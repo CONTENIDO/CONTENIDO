@@ -78,10 +78,10 @@ msgid "ACTIONS"
 msgstr "actions"
 
 msgid "EDITED"
-msgstr "last edit at : "
+msgstr "last edit at"
 
 msgid "FROM"
-msgstr "from : "
+msgstr "from"
 
 ; class.article_forum_left_bottom.php
 
@@ -89,13 +89,13 @@ msgid "DELETE_COMMENTS"
 msgstr "delete comments"
 
 msgid "ALLDELETEFROMCAT"
-msgstr "delete all comments  from this article ? "
+msgstr "delete all comments  from this article ?"
 
 msgid "ARTICLES"
-msgstr "articles "
+msgstr "articles"
 
 msgid "ALLDELETEFROMCATHIER"
-msgstr "delete comments inclusive subcomments ? "
+msgstr "delete comments inclusive subcomments ?"
 
 ; class.content.type.user_forum.php
 
@@ -114,7 +114,7 @@ msgstr "subcomments allowed"
 ; class.article_forum_collection.php
 
 msgid "MODSETTINGS"
-msgstr "settings : "
+msgstr "settings"
 
 msgid "COMMENT"
 msgstr "comment"
@@ -126,4 +126,4 @@ msgid "EMAIL"
 msgstr "email"
 
 msgid "NEWENTRYTEXT"
-msgstr "new comment with following content "
+msgstr "new comment with following content"

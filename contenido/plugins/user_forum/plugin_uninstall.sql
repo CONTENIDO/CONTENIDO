@@ -1,0 +1,1 @@
+DELETE FROM  con_type WHERE idtype = '100003';

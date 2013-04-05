@@ -38,7 +38,6 @@ class ArticleForumCollection extends ItemCollection {
         while ($this->db->next_record()) {
             array_push($data, $this->db->toArray());
         }
-
         return $data;
     }
 
@@ -138,7 +137,7 @@ class ArticleForumCollection extends ItemCollection {
                 $arrforum[$db->f('id_user_forum')]['realname'] = $db->f('realname');
             }
 
-            $arrforum[$db->f('id_user_forum')]['forum'] = str_replace(chr(13) . chr(10), '<br />',$db->f('forum'));
+            $arrforum[$db->f('id_user_forum')]['forum'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum'));
             $arrforum[$db->f('id_user_forum')]['forum_quote'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum_quote'));
             $arrforum[$db->f('id_user_forum')]['timestamp'] = $db->f('timestamp');
             $arrforum[$db->f('id_user_forum')]['like'] = $db->f('like');
@@ -161,9 +160,9 @@ class ArticleForumCollection extends ItemCollection {
 
     public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online, $checked) {
         // method receives checked as string, DB needs integer.
-        if (isset($checked)) {
-            ($checked === 'set_online')? $online = 1 : $online = 0;
-        }
+        // if (isset($checked)) {
+        (isset($checked) && $checked === 'set_online')? $online = 1 : $online = 0;
+        // }
 
         $uuid = cRegistry::getAuth()->isAuthenticated();
 
@@ -231,25 +230,37 @@ class ArticleForumCollection extends ItemCollection {
      * before calling this function it is necessary to receive the converted
      * language string from frontend module.
      */
-    public function mailToModerator($realname, $email, $forum, $idart, $forum_quote = 0) {
+    public function mailToModerator($realname, $email, $forum, $idart, $lang, $forum_quote = 0) {
+
+        // get article name
+        $ar = $this->getArticleTitle($idart, $lang);
+
         $mail = new cMailer();
         $mail->setCharset('UTF-8');
 
-        // $sToEmail = getEffectiveSetting('claus.schunk@4fb.de',
-        // 'claus.schunk@4fb.de');
-        // build mail content
-        $message = $this->languageSync['NEWENTRY'] . "\n" . "\n";
+        // build message content
+        $message = $this->languageSync['NEWENTRYTEXT'] . " " . $this->languageSync['ARTICLE'] . $ar[0]["title"] . "\n" . "\n";
         $message .= $this->languageSync['USER'] . ' : ' . $realname . "\n";
-        $message .= $this->languageSync['EMAIL'] . ' : ' . $email . "\n";
-        $message .= $this->languageSync['COMMENT'] . ' : ' . $forum . "\n";
+        $message .= $this->languageSync['EMAIL'] . ' : ' . $email . "\n" . "\n";
+        $message .= $this->languageSync['COMMENT'] . ' : ' . "\n" . $forum . "\n";
         if ($forum_quote != 0) {
             $message .= UserForum::i18n('QUOTE') . ' : ' . $forum_quote . "\n";
         }
 
-        // send mail only if modEmail is set.
+        // send mail only if modEmail is set -> minimize traffic.
         if ($this->getModEmail($idart) != NULL) {
             $mail->sendMail('info@contenido.org', $this->getModEmail($idart), $this->languageSync['NEWENTRY'], $message);
         }
+    }
+
+    public function getArticleTitle($idart, $idlang) {
+        $sql = "SELECT DISTINCT t.title FROM con_art_lang t WHERE t.idart=$idart AND t.idlang=$idlang;";
+        $this->db->query($sql);
+        $data = array();
+        while ($this->db->next_record()) {
+            array_push($data, $this->db->toArray());
+        }
+        return $data;
     }
 
     /**
@@ -265,7 +276,6 @@ class ArticleForumCollection extends ItemCollection {
         $userColl->query();
 
         while (($field = $userColl->next()) != false) {
-
             $arrUsers[$field->get('user_id')]['email'] = $field->get('email');
             $arrUsers[$field->get('user_id')]['realname'] = $field->get('realname');
         }
@@ -324,6 +334,7 @@ class ArticleForumCollection extends ItemCollection {
         $ar = $this->item->toArray();
         $current = $ar['dislike'];
         // increment value
+        $current += 1;
 
         $fields = array(
             'dislike' => $current
@@ -366,7 +377,7 @@ class ArticleForumCollection extends ItemCollection {
             'email' => mysql_real_escape_string($email),
             'realname' => mysql_real_escape_string($realname),
             'forum' => ($forum),
-            'forum_quote' =>($forum_quote),
+            'forum_quote' => ($forum_quote),
             'like' => 0,
             'dislike' => 0,
             'editedat' => NULL,
@@ -381,7 +392,7 @@ class ArticleForumCollection extends ItemCollection {
         // with the new comment and is able to
         // change the online state in the backend.
         if ($modCheck) {
-            $this->mailToModerator($realname, $email, $forum, $idart, $forum_quote = 0);
+            $this->mailToModerator($realname, $email, $forum, $idart, $lang, $forum_quote = 0);
         }
     }
 
@@ -391,7 +402,7 @@ class ArticleForumCollection extends ItemCollection {
      * @param articleId $idart
      */
     public function deleteAllCommentsById($idart) {
-        //var_dump($idart);
+        // var_dump($idart);
         $this->deleteBy('idart', mysql_real_escape_string(($idart)));
     }
 
@@ -404,7 +415,6 @@ class ArticleForumCollection extends ItemCollection {
         $userColl->query();
 
         while (($field = $userColl->next()) != false) {
-
             $arrUsers[$field->get('user_id')]['email'] = $field->get('email');
             $arrUsers[$field->get('user_id')]['realname'] = $field->get('realname');
         }
@@ -525,6 +535,16 @@ class ArticleForumCollection extends ItemCollection {
             return array();
         }
     }
+
+    public function getCommentContent($id_user_forum) {
+        $ar = array();
+        $item = $this->loadItem($id_user_forum);
+        $ar['name'] = $item->get("realname");
+        $ar['content'] = $item->get("forum");
+
+        return $ar;
+    }
+
 }
 
 ?>

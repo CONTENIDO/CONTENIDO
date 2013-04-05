@@ -51,7 +51,7 @@ msgid "TIME"
 msgstr "erstellt"
 
 msgid "EDITDAT"
-msgstr "zuletztet editiert"
+msgstr "zuletzt editiert"
 
 msgid "EDITEDBY"
 msgstr "editiert von"
@@ -77,7 +77,7 @@ msgid "ALLDELETEFROMCAT"
 msgstr "Alle Kommentare zu diesem Artikel löschen ? "
 
 msgid "ARTICLES"
-msgstr "Artikel "
+msgstr "Artikel"
 
 msgid "ALLDELETEFROMCATHIER"
 msgstr "Kommentar inklusive untergeordneten Kommentaren löschen ? "
@@ -89,10 +89,10 @@ msgid "FORUM_POST"
 msgstr "Kommentare"
 
 msgid "EDITED"
-msgstr "Zuletzt editiert am : "
+msgstr "Zuletzt editiert am: "
 
 msgid "FROM"
-msgstr "von : "
+msgstr "von: "
 
 msgid "ACTIONS"
 msgstr "Aktionen"
@@ -100,13 +100,13 @@ msgstr "Aktionen"
 ; class.content.type.user_forum.php
 
 msgid "MODSETTINGS"
-msgstr "Einstellungen : "
+msgstr "Einstellungen: "
 
 msgid "ADMINISTRATION"
 msgstr "Administration"
 
 msgid "MODEMAIL"
-msgstr "Email-Adresse"
+msgstr "E-Mail-Adresse"
 
 msgid "ACTIVATEMOD"
 msgstr "Moderatoren-Modus aktivieren"
@@ -117,10 +117,10 @@ msgstr "Antworten auf Beiträge möglich"
 ; class.article_forum_collection.php
 
 msgid "NEWENTRY"
-msgstr "Neuer Kommentar hinzugefuegt : "
+msgstr "Neuer Kommentar hinzugefuegt: "
 
 msgid "NEWENTRYTEXT"
-msgstr "Neuer Kommentar mit folgendem Inhalt : "
+msgstr "Neuer Kommentar mit folgendem Inhalt: "
 
 msgid "COMMENT"
 msgstr "Kommentar"
@@ -129,5 +129,5 @@ msgid "USER"
 msgstr "Name"
 
 msgid "EMAIL"
-msgstr "Email"
+msgstr "E-Mail"
 

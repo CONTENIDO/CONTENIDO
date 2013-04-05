@@ -36,12 +36,10 @@ function cContentTypeUserForum(frameId, imageId, pathBackend, pathFrontend,
     cContentTypeAbstractTabbed.apply(this, arguments);
 }
 
-// $(document).ready(function() {
-// inherit from cContentTypeAbstractTabbed
 cContentTypeUserForum.prototype = new cContentTypeAbstractTabbed();
-
-// correct the constructor function (it points to the cContentTypeAbstractTabbed
-// constructor)
 cContentTypeUserForum.prototype.constructor = cContentTypeUserForum;
-// });
+
+
+    
+
 

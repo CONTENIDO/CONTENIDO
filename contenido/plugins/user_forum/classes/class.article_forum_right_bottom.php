@@ -196,7 +196,7 @@ class ArticleForumRightBottom extends cGuiPage {
 
             // valid email
             $maili = $this->checkValidEmail($cont['email'], $cont['realname']);
-            $text = $cont['forum']; // n2bl
+            $text = $cont['forum'];
 
             $timestamp = $cont['editedat'];
 
@@ -358,10 +358,6 @@ class ArticleForumRightBottom extends cGuiPage {
         $email = new cHTMLTextBox("email", conHtmlSpecialChars($post['email']), 40, 255);
         $like = new cHTMLTextBox("like", conHtmlSpecialChars($post['like']), 40, 255);
         $dislike = new cHTMLTextBox("dislike", conHtmlSpecialChars($post['dislike']), 40, 255);
-
-
-        //hier
-
 
         $text = str_replace("<br />", "\n", $post['forum']);
 
