@@ -29,6 +29,7 @@ class ArticleForumCollection extends ItemCollection {
         parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
         $this->_setItemClass('ArticleForum');
         $this->item = new ArticleForumItem();
+        $this->getIdUserForumContenType();
     }
 
     public function getAllCommentedArticles() {
@@ -496,8 +497,9 @@ class ArticleForumCollection extends ItemCollection {
         $catId = cRegistry::getCategoryId();
         $idclient = cRegistry::getClientId();
         $cfgClient = cRegistry::getClientConfig();
+        $idtype = $this->getIdUserForumContenType();
 
-        $sql = "SELECT t.value,f.idart FROM con_art_lang f , con_content t WHERE idtype=100003 AND t.idartlang=f.idartlang;";
+        $sql = "SELECT t.value,f.idart FROM con_art_lang f , con_content t WHERE idtype=$idtype AND t.idartlang=f.idartlang;";
         try {
             $this->db->query($sql);
             $data = array();
@@ -543,6 +545,14 @@ class ArticleForumCollection extends ItemCollection {
         $ar['content'] = $item->get("forum");
 
         return $ar;
+    }
+
+    protected function getIdUserForumContenType()
+    {
+        $sql = "SELECT idtype from con_type WHERE type='CMS_USERFORUM';";
+        $result = $this->db->query($sql);
+        $row = mysql_fetch_row($result);
+        return $row[0];
     }
 
 }
