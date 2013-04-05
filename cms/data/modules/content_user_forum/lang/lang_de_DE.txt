@@ -1,4 +1,4 @@
-writeNewEntry=Neuen Beitrag schreiben
+﻿writeNewEntry=Neuen Beitrag schreiben
 answers=Antworten
 replyQuote=Zitat Antworten
 articleRemoved=Der Beitrag wurde gelöscht.
@@ -33,8 +33,14 @@ delete=Löschen
 edit=Bearbeiten
 sameOpinion=Sind Sie gleicher Meinung?
 showHideArticles=Beitrage anzeigen/ausblenden - aktuell: ___ Beitrag(e)
+<<<<<<< .mine
+NEWENTRY=Neuer Kommentar hinzugefügt
+NEWENTRYTEXT=Neuer Kommentar hinzugefügt
+COMMENT=Kommentar
+EMAILADR=Email
+INARTICLE=in Artikel: 
 NEWENTRY=Neuer Kommentar hinzugefuegt
 NEWENTRYTEXT=Neuer Kommentar hinzugefuegt
 COMMENT=Kommentar
 USER=Name
-EMAIL=Email
+hans=wurstsalat
