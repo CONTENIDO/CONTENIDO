@@ -19,7 +19,7 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-class cUpgradeJob_0009 extends cUpgradeJobAbstract {
+class cUpgradeJob_0010 extends cUpgradeJobAbstract {
 
     public $maxVersion = "4.9.0-rc1";
 
