@@ -56,6 +56,8 @@ cContentTypeLinkeditor.prototype.initialise = function() {
     cContentTypeAbstractTabbed.prototype.initialise.call(this);
     // call custom functions that attach custom event handlers etc.
     this.addNaviActions();
+    this.createMKDir();
+    this.linkEditorFileUpload();
 };
 
 /**
@@ -282,8 +284,8 @@ cContentTypeLinkeditor.prototype.linkEditorFileUpload = function() {
  */
 cContentTypeLinkeditor.prototype.createMKDir = function() {
     var self = this;
-    $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').unbind('click');
-    $(self.frameId + ' #upload form[name="newdir"] input[type="image"]').click(function() {
+    $(self.frameId + ' #file form[name="newdir"] input[type="image"]').unbind('click');
+    $(self.frameId + ' #file form[name="newdir"] input[type="image"]').click(function() {
         var folderName = $(self.frameId + ' input[name="foldername"]').val();
         // if folder name is empty, do nothing
         if (folderName === '') {
