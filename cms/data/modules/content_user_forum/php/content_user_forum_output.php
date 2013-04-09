@@ -16,6 +16,8 @@ class UserForumArticle {
 
     protected $_allowedToEditForum;
 
+    protected $_modMode;
+
     /**
      *
      * @access protected
@@ -94,6 +96,7 @@ class UserForumArticle {
 
     private function _setConfig() {
         $this->_qoute = ($this->_collection->getQuoteState($this->_idart));
+        $this->_modMode = ($this->_collection->getModeModeActive($this->_idart));
     }
 
     /**
@@ -175,6 +178,10 @@ class UserForumArticle {
      * submit for new entry will be called after click at new comment
      */
     function saveForum() {
+
+        $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
+        // Run the preg_match() function on regex against the email address
+
         if ($this->_allowedToEditForum) {
 
             $this->_userid = $_REQUEST['userid'];
@@ -202,6 +209,12 @@ class UserForumArticle {
                     $this->_messageText .= mi18n("enterYourMail") . '<br />';
                     $bInputOK = false;
                 }
+                if( $email!= ''){
+                    if(!preg_match($regex, $email)){
+                    $this->_messageText .= mi18n("enterValidMail") . '<br />';
+                    $bInputOK = false;
+                    }
+                }
 
                 if ($realname == '') {
                     $this->_messageText .= mi18n("enterYourName") . '<br />';
@@ -225,7 +238,7 @@ class UserForumArticle {
                     'ARTICLE' => mi18n("INARTICLE")
                 );
                 $this->_collection->languageSync($ar);
-               // var_dump($this->_collection->getlanguageSync());
+                // var_dump($this->_collection->getlanguageSync());
                 // persist comment
                 $this->_collection->insertValues($parent, $this->_idart, $this->_idcat, $this->_idlang, $this->_userid, $email, $realname, $forum, $forum_quote);
 
@@ -338,7 +351,7 @@ class UserForumArticle {
                     $ts = $arrTmp2[2] . '.' . $arrTmp2[1] . '.' . $arrTmp2[0] . ' ' . mi18n("about") . ' ';
                     $ts .= substr($arrTmp[1], 0, 5) . ' ' . mi18n("clock");
 
-                    $record['DAY'] = $arrTmp2[2];
+                    $record['AM'] = mi18n("AM");
                     $record['WROTE_ON'] = mi18n("wroteAt");
                     $record['WRITE_EMAIL'] = mi18n("emailToAuthor");
                     $record['TIMESTAMP'] = $ts;
@@ -454,10 +467,10 @@ class UserForumArticle {
                 (count($content) > 0)? $empty = false : $empty = true;
 
                 if (!$empty) {
-                     // Quote anser content
+                    // Quote anser content
                     $ar = $this->_collection->getCommentContent($replyId);
                     $transTemplate = mi18n("answerToQuote");
-                    $transTemplateContent =  $ar['content'];
+                    $transTemplateContent = $ar['content'];
                     $transTemplateAfter = mi18n("from");
                     $transTemplateName = $ar['name'];
                     $this->_tpl->assign('FORUM_REPLYMENT', $transTemplate . '<br/>' . $transTemplateContent . "<br/><br/>" . $transTemplateAfter . ' ' . $transTemplateName);
@@ -466,6 +479,10 @@ class UserForumArticle {
                 }
             } else {
                 $this->_tpl->assign('FORUM_REPLYMENT', '');
+            }
+
+            if ($this->_modMode) {
+                $this->_tpl->assign('MODEMODETEXT', mi18n('MODEMODETEXT'));
             }
 
             $this->_tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"\" />");
