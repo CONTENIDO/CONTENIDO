@@ -488,5 +488,9 @@ return array(
     'cApiClickableQuestionAction' => 'contenido/classes/widgets/class.widgets.actionbutton.php',
     'cXmlBase' => 'contenido/classes/xml/class.xml.base.php',
     'cXmlReader' => 'contenido/classes/xml/class.xml.reader.php',
-    'cXmlWriter' => 'contenido/classes/xml/class.xml.writer.php'
+    'cXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
+    'cApiIso6392Collection' => 'contenido/classes/contenido/class.iso6392.php',
+    'cApiIso6392' => 'contenido/classes/contenido/class.iso6392.php',
+    'cApiIso3166Collection' => 'contenido/classes/contenido/class.iso3166.php',
+    'cApiIso3166' => 'contenido/classes/contenido/class.iso3166.php',
 );
