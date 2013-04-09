@@ -83,6 +83,12 @@ msgstr "last edit at"
 msgid "FROM"
 msgstr "from"
 
+msgid "PARAMETER"
+msgstr "parameter"
+
+msgid "CONTENT"
+msgstr "content"
+
 ; class.article_forum_left_bottom.php
 
 msgid "NOENTRY"
@@ -103,13 +109,13 @@ msgstr "delete comments inclusive subcomments ?"
 ; class.content.type.user_forum.php
 
 msgid "ADMINISTRATION"
-msgstr "administration"
+msgstr "administration userform"
 
 msgid "MODEMAIL"
 msgstr "email address moderator"
 
 msgid "ACTIVATEMOD"
-msgstr "activate moderator mode"
+msgstr "moderator forum"
 
 msgid "EDITABLE"
 msgstr "subcomments allowed"

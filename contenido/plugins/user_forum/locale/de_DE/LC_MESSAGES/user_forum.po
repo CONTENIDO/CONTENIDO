@@ -33,7 +33,7 @@ msgid "USER"
 msgstr "Name"
 
 msgid "EMAIL"
-msgstr "Email"
+msgstr "E-Mail-Adresse"
 
 msgid "LIKE"
 msgstr "gefällt"
@@ -59,6 +59,12 @@ msgstr "editiert von"
 msgid "QUOTE"
 msgstr "Zitat"
 
+msgid "ONLINE"
+msgstr "online"
+
+msgid "OFFLINE"
+msgstr "offline"
+
 msgid "SETONLINE"
 msgstr " Kommentar online setzen"
 
@@ -71,19 +77,25 @@ msgstr "um"
 msgid "CLOCK"
 msgstr "Uhr"
 
+msgid "PARAMETER"
+msgstr "Parameter"
+
+msgid "CONTENT"
+msgstr "Inhalt"
+
 ; class.article_forum_left_bottom.php
 
 msgid "NOENTRY"
 msgstr "Noch keine Einträge vorhanden" 
 
 msgid "ALLDELETEFROMCAT"
-msgstr "Alle Kommentare zu diesem Artikel löschen ? "
+msgstr "Alle Kommentare zu diesem Artikel löschen? "
 
 msgid "ARTICLES"
 msgstr "Artikel"
 
 msgid "ALLDELETEFROMCATHIER"
-msgstr "Kommentar inklusive untergeordneten Kommentaren löschen ? "
+msgstr "Kommentar inklusive untergeordneten Kommentaren löschen? "
 
 msgid "DELETE_COMMENTS"
 msgstr "Kommentare löschen"
@@ -106,16 +118,16 @@ msgid "MODSETTINGS"
 msgstr "Einstellungen: "
 
 msgid "ADMINISTRATION"
-msgstr "Administration"
+msgstr "Administration Userforum"
 
 msgid "MODEMAIL"
 msgstr "E-Mail-Adresse"
 
 msgid "ACTIVATEMOD"
-msgstr "Moderatoren-Modus aktivieren"
+msgstr "Forum moderieren"
 
 msgid "EDITABLE"
-msgstr "Antworten auf Beiträge möglich"
+msgstr "Antworten möglich"
 
 ; class.article_forum_collection.php
 

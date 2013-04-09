@@ -16,6 +16,15 @@ class ArticleForumRightBottom extends cGuiPage {
     protected $_collection;
 
     function __construct() {
+
+//reload left bottom in this code because of irregular update problems in the location file
+echo <<<EOF
+<script type="text/javascript">
+    reloadLeftBottom = 'main.php?area=user_forum';
+    reloadLeftBottom += '&frame=2';
+    parent.parent.left.left_bottom.location.href = reloadLeftBottom;
+</script>
+EOF;
         $this->_collection = new ArticleForumCollection();
         parent::__construct('right_bottom', 'forumlist');
         $this->addStyle('../plugins/user_forum/styles/right_bottom.css');
@@ -76,7 +85,7 @@ class ArticleForumRightBottom extends cGuiPage {
      */
     protected function buildOnlineButtonBackendListMode(&$key, &$cont, &$cfg) {
         global $area;
-
+            $this->addScript( UserForum::getUrl() . 'scripts/test.js');
         $buttons = array();
 
         $id = $cont['id_user_forum'];
@@ -120,7 +129,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $idaart = $cont['idart'];
 
         // button with delete action
-        $deleteButton = '<a title="' . $cont['title'] . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function(){deleteArticlesByIdRight(' . $level . ',' . $keyy . ',' . $id . ',' . $idacat . ',' . $idaart . ');});return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $cont['title'] . " löschen" . '" alt="' . $cont['title'] . '"></a>';
+        $deleteButton = '<a title="' . $cont['title'] . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function(){deleteArticlesByIdRight(' . $level . ',' . $keyy . ',' . $id . ',' . $idacat . ',' . $idaart . ');});return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $message . '" alt="' . $message . '"></a>';
 
         // insert buttons to array for return
         $buttons['online'] = $online;
@@ -327,7 +336,8 @@ class ArticleForumRightBottom extends cGuiPage {
         global $area;
         $changes = 0;
         $cfg = cRegistry::getConfig();
-
+        $idart = cRegistry::getArticleId();
+        $idcat = cRegistry::getCategoryId();
         $menu = new cGuiMenu();
         $tr = new cHTMLTableRow();
 
@@ -354,10 +364,10 @@ class ArticleForumRightBottom extends cGuiPage {
         $likeButton = new cHTMLImage($cfg['path']['images'] . 'like.png');
         $dislikeButton = new cHTMLImage($cfg['path']['images'] . 'dislike.png');
 
-        $name = new cHTMLTextBox("realname", conHtmlSpecialChars($post['realname']), 40, 255);
-        $email = new cHTMLTextBox("email", conHtmlSpecialChars($post['email']), 40, 255);
-        $like = new cHTMLTextBox("like", conHtmlSpecialChars($post['like']), 40, 255);
-        $dislike = new cHTMLTextBox("dislike", conHtmlSpecialChars($post['dislike']), 40, 255);
+        $name = new cHTMLTextBox("realname", conHtmlSpecialChars($post['realname']), 30, 255);
+        $email = new cHTMLTextBox("email", conHtmlSpecialChars($post['email']), 30, 255);
+        $like = new cHTMLTextBox("like", conHtmlSpecialChars($post['like']), 7, 7);
+        $dislike = new cHTMLTextBox("dislike", conHtmlSpecialChars($post['dislike']), 7, 7);
 
         $text = str_replace("<br />", "\n", $post['forum']);
 
@@ -369,28 +379,13 @@ class ArticleForumRightBottom extends cGuiPage {
         $editedatearray = $this->formatTimeString($post['editedat']);
         (empty($editedatearray))? $editedat = '' : $editedat = $editedatearray['day'] . '.' . $editedatearray['month'] . '.' . $editedatearray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $editedatearray['hour'] . ':' . $editedatearray['minute'] . ' ' . UserForum::i18n("CLOCK");
 
-        $timestamp = new cHTMLTextBox("timestamp", conHtmlSpecialChars($date), 40, 255);
-        $editedat = new cHTMLTextBox("editedat", conHtmlSpecialChars($editedat), 40, 255);
-        $editedby = new cHTMLTextBox("editedby", conHtmlSpecialChars($username), 40, 255);
+        $timestamp = new cHTMLTextBox("timestamp", conHtmlSpecialChars($date), 30, 255);
+        $editedat = new cHTMLTextBox("editedat", conHtmlSpecialChars($editedat), 30, 255);
+        $editedby = new cHTMLTextBox("editedby", conHtmlSpecialChars($username), 30, 255);
 
         $editedat->setDisabled(true);
         $timestamp->setDisabled(true);
         $editedby->setDisabled(true);
-
-        if ($post['online'] == 1) {
-            $onlineBox = new cHTMLCheckbox("onlineState", 'set_offline');
-            $onlineBox->setChecked(false);
-            $onlineBox->setLabelText(UserForum::i18n('SETOFFLINE'));
-            $form1->setVar("checked", "1");
-        } else {
-            $onlineBox = new cHTMLCheckbox("onlineState", 'set_online');
-            $onlineBox->setChecked(false);
-            $onlineBox->setLabelText(UserForum::i18n('SETONLINE'));
-            $form1->setVar("checked", "0");
-        }
-
-        $idart = $post['idart'];
-        $idcat = $post['idcat'];
 
         $form1->addCancel("main.php?area=user_forum&frame=4&action=back&idart=$idart&idcat=$idcat");
         $form1->add(UserForum::i18n("USER"), $name, '');
@@ -400,10 +395,18 @@ class ArticleForumRightBottom extends cGuiPage {
         $form1->add(UserForum::i18n("TIME"), $timestamp, '');
         $form1->add(UserForum::i18n("EDITDAT"), $editedat, '');
         $form1->add(UserForum::i18n("EDITEDBY"), $editedby, '');
-        $form1->add(UserForum::i18n("STATUS"), $onlineBox, '');
+
+        $onlineBox = new cHTMLCheckbox("onlineState", "");
+
+        ($post['online'] == 1)? $onlineBox->setChecked(true) : $onlineBox->setChecked(false);
+        $form1->add(UserForum::i18n("ONLINE"), $onlineBox, '');
+
+        $idart = $post['idart'];
+        $idcat = $post['idcat'];
+
         $form1->add(UserForum::i18n("COMMENT"), $forum, '');
 
-        $form1->setVar('online', $post['online']);
+        // $form1->setVar('online', $post['online']);
         $form1->setVar("id_user_forum", $post['id_user_forum']);
         $form1->setVar("idart", $post['idart']);
         $form1->setVar("idcat", $post['idcat']);
@@ -464,6 +467,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $idart = $_REQUEST['idart'];
         $idcat = $_REQUEST['idcat'];
         $action = $_REQUEST["action"];
+        (isset($_REQUEST['onlineState']))? $online = 1 : $online = 0;
 
         switch ($action) {
 
@@ -479,7 +483,7 @@ class ArticleForumRightBottom extends cGuiPage {
                 break;
             // after click on save button in edit dialog
             case 'update':
-                $this->_collection->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $_POST['online'], $_POST['onlineState']);
+                $this->_collection->updateValues($_POST['id_user_forum'], $_POST['realname'], $_POST['email'], $_POST['like'], $_POST['dislike'], $_POST['forum'], $online, $_POST['onlineState']);
                 $this->getForum($idcat, $idart, $lang);
                 break;
             case 'show_form':

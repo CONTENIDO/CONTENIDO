@@ -14,8 +14,7 @@ class ArticleForumLeftBottom extends cGuiPage {
     protected function getMenu() {
         $arts = new ArticleForumCollection();
         $result = $arts->getAllCommentedArticles();
-        if(count($result) == 0)
-        {
+        if (count($result) == 0) {
             echo UserForum::i18n("NOENTRY");
         }
 
@@ -90,7 +89,7 @@ class ArticleForumLeftBottom extends cGuiPage {
 
             $deletebutton = '<a title="' . $result[$i]['title'] . '" href="javascript:void(0)"
             onclick="showConfirmation(&quot;' . $message . '&quot;, function(){deleteArticlesByIdLeft(' . $arg . ');});
-            return false;"><img class="links" src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $result[$i]['title'] . " löschen" . '" alt="' . $result[$i]['title'] . '"></a>';
+            return false;"><img class="links" src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $message . '" alt="' . $message . '"></a>';
 
             $tdname->appendContent($link);
             $tdlink->appendContent($deletebutton);

@@ -71,7 +71,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         // build top code
         $tplTop = new cTemplate();
         $tplTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
-        $tplTop->set('s', 'ICON', $cfg['path']['images'] . 'delete.gif');
+        $tplTop->set('s', 'ICON', 'plugins/user_forum/images/con_button.gif');
         $tplTop->set('s', 'ID', $this->_id);
         $tplTop->set('s', 'PREFIX', $this->_prefix);
         $tplTop->set('s', 'HEADLINE', UserForum::i18n('ADMINISTRATION'));

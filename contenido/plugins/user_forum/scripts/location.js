@@ -31,11 +31,6 @@ function deleteArticlesByIdRight(level, key, id, idcat, idart) {
     url += '&id_user_forum=';
     url += id;
 
-    reloadLeftBottom = 'main.php?area=user_forum';
-    reloadLeftBottom += '&frame=2';
-    reloadLeftBottom += '&idart='
-    reloadLeftBottom += idart;
-
     parent.parent.right.right_bottom.location.href = url;
-    parent.parent.left.left_bottom.location.href = reloadLeftBottom;
 }
+

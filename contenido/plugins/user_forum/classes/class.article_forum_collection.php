@@ -160,11 +160,6 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online, $checked) {
-        // method receives checked as string, DB needs integer.
-        // if (isset($checked)) {
-        (isset($checked) && $checked === 'set_online')? $online = 1 : $online = 0;
-        // }
-
         $uuid = cRegistry::getAuth()->isAuthenticated();
 
         $this->item->loadByPrimaryKey($id_user_forum);
@@ -452,12 +447,8 @@ class ArticleForumCollection extends ItemCollection {
      */
     public function getModeModeActive($idart) {
         $data = $this->readXML();
-        // echo '<pre>';
-        // var_dump($data);
-        // echo '</pre>'
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['idart'] == $idart) {
-
                 if ($data[$i]["modactive"] === 'false') {
                     return false;
                 }
@@ -547,8 +538,7 @@ class ArticleForumCollection extends ItemCollection {
         return $ar;
     }
 
-    protected function getIdUserForumContenType()
-    {
+    protected function getIdUserForumContenType() {
         $sql = "SELECT idtype from con_type WHERE type='CMS_USERFORUM';";
         $result = $this->db->query($sql);
         $row = mysql_fetch_row($result);
