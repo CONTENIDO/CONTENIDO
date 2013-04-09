@@ -108,11 +108,11 @@ a.submit,a.cancel {
 }
 
 .user_forum .name {
-	float: right;
+	float: left;
 }
 
 .user_forum .email {
-	float: left;
+	float: right;
 }
 
 .forum_quote,.replyment {
