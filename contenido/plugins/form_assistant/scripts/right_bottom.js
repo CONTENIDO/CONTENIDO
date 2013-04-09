@@ -67,7 +67,7 @@ $(function() {
      * from a hidden input field #sortParams which is filled serverside.
      */
     $pifaFormFieldList.sortable({
-        placeholder : 'ui-state-highlight',
+        placeholder: 'ui-state-highlight',
         items: 'li:not(.header)',
         axis: 'y',
         //containment: 'parent',
@@ -75,8 +75,8 @@ $(function() {
             ui.placeholder.height(ui.item.height());
         },
         revert: true,
-        update : function(event, ui) {
-            var idfields = new Array();
+        update: function(event, ui) {
+            var idfields = [];
             $.each($('li', this), function() {
                 idfields.push($(this).attr('id'));
             });
@@ -94,35 +94,32 @@ $(function() {
     /**
      * Make field type icons draggable.
      */
-    $(".img-draggable")
-        .draggable({
-            connectToSortable:'#pifa-form-field-list',
-            // make a copy of the dragged icon
-            helper: 'clone',
-            revert : 'invalid'
-        })
-        .disableSelection()
-        .on('click', function(event) {
-            // append to list when clicked
-            event.preventDefault();
-            $.ajax({
-                type: 'GET',
-                url: 'main.php',
-                data: $(this).attr('href'),
-                success: function(data, textStatus, jqXHR) {
-                    $pifaFormFieldForm.html(data);
-                    $("#field_rank", $pifaFormFieldForm).val($pifaFormFieldList.find('li').length + 1);
-                    pifaShowFormFieldDialog($pifaFormFieldForm, null);
-                },
-            });
+    $(".img-draggable").draggable({
+        connectToSortable: '#pifa-form-field-list',
+        // make a copy of the dragged icon
+        helper: 'clone',
+        revert: 'invalid'
+    }).disableSelection().on('click', function(event) {
+        // append to list when clicked
+        event.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: 'main.php',
+            data: $(this).attr('href'),
+            success: function(data, textStatus, jqXHR) {
+                $pifaFormFieldForm.html(data);
+                $("#field_rank", $pifaFormFieldForm).val($pifaFormFieldList.find('li').length + 1);
+                pifaShowFormFieldDialog($pifaFormFieldForm, null);
+            },
         });
+    });
 
     /**
      * Make form field list droppable.
      */
     $pifaFormFieldList.droppable({
-        accept : '.img-draggable', // accept only field type icons
-        drop : function(event, ui) {
+        accept: '.img-draggable', // accept only field type icons
+        drop: function(event, ui) {
             $.ajax({
                 type: 'GET',
                 url: 'main.php',
@@ -131,7 +128,7 @@ $(function() {
                     $pifaFormFieldForm.html(data);
                     $("#field_rank", $pifaFormFieldForm).val(ui.draggable.index() + 1);
                     pifaShowFormFieldDialog($pifaFormFieldForm, ui.draggable);
-                },
+                }
             });
         }
     });
@@ -185,13 +182,13 @@ $(function() {
     //$('#icon-add-option').on('click', function(event) {
     $('body').delegate('#icon-add-option', 'click', function(event) {
         event.preventDefault();
-        $options_list = $('#options-list');
+        $optionsList = $('#options-list');
         $.ajax({
             type: 'GET',
             url: $(this).attr('href'),
-            data : 'index=' + ($options_list.children().length + 1),
+            data: 'index=' + ($optionsList.children().length + 1),
             success: function(data, textStatus, jqXHR) {
-                $options_list.append(data);
+                $optionsList.append(data);
             }
         });
     });
@@ -209,15 +206,15 @@ $(function() {
             success: function(data, textStatus, jqXHR) {
                 // get idfield & field_rank of current item and list of existing items
                 var idfield = parseInt($('#idfield').val(), 10);
-                var field_rank = parseInt($('#field_rank').val(), 10);
+                var fieldRank = parseInt($('#field_rank').val(), 10);
                 var $items = $pifaFormFieldList.find('li');
                 // either replace item when editing existing field
                 // or append new item to predecessor when creating new field and list is not empty
                 // or append new item to list when creating new field and list is empty
                 if (!isNaN(idfield)) {
-                    $items.eq(field_rank - 1).replaceWith(data);
+                    $items.eq(fieldRank - 1).replaceWith(data);
                 } else if (0 < $items.length) {
-                    $items.eq(field_rank - 2).after(data);
+                    $items.eq(fieldRank - 2).after(data);
                 } else {
                     $pifaFormFieldList.append(data);
                 }
