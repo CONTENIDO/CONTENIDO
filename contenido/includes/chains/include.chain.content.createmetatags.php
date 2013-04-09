@@ -214,7 +214,6 @@ function cecCreateMetatags($metatags) {
             }
         }
     }
-    print_r($metatags);
     return $metatags;
 }
 
