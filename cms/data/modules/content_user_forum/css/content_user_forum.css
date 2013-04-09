@@ -107,11 +107,22 @@ a.submit,a.cancel {
 	width: 100%;
 }
 
+.user_forum .name {
+	float: right;
+}
+
+.user_forum .email {
+	float: left;
+}
 
 .forum_quote,.replyment {
 	background: #dadada;
 	padding: 3px 6px;
 	margin-bottom: 5px;
+}
+
+.user_forum .yourcomment{
+	clear: both;
 }
 
 .quote_handler,.replyment_handler {
