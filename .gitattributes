@@ -2065,6 +2065,7 @@ contenido/plugins/user_forum/classes/class.article_forum_left_bottom.php -text
 contenido/plugins/user_forum/classes/class.article_forum_right_bottom.php -text
 contenido/plugins/user_forum/classes/class.content.type.user_forum.php -text
 contenido/plugins/user_forum/classes/class.user_forum.php -text
+contenido/plugins/user_forum/images/con_button.gif -text
 contenido/plugins/user_forum/includes/config.plugin.php -text
 contenido/plugins/user_forum/includes/include.left_bottom.php -text
 contenido/plugins/user_forum/includes/include.left_top.php -text
