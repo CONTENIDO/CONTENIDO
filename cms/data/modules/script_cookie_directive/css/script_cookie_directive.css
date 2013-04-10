@@ -1,3 +1,7 @@
+.ui-dialog-buttonset{
+	float: left;
+}
+
 /* ----- COOKIE DIRECTIVE ----- */
 /*
 #cookieNote {

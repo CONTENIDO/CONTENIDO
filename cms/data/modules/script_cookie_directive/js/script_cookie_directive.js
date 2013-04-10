@@ -18,6 +18,7 @@ $(function() {
 //        },
         buttons : [{
             text : $('#accept').val(),
+            "class": "submit button red",
             click : function() {
                 window.location.href = $('#pageUrlAccept').val();
                 $(this).dialog("close");
@@ -25,6 +26,7 @@ $(function() {
         },
         {
             text : $('#decline').val(),
+            "class": "cancel button grey",
             click : function() {
                 window.location.href = $('#pageUrlDeny').val();
                 $(this).dialog("close");
