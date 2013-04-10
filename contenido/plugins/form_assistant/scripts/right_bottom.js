@@ -182,7 +182,7 @@ $(function() {
     //$('#icon-add-option').on('click', function(event) {
     $('body').delegate('#icon-add-option', 'click', function(event) {
         event.preventDefault();
-        $optionsList = $('#options-list');
+        var $optionsList = $('#options-list');
         $.ajax({
             type: 'GET',
             url: $(this).attr('href'),
