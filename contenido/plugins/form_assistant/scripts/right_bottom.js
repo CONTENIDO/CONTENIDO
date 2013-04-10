@@ -110,7 +110,7 @@ $(function() {
                 $pifaFormFieldForm.html(data);
                 $("#field_rank", $pifaFormFieldForm).val($pifaFormFieldList.find('li').length + 1);
                 pifaShowFormFieldDialog($pifaFormFieldForm, null);
-            },
+            }
         });
     });
 
