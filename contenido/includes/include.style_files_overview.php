@@ -81,7 +81,8 @@ if (($handle = opendir($path)) !== false) {
             $html_filename = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&file=$filename"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&action=$sActionEdit&file=$filename&tmp_file=$filename"), $filename, $filename, conHtmlSpecialChars($filename));
 
             $tpl->set('d', 'FILENAME', $html_filename);
-            $tpl->set("d", "DESCRIPTION", ($fileInfo["description"] == "") ? i18n("No description") : $fileInfo["description"]);
+
+            $tpl->set("d", "DESCRIPTION", ($fileInfo["description"] == "") ? '' : $fileInfo["description"]);
 
             $delTitle = i18n('Delete File');
             $delDescr = sprintf(i18n('Do you really want to delete the following file:<br><br>%s<br>'), $filename);
