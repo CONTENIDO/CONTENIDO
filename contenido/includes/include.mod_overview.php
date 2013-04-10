@@ -144,7 +144,7 @@ foreach ($allModules as $idmod => $module) {
         $iMenu++;
 
         $mlist->setTitle($iMenu, $colName);
-        $mlist->setTooltip($iMenu, ($descr == "") ? i18n("No description") : $descr);
+        $mlist->setTooltip($iMenu, ($descr == "") ? '' : $descr);
         if ($perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod) || $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $idmod)) {
             $mlist->setLink($iMenu, $link);
         }
