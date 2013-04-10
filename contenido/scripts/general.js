@@ -90,9 +90,16 @@ function conLoadFile(script, callback, scope, params) {
         // if script is not already loading, load it and evaluate the callbacks
         if (loaded[script] != 'pending') {
             loaded[script] = 'pending';
-            $.getScript(script, function() {
+            $.getScript(script)
+            .done(function() {
                 loaded[script] = 'true';
                 conEvaluateCallbacks(stack[script]);
+            })
+            .fail(function(jqxhr, settings, exception) {
+                //console.log('failed to load ' + script);
+                //console.log(jqxhr);
+                //console.log(settings);
+                //console.log(exception);
             });
         }
     } else {
