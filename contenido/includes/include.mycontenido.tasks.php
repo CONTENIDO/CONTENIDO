@@ -38,8 +38,6 @@ if (!isset($sortmode)) {
     $sortby   = $currentuser->getUserProperty("system","tasks_sortby");
 }
 
-
-
 $dateformat = getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s");
 
 if (isset($_REQUEST["listsubmit"])) {
@@ -146,7 +144,9 @@ class TODOBackendList extends cGuiScrollList
             }
 
             $amount = round($amount);
+        //    var_dump($amount);
 
+            if($amount != 0){
             $image = new cHTMLImage($backendUrl . $cfg["path"]["images"]."reminder/progress.gif");
             $image->setAlt(sprintf(i18n("%d %% complete"), $value));
             $ret = "";
@@ -156,6 +156,8 @@ class TODOBackendList extends cGuiScrollList
             }
 
             return $ret;
+            }
+            else return '&nbsp;';
         }
 
         if ($key == 6) {
@@ -186,6 +188,7 @@ class TODOBackendList extends cGuiScrollList
         }
 
         if ($key == 8) {
+
             if ($value !== "") {
                 if (round($value,2) == 0) {
                     return i18n("Today");
@@ -194,10 +197,15 @@ class TODOBackendList extends cGuiScrollList
                         return number_format(0-$value, 2, ',', '') . " ".i18n("Day(s)");
                     } else {
                         return '<font color="red">'. number_format(0-$value, 2, ',', '') . " ".i18n("Day(s)").'</font>';
+
                     }
                 }
             }
+            else {
+                return '&nbsp;';
+            }
         }
+
         return $value;
     }
 }
@@ -258,7 +266,7 @@ $todoitems->select("recipient = '" . $todoitems->escape($recipient) . "' AND idc
 $list = new TODOBackendList();
 
 $list->setHeader(
-    "", i18n("Subject"), i18n("Created"), i18n("End Date"), i18n("Status"),
+    '&nbsp;', i18n("Subject"), i18n("Created"), i18n("End Date"), i18n("Status"),
     i18n("Priority"), sprintf(i18n("%% complete")), i18n("Due in"), i18n("Actions")
 );
 
