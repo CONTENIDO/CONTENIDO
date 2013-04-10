@@ -56,7 +56,7 @@ while ($db->nextRecord()) {
             $tpl->set('d', 'NAME', $name);
         }
 
-        $tpl->set("d", "DESCRIPTION", ($descr == "") ? i18n("No description") : $descr);
+        $tpl->set("d", "DESCRIPTION", ($descr == "") ? '' : $descr);
 
         /* Check if template is in use */
         $inUse = tplIsTemplateInUse($idtpl);
