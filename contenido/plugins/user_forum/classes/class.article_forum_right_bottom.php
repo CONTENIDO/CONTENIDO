@@ -85,7 +85,6 @@ EOF;
      */
     protected function buildOnlineButtonBackendListMode(&$key, &$cont, &$cfg) {
         global $area;
-            $this->addScript( UserForum::getUrl() . 'scripts/test.js');
         $buttons = array();
 
         $id = $cont['id_user_forum'];
@@ -333,6 +332,7 @@ EOF;
      * @return ArticleForumRightBottom
      */
     protected function getEditModeMenu($post) {
+
         global $area;
         $changes = 0;
         $cfg = cRegistry::getConfig();
