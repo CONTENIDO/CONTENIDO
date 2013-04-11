@@ -1,5 +1,5 @@
-.ui-dialog-buttonset{
-	float: left;
+.ui-dialog-buttonset button{
+	float: right;
 }
 
 /* ----- COOKIE DIRECTIVE ----- */
