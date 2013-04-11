@@ -142,15 +142,16 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
 
     if ($bError) {
         cError("Error: Can't include $sInclude", E_USER_ERROR);
-        return;
+        return false;
     }
 
     // now include the file
     if ($bForce == true) {
-        include($sInclude);
+        return include($sInclude);
     } else {
-        include_once($sInclude);
+        return include_once($sInclude);
     }
+
 }
 
 /**
