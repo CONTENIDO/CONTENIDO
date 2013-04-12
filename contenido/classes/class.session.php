@@ -135,7 +135,7 @@ class cSession {
         // Remove trailing ?/& if needed
         $url = preg_replace('/[&?]+$/', '', $url);
 
-        if (!preg_match('~\b' . quotemeta(urlencode($this->name)) . '\b~', $url)) {
+        if (!preg_match('~\b' . quotemeta(urlencode($this->name)) . '=[a-zA-Z0-9]*\b~', $url)) {
             $url .= (strpos($url, '?') != false? '&' : '?') . urlencode($this->name) . '=1';
         }
 
