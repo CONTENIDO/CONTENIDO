@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-14 15:28+0100\n"
+"POT-Creation-Date: 2013-04-12 12:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Table prefix"
 msgstr ""
 
-#: steps/forms/setupsummary.php:56 steps/forms/systemdata.php:135
+#: steps/forms/setupsummary.php:56 steps/forms/systemdata.php:129
 msgid "Database collation"
 msgstr ""
 
@@ -184,11 +184,11 @@ msgstr ""
 msgid "Attention: Some directories/files have been moved"
 msgstr ""
 
-#: steps/forms/systemtest.php:219
+#: steps/forms/systemtest.php:214
 msgid "MySQL database already exists and seems to be filled"
 msgstr ""
 
-#: steps/forms/systemtest.php:219
+#: steps/forms/systemtest.php:214
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -197,22 +197,22 @@ msgid ""
 "previous version, choose 'upgrade' as setup type."
 msgstr ""
 
-#: steps/forms/systemtest.php:226
+#: steps/forms/systemtest.php:221
 msgid "MySQL test table already exists in the database"
 msgstr ""
 
-#: steps/forms/systemtest.php:226
+#: steps/forms/systemtest.php:221
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
 "before continuing."
 msgstr ""
 
-#: steps/forms/systemtest.php:233 steps/forms/systemtest.php:254
+#: steps/forms/systemtest.php:228 steps/forms/systemtest.php:249
 msgid "Unable to create tables in the selected MySQL database"
 msgstr ""
 
-#: steps/forms/systemtest.php:233 steps/forms/systemtest.php:254
+#: steps/forms/systemtest.php:228 steps/forms/systemtest.php:249
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -220,40 +220,40 @@ msgid ""
 "an administrator to do so."
 msgstr ""
 
-#: steps/forms/systemtest.php:240 steps/forms/systemtest.php:261
+#: steps/forms/systemtest.php:235 steps/forms/systemtest.php:256
 msgid "Unable to remove the test table"
 msgstr ""
 
-#: steps/forms/systemtest.php:240 steps/forms/systemtest.php:261
+#: steps/forms/systemtest.php:235 steps/forms/systemtest.php:256
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
 "insufficient permissions. Please remove the table %s manually."
 msgstr ""
 
-#: steps/forms/systemtest.php:247
+#: steps/forms/systemtest.php:242
 msgid "Unable to create the database in the MySQL server"
 msgstr ""
 
-#: steps/forms/systemtest.php:247
+#: steps/forms/systemtest.php:242
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
 "to do so, or create the database manually."
 msgstr ""
 
-#: steps/forms/systemtest.php:271 steps/forms/systemtest.php:281
+#: steps/forms/systemtest.php:266 steps/forms/systemtest.php:276
 msgid "No data found for the upgrade"
 msgstr ""
 
-#: steps/forms/systemtest.php:271
+#: steps/forms/systemtest.php:266
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
 "doesn't exist. You need to copy your database first before running setup."
 msgstr ""
 
-#: steps/forms/systemtest.php:281
+#: steps/forms/systemtest.php:276
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -380,23 +380,23 @@ msgstr ""
 msgid "None available"
 msgstr ""
 
-#: steps/forms/systemdata.php:78 steps/forms/systemdata.php:79
+#: steps/forms/systemdata.php:72 steps/forms/systemdata.php:73
 msgid "Database Parameters"
 msgstr ""
 
-#: steps/forms/systemdata.php:83
+#: steps/forms/systemdata.php:77
 msgid ""
 "Please enter the required database information. If you are unsure about the "
 "data, ask your provider or administrator."
 msgstr ""
 
-#: steps/forms/systemdata.php:83
+#: steps/forms/systemdata.php:77
 msgid ""
 "If the database does not exist and your database user has the sufficient "
 "permissions, setup will create the database automatically."
 msgstr ""
 
-#: steps/forms/systemdata.php:86
+#: steps/forms/systemdata.php:80
 msgid ""
 "Please enter the required database information. If the database data of your "
 "previous installation could have been read, the data will be inserted "
@@ -404,39 +404,39 @@ msgid ""
 "administrator."
 msgstr ""
 
-#: steps/forms/systemdata.php:123
+#: steps/forms/systemdata.php:117
 msgid "Database Server (IP or name)"
 msgstr ""
 
-#: steps/forms/systemdata.php:126 steps/forms/systemdata.php:128
+#: steps/forms/systemdata.php:120 steps/forms/systemdata.php:122
 msgid "Database Name"
 msgstr ""
 
-#: steps/forms/systemdata.php:126
+#: steps/forms/systemdata.php:120
 msgid "(use empty or non-existant database)"
 msgstr ""
 
-#: steps/forms/systemdata.php:132
+#: steps/forms/systemdata.php:126
 msgid "Database Username"
 msgstr ""
 
-#: steps/forms/systemdata.php:133
+#: steps/forms/systemdata.php:127
 msgid "Database Password"
 msgstr ""
 
-#: steps/forms/systemdata.php:134
+#: steps/forms/systemdata.php:128
 msgid "Table Prefix"
 msgstr ""
 
-#: steps/forms/systemdata.php:154
+#: steps/forms/systemdata.php:148
 msgid "You need to enter a database host."
 msgstr ""
 
-#: steps/forms/systemdata.php:155
+#: steps/forms/systemdata.php:149
 msgid "You need to enter a database name."
 msgstr ""
 
-#: steps/forms/systemdata.php:156
+#: steps/forms/systemdata.php:150
 msgid "You need to enter a database user."
 msgstr ""
 

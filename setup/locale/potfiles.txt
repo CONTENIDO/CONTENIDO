@@ -24,6 +24,7 @@
 ./upgrade_jobs/class.upgrade.job.0007.php
 ./upgrade_jobs/class.upgrade.job.0004.php
 ./upgrade_jobs/class.upgrade.job.main.php
+./upgrade_jobs/class.upgrade.job.0010.php
 ./upgrade_jobs/class.upgrade.job.0001.php
 ./index.php
 ./steps/upgrade/doupgrade.php
