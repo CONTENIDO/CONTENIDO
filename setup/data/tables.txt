@@ -201,7 +201,7 @@
 "inuse";"userid";"varchar(32)";"";"";"";"";""
 "inuse";"timestamp";"int(11)";"";"";"";"";""
 "iso_3166";"iso";"varchar(2)";"";"PRI";"";"";""
-"iso_639_2";"en";"varchar(64)";"";"";"";"";""
+"iso_3166";"en";"varchar(64)";"";"";"";"";""
 "iso_639_2";"iso";"varchar(2)";"";"PRI";"";"";""
 "iso_639_2";"en";"varchar(64)";"";"";"";"";""
 "keywords";"idkeyword";"int(10)";"";"PRI";"0";"";"1"
