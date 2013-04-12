@@ -12,7 +12,7 @@
  * @link http://www.contenido.org
  * @since file available since CONTENIDO release 4.9
  *
- * $Id: class.session.php 2486 2012-07-02 21:49:26Z xmurrix $:
+ *        $Id: class.session.php 2486 2012-07-02 21:49:26Z xmurrix $:
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -39,7 +39,8 @@ class cSession {
     protected $_prefix;
 
     /**
-     * Placeholder. This variable isn't needed to make sessions work any longer
+     * Placeholder.
+     * This variable isn't needed to make sessions work any longer
      * but some CONTENIDO functions/classes rely on it
      *
      * @var string
@@ -47,7 +48,8 @@ class cSession {
     public $id;
 
     /**
-     * Placeholder. This variable isn't needed to make sessions work any longer
+     * Placeholder.
+     * This variable isn't needed to make sessions work any longer
      * but some CONTENIDO functions/classes rely on it
      *
      * @var unknown_type
@@ -119,39 +121,44 @@ class cSession {
     }
 
     /**
-     * Attaches "&contenido=1" at the end of the URL. This is no longer needed
+     * Attaches "&contenido=1" at the end of the URL.
+     * This is no longer needed
      * to make sessions work but some CONTENIDO functions/classes rely on it
      *
      * @param string $url A URL
      */
     public function url($url) {
+
         // Remove existing session info from url
         $url = preg_replace('/([&?])' . quotemeta(urlencode($this->name)) . '=1(&|$)/', "\\1", $url);
 
         // Remove trailing ?/& if needed
         $url = preg_replace('/[&?]+$/', '', $url);
 
-        $url .= (strpos($url, '?') != false? '&' : '?') . urlencode($this->name) . '=1';
+        if (!preg_match('~\b' . quotemeta(urlencode($this->name)) . '\b~', $url)) {
+            $url .= (strpos($url, '?') != false? '&' : '?') . urlencode($this->name) . '=1';
+        }
 
         // Encode naughty characters in the URL
         $url = str_replace(array(
-                '<',
-                '>',
-                ' ',
-                '"',
-                '\''
+            '<',
+            '>',
+            ' ',
+            '"',
+            '\''
         ), array(
-                '%3C',
-                '%3E',
-                '+',
-                '%22',
-                '%27'
+            '%3C',
+            '%3E',
+            '+',
+            '%22',
+            '%27'
         ), $url);
         return $url;
     }
 
     /**
-     * Attaches "&contenido=1" at the end of the current URL. This is no longer
+     * Attaches "&contenido=1" at the end of the current URL.
+     * This is no longer
      * needed to make sessions work but some CONTENIDO functions/classes rely on
      * it
      *
@@ -163,7 +170,8 @@ class cSession {
 
     /**
      * Returns PHP code which can be used to rebuild the variable by evaluating
-     * it. This will work recursevly on arrays
+     * it.
+     * This will work recursevly on arrays
      *
      * @param mixed $var A variable which should get serialized.
      * @return string the PHP code which can be evaluated.
@@ -257,7 +265,8 @@ class cSession {
 }
 
 /**
- * Session class for the frontend. It uses a different prefix. The rest is the
+ * Session class for the frontend.
+ * It uses a different prefix. The rest is the
  * same
  */
 class cFrontendSession extends cSession {
@@ -283,17 +292,17 @@ class cFrontendSession extends cSession {
         $url = preg_replace('/[&?]+$/', '', $url);
 
         $url = str_replace(array(
-                '<',
-                '>',
-                ' ',
-                '"',
-                '\''
+            '<',
+            '>',
+            ' ',
+            '"',
+            '\''
         ), array(
-                '%3C',
-                '%3E',
-                '+',
-                '%22',
-                '%27'
+            '%3C',
+            '%3E',
+            '+',
+            '%22',
+            '%27'
         ), $url);
 
         return $url;
