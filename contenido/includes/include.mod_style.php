@@ -64,11 +64,20 @@ if (!(int) $client > 0) {
 
 $path = $contenidoModulHandler->getCssPath(); // $cfgClient[$client]['css']['path'];
                                               // Make automatic a new css file
-if (!$contenidoModulHandler->createModuleFile('css')) {
-    $page->displayCriticalError(i18n('Could not create a new css file!'));
+
+// ERROR MESSAGE
+if(!$contenidoModulHandler->moduleWriteable('css'))
+{
+    $page->displayCriticalError(i18n('No write permissions in css folder!'));
     $page->render();
-    return;
+    exit();
 }
+//if (!$contenidoModulHandler->createModuleFile('css')) {
+//    $page->displayCriticalError(i18n('Could not create a new css file!'));
+//    $page->render();
+//    return;
+//}
+
 
 if (stripslashes($file)) {
     $sReloadScript = "<script type=\"text/javascript\">
