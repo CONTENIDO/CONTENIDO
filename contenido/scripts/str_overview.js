@@ -129,21 +129,21 @@ function showNewForm() {
     var oHideEditLayer = document.getElementById('cat_new_layer_disable'),
         oHideEditLayerImage = document.getElementById('cat_new_layer_disable_image'),
         oEditLayer = document.getElementById('cat_edit'),
-        pos = getElementPostion(document.getElementById('cat_navbar')),
+        pos = $("#cat_navbar").position(),
         select = document.getElementById('new_idcat');
 
     document.getElementById('new_tree_button').style.color = '#0060B1';
 
-    oEditLayer.style.left = pos[0]+10;
-    oEditLayer.style.top = parseInt(pos[1])+parseInt(pos[2])-1;
+    oEditLayer.style.left = pos.left+10;
+    oEditLayer.style.top = parseInt(pos.top[1])+parseInt(pos[2])-1;
     oEditLayer.style.visibility = 'hidden';
     oEditLayer.style.display = 'block';
 
     oHideEditLayer.style.visibility = 'hidden';
     oHideEditLayer.style.display = 'block';
-
-    oHideEditLayer.style.left = pos[0]+10;
-    oHideEditLayer.style.top = parseInt(pos[1])+parseInt(pos[2])-1;
+    console.log(pos.left);
+    oHideEditLayer.style.left = pos.left-10;
+    oHideEditLayer.style.top = parseInt(pos.top)+parseInt(pos.top)-1;
 
     //get with of contained select element and calculate layer with.
     if (select) {
@@ -325,7 +325,7 @@ function showTemplateSelect() {
     document.getElementById('new_idcat').disabled = true;
 
     var oCategoryLayer = document.getElementById('cat_set_template_layer');
-    var pos = getElementPostion( document.getElementById('cat_category_select_button') );
+    var pos = $("#cat_category_select_button").position();
 
     document.getElementById('cat_new_submit').disabled = true;
     document.getElementById('cat_new_submit').src = con_images+'but_ok_off.gif';
@@ -333,8 +333,8 @@ function showTemplateSelect() {
 
     var select = document.getElementById('cat_template_select');
 
-    oCategoryLayer.style.left = pos[0]+22;
-    oCategoryLayer.style.top = parseInt(pos[1])+parseInt(pos[2])-50;
+    oCategoryLayer.style.left = pos.left+22;
+    oCategoryLayer.style.top = parseInt(pos.top)+parseInt(pos.top)-50;
     oCategoryLayer.style.visibility = 'hidden';
 
     oCategoryLayer.style.display = 'block';
