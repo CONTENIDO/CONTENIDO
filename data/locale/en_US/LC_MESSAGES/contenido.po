@@ -36,6 +36,14 @@ msgstr ""
 msgid "Make online"
 msgstr ""
 
+#: include.mod_script.php
+msgid "No write permissions in js folder!"
+msgstr "No write permissions in js folder!"
+
+#: include.mod_style.php
+msgid "No write permissions in css folder!"
+msgstr "No write permissions in css folder!"
+
 #: scripts/langref.php:10
 msgid "Protect"
 msgstr ""
