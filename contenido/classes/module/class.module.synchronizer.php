@@ -155,6 +155,10 @@ class cModuleSynchronizer extends cModuleHandler {
                         $mod->set("description", $modInfo["description"]);
                         $this->setLastModified($lastModInfo, $db->f('idmod'));
                     }
+                    if ($modInfo["type"] != $mod->get("type")) {
+                        $mod->set("type", $modInfo["type"]);
+                        $this->setLastModified($lastModInfo, $db->f('idmod'));
+                    }
                     $mod->store();
                     $synchLock = 1;
                     $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
@@ -265,8 +269,8 @@ class cModuleSynchronizer extends cModuleHandler {
                             $this->_syncModule($dir, $file, $newFile);
                         } else { // dir not ok (with not allowed characters)
                             if (is_dir($dir . $newFile)) { // exist the new dir
-                                // name?
-                                // make new dirname
+                                                           // name?
+                                                           // make new dirname
                                 $newDirName = $newFile . substr(md5(time() . rand(0, time())), 0, 4);
 
                                 // rename
@@ -274,7 +278,7 @@ class cModuleSynchronizer extends cModuleHandler {
                                     $this->_syncModule($dir, $file, $newDirName);
                                 }
                             } else { // $newFile (dir) not exist
-                                // rename dir old
+                                     // rename dir old
                                 if ($this->_renameFileAndDir($dir, $file, $newFile, $this->_client) != false) {
                                     $this->_syncModule($dir, $file, $newFile);
                                 }
