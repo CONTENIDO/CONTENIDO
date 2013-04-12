@@ -149,16 +149,16 @@ i18n("Allow all HTML tags and attributes in TinyMCE")
                 <group>Mailserver</group>
             </mail_sender_name>
         </system>
-        <wysiwyg>
-            <tinymce-valid-elements>
+        <tinymce>
+            <auto_full_elements>
                 <values>
-                    <array_value>true</array_value>
-                    <array_value>false</array_value>
+                    <array_value>1</array_value>
+                    <array_value>0</array_value>
                 </values>
                 <label>Allow all HTML tags and attributes in TinyMCE</label>
                 <group>Backend</group>
-            </tinymce-valid-elements>
-        </wysiwyg>
+            </auto_full_elements>
+        </tinymce>
         <pw_request>
             <enable>
                 <values>
