@@ -8,3 +8,4 @@ base/base_nav_main1.sql
 base/base_nav_sub1.sql
 base/base_type1.sql
 base/base_misc1.sql
+base/base_isocodes.sql
