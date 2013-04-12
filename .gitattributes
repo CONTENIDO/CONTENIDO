@@ -171,6 +171,8 @@ cms/data/modules/handler_newsletter_subscription/php/handler_newsletter_subscrip
 cms/data/modules/handler_newsletter_subscription/php/handler_newsletter_subscription_output.php -text
 cms/data/modules/handler_newsletter_subscription/template/get.tpl -text
 cms/data/modules/head_title/info.xml -text svneol=unset#text/plain
+cms/data/modules/head_title/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/head_title/lang/lang_en_GB.txt -text svneol=unset#text/plain
 cms/data/modules/head_title/php/head_title_input.php -text
 cms/data/modules/head_title/php/head_title_output.php -text
 cms/data/modules/layout_logo/info.xml -text

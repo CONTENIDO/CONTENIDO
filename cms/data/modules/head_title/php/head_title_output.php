@@ -30,6 +30,10 @@ if ($headline != '') {
     $breadcrumb[] = $headline;
 }
 
+if($headline === ''){
+    $breadcrumb[] = mi18n("STARTPAGE");
+}
+
 array_shift($breadcrumb);
 
 if (count($breadcrumb) > 0) {
