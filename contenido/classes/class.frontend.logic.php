@@ -2,8 +2,8 @@
 /**
  * This file contains the abstract frontend logic class.
  *
- * @package    Core
- * @subpackage Backend
+ * @package    Plugin
+ * @subpackage FrontendLogic
  * @version    SVN Revision $Rev:$
  *
  * @author     Unknown
@@ -26,8 +26,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * same amount of actions. You can't have a different set of actions for
  * different objects of the same type.
  *
- * @package    Core
- * @subpackage Backend
+ * @package    Plugin
+ * @subpackage FrontendLogic
  */
 abstract class FrontendLogic {
 
