@@ -1,20 +1,24 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the XML writer class.
  *
- * Description:
- * The XML writer class of CONTENIDO.
+ * @package    Core
+ * @subpackage XML
  *
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * XML writer class
  *
- * @package CONTENIDO Backend Classes
- * @version 1.0.0
- * @author Dominik Ziegler
- * @copyright four for business AG <info@contenido.org>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release >= 4.9.0
+ * @package    Core
+ * @subpackage XML
  */
 class cXmlWriter extends cXmlBase {
 
@@ -25,8 +29,6 @@ class cXmlWriter extends cXmlBase {
      * @param string $version version of XML document (optional, default: 1.0)
      * @param string $encoding encoding of XML document (optional, default:
      *        UTF-8)
-     *
-     * @return void
      */
     public function __construct($version = '', $encoding = '') {
         $this->_createDocument($version, $encoding);

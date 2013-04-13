@@ -1,20 +1,24 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the base XML class.
  *
- * Description:
- * The base XML class of CONTENIDO.
+ * @package    Core
+ * @subpackage XML
  *
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Base XML class
  *
- * @package CONTENIDO Backend Classes
- * @version 1.0.0
- * @author Dominik Ziegler
- * @copyright four for business AG <info@contenido.org>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release >= 4.9.0
+ * @package    Core
+ * @subpackage XML
  */
 abstract class cXmlBase {
 
@@ -29,8 +33,6 @@ abstract class cXmlBase {
      *
      * @param string $version version of DOMDocument (optional, default: 1.0)
      * @param string $encoding encoding of DOMDocumen (optional, default: UTF-8)
-     *
-     * @return void
      */
     protected function _createDocument($version = '', $encoding = '') {
         if ($version == '') {
@@ -55,7 +57,6 @@ abstract class cXmlBase {
     /**
      * Sets a current DOMDocument object to class.
      * @param    DOMDocument    $domDocument DOMDocument object
-     * @return    void
      */
     public function setDomDocument(DOMDocument $domDocument) {
         $this->_dom = $domDocument;
@@ -89,7 +90,6 @@ abstract class cXmlBase {
      * Initializes a new DOMXPath instance for DOMDocument.
      *
      * @throws cException if there is no valid DOM document
-     * @return void
      */
     protected function _initXpathInstance() {
         if (!($this->_dom instanceof DOMDocument)) {
@@ -102,10 +102,6 @@ abstract class cXmlBase {
     /**
      * Resolves a given path which contains ".." statement for moving up one
      * level in path.
-     *
-     * @static
-     *
-     *
      * @param string $path path to resolve
      *
      * @return string resolved path
@@ -135,9 +131,6 @@ abstract class cXmlBase {
 
     /**
      * Returns given XPath with integrad level definition.
-     *
-     * @static
-     *
      *
      * @param string $path XPath to extend
      * @param integer $level level

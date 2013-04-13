@@ -1,28 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the base version class.
  *
- * Description:
- * We use super class Version to create a new Version.
+ * @package    Core
+ * @subpackage Versioning
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.3
- * @author Bilal Arslan, Timo Trautmann
- * @copyright four for business AG <info@contenido.org>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release >= 4.8.8
+ * @author     Bilal Arslan, Timo Trautmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Base version class
+ *
+ * @package    Core
+ * @subpackage Versioning
+ */
 class cVersion {
 
     /**
@@ -174,7 +171,6 @@ class cVersion {
      * @param integer $iClient
      * @param object $sArea
      * @param object $iFrame
-     * @return void
      */
     public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
         $this->aBodyData = array();
@@ -233,8 +229,6 @@ class cVersion {
     /**
      * This function looks if maximum number of stored versions is achieved.
      * If true, it will be delete the first version.
-     *
-     * @return void
      */
     protected function prune() {
         $this->initRevisions();
@@ -255,9 +249,7 @@ class cVersion {
 
     /**
      * This function checks if needed version paths exists and were created if
-     * neccessary
-     *
-     * @return void
+     * necessary
      */
     protected function checkPaths() {
         $aPath = array(
@@ -636,7 +628,6 @@ class cVersion {
      * Displays your notification
      *
      * @param string $sOutPut
-     * @return void
      */
     public function displayNotification($sOutPut) {
         if ($sOutPut != '') {

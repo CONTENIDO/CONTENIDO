@@ -1,37 +1,29 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the clickable action and clickable question action widget class.
  *
- * Description:
+ * @package    Core
+ * @subpackage GUI
  *
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.1
- * @author Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * class cApiClickableAction
  * cApiClickableAction is a subclass of cApiAction.
  * It provides an image for visual
  * representation. Inherited classes should call the "setNamedAction" operation
  * in
  * their constructors; on-the-fly-implementations should call it directly after
  * creating an object instance.
+ *
+ * @package    Core
+ * @subpackage GUI
  */
 class cApiClickableAction extends cApiAction {
 
@@ -51,7 +43,7 @@ class cApiClickableAction extends cApiAction {
      *
      * @access private
      */
-    private $_link;
+    protected $_link;
 
     /**
      * cHTMLImage for rendering the icon
@@ -208,6 +200,13 @@ class cApiClickableAction extends cApiAction {
     }
 
 }
+
+/**
+ * Clickable question action class.
+ *
+ * @package    Core
+ * @subpackage GUI
+ */
 class cApiClickableQuestionAction extends cApiClickableAction {
 
     public function __construct() {

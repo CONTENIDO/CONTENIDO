@@ -1,17 +1,24 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System
- * Description: The XML reader class of CONTENIDO.
+ * This file contains the XML reader class.
  *
+ * @package    Core
+ * @subpackage XML
  *
- * @package CONTENIDO Backend Classes
- * @version 1.0.0
- * @author Dominik Ziegler
- * @copyright four for business AG <info@contenido.org>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release >= 4.9.0
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * XML reader class
+ *
+ * @package    Core
+ * @subpackage XML
  */
 class cXmlReader extends cXmlBase {
 

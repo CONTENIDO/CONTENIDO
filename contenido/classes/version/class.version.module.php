@@ -1,29 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the module version class.
  *
- * Description:
- * Super class for revision
+ * @package    Core
+ * @subpackage Versioning
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.0
- * @author Bilal Arslan, Timo Trautmann
- * @copyright four for business AG <info@contenido.org>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release >= 4.8.8
+ * @author     Bilal Arslan, Timo Trautmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * Super class for revision
+ *
+ * @package    Core
+ * @subpackage Versioning
+ */
 class cVersionModule extends cVersion {
 
     /**
@@ -43,8 +39,6 @@ class cVersionModule extends cVersion {
      * @param integer $iClient
      * @param object $sArea
      * @param object $iFrame
-     *
-     * @return void its only initialize class members
      */
     public function __construct($iIdMod, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
         // Set globals in main class

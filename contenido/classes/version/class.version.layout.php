@@ -1,30 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the layout version class.
  *
- * Description:
+ * @package    Core
+ * @subpackage Versioning
+ *
+ * @author     Bilal Arslan, Timo Trautmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
  * Class of Layout Revision
  * We use super class Version to create a new Version.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.0
- * @author Bilal Arslan, Timo Trautmann
- * @copyright four for business AG <info@contenido.org>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release >= 4.8.8
+ * @package    Core
+ * @subpackage Versioning
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
 class cVersionLayout extends cVersion {
 
     /**
@@ -65,8 +61,6 @@ class cVersionLayout extends cVersion {
      * @param integer $iClient
      * @param object $sArea
      * @param object $iFrame
-     *
-     * @return void its only initialize class members
      */
     public function __construct($iIdLayout, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
         // Init class members in super class
@@ -105,8 +99,6 @@ class cVersionLayout extends cVersion {
     /**
      * Function reads rows variables from table con_layout and init with the
      * class members.
-     *
-     * @return void
      */
     private function setLayoutTable() {
         if (!is_object($this->oDB)) {

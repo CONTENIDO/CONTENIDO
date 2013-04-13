@@ -1,29 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the file version class.
  *
- * Description:
+ * @package    Core
+ * @subpackage Versioning
+ *
+ * @author     Bilal Arslan, Timo Trautmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
  * Class of File System
  * We use super class Version to create a new Version.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.0
- * @author Bilal Arslan, Timo Trautmann
- * @copyright four for business AG <info@contenido.org>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release >= 4.8.8
+ * @package    Core
+ * @subpackage Versioning
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
 class cVersionFile extends cVersion {
 
     /**
@@ -66,8 +63,6 @@ class cVersionFile extends cVersion {
      * @param int $iClient
      * @param string $sArea
      * @param int $iFrame
-     *
-     * @return void its only initialize class members
      */
     public function __construct($iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = '') {
         // Set globals in super class constructer
@@ -119,8 +114,6 @@ class cVersionFile extends cVersion {
 
     /**
      * This function init the class member sCode with current file content
-     *
-     * @return void only init sCode
      */
     protected function initFileContent() {
         if (cFileHandler::exists($this->sPath . $this->sFileName)) {
