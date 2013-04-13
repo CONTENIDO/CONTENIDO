@@ -89,9 +89,6 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
         case 'all_wysiwyg':
             $sInclude = $cfg['path']['all_wysiwyg'] . $sWhat;
             break;
-        case 'phplib':
-            $sInclude = $cfg['path']['phplib'] . $sWhat;
-            break;
         case 'classes':
             if (cAutoload::isAutoloadable($cfg['path'][$sWhere] . $sWhat)) {
                 // The class file will be loaded automatically by the autoloader - get out here
@@ -106,25 +103,8 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
 
     $sFoundPath = '';
 
-    if ($sWhere === 'pear') {
-        // now we check if the file is available in the include path
-        $aPaths = explode(PATH_SEPARATOR, ini_get('include_path'));
-        foreach ($aPaths as $sPath) {
-            if (@cFileHandler::exists($sPath . DIRECTORY_SEPARATOR . $sInclude)) {
-                $sFoundPath = $sPath;
-                break;
-            }
-        }
-
-        if (!$sFoundPath) {
-            $bError = true;
-        }
-
-        unset($aPaths, $sPath);
-    } else {
-        if (!cFileHandler::exists($sInclude) || preg_match('#^\.\./#', $sWhat)) {
-            $bError = true;
-        }
+    if (!cFileHandler::exists($sInclude) || preg_match('#^\.\./#', $sWhat)) {
+        $bError = true;
     }
 
     // should the path be returned?

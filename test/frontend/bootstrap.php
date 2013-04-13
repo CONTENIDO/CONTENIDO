@@ -63,8 +63,6 @@ cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.pathresolver.php');
 
 // Initialize the Database Abstraction Layer, the Session, Authentication and Permissions Handler of the
-// PHPLIB application development toolkit
-// @see http://sourceforge.net/projects/phplib
 if ($contenido) {
     // Backend
     cRegistry::bootstrap(array(

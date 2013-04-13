@@ -52,7 +52,7 @@ $context = new stdClass();
 // current path
 $context->currentPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/';
 
-// CONTENIDO installation path (folder which contains "cms", "conlib", "contenido", "docs", "pear", "setup", etc...)
+// CONTENIDO installation path (folder which contains "cms", "contenido", "docs", "setup", etc...)
 $context->contenidoInstallPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../')) . '/';
 
 // the destination file where the class map configuration should be written in

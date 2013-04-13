@@ -44,7 +44,7 @@ if (substr(PHP_SAPI, 0, 3) != 'cli') {
 // create a page context class, better than spamming global scope
 $context = new stdClass();
 
-// CONTENIDO installation path (folder which contains "cms", "conlib", "contenido", "docs", "pear", "setup", etc...)
+// CONTENIDO installation path (folder which contains "cms", "contenido", "docs", "setup", etc...)
 $context->contenidoInstallPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../')) . '/';
 
 

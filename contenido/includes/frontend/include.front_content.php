@@ -7,8 +7,7 @@
  * This file handles the view of an article in frontend and in backend.
  *
  * To handle the page we use the Database Abstraction Layer, the Session,
- * Authentication and Permissions Handler of the
- * PHPLIB application development toolkit.
+ * Authentication and Permissions Handler.
  *
  * The Client Id and the Language Id of an article will be determined depending
  * on file __FRONTEND_PATH__/data/config/config.php where
