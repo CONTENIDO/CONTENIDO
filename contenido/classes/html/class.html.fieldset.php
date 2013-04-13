@@ -3,7 +3,7 @@
  * This file contains the cHTMLFieldset class.
  *
  * @package Core
- * @subpackage HTML
+ * @subpackage GUI_HTML
  * @version SVN Revision $Rev:$
  *
  * @author Marcus Gnaß
@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call');
  * cHTMLFieldset class represents a fieldset element.
  *
  * @package Core
- * @subpackage Frontend
+ * @subpackage GUI_HTML
  */
 class cHTMLFieldset extends cHTMLContentElement {
 

@@ -1,24 +1,18 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * This file contains the module log class.
  *
- * @package CONTENIDO Backend Classes
- * @version 1.0.0
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9.0
+ * @package    Core
+ * @subpackage Log
+ *
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains the main functionalities for the module logging in
@@ -33,11 +27,13 @@ if (!defined('CON_FRAMEWORK')) {
  * $log = new cModuleLog($writer);
  * $log->setModule(1);
  * $log->log("Anything you want to log.");
+ *
+ * @package    Core
+ * @subpackage Debug
  */
 class cModuleLog extends cLog {
 
     /**
-     *
      * @var cApiModule instance of module model
      */
     private $_module;
@@ -45,7 +41,7 @@ class cModuleLog extends cLog {
     /**
      * Constructor of the module log.
      *
-     * @param mixed writer Writer object (any subclass of cLogWriter), or false
+     * @param mixed $writer Writer object (any subclass of cLogWriter), or false
      *        if cLog should handle the writer creation
      *
      */
@@ -65,9 +61,8 @@ class cModuleLog extends cLog {
      * setModule automatically buffers basic module information to the log to
      * assist the developer in debugging his modules.
      *
-     * @param int idmod The module ID to use
+     * @param int $idmod The module ID to use
      * @throws cException if the module with the given idmod could not be loaded
-     * @return void
      */
     public function setModule($idmod) {
         $this->_module = new cApiModule($idmod);

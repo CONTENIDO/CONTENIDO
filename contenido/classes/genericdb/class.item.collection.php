@@ -1,33 +1,27 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the generic db item collection class.
  *
- * Description:
- * Generic database abstract item collection.
+ * @package          Core
+ * @subpackage       GenericDB
+ * @version          SVN Revision $Rev:$
  *
- * NOTE:
- * Because of required downwards compatibilitiy all protected/private member
- * variables or methods don't have an leading underscore.
- *
- * @package CONTENIDO Backend Classes
- * @version 0.2
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9
+ * @author           Timo Hummel
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Class ItemCollection
  * Abstract class for database based item collections.
+ *
+ * @package          Core
+ * @subpackage       GenericDB
  */
 abstract class ItemCollection extends cItemBaseAbstract {
 
@@ -221,7 +215,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sForeignCollectionClass Specifies the foreign class to use
      * @throws cInvalidArgumentException if the given foreign class can not be
      *         instantiated
-     * @return void
      */
     protected function _setJoinPartner($sForeignCollectionClass) {
         if (class_exists($sForeignCollectionClass)) {
@@ -241,7 +234,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sClassName Specifies the classname of item
      * @throws cInvalidArgumentException if the given class can not be
      *         instantiated
-     * @return void
      */
     protected function _setItemClass($sClassName) {
         if (class_exists($sClassName)) {
@@ -286,7 +278,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sForeignClass The class of foreign table to use
      * @throws cInvalidArgumentException if the given foreign class does not
      *         exist
-     * @return void
      */
     public function link($sForeignClass) {
         if (class_exists($sForeignClass)) {
@@ -783,7 +774,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @param string $sOrderBy Specifies the order by clause.
      * @param string $sLimit Specifies the limit by clause.
      * @return bool True on success, otherwhise false
-     * @author HerrB
      */
     public function flexSelect($sDistinct = '', $sFrom = '', $sWhere = '', $sGroupBy = '', $sOrderBy = '', $sLimit = '') {
         unset($this->objects);
@@ -878,7 +868,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         return $obj->loadItem($this->db->f($obj->primaryKey));
     }
 
-    /*
+    /**
      * Prelimary documentation $aFields = array with the fields to fetch. Notes:
      * If the array contains keys, the key will be used as alias for the field.
      * Example: array('id' => 'idcat') will put 'idcat' into field 'id'
@@ -886,7 +876,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * keys, the key will be used as alias for the object. If you specify more
      * than one object with the same key, the array will be multi-dimensional.
      */
-
     public function fetchTable(array $aFields = array(), array $aObjects = array()) {
         $row = 1;
         $aTable = array();

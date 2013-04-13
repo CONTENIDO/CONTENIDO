@@ -3,7 +3,7 @@
  * This file contains the cHTMLSelectElement class.
  *
  * @package Core
- * @subpackage HTML
+ * @subpackage GUI_HTML
  * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
@@ -13,15 +13,13 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * cHTMLSelectElement class represents a select element.
  *
  * @package Core
- * @subpackage Frontend
+ * @subpackage GUI_HTML
  */
 class cHTMLSelectElement extends cHTMLFormElement {
 

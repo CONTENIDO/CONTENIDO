@@ -3,7 +3,7 @@
  * This file contains the cHTMLHiddenField class.
  *
  * @package Core
- * @subpackage HTML
+ * @subpackage GUI_HTML
  * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
@@ -14,15 +14,13 @@
  *
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * cHTMLHiddenField class represents a hidden form field.
  *
  * @package Core
- * @subpackage Frontend
+ * @subpackage GUI_HTML
  */
 class cHTMLHiddenField extends cHTMLFormElement {
 

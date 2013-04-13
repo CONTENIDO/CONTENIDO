@@ -1,28 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the navigation GUI class.
  *
- * Description:
- * Class for the dynamic CONTENIDO backend navigation
+ * @package          Core
+ * @subpackage       GUI
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.6
- * @author     Jan Lengowski
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @author           Jan Lengowski
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.api.string.php');
 cInclude('includes', 'functions.api.images.php');
@@ -30,7 +21,8 @@ cInclude('includes', 'functions.api.images.php');
 /**
  * Backend navigaton class. Renders the header navigation document containing the navigtion structure.
  *
- * @package    CONTENIDO Backend Classes
+ * @package    Core
+ * @subpackage GUI
  */
 class cGuiNavigation {
 
@@ -44,7 +36,6 @@ class cGuiNavigation {
      * Constructor. Loads the XML language file using cXmlReader.
      *
      * @throws cException if XML language files could not be loaded
-     * @return void
      */
     public function __construct() {
         global $cfg;
@@ -115,8 +106,6 @@ class cGuiNavigation {
 
     /**
      * Reads and fills the navigation structure data
-     *
-     * @return  void
      */
     public function _buildHeaderData() {
         global $cfg, $perm;

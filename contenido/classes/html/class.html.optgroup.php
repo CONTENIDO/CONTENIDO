@@ -3,7 +3,7 @@
  * This file contains the cHTMLOptgroup class.
  *
  * @package Core
- * @subpackage HTML
+ * @subpackage GUI_HTML
  * @version SVN Revision $Rev:$
  *
  * @author Frederic Schneider
@@ -13,15 +13,13 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * cHTMLOptgroup class can be used for creating optgrops
  *
  * @package Core
- * @subpackage Frontend
+ * @subpackage GUI_HTML
  */
 class cHTMLOptgroup extends cHTMLContentElement {
 

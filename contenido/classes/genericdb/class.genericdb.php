@@ -1,39 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the generic db class.
  *
- * Description:
- * Generic database callback execution.
+ * @package          Core
+ * @subpackage       GenericDB
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    0.1
- * @author     Dominik Ziegler
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9
- *
- * {@internal
- *   created  2012-07-07
- *   $Id$:
- * }}
+ * @author           Dominik Ziegler
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Class cGenericDb.
  * Handles the generic execution of callbacks.
  *
- * @copyright  four for business AG <www.4fb.de>
+ * @package          Core
+ * @subpackage       GenericDB
  */
 class cGenericDb {
     /**

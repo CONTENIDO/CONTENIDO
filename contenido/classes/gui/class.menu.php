@@ -1,32 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the menu GUI class.
  *
- * Description:
- * Manages HTML menus
+ * @package          Core
+ * @subpackage       GUI
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5
- *
- * @package    CONTENIDO Backend
- * @subpackage GUI
- * @author     mischa.holz
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2012-07-12
- *   $Id: class.menu.php 2379 2012-06-22 21:00:16Z xmurrix $:
- * }}
+ * @author           Mischa Holz
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * Menu GUI class
+ *
+ * @package    Core
+ * @subpackage GUI
+ */
 class cGuiMenu {
 
     public $link;
@@ -59,9 +53,11 @@ class cGuiMenu {
     }
 
     public function setImage($item, $image, $maxwidth = 0) {
+        $show = '';
+
         $this->image[$item] = $image;
         $this->imagewidth[$item] = $maxwidth;
-        $this->show[$item] = $show;
+        $this->show[$item] = $show; // TODO: what is this variable supposed to be?
     }
 
     public function setLink($item, $link) {

@@ -1,33 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the generic db item cache class.
  *
- * Description:
- * Generic database item cache.
+ * @package          Core
+ * @subpackage       GenericDB
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    0.1.2
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9
- *
- * {@internal
- *   created  2011-03-16
- *   $Id$:
- * }}
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Class cItemCache.
@@ -35,6 +21,9 @@ if (!defined('CON_FRAMEWORK')) {
  * Implements features to cache entries, usually result sets of Item classes.
  * Contains a list of self instances, where each instance contains cached Items
  * fore one specific table.
+ *
+ * @package          Core
+ * @subpackage       GenericDB
  */
 class cItemCache {
 
@@ -192,7 +181,6 @@ class cItemCache {
      *
      * @param   mixed  $mId
      * @param   array  $aData  Usually the recordset
-     * @return  void
      */
     public function addItem($mId, array $aData) {
         if (!$this->_bEnable) {
@@ -214,7 +202,6 @@ class cItemCache {
      * Removes existing cache entry by it's key
      *
      * @param   mixed  $mId
-     * @return  void
      */
     public function removeItem($mId) {
         if (!$this->_bEnable) {
@@ -231,7 +218,6 @@ class cItemCache {
      * Removes multiple existing cache entries by their keys
      *
      * @param   array  $aIds
-     * @return  void
      */
     public function removeItems(array $aIds) {
         if (!$this->_bEnable) {

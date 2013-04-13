@@ -1,23 +1,24 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the log file writer class.
  *
- * Description:
- * This file contains the file writer class.
+ * @package    Core
+ * @subpackage Log
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.0
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains the file writer class for the logging mechanism.
+ *
+ * @package    Core
+ * @subpackage Debug
  */
 class cLogWriterFile extends cLogWriter {
     /**
@@ -40,7 +41,6 @@ class cLogWriterFile extends cLogWriter {
      *
      * @throws cException if not destination is specified
      * @throws cFileNotFoundException if the destination file could not be read
-     * @return    void
      */
     protected function _createHandle() {
         $destination = $this->getOption('destination');

@@ -1,24 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the foldable pager for menus GUI class.
  *
- * Description:
- * Foldable pager for menus
+ * @package          Core
+ * @subpackage       GUI
+ * @version          SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.2
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * Class for foldable pager for menus.
+ *
+ * @package    Core
+ * @subpackage GUI
+ */
 class cGuiObjectPager extends cGuiFoldingRow {
 
     public $_pagerLink;
@@ -47,7 +49,7 @@ class cGuiObjectPager extends cGuiFoldingRow {
         $this->_parameterToAdd = $parameterToAdd;
     }
 
-    function render($bContentOnly = false) {
+    public function render($bContentOnly = false) {
         #Do not display Page navigation if there is only one Page and we are not in newsletter section
         if ($this->_cPager->getMaxPages() == 1) {
             $this->_headerRow->setStyle("display:none");
@@ -56,6 +58,8 @@ class cGuiObjectPager extends cGuiFoldingRow {
 
         $items = $this->_cPager->getPagesInRange();
         $link = $this->_pagerLink;
+
+        $output = '';
 
         if (!$this->_cPager->isFirstPage()) {
             $img = new cHTMLImage("images/paging/first.gif");

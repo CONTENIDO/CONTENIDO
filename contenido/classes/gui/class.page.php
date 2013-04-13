@@ -1,27 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the generic page GUI class.
  *
- * Description:
- * Manages HTML pages and provides functions for rendering them.
- * As a usage example you can take a look at include.upl_files_upload.php
+ * @package          Core
+ * @subpackage       GUI
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO Backend
- * @subpackage GUI
- * @author mischa.holz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Mischa Holz
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Manages HTML pages and provides functions for rendering them
+ * Generic page GUI class.
+ * Manages HTML pages and provides functions for rendering them.
+ *
+ * @package    Core
+ * @subpackage GUI
  */
 class cGuiPage {
 

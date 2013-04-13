@@ -1,40 +1,23 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the abstract base item class of the generic db.
  *
- * Description:
- * Generic database abstract base item.
+ * @package          Core
+ * @subpackage       GenericDB
+ * @version          SVN Revision $Rev:$
  *
- * NOTE:
- * Because of required downwards compatibilitiy all protected/private member
- * variables or methods don't have an leading underscore.
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    0.2
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9
- *
- * {@internal
- *   created  2011-03-16
- *   $Id$:
- * }}
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $cfg;
+
+// TODO: check if this is needed any longer because we have autoloading feature
 
 // Try to load GenericDB database driver
 $driver_filename = cRegistry::getBackendPath() . $cfg['path']['classes'] . 'drivers/' . $cfg['sql']['gdb_driver'] . '/class.gdb.' . $cfg['sql']['gdb_driver'] . '.php';
@@ -46,6 +29,13 @@ if (cFileHandler::exists($driver_filename)) {
 /**
  * Class cItemBaseAbstract.
  * Base class with common features for database based items and item collections.
+ *
+ * NOTE:
+ * Because of required downwards compatibilitiy all protected/private member
+ * variables or methods don't have an leading underscore.
+ *
+ * @package          Core
+ * @subpackage       GenericDB
  */
 abstract class cItemBaseAbstract extends cGenericDb {
 
@@ -120,7 +110,6 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @param  string  $sPrimaryKey  Primary key of table
      * @param  string  $sClassName   Name of parent class
      * @throws cInvalidArgumentException If table name or primary key is not set
-     * @return void
      */
     protected function __construct($sTable, $sPrimaryKey, $sClassName) {
         global $cfg;

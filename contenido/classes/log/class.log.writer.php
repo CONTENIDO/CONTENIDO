@@ -1,23 +1,24 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the abstract log writer class.
  *
- * Description:
- * This file contains the log writer class.
+ * @package    Core
+ * @subpackage Log
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.0
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains the main functionalities for the logging writer in CONTENIDO.
+ *
+ * @package    Core
+ * @subpackage Debug
  */
 abstract class cLogWriter {
     /**
@@ -64,8 +65,6 @@ abstract class cLogWriter {
      * Sets the whole options array.
      *
      * @param    array    $options    Array with options
-     *
-     * @return    void
      */
     public function setOptions(array $options) {
         $this->_options = $options;
@@ -85,8 +84,6 @@ abstract class cLogWriter {
      * @param    string    $option    Name of the option
      * @param    mixed    $value    Value of the option
      * @param    boolean    $force    Flag to force setting the option value (optional, default: false)
-     *
-     * @return    void
      */
     public function setOption($option, $value, $force = false) {
         if ($force == false && isset($this->_options[$option]) == true) {
@@ -111,8 +108,6 @@ abstract class cLogWriter {
      * Removes an option entry.
      *
      * @param    string    $option    Name of the option
-     *
-     * @return    void
      */
     public function removeOption($option) {
         unset($this->_options[$option]);

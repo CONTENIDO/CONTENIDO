@@ -3,7 +3,7 @@
  * This file contains the cHTMLLegend class.
  *
  * @package Core
- * @subpackage HTML
+ * @subpackage GUI_HTML
  * @version SVN Revision $Rev:$
  *
  * @author Marcus Gnaß
@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call');
  * cHTMLLegend class represents a legend element.
  *
  * @package Core
- * @subpackage Frontend
+ * @subpackage GUI_HTML
  */
 class cHTMLLegend extends cHTMLContentElement {
 

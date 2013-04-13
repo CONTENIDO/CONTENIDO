@@ -1,9 +1,21 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the notification GUI class.
  *
- * Description:
+ * @package          Core
+ * @subpackage       GUI
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
  * Class for displaying notifications.
  *
  * Usage:
@@ -21,29 +33,9 @@
  * );
  * </code>
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.1.0
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
+ * @package    Core
+ * @subpackage GUI
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
 class cGuiNotification {
     /**
      * Error message level
@@ -169,7 +161,6 @@ class cGuiNotification {
      *
      * @param   string  $sLevel  Message level, one of cGuiNotification::LEVEL_* constants
      * @param   string  $sMessage  The message to display
-     * @return  void
      */
     public function displayNotification($sLevel, $sMessage) {
         echo $this->returnNotification($sLevel, $sMessage) . '<br>';
@@ -181,7 +172,6 @@ class cGuiNotification {
      * @param   string  $sLevel  Message level, one of cGuiNotification::LEVEL_* constants
      * @param   string  $sMessage  The message to display
      * @param   int     $iStyle   Flag tp use styles for display or not (feasible 1 or 0)
-     * @return  void
      */
     public function displayMessageBox($sLevel, $sMessage, $iStyle = 1) {
         echo $this->returnMessageBox($sLevel, $sMessage, $iStyle) . '<br>';

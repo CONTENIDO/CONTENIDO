@@ -1,32 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the tree GUI class.
  *
- * Description:
- * Visual representation of a cTree
+ * @package          Core
+ * @subpackage       GUI
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0
- * @author     mischa.holz
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author           Mischa Holz
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * class cGuiTree
  * cGuiTree is a visual representation of a cTree. It supports folding,
  * optional gridline marks and item icons.
+ *
+ * @package    Core
+ * @subpackage GUI
  */
 class cGuiTree extends cTree {
 
@@ -193,6 +187,8 @@ class cGuiTree extends cTree {
         if (!is_object($this->_baseLink)) {
             $this->_baseLink = new cHTMLLink();
         }
+
+        $out = $result = '';
 
         $lastitem = array();
         foreach ($objects as $key => $object) {

@@ -3,7 +3,7 @@
  * This file contains the cHTMLArticle class.
  *
  * @package Core
- * @subpackage HTML
+ * @subpackage GUI_HTML
  * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
@@ -13,9 +13,7 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * cHTMLArticle class represents an HTML5 article element.
@@ -23,7 +21,7 @@ if (!defined('CON_FRAMEWORK')) {
  * comments, ...
  *
  * @package Core
- * @subpackage Frontend
+ * @subpackage GUI_HTML
  */
 class cHTMLArticle extends cHTMLContentElement {
 

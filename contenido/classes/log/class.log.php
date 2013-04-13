@@ -1,20 +1,18 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the log class.
  *
- * Description:
- * This file contains the global log class.
+ * @package    Core
+ * @subpackage Log
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.0
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains the main functionalities for the logging in CONTENIDO.
@@ -35,6 +33,9 @@
  *
  * $log->buffer('Buffered Log Message', cLog::WARN);
  * $log->commit();
+ *
+ * @package    Core
+ * @subpackage Debug
  */
 class cLog {
     const EMERG   = 0;
@@ -126,8 +127,6 @@ class cLog {
      * Sets the local writer instance.
      *
      * @param    cLogWriter    $writer    Writer instacne
-     *
-     * @return    void
      */
     public function setWriter(cLogWriter $writer) {
         $this->_writer = $writer;
@@ -189,8 +188,6 @@ class cLog {
      *
      * @param    string    $message    Message to buffer
      * @param    mixed    $priority    Priority of the log entry (optional)
-     *
-     * @return    void
      */
     public function buffer($message, $priority = NULL) {
         $this->_buffer[] = array($message, $priority);
@@ -200,8 +197,6 @@ class cLog {
      * Commits all buffered messages and empties the message buffer if parameter is not false.
      *
      * @param    boolean    $revoke    Flag, whether the buffer is cleared or not (optional, default: true)
-     *
-     * @return    void
      */
     public function commit($revoke = true) {
         if (count($this->_buffer) == 0) {
@@ -220,7 +215,6 @@ class cLog {
 
     /**
      * Empties the message buffer.
-     * @return    void
      */
     public function revoke() {
         $this->_buffer = array();
@@ -231,8 +225,6 @@ class cLog {
      *
      * @param    string    $message    Message to log
      * @param    mixed      $priority    Priority of the log entry (optional)
-     *
-     * @return    void
      */
     public function log($message, $priority = NULL) {
         if ($priority && is_int($priority) == false && in_array($priority, $this->_priorities)) {
@@ -271,7 +263,6 @@ class cLog {
      * @param int $value Index value of the log priority
      * @throws cInvalidArgumentException if the given name is empty, already
      *         exists or the value already exists
-     * @return void
      */
     public function addPriority($name, $value) {
         if ($name == '') {
@@ -296,7 +287,6 @@ class cLog {
      * @param string $name Name of the log priority to remove
      * @throws cInvalidArgumentException if the given name is empty, does not
      *         exist or is a default priority
-     * @return void
      */
     public function removePriority($name) {
         if ($name == '') {
@@ -322,7 +312,6 @@ class cLog {
      * @param    string    $method        Name of the method
      * @param    array    $arguments    Array with the method arguments
      * @throws cInvalidArgumentException if the given priority is not supported
-     * @return    void
      */
     public function __call($method, $arguments) {
         $priorityName = strtoupper($method);
