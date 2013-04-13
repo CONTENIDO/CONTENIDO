@@ -1,18 +1,15 @@
 <?php
-
 /**
- * Frontend article view for CONTENIDO backend.
+ * This file contains the backend article view.
  *
- * @package Backend
- * @subpackage Article
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id$
+ * @package    Core
+ * @subpackage Backend
  *
- * @author unknown, Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {

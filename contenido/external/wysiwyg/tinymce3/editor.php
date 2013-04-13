@@ -1,36 +1,20 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * TINYMCE 1.45rc1 PHP WYSIWYG editor control
  * Main editor file for CONTENIDO
  *
- * Requirements:
- * @con_php_req 5
- * @con_notice
- * TINYMCE 1.45rc1 Fileversion
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- *
- * @package    CONTENIDO Backend Editor
- * @version    0.0.5
  * @author     Martin Horwath, horwath@dayside.net
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- *
- * {@internal
- *   created  2005-06-10
- *   $Id: editor.php 739 2008-08-27 10:37:54Z timo.trautmann $:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // include editor config/combat file
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php');

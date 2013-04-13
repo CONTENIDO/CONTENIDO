@@ -1,26 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System Backend
+ * This file defines the CodeMirror editor integration class.
  *
- * Description: This file defines the CodeMirror editor integration class.
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * @package CONTENIDO Backend
- * @version 1.0.0
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @since file available since CONTENIDO 4.9.0
- *
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 /**
- * Description: Class for handling and displaying CodeMirror
+ * Class for handling and displaying CodeMirror
  *
- * @version 1.0.0
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
+ * @package    Core
+ * @subpackage Backend
  */
 class CodeMirror {
 
@@ -28,7 +27,6 @@ class CodeMirror {
      * Properties which were used to init CodeMirror
      *
      * @var array
-     * @access private
      */
     private $_properties = array();
 
@@ -36,7 +34,6 @@ class CodeMirror {
      * HTML-ID of textarea which is replaced by CodeMirror
      *
      * @var string
-     * @access private
      */
     private $_textareaId = '';
 
@@ -44,7 +41,6 @@ class CodeMirror {
      * defines if textarea is used or not (by system/client/user property)
      *
      * @var boolean
-     * @access private
      */
     private $_activated = true;
 
@@ -52,7 +48,6 @@ class CodeMirror {
      * defines if js-script for CodeMirror is included on rendering process
      *
      * @var boolean
-     * @access private
      */
     private $_addScript = true;
 
@@ -60,7 +55,6 @@ class CodeMirror {
      * The CONTENIDO configuration array
      *
      * @var array
-     * @access private
      */
     private $_cfg = array();
 
@@ -68,7 +62,6 @@ class CodeMirror {
      * Language of CodeMirror
      *
      * @var string
-     * @access private
      */
     private $_language = '';
 
@@ -76,7 +69,6 @@ class CodeMirror {
      * Syntax of CodeMirror
      *
      * @var string
-     * @access private
      */
     private $_syntax = '';
 
@@ -95,8 +87,6 @@ class CodeMirror {
      *        interesting when there is more than only one editor on page
      * @param array $cfg - The CONTENIDO configuration array
      * @param boolean $editable - Optional defines if content is editable or not
-     *
-     * @access public
      */
     public function __construct($id, $syntax, $lang, $addScript, $cfg, $editable = true) {
         // init class variables
@@ -135,8 +125,6 @@ class CodeMirror {
      * other settings.
      * Function also checks if CodeMirror is activated or deactivated
      * by user
-     *
-     * @access private
      */
     private function _getSystemProperties() {
         // check if editor is disabled or enabled by user/admin
@@ -165,8 +153,6 @@ class CodeMirror {
      * @param boolean $isNumeric - Defines if value is numeric or not
      *        in case of a numeric value, there is no need to use
      *        quotes
-     *
-     * @access public
      */
     public function setProperty($name, $value, $isNumeric = false) {
         // datatype check
@@ -244,7 +230,6 @@ class CodeMirror {
      * Function renders js_script for inclusion into an header of a html file
      *
      * @return string - js_script for CodeMirror
-     * @access public
      */
     public function renderScript() {
         // if editor is disabled, there is no need to render this script

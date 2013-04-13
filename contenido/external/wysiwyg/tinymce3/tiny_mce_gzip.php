@@ -1,34 +1,21 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * This file compresses the TinyMCE JavaScript using GZip and
  * enables the browser to do two requests instead of one for each .js file.
  * Notice: This script defaults the button_tile_map option to true for extra performance.
  *
- * Requirements:
- * @con_php_req 5
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend Editor
- * @version    <version>
- * @author     Moxiecode
+ * @author     Martin Horwath, horwath@dayside.net
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- *
- * {@internal
- *   created  2005-06-06
- *   $Id: tiny_mce_gzip.php 739 2008-08-27 10:37:54Z timo.trautmann $:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
     // Set the error reporting to minimal.
     @error_reporting(E_ERROR | E_WARNING | E_PARSE);
