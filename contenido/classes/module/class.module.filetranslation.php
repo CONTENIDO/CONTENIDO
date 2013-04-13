@@ -1,35 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the module file translation class.
+ * TODO: Rework comments of this class.
  *
- * Description:
- * This class save the translations from a modul in a file
- * and get it from file.
+ * @package    Core
+ * @subpackage Backend
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.0
- * @author Rusmir Jusufovic
- * @copyright four for business AG <info@contenido.org>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- *
+ * @author     Rusmir Jusufovic
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class save the translations from a modul in a file
  * and get it from file.
  *
- * @author rusmir.jusufovic
+ * @package    Core
+ * @subpackage Backend
  */
 class cModuleFileTranslation extends cModuleHandler {
 

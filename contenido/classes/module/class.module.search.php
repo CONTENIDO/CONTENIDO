@@ -1,28 +1,25 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System Description: This class search
- * for modules (input, output,type,description, name ) Requirements:
- * @con_php_req 5.0
+ * This file contains the module search class.
+ * TODO: Rework comments of this class.
  *
+ * @package    Core
+ * @subpackage Backend
  *
- * @package CONTENIDO Backend Includes
- * @version 1.3.2
- * @author unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release >= 4.9
+ * @author     Rusmir Jusufovic
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class search for modules (input, output,type,description, name )
+ * This class performs the module search.
  *
- * @author rusmir.jusufovic
+ * @package    Core
+ * @subpackage Backend
  */
 class cModuleSearch extends cModuleHandler {
 
@@ -41,20 +38,14 @@ class cModuleSearch extends cModuleHandler {
     protected $_orderBy = '';
 
     /**
-     * asc,desc
+     * Sort order
      *
      * @var string
      */
     protected $_sortOrder = '';
 
     /**
-     * Wiche module type (Navigation,Content .
-     *
-     *
-     *
-     *
-     *
-     * ..)
+     * Module type
      *
      * @var string
      */

@@ -1,29 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the module template handler class.
+ * TODO: Rework comments of this class.
  *
- * Description:
- * Class for handeling modul templates.
+ * @package    Core
+ * @subpackage Backend
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Includes
- * @version 1.5.1
- * @author Rusmir Jusufovic
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
- *
+ * @author     Rusmir Jusufovic
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
@@ -31,7 +21,8 @@ cInclude('includes', 'functions.file.php');
 /**
  * Class handels the view, creation, edit, delete of modul templates.
  *
- * @author rusmir.jusufovic
+ * @package    Core
+ * @subpackage Backend
  */
 class cModuleTemplateHandler extends cModuleHandler {
 
@@ -262,7 +253,6 @@ class cModuleTemplateHandler extends cModuleHandler {
      * rename a file in template directory
      *
      * @throws cException if rename was not successfull
-     * @return void
      */
     private function _rename() {
         if ($this->renameModuleFile('template', $this->_tmp_file, $this->_file) == false) {

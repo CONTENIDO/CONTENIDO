@@ -1,41 +1,28 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the module handler class.
+ * TODO: Rework comments of this class.
  *
- * Description:
+ * @package    Core
+ * @subpackage Backend
+ *
+ * @author     Rusmir Jusufovic
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
  * Class for new modul structere. Saves the Modul-Input in a file (input.php)
  * and
  * Modul-Output in a file(output.php).
  * All moduls of a clients are in [frontend]/modules/.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.0
- * @author Rusmir Jusufovic
- * @copyright four for business AG <info@contenido.org>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since {@internal
- *        created 2010-12-14
- *        }}
- */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-/**
- * Class for new modul structere.
- * Saves the Modul-Input in a file (input.php) and
- * Modul-Output in a file(output.php).
- * All moduls of a clients are in [frontend]/modules/.
- *
- * @author rusmir.jusufovic
+ * @package    Core
+ * @subpackage Backend
  */
 class cModuleHandler {
 
@@ -178,7 +165,6 @@ class cModuleHandler {
      *
      * @param int $idmod the id of the modul
      * @throws cException if the module directory can not be created
-     * @return void
      */
     public function __construct($idmod = NULL) {
         global $cfg, $cfgClient, $lang, $client;
@@ -232,11 +218,11 @@ class cModuleHandler {
     /**
      * Save a content in the file, use for css/js
      *
-     * @param unknown_type $frontendPath
-     * @param unknown_type $templateName
-     * @param unknown_type $fileType
-     * @param unknown_type $fileContent
-     * @return false or string
+     * @param string $frontendPath
+     * @param string $templateName
+     * @param string $fileType
+     * @param string $fileContent
+     * @return bool|string
      */
     public function saveContentToFile($templateName, $fileType, $fileContent, $saveDirectory = 'cache') {
         $sSaveDirectory = $this->_cfgClient[$this->_client]['path']['frontend'] . $saveDirectory . '/';
@@ -261,8 +247,8 @@ class cModuleHandler {
     /**
      * Get the cleaned name
      *
-     * @param string $name, mod name
-     * @param string $defaultChar, default character
+     * @param string $name mod name
+     * @param string $defaultChar default character
      */
     public static function getCleanName($name, $defaultChar = '_') {
         // the first character of modul/Layut name should be [a-zA-Z0-9]|_|-
@@ -519,7 +505,6 @@ class cModuleHandler {
      *
      * @throws cException if the frontend path can not be found or the module
      *         directory cann ot be created
-     * @return void
      */
     public function createAllMainDirectories() {
         global $cfg, $cfgClient;

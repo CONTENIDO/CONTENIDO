@@ -1,40 +1,30 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the module synchronizer class.
+ * TODO: Rework comments of this class.
  *
- * Description:
- * This class synchronized the contents of modul dir with the table
- * $cfg['tab']['mod']. If a modul exist in modul dir but not in
- * $cfg['tab']['mod'] this class will insert the modul in the table.
+ * @package    Core
+ * @subpackage Backend
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.0
- * @author Rusmir Jusufovic
- * @copyright four for business AG <info@contenido.org>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rusmir Jusufovic
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.api.string.php');
 cInclude('includes', 'functions.con.php');
 
 /**
  * This class synchronized the contents of modul dir with the table
- * $cfg['tab']['mod'].
- * If a module exist in module directory but not in
+ * $cfg['tab']['mod']. If a modul exist in modul dir but not in
  * $cfg['tab']['mod'] this class will insert the modul in the table.
  *
- * @author rusmir.jusufovic
+ * @package    Core
+ * @subpackage Backend
  */
 class cModuleSynchronizer extends cModuleHandler {
 
@@ -49,9 +39,9 @@ class cModuleSynchronizer extends cModuleHandler {
      * This method insert a new modul in $cfg['tab']['mod'] table, if
      * the name of modul dont exist
      *
-     * @param unknown_type $dir
-     * @param unknown_type $oldModulName
-     * @param unknown_type $newModulName
+     * @param string $dir
+     * @param string $oldModulName
+     * @param string $newModulName
      */
     private function _syncModule($dir, $oldModulName, $newModulName) {
         global $client;
@@ -72,9 +62,9 @@ class cModuleSynchronizer extends cModuleHandler {
     /**
      * Rename css, js and input/output file
      *
-     * @param unknown_type $dir
-     * @param unknown_type $oldModulName
-     * @param unknown_type $newModulName
+     * @param string $dir
+     * @param string $oldModulName
+     * @param string $newModulName
      */
     private function _renameFiles($dir, $oldModulName, $newModulName) {
         if (cFileHandler::exists($dir . $newModulName . '/' . $this->_directories['php'] . $oldModulName . '_input.php') == true) {
@@ -303,7 +293,7 @@ class cModuleSynchronizer extends cModuleHandler {
      *
      * @param string $name name ot the modul
      * @param int $idclient idclient
-     * @return if a modul with the $name exist in the $cfg['tab']['mod'] table
+     * @return bool if a modul with the $name exist in the $cfg['tab']['mod'] table
      *         return true else false
      */
     private function _isExistInTable($alias, $idclient) {

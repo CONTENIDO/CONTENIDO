@@ -1,30 +1,24 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the tree class.
  *
- * Description:
- * logical cTree
+ * @package    Core
+ * @subpackage GUI
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.12
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * class cTree
+ * Tree class
+ *
+ * @package    Core
+ * @subpackage GUI
  */
 class cTree extends cTreeItem {
 
@@ -47,7 +41,6 @@ class cTree extends cTreeItem {
      * sets a new name for the tree.
      *
      * @param string name Name of the tree
-     * @return void
      */
     public function setTreeName($name) {
         $this->setName($name);
