@@ -1,28 +1,25 @@
 <?php
 /**
- * Contains CONTENIDO i18n class file
+ * This file contains the the I18N class.
  *
- * @package Core
- * @subpackage i18n
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id$
+ * @package    Core
+ * @subpackage I18N
+ * @version    SVN Revision $Rev:$
  *
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Internationalization (i18n) class.
  *
- * @package Core
- * @subpackage i18n
+ * @package    Core
+ * @subpackage I18N
  */
 class cI18n {
 

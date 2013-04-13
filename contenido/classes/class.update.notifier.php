@@ -1,30 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the update notifier class.
  *
- * Description:
- * CONTENIDO Update Notifier Functions
+ * @package    Core
+ * @subpackage Security
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- * @con_php_req simplexml
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.3
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.8.7
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * This class contains function for the update notifier.
+ *
+ * @package    Core
+ * @subpackage Security
+ */
 class cUpdateNotifier {
 
     /**
@@ -257,7 +253,6 @@ class cUpdateNotifier {
      * Constructor of Contenido_UpdateNotifier
      *
      * @param string $sConVersion
-     * @return void
      */
     public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
         $this->oProperties = new cApiPropertyCollection();
@@ -310,8 +305,6 @@ class cUpdateNotifier {
 
     /**
      * Sets the actual RSS file for the reader
-     *
-     * @return void
      */
     protected function setRSSFile() {
         if ($this->sBackendLanguage == "de_DE") {
@@ -325,7 +318,6 @@ class cUpdateNotifier {
      * Updates the system property for activation/deactivation requests
      *
      * @param $sAction string
-     * @return void
      */
     protected function updateSystemProperty($sAction) {
         if ($sAction == "activate") {
@@ -341,8 +333,6 @@ class cUpdateNotifier {
 
     /**
      * Sets the cache path
-     *
-     * @return void
      */
     protected function setCachePath() {
         $sCachePath = $this->aCfg['path']['contenido_cache'];
@@ -361,8 +351,6 @@ class cUpdateNotifier {
     /**
      * Checks if the xml files must be loaded from the vendor host or local
      * cache
-     *
-     * @return void
      */
     protected function checkUpdateNecessity() {
         $bUpdateNecessity = false;
@@ -398,8 +386,6 @@ class cUpdateNotifier {
 
     /**
      * Detects and converts the minor release of the system version
-     *
-     * @return void
      */
     protected function detectMinorRelease() {
         $sVersion = $this->aCfg['version'];
@@ -411,8 +397,6 @@ class cUpdateNotifier {
     /**
      * Reads the xml files from vendor host or cache and checks for file
      * manipulations
-     *
-     * @return void
      */
     protected function readVendorContent() {
         $this->sXMLContent = "";
@@ -458,8 +442,6 @@ class cUpdateNotifier {
 
     /**
      * Handles the update of files coming per vendor host
-     *
-     * @return void
      */
     protected function handleVendorUpdate($aXMLContent) {
         $bValidXMLFile = true;
@@ -545,7 +527,6 @@ class cUpdateNotifier {
      * Updates the files in cache
      *
      * @param $aRSSContent array
-     * @return void
      */
     protected function updateCacheFiles($aRSSContent) {
         $aWriteCache = array();
@@ -576,7 +557,6 @@ class cUpdateNotifier {
      * Updates the xml file hash in the property table
      *
      * @param $aRSSContent array
-     * @return void
      */
     protected function updateHashProperty($aXMLContent) {
         $sXML = $aXMLContent[$this->sVendorXMLFile];
@@ -653,7 +633,7 @@ class cUpdateNotifier {
      * Generates the output for the rss informations
      *
      * @param $oTpl
-     * @return CONTENIDO template object
+     * @return cTemplate CONTENIDO template object
      */
     protected function renderRss($oTpl) {
         if (!is_object($oTpl)) {
@@ -734,6 +714,8 @@ class cUpdateNotifier {
             if (!fputs($oSocket, "GET /" . $sUrl . " HTTP/1.0\r\n\r\n")) {
                 return false;
             }
+
+            $sVendorFile = '';
 
             while (!feof($oSocket)) {
                 $sVendorFile .= fgets($oSocket, 128);

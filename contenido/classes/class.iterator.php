@@ -1,33 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the iterator class.
  *
- * Description:
- * Iterator class
+ * @package    Core
+ * @subpackage Util
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.2
- * @author     unknown
+ * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * cIterator: A class which represents the C/C++/JAVA Iterator support.
@@ -45,6 +31,8 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @todo Add more stepping methods, as well as retrieving items
  *
+ * @package    Core
+ * @subpackage Util
  */
 class cIterator {
 
@@ -61,9 +49,8 @@ class cIterator {
      * and moves the iterator to the first element.
      *
      * @param $aItems array Items to add
-     * @return none
      */
-    function cIterator($aItems) {
+    public function __construct($aItems) {
         if (is_array($aItems)) {
             $this->_aIteratorItems = $aItems;
         } else {
@@ -77,10 +64,8 @@ class cIterator {
      * reset: Resets the iterator to the first element
      *
      * This function moves the iterator to the first element
-     *
-     * @return none
      */
-    function reset() {
+    public function reset() {
         reset($this->_aIteratorItems);
     }
 
@@ -92,7 +77,7 @@ class cIterator {
      *
      * @return mixed item or false if nothing was found
      */
-    function next() {
+    public function next() {
         $item = each($this->_aIteratorItems);
 
         if ($item === false) {
@@ -107,7 +92,7 @@ class cIterator {
      *
      * @return int Number of items
      */
-    function count() {
+    public function count() {
         return count($this->_aIteratorItems);
     }
 

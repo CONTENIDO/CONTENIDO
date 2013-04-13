@@ -1,38 +1,30 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
+ * This file contains the the input helper classes.
  * Various derived HTML class elements especially useful
  * in the input area of modules
  * Simple table generation class especially useful to generate
  * backend configuration table. May be used also in Frontend,
  * but note the globally used variables ($cfg)
  *
+ * @package    Core
+ * @subpackage Util
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5
- *
- *
- * @package CONTENIDO Frontend
- * @version 2.1 (formerly known as functions.input.helper.php)
- * @author Björn Behrens (HerrB), http://www.btech.de
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Select box with additional functions for category and article selection
  *
- * @package CONTENIDO Frontend
- * @subpackage Input Helper
+ * @package Core
+ * @subpackage Util
  */
 class cHTMLInputSelectElement extends cHTMLSelectElement {
 
@@ -46,9 +38,6 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @param string $bDisabled Item disabled flag (non-empty to set disabled)
      * @param int $iTabIndex Tab index for form elements
      * @param string $sAccessKey Key to access the field
-     *
-     * @return none
-     *
      */
     public function __construct($sName, $iWidth = "", $sID = "", $bDisabled = false, $iTabIndex = null, $sAccessKey = "") {
         parent::__construct($sName, $iWidth, $sID, $bDisabled, $iTabIndex, $sAccessKey);
@@ -286,9 +275,10 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
 }
 
 /**
+ * Config table class.
  *
- * @package CONTENIDO Frontend
- * @subpackage Input Helper
+ * @package Core
+ * @subpackage Util
  */
 class UI_Config_Table {
 

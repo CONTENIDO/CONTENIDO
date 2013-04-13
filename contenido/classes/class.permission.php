@@ -1,32 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the the permission class.
  *
- * Description:
- * Permission management
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5
- *
- * @package CONTENIDO Core
- * @version 0.3.1
- * @author Boris Erdmann, Kristian Koehntopp
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <CONTENIDO Version>
+ * @author     Boris Erdmann, Kristian Koehntopp
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * This class handles the permission management
  *
- * @package CONTENIDO Core
- * @subpackage Permission
+ * @package    Core
+ * @subpackage Backend
  */
 class cPermission {
 

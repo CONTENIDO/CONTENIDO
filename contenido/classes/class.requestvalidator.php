@@ -1,28 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the the request validator class.
  *
- * Description:
- * Class to check get and post variables
+ * @package    Core
+ * @subpackage Security
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO API
- * @version 1.0
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Mischa Holz, Andreas Kummer
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * Class to check get and post variables
+ *
+ * @package    Core
+ * @subpackage Security
+ */
 class cRequestValidator {
 
     /**
@@ -145,7 +143,6 @@ class cRequestValidator {
      * CON_ENVIRONMENT . '/config.http_check.php'.
      *
      * @throws cFileNotFoundException if the configuration can not be loaded
-     * @return void
      */
     private function __construct() {
         // globals from config.http_check.php file which is included below

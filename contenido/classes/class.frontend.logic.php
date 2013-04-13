@@ -1,33 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the abstract frontend logic class.
  *
- * Description:
- * Frontend logic base class
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.2.1
- * @author     unknown
+ * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * FrontendLogic: This is the base class for all frontend related logic.
@@ -39,8 +25,11 @@ if (!defined('CON_FRAMEWORK')) {
  * A word on actions: Each single object of a FrontendLogic subclass has the
  * same amount of actions. You can't have a different set of actions for
  * different objects of the same type.
+ *
+ * @package    Core
+ * @subpackage Backend
  */
-class FrontendLogic {
+abstract class FrontendLogic {
 
     /**
      * getFriendlyName: Returns the friendly (e.g. display) name of your
@@ -48,7 +37,7 @@ class FrontendLogic {
      *
      * @return string Name of the object
      */
-    function getFriendlyName() {
+    public function getFriendlyName() {
         return "Inherited class *must* override getFriendlyName";
     }
 
@@ -59,7 +48,7 @@ class FrontendLogic {
      *
      * @return array Array of all actions
      */
-    function listActions() {
+    public function listActions() {
         return array("Inherited class *must* override listActions");
     }
 
@@ -70,7 +59,7 @@ class FrontendLogic {
      *
      * @return array Array of items
      */
-    function listItems() {
+    public function listItems() {
         return array("Inherited class *must* override listItems");
     }
 

@@ -1,80 +1,62 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the the pager class.
  *
- * Description:
- * Foldable pager for menus
+ * @package    Core
+ * @subpackage GUI
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2005-05-11
- *   $Id: class.pager.php 2379 2012-06-22 21:00:16Z xmurrix $
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * cPager
  * Basic pager class without presentation logic
  *
- * @author      Timo A. Hummel <timo.hummel@4fb.de>
+ * @package    Core
+ * @subpackage GUI
  */
 class cPager {
 
     /**
      * Amount of items
-     * @private integer
-     * @access private
+     * @var integer
      */
     private $_items;
 
     /**
      * Item padding (before and after the current item)
-     * @private integer
-     * @access private
+     * @var integer
      */
     private $_itemPadding;
 
     /**
      * Items on the left side
-     * @private integer
-     * @access private
+     * @var integer
      */
     private $_previousItems;
 
     /**
      * Items on the right side
-     * @private integer
-     * @access private
+     * @var integer
      */
     private $_nextItems;
 
     /**
      * Current page
-     * @private integer
-     * @access private
+     * @var integer
      */
     private $_currentPage;
 
     /**
      * Items per page
-     * @private integer
-     * @access private
+     * @var integer
      */
     private $_itemsPerPage;
 

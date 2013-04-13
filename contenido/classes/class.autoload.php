@@ -1,9 +1,21 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the autoloader class.
  *
- * Description:
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
+ *
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
  * Implements autoload feature for a CONTENIDO project.
  *
  * Autoloading for CONTENIDO is provided via a generated class map configuration
@@ -23,29 +35,9 @@
  * Read also docs/techref/backend/backend.autoloader.html to get involved in
  * CONTENIDO autoloader mechanism.
  *
- *
- * Requirements:
- * @con_php_req 5.0
- *
- * @package    CONTENIDO Autoloader
- * @version    0.1.0
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created  2010-12-27
- *   $Id$:
- * }}
+ * @package Core
+ * @subpackage Backend
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
 class cAutoload {
 
     const ERROR_FILE_NOT_FOUND = 'file_not_found';
@@ -95,7 +87,6 @@ class cAutoload {
      * and if exists, the user defined class map file, containing the includes.
      *
      * @param   array  $cfg  The CONTENIDO cfg array
-     * @return  void
      */
     public static function initialize(array $cfg) {
         if (self::$_initialized == true) {
@@ -134,7 +125,6 @@ class cAutoload {
      *     'myPluginsOtherClass' => 'contenido/plugins/myplugin/classes/class.myPluginsOtherClass.php',
      * );
      * </pre>
-     * @return  void
      */
     public static function addClassmapConfig(array $config) {
         $newConfig = self::_normalizeConfig($config);
@@ -160,7 +150,6 @@ class cAutoload {
      *     'myCmsClass' => 'cms/includes/class.myCmsClass.php',
      * );
      * </pre>
-     * @return  void
      */
     public static function addClassmapConfigFile($configFile) {
         if (is_file($configFile)) {
@@ -176,7 +165,6 @@ class cAutoload {
      *
      * @param   string  $className  The classname
      * @throws  cBadMethodCallException If autoloader wasn't initialized before
-     * @return  void
      */
     public static function autoload($className) {
         if (self::$_initialized !== true) {
@@ -294,7 +282,6 @@ class cAutoload {
      * @param   string  $filePathName
      * @param   bool    $beQuiet  Flag to prevent thrown warnings/errors by using
      *                            the error control operator @
-     * @return  void
      */
     private static function _loadFile($filePathName, $beQuiet = false) {
         if ($beQuiet) {

@@ -1,40 +1,46 @@
 <?php
 /**
- * This file contains the article collector class.
+ * This file contains the array utility class.
  *
- * @package Core
- * @subpackage Helper
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @package    Core
+ * @subpackage Util
+ * @version    SVN Revision $Rev:$
+ *
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call: Missing framework initialization - request aborted.');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains functions for the article helper in CONTENIDO. The
+ * The
  * article collector returns you a list of articles, which destination you can
  * choose.
- * You have the ability to limit, sort and filter the article list. You can
- * configure the article collector with an options array, which can include the
- * following configuration. - idcat - category ID - categories - array with
- * multiple category IDs - lang - language ID, active language if ommited -
- * client - client ID, active client if ommited - artspecs - array of article
- * specifications, which should be considered - offline - include offline
- * article in the collection, defaults to false - offlineonly - only list
- * offline articles, defaults to false - start - include start article in the
- * collection, defaults to false - startonly - only list start articles,
- * defaults to false - order - articles will be ordered by this property,
- * defaults to created - direction - order direcion, ASC'or DESC for
- * ascending/descending, defaults to DESC - limit - limit numbers of articles in
- * collection, default to 0 (unlimited)
+ * You have the ability to limit, sort and filter the article list.
+ *
+ * You can configure the article collector with an options array, which can include the
+ * following configuration.
+ *
+ * - idcat - category ID
+ * - categories - array with multiple category IDs
+ * - lang - language ID, active language if ommited
+ * - client - client ID, active client if ommited
+ * - artspecs - array of article specifications, which should be considered
+ * - offline - include offline article in the collection, defaults to false
+ * - offlineonly - only list offline articles, defaults to false
+ * - start - include start article in the collection, defaults to false
+ * - startonly - only list start articles, defaults to false
+ * - order - articles will be ordered by this property, defaults to created
+ * - direction - order direction, ASC or DESC for ascending/descending, defaults to DESC
+ * - limit - limit numbers of articles in collection, default to 0 (unlimited)
+ *
+ * TODO: Use generic DB instead of SQL queries
  *
  * @package Core
- * @subpackage Helper
+ * @subpackage Util
  */
 class cArticleCollector implements SeekableIterator, Countable {
 
@@ -79,7 +85,6 @@ class cArticleCollector implements SeekableIterator, Countable {
      *
      * @param array $options array with options for the collector (optional,
      *            default: empty array)
-     * @return void
      */
     public function __construct($options = array()) {
         if (count($options) > 0) {
@@ -93,7 +98,6 @@ class cArticleCollector implements SeekableIterator, Countable {
      * default of the missing options.
      *
      * @param array $options array with option
-     * @return void
      */
     public function setOptions($options) {
         if (isset($options['idcat']) && !isset($options['categories'])) {
@@ -168,7 +172,6 @@ class cArticleCollector implements SeekableIterator, Countable {
      * Executes the article search with the given options.
      *
      * @throws cUnexpectedValueException
-     * @return void
      */
     public function loadArticles() {
         $this->_articles = array();
@@ -288,7 +291,6 @@ class cArticleCollector implements SeekableIterator, Countable {
      * $collection->nextArticle()) { ... }
      *
      * @param int $page The page of the article collection
-     * @return void
      */
     public function setPage($page) {
         if (is_array($this->_pages[$page])) {
@@ -312,8 +314,6 @@ class cArticleCollector implements SeekableIterator, Countable {
 
     /**
      * Method "rewind" of the implemented iterator.
-     *
-     * @return void
      */
     public function rewind() {
         $this->_currentPosition = 0;
@@ -339,8 +339,6 @@ class cArticleCollector implements SeekableIterator, Countable {
 
     /**
      * Method "next" of the implemented iterator.
-     *
-     * @return void
      */
     public function next() {
         ++$this->_currentPosition;

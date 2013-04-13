@@ -1,28 +1,25 @@
 <?php
 /**
- * Contains CONTENIDO string class file
+ * This file contains the string utility class.
  *
- * @package Core
- * @subpackage String
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id$
+ * @package    Core
+ * @subpackage Util
+ * @version    SVN Revision $Rev:$
  *
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * String helper class.
  *
  * @package Core
- * @subpackage String
+ * @subpackage Util
  */
 class cString {
 

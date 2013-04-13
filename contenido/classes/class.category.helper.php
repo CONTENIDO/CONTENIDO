@@ -2,22 +2,24 @@
 /**
  * This file contains the category helper class.
  *
- * @package       Core
- * @subpackage    Helper
- * @version       1.0
+ * @package    Core
+ * @subpackage Frontend_Util
+ * @version    SVN Revision $Rev:$
  *
- * @author        Dominik Ziegler
- * @copyright     four for business AG <www.4fb.de>
- * @license       http://www.contenido.org/license/LIZENZ.txt
- * @link          http://www.4fb.de
- * @link          http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 /**
- * @package       Core
- * @subpackage    Helper
- *
  * This class contains functions for the category helper class in CONTENIDO.
+ *
+ * @package    Core
+ * @subpackage Frontend_Util
  */
 class cCategoryHelper {
     /**
@@ -76,7 +78,6 @@ class cCategoryHelper {
 
     /**
      * Constructor of the class.
-     * @return    void
      */
     protected function __construct() {
     }
@@ -84,7 +85,6 @@ class cCategoryHelper {
     /**
      * Sets an auth object to use on category access check.
      * @param    cAuth    $auth    auth object
-     * @return    void
      */
     public function setAuth($auth) {
         $this->_auth = $auth;
@@ -100,7 +100,6 @@ class cCategoryHelper {
     /**
      * Sets the client ID to store it locally in the class.
      * @param    int    $clientId    client ID
-     * @return    void
      */
     public function setClientId($clientId = 0) {
         $this->_clientId = (int) $clientId;
@@ -126,7 +125,6 @@ class cCategoryHelper {
     /**
      * Sets the language ID to store it locally in the class.
      * @param    int    $languageId    language ID
-     * @return    void
      */
     public function setLanguageId($languageId = 0) {
         $this->_languageId = (int) $languageId;
@@ -252,6 +250,7 @@ class cCategoryHelper {
 
     /**
      * Return the subcategories of the given category ID.
+     * TODO: Use Generic DB instead of SQL queries
      * @param    int    $categoryId    ID of the category to load
      * @param    int    $depth    the maximum depth
      * @return    array    array with subcategories
@@ -344,6 +343,9 @@ class cCategoryHelper {
         if (intval($categoryLanguage->getField('public')) == 1) {
             return true;
         }
+
+        $clientId = $this->getClientId();
+        $languageId = $this->getLanguageId();
 
         if ($perm->have_perm_client_lang($clientId, $languageId) == true) {
             return true;

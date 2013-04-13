@@ -1,30 +1,24 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
+ * This file contains various classes for content search.
  * API to index a CONTENIDO article
  * API to search in the index structure
  * API to display the searchresults
  *
- * Requirements:
- * @con_php_req 5.0
+ * @package    Core
+ * @subpackage Frontend_Search
+ * @version    SVN Revision $Rev:$
  *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.4
- * @author Willi Man
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
+ * @author     Willi Man
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+cInclude('includes', 'functions.encoding.php');
 
 /**
  * Abstract base search class.
@@ -32,6 +26,9 @@ if (!defined('CON_FRAMEWORK')) {
  * for child implementations.
  *
  * @author Murat Purc <murat@purc.de>
+ *
+ * @package    Core
+ * @subpackage Frontend_Search
  */
 abstract class cSearchBaseAbstract {
 
@@ -143,8 +140,10 @@ abstract class cSearchBaseAbstract {
  * setCmsOptions should be sourced out into a new helper-class.
  * Keep in mind that class Search and SearchResult uses an instance of object
  * Index.
+ *
+ * @package    Core
+ * @subpackage Frontend_Search
  */
-cInclude('includes', 'functions.encoding.php');
 class cSearchIndex extends cSearchBaseAbstract {
 
     /**
@@ -260,7 +259,6 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @param array $cms_options One can specify explicitly cms types which
      *        should not be indexed.
      * @param array $aStopwords Array with words which should not be indexed.
-     * @return void
      */
     public function start($idart, $aContent, $place = 'auto', $cms_options = array(), $aStopwords = array()) {
         if (!is_int((int) $idart) || $idart < 0) {
@@ -298,8 +296,6 @@ class cSearchIndex extends cSearchBaseAbstract {
      * [dieser] => CMS_HTML-1
      * [website] => CMS_HTML-1 CMS_HTML-1 CMS_HTMLHEAD-2
      * )
-     *
-     * @return void
      */
     public function createKeywords() {
         $tmp_keys = array();
@@ -357,8 +353,6 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * generate index_string from index structure and save keywords
      * The index_string looks like "&12=2(CMS_HTMLHEAD-1,CMS_HTML-1)"
-     *
-     * @return void
      */
     public function saveKeywords() {
         $tmp_count = array();
@@ -401,9 +395,6 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * if keywords don't occur in the article anymore, update index_string and
      * delete keyword if necessary
-     *
-     * @param none
-     * @return void
      */
     public function deleteKeywords() {
         foreach ($this->_keywordsDel as $key_del) {
@@ -425,8 +416,6 @@ class cSearchIndex extends cSearchBaseAbstract {
 
     /**
      * get the keywords of an article
-     *
-     * @return void
      */
     public function getKeywords() {
         $keys = implode("','", array_keys($this->_keywords));
@@ -453,7 +442,7 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * remove special characters from index term
      *
-     * @param $key Keyword
+     * @param $key string Keyword
      * @return $key
      */
     public function removeSpecialChars($key) {
@@ -537,7 +526,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      * (important for syntaxhighlighting searchterm in searchresults)
      * adds umlauts to search term
      *
-     * @param $key Keyword
+     * @param $key string Keyword
      * @return $key
      */
     public function addSpecialUmlauts($key) {
@@ -564,7 +553,6 @@ class cSearchIndex extends cSearchBaseAbstract {
      * set the array of stopwords which should not be indexed
      *
      * @param array $aStopwords
-     * @return void
      */
     public function setStopwords($aStopwords) {
         if (is_array($aStopwords) && count($aStopwords) > 0) {
@@ -574,8 +562,7 @@ class cSearchIndex extends cSearchBaseAbstract {
 
     /**
      * set the cms types
-     *
-     * @return void
+
      */
     public function setContentTypes() {
         $sql = "SELECT type, idtype FROM " . $this->cfg['tab']['type'] . ' ';
@@ -589,8 +576,6 @@ class cSearchIndex extends cSearchBaseAbstract {
 
     /**
      * set the cms_options array of cms types which should be treated special
-     *
-     * @return void
      */
     public function setCmsOptions($cms_options) {
         if (is_array($cms_options) && count($cms_options) > 0) {
@@ -618,7 +603,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      * check if the current cms type is in the cms_options array
      *
      * @param $idtype
-     * @return bolean
+     * @return boolean
      */
     public function checkCmsType($idtype) {
         $idtype = strtoupper($idtype);
@@ -761,10 +746,8 @@ class cSearchIndex extends cSearchBaseAbstract {
  * with $oSearchResults = new cSearchResult($search_result, 10);
  * one can rank and display the results
  *
- * @version 1.0.1
- *
- * @author Willi Man
- * @copyright four for business AG <www.4fb.de>
+ * @package    Core
+ * @subpackage Frontend_Search
  */
 class cSearch extends cSearchBaseAbstract {
 
@@ -859,12 +842,6 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * Array of article id's with information about cms-types, occurence of
      * keyword/searchword, similarity .
-     *
-     *
-     *
-     *
-     * ..
-     *
      * @var array
      */
     protected $_searchResult = array();
@@ -895,7 +872,6 @@ class cSearch extends cSearchBaseAbstract {
      *        $options['searchable_articles'] array of article ID's which should
      *        be searchable
      * @param cDb $db Optional database instance
-     * @return void
      */
     public function __construct($options, $db = null) {
         parent::__construct($db);
@@ -929,7 +905,6 @@ class cSearch extends cSearchBaseAbstract {
      * @param string $searchwords The search words
      * @param string $searchwords_exclude The words, which should be excluded
      *        from search
-     * @return void
      */
     public function searchIndex($searchwords, $searchwords_exclude = '') {
         if (strlen(trim($searchwords)) > 0) {
@@ -1077,7 +1052,6 @@ class cSearch extends cSearchBaseAbstract {
      *
      * @param $cms_options The cms-types (htmlhead, html, ...) which should
      *        explicitly be searched
-     * @return void
      */
     public function setCmsOptions($cms_options) {
         if (is_array($cms_options) && count($cms_options) > 0) {
@@ -1281,7 +1255,6 @@ class cSearch extends cSearchBaseAbstract {
      * Set article specification
      *
      * @param int $iArtspecID
-     * @return void
      */
     public function setArticleSpecification($iArtspecID) {
         $this->_articleSpecs[] = $iArtspecID;
@@ -1292,7 +1265,6 @@ class cSearch extends cSearchBaseAbstract {
      * (client dependent but language independent)
      *
      * @param string $sArtSpecName
-     * @return void
      */
     public function addArticleSpecificationsByName($sArtSpecName) {
         if (!isset($sArtSpecName) || strlen($sArtSpecName) == 0) {
@@ -1344,10 +1316,8 @@ class cSearch extends cSearchBaseAbstract {
  * $iOccurrence = $oSearchResults->getOccurrence($key);
  * }
  *
- * @version 1.0.0
- *
- * @author Willi Man
- * @copyright four for business AG <www.4fb.de>
+ * @package    Core
+ * @subpackage Frontend_Search
  *
  */
 class cSearchResult extends cSearchBaseAbstract {
@@ -1412,11 +1382,6 @@ class cSearchResult extends cSearchBaseAbstract {
      * Array of article id's with information about cms-types, occurence of
      * keyword/searchword, similarity .
      *
-     *
-     *
-     *
-     * ..
-     *
      * @var array
      */
     protected $_searchResult = array();
@@ -1463,7 +1428,6 @@ class cSearchResult extends cSearchBaseAbstract {
      *
      * @param $ranked_search
      * @param $result_per_page
-     * @return void
      */
     public function setOrderedSearchResult($ranked_search, $result_per_page) {
         asort($ranked_search);
@@ -1481,8 +1445,8 @@ class cSearchResult extends cSearchBaseAbstract {
     /**
      *
      * @param $cms_type
-     * @param $art_id Id of an article
-     * @return Content of an article, specified by it's content type
+     * @param $art_id int Id of an article
+     * @return string Content of an article, specified by it's content type
      */
     public function getContent($art_id, $cms_type, $id = 0) {
         $article = new cApiArticleLanguage();
@@ -1492,9 +1456,9 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $cms_type Content type
-     * @param $art_id Id of an article
-     * @return Content of an article in search result, specified by its type
+     * @param $cms_type string Content type
+     * @param $art_id int Id of an article
+     * @return string Content of an article in search result, specified by its type
      */
     public function getSearchContent($art_id, $cms_type, $cms_nr = NULL) {
         $cms_type = strtoupper($cms_type);
@@ -1584,7 +1548,7 @@ class cSearchResult extends cSearchBaseAbstract {
      * Returns articles in page.
      *
      * @param int $page_id
-     * @return array Artices in page $page_id
+     * @return array Articles in page $page_id
      */
     public function getSearchResultPage($page_id) {
         $this->_resultPage = $page_id;
@@ -1612,8 +1576,8 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $art_id Id of an article
-     * @return Similarity between searchword and matching word in article
+     * @param $art_id int Id of an article
+     * @return int Similarity between searchword and matching word in article
      */
     public function getSimilarity($art_id) {
         return $this->_searchResult[$art_id]['similarity'];
@@ -1621,7 +1585,7 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $art_id Id of an article
+     * @param $art_id int Id of an article
      * @return Number of matching searchwords found in article
      */
     public function getOccurrence($art_id) {
@@ -1651,7 +1615,7 @@ class cSearchResult extends cSearchBaseAbstract {
     /**
      *
      * @param $artid
-     * @return Category Id
+     * @return int Category Id
      * @todo Is not job of search, should be outsourced!
      */
     public function getArtCat($artid) {

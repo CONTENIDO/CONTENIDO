@@ -1,9 +1,21 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the the effective setting class.
  *
- * Description:
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
+ *
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
  * Effective setting manager class. Provides a interface to retrieve effective
  * settings.
  *
@@ -18,32 +30,9 @@
  * - Client language properties can be overridden by group
  * - Group properties can be overridden by user
  *
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package     CONTENIDO Backend Classes
- * @subpackage  Setting
- * @version     0.1
- * @author      Murat Purc <murat@purc.de>
- * @copyright   four for business AG <www.4fb.de>
- * @license     http://www.contenido.org/license/LIZENZ.txt
- * @link        http://www.4fb.de
- * @link        http://www.contenido.org
- * @since       file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created 2011-11-03
- *
- *   $Id$:
- * }}
+ * @package    Core
+ * @subpackage Backend
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
 class cEffectiveSetting {
 
     /**

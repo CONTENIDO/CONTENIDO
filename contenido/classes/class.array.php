@@ -1,28 +1,25 @@
 <?php
 /**
- * Contains CONTENIDO array class file
+ * This file contains the array utility class.
  *
- * @package Core
- * @subpackage Array
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id$
+ * @package    Core
+ * @subpackage Util
+ * @version    SVN Revision $Rev:$
  *
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Array helper class.
  *
  * @package Core
- * @subpackage Array
+ * @subpackage Util
  */
 class cArray {
 

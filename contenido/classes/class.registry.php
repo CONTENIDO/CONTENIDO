@@ -1,27 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the the registry class.
  *
- * Description:
- * This file contains the global registry class.
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * @package CONTENIDO Backend Classes
- * @version 1.0.1
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9.0
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains functions for global interaction in CONTENIDO.
+ *
+ * @package    Core
+ * @subpackage Backend
  */
 class cRegistry {
 
@@ -531,18 +529,18 @@ class cRegistry {
             }
         }
 
-        if (class_exists($sessClass)) {
+        if (isset($sessClass) && class_exists($sessClass)) {
             global $sess;
             $sess = new $sessClass();
             $sess->start();
-            if (isset($authClass)) {
+            if (isset($authClass) && class_exists($authClass)) {
                 global $auth;
                 if (!isset($auth)) {
                     $auth = new $authClass();
                 }
                 $auth->start();
 
-                if (isset($permClass)) {
+                if (isset($permClass) && class_exists($permClass)) {
                     global $perm;
                     if (!isset($perm)) {
                         $perm = new $permClass();

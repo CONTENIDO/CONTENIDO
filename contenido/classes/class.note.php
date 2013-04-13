@@ -1,34 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains various note classes.
  *
- * Description:
- * CONTENIDO Notes system
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.7
- * @author     unknown
+ * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * This class uses the communication collection to serve a special collection for notes.
+ *
+ * @package    Core
+ * @subpackage GenericDB_Model
+ */
 class NoteCollection extends cApiCommunicationCollection {
 
     public function __construct() {
@@ -84,10 +76,21 @@ class NoteCollection extends cApiCommunicationCollection {
 
 }
 
+/**
+ * This class uses the communication item to serve a special item for notes.
+ *
+ * @package    Core
+ * @subpackage GenericDB_Model
+ */
 class NoteItem extends cApiCommunication {
-
 }
 
+/**
+ * This class uses the iframe GUI class to serve a special iframe for notes.
+ *
+ * @package    Core
+ * @subpackage GUI
+ */
 class NoteView extends cHTMLIFrame {
 
     public function NoteView($sItemType, $sItemId) {
@@ -99,10 +102,16 @@ class NoteView extends cHTMLIFrame {
 
 }
 
+/**
+ * This class uses the div GUI class to serve a special div for note lists.
+ *
+ * @package    Core
+ * @subpackage GUI
+ */
 class NoteList extends cHTMLDiv {
 
-    public function NoteList($sItemType, $sItemId) {
-        cHTMLDiv::cHTMLDiv();
+    public function __construct($sItemType, $sItemId) {
+        parent::__construct();
 
         $this->_sItemType = $sItemType;
         $this->_sItemId = $sItemId;
@@ -161,12 +170,15 @@ class NoteList extends cHTMLDiv {
 
 }
 
+/**
+ * This class uses the div GUI class to serve a special div for note list items.
+ *
+ * @package    Core
+ * @subpackage GUI
+ */
 class NoteListItem extends cHTMLDiv {
-
-
-
-    public function NoteListItem($sItemType, $sItemId, $iDeleteItem) {
-        cHTMLDiv::cHTMLDiv();
+    public function __construct($sItemType, $sItemId, $iDeleteItem) {
+        parent::__construct();
         $this->appendStyleDefinition('padding', '2px');
         $this->setBackground();
         $this->setDeleteable(true);
@@ -181,7 +193,6 @@ class NoteListItem extends cHTMLDiv {
     }
 
     public function setBackground($dark = false) {
-        global $cfg;
     }
 
     public function setAuthor($sAuthor) {
@@ -210,7 +221,7 @@ class NoteListItem extends cHTMLDiv {
     }
 
     public function render() {
-
+        global $sess;
         $itemtype = $this->_sItemType;
         $itemid = $this->_sItemId;
         $deleteitem = $this->_iDeleteItem;
@@ -242,6 +253,12 @@ class NoteListItem extends cHTMLDiv {
 
 }
 
+/**
+ * This class uses the link GUI class to serve a special link for notes.
+ *
+ * @package    Core
+ * @subpackage GUI
+ */
 class NoteLink extends cHTMLLink {
 
     /**
@@ -272,7 +289,6 @@ class NoteLink extends cHTMLLink {
      *
      * @param  string  $sItemType  Item type (usually the class name)
      * @param mixed  $sItemID      Item ID (usually the primary key)
-     * @return void
      */
     public function NoteLink($sItemType, $sItemID) {
         parent::__construct();
@@ -293,8 +309,6 @@ class NoteLink extends cHTMLLink {
 
     /**
      * Enables the display of all note items
-     *
-     * @return void
      */
     public function enableHistory() {
         $this->_bShowHistory = true;
@@ -311,8 +325,6 @@ class NoteLink extends cHTMLLink {
 
     /**
      * Enables the delete function in the history view
-     *
-     * @return void
      */
     public function enableHistoryDelete() {
         $this->_bDeleteHistoryItems = true;
@@ -320,8 +332,6 @@ class NoteLink extends cHTMLLink {
 
     /**
      * Disables the delete function in the history view
-     *
-     * @return void
      */
     public function disableHistoryDelete() {
         $this->_bDeleteHistoryItems = false;
@@ -329,8 +339,6 @@ class NoteLink extends cHTMLLink {
 
     /**
      * Renders the resulting link
-     *
-     * @return void
      */
     public function render($return = false) {
         global $sess;

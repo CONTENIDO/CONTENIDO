@@ -1,39 +1,17 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the html parser class.
  *
- * Description:
- * HTML parser for CONTENIDO
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.2
  * @author     Starnetsys, LLC.
  * @copyright  Starnetsys, LLC.
  * @link       http://starnetsys.com
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-/*
- * Copyright (c) 2003 Starnetsys, LLC.  All rights reserved.
- * Redistribution of source must retain this copyright notice.
- *
- * Starnetsys, LLC (http://starnetsys.com) specializes in
- * website design and software consulting.
- */
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Class HtmlParser.
@@ -41,6 +19,15 @@ if (!defined('CON_FRAMEWORK')) {
  * HTML text. Then invoke parse() until it's false.
  * When parse() returns true, $iNodeType, $iNodeName
  * $iNodeValue and $iNodeAttributes are updated.
+ *
+ * Copyright (c) 2003 Starnetsys, LLC.  All rights reserved.
+ * Redistribution of source must retain this copyright notice.
+ *
+ * Starnetsys, LLC (http://starnetsys.com) specializes in
+ * website design and software consulting
+ *
+ * @package    Core
+ * @subpackage Backend
  */
 class HtmlParser {
 

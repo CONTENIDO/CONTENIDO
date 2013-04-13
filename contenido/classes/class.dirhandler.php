@@ -1,27 +1,26 @@
 <?php
-
 /**
- * Project: CONTENIDO Content Management System
- * Description: Class for dir handling.
- * This class should never be instantiated
- * Requirements: @con_php_req 5.0
+ * This file contains the the static directory handler class.
  *
- * @package CONTENIDO Backend Classes
- * @version 1.0
- * @author Frederic Schneider
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9
+ * @package    Core
+ * @subpackage Util
+ * @version    SVN Revision $Rev:$
+ *
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Provides functions for dealing with dirs.
+ * Class for directory handling.
+ * Provides functions for dealing with directories.
+ *
+ * @package    Core
+ * @subpackage Util
  */
 class cDirHandler {
 

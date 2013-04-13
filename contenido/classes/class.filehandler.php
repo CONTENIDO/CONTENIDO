@@ -1,26 +1,26 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System Description: Class for file
- * handling. This class should never be instantiated Requirements: @con_php_req
- * 5.0
+ * This file contains the the static file handler class.
  *
+ * @package    Core
+ * @subpackage Util
+ * @version    SVN Revision $Rev:$
  *
- * @package CONTENIDO Backend Classes
- * @version 1.0
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9
+ * @author     Mischa Holz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Provides functions for dealing with files
+ * Class for file handling.
+ * Provides functions for dealing with files.
+ *
+ * @package    Core
+ * @subpackage Util
  */
 class cFileHandler {
 

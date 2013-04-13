@@ -1,26 +1,25 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System Description: Session management
- * Requirements: @con_php_req 5
+ * This file contains the the backend and frontend session class.
  *
- * @package CONTENIDO Core
- * @version 1.0
- * @author Mischa Holz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9
+ * @package    Core
+ * @subpackage Session
+ * @version    SVN Revision $Rev:$
  *
- *        $Id: class.session.php 2486 2012-07-02 21:49:26Z xmurrix $:
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Handles the backend session
+ * Backend session class.
+ *
+ * @package    Core
+ * @subpackage Session
  */
 class cSession {
 
@@ -268,6 +267,9 @@ class cSession {
  * Session class for the frontend.
  * It uses a different prefix. The rest is the
  * same
+ *
+ * @package    Core
+ * @subpackage Session
  */
 class cFrontendSession extends cSession {
 

@@ -1,29 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the layout handler class.
  *
- * Description:
- * CONTENIDO Layout in filesystem function
+ * @package    Core
+ * @subpackage LayoutHandler
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release >= 4.9
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * This class controls all layouts in filesystem.
+ *
+ * @package    Core
+ * @subpackage LayoutHandler
+ */
 class cLayoutHandler {
 
     /**
@@ -110,7 +107,7 @@ class cLayoutHandler {
      * Look in layout directory if layout [$layoutAlias] directory exists
      *
      * @param string $layoutAlias
-     * @return boolen if file exist true
+     * @return boolean if file exist true
      */
     static function existLayout($layoutAlias, $cfgClient, $client) {
         $file = $cfgClient[$client]['layout']['path'] . $layoutAlias . '/';
@@ -375,7 +372,6 @@ class cLayoutHandler {
      * Use it for upgrade.
      *
      * @throws cException if the layout could not be saved
-     * @return void
      */
     public function upgrade() {
         // get name of layout and frontendpath

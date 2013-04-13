@@ -1,34 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains various to-do classes.
  *
- * Description:
- * TODO / Reminder System
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.1.1
- * @author     unknown
+ * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * This class uses the communication collection to serve a special collection for to-do entries.
+ *
+ * @package    Core
+ * @subpackage GenericDB_Model
+ */
 class TODOCollection extends cApiCommunicationCollection {
 
     public function __construct() {
@@ -103,9 +95,13 @@ class TODOCollection extends cApiCommunicationCollection {
 
 }
 
+/**
+ * This class uses the communication collection to serve a special collection for to-do entries.
+ *
+ * @package    Core
+ * @subpackage GenericDB_Model
+ */
 class TODOItem extends cApiCommunication {
-
-    // @param int $client  Client id (not used, it's declared because of PHP strict warnings)
     public function setProperty($type, $name, $value, $client = 0) {
         if ($type == 'todo' && $name == 'emailnoti') {
             if ($value) {
@@ -121,6 +117,12 @@ class TODOItem extends cApiCommunication {
 
 }
 
+/**
+ * This class uses the link GUI class to serve a special link for to-do entries.
+ *
+ * @package    Core
+ * @subpackage GUI
+ */
 class TODOLink extends cHTMLLink {
 
     public function __construct($itemtype, $itemid, $subject, $message) {

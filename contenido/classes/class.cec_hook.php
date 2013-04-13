@@ -1,25 +1,20 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the CEC hook class.
  *
- * Description:
- * Includes CEC hook class
+ * @package          Core
+ * @subpackage       CEC
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @subpackage CEC
- * @version 0.5.1
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release >= 4.8.8
+ * @author           Timo A. Hummel
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Static CEC Hook class, provides some public methods to process registered
@@ -76,8 +71,7 @@
  * }
  * </code>
  *
- * @author Murat Purc <murat@purc.de>
- * @package CONTENIDO Backend Classes
+ * @package    Core
  * @subpackage CEC
  */
 class cApiCecHook {
@@ -87,14 +81,14 @@ class cApiCecHook {
      *
      * @var int
      */
-    private static $_breakCondition = null;
+    private static $_breakCondition = NULL;
 
     /**
      * Temporaly stored default return value of CEC functions
      *
      * @var mixed
      */
-    private static $_defaultReturnValue = null;
+    private static $_defaultReturnValue = NULL;
 
     /**
      * Temporaly stored position of argument to return.
@@ -111,9 +105,8 @@ class cApiCecHook {
      *
      * @param mixed $condition
      * @param mixed $defaultReturnValue
-     * @return void
      */
-    public static function setBreakCondition($condition, $defaultReturnValue = null) {
+    public static function setBreakCondition($condition, $defaultReturnValue = NULL) {
         self::$_breakCondition = $condition;
         self::setDefaultReturnValue($defaultReturnValue);
     }
@@ -122,7 +115,6 @@ class cApiCecHook {
      * Temporaly setting of default return value.
      *
      * @param mixed $defaultReturnValue
-     * @return void
      */
     public static function setDefaultReturnValue($defaultReturnValue) {
         self::$_defaultReturnValue = $defaultReturnValue;
@@ -132,14 +124,14 @@ class cApiCecHook {
      * Temporaly setting of position in argument to return.
      *
      * @param int $pos Position, feasible value greater 0
+     *
      * @throws cInvalidArgumentException if the given position is less than 1
-     * @return void
      */
     public static function setReturnArgumentPos($pos) {
-        if ((int) $pos < 1) {
+        if ((int)$pos < 1) {
             throw new cInvalidArgumentException('Return position has to be greater or equal than 1.');
         }
-        self::$_returnArgumentPos = (int) $pos;
+        self::$_returnArgumentPos = (int)$pos;
     }
 
     /**
@@ -151,14 +143,13 @@ class cApiCecHook {
      * arguments to it. There is
      *
      * @param string $chainName The chain name to process
-     * @param mixed $param1 First parameter which will be forwarded to
-     *        registered chain functions
-     * @param mixed $param2 Second parameter which will be forwarded to
-     *        registered chain functions
-     * @param mixed $param3 Third parameter which will be forwarded to
-     *        registered chain functions
-     *        NOTE: There is no restriction for number of passed parameter.
-     * @return void
+     * @param mixed  $param1    First parameter which will be forwarded to
+     *                          registered chain functions
+     * @param mixed  $param2    Second parameter which will be forwarded to
+     *                          registered chain functions
+     * @param mixed  $param3    Third parameter which will be forwarded to
+     *                          registered chain functions
+     *                          NOTE: There is no restriction for number of passed parameter.
      */
     public static function execute() {
         // get arguments
@@ -192,13 +183,14 @@ class cApiCecHook {
      * parameter as you want.
      *
      * @param string $chainName The chain name to process
-     * @param mixed $param1 First parameter which will be forwarded to
-     *        registered chain functions
-     * @param mixed $param2 Second parameter which will be forwarded to
-     *        registered chain functions
-     * @param mixed $param3 Third parameter which will be forwarded to
-     *        registered chain functions
-     *        NOTE: There is no restriction for number of passed parameter.
+     * @param mixed  $param1    First parameter which will be forwarded to
+     *                          registered chain functions
+     * @param mixed  $param2    Second parameter which will be forwarded to
+     *                          registered chain functions
+     * @param mixed  $param3    Third parameter which will be forwarded to
+     *                          registered chain functions
+     *                          NOTE: There is no restriction for number of passed parameter.
+     *
      * @return mixed Parameter changed/processed by chain functions.
      *         Note: If no chain function is registered, the first parameter
      *         $param after
@@ -250,13 +242,14 @@ class cApiCecHook {
      * condition doesn't occur.
      *
      * @param string $chainName The chain name to process
-     * @param mixed $param1 First parameter which will be forwarded to
-     *        registered chain functions
-     * @param mixed $param2 Second parameter which will be forwarded to
-     *        registered chain functions
-     * @param mixed $param3 Third parameter which will be forwarded to
-     *        registered chain functions
-     *        NOTE: There is no restriction for number of passed parameter.
+     * @param mixed  $param1    First parameter which will be forwarded to
+     *                          registered chain functions
+     * @param mixed  $param2    Second parameter which will be forwarded to
+     *                          registered chain functions
+     * @param mixed  $param3    Third parameter which will be forwarded to
+     *                          registered chain functions
+     *                          NOTE: There is no restriction for number of passed parameter.
+     *
      * @return mixed The break condition or it's default value
      */
     public static function executeWhileBreakCondition() {
@@ -282,6 +275,7 @@ class cApiCecHook {
                 // process return value
                 if (isset($return) && $return === $breakCondition) {
                     self::_reset();
+
                     return $return;
                     break;
                 }
@@ -296,27 +290,20 @@ class cApiCecHook {
 
     /**
      * Resets some properties to defaults
-     *
-     * @return void
      */
     private static function _reset() {
-        self::$_breakCondition = null;
-        self::$_defaultReturnValue = null;
+        self::$_breakCondition = NULL;
+        self::$_defaultReturnValue = NULL;
         self::$_returnArgumentPos = 1;
     }
 
     /**
      * Used to debug some status informations.
      *
-     * @todo : Implement cec_hook debug mode for automatic logging when
-     *       activated.
+     * @todo Implement cec_hook debug mode for automatic logging when activated. Writes the debug value into a logfile (see contenido/data/log/cec_hook_debug.log).
      *
-     *       Writes the debug value into a logfile (see
-     *       contenido/data/log/cec_hook_debug.log).
-     *
-     * @param mixed $var The variable to dump
+     * @param mixed  $var The variable to dump
      * @param string $msg Additional message
-     * @return void
      */
     private static function _debug($var, $msg = '') {
         global $cfg;

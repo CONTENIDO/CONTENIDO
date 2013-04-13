@@ -1,34 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the the system test class.
  *
- * Description:
- * Provides functions to test the system integrity
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0
  * @author     Mischa Holz
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9
- *
- * {@internal
- *   created 2008-01-28
- *   $Id: class.activeusers.php 3455 2012-10-16 08:51:57Z dominik.ziegler $;
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * Provides functions to test the system integrity
+ *
+ * @package    Core
+ * @subpackage Backend
+ */
 class cSystemtest {
     /**
      * The minimal PHP version
@@ -735,7 +727,7 @@ class cSystemtest {
      * @param string $host The database host
      * @param string $username The database user
      * @param string $password The database user password
-     * @return multitype:boolean cDb Returns an array with the cDB object on the first place and a boolean on the second
+     * @return boolean|cDb Returns an array with the cDB object on the first place and a boolean on the second
      */
     protected function doMySQLConnect($host, $username, $password) {
         $aOptions = array(

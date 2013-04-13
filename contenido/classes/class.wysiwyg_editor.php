@@ -1,29 +1,27 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the abstract WYSIWYG editor class.
  *
- * Description:
- * Base class for all WYSIWYG editors
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.6
- * @author Timo A. Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-class cWYSIWYGEditor {
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Base class for all WYSIWYG editors
+ *
+ * @package    Core
+ * @subpackage Backend
+ */
+abstract class cWYSIWYGEditor {
 
     protected $_sPath;
 

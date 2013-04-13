@@ -1,33 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the tree item storage class.
  *
- * Description:
- * CONTENIDO Tree Item Class
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.1.4
- * @author     Timo A. Hummel
+ * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-05-20
- *   $Id$:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Class TreeItem
@@ -55,6 +41,9 @@ if (!defined('CON_FRAMEWORK')) {
  * If you know the ID of the item you want to add
  * to, there's no need to have a specific item handy,
  * but rather you can use the "addItemToID" function.
+ *
+ * @package    Core
+ * @subpackage Backend
  */
 class TreeItem {
 
@@ -125,7 +114,7 @@ class TreeItem {
      * @param string $id   The unique ID of that item
      * @param boolean $collapsed Is this item collapsed by default
      */
-    function TreeItem($name = "", $id = "", $collapsed = false) {
+    public function __construct($name = "", $id = "", $collapsed = false) {
         $this->name = $name;
         $this->id = $id;
         $this->collapsed = $collapsed;

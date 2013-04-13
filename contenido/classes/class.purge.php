@@ -1,24 +1,25 @@
 <?php
 /**
- * Description:
- * CONTENIDO cSystemPurge class to reset some datas and files.
+ * This file contains the the system purge class.
  *
- * @package CONTENIDO Backend Classes
- * @version 1.0.2
- * @author Munkh-Ulzii Balidar
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.8.12
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
+ *
+ * @author     Munkh-Ulzii Balidar
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * class cSystemPurge
+ * CONTENIDO cSystemPurge class to reset some datas and files
+ *
+ * @package    Core
+ * @subpackage Backend
  */
 class cSystemPurge {
 
@@ -430,7 +431,6 @@ class cSystemPurge {
      * Set cronjob file types
      *
      * @param array $types
-     * @return void
      */
     public function setCronjobFileTypes($types) {
         if (count($types) > 0) {

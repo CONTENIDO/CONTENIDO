@@ -1,34 +1,28 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the the password request class.
  *
- * Description:
- * Class for handling passwort recovery for backend users. If a user has set his e-mail address, this class
- * generates a new Password for user and submits to his e-mail adress. Submitting a new Password is
- * only possible every 30 minutes Mailsender, Mailsendername and Mailserver are set into system properties.
- * There it is also possible to deactivate this feature.
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.1.0
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since 2008-03-20
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Description: Class for handling password recovery
+ * Class for handling passwort recovery for backend users. If a user has set his e-mail address, this class
+ * generates a new Password for user and submits to his e-mail adress. Submitting a new Password is
+ * only possible every 30 minutes Mailsender, Mailsendername and Mailserver are set into system properties.
+ * There it is also possible to deactivate this feature.
  *
- * @author Timo Trautmann
- * @copyright four for business AG <www.4fb.de>
+ * @package    Core
+ * @subpackage Backend
  */
 class cPasswordRequest {
 

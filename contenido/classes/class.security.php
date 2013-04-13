@@ -1,34 +1,32 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the the security class.
  *
- * Description:
- * This object makes CONTENIDO more secure
+ * @package    Core
+ * @subpackage Security
+ * @version    SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.1.2
  * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.8.7
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * CONTENIDO Security class
+ * This object makes CONTENIDO more secure
+ *
+ * @package    Core
+ * @subpackage Security
  */
 class cSecurity {
 
     /**
      * Checks some CONTENIDO core related request parameters against XSS
      *
-     * @return  bool|void  True on success otherwhise nothing.
+     * @return  bool  True on success otherwhise nothing.
      */
     public static function checkRequests() {
         $requestValidator = cRequestValidator::getInstance();

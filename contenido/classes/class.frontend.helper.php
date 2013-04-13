@@ -2,21 +2,24 @@
 /**
  * This file contains the frontend helper class.
  *
- * @package       Core
- * @subpackage    Helper
+ * @package    Core
+ * @subpackage Frontend_Util
+ * @version    SVN Revision $Rev:$
  *
- * @author        Dominik Ziegler
- * @copyright     four for business AG <www.4fb.de>
- * @license       http://www.contenido.org/license/LIZENZ.txt
- * @link          http://www.4fb.de
- * @link          http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains functions for the frontend helper class in CONTENIDO.
  *
- * @package       Core
- * @subpackage    Helper
+ * @package    Core
+ * @subpackage Frontend_Util
  */
 class cFrontendHelper {
     /**
@@ -96,7 +99,6 @@ class cFrontendHelper {
      * @param    int            $baseCategoryId        root category ID
      * @param    int            $depth                maximum depth
      * @param    int            $currentCategoryId    the current category ID
-     * @return    void
      */
     public function renderNavigation($baseCategoryId, $depth, $currentCategoryId) {
         $tree = $this->_fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId);

@@ -1,4 +1,27 @@
 <?php
+/**
+ * This file contains content type generator class.
+ * TODO: This class needs more documentation.
+ *
+ * @package Core
+ * @subpackage ContentType
+ * @version SVN Revision $Rev:$
+ *
+ * @author Alexander Scheider
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * This class generates content types.
+ *
+ * @package Core
+ * @subpackage ContentType
+ */
 class cTypeGenerator {
 
     /**
@@ -76,8 +99,6 @@ class cTypeGenerator {
 
     /**
      * Fill content from db for current article
-     *
-     * @return void
      */
     private function fillContent() {
         self::$a_content[$this->_idart] = array();

@@ -1,38 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the former template class.
  *
- * Description:
- * CONTENIDO Template Engine
+ * @package    Core
+ * @subpackage GUI
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.2.3
- * @author Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
+ * @author     Jan Lengowski, Stefan Jelner
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * class Template
- *
  * Light template mechanism
  *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business <http://www.4fb.de>
- * @author Stefan Jelner (Optimizations)
- * @version 1.0
+ * @package Core
+ * @subpackage GUI
  */
 class cTemplate {
 
@@ -92,8 +80,6 @@ class cTemplate {
 
     /**
      * Constructor function
-     *
-     * @return void
      */
     public function __construct($tags = false) {
         if (is_array($tags)) {
@@ -107,7 +93,6 @@ class cTemplate {
      * Sets the gettext domain to use for translations in a template
      *
      * @param string $sDomain Sets the domain to use for template translations
-     * @return void
      */
     public function setDomain($sDomain) {
         $this->_sDomain = $sDomain;
@@ -122,7 +107,6 @@ class cTemplate {
      * @param string $which 's' for Static or else dynamic
      * @param string $needle Placeholder
      * @param string $replacement Replacement String
-     * @return void
      */
     public function set($which, $needle, $replacement) {
         if ($which == 's') {
@@ -140,7 +124,6 @@ class cTemplate {
      * Sets an encoding for the template's head block.
      *
      * @param string $encoding Encoding to set
-     * @return void
      */
     public function setEncoding($encoding) {
         $this->_encoding = $encoding;
@@ -148,8 +131,6 @@ class cTemplate {
 
     /**
      * Iterate internal counter by one
-     *
-     * @return void
      */
     public function next() {
         $this->dyn_cnt++;
@@ -157,8 +138,6 @@ class cTemplate {
 
     /**
      * Reset template data
-     *
-     * @return void
      */
     public function reset() {
         $this->dyn_cnt = 0;
@@ -257,7 +236,6 @@ class cTemplate {
      * @param string $template Contents of the template to translate (it is
      *        reference to save memory!!!)
      * @param string $functionName Name of the translation function (e.g. i18n)
-     * @return void
      */
     public function replacei18n(&$template, $functionName) {
         $container = array();

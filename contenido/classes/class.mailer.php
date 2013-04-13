@@ -3,21 +3,18 @@
  * This file contains the cMail class which should be used for all mail sending
  * purposes.
  *
- * @package Core
- * @subpackage Util
- * @version SVN Revision $Rev:$
+ * @package    Core
+ * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
- * @author Rusmir Jusufovic
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rusmir Jusufovic, Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // since CONTENIDO has it's own autoloader, swift_init.php is enough
 // we do not need and should not use swift_required.php!
@@ -27,7 +24,7 @@ require_once 'swiftmailer/lib/swift_init.php';
  * Mailer class which should be used for all mail sending purposes.
  *
  * @package Core
- * @subpackage Util
+ * @subpackage Backend
  */
 class cMailer extends Swift_Mailer {
 
@@ -84,7 +81,6 @@ class cMailer extends Swift_Mailer {
      * Constructor
      *
      * @param Swift_Transport $transport [optional] the transport type
-     * @return void
      */
     public function __construct($transport = null) {
         // get sender mail from system properties

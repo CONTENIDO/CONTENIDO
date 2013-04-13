@@ -1,29 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the layout synchronizer class.
  *
- * Description:
- * Synchronize the layout directory with lay db-table.
+ * @package    Core
+ * @subpackage LayoutHandler
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.1
  * @author     Rusmir Jusufovic
- * @copyright  four for business AG <info@contenido.org>
+ * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * This class synchronizes layouts from filesystem to database table.
+ *
+ * @package    Core
+ * @subpackage LayoutHandler
+ */
 class cLayoutSynchronizer {
 
     protected $_cfg;
@@ -59,8 +56,8 @@ class cLayoutSynchronizer {
             //set output message
             $this->_outputMessage['info'][] = sprintf(i18n("Synchronization successfully layout name: %s"), $newLayoutName);
         } else {
-            //update the name of the module
-            if ($oldModulName != $newModulName) {
+            //update the name of the layout
+            if ($oldLayoutName != $newLayoutName) {
                 $this->_updateModulnameInDb($oldLayoutName, $newLayoutName, $idclient);
             }
         }
@@ -122,7 +119,7 @@ class cLayoutSynchronizer {
 
     /**
      * Rename the Layout
-     * @param path to  client layout-direcotry $dir
+     * @param string path to  client layout-direcotry $dir
      * @param string $oldLayoutName layout name in file directory
      * @param string $newLayoutName clear layout name
      */
@@ -147,7 +144,7 @@ class cLayoutSynchronizer {
     }
 
     /**
-     * Compare file change timestemp and the timestemp in ["tab"]["lay"].
+     * Compare file change timestamp and the timestamp in ["tab"]["lay"].
      * If file had changed make new code :conGenerateCodeForAllArtsUsingMod
      */
     private function _compareFileAndLayoutTimestamp() {
@@ -231,7 +228,7 @@ class cLayoutSynchronizer {
         //update file and layout
         $this->_compareFileAndLayoutTimestamp();
 
-        //get the path to cliets layouts
+        //get the path to clients layouts
         $dir = $this->_cfgClient[$this->_client]['layout']['path'];
 
         //is/exist directory
