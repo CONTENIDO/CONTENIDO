@@ -1,28 +1,24 @@
 <?php
 /**
- * Static debugger class.
+ * This file contains the static debugger class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id$
  *
- * @author Rudi Bieller
- * @author  Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rudi Bieller
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Debugger class
  *
- * @package Core
+ * @package    Core
  * @subpackage Debug
  */
 class cDebug {
@@ -42,7 +38,9 @@ class cDebug {
 
     /**
      * Returns instance of debugger. If not defined, it returns the debugger from the current system settings.
-     * @param  string  $sType  The debugger to get, empty string to get debugger defined in system settings
+     *
+     * @param  string $sType  The debugger to get, empty string to get debugger defined in system settings
+     *
      * @throws cInvalidArgumentException If type of debugger is unknown
      * @return cDebugInterface
      */
@@ -51,7 +49,7 @@ class cDebug {
             $sType = self::_getSystemSettingDebugger();
         }
 
-        $oDebugger = null;
+        $oDebugger = NULL;
         switch ($sType) {
             case self::DEBUGGER_VISIBLE:
                 $oDebugger = cDebugVisible::getInstance();
@@ -75,6 +73,7 @@ class cDebug {
                 throw new cInvalidArgumentException('This type of debugger is unknown to cDebug: ' . $sType);
                 break;
         }
+
         return $oDebugger;
     }
 
@@ -83,7 +82,7 @@ class cDebug {
      * in a textrea in the header and in the file debuglog.txt. All messages are immediately
      * written to the filesystem but they will only show up when cDebug::showAll() is called.
      *
-     * @param  string  $message  Message to display. NOTE: You can use buildStackString to show stacktraces
+     * @param  string $message  Message to display. NOTE: You can use buildStackString to show stacktraces
      */
     public static function out($message) {
         self::getDebugger()->out($message);
@@ -92,7 +91,7 @@ class cDebug {
     /**
      * Adds a variable to the debugger. This variable will be watched.
      *
-     * @param mixed $var A variable or an object
+     * @param mixed  $var   A variable or an object
      * @param string $label An optional description for the variable
      */
     public static function add($var, $label = '') {
@@ -131,6 +130,7 @@ class cDebug {
         if ((getSystemProperty('debug', 'debug_to_screen') == 'true') && (getSystemProperty('debug', 'debug_to_file') == 'true')) {
             self::$_defaultDebuggerName = self::DEBUGGER_VISIBLE_AND_FILE;
         }
+
         return self::$_defaultDebuggerName;
     }
 

@@ -1,37 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the number datatype class.
  *
- * Description:
+ * @package          Core
+ * @subpackage       Datatype
+ * @version          SVN Revision $Rev:$
  *
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0
- * @author
- *
- *
- *
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- *
- *       {@internal
- *       created
- *
- *       $Id$:
- *       }}
- *
+ * @author           unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Number datatype class.
+ *
+ * @package          Core
+ * @subpackage       Datatype
+ */
 class cDatatypeNumber extends cDatatype {
 
     protected $_iPrecision;

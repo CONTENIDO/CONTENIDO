@@ -1,9 +1,20 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the visible adv debug class.
  *
- * Description:
+ * @package    Core
+ * @subpackage Debug
+ *
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
  * Debug object to show info on screen in a box / HTML Block at the top of page.
  * Instead of doing the output immediately using method show, values can be
  * collected and printed to screen in one go.
@@ -14,24 +25,9 @@
  * When using method Debug_VisibleAdv::showAll() you'll produce invalid HTML
  * when having an XHTML doctype.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.1
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @package    Core
+ * @subpackage Debug
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-include_once ('interface.debug.php');
 class cDebugVisibleAdv implements cDebugInterface, Countable {
 
     private static $_instance;
@@ -51,18 +47,18 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * static
      */
     static public function getInstance() {
-        if (self::$_instance == null) {
+        if (self::$_instance == NULL) {
             self::$_instance = new cDebugVisibleAdv();
         }
+
         return self::$_instance;
     }
 
     /**
      * Add a Debug item to internal collection.
      *
-     * @param mixed $mVariable
+     * @param mixed  $mVariable
      * @param string $sVariableDescription
-     * @return void;
      */
     public function add($mVariable, $sVariableDescription = '') {
         $oItem = new cDebugVisibleAdvItem();
@@ -73,8 +69,6 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 
     /**
      * Reset internal collection with Debug items.
-     *
-     * @return void
      */
     public function reset() {
         $this->_aItems = array();
@@ -92,17 +86,17 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     /**
      * Outputs all Debug items in collection to screen in a HTML Box at left top
      * of page.
-     *
-     * @return void
      */
     public function showAll() {
+        global $cfg;
+
         $sHtml = "";
         if ($this->count() > 0) {
             $tpl = new cTemplate();
 
             $i = 1;
             foreach ($this->_aItems as $oItem) {
-                $sItemName = strlen($oItem->getDescription()) > 0? $oItem->getDescription() : ('debug item #' . $i);
+                $sItemName = strlen($oItem->getDescription()) > 0 ? $oItem->getDescription() : ('debug item #' . $i);
                 $sItemValue = $this->_prepareValue($oItem->getValue());
 
                 $tpl->set("d", "DBG_ITEM_COUNT", $i);
@@ -131,6 +125,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * Prepares Debug item value for output as string representation.
      *
      * @param mixed $mValue
+     *
      * @return string
      */
     private function _prepareValue($mValue) {
@@ -184,6 +179,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
         } else {
             $sReturn .= '</pre>';
         }
+
         return $sReturn;
     }
 
@@ -199,11 +195,10 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     /**
      * Outputs contents of passed variable in a preformatted, readable way
      *
-     * @param mixed $mVariable The variable to be displayed
-     * @param string $sVariableDescription The variable's name or description
-     * @param boolean $bExit If set to true, your app will die() after output of
-     *        current var
-     * @return void
+     * @param mixed   $mVariable            The variable to be displayed
+     * @param string  $sVariableDescription The variable's name or description
+     * @param boolean $bExit                If set to true, your app will die() after output of
+     *                                      current var
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         try {
@@ -219,6 +214,8 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 
 /**
  * An object representing one Debug item of a Debug_VisibleBlock.
+ * @package    Core
+ * @subpackage Debug
  */
 class cDebugVisibleAdvItem {
 
@@ -228,8 +225,6 @@ class cDebugVisibleAdvItem {
 
     /**
      * Set value of item
-     *
-     * @return void
      */
     public function setValue($mValue) {
         $this->_mValue = $mValue;
@@ -237,8 +232,6 @@ class cDebugVisibleAdvItem {
 
     /**
      * Set name/description of item
-     *
-     * @return void
      */
     public function setDescription($sDescription) {
         $this->_sDescription = $sDescription;

@@ -1,32 +1,28 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the visible debug class.
  *
- * Description:
+ * @package    Core
+ * @subpackage Debug
+ *
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
  * Debug object to show info on screen.
  * In case you cannot output directly to screen when debugging a live system,
  * this object writes
  * the info to a file located in /data/log/debug.log.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.1.1
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @package Core
+ * @subpackage Debug
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-include_once ('interface.debug.php');
 class cDebugVisible implements cDebugInterface {
 
     private static $_instance;
@@ -48,7 +44,6 @@ class cDebugVisible implements cDebugInterface {
     }
 
     public function out($msg) {
-        // o nothing
     }
 
     /**
@@ -58,7 +53,6 @@ class cDebugVisible implements cDebugInterface {
      * @param string $sVariableDescription The variable's name or description
      * @param boolean $bExit If set to true, your app will die() after output of
      *        current var
-     * @return void
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         $bTextarea = false;
@@ -112,7 +106,9 @@ class cDebugVisible implements cDebugInterface {
         }
         $tpl->set("s", "VAR_TEXT", $varText);
 
-        $tpl->render($cfg["templates"]["debug_visible"]);
+        global $cfg;
+
+        $tpl->generate($cfg["templates"]["debug_visible"]);
         if ($bExit === true) {
             die('<p class="debug_footer"><b>debugg\'ed</b></p>');
         }
@@ -123,23 +119,18 @@ class cDebugVisible implements cDebugInterface {
      *
      * @param mixed $mVariable
      * @param string $sVariableDescription
-     * @return void
      */
     public function add($mVariable, $sVariableDescription = '') {
     }
 
     /**
      * Interface implementation
-     *
-     * @return void
      */
     public function reset() {
     }
 
     /**
      * Interface implementation
-     *
-     * @return string Here an empty string
      */
     public function showAll() {
     }

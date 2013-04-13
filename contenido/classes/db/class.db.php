@@ -2,20 +2,22 @@
 /**
  * This file contains the record set and database interaction class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Database
  *
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains functions for handling record sets and interaction with database in CONTENIDO.
  *
- * @package Core
+ * @package    Core
  * @subpackage Database
  */
 class cDb extends cDbDriverHandler {
@@ -66,8 +68,8 @@ class cDb extends cDbDriverHandler {
 
     /**
      * Sets the query ID resource. Do not set it manually unless you know what you are doing.
+     *
      * @param   $queryId    resource    query ID resource
-     * @return  void
      */
     public function setQueryId($queryId) {
         $this->_queryId = $queryId;
@@ -83,8 +85,8 @@ class cDb extends cDbDriverHandler {
 
     /**
      * Sets the link ID resource. Do not set it manually unless you know what you are doing.
-     * @param   resource    $linkId    link ID resource
-     * @return  void
+     *
+     * @param   resource $linkId    link ID resource
      */
     public function setLinkId($linkId) {
         $this->_linkId = $linkId;
@@ -100,8 +102,8 @@ class cDb extends cDbDriverHandler {
 
     /**
      * Sets the current record data set. Do not set it manually unless you know what you are doing.
-     * @param   array   $record current record set data
-     * @return  void
+     *
+     * @param   array $record current record set data
      */
     public function setRecord($record) {
         $this->_record = $record;
@@ -117,16 +119,15 @@ class cDb extends cDbDriverHandler {
 
     /**
      * Sets the current row count. Do not set it manually unless you know what you are doing.
+     *
      * @param   int $row    current row count
-     * @return  void
      */
     public function setRow($row) {
-        $this->_row = (int) $row;
+        $this->_row = (int)$row;
     }
 
     /**
      * Increments current row count by 1. Do not set it manually unless you know what you are doing.
-     * @return  void
      */
     public function incrementRow() {
         $this->_row += 1;
@@ -142,8 +143,8 @@ class cDb extends cDbDriverHandler {
 
     /**
      * Sets the current error message from database.
-     * @param   string  $errorMessage   current error message
-     * @return  void
+     *
+     * @param   string $errorMessage   current error message
      */
     public function setErrorMessage($errorMessage) {
         $this->_errorMessage = $errorMessage;
@@ -159,11 +160,11 @@ class cDb extends cDbDriverHandler {
 
     /**
      * Sets the current error number from database.
+     *
      * @param   int $errorNumber    current error number
-     * @return  void
      */
     public function setErrorNumber($errorNumber) {
-        $this->_errorNumber = (int) $errorNumber;
+        $this->_errorNumber = (int)$errorNumber;
     }
 
 }

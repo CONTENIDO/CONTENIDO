@@ -1,76 +1,63 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the abstract datatype class.
  *
- * Description:
+ * @package          Core
+ * @subpackage       Datatype
+ * @version          SVN Revision $Rev:$
  *
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0
- * @author
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created
- *
- *   $Id$:
- * }}
- *
+ * @author           unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-class cDatatype
-{
+/**
+ * Abstract datatype class.
+ *
+ * @package          Core
+ * @subpackage       Datatype
+ */
+class cDatatype {
     /* Effective value */
     protected $_mValue;
 
     /* Displayed value */
     protected $_mDisplayedValue;
 
-    public function __construct()
-    {
+    public function __construct() {
     }
 
     /**
      * Sets this datatype to a specific value
-     * @param  mixed  $value
+     *
+     * @param  mixed $value
      */
-    public function set($value)
-    {
+    public function set($value) {
     }
 
     /**
      * Parses the given value to transfer into the datatype's format
-     * @param  mixed  $value
+     *
+     * @param  mixed $value
      */
-    public function parse($value)
-    {
+    public function parse($value) {
     }
 
     /**
      * Returns the effective value
      * @return  mixed
      */
-    public function get()
-    {
+    public function get() {
     }
 
     /**
      * Renders the displayed value
      */
-    public function render()
-    {
+    public function render() {
     }
 }
 

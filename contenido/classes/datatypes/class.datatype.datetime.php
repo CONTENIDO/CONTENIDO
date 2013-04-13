@@ -1,29 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the datetime datatype class.
  *
- * Description:
- * Area management class
+ * @package          Core
+ * @subpackage       Datatype
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.1
- * @author
- *
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * Datetime datatype class.
+ *
+ * @package          Core
+ * @subpackage       Datatype
+ */
 class cDatatypeDateTime extends cDatatype {
 
     protected $_iFirstDayOfWeek;
@@ -237,13 +234,7 @@ class cDatatypeDateTime extends cDatatype {
 
     public function getDayOrder() {
         $aDays = array(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6
+            0, 1, 2, 3, 4, 5, 6
         );
         $aRemainderDays = array_splice($aDays, 0, $this->_iFirstDayOfWeek);
 
@@ -419,10 +410,12 @@ class cDatatypeDateTime extends cDatatype {
         switch ($iFormat) {
             case self::FORMAT_ISO:
                 $sTemporaryTimestamp = mktime($this->_iHour, $this->_iMinute, $this->_iSecond, $this->_iMonth, $this->_iDay, $this->_iYear);
+
                 return date("Y-m-d H:i:s", $sTemporaryTimestamp);
                 break;
             case self::FORMAT_UNIX:
                 $sTemporaryTimestamp = mktime($this->_iHour, $this->_iMinute, $this->_iSecond, $this->_iMonth, $this->_iDay, $this->_iYear);
+
                 return ($sTemporaryTimestamp);
                 break;
             case self::FORMAT_CUSTOM:
@@ -430,6 +423,7 @@ class cDatatypeDateTime extends cDatatype {
                 break;
             case self::FORMAT_MYSQL:
                 $sTemporaryTimestamp = mktime($this->_iHour, $this->_iMinute, $this->_iSecond, $this->_iMonth, $this->_iDay, $this->_iYear);
+
                 return date("YmdHis", $sTemporaryTimestamp);
                 break;
             default:
@@ -448,12 +442,15 @@ class cDatatypeDateTime extends cDatatype {
         switch ($iFormat) {
             case self::FORMAT_LOCALE_TIMEONLY:
                 $sTimeformat = getEffectiveSetting("dateformat", "time", "H:i:s");
+
                 return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
             case self::FORMAT_LOCALE_DATEONLY:
                 $sTimeformat = getEffectiveSetting("dateformat", "date", "Y-m-d");
+
                 return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
             case self::FORMAT_LOCALE:
                 $sTimeformat = getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s");
+
                 return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
             case self::FORMAT_CUSTOM:
                 return strftime($this->_sCustomTargetFormat, mktime($this->_iHour, $this->_iMinute, $this->_iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));

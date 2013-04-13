@@ -2,15 +2,17 @@
 /**
  * This file contains the MySQL database driver class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Database
  *
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains functions for database interaction based on MySQL in CONTENIDO.
@@ -25,7 +27,7 @@
  * see http://php.net/manual/en/function.mysql-connect.php
  * </pre>
  *
- * @package Core
+ * @package    Core
  * @subpackage Database
  */
 class cDbDriverMysql extends cDbDriverAbstract {
@@ -46,26 +48,30 @@ class cDbDriverMysql extends cDbDriverAbstract {
         }
         if (empty($connectConfig) || !isset($connectConfig['host']) || !isset($connectConfig['user']) || !isset($connectConfig['password'])) {
             $this->_handler->halt('Database connection settings incomplete');
-            return null;
+
+            return NULL;
         }
 
         // establish connection, select database
         $dbHandler = mysql_connect($connectConfig['host'], $connectConfig['user'], $connectConfig['password']);
         if (!$dbHandler || !is_resource($dbHandler)) {
             $this->_handler->halt('Error during establishing a connection with database.');
-            return null;
+
+            return NULL;
         }
 
         if (isset($connectConfig['database'])) {
             if (!mysql_select_db($connectConfig['database'], $dbHandler)) {
                 $this->_handler->halt('Can not use database ' . $connectConfig['database']);
-                return null;
+
+                return NULL;
             } else {
                 //set connection charset
                 if (isset($connectConfig['charset']) && $connectConfig['charset'] != '') {
                     if (!mysql_set_charset($connectConfig['charset'], $dbHandler)) {
                         $this->_handler->halt('Could not set database charset to ' . $connectConfig['charset']);
-                        return null;
+
+                        return NULL;
                     }
                 }
             }
@@ -92,6 +98,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
 
         $fieldList = substr($fieldList, 0, -2);
         $valueList = substr($valueList, 0, -2);
+
         return sprintf('INSERT INTO `%s` (%s) VALUES (%s)', $tableName, $fieldList, $valueList);
     }
 
@@ -157,12 +164,12 @@ class cDbDriverMysql extends cDbDriverAbstract {
     /**
      * @see cDbDriverAbstract::getResultObject
      */
-    public function getResultObject($className = null) {
-        $result = null;
+    public function getResultObject($className = NULL) {
+        $result = NULL;
         $queryId = $this->_handler->getQueryId();
 
         if (is_resource($queryId)) {
-            if ($className == null) {
+            if ($className == NULL) {
                 $result = mysql_fetch_object($queryId);
             } else {
                 $result = mysql_fetch_object($queryId, $className);
@@ -177,6 +184,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
      */
     public function affectedRows() {
         $linkId = $this->_handler->getLinkId();
+
         return ($linkId) ? mysql_affected_rows($linkId) : 0;
     }
 
@@ -185,6 +193,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
      */
     public function numRows() {
         $queryId = $this->_handler->getQueryId();
+
         return ($queryId) ? mysql_num_rows($queryId) : 0;
     }
 
@@ -193,6 +202,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
      */
     public function numFields() {
         $queryId = $this->_handler->getQueryId();
+
         return ($queryId) ? mysql_num_fields($queryId) : 0;
     }
 
@@ -209,6 +219,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
      */
     public function escape($string) {
         $linkId = $this->_handler->getLinkId();
+
         return mysql_real_escape_string($string, $linkId);
     }
 
@@ -238,6 +249,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
         $id = $this->getQueryId();
         if (!$id) {
             $this->_handler->halt('Metadata query failed.');
+
             return false;
         }
 
@@ -273,14 +285,13 @@ class cDbDriverMysql extends cDbDriverAbstract {
             while ($this->nextRecord()) {
                 $record = $this->getRecord();
                 $return[] = array(
-                    'table_name' => $record[0],
-                    'tablespace_name' => $this->_dbCfg['connection']['database'],
-                    'database' => $this->_dbCfg['connection']['database'],
+                    'table_name' => $record[0], 'tablespace_name' => $this->_dbCfg['connection']['database'], 'database' => $this->_dbCfg['connection']['database'],
                 );
             }
 
             $this->free();
         }
+
         return $return;
     }
 
@@ -293,10 +304,11 @@ class cDbDriverMysql extends cDbDriverAbstract {
         if (is_resource($linkId)) {
             $arr = array();
             $arr['description'] = mysql_get_server_info($linkId);
+
             return $arr;
         }
 
-        return null;
+        return NULL;
     }
 
     /**

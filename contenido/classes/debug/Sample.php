@@ -1,10 +1,7 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains some sample scripts how to use the debug classes.
  *
- * Description:
- * Sample for using a Debug object
  * Debug objects here are made for simple (!) debugging purposes.
  * Instead of writing echo '<pre>'.print_r($mMyVar, true).'</pre>';
  * you can now write $oDbg->show($mMyVar);
@@ -18,29 +15,15 @@
  * Using the Factory you can simply change the type of debugger by passing the type to load.
  * By using "devnull" you can keep your debug code while in production systems and turn it on again by changing to "file" or "hidden" if needed.
  *
+ * @package    Core
+ * @subpackage Debug
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2008-02-19
- *   $Id$:
- * }}
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
 
 $oMyObj = new stdClass();
 $oMyObj->sTest = 'some property value';

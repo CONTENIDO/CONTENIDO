@@ -1,39 +1,33 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the file and vis adv debug class.
  *
- * Description:
+ * @package    Core
+ * @subpackage Debug
+ *
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
  * Debug object to write info to a file and to show info on screen.
  * In case you cannot output directly to screen when debugging a live system,
  * this object writes
  * the info to a file located in /data/logs/debug.log.
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.1
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @package    Core
+ * @subpackage Debug
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-include_once ("class.debug.visible.adv.php");
 class cDebugFileAndVisAdv extends cDebugVisibleAdv {
 
     protected static $_instance;
 
     private $_aItems;
-
-    private $_buffer;
 
     private $_filePathName;
 
@@ -65,7 +59,7 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
         if (is_writeable($this->_filePathName)) {
             $sDate = date('Y-m-d H:i:s');
             $sContent = '#################### ' . $sDate . ' ####################' . "\n" . $sVariableDescription . "\n" . print_r($mVariable, true) . "\n" . '#################### /' . $sDate . ' ###################' . "\n\n";
-            cFileHandler::write($file, $sContent, true);
+            cFileHandler::write($this->_filePathName, $sContent, true);
         }
     }
 

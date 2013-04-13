@@ -1,29 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the hidden debug class.
  *
- * Description:
- * Debug object to show info hidden in HTML comment-blocks.
+ * @package    Core
+ * @subpackage Debug
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.1.1
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-include_once ('interface.debug.php');
+/**
+ * Debug object to show info hidden in HTML comment-blocks.
+ *
+ * @package    Core
+ * @subpackage Debug
+ */
 class cDebugHidden implements cDebugInterface {
 
     private static $_instance;
@@ -57,7 +53,6 @@ class cDebugHidden implements cDebugInterface {
      * @param string $sVariableDescription The variable's name or description
      * @param boolean $bExit If set to true, your app will die() after output of
      *        current var
-     * @return void
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         echo "\n <!-- dbg";
@@ -84,23 +79,18 @@ class cDebugHidden implements cDebugInterface {
      *
      * @param mixed $mVariable
      * @param string $sVariableDescription
-     * @return void
      */
     public function add($mVariable, $sVariableDescription = '') {
     }
 
     /**
      * Interface implementation
-     *
-     * @return void
      */
     public function reset() {
     }
 
     /**
      * Interface implementation
-     *
-     * @return string Here an empty string
      */
     public function showAll() {
     }
