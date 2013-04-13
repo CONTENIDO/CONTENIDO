@@ -2,7 +2,7 @@
 /**
  * This file contains the uri builder mod rewrite class.
  *
- * @package    Plugins
+ * @package    Plugin
  * @subpackage ModRewrite
  * @version    SVN Revision $Rev:$
  *
@@ -30,7 +30,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @todo Add handling of absolute paths, standardize handling of fragments
  *
- * @package    Plugins
+ * @package    Plugin
  * @subpackage ModRewrite
  */
 class cUriBuilderMR extends cUriBuilder {
