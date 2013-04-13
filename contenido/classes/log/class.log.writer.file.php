@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class contains the file writer class for the logging mechanism.
  *
  * @package    Core
- * @subpackage Debug
+ * @subpackage Log
  */
 class cLogWriterFile extends cLogWriter {
     /**

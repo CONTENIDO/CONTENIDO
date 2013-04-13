@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This class contains the main functionalities for the logging writer in CONTENIDO.
  *
  * @package    Core
- * @subpackage Debug
+ * @subpackage Log
  */
 abstract class cLogWriter {
     /**

@@ -29,7 +29,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * $log->log("Anything you want to log.");
  *
  * @package    Core
- * @subpackage Debug
+ * @subpackage Log
  */
 class cModuleLog extends cLog {
 

@@ -35,7 +35,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * $log->commit();
  *
  * @package    Core
- * @subpackage Debug
+ * @subpackage Log
  */
 class cLog {
     const EMERG   = 0;
