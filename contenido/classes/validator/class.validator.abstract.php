@@ -4,6 +4,7 @@
  *
  * @package    Core
  * @subpackage Validation
+ * @version    SVN Revision $Rev:$
  *
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

@@ -4,6 +4,7 @@
  *
  * @package    Core
  * @subpackage Versioning
+ * @version    SVN Revision $Rev:$
  *
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>

@@ -5,6 +5,7 @@
  *
  * @package    Core
  * @subpackage Backend
+ * @version    SVN Revision $Rev:$
  *
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <www.4fb.de>

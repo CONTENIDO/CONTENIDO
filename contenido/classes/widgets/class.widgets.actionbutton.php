@@ -4,6 +4,7 @@
  *
  * @package    Core
  * @subpackage GUI
+ * @version    SVN Revision $Rev:$
  *
  * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
