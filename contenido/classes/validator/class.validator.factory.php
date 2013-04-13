@@ -1,43 +1,30 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the validator factory class.
  *
- * Description:
- * CONTENIDO validator factory class
+ * @package    Core
+ * @subpackage Validation
  *
- * Requirements:
- * @con_php_req 5.0
- *
- * @package    CONTENIDO Validator
- * @version    0.0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created 2011-11-18
- *   $Id$:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Validator factory
- * @package    CONTENIDO Validator
+ *
+ * @package    Core
+ * @subpackage Validation
  */
 class cValidatorFactory {
-
     /**
      * Instantiates and returns the validator. Sets also validators default options.
      *
-     * Each validator can be configured thru CONTENIDO $cfg configuration variable.
+     * Each validator can be configured through CONTENIDO $cfg configuration variable.
      * Example for email validator:
      * <pre>
      * $cfg['validator']['email'] = array(
@@ -79,7 +66,7 @@ class cValidatorFactory {
 
         $cfgName = strtolower($validator);
 
-        // Merge passsed options with global configured options.
+        // Merge passed options with global configured options.
         if (isset($cfg['validator']) && isset($cfg['validator'][$cfgName]) && is_array($cfg['validator'][$cfgName])) {
             $options = array_merge($cfg['validator'][$cfgName], $options);
         }

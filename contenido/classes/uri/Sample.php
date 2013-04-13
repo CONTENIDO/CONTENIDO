@@ -1,28 +1,16 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains some sample scripts how to use the uri and uri builder classes.
  *
- * Description:
- * Sample for using a cUriBuilder object
+ * @package    Core
+ * @subpackage Frontend_URI
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.0
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
 
 // build a front_content.php URL
 try {

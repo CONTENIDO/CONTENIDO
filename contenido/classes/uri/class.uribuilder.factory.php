@@ -1,37 +1,34 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the uri builder factory class.
  *
- * Description:
- * Factory for retrieving required cUriBuilder object
+ * @package    Core
+ * @subpackage Frontend_URI
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.1.0
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * Factory for retrieving required cUriBuilder object
+ *
+ * @package    Core
+ * @subpackage Frontend_URI
+ */
 class cUriBuilderFactory {
 
     /**
-     * Returns desired UriBuilder object.
+     * Returns desired cUriBuilder object.
      *
      * @param string $sBuilder For now, those are valid: front_content, custom,
      *            custom_path or a
-     *        Userdefined UriBuilder name. The name must be a subpart of the
-     *        UriBuilder class, e. g. 'MyUriBuilder' for
+     *        Userdefined cUriBuilder name. The name must be a subpart of the
+     *        cUriBuilder class, e. g. 'MyUriBuilder' for
      *            cUriBuilderMyUriBuilder.
      *        The classfile must be named like class.uribuilder.myuribuilder.php
      *        and it must be reside in /contenido/classes/uri/ folder.
@@ -51,6 +48,7 @@ class cUriBuilderFactory {
                 return cUriBuilderCustomPath::getInstance();
                 break;
             default:
+                // TODO check if this is needed any longer because we have autoloading feature
                 if ((string) $sBuilder !== '') {
                     $sClassName = 'cUriBuilder' . $sBuilder;
                     $sFileName = 'class.uribuilder.' . strtolower($sBuilder) . '.php';

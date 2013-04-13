@@ -1,29 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the uri builder front content class.
  *
- * Description:
- * Implementation of IContenido_Frontend_Navigation_UriBuilder to build
- * front_content.php URL
+ * @package    Core
+ * @subpackage Frontend_URI
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Classes
- * @version 1.0.3
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * Implementation to build front_content.php URL
+ *
+ * @package    Core
+ * @subpackage Frontend_URI
+ */
 class cUriBuilderFrontcontent extends cUriBuilder {
 
     /**
@@ -34,7 +30,7 @@ class cUriBuilderFrontcontent extends cUriBuilder {
     private static $_instance;
 
     /**
-     * XHTML compliant parameter composition delemiter
+     * XHTML compliant parameter composition delimiter
      *
      * @var string
      */
@@ -78,7 +74,6 @@ class cUriBuilderFrontcontent extends cUriBuilder {
      * @param array $aConfig Is not used at the moment
      * @throws cInvalidArgumentException
      * @throws cException
-     * @return void
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
         $bIdcatSet = isset($aParams['idcat']);

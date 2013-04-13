@@ -1,32 +1,18 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the regular expression validator class.
  *
- * Description:
- * CONTENIDO regular expression validator class
+ * @package    Core
+ * @subpackage Validation
  *
- * Requirements:
- * @con_php_req 5.0
- *
- * @package    CONTENIDO Validator
- * @version    0.0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
- *
- * {@internal
- *   created 2011-11-18
- *   $Id$:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Regular expression validation.
@@ -36,7 +22,8 @@ if (!defined('CON_FRAMEWORK')) {
  * - pattern  (string)  The regular expression pattern
  * </pre>
  *
- * @package    CONTENIDO Validator
+ * @package    Core
+ * @subpackage Validation
  */
 class cValidatorRegex extends cValidatorAbstract {
 

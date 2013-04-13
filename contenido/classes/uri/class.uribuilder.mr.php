@@ -1,30 +1,18 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the uri builder mod rewrite class.
  *
- * Description:
- * Implementation of Contenido_UriBuilder to build AMR (Advanced Mod Rewrite)
- * Frontend-URLs
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Plugins
+ * @package    Plugins
  * @subpackage ModRewrite
- * @version 0.1
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9.0
+ *
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Class to build frontend urls for advandced mod rewrite plugin.
@@ -41,9 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @todo Add handling of absolute paths, standardize handling of fragments
  *
- *
- * @author Murat Purc <murat@purc.de>
- * @package CONTENIDO Plugins
+ * @package    Plugins
  * @subpackage ModRewrite
  */
 class cUriBuilderMR extends cUriBuilder {

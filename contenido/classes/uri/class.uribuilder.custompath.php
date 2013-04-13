@@ -1,18 +1,10 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the uri builder custom path class.
  *
- * Description:
- * Implementation of IContenido_Frontend_Navigation_UriBuilder to build URL in style index-a-1.html
- * with category path (/category/subcategory/index-a-1.html).
+ * @package    Core
+ * @subpackage Frontend_URI
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,12 +12,18 @@
  * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.pathresolver.php');
 
+/**
+ * Custom path uri builder class.
+ * Implementation to build URL in style index-a-1.html
+ * with category path (/category/subcategory/index-a-1.html).
+ *
+ * @package    Core
+ * @subpackage Frontend_URI
+ */
 class cUriBuilderCustomPath extends cUriBuilder {
 
     /**

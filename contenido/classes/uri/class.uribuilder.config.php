@@ -1,29 +1,18 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the uri builder configuration class.
  *
- * Description:
- * Configure UriBuilder URL style. Per default, configures for style
- * index-a-1.html.
- * If you need another style, extend this class to your needs and pass it to
- * desired UriBuilder.
+ * @package    Core
+ * @subpackage Frontend_URI
  *
- * Requirements:
- * @con_php_req 5.0
- *
- * @package CONTENIDO Backend Classes
- * @version 1.1.0
- * @author Rudi Bieller
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (!class_exists('NotInitializedException')) {
     class NotInitializedException extends Exception {
@@ -31,26 +20,32 @@ if (!class_exists('NotInitializedException')) {
 }
 
 /**
- * Class to manage UriBuilder configuration.
+ * Configure cUriBuilder URL style. Per default, configures for style
+ * index-a-1.html.
+ * If you need another style, extend this class to your needs and pass it to
+ * desired cUriBuilder.
  *
- * The cUriBuilderrConfig::setConfig() must be called at least once to
+ * The cUriBuilderConfig::setConfig() must be called at least once to
  * initialize the desired
  * UriBuilder.
  *
  * Usage:
  * ------
  * <code>
- * // Example for default front_content UriBuilder
+ * // Example for default front_content cUriBuilder
  * $myCfg['name'] = 'front_content';
  * $myCfg['config'] = array();
  * cUriBuilderConfig::setConfig($myCfg);
  *
- * // Example for CustomPath UriBuilder
+ * // Example for CustomPath cUriBuilder
  * $myCfg['name'] = 'custom_path';
  * $myCfg['config'] = array('prefix' => 'rocknroll', 'suffix' => '.4fb',
  * 'separator' => ',');
  * cUriBuilderConfig::setConfig($myCfg);
  * </code>
+ *
+ * @package    Core
+ * @subpackage Frontend_URI
  */
 class cUriBuilderConfig {
 
@@ -68,7 +63,7 @@ class cUriBuilderConfig {
     );
 
     /**
-     * Set UlrBuilder configuration
+     * Set cUriBuilder configuration
      *
      * @param array $cfg Assoziative configuration array as follows:
      *        - $cfg['name'] = Name of UriBuilder class to use
@@ -90,11 +85,11 @@ class cUriBuilderConfig {
     }
 
     /**
-     * Returns UriBuilder name
+     * Returns cUriBuilder name
      *
-     * @throws cException If UriBuilder configuration wasn't
+     * @throws cException If cUriBuilder configuration wasn't
      *         initialized before
-     * @return string UriBuilder name
+     * @return string cUriBuilder name
      */
     public static function getUriBuilderName() {
         if (!is_array(self::$_aUriBuilderCfg) || !isset(self::$_aUriBuilderCfg['name'])) {
@@ -105,15 +100,15 @@ class cUriBuilderConfig {
     }
 
     /**
-     * Returns UriBuilder configuration
+     * Returns cUriBuilder configuration
      *
-     * @throws cException If UriBuilder configuration wasn't
+     * @throws cException If cUriBuilder configuration wasn't
      *         initialized before
-     * @return array UriBuilder configuration
+     * @return array cUriBuilder configuration
      */
     public static function getConfig() {
         if (!is_array(self::$_aUriBuilderCfg)) {
-            throw new cException('cUriBuilderrConfig: Configuration is not set');
+            throw new cException('cUriBuilderConfig: Configuration is not set');
         }
 
         return self::$_aUriBuilderCfg['config'];

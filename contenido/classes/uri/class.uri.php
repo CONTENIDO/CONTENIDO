@@ -1,17 +1,10 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the uri class.
  *
- * Description:
- * Frontend URL creation. Works as a wrapper of an UriBuilder instance.
+ * @package    Core
+ * @subpackage Frontend_URI
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.1
  * @author     Murat Purc
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -19,21 +12,25 @@
  * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * Frontend URL creation. Works as a wrapper of an UriBuilder instance.
+ *
+ * @package    Core
+ * @subpackage Frontend_URI
+ */
 class cUri {
 
     /**
      * Self instance.
-     * @var  Contenido_Url
+     * @var  cUri
      */
     static private $_instance;
 
     /**
      * UriBuilder instance.
-     * @var  Contenido_UriBuilder
+     * @var  cUriBuilder
      */
     private $_oUriBuilder;
 
@@ -44,7 +41,7 @@ class cUri {
     private $_sUriBuilderName;
 
     /**
-     * Constructor of Contenido_Url. Is not callable from outside.
+     * Constructor of cUri. Is not callable from outside.
      * Gets the UriBuilder configuration and creates an UriBuilder instance.
      */
     private function __construct() {
@@ -56,7 +53,7 @@ class cUri {
 
     /**
      * Returns self instance
-     * @return  Contenido_Url
+     * @return  cUri
      */
     public static function getInstance() {
         if (self::$_instance == null) {
@@ -73,9 +70,9 @@ class cUri {
      *                            - params: array('idcat' => 12, 'lang' => 1)
      *                            Required values depend on used UriBuilder, but a must have is 'lang'.
      * @param   boolean  $bUseAbsolutePath  Flag to create absolute Urls
-     * @param   array    $aConfig  If not set, UriBuilderConfig::getConfig() will be used by the UriBuilder
+     * @param   array    $aConfig  If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
      * @throws cInvalidArgumentException if the given params do not contain the lang
-     * @return  string   The Url build by UriBuilder
+     * @return  string   The Url build by cUriBuilder
      */
     public function build($param, $bUseAbsolutePath = false, array $aConfig = array()) {
         if (!is_array($param)) {
@@ -137,8 +134,8 @@ class cUri {
      *                            - url: front_content.php?idcat=12&lang=1
      *                            - params: array('idcat' => 12, 'lang' => 1)
      *                            Required values depend on used UriBuilder, but a must have is 'lang'.
-     * @param   array    $aConfig  If not set, UriBuilderConfig::getConfig() will be used by the UriBuilder
-     * @return  string   The redirect Url build by UriBuilder
+     * @param   array    $aConfig  If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
+     * @return  string   The redirect Url build by cUriBuilder
      */
     public function buildRedirect($param, array $aConfig = array()) {
         $url = $this->build($param, true, $aConfig);
