@@ -1,20 +1,28 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the file information collection and item class.
  *
- * Description:
- * MySQL Driver for GenericDB
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO Backend Classes
- * @author Konstantinos Katikakis
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Konstantinos Katikakis
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 cInclude('includes', 'functions.file.php');
+
+/**
+ * File information collection.
+ *
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ */
 class cApiFileInformationCollection extends ItemCollection {
 
     public function __construct() {
@@ -138,6 +146,13 @@ class cApiFileInformationCollection extends ItemCollection {
     }
 
 }
+
+/**
+ * File information item.
+ *
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ */
 class cApiFileInformation extends Item {
 
     public function __construct($id = false) {

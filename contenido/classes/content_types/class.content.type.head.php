@@ -3,7 +3,7 @@
  * This file contains the cContentTypeHead class.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
@@ -13,15 +13,13 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Content type CMS_HEAD which lets the editor enter a single-line text.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  */
 class cContentTypeHead extends cContentTypeText {
 

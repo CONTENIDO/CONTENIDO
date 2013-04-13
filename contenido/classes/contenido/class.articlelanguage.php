@@ -1,32 +1,27 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the article language collection and item class.
  *
- * Description:
- * Article access class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO API
- * @version 1.4.1
- * @author Bjoern Behrens
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Bjoern Behrens
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Article language collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiArticleLanguageCollection extends ItemCollection {
-
     public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['art_lang'], 'idartlang');
@@ -233,8 +228,8 @@ class cApiArticleLanguageCollection extends ItemCollection {
  * linkdescr - Linkdescription
  * swf - Upload id of the element
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiArticleLanguage extends Item {
 
@@ -334,8 +329,6 @@ class cApiArticleLanguage extends Item {
      * article object.
      *
      * $article->content[type][number] = value;
-     *
-     * @return void
      */
     protected function _getArticleContent() {
         global $cfg;

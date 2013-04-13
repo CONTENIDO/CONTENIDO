@@ -2,27 +2,24 @@
 /**
  * CONTENIDO code generator abstract class
  *
- * @package Core
- * @subpackage Content Type
- * @version SVN Revision $Rev:$
- * @id SVN Id $Id$
+ * @package    Core
+ * @subpackage ContentType
+ * @version    SVN Revision $Rev:$
  *
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * CONTENIDO abstract code generator class.
  *
- * @package Core
- * @subpackage Content Type
+ * @package    Core
+ * @subpackage ContentType
  */
 
 abstract class cCodeGeneratorAbstract {
@@ -174,23 +171,24 @@ abstract class cCodeGeneratorAbstract {
      * Generates the code for a specific article (article for a client in a
      * language).
      *
-     * @param int $idcat
-     * @param int $idart
-     * @param int $lang
-     * @param int $client
+     * @param int  $idcat
+     * @param int  $idart
+     * @param int  $lang
+     * @param int  $client
      * @param bool $layout
      * @param bool $save Flag to persist generated code
+     *
      * @throws cInvalidArgumentException if an article with the given idart and idlang can not be loaded
      * @return string Generated code or error code '0601' if no template
      *         configuration was found for category or article.
      */
     public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true) {
-        $this->_idcat = (int) $idcat;
-        $this->_idart = (int) $idart;
-        $this->_lang = (int) $lang;
-        $this->_client = (int) $client;
-        $this->_layout = (bool) $layout;
-        $this->_save = (bool) $save;
+        $this->_idcat = (int)$idcat;
+        $this->_idart = (int)$idart;
+        $this->_lang = (int)$lang;
+        $this->_client = (int)$client;
+        $this->_layout = (bool)$layout;
+        $this->_save = (bool)$save;
 
         $this->oArtLang = new cApiArticleLanguage();
         $this->oArtLang->loadByArticleAndLanguageId($idart, $lang);
@@ -227,20 +225,20 @@ abstract class cCodeGeneratorAbstract {
         } else {
             // Check whether category is configured
             $idtplcfg = conGetTemplateConfigurationIdForCategory($this->_idcat, $this->_lang, $this->_client);
-            if (null !== $idtplcfg) {
+            if (NULL !== $idtplcfg) {
                 // Category is configured
                 cDebug::out("configuration for category found: $idtplcfg<br><br>");
             }
         }
 
-        return (is_numeric($idtplcfg)) ? $idtplcfg : null;
+        return (is_numeric($idtplcfg)) ? $idtplcfg : NULL;
     }
 
     abstract protected function _processNoConfigurationError($idcatart);
 
     /**
      * Returns array containing used layout, template and template name
-     * @global  array  $cfg
+     * @global  array $cfg
      * @return  array  Asooziative array like array('idlay' => (int), 'idtpl' => (int), 'name' => (string))
      */
     protected function _getTemplateData() {
@@ -270,9 +268,9 @@ abstract class cCodeGeneratorAbstract {
      * Processes replacements of all existing CMS_...
      * tags within passed code
      *
-     * @param array $contentList Assoziative list of CMS variables
-     * @param bool $saveKeywords Flag to save collected keywords during
-     *        replacement process.
+     * @param array $contentList  Assoziative list of CMS variables
+     * @param bool  $saveKeywords Flag to save collected keywords during
+     *                            replacement process.
      */
     protected function _processCmsTags($contentList, $saveKeywords = true) {
         // #####################################################################
@@ -368,10 +366,11 @@ abstract class cCodeGeneratorAbstract {
      * Replaces all container/module configuration tags (CMS_VALUE[n] values)
      * against their settings.
      *
-     * @param int $containerId Container id
+     * @param int    $containerId  Container id
      * @param string $containerCfg A string being formatted like concatenated
-     *        query
-     *        parameter, e. g. param1=value1&param2=value2...
+     *                             query
+     *                             parameter, e. g. param1=value1&param2=value2...
+     *
      * @return string Concatenated PHP code containing CMS_VALUE variables and
      *         their values
      */
@@ -408,8 +407,8 @@ abstract class cCodeGeneratorAbstract {
      * Extends container code by adding several debug features, if enabled and
      * configured.
      *
-     * @param int $containerId Container id
-     * @param array $module Recordset as assoziative array of related module
+     * @param int   $containerId Container id
+     * @param array $module      Recordset as assoziative array of related module
      *        (container code)
      */
     protected function _processFrontendDebug($containerId, array $module) {
@@ -482,9 +481,7 @@ abstract class cCodeGeneratorAbstract {
         // Find out what kind of CMS_... Vars are in use
         $sql = "SELECT * FROM `%s` AS A, `%s` AS B, `%s` AS C
                 WHERE A.idtype = C.idtype AND A.idartlang = B.idartlang AND B.idart = %d AND B.idlang = %d";
-        $sql = $this->_db->prepare(
-                $sql, $cfg['tab']['content'], $cfg['tab']['art_lang'], $cfg['tab']['type'], $this->_idart, $this->_lang
-        );
+        $sql = $this->_db->prepare($sql, $cfg['tab']['content'], $cfg['tab']['art_lang'], $cfg['tab']['type'], $this->_idart, $this->_lang);
         $this->_db->query($sql);
         while ($this->_db->nextRecord()) {
             $return[$this->_db->f('type')][$this->_db->f('typeid')] = $this->_db->f('value');
@@ -504,23 +501,29 @@ abstract class cCodeGeneratorAbstract {
 
     /**
      * Returns the classname for a content type.
-     * @param  string  $type  Content type, e. g. CMS_HTMLHEAD
+     *
+     * @param  string $type  Content type, e. g. CMS_HTMLHEAD
+     *
      * @return  string  The classname e. g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
      */
     protected function _getContentTypeClassName($type) {
         $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
+
         return $typeClassName;
     }
 
     /**
      * Returns the full path to the include file name of a content type.
-     * @param  string  $type  Content type, e. g. CMS_HTMLHEAD
+     *
+     * @param  string $type  Content type, e. g. CMS_HTMLHEAD
+     *
      * @return  string  The full path e. g. {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
      *                  for content type CMS_HTMLHEAD
      */
     protected function _getContentTypeCodeFilePathName($type) {
         global $cfg;
         $typeCodeFile = cRegistry::getBackendPath() . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
+
         return $typeCodeFile;
     }
 
@@ -528,6 +531,6 @@ abstract class cCodeGeneratorAbstract {
      * returns the artlang object
      */
     protected function getArtLangObject() {
-       return $this->oArtLang;
+        return $this->oArtLang;
     }
 }

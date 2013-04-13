@@ -1,30 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the actionlog collection and item class.
  *
- * Description:
- * Action log management class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO API
- * @version 0.1
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9.0
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Actionlog collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package    Core
+ * @subpackage GenericDB_Model
  */
 class cApiActionlogCollection extends ItemCollection {
 
@@ -48,11 +43,12 @@ class cApiActionlogCollection extends ItemCollection {
      * Creates a actionlog item entry
      *
      * @param string $userId User id
-     * @param int $idclient
-     * @param int $idlang
-     * @param int $idaction
-     * @param int $idcatart
+     * @param int    $idclient
+     * @param int    $idlang
+     * @param int    $idaction
+     * @param int    $idcatart
      * @param string $logtimestamp
+     *
      * @return cApiActionlog
      */
     public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '') {
@@ -63,10 +59,10 @@ class cApiActionlogCollection extends ItemCollection {
         }
 
         $item->set('user_id', $this->escape($userId));
-        $item->set('idclient', (int) $idclient);
-        $item->set('idlang', (int) $idlang);
-        $item->set('idaction', (int) $idaction);
-        $item->set('idcatart', (int) $idcatart);
+        $item->set('idclient', (int)$idclient);
+        $item->set('idlang', (int)$idlang);
+        $item->set('idaction', (int)$idaction);
+        $item->set('idcatart', (int)$idcatart);
         $item->set('logtimestamp', $this->escape($logtimestamp));
 
         $item->store();
@@ -79,8 +75,8 @@ class cApiActionlogCollection extends ItemCollection {
 /**
  * Actionlog item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package    Core
+ * @subpackage GenericDB_Model
  */
 class cApiActionlog extends Item {
 
@@ -97,5 +93,4 @@ class cApiActionlog extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
 }

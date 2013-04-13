@@ -3,7 +3,7 @@
  * This file contains the cContentTypeAbstract class.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
@@ -13,15 +13,13 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Abstract content type from which every content type should inherit.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  */
 abstract class cContentTypeAbstract {
 

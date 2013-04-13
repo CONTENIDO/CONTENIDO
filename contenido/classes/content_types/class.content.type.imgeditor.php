@@ -3,7 +3,7 @@
  * This file contains the cContentTypeImgeditor class.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  * @version SVN Revision $Rev:$
  *
  * @author Fulai Zhang, Simon Sprankel
@@ -13,9 +13,7 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.upl.php');
@@ -24,7 +22,7 @@ cInclude('includes', 'functions.upl.php');
  * Content type CMS_IMGEDITOR which lets the editor select an image.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  */
 class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 

@@ -2,34 +2,32 @@
 /**
  * CONTENIDO code generator factory
  *
- * @package Core
- * @subpackage Content Type
- * @version SVN Revision $Rev:$
- * @id SVN Id $Id$
+ * @package    Core
+ * @subpackage ContentType
+ * @version    SVN Revision $Rev:$
  *
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * CONTENIDO code generator factory.
- * @package Core
- * @subpackage Content Type
+ * @package    Core
+ * @subpackage ContentType
  */
 class cCodeGeneratorFactory {
 
     /**
      * Returns code generator instance by it's name.
      *
-     * @param  string  $name  The generator name, e. g. 'Standard' to retrieve instance of
+     * @param  string $name   The generator name, e. g. 'Standard' to retrieve instance of
      *                        cCodeGeneratorStandard
+     *
      * @throws cInvalidArgumentException If name is invalid, class file is missing or
      *                                   class isn't available
      * @return cCodeGeneratorAbstract
@@ -58,6 +56,7 @@ class cCodeGeneratorFactory {
                 throw new cInvalidArgumentException('The class isn\'t available for cCodeGeneratorFactory: ' . $name . '!');
             }
         }
+
         return new $className();
     }
 

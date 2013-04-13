@@ -1,30 +1,24 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the language collection and item class.
  *
- * Description:
- * Language management class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO API
- * @version 1.5.1
- * @author Bjoern Behrens
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @todo merge logic with contenido/classes/class.lang.php
+ * @author           Bjoern Behrens
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Language collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiLanguageCollection extends ItemCollection {
 
@@ -73,10 +67,10 @@ class cApiLanguageCollection extends ItemCollection {
      * @global int $client
      * @global int $lang
      *
-     * @return cApiLanguage null
+     * @return cApiLanguage|null
      */
     public function nextAccessible() {
-        global $perm, $cfg, $client, $lang;
+        global $perm, $client, $lang;
 
         $item = parent::next();
 
@@ -124,8 +118,8 @@ class cApiLanguageCollection extends ItemCollection {
 /**
  * Language item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiLanguage extends Item {
 

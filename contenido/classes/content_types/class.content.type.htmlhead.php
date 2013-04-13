@@ -3,7 +3,7 @@
  * This file contains the cContentTypeHtmlhead class.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  * @version SVN Revision $Rev:$
  *
  * @author Simon Sprankel
@@ -13,16 +13,14 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Content type CMS_HTMLHEAD which lets the editor enter HTML with the help of a
  * WYSIWYG editor.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  */
 class cContentTypeHtmlhead extends cContentTypeHtml {
 

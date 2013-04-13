@@ -3,7 +3,7 @@
  * This file contains the cContentTypeLinkeditor class.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  * @version SVN Revision $Rev:$
  *
  * @author Timo Trautmann, Simon Sprankel
@@ -13,9 +13,7 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.api.images.php');
@@ -25,7 +23,7 @@ cInclude('includes', 'functions.api.images.php');
  * which are displayed as teasers.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  */
 class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 

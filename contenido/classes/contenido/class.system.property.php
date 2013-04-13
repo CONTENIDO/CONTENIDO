@@ -1,46 +1,30 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the system property collection and item class.
  *
- * Description:
- * System property management class.
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * cApiSystemProperty instance contains following class properties:
- * - idsystemprop (int)
- * - type (string)
- * - name (string)
- * - value (string)
- *
- * If caching is enabled, see $cfg['properties']['system_prop']['enable_cache'],
- * all entries will be loaded at first time.
- * If enabled, each call of cApiSystemPropertyCollection functions to retrieve
- * properties
- * will return the cached entries without stressing the database.
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * System property collection
  *
  * The cApiSystemPropertyCollection class keeps also track of changed and
  * deleted
  * properties and synchronizes them with cached values, as long as you use the
  * interface of cApiSystemPropertyCollection to manage the properties.
  *
- * @package CONTENIDO API
- * @version 0.2
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-/**
- * System property collection
- *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiSystemPropertyCollection extends ItemCollection {
 
@@ -93,7 +77,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @param string $name
      * @param string $value
      * @param int $id
-     * @return cApiSystemProperty null
+     * @return cApiSystemProperty|null
      */
     public function setTypeNameValueById($type, $name, $value, $id) {
         $item = $this->fetchById($id);
@@ -314,7 +298,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * Fetches entry by id from cache.
      *
      * @param int $id
-     * @return cApiSystemProperty null
+     * @return cApiSystemProperty|null
      */
     protected function _fetchByIdFromCache($id) {
         $obj = new cApiSystemProperty();
@@ -332,7 +316,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
-     * @return cApiSystemProperty null
+     * @return cApiSystemProperty|null
      */
     protected function _fetchByTypeNameFromCache($type, $name) {
         $obj = new cApiSystemProperty();
@@ -379,8 +363,20 @@ class cApiSystemPropertyCollection extends ItemCollection {
 /**
  * System property item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * cApiSystemProperty instance contains following class properties:
+ * - idsystemprop (int)
+ * - type (string)
+ * - name (string)
+ * - value (string)
+ *
+ * If caching is enabled, see $cfg['properties']['system_prop']['enable_cache'],
+ * all entries will be loaded at first time.
+ * If enabled, each call of cApiSystemPropertyCollection functions to retrieve
+ * properties
+ * will return the cached entries without stressing the database.
+ *
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiSystemProperty extends Item {
 

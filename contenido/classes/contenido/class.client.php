@@ -1,29 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the client collection and item class.
  *
- * Description:
- * Client management class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO API
- * @version 1.2.1
- * @author Bjoern Behrens
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Bjoern Behrens
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Client collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiClientCollection extends ItemCollection {
 
@@ -114,7 +110,7 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns first client available in the system
      *
-     * @return cApiClient null
+     * @return cApiClient|null
      */
     public function getFirstAccessibleClient() {
         global $perm;
@@ -159,11 +155,9 @@ class cApiClientCollection extends ItemCollection {
 /**
  * Class cApiClient, client item
  *
- * @package CONTENIDO API
- * @subpackage Model
- * @author Marco Jahn <Marco.Jahn@4fb.de>
- * @version 1.01
- * @copyright four for business 2004
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @author Marco Jahn
  */
 class cApiClient extends Item {
 

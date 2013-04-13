@@ -1,29 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the template configuration collection and item class.
  *
- * Description:
- * Template access class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO API
- * @version 1.3
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Template configuration collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiTemplateConfigurationCollection extends ItemCollection {
 
@@ -121,8 +117,8 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
 /**
  * Template configuration item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiTemplateConfiguration extends Item {
 

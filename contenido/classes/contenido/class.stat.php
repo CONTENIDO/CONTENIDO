@@ -1,29 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the stat collection and item class.
  *
- * Description:
- * Statistics management class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO API
- * @version 0.1
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Statistic collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiStatCollection extends ItemCollection {
 
@@ -84,7 +80,7 @@ class cApiStatCollection extends ItemCollection {
      *
      * @param int $iIdCatArt
      * @param int $iIdLang
-     * @return cApiStat null
+     * @return cApiStat|null
      */
     public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
@@ -108,8 +104,8 @@ class cApiStatCollection extends ItemCollection {
 /**
  * Statistic item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiStat extends Item {
 

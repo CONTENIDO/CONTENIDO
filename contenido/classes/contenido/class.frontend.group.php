@@ -1,34 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the frontend group collection and item class.
  *
- * Description:
- * Frontend group classes
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * Code is taken over from file contenido/classes/class.frontend.groups.php in
- * favor of
- * normalizing API.
- *
- * @package CONTENIDO API
- * @version 0.1
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9.0
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Frontend group collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiFrontendGroupCollection extends ItemCollection {
 
@@ -94,8 +85,8 @@ class cApiFrontendGroupCollection extends ItemCollection {
 /**
  * Frontend group item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiFrontendGroup extends Item {
 

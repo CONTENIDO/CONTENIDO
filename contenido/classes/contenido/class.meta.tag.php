@@ -1,29 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the meta tag collection and item class.
  *
- * Description:
- * Metatag management class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO API
- * @version 0.1
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Metatag collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiMetaTagCollection extends ItemCollection {
 
@@ -64,7 +60,7 @@ class cApiMetaTagCollection extends ItemCollection {
      *
      * @param int $iIdArtLang
      * @param int $iIdMetaType
-     * @return cApiMetaTag null
+     * @return cApiMetaTag|null
      */
     public function fetchByArtLangAndMetaType($iIdArtLang, $iIdMetaType) {
         $this->select('idartlang=' . (int) $iIdArtLang . ' AND idmetatype=' . (int) $iIdMetaType);
@@ -76,8 +72,8 @@ class cApiMetaTagCollection extends ItemCollection {
 /**
  * Metatag item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiMetaTag extends Item {
 

@@ -2,25 +2,23 @@
 /**
  * CONTENIDO standard code generator
  *
- * @package Core
- * @subpackage Content Type
- * @version SVN Revision $Rev:$
+ * @package    Core
+ * @subpackage ContentType
+ * @version    SVN Revision $Rev:$
  *
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * CONTENIDO standard code generator.
- * @package Core
- * @subpackage Content Type
+ * @package    Core
+ * @subpackage ContentType
  */
 class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
@@ -41,8 +39,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // Set configuration for article
         $this->_idtplcfg = $this->_getTemplateConfigurationId();
-        if (null === $this->_idtplcfg) {
+        if (NULL === $this->_idtplcfg) {
             $this->_processNoConfigurationError($idcatart);
+
             return '0601';
         }
 
@@ -182,7 +181,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      *
      * Creates a error message and writes this into the code cache.
      *
-     * @param  int   $idcatart  Category article id
+     * @param  int $idcatart  Category article id
      */
     protected function _processNoConfigurationError($idcatart) {
         cDebug::out('Neither CAT or ART are configured!<br><br>');
@@ -214,6 +213,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         } else {
             $this->_layoutCode = str_replace('<title></title>', '', $this->_layoutCode);
         }
+
         return $this->_layoutCode;
     }
 
@@ -313,10 +313,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
     /**
      * Saves the generated code (if layout flag is false and save flag is true)
      *
-     * @global  array  $cfgClient
-     * @param  int   $idcatart  Category article id
-     * @param string $code parameter for setting code manually instead of using the generated layout code
-     * @param bool $flagCreateCode whether the create code flag in cat_art should be set or not (optional)
+     * @global  array $cfgClient
+     *
+     * @param  int    $idcatart       Category article id
+     * @param string  $code           parameter for setting code manually instead of using the generated layout code
+     * @param bool    $flagCreateCode whether the create code flag in cat_art should be set or not (optional)
      */
     protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true) {
         global $cfgClient;
@@ -344,7 +345,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * Collects basic meta tags an returns them.
-     * @global  array  $encoding
+     * @global  array $encoding
      * @return array  List of assozative meta tag values
      */
     protected function _getBasicMetaTags() {
@@ -360,7 +361,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             }
         }
 
-            // Add CONTENIDO meta tag
+        // Add CONTENIDO meta tag
         $aVersion = explode('.', $cfg['version']);
         $sContenidoVersion = $aVersion[0] . '.' . $aVersion[1];
 
@@ -376,7 +377,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $aMetaTags[] = array('name' => 'generator', 'content' => 'CMS CONTENIDO ' . $sContenidoVersion);
 
 
-
         // Add content type or charseet meta tag
         if (getEffectiveSetting('generator', 'html5', 'false') == 'true') {
             $aMetaTags[] = array('charset' => $encoding[$this->_lang]);
@@ -386,7 +386,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'text/html; charset=' . $encoding[$this->_lang]);
         }
 
-        $aMetaTags[] = array('name' => 'robots' , 'content' => $searchable);
+        $aMetaTags[] = array('name' => 'robots', 'content' => $searchable);
 
         return $aMetaTags;
     }

@@ -1,29 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the action collection and item class.
  *
- * Description:
- * Action management class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO API
- * @version 1.5
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Action collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package    Core
+ * @subpackage GenericDB_Model
  */
 class cApiActionCollection extends ItemCollection {
 
@@ -45,9 +41,10 @@ class cApiActionCollection extends ItemCollection {
      * @param string|int $area
      * @param string|int $name
      * @param string|int $alt_name
-     * @param string $code
-     * @param string $location
-     * @param int $relevant
+     * @param string     $code
+     * @param string     $location
+     * @param int        $relevant
+     *
      * @return cApiAction
      */
     public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1) {
@@ -79,7 +76,7 @@ class cApiActionCollection extends ItemCollection {
         $item->set('alt_name', $alt_name);
         $item->set('code', $code);
         $item->set('location', $location);
-        $item->set('relevant', (int) $relevant);
+        $item->set('relevant', (int)$relevant);
 
         $item->store();
 
@@ -116,17 +113,20 @@ class cApiActionCollection extends ItemCollection {
      * Return name of passed action.
      *
      * @param int Id of action
+     *
      * @return string null
      */
     public function getActionName($action) {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
-        return ($this->db->nextRecord())? $this->db->f('name') : null;
+
+        return ($this->db->nextRecord()) ? $this->db->f('name') : NULL;
     }
 
     /**
      * Returns the area for the given action.
      *
      * @param string|int Name or id of action
+     *
      * @return int null with the area ID for the given action or null
      */
     function getAreaForAction($action) {
@@ -136,7 +136,7 @@ class cApiActionCollection extends ItemCollection {
             $this->db->query("SELECT idarea FROM `%s` WHERE idaction = %d", $this->table, $action);
         }
 
-        return ($this->db->nextRecord())? $this->db->f('idarea') : null;
+        return ($this->db->nextRecord()) ? $this->db->f('idarea') : NULL;
     }
 
 }
@@ -144,8 +144,8 @@ class cApiActionCollection extends ItemCollection {
 /**
  * Action item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package    Core
+ * @subpackage GenericDB_Model
  */
 class cApiAction extends Item {
 

@@ -1,26 +1,25 @@
 <?php
 /**
- * Keyword Management System
+ * This file contains the keyword collection and item class.
  *
- * @package CONTENIDO API
- * @subpackage Model
- * @version SVN Revision $Rev:$
- * @author Frederic Schneider
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Frederic Schneider
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * File collection
+ * Keyword collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiKeywordCollection extends ItemCollection {
 
@@ -58,8 +57,8 @@ class cApiKeywordCollection extends ItemCollection {
 /**
  * Keyword item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiKeyword extends Item {
 

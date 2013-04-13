@@ -1,40 +1,30 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the article specifications collection and item class.
  *
- * Description:
- * Article specification class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * Code is taken over from file contenido/classes/class.artspec.php in favor of
- * normalizing API.
- *
- * @package CONTENIDO API
- * @version 0.1
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9.0
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Article specification collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiArticleSpecificationCollection extends ItemCollection {
 
     /**
      * Constructor function
-     *
-     * @param none
      */
     public function __construct() {
         global $cfg;
@@ -48,7 +38,7 @@ class cApiArticleSpecificationCollection extends ItemCollection {
      * @param int $client
      * @param int $lang
      * @param string $orderby Order statement, like "artspec ASC"
-     * @return cApiGroupProperty[]
+     * @return array
      */
     public function fetchByClientLang($client, $lang, $orderBy = '') {
         $this->select("client=" . (int) $client . " AND lang=" . (int) $lang, '', $this->escape($orderBy));
@@ -64,8 +54,8 @@ class cApiArticleSpecificationCollection extends ItemCollection {
 /**
  * Article specification item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiArticleSpecification extends Item {
 

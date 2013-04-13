@@ -1,89 +1,35 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the system property collection and item class.
  *
- * Description:
- * This class will be a replacement for all other
- * user classes, which encapsulates only small parts
- * of user related tasks.
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * In current version you can administer optional password checks
- * via following configuration values:
- *
- * - En- or disabling checks:
- * $cfg['password']['check_password_mask'] = [true|false]
- * Use this flag to enable (true) or disable (false) the mask checks.
- *
- * $cfg['password']['use_cracklib'] = [true|false]
- * Use this to enable (true) or disable (false) the strength check, currently
- * done with cracklib.
- *
- * - Mask checks:
- * Password mask checks are checks belonging to the "format" of the needed
- * password string.
- *
- * $cfg['password']['min_length'], int
- * Minimum length a password has to have. If not set, 8 chars are set as default
- * $cfg['password']['numbers_mandatory'], int
- * If set to a value greater than 0, at least
- * $cfg['password']['numbers_mandatory'] numbers
- * must be in password
- * $cfg['password']['symbols_mandatory'], int &&
- * $cfg['password']['symbols_regex'], String
- * If 'symbols_mandatory' set to a value greater than 0, at least so many
- * symbols has to appear in
- * given password. What symbols are regcognized can be administrated via
- * 'symbols_regex'. This has
- * to be a regular expression which is used to "find" the symbols in $password.
- * If not set, following
- * RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
- * $cfg['password']['mixed_case_mandatory'], int
- * If set to a value greater than 0 so many lower and upper case character must
- * appear in the password.
- * (e.g.: if set to 2, 2 upper and 2 lower case characters must appear)
- *
- * - Strength check
- * Passwords should have some special characteristics to be a strong, i.e. not
- * easy to guess, password. Currently
- * cracklib is supported. These are the configuration possibilities:
- *
- * $cfg['password']['cracklib_dict'], string
- * Path and file name (without file extension!) to dictionary you want to use.
- * This setting is
- * mandatory!
- *
- * Keep in mind that these type of check only works if crack module is
- * available.
- *
- * @package CONTENIDO API
- * @version 1.9.1
- * @author Bjoern Behrens
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Bjoern Behrens
+ * @author           Holger Librenz
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * User collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiUserCollection extends ItemCollection {
 
     /**
      * Constructor function.
      *
-     * @global type $cfg
+     * @global array $cfg
      * @param string|bool $where The where clause in the select, usable to run
-     *        select
-     *        by creating the instance
+     *        select by creating the instance
      */
     public function __construct($where = false) {
         global $cfg;
@@ -98,7 +44,7 @@ class cApiUserCollection extends ItemCollection {
      * Createa a user by user name.
      *
      * @param string $username
-     * @return cApiUser false
+     * @return cApiUser|false
      */
     public function create($username) {
         $primaryKeyValue = md5($username);
@@ -268,8 +214,56 @@ class cApiUserCollection extends ItemCollection {
 /**
  * User item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * In current version you can administer optional password checks
+ * via following configuration values:
+ *
+ * - En- or disabling checks:
+ * $cfg['password']['check_password_mask'] = [true|false]
+ * Use this flag to enable (true) or disable (false) the mask checks.
+ *
+ * $cfg['password']['use_cracklib'] = [true|false]
+ * Use this to enable (true) or disable (false) the strength check, currently
+ * done with cracklib.
+ *
+ * - Mask checks:
+ * Password mask checks are checks belonging to the "format" of the needed
+ * password string.
+ *
+ * $cfg['password']['min_length'], int
+ * Minimum length a password has to have. If not set, 8 chars are set as default
+ * $cfg['password']['numbers_mandatory'], int
+ * If set to a value greater than 0, at least
+ * $cfg['password']['numbers_mandatory'] numbers
+ * must be in password
+ * $cfg['password']['symbols_mandatory'], int &&
+ * $cfg['password']['symbols_regex'], String
+ * If 'symbols_mandatory' set to a value greater than 0, at least so many
+ * symbols has to appear in
+ * given password. What symbols are regcognized can be administrated via
+ * 'symbols_regex'. This has
+ * to be a regular expression which is used to "find" the symbols in $password.
+ * If not set, following
+ * RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
+ * $cfg['password']['mixed_case_mandatory'], int
+ * If set to a value greater than 0 so many lower and upper case character must
+ * appear in the password.
+ * (e.g.: if set to 2, 2 upper and 2 lower case characters must appear)
+ *
+ * - Strength check
+ * Passwords should have some special characteristics to be a strong, i.e. not
+ * easy to guess, password. Currently
+ * cracklib is supported. These are the configuration possibilities:
+ *
+ * $cfg['password']['cracklib_dict'], string
+ * Path and file name (without file extension!) to dictionary you want to use.
+ * This setting is
+ * mandatory!
+ *
+ * Keep in mind that these type of check only works if crack module is
+ * available.
+ *
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiUser extends Item {
 
@@ -277,9 +271,7 @@ class cApiUser extends Item {
      * Password is ok and stored.
      *
      * @var int
-     * @final
-     *
-     *
+
      */
     const PASS_OK = 0;
 
@@ -287,9 +279,7 @@ class cApiUser extends Item {
      * Given password is to short
      *
      * @var int
-     * @final
-     *
-     *
+
      */
     const PASS_TO_SHORT = 1;
 
@@ -297,9 +287,7 @@ class cApiUser extends Item {
      * Given password is not strong enough
      *
      * @var int
-     * @final
-     *
-     *
+
      */
     const PASS_NOT_STRONG = 2;
 
@@ -307,9 +295,7 @@ class cApiUser extends Item {
      * Given password is not complex enough
      *
      * @var int
-     * @final
-     *
-     *
+
      */
     const PASS_NOT_COMPLEX = 3;
 
@@ -317,9 +303,7 @@ class cApiUser extends Item {
      * Password does not contain enough numbers.
      *
      * @var int
-     * @final
-     *
-     *
+
      */
     const PASS_NOT_ENOUGH_NUMBERS = 4;
 
@@ -327,9 +311,6 @@ class cApiUser extends Item {
      * Password does not contain enough symbols.
      *
      * @var int
-     * @final
-     *
-     *
      */
     const PASS_NOT_ENOUGH_SYMBOLS = 5;
 
@@ -337,9 +318,7 @@ class cApiUser extends Item {
      * Password does not contain enough mixed characters.
      *
      * @var int
-     * @final
-     *
-     *
+
      */
     const PASS_NOT_ENOUGH_MIXED_CHARS = 6;
 
@@ -347,9 +326,7 @@ class cApiUser extends Item {
      * Password does not contain enough different characters.
      *
      * @var int
-     * @final
-     *
-     *
+
      */
     const PASS_NOT_ENOUGH_DIFFERENT_CHARS = 7;
 
@@ -358,9 +335,7 @@ class cApiUser extends Item {
      * that already exists.
      *
      * @var int
-     * @final
-     *
-     *
+
      */
     const EXCEPTION_USERNAME_EXISTS = 8;
 
@@ -369,9 +344,7 @@ class cApiUser extends Item {
      * that is not valid.
      *
      * @var int
-     * @final
-     *
-     *
+
      */
     const EXCEPTION_PASSWORD_INVALID = 9;
 
@@ -380,9 +353,7 @@ class cApiUser extends Item {
      * for passwords are set via $cfg['password']['min_length']
      *
      * @var int
-     * @final
-     *
-     *
+
      */
     const MIN_PASS_LENGTH_DEFAULT = 8;
 
@@ -1152,9 +1123,6 @@ class cApiUser extends Item {
                 break;
             case self::PASS_NOT_ENOUGH_DIFFERENT_CHARS:
                 $sError = sprintf(i18n('Password does not contain enough different characters.'));
-                break;
-            case self::PASS_NOT_ENOUGH_MIXED_CHARS:
-                $sError = sprintf(i18n('Please use at least %d lower and upper case characters in your password!'), $cfg['password']['mixed_case_mandatory']);
                 break;
             case self::PASS_NOT_STRONG:
                 $sError = i18n('Please choose a more secure password!');

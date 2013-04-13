@@ -1,29 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the path resolve cache collection and item class and its helper.
  *
- * Description:
- * Pathresolve cache heap table management class.
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO API
- * @version 0.1
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Pathresolve cache static helper class
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage Util
  */
 class cApiPathresolveCacheHelper {
 
@@ -72,8 +68,8 @@ class cApiPathresolveCacheHelper {
 /**
  * Pathresolve cache collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiPathresolveCacheCollection extends ItemCollection {
 
@@ -117,7 +113,7 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      *
      * @param string $path
      * @param int $idlang
-     * @return cApiPathresolveCache null
+     * @return cApiPathresolveCache|null
      */
     public function fetchLatestByPathAndLanguage($path, $idlang) {
         $this->select("path LIKE '" . $this->db->escape($path) . "' AND idlang=" . (int) $idlang, '', 'lastcached DESC', '1');
@@ -142,8 +138,8 @@ class cApiPathresolveCacheCollection extends ItemCollection {
 /**
  * Pathresolve cache item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiPathresolveCache extends Item {
 

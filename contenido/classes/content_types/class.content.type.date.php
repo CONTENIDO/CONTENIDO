@@ -3,7 +3,7 @@
  * This file contains the cContentTypeDate class.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  * @version SVN Revision $Rev:$
  * @author Bilal Arslan, Timo Trautmann, Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
@@ -12,9 +12,7 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Content type CMS_DATE which allows the editor to select a date from a
@@ -22,7 +20,7 @@ if (!defined('CON_FRAMEWORK')) {
  * format.
  *
  * @package Core
- * @subpackage Content Type
+ * @subpackage ContentType
  */
 class cContentTypeDate extends cContentTypeAbstract {
 

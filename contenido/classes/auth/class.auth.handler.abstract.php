@@ -2,24 +2,22 @@
 /**
  * This file contains the abstract authentication handler class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Authentication
  *
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call: Missing framework initialization - request aborted.');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains the abstract methods for the authentication in CONTENIDO.
  *
- * @package Core
+ * @package    Core
  * @subpackage Authentication
  */
 abstract class cAuthHandlerAbstract extends cAuth {
@@ -36,8 +34,6 @@ abstract class cAuthHandlerAbstract extends cAuth {
     /**
      * Display the login form.
      * Let this method include a file which displays the login form.
-     *
-     * @return void
      */
     abstract public function displayLoginForm();
 
@@ -54,8 +50,6 @@ abstract class cAuthHandlerAbstract extends cAuth {
      * Log the successful authentication.
      * If wished, this method can be executed for logging an successful
      * authentication.
-     *
-     * @return void
      */
     abstract public function logSuccessfulAuth();
 

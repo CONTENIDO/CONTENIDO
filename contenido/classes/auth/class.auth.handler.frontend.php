@@ -2,24 +2,22 @@
 /**
  * This file contains the frontend authentication handler class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Authentication
  *
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call: Missing framework initialization - request aborted.');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains the methods for the frontend authentication in CONTENIDO.
  *
- * @package Core
+ * @package    Core
  * @subpackage Authentication
  */
 class cAuthHandlerFrontend extends cAuthHandlerAbstract {
@@ -31,6 +29,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         if ($password == '') {
             // Stay as nobody when an empty password is passed
             $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
+
             return false;
         }
 
@@ -51,6 +50,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
             $this->auth['uname'] = $username;
         } elseif ($this->_defaultNobody == true) {
             $uid = $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
+
             return $uid;
         }
 
@@ -97,8 +97,9 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
             }
         }
 
-        if ($uid == false || hash("sha256", md5($password).$salt) != $pass) {
+        if ($uid == false || hash("sha256", md5($password) . $salt) != $pass) {
             sleep(5);
+
             return false;
         }
 
@@ -115,6 +116,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         $perm = implode(',', $groupPerm);
 
         $this->auth['perm'] = $perm;
+
         return $uid;
     }
 

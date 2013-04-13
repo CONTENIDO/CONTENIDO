@@ -1,33 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * Code is taken over from file contenido/classes/class.upload.php in favor of
- * normalizing API.
- *
- * @package CONTENIDO API
- * @version 0.1.1
- * @author Timo A. Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
- *
+ * This file contains the upload collection and item class.
  * @todo Reset in/out filters of parent classes.
+ *
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Upload collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiUploadCollection extends ItemCollection {
 
@@ -118,8 +111,8 @@ class cApiUploadCollection extends ItemCollection {
      * @global array $cfgClient
      * @global int $client
      * @param int $id
-     * @return bool FIXME Code is similar/redundant to
-     *         include.upl_files_overview.php 216-230
+     * @return bool
+     * @fixme Code is similar/redundant to include.upl_files_overview.php 216-230
      */
     public function delete($id) {
         global $_cecRegistry, $cfgClient, $client;
@@ -192,8 +185,8 @@ class cApiUploadCollection extends ItemCollection {
 /**
  * Upload item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiUpload extends Item {
 

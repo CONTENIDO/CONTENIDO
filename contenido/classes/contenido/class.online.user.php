@@ -1,33 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the online user collection and item class.
  *
- * Description:
- * Display current online user
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * Code is taken over from file contenido/classes/class.activeusers.php in favor
- * of normalizing API.
- *
- * @package CONTENIDO API
- * @version 0.1.2
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9.0
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Online user collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiOnlineUserCollection extends ItemCollection {
 
@@ -175,7 +167,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      * This function do an update of current timestamp in 'online_user'
      *
      * @param string $userId Is the User-Id (get from auth object)
-     * @return Returns true if successful, else false
+     * @return bool Returns true if successful, else false
      */
     public function updateUser($userId) {
         $oUser = new cApiOnlineUser((string) $userId);
@@ -191,7 +183,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      * Delete all Contains in the table 'online_user' that is older as
      * Backend timeout(currently is $cfg['backend']['timeout'] = 60)
      *
-     * @return Returns true if successful else false
+     * @return bool Returns true if successful else false
      */
     public function deleteInactiveUser() {
         global $cfg;
@@ -229,7 +221,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      * Delete this user from 'online user' table
      *
      * @param string $userId Is the User-Id (get from auth object)
-     * @return Returns true if successful, else false
+     * @return bool Returns true if successful, else false
      */
     public function deleteUser($userId) {
         return $this->delete((string) $userId);
@@ -239,8 +231,8 @@ class cApiOnlineUserCollection extends ItemCollection {
 /**
  * Online user item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiOnlineUser extends Item {
 

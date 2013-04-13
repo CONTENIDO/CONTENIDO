@@ -1,47 +1,29 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System.
+ * This file contains the group property collection and item class.
  *
- * Description:
- * Group property management class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * cApiGroupProperty instance contains following class properties:
- * - idgroupprop (int)
- * - group_id (string)
- * - type (string)
- * - name (string)
- * - value (string)
- * - idcatlang (int)
- *
- * If caching is enabled, see $cfg['properties']['group_prop']['enable_cache'],
- * all entries will be loaded at first time.
- * If enabled, each call of cApiGroupPropertyCollection functions to retrieve
- * properties
- * will return the cached entries without stressing the database.
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Group property collection.
  *
  * The cApiGroupPropertyCollection class keeps also track of changed and deleted
  * properties and synchronizes them with cached values, as long as you use the
  * interface of cApiGroupPropertyCollection to manage the properties.
  *
- * @package CONTENIDO API
- * @version 0.2
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-/**
- * Group property collection
- *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiGroupPropertyCollection extends ItemCollection {
 
@@ -118,7 +100,6 @@ class cApiGroupPropertyCollection extends ItemCollection {
      *
      * @param string $groupId
      * @throws cInvalidArgumentException If passed group id is empty
-     * @return void
      */
     public function setGroupId($groupId) {
         if (empty($groupId)) {
@@ -393,8 +374,22 @@ class cApiGroupPropertyCollection extends ItemCollection {
 /**
  * Group property item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * cApiGroupProperty instance contains following class properties:
+ * - idgroupprop (int)
+ * - group_id (string)
+ * - type (string)
+ * - name (string)
+ * - value (string)
+ * - idcatlang (int)
+ *
+ * If caching is enabled, see $cfg['properties']['group_prop']['enable_cache'],
+ * all entries will be loaded at first time.
+ * If enabled, each call of cApiGroupPropertyCollection functions to retrieve
+ * properties
+ * will return the cached entries without stressing the database.
+ *
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiGroupProperty extends Item {
 

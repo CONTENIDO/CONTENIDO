@@ -1,36 +1,25 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System
- * Description: User property management class.
- * cApiUserProperty instance contains following properties: - iduserprop (int) -
- * user_id (string) - type (string) - name (string) - value (string) - idcatlang
- * (int)
- * If caching is enabled, see $cfg['properties']['user_prop']['enable_cache'],
- * all entries will be loaded at first time. If enabled, each call of
- * cApiUserPropertyCollection functions to retrieve properties will return the
- * cached entries without stressing the database.
- * The cApiUserPropertyCollection class keeps also track of changed and deleted
- * properties and synchronizes them with cached values, as long as you use the
- * interface of cApiUserPropertyCollection to manage the properties.
+ * This file contains the user property collection and item class.
  *
- * @package CONTENIDO API
- * @version 0.2
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * User property collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiUserPropertyCollection extends ItemCollection {
 
@@ -91,7 +80,6 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $userId
      * @throws cInvalidArgumentException If passed user id is empty
-     * @return void
      */
     public function setUserId($userId) {
         if (empty($userId)) {
@@ -194,7 +182,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
-     * @return cApiUserProperty null
+     * @return cApiUserProperty|null
      */
     public function fetchByUserIdTypeName($type, $name) {
         if (self::$_enableCache) {
@@ -319,7 +307,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
-     * @return cApiUserProperty null
+     * @return cApiUserProperty|null
      */
     public function _fetchByUserIdTypeNameFromCache($type, $name) {
         $props = array();
@@ -367,8 +355,8 @@ class cApiUserPropertyCollection extends ItemCollection {
 /**
  * User property item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiUserProperty extends Item {
 

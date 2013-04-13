@@ -2,24 +2,22 @@
 /**
  * This file contains the backend authentication handler class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Authentication
  *
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call: Missing framework initialization - request aborted.');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains the methods for the backend authentication in CONTENIDO.
  *
- * @package Core
+ * @package    Core
  * @subpackage Authentication
  */
 class cAuthHandlerBackend extends cAuthHandlerAbstract {
@@ -28,12 +26,10 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
      * Constructor of the backend auth handler.
      * Automatically sets the lifetime of the authentication to the configured
      * value.
-     *
-     * @return void
      */
     public function __construct() {
         $cfg = cRegistry::getConfig();
-        $this->_lifetime = (int) $cfg['backend']['timeout'];
+        $this->_lifetime = (int)$cfg['backend']['timeout'];
 
         if ($this->_lifetime == 0) {
             $this->_lifetime = 15;
@@ -68,6 +64,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
             $this->auth['uname'] = $username;
         } else if ($this->_defaultNobody == true) {
             $uid = $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
+
             return $uid;
         }
 
@@ -95,9 +92,10 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
             $salt = $item->get("salt");
         }
 
-        if ($uid == false || hash("sha256", md5($password).$salt) != $pass) {
+        if ($uid == false || hash("sha256", md5($password) . $salt) != $pass) {
             // No user found, sleep and exit
             sleep(5);
+
             return false;
         }
 
@@ -114,6 +112,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         $perm = implode(',', $groupPerm);
 
         $this->auth['perm'] = $perm;
+
         return $uid;
     }
 

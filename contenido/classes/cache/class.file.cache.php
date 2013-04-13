@@ -2,24 +2,22 @@
 /**
  * This file contains the file cache class.
  *
- * @package Core
+ * @package    Core
  * @subpackage Cache
  *
- * @author Dominik Ziegler
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Dominik Ziegler
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call: Missing framework initialization - request aborted.');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * This class contains functions for the file cache in CONTENIDO.
  *
- * @package Core
+ * @package    Core
  * @subpackage Cache
  */
 class cFileCache {
@@ -31,8 +29,8 @@ class cFileCache {
 
     /**
      * Constructor.
+     *
      * @param array $options array with options for the cache (optional, default: empty array)
-     * @return void
      */
     public function __construct($options = array()) {
         $this->setOptions($options);
@@ -40,8 +38,8 @@ class cFileCache {
 
     /**
      * Setter for the cache options. Validates incoming options and sets the default of the missing options.
+     *
      * @param array $options array with option
-     * @return void
      */
     public function setOptions($options) {
         // complete all options
@@ -78,8 +76,10 @@ class cFileCache {
 
     /**
      * Generates the filename based on set options.
-     * @param string $id cache ID
+     *
+     * @param string $id    cache ID
      * @param string $group cache group
+     *
      * @return string filename
      */
     public function generateFileName($id, $group = '') {
@@ -95,7 +95,6 @@ class cFileCache {
     /**
      * Validates the caching directory and throws exception on error.
      * @throws cInvalidArgumentException
-     * @return void
      */
     protected function _validateDirectory() {
         $directory = $this->_options['cacheDir'];
@@ -114,8 +113,10 @@ class cFileCache {
 
     /**
      * Returns full destination to the cache file.
-     * @param string $id cache ID
+     *
+     * @param string $id    cache ID
      * @param string $group cache group
+     *
      * @return string full filename
      */
     public function getDestination($id, $group = '') {
@@ -129,8 +130,10 @@ class cFileCache {
 
     /**
      * Return content of a specific cache stored in filesystem. If not cached, false is returned.
-     * @param string $id cache ID
+     *
+     * @param string $id    cache ID
      * @param string $group cache group
+     *
      * @return bool|string content or false
      */
     public function get($id, $group = '') {
@@ -142,7 +145,7 @@ class cFileCache {
             return false;
         }
 
-        $refreshTime = ($this->_options['lifetime'] == 0) ? 0 : time() - (int) $this->_options['lifetime'];
+        $refreshTime = ($this->_options['lifetime'] == 0) ? 0 : time() - (int)$this->_options['lifetime'];
 
         clearstatcache();
         $info = cFileHandler::info($destination);
@@ -157,9 +160,11 @@ class cFileCache {
 
     /**
      * Saves the content of a cache in filesystem.
-     * @param string $data data to save
-     * @param string $id cache ID
+     *
+     * @param string $data  data to save
+     * @param string $id    cache ID
      * @param string $group cache group
+     *
      * @return bool success state
      */
     public function save($data, $id, $group = '') {
@@ -168,8 +173,10 @@ class cFileCache {
 
     /**
      * Removes cache from filesystem.
-     * @param string $id cache ID
+     *
+     * @param string $id    cache ID
      * @param string $group cache group
+     *
      * @return bool success state
      */
     public function remove($id, $group = '') {
@@ -183,7 +190,9 @@ class cFileCache {
 
     /**
      * Generates a ID for the given variables.
+     *
      * @param mixed $variables variables to generate a ID for
+     *
      * @return string generated ID
      */
     public function generateID($variables) {

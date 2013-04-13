@@ -1,38 +1,30 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System Description: CONTENIDO In-Use
- * classes Code is taken over from file contenido/classes/class.inuse.php in
- * favor of normalizing API.
+ * This file contains the inuse collection and item class.
  *
- * @package CONTENIDO API
- * @version 0.1.1
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9.0
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Class InUse Class for In-Use management
  *
- * @package CONTENIDO API
- * @subpackage Model
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.1
- * @copyright four for business 2003
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiInUseCollection extends ItemCollection {
 
     /**
      * Constructor Function
-     *
-     * @param none
      */
     public function __construct() {
         global $cfg;
@@ -51,7 +43,7 @@ class cApiInUseCollection extends ItemCollection {
      * @param string $session Specifies the session for which the "in use" mark
      *            is valid
      * @param string $user Specifies the user which requested the in-use flag
-     * @return cApiInUse null
+     * @return cApiInUse|null
      */
     public function markInUse($type, $objectid, $session, $user) {
         $type = $this->escape($type);
@@ -277,11 +269,8 @@ class cApiInUseCollection extends ItemCollection {
 /**
  * Class cApiInUse Class for a single in-use item
  *
- * @package CONTENIDO API
- * @subpackage Model
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.1
- * @copyright four for business 2003
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiInUse extends Item {
 

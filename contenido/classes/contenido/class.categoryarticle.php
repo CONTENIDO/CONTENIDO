@@ -1,29 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the category article collection and item class.
  *
- * Description:
- * Category access class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO API
- * @version 1.4
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Category article collection
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiCategoryArticleCollection extends ItemCollection {
 
@@ -121,7 +117,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
-     * @return cApiCategoryArticle null
+     * @return cApiCategoryArticle|null
      */
     public function fetchByCategoryIdAndArticleId($idcat, $idart) {
         $aProps = array(
@@ -145,7 +141,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
-     * @return int null
+     * @return int|null
      */
     public function getIdByCategoryIdAndArticleId($idcat, $idart) {
         $where = "idcat = %d AND idart = %d";
@@ -254,8 +250,8 @@ class cApiCategoryArticleCollection extends ItemCollection {
 /**
  * Category article item
  *
- * @package CONTENIDO API
- * @subpackage Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiCategoryArticle extends Item {
 

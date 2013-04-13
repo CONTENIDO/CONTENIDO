@@ -1,44 +1,28 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the module collection and item class.
  *
- * Description:
- * Area management class
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- * @todo       Switch to SimpleXML
- *
- * @package    CONTENIDO API
- * @version    1.2.1
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2003-02-26
- *   $Id$:
- * }}
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Module collection
- * @package    CONTENIDO API
- * @subpackage Model
+ * @package    Core
+ * @subpackage GenericDB_Model
  */
 class cApiModuleCollection extends ItemCollection {
     /**
      * Constructor Function
-     *
-     * @param none
      */
     public function __construct() {
         global $cfg;
@@ -162,8 +146,8 @@ class cApiModuleCollection extends ItemCollection {
 
 /**
  * Module item
- * @package    CONTENIDO API
- * @subpackage Model
+ * @package    Core
+ * @subpackage GenericDB_Model
  */
 class cApiModule extends Item {
     /**
@@ -222,9 +206,6 @@ class cApiModule extends Item {
 
     /**
      * Returns the translated name of the module if a translation exists.
-     *
-     * @param none
-     *
      * @return string Translated module name or original
      */
     public function getTranslatedName() {
@@ -248,8 +229,6 @@ class cApiModule extends Item {
      * Sets the translated name of the module
      *
      * @param $name string Translated name of the module
-     *
-     * @return none
      */
     public function setTranslatedName($name) {
         global $lang;
@@ -385,6 +364,8 @@ class cApiModule extends Item {
                 unset($results);
             }
         }
+
+        global $cfg;
 
         // adding dynamically new module translations by content types
         // this function was introduced with CONTENIDO 4.8.13
@@ -660,9 +641,9 @@ class cApiModule extends Item {
     }
 
     /**
-     * Add recrusive folder to zip archive
+     * Add recursive folder to zip archive
      *
-     * @param string $dir        direcotry name
+     * @param string $dir        directory name
      * @param string $zipArchive name of the archive
      * @param string $zipdir
      */
@@ -697,7 +678,7 @@ class cApiModule extends Item {
     /**
      * Exports the specified module  to a zip file
      */
-    function export() {
+    public function export() {
         $notification = new cGuiNotification();
         $moduleHandler = new cModuleHandler($this->get('idmod'));
 
