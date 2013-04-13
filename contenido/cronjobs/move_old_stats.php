@@ -1,28 +1,15 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the cronjob for moving old statistics into the stat_archive table
  *
- * Description:
- * Cron Job to move old statistics into the stat_archive table
+ * @package    Core
+ * @subpackage Cronjob
  *
- * Requirements:
- * @con_php_req 5
- *
- *
- * @package    CONTENIDO Backend Cronjob
- * @version    1.0.2
- * @author     Timo A. Hummel
+ * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- *
- * {@internal
- *   created  2003-05-26
- *   $Id$:
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {

@@ -1,27 +1,15 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the cronjob of the linkchecker plugin.
  *
- * Description:
- * Link Checker
+ * @package    Plugin
+ * @subpackage Linkchecker
  *
- * Requirements:
- * @con_php_req 5
- *
- *
- * @package    CONTENIDO Backend Cronjob
- * @version    1.0.1
  * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

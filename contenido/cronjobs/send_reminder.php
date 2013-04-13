@@ -1,19 +1,15 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the cronjob to send the reminder items.
  *
- * Description:
- * Cronjob to send reminder items
+ * @package    Core
+ * @subpackage Cronjob
  *
- * @package    CONTENIDO Backend Cronjob
- * @version    1.1
- * @author     Timo A. Hummel
+ * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
  */
 
 if (!defined('CON_FRAMEWORK')) {

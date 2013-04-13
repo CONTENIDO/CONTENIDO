@@ -1,27 +1,16 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
+ * This file contains the cronjob to advance workflow.
  * Advances to the next step if the time limit is 'over'
  *
- * Requirements:
- * @con_php_req 5.0
+ * @package    Plugin
+ * @subpackage Workflow
  *
- *
- * @package    CONTENIDO Backend Cronjob
- * @version    1.5.4
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2003-05-26
- *   $Id$
- * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
