@@ -1,32 +1,19 @@
 <?php
-
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the mass module translation backend page in content area.
  *
- * Description:
- * All modules translation editor
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Includes
- * @version 1.0.3
- * @author Ingo van Peeren
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- *
- *       {@internal
- *       created unknown
- *       $Id: include.mod_translate.php 2987 2012-08-21 21:44:14Z xmurrix $:
- *       }}
+ * @author           Ingo van Peeren
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Extend cGuiScrollList for some special features like CSS class for table data

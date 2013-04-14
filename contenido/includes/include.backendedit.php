@@ -1,20 +1,18 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the backend edit include.
  *
- * Description:
- * Backend edit include
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend classes
- * @version    1.0.5
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @author           Unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
+
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
@@ -37,7 +35,6 @@ cRegistry::bootstrap(array(
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
-
 
 // Create CONTENIDO classes
 // FIXME: Correct variable names, instances of classes at objects, not classes!

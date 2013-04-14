@@ -1,39 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the backend page for the editor of frontend users.
  *
- * Description:
- * Frontend user editor
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.1.10
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *  created unknown
- *  modified 2008-06-27, Frederic Schneider, add security fix
- *  modified 2009-06-02, Andreas Lindner, fix check for duplicate user name when it contains a special character
- *  modified 2011-06-01, Ortwin Pinke, fixed CON-402 german umlaute not correct displayed for membergroups
- *  modified 2012-02-15, Rusmir Jusufovic, show message
- *   $Id$:
- * }}
- *
+ * @author           Unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $page = new cGuiPage("frontend.user_edit");
 
