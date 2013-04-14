@@ -1,30 +1,21 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * Display rights
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.4
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * This file contains the backend page for the user overview.
  * TODO error handling!!!
  * TODO export functions to new cApiUser object!
+ *
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.rights.php');
 
