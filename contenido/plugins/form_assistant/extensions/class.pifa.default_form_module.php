@@ -3,7 +3,7 @@
 /**
  *
  * @package Plugin
- * @subpackage PIFA Form Asistant
+ * @subpackage FormAssistant
  * @version SVN Revision $Rev:$
  * @author marcus.gnass
  * @copyright four for business AG

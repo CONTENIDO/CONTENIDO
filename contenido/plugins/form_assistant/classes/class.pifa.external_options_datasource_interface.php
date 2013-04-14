@@ -3,7 +3,7 @@
 /**
  *
  * @package Plugin
- * @subpackage PIFA Form Asistant
+ * @subpackage FormAssistant
  * @version SVN Revision $Rev:$
  * @author marcus.gnass
  * @copyright four for business AG
@@ -11,7 +11,7 @@
  */
 
 // assert CONTENIDO framework
-defined('CON_FRAMEWORK') or die('Illegal call');
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Abstract class to read labels and values to be used for PIFA field options
