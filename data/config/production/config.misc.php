@@ -20,9 +20,7 @@
  * @since      file available since CONTENIDO release <= 4.6
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $cfg;
 

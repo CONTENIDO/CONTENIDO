@@ -3,9 +3,7 @@
  * This file contains all chains to load in the registry.
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // get cec registry instance
 $_cecRegistry = cApiCecRegistry::getInstance();

@@ -25,9 +25,7 @@
  * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /* Do not edit or add anything in check array here, use config.http_check.local.php for custom entries. Otherwise
  * your changes could be damaged on next update!

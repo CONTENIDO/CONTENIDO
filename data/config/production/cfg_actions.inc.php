@@ -25,9 +25,7 @@
  * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 
 cInclude('includes', 'functions.i18n.php');
