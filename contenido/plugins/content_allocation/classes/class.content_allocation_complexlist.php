@@ -1,40 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the complex list class for the plugin content allocation.
  *
- * Description:
- * ContentAllocation
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
+ * @package    Plugin
  * @subpackage ContentAllocation
- * @version    0.2.1
+ * @version    SVN Revision $Rev:$
+ *
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   modified 2008-07-02, Frederic Schneider, add security fix
- *
- *   $Id$:
- * }}
- *
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+plugin_include('repository', 'custom/FrontendNavigation.php');
 
 /**
- * @package    CONTENIDO Plugins
+ * Complex list class for content allocation
+ *
+ * @package    Plugin
  * @subpackage ContentAllocation
  */
 class pApiContentAllocationComplexList extends pApiTree {

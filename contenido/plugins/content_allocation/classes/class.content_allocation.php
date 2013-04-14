@@ -1,47 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the main class for the plugin content allocation.
  *
- * Description:
- * Search articles by ContentAllocation
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
+ * @package    Plugin
  * @subpackage ContentAllocation
- * @version    0.7.9
+ * @version    SVN Revision $Rev:$
+ *
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2005
- *   modified 2005-10-27, Willi Man, debug option
- *   modified 2005-11-16, Willi Man, new method findMatchingContentByContentAllocationByCategories
- *   modified 2005-11-21, Willi Man, new method findMarchingCOntentByContentAllocation_OR_Categories
- *   modified 2008-04-06, Holger Librenz, direct mysql_* calls remoced, using DB_Contenido:: methods instead
- *   modified 2008-07-02, Frederic Schneider, add security fix
- *   modified 2011-08-23, Dominik Ziegler, added check for empty arrays [#CON-423]
- *
- *   $Id$:
- * }}
- *
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 plugin_include('repository', 'custom/FrontendNavigation.php');
 
 /**
- * @package    CONTENIDO Plugins
+ * Main class for content allocation
+ *
+ * @package    Plugin
  * @subpackage ContentAllocation
  */
 class pApiContentAllocation {

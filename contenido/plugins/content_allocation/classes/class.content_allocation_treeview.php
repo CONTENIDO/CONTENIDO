@@ -1,31 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the tree view class for the plugin content allocation.
  *
- * Description:
- * Stores and handles ContentAllocation management
+ * @package    Plugin
+ * @subpackage ContentAllocation
+ * @version    SVN Revision $Rev:$
  *
- * @package CONTENIDO Plugins
- * @version 0.2.3
- * @author Marco Jahn
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
+ * @author     Marco Jahn
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+plugin_include('repository', 'custom/FrontendNavigation.php');
 
 /**
- * Todo
- * - generalize this and papitree !!!!
- * - Comments!
+ * Tree view class for content allocation
  *
- * @package CONTENIDO Plugins
+ * @package    Plugin
  * @subpackage ContentAllocation
  */
 class pApiContentAllocationTreeView extends pApiTree {

@@ -1,40 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the tree class for the plugin content allocation.
  *
- * Description:
- * Stores and handles ContentAllocation management
+ * @package    Plugin
+ * @subpackage ContentAllocation
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @version    0.10.1
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created unknown
- *   $Id$:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+plugin_include('repository', 'custom/FrontendNavigation.php');
 
 /**
- * Todo
- * addslashes to all string db inserts
- * check if default language exists if new entry is added (otherwise)
+ * Tree class for content allocation
  *
- * @package    CONTENIDO Plugins
+ * @package    Plugin
  * @subpackage ContentAllocation
  */
 class pApiTree {
