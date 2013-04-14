@@ -2,7 +2,7 @@
 /**
  * Plugin mod_rewrite backend include file to administer settings (in content frame)
  *
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
@@ -13,9 +13,7 @@
  * @link        http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $client, $cfg;
 

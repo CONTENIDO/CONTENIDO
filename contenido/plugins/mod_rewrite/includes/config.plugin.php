@@ -5,7 +5,7 @@
  * This file will be included by CONTENIDO plugin loader routine, and the content
  * of this file ensures that the AMR Plugin will be initialized correctly.
  *
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
@@ -16,9 +16,7 @@
  * @link        http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $_cecRegistry, $cfg, $contenido, $area, $client, $load_client;
 

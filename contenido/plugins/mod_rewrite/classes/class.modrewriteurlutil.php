@@ -2,7 +2,7 @@
 /**
  * AMR url utility class
  *
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
@@ -13,9 +13,7 @@
  * @link        http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Mod Rewrite url utility class. Handles convertion of Urls from CONTENIDO core
@@ -23,7 +21,7 @@ if (!defined('CON_FRAMEWORK')) {
  * pattern and vice versa.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  */
 class ModRewriteUrlUtil extends ModRewriteBase {

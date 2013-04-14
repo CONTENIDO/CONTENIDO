@@ -2,7 +2,7 @@
 /**
  * AMR abstract controller class
  *
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
@@ -13,15 +13,13 @@
  * @link        http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Abstract controller for all concrete mod_rewrite controller implementations.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  */
 abstract class ModRewrite_ControllerAbstract {

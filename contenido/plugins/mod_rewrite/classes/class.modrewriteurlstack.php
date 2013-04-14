@@ -2,7 +2,7 @@
 /**
  * AMR url stack class
  *
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
@@ -13,9 +13,7 @@
  * @link        http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Mod rewrite url stack class. Provides features to collect urls and to get the
@@ -46,7 +44,7 @@ if (!defined('CON_FRAMEWORK')) {
  * </code>
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  */
 class ModRewriteUrlStack {

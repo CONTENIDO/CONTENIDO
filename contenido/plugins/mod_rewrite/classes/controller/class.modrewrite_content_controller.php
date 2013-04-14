@@ -2,7 +2,7 @@
 /**
  * AMR Content controller class
  *
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
@@ -13,16 +13,14 @@
  * @link        http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 
 /**
  * Content controller for general settings.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  */
 class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
@@ -376,7 +374,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract {
             $this->_oView->content_before = $this->_notifyBox('info', $sMsg);
         } else {
             $sMsg = i18n('Configuration could not saved. Please check write permissions for %s ', 'mod_rewrite');
-            $sMsg = sprintf($sMsg, $options['key']);
+            $sMsg = sprintf($sMsg, $options['key']); // TODO: from where does $options come?
             $this->_oView->content_before = $this->_notifyBox('error', $sMsg);
         }
     }

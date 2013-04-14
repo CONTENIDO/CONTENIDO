@@ -2,7 +2,7 @@
 /**
  * AMR base Mod Rewrite class
  *
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
@@ -13,9 +13,7 @@
  * @link        http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Abstract base mod rewrite class.
@@ -24,7 +22,7 @@ if (!defined('CON_FRAMEWORK')) {
  * access for childs.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  */
 abstract class ModRewriteBase {

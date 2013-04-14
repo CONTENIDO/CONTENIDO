@@ -10,7 +10,7 @@
  * - $idart
  * - $idcat
  *
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  ModRewrite
  * @version     SVN Revision $Rev:$
  * @id          $Id$:
@@ -21,9 +21,7 @@
  * @link        http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 
 global $client, $changeclient, $cfgClient, $lang, $changelang, $idart, $idcat, $path, $mr_preprocessedPageError;
