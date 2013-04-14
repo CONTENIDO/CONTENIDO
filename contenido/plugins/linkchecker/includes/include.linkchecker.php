@@ -1,25 +1,19 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System Description: Main file for the
- * plugin linkchecker Requirements: @con_php_req 5.0
+ * This is the main backend page for the linkchecker plugin.
  *
- *
- * @package CONTENIDO Plugins
+ * @package    Plugin
  * @subpackage Linkchecker
- * @version 2.0.1
- * @author Frederic Schneider
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.8.7 {@internal created
- *        2007-08-08 $Id: include.linkchecker.php 3642 2012-11-09 09:02:48Z
- *        frederic.schneider $: }}
+ * @version    SVN Revision $Rev:$
+ *
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $plugin_name = "linkchecker";
 $cfg = cRegistry::getConfig();

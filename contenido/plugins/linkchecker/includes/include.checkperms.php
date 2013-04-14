@@ -1,28 +1,19 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System
- * Description: Checks userrights for cats
- * Requirements: @con_php_req 5.0
+ * This file contains function to check user rights for the linkchecker plugin.
  *
- *
- * @package CONTENIDO Plugins
+ * @package    Plugin
  * @subpackage Linkchecker
- * @version 1.0.1
- * @author Mario Diaz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.8.7 {@internal created
- *        2006-06-08 modified 2007-11-07, Frederic Schneider,
- *        Linkchecker-Edition modified 2008-02-08, Andreas Lindner, Performance
- *        enhancements modified 2008-07-02, Frederic Schneider, add security fix
- *        $Id$: }}
+ * @version    SVN Revision $Rev:$
+ *
+ * @author     Mario Diaz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 function cCatPerm($widcat, $db = null) {
     global $cfg, $sess, $auth, $group_id, $_arrCatIDs_cCP;

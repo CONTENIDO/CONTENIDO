@@ -1,36 +1,26 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System Description: Some linktests for
- * the Linkchecker Requirements: @con_php_req 5.0
+ * This is the tests backend page for the linkchecker plugin.
  *
- *
- * @package CONTENIDO Plugins
+ * @package    Plugin
  * @subpackage Linkchecker
- * @version 2.0.2
- * @author Frederic Schneider
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.8.7 {@internal created
- *        2008-02-28 modified 2008-06-05, Frederic Schneider modified
- *        2008-06-26, Frederic Schneider, add security fix modified 2009-11-06,
- *        Murat Purc, replaced deprecated functions (PHP 5.3 ready) modified
- *        2010-01-07, Murat Purc, fixed usage of wrong variable, see [#CON-292]
- *        modified 2010-11-26, Dominik Ziegler, resetten array with redefinition
- *        of empty array instead of unsetting the variable [#CON-369] $Id:
- *        include.linkchecker_tests.php 3629 2012-11-02 12:27:32Z
- *        frederic.schneider $: }}
+ * @version    SVN Revision $Rev:$
+ *
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Checks all links without front_content.php
 function checkLinks() {
     global $auth, $cfgClient, $client, $cfg, $cronjob, $db, $aErrors, $lang, $langart, $whitelist;
     global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt, $aSearchIDInfosNonID;
+
+    $sSearch = '';
 
     if (count($aSearchIDInfosArt) > 0) { // Checks idarts
 
@@ -165,10 +155,10 @@ function checkLinks() {
         }
 
         $frontendPath = cRegistry::getFrontendPath();
-        for ($i = 0; $i < count($aSearchIDInfosNonID); $i++) {
+        $frontendURL = cRegistry::getFrontendUrl();
 
+        for ($i = 0; $i < count($aSearchIDInfosNonID); $i++) {
             if (url_is_uri($aSearchIDInfosNonID[$i]['url'])) {
-                $frontendURL = cRegistry::getFrontendUrl();
                 if (substr($aSearchIDInfosNonID[$i]['url'], 0, strlen($aSearchIDInfosNonID[$i]['url'])) == $frontendURL) {
                     $iPing = @cFileHandler::exists(str_replace($frontendURL, $frontendPath, $aSearchIDInfosNonID[$i]['url']));
                 } else {
