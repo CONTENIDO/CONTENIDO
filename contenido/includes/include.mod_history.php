@@ -1,28 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the backend page for module history.
  *
- * Description:
- * Layout history.
- * We use SimpleXml to read the xml nodes
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @version    1.0.0
- * @author     Bilal Arslan
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release >= 5.0
+ * @author           Bilal Arslan, Timo Trautmann
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.mod.php');

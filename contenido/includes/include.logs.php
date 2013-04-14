@@ -1,40 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the backend page for displaying log entries.
  *
- * Description:
- * Display log entries
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.7
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2003-05-09
- *   modified 2008-06-16, Holger Librenz, Hotfix: added check for invalid calls
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2009-10-15, Dominik Ziegler, fetching areaname from actions array to save a lot of database queries
- *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
- *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *
- *   $Id$:
- * }}
- *
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (!$perm->have_perm_area_action($area)) {
     $notification->displayNotification('error', i18n('Permission denied'));

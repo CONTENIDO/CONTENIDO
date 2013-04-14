@@ -2,20 +2,18 @@
 /**
  * This file renders the main mail log view.
  *
- * @package Core
+ * @package    Core
  * @subpackage Backend
- * @version SVN Revision $Rev:$
+ * @version    SVN Revision $Rev:$
  *
- * @author Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $area, $action, $perm;
 
@@ -83,12 +81,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
 
     // construct the header
     $headers = array(
-        'checkbox' => i18n('Mark'),
-        'subject' => i18n('Subject'),
-        'to' => i18n('To'),
-        'created' => i18n('Date'),
-        'client' => i18n('Client'),
-        'action' => i18n('Action')
+        'checkbox' => i18n('Mark'), 'subject' => i18n('Subject'), 'to' => i18n('To'), 'created' => i18n('Date'), 'client' => i18n('Client'), 'action' => i18n('Action')
     );
     $thead = new cHTMLTableHeader();
     $tr = new cHTMLTableRow();
@@ -174,14 +167,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
 
         // construct the email details table
         $tableHeaderDetail = array(
-            'from' => i18n('From'),
-            'to' => i18n('To'),
-            'reply_to' => i18n('Reply to'),
-            'cc' => i18n('CC'),
-            'bcc' => i18n('BCC'),
-            'subject' => i18n('Subject'),
-            'body' => i18n('Body'),
-            'created' => i18n('Date')
+            'from' => i18n('From'), 'to' => i18n('To'), 'reply_to' => i18n('Reply to'), 'cc' => i18n('CC'), 'bcc' => i18n('BCC'), 'subject' => i18n('Subject'), 'body' => i18n('Body'), 'created' => i18n('Date')
         );
         $table = new cHTMLTable();
         $table->setClass('generic');
@@ -296,7 +282,8 @@ $page->render();
  * Vorname2 Nachname2 <vorname2.nachname2@domain2.tld>
  *
  * @param array $addresses associative array containing the mail addresses
- *        as keys and the mailer names as values
+ *                         as keys and the mailer names as values
+ *
  * @return string HTML code showing the given mail addresses and names
  */
 function mailLogDecodeAddresses($addresses) {

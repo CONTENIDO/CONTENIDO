@@ -1,33 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the backend page for editing layouts.
  *
- * Description:
- * Edit form for layout
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Includes
- * @version 1.0.2
- * @author Olaf Niemann
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
- *
- *        {@internal
- *        created 2003-01-24
- *        $Id$:
- *        }}
+ * @author           Olaf Niemann
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude("external", "codemirror/class.codemirror.php");
 cInclude('classes', 'class.layout.synchronizer.php');

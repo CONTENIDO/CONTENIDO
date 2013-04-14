@@ -1,24 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the backend page for javascript history.
  *
- * Description:
- * Style History.
- * We use super class Version to create a Version. To read the xml File, we use
- * SimpleXml.
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @author Bilal Arslan, Timo Trautmann
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release >= 5.0
+ * @author           Bilal Arslan, Timo Trautmann
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // For read Fileinformation an get the id of current File
 cInclude('includes', 'functions.file.php');

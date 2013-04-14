@@ -1,23 +1,19 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System
- * Description: Layout history. We use SimpleXml to read the xml nodes
- * Requirements: @con_php_req 5.0
+ * This file contains the backend page for layout history.
  *
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @version 1.0.0
- * @author Bilal Arslan
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release >= 5.0 {@internal created
- *        2008-08-1 $Id: include.lay_history.php 3742 2012-11-23 10:34:09Z
- *        frederic.schneider $: }}
+ * @author           Bilal Arslan, Timo Trautmann
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // For update current layout with Revision
 cInclude("includes", "functions.lay.php");
