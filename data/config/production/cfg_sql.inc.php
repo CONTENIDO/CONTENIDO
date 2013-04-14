@@ -1,20 +1,16 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System
- * Description: Definition of SQL-vars
- * Requirements: @con_php_req 5.0
+ * This file contains the configuration values for the database table names.
  *
+ * @package          Core
+ * @subpackage       Backend_ConfigFile
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO Backend Includes
- * @version 1.0.1
- * @author Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6 {@internal created
- *        2003-01-21 $Id: cfg_sql.inc.php 2788 2012-07-26 15:16:13Z
- *        simon.sprankel $: }}
+ * @author           Jan Lengowski
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

@@ -1,6 +1,16 @@
 <?php
 /**
  * This file contains all chains to load in the registry.
+ *
+ * @package          Core
+ * @subpackage       Backend_ConfigFile
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

@@ -1,19 +1,16 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains all chains available in the system.
  *
- * Description:
- * CONTENIDO Chains
+ * @package          Core
+ * @subpackage       Backend_ConfigFile
+ * @version          SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.2
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @author           Unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');

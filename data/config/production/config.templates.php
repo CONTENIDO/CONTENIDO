@@ -1,28 +1,16 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the configuration variables for template names.
  *
- * Description:
- * CONTENIDO Template Configurations
+ * @package          Core
+ * @subpackage       Backend_ConfigFile
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.4.3
- * @author     Bjoern Behrens
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2004-02-24
- *   $Id$:
- * }}
+ * @author           Bjoern Behrens
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
