@@ -1,18 +1,16 @@
 <?php
 /**
- * Database file system file output.
+ * This file handles request to the database filesystem of the frontend.
  *
- * @package Frontend
- * @subpackage DBFS
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id: dbfs.php 3288 2012-09-22 18:36:28Z dominik.ziegler $
+ * @package          Core
+ * @subpackage       Frontend
+ * @version          SVN Revision $Rev:$
  *
- * @author unknown
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {

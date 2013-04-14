@@ -1,22 +1,19 @@
 <?php
 /**
- * Frontend login form.
+ * This file manages the login form page in the frontend.
  *
- * @package Frontend
- * @subpackage Form
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id: front_crcloginform.inc.php 3417 2012-10-04 19:26:38Z xmurrix $
+ * @package          Core
+ * @subpackage       Frontend
+ * @version          SVN Revision $Rev:$
  *
- * @author Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Jan Lengowski
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $cfg;
 
