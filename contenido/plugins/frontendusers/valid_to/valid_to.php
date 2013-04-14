@@ -1,31 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the valid_to extension of the frontend user plugin.
  *
- * Description:
- * Plugin valid to for frontend users
+ * @package    Plugin
+ * @subpackage FrontendUsers
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Frontendusers
- * @version    0.2
- * @author     Unknown
+ * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created  Unknown
- *
- *   $Id$:
- * }}
- *
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 function frontendusers_valid_to_getTitle ()
 {

@@ -1,31 +1,19 @@
 <?php
 /**
- * Project:
- * Contenido Content Management System
+ * This file contains the groupselect extension of the frontend user plugin.
  *
- * Description:
- * File for handling first name of frontend user
+ * @package    Plugin
+ * @subpackage FrontendUsers
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.0.0
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
- *
- * {@internal
- *   created 2009-08-14
- *
- *   $Id$:
- * }}
- *
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $db;
 
