@@ -1,4 +1,17 @@
 <?php
+/**
+ * This file contains the left top frame backend page for the plugin cronjob overview.
+ *
+ * @package    Plugin
+ * @subpackage CronjobOverview
+ * @version    SVN Revision $Rev:$
+ *
+ * @author     Rusmir Jusufovic
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
 
 //Has the user permission for crontab_edit
 if (!$perm->have_perm_area_action($area, 'crontab_edit'))
