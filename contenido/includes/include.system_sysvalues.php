@@ -1,33 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the system variables backend page.
  *
- * Description:
- * Output of important system variables
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.7.2
- * @author     Marco Jahn
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-08-15
- *   $Id$:
- * }}
+ * @author           Marco Jahn
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $tpl->reset();
 
@@ -37,30 +23,7 @@ if (isset($tmp_notification)) {
 } else {
     $tpl->set('s', 'TEMPNOTIFICATION', '');
 }
-/*
-// error log
-if (cFileHandler::exists($cfg['path']['contenido_logs'] . 'errorlog.txt')) {
-    $info = cFileHandler::info($cfg['path']['contenido_logs'] . 'errorlog.txt');
-    if ($info['size'] >= 16384) {
-        $errorLogBuffer = cFileHandler::read($cfg['path']['contenido_logs'] . 'errorlog.txt', 16384, 0, true);
-    } else {
-        $errorLogBuffer = cFileHandler::read($cfg['path']['contenido_logs'] . 'errorlog.txt');
-    }
-    $txtAreaHeight = "200";
 
-    if (strlen($errorLogBuffer) == 0) {
-        $errorLogBuffer = i18n("No error log entries found");
-        $txtAreaHeight = "20";
-    }
-} else {
-    $errorLogBuffer = i18n("No error log file found");
-    $txtAreaHeight = "20";
-}
-
-$tpl->set('s', 'TXTERRORLOGSIZE', $txtAreaHeight);
-$tpl->set('s', 'ERRORLOG', $errorLogBuffer);
-$tpl->set('s', 'LOGEMPTYURL', conHtmlentities($sess->url("main.php?area=$area&frame=$frame&action=emptyLog")));
-*/
 // server configuration
 $aChecks = array(
     1 => $cfg['path']['frontend'],

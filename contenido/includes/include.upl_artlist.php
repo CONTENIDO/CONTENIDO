@@ -1,25 +1,19 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System Description: Article list for
- * upload Requirements: @con_php_req 5.0
+ * This file contains the backend page for article list in upload section.
  *
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO Backend Includes
- * @version 1.0.1
- * @author unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6 {@internal created
- *        unknown modified 2008-06-27, Frederic Schneider, add security fix $Id:
- *        include.upl_artlist.php 3927 2013-01-30 11:00:00Z frederic.schneider
- *        $: }}
+ * @author           Unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude("includes", "functions.con.php");
 

@@ -1,23 +1,19 @@
 <?php
 /**
- * Project: CONTENIDO
+ * This file contains the system purge backend page.
  *
- * Description:
- * CONTENIDO Purge include file to reset some datas(con_code, con_cat_art) and files (log, cache, history)
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.1
- * @author     Munkh-Ulzii Balidar
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.8.12
+ * @author           Munkh-Ulzii Balidar
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('classes', 'class.purge.php');
 
