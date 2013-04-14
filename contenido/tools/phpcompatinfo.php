@@ -1,9 +1,5 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Detection of PHP dependency in CONTENIDO.
  *
  * Uses PEAR package PHP_CompatInfo, see http://pear.php.net/package/PHP_CompatInfo
@@ -21,16 +17,16 @@
  * Pass the output into a file using following commnad:
  *     $ php phpcompat.php > phpcompat_info.txt
  *
- * @package    CONTENIDO Tools
- * @version    0.0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
+ * @package          Core
+ * @subpackage       Tool
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
 
 // allow execution only thru cli mode
 if (substr(PHP_SAPI, 0, 3) != 'cli') {

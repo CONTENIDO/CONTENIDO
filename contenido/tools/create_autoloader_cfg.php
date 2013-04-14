@@ -1,9 +1,5 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * CONTENIDO autoloader class map file generator.
  *
  * Parses CONTENIDO classes folder and creates a class map file.
@@ -15,16 +11,16 @@
  *     $ php create_autoloader_cfg.php
  * 3. Check created class map file
  *
- * @package    CONTENIDO Autoloader
- * @version    0.0.2
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
+ * @package          Core
+ * @subpackage       Tool
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
 
 // allow execution only thru cli mode
 if (substr(PHP_SAPI, 0, 3) != 'cli') {
