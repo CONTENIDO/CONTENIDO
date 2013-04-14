@@ -1,25 +1,20 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the CONTENIDO structure/category functions.
  *
- * Description:
- * Defines the structure/category ("str") related functions
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.4.0
- * @author     Olaf Niemann
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @author           Olaf Niemann
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.database.php');
@@ -32,7 +27,7 @@ cInclude('includes', 'functions.database.php');
  * @param   int     $visible     Flag about visible status
  * @param   int     $public      Flag about public status
  * @param   int     $iIdtplcfg   Id of template configuration
- * @return  (int|void)  Id of new generated category or nothing on failure
+ * @return  (int|null)  Id of new generated category or nothing on failure
  */
 function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0) {
     global $client, $lang, $perm;
@@ -114,7 +109,7 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
  * @param   int     $visible     Flag about visible status
  * @param   int     $public      Flag about public status
  * @param   int     $iIdtplcfg   Id of template configuration
- * @return  (int|void)  Id of new generated category or nothing on failure
+ * @return  (int|null)  Id of new generated category or nothing on failure
  */
 function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0) {
     global $client, $lang, $perm;
@@ -217,8 +212,6 @@ function strOrderedPostTreeList($idcat, $poststring) {
  * Remakes the category tree structure in category tree table.
  *
  * It still uses manually build sql statements due to performance reasons.
- *
- * @return  void
  */
 function strRemakeTreeTable() {
     global $db, $client, $cfg;
@@ -416,7 +409,6 @@ function strNextDeeperAll($idcat, $ignoreLang = false) {
  * @param   int     $lang              Language id
  * @param   string  $newcategoryname   New category name
  * @param   string  $newcategoryalias  New category alias
- * @return  void
  */
 function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
 
@@ -469,7 +461,6 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
  * @param   int     $idcat             Category id
  * @param   int     $lang              Language id
  * @param   string  $newcategoryalias  New category alias
- * @return  void
  */
 function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
 
@@ -511,7 +502,6 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
  * @param   int  $idcat    Category id
  * @param   int  $lang     Language id
  * @param   int  $visible  Visible status
- * @return  void
  */
 function strMakeVisible($idcat, $lang, $visible) {
     global $cfg;
@@ -540,7 +530,6 @@ function strMakeVisible($idcat, $lang, $visible) {
  * @param   int  $idcat   Category id
  * @param   int  $lang    Language id
  * @param   int  $public  Public status
- * @return  void
  */
 function strMakePublic($idcat, $lang, $public) {
     $categories = strDeeperCategoriesArray($idcat);
@@ -572,7 +561,6 @@ function strDeeperCategoriesArray($startIdcat) {
  * Only categories having no child categories and having no articles will be deleted!
  *
  * @param   int   $idcat  Id of category to delete
- * @return  void
  */
 function strDeleteCategory($idcat) {
     global $lang, $lang;
@@ -665,7 +653,6 @@ function strDeleteCategory($idcat) {
  * Moves a category upwards.
  *
  * @param   int  $idcat  Id of category to move upwards
- * @return  void
  */
 function strMoveUpCategory($idcat) {
     // Flag to rebuild the category table
@@ -728,7 +715,6 @@ function strMoveUpCategory($idcat) {
  * Moves a category downwards.
  *
  * @param   int  $idcat  Id of category to move downwards
- * @return  void
  */
 function strMoveDownCategory($idcat) {
     // Flag to rebuild the category table
@@ -794,7 +780,6 @@ function strMoveDownCategory($idcat) {
  * @param   int  $newParentId  Id of destination parent category
  * @param   int  $newPreId  Id of new previous category
  * @param   int  $newPostId  Id of new post category
- * @return  void
  */
 function strMoveSubtree($idcat, $newParentId, $newPreId = null, $newPostId = null) {
     global $movesubtreeidcat;
@@ -961,7 +946,6 @@ function strHasStartArticle($idcat, $idlang) {
  * @param   int   $destidcat      Id of destination category
  * @param   bool  $remakeTree     Flag to rebuild category tree
  * @param   bool  $bUseCopyLabel  Flag to add copy label to the new categories
- * @return  void
  */
 function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel = true) {
     global $cfg, $lang;

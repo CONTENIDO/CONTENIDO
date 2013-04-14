@@ -1,28 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * Plugin include function
  *
- * Description:
- * CONTENIDO Include Plugins Functions
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Includes
- * @version 1.1.4
- * @author unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
+ * @author           Unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $plugins = array();
 $pluginFolder = cRegistry::getBackendPath() . $cfg['path']['plugins'];

@@ -1,21 +1,19 @@
 <?php
 /**
- * Project: CONTENIDO Content Management System
- * Description: Defines the Layout related functions
+ * This file contains the CONTENIDO layout functions.
  *
- * @package CONTENIDO Backend Includes
- * @version 1.3.2
- * @author Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Jan Lengowski, Olaf Niemann
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.tpl.php');
 cInclude('includes', 'functions.con.php');
@@ -29,11 +27,9 @@ cInclude('classes', 'class.layout.handler.php');
  * @param string $description Description of the Layout
  * @param string $code Layout HTML Code
  * @return int $idlay Id of the new or edited Layout
- * @author Olaf Niemann <olaf.niemann@4fb.de> @copryright four for business AG
- *         <www.4fb.de>
  */
 function layEditLayout($idlay, $name, $description, $code) {
-    global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $cfgClient;
+    global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $area, $frame, $cfgClient;
 
     $db2 = cRegistry::getDb();
     $db = cRegistry::getDb();
@@ -66,7 +62,7 @@ function layEditLayout($idlay, $name, $description, $code) {
 
     if (!$idlay) {
         $layoutCollection = new cApiLayoutCollection();
-        $layout = $layoutCollection->create($name, $client, $alias, $description, '1', $author, $date, $date);
+        $layout = $layoutCollection->create($name, $client, $layoutAlias, $description, '1', $author, $date, $date);
         $idlay = $layout->get('idlay');
 
         if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
@@ -148,7 +144,7 @@ function layEditLayout($idlay, $name, $description, $code) {
  * @return string an error code if the layout is still in use
  */
 function layDeleteLayout($idlay) {
-    global $client, $cfg, $area_tree, $perm;
+    global $client, $cfg, $area_tree, $perm, $cfgClient;
 
     $tplColl = new cApiTemplateCollection();
     $tplColl->select('`idlay`=' . $idlay);
@@ -161,7 +157,7 @@ function layDeleteLayout($idlay) {
         $layoutInFile = new cLayoutHandler($idlay, '', $cfg, 1);
         if ($layoutInFile->eraseLayout()) {
             if (cFileHandler::exists($cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPERATOR . $idlay)) {
-                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPERATOR . $layout);
+                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPERATOR . $idlay);
             }
 
             // delete layout in database

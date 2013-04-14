@@ -2,21 +2,19 @@
 /**
  * Defines the 'con' related functions in CONTENIDO
  *
- * @package Core
- * @subpackage Con
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id$
- * @author Olaf Niemann, Jan Lengowski
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Olaf Niemann, Jan Lengowski
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Compatibility: Include new functions.con2.php
 cInclude('includes', 'functions.con2.php');
@@ -24,7 +22,6 @@ cInclude('includes', 'functions.con2.php');
 /**
  * Create a new Article
  *
- * @param mixed many
  * @return int Id of the new article
  */
 function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
@@ -165,9 +162,6 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
 
 /**
  * Edit an existing article
- *
- * @param mixed many
- * @return void
  */
 function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
     global $client, $lang, $redirect, $redirect_url, $external_redirect, $perm;
@@ -300,7 +294,6 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
  * @param string $value Content
  * @param bool $bForce Not used: Was a flag to use existing db instance in
  *        global scope
- * @return void
  */
 function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false) {
     global $auth, $cfgClient, $client, $_cecRegistry;
@@ -383,7 +376,7 @@ function conMakeArticleIndex($idartlang, $idart) {
  * Toggle the online status of an article
  *
  * @param int $idart Article Id
- * @param ing $lang Language Id
+ * @param int $lang Language Id
  */
 function conMakeOnline($idart, $lang) {
     $auth = cRegistry::getAuth();
@@ -438,7 +431,7 @@ function conMakeOnlineBulkEditing($idarts, $idlang, $online) {
  * Toggle the lock status of an article
  *
  * @param int $idart Article Id
- * @param ing $lang Language Id
+ * @param int $lang Language Id
  */
 function conLock($idart, $lang) {
     $artLang = new cApiArticleLanguage();
@@ -638,20 +631,6 @@ function conDeleteart($idart) {
 
     // Contenido Extension Chain
     // @see docs/techref/plugins/Contenido Extension Chainer.pdf
-    //
-    // Usage:
-    // One could define the file data/config/{environment}/config.local.php
-    // with following code.
-    //
-    // global $_cecRegistry;
-    // cInclude("plugins", "extension/extension.php");
-    // $_cecRegistry->addChainFunction("Contenido.Content.DeleteArticle",
-    // "AdditionalFunction1");
-    //
-    // If function "AdditionalFunction1" is defined in file extension.php, it
-    // would be called via
-    // $chainEntry->execute($idart);
-
     $iterator = $_cecRegistry->getIterator("Contenido.Content.DeleteArticle");
     while (($chainEntry = $iterator->next()) !== false) {
         $chainEntry->execute($idart);
@@ -1356,20 +1335,6 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
 
     // Contenido Extension Chain
     // @see docs/techref/plugins/Contenido Extension Chainer.pdf
-    //
-    // Usage:
-    // One could define the file data/config/{environment}/config.local.php
-    // with following code.
-    //
-    // global $_cecRegistry;
-    // cInclude("plugins", "extension/extenison.php");
-    // $_cecRegistry->addChainFunction("Contenido.Content.CopyArticle",
-    // "AdditionalFunction1");
-    //
-    // If function "AdditionalFunction1" is defined in file extension.php, it
-    // would be called via
-    // $chainEntry->execute($srcidart, $dstidart);
-
     $_cecRegistry = cApiCecRegistry::getInstance();
     $iterator = $_cecRegistry->getIterator('Contenido.Content.CopyArticle');
     while (($chainEntry = $iterator->next()) !== false) {

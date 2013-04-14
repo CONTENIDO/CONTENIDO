@@ -1,31 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the CONTENIDO module functions.
  *
- * Description:
- * Defines the "mod" related functions
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO Backend Includes
- * @version 1.0.2
- * @author Olaf Niemann, Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
+ * @author           Jan Lengowski
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.tpl.php');
 cInclude('includes', 'functions.con.php');
 
 // @fixme: Document me!
 function modEditModule($idmod, $name, $description, $input, $output, $template, $type = '') {
-    global $db, $client, $cfgClient, $auth, $cfg, $sess, $area_tree, $perm, $frame;
+    global $db, $client, $cfgClient, $auth, $cfg, $sess, $area, $area_tree, $perm, $frame;
 
     $date = date('Y-m-d H:i:s');
     $author = $auth->auth['uname'];

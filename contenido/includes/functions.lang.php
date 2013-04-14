@@ -1,34 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the CONTENIDO language functions.
  *
- * Description:
- * CONTENIDO Language Functions
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Includes
- * @version 1.2.9
- * @author Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
- *
- *        {@internal
- *        created unknown
- *        $Id: functions.lang.php 4366 2013-03-22 15:30:34Z frederic.schneider
- *        $:
- *        }}
+ * @author           Jan Lengowski
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.str.php');
@@ -270,7 +255,7 @@ function langActivateDeactivateLanguage($idlang, $active) {
  * by language id
  *
  * @param int $idlang
- * @param cDb Is not in use
+ * @param cDb $db Is not in use
  * @return string 'ltr' or 'rtl'
  */
 function langGetTextDirection($idlang, $db = null) {

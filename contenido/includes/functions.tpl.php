@@ -1,33 +1,24 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the CONTENIDO template functions.
  *
- * Description:
- * Define the Template related functions
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.1
- * @author     Olaf Niemann
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @author           Olaf Niemann, Jan Lengowski, Munkh-Ulzii Balidar
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude("includes", "functions.con.php");
 
 /**
  * Edit or create a new Template
- *
- * @author Olaf Niemann <Olaf.Niemann@4fb.de>
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
  */
 function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c, $default)
 {
@@ -142,9 +133,6 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
  * @param int $idtpl ID of the template to duplicate
  *
  * @return $new_idtpl ID of the duplicated template
- * @author Olaf Niemann <Olaf.Niemann@4fb.de>
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.>
  */
 function tplDeleteTemplate($idtpl) {
 
@@ -187,9 +175,6 @@ function tplDeleteTemplate($idtpl) {
  * @param int $idtpl Layout number to browse
  *
  * @return string &-seperated String of all containers
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.>
  */
 function tplBrowseLayoutForContainers($idlay) {
         global $db;
@@ -344,8 +329,6 @@ function tplGetContainerDefault($idlay, $container)
  * Preparse the layout for caching purposes
  *
  * @param int $idtpl Layout number to browse
- *
- * @return none
  */
 function tplPreparseLayout ($idlay)
 {
@@ -391,9 +374,6 @@ function tplPreparseLayout ($idlay)
  * @param int $idtpl ID of the template to duplicate
  *
  * @return $new_idtpl ID of the duplicated template
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.>
  */
 function tplDuplicateTemplate($idtpl) {
 
@@ -514,11 +494,6 @@ function tplDuplicateTemplate($idtpl) {
  * @param int $idtpl Template ID
  *
  * @return bool is template in use
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- *
- * modified Munkh-Ulzii Balidar, improved the sql query without while loop
  */
 function tplIsTemplateInUse($idtpl) {
 
@@ -569,9 +544,6 @@ function tplIsTemplateInUse($idtpl) {
  * @param int $idtpl Template ID
  *
  * @return array - category name, article name
- *
- * @author Munkh-Ulzii Balidar <munkh-ulzii.balidar@4fb.de>
- * @copyright four for business AG <www.4fb.de>
  */
 function tplGetInUsedData($idtpl) {
 
@@ -743,6 +715,8 @@ function tplAutoFillModules ($idtpl)
     }
 
     $a_container = explode("&",$_autoFillcontainerCache[$idlay]);
+
+    $db = cRegistry::getDb();
 
     foreach ($a_container as $container)
     {

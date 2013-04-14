@@ -1,27 +1,23 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the CONTENIDO rights functions.
  *
- * Description:
- * Defines the "rights" related functions
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO Backend Includes
- * @version 1.1.0
- * @author Martin Horwath
- * @author Murat Purc <murat@purc.de>
- * @copyright dayside.net
- * @link http://www.dayside.net
- * @since file available since CONTENIDO release <= 4.6
+ * @author           Martin Horwath
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Function checks if a language is associated with a given list of clients
- * Fixed CON-200
  *
  * @param array $aClients - array of clients to check
  * @param integer $iLang - language id which should be checked
@@ -45,10 +41,6 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
  * @param int $idlang ID of language, if passed only rights for this language
  *            will be created, otherwhise for all existing languages
  * @return bool True on success otherwhise false
- *
- * @author Martin Horwath <horwath@dayside.net>
- * @author Murat Purc <murat@purc.de>
- * @copyright dayside.net <dayside.net>
  */
 function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
     global $perm, $auth, $area_tree;
@@ -119,10 +111,6 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
  * @param int $idlang ID of language, if passed only rights for this language
  *            will be created, otherwhise for all existing languages
  * @return bool True on success otherwhise false
- *
- * @author Martin Horwath <horwath@dayside.net>
- * @author Murat Purc <murat@purc.de>
- * @copyright dayside.net <dayside.net>
  */
 function createRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $auth, $area_tree, $client;
@@ -189,10 +177,6 @@ function createRightsForElement($area, $iditem, $idlang = false) {
  * @param string $area main area name
  * @param int $iditem ID of new element
  * @param int $idlang ID of lang parameter
- *
- * @author Martin Horwath <horwath@dayside.net>
- * @author Murat Purc <murat@purc.de>
- * @copyright dayside.net <dayside.net>
  */
 function deleteRightsForElement($area, $iditem, $idlang = false) {
     global $perm, $area_tree, $client;

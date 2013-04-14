@@ -1,27 +1,5 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * CONTENIDO String API functions
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.6.1
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-/**
- * Info:
  * This file contains CONTENIDO String API functions.
  *
  * If you are planning to add a function, please make sure that:
@@ -29,7 +7,18 @@ if (!defined('CON_FRAMEWORK')) {
  * 2.) The function is documented
  * 3.) The function makes sense and is generically usable
  *
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Trims a string to a given length and makes sure that all words up to $maxlen
@@ -299,6 +288,8 @@ function cApiStrCleanURLCharacters($sString, $bReplace = false) {
     $sString = str_replace('+', '-', $sString);
 
     $iStrLen = strlen($sString);
+
+    $sResultString = '';
 
     for ($i = 0; $i < $iStrLen; $i++) {
         $sChar = substr($sString, $i, 1);

@@ -1,24 +1,19 @@
 <?php
 /**
- * Project:
- * Contenido Content Management System
+ * This file contains fix functions for PHP 5.4 support (encoding related).
  *
- * Description:
- * Fix functions for PHP 5.4
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.0
- * @author     four for Business AG
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.16
+ * @author           Dominik Ziegler, Timo Trautmann
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (function_exists('conPhp54Check') == false) {
     function conPhp54Check() {

@@ -2,22 +2,18 @@
 /**
  * Defines the general CONTENIDO functions
  *
- * @package Core
- * @subpackage General
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id: functions.general.php 3145 2012-09-05 11:10:12Z
- *          simon.sprankel $
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @author Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Jan Lengowski
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.file.php');
 
@@ -29,7 +25,6 @@ cInclude('includes', 'functions.file.php');
  * Same for array $a_description
  *
  * @param int $idartlang Language specific ID of the arcticle
- * @return void
  */
 function getAvailableContentTypes($idartlang) {
     global $db, $cfg, $a_content, $a_description;
@@ -87,7 +82,7 @@ function isAlphanumeric($test, $umlauts = true) {
 }
 
 /**
- * Returns wether a string is UTF-8 encoded or not
+ * Returns whether a string is UTF-8 encoded or not
  *
  * @param string $input
  * @return bool
@@ -212,7 +207,7 @@ function getCanonicalDay($iDay) {
  *            will be used.
  * @param bool $date if true the date will be included in the string
  * @param bool $time if true the time will be included in the string
- * @return string the formatted timestring.
+ * @return string the formatted time string.
  */
 function displayDatetime($timestamp = "", $date = false, $time = false) {
     if ($timestamp == "") {
@@ -811,7 +806,6 @@ function addArtspec($artspectext, $online) {
  * Delete specified article specification
  *
  * @param int $idartspec article specification id
- * @return void
  */
 function deleteArtspec($idartspec) {
     global $db, $cfg;
@@ -830,7 +824,6 @@ function deleteArtspec($idartspec) {
  *
  * @param int $idartspec article specification id
  * @param int $online 0/1 switch the status between on an offline
- * @return void
  */
 function setArtspecOnline($idartspec, $online) {
     global $db, $cfg;
@@ -845,7 +838,6 @@ function setArtspecOnline($idartspec, $online) {
  * default setting
  *
  * @param int $idartspec Article specification id
- * @return void
  */
 function setArtspecDefault($idartspec) {
     global $db, $cfg, $lang, $client;
@@ -1340,7 +1332,6 @@ function cError($message) {
  * Writes a note to deprecatedlog.txt
  *
  * @param string $amsg Optional message (e.g. "Use function XYZ instead")
- * @return void
  */
 function cDeprecated($message = '') {
     global $cfg;

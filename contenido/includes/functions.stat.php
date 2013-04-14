@@ -1,34 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the CONTENIDO statistic functions.
  *
- * Description:
- * Define the "stat" related functions
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.3
- * @author     Olaf Niemann
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2002-03-02
- *   $Id$:
- * }}
+ * @author           Olaf Niemann
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude("includes", "functions.database.php");
 
@@ -171,6 +156,8 @@ function statsOverviewAll($yearmonth) {
     $backendUrl = cRegistry::getBackendUrl();
     $tpl->set('s', 'IMG_EXPAND', $backendUrl . $cfg['path']['images'] . 'open_all.gif');
     $tpl->set('s', 'IMG_COLLAPSE', $backendUrl . $cfg['path']['images'] . 'close_all.gif');
+
+    $sumNumberOfArticles = 0;
 
     while ($db->nextRecord()) {
         if ($db->f("level") == 0 && $db->f("preid") != 0) {

@@ -1,36 +1,32 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Functions to edit files. Included in Area style,
  * js, htmltpl in Frame right_bottom.
  *
  * Contains also common file and directory related functions
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.5
- * @author     Willi Man
- * @copyright  four for business AG <info@contenido.org>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release >= 4.6
+ * TODO: merge with cFileHandler and cDirHandler
+ *
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Willi Man, Timo Trautmann
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Function removes file meta information from database (used when a file is deleted)
  *
- * @author Timo Trautmann
  * @param int $iIdClient - id of client which contains this file
  * @param string  $sFilename - name of corresponding file
  * @param string  $sType - type of file (css, js or templates)
- * @param DB_Contenido  $oDb - CONTENIDO database object
+ * @param cDb  $oDb - CONTENIDO database object
  */
 function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     global $cfg;
@@ -53,11 +49,10 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
 /**
  * Function returns file meta information from database (used when files were versionned or description is displayed)
  *
- * @author Timo Trautmann
  * @param int $iIdClient - id of client which contains this file
  * @param string  $sFilename - name of corresponding file
  * @param string  $sType - type of file (css, js or templates)
- * @param DB_Contenido  $oDb - CONTENIDO database object
+ * @param cDb  $oDb - CONTENIDO database object
  * @return array   Indexes:
  *                           idsfi - Primary key of database record
  *                           created - Datetime when file was created
@@ -102,13 +97,12 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  * It creates new database record for file meta informations if database record does
  * not exist. Otherwise, existing record will be updated
  *
- * @author Timo Trautmann
  * @param int $iIdClient - id of client which contains this file
  * @param string  $sFilename - name of corresponding file
  * @param string  $sType - type of file (css, js or templates)
  * @param string  $sAuthor - author of file
  * @param string  $sDescription - description of file
- * @param DB_Contenido  $oDb - CONTENIDO database object
+ * @param cDb  $oDb - CONTENIDO database object
  * @param string  $sFilenameNew - new filename if filename was changed (optional)
  */
 function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '') {

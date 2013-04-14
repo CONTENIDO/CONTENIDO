@@ -1,24 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the CONTENIDO upload functions.
  *
- * Description:
- * Upload functions
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO Backend Includes
- * @version 1.4.1
- * @author Jan Lengowski
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
+ * @author           Jan Lengowski, Timo Trautmann
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.file.php');
 
@@ -26,7 +21,6 @@ cInclude('includes', 'functions.file.php');
  * Function reduces long path names and creates a dynamic tooltipp which shows
  * the full path name on mouseover
  *
- * @author Timo Trautmann (4fb)
  * @param string $sDisplayPath Original filepath
  * @param int $iLimit Limit of chars which were displayed directly. If the path
  *        string is shorter there will be no tooltipp
@@ -315,7 +309,6 @@ function uplmkdir($sPath, $sName) {
  * @param string $sNewName
  * @param string $sParent
  * @throws cException if the upload path can not be renamed
- * @return void
  */
 function uplRenameDirectory($sOldName, $sNewName, $sParent) {
     global $cfgClient, $client, $cfg, $db;
@@ -427,6 +420,9 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
     $count = 0;
     $lastlevel = 0;
     $item['.'] = $oRootItem;
+
+    $prevobj = array(); // TODO: what was this array supposed to be?
+    $lprevobj = new stdClass(); // TODO: what was this object supposed to be?
 
     while (($dbitem = $dbfs->next()) !== false) {
         $dirname = $dbitem->get('dirname');
@@ -831,6 +827,8 @@ function uplSearch($searchfor) {
     $uplMetaColl = new cApiUploadMetaCollection();
 
     $searchfordb = $uplMetaColl->escape($searchfor);
+
+    $items = array();
 
     // Search for description, ranking *5
     $uplMetaColl->link('cApiUploadCollection');

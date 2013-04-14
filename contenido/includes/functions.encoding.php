@@ -1,28 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains some little function to retrieving current encoding.
  *
- * Description:
- * Some little function to retrieving current encoding.
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package CONTENIDO Backend Includes
- * @version 1.3.1
- * @author Holger Librenz
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release <= 4.6
+ * @author           Holger Librenz
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Returns encoding for language with ID $iLang (global $lang in CONTENIDO
@@ -33,8 +24,6 @@ if (!defined('CON_FRAMEWORK')) {
  * If no encoding is found or any parameter is not valid, the function will
  * return
  * false, otherwise the encoding as string like it is stored in database.
- * modified 18.03.2008 - Removed special mySQl behaviour (using db object
- * instead) Timo Trautmann
  *
  * @param cDb $db not used any more!
  * @param int $lang

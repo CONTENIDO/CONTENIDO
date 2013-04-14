@@ -1,30 +1,23 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains CONTENIDO content functions.
  *
- * Description:
- * CONTENIDO Content Functions
+ * Please add only stuff which is relevant for the frontend
+ * AND the backend. This file should NOT contain any backend editing
+ * functions to improve frontend performance:
  *
- * Requirements:
- * @con_notice Please add only stuff which is relevant for the frontend
- *             AND the backend. This file should NOT contain any backend editing
- *             functions to improve frontend performance:
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.3.9
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @author           Willi Man, Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Generates the code for one article
@@ -61,9 +54,6 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save 
  * @param  int  $idart ID of the article
  * @param  int  $idlang ID of the language
  * @return mixed idartlang of the article or false if nothing was found
- *
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @copyright four for business AG 2003
  */
 function getArtLang($idart, $idlang) {
     $oArtLangColl = new cApiArticleLanguageCollection();
@@ -149,12 +139,6 @@ function conSetMetaValue($idartlang, $idmetatype, $value) {
  * (re)generate keywords for all articles of a given client (with specified language)
  * @param int $client Client
  * @param int $lang Language of a client
- * @return void
- *
- * @author Willi Man
- * Created   :   12.05.2004
- * Modified  :   13.05.2004
- * @copyright four for business AG 2003
  */
 function conGenerateKeywords($client, $lang) {
     global $cfg;

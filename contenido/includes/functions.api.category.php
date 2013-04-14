@@ -1,35 +1,5 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * CONTENIDO Category API functions
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.4.0
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created 2003-08-08
- *   $Id$:
- * }}
- */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-/* Info:
  * This file contains CONTENIDO Category API functions.
  *
  * If you are planning to add a function, please make sure that:
@@ -37,8 +7,18 @@ if (!defined('CON_FRAMEWORK')) {
  * 2.) The function is documented
  * 3.) The function makes sense and is generically usable
  *
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Seeks through the category tree and returns the node on a specific level.
