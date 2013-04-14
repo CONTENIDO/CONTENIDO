@@ -1,9 +1,5 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * This file handles the view of an article in frontend and in backend.
  *
  * To handle the page we use the Database Abstraction Layer, the Session,
@@ -33,29 +29,19 @@
  * NOTE:
  * This file has to run in clients frontend directory!
  *
- * Requirements:
- * @con_php_req 5.0
+ * @package          Core
+ * @subpackage       Frontend
+ * @version          SVN Revision $Rev:$
  *
- * @package CONTENIDO Frontend
- * @version 4.9
- * @author Olaf Niemann, Jan Lengowski, Timo A. Hummel et al., Murat Purc
- *         <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release = 4.9
- *
- *        {@internal
- *        created 2003-01-21
- *        $Id: include.front_content.php 3672 2012-11-11 00:19:34Z
- *        simon.sprankel $:
- *        }}
+ * @author           Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.,
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Clients local configuration
 if (file_exists($frontend_path . 'data/config/config.local.php')) {

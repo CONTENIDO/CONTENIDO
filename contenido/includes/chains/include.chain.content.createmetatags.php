@@ -1,34 +1,20 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
+ * CONTENIDO Chain.
  * Generate metatags for current article if they are not set in article
  * properties
  *
- * Requirements:
- * @con_php_req 5.0
+ * @package          Core
+ * @subpackage       Chain
+ * @version          SVN Revision $Rev:$
  *
- *
- * @package CONTENIDO Plugins
- * @subpackage Chains
- * @version 1.1.1
- * @author Andreas Lindner, Unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- *
- *       {@internal
- *       created 2007-10-24
- *       $Id: include.chain.content.createmetatags.php 2851 2012-08-09 01:00:10Z
- *       xmurrix $:
- *       }}
+ * @author           Andreas Lindner, Unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('plugins', 'repository/keyword_density.php');
 

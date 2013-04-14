@@ -1,38 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
+ * CONTENIDO Chain.
  * Generate base href for multiple client domains
  *
  * Client setting must look like this:
  * Type:    client
  * Name:    frontend_pathX (X any number/character)
- * Value:    base href URL (e.g. http://www.example.org/example/)
+ * Value:   base href URL (e.g. http://www.example.org/example/)
  *
- * Requirements:
- * @con_php_req 5.0
+ * @package          Core
+ * @subpackage       Chain
+ * @version          SVN Revision $Rev:$
  *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Chains
- * @version    1.1.1
- * @author     Andreas Lindner, 4fb AG
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2008-07-31
- *   $Id: include.chain.frontend.createbasehref.php 2755 2012-07-25 20:10:28Z xmurrix $:
- * }}
+ * @author           Andreas Lindner
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 function cecCreateBaseHref($sCurrentBaseHref)
 {

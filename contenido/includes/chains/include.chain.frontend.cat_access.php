@@ -1,35 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * CONTENIDO Chain.
+ * Category access feature.
  *
- * Description:
+ * @package          Core
+ * @subpackage       Chain
+ * @version          SVN Revision $Rev:$
  *
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Chains
- * @version    1.0
- * @author     Unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created
- *   modified 2008-07-04, bilal arslan, added security fix
- *   $Id: include.chain.frontend.cat_access.php 2755 2012-07-25 20:10:28Z xmurrix $:
- * }}
- *
+ * @author           Unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 
 function cecFrontendCategoryAccess($idlang, $idcat, $user)

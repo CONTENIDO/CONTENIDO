@@ -1,36 +1,5 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
- * CONTENIDO General API functions
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.3
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2003-09-01
- *   $Id$:
- * }}
- */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-
-/* Info:
  * This file contains CONTENIDO General API functions.
  *
  * If you are planning to add a function, please make sure that:
@@ -38,7 +7,18 @@ if (!defined('CON_FRAMEWORK')) {
  * 2.) The function is documented
  * 3.) The function makes sense and is generically usable
  *
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Timo Hummel
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Includes a file and takes care of all path transformations.
@@ -64,7 +44,6 @@ if (!defined('CON_FRAMEWORK')) {
  * @param   string  $sWhat        The filename of the include
  * @param   bool    $bForce       If true, force the file to be included
  * @param   string  $bReturnPath  Flag to return the path instead of including the file
- * @return  void
  */
 function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
     $backendPath = cRegistry::getBackendPath();
@@ -92,7 +71,7 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
         case 'classes':
             if (cAutoload::isAutoloadable($cfg['path'][$sWhere] . $sWhat)) {
                 // The class file will be loaded automatically by the autoloader - get out here
-                return;
+                return NULL;
             }
             $sInclude = $backendPath  . $cfg['path'][$sWhere] . $sWhat;
             break;
@@ -142,7 +121,6 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
  *
  * @param   string  $sWhere  The name of the plugin
  * @param   string  $sWhat   The filename of the include
- * @return  void
  */
 function plugin_include($sWhere, $sWhat) {
     global $cfg;

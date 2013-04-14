@@ -1,34 +1,22 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Login form for client
  *
  * NOTE:
  * This file has to run in clients frontend directory!
  *
- * Requirements:
- * @con_php_req 5
+ * @package          Core
+ * @subpackage       Frontend
+ * @version          SVN Revision $Rev:$
  *
- * @package    CONTENIDO Frontend
- * @version    0.5.1
- * @author     Jan Lengowski
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2003-01-2003
- *   $Id$:
- * }}
+ * @author           Jan Lengowski
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $cfg, $cfgClient, $idcat, $idart, $idcatart, $lang, $client, $username, $encoding;
 
@@ -105,6 +93,6 @@ $tpl = new cTemplate();
 $tpl->set("s", "USERNAME", (isset($this->auth['uname'])) ? $this->auth['uname'] : '');
 $tpl->set("s", "LOGINBUTTON", $sLoginButton);
 
-$tpl->render($cfg["templates"]["front_loginform"]);
+$tpl->generate($cfg["templates"]["front_loginform"]);
 
 ?>
