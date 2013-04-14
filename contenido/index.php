@@ -1,28 +1,16 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file is the main entrance point of the backend.
  *
- * Description:
- * CONTENIDO main file
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend
- * @version    1.2.3
- * @author     Olaf Niemann, Jan Lengowski
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2003-01-20
- *   $Id$:
- * }}
+ * @author           Olaf Niemann, Jan Lengowski
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {

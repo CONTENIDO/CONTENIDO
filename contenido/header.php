@@ -1,33 +1,16 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file loads the header of the backend frameset.
  *
- * Description:
- * Header File
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend
- * @version    1.2.2
- * @author     Jan Lengowski
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2003-03-18
- *   modified 2008-06-25, Timo Trautmann, CONTENIDO Framework Constand added
- *   modified 2008-07-02, Frederic Schneider, add security fix and include_security_class
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
- *
- *   $Id$:
- * }}
- *
+ * @author           Jan Lengowski
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {

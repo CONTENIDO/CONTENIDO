@@ -1,35 +1,20 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This is the main AJAX file of the backend.
  *
- * Description:
- * CONTENIDO main ajax file
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend
- * @version    1.0.5
- * @author     Olaf Niemann, Jan Lengowski, Ingo van Peeren
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2008-09-08, Ingo van Peeren
- *   $Id:$:
- * }}
+ * @author           Olaf Niemann, Jan Lengowski, Ingo van Peeren
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
-
-
 
 // CONTENIDO startup process
 include_once('./includes/startup.php');

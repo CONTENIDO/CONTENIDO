@@ -1,20 +1,18 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file performs various searches on articles from backend.
  *
- * Description:
- * CONTENIDO main file
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend
- * @version    1.0.6
- * @author     Holger Librenz, Andreas Lindner
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @author           Holger Librenz, Andreas Lindner
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
+
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
