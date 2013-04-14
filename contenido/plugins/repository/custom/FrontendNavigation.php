@@ -1,13 +1,25 @@
 <?php
+/**
+ * This file includes the "frontend navigation" sub plugin from the old plugin repository.
+ *
+ * @package    Plugin
+ * @subpackage Repository_FrontendNavigation
+ * @version    SVN Revision $Rev:$
+ *
+ * @author     Willi Man
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * file FrontendNavigation.php
  *
- * @version    1.1.0
- * @author Willi Man
- * @copyright four for business AG <www.4fb.de>
- * @created 25.03.2005
- * @modified 22.11.2005
+ * @package    Plugin
+ * @subpackage Repository_FrontendNavigation
  */
 class FrontendNavigation {
 
