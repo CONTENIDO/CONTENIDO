@@ -1,23 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * Makes available those super global arrays that are made available in versions of PHP after v4.1.0.
+ * This file is where all the "magic" begins. We ignore register_globals setting and retrieve any
+ * variable from wherever and transform them to global variables. This is highly insecure, so variables
+ * need to be checked carefully.
  *
- * Description:
- * Makes available those super global arrays that are made available in versions of PHP after v4.1.0
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Includes
- * @version    1.0.1
- * @author     Martin Horwath
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @author           Martin Horwarth
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 /**

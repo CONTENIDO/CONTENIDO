@@ -1,9 +1,5 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Central CONTENIDO file to initialize the application. Performs following steps:
  * - Initial PHP setting
  * - Does basic security check
@@ -17,19 +13,18 @@
  *
  * @TODO: Collect all startup (bootstrap) related jobs into this file...
  *
- * @package    CONTENIDO Backend Includes
- * @version    1.1.2
- * @author     four for Business AG
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @package          Core
+ * @subpackage       Backend
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Unknown
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
