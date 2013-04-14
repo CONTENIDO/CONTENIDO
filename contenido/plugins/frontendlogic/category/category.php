@@ -1,40 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the category frontend logic class.
  *
- * Description:
+ * @package    Plugin
+ * @subpackage FrontendLogic
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Frontendlogic
- * @version    1.1.1
- * @author     Andreas Lindner, Unknown
+ * @author     Andreas Lindner
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created
- *   modified 2008-08-06, Ingo van Peeren - replaced genericdb-code due to performance issues (ticket #)
- *
- *   $Id$:
- * }}
- *
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @package    CONTENIDO Plugins
- * @subpackage Frontendlogic
+ * Category frontend logic class.
+ * TODO: comments
+ *
+ * @package    Plugin
+ * @subpackage FrontendLogic
  */
 class frontendlogic_category extends FrontendLogic
 {
