@@ -117,7 +117,7 @@ class cDirHandler {
         $cfg = cRegistry::getConfig();
         $dirPerms = $cfg['default_perms']['directory'];
 
-        return self::chmod($dirname, $dirPerms);
+        return self::chmod($dirname, intval($dirPerms, 8 ));
     }
 
     /**
