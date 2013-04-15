@@ -22,15 +22,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 abstract class PifaExternalOptionsDatasourceInterface {
 
     /**
+     * Gets all option labels.
      *
      * @return array of labels to be used for PIFA field options
      */
     public abstract function getOptionLabels();
 
     /**
+     * Gets all option values.
      *
      * @return array of values to be used for PIFA field options
      */
     public abstract function getOptionValues();
-
 }

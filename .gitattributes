@@ -1722,8 +1722,8 @@ contenido/plugins/form_assistant/docs/todo_de.txt -text svneol=unset#text/plain
 contenido/plugins/form_assistant/docs/uninstall.sql -text
 contenido/plugins/form_assistant/extensions/class.pifa.default_form_module.php -text
 contenido/plugins/form_assistant/extensions/class.pifa.default_form_processor.php -text
+contenido/plugins/form_assistant/extensions/class.pifa.example_options_datasource.php -text
 contenido/plugins/form_assistant/extensions/class.pifa.mailed_form_processor.php -text
-contenido/plugins/form_assistant/extensions/class.pifa.product_group_options_datasource.php -text
 contenido/plugins/form_assistant/images/btn_close.png -text
 contenido/plugins/form_assistant/images/button_close.png -text
 contenido/plugins/form_assistant/images/icon_form.png -text
