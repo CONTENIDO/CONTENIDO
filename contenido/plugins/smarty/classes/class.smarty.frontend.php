@@ -1,6 +1,6 @@
 <?php
 /**
- * Wrapper class for Integration of smarty.
+ * This file contains the frontend class for smarty wrapper plugin.
  *
  * @package Plugin
  * @subpackage SmartyWrapper
@@ -12,11 +12,12 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * Wrapper class for Integration of smarty.
  *
- * @author Andreas Dieter
  * @package Plugin
  * @subpackage SmartyWrapper
  */
@@ -24,8 +25,8 @@ class Contenido_SmartyWrapper extends cSmartyFrontend {
 
 }
 /**
+ * Wrapper class for Integration of smarty.
  *
- * @author Andreas Dieter
  * @package Plugin
  * @subpackage SmartyWrapper
  */
@@ -57,7 +58,7 @@ class cSmartyFrontend {
      *
      * @param array &$aCfg contenido cfg array
      * @param array &$aClientCfg contenido client cfg array of the specific
-     *            client
+     *        client
      * @throws cException
      * @throws cInvalidArgumentException if the given configurations are not an
      *         array
@@ -127,7 +128,7 @@ class cSmartyFrontend {
      * static function to provide the smart object
      *
      * @param boolean bResetTemplate true if the template values shall all be
-     *            resetted
+     *        resetted
      * @throws cException if singleton has not been instantiated yet
      * @return cSmartyWrapper
      */

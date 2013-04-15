@@ -1,6 +1,6 @@
 <?php
 /**
- * Wrapper class for Integration of smarty.
+ * This file contains the backend class for smarty wrapper plugin.
  *
  * @package Plugin
  * @subpackage SmartyWrapper
@@ -12,11 +12,12 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * Wrapper class for Integration of smarty.
  *
- * @author Andreas Dieter
  * @package Plugin
  * @subpackage SmartyWrapper
  */
@@ -24,8 +25,8 @@ class Contenido_Backend_SmartyWrapper extends cSmartyBackend {
 
 }
 /**
+ * Wrapper class for Integration of smarty.
  *
- * @author Andreas Dieter
  * @package Plugin
  * @subpackage SmartyWrapper
  */

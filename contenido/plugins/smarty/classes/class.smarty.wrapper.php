@@ -1,28 +1,30 @@
 <?php
 /**
- * Wrapper class for Integration of smarty.
+ * This file contains the wrapper class for smarty wrapper plugin.
  *
- * @package    Plugin
+ * @package Plugin
  * @subpackage SmartyWrapper
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Andreas Dieter
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Andreas Dieter
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * Wrapper class for Integration of smarty.
  *
- * @author      Andreas Dieter
- * @package     Plugin
- * @subpackage  SmartyWrapper
+ * @package Plugin
+ * @subpackage SmartyWrapper
  */
 class cSmartyWrapper extends Smarty {
+
     /**
+     *
      * @see Smarty_Internal_TemplateBase::fetch()
      */
     public function fetch($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL, $display = false, $merge_tpl_vars = true, $no_output_filter = false) {
@@ -38,6 +40,7 @@ class cSmartyWrapper extends Smarty {
     }
 
     /**
+     *
      * @see Smarty_Internal_TemplateBase::fetch()
      */
     public function fetchGeneral($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL, $display = false, $merge_tpl_vars = true, $no_output_filter = false) {
@@ -47,6 +50,7 @@ class cSmartyWrapper extends Smarty {
     }
 
     /**
+     *
      * @see Smarty_Internal_TemplateBase::display()
      */
     public function displayGeneral($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL) {
