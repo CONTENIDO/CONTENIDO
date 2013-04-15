@@ -93,7 +93,7 @@ class cDirHandler {
      * Changes the dir permissions
      *
      * @param string $dirname the name and path of the dir
-     * @param int $mode the new access mode
+     * @param int $mode the new access mode : php chmod needs octal value
      * @throws cInvalidArgumentException if the dir with the given dirname
      *         does not exist
      * @return bool true on success
@@ -102,7 +102,8 @@ class cDirHandler {
         if (!cFileHandler::exists($dirname)) {
             throw new cInvalidArgumentException('The directory ' . $dirname . ' could not be accessed because it does not exist.');
         }
-
+        // chmod needs octal value for correct execution.
+        $mode = intval($mode, 8);
         return chmod($dirname, $mode);
     }
 
@@ -116,7 +117,7 @@ class cDirHandler {
         $cfg = cRegistry::getConfig();
         $dirPerms = $cfg['default_perms']['directory'];
 
-        return self::chmod($dirname, intval($dirPerms, 8));
+        return self::chmod($dirname, $dirPerms);
     }
 
     /**
