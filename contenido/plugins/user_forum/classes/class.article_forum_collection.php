@@ -18,7 +18,7 @@ class ArticleForumCollection extends ItemCollection {
     // contents array of translations from frontend module
     protected $languageSync = 0;
 
-    const idContentType = 100003;
+    protected $idContentType = 0;
 
     public function __construct() {
         // sync time
@@ -29,7 +29,7 @@ class ArticleForumCollection extends ItemCollection {
         parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
         $this->_setItemClass('ArticleForum');
         $this->item = new ArticleForumItem();
-        $this->getIdUserForumContenType();
+        $this->idContentType = $this->getIdUserForumContenType();
     }
 
     public function getAllCommentedArticles() {
@@ -488,7 +488,7 @@ class ArticleForumCollection extends ItemCollection {
         $catId = cRegistry::getCategoryId();
         $idclient = cRegistry::getClientId();
         $cfgClient = cRegistry::getClientConfig();
-        $idtype = $this->getIdUserForumContenType();
+        $idtype = $this->idContentType;
 
         $sql = "SELECT t.value,f.idart FROM con_art_lang f , con_content t WHERE idtype=$idtype AND t.idartlang=f.idartlang;";
         try {
