@@ -34,14 +34,14 @@ function cecCreateMetatags($metatags) {
 
     // Get idcat of homepage
     $sql = "SELECT a.idcat
-		FROM
-			" . $cfg['tab']['cat_tree'] . " AS a,
-			" . $cfg['tab']['cat_lang'] . " AS b
-		WHERE
-			(a.idcat = b.idcat) AND
-			(b.visible = 1) AND
-			(b.idlang = " . (int) $lang . ")
-		ORDER BY a.idtree LIMIT 1";
+        FROM
+            " . $cfg['tab']['cat_tree'] . " AS a,
+            " . $cfg['tab']['cat_lang'] . " AS b
+        WHERE
+            (a.idcat = b.idcat) AND
+            (b.visible = 1) AND
+            (b.idlang = " . (int) $lang . ")
+        ORDER BY a.idtree LIMIT 1";
 
     $db->query($sql);
 
