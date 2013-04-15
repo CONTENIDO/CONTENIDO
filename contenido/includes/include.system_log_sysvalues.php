@@ -19,7 +19,7 @@ cInclude('includes', 'functions.general.php');
 
 $page = new cGuiPage('system_log_sysvalues');
 
-$path = $cfg['path']['frontend'] . DS . $cfg['path']['logs'];
+$path = $cfg['path']['frontend'] . '/' . $cfg['path']['logs'];
 $numberOfLines = $cfg['system_log']['number_of_lines'];
 
 $logfile = basename($_REQUEST['logfile']);
