@@ -1,34 +1,34 @@
 <?php
 /**
- * Project:
- * Contenido Content Management System
+ * Wrapper class for Integration of smarty.
  *
- * Description:
- * Wrapper class for Integration of smarty
+ * @package Plugin
+ * @subpackage SmartyWrapper
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- *
- *
- * @package    Contenido Template classes
- * @version    1.3.0
- * @author     Andreas Dieter
- * @copyright  four for business AG <info@contenido.org>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since
- *
- * {@internal
- *     created     2010-07-22
- * }}
+ * @author Andreas Dieter
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
+/**
+ *
+ * @author Andreas Dieter
+ * @package Plugin
+ * @subpackage SmartyWrapper
+ */
+class Contenido_Backend_SmartyWrapper extends cSmartyBackend {
+
 }
-
-class Contenido_Backend_SmartyWrapper extends cSmartyBackend {}
-
+/**
+ *
+ * @author Andreas Dieter
+ * @package Plugin
+ * @subpackage SmartyWrapper
+ */
 class cSmartyBackend extends Contenido_SmartyWrapper {
 
     public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
@@ -44,4 +44,5 @@ class cSmartyBackend extends Contenido_SmartyWrapper {
 
         $this->resetPaths();
     }
+
 }

@@ -1,60 +1,66 @@
 <?php
 /**
- * Project:
- * Contenido Content Management System
+ * Wrapper class for Integration of smarty.
  *
- * Description:
- * Wrapper class for Integration of smarty
+ * @package Plugin
+ * @subpackage SmartyWrapper
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- *
- *
- * @package    Contenido Template classes
- * @version    1.3.0
- * @author     Andreas Dieter
- * @copyright  four for business AG <info@contenido.org>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since
- *
- * {@internal
- *     created     2010-07-22
- * }}
+ * @author Andreas Dieter
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
+/**
+ *
+ * @author Andreas Dieter
+ * @package Plugin
+ * @subpackage SmartyWrapper
+ */
+class Contenido_SmartyWrapper extends cSmartyFrontend {
+
 }
-
-class Contenido_SmartyWrapper extends cSmartyFrontend {}
-
+/**
+ *
+ * @author Andreas Dieter
+ * @package Plugin
+ * @subpackage SmartyWrapper
+ */
 class cSmartyFrontend {
 
     /**
      * The smarty Object
+     *
      * @var Smarty
      */
     protected static $oSmarty;
 
     /**
      * static flag to simulate singleton behaviour
+     *
      * @var bool
      */
     public static $bSmartyInstanciated = false;
 
     /**
      * static default paths
+     *
      * @var array
      */
     protected static $aDefaultPaths = array();
 
     /**
      * constructor
-     * @param  array  &$aCfg        contenido cfg array
-     * @param  array  &$aClientCfg  contenido client cfg array of the specific client
+     *
+     * @param array &$aCfg contenido cfg array
+     * @param array &$aClientCfg contenido client cfg array of the specific
+     *            client
      * @throws cException
-     * @throws cInvalidArgumentException if the given configurations are not an array
+     * @throws cInvalidArgumentException if the given configurations are not an
+     *         array
      */
     public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
         // check if already instanciated
@@ -120,13 +126,14 @@ class cSmartyFrontend {
     /**
      * static function to provide the smart object
      *
-     * @param boolean bResetTemplate     true if the template values shall all be resetted
+     * @param boolean bResetTemplate true if the template values shall all be
+     *            resetted
      * @throws cException if singleton has not been instantiated yet
      * @return cSmartyWrapper
      */
     public static function getInstance($bResetTemplate = false) {
         if (!isset(self::$oSmarty)) {
-            // @TODO  find a smart way to instanciate smarty object on demand
+            // @TODO find a smart way to instanciate smarty object on demand
             throw new cException("Smarty singleton not instantiated yet.");
         }
         if ($bResetTemplate) {
