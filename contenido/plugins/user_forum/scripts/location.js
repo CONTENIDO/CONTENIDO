@@ -6,7 +6,6 @@ function deleteArticlesByIdLeft(idart) {
     url += '&idart=';
     url += idart;
 
-
     reloadRightBottom = 'main.php?area=user_forum';
     reloadRightBottom += '&action=empty';
     reloadRightBottom += '&frame=4';
@@ -33,4 +32,3 @@ function deleteArticlesByIdRight(level, key, id, idcat, idart) {
 
     parent.parent.right.right_bottom.location.href = url;
 }
-

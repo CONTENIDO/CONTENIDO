@@ -1,13 +1,28 @@
 <?php
 /**
+ * This file contains the class for visualisation and interactions in the right frame.
  *
- * @package plugins/user_forum
+ * @package Plugin
+ * @subpackage UserForum
  * @version SVN Revision $Rev:$
- * @author claus.schunk
- * @copyright four for business AG
+ *
+ * @author Claus Schunk
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-defined('CON_FRAMEWORK') or die('Illegal call');
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * This class contains builds the content of the right frame.
+ *
+ *
+ * @package Plugin
+ * @subpackage UserForum
+ */
+
 global $area;
 class ArticleForumRightBottom extends cGuiPage {
 
@@ -333,6 +348,12 @@ EOF;
      */
     protected function getEditModeMenu($post) {
 
+echo <<<EOF
+<script type="text/javascript">
+funcifunci();
+</script>
+EOF;
+
         global $area;
         $changes = 0;
         $cfg = cRegistry::getConfig();
@@ -354,6 +375,7 @@ EOF;
         // build form element
         $form1 = new cGuiTableForm("comment", "main.php?area=user_forum&frame=4", "post");
         $form1->addHeader($tr);
+        $form1->setTableID("table");
 
         $user = new cApiUser();
         $user->loadByPrimaryKey($post['editedby']);

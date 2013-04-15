@@ -1,13 +1,28 @@
 <?php
-defined('CON_FRAMEWORK') or die('Illegal call');
 /**
+ * This file contains the collection class for userforum plugin.
  *
- * @package plugins/user_forum
+ * @package Plugin
+ * @subpackage UserForum
  * @version SVN Revision $Rev:$
- * @author claus.schunk
- * @copyright four for business AG
+ *
+ * @author Claus Schunk
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * This class contains functions for dB manipulations and for the interaction between the frontend module
+ * content_user_forum and the backend plugin.
+ *
+ * @package Plugin
+ * @subpackage UserForum
+ */
+
 class ArticleForumCollection extends ItemCollection {
 
     protected $cfg = 0;

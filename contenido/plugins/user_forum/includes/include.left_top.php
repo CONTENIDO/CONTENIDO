@@ -1,7 +1,19 @@
 <?php
-defined('CON_FRAMEWORK') or die('Illegal call');
-//$oUi = new UI_Left_Top();
-//$oUi->render();
+/**
+ * This file contains initialisation for left top
+ *
+ * @package Plugin
+ * @subpackage UserForum
+ * @version SVN Revision $Rev:$
+ *
+ * @author Claus Schunk
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $oUi = new cTemplate();
 $oUi->set("s", "ACTION", '');

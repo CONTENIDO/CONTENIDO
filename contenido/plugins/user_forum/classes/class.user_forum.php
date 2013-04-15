@@ -1,14 +1,26 @@
 <?php
-// assert CONTENIDO framework
-defined('CON_FRAMEWORK') or die('Illegal call');
 /**
+ * This file contains the class for plugin settings
  *
  * @package Plugin
- * @subpackage user_forum
+ * @subpackage UserForum
  * @version SVN Revision $Rev:$
- * @author claus.schunk
- * @copyright four for business AG
+ *
+ * @author Claus Schunk
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * This class contains plugin settings.
+ *
+ *
+ * @package Plugin
+ * @subpackage UserForum
  */
 class UserForum {
 

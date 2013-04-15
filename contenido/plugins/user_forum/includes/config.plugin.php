@@ -1,17 +1,20 @@
 <?php
-
 /**
+ * This file contains configuration for plugin.
  *
  * @package Plugin
- * @subpackage user_forum/includes/
+ * @subpackage UserForum
  * @version SVN Revision $Rev:$
- * @author claus.schunk
- * @copyright four for business AG
+ *
+ * @author Claus Schunk
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-// assert CONTENIDO framework
-defined('CON_FRAMEWORK') or die('Illegal call');
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 
 // define plugin path
 $cfg['plugins']['user_forum'] = 'user_forum/';

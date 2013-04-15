@@ -1,26 +1,33 @@
 <?php
 /**
- * This file contains the cContentTypeUserForum class.
+ * This file contains the class for contenttype CMS_USERFORUM
  *
  * @package Plugin
+ * @subpackage UserForum
  * @version SVN Revision $Rev:$
- * @author claus.schunk
- * @copyright four for business AG
+ *
+ * @author Claus Schunk
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-// assert CONTENIDO framework
-defined('CON_FRAMEWORK') or die('Illegal call');
-
-// Width from Container set in file cms/css/contenido_backend.css
-// .cms_userforum label {
-// width: 210px !important;
-// }
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Content type CMS_USERFORUM.
+ * This class contains the features of the contenttype CMS_USERFORUM.
+ *
+ *
+ * @package Plugin
+ * @subpackage UserForum
  */
 class cContentTypeUserForum extends cContentTypeAbstractTabbed {
+
+    // Width from Container set in file cms/css/contenido_backend.css
+    // .cms_userforum label {
+    // width: 210px !important;
+    // }
 
     /**
      * Initialize class attributes and handles store events.
