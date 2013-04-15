@@ -38,11 +38,11 @@ msgstr ""
 
 #: include.mod_script.php
 msgid "No write permissions in js folder!"
-msgstr "No write permissions in js folder!"
+msgstr "No write permissions in javascript folder for this module!"
 
 #: include.mod_style.php
 msgid "No write permissions in css folder!"
-msgstr "No write permissions in css folder!"
+msgstr "No write permissions in css folder for this module!"
 
 #: scripts/langref.php:10
 msgid "Protect"
