@@ -2,24 +2,23 @@
 /**
  * This file contains the the static directory handler class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Util
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Frederic Schneider
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Frederic Schneider
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Class for directory handling.
  * Provides functions for dealing with directories.
  *
- * @package    Core
+ * @package Core
  * @subpackage Util
  */
 class cDirHandler {
@@ -117,7 +116,7 @@ class cDirHandler {
         $cfg = cRegistry::getConfig();
         $dirPerms = $cfg['default_perms']['directory'];
 
-        return self::chmod($dirname, intval($dirPerms, 8 ));
+        return self::chmod($dirname, intval($dirPerms, 8));
     }
 
     /**
