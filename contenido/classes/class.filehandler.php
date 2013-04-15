@@ -301,7 +301,7 @@ class cFileHandler {
      * Changes the file permissions
      *
      * @param string $filename the name and path of the file
-     * @param int $mode the new access mode
+     * @param int $mode the new access mode : php chmod needs octal value
      * @throws cInvalidArgumentException if the file with the given filename
      *         does not exist
      * @return bool true on success
@@ -310,7 +310,8 @@ class cFileHandler {
         if (!cFileHandler::exists($filename)) {
             throw new cInvalidArgumentException('The file ' . $filename . ' could not be accessed because it does not exist.');
         }
-
+        // chmod needs octal value for correct execution.
+        $mode = intval($mode, 8);
         return chmod($filename, $mode);
     }
 
