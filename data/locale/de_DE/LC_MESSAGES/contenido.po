@@ -38,11 +38,11 @@ msgstr "Online setzen"
 
 #: include.mod_script.php
 msgid "No write permissions in js folder!"
-msgstr "Keine Schreibrechte im js-Ordner!"
+msgstr "Keine Schreibrechte im JavaScript-Ordner des Modules!"
 
 #: include.mod_style.php
 msgid "No write permissions in css folder!"
-msgstr "Keine Schreibrechte im css-Ordner!"
+msgstr "Keine Schreibrechte im CSS-Ordner des Modules!"
 
 #: scripts/langref.php:10
 msgid "Protect"
