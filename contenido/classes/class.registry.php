@@ -33,25 +33,25 @@ class cRegistry {
     protected static $_appVars = array();
 
     /**
-     * Container for information messages
+     * Container for information messages.
      *
      * @var array
      */
-    public static $_infoMessages = array();
+    protected static $_infoMessages = array();
 
     /**
-     * Container for error messages
+     * Container for error messages.
      *
      * @var array
      */
-    public static $_errMessages = array();
+    protected static $_errMessages = array();
 
     /**
-     * Container for warning messages
+     * Container for warning messages.
      *
      * @var array
      */
-    public static $_warnMessages = array();
+    protected static $_warnMessages = array();
 
     /**
      * Function wich returns path after the last possible place changing via
