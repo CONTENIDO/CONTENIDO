@@ -322,32 +322,6 @@ div.button_grey input {
     margin-top: 30px;
     position: relative;
 }
-/* ----- UserForum ----- */
-.user_forum .button.red,
-.user_forum .button.grey {
-    line-height: 25px;
-    width: 190px;
-    float: left;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.user_forum input[type="text"]{
-    width: 180px;
-}
-
-.user_forum .inputForumText{
-	width: 100% !IMPORTANT;
-}
-.user_forum .submitbuttons{
-	padding-left:120px;
-	
-}
-
-.user_forum .modtext{
- 	text-align: center;
-}
-
 
 #contactFormSubmitRight .button.red {
     margin-top: 0px;
@@ -394,6 +368,31 @@ p + .button.red {
     height: 30px;
 }
 
+/* ----- UserForum ----- */
+.user_forum .button.red,
+.user_forum .button.grey {
+    line-height: 25px;
+    width: 190px;
+    float: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.user_forum input[type="text"]{
+    width: 180px;
+}
+
+.user_forum .inputForumText{
+	width: 100% !IMPORTANT;
+}
+.user_forum .submitbuttons{
+	padding-left:120px;
+	
+}
+
+.user_forum .modtext{
+ 	text-align: center;
+}
 
 /* ----- NEWSTEASER ----- */
 /* 4-culumn version */
