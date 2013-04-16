@@ -1,10 +1,11 @@
 <?php
 /**
- * Plugin Manager configurations
+ * This file contains the Plugin Manager configurations.
  *
- * @package     CONTENIDO Plugins
- * @subpackage  UrlShortener
+ * @package Plugin
+ * @subpackage UrlShortener
  * @version SVN Revision $Rev:$
+ *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -12,9 +13,7 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $cfg;
 

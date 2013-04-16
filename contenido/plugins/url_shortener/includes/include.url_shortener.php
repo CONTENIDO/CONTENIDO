@@ -1,11 +1,11 @@
 <?php
 /**
- * Description:
- * Backend page for showing and editing short URLs.
+ * This file contains the Backend page for showing and editing short URLs.
  *
- * @package     CONTENIDO Plugins
- * @subpackage  UrlShortener
+ * @package Plugin
+ * @subpackage UrlShortener
  * @version SVN Revision $Rev:$
+ *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -13,10 +13,7 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 global $action, $cfg;
 
@@ -71,7 +68,10 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
     }
 } else if ($action === 'url_shortener_copy_htaccess' && !empty($_GET['htaccess_type'])) {
     // copy the .htaccess file to the client path
-    $validTypes = array('simple', 'restrictive');
+    $validTypes = array(
+        'simple',
+        'restrictive'
+    );
     if (in_array($_GET['htaccess_type'], $validTypes)) {
         $source = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'url_shortener/files/htaccess_' . $_GET['htaccess_type'] . '.txt';
         $dest = cRegistry::getFrontendPath() . '.htaccess';
@@ -107,7 +107,7 @@ $shortUrlColl->query();
 if ($shortUrlColl->count() === 0) {
     $page->displayInfo(i18n('No short URLs have been defined yet!', 'url_shortener'));
     $page->render();
-    exit;
+    exit();
 }
 
 // add the edit form to the page

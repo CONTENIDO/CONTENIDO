@@ -1,10 +1,11 @@
 <?php
 /**
- * Plugin Manager API classes
+ * This file contains the Plugin Manager API classes.
  *
- * @package     CONTENIDO Plugins
- * @subpackage  UrlShortener
+ * @package Plugin
+ * @subpackage UrlShortener
  * @version SVN Revision $Rev:$
+ *
  * @author Simon Sprankel
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -12,9 +13,14 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Plugin Manager API classes.
+ *
+ * @package Plugin
+ * @subpackage UrlShortener
+ */
 class cApiShortUrlCollection extends ItemCollection {
 
     const ERR_IS_CLIENT_FOLDER = 1;
