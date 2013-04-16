@@ -40,13 +40,10 @@ require(cRegistry::getBackendPath() . 'includes/functions.includePluginConf.php'
 // Fetch chains
 $iterator = $_cecRegistry->getIterator('Contenido.Article.RegisterCustomTab');
 
-echo '//itsameA';
-
 $aTabs = array();
 while ($chainEntry = $iterator->next()) {
     $aTmpArray = $chainEntry->execute();
     if (is_array($aTmpArray)) {
-        echo '//itsame';
         $aTabs = array_merge($aTabs, $aTmpArray);
     }
 }
