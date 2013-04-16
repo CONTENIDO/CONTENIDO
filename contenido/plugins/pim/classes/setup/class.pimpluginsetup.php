@@ -1,11 +1,11 @@
 <?php
 /**
- * Abstract class for Contenido Setup operations When creating Install,
- * Uninstall, Update you must extend this class
+ * This file contains abstract class for contenido setup.
  *
  * @package CONTENIDO Plugins
  * @subpackage PluginManager
  * @version SVN Revision $Rev:$
+ *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -13,9 +13,16 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Abstract class for contenido setup operations When creating install,
+ * uninstall, update you must extend this class.
+ *
+ * @package Plugin
+ * @subpackage PluginManager
+ *
+ */
 class PimPluginSetup {
 
     protected $sqlPrefix = "!PREFIX!";

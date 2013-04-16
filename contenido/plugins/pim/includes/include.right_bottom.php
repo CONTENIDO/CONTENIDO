@@ -1,10 +1,12 @@
 <?php
+
 /**
- * Plugin Manager Backend View
+ * This file contains Plugin Manager Backend View.
  *
  * @package CONTENIDO Plugins
  * @subpackage PluginManager
  * @version SVN Revision $Rev:$
+ *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -12,9 +14,7 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // initializing classes
 $setup = new PimPluginSetup();
