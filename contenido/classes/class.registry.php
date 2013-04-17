@@ -296,6 +296,7 @@ class cRegistry {
         return self::_fetchGlobalVariable('cCurrentContainer', 0);
     }
 
+
     /**
      * Return the session object stored in the global variable "sess".
      *
@@ -615,6 +616,6 @@ class cRegistry {
      * @return boolean whether tracking is allowed by the DNT header
      */
     public static function isTrackingAllowed() {
-        return (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] == 1);
+         return (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] != 1) || !isset($_SERVER['HTTP_DNT']);
     }
 }
