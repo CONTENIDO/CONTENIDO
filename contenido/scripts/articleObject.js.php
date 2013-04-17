@@ -36,7 +36,6 @@ require(cRegistry::getBackendPath() . 'includes/functions.includePluginConf.php'
 // do not call cRegistry::shutdown(); here because
 // it will print <script> tags which result in errors
 
-
 // Fetch chains
 $iterator = $_cecRegistry->getIterator('Contenido.Article.RegisterCustomTab');
 
@@ -100,8 +99,6 @@ function articleObject(actionFrameName, frameNumber) {
     this.hrefOverview = null;
 
     <?php
-    print("/*DUMP:<pre>"); var_Dump($aTabs); print("</pre>*/");
-
     foreach ($aTabs as $key => $sTab) {
         echo 'this.customTabs[\''.$sTab.'\'] = new Object();'."\n";
 
