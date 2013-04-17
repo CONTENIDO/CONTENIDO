@@ -62,7 +62,9 @@ function addAutoIncrementToTables($db, $cfg) {
         $cfg['sql']['sqlprefix'] . '_online_user',
         $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist',
         $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5',
-        $cfg['sql']['sqlprefix'] . '_user'
+        $cfg['sql']['sqlprefix'] . '_user',
+		$cfg['sql']['sqlprefix'] . '_iso_639_2',
+		$cfg['sql']['sqlprefix'] . '_iso_3166'
     );
 
     $sql = 'SHOW TABLES FROM  ' . $cfg['db']['connection']['database'] . '';
