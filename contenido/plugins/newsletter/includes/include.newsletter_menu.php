@@ -1,51 +1,49 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the Frontend user list.
  *
- * Description:
- * Frontend user list
- *
- * @package    CONTENIDO Plugins
+ * @package Plugin
  * @subpackage Newsletter
- * @version    1.2.2
- * @author     Björn Behrens (HerrB)
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @version SVN Revision $Rev:$
+ *
+ * @author Björn Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
-##################################
-# Initialization
-##################################
+// ################################
+// Initialization
+// ################################
 $oPage = new cGuiPage("newsletter_menu", "newsletter");
 $oUser = new cApiUser($auth->auth["uid"]);
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 
 // Get idCatArt to check, if we may send a test newsletter
-$lIDCatArt = (int)$oClientLang->getProperty("newsletter", "idcatart");
+$lIDCatArt = (int) $oClientLang->getProperty("newsletter", "idcatart");
 
 // Specify fields for search, sort and validation. Design makes enhancements
-// using plugins possible (currently not implemented). If you are changing things here,
+// using plugins possible (currently not implemented). If you are changing
+// things here,
 // remember to update include.newsletter_left_top.php, also.
-// field:   Field name in the db
+// field: Field name in the db
 // caption: Shown field name (-> user)
-// base:    Elements from core code (other type may be: "plugin")
-// sort:    Element can be used to be sorted by
-// search:  Element can be used to search in
+// base: Elements from core code (other type may be: "plugin")
+// sort: Element can be used to be sorted by
+// search: Element can be used to search in
 $aFields = array();
-$aFields["name"] = array("field" => "name", "caption" => i18n("Name", 'newsletter'), "type" => "base,sort,search");
+$aFields["name"] = array(
+    "field" => "name",
+    "caption" => i18n("Name", 'newsletter'),
+    "type" => "base,sort,search"
+);
 
-##################################
-# Store settings/Get basic data
-##################################
+// ################################
+// Store settings/Get basic data
+// ################################
 if (isset($_REQUEST['action_html']) && $_REQUEST['action_html'] == 'save_newsletter_properties' && $perm->have_perm_area_action($area, "news_html_settings")) {
     // Storing settings
     if (isset($_REQUEST["ckbHTMLNewsletter"])) {
@@ -53,29 +51,32 @@ if (isset($_REQUEST['action_html']) && $_REQUEST['action_html'] == 'save_newslet
     } else {
         $oClientLang->setProperty("newsletter", "html_newsletter", "false");
     }
-    $oClientLang->setProperty("newsletter", "html_template_idcat",   (int)$_REQUEST["selHTMLTemplateCat"]);
-    $oClientLang->setProperty("newsletter", "html_newsletter_idcat", (int)$_REQUEST["selHTMLNewsletterCat"]);
-    $oUser->setProperty("newsletter", "test_idnewsgrp_lang" . $lang, (int)$_REQUEST["selTestDestination"]);
+    $oClientLang->setProperty("newsletter", "html_template_idcat", (int) $_REQUEST["selHTMLTemplateCat"]);
+    $oClientLang->setProperty("newsletter", "html_newsletter_idcat", (int) $_REQUEST["selHTMLNewsletterCat"]);
+    $oUser->setProperty("newsletter", "test_idnewsgrp_lang" . $lang, (int) $_REQUEST["selTestDestination"]);
 } else {
-    // No settings to be stored, get current settings (language sepcific, as lang is client specific, lang is sufficient)
-    $_REQUEST["selTestDestination"] = (int)$oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
+    // No settings to be stored, get current settings (language sepcific, as
+    // lang is client specific, lang is sufficient)
+    $_REQUEST["selTestDestination"] = (int) $oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
 }
 // Default value: Current user mail
-$sSendTestTarget = $oUser->get("realname"). " (" . $oUser->get("email") . ")";
+$sSendTestTarget = $oUser->get("realname") . " (" . $oUser->get("email") . ")";
 
-##################################
-# Check external input
-##################################
+// ################################
+// Check external input
+// ################################
 // Items per page (value stored per area in user property)
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0) {
     $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
 if (!is_numeric($_REQUEST["elemperpage"])) {
-    // This is the case, if the user property has never been set (first time user)
+    // This is the case, if the user property has never been set (first time
+    // user)
     $_REQUEST["elemperpage"] = 25;
 }
 if ($_REQUEST["elemperpage"] > 0) {
-    // -- All -- will not be stored, as it may be impossible to change this back to something more useful
+    // -- All -- will not be stored, as it may be impossible to change this back
+    // to something more useful
     $oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
 }
 $_REQUEST["page"] = (int) $_REQUEST["page"];
@@ -100,7 +101,8 @@ foreach ($aFields as $sKey => $aData) {
 }
 
 if (!$bSortByFound) {
-    $_REQUEST["sortby"] = "name"; // Default sort by field, possible values see above
+    $_REQUEST["sortby"] = "name"; // Default sort by field, possible values see
+                                  // above
 }
 if (!$bSearchInFound) {
     $_REQUEST["searchin"] = "--all--";
@@ -109,9 +111,9 @@ if (!$bSearchInFound) {
 // Free memory
 unset($oClientLang, $oUser);
 
-##################################
-# Get data
-##################################
+// ################################
+// Get data
+// ################################
 $oNewsletters = new NewsletterCollection();
 $oNewsletters->setWhere("idclient", $client);
 $oNewsletters->setWhere("idlang", $lang);
@@ -130,11 +132,12 @@ if ($_REQUEST["filter"] != "") {
 }
 
 if ($_REQUEST["elemperpage"] > 0) {
-    // Getting item count without limit (for page function) - better idea anyone (performance)?
+    // Getting item count without limit (for page function) - better idea anyone
+    // (performance)?
     $oNewsletters->query();
     $iItemCount = $oNewsletters->count();
 
-    if ($_REQUEST["elemperpage"]*($_REQUEST["page"]) >= $iItemCount+$_REQUEST["elemperpage"] && $_REQUEST["page"]  != 1) {
+    if ($_REQUEST["elemperpage"] * ($_REQUEST["page"]) >= $iItemCount + $_REQUEST["elemperpage"] && $_REQUEST["page"] != 1) {
         $_REQUEST["page"]--;
     }
 
@@ -150,7 +153,8 @@ $oNewsletters->query();
 $oMenu = new cGuiMenu();
 $iMenu = 0;
 
-// Store messages for repeated use (speeds performance, as i18n translation is only needed once)
+// Store messages for repeated use (speeds performance, as i18n translation is
+// only needed once)
 $aMsg = array();
 $aMsg["DelTitle"] = i18n("Delete newsletter", 'newsletter');
 $aMsg["DelDescr"] = i18n("Do you really want to delete the following newsletter:<br>", 'newsletter');
@@ -177,17 +181,16 @@ while ($oNewsletter = $oNewsletters->next()) {
     $oMenu->setTitle($iMenu, $sName);
     $oMenu->setLink($iMenu, $oLnk);
 
-    if ($perm->have_perm_area_action($area, "news_add_job") ||
-        $perm->have_perm_area_action($area, "news_create") ||
-        $perm->have_perm_area_action($area, "news_save"))
-    {
+    if ($perm->have_perm_area_action($area, "news_add_job") || $perm->have_perm_area_action($area, "news_create") || $perm->have_perm_area_action($area, "news_save")) {
         // Rights: If you are able to add a job, you should be able to test it
-        //         If you are able to add or change a newsletter, you should be able to test it
-        // Usability: If no e-mail has been specified, you can't send a test newsletter
+        // If you are able to add or change a newsletter, you should be able to
+        // test it
+        // Usability: If no e-mail has been specified, you can't send a test
+        // newsletter
         if (isValidMail($oNewsletter->get("newsfrom")) && $lIDCatArt > 0) {
-            $sLnkSendTest = '<a title="'.$aMsg["SendTestTitle"].'" href="javascript://" onclick="showSendTestMsg('.$idnewsletter.')"><img src="'.$cfg['path']['images'].'newsletter_sendtest_16.gif" border="0" title="'.$aMsg["SendTestTitle"].'" alt="'.$aMsg["SendTestTitle"].'"></a>';
+            $sLnkSendTest = '<a title="' . $aMsg["SendTestTitle"] . '" href="javascript://" onclick="showSendTestMsg(' . $idnewsletter . ')"><img src="' . $cfg['path']['images'] . 'newsletter_sendtest_16.gif" border="0" title="' . $aMsg["SendTestTitle"] . '" alt="' . $aMsg["SendTestTitle"] . '"></a>';
         } else {
-            $sLnkSendTest = '<img src="'.$cfg['path']['images'].'newsletter_sendtest_16_off.gif" border="0" title="'.$aMsg["SendTestTitleOff"].'" alt="'.$aMsg["SendTestTitleOff"].'">';
+            $sLnkSendTest = '<img src="' . $cfg['path']['images'] . 'newsletter_sendtest_16_off.gif" border="0" title="' . $aMsg["SendTestTitleOff"] . '" alt="' . $aMsg["SendTestTitleOff"] . '">';
         }
         $oMenu->setActions($iMenu, 'test', $sLnkSendTest);
     }
@@ -195,14 +198,14 @@ while ($oNewsletter = $oNewsletters->next()) {
     if ($perm->have_perm_area_action($area, "news_add_job")) {
         if (isValidMail($oNewsletter->get("newsfrom")) && $lIDCatArt > 0) {
             $oLnkAddJob = new cHTMLLink();
-            $oLnkAddJob->setMultiLink("news","","news","news_add_job");
+            $oLnkAddJob->setMultiLink("news", "", "news", "news_add_job");
             $oLnkAddJob->setCustom("idnewsletter", $idnewsletter);
             $oLnkAddJob->setAlt($aMsg["AddJobTitle"]);
-            $oLnkAddJob->setContent('<img src="'.$cfg['path']['images'].'newsletter_dispatch_16.gif" border="0" title="'.$aMsg["AddJobTitle"].'" alt="'.$aMsg["AddJobTitle"].'">');
+            $oLnkAddJob->setContent('<img src="' . $cfg['path']['images'] . 'newsletter_dispatch_16.gif" border="0" title="' . $aMsg["AddJobTitle"] . '" alt="' . $aMsg["AddJobTitle"] . '">');
 
             $sLnkAddJob = $oLnkAddJob->render();
         } else {
-            $sLnkAddJob = '<img src="'.$cfg['path']['images'].'newsletter_dispatch_16_off.gif" border="0" title="'.$aMsg["AddJobTitleOff"].'" alt="'.$aMsg["AddJobTitleOff"].'">';
+            $sLnkAddJob = '<img src="' . $cfg['path']['images'] . 'newsletter_dispatch_16_off.gif" border="0" title="' . $aMsg["AddJobTitleOff"] . '" alt="' . $aMsg["AddJobTitleOff"] . '">';
         }
 
         $oMenu->setActions($iMenu, 'dispatch', $sLnkAddJob);
@@ -213,13 +216,13 @@ while ($oNewsletter = $oNewsletters->next()) {
         $oLnkCopy->setMultiLink("news", "", "news", "news_duplicate");
         $oLnkCopy->setCustom("idnewsletter", $idnewsletter);
         $oLnkCopy->setAlt($aMsg["CopyTitle"]);
-        $oLnkCopy->setContent('<img src="'.$cfg['path']['images'].'but_copy.gif" border="0" title="'.$aMsg["CopyTitle"].'" alt="'.$aMsg["CopyTitle"].'">');
+        $oLnkCopy->setContent('<img src="' . $cfg['path']['images'] . 'but_copy.gif" border="0" title="' . $aMsg["CopyTitle"] . '" alt="' . $aMsg["CopyTitle"] . '">');
 
         $oMenu->setActions($iMenu, 'copy', $oLnkCopy->render());
     }
 
     if ($perm->have_perm_area_action($area, "news_delete")) {
-        $sDelete = '<a title="'.$aMsg["DelTitle"].'" href="javascript://" onclick="showDelMsg('.$idnewsletter.',\''.addslashes($sName).'\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$aMsg["DelTitle"].'" alt="'.$aMsg["DelTitle"].'"></a>';
+        $sDelete = '<a title="' . $aMsg["DelTitle"] . '" href="javascript://" onclick="showDelMsg(' . $idnewsletter . ',\'' . addslashes($sName) . '\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '"></a>';
         $oMenu->setActions($iMenu, 'delete', $sDelete);
     }
 }
@@ -228,7 +231,7 @@ while ($oNewsletter = $oNewsletters->next()) {
 if ($_REQUEST["selTestDestination"] > 0 && $perm->have_perm_area_action($area, "news_send_test")) {
     $oRcpGroups = new NewsletterRecipientGroupCollection();
     $oRcpGroups->setWhere("idclient", $client);
-    $oRcpGroups->setWhere("idlang",   $lang);
+    $oRcpGroups->setWhere("idlang", $lang);
     $oRcpGroups->setWhere($oRcpGroups->primaryKey, $_REQUEST["selTestDestination"]);
     $oRcpGroups->query();
 
@@ -242,7 +245,7 @@ $aMsg["SendTestDescr"] = sprintf(i18n("Do you really want to send the newsletter
 
 $sExecScript = '
     <script type="text/javascript">
-        var sid = "'.$sess->id.'";
+        var sid = "' . $sess->id . '";
 
         function showSendTestMsg(lngId) {
             showConfirmation("' . $aMsg["SendTestDescr"] . '", function() { sendTestNewsletter(lngId); });
@@ -318,7 +321,8 @@ $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 // Note, that after the "page" parameter no "pagerlink" parameter is specified -
-// it is not used, as the JS below only uses the INNER html and the "pagerlink" parameter is
+// it is not used, as the JS below only uses the INNER html and the "pagerlink"
+// parameter is
 // set by ...left_top.html for the foldingrow itself
 $oPager = new cGuiObjectPager($sPagerId, $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page");
 
@@ -333,11 +337,14 @@ $oPage->addScript('setPager.js');
 $oScript = new cHTMLScript();
 $oScript->setAttribute('type', 'text/javascript');
 $sRefreshPager = '
-    var sNavigation = \''.$sPagerContent.'\',
+    var sNavigation = \'' . $sPagerContent . '\',
     // Activate time to refresh pager folding row in left top
     oTimer = window.setInterval("fncSetPager(\'' . $sPagerId . '\',\'' . $_REQUEST["page"] . '\')", 200);
 ';
 $oScript->setContent($jsCode);
 
-$oPage->setContent(array($oMenu, $oScript));
+$oPage->setContent(array(
+    $oMenu,
+    $oScript
+));
 $oPage->render();

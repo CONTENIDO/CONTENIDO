@@ -1,73 +1,84 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the Frontend user list.
  *
- * Description:
- * Frontend user list
- *
- * @package    CONTENIDO Plugins
+ * @package Plugin
  * @subpackage Newsletter
- * @version    1.0.2
- * @author     Björn Behrens (HerrB)
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @version SVN Revision $Rev:$
+ *
+ * @author Björn Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
-##################################
-# Initialization
-##################################
+// ################################
+// Initialization
+// ################################
 $oPage = new cGuiPage("newsletter_jobs_menu", "newsletter");
 $oMenu = new cGuiMenu();
 $oJobs = new NewsletterJobCollection();
 $oUser = new cApiUser($auth->auth["uid"]);
 
 // Specify fields for search, sort and validation. Design makes enhancements
-// using plugins possible (currently not implemented). If you are changing things here,
+// using plugins possible (currently not implemented). If you are changing
+// things here,
 // remember to update include.newsletter_left_top.php, also.
-// field:   Field name in the db
+// field: Field name in the db
 // caption: Shown field name (-> user)
-// base:    Elements from core code (other type may be: "plugin")
-// sort:    Element can be used to be sorted by
-// search:  Element can be used to search in
+// base: Elements from core code (other type may be: "plugin")
+// sort: Element can be used to be sorted by
+// search: Element can be used to search in
 $aFields = array();
-$aFields["name"] = array("field" => "name",    "caption" => i18n("Name", 'newsletter'),    "type" => "base,sort,search");
-$aFields["created"] = array("field" => "created", "caption" => i18n("Created", 'newsletter'), "type" => "base,sort");
-$aFields["status"] = array("field" => "status",  "caption" => i18n("Status", 'newsletter'),  "type" => "base,sort");
-// Not needed, as no sort/search, but keep as memo: $aFields["cronjob"] = array("field" => "use_cronjob", "caption" => i18n("Use cronjob", 'newsletter'), "type" => "base");
+$aFields["name"] = array(
+    "field" => "name",
+    "caption" => i18n("Name", 'newsletter'),
+    "type" => "base,sort,search"
+);
+$aFields["created"] = array(
+    "field" => "created",
+    "caption" => i18n("Created", 'newsletter'),
+    "type" => "base,sort"
+);
+$aFields["status"] = array(
+    "field" => "status",
+    "caption" => i18n("Status", 'newsletter'),
+    "type" => "base,sort"
+);
+// Not needed, as no sort/search, but keep as memo: $aFields["cronjob"] =
+// array("field" => "use_cronjob", "caption" => i18n("Use cronjob",
+// 'newsletter'), "type" => "base");
 
-##################################
-# Check external input
-##################################
+// ################################
+// Check external input
+// ################################
 // Items per page (value stored per area in user property)
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0) {
     $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
 if (!is_numeric($_REQUEST["elemperpage"])) {
-    // This is the case, if the user property has never been set (first time user)
+    // This is the case, if the user property has never been set (first time
+    // user)
     $_REQUEST["elemperpage"] = 25;
 }
 if ($_REQUEST["elemperpage"] > 0) {
-    // -- All -- will not be stored, as it may be impossible to change this back to something more useful
+    // -- All -- will not be stored, as it may be impossible to change this back
+    // to something more useful
     $oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
 }
 unset($oUser);
 
-$_REQUEST["page"] = (int)$_REQUEST["page"];
+$_REQUEST["page"] = (int) $_REQUEST["page"];
 if ($_REQUEST["page"] <= 0 || $_REQUEST["elemperpage"] == 0) {
     $_REQUEST["page"] = 1;
 }
 // Sort order
 if ($_REQUEST["sortorder"] != "ASC") {
-    $_REQUEST["sortorder"] = "DESC"; // Note, default is DESC (as default sortby is "created" date)
+    $_REQUEST["sortorder"] = "DESC"; // Note, default is DESC (as default sortby
+                                     // is "created" date)
 }
 
 // Check sort by and search in criteria
@@ -83,7 +94,8 @@ foreach ($aFields as $sKey => $aData) {
 }
 
 if (!$bSortByFound) {
-    $_REQUEST["sortby"] = "created"; // Default sort by field, possible values see above
+    $_REQUEST["sortby"] = "created"; // Default sort by field, possible values
+                                     // see above
 }
 if (!$bSearchInFound) {
     $_REQUEST["searchin"] = "--all--";
@@ -97,13 +109,13 @@ if ($_REQUEST["selAuthor"] == "") {
 // Free memory
 unset($oUser);
 
-##################################
-# Get data
-##################################
+// ################################
+// Get data
+// ################################
 
 $oJobs->setWhere("idclient", $client);
-$oJobs->setWhere("idlang",   $lang);
-$oJobs->setWhere("author",   $_REQUEST["selAuthor"]);
+$oJobs->setWhere("idlang", $lang);
+$oJobs->setWhere("author", $_REQUEST["selAuthor"]);
 
 if ($_REQUEST["filter"] != "") {
     if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
@@ -121,10 +133,11 @@ if ($_REQUEST["filter"] != "") {
 if ($_REQUEST["elemperpage"] > 0) {
     $oJobs->query();
 
-    // Getting item count without limit (for page function) - better idea anyone (performance)?
+    // Getting item count without limit (for page function) - better idea anyone
+    // (performance)?
     $iItemCount = $oJobs->count();
 
-    if ($_REQUEST["elemperpage"]*($_REQUEST["page"]) >= $iItemCount+$_REQUEST["elemperpage"] && $_REQUEST["page"]  != 1) {
+    if ($_REQUEST["elemperpage"] * ($_REQUEST["page"]) >= $iItemCount + $_REQUEST["elemperpage"] && $_REQUEST["page"] != 1) {
         $_REQUEST["page"]--;
     }
     $oJobs->setLimit($_REQUEST["elemperpage"] * ($_REQUEST["page"] - 1), $_REQUEST["elemperpage"]);
@@ -140,7 +153,8 @@ $oMenu = new cGuiMenu();
 $iMenu = 0;
 $sDateFormat = getEffectiveSetting("dateformat", "full", "d.m.Y H:i");
 
-// Store messages for repeated use (speeds performance, as i18n translation is only needed once)
+// Store messages for repeated use (speeds performance, as i18n translation is
+// only needed once)
 $aMsg = array();
 $aMsg["DelTitle"] = i18n("Delete dispatch job", 'newsletter');
 $aMsg["DelDescr"] = i18n("Do you really want to delete the following newsletter dispatch job:<br>", 'newsletter');
@@ -149,12 +163,12 @@ $aMsg["SendTitle"] = i18n("Run job", 'newsletter');
 $aMsg["SendDescr"] = i18n("Do you really want to run the following job:<br>", 'newsletter');
 
 // Prepare "send link" template
-$sTplSend = '<a title="'.$aMsg["SendTitle"].'" href="javascript://" onclick="showSendMsg(\'{ID}\',\'{NAME}\')"><img src="'.$cfg['path']['images'].'newsletter_16.gif" border="0" title="'.$aMsg["SendTitle"].'" alt="'.$aMsg["SendTitle"].'"></a>';
+$sTplSend = '<a title="' . $aMsg["SendTitle"] . '" href="javascript://" onclick="showSendMsg(\'{ID}\',\'{NAME}\')"><img src="' . $cfg['path']['images'] . 'newsletter_16.gif" border="0" title="' . $aMsg["SendTitle"] . '" alt="' . $aMsg["SendTitle"] . '"></a>';
 
 while ($oJob = $oJobs->next()) {
     $iMenu++;
     $iID = $oJob->get("idnewsjob");
-    $sName = $oJob->get("name") . " (" . date($sDateFormat, strtotime($oJob->get("created"))) .")";
+    $sName = $oJob->get("name") . " (" . date($sDateFormat, strtotime($oJob->get("created"))) . ")";
 
     $oLnk = new cHTMLLink();
     $oLnk->setMultiLink($area, "", $area, "");
@@ -162,7 +176,7 @@ while ($oJob = $oJobs->next()) {
 
     // Is at present redundant
     // HerrB: No, it's just not used/set...
-    //$oMenu->setImage($iMenu, "images/newsletter_16.gif");
+    // $oMenu->setImage($iMenu, "images/newsletter_16.gif");
     $oMenu->setTitle($iMenu, $sName);
 
     switch ($oJob->get("status")) {
@@ -171,42 +185,50 @@ while ($oJob = $oJobs->next()) {
             if ($oJob->get("cronjob") == 0) {
                 // Standard job can be run if user has the right to do so
                 if ($perm->have_perm_area_action($area, "news_job_run")) {
-                    $sLnkSend = str_replace('{ID}',   $iID, $sTplSend);
+                    $sLnkSend = str_replace('{ID}', $iID, $sTplSend);
                     $sLnkSend = str_replace('{NAME}', addslashes($sName), $sLnkSend);
 
                     $oMenu->setActions($iMenu, 'send', $sLnkSend);
                 }
             } elseif ($oJob->get("cronjob") == 1) {
                 // It's a cronjob job - no manual sending, show it blue
-                $oLnk->updateAttributes(array("style" => "color:#0000FF"));
+                $oLnk->updateAttributes(array(
+                    "style" => "color:#0000FF"
+                ));
             }
 
             if ($perm->have_perm_area_action($area, "news_job_delete")) {
                 // Job may be deleted, if user has the right to do so
-                $oMenu->setActions($iMenu, 'delete', '<a title="'.$aMsg["DelTitle"].'" href="javascript://" onclick="showDelMsg('.$iID.',\''.addslashes($sName).'\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$aMsg["DelTitle"].'" alt="'.$aMsg["DelTitle"].'"></a>');
+                $oMenu->setActions($iMenu, 'delete', '<a title="' . $aMsg["DelTitle"] . '" href="javascript://" onclick="showDelMsg(' . $iID . ',\'' . addslashes($sName) . '\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '"></a>');
             }
             break;
         case 2:
             // Sending job
             if ($perm->have_perm_area_action($area, "news_job_run")) {
-                // User may try to start sending, again - if he has the right to do so
-                $sLnkSend = str_replace('{ID}',   $iID, $sTplSend);
+                // User may try to start sending, again - if he has the right to
+                // do so
+                $sLnkSend = str_replace('{ID}', $iID, $sTplSend);
                 $sLnkSend = str_replace('{NAME}', addslashes($sName), $sLnkSend);
 
                 $oMenu->setActions($iMenu, 'send', $sLnkSend);
             }
 
-            $oLnk->updateAttributes(array("style" => "color:#da8a00"));
+            $oLnk->updateAttributes(array(
+                "style" => "color:#da8a00"
+            ));
 
-            $sDelete = '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$aMsg["DelTitle"].'" alt="'.$aMsg["DelTitle"].'">';
+            $sDelete = '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '">';
             break;
         case 9:
             // Job finished, don't do anything
-            $oLnk->updateAttributes(array("style" => "color:#808080"));
+            $oLnk->updateAttributes(array(
+                "style" => "color:#808080"
+            ));
 
             if ($perm->have_perm_area_action($area, "news_job_delete")) {
-                // You have the right, but you can't delete the job after sending
-                $oMenu->setActions($iMenu, 'delete', '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$aMsg["DelTitle"].'" alt="'.$aMsg["DelTitle"].'">');
+                // You have the right, but you can't delete the job after
+                // sending
+                $oMenu->setActions($iMenu, 'delete', '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '">');
             }
             break;
     }
@@ -217,7 +239,7 @@ while ($oJob = $oJobs->next()) {
 $sExecScript = '
     <script type="text/javascript">
         // Session-ID
-        var sid = "'.$sess->id.'";
+        var sid = "' . $sess->id . '";
 
         function showSendMsg(lngId, strElement) {
             showConfirmation("' . $aMsg["SendDescr"] . '<b>" + strElement + "</b>", function() { runJob(lngId); });
@@ -270,24 +292,25 @@ $sExecScript = '
 $oPage->addScript($sExecScript);
 $oPage->addScript('parameterCollector.js');
 
-//generate current content for Object Pager
+// generate current content for Object Pager
 $sPagerId = '0ed6d632-6adf-4f09-a0c6-1e38ab60e303';
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("selAuthor",     $_REQUEST["selAuthor"]);
-$oPagerLink->setCustom("elemperpage",   $_REQUEST["elemperpage"]);
-$oPagerLink->setCustom("filter",        $_REQUEST["filter"]);
+$oPagerLink->setCustom("selAuthor", $_REQUEST["selAuthor"]);
+$oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);
+$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
 $oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
-$oPagerLink->setCustom("sortby",        $_REQUEST["sortby"]);
-$oPagerLink->setCustom("sortorder",     $_REQUEST["sortorder"]);
-$oPagerLink->setCustom("searchin",      $_REQUEST["searchin"]);
-$oPagerLink->setCustom("frame",         $frame);
-$oPagerLink->setCustom("area",          $area);
+$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
+$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
+$oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
+$oPagerLink->setCustom("frame", $frame);
+$oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
-$oPagerLink->setCustom("contenido",     $sess->id);
+$oPagerLink->setCustom("contenido", $sess->id);
 // Note, that after the "page" parameter no "pagerlink" parameter is specified -
-// it is not used, as the JS below only uses the INNER html and the "pagerlink" parameter is
+// it is not used, as the JS below only uses the INNER html and the "pagerlink"
+// parameter is
 // set by ...left_top.html for the foldingrow itself
 $oPager = new cGuiObjectPager($sPagerId, $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page");
 
@@ -301,7 +324,7 @@ $oPage->addScript('setPager.js');
 
 $sRefreshPager = '
     <script type="text/javascript">
-        var sNavigation = \''.$sPagerContent.'\';
+        var sNavigation = \'' . $sPagerContent . '\';
 
         // Activate time to refresh pager folding row in left top
         var oTimer = window.setInterval("fncSetPager(\'' . $sPagerId . '\',\'' . $_REQUEST["page"] . '\')", 200);
@@ -309,6 +332,7 @@ $sRefreshPager = '
 
 $oPage->addScript($sRefreshPager);
 
-//$oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0" width="100%">', $oListOptionRow, '</table>', $oMenu->render(false)));
+// $oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0"
+// width="100%">', $oListOptionRow, '</table>', $oMenu->render(false)));
 $oPage->setContent($oMenu);
 $oPage->render();

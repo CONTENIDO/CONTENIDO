@@ -1,41 +1,34 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the Collection management class.
  *
- * Description:
- * Newsletter job class
+ * @package Plugin
+ * @subpackage Newsletter
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.1
- * @author     Bj�rn Behrens
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @author Bj�rn Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Collection management class
+ * Collection management class.
+ *
+ * @package Plugin
+ * @subpackage Newsletter
  */
-class NewsletterJobCollection extends ItemCollection
-{
+class NewsletterJobCollection extends ItemCollection {
+
     /**
      * Constructor Function
+     *
      * @param none
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["news_jobs"], "idnewsjob");
         $this->_setItemClass("NewsletterJob");
@@ -43,20 +36,21 @@ class NewsletterJobCollection extends ItemCollection
 
     /**
      * Creates a newsletter job
-     * @param $name        string    Specifies the name of the newsletter, the same name may be used more than once
-     * @param $idnews    integer Newsletter id
+     *
+     * @param $name string Specifies the name of the newsletter, the same name
+     *            may be used more than once
+     * @param $idnews integer Newsletter id
      */
-    public function create($iIDNews, $iIDCatArt, $sName = "")
-    {
+    public function create($iIDNews, $iIDCatArt, $sName = "") {
         global $client, $lang, $cfg, $cfgClient, $auth;
 
-        $oNewsletter = new Newsletter;
+        $oNewsletter = new Newsletter();
         if ($oNewsletter->loadByPrimaryKey($iIDNews)) {
-            $iIDNews   = cSecurity::toInteger($iIDNews);
+            $iIDNews = cSecurity::toInteger($iIDNews);
             $iIDCatArt = cSecurity::toInteger($iIDCatArt);
-            $lang      = cSecurity::toInteger($lang);
-            $client    = cSecurity::toInteger($client);
-            $sName     = cSecurity::escapeDB($sName, null);
+            $lang = cSecurity::toInteger($lang);
+            $client = cSecurity::toInteger($client);
+            $sName = cSecurity::escapeDB($sName, null);
 
             $oItem = parent::createNewItem();
 
@@ -80,19 +74,20 @@ class NewsletterJobCollection extends ItemCollection
             $oItem->set("subject", $oNewsletter->get("subject"));
 
             // Precompile messages
-            $sPath = cRegistry::getFrontendUrl() . "front_content.php?changelang=".$lang."&idcatart=".$iIDCatArt."&";
+            $sPath = cRegistry::getFrontendUrl() . "front_content.php?changelang=" . $lang . "&idcatart=" . $iIDCatArt . "&";
 
             $sMessageText = $oNewsletter->get("message");
 
-            // Preventing double lines in mail, you may wish to disable this function on windows servers
+            // Preventing double lines in mail, you may wish to disable this
+            // function on windows servers
             if (!getSystemProperty("newsletter", "disable-rn-replacement")) {
                 $sMessageText = str_replace("\r\n", "\n", $sMessageText);
             }
 
-            $oNewsletter->_replaceTag($sMessageText, false, "unsubscribe", $sPath."unsubscribe={KEY}");
-            $oNewsletter->_replaceTag($sMessageText, false, "change", $sPath."change={KEY}");
-            $oNewsletter->_replaceTag($sMessageText, false, "stop", $sPath."stop={KEY}");
-            $oNewsletter->_replaceTag($sMessageText, false, "goon", $sPath."goon={KEY}");
+            $oNewsletter->_replaceTag($sMessageText, false, "unsubscribe", $sPath . "unsubscribe={KEY}");
+            $oNewsletter->_replaceTag($sMessageText, false, "change", $sPath . "change={KEY}");
+            $oNewsletter->_replaceTag($sMessageText, false, "stop", $sPath . "stop={KEY}");
+            $oNewsletter->_replaceTag($sMessageText, false, "goon", $sPath . "goon={KEY}");
 
             $oItem->set("message_text", $sMessageText);
 
@@ -109,29 +104,30 @@ class NewsletterJobCollection extends ItemCollection
                     $oNewsletter->_replaceTag($sMessageHTML, true, "date", "MAIL_DATE");
                     $oNewsletter->_replaceTag($sMessageHTML, true, "time", "MAIL_TIME");
 
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "unsubscribe", $sPath."unsubscribe={KEY}");
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "change", $sPath."change={KEY}");
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "stop", $sPath."stop={KEY}");
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "goon", $sPath."goon={KEY}");
+                    $oNewsletter->_replaceTag($sMessageHTML, true, "unsubscribe", $sPath . "unsubscribe={KEY}");
+                    $oNewsletter->_replaceTag($sMessageHTML, true, "change", $sPath . "change={KEY}");
+                    $oNewsletter->_replaceTag($sMessageHTML, true, "stop", $sPath . "stop={KEY}");
+                    $oNewsletter->_replaceTag($sMessageHTML, true, "goon", $sPath . "goon={KEY}");
 
                     // Replace plugin tags by simple MAIL_ tags
                     if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
                         if (is_array($cfg['plugins']['recipients'])) {
                             foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                                plugin_include("recipients", $sPlugin."/".$sPlugin.".php");
-                                if (function_exists("recipients_".$sPlugin."_wantedVariables")) {
+                                plugin_include("recipients", $sPlugin . "/" . $sPlugin . ".php");
+                                if (function_exists("recipients_" . $sPlugin . "_wantedVariables")) {
                                     $aPluginVars = array();
-                                    $aPluginVars = call_user_func("recipients_".$sPlugin."_wantedVariables");
+                                    $aPluginVars = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
 
                                     foreach ($aPluginVars as $sPluginVar) {
-                                        $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_".strtoupper($sPluginVar));
+                                        $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_" . strtoupper($sPluginVar));
                                     }
                                 }
                             }
                         }
                     }
                 } else {
-                    // There was a problem getting html message (maybe article deleted)
+                    // There was a problem getting html message (maybe article
+                    // deleted)
                     // Cancel job generation
                     return false;
                 }
@@ -145,22 +141,24 @@ class NewsletterJobCollection extends ItemCollection
             } else {
                 $oItem->set("newsfromname", $oNewsletter->get("newsfromname"));
             }
-            $oItem->set("newsdate", date("Y-m-d H:i:s"), false); //$oNewsletter->get("newsdate"));
+            $oItem->set("newsdate", date("Y-m-d H:i:s"), false); // $oNewsletter->get("newsdate"));
             $oItem->set("dispatch", $oNewsletter->get("dispatch"));
             $oItem->set("dispatch_count", $oNewsletter->get("dispatch_count"));
             $oItem->set("dispatch_delay", $oNewsletter->get("dispatch_delay"));
 
             // Store "send to" info in serialized array (just info)
-            $aSendInfo   = array();
+            $aSendInfo = array();
             $aSendInfo[] = $oNewsletter->get("send_to");
 
             switch ($oNewsletter->get("send_to")) {
                 case "selection":
-                    $oGroups = new NewsletterRecipientGroupCollection;
+                    $oGroups = new NewsletterRecipientGroupCollection();
                     $oGroups->setWhere("idnewsgroup", unserialize($oNewsletter->get("send_ids")), "IN");
                     $oGroups->setOrder("groupname");
                     $oGroups->query();
-                    #$oGroups->select("idnewsgroup IN ('" . implode("','", unserialize($oNewsletter->get("send_ids"))) . "')", "", "groupname");
+                    // oGroups->select("idnewsgroup IN ('" . implode("','",
+                    // unserialize($oNewsletter->get("send_ids"))) . "')", "",
+                    // "groupname");
 
                     while (($oGroup = $oGroups->next()) !== false) {
                         $aSendInfo[] = $oGroup->get("groupname");
@@ -199,7 +197,9 @@ class NewsletterJobCollection extends ItemCollection
 
             $oItem->set("rcpcount", $iRecipientCount);
             $oItem->set("sendcount", 0);
-            $oItem->set("status", 1); // Waiting for sending; note, that status will be set to 9, if $iRecipientCount = 0 in store() method
+            $oItem->set("status", 1); // Waiting for sending; note, that status
+                                      // will be set to 9, if $iRecipientCount =
+                                      // 0 in store() method
 
             $oItem->store();
 
@@ -210,32 +210,32 @@ class NewsletterJobCollection extends ItemCollection
     }
 
     /**
-     * Overridden delete method to remove job details (logs) from newsletter logs table
+     * Overridden delete method to remove job details (logs) from newsletter
+     * logs table
      * before deleting newsletter job
      *
      * @param $iItemID int specifies the frontend user group
      */
-    public function delete($iItemID)
-    {
+    public function delete($iItemID) {
         $oLogs = new NewsletterLogCollection();
         $oLogs->delete($iItemID);
 
         parent::delete($iItemID);
     }
-}
 
+}
 
 /**
  * Single NewsletterJob Item
  */
-class NewsletterJob extends Item
-{
+class NewsletterJob extends Item {
+
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg["tab"]["news_jobs"], "idnewsjob");
         if ($mId !== false) {
@@ -243,8 +243,7 @@ class NewsletterJob extends Item
         }
     }
 
-    public function runJob()
-    {
+    public function runJob() {
         global $cfg, $recipient;
 
         $iCount = 0;
@@ -252,7 +251,7 @@ class NewsletterJob extends Item
             // Job is currently running, check start time and restart if
             // started 5 minutes ago
             $dStart = strtotime($this->get("started"));
-            $dNow   = time();
+            $dNow = time();
 
             if (($dNow - $dStart) > (5 * 60)) {
                 $this->set("status", 1);
@@ -273,7 +272,7 @@ class NewsletterJob extends Item
         if ($this->get("status") == 1) {
             // Job waiting for sending
             $this->set("status", 2);
-            $this->set("started",  date("Y-m-d H:i:s"), false);
+            $this->set("started", date("Y-m-d H:i:s"), false);
             $this->store();
 
             // Initialization
@@ -292,14 +291,14 @@ class NewsletterJob extends Item
             }
 
             // Get newsletter data
-            $sFrom         = $this->get("newsfrom");
-            $sFromName     = $this->get("newsfromname");
-            $sSubject      = $this->get("subject");
-            $sMessageText  = $this->get("message_text");
-            $sMessageHTML  = $this->get("message_html");
-            $dNewsDate     = strtotime($this->get("newsdate"));
-            $sEncoding     = $this->get("encoding");
-            $bIsHTML       = false;
+            $sFrom = $this->get("newsfrom");
+            $sFromName = $this->get("newsfromname");
+            $sSubject = $this->get("subject");
+            $sMessageText = $this->get("message_text");
+            $sMessageHTML = $this->get("message_html");
+            $dNewsDate = strtotime($this->get("newsdate"));
+            $sEncoding = $this->get("encoding");
+            $bIsHTML = false;
             if ($this->get("type") == "html" && $sMessageHTML != "") {
                 $bIsHTML = true;
             }
@@ -326,13 +325,13 @@ class NewsletterJob extends Item
             $bPluginEnabled = false;
             if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
                 $bPluginEnabled = true;
-                $aPlugins       = array();
+                $aPlugins = array();
 
                 if (is_array($cfg['plugins']['recipients'])) {
                     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
-                        plugin_include("recipients", $sPlugin."/".$sPlugin.".php");
-                        if (function_exists("recipients_".$sPlugin."_wantedVariables")) {
-                            $aPlugins[$sPlugin] = call_user_func("recipients_".$sPlugin."_wantedVariables");
+                        plugin_include("recipients", $sPlugin . "/" . $sPlugin . ".php");
+                        if (function_exists("recipients_" . $sPlugin . "_wantedVariables")) {
+                            $aPlugins[$sPlugin] = call_user_func("recipients_" . $sPlugin . "_wantedVariables");
                         }
                     }
                 }
@@ -340,7 +339,7 @@ class NewsletterJob extends Item
 
             // Get recipients (from log table)
             if (!is_object($oLogs)) {
-                $oLogs = new NewsletterLogCollection;
+                $oLogs = new NewsletterLogCollection();
             } else {
                 $oLogs->resetQuery();
             }
@@ -360,38 +359,40 @@ class NewsletterJob extends Item
                 $sRcpMsgText = $sMessageText;
                 $sRcpMsgHTML = $sMessageHTML;
 
-                $sKey    = $oLog->get("rcphash");
+                $sKey = $oLog->get("rcphash");
                 $sEMail = $oLog->get("rcpemail");
-                $bSendHTML    = false;
+                $bSendHTML = false;
                 if ($oLog->get("rcpnewstype") == 1) {
                     $bSendHTML = true; // Recipient accepts html newsletter
                 }
 
-                if (strlen($sKey) == 30) { // Prevents sending without having a key
-                    $sRcpMsgText = str_replace("{KEY}",     $sKey, $sRcpMsgText);
+                if (strlen($sKey) == 30) { // Prevents sending without having a
+                                           // key
+                    $sRcpMsgText = str_replace("{KEY}", $sKey, $sRcpMsgText);
                     $sRcpMsgText = str_replace("MAIL_MAIL", $sEMail, $sRcpMsgText);
                     $sRcpMsgText = str_replace("MAIL_NAME", $oLog->get("rcpname"), $sRcpMsgText);
 
                     // Replace message tags (html message)
                     if ($bIsHTML && $bSendHTML) {
-                        $sRcpMsgHTML = str_replace("{KEY}",     $sKey, $sRcpMsgHTML);
+                        $sRcpMsgHTML = str_replace("{KEY}", $sKey, $sRcpMsgHTML);
                         $sRcpMsgHTML = str_replace("MAIL_MAIL", $sEMail, $sRcpMsgHTML);
                         $sRcpMsgHTML = str_replace("MAIL_NAME", $oLog->get("rcpname"), $sRcpMsgHTML);
                     }
 
                     if ($bPluginEnabled) {
-                        // Don't change name of $recipient variable as it is used in plugins!
+                        // Don't change name of $recipient variable as it is
+                        // used in plugins!
                         $recipient = new NewsletterRecipient();
                         $recipient->loadByPrimaryKey($oLog->get("idnewsrcp"));
 
                         foreach ($aPlugins as $sPlugin => $aPluginVar) {
                             foreach ($aPluginVar as $sPluginVar) {
                                 // Replace tags in text message
-                                $sRcpMsgText = str_replace("MAIL_".strtoupper($sPluginVar), call_user_func("recipients_".$sPlugin."_getvalue", $sPluginVar), $sRcpMsgText);
+                                $sRcpMsgText = str_replace("MAIL_" . strtoupper($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgText);
 
                                 // Replace tags in html message
                                 if ($bIsHTML && $bSendHTML) {
-                                    $sRcpMsgHTML = str_replace("MAIL_".strtoupper($sPluginVar), call_user_func("recipients_".$sPlugin."_getvalue", $sPluginVar), $sRcpMsgHTML);
+                                    $sRcpMsgHTML = str_replace("MAIL_" . strtoupper($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgHTML);
                                 }
                             }
                         }
@@ -400,7 +401,9 @@ class NewsletterJob extends Item
 
                     $mailer = new cMailer();
                     $mailer->setCharset($sEncoding);
-                    $from = array($sFromName => $sFrom);
+                    $from = array(
+                        $sFromName => $sFrom
+                    );
                     $to = $sEMail;
                     if ($bIsHTML && $bSendHTML) {
                         $body = $sRcpMsgHTML;
@@ -442,7 +445,7 @@ class NewsletterJob extends Item
                 If ($oLogs->next()) {
                     // Remaining recipients found, set job back to pending
                     $this->set("status", 1);
-                    $this->set("started",  "0000-00-00 00:00:00", false);
+                    $this->set("started", "0000-00-00 00:00:00", false);
                 } else {
                     // No remaining recipients, job finished
                     $this->set("status", 9);
@@ -451,7 +454,7 @@ class NewsletterJob extends Item
             } else {
                 // Set job back to pending
                 $this->set("status", 1);
-                $this->set("started",  "0000-00-00 00:00:00", false);
+                $this->set("started", "0000-00-00 00:00:00", false);
             }
             $this->store();
         }
@@ -462,17 +465,17 @@ class NewsletterJob extends Item
     /**
      * Overriden store() method to set status to finished if rcpcount is 0
      */
-    public function store()
-    {
+    public function store() {
         if ($this->get("rcpcount") == 0) {
             // No recipients, job finished
-            $this->set("status",     9);
+            $this->set("status", 9);
             if ($this->get("started") == "0000-00-00 00:00:00") {
                 $this->set("started", date("Y-m-d H:i:s"), false);
             }
-            $this->set("finished",    date("Y-m-d H:i:s"), false);
+            $this->set("finished", date("Y-m-d H:i:s"), false);
         }
 
         return parent::store();
     }
+
 }

@@ -1,61 +1,61 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the Frontend group list.
  *
- * Description:
- * Frontend group list
- *
- * @package    CONTENIDO Plugins
+ * @package Plugin
  * @subpackage Newsletter
- * @version    1.6.0
- * @author     Björn Behrens (HerrB)
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @version SVN Revision $Rev:$
+ *
+ * @author Björn Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
-##################################
-# Initialization
-##################################
+// ################################
+// Initialization
+// ################################
 $oPage = new cGuiPage("recipients.group_menu", "newsletter");
 $oMenu = new cGuiMenu();
 $oUser = new cApiUser($auth->auth["uid"]);
 
 // Specify fields for search, sort and validation. Design makes enhancements
-// using plugins possible (currently not implemented). If you are changing things here,
+// using plugins possible (currently not implemented). If you are changing
+// things here,
 // remember to update include.newsletter_left_top.php, also.
-// field:    Field name in the db
-// caption:  Shown field name (-> user)
-// base:     Elements from core code (other type may be: "plugin")
-// sort:     Element can be used to be sorted by
-// search:   Element can be used to search in
+// field: Field name in the db
+// caption: Shown field name (-> user)
+// base: Elements from core code (other type may be: "plugin")
+// sort: Element can be used to be sorted by
+// search: Element can be used to search in
 $aFields = array();
-$aFields["name"] = array("field" => "groupname", "caption" => i18n("Name", 'newsletter'), "type" => "base,sort,search");
+$aFields["name"] = array(
+    "field" => "groupname",
+    "caption" => i18n("Name", 'newsletter'),
+    "type" => "base,sort,search"
+);
 
-##################################
-# Check external input
-##################################
+// ################################
+// Check external input
+// ################################
 // Items per page (value stored per area in user property)
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0) {
     $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
 if (!is_numeric($_REQUEST["elemperpage"])) {
-    // This is the case, if the user property has never been set (first time user)
+    // This is the case, if the user property has never been set (first time
+    // user)
     $_REQUEST["elemperpage"] = 25;
 }
 if ($_REQUEST["elemperpage"] > 0) {
-    // -- All -- will not be stored, as it may be impossible to change this back to something more useful
+    // -- All -- will not be stored, as it may be impossible to change this back
+    // to something more useful
     $oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
 }
-$_REQUEST["page"] = (int)$_REQUEST["page"];
+$_REQUEST["page"] = (int) $_REQUEST["page"];
 if ($_REQUEST["page"] <= 0 || $_REQUEST["elemperpage"] == 0) {
     $_REQUEST["page"] = 1;
 }
@@ -65,19 +65,20 @@ if ($_REQUEST["sortorder"] != "DESC") {
 }
 
 // Don't need to check sort by and search in criteria - just set it
-$_REQUEST["sortby"] = "groupname"; // Default sort by field, possible values see above
+$_REQUEST["sortby"] = "groupname"; // Default sort by field, possible values see
+                                   // above
 $_REQUEST["searchin"] = "--all--";
 
 // Free memory
 unset($oUser);
 unset($oClient);
 
-##################################
-# Get data
-##################################
-$oRcpGroups = new NewsletterRecipientGroupCollection;
+// ################################
+// Get data
+// ################################
+$oRcpGroups = new NewsletterRecipientGroupCollection();
 $oRcpGroups->setWhere("idclient", $client);
-$oRcpGroups->setWhere("idlang",   $lang);
+$oRcpGroups->setWhere("idlang", $lang);
 
 if ($_REQUEST["filter"] != "") {
     if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
@@ -93,11 +94,12 @@ if ($_REQUEST["filter"] != "") {
 }
 
 if ($_REQUEST["elemperpage"] > 0) {
-    // Getting item count without limit (for page function) - better idea anyone (performance)?
+    // Getting item count without limit (for page function) - better idea anyone
+    // (performance)?
     $oRcpGroups->query();
     $iItemCount = $oRcpGroups->count();
 
-    if ($_REQUEST["elemperpage"]*($_REQUEST["page"]) >= $iItemCount+$_REQUEST["elemperpage"] && $_REQUEST["page"]  != 1) {
+    if ($_REQUEST["elemperpage"] * ($_REQUEST["page"]) >= $iItemCount + $_REQUEST["elemperpage"] && $_REQUEST["page"] != 1) {
         $_REQUEST["page"]--;
     }
 
@@ -106,14 +108,15 @@ if ($_REQUEST["elemperpage"] > 0) {
     $iItemCount = 0;
 }
 
-$oRcpGroups->setOrder("defaultgroup DESC, ".$_REQUEST["sortby"]." ".$_REQUEST["sortorder"]);
+$oRcpGroups->setOrder("defaultgroup DESC, " . $_REQUEST["sortby"] . " " . $_REQUEST["sortorder"]);
 $oRcpGroups->query();
 
 // Output data
 $oMenu = new cGuiMenu();
 $iMenu = 0;
 
-// Store messages for repeated use (speeds performance, as i18n translation is only needed once)
+// Store messages for repeated use (speeds performance, as i18n translation is
+// only needed once)
 $aMsg = array();
 $aMsg["DelTitle"] = i18n("Delete recipient group", 'newsletter');
 $aMsg["DelDescr"] = i18n("Do you really want to delete the following newsletter recipient group:<br>", 'newsletter');
@@ -128,23 +131,23 @@ while ($oRcpGroup = $oRcpGroups->next()) {
     }
 
     // Create the link to show/edit the recipient group
-    $oLnk = new cHTMLLink;
-    $oLnk->setMultiLink("recipientgroups","","recipientgroups","");
+    $oLnk = new cHTMLLink();
+    $oLnk->setMultiLink("recipientgroups", "", "recipientgroups", "");
     $oLnk->setCustom("idrecipientgroup", $iIDGroup);
 
-    #$oMenu->setImage($iMenu, $cfg["path"]["images"] . "groups.gif");
+    // oMenu->setImage($iMenu, $cfg["path"]["images"] . "groups.gif");
     $oMenu->setTitle($iMenu, $sName);
     $oMenu->setLink($iMenu, $oLnk);
 
     if ($perm->have_perm_area_action($area, recipientgroup_delete)) {
-        $oMenu->setActions($iMenu, 'delete', '<a title="'.$aMsg["DelTitle"].'" href="javascript://" onclick="showDelMsg('.$iIDGroup.',\''.addslashes($sName).'\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$aMsg["DelTitle"].'" alt="'.$aMsg["DelTitle"].'"></a>');
+        $oMenu->setActions($iMenu, 'delete', '<a title="' . $aMsg["DelTitle"] . '" href="javascript://" onclick="showDelMsg(' . $iIDGroup . ',\'' . addslashes($sName) . '\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '"></a>');
     }
 }
 
 $sExecScript = '
     <script type="text/javascript">
         // Session-ID
-        var sid = "'.$sess->id.'";
+        var sid = "' . $sess->id . '";
 
         function showDelMsg(lngId, strElement) {
             showConfirmation("' . $aMsg["DelDescr"] . '<b>" + strElement + "</b>", function() { deleteRecipientGroup(lngId); });
@@ -171,12 +174,13 @@ $sExecScript = '
     </script>';
 
 $oPage->addScript($sExecScript);
-//$oPage->addScript('cfoldingrow.js', '<script type="text/javascript" src="scripts/cfoldingrow.js"></script>');
+// $oPage->addScript('cfoldingrow.js', '<script type="text/javascript"
+// src="scripts/cfoldingrow.js"></script>');
 $oPage->addScript('parameterCollector.js');
 
 // Generate current content for Object Pager
 $sPagerId = "0ed6d632-6adf-4f09-a0c6-1e38ab60e305";
-$oPagerLink = new cHTMLLink;
+$oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);
@@ -189,7 +193,8 @@ $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 // Note, that after the "page" parameter no "pagerlink" parameter is specified -
-// it is not used, as the JS below only uses the INNER html and the "pagerlink" parameter is
+// it is not used, as the JS below only uses the INNER html and the "pagerlink"
+// parameter is
 // set by ...left_top.html for the foldingrow itself
 $oPager = new cGuiObjectPager($sPagerId, $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page");
 
@@ -204,7 +209,7 @@ $oPage->addScript('setPager.js');
 
 $sRefreshPager = '
     <script type="text/javascript">
-        var sNavigation = \''.$sPagerContent.'\';
+        var sNavigation = \'' . $sPagerContent . '\';
 
         // Activate time to refresh pager folding row in left top
         var oTimer = window.setInterval("fncSetPager(\'' . $sPagerId . '\',\'' . $_REQUEST["page"] . '\')", 200);
@@ -212,6 +217,7 @@ $sRefreshPager = '
 
 $oPage->addScript($sRefreshPager);
 
-//$oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0" width="100%">', '</table>', $oMenu->render(false)));
+// $oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0"
+// width="100%">', '</table>', $oMenu->render(false)));
 $oPage->setContent($oMenu);
 $oPage->render();

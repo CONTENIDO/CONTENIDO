@@ -1,45 +1,34 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the Recipient groups class.
  *
- * Description:
- * Recipient groups class
+ * @package Plugin
+ * @subpackage Newsletter
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Backend Classes
- * @version    1.1
- * @author     Bj�rn Behrens
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  2004-08-01
- *   $Id$:
- * }}
+ * @author Bj�rn Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Recipient group management class
+ * Recipient group management class.
+ *
+ * @package Plugin
+ * @subpackage Newsletter
  */
-class NewsletterRecipientGroupCollection extends ItemCollection
-{
+class NewsletterRecipientGroupCollection extends ItemCollection {
+
     /**
      * Constructor Function
+     *
      * @param none
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["news_groups"], "idnewsgroup");
         $this->_setItemClass("NewsletterRecipientGroup");
@@ -47,23 +36,24 @@ class NewsletterRecipientGroupCollection extends ItemCollection
 
     /**
      * Creates a new group
+     *
      * @param $groupname string Specifies the groupname
-     * @param $defaultgroup integer Specfies, if group is default group (optional)
+     * @param $defaultgroup integer Specfies, if group is default group
+     *        (optional)
      */
-    public function create($groupname, $defaultgroup = 0)
-    {
+    public function create($groupname, $defaultgroup = 0) {
         global $client, $lang;
 
         $client = cSecurity::toInteger($client);
-        $lang   = cSecurity::toInteger($lang);
+        $lang = cSecurity::toInteger($lang);
 
         $group = new NewsletterRecipientGroup();
 
-        #$_arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
+        // _arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
 
         $mangledGroupName = $group->_inFilter($groupname);
         $this->setWhere("idclient", $client);
-        $this->setWhere("idlang",     $lang);
+        $this->setWhere("idlang", $lang);
         $this->setWhere("groupname", $mangledGroupName);
         $this->query();
 
@@ -88,9 +78,8 @@ class NewsletterRecipientGroupCollection extends ItemCollection
      *
      * @param $itemID int specifies the newsletter recipient group
      */
-    public function delete($itemID)
-    {
-        $oAssociations = new NewsletterRecipientGroupMemberCollection;
+    public function delete($itemID) {
+        $oAssociations = new NewsletterRecipientGroupMemberCollection();
         $oAssociations->setWhere("idnewsgroup", $itemID);
         $oAssociations->query();
 
@@ -99,20 +88,20 @@ class NewsletterRecipientGroupCollection extends ItemCollection
         }
         parent::delete($itemID);
     }
-}
 
+}
 
 /**
  * Single RecipientGroup Item
  */
-class NewsletterRecipientGroup extends Item
-{
+class NewsletterRecipientGroup extends Item {
+
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg["tab"]["news_groups"], "idnewsgroup");
         if ($mId !== false) {
@@ -122,13 +111,12 @@ class NewsletterRecipientGroup extends Item
 
     /**
      * Overriden store() method to ensure, that there is only one default group
-     **/
-    public function store()
-    {
+     */
+    public function store() {
         global $client, $lang;
 
         $client = cSecurity::toInteger($client);
-        $lang   = cSecurity::toInteger($lang);
+        $lang = cSecurity::toInteger($lang);
 
         if ($this->get("defaultgroup") == 1) {
             $oItems = new NewsletterRecipientGroupCollection();
@@ -145,36 +133,36 @@ class NewsletterRecipientGroup extends Item
         }
         return parent::store();
     }
-}
 
+}
 
 /**
  * Recipient group member management class
  */
-class NewsletterRecipientGroupMemberCollection extends ItemCollection
-{
+class NewsletterRecipientGroupMemberCollection extends ItemCollection {
+
     /**
      * Constructor Function
+     *
      * @param none
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["news_groupmembers"], "idnewsgroupmember");
-        $this->_setJoinPartner ('NewsletterRecipientGroupCollection');
-        $this->_setJoinPartner ('NewsletterRecipientCollection');
+        $this->_setJoinPartner('NewsletterRecipientGroupCollection');
+        $this->_setJoinPartner('NewsletterRecipientCollection');
         $this->_setItemClass("NewsletterRecipientGroupMember");
     }
 
     /**
      * Creates a new association
+     *
      * @param $idrecipientgroup int specifies the newsletter group
-     * @param $idrecipient  int specifies the newsletter user
+     * @param $idrecipient int specifies the newsletter user
      */
-    public function create($idrecipientgroup, $idrecipient)
-    {
+    public function create($idrecipientgroup, $idrecipient) {
         $idrecipientgroup = cSecurity::toInteger($idrecipientgroup);
-        $idrecipient      = cSecurity::toInteger($idrecipient);
+        $idrecipient = cSecurity::toInteger($idrecipient);
 
         $this->setWhere("idnewsgroup", $idrecipientgroup);
         $this->setWhere("idnewsrcp", $idrecipient);
@@ -195,13 +183,13 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
 
     /**
      * Removes an association
+     *
      * @param $idrecipientgroup int specifies the newsletter group
-     * @param $idrecipient  int specifies the newsletter user
+     * @param $idrecipient int specifies the newsletter user
      */
-    public function remove($idrecipientgroup, $idrecipient)
-    {
+    public function remove($idrecipientgroup, $idrecipient) {
         $idrecipientgroup = cSecurity::toInteger($idrecipientgroup);
-        $idrecipient      = cSecurity::toInteger($idrecipient);
+        $idrecipient = cSecurity::toInteger($idrecipient);
 
         $this->setWhere("idnewsgroup", $idrecipientgroup);
         $this->setWhere("idnewsrcp", $idrecipient);
@@ -214,10 +202,10 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
 
     /**
      * Removes all associations from any newsletter group
-     * @param $idrecipient  int specifies the newsletter recipient
+     *
+     * @param $idrecipient int specifies the newsletter recipient
      */
-    public function removeRecipientFromGroups($idrecipient)
-    {
+    public function removeRecipientFromGroups($idrecipient) {
         $idrecipient = cSecurity::toInteger($idrecipient);
 
         $this->setWhere("idnewsrcp", $idrecipient);
@@ -230,10 +218,10 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
 
     /**
      * Removes all associations of a newsletter group
-     * @param $idgroup  int specifies the newsletter recipient group
+     *
+     * @param $idgroup int specifies the newsletter recipient group
      */
-    public function removeGroup($idgroup)
-    {
+    public function removeGroup($idgroup) {
         $idgroup = cSecurity::toInteger($idgroup);
 
         $this->setWhere("idnewsgroup", $idgroup);
@@ -246,12 +234,12 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
 
     /**
      * Returns all recipients in a single group
+     *
      * @param $idrecipientgroup int specifies the newsletter group
      * @param $asObjects boolean specifies if the function should return objects
      * @return array RecipientRecipient items
      */
-    public function getRecipientsInGroup($idrecipientgroup, $asObjects = true)
-    {
+    public function getRecipientsInGroup($idrecipientgroup, $asObjects = true) {
         $idrecipientgroup = cSecurity::toInteger($idrecipientgroup);
 
         $this->setWhere("idnewsgroup", $idrecipientgroup);
@@ -272,25 +260,26 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
 
         return ($aObjects);
     }
-}
 
+}
 
 /**
  * Single RecipientGroup Item
  */
-class NewsletterRecipientGroupMember extends Item
-{
+class NewsletterRecipientGroupMember extends Item {
+
     /**
      * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
+     *
+     * @param mixed $mId Specifies the ID of item to load
      */
-    public function __construct($mId = false)
-    {
+    public function __construct($mId = false) {
         global $cfg;
         parent::__construct($cfg["tab"]["news_groupmembers"], "idnewsgroupmember");
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
     }
+
 }
 ?>

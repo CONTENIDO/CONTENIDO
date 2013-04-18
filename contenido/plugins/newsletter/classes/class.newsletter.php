@@ -1,27 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the Newsletter recipient class.
  *
- * Description:
- * Newsletter recipient class
+ * @package Plugin
+ * @subpackage Newsletter
+ * @version SVN Revision $Rev:$
  *
- * @package    CONTENIDO Backend Classes
- * @version    1.1
- * @author     Björn Behrens
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @author Bj�rn Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Newsletter management class
+ * Newsletter recipient class.
+ *
+ * @package Plugin
+ * @subpackage Newsletter
  */
 class NewsletterCollection extends ItemCollection
 {

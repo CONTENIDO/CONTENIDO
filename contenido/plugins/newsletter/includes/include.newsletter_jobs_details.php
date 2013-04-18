@@ -1,37 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the job details.
  *
- * Description:
- * Shows job details
- *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
+ * @package Plugin
  * @subpackage Newsletter
- * @version    1.0.2
- * @author     Björn Behrens (HerrB)
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.6
+ * @version SVN Revision $Rev:$
  *
- * {@internal
- *   created 2007-01-01, Björn Behrens (HerrB)
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *
- *   $Id$:
- * }}
- *
+ * @author Björn Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $backendUrl = cRegistry::getBackendUrl();
 
@@ -45,11 +27,11 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
     if ($oJob->get("dispatch") == 1 && $oJob->get("sendcount") < $oJob->get("rcpcount")) {
         // Send in chunks
-        $sPathNext = $sess->url("main.php?area=$area&action=news_job_run&frame=4&idnewsjob=".$_REQUEST["idnewsjob"]);
+        $sPathNext = $sess->url("main.php?area=$area&action=news_job_run&frame=4&idnewsjob=" . $_REQUEST["idnewsjob"]);
 
         // Calculating some statistics
         $iChunk = ceil($oJob->get("sendcount") / $oJob->get("dispatch_count"));
-        $iChunks = ceil($oJob->get("rcpcount")  / $oJob->get("dispatch_count"));
+        $iChunks = ceil($oJob->get("rcpcount") / $oJob->get("dispatch_count"));
 
         // Dispatch count > send/recipient count, set values to 1, at least
         if ($iChunk == 0) {
@@ -62,26 +44,24 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         if ($oJob->get("dispatch_delay") == 0) {
             // Send manually
             $oForm = new cGuiTableForm("properties", $sPathNext);
-            $oForm->addHeader(i18n("Report:",'newsletter'));
+            $oForm->addHeader(i18n("Report:", 'newsletter'));
             $oForm->add("", "");
 
-            $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)",'newsletter'),
-                                    $iChunk, $iChunks, $oJob->get("rcpcount"), $oJob->get("sendcount")));
+            $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)", 'newsletter'), $iChunk, $iChunks, $oJob->get("rcpcount"), $oJob->get("sendcount")));
 
             $oForm->setActionButton("cancel", $backendUrl . "images/but_cancel.gif", i18n("Stop sending", 'newsletter'), "c");
             $oForm->setActionButton("submit", $backendUrl . "images/but_ok.gif", i18n("Send next chunk", 'newsletter'), "s", "news_job_run");
         } else {
             // Send automatically
             $oForm = new cGuiTableForm("properties");
-            $oForm->addHeader(i18n("Report:",'newsletter'));
+            $oForm->addHeader(i18n("Report:", 'newsletter'));
             $oForm->add("", "");
 
-            $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)", 'newsletter'),
-                                    $iChunk, $iChunks, $oJob->get("rcpcount"), $oJob->get("sendcount")));
+            $oForm->add("", sprintf(i18n("Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)", 'newsletter'), $iChunk, $iChunks, $oJob->get("rcpcount"), $oJob->get("sendcount")));
 
             $oPage->addMeta(array(
                 'http-equiv' => 'refresh',
-                'content' => $oJob->get("dispatch_delay").'; URL='.$sPathNext
+                'content' => $oJob->get("dispatch_delay") . '; URL=' . $sPathNext
             ));
             $oForm->unsetActionButton("submit");
             $oForm->setActionButton("cancel", $backendUrl . "images/but_cancel.gif", i18n("Stop sending", 'newsletter'), "c");
@@ -89,7 +69,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     } else {
         // All newsletters should have been sent
         $oForm = new cGuiTableForm("properties");
-        $oForm->addHeader(i18n("Report:",'newsletter'));
+        $oForm->addHeader(i18n("Report:", 'newsletter'));
         $oForm->add("", "");
 
         $oForm->add("", sprintf(i18n("The newsletter has been sent to %s recipients", 'newsletter'), $oJob->get("sendcount")));
@@ -98,7 +78,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
     $oPage->setContent($notis . $oForm->render(true));
 } elseif ($action == "news_job_delete" && $perm->have_perm_area_action($area, $action) && is_numeric($_REQUEST["idnewsjob"])) {
-    $oJobs = new NewsletterJobCollection;
+    $oJobs = new NewsletterJobCollection();
     $oJobs->delete($_REQUEST["idnewsjob"]);
 
     $oPage->setSubnav("blank", "news_jobs");
@@ -129,50 +109,58 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     // Set default values
     $oUser = new cApiUser($auth->auth["uid"]);
     if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0) {
-        $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area."_job_details");
+        $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area . "_job_details");
     }
     if (!is_numeric($_REQUEST["elemperpage"])) {
         $_REQUEST["elemperpage"] = 50;
     }
     if ($_REQUEST["elemperpage"] > 0) {
         // - All - will not be saved
-        $oUser->setProperty("itemsperpage", $area."_job_details", $_REQUEST["elemperpage"]);
+        $oUser->setProperty("itemsperpage", $area . "_job_details", $_REQUEST["elemperpage"]);
     }
 
     $oFrmOptions = new cGuiTableForm("frmOptions");
     $oFrmOptions->setVar("contenido", $sess->id);
-    $oFrmOptions->setVar("area",      $area);
-    $oFrmOptions->setVar("action",    $action);
-    $oFrmOptions->setVar("frame",     $frame);
-    $oFrmOptions->setVar("sortmode",  $_REQUEST["sortmode"]);
-    $oFrmOptions->setVar("sortby",    $_REQUEST["sortby"]);
+    $oFrmOptions->setVar("area", $area);
+    $oFrmOptions->setVar("action", $action);
+    $oFrmOptions->setVar("frame", $frame);
+    $oFrmOptions->setVar("sortmode", $_REQUEST["sortmode"]);
+    $oFrmOptions->setVar("sortby", $_REQUEST["sortby"]);
     $oFrmOptions->setVar("idnewsjob", $_REQUEST["idnewsjob"]);
-    //$oFrmOptions->setVar("startpage", $startpage);
-    //$oFrmOptions->setVar("appendparameters", $appendparameters);
-    $oFrmOptions->addHeader(i18n("List options",'newsletter'));
+    // $oFrmOptions->setVar("startpage", $startpage);
+    // $oFrmOptions->setVar("appendparameters", $appendparameters);
+    $oFrmOptions->addHeader(i18n("List options", 'newsletter'));
 
     $oSelElements = new cHTMLSelectElement("elemperpage");
     $oSelElements->setEvent("onchange", "document.forms.frmOptions.submit();");
 
-    $aData = array("0" => i18n("-All-",'newsletter'),
-                   "50" => "50",
-                   "100" => "100",
-                   "250" => "250",
-                   "500" => "500");
+    $aData = array(
+        "0" => i18n("-All-", 'newsletter'),
+        "50" => "50",
+        "100" => "100",
+        "250" => "250",
+        "500" => "500"
+    );
     $oSelElements->autoFill($aData);
 
     $oSelElements->setDefault($_REQUEST["elemperpage"]);
 
-    //$oSelElements->setStyle('border:1px;border-style:solid;border-color:black;');
-    $oFrmOptions->add(i18n("Items per page:",'newsletter'), $oSelElements->render());
+    // $oSelElements->setStyle('border:1px;border-style:solid;border-color:black;');
+    $oFrmOptions->add(i18n("Items per page:", 'newsletter'), $oSelElements->render());
 
     // Ouput data
-    $oList = new cGuiScrollList (true, "news_job_details");
-    $oList->setCustom("idnewsjob",   $_REQUEST["idnewsjob"]);
-    $oList->setCustom("nextpage",    $iNextPage);
+    $oList = new cGuiScrollList(true, "news_job_details");
+    $oList->setCustom("idnewsjob", $_REQUEST["idnewsjob"]);
+    $oList->setCustom("nextpage", $iNextPage);
     $oList->setCustom("elemperpage", $_REQUEST["elemperpage"]);
 
-    $aCols = array("rcpname", "rcpemail", "", "status", "sent");
+    $aCols = array(
+        "rcpname",
+        "rcpemail",
+        "",
+        "status",
+        "sent"
+    );
     $oList->setHeader(i18n("Recipient", 'newsletter'), i18n("E-Mail", 'newsletter'), i18n("Type", 'newsletter'), i18n("Status", 'newsletter'), i18n("Sent", 'newsletter'), i18n("Actions", 'newsletter'));
     $oList->setSortable(0, true);
     $oList->setSortable(1, true);
@@ -188,21 +176,22 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     if ($_REQUEST["elemperpage"] > 0) {
         // First, get total data count
         $oLogs->query();
-        $iRecipients = $oLogs->count(); // Getting item count without limit (for page function) - better idea anybody (performance)?
+        $iRecipients = $oLogs->count(); // Getting item count without limit (for
+                                        // page function) - better idea anybody
+                                        // (performance)?
 
         if ($iRecipients > 0 && $iRecipients > $_REQUEST["elemperpage"]) {
             $sBrowseLinks = "";
             for ($i = 1; $i <= ceil($iRecipients / $_REQUEST["elemperpage"]); $i++) {
-                //$iNext = (($i - 1) * $_REQUEST["elemperpage"]) + 1;
+                // $iNext = (($i - 1) * $_REQUEST["elemperpage"]) + 1;
                 if ($sBrowseLinks !== "") {
                     $sBrowseLinks .= "&nbsp;";
                 }
                 if ($iNextPage == $i) {
-                    $sBrowseLinks .= $i."\n"; // I'm on the current page, no link
+                    $sBrowseLinks .= $i . "\n"; // I'm on the current page, no
+                                              // link
                 } else {
-                    $sBrowseLinks .= '<a href="'.$sess->url("main.php?area=$area&action=$action&frame=$frame&idnewsjob=" .
-                                                            $_REQUEST["idnewsjob"] . "&nextpage=$i&sortmode=" .
-                                                            $_REQUEST["sortmode"] . "&sortby=" . $_REQUEST["sortby"]) . '">'.$i.'</a>'."\n";
+                    $sBrowseLinks .= '<a href="' . $sess->url("main.php?area=$area&action=$action&frame=$frame&idnewsjob=" . $_REQUEST["idnewsjob"] . "&nextpage=$i&sortmode=" . $_REQUEST["sortmode"] . "&sortby=" . $_REQUEST["sortby"]) . '">' . $i . '</a>' . "\n";
                 }
             }
         }
@@ -255,8 +244,8 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
             $oLnkRemove->setCLink("news_jobs", 4, "news_job_detail_delete");
             $oLnkRemove->setCustom("idnewsjob", $_REQUEST["idnewsjob"]);
             $oLnkRemove->setCustom("idnewslog", $oLog->get($oLog->primaryKey));
-            $oLnkRemove->setCustom("sortby",    $_REQUEST["sortby"]);
-            $oLnkRemove->setCustom("sortmode",  $_REQUEST["sortmode"]);
+            $oLnkRemove->setCustom("sortby", $_REQUEST["sortby"]);
+            $oLnkRemove->setCustom("sortmode", $_REQUEST["sortmode"]);
             $oLnkRemove->setContent($sImgDelete);
 
             $sLnkRemove = $oLnkRemove->render();
@@ -277,8 +266,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         <td><img src="images/spacer.gif" width="1" height="10"></td>
     </tr>
     <tr class="text_medium">
-        <td> ' .
-        sprintf(i18n("Go to page: %s", 'newsletter'), $sBrowseLinks) . '</td>
+        <td> ' . sprintf(i18n("Go to page: %s", 'newsletter'), $sBrowseLinks) . '</td>
     </tr>
 </table>';
 
@@ -288,9 +276,9 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oJob = new NewsletterJob($_REQUEST["idnewsjob"]);
 
     $oForm = new cGuiTableForm("properties");
-    $oForm->setVar("frame",     $frame);
-    $oForm->setVar("area",      $area);
-    $oForm->setVar("action",    "");
+    $oForm->setVar("frame", $frame);
+    $oForm->setVar("area", $area);
+    $oForm->setVar("action", "");
     $oForm->setVar("idnewsjob", $idnewsjob);
 
     $oForm->addHeader(i18n("Newsletter dispatch job", 'newsletter'));
@@ -303,19 +291,16 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
             $oForm->add(i18n("Status", 'newsletter'), i18n("Pending", 'newsletter'));
             break;
         case 2:
-            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Sending (started: %s)", 'newsletter'),
-                                        date($sDateFormat, strtotime($oJob->get("started")))));
+            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Sending (started: %s)", 'newsletter'), date($sDateFormat, strtotime($oJob->get("started")))));
             break;
         case 9:
-            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Finished (started: %s, finished: %s)", 'newsletter'),
-                                        date($sDateFormat, strtotime($oJob->get("started"))),
-                                        date($sDateFormat, strtotime($oJob->get("finished")))));
+            $oForm->add(i18n("Status", 'newsletter'), sprintf(i18n("Finished (started: %s, finished: %s)", 'newsletter'), date($sDateFormat, strtotime($oJob->get("started"))), date($sDateFormat, strtotime($oJob->get("finished")))));
             break;
     }
 
     $oForm->add(i18n("Statistics", 'newsletter'), sprintf(i18n("Planned: %s, Send: %s", 'newsletter'), $oJob->get("rcpcount"), $oJob->get("sendcount")));
-    $oForm->add(i18n("From", 'newsletter'),       $oJob->get("newsfrom") . " (" . $oJob->get("newsfromname") . ")");
-    $oForm->add(i18n("Subject", 'newsletter'),    $oJob->get("subject"));
+    $oForm->add(i18n("From", 'newsletter'), $oJob->get("newsfrom") . " (" . $oJob->get("newsfromname") . ")");
+    $oForm->add(i18n("Subject", 'newsletter'), $oJob->get("subject"));
 
     if ($oJob->get("type") == "html") {
         $oForm->add(i18n("Type", 'newsletter'), i18n("HTML and text"));
@@ -325,7 +310,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
         $oForm->add(i18n("HTML Message", 'newsletter'), $txtMessageHTML->render());
     } else {
-        $oForm->add(i18n("Type", 'newsletter'),    i18n("Text only", 'newsletter'));
+        $oForm->add(i18n("Type", 'newsletter'), i18n("Text only", 'newsletter'));
     }
     $txtMessageText = new cHTMLTextarea("txtMessageText", $oJob->get("message_text"), 80, 20);
     $txtMessageText->setDisabled("disabled");
@@ -371,10 +356,11 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     }
 
     $oForm->add(i18n("Options", 'newsletter'), $sOptionsInfo);
-    $oForm->add(i18n("Author", 'newsletter'),  $oJob->get("authorname"));
+    $oForm->add(i18n("Author", 'newsletter'), $oJob->get("authorname"));
     $oForm->add(i18n("Created", 'newsletter'), $oJob->get("created"));
 
-    // Just remove the "save changes" message (as it is not possible to remove the image completely in ui_table_form)
+    // Just remove the "save changes" message (as it is not possible to remove
+    // the image completely in ui_table_form)
     $oForm->setActionButton("submit", $backendUrl . "images/but_ok.gif", "", "s");
 
     $oPage->setContent($oForm->render(true));
