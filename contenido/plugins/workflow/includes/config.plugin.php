@@ -1,25 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the workflow allocation.
  *
- * Description:
- *  Workflow allocation class
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.5
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
@@ -74,8 +68,13 @@ function prepareWorkflowItems() {
 
                 if (($item = $wfa->next()) !== false) {
                     $wfa->delete($item->get("idallocation"));
-                    // delete user sequences for listing in tasklist for each included article
-                    $oArticles = new cArticleCollector(array('idcat' => $idcatlang, 'start' => true, 'offline' => true));
+                    // delete user sequences for listing in tasklist for each
+                    // included article
+                    $oArticles = new cArticleCollector(array(
+                        'idcat' => $idcatlang,
+                        'start' => true,
+                        'offline' => true
+                    ));
                     while (($oArticle = $oArticles->nextArticle()) !== false) {
                         setUserSequence($oArticle->getField('idartlang'), -1);
                     }
@@ -88,8 +87,13 @@ function prepareWorkflowItems() {
                     $item->store();
                 } else {
                     $wfa->create($asworkflow, $idcatlang);
-                    // generate user sequences for listing in tasklist for each included article
-                    $oArticles = new cArticleCollector(array('idcat' => $tmp_cat, 'start' => true, 'offline' => true));
+                    // generate user sequences for listing in tasklist for each
+                    // included article
+                    $oArticles = new cArticleCollector(array(
+                        'idcat' => $tmp_cat,
+                        'start' => true,
+                        'offline' => true
+                    ));
                     while (($oArticle = $oArticles->nextArticle()) !== false) {
                         setUserSequence($oArticle->getField('idartlang'), $asworkflow);
                     }
@@ -114,8 +118,13 @@ function prepareWorkflowItems() {
                 $wfa->create($GLOBALS[$seltpl], $idcatlang);
             }
 
-            // generate user sequences for listing in tasklist for each included article
-            $oArticles = new cArticleCollector(array('idcat' => $modidcat, 'start' => true, 'offline' => true));
+            // generate user sequences for listing in tasklist for each included
+            // article
+            $oArticles = new cArticleCollector(array(
+                'idcat' => $modidcat,
+                'start' => true,
+                'offline' => true
+            ));
             while (($oArticle = $oArticles->nextArticle()) !== false) {
                 setUserSequence($oArticle->getField('idartlang'), $GLOBALS[$seltpl]);
             }
@@ -128,8 +137,13 @@ function prepareWorkflowItems() {
             }
             $wfa->delete($alloc);
 
-            // delete user sequences for listing in tasklist for each included article
-            $oArticles = new cArticleCollector(array('idcat' => $modidcat, 'start' => true, 'offline' => true));
+            // delete user sequences for listing in tasklist for each included
+            // article
+            $oArticles = new cArticleCollector(array(
+                'idcat' => $modidcat,
+                'start' => true,
+                'offline' => true
+            ));
             while (($oArticle = $oArticles->nextArticle()) !== false) {
                 setUserSequence($oArticle->getField('idartlang'), -1);
             }
@@ -148,8 +162,12 @@ function prepareWorkflowItems() {
         $workflowSelectBox->addOptionElement($workflow->get("idworkflow"), $workflowOption);
     }
 
-    $workflowSelectBox->updateAttributes(array("id" => "wfselect{IDCAT}"));
-    $workflowSelectBox->updateAttributes(array("name" => "wfselect{IDCAT}"));
+    $workflowSelectBox->updateAttributes(array(
+        "id" => "wfselect{IDCAT}"
+    ));
+    $workflowSelectBox->updateAttributes(array(
+        "name" => "wfselect{IDCAT}"
+    ));
 
     $tpl->set('s', 'PLUGIN_WORKFLOW', $workflowSelectBox->render() . '<a href="javascript:setWorkflow({IDCAT}, \\\'wfselect{IDCAT}\\\')"><img src="' . $cfg["path"]["images"] . 'submit.gif" class="spaced"></a>');
     $tpl->set('s', 'PLUGIN_WORKFLOW_TRANSLATION', i18n("Inherit workflow down", "workflow"));
@@ -167,7 +185,9 @@ function piworkflowCategoryRenderColumn($idcat, $type) {
 
 function piworkflowCategoryColumns($array) {
     prepareWorkflowItems();
-    $myarray = array("workflow" => i18n("Workflow", "workflow"));
+    $myarray = array(
+        "workflow" => i18n("Workflow", "workflow")
+    );
 
     return ($myarray);
 }
@@ -177,14 +197,16 @@ function piworkflowProcessActions($array) {
 
     $defaultidworkflow = getWorkflowForCat($idcat);
     if ($defaultidworkflow != 0) {
-        $narray = array("todo",
+        $narray = array(
+            "todo",
             "wfartconf",
             "wftplconf",
             "wfonline",
             "wflocked",
             "duplicate",
             "delete",
-            "usetime");
+            "usetime"
+        );
     } else {
         $narray = $array;
     }

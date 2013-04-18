@@ -1,47 +1,31 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the class for workflow item management.
  *
- * Description:
- * Workflow items
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.3
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-07-18
- *   $Id$
- * }}
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class WorkflowItems
- * Class for workflow item management
- * @package    CONTENIDO Plugins
+ * Class for workflow item management.
+ *
+ * @package Plugin
  * @subpackage Workflow
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.2
- * @copyright four for business 2003
  */
 class WorkflowItems extends ItemCollection {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -183,7 +167,8 @@ class WorkflowItems extends ItemCollection {
 /**
  * Class WorkflowItem
  * Class for a single workflow item
- * @package    CONTENIDO Plugins
+ *
+ * @package CONTENIDO Plugins
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
@@ -193,6 +178,7 @@ class WorkflowItem extends Item {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -216,9 +202,13 @@ class WorkflowItem extends Item {
 
     /**
      * Overridden setField function.
-     * @param string $field Void field since we override the usual setField function
-     * @param string $value Void field since we override the usual setField function
-     * @throws cInvalidArgumentException if the field is idsequence, idworkflow or position
+     *
+     * @param string $field Void field since we override the usual setField
+     *            function
+     * @param string $value Void field since we override the usual setField
+     *            function
+     * @throws cInvalidArgumentException if the field is idsequence, idworkflow
+     *         or position
      * @return void
      */
     public function setField($field, $value, $safe = true) {
@@ -252,8 +242,10 @@ class WorkflowItem extends Item {
     }
 
     /**
-     * init initializes a new wf_items entry. Should
+     * init initializes a new wf_items entry.
+     * Should
      * only be called by the create function.
+     *
      * @param int $idworkflow The workflow to set the item to
      */
     public function init($idworkflow, $idposition) {
@@ -282,8 +274,10 @@ class WorkflowItem extends Item {
     }
 
     /**
-     * setPosition Sets the position for an item. Should only be
+     * setPosition Sets the position for an item.
+     * Should only be
      * called by the "swap" function
+     *
      * @param int $idposition The new position ID
      */
     public function setPosition($idposition) {

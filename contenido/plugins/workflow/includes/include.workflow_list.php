@@ -1,25 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the workflow list.
  *
- * Description:
- * Workflow list
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.5
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $iIdMarked = (int) $_GET['idworkflow'];
 

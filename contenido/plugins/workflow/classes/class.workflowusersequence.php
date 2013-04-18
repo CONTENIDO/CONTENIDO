@@ -1,47 +1,31 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the class for workflow user sequence managements.
  *
- * Description:
- * Workflow management class
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.3
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-07-18
- *   $Id$
- * }}
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class WorkflowUserSequences
- * Class for workflow user sequence management
- * @package    CONTENIDO Plugins
+ * Class for workflow user sequence management.
+ *
+ * @package Plugin
  * @subpackage Workflow
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.2
- * @copyright four for business 2003
  */
 class WorkflowUserSequences extends ItemCollection {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -83,7 +67,6 @@ class WorkflowUserSequences extends ItemCollection {
 
         $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence = ' . cSecurity::escapeDB($idusersequence, $oDb) . ';';
         $oDb->query($sSql);
-
 
         foreach ($aIdArtLang as $iIdArtLang) {
             setUserSequence($iIdArtLang, $idworkflow);
@@ -153,7 +136,8 @@ class WorkflowUserSequences extends ItemCollection {
 /**
  * Class WorkflowUserSequence
  * Class for a single workflow item
- * @package    CONTENIDO Plugins
+ *
+ * @package CONTENIDO Plugins
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
@@ -163,6 +147,7 @@ class WorkflowUserSequence extends Item {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -173,10 +158,12 @@ class WorkflowUserSequence extends Item {
     /**
      * Override setField Function to prevent that somebody modifies
      * idsequence.
-     * @param  string  $field Field to set
-     * @param  string  $value Value to set
-     * @param  bool  $safe
-     * @throws cInvalidArgumentException if the field is idworkflowitem, idusersequence or position
+     *
+     * @param string $field Field to set
+     * @param string $value Value to set
+     * @param bool $safe
+     * @throws cInvalidArgumentException if the field is idworkflowitem,
+     *         idusersequence or position
      * @return void
      */
     public function setField($field, $value, $safe = true) {
@@ -192,13 +179,11 @@ class WorkflowUserSequence extends Item {
             case "iduser":
                 if ($value != 0) {
                     $db = cRegistry::getDb();
-                    $sql = "SELECT user_id FROM " . $cfg['tab']['user'] .
-                            " WHERE user_id = '" . cSecurity::escapeDB($value, $db) . "'";
+                    $sql = "SELECT user_id FROM " . $cfg['tab']['user'] . " WHERE user_id = '" . cSecurity::escapeDB($value, $db) . "'";
                     $db->query($sql);
 
                     if (!$db->nextRecord()) {
-                        $sql = "SELECT group_id FROM " . $cfg["tab"]["groups"] .
-                                " WHERE group_id = '" . cSecurity::escapeDB($value, $db) . "'";
+                        $sql = "SELECT group_id FROM " . $cfg["tab"]["groups"] . " WHERE group_id = '" . cSecurity::escapeDB($value, $db) . "'";
 
                         $db->query($sql);
                         if (!$db->nextRecord()) {
@@ -219,6 +204,7 @@ class WorkflowUserSequence extends Item {
 
     /**
      * Returns the associated workflowItem for this user sequence
+     *
      * @param none
      */
     public function getWorkflowItem() {
@@ -232,7 +218,9 @@ class WorkflowUserSequence extends Item {
     }
 
     /**
-     * Interface to set idworkflowitem. Should only be called by "create".
+     * Interface to set idworkflowitem.
+     * Should only be called by "create".
+     *
      * @param string $value The value to set
      */
     public function setWorkflowItem($value) {
@@ -240,7 +228,9 @@ class WorkflowUserSequence extends Item {
     }
 
     /**
-     * Interface to set idworkflowitem. Should only be called by "create".
+     * Interface to set idworkflowitem.
+     * Should only be called by "create".
+     *
      * @param string $value The value to set
      */
     public function setPosition($value) {

@@ -1,34 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the Workflow management class.
  *
- * Description:
- * Workflow management class
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.6
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-07-18
- *   $Id$
- * }}
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $cfg["tab"]["workflow"] = $cfg['sql']['sqlprefix'] . "_piwf_workflow";
 $cfg["tab"]["workflow_allocation"] = $cfg['sql']['sqlprefix'] . "_piwf_allocation";
@@ -45,18 +30,16 @@ plugin_include('workflow', 'classes/class.workflowitems.php');
 plugin_include('workflow', 'classes/class.workflowusersequence.php');
 
 /**
- * Class Workflows
- * Class for workflow management
- * @package    CONTENIDO Plugins
+ * Workflow management class.
+ *
+ * @package Plugin
  * @subpackage Workflow
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.2
- * @copyright four for business 2003
  */
 class Workflows extends ItemCollection {
 
     /**
      * Constructor Function
+     *
      * @param none
      */
     public function __construct() {
@@ -78,7 +61,9 @@ class Workflows extends ItemCollection {
     }
 
     /**
-     * Deletes all corresponding informations to this workflow and delegate call to parent
+     * Deletes all corresponding informations to this workflow and delegate call
+     * to parent
+     *
      * @param integer $idWorkflow - id of workflow to delete
      */
     public function delete($idWorkflow) {
@@ -126,7 +111,8 @@ class Workflows extends ItemCollection {
 /**
  * Class Workflow
  * Class for a single workflow item
- * @package    CONTENIDO Plugins
+ *
+ * @package CONTENIDO Plugins
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
@@ -136,6 +122,7 @@ class Workflow extends Item {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -143,10 +130,10 @@ class Workflow extends Item {
 
         parent::__construct($cfg["tab"]["workflow"], "idworkflow");
     }
+
 }
 
 /* Helper functions */
-
 function getWorkflowForCat($idcat) {
     global $lang;
 
@@ -160,7 +147,7 @@ function getWorkflowForCat($idcat) {
         // Sanity: Check if the workflow still exists
         $workflow = new Workflow();
         $res = $workflow->loadByPrimaryKey($obj->get('idworkflow'));
-        return ($res == true) ? $obj->get('idworkflow') : 0;
+        return ($res == true)? $obj->get('idworkflow') : 0;
     }
 }
 
@@ -168,7 +155,7 @@ function getCatLang($idcat, $idlang) {
     // Get the idcatlang
     $oCatLangColl = new cApiCategoryLanguageCollection();
     $aIds = $oCatLangColl->getIdsByWhereClause('idlang = ' . (int) $idlang . ' AND idcat = ' . (int) $idcat);
-    return (count($aIds) > 0) ? $aIds[0] : 0;
+    return (count($aIds) > 0)? $aIds[0] : 0;
 }
 
 ?>

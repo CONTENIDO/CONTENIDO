@@ -1,34 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the workflow functions.
  *
- * Description:
- * Workflow functions
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.8.3
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-07-28
- *   $Id$
- * }}
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude("includes", "functions.con.php");
 
@@ -103,8 +88,7 @@ function isCurrentEditor($uid) {
         $db2 = cRegistry::getDb();
 
         // Yes, it's a group. Let's try to load the group members!
-        $sql = "SELECT user_id FROM "
-                . $cfg["tab"]["groupmembers"] . "
+        $sql = "SELECT user_id FROM " . $cfg["tab"]["groupmembers"] . "
                 WHERE group_id = '" . cSecurity::escapeDB($uid, $db2) . "'";
 
         $db2->query($sql);
@@ -192,8 +176,8 @@ function getActionSelect($idartlang, $idusersequence) {
     }
 }
 
-#function for inserting todos in wokflow_art_allocation used, when a workflow is associated with a category in content->category
-
+// unction for inserting todos in wokflow_art_allocation used, when a workflow
+// is associated with a category in content->category
 function setUserSequence($idartlang, $defaultidworkflow) {
     $wfaa = new WorkflowArtAllocations();
     $wfaa->select("idartlang = '$idartlang'");
@@ -242,9 +226,9 @@ function setUserSequence($idartlang, $defaultidworkflow) {
  * Returns current user sequence, either from workflow article allocations or
  * from workflow user sequnces.
  *
- * @param   int  $idartlang  Article language id
- * @param   int  $defaultidworkflow  Default workflow id
- * @return  int|false  Id of found user sequence or false
+ * @param int $idartlang Article language id
+ * @param int $defaultidworkflow Default workflow id
+ * @return int false of found user sequence or false
  */
 function getCurrentUserSequence($idartlang, $defaultidworkflow) {
     $wfaa = new WorkflowArtAllocations();
@@ -480,8 +464,12 @@ function workflowSelect($listid, $default, $idcat) {
     $oSelectBox = $workflowSelectBox;
 
     $default = (int) $default;
-    $workflowSelectBox->updateAttributes(array("id" => "wfselect" . $idcat));
-    $workflowSelectBox->updateAttributes(array("name" => "wfselect" . $idcat));
+    $workflowSelectBox->updateAttributes(array(
+        "id" => "wfselect" . $idcat
+    ));
+    $workflowSelectBox->updateAttributes(array(
+        "name" => "wfselect" . $idcat
+    ));
     $workflowSelectBox->setDefault($default);
 
     $sButton = '<a href="javascript:setWorkflow(' . $idcat . ', \'' . "wfselect" . $idcat . '\')"><img src="' . $cfg["path"]["images"] . 'submit.gif" class="spaced"></a>';

@@ -1,47 +1,31 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the class for workflow allocation management.
  *
- * Description:
- *  Workflow allocation class
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.5
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-07-18
- *   $Id$
- * }}
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class WorkflowAllocations
- * Class for workflow allocation management
- * @package    CONTENIDO Plugins
+ * Class for workflow allocation management.
+ *
+ * @package Plugin
  * @subpackage Workflow
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.2
- * @copyright four for business 2003
  */
 class WorkflowAllocations extends ItemCollection {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -132,7 +116,8 @@ class WorkflowAllocations extends ItemCollection {
 /**
  * Class WorkflowAllocation
  * Class for a single workflow allocation item
- * @package    CONTENIDO Plugins
+ *
+ * @package CONTENIDO Plugins
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
@@ -142,6 +127,7 @@ class WorkflowAllocation extends Item {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -151,9 +137,13 @@ class WorkflowAllocation extends Item {
     }
 
     /**
-     * Overridden setField function. Users should only use setWorkflow.
-     * @param string $field Void field since we override the usual setField function
-     * @param string $value Void field since we override the usual setField function
+     * Overridden setField function.
+     * Users should only use setWorkflow.
+     *
+     * @param string $field Void field since we override the usual setField
+     *            function
+     * @param string $value Void field since we override the usual setField
+     *            function
      * @throws cBadMethodCallException if this function is called
      * @return void
      */
@@ -163,6 +153,7 @@ class WorkflowAllocation extends Item {
 
     /**
      * setWorkflow sets the workflow for the current item.
+     *
      * @param int $idworkflow Workflow-ID to set the item to
      */
     public function setWorkflow($idworkflow) {
@@ -181,8 +172,10 @@ class WorkflowAllocation extends Item {
     }
 
     /**
-     * setCatLang sets the idcatlang for the current item. Should
+     * setCatLang sets the idcatlang for the current item.
+     * Should
      * only be called by the create function.
+     *
      * @param int $idcatlang idcatlang to set.
      */
     public function setCatLang($idcatlang) {

@@ -1,37 +1,24 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the advances to the next step if the time limit is "over".
  *
- * Description:
- * Advances to the next step if the time limit is "over"
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.5.2
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2003-05-26
- *   $Id$
- * }}
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-define('CON_FRAMEWORK', true);
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // CONTENIDO startup process
-include_once('../../../includes/startup.php');
+include_once ('../../../includes/startup.php');
 
-require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
+require_once ($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 cInclude("includes", "functions.con.php");
 
 plugin_include('workflow', 'classes/class.workflow.php');

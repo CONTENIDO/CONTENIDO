@@ -1,35 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the workflow allocation management.
  *
- * Description:
- * Class for workflow allocation management
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.0
- * @author     Unknwon
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created
- *   $Id$:
- * }}
+ * @author unkown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
@@ -203,7 +187,7 @@ function getWorkflowList() {
         $movedown->setCustom("idworkflow", $idworkflow);
         $movedown->setCustom("position", $pos);
         $movedown->setAlt(i18n("Move step down", "workflow"));
-        $movedown->setContent('<img border="0" src="' . $backendUrl. $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
+        $movedown->setContent('<img border="0" src="' . $backendUrl . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
 
         $deletestep = new cHTMLLink();
         $deletestep->setCLink("workflow_steps", 4, "workflow_step_delete");
@@ -253,7 +237,7 @@ function createNewWorkflow() {
     $createstep->setCLink("workflow_steps", 4, "workflow_create_step");
     $createstep->setCustom("idworkflow", $idworkflow);
 
-    #$ui->setLink("spacer", NULL);
+    // ui->setLink("spacer", NULL);
     $ui->setTitle("create", i18n("Create new step", "workflow"));
     $ui->setImage("create", $backendUrl . $cfg["path"]["plugins"] . "workflow/images/workflow_step_new.gif");
     $ui->setLink("create", $createstep);

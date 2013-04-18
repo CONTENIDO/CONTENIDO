@@ -1,47 +1,31 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the class for workflow task collections.
  *
- * Description:
- * Simple wrapper for workflow tasks
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.2
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-07-18
- *   $Id$
- * }}
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class WorkflowTasks
- * Class for workflow task collections
- * @package    CONTENIDO Plugins
+ * Class for workflow task collections.
+ *
+ * @package Plugin
  * @subpackage Workflow
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.2
- * @copyright four for business 2003
  */
 class WorkflowTasks extends ItemCollection {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -69,7 +53,8 @@ class WorkflowTasks extends ItemCollection {
 /**
  * Class WorkflowTask
  * Class for a single workflow task item
- * @package    CONTENIDO Plugins
+ *
+ * @package CONTENIDO Plugins
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
@@ -79,12 +64,14 @@ class WorkflowTask extends Item {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["tasks"], "idtask");
     }
+
 }
 
 ?>

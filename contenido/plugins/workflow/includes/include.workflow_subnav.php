@@ -1,34 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the building of the third navigation layer.
  *
- * Description:
- * Builds the third navigation layer
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.1.1
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created  2003-05-20
- *   $Id$
- * }}
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $nav = new cGuiNavigation();
 
@@ -93,7 +78,6 @@ $tpl->set('s', 'IDCAT', $idcat);
 $tpl->set('s', 'SESSID', $sess->id);
 $tpl->set('s', 'CLIENT', $client);
 $tpl->set('s', 'LANG', $lang);
-
 
 // Generate the third navigation layer
 if ($idworkflow <= 0) {

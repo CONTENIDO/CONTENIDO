@@ -1,38 +1,31 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the class for workflow art allocation management.
  *
- * Description:
- *  Workflow allocation class
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.4.1
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class WorkflowArtAllocations
- * Class for workflow art allocation management
- * @package    CONTENIDO Plugins
+ * Class for workflow art allocation management.
+ *
+ * @package Plugin
  * @subpackage Workflow
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.2
- * @copyright four for business 2003
  */
 class WorkflowArtAllocations extends ItemCollection {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -44,8 +37,7 @@ class WorkflowArtAllocations extends ItemCollection {
     public function create($idartlang) {
         global $cfg;
 
-        $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] .
-                " WHERE idartlang = '" . cSecurity::escapeDB($idartlang, $this->db) . "'";
+        $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = '" . cSecurity::escapeDB($idartlang, $this->db) . "'";
 
         $this->db->query($sql);
         if (!$this->db->nextRecord()) {
@@ -72,7 +64,8 @@ class WorkflowArtAllocations extends ItemCollection {
 /**
  * Class WorkflowArtAllocation
  * Class for a single workflow allocation item
- * @package    CONTENIDO Plugins
+ *
+ * @package CONTENIDO Plugins
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
@@ -82,6 +75,7 @@ class WorkflowArtAllocation extends Item {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -99,8 +93,11 @@ class WorkflowArtAllocation extends Item {
 
     /**
      * Returns the current item position
-     * @param string $field Void field since we override the usual setField function
-     * @param string $value Void field since we override the usual setField function
+     *
+     * @param string $field Void field since we override the usual setField
+     *            function
+     * @param string $value Void field since we override the usual setField
+     *            function
      */
     public function currentItemPosition() {
         $idworkflowitem = $this->get("idworkflowitem");
@@ -115,8 +112,11 @@ class WorkflowArtAllocation extends Item {
 
     /**
      * Returns the current user position
-     * @param string $field Void field since we override the usual setField function
-     * @param string $value Void field since we override the usual setField function
+     *
+     * @param string $field Void field since we override the usual setField
+     *            function
+     * @param string $value Void field since we override the usual setField
+     *            function
      */
     public function currentUserPosition() {
         return ($this->get("position"));
@@ -124,6 +124,7 @@ class WorkflowArtAllocation extends Item {
 
     /**
      * Overriden store function to send mails
+     *
      * @param none
      */
     public function store() {
@@ -203,15 +204,7 @@ class WorkflowArtAllocation extends Item {
                 }
 
                 if ($email == 1) {
-                    $email = "Hello %s,\n\n" .
-                            "you are assigned as the next editor for the Article %s.\n\n" .
-                            "More informations:\n" .
-                            "Article: %s\n" .
-                            "Category: %s\n" .
-                            "Editor: %s\n" .
-                            "Author: %s\n" .
-                            "Editable from: %s\n" .
-                            "Editable to: %s\n";
+                    $email = "Hello %s,\n\n" . "you are assigned as the next editor for the Article %s.\n\n" . "More informations:\n" . "Article: %s\n" . "Category: %s\n" . "Editor: %s\n" . "Author: %s\n" . "Editable from: %s\n" . "Editable to: %s\n";
 
                     $filledMail = sprintf($email, $curEditor, $title, $title, $catname, $curEditor, $author, date("Y-m-d H:i:s", $starttime), date("Y-m-d H:i:s", $maxtime));
                     $user = new cApiUser();
@@ -230,15 +223,7 @@ class WorkflowArtAllocation extends Item {
                         $mailer->sendMail(null, $user->getField("email"), stripslashes(i18n('Workflow notification')), $filledMail);
                     }
                 } else {
-                    $email = "Hello %s,\n\n" .
-                            "you are assigned as the escalator for the Article %s.\n\n" .
-                            "More informations:\n" .
-                            "Article: %s\n" .
-                            "Category: %s\n" .
-                            "Editor: %s\n" .
-                            "Author: %s\n" .
-                            "Editable from: %s\n" .
-                            "Editable to: %s\n";
+                    $email = "Hello %s,\n\n" . "you are assigned as the escalator for the Article %s.\n\n" . "More informations:\n" . "Article: %s\n" . "Category: %s\n" . "Editor: %s\n" . "Author: %s\n" . "Editable from: %s\n" . "Editable to: %s\n";
 
                     $filledMail = sprintf($email, $curEditor, $title, $title, $catname, $curEditor, $author, date("Y-m-d H:i:s", $starttime), date("Y-m-d H:i:s", $maxtime));
 

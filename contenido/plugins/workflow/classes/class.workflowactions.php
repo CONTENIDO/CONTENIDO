@@ -1,47 +1,31 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the management of per-workflowitem actions.
  *
- * Description:
- * Management of per-workflowitem actions
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.3
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-07-18
- *   $Id$
- * }}
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class WorkflowActions
- * Class for workflow action collections
- * @package    CONTENIDO Plugins
+ * Management of per-workflowitem actions.
+ *
+ * @package Plugin
  * @subpackage Workflow
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.2
- * @copyright four for business 2003
  */
 class WorkflowActions extends ItemCollection {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -71,7 +55,7 @@ class WorkflowActions extends ItemCollection {
             "revise" => i18n("Revise article", "workflow")
         );
 
-        return($availableWorkflowActions);
+        return ($availableWorkflowActions);
     }
 
     public function set($idworkflowitem, $action) {
@@ -102,7 +86,8 @@ class WorkflowActions extends ItemCollection {
 /**
  * Class WorkflowAction
  * Class for a single workflow action
- * @package    CONTENIDO Plugins
+ *
+ * @package CONTENIDO Plugins
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
@@ -112,6 +97,7 @@ class WorkflowAction extends Item {
 
     /**
      * Constructor Function
+     *
      * @param string $table The table to use as information source
      */
     public function __construct() {
@@ -119,6 +105,7 @@ class WorkflowAction extends Item {
 
         parent::__construct($cfg["tab"]["workflow_actions"], "idworkflowaction");
     }
+
 }
 
 ?>

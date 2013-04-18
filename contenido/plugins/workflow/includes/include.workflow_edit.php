@@ -1,34 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the workflow editing functions.
  *
- * Description:
- * Contains workflow editing functions
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.3.1
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-05-20
- *   $Id$
- * }}
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 plugin_include('workflow', 'classes/class.workflow.php');
 
@@ -37,7 +22,7 @@ $page = new cGuiPage("workflow_edit", "workflow");
 if ($action == "workflow_delete") {
     $page->displayInfo(i18n('Deleted workflow successfully!', 'workflow'));
     $page->render();
-    exit;
+    exit();
 }
 
 $form = new cGuiTableForm("workflow_edit");
@@ -80,7 +65,6 @@ if ($idworkflow) {
 } else {
     $sReloadScript = '';
 }
-
 
 $form->setVar("area", $area);
 $form->setVar("action", "workflow_save");

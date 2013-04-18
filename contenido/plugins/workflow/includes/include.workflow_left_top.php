@@ -1,39 +1,25 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the workflow allocation.
  *
- * Description:
- *  Workflow allocation class
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.5
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- * {@internal
- *   created 2003-07-18
- *   $Id$
- * }}
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $page = new cGuiPage("workflow_left_top", "workflow");
 
 $create = new cHTMLLink();
 $create->setMultiLink("workflow", "", "workflow_common", "workflow_create");
-//$create->setCLink("workflow_common",4,"workflow_create");
+// $create->setCLink("workflow_common",4,"workflow_create");
 $create->setContent(i18n("Create workflow", "workflow"));
 $create->setCustom("idworkflow", "-1");
 

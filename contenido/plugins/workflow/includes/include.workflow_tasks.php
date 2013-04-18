@@ -1,25 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the workflow task overview mask.
  *
- * Description:
- * Workflow task overview mask
+ * @package Plugin
+ * @subpackage Worklow
+ * @version SVN Revision $Rev:$
  *
- * @package    CONTENIDO Plugins
- * @subpackage Workflow
- * @version    1.4.1
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
@@ -55,7 +49,6 @@ while (($wfaitem = $wfa->next()) !== false) {
     $lastusersequence[$wfaid] = $wfaitem->get("lastusersequence");
     $article[$wfaid] = $wfaitem->get("idartlang");
 }
-
 
 if (is_array($usersequence)) {
     foreach ($usersequence as $key => $value) {
@@ -159,15 +152,14 @@ if (is_array($isCurrent)) {
 
             if ($db->nextRecord()) {
                 global $area;
-                //$area = "con";
+                // $area = "con";
                 $idcat = $db->f("idcat");
                 $idart = $db->f("idart");
 
                 // Create javascript multilink
                 $tmp_mstr = '<a href="javascript://" onclick="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '" alt="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '">%s</a>';
 
-                $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"), $db->f("title")
-                );
+                $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"), $db->f("title"));
 
                 $laststatus = getLastWorkflowStatus($idartlang);
                 $username = getGroupOrUserName($userids[$key]);
