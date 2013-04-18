@@ -7,7 +7,7 @@
  * @subpackage Newsletter
  * @version SVN Revision $Rev:$
  *
- * @author Björn Behrens
+ * @author Bjoern Behrens
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
