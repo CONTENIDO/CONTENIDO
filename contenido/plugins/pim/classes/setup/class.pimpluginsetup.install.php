@@ -184,7 +184,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // PluginManager classes
         $this->_setPimPluginCollection();
         $this->_setPimPluginRelationsCollection();
-        // $this->_setPimPluginArchiveExtractor();
 
         // cApiClasses
         $this->_setApiAreaCollection();

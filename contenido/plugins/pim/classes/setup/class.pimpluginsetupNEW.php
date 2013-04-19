@@ -199,7 +199,7 @@ class PimPluginSetup {
      * @return void
      */
     public function __construct($Xml) {
-        self::_setPimPluginArchiveExtractor();
+        //self::_setPimPluginArchiveExtractor();
 
         if ($this->validXml($Xml) === true) {
             $this->_setXml(simplexml_load_string($Xml));
