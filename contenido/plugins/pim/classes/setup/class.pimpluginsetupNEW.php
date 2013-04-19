@@ -28,7 +28,7 @@ class PimPluginSetup {
 
     public static $_XmlNavSub;
 
-    // Id of new plugin
+    // Id of selected / new plugin
     protected static $_PluginId = 0;
 
     # GET and SET methods for installation routine
