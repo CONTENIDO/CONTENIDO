@@ -247,8 +247,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Check min CONTENIDO version
         if (parent::$_XmlGeneral->min_contenido_version != '' && version_compare($cfg['version'], parent::$_XmlGeneral->min_contenido_version, '<')) {
-            parent:
-            error(i18n('You have to install CONTENIDO <strong>', 'pim') . parent::$_XmlGeneral->min_contenido_version . i18n('</strong> or higher to install this plugin!', 'pim'));
+            parent::error(i18n('You have to install CONTENIDO <strong>', 'pim') . parent::$_XmlGeneral->min_contenido_version . i18n('</strong> or higher to install this plugin!', 'pim'));
         }
 
         // Check max CONTENIDO version
