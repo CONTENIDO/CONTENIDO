@@ -66,6 +66,11 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
             // otherwise umlauts will crash the XML parsing
             $_POST['linkeditor_title'] = conHtmlentities(conHtmlEntityDecode($_POST['linkeditor_title']));
             $this->_storeSettings();
+
+            // overwrite old entries with new values
+            conSaveContentEntry($this->_idArtLang, 'CMS_LINK', $this->_id, $this->_rawSettings);
+            conSaveContentEntry($this->_idArtLang, 'CMS_LINKDESCR', $this->_id, $_POST['linkeditor_title']);
+            conSaveContentEntry($this->_idArtLang, 'CMS_LINKTARGET', $this->_id, cSecurity::escapeString($_POST['linkeditor_newwindow']));
         }
     }
 
