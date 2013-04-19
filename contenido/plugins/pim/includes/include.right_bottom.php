@@ -23,8 +23,8 @@ $page = new cGuiPage('pim_overview', 'pim');
 if ($_REQUEST['pim_view'] == "newinstall") {
     $tempXml = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . 'linkchecker/plugin.xml');
     $setup = new PimPluginSetup($tempXml);
+    $setup->_setMode('extracted');
     $new = new PimPluginSetupInstall();
-    $new->_setMode('extracted');
     $new->install();
 
     exit();

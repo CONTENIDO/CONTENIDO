@@ -17,8 +17,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class PimPluginSetup {
 
     // Initializing variables
+    // Variable for installation / update mode
+    public static $mode = 0;
+
     // Specific sql prefix
     protected static $_SqlPrefix = "!PREFIX!";
+
+    // Class variable for PimPluginArchiveExtractor
+    protected $_PimPluginArchiveExtractor;
 
     // Xml variables
     // General informations of plugin
@@ -46,6 +52,36 @@ class PimPluginSetup {
     protected static $pluginId = 0;
 
     // GET and SET methods for installation routine
+    /**
+     * Set method for installation / update mode
+     * Mode 1: Plugin is already extracted
+     * Mode 2: Plugin is uploaded
+     *
+     * @access public
+     * @param string $mode
+     * @return void
+     */
+    public function _setMode($mode) {
+        switch ($mode) {
+            case 'extracted':
+                self::$mode = 1;
+                break;
+            case 'uploaded':
+                self::$mode = 2;
+                break;
+        }
+    }
+
+    /**
+     * Initialzing and set variable for PimPluginArchiveExtractor class
+     *
+     * @access private
+     * @return PimPluginArchiveExtractor
+     */
+    private function _setPimPluginArchiveExtractor() {
+        return $this->_PimPluginArchiveExtractor = new PimPluginArchiveExtractor();
+    }
+
     /**
      * Set temporary xml content to static variables
      *
@@ -86,6 +122,15 @@ class PimPluginSetup {
      */
     protected function _setPluginId($pluginId = 0) {
         return $this->pluginId = $pluginId;
+    }
+
+    /**
+     * Get method for installation / update mode
+     *
+     * @return integer
+     */
+    public function _getMode() {
+        return self::$mode;
     }
 
     /**
@@ -131,6 +176,11 @@ class PimPluginSetup {
         // Get session variable
         $session = cRegistry::getSession();
 
+        // Destroy temporary files if plugin is uploaded
+        if ($this->mode == 2) {
+            parent::$_PimPluginArchiveExtractor->destroyTempFiles();
+        }
+
         // Error template
         $pageError = new cGuiPage('pim_error', 'pim');
         $pageError->set('s', 'BACKLINK', $session->url('main.php?area=pim&frame=4'));
@@ -149,6 +199,8 @@ class PimPluginSetup {
      * @return void
      */
     public function __construct($Xml) {
+        self::_setPimPluginArchiveExtractor();
+
         if ($this->validXml($Xml) === true) {
             $this->_setXml(simplexml_load_string($Xml));
         } else {

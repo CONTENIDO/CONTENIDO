@@ -17,9 +17,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class PimPluginSetupInstall extends PimPluginSetup {
 
     // Initializing variables
-    // Variable for installation mode
-    public $mode = 0;
-
     // Plugin specific data
     // Foldername of installed plugin
     protected $PluginFoldername;
@@ -28,9 +25,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     protected $PluginInstalledAreas = array();
 
     // Classes
-    // Class variable for PimPluginArchiveExtractor
-    protected $_PimPluginArchiveExtractor;
-
     // Class variable for PimPluginCollection
     protected $_PimPluginCollection;
 
@@ -60,26 +54,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     // GET and SET methods for installation routine
     /**
-     * Set method for installation mode
-     * Mode 1: Plugin is already extracted
-     * Mode 2: Plugin is uploaded
-     *
-     * @access public
-     * @param string $mode
-     * @return voids
-     */
-    public function _setMode($mode) {
-        switch ($mode) {
-            case 'extracted':
-                $this->mode = 1;
-                break;
-            case 'uploaded':
-                $this->mode = 2;
-                break;
-        }
-    }
-
-    /**
      * Set variable for plugin foldername
      *
      * @param string $foldername
@@ -107,16 +81,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _setPimPluginRelationsCollection() {
         return $this->_PimPluginRelationsCollection = new PimPluginRelationsCollection();
-    }
-
-    /**
-     * Initialzing and set variable for PimPluginArchiveExtractor class
-     *
-     * @access private
-     * @return PimPluginArchiveExtractor
-     */
-    private function _setPimPluginArchiveExtractor() {
-        return $this->_PimPluginArchiveExtractor = new PimPluginArchiveExtractor();
     }
 
     /**
@@ -189,6 +153,11 @@ class PimPluginSetupInstall extends PimPluginSetup {
         return $this->_ApiTypeCollection = new cApiTypeCollection();
     }
 
+    /**
+     * Get method for foldername of installed plugin
+     *
+     * @return string
+     */
     protected function _getPluginFoldername() {
         return $this->PluginFoldername;
     }
@@ -388,7 +357,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
             // Check for valid area
             if (!in_array($area, $this->_getInstalledAreas())) {
-                parent::error($area);
+                parent::error(i18n('Defined area', 'pim') . ' <strong>' . $area . '</strong> ' . i18n('are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'));
             }
 
             // Create a new entry
@@ -417,7 +386,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
             // Check for valid area
             if (!in_array($attributes['area'], $this->_getInstalledAreas())) {
-                $this->errorArea($attributes['area']);
+                parent::error(i18n('Defined area', 'pim') . ' <strong>' . $attributes['area'] . '</strong> ' . i18n('are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'));
             }
 
             // Create a new entry at *_files
@@ -481,7 +450,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
             // Check for valid area
             if (!in_array($attributes['area'], $this->_getInstalledAreas())) {
-                $this->errorArea($attributes['area']);
+                parent::error(i18n('Defined area', 'pim') . ' <strong>' . $attributes['area'] . '</strong> ' . i18n('are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'));
             }
 
             // Create a new entry at *_nav_sub
@@ -502,10 +471,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
-        if ($this->mode == 1) { // Plugin is already extracted
+        if (parent::_getMode() == 1) { // Plugin is already extracted
             $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . '/plugin_install.sql';
-        } elseif ($this->mode == 2) { // Plugin is uploaded
-            $tempSqlFilename = $this->_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_install.sql', 0);
+        } elseif (parent::getMode() == 2) { // Plugin is uploaded
+            $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_install.sql', 0);
         }
 
         if (!cFileHandler::exists($tempSqlFilename)) {
