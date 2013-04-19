@@ -234,6 +234,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @return void
      */
     public function install() {
+
+        // Versionchecks
+        $this->installCheckVersion();
+
         // Add new plugin: *_plugins
         $this->installAddPlugin();
 
@@ -260,6 +264,29 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Add new CONTENIDO content types: *_type
         $this->installAddContentTypes();
+    }
+
+    /**
+     * This function checks min and max CONTENIDO version for one plugin
+     *
+     * @access private
+     * @return void
+     */
+    private function installCheckVersion() {
+
+        // Get config variables
+        $cfg = cRegistry::getConfig();
+
+        // Check min CONTENIDO version
+        if (parent::$_XmlGeneral->min_contenido_version != '' && version_compare($cfg['version'], parent::$_XmlGeneral->min_contenido_version, '<')) {
+            parent:
+            error(i18n('You have to install CONTENIDO <strong>', 'pim') . parent::$_XmlGeneral->min_contenido_version . i18n('</strong> or higher to install this plugin!', 'pim'));
+        }
+
+        // Check max CONTENIDO version
+        if (parent::$_XmlGeneral->max_contenido_version != '' && version_compare($cfg['version'], parent::$_XmlGeneral->max_contenido_version, '>')) {
+            parent::error(i18n('Your current CONTENIDO version is to new - max CONTENIDO version: ' . parent::$_XmlGeneral->max_contenido_version . '', 'pim'));
+        }
     }
 
     /**
@@ -383,20 +410,20 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $frameCount = count(parent::$_XmlFrames->frame);
         for ($i = 0; $i < $frameCount; $i++) {
 
-            // build attributes with security checks
+            // Build attributes with security checks
             foreach (parent::$_XmlFrames->frame[$i]->attributes() as $sKey => $sValue) {
                 $attributes[$sKey] = cSecurity::escapeString($sValue);
             }
 
-            // check for valid area
+            // Check for valid area
             if (!in_array($attributes['area'], $this->_getInstalledAreas())) {
                 $this->errorArea($attributes['area']);
             }
 
-            // create a new entry at *_files
+            // Create a new entry at *_files
             $file = $this->_ApiFileCollection->create($attributes['area'], $attributes['name'], $attributes['filetype']);
 
-            // create a new entry at *_frame_files
+            // Create a new entry at *_frame_files
             if (!empty($attributes['frameId'])) {
                 $this->_ApiFrameFileCollection->create($attributes['area'], $attributes['frameId'], $file->get('idfile'));
             }

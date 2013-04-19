@@ -120,14 +120,24 @@ class PimPluginSetup {
     }
 
     /**
-     * Error function
+     * Error function with pim_error-Template
      *
      * @access private
      * @param string $message
      * @return void
      */
     private function error($message = '') {
-        echo $message;
+
+        // Get session variable
+        $session = cRegistry::getSession();
+
+        // Error template
+        $pageError = new cGuiPage('pim_error', 'pim');
+        $pageError->set('s', 'BACKLINK', $session->url('main.php?area=pim&frame=4'));
+        $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
+        $pageError->displayError($message);
+        $pageError->render();
+        exit();
     }
 
     // Begin of program
