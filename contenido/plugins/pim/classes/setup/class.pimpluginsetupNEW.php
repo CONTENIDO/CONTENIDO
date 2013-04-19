@@ -12,26 +12,40 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 class PimPluginSetup {
 
-    # Initializing variables
+    // Initializing variables
+    // Specific sql prefix
+    protected static $_SqlPrefix = "!PREFIX!";
+
     // Xml variables
+    // General informations of plugin
     public static $_XmlGeneral;
 
+    // CONTENIDO areas: *_area
     public static $_XmlArea;
 
+    // CONTENIDO actions: *_actions
     public static $_XmlActions;
 
+    // CONTENIDO frames: *_frame_files and *_files
     public static $_XmlFrames;
 
+    // CONTENIDO main navigations: *_nav_main
     public static $_XmlNavMain;
 
+    // CONTENIDO sub navigations: *_nav_sub
     public static $_XmlNavSub;
 
-    // Id of selected / new plugin
-    protected static $_PluginId = 0;
+    // CONTENIDO content types: *_type
+    public static $_XmlContentType;
 
-    # GET and SET methods for installation routine
+    // Id of selected / new plugin
+    protected static $pluginId = 0;
+
+    // GET and SET methods for installation routine
     /**
      * Set temporary xml content to static variables
      *
@@ -58,6 +72,9 @@ class PimPluginSetup {
 
         // CONTENIDO sub navigations: *_nav_sub
         self::$_XmlNavSub = $Xml->contenido->nav_sub;
+
+        // CONTENIDO Content Types: *_type
+        self::$_XmlContentType = $Xml->type;
     }
 
     /**
@@ -68,7 +85,7 @@ class PimPluginSetup {
      * @return integer
      */
     protected function _setPluginId($pluginId = 0) {
-        return $this->_PluginId = $pluginId;
+        return $this->pluginId = $pluginId;
     }
 
     /**
@@ -78,10 +95,10 @@ class PimPluginSetup {
      * @return integer
      */
     protected function _getPluginId() {
-        return self::$_PluginId;
+        return self::$pluginId;
     }
 
-    # Help methods for construct function
+    // Help methods for construct function
     /**
      * Validate Xml source
      *
@@ -113,7 +130,7 @@ class PimPluginSetup {
         echo $message;
     }
 
-    # Begin of program
+    // Begin of program
     /**
      * Construct function
      *
