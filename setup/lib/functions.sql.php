@@ -200,7 +200,7 @@ function alterTableHandling($row) {
     while ($row = mysql_fetch_row($db->getQueryId())) {
         $primaryKey = $row[4];
         $dbAlter = getSetupMySQLDBConnection(false);
-        $sqlAlter = 'ALTER TABLE `' . $tableName . '` CHANGE `' . $primaryKey . '` `' . $primaryKey . '` INT(10) NOT NULL AUTO_INCREMENT';
+        $sqlAlter = 'ALTER TABLE `' . $tableName . '` CHANGE `' . $primaryKey . '` `' . $primaryKey . '` INT(11) NOT NULL AUTO_INCREMENT';
         $dbAlter->query($sqlAlter);
         if ($dbAlter->getErrorNumber() != 0) {
             logSetupFailure("Unable to execute SQL statement:\n" . $sqlAlter . "\nMysql Error: " . $dbAlter->getErrorMessage() . " (" . $dbAlter->getErrorNumber() . ")");
