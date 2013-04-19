@@ -110,7 +110,7 @@ class PimPluginSetup {
      * @return void
      */
     private function error($message = '') {
-        echo "No Valid Xml<br />";
+        echo $message;
     }
 
     # Begin of program
