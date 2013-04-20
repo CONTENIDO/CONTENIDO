@@ -1,36 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the setup mask class.
  *
- * Description:
+ * @package    Setup
+ * @subpackage GUI
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5
- *
- * @package    CONTENIDO setup
- * @version    0.2
- * @author     unknown
+ * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- *
- * {@internal
- *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *
- *   $Id$:
- * }}
- *
  */
 
-if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
+/**
+ * Setup mask class.
+ *
+ * @package Setup
+ * @subpackage GUI
+ */
 class cSetupMask
 {
     function cSetupMask($sStepTemplate, $iStep = false)

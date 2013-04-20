@@ -1,26 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains various helper functions to read specific values needed for setup checks.
  *
- * Description:
+ * @package    Setup
+ * @subpackage Helper_Filesystem
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5
- *
- * @package CONTENIDO setup
- * @version 0.2
- * @author unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- *
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 define('CON_PREDICT_SUFFICIENT', 1);
 

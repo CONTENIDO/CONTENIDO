@@ -1,26 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains various classes for displaying the setup.
  *
- * Description:
+ * @package    Setup
+ * @subpackage GUI
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5
- *
- *
- * @package CONTENIDO setup
- * @version 0.1
- * @author unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Alpha image class, based on cHTMLImage.
+ *
+ * @package Setup
+ * @subpackage GUI
+ */
 class cHTMLAlphaImage extends cHTMLImage {
 
     var $_sClickImage;
@@ -67,6 +67,13 @@ class cHTMLAlphaImage extends cHTMLImage {
     }
 
 }
+
+/**
+ * Setup error message list based on cHTMLDiv.
+ *
+ * @package Setup
+ * @subpackage GUI
+ */
 class cHTMLErrorMessageList extends cHTMLDiv {
 
     function cHTMLErrorMessageList() {
@@ -87,6 +94,13 @@ class cHTMLErrorMessageList extends cHTMLDiv {
     }
 
 }
+
+/**
+ * Foldable setup error message based on cHTMLTableRow.
+ *
+ * @package Setup
+ * @subpackage GUI
+ */
 class cHTMLFoldableErrorMessage extends cHTMLTableRow {
 
     function cHTMLFoldableErrorMessage($sTitle, $sMessage, $sIcon = false, $sIconText = false) {
@@ -151,6 +165,13 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
     }
 
 }
+
+/**
+ * Setup info message based on cHTMLTableRow.
+ *
+ * @package Setup
+ * @subpackage GUI
+ */
 class cHTMLInfoMessage extends cHTMLTableRow {
 
     function cHTMLInfoMessage($sTitle, $sMessage) {
@@ -177,6 +198,13 @@ class cHTMLInfoMessage extends cHTMLTableRow {
     }
 
 }
+
+/**
+ * Setup language link based on cHTMLDiv.
+ *
+ * @package Setup
+ * @subpackage GUI
+ */
 class cHTMLLanguageLink extends cHTMLDiv {
 
     function cHTMLLanguageLink($langcode, $langname, $stepnumber) {
@@ -211,6 +239,13 @@ class cHTMLLanguageLink extends cHTMLDiv {
     }
 
 }
+
+/**
+ * Setup button link based on cHTMLDiv.
+ *
+ * @package Setup
+ * @subpackage GUI
+ */
 class cHTMLButtonLink extends cHTMLDiv {
 
     function cHTMLButtonLink($href, $title) {

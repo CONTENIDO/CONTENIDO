@@ -1,24 +1,19 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Main CONTENIDO setup bootstrap file.
  *
- * @package    CONTENIDO setup bootstrap
- * @version    0.0.2
+ * @package    Setup
+ * @subpackage Setup
+ * @version    SVN Revision $Rev:$
+ *
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Don't display errors
 @ini_set('display_errors', false);
