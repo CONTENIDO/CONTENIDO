@@ -1,27 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the abstract upgrade job class.
  *
- * Description:
- * Abstract upgade job class
+ * @package    Setup
+ * @subpackage UpgradeJob
+ * @version    SVN Revision $Rev:$
  *
- * @package    CONTENIDO Setup upgrade
- * @version    0.1
- * @author     Murat Purc <murat@purc>
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9
  */
 
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
-}
-
-
+/**
+ * Abstract upgrade job class.
+ *
+ * @package Setup
+ * @subpackage UpgradeJob
+ */
 abstract class cUpgradeJobAbstract {
 
     /**

@@ -1,26 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the upgrade job 1.
  *
- * Description:
+ * @package    Setup
+ * @subpackage UpgradeJob
+ * @version    SVN Revision $Rev:$
  *
- * @package    CONTENIDO Setup upgrade
- * @version    0.1
  * @author     Murat Purc <murat@purc>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9
  */
 
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
-}
-
-
+/**
+ * Upgrade job 1.
+ *
+ * @package Setup
+ * @subpackage UpgradeJob
+ */
 class cUpgradeJob_0001 extends cUpgradeJobAbstract {
 
     public $maxVersion = "0"; //this will be executed every time

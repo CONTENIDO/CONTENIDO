@@ -1,24 +1,27 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the upgrade job 11.
  *
- * Description:
- * Update the old system property for insite editing
+ * @package    Setup
+ * @subpackage UpgradeJob
+ * @version    SVN Revision $Rev:$
  *
- * @package CONTENIDO Setup upgrade
- * @version 1.0
- * @author Frederic Schneider <frederic.schneider@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Upgrade job 11.
+ * Update the old system property for insite editing
+ *
+ * @package Setup
+ * @subpackage UpgradeJob
+ */
 class cUpgradeJob_0011 extends cUpgradeJobAbstract {
 
     public $maxVersion = "4.9.0";

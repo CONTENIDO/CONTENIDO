@@ -1,29 +1,16 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * CONTENIDO setup script. Main entry point for the setup requests.
  *
- * Requirements:
- * @con_php_req 5
+ * @package    Setup
+ * @subpackage Setup
+ * @version    SVN Revision $Rev:$
  *
- * @package    CONTENIDO setup
- * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- *
- * {@internal
- *   created  2011-11-01  Murat Purc
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

@@ -1,27 +1,30 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the upgrade job 7.
  *
- * Description:
+ * @package    Setup
+ * @subpackage UpgradeJob
+ * @version    SVN Revision $Rev:$
+ *
+ * @author     Simon Sprankel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Upgrade job 7.
  * Runs the upgrade job to remove unused mail logging include files from the DB.
  * Additionally, the used include file is renamed.
  * Besides, the column idmail_resend is removed from the con_mail_log_success
  * table.
  *
- * @package CONTENIDO Setup upgrade
- * @version 0.1
- * @author Simon Sprankel <simon.sprankel@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
- * @since file available since CONTENIDO release 4.9
+ * @package Setup
+ * @subpackage UpgradeJob
  */
-
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
 class cUpgradeJob_0007 extends cUpgradeJobAbstract {
 
     public $maxVersion = "4.9.0-beta1";
