@@ -1,25 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the system test setup mask.
  *
- * Description:
+ * @package    Setup
+ * @subpackage Form
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5
- *
- * @package CONTENIDO setup
- * @version 0.3.3
- * @author unknown
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * System test setup mask.
+ *
+ * @package Setup
+ * @subpackage Form
+ */
 class cSetupSystemtest extends cSetupMask {
 
     private $systemtest;

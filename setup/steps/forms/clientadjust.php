@@ -1,32 +1,26 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the client adjust setup mask.
  *
- * Description:
+ * @package    Setup
+ * @subpackage Form
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5
- *
- * @package    CONTENIDO setup
- * @version    0.2.1
- * @author     unknown
+ * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * Client adjust setup mask.
+ *
+ * @package Setup
+ * @subpackage Form
+ */
 class cSetupClientAdjust extends cSetupMask {
 
     function cSetupClientAdjust($step, $previous, $next) {

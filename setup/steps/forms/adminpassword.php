@@ -1,13 +1,11 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the admin password setup mask.
  *
- * Description:
- * Step x of installation: Admin password
+ * @package    Setup
+ * @subpackage Form
+ * @version    SVN Revision $Rev:$
  *
- * @package    CONTENIDO setup
- * @version    1.0.0
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -15,10 +13,14 @@
  * @link       http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * Admin password setup mask.
+ *
+ * @package Setup
+ * @subpackage Form
+ */
 class cSetupAdminPassword extends cSetupMask {
     function cSetupAdminPassword($step, $previous, $next) {
         global $cfg;
