@@ -2441,7 +2441,6 @@ setup/locale/de_DE/LC_MESSAGES/contenido.po -text
 setup/locale/potfiles.txt -text
 setup/locale/setup.pot -text
 setup/script/setup.js -text
-setup/steps/forms/additionalplugins.php -text
 setup/steps/forms/adminpassword.php -text
 setup/steps/forms/clientadjust.php -text
 setup/steps/forms/clientmode.php -text
