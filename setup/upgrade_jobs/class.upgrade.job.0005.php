@@ -27,7 +27,7 @@ class cUpgradeJob_0005 extends cUpgradeJobAbstract {
     public $maxVersion = "4.9.0-beta1";
 
     public function _execute() {
-        global $cfg;
+        global $cfg, $cfgClient;
 
         $db = $this->_oDb;
 
