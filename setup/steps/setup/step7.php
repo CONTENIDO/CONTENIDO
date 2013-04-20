@@ -1,42 +1,23 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * CONTENIDO setup step 7 - setup summary.
  *
- * Description:
+ * @package    Setup
+ * @subpackage Step_Setup
+ * @version    SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5
- *
- * @package    CONTENIDO setup
- * @version    0.2
- * @author     unknown
+ * @author     Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- *
- * {@internal
- *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *
- *   $Id$:
- * }}
- *
  */
 
  echo '<!-- Hello begin -->';
 
-if (!defined('CON_FRAMEWORK')) {
-     die('Illegal call');
-}
-
-
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 checkAndInclude("steps/forms/setupsummary.php");
-
-
 
 $cSetupSetupSummary = new cSetupSetupSummary(7, "setup6", "doinstall");
 $cSetupSetupSummary->render();
