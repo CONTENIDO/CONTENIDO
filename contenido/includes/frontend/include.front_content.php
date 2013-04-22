@@ -172,7 +172,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 // current user.
 if (isset($logout)) {
     $auth->logout(true);
-    $auth->unauth(true);
+    $auth->resetAuthInfo(true);
     $auth->auth['uname'] = 'nobody';
 }
 
@@ -451,7 +451,9 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                                                              // default value
                                                              // 'false'
                 $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']);
-                $auth->login_if(!$allow);
+				if (!$allow) {
+					$auth->restart();
+				}
             }
         } else {
             // CEC to check category access

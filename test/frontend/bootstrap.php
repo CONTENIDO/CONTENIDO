@@ -125,7 +125,7 @@ if (!$sess->isRegistered('client')) {
 }
 
 if (isset($username)) {
-    $auth->login_if(true);
+    $auth->restart();
 }
 
 // Send HTTP header with encoding
@@ -135,7 +135,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 // log out the current user.
 if (isset($logout)) {
     $auth->logout(true);
-    $auth->unauth(true);
+    $auth->resetAuthInfo(true);
     $auth->auth['uname'] = 'nobody';
 }
 
