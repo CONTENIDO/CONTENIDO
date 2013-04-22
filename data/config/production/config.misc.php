@@ -27,7 +27,7 @@ global $cfg;
 
 // (string) Current CONTENIDO Version. You shouldn't change this value unless
 //          you know what you are doing.
-$cfg['version'] = '4.9.0-rc1';
+$cfg['version'] = '4.9.0';
 
 // (int) Backend timeout
 $cfg['backend']['timeout'] = 60;

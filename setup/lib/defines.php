@@ -34,6 +34,6 @@ define('CON_SETUP_MAX_CHUNKS_PER_STEP', 50);
 
 define('CON_SETUP_MIN_PHP_VERSION', '5.2.3');
 
-define('CON_SETUP_VERSION', '4.9.0-rc1');
+define('CON_SETUP_VERSION', '4.9.0');
 
 ?>

@@ -1,6 +1,6 @@
-CONTENIDO Version 4.9.0 RC 1
+CONTENIDO Version 4.9.0
 Lizenz:        GNU General Public Licence (GPL)
-Copyright:     (c) 2003-2012, four for business AG
+Copyright:     (c) 2003-2013, four for business AG
 Informationen: http://www.contenido.org
 
 <take care>
