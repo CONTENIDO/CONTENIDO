@@ -451,9 +451,9 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                                                              // default value
                                                              // 'false'
                 $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']);
-				if (!$allow) {
-					$auth->restart();
-				}
+                if (!$allow) {
+                    $auth->restart();
+                }
             }
         } else {
             // CEC to check category access

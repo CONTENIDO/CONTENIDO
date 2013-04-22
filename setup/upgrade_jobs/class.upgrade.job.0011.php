@@ -31,7 +31,7 @@ class cUpgradeJob_0011 extends cUpgradeJobAbstract {
 
         if ($this->_setupType == 'upgrade') {
             $sql = "UPDATE `" . $cfg['tab']['system_prop'] . "` SET `name` = 'insite_editing_activated' WHERE `name` = 'insight_editing_activated'";
-			$db->query($sql);
+            $db->query($sql);
         }
     }
 
