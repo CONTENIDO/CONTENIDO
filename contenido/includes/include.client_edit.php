@@ -118,7 +118,8 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
 
     // Clear the code cache
     foreach (new DirectoryIterator($cfgClient[$idclient]['cache']['path']) as $file) {
-        if ($file->getFilename() == $idclient && $file->getExtension() == "php") {
+        $extension = substr($file, strpos($file->getBasename(), '.') + 1);
+        if ($file->getFilename() == $idclient && $extension == "php") {
             unlink($cfgClient[$idclient]['cache']['path'] . $idclient . 'php');
         }
     }

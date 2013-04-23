@@ -2,15 +2,15 @@
 /**
  * This file contains the system log display backend page.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Simon Sprankel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Simon Sprankel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -41,7 +41,8 @@ if ($action == 'deletelog' && !empty($logfile)) {
 
 $files = array();
 foreach (new DirectoryIterator($path) as $filename) {
-    if (in_array($filename->getExtension(), $cfg['system_log']['file_extensions'])) {
+    $extension = substr($filename, strpos($filename->getBasename(), '.') + 1);
+    if (in_array($extension, $cfg['system_log']['file_extensions'])) {
         $files[] = $path . $filename->getFilename();
     }
 }

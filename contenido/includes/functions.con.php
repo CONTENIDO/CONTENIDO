@@ -585,7 +585,8 @@ function conDeleteart($idart) {
     while (($oCatArtItem = $catArtColl->next()) !== false) {
         // Delete from code cache
         foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
-            if ($file->getFilename() == $oCatArtItem->get('idcatart') && $file->getExtension() == "php") {
+            $extension = substr($file, strpos($file->getBasename(), '.') + 1);
+            if ($file->getFilename() == $oCatArtItem->get('idcatart') && $extension == "php") {
                 unlink($cfgClient[$client]['code']['path'] . $oCatArtItem->get('idcatart') . 'php');
             }
         }

@@ -89,7 +89,8 @@ class cSystemPurge {
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             foreach (new DirectoryIterator($cfgClient[$clientId]['cache']['path'] . 'code/') as $file) {
-                if ($file->getExtension() == "php") {
+                $extension = substr($file, strpos($file->getBasename(), '.') + 1);
+                if ($extension == "php") {
                     if (!unlink($file)) {
                         return false;
                     }
