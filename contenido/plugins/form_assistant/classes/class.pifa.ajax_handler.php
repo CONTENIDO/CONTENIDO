@@ -68,6 +68,7 @@ class PifaAjaxHandler {
      * @throws Exception
      */
     function dispatch($action) {
+
         function pifa_ajax_handler_integer_cast_deep($value) {
             return cSecurity::toInteger($value);
         }
@@ -119,9 +120,7 @@ class PifaAjaxHandler {
 
             default:
                 throw new Exception('unknown action ' . $_REQUEST['action']);
-
         }
-
     }
 
     /**
@@ -133,7 +132,6 @@ class PifaAjaxHandler {
      * @throws Exception
      */
     private function _getFieldForm($idform, $idfield, $fieldType) {
-
         $cfg = cRegistry::getConfig();
 
         // get field
@@ -212,7 +210,6 @@ class PifaAjaxHandler {
         $tpl->assign('partialOptionRow', $cfg['templates']['pifa_ajax_option_row']);
 
         $tpl->display($cfg['templates']['pifa_ajax_field_form']);
-
     }
 
     /**
@@ -223,7 +220,6 @@ class PifaAjaxHandler {
      * @throws Exception
      */
     private function _postFieldForm($idform, $idfield) {
-
         global $area;
         $cfg = cRegistry::getConfig();
 
@@ -323,11 +319,13 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('option_values') && array_key_exists('option_values', $_POST) && is_array($_POST['option_values'])) {
-            $optionValues = implode(',', array_map(function ($value) {
-                $value = cSecurity::toString($value);
-                $value = trim($value);
-                return $value;
-            }, $_POST['option_values']));
+
+            for ($i = 0; $i < count($_POST['option_values']); $i++) {
+                $_POST['option_values'][$i] = cSecurity::toString($_POST['option_values'][$i]);
+                $_POST['option_values'][$i] = trim($_POST['option_values'][$i]);
+            }
+
+            $optionValues = implode(',', $_POST['option_values']);
             $optionValues = substr($optionValues, 0, 1023);
             if ($optionValues !== $pifaField->get('option_values')) {
                 $pifaField->set('option_values', $optionValues);
@@ -377,11 +375,13 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('css_class') && array_key_exists('css_class', $_POST) && is_array($_POST['css_class'])) {
-            $cssClass = implode(',', array_map(function ($value) {
-                $value = cSecurity::toString($value);
-                $value = trim($value);
-                return $value;
-            }, $_POST['css_class']));
+
+            for ($i = 0; $i < count($_POST['css_class']); $i++) {
+                $_POST['css_class'][$i] = cSecurity::toString($_POST['css_class'][$i]);
+                $_POST['css_class'][$i] = trim($_POST['css_class'][$i]);
+            }
+
+            $cssClass = implode(',', $_POST['css_class']);
             $cssClass = substr($cssClass, 0, 1023);
             if ($cssClass !== $pifaField->get('css_class')) {
                 $pifaField->set('css_class', $cssClass);
@@ -428,7 +428,6 @@ class PifaAjaxHandler {
                 // but that doesn't matter cause new field might
                 // have no younger siblings
             }
-
         }
 
         // return new row to be displayed in list
@@ -457,7 +456,6 @@ class PifaAjaxHandler {
         $tpl->assign('deleteField', $deleteField);
 
         $tpl->display($cfg['templates']['pifa_ajax_field_row']);
-
     }
 
     /**
@@ -466,14 +464,12 @@ class PifaAjaxHandler {
      * @throws Exception
      */
     private function _deleteField($idfield) {
-
         if (0 == $idfield) {
             throw new Exception('no idfield given');
         }
 
         $pifaField = new PifaField($idfield);
         $pifaField->delete();
-
     }
 
     /**
@@ -483,9 +479,7 @@ class PifaAjaxHandler {
      * @param string $idfields CSV of integers
      */
     private function _reorderFields($idform, $idfields) {
-
         PifaFieldCollection::reorder($idform, $idfields);
-
     }
 
     /**
@@ -515,7 +509,6 @@ class PifaAjaxHandler {
 
         // echo payload
         echo $data;
-
     }
 
     /**
@@ -524,7 +517,6 @@ class PifaAjaxHandler {
      * @param string $file
      */
     private function _getFile($name, $file) {
-
         $cfg = cRegistry::getConfig();
 
         $path = $cfg['path']['contenido_cache'] . 'form_assistant/';
@@ -558,7 +550,6 @@ class PifaAjaxHandler {
             flush();
         }
         fclose($handle);
-
     }
 
     /**
@@ -566,7 +557,6 @@ class PifaAjaxHandler {
      * @param int $index
      */
     private function _getOptionRow($index) {
-
         $cfg = cRegistry::getConfig();
 
         $tpl = Contenido_SmartyWrapper::getInstance(true);
@@ -586,7 +576,6 @@ class PifaAjaxHandler {
         ));
 
         $tpl->display($cfg['templates']['pifa_ajax_option_row']);
-
     }
 
 }
