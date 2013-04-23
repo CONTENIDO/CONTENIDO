@@ -3,15 +3,15 @@
  * This file contains the cMail class which should be used for all mail sending
  * purposes.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Rusmir Jusufovic, Simon Sprankel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Rusmir Jusufovic, Simon Sprankel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -288,11 +288,15 @@ class cMailer extends Swift_Mailer {
      *
      * @param string|array $value the value to encode
      * @param string $charset the charset to use in htmlentities
-     * @return string|array the encoded value
+     * @return string array encoded value
      */
     private function encodeField($value, $charset) {
         if (is_array($value)) {
-            array_walk($value, function(&$item, $key, $charset) { $item = conHtmlentities($item, ENT_COMPAT, $charset, false); }, $charset);
+            for ($i = 0; $i < count($value); $i++) {
+                if (!empty($value[$i])) {
+                    $value[$i] = conHtmlEntities($value[$i], ENT_COMPAT, $charset, false);
+                }
+            }
             return $value;
         } else if (is_string($value)) {
             return conHtmlentities($value, ENT_COMPAT, $charset, false);
@@ -305,11 +309,15 @@ class cMailer extends Swift_Mailer {
      *
      * @param string|array $value the value to decode
      * @param string $charset the charset to use in htmlentities
-     * @return string|array the decoded value
+     * @return string array decoded value
      */
     private function decodeField($value, $charset) {
         if (is_array($value)) {
-            array_walk($value, function(&$item, $key, $charset) { $item = conHtmlEntityDecode($item, ENT_COMPAT | ENT_HTML401, $charset, false); }, $charset);
+            for ($i = 0; $i < count($value); $i++) {
+                if (!empty($value[$i])) {
+                    $value[$i] = conHtmlEntityDecode($value[$i], ENT_COMPAT | ENT_HTML401, $charset, false);
+                }
+            }
         } else if (is_string($value)) {
             return conHtmlEntityDecode($value, ENT_COMPAT | ENT_HTML401, $charset);
         }
