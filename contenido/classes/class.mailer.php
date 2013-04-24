@@ -356,22 +356,24 @@ class cMailer extends Swift_Mailer {
         );
         $mailLogSuccessCollection = new cApiMailLogSuccessCollection();
         foreach ($recipientArrays as $recipients) {
-            foreach ($recipients as $key => $value) {
-                $recipient = array(
-                    $key => $value
-                );
-                $success = true;
-                // TODO how do we get the information why message sending has
-                // failed?
-                $exception = '';
-                if (in_array($key, $failedRecipients)) {
-                    $success = false;
+            if (is_array($recipients)) {
+                foreach ($recipients as $key => $value) {
+                    $recipient = array(
+                        $key => $value
+                    );
+                    $success = true;
+                    // TODO how do we get the information why message sending
+                    // has
+                    // failed?
+                    $exception = '';
+                    if (in_array($key, $failedRecipients)) {
+                        $success = false;
+                    }
+                    $mailLogSuccessCollection->create($idmail, $recipient, $success, $exception);
                 }
-                $mailLogSuccessCollection->create($idmail, $recipient, $success, $exception);
             }
         }
 
         return $idmail;
     }
-
 }
