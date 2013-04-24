@@ -332,7 +332,7 @@ class cMailer extends Swift_Mailer {
      *        did not get the mail
      * @return the idmail of the inserted table row in con_mail_log
      */
-    private function _logMail($message, $failedRecipients = array()) {
+    private function _logMail(Swift_Mime_Message $message, array $failedRecipients = array()) {
         $mailLogCollection = new cApiMailLogCollection();
 
         // encode all fields
