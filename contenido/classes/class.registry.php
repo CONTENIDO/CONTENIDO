@@ -65,6 +65,17 @@ class cRegistry {
     }
 
     /**
+     * Function wich returns the backend URL after the last possible place
+     * changing via configuration file.
+     *
+     * @return URL
+     */
+    public static function getBackendUrl() {
+        $cfg = self::getConfig();
+        return $cfg['path']['contenido_fullhtml'];
+    }
+
+    /**
      * Function wich returns path after the last possible place changing via
      * configuration file.
      * The path point to the current client
@@ -75,17 +86,6 @@ class cRegistry {
         $cfgClient = self::getClientConfig();
         $client = self::getClientId();
         return $cfgClient[$client]['path']['frontend'];
-    }
-
-    /**
-     * Function wich returns the backend URL after the last possible place
-     * changing via configuration file.
-     *
-     * @return URL
-     */
-    public static function getBackendUrl() {
-        $cfg = self::getConfig();
-        return $cfg['path']['contenido_fullhtml'];
     }
 
     /**
@@ -171,7 +171,7 @@ class cRegistry {
      * Returns the article id stored in the global variable "idart".
      *
      * @param boolean $autoDetect If true, the value is tried to detected
-     *            automatically. (default: false)
+     *        automatically. (default: false)
      * @return integer
      */
     public static function getArticleId($autoDetect = false) {
@@ -193,7 +193,7 @@ class cRegistry {
      * "idartlang".
      *
      * @param boolean $autoDetect If true, the value is tried to detected
-     *            automatically. (default: false)
+     *        automatically. (default: false)
      * @return integer
      */
     public static function getArticleLanguageId($autoDetect = false) {
@@ -214,7 +214,7 @@ class cRegistry {
      * Returns the category id stored in the global variable "idcat".
      *
      * @param boolean $autoDetect If true, the value is tried to detected
-     *            automatically. (default: false)
+     *        automatically. (default: false)
      * @return integer
      */
     public static function getCategoryId($autoDetect = false) {
@@ -236,7 +236,7 @@ class cRegistry {
      * "idcatlang".
      *
      * @param boolean $autoDetect If true, the value is tried to detected
-     *            automatically. (default: false)
+     *        automatically. (default: false)
      * @return integer
      */
     public static function getCategoryLanguageId($autoDetect = false) {
@@ -258,7 +258,7 @@ class cRegistry {
      * "idcatart".
      *
      * @param boolean $autoDetect If true, the value is tried to detected
-     *            automatically. (default: false)
+     *        automatically. (default: false)
      * @return integer
      */
     public static function getCategoryArticleId($autoDetect = false) {
@@ -295,7 +295,6 @@ class cRegistry {
     public static function getCurrentContainerId() {
         return self::_fetchGlobalVariable('cCurrentContainer', 0);
     }
-
 
     /**
      * Return the session object stored in the global variable "sess".
@@ -549,14 +548,14 @@ class cRegistry {
     public final static function shutdown() {
         cDebug::showAll();
 
-        $sess = self::_fetchGlobalVariable('sess');
+        $sess = self::getSession();
         if (isset($sess)) {
             $sess->freeze();
         }
     }
 
     /**
-     * Stores an information massage in the cRegistry
+     * Stores an information massage in the cRegistry.
      *
      * @param string message
      */
@@ -565,7 +564,7 @@ class cRegistry {
     }
 
     /**
-     * Stores an information massage in the cRegistry
+     * Stores an error massage in the cRegistry.
      *
      * @param string message
      */
@@ -574,7 +573,7 @@ class cRegistry {
     }
 
     /**
-     * Stores an information massage in the cRegistry
+     * Stores an warning massage in the cRegistry.
      *
      * @param string message
      */
@@ -583,7 +582,7 @@ class cRegistry {
     }
 
     /**
-     * Returns an array with information messages
+     * Returns an array with information messages.
      *
      * @return array
      */
@@ -592,7 +591,7 @@ class cRegistry {
     }
 
     /**
-     * Returns an array with error messages
+     * Returns an array with error messages.
      *
      * @return array
      */
@@ -601,7 +600,7 @@ class cRegistry {
     }
 
     /**
-     * Returns an array with warning messages
+     * Returns an array with warning messages.
      *
      * @return array
      */
@@ -616,6 +615,6 @@ class cRegistry {
      * @return boolean whether tracking is allowed by the DNT header
      */
     public static function isTrackingAllowed() {
-         return (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] != 1) || !isset($_SERVER['HTTP_DNT']);
+        return (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] != 1) || !isset($_SERVER['HTTP_DNT']);
     }
 }
