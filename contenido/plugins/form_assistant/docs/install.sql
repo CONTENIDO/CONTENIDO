@@ -9,7 +9,7 @@ INSERT IGNORE
     INTO con_area (idarea, parent_id, name, relevant, online, menuless)
     VALUES (100002, '100001', 'form_ajax', 1, 1, 0);
 
--- navigation    
+-- navigation
 INSERT IGNORE
     INTO con_nav_main (idnavm ,location)
     VALUES (100001 , 'form_assistant/xml/lang_de_DE.xml;plugins/label');
@@ -34,7 +34,7 @@ INSERT IGNORE
     INTO con_files (idfile, idarea, filename, filetype)
     VALUES (100005, 100002, 'form_assistant/includes/include.ajax.php', 'main');
 
--- mapping of files to frames    
+-- mapping of files to frames
 INSERT
     INTO con_frame_files (idframefile, idarea, idframe, idfile)
     VALUES (100001, 100001, 1, 100001);
@@ -59,9 +59,9 @@ INSERT
 
 -- create record for of CMS_PIFAFORM content type
 INSERT
-	INTO con_type (idtype, `type`, code, description, status, author, created, lastmodified)
-	VALUES ('100001', 'CMS_PIFAFORM', '', 'PIFA form', '0', '', NOW(), NOW());
-    
+    INTO con_type (idtype, `type`, code, description, status, author, created, lastmodified)
+    VALUES ('100001', 'CMS_PIFAFORM', '', 'PIFA form', '0', '', NOW(), NOW());
+
 -- create table for meta data of PIFA forms
 CREATE TABLE con_pifa_form (
   idform         int(10) unsigned    NOT NULL AUTO_INCREMENT             COMMENT 'unique identifier for a ConForm form',
