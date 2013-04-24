@@ -41,5 +41,4 @@ class DefaultFormProcessor extends PifaAbstractFormProcessor {
      */
     protected function _processStoredData() {
     }
-
 }

@@ -20,6 +20,9 @@ AUTHOR marcus.gnass@4fb.de
     <table border="1">
         <tr>
             <th>id</th>
+    {if $withTimestamp}
+            <th>timestamp</th>
+    {/if}
     {foreach from=$fields item=field}
         {* skip columns that dont store data into DB *}
         {if NULL eq $field->getDbDataType()}{continue}{/if}
@@ -34,6 +37,9 @@ AUTHOR marcus.gnass@4fb.de
     {foreach from=$data item=row}
         <tr>
             <td>{$row.id}</td>
+        {if $withTimestamp}
+            <td>{$row.pifa_timestamp}</td>
+        {/if}
         {foreach from=$fields item=field}
             {* skip columns that dont store data into DB *}
             {if NULL eq $field->getDbDataType()}{continue}{/if}

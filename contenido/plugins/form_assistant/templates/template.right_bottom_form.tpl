@@ -34,6 +34,13 @@ Form to edit meta data for the given form.
             </select>
         </div>
 
+        {if $hasWithTimestamp}
+        <div class="field-type">
+            <label for="with_timestamp">{$trans.withTimestamp}</label>
+            <input type="checkbox" id="with_timestamp" name="with_timestamp" {if $withTimestampValue}checked="checked"{/if} />
+        </div>
+        {/if}
+
         <input type="image" id="image-new-form" src="images/but_ok.gif" alt="{$trans.saveForm}" title="{$trans.createForm}" />
 
     </fieldset>

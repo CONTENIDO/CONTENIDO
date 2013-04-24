@@ -78,7 +78,6 @@ class PifaValidationException extends PifaException {
     public function getErrors() {
         return $this->_errors;
     }
-
 }
 
 /**

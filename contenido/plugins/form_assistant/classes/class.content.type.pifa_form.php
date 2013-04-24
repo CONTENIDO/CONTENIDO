@@ -70,7 +70,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         if ('store' === $action && $this->_id == $id) {
             $this->_storeSettings();
         }
-
     }
 
     /**
@@ -127,7 +126,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $code .= $this->generateViewCode();
 
         return $code;
-
     }
 
     /**
@@ -136,7 +134,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      * @return string - the code for the base panel
      */
     private function _getPanel() {
-
         $wrapper = new cHTMLDiv(array(
 
             // form
@@ -173,7 +170,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $wrapper->setStyle('clear:both');
 
         return $wrapper->render();
-
     }
 
     /**
@@ -214,7 +210,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
             // append option element to select element
             $select->addOptionElement(++$index, $option);
-
         }
 
         // build div element as wrapper
@@ -225,7 +220,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -249,6 +243,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         // get all modules from extensions & validate result
         $modules = Pifa::getExtensionClasses('PifaAbstractFormModule');
 
+        // sort modules by their label
+        function sortByLabel($a, $b) {
+            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
+        }
+        usort($modules, sortByLabel);
+
         // loop all forms
         foreach ($modules as $module) {
 
@@ -262,7 +262,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
             // append option element to select element
             $select->addOptionElement(++$index, $option);
-
         }
 
         // build div element as wrapper
@@ -273,7 +272,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -297,6 +295,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         // get all processors from extensions & validate result
         $processors = Pifa::getExtensionClasses('PifaAbstractFormProcessor');
 
+        // sort processors by their label
+        function sortByLabel($a, $b) {
+            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
+        }
+        usort($processors, sortByLabel);
+
         // loop all forms
         foreach ($processors as $processor) {
 
@@ -310,7 +314,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
             // append option element to select element
             $select->addOptionElement(++$index, $option);
-
         }
 
         // build div element as wrapper
@@ -321,7 +324,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -343,7 +345,13 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
         // get templates from client template folder
-        $templates = Pifa::getTemplates();
+        $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_get\.tpl/');
+
+        // sort templates by their label
+        function sortByLabel($a, $b) {
+            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
+        }
+        usort($templates, sortByLabel);
 
         // loop all templates
         foreach ($templates as $template) {
@@ -358,7 +366,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
             // append option element to select element
             $select->addOptionElement(++$index, $option);
-
         }
 
         // build div element as wrapper
@@ -369,7 +376,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -391,7 +397,13 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
         // get templates from client template folder
-        $templates = Pifa::getTemplates();
+        $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_post\.tpl/');
+
+        // sort templates by their label
+        function sortByLabel($a, $b) {
+            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
+        }
+        usort($templates, sortByLabel);
 
         // loop all templates
         foreach ($templates as $template) {
@@ -406,7 +418,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
             // append option element to select element
             $select->addOptionElement(++$index, $option);
-
         }
 
         // build div element as wrapper
@@ -417,7 +428,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -440,7 +450,13 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
         // get templates from client template folder
-        $templates = Pifa::getTemplates();
+        $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_mail_client\.tpl/');
+
+        // sort templates by their label
+        function sortByLabel($a, $b) {
+            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
+        }
+        usort($templates, sortByLabel);
 
         // loop all templates
         foreach ($templates as $template) {
@@ -455,7 +471,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
             // append option element to select element
             $select->addOptionElement(++$index, $option);
-
         }
 
         // build div element as wrapper
@@ -466,7 +481,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -489,7 +503,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -512,7 +525,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -535,7 +547,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -557,7 +568,13 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $select->addOptionElement($index = 0, new cHTMLOptionElement(Pifa::i18n('none'), ''));
 
         // get templates from client template folder
-        $templates = Pifa::getTemplates();
+        $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_mail_system\.tpl/');
+
+        // sort templates by their label
+        function sortByLabel($a, $b) {
+            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
+        }
+        usort($templates, sortByLabel);
 
         // loop all templates
         foreach ($templates as $template) {
@@ -572,7 +589,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
             // append option element to select element
             $select->addOptionElement(++$index, $option);
-
         }
 
         // build div element as wrapper
@@ -583,7 +599,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -606,7 +621,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -629,7 +643,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -653,7 +666,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -676,7 +688,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // return div element
         return $div;
-
     }
 
     /**
@@ -690,12 +701,10 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      *         shown in frontend
      */
     public function generateViewCode() {
-
         $code = '";?' . '><' . '?php $form = new %s(\'%s\', %s, %s); echo $form->buildCode(); ?' . '><' . '?php echo "';
         $code = sprintf($code, get_class($this), $this->_rawSettings, $this->_id, 'array()');
 
         return $code;
-
     }
 
     /**
@@ -705,7 +714,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      *         shown in frontend
      */
     public function buildCode() {
-
         $out = '';
         if (0 === cSecurity::toInteger($this->_settings['pifaform_idform'])) {
             // no form was selected
@@ -735,7 +743,5 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         // $out = $this->_encodeForOutput($out);
 
         return $out;
-
     }
-
 }

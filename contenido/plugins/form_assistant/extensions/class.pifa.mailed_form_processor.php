@@ -21,6 +21,9 @@ plugin_include(Pifa::getName(), 'extensions/class.pifa.default_form_processor.ph
  * This feature can be accomplished by extending the class
  * PifaFormAbstractProcessor and implementing its method _processStoredData().
  *
+ * Any uploads of the given form will be added as attachments to the system
+ * mail.
+ *
  * @author marcus.gnass
  */
 class MailedFormProcessor extends DefaultFormProcessor {
@@ -34,7 +37,6 @@ class MailedFormProcessor extends DefaultFormProcessor {
      * @throws PifaMailException if any mail could not be sent
      */
     protected function _processStoredData() {
-
         $cfg = cRegistry::getConfig();
 
         // get values
@@ -76,6 +78,8 @@ class MailedFormProcessor extends DefaultFormProcessor {
                 'to' => $this->getModule()->getSetting('pifaform_mail_system_recipient_email'),
                 'subject' => $this->getModule()->getSetting('pifaform_mail_system_subject'),
                 'body' => $body,
+                'attachmentNames' => $this->_getAttachmentNames(),
+                'attachmentStrings' => $this->_getAttachmentStrings(),
                 'charSet' => 'UTF-8'
             ));
         } catch (PifaMailException $e) {
@@ -86,9 +90,46 @@ class MailedFormProcessor extends DefaultFormProcessor {
         if (0 < count($errors)) {
             throw new PifaMailException(implode('<br>', $errors));
         }
-
     }
 
+    /**
+     * Return all files that were uploaded by the form as names of attachments
+     * to be added to the system mail.
+     *
+     * @return array
+     */
+    protected function _getAttachmentNames() {
+        $cfg = cRegistry::getConfig();
+
+        // determine attachment names
+        // these are already stored in the FS
+        $attachmentNames = array();
+        if (0 < count($this->getForm()->getFiles())) {
+            $tableName = $this->getForm()->get('data_table');
+            $lastInsertedId = $this->getForm()->getLastInsertedId();
+            $destPath = $cfg['path']['contenido_cache'] . 'form_assistant/';
+            foreach ($this->getForm()->getFiles() as $column => $file) {
+                if (!is_array($file)) {
+                    continue;
+                }
+                $destName = $tableName . '_' . $lastInsertedId . '_' . $column;
+                $destName = preg_replace('/[^a-z0-9_]+/i', '_', $destName);
+                $attachmentNames[$column] = $destPath . $destName;
+            }
+        }
+
+        return $attachmentNames;
+    }
+
+    /**
+     * Returns an empty array cause there are no attachments that will be
+     * created on the fly.
+     *
+     * @return array
+     */
+    protected function _getAttachmentStrings() {
+        return array();
+    }
 }
 
 ?>

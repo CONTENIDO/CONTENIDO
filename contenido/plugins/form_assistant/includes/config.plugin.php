@@ -21,11 +21,28 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class Pifa {
 
     /**
+     * These constants describe if forms have a timestamp.
+     *
+     * @var string
+     */
+    const TIMESTAMP_NEVER = 'never';
+
+    const TIMESTAMP_BYFORM = 'byform';
+
+    const TIMESTAMP_ALWAYS = 'always';
+
+    /**
      * name of this plugin
      *
      * @var string
      */
     private static $_name = 'form_assistant';
+
+    /**
+     *
+     * @var int
+     */
+    private static $_timestampSetting = NULL;
 
     /**
      */
@@ -73,8 +90,8 @@ class Pifa {
 
     /**
      *
-     * @param unknown_type $level
-     * @param unknown_type $note
+     * @param string $level
+     * @param string $note
      */
     public static function getNote($level, $note) {
         $note = self::i18n($note);
@@ -84,7 +101,7 @@ class Pifa {
 
     /**
      *
-     * @param unknown_type $note
+     * @param string $note
      */
     public static function getError($note) {
         return self::getNote(cGuiNotification::LEVEL_ERROR, $note);
@@ -95,7 +112,6 @@ class Pifa {
      * @param Exception $e
      */
     public static function logException(Exception $e) {
-
         $cfg = cRegistry::getConfig();
 
         $log = new cLog(cLogWriter::factory('file', array(
@@ -104,7 +120,6 @@ class Pifa {
 
         $log->err($e->getMessage());
         $log->err($e->getTraceAsString());
-
     }
 
     /**
@@ -114,7 +129,6 @@ class Pifa {
      * @param bool $showTrace if trace should be displayed too
      */
     public static function displayException(Exception $e, $showTrace = false) {
-
         header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
 
         if (true) {
@@ -141,7 +155,6 @@ class Pifa {
         echo '</p>';
         echo '</div>';
         echo '</div>';
-
     }
 
     /**
@@ -152,13 +165,11 @@ class Pifa {
      * @return string
      */
     public static function notifyException(Exception $e) {
-
         $cGuiNotification = new cGuiNotification();
         $level = cGuiNotification::LEVEL_ERROR;
         $message = $e->getMessage();
 
         return $cGuiNotification->returnNotification($level, $message);
-
     }
 
     /**
@@ -211,11 +222,9 @@ class Pifa {
                 'value' => $optionClass,
                 'label' => $optionClass
             );
-
         }
 
         return $extensionClasses;
-
     }
 
     /**
@@ -226,8 +235,7 @@ class Pifa {
      * @throws PifaException
      * @return array
      */
-    public static function getTemplates() {
-
+    public static function getTemplates($re = '/cms_pifaform_[^\.]+\.tpl/') {
         $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
 
         // ignore if template folder is missing
@@ -245,7 +253,7 @@ class Pifa {
 
             // skip files that don't match regex
             $matches = array();
-            $matchCount = preg_match('/cms_pifaform_[^\.]+\.tpl/', $file, $matches);
+            $matchCount = preg_match($re, $file, $matches);
 
             // REGEX failure ... just call Mr. T!
             if (false === $matchCount) {
@@ -261,11 +269,9 @@ class Pifa {
                 'value' => $file,
                 'label' => $file
             );
-
         }
 
         return $templates;
-
     }
 
     /**
@@ -288,7 +294,6 @@ class Pifa {
         ));
 
         $img->show();
-
     }
 
     /**
@@ -324,6 +329,29 @@ class Pifa {
         return preg_replace_callback('/_([a-z])/', $func, $str);
     }
 
+    /**
+     * Translates a string with underscores into camel case (e.g.
+     * first_name -&gt; firstName)
+     *
+     * @see http://www.paulferrett.com/2009/php-camel-case-functions/
+     * @param string $str String in underscore format
+     * @param bool $capitalise_first_char If true, capitalise the first
+     *        char in $str
+     * @return string $str translated into camel caps
+     */
+    public static function getTimestampSetting($force = false) {
+        if (is_null(self::$_timestampSetting) || $force) {
+            self::$_timestampSetting = getEffectiveSetting('pifa', 'timestamp', self::TIMESTAMP_ALWAYS);
+            if (!in_array(self::$_timestampSetting, array(
+                self::TIMESTAMP_NEVER,
+                self::TIMESTAMP_BYFORM,
+                self::TIMESTAMP_ALWAYS
+            ))) {
+                self::$_timestampSetting = self::TIMESTAMP_ALWAYS;
+            }
+        }
+        return self::$_timestampSetting;
+    }
 }
 
 // define plugin path
@@ -342,6 +370,9 @@ $cfg['templates']['pifa_ajax_option_row'] = $cfg['plugins'][Pifa::getName()] . '
 // define table names
 $cfg['tab']['pifa_form'] = $cfg['sql']['sqlprefix'] . '_pifa_form';
 $cfg['tab']['pifa_field'] = $cfg['sql']['sqlprefix'] . '_pifa_field';
+
+// include CONTENIDO classes
+cInclude('classes', 'class.ui.php');
 
 // include necessary sources, setup autoloader for plugin
 // @todo Use config variables for $pluginClassPath below!
@@ -365,7 +396,7 @@ cAutoload::addClassmapConfig(array(
     'PifaNotYetStoredException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaValidationException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaMailException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
-    'Securimage' => $pluginClassPath . 'securimage/securimage.php',
+    'Securimage' => $pluginClassPath . 'securimage/securimage.php'
 ));
 unset($pluginClassPath);
 

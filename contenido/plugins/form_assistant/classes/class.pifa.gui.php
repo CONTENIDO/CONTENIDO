@@ -52,7 +52,6 @@ class PifaLeftBottomPage extends cGuiPage {
         }
 
         $this->set('s', 'menu', $this->_getMenu());
-
     }
 
     /**
@@ -63,7 +62,6 @@ class PifaLeftBottomPage extends cGuiPage {
      * @throws InvalidArgumentException if the given action is unknown
      */
     private function _dispatch($action, $idform, $notification = '') {
-
         global $area;
 
         // check for permission
@@ -91,16 +89,13 @@ class PifaLeftBottomPage extends cGuiPage {
 
             default:
                 throw new InvalidArgumentException('unknown action ' . $action);
-
         }
-
     }
 
     /**
      * Get menu with all forms of current client in current language.
      */
     private function _getMenu() {
-
         global $area;
 
         $cfg = cRegistry::getConfig();
@@ -145,13 +140,10 @@ class PifaLeftBottomPage extends cGuiPage {
             $delete->setAlt($deleteForm);
             $delete->setContent('<img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
             $menu->setActions($idform, 'delete', $delete);
-
         }
 
         return $menu->render(false);
-
     }
-
 }
 
 /**
@@ -255,7 +247,6 @@ class PifaRightBottomPage extends cGuiPage {
             $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
             $this->set('s', 'notification', $notification);
         }
-
     }
 
     /**
@@ -266,7 +257,6 @@ class PifaRightBottomPage extends cGuiPage {
      * @throws InvalidArgumentException if the given action is unknown
      */
     protected function _dispatch($action, $notification = '') {
-
         global $area;
 
         // check for permission
@@ -331,48 +321,53 @@ class PifaRightBottomPage extends cGuiPage {
 
             default:
                 throw new InvalidArgumentException('unknown action ' . $action);
-
         }
-
     }
 
     /**
+     * Build and return form for PIFA forms.
+     *
+     * @return string
      */
     private function _showForm() {
-
         global $area;
 
         $cfg = cRegistry::getConfig();
 
-        $action = new cHTMLLink();
-        $action->setCLink($area, 4, 'store_form');
+        // get form action
+        $formAction = new cHTMLLink();
+        $formAction->setCLink($area, 4, 'store_form');
+        $formAction = $formAction->getHref();
 
-        $formAction = $action->getHref();
-        $idform = NULL;
-        $nameValue = '';
-        $dataTableValue = '';
-        $methodValue = '';
-
+        // get current or default values for form
         if ($this->_pifaForm->isLoaded()) {
             $idform = $this->_pifaForm->get('idform');
             $nameValue = $this->_pifaForm->get('name');
             $dataTableValue = $this->_pifaForm->get('data_table');
             $methodValue = $this->_pifaForm->get('method');
+            $withTimestampValue = (bool) $this->_pifaForm->get('with_timestamp');
+        } else {
+            $idform = NULL;
+            $nameValue = '';
+            $dataTableValue = '';
+            $methodValue = '';
+            $withTimestampValue = true;
         }
-        $methodValue = strtoupper($methodValue);
 
         $tpl = Contenido_SmartyWrapper::getInstance(true);
         $tpl->assign('formAction', $formAction);
         $tpl->assign('idform', $idform);
         $tpl->assign('nameValue', $nameValue);
         $tpl->assign('dataTableValue', $dataTableValue);
-        $tpl->assign('methodValue', $methodValue);
-
+        $tpl->assign('methodValue', strtoupper($methodValue));
+        $tpl->assign('withTimestampValue', $withTimestampValue);
+        $tpl->assign('hasWithTimestamp', Pifa::TIMESTAMP_BYFORM === Pifa::getTimestampSetting());
         $tpl->assign('trans', array(
             'legend' => Pifa::i18n('form'),
             'name' => Pifa::i18n('form name'),
             'dataTable' => Pifa::i18n('data table'),
             'method' => Pifa::i18n('method'),
+            'withTimestamp' => Pifa::i18n('with timestamp'),
             'pleaseChoose' => Pifa::i18n('please choose'),
             'saveForm' => Pifa::i18n('save form')
         ));
@@ -380,13 +375,11 @@ class PifaRightBottomPage extends cGuiPage {
         $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_form']);
 
         return $out;
-
     }
 
     /**
      */
     private function _showFields() {
-
         global $area;
 
         $cfg = cRegistry::getConfig();
@@ -408,7 +401,6 @@ class PifaRightBottomPage extends cGuiPage {
             $deleteField->setCLink('form_ajax', 4, PifaAjaxHandler::DELETE_FIELD);
             $deleteField->setCustom('idform', $idform);
             $deleteField = $deleteField->getHref();
-
         } else {
 
             $idform = NULL;
@@ -419,7 +411,6 @@ class PifaRightBottomPage extends cGuiPage {
 
             $editField = NULL;
             $deleteField = NULL;
-
         }
 
         // get and fill template
@@ -472,13 +463,11 @@ class PifaRightBottomPage extends cGuiPage {
         $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_fields']);
 
         return $out;
-
     }
 
     /**
      */
     private function _showData() {
-
         $cfg = cRegistry::getConfig();
 
         $tpl = Contenido_SmartyWrapper::getInstance(true);
@@ -511,6 +500,8 @@ class PifaRightBottomPage extends cGuiPage {
             $tpl->assign('fields', Pifa::notifyException($e));
         }
 
+        $tpl->assign('withTimestamp', (bool) $this->_pifaForm->get('with_timestamp'));
+
         try {
             $tpl->assign('data', $this->_pifaForm->getData());
         } catch (Exception $e) {
@@ -520,7 +511,6 @@ class PifaRightBottomPage extends cGuiPage {
         $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_data']);
 
         return $out;
-
     }
 
     /**
@@ -544,6 +534,18 @@ class PifaRightBottomPage extends cGuiPage {
         $method = trim($method);
         $method = strtoupper($method);
 
+        switch (Pifa::getTimestampSetting()) {
+            case Pifa::TIMESTAMP_NEVER:
+                $withTimestamp = false;
+                break;
+            case Pifa::TIMESTAMP_BYFORM:
+                $withTimestamp = 'on' === $_POST['with_timestamp'];
+                break;
+            case Pifa::TIMESTAMP_ALWAYS:
+                $withTimestamp = true;
+                break;
+        }
+
         // validate item data
         if (0 === strlen($name)) {
             throw new Exception('form name must not be empty');
@@ -559,8 +561,9 @@ class PifaRightBottomPage extends cGuiPage {
         }
 
         if ($isLoaded) {
-            // remember old table name
+            // remember old table values
             $oldDataTable = $this->_pifaForm->get('data_table');
+            $oldWithTimestamp = (bool) $this->_pifaForm->get('with_timestamp');
         } else {
             // create new item for given client & language
             $this->_pifaForm = $this->_pifaFormCollection->createNewItem(array(
@@ -583,6 +586,9 @@ class PifaRightBottomPage extends cGuiPage {
         if ($method !== $this->_pifaForm->get('method')) {
             $this->_pifaForm->set('method', $method);
         }
+        if ($withTimestamp !== (bool) $this->_pifaForm->get('with_timestamp')) {
+            $this->_pifaForm->set('with_timestamp', $withTimestamp);
+        }
 
         // store item
         if (false === $this->_pifaForm->store()) {
@@ -590,16 +596,15 @@ class PifaRightBottomPage extends cGuiPage {
         }
 
         if ($isLoaded) {
-            // rename table if name has changed
-            // HINT: passing the old data table name is correct!
-            // The new table name has already been stored
-            // inside the pifaForm object!
-            $this->_pifaForm->renameTable($oldDataTable);
+            // optionally alter data table
+            // HINT: passing the old values is correct!
+            // The new values have already been stored inside the pifaForm
+            // object!
+            $this->_pifaForm->alterTable($oldDataTable, $oldWithTimestamp);
         } else {
             // create table
-            $this->_pifaForm->createTable();
+            $this->_pifaForm->createTable($withTimestamp);
         }
-
     }
 
     /**
@@ -609,7 +614,6 @@ class PifaRightBottomPage extends cGuiPage {
      * @return array
      */
     private function _getFieldTypes() {
-
         $fieldTypes = array();
         foreach (PifaField::getFieldTypeIds() as $fieldTypeId) {
             $fieldTypes[$fieldTypeId] = array();
@@ -620,7 +624,5 @@ class PifaRightBottomPage extends cGuiPage {
         }
 
         return $fieldTypes;
-
     }
-
 }

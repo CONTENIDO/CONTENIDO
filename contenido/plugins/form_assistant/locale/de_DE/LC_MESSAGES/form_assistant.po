@@ -220,7 +220,10 @@ msgid "data table"
 msgstr "Datentabelle"
 
 msgid "method"
-msgstr "Method"
+msgstr "Methode"
+
+msgid "with timestamp"
+msgstr "mit Zeitstempel"
 
 msgid "please choose"
 msgstr "bitte auswählen"

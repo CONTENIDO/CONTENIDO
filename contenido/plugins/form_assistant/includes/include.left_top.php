@@ -1,6 +1,7 @@
 <?php
 
 /**
+ *
  * @package Plugin
  * @subpackage FormAssistant
  * @version SVN Revision $Rev:$
@@ -15,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $area;
 
 $link = new cHTMLLink();
-//$link->setCLink($area, 4, 'show_form');
+// $link->setCLink($area, 4, 'show_form');
 $link->setMultiLink($area, 'show_form', $area, 'show_form');
 $link->setContent(Pifa::i18n('CREATE_FORM'));
 $link->setTargetFrame('right_bottom');

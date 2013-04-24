@@ -1,6 +1,7 @@
 <?php
 
 /**
+ *
  * @package Plugin
  * @subpackage FormAssistant
  * @version SVN Revision $Rev:$

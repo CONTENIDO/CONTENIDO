@@ -52,12 +52,15 @@ abstract class PifaAbstractFormProcessor {
      * @param int $idform
      * @throws ModuleException
      */
-    public function __construct(PifaAbstractFormModule $module) {
-
+    public function __construct(PifaAbstractFormModule $module = NULL, $idform = NULL) {
         $this->_module = $module;
 
+        // for backward compatibility
+        if (NULL !== $this->_module) {
+            $idform = $this->_module->getSetting('pifaform_idform');
+        }
+
         // assure $idform to be an integer
-        $idform = $module->getSetting('pifaform_idform');
         $idform = cSecurity::toInteger($idform);
         if (0 === $idform) {
             throw new PifaException('don\'t know which form to load');
@@ -68,7 +71,6 @@ abstract class PifaAbstractFormProcessor {
         if (false === $this->_form->isLoaded()) {
             throw new PifaException('could not load form');
         }
-
     }
 
     /**
@@ -154,7 +156,5 @@ abstract class PifaAbstractFormProcessor {
 
         $this->_form->storeData();
         $this->_processStoredData();
-
     }
-
 }

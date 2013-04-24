@@ -157,12 +157,10 @@ abstract class PifaAbstractFormModule {
      * @return string
      */
     protected function _getRequestMethod() {
-
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         $requestMethod = strtoupper($requestMethod);
 
         return $requestMethod;
-
     }
 
     /**
@@ -197,7 +195,6 @@ abstract class PifaAbstractFormModule {
         } else {
             $this->_tpl->display($path . $this->getTemplateName());
         }
-
     }
 
     /**
@@ -210,5 +207,4 @@ abstract class PifaAbstractFormModule {
     /**
      */
     abstract protected function doPost();
-
 }

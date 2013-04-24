@@ -74,7 +74,6 @@ class PifaFormCollection extends ItemCollection {
         }
 
         return $forms;
-
     }
 
     /**
@@ -86,13 +85,11 @@ class PifaFormCollection extends ItemCollection {
      * @return PifaFormCollection
      */
     public static function getByClient($client) {
-
         if (0 >= cSecurity::toInteger($client)) {
             throw new PifaException('$client is not greater 0');
         }
 
         return self::_getBy($client, 0);
-
     }
 
     /**
@@ -104,13 +101,11 @@ class PifaFormCollection extends ItemCollection {
      * @return PifaFormCollection
      */
     public static function getByLang($lang) {
-
         if (0 >= cSecurity::toInteger($lang)) {
             throw new PifaException('$lang is not greater 0');
         }
 
         return self::_getBy(0, $lang);
-
     }
 
     /**
@@ -124,7 +119,6 @@ class PifaFormCollection extends ItemCollection {
      * @return PifaFormCollection
      */
     public static function getByClientAndLang($client, $lang) {
-
         if (0 >= cSecurity::toInteger($client)) {
             throw new PifaException('$client is not greater 0');
         }
@@ -134,9 +128,7 @@ class PifaFormCollection extends ItemCollection {
         }
 
         return self::_getBy($client, $lang);
-
     }
-
 }
 
 /**
@@ -411,7 +403,8 @@ class PifaForm extends Item {
 
         // if some fields were invalid
         if (0 < count($errors)) {
-            // throw ONE PifaValidationException with infos for all invalid fields
+            // throw ONE PifaValidationException with infos for all invalid
+            // fields
             throw new PifaValidationException($errors);
         }
     }
@@ -503,49 +496,43 @@ class PifaForm extends Item {
             throw new PifaMailException('missing mail body');
         }
 
-        // PHPMailer is deprecated, but cMailer does not support attachments
-        // yet.
-        $mailer = new PHPMailer();
-        // $mailer = new cMailer();
-        $mailer->isMail();
-        $mailer->From = $opt['from'];
-        if (array_key_exists('charSet', $opt)) {
-            $mailer->CharSet = $opt['charSet'];
-        }
-        $mailer->FromName = $opt['fromName'];
-        foreach (explode(',', $opt['to']) as $to) {
-            $mailer->AddAddress($to);
-        }
-        $mailer->Subject = $opt['subject'];
-        $mailer->Body = $opt['body'];
+        // cMailer
 
-        // add attachments by name
+        $mailer = new cMailer();
+        $message = Swift_Message::newInstance($opt['subject'], $opt['body'], 'text/plain', $opt['charSet']);
+
+        // add attachments by names
         if (array_key_exists('attachmentNames', $opt) && is_array($opt['attachmentNames'])) {
             $values = $this->getValues();
-            foreach ($opt['attachmentNames'] as $column => $attachment) {
-                // $succ = $mailer->AddAttachment($attachement);
-                // if (false === $succ) {
-                // throw new PifaMailException('could not append attachment');
-                // }
-                if (file_exists($attachment)) {
-                    $string = file_get_contents($attachment);
-                    $filename = $values[$column];
-                    $mailer->AddStringAttachment($string, $filename);
+            foreach ($opt['attachmentNames'] as $column => $path) {
+                if (!file_exists($path)) {
+                    Util::log('could not attach file cause it doesn\'t exist: ' . $path);
+                    continue;
                 }
+                $attachment = Swift_Attachment::fromPath($path);
+                $filename = $values[$column];
+                $attachment->setFilename($filename);
+                $message->attach($attachment);
             }
         }
 
         // add attachments by string
         if (array_key_exists('attachmentStrings', $opt) && is_array($opt['attachmentStrings'])) {
             foreach ($opt['attachmentStrings'] as $filename => $string) {
-                $mailer->AddStringAttachment($string, $filename, 'quoted-printable');
+                // TODO mime type should be configurale
+                $attachment = Swift_Attachment::newInstance($string, $filename, 'text/csv');
+                $message->attach($attachment);
             }
         }
 
-        if (!$mailer->Send()) {
-            throw new PifaMailException($this->ErrorInfo);
+        $message->addFrom($opt['from'], $opt['fromName']);
+        foreach (explode(',', $opt['to']) as $to) {
+            $message->setTo($to, $to);
         }
 
+        if (!$mailer->send($message)) {
+            throw new PifaMailException($this->ErrorInfo);
+        }
     }
 
     /**
@@ -670,8 +657,7 @@ class PifaForm extends Item {
             ;";
 
         // execute SQL
-        $db = cRegistry::getDb();
-        $db->query($sql);
+        cRegistry::getDb()->query($sql);
 
         // get content
         $out = cFileHandler::read($filename);
@@ -766,7 +752,6 @@ class PifaForm extends Item {
                 $value = "\"$value\"";
                 $out .= "$key;$value";
             }
-
         } else {
 
             // one line for headers and another for values
@@ -786,7 +771,6 @@ class PifaForm extends Item {
         }
 
         return $out;
-
     }
 
     /**
@@ -834,7 +818,7 @@ class PifaForm extends Item {
      * @throws PifaException if table already exists
      * @throws PifaException if table could not be created
      */
-    public function createTable() {
+    public function createTable($withTimestamp) {
         if (!$this->isLoaded()) {
             throw new PifaException('form is not loaded');
         }
@@ -847,7 +831,10 @@ class PifaForm extends Item {
 
         // prepare column definitions
         $createDefinitions = array();
-        $createDefinitions[] = "`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'primary key'";
+        $createDefinitions[] = "id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'primary key'";
+        if ($withTimestamp) {
+            $createDefinitions[] = "pifa_timestamp TIMESTAMP NOT NULL COMMENT 'automatic PIFA timestamp'";
+        }
         $createDefinitions = join(',', $createDefinitions);
 
         // prepare statement
@@ -867,35 +854,61 @@ class PifaForm extends Item {
     }
 
     /**
-     * rename data table if name has changed
+     * Alter data table.
+     * Renames data table if name has changed and adds or drops column for
+     * timestamp if setting has changed.
      *
-     * HINT: passing the old data table name is correct!
-     * The new table name has already been stored inside the pifaForm object!
+     * HINT: passing the old values is correct!
+     * The new values have already been stored inside the pifaForm object!
      *
      * @param string $oldTableName
+     * @param bool $oldWithTimestamp
      * @throws PifaException if form is not loaded
      */
-    public function renameTable($oldTableName) {
+    public function alterTable($oldTableName, $oldWithTimestamp) {
         $db = cRegistry::getDb();
 
         if (!$this->isLoaded()) {
             throw new PifaException('form is not loaded');
         }
 
+        // rename data table if name has changed
         $tableName = $this->get('data_table');
-
-        if ($oldTableName === $tableName) {
-            return;
+        if ($oldTableName !== $tableName) {
+            $sql = "-- PifaForm->alterTable()
+                RENAME TABLE
+                    `$oldTableName`
+                TO
+                    `$tableName`
+                ;";
+            $db->query($sql);
         }
 
-        $sql = "-- PifaForm->renameTable()
-            RENAME TABLE
-                `$oldTableName`
-            TO
-                `$tableName`
-            ;";
-
-        $db->query($sql);
+        // adds or drop column for timestamp if setting has changed.
+        $withTimestamp = $this->get('with_timestamp');
+        if ($oldWithTimestamp != $withTimestamp) {
+            if ($withTimestamp) {
+                $sql = "-- PifaForm->alterTable()
+                    ALTER TABLE
+                        `$tableName`
+                    ADD
+                        `pifa_timestamp`
+                    TIMESTAMP
+                    NOT NULL
+                    COMMENT
+                        'automatic PIFA timestamp'
+                    AFTER id
+                    ;";
+            } else {
+                $sql = "-- PifaForm->alterTable()
+                    ALTER TABLE
+                        `$tableName`
+                    DROP
+                        `pifa_timestamp`
+                    ;";
+            }
+            $db->query($sql);
+        }
     }
 
     /**
@@ -906,7 +919,6 @@ class PifaForm extends Item {
      * @throws PifaException if field is not loaded
      */
     public function storeColumn(PifaField $pifaField, $oldColumnName) {
-
         if (!$this->isLoaded()) {
             throw new PifaException('form is not loaded');
         }
@@ -930,7 +942,6 @@ class PifaForm extends Item {
                 $this->changeColumn($columnName, $dataType, $oldColumnName);
             }
         }
-
     }
 
     /**
@@ -943,7 +954,6 @@ class PifaForm extends Item {
      * @throws PifaException if field is not loaded
      */
     public function changeColumn($columnName, $dataType, $oldColumnName) {
-
         $tableName = $this->get('data_table');
         if ($oldColumnName === $columnName) {
             return;
@@ -967,7 +977,6 @@ class PifaForm extends Item {
         if (false === $db->query($sql)) {
             throw new PifaException('column could not be changed');
         }
-
     }
 
     /**
@@ -977,7 +986,6 @@ class PifaForm extends Item {
      * @throws PifaException if field is not loaded
      */
     public function dropColumn($columnName) {
-
         $tableName = $this->get('data_table');
         if (false === $this->_existsColumn($columnName)) {
             throw new PifaException("column $columnName already exists");
@@ -994,7 +1002,6 @@ class PifaForm extends Item {
         if (false === $db->query($sql)) {
             throw new PifaException('column could not be dropped');
         }
-
     }
 
     /**
@@ -1005,7 +1012,6 @@ class PifaForm extends Item {
      * @throws PifaException if field is not loaded
      */
     public function addColumn($columnName, $dataType) {
-
         $tableName = $this->get('data_table');
         if (true === $this->_existsColumn($columnName)) {
             throw new PifaException("column $columnName already exists");
@@ -1025,7 +1031,6 @@ class PifaForm extends Item {
         if (false === $db->query($sql)) {
             throw new PifaException('column could not be added');
         }
-
     }
 
     /**
@@ -1035,12 +1040,11 @@ class PifaForm extends Item {
      * @return boolean
      */
     protected function _existsColumn($columnName) {
-
         $tableName = $this->get('data_table');
         $sql = "-- PifaForm->_existsColumn()
-               SHOW FIELDS FROM
-                   `$tableName`
-        ;";
+            SHOW FIELDS FROM
+                `$tableName`
+            ;";
 
         $db = cRegistry::getDb();
         if (false === $db->query($sql)) {
@@ -1056,7 +1060,6 @@ class PifaForm extends Item {
         }
 
         return false;
-
     }
 
     /**
@@ -1074,7 +1077,7 @@ class PifaForm extends Item {
         // delete form
         $sql = "-- PifaForm->delete()
             DELETE FROM
-                `" . $cfg['tab']['pifa_form'] . "`
+                `" . cRegistry::getDbTableName('pifa_form') . "`
             WHERE
                 idform = " . cSecurity::toInteger($this->get('idform')) . "
             ;";
@@ -1085,7 +1088,7 @@ class PifaForm extends Item {
         // delete fields
         $sql = "-- PifaForm->delete()
             DELETE FROM
-                `" . $cfg['tab']['pifa_field'] . "`
+                `" . cRegistry::getDbTableName('pifa_field') . "`
             WHERE
                 idform = " . cSecurity::toInteger($this->get('idform')) . "
             ;";
@@ -1103,5 +1106,13 @@ class PifaForm extends Item {
                 throw new PifaException('data table could not be dropped');
             }
         }
+    }
+
+    /**
+     *
+     * @deprecated use $this->get('data_table') instead
+     */
+    public function getTableName() {
+        return $this->get('data_table');
     }
 }

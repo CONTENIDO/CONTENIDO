@@ -15,8 +15,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $action = $_REQUEST['action'];
 
-$ajaxHandler = new PifaAjaxHandler();
 try {
+    $ajaxHandler = new PifaAjaxHandler();
     $ajaxHandler->dispatch($action);
 } catch (Exception $e) {
     Pifa::logException($e);

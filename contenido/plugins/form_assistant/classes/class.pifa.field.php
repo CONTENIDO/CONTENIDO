@@ -24,17 +24,11 @@ class PifaFieldCollection extends ItemCollection {
      * @param mixed $where clause to be used to load items or false
      */
     public function __construct($where = false) {
-
-        $cfg = cRegistry::getConfig();
-
-        parent::__construct($cfg['tab']['pifa_field'], 'idfield');
-
+        parent::__construct(cRegistry::getDbTableName('pifa_field'), 'idfield');
         $this->_setItemClass('PifaField');
-
         if (false !== $where) {
             $this->select($where);
         }
-
     }
 
     /**
@@ -44,23 +38,17 @@ class PifaFieldCollection extends ItemCollection {
      * @param string $idfields containing a CSV list of idfield as integer
      */
     public static function reorder($idform, $idfields) {
-
-        $cfg = cRegistry::getConfig();
-        $db = cRegistry::getDb();
-
         $sql = "-- PifaFieldCollection::reorder()
             UPDATE
-                " . $cfg['tab']['pifa_field'] . "
+                " . cRegistry::getDbTableName('pifa_field') . "
             SET
                 field_rank = FIND_IN_SET(idfield, '$idfields')
             WHERE
                 idform = $idform
             ;";
 
-        $db->query($sql);
-
+        cRegistry::getDb()->query($sql);
     }
-
 }
 
 /**
@@ -220,8 +208,7 @@ class PifaField extends Item {
      * @param mixed $id ID of item to be loaded or false
      */
     public function __construct($id = false) {
-        $cfg = cRegistry::getConfig();
-        parent::__construct($cfg['tab']['pifa_field'], 'idfield');
+        parent::__construct(cRegistry::getDbTableName('pifa_field'), 'idfield');
         $this->setFilters(array(), array());
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
@@ -311,36 +298,31 @@ class PifaField extends Item {
                     'session_name' => cRegistry::getClientId() . 'frontend'
                 ));
                 $isValid = $securimage->check($value);
-
             } else if (1 === cSecurity::toInteger($this->get('obligatory')) && 0 === strlen($value)) {
                 // check for obligatory & rule
                 $isValid = false;
-
             } else if (0 < strlen($this->get('rule')) && in_array(preg_match($this->get('rule'), $value), array(
                 false,
                 0
             ))) {
                 // check for rule
                 $isValid = false;
-
             } else {
                 $isValid = true;
-
             }
 
             // throw error
             if (true !== $isValid) {
                 $error_message = $this->get('error_message');
                 if (NULL === $error_message) {
-                    $error_message = 'invalid data';
+                    // $error_message = 'invalid data';
+                    $error_message = '';
                 }
                 throw new PifaValidationException(array(
                     $this->get('idfield') => $error_message
                 ));
             }
-
         }
-
     }
 
     /**
@@ -350,7 +332,6 @@ class PifaField extends Item {
      * @return string
      */
     public function toHtml(array $errors = NULL) {
-
         switch (cSecurity::toInteger($this->get('field_type'))) {
 
             case self::FIELDSET_BEGIN:
@@ -410,15 +391,12 @@ class PifaField extends Item {
 
                 return "\n\t" . $div->render();
                 break;
-
         }
-
     }
 
     /**
      */
     public function _getElemLabel() {
-
         if (1 !== cSecurity::toInteger($this->get('display_label'))) {
             return '';
         }
@@ -458,7 +436,6 @@ class PifaField extends Item {
         $elemLabel->removeAttribute('id');
 
         return $elemLabel;
-
     }
 
     /**
@@ -476,7 +453,6 @@ class PifaField extends Item {
     public function _getElemField() {
 
         // get field data
-
         $idfield = cSecurity::toInteger($this->get('idfield'));
 
         $fieldType = cSecurity::toInteger($this->get('field_type'));
@@ -716,17 +692,14 @@ class PifaField extends Item {
             default:
 
                 throw new NotImplementedException('field type ' . $fieldType . ' is not implemented');
-
         }
 
         return $elemField;
-
     }
 
     /**
      */
     public function _getElemHelp() {
-
         $helpText = $this->get('help_text');
 
         $p = NULL;
@@ -735,7 +708,6 @@ class PifaField extends Item {
         }
 
         return $p;
-
     }
 
     /**
@@ -781,7 +753,6 @@ class PifaField extends Item {
         }
 
         return $elemScript;
-
     }
 
     /**
@@ -790,7 +761,6 @@ class PifaField extends Item {
      * @param int $fieldType
      */
     public static function getFieldTypeIcon($fieldType) {
-
         switch ($fieldType) {
             case self::INPUTTEXT:
             case self::TEXTAREA:
@@ -814,7 +784,6 @@ class PifaField extends Item {
             case self::FIELDSET_END:
                 return 'icon.png';
         }
-
     }
 
     /**
@@ -823,9 +792,7 @@ class PifaField extends Item {
      * @return array
      */
     public static function getFieldTypeIds() {
-
         return array_keys(self::getFieldTypeNames());
-
     }
 
     /**
@@ -834,7 +801,6 @@ class PifaField extends Item {
      * @return array
      */
     public static function getFieldTypeNames() {
-
         return array(
             self::INPUTTEXT => Pifa::i18n('INPUTTEXT'),
             self::TEXTAREA => Pifa::i18n('TEXTAREA'),
@@ -857,7 +823,6 @@ class PifaField extends Item {
             self::FIELDSET_BEGIN => Pifa::i18n('FIELDSET_BEGIN'),
             self::FIELDSET_END => Pifa::i18n('FIELDSET_END')
         );
-
     }
 
     /**
@@ -867,7 +832,6 @@ class PifaField extends Item {
      * @return string
      */
     public static function getFieldTypeName($fieldTypeId) {
-
         $fieldTypeId = cSecurity::toInteger($fieldTypeId);
         $fieldTypeNames = self::getFieldTypeNames();
 
@@ -878,7 +842,6 @@ class PifaField extends Item {
         }
 
         return $fieldTypeName;
-
     }
 
     /**
@@ -888,9 +851,7 @@ class PifaField extends Item {
      * @return string
      */
     public function getMyFieldTypeName() {
-
         return self::getFieldTypeName($this->get('field_type'));
-
     }
 
     /**
@@ -901,7 +862,6 @@ class PifaField extends Item {
      * @throws PifaException if field type is not implemented
      */
     public function getDbDataType() {
-
         if (!$this->isLoaded()) {
             throw new PifaException('field is not loaded');
         }
@@ -982,9 +942,7 @@ class PifaField extends Item {
 
             default:
                 throw new PifaException('field type ' . $fieldType . ' is not implemented');
-
         }
-
     }
 
     /**
@@ -992,7 +950,6 @@ class PifaField extends Item {
      * The forms data table is also dropped.
      */
     public function delete() {
-
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
@@ -1003,7 +960,7 @@ class PifaField extends Item {
         // update ranks of younger siblings
         $sql = "-- PifaField->delete()
             UPDATE
-                " . $cfg['tab']['pifa_field'] . "
+                " . cRegistry::getDbTableName('pifa_field') . "
             SET
                 field_rank = field_rank - 1
             WHERE
@@ -1018,7 +975,7 @@ class PifaField extends Item {
         // delete field
         $sql = "-- PifaField->delete()
             DELETE FROM
-                " . $cfg['tab']['pifa_field'] . "
+                " . cRegistry::getDbTableName('pifa_field') . "
             WHERE
                 idfield = " . cSecurity::toInteger($this->get('idfield')) . "
             ;";
@@ -1042,7 +999,6 @@ class PifaField extends Item {
                 }
             }
         }
-
     }
 
     /**
@@ -1052,7 +1008,6 @@ class PifaField extends Item {
      * @param string $columnName for data to edit
      */
     public function showField($columnName) {
-
         $fieldType = $this->get('field_type');
         $fieldType = cSecurity::toInteger($fieldType);
 
@@ -1259,9 +1214,7 @@ class PifaField extends Item {
 
             default:
                 throw new PifaException('field property ' . $columnName . ' is not implemented');
-
         }
-
     }
 
     /**
@@ -1269,7 +1222,6 @@ class PifaField extends Item {
      * @return array
      */
     public function getOptions() {
-
         $option_labels = $this->get('option_labels');
         $option_values = $this->get('option_values');
 
@@ -1286,9 +1238,7 @@ class PifaField extends Item {
         }
 
         return $out;
-
     }
-
 }
 
 ?>

@@ -220,6 +220,13 @@ class PifaAjaxHandler {
      * @throws Exception
      */
     private function _postFieldForm($idform, $idfield) {
+
+        function pifa_ajax_handler_string_cast_deep($value) {
+            $value = cSecurity::toString($value);
+            $value = trim($value);
+            return $value;
+        }
+
         global $area;
         $cfg = cRegistry::getConfig();
 
@@ -304,12 +311,6 @@ class PifaAjaxHandler {
             }
         }
 
-        function pifa_ajax_handler_string_cast_deep($value) {
-            $value = cSecurity::toString($value);
-            $value = trim($value);
-            return $value;
-        }
-
         if ($pifaField->showField('option_labels') && array_key_exists('option_labels', $_POST) && is_array($_POST['option_labels'])) {
             $optionLabels = implode(',', array_map('pifa_ajax_handler_string_cast_deep', $_POST['option_labels']));
             $optionLabels = substr($optionLabels, 0, 1023);
@@ -319,13 +320,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('option_values') && array_key_exists('option_values', $_POST) && is_array($_POST['option_values'])) {
-
-            for ($i = 0; $i < count($_POST['option_values']); $i++) {
-                $_POST['option_values'][$i] = cSecurity::toString($_POST['option_values'][$i]);
-                $_POST['option_values'][$i] = trim($_POST['option_values'][$i]);
-            }
-
-            $optionValues = implode(',', $_POST['option_values']);
+            $optionValues = implode(',', array_map(pifa_ajax_handler_string_cast_deep, $_POST['option_values']));
             $optionValues = substr($optionValues, 0, 1023);
             if ($optionValues !== $pifaField->get('option_values')) {
                 $pifaField->set('option_values', $optionValues);
@@ -375,13 +370,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('css_class') && array_key_exists('css_class', $_POST) && is_array($_POST['css_class'])) {
-
-            for ($i = 0; $i < count($_POST['css_class']); $i++) {
-                $_POST['css_class'][$i] = cSecurity::toString($_POST['css_class'][$i]);
-                $_POST['css_class'][$i] = trim($_POST['css_class'][$i]);
-            }
-
-            $cssClass = implode(',', $_POST['css_class']);
+            $cssClass = implode(',', array_map(pifa_ajax_handler_string_cast_deep, $_POST['css_class']));
             $cssClass = substr($cssClass, 0, 1023);
             if ($cssClass !== $pifaField->get('css_class')) {
                 $pifaField->set('css_class', $cssClass);
@@ -413,7 +402,7 @@ class PifaAjaxHandler {
             // update ranks of younger siblings
             $sql = "-- PifaAjaxHandler->_editFieldFormKK()
                 UPDATE
-                    " . $cfg['tab']['pifa_field'] . "
+                    " . cRegistry::getDbTableName('pifa_field') . "
                 SET
                     field_rank = field_rank + 1
                 WHERE
@@ -577,7 +566,6 @@ class PifaAjaxHandler {
 
         $tpl->display($cfg['templates']['pifa_ajax_option_row']);
     }
-
 }
 
 ?>

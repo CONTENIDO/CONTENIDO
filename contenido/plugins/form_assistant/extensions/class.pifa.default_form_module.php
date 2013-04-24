@@ -48,7 +48,6 @@ class DefaultFormModule extends PifaAbstractFormModule {
                 'lang' => cRegistry::getLanguageId()
             ), true)
         )));
-
     }
 
     /**
@@ -87,19 +86,18 @@ class DefaultFormModule extends PifaAbstractFormModule {
                 'headline' => mi18n("REPLY_HEADLINE"),
                 'text' => mi18n("REPLY_TEXT")
             ));
-
         } catch (PifaValidationException $e) {
 
             // display form with valid values again
             $this->doGet($postProcessor->getForm()->getValues(), $e->getErrors());
 
+            // store validation state as (global) application so another module
+            // can show a reply text but when validation is successfull
+            cRegistry::setAppVar('pifaFormValidity', 'invalid');
         } catch (Exception $e) {
 
             Pifa::logException($e);
             Pifa::displayException($e);
-
         }
-
     }
-
 }
