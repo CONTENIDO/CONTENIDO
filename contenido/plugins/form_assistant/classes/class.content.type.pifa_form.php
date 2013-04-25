@@ -23,6 +23,16 @@ cInclude('includes', 'functions.upl.php');
 class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
     /**
+     *
+     * @param array $a
+     * @param array $b
+     * @return number
+     */
+    public static function sortByLabel($a, $b) {
+        return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
+    }
+
+    /**
      * Initialize class attributes and handles store events.
      *
      * @param string $rawSettings the raw settings in an XML structure or as
@@ -244,10 +254,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $modules = Pifa::getExtensionClasses('PifaAbstractFormModule');
 
         // sort modules by their label
-        function sortByLabel($a, $b) {
-            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
-        }
-        usort($modules, sortByLabel);
+        usort($modules, 'cContentTypePifaForm::sortByLabel');
 
         // loop all forms
         foreach ($modules as $module) {
@@ -296,10 +303,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $processors = Pifa::getExtensionClasses('PifaAbstractFormProcessor');
 
         // sort processors by their label
-        function sortByLabel($a, $b) {
-            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
-        }
-        usort($processors, sortByLabel);
+        usort($processors, 'cContentTypePifaForm::sortByLabel');
 
         // loop all forms
         foreach ($processors as $processor) {
@@ -348,10 +352,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_get\.tpl/');
 
         // sort templates by their label
-        function sortByLabel($a, $b) {
-            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
-        }
-        usort($templates, sortByLabel);
+        usort($templates, 'cContentTypePifaForm::sortByLabel');
 
         // loop all templates
         foreach ($templates as $template) {
@@ -400,10 +401,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_post\.tpl/');
 
         // sort templates by their label
-        function sortByLabel($a, $b) {
-            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
-        }
-        usort($templates, sortByLabel);
+        usort($templates, 'cContentTypePifaForm::sortByLabel');
 
         // loop all templates
         foreach ($templates as $template) {
@@ -453,10 +451,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_mail_client\.tpl/');
 
         // sort templates by their label
-        function sortByLabel($a, $b) {
-            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
-        }
-        usort($templates, sortByLabel);
+        usort($templates, 'cContentTypePifaForm::sortByLabel');
 
         // loop all templates
         foreach ($templates as $template) {
@@ -571,10 +566,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $templates = Pifa::getTemplates('/cms_pifaform_[^\.]+_mail_system\.tpl/');
 
         // sort templates by their label
-        function sortByLabel($a, $b) {
-            return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
-        }
-        usort($templates, sortByLabel);
+        usort($templates, 'cContentTypePifaForm::sortByLabel');
 
         // loop all templates
         foreach ($templates as $template) {
