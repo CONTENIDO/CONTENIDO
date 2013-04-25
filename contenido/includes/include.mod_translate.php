@@ -69,11 +69,12 @@ if (count(array_diff_assoc($myTrans, $translationArray)) > 0 || count(array_diff
 }
 
 if (!isset($row)) {
-    $row = count($strings) - 1; //last string
-    $lastString = end($strings);
+    $row = 0; // first string
+    $lastString = reset($strings);
     $lastTranslation = $myTrans[$lastString];
 } else {
     // Get the string
+    $row++;
     $index = 0;
     foreach ($myTrans as $key => $value) {
         if ($index == $row) {
