@@ -1,12 +1,12 @@
 <!-- content_map_google -->
 
 {if true eq $isBackendEditMode}
-    <label class="content-type-label">{$trans.header}</label>
+    <label class="content_type_label">{$trans.header}</label>
 {/if}
 <div>{$header}</div>
 
 {if true eq $isBackendEditMode}
-    <label class="content-type-label">{$trans.address}</label>
+    <label class="content_type_label">{$trans.address}</label>
 {/if}
 <div id="address">{$address}</div>
 
@@ -17,16 +17,16 @@
 
 {if true eq $isBackendEditMode}
 
-    <label class="content-type-label">{$trans.latitude}</label>
+    <label class="content_type_label">{$trans.latitude}</label>
     <div>{$lat}</div>
 
-    <label class="content-type-label">{$trans.longitude}</label>
+    <label class="content_type_label">{$trans.longitude}</label>
     <div>{$lng}</div>
 
-    <label class="content-type-label">{$trans.markerTitle}</label>
+    <label class="content_type_label">{$trans.markerTitle}</label>
     <div>{$markerTitle}</div>
 
-    <label class="content-type-label">{$trans.way}</label>
+    <label class="content_type_label">{$trans.way}</label>
     <div>{$way}</div>
 
 {else}

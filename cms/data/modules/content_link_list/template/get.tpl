@@ -1,12 +1,12 @@
 <!-- content_link_list -->
 {if 0 lt $label|strlen}
-    <label class="content-type-label">{$label}</label>
+    <label class="content_type_label">{$label}</label>
 {/if}
 
-<div class="linklist">
+<div class="link_list">
     <h2>{$usable_links}</h2>
 
-    <ul class="linklist">
+    <ul class="link_list">
         <!-- BEGIN:BLOCK -->
         <li>
             {foreach from=$contents item=content key=kcontent}

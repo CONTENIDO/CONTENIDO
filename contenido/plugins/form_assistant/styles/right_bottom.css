@@ -40,20 +40,20 @@ legend {
 /* FORM: form                                                                 */
 /******************************************************************************/
 
-#pifa-form div {
+#pifa_form div {
     clear: left;
     margin-top: 4px;
     margin-bottom : 12px;
 }
 
-#pifa-form label {
+#pifa_form label {
     float: left;
     width: 20%;
     text-align: center;
 }
 
-#pifa-form div input,
-#pifa-form div select {
+#pifa_form div input,
+#pifa_form div select {
     width: 65%;
 }
 
@@ -62,7 +62,7 @@ legend {
 /* FORM: add field                                                            */
 /******************************************************************************/
 
-#pifa-form-add-field {
+#pifa_form_add_field {
     padding-right: 281px;
 }
 
@@ -70,30 +70,30 @@ legend {
 /* FORM: form fields                                                          */
 /******************************************************************************/
 
-#pifa-form fieldset {
+#pifa_form fieldset {
     width: 678px;
     padding-right: 0;
     margin-bottom: 30px;
 
 }
 
-#pifa-form fieldset div {
+#pifa_form fieldset div {
     width: 571px;
     margin-top: 1px;
     margin-bottom: 5px;
 }
 
-#pifa-form fieldset div input {
+#pifa_form fieldset div input {
     width: 231px;
     margin-right: 28%;
 }
 
-#pifa-form fieldset div select {
+#pifa_form fieldset div select {
     width: 231px;
     margin-right: 200px;
 }
 
-#pifa-form fieldset #image-new-form {
+#pifa_form fieldset #image_new_form {
     float: right;
 }
 
@@ -105,11 +105,11 @@ legend {
     float: left;
 }
 
-#field-list-field {
+#field_list_field {
     width: 673px;
 }
 
-#pifa-form-field-list {
+#pifa_form_field_list {
     list-style-type: none;
     margin: 0;
     border: 0;
@@ -118,12 +118,12 @@ legend {
     min-height: 200px;
 }
 
-#pifa-form-field-list:empty {
+#pifa_form_field_list:empty {
     margin: 12px 10px 0 9px;
     border: 1px dashed grey;
 }
 
-#pifa-form-field-list li {
+#pifa_form_field_list li {
     background-color: #f1f1f1;
     height: 51px;
     border: 1px solid black;
@@ -132,44 +132,44 @@ legend {
     padding-top: 3px;
 }
 
-#pifa-form-field-list li>div {
+#pifa_form_field_list li>div {
     float: left;
     padding: 3px;
     border-collapse: collapse;
 }
 
-#pifa-form-field-list .idfield {
+#pifa_form_field_list .idfield {
     width: 5%;
 }
 
-#pifa-form-field-list .edit {
+#pifa_form_field_list .edit {
     width: 8%;
     padding-left: 2px;
     padding-top : 17px;
     text-align: center;
 }
 
-#pifa-form-field-list .edit a {
+#pifa_form_field_list .edit a {
     padding-right: 4px;
 }
 
-#pifa-form-field-list .column_name,
-#pifa-form-field-list .label,
-#pifa-form-field-list .field-type {
+#pifa_form_field_list .column_name,
+#pifa_form_field_list .label,
+#pifa_form_field_list .field-type {
     width: 27%;
 }
 
-#pifa-form-field-list li div div {
+#pifa_form_field_list li div div {
     padding-left: 30px;
     clear: left;
 }
 
-#pifa-form-field-list label {
+#pifa_form_field_list label {
     float: left;
     width: 20%;
 }
 
-#pifa-form-field-list div input {
+#pifa_form_field_list div input {
     width: 75%;
 }
 
@@ -438,23 +438,23 @@ legend {
     margin-left: 5px;
 }
 
-.pifa-icon-1, .pifa-field-type-1 {background-image:url(../images/pifa_field_type_1.png);}
-.pifa-icon-2, .pifa-field-type-2 {background-image:url(../images/pifa_field_type_2.png);}
-.pifa-icon-3, .pifa-field-type-3 {background-image:url(../images/pifa_field_type_3.png);}
-.pifa-icon-4, .pifa-field-type-4 {background-image:url(../images/pifa_field_type_4.png);}
-.pifa-icon-5, .pifa-field-type-5 {background-image:url(../images/pifa_field_type_5.png);}
-.pifa-icon-6, .pifa-field-type-6 {background-image:url(../images/pifa_field_type_6.png);}
-.pifa-icon-7, .pifa-field-type-7 {background-image:url(../images/pifa_field_type_7.png);}
-.pifa-icon-8, .pifa-field-type-8 {background-image:url(../images/pifa_field_type_8.png);}
-.pifa-icon-9, .pifa-field-type-9 {background-image:url(../images/pifa_field_type_9.png);}
-.pifa-icon-10, .pifa-field-type-10 {background-image:url(../images/pifa_field_type_10.png);}
-.pifa-icon-11, .pifa-field-type-11 {background-image:url(../images/pifa_field_type_11.png);}
-.pifa-icon-12, .pifa-field-type-12 {background-image:url(../images/pifa_field_type_12.png);}
-.pifa-icon-13, .pifa-field-type-13 {background-image:url(../images/pifa_field_type_13.png);}
-.pifa-icon-14, .pifa-field-type-14 {background-image:url(../images/pifa_field_type_14.png);}
-.pifa-icon-15, .pifa-field-type-15 {background-image:url(../images/pifa_field_type_15.png);}
-.pifa-icon-16, .pifa-field-type-16 {background-image:url(../images/pifa_field_type_16.png);}
-.pifa-icon-17, .pifa-field-type-17 {background-image:url(../images/pifa_field_type_17.png);}
-.pifa-icon-18, .pifa-field-type-18 {background-image:url(../images/pifa_field_type_18.png);}
-.pifa-icon-19, .pifa-field-type-19 {background-image:url(../images/pifa_field_type_19.png);}
-.pifa-icon-20, .pifa-field-type-20 {background-image:url(../images/pifa_field_type_20.png);}
+.pifa_icon_1, .pifa_field_type_1 {background-image:url(../images/pifa_field_type_1.png);}
+.pifa_icon_2, .pifa_field_type_2 {background-image:url(../images/pifa_field_type_2.png);}
+.pifa_icon_3, .pifa_field_type_3 {background-image:url(../images/pifa_field_type_3.png);}
+.pifa_icon_4, .pifa_field_type_4 {background-image:url(../images/pifa_field_type_4.png);}
+.pifa_icon_5, .pifa_field_type_5 {background-image:url(../images/pifa_field_type_5.png);}
+.pifa_icon_6, .pifa_field_type_6 {background-image:url(../images/pifa_field_type_6.png);}
+.pifa_icon_7, .pifa_field_type_7 {background-image:url(../images/pifa_field_type_7.png);}
+.pifa_icon_8, .pifa_field_type_8 {background-image:url(../images/pifa_field_type_8.png);}
+.pifa_icon_9, .pifa_field_type_9 {background-image:url(../images/pifa_field_type_9.png);}
+.pifa_icon_10, .pifa_field_type_10 {background-image:url(../images/pifa_field_type_10.png);}
+.pifa_icon_11, .pifa_field_type_11 {background-image:url(../images/pifa_field_type_11.png);}
+.pifa_icon_12, .pifa_field_type_12 {background-image:url(../images/pifa_field_type_12.png);}
+.pifa_icon_13, .pifa_field_type_13 {background-image:url(../images/pifa_field_type_13.png);}
+.pifa_icon_14, .pifa_field_type_14 {background-image:url(../images/pifa_field_type_14.png);}
+.pifa_icon_15, .pifa_field_type_15 {background-image:url(../images/pifa_field_type_15.png);}
+.pifa_icon_16, .pifa_field_type_16 {background-image:url(../images/pifa_field_type_16.png);}
+.pifa_icon_17, .pifa_field_type_17 {background-image:url(../images/pifa_field_type_17.png);}
+.pifa_icon_18, .pifa_field_type_18 {background-image:url(../images/pifa_field_type_18.png);}
+.pifa_icon_19, .pifa_field_type_19 {background-image:url(../images/pifa_field_type_19.png);}
+.pifa_icon_20, .pifa_field_type_20 {background-image:url(../images/pifa_field_type_20.png);}

@@ -50,7 +50,7 @@ $(function() {
         $search_container = $(this).parent();
         if (!$search_container.hasClass("active")) {
             $search_container.addClass("active")
-                             .animate({"width": "140px", "paddingLeft": "25px"}, 500, "swing");
+                             .animate({"width": "135px", "paddingLeft": "30px"}, 500, "swing");
         }
     });
     $("#header #navigation_header #search_term").on("blur", function(e) {

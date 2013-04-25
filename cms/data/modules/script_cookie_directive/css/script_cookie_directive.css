@@ -2,14 +2,14 @@
     float: right;
 }
 
-#cookieNote{
+#cookie_note{
     text-align: center;
 }
 
 
 /* ----- COOKIE DIRECTIVE ----- */
 /*
-#cookieNote {
+#cookie_note {
     background: #fff;
     left: 0;
     filter: alpha(opacity = 90);
@@ -19,12 +19,12 @@
     width: 100%;
     z-index: 1000;
 }
-#cookieNote div.notify {
+#cookie_note div.notify {
     font-size: 14px;
     padding: 10px 100px;
     position: relative;
 }
-#cookieNote a.dismiss {
+#cookie_note a.dismiss {
     border: 1px solid #9ba21b;
     border-radius: 10px;
     color: #9ba21b;
@@ -36,11 +36,11 @@
     top: 5px;
     text-decoration: none;
 }
-#cookieNote a.dismiss:hover {
+#cookie_note a.dismiss:hover {
     background: #9ba21b;
     color: #fff;
 }
-#cookieNote .cancelCookie {
+#cookie_note .cancel_cookie {
     color: #9ba21b;
     line-height: 17px;
 */

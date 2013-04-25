@@ -1,6 +1,6 @@
 
 /* labels for contenttypes in backend edit mode */
-.content-type-label {
+.content_type_label {
     color: #0060B1;
     background-color: #BFCF00;
     display: block;
@@ -10,7 +10,7 @@
     padding: 2px;
     font-weight: bold;
 }
-.content-type-label-secondary {
+.content_type_label_secondary {
     color: #0060B1;
     background-color: #BFCF00;
     display: block;

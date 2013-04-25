@@ -3,7 +3,7 @@ $(function() {
     /**
      * Open cookie note dialog when present.
      */
-    $("#cookieNote").dialog({
+    $("#cookie_note").dialog({
         height : 300,
         width : 350,
         modal : true,
@@ -20,7 +20,7 @@ $(function() {
             text : $('#accept').val(),
             "class": "submit button red",
             click : function() {
-                window.location.href = $('#pageUrlAccept').val();
+                window.location.href = $('#page_url_accept').val();
                 $(this).dialog("close");
             }
         },
@@ -28,7 +28,7 @@ $(function() {
             text : $('#decline').val(),
             "class": "cancel button grey",
             click : function() {
-                window.location.href = $('#pageUrlDeny').val();
+                window.location.href = $('#page_url_deny').val();
                 $(this).dialog("close");
             }
         }]

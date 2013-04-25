@@ -1,7 +1,7 @@
 <!-- content_sitemap_html -->
 
 {if true eq $isBackendEditMode}
-    <label class="content-type-label">{$trans.headline}</label>
+    <label class="content_type_label">{$trans.headline}</label>
     <div class="sitemapdiv">
         <h2>{$trans.categoryLabel}</h2>
         <label>{$trans.categoryHintLabel}</label>

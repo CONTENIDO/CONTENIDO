@@ -129,7 +129,7 @@ class cHTMLCheckbox extends cHTMLFormElement {
             }
 
             $result = new cHTMLDiv(parent::toHTML() . $renderedLabel);
-            $result->setClass('checkboxWrapper');
+            $result->setClass('checkbox_wrapper');
             return $result->render();
         } else {
             return parent::toHTML();

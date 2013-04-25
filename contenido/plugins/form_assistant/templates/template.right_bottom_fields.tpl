@@ -24,7 +24,7 @@ AUTHOR marcus.gnass@4fb.de
         {foreach from=$fieldTypes key=fieldTypeId item=fieldTypeName}
         <li>
         <a
-            class="img-draggable pifa-field-type-{$fieldTypeId}"
+            class="img-draggable pifa_field_type_{$fieldTypeId}"
             href="{$dragParams}&field_type={$fieldTypeId}"
             title="{$fieldTypeName}"
         ></a></li>
@@ -34,7 +34,7 @@ AUTHOR marcus.gnass@4fb.de
 
 {* list of this forms fields *}
 <fieldset id="field-list-field">
-    <ul id="pifa-form-field-list">
+    <ul id="pifa_form_field_list">
         {* $fields might be NULL, but the UL has to be displayed for dropping nonetheless *}
         {if NULL neq $fields}
             {foreach from=$fields item=field}
@@ -50,7 +50,7 @@ AUTHOR marcus.gnass@4fb.de
 </fieldset>
 
 {* dialog for field forms (form is posted via Ajax!) *}
-<form id="pifa-form-field-dialog" title="{$trans.dialogTitle}"></form>
+<form id="pifa_form_field_dialog" title="{$trans.dialogTitle}"></form>
 
 {/if}
 

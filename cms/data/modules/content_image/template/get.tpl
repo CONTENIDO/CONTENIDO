@@ -1,7 +1,7 @@
 <!-- content_image -->
 
 {if 0 lt $label|strlen}
-    <label class="content-type-label">{$label}</label>
+    <label class="content_type_label">{$label}</label>
 {/if}
 
 {$editor}

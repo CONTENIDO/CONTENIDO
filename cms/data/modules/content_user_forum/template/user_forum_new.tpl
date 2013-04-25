@@ -21,11 +21,11 @@
             <div style="padding-top:10px;"></div>
             <div class="yourcomment" style="padding-top:10px;{$DISPLAY}"><strong>{$FORUM_QUOTE}</strong></div>
             <div>
-    			<textarea class="inputForumText" name="forum_quote" style="width:400px;height:90px;{$DISPLAY}">{$INPUT_FORUM_QUOTE}</textarea>
+    			<textarea class="input_forum_text" name="forum_quote" style="width:400px;height:90px;{$DISPLAY}">{$INPUT_FORUM_QUOTE}</textarea>
     		</div>
             <div class="yourcomment" style="padding-top:10px;"><strong>{$FORUM}</strong></div>
             <div>
-            	<textarea  class="inputForumText" name="forum" style="width:400px;height:90px;">{$INPUT_FORUM}</textarea></div>
+            	<textarea  class="input_forum_text" name="forum" style="width:400px;height:90px;">{$INPUT_FORUM}</textarea></div>
                 {if isset($MODEMODETEXT)}
             		<div class="modtext"><p>{$MODEMODETEXT}</p></div>
      			{/if}
