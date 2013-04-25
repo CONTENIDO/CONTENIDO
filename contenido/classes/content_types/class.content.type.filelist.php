@@ -223,6 +223,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             // strip duplicate directories to save performance
             $directories = array_unique($directories);
 
+            if (count($directories) <= 1) {
+                return;
+            }
+
             foreach ($directories as $directoryName) {
                 $handle = opendir($this->_uploadPath . $directoryName);
                 while (($entry = readdir($handle)) !== false) {
