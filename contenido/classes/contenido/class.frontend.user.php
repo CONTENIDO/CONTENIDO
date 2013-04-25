@@ -72,8 +72,8 @@ class cApiFrontendUserCollection extends ItemCollection {
         $item = parent::createNewItem();
         $item->set('idclient', $client);
         $item->set('username', $username);
-        $item->set('password', $password);
         $item->set('salt', md5($username.rand(1000, 9999).rand(1000, 9999).rand(1000, 9999)));
+        $item->set('password', $password);
         $item->set('created', date('Y-m-d H:i:s'), false);
         $item->set('author', $auth->auth['uid']);
         $item->set('active', 0);
