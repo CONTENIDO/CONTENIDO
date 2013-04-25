@@ -3,7 +3,7 @@
 /**
  * Description: Language changer
  *
- * @version 1.0.0
+ * @version 1.0.1
  * @author A. Scheider
  * @copyright four for business AG <www.4fb.de>
  */
@@ -12,7 +12,9 @@
 $catCollection = new cApiCategoryLanguageCollection();
 $artCollection = new cApiArticleLanguageCollection();
 $catArtCollection = new cApiCategoryArticleCollection();
-$languageInstance = new cApiLanguageCollection();
+$languageCollectionInstance = new cApiLanguageCollection();
+$clientsLangInstance = new cApiClientLanguageCollection();
+$languageInstance = new cApiLanguage();
 
 $tpl = new cTemplate();
 $nextLang = false;
@@ -22,21 +24,37 @@ $idcatAuto = cRegistry::getCategoryId();
 $artRetItem = NULL;
 $urlSet = false;
 $currentLanguage = NULL;
+$clientId = cRegistry::getClientId();
 
-// fetch all existing languages, if no languages available, exit
-$allLanguages = $languageInstance->getAllIds();
+//get all client language id's
+$clientsLangInstance->select("idclient= ".$clientId);
+$resultClientLangs = $clientsLangInstance->fetchArray('idlang', 'idlang');
+
+//get all active languages of a client
+foreach ($resultClientLangs as $clientLang) {
+    $languageInstance->loadByMany(array('active' => '1', 'idlang' => $clientLang));
+    if($languageInstance->get('idlang')) {
+        $allLanguages[] = $languageInstance->get('idlang');
+    }
+    $languageInstance = new cApiLanguage();
+}
+
+//if no languages present do nothing
 if (empty($allLanguages)) {
     echo "No languages present";
     exit();
 }
-// fetch current language
+//else check if there more as one language
+else if(count($allLanguages) != 1) {
+
+
 $currentLanguage = cRegistry::getLanguageId();
 
 // set next language is exists
 foreach ($allLanguages as $langs) {
     if ($langs > $currentLanguage) {
-        $tpl->set('s', 'label', $languageInstance->getLanguageName($langs));
-        $tpl->set('s', 'title', $languageInstance->getLanguageName($langs));
+        $tpl->set('s', 'label', $languageCollectionInstance->getLanguageName($langs));
+        $tpl->set('s', 'title', $languageCollectionInstance->getLanguageName($langs));
 
         $selectedLang = $langs;
         $nextLang = true;
@@ -46,7 +64,7 @@ foreach ($allLanguages as $langs) {
 
 // otherwise set first language
 if ($nextLang === false) {
-    $languageName = $languageInstance->getLanguageName(reset($allLanguages));
+    $languageName = $languageCollectionInstance->getLanguageName(reset($allLanguages));
 
     $tpl->set('s', 'label', $languageName);
     $tpl->set('s', 'title', $languageName);
@@ -80,4 +98,5 @@ if ($checkedCatArt === true) {
 $tpl->set('s', 'url', $url);
 $tpl->generate('get.html');
 
+}
 ?>
