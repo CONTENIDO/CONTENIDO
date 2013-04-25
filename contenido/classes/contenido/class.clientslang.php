@@ -200,11 +200,11 @@ class cApiClientLanguage extends Item {
      * @param mixed $mType Type of the data to store (arbitary data)
      * @param mixed $mName Entry name
      * @param mixed $mValue Value
-     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
+     * @param int $client  Client id
      */
     public function setProperty($mType, $mName, $mValue, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
-        $oPropertyColl->setValue($this->primaryKey, $this->get($this->primaryKey), $mType, $mName, $mValue);
+        $oPropertyColl->setValue($this->primaryKey, $this->get($this->primaryKey), $mType, $mName, $mValue, $client);
     }
 
     /**
@@ -229,11 +229,11 @@ class cApiClientLanguage extends Item {
      *       different parameter!
      *
      * @param int $idprop Id of property
-     * @param string $p2 Not used, is here to prevent PHP Strict warnings
+     * @param int $p2 Not used, is here to prevent PHP Strict warnings
      * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
      * @return void
      */
-    public function deleteProperty($idprop, $p2, $client = 0) {
+    public function deleteProperty($idprop, $p2 = null, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->delete($idprop);
     }
