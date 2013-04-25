@@ -1,16 +1,17 @@
 <?php
 /**
- * This file contains the backend page for displaying and editing article properties.
+ * This file contains the backend page for displaying and editing article
+ * properties.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -31,8 +32,7 @@ if ($action == "con_newart" && $newart != true) {
 
 $disabled = '';
 
-if ($perm->have_perm_area_action($area, "con_edit") ||
-        $perm->have_perm_area_action_item($area, "con_edit", $idcat)) {
+if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat)) {
     $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat=" . cSecurity::toInteger($idcat);
     $db->query($sql);
     $db->nextRecord();
@@ -47,13 +47,16 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     if ($db->f("created")) {
 
-        //****************** this art was edited before ********************
+        // ****************** this art was edited before ********************
         $tmp_firstedit = 0;
         $tmp_idartlang = $db->f("idartlang");
         $tmp_page_title = cSecurity::unFilter(stripslashes($db->f("pagetitle")));
         $tmp_idlang = $db->f("idlang");
         $tmp_title = cSecurity::unFilter($db->f("title"));
-        $tmp_urlname = cSecurity::unFilter($db->f("urlname"));      // plugin Advanced Mod Rewrite - edit by stese
+        $tmp_urlname = cSecurity::unFilter($db->f("urlname")); // plugin
+                                                               // Advanced Mod
+                                                               // Rewrite - edit
+                                                               // by stese
         $tmp_artspec = $db->f("artspec");
         $tmp_summary = cSecurity::unFilter($db->f("summary"));
         $tmp_created = $db->f("created");
@@ -74,9 +77,9 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tmp_onlineaftermove = $db->f("time_online_move");
         $tmp_usetimemgmt = $db->f("timemgmt");
         $tmp_locked = $db->f("locked");
-        $tmp_redirect_checked = ($db->f("redirect") == '1') ? 'checked' : '';
-        $tmp_redirect_url = ($db->f("redirect_url") != '0') ? $db->f("redirect_url") : "http://";
-        $tmp_external_redirect_checked = ($db->f("external_redirect") == '1') ? 'checked' : '';
+        $tmp_redirect_checked = ($db->f("redirect") == '1')? 'checked' : '';
+        $tmp_redirect_url = ($db->f("redirect_url") != '0')? $db->f("redirect_url") : "http://";
+        $tmp_external_redirect_checked = ($db->f("external_redirect") == '1')? 'checked' : '';
         $idtplinput = $db->f("idtplinput");
 
         if ($tmp_modifiedby == '') {
@@ -110,17 +113,18 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $newArtStyle = 'table-row';
     } else {
 
-        //***************** this art is edited the first time *************
+        // ***************** this art is edited the first time *************
 
         if (!$idart) {
-            $tmp_firstedit = 1; //**** is needed when input is written to db (update or insert)
+            $tmp_firstedit = 1; // **** is needed when input is written to db
+                                // (update or insert)
         }
 
         $tmp_idartlang = 0;
         $tmp_idlang = $lang;
         $tmp_page_title = stripslashes($db->f("pagetitle"));
         $tmp_title = '';
-        $tmp_urlname = '';   // plugin Advanced Mod Rewrite - edit by stese
+        $tmp_urlname = ''; // plugin Advanced Mod Rewrite - edit by stese
         $tmp_artspec = '';
         $tmp_summary = '';
         $tmp_created = date("Y-m-d H:i:s");
@@ -201,11 +205,14 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
             $iAvariableSpec++;
         }
     }
-    $tmp_inputArtSort.= $inputArtSortSelect->toHTML();
+    $tmp_inputArtSort .= $inputArtSortSelect->toHTML();
 
     if ($iAvariableSpec == 0) {
         $tmp_inputArtSort = i18n("No article specifications found!");
     }
+
+    // Path for calendar timepicker
+    $tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
     $tpl->set('s', 'ARTIKELART', i18n("Article specification"));
     $tpl->set('s', 'ARTIKELARTSELECT', $tmp_inputArtSort);
@@ -241,10 +248,10 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select->appendOptionElement($option[3]);
     $select->appendOptionElement($option[4]);
 
-    $tpl->set('s', 'DIRECTLINK', $select->render() . '<br /><br /><input class="text_medium" type="text" id="linkhint" readonly="readonly" ' . $disabled . '> <input id="linkhintA" type="button" value="'.i18n("open").'" style="display: none;" onclick="window.open(document.getElementById(\'linkhint\').value);">');
+    $tpl->set('s', 'DIRECTLINK', $select->render() . '<br /><br /><input class="text_medium" type="text" id="linkhint" readonly="readonly" ' . $disabled . '> <input id="linkhintA" type="button" value="' . i18n("open") . '" style="display: none;" onclick="window.open(document.getElementById(\'linkhint\').value);">');
 
     $tpl->set('s', 'ZUORDNUNGSID', "idcatart");
-    $tpl->set('s', 'ALLOCID', $tmp_cat_art ? $tmp_cat_art : '&nbsp;');
+    $tpl->set('s', 'ALLOCID', $tmp_cat_art? $tmp_cat_art : '&nbsp;');
 
     // Author (Creator)
     $tpl->set('s', 'AUTHOR_CREATOR', i18n("Author (Creator)"));
@@ -268,7 +275,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'AUTOR-AENDERUNG-NAME', $modifiedByRealname);
 
     // Created
-    $tmp_erstellt = ($tmp_firstedit == 1) ? '<input type="hidden" name="created" value="' . date("Y-m-d H:i:s") . '">' : '<input type="hidden" name="created" value="' . $tmp_created . '">';
+    $tmp_erstellt = ($tmp_firstedit == 1)? '<input type="hidden" name="created" value="' . date("Y-m-d H:i:s") . '">' : '<input type="hidden" name="created" value="' . $tmp_created . '">';
     $tpl->set('s', 'ERSTELLT', i18n("Created"));
     $tpl->set('s', 'ERSTELLUNGS-DATUM', $tmp2_created . $tmp_erstellt);
 
@@ -316,27 +323,25 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     }
 
     // Online
-    if ($perm->have_perm_area_action("con", "con_makeonline") ||
-            $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) {
-        $tmp_ocheck = ($tmp_online != 1) ? '<input ' . $disabled . ' id="online" type="checkbox" name="online" value="1">' : '<input type="checkbox" ' . $disabled . ' id="online" name="online" value="1" checked="checked">';
+    if ($perm->have_perm_area_action("con", "con_makeonline") || $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) {
+        $tmp_ocheck = ($tmp_online != 1)? '<input ' . $disabled . ' id="online" type="checkbox" name="online" value="1">' : '<input type="checkbox" ' . $disabled . ' id="online" name="online" value="1" checked="checked">';
     } else {
-        $tmp_ocheck = ($tmp_online != 1) ? '<input disabled="disabled" type="checkbox" name="" value="1">' : '<input disabled="disabled" type="checkbox" name="" value="1" checked="checked">';
+        $tmp_ocheck = ($tmp_online != 1)? '<input disabled="disabled" type="checkbox" name="" value="1">' : '<input disabled="disabled" type="checkbox" name="" value="1" checked="checked">';
     }
     $tpl->set('s', 'ONLINE', 'Online');
     $tpl->set('s', 'ONLINE-CHECKBOX', $tmp_ocheck);
 
     // Startartikel
-    if ($perm->have_perm_area_action("con", "con_makestart") ||
-            $perm->have_perm_area_action_item("con", "con_makestart", $idcat)) {
-        $tmp_start = (!$tmp_is_start) ? '<input ' . $disabled . ' id="is_start" type="checkbox" name="is_start" value="1">' : '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" checked="checked">';
+    if ($perm->have_perm_area_action("con", "con_makestart") || $perm->have_perm_area_action_item("con", "con_makestart", $idcat)) {
+        $tmp_start = (!$tmp_is_start)? '<input ' . $disabled . ' id="is_start" type="checkbox" name="is_start" value="1">' : '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" checked="checked">';
     } else {
-        $tmp_start = (!$tmp_is_start) ? '<input disabled="disabled" type="checkbox" name="" value="1">' : '<input disabled="disabled" type="checkbox" name="" value="1" checked="checked">';
+        $tmp_start = (!$tmp_is_start)? '<input disabled="disabled" type="checkbox" name="" value="1">' : '<input disabled="disabled" type="checkbox" name="" value="1" checked="checked">';
     }
     $tpl->set('s', 'STARTARTIKEL', i18n("Start article"));
     $tpl->set('s', 'STARTARTIKEL-CHECKBOX', $tmp_start);
 
     // Searchable / Indexable
-    $tmp_searchable_checkbox = ($tmp_searchable != 1) ? '<input ' . $disabled . ' id="searchable" type="checkbox" name="searchable" value="1">' : '<input type="checkbox" ' . $disabled . ' id="searchable" name="searchable" value="1" checked="checked">';
+    $tmp_searchable_checkbox = ($tmp_searchable != 1)? '<input ' . $disabled . ' id="searchable" type="checkbox" name="searchable" value="1">' : '<input type="checkbox" ' . $disabled . ' id="searchable" name="searchable" value="1" checked="checked">';
     $tpl->set('s', 'SEARCHABLE', i18n('Searchable/Indexable'));
     $tpl->set('s', 'SEARCHABLE-CHECKBOX', $tmp_searchable_checkbox);
 
@@ -438,7 +443,12 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     if (isset($tplinputchanged) && $tplinputchanged == 1) {
         $tmp_idcat_in_art = $idcatnew;
     } else {
-        $sql = "SELECT idcat FROM " . $cfg["tab"]["cat_art"] . " WHERE idart='" . $idart . "'"; // get all idcats that contain art
+        $sql = "SELECT idcat FROM " . $cfg["tab"]["cat_art"] . " WHERE idart='" . $idart . "'"; // get
+                                                                                                // all
+                                                                                                // idcats
+                                                                                                // that
+                                                                                                // contain
+                                                                                                // art
         $db->query($sql);
         while ($db->nextRecord()) {
             $tmp_idcat_in_art[] = $db->f("idcat");
@@ -518,17 +528,13 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tpl->set('s', 'NOTIFICATION', '');
     }
 
-    $tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
-
-    if (($perm->have_perm_area_action("con", "con_makeonline") ||
-            $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) && $inUse == false) {
+    if (($perm->have_perm_area_action("con", "con_makeonline") || $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) && $inUse == false) {
         $allow_usetimemgmt = '';
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 0);
     } else {
         $allow_usetimemgmt = ' disabled="disabled"';
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 1);
     }
-
 
     $tpl->set('s', 'SDOPTS', $allow_usetimemgmt);
     $tpl->set('s', 'EDOPTS', $allow_usetimemgmt);
@@ -706,7 +712,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     } else {
         $tpl->set('s', 'bNoArticle', 'false');
     }
-    //breadcrumb onclick
+    // breadcrumb onclick
     $tpl->set('s', 'iIdcat', $idcat);
     $tpl->set('s', 'iIdtpl', $idtpl);
     $tpl->set('s', 'SYNCOPTIONS', -1);

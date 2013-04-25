@@ -123,6 +123,7 @@ if (isset($title)) {
             $oldData['searchable'] = $oArtLang->get('searchable');
             $oldData['sitemapprio'] = $oArtLang->get('sitemapprio');
             $oldData['changefreq'] = $oArtLang->get('changefreq');
+            $oldData['published'] = $oArtLang->get('published');
             $oldData['datestart'] = $oArtLang->get('datestart');
             $oldData['dateend'] = $oArtLang->get('dateend');
             $oldData['artsort'] = $oArtLang->get('artsort');
@@ -132,7 +133,7 @@ if (isset($title)) {
             $oldData['is_start'] = $wasStart;
         }
 
-        conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable, $sitemapprio, $changefreq);
+        conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $publishing_date, $artsort, 0, $searchable, $sitemapprio, $changefreq);
 
         $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
 
@@ -205,6 +206,7 @@ $newData = array(
     'changefreq' => $changefreq,
     'datestart' => $datestart,
     'dateend' => $dateend,
+    'published' => $publishing_date,
     'artsort' => $artsort
 );
 
