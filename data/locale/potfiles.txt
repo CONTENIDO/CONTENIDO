@@ -38,10 +38,8 @@
 ./cronjobs/setfrontenduserstate.php
 ./cronjobs/send_reminder.php
 ./cronjobs/linkchecker.php
-./cronjobs/session_cleanup.php
 ./cronjobs/run_newsletter_job.php
 ./cronjobs/move_articles.php
-./cronjobs/sequence.php
 ./cronjobs/index.php
 ./classes/swiftmailer/lib/swift_init.php
 ./classes/swiftmailer/lib/classes/Swift/Attachment.php
