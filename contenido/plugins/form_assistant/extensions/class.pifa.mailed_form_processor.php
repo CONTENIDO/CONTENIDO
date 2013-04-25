@@ -37,26 +37,29 @@ class MailedFormProcessor extends DefaultFormProcessor {
      * @throws PifaMailException if any mail could not be sent
      */
     protected function _processStoredData() {
-        $cfg = cRegistry::getConfig();
-
-        // get values
-        $values = $this->getForm()->getValues();
 
         // array to collect errors
         $errors = array();
 
+        // get values
+        $values = $this->getForm()->getValues();
+
         // client mail
         try {
+            // get subject from template
+            $tpl = cSmartyFrontend::getInstance(true);
+            $tpl->assign('values', $values);
+            $subject = $tpl->fetchGeneral('eval:' . $this->getModule()->getSetting('pifaform_mail_client_subject'));
             // get body from template
-            $tplFile = $this->getModule()->getSetting('pifaform_mail_client_template');
-            $tplMail = cSmartyFrontend::getInstance(true);
-            $body = $tplMail->fetchGeneral($tplFile);
+            $tpl = cSmartyFrontend::getInstance(true);
+            $tpl->assign('values', $values);
+            $body = $tpl->fetchGeneral($this->getModule()->getSetting('pifaform_mail_client_template'));
             // send mail
             $this->getForm()->toMailRecipient(array(
                 'from' => $this->getModule()->getSetting('pifaform_mail_client_from_email'),
                 'fromName' => $this->getModule()->getSetting('pifaform_mail_client_from_name'),
                 'to' => $values['email'],
-                'subject' => $this->getModule()->getSetting('pifaform_mail_client_subject'),
+                'subject' => $subject,
                 'body' => $body,
                 'charSet' => 'UTF-8'
             ));
@@ -66,17 +69,20 @@ class MailedFormProcessor extends DefaultFormProcessor {
 
         // system mail
         try {
+            // get subject from template
+            $tpl = cSmartyFrontend::getInstance(true);
+            $tpl->assign('values', $values);
+            $subject = $tpl->fetchGeneral('eval:' . $this->getModule()->getSetting('pifaform_mail_system_subject'));
             // get body from template
-            $tplFile = $this->getModule()->getSetting('pifaform_mail_system_template');
-            $tplMail = cSmartyFrontend::getInstance(true);
-            $tplMail->assign('values', $values);
-            $body = $tplMail->fetchGeneral($tplFile);
+            $tpl = cSmartyFrontend::getInstance(true);
+            $tpl->assign('values', $values);
+            $body = $tpl->fetchGeneral($this->getModule()->getSetting('pifaform_mail_system_template'));
             // send mail
             $this->getForm()->toMailRecipient(array(
                 'from' => $this->getModule()->getSetting('pifaform_mail_system_from_email'),
                 'fromName' => $this->getModule()->getSetting('pifaform_mail_system_from_name'),
                 'to' => $this->getModule()->getSetting('pifaform_mail_system_recipient_email'),
-                'subject' => $this->getModule()->getSetting('pifaform_mail_system_subject'),
+                'subject' => $subject,
                 'body' => $body,
                 'attachmentNames' => $this->_getAttachmentNames(),
                 'attachmentStrings' => $this->_getAttachmentStrings(),
@@ -99,7 +105,6 @@ class MailedFormProcessor extends DefaultFormProcessor {
      * @return array
      */
     protected function _getAttachmentNames() {
-        $cfg = cRegistry::getConfig();
 
         // determine attachment names
         // these are already stored in the FS
@@ -107,6 +112,7 @@ class MailedFormProcessor extends DefaultFormProcessor {
         if (0 < count($this->getForm()->getFiles())) {
             $tableName = $this->getForm()->get('data_table');
             $lastInsertedId = $this->getForm()->getLastInsertedId();
+            $cfg = cRegistry::getConfig();
             $destPath = $cfg['path']['contenido_cache'] . 'form_assistant/';
             foreach ($this->getForm()->getFiles() as $column => $file) {
                 if (!is_array($file)) {
