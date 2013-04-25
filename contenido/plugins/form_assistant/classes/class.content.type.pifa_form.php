@@ -23,10 +23,12 @@ cInclude('includes', 'functions.upl.php');
 class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
     /**
+     * Callback function that is capable of sorting items that are arrays by
+     * comparing their value for the key 'label'.
      *
      * @param array $a
      * @param array $b
-     * @return number
+     * @return number as expected for a comparision function used for sorting
      */
     public static function sortByLabel($a, $b) {
         return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
@@ -41,7 +43,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      *        used
      * @param array $contentTypes array containing the values of all content
      *        types
-     * @return void
      */
     function __construct($rawSettings, $id, array $contentTypes) {
 
