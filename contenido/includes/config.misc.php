@@ -140,6 +140,18 @@ $cfg['AvailableCharsets'] = array(
 /* Report all errors except warnings */
 error_reporting (E_ALL & ~(E_STRICT | E_NOTICE));
 
+
+/*
+ * PHP settings
+ * ----------------------------------
+ */
+
+// Set PHP default_charset if it's empty
+if ('' == ini_get('default_charset')) {
+    @ini_set('default_charset', 'ISO-8859-1');
+}
+
+
 /* Session data storage container (PHPLIB)
  * ----------------------------------
  *

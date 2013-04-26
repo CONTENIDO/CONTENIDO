@@ -260,4 +260,33 @@ function fetchMySQLStorageEngines ($db)
 	return ($engines);
 }
 
+/**
+ * Returns all suppported character sets (field Charset) from the MySQL database.
+ * @param DB_Contenido|null  $db
+ * @return array
+ */
+function fetchMySQLCharsets ($db = null)
+{
+    if (!is_object($db)) {
+        // No DB object, return static list
+        return array(
+            'big5', 'dec8', 'cp850', 'hp8', 'koi8r', 'latin1', 'latin2', 'swe7', 'ascii', 'ujis',
+            'sjis', 'hebrew', 'tis620', 'euckr', 'koi8u', 'gb2312', 'greek', 'cp1250', 'gbk',
+            'latin5', 'armscii8', 'utf8', 'ucs2', 'cp866', 'keybcs2', 'macce', 'macroman', 'cp852',
+            'latin7', 'utf8mb4', 'cp1251', 'utf16', 'cp1256', 'cp1257', 'utf32', 'binary', 'geostd8',
+            'cp932', 'eucjpms',
+        );
+    }
+
+    $db->query('SHOW CHARACTER SET');
+
+    $charsets = array();
+
+    while ($db->next_record()) {
+        $charsets[] = $db->f('Charset');
+    }
+
+    return $charsets;
+}
+
 ?>

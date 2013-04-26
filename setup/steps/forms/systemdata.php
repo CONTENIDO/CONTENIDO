@@ -45,24 +45,29 @@ class cSetupSystemData extends cSetupMask
 		cInitializeArrayKey($_SESSION, "dbuser", "");
 		cInitializeArrayKey($_SESSION, "dbname", "");
 		cInitializeArrayKey($_SESSION, "dbpass", "");
+		cInitializeArrayKey($_SESSION, "dbcharset", "");
 		
 		if (file_exists($a_root_path."/contenido/includes/config.php"))
 		{
 			global $cfg; // Avoiding error message about "prepend3.php" on update from V4.x
 			
-			$contenido_host		= ""; // Just define the variables to avoid warnings in IDE
-			$contenido_user		= "";
-			$contenido_database = "";
-			$contenido_password = "";
+			$contenido_host		 = ""; // Just define the variables to avoid warnings in IDE
+			$contenido_user		 = "";
+			$contenido_database  = "";
+			$contenido_password  = "";
+            $contenido_charset   = "";
 			
 			@include($a_root_path."/contenido/includes/config.php");
 			
-			$aVars = array(	"dbhost" => $contenido_host,
-							"dbuser" => $contenido_user,
-							"dbname" => $contenido_database,
-							"dbpass" => $contenido_password,
-							"dbprefix" => $cfg["sql"]["sqlprefix"]);
-							
+			$aVars = array(
+                "dbhost" => $contenido_host,
+                "dbuser" => $contenido_user,
+                "dbname" => $contenido_database,
+                "dbpass" => $contenido_password,
+                "dbprefix" => $cfg["sql"]["sqlprefix"],
+                "dbcharset" => $contenido_charset,
+            );
+
 			foreach ($aVars as $aVar => $sValue)
 			{
 				if ($_SESSION[$aVar] == "")
@@ -93,7 +98,12 @@ class cSetupSystemData extends cSetupMask
 		{
 			$_SESSION["dbprefix"] = "con";
 		}
-		
+
+        if ($_SESSION["dbcharset"] == "" && $_SESSION["setuptype"] == 'setup')
+        {
+            $_SESSION["dbcharset"] = C_SETUP_DBCHARSET;
+        }
+
 		unset($_SESSION["install_failedchunks"]);
 		unset($_SESSION["install_failedupgradetable"]);
 		unset($_SESSION["configsavefailed"]);
@@ -103,6 +113,16 @@ class cSetupSystemData extends cSetupMask
 		$dbhost = new cHTMLTextbox("dbhost", $_SESSION["dbhost"], 30, 255);
 		$dbname = new cHTMLTextbox("dbname", $_SESSION["dbname"], 30, 255);
 		$dbuser = new cHTMLTextbox("dbuser", $_SESSION["dbuser"], 30, 255);
+		$dbcharset = new cHTMLSelectElement("dbcharset");
+
+                // Compose charser select box
+                $selectedCharset = (!empty($_SESSION["dbcharset"])) ? $_SESSION["dbcharset"] : C_SETUP_DBCHARSET;
+                $aCharsets = fetchMySQLCharsets();
+                foreach ($aCharsets as $p => $charset) {
+                    $selected = ($selectedCharset == $charset);
+                    $option = new cHTMLOptionElement($charset, $charset, $selected);
+                    $dbcharset->addOptionElement($p, $option);
+                }
 		
 		if ($_SESSION["dbpass"] != "")
 		{
@@ -119,7 +139,6 @@ class cSetupSystemData extends cSetupMask
 		
 		$dbprefix = new cHTMLTextbox("dbprefix", $_SESSION["dbprefix"], 10, 30);
 		
-
 		
 		$this->_oStepTemplate->set("s", "LABEL_DBHOST", i18n("Database Server (IP or name)"));
 		
@@ -128,18 +147,20 @@ class cSetupSystemData extends cSetupMask
 			$this->_oStepTemplate->set("s", "LABEL_DBNAME", i18n("Database Name")."<br>".i18n("(use empty or non-existant database)"));
 		} else {
 			$this->_oStepTemplate->set("s", "LABEL_DBNAME", i18n("Database Name"));
+            $dbcharset->setDisabled(true);
 		}
 		
 		$this->_oStepTemplate->set("s", "LABEL_DBUSERNAME", i18n("Database Username"));
 		$this->_oStepTemplate->set("s", "LABEL_DBPASSWORD", i18n("Database Password"));
 		$this->_oStepTemplate->set("s", "LABEL_DBPREFIX", i18n("Table Prefix"));
+		$this->_oStepTemplate->set("s", "LABEL_DBCHARSET", i18n("Database character set"));
 		
-	
 		$this->_oStepTemplate->set("s", "INPUT_DBHOST", $dbhost->render());
 		$this->_oStepTemplate->set("s", "INPUT_DBNAME", $dbname->render());
 		$this->_oStepTemplate->set("s", "INPUT_DBUSERNAME", $dbuser->render());
 		$this->_oStepTemplate->set("s", "INPUT_DBPASSWORD", $dbpass->render().$dbpass_hidden->render());
 		$this->_oStepTemplate->set("s", "INPUT_DBPREFIX", $dbprefix->render());
+		$this->_oStepTemplate->set("s", "INPUT_DBCHARSET", $dbcharset->render());
 		
 		$this->setNavigation($previous, $next);
 	}

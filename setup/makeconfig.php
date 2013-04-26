@@ -48,6 +48,7 @@ $tpl->set('s', 'MYSQL_DB', $_SESSION['dbname']);
 $tpl->set('s', 'MYSQL_USER', $_SESSION['dbuser']);
 $tpl->set('s', 'MYSQL_PASS', $_SESSION['dbpass']);
 $tpl->set('s', 'MYSQL_PREFIX', $_SESSION['dbprefix']);
+$tpl->set('s', 'MYSQL_CHARSET', $_SESSION['dbcharset']);
 
 if (hasMySQLiExtension() && !hasMySQLExtension()) {
     $tpl->set('s', 'DB_EXTENSION', 'mysqli');

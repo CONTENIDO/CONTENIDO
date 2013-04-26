@@ -67,9 +67,13 @@ class cSetupSetupSummary extends cSetupMask
 		}
 
 		$messages = array(
-            i18n("Installation type").":"   => $sType,
-			i18n("Database parameters").":" => i18n("Database host").": ".$_SESSION["dbhost"] . "<br>" . i18n("Database name").": ".$_SESSION["dbname"] ."<br>".i18n("Database username").": " . $_SESSION["dbuser"]. "<br>".i18n("Database prefix").": ".$_SESSION["dbprefix"],
-        );
+                    i18n("Installation type") . ":" => $sType,
+                    i18n("Database parameters") . ":" => i18n("Database host") . ": " . $_SESSION["dbhost"] . "<br>" . 
+                                                         i18n("Database name") . ": " . $_SESSION["dbname"] . "<br>" .
+                                                         i18n("Database username") . ": " . $_SESSION["dbuser"] . "<br>" .
+                                                         i18n("Table prefix") . ": " . $_SESSION["dbprefix"] . "<br>" .
+                                                         i18n("Database character set") . ": " . $_SESSION["dbcharset"],
+		);
 
 		if ($_SESSION["setuptype"] == "setup")
 		{

@@ -96,6 +96,10 @@ class DB_Contenido extends DB_Sql {
 
       if ((0 == $db_link || !is_resource($db_link)) && !is_object($db_link)) {
           $db_link = parent::connect($Database, $Host, $User, $Password);
+          global $contenido_charset;
+          if (!empty($contenido_charset)) {
+            $this->query('SET NAMES "' . $this->escape($contenido_charset) . '"');
+          }
       }
 
       $this->Link_ID = $db_link;

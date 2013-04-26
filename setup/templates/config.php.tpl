@@ -105,6 +105,9 @@ $contenido_user = '{MYSQL_USER}';
 /* The password to access the database */
 $contenido_password = '{MYSQL_PASS}';
 
+/* The charset of connection to database */
+$contenido_charset = '{MYSQL_CHARSET}';
+
 $cfg["database_extension"] = '{DB_EXTENSION}';
 
 /* (Boolean) Flag to lock tables */
