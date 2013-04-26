@@ -165,9 +165,12 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
         $oPage->render();
     } else {
         if ($bDeleteFile) {
-            $notification->displayNotification('warning', i18n('Version history was cleared'));
+			$oPage->displayWarning(i18n('Version history was cleared'));
         } else {
-            $notification->displayNotification('warning', i18n('No style history available'));
+			$oPage->displayWarning(i18n('No jscript history available'));
         }
+		$oPage->setEncoding('utf-8');
+		$oPage->abortRendering();
+		$oPage->render();
     }
 }
