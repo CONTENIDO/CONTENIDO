@@ -164,7 +164,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tpl->set('s', 'SID', $sess->id);
     $tpl->set('s', 'IDCAT', $idcat);
     $tpl->set('s', 'IDARTLANG', $tmp_idartlang);
-    $tpl->set('s', 'newArtStyle', $newArtStyle);
+    $tpl->set('s', 'NEWARTSTYLE', $newArtStyle);
 
     $hiddenfields = '<input type="hidden" name="idcat" value="' . $idcat . '">
                      <input type="hidden" name="idart" value="' . $idart . '">
