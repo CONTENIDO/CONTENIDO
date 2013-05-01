@@ -310,6 +310,10 @@ table.setupBodyOuterTableSystemData td.nav {
     white-space: nowrap;
 }
 
+table.setupBodyOuterTableSystemData td.list select {
+    margin-left: 0;
+}
+
 table.setupBodyOuterTableSystemData td.nav a,
 td.back_next a {
     width: 16px;
