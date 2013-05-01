@@ -114,15 +114,16 @@ class cSetupSystemData extends cSetupMask
 		$dbname = new cHTMLTextbox("dbname", $_SESSION["dbname"], 30, 255);
 		$dbuser = new cHTMLTextbox("dbuser", $_SESSION["dbuser"], 30, 255);
 		$dbcharset = new cHTMLSelectElement("dbcharset");
+        $dbcharset->setStyle('margin-left:0');
 
-                // Compose charser select box
-                $selectedCharset = (!empty($_SESSION["dbcharset"])) ? $_SESSION["dbcharset"] : C_SETUP_DBCHARSET;
-                $aCharsets = fetchMySQLCharsets();
-                foreach ($aCharsets as $p => $charset) {
-                    $selected = ($selectedCharset == $charset);
-                    $option = new cHTMLOptionElement($charset, $charset, $selected);
-                    $dbcharset->addOptionElement($p, $option);
-                }
+        // Compose charser select box
+        $selectedCharset = (!empty($_SESSION["dbcharset"])) ? $_SESSION["dbcharset"] : C_SETUP_DBCHARSET;
+        $aCharsets = fetchMySQLCharsets();
+        foreach ($aCharsets as $p => $charset) {
+            $selected = ($selectedCharset == $charset);
+            $option = new cHTMLOptionElement($charset, $charset, $selected);
+            $dbcharset->addOptionElement($p, $option);
+        }
 		
 		if ($_SESSION["dbpass"] != "")
 		{
