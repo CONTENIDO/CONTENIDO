@@ -93,17 +93,17 @@ function updateSystemProperties($db, $table) {
     );
 
     foreach ($aStandardvalues as $aData) {
-        $sql = "SELECT value FROM %s WHERE type='%s' AND name='%s'";
+        $sql = "SELECT `value` FROM `%s` WHERE `type` = '%s' AND `name` = '%s'";
         $db->query(sprintf($sql, $table, $aData['type'], $aData['name']));
         if ($db->nextRecord()) {
             $sValue = $db->f('value');
             if ($sValue == '') {
-                $sql = "UPDATE %s SET value = '%s' WHERE type='%s' AND name='%s'";
+                $sql = "UPDATE `%s` SET `value` = '%s' WHERE `type` = '%s' AND `name` = '%s'";
                 $sql = sprintf($sql, $table, $aData['value'], $aData['type'], $aData['name']);
                 $db->query($sql);
             }
         } else {
-            $sql = "INSERT INTO %s SET type='%s', name='%s', value='%s'";
+            $sql = "INSERT INTO `%s` SET `type` = '%s', `name` = '%s', `value` = '%s'";
             $sql = sprintf($sql, $table, $aData['type'], $aData['name'], $aData['value']);
             $db->query($sql);
         }
@@ -121,15 +121,15 @@ function updateSystemProperties($db, $table) {
  * @param  string  $version  Version
  */
 function updateContenidoVersion($db, $table, $version) {
-    $sql = "SELECT idsystemprop FROM %s WHERE type='system' AND name='version'";
+    $sql = "SELECT `idsystemprop` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'";
     $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
     if ($db->nextRecord()) {
-        $sql = "UPDATE %s SET value = '%s' WHERE type='system' AND name='version'";
+        $sql = "UPDATE `%s` SET `value` = '%s' WHERE `type` = 'system' AND `name` = 'version'";
         $db->query(sprintf($sql, cSecurity::escapeDB($table, $db), cSecurity::escapeDB($version, $db)));
     } else {
         //$id = $db->nextid($table);
-        $sql = "INSERT INTO %s SET type='system', name='version', value='%s'";
+        $sql = "INSERT INTO `%s` SET `type` = 'system', `name` = 'version', `value` = '%s'";
         $db->query(sprintf($sql, cSecurity::escapeDB($table, $db), cSecurity::escapeDB($version, $db)));
     }
 }
@@ -141,7 +141,7 @@ function updateContenidoVersion($db, $table, $version) {
  * @return string
  */
 function getContenidoVersion($db, $table) {
-    $sql = "SELECT value FROM %s WHERE type='system' AND name='version'";
+    $sql = "SELECT `value` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'";
     $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
     if ($db->nextRecord()) {

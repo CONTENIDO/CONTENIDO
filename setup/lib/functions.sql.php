@@ -48,8 +48,13 @@ function injectSQL($db, $prefix, $file, $replacements = array()) {
     return true;
 }
 
-// @FIXME: Comment me plz!
+/**
+ * Adds the autoincrement property to all primary keys in CONTENIDO tables
+ * @param cDB $db
+ * @param array $cfg
+ */
 function addAutoIncrementToTables($db, $cfg) {
+    // All primary keys in tables except these below!
     $filterTables = array(
         $cfg['sql']['sqlprefix'] . '_groups',
         $cfg['sql']['sqlprefix'] . '_pica_alloc_con',
@@ -64,7 +69,7 @@ function addAutoIncrementToTables($db, $cfg) {
         $cfg['sql']['sqlprefix'] . '_iso_3166'
     );
 
-    $sql = 'SHOW TABLES FROM  ' . $cfg['db']['connection']['database'] . '';
+    $sql = $db->prepare('SHOW TABLES FROM `%s`', $cfg['db']['connection']['database']);
     $db->query($sql);
 
     if ($db->getErrorNumber() != 0) {
@@ -72,16 +77,18 @@ function addAutoIncrementToTables($db, $cfg) {
         $_SESSION['install_failedupgradetable'] = true;
     }
 
-    $i = 0;
-    while ($row = mysql_fetch_row($db->getQueryId())) {
+    $aRows = array();
+    while ($db->nextRecord()) {
+        $aRows[] = $db->getRecord();
+    }
+    foreach ($aRows as $row) {
         if (in_array($row[0], $filterTables) === false && strpos($row[0], $cfg['sql']['sqlprefix'] . '_') !== false) {
-            alterTableHandling($row);
-            $i++;
+            alterTableHandling($row[0]);
         }
     }
 
     // Security reason: Check iterator alter table before drop table. The count of Tables must be not less than 65.
-    if ($i > 65) {
+    if (count($aRows) > 65) {
         $sql = 'DROP TABLE IF EXISTS ' . $cfg['sql']['sqlprefix'] . '_sequence';
         $db->query($sql);
     }
@@ -181,23 +188,26 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
 function convertToDatetime($db, $cfg) {
     $db->query('SHOW TABLES LIKE "%s"', $cfg["sql"]["sqlprefix"] . "_piwf_art_allocation");
     if ($db->nextRecord()) {
-        $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_piwf_art_allocation CHANGE  `starttime`  `starttime` DATETIME NOT NULL");
+        $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_piwf_art_allocation CHANGE `starttime` `starttime` DATETIME NOT NULL");
     }
 
-    $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_template_conf CHANGE  `created`  `created` DATETIME NOT NULL");
+    $db->query("ALTER TABLE " . $cfg['sql']['sqlprefix'] . "_template_conf CHANGE `created` `created` DATETIME NOT NULL");
 }
 
-// @FIXME: Comment me plz!
-function alterTableHandling($row) {
-    $tableName = $row[0];
-
+/**
+ * Changes the primary key of the given table to an auto increment type
+ * @param string $tableName
+ */
+function alterTableHandling($tableName) {
     $db = getSetupMySQLDBConnection(false);
-    $sql = 'SHOW KEYS FROM `' . $tableName . '` WHERE Key_name="PRIMARY"';
+    $dbAlter = getSetupMySQLDBConnection(false);
+
+    $sql = $db->prepare('SHOW KEYS FROM `%s` WHERE Key_name="PRIMARY"', $tableName);
     $db->query($sql);
-    while ($row = mysql_fetch_row($db->getQueryId())) {
+    while ($db->nextRecord()) {
+        $row = $db->getRecord();
         $primaryKey = $row[4];
-        $dbAlter = getSetupMySQLDBConnection(false);
-        $sqlAlter = 'ALTER TABLE `' . $tableName . '` CHANGE `' . $primaryKey . '` `' . $primaryKey . '` INT(11) NOT NULL AUTO_INCREMENT';
+        $sqlAlter = $dbAlter->prepare('ALTER TABLE `%s` CHANGE `%s` `%s` INT(11) NOT NULL AUTO_INCREMENT', $tableName, $primaryKey, $primaryKey);
         $dbAlter->query($sqlAlter);
         if ($dbAlter->getErrorNumber() != 0) {
             logSetupFailure("Unable to execute SQL statement:\n" . $sqlAlter . "\nMysql Error: " . $dbAlter->getErrorMessage() . " (" . $dbAlter->getErrorNumber() . ")");

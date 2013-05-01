@@ -16,19 +16,11 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 function hasMySQLExtension() {
-    if (isPHPExtensionLoaded("mysql") == CON_EXTENSION_AVAILABLE) {
-        return true;
-    } else {
-        return false;
-    }
+    return (isPHPExtensionLoaded("mysql") == CON_EXTENSION_AVAILABLE) ? true : false;
 }
 
 function hasMySQLiExtension() {
-    if (isPHPExtensionLoaded("mysqli") == CON_EXTENSION_AVAILABLE) {
-        return true;
-    } else {
-        return false;
-    }
+    return (isPHPExtensionLoaded("mysqli") == CON_EXTENSION_AVAILABLE) ? true : false;
 }
 
 function doMySQLConnect($host, $username, $password) {
@@ -42,22 +34,31 @@ function doMySQLConnect($host, $username, $password) {
     try {
         $db = new cDb($aOptions);
     } catch (Exception $e) {
-        return array(
-            $db,
-            false
-        );
+        return array($db, false);
     }
 
     if ($db->connect() == 0) {
-        return array(
-            $db,
-            false
-        );
+        return array($db, false);
     } else {
-        return array(
-            $db,
-            true
-        );
+        return array($db, true);
+    }
+}
+
+/**
+ * Selects a desired database by the link identifier and database name
+ * @param resource $linkid  MySQLi/MySQL link identifier
+ * @param string $database
+ * @return boolean
+ */
+function doMySQLSelectDB($linkid, $database) {
+    $extension = getMySQLDatabaseExtension();
+
+    if (CON_SETUP_MYSQLI === $extension) {
+        return (@mysqli_select_db($linkid, $database)) ? true : false;
+    } elseif (CON_SETUP_MYSQL === $extension) {
+        return (@mysql_select_db($database, $linkid)) ? true : false;
+    } else {
+        return false;
     }
 }
 
@@ -75,83 +76,55 @@ function getSetupMySQLDBConnection($full = true) {
     return $db;
 }
 
+/**
+ * Checks existing MySQL extensions and returns 'mysqli' as default, 'mysql' or null.
+ * @return string|null
+ */
+function getMySQLDatabaseExtension() {
+    if (hasMySQLiExtension()) {
+        return CON_SETUP_MYSQLI;
+    } elseif (hasMySQLExtension()) {
+        return CON_SETUP_MYSQL;
+    } else {
+        return null;
+    }
+}
+
 function fetchMySQLVersion($db) {
     $db->query("SELECT VERSION()");
 
-    if ($db->nextRecord()) {
-        return $db->f(0);
-    } else {
-        return false;
-    }
+    return ($db->nextRecord()) ? $db->f(0) : false;
 }
 
 function fetchMySQLUser($db) {
     $db->query("SELECT USER()");
 
-    if ($db->nextRecord()) {
-        return ($db->f(0));
-    } else {
-        return false;
-    }
+    return ($db->nextRecord()) ? $db->f(0) : false;
 }
 
 function checkMySQLDatabaseCreation($db, $database) {
     if (checkMySQLDatabaseExists($db, $database)) {
         return true;
     } else {
-        $db->query("CREATE DATABASE `$database`");
-        if ($db->getErrorNumber() != 0) {
-            return false;
-        } else {
-            return true;
-        }
+        $db->query("CREATE DATABASE `%s`", $database);
+        return ($db->getErrorNumber() == 0) ? true : false;
     }
 }
 
 function checkMySQLDatabaseExists($db, $database) {
     $db->connect();
 
-    if (hasMySQLiExtension()) {
-        if (@mysqli_select_db($db->getLinkId(), $database)) {
-            return true;
-        } else {
-            $db->query("SHOW DATABASES LIKE '$database'");
-            if ($db->nextRecord()) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+    if (doMySQLSelectDB($db->getLinkId(), $database)) {
+        return true;
     } else {
-        if (@mysql_select_db($database, $db->getLinkId())) {
-            return true;
-        } else {
-            $db->query("SHOW DATABASES LIKE '$database'");
-            if ($db->nextRecord()) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+        $db->query("SHOW DATABASES LIKE '%s'", $database);
+        return ($db->nextRecord()) ? true : false;
     }
 }
 
 function checkMySQLDatabaseUse($db, $database) {
     $db->connect();
-
-    if (hasMySQLiExtension() && !hasMySQLExtension()) {
-        if (@mysqli_select_db($db->getLinkId(), $database)) {
-            return true;
-        } else {
-            return false;
-        }
-    } else {
-        if (@mysql_select_db($database, $db->getLinkId())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    return doMySQLSelectDB($db->getLinkId(), $database);
 }
 
 function checkMySQLTableCreation($db, $database, $table) {
@@ -159,13 +132,9 @@ function checkMySQLTableCreation($db, $database, $table) {
         return false;
     }
 
-    $db->query("CREATE TABLE `$table` (test INT( 1 ) NOT NULL) ENGINE = MYISAM ;");
+    $db->query("CREATE TABLE `%s` (test INT(1) NOT NULL) ENGINE = MYISAM;", $table);
 
-    if ($db->getErrorNumber() == 0) {
-        return true;
-    } else {
-        return false;
-    }
+    return ($db->getErrorNumber() == 0) ? true : false;
 }
 
 function checkMySQLLockTable($db, $database, $table) {
@@ -173,13 +142,9 @@ function checkMySQLLockTable($db, $database, $table) {
         return false;
     }
 
-    $db->query("LOCK TABLES `$table` WRITE");
+    $db->query("LOCK TABLES `%s` WRITE", $table);
 
-    if ($db->getErrorNumber() == 0) {
-        return true;
-    } else {
-        return false;
-    }
+    return ($db->getErrorNumber() == 0) ? true : false;
 }
 
 function checkMySQLUnlockTables($db, $database) {
@@ -189,11 +154,7 @@ function checkMySQLUnlockTables($db, $database) {
 
     $db->query("UNLOCK TABLES");
 
-    if ($db->getErrorNumber() == 0) {
-        return true;
-    } else {
-        return false;
-    }
+    return ($db->getErrorNumber() == 0) ? true : false;
 }
 
 function checkMySQLDropTable($db, $database, $table) {
@@ -201,23 +162,15 @@ function checkMySQLDropTable($db, $database, $table) {
         return false;
     }
 
-    $db->query("DROP TABLE `$table`");
+    $db->query("DROP TABLE `%s`", $table);
 
-    if ($db->getErrorNumber() == 0) {
-        return true;
-    } else {
-        return false;
-    }
+    return ($db->getErrorNumber() == 0) ? true : false;
 }
 
 function checkMySQLDropDatabase($db, $database) {
-    $db->query("DROP DATABASE `$database`");
+    $db->query("DROP DATABASE `%s`", $database);
 
-    if ($db->getErrorNumber() == 0) {
-        return true;
-    } else {
-        return false;
-    }
+    return ($db->getErrorNumber() == 0) ? true : false;
 }
 
 function fetchMySQLStorageEngines($db) {
@@ -229,7 +182,7 @@ function fetchMySQLStorageEngines($db) {
         $engines[] = $db->f(0);
     }
 
-    return ($engines);
+    return $engines;
 }
 
 ?>

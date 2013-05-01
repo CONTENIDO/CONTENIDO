@@ -28,11 +28,7 @@ $tpl->set('s', 'MYSQL_PASS', $cfg['db']['connection']['password']);
 $tpl->set('s', 'MYSQL_PREFIX', $cfg['sql']['sqlprefix']);
 $tpl->set('s', 'MYSQL_COLLATION', $cfg['db']['connection']['charset']);
 
-if (hasMySQLiExtension() && !hasMySQLExtension()) {
-    $tpl->set('s', 'DB_EXTENSION', 'mysqli');
-} else {
-    $tpl->set('s', 'DB_EXTENSION', 'mysql');
-}
+$tpl->set('s', 'DB_EXTENSION', (string) getMySQLDatabaseExtension());
 
 $tpl->set('s', 'NOLOCK', $_SESSION['nolock']);
 

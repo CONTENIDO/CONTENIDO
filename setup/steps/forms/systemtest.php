@@ -42,7 +42,7 @@ class cSetupSystemtest extends cSetupMask {
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
 
-        if (!(hasMySQLExtension() || hasMySQLiExtension())) {
+        if (is_null(getMySQLDatabaseExtension())) {
             $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("PHP MySQL Extension missing"), i18n("CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi."));
         } else if ($this->systemtest->testMySQL($_SESSION["dbhost"], $_SESSION["dbuser"], $_SESSION["dbpass"]) == cSystemtest::CON_MYSQL_OK) {
             $this->initDB();

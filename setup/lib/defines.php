@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the setup mask class.
+ * This file contains the setup constants
  *
  * @package    Setup
  * @subpackage Setup
@@ -25,6 +25,9 @@ if (isset($_SESSION['setuptype'])) {
             break;
     }
 }
+
+define('CON_SETUP_MYSQL', 'mysql');
+define('CON_SETUP_MYSQLI', 'mysqli');
 
 define('CON_SETUP_CONTENIDO_HTML_PATH', '../contenido/');
 
