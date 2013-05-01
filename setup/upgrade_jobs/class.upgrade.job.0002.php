@@ -139,35 +139,36 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         foreach ($cfgClient as $iClient => $aClient) {
             $client = $iClient; //this should work for all clients now
 
-            // Save all modules from db-table to the filesystem if exists
-            $sql = "SHOW COLUMNS FROM %s LIKE 'OUTPUT'";
-            $sql = sprintf($sql, $cfg['tab']['mod']);
+            $db2 = getSetupMySQLDBConnection();
 
-            $this->_oDb->query($sql);
+            // Save all modules from db-table to the filesystem if exists
+            $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'output'", $cfg['tab']['mod']);
             if ($this->_oDb->numRows() == 0) {
                 cModuleHandler::setEncoding('ISO-8859-1');
                 $this->_convertModulesToFile();
             }
 
-            // Save layout from db-table to the file system
-            $layoutInFile = new cLayoutHandler(1, '', $cfg, 1, $this->_oDb);
-            $layoutInFile->upgrade();
-
-            $db2 = getSetupMySQLDBConnection();
-            $sql = "SELECT * FROM " . $cfg['tab']['lay'];
-            $this->_oDb->query($sql);
+            // Update module aliases
+            $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['mod']);
             while ($this->_oDb->nextRecord()) {
-                if ($this->_oDb->f("alias") == "") {
-                    $sql = "UPDATE " . $cfg['tab']['lay'] . " SET `alias`='" . $this->_oDb->f("name") . "' WHERE `idlay`='" . $this->_oDb->f("idlay") . "';";
+                if ($this->_oDb->f('alias') == '') {
+                    $sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idmod` = %d;", $cfg['tab']['mod'], $this->_oDb->f('name'), $this->_oDb->f('idmod'));
                     $db2->query($sql);
                 }
             }
 
-            $sql = "SELECT * FROM " . $cfg['tab']['mod'];
-            $this->_oDb->query($sql);
+            // Save all layouts from db-table to the filesystem if exists
+            $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'code'", $cfg['tab']['lay']);
+            if ($this->_oDb->numRows() == 0) {
+                $layoutInFile = new cLayoutHandler(1, '', $cfg, 1, $this->_oDb);
+                $layoutInFile->upgrade();
+            }
+
+            // Update layout aliases
+            $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['lay']);
             while ($this->_oDb->nextRecord()) {
-                if ($this->_oDb->f("alias") == "") {
-                    $sql = "UPDATE " . $cfg['tab']['mod'] . " SET `alias`='" . $this->_oDb->f("name") . "' WHERE `idmod`='" . $this->_oDb->f("idmod") . "';";
+                if ($this->_oDb->f('alias') == '') {
+                    $sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idlay` = %d;", $cfg['tab']['lay'], $this->_oDb->f('name'), $this->_oDb->f('idlay'));
                     $db2->query($sql);
                 }
             }
