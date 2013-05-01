@@ -143,7 +143,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
 
             // Save all modules from db-table to the filesystem if exists
             $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'output'", $cfg['tab']['mod']);
-            if ($this->_oDb->numRows() == 0) {
+            if ($this->_oDb->numRows() > 0) {
                 cModuleHandler::setEncoding('ISO-8859-1');
                 $this->_convertModulesToFile();
             }
@@ -159,7 +159,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
 
             // Save all layouts from db-table to the filesystem if exists
             $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'code'", $cfg['tab']['lay']);
-            if ($this->_oDb->numRows() == 0) {
+            if ($this->_oDb->numRows() > 0) {
                 $layoutInFile = new cLayoutHandler(1, '', $cfg, 1, $this->_oDb);
                 $layoutInFile->upgrade();
             }
