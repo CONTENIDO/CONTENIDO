@@ -401,12 +401,14 @@ class cSetupSystemtest extends cSetupMask
 
 		list($handle, $status) = doMySQLConnect($_SESSION["dbhost"], $_SESSION["dbuser"], $_SESSION["dbpass"]);
 
-		if (hasMySQLiExtension() && !hasMySQLExtension())
-		{
+		$extension = getMySQLDatabaseExtension();
+        if (CON_SETUP_MYSQLI == $extension) {
 			$sErrorMessage = mysqli_error($handle->Link_ID);
-		} else {
+        } elseif (CON_SETUP_MYSQL == $extension) {
 			$sErrorMessage = mysql_error();
-		}
+        } else {
+			$sErrorMessage = '';
+        }
 
 		$this->runTest( $status,
 						C_SEVERITY_ERROR,

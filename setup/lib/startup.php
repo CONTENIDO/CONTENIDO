@@ -172,12 +172,9 @@ if (getPHPIniSetting('session.use_cookies') == 0) {
 }
 
 // PHP database extension check
-if (hasMySQLiExtension() && !hasMySQLExtension()) {
-    // use MySQLi extension by default if available
-    $cfg['database_extension'] = 'mysqli';
-} elseif (hasMySQLExtension()) {
-    // use MySQL extension if available
-    $cfg['database_extension'] = 'mysql';
+$extension = getMySQLDatabaseExtension();
+if (!is_null($extension)) {
+    $cfg['database_extension'] = $extension;
 } else {
     $sNotInstallableReason = 'database_extension';
     checkAndInclude(CON_SETUP_PATH . '/steps/notinstallable.php');
