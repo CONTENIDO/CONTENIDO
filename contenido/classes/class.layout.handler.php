@@ -375,21 +375,21 @@ class cLayoutHandler {
      */
     public function upgrade() {
         // get name of layout and frontendpath
-        $sql = sprintf("SELECT alias, idlay, code FROM %s", $this->_cfg["tab"]["lay"]);
         $db = clone $this->_db;
-        $db->query($sql);
+        if (!$db->query('SELECT alias, idlay, code FROM `%s`', $this->_cfg['tab']['lay'])) {
+            return;
+        }
 
         while ($db->nextRecord()) {
             // init class var for save
             $this->initWithDbObject($db);
-            if ($this->saveLayoutByUpgrade($db->f("code")) == false) {
+            if ($this->saveLayoutByUpgrade($db->f('code')) == false) {
                 throw new cException('Can not save layout.' . print_r($this, true));
             }
         }
 
         // all layouts are saved, so remove the code field from _lay
-        $sql = sprintf("ALTER TABLE %s DROP code", $this->_cfg["tab"]["lay"]);
-        $db->query($sql);
+        $db->query('ALTER TABLE `%s` DROP code', $this->_cfg['tab']['lay']);
     }
 
 }
