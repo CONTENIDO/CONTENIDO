@@ -95,8 +95,8 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             }
         }
 
-        // remove input and output fields from db
-        $sql = sprintf('ALTER TABLE %s DROP input, DROP output', $cfg['tab']['mod']);
+        // update input and output fields
+        $sql = sprintf("UPDATE %s SET input = '', output = ''", $cfg['tab']['mod']);
         $db->query($sql);
     }
 
