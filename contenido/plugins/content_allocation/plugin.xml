@@ -24,7 +24,6 @@
         <frames>
             <frame area="content_allocation" filetype="main" name="content_allocation/includes/include.left_top.php" frameId="1" />
             <frame area="content_allocation" filetype="main" name="content_allocation/includes/include.left_bottom.php" frameId="2" />
-            <frame area="content_allocation" filetype="main" name="content_allocation/includes/include.right_top.php" />
             <frame area="content_allocation" filetype="main" name="content_allocation/includes/include.right_bottom.php" frameId="4" />
             <frame area="con_contentallocation" filetype="main" name="content_allocation/includes/include.contentallocation_article.php" frameId="4" />
         </frames>
