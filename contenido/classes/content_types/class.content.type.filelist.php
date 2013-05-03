@@ -243,6 +243,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         if (is_array($fileList)) {
             $files = $this->_applyFileFilters($fileList);
+        } else {
+            $files = $this->_applyFileFilters((array) $fileList);
         }
         unset($fileList);
 
