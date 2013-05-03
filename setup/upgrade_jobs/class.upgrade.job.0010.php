@@ -2,15 +2,15 @@
 /**
  * This file contains the upgrade job 10.
  *
- * @package    Setup
+ * @package Setup
  * @subpackage UpgradeJob
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Mischa Holz
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Mischa Holz
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -34,9 +34,10 @@ class cUpgradeJob_0010 extends cUpgradeJobAbstract {
         global $db, $cfg;
 
         if ($this->_setupType == 'upgrade') {
-            foreach($this->filesToRemove as $file) {
-                $db->query("DELETE FROM " . $cfg["tab"]["file"] . " WHERE `filename`=" . $file);
+            foreach ($this->filesToRemove as $file) {
+                $db->query("DELETE FROM " . $cfg['tab']['files'] . " WHERE filename = '" . $file . "'");
             }
         }
     }
+
 }
