@@ -138,7 +138,7 @@ $cfg['statistics_heap_table'] = false;
  */
 
 // (bool) Display PHP errors
-$cfg['php_settings']['display_errors'] = true;
+$cfg['php_settings']['display_errors'] = false;
 
 // (bool) Enable logging of PHP errors
 $cfg['php_settings']['log_errors'] = true;
