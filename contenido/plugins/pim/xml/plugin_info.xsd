@@ -91,7 +91,7 @@
                             <xsd:attribute name="area" type="xsd:string" use="required" />
                             <xsd:attribute name="filetype" type="xsd:string" default="main" />
                             <xsd:attribute name="name" type="xsd:string" use="required" />
-                            <xsd:attribute name="frameId" type="xsd:integer" />
+                            <xsd:attribute name="frameId" type="xsd:integer" use="required" />
                         </xsd:extension>
                     </xsd:simpleContent>
                 </xsd:complexType>
