@@ -19,18 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // initializing classes
 $page = new cGuiPage('pim_overview', 'pim');
 
-// DEBUG
-if ($_REQUEST['pim_view'] == "newinstall") {
-    $tempXml = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . 'linkchecker/plugin.xml');
-    $setup = new PimPluginSetup($tempXml);
-    $setup->_setMode('extracted');
-    $new = new PimPluginSetupInstall();
-    $new->install();
-
-    exit();
-} else {
-    $setup = new PimPluginSetup();
-}
+$setup = new PimPluginSetup();
 
 // access denied
 if (!$perm->isSysadmin($currentuser)) {
