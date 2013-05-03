@@ -24,17 +24,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cDirHandler {
 
     /**
-     * Creates a new dir
+     * Creates a new dir.
      *
-     * @param string $dirname the name and path of the new dir
-     * @return bool true on success. Otherwise false.
+     * @param string $pathname the name and path of the new dir
+     * @param bool $recursive
+     * @return bool Returns true on success or false on failure.
      */
-    public static function create($dirname) {
-        $success = mkdir($dirname);
-
-        if ($success) {
-            self::setDefaultDirPerms($dirname);
-        }
+    public static function create($pathname, $recursive = false) {
+        $mode = cRegistry::getConfigValue('default_perms', 'directory', 0777);
+        $success = mkdir($pathname, $mode, $recursive);
 
         return $success;
     }
@@ -45,7 +43,7 @@ class cDirHandler {
      * @param string $dirname The path to the directory
      * @throws cInvalidArgumentException if the dir with the given dirname
      *         does not exist
-     * @return bool true on success
+     * @return bool Returns true on success or false on failure.
      */
     public static function remove($dirname) {
         if (!cFileHandler::exists($dirname)) {
@@ -63,7 +61,7 @@ class cDirHandler {
      *        be renamed in the process of moving it
      * @throws cInvalidArgumentException if the dir with the given dirname
      *         does not exist
-     * @return bool true on success
+     * @return bool Returns true on success or false on failure.
      */
     public static function move($dirname, $destination) {
         if (!cFileHandler::exists($dirname)) {
@@ -96,7 +94,7 @@ class cDirHandler {
      * @param int $mode the new access mode : php chmod needs octal value
      * @throws cInvalidArgumentException if the dir with the given dirname
      *         does not exist
-     * @return bool true on success
+     * @return bool Returns true on success or false on failure.
      */
     public static function chmod($dirname, $mode) {
         if (!cFileHandler::exists($dirname)) {
@@ -111,7 +109,7 @@ class cDirHandler {
      * Sets the default directory permissions on the given directory.
      *
      * @param string $dirname the name of the directory
-     * @return boolean true on success or false on failure
+     * @return bool Returns true on success or false on failure.
      */
     public static function setDefaultDirPerms($dirname) {
         $cfg = cRegistry::getConfig();
@@ -124,7 +122,7 @@ class cDirHandler {
      * Deletes a directory and all of its content.
      *
      * @param string $dirname the name of the directory which should be deleted
-     * @return bool true on success or false on failure
+     * @return bool Returns true on success or false on failure.
      */
     public static function recursiveRmdir($dirname) {
         if ($dirname == '') {
@@ -149,5 +147,4 @@ class cDirHandler {
 
         return rmdir($dirname);
     }
-
 }
