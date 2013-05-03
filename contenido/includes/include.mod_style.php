@@ -58,7 +58,6 @@ if (!(int) $client > 0) {
 }
 
 $path = $contenidoModulHandler->getCssPath(); // $cfgClient[$client]['css']['path'];
-                                              // Make automatic a new css file
 
 // ERROR MESSAGE
 if(!$contenidoModulHandler->moduleWriteable('css'))
@@ -67,12 +66,8 @@ if(!$contenidoModulHandler->moduleWriteable('css'))
     $page->render();
     exit();
 }
-//if (!$contenidoModulHandler->createModuleFile('css')) {
-//    $page->displayCriticalError(i18n('Could not create a new css file!'));
-//    $page->render();
-//    return;
-//}
 
+$contenidoModulHandler->createModuleFile('css'); // Make automatic a new css file
 
 if (stripslashes($file)) {
     $sReloadScript = "<script type=\"text/javascript\">
