@@ -43,7 +43,8 @@ class cApiUploadCollection extends ItemCollection {
      *
      * @global int $client
      * @param string $sDirname
-     * @param string $sFilename return cApiUpload
+     * @param string $sFilename
+     * @return cApiUpload
      */
     public function sync($sDirname, $sFilename) {
         global $client;
