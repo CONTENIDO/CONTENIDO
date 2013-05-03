@@ -31,9 +31,19 @@ class cDirHandler {
      * @return bool Returns true on success or false on failure.
      */
     public static function create($pathname, $recursive = false) {
+        // skip if dir already exists (better check with is_dir?)
+        if (!cFileHandler::exists($pathname)) {
+            return true;
+        }
+        // reset umask and store old umask
+        $oldumask = umask(0);
+        // calc mode from setting or default
         $mode = cRegistry::getConfigValue('default_perms', 'directory', 0777);
+        // create dir with given mode
         $success = mkdir($pathname, $mode, $recursive);
-
+        // reset umask to old umask
+        umask($oldumask);
+        // return success
         return $success;
     }
 
