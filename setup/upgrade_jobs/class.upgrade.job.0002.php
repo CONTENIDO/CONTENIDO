@@ -2,15 +2,15 @@
 /**
  * This file contains the upgrade job 2.
  *
- * @package    Setup
+ * @package Setup
  * @subpackage UpgradeJob
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Murat Purc <murat@purc>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Murat Purc <murat@purc>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -102,12 +102,15 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
 
     public function _execute() {
         global $cfg;
-        global $client, $lang, $cfgClient;  // is used in cLayoutHandler below!!!
+        global $client, $lang, $cfgClient; // is used in cLayoutHandler below!!!
 
-        // Makes the new concept of modules (save the modules to the file) save the translation
+        // Makes the new concept of modules (save the modules to the file) save
+                                           // the translation
 
-        // @fixme  Get rid of hacks below
-        // @fixme  Logic below works only for setup, not for upgrade because of different clients and languages
+        // @fixme Get rid of hacks below
+                                           // @fixme Logic below works only for
+                                           // setup, not for upgrade because of
+                                           // different clients and languages
 
         if ($this->_setupType == 'upgrade') {
             $sql = "SHOW COLUMNS FROM %s LIKE 'frontendpath'";
@@ -137,7 +140,12 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         $langBackup = $lang;
 
         foreach ($cfgClient as $iClient => $aClient) {
-            $client = $iClient; //this should work for all clients now
+
+            if ((int) $iClient == 0) {
+                continue;
+            }
+
+            $client = $iClient; // this should work for all clients now
 
             $db2 = getSetupMySQLDBConnection();
 
@@ -176,7 +184,6 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
 
         $client = $clientBackup;
         $lang = $langBackup;
-
     }
 
 }
