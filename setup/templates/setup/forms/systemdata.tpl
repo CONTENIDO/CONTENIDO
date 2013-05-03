@@ -29,8 +29,8 @@
                     <td class="last">{INPUT_DBPREFIX}</td>
                 </tr>
                 <tr>
-                    <td class="first"><div class="description">{LABEL_DBCOLLATION}</div></td>
-                    <td class="last">{INPUT_DBCOLLATION}</td>
+                    <td class="first"><div class="description">{LABEL_DBCHARSET}</div></td>
+                    <td class="last">{INPUT_DBCHARSET}</td>
                 </tr>
             </table>
         </td>

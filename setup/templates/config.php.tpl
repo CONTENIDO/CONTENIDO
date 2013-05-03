@@ -66,13 +66,13 @@ $cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . 'ti
 /* Section 2: Database settings
  * ----------------------------
  *
- * Database settings for MySQL/MySQLi. Note that we don't support other databases.
+ * Database settings for MySQLi/MySQL. Note that we don't support other databases.
  */
 
 /* The prefix for all CONTENIDO system tables, usually 'con' */
 $cfg['sql']['sqlprefix'] = '{MYSQL_PREFIX}';
 
-/* Database extension/driver to use, feasible values are 'mysql' or 'mysqli' */
+/* Database extension/driver to use, feasible values are 'mysqli' or 'mysql' */
 $cfg['database_extension'] = '{DB_EXTENSION}';
 
 /**
@@ -86,7 +86,7 @@ $cfg['db'] = array(
         'database' => '{MYSQL_DB}',   // (string) The database name which you use
         'user'     => '{MYSQL_USER}', // (string) The username to access the database
         'password' => '{MYSQL_PASS}', // (string) The password to access the database
-        'charset'  => '{MYSQL_COLLATION}', // (string) The charset of connection to database
+        'charset'  => '{MYSQL_CHARSET}', // (string) The charset of connection to database
     ),
     'haltBehavior'    => 'report', // (string) Feasible values are 'yes', 'no' or 'report'
     'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
