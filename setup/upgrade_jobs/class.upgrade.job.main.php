@@ -50,8 +50,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
             updateSysadminPassword($this->_oDb, $cfg['sql']['sqlprefix'].'_user', $_SESSION['adminpass'], $_SESSION['adminmail']);
         }
 
-        // Empty code table and set code creation (on update) flag
-        $this->_oDb->query('DELETE FROM %s', $cfg['tab']['code']);
+        // Set code creation (on update) flag
         $this->_oDb->query('UPDATE %s SET createcode = 1', $cfg['tab']['cat_art']);
 
         // Convert old category start articles to new format, we don't support

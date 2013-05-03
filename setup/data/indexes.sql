@@ -29,10 +29,6 @@ ALTER TABLE !PREFIX!_cat_lang ADD INDEX idlang_3 (idlang, idcat);
 
 ALTER TABLE !PREFIX!_cat_tree ADD INDEX idcat (idcat);
 
-ALTER TABLE !PREFIX!_code ADD INDEX idcatart (idcatart);
-ALTER TABLE !PREFIX!_code ADD INDEX idlang (idlang);
-ALTER TABLE !PREFIX!_code ADD INDEX idclient (idclient);
-
 ALTER TABLE !PREFIX!_container ADD INDEX idtpl (idtpl);
 ALTER TABLE !PREFIX!_container ADD INDEX number (number);
 
