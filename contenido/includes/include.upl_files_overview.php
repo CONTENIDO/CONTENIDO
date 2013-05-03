@@ -570,7 +570,7 @@ while ($item = $uploads->next()) {
 
 if ($rownum == 0) {
 
-    header('Location: ' . cRegistry::getBackendUrl() . 'main.php?area=upl_upload&frame=4&path=' . $path . '&contenido=' . $contenido);
+    header('Location: ' . cRegistry::getBackendUrl() . 'main.php?area=upl_upload&frame=4&path=' . $path . '&contenido=' . $contenido . '&appendparameters=' . $appendparameters);
 }
 
 if ($sortmode == "ASC") {
