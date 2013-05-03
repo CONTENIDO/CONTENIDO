@@ -147,7 +147,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
     }
 
     if (count($messages) > 0) {
-        $oPage->displayWarning(implode("<br>", $messages)) . "<br>";
+        $page->displayWarning(implode("<br>", $messages)) . "<br>";
     }
 
 
