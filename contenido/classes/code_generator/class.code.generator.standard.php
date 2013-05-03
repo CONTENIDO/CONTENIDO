@@ -51,7 +51,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $data = $this->_getTemplateData();
         $idlay = $data['idlay'];
         $idtpl = $data['idtpl'];
-        $this->_tplName = $data['name'];
+        $this->_tplName = cApiStrCleanURLCharacters($data['name']);
 
         // List of used modules
         $a_d = conGetUsedModules($idtpl);
