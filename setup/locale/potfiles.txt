@@ -14,6 +14,7 @@
 ./lib/functions.safe_mode.php
 ./lib/functions.system.php
 ./lib/include.index.controller.php
+./upgrade_jobs/class.upgrade.job.0011.php
 ./upgrade_jobs/class.upgrade.job.0006.php
 ./upgrade_jobs/class.upgrade.job.0008.php
 ./upgrade_jobs/class.upgrade.job.0009.php
@@ -40,7 +41,6 @@
 ./steps/forms/systemtest.php
 ./steps/forms/clientadjust.php
 ./steps/forms/installer.php
-./steps/forms/additionalplugins.php
 ./steps/forms/systemdata.php
 ./steps/forms/adminpassword.php
 ./steps/forms/pathinfo.php
