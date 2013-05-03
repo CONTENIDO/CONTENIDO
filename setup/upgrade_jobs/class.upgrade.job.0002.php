@@ -61,7 +61,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
     private function _convertModulesToFile() {
         global $cfg;
 
-        $db = clone $this->_oDb;
+        $db = getSetupMySQLDBConnection();
 
         if ($this->_setupType == 'upgrade') {
             // clean name of module (Umlaute, not allowed character ..),
