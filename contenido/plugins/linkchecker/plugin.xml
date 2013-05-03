@@ -28,7 +28,6 @@
 
         <frames>
             <frame area="linkchecker" filetype="main" name="linkchecker/includes/include.linkchecker.php" frameId="4" />
-            <frame area="linkchecker" filetype="main" name="linkchecker/includes/include.linkchecker_right_top.php" />
             <frame area="lc_whitelist" filetype="main" name="linkchecker/includes/include.linkchecker_whitelist.php" frameId="4" />
         </frames>
 
