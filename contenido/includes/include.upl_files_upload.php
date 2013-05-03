@@ -44,6 +44,10 @@ if ((cFileHandler::writeable($cfgClient[$client]["upl"]["path"] . $path) || cApi
     $sDisplayPath = generateDisplayFilePath($mpath, 85);
     $page->set("s", "DISPLAY_PATH", $sDisplayPath);
 
+    if($_REQUEST['appendparameters'] == "imagebrowser") {
+        $page->set("s", "APPENDPARAMETERS", "imagebrowser");
+    }
+
     $page->set("s", "PATH", $path);
     $page->set("s", "MAX_FILE_SIZE", min($maxUploadSize, $maxPostSize));
 } else {
