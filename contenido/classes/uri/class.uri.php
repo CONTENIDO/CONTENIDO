@@ -257,6 +257,9 @@ class cUri {
             return true;
         } elseif (($path == $clientPath && ($baseName == 'front_content.php' || $baseName == ''))) {
             return true;
+        } elseif ($path == '' && $baseName !== 'front_content.php' && $baseName == $clientPath) {
+            // If url is e. g. "/cms/"
+            return true;
         } else {
             return false;
         }
