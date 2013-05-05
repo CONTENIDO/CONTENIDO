@@ -271,9 +271,25 @@ final class Contenido_Url {
             }
         }
 
-        $path = $aComponents['path'];
-        if ($path == '/' || strpos($path, 'front_content.php') === 0 || 
-            strpos($path, '/front_content.php') > 0 || ($clientPath !== '' && $clientPath == $path)) {
+        // Use pathinfo to get the path part (dirname) of the url
+        $pathinfo = pathinfo($aComponents['path']);
+        $baseName = $pathinfo['basename'];
+        $path = $pathinfo['dirname'];
+        $path = str_replace('\\', '/', $path);
+        if ($path == '.') {
+            $path = '';
+        }
+
+        // Remove leading/ending slashes
+        $path = trim($path, '/');
+        $clientPath = trim($clientPath, '/');
+
+        if (($path == '' && ($baseName == 'front_content.php' || $baseName == ''))) {
+            return true;
+        } elseif (($path == $clientPath && ($baseName == 'front_content.php' || $baseName == ''))) {
+            return true;
+        } elseif ($path == '' && $baseName !== 'front_content.php' && $baseName == $clientPath) {
+            // If url is e. g. "/cms/"
             return true;
         } else {
             return false;
