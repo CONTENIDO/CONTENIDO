@@ -23,7 +23,7 @@ class ContenidoSecurityAllTest
     public static function suite()
     {
         $suite = new PHPUnit_Framework_TestSuite('Contenido Security');
-        $suite->addTestSuite('Contenido_SecurityTest');
+        $suite->addTestSuite('cSecurityTest');
         return $suite;
     }
 

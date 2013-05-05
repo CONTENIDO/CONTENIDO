@@ -1,6 +1,6 @@
 <?php
 /**
- * Unittest for Contenido_Url class.
+ * Unittest for cUri class.
  *
  * @author      Murat Purc <murat@purc.de>
  * @date        26.12.2008
@@ -11,7 +11,7 @@
 
 
 /**
- * Class to test Contenido_Url
+ * Class to test cUri
  *
  * @author      Murat Purc <murat@purc.de>
  * @date        26.12.2008
@@ -19,7 +19,7 @@
  * @package     Contenido_Frontend
  * @subpackage  Url
  */
-class Contenido_UrlTest extends PHPUnit_Framework_TestCase
+class cUriTest extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -36,10 +36,10 @@ class Contenido_UrlTest extends PHPUnit_Framework_TestCase
             'error'  => '1'
         );
 
-        $url = Contenido_Url::getInstance()->buildRedirect($aParams);
+        $url = cUri::getInstance()->buildRedirect($aParams);
 
         $isToBeUrl = $GLOBALS['cfgClient'][$GLOBALS['client']]['path']['htmlpath']
-                   . 'front_content.php?idcat=31&idart=36&client=1&lang=1&error=1';
+                   . 'front_content.php?idcat=2&idart=15&client=1&lang=1&error=1';
 
         $this->assertEquals($isToBeUrl, $url);
     }
@@ -59,7 +59,6 @@ class Contenido_UrlTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($isToBeUrl, $redirectUrl);
     }
-
 
     /**
      * Test url creation to internal homepage without existing parameter idart/idcat.
@@ -113,7 +112,6 @@ class Contenido_UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($isToBeUrl, $redirectUrl);
     }
 
-
     /**
      * Test url creation to external pages (article redirects)
      */
@@ -127,7 +125,6 @@ class Contenido_UrlTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($isToBeUrl, $redirectUrl);
     }
-
 
     /**
      * Test url creation to unidentifiable internal pages (article redirects)
@@ -143,10 +140,10 @@ class Contenido_UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($isToBeUrl, $redirectUrl);
     }
 
-
     private function _createArticleRedirectUrl($redirectUrl)
     {
-        $oUrl = Contenido_Url::getInstance();
+        $oUrl = cUri::getInstance();
+
         if ($oUrl->isIdentifiableFrontContentUrl($redirectUrl)) {
             // perform urlbuilding only for identified internal urls
             $aUrl = $oUrl->parse($redirectUrl);

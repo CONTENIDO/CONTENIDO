@@ -57,8 +57,8 @@ class ContenidoFrontendAllowEditTest extends PHPUnit_Framework_TestCase
     {
         $this->_lang = $GLOBALS['lang'];
 
-        if (!$user = ContenidoTestHelper::getUserByUsername('admin')) {
-            $this->fail('Couldn\'t get user_id of user "admin".');
+        if (!$user = ContenidoTestHelper::getUserByUsername('sysadmin')) {
+            $this->fail('Couldn\'t get user_id of user "sysadmin".');
             return;
         }
         $this->_uid = $user->user_id;

@@ -19,13 +19,15 @@ class ContenidoTestHelper
 
     /**
      * Returns the user recordset by username
+     * @param string $username 
      * @return  stdClass|null
      */
-    public static function getUserByUsername()
+    public static function getUserByUsername($username = '')
     {
+        $username = (!empty($username)) ? $username : 'sysadmin';
         $db = self::_getDatabase();
-        $sql = 'SELECT * FROM ' . $GLOBALS['cfg']['tab']['phplib_auth_user_md5'] . ' WHERE username="admin"';
-        if (!$db->query($sql)) {
+        $sql = "SELECT * FROM `%s` WHERE username = '%s'";
+        if (!$db->query($sql, $GLOBALS['cfg']['tab']['user'], $username)) {
             return null;
         } elseif (!$user = $db->getResultObject()) {
             return null;
