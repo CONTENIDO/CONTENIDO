@@ -1,22 +1,30 @@
 <?php
 /**
+ * This file contains the TestSuite for uri.
+ *
+ * @package          Testing
+ * @subpackage       Test_Url
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
+ */
+
+require_once('bootstrap.php');
+TestSuiteHelper::loadFeSuite('Url');
+
+/**
  * Testsuite for Contenido_Url related tests.
  *
  * Call this from cmd-line as follows:
  * ...>phpunit UrlTestSuite
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        26.12.2008
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  TestSuite
+ * @package          Testing
+ * @subpackage       Test_Url
  */
-
-
-require_once('bootstrap.php');
-TestSuiteHelper::loadFeSuite('Url');
-
-
 class ContenidoUrlAllTest
 {
 

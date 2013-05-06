@@ -1,15 +1,23 @@
 <?php
 /**
- * Testsuite loader for Contenido tests.
+ * This file contains the Testsuite loader for Contenido tests.
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        03.04.2008
- * @category    Testing
- * @package     Contenido
- * @subpackage  Helper
+ * @package          Testing
+ * @subpackage       Helper
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-
+/**
+ * Class TestSuiteHelper
+ * @package          Testing
+ * @subpackage       Helper
+ */
 class TestSuiteHelper
 {
 

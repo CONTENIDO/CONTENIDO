@@ -1,22 +1,30 @@
 <?php
 /**
+ * This file contains the TestSuite for chains.
+ *
+ * @package          Testing
+ * @subpackage       Test_Chains
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
+ */
+
+require_once('bootstrap.php');
+TestSuiteHelper::loadFeSuite('Chains');
+
+/**
  * Testsuite for Contenido chains related tests.
  *
  * Call this from cmd-line as follows:
  * ...>phpunit ChainsTestSuite
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        03.04.2009
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  TestSuite
+ * @package          Testing
+ * @subpackage       Test_Chains
  */
-
-
-require_once('bootstrap.php');
-TestSuiteHelper::loadFeSuite('Chains');
-
-
 class ContenidoChainsAllTest
 {
 

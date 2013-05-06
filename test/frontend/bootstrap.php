@@ -5,13 +5,16 @@
  * This file should included at least once. It initializes the UnitTest Framework
  * and also CONTENIDO frontend.
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        26.12.2008
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Bootstrap
+ * @package          Testing
+ * @subpackage       Bootstrap
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
 
 ################################################################################
 # UnitTest Framework initialization

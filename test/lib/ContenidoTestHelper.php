@@ -1,12 +1,22 @@
 <?php
 /**
- * Contenido test helper class.
+ * This file contains the test helper class.
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        03.04.2008
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Helper
+ * @package          Testing
+ * @subpackage       Helper
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
+ */
+
+/**
+ * Contenido test helper class.
+ * @package          Testing
+ * @subpackage       Helper
  */
 class ContenidoTestHelper
 {

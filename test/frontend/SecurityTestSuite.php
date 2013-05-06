@@ -1,22 +1,30 @@
 <?php
 /**
+ * This file contains the TestSuite for security.
+ *
+ * @package          Testing
+ * @subpackage       Test_Security
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
+ */
+
+require_once('bootstrap.php');
+TestSuiteHelper::loadFeSuite('Security');
+
+/**
  * Testsuite for security related tests.
  *
  * Call this from cmd-line as follows:
  * ...>phpunit SecurityTestSuite
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        20.05.2010
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Security
+ * @package          Testing
+ * @subpackage       Test_Security
  */
-
-
-require_once('bootstrap.php');
-TestSuiteHelper::loadFeSuite('Security');
-
-
 class ContenidoSecurityAllTest
 {
 
