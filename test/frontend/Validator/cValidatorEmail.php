@@ -1,12 +1,16 @@
 <?php
 /**
- * Unittest to validate email.
+ * This file contains tests for the mail validator.
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        17.11.2011
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Validator
+ * @package          Testing
+ * @subpackage       Test_Validator
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 /**
@@ -15,11 +19,8 @@
  * Most of the code below s taken over from
  * http://code.google.com/p/php-email-address-validation/
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        17.11.2011
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Validator
+ * @package          Testing
+ * @subpackage       Test_Validator
  */
 class cValidatorEmailTest extends PHPUnit_Framework_TestCase
 {
@@ -47,6 +48,7 @@ class cValidatorEmailTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
+        global $cfg;
         unset($this->_validator, $cfg['validator']['email']);
     }
 
