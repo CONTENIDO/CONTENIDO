@@ -21,6 +21,7 @@ cInclude('includes', 'functions.con.php');
 // @fixme: Document me!
 function modEditModule($idmod, $name, $description, $input, $output, $template, $type = '') {
     global $db, $client, $cfgClient, $auth, $cfg, $sess, $area, $area_tree, $perm, $frame;
+	$description = stripslashes($description);
 
     $date = date('Y-m-d H:i:s');
     $author = $auth->auth['uname'];
