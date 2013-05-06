@@ -1,25 +1,25 @@
 <?php
 /**
- * Unittest for class cSecurity
+ * This file contains tests for the cUri class.
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        20.05.2010
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Security
+ * @package          Testing
+ * @subpackage       Test_Security
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
 
 /**
  * Class to check cSecurity class
  *
  * @todo Implement more tests
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        20.05.2010
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Security
+ * @package          Testing
+ * @subpackage       Test_Security
  */
 class cSecurityTest extends PHPUnit_Framework_TestCase
 {
