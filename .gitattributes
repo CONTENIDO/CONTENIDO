@@ -1,9 +1,9 @@
 * text=auto !eol
 /CHANGELOG.txt -text
-/INSTALL.txt -text
+/INSTALL.pdf -text
 /LICENSE.txt -text
 /README.txt -text
-/UPGRADE.txt -text
+/UPGRADE.pdf -text
 cms/cache/code/.htaccess -text
 cms/cache/index.php -text
 cms/css/contenido_backend.css -text svneol=unset#text/plain
