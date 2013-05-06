@@ -3,7 +3,7 @@
 /**
  * This file contains Plugin Manager Backend View.
  *
- * @package CONTENIDO Plugins
+ * @package Plugin
  * @subpackage PluginManager
  * @version SVN Revision $Rev:$
  *

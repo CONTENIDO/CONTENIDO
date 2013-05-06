@@ -2,7 +2,7 @@
 /**
  * This file contains Plugin Manager Relations recipient class.
  *
- * @package CONTENIDO Plugins
+ * @package Plugin
  * @subpackage PluginManager
  * @version SVN Revision $Rev:$
  *

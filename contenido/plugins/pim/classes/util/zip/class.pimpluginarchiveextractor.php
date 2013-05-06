@@ -1,8 +1,8 @@
 <?php
 /**
- * Extractor for plugin archive files
+ * This file contains the Extractor for plugin archive files
  *
- * @package     CONTENIDO Plugins
+ * @package     Plugin
  * @subpackage  PluginManager
  * @version SVN Revision $Rev:$
  * @author Frederic Schneider
@@ -12,9 +12,14 @@
  * @link http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Extractor for plugin archive files
+ *
+ * @package     Plugin
+ * @subpackage  PluginManager
+ */
 class PimPluginArchiveExtractor {
 
     /**
