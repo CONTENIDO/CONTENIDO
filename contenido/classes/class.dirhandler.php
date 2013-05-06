@@ -32,7 +32,7 @@ class cDirHandler {
      */
     public static function create($pathname, $recursive = false) {
         // skip if dir already exists (better check with is_dir?)
-        if (!cFileHandler::exists($pathname)) {
+        if (cFileHandler::exists($pathname)) {
             return true;
         }
         // reset umask and store old umask
