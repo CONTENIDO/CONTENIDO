@@ -3,7 +3,7 @@
  * This file contains the class for workflow task collections.
  *
  * @package Plugin
- * @subpackage Worklow
+ * @subpackage Workflow
  * @version SVN Revision $Rev:$
  *
  * @author Timo Hummel
@@ -54,7 +54,7 @@ class WorkflowTasks extends ItemCollection {
  * Class WorkflowTask
  * Class for a single workflow task item
  *
- * @package CONTENIDO Plugins
+ * @package Plugin
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1

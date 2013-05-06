@@ -3,7 +3,7 @@
  * This file contains the workflow editing functions.
  *
  * @package Plugin
- * @subpackage Worklow
+ * @subpackage Workflow
  * @version SVN Revision $Rev:$
  *
  * @author Timo Hummel

@@ -3,7 +3,7 @@
  * This file contains the building of the third navigation layer.
  *
  * @package Plugin
- * @subpackage Worklow
+ * @subpackage Workflow
  * @version SVN Revision $Rev:$
  *
  * @author Timo Hummel

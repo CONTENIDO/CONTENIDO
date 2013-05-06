@@ -3,7 +3,7 @@
  * This file contains the advances to the next step if the time limit is "over".
  *
  * @package Plugin
- * @subpackage Worklow
+ * @subpackage Workflow
  * @version SVN Revision $Rev:$
  *
  * @author Timo Hummel

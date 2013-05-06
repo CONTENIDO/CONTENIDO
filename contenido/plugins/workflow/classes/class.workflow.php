@@ -3,7 +3,7 @@
  * This file contains the Workflow management class.
  *
  * @package Plugin
- * @subpackage Worklow
+ * @subpackage Workflow
  * @version SVN Revision $Rev:$
  *
  * @author Timo Hummel
@@ -112,7 +112,7 @@ class Workflows extends ItemCollection {
  * Class Workflow
  * Class for a single workflow item
  *
- * @package CONTENIDO Plugins
+ * @package Plugin
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1

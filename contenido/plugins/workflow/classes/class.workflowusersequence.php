@@ -3,7 +3,7 @@
  * This file contains the class for workflow user sequence managements.
  *
  * @package Plugin
- * @subpackage Worklow
+ * @subpackage Workflow
  * @version SVN Revision $Rev:$
  *
  * @author Timo Hummel
@@ -137,7 +137,7 @@ class WorkflowUserSequences extends ItemCollection {
  * Class WorkflowUserSequence
  * Class for a single workflow item
  *
- * @package CONTENIDO Plugins
+ * @package Plugin
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1

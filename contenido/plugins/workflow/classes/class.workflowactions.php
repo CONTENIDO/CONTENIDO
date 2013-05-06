@@ -3,7 +3,7 @@
  * This file contains the management of per-workflowitem actions.
  *
  * @package Plugin
- * @subpackage Worklow
+ * @subpackage Workflow
  * @version SVN Revision $Rev:$
  *
  * @author Timo Hummel
@@ -87,7 +87,7 @@ class WorkflowActions extends ItemCollection {
  * Class WorkflowAction
  * Class for a single workflow action
  *
- * @package CONTENIDO Plugins
+ * @package Plugin
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1

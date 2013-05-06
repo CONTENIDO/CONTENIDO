@@ -3,7 +3,7 @@
  * This file contains the workflow task overview mask.
  *
  * @package Plugin
- * @subpackage Worklow
+ * @subpackage Workflow
  * @version SVN Revision $Rev:$
  *
  * @author Timo Hummel
@@ -212,7 +212,7 @@ if (is_array($isCurrent)) {
 }
 
 if ($i > 0) {
-    $tpl->set('s', 'NO_ARTICLES_ROW');
+    $tpl->set('s', 'NO_ARTICLES_ROW', '');
 } else {
     $sRow = '<tr><td colspan="8" class="bordercell">' . i18n("No article found.") . '</td></tr>';
     $tpl->set('s', 'NO_ARTICLES_ROW', $sRow);

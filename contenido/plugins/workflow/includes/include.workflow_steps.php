@@ -3,7 +3,7 @@
  * This file contains the workflow allocation management.
  *
  * @package Plugin
- * @subpackage Worklow
+ * @subpackage Workflow
  * @version SVN Revision $Rev:$
  *
  * @author unkown
@@ -277,6 +277,8 @@ function editWorkflowStep($idworkflowitem) {
     $form->add(i18n("Step name", "workflow"), $oTxtStep->render());
     $oTxtStepDesc = new cHTMLTextarea("wfstepdescription", $stepdescription, 60, 10);
     $form->add(i18n("Step description", "workflow"), $oTxtStepDesc->render());
+
+    $actions = '';
 
     foreach ($availableWorkflowActions as $key => $value) {
         $oCheckbox = new cHTMLCheckbox("wfactions[" . $key . "]", "1", "wfactions[" . $key . "]1", $workflowactions->get($id, $key));

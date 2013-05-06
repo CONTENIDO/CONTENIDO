@@ -3,7 +3,7 @@
  * This file contains the workflow functions.
  *
  * @package Plugin
- * @subpackage Worklow
+ * @subpackage Workflow
  * @version SVN Revision $Rev:$
  *
  * @author Timo Hummel
@@ -192,10 +192,6 @@ function setUserSequence($idartlang, $defaultidworkflow) {
         $newObj = $wfaa->create($idartlang);
 
         if (!$newObj) {
-            // Try to load
-            $newObj = new WorkflowArtAllocation();
-
-            echo $wfaa->lasterror;
             return false;
         }
 
@@ -246,10 +242,6 @@ function getCurrentUserSequence($idartlang, $defaultidworkflow) {
             $newObj = $wfaa->create($idartlang);
 
             if (!$newObj) {
-                // Try to load
-                $newObj = new WorkflowArtAllocation();
-
-                echo $wfaa->lasterror;
                 return false;
             }
         }

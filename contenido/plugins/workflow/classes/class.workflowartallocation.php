@@ -3,7 +3,7 @@
  * This file contains the class for workflow art allocation management.
  *
  * @package Plugin
- * @subpackage Worklow
+ * @subpackage Workflow
  * @version SVN Revision $Rev:$
  *
  * @author Timo Hummel
@@ -65,7 +65,7 @@ class WorkflowArtAllocations extends ItemCollection {
  * Class WorkflowArtAllocation
  * Class for a single workflow allocation item
  *
- * @package CONTENIDO Plugins
+ * @package Plugin
  * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
