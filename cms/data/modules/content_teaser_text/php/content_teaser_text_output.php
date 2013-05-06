@@ -4,7 +4,9 @@
  * description: standard teaser - text teaser
  *
  * @package Module
- * @subpackage content_teaser
+ * @subpackage ContentTeaserText
+ * @version SVN Revision $Rev:$
+ *
  * @author timo.trautmann@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt

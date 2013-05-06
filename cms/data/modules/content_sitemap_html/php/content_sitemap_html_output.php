@@ -3,7 +3,9 @@
 /**
  *
  * @package Module
- * @subpackage content_sitemap_html
+ * @subpackage ContentSitemapHtml
+ * @version SVN Revision $Rev:$
+ *
  * @version SVN Revision $Rev:$
  * @author marcus.gnass@4fb.de
  * @author alexander.scheider@4fb.de
@@ -24,7 +26,7 @@ $level = $art->getContent('CMS_TEXT', 2);
 $article = $art->getContent('CMS_TEXT', 3);
 
 // get smarty template instance
-$tpl = Contenido_SmartyWrapper::getInstance();
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
 
 // assign module translations
@@ -60,7 +62,7 @@ if (false === is_numeric($content) || false === is_numeric($level)) {
     $tpl->assign('tree', $tree);
 }
 
-echo $tpl->fetch('content_sitemap_html/template/get.tpl');
+$tpl->display('content_sitemap_html/template/get.tpl');
 
 /**
  * Adds articles to categories in given array $tree as returned by

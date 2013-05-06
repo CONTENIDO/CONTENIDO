@@ -4,7 +4,9 @@
  * description: social media configurator
  *
  * @package Module
- * @subpackage config_social_media
+ * @subpackage ConfigSocialMedia
+ * @version SVN Revision $Rev:$
+ *
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -46,15 +48,10 @@ if (cRegistry::isBackendEditMode()) {
     );
 
     // use smarty template to output header text
-    $tpl = Contenido_SmartyWrapper::getInstance();
-    global $force;
-    if (1 == $force) {
-        $tpl->clearAllCache();
-    }
+    $tpl = cSmartyFrontend::getInstance();
     $tpl->assign('label', mi18n("LABEL_SOCIAL_MEDIA"));
     $tpl->assign('items', $items);
     $tpl->display('get.tpl');
-
 }
 
 ?>

@@ -4,7 +4,9 @@
  * description: standard date
  *
  * @package Module
- * @subpackage content_date
+ * @subpackage ContentDate
+ * @version SVN Revision $Rev:$
+ *
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -27,11 +29,7 @@ if (cRegistry::isBackendEditMode()) {
 }
 
 // use smarty template to output header text
-$tpl = Contenido_SmartyWrapper::getInstance();
-global $force;
-if (1 == $force) {
-    $tpl->clearAllCache();
-}
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('label', $label);
 $tpl->assign('date', $date);
 $tpl->display('get.tpl');

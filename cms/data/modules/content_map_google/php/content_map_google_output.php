@@ -4,6 +4,9 @@
  * description: google map
  *
  * @package Module
+ * @subpackage ContentMapGoogle
+ * @version SVN Revision $Rev:$
+ *
  * @author alexander.scheider@4fb.de
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
@@ -12,7 +15,7 @@
  * @link http://www.contenido.org
  */
 
-$tpl = Contenido_SmartyWrapper::getInstance();
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
 $tpl->assign('trans', array(
     'header' => mi18n("HEADER"),
@@ -28,8 +31,6 @@ $tpl->assign('lat', "CMS_TEXT[602]");
 $tpl->assign('lng', "CMS_TEXT[603]");
 $tpl->assign('markerTitle', "CMS_HTML[604]");
 $tpl->assign('way', "CMS_HTML[605]");
-
-// fetch template content
-echo $tpl->fetch('get.tpl');
+$tpl->display('get.tpl');
 
 ?>

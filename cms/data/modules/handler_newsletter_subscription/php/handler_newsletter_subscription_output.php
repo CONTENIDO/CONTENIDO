@@ -2,15 +2,15 @@
 /**
  * Description: Newsletter handler outout
  *
- * @version 1.0.0
+ * @package Module
+ * @subpackage HandlerNewsletterSubscription
+ * @version SVN Revision $Rev:$
+ *
  * @author unknown
  * @copyright four for business AG <www.4fb.de>
- *
- *            {@internal
- *            created unknown
- *            $Id: newsletter_handler_output.php 3602 2012-10-26 21:26:16Z
- *            xmurrix $
- *            }}
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (!class_exists('cNewsletterJobCollection')) {
@@ -44,36 +44,16 @@ if (!class_exists('cNewsletterJobCollection')) {
         'JoinMultiple' => $oClientLang->getProperty('newsletter', 'joinmultiple'),
         'JoinGroups' => $oClientLang->getProperty('newsletter', 'joingroups'),
         'JoinMessageType' => $oClientLang->getProperty('newsletter', 'joinmessagetype'),
-        'FrontendLink' => $oClient->getProperty('newsletter', 'frontendlink'), // Note:
-                                                                                  // Stored
-                                                                                  // for
-                                                                                  // client,
-                                                                                  // as
-                                                                                  // frontendusers
-                                                                                  // are
-                                                                                  // language
-                                                                                  // independent
+        // Note: Stored for client, as frontendusers are language independent
+        'FrontendLink' => $oClient->getProperty('newsletter', 'frontendlink'),
         'FrontendConfirm' => "CMS_VALUE[5]",
         'FrontendDel' => "CMS_VALUE[6]",
-        'SenderEMail' => $oClient->getProperty('global', 'sender-email'), // This
-                                                                              // one
-                                                                              // could
-                                                                              // be
-                                                                              // recycled
-                                                                              // by
-                                                                              // other
-                                                                              // modules...
+        // This one could be recycled by other modules...
+        'SenderEMail' => $oClient->getProperty('global', 'sender-email'),
         'HandlerID' => $oClientLang->getProperty('newsletter', 'idcatart')
     );
 
     $sTemplate = 'get.tpl';
-
-    $oPage = Contenido_SmartyWrapper::getInstance();
-
-    global $force;
-    if (1 == $force) {
-        $oPage->clearAllCache();
-    }
 
     // If there is no selection option set or if no groups has been selected,
     // activate option Default
@@ -125,9 +105,8 @@ if (!class_exists('cNewsletterJobCollection')) {
                     $iSelCount = count($_POST['selNewsletterGroup']);
 
                     if ($iSelCount == 0) {
-                        $recipient = $oRecipients->create($sEMail, $sName, 0, "", $iMessageType); // No
-                                                                                                  // group
-                                                                                                  // selected
+                        // No group selected
+                        $recipient = $oRecipients->create($sEMail, $sName, 0, "", $iMessageType);
                     } else {
                         if ($iSelCount > 1 && $aSettings['JoinMultiple'] != "enabled") {
                             $sMessage = mi18n("SELECT_ONE_GROUP");
@@ -184,71 +163,24 @@ if (!class_exists('cNewsletterJobCollection')) {
                         $oFrontendUsers = new cApiFrontendUserCollection();
 
                         if (!$oFrontendUsers->userExists($sEMail)) {
-                            if ($frontenduser = $oFrontendUsers->create($sEMail)) { // it's
-                                                                                    // "frontenduser"
-                                                                                    // (instead
-                                                                                    // of
-                                                                                    // oFrontendUser)
-                                                                                    // for
-                                                                                    // plugins...
-                                                                                    // Add
-                                                                                    // here
-                                                                                    // code,
-                                                                                    // if
-                                                                                    // you
-                                                                                    // like
-                                                                                    // to
-                                                                                    // store
-                                                                                    // additional
-                                                                                    // information
-                                                                                    // per
-                                                                                    // >frontenduser<
-                                                                                    // Example:
-                                                                                    // $frontenduser->setProperty("contact",
-                                                                                    // "firstname",
-                                                                                    // $_REQUEST["firstname"]);
-                                                                                    // contact/firstname
-                                                                                    // have
-                                                                                    // to
-                                                                                    // match
-                                                                                    // the
-                                                                                    // values
-                                                                                    // used
-                                                                                    // in
-                                                                                    // the
-                                                                                    // firstname-frontenduser-plugin
-                                                                                    // $_REQUEST["firstname"]
-                                                                                    // contains
-                                                                                    // the
-                                                                                    // data
-                                                                                    // from
-                                                                                    // the
-                                                                                    // input-field
-                                                                                    // firstname
-                                                                                    // in
-                                                                                    // the
-                                                                                    // Form
-                                                                                    // module
-                                                                                    // (->
-                                                                                    // there
-                                                                                    // has
-                                                                                    // to
-                                                                                    // be
-                                                                                    // a
-                                                                                    // field
-                                                                                    // with
-                                                                                    // this
-                                                                                    // name)
-                                                                                    // Note:
-                                                                                    // You
-                                                                                    // should
-                                                                                    // check
-                                                                                    // the
-                                                                                    // values
-                                                                                    // you
-                                                                                    // get
-                                                                                    // (safety)!!!
-
+                            if ($frontenduser = $oFrontendUsers->create($sEMail)) {
+                                // it's "frontenduser" (instead of
+                                // oFrontendUser) for plugins...
+                                // Add here code, if you like to store
+                                // additional information per >frontenduser<
+                                // Example:
+                                // $frontenduser->setProperty("contact",
+                                // "firstname", $_REQUEST["firstname"]);
+                                // contact/firstname have to match the values
+                                // used in the
+                                // firstname-frontenduser-plugin
+                                // $_REQUEST["firstname"]
+                                // contains the data from the input-field
+                                // firstname in the
+                                // Form module (-> there has to be a field with
+                                // this name)
+                                // Note: You should check the values you get
+                                // (safety)!!!
                                 if ($aSettings['FrontendConfirm'] == "ActivateUser") {
                                     // Inform about frontend user account
                                     // creation
@@ -296,9 +228,9 @@ if (!class_exists('cNewsletterJobCollection')) {
 
         if (($recipient = $oRecipients->next()) !== false) {
             $iID = $recipient->get("idnewsrcp"); // For some reason,
-                                                    // $recipient may get
-                                                    // invalid later on - save
-                                                    // id
+                                                 // $recipient may get
+                                                 // invalid later on - save
+                                                 // id
             $sEMail = $recipient->get("email"); // ... and email
             $recipient->set("confirmed", 1);
             $recipient->set("confirmeddate", date("Y-m-d H:i:s"), false);
@@ -327,7 +259,8 @@ if (!class_exists('cNewsletterJobCollection')) {
 
                 if (($frontenduser = $oFrontendUsers->next()) !== false) {
                     $frontenduser->set("active", 1);
-                    $sPassword = substr(md5(rand()), 0, 8); // Generating password
+                    $sPassword = substr(md5(rand()), 0, 8); // Generating
+                                                            // password
                     $frontenduser->set("password", $sPassword);
                     $frontenduser->store();
 
@@ -389,8 +322,8 @@ _BR ") . $sPassword;
         $oRecipients->query();
 
         if (($recipient = $oRecipients->next()) !== false) {
-            $sEMail = $recipient->get("email"); // Saving recipient e-mail
-                                                // address for frontend account
+            // Saving recipient e-mail address for frontend account
+            $sEMail = $recipient->get("email");
             $oRecipients->delete($recipient->get("idnewsrcp"));
 
             $sMessage = mi18n("EMAIL_ADDRESS_REMOVED");
@@ -421,8 +354,9 @@ _BR ") . $sPassword;
         }
     }
 
-    $oPage->assign('CONTENT', $sMessage);
-    $oPage->display($sTemplate);
+    $tpl = cSmartyFrontend::getInstance();
+    $tpl->assign('CONTENT', $sMessage);
+    $tpl->display($sTemplate);
 }
 
 ?>

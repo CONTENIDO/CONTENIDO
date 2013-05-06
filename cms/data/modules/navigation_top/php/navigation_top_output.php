@@ -4,7 +4,9 @@
  * description: top navigation
  *
  * @package Module
- * @subpackage navigation_top
+ * @subpackage NavigationTop
+ * @version SVN Revision $Rev:$
+ *
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -31,11 +33,7 @@ function navigation_top_filter(cApiCategoryLanguage $categoryLanguage) {
 $path = array_map('navigation_top_filter', $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1));
 
 // use template to display navigation
-$tpl = Contenido_SmartyWrapper::getInstance();
-global $force;
-if (1 == $force) {
-    $tpl->clearAllCache();
-}
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('tree', $tree);
 $tpl->assign('path', $path);
 $tpl->display('get.tpl');

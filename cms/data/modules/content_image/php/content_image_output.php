@@ -4,7 +4,9 @@
  * description: standard image
  *
  * @package Module
- * @subpackage content_image
+ * @subpackage ContentImage
+ * @version SVN Revision $Rev:$
+ *
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -19,9 +21,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $imageSource = "CMS_IMG[1]";
 // get description as content type IMGDESCR with index 1
 $imageDescription = "CMS_IMGDESCR[1]";
-
-// var_dump($imageSource);
-// var_dump($imageDescription);
 
 // get editor as content type IMGEDITOR with index 1
 // skip IMGEDITOR in frontend cause it displays the image too!
@@ -53,11 +52,7 @@ if (cRegistry::isBackendEditMode()) {
 }
 
 // use smarty template to output header text
-$tpl = Contenido_SmartyWrapper::getInstance();
-global $force;
-if (1 == $force) {
-    $tpl->clearAllCache();
-}
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('label', $label);
 $tpl->assign('editor', $imageEditor);
 $tpl->assign('image', $image);

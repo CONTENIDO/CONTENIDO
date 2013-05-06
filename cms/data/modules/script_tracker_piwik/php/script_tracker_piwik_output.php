@@ -3,22 +3,21 @@
  * Description: Piwik Tracking
  *
  * @package Module
- * @subpackage script_tracker_piwik
+ * @subpackage ScriptTrackerPiwik
  * @version SVN Revision $Rev:$
- * @author unkown
- * @copyright four for business AG
+ *
+ * @author simon.sprankel@4fb.de
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
-$url  = getEffectiveSetting('stats', 'piwik_url', '');
+$url = getEffectiveSetting('stats', 'piwik_url', '');
 $site = getEffectiveSetting('stats', 'piwik_site', '');
 
-if ($url != '' && $site != '' && cRegistry::isTrackingAllowed()) {
-    $tpl = Contenido_SmartyWrapper::getInstance();
-    global $force;
-    if (1 == $force) {
-        $tpl->clearAllCache();
-    }
+if (0 < strlen(trim($url)) && 0 < strlen(trim($site)) && cRegistry::isTrackingAllowed()) {
+    $tpl = cSmartyFrontend::getInstance();
     $tpl->assign('url', $url);
     $tpl->assign('site', $site);
     $tpl->display('get.tpl');

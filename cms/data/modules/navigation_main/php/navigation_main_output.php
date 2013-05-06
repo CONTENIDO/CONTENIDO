@@ -4,7 +4,9 @@
  * description: main navigation
  *
  * @package Module
- * @subpackage navigation_main
+ * @subpackage NavigationMain
+ * @version SVN Revision $Rev:$
+ *
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -31,11 +33,7 @@ function navigation_main_filter(cApiCategoryLanguage $categoryLanguage) {
 $path = array_map('navigation_main_filter', $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1));
 
 // use template to display navigation
-$tpl = Contenido_SmartyWrapper::getInstance();
-global $force;
-if (1 == $force) {
-    $tpl->clearAllCache();
-}
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('ulId', 'navigation');
 $tpl->assign('tree', $tree);
 $tpl->assign('path', $path);

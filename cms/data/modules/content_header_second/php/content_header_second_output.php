@@ -5,7 +5,9 @@
  * Header will not be output if no or an empty text is given.
  *
  * @package Module
- * @subpackage content_header_second
+ * @subpackage ContentHeaderSecond
+ * @version SVN Revision $Rev:$
+ *
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -34,11 +36,7 @@ if (cRegistry::isBackendEditMode()) {
 }
 
 // use smarty template to output header text
-$tpl = Contenido_SmartyWrapper::getInstance();
-global $force;
-if (1 == $force) {
-    $tpl->clearAllCache();
-}
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('label', $label);
 $tpl->assign('header', $header);
 $tpl->display('get.tpl');

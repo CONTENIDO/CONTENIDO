@@ -3,7 +3,9 @@
 /**
  *
  * @package Module
- * @subpackage search_result
+ * @subpackage ContentSearchResult
+ * @version SVN Revision $Rev:$
+ *
  * @version SVN Revision $Rev:$
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG
@@ -133,7 +135,7 @@ class SearchResultModule {
      */
     public function render() {
 
-        $tpl = Contenido_SmartyWrapper::getInstance();
+        $tpl = cSmartyFrontend::getInstance();
 
         $tpl->assign('label', $this->_label);
         $tpl->assign('searchTerm', $this->_dispSearchTerm);

@@ -1,5 +1,19 @@
 <?php
-$tpl = Contenido_SmartyWrapper::getInstance();
+
+/**
+ * description: google map
+ *
+ * @package Module
+ * @subpackage ContentPictureGallery
+ * @version SVN Revision $Rev:$
+ *
+ * @author timo.trautmann@4fb.de
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ */
+
 $filelistIndex = 1;
 
 $art = new cApiArticleLanguage();
@@ -12,7 +26,6 @@ $files = $filelist->getConfiguredFiles();
 $pictures = array();
 
 if (count($files) > 0) {
-
     foreach ($files as $file) {
         $path = 'upload/' . $file['path'] . '/' . $file['filename'];
 
@@ -26,8 +39,8 @@ if (count($files) > 0) {
     }
 }
 
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('pictures', $pictures);
-
 $tpl->display('picture_gallery.tpl');
 
 if (cRegistry::isBackendEditMode()) {

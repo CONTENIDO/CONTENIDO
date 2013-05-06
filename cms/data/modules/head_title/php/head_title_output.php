@@ -3,9 +3,10 @@
  * This module handles the content of the title element.
  *
  * @package Module
- * @subpackage Title Element
+ * @subpackage HeadTitle
+ * @version SVN Revision $Rev:$
  *
- * @author Dominik Ziegler
+ * @author dominik.ziegler@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -30,7 +31,7 @@ if ($headline != '') {
     $breadcrumb[] = $headline;
 }
 
-if($headline === ''){
+if ($headline === '') {
     $breadcrumb[] = mi18n("STARTPAGE");
 }
 
@@ -39,4 +40,5 @@ array_shift($breadcrumb);
 if (count($breadcrumb) > 0) {
     echo implode(' - ', $breadcrumb);
 }
+
 ?>

@@ -4,7 +4,9 @@
  * description: copyright notice
  *
  * @package Module
- * @subpackage content_copyright_notice
+ * @subpackage ContentCopyrightNotice
+ * @version SVN Revision $Rev:$
+ *
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -17,22 +19,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $configIdart = getEffectiveSetting('footer_config', 'idart', 0);
 
-if (0< $configIdart) {
+if (0 < $configIdart) {
 
     $article = new cApiArticleLanguage($configIdart, true);
+
     $text = $article->getContent('CMS_HTML', 1);
-
     $text = str_replace('{year}', date('Y'), $text);
-    // use smarty template to output header text
-    $tpl = Contenido_SmartyWrapper::getInstance();
-    global $force;
-    if (1 == $force) {
-        $tpl->clearAllCache();
-    }
 
+    // use smarty template to output header text
+    $tpl = cSmartyFrontend::getInstance();
     $tpl->assign('text', $text);
     $tpl->display('get.tpl');
-
 }
 
 ?>

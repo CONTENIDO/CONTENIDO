@@ -4,7 +4,9 @@
  * description: top search form
  *
  * @package Module
- * @subpackage navigation_searchform_top
+ * @subpackage NavigationSearchformTop
+ * @version SVN Revision $Rev:$
+ *
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -52,15 +54,10 @@ if (0 < $searchResultIdart) {
     if (false !== strpos($submit, 'Module translation not found: ')) {
         $submit = '';
     }
-
 }
 
 // use template to display search form
-$tpl = Contenido_SmartyWrapper::getInstance();
-global $force;
-if (1 == $force) {
-    $tpl->clearAllCache();
-}
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('action', $action);
 $tpl->assign('method', $method);
 $tpl->assign('label', $label);

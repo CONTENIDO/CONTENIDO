@@ -6,7 +6,9 @@
  * searchable/idcats
  *
  * @package Module
- * @subpackage search_result
+ * @subpackage ContentSearchResult
+ * @version SVN Revision $Rev:$
+ *
  * @version SVN Revision $Rev:$
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG

@@ -4,7 +4,9 @@
  * description: social media links
  *
  * @package Module
- * @subpackage navigation_social_media
+ * @subpackage NavigationSocialMedia
+ * @version SVN Revision $Rev:$
+ *
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -17,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $configIdart = getEffectiveSetting('footer_config', 'idart', 0);
 
-if (0< $configIdart) {
+if (0 < $configIdart) {
 
     $article = new cApiArticleLanguage($configIdart, true);
 
@@ -31,14 +33,9 @@ if (0< $configIdart) {
     );
 
     // use smarty template to output header text
-    $tpl = Contenido_SmartyWrapper::getInstance();
-    global $force;
-    if (1 == $force) {
-        $tpl->clearAllCache();
-    }
+    $tpl = cSmartyFrontend::getInstance();
     $tpl->assign('url', $url);
     $tpl->display('get.tpl');
-
 }
 
 ?>

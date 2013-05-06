@@ -4,7 +4,9 @@
  * description: standard article doorway configuration
  *
  * @package Module
- * @subpackage content_teaser
+ * @subpackage ContentTeaser
+ * @version SVN Revision $Rev:$
+ *
  * @author timo.trautmann@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -15,7 +17,7 @@
 // assert framework initialization
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$tpl = Contenido_SmartyWrapper::getInstance();
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('isBackendEditMode', cRegistry::isBackendEditMode());
 $tpl->assign('label', mi18n("LABEL_TEASERIMAGE"));
 $tpl->assign('image', "CMS_IMG[100]");

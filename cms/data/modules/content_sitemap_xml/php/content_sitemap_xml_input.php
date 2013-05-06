@@ -3,8 +3,9 @@
 /**
  *
  * @package Module
- * @subpackage
+ * @subpackage ContentSitemapXml
  * @version SVN Revision $Rev:$
+ *
  * @author simon.sprankel@4fb.de
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG

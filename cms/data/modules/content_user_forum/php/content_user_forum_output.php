@@ -1,27 +1,78 @@
 <?php
+
+/**
+ * description:
+ *
+ * @package Module
+ * @subpackage ContentUserForum
+ * @version SVN Revision $Rev:$
+ *
+ * @author claus.schunk@4fb.de
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ */
+
 defined('CON_FRAMEWORK') or die('Illegal call');
+
+/**
+ *
+ * @author claus.schunk
+ */
 class UserForumArticle {
 
-    // Antworten auf beiträge möglich -> Kommentieren Button ausblenden.
+    /**
+     * Antworten auf beiträge möglich -> Kommentieren Button ausblenden.
+     */
     // protected $_dat= 0;
+
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_qoute = true;
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_messageText = '';
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_generate = true;
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_allowDeleting;
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_userLoggedIn;
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_allowedToEditForum;
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_modMode;
 
     /**
      *
      * @access protected
-     * @var Contenido_SmartyWrapper
+     * @var cSmartyFrontend
      */
     protected $_tpl;
 
@@ -83,18 +134,17 @@ class UserForumArticle {
      */
     protected $_collection;
 
+    /**
+     *
+     */
     public function __construct() {
-        $this->_tpl = Contenido_SmartyWrapper::getInstance();
+        $this->_tpl = cSmartyFrontend::getInstance();
         $this->_messageText = '';
         $this->_generate = true;
         $this->_idart = cRegistry::getArticleId();
         $this->_idcat = cRegistry::getCategoryId();
         $this->_idlang = cRegistry::getLanguageId();
         $this->_collection = new ArticleForumCollection();
-        $this->_setConfig();
-    }
-
-    private function _setConfig() {
         $this->_qoute = ($this->_collection->getQuoteState($this->_idart));
         $this->_modMode = ($this->_collection->getModeModeActive($this->_idart));
     }
@@ -104,43 +154,46 @@ class UserForumArticle {
      *
      * @param received $_REQUEST[]
      */
-    function receiveData(array $request) {
-        $this->checkCookie();
-        $this->checkForceState();
+    public function receiveData(array $request) {
+        $this->_checkCookie();
 
         (stristr($auth->auth['perm'], 'admin') === FALSE)? $this->_allowDeleting = false : $this->_allowDeleting = true;
         (getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1')? $bAllowAnonymousforum = true : $bAllowAnonymousforum = false;
 
-        $this->getUser($auth->auth['uid']);
+        $this->_getUser($auth->auth['uid']);
         ($bAllowAnonymousforum || $this->_userLoggedIn && !$bAllowAnonymousforum)? $this->_allowedToEditForum = true : $this->_allowedToEditForum = false;
 
         switch ($_REQUEST['user_forum_action']) {
             // user interaction click on like button
             case 'like_forum':
-                $this->incrementLike();
-                $this->listForum();
+                $this->_incrementLike();
+                $this->_listForum();
                 break;
             // user interaction click on dislike button
             case 'dislike_forum':
-                $this->incrementDislike();
-                $this->listForum();
+                $this->_incrementDislike();
+                $this->_listForum();
                 break;
             // user interaction click on new comment
             case 'new_forum':
-                $this->newEntry();
+                $this->_newEntry();
                 break;
             // user interaction click at save in input new comment dialog
             case 'save_new_forum':
-                $this->saveForum();
-                $this->listForum();
+                $this->_saveForum();
+                $this->_listForum();
                 break;
             default:
-                $this->listForum();
+                $this->_listForum();
                 break;
         }
     }
 
-    function getUser($userid) {
+    /**
+     *
+     * @param unknown_type $userid
+     */
+    private function _getUser($userid) {
         $db = cRegistry::getDb();
         $cfg = cRegistry::getConfig();
         if (($userid != '') && ($userid != 'nobody')) {
@@ -157,7 +210,7 @@ class UserForumArticle {
     /**
      * increments the current number of likes
      */
-    function incrementLike() {
+    private function _incrementLike() {
         $form_id = (int) $_REQUEST['user_forum_id'];
         if ($form_id > 0 && $this->_counter) {
             $this->_collection->incrementLike($form_id);
@@ -167,7 +220,7 @@ class UserForumArticle {
     /**
      * increments the current number of dislikes
      */
-    function incrementDislike() {
+    private function _incrementDislike() {
         $form_id = (int) $_REQUEST['user_forum_id'];
         if ($form_id > 0 && $this->_counter) {
             $this->_collection->incrementDislike($form_id);
@@ -177,8 +230,7 @@ class UserForumArticle {
     /**
      * submit for new entry will be called after click at new comment
      */
-    function saveForum() {
-
+    private function _saveForum() {
         $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
         // Run the preg_match() function on regex against the email address
 
@@ -195,7 +247,7 @@ class UserForumArticle {
             $parent = (int) $_REQUEST['user_forum_parent'];
             $forum_quote = trim($_REQUEST['forum_quote']);
 
-            $this->getUser($this->_userid);
+            $this->_getUser($this->_userid);
 
             // error validation for user inputs
             if ($this->_userLoggedIn) {
@@ -209,10 +261,10 @@ class UserForumArticle {
                     $this->_messageText .= mi18n("enterYourMail") . '<br />';
                     $bInputOK = false;
                 }
-                if( $email!= ''){
-                    if(!preg_match($regex, $email)){
-                    $this->_messageText .= mi18n("enterValidMail") . '<br />';
-                    $bInputOK = false;
+                if ($email != '') {
+                    if (!preg_match($regex, $email)) {
+                        $this->_messageText .= mi18n("enterValidMail") . '<br />';
+                        $bInputOK = false;
                     }
                 }
 
@@ -309,7 +361,7 @@ class UserForumArticle {
     /**
      * displays all existing comments
      */
-    function listForum() {
+    private function _listForum() {
         $linkText = "$this->_userid&deleting=$this->_allowDeleting&idart=$this->_idart";
         if ($this->_generate) {
 
@@ -438,7 +490,7 @@ class UserForumArticle {
     /**
      * generate view for new entrys
      */
-    function newEntry() {
+    private function _newEntry() {
         if ($this->_allowedToEditForum) {
             $db = cRegistry::getDb();
             $this->_tpl->assign('MESSAGE', $this->_messageText);
@@ -511,7 +563,7 @@ class UserForumArticle {
      * After the first click the user can´t add likes/dislikes for the same
      * comment for a fixed time intervall (value in cookie).
      */
-    function checkCookie() {
+    private function _checkCookie() {
         // global $REMOTE_ADDR;
         $ip = $REMOTE_ADDR? $REMOTE_ADDR : $_SERVER['REMOTE_ADDR'];
         $time = time();
@@ -529,16 +581,10 @@ class UserForumArticle {
             $this->_counter = true;
         }
     }
-
-    function checkForceState() {
-        global $force;
-        if (1 == $force) {
-            $this->_tpl->clearAllCache();
-        }
-    }
-
 }
+
 // generate object
 $userForumArticle = new UserForumArticle();
 $userForumArticle->receiveData($_REQUEST);
+
 ?>

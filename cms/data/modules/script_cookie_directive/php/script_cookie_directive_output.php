@@ -3,12 +3,15 @@
  * Description: Cookie Directive
  *
  * @package Module
- * @subpackage script_cookie_directive
+ * @subpackage ScriptCookieDirective
  * @version SVN Revision $Rev:$
+ *
  * @author ilia.schwarz
  * @author claus.schunk@4fb.de
- * @copyright four for business AG
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 if (array_key_exists('acceptCookie', $_GET)) {
@@ -27,7 +30,7 @@ $session->register('allowCookie');
 // Show notify
 if (!isset($allowCookie)) {
 
-    $tpl = Contenido_SmartyWrapper::getInstance();
+    $tpl = cSmartyFrontend::getInstance();
 
     // build translations
     $tpl->assign('trans', array(

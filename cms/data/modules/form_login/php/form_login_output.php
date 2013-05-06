@@ -3,7 +3,9 @@
  * description: login/logout form
  *
  * @package Module
- * @subpackage form
+ * @subpackage FormLogin
+ * @version SVN Revision $Rev:$
+ *
  * @author timo.trautmann@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -11,12 +13,7 @@
  * @link http://www.contenido.org
  */
 
-$tpl = Contenido_SmartyWrapper::getInstance();
-
-global $force;
-if (1 == $force) {
-    $tpl->clearAllCache();
-}
+$tpl = cSmartyFrontend::getInstance();
 
 if ($auth->auth["uid"] == "nobody") {
     $sTargetIdart = getEffectiveSetting('login', 'idart', '1');

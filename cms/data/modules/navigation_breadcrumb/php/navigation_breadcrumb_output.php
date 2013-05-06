@@ -4,8 +4,10 @@
  * This module handles the breadcrumb output.
  *
  * @package Module
- * @subpackage Breadcrumb
- * @author Dominik Ziegler
+ * @subpackage NavigationBreadcrumb
+ * @version SVN Revision $Rev:$
+ *
+ * @author dominik.ziegler@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -23,15 +25,15 @@ foreach ($categories as $categoryLang) {
 }
 array_shift($breadcrumb);
 
-// // optionally load current article headline
 $headline = '';
+
+// // optionally load current article headline
 // $article = new cApiArticleLanguage();
-// $article->loadByArticleAndLanguageId(cRegistry::getArticleId(),
-// cRegistry::getLanguageId());
+// $article->loadByArticleAndLanguageId(cRegistry::getArticleId(), cRegistry::getLanguageId());
 // $headline = strip_tags($article->getContent('CMS_HTMLHEAD', 1));
 
 // build template
-$tpl = Contenido_SmartyWrapper::getInstance();
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('label_breadcrumb', mi18n("LABEL_BREADCRUMB"));
 $tpl->assign('breadcrumb', $breadcrumb);
 $tpl->assign('headline', $headline);

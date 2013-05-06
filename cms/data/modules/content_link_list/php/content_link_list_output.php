@@ -4,7 +4,9 @@
  * description: standard link list
  *
  * @package Module
- * @subpackage content_list
+ * @subpackage ContentList
+ * @version SVN Revision $Rev:$
+ *
  * @author timo.trautmann@4fb.de
  * @author alexander.scheider@4fb.de
  * @copyright four for business AG <www.4fb.de>
@@ -16,25 +18,13 @@
 // include class
 cInclude('classes', 'class.typegenerator.php');
 
-// use smarty template to output header text
-$tpl = Contenido_SmartyWrapper::getInstance();
-
-// initialize var's
 $type = "CMS_TEXT";
 $typeid = 500;
+
 $idartlang = cRegistry::getArticleLanguageId(true);
 $artId = cRegistry::getArticleId(true);
 $client = cRegistry::getClientId(true);
 $lang = cRegistry::getLanguageId(true);
-$val = array();
-$valDescription = array();
-// create typegenerator object
-$ocType = new cTypeGenerator();
-
-global $force;
-if (1 == $force) {
-    $tpl->clearAllCache();
-}
 
 // create art object
 $art = new cApiArticleLanguage();
@@ -60,17 +50,17 @@ if (cRegistry::isBackendEditMode()) {
     $button = NULL;
 }
 
-global $force;
-if (1 == $force) {
-    $tpl->clearAllCache();
-}
-
+$val = array();
+$valDescription = array();
+// create typegenerator object
+$ocType = new cTypeGenerator();
 for ($i = 0; $i < $linkCount; $i++) {
-    $val[$typeid + $i] = stripslashes($ocType->getGeneratedCmsTag("CMS_LINKEDITOR", $typeid + $i));
-    $valDescription[$typeid + $i] = stripslashes($ocType->getGeneratedCmsTag("CMS_HTML", $typeid + $i));
+    $val[$typeid + $i] = stripslashes($ocType->getGeneratedCmsTag('CMS_LINKEDITOR', $typeid + $i));
+    $valDescription[$typeid + $i] = stripslashes($ocType->getGeneratedCmsTag('CMS_HTML', $typeid + $i));
 }
 
-// assign data to the smarty template
+// use smarty template to output header text
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('label', $label);
 $tpl->assign('createLabel', $createLabel);
 $tpl->assign('usable_links', mi18n("usable_links"));
@@ -82,7 +72,6 @@ if ($art->isLoaded()) {
 }
 $tpl->assign('inputfield', $input);
 $tpl->assign('button', $button);
-
-echo $tpl->fetch('get.tpl');
+$tpl->display('get.tpl');
 
 ?>

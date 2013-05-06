@@ -4,7 +4,9 @@
  * description: bottom navigation
  *
  * @package Module
- * @subpackage navigation_bottom
+ * @subpackage NavigationBottom
+ * @version SVN Revision $Rev:$
+ *
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -35,11 +37,7 @@ foreach ($collector as $article) {
 }
 
 // use smarty template to output header text
-$tpl = Contenido_SmartyWrapper::getInstance();
-global $force;
-if (1 == $force) {
-    $tpl->clearAllCache();
-}
+$tpl = cSmartyFrontend::getInstance();
 $tpl->assign('articles', $articles);
 $tpl->display('get.tpl');
 

@@ -3,7 +3,9 @@
 /**
  *
  * @package Module
- * @subpackage
+ * @subpackage ContentSitemapXml
+ * @version SVN Revision $Rev:$
+ *
  * @version SVN Revision $Rev:$
  * @author simon.sprankel@4fb.de
  * @author marcus.gnass@4fb.de
@@ -68,7 +70,6 @@ saveSitemap($sitemap, $filename);
  * @param SimpleXMLElement $sitemap
  */
 function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds) {
-
     $cfg = cRegistry::getConfig();
     $db = cRegistry::getDb();
     $lang = cRegistry::getLanguageId();
@@ -116,11 +117,9 @@ function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds) {
             ));
             $itemCount++;
         }
-
     }
 
     return $itemCount;
-
 }
 
 /**
@@ -129,7 +128,6 @@ function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds) {
  * @param array $data
  */
 function addUrl(SimpleXMLElement $sitemap, array $data) {
-
     $url = $sitemap->addChild('url');
 
     $url->addChild('loc', $data['loc']);
@@ -147,7 +145,6 @@ function addUrl(SimpleXMLElement $sitemap, array $data) {
     if (!empty($data['priority']) || $data['priority'] == 0) {
         $url->addChild('priority', $data['priority']);
     }
-
 }
 
 /**
@@ -160,7 +157,6 @@ function addUrl(SimpleXMLElement $sitemap, array $data) {
  * @return string the formatted date string
  */
 function iso8601Date($time) {
-
     $tzd = date('O', $time);
     $tzd = chunk_split($tzd, 3, ':');
     $tzd = substr($tzd, 0, 6);
@@ -168,7 +164,6 @@ function iso8601Date($time) {
     $date = date('Y-m-d\TH:i:s', $time);
 
     return $date . $tzd;
-
 }
 
 /**
