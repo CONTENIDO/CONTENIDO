@@ -1,14 +1,17 @@
 <?php
 /**
- * Unittest for Contenido chain Contenido.Frontend.HTMLCodeOutput
+ * This file contains tests for Contenido chain Contenido.Frontend.HTMLCodeOutput
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        30.12.2009
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
 
 /**
  * 1. chain function to modify html code output
@@ -29,12 +32,8 @@ function chain_ContenidoFrontendHTMLCodeOutput_Test2($html)
 
 /**
  * Class to test Contenido chain Contenido.Frontend.HTMLCodeOutput
- *
- * @author      Murat Purc <murat@purc.de>
- * @date        30.12.2009
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
  */
 class ContenidoFrontendHTMLCodeOutputTest extends PHPUnit_Framework_TestCase
 {

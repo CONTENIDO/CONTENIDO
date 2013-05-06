@@ -1,14 +1,17 @@
 <?php
 /**
- * Unittest for Contenido cApiCecRegistry
+ * This file contains tests for Contenido cApiCecRegistry.
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        31.12.2009
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
 
 /**
  * Chain function
@@ -20,6 +23,8 @@ function chain_cApiCecRegistry_Test()
 
 /**
  * Chain callback class
+ * @package          Testing
+ * @subpackage       Test_Chains
  */
 class chain_cApiCecRegistryClass_Test
 {
@@ -31,6 +36,8 @@ class chain_cApiCecRegistryClass_Test
 
 /**
  * Chain callback class with static method
+ * @package          Testing
+ * @subpackage       Test_Chains
  */
 class chain_cApiCecRegistryClassStatic_Test
 {
@@ -44,12 +51,8 @@ class chain_cApiCecRegistryClassStatic_Test
 
 /**
  * Class to test cApiCecRegistry.
- *
- * @author      Murat Purc <murat@purc.de>
- * @date        30.12.2009
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
  */
 class cApiCecRegistryTest extends PHPUnit_Framework_TestCase
 {

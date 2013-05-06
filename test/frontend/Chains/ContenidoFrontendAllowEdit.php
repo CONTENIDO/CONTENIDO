@@ -1,14 +1,17 @@
 <?php
 /**
- * Unittest for Contenido chain Contenido.Frontend.AllowEdit.
+ * This file contains tests for Contenido chain Contenido.Frontend.AllowEdit
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        30.12.2009
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
 
 /**
  * 1. chain function to check if the user has permission to edit articles in this category
@@ -37,12 +40,8 @@ function chain_ContenidoFrontendAllowEdit_Test3($lang, $idcat, $idart, $uid)
 
 /**
  * Class to test Contenido chain Contenido.Frontend.AllowEdit.
- *
- * @author      Murat Purc <murat@purc.de>
- * @date        30.12.2009
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
  */
 class ContenidoFrontendAllowEditTest extends PHPUnit_Framework_TestCase
 {

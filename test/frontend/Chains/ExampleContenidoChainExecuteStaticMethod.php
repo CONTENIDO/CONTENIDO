@@ -1,17 +1,22 @@
 <?php
 /**
- * Unittest for Contenido chain Example.Contenido.Chain.ExecuteStaticMethod
+ * This file contains tests for Contenido chain Example.Contenido.Chain.ExecuteStaticMethod
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        30.12.2009
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
 
 /**
  * 1. chain object
+ * @package          Testing
+ * @subpackage       Test_Chains
  */
 class chain_ExampleContenidoChainExecuteStaticMethod_Test
 {
@@ -23,6 +28,8 @@ class chain_ExampleContenidoChainExecuteStaticMethod_Test
 
 /**
  * 2. chain object
+ * @package          Testing
+ * @subpackage       Test_Chains
  */
 class chain_ExampleContenidoChainExecuteStaticMethod_Test2
 {
@@ -35,12 +42,8 @@ class chain_ExampleContenidoChainExecuteStaticMethod_Test2
 
 /**
  * Class to test Contenido chain Example.Contenido.Chain.ExecuteStaticMethod.
- *
- * @author      Murat Purc <murat@purc.de>
- * @date        30.12.2009
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
  */
 class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_TestCase
 {

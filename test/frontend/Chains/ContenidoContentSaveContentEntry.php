@@ -1,14 +1,17 @@
 <?php
 /**
- * Unittest for Contenido chain Contenido.Content.SaveContentEntry
+ * This file contains tests for Contenido chain Contenido.Content.SaveContentEntry
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        01.01.2010
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
 
 /**
  * 1. chain function
@@ -35,12 +38,8 @@ function chain_ContenidoContentSaveContentEntry_Test2($idartlang, $type, $typeid
 
 /**
  * Class to test Contenido chain Contenido.Content.SaveContentEntry.
- *
- * @author      Murat Purc <murat@purc.de>
- * @date        01.01.2010
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
  */
 class ContenidoContentSaveContentEntryTest extends PHPUnit_Framework_TestCase
 {

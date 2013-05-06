@@ -1,14 +1,17 @@
 <?php
 /**
- * Unittest for Contenido chain Contenido.Article.conSyncArticle_AfterInsert
+ * This file contains tests for Contenido chain Contenido.Article.conSyncArticle_AfterInsert
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        30.12.2009
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
-
 
 /**
  * 1. chain function
@@ -33,12 +36,8 @@ function chain_ContenidoArticleConSyncArticle_AfterInsert_Test2(array $data)
 
 /**
  * Class to test Contenido chain Contenido.Article.conSyncArticle_AfterInsert.
- *
- * @author      Murat Purc <murat@purc.de>
- * @date        30.12.2009
- * @category    Testing
- * @package     Contenido_Frontend
- * @subpackage  Chains
+ * @package          Testing
+ * @subpackage       Test_Chains
  */
 class ContenidoArticleConSyncArticle_AfterInsertTest extends PHPUnit_Framework_TestCase
 {
