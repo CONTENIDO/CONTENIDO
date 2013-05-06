@@ -29,7 +29,7 @@ class ContenidoTestHelper
 
     /**
      * Returns the user recordset by username
-     * @param string $username 
+     * @param string $username
      * @return  stdClass|null
      */
     public static function getUserByUsername($username = '')

@@ -158,12 +158,12 @@ function prepareWorkflowItems() {
     $workflowSelectBox->addOptionElement(0, $workflowOption);
 
     while (($workflow = $workflowworkflows->next()) !== false) {
-		$wfa = new WorkflowAllocations();
-		$wfa->select("idworkflow = '".$workflow->get("idworkflow")."'");
-		if ($wfa->next() !== false) {
-			$workflowOption = new cHTMLOptionElement($workflow->get("name"), $workflow->get("idworkflow"));
-			$workflowSelectBox->addOptionElement($workflow->get("idworkflow"), $workflowOption);
-		}
+        $wfa = new WorkflowAllocations();
+        $wfa->select("idworkflow = '".$workflow->get("idworkflow")."'");
+        if ($wfa->next() !== false) {
+            $workflowOption = new cHTMLOptionElement($workflow->get("name"), $workflow->get("idworkflow"));
+            $workflowSelectBox->addOptionElement($workflow->get("idworkflow"), $workflowOption);
+        }
     }
 
     $workflowSelectBox->updateAttributes(array(
