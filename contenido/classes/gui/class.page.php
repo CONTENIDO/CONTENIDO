@@ -433,7 +433,7 @@ class cGuiPage {
         if (!is_array($objects)) {
             $this->_objects[] = $objects;
         } else {
-            $this->_objects[] = array_merge($this->_objects, $objects);
+            $this->_objects = array_merge($this->_objects, $objects);
         }
     }
 
