@@ -294,7 +294,7 @@ class Securimage {
      * How long in seconds a captcha remains valid, after this time it will not
      * be accepted
      *
-     * @var unknown_type
+     * @var int
      */
     public $expiry_time = 900;
 

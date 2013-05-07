@@ -59,9 +59,9 @@ INSERT
 
 -- create record for of CMS_PIFAFORM content type
 INSERT
-    INTO con_type (idtype, `type`, code, description, status, author, created, lastmodified)
-    VALUES ('100001', 'CMS_PIFAFORM', '', 'PIFA form', '0', '', NOW(), NOW());
-
+	INTO con_type (idtype, `type`, code, description, status, author, created, lastmodified)
+	VALUES ('100001', 'CMS_PIFAFORM', '', 'PIFA form', '0', '', NOW(), NOW());
+    
 -- create table for meta data of PIFA forms
 CREATE TABLE con_pifa_form (
   idform         int(10) unsigned    NOT NULL AUTO_INCREMENT             COMMENT 'unique identifier for a ConForm form',

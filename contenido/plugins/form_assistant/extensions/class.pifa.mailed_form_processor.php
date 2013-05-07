@@ -49,7 +49,7 @@ class MailedFormProcessor extends DefaultFormProcessor {
             // get subject from template
             $tpl = cSmartyFrontend::getInstance(true);
             $tpl->assign('values', $values);
-            $subject = $tpl->fetchGeneral('eval:' . $this->getModule()->getSetting('pifaform_mail_client_subject'));
+            $subject = $tpl->fetch('eval:' . $this->getModule()->getSetting('pifaform_mail_client_subject'));
             // get body from template
             $tpl = cSmartyFrontend::getInstance(true);
             $tpl->assign('values', $values);
@@ -72,7 +72,7 @@ class MailedFormProcessor extends DefaultFormProcessor {
             // get subject from template
             $tpl = cSmartyFrontend::getInstance(true);
             $tpl->assign('values', $values);
-            $subject = $tpl->fetchGeneral('eval:' . $this->getModule()->getSetting('pifaform_mail_system_subject'));
+            $subject = $tpl->fetch('eval:' . $this->getModule()->getSetting('pifaform_mail_system_subject'));
             // get body from template
             $tpl = cSmartyFrontend::getInstance(true);
             $tpl->assign('values', $values);

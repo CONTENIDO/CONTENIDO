@@ -135,7 +135,7 @@ class PifaLeftBottomPage extends cGuiPage {
             $delete->setCLink($area, 2, 'delete_form');
             $delete->setTargetFrame('left_bottom');
             $delete->setCustom('idform', $idform);
-            $delete->setClass('pifa_icon_delete_form');
+            $delete->setClass('pifa-icon-delete-form');
             $deleteForm = Pifa::i18n('DELETE_FORM');
             $delete->setAlt($deleteForm);
             $delete->setContent('<img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');

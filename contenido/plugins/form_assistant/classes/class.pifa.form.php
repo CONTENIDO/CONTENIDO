@@ -351,17 +351,17 @@ class PifaForm extends Item {
         // get form attribute values
         $opt = array_merge(array(
             // or whatever
-            'name' => 'pifa_form',
+            'name' => 'pifa-form',
             'action' => 'main.php',
             'method' => $this->get('method'),
-            'class' => 'pifa_form jqtransform'
+            'class' => 'pifa-form jqtransform'
         ), $opt);
         $idform = $this->get('idform');
 
         // build form
         $htmlForm = new cHTMLForm($opt['name'], $opt['action'], $opt['method'], $opt['class']);
         // set ID (workaround: remove ID first!)
-        $htmlForm->removeAttribute('id')->setID('pifa_form-' . $idform);
+        $htmlForm->removeAttribute('id')->setID('pifa-form-' . $idform);
 
         // add fields
         foreach ($this->getFields() as $pifaField) {
@@ -502,34 +502,41 @@ class PifaForm extends Item {
         $message = Swift_Message::newInstance($opt['subject'], $opt['body'], 'text/plain', $opt['charSet']);
 
         // add attachments by names
-        if (array_key_exists('attachmentNames', $opt) && is_array($opt['attachmentNames'])) {
-            $values = $this->getValues();
-            foreach ($opt['attachmentNames'] as $column => $path) {
-                if (!file_exists($path)) {
-                    Util::log('could not attach file cause it doesn\'t exist: ' . $path);
-                    continue;
+        if (array_key_exists('attachmentNames', $opt)) {
+            if (is_array($opt['attachmentNames'])) {
+                $values = $this->getValues();
+                foreach ($opt['attachmentNames'] as $column => $path) {
+                    if (!file_exists($path)) {
+                        Util::log('could not attach file cause it doesn\'t exist: ' . $path);
+                        continue;
+                    }
+                    $attachment = Swift_Attachment::fromPath($path);
+                    $filename = $values[$column];
+                    $attachment->setFilename($filename);
+                    $message->attach($attachment);
                 }
-                $attachment = Swift_Attachment::fromPath($path);
-                $filename = $values[$column];
-                $attachment->setFilename($filename);
-                $message->attach($attachment);
             }
         }
 
         // add attachments by string
-        if (array_key_exists('attachmentStrings', $opt) && is_array($opt['attachmentStrings'])) {
-            foreach ($opt['attachmentStrings'] as $filename => $string) {
-                // TODO mime type should be configurale
-                $attachment = Swift_Attachment::newInstance($string, $filename, 'text/csv');
-                $message->attach($attachment);
+        if (array_key_exists('attachmentStrings', $opt)) {
+            if (is_array($opt['attachmentStrings'])) {
+                foreach ($opt['attachmentStrings'] as $filename => $string) {
+                    // TODO mime type should be configurale
+                    $attachment = Swift_Attachment::newInstance($string, $filename, 'text/csv');
+                    $message->attach($attachment);
+                }
             }
         }
 
+        // add sender
         $message->addFrom($opt['from'], $opt['fromName']);
-        foreach (explode(',', $opt['to']) as $to) {
-            $message->setTo($to, $to);
-        }
 
+        // add recipient
+        $to = explode(',', $opt['to']);
+        $message->setTo(array_combine($to, $to));
+
+        // send mail
         if (!$mailer->send($message)) {
             throw new PifaMailException($this->ErrorInfo);
         }

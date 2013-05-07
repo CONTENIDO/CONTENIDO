@@ -7,7 +7,7 @@ author: marcus.gnass
 Form to edit meta data for the given form.
 
 *}
-<form id="pifa_form" action="{$formAction}" method="post">
+<form id="pifa-form" action="{$formAction}" method="post">
 
     <input type="hidden" name="idform" value="{$idform}">
 

@@ -5,67 +5,67 @@
 All labels should be displayed left of their form fields.
 The surrounding division has to clear the floating though. */
 
-.pifa_form div {clear: both;}
-.pifa_form label {float: left;}
-.pifa_form label {width: 200px;} /* optionally set a common label width */
+.pifa-form div {clear: both;}
+.pifa-form label {float: left;}
+.pifa-form label {width: 200px;} /* optionally set a common label width */
 
 /* == Styling fields according to their field types ==
-In order to style fields according to their field types a class pifa_field_<n>
+In order to style fields according to their field types a class pifa-field-<n>
 is set to all form fields where <n> is its type id. */
 
 /* INPUTTEXT */
-.pifa_field_1 {}
+.pifa-field-1 {}
 
 /* TEXTAREA */
-.pifa_field_2 {}
+.pifa-field-2 {}
 
 /* INPUTPASSWORD */
-.pifa_field_3 {}
+.pifa-field-3 {}
 
 /* INPUTRADIO */
-.pifa_field_4 {}
+.pifa-field-4 {}
 
 /* INPUTCHECKBOX */
-.pifa_field_5 {}
+.pifa-field-5 {}
 
 /* SELECT */
-.pifa_field_6 {}
+.pifa-field-6 {}
 
 /* SELECTMULTI */
-.pifa_field_7 {}
+.pifa-field-7 {}
 
 /* DATEPICKER */
-.pifa_field_8 {}
+.pifa-field-8 {}
 
 /* INPUTFILE */
-.pifa_field_9 {}
+.pifa-field-9 {}
 
 /* PROCESSBAR */
-.pifa_field_10 {}
+.pifa-field-10 {}
 
 /* SLIDER */
-.pifa_field_11 {}
+.pifa-field-11 {}
 
 /* CAPTCHA */
-.pifa_field_12 {}
+.pifa-field-12 {}
 
 /* BUTTONSUBMIT */
-.pifa_field_13 {}
+.pifa-field-13 {}
 
 /* BUTTONRESET */
-.pifa_field_14 {}
+.pifa-field-14 {}
 
 /* BUTTONBACK */
-.pifa_field_15 {}
+.pifa-field-15 {}
 
 /* MATRIX */
-.pifa_field_16 {}
+.pifa-field-16 {}
 
 /* PARA */
-.pifa_field_17 {}
+.pifa-field-17 {}
 
 /* INPUTHIDDEN */
-.pifa_field_18 {}
+.pifa-field-18 {}
 
 /* == Styling obligatory fields  ==
 The class pifa-obligatory is set to all divisions containing an obligatory field.
@@ -75,7 +75,7 @@ Unfortunately this doesn't seem to work in IE though. */
 div.pifa-obligatory label:after {content: ' *'}
 
 /* == Styling fields with erroneous data  ==
-The class pifa_error is set to all divisions containing a field with erroneous
+The class pifa-error is set to all divisions containing a field with erroneous
 data. */
 
-div.pifa_error {border: 1px solid red;}
+div.pifa-error {border: 1px solid red;}

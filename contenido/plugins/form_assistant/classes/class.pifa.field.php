@@ -332,12 +332,23 @@ class PifaField extends Item {
      * @return string
      */
     public function toHtml(array $errors = NULL) {
+        $out = '';
         switch (cSecurity::toInteger($this->get('field_type'))) {
 
             case self::FIELDSET_BEGIN:
 
-                $label = $this->get('label');
-                return "\n\t<fieldset><legend>$label</legend>";
+                // optional class for field
+                if (0 < strlen(trim($this->get('css_class')))) {
+                    $class = ' class="' . implode(' ', explode(',', $this->get('css_class'))) . '"';
+                }
+                $out .= "\n\t<fieldset$class>";
+                // add optional legend/description
+                if (1 === cSecurity::toInteger($this->get('display_label'))) {
+                    $label = $this->get('label');
+                    $out .= "\n\t<legend>$label</legend>";
+                }
+
+                return $out;
                 break;
 
             case self::FIELDSET_END:
@@ -357,7 +368,7 @@ class PifaField extends Item {
                     // / add this fields error message
                     if (array_key_exists($this->get('idfield'), $errors)) {
                         $error = $errors[$this->get('idfield')];
-                        $content[] = new cHTMLParagraph($error, 'pifa_error-message');
+                        $content[] = new cHTMLParagraph($error, 'pifa-error-message');
                     }
                 } catch (NotImplementedException $e) {
                     return NULL; // PASS // warning?
@@ -369,22 +380,22 @@ class PifaField extends Item {
                 }
 
                 // CSS class for surrounding division
-                $class = 'pifa_field_' . $this->get('field_type');
-                // optional obligatory class for field
+                $class = 'pifa-field-' . $this->get('field_type');
+                // optional class for field
                 if (0 < strlen(trim($this->get('css_class')))) {
                     $class .= ' ' . implode(' ', explode(',', $this->get('css_class')));
                 }
-                // optional obligatory class for field
+                // optional class for obligatory field
                 if (true === (bool) $this->get('obligatory')) {
                     $class .= ' pifa-obligatory';
                 }
                 // optional error class for field
                 if (NULL !== $error) {
-                    $class .= ' pifa_error';
+                    $class .= ' pifa-error';
                 }
 
                 // ID for surrounding division
-                $id = 'pifa_field_' . $this->get('idfield');
+                $id = 'pifa-field-' . $this->get('idfield');
 
                 // surrounding division
                 $div = new cHTMLDiv($content, $class, $id);
@@ -395,6 +406,8 @@ class PifaField extends Item {
     }
 
     /**
+     *
+     * @return cHTMLLabel
      */
     public function _getElemLabel() {
         if (1 !== cSecurity::toInteger($this->get('display_label'))) {
@@ -431,7 +444,7 @@ class PifaField extends Item {
         // Code</span>';
         // }
 
-        $elemLabel = new cHTMLLabel($label, 'pifa_field_elm-' . $idfield, 'pifa_field_lbl');
+        $elemLabel = new cHTMLLabel($label, 'pifa-field-elm-' . $idfield, 'pifa-field-lbl');
         // set ID (workaround: remove ID first!)
         $elemLabel->removeAttribute('id');
 
@@ -489,7 +502,7 @@ class PifaField extends Item {
         }
 
         // ID for field & FOR for label
-        $id = 'pifa_field_elm-' . $idfield;
+        $id = 'pifa-field-elm-' . $idfield;
 
         // get current value
         $value = $this->getValue();
@@ -704,7 +717,7 @@ class PifaField extends Item {
 
         $p = NULL;
         if (0 < strlen($helpText)) {
-            $p = new cHTMLParagraph($helpText, 'pifa_field_help');
+            $p = new cHTMLParagraph($helpText, 'pifa-field-help');
         }
 
         return $p;
@@ -720,7 +733,7 @@ class PifaField extends Item {
 
         switch ($fieldType) {
             case self::DATEPICKER:
-                $sel = '#pifa_field_elm-' . $idfield;
+                $sel = '#pifa-field-elm-' . $idfield;
                 // dateFormat: 'yy-mm-dd', // could be different
                 // altFormat as ISO_8601
                 $script = "jQuery(function(){jQuery('$sel').datepicker({
@@ -729,7 +742,7 @@ class PifaField extends Item {
                 });});";
                 break;
             case self::CAPTCHA:
-                $sel = '#pifa_field_' . $idfield . ' label';
+                $sel = '#pifa-field-' . $idfield . ' label';
                 $newCaptchaCode = mi18n("NEW_CAPTCHA_CODE");
                 $script = "jQuery(function(){\n";
                 // implement captcha reload on click
@@ -1206,7 +1219,8 @@ class PifaField extends Item {
                     self::BUTTONRESET,
                     self::BUTTONBACK,
                     self::MATRIX,
-                    self::PARA
+                    self::PARA,
+                    self::FIELDSET_BEGIN
                     /*
                     self::INPUTHIDDEN
                     */

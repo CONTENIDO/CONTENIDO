@@ -7,8 +7,8 @@ $(function() {
     /**
      * list & form (dialog) as global jQuery-objects
      */
-    var $pifaFormFieldList = $('#pifa_form-field-list');
-    var $pifaFormFieldForm = $('#pifa_form-field-dialog');
+    var $pifaFormFieldList = $('#pifa-form-field-list');
+    var $pifaFormFieldForm = $('#pifa-form-field-dialog');
 
     /**
      * Init UI tabs
@@ -21,7 +21,7 @@ $(function() {
      * then its form is requested via AJAX and displayed
      * as a dialog.
      */
-    $('body').delegate('.pifa_icon_edit_field', 'click', function(event) {
+    $('body').delegate('.pifa-icon-edit-field', 'click', function(event) {
         event.preventDefault();
         $.ajax({
             type: 'GET',
@@ -40,7 +40,7 @@ $(function() {
      * Ajax request is send which deletes the field. Eventually
      * the field is removed via a hide animation.
      */
-    $('body').delegate('.pifa_icon_delete_field', 'click', function(event) {
+    $('body').delegate('.pifa-icon-delete-field', 'click', function(event) {
         event.preventDefault();
         if (false === confirm('Do you really want to delete this field?')) {
             return;
@@ -95,7 +95,7 @@ $(function() {
      * Make field type icons draggable.
      */
     $(".img-draggable").draggable({
-        connectToSortable: '#pifa_form-field-list',
+        connectToSortable: '#pifa-form-field-list',
         // make a copy of the dragged icon
         helper: 'clone',
         revert: 'invalid'
@@ -197,7 +197,7 @@ $(function() {
      * Submit form via AJAX.
      * The response is the row for the edited form field to be shown in the list of form fields.
      */
-    $('#pifa_form_field_dialog').on('submit', function(event) {
+    $('#pifa-form-field-dialog').on('submit', function(event) {
         event.preventDefault();
         $.ajax({
             type: 'POST',
