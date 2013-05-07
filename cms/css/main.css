@@ -1172,3 +1172,11 @@ ul.social_media li.twitter {
     color: #9ba21b;
     line-height: 17px;
 }
+
+#content sup {
+	vertical-align:super;
+}
+
+#content sub {
+	vertical-align: sub;
+}
