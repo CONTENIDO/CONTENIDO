@@ -53,11 +53,11 @@ class cApiActionCollection extends ItemCollection {
         if (is_string($area)) {
             $c = new cApiArea();
             $c->loadBy('name', $area);
-            if ($c->virgin) {
+            if ($c->isLoaded()) {
+                $area = $c->get('idarea');
+            } else {
                 $area = 0;
                 cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
-            } else {
-                $area = $c->get('idarea');
             }
         }
 

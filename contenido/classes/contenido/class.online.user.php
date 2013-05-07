@@ -90,7 +90,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      */
     public function findUser($userId) {
         $oUser = new cApiOnlineUser((string) $userId);
-        return (!$oUser->virgin);
+        return ($oUser->isLoaded());
     }
 
     /**
@@ -171,7 +171,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      */
     public function updateUser($userId) {
         $oUser = new cApiOnlineUser((string) $userId);
-        if (!$oUser->virgin) {
+        if ($oUser->isLoaded()) {
             $now = date('Y-m-d H:i:s');
             $oUser->set('lastaccessed', $now);
             return $oUser->store();

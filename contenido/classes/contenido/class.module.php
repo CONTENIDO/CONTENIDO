@@ -212,7 +212,7 @@ class cApiModule extends Item {
         global $lang;
 
         // If we're not loaded, return
-        if ($this->virgin == true) {
+        if (!$this->isLoaded()) {
             return false;
         }
 
@@ -243,7 +243,8 @@ class cApiModule extends Item {
     function parseModuleForStringsLoadFromFile($cfg, $client, $lang) {
         global $client;
 
-        if ($this->virgin == true) {
+        // If we're not loaded, return
+        if (!$this->isLoaded()) {
             return false;
         }
 
@@ -318,7 +319,7 @@ class cApiModule extends Item {
      * @return array Found strings for this module
      */
     public function parseModuleForStrings() {
-        if ($this->virgin == true) {
+        if (!$this->isLoaded()) {
             return false;
         }
 

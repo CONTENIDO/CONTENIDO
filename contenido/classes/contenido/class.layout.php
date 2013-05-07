@@ -118,7 +118,7 @@ class cApiLayout extends Item {
      * @return bool
      */
     public function isInUse($setData = false) {
-        if ($this->virgin) {
+        if (!$this->isLoaded()) {
             throw new cException('Layout item not loaded!');
         }
 

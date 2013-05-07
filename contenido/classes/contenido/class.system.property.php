@@ -176,7 +176,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
         }
 
         $item = parent::fetchById($id);
-        return ($item && !$item->virgin)? $item : null;
+        return ($item && $item->isLoaded())? $item : null;
     }
 
     /**

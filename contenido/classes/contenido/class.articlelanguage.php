@@ -275,7 +275,7 @@ class cApiArticleLanguage extends Item {
      */
     public function loadByArticleAndLanguageId($idart, $idlang, $fetchContent = false) {
         $result = true;
-        if ($this->virgin == true) {
+        if (!$this->isLoaded()) {
             $aProps = array(
                 'idart' => $idart,
                 'idlang' => $idlang
