@@ -167,7 +167,7 @@ class cGuiPage {
         // Try to extract the current CONTENIDO language
         $clang = new cApiLanguage($lang);
 
-        if (!$clang->virgin) {
+        if ($clang->isLoaded()) {
             $this->setEncoding($clang->get("encoding"));
         }
 
