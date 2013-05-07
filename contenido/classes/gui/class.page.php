@@ -179,7 +179,7 @@ class cGuiPage {
         }
         foreach (new DirectoryIterator($cfg['path']['styles']) as $stylefile) {
             if (endsWith($stylefile->getFilename(), "." . $pagename . ".css")) {
-                $this->addStyle($scriptfile->getFilename());
+                $this->addStyle($stylefile->getFilename());
             }
         }
 
