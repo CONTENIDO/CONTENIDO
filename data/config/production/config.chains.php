@@ -332,13 +332,13 @@ $_cecRegistry->registerChain('Contenido.Permissions.User.GetAreaEditFilename', '
  * This chain function is called after a frontend user has been deleted from the database
  *
  * Parameters:
- * idfrontenduser    string    uid of deleted frontend user
+ * idfrontenduser    int    id of deleted frontend user
  *
  * Returns:
  * nothing
  *
  */
-$_cecRegistry->registerChain('Contenido.Permissions.FrontendUser.AfterDeletion', 'string');
+$_cecRegistry->registerChain('Contenido.Permissions.FrontendUser.AfterDeletion', 'int');
 
 /* Chain Contenido.Permissions.Group.Areas
  * This chain returns all areas which should appear in the group rights management.
