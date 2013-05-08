@@ -619,6 +619,27 @@ p+.button.red {
     color: #0083cb;
 }
 
+.lightbox .next_image,
+.lightbox .prev_image {
+    position: absolute;
+    outline-style: none;
+    z-index: 1004;
+    display: block;
+    height: 30px;
+    width: 40px;
+    background: #fff;
+    opacity: 0.7;
+    border-radius: 9px;
+    line-height: 30px;
+    text-align: center;
+    top: 50%;
+    margin-top: -18px;
+    text-decoration: none;
+}
+.lightbox .next_image {
+    right: 0px;
+}
+
 /* ----- LINKLIST ----- */
 div.link_list {
     margin-top: 40px;

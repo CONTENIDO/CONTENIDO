@@ -126,11 +126,23 @@ $(function() {
             loadGaleryPage(page);
         }
     });
-
+    /* ----- GALERY LIGHTBOX ----- */
     jQuery(window).load(function() {
         $(".galery .slider").delegate("a", "click", function(e) {
             e.preventDefault();
-            $(".galery .lightbox").html('<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + ': ' + $(this).attr("title") + '</p>').dialog({
+            var left ="", right="",
+            count = $(this).parent().parent().find("li").length;
+            if(count > 1){
+            	var index = $(this).parent().index();
+            	if(index >0){
+            		left = '<a href="'+(index-1)+'" class="prev_image">&laquo;</a>';	
+            	}
+            	if( index < (count-1)) {
+            		right = '<a href="'+(index+1)+'" class="next_image">&raquo;</a>';	
+            	}
+            	
+            }
+            $(".galery .lightbox").html(left+right+'<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + ': ' + $(this).attr("title") + '</p>').dialog({
                 modal: true,
                 width: "auto",
                 height: "auto",
@@ -145,6 +157,14 @@ $(function() {
                 }
             });
         });
+        
+        $("body").delegate(".lightbox a", "click", function(e) {
+            e.preventDefault();
+            var index = parseInt($(this).attr("href"));
+            $(".lightbox").dialog("close");
+            $('.galery .slider li:eq('+index+') a').click();
+        });
+        
     });
 
 
