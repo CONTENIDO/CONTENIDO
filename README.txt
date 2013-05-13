@@ -35,23 +35,50 @@ http://facebook.com/cms.contenido	Facebook
 -------------------------------------------------------------------
 Lizenzen von verwendeten Produkten / Licenses of used third party products:
 
-- Pseudo-Cron (Cron-Emulator)
-  Lizenz:        GNU General Public Licence (GPL)
-  Copyright:   (c) 2003 Kai Blankenhorn
-  Information: http://www.bitfolge.de/?l=en&s=pseudocron
-
-- TinyMCE
-  Lizenz:      GNU Library General Public Licence (LGPL)
-  Information: http://tinymce.moxiecode.com/
-
-- jQuery
-  Lizenz:      Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
-  Information: http://jquery.com/
-
-- CodeMirror
+- CodeMirror 2.32
   Lizenz:      CodeMirror license
   Information: http://codemirror.net/LICENSE
 
+- jQuery 1.8.2
+  Lizenz:      MIT License
+  Information: http://www.jquery.com
+  
+- jQuery timepicker addon 1.0.2
+  Lizenz:      MIT or GPL licenses
+  Information: http://trentrichardson.com/examples/timepicker/
+  
+- jQuery UI 1.8.23
+  Lizenz:      MIT License
+  Information: http://www.jqueryui.com
+
+- Pseudo-Cron (Cron-Emulator) 1.2.1
+  Lizenz:      GNU General Public Licence (GPL)
+  Information: http://www.bitfolge.de/?l=en&s=pseudocron
+  
+- Securimage 3.2RC2
+  Lizenz:      Securimage license
+  Information: http://www.phpcaptcha.org
+  
+- SwiftMailer 4.2.1
+  Lizenz:      GNU Lesser General Public License v3
+  Information: http://swiftmailer.org/
+
+- TinyMCE 3.5.8
+  Lizenz:      GNU Lesser General Public License
+  Information: http://www.tinymce.com/
+  
+- tipsy, facebook style tooltips for jquery 1.0.0a
+  Lizenz:      MIT license
+  Information: http://onehackoranother.com/projects/jquery/tipsy/
+
+- Valums AJAX Upload 3.6
+  Lizenz:      MIT license
+  Information: http://valums.com/ajax-upload/
+
+- Valums File Uploader 2.0
+  Lizenz:      MIT license, GNU GPL 2 or later, GNU LGPL 2 or later, see license.txt
+  Information: https://github.com/Valums-File-Uploader/file-uploader
+  
 -------------------------------------------------------------------
 
 Alle Informationen zu Gewährleistung, Garantie und
