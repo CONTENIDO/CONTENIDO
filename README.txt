@@ -33,6 +33,26 @@ http://twitter.com/contenido		Twitter
 http://facebook.com/cms.contenido	Facebook
 
 -------------------------------------------------------------------
+Lizenzen von verwendeten Produkten / Licenses of used third party products:
+
+- Pseudo-Cron (Cron-Emulator)
+  Lizenz:        GNU General Public Licence (GPL)
+  Copyright:   (c) 2003 Kai Blankenhorn
+  Information: http://www.bitfolge.de/?l=en&s=pseudocron
+
+- TinyMCE
+  Lizenz:      GNU Library General Public Licence (LGPL)
+  Information: http://tinymce.moxiecode.com/
+
+- jQuery
+  Lizenz:      Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
+  Information: http://jquery.com/
+
+- CodeMirror
+  Lizenz:      CodeMirror license
+  Information: http://codemirror.net/LICENSE
+
+-------------------------------------------------------------------
 
 Alle Informationen zu Gewährleistung, Garantie und
 Lizenzbestimmungen finden Sie unter www.contenido.org.
