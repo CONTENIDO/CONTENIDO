@@ -75,12 +75,12 @@ abstract class cUpgradeJobAbstract {
 
     /**
      * Constructor, sets some properties
-     * @param  DB_Contenido  $db
+     * @param  cDb $db
      * @param  array  $cfg  Main configuration array
      * @param  array  $cfgClient  Clients configuration array
      * @param  version $version The CONTENIDO version which is upgraded
      */
-    public function __construct($db, $cfg, $cfgClient, $version) {
+    public function __construct(cDb $db, $cfg, $cfgClient, $version) {
         $this->_version = $version;
         $this->_oDb = $db;
         $this->_aCfg = (is_array($cfg)) ? $cfg : $GLOBALS['cfg'];
