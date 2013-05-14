@@ -407,6 +407,8 @@ class PifaField extends Item {
 
     /**
      *
+     * TODO should be private, right?
+     *
      * @return cHTMLLabel
      */
     public function _getElemLabel() {
@@ -457,6 +459,8 @@ class PifaField extends Item {
      * The displayed value of a form field can be set via a GET param whose name
      * has to be the fields column name which is set if the form is displayed
      * for the first time and user hasn't entered another value.
+     *
+     * TODO should be private, right?
      *
      * @param boolean $error if field elem should be displayed as erroneous
      * @throws NotImplementedException if field type is not implemented
@@ -711,6 +715,9 @@ class PifaField extends Item {
     }
 
     /**
+     * TODO should be private, right?
+     *
+     * @return Ambigous <NULL, cHTMLParagraph>
      */
     public function _getElemHelp() {
         $helpText = $this->get('help_text');
@@ -724,6 +731,9 @@ class PifaField extends Item {
     }
 
     /**
+     * TODO should be private, right?
+     *
+     * @return Ambigous <NULL, cHTMLScript>
      */
     public function _getElemScript() {
 
