@@ -222,6 +222,7 @@ class PifaAjaxHandler {
     private function _postFieldForm($idform, $idfield) {
 
         function pifa_ajax_handler_string_cast_deep($value) {
+            $value = cSecurity::unescapeDB($value);
             $value = cSecurity::toString($value);
             $value = trim($value);
             return $value;
@@ -240,7 +241,8 @@ class PifaAjaxHandler {
             $isFieldCreated = false;
         } else {
             // get field type for new form field
-            $fieldType = cSecurity::toInteger($_POST['field_type']);
+            $fieldType = $_POST['field_type'];
+            $fieldType = cSecurity::toInteger($fieldType);
             // create field
             $collection = new PifaFieldCollection();
             $pifaField = $collection->createNewItem(array(
@@ -255,7 +257,8 @@ class PifaAjaxHandler {
         $oldColumnName = $pifaField->get('column_name');
 
         // set the new rank of the item
-        $fieldRank = cSecurity::toInteger($_POST['field_rank']);
+        $fieldRank = $_POST['field_rank'];
+        $fieldRank = cSecurity::toInteger($fieldRank);
         if ($fieldRank !== $pifaField->get('field_rank')) {
             $pifaField->set('field_rank', $fieldRank);
         }
@@ -272,7 +275,9 @@ class PifaAjaxHandler {
         // According to the MySQL documentation table and column names
         // must not be longer than 64 charcters.
         if ($pifaField->showField('column_name')) {
-            $columnName = cSecurity::toString($_POST['column_name']);
+            $columnName = $_POST['column_name'];
+            $columnName = cSecurity::unescapeDB($columnName);
+            $columnName = cSecurity::toString($columnName);
             $columnName = trim($columnName);
             $columnName = strtolower($columnName);
             // does not seem to work
@@ -285,7 +290,9 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('label')) {
-            $label = cSecurity::toString($_POST['label']);
+            $label = $_POST['label'];
+            $label = cSecurity::unescapeDB($label);
+            $label = cSecurity::toString($label);
             $label = trim($label);
             $label = substr($label, 0, 1023);
             if ($label !== $pifaField->get('label')) {
@@ -294,7 +301,9 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('display_label')) {
-            $displayLabel = cSecurity::toString($_POST['display_label']);
+            $displayLabel = $_POST['display_label'];
+            $displayLabel = cSecurity::unescapeDB($displayLabel);
+            $displayLabel = cSecurity::toString($displayLabel);
             $displayLabel = trim($displayLabel);
             $displayLabel = 'on' === $displayLabel? 1 : 0;
             if ($displayLabel !== $pifaField->get('display_label')) {
@@ -303,7 +312,9 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('default_value')) {
-            $defaultValue = cSecurity::toString($_POST['default_value']);
+            $defaultValue = $_POST['default_value'];
+            $defaultValue = cSecurity::unescapeDB($defaultValue);
+            $defaultValue = cSecurity::toString($defaultValue);
             $defaultValue = trim($defaultValue);
             $defaultValue = substr($defaultValue, 0, 1023);
             if ($defaultValue !== $pifaField->get('default_value')) {
@@ -328,7 +339,9 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('help_text')) {
-            $helpText = cSecurity::toString($_POST['help_text']);
+            $helpText = $_POST['help_text'];
+            $helpText = cSecurity::unescapeDB($helpText);
+            $helpText = cSecurity::toString($helpText);
             $helpText = trim($helpText);
             if ($helpText !== $pifaField->get('help_text')) {
                 $pifaField->set('help_text', $helpText);
@@ -336,7 +349,9 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('obligatory')) {
-            $obligatory = cSecurity::toString($_POST['obligatory']);
+            $obligatory = $_POST['obligatory'];
+            $obligatory = cSecurity::unescapeDB($obligatory);
+            $obligatory = cSecurity::toString($obligatory);
             $obligatory = trim($obligatory);
             $obligatory = 'on' === $obligatory? 1 : 0;
             if ($obligatory !== $pifaField->get('obligatory')) {
@@ -345,7 +360,9 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('rule')) {
-            $rule = cSecurity::toString($_POST['rule']);
+            $rule = $_POST['rule'];
+            $rule = cSecurity::unescapeDB($rule);
+            $rule = cSecurity::toString($rule);
             $rule = trim($rule);
             $rule = substr($rule, 0, 1023);
             // check if rule is valid
@@ -361,7 +378,9 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('error_message')) {
-            $errorMessage = cSecurity::toString($_POST['error_message']);
+            $errorMessage = $_POST['error_message'];
+            $errorMessage = cSecurity::unescapeDB($errorMessage);
+            $errorMessage = cSecurity::toString($errorMessage);
             $errorMessage = trim($errorMessage);
             $errorMessage = substr($errorMessage, 0, 1023);
             if ($errorMessage !== $pifaField->get('error_message')) {
@@ -378,7 +397,9 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('option_class')) {
-            $optionClass = cSecurity::toString($_POST['option_class']);
+            $optionClass = $_POST['option_class'];
+            $optionClass = cSecurity::unescapeDB($optionClass);
+            $optionClass = cSecurity::toString($optionClass);
             $optionClass = trim($optionClass);
             $optionClass = substr($optionClass, 0, 1023);
             if ($optionClass !== $pifaField->get('option_class')) {
