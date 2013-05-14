@@ -29,7 +29,7 @@ GENERAL SETTINGS
     {if $field->showField('label')}
     <div class="label">
         <label for="label">{$trans.label}</label>
-        <input type="text" id="label" name="label" value="{$field->get('label')|htmlentities}" maxlength="1023" />
+        <input type="text" id="label" name="label" value="{$field->get('label')|escape}" maxlength="1023" />
     </div>
     {/if}
 
@@ -50,21 +50,21 @@ GENERAL SETTINGS
     {if $field->showField('default_value')}
     <div class="default_value">
         <label for="default_value">{$trans.defaultValue}</label>
-        <input type="text" id="default_value" name="default_value" value="{$field->get('default_value')|htmlentities}" maxlength="1023" />
+        <input type="text" id="default_value" name="default_value" value="{$field->get('default_value')|escape}" maxlength="1023" />
     </div>
     {/if}
 
     {if $field->showField('rule')}
     <div class="rule">
         <label for="rule">{$trans.rule}</label>
-        <input type="text" id="rule" name="rule" value="{$field->get('rule')|htmlentities}" maxlength="1023" />
+        <input type="text" id="rule" name="rule" value="{$field->get('rule')|escape}" maxlength="1023" />
     </div>
     {/if}
 
     {if $field->showField('error_message')}
     <div class="error_message">
         <label for="error_message">{$trans.errorMessage}</label>
-        <textarea id="error_message" name="error_message" rows="5" cols="30">{$field->get('error_message')|htmlentities}</textarea>
+        <textarea id="error_message" name="error_message" rows="5" cols="30">{$field->get('error_message')|escape}</textarea>
     </div>
     {/if}
 
@@ -72,7 +72,7 @@ GENERAL SETTINGS
     <div class="help_text">
         <label for="help_text">{$trans.helpText}</label>
         <!--textarea id="help_text" name="help_text">{$field->get('help_text')}</textarea-->
-        <textarea id="help_text" name="help_text" rows="5" cols="30">{$field->get('help_text')|htmlentities}</textarea>
+        <textarea id="help_text" name="help_text" rows="5" cols="30">{$field->get('help_text')|escape}</textarea>
     </div>
     {/if}
 
