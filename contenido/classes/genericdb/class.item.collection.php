@@ -1074,9 +1074,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @return object Item null
      */
     public function copyItem($srcItem, array $fieldsToOverwrite = array()) {
-        /* @var $srcItem Item */
-        $tmp = get_class($srcItem);
-        $tmp2 = $this->_itemClass;
 
         if (get_class($srcItem) !== $this->_itemClass) {
             throw new cInvalidArgumentException("Item class doesn't match");
