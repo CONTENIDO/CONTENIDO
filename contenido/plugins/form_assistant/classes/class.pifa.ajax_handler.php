@@ -331,7 +331,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('option_values') && array_key_exists('option_values', $_POST) && is_array($_POST['option_values'])) {
-            $optionValues = implode(',', array_map(pifa_ajax_handler_string_cast_deep, $_POST['option_values']));
+            $optionValues = implode(',', array_map('pifa_ajax_handler_string_cast_deep', $_POST['option_values']));
             $optionValues = substr($optionValues, 0, 1023);
             if ($optionValues !== $pifaField->get('option_values')) {
                 $pifaField->set('option_values', $optionValues);
@@ -389,7 +389,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('css_class') && array_key_exists('css_class', $_POST) && is_array($_POST['css_class'])) {
-            $cssClass = implode(',', array_map(pifa_ajax_handler_string_cast_deep, $_POST['css_class']));
+            $cssClass = implode(',', array_map('pifa_ajax_handler_string_cast_deep', $_POST['css_class']));
             $cssClass = substr($cssClass, 0, 1023);
             if ($cssClass !== $pifaField->get('css_class')) {
                 $pifaField->set('css_class', $cssClass);
