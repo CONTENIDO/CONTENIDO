@@ -175,6 +175,13 @@ body {
     float: left;
 }
 
+#content sup {
+    vertical-align: super;
+}
+
+#content sub {
+    vertical-align: sub;
+}
 #menu+#content {
     min-height: 50px;
     width: 660px;
@@ -259,7 +266,7 @@ p a:hover {
 
 .slider .images li h2,
 .slider .images li h3 {
-    color: #FFFFFF;
+    color: #fff;
     display: block;
     font-family: Verdana;
     font-size: 18px;
@@ -331,7 +338,8 @@ div.button_grey input {
     font-size: 12px;
 }
 
-.button.red,.login input[type="submit"] {
+.button.red,
+.login input[type="submit"] {
     margin-top: 30px;
     position: relative;
 }
@@ -697,8 +705,9 @@ ul.download_list ul.formats li+li {
     margin-left: 20px;
 }
 
-ul.download_list ul.formats li a:link,ul.download_list ul.formats li a:visited,ul.download_list ul.formats li a:active
-    {
+ul.download_list ul.formats li a:link,
+ul.download_list ul.formats li a:visited,
+ul.download_list ul.formats li a:active {
     background: url('../images/misc/sprite.png') no-repeat 0 -267px;
     padding-left: 35px;
     height: 19px;
@@ -781,8 +790,8 @@ button.ui-button::-moz-focus-inner {
     margin: 1px;
 }
 
-.ui-dialog .ui-dialog-titlebar-close:hover,.ui-dialog .ui-dialog-titlebar-close:focus
-    {
+.ui-dialog .ui-dialog-titlebar-close:hover,
+.ui-dialog .ui-dialog-titlebar-close:focus {
     padding: 0;
 }
 
@@ -823,8 +832,10 @@ button.ui-button::-moz-focus-inner {
 }
 
 /* Component containers */
-.ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button
-    {
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget button {
     font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
     font-size: 1em;
 }
@@ -980,7 +991,8 @@ button.ui-button::-moz-focus-inner {
 }
 
 /* ----- NEWSLETTER FORM ----- */
-#contact_form_submit_left,#contact_form_submit_right {
+#contact_form_submit_left,
+#contact_form_submit_right {
     float: left;
     margin-right: 15px;
 }
@@ -1096,17 +1108,19 @@ ul.social_media li.twitter {
     width: 456px;
 }
 
-.pifa_form input[type="text"],textarea {
+.pifa_form input[type="text"],
+textarea {
     width: 450px;
 }
 
-.pifa_form .pifa_error select,.pifa_form .pifa_error input,.pifa_form .pifa_error textarea
-    {
+.pifa_form .pifa_error select,
+.pifa_form .pifa_error input,
+.pifa_form .pifa_error textarea {
     border: 1px solid #C31250;
 }
 
-.pifa_form .pifa_error input[type="text"],.pifa_form .pifa_error textarea
-    {
+.pifa_form .pifa_error input[type="text"],
+.pifa_form .pifa_error textarea {
     width: 454px;
 }
 
@@ -1157,7 +1171,7 @@ ul.social_media li.twitter {
 #cookie_note {
     background: #fff;
     left: 0;
-    filter: alpha(opacity =   90);
+    filter: alpha(opacity = 90);
     opacity: 0.9;
     position: absolute;
     top: 0;
@@ -1192,12 +1206,4 @@ ul.social_media li.twitter {
 #cookie_note .cancel_cookie {
     color: #9ba21b;
     line-height: 17px;
-}
-
-#content sup {
-	vertical-align:super;
-}
-
-#content sub {
-	vertical-align: sub;
 }

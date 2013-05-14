@@ -21,16 +21,16 @@ No Warranty - take a look at the GPL at the end of this file.
 
 Weitere Informationen zu CONTENIDO / More information on CONTENIDO:
 
-http://www.contenido.org		Homepage
-http://forum.contenido.org		Community Forum
-http://docs.contenido.org		Documentation Portal
-http://faq.contenido.org		FAQ
+http://www.contenido.org            Homepage
+http://forum.contenido.org          Community Forum
+http://docs.contenido.org           Documentation Portal
+http://faq.contenido.org            FAQ
 
-http://api.contenido.org		API documentation
-http://issues.contenido.org		Bugtracker
+http://api.contenido.org            API documentation
+http://issues.contenido.org         Bugtracker
 
-http://twitter.com/contenido		Twitter
-http://facebook.com/cms.contenido	Facebook
+http://twitter.com/contenido        Twitter
+http://facebook.com/cms.contenido   Facebook
 
 -------------------------------------------------------------------
 Lizenzen von verwendeten Produkten / Licenses of used third party products:
@@ -42,11 +42,11 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
 - jQuery 1.8.2
   Lizenz:      MIT License
   Information: http://www.jquery.com
-  
+
 - jQuery timepicker addon 1.0.2
   Lizenz:      MIT or GPL licenses
   Information: http://trentrichardson.com/examples/timepicker/
-  
+
 - jQuery UI 1.8.23
   Lizenz:      MIT License
   Information: http://www.jqueryui.com
@@ -54,11 +54,11 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
 - Pseudo-Cron (Cron-Emulator) 1.2.1
   Lizenz:      GNU General Public Licence (GPL)
   Information: http://www.bitfolge.de/?l=en&s=pseudocron
-  
+
 - Securimage 3.2RC2
   Lizenz:      Securimage license
   Information: http://www.phpcaptcha.org
-  
+
 - SwiftMailer 4.2.1
   Lizenz:      GNU Lesser General Public License v3
   Information: http://swiftmailer.org/
@@ -66,7 +66,7 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
 - TinyMCE 3.5.8
   Lizenz:      GNU Lesser General Public License
   Information: http://www.tinymce.com/
-  
+
 - tipsy, facebook style tooltips for jquery 1.0.0a
   Lizenz:      MIT license
   Information: http://onehackoranother.com/projects/jquery/tipsy/
@@ -78,7 +78,7 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
 - Valums File Uploader 2.0
   Lizenz:      MIT license, GNU GPL 2 or later, GNU LGPL 2 or later, see license.txt
   Information: https://github.com/Valums-File-Uploader/file-uploader
-  
+
 -------------------------------------------------------------------
 
 Alle Informationen zu Gewährleistung, Garantie und
