@@ -657,7 +657,7 @@ class cModuleHandler {
     protected function createModuleDirectory($type) {
         if (array_key_exists($type, $this->_directories)) {
             if (!is_dir($this->_modulePath . $this->_directories[$type])) {
-                if (mkdir($this->_modulePath . $this->_directories[$type]) == false) {
+                if (@mkdir($this->_modulePath . $this->_directories[$type]) == false) {
                     return false;
                 }
                 else
