@@ -217,3 +217,9 @@
 .directoryList ul li a {
     background: url("../../images/folder_on.gif") no-repeat 0 2px;
 }
+
+.cms_linkeditor .loading {
+	display: none;
+	margin-top: 15px;
+    margin-left: -95px;
+}

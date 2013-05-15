@@ -468,8 +468,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             '<b>' . i18n('Path') . '</b>',
             $caption2Span
         ));
-        $imageUpload = new cHTMLUpload('file[]', '', '', 'cms_image_m' . $this->_id, false, '', '', 'file');
-        $propertiesForm->setContent(array(
+        $imageUpload = new cHTMLButton('file[]', i18n("Upload"), 'cms_linkeditor_m' . $this->_id, false, null, '', 'button', 'jqueryAjaxUpload');
+        $imageUpload->setAttribute("style", "padding: 0px 10px; width:auto");
+		
+		$propertiesForm->setContent(array(
             $frame,
             $area,
             $path,
@@ -612,17 +614,17 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      */
     public function uplupload($path) {
         if (count($_FILES) === 1) {
-            foreach ($_FILES['file']['name'] as $key => $value) {
-                if (file_exists($_FILES['file']['tmp_name'][$key])) {
-                    $friendlyName = uplCreateFriendlyName($_FILES['file']['name'][$key]);
-                    move_uploaded_file($_FILES['file']['tmp_name'][$key], $this->_cfgClient[$this->_client]['upl']['path'] . $path . $friendlyName);
+            foreach ($_FILES['uploads']['name'] as $key => $value) {
+                if (file_exists($_FILES['uploads']['tmp_name'][$key])) {
+                    $friendlyName = uplCreateFriendlyName($_FILES['uploads']['name'][$key]);
+                    move_uploaded_file($_FILES['uploads']['tmp_name'][$key], $this->_cfgClient[$this->_client]['upl']['path'] . $path . $friendlyName);
 
                     uplSyncDirectory($path);
 
                     $upload = new cApiUpload();
                     $upload->loadByMany(array(
                         'dirname' => $path,
-                        'filename' => $_FILES['file']['name'][$key]
+                        'filename' => $_FILES['uploads']['name'][$key]
                     ), false);
                     if ($upload->get('idupl') != false) {
                         $uplfilename = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $upload->get('dirname') . $upload->get('filename');

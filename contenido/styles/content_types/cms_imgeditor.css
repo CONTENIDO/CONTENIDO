@@ -69,11 +69,11 @@
     width: 16px;
 }
 
-.loading {
+.cms_imgeditor .loading {
     display: none;
-    left: 22%;
-    position: absolute;
-    top: 17%;
+	position: relative;
+    margin-top: -20px;
+    margin-left: -95px;
 }
 
 .cms_imgeditor #caption1,.cms_imgeditor #caption2,.cms_imgeditor .image_meta_url {

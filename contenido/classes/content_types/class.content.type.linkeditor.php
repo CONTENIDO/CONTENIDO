@@ -551,8 +551,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
             '<b>' . i18n('Path') . '</b>',
             $caption2Span
         ));
-        $imageUpload = new cHTMLUpload('file[]', '', '', 'cms_linkeditor_m' . $this->_id, false, '', '', 'file');
-        $propertiesForm->setContent(array(
+		$imageUpload = new cHTMLButton('file[]', i18n("Upload"), 'cms_linkeditor_m' . $this->_id, false, null, '', 'button', 'jqueryAjaxUpload');
+        $imageUpload->setAttribute("style", "padding: 0px 10px; width:auto");
+		$propertiesForm->setContent(array(
             $frame,
             $area,
             $path,
