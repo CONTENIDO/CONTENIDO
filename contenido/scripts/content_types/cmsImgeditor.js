@@ -82,7 +82,7 @@ cContentTypeImgeditor.prototype.loadExternalFiles = function() {
     if ($('#cms_imgeditor_styles').length === 0) {
         $('head').append('<link rel="stylesheet" id="cms_imgeditor_styles" href="' + this.pathBackend + 'styles/content_types/cms_imgeditor.css" type="text/css" media="all" />');
     }
-	
+
     conLoadFile(this.pathBackend + 'scripts/jquery/ajaxupload.js', cContentTypeImgeditor.prototype.initUpload, this);
 };
 
@@ -342,15 +342,15 @@ cContentTypeImgeditor.prototype.imageFileUpload = function() {
     $('body > input[type=file]').remove();
     $('#cms_image_m' + self.id).unbind();
 
-	$(self.frameId + ' input.jqueryAjaxUpload').unbind();
-	$(self.frameId + ' input.jqueryAjaxUpload').ajaxUploadPrompt({
-		url: self.pathBackend + 'ajaxmain.php?ajax=upl_upload&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&contenido=' + self.session,
-		onprogress: function (e) {
-			$(self.frameId + ' img.loading').show();
-			$(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'hidden');
-		},
-		success: function (data, status, xhr) {
-			if (dirname === 'upload' || dirname === '') {
+    $(self.frameId + ' input.jqueryAjaxUpload').unbind();
+    $(self.frameId + ' input.jqueryAjaxUpload').ajaxUploadPrompt({
+        url: self.pathBackend + 'ajaxmain.php?ajax=upl_upload&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&contenido=' + self.session,
+        onprogress: function(e) {
+            $(self.frameId + ' img.loading').show();
+            $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'hidden');
+        },
+        success: function(data, status, xhr) {
+            if (dirname === 'upload' || dirname === '') {
                 dirname = '/';
             }
             $.ajax({
@@ -359,7 +359,7 @@ cContentTypeImgeditor.prototype.imageFileUpload = function() {
                 data: 'ajax=imagelist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function(msg) {
                     $(self.frameId + ' img.loading').hide();
-					$(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
+                    $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
                     $(self.frameId + ' #directoryFile_' + self.id).html(msg);
                     self.addSelectAction();
                     if (self.scriptLoaded == 1) {
@@ -367,8 +367,8 @@ cContentTypeImgeditor.prototype.imageFileUpload = function() {
                     }
                 }
             });
-		}
-	}); 
+        }
+    });
 };
 
 /**

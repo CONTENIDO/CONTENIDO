@@ -20,7 +20,8 @@
     overflow: auto;
 }
 
-.cms_imgeditor .directories .directoryShow,.cms_imgeditor .upload .directoryShow
+.cms_imgeditor .directories .directoryShow,
+.cms_imgeditor .upload .directoryShow
     {
     background-color: #FFFFFF;
     border: 1px solid #CCCCCC;
@@ -71,11 +72,13 @@
 
 .cms_imgeditor .loading {
     display: none;
-	position: relative;
+    position: relative;
     margin-top: -20px;
     margin-left: -95px;
 }
 
-.cms_imgeditor #caption1,.cms_imgeditor #caption2,.cms_imgeditor .image_meta_url {
+.cms_imgeditor #caption1,
+.cms_imgeditor #caption2,
+.cms_imgeditor .image_meta_url {
     margin-left: 10px;
 }

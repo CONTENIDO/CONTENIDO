@@ -8,7 +8,7 @@ var frontend_path = '{FRONTEND_PATH}';
 /**
  */
 function myCustomSetupContent(editor_id, body, doc) {
-	tinyMCE.get(editor_id).setContent(tinyMCE.get(editor_id).getContent());
+    tinyMCE.get(editor_id).setContent(tinyMCE.get(editor_id).getContent());
 }
 
 /**
@@ -77,20 +77,20 @@ function updateImageFilebrowser() {
  * This is where you insert your custom filebrowser logic.
  */
 function CustomfileBrowserCallBack(field_name, url, type) {
-	alert("Filebrowser callback: " + field_name + "," + url + "," + type);
+    alert("Filebrowser callback: " + field_name + "," + url + "," + type);
 }
 
 /**
  * Removes xhtml styled tags.
  */
 function CustomCleanupContent(type, value) {
-	switch (type) {
-		case "get_from_editor":
-		case "insert_to_editor":
-			value = value.replace(/[\s]*\/>/g,'>');
-			break;
-	}
-	return value;
+    switch (type) {
+        case "get_from_editor":
+        case "insert_to_editor":
+            value = value.replace(/[\s]*\/>/g,'>');
+            break;
+    }
+    return value;
 }
 </script>
 {COMPRESSOR}

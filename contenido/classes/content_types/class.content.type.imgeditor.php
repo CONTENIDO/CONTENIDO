@@ -470,8 +470,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         ));
         $imageUpload = new cHTMLButton('file[]', i18n("Upload"), 'cms_linkeditor_m' . $this->_id, false, null, '', 'button', 'jqueryAjaxUpload');
         $imageUpload->setAttribute("style", "padding: 0px 10px; width:auto");
-		
-		$propertiesForm->setContent(array(
+
+        $propertiesForm->setContent(array(
             $frame,
             $area,
             $path,

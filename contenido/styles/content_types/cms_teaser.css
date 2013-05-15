@@ -1,7 +1,7 @@
 .cms_teaser {
     min-height: 320px;
-	max-height: 500px;
-	overflow: auto;
+    max-height: 500px;
+    overflow: auto;
     width: 322px;
 }
 
@@ -15,5 +15,5 @@
 
 .cms_teaser input.teaser_type_count {
     width: 11%;
-	margin-left: 3%;
+    margin-left: 3%;
 }

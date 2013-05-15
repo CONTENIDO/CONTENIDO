@@ -11,8 +11,8 @@
     /*left: 50% !important;*/
     padding: 5px;
     /*top: 50% !important;*/
-	margin: -160px 0 0 -161px;
-	/*position: fixed !important;*/
+    margin: -160px 0 0 -161px;
+    /*position: fixed !important;*/
     z-index: 20000;
 }
 
@@ -24,8 +24,8 @@
 
 .cms_abstract .close {
     float: right;
-	margin-right: 6px;
-	margin-top: 5px;
+    margin-right: 6px;
+    margin-top: 5px;
 }
 
 .cms_abstract .tabs {
@@ -41,10 +41,10 @@
     clear: both;
     font-style: italic;
     margin: 10px 0 5px;
-	font-weight: bold;
+    font-weight: bold;
 }
 .cms_abstract div + .head_sub {
-	padding-top: 15px;
+    padding-top: 15px;
 }
 
 .cms_abstract label {
@@ -85,8 +85,8 @@
     clear: both;
     list-style-type: none;
     margin: 10px 0 0;
-	border-bottom: 1px solid #B3B3B3;
-	height: 22px;
+    border-bottom: 1px solid #B3B3B3;
+    height: 22px;
 }
 
 .cms_abstract .menu li {
@@ -96,12 +96,12 @@
     padding: 0 10px;
     width: auto;
     display: inline-block;
-	margin-top: 1px;
+    margin-top: 1px;
 }
 
 .cms_abstract .menu li.active {
     font-weight: bold;
-	border-bottom: 1px solid #F1F1F1;
+    border-bottom: 1px solid #F1F1F1;
 }
 
 .cms_abstract .checkbox_wrapper {

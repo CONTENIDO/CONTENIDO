@@ -71,8 +71,8 @@ cContentTypeLinkeditor.prototype.loadExternalFiles = function() {
     if ($('#cms_linkeditor_styles').length === 0) {
         $('head').append('<link rel="stylesheet" id="cms_linkeditor_styles" href="' + this.pathBackend + 'styles/content_types/cms_linkeditor.css" type="text/css" media="all" />');
     }
-	
-	conLoadFile(this.pathBackend + 'scripts/jquery/ajaxupload.js', cContentTypeLinkeditor.prototype.linkEditorFileUpload, this);
+
+    conLoadFile(this.pathBackend + 'scripts/jquery/ajaxupload.js', cContentTypeLinkeditor.prototype.linkEditorFileUpload, this);
 };
 
 /**
@@ -241,45 +241,45 @@ cContentTypeLinkeditor.prototype.showFolderPath = function() {
     $(self.frameId + ' form[name="newdir"] input[name="path"]').val(selectedPath);
     $(self.frameId + ' form[name="properties"] input[name="path"]').val(selectedPath);
 
-    
-	self.linkEditorFileUpload();
+
+    self.linkEditorFileUpload();
 };
 
 /**
  * Uploads an image.
  */
 cContentTypeLinkeditor.prototype.linkEditorFileUpload = function() {
-	
+
     var self = this;
     var dirname = '';
     if (self.selectedPath != '' && self.selectedPath != 'upload') {
         dirname = self.selectedPath + '/';
     }
 
-	$(self.frameId + ' input.jqueryAjaxUpload').unbind();
-	$(self.frameId + ' input.jqueryAjaxUpload').ajaxUploadPrompt({
-		url: self.pathBackend + 'ajaxmain.php?ajax=upl_upload&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&contenido=' + self.session,
-		onprogress: function (e) {
-			$(self.frameId + ' img.loading').show();
-			$(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'hidden');
-		},
-		success: function (data, status, xhr) {
-			if (dirname === 'upload' || dirname === '') {
+    $(self.frameId + ' input.jqueryAjaxUpload').unbind();
+    $(self.frameId + ' input.jqueryAjaxUpload').ajaxUploadPrompt({
+        url: self.pathBackend + 'ajaxmain.php?ajax=upl_upload&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&contenido=' + self.session,
+        onprogress: function(e) {
+            $(self.frameId + ' img.loading').show();
+            $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'hidden');
+        },
+        success: function(data, status, xhr) {
+            if (dirname === 'upload' || dirname === '') {
                 dirname = '/';
             }
-			
+
             $.ajax({
                 type: 'POST',
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=linkeditorimagelist&dir=' + self.selectedPath + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function(msg) {
                     $(self.frameId + ' img.loading').hide();
-					$(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
+                    $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
                     $(self.frameId + ' #directoryFile_' + self.id).html(msg);
                 }
             });
-		}
-	}); 
+        }
+    });
 };
 
 /**

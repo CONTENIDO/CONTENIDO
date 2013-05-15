@@ -82,7 +82,10 @@
     width: 200px;
 }
 
-.directoryList ul li div.active,.directoryList ul li#root li div.active a,.directoryList ul li#root li div.active em a,.directoryList ul li#root li div.active em span
+.directoryList ul li div.active,
+.directoryList ul li#root li div.active a,
+.directoryList ul li#root li div.active em a,
+.directoryList ul li#root li div.active em span
     {
     background-color: #ECF1B2 !important;
 }
@@ -91,7 +94,16 @@
     cursor: pointer;
 }
 
-.directoryList ul li div:hover,.directoryList ul li div:hover a,.directoryList ul li#root li div:hover a,.directoryList ul li#root li div:hover em a,.directoryList ul li#root li div:hover em span,.directoryList div.hover,.directoryList div.hover a,.directoryList ul li#root li div.hover a,.directoryList ul li#root li div.hover em a,.directoryList ul li#root li div.hover em span
+.directoryList ul li div:hover,
+.directoryList ul li div:hover a,
+.directoryList ul li#root li div:hover a,
+.directoryList ul li#root li div:hover em a,
+.directoryList ul li#root li div:hover em span,
+.directoryList div.hover,
+.directoryList div.hover a,
+.directoryList ul li#root li div.hover a,
+.directoryList ul li#root li div.hover em a,
+.directoryList ul li#root li div.hover em span
     {
     background-color: #F8FDDC !important;
 }
@@ -164,7 +176,8 @@
         transparent;
 }
 
-.directoryList ul li#root li em a,.directoryList ul li#root li em span {
+.directoryList ul li#root li em a,
+.directoryList ul li#root li em span {
     background: #FFF url("../../images/but_minus.gif") no-repeat 0 0;
     float: right;
     height: 20px;
@@ -173,22 +186,34 @@
     width: 16px;
 }
 
-.directoryList ul li#root li.collapsed em a,.directoryList ul li#root li.collapsed em span
+.directoryList ul li#root li.collapsed em a,
+.directoryList ul li#root li.collapsed em span
     {
     background: #FFF url("../../images/but_plus.gif") no-repeat 0 0;
 }
 
-.directoryList ul li#root li.last em a,.directoryList ul li#root li.last li.last em a,.directoryList ul li#root li.last em span,.directoryList ul li#root li.last li.last em span
+.directoryList ul li#root li.last em a,
+.directoryList ul li#root li.last li.last em a,
+.directoryList ul li#root li.last em span,
+.directoryList ul li#root li.last li.last em span
     {
     background: #FFF url("../../images/but_lastnode.gif") no-repeat 0 0;
 }
 
-.directoryList ul li#root li.last li em a,.directoryList ul li#root li.collapsed li em a,.directoryList ul li#root li.last li.collapsed li em a,.directoryList ul li#root li.last li em span,.directoryList ul li#root li.collapsed li em span,.directoryList ul li#root li.last li.collapsed li em span
+.directoryList ul li#root li.last li em a,
+.directoryList ul li#root li.collapsed li em a,
+.directoryList ul li#root li.last li.collapsed li em a,
+.directoryList ul li#root li.last li em span,
+.directoryList ul li#root li.collapsed li em span,
+.directoryList ul li#root li.last li.collapsed li em span
     {
     background: #FFF url("../../images/but_minus.gif") no-repeat 0 0;
 }
 
-.directoryList ul li#root li.last li.collapsed em a,.directoryList ul li#root li.last.collapsed em a,.directoryList ul li#root li.last li.collapsed em span,.directoryList ul li#root li.last.collapsed em span
+.directoryList ul li#root li.last li.collapsed em a,
+.directoryList ul li#root li.last.collapsed em a,
+.directoryList ul li#root li.last li.collapsed em span,
+.directoryList ul li#root li.last.collapsed em span
     {
     background: #FFF url("../../images/but_plus.gif") no-repeat 0 0;
 }
@@ -219,7 +244,7 @@
 }
 
 .cms_linkeditor .loading {
-	display: none;
-	margin-top: 15px;
+    display: none;
+    margin-top: 15px;
     margin-left: -95px;
 }
