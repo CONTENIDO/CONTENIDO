@@ -2,16 +2,16 @@
 /**
  * Defines the 'con' related functions in CONTENIDO
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Olaf Niemann, Jan Lengowski
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Olaf Niemann, Jan Lengowski
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -968,16 +968,16 @@ function conGenerateCodeForAllArtsUsingTemplate($idtpl) {
                 " . $cfg['tab']['cat_lang'] . " AS b,
                 " . $cfg['tab']['cat'] . " AS c
             WHERE
-                a.idtpl     = " . (int) $idtpl . " AND
+                a.idtpl     = " . cSecurity::toInteger($idtpl) . " AND
                 b.idtplcfg  = a.idtplcfg AND
-                c.idclient  = " . (int) $client . " AND
+                c.idclient  = " . cSecurity::toInteger($client) . " AND
                 b.idcat     = c.idcat";
 
     $db->query($sql);
 
     while ($db->nextRecord()) {
         $oCatArtColl->resetQuery();
-        $ids = $oCatArtColl->getIdsByWhereClause('idcat = ' . (int) $db->f('idcat'));
+        $ids = $oCatArtColl->getIdsByWhereClause('idcat = ' . cSecurity::toInteger($db->f('idcat')));
         foreach ($ids as $id) {
             conSetCodeFlag($id);
         }
@@ -991,9 +991,9 @@ function conGenerateCodeForAllArtsUsingTemplate($idtpl) {
                 " . $cfg['tab']['art_lang'] . " AS b,
                 " . $cfg['tab']['art'] . " AS c
             WHERE
-                a.idtpl     = " . (int) $idtpl . " AND
+                a.idtpl     = " . cSecurity::toInteger($idtpl) . " AND
                 b.idtplcfg  = a.idtplcfg AND
-                c.idclient  = " . (int) $client . " AND
+                c.idclient  = " . cSecurity::toInteger($client) . " AND
                 b.idart     = c.idart";
 
     $db->query($sql);
@@ -1165,11 +1165,11 @@ function conCopyTemplateConfiguration($srcidtplcfg) {
 function conCopyContainerConf($srcidtplcfg, $dstidtplcfg) {
     $counter = 0;
     $oContainerConfColl = new cApiContainerConfigurationCollection();
-    $oContainerConfColl->select('idtplcfg = ' . (int) $srcidtplcfg);
+    $oContainerConfColl->select('idtplcfg = ' . cSecurity::toInteger($srcidtplcfg));
     while (($oContainerConf = $oContainerConfColl->next()) !== false) {
         $oNewContainerConfColl = new cApiContainerConfigurationCollection();
         $oNewContainerConfColl->copyItem($oContainerConf, array(
-            'idtplcfg' => (int) $dstidtplcfg
+            'idtplcfg' => cSecurity::toInteger($dstidtplcfg)
         ));
         $counter++;
     }
@@ -1185,11 +1185,11 @@ function conCopyContainerConf($srcidtplcfg, $dstidtplcfg) {
  */
 function conCopyContent($srcidartlang, $dstidartlang) {
     $oContentColl = new cApiContentCollection();
-    $oContentColl->select('idartlang = ' . (int) $srcidartlang);
+    $oContentColl->select('idartlang = ' . cSecurity::toInteger($srcidartlang));
     while (($oContent = $oContentColl->next()) !== false) {
         $oNewContentColl = new cApiContentCollection();
         $oNewContentColl->copyItem($oContent, array(
-            'idartlang' => (int) $dstidartlang
+            'idartlang' => cSecurity::toInteger($dstidartlang)
         ));
     }
 }
@@ -1203,11 +1203,11 @@ function conCopyContent($srcidartlang, $dstidartlang) {
  */
 function conCopyMetaTags($srcidartlang, $dstidartlang) {
     $oMetaTagColl = new cApiMetaTagCollection();
-    $oMetaTagColl->select('idartlang = ' . (int) $srcidartlang);
+    $oMetaTagColl->select('idartlang = ' . cSecurity::toInteger($srcidartlang));
     while (($oMetaTag = $oMetaTagColl->next()) !== false) {
         $oNewMetaTagColl = new cApiMetaTagCollection();
         $oNewMetaTagColl->copyItem($oMetaTag, array(
-            'idartlang' => (int) $dstidartlang
+            'idartlang' => cSecurity::toInteger($dstidartlang)
         ));
     }
 }
@@ -1275,10 +1275,10 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
 
     // Execute CEC hook
     cApiCecHook::execute('Contenido.Article.conCopyArtLang_AfterInsert', array(
-        'idartlang' => (int) $oNewArtLang->get('idartlang'),
-        'idart' => (int) $idart,
-        'idlang' => (int) $idlang,
-        'idtplcfg' => (int) $idtplcfg,
+        'idartlang' => cSecurity::toInteger($oNewArtLang->get('idartlang')),
+        'idart' => cSecurity::toInteger($idart),
+        'idlang' => cSecurity::toInteger($idlang),
+        'idtplcfg' => cSecurity::toInteger($idtplcfg),
         'title' => $title
     ));
 
@@ -1455,9 +1455,9 @@ function conSyncArticle($idart, $srclang, $dstlang) {
     $param = array();
     $param['src_art_lang'] = $srcArtLang->toArray();
     $param['dest_art_lang'] = $dstArtLang->toArray();
-    $param['dest_art_lang']['idartlang'] = (int) $newidartlang;
-    $param['dest_art_lang']['idlang'] = (int) $dstlang;
-    $param['dest_art_lang']['idtplcfg'] = (int) $newidtplcfg;
+    $param['dest_art_lang']['idartlang'] = cSecurity::toInteger($newidartlang);
+    $param['dest_art_lang']['idlang'] = cSecurity::toInteger($dstlang);
+    $param['dest_art_lang']['idtplcfg'] = cSecurity::toInteger($newidtplcfg);
     cApiCecHook::execute('Contenido.Article.conSyncArticle_AfterInsert', $param);
 
     // Copy content
