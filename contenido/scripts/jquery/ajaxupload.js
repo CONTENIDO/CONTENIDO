@@ -244,6 +244,9 @@
 					options.data = $.ajaxUploadExtractData(this.files, options.data);
 					$.ajaxUpload(options); */
 				});
+				$(this).click(function () {
+					d.click();
+				});
 			} else {
 				$(this).click(function () {
 					$.ajaxUploadPrompt( origSettings );
