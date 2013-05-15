@@ -1,16 +1,17 @@
 <?php
 /**
- * This file contains the backend page for the form of editing template configurations.
+ * This file contains the backend page for the form of editing template
+ * configurations.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Jan Lengowski, Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Jan Lengowski, Olaf Niemann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -79,8 +80,7 @@ if (!isset($db3) || !is_object($db3)) {
 $tpl->reset();
 
 if ($idart) {
-    if ($perm->have_perm_area_action('con', 'con_tplcfg_edit') ||
-            $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)) {
+    if ($perm->have_perm_area_action('con', 'con_tplcfg_edit') || $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)) {
 
         // Article is configured
         $sql = "SELECT
@@ -93,8 +93,8 @@ if ($idart) {
                     " . $cfg['tab']['art_lang'] . " AS b,
                     " . $cfg['tab']['tpl'] . " AS c
                 WHERE
-                    b.idart     = " . (int) $idart . " AND
-                    b.idlang    = " . (int) $lang . " AND
+                    b.idart     = " . cSecurity::toInteger($idart) . " AND
+                    b.idlang    = " . cSecurity::toInteger($lang) . " AND
                     b.idtplcfg  = a.idtplcfg AND
                     c.idtpl     = a.idtpl";
 
@@ -113,20 +113,20 @@ if ($idart) {
         } else {
             if ($idtpl) {
                 // create new configuration entry
-                //$nextid = $db3->nextid($cfg['tab']['tpl_conf']);
+                // $nextid = $db3->nextid($cfg['tab']['tpl_conf']);
 
-                $sql = "INSERT INTO " . $cfg['tab']['tpl_conf'] . " (idtpl) VALUES (" . (int) $idtpl . ")";
+                $sql = "INSERT INTO " . $cfg['tab']['tpl_conf'] . " (idtpl) VALUES (" . cSecurity::toInteger($idtpl) . ")";
                 $db->query($sql);
                 $idtplcfg = $db->getLastInsertedId($cfg['tab']['tpl_conf']);
 
                 // update art_lang
-                $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET idtplcfg=" . (int) $idtplcfg . " WHERE idart=" . (int) $idart . " AND idlang=" . (int) $lang;
+                $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET idtplcfg=" . cSecurity::toInteger($idtplcfg) . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
                 $db->query($sql);
             }
         }
     } else {
         $notification->displayNotification('error', i18n("Permission denied"));
-        exit;
+        exit();
     }
 } elseif ($idcat) {
 
@@ -140,11 +140,11 @@ if ($idart) {
                 " . $cfg['tab']['cat_lang'] . " AS b,
                 " . $cfg['tab']['tpl'] . " AS c
             WHERE
-                b.idcat     = " . (int) $idcat . " AND
-                b.idlang    = " . (int) $lang . " AND
+                b.idcat     = " . cSecurity::toInteger($idcat) . " AND
+                b.idlang    = " . cSecurity::toInteger($lang) . " AND
                 b.idtplcfg  = a.idtplcfg AND
                 c.idtpl     = a.idtpl AND
-                c.idclient  = " . (int) $client;
+                c.idclient  = " . cSecurity::toInteger($client);
     $db->query($sql);
 
     if ($db->nextRecord()) {
@@ -155,14 +155,14 @@ if ($idart) {
     } else {
         if ($idtpl) {
             // create new configuration entry
-            //$nextid = $db3->nextid($cfg['tab']['tpl_conf']);
+            // $nextid = $db3->nextid($cfg['tab']['tpl_conf']);
 
-            $sql = "INSERT INTO " . $cfg['tab']['tpl_conf'] . " (idtpl) VALUES (" . (int) $idtpl . ")";
+            $sql = "INSERT INTO " . $cfg['tab']['tpl_conf'] . " (idtpl) VALUES (" . cSecurity::toInteger($idtpl) . ")";
             $db->query($sql);
             $idtplcfg = $db->getLastInsertedId($cfg['tab']['tpl_conf']);
 
             // update cat_lang
-            $sql = "UPDATE " . $cfg['tab']['cat_lang'] . " SET idtplcfg=" . (int) $idtplcfg . " WHERE idcat=" . (int) $idcat . " AND idlang=" . (int) $lang;
+            $sql = "UPDATE " . $cfg['tab']['cat_lang'] . " SET idtplcfg=" . cSecurity::toInteger($idtplcfg) . " WHERE idcat=" . cSecurity::toInteger($idcat) . " AND idlang=" . cSecurity::toInteger($lang);
             $db->query($sql);
         }
     }
@@ -178,7 +178,8 @@ $sql = "SELECT idcontainerc FROM " . $cfg['tab']['container_conf'] . " WHERE idt
 $db->query($sql);
 
 if (!$db->nextRecord()) {
-    // There is no configuration for this $idtplcfg, check if template has a pre-configuration
+    // There is no configuration for this $idtplcfg, check if template has a
+    // pre-configuration
     $sql = "SELECT idtplcfg, description FROM " . $cfg['tab']['tpl'] . " WHERE idtpl=" . (int) $idtpl;
 
     $db->query($sql);
@@ -192,7 +193,7 @@ if (!$db->nextRecord()) {
 
         while ($db->nextRecord()) {
             // get data
-            //$nextid    = $db3->nextid($cfg['tab']['container_conf']);
+            // $nextid = $db3->nextid($cfg['tab']['container_conf']);
             $number = $db->f('number');
             $container = $db->f('container');
             // write new entry
@@ -211,7 +212,8 @@ if (count($_POST) > 0 && $message == '') {
     $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Save change successfully!"));
 }
 
-// Get template configuration from 'con_container_conf' and create configuration data array
+// Get template configuration from 'con_container_conf' and create configuration
+// data array
 $sql = "SELECT * FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . (int) $idtplcfg . " ORDER BY number";
 $db->query($sql);
 
@@ -224,7 +226,7 @@ while ($db->nextRecord()) {
 
 $tmp_area = 'tplcfg';
 
-//Form
+// Form
 $formaction = $sess->url('main.php');
 $hidden = '<input type="hidden" name="area" value="' . $area . '">
                <input type="hidden" name="frame" value="' . $frame . '">
@@ -252,7 +254,7 @@ if (!empty($sArticleTitle)) {
 }
 $tpl->set('s', 'CATEGORY', $category);
 
-//SELECT Box for Templates
+// SELECT Box for Templates
 
 $tpl->set('s', 'TEMPLATECAPTION', i18n("Template"));
 
@@ -314,7 +316,6 @@ if (isset($a_d) && is_array($a_d)) {
             $cCurrentContainer = $cnumber;
             $modulecaption = i18n("Module in container") . ' ' . $cnumber . ': ';
             $modulename = $db->f('name');
-
 
             $input = "\n";
             $contenidoModuleHandler = new cModuleHandler($db->f('idmod'));
@@ -433,7 +434,6 @@ if ($idtpl != 0 && $inUse == false) {
     $tpl->set('s', 'BUTTONS', '');
 }
 
-
 // Display template description
 if ($idtpl) {
     $tpl->set('s', 'DESCRIPTION', nl2br($description));
@@ -454,14 +454,14 @@ if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
     $tpl->set('s', 'DISPLAY_HEADER', 'none');
 }
 
-//breadcrumb onclick
+// breadcrumb onclick
 $tpl->set('s', 'iIdcat', $idcat);
 $tpl->set('s', 'iIdtpl', $idtpl);
 $tpl->set('s', 'SYNCOPTIONS', -1);
 $tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'DISPLAY_MENU', 1);
 
-//Improve display of inherited templates
+// Improve display of inherited templates
 if (!$idtpl && $idcat && $idart) {
     $sql = "SELECT
                 c.idtpl AS idtpl,
