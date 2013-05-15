@@ -28,8 +28,7 @@ if (0 < $configIdart) {
         'facebook' => $article->getContent('CMS_TEXT', 2),
         'googleplus' => $article->getContent('CMS_TEXT', 3),
         'twitter' => $article->getContent('CMS_TEXT', 4),
-        'youtube' => $article->getContent('CMS_TEXT', 5),
-        'xing' => $article->getContent('CMS_TEXT', 6)
+        'xing' => $article->getContent('CMS_TEXT', 5)
     );
 
     // use smarty template to output header text

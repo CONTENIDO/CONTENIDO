@@ -37,13 +37,9 @@ if (cRegistry::isBackendEditMode()) {
             'name' => mi18n("NAME_TWITTER"),
             'link' => "CMS_TEXT[4]"
         ),
-        'youtube' => array(
-            'name' => mi18n("NAME_YOUTUBE"),
-            'link' => "CMS_TEXT[5]"
-        ),
         'xing' => array(
             'name' => mi18n("NAME_XING"),
-            'link' => "CMS_TEXT[6]"
+            'link' => "CMS_TEXT[5]"
         )
     );
 

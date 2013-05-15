@@ -323,8 +323,8 @@ INSERT INTO `!PREFIX!_content` VALUES(395, 119, 2, 1, '<p><span style="color: #c
 INSERT INTO `!PREFIX!_content` VALUES(396, 120, 1, 1, '<p>Login / Logout</p>', '', 'sysadmin', '2013-02-13 14:16:57', '2013-02-13 14:16:57');
 INSERT INTO `!PREFIX!_content` VALUES(397, 120, 2, 1, '<p>Invalid credentials, please try again!</p>', '', 'sysadmin', '2013-02-21 16:25:54', '2013-02-21 16:28:33');
 INSERT INTO `!PREFIX!_content` VALUES(398, 98, 3, 3, 'https://plus.google.com/communities/116797635881622662388', '', 'sysadmin', '2013-02-21 16:39:04', '2013-02-21 16:39:04');
-INSERT INTO `!PREFIX!_content` VALUES(399, 98, 3, 6, 'https://www.xing.com/net/contenido', '', 'sysadmin', '2013-02-21 16:39:52', '2013-02-21 16:39:52');
-INSERT INTO `!PREFIX!_content` VALUES(400, 12, 3, 6, 'https://www.xing.com/net/contenido', '', 'sysadmin', '2013-02-21 16:40:12', '2013-02-21 16:40:12');
+INSERT INTO `!PREFIX!_content` VALUES(399, 98, 3, 5, 'https://www.xing.com/net/contenido', '', 'sysadmin', '2013-02-21 16:39:52', '2013-02-21 16:39:52');
+INSERT INTO `!PREFIX!_content` VALUES(400, 12, 3, 5, 'https://www.xing.com/net/contenido', '', 'sysadmin', '2013-02-21 16:40:12', '2013-02-21 16:40:12');
 INSERT INTO `!PREFIX!_content` VALUES(401, 12, 3, 3, 'https://plus.google.com/communities/116797635881622662388', '', 'sysadmin', '2013-02-21 16:40:18', '2013-02-21 16:40:18');
 INSERT INTO `!PREFIX!_content` VALUES(402, 66, 22, 100, '61', '', 'sysadmin', '2013-02-21 16:52:05', '2013-02-21 16:52:05');
 INSERT INTO `!PREFIX!_content` VALUES(403, 66, 4, 100, '61', '', 'sysadmin', '2013-02-21 16:52:05', '2013-02-21 16:52:05');
