@@ -127,7 +127,7 @@ function uplHasFiles($sDir) {
     global $client, $cfgClient;
 
     if (!$hDir = @opendir($cfgClient[$client]['upl']['path'] . $sDir)) {
-        return true;
+        return false;
     }
 
     $bHasContent = false;
