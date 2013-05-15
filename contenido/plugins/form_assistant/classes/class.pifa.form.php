@@ -351,17 +351,17 @@ class PifaForm extends Item {
         // get form attribute values
         $opt = array_merge(array(
             // or whatever
-            'name' => 'pifa-form',
+            'name' => 'pifa_form',
             'action' => 'main.php',
             'method' => $this->get('method'),
-            'class' => 'pifa-form jqtransform'
+            'class' => 'pifa_form jqtransform'
         ), $opt);
         $idform = $this->get('idform');
 
         // build form
         $htmlForm = new cHTMLForm($opt['name'], $opt['action'], $opt['method'], $opt['class']);
         // set ID (workaround: remove ID first!)
-        $htmlForm->removeAttribute('id')->setID('pifa-form-' . $idform);
+        $htmlForm->removeAttribute('id')->setID('pifa_form_' . $idform);
 
         // add fields
         foreach ($this->getFields() as $pifaField) {
