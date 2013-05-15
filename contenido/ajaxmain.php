@@ -158,4 +158,4 @@ cDebug::out(implode("\n", $debugInfo));
 $oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->startUsersTracking();
 
-cRegistry::shutdown();
+cRegistry::shutdown(false);

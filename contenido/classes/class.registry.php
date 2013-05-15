@@ -545,8 +545,10 @@ class cRegistry {
     /**
      * Shutdowns the CONTENIDO framework on page close.
      */
-    public final static function shutdown() {
-        cDebug::showAll();
+    public final static function shutdown($debugShowAll = true) {
+        if ($debugShowAll == true) {
+            cDebug::showAll();
+        }
 
         $sess = self::getSession();
         if (isset($sess)) {
@@ -617,4 +619,5 @@ class cRegistry {
     public static function isTrackingAllowed() {
         return (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] != 1) || !isset($_SERVER['HTTP_DNT']);
     }
+
 }
