@@ -1,11 +1,9 @@
-<?php
+ <?php
 
 /**
  *
  * @package Module
- * @subpackage ContentSearchResult
- * @version SVN Revision $Rev:$
- *
+ * @subpackage search_result
  * @version SVN Revision $Rev:$
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG
@@ -17,6 +15,18 @@
  * @author marcus.gnass
  */
 class SearchResultModule {
+
+    /**
+     *
+     * @var unknown_type
+     */
+    protected $_countValues;
+
+    /**
+     *
+     * @var unknown_type
+     */
+    protected $_searchResultCount = 0;
 
     /**
      *
@@ -104,6 +114,7 @@ class SearchResultModule {
         $searchTerm = stripslashes($searchTerm);
         $searchTerm = strip_tags($searchTerm);
         $searchTerm = conHtmlentities($searchTerm);
+
         $searchTerm = urldecode($searchTerm);
         $searchTerm = str_replace(' + ', ' AND ', $searchTerm);
         $searchTerm = str_replace(' - ', ' NOT ', $searchTerm);
@@ -119,8 +130,13 @@ class SearchResultModule {
             } else {
                 $this->_combine = 'or';
             }
-            $searchTerm = str_replace(' and ', ' ', strtolower($searchTerm));
-            $searchTerm = str_replace(' or ', ' ', strtolower($searchTerm));
+
+            $searchTerm = htmlentities($searchTerm, ENT_COMPAT, 'UTF-8');
+            $searchTerm = (trim(strtolower($searchTerm)));
+            $searchTerm = html_entity_decode($searchTerm, ENT_COMPAT, 'UTF-8');
+
+            $searchTerm = str_replace(' and ', ' ', $searchTerm);
+            $searchTerm = str_replace(' or ', ' ', $searchTerm);
         }
 
         // that's the search term suitable for the search itself
@@ -128,18 +144,17 @@ class SearchResultModule {
 
         // perform search
         $this->_performSearch();
-
     }
 
     /**
      */
     public function render() {
-
-        $tpl = cSmartyFrontend::getInstance();
+        $tpl = Contenido_SmartyWrapper::getInstance();
 
         $tpl->assign('label', $this->_label);
         $tpl->assign('searchTerm', $this->_dispSearchTerm);
         $tpl->assign('currentPage', $this->_page);
+
         $tpl->assign('results', $this->_getResults());
         $tpl->assign('msgResult', $this->_msgResult);
         $tpl->assign('msgRange', $this->_msgRange);
@@ -161,7 +176,6 @@ class SearchResultModule {
         }
 
         $tpl->display($this->_templateName);
-
     }
 
     /**
@@ -194,31 +208,57 @@ class SearchResultModule {
             'htmltext',
             'text'
         ));
-        $searchResultArray = $search->searchIndex($this->_prepSearchTerm, '');
+        if (strlen($this->_prepSearchTerm) > 1) {
+            $searchResultArray = $search->searchIndex($this->_prepSearchTerm, '');
 
-        $searchResultCount = 0;
-        if (false !== $searchResultArray) {
+            $searchResultCount = 0;
+            if (false !== $searchResultArray) {
 
-            $searchResultCount = count($searchResultArray);
+                $this->_searchResultCount = count($searchResultArray);
 
-            // get search results
-            $this->_searchResults = new cSearchResult($searchResultArray, $this->_itemsPerPage);
+                // get search results
+                $this->_searchResults = new cSearchResult($searchResultArray, $this->_itemsPerPage);
 
-            // get number of pages
-            $this->_numberOfPages = $this->_searchResults->getNumberOfPages();
+                // get number of pages
+                $this->_numberOfPages = $this->_searchResults->getNumberOfPages();
 
-            // html-tags to emphasize the located searchterms
-            $this->_searchResults->setReplacement('<strong>', '</strong>');
+                // html-tags to emphasize the located searchterms
+                $this->_searchResults->setReplacement('<strong>', '</strong>');
+            }
 
+            // create message to display
+            if (0 === $this->_searchResultCount) {
+                $this->_msgResult = sprintf($this->_label['msgNoResultsFound'], $this->_dispSearchTerm);
+            } else {
+                $this->_msgResult = sprintf($this->_label['msgResultsFound'], $this->_dispSearchTerm, $this->_searchResultCount);
+            }
+        } else {
+            echo "Bitte geben verwenden Sie einen Suchbegriff mit mehr als einem Buchstaben";
         }
+    }
 
-        // create message to display
-        if (0 === $searchResultCount) {
+    /**
+     *
+     * @return string
+     */
+    protected function _getMsgResult() {
+        return $this->_msgResult;
+    }
+
+    /**
+     *
+     * @param unknown_type $count
+     * @param unknown_type $countIdarts
+     */
+    protected function _setMsgResult($count, $countIdarts) {
+        $this->_countValues = $count;
+
+        // $this->_numberOfPages = 1;
+        if (0 === $this->_searchResultCount) {
             $this->_msgResult = sprintf($this->_label['msgNoResultsFound'], $this->_dispSearchTerm);
         } else {
-            $this->_msgResult = sprintf($this->_label['msgResultsFound'], $this->_dispSearchTerm, $searchResultCount);
+            $this->_msgResult = sprintf($this->_label['msgResultsFound'], $this->_dispSearchTerm, $this->_searchResultCount);
         }
-
     }
 
     /**
@@ -228,12 +268,10 @@ class SearchResultModule {
      * @return array
      */
     protected function _getSearchableIdcats() {
-
         $searchableIdcats = getEffectiveSetting('searchable', 'idcats', 1);
         $searchableIdcats = explode(',', $searchableIdcats);
 
         return $searchableIdcats;
-
     }
 
     /**
@@ -244,7 +282,6 @@ class SearchResultModule {
      * @return array
      */
     protected function _getArticleSpecs() {
-
         $sql = "-- getArticleSpecs()
             SELECT
                 idartspec
@@ -266,7 +303,6 @@ class SearchResultModule {
         $aArtSpecs[] = 0;
 
         return $aArtSpecs;
-
     }
 
     /**
@@ -274,7 +310,6 @@ class SearchResultModule {
      * @return array
      */
     protected function _getResults() {
-
         if (NULL === $this->_searchResults) {
             return array();
         }
@@ -329,7 +364,6 @@ class SearchResultModule {
                 'similarity' => $similarity,
                 'href' => $href
             );
-
         }
 
         $lower = ($this->_page - 1) * $this->_itemsPerPage + 1;
@@ -339,7 +373,6 @@ class SearchResultModule {
         $this->_msgRange = sprintf($this->_label['msgRange'], $lower, $upper, $total);
 
         return $entries;
-
     }
 
     /**
@@ -357,7 +390,6 @@ class SearchResultModule {
         $url = $this->_getPageLink($this->_dispSearchTerm, $this->_page - 1);
 
         return $url;
-
     }
 
     /**
@@ -375,7 +407,6 @@ class SearchResultModule {
         $url = $this->_getPageLink($this->_dispSearchTerm, $this->_page + 1);
 
         return $url;
-
     }
 
     /**
@@ -384,14 +415,12 @@ class SearchResultModule {
      * @return string
      */
     protected function _getPageLinks() {
-
         $pageLinks = array();
         for ($i = 1; $i <= $this->_numberOfPages; $i++) {
             $pageLinks[$i] = $this->_getPageLink($this->_dispSearchTerm, $i);
         }
 
         return $pageLinks;
-
     }
 
     /**
@@ -447,7 +476,6 @@ class SearchResultModule {
         }
 
         return $url;
-
     }
 
 }
