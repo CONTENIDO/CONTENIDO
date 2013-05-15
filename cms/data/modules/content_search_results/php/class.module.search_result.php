@@ -232,8 +232,6 @@ class SearchResultModule {
             } else {
                 $this->_msgResult = sprintf($this->_label['msgResultsFound'], $this->_dispSearchTerm, $this->_searchResultCount);
             }
-        } else {
-            echo "Bitte geben verwenden Sie einen Suchbegriff mit mehr als einem Buchstaben";
         }
     }
 
