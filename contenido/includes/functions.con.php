@@ -1253,6 +1253,7 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
     $fieldsToOverwrite = array(
         'idart' => $idart,
         'idlang' => $idlang,
+        'idtplcfg' => cSecurity::toInteger($idtplcfg),
         'online' => 0,
         'title' => $title,
         'created' => date('Y-m-d H:i:s'),
