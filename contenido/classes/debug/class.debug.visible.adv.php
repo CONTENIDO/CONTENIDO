@@ -107,7 +107,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 
                 ++$i;
             }
-            $sHtml .= $tpl->generate($cfg["template"]["debug_visibleadv"], true);
+            $sHtml .= $tpl->generate($cfg["path"]["templates"] . $cfg["template"]["debug_visibleadv"], true);
         }
 
         $buffer = str_replace("\'", "\\'", $this->_buffer);
@@ -117,7 +117,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 
         $tpl = new cTemplate();
         $tpl->set("s", "DBG_MESSAGE_CONTENT", $buffer);
-        $sHtml .= $tpl->generate($cfg["templates"]["debug_header"], true);
+        $sHtml .= $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["debug_header"], true);
 
         echo $sHtml;
     }
