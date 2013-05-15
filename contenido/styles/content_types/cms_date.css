@@ -13,3 +13,7 @@
 .cms_date .ui-datepicker {
     z-index: 20000 !important;
 }
+
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span {
+	text-indent: 37px;
+}

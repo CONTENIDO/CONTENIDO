@@ -160,10 +160,11 @@ cContentTypeAbstractTabbed.prototype.addFrameShowEvent = function() {
     var self = this;
     $(self.imageId).css('cursor', 'pointer');
     $(self.imageId).click(function() {
+    	 var top = $(document).scrollTop()+($(window).height()/2); 
         $(self.frameId).fadeIn('normal');
         $(self.frameId).css('position', 'absolute');
-        $(self.frameId).css('top', $(self.imageId).offset().top);
-        $(self.frameId).css('left', $(self.imageId).offset().left + $(self.imageId).width() + 3);
+        $(self.frameId).css('top', top); 
+        $(self.frameId).css('left', '50%');
     });
 };
 

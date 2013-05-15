@@ -8,10 +8,11 @@
     border: 1px solid #B3B3B3;
     display: none;
     font-size: 12px;
-    left: 40px;
-    padding: 3px;
-    position: absolute;
-    top: 40px;
+    /*left: 50% !important;*/
+    padding: 5px;
+    /*top: 50% !important;*/
+	margin: -160px 0 0 -161px;
+	/*position: fixed !important;*/
     z-index: 20000;
 }
 
@@ -23,6 +24,8 @@
 
 .cms_abstract .close {
     float: right;
+	margin-right: 6px;
+	margin-top: 5px;
 }
 
 .cms_abstract .tabs {
@@ -38,26 +41,30 @@
     clear: both;
     font-style: italic;
     margin: 10px 0 5px;
+	font-weight: bold;
+}
+.cms_abstract div + .head_sub {
+	padding-top: 15px;
 }
 
 .cms_abstract label {
     display: block;
     float: left;
-    width: 120px;
+    width: 48%;
 }
 
 .cms_abstract input,
 .cms_abstract select {
-    margin-bottom: 3px;
-    width: 194px;
+    margin-bottom: 5px;
+    width: 50%;
 }
 
 .cms_abstract input {
-    width: 198px;
+    width: 50%;
 }
 
 .cms_abstract input.file {
-    width: 300px;
+    width: 50%;
 }
 
 .cms_abstract input[type="checkbox"] {
@@ -65,33 +72,36 @@
 }
 
 .cms_abstract select {
-    width: 200px;
+    width: 51%;
 }
 
 .cms_abstract .toolbar {
     clear: both;
     float: right;
-    margin: 5px 0;
+    margin: 5px 6px 5px 0;
 }
 
 .cms_abstract .menu {
     clear: both;
     list-style-type: none;
     margin: 10px 0 0;
+	border-bottom: 1px solid #B3B3B3;
+	height: 22px;
 }
 
 .cms_abstract .menu li {
-    border-bottom: 1px solid #B3B3B3;
-    border-right: 1px solid #B3B3B3;
+    border: 1px solid #B3B3B3;
     cursor: pointer;
     line-height: 20px;
     padding: 0 10px;
     width: auto;
     display: inline-block;
+	margin-top: 1px;
 }
 
 .cms_abstract .menu li.active {
     font-weight: bold;
+	border-bottom: 1px solid #F1F1F1;
 }
 
 .cms_abstract .checkbox_wrapper {
