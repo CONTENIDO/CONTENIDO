@@ -174,13 +174,13 @@ if ($idtpl == 0) {
 }
 
 // Check if a configuration for this $idtplcfg exists
-$sql = "SELECT idcontainerc FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . (int) $idtplcfg;
+$sql = "SELECT idcontainerc FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . cSecurity::toInteger($idtplcfg);
 $db->query($sql);
 
 if (!$db->nextRecord()) {
     // There is no configuration for this $idtplcfg, check if template has a
     // pre-configuration
-    $sql = "SELECT idtplcfg, description FROM " . $cfg['tab']['tpl'] . " WHERE idtpl=" . (int) $idtpl;
+    $sql = "SELECT idtplcfg, description FROM " . $cfg['tab']['tpl'] . " WHERE idtpl=" . cSecurity::toInteger($idtpl);
 
     $db->query($sql);
     $db->nextRecord();
@@ -188,7 +188,7 @@ if (!$db->nextRecord()) {
     if (0 != $db->f('idtplcfg')) {
         // Template has a pre-configuration, copy pre-configuration data to
         // category configuration with the $idtplcfg from the category
-        $sql = "SELECT * FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . (int) $db->f('idtplcfg') . " ORDER BY number DESC";
+        $sql = "SELECT * FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . cSecurity::toInteger($db->f('idtplcfg')) . " ORDER BY number DESC";
         $db->query($sql);
 
         while ($db->nextRecord()) {
@@ -201,7 +201,7 @@ if (!$db->nextRecord()) {
                         " . $cfg['tab']['container_conf'] . "
                         (idtplcfg, number, container)
                     VALUES
-                        (" . (int) $idtplcfg . ", " . (int) $number . ", '" . $db2->escape($container) . "')";
+                        (" . cSecurity::toInteger($idtplcfg) . ", " . cSecurity::toInteger($number) . ", '" . $db2->escape($container) . "')";
 
             $db2->query($sql);
         }
@@ -214,7 +214,7 @@ if (count($_POST) > 0 && $message == '') {
 
 // Get template configuration from 'con_container_conf' and create configuration
 // data array
-$sql = "SELECT * FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . (int) $idtplcfg . " ORDER BY number";
+$sql = "SELECT * FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . cSecurity::toInteger($idtplcfg) . " ORDER BY number";
 $db->query($sql);
 
 $a_c = array();
@@ -268,7 +268,7 @@ if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat)) {
 
 $tpl2->set('s', 'OPTIONS', $disabled . ' ' . $disabled2 . ' onchange="tplcfgform.changetemplate.value=1;tplcfgform.send.value=0;tplcfgform.submit();"');
 
-$sql = "SELECT idtpl, name, description FROM " . $cfg['tab']['tpl'] . " WHERE idclient=" . (int) $client . " ORDER BY name";
+$sql = "SELECT idtpl, name, description FROM " . $cfg['tab']['tpl'] . " WHERE idclient=" . cSecurity::toInteger($client) . " ORDER BY name";
 $db->query($sql);
 
 $tpl2->set('d', 'VALUE', 0);
@@ -293,7 +293,7 @@ while ($db->nextRecord()) {
 $select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 $tpl->set('s', 'TEMPLATESELECTBOX', $select);
 // modul input bereich von allen container anzeigen
-$sql = "SELECT * FROM " . $cfg['tab']['container'] . " WHERE idtpl=" . (int) $idtpl . " ORDER BY number ASC";
+$sql = "SELECT * FROM " . $cfg['tab']['container'] . " WHERE idtpl=" . cSecurity::toInteger($idtpl) . " ORDER BY number ASC";
 $db->query($sql);
 
 $a_d = array();
@@ -307,7 +307,7 @@ if (isset($a_d) && is_array($a_d)) {
     foreach ($a_d as $cnumber => $value) {
         // show only the containers which contain a module
         if (0 != $value) {
-            $sql = "SELECT * FROM " . $cfg['tab']['mod'] . " WHERE idmod=" . (int) $a_d[$cnumber];
+            $sql = "SELECT * FROM " . $cfg['tab']['mod'] . " WHERE idmod=" . cSecurity::toInteger($a_d[$cnumber]);
             $db->query($sql);
             $db->nextRecord();
 
@@ -473,11 +473,11 @@ if (!$idtpl && $idcat && $idart) {
                 " . $cfg['tab']['cat_lang'] . " AS b,
                 " . $cfg['tab']['tpl'] . " AS c
             WHERE
-                b.idcat     = " . (int) $idcat . " AND
-                b.idlang    = " . (int) $lang . " AND
+                b.idcat     = " . cSecurity::toInteger($idcat) . " AND
+                b.idlang    = " . cSecurity::toInteger($lang) . " AND
                 b.idtplcfg  = a.idtplcfg AND
                 c.idtpl     = a.idtpl AND
-                c.idclient  = " . (int) $client;
+                c.idclient  = " . cSecurity::toInteger($client);
     $db2->query($sql);
     if ($db2->nextRecord()) {
         $message = sprintf(i18n("This article has no template. Therefore the categories template (%s) is used. You can set the article template below."), $db2->f('name'));
