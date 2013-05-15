@@ -223,7 +223,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             // strip duplicate directories to save performance
             $directories = array_unique($directories);
 
-            if (count($directories) <= 1) {
+            if (count($directories) < 1) {
                 return;
             }
 
