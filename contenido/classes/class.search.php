@@ -5,17 +5,16 @@
  * API to search in the index structure
  * API to display the searchresults
  *
- * @package    Core
+ * @package Core
  * @subpackage Frontend_Search
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Willi Man
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Willi Man
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.encoding.php');
@@ -27,7 +26,7 @@ cInclude('includes', 'functions.encoding.php');
  *
  * @author Murat Purc <murat@purc.de>
  *
- * @package    Core
+ * @package Core
  * @subpackage Frontend_Search
  */
 abstract class cSearchBaseAbstract {
@@ -141,7 +140,7 @@ abstract class cSearchBaseAbstract {
  * Keep in mind that class Search and SearchResult uses an instance of object
  * Index.
  *
- * @package    Core
+ * @package Core
  * @subpackage Frontend_Search
  */
 class cSearchIndex extends cSearchBaseAbstract {
@@ -328,7 +327,11 @@ class cSearchIndex extends cSearchBaseAbstract {
 
                         foreach ($tmp_keys as $value) {
                             // index terms are stored with lower case
-                            $value = strtolower($value);
+                            // $value = strtolower($value);
+
+                            $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
+                            $value = trim(strtolower($value));
+                            $value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');
 
                             if (!in_array($value, $this->_stopwords)) {
                                 // eliminate stopwords
@@ -369,7 +372,6 @@ class cSearchIndex extends cSearchBaseAbstract {
             if (!array_key_exists($keyword, $this->_keywordsOld)) {
                 // if keyword is new, save index information
                 // $nextid = $this->db->nextid($this->cfg['tab']['keywords']);
-
                 $sql = "INSERT INTO " . $this->cfg['tab']['keywords'] . "
                             (keyword, " . $this->_place . ", idlang)
                         VALUES
@@ -387,7 +389,6 @@ class cSearchIndex extends cSearchBaseAbstract {
                         WHERE idlang='" . cSecurity::toInteger($this->lang) . "' AND keyword='" . $this->db->escape($keyword) . "'";
             }
             $this->_debug('sql', $sql);
-
             $this->db->query($sql);
         }
     }
@@ -481,10 +482,10 @@ class cSearchIndex extends cSearchBaseAbstract {
             "~"
         );
 
-        for ($i = 127; $i < 192; $i++) {
-            // some other special characters
-            $aSpecialChars[] = chr($i);
-        }
+        // for ($i = 127; $i < 192; $i++) {
+        // some other special characters
+        // $aSpecialChars[] = chr($i);
+        // }
 
         // TODO: The transformation of accented characters must depend on the
         // selected encoding of the language of
@@ -500,19 +501,19 @@ class cSearchIndex extends cSearchBaseAbstract {
             $key = htmlentities_iso88592($key);
         }
 
-        $aUmlautMap = array(
-            '&Uuml;' => 'ue',
-            '&uuml;' => 'ue',
-            '&Auml;' => 'ae',
-            '&auml;' => 'ae',
-            '&Ouml;' => 'oe',
-            '&ouml;' => 'oe',
-            '&szlig;' => 'ss'
-        );
+        // $aUmlautMap = array(
+        // '&Uuml;' => 'ue',
+        // '&uuml;' => 'ue',
+        // '&Auml;' => 'ae',
+        // '&auml;' => 'ae',
+        // '&Ouml;' => 'oe',
+        // '&ouml;' => 'oe',
+        // '&szlig;' => 'ss'
+        // );
 
-        foreach ($aUmlautMap as $sUmlaut => $sMapped) {
-            $key = str_replace($sUmlaut, $sMapped, $key);
-        }
+        // foreach ($aUmlautMap as $sUmlaut => $sMapped) {
+        // $key = str_replace($sUmlaut, $sMapped, $key);
+        // }
 
         $key = conHtmlEntityDecode($key);
         $key = str_replace($aSpecialChars, '', $key);
@@ -562,7 +563,6 @@ class cSearchIndex extends cSearchBaseAbstract {
 
     /**
      * set the cms types
-
      */
     public function setContentTypes() {
         $sql = "SELECT type, idtype FROM " . $this->cfg['tab']['type'] . ' ';
@@ -746,7 +746,7 @@ class cSearchIndex extends cSearchBaseAbstract {
  * with $oSearchResults = new cSearchResult($search_result, 10);
  * one can rank and display the results
  *
- * @package    Core
+ * @package Core
  * @subpackage Frontend_Search
  */
 class cSearch extends cSearchBaseAbstract {
@@ -842,6 +842,7 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * Array of article id's with information about cms-types, occurence of
      * keyword/searchword, similarity .
+     *
      * @var array
      */
     protected $_searchResult = array();
@@ -1074,7 +1075,12 @@ class cSearch extends cSearchBaseAbstract {
         $tmp_searchwords = array();
 
         foreach ($tmp_words as $word) {
-            $word = $this->_index->removeSpecialChars(trim(strtolower($word)));
+
+            $word = htmlentities($word, ENT_COMPAT, 'UTF-8');
+            $word = (trim(strtolower($word)));
+            $word = html_entity_decode($word, ENT_COMPAT, 'UTF-8');
+
+            // $word =(trim(strtolower($word)));
             if (strlen($word) > 1) {
                 $tmp_searchwords[] = $word;
             }
@@ -1316,7 +1322,7 @@ class cSearch extends cSearchBaseAbstract {
  * $iOccurrence = $oSearchResults->getOccurrence($key);
  * }
  *
- * @package    Core
+ * @package Core
  * @subpackage Frontend_Search
  *
  */
@@ -1381,6 +1387,7 @@ class cSearchResult extends cSearchBaseAbstract {
     /**
      * Array of article id's with information about cms-types, occurence of
      * keyword/searchword, similarity .
+     *
      *
      * @var array
      */
@@ -1458,7 +1465,8 @@ class cSearchResult extends cSearchBaseAbstract {
      *
      * @param $cms_type string Content type
      * @param $art_id int Id of an article
-     * @return string Content of an article in search result, specified by its type
+     * @return string Content of an article in search result, specified by its
+     *         type
      */
     public function getSearchContent($art_id, $cms_type, $cms_nr = NULL) {
         $cms_type = strtoupper($cms_type);
@@ -1501,8 +1509,8 @@ class cSearchResult extends cSearchBaseAbstract {
                             $pattern = $match[0];
                             $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
                             $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
-                                                                                                    // located
-                                                                                                    // searchwords
+                                                                                                        // located
+                                                                                                        // searchwords
                         }
                     }
                 }
@@ -1520,8 +1528,8 @@ class cSearchResult extends cSearchBaseAbstract {
                                 $pattern = $match[0];
                                 $replacement = $this->_replacement[0] . $pattern . $this->_replacement[1];
                                 $cms_content = preg_replace("/$pattern/i", $replacement, $cms_content); // emphasize
-                                                                                                        // located
-                                                                                                        // searchwords
+                                                                                                            // located
+                                                                                                            // searchwords
                             }
                         }
                     }
