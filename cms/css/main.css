@@ -813,7 +813,7 @@ button.ui-button::-moz-focus-inner {
 
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
     float: right;
-	padding-top:50px;
+    padding-top: 50px;
 }
 
 .ui-dialog .ui-dialog-buttonpane button {
