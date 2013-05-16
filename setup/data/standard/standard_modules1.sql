@@ -34,3 +34,4 @@ INSERT INTO `!PREFIX!_mod` VALUES(34, 1, 'form_newsletter_subscription', 'form_n
 INSERT INTO `!PREFIX!_mod` VALUES(35, 1, 'content_user_forum', 'content_user_forum', '', 'none', NULL, NULL, '', '', '', 0, NULL, NULL, 'sysadmin', '2013-02-13 14:14:00', '2013-02-15 14:41:01');
 INSERT INTO `!PREFIX!_mod` VALUES(36, 1, 'handler_newsletter_subscription', 'handler_newsletter_subscription', '', 'none', NULL, NULL, '', '', '', 0, NULL, NULL, 'sysadmin', '2013-02-13 14:14:00', '2013-02-14 13:03:13');
 INSERT INTO `!PREFIX!_mod` VALUES(37, 1, 'form_contact', 'form_contact', '', 'none', NULL, NULL, '', '', '', 0, NULL, NULL, 'sysadmin', '2013-02-20 13:33:23', '2013-02-20 12:41:02');
+INSERT INTO `!PREFIX!_mod` VALUES(38, 1, 'script_cookie_directive', 'script_cookie_directive', '', 'none', NULL, NULL, '', '', '', 0, NULL, NULL, 'sysadmin', '2013-02-20 13:33:23', '2013-02-20 12:41:02');
