@@ -33,3 +33,4 @@ INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES
 INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100004, 100001, 4, 100004);
 INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100005, 100002, 4, 100005);
 INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100001', 'CMS_PIFAFORM', '', 'PIFA form', '0', '', NOW(), NOW());
+INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100002', 'CMS_USERFORUM', '', 'User forum', '0', '', NOW(), NOW());
