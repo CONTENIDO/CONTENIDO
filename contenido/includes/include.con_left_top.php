@@ -328,7 +328,7 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
     $tpl->set('s', 'UPDATE_SYNC_REFRESH_FRAMES', $sJsLink);
     $tpl->set('s', 'SYNCRONIZATION', $oListOptionRow->render());
     $tpl->set('s', 'SYNCLINK', $sListId);
-    $sSyncLink = $sess->url($selflink . "?area=$area&frame=2&action=con_synccat");
+    $sSyncLink = $sess->url("main.php?area=$area&frame=2&action=con_synccat");
     $tpl->set('s', 'SYNC_HREF', $sSyncLink);
 } else {
     $tpl->set('s', 'SYNCRONIZATION', '');
