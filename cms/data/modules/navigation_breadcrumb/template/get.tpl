@@ -1,5 +1,6 @@
 <!-- navigation_breadcrumb/template/get.tpl -->
 
+{if $breadcrumb|@count > 0}
 <ul>
     <li>{$label_breadcrumb}:</li>
     {foreach from=$breadcrumb item=category}
@@ -9,5 +10,6 @@
         <li>{$headline}</li>
     {/if}
 </ul>
+{/if}
 
 <!-- /navigation_breadcrumb/template/get.tpl -->
