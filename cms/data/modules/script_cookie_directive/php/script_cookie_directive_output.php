@@ -14,18 +14,22 @@
  * @link http://www.contenido.org
  */
 
+$session = cRegistry::getSession();
+
 if (array_key_exists('acceptCookie', $_GET)) {
     // Check value in get, if js is off
     $allowCookie = $_GET['acceptCookie'] === '1'? 1 : 0;
     setcookie('allowCookie', $allowCookie);
+
+    // Save value
+    $session->register('allowCookie');
 } elseif (array_key_exists('allowCookie', $_COOKIE)) {
     // Check value in cookies
     $allowCookie = $_COOKIE['allowCookie'] === '1'? 1 : 0;
-}
 
-// Save value
-$session = cRegistry::getSession();
-$session->register('allowCookie');
+    // Save value
+    $session->register('allowCookie');
+}
 
 // Show notify
 if (!isset($allowCookie)) {
