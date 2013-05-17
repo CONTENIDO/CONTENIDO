@@ -120,7 +120,7 @@ class cSession {
     }
 
     /**
-     * Attaches "&contenido=1" at the end of the URL.
+     * Attaches "&contenido=sessionid" at the end of the URL.
      * This is no longer needed
      * to make sessions work but some CONTENIDO functions/classes rely on it
      *
@@ -135,7 +135,7 @@ class cSession {
         $url = preg_replace('/[&?]+$/', '', $url);
 
         if (!preg_match('~\b' . quotemeta(urlencode($this->name)) . '=[a-zA-Z0-9]*\b~', $url)) {
-            $url .= (strpos($url, '?') != false? '&' : '?') . urlencode($this->name) . '=1';
+            $url .= (strpos($url, '?') != false? '&' : '?') . urlencode($this->name) . '=' . $this->id;
         }
 
         // Encode naughty characters in the URL
