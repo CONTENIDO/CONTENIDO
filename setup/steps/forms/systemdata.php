@@ -64,7 +64,7 @@ class cSetupSystemData extends cSetupMask {
 
         switch ($_SESSION['setuptype']) {
             case 'setup':
-                $this->_oStepTemplate->set('s', 'DESCRIPTION', i18n("Please enter the required database information. If you are unsure about the data, ask your provider or administrator.") . i18n("If the database does not exist and your database user has the sufficient permissions, setup will create the database automatically."));
+                $this->_oStepTemplate->set('s', 'DESCRIPTION', i18n("Please enter the required database information. If you are unsure about the data, ask your provider or administrator.") . " " . i18n("If the database does not exist and your database user has the sufficient permissions, setup will create the database automatically."));
                 break;
             case 'upgrade':
                 $this->_oStepTemplate->set('s', 'DESCRIPTION', i18n("Please enter the required database information. If the database data of your previous installation could have been read, the data will be inserted automatically. If you are unsure about the data, please ask your provider or administrator."));
