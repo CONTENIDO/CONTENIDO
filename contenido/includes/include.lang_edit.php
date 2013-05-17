@@ -198,7 +198,7 @@ if ($action == "lang_newlanguage") {
                 // update dropdown in header
                 $jsCode = '<script type="text/javascript">
                             (function() {
-                                top.header.languageSelectUpdate("' . $langname . '", "' . $idlang . '");
+                                top.header.languageSelectUpdate("' . $db->f("name") . '", "' . $idlang . '");
                             })();
                           </script>';
 
