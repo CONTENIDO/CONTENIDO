@@ -479,7 +479,8 @@ class cSearchIndex extends cSearchBaseAbstract {
             "{",
             "|",
             "}",
-            "~"
+            "~",
+            "„"
         );
 
         // for ($i = 127; $i < 192; $i++) {
