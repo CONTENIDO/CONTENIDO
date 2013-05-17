@@ -602,7 +602,7 @@ class cSystemtest {
      */
     protected function testSingleFile($filename, $severity, $dir = false) {
         if (strpos($filename, $this->_config["path"]["frontend"]) === 0) {
-            $shortFilename = substr($filename, strlen($this->_config["path"]["frontend"]));
+            $shortFilename = substr(substr($filename, strlen($this->_config["path"]["frontend"])), 1);
         }
 
         if (!$dir) {
