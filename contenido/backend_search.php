@@ -398,7 +398,7 @@ if (!empty($sSearchStr_tmp)) {
     $sSearchStr = $sSearchStr_tmp;
 }
 // Article ID
-if ($iSearchID_tmp >= 0) {
+if ($iSearchID_tmp > 0) {
     $iSearchID = $iSearchID_tmp;
 }
 // Date
@@ -444,8 +444,8 @@ $where = "";
 $bNoCriteria = true;
 
 // Article ID
-if (!is_null($iSearchID)) {
-    $where.= " AND (a.idart = ".Contenido_Security::toInteger($iSearchID).")";
+if (!empty($iSearchID)) {
+    $where.= " AND (a.idart = " . Contenido_Security::toInteger($iSearchID) . ")";
 	$bNoCriteria = false;
 }
 
