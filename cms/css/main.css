@@ -283,6 +283,7 @@ p a:hover {
 .slider .images li h2 {
     font-weight: bold;
     font-size: 30px;
+	line-height: 30px;
     top: 27px;
 }
 
