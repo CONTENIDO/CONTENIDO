@@ -1088,62 +1088,62 @@ ul.social_media li.twitter {
 }
 
 /* ----- PIFAFORM ----- */
-.pifa_form {
+.pifa-form {
     margin-top: 30px;
     position: relative;
 }
 
-.pifa_form label {
+.pifa-form label {
     display: block;
     width: 160px;
     float: left;
 }
 
-.pifa_form div.checkbox_wrapper label {
+.pifa-form div.checkbox-wrapper label {
     width: 438px;
 }
 
-.pifa_form div.privacy {
+.pifa-form div.privacy {
     margin-bottom: 15px;
 }
 
-.pifa_form div {
+.pifa-form div {
     margin-bottom: 3px;
 }
 
-.pifa_form select {
+.pifa-form select {
     width: 456px;
 }
 
-.pifa_form input[type="text"],
+.pifa-form input[type="text"],
 textarea {
     width: 450px;
 }
 
-.pifa_form .pifa_error select,
-.pifa_form .pifa_error input,
-.pifa_form .pifa_error textarea {
+.pifa-form .pifa-error select,
+.pifa-form .pifa-error input,
+.pifa-form .pifa-error textarea {
     border: 1px solid #C31250;
 }
 
-.pifa_form .pifa_error input[type="text"],
-.pifa_form .pifa_error textarea {
+.pifa-form .pifa-error input[type="text"],
+.pifa-form .pifa-error textarea {
     width: 454px;
 }
 
-.pifa_form .pifa_error label {
+.pifa-form .pifa-error label {
     color: #C31250;
 }
 
-.pifa_form p {
+.pifa-form p {
     display: none;
 }
 
-.pifa_form .pifa-error .pifa-error-message {
+.pifa-form .pifa-error .pifa-error-message {
 	display: block;
 }
 
-.pifa_form .pifa_error:hover p {
+.pifa-form .pifa-error:hover p {
     display: block;
     position: absolute;
     top: 0px;
