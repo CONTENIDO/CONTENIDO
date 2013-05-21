@@ -114,9 +114,6 @@ body {
     font-weight: normal;
 }
 
-#breadcrumb ul li a:active {
-    font-weight: bold;
-}
 
 /* ----- MENU ----- */
 #menu {
