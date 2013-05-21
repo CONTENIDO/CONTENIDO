@@ -47,6 +47,7 @@
         <td><input type="text" name="height" value="{$height}"></td>
     </tr>
  </table>
+ <input type="hidden" name="plugin_type" value="facebook" />
  <input type="submit" value="{$save}" />
 </form>
 
