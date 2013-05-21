@@ -3,6 +3,9 @@
 /**
  * description: standard article doorway configuration
  *
+ * Allows to select an imagewhich will be used as teaser image by the module
+ * content_teaser_image.
+ *
  * @package Module
  * @subpackage ContentTeaser
  * @version SVN Revision $Rev:$
