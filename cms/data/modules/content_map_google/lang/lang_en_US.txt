@@ -4,3 +4,4 @@ LATITUDE=Latitude
 LONGITUDE=Longitude
 MARKER_TITLE=Description
 WAY_DESCRIPTION=Directions
+
