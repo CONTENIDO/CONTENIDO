@@ -170,8 +170,12 @@ $(function() {
 
 
     /* ----- SLIDER ----- */
-
+    //fix for safer sliding in IE 7/8
+    $(".slider .images li").not(".active").css({"opacity": "0"});
+    
+    
     var slider = window.setInterval(function() {
+    	
         var index = $(".slider .images li.active").index();
         $(".slider .pagination li a").removeClass("active");
         $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function() {

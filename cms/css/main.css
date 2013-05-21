@@ -251,8 +251,10 @@ p a:hover {
     left: 20px;
 }
 
+
 .slider .images li.active {
     opacity: 1;
+	
 }
 
 #content .slider .images li img {
@@ -1134,6 +1136,10 @@ textarea {
 
 .pifa_form p {
     display: none;
+}
+
+.pifa_form .pifa-error .pifa-error-message {
+	display: block;
 }
 
 .pifa_form .pifa_error:hover p {
