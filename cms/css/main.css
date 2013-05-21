@@ -505,6 +505,10 @@ p+.button.red {
     margin-bottom: 30px;
     outline: none;
 }
+#navigation_searchform_top + h3 {
+	white-space: pre-line;
+	word-break: break-all;
+}
 
 .submit.search {
     vertical-align: top;
