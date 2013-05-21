@@ -1,0 +1,1 @@
+<div id="fb-root"></div><script src="http://connect.facebook.net/{$LOCALE}/all.js#xfbml=1"></script><fb:like-box href="{$URL}" width="{$WIDTH}" show_faces="{$SHOW_FACES}" border_color="" locale="en_US" stream="false" header="false"></fb:like-box>

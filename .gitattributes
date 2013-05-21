@@ -108,6 +108,14 @@ cms/data/modules/content_sitemap_xml/lang/lang_de_DE.txt -text svneol=unset#text
 cms/data/modules/content_sitemap_xml/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/data/modules/content_sitemap_xml/php/content_sitemap_xml_input.php -text
 cms/data/modules/content_sitemap_xml/php/content_sitemap_xml_output.php -text
+cms/data/modules/content_socialmedia_facebook/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_socialmedia_facebook/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/content_socialmedia_facebook/lang/lang_en_US.txt -text svneol=unset#text/plain
+cms/data/modules/content_socialmedia_facebook/php/content_socialmedia_facebook_input.php -text
+cms/data/modules/content_socialmedia_facebook/php/content_socialmedia_facebook_output.php -text
+cms/data/modules/content_socialmedia_facebook/template/facebook_config_view.tpl -text
+cms/data/modules/content_socialmedia_facebook/template/facebook_like_box.tpl -text
+cms/data/modules/content_socialmedia_facebook/template/facebook_like_button.tpl -text
 cms/data/modules/content_teaser_config/info.xml -text
 cms/data/modules/content_teaser_config/lang/lang_de_DE.txt -text
 cms/data/modules/content_teaser_config/lang/lang_en_US.txt -text
