@@ -30,6 +30,7 @@ body {
 
 #header #logo {
     margin-top: 35px;
+	position: absolute;
 }
 
 #header #navigation_header {
