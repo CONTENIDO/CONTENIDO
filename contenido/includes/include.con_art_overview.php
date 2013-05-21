@@ -915,6 +915,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         } else {
             $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
             $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
+            $tpl->set('s', 'CATTEMPLATE', '');
         }
 
         $str = '';
