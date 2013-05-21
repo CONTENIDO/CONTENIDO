@@ -150,7 +150,7 @@ $(function() {
      */
     function pifaShowFormFieldDialog($dialog, $draggedItem) {
         $dialog.dialog({
-            width: 500,
+            width: 520,
             height: 'auto',
             modal: true,
             resizable: true,
