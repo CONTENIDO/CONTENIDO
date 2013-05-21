@@ -1,0 +1,5 @@
+URL_PROFILE=URL zum Profil
+LOOK=Aussehen
+NAME=Name
+SAVE=Speichern
+OVERVIEW=Xing Plugin

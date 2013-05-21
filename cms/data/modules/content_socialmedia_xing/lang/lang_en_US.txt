@@ -1,0 +1,5 @@
+URL_PROFILE=URL to profile
+LOOK=Look
+NAME=Name
+SAVE=Save
+OVERVIEW=Xing Plugin
