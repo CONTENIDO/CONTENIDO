@@ -434,7 +434,7 @@ function mi18n($key) {
         $translation = call_user_func_array('sprintf', $arrArgs);
     }
 
-    return str_replace("\n",'',$translation);
+    return trim($translation);
 
 }
 
