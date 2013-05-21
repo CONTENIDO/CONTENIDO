@@ -3,7 +3,7 @@
 .cms_imgeditor .directoryList {
     float: left;
     margin-right: 1.5%;
-	width: 48%;
+    width: 48%;
 }
 
 .cms_imgeditor .directoryShow {
@@ -18,7 +18,7 @@
     border: 1px solid #CCC;
     height: 170px;
     overflow: auto;
-	width: 49%;
+    width: 49%;
 }
 
 .cms_imgeditor .directories .directoryShow,
@@ -32,7 +32,7 @@
     overflow: auto;
 }
 .cms_imgeditor b {
-	display: block;
+    display: block;
 }
 .cms_imgeditor .meta label {
    /* margin: 10px 0 3px 10px;*/
@@ -86,8 +86,8 @@
 }
 
 #imgeditor_tabs input[type='file'] {
-	width: 99%;
-margin-bottom: 8px;
-display: block;
-margin-top: 8px;
+    width: 99%;
+    margin-bottom: 8px;
+    display: block;
+    margin-top: 8px;
 }

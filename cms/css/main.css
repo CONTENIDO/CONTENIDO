@@ -30,7 +30,7 @@ body {
 
 #header #logo {
     margin-top: 35px;
-	position: absolute;
+    position: absolute;
 }
 
 #header #navigation_header {
@@ -254,7 +254,6 @@ p a:hover {
 
 .slider .images li.active {
     opacity: 1;
-	
 }
 
 #content .slider .images li img {
@@ -283,7 +282,7 @@ p a:hover {
 .slider .images li h2 {
     font-weight: bold;
     font-size: 30px;
-	line-height: 30px;
+    line-height: 30px;
     top: 27px;
 }
 
@@ -510,8 +509,8 @@ p+.button.red {
     outline: none;
 }
 #navigation_searchform_top + h3 {
-	white-space: pre-line;
-	word-break: break-all;
+    white-space: pre-line;
+    word-break: break-all;
 }
 
 .submit.search {
@@ -1140,7 +1139,7 @@ textarea {
 }
 
 .pifa-form .pifa-error .pifa-error-message {
-	display: block;
+    display: block;
 }
 
 .pifa-form .pifa-error:hover p {
