@@ -260,8 +260,18 @@ class ModRewriteController extends ModRewriteBase {
     private function _extractRequestUri($secondCall = false) {
         global $client;
 
+        // get REQUEST_URI
+        $requestUri = $_SERVER['REQUEST_URI'];
+        // use REDIRECT_URL if set
+        if (array_key_exists('REDIRECT_URL', $_SERVER)) {
+            $requestUri = $_SERVER['REDIRECT_URL'];
+            if (array_key_exists('REDIRECT_QUERY_STRING', $_SERVER)) {
+                $requestUri .= '?' . $_SERVER['REDIRECT_QUERY_STRING'];
+            }
+        }
+
         // check for defined rootdir
-        if (parent::getConfig('rootdir') !== '/' && strpos($_SERVER['REQUEST_URI'], $this->_sIncommingUrl) === 0) {
+        if (parent::getConfig('rootdir') !== '/' && strpos($requestUri, $this->_sIncommingUrl) === 0) {
             $this->_sIncommingUrl = str_replace(parent::getConfig('rootdir'), '/', $this->_sIncommingUrl);
         }
 
@@ -481,7 +491,7 @@ class ModRewriteController extends ModRewriteBase {
                 $clCol = new cApiClientLanguageCollection();
                 $clCol->setWhere('idclient', $client);
                 $clCol->query();
-                if ($clItem = $clCol->next()) {
+                if (false !== $clItem = $clCol->next()) {
                     $lang = $clItem->get('idlang');
                 }
             }
