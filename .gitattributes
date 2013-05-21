@@ -7,6 +7,7 @@
 cms/cache/code/.htaccess -text
 cms/cache/index.php -text
 cms/css/contenido_backend.css -text svneol=unset#text/plain
+cms/css/ie_8.css -text svneol=unset#text/plain
 cms/css/index.php -text
 cms/css/main.css -text svneol=unset#text/plain
 cms/css/reset.css -text svneol=unset#text/plain
