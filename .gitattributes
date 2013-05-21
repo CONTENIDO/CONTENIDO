@@ -116,6 +116,13 @@ cms/data/modules/content_socialmedia_facebook/php/content_socialmedia_facebook_o
 cms/data/modules/content_socialmedia_facebook/template/facebook_config_view.tpl -text
 cms/data/modules/content_socialmedia_facebook/template/facebook_like_box.tpl -text
 cms/data/modules/content_socialmedia_facebook/template/facebook_like_button.tpl -text
+cms/data/modules/content_socialmedia_googleplus/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_socialmedia_googleplus/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/content_socialmedia_googleplus/lang/lang_en_US.txt -text svneol=unset#text/plain
+cms/data/modules/content_socialmedia_googleplus/php/content_socialmedia_googleplus_input.php -text
+cms/data/modules/content_socialmedia_googleplus/php/content_socialmedia_googleplus_output.php -text
+cms/data/modules/content_socialmedia_googleplus/template/google_plus.tpl -text
+cms/data/modules/content_socialmedia_googleplus/template/google_plus_config_view.tpl -text
 cms/data/modules/content_socialmedia_xing/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_socialmedia_xing/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_socialmedia_xing/lang/lang_en_US.txt -text svneol=unset#text/plain
