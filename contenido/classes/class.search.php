@@ -333,6 +333,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                             $value = trim(strtolower($value));
                             $value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');
 
+                            var_dump($value);
                             if (!in_array($value, $this->_stopwords)) {
                                 // eliminate stopwords
 
