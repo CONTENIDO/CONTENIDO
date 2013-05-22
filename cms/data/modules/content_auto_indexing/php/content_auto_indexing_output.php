@@ -3,9 +3,9 @@
  /**
   *  This module is used to start the automatic keyword generation progress
   *  and SHOULD NOT be used permanently because of performance reasons.
-  * 
-  * 
-  * 
+  *
+  *
+  *
   * @package Module
   * @subpackage AutoIndexing
   * @version SVN Revision $Rev:$
@@ -17,7 +17,5 @@
 
  cInclude('frontend', 'classes/class.kvh.auto_indexing.php');
 
- if (AutoIndexing::start() == 0) {
-     echo 'indexierung erfolgreich abgeschlossen !';
- }
+AutoIndexing::start();
 ?>
