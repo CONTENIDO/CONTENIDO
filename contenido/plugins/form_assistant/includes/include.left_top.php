@@ -15,6 +15,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $area;
 
+$cfg = cRegistry::getConfig();
+
 $link = new cHTMLLink();
 // $link->setCLink($area, 4, 'show_form');
 $link->setMultiLink($area, 'show_form', $area, 'show_form');
