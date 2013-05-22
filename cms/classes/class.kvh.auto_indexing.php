@@ -30,6 +30,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
          }
          var_dump($data);
          $data = Tools::mergeAssoziativ($data, 'idart');
+         var_dump($data);
 
          foreach ($data as $key => $val)
          {
