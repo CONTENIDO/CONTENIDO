@@ -411,6 +411,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                     WHERE idlang = " . cSecurity::toInteger($this->lang) . " AND keyword = '" . $this->db->escape($key_del) . "'";
             }
             $this->_debug('sql', $sql);
+            var_dump($sql);
             $this->db->query($sql);
         }
     }
