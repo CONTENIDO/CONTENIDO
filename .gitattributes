@@ -6,6 +6,8 @@
 /UPGRADE.pdf -text
 cms/cache/code/.htaccess -text
 cms/cache/index.php -text
+cms/classes/class.kvh.auto_indexing.php -text
+cms/classes/class.kvh.tools.php -text
 cms/css/contenido_backend.css -text svneol=unset#text/plain
 cms/css/ie_8.css -text svneol=unset#text/plain
 cms/css/index.php -text
