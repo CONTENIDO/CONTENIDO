@@ -16,6 +16,7 @@
  defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
  cInclude('frontend', 'classes/class.kvh.auto_indexing.php');
+ cInclude('frontend', 'classes/class.kvh.tools.php');
 
 AutoIndexing::start();
 ?>
