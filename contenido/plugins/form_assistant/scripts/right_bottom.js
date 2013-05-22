@@ -149,6 +149,8 @@ $(function() {
      * @var $draggedItem to be removed
      */
     function pifaShowFormFieldDialog($dialog, $draggedItem) {
+        var i18n = $.parseJSON($('#i18n').val());
+        cancel = i18n['cancel'];
         $dialog.dialog({
             width: 520,
             height: 'auto',
@@ -164,15 +166,18 @@ $(function() {
                     $draggedItem.remove();
                 }
             },
-            buttons: {
-                'cancel': function() {
+            buttons: [{
+                text: i18n['cancel'],
+                click: function () {
                     // close dialog
                     $(this).dialog('close');
                 },
-                'save': function(event) {
+            }, {
+                text: i18n['save'],
+                click: function () {
                     $(this).dialog('close').submit();
-                }
-            }
+                },
+            }]            
         });
     }
 

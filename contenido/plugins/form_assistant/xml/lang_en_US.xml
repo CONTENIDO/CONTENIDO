@@ -2,14 +2,14 @@
 <!-- CONTENIDO XML language file -->
 <language>
     <plugins>
-        <label>plugins</label>
+        <label>Plugins</label>
         <form_assistant>
-            <label>form assistant</label>
+            <label>Form assistant</label>
             <form>
-                <label>form</label>
+                <label>Form</label>
             </form>
             <fields>
-                <label>fields</label>
+                <label>Fields</label>
             </fields>
         </form_assistant>
     </plugins>

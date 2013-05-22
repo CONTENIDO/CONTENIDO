@@ -105,6 +105,9 @@ msgstr "Wert"
 msgid "ADD_OPTION"
 msgstr "Option hinzufügen"
 
+msgid "CANCEL"
+msgstr "Abbrechen"
+
 msgid "SAVE"
 msgstr "Speichern"
 
@@ -231,14 +234,14 @@ msgstr "bitte auswählen"
 msgid "save form"
 msgstr "Formular speichern"
 
-msgid "All form types"
-msgstr "All form types"
-
 msgid "please save first"
 msgstr "bitte erst speichern"
 
 msgid "edit form"
 msgstr "Formular bearbeiten"
+
+msgid "edit field"
+msgstr "Formularfeld bearbeiten"
 
 msgid "edit"
 msgstr "Bearbeiten"

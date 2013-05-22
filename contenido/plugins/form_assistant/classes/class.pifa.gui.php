@@ -247,6 +247,12 @@ class PifaRightBottomPage extends cGuiPage {
             $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
             $this->set('s', 'notification', $notification);
         }
+
+        // add translations to template
+        $this->set('s', 'I18N', conHtmlentities(json_encode(array(
+            'cancel' => Pifa::i18n('CANCEL'),
+            'save' => Pifa::i18n('SAVE')
+        ))));
     }
 
     /**
@@ -313,6 +319,7 @@ class PifaRightBottomPage extends cGuiPage {
                 $notification = '';
                 try {
                     $this->_storeForm();
+                    $this->setReload();
                 } catch (Exception $e) {
                     $notification = Pifa::notifyException($e);
                 }
@@ -418,9 +425,9 @@ class PifaRightBottomPage extends cGuiPage {
 
         // translations
         $tpl->assign('trans', array(
-            'legend' => Pifa::i18n('All form types'),
+            'legend' => Pifa::i18n('fields'),
             'pleaseSaveFirst' => Pifa::i18n('please save first'),
-            'dialogTitle' => Pifa::i18n('edit form'),
+            'dialogTitle' => Pifa::i18n('edit field'),
             'edit' => Pifa::i18n('edit'),
             'delete' => Pifa::i18n('delete')
         ));

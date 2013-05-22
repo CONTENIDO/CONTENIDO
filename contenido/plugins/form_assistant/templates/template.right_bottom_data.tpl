@@ -17,7 +17,7 @@ AUTHOR marcus.gnass@4fb.de
     {$data}
 {else}
     <p><a href="{$exportUrl}">{$trans.export}</a></p>
-    <table border="1">
+    <table cellpadding="0" class="generic">
         <tr>
             <th>id</th>
     {if $withTimestamp}
@@ -36,9 +36,9 @@ AUTHOR marcus.gnass@4fb.de
         </tr>
     {foreach from=$data item=row}
         <tr>
-            <td>{$row.id}</td>
+            <td class="bordercell">{$row.id}</td>
         {if $withTimestamp}
-            <td>{$row.pifa_timestamp}</td>
+            <td class="bordercell">{$row.pifa_timestamp}</td>
         {/if}
         {foreach from=$fields item=field}
             {* skip columns that dont store data into DB *}
@@ -46,12 +46,12 @@ AUTHOR marcus.gnass@4fb.de
             {assign var=columnName value=$field->get('column_name')}
             {assign var=columnData value=$row.$columnName}
             {if 0 eq $columnData|strlen}
-            <td>&nbsp;</td>
+            <td class="bordercell">&nbsp;</td>
             {else if '9' eq $field->get('field_type')}
             {* display INPUTFILE values as link *}
-            <td><a href="{$getFileUrl}&name={$columnData}&file={$form->get('data_table')}_{$row.id}_{$columnName}">{$columnData}</a></td>
+            <td class="bordercell"><a href="{$getFileUrl}&name={$columnData}&file={$form->get('data_table')}_{$row.id}_{$columnName}">{$columnData}</a></td>
             {else}
-            <td>{$columnData}</td>
+            <td class="bordercell">{$columnData}</td>
             {/if}
         {/foreach}
         </tr>

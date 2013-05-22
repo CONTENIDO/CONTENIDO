@@ -48,3 +48,6 @@
 [_] beim D&D eines Feldes verschwindet dieses
 [_] nach dem Herunterziehen wird die row falsch dargestellt.
 [_] error message hat textarea ist aber varchar 1023
+
+add new input types
+http://www.w3schools.com/tags/att_input_type.asp

@@ -105,6 +105,9 @@ msgstr "value"
 msgid "ADD_OPTION"
 msgstr "add option"
 
+msgid "CANCEL"
+msgstr "cancel"
+
 msgid "SAVE"
 msgstr "save"
 
@@ -231,14 +234,14 @@ msgstr "please choose"
 msgid "save form"
 msgstr "save form"
 
-msgid "All form types"
-msgstr "All form types"
-
 msgid "please save first"
 msgstr "please save first"
 
 msgid "edit form"
 msgstr "edit form"
+
+msgid "edit field"
+msgstr "edit field"
 
 msgid "edit"
 msgstr "edit"

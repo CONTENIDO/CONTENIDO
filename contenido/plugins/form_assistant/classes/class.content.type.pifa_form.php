@@ -122,7 +122,8 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $tplBottom->set('s', 'IDARTLANG', $this->_idArtLang);
         $tplBottom->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $tplBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
-        // encode dollar sign so that contained PHP style variable will not be interpreted
+        // encode dollar sign so that contained PHP style variable will not be
+        // interpreted
         $tplBottom->set('s', 'SETTINGS', json_encode(str_replace('$', '&#36;', $this->_settings)));
         $tplBottom->set('s', 'JS_CLASS_SCRIPT', Pifa::getUrl() . 'scripts/cmsPifaform.js');
         $tplBottom->set('s', 'JS_CLASS_NAME', get_class($this));
@@ -535,7 +536,8 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $label = Pifa::i18n('subject');
         $id = 'pifaform_mail_client_subject_' . $this->_id;
         $value = $this->_settings['pifaform_mail_client_subject'];
-        // encode dollar sign so that contained PHP style variable will not be interpreted
+        // encode dollar sign so that contained PHP style variable will not be
+        // interpreted
         $value = str_replace('$', '&#36;', $value);
 
         // build label element, input element & div element as wrapper
@@ -675,7 +677,8 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         $label = Pifa::i18n('subject');
         $id = 'pifaform_mail_system_subject_' . $this->_id;
         $value = $this->_settings['pifaform_mail_system_subject'];
-        // encode dollar sign so that contained PHP style variable will not be interpreted
+        // encode dollar sign so that contained PHP style variable will not be
+        // interpreted
         $value = str_replace('$', '&#36;', $value);
 
         // build label element, input element & div element as wrapper
