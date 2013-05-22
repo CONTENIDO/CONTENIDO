@@ -328,16 +328,16 @@ class cSearchIndex extends cSearchBaseAbstract {
                         foreach ($tmp_keys as $value) {
                             // index terms are stored with lower case
                             // $value = strtolower($value);
-
+                            var_dump($value);
                             $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
                             $value = trim(strtolower($value));
                             $value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');
 
                             if (!in_array($value, $this->_stopwords)) {
                                 // eliminate stopwords
-                                var_dump($value);
+
                                 $value = $this->removeSpecialChars($value);
-                                var_dump($value);
+
                                 if (strlen($value) > 1) {
                                     // do not index single characters
                                     $this->_keywords[$value] = $this->_keywords[$value] . $idtype . '-' . $typeid . ' ';
