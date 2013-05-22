@@ -21,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
       */
      public static function start() {
          $data = array();
-
+         var_dump('ok');
          $db = cRegistry::getDb();
          $sql = 'SELECT idart from con_art_lang';
          $db->query($sql);
