@@ -314,12 +314,9 @@ class cSearchIndex extends cSearchBaseAbstract {
                             '<br />'
                         ), "\n", $code);
                         // remove html tags
-                        var_dump($code);
                         $code = strip_tags($code);
-                        var_dump($code);
                         if (strlen($code) > 0) {
                             $code = conHtmlEntityDecode($code);
-                            var_dump($code);
                         }
                         $this->_debug('code', $code);
 
@@ -331,13 +328,13 @@ class cSearchIndex extends cSearchBaseAbstract {
                         foreach ($tmp_keys as $value) {
                             // index terms are stored with lower case
                             // $value = strtolower($value);
+
                             $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
                             $value = trim(strtolower($value));
                             $value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');
 
                             if (!in_array($value, $this->_stopwords)) {
                                 // eliminate stopwords
-
                                 $value = $this->removeSpecialChars($value);
 
                                 if (strlen($value) > 1) {
