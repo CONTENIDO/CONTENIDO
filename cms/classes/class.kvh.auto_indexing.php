@@ -28,6 +28,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
          while ($db->next_record()) {
              array_push($data, $db->toArray());
          }
+         var_dump($data);
          $data = Tools::mergeAssoziativ($data, 'idart');
 
          foreach ($data as $key => $val)
