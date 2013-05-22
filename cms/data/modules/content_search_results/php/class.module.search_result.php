@@ -120,8 +120,8 @@ class SearchResultModule {
         $searchTerm = str_replace(' - ', ' NOT ', $searchTerm);
 
         // that's the search term suitable for display
-        $this->_dispSearchTerm = $searchTerm;
-        var_dump($this->_dispSearchTerm);
+
+
 
         // now parse search term and set search options
         if (strlen(trim($searchTerm)) > 0) {
@@ -141,6 +141,8 @@ class SearchResultModule {
         }
 
         // that's the search term suitable for the search itself
+        $this->_dispSearchTerm = $searchTerm;
+        var_dump($this->_dispSearchTerm);
         $this->_prepSearchTerm = $searchTerm;
 
 
