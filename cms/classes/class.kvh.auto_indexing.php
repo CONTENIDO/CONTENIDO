@@ -33,7 +33,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
          foreach ($data as $key => $val)
          {
-             var_dump($val);
+             var_dump('oki');
             $article = new cApiArticleLanguage();
             $article->loadByArticleAndLanguageId($val, cRegistry::getLanguageId());
             conMakeArticleIndex($article->getField('idartlang'), $val);
