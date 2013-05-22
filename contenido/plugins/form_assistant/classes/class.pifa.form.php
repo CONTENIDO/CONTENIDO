@@ -403,7 +403,7 @@ class PifaForm extends Item {
 
         // if some fields were invalid
         if (0 < count($errors)) {
-            // throw ONE PifaValidationException with infos for all invalid
+            // throw a single PifaValidationException with infos for all invalid
             // fields
             throw new PifaValidationException($errors);
         }
@@ -684,9 +684,13 @@ class PifaForm extends Item {
     private function _getCsvFromRemoteDatabaseServer() {
 
         // get column names in correct order
-        $columns = array(
-            'id'
-        );
+        $columns = array();
+        // always append the records ID
+        array_push($columns, 'id');
+        // append the records timestamp if defined for form
+        if (true === (bool) $this->get('with_timestamp')) {
+            array_push($columns, 'pifa_timestamp');
+        }
         foreach ($this->getFields() as $index => $pifaField) {
             $columns[] = $pifaField->get('column_name');
         }
@@ -714,11 +718,7 @@ class PifaForm extends Item {
             $row = array_map('pifa_form_get_literal_line_endings', $row);
             // append value
             foreach ($columns as $index => $columnName) {
-                if (0 === $index) {
-                    $out .= "\n";
-                } else {
-                    $out .= ';';
-                }
+                $out .= 0 === $index? "\n" : ';';
                 $out .= $row[$columnName];
             }
         }
