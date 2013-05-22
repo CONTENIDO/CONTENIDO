@@ -31,6 +31,9 @@ cms/data/modules/config_social_media/lang/lang_en_US.txt -text
 cms/data/modules/config_social_media/php/config_social_media_input.php -text
 cms/data/modules/config_social_media/php/config_social_media_output.php -text
 cms/data/modules/config_social_media/template/get.tpl -text
+cms/data/modules/content_auto_indexing/info.xml -text
+cms/data/modules/content_auto_indexing/php/content_auto_indexing_input.php -text
+cms/data/modules/content_auto_indexing/php/content_auto_indexing_output.php -text
 cms/data/modules/content_copyright_notice/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_copyright_notice/php/content_copyright_notice_input.php -text
 cms/data/modules/content_copyright_notice/php/content_copyright_notice_output.php -text
