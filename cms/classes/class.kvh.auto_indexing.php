@@ -10,7 +10,7 @@
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
-
+cInclude('frontend', 'classes/class.kvh.tools.php');
 /**
  * This class provides auto keyword generation for all articles.
  */
