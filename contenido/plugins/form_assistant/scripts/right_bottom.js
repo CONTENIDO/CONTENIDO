@@ -168,16 +168,16 @@ $(function() {
             },
             buttons: [{
                 text: i18n['cancel'],
-                click: function () {
+                click: function() {
                     // close dialog
                     $(this).dialog('close');
-                },
+                }
             }, {
                 text: i18n['save'],
-                click: function () {
+                click: function() {
                     $(this).dialog('close').submit();
-                },
-            }]            
+                }
+            }]
         });
     }
 

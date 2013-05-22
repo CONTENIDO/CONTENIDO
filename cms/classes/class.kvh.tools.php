@@ -11,7 +11,7 @@
  */
 
  defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
- 
+
 /**
  * this class provides functions so merge arrays after reading from database.
  */
@@ -31,21 +31,19 @@ class Tools {
 
     /**
      * merge indexed arrays
-     * 
+     *
      */
     public static function mergeArrayofArray($ar) {
-
-        $new_array = array();
-
+        $newArray = array();
 
         for ($i = 0; $i < count($ar); $i++) {
             for ($j = 0; $j < count($ar[$i]); $j++) {
-                $new_array[] = $ar[$i][$j];
+                $newArray[] = $ar[$i][$j];
 
             }
         }
 
-        return $new_array;
+        return $newArray;
     }
 }
 ?>
