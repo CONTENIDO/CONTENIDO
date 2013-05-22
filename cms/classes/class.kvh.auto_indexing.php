@@ -1,5 +1,5 @@
 <?php
- 
+
  /**
  *
  * @package classes
@@ -29,14 +29,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
              array_push($data, $db->toArray());
          }
          $data = Tools::mergeAssoziativ($data, 'idart');
-        
+
          foreach ($data as $key => $val)
          {
+             var_dump($val);
             $article = new cApiArticleLanguage();
             $article->loadByArticleAndLanguageId($val, cRegistry::getLanguageId());
             conMakeArticleIndex($article->getField('idartlang'), $val);
          }
-         
+
          return 0;
      }
 
