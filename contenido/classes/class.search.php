@@ -306,6 +306,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                     foreach ($data as $typeid => $code) {
                         $this->_debug('code', $code);
 
+                        var_dump($code);
                         // remove backslash
                         $code = stripslashes($code);
                         // replace HTML line breaks with newlines
@@ -328,7 +329,6 @@ class cSearchIndex extends cSearchBaseAbstract {
                         foreach ($tmp_keys as $value) {
                             // index terms are stored with lower case
                             // $value = strtolower($value);
-                            var_dump($value);
                             $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
                             $value = trim(strtolower($value));
                             $value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');
