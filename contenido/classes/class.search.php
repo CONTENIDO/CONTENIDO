@@ -316,8 +316,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                         // remove html tags
                         $code = strip_tags($code);
                         if (strlen($code) > 0) {
-                           // $code = conHtmlEntityDecode($code);
-
+                            $code = conHtmlEntityDecode($code);
                         }
                         $this->_debug('code', $code);
 
@@ -329,14 +328,13 @@ class cSearchIndex extends cSearchBaseAbstract {
                         foreach ($tmp_keys as $value) {
                             // index terms are stored with lower case
                             // $value = strtolower($value);
+
                             $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
                             $value = trim(strtolower($value));
                             $value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');
 
-
                             if (!in_array($value, $this->_stopwords)) {
                                 // eliminate stopwords
-
                                 $value = $this->removeSpecialChars($value);
 
                                 if (strlen($value) > 1) {
@@ -391,7 +389,6 @@ class cSearchIndex extends cSearchBaseAbstract {
                         WHERE idlang='" . cSecurity::toInteger($this->lang) . "' AND keyword='" . $this->db->escape($keyword) . "'";
             }
             $this->_debug('sql', $sql);
-            var_dump($sql);
             $this->db->query($sql);
         }
     }
@@ -497,15 +494,13 @@ class cSearchIndex extends cSearchBaseAbstract {
         // modified 2007-10-01, H. Librenz - added as hotfix for encoding
         // problems (doesn't find any words with
         // umlaut vowels in it since you turn on UTF-8 as language encoding)
-  //      $sEncoding = getEncodingByLanguage($this->db, $this->lang);
+        $sEncoding = getEncodingByLanguage($this->db, $this->lang);
 
-
-  //      if (strtolower($sEncoding) != 'iso-8859-2') {
-  //          $key = conHtmlentities($key, null, $sEncoding);
-  //      } else {
-  //          $key = htmlentities_iso88592($key);
-  //      }
-
+        if (strtolower($sEncoding) != 'iso-8859-2') {
+            $key = conHtmlentities($key, null, $sEncoding);
+        } else {
+            $key = htmlentities_iso88592($key);
+        }
 
         // $aUmlautMap = array(
         // '&Uuml;' => 'ue',
@@ -521,9 +516,8 @@ class cSearchIndex extends cSearchBaseAbstract {
         // $key = str_replace($sUmlaut, $sMapped, $key);
         // }
 
-
- //       $key = conHtmlEntityDecode($key);
- //       $key = str_replace($aSpecialChars, '', $key);
+        $key = conHtmlEntityDecode($key);
+        $key = str_replace($aSpecialChars, '', $key);
 
         return $key;
     }
