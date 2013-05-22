@@ -30,26 +30,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
          }
          var_dump($data);
          echo '<hr>';
-         $data = $this->mergeAssoziativ($data, 'idart');
+         $data = Tools::mergeAssoziativ($data, 'idart');
 
          var_dump($data);
 
          foreach ($data as $key => $val)
          {
-             var_dump('oki');
+             var_dump($val);
             $article = new cApiArticleLanguage();
             $article->loadByArticleAndLanguageId($val, cRegistry::getLanguageId());
             conMakeArticleIndex($article->getField('idartlang'), $val);
          }
 
-     }
-
-     public function mergeAssoziativ(array $ar, $str) {
-         $con = array();
-         for ($i = 0; $i < count($ar); $i++) {
-             $con[] = $ar[$i][$str];
-         }
-         return $con;
      }
 
  }
