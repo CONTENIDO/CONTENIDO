@@ -335,8 +335,9 @@ class cSearchIndex extends cSearchBaseAbstract {
 
                             if (!in_array($value, $this->_stopwords)) {
                                 // eliminate stopwords
+                                var_dump($value);
                                 $value = $this->removeSpecialChars($value);
-
+                                var_dump($value);
                                 if (strlen($value) > 1) {
                                     // do not index single characters
                                     $this->_keywords[$value] = $this->_keywords[$value] . $idtype . '-' . $typeid . ' ';
