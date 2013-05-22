@@ -30,7 +30,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
          }
          var_dump($data);
          echo '<hr>';
-         $data = Tools::mergeAssoziativ($data, 'idart');
+         $data = $this->mergeAssoziativ($data, 'idart');
 
          var_dump($data);
 
@@ -42,7 +42,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
             conMakeArticleIndex($article->getField('idartlang'), $val);
          }
 
-         return 0;
+     }
+
+     public function mergeAssoziativ(array $ar, $str) {
+         $con = array();
+         for ($i = 0; $i < count($ar); $i++) {
+             $con[] = $ar[$i][$str];
+         }
+         return $con;
      }
 
  }
