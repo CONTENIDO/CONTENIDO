@@ -336,9 +336,8 @@ class cSearchIndex extends cSearchBaseAbstract {
 
                             if (!in_array($value, $this->_stopwords)) {
                                 // eliminate stopwords
-                                var_dump($value);
+
                                 $value = $this->removeSpecialChars($value);
-                                var_dump($value);
 
                                 if (strlen($value) > 1) {
                                     // do not index single characters
@@ -392,6 +391,7 @@ class cSearchIndex extends cSearchBaseAbstract {
                         WHERE idlang='" . cSecurity::toInteger($this->lang) . "' AND keyword='" . $this->db->escape($keyword) . "'";
             }
             $this->_debug('sql', $sql);
+            var_dump($sql);
             $this->db->query($sql);
         }
     }
