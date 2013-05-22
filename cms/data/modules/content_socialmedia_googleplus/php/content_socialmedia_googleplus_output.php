@@ -35,6 +35,7 @@ if('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] ==
     conSaveContentEntry($idartlang, "CMS_HTML", 3000, $_POST['url']);
     conSaveContentEntry($idartlang, "CMS_HTML", 3001, $_POST['size']);
     conSaveContentEntry($idartlang, "CMS_HTML", 3002, $_POST['counter']);
+
 }
 
 //get saved content
@@ -58,8 +59,8 @@ if(cRegistry::isBackendEditMode()) {
     $tpl->assign('label_overview', $label_overview);
 
     $tpl->display('google_plus_config_view.tpl');
-
 } else {
+
 
     if ($size == 'standard') {
         $tpl->assign('LAYOUT', '');
@@ -74,15 +75,15 @@ if(cRegistry::isBackendEditMode()) {
     }
 
     if ($url != '') {
-        $tpl->assign('URL', ' url="' . urlencode($url) . '"');
+        $tpl->assign('URL', ' href="' . urlencode($url) . '"');
     } else {
         $tpl->assign('URL', '');
     }
 
-    $langObj = new cApiLanguage($lang);
+    $langObj = new cApiLanguage($idlang);
     $locale = $langObj->getProperty('language', 'code');
-    $locales = 'lang:' . $locale;
-    $tpl->assign('LOCALE', $locales);
+
+    $tpl->assign('LOCALE', $locale);
     $tpl->display('google_plus.tpl');
 }
 
