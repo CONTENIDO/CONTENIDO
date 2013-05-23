@@ -54,6 +54,7 @@ class ArticleForumCollection extends ItemCollection {
         while ($this->db->next_record()) {
             array_push($data, $this->db->toArray());
         }
+		echo $sql;
         return $data;
     }
 
@@ -556,8 +557,11 @@ class ArticleForumCollection extends ItemCollection {
     protected function getIdUserForumContenType() {
         $sql = "SELECT idtype from con_type WHERE type='CMS_USERFORUM';";
         $result = $this->db->query($sql);
-        $row = mysql_fetch_row($result);
-        return $row[0];
+		if ($this->db->next_record()) {
+			return $this->db->f('idtype');
+		} else {
+			return false;
+		}
     }
 
 }
