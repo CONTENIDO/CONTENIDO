@@ -54,7 +54,7 @@ class ArticleForumCollection extends ItemCollection {
         while ($this->db->next_record()) {
             array_push($data, $this->db->toArray());
         }
-		echo $sql;
+
         return $data;
     }
 
