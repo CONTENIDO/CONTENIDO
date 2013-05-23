@@ -200,14 +200,14 @@ class ArticleForumCollection extends ItemCollection {
         (!preg_match('/\D/', $dislike))?  : $dislike = $this->item->getField('dislike');
 
         $fields = array(
-            'realname' => mysql_real_escape_string($name),
-            'editedby' => mysql_real_escape_string($uuid),
-            'email' => mysql_real_escape_string($email),
+            'realname' => cSecurity::escapeDB($name,$this->db),
+            'editedby' => cSecurity::escapeDB($uuid,$this->db),
+            'email' => cSecurity::escapeDB($email,$this->db),
             'forum' => $forum,
-            'editedat' => mysql_real_escape_string($timeStamp),
-            'like' => mysql_real_escape_string($like),
-            'dislike' => mysql_real_escape_string($dislike),
-            'online' => mysql_real_escape_string($online)
+            'editedat' => cSecurity::escapeDB($timeStamp,$this->db),
+            'like' => cSecurity::escapeDB($like,$this->db),
+            'dislike' => cSecurity::escapeDB($dislike,$this->db),
+            'online' => cSecurity::escapeDB($online,$this->db)
         );
 
         $whereClauses = array(
@@ -228,10 +228,10 @@ class ArticleForumCollection extends ItemCollection {
         ($onlineState == 0)? $onlineState = 1 : $onlineState = 0;
 
         $fields = array(
-            'online' => mysql_real_escape_string($onlineState)
+            'online' => cSecurity::escapeDB($onlineState,$this->db)
         );
         $whereClauses = array(
-            'id_user_forum' => mysql_real_escape_string($id_user_forum)
+            'id_user_forum' => cSecurity::escapeDB($id_user_forum,$this->db)
         );
         $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
         $this->db->query($statement);
@@ -296,13 +296,13 @@ class ArticleForumCollection extends ItemCollection {
 
     function selectNameAndNameByForumId($idquote) {
         $ar = array();
-        $this->item->loadByPrimaryKey(mysql_real_escape_string($idquote));
+        $this->item->loadByPrimaryKey(cSecurity::escapeDB($idquote,$this->db));
         $ar[] = $this->item->get('realname');
         return $ar;
     }
 
     public function selectUser($userid) {
-        return $this->item->loadByPrimaryKey(mysql_real_escape_string($userid));
+        return $this->item->loadByPrimaryKey(cSecurity::escapeDB($userid,$this->db));
     }
 
     /**
@@ -315,7 +315,7 @@ class ArticleForumCollection extends ItemCollection {
         $db = cRegistry::getDb();
         $ar = array();
         // load actual value
-        $this->item->loadByPrimaryKey(mysql_real_escape_string($forum_user_id));
+        $this->item->loadByPrimaryKey(cSecurity::escapeDB($forum_user_id,$db));
         $ar = $this->item->toArray();
         $current = $ar['like'];
         // increment value
@@ -342,7 +342,7 @@ class ArticleForumCollection extends ItemCollection {
         $db = cRegistry::getDb();
         $ar = array();
         // load actual value
-        $this->item->loadByPrimaryKey(mysql_real_escape_string($forum_user_id));
+        $this->item->loadByPrimaryKey(cSecurity::escapeDB($forum_user_id,$db));
         $ar = $this->item->toArray();
         $current = $ar['dislike'];
         // increment value
@@ -381,13 +381,13 @@ class ArticleForumCollection extends ItemCollection {
         // build array for sql statemant
         $fields = array(
             'id_user_forum' => NULL,
-            'id_user_forum_parent' => mysql_real_escape_string($parent),
-            'idart' => mysql_real_escape_string($idart),
-            'idcat' => mysql_real_escape_string($idcat),
-            'idlang' => mysql_real_escape_string($lang),
-            'userid' => mysql_real_escape_string($userid),
-            'email' => mysql_real_escape_string($email),
-            'realname' => mysql_real_escape_string($realname),
+            'id_user_forum_parent' => cSecurity::escapeDB($parent, $db),
+            'idart' =>  cSecurity::escapeDB($idart, $db),
+            'idcat' =>  cSecurity::escapeDB($idcat, $db),
+            'idlang' =>  cSecurity::escapeDB($lang, $db),
+            'userid' =>  cSecurity::escapeDB($userid, $db),
+            'email' =>  cSecurity::escapeDB($email, $db),
+            'realname' => cSecurity::escapeDB($realname, $db),
             'forum' => ($forum),
             'forum_quote' => ($forum_quote),
             'like' => 0,
@@ -415,7 +415,7 @@ class ArticleForumCollection extends ItemCollection {
      */
     public function deleteAllCommentsById($idart) {
         // var_dump($idart);
-        $this->deleteBy('idart', mysql_real_escape_string(($idart)));
+        $this->deleteBy('idart', cSecurity::escapeDB(($idart),$this->db));
     }
 
     public function getExistingforumFrontend($id_cat, $id_art, $id_lang, $frontend) {
