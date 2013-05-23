@@ -162,6 +162,7 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
  * If scaling, the aspect ratio is maintained.
  *
  * Note: GDLib 2.x is required!
+ * Note: Image cropping calculates center of the image!
  *
  * Returns the path to the scaled temporary image.
  *
@@ -181,29 +182,30 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
  * @param   bool    $keepType   If true and a png file is source, output file is also png
  * @return  string  Url to the resulting image (http://...)
  */
-function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 75, $keepType = true) {
+function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 75, $keepType = true)
+{
     global $cfgClient, $client;
 
     if (!cFileHandler::exists($img)) {
         return false;
     }
 
-    $filename = $img;
-    $maxX = (int) $maxX;
-    $maxY = (int) $maxY;
+    $filename  = $img;
+    $maxX      = (int) $maxX;
+    $maxY      = (int) $maxY;
     $cacheTime = (int) $cacheTime;
-    $quality = (int) $quality;
+    $quality   = (int) $quality;
 
     if ($quality <= 0 || $quality > 100) {
         $quality = 75;
     }
 
     $frontendURL = cRegistry::getFrontendUrl();
-    $filetype = substr($filename, strlen($filename) - 4, 4);
-    $md5 = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
+    $filetype  = cFileHandler::getExtension($filename);
+    $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
-    $webFile = $frontendURL . 'cache/' . $cfileName;
+    $webFile   = $frontendURL . 'cache/' . $cfileName;
 
     if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
         return $webFile;
@@ -211,14 +213,10 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
 
     // Get out which file we have
     switch (strtolower($filetype)) {
-        case '.gif': $function = 'imagecreatefromgif';
-            break;
-        case '.png': $function = 'imagecreatefrompng';
-            break;
-        case '.jpg': $function = 'imagecreatefromjpeg';
-            break;
-        case 'jpeg': $function = 'imagecreatefromjpeg';
-            break;
+        case 'gif': $function = 'imagecreatefromgif'; break;
+        case 'png': $function = 'imagecreatefrompng'; break;
+        case 'jpg': $function = 'imagecreatefromjpeg'; break;
+        case 'jpeg': $function = 'imagecreatefromjpeg'; break;
         default: return false;
     }
 
@@ -240,13 +238,17 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     if ($crop) {
         // Create the target image with the max size, crop it afterwards.
         $targetImage = imagecreatetruecolor($maxX, $maxY);
-        imagecopy($targetImage, $imageHandle, 0, 0, 0, 0, $maxX, $maxY);
+        //calculate canter of the image
+        $srcX = ($x - $maxX) / 2;
+        $srcY = ($y - $maxY) /2;
+        //crop image from center
+        imagecopy($targetImage, $imageHandle, 0, 0, $srcX, $srcY, $maxX, $maxY);
     } else {
         // Create the target image with the target size, resize it afterwards.
         $targetImage = imagecreatetruecolor($targetX, $targetY);
 
         // Preserve transparency
-        if (strtolower($filetype) == '.gif' or strtolower($filetype) == '.png') {
+        if (strtolower($filetype) == '.gif' or strtolower($filetype) == '.png'){
             imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
             imagealphablending($targetImage, false);
             imagesavealpha($targetImage, true);
