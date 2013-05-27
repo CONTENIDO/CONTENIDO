@@ -386,6 +386,7 @@ p+.button.red {
     width: 30px;
     height: 30px;
     text-indent: -9999px;
+	outline: none;
 }
 
 .slider .pagination li a:hover,
