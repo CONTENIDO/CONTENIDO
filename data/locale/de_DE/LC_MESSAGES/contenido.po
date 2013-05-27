@@ -939,6 +939,18 @@ msgstr "Titel"
 msgid "Keywords"
 msgstr "Schlüsselwörter"
 
+#: includes/include.upl_edit.php:69
+msgid "extract"
+msgstr "Archiv entpacken"
+
+#: includes/include.upl_edit.php:69
+msgid "overwrite"
+msgstr "Inhalt überschreiben"
+
+#: includes/include.upl_edit.php:69
+msgid "extractTo"
+msgstr "Entpacken nach"
+
 #: classes/content_types/class.content.type.imgeditor.php:396
 #: includes/include.upl_edit.php:70
 msgid "Internal notes"
