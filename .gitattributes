@@ -283,6 +283,7 @@ cms/index.php -text
 cms/js/index.php -text
 cms/js/jquery-1.8.2.min.js -text svneol=unset#text/plain
 cms/js/jquery-ui-1.9.1.custom.min.js -text svneol=unset#text/plain
+cms/js/jquery.validate.js -text svneol=unset#text/plain
 cms/js/main.js -text svneol=unset#text/plain
 cms/robots.txt -text
 cms/templates/cms_filelist_style_default.html -text
