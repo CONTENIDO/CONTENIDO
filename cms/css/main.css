@@ -37,6 +37,7 @@ body {
     display: inline;
     float: right;
     margin-top: 35px;
+	margin-right: -5px;
 }
 
 #header #navigation_header li {
@@ -69,6 +70,7 @@ body {
     border: none;
     width: 130px;
     cursor: pointer;
+	padding-left: 2px;
 }
 
 #header #navigation_header form {

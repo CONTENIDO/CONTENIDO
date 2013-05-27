@@ -58,7 +58,7 @@ $(function() {
         $search_container = $(this).parent();
         $(this).val("");
         if ($search_container.hasClass("active")) {
-            $search_container.animate({"width": "24px", "paddingLeft": "0"}, 500, "swing", function() {
+            $search_container.animate({"width": "24px", "paddingLeft": "2px"}, 500, "swing", function() {
                 $search_container.removeClass("active");
             });
         }
