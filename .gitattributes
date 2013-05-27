@@ -2177,6 +2177,7 @@ contenido/scripts/group_association.js -text
 contenido/scripts/header.js -text
 contenido/scripts/help.js.php -text
 contenido/scripts/iZoom.js.php -text
+contenido/scripts/include.upl_edit.js -text
 contenido/scripts/index.php -text
 contenido/scripts/infoBox.js -text
 contenido/scripts/jquery/ajaxupload.js -text
