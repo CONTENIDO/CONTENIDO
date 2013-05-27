@@ -1,246 +1,292 @@
 <?php
-/**
- * This file contains the backend page for editing meta information of file in upload section.
- *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
- *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
- */
 
-defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+ /**
+  * This file contains the backend page for editing meta information of file in upload section.
+  *
+  * @package          Core
+  * @subpackage       Backend
+  * @version          SVN Revision $Rev:$
+  *
+  * @author           Timo Hummel
+  * @copyright        four for business AG <www.4fb.de>
+  * @license          http://www.contenido.org/license/LIZENZ.txt
+  * @link             http://www.4fb.de
+  * @link             http://www.contenido.org
+  */
+ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude("includes", "functions.upl.php");
+ cInclude("includes", "functions.upl.php");
 
-$page = new cGuiPage("upl_edit");
+ $isZipFile = isArchive( $_REQUEST["file"]);
 
-$page->addStyle("jquery/plugins/timepicker.css");
-$page->addScript("jquery/plugins/timepicker.js");
+ $page = new cGuiPage("upl_edit");
+
+ $page->addStyle("jquery/plugins/timepicker.css");
+ $page->addScript("jquery/plugins/timepicker.js");
+ $page->addScript("include.upl_edit.js");
 
 //get language js files
-if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-    $page->addScript("jquery/plugins/timepicker-" . $lang_short . ".js");
-    $page->addScript("jquery/plugins/datepicker-" . $lang_short . ".js");
+ if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+     $page->addScript("jquery/plugins/timepicker-" . $lang_short . ".js");
+     $page->addScript("jquery/plugins/datepicker-" . $lang_short . ".js");
+ }
+
+ $form = new cGuiTableForm("properties");
+ $form->setVar("frame", $frame);
+ $form->setVar("area", "upl");
+ $form->setVar("path", $_REQUEST["path"]);
+ $form->setVar("file", $_REQUEST["file"]);
+ $form->setVar("action", "upl_modify_file");
+ $form->setVar("startpage", $_REQUEST["startpage"]);
+ $form->setVar("sortby", $_REQUEST["sortby"]);
+ $form->setVar("sortmode", $_REQUEST["sortmode"]);
+ $form->setVar("thumbnailmode", $_REQUEST["thumbnailmode"]);
+// (isArchive( $_REQUEST["file"]))? $form->setVar("zip","1") : $form->setVar("zip","0");
+ $form->addHeader(i18n("Edit"));
+
+ if(isset($_REQUEST['zip'])){
+     var_dump('zip');
+ }
+ $properties = new cApiPropertyCollection();
+ $uploads = new cApiUploadCollection();
+
+ if (cApiDbfs::isDbfs($_REQUEST["path"])) {
+     $qpath = $_REQUEST["path"] . "/";
+ } else {
+     $qpath = $_REQUEST["path"];
+ }
+
+ if ((is_writable($cfgClient[$client]["upl"]["path"] . $path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
+     $bDirectoryIsWritable = true;
+ } else {
+     $bDirectoryIsWritable = false;
+ }
+
+ $uploads->select("idclient = '" . $client . "' AND dirname = '" . $qpath . "' AND filename='" . $_REQUEST["file"] . "'");
+
+ if ($upload = $uploads->next()) {
+
+     // Which rows to display?
+     $aListRows = array();
+     $aListRows["filename"] = i18n("File name");
+     $aListRows["path"] = i18n("Path");
+     $aListRows["replacefile"] = i18n("Replace file");
+     $aListRows["medianame"] = i18n("Media name");
+     $aListRows["description"] = i18n("Description");
+     $aListRows["keywords"] = i18n("Keywords");
+     $aListRows["medianotes"] = i18n("Internal notes");
+     $aListRows["copyright"] = i18n("Copyright");
+     $aListRows["protected"] = i18n("Protection");
+     $aListRows["timecontrol"] = i18n("Time control");
+     $aListRows["preview"] = i18n("Preview");
+     $aListRows["author"] = i18n("Author");
+     $aListRows["modified"] = i18n("Last modified by");
+
+    if($isZipFile){
+
+            $id = $_GET['user_id'];
+    //echo '<input type="button" value="test";
+
+
+if(isset($_SESSION['zip']) && $_SESSION['zip'] === 'extract')
+{
+
+
 }
 
-$form = new cGuiTableForm("properties");
-$form->setVar("frame", $frame);
-$form->setVar("area", "upl");
-$form->setVar("path", $_REQUEST["path"]);
-$form->setVar("file", $_REQUEST["file"]);
-$form->setVar("action", "upl_modify_file");
-$form->setVar("startpage", $_REQUEST["startpage"]);
-$form->setVar("sortby", $_REQUEST["sortby"]);
-$form->setVar("sortmode", $_REQUEST["sortmode"]);
-$form->setVar("thumbnailmode", $_REQUEST["thumbnailmode"]);
-$form->addHeader(i18n("Edit"));
-
-$properties = new cApiPropertyCollection();
-$uploads = new cApiUploadCollection();
-
-if (cApiDbfs::isDbfs($_REQUEST["path"])) {
-    $qpath = $_REQUEST["path"] . "/";
-} else {
-    $qpath = $_REQUEST["path"];
-}
-
-if ((is_writable($cfgClient[$client]["upl"]["path"] . $path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
-    $bDirectoryIsWritable = true;
-} else {
-    $bDirectoryIsWritable = false;
-}
-
-$uploads->select("idclient = '" . $client . "' AND dirname = '" . $qpath . "' AND filename='" . $_REQUEST["file"] . "'");
-
-if ($upload = $uploads->next()) {
-
-    // Which rows to display?
-    $aListRows = array();
-    $aListRows["filename"] = i18n("File name");
-    $aListRows["path"] = i18n("Path");
-    $aListRows["replacefile"] = i18n("Replace file");
-    $aListRows["medianame"] = i18n("Media name");
-    $aListRows["description"] = i18n("Description");
-    $aListRows["keywords"] = i18n("Keywords");
-    $aListRows["medianotes"] = i18n("Internal notes");
-    $aListRows["copyright"] = i18n("Copyright");
-    $aListRows["protected"] = i18n("Protection");
-    $aListRows["timecontrol"] = i18n("Time control");
-    $aListRows["preview"] = i18n("Preview");
-    $aListRows["author"] = i18n("Author");
-    $aListRows["modified"] = i18n("Last modified by");
-
-    // Delete dbfs specific rows
-    if (!cApiDbfs::isDbfs($_REQUEST["path"])) {
-        unset($aListRows['protected']);
-        unset($aListRows['timecontrol']);
-    }
-
-    // Call chains to process the rows
-    $_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.Rows");
-    if ($_cecIterator->count() > 0) {
-        while ($chainEntry = $_cecIterator->next()) {
-            $newRowList = $chainEntry->execute($aListRows);
-            if (is_array($newRowList)) {
-                $aListRows = $newRowList;
-            }
+      $link =   new cHTMLLink();
+      $link->appendContent(i18n("extract"));
+        $aListRows["zip"] = $link;
         }
-    }
+    ($isZipFile)? $aListRows["extractFolder"] = '<label class="ZipExtract">'.i18n("extractTo").'</label>':'';
 
-    $iIdupl = $upload->get("idupl");
-    $sSql = "SELECT * FROM " . $cfg['tab']['upl_meta'] . "
+
+     // Delete dbfs specific rows
+     if (!cApiDbfs::isDbfs($_REQUEST["path"])) {
+         unset($aListRows['protected']);
+         unset($aListRows['timecontrol']);
+     }
+
+     // Call chains to process the rows
+     $_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.Rows");
+     if ($_cecIterator->count() > 0) {
+         while ($chainEntry = $_cecIterator->next()) {
+             $newRowList = $chainEntry->execute($aListRows);
+             if (is_array($newRowList)) {
+                 $aListRows = $newRowList;
+             }
+         }
+     }
+
+     $iIdupl = $upload->get("idupl");
+     $sSql = "SELECT * FROM " . $cfg['tab']['upl_meta'] . "
              WHERE idupl = " . cSecurity::toInteger($iIdupl) . "
              AND idlang = " . cSecurity::toInteger($lang) . "
              LIMIT 0, 1";
-    $db->query($sSql);
+     $db->query($sSql);
 
-    if ($db->numRows() > 0) {
-        $db->nextRecord();
-    }
+     if ($db->numRows() > 0) {
+         $db->nextRecord();
+     }
 
-    // Add rows to $form
-    foreach ($aListRows as $sListRow => $sTitle) {
-        $sCell = "";
-        switch ($sListRow) {
-            case "filename":
-                $sCell = $_REQUEST["file"];
-                break;
+     // Add rows to $form
+     foreach ($aListRows as $sListRow => $sTitle) {
+         $sCell = "";
+         switch ($sListRow) {
+             case "filename":
+                 $sCell = $_REQUEST["file"];
+                 break;
 
-            case "path":
-                $sCell = generateDisplayFilePath($qpath, 65);
-                break;
+             case "zip":
+                 $sCell = new cHTMLCheckbox('extractZip');
+                 $sCell->setEvent('onclick','show();');
+                // $sCell->setClass('ZipExtract');
+                 break;
 
-            case "replacefile":
-                $uplelement = new cHTMLUpload("file", 40);
-                $uplelement->setDisabled(!$bDirectoryIsWritable);
-                $sCell = $uplelement->render();
-                break;
+             case 'extractFolder':
+                 $box = new cHTMLTextbox('efolder');
+                 $box->setID('extractFolder');
+                 $box->setValue(strstr($_REQUEST['file'],'.',TRUE));
+                 $box->setClass('ZipExtract');
+                 $sCell = $box;
+                 $checkbox = new cHTMLCheckbox('overwrite');
+                 $checkbox->setID('overwrite');
+                 $checkbox->setLabelText(i18n('overwrite'));
+                 $checkbox->setClass('ZipExtract');
 
-            case "medianame":
-                if ($db->f('medianame')) {
-                    $medianame = cSecurity::unFilter($db->f('medianame'));
-                } else {
-                    $medianame = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "medianame");
-                }
+                 $sCell .= $checkbox;
+                 break;
 
-                $mnedit = new cHTMLTextbox("medianame", $medianame, 60);
-                $sCell = $mnedit->render();
-                break;
+             case "path":
+                 $sCell = generateDisplayFilePath($qpath, 65);
+                 break;
 
-            case "description":
-                if ($db->f('description')) {
-                    $description = cSecurity::unFilter($db->f('description'));
-                } else {
-                    $description = "";
-                }
+             case "replacefile":
+                 $uplelement = new cHTMLUpload("file", 40);
+                 $uplelement->setDisabled(!$bDirectoryIsWritable);
+                 $sCell = $uplelement->render();
+                 break;
 
-                $dsedit = new cHTMLTextarea("description", $description);
-                $sCell = $dsedit->render();
-                break;
+             case "medianame":
+                 if ($db->f('medianame')) {
+                     $medianame = cSecurity::unFilter($db->f('medianame'));
+                 } else {
+                     $medianame = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "medianame");
+                 }
 
-            case "keywords":
-                if ($db->f('keywords')) {
-                    $keywords = cSecurity::unFilter($db->f('keywords'));
-                } else {
-                    $keywords = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "keywords");
-                }
+                 $mnedit = new cHTMLTextbox("medianame", $medianame, 60);
+                 $sCell = $mnedit->render();
+                 break;
 
-                $kwedit = new cHTMLTextarea("keywords", $keywords);
-                $sCell = $kwedit->render();
-                break;
+             case "description":
+                 if ($db->f('description')) {
+                     $description = cSecurity::unFilter($db->f('description'));
+                 } else {
+                     $description = "";
+                 }
 
-            case "medianotes":
-                if ($db->f('internal_notice')) {
-                    $medianotes = cSecurity::unFilter($db->f('internal_notice'));
-                } else {
-                    $medianotes = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "medianotes");
-                }
+                 $dsedit = new cHTMLTextarea("description", $description);
+                 $sCell = $dsedit->render();
+                 break;
 
-                $moedit = new cHTMLTextarea("medianotes", $medianotes);
-                $sCell = $moedit->render();
-                break;
+             case "keywords":
+                 if ($db->f('keywords')) {
+                     $keywords = cSecurity::unFilter($db->f('keywords'));
+                 } else {
+                     $keywords = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "keywords");
+                 }
 
-            case "copyright":
-                if ($db->f('copyright')) {
-                    $copyright = cSecurity::unFilter($db->f('copyright'));
-                } else {
-                    $copyright = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "copyright");
-                }
+                 $kwedit = new cHTMLTextarea("keywords", $keywords);
+                 $sCell = $kwedit->render();
+                 break;
 
-                $copyrightEdit = new cHTMLTextarea("copyright", $copyright);
-                $sCell = $copyrightEdit->render();
-                break;
+             case "medianotes":
+                 if ($db->f('internal_notice')) {
+                     $medianotes = cSecurity::unFilter($db->f('internal_notice'));
+                 } else {
+                     $medianotes = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "medianotes");
+                 }
 
-            case "protected":
-                $vprotected = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "protected");
-                $protected = new cHTMLCheckbox("protected", "1");
-                $protected->setChecked($vprotected);
-                $protected->setLabelText(i18n("Protected for non-logged in users"));
-                $sCell = $protected->render();
-                break;
+                 $moedit = new cHTMLTextarea("medianotes", $medianotes);
+                 $sCell = $moedit->render();
+                 break;
 
-            case "timecontrol":
-                $iTimeMng = (int) $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "timemgmt");
-                $sStartDate = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "datestart");
-                $sEndDate = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "dateend");
+             case "copyright":
+                 if ($db->f('copyright')) {
+                     $copyright = cSecurity::unFilter($db->f('copyright'));
+                 } else {
+                     $copyright = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "copyright");
+                 }
 
-                $oTimeCheckbox = new cHTMLCheckbox("timemgmt", i18n("Use time control"));
-                $oTimeCheckbox->setChecked($iTimeMng);
+                 $copyrightEdit = new cHTMLTextarea("copyright", $copyright);
+                 $sCell = $copyrightEdit->render();
+                 break;
 
-                $sHtmlTimeMng = $oTimeCheckbox->render();
-                $sHtmlTimeMng .= "<table id='dbfsTimecontrol' class='borderless' border='0' cellpadding='0' cellspacing='0'>\n";
-                $sHtmlTimeMng .= "<tr><td><label for='datestart'>" . i18n("Start date") . "</label></td>\n";
-                $sHtmlTimeMng .= '<td><input type="text" name="datestart" id="datestart" value="' . $sStartDate . '"  size="20" maxlength="40" class="text_medium">' .
-                        '</td></tr>';
-                $sHtmlTimeMng .= "<tr><td><label for='dateend'>" . i18n("End date") . "</label></td>\n";
-                $sHtmlTimeMng .= '<td><input type="text" name="dateend" id="dateend" value="' . $sEndDate . '"  size="20" maxlength="40" class="text_medium">' .
-                        '</td></tr>';
-                $sHtmlTimeMng .= "</table>\n";
+             case "protected":
+                 $vprotected = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "protected");
+                 $protected = new cHTMLCheckbox("protected", "1");
+                 $protected->setChecked($vprotected);
+                 $protected->setLabelText(i18n("Protected for non-logged in users"));
+                 $sCell = $protected->render();
+                 break;
 
-                $sCell = $sHtmlTimeMng;
-                break;
+             case "timecontrol":
+                 $iTimeMng = (int) $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "timemgmt");
+                 $sStartDate = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "datestart");
+                 $sEndDate = $properties->getValue("upload", $qpath . $_REQUEST["file"], "file", "dateend");
 
-            case "preview":
-                if (cApiDbfs::isDbfs($_REQUEST["path"])) {
-                    $sCell = '<a target="_blank" href="' . $sess->url(cRegistry::getFrontendUrl() . "dbfs.php?file=" . $qpath . $_REQUEST["file"]) . '"><img class="bordered" src="' . uplGetThumbnail($qpath . $_REQUEST["file"], 350) . '"></a>';
-                } else {
-                    $sCell = '<a target="_blank" href="' . $cfgClient[$client]["upl"]["htmlpath"] . $qpath . $_REQUEST["file"] . '"><img class="bordered" src="' . uplGetThumbnail($qpath . $_REQUEST["file"], 350) . '"></a>';
-                }
-                break;
+                 $oTimeCheckbox = new cHTMLCheckbox("timemgmt", i18n("Use time control"));
+                 $oTimeCheckbox->setChecked($iTimeMng);
 
-            case "author":
-                $oUser = new cApiUser($upload->get("author"));
-                $sCell = $oUser->get('username') . " (" . displayDatetime($upload->get("created")) . ")";
-                break;
+                 $sHtmlTimeMng = $oTimeCheckbox->render();
+                 $sHtmlTimeMng .= "<table id='dbfsTimecontrol' class='borderless' border='0' cellpadding='0' cellspacing='0'>\n";
+                 $sHtmlTimeMng .= "<tr><td><label for='datestart'>" . i18n("Start date") . "</label></td>\n";
+                 $sHtmlTimeMng .= '<td><input type="text" name="datestart" id="datestart" value="' . $sStartDate . '"  size="20" maxlength="40" class="text_medium">' .
+                         '</td></tr>';
+                 $sHtmlTimeMng .= "<tr><td><label for='dateend'>" . i18n("End date") . "</label></td>\n";
+                 $sHtmlTimeMng .= '<td><input type="text" name="dateend" id="dateend" value="' . $sEndDate . '"  size="20" maxlength="40" class="text_medium">' .
+                         '</td></tr>';
+                 $sHtmlTimeMng .= "</table>\n";
 
-            case "modified":
-                $oUser = new cApiUser($upload->get("modifiedby"));
-                $sCell = $oUser->get('username') . " (" . displayDatetime($upload->get("lastmodified")) . ")";
-                break;
+                 $sCell = $sHtmlTimeMng;
+                 break;
 
-            default:
-                // Call chain to retrieve value
-                $_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.RenderRows");
+             case "preview":
+                 if (cApiDbfs::isDbfs($_REQUEST["path"])) {
+                     $sCell = '<a target="_blank" href="' . $sess->url(cRegistry::getFrontendUrl() . "dbfs.php?file=" . $qpath . $_REQUEST["file"]) . '"><img class="bordered" src="' . uplGetThumbnail($qpath . $_REQUEST["file"], 350) . '"></a>';
+                 } else {
+                     $sCell = '<a target="_blank" href="' . $cfgClient[$client]["upl"]["htmlpath"] . $qpath . $_REQUEST["file"] . '"><img class="bordered" src="' . uplGetThumbnail($qpath . $_REQUEST["file"], 350) . '"></a>';
+                 }
+                 break;
 
-                if ($_cecIterator->count() > 0) {
-                    $contents = array();
-                    while ($chainEntry = $_cecIterator->next()) {
-                        $contents[] = $chainEntry->execute($iIdupl, $qpath, $_REQUEST["file"], $sListRow);
-                    }
-                }
-                $sCell = implode("", $contents);
-        }
-        $form->add($sTitle, $sCell);
-    }
+             case "author":
+                 $oUser = new cApiUser($upload->get("author"));
+                 $sCell = $oUser->get('username') . " (" . displayDatetime($upload->get("created")) . ")";
+                 break;
 
-    $sScript = "";
-    if (cApiDbfs::isDbfs($_REQUEST["path"])) {
-        $sScript = '
+             case "modified":
+                 $oUser = new cApiUser($upload->get("modifiedby"));
+                 $sCell = $oUser->get('username') . " (" . displayDatetime($upload->get("lastmodified")) . ")";
+                 break;
+
+             default:
+                 // Call chain to retrieve value
+                 $_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.RenderRows");
+
+                 if ($_cecIterator->count() > 0) {
+                     $contents = array();
+                     while ($chainEntry = $_cecIterator->next()) {
+                         $contents[] = $chainEntry->execute($iIdupl, $qpath, $_REQUEST["file"], $sListRow);
+                     }
+                 }
+                 $sCell = implode("", $contents);
+         }
+         $form->add($sTitle, $sCell);
+     }
+
+     $sScript = "";
+     if (cApiDbfs::isDbfs($_REQUEST["path"])) {
+         $sScript = '
 
         <script type="text/javascript">
         var startcal = new calendar1(document.properties.elements["datestart"]);
@@ -253,15 +299,24 @@ if ($upload = $uploads->next()) {
         </script>
 
         ';
-    }
+     }
 
-    if ($bDirectoryIsWritable == false) {
-        $pager->displayError(i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"] . $path . ')');
-    }
+     if ($bDirectoryIsWritable == false) {
+         $pager->displayError(i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"] . $path . ')');
+     }
 
-    $page->set("s", "FORM", $form->render() . $sScript);
-} else {
-    $page->displayCriticalError(sprintf(i18n("Could not load file %s"), $_REQUEST["file"]));
-}
+     $page->set("s", "FORM", $form->render() . $sScript);
+ } else {
+     $page->displayCriticalError(sprintf(i18n("Could not load file %s"), $_REQUEST["file"]));
+ }
 
-$page->render();
+ $page->render();
+
+ function isArchive($fileName) {
+
+     if (substr(strrchr($fileName, '.'), 1) === 'zip') {
+         return true;
+     } else {
+         return false;
+     }
+ }
