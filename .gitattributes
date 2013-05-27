@@ -344,6 +344,7 @@ contenido/classes/class.backend.php -text
 contenido/classes/class.category.helper.php -text
 contenido/classes/class.cec.php -text
 contenido/classes/class.cec_hook.php -text
+contenido/classes/class.cziparchive.php -text
 contenido/classes/class.dirhandler.php -text
 contenido/classes/class.effective.setting.php -text
 contenido/classes/class.filehandler.php -text
