@@ -38,7 +38,7 @@
          if (isset($extractPathUserInput)) {
 
              // validate user input
-       //      $extractPath .= uplCreateFriendlyName($extractPathUserInput);
+             $extractPath .= uplCreateFriendlyName($extractPathUserInput);
              $extractPath = str_replace('.', '_', $extractPath);
          }
 
@@ -73,7 +73,7 @@
          if (isset($extractPathUserInput)) {
 
              // validate user input
-          //   $extractPath .= uplCreateFriendlyName($extractPathUserInput);
+             $extractPath .= uplCreateFriendlyName($extractPathUserInput);
              $extractPath = str_replace('.', '', $extractPath);
          }
 
