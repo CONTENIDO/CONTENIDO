@@ -619,9 +619,9 @@ class cApiUser extends Item {
      * @return string Realname or username of user
      */
     public function getEffectiveName() {
-        $name = $this->get('realname');
-        if ('' === $name) {
-            $name = $this->get('username');
+        $name = trim($this->get('realname'));
+        if (strlen($name) == 0) {
+            $name = trim($this->get('username'));
         }
         return $name;
     }
