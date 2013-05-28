@@ -38,7 +38,7 @@
          if (isset($extractPathUserInput)) {
 
              // validate user input
-             $extractPath .= uplCreateFriendlyName($extractPathUserInput);
+       //      $extractPath .= uplCreateFriendlyName($extractPathUserInput);
              $extractPath = str_replace('.', '_', $extractPath);
          }
 
@@ -63,6 +63,9 @@
 
              $zip->close();
          }
+         else {
+              echo('can not open zip file!');
+         }
      }
 
      public static function extract($file, $extractPath, $extractPathUserInput = NULL) {
@@ -70,7 +73,7 @@
          if (isset($extractPathUserInput)) {
 
              // validate user input
-             $extractPath .= uplCreateFriendlyName($extractPathUserInput);
+          //   $extractPath .= uplCreateFriendlyName($extractPathUserInput);
              $extractPath = str_replace('.', '', $extractPath);
          }
 
@@ -101,6 +104,9 @@
                  }
                  $zip->close();
              }
+             else {
+                 echo('can not open zip file!');
+             }
          } else {
              if ($state === TRUE) {
 
@@ -118,6 +124,9 @@
                  }
 
                  $zip->close();
+             }
+             else {
+                  echo('can not open zip file!');
              }
          }
      }
