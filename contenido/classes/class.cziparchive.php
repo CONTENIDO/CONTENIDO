@@ -22,24 +22,22 @@
          return $ar;
      }
 
-     public static function isExtracted($file) {
+     public static function isExtracted($pathDir) {
 
-
-         // name without file ending.
-         $pathDir = strstr($file, '.', true);
          if (file_exists($pathDir) and is_dir($pathDir)) {
-             cZipArchive::readExistingFiles($pathDir);
+             return true;
+         } else {
+             return false;
          }
-         return false;
      }
 
      public static function extractOverRide($file, $extractPath, $extractPathUserInput = NULL) {
-         //   try {
+
          if (isset($extractPathUserInput)) {
 
              // validate user input
              $extractPath .= uplCreateFriendlyName($extractPathUserInput);
-             $extractPath = str_replace('.', '_', $extractPath);
+             $extractPath = str_replace('.', '', $extractPath);
          }
 
          $zip = new ZipArchive;
@@ -50,25 +48,23 @@
              for ($i = 0; $i < $zip->numFiles; $i++) {
 
                  $file = $zip->getNameIndex($i);
-                 $zipFileName = substr(strrchr($file, '/'), 1);
+                 //remove '/' for validation -> directory names
+                 $tmpFile = str_replace('/', '', $file);
 
                  //extract only file with valid filename
-
-                 if (cFileHandler::validateFilename($zipFileName, FALSE)) {
-                     if (cFileHandler::validateFilename($zipFileName, FALSE)) {
-                         $zip->extractTo($extractPath, $file);
-                     }
-                 }
-             }
+                 if (cFileHandler::validateFilename($tmpFile, FALSE)) {
+                     $zip->extractTo($extractPath, $file);
+                   }
+                }
 
              $zip->close();
-         }
-         else {
-              echo('can not open zip file!');
+         } else {
+             echo('can not open zip file!');
          }
      }
 
      public static function extract($file, $extractPath, $extractPathUserInput = NULL) {
+
 
          if (isset($extractPathUserInput)) {
 
@@ -77,34 +73,34 @@
              $extractPath = str_replace('.', '', $extractPath);
          }
 
-         $pathDir = strstr($file, '.', true);
-         if (file_exists($pathDir) and is_dir($pathDir)) {
-             $ar = cZipArchive::readExistingFiles($pathDir);
+         if (file_exists($extractPath) and is_dir($extractPath)) {
+             $ar = cZipArchive::readExistingFiles($extractPath);
+
          }
          // :: OVERRIDE
          $zip = new ZipArchive;
          $state = $zip->open($file);
+
          //Does the directory already exists ?
-         if (cZipArchive::isExtracted($file)) {
+         if (cZipArchive::isExtracted($extractPath)) {
 
              if ($state === TRUE) {
 
                  for ($i = 0; $i < $zip->numFiles; $i++) {
 
                      $file = $zip->getNameIndex($i);
-                     $zipFileName = substr(strrchr($file, '/'), 1);
+                      $tmpFile = str_replace('/', '', $file);
 
-                     //extract only new files
-                     if (cFileHandler::validateFilename($zipFileName, FALSE)) {
+                     if (cFileHandler::validateFilename($tmpFile, FALSE)) {
 
-                         if (array_search($zipFileName, $ar) == FALSE) {
+                         if (!array_search($file, $ar)) {
                              $zip->extractTo($extractPath, $file);
-                         }
                      }
+                }
                  }
+
                  $zip->close();
-             }
-             else {
+                 }else {
                  echo('can not open zip file!');
              }
          } else {
@@ -113,22 +109,20 @@
                  for ($i = 0; $i < $zip->numFiles; $i++) {
 
                      $file = $zip->getNameIndex($i);
-                     $zipFileName = substr(strrchr($file, '/'), 1);
+                    //remove '/' for validation -> directory names
+                     $tmpFile = str_replace('/', '', $file);
 
-                     //extract only file with valid filename
-                     if (cFileHandler::validateFilename($zipFileName, FALSE)) {
-                         if (cFileHandler::validateFilename($zipFileName, FALSE)) {
-                             $zip->extractTo($extractPath, $file);
-                         }
-                     }
-                 }
-
+                   if (cFileHandler::validateFilename($tmpFile, FALSE)) {
+                         $zip->extractTo($extractPath, $file);
+                    }
+                }
                  $zip->close();
-             }
-             else {
-                  echo('can not open zip file!');
+             } else {
+                 echo('can not open zip file!');
              }
          }
      }
+
  }
+
 ?>
