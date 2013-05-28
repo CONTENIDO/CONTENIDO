@@ -77,9 +77,16 @@
      $bDirectoryIsWritable = false;
  }
 
+
  if ($action == "upl_modify_file") {
 
      $extractFolder = NULL;
+     $uplPath =  $cfgClient[$client]['upl']['path'];
+
+     if(isset($_REQUEST['path']) && $_REQUEST['path'] != NULL)
+     {
+         $uplPath .= $_REQUEST['path'];
+     }
 
      if(isset($_REQUEST['efolder']) && $_REQUEST['efolder'] != NULL )
      {
@@ -87,12 +94,12 @@
      }
 
      if (isset($_REQUEST['extractZip']) && !isset($_REQUEST['overwrite'])) {
-         $zipFile = $cfgClient[$client]['upl']['path'] . $_REQUEST['file'];
-         cZipArchive::extract($zipFile, $cfgClient[$client]['upl']['path'],$extractFolder);
+         $zipFile = $uplPath . $_REQUEST['file'];
+         cZipArchive::extract($zipFile, $uplPath ,$extractFolder);
      }
      if (isset($_REQUEST['extractZip']) && isset($_REQUEST['overwrite'])) {
-         $zipFile = $cfgClient[$client]['upl']['path'] . $_REQUEST['file'];
-         cZipArchive::extractOverRide($zipFile, $cfgClient[$client]['upl']['path'],$extractFolder);
+         $zipFile = $uplPath . $_REQUEST['file'];
+         cZipArchive::extractOverRide($zipFile, $uplPath, $extractFolder);
      }
      // Did the user upload a new file?
      if ($bDirectoryIsWritable == true && count($_FILES) == 1 && ($_FILES["file"]["size"] > 0) && ($_FILES["file"]["name"] != "")) {
