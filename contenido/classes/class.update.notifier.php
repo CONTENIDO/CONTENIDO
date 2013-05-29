@@ -640,7 +640,7 @@ class cUpdateNotifier {
             $oTpl = new cTemplate();
         }
 
-        if ($this->sRSSContent != '') {
+        if ($this->sRSSContent != '<rss></rss>') {
             $doc = new cXmlReader();
             $doc->load($this->sCacheDirectory . $this->sRSSFile);
 
