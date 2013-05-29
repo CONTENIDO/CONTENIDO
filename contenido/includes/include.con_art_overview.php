@@ -2,15 +2,15 @@
 /**
  * This file contains the backend page for displaying articles of a category.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -224,6 +224,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // Reset Template
         $tpl->reset();
+
+        // Categories without start article
+        if (strHasStartArticle($idcat, $lang) === false) {
+            $notification->displayNotification('LEVEL_WARNING', i18n('This category does not have a configured start article.'));
+        }
 
         // No article
         $no_article = true;
@@ -700,7 +705,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
                 if ($next == $iNext) {
                     $sBrowseLinks .= $i . "\n"; // I'm on the current page, no
-                                                // link
+                                                    // link
                 } else {
                     $tmp_alink = $sess->url("main.php?area=con&frame=$frame&idcat=$idcat&next=$iNext");
                     $sBrowseLinks .= '<a href="' . $tmp_alink . '">' . $i . '</a>' . "\n";
