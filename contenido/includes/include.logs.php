@@ -22,8 +22,6 @@ if (!$perm->have_perm_area_action($area)) {
 
 $clientColl = new cApiClientCollection();
 
-
-
 $tpl->reset();
 
 $form = '<form name="log_select" method="post" action="'.$sess->url("main.php?").'">
@@ -273,14 +271,14 @@ while ($oItem = $actionLogColl->next()) {
         $oCategoryArticle = new cApiCategoryArticle($idcatart);
     }
 
-    // get structure name
+    // get structure id and name
     if (!isset($strNames[$key])) {
         $strNames[$key] = '';
         if ($oCategoryArticle->get('idcat')) {
             $oCategoryLanguage = new cApiCategoryLanguage();
             $oCategoryLanguage->loadByCategoryIdAndLanguageId($oCategoryArticle->get('idcat'), $idlang);
             if ($oCategoryLanguage->isLoaded()) {
-                $strNames[$key] = $oCategoryLanguage->get('name');
+                $strNames[$key] = $oCategoryLanguage->get('name')  . " (" . $oCategoryLanguage->get('idcat') . ")";
             }
         }
         if ($strNames[$key] == '') {
@@ -288,14 +286,14 @@ while ($oItem = $actionLogColl->next()) {
         }
     }
 
-    // get article name
+    // get article id and name
     if (!isset($artNames[$key])) {
         $artNames[$key] = '';
         if ($oCategoryArticle->get('idart')) {
             $oArticleLanguage = new cApiArticleLanguage();
             $oArticleLanguage->loadByArticleAndLanguageId($oCategoryArticle->get('idart'), $idlang);
             if ($oArticleLanguage->isLoaded()) {
-                $artNames[$key] = $oArticleLanguage->get('title');
+                $artNames[$key] = $oArticleLanguage->get('title') . " (" . $oArticleLanguage->get('idart') . ")";
             }
         }
         if ($artNames[$key] == '') {
