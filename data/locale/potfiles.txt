@@ -223,6 +223,7 @@
 ./classes/class.systemtest.php
 ./classes/class.wysiwyg_editor.php
 ./classes/class.frontend.logic.php
+./classes/class.cziparchive.php
 ./classes/content_types/class.content.type.date.php
 ./classes/content_types/class.content.type.teaser.php
 ./classes/content_types/class.content.type.text.php
