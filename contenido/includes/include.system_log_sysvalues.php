@@ -89,7 +89,10 @@ if (!empty($files)) {
         $filename = $path . cSecurity::escapeString($logfile);
     }
 
-    if (cFileHandler::exists($filename)) {
+    $memory_limit = machineReadableSize(ini_get("memory_limit"));
+    $filesize = cFileHandler::info($filename);
+
+    if (cFileHandler::exists($filename) && $filesize['size'] < $memory_limit) {
         $lines = file($filename);
         $lines = array_splice($lines, $numberOfLines * -1);
         $textarea = new cHTMLTextarea('logfile-content', implode('', $lines));
