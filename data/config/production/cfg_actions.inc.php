@@ -43,6 +43,8 @@ $lngAct['con_tplcfg']['con_edddittemplate']         = i18n('Help');
 $lngAct['con_content_list']['con_content']          = i18n('List content entries');
 $lngAct['con_content_list']['savecontype']          = i18n('Edit content list entry');
 $lngAct['con_content_list']['deletecontype']        = i18n('Delete content list entry');
+$lngAct['con_translate']['con_translate_edit']		= i18n('Edit translations');
+$lngAct['con_translate']['con_translate_save']		= i18n('Save translations');
 
 $lngAct['str']['str_renamecat']                     = i18n('Rename category');
 $lngAct['str']['str_newcat']                        = i18n('New category');
