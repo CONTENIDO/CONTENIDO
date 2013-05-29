@@ -656,10 +656,15 @@ if ($perm->have_perm_area_action("recipients", "recipients_create")) {
     $sContent .= $oLink->render() . '<br>' . "\n";
 }
 
+$iTimeframe = (int) $oClient->getProperty("newsletter", "purgetimeframe");
+if ($iTimeframe <= 0) {
+    $iTimeframe = 30;
+}
+
 // Create a link to purge subscribed but not confirmed recipients
 if ($perm->have_perm_area_action("recipients", "recipients_delete")) {
     $oLink = new cHTMLLink();
-    $oLink->setLink("javascript:showPurgeMsg('" . i18n('Purge recipients', 'newsletter') . "', '" . sprintf(i18n('Do you really want to remove recipients, that have not been confirmed since %s days and over?', 'newsletter'), purgetimeframe) . "')");
+    $oLink->setLink("javascript:showPurgeMsg('" . i18n('Purge recipients', 'newsletter') . "', '" . sprintf(i18n('Do you really want to remove recipients, that have not been confirmed since %s days and over?', 'newsletter'), $iTimeframe) . "')");
     $oLink->setContent('<img src="' . $cfg["path"]["images"] . 'delete.gif">' . i18n("Purge recipients", 'newsletter') . '</a>');
     $sContent .= $oLink->render();
 }
@@ -670,10 +675,7 @@ $sContent = '
 </div>
 ';
 
-$iTimeframe = (int) $oClient->getProperty("newsletter", "purgetimeframe");
-if ($iTimeframe <= 0) {
-    $iTimeframe = 30;
-}
+
 $oTpl->set('s', 'VALUE_PURGETIMEFRAME', $iTimeframe);
 
 // To template
