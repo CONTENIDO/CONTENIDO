@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-29 12:46+0200\n"
+"POT-Creation-Date: 2013-05-29 13:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: scripts/langref.php:8 templates/standard/template.str_overview.html:472
 #: includes/include.client_artspec.php:124
 #: includes/include.str_overview.php:672
-#: includes/include.con_art_overview.php:522 backend_search.php:678
+#: includes/include.con_art_overview.php:527 backend_search.php:678
 msgid "Make offline"
 msgstr ""
 
@@ -28,7 +28,7 @@ msgstr ""
 #: includes/include.client_artspec.php:121
 #: includes/include.str_overview.php:674 includes/include.str_overview.php:889
 #: includes/include.str_overview.php:891
-#: includes/include.con_art_overview.php:528 backend_search.php:682
+#: includes/include.con_art_overview.php:533 backend_search.php:682
 msgid "Make online"
 msgstr ""
 
@@ -985,7 +985,7 @@ msgstr ""
 #: includes/include.con_edit_form.php:185
 #: includes/include.con_meta_form.php:191
 #: includes/include.con_art_overview.php:64
-#: includes/include.con_art_overview.php:669 backend_search.php:485
+#: includes/include.con_art_overview.php:674 backend_search.php:485
 msgid "Title"
 msgstr ""
 
@@ -1457,7 +1457,7 @@ msgstr ""
 #: includes/include.style_edit_form.php:29
 #: includes/include.grouprights_members.php:22
 #: includes/include.lay_history.php:29
-#: includes/include.con_art_overview.php:947
+#: includes/include.con_art_overview.php:952
 #: includes/include.system_purge.php:30
 #: includes/include.grouprights_create.php:22
 #: includes/include.tpl_edit_form.php:30
@@ -2024,7 +2024,7 @@ msgstr ""
 #: includes/include.con_edit_form.php:182
 #: includes/include.tplcfg_edit_form.php:251
 #: includes/include.con_meta_form.php:188
-#: includes/include.con_art_overview.php:849
+#: includes/include.con_art_overview.php:854
 msgid "You are here"
 msgstr ""
 
@@ -2331,8 +2331,8 @@ msgstr ""
 
 #: templates/standard/template.symbolhelp.html:117
 #: templates/standard/template.symbolhelp.html:682
-#: includes/include.con_art_overview.php:906
-#: includes/include.con_art_overview.php:907
+#: includes/include.con_art_overview.php:911
+#: includes/include.con_art_overview.php:912
 msgid "Create new article"
 msgstr ""
 
@@ -2373,14 +2373,14 @@ msgstr ""
 
 #: templates/standard/template.symbolhelp.html:145
 #: templates/standard/template.symbolhelp.html:689
-#: includes/include.con_art_overview.php:501 backend_search.php:704
+#: includes/include.con_art_overview.php:506 backend_search.php:704
 #: ../data/config/production/cfg_actions.inc.php:32
 msgid "Duplicate article"
 msgstr ""
 
 #: templates/standard/template.symbolhelp.html:149
 #: templates/standard/template.symbolhelp.html:690
-#: includes/include.con_art_overview.php:548 backend_search.php:707
+#: includes/include.con_art_overview.php:553 backend_search.php:707
 #: ../data/config/production/cfg_actions.inc.php:30
 msgid "Delete article"
 msgstr ""
@@ -2598,33 +2598,33 @@ msgid "Apply to all selected articles"
 msgstr ""
 
 #: templates/standard/template.con_art_overview.html:350
-#: includes/include.con_art_overview.php:720
+#: includes/include.con_art_overview.php:725
 msgid "Set articles online"
 msgstr ""
 
 #: templates/standard/template.con_art_overview.html:351
-#: includes/include.con_art_overview.php:723
+#: includes/include.con_art_overview.php:728
 msgid "Set articles offline"
 msgstr ""
 
 #: templates/standard/template.con_art_overview.html:352
-#: includes/include.con_art_overview.php:726
+#: includes/include.con_art_overview.php:731
 msgid "Freeze articles"
 msgstr ""
 
 #: templates/standard/template.con_art_overview.html:353
-#: includes/include.con_art_overview.php:729
+#: includes/include.con_art_overview.php:734
 msgid "Unfreeze articles"
 msgstr ""
 
 #: templates/standard/template.con_art_overview.html:354
-#: includes/include.con_art_overview.php:410
-#: includes/include.con_art_overview.php:732
+#: includes/include.con_art_overview.php:415
+#: includes/include.con_art_overview.php:737
 msgid "Copy article to the current language"
 msgstr ""
 
 #: templates/standard/template.con_art_overview.html:355
-#: includes/include.con_art_overview.php:734
+#: includes/include.con_art_overview.php:739
 msgid "Delete articles"
 msgstr ""
 
@@ -3457,7 +3457,7 @@ msgstr ""
 #: includes/functions.stat.php:880 includes/functions.stat.php:910
 #: includes/include.grouprights.php:117
 #: includes/include.grouprights_left_top.php:42
-#: includes/include.con_art_overview.php:788
+#: includes/include.con_art_overview.php:793
 msgid "All"
 msgstr ""
 
@@ -3612,7 +3612,7 @@ msgstr ""
 
 #: includes/include.upl_search_results.php:36
 #: includes/include.con_left_top.php:308
-#: includes/include.con_art_overview.php:458
+#: includes/include.con_art_overview.php:463
 #: includes/include.mycontenido_lastarticles.php:107 backend_search.php:699
 msgid "None"
 msgstr ""
@@ -3735,7 +3735,7 @@ msgid "Publishing date"
 msgstr ""
 
 #: includes/include.con_edit_form.php:292
-#: includes/include.con_art_overview.php:291
+#: includes/include.con_art_overview.php:296
 msgid "not yet published"
 msgstr ""
 
@@ -3752,7 +3752,7 @@ msgid "New window"
 msgstr ""
 
 #: includes/include.con_edit_form.php:340
-#: includes/include.con_art_overview.php:486
+#: includes/include.con_art_overview.php:491
 msgid "Start article"
 msgstr ""
 
@@ -4132,7 +4132,7 @@ msgid "New language for editing"
 msgstr ""
 
 #: includes/include.con_translate.php:435
-#: includes/include.con_art_overview.php:810
+#: includes/include.con_art_overview.php:815
 msgid "Items per page:"
 msgstr ""
 
@@ -4429,12 +4429,12 @@ msgid "Category is offline"
 msgstr ""
 
 #: includes/functions.stat.php:374 includes/functions.stat.php:666
-#: includes/include.con_art_overview.php:530
+#: includes/include.con_art_overview.php:535
 #: includes/include.mycontenido_lastarticles.php:145
 msgid "Article is offline"
 msgstr ""
 
-#: includes/functions.stat.php:376 includes/include.con_art_overview.php:524
+#: includes/functions.stat.php:376 includes/include.con_art_overview.php:529
 #: includes/include.mycontenido_lastarticles.php:143
 msgid "Article is online"
 msgstr ""
@@ -5207,7 +5207,7 @@ msgid "Path:"
 msgstr ""
 
 #: includes/include.upl_files_overview.php:573
-#: includes/include.con_art_overview.php:636
+#: includes/include.con_art_overview.php:641
 msgid "Display properties"
 msgstr ""
 
@@ -5554,92 +5554,96 @@ msgstr ""
 msgid "Published"
 msgstr ""
 
-#: includes/include.con_art_overview.php:318
+#: includes/include.con_art_overview.php:230
+msgid "This category does not have a configured start article."
+msgstr ""
+
+#: includes/include.con_art_overview.php:323
 msgid "Article is in use"
 msgstr ""
 
-#: includes/include.con_art_overview.php:319
+#: includes/include.con_art_overview.php:324
 #, php-format
 msgid "Article in use by %s (%s)"
 msgstr ""
 
-#: includes/include.con_art_overview.php:357
+#: includes/include.con_art_overview.php:362
 msgid "Article with time control online"
 msgstr ""
 
-#: includes/include.con_art_overview.php:359
+#: includes/include.con_art_overview.php:364
 msgid "Article with time control offline"
 msgstr ""
 
-#: includes/include.con_art_overview.php:369 backend_search.php:688
+#: includes/include.con_art_overview.php:374 backend_search.php:688
 msgid "Unfreeze article"
 msgstr ""
 
-#: includes/include.con_art_overview.php:372 backend_search.php:691
+#: includes/include.con_art_overview.php:377 backend_search.php:691
 #: ../data/config/production/cfg_actions.inc.php:22
 msgid "Freeze article"
 msgstr ""
 
-#: includes/include.con_art_overview.php:378
+#: includes/include.con_art_overview.php:383
 msgid "Article is frozen"
 msgstr ""
 
-#: includes/include.con_art_overview.php:381
+#: includes/include.con_art_overview.php:386
 msgid "Article is not frozen"
 msgstr ""
 
-#: includes/include.con_art_overview.php:400 backend_search.php:705
+#: includes/include.con_art_overview.php:405 backend_search.php:705
 msgid "Article properties"
 msgstr ""
 
-#: includes/include.con_art_overview.php:480 backend_search.php:665
+#: includes/include.con_art_overview.php:485 backend_search.php:665
 msgid "Flag as start article"
 msgstr ""
 
-#: includes/include.con_art_overview.php:482 backend_search.php:662
+#: includes/include.con_art_overview.php:487 backend_search.php:662
 msgid "Flag as normal article"
 msgstr ""
 
-#: includes/include.con_art_overview.php:488
+#: includes/include.con_art_overview.php:493
 msgid "Normal article"
 msgstr ""
 
-#: includes/include.con_art_overview.php:512
+#: includes/include.con_art_overview.php:517
 #, php-format
 msgid "Reminder for article '%s'"
 msgstr ""
 
-#: includes/include.con_art_overview.php:515
+#: includes/include.con_art_overview.php:520
 #, php-format
 msgid ""
 "Reminder for article '%s'\n"
 "Category: %s"
 msgstr ""
 
-#: includes/include.con_art_overview.php:547
+#: includes/include.con_art_overview.php:552
 #, php-format
 msgid "Are you sure to delete the following article:<br><br><b>%s</b>"
 msgstr ""
 
-#: includes/include.con_art_overview.php:710
+#: includes/include.con_art_overview.php:715
 #, php-format
 msgid "Go to page: %s"
 msgstr ""
 
-#: includes/include.con_art_overview.php:715
+#: includes/include.con_art_overview.php:720
 msgid "Click on a row to select an article for editing"
 msgstr ""
 
-#: includes/include.con_art_overview.php:734
+#: includes/include.con_art_overview.php:739
 msgid "Are you sure to delete the selected articles"
 msgstr ""
 
-#: includes/include.con_art_overview.php:781
-#: includes/include.con_art_overview.php:860
+#: includes/include.con_art_overview.php:786
+#: includes/include.con_art_overview.php:865
 msgid "No articles found"
 msgstr ""
 
-#: includes/include.con_art_overview.php:910
+#: includes/include.con_art_overview.php:915
 msgid ""
 "Creation of articles is only possible if the category has a assigned "
 "template."
