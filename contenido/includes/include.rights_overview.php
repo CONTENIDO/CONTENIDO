@@ -38,11 +38,14 @@ $sNotification = '';
 if ($action == 'user_delete') {
     $oUserColl = new cApiUserCollection();
 
+    $page = new cGuiPage("rights_overview");
+
     // Prevent deletion of last system administrator
     $oUserColl->query();
     if ($oUserColl->count() == 1) {
-        $notification->displayNotification("error", i18n("You are the last system administrator of this installation. You can not delete yourself."));
-        return;
+        $page->displayCriticalError(i18n("You are the last system administrator of this installation. You can not delete yourself."));
+        $page->render();
+        exit();
     }
 
     $oUserColl->delete($userid);
@@ -53,7 +56,7 @@ if ($action == 'user_delete') {
     $oRightColl = new cApiRightCollection();
     $oRightColl->deleteByUserId($userid);
 
-    $page = new cGuiPage("rights_overview");
+
     $page->displayInfo(i18n("User deleted"));
     $page->setReload();
 
