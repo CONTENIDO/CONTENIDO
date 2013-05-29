@@ -56,7 +56,6 @@ if ($action == 'user_delete') {
     $oRightColl = new cApiRightCollection();
     $oRightColl->deleteByUserId($userid);
 
-
     $page->displayInfo(i18n("User deleted"));
     $page->setReload();
 
