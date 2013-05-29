@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-29 12:46+0200\n"
-"PO-Revision-Date: 2013-05-29 12:56+0100\n"
+"POT-Creation-Date: 2013-05-29 13:58+0200\n"
+"PO-Revision-Date: 2013-05-29 14:03+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: templates/standard/template.str_overview.html:472
 #: includes/include.client_artspec.php:124
 #: includes/include.str_overview.php:672
-#: includes/include.con_art_overview.php:522
+#: includes/include.con_art_overview.php:527
 #: backend_search.php:678
 msgid "Make offline"
 msgstr "Offline setzen"
@@ -31,7 +31,7 @@ msgstr "Offline setzen"
 #: includes/include.str_overview.php:674
 #: includes/include.str_overview.php:889
 #: includes/include.str_overview.php:891
-#: includes/include.con_art_overview.php:528
+#: includes/include.con_art_overview.php:533
 #: backend_search.php:682
 msgid "Make online"
 msgstr "Online setzen"
@@ -927,7 +927,7 @@ msgstr "Gewählte Datei"
 #: includes/include.con_edit_form.php:185
 #: includes/include.con_meta_form.php:191
 #: includes/include.con_art_overview.php:64
-#: includes/include.con_art_overview.php:669
+#: includes/include.con_art_overview.php:674
 #: backend_search.php:485
 msgid "Title"
 msgstr "Titel"
@@ -1421,7 +1421,7 @@ msgstr "Die Vorlage wurde erfolgreich gelöscht!"
 #: includes/include.style_edit_form.php:29
 #: includes/include.grouprights_members.php:22
 #: includes/include.lay_history.php:29
-#: includes/include.con_art_overview.php:947
+#: includes/include.con_art_overview.php:952
 #: includes/include.system_purge.php:30
 #: includes/include.grouprights_create.php:22
 #: includes/include.tpl_edit_form.php:30
@@ -2020,7 +2020,7 @@ msgstr "Kontakt Systemadministrator / -en"
 #: includes/include.con_edit_form.php:182
 #: includes/include.tplcfg_edit_form.php:251
 #: includes/include.con_meta_form.php:188
-#: includes/include.con_art_overview.php:849
+#: includes/include.con_art_overview.php:854
 msgid "You are here"
 msgstr "Sie sind hier"
 
@@ -2348,8 +2348,8 @@ msgstr "Kategorie konfigurieren"
 
 #: templates/standard/template.symbolhelp.html:117
 #: templates/standard/template.symbolhelp.html:682
-#: includes/include.con_art_overview.php:906
-#: includes/include.con_art_overview.php:907
+#: includes/include.con_art_overview.php:911
+#: includes/include.con_art_overview.php:912
 msgid "Create new article"
 msgstr "Neuen Artikel erstellen"
 
@@ -2391,7 +2391,7 @@ msgstr "Element ist geschützt / erreichbar (durch Klick ändern)"
 
 #: templates/standard/template.symbolhelp.html:145
 #: templates/standard/template.symbolhelp.html:689
-#: includes/include.con_art_overview.php:501
+#: includes/include.con_art_overview.php:506
 #: backend_search.php:704
 #: ../data/config/production/cfg_actions.inc.php:32
 msgid "Duplicate article"
@@ -2399,7 +2399,7 @@ msgstr "Artikel duplizieren"
 
 #: templates/standard/template.symbolhelp.html:149
 #: templates/standard/template.symbolhelp.html:690
-#: includes/include.con_art_overview.php:548
+#: includes/include.con_art_overview.php:553
 #: backend_search.php:707
 #: ../data/config/production/cfg_actions.inc.php:30
 msgid "Delete article"
@@ -2618,33 +2618,33 @@ msgid "Apply to all selected articles"
 msgstr "Anwenden für ausgewählte Artikel"
 
 #: templates/standard/template.con_art_overview.html:350
-#: includes/include.con_art_overview.php:720
+#: includes/include.con_art_overview.php:725
 msgid "Set articles online"
 msgstr "Artikel online stellen"
 
 #: templates/standard/template.con_art_overview.html:351
-#: includes/include.con_art_overview.php:723
+#: includes/include.con_art_overview.php:728
 msgid "Set articles offline"
 msgstr "Artikel offline stellen"
 
 #: templates/standard/template.con_art_overview.html:352
-#: includes/include.con_art_overview.php:726
+#: includes/include.con_art_overview.php:731
 msgid "Freeze articles"
 msgstr "Artikel einfrieren"
 
 #: templates/standard/template.con_art_overview.html:353
-#: includes/include.con_art_overview.php:729
+#: includes/include.con_art_overview.php:734
 msgid "Unfreeze articles"
 msgstr "Artikel auftauen"
 
 #: templates/standard/template.con_art_overview.html:354
-#: includes/include.con_art_overview.php:410
-#: includes/include.con_art_overview.php:732
+#: includes/include.con_art_overview.php:415
+#: includes/include.con_art_overview.php:737
 msgid "Copy article to the current language"
 msgstr "Artikel in die aktuelle Sprache kopieren"
 
 #: templates/standard/template.con_art_overview.html:355
-#: includes/include.con_art_overview.php:734
+#: includes/include.con_art_overview.php:739
 msgid "Delete articles"
 msgstr "Artikel löschen"
 
@@ -3508,7 +3508,7 @@ msgstr "Die JS-Datei wurde erfolgreich umbenannt!"
 #: includes/functions.stat.php:910
 #: includes/include.grouprights.php:117
 #: includes/include.grouprights_left_top.php:42
-#: includes/include.con_art_overview.php:788
+#: includes/include.con_art_overview.php:793
 msgid "All"
 msgstr "Alle"
 
@@ -3668,7 +3668,7 @@ msgstr "Alle Informationen zu CONTENIDO und das CONTENIDO-Community-Forum finden
 
 #: includes/include.upl_search_results.php:36
 #: includes/include.con_left_top.php:308
-#: includes/include.con_art_overview.php:458
+#: includes/include.con_art_overview.php:463
 #: includes/include.mycontenido_lastarticles.php:107
 #: backend_search.php:699
 msgid "None"
@@ -3793,7 +3793,7 @@ msgid "Publishing date"
 msgstr "Veröffentlichungsdatum"
 
 #: includes/include.con_edit_form.php:292
-#: includes/include.con_art_overview.php:291
+#: includes/include.con_art_overview.php:296
 msgid "not yet published"
 msgstr "noch nicht veröffentlicht"
 
@@ -3810,7 +3810,7 @@ msgid "New window"
 msgstr "Neues Fenster"
 
 #: includes/include.con_edit_form.php:340
-#: includes/include.con_art_overview.php:486
+#: includes/include.con_art_overview.php:491
 msgid "Start article"
 msgstr "Startartikel"
 
@@ -4182,7 +4182,7 @@ msgid "New language for editing"
 msgstr "Neue Sprache zur Bearbeitung"
 
 #: includes/include.con_translate.php:435
-#: includes/include.con_art_overview.php:810
+#: includes/include.con_art_overview.php:815
 msgid "Items per page:"
 msgstr "Elemente / Seite"
 
@@ -4489,13 +4489,13 @@ msgstr "Die Kategorie ist offline"
 
 #: includes/functions.stat.php:374
 #: includes/functions.stat.php:666
-#: includes/include.con_art_overview.php:530
+#: includes/include.con_art_overview.php:535
 #: includes/include.mycontenido_lastarticles.php:145
 msgid "Article is offline"
 msgstr "Der Artikel ist offline"
 
 #: includes/functions.stat.php:376
-#: includes/include.con_art_overview.php:524
+#: includes/include.con_art_overview.php:529
 #: includes/include.mycontenido_lastarticles.php:143
 msgid "Article is online"
 msgstr "Der Artikel ist online"
@@ -5274,7 +5274,7 @@ msgid "Path:"
 msgstr "Pfad:"
 
 #: includes/include.upl_files_overview.php:573
-#: includes/include.con_art_overview.php:636
+#: includes/include.con_art_overview.php:641
 msgid "Display properties"
 msgstr "Eigenschaften anzeigen"
 
@@ -5619,67 +5619,71 @@ msgstr "Geändert"
 msgid "Published"
 msgstr "Veröffentlicht"
 
-#: includes/include.con_art_overview.php:318
+#: includes/include.con_art_overview.php:230
+msgid "This category does not have a configured start article."
+msgstr "Diese Kategorie hat keinen konfigurierten Startartikel."
+
+#: includes/include.con_art_overview.php:323
 msgid "Article is in use"
 msgstr "Artikel wird benutzt"
 
-#: includes/include.con_art_overview.php:319
+#: includes/include.con_art_overview.php:324
 #, php-format
 msgid "Article in use by %s (%s)"
 msgstr "Artikel wird benutzt von %s (%s)"
 
-#: includes/include.con_art_overview.php:357
+#: includes/include.con_art_overview.php:362
 msgid "Article with time control online"
 msgstr "Artikel mit Zeitsteuerung offline"
 
-#: includes/include.con_art_overview.php:359
+#: includes/include.con_art_overview.php:364
 msgid "Article with time control offline"
 msgstr "Artikel mit Zeitsteuerung offline"
 
-#: includes/include.con_art_overview.php:369
+#: includes/include.con_art_overview.php:374
 #: backend_search.php:688
 msgid "Unfreeze article"
 msgstr "Artikel auftauen"
 
-#: includes/include.con_art_overview.php:372
+#: includes/include.con_art_overview.php:377
 #: backend_search.php:691
 #: ../data/config/production/cfg_actions.inc.php:22
 msgid "Freeze article"
 msgstr "Artikel einfrieren"
 
-#: includes/include.con_art_overview.php:378
+#: includes/include.con_art_overview.php:383
 msgid "Article is frozen"
 msgstr "Artikel ist gefroren"
 
-#: includes/include.con_art_overview.php:381
+#: includes/include.con_art_overview.php:386
 msgid "Article is not frozen"
 msgstr "Artikel ist nicht gefroren"
 
-#: includes/include.con_art_overview.php:400
+#: includes/include.con_art_overview.php:405
 #: backend_search.php:705
 msgid "Article properties"
 msgstr "Artikeleigenschaften"
 
-#: includes/include.con_art_overview.php:480
+#: includes/include.con_art_overview.php:485
 #: backend_search.php:665
 msgid "Flag as start article"
 msgstr "Als Startartikel markieren"
 
-#: includes/include.con_art_overview.php:482
+#: includes/include.con_art_overview.php:487
 #: backend_search.php:662
 msgid "Flag as normal article"
 msgstr "Als normalen Artikel markieren"
 
-#: includes/include.con_art_overview.php:488
+#: includes/include.con_art_overview.php:493
 msgid "Normal article"
 msgstr "Normaler Artikel"
 
-#: includes/include.con_art_overview.php:512
+#: includes/include.con_art_overview.php:517
 #, php-format
 msgid "Reminder for article '%s'"
 msgstr "Wiedervorlage für Artikel '%s'"
 
-#: includes/include.con_art_overview.php:515
+#: includes/include.con_art_overview.php:520
 #, php-format
 msgid ""
 "Reminder for article '%s'\n"
@@ -5688,30 +5692,30 @@ msgstr ""
 "Wiedervorlage für Artikel '%s'\n"
 "Kategorie: %s"
 
-#: includes/include.con_art_overview.php:547
+#: includes/include.con_art_overview.php:552
 #, php-format
 msgid "Are you sure to delete the following article:<br><br><b>%s</b>"
 msgstr "Möchten Sie den folgenden Artikel wirklich löschen:<br /><br /><b>%s</b>"
 
-#: includes/include.con_art_overview.php:710
+#: includes/include.con_art_overview.php:715
 #, php-format
 msgid "Go to page: %s"
 msgstr "Gehe zu Seite: %s"
 
-#: includes/include.con_art_overview.php:715
+#: includes/include.con_art_overview.php:720
 msgid "Click on a row to select an article for editing"
 msgstr "Klicken Sie auf einen Artikel, um ihn zu bearbeiten"
 
-#: includes/include.con_art_overview.php:734
+#: includes/include.con_art_overview.php:739
 msgid "Are you sure to delete the selected articles"
 msgstr "Sind Sie sich sicher, dass Sie die gewählten Artikel löschen wollen?"
 
-#: includes/include.con_art_overview.php:781
-#: includes/include.con_art_overview.php:860
+#: includes/include.con_art_overview.php:786
+#: includes/include.con_art_overview.php:865
 msgid "No articles found"
 msgstr "Keine Artikel gefunden"
 
-#: includes/include.con_art_overview.php:910
+#: includes/include.con_art_overview.php:915
 msgid "Creation of articles is only possible if the category has a assigned template."
 msgstr "Kann keine Artikel erstellen, solange die Kategorie noch keine zugewiesene Vorlage hat."
 
