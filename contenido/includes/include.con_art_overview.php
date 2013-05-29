@@ -227,7 +227,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // Categories without start article
         if (strHasStartArticle($idcat, $lang) === false) {
-            $notification->displayNotification('LEVEL_WARNING', i18n('This category does not have a configured start article.'));
+            $notification->displayNotification('warning', i18n('This category does not have a configured start article.'));
         }
 
         // No article
