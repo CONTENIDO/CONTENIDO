@@ -14,6 +14,7 @@ i18n("Properties")
 i18n("Configuration")
 i18n("Preview")
 i18n("SEO")
+i18n("Raw data")
 i18n("Content")
 i18n("Category")
 i18n("Overview")
@@ -108,7 +109,7 @@ i18n("HTML")
                 <configuration>Configuration</configuration>
                 <preview>Preview</preview>
                 <meta>SEO</meta>
-                <content>Content</content>
+                <content>Raw data</content>
             </article>
             <structure>
                 <main>Category</main>
