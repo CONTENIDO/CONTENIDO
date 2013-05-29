@@ -2431,12 +2431,10 @@ setup/data/examples/examples_content1.sql -text
 setup/data/examples/examples_misc1.sql -text
 setup/data/examples/examples_misc2.sql -text
 setup/data/examples/examples_misc3.sql -text
-setup/data/examples/examples_misc4.sql -text
-setup/data/examples/examples_misc5.sql -text
-setup/data/examples/examples_misc6.sql -text
 setup/data/indexes.sql -text
 setup/data/standard.txt -text
 setup/data/standard/standard_modules1.sql -text
+setup/data/standard/standard_modules2.sql -text
 setup/data/sysadmin.txt -text
 setup/data/sysadmin/sysadmin1.sql -text
 setup/data/tables.txt -text

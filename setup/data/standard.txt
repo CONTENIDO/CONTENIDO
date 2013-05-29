@@ -1,1 +1,2 @@
 standard/standard_modules1.sql
+standard/standard_modules2.sql
