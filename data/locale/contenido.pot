@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-29 13:58+0200\n"
+"POT-Creation-Date: 2013-05-29 14:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1283,7 +1283,7 @@ msgstr ""
 #: templates/standard/template.upl_files_upload.html:87
 #: templates/standard/template.grouprights_memberselect.html:96
 #: includes/include.client_edit.php:165 includes/include.rights_create.php:102
-#: includes/include.rights_overview.php:138
+#: includes/include.rights_overview.php:145
 #: includes/include.system_configuration.php:158
 #: includes/include.grouprights_overview.php:96
 #: includes/include.grouprights_create.php:69
@@ -1511,7 +1511,7 @@ msgstr ""
 #: includes/include.clientsettings.php:162
 #: includes/include.mod_history.php:113 includes/include.js_edit_form.php:219
 #: includes/include.rights_left_top.php:97
-#: includes/include.rights_overview.php:150
+#: includes/include.rights_overview.php:157
 #: includes/include.html_tpl_edit_form.php:263
 #: includes/include.lay_edit_form.php:211
 #: includes/include.systemsettings.php:58
@@ -2802,8 +2802,8 @@ msgstr ""
 #: includes/include.client_edit.php:169 includes/include.rights_create.php:104
 #: includes/include.clientsettings.php:79
 #: includes/include.clientsettings.php:166
-#: includes/include.rights_overview.php:142
-#: includes/include.rights_overview.php:309
+#: includes/include.rights_overview.php:149
+#: includes/include.rights_overview.php:315
 #: includes/include.systemsettings.php:59
 #: includes/include.systemsettings.php:164
 #: includes/include.grouprights_overview.php:101
@@ -3020,7 +3020,7 @@ msgid ""
 msgstr ""
 
 #: includes/include.client_edit.php:127
-#: includes/include.rights_overview.php:102
+#: includes/include.rights_overview.php:111
 #: includes/type/action/include.con_meta_saveart.action.php:34
 #: includes/type/action/include.con_saveart.action.php:39
 #: includes/type/action/include.con_saveart.action.php:138
@@ -3035,14 +3035,14 @@ msgid "Changes saved"
 msgstr ""
 
 #: includes/include.client_edit.php:166
-#: includes/include.rights_overview.php:139
+#: includes/include.rights_overview.php:146
 #: includes/include.grouprights_overview.php:97
 msgid "Discard changes"
 msgstr ""
 
 #: includes/include.client_edit.php:168 includes/include.rights_create.php:103
-#: includes/include.rights_overview.php:141
-#: includes/include.rights_overview.php:308
+#: includes/include.rights_overview.php:148
+#: includes/include.rights_overview.php:314
 #: includes/include.grouprights_overview.php:100
 #: includes/include.grouprights_overview.php:196
 #: includes/include.grouprights_create.php:71
@@ -3142,13 +3142,13 @@ msgid "User created"
 msgstr ""
 
 #: includes/include.rights_create.php:86
-#: includes/include.rights_overview.php:92
+#: includes/include.rights_overview.php:100
 #: includes/include.mycontenido_settings.php:38
 msgid "Passwords don't match"
 msgstr ""
 
 #: includes/include.rights_create.php:106
-#: includes/include.rights_overview.php:145
+#: includes/include.rights_overview.php:152
 #: includes/include.frontend.user_menu.php:37
 #: includes/include.frontend.user_menu.php:40
 #: includes/include.frontend.left_top.php:39
@@ -3157,95 +3157,95 @@ msgid "Username"
 msgstr ""
 
 #: includes/include.rights_create.php:116
-#: includes/include.rights_overview.php:158
+#: includes/include.rights_overview.php:166
 #: includes/include.mycontenido_settings.php:123
 #: includes/include.frontend.user_edit.php:169
 msgid "New password"
 msgstr ""
 
 #: includes/include.rights_create.php:121
-#: includes/include.rights_overview.php:164
+#: includes/include.rights_overview.php:172
 #: includes/include.mycontenido_settings.php:124
 msgid "Confirm new password"
 msgstr ""
 
 #: includes/include.rights_create.php:126
-#: includes/include.rights_overview.php:171
+#: includes/include.rights_overview.php:179
 #: includes/include.mycontenido_settings.php:128
 msgid "E-Mail"
 msgstr ""
 
 #: includes/include.rights_create.php:131
-#: includes/include.rights_overview.php:177
+#: includes/include.rights_overview.php:185
 #: includes/include.mycontenido_settings.php:131
 msgid "Phone number"
 msgstr ""
 
 #: includes/include.rights_create.php:136
-#: includes/include.rights_overview.php:183
+#: includes/include.rights_overview.php:191
 #: includes/include.mycontenido_settings.php:134
 msgid "Street"
 msgstr ""
 
 #: includes/include.rights_create.php:141
-#: includes/include.rights_overview.php:189
+#: includes/include.rights_overview.php:197
 #: includes/include.mycontenido_settings.php:137
 msgid "ZIP code"
 msgstr ""
 
 #: includes/include.rights_create.php:146
-#: includes/include.rights_overview.php:195
+#: includes/include.rights_overview.php:203
 #: includes/include.mycontenido_settings.php:140
 msgid "City"
 msgstr ""
 
 #: includes/include.rights_create.php:151
-#: includes/include.rights_overview.php:201
+#: includes/include.rights_overview.php:209
 #: includes/include.mycontenido_settings.php:143
 #: includes/include.lang_edit.php:185
 msgid "Country"
 msgstr ""
 
 #: includes/include.rights_create.php:171
-#: includes/include.rights_overview.php:223
+#: includes/include.rights_overview.php:230
 #: includes/include.grouprights_overview.php:117
 #: includes/include.grouprights_create.php:93
 msgid "System administrator"
 msgstr ""
 
 #: includes/include.rights_create.php:190
-#: includes/include.rights_overview.php:243
+#: includes/include.rights_overview.php:250
 #: includes/include.grouprights_overview.php:136
 #: includes/include.grouprights_create.php:112
 msgid "Administrator"
 msgstr ""
 
 #: includes/include.rights_create.php:205
-#: includes/include.rights_overview.php:260
+#: includes/include.rights_overview.php:267
 #: includes/include.grouprights_overview.php:152
 #: includes/include.grouprights_create.php:127
 msgid "Access clients"
 msgstr ""
 
 #: includes/include.rights_create.php:220
-#: includes/include.rights_overview.php:278
+#: includes/include.rights_overview.php:285
 #: includes/include.grouprights_overview.php:169
 #: includes/include.grouprights_create.php:142
 msgid "Access languages"
 msgstr ""
 
 #: includes/include.rights_create.php:224
-#: includes/include.rights_overview.php:328
+#: includes/include.rights_overview.php:334
 msgid "Use WYSIWYG-Editor"
 msgstr ""
 
 #: includes/include.rights_create.php:231
-#: includes/include.rights_overview.php:341
+#: includes/include.rights_overview.php:346
 msgid "Valid from"
 msgstr ""
 
 #: includes/include.rights_create.php:237
-#: includes/include.rights_overview.php:352
+#: includes/include.rights_overview.php:356
 msgid "Valid to"
 msgstr ""
 
@@ -3285,8 +3285,8 @@ msgid "Type"
 msgstr ""
 
 #: includes/include.clientsettings.php:92
-#: includes/include.rights_overview.php:301
-#: includes/include.rights_overview.php:310
+#: includes/include.rights_overview.php:307
+#: includes/include.rights_overview.php:316
 #: includes/include.systemsettings.php:72
 #: includes/include.systemsettings.php:75
 #: includes/include.client_artspec.php:71
@@ -3518,34 +3518,40 @@ msgstr ""
 msgid "Can't delete layout!"
 msgstr ""
 
-#: includes/include.rights_overview.php:49
+#: includes/include.rights_overview.php:44
+msgid ""
+"You are the last system administrator of this installation. You can not "
+"delete yourself."
+msgstr ""
+
+#: includes/include.rights_overview.php:57
 msgid "User deleted"
 msgstr ""
 
-#: includes/include.rights_overview.php:105
+#: includes/include.rights_overview.php:114
 #: includes/include.mycontenido_settings.php:93
 msgid "An error occured while saving user info."
 msgstr ""
 
-#: includes/include.rights_overview.php:307
+#: includes/include.rights_overview.php:313
 #: includes/include.grouprights_overview.php:195
 msgid "Area/Type"
 msgstr ""
 
-#: includes/include.rights_overview.php:322
+#: includes/include.rights_overview.php:328
 #: includes/include.grouprights_overview.php:207
 msgid "User-defined properties"
 msgstr ""
 
-#: includes/include.rights_overview.php:368
+#: includes/include.rights_overview.php:372
 msgid "This account is currently inactive."
 msgstr ""
 
-#: includes/include.rights_overview.php:371
+#: includes/include.rights_overview.php:375
 msgid "This account is currently active."
 msgstr ""
 
-#: includes/include.rights_overview.php:387
+#: includes/include.rights_overview.php:391
 #: includes/include.tplcfg_edit_form.php:275
 #: includes/include.tpl_visualedit.php:116
 #: includes/include.con_left_top.php:266
@@ -3556,7 +3562,7 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: includes/include.rights_overview.php:391
+#: includes/include.rights_overview.php:395
 #: includes/include.frontend.user_edit.php:225
 msgid "Group membership"
 msgstr ""
