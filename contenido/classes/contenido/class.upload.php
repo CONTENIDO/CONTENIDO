@@ -45,9 +45,13 @@ class cApiUploadCollection extends ItemCollection {
      * @param string $sDirname
      * @param string $sFilename
      * @return cApiUpload
+     * @param int $clientid
      */
-    public function sync($sDirname, $sFilename) {
-        global $client;
+    public function sync($sDirname, $sFilename, $client = 0) {
+        $client = cSecurity::toInteger($client);
+        if($client <= 0) {
+            global $client;
+        }
 
         $sDirname = $this->escape($sDirname);
         $sFilename = $this->escape($sFilename);
