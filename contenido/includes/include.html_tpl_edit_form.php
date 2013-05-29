@@ -47,20 +47,21 @@ if ($action == $sActionDelete) {
     // TODO also delete the versioning files
     if (!strrchr($_REQUEST['delfile'], '/')) {
         if (cFileHandler::exists($path . $_REQUEST['delfile'])) {
-            unlink($path . $_REQUEST['delfile']);
             $fileInfoCollection = new cApiFileInformationCollection();
 
-            $fileIds = $fileInfoCollection->getIdsByWhereClause("`filename`='" . $_REQUEST["delfile"] . "'");
+            $fileIds = $fileInfoCollection->getIdsByWhereClause("`filename`='" . cSecurity::toString($_REQUEST["delfile"]) . "'");
 
-            if (is_dir($cfgClient[$client]['version']['path'] . "templates/" . $fileIds[0])) {
+            if (cSecurity::isInteger($fileIds[0]) && is_dir($cfgClient[$client]['version']['path'] . "templates/" . $fileIds[0])) {
                 cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "templates/" . $fileIds[0]);
+
+                $fileInfoCollection->removeFileInformation(array(
+                    'idclient' => cSecurity::toInteger($client),
+                    'filename' => cSecurity::toString($_REQUEST['delfile']),
+                    'type' => 'templates'
+                ));
             }
 
-            $fileInfoCollection->removeFileInformation(array(
-                'idclient' => $client,
-                'filename' => $_REQUEST['delfile'],
-                'type' => 'templates'
-            ));
+            unlink($path . cSecurity::toString($_REQUEST['delfile']));
 
             $page->displayInfo(i18n('Deleted template file successfully!'));
         }

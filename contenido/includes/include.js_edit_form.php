@@ -4,15 +4,15 @@
  * @fixme: Rework logic for creation of cApiFileInformation entries
  * It may happpen, that we have already a file but not a entry or vice versa!
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Willi Man
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Willi Man
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -44,18 +44,19 @@ if ($action == 'js_delete') {
     if (!strrchr($_REQUEST['delfile'], '/')) {
         if (cFileHandler::exists($path . $_REQUEST['delfile'])) {
             $fileInfoCollection = new cApiFileInformationCollection();
-            $fileIds = $fileInfoCollection->getIdsByWhereClause("`filename`='".$_REQUEST["delfile"]."'");
+            $fileIds = $fileInfoCollection->getIdsByWhereClause("`filename`='" . cSecurity::toString($_REQUEST["delfile"]) . "'");
 
-            if (is_dir($cfgClient[$client]['version']['path']."js/".$fileIds[0])) {
-                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path']."js/".$fileIds[0]);
+            if (cSecurity::isInteger($fileIds[0]) && is_dir($cfgClient[$client]['version']['path'] . "js/" . $fileIds[0])) {
+                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "js/" . $fileIds[0]);
+
+                $fileInfoCollection->removeFileInformation(array(
+                    'idclient' => cSecurity::toInteger($client),
+                    'filename' => cSecurity::toString($_REQUEST['delfile']),
+                    'type' => 'js'
+                ));
             }
 
-            unlink($path . $_REQUEST['delfile']);
-            $fileInfoCollection->removeFileInformation(array(
-                'idclient' => $client,
-                'filename' => $_REQUEST['delfile'],
-                'type' => 'js'
-            ));
+            unlink($path . cSecurity::toString($_REQUEST['delfile']));
 
             $page->displayInfo(i18n('Deleted JS-File successfully!'));
         }
@@ -149,13 +150,15 @@ if ($action == 'js_delete') {
         $fileInfoCollection = new cApiFileInformationCollection();
         $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
-        // @fixme: Rework logic. Even if we have already a file, there may be no db entry available!
+        // @fixme: Rework logic. Even if we have already a file, there may be no
+        // db entry available!
         if (0 == count($aFileInfo)) {
             // No entry, create it
             $fileInfoCollection->create('js', $sFilename, $_REQUEST['description']);
         }
 
-        // @fixme: Check condition below, how is it possible to have an db entry with primary key?
+        // @fixme: Check condition below, how is it possible to have an db entry
+        // with primary key?
         if (count($aFileInfo) > 0 && $aFileInfo['idsfi'] != '') {
             $oVersion = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
             // Create new Jscript Version in cms/version/js/ folder
@@ -191,8 +194,8 @@ if ($action == 'js_delete') {
             }
         } else {
             $sCode = stripslashes($_REQUEST['code']); // stripslashes is
-                                                      // required here in case
-                                                      // of creating a new file
+                                                          // required here in case
+                                                          // of creating a new file
         }
 
         $form = new cGuiTableForm('file_editor');

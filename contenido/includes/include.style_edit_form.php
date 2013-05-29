@@ -4,15 +4,15 @@
  * @fixme: Rework logic for creation of cApiFileInformation entries
  * It may happpen, that we have already a file but not a entry or vice versa!
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Willi Man, Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Willi Man, Olaf Niemann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -46,19 +46,24 @@ if ($action == 'style_delete') {
     ));
     $filename = $file->get('filename');
     if (!strrchr($_REQUEST['delfile'], '/')) {
-        if (cFileHandler::exists($path . $filename)) {
-            $fileId = $file->get("idsfi");
+        $fileId = $file->get("idsfi");
+
+        if (cFileHandler::exists($path . $filename) && cSecurity::isInteger($fileId)) {
             if (is_dir($cfgClient[$client]['version']['path'] . "css/" . $fileId)) {
                 cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "css/" . $fileId);
             }
 
-            unlink($path . $filename);
+            unlink($path . cSecurity::toString($filename));
+
             $fileInfoCollection = new cApiFileInformationCollection();
             $fileInfoCollection->removeFileInformation(array(
-                'idclient' => $client,
-                'filename' => $filename,
+                'idclient' => cSecurity::toInteger($client),
+                'filename' => cSecurity::toString($filename),
                 'type' => 'css'
             ));
+            $page->displayInfo(i18n('Deleted CSS file successfully!'));
+        } elseif (cFileHandler::exists($path . $_REQUEST['delfile'])) {
+            unlink($path . cSecurity::toString($_REQUEST['delfile']));
             $page->displayInfo(i18n('Deleted CSS file successfully!'));
         }
     }
@@ -178,7 +183,7 @@ if ($action == 'style_delete') {
     }
     // Generate edit form
     if (isset($_REQUEST['action'])) {
-        $sAction = ($_REQUEST['file']) ? 'style_edit' : $_REQUEST['action'];
+        $sAction = ($_REQUEST['file'])? 'style_edit' : $_REQUEST['action'];
 
         if ($_REQUEST['action'] == 'style_edit') {
             $sCode = cFileHandler::read($path . $sFilename);
@@ -212,7 +217,9 @@ if ($action == 'style_delete') {
         $form->add(i18n('Description'), $descr->render());
         $form->add(i18n('Code'), $ta_code);
 
-        $page->setContent(array($form));
+        $page->setContent(array(
+            $form
+        ));
 
         $oCodeMirror = new CodeMirror('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
         $page->addScript($oCodeMirror->renderScript());

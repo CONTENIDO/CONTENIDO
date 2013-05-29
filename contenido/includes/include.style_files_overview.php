@@ -2,15 +2,15 @@
 /**
  * This file contains the backend page for style files overview.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Willi Man, Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Willi Man, Olaf Niemann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -78,7 +78,7 @@ if (($handle = opendir($path)) !== false) {
 
             $tpl->set('d', 'FILENAME', $html_filename);
 
-            $tpl->set("d", "DESCRIPTION", ($fileInfo["description"] == "") ? '' : $fileInfo["description"]);
+            $tpl->set("d", "DESCRIPTION", ($fileInfo["description"] == "")? '' : $fileInfo["description"]);
 
             $delTitle = i18n('Delete File');
             $delDescr = sprintf(i18n('Do you really want to delete the following file:<br><br>%s<br>'), $filename);
@@ -89,7 +89,11 @@ if (($handle = opendir($path)) !== false) {
                 if ($db->nextRecord()) {
                     $idsfi = $db->f('idsfi');
                 }
-                $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(' . $idsfi . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');
+                if (cSecurity::isInteger($idsfi)) {
+                    $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(' . cSecurity::toInteger($idsfi) . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');
+                } else {
+                    $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(&quot;' . cSecurity::toString($filename) . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');
+                }
             } else {
                 $tpl->set('d', 'DELETE', '');
             }
