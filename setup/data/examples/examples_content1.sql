@@ -30,7 +30,7 @@ INSERT INTO `!PREFIX!_content` VALUES(47, 31, 1, 1, '<p>Content</p>', '', 'sysad
 INSERT INTO `!PREFIX!_content` VALUES(48, 32, 1, 1, '<p>Teaser</p>', '', 'sysadmin', '2012-11-11 05:16:57', '2013-02-11 17:12:32');
 INSERT INTO `!PREFIX!_content` VALUES(49, 33, 1, 1, '<p>Geschlossener Bereich</p>', '', 'sysadmin', '2012-11-11 05:17:15', '2012-11-11 05:17:15');
 INSERT INTO `!PREFIX!_content` VALUES(33, 13, 19, 1, '<?xml version="1.0" encoding="utf-8"?>\n<date><timestamp>1358852220</timestamp><format>{"dateFormat":"","timeFormat":""}</format></date>\n', '', 'sysadmin', '2012-11-11 04:18:19', '2013-01-22 11:29:42');
-INSERT INTO `!PREFIX!_content` VALUES(34, 12, 3, 1, 'xml/rss.xml', '', 'sysadmin', '2012-11-11 04:20:44', '2012-11-11 04:26:18');
+INSERT INTO `!PREFIX!_content` VALUES(34, 12, 3, 1, '', '', 'sysadmin', '2012-11-11 04:20:44', '2012-11-11 04:26:18');
 INSERT INTO `!PREFIX!_content` VALUES(35, 12, 3, 2, 'https://www.facebook.com/cms.contenido', '', 'sysadmin', '2012-11-11 04:26:33', '2012-11-11 04:26:33');
 INSERT INTO `!PREFIX!_content` VALUES(36, 12, 3, 5, '', '', 'sysadmin', '2012-11-11 04:26:44', '2013-02-21 16:40:04');
 INSERT INTO `!PREFIX!_content` VALUES(37, 12, 3, 4, 'http://twitter.com/CONTENIDO', '', 'sysadmin', '2012-11-11 04:26:54', '2012-11-11 04:26:54');
@@ -234,7 +234,7 @@ INSERT INTO `!PREFIX!_content` VALUES(305, 97, 1, 1, '<p>Fehler</p>', '', 'sysad
 INSERT INTO `!PREFIX!_content` VALUES(306, 97, 1, 2, '<p>Es ist ein Fehler aufgetreten.</p>', '', 'sysadmin', '2012-11-11 03:54:52', '2012-11-11 03:54:52');
 INSERT INTO `!PREFIX!_content` VALUES(307, 97, 2, 1, '<p>Diese Seite wurde leider nicht gefunden oder ist ung&uuml;ltig.</p>', '', 'sysadmin', '2012-11-11 03:55:05', '2012-11-11 03:55:05');
 INSERT INTO `!PREFIX!_content` VALUES(308, 98, 2, 1, '<p><strong>1998-{year} four for business AG</strong></p>\r\n<p>Alle Rechte vorbehalten. Wer Chili con carne nachmacht oder f&auml;lscht oder nachgemachte oder gef&auml;lschte in Umlauf setzt und zum Verzehr bringt, wird mit Zwiebelsuppe nicht unter zwei Portionen bestraft.</p>', '', 'sysadmin', '2012-11-11 05:00:49', '2013-02-21 16:42:03');
-INSERT INTO `!PREFIX!_content` VALUES(309, 98, 3, 1, 'xml/rss.xml', '', 'sysadmin', '2012-11-11 04:20:44', '2012-11-11 04:26:18');
+INSERT INTO `!PREFIX!_content` VALUES(309, 98, 3, 1, '', '', 'sysadmin', '2012-11-11 04:20:44', '2012-11-11 04:26:18');
 INSERT INTO `!PREFIX!_content` VALUES(310, 98, 3, 2, 'https://www.facebook.com/cms.contenido', '', 'sysadmin', '2012-11-11 04:26:33', '2012-11-11 04:26:33');
 INSERT INTO `!PREFIX!_content` VALUES(311, 98, 3, 5, '', '', 'sysadmin', '2012-11-11 04:26:44', '2013-02-21 16:37:58');
 INSERT INTO `!PREFIX!_content` VALUES(312, 98, 3, 4, 'http://twitter.com/CONTENIDO', '', 'sysadmin', '2012-11-11 04:26:54', '2012-11-11 04:26:54');
