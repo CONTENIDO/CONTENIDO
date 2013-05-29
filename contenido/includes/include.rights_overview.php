@@ -4,15 +4,15 @@
  * TODO error handling!!!
  * TODO export functions to new cApiUser object!
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -30,13 +30,21 @@ if (!isset($userid)) {
     return;
 }
 
-$aPerms        = array();
-$bError        = false;
+$aPerms = array();
+$bError = false;
 $sNotification = '';
 
 // delete user
 if ($action == 'user_delete') {
     $oUserColl = new cApiUserCollection();
+
+    // Prevent deletion of last system administrator
+    $oUserColl->query();
+    if ($oUserColl->count() == 1) {
+        $notification->displayNotification("error", i18n("You are the last system administrator of this installation. You can not delete yourself."));
+        return;
+    }
+
     $oUserColl->delete($userid);
 
     $oGroupMemberColl = new cApiGroupMemberCollection();
@@ -93,7 +101,8 @@ if ($action == 'user_edit') {
             $bError = true;
         }
     } else if (strlen($password) === 0 && strlen($passwordagain) === 0) {
-        // it is okay if the password has not been changed - then the old password is kept.
+        // it is okay if the password has not been changed - then the old
+        // password is kept.
         $bPassOk = true;
     }
 
@@ -116,8 +125,7 @@ if (is_string($del_userprop_type) && is_string($del_userprop_name)) {
 }
 
 // edit user property
-if (is_string($userprop_type) && is_string($userprop_name) && is_string($userprop_value)
-    && !empty($userprop_type) && !empty($userprop_name)) {
+if (is_string($userprop_type) && is_string($userprop_name) && is_string($userprop_value) && !empty($userprop_type) && !empty($userprop_name)) {
     $oUser->setUserProperty($userprop_type, $userprop_name, $userprop_value);
 }
 
@@ -125,10 +133,9 @@ if (count($aPerms) == 0 || $action == '' || !isset($action)) {
     $aPerms = explode(',', $oUser->getField('perms'));
 }
 
-
 $tpl->reset();
-$tpl->set('s','SID', $sess->id);
-$tpl->set('s','NOTIFICATION', $sNotification);
+$tpl->set('s', 'SID', $sess->id);
+$tpl->set('s', 'NOTIFICATION', $sNotification);
 
 $tpl->set("s", "AREA", $area);
 $tpl->set("s", "FRAME", $frame);
@@ -143,7 +150,7 @@ $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'ROW_ID', "username");
 $tpl->set('d', 'CATNAME', i18n("Username"));
-$tpl->set('d', 'CATFIELD', $oUser->getField('username').'<img align="top" src="images/spacer.gif" height="20">');
+$tpl->set('d', 'CATFIELD', $oUser->getField('username') . '<img align="top" src="images/spacer.gif" height="20">');
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "name");
@@ -152,7 +159,8 @@ $oTxtName = new cHTMLTextbox("realname", $oUser->getField('realname'), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtName->render());
 $tpl->next();
 
-// @since 2006-07-04 Display password fields only if not authenticated via LDAP/AD
+// @since 2006-07-04 Display password fields only if not authenticated via
+// LDAP/AD
 if ($msysadmin || $oUser->getField('password') != 'active_directory_auth') {
     $tpl->set('d', 'ROW_ID', "password");
     $tpl->set('d', 'CATNAME', i18n("New password"));
@@ -187,28 +195,27 @@ $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "zip_code");
 $tpl->set('d', 'CATNAME', i18n("ZIP code"));
-$oTxtZip= new cHTMLTextbox('address_zip', $oUser->getField('address_zip'), 10, 10);
+$oTxtZip = new cHTMLTextbox('address_zip', $oUser->getField('address_zip'), 10, 10);
 $tpl->set('d', 'CATFIELD', $oTxtZip->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "city");
 $tpl->set('d', 'CATNAME', i18n("City"));
-$oTxtCity= new cHTMLTextbox('address_city', $oUser->getField('address_city'), 40, 255);
+$oTxtCity = new cHTMLTextbox('address_city', $oUser->getField('address_city'), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtCity->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "country");
 $tpl->set('d', 'CATNAME', i18n("Country"));
-$oTxtLand= new cHTMLTextbox('address_country', $oUser->getField('address_country'), 40, 255);
+$oTxtLand = new cHTMLTextbox('address_country', $oUser->getField('address_country'), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtLand->render());
 $tpl->next();
 
-$tpl->set('s', 'PATH_TO_CALENDER_PIC',   cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
-
+$tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
 if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-    $langscripts=  '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-'.$lang_short.'.js"></script>
-    <script type="text/javascript" src="scripts/jquery/plugins/datepicker-'.$lang_short.'.js"></script>';
+    $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
+    <script type="text/javascript" src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js"></script>';
     $tpl->set('s', 'CAL_LANG', $langscripts);
 } else {
     $tpl->set('s', 'CAL_LANG', '');
@@ -231,9 +238,9 @@ $oClientsCollection = new cApiClientCollection();
 $aClients = $oClientsCollection->getAvailableClients();
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if (in_array("admin[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
-        $oCheckbox = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
-        $oCheckbox->setLabelText($item['name']." (".$idclient.")");
+    if (in_array("admin[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)) {
+        $oCheckbox = new cHTMLCheckbox("madmin[" . $idclient . "]", $idclient, "madmin[" . $idclient . "]" . $idclient, in_array("admin[" . $idclient . "]", $aPerms));
+        $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
@@ -248,9 +255,9 @@ if ($sClientCheckboxes !== '') {
 // clients perms
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
-    if ((in_array("client[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[".$idclient."]", $aAuthPerms)) && !in_array("admin[".$idclient."]", $aPerms)) {
-        $oCheckbox = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
-        $oCheckbox->setLabelText($item['name']." (". $idclient . ")");
+    if ((in_array("client[" . $idclient . "]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[" . $idclient . "]", $aAuthPerms)) && !in_array("admin[" . $idclient . "]", $aPerms)) {
+        $oCheckbox = new cHTMLCheckbox("mclient[" . $idclient . "]", $idclient, "mclient[" . $idclient . "]" . $idclient, in_array("client[" . $idclient . "]", $aPerms));
+        $oCheckbox->setLabelText($item['name'] . " (" . $idclient . ")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
@@ -266,9 +273,9 @@ if ($sClientCheckboxes !== '') {
 $aClientsLanguages = getAllClientsAndLanguages();
 $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
-    if (($perm->have_perm_client("lang[".$item['idlang']."]") || $perm->have_perm_client("admin[".$item['idclient']."]")) && !in_array("admin[".$item['idclient']."]", $aPerms)) {
-        $oCheckbox = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
-        $oCheckbox->setLabelText($item['langname']." (". $item['clientname'] .")");
+    if (($perm->have_perm_client("lang[" . $item['idlang'] . "]") || $perm->have_perm_client("admin[" . $item['idclient'] . "]")) && !in_array("admin[" . $item['idclient'] . "]", $aPerms)) {
+        $oCheckbox = new cHTMLCheckbox("mlang[" . $item['idlang'] . "]", $item['idlang'], "mlang[" . $item['idlang'] . "]" . $item['idlang'], in_array("lang[" . $item['idlang'] . "]", $aPerms));
+        $oCheckbox->setLabelText($item['langname'] . " (" . $item['clientname'] . ")");
         $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
@@ -280,10 +287,9 @@ if ($sClientCheckboxes != '') {
     $tpl->next();
 }
 
-
 // user properties
 $aProperties = $oUser->getUserProperties(false);
-$sPropRows   = '';
+$sPropRows = '';
 foreach ($aProperties as $entry) {
     // ommit system props
     if ('system' === $entry['type']) {
@@ -304,10 +310,10 @@ foreach ($aProperties as $entry) {
 $table = '
     <table class="generic" width="100%" cellspacing="0" cellpadding="2">
     <tr>
-        <th>'.i18n("Area/Type").'</th>
-        <th>'.i18n("Property").'</th>
-        <th>'.i18n("Value").'</th>
-        <th>'.i18n("Delete").'</th>
+        <th>' . i18n("Area/Type") . '</th>
+        <th>' . i18n("Property") . '</th>
+        <th>' . i18n("Value") . '</th>
+        <th>' . i18n("Delete") . '</th>
     </tr>
     ' . $sPropRows . '
     <tr>
@@ -334,8 +340,7 @@ $tpl->next();
 $sCurrentValueFrom = str_replace('00:00:00', '', $oUser->getField('valid_from'));
 $sCurrentValueFrom = trim(str_replace('0000-00-00', '', $sCurrentValueFrom));
 
-$sInputValidFrom = '<input type="text" id="valid_from" name="valid_from" value="'.$sCurrentValueFrom.'">';
-
+$sInputValidFrom = '<input type="text" id="valid_from" name="valid_from" value="' . $sCurrentValueFrom . '">';
 
 $tpl->set('d', 'ROW_ID', "tr_valid_from");
 $tpl->set('d', 'CATNAME', i18n("Valid from"));
@@ -345,8 +350,7 @@ $tpl->next();
 $sCurrentValueTo = str_replace('00:00:00', '', $oUser->getField('valid_to'));
 $sCurrentValueTo = trim(str_replace('0000-00-00', '', $sCurrentValueTo));
 
-$sInputValidTo  = '<input type="text" id="valid_to" name="valid_to" value="'.$sCurrentValueTo.'">';
-
+$sInputValidTo = '<input type="text" id="valid_to" name="valid_to" value="' . $sCurrentValueTo . '">';
 
 $tpl->set('d', 'ROW_ID', "tr_valid_to");
 $tpl->set('d', 'CATNAME', i18n("Valid to"));
@@ -374,7 +378,7 @@ if (($sCurrentValueFrom > $sCurrentDate) || ($sCurrentValueTo < $sCurrentDate)) 
 
 $tpl->set('d', 'ROW_ID', "active");
 $tpl->set('d', 'CATNAME', '&nbsp;');
-$tpl->set('d', 'CATFIELD', '<span style="color:'.$sAccountColor.';">'.$sAccountState.'</span>');
+$tpl->set('d', 'CATFIELD', '<span style="color:' . $sAccountColor . ';">' . $sAccountState . '</span>');
 $tpl->next();
 
 // Show backend user's group memberships
