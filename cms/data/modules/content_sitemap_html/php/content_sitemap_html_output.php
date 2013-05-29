@@ -62,7 +62,7 @@ if (false === is_numeric($content) || false === is_numeric($level)) {
     $tpl->assign('tree', $tree);
 }
 
-$tpl->display('content_sitemap_html/template/get.tpl');
+$tpl->display('get.tpl');
 
 /**
  * Adds articles to categories in given array $tree as returned by

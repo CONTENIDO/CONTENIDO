@@ -52,7 +52,7 @@ $tpl->assign('rss_logo', $rssLogo);
 $tpl->assign('rss_logo_display', $rssLogoDisplay);
 $tpl->assign('rss_description', $rssDescription);
 $tpl->assign('rss_configuration', $rssConfiguration);
-$tpl->display('content_rss_creator/template/rss_edit.tpl');
+$tpl->display('rss_edit.tpl');
 
 echo "CMS_TEASER[5]";
 
