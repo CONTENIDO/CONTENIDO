@@ -16,7 +16,7 @@
 $url = getEffectiveSetting('stats', 'piwik_url', '');
 $site = getEffectiveSetting('stats', 'piwik_site', '');
 
-if (0 < strlen(trim($url)) && 0 < strlen(trim($site)) && cRegistry::isTrackingAllowed()) {
+if (0 < strlen(trim($url)) && 0 < strlen(trim($site)) && cRegistry::isTrackingAllowed() && !cRegistry::isBackendEditMode()) {
     $tpl = cSmartyFrontend::getInstance();
     $tpl->assign('url', $url);
     $tpl->assign('site', $site);

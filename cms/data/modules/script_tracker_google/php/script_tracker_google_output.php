@@ -15,7 +15,7 @@
 
 $account = getEffectiveSetting('stats', 'ga_account', '');
 
-if (0 < strlen(trim($account)) && cRegistry::isTrackingAllowed()) {
+if (0 < strlen(trim($account)) && cRegistry::isTrackingAllowed() && !cRegistry::isBackendEditMode()) {
     $tpl = cSmartyFrontend::getInstance();
     $tpl->assign('account', $account);
     $tpl->display('get.tpl');
