@@ -713,7 +713,7 @@ class cUpdateNotifier {
             return false;
         } else {
             // get file
-            if (!fputs($oSocket, "GET http://".$this->sVendorHost."/" . $sUrl . " HTTP/1.0\r\n\r\n")) {
+            if (!fputs($oSocket, "GET /" . $sUrl . " HTTP/1.0\r\nHost: " . $this->sVendorHost . "\r\n\r\n")) {
                 return false;
             }
 			
