@@ -255,6 +255,7 @@ class cUpdateNotifier {
      * @param string $sConVersion
      */
     public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
+		
         $this->oProperties = new cApiPropertyCollection();
         $this->oSession = $oSession;
         $this->aCfg = $aCfg;
@@ -704,6 +705,7 @@ class cUpdateNotifier {
         }
 
         $oSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout);
+		
         if (!is_resource($oSocket)) {
             $sErrorMessage = i18n('Unable to check for new updates!') . " " . i18n('Connection to contenido.org failed!');
             $this->sErrorOutput = $this->renderOutput($sErrorMessage);
@@ -711,10 +713,10 @@ class cUpdateNotifier {
             return false;
         } else {
             // get file
-            if (!fputs($oSocket, "GET /" . $sUrl . " HTTP/1.0\r\n\r\n")) {
+            if (!fputs($oSocket, "GET http://".$this->sVendorHost."/" . $sUrl . " HTTP/1.0\r\n\r\n")) {
                 return false;
             }
-
+			
             $sVendorFile = '';
 
             while (!feof($oSocket)) {
@@ -723,6 +725,7 @@ class cUpdateNotifier {
 
             $sSeparator = strpos($sVendorFile, "\r\n\r\n");
             $sVendorFile = substr($sVendorFile, $sSeparator + 4);
+			
             fclose($oSocket);
         }
 
