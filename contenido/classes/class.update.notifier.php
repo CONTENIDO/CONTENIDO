@@ -525,7 +525,7 @@ class Contenido_UpdateNotifier
         } else {
             // get update file
             $sXMLUpdate = '';
-            fputs($hSocket, "GET /".$this->sVendorHostPath.$this->sVendorXMLFile." HTTP/1.0\r\n\r\n");
+            fputs($hSocket, "GET /".$this->sVendorHostPath.$this->sVendorXMLFile." HTTP/1.0\r\nHost: " . $this->sVendorHost . "\r\n\r\n");
             while(!feof($hSocket)) {
                 $sXMLUpdate .= fgets($hSocket, 128);
             }
@@ -537,7 +537,7 @@ class Contenido_UpdateNotifier
             $sDeRSSContent = '';
             $hSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout);
             if (is_resource($hSocket)) {
-                fputs($hSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssDeFile." HTTP/1.0\r\n\r\n");
+                fputs($hSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssDeFile." HTTP/1.0\r\nHost: " . $this->sVendorHost . "\r\n\r\n");
                 while(!feof($hSocket)) {
                     $sDeRSSContent .= fgets($hSocket, 128);
                 }
@@ -550,7 +550,7 @@ class Contenido_UpdateNotifier
             $sEnRSSContent = '';
             $hSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout);
             if (is_resource($hSocket)) {
-                fputs($hSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssEnFile." HTTP/1.0\r\n\r\n");
+                fputs($hSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssEnFile." HTTP/1.0\r\nHost: " . $this->sVendorHost . "\r\n\r\n");
                 while(!feof($hSocket)) {
                     $sEnRSSContent .= fgets($hSocket, 128);
                 }
