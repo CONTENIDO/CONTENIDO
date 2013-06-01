@@ -906,6 +906,36 @@ class ModRewrite extends ModRewriteBase {
     }
 
     /**
+     * Returns list of all empty category aliases
+     *
+     * @param bool $bOnlyNumber
+     * @return array|int
+     */
+    public static function getEmptyCategoriesAliases($bOnlyNumber = true) {
+        global $cfg;
+
+        $db = new DB_Contenido();
+        $return = ($bOnlyNumber) ? 0 : array();
+
+        // get all empty categories
+        $sql = "SELECT name, idcat, idlang FROM " . $cfg['tab']['cat_lang'];
+        $sql .= " WHERE urlname IS NULL OR urlname = '' OR urlpath IS NULL OR urlpath = ''";
+
+        $db->query($sql);
+
+        if ($bOnlyNumber) {
+            $return = (int) $db->num_rows();
+        } else {
+            while ($db->next_record()) {
+                $return[] = array($db->f('name'), $db->f('idcat'), $db->f('idlang'));
+            }
+        }
+ 
+        unset($db);
+        return $return;
+    }
+
+    /**
      * Method to reset all aliases in articles.
      *
      * Clears all urlname entries in art_lang table, and sets the value for all
@@ -940,6 +970,35 @@ class ModRewrite extends ModRewriteBase {
         }
 
         unset($db);
+    }
+
+    /**
+     * Returns list of all empty article aliases
+     *
+     * @param bool $bOnlyNumber
+     * @return array|int
+     */
+    public static function getEmptyArticlesAliases($bOnlyNumber = true) {
+        global $cfg;
+
+        $db = new DB_Contenido();
+        $return = ($bOnlyNumber) ? 0 : array();
+
+        // get all empty articles
+        $sql  = "SELECT title, idart, idlang FROM " . $cfg['tab']['art_lang'];
+        $sql .= " WHERE urlname IS NULL OR urlname = ''";
+
+        $db->query($sql);
+        if ($bOnlyNumber) {
+            $return = (int) $db->num_rows();
+        } else {
+            while ($db->next_record()) {
+                $return[] = array($db->f('title'), $db->f('idart'), $db->f('idlang'));
+            }
+        }
+
+        unset($db);
+        return $return;
     }
 
     /**

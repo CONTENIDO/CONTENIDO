@@ -21,7 +21,6 @@
 ./includes/include.mod_rewrite_contentexpert.php
 ./includes/include.mod_rewrite_contenttest.php
 ./includes/include.mod_rewrite_content_top.php
-./install.php
 ./templates/content.html
 ./templates/contentexpert.html
 ./templates/contenttest.html

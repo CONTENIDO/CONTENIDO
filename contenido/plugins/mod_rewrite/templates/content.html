@@ -58,13 +58,16 @@
     <th colspan="2" class="text_medium col-I" style="border-top:1px;">{LNG_PLUGIN_SETTINGS}</th>
 </tr>
 
-<!-- htaccess info -->
-<tr style="{HTACCESS_INFO_CSS}" class="marked">
-    <td colspan="2" class="text_medium col-I">
-            <br>
-            <strong>{LNG_NOTE}</strong><br>
+<!-- htaccess info / empty aliases -->
+<tr style="{HEADER_NOTES_CSS}" class="marked">
+    <td colspan="2" class="text_medium col-I" style="padding:13px 3px;">
+        <strong>{LNG_NOTE}</strong><br>
+        <p style="{HTACCESS_INFO_CSS}">
             {LNG_MSG_NO_HTACCESS_FOUND}<br>
-            <br>
+        </p>
+        <p style="{EMPTYALIASES_INFO_CSS}">
+            {LNG_MSG_NO_EMPTYALIASES_FOUND}<br>
+        </p>
     </td>
 </tr>
 
