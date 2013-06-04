@@ -37,7 +37,7 @@ body {
     display: inline;
     float: right;
     margin-top: 35px;
-	margin-right: -5px;
+    margin-right: -5px;
 }
 
 #header #navigation_header li {
@@ -70,7 +70,7 @@ body {
     border: none;
     width: 130px;
     cursor: pointer;
-	padding-left: 2px;
+    padding-left: 2px;
 }
 
 #header #navigation_header form {
@@ -386,7 +386,7 @@ p+.button.red {
     width: 30px;
     height: 30px;
     text-indent: -9999px;
-	outline: none;
+    outline: none;
 }
 
 .slider .pagination li a:hover,

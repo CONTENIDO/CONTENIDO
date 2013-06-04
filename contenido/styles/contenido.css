@@ -2341,10 +2341,10 @@ input[type=image].vAlignMiddle {
 }
 
 #todoList {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 #cont_users select,
 #cont_users input[type="text"] {
-	width: 110px;
+    width: 110px;
 }

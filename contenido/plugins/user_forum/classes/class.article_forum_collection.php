@@ -557,11 +557,11 @@ class ArticleForumCollection extends ItemCollection {
     protected function getIdUserForumContenType() {
         $sql = "SELECT idtype from con_type WHERE type='CMS_USERFORUM';";
         $result = $this->db->query($sql);
-		if ($this->db->next_record()) {
-			return $this->db->f('idtype');
-		} else {
-			return false;
-		}
+        if ($this->db->next_record()) {
+            return $this->db->f('idtype');
+        } else {
+            return false;
+        }
     }
 
 }

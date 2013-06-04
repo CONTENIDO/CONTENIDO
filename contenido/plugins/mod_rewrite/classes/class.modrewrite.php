@@ -912,7 +912,7 @@ class ModRewrite extends ModRewriteBase {
                 $return[] = array($db->f('name'), $db->f('idcat'), $db->f('idlang'));
             }
         }
- 
+
         unset($db);
         return $return;
     }
