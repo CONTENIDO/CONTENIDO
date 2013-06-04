@@ -15,6 +15,10 @@
  */
 
 defined('CON_FRAMEWORK') or die('Illegal call');
+//call userforum administration
+if(cRegistry::isBackendEditMode()){
+    echo "CMS_USERFORUM[2]";
+}
 
 /**
  *
