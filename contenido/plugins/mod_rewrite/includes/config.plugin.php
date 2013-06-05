@@ -163,4 +163,11 @@ if (isset($contenido) && isset($area) && $area == 'mod_rewrite_test') {
     ModRewrite::setEnabled(true);
 }
 
+//activate the plugin in the meta section to display the correct link
+if (isset($contenido) && isset($area) && $area == 'con_meta' && ModRewrite::isEnabled()) {
+    $cfg['url_builder']['name'] = 'MR';
+    $cfg['config'] = array();
+    cUriBuilderConfig::setConfig($cfg['url_builder']);
+}
+
 unset($clientId);
