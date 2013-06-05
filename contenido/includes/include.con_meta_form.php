@@ -250,6 +250,17 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
 
         if(in_array($value["metatype"], $managedTypes)) {
             if($value["metatype"] == "robots") {
+                if(conGetMetaValue($tmp_idartlang, $key) == "") {
+                    conSetMetaValue($tmp_idartlang, $key, "index, follow");
+                    $i = 0;
+                    foreach($metaPreview as $metaRow) {
+                        if($metaRow["name"] == "robots") {
+                            $metaPreview[$i]["content"] = "index, follow";
+                            break;
+                        }
+                        $i++;
+                    }
+                }
                 $robot_array = explode(", ", conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)));
                 foreach($robot_array as $instruction) {
                     $tpl->set("s", strtoupper($instruction), "checked");
