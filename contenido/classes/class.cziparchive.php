@@ -1,5 +1,6 @@
 <?php
-echo '<pre>';
+
+
  defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
  class cZipArchive {
@@ -50,7 +51,9 @@ echo '<pre>';
 
                  //remove '/' for validation -> directory names
                  $tmpFile = str_replace('/', '', $file);
+
                  //extract only file with valid filename
+                 // fix osx fix : files and directories starting with '_' and containing files with prefix '._'
                  if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_') ) {
                      $zip->extractTo($extractPath, $file);
                  }
@@ -74,7 +77,6 @@ echo '<pre>';
          if (file_exists($extractPath) and is_dir($extractPath)) {
              $ar = cZipArchive::readExistingFiles($extractPath);
          }
-         // :: OVERRIDE
 
          $zip = new ZipArchive;
          $state = $zip->open($file);
@@ -87,7 +89,12 @@ echo '<pre>';
                  for ($i = 0; $i < $zip->numFiles; $i++) {
 
                      $file = $zip->getNameIndex($i);
+
+                     //remove '/' for validation -> directory names
                      $tmpFile = str_replace('/', '', $file);
+
+                     //extract only file with valid filename
+                     // fix osx fix : files and directories starting with '_' and containing files with prefix '._'
                      if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_') ){
 
                          if (!array_search($file, $ar)) {
@@ -106,9 +113,12 @@ echo '<pre>';
                  for ($i = 0; $i < $zip->numFiles; $i++) {
 
                      $file = $zip->getNameIndex($i);
+
                      //remove '/' for validation -> directory names
                      $tmpFile = str_replace('/', '', $file);
 
+                     //extract only file with valid filename
+                     // fix osx fix : files and directories starting with '_' and containing files with prefix '._'
                      if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_') ) {
                          $zip->extractTo($extractPath, $file);
                      }
