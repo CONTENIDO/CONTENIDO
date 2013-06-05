@@ -1,5 +1,5 @@
 <?php
-
+echo '<pre>';
  defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
  class cZipArchive {
@@ -37,27 +37,27 @@
 
              // validate user input
              $extractPath .= uplCreateFriendlyName($extractPathUserInput);
-             $extractPath = str_replace('.', '', $extractPath);
          }
 
          $zip = new ZipArchive;
          $state = $zip->open($file);
 
-         if ($state === TRUE) {
+         if ($state == TRUE) {
 
              for ($i = 0; $i < $zip->numFiles; $i++) {
 
                  $file = $zip->getNameIndex($i);
+
                  //remove '/' for validation -> directory names
                  $tmpFile = str_replace('/', '', $file);
-
                  //extract only file with valid filename
-                 if (cFileHandler::validateFilename($tmpFile, FALSE)) {
+                 if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_') ) {
                      $zip->extractTo($extractPath, $file);
-                   }
-                }
+                 }
 
-             $zip->close();
+             }
+
+            $zip->close();
          } else {
              echo('can not open zip file!');
          }
@@ -65,62 +65,72 @@
 
      public static function extract($file, $extractPath, $extractPathUserInput = NULL) {
 
-
          if (isset($extractPathUserInput)) {
 
              // validate user input
              $extractPath .= uplCreateFriendlyName($extractPathUserInput);
-             $extractPath = str_replace('.', '', $extractPath);
          }
 
          if (file_exists($extractPath) and is_dir($extractPath)) {
              $ar = cZipArchive::readExistingFiles($extractPath);
-
          }
          // :: OVERRIDE
+
          $zip = new ZipArchive;
          $state = $zip->open($file);
 
          //Does the directory already exists ?
          if (cZipArchive::isExtracted($extractPath)) {
 
-             if ($state === TRUE) {
+             if ($state == TRUE) {
 
                  for ($i = 0; $i < $zip->numFiles; $i++) {
 
                      $file = $zip->getNameIndex($i);
-                      $tmpFile = str_replace('/', '', $file);
-
-                     if (cFileHandler::validateFilename($tmpFile, FALSE)) {
+                     $tmpFile = str_replace('/', '', $file);
+                     if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_') ){
 
                          if (!array_search($file, $ar)) {
                              $zip->extractTo($extractPath, $file);
+                         }
                      }
-                }
                  }
 
-                 $zip->close();
-                 }else {
+                     $zip->close();
+             } else {
                  echo('can not open zip file!');
              }
          } else {
-             if ($state === TRUE) {
+             if ($state == TRUE) {
 
                  for ($i = 0; $i < $zip->numFiles; $i++) {
 
                      $file = $zip->getNameIndex($i);
-                    //remove '/' for validation -> directory names
+                     //remove '/' for validation -> directory names
                      $tmpFile = str_replace('/', '', $file);
 
-                   if (cFileHandler::validateFilename($tmpFile, FALSE)) {
+                     if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_') ) {
                          $zip->extractTo($extractPath, $file);
-                    }
-                }
-                 $zip->close();
+                     }
+                 }
+                    $zip->close();
              } else {
                  echo('can not open zip file!');
              }
          }
+     }
+
+
+     public static function createZip($zipFilePath,$dirPath, array $filePathes) {
+
+         $zip = new ZipArchive();
+         if ($zip->open($dirPath.$zipFilePath,ZipArchive::CREATE) == TRUE) {
+            foreach ($filePathes as $key => $file) {
+                 $zip->addFile($dirPath.$file, $file);
+            }
+            $zip->close();
+        }
+
      }
 
  }
