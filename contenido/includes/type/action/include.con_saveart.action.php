@@ -38,7 +38,7 @@ if (isset($title)) {
         $idart = conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable);
         $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
 
-        if (!isset($idartlang)) {
+        if (!isset($idartlang) || $idartlang == 0) {
             $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart = $idart AND idlang = $lang";
             $db->query($sql);
             $db->nextRecord();
@@ -79,6 +79,14 @@ if (isset($title)) {
                 $db->nextRecord();
 
                 conSetCodeFlag($db->f("idcatart"));
+            }
+        }
+
+		$availableTags = conGetAvailableMetaTagTypes();
+        foreach ($availableTags as $key => $value) {
+            if($value["metatype"] == "robots") {
+                conSetMetaValue($idartlang, $key, "index, follow");
+                break;
             }
         }
     } else {
