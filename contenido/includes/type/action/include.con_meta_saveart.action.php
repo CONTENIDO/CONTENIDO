@@ -32,22 +32,23 @@ $artLang->set("changefreq", $_POST["sitemap_change_freq"]);
 $artLang->store();
 
 $robots = "";
-if(in_array("noindex", $_POST["robots"])) {
+$robotArray = ($_POST["robots"] == null) ? array() : $_POST["robots"];
+if(in_array("noindex", $robotArray)) {
     $robots .= "noindex, ";
 } else {
     $robots .= "index, ";
 }
-if(in_array("nosnippet", $_POST["robots"])) {
+if(in_array("nosnippet", $robotArray)) {
 	$robots .= "nosnippet, ";
 }
-if(in_array("noimageindex", $_POST["robots"])) {
+if(in_array("noimageindex", $robotArray)) {
     $robots .= "noimageindex, ";
 }
-if(in_array("noarchive", $_POST["robots"])) {
+if(in_array("noarchive", $robotArray)) {
     $robots .= "noarchive, ";
 }
 
-if(in_array("nofollow", $_POST["robots"])) {
+if(in_array("nofollow", $robotArray)) {
     $robots .= "nofollow";
 } else {
     $robots .= "follow";
