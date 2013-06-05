@@ -1,148 +1,141 @@
 <?php
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+class cZipArchive {
 
+    public static function readExistingFiles($dirPath) {
+        $ar = array();
+        if ($handle = opendir($dirPath)) {
 
- defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+            while (false !== ($file = readdir($handle))) {
 
- class cZipArchive {
+                // hotfix : fileHandler returns filename '.' als valid filename
+                if (cFileHandler::validateFilename($file, FALSE) && $file[0] != '.') {
 
-     public static function readExistingFiles($dirPath) {
-         $ar = array();
-         if ($handle = opendir($dirPath)) {
+                    $ar[] = $file;
+                }
+            }
 
-             while (false !== ($file = readdir($handle))) {
+            closedir($handle);
+        }
+        return $ar;
+    }
 
-                 //  hotfix : fileHandler returns filename '.' als valid filename
-                 if (cFileHandler::validateFilename($file, FALSE) && $file[0] != '.') {
+    public static function isExtracted($pathDir) {
+        if (file_exists($pathDir) and is_dir($pathDir)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-                     $ar[] = $file;
-                 }
-             }
+    public static function extractOverRide($file, $extractPath, $extractPathUserInput = NULL) {
+        if (isset($extractPathUserInput)) {
 
-             closedir($handle);
-         }
-         return $ar;
-     }
+            // validate user input
+            $extractPath .= uplCreateFriendlyName($extractPathUserInput);
+        }
 
-     public static function isExtracted($pathDir) {
+        $zip = new ZipArchive();
+        $state = $zip->open($file);
 
-         if (file_exists($pathDir) and is_dir($pathDir)) {
-             return true;
-         } else {
-             return false;
-         }
-     }
+        if ($state == TRUE) {
 
-     public static function extractOverRide($file, $extractPath, $extractPathUserInput = NULL) {
+            for ($i = 0; $i < $zip->numFiles; $i++) {
 
-         if (isset($extractPathUserInput)) {
+                $file = $zip->getNameIndex($i);
 
-             // validate user input
-             $extractPath .= uplCreateFriendlyName($extractPathUserInput);
-         }
+                // remove '/' for validation -> directory names
+                $tmpFile = str_replace('/', '', $file);
 
-         $zip = new ZipArchive;
-         $state = $zip->open($file);
-
-         if ($state == TRUE) {
-
-             for ($i = 0; $i < $zip->numFiles; $i++) {
-
-                 $file = $zip->getNameIndex($i);
-
-                 //remove '/' for validation -> directory names
-                 $tmpFile = str_replace('/', '', $file);
-
-                 //extract only file with valid filename
-                 // fix osx fix : files and directories starting with '_' and containing files with prefix '._'
-                 if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_') ) {
-                     $zip->extractTo($extractPath, $file);
-                 }
-
-             }
+                // extract only file with valid filename
+                // fix osx fix : files and directories starting with '_' and
+                // containing files with prefix '._'
+                if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_')) {
+                    $zip->extractTo($extractPath, $file);
+                }
+            }
 
             $zip->close();
-         } else {
-             echo('can not open zip file!');
-         }
-     }
+        } else {
+            echo ('can not open zip file!');
+        }
+    }
 
-     public static function extract($file, $extractPath, $extractPathUserInput = NULL) {
+    public static function extract($file, $extractPath, $extractPathUserInput = NULL) {
+        if (isset($extractPathUserInput)) {
 
-         if (isset($extractPathUserInput)) {
+            // validate user input
+            $extractPath .= uplCreateFriendlyName($extractPathUserInput);
+        }
 
-             // validate user input
-             $extractPath .= uplCreateFriendlyName($extractPathUserInput);
-         }
+        if (file_exists($extractPath) and is_dir($extractPath)) {
+            $ar = cZipArchive::readExistingFiles($extractPath);
+        }
 
-         if (file_exists($extractPath) and is_dir($extractPath)) {
-             $ar = cZipArchive::readExistingFiles($extractPath);
-         }
+        $zip = new ZipArchive();
+        $state = $zip->open($file);
 
-         $zip = new ZipArchive;
-         $state = $zip->open($file);
+        // Does the directory already exists ?
+        if (cZipArchive::isExtracted($extractPath)) {
 
-         //Does the directory already exists ?
-         if (cZipArchive::isExtracted($extractPath)) {
+            if ($state == TRUE) {
 
-             if ($state == TRUE) {
+                for ($i = 0; $i < $zip->numFiles; $i++) {
 
-                 for ($i = 0; $i < $zip->numFiles; $i++) {
+                    $file = $zip->getNameIndex($i);
 
-                     $file = $zip->getNameIndex($i);
+                    // remove '/' for validation -> directory names
+                    $tmpFile = str_replace('/', '', $file);
 
-                     //remove '/' for validation -> directory names
-                     $tmpFile = str_replace('/', '', $file);
+                    // extract only file with valid filename
+                    // fix osx fix : files and directories starting with '_' and
+                    // containing files with prefix '._'
+                    if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_')) {
 
-                     //extract only file with valid filename
-                     // fix osx fix : files and directories starting with '_' and containing files with prefix '._'
-                     if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_') ){
+                        if (!array_search($file, $ar)) {
+                            $zip->extractTo($extractPath, $file);
+                        }
+                    }
+                }
 
-                         if (!array_search($file, $ar)) {
-                             $zip->extractTo($extractPath, $file);
-                         }
-                     }
-                 }
+                $zip->close();
+            } else {
+                echo ('can not open zip file!');
+            }
+        } else {
+            if ($state == TRUE) {
 
-                     $zip->close();
-             } else {
-                 echo('can not open zip file!');
-             }
-         } else {
-             if ($state == TRUE) {
+                for ($i = 0; $i < $zip->numFiles; $i++) {
 
-                 for ($i = 0; $i < $zip->numFiles; $i++) {
+                    $file = $zip->getNameIndex($i);
 
-                     $file = $zip->getNameIndex($i);
+                    // remove '/' for validation -> directory names
+                    $tmpFile = str_replace('/', '', $file);
 
-                     //remove '/' for validation -> directory names
-                     $tmpFile = str_replace('/', '', $file);
+                    // extract only file with valid filename
+                    // fix osx fix : files and directories starting with '_' and
+                    // containing files with prefix '._'
+                    if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_')) {
+                        $zip->extractTo($extractPath, $file);
+                    }
+                }
+                $zip->close();
+            } else {
+                echo ('can not open zip file!');
+            }
+        }
+    }
 
-                     //extract only file with valid filename
-                     // fix osx fix : files and directories starting with '_' and containing files with prefix '._'
-                     if (cFileHandler::validateFilename($tmpFile, FALSE) && (substr($tmpFile, 0, 1) != '.') && (substr($tmpFile, 0, 1) != '_') ) {
-                         $zip->extractTo($extractPath, $file);
-                     }
-                 }
-                    $zip->close();
-             } else {
-                 echo('can not open zip file!');
-             }
-         }
-     }
-
-
-     public static function createZip($zipFilePath,$dirPath, array $filePathes) {
-
-         $zip = new ZipArchive();
-         if ($zip->open($dirPath.$zipFilePath,ZipArchive::CREATE) == TRUE) {
+    public static function createZip($zipFilePath, $dirPath, array $filePathes) {
+        $zip = new ZipArchive();
+        if ($zip->open($dirPath . $zipFilePath, ZipArchive::CREATE) == TRUE) {
             foreach ($filePathes as $key => $file) {
-                 $zip->addFile($dirPath.$file, $file);
+                $zip->addFile($dirPath . $file, $file);
             }
             $zip->close();
         }
+    }
 
-     }
-
- }
+}
 
 ?>
