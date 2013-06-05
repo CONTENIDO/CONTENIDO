@@ -543,7 +543,7 @@ class ModRewriteController extends ModRewriteBase {
             }
         } elseif ($iIdCat == 0 && $iIdArt == 0 && !empty($currArtName)) {
             // no idcat and idart but article name
-            $detectedIdart = (int) ModRewrite::getArtIdByWebsafeName($currArtName);
+            $detectedIdart = (int) ModRewrite::getArtIdByWebsafeName($currArtName, $iIdCat, $lang);
         }
 
         if ($detectedIdart > 0) {

@@ -282,11 +282,14 @@ class ModRewrite extends ModRewriteBase {
      * @return  int|null  Recent article id or null
      */
     public static function getArtIdByWebsafeName($sArtName = '', $iCatId = 0, $iLangId = 0) {
-        global $cfg;
+        global $cfg, $lang;
 
         $sArtName = self::$_db->escape($sArtName);
         $iCatId = (int) $iCatId;
         $iLangId = (int) $iLangId;
+        if (0 === $iLangId && is_int($lang)) {
+            $iLangId = $lang;
+        }
 
         $sWhere = '';
         if ($iLangId !== 0) {
