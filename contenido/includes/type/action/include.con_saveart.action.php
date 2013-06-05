@@ -82,9 +82,9 @@ if (isset($title)) {
             }
         }
 
-		$availableTags = conGetAvailableMetaTagTypes();
+        $availableTags = conGetAvailableMetaTagTypes();
         foreach ($availableTags as $key => $value) {
-            if($value["metatype"] == "robots") {
+            if ($value["metatype"] == "robots") {
                 conSetMetaValue($idartlang, $key, "index, follow");
                 break;
             }

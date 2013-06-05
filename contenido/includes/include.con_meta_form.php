@@ -224,29 +224,29 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     $tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
     $art = new cApiArticleLanguage($tmp_idartlang);
-	$tpl->set("s", "LINK", $art->getLink());
+    $tpl->set("s", "LINK", $art->getLink());
 
     // Meta-Tags
     $availableTags = conGetAvailableMetaTagTypes();
 
     $managedTypes = array(
-        	"author",
-        	"date",
-        	"description",
-        	"expires",
-        	"keywords",
-        	"revisit-after",
-        	"robots",
-        	"copyright"
-        );
+        "author",
+        "date",
+        "description",
+        "expires",
+        "keywords",
+        "revisit-after",
+        "robots",
+        "copyright"
+    );
 
     $metaPreview = array();
 
     foreach ($availableTags as $key => $value) {
         $metaPreview[] = array(
-            	"name" => $value["metatype"],
-            	"content" => conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key))
-            );
+            "name" => $value["metatype"],
+            "content" => conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key))
+        );
 
         if(in_array($value["metatype"], $managedTypes)) {
             if($value["metatype"] == "robots") {
@@ -266,7 +266,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
                     $tpl->set("s", strtoupper($instruction), "checked");
                 }
             } else {
-    			$tpl->set("s", strtoupper($value["metatype"]), conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)));
+                $tpl->set("s", strtoupper($value["metatype"]), conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)));
             }
             continue;
         }
@@ -433,7 +433,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         $tpl->set('s', 'ADDMETABTN', '&nbsp;');
         $tpl->set('s', 'ADDNEWMETA', '&nbsp;');
     } else {
-        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta" />');
+        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta">');
         $tpl->set('s', 'ADDNEWMETA', $select);
     }
     // breadcrumb onclick
