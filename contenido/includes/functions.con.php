@@ -163,7 +163,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
 /**
  * Edit an existing article
  */
-function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $published, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
+function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $published, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = -1, $changefreq = 'nothing') {
     global $client, $lang, $redirect, $redirect_url, $external_redirect, $perm;
     global $urlname, $page_title;
     global $time_move_cat, $time_target_cat;
@@ -251,8 +251,12 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $oArtLang->set('redirect_url', $redirect_url);
     $oArtLang->set('artsort', $artsort);
     $oArtLang->set('searchable', $searchable);
-    $oArtLang->set('sitemapprio', $sitemapprio);
-    $oArtLang->set('changefreq', $changefreq);
+    if($sitemapprio != -1) {
+        $oArtLang->set('sitemapprio', $sitemapprio);
+    }
+    if($changefreq != "nothing") {
+        $oArtLang->set('changefreq', $changefreq);
+    }
     $oArtLang->set('published', $published);
 
     // If the user has right for makeonline, update some properties.

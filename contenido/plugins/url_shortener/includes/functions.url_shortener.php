@@ -30,7 +30,6 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient) {
     ));
 
     $tr = new cHTMLTableRow();
-    $tr->setAttribute('valign', 'top');
 
     $td = new cHTMLTableData();
     $td->setClass('text_medium');
@@ -39,9 +38,8 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient) {
 
     $td = new cHTMLTableData();
     $td->setClass('text_medium');
-    $textbox = new cHTMLTextbox('url_shortener_shorturl', $shortUrl->get('shorturl'));
+    $textbox = new cHTMLTextbox('url_shortener_shorturl', $shortUrl->get('shorturl'), 24);
     $td->setContent($textbox);
-    $td->setColspan('3');
     $tr->appendContent($td);
 
     return $tr->render();
@@ -53,13 +51,13 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient) {
  *
  * @param array $values the values which are saved
  */
-function piUsConSaveArtAfter($values) {
+function piUsConSaveArtAfter($editedIdArt, $values) {
     // if not all parameters have been given, do nothing
-    if (!isset($_POST['url_shortener_shorturl']) || $_POST['url_shortener_shorturl'] == '' || !isset($values['idart'])) {
+    if (!isset($_POST['url_shortener_shorturl']) || $_POST['url_shortener_shorturl'] == '' || !isset($editedIdArt)) {
         return;
     }
     $shorturl = $_POST['url_shortener_shorturl'];
-    $idart = $values['idart'];
+    $idart = $editedIdArt;
     $idlang = cRegistry::getLanguageId();
     $idclient = cRegistry::getClientId();
     $shortUrlItem = new cApiShortUrl();

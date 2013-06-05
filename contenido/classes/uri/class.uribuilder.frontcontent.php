@@ -35,7 +35,7 @@ class cUriBuilderFrontcontent extends cUriBuilder {
      *
      * @var string
      */
-    private $_sAmp = '&amp;';
+    private $_sAmp = '&';
 
     /**
      * Constructor

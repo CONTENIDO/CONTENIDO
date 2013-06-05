@@ -43,8 +43,8 @@ plugin_include('url_shortener', 'includes/functions.url_shortener.php');
 // add chain functions
 $cecRegistry = cApiCecRegistry::getInstance();
 // add additional rows to the article edit form
-$cecRegistry->addChainFunction('Contenido.Backend.ConEditFormAdditionalRows', 'piUsEditFormAdditionalRows');
+$cecRegistry->addChainFunction('Contenido.Backend.ConMetaEditFormAdditionalRows', 'piUsEditFormAdditionalRows');
 // extend the save action of articles, so that the short URL is also saved
-$cecRegistry->addChainFunction('Contenido.Action.con_saveart.AfterCall', 'piUsConSaveArtAfter');
+$cecRegistry->addChainFunction('Contenido.Action.con_meta_saveart.AfterCall', 'piUsConSaveArtAfter');
 // hook as soon as possible, so that short URLs can be resolved early
 $cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'piUsAfterLoadPlugins');

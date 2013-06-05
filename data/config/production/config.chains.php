@@ -858,3 +858,28 @@ $_cecRegistry->registerChain('Contenido.Content.XmlSitemapCreate', 'SimpleXMLEle
  * string     HTML code defining additional table rows
  */
 $_cecRegistry->registerChain('Contenido.Backend.ConEditFormAdditionalRows', 'int', 'int', 'int');
+
+/**
+ * Chain Contenido.Backend.ConMetaEditFormAdditionalRows'
+ * This chain is called in the include.con_meta_edit_form.php file.
+ * You can add new rows for the meta tab ("SEO") in the article area.
+ *
+ * Parameters & order:
+ * int idart the ID of the article which is edited
+ * int idlang the ID of the corresponding language
+ * int idclient the ID of the corresponding client
+ *
+ * Returns:
+ * string     HTML code defining additional table rows
+ */
+$_cecRegistry->registerChain('Contenido.Backend.ConMetaEditFormAdditionalRows', 'int', 'int', 'int');
+
+/**
+ * This chain is called after the new meta data from the SEO tab is saved.
+ *
+ * Parameters & order:
+ * int idartlang idartlang of the edited article
+ * array newData An associative array with the new meta data for the article
+ * array oldData An associative array with the old meta data for the article
+ */
+$_cecRegistry->registerChain('Contenido.Action.con_meta_saveart.AfterCall', 'int', 'array', 'array');

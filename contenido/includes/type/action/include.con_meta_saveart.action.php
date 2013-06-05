@@ -17,18 +17,57 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.con2.php');
 
-$artLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
-$artLang->set('pagetitle', $_POST["page_title"]);
-$artLang->store();
+$oldData = array();
 
 $availableTags = conGetAvailableMetaTagTypes();
-
 foreach ($availableTags as $key => $value) {
-    conSetMetaValue($idartlang, $key, $_POST["META" . $value["metatype"]]);
+    $oldData[$value["metatype"]] = conGetMetaValue($idartlang, $key);
+}
+
+$artLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
+$artLang->set('pagetitle', $_POST["page_title"]);
+$artLang->set("urlname", $_POST["alias"]);
+$artLang->set("sitemapprio", $_POST["sitemap_prio"]);
+$artLang->set("changefreq", $_POST["sitemap_change_freq"]);
+$artLang->store();
+
+$robots = "";
+if(in_array("noindex", $_POST["robots"])) {
+    $robots .= "noindex, ";
+} else {
+    $robots .= "index, ";
+}
+if(in_array("nosnippet", $_POST["robots"])) {
+	$robots .= "nosnippet, ";
+}
+if(in_array("noimageindex", $_POST["robots"])) {
+    $robots .= "noimageindex, ";
+}
+if(in_array("noarchive", $_POST["robots"])) {
+    $robots .= "noarchive, ";
+}
+
+if(in_array("nofollow", $_POST["robots"])) {
+    $robots .= "nofollow";
+} else {
+    $robots .= "follow";
+}
+
+$newData = array();
+foreach ($availableTags as $key => $value) {
+    if($value["metatype"] == "robots") {
+    	conSetMetaValue($idartlang, $key, $robots);
+    	$newData[$value["metatype"]] = $robots;
+    } else {
+    	conSetMetaValue($idartlang, $key, $_POST["META" . $value["metatype"]]);
+    	$newData[$value["metatype"]] = $_POST["META" . $value["metatype"]];
+    }
 }
 
 // meta tags have been saved, so clear the article cache
 $purge = new cSystemPurge();
 $purge->clearArticleCache($idartlang);
+
+cApiCecHook::execute("Contenido.Action.con_meta_saveart.AfterCall", $idart, $newData, $oldData);
 
 $notification->displayNotification("info", i18n("Changes saved"));

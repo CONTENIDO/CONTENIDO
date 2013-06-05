@@ -342,41 +342,12 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     // Searchable / Indexable
     $tmp_searchable_checkbox = ($tmp_searchable != 1)? '<input ' . $disabled . ' id="searchable" type="checkbox" name="searchable" value="1">' : '<input type="checkbox" ' . $disabled . ' id="searchable" name="searchable" value="1" checked="checked">';
-    $tpl->set('s', 'SEARCHABLE', i18n('Searchable/Indexable'));
+    $tpl->set('s', 'SEARCHABLE', i18n('Searchable'));
     $tpl->set('s', 'SEARCHABLE-CHECKBOX', $tmp_searchable_checkbox);
 
     // Sortierung
     $tpl->set('s', 'SORTIERUNG', i18n("Sort key"));
     $tpl->set('s', 'SORTIERUNG-FIELD', '<input type="text" ' . $disabled . ' class="text_medium" name="artsort" value="' . $tmp_sort . '">');
-
-    // sitemap priority
-    $tpl->set('s', 'SITEMAP-PRIORITY', i18n('Sitemap priority'));
-    $tpl->set('s', 'SITEMAP-PRIORITY-FIELD', '<input type="text" ' . $disabled . ' class="text_medium sitemapPriority" name="sitemapprio" value="' . $tmp_sitemapprio . '">');
-
-    // sitemap change frequency
-    $select = new cHTMLSelectElement('changefreq');
-    $changefreqs = array(
-        '',
-        'always',
-        'hourly',
-        'daily',
-        'weekly',
-        'monthly',
-        'yearly',
-        'never'
-    );
-    foreach ($changefreqs as $changefreq) {
-        $option = new cHTMLOptionElement($changefreq, $changefreq);
-        if ($changefreq == $tmp_changefreq) {
-            $option->setSelected(true);
-        }
-        $select->appendOptionElement($option);
-    }
-    if (strpos($disabled, 'disabled') !== false) {
-        $select->setDisabled('disabled');
-    }
-    $tpl->set('s', 'SITEMAP-CHANGEFREQ', i18n('Sitemap change frequency'));
-    $tpl->set('s', 'SITEMAP-CHANGEFREQ-FIELD', $select->render());
 
     // Category select
     // Fetch setting

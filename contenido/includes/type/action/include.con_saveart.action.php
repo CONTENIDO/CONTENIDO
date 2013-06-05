@@ -35,7 +35,7 @@ $oldData = array();
 
 if (isset($title)) {
     if (1 == $tmp_firstedit) {
-        $idart = conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable, $sitemapprio, $changefreq);
+        $idart = conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, 0, $searchable);
         $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
 
         if (!isset($idartlang)) {
@@ -133,7 +133,7 @@ if (isset($title)) {
             $oldData['is_start'] = $wasStart;
         }
 
-        conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $publishing_date, $artsort, 0, $searchable, $sitemapprio, $changefreq);
+        conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $publishing_date, $artsort, 0, $searchable);
 
         $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
 

@@ -37,7 +37,6 @@
 <body style="margin: 10px">
 
     <div id="categorypath" class="categorypath">{CATEGORY}</div>
-    <p style="display:block;font-weight:bold;">{TITEL}</p>
 
     <form method="post" name="art_props" action="{ACTION}">
 
@@ -48,31 +47,133 @@
         <input type="hidden" name="idcat" value="{IDCAT}">
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
 
-        <table class="conEditForm" cellspacing="0" cellpadding="2" border="0">
+        <table class="generic" cellspacing="0" cellpadding="2" border="0">
 
+			<tr>
+				<th colspan="2">{TITEL}</th>
+			</tr>
             {NOTIFICATION}
 
-            <tr valign="top">
-                <td class="text_medium" style="border: 1px; border-right:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Page title")</td>
-                <td colspan="3" class="text_medium" style="border: 1px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{TITLE-INPUT}</td>
+            <tr>
+            	<td>i18n("Link")</td>
+            	<td><input type="text" value="{LINK}" disabled size="24"></td>
             </tr>
-
-            <!-- BEGIN:BLOCK -->
-            <tr valign="top">
-                <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">{METATITLE}</td>
-                <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">{METAFIELDTYPE}</td>
+            
+            <tr>
+                <td>i18n("Page title")</td>
+                <td colspan="3" class="text_medium">{TITLE-INPUT}</td>
             </tr>
-            <!-- END:BLOCK -->
-
-            {ADDNEWMETA}
+            
+            <tr>
+                <td>i18n("Alias")</td>
+                <td colspan="3" class="text_medium"><input type="text" name="alias" value="{ALIAS}" size="24"></td>
+            </tr>
+            
+            <tr>
+            	<td>i18n("Description")</td>
+            	<td><textarea class="metaTag" name="METAdescription" id="METAdescription" rows=3>{DESCRIPTION}</textarea></td>
+            </tr>
+            
+            <tr>
+            	<td>i18n("Keywords")</td>
+            	<td><textarea class="metaTag" name="METAkeywords" id="METAkeywords" rows=3>{KEYWORDS}</textarea></td>
+            </tr>
 
             <tr>
-                <td class="text_medium">{ADDMETABTN}</td>
-                <td class="text_medium" align="right"><input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td>
+            	<td style="border-top: 1px solid #b3b3b3">i18n("Copyright")</td>
+            	<td style="border-top: 1px solid #b3b3b3"><input type="text" class="metaTag" name="METAcopyright" id="METAcopyright" value="{COPYRIGHT}" size="24"></td>
             </tr>
 
-        </table>
-
+            <tr>
+            	<td>i18n("Author")</td>
+            	<td><input class="metaTag" type="text" name="METAauthor" id="METAauthor" value="{AUTHOR}" size="24"></td>
+            </tr>
+            
+            <tr>
+            	<td>i18n("Date")</td>
+            	<td><input class="metaTag" type="text" name="METAdate" id="METAdate" value="{DATE}"></td>
+            </tr>
+            
+            <tr>
+            	<td>i18n("Expires")</td>
+            	<td><input class="metaTag" type="text" name="METAexpires" id="METAexpires" value="{EXPIRES}"></td>
+            </tr>
+            
+            <tr>
+            	<td>i18n("Revisit after")</td>
+            	<td><input class="metaTag" type="text" name="METArevisit-after" id="METArevisit-after" value="{REVISIT-AFTER}" size="24"></td>
+            </tr>
+            
+            <tr>
+            	<td valign="top" style="border-top: 1px solid #b3b3b3">i18n("Robots")</td>
+            	<td style="border-top: 1px solid #b3b3b3">
+            		<input id="metaNoIndex" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noindex" {NOINDEX}><label for="metaNoIndex">noindex</label><br>
+            		<input id="metaNoFollow" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="nofollow" {NOFOLLOW}><label for="metaNoFollow">nofollow</label><br>
+            		<input id="metaNoSnippet" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="nosnippet" {NOSNIPPET}><label for="metaNoSnippet">nosnippet</label><br>
+            		<input id="metaNoImageIndex" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noimageindex" {NOIMAGEINDEX}><label for="metaNoImageIndex">noimageindex</label><br>
+            		<input id="metaNoArchive" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noarchive" {NOARCHIVE}><label for="metaNoArchive">noarchive</label><br>
+            	</td>
+            </tr>
+            
+            <tr>
+            	<td style="border-top: 1px solid #b3b3b3">
+            		i18n("Sitemap Priority")
+            	</td>
+            	<td style="border-top: 1px solid #b3b3b3">
+            		<input type="text" name="sitemap_prio" value="{SITEMAP_PRIO}" size="24">
+            	</td>
+            </tr>
+            
+            <tr>
+            	<td style="border-bottom: 2px solid #b3b3b3">
+            		i18n("Sitemap change frequency")
+            	</td>
+            	<td style="border-bottom: 2px solid #b3b3b3">
+            		<select size="1" name="sitemap_change_freq">
+            			<option {SELECTED_}></option>
+            			<option {SELECTED_always}>always</option>
+            			<option {SELECTED_hourly}>hourly</option>
+            			<option {SELECTED_daily}>daily</option>
+            			<option {SELECTED_weekly}>weekly</option>
+            			<option {SELECTED_monthly}>monthly</option>
+            			<option {SELECTED_yearly}>yearly</option>
+            			<option {SELECTED_never}>never</option>
+            		</select>
+            	</td>
+            </tr>
+            
+            {ADDITIONAL_ROWS}
+            
+            <tr>
+            	<th colspan="2">
+            		i18n("Custom meta tags")
+            	</th>
+            </tr>
+            
+            <!-- BEGIN:BLOCK -->
+            <tr>
+                <td>{METATITLE}</td>
+                <td class="text_medium">{METAFIELDTYPE}</td>
+            </tr>
+            <!-- END:BLOCK -->
+            
+         	{ADDNEWMETA}
+         	
+            <tr>
+            	<td class="text_medium">{ADDMETABTN}</td>
+            	<td align="right">
+            		<input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}">
+            	</td>
+            </tr>
+         	
+            <tr>
+            	<td colspan=2>
+					<a href="javascript://" onclick="$('#metaPreview').toggle();"><img src="images/but_preview.gif" class="vAlignMiddle">&nbsp;i18n("HTML-View")</a>
+					<div style="display: none;" id="metaPreview">{META_TAGS}</div>
+				</td>
+			</tr>
+            		
+           </table>
     </form>
 
     <script type="text/javascript">
@@ -117,13 +218,70 @@
                 dateFormat: 'yy-mm-dd',
                 disabled: {IS_DATETIMEPICKER_DISABLED}
             });
+            $('#METAexpires').datetimepicker({
+                buttonImage: '{PATH_TO_CALENDER_PIC}',
+                buttonImageOnly: true,
+                showOn: 'both',
+                dateFormat: 'yy-mm-dd',
+                disabled: {IS_DATETIMEPICKER_DISABLED}
+            });
+            
+            $('.metaTag').live("input", function() {
+                var id = $(this).attr("id").substr(4);
+                var text = $(this).val();
+				if(text == "") {
+				    $("#metaRow_" + id).hide();
+				} else {
+				    $("#metaRow_" + id).show();
+				}
+				$("#metaContent_" + id).text(text);
+            });
+            
+            $('.robotCheckbox').change(function() {
+                var robotString = "";
+                if($('#metaNoIndex').attr("checked")) {
+                    robotString += "noindex, ";
+                } else {
+                    robotString += "index, ";
+                }
+                if($('#metaNoImageIndex').attr("checked")) {
+                    robotString += "noimageindex, ";
+                }
+                if($('#metaNoArchive').attr("checked")) {
+                    robotString += "noarchive, ";
+                }
+                if($('#metaNoSnippet').attr("checked")) {
+                    robotString += "nosnippet, ";
+                }
+                if($('#metaNoFollow').attr("checked")) {
+                    robotString += "nofollow";
+                } else {
+                    robotString += "follow";
+                }
+                $("#metaContent_robots").text(robotString);
+            })
         });
     </script>
 </body>
+
 </html>
 <!--
 template.con_meta_edit_form
 
 i18n("Page title")
+i18n("Alias")
+i18n("Description")
+i18n("HTML-View")
+i18n("Link")
+i18n("Keywords")
+i18n("Copyright")
+i18n("Author")
+i18n("Date")
+i18n("Expires")
+i18n("Revisit after")
+i18n("Robots")
+i18n("Sitemap Priority")
+i18n("Sitemap change frequency")
+i18n("Custom meta tags")
 
 -->

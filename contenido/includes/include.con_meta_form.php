@@ -65,6 +65,11 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         $tmp_firstedit = 0;
         $tmp_idartlang = $db->f("idartlang");
         $tmp_page_title = cSecurity::unFilter(stripslashes($db->f("pagetitle")));
+        $tmp_alias = cSecurity::unFilter(stripslashes($db->f("urlname")));
+
+        $tmp_sitemap_prio = $db->f("sitemapprio");
+        $tmp_sitemap_change_freg = $db->f("changefreq");
+
         $tmp_idlang = $db->f("idlang");
         $tmp_title = cSecurity::unFilter($db->f("title"));
         $tmp_urlname = cSecurity::unFilter($db->f("urlname")); // plugin
@@ -137,6 +142,11 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         $tmp_idlang = $lang;
         $tmp_page_title = stripslashes($db->f("pagetitle"));
         $tmp_title = '';
+        $tmp_alias = "";
+
+        $tmp_sitemap_prio = "";
+        $tmp_sitemap_change_freg = "";
+
         $tmp_urlname = ''; // plugin Advanced Mod Rewrite - edit by stese
         $tmp_artspec = '';
         $tmp_summary = '';
@@ -196,8 +206,12 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         $tpl->set('s', 'NOTIFICATION', '');
     }
     // Page title
-    $title_input = '<input type="text" ' . $disabled . ' class="text_medium" name="page_title" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
+    $title_input = '<input size="24" type="text" ' . $disabled . ' name="page_title" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
+
+    $tpl->set("s", "ALIAS", $tmp_alias);
+    $tpl->set("s", "SITEMAP_PRIO", $tmp_sitemap_prio);
+    $tpl->set("s", "SELECTED_".$tmp_sitemap_change_freg, "selected");
 
     if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
         $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
@@ -209,22 +223,55 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
 
     $tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
+    $art = new cApiArticleLanguage($tmp_idartlang);
+	$tpl->set("s", "LINK", $art->getLink());
+
     // Meta-Tags
     $availableTags = conGetAvailableMetaTagTypes();
 
+    $managedTypes = array(
+        	"author",
+        	"date",
+        	"description",
+        	"expires",
+        	"keywords",
+        	"revisit-after",
+        	"robots",
+        	"copyright"
+        );
+
+    $metaPreview = array();
+
     foreach ($availableTags as $key => $value) {
+        $metaPreview[] = array(
+            	"name" => $value["metatype"],
+            	"content" => conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key))
+            );
+
+        if(in_array($value["metatype"], $managedTypes)) {
+            if($value["metatype"] == "robots") {
+                $robot_array = explode(", ", conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)));
+                foreach($robot_array as $instruction) {
+                    $tpl->set("s", strtoupper($instruction), "checked");
+                }
+            } else {
+    			$tpl->set("s", strtoupper($value["metatype"]), conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)));
+            }
+            continue;
+        }
+
         $tpl->set('d', 'METAINPUT', 'META' . $value);
 
         switch ($value["fieldtype"]) {
             case "text":
                 if ($value["metatype"] == 'date') {
-                    $element = '<input ' . $disabled . ' class="text_medium shorter" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" maxlength=' . $value["maxlength"] . ' value="' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '">';
+                    $element = '<input ' . $disabled . ' class="metaTag" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" size="24" maxlength=' . $value["maxlength"] . ' value="' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '">';
                 } else {
-                    $element = '<input ' . $disabled . ' class="text_medium" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" maxlength=' . $value["maxlength"] . ' value="' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '">';
+                    $element = '<input ' . $disabled . ' class="metaTag" type="text" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" size="24" maxlength=' . $value["maxlength"] . ' value="' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '">';
                 }
                 break;
             case "textarea":
-                $element = '<textarea ' . $disabled . ' class="text_medium" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" rows=3>' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '</textarea>';
+                $element = '<textarea ' . $disabled . ' class="metaTag" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" rows=3>' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '</textarea>';
                 break;
         }
 
@@ -384,6 +431,35 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     $tpl->set('s', 'SYNCOPTIONS', -1);
     $tpl->set('s', 'SESSION', $contenido);
     $tpl->set('s', 'DISPLAY_MENU', 1);
+
+
+    //call the chain to add additional rows
+    $additionalRows = '';
+    $cecRegistry = cApiCecRegistry::getInstance();
+    $cecIterator = $cecRegistry->getIterator('Contenido.Backend.ConMetaEditFormAdditionalRows');
+    while (($chainEntry = $cecIterator->next()) !== false) {
+        $additionalRows .= $chainEntry->execute($idart, $lang, $client);
+    }
+    $tpl->set('s', 'ADDITIONAL_ROWS', $additionalRows);
+
+    //call the chain to create meta tags to display any additional tags in the preview
+    $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Content.CreateMetatags');
+    if ($_cecIterator->count() > 0) {
+        while (false !== $chainEntry = $_cecIterator->next()) {
+            $metaPreview = $chainEntry->execute($metaPreview);
+        }
+    }
+
+    $tpl2 = new cTemplate();
+    foreach($metaPreview as $metaRow) {
+        if($metaRow["content"] == "") {
+            $tpl2->set("d", "META_SHOWN", "display: none");
+        }
+        $tpl2->set("d", "META_NAME", $metaRow["name"]);
+        $tpl2->set("d", "META_CONTENT", $metaRow["content"]);
+        $tpl2->next();
+    }
+    $tpl->set("s", "META_TAGS", $tpl2->generate($cfg['path']['templates'] . "template.con_meta_edit_form_preview.html", true));
 
     // Genereate the Template
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_meta_edit_form']);

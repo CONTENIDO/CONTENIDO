@@ -381,8 +381,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // update (!) index setting of robots meta tag
         // the follow value will not be changed
-        $index = (bool) $this->getArtLangObject()->get('searchable');
-        $metaTags = $this->_updateMetaRobots($metaTags, $index, NULL);
+        //$index = (bool) $this->getArtLangObject()->get('searchable');
+        //$metaTags = $this->_updateMetaRobots($metaTags, $index, NULL);
 
         return $metaTags;
     }
