@@ -2,15 +2,15 @@
 /**
  * This file contains the the system purge class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Munkh-Ulzii Balidar
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Munkh-Ulzii Balidar
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * CONTENIDO cSystemPurge class to reset some datas and files
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
  */
 class cSystemPurge {
@@ -87,18 +87,21 @@ class cSystemPurge {
         global $perm, $currentuser;
         $cfgClient = cRegistry::getClientConfig();
 
-        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-            foreach (new DirectoryIterator($cfgClient[$clientId]['cache']['path'] . 'code/') as $file) {
-                $extension = substr($file, strpos($file->getBasename(), '.') + 1);
-                if ($extension == "php") {
-                    if (!unlink($file)) {
-                        return false;
+        if (cFileHandler::exists($cfgClient[$clientId]['cache']['path'] . 'code/')) {
+
+            if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+                foreach (new DirectoryIterator($cfgClient[$clientId]['cache']['path'] . 'code/') as $file) {
+                    $extension = substr($file, strpos($file->getBasename(), '.') + 1);
+                    if ($extension == "php") {
+                        if (!unlink($file)) {
+                            return false;
+                        }
                     }
                 }
+                return true;
+            } else {
+                return false;
             }
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -440,4 +443,5 @@ class cSystemPurge {
             }
         }
     }
+
 }
