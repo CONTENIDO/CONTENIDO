@@ -128,6 +128,23 @@ cms/data/modules/content_socialmedia_googleplus/php/content_socialmedia_googlepl
 cms/data/modules/content_socialmedia_googleplus/php/content_socialmedia_googleplus_output.php -text
 cms/data/modules/content_socialmedia_googleplus/template/google_plus.tpl -text
 cms/data/modules/content_socialmedia_googleplus/template/google_plus_config_view.tpl -text
+cms/data/modules/content_socialmedia_twitter/css/content_socialmedia_twitter.css -text svneol=unset#text/plain
+cms/data/modules/content_socialmedia_twitter/image/logo_twitter_withbird.png -text
+cms/data/modules/content_socialmedia_twitter/info.xml -text svneol=unset#text/plain
+cms/data/modules/content_socialmedia_twitter/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/data/modules/content_socialmedia_twitter/lang/lang_en_US.txt -text svneol=unset#text/plain
+cms/data/modules/content_socialmedia_twitter/php/content_socialmedia_twitter_input.php -text
+cms/data/modules/content_socialmedia_twitter/php/content_socialmedia_twitter_output.php -text
+cms/data/modules/content_socialmedia_twitter/template/follow_button.tpl -text
+cms/data/modules/content_socialmedia_twitter/template/label_translations.tpl -text
+cms/data/modules/content_socialmedia_twitter/template/tweets.tpl -text
+cms/data/modules/content_socialmedia_twitter/template/twitter.js -text svneol=unset#text/plain
+cms/data/modules/content_socialmedia_twitter/template/twitter_big.tpl -text
+cms/data/modules/content_socialmedia_twitter/template/twitter_config_view.tpl -text
+cms/data/modules/content_socialmedia_twitter/template/twitter_no_config.tpl -text
+cms/data/modules/content_socialmedia_twitter/template/twitter_small.tpl -text
+cms/data/modules/content_socialmedia_twitter/template/twitter_twitts_big.tpl -text
+cms/data/modules/content_socialmedia_twitter/template/twitter_twitts_small.tpl -text
 cms/data/modules/content_socialmedia_xing/info.xml -text svneol=unset#text/plain
 cms/data/modules/content_socialmedia_xing/lang/lang_de_DE.txt -text svneol=unset#text/plain
 cms/data/modules/content_socialmedia_xing/lang/lang_en_US.txt -text svneol=unset#text/plain
