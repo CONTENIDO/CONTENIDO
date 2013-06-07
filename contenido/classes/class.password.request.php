@@ -128,7 +128,7 @@ class cPasswordRequest {
         $this->_email = '';
 
         // set reload to 30 minutes
-        $this->_reloadTime = 0;
+        $this->_reloadTime = 30;
 
         // set pass length to 14 chars
         $this->_passLength = 14;
