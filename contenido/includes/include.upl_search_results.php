@@ -135,7 +135,7 @@ if ($startpage == "") {
     $startpage = 1;
 }
 
-$thisfile = $sess->url("main.php?idarea=$area&frame=$frame&appendparameters=$appendparameters&searchfor=$searchfor&thumbnailmode=$thumbnailmode");
+$thisfile = $sess->url("main.php?area=$area&frame=$frame&appendparameters=$appendparameters&searchfor=$searchfor&thumbnailmode=$thumbnailmode");
 $scrollthisfile = $thisfile . "&sortmode=$sortmode&sortby=$sortby";
 
 if ($sortby == 3 && $sortmode == "DESC") {
@@ -344,7 +344,7 @@ if ($list2->getNumPages() > 1) {
     $paging_form .= "<script type=\"text/javascript\">
         function jumpToPage(select) {
             var pagenumber = select.selectedIndex + 1;
-            url = '" . $sess->url("main.php?idarea=$area&frame=$frame&appendparameters=$appendparameters&searchfor=$searchfor&thumbnailmode=$thumbnailmode") . "';
+            url = '" . $sess->url("main.php?area=$area&frame=$frame&appendparameters=$appendparameters&searchfor=$searchfor&thumbnailmode=$thumbnailmode") . "';
             document.location.href = url + '&startpage=' + pagenumber;
         }
     </script>";
