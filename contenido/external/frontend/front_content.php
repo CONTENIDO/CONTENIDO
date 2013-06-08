@@ -1,22 +1,24 @@
 <?php
 /**
- * Frontend article view.
+ * This file is the main entrance point for the frontend.
  *
- * @package Frontend
- * @subpackage Article
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id$
+ * @package          Core
+ * @subpackage       Frontend
+ * @version          SVN Revision $Rev:$
  *
- * @author Olaf Niemann, Jan Lengowski, Timo A. Hummel et al., Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
+
+global $contenido_path, $cfg;
 
 // Set path to current frontend
 $frontend_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/';

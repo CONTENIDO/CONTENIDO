@@ -1,23 +1,23 @@
 <?php
 /**
- * Database file system file output.
+ * This file handles request to the database filesystem of the frontend.
  *
- * @package Frontend
- * @subpackage DBFS
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id$
+ * @package          Core
+ * @subpackage       Frontend
+ * @version          SVN Revision $Rev:$
  *
- * @author unknown
- * @author Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
+
+global $contenido_path, $contenido, $client, $load_client, $file;
 
 // Set path to current frontend
 $frontend_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/';
@@ -31,15 +31,23 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
 }
 include_once($contenido_path . 'includes/startup.php');
 
-if ($contenido) {
-    cRegistry::bootstrap(array('sess' => 'cSession',
-                    'auth' => 'cAuthHandlerBackend',
-                    'perm' => 'cPermission'));
+chdir($contenido_path);
+
+if ($_REQUEST["contenido"]) {
+    cRegistry::bootstrap(array(
+        'sess' => 'cSession',
+        'auth' => 'cAuthHandlerBackend',
+        'perm' => 'cPermission'
+    ));
 } else {
-    cRegistry::bootstrap(array('sess' => 'cFrontendSession',
-                    'auth' => 'cAuthHandlerFrontend',
-                    'perm' => 'cPermission'));
+    cRegistry::bootstrap(array(
+        'sess' => 'cFrontendSession',
+        'auth' => 'cAuthHandlerFrontend',
+        'perm' => 'cPermission'
+    ));
 }
+
+chdir(dirname(__FILE__));
 
 // Shorten load time
 $client = $load_client;

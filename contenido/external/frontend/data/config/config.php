@@ -1,22 +1,19 @@
 <?php
 /**
- * Contains clients basic configuration.
+ * This file contains the main configuration of the client.
  *
- * @package Frontend
- * @subpackage Configuration
- * @version SVN Revision $Rev:$
- * @version SVN Id $Id$
+ * @package          Core
+ * @subpackage       Frontend_ConfigFile
+ * @version          SVN Revision $Rev:$
  *
- * @author System
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author           Automatically generated via System
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
-if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
-}
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Relative path to CONTENIDO directory, for all inclusions, in most cases: '../contenido/'
 $contenido_path = '!PATH!';

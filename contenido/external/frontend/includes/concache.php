@@ -1,32 +1,16 @@
 <?php
 /**
- * Project:
- * CONTENIDO Content Management System
+ * This file contains the cache configuration of the client.
  *
- * Description:
- * File with configuration of concache
+ * @package          Core
+ * @subpackage       Frontend_ConfigFile
+ * @version          SVN Revision $Rev:$
  *
- * Requirements:
- * @con_php_req 5
- *
- * @package    CONTENIDO Frontend
- * @subpackage Cache
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- *
- *
- * @class      cOutputCache
- * @file       concache.php
- * @version    0.9
- * @date       2006-07-07
- *
- * {@internal
- *   created  2006-07-07
- *   $Id: concache.php 2194 2012-05-18 21:20:59Z dominik.ziegler $:
- * }}
+ * @author           System
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -157,10 +141,5 @@ $cfgConCache['raiseonevent'] = array(
     'beforeoutput' => array('/* some code here */'),
     'afteroutput'  => array($sStatCode, 'cRegistry::shutdown();')
 );
-
-
-// include concache file
-cInclude('classes', 'cache/class.outputcache.php');
-
 
 ?>
