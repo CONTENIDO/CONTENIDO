@@ -1,0 +1,5 @@
+TITLE=This page uses cookies.
+INFOTEXT=Cookies store informartions on your pc, without cookies it is possible that the scope of operation could decrease.
+USERINPUT=Please choose if you want to use cookies. function range scope of operation
+ACCEPT=Accept
+DECLINE=Decline

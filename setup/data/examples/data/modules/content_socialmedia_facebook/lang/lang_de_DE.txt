@@ -1,0 +1,13 @@
+URL=URL
+PLUGIN=Plugin
+LIKE_BUTTON=LIKE-Button
+LIKE_BOX=LIKE-Box
+LAYOUT=Layout
+STANDARD=standard
+BUTTON_COUNT=Buttonanzahl
+BOX_COUNT=Boxanzahl
+SHOW_FACES=Profile anzeigen
+WIDTH=Breite
+HEIGHT=Höhe
+SAVE=Speichern
+OVERVIEW_LABEL=Facebook Plugin

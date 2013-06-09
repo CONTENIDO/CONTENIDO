@@ -1,0 +1,5 @@
+LOGIN=Login
+LOGOUT=Logout
+NAME=Username
+PASS=Password
+TXT_WELCOME_USER=You are logged in

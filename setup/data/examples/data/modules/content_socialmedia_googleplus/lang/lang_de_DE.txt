@@ -1,0 +1,7 @@
+URL=URL
+LOOK=Aussehen
+NORMAL=normal
+SMALL=klein
+MEDIUM=mittel
+TALL=groß
+DISPLAY_COUNTER=Zähler anzeigen

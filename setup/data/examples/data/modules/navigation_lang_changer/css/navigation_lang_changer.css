@@ -1,0 +1,15 @@
+/* header navigation for language, contact and search */
+#navigation_header {
+    float: right;
+}
+
+#navigation_header li {
+    list-style: none;
+    margin: 3px;
+}
+
+#navigation_header a {
+    color:#9ba21b;
+    text-decoration: none;
+    text-underline: none;
+}

@@ -1,0 +1,5 @@
+TITLE=Diese Seite verwendet Cookies.
+INFOTEXT=Cookies speichern Informationen lokal auf Ihrem Rechner, ohne die Verwendung kann der Funktionsumfang beeinträchtigt werden.
+USERINPUT=Bitte wählen Sie ob Cookies verwendet werden sollen.
+ACCEPT=Annehmen
+DECLINE=Ablehnen

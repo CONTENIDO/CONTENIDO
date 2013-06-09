@@ -298,6 +298,36 @@ class cFileHandler {
     }
 
     /**
+     * Copies a directory and all of its subfolders.
+     *
+     * @param string $filename the name and path of the file
+     * @param string $destination the destination. Note that existing files get
+     *            overwritten
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
+     * @return bool true on success
+     */
+    public static function recursiveCopy($filename, $destination) {
+        if (!cFileHandler::exists($filename)) {
+            throw new cInvalidArgumentException('The file ' . $filename . ' could not be accessed because it does not exist.');
+        }
+        
+    	foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($filename, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST) as $item) {
+    		if ($item->isDir()) {
+    			if(!mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
+    				return false;
+    			}
+    		} else {
+    			if(!copy($item, $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
+    				return false;
+    			}
+    		}
+    	}
+    	
+    	return true;
+    }
+
+    /**
      * Changes the file permissions
      *
      * @param string $filename the name and path of the file

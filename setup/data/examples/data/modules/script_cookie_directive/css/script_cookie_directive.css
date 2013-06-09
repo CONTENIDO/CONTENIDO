@@ -1,0 +1,46 @@
+.ui-dialog-buttonset button{
+    float: right;
+}
+
+#cookie_note{
+    text-align: center;
+}
+
+
+/* ----- COOKIE DIRECTIVE ----- */
+/*
+#cookie_note {
+    background: #fff;
+    left: 0;
+    filter: alpha(opacity = 90);
+    opacity: 0.9;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+#cookie_note div.notify {
+    font-size: 14px;
+    padding: 10px 100px;
+    position: relative;
+}
+#cookie_note a.dismiss {
+    border: 1px solid #9ba21b;
+    border-radius: 10px;
+    color: #9ba21b;
+    display: block;
+    line-height: 14px;
+    padding: 1px 4px 4px 4px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    text-decoration: none;
+}
+#cookie_note a.dismiss:hover {
+    background: #9ba21b;
+    color: #fff;
+}
+#cookie_note .cancel_cookie {
+    color: #9ba21b;
+    line-height: 17px;
+*/

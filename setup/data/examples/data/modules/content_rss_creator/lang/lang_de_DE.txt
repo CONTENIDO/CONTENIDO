@@ -1,0 +1,8 @@
+LABEL_RSS_TITLE=Header: RSS Überschrift
+LABEL_RSS_LINK=Header: RSS Link
+LABEL_RSS_DESCRIPTION=Header: RSS Beschreibung
+LABEL_RSS_CONFIGURATION=Header: RSS Artikelauswahl
+LABEL_RSS_H1=RSS Creator Konfiguration
+LABEL_RSS_LOGO=Header: RSS Logo
+LABEL_RSS_SOURCE=RSS Quelle
+MORE=mehr

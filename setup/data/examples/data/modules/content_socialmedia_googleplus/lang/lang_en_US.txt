@@ -1,0 +1,7 @@
+URL=URL
+LOOK=look
+NORMAL=normal
+SMALL=small
+MEDIUM=medium
+TALL=tall
+DISPLAY_COUNTER=display counter
