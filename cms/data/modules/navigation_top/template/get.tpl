@@ -7,6 +7,8 @@
         {assign var="name" value=$wrapper.item->get('name')}
         {if $idcat|in_array:$path}
             {assign var="aClass" value='active'}
+        {else}
+            {assign var="aClass" value=''}
         {/if}
         <li>
             <a class="{$aClass}" href="{$url}" title="{$name}">{$name}</a>
