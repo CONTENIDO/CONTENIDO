@@ -53,7 +53,7 @@
                     var oldobject = parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#"+oldid);
                     var oldlink = parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#"+oldid+" > div > a");
                     var oldclass = oldlink.attr("class");
-                    if (cfg.isOnline == 1) {
+                    if (cfg.isOnline == 0) {
                         var newonline = 1;
                         var newclass = oldclass.replace(/off/, "on");
                     } else {
@@ -75,7 +75,7 @@
             $("div#oLock_label a").click(function () {
                 newid = false;
                 if (cfg.catId > 0 && cfg.hasRight['public'] == 1) {
-                    if (cfg.isPublic == 1) {
+                    if (cfg.isPublic == 0) {
                         var newpublic = 1;
                     } else {
                         var newpublic = 0;
@@ -87,7 +87,7 @@
                         var oldlinkclass = $(this).attr("class");
                         var oldlinkid = $(this).parent().parent().attr("id");
                         var aOldlinkids = oldlinkid.split("-");
-                        if (cfg.isPublic == 1) {
+                        if (cfg.isPublic == 0) {
                             var newlinkclass = oldlinkclass.replace(/_locked/, "");
                         } else {
                             if (oldlinkclass.search(/_locked/) == -1) {
@@ -107,6 +107,8 @@
                     });
 
                     $.post("{AJAXURL}", { area: "{AREA}", action: "con_makepublic", idcat: cfg.catId, public: newpublic, contenido: "{SESSION}" } );
+                    
+                    cfg.isPublic = newpublic;
 
                     parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#"+newid+" > div").click();
                     cfg.updateScreen();
