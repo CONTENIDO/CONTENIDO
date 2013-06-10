@@ -70,7 +70,7 @@ CREATE TABLE con_pifa_form (
   name           varchar(1023)       NOT NULL DEFAULT 'new form'         COMMENT 'human readable name of form',
   data_table     varchar(64)         NOT NULL DEFAULT 'con_pifo_data'    COMMENT 'unique name of data table',
   method         enum('get','post')  NOT NULL DEFAULT 'post'             COMMENT 'method to be used for form submission',
-  with_timestamp` BOOLEAN            NOT NULL DEFAULT '1'                COMMENT 'if data table records have a timestamp',
+  with_timestamp BOOLEAN            NOT NULL DEFAULT '1'                COMMENT 'if data table records have a timestamp',
   PRIMARY KEY  (idform)
 ) ENGINE=MyISAM
 DEFAULT CHARSET=utf8
