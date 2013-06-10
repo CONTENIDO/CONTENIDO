@@ -1,1 +1,0 @@
-LABEL_HEADER_SECOND=zweite Überschrift

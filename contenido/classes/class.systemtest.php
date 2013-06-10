@@ -1022,6 +1022,44 @@ class cSystemtest {
         return $status;
     }
 
+    public function testFrontendFolderCreation() {
+        $directories = array(
+            	"cms/cache",
+            	"cms/cache/code",
+            	"cms/css",
+            	"cms/data",
+            	"cms/data/layouts",
+            	"cms/data/modules",
+            	"cms/data/version",
+            	"cms/data/version/css",
+            	"cms/data/version/js",
+            	"cms/data/version/layout",
+            	"cms/data/version/module",
+            	"cms/data/version/templates",
+            	"cms/js",
+            	"cms/templates",
+            	"cms/upload"
+            );
+
+        $ret = true;
+
+        foreach($directories as $dir) {
+            if(!cFileHandler::exists("../".$dir)) {
+            	if(!mkdir("../".$dir)) {
+            	    $ret = false;
+            	    $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories."));
+            	} else {
+            	    if(!cFileHandler::chmod("../".$dir, 777)) {
+	            	    $ret = false;
+	            	    $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories."));
+            	    }
+            	}
+            }
+        }
+
+        return $ret;
+    }
+
     /**
      * Checks for the open_basedir directive and returns one of the CON_BASEDIR constants
      *

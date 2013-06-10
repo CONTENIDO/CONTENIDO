@@ -1,9 +1,0 @@
-@CHARSET "UTF-8";
-
-.galery .slider li {
-    margin-top: 18px;
-}
-
-.galery .slider li + li {
-    margin-top: 0;
-}

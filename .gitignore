@@ -5,7 +5,6 @@
 cms/cache/*
 cms/cache/code/*
 cms/cache/templates_c/*
-cms/data/layouts/test_marcus
 cms/data/logs/*
 cms/data/version/*
 cms/data/version/css/*
