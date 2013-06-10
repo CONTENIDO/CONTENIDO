@@ -375,3 +375,8 @@ td.back_next a {
     background-color: #fff;
     color: #0060B1;
 }
+
+.additionalInfo {
+	font-size: 80%;
+	color: #b5b5b5;
+}

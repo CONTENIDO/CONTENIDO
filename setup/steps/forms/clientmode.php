@@ -25,6 +25,8 @@ class cSetupClientMode extends cSetupMask
 {
     function cSetupClientMode($step, $previous, $next)
     {
+        global $cfgClient;
+
         cSetupMask::cSetupMask("templates/setup/forms/clientmode.tpl", $step);
         $this->setHeader(i18n("Example Client"));
         $this->_oStepTemplate->set("s", "TITLE", i18n("Example Client"));
@@ -32,9 +34,44 @@ class cSetupClientMode extends cSetupMask
 
         cArray::initializeKey($_SESSION, "clientmode", "");
 
+        $folders = "";
+        $moduleFolderNotEmpty = false;
+        if(cFileHandler::exists("../cms/css")) {
+            if(!cFileHandler::isDirectoryEmpty("../cms/css")) {
+                $folders .= "cms/css/, ";
+            }
+        }
+        if(cFileHandler::exists("../cms/js")) {
+            if(!cFileHandler::isDirectoryEmpty("../cms/js")) {
+                $folders .= "cms/js/, ";
+            }
+        }
+        if(cFileHandler::exists("../cms/templates")) {
+            if(!cFileHandler::isDirectoryEmpty("../cms/templates")) {
+                $folders .= "cms/templates/, ";
+            }
+        }
+        if(cFileHandler::exists("../cms/data/modules")) {
+            if(!cFileHandler::isDirectoryEmpty("../cms/data/modules")) {
+                $folders .= "cms/data/modules/, ";
+                $moduleFolderNotEmpty = true;
+            }
+        }
+        if(cFileHandler::exists("../cms/data/layouts")) {
+            if(!cFileHandler::isDirectoryEmpty("../cms/data/layouts")) {
+                $folders .= "cms/data/layouts/, ";
+            }
+        }
+
+        $this->_oStepTemplate->set("s", "FOLDER_MESSAGE_EXAMPLES", "");
+        $this->_oStepTemplate->set("s", "FOLDER_MESSAGE_MODULES", "");
+        if(strlen($folders) > 0) {
+            $folders = substr($folders, 0, strlen($folders) - 2);
+        }
+
         $aChoices = array(
-            "CLIENTEXAMPLES" => i18n("Client with example modules and example content"),
-            "CLIENTMODULES"  => i18n("Client with example modules, but without example content"),
+            "CLIENTEXAMPLES" => i18n("Client with example modules and example content") . ((strlen($folders) > 0) ? " <span class='additionalInfo'>(" . sprintf(i18n("PLEASE NOTE: Some folders (%s) which are used by the example client aren't empty. THESE WILL BE OVERWRITTEN"), $folders) . ")</span>" : ""),
+            "CLIENTMODULES"  => i18n("Client with example modules, but without example content") . (($moduleFolderNotEmpty) ? " <span class='additionalInfo'>(" . i18n("PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN") . ")</span>" : ""),
             "NOCLIENT"       => i18n("Don't create client")
         );
 

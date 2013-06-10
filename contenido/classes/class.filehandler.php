@@ -197,6 +197,25 @@ class cFileHandler {
     }
 
     /**
+     * Checks if a directory is empty
+     * @param string $dir Name of the directory
+     * @return boolean true if the directory is empty
+     */
+    public static function isDirectoryEmpty($dir) {
+        if (!is_readable($dir)) {
+            return false;
+        }
+
+        $handle = opendir($dir);
+        while (false !== ($entry = readdir($handle))) {
+            if ($entry != "." && $entry != "..") {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Removes a file from the filesystem
      *
      * @param string $filename the name and path of the file
@@ -311,19 +330,34 @@ class cFileHandler {
         if (!cFileHandler::exists($filename)) {
             throw new cInvalidArgumentException('The file ' . $filename . ' could not be accessed because it does not exist.');
         }
-        
+
+        if(!cFileHandler::exists($destination)) {
+            if(!mkdir($destination)) {
+                return false;
+            }
+            if(!self::chmod($destination, 777)) {
+                return false;
+            }
+        }
+
     	foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($filename, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST) as $item) {
     		if ($item->isDir()) {
     			if(!mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
     				return false;
     			}
+	            if(!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), 777)) {
+	                return false;
+	            }
     		} else {
     			if(!copy($item, $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
     				return false;
     			}
+	            if(!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), 777)) {
+	                return false;
+	            }
     		}
     	}
-    	
+
     	return true;
     }
 
