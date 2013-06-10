@@ -200,7 +200,7 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  * @return string  The resulting string
  */
 function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'ISO-8859-1', $targetEncoding = 'ISO-8859-1') {
-    if ($sourceEncoding == 'UTF-8') {
+    if ($sourceEncoding != 'UTF-8') {
         $sString = utf8_decode($sString);
     }
 
