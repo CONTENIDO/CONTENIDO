@@ -62,7 +62,7 @@ function layEditLayout($idlay, $name, $description, $code) {
 
     if (!$idlay) {
         $layoutCollection = new cApiLayoutCollection();
-        $layout = $layoutCollection->create($name, $client, $layoutAlias, $description, '1', $author, $date, $date);
+        $layout = $layoutCollection->create($name, $client, $layoutAlias, $description, '1', $author);
         $idlay = $layout->get('idlay');
 
         if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
@@ -105,7 +105,7 @@ function layEditLayout($idlay, $name, $description, $code) {
                 $layout->set('alias', $layoutAlias);
                 $layout->set('description', $description);
                 $layout->set('author', $author);
-                $layout->set('lastmodified', $date);
+                $layout->set('lastmodified', "NOW()");
                 $layout->store();
             } else {
                 // Rename not successfully
@@ -126,7 +126,7 @@ function layEditLayout($idlay, $name, $description, $code) {
             $layout->set('alias', $layoutAlias);
             $layout->set('description', $description);
             $layout->set('author', $author);
-            $layout->set('lastmodified', $date);
+            $layout->set('lastmodified', "NOW()");
             $layout->store();
         }
 

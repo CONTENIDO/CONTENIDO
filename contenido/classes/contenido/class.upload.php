@@ -103,7 +103,7 @@ class cApiUploadCollection extends ItemCollection {
         // $oItem->set('description', $sDescription, false);
         $oItem->set('status', $iStatus, false);
         $oItem->set('author', $auth->auth['uid']);
-        $oItem->set('created', date('Y-m-d H:i:s'), false);
+        $oItem->set('created', "NOW()", false);
         $oItem->store();
 
         return $oItem;
@@ -252,7 +252,7 @@ class cApiUpload extends Item {
         global $auth, $_cecRegistry;
 
         $this->set('modifiedby', $auth->auth['uid']);
-        $this->set('lastmodified', date('Y-m-d H:i:s'), false);
+        $this->set('lastmodified', "NOW()", false);
 
         // Call chain
         $_cecIterator = $_cecRegistry->getIterator('Contenido.Upl_edit.SaveRows');

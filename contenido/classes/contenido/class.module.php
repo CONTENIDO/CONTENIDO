@@ -64,10 +64,10 @@ class cApiModuleCollection extends ItemCollection {
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
-            $created = date('Y-m-d H:i:s');
+            $created = "NOW()";
         }
         if (empty($lastmodified)) {
-            $lastmodified = date('Y-m-d H:i:s');
+            $lastmodified = "NOW()";
         }
 
         $item = parent::createNewItem();

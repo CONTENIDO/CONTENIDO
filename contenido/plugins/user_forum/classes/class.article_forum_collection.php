@@ -394,7 +394,7 @@ class ArticleForumCollection extends ItemCollection {
             'dislike' => 0,
             'editedat' => NULL,
             'editedby' => NULL,
-            'timestamp' => date("Y-m-d H:i:s"),
+            'timestamp' => "NOW()",
             'online' => $online
         );
 

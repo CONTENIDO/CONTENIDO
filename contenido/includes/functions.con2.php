@@ -125,7 +125,7 @@ function conSetMetaValue($idartlang, $idmetatype, $value) {
 
     $metaTag = $metaTagColl->fetchByArtLangAndMetaType($idartlang, $idmetatype);
     $artLang = new cApiArticleLanguage($idartlang);
-    $artLang->set('lastmodified', date('Y-m-d H:i:s'));
+    $artLang->set('lastmodified', "NOW()");
     $artLang->store();
     if (is_object($metaTag)) {
         return $metaTag->updateMetaValue($value);

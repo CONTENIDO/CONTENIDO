@@ -80,7 +80,7 @@ class NewsletterRecipientCollection extends ItemCollection {
             $oItem->set("confirmeddate", date("Y-m-d H:i:s"), false);
         }
         $oItem->set("deactivated", 0);
-        $oItem->set("created", date("Y-m-d H:i:s"), false);
+        $oItem->set("created", "NOW()", false);
         $oItem->set("author", $auth->auth["uid"]);
         $oItem->store();
 
@@ -232,7 +232,7 @@ class NewsletterRecipient extends Item {
     public function store() {
         global $auth;
 
-        $this->set("lastmodified", date("Y-m-d H:i:s"), false);
+        $this->set("lastmodified", "NOW()", false);
         $this->set("modifiedby", $auth->auth["uid"]);
         $success = parent::store();
 

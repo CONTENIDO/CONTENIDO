@@ -280,7 +280,7 @@ class cApiDbfsCollection extends ItemCollection {
             }
 
             $item->set('content', $content);
-            $item->set('created', date('Y-m-d H:i:s'), false);
+            $item->set('created', "NOW()", false);
             $item->set('author', $auth->auth['uid']);
             $item->store();
         }

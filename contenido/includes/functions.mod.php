@@ -81,7 +81,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             $cApiModule->set('template', $template);
             $cApiModule->set('description', $description);
             $cApiModule->set('type', $type);
-            $cApiModule->set('lastmodified', $date);
+            $cApiModule->set('lastmodified', "NOW()");
 
             // False: The new name of modul dont exist im modul dir
             if ($contenidoModuleHandler->renameModul($oldName, $alias) == false) {
@@ -119,7 +119,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             $cApiModule->set('template', $template);
             $cApiModule->set('description', $description);
             $cApiModule->set('type', $type);
-            $cApiModule->set('lastmodified', $date);
+            $cApiModule->set('lastmodified', "NOW()");
             $cApiModule->set('alias', $alias);
             $cApiModule->store();
 

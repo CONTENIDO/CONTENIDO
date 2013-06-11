@@ -161,7 +161,7 @@
      }
 
      $author = $auth->auth['uid'];
-     $created = date('Y-m-d H:i:s');
+     $created = "NOW()";
 
      $iIdupl = $upload->get("idupl");
      if (!empty($iIdupl) && $iIdupl > 0) {

@@ -51,7 +51,7 @@ class cApiLanguageCollection extends ItemCollection {
         $item->set('encoding', $this->escape($encoding), false);
         $item->set('direction', $this->escape($direction), false);
         $item->set('author', $this->escape($auth->auth['uid']), false);
-        $item->set('created', date('Y-m-d H:i:s'), false);
+        $item->set('created', "NOW()", false);
         $item->set('lastmodified', '0000-00-00 00:00:00', false);
         $item->store();
 
@@ -142,7 +142,7 @@ class cApiLanguage extends Item {
      * @return bool
      */
     public function store() {
-        $this->set('lastmodified', date('Y-m-d H:i:s'), false);
+        $this->set('lastmodified', "NOW()", false);
         return parent::store();
     }
 

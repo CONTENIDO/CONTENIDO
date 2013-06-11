@@ -61,7 +61,7 @@ class NewsletterCollection extends ItemCollection
         $oItem->set("idclient", $client);
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);
-        $oItem->set("created", date("Y-m-d H:i:s"), false);
+        $oItem->set("created", "NOW()", false);
         $oItem->set("author", cSecurity::escapeDB($auth->auth["uid"], null));
 
         $oItem->store();
@@ -118,7 +118,7 @@ class NewsletterCollection extends ItemCollection
         $oItem->set("dispatch_count", $oBaseItem->get("dispatch_count"));
         $oItem->set("dispatch_delay", $oBaseItem->get("dispatch_delay"));
         $oItem->set("author", $auth->auth["uid"]);
-        $oItem->set("created", date("Y-m-d H:i:s"), false);
+        $oItem->set("created", "NOW()", false);
 
         // Copy properties, runtime on-demand allocation of the properties object
         if (!is_object($this->properties)) {
@@ -175,7 +175,7 @@ class Newsletter extends Item
         $client = cSecurity::toInteger($client);
         $lang     = cSecurity::toInteger($lang);
 
-        $this->set("modified", date("Y-m-d H:i:s"), false);
+        $this->set("modified", "NOW()", false);
         $this->set("modifiedby", $auth->auth["uid"]);
 
         if ($this->get("welcome") == 1) {

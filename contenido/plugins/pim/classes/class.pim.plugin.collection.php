@@ -70,7 +70,7 @@ class PimPluginCollection extends ItemCollection {
         $item->set('version', $version);
         $item->set('folder', $foldername);
         $item->set('uuid', $uuId);
-        $item->set('installed', date('Y-m-d H:i:s'), false);
+        $item->set('installed', "NOW()", false);
         $item->set('active', $active);
 
         $item->store();
