@@ -962,6 +962,8 @@ class cSystemtest {
     }
 
     public function testFilesystem($testConfig = true, $testFrontend = true) {
+        global $cfgClient;
+
             $status = true;
 
             $files = array(
@@ -980,24 +982,28 @@ class cSystemtest {
                 array('filename' => $this->_config['path']['contenido_cronlog'] . "advance_workflow.php.job", 'severity' => self::C_SEVERITY_WARNING),
                 array('filename' => $this->_config['path']['contenido_cache'], 'severity' => self::C_SEVERITY_WARNING, 'dir' => true),
                 array('filename' => $this->_config['path']['contenido_temp'], 'severity' => self::C_SEVERITY_WARNING, 'dir' => true),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/cache/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/cache/code/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/css/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/data/layouts/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/data/logs/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/data/modules/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/data/version/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/data/version/css/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/data/version/js/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/data/version/layout/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/data/version/module/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/data/version/templates/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/js/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/templates/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
-                array('filename' => $this->_config['path']['frontend'] . "/cms/upload/", 'severity' => self::C_SEVERITY_WARNING, 'dir' => true, 'frontend' => $testFrontend),
                 array('filename' => $this->_config['path']['contenido_config'] . "config.php", 'severity' => self::C_SEVERITY_ERROR, 'config' => $testConfig),
-
             );
+
+            $frontendFiles = array(
+                	"cache",
+                	"cache/code",
+                	"css",
+                	"data",
+                	"data/layouts",
+                	"data/logs",
+                	"data/modules",
+                	"data/version",
+                	"data/version/css",
+                	"data/version/js",
+                	"data/version/layout",
+                	"data/version/module",
+                	"data/version/templates",
+                	"js",
+                	"templates",
+                	"upload"
+                );
+
                 $ret = true;
                 foreach ($files as $key => $file) {
 
@@ -1017,6 +1023,20 @@ class cSystemtest {
                     if($ret == false) {
                         $status = false;
                     }
+                }
+
+                if($testFrontend) {
+					foreach($cfgClient as $oneClient) {
+					    if(!is_array($oneClient)) {
+					        continue;
+					    }
+					    foreach($frontendFiles as $file) {
+							$ret = $this->testSingleFile($oneClient["path"]["frontend"] . $file, self::C_SEVERITY_WARNING, true);
+							if($ret == false) {
+							    $status = false;
+							}
+					    }
+					}
                 }
 
         return $status;

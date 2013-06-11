@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-05 14:38+0200\n"
-"PO-Revision-Date: 2013-06-05 14:43+0100\n"
+"POT-Creation-Date: 2013-06-10 16:04+0200\n"
+"PO-Revision-Date: 2013-06-10 16:05+0100\n"
 "Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -308,11 +308,11 @@ msgstr "O. K."
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: classes/class.filehandler.php:427
+#: classes/class.filehandler.php:491
 msgid "Wrong file name."
 msgstr "Falscher Dateiname."
 
-#: classes/class.filehandler.php:440
+#: classes/class.filehandler.php:504
 msgid "Please insert file name."
 msgstr "Bitte Dateinamen angeben."
 
@@ -346,32 +346,32 @@ msgstr "Sychronisierung war erfolgreich!"
 msgid "View notes / add note"
 msgstr "Notizen anzeigen / hinzufügen"
 
-#: classes/class.password.request.php:192
+#: classes/class.password.request.php:214
 #: includes/include.con_translate.php:445
 #: templates/standard/template.symbolhelp.html:73
 #: templates/standard/template.symbolhelp.html:677
 msgid "Submit"
 msgstr "Absenden"
 
-#: classes/class.password.request.php:195
+#: classes/class.password.request.php:217
 msgid "Please enter your login"
 msgstr "Bitte geben Sie hier Ihren Login ein"
 
-#: classes/class.password.request.php:235
+#: classes/class.password.request.php:260
 #, php-format
 msgid "Password requests are allowed every %s minutes."
 msgstr "Passwörter können nur alle %s Minuten angefordert werden."
 
-#: classes/class.password.request.php:243
-#: classes/class.password.request.php:256
+#: classes/class.password.request.php:272
+#: classes/class.password.request.php:286
 msgid "No matching data found. Please contact your systemadministrator."
 msgstr "Keine passenden Daten gefunden. Bitte wenden Sie sich an Ihren System-Administrator."
 
-#: classes/class.password.request.php:249
+#: classes/class.password.request.php:279
 msgid "New password was submitted to your e-mail address."
 msgstr "Das neue Passwort wurde Ihnen soeben an Ihre E-Mail-Adresse gesendet."
 
-#: classes/class.password.request.php:289
+#: classes/class.password.request.php:328
 #, php-format
 msgid ""
 "Dear CONTENIDO-User %s,\n"
@@ -390,7 +390,7 @@ msgstr ""
 "\n"
 "Ihr CONTENIDO-Systemadministrator"
 
-#: classes/class.password.request.php:293
+#: classes/class.password.request.php:334
 msgid "Your new password for CONTENIDO Backend"
 msgstr "Ihr neues Passwort für das CONTENIDO-Backend"
 
@@ -783,6 +783,17 @@ msgstr "Die Webservergruppe sowie die Gruppe des Verzeichnisses sind identisch. 
 #, php-format
 msgid "Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."
 msgstr "Der Webserver entspricht nicht dem Dateibesitzer und befindet sich nicht in der Webserver-Gruppe. Es wäre unsicher, den \"world\"-Schreibzugriff zu aktivieren. Wenn Sie die Installation dennoch fortsetzen möchten, aktivieren Sie bitte den Schreibzugriff für Jedermann (world), z. B. mit chmod o+rw %s oder durch das Setzen der Rechtemaske auf %s."
+
+#: classes/class.systemtest.php:1050
+#: classes/class.systemtest.php:1054
+#, php-format
+msgid "Could not find or create directory %s"
+msgstr "Das folgende Verzeichnis konnte weder gefunden, noch erstellt werden: %s"
+
+#: classes/class.systemtest.php:1050
+#: classes/class.systemtest.php:1054
+msgid "The frontend expects certain directories to exist and it needs to be able to write to these directories."
+msgstr "Das Frontend braucht Schreibrechte für bestimmte Verzeichnisse, um Dateien zu speichern."
 
 #: classes/class.todo.php:77
 msgid "New"
@@ -1713,7 +1724,7 @@ msgstr "Die Vorlage wurde erfolgreich gelöscht!"
 #: includes/include.client_edit.php:27
 #: includes/include.con_art_overview.php:952
 #: includes/include.con_edit_form.php:697
-#: includes/include.con_meta_form.php:468
+#: includes/include.con_meta_form.php:479
 #: includes/include.con_translate.php:133
 #: includes/include.grouprights_area.php:36
 #: includes/include.grouprights_con.php:34
@@ -2051,9 +2062,9 @@ msgstr "Bitte benutzen Sie keine Short Open Tags. (Nutzen Sie <?php anstelle von
 #: includes/include.mycontenido_settings.php:91
 #: includes/include.rights_overview.php:113
 #: includes/include.system_configuration.php:144
-#: includes/type/action/include.con_meta_saveart.action.php:73
+#: includes/type/action/include.con_meta_saveart.action.php:74
 #: includes/type/action/include.con_saveart.action.php:39
-#: includes/type/action/include.con_saveart.action.php:138
+#: includes/type/action/include.con_saveart.action.php:146
 msgid "Changes saved"
 msgstr "Änderungen gespeichert"
 
@@ -2855,12 +2866,12 @@ msgid "Language parts of the articles are existing in other languages and are on
 msgstr "Sprachabhängige Teile dieses Artikels existieren in anderen Sprachen und sind online. Um die Kategoriezuweisung zu verändern, setzen Sie bitte zuerst die anderen sprachabhängigen Teile offline."
 
 #: includes/include.con_edit_form.php:588
-#: includes/include.con_meta_form.php:300
+#: includes/include.con_meta_form.php:311
 msgid "Summary"
 msgstr "Zusammenfassung"
 
 #: includes/include.con_edit_form.php:676
-#: includes/include.con_meta_form.php:365
+#: includes/include.con_meta_form.php:376
 msgid "Please fill in the start date and/or the end date!"
 msgstr "Bitte geben Sie Startzeitpunkt und / oder Endzeitpunkt ein!"
 
@@ -2917,30 +2928,30 @@ msgstr "Legende"
 msgid "SEO administration"
 msgstr "SEO-Administration"
 
-#: includes/include.con_meta_form.php:382
+#: includes/include.con_meta_form.php:393
 msgid "New meta tag"
 msgstr "Neuer Meta-Tag"
 
-#: includes/include.con_meta_form.php:391
+#: includes/include.con_meta_form.php:402
 msgid "Field Value"
 msgstr "Feldwert"
 
-#: includes/include.con_meta_form.php:393
+#: includes/include.con_meta_form.php:404
 msgid "Field Type"
 msgstr "Eingabetyp"
 
-#: includes/include.con_meta_form.php:395
+#: includes/include.con_meta_form.php:406
 msgid "Max Length"
 msgstr "Maximale Länge"
 
-#: includes/include.con_meta_form.php:397
+#: includes/include.con_meta_form.php:408
 msgid "Field Name"
 msgstr "Feldname"
 
 #: includes/include.con_str_overview.php:511
 #: includes/include.str_overview.php:476
 #: includes/include.str_overview.php:477
-#: templates/standard/template.con_left_top.html:335
+#: templates/standard/template.con_left_top.html:337
 #: templates/standard/template.stat_overview.html:136
 #: templates/standard/template.stat_overview.html:185
 msgid "Close all categories"
@@ -2949,7 +2960,7 @@ msgstr "Alle Kategorien schliessen"
 #: includes/include.con_str_overview.php:512
 #: includes/include.str_overview.php:478
 #: includes/include.str_overview.php:479
-#: templates/standard/template.con_left_top.html:334
+#: templates/standard/template.con_left_top.html:336
 #: templates/standard/template.stat_overview.html:138
 #: templates/standard/template.stat_overview.html:186
 msgid "Open all categories"
@@ -4558,7 +4569,7 @@ msgstr "Neue Kategorie erstellen"
 #: includes/include.str_overview.php:881
 #: includes/include.str_overview.php:884
 #: templates/standard/template.con_left_top_cat_edit.html:12
-#: templates/standard/template.con_left_top_cat_edit.html:33
+#: templates/standard/template.con_left_top_cat_edit.html:34
 #: templates/standard/template.str_overview.html:316
 #: templates/standard/template.str_overview.html:467
 #: templates/standard/template.symbolhelp.html:112
@@ -4630,24 +4641,24 @@ msgstr "Ergebnisse"
 msgid "Logfile \"%s\" deleted successfully"
 msgstr "Log-Datei \"%s\" erfolgreich gelöscht"
 
-#: includes/include.system_log_sysvalues.php:76
+#: includes/include.system_log_sysvalues.php:77
 msgid "Show "
 msgstr "Anzeigen"
 
-#: includes/include.system_log_sysvalues.php:78
-#: includes/include.system_log_sysvalues.php:112
+#: includes/include.system_log_sysvalues.php:79
+#: includes/include.system_log_sysvalues.php:113
 msgid " lines"
 msgstr " Zeilen"
 
-#: includes/include.system_log_sysvalues.php:108
+#: includes/include.system_log_sysvalues.php:109
 msgid "Clear log file, keep last "
 msgstr "Log-Datei leeren, letzte behalten"
 
-#: includes/include.system_log_sysvalues.php:122
+#: includes/include.system_log_sysvalues.php:123
 msgid "Delete log file"
 msgstr "Log-Datei löschen"
 
-#: includes/include.system_log_sysvalues.php:130
+#: includes/include.system_log_sysvalues.php:131
 msgid "No log files found!"
 msgstr "Keine Log-Dateien gefunden / vorhanden."
 
@@ -5374,13 +5385,13 @@ msgstr "Wenn abgelaufen, dann in diese Kategorie verschieben"
 msgid "Make online after move"
 msgstr "Nach dem Verschieben den Artikel online stellen"
 
-#: templates/standard/template.con_left_top.html:309
-#: templates/standard/template.con_left_top.html:333
+#: templates/standard/template.con_left_top.html:311
+#: templates/standard/template.con_left_top.html:335
 msgid "open all"
 msgstr "alle öffnen"
 
-#: templates/standard/template.con_left_top.html:313
-#: templates/standard/template.con_left_top.html:336
+#: templates/standard/template.con_left_top.html:315
+#: templates/standard/template.con_left_top.html:338
 msgid "close all"
 msgstr "alle schließen"
 
@@ -5413,17 +5424,17 @@ msgid "Workflow"
 msgstr "Workflow"
 
 #: templates/standard/template.con_left_top_cat_edit.html:2
-#: templates/standard/template.con_left_top_cat_edit.html:32
+#: templates/standard/template.con_left_top_cat_edit.html:33
 msgid "Template:"
 msgstr "Vorlage:"
 
-#: templates/standard/template.con_left_top_cat_edit.html:18
-#: templates/standard/template.con_left_top_cat_edit.html:34
+#: templates/standard/template.con_left_top_cat_edit.html:17
+#: templates/standard/template.con_left_top_cat_edit.html:35
 msgid "Online / Offline"
 msgstr "Online / Offline"
 
 #: templates/standard/template.con_left_top_cat_edit.html:24
-#: templates/standard/template.con_left_top_cat_edit.html:35
+#: templates/standard/template.con_left_top_cat_edit.html:36
 msgid "Lock / Unlock"
 msgstr "Schützen / Freigeben"
 
@@ -6411,649 +6422,3 @@ msgstr "Debug-Meldungen anzeigen"
 msgid "Allow all HTML tags and attributes in TinyMCE"
 msgstr "Erlaube alle HTML-Tags und -Attribute in TinyMCE"
 
-#~ msgid "Searchable/Indexable"
-#~ msgstr "Such- / Indizierbar"
-
-#~ msgid "Make category online"
-#~ msgstr "Kategorie online setzen"
-
-#~ msgid "Change template"
-#~ msgstr "Vorlage wechseln"
-
-#~ msgid "Set start article"
-#~ msgstr "Startartikel festlegen"
-
-#~ msgid "Make article online"
-#~ msgstr "Artikel online setzen"
-
-#~ msgid "Syncronize category"
-#~ msgstr "Kategorie synchronisieren"
-
-#~ msgid "Syncronize article"
-#~ msgstr "Artikel synchronisieren"
-
-#~ msgid "Edit template configuration"
-#~ msgstr "Vorlagenkonfiguration bearbeiten"
-
-#~ msgid "Expand boxes"
-#~ msgstr "Boxen ausklappen / einklappen"
-
-#~ msgid "Configure article"
-#~ msgstr "Artikel konfigurieren"
-
-#~ msgid "Save article"
-#~ msgstr "Artikel speichern"
-
-#~ msgid "Edit article properties"
-#~ msgstr "Artikeleigenschaften bearbeiten"
-
-#~ msgid "Edit article"
-#~ msgstr "Artikel bearbeiten"
-
-#~ msgid "Help"
-#~ msgstr "Hilfe"
-
-#~ msgid "List content entries"
-#~ msgstr "Inhaltsliste anzeigen"
-
-#~ msgid "Edit content list entry"
-#~ msgstr "Eintrag aus Inhaltsliste bearbeiten"
-
-#~ msgid "Delete content list entry"
-#~ msgstr "Eintrag aus Inhaltsliste entfernen"
-
-#~ msgid "Edit translations"
-#~ msgstr "Bearbeite Übersetzungen"
-
-#~ msgid "Save translations"
-#~ msgstr "Speichere Übersetzungen"
-
-#~ msgid "New category"
-#~ msgstr "Neue Kategorie"
-
-#~ msgid "Set category on- or offline"
-#~ msgstr "Kategorie on- oder offline setzen"
-
-#~ msgid "Disable category"
-#~ msgstr "Kategorie schützen"
-
-#~ msgid "Frontend access"
-#~ msgstr "Frontend-Zugriff"
-
-#~ msgid "Create new tree"
-#~ msgstr "Neuen Baum anlegen"
-
-#~ msgid "Create directory"
-#~ msgstr "Verzeichnis erstellen"
-
-#~ msgid "Delete files"
-#~ msgstr "Dateien löschen"
-
-#~ msgid "Remove directory"
-#~ msgstr "Verzeichnis löschen"
-
-#~ msgid "Rename directory"
-#~ msgstr "Verzeichnis umbenennen"
-
-#~ msgid "Modify file"
-#~ msgstr "Datei modifizieren"
-
-#~ msgid "Rename file"
-#~ msgstr "Datei umbenennen"
-
-#~ msgid "Multidelete files"
-#~ msgstr "Mehrfachlöschung"
-
-#~ msgid "Modify layout"
-#~ msgstr "Layout bearbeiten"
-
-#~ msgid "Create layout"
-#~ msgstr "Layout erstellen"
-
-#~ msgid "Manage history"
-#~ msgstr "Historie verwalten"
-
-#~ msgid "Truncate history"
-#~ msgstr "Historie löschen"
-
-#~ msgid "Create module"
-#~ msgstr "Modul erstellen"
-
-#~ msgid "Import/Export module"
-#~ msgstr "Modul importieren / exportieren"
-
-#~ msgid "Translate modules"
-#~ msgstr "Modul übersetzen"
-
-#~ msgid "Translation import/export"
-#~ msgstr "Übersetzungen importieren / exportieren"
-
-#~ msgid "Import/Export package"
-#~ msgstr "Paket importieren / exportieren"
-
-#~ msgid "Create template"
-#~ msgstr "Vorlage erstellen"
-
-#~ msgid "Save user area rights"
-#~ msgstr "User-Bereichsrechte speichern"
-
-#~ msgid "Edit rights"
-#~ msgstr "Rechte bearbeiten"
-
-#~ msgid "Delete group members"
-#~ msgstr "Gruppenmitglieder löschen"
-
-#~ msgid "Add group members"
-#~ msgstr "Gruppenmitglied hinzufügen"
-
-#~ msgid "Show statistics"
-#~ msgstr "Statistik anzeigen"
-
-#~ msgid "Rename language"
-#~ msgstr "Sprache umbenennen"
-
-#~ msgid "Create language"
-#~ msgstr "Sprache erstellen"
-
-#~ msgid "Linkchecker"
-#~ msgstr "Linkchecker"
-
-#~ msgid "Linkchecker Whitelist"
-#~ msgstr "Linkchecker Whitelist"
-
-#~ msgid "Install/Remove plugins"
-#~ msgstr "Plugins installieren / deinstallieren"
-
-#~ msgid "Modify CSS"
-#~ msgstr "CSS modifizieren"
-
-#~ msgid "Create CSS"
-#~ msgstr "CSS erstellen"
-
-#~ msgid "Delete CSS"
-#~ msgstr "CSS löschen"
-
-#~ msgid "Edit script"
-#~ msgstr "Script bearbeiten"
-
-#~ msgid "Delete script"
-#~ msgstr "Script löschen"
-
-#~ msgid "Modify HTML template"
-#~ msgstr "HTML-Vorlage verändern"
-
-#~ msgid "Create HTML template"
-#~ msgstr "HTML-Vorlage erstellen"
-
-#~ msgid "Delete HTML template"
-#~ msgstr "HTML-Vorlage löschen"
-
-#~ msgid "Edit newsletter"
-#~ msgstr "Newsletter bearbeiten"
-
-#~ msgid "Delete newsletter"
-#~ msgstr "Newsletter löschen"
-
-#~ msgid "Duplicate newsletter"
-#~ msgstr "Newsletter kopieren"
-
-#~ msgid "Add newsletter dispatch job"
-#~ msgstr "Newsletter Versand-Job erstellen"
-
-#~ msgid "Change global HTML newsletter settings"
-#~ msgstr "Globale HTML-Newsletter-Einstellungen ändern"
-
-#~ msgid "Send test newsletter (to groups)"
-#~ msgstr "Test-Newsletter versenden (an Gruppen)"
-
-#~ msgid "Delete dispatch job"
-#~ msgstr "Newsletter Versand-Job löschen"
-
-#~ msgid "Remove recipient from dispatch job"
-#~ msgstr "Empfänger aus Newsletter-Job herausnehmen"
-
-#~ msgid "Run job"
-#~ msgstr "Job ausführen"
-
-#~ msgid "View dispatch job details"
-#~ msgstr "Newsletter Versand-Job-Details ansehen"
-
-#~ msgid "Edit recipient"
-#~ msgstr "Empfänger bearbeiten"
-
-#~ msgid "Delete recipient"
-#~ msgstr "Empfänger löschen"
-
-#~ msgid "Purge recipients"
-#~ msgstr "Empfänger aufräumen"
-
-#~ msgid "Import recipients"
-#~ msgstr "Empfänger importieren"
-
-#~ msgid "Execute recipients import"
-#~ msgstr "Empfänger-Import ausführen"
-
-#~ msgid "Delete recipient group"
-#~ msgstr "Empfänger-Gruppe löschen"
-
-#~ msgid "Delete recipient from group"
-#~ msgstr "Empfänger aus Gruppe entfernen"
-
-#~ msgid "Save recipient group"
-#~ msgstr "Änderungen in Empfänger-Gruppe speichern"
-
-#~ msgid "Edit own MyContenido settings"
-#~ msgstr "Eigene MyContenido-Einstellungen bearbeiten"
-
-#~ msgid "Delete reminder item"
-#~ msgstr "Wiedervorlage löschen"
-
-#~ msgid "Save todo item"
-#~ msgstr "ToDo-Eintrag speichern"
-
-#~ msgid "Edit client"
-#~ msgstr "Mandant bearbeiten"
-
-#~ msgid "Remove client"
-#~ msgstr "Mandant löschen"
-
-#~ msgid "Delete client setting"
-#~ msgstr "Mandanteneinstellungen löschen"
-
-#~ msgid "Edit client setting"
-#~ msgstr "Mandanteneinstellungen bearbeiten"
-
-#~ msgid "Save client setting"
-#~ msgstr "Mandanteneinstellungen speichern"
-
-#~ msgid "Create/Edit article specifications"
-#~ msgstr "Artikelspezifikation erstellen / bearbeiten"
-
-#~ msgid "Delete article specifications"
-#~ msgstr "Artikelspezifikation löschen"
-
-#~ msgid "Define default article specification"
-#~ msgstr "Dies ist die standardmäßige Artikelspezifikation"
-
-#~ msgid "Edit article specifications"
-#~ msgstr "Artikelspezifikationen bearbeiten"
-
-#~ msgid "Make article specifications online"
-#~ msgstr "Artikelspezifikationen online setzen"
-
-#~ msgid "Save frontend user"
-#~ msgstr "Frontendbenutzer speichern"
-
-#~ msgid "Create frontend user"
-#~ msgstr "Frontendbenutzer erstellen"
-
-#~ msgid "Delete frontend user"
-#~ msgstr "Frontendbenutzer löschen"
-
-#~ msgid "Save frontend group"
-#~ msgstr "Frontendbenutzergruppe speichern"
-
-#~ msgid "Create frontend group"
-#~ msgstr "Frontendbenutzergruppe erstellen"
-
-#~ msgid "Add frontend users"
-#~ msgstr "Frontendbenutzer hinzufügen"
-
-#~ msgid "Save frontend group permissions"
-#~ msgstr "Frontendbenutzergruppe-Berechtigungen speichern"
-
-#~ msgid "Delete system property"
-#~ msgstr "Systemeinstellung löschen"
-
-#~ msgid "Edit system property"
-#~ msgstr "Systemeinstellung bearbeiten"
-
-#~ msgid "Save system property"
-#~ msgstr "Systemeinstellung speichern"
-
-#~ msgid "Empty log"
-#~ msgstr "Log leeren"
-
-#~ msgid "Edit system configration"
-#~ msgstr "Systemkonfiguration bearbeiten"
-
-#~ msgid "Do system purge"
-#~ msgstr "Systembereinigung ausführen"
-
-#~ msgid "Show log"
-#~ msgstr "Log anzeigen"
-
-#~ msgid "Request password?"
-#~ msgstr "Passwort vergessen?"
-
-#~ msgid "Delete note"
-#~ msgstr "Notiz löschen"
-
-#~ msgid "Save note"
-#~ msgstr "Notiz speichern"
-
-#~ msgid "Send mail"
-#~ msgstr "E-Mail senden"
-
-#~ msgid "Fake permissions"
-#~ msgstr "Berechtigungen emulieren"
-
-#~ msgid "No description"
-#~ msgstr "Keine Beschreibung"
-
-#~ msgid "Cant make a new modul!"
-#~ msgstr "Kann neues Modul nicht erstellen!"
-
-#~ msgid "Created new module successfuly!"
-#~ msgstr "Neues Modul erfolgreich angelegt!"
-
-#~ msgid "Configure Category"
-#~ msgstr "Kategorie konfigurieren"
-
-#~ msgid "This article specification is default"
-#~ msgstr "Diese Artikelspezifikation ist Standard"
-
-#~ msgid "Edit image for container %s"
-#~ msgstr "Bild für Container %s bearbeiten"
-
-#~ msgid "Upload image"
-#~ msgstr "Bild hochladen"
-
-#~ msgid "Directory / File"
-#~ msgstr "Verzeichnis / Datei"
-
-#~ msgid "Edit link for container %s"
-#~ msgstr "Link für Container %s bearbeiten"
-
-#~ msgid "Link to a document"
-#~ msgstr "Link zu einem Dokument"
-
-#~ msgid "Link to an image"
-#~ msgstr "Link zu einem Bild"
-
-#~ msgid "Link to an archive"
-#~ msgstr "Link zu einem Archiv"
-
-#~ msgid "Link to a media file"
-#~ msgstr "Link zu einer Mediendatei"
-
-#~ msgid "Link to any file"
-#~ msgstr "Link auf eine beliebige Datei"
-
-#~ msgid "Upload file"
-#~ msgstr "Datei hochladen"
-
-#~ msgid "Target frame"
-#~ msgstr "Zielframe"
-
-#~ msgid "Open link in new window"
-#~ msgstr "Im neuen Fenster öffnen"
-
-#~ msgid "Open in new window"
-#~ msgstr "Im neuen Fenster öffnen"
-
-#~ msgid "with click select line for further treatment"
-#~ msgstr "mit Klick Zeile zur weiteren Bearbeitung auswählen"
-
-#~ msgid "This file is too large."
-#~ msgstr "Diese Datei ist zu groß."
-
-#~ msgid "Clear contents"
-#~ msgstr "Inhalt leeren"
-
-#~ msgid "Make new template file"
-#~ msgstr "Neues Template erstellen"
-
-#~ msgid "New template file"
-#~ msgstr "Neues Template"
-
-#~ msgid "Provide address"
-#~ msgstr "Adresse angeben"
-
-#~ msgid "Mailer not supported"
-#~ msgstr "Mailer nicht unterstützt"
-
-#~ msgid "Execute"
-#~ msgstr "Ausführen"
-
-#~ msgid "Instantiate"
-#~ msgstr "Instanzieren"
-
-#~ msgid "From failed"
-#~ msgstr "From fehlgeschlagen"
-
-#~ msgid "Recipients failed"
-#~ msgstr "Empfänger fehlgeschlagen"
-
-#~ msgid "Data not accepted"
-#~ msgstr "Daten nicht akzeptiert"
-
-#~ msgid "Authenticate"
-#~ msgstr "Authentifizieren"
-
-#~ msgid "Connect host"
-#~ msgstr "Verbinde Host"
-
-#~ msgid "File access"
-#~ msgstr "Datei Zugriff"
-
-#~ msgid "File open"
-#~ msgstr "Datei öffnen"
-
-#~ msgid "JavaScript editor"
-#~ msgstr "JavaScript-Editor"
-
-#~ msgid "Module"
-#~ msgstr "Module"
-
-#~ msgid "Keyword"
-#~ msgstr "Keyword"
-
-#~ msgid "Translated name"
-#~ msgstr "Übersetzter Name"
-
-#~ msgid "Block style"
-#~ msgstr "Blockdarstellung"
-
-#~ msgid "Meta tags administration"
-#~ msgstr "Meta-Tag Administration"
-
-#~ msgid "No error log entries found"
-#~ msgstr "Keine Einträge im Fehlerlog gefunden"
-
-#~ msgid "No error log file found"
-#~ msgstr "Keine Fehlerlog-Datei gefunden"
-
-#~ msgid "The folder located at "
-#~ msgstr "Das Verzeichnis"
-
-#~ msgid "Renamed CSS file successfully!"
-#~ msgstr "CSS-Datei wurde erfolgreich umbenannt!"
-
-#~ msgid "CONTENIDO PEAR path"
-#~ msgstr "CONTENIDO PEAR-Pfad"
-
-#~ msgid "CONTENIDO PHPLIB path"
-#~ msgstr "CONTENIDO PHPLIB-Pfad"
-
-#~ msgid ""
-#~ "The sysadmin and/or the admin account still contains a well-known default "
-#~ "password. Please change immediately after login."
-#~ msgstr ""
-#~ "Der Sysadmin und/oder Admin Account ist noch auf das Standardpasswort "
-#~ "gesetzt. Bitte ändern Sie gleich nach dem Login diese Passwörter."
-
-#~ msgid "Meta tags"
-#~ msgstr "Meta-Tags"
-
-#~ msgid "PHP MySQL Extension missing"
-#~ msgstr "PHP MySQL Extension nicht geladen"
-
-#~ msgid ""
-#~ "CONTENIDO requires the MySQL or MySQLi extension to access MySQL "
-#~ "databases. Please configure PHP to use either MySQL or MySQLi."
-#~ msgstr ""
-#~ "CONTENIDO benötigt die MySQL- oder MySQLi-Extension, um auf MySQL-"
-#~ "Datenbanken zuzugreifen. Bitte konfigurieren Sie PHP so, daß PHP entweder "
-#~ "MySQL oder MySQLi verwendet."
-
-#~ msgid "Information"
-#~ msgstr "Information"
-
-#~ msgid "Fatal error"
-#~ msgstr "Schwerer Fehler"
-
-#~ msgid "No problems detected"
-#~ msgstr "Keine Probleme gefunden"
-
-#~ msgid ""
-#~ "System integrity could not detect any problems with your system "
-#~ "environment"
-#~ msgstr ""
-#~ "Die Systemintegrität konnte keine Probleme mit Ihrer Systemumgebung "
-#~ "finden."
-
-#~ msgid "An old Version of Plugin %s is installed on your system."
-#~ msgstr "Eine alte Version des Plugin %s ist auf Ihrem System installiert."
-
-#~ msgid ""
-#~ "Please remove all old plugins before you continue. To transfer old plugin "
-#~ "data, please copy the old plugin data tables into the new plugin data "
-#~ "tables after the installation. The new plugintable names are the same, "
-#~ "but contains the table prefix of CONTENIDO. Also delete the old plugin "
-#~ "tables after data transfer."
-#~ msgstr ""
-#~ "Bitte entfernen Sie alle alten Plugins bevor Sie fortfahren. Um die alten "
-#~ "Plugindaten zu übertragen, kopieren Sie bitte die alten Daten aus den "
-#~ "Plugintabellen nach der Installation in die neuen Plugintabellen. Die "
-#~ "neuen Plugintabellen haben die gleiche Bezeichnung, besitzen jedoch "
-#~ "zusätzlich den CONTENIDO Tabellenpräfix. Bitte entfernen Sie auch nach "
-#~ "der Datenübertragung die alten Plugintabellen."
-
-#~ msgid "Old Plugins are still installed"
-#~ msgstr "Alte Plugins sind noch installiert"
-
-#~ msgid ""
-#~ "You are updating a previous version of CONTENIDO to %s. Some directories/"
-#~ "files have been moved to other sections in %s.\n"
-#~ "\n"
-#~ "Please ensure to copy contenido/includes/config.php to data/config/"
-#~ "production/config.php and also other configuration files within contenido/"
-#~ "includes/ to data/config/production/."
-#~ msgstr ""
-#~ "Sie aktualisieren von einer früheren CONTENIDO Version auf %s. In der "
-#~ "Version %s wurden einige Verzeichnisse/Dateien in andere Bereiche "
-#~ "ausgelagert.\n"
-#~ "\n"
-#~ "Bitte stellen Sie sicher, dass die Datei contenido/includes/config.php in "
-#~ "data/config/production/config.php kopiert wird. Das gilt auch für andere "
-#~ "Konfigurations-Dateien in contenido/includes/ die bei Bedarf nach data/"
-#~ "config/production/ kopiert werden sollten."
-
-#~ msgid "Attention: Some directories/files have been moved"
-#~ msgstr "Achtung: Einige Verzeichnisse/Dateien wurden verschoben"
-
-#~ msgid "MySQL database already exists and seems to be filled"
-#~ msgstr "MySQL-Datenbank existiert bereits und scheint gefüllt zu sein"
-
-#~ msgid ""
-#~ "System integrity checked the database %s and found the table %s. It seems "
-#~ "that you already have a CONTENIDO installation in this database. If you "
-#~ "want to install anyways, change the database prefix. If you want to "
-#~ "upgrade from a previous version, choose 'upgrade' as setup type."
-#~ msgstr ""
-#~ "Die Systemintegrität hat die Datenbank %s geprüft und die Tabelle %s "
-#~ "gefunden. Es scheint, als ob eine (ältere) CONTENIDO-Version bereits "
-#~ "installiert ist. Wenn Sie trotzdem in dieser Datenbank installieren "
-#~ "möchten, wählen Sie einen anderen Präfix. Wenn Sie von einer älteren "
-#~ "CONTENIDO-Version upgraden möchten, wählen Sie bitte \"Upgrade\" als "
-#~ "Setupart."
-
-#~ msgid "MySQL test table already exists in the database"
-#~ msgstr "MySQL Testtabelle existiert bereits in der Datenbank"
-
-#~ msgid ""
-#~ "System integrity checked the database %s and found the test table %s. "
-#~ "Please remove it before continuing."
-#~ msgstr ""
-#~ "Die Systemintegrität hat die Datenbank %s geprüft und die Testtabelle %s "
-#~ "gefunden. Bitte entfernen Sie diese, bevor Sie fortfahren."
-
-#~ msgid "Unable to create tables in the selected MySQL database"
-#~ msgstr "Kann keine Tabellen in der gewählten MySQL-Datenbank anlegen"
-
-#~ msgid ""
-#~ "System integrity tried to create a test table in the database %s and "
-#~ "failed. Please assign table creation permissions to the database user you "
-#~ "entered, or ask an administrator to do so."
-#~ msgstr ""
-#~ "Die Systemintegrität hat versucht, eine Testtabelle in der Datenbank %s "
-#~ "anzulegen und ist gescheitert. Bitte weisen Sie ihrem Datenbankbenutzer "
-#~ "entsprechende Rechte zu, oder fragen Sie einen Administrator."
-
-#~ msgid "Unable to remove the test table"
-#~ msgstr "Konnte die Testtabelle nicht entfernen"
-
-#~ msgid ""
-#~ "System integrity tried to remove the test table %s in the database %s and "
-#~ "failed due to insufficient permissions. Please remove the table %s "
-#~ "manually."
-#~ msgstr ""
-#~ "Die Systemintegrität hat die Testtabelle %s in der Datenbank %s erstellt, "
-#~ "konnte sie jedoch aufgrund fehlender Berechtigungen nicht löschen. Bitte "
-#~ "löschen Sie die Testtabelle %s manuell."
-
-#~ msgid "Unable to create the database in the MySQL server"
-#~ msgstr "Datenbankerzeugung auf dem MySQL-Server ist fehlgeschlagen"
-
-#~ msgid ""
-#~ "System integrity tried to create a test database and failed. Please "
-#~ "assign database creation permissions to the database user you entered, "
-#~ "ask an administrator to do so, or create the database manually."
-#~ msgstr ""
-#~ "Die Systemintegrität hat versucht, eine Testdatenbank zu erzeugen, jedoch "
-#~ "ist die Datenbankerzeugung fehlgeschlagen. Bitte vergeben Sie passende "
-#~ "Berechtigungen für den eingegebenen Datenbankbenutzer, fragen Sie ihre "
-#~ "Administrator, oder erstellen Sie die Datenbank händisch."
-
-#~ msgid "No data found for the migration"
-#~ msgstr "Keine Daten für die Migration gefunden"
-
-#~ msgid ""
-#~ "System integrity tried to locate the data for the migration, however, the "
-#~ "database %s doesn't exist. You need to copy your database first before "
-#~ "running system integrity."
-#~ msgstr ""
-#~ "Die Systemintegrität hat versucht, die Daten für die Migration zu "
-#~ "lokalisieren, jedoch enthält die Datenbank %s keine Tabellen. Bitte "
-#~ "kopieren Sie die Datenbank bevor Sie die Systemintegrität ausführen."
-
-#~ msgid ""
-#~ "System integrity tried to locate the data for the migration, however, the "
-#~ "database %s contains no tables. You need to copy your database first "
-#~ "before running system integrity."
-#~ msgstr ""
-#~ "Die Systemintegrität hat versucht, die Daten für die Migration zu "
-#~ "lokalisieren, jedoch enthält die Datenbank %s keine Tabellen. Bitte "
-#~ "kopieren Sie die Datenbank bevor Sie die Systemintegrität ausführen."
-
-#~ msgid "No data found for the upgrade"
-#~ msgstr "Keine Daten für das Upgrade gefunden"
-
-#~ msgid ""
-#~ "System integrity tried to locate the data for the upgrade, however, the "
-#~ "database %s doesn't exist. You need to copy your database first before "
-#~ "running system integrity."
-#~ msgstr ""
-#~ "Die Systemintegrität hat versucht, die Daten für das Upgrade zu "
-#~ "lokalisieren, jedoch existiert die Datenbank %s nicht. Bitte kopieren Sie "
-#~ "die Datenbank bevor Sie die Systemintegrität ausführen."
-
-#~ msgid ""
-#~ "System integrity tried to locate the data for the upgrade, however, the "
-#~ "database %s contains no tables. You need to copy your database first "
-#~ "before running system integrity."
-#~ msgstr ""
-#~ "Die Systemintegrität hat versucht, die Daten für das Upgrade zu "
-#~ "lokalisieren, jedoch enthält die Datenbank %s keine Tabellen. Bitte "
-#~ "kopieren Sie die Datenbank bevor Sie die Systemintegrität ausführen."

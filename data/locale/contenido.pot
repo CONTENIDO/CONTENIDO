@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-05 14:38+0200\n"
+"POT-Creation-Date: 2013-06-10 16:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -270,11 +270,11 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: classes/class.filehandler.php:427
+#: classes/class.filehandler.php:491
 msgid "Wrong file name."
 msgstr ""
 
-#: classes/class.filehandler.php:440
+#: classes/class.filehandler.php:504
 msgid "Please insert file name."
 msgstr ""
 
@@ -307,32 +307,32 @@ msgstr ""
 msgid "View notes / add note"
 msgstr ""
 
-#: classes/class.password.request.php:192
+#: classes/class.password.request.php:214
 #: includes/include.con_translate.php:445
 #: templates/standard/template.symbolhelp.html:73
 #: templates/standard/template.symbolhelp.html:677
 msgid "Submit"
 msgstr ""
 
-#: classes/class.password.request.php:195
+#: classes/class.password.request.php:217
 msgid "Please enter your login"
 msgstr ""
 
-#: classes/class.password.request.php:235
+#: classes/class.password.request.php:260
 #, php-format
 msgid "Password requests are allowed every %s minutes."
 msgstr ""
 
-#: classes/class.password.request.php:243
-#: classes/class.password.request.php:256
+#: classes/class.password.request.php:272
+#: classes/class.password.request.php:286
 msgid "No matching data found. Please contact your systemadministrator."
 msgstr ""
 
-#: classes/class.password.request.php:249
+#: classes/class.password.request.php:279
 msgid "New password was submitted to your e-mail address."
 msgstr ""
 
-#: classes/class.password.request.php:289
+#: classes/class.password.request.php:328
 #, php-format
 msgid ""
 "Dear CONTENIDO-User %s,\n"
@@ -344,7 +344,7 @@ msgid ""
 "Your CONTENIDO sysadmin"
 msgstr ""
 
-#: classes/class.password.request.php:293
+#: classes/class.password.request.php:334
 msgid "Your new password for CONTENIDO Backend"
 msgstr ""
 
@@ -844,6 +844,17 @@ msgid ""
 "the directory. If you want to install anyways, enable write access for all "
 "others, e.g. using chmod o+rw %s, setting the directory mask to %s or set "
 "the others to allow writing the directory."
+msgstr ""
+
+#: classes/class.systemtest.php:1050 classes/class.systemtest.php:1054
+#, php-format
+msgid "Could not find or create directory %s"
+msgstr ""
+
+#: classes/class.systemtest.php:1050 classes/class.systemtest.php:1054
+msgid ""
+"The frontend expects certain directories to exist and it needs to be able to "
+"write to these directories."
 msgstr ""
 
 #: classes/class.todo.php:77
@@ -1756,7 +1767,7 @@ msgstr ""
 #: includes/include.client_artspec.php:46 includes/include.client_edit.php:27
 #: includes/include.con_art_overview.php:952
 #: includes/include.con_edit_form.php:697
-#: includes/include.con_meta_form.php:468
+#: includes/include.con_meta_form.php:479
 #: includes/include.con_translate.php:133
 #: includes/include.grouprights_area.php:36
 #: includes/include.grouprights_con.php:34
@@ -2063,9 +2074,9 @@ msgstr ""
 #: includes/include.mycontenido_settings.php:91
 #: includes/include.rights_overview.php:113
 #: includes/include.system_configuration.php:144
-#: includes/type/action/include.con_meta_saveart.action.php:73
+#: includes/type/action/include.con_meta_saveart.action.php:74
 #: includes/type/action/include.con_saveart.action.php:39
-#: includes/type/action/include.con_saveart.action.php:138
+#: includes/type/action/include.con_saveart.action.php:146
 msgid "Changes saved"
 msgstr ""
 
@@ -2855,12 +2866,12 @@ msgid ""
 msgstr ""
 
 #: includes/include.con_edit_form.php:588
-#: includes/include.con_meta_form.php:300
+#: includes/include.con_meta_form.php:311
 msgid "Summary"
 msgstr ""
 
 #: includes/include.con_edit_form.php:676
-#: includes/include.con_meta_form.php:365
+#: includes/include.con_meta_form.php:376
 msgid "Please fill in the start date and/or the end date!"
 msgstr ""
 
@@ -2913,29 +2924,29 @@ msgstr ""
 msgid "SEO administration"
 msgstr ""
 
-#: includes/include.con_meta_form.php:382
+#: includes/include.con_meta_form.php:393
 msgid "New meta tag"
 msgstr ""
 
-#: includes/include.con_meta_form.php:391
+#: includes/include.con_meta_form.php:402
 msgid "Field Value"
 msgstr ""
 
-#: includes/include.con_meta_form.php:393
+#: includes/include.con_meta_form.php:404
 msgid "Field Type"
 msgstr ""
 
-#: includes/include.con_meta_form.php:395
+#: includes/include.con_meta_form.php:406
 msgid "Max Length"
 msgstr ""
 
-#: includes/include.con_meta_form.php:397
+#: includes/include.con_meta_form.php:408
 msgid "Field Name"
 msgstr ""
 
 #: includes/include.con_str_overview.php:511
 #: includes/include.str_overview.php:476 includes/include.str_overview.php:477
-#: templates/standard/template.con_left_top.html:335
+#: templates/standard/template.con_left_top.html:337
 #: templates/standard/template.stat_overview.html:136
 #: templates/standard/template.stat_overview.html:185
 msgid "Close all categories"
@@ -2943,7 +2954,7 @@ msgstr ""
 
 #: includes/include.con_str_overview.php:512
 #: includes/include.str_overview.php:478 includes/include.str_overview.php:479
-#: templates/standard/template.con_left_top.html:334
+#: templates/standard/template.con_left_top.html:336
 #: templates/standard/template.stat_overview.html:138
 #: templates/standard/template.stat_overview.html:186
 msgid "Open all categories"
@@ -4519,7 +4530,7 @@ msgstr ""
 
 #: includes/include.str_overview.php:881 includes/include.str_overview.php:884
 #: templates/standard/template.con_left_top_cat_edit.html:12
-#: templates/standard/template.con_left_top_cat_edit.html:33
+#: templates/standard/template.con_left_top_cat_edit.html:34
 #: templates/standard/template.str_overview.html:316
 #: templates/standard/template.str_overview.html:467
 #: templates/standard/template.symbolhelp.html:112
@@ -4591,24 +4602,24 @@ msgstr ""
 msgid "Logfile \"%s\" deleted successfully"
 msgstr ""
 
-#: includes/include.system_log_sysvalues.php:76
+#: includes/include.system_log_sysvalues.php:77
 msgid "Show "
 msgstr ""
 
-#: includes/include.system_log_sysvalues.php:78
-#: includes/include.system_log_sysvalues.php:112
+#: includes/include.system_log_sysvalues.php:79
+#: includes/include.system_log_sysvalues.php:113
 msgid " lines"
 msgstr ""
 
-#: includes/include.system_log_sysvalues.php:108
+#: includes/include.system_log_sysvalues.php:109
 msgid "Clear log file, keep last "
 msgstr ""
 
-#: includes/include.system_log_sysvalues.php:122
+#: includes/include.system_log_sysvalues.php:123
 msgid "Delete log file"
 msgstr ""
 
-#: includes/include.system_log_sysvalues.php:130
+#: includes/include.system_log_sysvalues.php:131
 msgid "No log files found!"
 msgstr ""
 
@@ -5319,13 +5330,13 @@ msgstr ""
 msgid "Make online after move"
 msgstr ""
 
-#: templates/standard/template.con_left_top.html:309
-#: templates/standard/template.con_left_top.html:333
+#: templates/standard/template.con_left_top.html:311
+#: templates/standard/template.con_left_top.html:335
 msgid "open all"
 msgstr ""
 
-#: templates/standard/template.con_left_top.html:313
-#: templates/standard/template.con_left_top.html:336
+#: templates/standard/template.con_left_top.html:315
+#: templates/standard/template.con_left_top.html:338
 msgid "close all"
 msgstr ""
 
@@ -5358,17 +5369,17 @@ msgid "Workflow"
 msgstr ""
 
 #: templates/standard/template.con_left_top_cat_edit.html:2
-#: templates/standard/template.con_left_top_cat_edit.html:32
+#: templates/standard/template.con_left_top_cat_edit.html:33
 msgid "Template:"
 msgstr ""
 
-#: templates/standard/template.con_left_top_cat_edit.html:18
-#: templates/standard/template.con_left_top_cat_edit.html:34
+#: templates/standard/template.con_left_top_cat_edit.html:17
+#: templates/standard/template.con_left_top_cat_edit.html:35
 msgid "Online / Offline"
 msgstr ""
 
 #: templates/standard/template.con_left_top_cat_edit.html:24
-#: templates/standard/template.con_left_top_cat_edit.html:35
+#: templates/standard/template.con_left_top_cat_edit.html:36
 msgid "Lock / Unlock"
 msgstr ""
 

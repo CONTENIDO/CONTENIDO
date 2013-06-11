@@ -69,9 +69,12 @@ class cSetupClientMode extends cSetupMask
             $folders = substr($folders, 0, strlen($folders) - 2);
         }
 
+        $exampleMessage = i18n("PLEASE NOTE: Some folders (%s) which are used by the example client aren't empty. THESE WILL BE OVERWRITTEN");
+        $moduleMessage = i18n("PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN");
+
         $aChoices = array(
-            "CLIENTEXAMPLES" => i18n("Client with example modules and example content") . ((strlen($folders) > 0) ? " <span class='additionalInfo'>(" . sprintf(i18n("PLEASE NOTE: Some folders (%s) which are used by the example client aren't empty. THESE WILL BE OVERWRITTEN"), $folders) . ")</span>" : ""),
-            "CLIENTMODULES"  => i18n("Client with example modules, but without example content") . (($moduleFolderNotEmpty) ? " <span class='additionalInfo'>(" . i18n("PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN") . ")</span>" : ""),
+            "CLIENTEXAMPLES" => i18n("Client with example modules and example content") . ((strlen($folders) > 0) ? " <span class='additionalInfo'>(" . sprintf($exampleMessage, $folders) . ")</span>" : ""),
+            "CLIENTMODULES"  => i18n("Client with example modules, but without example content") . (($moduleFolderNotEmpty) ? " <span class='additionalInfo'>(" . $moduleMessage . ")</span>" : ""),
             "NOCLIENT"       => i18n("Don't create client")
         );
 
