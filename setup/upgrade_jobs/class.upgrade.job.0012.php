@@ -1,12 +1,12 @@
 <?php
 /**
- * This file contains the upgrade job 11.
+ * This file contains the upgrade job 12.
  *
  * @package    Setup
  * @subpackage UpgradeJob
  * @version    SVN Revision $Rev:$
  *
- * @author     Frederic Schneider
+ * @author     Mischa Holz
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -39,28 +39,28 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract {
         			mkdir($cfgClient[1]["path"]["frontend"]."css");
         		}
         		cFileHandler::recursiveCopy("data/examples/data/css", $cfgClient[1]["path"]["frontend"]."css");
-        		
+
         		//copy the scripts folder to the cms folder for the example client
         		if(cFileHandler::exists($cfgClient[1]["path"]["frontend"]."js")) {
         			cFileHandler::recursiveRmdir($cfgClient[1]["path"]["frontend"]."js");
         			mkdir($cfgClient[1]["path"]["frontend"]."js");
         		}
         		cFileHandler::recursiveCopy("data/examples/data/js", $cfgClient[1]["path"]["frontend"]."js");
-        		
+
         		//copy the template folder to the cms folder for the example client
         		if(cFileHandler::exists($cfgClient[1]["path"]["frontend"]."templates")) {
         			cFileHandler::recursiveRmdir($cfgClient[1]["path"]["frontend"]."templates");
         			mkdir($cfgClient[1]["path"]["frontend"]."templates");
         		}
         		cFileHandler::recursiveCopy("data/examples/data/templates", $cfgClient[1]["path"]["frontend"]."templates");
-        		
+
         		//copy the upload folder to the cms folder for the example client
         		if(cFileHandler::exists($cfgClient[1]["path"]["frontend"]."upload")) {
         			cFileHandler::recursiveRmdir($cfgClient[1]["path"]["frontend"]."upload");
         			mkdir($cfgClient[1]["path"]["frontend"]."upload");
         		}
         		cFileHandler::recursiveCopy("data/examples/data/upload", $cfgClient[1]["path"]["frontend"]."upload");
-        		
+
         		//copy the layout folder to the cms folder for the example client
         		if(cFileHandler::exists($cfgClient[1]["path"]["frontend"]."data/layouts")) {
         			cFileHandler::recursiveRmdir($cfgClient[1]["path"]["frontend"]."data/layouts");

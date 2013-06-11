@@ -224,16 +224,6 @@ i18n("Allow all HTML tags and attributes in TinyMCE")
                 <group>Development</group>
             </basehref>
         </generator>
-        <imagemagick>
-            <available>
-                <values>
-                    <array_value>0</array_value>
-                    <array_value>1</array_value>
-                </values>
-                <label>Use image magic (if available)</label>
-                <group>Development</group>
-            </available>
-        </imagemagick>
         <debug>
             <debug_to_file>
                 <values>
