@@ -102,7 +102,7 @@ if (empty($allLanguages)) {
         $url = $catRetItem->getLink($selectedLang);
     } else {
         $config = cRegistry::getClientConfig(cRegistry::getClientId());
-        $url = cRegistry::getFrontendUrl() . 'front_content.php?changelang=' . $selectedLang;
+        $url = cRegistry::getFrontendUrl() . 'front_content.php?idart='.$idart.'&changelang=' . $selectedLang;
     }
 
     $tpl->set('s', 'url', $url);

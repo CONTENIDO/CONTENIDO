@@ -335,7 +335,7 @@ class cFileHandler {
             if(!mkdir($destination)) {
                 return false;
             }
-            if(!self::chmod($destination, 777)) {
+            if(!self::chmod($destination, "777")) {
                 return false;
             }
         }
@@ -345,14 +345,14 @@ class cFileHandler {
     			if(!mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
     				return false;
     			}
-	            if(!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), 777)) {
+	            if(!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
 	                return false;
 	            }
     		} else {
     			if(!copy($item, $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
     				return false;
     			}
-	            if(!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), 777)) {
+	            if(!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
 	                return false;
 	            }
     		}
