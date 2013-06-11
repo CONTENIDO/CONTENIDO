@@ -91,6 +91,9 @@ $import->setLabelText(i18n("Import from zip-file"));
 $importXML->setLabelText(i18n("Import from xml-file"));
 $export->setLabelText(i18n("Export to file"));
 
+$export->setEvent("onclick", "$('#vupload').hide()");
+$importXML->setEvent("onclick", "$('#vupload').show()");
+$import->setEvent("onclick", "$('#vupload').show()");
 
 $upload = new cHTMLUpload("upload");
 
