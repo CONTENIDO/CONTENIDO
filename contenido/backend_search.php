@@ -648,6 +648,7 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             $locked = $db->f("locked");
             $startidartlang = $db->f("startidartlang");
             $templatename = $db->f("tplname");
+            $idtplcfg = $db->f("idtplcfg");
 
             // Store values of category and template for first found article
             if ($i == 0) {
@@ -696,7 +697,25 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             if (!empty($templatename)) {
                 $sTemplateName = conHtmlentities($templatename);
             } else {
-                $sTemplateName = '--- ' . i18n("None") . ' ---';
+                $db2 = cRegistry::getDb();
+                $sql2 = "SELECT
+                    c.idtpl AS idtpl,
+                    c.name AS name,
+                    c.description,
+                    b.idtplcfg AS idtplcfg
+                FROM
+                    " . $cfg['tab']['tpl_conf'] . " AS a,
+                    " . $cfg['tab']['cat_lang'] . " AS b,
+                    " . $cfg['tab']['tpl'] . " AS c
+                WHERE
+                    b.idcat     = " . cSecurity::toInteger($idcat) . " AND
+                    b.idlang    = " . cSecurity::toInteger($lang) . " AND
+                    b.idtplcfg  = a.idtplcfg AND
+                    c.idtpl     = a.idtpl AND
+                    c.idclient  = " . cSecurity::toInteger($client);
+                $db2->query($sql2);
+                $db2->nextRecord();
+                $sTemplateName = $db2->f("name")? '<i>' . $db2->f("name") . '</i>' : "--- " . i18n("None") . " ---";
             }
 
             $sTodoListSubject = i18n("Reminder");
