@@ -1,7 +1,7 @@
 {*template for empty comment list*}
 <div class="user_forum">
     <div class="form_status_message">
-    	{$MESSAGE}
+        {$MESSAGE}
     </div>
     <br />
         <a href="front_content.php?userid={$LINK_NEW_FORUM}&user_forum_action=new_forum" class="new button red">{$LINKTEXT}</a>

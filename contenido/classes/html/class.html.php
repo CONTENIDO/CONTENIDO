@@ -196,16 +196,16 @@ class cHTML {
      * mouse over. Mozilla browsers only show "title" as mouse over.
      *
      * @param string $alt Text to set as the "alt" and "title" attribute
-	 * @param bool $setTitle Whether title attribute should be set, too (optional, default: true)
+     * @param bool $setTitle Whether title attribute should be set, too (optional, default: true)
      * @return cHTML $this
      */
     public function setAlt($alt, $setTitle = true) {
-		$attributes = array('alt' => $alt, 'title' => $alt);
-		
-		if ($setTitle === false) {
-			unset($attributes['title']);
-		}
-		
+        $attributes = array('alt' => $alt, 'title' => $alt);
+
+        if ($setTitle === false) {
+            unset($attributes['title']);
+        }
+
         return $this->updateAttributes($attributes);
     }
 
@@ -550,7 +550,7 @@ class cHTML {
      */
     public function updateAttribute($name, $value) {
         return $this->updateAttributes(array(
-            $name => $value
+                    $name => $value
         ));
     }
 

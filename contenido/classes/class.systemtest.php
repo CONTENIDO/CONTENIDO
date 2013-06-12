@@ -673,10 +673,9 @@ class cSystemtest {
             }
 
             $this->storeResult(false, $severity, $title, $message . "<br><br>" . $predictMessage);
-            if($title && $message) {
+            if ($title && $message) {
                 $status = false;
             }
-
         }
 
         return $status;
@@ -964,116 +963,126 @@ class cSystemtest {
     public function testFilesystem($testConfig = true, $testFrontend = true) {
         global $cfgClient;
 
-            $status = true;
+        $status = true;
 
-            $files = array(
-                //check files
-                array('filename' => $this->_config['path']['contenido_logs'] . "errorlog.txt", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_logs'] . "setuplog.txt", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_cronlog'] . "pseudo-cron.log", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_cronlog'] . "session_cleanup.php.job", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_cronlog'] . "send_reminder.php.job", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_cronlog'] . "optimize_database.php.job", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_cronlog'] . "move_old_stats.php.job", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_cronlog'] . "move_articles.php.job", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_cronlog'] . "linkchecker.php.job", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_cronlog'] . "run_newsletter_job.php.job", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_cronlog'] . "setfrontenduserstate.php.job", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_cronlog'] . "advance_workflow.php.job", 'severity' => self::C_SEVERITY_WARNING),
-                array('filename' => $this->_config['path']['contenido_cache'], 'severity' => self::C_SEVERITY_WARNING, 'dir' => true),
-                array('filename' => $this->_config['path']['contenido_temp'], 'severity' => self::C_SEVERITY_WARNING, 'dir' => true),
-                array('filename' => $this->_config['path']['contenido_config'] . "config.php", 'severity' => self::C_SEVERITY_ERROR, 'config' => $testConfig),
-            );
+        $files = array(
+            //check files
+            array('filename' => $this->_config['path']['contenido_logs'] . "errorlog.txt", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_logs'] . "setuplog.txt", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_cronlog'] . "pseudo-cron.log", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_cronlog'] . "session_cleanup.php.job", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_cronlog'] . "send_reminder.php.job", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_cronlog'] . "optimize_database.php.job", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_cronlog'] . "move_old_stats.php.job", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_cronlog'] . "move_articles.php.job", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_cronlog'] . "linkchecker.php.job", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_cronlog'] . "run_newsletter_job.php.job", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_cronlog'] . "setfrontenduserstate.php.job", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_cronlog'] . "advance_workflow.php.job", 'severity' => self::C_SEVERITY_WARNING),
+            array('filename' => $this->_config['path']['contenido_cache'], 'severity' => self::C_SEVERITY_WARNING, 'dir' => true),
+            array('filename' => $this->_config['path']['contenido_temp'], 'severity' => self::C_SEVERITY_WARNING, 'dir' => true),
+            array('filename' => $this->_config['path']['contenido_config'] . "config.php", 'severity' => self::C_SEVERITY_ERROR, 'config' => $testConfig),
+        );
 
-            $frontendFiles = array(
-                	"cache",
-                	"cache/code",
-                	"css",
-                	"data",
-                	"data/layouts",
-                	"data/logs",
-                	"data/modules",
-                	"data/version",
-                	"data/version/css",
-                	"data/version/js",
-                	"data/version/layout",
-                	"data/version/module",
-                	"data/version/templates",
-                	"js",
-                	"templates",
-                	"upload"
-                );
+        $frontendFiles = array(
+            "cache",
+            "cache/code",
+            "css",
+            "data",
+            "data/layouts",
+            "data/logs",
+            "data/modules",
+            "data/version",
+            "data/version/css",
+            "data/version/js",
+            "data/version/layout",
+            "data/version/module",
+            "data/version/templates",
+            "js",
+            "templates",
+            "upload"
+        );
 
-                $ret = true;
-                foreach ($files as $key => $file) {
+        $ret = true;
+        foreach ($files as $key => $file) {
 
-                    $name = $file['filename'];
-                    $severity = $file['severity'];
-                    $dir = $file['dir'];
-                    $frontend = $file['frontend'];
-                    $config =  $file['config'];
+            $name = $file['filename'];
+            $severity = $file['severity'];
+            $dir = $file['dir'];
+            $frontend = $file['frontend'];
+            $config = $file['config'];
 
-                    if(array_key_exists('frontend', $file) && $frontend != false) {
-                        $ret = $this->testSingleFile($name, $severity, $frontend);
-                    } else if(array_key_exists('config', $file) && $config != false) {
-                        $ret = $this->testSingleFile($name, $severity);
-                    } else if(!array_key_exists('frontend', $file) && !array_key_exists('config', $file)) {
-                        $ret = $this->testSingleFile($name, $severity, $config);
-                    }
-                    if($ret == false) {
+            if (array_key_exists('frontend', $file) && $frontend != false) {
+                $ret = $this->testSingleFile($name, $severity, $frontend);
+            } else if (array_key_exists('config', $file) && $config != false) {
+                $ret = $this->testSingleFile($name, $severity);
+            } else if (!array_key_exists('frontend', $file) && !array_key_exists('config', $file)) {
+                $ret = $this->testSingleFile($name, $severity, $config);
+            }
+            if ($ret == false) {
+                $status = false;
+            }
+        }
+
+        if ($testFrontend) {
+            foreach ($cfgClient as $oneClient) {
+                if (!is_array($oneClient)) {
+                    continue;
+                }
+                foreach ($frontendFiles as $file) {
+                    $ret = $this->testSingleFile($oneClient["path"]["frontend"] . $file, self::C_SEVERITY_WARNING, true);
+                    if ($ret == false) {
                         $status = false;
                     }
                 }
-
-                if($testFrontend) {
-					foreach($cfgClient as $oneClient) {
-					    if(!is_array($oneClient)) {
-					        continue;
-					    }
-					    foreach($frontendFiles as $file) {
-							$ret = $this->testSingleFile($oneClient["path"]["frontend"] . $file, self::C_SEVERITY_WARNING, true);
-							if($ret == false) {
-							    $status = false;
-							}
-					    }
-					}
-                }
+            }
+        }
 
         return $status;
     }
 
     public function testFrontendFolderCreation() {
         $directories = array(
-            	"cms/cache",
-            	"cms/cache/code",
-            	"cms/css",
-            	"cms/data",
-            	"cms/data/layouts",
-            	"cms/data/modules",
-            	"cms/data/version",
-            	"cms/data/version/css",
-            	"cms/data/version/js",
-            	"cms/data/version/layout",
-            	"cms/data/version/module",
-            	"cms/data/version/templates",
-            	"cms/js",
-            	"cms/templates",
-            	"cms/upload"
-            );
+            "cms/cache",
+            "cms/cache/code",
+            "cms/css",
+            "cms/data",
+            "cms/data/layouts",
+            "cms/data/modules",
+            "cms/data/version",
+            "cms/data/version/css",
+            "cms/data/version/js",
+            "cms/data/version/layout",
+            "cms/data/version/module",
+            "cms/data/version/templates",
+            "cms/js",
+            "cms/templates",
+            "cms/upload"
+        );
 
         $ret = true;
 
-        foreach($directories as $dir) {
-            if(!cFileHandler::exists("../".$dir)) {
-            	if(!mkdir("../".$dir)) {
-            	    $ret = false;
-            	    $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories."));
-            	} else {
-            	    if(!cFileHandler::chmod("../".$dir, "777")) {
-	            	    $ret = false;
-	            	    $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories."));
-            	    }
-            	}
+        foreach ($directories as $dir) {
+            if (!cFileHandler::exists("../" . $dir)) {
+                if (!mkdir("../" . $dir)) {
+                    $ret = false;
+                    $this->storeResult(
+                        false,
+                        self::C_SEVERITY_WARNING,
+                        sprintf(i18n("Could not find or create directory %s"), $dir),
+                        i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories.")
+                    );
+                } else {
+                    if (!cFileHandler::chmod("../" . $dir, "777")) {
+                        $ret = false;
+                        $this->storeResult(
+                            false,
+                            self::C_SEVERITY_WARNING,
+                            sprintf(i18n("Could not find or create directory %s"), $dir),
+                            i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories.")
+                        );
+                    }
+                }
             }
         }
 

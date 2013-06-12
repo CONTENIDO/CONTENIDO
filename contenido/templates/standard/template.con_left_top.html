@@ -107,7 +107,7 @@
                     });
 
                     $.post("{AJAXURL}", { area: "{AREA}", action: "con_makepublic", idcat: cfg.catId, public: newpublic, contenido: "{SESSION}" } );
-                    
+
                     cfg.isPublic = newpublic;
 
                     parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#"+newid+" > div").click();

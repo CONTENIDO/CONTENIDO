@@ -46,7 +46,8 @@ body {
     position: relative;
 }
 
-body, td {
+body,
+td {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
     color: #334f77;
@@ -54,7 +55,9 @@ body, td {
     margin: 0;
 }
 
-p, td, input {
+p,
+td,
+input {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
     color: #334f77;
@@ -173,7 +176,8 @@ input {
     border: 1px solid #b3b3b8;
     width: 240px;
 }
-table td, p {
+table td,
+p {
     color: black;
 }
 
@@ -377,6 +381,6 @@ td.back_next a {
 }
 
 .additionalInfo {
-	font-size: 80%;
-	color: #b5b5b5;
+    font-size: 80%;
+    color: #b5b5b5;
 }
