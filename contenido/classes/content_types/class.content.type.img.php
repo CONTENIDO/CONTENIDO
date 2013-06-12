@@ -39,7 +39,7 @@ class cContentTypeImg extends cContentTypeImgeditor {
         // separately any more
         // so compute the appropriate raw settings and call the parent
         // constructor with them
-        if (is_null($rawSettings)) {
+        if (strlen($rawSettings) == 0) {
             // if the content type value is not passed, get it from the DB
             if (!isset($contentTypes['CMS_IMGEDITOR'][$id])) {
                 $idArtLang = cRegistry::getArticleLanguageId();
