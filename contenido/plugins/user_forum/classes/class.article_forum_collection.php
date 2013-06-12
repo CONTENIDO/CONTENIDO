@@ -261,7 +261,7 @@ class ArticleForumCollection extends ItemCollection {
 
         // send mail only if modEmail is set -> minimize traffic.
         if ($this->getModEmail($idart) != NULL) {
-            $mail->sendMail('info@contenido.org', $this->getModEmail($idart), $this->languageSync['NEWENTRY'], $message);
+            $mail->sendMail(getEffectiveSetting("userforum", "mailfrom"), $this->getModEmail($idart), $this->languageSync['NEWENTRY'], $message);
         }
     }
 
