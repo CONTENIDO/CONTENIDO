@@ -530,6 +530,7 @@ class PifaField extends Item {
                 $elemField = new cHTMLTextbox($columnName);
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);
+                $elemField->setAttribute('title', $this->get('default_value'));
                 if (NULL !== $value) {
                     $elemField->setValue($value);
                 }
@@ -540,6 +541,7 @@ class PifaField extends Item {
                 $elemField = new cHTMLTextarea($columnName);
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);
+                $elemField->setAttribute('title', $this->get('default_value'));
                 if (NULL !== $value) {
                     $elemField->setValue($value);
                 }
@@ -550,6 +552,7 @@ class PifaField extends Item {
                 $elemField = new cHTMLPasswordbox($columnName);
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);
+                $elemField->setAttribute('title', $this->get('default_value'));
                 if (NULL !== $value) {
                     $elemField->setValue($value);
                 }

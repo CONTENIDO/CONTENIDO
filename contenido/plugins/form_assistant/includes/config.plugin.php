@@ -352,6 +352,19 @@ class Pifa {
         }
         return self::$_timestampSetting;
     }
+
+    /**
+     * Determine if page is called via HTTPS.
+     *
+     * @return boolean
+     */
+    public static function isHttps() {
+        $isHttps = false;
+        $isHttps |= 443 === $_SERVER['SERVER_PORT'];
+        $isHttps |= array_key_exists('HTTP_X_SSL_CIPHER', $_SERVER);
+        return $isHttps;
+    }
+
 }
 
 // define plugin path

@@ -69,10 +69,6 @@ class PifaAjaxHandler {
      */
     function dispatch($action) {
 
-        function pifa_ajax_handler_integer_cast_deep($value) {
-            return cSecurity::toInteger($value);
-        }
-
         switch ($action) {
 
             case self::GET_FIELD_FORM:
@@ -98,7 +94,7 @@ class PifaAjaxHandler {
 
             case self::REORDER_FIELDS:
                 $idform = cSecurity::toInteger($_POST['idform']);
-                $idfields = implode(',', array_map('pifa_ajax_handler_integer_cast_deep', explode(',', $_POST['idfields'])));
+                $idfields = implode(',', array_map('cSecurity::toInteger', explode(',', $_POST['idfields'])));
                 $this->_reorderFields($idform, $idfields);
                 break;
 

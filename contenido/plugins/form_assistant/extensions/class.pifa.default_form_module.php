@@ -41,12 +41,18 @@ class DefaultFormModule extends PifaAbstractFormModule {
         // set errors
         $pifaForm->setErrors($errors);
 
+		$actionPath = cUri::getInstance()->build(array(
+            'idart' => cRegistry::getArticleId(),
+            'lang' => cRegistry::getLanguageId()
+        ), true);
+
+		if (Pifa::isHttps()) {
+			$actionPath = str_replace('http://', 'https://', $actionPath);
+		}
+
         // assign rendered form
         $this->getTpl()->assign('form', $pifaForm->toHtml(array(
-            'action' => cUri::getInstance()->build(array(
-                'idart' => cRegistry::getArticleId(),
-                'lang' => cRegistry::getLanguageId()
-            ), true)
+            'action' => $actionPath
         )));
     }
 
