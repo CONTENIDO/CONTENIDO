@@ -289,6 +289,7 @@ class cApiCategoryLanguage extends Item {
 
         $options = array();
         $options['idcat'] = $this->get('idcat');
+        $options['idartlang'] = $this->get('startidartlang');
         $options['lang'] = ($changeLangId == 0) ? $this->get('idlang') : $changeLangId;
         if ($changeLangId > 0) {
             $options['changelang'] = $changeLangId;
