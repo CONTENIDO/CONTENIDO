@@ -6,8 +6,6 @@
 /UPGRADE.pdf -text
 cms/cache/code/.htaccess -text
 cms/cache/index.php -text
-cms/classes/class.kvh.auto_indexing.php -text
-cms/classes/class.kvh.tools.php -text
 cms/data/.htaccess -text
 cms/data/config/config.php -text
 cms/data/logs/index.php -text
