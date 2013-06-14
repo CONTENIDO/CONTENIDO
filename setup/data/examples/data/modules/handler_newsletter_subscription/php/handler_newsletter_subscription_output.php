@@ -13,7 +13,7 @@
  * @link http://www.contenido.org
  */
 
-if (!class_exists('cNewsletterJobCollection')) {
+if (!class_exists('NewsletterJobCollection')) {
     echo mi18n("ERROR_CLASS");
 } else {
 
