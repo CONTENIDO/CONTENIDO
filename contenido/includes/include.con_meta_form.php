@@ -206,7 +206,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         $tpl->set('s', 'NOTIFICATION', '');
     }
     // Page title
-    $title_input = '<input size="24" type="text" ' . $disabled . ' name="page_title" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
+    $title_input = '<input class="textField" type="text" ' . $disabled . ' name="page_title" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
 
     $tpl->set("s", "ALIAS", $tmp_alias);
@@ -225,6 +225,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
 
     $art = new cApiArticleLanguage($tmp_idartlang);
     $tpl->set("s", "LINK", $art->getLink());
+    $tpl->set("s", "FULL_LINK", $cfgClient[$client]["path"]["htmlpath"] . $art->getLink());
 
     // Meta-Tags
     $availableTags = conGetAvailableMetaTagTypes();

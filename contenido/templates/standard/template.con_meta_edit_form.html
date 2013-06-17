@@ -32,7 +32,38 @@
                 return false;
             });
         });
+        
+        function pad(str) {
+            var str = str + "";
+            if(str.length == 1) {
+                str = "0" + str;
+            }
+            
+            return str;
+        }
+        
+        function formatDates(date) {
+            var ret = date.getFullYear() + "-" + pad(date.getMonth()) + "-" + pad(date.getDate()) + "T" + pad(date.getHours()) + ":" + pad(date.getMinutes());
+            
+            var offset = date.getTimezoneOffset();
+            offset = (offset < 0 ? "+" : "-") + pad(parseInt(Math.abs(offset / 60))) + ":" + pad(Math.abs(offset % 60));
+            
+            return ret + offset;
+        }
     </script>
+    
+    <style>
+    	table.generic td.leftData {
+			width: 1px;
+    		white-space: nowrap;
+    		
+    		padding: 2px;
+    	}
+    	
+    	.textField {
+			width: 200px;
+    	}
+    </style>
 </head>
 <body style="margin: 10px">
 
@@ -47,7 +78,7 @@
         <input type="hidden" name="idcat" value="{IDCAT}">
         <input type="hidden" name="idartlang" value="{IDARTLANG}">
 
-        <table class="generic" cellspacing="0" cellpadding="2" border="0">
+        <table style="width: 700px" class="generic" cellspacing="0" cellpadding="2" border="0">
 
             <tr>
                 <th colspan="2">{TITEL}</th>
@@ -55,57 +86,57 @@
             {NOTIFICATION}
 
             <tr>
-                <td>i18n("Link")</td>
-                <td><input type="text" value="{LINK}" disabled size="24"></td>
+                <td class="leftData">i18n("Link")</td>
+                <td><input class="textField" type="text" value="{LINK}" disabled size="24">&nbsp;<a href="{FULL_LINK}" target="_blank"><img class="vAlignMiddle" src="images/submit.gif"></a></td>
             </tr>
 
             <tr>
-                <td>i18n("Page title")</td>
+                <td class="leftData">i18n("Page title")</td>
                 <td colspan="3" class="text_medium">{TITLE-INPUT}</td>
             </tr>
 
             <tr>
-                <td>i18n("Alias")</td>
-                <td colspan="3" class="text_medium"><input type="text" name="alias" value="{ALIAS}" size="24"></td>
+                <td class="leftData">i18n("Alias")</td>
+                <td colspan="3" class="text_medium"><input class="textField" type="text" name="alias" value="{ALIAS}" size="24"></td>
             </tr>
 
             <tr>
-                <td>i18n("Description")</td>
-                <td><textarea class="metaTag" name="METAdescription" id="METAdescription" rows=3>{DESCRIPTION}</textarea></td>
+                <td class="leftData">i18n("Description")</td>
+                <td><textarea class="textField metaTag" name="METAdescription" id="METAdescription" rows=3>{DESCRIPTION}</textarea></td>
             </tr>
 
             <tr>
-                <td>i18n("Keywords")</td>
-                <td><textarea class="metaTag" name="METAkeywords" id="METAkeywords" rows=3>{KEYWORDS}</textarea></td>
+                <td class="leftData">i18n("Keywords")</td>
+                <td><textarea class="textField metaTag" name="METAkeywords" id="METAkeywords" rows=3>{KEYWORDS}</textarea></td>
             </tr>
 
             <tr>
-                <td style="border-top: 1px solid #b3b3b3">i18n("Copyright")</td>
-                <td style="border-top: 1px solid #b3b3b3"><input type="text" class="metaTag" name="METAcopyright" id="METAcopyright" value="{COPYRIGHT}" size="24"></td>
+                <td  class="leftData" style="border-top: 1px solid #b3b3b3">i18n("Copyright")</td>
+                <td style="border-top: 1px solid #b3b3b3"><input type="text" class="textField metaTag" name="METAcopyright" id="METAcopyright" value="{COPYRIGHT}" size="24"></td>
             </tr>
 
             <tr>
-                <td>i18n("Author")</td>
-                <td><input class="metaTag" type="text" name="METAauthor" id="METAauthor" value="{AUTHOR}" size="24"></td>
+                <td class="leftData">i18n("Author")</td>
+                <td><input class="textField metaTag" type="text" name="METAauthor" id="METAauthor" value="{AUTHOR}" size="24"></td>
             </tr>
 
             <tr>
-                <td>i18n("Date")</td>
-                <td><input class="metaTag" type="text" name="METAdate" id="METAdate" value="{DATE}"></td>
+                <td class="leftData">i18n("Date")</td>
+                <td><input class="textField metaTag" type="text" name="METAdate" id="METAdate" value="{DATE}"></td>
             </tr>
 
             <tr>
-                <td>i18n("Expires")</td>
-                <td><input class="metaTag" type="text" name="METAexpires" id="METAexpires" value="{EXPIRES}"></td>
+                <td class="leftData">i18n("Expires")</td>
+                <td><input class="textField metaTag" type="text" name="METAexpires" id="METAexpires" value="{EXPIRES}"></td>
             </tr>
 
             <tr>
-                <td>i18n("Revisit after")</td>
-                <td><input class="metaTag" type="text" name="METArevisit-after" id="METArevisit-after" value="{REVISIT-AFTER}" size="24"></td>
+                <td class="leftData">i18n("Revisit after")</td>
+                <td><input class="textField metaTag" type="text" name="METArevisit-after" id="METArevisit-after" value="{REVISIT-AFTER}" size="24"></td>
             </tr>
 
             <tr>
-                <td valign="top" style="border-top: 1px solid #b3b3b3">i18n("Robots")</td>
+                <td class="leftData" valign="top" style="border-top: 1px solid #b3b3b3">i18n("Robots")</td>
                 <td style="border-top: 1px solid #b3b3b3">
                     <input id="metaNoIndex" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noindex" {NOINDEX}><label for="metaNoIndex">noindex</label><br>
                     <input id="metaNoFollow" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="nofollow" {NOFOLLOW}><label for="metaNoFollow">nofollow</label><br>
@@ -116,16 +147,16 @@
             </tr>
 
             <tr>
-                <td style="border-top: 1px solid #b3b3b3">
+                <td class="leftData" style="border-top: 1px solid #b3b3b3">
                     i18n("Sitemap Priority")
                 </td>
-                <td style="border-top: 1px solid #b3b3b3">
-                    <input type="text" name="sitemap_prio" value="{SITEMAP_PRIO}" size="24">
+                <td class="leftData" style="border-top: 1px solid #b3b3b3">
+                    <input class="textField" type="text" name="sitemap_prio" value="{SITEMAP_PRIO}" size="24">
                 </td>
             </tr>
 
             <tr>
-                <td style="border-bottom: 2px solid #b3b3b3">
+                <td class="leftData" style="border-bottom: 2px solid #b3b3b3">
                     i18n("Sitemap change frequency")
                 </td>
                 <td style="border-bottom: 2px solid #b3b3b3">
@@ -216,6 +247,12 @@
                 buttonImageOnly: true,
                 showOn: 'both',
                 dateFormat: 'yy-mm-dd',
+                onClose: function(text, inst) {
+                    var id = $(this).attr("id").substr(4);
+                    text = formatDates(new Date(text));
+                    $("#metaContent_" + id).text(text);
+                    $(this).attr("value", text);
+                },
                 disabled: {IS_DATETIMEPICKER_DISABLED}
             });
             $('#METAexpires').datetimepicker({
@@ -223,12 +260,21 @@
                 buttonImageOnly: true,
                 showOn: 'both',
                 dateFormat: 'yy-mm-dd',
+                onClose: function(text, inst) {
+                    var id = $(this).attr("id").substr(4);
+                    text = formatDates(new Date(text));
+                    $("#metaContent_" + id).text(text);
+                    $(this).attr("value", text);
+                },
                 disabled: {IS_DATETIMEPICKER_DISABLED}
             });
 
             $('.metaTag').live("input", function() {
                 var id = $(this).attr("id").substr(4);
                 var text = $(this).val();
+                if($(this).hasClass("hasDatepicker")) {
+                    text = formatDates(new Date(text));
+                }
                 if(text == "") {
                     $("#metaRow_" + id).hide();
                 } else {
