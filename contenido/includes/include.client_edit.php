@@ -68,7 +68,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         // Copy the client template to the real location
         $destPath = $frontendpath;
         $sourcePath = $backendPath . $cfg['path']['frontendtemplate'];
-        $dataPath = 'data/config/';
+        $dataPath = 'data/config/production';
 
         if ($copytemplate) {
             if (!cFileHandler::exists($destPath)) {
