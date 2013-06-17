@@ -82,7 +82,11 @@
     }
 
     function languageSelectRemove(idlang) {
+        var oldLang = $("#cLanguageSelect").val();
         $("#cLanguageSelect").find("option[value='" + idlang + "']").remove();
+        if(oldLang == idlang && $("#cLanguageSelect").val() != null) {
+            changeContenidoLanguage($("#cLanguageSelect").val());
+        }
     }
 
     function languageSelectUpdate(name, idlang) {
