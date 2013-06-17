@@ -243,6 +243,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @return mixed string of select box or array of articles
      */
     public function generateTeaserCode($returnAsArray = false) {
+        global $contenido;
+
+
         $articles = array();
 
         $template = new cTemplate();
@@ -294,7 +297,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 'order' => $this->_settings['teaser_sort'],
                 'direction' => $this->_settings['teaser_sort_order'],
                 'limit' => $this->_settings['teaser_count'],
-                'start' => false
+                'start' => false,
+                'offline' => $contenido != ""
             );
 
             if ($this->_settings['teaser_start'] == 'true') {
@@ -332,6 +336,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @return boolean - success state of this operation
      */
     private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate &$template) {
+        global $contenido;
+
         // get necessary informations for teaser from articles use properties in
         // a Settings for retrieval
         $title = $this->_getArtContent($article, $this->_settings['teaser_source_head'], $this->_settings['teaser_source_head_count']);
@@ -342,7 +348,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $published = $article->getField('published');
         $online = $article->getField('online');
 
-        if ($online == 1) {
+        if ($online == 1 || $contenido) {
             // teaserfilter defines strings which must be contained in text for
             // display.
             // if string is defined check if article contains this string and
