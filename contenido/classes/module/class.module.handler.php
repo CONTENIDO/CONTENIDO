@@ -289,17 +289,17 @@ class cModuleHandler {
         $cApiModule = new cApiModule($idmod);
 
         if ($cApiModule->virgin == false) {
-            $this->_moduleAlias = $cApiModule->get('alias');
-            $this->_moduleName = $cApiModule->get('name');
-            $this->_path = $frontendPath . $this->_cfgClient[$this->_client]['module']['path'];
-            $this->_modulePath = $this->_path . $this->_moduleAlias . '/';
-
             $this->_idmod = $idmod;
             $this->_client = $cApiModule->get('idclient');
             $this->_description = $cApiModule->get('description');
             $this->_type = $cApiModule->get('type');
             $this->_input = '';
             $this->_output = '';
+            
+            $this->_moduleAlias = $cApiModule->get('alias');
+            $this->_moduleName = $cApiModule->get('name');
+            $this->_path = $frontendPath . $this->_cfgClient[$this->_client]['module']['path'];
+            $this->_modulePath = $this->_path . $this->_moduleAlias . '/';
         }
     }
 
@@ -520,7 +520,7 @@ class cModuleHandler {
                     $sModulePath = $aClient['module']['path'];
                     if (!is_dir($sModulePath)) {
                         // could not make the modul directory in client
-                        if (mkdir($sModulePath) == false) {
+                        if (mkdir($sModulePath, 0777, true) == false) {
                             throw new cException('Module directory could not be created: ' . $sModulePath);
                         } else {
                             cFileHandler::setDefaultDirPerms($sModulePath);

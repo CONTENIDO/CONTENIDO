@@ -77,7 +77,7 @@ class cLayoutHandler {
     /**
      * Construct of the class
      */
-    public function __construct($layoutId, $layoutCode, $cfg, $lang, $db = null) {
+    public function __construct($layoutId = 0, $layoutCode = "", $cfg = array(), $lang = 0, $db = null) {
         if ($db === null) {
             $db = cRegistry::getDb();
         }
@@ -165,8 +165,8 @@ class cLayoutHandler {
         global $cfgClient, $client;
 
         $this->_layoutCode = $dbObject->f("code");
-        $this->_layoutName = $dbObject->f('alias');
-        $this->_layoutMainPath = $cfgClient[$client]['layout']['path'];
+        $this->_layoutName = $dbObject->f("alias");
+        $this->_layoutMainPath = $cfgClient[$dbObject->f("idclient")]['layout']['path'];
         $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . "/";
         $this->_fileName = $this->_layoutName . ".html";
 
@@ -371,25 +371,27 @@ class cLayoutHandler {
      * Save all layout in file system.
      * Use it for upgrade.
      *
+     * @param cDb database object
+     * @param array CONTENIDO config array
      * @throws cException if the layout could not be saved
      */
-    public function upgrade() {
+    public static function upgrade($adb, $cfg) {
         // get name of layout and frontendpath
-        $db = clone $this->_db;
-        if (!$db->query('SELECT alias, idlay, code FROM `%s`', $this->_cfg['tab']['lay'])) {
+        if (!$adb->query('SELECT * FROM `%s`', $cfg['tab']['lay'])) {
             return;
         }
 
-        while ($db->nextRecord()) {
+        while ($adb->nextRecord()) {
             // init class var for save
-            $this->initWithDbObject($db);
-            if ($this->saveLayoutByUpgrade($db->f('code')) == false) {
-                throw new cException('Can not save layout.' . print_r($this, true));
+            $layout = new cLayoutHandler();
+            $layout->initWithDbObject($adb);
+            if ($layout->saveLayoutByUpgrade($adb->f('code')) == false) {
+                throw new cException('Can not save layout.' . print_r($layout, true));
             }
         }
 
         // all layouts are saved, so remove the code field from _lay
-        $db->query('ALTER TABLE `%s` DROP code', $this->_cfg['tab']['lay']);
+        $adb->query('ALTER TABLE `%s` DROP code', $cfg['tab']['lay']);
     }
 
 }

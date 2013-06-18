@@ -54,9 +54,9 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
     }
 
     /**
-     * This method will be transfer the moduls from $cfg['tab']['mod'] to the
+     * This method will transfer the moduls from $cfg['tab']['mod'] to the
      * file system.
-     * This Method will be call by setup
+     * This Method will be called by setup
      */
     private function _convertModulesToFile() {
         global $cfg;
@@ -148,14 +148,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             $client = $iClient; // this should work for all clients now
 
             $db2 = getSetupMySQLDBConnection();
-
-            // Save all modules from db-table to the filesystem if exists
-            $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'output'", $cfg['tab']['mod']);
-            if ($this->_oDb->numRows() > 0) {
-                cModuleHandler::setEncoding('ISO-8859-1');
-                $this->_convertModulesToFile();
-            }
-
+            
             // Update module aliases
             $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['mod']);
             while ($this->_oDb->nextRecord()) {
@@ -164,13 +157,14 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
                     $db2->query($sql);
                 }
             }
-
-            // Save all layouts from db-table to the filesystem if exists
-            $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'code'", $cfg['tab']['lay']);
+            
+            // Save all modules from db-table to the filesystem if exists
+            $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'output'", $cfg['tab']['mod']);
             if ($this->_oDb->numRows() > 0) {
-                $layoutInFile = new cLayoutHandler(1, '', $cfg, 1, $this->_oDb);
-                $layoutInFile->upgrade();
+                cModuleHandler::setEncoding('ISO-8859-1');
+                $this->_convertModulesToFile();
             }
+            
 
             // Update layout aliases
             $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['lay']);
@@ -179,6 +173,12 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
                     $sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idlay` = %d;", $cfg['tab']['lay'], $this->_oDb->f('name'), $this->_oDb->f('idlay'));
                     $db2->query($sql);
                 }
+            }
+
+            // Save all layouts from db-table to the filesystem if exists
+            $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'code'", $cfg['tab']['lay']);
+            if ($this->_oDb->numRows() > 0) {
+                cLayoutHandler::upgrade($this->_oDb, $cfg);
             }
         }
 

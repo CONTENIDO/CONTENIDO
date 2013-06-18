@@ -173,6 +173,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
             if (!class_exists($className)) {
                 continue;;
             }
+            
             /* @var $obj cUpgradeJobAbstract */
             $obj = new $className($this->_oDb, $this->_aCfg, $this->_aCfgClient, $this->_version);
             $obj->execute();
