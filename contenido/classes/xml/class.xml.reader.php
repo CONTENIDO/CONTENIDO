@@ -33,6 +33,7 @@ class cXmlReader extends cXmlBase {
      *         or loaded)
      */
     public function load($filename) {
+
         if (cFileHandler::exists($filename) === false) {
             return false;
         }
@@ -42,6 +43,7 @@ class cXmlReader extends cXmlBase {
         if (false === $doc->load($filename)) {
             throw new cException('Could not load file "' . $filename . '"');
         }
+
 
         $this->setDomDocument($doc);
 
@@ -107,6 +109,7 @@ class cXmlReader extends cXmlBase {
      * @return string value of DOMNode
      */
     public function getXpathValue($path, $nodeKey = 0) {
+
         $domNode = $this->getXpathNode($path, $nodeKey);
         return $this->_decode($domNode->nodeValue);
     }
@@ -136,8 +139,11 @@ class cXmlReader extends cXmlBase {
      * @return string decoded value
      */
     protected function _decode($value) {
+
         if ($this->getEncoding() != 'UTF-8') {
-            $value = utf8_decode($value);
+
+            $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
+            $value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');
         }
 
         return $value;
