@@ -141,7 +141,7 @@ class cXmlReader extends cXmlBase {
     protected function _decode($value) {
 
         if ($this->getEncoding() != 'UTF-8') {
-            $value = utf8_encode($value);
+            $value = utf8_decode($value);
         }
 
         return $value;
