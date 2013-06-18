@@ -401,12 +401,15 @@ class cUpdateNotifier {
      */
     protected function readVendorContent() {
         $this->sXMLContent = "";
+
         if ($this->bUpdateNecessity == true) {
             $aXmlContent = $this->getVendorHostFiles();
+
             if (isset($aXmlContent[$this->sVendorXMLFile]) && isset($aXmlContent[$this->sVendorRssDeFile]) && isset($aXmlContent[$this->sVendorRssEnFile])) {
                 $this->handleVendorUpdate($aXmlContent);
             }
         } else {
+
             $sXMLContent = cFileHandler::read($this->sCacheDirectory . $this->sVendorXMLFile);
             $aRSSContent[$this->sVendorRssDeFile] = cFileHandler::read($this->sCacheDirectory . $this->sVendorRssDeFile);
             $aRSSContent[$this->sVendorRssEnFile] = cFileHandler::read($this->sCacheDirectory . $this->sVendorRssEnFile);
@@ -424,7 +427,10 @@ class cUpdateNotifier {
             }
         }
 
+        //echo $this->sXMLContent;
+        //echo $this->sRSSContent;
         if ($this->sXMLContent != "") {
+
             $this->oXML = simplexml_load_string($this->sXMLContent);
             if (!is_object($this->oXML)) {
                 $sErrorMessage = i18n('Unable to check for new updates!') . " " . i18n('Could not handle server response!');
@@ -499,6 +505,7 @@ class cUpdateNotifier {
         $this->sRSSContent = $aXMLContent[$this->sRSSFile];
         $this->updateCacheFiles($aXMLContent);
         $this->updateHashProperty($aXMLContent);
+
     }
 
     /**
@@ -705,7 +712,6 @@ class cUpdateNotifier {
         }
 
         $oSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout);
-
         if (!is_resource($oSocket)) {
             $sErrorMessage = i18n('Unable to check for new updates!') . " " . i18n('Connection to contenido.org failed!');
             $this->sErrorOutput = $this->renderOutput($sErrorMessage);
@@ -720,11 +726,13 @@ class cUpdateNotifier {
             $sVendorFile = '';
 
             while (!feof($oSocket)) {
-                $sVendorFile .= fgets($oSocket, 128);
+                $sVendorFile .= utf8_encode(fgets($oSocket, 128));
+
             }
 
             $sSeparator = strpos($sVendorFile, "\r\n\r\n");
             $sVendorFile = substr($sVendorFile, $sSeparator + 4);
+
 
             fclose($oSocket);
         }
