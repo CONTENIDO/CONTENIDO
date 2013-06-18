@@ -11,6 +11,7 @@
  *   $Id: googleplus_output.php 2755 2012-07-25 20:10:28Z xmurrix $
  * }}
  */
+
 $tpl = Contenido_SmartyWrapper::getInstance();
 
 $urlLabel = mi18n("URL");
@@ -19,7 +20,7 @@ $normalLabel = mi18n("NORMAL") . '(24px)';
 $smallLabel = mi18n("NORMAL") . '(15px)';
 $mediumLabel = mi18n("MEDIUM") . '(20px)';
 $tallLabel = mi18n("TALL") . '(60px)';
-$displayCounterLabel =  mi18n("DISPLAY_COUNTER");
+$displayCounterLabel = mi18n("DISPLAY_COUNTER");
 $label_overview = mi18n("OVERVIEW");
 $saveLabel = mi18n("SAVE");
 
@@ -31,11 +32,10 @@ $idclient = cRegistry::getClientId();
 $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
-if('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'gplus') {
+if ('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'gplus') {
     conSaveContentEntry($idartlang, "CMS_HTML", 3000, $_POST['url']);
     conSaveContentEntry($idartlang, "CMS_HTML", 3001, $_POST['size']);
     conSaveContentEntry($idartlang, "CMS_HTML", 3002, $_POST['counter']);
-
 }
 
 //get saved content
@@ -44,7 +44,7 @@ $size = $art->getContent("CMS_HTML", 3001);
 $counter = $art->getContent("CMS_HTML", 3002);
 
 //if backend mode set some values and display config tpl
-if(cRegistry::isBackendEditMode()) {
+if (cRegistry::isBackendEditMode()) {
     $tpl->assign('url', $url);
     $tpl->assign('size', $size);
     $tpl->assign('counter', $counter);
@@ -60,7 +60,6 @@ if(cRegistry::isBackendEditMode()) {
 
     $tpl->display('google_plus_config_view.tpl');
 } else {
-
 
     if ($size == 'standard') {
         $tpl->assign('LAYOUT', '');

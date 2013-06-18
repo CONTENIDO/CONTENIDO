@@ -212,7 +212,7 @@ class cGuiPage {
         $backendPath = cRegistry::getBackendPath();
 
         if (strpos(trim($script), 'http') === 0 || strpos(trim($script), '<script') === 0 || strpos(trim($script), '//') === 0) {
-            if(strpos(trim($script), '<script') === 0) {
+            if (strpos(trim($script), '<script') === 0) {
                 cDeprecated("You shouldn't use inline JS for backend pages");
             }
             // the given script path is absolute

@@ -1222,9 +1222,9 @@ textarea {
 
 
 #content sup {
-	vertical-align:super;
+    vertical-align:super;
 }
 
 #content sub {
-	vertical-align: sub;
+    vertical-align: sub;
 }

@@ -19,7 +19,7 @@ $smallIconLabel = mi18n("SMALL");
 $bigIconLabel = mi18n("BIG");
 $showTweetsLabel = mi18n("SHOW_TWEETS");
 $countTweetsLabel = mi18n("COUNT_TWEETS");
-$showFollowButtonLabel =  mi18n("SHOW_FOLLOW_BUTTON");
+$showFollowButtonLabel = mi18n("SHOW_FOLLOW_BUTTON");
 $showTweetButtonLabel = mi18n("SHOW_TWEET_BUTTON");
 $defaultTextLabel = mi18n("DEFAULT_TEXT");
 $urlToShareLabel = mi18n("URL_TO_SHARE");
@@ -36,7 +36,7 @@ $idclient = cRegistry::getClientId();
 $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
-if('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'twitter') {
+if ('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'twitter') {
     conSaveContentEntry($idartlang, "CMS_HTML", 4000, $_POST['twitter_name']);
     conSaveContentEntry($idartlang, "CMS_HTML", 4001, $_POST['look']);
     conSaveContentEntry($idartlang, "CMS_HTML", 4002, $_POST['show_tweets']);
@@ -61,7 +61,7 @@ $show_count = strip_tags($art->getContent("CMS_HTML", 4008));
 
 
 //if backend mode set some values and display config tpl
-if(cRegistry::isBackendEditMode()) {
+if (cRegistry::isBackendEditMode()) {
     $tpl->assign('twitterName', $twitterName);
     $tpl->assign('look', $look);
     $tpl->assign('show_tweets', $show_tweets);
@@ -86,7 +86,6 @@ if(cRegistry::isBackendEditMode()) {
     $tpl->assign('label_overview', $label_overview);
 
     $tpl->display('twitter_config_view.tpl');
-
 } else {
 
     $tpl->assign("LESS_MINUTES", mi18n("TIME_LESS_MINUTES"));
@@ -105,7 +104,6 @@ if(cRegistry::isBackendEditMode()) {
         case "small":
             // Show twitter follow button
             if ($show_follow_button) {
-
                 $tpl->assign("ALIGN", 'left');
                 $tpl->assign("LANG", 'de');
                 $tpl->assign("TWITTER_NAME", $twitterName);
@@ -117,20 +115,19 @@ if(cRegistry::isBackendEditMode()) {
             // Show twitts
             if ($show_tweets) {
                 $tpl->assign("TWITTER_TWITTS", $tpl->fetch("twitter_twitts_small.tpl"));
-            }  else {
+            } else {
                 $tpl->assign("TWITTER_TWITTS", '');
             }
 
-             $tpl->assign("LABEL_TRANSLATIONS", $tpl->fetch('label_translations.tpl'));
-             $tpl->display('twitter_small.tpl');
+            $tpl->assign("LABEL_TRANSLATIONS", $tpl->fetch('label_translations.tpl'));
+            $tpl->display('twitter_small.tpl');
             break;
         case "big":
             if ($show_follow_button) {
-
-                $tpl->assign("ALIGN",'left');
+                $tpl->assign("ALIGN", 'left');
                 $tpl->assign("LANG", 'de');
-                $tpl->assign("TWITTER_NAME",$twitterName);
-                $tpl->assign("FOLLOW_BUTTON",$tpl->fetch('follow_button.tpl'));
+                $tpl->assign("TWITTER_NAME", $twitterName);
+                $tpl->assign("FOLLOW_BUTTON", $tpl->fetch('follow_button.tpl'));
             } else {
                 $tpl->assign("FOLLOW_BUTTON", '');
             }
@@ -151,17 +148,15 @@ if(cRegistry::isBackendEditMode()) {
     }
 
     if ($show_tweet_button) {
-
         if ($show_count) {
             $tpl->assign("SHOW_COUNT", '');
         } else {
-             $tpl->assign("SHOW_COUNT", ' data-count="none"');
+            $tpl->assign("SHOW_COUNT", ' data-count="none"');
         }
-         $tpl->assign("DEFAULT_TEXT", $default_text);
-         $tpl->assign("URL_TO_SHARE", $url_to_share);
-         $tpl->display('tweets.tpl');
+        $tpl->assign("DEFAULT_TEXT", $default_text);
+        $tpl->assign("URL_TO_SHARE", $url_to_share);
+        $tpl->display('tweets.tpl');
     }
-
 }
 
 ?>

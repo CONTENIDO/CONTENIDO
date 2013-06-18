@@ -148,7 +148,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             $client = $iClient; // this should work for all clients now
 
             $db2 = getSetupMySQLDBConnection();
-            
+
             // Update module aliases
             $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['mod']);
             while ($this->_oDb->nextRecord()) {
@@ -157,14 +157,14 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
                     $db2->query($sql);
                 }
             }
-            
+
             // Save all modules from db-table to the filesystem if exists
             $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'output'", $cfg['tab']['mod']);
             if ($this->_oDb->numRows() > 0) {
                 cModuleHandler::setEncoding('ISO-8859-1');
                 $this->_convertModulesToFile();
             }
-            
+
 
             // Update layout aliases
             $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['lay']);

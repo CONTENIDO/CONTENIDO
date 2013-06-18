@@ -251,10 +251,10 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $oArtLang->set('redirect_url', $redirect_url);
     $oArtLang->set('artsort', $artsort);
     $oArtLang->set('searchable', $searchable);
-    if($sitemapprio != -1) {
+    if ($sitemapprio != -1) {
         $oArtLang->set('sitemapprio', $sitemapprio);
     }
-    if($changefreq != "nothing") {
+    if ($changefreq != "nothing") {
         $oArtLang->set('changefreq', $changefreq);
     }
     $oArtLang->set('published', $published);

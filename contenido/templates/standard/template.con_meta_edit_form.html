@@ -32,37 +32,37 @@
                 return false;
             });
         });
-        
+
         function pad(str) {
             var str = str + "";
             if(str.length == 1) {
                 str = "0" + str;
             }
-            
+
             return str;
         }
-        
+
         function formatDates(date) {
             var ret = date.getFullYear() + "-" + pad(date.getMonth()) + "-" + pad(date.getDate()) + "T" + pad(date.getHours()) + ":" + pad(date.getMinutes());
-            
+
             var offset = date.getTimezoneOffset();
             offset = (offset < 0 ? "+" : "-") + pad(parseInt(Math.abs(offset / 60))) + ":" + pad(Math.abs(offset % 60));
-            
+
             return ret + offset;
         }
     </script>
-    
+
     <style>
-    	table.generic td.leftData {
-			width: 1px;
-    		white-space: nowrap;
-    		
-    		padding: 2px;
-    	}
-    	
-    	.textField {
-			width: 200px;
-    	}
+        table.generic td.leftData {
+            width: 1px;
+            white-space: nowrap;
+
+            padding: 2px;
+        }
+
+        .textField {
+            width: 200px;
+        }
     </style>
 </head>
 <body style="margin: 10px">

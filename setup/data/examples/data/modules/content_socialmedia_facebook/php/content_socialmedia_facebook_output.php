@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Facebook socialmedia module
  * @package Module
@@ -14,10 +13,10 @@
 $tpl = Contenido_SmartyWrapper::getInstance();
 
 //init vars and objects
-$urlLabel =  mi18n("URL");
+$urlLabel = mi18n("URL");
 $pluginLabel = mi18n("PLUGIN");
 $likeButtonLabel = mi18n("LIKE_BUTTON");
-$likeBoxLabel =  mi18n("LIKE_BOX");
+$likeBoxLabel = mi18n("LIKE_BOX");
 $layoutLabel = mi18n("LAYOUT");
 $standardLabel = mi18n("STANDARD");
 $buttonCountLabel = mi18n("BUTTON_COUNT");
@@ -35,7 +34,7 @@ $idclient = cRegistry::getClientId();
 $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
-if('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'facebook') {
+if ('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'facebook') {
     conSaveContentEntry($idartlang, "CMS_HTML", 1000, $_POST['url']);
     conSaveContentEntry($idartlang, "CMS_HTML", 1001, $_POST['plugin']);
     conSaveContentEntry($idartlang, "CMS_HTML", 1002, $_POST['layout']);
@@ -50,10 +49,10 @@ $pluginvalue = $art->getContent("CMS_HTML", 1001);
 $layoutvalue = $art->getContent("CMS_HTML", 1002);
 $facesvalue = $art->getContent("CMS_HTML", 1003);
 $width = $art->getContent("CMS_HTML", 1004);
-$height =  $art->getContent("CMS_HTML", 1005);
+$height = $art->getContent("CMS_HTML", 1005);
 
 //if backend mode set some values and display config tpl
-if(cRegistry::isBackendEditMode()) {
+if (cRegistry::isBackendEditMode()) {
     $tpl->assign('url', $url);
     $tpl->assign('pluginvalue', $pluginvalue);
     $tpl->assign('layoutvalue', $layoutvalue);
@@ -90,7 +89,7 @@ if(cRegistry::isBackendEditMode()) {
     $propColl->changeClient($idclient);
 
     $language = $propColl->getValue('idlang', $idlang, 'language', 'code', '');
-    $country =  $propColl->getValue('idlang', $idlang, 'country', 'code', '');;
+    $country = $propColl->getValue('idlang', $idlang, 'country', 'code', '');
 
     $locale = $language . '_' . strtoupper($country);
 
@@ -105,13 +104,12 @@ if(cRegistry::isBackendEditMode()) {
     $tpl->assign('LAYOUT', $layoutvalue);
 
     switch ($pluginvalue) {
-
         case 'like_button':
             $tpl->assign('URL', urlencode($url));
             $tpl->display('facebook_like_button.tpl');
             break;
         case 'like_box':
-            $tpl->assign('URL',$url);
+            $tpl->assign('URL', $url);
             $tpl->display('facebook_like_box.tpl');
             break;
         default:

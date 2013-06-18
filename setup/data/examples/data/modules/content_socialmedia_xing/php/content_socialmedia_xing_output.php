@@ -14,7 +14,7 @@ $urlProfileLabel = mi18n("URL_PROFILE");
 $lookLabel = mi18n("LOOK");
 $nameLabel = mi18n("NAME");
 $save = mi18n("SAVE");
-$label_overview =  mi18n("OVERVIEW");
+$label_overview = mi18n("OVERVIEW");
 $idartlang = cRegistry::getArticleLanguageId();
 $idlang = cRegistry::getLanguageId();
 $idclient = cRegistry::getClientId();
@@ -23,7 +23,7 @@ $idclient = cRegistry::getClientId();
 $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
-if('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'xing') {
+if ('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'xing') {
     conSaveContentEntry($idartlang, "CMS_HTML", 2000, $_POST['profile']);
     conSaveContentEntry($idartlang, "CMS_HTML", 2001, $_POST['look']);
     conSaveContentEntry($idartlang, "CMS_HTML", 2002, $_POST['name']);
@@ -35,7 +35,7 @@ $look = $art->getContent("CMS_HTML", 2001);
 $name = $art->getContent("CMS_HTML", 2002);
 
 //if backend mode set some values and display config tpl
-if(cRegistry::isBackendEditMode()) {
+if (cRegistry::isBackendEditMode()) {
     $tpl->assign('urlProfileLabel', $urlProfileLabel);
     $tpl->assign('lookLabel', $lookLabel);
     $tpl->assign('nameLabel', $nameLabel);
@@ -49,16 +49,17 @@ if(cRegistry::isBackendEditMode()) {
     $tpl->display('xing_config_view.tpl');
 } else {
 
-if ($profile != '' && $look != '') {
+    if ($profile != '' && $look != '') {
 
-    $tpl->assign('NAME', $name);
-    $tpl->assign('URL' , $profile);
+        $tpl->assign('NAME', $name);
+        $tpl->assign('URL', $profile);
 
-    if ($look == 'small') {
-        $tpl->display('xing_small.tpl');
-    } elseif ($look == 'big') {
-        $tpl->display('xing_big.tpl');
+        if ($look == 'small') {
+            $tpl->display('xing_small.tpl');
+        } elseif ($look == 'big') {
+            $tpl->display('xing_big.tpl');
+        }
     }
 }
-}
+
 ?>

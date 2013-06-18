@@ -249,13 +249,13 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
             "content" => conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key))
         );
 
-        if(in_array($value["metatype"], $managedTypes)) {
-            if($value["metatype"] == "robots") {
-                if(conGetMetaValue($tmp_idartlang, $key) == "") {
+        if (in_array($value["metatype"], $managedTypes)) {
+            if ($value["metatype"] == "robots") {
+                if (conGetMetaValue($tmp_idartlang, $key) == "") {
                     conSetMetaValue($tmp_idartlang, $key, "index, follow");
                     $i = 0;
                     foreach($metaPreview as $metaRow) {
-                        if($metaRow["name"] == "robots") {
+                        if ($metaRow["name"] == "robots") {
                             $metaPreview[$i]["content"] = "index, follow";
                             break;
                         }
@@ -464,7 +464,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
 
     $tpl2 = new cTemplate();
     foreach($metaPreview as $metaRow) {
-        if($metaRow["content"] == "") {
+        if ($metaRow["content"] == "") {
             $tpl2->set("d", "META_SHOWN", "display: none");
         }
         $tpl2->set("d", "META_NAME", $metaRow["name"]);

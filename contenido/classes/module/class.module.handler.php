@@ -295,7 +295,7 @@ class cModuleHandler {
             $this->_type = $cApiModule->get('type');
             $this->_input = '';
             $this->_output = '';
-            
+
             $this->_moduleAlias = $cApiModule->get('alias');
             $this->_moduleName = $cApiModule->get('name');
             $this->_path = $frontendPath . $this->_cfgClient[$this->_client]['module']['path'];

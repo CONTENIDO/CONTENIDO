@@ -60,8 +60,7 @@ if (!(int) $client > 0) {
 $path = $contenidoModulHandler->getCssPath(); // $cfgClient[$client]['css']['path'];
 
 // ERROR MESSAGE
-if(!$contenidoModulHandler->moduleWriteable('css'))
-{
+if (!$contenidoModulHandler->moduleWriteable('css')) {
     $page->displayCriticalError(i18n('No write permissions in css folder!'));
     $page->render();
     exit();
@@ -212,16 +211,16 @@ if (isset($actionRequest)) {
     $form->setVar('status', 'send');
     $form->setVar('tmp_file', $sTempFilename);
     $form->setVar('idmod', $idmod);
-    $tb_name = new cHTMLLabel($sFilename, '');
+    $label = new cHTMLLabel($sFilename, '');
 
-    $ta_code = new cHTMLTextarea('code', conHtmlSpecialChars($sCode), 100, 35, 'code');
-    $ta_code->setStyle('font-family: monospace;width: 100%;');
-    $ta_code->updateAttributes(array(
+    $code = new cHTMLTextarea('code', conHtmlSpecialChars($sCode), 100, 35, 'code');
+    $code->setStyle('font-family: monospace;width: 100%;');
+    $code->updateAttributes(array(
         'wrap' => getEffectiveSetting('style_editor', 'wrap', 'off')
     ));
 
-    $form->add(i18n('Name'), $tb_name);
-    $form->add(i18n('Code'), $ta_code);
+    $form->add(i18n('Name'), $label);
+    $form->add(i18n('Code'), $code);
 
     $page->setContent($form);
 

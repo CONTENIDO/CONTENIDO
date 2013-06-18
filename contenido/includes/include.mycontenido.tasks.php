@@ -15,10 +15,9 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
 if (!isset($sortmode)) {
-    $sortmode = $currentuser->getUserProperty("system","tasks_sortmode");
-    $sortby   = $currentuser->getUserProperty("system","tasks_sortby");
+    $sortmode = $currentuser->getUserProperty("system", "tasks_sortmode");
+    $sortby = $currentuser->getUserProperty("system", "tasks_sortby");
 }
 
 $dateformat = getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s");
@@ -39,11 +38,11 @@ if (isset($_REQUEST["listsubmit"])) {
     }
 }
 
-class TODOBackendList extends cGuiScrollList
-{
+class TODOBackendList extends cGuiScrollList {
+
     var $statustypes;
-    function TODOBackendList()
-    {
+
+    function TODOBackendList() {
         global $todoitems;
 
         parent::__construct();
@@ -52,15 +51,14 @@ class TODOBackendList extends cGuiScrollList
         $this->prioritytypes = $todoitems->getPriorityTypes();
     }
 
-    function onRenderColumn($column)
-    {
+    function onRenderColumn($column) {
         if ($column == 6 || $column == 5) {
             $this->objItem->updateAttributes(array("align" => "center"));
         } else {
             $this->objItem->updateAttributes(array("align" => "left"));
         }
 
-        if($column == 7) {
+        if ($column == 7) {
             $this->objItem->updateAttributes(array("style" => "width: 85px;"));
         } else {
             $this->objItem->updateAttributes(array("style" => ""));
@@ -79,7 +77,7 @@ class TODOBackendList extends cGuiScrollList
         }
 
         if ($key == 3) {
-            return date($dateformat,strtotime($value));
+            return date($dateformat, strtotime($value));
         }
 
         if ($key == 5) {
@@ -109,7 +107,7 @@ class TODOBackendList extends cGuiScrollList
 
             $backendUrl = cRegistry::getBackendUrl();
 
-            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"]."reminder/".$img);
+            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/" . $img);
             $image->setAlt($this->statustypes[$value]);
 
             //Do not display statuicon, only show statustext
@@ -121,28 +119,29 @@ class TODOBackendList extends cGuiScrollList
             $amount = $value / 20;
 
             if ($amount < 0) {
-                $amount  = 0;
+                $amount = 0;
             }
 
-            if ($amount  > 5) {
-                $amount  = 5;
+            if ($amount > 5) {
+                $amount = 5;
             }
 
             $amount = round($amount);
-        //    var_dump($amount);
+            //    var_dump($amount);
 
-            if($amount != 0){
-            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"]."reminder/progress.gif");
-            $image->setAlt(sprintf(i18n("%d %% complete"), $value));
-            $ret = "";
+            if ($amount != 0) {
+                $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/progress.gif");
+                $image->setAlt(sprintf(i18n("%d %% complete"), $value));
+                $ret = "";
 
-            for ($i=0;$i<$amount;$i++) {
-                $ret .= $image->render();
+                for ($i = 0; $i < $amount; $i++) {
+                    $ret .= $image->render();
+                }
+
+                return $ret;
+            } else {
+                return '&nbsp;';
             }
-
-            return $ret;
-            }
-            else return '&nbsp;';
         }
 
         if ($key == 6) {
@@ -167,7 +166,7 @@ class TODOBackendList extends cGuiScrollList
                     break;
             }
 
-            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"]."reminder/".$img);
+            $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/" . $img);
             $image->setAlt($this->prioritytypes[$p]);
             return $image->render();
         }
@@ -175,24 +174,23 @@ class TODOBackendList extends cGuiScrollList
         if ($key == 8) {
 
             if ($value !== "") {
-                if (round($value,2) == 0) {
+                if (round($value, 2) == 0) {
                     return i18n("Today");
                 } else {
                     if ($value < 0) {
-                        return number_format(0-$value, 2, ',', '') . " ".i18n("Day(s)");
+                        return number_format(0 - $value, 2, ',', '') . " " . i18n("Day(s)");
                     } else {
-                        return '<font color="red">'. number_format(0-$value, 2, ',', '') . " ".i18n("Day(s)").'</font>';
-
+                        return '<font color="red">' . number_format(0 - $value, 2, ',', '') . " " . i18n("Day(s)") . '</font>';
                     }
                 }
-            }
-            else {
+            } else {
                 return '&nbsp;';
             }
         }
 
         return $value;
     }
+
 }
 
 if ($action == "todo_save_item") {
@@ -280,7 +278,7 @@ while ($todo = $todoitems->next()) {
         if (trim($reminder) == "") {
             $reminder = i18n("No end date set");
         } else {
-            $reminder = date($dateformat,strtotime($reminder));
+            $reminder = date($dateformat, strtotime($reminder));
         }
 
         if (trim($status) == "") {
@@ -397,6 +395,7 @@ if ($lcount == 0) {
 }
 $cpage->render();
 
-$currentuser->setUserProperty("system","tasks_sortby", $sortby);
-$currentuser->setUserProperty("system","tasks_sortmode", $sortmode);
+$currentuser->setUserProperty("system", "tasks_sortby", $sortby);
+$currentuser->setUserProperty("system", "tasks_sortmode", $sortmode);
+
 ?>

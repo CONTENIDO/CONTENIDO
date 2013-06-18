@@ -331,28 +331,28 @@ class cFileHandler {
             throw new cInvalidArgumentException('The file ' . $filename . ' could not be accessed because it does not exist.');
         }
 
-        if(!cFileHandler::exists($destination)) {
-            if(!mkdir($destination)) {
+        if (!cFileHandler::exists($destination)) {
+            if (!mkdir($destination)) {
                 return false;
             }
-            if(!self::chmod($destination, "777")) {
+            if (!self::chmod($destination, "777")) {
                 return false;
             }
         }
 
         foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($filename, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST) as $item) {
             if ($item->isDir()) {
-                if(!mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
+                if (!mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
                     return false;
                 }
-                if(!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
+                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
                     return false;
                 }
             } else {
-                if(!copy($item, $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
+                if (!copy($item, $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
                     return false;
                 }
-                if(!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
+                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
                     return false;
                 }
             }

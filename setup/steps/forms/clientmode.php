@@ -21,10 +21,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package Setup
  * @subpackage Form
  */
-class cSetupClientMode extends cSetupMask
-{
-    function cSetupClientMode($step, $previous, $next)
-    {
+class cSetupClientMode extends cSetupMask {
+
+    function cSetupClientMode($step, $previous, $next) {
         global $cfgClient;
 
         cSetupMask::cSetupMask("templates/setup/forms/clientmode.tpl", $step);
@@ -36,36 +35,36 @@ class cSetupClientMode extends cSetupMask
 
         $folders = "";
         $moduleFolderNotEmpty = false;
-        if(cFileHandler::exists("../cms/css")) {
-            if(!cFileHandler::isDirectoryEmpty("../cms/css")) {
+        if (cFileHandler::exists("../cms/css")) {
+            if (!cFileHandler::isDirectoryEmpty("../cms/css")) {
                 $folders .= "cms/css/, ";
             }
         }
-        if(cFileHandler::exists("../cms/js")) {
-            if(!cFileHandler::isDirectoryEmpty("../cms/js")) {
+        if (cFileHandler::exists("../cms/js")) {
+            if (!cFileHandler::isDirectoryEmpty("../cms/js")) {
                 $folders .= "cms/js/, ";
             }
         }
-        if(cFileHandler::exists("../cms/templates")) {
-            if(!cFileHandler::isDirectoryEmpty("../cms/templates")) {
+        if (cFileHandler::exists("../cms/templates")) {
+            if (!cFileHandler::isDirectoryEmpty("../cms/templates")) {
                 $folders .= "cms/templates/, ";
             }
         }
-        if(cFileHandler::exists("../cms/data/modules")) {
-            if(!cFileHandler::isDirectoryEmpty("../cms/data/modules")) {
+        if (cFileHandler::exists("../cms/data/modules")) {
+            if (!cFileHandler::isDirectoryEmpty("../cms/data/modules")) {
                 $folders .= "cms/data/modules/, ";
                 $moduleFolderNotEmpty = true;
             }
         }
-        if(cFileHandler::exists("../cms/data/layouts")) {
-            if(!cFileHandler::isDirectoryEmpty("../cms/data/layouts")) {
+        if (cFileHandler::exists("../cms/data/layouts")) {
+            if (!cFileHandler::isDirectoryEmpty("../cms/data/layouts")) {
                 $folders .= "cms/data/layouts/, ";
             }
         }
 
         $this->_oStepTemplate->set("s", "FOLDER_MESSAGE_EXAMPLES", "");
         $this->_oStepTemplate->set("s", "FOLDER_MESSAGE_MODULES", "");
-        if(strlen($folders) > 0) {
+        if (strlen($folders) > 0) {
             $folders = substr($folders, 0, strlen($folders) - 2);
         }
 
@@ -74,8 +73,8 @@ class cSetupClientMode extends cSetupMask
 
         $aChoices = array(
             "CLIENTEXAMPLES" => i18n("Client with example modules and example content") . ((strlen($folders) > 0) ? " <span class='additionalInfo'>(" . sprintf($exampleMessage, $folders) . ")</span>" : ""),
-            "CLIENTMODULES"  => i18n("Client with example modules, but without example content") . (($moduleFolderNotEmpty) ? " <span class='additionalInfo'>(" . $moduleMessage . ")</span>" : ""),
-            "NOCLIENT"       => i18n("Don't create client")
+            "CLIENTMODULES" => i18n("Client with example modules, but without example content") . (($moduleFolderNotEmpty) ? " <span class='additionalInfo'>(" . $moduleMessage . ")</span>" : ""),
+            "NOCLIENT" => i18n("Don't create client")
         );
 
         foreach ($aChoices as $sKey => $sChoice) {
@@ -89,8 +88,8 @@ class cSetupClientMode extends cSetupMask
 
             $oLabel = new cHTMLLabel($sChoice, $oRadio->getId());
 
-            $this->_oStepTemplate->set("s", "CONTROL_".$sKey, $oRadio->render());
-            $this->_oStepTemplate->set("s", "LABEL_".$sKey, $oLabel->render());
+            $this->_oStepTemplate->set("s", "CONTROL_" . $sKey, $oRadio->render());
+            $this->_oStepTemplate->set("s", "LABEL_" . $sKey, $oLabel->render());
         }
 
         $this->setNavigation($previous, $next);

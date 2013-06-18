@@ -49,7 +49,7 @@ class cApiUploadCollection extends ItemCollection {
      */
     public function sync($sDirname, $sFilename, $client = 0) {
         $client = cSecurity::toInteger($client);
-        if($client <= 0) {
+        if ($client <= 0) {
             global $client;
         }
 

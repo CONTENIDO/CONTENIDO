@@ -1,5 +1,4 @@
 <?php
-
 /**
  * description:
  *
@@ -15,8 +14,9 @@
  */
 
 defined('CON_FRAMEWORK') or die('Illegal call');
+
 //call userforum administration
-if(cRegistry::isBackendEditMode()){
+if (cRegistry::isBackendEditMode()) {
     echo "CMS_USERFORUM[2]";
 }
 
@@ -25,7 +25,6 @@ if(cRegistry::isBackendEditMode()){
  * @author claus.schunk
  */
 class UserForumArticle {
-
     /**
      * Antworten auf beiträge möglich -> Kommentieren Button ausblenden.
      */
@@ -161,11 +160,11 @@ class UserForumArticle {
     public function receiveData(array $request) {
         $this->_checkCookie();
 
-        (stristr($auth->auth['perm'], 'admin') === FALSE)? $this->_allowDeleting = false : $this->_allowDeleting = true;
-        (getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1')? $bAllowAnonymousforum = true : $bAllowAnonymousforum = false;
+        (stristr($auth->auth['perm'], 'admin') === FALSE) ? $this->_allowDeleting = false : $this->_allowDeleting = true;
+        (getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1') ? $bAllowAnonymousforum = true : $bAllowAnonymousforum = false;
 
         $this->_getUser($auth->auth['uid']);
-        ($bAllowAnonymousforum || $this->_userLoggedIn && !$bAllowAnonymousforum)? $this->_allowedToEditForum = true : $this->_allowedToEditForum = false;
+        ($bAllowAnonymousforum || $this->_userLoggedIn && !$bAllowAnonymousforum) ? $this->_allowedToEditForum = true : $this->_allowedToEditForum = false;
 
         switch ($_REQUEST['user_forum_action']) {
             // user interaction click on like button
@@ -235,6 +234,7 @@ class UserForumArticle {
      * submit for new entry will be called after click at new comment
      */
     private function _saveForum() {
+        // @fixme We have already an email validator!
         $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
         // Run the preg_match() function on regex against the email address
 
@@ -342,7 +342,7 @@ class UserForumArticle {
                 if ($replyId > 0) {
 
                     $content = $this->_collection->selectNameAndNameByForumId($replyId);
-                    (count($content) > 0)? $empty = false : $empty = true;
+                    (count($content) > 0) ? $empty = false : $empty = true;
 
                     if (!$empty) {
                         $transTemplate = mi18n("answerToQuote");
@@ -502,7 +502,7 @@ class UserForumArticle {
 
             if ($idquote > 0) {
                 $content = $this->_collection->selectNameAndNameByForumId($idquote);
-                (count($content) > 0)? $empty = false : $empty = true;
+                (count($content) > 0) ? $empty = false : $empty = true;
                 if (!$empty) {
                     $transTemplate = mi18n("quoteFrom");
                     $this->_tpl->assign('INPUT_FORUM_QUOTE', $transTemplate . ' ' . $content['realname'] . "\n" . $content['forum']);
@@ -520,7 +520,7 @@ class UserForumArticle {
 
             if ($replyId > 0) {
                 $content = $this->_collection->selectNameAndNameByForumId($replyId);
-                (count($content) > 0)? $empty = false : $empty = true;
+                (count($content) > 0) ? $empty = false : $empty = true;
 
                 if (!$empty) {
                     // Quote anser content
@@ -569,7 +569,7 @@ class UserForumArticle {
      */
     private function _checkCookie() {
         // global $REMOTE_ADDR;
-        $ip = $REMOTE_ADDR? $REMOTE_ADDR : $_SERVER['REMOTE_ADDR'];
+        $ip = $REMOTE_ADDR ? $REMOTE_ADDR : $_SERVER['REMOTE_ADDR'];
         $time = time();
 
         if ($_REQUEST['user_forum_action'] == 'dislike_forum' && isset($_COOKIE['cookie'][$ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
@@ -585,6 +585,7 @@ class UserForumArticle {
             $this->_counter = true;
         }
     }
+
 }
 
 // generate object
