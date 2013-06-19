@@ -660,9 +660,11 @@ class cUpdateNotifier {
                 $description = $doc->getXpathValue('*/channel/item/description', $iCnt);
                 $date = $doc->getXpathValue('*/channel/item/pubDate', $iCnt);
 
+                // hotfix do not call conHtmlentities because of different umlaut handling on PHP 5.3 and PHP 5.4
+                // perhaps it is a bug in conHtmlentities.
                 $title = utf8_encode($title);
-
                 $sText = utf8_encode($description);
+
                 if (strlen($sText) > 150) {
                     $sText = cApiStrTrimAfterWord($sText, 150) . '...';
                 }
