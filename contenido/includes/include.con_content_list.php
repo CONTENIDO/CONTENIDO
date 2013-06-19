@@ -56,9 +56,23 @@ if ($action == 'savecontype' || $action == 10) {
 } else if ($action == 'deletecontype') {
     if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
         $oContentColl = new cApiContentCollection();
+
+        $linkedTypes = array(
+            	4 => 22,		//if a CMS_IMG is deleted, the corresponding CMS_IMAGEEDITOR will be deleted too
+            	22 => 4			//the same goes for the other way round
+            );
+
+      	$contentItem = new cApiContent((int) $_REQUEST["idcontent"]);
+      	if(isset($linkedTypes[$contentItem->get("idtype")])) {
+      	    $linkedIds = $oContentColl->getIdsByWhereClause("`idartlang`='" . $idartlang . "' AND `idtype`='" . $linkedTypes[$contentItem->get("idtype")] . "' AND `value`='" . $contentItem->get("value") . "'");
+      	    foreach($linkedIds as $linkedId) {
+      	        $oContentColl->delete($linkedId);
+      	    }
+      	}
         $oContentColl->delete((int) $_REQUEST['idcontent']);
         $notification->displayNotification("info", i18n("Changes saved"));
 
+    	conGenerateCodeForArtInAllCategories($idart);
     }
 }
 
