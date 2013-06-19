@@ -61,9 +61,16 @@ function setupInitializeCfgClient($reset = false) {
     }
 
     // Load client configuration
-    if (!isset($cfgClient) || !isset($cfgClient['set'])) {
+    if (empty($cfgClient) || !isset($cfgClient['set'])) {
         if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
             require($cfg['path']['contenido_config'] . 'config.clients.php');
+        } else {
+            $db = getSetupMySQLDBConnection();
+
+            $db->query("SELECT * FROM " . $cfg["tab"]["clients"]);
+            while($db->nextRecord()) {
+                updateClientCache($db->f("idclient"), $db->f("htmlpath"), $db->f("frontendpath"));
+            }
         }
     }
 }
