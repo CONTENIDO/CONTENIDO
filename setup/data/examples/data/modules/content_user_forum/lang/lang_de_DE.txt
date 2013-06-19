@@ -1,4 +1,4 @@
-writeNewEntry=Neuen Beitrag schreiben
+﻿writeNewEntry=Neuen Beitrag schreiben
 answers=Antworten
 replyQuote=Zitieren
 articleRemoved=Der Beitrag wurde gelöscht.
@@ -45,3 +45,4 @@ USER=Name
 AM=am
 MODEMODETEXT=Dieses Forum wird moderiert, neue Beiträge werden nach der Freischaltung durch den Moderator angezeigt.
 admin=admin
+FEEDBACK=Vielen Dank für Ihren Kommentar! Dieser wird nach der Moderation angezeigt.
