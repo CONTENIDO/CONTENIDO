@@ -660,9 +660,9 @@ class cUpdateNotifier {
                 $description = $doc->getXpathValue('*/channel/item/description', $iCnt);
                 $date = $doc->getXpathValue('*/channel/item/pubDate', $iCnt);
 
-                $title = conHtmlentities($title, ENT_QUOTES);
+                $title = utf8_encode($title);
 
-                $sText = conHtmlentities($description, ENT_QUOTES);
+                $sText = utf8_encode($description);
                 if (strlen($sText) > 150) {
                     $sText = cApiStrTrimAfterWord($sText, 150) . '...';
                 }
@@ -726,7 +726,7 @@ class cUpdateNotifier {
             $sVendorFile = '';
 
             while (!feof($oSocket)) {
-                $sVendorFile .= utf8_encode(fgets($oSocket, 128));
+                $sVendorFile .= fgets($oSocket, 128);
 
             }
 
