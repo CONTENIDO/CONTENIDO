@@ -38,12 +38,8 @@ if ($action == "workflow_save") {
         $page->displayInfo(i18n("Saved changes successfully!", 'workflow'));
     }
 
-  //hotfix umlaut problems
-
-  // $workflow->set("name", conHtmlentities(conHtmlSpecialChars($wfname)));
-  //  $workflow->set("description", conHtmlentities(conHtmlSpecialChars($wfdescription)));
-    $workflow->set("name", $wfname);
-    $workflow->set("description",$wfdescription);
+    $workflow->set("name", conHtmlentities(conHtmlSpecialChars(strip_tags($wfname))));
+    $workflow->set("description", conHtmlentities(conHtmlSpecialChars(strip_tags($wfdescription))));
     $idworkflow = $workflow->get("idworkflow");
     $workflow->store();
 }
