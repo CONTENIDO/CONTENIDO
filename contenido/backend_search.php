@@ -317,7 +317,7 @@ if (sizeof($_GET) == 0 && isset($_POST['save_search'])) {
     // Reload top left to show new search name
     $sRefreshScript .= 'top.content.left.left_top.location.href = top.content.left.left_top.location.href+"&save_search=true";';
 
-    // Message for successfull saving
+    // Message for successful saving
     $sSaveSuccessfull = i18n("Thank you for saving this search from extinction!");
 } elseif (sizeof($_GET) > 0) {
     // STORED SEARCH HAS BEEN CALLED
@@ -805,7 +805,7 @@ if (sizeof($_GET) == 0 && isset($_POST) && !$bNoCriteria) {
     $searchForm .= '<input type="hidden" name="' . $sSaveDateField . '" id="' . $sSaveDateField . '" value="' . $sDateFieldName . '">';
     $searchForm .= '<input type="hidden" name="' . $sSaveAuthor . '" id="' . $sSaveAuthor . '" value="' . $sSearchStrAuthor . '">';
     $searchForm .= '<label for="' . $sSaveName . '">' . i18n("Search name") . ': </label>';
-    $searchForm .= '<input type="text" class="text_medium" name="' . $sSaveName . '" id="' . $sSaveName . '" value="' . i18n("The search") . '" class="vAlignMiddle">';
+    $searchForm .= '<input type="text" class="text_medium" name="' . $sSaveName . '" id="' . $sSaveName . '" placeholder="' . i18n("The search") . '" class="vAlignMiddle">';
     $searchForm .= '<input type="image" class="vAlignMiddle tableElement" src="./images/but_ok.gif" alt="' . i18n('Store') . '" title="' . i18n('Store') . '" value="' . i18n('Store') . '" name="submit">';
     $searchForm .= '</form>';
     $tpl->set('s', 'STORESEARCHFORM', $searchForm);

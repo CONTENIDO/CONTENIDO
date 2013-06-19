@@ -225,19 +225,14 @@ $tplSearch->set("s", "SUBMIT_BUTTON", $oSubmit->render());
 $proppy = new cApiPropertyCollection();
 $savedSearchList = $proppy->getAllValues('type', 'savedsearch', $auth);
 
-$init_itemid = '';
-$init_itemtype = '';
-
 foreach ($savedSearchList as $value) {
-    if (($init_itemid != $value['itemid']) && ($init_itemtype != $value['itemtype'])) {
-        $init_itemid = $value['itemid'];
-        $init_itemtype = $value['itemtype'];
+	if($value["name"] == "save_name") {
+        $tplSearch->set("d", "SEARCH_NAME", ($value['value'] == "") ? i18n("A saved search") : $value['value']);
 
         $tplSearch->set("d", "ITEM_ID", $value['itemid']);
         $tplSearch->set("d", "ITEM_TYPE", $value['itemtype']);
-        $tplSearch->set("d", "SEARCH_NAME", $value['value']);
         $tplSearch->next();
-    }
+	}
 }
 
 $oListOptionRow->setContentData($tplSearch->generate($cfg['path']['templates'] . $cfg["templates"]["con_left_top_art_search"], true));

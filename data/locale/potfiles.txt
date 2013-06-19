@@ -472,7 +472,7 @@
 ./external/codemirror/mode/yaml/index.html
 ./external/frontend/cache/index.php
 ./external/frontend/css/index.php
-./external/frontend/data/config/config.php
+./external/frontend/data/config/production/config.php
 ./external/frontend/data/logs/index.php
 ./external/frontend/dbfs.php
 ./external/frontend/error.php
