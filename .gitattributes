@@ -1299,6 +1299,7 @@ contenido/includes/type/action/include.con_makecatonline.action.php -text
 contenido/includes/type/action/include.con_makeonline.action.php -text
 contenido/includes/type/action/include.con_makepublic.action.php -text
 contenido/includes/type/action/include.con_makestart.action.php -text
+contenido/includes/type/action/include.con_meta_deletetype.action.php -text
 contenido/includes/type/action/include.con_meta_saveart.action.php -text
 contenido/includes/type/action/include.con_newart.action.php -text
 contenido/includes/type/action/include.con_saveart.action.php -text

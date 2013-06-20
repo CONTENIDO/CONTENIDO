@@ -287,8 +287,10 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
                 break;
         }
 
+        $tpl->set("d", "ARTICLE_ID", $idart);
+        $tpl->set("d", "CAT_ID", $idcat);
         $tpl->set('d', 'METAFIELDTYPE', $element);
-        // $tpl->set('d', 'METAVALUE', conGetMetaValue($tmp_idartlang,$key));
+        $tpl->set('d', 'IDMETATYPE', $value["idmetatype"]);
         $tpl->set('d', 'METATITLE', $value["metatype"] . ':');
         $tpl->next();
     }

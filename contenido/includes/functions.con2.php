@@ -78,6 +78,7 @@ function conGetAvailableMetaTagTypes() {
             'fieldtype' => $rs['fieldtype'],
             'maxlength' => $rs['maxlength'],
             'fieldname' => $rs['fieldname'],
+            'idmetatype' => $rs["idmetatype"]
         );
     }
 
