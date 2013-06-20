@@ -2135,6 +2135,7 @@ setup/data/examples/css/reset.css -text svneol=unset#text/plain
 setup/data/examples/css/style_tiny.css -text svneol=unset#text/plain
 setup/data/examples/data/layouts/standard/standard.html -text svneol=unset#text/plain
 setup/data/examples/data/layouts/start_page/start_page.html -text svneol=unset#text/plain
+setup/data/examples/data/layouts/system/system.html -text svneol=unset#text/plain
 setup/data/examples/data/modules/config_copyright_notice/info.xml -text svneol=unset#text/plain
 setup/data/examples/data/modules/config_copyright_notice/lang/lang_de_DE.txt -text svneol=unset#text/plain
 setup/data/examples/data/modules/config_copyright_notice/lang/lang_en_US.txt -text svneol=unset#text/plain
@@ -2257,6 +2258,7 @@ setup/data/examples/data/modules/content_socialmedia_twitter/template/tweets.tpl
 setup/data/examples/data/modules/content_socialmedia_twitter/template/twitter.js -text svneol=unset#text/plain
 setup/data/examples/data/modules/content_socialmedia_twitter/template/twitter_big.tpl -text
 setup/data/examples/data/modules/content_socialmedia_twitter/template/twitter_config_view.tpl -text
+setup/data/examples/data/modules/content_socialmedia_twitter/template/twitter_embed_timeline.tpl -text
 setup/data/examples/data/modules/content_socialmedia_twitter/template/twitter_no_config.tpl -text
 setup/data/examples/data/modules/content_socialmedia_twitter/template/twitter_small.tpl -text
 setup/data/examples/data/modules/content_socialmedia_twitter/template/twitter_twitts_big.tpl -text

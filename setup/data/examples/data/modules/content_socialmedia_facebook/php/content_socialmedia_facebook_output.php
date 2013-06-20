@@ -26,6 +26,7 @@ $widthLabel = mi18n("WIDTH");
 $heightLabel = mi18n("HEIGHT");
 $saveLabel = mi18n("SAVE");
 $label_overview = mi18n("OVERVIEW_LABEL");
+$automaticURLLabel = mi18n("AUTOMATIC_URL_LABEL");
 $idartlang = cRegistry::getArticleLanguageId();
 $idlang = cRegistry::getLanguageId();
 $idclient = cRegistry::getClientId();
@@ -41,6 +42,7 @@ if ('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] =
     conSaveContentEntry($idartlang, "CMS_HTML", 1003, $_POST['faces']);
     conSaveContentEntry($idartlang, "CMS_HTML", 1004, $_POST['width']);
     conSaveContentEntry($idartlang, "CMS_HTML", 1005, $_POST['height']);
+    conSaveContentEntry($idartlang, "CMS_HTML", 1006, $_POST['automaticURL']);
 }
 
 //get saved content
@@ -50,6 +52,10 @@ $layoutvalue = $art->getContent("CMS_HTML", 1002);
 $facesvalue = $art->getContent("CMS_HTML", 1003);
 $width = $art->getContent("CMS_HTML", 1004);
 $height = $art->getContent("CMS_HTML", 1005);
+$useAutomaticURL = $art->getContent("CMS_HTML", 1006);
+if($useAutomaticURL == "1") {
+    $url = cRegistry::getFrontendUrl() . $art->getLink();
+}
 
 //if backend mode set some values and display config tpl
 if (cRegistry::isBackendEditMode()) {
@@ -72,12 +78,14 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign('heightLabel', $heightLabel);
     $tpl->assign('save', $saveLabel);
     $tpl->assign('label_overview', $label_overview);
+    $tpl->assign("automaticURLLabel", $automaticURLLabel);
+    $tpl->assign("useAutomaticURL", $useAutomaticURL);
 
     $tpl->display('facebook_config_view.tpl');
 } else {
     //if no url set, set default contenido url
     if ($url == '') {
-        $url = 'http://de-de.facebook.com/cms.contenido';
+        $url = 'http://facebook.com/cms.contenido';
     }
     //if no type is set set default type
     if ($pluginvalue == '') {

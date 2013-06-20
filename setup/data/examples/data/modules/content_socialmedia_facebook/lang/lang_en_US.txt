@@ -10,4 +10,5 @@ SHOW_FACES=Show faces
 WIDTH=Width
 HEIGHT=Height
 SAVE=Save
-OVERVIEW_LABEL=Facebook Plugin
+OVERVIEW_LABEL=Facebook Like Button
+AUTOMATIC_URL_LABEL=Use the URL of this article

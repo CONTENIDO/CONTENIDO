@@ -6,43 +6,38 @@
         <td><input type="text" name="twitter_name" value="{$twitterName}"/></td>
     </tr>
     <tr>
-        <td>{$lookLabel}</td>
+        <td>{$labelWidth}</td>
+        <td><input type="text" name="width" value="{$twitterWidth}"></td>
+    </tr>
+    <tr>
+        <td>{$labelHeight}</td>
+        <td><input type="text" name="height" value="{$twitterHeight}"></td>
+    </tr>
+    <tr>
+        <td>{$themeLabel}</td>
         <td>
-            <input type="radio" name="look" value="small" {if $look == "small" } checked="checked" {/if} />
-            <label>{$smallIconLabel}</label>
+            <input type="radio" name="theme" value="light" {if $twitterTheme == "light" } checked="checked" {/if} />
+            <label>{$lightThemeLabel}</label>
             <br/>
-            <input type="radio" name="look" value="big"  {if $look =="big" } checked="checked" {/if} />
-            <label>{$bigIconLabel}</label>
+            <input type="radio" name="theme" value="dark"  {if $twitterTheme =="dark" } checked="checked" {/if} />
+            <label>{$darkThemeLabel}</label>
         </td>
     </tr>
     <tr>
-        <td>{$showTweetsLabel}</td>
-        <td><input type="checkbox" name="show_tweets" value="1" {if $show_tweets} checked="checked" {/if} ></td>
+        <td>{$showRepliesLabel}</td>
+        <td><input type="checkbox" name="show_replies" value="1" {if $twitterShowReplies} checked="checked" {/if} ></td>
     </tr>
     <tr>
-        <td>{$countTweetsLabel}</td>
-        <td><input type="text" name="count_tweets" value="{$count_tweets}"/></td>
+        <td>{$labelLinkColor}</td>
+        <td><input type="text" name="link_color" value="{$twitterLinkColor}"/></td>
     </tr>
     <tr>
-        <td>{$showFollowButtonLabel}</td>
-        <td><input type="checkbox" name="show_follow_button" value="1" {if $show_follow_button} checked="checked" {/if} ></td>
+        <td>{$labelBorderColor}</td>
+        <td><input type="text" name="border_color" value="{$twitterBorderColor}"></td>
     </tr>
     <tr>
-        <td>{$showTweetButtonLabel}</td>
-        <td><input type="checkbox" name="show_tweet_button" value="1" {if $show_tweet_button} checked="checked" {/if} ></td>
-    </tr>
-
-     <tr>
-        <td>{$defaultTextLabel}</td>
-        <td><input type="text" name="default_text" value="{$default_text}"/></td>
-    </tr>
-    <tr>
-        <td>{$urlToShareLabel}</td>
-        <td><input type="text" name="url_to_share" value="{$url_to_share}"/></td>
-    </tr>
-    <tr>
-        <td>{$showCountLabel}</td>
-        <td><input type="checkbox" name="show_count" value="1" {if $show_count} checked="checked" {/if} ></td>
+        <td>{$labelRelated}</td>
+        <td><input type="text" name="related" placeholder="{$labelRelatedExplanation}" value="{$twitterRelated}"></td>
     </tr>
 </table>
 <input type="hidden" name="plugin_type" value="twitter" />

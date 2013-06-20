@@ -15,6 +15,7 @@
 $tpl = Contenido_SmartyWrapper::getInstance();
 
 $urlLabel = mi18n("URL");
+$automaticURLLabel = mi18n("AUTOMATIC_URL_LABEL");
 $lookLabel = mi18n("LOOK");
 $normalLabel = mi18n("NORMAL") . '(24px)';
 $smallLabel = mi18n("NORMAL") . '(15px)';
@@ -36,12 +37,18 @@ if ('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] =
     conSaveContentEntry($idartlang, "CMS_HTML", 3000, $_POST['url']);
     conSaveContentEntry($idartlang, "CMS_HTML", 3001, $_POST['size']);
     conSaveContentEntry($idartlang, "CMS_HTML", 3002, $_POST['counter']);
+    conSaveContentEntry($idartlang, "CMS_HTML", 3003, $_POST['currentArticleUrl']);
 }
 
 //get saved content
 $url = $art->getContent("CMS_HTML", 3000);
 $size = $art->getContent("CMS_HTML", 3001);
 $counter = $art->getContent("CMS_HTML", 3002);
+$currentArticleUrl = $art->getContent("CMS_HTML", 3003);
+
+if($currentArticleUrl == "1") {
+    $url = cRegistry::getFrontendUrl() . $art->getLink();
+}
 
 //if backend mode set some values and display config tpl
 if (cRegistry::isBackendEditMode()) {
@@ -57,6 +64,8 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign('displayCounterLabel', $displayCounterLabel);
     $tpl->assign('save', $saveLabel);
     $tpl->assign('label_overview', $label_overview);
+    $tpl->assign("automaticURLLabel", $automaticURLLabel);
+    $tpl->assign("currentArticleUrl", $currentArticleUrl);
 
     $tpl->display('google_plus_config_view.tpl');
 } else {

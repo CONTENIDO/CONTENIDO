@@ -10,4 +10,5 @@ SHOW_FACES=Profile anzeigen
 WIDTH=Breite
 HEIGHT=Höhe
 SAVE=Speichern
-OVERVIEW_LABEL=Facebook Plugin
+OVERVIEW_LABEL=Facebook Like Button
+AUTOMATIC_URL_LABEL=Nutze die URL des Artikels

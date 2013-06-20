@@ -6,6 +6,10 @@
         <td><input type="text" name="url" value="{$url}"></td>
     </tr>
     <tr>
+        <td>{$automaticURLLabel}</td>
+        <td><input type="checkbox" name="automaticURL" value="1" {if $useAutomaticURL == "1" } checked="1" {/if}></td>
+    </tr>
+    <tr>
         <td>
             {$pluginLabel}
         </td>
