@@ -95,7 +95,12 @@
 
             <tr>
                 <td class="leftData">i18n("Page title")</td>
+<<<<<<< .mine
+                <td colspan="3" class="text_medium">{TITLE-INPUT} <img class="vAlignMiddle" title="{TITLE_INFO}" src="images/info.gif"></td>
+                
+=======
                 <td class="text_medium">{TITLE-INPUT}</td>
+>>>>>>> .r4967
             </tr>
 
             <tr>
@@ -105,22 +110,22 @@
 
             <tr>
                 <td class="leftData">i18n("Description")</td>
-                <td><textarea class="textField metaTag" name="METAdescription" id="METAdescription" rows=3>{DESCRIPTION}</textarea></td>
+                <td><textarea class="textField metaTag" name="METAdescription" id="METAdescription" rows=3>{DESCRIPTION}</textarea> <img class="vAlignMiddle" title="{DESCRIPTION_INFO}" src="images/info.gif"></td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Keywords")</td>
-                <td><textarea class="textField metaTag" name="METAkeywords" id="METAkeywords" rows=3>{KEYWORDS}</textarea></td>
+                <td><textarea class="textField metaTag" name="METAkeywords" id="METAkeywords" rows=3>{KEYWORDS}</textarea> <img class="vAlignMiddle" title="{KEYWORD_INFO}" src="images/info.gif"></td>
             </tr>
 
             <tr>
                 <td  class="leftData" style="border-top: 1px solid #b3b3b3">i18n("Copyright")</td>
-                <td style="border-top: 1px solid #b3b3b3"><input type="text" class="textField metaTag" name="METAcopyright" id="METAcopyright" value="{COPYRIGHT}" size="24"></td>
+                <td style="border-top: 1px solid #b3b3b3"><input type="text" class="textField metaTag" name="METAcopyright" id="METAcopyright" value="{COPYRIGHT}" size="24"> </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Author")</td>
-                <td><input class="textField metaTag" type="text" name="METAauthor" id="METAauthor" value="{AUTHOR}" size="24"></td>
+                <td><input class="textField metaTag" type="text" name="METAauthor" id="METAauthor" value="{AUTHOR}" size="24"> </td>
             </tr>
 
             <tr>
@@ -135,7 +140,7 @@
 
             <tr>
                 <td class="leftData">i18n("Revisit after")</td>
-                <td><input class="textField metaTag" type="text" name="METArevisit-after" id="METArevisit-after" value="{REVISIT-AFTER}" size="24"></td>
+                <td><input class="textField metaTag" type="text" name="METArevisit-after" id="METArevisit-after" value="" size="24"> <img class="vAlignMiddle" title="{REVISIT_INFO}" src="images/info.gif"></td>
             </tr>
 
             <tr>
@@ -146,15 +151,16 @@
                     <input id="metaNoSnippet" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="nosnippet" {NOSNIPPET}><label for="metaNoSnippet">nosnippet</label><br>
                     <input id="metaNoImageIndex" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noimageindex" {NOIMAGEINDEX}><label for="metaNoImageIndex">noimageindex</label><br>
                     <input id="metaNoArchive" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noarchive" {NOARCHIVE}><label for="metaNoArchive">noarchive</label><br>
-                </td>
+                    <img class="vAlignMiddle" title="{ROBOTS_INFO}" src="images/info.gif">
+                 </td>
             </tr>
 
             <tr>
                 <td class="leftData" style="border-top: 1px solid #b3b3b3">
-                    i18n("Sitemap Priority")
+                    i18n("Sitemap Priority") 
                 </td>
                 <td class="leftData" style="border-top: 1px solid #b3b3b3">
-                    <input class="textField" type="text" name="sitemap_prio" value="{SITEMAP_PRIO}" size="24">
+                    <input class="textField" type="text" name="sitemap_prio" value="{SITEMAP_PRIO}" size="24"> <img class="vAlignMiddle" title="{SITEMAPRIORITY_INFO}" src="images/info.gif">
                 </td>
             </tr>
 
@@ -173,7 +179,7 @@
                         <option {SELECTED_yearly}>yearly</option>
                         <option {SELECTED_never}>never</option>
                     </select>
-                </td>
+                 <img class="vAlignMiddle" title="{SITEMAPCHANGEFREQUENCY_INFO}" src="images/info.gif"></td>
             </tr>
 
             {ADDITIONAL_ROWS}
