@@ -18,7 +18,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.pathresolver.php");
 
+
 $tpl->reset();
+
+
+function generateInfoButton($title){
+
+    return '<a id="rootdirInfo1-link" class="infoButton" title="'."$title".'" href="javascript:void(0);"></a>';
+}
+
+
+
+//echo '<div id="rootdirInfo1" class="nodisplay" title="sdafkjasdfkjasdfasdfjk">';
 
 if ($action == "remove_assignments") {
     $sql = "DELETE FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat != " . cSecurity::toInteger($idcat);
@@ -208,6 +219,27 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     // Page title
     $title_input = '<input class="textField" type="text" ' . $disabled . ' name="page_title" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
+
+    $tpl->set("s","TITLE_INFO",(i18n("TITLE_INFO")));
+    $tpl->set("s","EXPIRES_INFO",(i18n("EXPIRES_INFO")));
+    $tpl->set("s","REVISIT_INFO",(i18n("REVISIT_INFO")));
+    $tpl->set("s","ROBOTS_INFO",(i18n("ROBOTS_INFO")));
+    $tpl->set("s","SITEMAPRIORITY_INFO",(i18n("SITEMAPRIORITY_INFO")));
+    $tpl->set("s","SITEMAPCHANGEFREQUENCY_INFO",(i18n("SITEMAPCHANGEFREQUENCY_INFO")));
+    $tpl->set("s","CUSTOMMETATAGS_INFO",(i18n("CUSTOMMETATAGS_INFO")));
+    $tpl->set("s","DESCRIPTION_INFO",(i18n("DESCRIPTION_INFO")));
+    $tpl->set("s","KEYWORD_INFO",(i18n("KEYWORD_INFO")));
+    $tpl->set("s","REVISITED_INFO",(i18n("REVISITED_INFO")));
+
+    $tpl->set("s","EXPIRES_INFO",(i18n("EXPIRES_INFO")));
+    $tpl->set("s","REVISIT_INFO",(i18n("REVISIT_INFO")));
+    $tpl->set("s","ROBOTS_INFO",(i18n("ROBOTS_INFO")));
+    $tpl->set("s","SITEMAPRIORITY_INFO",(i18n("SITEMAPRIORITY_INFO")));
+    $tpl->set("s","SITEMAPCHANGEFREQUENCY_INFO",(i18n("SITEMAPCHANGEFREQUENCY_INFO")));
+    $tpl->set("s","CUSTOMMETATAGS_INFO",(i18n("CUSTOMMETATAGS_INFO")));
+  //  $tpl->set("s","TITLE_INFO",(i18n("TITLE_INFO")));
+  //  $tpl->set("s","TITLE_INFO",(i18n("TITLE_INFO")));
+
 
     $tpl->set("s", "ALIAS", $tmp_alias);
     $tpl->set("s", "SITEMAP_PRIO", $tmp_sitemap_prio);
@@ -454,6 +486,8 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     while (($chainEntry = $cecIterator->next()) !== false) {
         $additionalRows .= $chainEntry->execute($idart, $lang, $client);
     }
+
+
     $tpl->set('s', 'ADDITIONAL_ROWS', $additionalRows);
 
     //call the chain to create meta tags to display any additional tags in the preview
@@ -481,3 +515,4 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     // User has no permission to see this form
     $notification->displayNotification("error", i18n("Permission denied"));
 }
+
