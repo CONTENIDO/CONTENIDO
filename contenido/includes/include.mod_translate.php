@@ -74,7 +74,6 @@ if (!isset($row)) {
     $lastTranslation = $myTrans[$lastString];
 } else {
     // Get the string
-    $row++;
     $index = 0;
     foreach ($myTrans as $key => $value) {
         if ($index == $row) {
