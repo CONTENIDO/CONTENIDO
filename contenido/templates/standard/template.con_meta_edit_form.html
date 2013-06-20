@@ -43,6 +43,9 @@
         }
 
         function formatDates(date) {
+            if(date == "Invalid Date") {
+                return "";
+            }
             var ret = date.getFullYear() + "-" + pad(date.getMonth()) + "-" + pad(date.getDate()) + "T" + pad(date.getHours()) + ":" + pad(date.getMinutes());
 
             var offset = date.getTimezoneOffset();
