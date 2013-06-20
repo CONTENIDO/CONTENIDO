@@ -133,3 +133,7 @@ msgstr "Aktionen"
 msgid "Do you really want to delete the short URL %s?"
 msgstr "Möchten Sie wirklich die Short URL %s löschen?"
 
+#: includes/include.url_shortener.php:137
+msgid "INFO"
+msgstr "Short URL's sollen eine Ausnahme bleiben, da sprechende URL's höhere Auswirkungen auf das Ranking bleiben."
+

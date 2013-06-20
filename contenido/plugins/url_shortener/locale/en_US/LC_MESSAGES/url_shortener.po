@@ -133,3 +133,6 @@ msgstr ""
 msgid "Do you really want to delete the short URL %s?"
 msgstr ""
 
+#: includes/include.url_shortener.php:137
+msgid "INFO"
+msgstr "Only in exceptional cases short URL's should be used, because speaking URL's have higher impacts on ranking."
