@@ -221,6 +221,14 @@ class cSystemtest {
     const CON_MYSQL_STRICT_MODE = 2;
 
     /**
+     * Possible result of cSystemtest::testMySQL()
+     * Strict mode is activated. CONTENIDO won't work
+     *
+     * @var int
+     */
+    const CON_MYSQL_CANT_CONNECT = 3;
+
+    /**
      * The test results which are stored for display. Every array element is an assoicative array like this:
      * $_messages[$i] = array(
      *                     "result" => $result, //true or false, success or no success
@@ -951,6 +959,10 @@ class cSystemtest {
         }
         if ($errorMessage != "") {
             return $errorMessage;
+        }
+
+        if($handle->getLinkId()->errno == 1045) {
+            return self::CON_MYSQL_CANT_CONNECT;
         }
 
         if (!$this->testMySQLModeStrict($host, $username, $password)) {
