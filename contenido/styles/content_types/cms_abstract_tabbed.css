@@ -95,8 +95,9 @@
     line-height: 20px;
     padding: 0 10px;
     width: auto;
-    display: inline-block;
     margin-top: 1px;
+	float: left;
+	margin-right: 4px;
 }
 
 .cms_abstract .menu li.active {
