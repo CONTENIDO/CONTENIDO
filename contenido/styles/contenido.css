@@ -750,8 +750,6 @@ p, table, tr, td, th {
 
 /* link style for adding anything */
 .addfunction {
-    float: left;
-    display: block;
     background: transparent url(../images/folder_new.gif) no-repeat scroll 0 2px;
     padding-left: 20px;
     height: 2em;
@@ -760,7 +758,6 @@ p, table, tr, td, th {
 
 /* link style for synchronization anything */
 .syncronizefunction {
-    float: left;
     display: block;
     background: transparent url(../images/but_refresh.gif) no-repeat scroll 0 2px;
     padding-left: 20px;
