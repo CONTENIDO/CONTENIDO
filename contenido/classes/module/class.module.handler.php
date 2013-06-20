@@ -149,10 +149,20 @@ class cModuleHandler {
 
     /**
      *
-     * @var DB_Contenido
+     * @var cDb
      */
     private $_db = NULL;
+
+    /**
+     *
+     * @var array
+     */
     protected static $_encodingStore = array();
+
+    /**
+     *
+     * @var string
+     */
     protected static $_overrideEncoding = '';
 
     /**
