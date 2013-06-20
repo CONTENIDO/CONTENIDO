@@ -2127,17 +2127,12 @@ setup/data/base/base_type1.sql -text
 setup/data/client.txt -text
 setup/data/client/client1.sql -text
 setup/data/examples.txt -text
-setup/data/examples/data/css/contenido_backend.css -text svneol=unset#text/plain
-setup/data/examples/data/css/ie_8.css -text svneol=unset#text/plain
-setup/data/examples/data/css/index.php -text
-setup/data/examples/data/css/main.css -text svneol=unset#text/plain
-setup/data/examples/data/css/reset.css -text svneol=unset#text/plain
-setup/data/examples/data/css/style_tiny.css -text svneol=unset#text/plain
-setup/data/examples/data/js/index.php -text
-setup/data/examples/data/js/jquery-1.8.2.min.js -text svneol=unset#text/plain
-setup/data/examples/data/js/jquery-ui-1.9.1.custom.min.js -text svneol=unset#text/plain
-setup/data/examples/data/js/jquery.validate.js -text svneol=unset#text/plain
-setup/data/examples/data/js/main.js -text svneol=unset#text/plain
+setup/data/examples/css/contenido_backend.css -text svneol=unset#text/plain
+setup/data/examples/css/ie_8.css -text svneol=unset#text/plain
+setup/data/examples/css/index.php -text
+setup/data/examples/css/main.css -text svneol=unset#text/plain
+setup/data/examples/css/reset.css -text svneol=unset#text/plain
+setup/data/examples/css/style_tiny.css -text svneol=unset#text/plain
 setup/data/examples/data/layouts/standard/standard.html -text svneol=unset#text/plain
 setup/data/examples/data/layouts/start_page/start_page.html -text svneol=unset#text/plain
 setup/data/examples/data/modules/config_copyright_notice/info.xml -text svneol=unset#text/plain
@@ -2397,49 +2392,6 @@ setup/data/examples/data/modules/script_tracker_piwik/info.xml -text svneol=unse
 setup/data/examples/data/modules/script_tracker_piwik/php/script_tracker_piwik_input.php -text
 setup/data/examples/data/modules/script_tracker_piwik/php/script_tracker_piwik_output.php -text
 setup/data/examples/data/modules/script_tracker_piwik/template/get.tpl -text
-setup/data/examples/data/templates/cms_filelist_style_default.html -text svneol=unset#text/plain
-setup/data/examples/data/templates/cms_pifaform_get_default.tpl -text
-setup/data/examples/data/templates/cms_pifaform_mail_system.tpl -text
-setup/data/examples/data/templates/cms_pifaform_mail_user.tpl -text
-setup/data/examples/data/templates/cms_pifaform_post_default.tpl -text
-setup/data/examples/data/templates/cms_teaser_blog.html -text svneol=unset#text/plain
-setup/data/examples/data/templates/cms_teaser_image.html -text svneol=unset#text/plain
-setup/data/examples/data/templates/cms_teaser_slider.html -text svneol=unset#text/plain
-setup/data/examples/data/templates/cms_teaser_text.html -text svneol=unset#text/plain
-setup/data/examples/data/templates/error_page.html -text svneol=unset#text/plain
-setup/data/examples/data/templates/index.php -text
-setup/data/examples/data/upload/contenido_diagramme/contenido_priniciple.png -text
-setup/data/examples/data/upload/downloads/Logo_4fb.png -text
-setup/data/examples/data/upload/downloads/Logo_CONTENIDO.png -text
-setup/data/examples/data/upload/downloads/contenido_cms_garden_anzeige_60x90mm_20130122_sgr.pdf -text
-setup/data/examples/data/upload/logos/logo.png -text
-setup/data/examples/data/upload/picture_gallery/galerie_01.jpg -text
-setup/data/examples/data/upload/picture_gallery/galerie_02.jpg -text
-setup/data/examples/data/upload/picture_gallery/galerie_03.jpg -text
-setup/data/examples/data/upload/picture_gallery/galerie_04.jpg -text
-setup/data/examples/data/upload/picture_gallery/galerie_05.jpg -text
-setup/data/examples/data/upload/picture_gallery/galerie_06.jpg -text
-setup/data/examples/data/upload/picture_gallery/galerie_07.jpg -text
-setup/data/examples/data/upload/picture_gallery/galerie_08.jpg -text
-setup/data/examples/data/upload/picture_gallery/galerie_10.jpg -text
-setup/data/examples/data/upload/picture_gallery/galerie_11.jpg -text
-setup/data/examples/data/upload/picture_gallery/galerie_12.jpg -text
-setup/data/examples/data/upload/slider/slider_1.jpg -text
-setup/data/examples/data/upload/slider/slider_2.jpg -text
-setup/data/examples/data/upload/slider/slider_3.jpg -text
-setup/data/examples/data/upload/slider/slider_4.jpg -text
-setup/data/examples/data/upload/teaser/Dienstleistungen_4fb.jpg -text
-setup/data/examples/data/upload/teaser/Features_dieser_Webseite.jpg -text
-setup/data/examples/data/upload/teaser/Funktionen_Fakten.jpg -text
-setup/data/examples/data/upload/teaser/einfach_benutzen.jpg -text
-setup/data/examples/data/upload/teaser/einfach_benutzen_teaser.jpg -text
-setup/data/examples/data/upload/teaser/einfach_einfach.jpg -text
-setup/data/examples/data/upload/teaser/einfach_einfach_teaser.jpg -text
-setup/data/examples/data/upload/teaser/einfach_grenzenlos.jpg -text
-setup/data/examples/data/upload/teaser/einfach_grenzenlos_teaser.jpg -text
-setup/data/examples/data/upload/teaser/philosophie.jpg -text
-setup/data/examples/data/upload/teaser/start.jpg -text
-setup/data/examples/data/upload/teaser/teaser_01.jpg -text
 setup/data/examples/examples_articles1.sql -text
 setup/data/examples/examples_categories1.sql -text
 setup/data/examples/examples_container1.sql -text
@@ -2447,6 +2399,54 @@ setup/data/examples/examples_content1.sql -text
 setup/data/examples/examples_misc1.sql -text
 setup/data/examples/examples_misc2.sql -text
 setup/data/examples/examples_misc3.sql -text
+setup/data/examples/js/index.php -text
+setup/data/examples/js/jquery-1.8.2.min.js -text svneol=unset#text/plain
+setup/data/examples/js/jquery-ui-1.9.1.custom.min.js -text svneol=unset#text/plain
+setup/data/examples/js/jquery.validate.js -text svneol=unset#text/plain
+setup/data/examples/js/main.js -text svneol=unset#text/plain
+setup/data/examples/templates/cms_filelist_style_default.html -text svneol=unset#text/plain
+setup/data/examples/templates/cms_pifaform_get_default.tpl -text
+setup/data/examples/templates/cms_pifaform_mail_system.tpl -text
+setup/data/examples/templates/cms_pifaform_mail_user.tpl -text
+setup/data/examples/templates/cms_pifaform_post_default.tpl -text
+setup/data/examples/templates/cms_teaser_blog.html -text svneol=unset#text/plain
+setup/data/examples/templates/cms_teaser_image.html -text svneol=unset#text/plain
+setup/data/examples/templates/cms_teaser_slider.html -text svneol=unset#text/plain
+setup/data/examples/templates/cms_teaser_text.html -text svneol=unset#text/plain
+setup/data/examples/templates/error_page.html -text svneol=unset#text/plain
+setup/data/examples/templates/index.php -text
+setup/data/examples/upload/contenido_diagramme/contenido_priniciple.png -text
+setup/data/examples/upload/downloads/Logo_4fb.png -text
+setup/data/examples/upload/downloads/Logo_CONTENIDO.png -text
+setup/data/examples/upload/downloads/contenido_cms_garden_anzeige_60x90mm_20130122_sgr.pdf -text
+setup/data/examples/upload/logos/logo.png -text
+setup/data/examples/upload/picture_gallery/galerie_01.jpg -text
+setup/data/examples/upload/picture_gallery/galerie_02.jpg -text
+setup/data/examples/upload/picture_gallery/galerie_03.jpg -text
+setup/data/examples/upload/picture_gallery/galerie_04.jpg -text
+setup/data/examples/upload/picture_gallery/galerie_05.jpg -text
+setup/data/examples/upload/picture_gallery/galerie_06.jpg -text
+setup/data/examples/upload/picture_gallery/galerie_07.jpg -text
+setup/data/examples/upload/picture_gallery/galerie_08.jpg -text
+setup/data/examples/upload/picture_gallery/galerie_10.jpg -text
+setup/data/examples/upload/picture_gallery/galerie_11.jpg -text
+setup/data/examples/upload/picture_gallery/galerie_12.jpg -text
+setup/data/examples/upload/slider/slider_1.jpg -text
+setup/data/examples/upload/slider/slider_2.jpg -text
+setup/data/examples/upload/slider/slider_3.jpg -text
+setup/data/examples/upload/slider/slider_4.jpg -text
+setup/data/examples/upload/teaser/Dienstleistungen_4fb.jpg -text
+setup/data/examples/upload/teaser/Features_dieser_Webseite.jpg -text
+setup/data/examples/upload/teaser/Funktionen_Fakten.jpg -text
+setup/data/examples/upload/teaser/einfach_benutzen.jpg -text
+setup/data/examples/upload/teaser/einfach_benutzen_teaser.jpg -text
+setup/data/examples/upload/teaser/einfach_einfach.jpg -text
+setup/data/examples/upload/teaser/einfach_einfach_teaser.jpg -text
+setup/data/examples/upload/teaser/einfach_grenzenlos.jpg -text
+setup/data/examples/upload/teaser/einfach_grenzenlos_teaser.jpg -text
+setup/data/examples/upload/teaser/philosophie.jpg -text
+setup/data/examples/upload/teaser/start.jpg -text
+setup/data/examples/upload/teaser/teaser_01.jpg -text
 setup/data/indexes.sql -text
 setup/data/standard.txt -text
 setup/data/standard/standard_modules1.sql -text

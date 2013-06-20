@@ -34,7 +34,7 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
                 continue;
             }
 		    if(cFileHandler::exists($aClient["path"]["frontend"] . "/data/config/config.php")) {
-		        cFileHandler::move($aClient["path"]["frontend"] . "/data/config/config.php", $aClient["path"]["frontend"] . "/data/config/" . CON_ENVIRONMENT . "config.php");
+		        cFileHandler::move($aClient["path"]["frontend"] . "/data/config/config.php", $aClient["path"]["frontend"] . "/data/config/" . CON_ENVIRONMENT . "/config.php");
 		    }
 		}
     }
