@@ -6655,3 +6655,54 @@ msgstr ""
 msgid "Fake permissions"
 msgstr ""
 
+#: templates/standard/template.con_meta_edit_form.html:94
+#: templates/standard/template.con_meta_edit_form.html:317
+msgid "TITLE_INFO"
+msgstr "The Title-Tag is one of the most important on-page factor for SEO and is no longer than 60 characters. It includes top keywords and the branding."
+
+#: templates/standard/template.con_meta_edit_form.html:129
+#: templates/standard/template.con_meta_edit_form.html:326
+msgid "EXPIRES_INFO"
+msgstr "Expires"
+
+#: templates/standard/template.con_meta_edit_form.html:134
+#: templates/standard/template.con_meta_edit_form.html:327
+msgid "REVISIT_INFO"
+msgstr "Die Häufigkeit des revisit after orientiert sich an der Anzahl der Neuerscheinungen.  Jedoch haben die Robots der Suchmaschinen ihren eigenen Besuchsrhythmus."
+
+#: templates/standard/template.con_meta_edit_form.html:139
+#: templates/standard/template.con_meta_edit_form.html:328
+msgid "ROBOTS_INFO"
+msgstr "Not important content or not to indicate pictures should be declared with the robot-tag. It has an high relevance for SEO. Only relevant and most visited articels should be indicated."
+
+#: templates/standard/template.con_meta_edit_form.html:151
+#: templates/standard/template.con_meta_edit_form.html:329
+msgid "SITEMAPRIORITY_INFO"
+msgstr "The avarage value for the sitemap priority is 0.5. Only important articels should have an value no more than 0.8."
+
+#: templates/standard/template.con_meta_edit_form.html:160
+#: templates/standard/template.con_meta_edit_form.html:330
+msgid "SITEMAPCHANGEFREQUENCY_INFO"
+msgstr "The refresh rate is focused on the content."
+
+#: templates/standard/template.con_meta_edit_form.html:180
+#: templates/standard/template.con_meta_edit_form.html:331
+msgid "CUSTOMMETATAGS_INFO"
+msgstr "Benutzerdefinierte Meta Tags"
+
+#: templates/standard/template.con_meta_edit_form.html:139
+#: templates/standard/template.con_meta_edit_form.html:328
+msgid "DESCRIPTION_INFO"
+msgstr "The Description-Tag describes the article in a short way (no more than 150 characters). The content should be related to the Title-Tag and the H1-Tag."
+
+#: templates/standard/template.con_meta_edit_form.html:151
+#: templates/standard/template.con_meta_edit_form.html:329
+msgid "KEYWORD_INFO"
+msgstr "No more than 6 Keywords should be used."
+
+#: templates/standard/template.con_meta_edit_form.html:160
+#: templates/standard/template.con_meta_edit_form.html:330
+msgid "REVISITED_INFO"
+msgstr "The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit."
+
+

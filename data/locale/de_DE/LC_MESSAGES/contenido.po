@@ -6426,3 +6426,55 @@ msgstr "Debug-Meldungen anzeigen"
 msgid "Allow all HTML tags and attributes in TinyMCE"
 msgstr "Erlaube alle HTML-Tags und -Attribute in TinyMCE"
 
+#: templates/standard/template.con_meta_edit_form.html:94
+#: templates/standard/template.con_meta_edit_form.html:317
+msgid "TITLE_INFO"
+msgstr "Der Seitentitel gilt als einer der Hauptfaktoren für ein hohes Ranking. Ein optimierter Seitentitel beträgt nicht mehr als 60 Zeichen und beinhaltet neben den wichtigsten Keywords und auch das Branding."
+
+#: templates/standard/template.con_meta_edit_form.html:129
+#: templates/standard/template.con_meta_edit_form.html:326
+msgid "EXPIRES_INFO"
+msgstr "Expires"
+
+#: templates/standard/template.con_meta_edit_form.html:134
+#: templates/standard/template.con_meta_edit_form.html:327
+msgid "REVISIT_INFO"
+msgstr "Die Häufigkeit des revisit after orientiert sich an der Anzahl der Neuerscheinungen.  Jedoch haben die Robots der Suchmaschinen ihren eigenen Besuchsrhythmus."
+
+#: templates/standard/template.con_meta_edit_form.html:139
+#: templates/standard/template.con_meta_edit_form.html:328
+msgid "ROBOTS_INFO"
+msgstr "Der Ausschluss von unrelevantem Content oder nicht zu indizierenden Bildern wird durch den robot-tag vermittelt. Der Robot-Tag hat einen gewichtigen Einfluss auf das Ranking, da nur relevante und besucherreiche Artikeln indiziert werden sollen."
+
+#: templates/standard/template.con_meta_edit_form.html:151
+#: templates/standard/template.con_meta_edit_form.html:329
+msgid "SITEMAPRIORITY_INFO"
+msgstr "Die Sitemap-Priorität hat einen durchschnittlichen Wert von 0.5. Nur wichtige Artikel sollten einen Wert nicht über 0.8 erhalten. Ein unwichtiger Artikel sollten einen Wert nicht über 0.3 erhalten."
+
+#: templates/standard/template.con_meta_edit_form.html:160
+#: templates/standard/template.con_meta_edit_form.html:330
+msgid "SITEMAPCHANGEFREQUENCY_INFO"
+msgstr "Der Aktualisierung-Intervall richtet sich am Content."
+
+#: templates/standard/template.con_meta_edit_form.html:180
+#: templates/standard/template.con_meta_edit_form.html:331
+msgid "CUSTOMMETATAGS_INFO"
+msgstr "Benutzerdefinierte Meta Tags"
+
+#: templates/standard/template.con_meta_edit_form.html:139
+#: templates/standard/template.con_meta_edit_form.html:328
+msgid "DESCRIPTION_INFO"
+msgstr "Der Description-Tag ist eine kurze Zusammenfassung des Artikels. In ungefähr 150 Zeichen werden die Top-Keywords erwähnt, die in Relation zum Title-Tag und H1-Tag stehen."
+
+#: templates/standard/template.con_meta_edit_form.html:151
+#: templates/standard/template.con_meta_edit_form.html:329
+msgid "KEYWORD_INFO"
+msgstr "Mittels des Keyword-Tag wird der Artikel mit den wichtigsten Elementen beschrieben. Es sollten nicht mehr als 6-10 Keywords erwähnt werden."
+
+#: templates/standard/template.con_meta_edit_form.html:160
+#: templates/standard/template.con_meta_edit_form.html:330
+msgid "REVISITED_INFO"
+msgstr "Die Häufigkeit des revisit after orientiert sich an der Anzahl der Neuerscheinungen.  Jedoch haben die Robots der Suchmaschinen ihren eigenen Besuchsrhythmus."
+
+
+
