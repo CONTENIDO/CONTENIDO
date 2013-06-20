@@ -43,6 +43,7 @@
     font-size: 11px;
     margin-bottom: 5x;
     width: 50%;
+	margin-top: 2px;
 }
 
 .cms_imgeditor .meta textarea {
@@ -58,8 +59,9 @@
     border: none;
     color: #000;
     font-size: 11px;
-    height: 170px;
+    height: 165px;
     width: 100%;
+	
 }
 
 .cms_imgeditor select option {
