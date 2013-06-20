@@ -62,6 +62,17 @@ $_cecRegistry->registerChain('Contenido.Content.CreateArticleLink', 'int', 'int'
  */
 $_cecRegistry->registerChain('Contenido.Content.SaveContentEntry', 'int', 'int', 'int', 'string');
 
+/* Chain Contenido.Content.AfterStore
+ * This chain is called after one or more content entries were stored.
+ *
+ * Parameters & order:
+ * array        articleIds        Article IDs
+ *
+ * Returns:
+ * nothing
+ */
+$_cecRegistry->registerChain('Contenido.Content.AfterStore', 'array');
+
 /* Chain Contenido.Upload.UploadPreprocess
  * This chain is called everytime a file is uploaded
  *

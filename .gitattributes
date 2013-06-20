@@ -1130,6 +1130,7 @@ contenido/includes/ajax/include.ajax.con.php -text
 contenido/includes/api/functions.api.general.php -text
 contenido/includes/api/functions.frontend.list.php -text
 contenido/includes/chains/include.chain.content.createmetatags.php -text
+contenido/includes/chains/include.chain.content.indexarticle.php -text
 contenido/includes/chains/include.chain.frontend.cat_access.php -text
 contenido/includes/chains/include.chain.frontend.cat_backendaccess.php -text
 contenido/includes/chains/include.chain.frontend.createbasehref.php -text

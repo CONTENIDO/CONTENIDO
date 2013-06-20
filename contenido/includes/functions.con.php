@@ -20,8 +20,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.con2.php');
 
 /**
- * Create a new Article
+ * Create a new article
  *
+ * @param int $idcat
+ * @param int $idcatnew
+ * @param int $idart
+ * @param unknown_type $isstart
+ * @param int $idtpl
+ * @param int $idartlang
+ * @param int $idlang
+ * @param unknown_type $title
+ * @param unknown_type $summary
+ * @param unknown_type $artspec
+ * @param unknown_type $created
+ * @param unknown_type $lastmodified
+ * @param unknown_type $author
+ * @param unknown_type $online
+ * @param unknown_type $datestart
+ * @param unknown_type $dateend
+ * @param unknown_type $artsort
+ * @param unknown_type $keyart
+ * @param unknown_type $searchable
+ * @param unknown_type $sitemapprio
+ * @param unknown_type $changefreq
  * @return int Id of the new article
  */
 function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
@@ -162,13 +183,36 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
 
 /**
  * Edit an existing article
+ *
+ * @param int $idcat
+ * @param int $idcatnew
+ * @param int $idart
+ * @param unknown_type $isstart
+ * @param int $idtpl
+ * @param int $idartlang
+ * @param int $idlang
+ * @param unknown_type $title
+ * @param unknown_type $summary
+ * @param unknown_type $artspec
+ * @param unknown_type $created
+ * @param unknown_type $lastmodified
+ * @param unknown_type $author
+ * @param unknown_type $online
+ * @param unknown_type $datestart
+ * @param unknown_type $dateend
+ * @param unknown_type $published
+ * @param unknown_type $artsort
+ * @param unknown_type $keyart
+ * @param unknown_type $searchable
+ * @param unknown_type $sitemapprio
+ * @param unknown_type $changefreq
  */
 function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $published, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = -1, $changefreq = 'nothing') {
     global $client, $lang, $redirect, $redirect_url, $external_redirect, $perm;
     global $urlname, $page_title;
     global $time_move_cat, $time_target_cat;
-    global $time_online_move; // Used to indicate if the moved article should be
-                              // online
+    // Used to indicate if the moved article should be online
+    global $time_online_move;
     global $timemgmt;
 
     // Add slashes because single quotes will crash the db
@@ -349,32 +393,61 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
 
 /**
  * Generate index of article content.
- * added by stese removed from function
- * conSaveContentEntry before Touch the article to update last modified date
  *
- * @see conSaveContentEntry
- * @param integer $idart
+ * This is done by calling the hook 'Contenido.Content.AfterStore'.
+ *
+ * @param int $idartlang of article to index
+ * @param int $idart of article to index
  */
 function conMakeArticleIndex($idartlang, $idart) {
-    global $db;
 
-    // indexing an article depends on the complete content with all content
-    // types,
-    // i.e it can not by differentiated by specific content types.
-    // Therefore one must fetch the complete content arrray.
-    $aContent = conGetContentFromArticle($idartlang);
+    // get IDs of given article langauge
+    if (cRegistry::getArticleLanguageId() == $idartlang) {
+        // quite easy if given article is current article
+        $idclient = cRegistry::getClientId();
+        $idlang = cRegistry::getLanguageId();
+        $idcat = cRegistry::getCategoryId();
+        $idart = cRegistry::getArticleId();
+        $idcatlang = cRegistry::getCategoryLanguageId();
+        $idartlang = cRegistry::getArticleLanguageId();
+    } else {
+        // == for other articles these infos have to be read from DB
+        // get idclient by idart
+        $article = new cApiArticle($idart);
+        if ($article->isLoaded()) {
+            $idclient = $article->get('idclient');
+        }
+        // get idlang by idartlang
+        $articleLanguage = new cApiArticleLanguage($idartlang);
+        if ($articleLanguage->isLoaded()) {
+            $idlang = $articleLanguage->get('idlang');
+        }
+        // get first idcat by idart
+        $coll = new cApiCategoryArticleCollection();
+        $idcat = array_shift($coll->getCategoryIdsByArticleId($idart));
+        // get idcatlang by idcat & idlang
+        $categoryLanguage = new cApiCategoryLanguage();
+        $categoryLanguage->loadByCategoryIdAndLanguageId($idcat, $idlang);
+        if ($categoryLanguage->isLoaded()) {
+            $idcatlang = $articleLanguage->get('idlang');
+        }
+    }
 
-    // cms types to be excluded from indexing
-    // @todo Make this configurable!
-    $aOptions = array(
-        'img',
-        'link',
-        'linktarget',
-        'swf'
+    // build data structure expected by handlers of Contenido.Content.AfterStore
+    $articleIds = array(
+        'idclient' => $idclient,
+        'idlang' => $idlang,
+        'idcat' => $idcat,
+        'idcatlang' => $idcatlang,
+        'idart' => $idart,
+        'idartlang' => $idartlang
     );
 
-    $oIndex = new cSearchIndex($db);
-    $oIndex->start($idart, $aContent, 'auto', $aOptions);
+    // iterate chain Contenido.Content.AfterStore
+    $iterator = cRegistry::getCecRegistry()->getIterator('Contenido.Content.AfterStore');
+    while (false !== $chainEntry = $iterator->next()) {
+        $chainEntry->execute($articleIds);
+    }
 }
 
 /**
@@ -518,7 +591,7 @@ function conMakeCatOnline($idcat, $lang, $status) {
  * strDeeperCategoriesArray)
  *
  * @param int $idcat Category Id
- * @param int $idcat Language Id
+ * @param int $lang Language Id
  * @param bool $public Public status of the Article
  */
 function conMakePublic($idcat, $lang, $public) {
@@ -1146,7 +1219,6 @@ function conMoveArticles() {
  * Copies template configuration entry from source template configuration.
  *
  * @param int $srcidtplcfg
- * @param int $dstidtplcfg
  */
 function conCopyTemplateConfiguration($srcidtplcfg) {
     $oTemplateConf = new cApiTemplateConfiguration((int) $srcidtplcfg);
@@ -1475,7 +1547,6 @@ function conSyncArticle($idart, $srclang, $dstlang) {
 /**
  * Checks if an article is a start article of a category.
  *
- * @global array $cfg
  * @param int $idartlang
  * @param int $idcat
  * @param int $idlang
