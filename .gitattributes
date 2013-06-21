@@ -1648,6 +1648,32 @@ contenido/plugins/pim/xml/plugin_info.xml -text svneol=unset#text/plain
 contenido/plugins/pim/xml/plugin_info.xsd -text svneol=unset#text/plain
 contenido/plugins/repository/custom/FrontendNavigation.php -text
 contenido/plugins/repository/keyword_density.php -text
+contenido/plugins/search_solr/classes/class.solr.gui.php -text
+contenido/plugins/search_solr/classes/class.solr_indexer.php -text
+contenido/plugins/search_solr/classes/class.solr_search_module.php -text
+contenido/plugins/search_solr/classes/class.solr_searcher_abstract.php -text
+contenido/plugins/search_solr/classes/class.solr_searcher_simple.php -text
+contenido/plugins/search_solr/classes/class.util.helper.php -text
+contenido/plugins/search_solr/docs/readme.txt -text svneol=unset#text/plain
+contenido/plugins/search_solr/docs/schema.orig.xml -text svneol=unset#text/plain
+contenido/plugins/search_solr/docs/schema.xml -text svneol=unset#text/plain
+contenido/plugins/search_solr/includes/config.plugin.php -text
+contenido/plugins/search_solr/includes/include.right_bottom.php -text
+contenido/plugins/search_solr/locale/de_DE/LC_MESSAGES/search_solr.po -text
+contenido/plugins/search_solr/locale/en_US/LC_MESSAGES/search_solr.po -text
+contenido/plugins/search_solr/modules/navigation_searchform_top/info.xml -text svneol=unset#text/plain
+contenido/plugins/search_solr/modules/navigation_searchform_top/lang/lang_de_DE.txt -text svneol=unset#text/plain
+contenido/plugins/search_solr/modules/navigation_searchform_top/lang/lang_en_US.txt -text svneol=unset#text/plain
+contenido/plugins/search_solr/modules/navigation_searchform_top/php/navigation_searchform_top_input.php -text
+contenido/plugins/search_solr/modules/navigation_searchform_top/php/navigation_searchform_top_output.php -text
+contenido/plugins/search_solr/modules/navigation_searchform_top/template/get.tpl -text
+contenido/plugins/search_solr/plugin.xml -text svneol=unset#text/plain
+contenido/plugins/search_solr/scripts/right_bottom.js -text svneol=unset#text/plain
+contenido/plugins/search_solr/styles/right_bottom.css -text svneol=unset#text/plain
+contenido/plugins/search_solr/templates/template.right_bottom.html -text svneol=unset#text/plain
+contenido/plugins/search_solr/templates/template.right_bottom.tpl -text
+contenido/plugins/search_solr/xml/lang_de_DE.xml -text svneol=unset#text/plain
+contenido/plugins/search_solr/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/smarty/README.txt -text svneol=unset#text/plain
 contenido/plugins/smarty/classes/class.smarty.backend.php -text
 contenido/plugins/smarty/classes/class.smarty.frontend.php -text

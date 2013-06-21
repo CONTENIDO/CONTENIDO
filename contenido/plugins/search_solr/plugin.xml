@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<plugin>
+
+    <general active="1">
+        <plugin_name>Solr Search</plugin_name>
+        <plugin_foldername>search_solr</plugin_foldername>
+        <uuid>3A6A020A-7357-C800-4C78-CF52C3C10F52</uuid>
+        <description>Provides Solr search capabilities.</description>
+        <author>Marcus Gnaß</author>
+        <copyright>four for business AG</copyright>
+        <mail>info@4fb.de</mail>
+        <website>http://www.4fb.de</website>
+        <version>1.0.0</version>
+        <min_contenido_version>4.9.0</min_contenido_version>
+        <max_contenido_version></max_contenido_version>
+    </general>
+
+    <contenido>
+
+        <areas>
+            <area menuless="1">solr</area>
+        </areas>
+
+		<actions>
+		    <action area="solr">reindex</action>
+		</actions>
+
+        <frames>
+            <frame area="solr" filetype="main" name="search_solr/includes/include.right_bottom.php" frameId="4" />
+        </frames>
+
+        <nav_sub>
+            <nav area="solr" level="0" navm="3">search_solr/xml/lang_de_DE.xml;plugins/solr/label</nav>
+        </nav_sub>
+
+    </contenido>
+
+</plugin>
