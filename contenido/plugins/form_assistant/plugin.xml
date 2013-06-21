@@ -34,5 +34,11 @@
             <nav area="form" level="0" navm="3">form_assistant/xml/lang_de_DE.xml;plugins/form_assistant/label</nav>
         </nav_sub>
 
+		<!--
+		<content_types>
+			<type>CMS_PIFAFORM</type>
+		</content_types>
+		-->
+
     </contenido>
 </plugin>
