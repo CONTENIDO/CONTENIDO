@@ -75,6 +75,88 @@ class PimPluginSetup {
     }
 
     /**
+     * Checks plugin specific requirements
+     *
+     * @access public
+     * @return void
+     */
+    public function checkRequirements() {
+
+        // get config
+        $cfg = cRegistry::getConfig();
+
+        // get requirements xml
+        $xml = simplexml_load_string($this->getTempXml());
+
+        // check CONTENIDO version
+        if (version_compare($cfg['version'], $xml->requirements->attributes()->contenido, '<')) {
+            $this->getRequirementsError(i18n('You have to install CONTENIDO <strong>', 'pim') . $xml->attributes()->contenido . i18n('</strong> or higher to install this plugin!', 'pim'));
+        }
+
+        // check PHP version
+        if (version_compare(phpversion(), $xml->requirements->attributes()->php, '<')) {
+            $this->getRequirementsError(i18n('You have to install PHP <strong>', 'pim') . $xml->attributes()->php . i18n('</strong> or higher to install this plugin!', 'pim'));
+        }
+
+        // check extensions
+        if (count($xml->requirements->extension) != 0) {
+
+            for($i = 0; $i < count($xml->requirements->extension); $i++) {
+
+                if(!extension_loaded($xml->requirements->extension[$i]->attributes()->name)) {
+                    $this->getRequirementsError(i18n('The plugin could not find the PHP extension <strong>', 'pim') . $xml->requirements->extension[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
+                }
+
+            }
+
+        }
+
+        // check classes
+        if (count($xml->requirements->class) != 0) {
+
+            for($i = 0; $i < count($xml->requirements->class); $i++) {
+
+                if(!class_exists($xml->requirements->class[$i]->attributes()->name)) {
+                    $this->getRequirementsError(i18n('The plugin could not find the class <strong>', 'pim') . $xml->requirements->class[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
+                }
+
+            }
+
+        }
+
+        // check functions
+        if (count($xml->requirements->function) != 0) {
+
+            for($i = 0; $i < count($xml->requirements->function); $i++) {
+
+                if(!function_exists($xml->requirements->function[$i]->attributes()->name)) {
+                    $this->getRequirementsError(i18n('The plugin could not find the function <strong>', 'pim') . $xml->requirements->function[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
+                }
+
+            }
+
+        }
+    }
+
+    /**
+     * Get error template for requirements (checkRequirements())
+     *
+     * @access private
+     * @param errorMessage Specific error message string
+     * @return void
+     */
+    private function getRequirementsError($errorMessage) {
+        $sess = cRegistry::getSession();
+
+        $pageError = new cGuiPage('pim_error', 'pim');
+        $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
+        $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
+        $pageError->displayError($errorMessage);
+        $pageError->render();
+        exit();
+    }
+
+    /**
      * Get method for $tempXml
      *
      * @access public

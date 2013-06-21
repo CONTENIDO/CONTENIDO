@@ -6,7 +6,8 @@
     <xsd:complexType name="PluginTyp">
         <xsd:sequence>
             <xsd:element name="general" type="GeneralTyp" minOccurs="1" maxOccurs="1" />
-            <xsd:element name="plugin_dependencies" type="PluginDependenciesTyp" minOccurs="0" />
+            <xsd:element name="requirements" type="RequirementsTyp" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="plugin_dependencies" type="PluginDependenciesTyp" minOccurs="0" maxOccurs="1" />
             <xsd:element name="contenido" type="ContenidoTyp" minOccurs="1" maxOccurs="1" />
             <xsd:element name="content_types" type="ContentTypes" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
@@ -23,11 +24,31 @@
             <xsd:element name="mail" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="website" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="version" type="xsd:string" minOccurs="1" maxOccurs="1" />
-            <xsd:element name="min_contenido_version" type="xsd:string" minOccurs="1" maxOccurs="1" default="4.9.0" />
-            <xsd:element name="max_contenido_version" type="xsd:string" minOccurs="0" maxOccurs="1" />
         </xsd:all>
         <xsd:attribute name="active" default="1" />
     </xsd:complexType>
+
+	<xsd:complexType name="RequirementsTyp">
+    	<xsd:sequence minOccurs="0">
+    		<xsd:element name="extension" type="RequirementsExtensionTyp" minOccurs="0" />
+    		<xsd:element name="class" type="RequirementsClassTyp" minOccurs="0" />
+    		<xsd:element name="function" type="RequirementsFunctionTyp" minOccurs="0" />
+    	</xsd:sequence>
+    	<xsd:attribute name="contenido" type="xsd:string" default="4.9.0" />
+    	<xsd:attribute name="php" type="xsd:string" default="5.2.3" />
+	</xsd:complexType>
+
+	<xsd:complexType name="RequirementsExtensionTyp">
+		<xsd:attribute name="name" type="xsd:string" />
+	</xsd:complexType>
+
+	<xsd:complexType name="RequirementsClassTyp">
+		<xsd:attribute name="name" type="xsd:string" />
+	</xsd:complexType>
+
+	<xsd:complexType name="RequirementsFunctionTyp">
+		<xsd:attribute name="name" type="xsd:string" />
+	</xsd:complexType>
 
     <xsd:complexType name="PluginDependenciesTyp">
         <xsd:sequence minOccurs="0" maxOccurs="unbounded">
@@ -35,7 +56,7 @@
                 <xsd:complexType>
                     <xsd:simpleContent>
                         <xsd:extension base="xsd:string">
-                            <xsd:attribute name="version" type="xsd:string"/>
+                            <xsd:attribute name="version" type="xsd:string" />
                         </xsd:extension>
                     </xsd:simpleContent>
                 </xsd:complexType>

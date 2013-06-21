@@ -111,35 +111,8 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '', $
     // load plugin.xml to an xml-string
     $tempXml = simplexml_load_string($setup->getTempXml());
 
-    // check min CONTENIDO version
-    if ($tempXml->general->min_contenido_version != '' && version_compare($cfg['version'], $tempXml->general->min_contenido_version, '<')) {
-
-        if ($isExtracted === false) {
-            $extractor->destroyTempFiles();
-        }
-
-        $pageError = new cGuiPage('pim_error', 'pim');
-        $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
-        $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
-        $pageError->displayError(i18n('You have to install CONTENIDO <strong>', 'pim') . $tempXml->general->min_contenido_version . i18n('</strong> or higher to install this plugin!', 'pim'));
-        $pageError->render();
-        exit();
-    }
-
-    // check max CONTENIDO version
-    if ($tempXml->general->max_contenido_version != '' && version_compare($cfg['version'], $tempXml->general->max_contenido_version, '>')) {
-
-        if ($isExtracted === false) {
-            $extractor->destroyTempFiles();
-        }
-
-        $pageError = new cGuiPage('pim_error', 'pim');
-        $pageError->set('s', 'BACKLINK', $sess->url('main.php?area=pim&frame=4'));
-        $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
-        $pageError->displayError(i18n('Your current CONTENIDO version is to new - max CONTENIDO version: ' . $tempXml->general->max_contenido_version . '', 'pim'));
-        $pageError->render();
-        exit();
-    }
+    // check plugin speciic requirements
+    $setup->checkRequirements();
 
     // build the new plugin dir
     $tempPluginDir = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $tempXml->general->plugin_foldername . DIRECTORY_SEPARATOR;
