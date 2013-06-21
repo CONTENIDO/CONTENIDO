@@ -111,7 +111,7 @@ function installationRoutine($page, $isExtracted = false, $extractedPath = '', $
     // load plugin.xml to an xml-string
     $tempXml = simplexml_load_string($setup->getTempXml());
 
-    // check plugin speciic requirements
+    // check plugin specific requirements
     $setup->checkRequirements();
 
     // build the new plugin dir
