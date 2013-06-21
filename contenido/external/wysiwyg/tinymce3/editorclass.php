@@ -368,7 +368,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
                 $this->_unsetSetting("theme_advanced_toolbar_location");
                 $this->_setSetting("theme_advanced_toolbar_location", "external");
                 $this->_setSetting("height", "210px", true);
-                $this->_setSetting("plugins", "table,inlinepopups,fullscreen,-close", true);
+                $this->_setSetting("plugins", "table,inlinepopups,fullscreen,close", true);
                 $this->_setSetting("mode", "exact", true);
                 $this->_setSetting("elements", "*", true);
                 $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);

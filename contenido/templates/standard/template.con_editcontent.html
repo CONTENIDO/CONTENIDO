@@ -12,36 +12,30 @@
 
 <script type="text/javascript">
     tinymce.create('tinymce.plugins.ClosePlugin', {
-        createControl: function(n, cm) {
-            switch (n) {
-                case 'close':
-                    var c = cm.createMenuButton('close', {
-                        title : '{CLOSE}',
-                        image : '{CON_PATH}images/but_close_tiny.gif',
-                        icons : false,
-                        onclick : function(ed) {
-                           closeTiny();
-                        }
-                    });
+        init: function(ed, url) {
 
-                    // Return the new menu button instance
-                    return c;
+            ed.addButton('save', {
+                title   : '{SAVE}',
+                image   : '{CON_PATH}images/but_save_tiny.gif',
+                icons   : false,
+                onclick : function(ed) {
 
-                case 'save':
-                    var c = cm.createMenuButton('save', {
-                        title : '{SAVE}',
-                        image : '{CON_PATH}images/but_save_tiny.gif',
-                        icons : false,
-                        onclick : function(ed) {
-                           setcontent(iIdartlang, '0');
-                        }
-                    });
+                    setcontent(iIdartlang, '0');
 
-                    // Return the new menu button instance
-                    return c;
-            }
+                }
+            });
 
-            return null;
+            ed.addButton('close', {
+                title   : '{CLOSE}',
+                image   : '{CON_PATH}images/but_close_tiny.gif',
+                icons   : false,
+                onclick : function(ed) {
+
+                    closeTiny();
+
+                }
+            });
+
         }
     });
 
