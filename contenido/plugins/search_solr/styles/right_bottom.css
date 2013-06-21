@@ -34,3 +34,9 @@ legend {
 label {
 	font-weight: bold;
 }
+
+
+fieldset table {
+    border-collapse: collapse;
+}
+
