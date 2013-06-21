@@ -12,7 +12,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.tpl.php');
@@ -285,6 +284,12 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $idcatart = $sart["idcatart"];
             $created = $sart["created"];
             $modified = $sart["lastmodified"];
+
+            if ($modified === '0000-00-00 00:00:00') {
+                $modified = i18n("NOTMODIFIED");
+            } else {
+                $modified = date($dateformat, strtotime($modified));
+            }
             $title = conHtmlSpecialChars($sart["title"]);
             $timemgmt = $sart["timemgmt"];
             $datestart = $sart["datestart"];
@@ -295,7 +300,6 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             $published = ($published != '0000-00-00 00:00:00')? date($dateformat, strtotime($published)) : i18n("not yet published");
             $created = date($dateformat, strtotime($created));
-            $modified = date($dateformat, strtotime($modified));
             $alttitle = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
 
             if ($online == 1) {
