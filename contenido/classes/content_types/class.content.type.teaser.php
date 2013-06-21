@@ -12,7 +12,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
@@ -38,14 +37,16 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
     /**
      * Content types in this array will be completely ignored by CMS_TEASER
-     * They won't be displayed in the frontend and they won't be shown as an option in the backend
+     * They won't be displayed in the frontend and they won't be shown as an
+     * option in the backend
      *
      * @var array
      */
     private $_ignoreTypes = array();
 
     /**
-     * If CMS_TEASER tries to load one of the content types listed as the keys of this array it will load the value of that key instead
+     * If CMS_TEASER tries to load one of the content types listed as the keys
+     * of this array it will load the value of that key instead
      * These won't be listed as an option in the backend either
      *
      * @var array
@@ -59,9 +60,12 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     /**
      * Placeholders for labels in frontend.
      * Important: This must be a static array!
-     * @var        array
+     *
+     * @var array
      */
-    protected static $_translations = array("MORE");
+    protected static $_translations = array(
+        "MORE"
+    );
 
     /**
      * Variable for detecting current interation
@@ -239,12 +243,11 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * for output
      *
      * @param boolean $returnAsArray modeswitch betwwen template generation and
-     *                               and returning result as array
+     *        and returning result as array
      * @return mixed string of select box or array of articles
      */
     public function generateTeaserCode($returnAsArray = false) {
         global $contenido;
-
 
         $articles = array();
 
@@ -597,9 +600,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // define the available tabs
         $tabMenu = array(
-            'general' => i18n('General'),
-            'advanced' => i18n('Advanced'),
-            'manual' => i18n('Manual')
+            'general' => i18n('AUTOMATIC'),
+            'advanced' => i18n('MANUAL'),
+            'manual' => i18n('SETTINGS')
         );
 
         // construct the bottom code of the template
@@ -630,7 +633,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     /**
      * Gets all currenty avariable content types and their ids
      * from database and store it into class variable aCMSTypes.
-     * Because this information is used multiple times, this causes a better performance than gettting it seperately
+     * Because this information is used multiple times, this causes a better
+     * performance than gettting it seperately
      *
      * @return void
      */
@@ -645,7 +649,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $db = cRegistry::getDb();
         $db->query($sql);
         while ($db->nextRecord()) {
-            if (in_array($db->f('type'), $this->_ignoreTypes)) { //we do not want certain content types
+            if (in_array($db->f('type'), $this->_ignoreTypes)) { // we do not
+                                                                 // want certain
+                                                                 // content
+                                                                 // types
                 continue;
             }
             $this->_cmsTypes[$db->f('idtype')] = $db->f('type');
@@ -662,27 +669,22 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
-        $wrapperContent[] = new cHTMLParagraph(i18n('General settings'), 'head_sub');
+        // $wrapperContent[] = new cHTMLParagraph(i18n('General settings'),
+        // 'head_sub');
         $wrapperContent[] = new cHTMLLabel(i18n('Teaser title'), 'teaser_title_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox('teaser_title_' . $this->_id, $this->_settings['teaser_title'], '', '', 'teaser_title_' . $this->_id);
         $wrapperContent[] = new cHTMLLabel(i18n('Source category'), 'teaser_category_' . $this->_id);
         $wrapperContent[] = buildCategorySelect('teaser_category_' . $this->_id, $this->_settings['teaser_category'], 0);
         $wrapperContent[] = new cHTMLLabel(i18n('Number of articles'), 'teaser_count_' . $this->_id);
         $wrapperContent[] = $this->_generateCountSelect();
-        $wrapperContent[] = new cHTMLLabel(i18n('Teaser style'), 'teaser_style');
-        $wrapperContent[] = $this->_generateStyleSelect();
-        $wrapperContent[] = new cHTMLLabel(i18n('Teaser start article'), 'teaser_start_' . $this->_id);
+
+        $wrapperContent[] = new cHTMLLabel(i18n("TEASER_START_ARTICLE"), 'teaser_start_' . $this->_id);
         $wrapperContent[] = new cHTMLCheckbox('teaser_start_' . $this->_id, '', 'teaser_start_' . $this->_id, ($this->_settings['teaser_start'] == 'true'));
 
-        $wrapperContent[] = new cHTMLParagraph(i18n('Source settings'), 'head_sub');
-        $wrapperContent[] = new cHTMLLabel(i18n('Source headline'), 'teaser_source_head_' . $this->_id);
-        $wrapperContent[] = $this->_generateTypeSelect('teaser_source_head_' . $this->_id, $this->_settings['teaser_source_head'], $this->_settings['teaser_source_head_count']);
-        $wrapperContent[] = new cHTMLLabel(i18n('Source text'), 'teaser_source_text_' . $this->_id);
-        $wrapperContent[] = $this->_generateTypeSelect('teaser_source_text_' . $this->_id, $this->_settings['teaser_source_text'], $this->_settings['teaser_source_text_count']);
-        $wrapperContent[] = new cHTMLLabel(i18n('Source image'), 'teaser_source_image_' . $this->_id);
-        $wrapperContent[] = $this->_generateTypeSelect('teaser_source_image_' . $this->_id, $this->_settings['teaser_source_image'], $this->_settings['teaser_source_image_count']);
-        $wrapperContent[] = new cHTMLLabel(i18n('Source date'), 'teaser_source_date_' . $this->_id);
-        $wrapperContent[] = $this->_generateTypeSelect('teaser_source_date_' . $this->_id, $this->_settings['teaser_source_date'], $this->_settings['teaser_source_date_count']);
+        $wrapperContent[] = new cHTMLLabel(i18n("TEASER_SORT"), 'teaser_sort_' . $this->_id);
+        $wrapperContent[] = $this->_generateSortSelect();
+        $wrapperContent[] = new cHTMLLabel(i18n("SORT_ORDER"), 'teaser_sort_order_' . $this->_id);
+        $wrapperContent[] = $this->_generateSortOrderSelect();
 
         $wrapper->setContent($wrapperContent);
         return $wrapper->render();
@@ -808,24 +810,49 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
-        $wrapperContent[] = new cHTMLParagraph(i18n('Advanced teaser settings'), 'head_sub');
-        $wrapperContent[] = new cHTMLLabel(i18n('Teaser filter'), 'teaser_filter_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('teaser_filter_' . $this->_id, $this->_settings['teaser_filter'], '', '', 'teaser_filter_' . $this->_id);
-        $wrapperContent[] = new cHTMLLabel(i18n('Teaser sort'), 'teaser_sort_' . $this->_id);
-        $wrapperContent[] = $this->_generateSortSelect();
-        $wrapperContent[] = new cHTMLLabel(i18n('Sort order'), 'teaser_sort_order_' . $this->_id);
-        $wrapperContent[] = $this->_generateSortOrderSelect();
+        // $wrapperContent[] = new cHTMLParagraph(i18n('Manual teaser
+        // settings'), 'head_sub');
+        $wrapperContent[] = new cHTMLLabel(i18n('Manual teaser'), 'teaser_manual_' . $this->_id);
+        $wrapperContent[] = new cHTMLCheckbox('teaser_manual_' . $this->_id, '', 'teaser_manual_' . $this->_id, ($this->_settings['teaser_manual'] == 'true'));
 
-        $wrapperContent[] = new cHTMLParagraph(i18n('Size settings'), 'head_sub');
-        $wrapperContent[] = new cHTMLLabel(i18n('Character length'), 'teaser_character_limit_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('teaser_character_limit_' . $this->_id, $this->_settings['teaser_character_limit'], '', '', 'teaser_character_limit_' . $this->_id);
-        $wrapperContent[] = new cHTMLLabel(i18n('Image width'), 'teaser_image_width_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('teaser_image_width_' . $this->_id, $this->_settings['teaser_image_width'], '', '', 'teaser_image_width_' . $this->_id);
-        $wrapperContent[] = new cHTMLLabel(i18n('Image height'), 'teaser_image_height_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('teaser_image_height_' . $this->_id, $this->_settings['teaser_image_height'], '', '', 'teaser_image_height_' . $this->_id);
-        $wrapperContent[] = new cHTMLLabel(i18n('Image scale'), 'teaser_image_crop_' . $this->_id);
-        $wrapperContent[] = $this->_generateCropSelect();
-        $wrapperContent[] = new cHTMLDiv('&nbsp;', 'head_sub');
+        // $wrapperContent[] = new cHTMLParagraph(i18n('Add article'),
+        // 'head_sub');
+        $wrapperContent[] = new cHTMLLabel(i18n('Category'), 'teaser_cat_' . $this->_id);
+        $wrapperContent[] = buildCategorySelect('teaser_cat_' . $this->_id, 0, 0);
+        $wrapperContent[] = new cHTMLLabel(i18n('Article'), 'teaser_art_' . $this->_id);
+        $wrapperContent[] = buildArticleSelect('teaser_art_' . $this->_id, 0, 0);
+
+        $wrapperContent[] = new cHTMLLabel(i18n('Add'), 'add_art_' . $this->_id);
+        $image = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_art_new.gif');
+        $image->setAttribute('id', 'add_art_' . $this->_id);
+        $image->appendStyleDefinition('cursor', 'pointer');
+        $wrapperContent[] = $image;
+
+        $wrapperContent[] = new cHTMLParagraph(i18n('Included articles'), 'head_sub');
+        $selectElement = new cHTMLSelectElement('teaser_manual_art_' . $this->_id, '', 'teaser_manual_art_' . $this->_id, false, '', '', 'manual');
+        $selectElement->setAttribute('size', '4');
+        $selectElement->setAttribute('multiple', 'multiple');
+        // there can be one or multiple selected articles
+        if (is_array($this->_settings['teaser_manual_art'])) {
+            foreach ($this->_settings['teaser_manual_art'] as $index => $idArt) {
+                $option = new cHTMLOptionElement($this->_getArtName($idArt), $idArt, true);
+                $selectElement->addOptionElement($index, $option);
+            }
+        } else {
+            // check if the article really exists
+            $artName = $this->_getArtName($this->_settings['teaser_manual_art']);
+            if ($artName != i18n('Unknown article')) {
+                $option = new cHTMLOptionElement($artName, $this->_settings['teaser_manual_art'], true);
+                $selectElement->addOptionElement(0, $option);
+            }
+        }
+        $wrapperContent[] = $selectElement;
+
+        $wrapperContent[] = new cHTMLLabel(i18n("DEL"), 'del_art_' . $this->_id);
+        $image = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/delete.gif');
+        $image->setAttribute('id', 'del_art_' . $this->_id);
+        $image->appendStyleDefinition('cursor', 'pointer');
+        $wrapperContent[] = $image;
 
         $wrapper->setContent($wrapperContent);
         return $wrapper->render();
@@ -925,40 +952,31 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapper = new cHTMLDiv();
         $wrapperContent = array();
 
-        $wrapperContent[] = new cHTMLParagraph(i18n('Manual teaser settings'), 'head_sub');
-        $wrapperContent[] = new cHTMLLabel(i18n('Manual teaser'), 'teaser_manual_' . $this->_id);
-        $wrapperContent[] = new cHTMLCheckbox('teaser_manual_' . $this->_id, '', 'teaser_manual_' . $this->_id, ($this->_settings['teaser_manual'] == 'true'));
+        $wrapperContent[] = new cHTMLParagraph(i18n("CONTENT_SETTINGS"), 'head_sub');
+        $wrapperContent[] = new cHTMLLabel(i18n("TEASER_VISUALISATION"), 'teaser_style');
+        $wrapperContent[] = $this->_generateStyleSelect();
+        $wrapperContent[] = new cHTMLLabel(i18n("TEASER_FILTER"), 'teaser_filter_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('teaser_filter_' . $this->_id, $this->_settings['teaser_filter'], '', '', 'teaser_filter_' . $this->_id);
+        $wrapperContent[] = new cHTMLLabel(i18n('Character length'), 'teaser_character_limit_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('teaser_character_limit_' . $this->_id, $this->_settings['teaser_character_limit'], '', '', 'teaser_character_limit_' . $this->_id);
 
-        $wrapperContent[] = new cHTMLParagraph(i18n('Included articles'), 'head_sub');
-        $selectElement = new cHTMLSelectElement('teaser_manual_art_' . $this->_id, '', 'teaser_manual_art_' . $this->_id, false, '', '', 'manual');
-        $selectElement->setAttribute('size', '4');
-        $selectElement->setAttribute('multiple', 'multiple');
-        // there can be one or multiple selected articles
-        if (is_array($this->_settings['teaser_manual_art'])) {
-            foreach ($this->_settings['teaser_manual_art'] as $index => $idArt) {
-                $option = new cHTMLOptionElement($this->_getArtName($idArt), $idArt, true);
-                $selectElement->addOptionElement($index, $option);
-            }
-        } else {
-            // check if the article really exists
-            $artName = $this->_getArtName($this->_settings['teaser_manual_art']);
-            if ($artName != i18n('Unknown article')) {
-                $option = new cHTMLOptionElement($artName, $this->_settings['teaser_manual_art'], true);
-                $selectElement->addOptionElement(0, $option);
-            }
-        }
-        $wrapperContent[] = $selectElement;
+        $wrapperContent[] = new cHTMLParagraph(i18n("PICTURE_SETTINGS"), 'head_sub');
+        $wrapperContent[] = new cHTMLLabel(i18n('Image width'), 'teaser_image_width_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('teaser_image_width_' . $this->_id, $this->_settings['teaser_image_width'], '', '', 'teaser_image_width_' . $this->_id);
+        $wrapperContent[] = new cHTMLLabel(i18n('Image height'), 'teaser_image_height_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('teaser_image_height_' . $this->_id, $this->_settings['teaser_image_height'], '', '', 'teaser_image_height_' . $this->_id);
+        $wrapperContent[] = new cHTMLLabel(i18n('Image scale'), 'teaser_image_crop_' . $this->_id);
+        $wrapperContent[] = $this->_generateCropSelect();
 
-        $wrapperContent[] = new cHTMLParagraph(i18n('Add article'), 'head_sub');
-        $wrapperContent[] = new cHTMLLabel(i18n('Category'), 'teaser_cat_' . $this->_id);
-        $wrapperContent[] = buildCategorySelect('teaser_cat_' . $this->_id, 0, 0);
-        $wrapperContent[] = new cHTMLLabel(i18n('Article'), 'teaser_art_' . $this->_id);
-        $wrapperContent[] = buildArticleSelect('teaser_art_' . $this->_id, 0, 0);
-        $wrapperContent[] = new cHTMLLabel(i18n('Add'), 'add_art_' . $this->_id);
-        $image = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_art_new.gif');
-        $image->setAttribute('id', 'add_art_' . $this->_id);
-        $image->appendStyleDefinition('cursor', 'pointer');
-        $wrapperContent[] = $image;
+        $wrapperContent[] = new cHTMLParagraph(i18n("CONTENTTYPE_SETTINGS"), 'head_sub');
+        $wrapperContent[] = new cHTMLLabel(i18n("SOURCE_HEADLINE"), 'teaser_source_head_' . $this->_id);
+        $wrapperContent[] = $this->_generateTypeSelect('teaser_source_head_' . $this->_id, $this->_settings['teaser_source_head'], $this->_settings['teaser_source_head_count']);
+        $wrapperContent[] = new cHTMLLabel(i18n("SOURCE_TEXT"), 'teaser_source_text_' . $this->_id);
+        $wrapperContent[] = $this->_generateTypeSelect('teaser_source_text_' . $this->_id, $this->_settings['teaser_source_text'], $this->_settings['teaser_source_text_count']);
+        $wrapperContent[] = new cHTMLLabel(i18n('SOURCE_IMAGE'), 'teaser_source_image_' . $this->_id);
+        $wrapperContent[] = $this->_generateTypeSelect('teaser_source_image_' . $this->_id, $this->_settings['teaser_source_image'], $this->_settings['teaser_source_image_count']);
+        $wrapperContent[] = new cHTMLLabel(i18n('SOURCE_DATE'), 'teaser_source_date_' . $this->_id);
+        $wrapperContent[] = $this->_generateTypeSelect('teaser_source_date_' . $this->_id, $this->_settings['teaser_source_date'], $this->_settings['teaser_source_date_count']);
 
         $wrapper->setContent($wrapperContent);
         return $wrapper->render();
