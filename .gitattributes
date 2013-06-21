@@ -1661,6 +1661,13 @@ contenido/plugins/search_solr/includes/config.plugin.php -text
 contenido/plugins/search_solr/includes/include.right_bottom.php -text
 contenido/plugins/search_solr/locale/de_DE/LC_MESSAGES/search_solr.po -text
 contenido/plugins/search_solr/locale/en_US/LC_MESSAGES/search_solr.po -text
+contenido/plugins/search_solr/modules/content_solr_results/info.xml -text svneol=unset#text/plain
+contenido/plugins/search_solr/modules/content_solr_results/lang/lang_de_DE.txt -text svneol=unset#text/plain
+contenido/plugins/search_solr/modules/content_solr_results/lang/lang_en_US.txt -text svneol=unset#text/plain
+contenido/plugins/search_solr/modules/content_solr_results/php/class.module.search_result.php -text
+contenido/plugins/search_solr/modules/content_solr_results/php/content_solr_results_input.php -text
+contenido/plugins/search_solr/modules/content_solr_results/php/content_solr_results_output.php -text
+contenido/plugins/search_solr/modules/content_solr_results/template/get.tpl -text
 contenido/plugins/search_solr/modules/navigation_searchform_top/info.xml -text svneol=unset#text/plain
 contenido/plugins/search_solr/modules/navigation_searchform_top/lang/lang_de_DE.txt -text svneol=unset#text/plain
 contenido/plugins/search_solr/modules/navigation_searchform_top/lang/lang_en_US.txt -text svneol=unset#text/plain

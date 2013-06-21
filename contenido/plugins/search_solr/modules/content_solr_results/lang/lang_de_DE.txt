@@ -1,0 +1,12 @@
+LINK_SEARCH_RESULTS=Link zu Suchergebnis
+MORE=mehr
+MSG_NO_RESULTS_FOUND=Ihre Suche nach '%s' hat leider keine Treffer ergeben.
+MSG_RESULTS_FOUND=Ihre Suche nach '%s' hat %d Treffer ergeben:
+MSG_RANGE=Ergebnisse %d-%d von %d
+NEXT=vor
+RESULT_PAGE_HEADLINE=Suchergebnisseite
+SEARCH_SUBMIT=absenden
+PREVIOUS=zurück
+RESULT_PAGE=Ergebnis-Seite
+VIEW_RESULT_PAGE=Ergebnisseite anzeigen
+VIEW_NEXT_RESULT_PAGE=nächste
