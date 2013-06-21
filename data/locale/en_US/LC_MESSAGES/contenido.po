@@ -6705,4 +6705,14 @@ msgstr "No more than 6 Keywords should be used."
 msgid "REVISITED_INFO"
 msgstr "The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit."
 
+#: includes/include.con_art_overview.php:67
+msgid "NOTMODIFIED"
+msgstr "not modified yet"
 
+#: includes/frontend/include.front_content.php:348
+msgid "NOTEMPLATE"
+msgstr "Editing is not possible because there is no template assigned to this category."
+
+#: includes/frontend/include.front_content.php:348
+msgid "FATALERROR"
+msgstr "FATAL ERROR!"

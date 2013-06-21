@@ -6476,5 +6476,15 @@ msgstr "Mittels des Keyword-Tag wird der Artikel mit den wichtigsten Elementen b
 msgid "REVISITED_INFO"
 msgstr "Die Häufigkeit des revisit after orientiert sich an der Anzahl der Neuerscheinungen.  Jedoch haben die Robots der Suchmaschinen ihren eigenen Besuchsrhythmus."
 
+#: includes/include.con_art_overview.php:67
+msgid "NOTMODIFIED"
+msgstr "noch nicht geändert"
 
+#: includes/frontend/include.front_content.php:348
+msgid "NOTEMPLATE"
+msgstr "Die Bearbeitung ist nicht möglich, weil der Kategorie keine Vorlage zugewiesen ist."
+
+#: includes/frontend/include.front_content.php:348
+msgid "FATALERROR"
+msgstr "SYSTEMFEHLER!"
 
