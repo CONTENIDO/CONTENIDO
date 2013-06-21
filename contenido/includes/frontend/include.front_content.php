@@ -29,18 +29,17 @@
  * NOTE:
  * This file has to run in clients frontend directory!
  *
- * @package          Core
- * @subpackage       Frontend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Frontend
+ * @version SVN Revision $Rev:$
  *
- * @author           Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.,
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.,
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Clients local configuration
@@ -320,9 +319,10 @@ if ($cfg['cache']['disable'] != '1') {
 /**
  * First we have to figure out if the user is allowed to edit the article.
  *
- * We'll check if it's inuse, if they want to edit it and if all plugins allow it.
- *
+ * We'll check if it's inuse, if they want to edit it and if all plugins allow
+ * it.
  */
+
 $inUse = false;
 $allow = false;
 $view = false;
@@ -346,7 +346,6 @@ if ($contenido) {
 
     $inUseUrl = $backendUrl . "external/backendedit/front_content.php?changeview=edit&action=con_editart&idartlang=$idartlang&type=$type&typenr=$typenr&idart=$idart&idcat=$idcat&idcatart=$idcatart&client=$client&lang=$lang";
     list($inUse, $message) = $col->checkAndMark('article', $idartlang, true, i18n('Article is in use by %s (%s)'), true, $inUseUrl);
-
     $sHtmlInUse = '';
     $sHtmlInUseMessage = '';
     if ($inUse == true) {
@@ -370,6 +369,35 @@ if ($contenido) {
     $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']);
 }
 
+// check if isset parent category template.
+if ($contenido) {
+    $sql = "SELECT a.idtplcfg FROM con_cat_lang a, con_cat_art b WHERE a.idcat=b.idcat AND b.idart=$idart AND a.idlang=$lang;";
+    $errorText = i18n("NOTEMPLATE");
+    $errorTitle = i18n("FATALERROR");
+} else {
+    $article = new cApiArticleLanguage($idartlang);
+    $idart = $article->getField('idart');
+    $sql = "SELECT a.idtplcfg FROM con_cat_lang a, con_cat_art b WHERE a.idcat=b.idcat AND b.idart=$idart AND a.idlang=$lang;";
+    $errorText = 'Editing is not possible because there is no template assigned to this category.';
+    $errorTitle = 'FATAL ERROR!';
+}
+$db = cRegistry::getDb();
+
+$db->query($sql);
+$data = array();
+while ($db->next_record()) {
+    array_push($data, $db->toArray());
+}
+
+if ($data[0]['idtplcfg'] === '0') {
+    // echo 'Editing is not possible because there is no template assigned to
+    // this category.';
+    $tpl = new cTemplate();
+    $tpl->set("s", "ERROR_TITLE", $errorTitle);
+    $tpl->set("s", "ERROR_TEXT", $errorText);
+    $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
+    exit();
+}
 // If mode is 'edit' and user has permission to edit articles in the current
 // category
 if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat))) {
