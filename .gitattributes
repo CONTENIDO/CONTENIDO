@@ -2512,6 +2512,7 @@ setup/style/setup.css -text
 setup/templates/cfoldablerow.tpl -text
 setup/templates/config.php.tpl -text
 setup/templates/crow.tpl -text
+setup/templates/error_page.html -text svneol=unset#text/plain
 setup/templates/languagechooser.tpl -text
 setup/templates/notinstallable.tpl -text
 setup/templates/setup.tpl -text
