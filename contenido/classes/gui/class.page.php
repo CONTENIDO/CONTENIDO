@@ -539,13 +539,13 @@ class cGuiPage {
         }
         $text = "";
         if ($this->_info != "") {
-            $text = $notification->returnNotification("info", $this->_info) . "<br>";
+            $text .= $notification->returnNotification("info", $this->_info) . "<br>";
         }
         if ($this->_warning != "") {
-            $text = $notification->returnNotification("warning", $this->_warning) . "<br>";
+            $text .= $notification->returnNotification("warning", $this->_warning) . "<br>";
         }
         if ($this->_error != "") {
-            $text = $notification->returnNotification("error", $this->_error) . "<br>";
+            $text .= $notification->returnNotification("error", $this->_error) . "<br>";
         }
 
         $file = "";
