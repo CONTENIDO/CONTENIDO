@@ -2,23 +2,26 @@
 /**
  * This file contains the backend page for editing language.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel, Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel, Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 includePlugins('languages');
 
 if ($action == "lang_newlanguage" && (int) $newidlang > 0) {
     $idlang = $newidlang;
+}
+
+function generateInfoIcon($title, $id = '', $class = 'vAlignMiddle', $img = 'images/info.gif') {
+    return  '<img class="' . $class . '" id="' . $id . '" title="'. $title . '" src="' . $img . '">';
 }
 
 $oLanguage = new cApiLanguage($idlang);
@@ -59,7 +62,6 @@ if ($action == "lang_newlanguage") {
         $page->addScript($sReload);
     }
     $page->render();
-
 } elseif ($action == "lang_deletelanguage") {
 
     $page->displayInfo(i18n("Deleted language successfully!"));
@@ -78,7 +80,6 @@ if ($action == "lang_newlanguage") {
         $page->addScript($sReload);
     }
     $page->render();
-
 } else {
 
     if ($action == "lang_edit") {
@@ -149,6 +150,8 @@ if ($action == "lang_newlanguage") {
             $eselect->autoFill($charsets);
             $eselect->setDefault($db->f("encoding"));
 
+
+
             $languagecode = new cHTMLSelectElement("languagecode");
             $languagecode->setStyle('width:255px');
             $languagecode->autoFill($iso_639_2_result);
@@ -161,9 +164,11 @@ if ($action == "lang_newlanguage") {
 
             $directionSelect = new cHTMLSelectElement("direction");
             $directionSelect->setStyle('width:255px');
-            $directionSelect->autoFill(array("ltr" => i18n("Left to right"), "rtl" => i18n("Right to left")));
+            $directionSelect->autoFill(array(
+                "ltr" => i18n("Left to right"),
+                "rtl" => i18n("Right to left")
+            ));
             $directionSelect->setDefault($db->f("direction"));
-
 
             $fulldateformat = new cHTMLTextbox("datetimeformat", $oLanguage->getProperty("dateformat", "full", $targetclient), 40);
 
@@ -186,10 +191,10 @@ if ($action == "lang_newlanguage") {
             $form->add(i18n("Text direction"), $directionSelect);
 
             $form->addSubHeader(i18n("Time format"));
-            $form->add(i18n("Date/Time format"), $fulldateformat->render());
-            $form->add(i18n("Date format"), $dateformat->render());
-            $form->add(i18n("Time format"), $timeformat->render());
-            $form->add(i18n("Date/Time locale"), $dateLocale->render());
+            $form->add(i18n("Date/Time format"), $fulldateformat->render().' '.generateInfoIcon(i18n("FORMAT_DATE_TIME")));
+            $form->add(i18n("Date format"), $dateformat->render().' '.generateInfoIcon(i18n("FORMAT_DATE")));
+            $form->add(i18n("Time format"), $timeformat->render().' '.generateInfoIcon(i18n("FORMATE_TIME")));
+            $form->add(i18n("Date/Time locale"), $dateLocale->render().' '.generateInfoIcon(i18n("LANUAGE_DATE_TIME")));
 
             $page->setContent($form);
 
