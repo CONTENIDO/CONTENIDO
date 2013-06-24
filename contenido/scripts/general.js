@@ -208,7 +208,19 @@ function getUrlParams(url) {
  * @returns {Object}
  */
 function getTranslations() {
+
     var registry = getRegistry();
+
+    if (!registry) {
+        setTimeout(function() {
+
+            getTranslations();
+
+        }, 50);
+
+        return;
+    }
+
     // if the translations have not been loaded yet, do it now
     if (typeof registry.get('translations') === 'undefined') {
         // get param 'contenido'

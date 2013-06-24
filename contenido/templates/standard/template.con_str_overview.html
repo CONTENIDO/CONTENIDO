@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
     <title></title>
@@ -6,6 +6,7 @@
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <link rel="stylesheet" type="text/css" href="styles/tree.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
@@ -30,7 +31,7 @@
                 //}
             });
             var docwidth = document.body.scrollWidth + 100;
-            $("#con_str_tree li").width(docwidth);
+            //$("#con_str_tree li").width(docwidth);
 
             $("#con_str_tree li:last-child").addClass('last');
 
@@ -78,35 +79,6 @@
             });
         });
     </script>
-    <!--[if lte IE 7]>
-    <style type="text/css">
-        #con_str_tree {
-            width: 600px!important; /* fixed width in pixels necessary due to javascript performance issues */
-        }
-        #con_str_tree ul,
-        #con_str_tree li,
-        #con_str_tree li div {
-            width: 600px; /* fixed width in pixels necessary due to javascript performance issues */
-        }
-        #con_str_tree li a,
-        #con_str_tree li.on a {
-            padding: 0px 5px 0px 20px;
-            margin-left: -3px;
-            height: 20px;
-        }
-        #con_str_tree li em a {
-            padding: 0;
-        }
-        #con_str_tree ul {
-            float: none;
-        }
-    </style>
-    <![endif]-->
-    <!--[if lte IE 6]>
-    <style type="text/css">
-
-    </style>
-    <![endif]-->
 </head>
 <body>
 
@@ -116,7 +88,7 @@
     {CATS}
   </li>
 </ul>
-<div style="margin-top:10px"></div>
+<!--div style="margin-top:10px"></div-->
 
 <script type="text/javascript">
     // Ugly frame concept seems to lead to ugly timeout problem -> wait some millis

@@ -110,7 +110,7 @@ HTMLObj.prototype.setMethods = function(type) {
             this.obj.onclick        = doAction;
 
             //Also make corresponding Labels clickable
-            this.obj.parentNode.nextSibling.onclick        = doAction;
+            if (this.obj.parentNode.nextSibling) this.obj.parentNode.nextSibling.onclick        = doAction;
 
             break;
 

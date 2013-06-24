@@ -1977,6 +1977,7 @@ contenido/styles/jquery/plugins/timepicker.css -text svneol=unset#text/plain
 contenido/styles/jquery/plugins/tipsy.css -text
 contenido/styles/str_overview.css -text
 contenido/styles/system_integrity.css -text
+contenido/styles/tree.css -text svneol=unset#text/plain
 contenido/subnav.php -text
 contenido/templates/index.php -text
 contenido/templates/standard/filler.html -text
