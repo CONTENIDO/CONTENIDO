@@ -1147,9 +1147,7 @@ textarea {
 
 .pifa-form .pifa-error:hover p {
     display: block;
-    position: absolute;
-    top: 0px;
-    margin-top: -22px;
+
 }
 
 /* ----- NEWSLETTERFORM ----- */
