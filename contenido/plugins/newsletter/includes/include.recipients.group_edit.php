@@ -272,7 +272,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
     $oInsiders = new NewsletterRecipientCollection();
 
-    $oInsiders->link("RecipientGroupMemberCollection");
+    $oInsiders->link("NewsletterRecipientGroupMemberCollection");
     $oInsiders->setWhere("idclient", $client);
     $oInsiders->setWhere("idlang", $lang);
     $oInsiders->setWhere("idnewsgroup", $_REQUEST["idrecipientgroup"]);
