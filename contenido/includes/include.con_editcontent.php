@@ -31,6 +31,7 @@ $scripts = '';
 $cssData = '';
 $jsData = '';
 
+$data = cSecurity::toString($_REQUEST['data']);
 if ($action == 20 || $action == 10) {
     if ($data != '') {
         $data = explode('||', substr($data, 0, -2));
