@@ -113,15 +113,17 @@ class SolrIndexer {
      * @param int $idartlang of article to be updated
      */
     public static function handleStoringOfContentEntry(array $articleIds) {
-
-        // build indexer instance
-        $indexer = new self(array(
-            $articleIds
-        ));
-
         try {
-            //
+            // build indexer instance
+            $indexer = new self(array(
+                $articleIds
+            ));
+            // update given articles
             $indexer->updateArticles();
+        } catch (SolrIllegalArgumentException $e) {
+            // either deletion or adding of articles failed
+            $note = new cGuiNotification();
+            $note->displayNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
         } catch (cException $e) {
             // either deletion or adding of articles failed
             $note = new cGuiNotification();
@@ -139,7 +141,11 @@ class SolrIndexer {
      */
     public function __construct(array $articleIds) {
         $this->_articleIds = $articleIds;
-        $this->_solrClient = new SolrClient(Solr::getClientOptions());
+        $options = Solr::getClientOptions();
+        if (empty($options)) {
+            throw new cException('article could not be indexed cause Solr is not configured');
+        }
+        $this->_solrClient = new SolrClient($options);
     }
 
     /**
