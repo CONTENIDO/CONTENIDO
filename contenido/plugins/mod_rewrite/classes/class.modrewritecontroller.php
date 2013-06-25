@@ -276,6 +276,11 @@ class ModRewriteController extends ModRewriteBase {
                 $requestUri .= '?' . $_SERVER['REDIRECT_QUERY_STRING'];
             }
         }
+        // CON-1266 make request URL lowercase if option "URLS to
+        // lowercase" is set
+        if (1 == $this->getConfig('use_lowercase_uri')) {
+            $requestUri = strtolower($requestUri);
+        }
 
         // check for defined rootdir
         if (parent::getConfig('rootdir') !== '/' && strpos($requestUri, $this->_sIncommingUrl) === 0) {
