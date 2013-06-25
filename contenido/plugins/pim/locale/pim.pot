@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-21 15:35+0200\n"
+"POT-Creation-Date: 2013-06-25 11:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: classes/setup/class.pimpluginsetup.php:70
-#: classes/setup/class.pimpluginsetup.php:153
-#: classes/setup/class.pimpluginsetup.php:778
-#: classes/setup/class.pimpluginsetup.php:786
-#: classes/setup/class.pimpluginsetup.php:806
-#: classes/setup/class.pimpluginsetup.php:828
+#: classes/setup/class.pimpluginsetup.php:155
+#: classes/setup/class.pimpluginsetup.php:814
+#: classes/setup/class.pimpluginsetup.php:822
+#: classes/setup/class.pimpluginsetup.php:842
+#: classes/setup/class.pimpluginsetup.php:864
 msgid "Back to Plugin Manager"
 msgstr ""
 
@@ -35,87 +35,95 @@ msgid "You have to install CONTENIDO <strong>"
 msgstr ""
 
 #: classes/setup/class.pimpluginsetup.php:93
-#: classes/setup/class.pimpluginsetup.php:98
+#: classes/setup/class.pimpluginsetup.php:106
 msgid "</strong> or higher to install this plugin!"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:98
+#: classes/setup/class.pimpluginsetup.php:99
+msgid "This plugin is only valid for CONTENIDO <strong>"
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:99
+msgid "</strong> or lower!"
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.php:106
 msgid "You have to install PHP <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:107
+#: classes/setup/class.pimpluginsetup.php:115
 msgid "The plugin could not find the PHP extension <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:107
-#: classes/setup/class.pimpluginsetup.php:120
-#: classes/setup/class.pimpluginsetup.php:133
+#: classes/setup/class.pimpluginsetup.php:115
+#: classes/setup/class.pimpluginsetup.php:126
+#: classes/setup/class.pimpluginsetup.php:137
 msgid ""
 "</strong>. Because this is required by the plugin, it can not be installed."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:120
+#: classes/setup/class.pimpluginsetup.php:126
 msgid "The plugin could not find the class <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:133
+#: classes/setup/class.pimpluginsetup.php:137
 msgid "The plugin could not find the function <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:596
-#: classes/setup/class.pimpluginsetup.php:686
-#: classes/setup/class.pimpluginsetup.php:697
+#: classes/setup/class.pimpluginsetup.php:627
+#: classes/setup/class.pimpluginsetup.php:722
+#: classes/setup/class.pimpluginsetup.php:733
 msgid "The plugin"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:596
+#: classes/setup/class.pimpluginsetup.php:627
 msgid ""
 "has been successfully uninstalled. To apply the changes please login into "
 "backend again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:649
-#: classes/setup/class.pimpluginsetup.php:651
+#: classes/setup/class.pimpluginsetup.php:684
+#: classes/setup/class.pimpluginsetup.php:686
 msgid "The pluginfolder"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:649
+#: classes/setup/class.pimpluginsetup.php:684
 msgid "has been successfully uninstalled."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:651
+#: classes/setup/class.pimpluginsetup.php:686
 msgid "could not be uninstalled."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:686
+#: classes/setup/class.pimpluginsetup.php:722
 msgid ""
 "has been sucessfully disabled. To apply the changes please login into "
 "backend again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:697
+#: classes/setup/class.pimpluginsetup.php:733
 msgid ""
 "has been sucessfully enabled. To apply the changes please login into backend "
 "again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:779
+#: classes/setup/class.pimpluginsetup.php:815
 msgid "This plugin is already installed"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:787
+#: classes/setup/class.pimpluginsetup.php:823
 msgid "You have to update the same plugin"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:807
+#: classes/setup/class.pimpluginsetup.php:843
 msgid "Plugin Manager accepts only Zip archives"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:829
+#: classes/setup/class.pimpluginsetup.php:865
 msgid "Defined area"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:829
+#: classes/setup/class.pimpluginsetup.php:865
 msgid ""
 "are not found on your CONTENIDO installation. Please contact your plugin "
 "author."

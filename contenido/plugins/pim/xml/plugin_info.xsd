@@ -30,12 +30,17 @@
 
 	<xsd:complexType name="RequirementsTyp">
     	<xsd:sequence minOccurs="0">
+    		<xsd:element name="contenido" type="RequirementsContenidoTyp" minOccurs="1" maxOccurs="1" />
     		<xsd:element name="extension" type="RequirementsExtensionTyp" minOccurs="0" />
     		<xsd:element name="class" type="RequirementsClassTyp" minOccurs="0" />
     		<xsd:element name="function" type="RequirementsFunctionTyp" minOccurs="0" />
     	</xsd:sequence>
-    	<xsd:attribute name="contenido" type="xsd:string" default="4.9.0" />
     	<xsd:attribute name="php" type="xsd:string" default="5.2.3" />
+	</xsd:complexType>
+
+	<xsd:complexType name="RequirementsContenidoTyp">
+		<xsd:attribute name="minversion" type="xsd:string" use="required" />
+		<xsd:attribute name="maxversion" type="xsd:string" />
 	</xsd:complexType>
 
 	<xsd:complexType name="RequirementsExtensionTyp">

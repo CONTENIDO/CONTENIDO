@@ -88,14 +88,22 @@ class PimPluginSetup {
         // get requirements xml
         $xml = simplexml_load_string($this->getTempXml());
 
-        // check CONTENIDO version
-        if (version_compare($cfg['version'], $xml->requirements->attributes()->contenido, '<')) {
-            $this->getRequirementsError(i18n('You have to install CONTENIDO <strong>', 'pim') . $xml->attributes()->contenido . i18n('</strong> or higher to install this plugin!', 'pim'));
+        // check CONTENIDO min version
+        if (version_compare($cfg['version'], $xml->requirements->contenido->attributes()->minversion, '<')) {
+            $this->getRequirementsError(i18n('You have to install CONTENIDO <strong>', 'pim') . $xml->requirements->contenido->attributes()->minversion . i18n('</strong> or higher to install this plugin!', 'pim'));
+        }
+
+        if($xml->requirements->contenido->attributes()->maxversion) {
+
+            if (version_compare($cfg['version'], $xml->requirements->contenido->attributes()->maxversion, '>')) {
+                $this->getRequirementsError(i18n('This plugin is only valid for CONTENIDO <strong>', 'pim') . $xml->requirements->contenido->attributes()->maxversion . i18n('</strong> or lower!', 'pim'));
+            }
+
         }
 
         // check PHP version
         if (version_compare(phpversion(), $xml->requirements->attributes()->php, '<')) {
-            $this->getRequirementsError(i18n('You have to install PHP <strong>', 'pim') . $xml->attributes()->php . i18n('</strong> or higher to install this plugin!', 'pim'));
+            $this->getRequirementsError(i18n('You have to install PHP <strong>', 'pim') . $xml->requirements->attributes()->php . i18n('</strong> or higher to install this plugin!', 'pim'));
         }
 
         // check extensions
@@ -520,6 +528,10 @@ class PimPluginSetup {
         $module = new cApiModule();
 
         $modulesPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $tempXml->plugin_foldername . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR;
+
+        if(!is_dir($modulesPath)) {
+            return false;
+        }
 
         foreach (new DirectoryIterator($modulesPath) as $modulesFiles) {
 
