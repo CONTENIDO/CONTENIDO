@@ -120,10 +120,6 @@ class SolrIndexer {
             ));
             // update given articles
             $indexer->updateArticles();
-        } catch (SolrIllegalArgumentException $e) {
-            // either deletion or adding of articles failed
-            $note = new cGuiNotification();
-            $note->displayNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
         } catch (cException $e) {
             // either deletion or adding of articles failed
             $note = new cGuiNotification();
