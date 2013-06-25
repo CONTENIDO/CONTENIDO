@@ -94,12 +94,11 @@ class PimPluginSetup {
         }
 
         // check CONTENIDO max version
-        if($xml->requirements->contenido->attributes()->maxversion) {
+        if ($xml->requirements->contenido->attributes()->maxversion) {
 
             if (version_compare($cfg['version'], $xml->requirements->contenido->attributes()->maxversion, '>')) {
                 $this->getRequirementsError(i18n('This plugin is only valid for CONTENIDO <strong>', 'pim') . $xml->requirements->contenido->attributes()->maxversion . i18n('</strong> or lower!', 'pim'));
             }
-
         }
 
         // check PHP version
@@ -530,7 +529,7 @@ class PimPluginSetup {
 
         $modulesPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $tempXml->plugin_foldername . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR;
 
-        if(!is_dir($modulesPath)) {
+        if (!is_dir($modulesPath)) {
             return false;
         }
 
@@ -670,11 +669,9 @@ class PimPluginSetup {
      * @return void
      */
     public function uninstallDir($foldername, $page = null) {
-        if (!$page)
+        $cfg = cRegistry::getConfig();
 
-            $cfg = cRegistry::getConfig();
-
-            // delete folders
+        // delete folders
         $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($foldername);
         cFileHandler::recursiveRmdir($folderpath);
 
