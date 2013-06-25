@@ -264,14 +264,16 @@ class SolrIndexer {
     }
 
     /**
+     * An article is indexable if it is online and searchable.
+     *
+     * Articles that are hidden due to a protected category are indexable. The
+     * searcher is responsible for making sure these aticles are only displayed
+     * to privileged users.
      *
      * @param int $idartlang of article to be checked
      * @return bool
      */
     private function _isIndexable($idartlang) {
-
-        // TODO check for permissions
-        // article could be part of protected category!!!
 
         // What about time managment?
         $articleLanguage = new cApiArticleLanguage($idartlang);
