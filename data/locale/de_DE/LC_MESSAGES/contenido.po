@@ -1336,6 +1336,7 @@ msgstr "Teaser-Darstellung"
 msgid "Teaser start article"
 msgstr "Teaser-Startartikel"
 
+
 #: classes/content_types/class.content.type.teaser.php:677
 msgid "Source settings"
 msgstr "Quelleinstellungen"
@@ -6487,4 +6488,67 @@ msgstr "Die Bearbeitung ist nicht möglich, weil der Kategorie keine Vorlage zug
 #: includes/frontend/include.front_content.php:348
 msgid "FATALERROR"
 msgstr "SYSTEMFEHLER!"
+
+#: classes/content_types/class.content.type.teaser.php:600
+msgid "AUTOMATIC"
+msgstr "Automatisch"
+
+#: classes/content_types/class.content.type.teaser.php:600
+msgid "MANUAL"
+msgstr "Manuell"
+
+#: classes/content_types/class.content.type.teaser.php:600
+msgid "SETTINGS"
+msgstr "Einstellungen"
+
+#: classes/content_types/class.content.type.teaser.php:600
+msgid "CONTENT_SETTINGS"
+msgstr "Content Darstellung"
+
+#: classes/content_types/class.content.type.teaser.php:600
+msgid "PICTURE_SETTINGS"
+msgstr "Bilder"
+
+#: classes/content_types/class.content.type.teaser.php:600
+msgid "CONTENTTYPE_SETTINGS"
+msgstr "Content Typen"
+
+#: classes/content_types/class.content.type.teaser.php:678
+msgid "SOURCE_HEADLINE"
+msgstr "Quelle Überschrift"
+
+#: classes/content_types/class.content.type.teaser.php:680
+msgid "SOURCE_TEXT"
+msgstr "Quelle Text"
+
+#: classes/content_types/class.content.type.teaser.php:682
+msgid "SOURCE_IMAGE"
+msgstr "Quelle Bild"
+
+#: classes/content_types/class.content.type.teaser.php:684
+msgid "SOURCE_DATE"
+msgstr "Quelle Datum"
+
+#: classes/content_types/class.content.type.teaser.php:674
+msgid "TEASER_START_ARTICLE"
+msgstr "Teaser Startartikel"
+#: classes/content_types/class.content.type.teaser.php:814
+msgid "TEASER_SORT"
+msgstr "Teasersortierung"
+
+#: classes/content_types/class.content.type.teaser.php:814
+msgid "SORT_ORDER"
+msgstr "Sortierreihenfolge"
+
+#: classes/content_types/class.content.type.teaser.php:814
+msgid "DEL"
+msgstr "Entfernen"
+
+#: classes/content_types/class.content.type.teaser.php:814
+msgid "TEASER_VISUALISATION"
+msgstr "Teaserdarstellung"
+
+#: classes/content_types/class.content.type.teaser.php:814
+msgid "TEASER_FILTER"
+msgstr "Teaserfilter"
 
