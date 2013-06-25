@@ -406,28 +406,28 @@
         </tr>
         <!-- layer for inline editing of existing categories -->
         <tr id="cat_inline_layer" class="fixed">
-           
+
 
             <td class="str-style-a" valign="middle">&nbsp;</td>
             <td colspan="{SUM_COLUMNS_EDIT}" class="str-style-c" style="padding-left:15px; vertical-align:middle;">
-				<form name="renamecategory" id="renamecategory" method="post" action="{ACTION_EDIT_URL}">
-					{INPUT_ACTION_EDIT}
-					{INPUT_IDCAT}
-					{INPUT_SESSION}
-					<span id="cat_name">i18n('Categoryname') &nbsp; {INPUT_CATNAME_EDIT}<span style="padding-left:15px;">&nbsp;</span></span>
+                <form name="renamecategory" id="renamecategory" method="post" action="{ACTION_EDIT_URL}">
+                    {INPUT_ACTION_EDIT}
+                    {INPUT_IDCAT}
+                    {INPUT_SESSION}
+                    <span id="cat_name">i18n('Categoryname') &nbsp; {INPUT_CATNAME_EDIT}<span style="padding-left:15px;">&nbsp;</span></span>
 
-					{LABEL_ALIAS_NAME}
-					{INPUT_ALIAS_EDIT}
-					<span style="padding-left:15px;">&nbsp;</span>
+                    {LABEL_ALIAS_NAME}
+                    {INPUT_ALIAS_EDIT}
+                    <span style="padding-left:15px;">&nbsp;</span>
 
-					<span id="tpl_cfg"><a href="{TEMPLATE_URL}" id="tplcfg_href"><img src="images/template_properties.gif" title="i18n('Configure category')" alt="i18n('Configure category')" border="0" style="vertical-align:middle"> &nbsp; i18n('Configure category')</a><span style="padding-left:15px;">&nbsp;</span></span>
+                    <span id="tpl_cfg"><a href="{TEMPLATE_URL}" id="tplcfg_href"><img src="images/template_properties.gif" title="i18n('Configure category')" alt="i18n('Configure category')" border="0" style="vertical-align:middle"> &nbsp; i18n('Configure category')</a><span style="padding-left:15px;">&nbsp;</span></span>
 
-					<a href="{HREF_CANCEL}"><img src="{SRC_CANCEL}" style="vertical-align:middle" border="0"></a>
-					&nbsp;
-					<input style="vertical-align:middle" type="image" src="{SRC_OK}">
-				</form>
+                    <a href="{HREF_CANCEL}"><img src="{SRC_CANCEL}" style="vertical-align:middle" border="0"></a>
+                    &nbsp;
+                    <input style="vertical-align:middle" type="image" src="{SRC_OK}">
+                </form>
             </td>
-           
+
         </tr>
         <!-- BEGIN:BLOCK -->
         <tr id="cat_{CATID}_row" class="text_medium draggable" style="background-color:{BGCOLOR};{HEIGHT}" data-idcat="{CATID}" data-parentid="{PARENTID}" data-level="{LEVEL}" {MOUSEOVER}>

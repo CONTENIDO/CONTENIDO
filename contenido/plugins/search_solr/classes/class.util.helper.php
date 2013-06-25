@@ -435,6 +435,7 @@ class Util {
     /**
      *
      * @param string $sEmail
+     * @fixme  Follow coding guidelines and use existing email validator!
      */
     function is_valid_email($sEmail) {
         $bResult = filter_var($sEmail, FILTER_VALIDATE_EMAIL);

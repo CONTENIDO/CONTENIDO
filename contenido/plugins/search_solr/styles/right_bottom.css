@@ -1,38 +1,38 @@
 fieldset {
-	width: 40%;
-	float: left;
+    width: 40%;
+    float: left;
 }
 
 fieldset table td {
-	vertical-align: top;
-	line-height: 2em;
-	padding: 0 5px;
+    vertical-align: top;
+    line-height: 2em;
+    padding: 0 5px;
 }
 
 fieldset table tr.section-start td {
-	border-top: 1px solid black;
-	padding-top: 4px;
+    border-top: 1px solid black;
+    padding-top: 4px;
 }
 
 fieldset table tr.section-end td {
-	padding-bottom: 4px;
+    padding-bottom: 4px;
 }
 
 fieldset table tr.required label {
-	color: red;
+    color: red;
 }
 
 input[type="submit"] {
-	width: 100px;
+    width: 100px;
 }
 
 legend {
-	text-transform: uppercase;
-	font-weight: bold;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
 label {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 

@@ -2,7 +2,7 @@
 answers=Antworten
 replyQuote=Zitieren
 articleRemoved=Der Beitrag wurde gelöscht.
-quoteFrom=Zitat: 
+quoteFrom=Zitat:
 answerToQuote=Als Antwort auf
 from=von
 yourName=Ihr Name
@@ -37,7 +37,7 @@ NEWENTRY=Neuer Kommentar hinzugefügt
 NEWENTRYTEXT=Neuer Kommentar hinzugefügt
 COMMENT=Kommentar
 EMAILADR=E-Mail-Adresse
-INARTICLE=in Artikel:  
+INARTICLE=in Artikel:
 NEWENTRY=Neuer Kommentar hinzugefuegt
 NEWENTRYTEXT=Neuer Kommentar hinzugefuegt
 COMMENT=Kommentar

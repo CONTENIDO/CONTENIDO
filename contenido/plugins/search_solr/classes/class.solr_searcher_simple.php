@@ -67,5 +67,6 @@ class SolrSearcherSimple extends SolrSearcherAbstract {
 
         return $docs;
     }
+
 }
 

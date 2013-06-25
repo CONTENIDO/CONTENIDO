@@ -67,7 +67,7 @@ class Solr {
 
         // log message
         $log = new cLog(cLogWriter::factory('file', array(
-            'destination' => $filename
+                    'destination' => $filename
         )));
         $log->info($prefix . $whatever);
     }
@@ -190,8 +190,8 @@ class Solr {
         $cfg = cRegistry::getConfig();
 
         $log = new cLog(cLogWriter::factory('file', array(
-            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
-        )), cLog::ERR);
+                    'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
+                )), cLog::ERR);
 
         $log->err($e->getMessage());
         $log->err($e->getTraceAsString());

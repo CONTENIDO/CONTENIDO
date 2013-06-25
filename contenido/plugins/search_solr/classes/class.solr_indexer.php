@@ -178,7 +178,6 @@ class SolrIndexer {
             $solrInputDocument = new SolrInputDocument();
             // $solrInputDocument->addField('raise_exception', 'uncomment this
             // to raise an exception');
-
             // add IDs
             $solrInputDocument->addField('id_client', $articleIds['idclient']);
             $solrInputDocument->addField('id_lang', $articleIds['idlang']);
@@ -327,7 +326,6 @@ class SolrIndexer {
         // TODO check first alternative:
         // cInclude('includes', 'functions.con.php');
         // $content = conGetContentFromArticle($this->_idartlang);
-
         // TODO check second alternative:
         // $articleLanguage = new cApiArticleLanguage($this->_idartlang);
         // if (!$articleLanguage->isLoaded()) {
@@ -370,4 +368,5 @@ class SolrIndexer {
             throw new cException($msg);
         }
     }
+
 }

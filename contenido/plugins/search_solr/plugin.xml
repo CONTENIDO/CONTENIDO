@@ -15,8 +15,8 @@
     </general>
 
     <requirements php="5.2.11">
-    	<contenido minversion="4.9.0" />
-	    <extension name="solr" />
+        <contenido minversion="4.9.0" />
+        <extension name="solr" />
     </requirements>
 
     <contenido>
@@ -25,9 +25,9 @@
             <area menuless="1">solr</area>
         </areas>
 
-		<actions>
-		    <action area="solr">reindex</action>
-		</actions>
+        <actions>
+            <action area="solr">reindex</action>
+        </actions>
 
         <frames>
             <frame area="solr" filetype="main" name="search_solr/includes/include.right_bottom.php" frameId="4" />

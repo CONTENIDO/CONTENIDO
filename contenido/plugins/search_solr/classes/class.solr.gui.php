@@ -45,13 +45,10 @@ class SolrRightBottomPage extends cGuiPage {
     private $_clientOptions;
 
     /**
+     * @global string $action to be performed
      */
     public function __construct() {
 
-        /**
-         *
-         * @param string $action to be performed
-         */
         global $action;
 
         parent::__construct('right_bottom', Solr::getName());
@@ -93,7 +90,7 @@ class SolrRightBottomPage extends cGuiPage {
         $this->set('s', 'PATH', $this->_clientOptions['path']);
         $this->set('s', 'LOGIN', $this->_clientOptions['login']);
         $this->set('s', 'PASSWORD', $this->_clientOptions['password']);
-        $this->set('s', 'SECURE', 'true' == $this->_clientOptions['secure']? 'checked="checked"' : '');
+        $this->set('s', 'SECURE', 'true' == $this->_clientOptions['secure'] ? 'checked="checked"' : '');
         $this->set('s', 'TIMEOUT', $this->_clientOptions['timeout']);
         $this->set('s', 'WT', $this->_clientOptions['wt']);
         $this->set('s', 'PROXY_HOST', $this->_clientOptions['proxy_host']);
@@ -113,8 +110,8 @@ class SolrRightBottomPage extends cGuiPage {
         $validClientOptions &= array_key_exists('path', $this->_clientOptions);
         $validClientOptions &= array_key_exists('login', $this->_clientOptions);
         $validClientOptions &= array_key_exists('password', $this->_clientOptions);
-        $this->set('s', 'DISABLED_RELOAD', $validClientOptions? '' : 'disabled="disabled"');
-        $this->set('s', 'DISABLED_REINDEX', $validClientOptions? '' : 'disabled="disabled"');
+        $this->set('s', 'DISABLED_RELOAD', $validClientOptions ? '' : 'disabled="disabled"');
+        $this->set('s', 'DISABLED_REINDEX', $validClientOptions ? '' : 'disabled="disabled"');
 
         // dispatch action
         try {
@@ -207,8 +204,8 @@ class SolrRightBottomPage extends cGuiPage {
         $url .= $this->_clientOptions['login'] . ':' . $this->_clientOptions['password'] . '@';
         $url .= $this->_clientOptions['hostname'] . ':' . $this->_clientOptions['port'];
         $url .= '/solr/admin/cores?' . http_build_query(array(
-            'action' => 'RELOAD',
-            'core' => array_pop(explode('/', $this->_clientOptions['path']))
+                    'action' => 'RELOAD',
+                    'core' => array_pop(explode('/', $this->_clientOptions['path']))
         ));
 
         // create curl resource
@@ -323,4 +320,5 @@ class SolrRightBottomPage extends cGuiPage {
         $cGuiNotification = new cGuiNotification();
         return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, 'core was reindexed');
     }
+
 }

@@ -1,13 +1,13 @@
-<a class="twitter-timeline" 
-data-screen-name="{$twitterName}" 
-data-show-replies="{$twitterShowReplies}" 
-data-theme="{$twitterTheme}" 
-data-link-color="{$twitterLinkColor}" 
-width="{$twitterWidth}" 
-height="{$twitterHeight}" 
-data-border-color="{$twitterBorderColor}" 
-data-related="{$twitterRelated}" 
-href="https://twitter.com/{$twitterName}" 
+<a class="twitter-timeline"
+data-screen-name="{$twitterName}"
+data-show-replies="{$twitterShowReplies}"
+data-theme="{$twitterTheme}"
+data-link-color="{$twitterLinkColor}"
+width="{$twitterWidth}"
+height="{$twitterHeight}"
+data-border-color="{$twitterBorderColor}"
+data-related="{$twitterRelated}"
+href="https://twitter.com/{$twitterName}"
 data-widget-id="347351638245253120">
 Tweets by @{$twitterName}
 </a>

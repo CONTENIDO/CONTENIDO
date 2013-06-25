@@ -226,13 +226,13 @@ $proppy = new cApiPropertyCollection();
 $savedSearchList = $proppy->getAllValues('type', 'savedsearch', $auth);
 
 foreach ($savedSearchList as $value) {
-	if($value["name"] == "save_name") {
+    if ($value["name"] == "save_name") {
         $tplSearch->set("d", "SEARCH_NAME", ($value['value'] == "") ? i18n("A saved search") : $value['value']);
 
         $tplSearch->set("d", "ITEM_ID", $value['itemid']);
         $tplSearch->set("d", "ITEM_TYPE", $value['itemtype']);
         $tplSearch->next();
-	}
+    }
 }
 
 $oListOptionRow->setContentData($tplSearch->generate($cfg['path']['templates'] . $cfg["templates"]["con_left_top_art_search"], true));
@@ -280,7 +280,7 @@ while ($db->nextRecord()) {
 $tplCatConfig = new cTemplate();
 $tplCatConfig->set("s", "TEMPLATE_SELECT", $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true));
 
-$editCategory->setContentData($tplCatConfig->generate($cfg["path"]["templates"] .  $cfg['templates']['con_left_top_cat_edit'], true));
+$editCategory->setContentData($tplCatConfig->generate($cfg["path"]["templates"] . $cfg['templates']['con_left_top_cat_edit'], true));
 
 $tpl->set('s', 'CAT_HREF', $sess->url("main.php?area=con_tplcfg&action=tplcfg_edit&frame=4&mode=art") . '&idcat=');
 $tpl->set('s', 'IDCAT', $idcat);

@@ -86,5 +86,6 @@ class SolrSearchModule {
         $tpl->assign('results', $this->_results);
         $tpl->display($this->_templateName);
     }
+
 }
 

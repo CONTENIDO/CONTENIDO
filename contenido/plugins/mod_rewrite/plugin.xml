@@ -13,9 +13,9 @@
         <version>1.0.0</version>
     </general>
 
-	<requirements php="5.2.3">
-		<contenido minversion="4.9.0" />
-	</requirements>
+    <requirements php="5.2.3">
+        <contenido minversion="4.9.0" />
+    </requirements>
 
     <contenido>
 

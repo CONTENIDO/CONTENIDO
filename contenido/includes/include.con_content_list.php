@@ -58,21 +58,21 @@ if ($action == 'savecontype' || $action == 10) {
         $oContentColl = new cApiContentCollection();
 
         $linkedTypes = array(
-            	4 => 22,		//if a CMS_IMG is deleted, the corresponding CMS_IMAGEEDITOR will be deleted too
-            	22 => 4			//the same goes for the other way round
-            );
+            4 => 22, // if a CMS_IMG is deleted, the corresponding CMS_IMAGEEDITOR will be deleted too
+            22 => 4  // the same goes for the other way round
+        );
 
-      	$contentItem = new cApiContent((int) $_REQUEST["idcontent"]);
-      	if(isset($linkedTypes[$contentItem->get("idtype")])) {
-      	    $linkedIds = $oContentColl->getIdsByWhereClause("`idartlang`='" . $idartlang . "' AND `idtype`='" . $linkedTypes[$contentItem->get("idtype")] . "' AND `value`='" . $contentItem->get("value") . "'");
-      	    foreach($linkedIds as $linkedId) {
-      	        $oContentColl->delete($linkedId);
-      	    }
-      	}
+        $contentItem = new cApiContent((int) $_REQUEST["idcontent"]);
+        if (isset($linkedTypes[$contentItem->get("idtype")])) {
+            $linkedIds = $oContentColl->getIdsByWhereClause("`idartlang`='" . $idartlang . "' AND `idtype`='" . $linkedTypes[$contentItem->get("idtype")] . "' AND `value`='" . $contentItem->get("value") . "'");
+            foreach ($linkedIds as $linkedId) {
+                $oContentColl->delete($linkedId);
+            }
+        }
         $oContentColl->delete((int) $_REQUEST['idcontent']);
         $notification->displayNotification("info", i18n("Changes saved"));
 
-    	conGenerateCodeForArtInAllCategories($idart);
+        conGenerateCodeForArtInAllCategories($idart);
     }
 }
 
@@ -97,7 +97,7 @@ while ($db->nextRecord()) {
 foreach ($sortID as $name) {
 //    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM " . $cfg["tab"]["content"] . " as a, " . $cfg["tab"]["type"] . " as b WHERE a.idartlang = " . cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype = b.idtype AND b.type = '" . cSecurity::toString($name) . "' ORDER BY idtype, typeid, idcontent";
     $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b "
-         . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
+            . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
     $db->query($sql, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
     while ($db->nextRecord() && $db->f("value") != '') {
         $result[$db->f("name")][$db->f("id")] = $db->f("value");
@@ -196,7 +196,8 @@ $page->set("s", "IDARTLANG", $idartlang);
 $page->set("s", "IDCLIENT", $client);
 
 // generate code
-$code = _processCmsTags($aList, $result, true, $page->render(null, true));;
+$code = _processCmsTags($aList, $result, true, $page->render(null, true));
+;
 
 if ($code == "0601") {
     markSubMenuItem("1");

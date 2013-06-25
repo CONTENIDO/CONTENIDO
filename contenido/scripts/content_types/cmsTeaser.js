@@ -147,11 +147,11 @@ cContentTypeTeaser.prototype.removeManualTeaser = function() {
 };
 
 $(document).ready(function(){
-    
+
     $("#del_art_3").click(function() {
-       
+
         $("#teaser_manual_art_3 option:selected").remove();
     });
-    
+
 });
 

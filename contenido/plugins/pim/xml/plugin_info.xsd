@@ -28,32 +28,32 @@
         <xsd:attribute name="active" default="1" />
     </xsd:complexType>
 
-	<xsd:complexType name="RequirementsTyp">
-    	<xsd:sequence minOccurs="0">
-    		<xsd:element name="contenido" type="RequirementsContenidoTyp" minOccurs="1" maxOccurs="1" />
-    		<xsd:element name="extension" type="RequirementsExtensionTyp" minOccurs="0" />
-    		<xsd:element name="class" type="RequirementsClassTyp" minOccurs="0" />
-    		<xsd:element name="function" type="RequirementsFunctionTyp" minOccurs="0" />
-    	</xsd:sequence>
-    	<xsd:attribute name="php" type="xsd:string" default="5.2.3" />
-	</xsd:complexType>
+    <xsd:complexType name="RequirementsTyp">
+        <xsd:sequence minOccurs="0">
+            <xsd:element name="contenido" type="RequirementsContenidoTyp" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="extension" type="RequirementsExtensionTyp" minOccurs="0" />
+            <xsd:element name="class" type="RequirementsClassTyp" minOccurs="0" />
+            <xsd:element name="function" type="RequirementsFunctionTyp" minOccurs="0" />
+        </xsd:sequence>
+        <xsd:attribute name="php" type="xsd:string" default="5.2.3" />
+    </xsd:complexType>
 
-	<xsd:complexType name="RequirementsContenidoTyp">
-		<xsd:attribute name="minversion" type="xsd:string" use="required" />
-		<xsd:attribute name="maxversion" type="xsd:string" />
-	</xsd:complexType>
+    <xsd:complexType name="RequirementsContenidoTyp">
+        <xsd:attribute name="minversion" type="xsd:string" use="required" />
+        <xsd:attribute name="maxversion" type="xsd:string" />
+    </xsd:complexType>
 
-	<xsd:complexType name="RequirementsExtensionTyp">
-		<xsd:attribute name="name" type="xsd:string" />
-	</xsd:complexType>
+    <xsd:complexType name="RequirementsExtensionTyp">
+        <xsd:attribute name="name" type="xsd:string" />
+    </xsd:complexType>
 
-	<xsd:complexType name="RequirementsClassTyp">
-		<xsd:attribute name="name" type="xsd:string" />
-	</xsd:complexType>
+    <xsd:complexType name="RequirementsClassTyp">
+        <xsd:attribute name="name" type="xsd:string" />
+    </xsd:complexType>
 
-	<xsd:complexType name="RequirementsFunctionTyp">
-		<xsd:attribute name="name" type="xsd:string" />
-	</xsd:complexType>
+    <xsd:complexType name="RequirementsFunctionTyp">
+        <xsd:attribute name="name" type="xsd:string" />
+    </xsd:complexType>
 
     <xsd:complexType name="PluginDependenciesTyp">
         <xsd:sequence minOccurs="0" maxOccurs="unbounded">
@@ -86,7 +86,7 @@
                     <xsd:simpleContent>
                         <xsd:extension base="xsd:string">
                             <xsd:attribute name="parent" type="xsd:string" />
-							<xsd:attribute name="menuless" type="xsd:integer" default="0" />
+                            <xsd:attribute name="menuless" type="xsd:integer" default="0" />
                         </xsd:extension>
                     </xsd:simpleContent>
                 </xsd:complexType>
@@ -107,7 +107,7 @@
             </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
-	
+
     <xsd:complexType name="ContenidoFramesTyp">
         <xsd:sequence minOccurs="0" maxOccurs="unbounded">
             <xsd:element name="frame">
@@ -125,9 +125,9 @@
         </xsd:sequence>
     </xsd:complexType>
 
-	<xsd:complexType name="ContenidoNavMainTyp">
-		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
-        	<xsd:element name="nav" type="xsd:string" />
+    <xsd:complexType name="ContenidoNavMainTyp">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="nav" type="xsd:string" />
         </xsd:sequence>
     </xsd:complexType>
 
@@ -138,7 +138,7 @@
                     <xsd:simpleContent>
                         <xsd:extension base="xsd:string">
                             <xsd:attribute name="area" type="xsd:string" use="required" />
-							<xsd:attribute name="level" type="xsd:integer" use="required" />
+                            <xsd:attribute name="level" type="xsd:integer" use="required" />
                             <xsd:attribute name="navm" type="xsd:integer" />
                         </xsd:extension>
                     </xsd:simpleContent>
@@ -146,10 +146,10 @@
             </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
-    
-	<xsd:complexType name="ContentTypes">
-		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
-        	<xsd:element name="type" type="xsd:string" />
+
+    <xsd:complexType name="ContentTypes">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="type" type="xsd:string" />
         </xsd:sequence>
     </xsd:complexType>
 

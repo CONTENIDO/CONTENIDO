@@ -11,9 +11,9 @@
         <website>http://www.4fb.de</website>
         <version>1.0.0</version>
     </general>
-	<requirements php="5.2.3">
-		<contenido minversion="4.9.0" />
-	</requirements>
+    <requirements php="5.2.3">
+        <contenido minversion="4.9.0" />
+    </requirements>
     <contenido>
         <areas>
             <area menuless="0">news</area>
