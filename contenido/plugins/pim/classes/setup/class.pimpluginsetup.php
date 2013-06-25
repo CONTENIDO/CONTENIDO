@@ -101,40 +101,34 @@ class PimPluginSetup {
         // check extensions
         if (count($xml->requirements->extension) != 0) {
 
-            for($i = 0; $i < count($xml->requirements->extension); $i++) {
+            for ($i = 0; $i < count($xml->requirements->extension); $i++) {
 
-                if(!extension_loaded($xml->requirements->extension[$i]->attributes()->name)) {
+                if (!extension_loaded($xml->requirements->extension[$i]->attributes()->name)) {
                     $this->getRequirementsError(i18n('The plugin could not find the PHP extension <strong>', 'pim') . $xml->requirements->extension[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
                 }
-
             }
-
         }
 
         // check classes
         if (count($xml->requirements->class) != 0) {
 
-            for($i = 0; $i < count($xml->requirements->class); $i++) {
+            for ($i = 0; $i < count($xml->requirements->class); $i++) {
 
-                if(!class_exists($xml->requirements->class[$i]->attributes()->name)) {
+                if (!class_exists($xml->requirements->class[$i]->attributes()->name)) {
                     $this->getRequirementsError(i18n('The plugin could not find the class <strong>', 'pim') . $xml->requirements->class[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
                 }
-
             }
-
         }
 
         // check functions
         if (count($xml->requirements->function) != 0) {
 
-            for($i = 0; $i < count($xml->requirements->function); $i++) {
+            for ($i = 0; $i < count($xml->requirements->function); $i++) {
 
-                if(!function_exists($xml->requirements->function[$i]->attributes()->name)) {
+                if (!function_exists($xml->requirements->function[$i]->attributes()->name)) {
                     $this->getRequirementsError(i18n('The plugin could not find the function <strong>', 'pim') . $xml->requirements->function[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
                 }
-
             }
-
         }
     }
 
@@ -267,6 +261,9 @@ class PimPluginSetup {
 
         // add content types
         $this->_installAddContentTypes($tempXml->content_types);
+
+        // add modules
+        $this->_installAddModules($tempXml->general);
     }
 
     /**
@@ -513,6 +510,28 @@ class PimPluginSetup {
     }
 
     /**
+     * Add modules
+     *
+     * @access protected
+     * @return void
+     */
+    protected function _installAddModules($tempXml) {
+        $cfg = cRegistry::getConfig();
+        $module = new cApiModule();
+
+        $modulesPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $tempXml->plugin_foldername . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR;
+
+        foreach (new DirectoryIterator($modulesPath) as $modulesFiles) {
+
+            if (substr($modulesFiles->getBasename(), -4) == ".zip") {
+                $module->import($modulesFiles->getBasename(), $modulesFiles->getBasename(), false);
+            }
+        }
+
+        $this->uninstallDir($tempXml->plugin_foldername . DIRECTORY_SEPARATOR . "modules");
+    }
+
+    /**
      * Uninstall a plugin
      *
      * @access public
@@ -638,17 +657,22 @@ class PimPluginSetup {
      * @return void
      */
     public function uninstallDir($foldername, $page = null) {
-        $cfg = cRegistry::getConfig();
+        if (!$page)
 
-        // delete folders
+            $cfg = cRegistry::getConfig();
+
+            // delete folders
         $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($foldername);
         cFileHandler::recursiveRmdir($folderpath);
 
-        // success message
-        if ($page instanceof cGuiPage && !cFileHandler::exists($folderpath)) {
-            $page->displayInfo(i18n('The pluginfolder', 'pim') . ' <strong>' . $foldername . '</strong> ' . i18n('has been successfully uninstalled.', 'pim'));
-        } else if (cFileHandler::exists($folderpath)) {
-            $page->displayError(i18n('The pluginfolder', 'pim') . ' <strong>' . $foldername . '</strong> ' . i18n('could not be uninstalled.', 'pim'));
+        if ($page instanceof cGuiPage) {
+
+            // success message
+            if (!cFileHandler::exists($folderpath)) {
+                $page->displayInfo(i18n('The pluginfolder', 'pim') . ' <strong>' . $foldername . '</strong> ' . i18n('has been successfully uninstalled.', 'pim'));
+            } else if (cFileHandler::exists($folderpath)) {
+                $page->displayError(i18n('The pluginfolder', 'pim') . ' <strong>' . $foldername . '</strong> ' . i18n('could not be uninstalled.', 'pim'));
+            }
         }
     }
 
