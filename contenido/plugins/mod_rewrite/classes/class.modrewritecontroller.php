@@ -114,6 +114,13 @@ class ModRewriteController extends ModRewriteBase {
      * @param  string  $incommingUrl  Incomming URL
      */
     public function __construct($incommingUrl) {
+
+        // CON-1266 make incomming URL lowercase if option "URLS to
+        // lowercase" is set
+        if (1 == $this->getConfig('use_lowercase_uri')) {
+            $incommingUrl = strtolower($incommingUrl);
+        }
+
         $this->_sIncommingUrl = $incommingUrl;
         $this->_aParts = array();
         $this->_sArtName = '';
