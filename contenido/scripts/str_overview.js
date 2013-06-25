@@ -15,6 +15,7 @@
 
 //Defining vars for translations and CONTENIDO imagepath
 var bMsie = (document.all) ? true : false;
+var bMsie10 = (navigator.appVersion.indexOf("MSIE 10")) == -1 ? false : true;
 var con_images = '';
 var sMakeOnline = '';
 var sMakeOffline = '';
@@ -84,7 +85,7 @@ function handleInlineEdit(iCatId) {
 
                 table.insertBefore(layer, row);
 
-                if (bMsie) {
+                if (bMsie && !bMsie10) {
                     layer.style.display = 'block';
                 } else {
                     layer.style.display = 'table-row';
