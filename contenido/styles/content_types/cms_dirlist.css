@@ -1,246 +1,116 @@
+/**
+ * #############################################################################
+ * @section Tree_Navigation
+ */
+
+#con_str_tree {
+    display: block;
+    margin: 10px 0 0 0;
+    padding: 0 2px;
+    list-style: none;
+}
+#con_str_tree li {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+#con_str_tree li em {
+    display: block;
+}
+#con_str_tree li ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+#con_str_tree li ul li {
+    background: url("../../images/tree/tree_i.gif") repeat-y scroll left top transparent;
+    margin: 0 0 0 20px;
+}
+#con_str_tree > li > ul > li {
+    margin: 0;
+}
+#con_str_tree li div {
+    height: 20px;
+}
+#con_str_tree li div em {
+    float: left;
+    width: 20px;
+}
+#con_str_tree li div em a {
+    background: url("../../images/tree/but_minus.gif") no-repeat scroll left top #fff;
+    display: block;
+    height: 20px;
+    font-style: normal;
+    width: 20px;
+}
+#con_str_tree li div em span {
+    background: url("../images/tree/but_minus.gif") no-repeat scroll left top #fff;
+    display: block;
+    height: 20px;
+    font-style: normal;
+    width: 20px;
+}
+#con_str_tree li div > a {
+    background:  url("../../images/folder_on.gif") no-repeat scroll left 2px transparent;
+    color: #000;
+    display: block;
+    font-size: 11px;
+    line-height: 20px;
+    margin: 0 0 0 20px;
+    padding: 0 0 0 20px;
+    white-space: nowrap;
+}
+#con_str_tree li.last {
+    background: none;
+}
+#con_str_tree li.last > div > em > a,
+#con_str_tree li.last > div > em > span {
+    background: url("../../images/tree/but_last.gif") no-repeat scroll 0 0 #fff;
+}
+#con_str_tree li.collapsed div em a {
+    background: url("../../images/tree/but_plus.gif") no-repeat scroll left top #fff;
+}
+#con_str_tree li.collapsed ul {
+    display: none;
+}
+#con_str_tree li.last.collapsed div em a {
+    background: url("../../images/tree/but_last_plus.gif") no-repeat scroll 0 0 #fff;
+}
+#con_str_tree li div.active,
+#con_str_tree li div.active em a,
+#con_str_tree li div.active em span {
+    background-color: #ecf1b2;
+}
+#con_str_tree li div.hover,
+#con_str_tree li div.hover em a,
+#con_str_tree li div.hover em span {
+    background-color: #f8fddc;
+}
+
 .directoryList {
-    background-color: #FFF;
+    background-color: #fff;
     border: 1px solid #ccc;
     height: 170px;
     margin-bottom: 10px;
     overflow: auto;
 }
-
-.directoryList ul li div {
-    background: #FFF url("../../images/dash.gif") no-repeat 16px 8px;
+.directoryList #con_str_tree {
+    margin: 0;
 }
-
-.directoryList ul li li li div {
-    background-position: 36px 8px;
-}
-
-.directoryList ul li li li li div {
-    background-position: 56px 8px;
-}
-
-.directoryList ul li li li li li div {
-    background-position: 76px 8px;
-}
-
-.directoryList ul li li li li li li div {
-    background-position: 96px 8px;
-}
-
-.directoryList ul li li li li li li li div {
-    background-position: 116px 8px;
-}
-
-.directoryList ul li li li li li li li li div {
-    background-position: 136px 8px;
-}
-
-.directoryList ul li li li li li li li li li div {
-    background-position: 156px 8px;
-}
-
-.directoryList ul li li li li li li li li li li div {
-    background-position: 176px 8px;
-}
-
-.directoryList ul li li li li li li li li li li li div {
-    background-position: 196px 8px;
-}
-
-.directoryList ul li#root li li em {
-    width: 40px;
-}
-
-.directoryList ul li#root li li li em {
-    width: 60px;
-}
-
-.directoryList ul li#root li li li li em {
-    width: 80px;
-}
-
-.directoryList ul li#root li li li li li em {
-    width: 100px;
-}
-
-.directoryList ul li#root li li li li li li em {
-    width: 120px;
-}
-
-.directoryList ul li#root li li li li li li li em {
-    width: 140px;
-}
-
-.directoryList ul li#root li li li li li li li li em {
-    width: 160px;
-}
-
-.directoryList ul li#root li li li li li li li li li em {
-    width: 180px;
-}
-
-.directoryList ul li#root li li li li li li li li li li em {
-    width: 200px;
-}
-
-.directoryList ul li div.active,
-.directoryList ul li#root li div.active a,
-.directoryList ul li#root li div.active em a,
-.directoryList ul li#root li div.active em span
-    {
-    background-color: #ECF1B2 !important;
-}
-
-.directoryList ul li div:hover {
-    cursor: pointer;
-}
-
-.directoryList ul li div:hover,
-.directoryList ul li div:hover a,
-.directoryList ul li#root li div:hover a,
-.directoryList ul li#root li div:hover em a,
-.directoryList ul li#root li div:hover em span,
-.directoryList div.hover,
-.directoryList div.hover a,
-.directoryList ul li#root li div.hover a,
-.directoryList ul li#root li div.hover em a,
-.directoryList ul li#root li div.hover em span
-    {
-    background-color: #F8FDDC !important;
-}
-
-.directoryList ul li a:hover {
-    background-color: #F8FDDC !important;
-    color: #0060B1 !important;
-    text-decoration: none;
-}
-
-.directoryList ul li a {
-    background: #FFF;
-    color: #000000;
-    line-height: 20px;
-    padding: 4px 5px 4px 20px;
-}
-
-.directoryList ul li#root em {
-    float: left;
-}
-.directoryList ul li#root>em {
-    float: none;
-    height: 20px;
-    line-height: 20px;
-    padding-left: 20px;
-}
-
-.directoryList ul li#root li.last ul em {
-    background-position: -1000px 0;
-}
-
-.directoryList ul li#root li li.last ul em {
-    background-position: -980px 0;
-}
-
-.directoryList ul li#root li li li.last ul em {
-    background-position: -960px 0;
-}
-
-.directoryList ul li#root li li li li.last ul em {
-    background-position: -940px 0;
-}
-
-.directoryList ul li#root li li li li li.last ul em {
-    background-position: -920px 0;
-}
-
-.directoryList ul li#root li li li li li li.last ul em {
-    background-position: -900px 0;
-}
-
-.directoryList ul li#root li li li li li li li.last ul em {
-    background-position: -880px 0;
-}
-
-.directoryList ul li#root li li li li li li li li.last ul em {
-    background-position: -860px 0;
-}
-
-.directoryList ul li#root li li li li li li li li li.last ul em {
-    background-position: -840px 0;
-}
-
-.directoryList ul li#root li li li li li li li li li li.last ul em {
-    background-position: -820px 0;
-}
-
-.directoryList ul li#root li em {
-    background: url("../../images/vert-neu.gif") no-repeat scroll right top
-        transparent;
-}
-
-.directoryList ul li#root li em a,
-.directoryList ul li#root li em span {
-    background: #FFF url("../../images/but_minus.gif") no-repeat 0 0;
-    float: right;
-    height: 20px;
-    margin: 0 4px 0 0;
-    padding: 0;
-    width: 16px;
-}
-
-.directoryList ul li#root li.collapsed em a,
-.directoryList ul li#root li.collapsed em span
-    {
-    background: #FFF url("../../images/but_plus.gif") no-repeat 0 0;
-}
-
-.directoryList ul li#root li.last em a,
-.directoryList ul li#root li.last li.last em a,
-.directoryList ul li#root li.last em span,
-.directoryList ul li#root li.last li.last em span
-    {
-    background: #FFF url("../../images/but_lastnode.gif") no-repeat 0 0;
-}
-
-.directoryList ul li#root li.last li em a,
-.directoryList ul li#root li.collapsed li em a,
-.directoryList ul li#root li.last li.collapsed li em a,
-.directoryList ul li#root li.last li em span,
-.directoryList ul li#root li.collapsed li em span,
-.directoryList ul li#root li.last li.collapsed li em span
-    {
-    background: #FFF url("../../images/but_minus.gif") no-repeat 0 0;
-}
-
-.directoryList ul li#root li.last li.collapsed em a,
-.directoryList ul li#root li.last.collapsed em a,
-.directoryList ul li#root li.last li.collapsed em span,
-.directoryList ul li#root li.last.collapsed em span
-    {
-    background: #FFF url("../../images/but_plus.gif") no-repeat 0 0;
-}
-
-.directoryList ul li#root li.collapsed ul {
-    display: none;
-}
-
-.directoryList ul li#root {
-    background: url("../../images/ordner_oben.gif") no-repeat 0 2px;
-}
-
-.directoryList ul li#root>div {
-    background: none;
-}
-
-.directoryList ul li#root>div>a {
+.directoryList li#root > div > em {
     background: url("../../images/ordner_oben.gif") no-repeat 0 2px;
     font-style: italic;
-}
-
-.directoryList ul li#root>div>em>a {
+    height: 20px;
     padding: 0;
 }
-
-.directoryList ul li a {
-    background: url("../../images/folder_on.gif") no-repeat 0 2px;
+.directoryList li#root > div > em a {
+    display: none;
+}
+.directoryList li#root > div > a {
+    background: none;
+    padding: 0;
 }
 
 .cms_linkeditor .loading {

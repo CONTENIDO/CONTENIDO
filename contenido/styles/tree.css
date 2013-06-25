@@ -33,12 +33,9 @@
 }
 #con_str_tree li ul li div {
     height: 20px;
-    position: relative;
 }
 #con_str_tree li ul li div em {
-    left: 0;
-    position: absolute;
-    top: 0;
+    float: left;
     width: 20px;
 }
 #con_str_tree li ul li div em a {

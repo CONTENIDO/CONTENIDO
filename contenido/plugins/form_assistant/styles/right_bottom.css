@@ -377,13 +377,17 @@ legend {
     padding: 0 10px 10px 0;
 }
 
+#field-buttons ul li {
+    float: left;
+    margin: 10px 0 0 10px;
+}
+
 #field-buttons ul li a {
     background-repeat: no-repeat;
     cursor: move;
-    float: left;
+    display: block;
     height: 46px;
     width: 46px;
-    margin: 10px 0 0 10px;
 }
 
 #add-options-div {

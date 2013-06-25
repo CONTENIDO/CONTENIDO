@@ -420,7 +420,7 @@ function conEvaluateCallbacks(callbacks) {
 
     $.each(callbacks, function(index, value) {
 
-        if (typeof value === 'object') {
+        if (typeof value === 'object' && value['params'] != undefined) {
 
             // object callback, call it with the appropriate scope
             value['callback'].apply(value['scope'], value['params']);

@@ -9,8 +9,10 @@
     height: 135px;
 }
 
-.cms_filelist #manual .directoryList ul li div.active,.cms_filelist #manual .directoryList ul li#root li div.active a,.cms_filelist #manual .directoryList ul li#root li div.active em a,.cms_filelist #manual .directoryList ul li#root li div.active em span
-    {
+.cms_filelist #manual .directoryList ul li div.active,
+.cms_filelist #manual .directoryList ul li#root li div.active a,
+.cms_filelist #manual .directoryList ul li#root li div.active em a,
+.cms_filelist #manual .directoryList ul li#root li div.active em span {
     background-color: #FFF !important;
 }
 
