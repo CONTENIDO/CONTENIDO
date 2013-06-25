@@ -180,7 +180,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $filename = basename($_POST['image_filename']);
         $dirname = dirname($_POST['image_filename']);
         if ($dirname === '\\' || $dirname === '/') {
-            $dirname = '/';
+            $dirname = '';
         } else {
             $dirname .= '/';
         }
@@ -192,6 +192,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             'dirname' => $dirname,
             'idclient' => $this->_client
         ), false);
+
         $this->_rawSettings = $upload->get('idupl');
 
         // save the content types
