@@ -93,6 +93,7 @@ class PimPluginSetup {
             $this->getRequirementsError(i18n('You have to install CONTENIDO <strong>', 'pim') . $xml->requirements->contenido->attributes()->minversion . i18n('</strong> or higher to install this plugin!', 'pim'));
         }
 
+        // check CONTENIDO max version
         if($xml->requirements->contenido->attributes()->maxversion) {
 
             if (version_compare($cfg['version'], $xml->requirements->contenido->attributes()->maxversion, '>')) {
