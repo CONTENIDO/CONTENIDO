@@ -108,6 +108,21 @@ if ($action == 'style_delete') {
         $sTempFilename = $sFilename;
         // check filename and create new file
         cFileHandler::validateFilename($sFilename);
+
+        // CON-1284 check if file already exists in FS
+        if(cFileHandler::exists($path . $sFilename)){
+            $notification->displayNotification('error', sprintf(i18n('Can not create file %s'), $sFilename));
+            exit();
+        }
+
+        // CON-1284 check if file already exists in DB
+        $fileInfoCollection = new cApiFileInformationCollection();
+        $aFileInfo = $fileInfoCollection->getFileInformation($sFilename, $sTypeContent);
+        if (0 < count($aFileInfo)) {
+            $notification->displayNotification('error', sprintf(i18n('Can not create file %s'), $sFilename));
+            exit();
+        }
+
         cFileHandler::create($path . $sFilename, $_REQUEST['code']);
         $bEdit = cFileHandler::read($path . $sFilename);
         $fileInfoCollection = new cApiFileInformationCollection();
@@ -129,6 +144,21 @@ if ($action == 'style_delete') {
         $tempTemplate = $sTempFilename;
         if ($sFilename != $sTempFilename) {
             cFileHandler::validateFilename($sFilename);
+
+            // CON-1284 check if file already exists in FS
+            if(cFileHandler::exists($path . $sFilename)){
+                $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $sTempFilename));
+                exit();
+            }
+
+            // CON-1284 check if file already exists in DB
+            $fileInfoCollection = new cApiFileInformationCollection();
+            $aFileInfo = $fileInfoCollection->getFileInformation($sFilename, $sTypeContent);
+            if (0 < count($aFileInfo)) {
+                $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $sTempFilename));
+                exit();
+            }
+
             if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
                 $sTempFilename = $sFilename;
             } else {
