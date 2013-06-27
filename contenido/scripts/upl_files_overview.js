@@ -1,5 +1,7 @@
 // to reload the left frame after delete/insert new files
-parent.parent.frames['left'].frames['left_bottom'].location.reload();
+if (parent.parent.frames['left'].frames['left_bottom'].location != 'about:blank') {
+    parent.parent.frames['left'].frames['left_bottom'].location.reload();
+}
 
 (function($) {
     $(document).ready(
