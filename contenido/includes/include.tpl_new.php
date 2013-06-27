@@ -17,9 +17,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $tpl->reset();
 if ((int) $client > 0) {
-    $tpl->set('s', 'ACTION', '<a class="addfunction" target="right_bottom" href="'.$sess->url("main.php?area=tpl_edit&frame=4&action=tpl_new").'">'.i18n("New template").'</div>');
+    $tpl->set('s', 'ACTION', '<a class="addfunction"target="right_bottom"
+        href="' . $sess->url("main.php?area=tpl_edit&frame=4&action=tpl_new") . '">' . i18n("New template") . '</a></div>'
+    );
 } else {
     $tpl->set('s', 'ACTION', i18n('No Client selected'));
 }
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['left_top']);
+
 ?>

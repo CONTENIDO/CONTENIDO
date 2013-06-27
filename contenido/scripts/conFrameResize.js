@@ -99,52 +99,58 @@ function conFrameResize(parentFrameId, frameOne, frameTwo, frameThree, frameFour
  */
 conFrameResize.prototype.toggle = function()
 {
-    if (this.ok)
-    {
-        if (this.status == 'normal')
-        {
-                    this.size = 0;
-                    this.colValPrevious = this.frameSet.cols;
-                    this.frameSet.cols = this.colValHidden;
-                    this.imgRight.src = this.imgRightSrc;
-                    this.imgRight.style.cursor = "pointer";
-                    this.status = 'hidden';
+
+    if (this.ok) {
+
+        if (this.status == 'normal') {
+
+            this.size                  = 0;
+            this.colValPrevious        = this.frameSet.cols;
+            this.frameSet.cols         = this.colValHidden;
+            this.imgRight.src          = this.imgRightSrc;
+            this.imgRight.style.cursor = "pointer";
+            this.status                = 'hidden';
+
+        } else if (this.status == 'hidden') {
+
+            /* Change image sources */
+            this.imgRight.src = this.spacerImage;
+
+            /* Cursor style */
+            this.imgRight.style.cursor = "default";
+
+            /* Resize frameset */
+            this.frameSet.cols = this.colValPrevious;
+
+            /* Set status to normal */
+            this.status = 'normal';
+
+            /* Resetting drag size */
+            this.dragSize = this.defaultSize;
+
+        } else if (this.status == 'dragged') {
+
+            /* Change image sources */
+            this.imgRight.src = this.spacerImage;
+
+            /* Cursor style */
+            this.imgRight.style.cursor = "default";
+
+            /* Resize frameset */
+            this.frameSet.cols = this.colValNormal;
+
+            /* Set status to normal */
+            this.status = 'normal';
+
+            /* Resetting drag size */
+            this.size = this.defaultSize;
+
         }
-                else if (this.status == 'hidden')
-                {
-                    /* Change image sources */
-                    this.imgRight.src = this.spacerImage;
 
-                    /* Cursor style */
-                    this.imgRight.style.cursor = "default";
+        this.frameSet.rows = this.frameSet.rows;  //IE10 bug fix
 
-                    /* Resize frameset */
-                    this.frameSet.cols = this.colValPrevious;
-
-                    /* Set status to normal */
-                    this.status = 'normal';
-
-                    /* Resetting drag size */
-                    this.dragSize = this.defaultSize;
-        }
-                else if (this.status == 'dragged')
-                {
-                    /* Change image sources */
-                    this.imgRight.src = this.spacerImage;
-
-                    /* Cursor style */
-                    this.imgRight.style.cursor = "default";
-
-                    /* Resize frameset */
-                    this.frameSet.cols = this.colValNormal;
-
-                    /* Set status to normal */
-                    this.status = 'normal';
-
-                    /* Resetting drag size */
-                    this.size = this.defaultSize;
-        }
     }
+
 }
 
 /**

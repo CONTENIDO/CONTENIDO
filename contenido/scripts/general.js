@@ -104,7 +104,7 @@ function conLoadFile(script, callback, scope, params) {
         }
     } else {
         // script is already loaded, so just evaluate the callback
-        if (isObjectCallback) {
+        if (isObjectCallback && params != undefined) {
             callback.apply(scope, params);
         } else {
             eval(callback);
@@ -190,7 +190,7 @@ function getContentWindow() {
 function getUrlParams(url) {
     var params = [];
     var parts = url.split('?');
-    if (0 < parts.length) {
+    if (1 < parts.length) {
         var queryString = parts[1];
         var queryString = queryString.split('&');
         for (var i in queryString) {

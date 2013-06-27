@@ -9,7 +9,18 @@
     }
 
     function {PREFIX}{ID}ContentTypeClassLoaded() {
-        var contentTypeInstance = new {JS_CLASS_NAME}('#cms_{PREFIX}_{ID}_settings', '#cms_{PREFIX}_{ID}', '{PATH_BACKEND}', '{PATH_FRONTEND}', '{IDARTLANG}', '{ID}', Array({FIELDS}), '{PREFIX}', '{CONTENIDO}', {SETTINGS});
+        var contentTypeInstance = new {JS_CLASS_NAME}(
+            '#cms_{PREFIX}_{ID}_settings',
+            '#cms_{PREFIX}_{ID}',
+            '{PATH_BACKEND}',
+            '{PATH_FRONTEND}',
+            '{IDARTLANG}',
+            '{ID}',
+            Array({FIELDS}),
+            '{PREFIX}',
+            '{CONTENIDO}',
+            {SETTINGS}
+        );
         contentTypeInstance.initialise();
     }
     //]]>

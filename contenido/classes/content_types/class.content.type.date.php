@@ -263,7 +263,11 @@ class cContentTypeDate extends cContentTypeAbstract {
         $template->set('s', 'PATH_BACKEND', $pathBackend);
         $template->set('s', 'LANG', substr(cRegistry::getBackendLanguage(), 0, 2));
         $template->set('s', 'PATH_TO_CALENDAR_PIC', $pathBackend . $this->_cfg['path']['images'] . 'calendar.gif');
-        $template->set('s', 'SETTINGS', json_encode($this->_settings));
+        $setting = $this->_settings;
+        if (array_key_exists('date_format', $setting)) {
+            $setting['date_format'] = json_decode($setting['date_format'], true);
+        }
+        $template->set('s', 'SETTINGS', json_encode($setting));
         $template->set('s', 'BELANG', cRegistry::getBackendLanguage());
 
         return $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_date.html', true);

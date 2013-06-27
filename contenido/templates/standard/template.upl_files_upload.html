@@ -14,7 +14,7 @@
 
     $(document).ready(function() {
         $(".file_upload").bind('change', function() {
-            if (this.files[0].size > maxFileSize) {
+            if (this.files && this.files.length > 0 && this.files[0].size > maxFileSize) {
                 this.files = null;
                 alert(this.files[0].name + ": " + $('<div />').html(text_fileIsTooBig).text());
             }

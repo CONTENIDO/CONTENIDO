@@ -136,13 +136,13 @@ function showNewForm() {
     document.getElementById('new_tree_button').style.color = '#0060B1';
 
     oEditLayer.style.left = pos.left+10;
-    oEditLayer.style.top = parseInt(pos.top[1])+parseInt(pos[2])-1;
+    oEditLayer.style.top = parseInt(pos.top)+parseInt(pos.top)-1;
     oEditLayer.style.visibility = 'hidden';
     oEditLayer.style.display = 'block';
 
     oHideEditLayer.style.visibility = 'hidden';
     oHideEditLayer.style.display = 'block';
-    console.log(pos.left);
+    //console.log(pos.left);
     oHideEditLayer.style.left = pos.left-10;
     oHideEditLayer.style.top = parseInt(pos.top)+parseInt(pos.top)-1;
 
