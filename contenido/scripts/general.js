@@ -277,11 +277,17 @@ function showConfirmation(description, callback, additionalOptions) {
         buttons: buttons,
         position: ['center', 50],
         resizable: false,
-        title: translations['Confirmation Required']
+        title: translations['Confirmation Required'],
+        close: function( event, ui ) {
+        	contentWindow.$("html").find("#single_dialog").remove();
+        }
     };
     options = $.extend(options, additionalOptions);
     // show the dialog in the content window
-    contentWindow.$('<div>' + description + '</div>').dialog(options);
+    if(contentWindow.$("html").find("#single_dialog").length == 0){
+    	contentWindow.$('<div id="single_dialog">' + description + '</div>').dialog(options);	
+    }
+    
 }
 
 /**
