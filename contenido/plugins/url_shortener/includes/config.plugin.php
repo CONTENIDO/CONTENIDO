@@ -40,6 +40,9 @@ plugin_include('url_shortener', 'classes/class.url_shortener.shorturl.php');
 // include plugin includes
 plugin_include('url_shortener', 'includes/functions.url_shortener.php');
 
+$lngAct["url_shortener"]["url_shortener_delete"] = i18n("Delete Short URLs", "url_shortener");
+$lngAct["url_shortener"]["url_shortener_edit"] = i18n("Edit Short URLs", "url_shortener");
+
 // add chain functions
 $cecRegistry = cApiCecRegistry::getInstance();
 // add additional rows to the article edit form

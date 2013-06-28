@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-21 14:32+0100\n"
-"PO-Revision-Date: 2012-12-21 14:34+0100\n"
+"POT-Creation-Date: 2013-06-28 13:49+0200\n"
+"PO-Revision-Date: 2013-06-28 13:49+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,72 +15,84 @@ msgstr ""
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: includes/functions.url_shortener.php:38
+#: includes/config.plugin.php:43
+msgid "Delete Short URLs"
+msgstr "Lösche Short URLs"
+
+#: includes/config.plugin.php:44
+msgid "Edit Short URLs"
+msgstr "Bearbeite Short URLs"
+
+#: includes/functions.url_shortener.php:36
 #: includes/include.url_shortener.php:134
 msgid "Short URL"
 msgstr "Short URL"
 
-#: includes/functions.url_shortener.php:129
+#: includes/functions.url_shortener.php:42
+msgid "INFO"
+msgstr "Short URL's sollen eine Ausnahme bleiben, da sprechende URL's höhere Auswirkungen auf das Ranking bleiben."
+
+#: includes/functions.url_shortener.php:126
 msgid "The entered short URL contains invalid characters!"
 msgstr "Die eingegebene Short URL beinhaltet ungültige Zeichen!"
 
-#: includes/functions.url_shortener.php:132
+#: includes/functions.url_shortener.php:129
 msgid "The entered short URL is already an article alias!"
 msgstr "Die eingegebene Short URL ist schon ein Artikel Alias!"
 
-#: includes/functions.url_shortener.php:135
+#: includes/functions.url_shortener.php:132
 msgid "The entered short URL is already a category alias!"
 msgstr "Die eingegebene Short URL ist schon ein Kategorie Alias!"
 
-#: includes/functions.url_shortener.php:138
+#: includes/functions.url_shortener.php:135
 msgid "The entered short URL is a subdirectory of the client directory!"
 msgstr "Die eingegebene Short URL ist ein Unterverzeichnis des Mandantenverzeichnis!"
 
-#: includes/functions.url_shortener.php:141
+#: includes/functions.url_shortener.php:138
 msgid "The entered short URL is too short!"
 msgstr "Die eingegebene Short URL ist zu kurz!"
 
-#: includes/functions.url_shortener.php:144
+#: includes/functions.url_shortener.php:141
 msgid "The entered short URL already exists!"
 msgstr "Die eingegebene Short URL existiert bereits!"
 
-#: includes/functions.url_shortener.php:149
+#: includes/functions.url_shortener.php:146
 #: includes/include.url_shortener.php:130
 msgid "Client"
 msgstr "Mandant"
 
-#: includes/functions.url_shortener.php:153
+#: includes/functions.url_shortener.php:150
 #: includes/include.url_shortener.php:131
 msgid "Language"
 msgstr "Sprache"
 
-#: includes/functions.url_shortener.php:160
+#: includes/functions.url_shortener.php:157
 #: includes/include.url_shortener.php:132
 msgid "Category"
 msgstr "Kategorie"
 
-#: includes/functions.url_shortener.php:165
+#: includes/functions.url_shortener.php:162
 #: includes/include.url_shortener.php:133
 msgid "Article"
 msgstr "Artikel"
 
-#: includes/functions.url_shortener.php:170
+#: includes/functions.url_shortener.php:167
 msgid "The entered short URL is not valid!"
 msgstr "Die eingegebene Short URL ist ungültig!"
 
-#: includes/include.url_shortener.php:30
+#: includes/include.url_shortener.php:27
 msgid "Short URLs can only be managed by authorized user!"
 msgstr "Short URLs können nur von autorisierten Nutzern verwaltet werden!"
 
-#: includes/include.url_shortener.php:37
+#: includes/include.url_shortener.php:34
 msgid "The short URL has successfully been deleted!"
 msgstr "Die Short URL wurde erfolgreich gelöscht!"
 
-#: includes/include.url_shortener.php:66
+#: includes/include.url_shortener.php:63
 msgid "Short URL successfully edited!"
 msgstr "Die Short URL wurde erfolgreich bearbeitet!"
 
-#: includes/include.url_shortener.php:68
+#: includes/include.url_shortener.php:65
 msgid "Short URL could not be saved!"
 msgstr "Die Short URL konnte nicht gespeichert werden!"
 
@@ -132,8 +144,4 @@ msgstr "Aktionen"
 #, php-format
 msgid "Do you really want to delete the short URL %s?"
 msgstr "Möchten Sie wirklich die Short URL %s löschen?"
-
-#: includes/include.url_shortener.php:137
-msgid "INFO"
-msgstr "Short URL's sollen eine Ausnahme bleiben, da sprechende URL's höhere Auswirkungen auf das Ranking bleiben."
 
