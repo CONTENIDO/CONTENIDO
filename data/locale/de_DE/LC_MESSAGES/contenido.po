@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-06-28 14:26+0200\n"
-"PO-Revision-Date: 2013-06-28 14:33+0100\n"
+"PO-Revision-Date: 2013-06-28 15:09+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -6615,7 +6615,7 @@ msgstr "Hilfe"
 
 #: ../data/config/production/cfg_actions.inc.php:43
 msgid "List content entries"
-msgstr "Listeneinträge"
+msgstr "Inhaltsliste anzeigen"
 
 #: ../data/config/production/cfg_actions.inc.php:44
 msgid "Edit content list entry"
