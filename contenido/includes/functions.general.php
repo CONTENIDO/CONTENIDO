@@ -528,7 +528,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$iClient]['module']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/modules/';
         $cfgClient[$iClient]['module']['frontendpath'] = 'data/modules/';
 
-        $cfgClient[$iClient]['config']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/config/';
+        $cfgClient[$iClient]['config']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/config/' . CON_ENVIRONMENT . '/';
         $cfgClient[$iClient]['config']['frontendpath'] = 'data/config/';
 
         $cfgClient[$iClient]['layout']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/layouts/';
@@ -555,48 +555,49 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["images"] = "'.$aClient["path"]["htmlpath"].'images/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upload"] = "upload/";';
 
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["path"]["frontend"] = "'.$aClient["path"]["frontend"].'";';
+
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["htmlpath"]["frontend"] = "'.$aClient["path"]["htmlpath"].'";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upl"]["path"] = "'.$aClient["path"]["frontend"].'upload/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upl"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "upload/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upl"]["htmlpath"] = "'.$aClient["htmlpath"]["frontend"].'upload/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upl"]["frontendpath"] = "upload/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["css"]["path"] = "'.$aClient["path"]["frontend"].'css/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["css"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "css/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["js"]["path"] = "'.$aClient["path"]["frontend"].'js/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["js"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "js/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["tpl"]["path"] = "'.$aClient["path"]["frontend"].'templates/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["tpl"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "templates/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["cache"]["path"] = "'.$aClient["path"]["frontend"].'cache/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["cache"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "cache/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["cache"]["frontendpath"] = "cache/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["code"]["path"] = "'.$aClient["path"]["frontend"].'cache/code/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["code"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "cache/code/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["code"]["frontendpath"] = "cache/code/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["xml"]["path"] = "'.$aClient["path"]["frontend"].'xml/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["xml"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "xml/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["xml"]["frontendpath"] = "xml/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["template"]["path"] = "'.$aClient["path"]["frontend"].'templates/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["template"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "templates/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["template"]["frontendpath"] = "templates/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["data"]["path"] = "'.$aClient["path"]["frontend"].'data/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["data"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["module"]["path"] = "'.$aClient["path"]["frontend"].'data/modules/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["module"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/modules/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["module"]["frontendpath"] = "data/modules/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["config"]["path"] = "'.$aClient["path"]["frontend"].'data/config/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["config"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/config/'.CON_ENVIRONMENT.'/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["config"]["frontendpath"] = "data/config/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["layout"]["path"] = "'.$aClient["path"]["frontend"].'data/layouts/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["layout"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/layouts/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["layout"]["frontendpath"] = "data/layouts/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["log"]["path"] = "'.$aClient["path"]["frontend"].'data/logs/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["log"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/logs/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["log"]["frontendpath"] = "data/logs/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["version"]["path"] = "'.$aClient["path"]["frontend"].'data/version/";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["version"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/version/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["version"]["frontendpath"] = "data/version/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["path"]["frontend"] = "' . $aClient['path']['frontend'] . '";';
             $aConfigFileContent[] = '';
         }
     }
