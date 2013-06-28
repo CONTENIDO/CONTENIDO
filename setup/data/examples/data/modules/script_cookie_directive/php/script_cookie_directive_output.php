@@ -14,7 +14,7 @@
  * @link http://www.contenido.org
  */
 
-if (cRegistry::isBackendEditMode() === false) {
+if (!$contenido) {
 
     $session = cRegistry::getSession();
 
