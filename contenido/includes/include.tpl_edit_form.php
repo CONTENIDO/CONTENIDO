@@ -133,7 +133,7 @@ $form->setVar("area", $area);
 $form->setVar("changelayout", 0);
 $form->setVar("frame", $frame);
 $form->setVar("action", "tpl_edit");
-$form->setVar("idtpl", $idtpl);
+$form->setVar("idtpl", $idtpl != -1 ? $idtpl: "");
 
 if (!$idlay) {
     $form->setVar("createmode", 1);
@@ -243,10 +243,9 @@ $page->setSubnav("idtpl=$idtpl", "tpl");
 $page->setContent(array(
         $form
 ));
-
 if ($_POST["idtpl"] === "" && $idtpl > 0) {
     $page->displayInfo(i18n("Created new Template successfully!"));
-} elseif (isset($_POST["submit_x"]) || ($_POST["idtpl"] == $idtpl && $action != 'tpl_new')) {
+} elseif ($idtpl > 0 && (isset($_POST["submit_x"]) || ($_POST["idtpl"] == $idtpl && $action != 'tpl_new'))) {
     $page->displayInfo(i18n("Saved changes successfully!"));
 }
 

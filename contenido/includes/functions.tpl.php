@@ -38,11 +38,14 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         set_magic_quotes_gpc($name);
         set_magic_quotes_gpc($description);
 
+        $template = new cApiTemplate();
+        $template->loadBy("name", $name);
+        if ($template->isLoaded() && $template->get('idtpl') != $idtpl) {
+            cRegistry::addErrorMessage(i18n("Template name already exists"));
+            return -1;
+        }
+
         if (!$idtpl) {
-
-//            $idtpl = $db->nextid($cfg["tab"]["tpl"]);
-//            $idtplcfg = $db->nextid($cfg["tab"]["tpl_conf"]);
-
             /* Insert new entry in the
                Template table  */
             $sql = "INSERT INTO ".$cfg["tab"]["tpl"]."
