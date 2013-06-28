@@ -389,7 +389,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $lockimg = 'images/article_unlocked.gif';
                     $lockalt = i18n("Article is not frozen");
                 }
-                $tmp_lock = '<img src="' . $lockimg . '" title="' . $lockalt . '" alt="' . $lockalt . '" border="0">';
+                $tmp_lock = '<img class="vAlignMiddle tableElement" src="' . $lockimg . '" title="' . $lockalt . '" alt="' . $lockalt . '" border="0">';
             }
 
             if ($idlang != $lang) {
