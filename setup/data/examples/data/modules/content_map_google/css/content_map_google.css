@@ -1,13 +1,14 @@
 #googleMap {
-    width: 490px;
+    width: 480px;
     height: 150px;
     float: left;
 }
 
 #address {
-    float: right;
+    float: left;
     margin-left: 8px;
     margin-top: 15px;
+	max-width: 171px;
 }
 
 #dialogContent {
