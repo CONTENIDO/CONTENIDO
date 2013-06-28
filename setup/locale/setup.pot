@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-17 12:39+0200\n"
+"POT-Creation-Date: 2013-06-28 13:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -189,7 +189,7 @@ msgstr ""
 msgid "Database character set"
 msgstr ""
 
-#: steps/forms/setupsummary.php:55 steps/forms/clientmode.php:36
+#: steps/forms/setupsummary.php:55 steps/forms/clientmode.php:75
 msgid "Client with example modules and example content"
 msgstr ""
 
@@ -213,42 +213,42 @@ msgstr ""
 msgid "Your system has been tested for compatibility with CONTENIDO:"
 msgstr ""
 
-#: steps/forms/systemtest.php:46
+#: steps/forms/systemtest.php:47
 msgid "PHP MySQL Extension missing"
 msgstr ""
 
-#: steps/forms/systemtest.php:46
+#: steps/forms/systemtest.php:47
 msgid ""
 "CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. "
 "Please configure PHP to use either MySQL or MySQLi."
 msgstr ""
 
-#: steps/forms/systemtest.php:72
+#: steps/forms/systemtest.php:73
 msgid "Information"
 msgstr ""
 
-#: steps/forms/systemtest.php:76
+#: steps/forms/systemtest.php:77
 msgid "Warning"
 msgstr ""
 
-#: steps/forms/systemtest.php:80
+#: steps/forms/systemtest.php:81
 msgid "Fatal error"
 msgstr ""
 
-#: steps/forms/systemtest.php:88
+#: steps/forms/systemtest.php:89
 msgid "No problems detected"
 msgstr ""
 
-#: steps/forms/systemtest.php:88
+#: steps/forms/systemtest.php:89
 msgid "Setup could not detect any problems with your system environment"
 msgstr ""
 
-#: steps/forms/systemtest.php:170
+#: steps/forms/systemtest.php:171
 #, php-format
 msgid "An old Version of Plugin %s is installed on your system."
 msgstr ""
 
-#: steps/forms/systemtest.php:175
+#: steps/forms/systemtest.php:176
 msgid ""
 "Please remove all old plugins before you continue. To transfer old plugin "
 "data, please copy the old plugin data tables into the new plugin data tables "
@@ -257,11 +257,11 @@ msgid ""
 "transfer."
 msgstr ""
 
-#: steps/forms/systemtest.php:177
+#: steps/forms/systemtest.php:178
 msgid "Old Plugins are still installed"
 msgstr ""
 
-#: steps/forms/systemtest.php:190
+#: steps/forms/systemtest.php:191
 #, php-format
 msgid ""
 "You are updating a previous version of CONTENIDO to %s. Some directories/"
@@ -272,15 +272,15 @@ msgid ""
 "includes/ to data/config/production/."
 msgstr ""
 
-#: steps/forms/systemtest.php:193
+#: steps/forms/systemtest.php:194
 msgid "Attention: Some directories/files have been moved"
 msgstr ""
 
-#: steps/forms/systemtest.php:215
+#: steps/forms/systemtest.php:216
 msgid "MySQL database already exists and seems to be filled"
 msgstr ""
 
-#: steps/forms/systemtest.php:215
+#: steps/forms/systemtest.php:216
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -289,22 +289,22 @@ msgid ""
 "previous version, choose 'upgrade' as setup type."
 msgstr ""
 
-#: steps/forms/systemtest.php:222
+#: steps/forms/systemtest.php:223
 msgid "MySQL test table already exists in the database"
 msgstr ""
 
-#: steps/forms/systemtest.php:222
+#: steps/forms/systemtest.php:223
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
 "before continuing."
 msgstr ""
 
-#: steps/forms/systemtest.php:229 steps/forms/systemtest.php:250
+#: steps/forms/systemtest.php:230 steps/forms/systemtest.php:251
 msgid "Unable to create tables in the selected MySQL database"
 msgstr ""
 
-#: steps/forms/systemtest.php:229 steps/forms/systemtest.php:250
+#: steps/forms/systemtest.php:230 steps/forms/systemtest.php:251
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -312,40 +312,40 @@ msgid ""
 "an administrator to do so."
 msgstr ""
 
-#: steps/forms/systemtest.php:236 steps/forms/systemtest.php:257
+#: steps/forms/systemtest.php:237 steps/forms/systemtest.php:258
 msgid "Unable to remove the test table"
 msgstr ""
 
-#: steps/forms/systemtest.php:236 steps/forms/systemtest.php:257
+#: steps/forms/systemtest.php:237 steps/forms/systemtest.php:258
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
 "insufficient permissions. Please remove the table %s manually."
 msgstr ""
 
-#: steps/forms/systemtest.php:243
+#: steps/forms/systemtest.php:244
 msgid "Unable to create the database in the MySQL server"
 msgstr ""
 
-#: steps/forms/systemtest.php:243
+#: steps/forms/systemtest.php:244
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
 "to do so, or create the database manually."
 msgstr ""
 
-#: steps/forms/systemtest.php:267 steps/forms/systemtest.php:277
+#: steps/forms/systemtest.php:268 steps/forms/systemtest.php:278
 msgid "No data found for the upgrade"
 msgstr ""
 
-#: steps/forms/systemtest.php:267
+#: steps/forms/systemtest.php:268
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
 "doesn't exist. You need to copy your database first before running setup."
 msgstr ""
 
-#: steps/forms/systemtest.php:277
+#: steps/forms/systemtest.php:278
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -552,21 +552,33 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-#: steps/forms/clientmode.php:29 steps/forms/clientmode.php:30
+#: steps/forms/clientmode.php:30 steps/forms/clientmode.php:31
 msgid "Example Client"
 msgstr ""
 
-#: steps/forms/clientmode.php:31
+#: steps/forms/clientmode.php:32
 msgid ""
 "If you are new to CONTENIDO, you should create an example client to start "
 "working with."
 msgstr ""
 
-#: steps/forms/clientmode.php:37
+#: steps/forms/clientmode.php:71
+#, php-format
+msgid ""
+"PLEASE NOTE: Some folders (%s) which are used by the example client aren't "
+"empty. THESE WILL BE OVERWRITTEN"
+msgstr ""
+
+#: steps/forms/clientmode.php:72
+msgid ""
+"PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN"
+msgstr ""
+
+#: steps/forms/clientmode.php:76
 msgid "Client with example modules, but without example content"
 msgstr ""
 
-#: steps/forms/clientmode.php:38
+#: steps/forms/clientmode.php:77
 msgid "Don't create client"
 msgstr ""
 
