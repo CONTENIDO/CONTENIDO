@@ -59,6 +59,10 @@ form, h1, h2, h3, h4 {
     line-height: 30px;
     background-color: #f1f1f1;
 }
+
+#head_info + form#login {
+	margin-top: -2px;
+}
 .head_nav {
     line-height: 25px;
     width: 700px;
