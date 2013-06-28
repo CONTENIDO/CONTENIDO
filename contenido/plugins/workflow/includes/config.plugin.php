@@ -25,6 +25,7 @@ $lngAct["con_workflow"]["workflow_task_user_select"] = i18n("Select workflow tas
 $lngAct["workflow_common"]["workflow_show"] = i18n("Show workflow", "workflow");
 $lngAct["workflow_common"]["workflow_create"] = i18n("Create workflow", "workflow");
 $lngAct["workflow_common"]["workflow_save"] = i18n("Edit workflow", "workflow");
+$lngAct["con"]["workflow_do_action"] = i18n("Process workflow step", "workflow");
 $lngAct["con_workflow"]["workflow_do_action"] = i18n("Process workflow step", "workflow");
 $lngAct["str"]["workflow_inherit_down"] = i18n("Inherit workflow down", "workflow");
 $lngAct["str"]["workflow_inherit_down"] = i18n("Inherit workflow down", "workflow");
