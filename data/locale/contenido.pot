@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-28 13:59+0200\n"
+"POT-Creation-Date: 2013-06-28 14:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1424,7 +1424,7 @@ msgstr ""
 #: includes/include.mod_script.php:157
 #: includes/include.style_edit_form.php:204
 #: includes/include.frontend.group_rights.php:67
-#: includes/include.tpl_edit_form.php:250
+#: includes/include.tpl_edit_form.php:249
 msgid "Saved changes successfully!"
 msgstr ""
 
@@ -5000,7 +5000,7 @@ msgid ""
 "infinite loop. Check you database."
 msgstr ""
 
-#: includes/functions.str.php:975 includes/functions.tpl.php:398
+#: includes/functions.str.php:975 includes/functions.tpl.php:401
 #: includes/functions.con.php:1322
 #, php-format
 msgid "%s (Copy)"
@@ -5611,6 +5611,10 @@ msgstr ""
 msgid "language(s)"
 msgstr ""
 
+#: includes/functions.tpl.php:44
+msgid "Template name already exists"
+msgstr ""
+
 #: includes/include.style_edit_form.php:64
 #: includes/include.style_edit_form.php:67
 msgid "Deleted CSS file successfully!"
@@ -6036,7 +6040,7 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: includes/include.tpl_edit_form.php:248
+#: includes/include.tpl_edit_form.php:247
 msgid "Created new Template successfully!"
 msgstr ""
 
