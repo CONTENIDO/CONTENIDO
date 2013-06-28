@@ -101,7 +101,7 @@ function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds) {
         $db->query($sql);
 
         // construct the XML node
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             addUrl($sitemap, array(
                 // construct the link
                 'loc' => cUri::getInstance()->build(array(

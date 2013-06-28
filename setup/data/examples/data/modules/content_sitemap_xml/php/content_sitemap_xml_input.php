@@ -24,7 +24,7 @@ $selectName = "CMS_VAR[1]";
 if ($selected == '') {
     $query = 'SELECT * FROM ' . $cfg['tab']['cat_tree'] . ' AS a, ' . $cfg['tab']['cat'] . ' AS b WHERE (a.idcat) AND (b.idcat) AND (b.idclient = ' . $client . ') ORDER BY a.idtree';
     $db->query($query);
-    $db->next_record();
+    $db->nextRecord();
     $selected = $db->f('idcat');
 }
 
@@ -90,7 +90,7 @@ function buildCategoryArray() {
     $db->query($query);
 
     $categories = array();
-    while ($db->next_record()) {
+    while ($db->nextRecord()) {
         $category = array();
         $category['idcat'] = $db->f('idcat');
         $category['level'] = $db->f('level');
