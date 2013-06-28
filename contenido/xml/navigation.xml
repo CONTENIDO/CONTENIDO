@@ -79,7 +79,7 @@ i18n("Debug")
 i18n("System")
 i18n("Expert settings")
 i18n("System variables")
-i18n("System settings")
+i18n("System configuration")
 i18n("Purge")
 i18n("Error report")
 i18n("Frontend")
@@ -210,7 +210,7 @@ i18n("HTML")
                 <main>System</main>
                 <syssettings>Expert settings</syssettings>
                 <sysvalues>System variables</sysvalues>
-                <configuration>System settings</configuration>
+                <configuration>System configuration</configuration>
                 <purge>Purge</purge>
                 <syserrorreport>Error report</syserrorreport>
                 <integrity>System integrity</integrity>
