@@ -105,7 +105,7 @@ function layEditLayout($idlay, $name, $description, $code) {
                 $layout->set('alias', $layoutAlias);
                 $layout->set('description', $description);
                 $layout->set('author', $author);
-                $layout->set('lastmodified', "NOW()");
+                $layout->set('lastmodified', $date);
                 $layout->store();
             } else {
                 // Rename not successfully
@@ -126,7 +126,7 @@ function layEditLayout($idlay, $name, $description, $code) {
             $layout->set('alias', $layoutAlias);
             $layout->set('description', $description);
             $layout->set('author', $author);
-            $layout->set('lastmodified', "NOW()");
+            $layout->set('lastmodified', $date);
             $layout->store();
         }
 

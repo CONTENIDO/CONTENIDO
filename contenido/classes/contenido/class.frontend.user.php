@@ -74,7 +74,7 @@ class cApiFrontendUserCollection extends ItemCollection {
         $item->set('username', $username);
         $item->set('salt', md5($username.rand(1000, 9999).rand(1000, 9999).rand(1000, 9999)));
         $item->set('password', $password);
-        $item->set('created', "NOW()", false);
+        $item->set('created', date('Y-m-d H:i:s'), false);
         $item->set('author', $auth->auth['uid']);
         $item->set('active', 0);
 
@@ -183,7 +183,7 @@ class cApiFrontendUser extends Item {
     public function store() {
         global $auth;
 
-        $this->set('modified', "NOW()", false);
+        $this->set('modified', date('Y-m-d H:i:s'), false);
         $this->set('modifiedby', $auth->auth['uid']);
         return parent::store();
     }

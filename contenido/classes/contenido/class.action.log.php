@@ -55,7 +55,7 @@ class cApiActionlogCollection extends ItemCollection {
         $item = parent::createNewItem();
 
         if (empty($logtimestamp)) {
-            $logtimestamp = "NOW()";
+            $logtimestamp = date('Y-m-d H:i:s');
         }
 
         $item->set('user_id', $this->escape($userId));

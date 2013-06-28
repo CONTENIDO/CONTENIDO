@@ -159,7 +159,7 @@ if ($action == "upl_modify_file") {
     }
 
     $author = $auth->auth['uid'];
-    $created = "NOW()";
+    $created = date('Y-m-d H:i:s');
 
     $iIdupl = $upload->get("idupl");
     if (!empty($iIdupl) && $iIdupl > 0) {

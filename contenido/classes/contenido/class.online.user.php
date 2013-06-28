@@ -75,7 +75,7 @@ class cApiOnlineUserCollection extends ItemCollection {
     public function insertOnlineUser($userId) {
         $oItem = parent::createNewItem((string) $userId);
         if ($oItem) {
-            $created = "NOW()";
+            $created = date('Y-m-d H:i:s');
             $oItem->set('lastaccessed', $created);
             $oItem->store();
         }

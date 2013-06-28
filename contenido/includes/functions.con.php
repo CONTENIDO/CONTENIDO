@@ -371,7 +371,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
         // Update existing entry
         $oContent->set('value', $value);
         $oContent->set('author', $author);
-        $oContent->set('lastmodified', "NOW()");
+        $oContent->set('lastmodified', date('Y-m-d H:i:s'));
         $oContent->store();
     } else {
         // Create new entry
@@ -380,7 +380,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     }
 
     // Touch the article to update last modified date
-    $lastmodified = "NOW()";
+    $lastmodified = date('Y-m-d H:i:s');
     $oArtLang = new cApiArticleLanguage($idartlang);
     $oArtLang->set('lastmodified', $lastmodified);
     $oArtLang->set('modifiedby', $author);
@@ -576,7 +576,7 @@ function conMakeCatOnline($idcat, $lang, $status) {
     $status = (1 == $status)? 1 : 0;
 
     $catLang->set('visible', $status);
-    $catLang->set('lastmodified', "NOW()");
+    $catLang->set('lastmodified', date('Y-m-d H:i:s'));
     $catLang->store();
 
     if ($cfg['pathresolve_heapcache'] == true && !$status = 0) {
@@ -603,7 +603,7 @@ function conMakePublic($idcat, $lang, $public) {
     $public = (1 == $public)? 1 : 0;
 
     $catLang->set('public', $public);
-    $catLang->set('lastmodified', "NOW()");
+    $catLang->set('lastmodified', date('Y-m-d H:i:s'));
     $catLang->store();
 }
 
@@ -1332,8 +1332,8 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $useCopyLabel = true) {
         'idtplcfg' => cSecurity::toInteger($idtplcfg),
         'online' => 0,
         'title' => $title,
-        'created' => "NOW()",
-        'lastmodified' => "NOW()",
+        'created' => date('Y-m-d H:i:s'),
+        'lastmodified' => date('Y-m-d H:i:s'),
         'modifiedby' => $auth->auth['uname'],
         'published' => '',
         'publishedby' => ''
@@ -1505,8 +1505,8 @@ function conSyncArticle($idart, $srclang, $dstlang) {
         'idlang' => $dstlang,
         'artspec' => 0,
         'online' => 0,
-        'created' => "NOW()",
-        'lastmodified' => "NOW()",
+        'created' => date('Y-m-d H:i:s'),
+        'lastmodified' => date('Y-m-d H:i:s'),
         'modifiedby' => $auth->auth['uname'],
         'published' => '',
         'publishedby' => '',

@@ -31,7 +31,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         global $perm;
 
         $db2= cRegistry::getDb();
-        $date = "NOW()";
+        $date = date('Y-m-d H:i:s');
         $author = "".$auth->auth["uname"]."";
 
         //******** entry in 'tpl'-table ***************
@@ -398,8 +398,8 @@ function tplDuplicateTemplate($idtpl) {
     $name       = sprintf(i18n("%s (Copy)"), $db->f("name"));
     $descr      = $db->f("description");
     $author     = $auth->auth["uname"];
-    $created    = "NOW()";
-    $lastmod    = "NOW()";
+    $created    = date('Y-m-d H:i:s');
+    $lastmod    = date('Y-m-d H:i:s');
 
     $idtpl_conf = $db->f("idtplcfg");
     if ($idtpl_conf) {

@@ -56,10 +56,10 @@ class cApiUploadMetaCollection extends ItemCollection {
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
-            $created = "NOW()";
+            $created = date('Y-m-d H:i:s');
         }
         if (empty($modified)) {
-            $modified = "NOW()";
+            $modified = date('Y-m-d H:i:s');
         }
 
         $oItem = parent::createNewItem();

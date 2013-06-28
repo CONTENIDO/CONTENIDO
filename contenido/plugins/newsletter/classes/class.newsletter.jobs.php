@@ -185,7 +185,7 @@ class NewsletterJobCollection extends ItemCollection {
             }
             $oItem->set("send_to", serialize($aSendInfo), false);
 
-            $oItem->set("created", "NOW()", false);
+            $oItem->set("created", date('Y-m-d H:i:s'), false);
             $oItem->set("author", $auth->auth["uid"]);
             $oItem->set("authorname", $auth->auth["uname"]);
             unset($oNewsletter); // Not needed anymore

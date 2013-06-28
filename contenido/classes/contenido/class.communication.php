@@ -46,7 +46,7 @@ class cApiCommunicationCollection extends ItemCollection {
 
         $item->set('idclient', (int) $client);
         $item->set('author', $auth->auth['uid']);
-        $item->set('created', "NOW()", false);
+        $item->set('created', date('Y-m-d H:i:s'), false);
 
         return $item;
     }

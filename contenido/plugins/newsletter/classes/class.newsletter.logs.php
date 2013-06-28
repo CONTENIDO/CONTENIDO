@@ -81,7 +81,7 @@ class NewsletterLogCollection extends ItemCollection {
             $oItem->set("rcphash", $oRecipient->get("hash"));
             $oItem->set("rcpnewstype", $oRecipient->get("news_type"));
             $oItem->set("status", "pending");
-            $oItem->set("created", "NOW()", false);
+            $oItem->set("created", date('Y-m-d H:i:s'), false);
             $oItem->store();
 
             return $oItem;

@@ -57,7 +57,7 @@ class cApiShortUrlCollection extends ItemCollection {
         $item->set('idart', $idart);
         $item->set('idlang', $idlang);
         $item->set('idclient', $idclient);
-        $item->set('created', "NOW()");
+        $item->set('created', date('Y-m-d H:i:s'));
         $item->store();
 
         return $item;

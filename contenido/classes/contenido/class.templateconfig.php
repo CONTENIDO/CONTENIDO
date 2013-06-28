@@ -70,7 +70,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
-            $created = "NOW()";
+            $created = date('Y-m-d H:i:s');
         }
         if (empty($lastmodified)) {
             $lastmodified = '0000-00-00 00:00:00';

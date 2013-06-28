@@ -158,7 +158,7 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     // Update previous category, if exists
     if (is_object($oPrevCat)) {
         $oPrevCat->set('postid', $newIdcat);
-        $oPrevCat->set('lastmodified', "NOW()");
+        $oPrevCat->set('lastmodified', date('Y-m-d H:i:s'));
         $oPrevCat->store();
     }
 
@@ -443,7 +443,7 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
 
     $oCatLang->set('name', $name);
     $oCatLang->set('urlname', $urlName);
-    $oCatLang->set('lastmodified', "NOW()");
+    $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
     $oCatLang->store();
 
     $newData = array(
@@ -481,7 +481,7 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias) {
     }
 
     $oCatLang->set('urlname', $newcategoryalias);
-    $oCatLang->set('lastmodified', "NOW()");
+    $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
     $oCatLang->store();
 
     cInclude('includes', 'functions.pathresolver.php');
@@ -514,7 +514,7 @@ function strMakeVisible($idcat, $lang, $visible) {
         $oCatLang = new cApiCategoryLanguage();
         $oCatLang->loadByCategoryIdAndLanguageId($value, $lang);
         $oCatLang->set('visible', $visible);
-        $oCatLang->set('lastmodified', "NOW()");
+        $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
         $oCatLang->store();
     }
 
@@ -537,7 +537,7 @@ function strMakePublic($idcat, $lang, $public) {
         $oCatLang = new cApiCategoryLanguage();
         $oCatLang->loadByCategoryIdAndLanguageId($value, $lang);
         $oCatLang->set('public', $public);
-        $oCatLang->set('lastmodified', "NOW()");
+        $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
         $oCatLang->store();
     }
 }

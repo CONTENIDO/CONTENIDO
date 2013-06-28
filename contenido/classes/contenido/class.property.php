@@ -189,7 +189,7 @@ class cApiPropertyCollection extends ItemCollection {
         $item->set('name', $name);
         $item->set('value', $value);
 
-        $item->set('created', "NOW()", false);
+        $item->set('created', date('Y-m-d H:i:s'), false);
         $item->set('author', $this->db->escape($auth->auth['uid']));
         $item->store();
 
@@ -734,7 +734,7 @@ class cApiProperty extends Item {
     public function store() {
         global $auth;
 
-        $this->set('modified', "NOW()", false);
+        $this->set('modified', date('Y-m-d H:i:s'), false);
         $this->set('modifiedby', $auth->auth['uid']);
 
         return parent::store();

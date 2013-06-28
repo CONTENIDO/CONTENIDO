@@ -54,8 +54,8 @@ class cApiFileInformationCollection extends ItemCollection {
             $item->set('idclient', $client);
             $item->set('type', $typeContent);
             $item->set('filename', $filename);
-            $item->set('created', "NOW()");
-            $item->set('lastmodified', "NOW()");
+            $item->set('created', date('Y-m-d H:i:s'));
+            $item->set('lastmodified', date('Y-m-d H:i:s'));
             $item->set('author', $auth->auth['uid']);
             $item->set('modifiedby', $auth->auth['uid']);
             $item->set('description', $description);
@@ -89,7 +89,7 @@ class cApiFileInformationCollection extends ItemCollection {
         $id = $item->get('idsfi');
         if ($item->isLoaded()) {
             $item->set('idsfi', $id);
-            $item->set('lastmodified', "NOW()");
+            $item->set('lastmodified', date('Y-m-d H:i:s'));
             $item->set('description', $description);
             $item->set('modifiedby', $auth->auth['uid']);
             if (!empty($newFilename)) {

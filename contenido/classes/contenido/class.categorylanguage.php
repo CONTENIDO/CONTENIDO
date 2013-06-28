@@ -68,10 +68,10 @@ class cApiCategoryLanguageCollection extends ItemCollection {
             $author = $auth->auth['uname'];
         }
         if (empty($created)) {
-            $created = "NOW()";
+            $created = date('Y-m-d H:i:s');
         }
         if (empty($lastmodified)) {
-            $lastmodified = "NOW()";
+            $lastmodified = date('Y-m-d H:i:s');
         }
 
         $oItem = parent::createNewItem();
