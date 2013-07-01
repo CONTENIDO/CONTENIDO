@@ -1,16 +1,17 @@
 <?php
 /**
- * This file contains the backend page for the directory overview in upload section.
+ * This file contains the backend page for the directory overview in upload
+ * section.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -99,13 +100,15 @@ if ($action == "upl_delete") {
         if (uplHasFiles($path)) {
             $failedFiles = array();
 
-            $directory = opendir($cfgClient[$client]["upl"]["path"] . $path);
-            while (false !== ($dir_entry = readdir($directory))) {
-                if ($dir_entry != "." && $dir_entry != "..") {
-                    $res = @ unlink($cfgClient[$client]["upl"]["path"] . $path . $dir_entry);
+            $directory = @opendir($cfgClient[$client]["upl"]["path"] . $path);
+            if (false !== $directory) {
+                while (false !== ($dir_entry = readdir($directory))) {
+                    if ($dir_entry != "." && $dir_entry != "..") {
+                        $res = @ unlink($cfgClient[$client]["upl"]["path"] . $path . $dir_entry);
 
-                    if ($res == false) {
-                        $failedFiles[] = $dir_entry;
+                        if ($res == false) {
+                            $failedFiles[] = $dir_entry;
+                        }
                     }
                 }
             }
