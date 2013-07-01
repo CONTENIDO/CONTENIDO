@@ -6779,3 +6779,23 @@ msgstr "Teaser visualisation"
 #: classes/content_types/class.content.type.teaser.php:814
 msgid "TEASER_FILTER"
 msgstr "Teaser filter"
+
+#: includes/include.lang_edit.php:102
+#: includes/include.mycontenido_settings.php:165
+msgid "FORMAT_DATE_TIME"
+msgstr "Format for PHP date() function exclusively for date and time, e.g. Y-m-d, H-i-s"
+
+msgid "FORMAT_DATE"
+msgstr "Format for PHP date() function exclusively for dates, e.g. Y-m-d"
+
+msgid "FORMATE_TIME"
+msgstr "Format for PHP date() function exclusively for dates, e.g. H:i:s"
+
+msgid "LANUAGE_DATE_TIME"
+msgstr "Format for PHP date() function exclusively for date and time, e.g. H-i-s, Y-m-d"
+
+    
+    
+    
+    
+
