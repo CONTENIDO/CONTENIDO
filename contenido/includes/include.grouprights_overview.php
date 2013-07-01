@@ -2,21 +2,20 @@
 /**
  * This file contains the backend page for the group overview.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.rights.php');
-
 
 if (!$perm->have_perm_area_action($area, $action)) {
     // access denied
@@ -39,15 +38,17 @@ $aPerms = array();
 if (($action == 'group_edit')) {
     $bError = false;
 
-    if (isset($mlang) && count($mlang > 0) && (!isset($mclient))) {
-        $sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
-        $bError = true;
-    } else {
-        foreach ($mlang as $ilang) {
-            if (!checkLangInClients($mclient, $ilang, null, null)) {
-                $sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
-                $bError = true;
-                break;
+    if (isset($mlang) && is_array($mlang)) {
+        if (0 < count($mlang) && !isset($mclient)) {
+            $sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
+            $bError = true;
+        } else {
+            foreach ($mlang as $ilang) {
+                if (!checkLangInClients($mclient, $ilang, null, null)) {
+                    $sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
+                    $bError = true;
+                    break;
+                }
             }
         }
     }
@@ -72,11 +73,9 @@ if (is_string($del_groupprop_type) && is_string($del_groupprop_name)) {
 }
 
 // add group property
-if (is_string($groupprop_type) && is_string($groupprop_name) && is_string($groupprop_value)
-        && !empty($groupprop_type) && !empty($groupprop_name)) {
+if (is_string($groupprop_type) && is_string($groupprop_name) && is_string($groupprop_value) && !empty($groupprop_type) && !empty($groupprop_name)) {
     $oGroup->setGroupProperty($groupprop_type, $groupprop_name, $groupprop_value);
 }
-
 
 $aPerms = explode(',', $oGroup->getField('perms'));
 
