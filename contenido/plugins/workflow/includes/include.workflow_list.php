@@ -42,7 +42,7 @@ $workflows->select("idclient = '$client' AND idlang = '$lang'");
 
 while (($workflow = $workflows->next()) !== false) {
     $wfid = $workflow->getField("idworkflow");
-    $wfname = $workflow->getField("name");
+    $wfname = mysql_real_escape_string($workflow->getField("name"));
     $wfdescription = $workflow->getField("description");
 
     /* Create the link to show/edit the workflow */
