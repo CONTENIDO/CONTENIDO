@@ -15,6 +15,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+function generateInfoIcon($title, $id = '', $class = 'vAlignMiddle', $img = 'images/info.gif') {
+    return  '<img class="' . $class . '" id="' . $id . '" title="'. $title . '" src="' . $img . '">';
+}
+
 $cpage = new cGuiPage("mycontenido_settings", "", "2");
 
 $user = new cApiUser($auth->auth["uid"]);
@@ -156,13 +160,20 @@ $formathint.= "d M Y H:i => 01 Jan 2004 00:00";
 $formathint.= "<br>";
 $formathint.= "d.m.Y H:i:s => 01.01.2004 00:00:00";
 
+//$form->addSubHeader(i18n("Time format"));
+//$form->add(i18n("Date/Time format"), $fulldateformat->render().' '.generateInfoIcon(i18n("FORMAT_DATE_TIME")));
+//$form->add(i18n("Date format"), $dateformat->render().' '.generateInfoIcon(i18n("FORMAT_DATE")));
+//$form->add(i18n("Time format"), $timeformat->render().' '.generateInfoIcon(i18n("FORMATE_TIME")));
+//$form->add(i18n("Date/Time locale"), $dateLocale->render().' '.generateInfoIcon(i18n("LANUAGE_DATE_TIME")));
+
+
 $format = new cHTMLTextbox("format", $user->getUserProperty("dateformat", "full"));
 $format2 = new cHTMLTextbox("formatdate", $user->getUserProperty("dateformat", "date"));
 $format3 = new cHTMLTextbox("formattime", $user->getUserProperty("dateformat", "time"));
 
-$form->add(i18n("Date/Time format"), array($format, $formathint));
-$form->add(i18n("Date format"), array($format2));
-$form->add(i18n("Time format"), array($format3));
+$form->add(i18n("Date/Time format"), array($format, ' ', generateInfoIcon(i18n("FORMAT_DATE_TIME")) ,$formathint));
+$form->add(i18n("Date format"), array($format2, ' ',  generateInfoIcon(i18n("FORMAT_DATE"))));
+$form->add(i18n("Time format"), array($format3, ' ',  generateInfoIcon(i18n("FORMATE_TIME"))));
 
 $cpage->setContent(array($form));
 $cpage->render();
