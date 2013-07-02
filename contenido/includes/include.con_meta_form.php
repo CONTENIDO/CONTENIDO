@@ -220,23 +220,23 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     $title_input = '<input class="textField" type="text" ' . $disabled . ' name="page_title" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
 
-    $tpl->set("s","TITLE_INFO",(i18n("TITLE_INFO")));
-    $tpl->set("s","EXPIRES_INFO",(i18n("EXPIRES_INFO")));
-    $tpl->set("s","REVISIT_INFO",(i18n("REVISIT_INFO")));
-    $tpl->set("s","ROBOTS_INFO",(i18n("ROBOTS_INFO")));
-    $tpl->set("s","SITEMAPRIORITY_INFO",(i18n("SITEMAPRIORITY_INFO")));
-    $tpl->set("s","SITEMAPCHANGEFREQUENCY_INFO",(i18n("SITEMAPCHANGEFREQUENCY_INFO")));
-    $tpl->set("s","CUSTOMMETATAGS_INFO",(i18n("CUSTOMMETATAGS_INFO")));
-    $tpl->set("s","DESCRIPTION_INFO",(i18n("DESCRIPTION_INFO")));
-    $tpl->set("s","KEYWORD_INFO",(i18n("KEYWORD_INFO")));
-    $tpl->set("s","REVISITED_INFO",(i18n("REVISITED_INFO")));
+    $tpl->set("s","TITLE_INFO",(i18n("The Title-Tag is one of the most important on-page factor for SEO and is no longer than 60 characters. It includes top keywords and the branding.")));
+    $tpl->set("s","EXPIRES_INFO",(i18n("Expires")));
+    $tpl->set("s","REVISIT_INFO",(i18n("The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit.")));
+    $tpl->set("s","ROBOTS_INFO",(i18n("Not important content or not to indicate pictures should be declared with the robot-tag. It has an high relevance for SEO. Only relevant and most visited articels should be indicated.")));
+    $tpl->set("s","SITEMAPRIORITY_INFO",(i18n("The avarage value for the sitemap priority is 0.5. Only important articels should have an value no more than 0.8.")));
+    $tpl->set("s","SITEMAPCHANGEFREQUENCY_INFO",(i18n("The refresh rate is focused on the content.")));
+    $tpl->set("s","CUSTOMMETATAGS_INFO",(i18n("User defined meta tags.")));
+    $tpl->set("s","DESCRIPTION_INFO",(i18n("The Description-Tag describes the article in a short way (no more than 150 characters). The content should be related to the Title-Tag and the H1-Tag.")));
+    $tpl->set("s","KEYWORD_INFO",(i18n("No more than 6 Keywords should be used.")));
+    $tpl->set("s","REVISITED_INFO",(i18n("The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit.")));
 
-    $tpl->set("s","EXPIRES_INFO",(i18n("EXPIRES_INFO")));
-    $tpl->set("s","REVISIT_INFO",(i18n("REVISIT_INFO")));
+    $tpl->set("s","EXPIRES_INFO",(i18n("Expires")));
+    $tpl->set("s","REVISIT_INFO",(i18n("The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit.")));
     $tpl->set("s","ROBOTS_INFO",(i18n("ROBOTS_INFO")));
-    $tpl->set("s","SITEMAPRIORITY_INFO",(i18n("SITEMAPRIORITY_INFO")));
-    $tpl->set("s","SITEMAPCHANGEFREQUENCY_INFO",(i18n("SITEMAPCHANGEFREQUENCY_INFO")));
-    $tpl->set("s","CUSTOMMETATAGS_INFO",(i18n("CUSTOMMETATAGS_INFO")));
+    $tpl->set("s","SITEMAPRIORITY_INFO",(i18n("The avarage value for the sitemap priority is 0.5. Only important articels should have an value no more than 0.8.")));
+    $tpl->set("s","SITEMAPCHANGEFREQUENCY_INFO",(i18n("The refresh rate is focused on the content.")));
+    $tpl->set("s","CUSTOMMETATAGS_INFO",(i18n("user defined meta tags")));
   //  $tpl->set("s","TITLE_INFO",(i18n("TITLE_INFO")));
   //  $tpl->set("s","TITLE_INFO",(i18n("TITLE_INFO")));
 
