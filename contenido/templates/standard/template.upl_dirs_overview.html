@@ -13,6 +13,17 @@
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/parameterCollector.js"></script>
     <script type="text/javascript">
+    	$(document).ready(function () {
+    	    var myLoc = window.location.href;
+    	    if(myLoc.indexOf('action=upl_delete') != -1) {
+    	        var right_bottom = top.content.right.right_bottom;
+    	        $('body', window.parent.parent.right.right_bottom.document).remove();
+				$('#navlist', window.parent.parent.right.right_top.document).remove();
+				$('#root').click();
+    	    }
+    	});
+    
+    
         var sid = "{SID}";
 
         function deleteDirectory(path) {

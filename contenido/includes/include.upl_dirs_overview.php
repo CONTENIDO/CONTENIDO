@@ -270,7 +270,7 @@ chdir(cRegistry::getBackendPath());
 $tpl->set('s', 'SID', $sess->id);
 
 // create javascript multilink
-$tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\',\'%s\', \'%s\')">%s</a>';
+$tmp_mstr = '<a id="root" href="javascript:conMultiLink(\'%s\', \'%s\',\'%s\', \'%s\')">%s</a>';
 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img class="vAlignMiddle" src="images/ordner_oben.gif" align="middle" alt="" border="0"><img src="images/spacer.gif" width="5" border="0">' . $file);
 
 $tpl->set('d', 'PATH', $pathstring);

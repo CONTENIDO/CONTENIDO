@@ -1,6 +1,10 @@
 // to reload the left frame after delete/insert new files
 if (parent.parent.frames['left'].frames['left_bottom'].location != 'about:blank') {
-    parent.parent.frames['left'].frames['left_bottom'].location.reload();
+	var myLoc = parent.parent.frames['left'].frames['left_bottom'].location.href;
+	myLoc = myLoc.replace('&action=upl_delete', '');
+    myLoc = myLoc.replace('?action=upl_delete&', '?');
+	myLoc = myLoc.replace('?action=upl_delete', '?');
+	parent.parent.frames['left'].frames['left_bottom'].location.href = myLoc;
 }
 
 (function($) {
