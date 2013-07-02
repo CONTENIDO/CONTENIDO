@@ -60,7 +60,7 @@ if (!(int) $client > 0) {
 
 // ERROR MESSAGE
 if (!$contenidoModulHandler->moduleWriteable('js')) {
-    $page->displayCriticalError(i18n('No write permissions in js folder!'));
+    $page->displayCriticalError(i18n('No write permissions in javascript folder for this module!'));
     $page->render();
     exit();
 }
