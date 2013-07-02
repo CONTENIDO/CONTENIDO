@@ -107,9 +107,9 @@ foreach ($allModules as $idmod => $module) {
             "alt" => htmlentities($module['description']),
             "title" => htmlentities($module['description'])
         ));
-        $msg = i18n("Empty name");
 
-        $sName = cString::stripSlashes(conHtmlSpecialChars($module ['name'])); //$cApiModule->get("name");
+        $moduleName = (strlen(trim($module['name'])) > 0) ? $module['name'] : i18n("- Unnamed module -");
+        $sName = cString::stripSlashes(conHtmlSpecialChars($moduleName)); //$cApiModule->get("name");
         $descr = cString::stripSlashes(conHtmlSpecialChars($module ['description']));
 
         if ($sOptionModuleCheck !== "false" && $sOptionForceCheck !== "false") {
