@@ -286,7 +286,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $modified = $sart["lastmodified"];
 
             if ($modified === '0000-00-00 00:00:00') {
-                $modified = i18n("NOTMODIFIED");
+                $modified = i18n("not modified yet");
             } else {
                 $modified = date($dateformat, strtotime($modified));
             }
