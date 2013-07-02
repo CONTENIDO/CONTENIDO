@@ -168,7 +168,7 @@ while ($oNewsletter = $oNewsletters->next()) {
     $idnewsletter = $oNewsletter->get("idnews");
     $iMenu++;
 
-    $sName = $oNewsletter->get("name");
+    $sName = (strlen(trim($oNewsletter->get("name"))) > 0) ? $oNewsletter->get("name") : i18n("-- New newsletter --", 'newsletter');
     if ($oNewsletter->get("welcome")) {
         $sName = $sName . "*";
     }
