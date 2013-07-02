@@ -372,8 +372,8 @@ if ($contenido) {
 // check if isset parent category template.
 if ($contenido) {
     $sql = "SELECT a.idtplcfg FROM con_cat_lang a, con_cat_art b WHERE a.idcat=b.idcat AND b.idart=$idart AND a.idlang=$lang;";
-    $errorText = i18n("NOTEMPLATE");
-    $errorTitle = i18n("FATALERROR");
+    $errorText = i18n("Editing is not possible because there is no template assigned to this category.");
+    $errorTitle = i18n("FATAL ERROR");
 } else {
     $article = new cApiArticleLanguage($idartlang);
     $idart = $article->getField('idart');
