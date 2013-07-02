@@ -107,6 +107,7 @@ foreach ($allModules as $idmod => $module) {
             "alt" => htmlentities($module['description']),
             "title" => htmlentities($module['description'])
         ));
+        $msg = i18n("Empty name");
 
         $sName = cString::stripSlashes(conHtmlSpecialChars($module ['name'])); //$cApiModule->get("name");
         $descr = cString::stripSlashes(conHtmlSpecialChars($module ['description']));

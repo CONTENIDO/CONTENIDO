@@ -29,6 +29,6 @@ $frontend_debug['module_timing']         = false;
 $frontend_debug['module_timing_summary'] = false;
 
 // Set to 1 to brute-force module regeneration
-$force = 0;
+$force = 1;
 
 ?>
