@@ -97,7 +97,11 @@ if ($_REQUEST["elemperpage"] > 0) {
 foreach ($allModules as $idmod => $module) {
     //$cApiModule = $cApiModuleCollection->next())
 
-    if ($perm->have_perm_item($area, $idmod) || $perm->have_perm_area_action("mod_translate", "mod_translation_save") || $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $idmod)) {
+    if ($perm->have_perm_item($area, $idmod) ||
+        $perm->have_perm_area_action("mod_translate", "mod_translation_save") ||
+        $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $idmod)
+    ) {
+
         //$idmod = $cApiModule->get("idmod");
 
         $link = new cHTMLLink;
@@ -141,7 +145,8 @@ foreach ($allModules as $idmod => $module) {
 
         $mlist->setTitle($iMenu, $colName);
         $mlist->setTooltip($iMenu, ($descr == "") ? '' : $descr);
-        if ($perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod) || $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $idmod)) {
+        if ($perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod) ||
+            $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $idmod)) {
             $mlist->setLink($iMenu, $link);
         }
 
@@ -151,14 +156,32 @@ foreach ($allModules as $idmod => $module) {
 
         if ($inUse) {
             $inUseString = i18n("Click for more information about usage");
-            $mlist->setActions($iMenu, 'inuse', '<a href="javascript:;" rel="' . $idmod . '" class="in_used_mod"><img src="' . $cfg['path']['images'] . 'exclamation.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '"></a>');
+            $mlist->setActions($iMenu, 'inuse', '
+                <a
+                    href="javascript:;"
+                    rel="' . $idmod . '"
+                    class="in_used_mod"><img src="' . $cfg['path']['images'] . 'exclamation.gif"
+                    border="0"
+                    title="' . $inUseString . '"
+                    alt="' . $inUseString . '"></a>');
             $delDescription = i18n("Module in use, cannot delete");
         } else {
             $mlist->setActions($iMenu, 'inuse', '<img src="./images/spacer.gif" border="0" width="16">');
             if ($perm->have_perm_area_action_item("mod", "mod_delete", $idmod)) {
                 $delTitle = i18n("Delete module");
                 $delDescr = sprintf(i18n("Do you really want to delete the following module:<br><br>%s<br>"), $sName);
-                $deletebutton = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteModule(' . $idmod . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+                $deletebutton = '
+                    <a
+                        title="' . $delTitle . '"
+                        href="javascript:void(0)"
+                        onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteModule(' . $idmod . '); });return false;"
+                    >
+                        <img
+                            src="' . $cfg['path']['images'] . 'delete.gif"
+                            border="0"
+                            title="' . $delTitle . '"
+                            alt="' . $delTitle . '" />
+                    </a>';
             } else {
                 $delDescription = i18n("No permission");
             }
@@ -166,7 +189,12 @@ foreach ($allModules as $idmod => $module) {
 
         if ($deletebutton == "") {
             //$deletebutton = '<img src="images/spacer.gif" width="16" height="16">';
-            $deletebutton = '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . $delDescription . '" alt="' . $delDescription . '">';
+            $deletebutton = '
+                <img
+                    src="' . $cfg['path']['images'] . 'delete_inact.gif"
+                    border="0"
+                    title="' . $delDescription . '"
+                    alt="' . $delDescription . '" />';
         }
 
         $todo = new TODOLink("idmod", $idmod, "Module: $sName", "");
