@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-28 14:26+0200\n"
+"POT-Creation-Date: 2013-07-02 13:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -132,7 +132,7 @@ msgstr ""
 #: includes/include.html_tpl_edit_form.php:264
 #: includes/include.lay_edit_form.php:212
 #: includes/include.grouprights_tpl.php:65 includes/include.mod_new.php:55
-#: includes/include.grouprights_overview.php:107
+#: includes/include.grouprights_overview.php:106
 #: includes/include.tplcfg_edit_form.php:440
 #: includes/include.pretplcfg_edit_form.php:141
 #: includes/include.style_history.php:147 includes/include.js_history.php:147
@@ -745,15 +745,17 @@ msgid "Teaser settings"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:603
-msgid "AUTOMATIC"
+msgid "Automatic"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:604
-msgid "MANUAL"
+#: classes/content_types/class.content.type.filelist.php:538
+msgid "Manual"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:605
-msgid "SETTINGS"
+#: includes/include.mycontenido.php:180 xml/navigation.xml:91
+msgid "Settings"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:674
@@ -775,11 +777,18 @@ msgid "TEASER_START_ARTICLE"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:684
-msgid "TEASER_SORT"
+msgid "Teaser sort"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:686
-msgid "SORT_ORDER"
+#: classes/content_types/class.content.type.filelist.php:613
+#: templates/standard/template.mod_left_top_filter.html:17
+#: templates/standard/template.mod_left_top_filter.html:44
+#: templates/standard/template.rights_left_top_filter.html:16
+#: templates/standard/template.frontend_left_top_filter.html:16
+#: templates/standard/template.frontend_left_top_filter.html:43
+#: includes/include.con_art_overview.php:66 backend_search.php:494
+msgid "Sort order"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:704
@@ -855,7 +864,15 @@ msgid "Unknown article"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:851
-msgid "DEL"
+#: includes/include.clientsettings.php:92
+#: includes/include.rights_overview.php:309
+#: includes/include.rights_overview.php:318
+#: includes/include.systemsettings.php:72
+#: includes/include.systemsettings.php:75
+#: includes/include.client_artspec.php:71
+#: includes/include.grouprights_overview.php:186
+#: includes/include.con_translate.php:705
+msgid "Delete"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:875
@@ -900,15 +917,15 @@ msgid "Cropped"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:955
-msgid "CONTENT_SETTINGS"
+msgid "Content visualisation"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:956
-msgid "TEASER_VISUALISATION"
+msgid "Teaser visualisation"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:958
-msgid "TEASER_FILTER"
+msgid "Teaser filter"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:960
@@ -916,7 +933,7 @@ msgid "Character length"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:963
-msgid "PICTURE_SETTINGS"
+msgid "Pictures"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:964
@@ -932,23 +949,23 @@ msgid "Image scale"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:971
-msgid "CONTENTTYPE_SETTINGS"
+msgid "Content types"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:972
-msgid "SOURCE_HEADLINE"
+msgid "Headline source"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:974
-msgid "SOURCE_TEXT"
+msgid "Text source"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:976
-msgid "SOURCE_IMAGE"
+msgid "Image source"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:978
-msgid "SOURCE_DATE"
+msgid "Date source"
 msgstr ""
 
 #: classes/content_types/class.content.type.imgeditor.php:264
@@ -1049,10 +1066,6 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:538
-msgid "Manual"
-msgstr ""
-
 #: classes/content_types/class.content.type.filelist.php:577
 msgid "Source directory"
 msgstr ""
@@ -1071,16 +1084,6 @@ msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:611
 msgid "File list sort"
-msgstr ""
-
-#: classes/content_types/class.content.type.filelist.php:613
-#: templates/standard/template.mod_left_top_filter.html:17
-#: templates/standard/template.mod_left_top_filter.html:44
-#: templates/standard/template.rights_left_top_filter.html:16
-#: templates/standard/template.frontend_left_top_filter.html:16
-#: templates/standard/template.frontend_left_top_filter.html:43
-#: includes/include.con_art_overview.php:66 backend_search.php:494
-msgid "Sort order"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:615
@@ -1308,7 +1311,7 @@ msgstr ""
 #: includes/include.client_edit.php:165 includes/include.rights_create.php:102
 #: includes/include.rights_overview.php:147
 #: includes/include.system_configuration.php:158
-#: includes/include.grouprights_overview.php:96
+#: includes/include.grouprights_overview.php:95
 #: includes/include.grouprights_create.php:69
 msgid "Save changes"
 msgstr ""
@@ -1463,7 +1466,7 @@ msgstr ""
 #: includes/include.client_artspec.php:30
 #: includes/include.client_artspec.php:38
 #: includes/include.client_artspec.php:46 includes/include.rights_con.php:34
-#: includes/include.grouprights_overview.php:23
+#: includes/include.grouprights_overview.php:22
 #: includes/include.tplcfg_edit_form.php:128
 #: includes/include.con_translate.php:133
 #: includes/include.style_history.php:34 includes/include.js_history.php:36
@@ -1472,8 +1475,8 @@ msgstr ""
 #: includes/include.grouprights_mod.php:36 includes/include.lang_edit.php:98
 #: includes/include.mail_log.php:25 includes/include.html_tpl_history.php:38
 #: includes/include.mod_script.php:51
-#: includes/include.upl_dirs_overview.php:314
-#: includes/include.upl_dirs_overview.php:436
+#: includes/include.upl_dirs_overview.php:317
+#: includes/include.upl_dirs_overview.php:439
 #: includes/include.con_meta_form.php:516 includes/include.rights_area.php:36
 #: includes/include.grouprights_con.php:34
 #: includes/include.grouprights_area.php:36
@@ -1541,7 +1544,7 @@ msgstr ""
 #: includes/include.systemsettings.php:160 includes/include.mod_new.php:37
 #: includes/include.style_history.php:146 includes/include.js_history.php:146
 #: includes/include.mod_style.php:222
-#: includes/include.mycontenido_settings.php:114
+#: includes/include.mycontenido_settings.php:118
 #: includes/include.html_tpl_history.php:149
 #: includes/include.mod_script.php:193
 #: includes/include.style_edit_form.php:246
@@ -2011,7 +2014,7 @@ msgstr ""
 #: includes/include.rights_str.php:251 includes/include.rights_con.php:248
 #: includes/functions.stat.php:287 includes/functions.stat.php:288
 #: includes/functions.stat.php:600 includes/functions.stat.php:601
-#: includes/include.upl_dirs_overview.php:35
+#: includes/include.upl_dirs_overview.php:36
 #: includes/include.grouprights_con.php:247
 #: includes/include.str_overview.php:130
 msgid "Open category"
@@ -2020,7 +2023,7 @@ msgstr ""
 #: templates/standard/template.stat_overview.html:184
 #: includes/include.grouprights_str.php:248
 #: includes/include.rights_str.php:251 includes/include.rights_con.php:248
-#: includes/include.upl_dirs_overview.php:38
+#: includes/include.upl_dirs_overview.php:39
 #: includes/include.grouprights_con.php:247
 #: includes/include.str_overview.php:135
 msgid "Close category"
@@ -2833,8 +2836,8 @@ msgstr ""
 #: includes/include.rights_overview.php:317
 #: includes/include.systemsettings.php:59
 #: includes/include.systemsettings.php:164
-#: includes/include.grouprights_overview.php:101
-#: includes/include.grouprights_overview.php:197
+#: includes/include.grouprights_overview.php:100
+#: includes/include.grouprights_overview.php:196
 #: includes/include.grouprights_create.php:72
 msgid "Value"
 msgstr ""
@@ -2883,6 +2886,8 @@ msgstr ""
 
 #: templates/standard/template.con_meta_edit_form.html:149
 #: templates/standard/template.con_meta_edit_form.html:361
+#: includes/include.con_meta_form.php:224
+#: includes/include.con_meta_form.php:234
 msgid "Expires"
 msgstr ""
 
@@ -3089,9 +3094,9 @@ msgstr ""
 #: includes/type/action/include.con_saveart.action.php:39
 #: includes/type/action/include.con_saveart.action.php:146
 #: includes/include.system_configuration.php:144
-#: includes/include.grouprights_overview.php:61
-#: includes/include.mycontenido_settings.php:53
-#: includes/include.mycontenido_settings.php:91
+#: includes/include.grouprights_overview.php:62
+#: includes/include.mycontenido_settings.php:57
+#: includes/include.mycontenido_settings.php:95
 #: includes/include.lang_edit.php:105 includes/functions.rights.php:331
 #: includes/functions.rights.php:386 includes/include.con_content_list.php:52
 #: includes/include.con_content_list.php:73
@@ -3100,15 +3105,15 @@ msgstr ""
 
 #: includes/include.client_edit.php:166
 #: includes/include.rights_overview.php:148
-#: includes/include.grouprights_overview.php:97
+#: includes/include.grouprights_overview.php:96
 msgid "Discard changes"
 msgstr ""
 
 #: includes/include.client_edit.php:168 includes/include.rights_create.php:103
 #: includes/include.rights_overview.php:150
 #: includes/include.rights_overview.php:316
-#: includes/include.grouprights_overview.php:100
-#: includes/include.grouprights_overview.php:196
+#: includes/include.grouprights_overview.php:99
+#: includes/include.grouprights_overview.php:195
 #: includes/include.grouprights_create.php:71
 msgid "Property"
 msgstr ""
@@ -3207,7 +3212,7 @@ msgstr ""
 
 #: includes/include.rights_create.php:86
 #: includes/include.rights_overview.php:102
-#: includes/include.mycontenido_settings.php:38
+#: includes/include.mycontenido_settings.php:42
 msgid "Passwords don't match"
 msgstr ""
 
@@ -3222,78 +3227,78 @@ msgstr ""
 
 #: includes/include.rights_create.php:116
 #: includes/include.rights_overview.php:168
-#: includes/include.mycontenido_settings.php:123
+#: includes/include.mycontenido_settings.php:127
 #: includes/include.frontend.user_edit.php:169
 msgid "New password"
 msgstr ""
 
 #: includes/include.rights_create.php:121
 #: includes/include.rights_overview.php:174
-#: includes/include.mycontenido_settings.php:124
+#: includes/include.mycontenido_settings.php:128
 msgid "Confirm new password"
 msgstr ""
 
 #: includes/include.rights_create.php:126
 #: includes/include.rights_overview.php:181
-#: includes/include.mycontenido_settings.php:128
+#: includes/include.mycontenido_settings.php:132
 msgid "E-Mail"
 msgstr ""
 
 #: includes/include.rights_create.php:131
 #: includes/include.rights_overview.php:187
-#: includes/include.mycontenido_settings.php:131
+#: includes/include.mycontenido_settings.php:135
 msgid "Phone number"
 msgstr ""
 
 #: includes/include.rights_create.php:136
 #: includes/include.rights_overview.php:193
-#: includes/include.mycontenido_settings.php:134
+#: includes/include.mycontenido_settings.php:138
 msgid "Street"
 msgstr ""
 
 #: includes/include.rights_create.php:141
 #: includes/include.rights_overview.php:199
-#: includes/include.mycontenido_settings.php:137
+#: includes/include.mycontenido_settings.php:141
 msgid "ZIP code"
 msgstr ""
 
 #: includes/include.rights_create.php:146
 #: includes/include.rights_overview.php:205
-#: includes/include.mycontenido_settings.php:140
+#: includes/include.mycontenido_settings.php:144
 msgid "City"
 msgstr ""
 
 #: includes/include.rights_create.php:151
 #: includes/include.rights_overview.php:211
-#: includes/include.mycontenido_settings.php:143
+#: includes/include.mycontenido_settings.php:147
 #: includes/include.lang_edit.php:190
 msgid "Country"
 msgstr ""
 
 #: includes/include.rights_create.php:171
 #: includes/include.rights_overview.php:232
-#: includes/include.grouprights_overview.php:117
+#: includes/include.grouprights_overview.php:116
 #: includes/include.grouprights_create.php:93
 msgid "System administrator"
 msgstr ""
 
 #: includes/include.rights_create.php:190
 #: includes/include.rights_overview.php:252
-#: includes/include.grouprights_overview.php:136
+#: includes/include.grouprights_overview.php:135
 #: includes/include.grouprights_create.php:112
 msgid "Administrator"
 msgstr ""
 
 #: includes/include.rights_create.php:205
 #: includes/include.rights_overview.php:269
-#: includes/include.grouprights_overview.php:152
+#: includes/include.grouprights_overview.php:151
 #: includes/include.grouprights_create.php:127
 msgid "Access clients"
 msgstr ""
 
 #: includes/include.rights_create.php:220
 #: includes/include.rights_overview.php:287
-#: includes/include.grouprights_overview.php:169
+#: includes/include.grouprights_overview.php:168
 #: includes/include.grouprights_create.php:142
 msgid "Access languages"
 msgstr ""
@@ -3346,17 +3351,6 @@ msgstr ""
 #: includes/include.upl_files_overview.php:411
 #: includes/include.mod_edit_form.php:382
 msgid "Type"
-msgstr ""
-
-#: includes/include.clientsettings.php:92
-#: includes/include.rights_overview.php:309
-#: includes/include.rights_overview.php:318
-#: includes/include.systemsettings.php:72
-#: includes/include.systemsettings.php:75
-#: includes/include.client_artspec.php:71
-#: includes/include.grouprights_overview.php:187
-#: includes/include.con_translate.php:705
-msgid "Delete"
 msgstr ""
 
 #: includes/include.clientsettings.php:98
@@ -3595,17 +3589,17 @@ msgid "User deleted"
 msgstr ""
 
 #: includes/include.rights_overview.php:116
-#: includes/include.mycontenido_settings.php:93
+#: includes/include.mycontenido_settings.php:97
 msgid "An error occured while saving user info."
 msgstr ""
 
 #: includes/include.rights_overview.php:315
-#: includes/include.grouprights_overview.php:195
+#: includes/include.grouprights_overview.php:194
 msgid "Area/Type"
 msgstr ""
 
 #: includes/include.rights_overview.php:330
-#: includes/include.grouprights_overview.php:207
+#: includes/include.grouprights_overview.php:206
 msgid "User-defined properties"
 msgstr ""
 
@@ -3929,7 +3923,7 @@ msgstr ""
 
 #: includes/include.lay_edit_form.php:214
 #: includes/include.client_artspec.php:61
-#: includes/include.mycontenido_settings.php:149
+#: includes/include.mycontenido_settings.php:153
 #: includes/include.mycontenido.tasks.php:371
 msgid "Options"
 msgstr ""
@@ -4048,11 +4042,13 @@ msgid "Error article/category not found!"
 msgstr ""
 
 #: includes/frontend/include.front_content.php:375
-msgid "NOTEMPLATE"
+msgid ""
+"Editing is not possible because there is no template assigned to this "
+"category."
 msgstr ""
 
 #: includes/frontend/include.front_content.php:376
-msgid "FATALERROR"
+msgid "FATAL ERROR"
 msgstr ""
 
 #: includes/include.client_artspec.php:112
@@ -4137,11 +4133,11 @@ msgid ""
 "the client too."
 msgstr ""
 
-#: includes/include.grouprights_overview.php:63
+#: includes/include.grouprights_overview.php:64
 msgid "Changes couldn't be saved"
 msgstr ""
 
-#: includes/include.grouprights_overview.php:103
+#: includes/include.grouprights_overview.php:102
 msgid "Groupname"
 msgstr ""
 
@@ -4238,7 +4234,7 @@ msgid "No template"
 msgstr ""
 
 #: includes/include.con_translate.php:570
-#: includes/include.mod_overview.php:152 includes/include.lay_overview.php:64
+#: includes/include.mod_overview.php:153 includes/include.lay_overview.php:64
 #: includes/include.tpl_overview.php:59
 msgid "Click for more information about usage"
 msgstr ""
@@ -4306,21 +4302,25 @@ msgstr ""
 msgid "Template preconfiguration"
 msgstr ""
 
-#: includes/include.mod_overview.php:154
+#: includes/include.mod_overview.php:110
+msgid "Empty name"
+msgstr ""
+
+#: includes/include.mod_overview.php:155
 msgid "Module in use, cannot delete"
 msgstr ""
 
-#: includes/include.mod_overview.php:158
+#: includes/include.mod_overview.php:159
 #: ../data/config/production/cfg_actions.inc.php:84
 msgid "Delete module"
 msgstr ""
 
-#: includes/include.mod_overview.php:159
+#: includes/include.mod_overview.php:160
 #, php-format
 msgid "Do you really want to delete the following module:<br><br>%s<br>"
 msgstr ""
 
-#: includes/include.mod_overview.php:162 includes/include.lay_overview.php:59
+#: includes/include.mod_overview.php:163 includes/include.lay_overview.php:59
 #: includes/include.str_overview.php:696 includes/include.mod_edit_form.php:30
 #: includes/include.mod_edit_form.php:59 includes/include.mod_edit_form.php:81
 msgid "No permission"
@@ -4345,7 +4345,7 @@ msgid "No jscript history available"
 msgstr ""
 
 #: includes/include.mod_style.php:64
-msgid "No write permissions in css folder!"
+msgid "No write permissions in css folder for this module!"
 msgstr ""
 
 #: includes/include.mod_style.php:139
@@ -4364,44 +4364,59 @@ msgstr ""
 msgid "Can't save file!"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:34
+#: includes/include.mycontenido_settings.php:38
 msgid "Old password incorrect"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:102
+#: includes/include.mycontenido_settings.php:106
 #, php-format
 msgid "Settings for %s"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:122
+#: includes/include.mycontenido_settings.php:126
 msgid "Old password"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:147
+#: includes/include.mycontenido_settings.php:151
 msgid "Use WYSIWYG Editor"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:151
+#: includes/include.mycontenido_settings.php:155
 msgid "The format is equal to PHP's date() function."
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:153
+#: includes/include.mycontenido_settings.php:157
 msgid "Common date formattings"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:163
+#: includes/include.mycontenido_settings.php:174
 #: includes/include.lang_edit.php:194
 msgid "Date/Time format"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:164
+#: includes/include.mycontenido_settings.php:174
+#: includes/include.lang_edit.php:194
+msgid "FORMAT_DATE_TIME"
+msgstr ""
+
+#: includes/include.mycontenido_settings.php:175
 #: includes/include.lang_edit.php:195
 msgid "Date format"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:165
+#: includes/include.mycontenido_settings.php:175
+#: includes/include.lang_edit.php:195
+msgid "FORMAT_DATE"
+msgstr ""
+
+#: includes/include.mycontenido_settings.php:176
 #: includes/include.lang_edit.php:193 includes/include.lang_edit.php:196
 msgid "Time format"
+msgstr ""
+
+#: includes/include.mycontenido_settings.php:176
+#: includes/include.lang_edit.php:196
+msgid "FORMATE_TIME"
 msgstr ""
 
 #: includes/include.style_left_top.php:33
@@ -4830,18 +4845,6 @@ msgstr ""
 msgid "Text direction"
 msgstr ""
 
-#: includes/include.lang_edit.php:194
-msgid "FORMAT_DATE_TIME"
-msgstr ""
-
-#: includes/include.lang_edit.php:195
-msgid "FORMAT_DATE"
-msgstr ""
-
-#: includes/include.lang_edit.php:196
-msgid "FORMATE_TIME"
-msgstr ""
-
 #: includes/include.lang_edit.php:197
 msgid "Date/Time locale"
 msgstr ""
@@ -5139,7 +5142,7 @@ msgid ""
 msgstr ""
 
 #: includes/include.mod_script.php:63
-msgid "No write permissions in js folder!"
+msgid "No write permissions in javascript folder for this module!"
 msgstr ""
 
 #: includes/include.mod_script.php:119
@@ -5150,49 +5153,49 @@ msgstr ""
 msgid "Could not create a new js file."
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:115
+#: includes/include.upl_dirs_overview.php:118
 msgid "Failed to delete the following files:"
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:119
+#: includes/include.upl_dirs_overview.php:122
 #, php-format
 msgid "Failed to remove directory %s"
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:132
+#: includes/include.upl_dirs_overview.php:135
 msgid "Upload directory"
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:135
+#: includes/include.upl_dirs_overview.php:138
 msgid ""
 "The following directories contains invalid characters and were ignored: "
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:138
+#: includes/include.upl_dirs_overview.php:141
 msgid "Please click here in order to rename automatically."
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:241 xml/navigation.xml:61
+#: includes/include.upl_dirs_overview.php:244 xml/navigation.xml:61
 #: xml/navigation.xml:70
 msgid "Categories"
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:309
-#: includes/include.upl_dirs_overview.php:431
+#: includes/include.upl_dirs_overview.php:312
+#: includes/include.upl_dirs_overview.php:434
 msgid "Delete directory"
-msgstr ""
-
-#: includes/include.upl_dirs_overview.php:309
-#: includes/include.upl_dirs_overview.php:431
-msgid "Do you really want to delete the following directory:"
 msgstr ""
 
 #: includes/include.upl_dirs_overview.php:312
 #: includes/include.upl_dirs_overview.php:434
+msgid "Do you really want to delete the following directory:"
+msgstr ""
+
+#: includes/include.upl_dirs_overview.php:315
+#: includes/include.upl_dirs_overview.php:437
 msgid "Directory contains files"
 msgstr ""
 
-#: includes/include.upl_dirs_overview.php:353
+#: includes/include.upl_dirs_overview.php:356
 msgid "Database file system"
 msgstr ""
 
@@ -5201,49 +5204,58 @@ msgid "SEO administration"
 msgstr ""
 
 #: includes/include.con_meta_form.php:223
-msgid "TITLE_INFO"
-msgstr ""
-
-#: includes/include.con_meta_form.php:224
-#: includes/include.con_meta_form.php:234
-msgid "EXPIRES_INFO"
+msgid ""
+"The Title-Tag is one of the most important on-page factor for SEO and is no "
+"longer than 60 characters. It includes top keywords and the branding."
 msgstr ""
 
 #: includes/include.con_meta_form.php:225
+#: includes/include.con_meta_form.php:232
 #: includes/include.con_meta_form.php:235
-msgid "REVISIT_INFO"
+msgid ""
+"The frequency of the revisit after tag depend on new publications of the "
+"content. Nevertheless the robots decide on their own when to visit."
 msgstr ""
 
 #: includes/include.con_meta_form.php:226
-#: includes/include.con_meta_form.php:236
-msgid "ROBOTS_INFO"
+msgid ""
+"Not important content or not to indicate pictures should be declared with "
+"the robot-tag. It has an high relevance for SEO. Only relevant and most "
+"visited articels should be indicated."
 msgstr ""
 
 #: includes/include.con_meta_form.php:227
 #: includes/include.con_meta_form.php:237
-msgid "SITEMAPRIORITY_INFO"
+msgid ""
+"The avarage value for the sitemap priority is 0.5. Only important articels "
+"should have an value no more than 0.8."
 msgstr ""
 
 #: includes/include.con_meta_form.php:228
 #: includes/include.con_meta_form.php:238
-msgid "SITEMAPCHANGEFREQUENCY_INFO"
+msgid "The refresh rate is focused on the content."
 msgstr ""
 
 #: includes/include.con_meta_form.php:229
-#: includes/include.con_meta_form.php:239
-msgid "CUSTOMMETATAGS_INFO"
+msgid "User defined meta tags."
 msgstr ""
 
 #: includes/include.con_meta_form.php:230
-msgid "DESCRIPTION_INFO"
+msgid ""
+"The Description-Tag describes the article in a short way (no more than 150 "
+"characters). The content should be related to the Title-Tag and the H1-Tag."
 msgstr ""
 
 #: includes/include.con_meta_form.php:231
-msgid "KEYWORD_INFO"
+msgid "No more than 6 Keywords should be used."
 msgstr ""
 
-#: includes/include.con_meta_form.php:232
-msgid "REVISITED_INFO"
+#: includes/include.con_meta_form.php:236
+msgid "ROBOTS_INFO"
+msgstr ""
+
+#: includes/include.con_meta_form.php:239
+msgid "user defined meta tags"
 msgstr ""
 
 #: includes/include.con_meta_form.php:428
@@ -5431,10 +5443,6 @@ msgstr ""
 #: includes/include.frontend.group.subnav.php:19 xml/navigation.xml:11
 #: xml/navigation.xml:20 xml/navigation.xml:22 xml/navigation.xml:88
 msgid "Overview"
-msgstr ""
-
-#: includes/include.mycontenido.php:180 xml/navigation.xml:91
-msgid "Settings"
 msgstr ""
 
 #: includes/include.lang_left_top.php:55
@@ -5707,7 +5715,7 @@ msgid "This category does not have a configured start article."
 msgstr ""
 
 #: includes/include.con_art_overview.php:289
-msgid "NOTMODIFIED"
+msgid "not modified yet"
 msgstr ""
 
 #: includes/include.con_art_overview.php:327
