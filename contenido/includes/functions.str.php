@@ -150,7 +150,7 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
 
     // Get previous category on same level, if exists
     $oCatColl = new cApiCategoryCollection();
-    $oCatColl->select('parentid=' . $parentid . ' AND postid = 0');
+    $oCatColl->select('parentid=' . $parentid . ' AND postid = 0 AND idclient = ' . $client);
     $oPrevCat = $oCatColl->next();
     $preIdcat = (is_object($oPrevCat)) ? $oPrevCat->get('idcat') : 0;
 
