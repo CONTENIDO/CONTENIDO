@@ -56,6 +56,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     global $timemgmt;
 
     $page_title = addslashes($page_title);
+    $title      = stripslashes($title);
     $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
 
     if ($isstart == 1) {
@@ -217,6 +218,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
 
     // Add slashes because single quotes will crash the db
     $page_title = addslashes($page_title);
+    $title      = stripslashes($title);
 
     $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
     $usetimemgmt = ((int) $timemgmt == 1)? 1 : 0;

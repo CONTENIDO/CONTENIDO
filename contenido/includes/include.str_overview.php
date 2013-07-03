@@ -123,6 +123,8 @@ function getStrExpandCollapseButton($item, $catName) {
         $title = '';
     }
 
+    $catName = cSecurity::unFilter($catName);
+
     if (count($item->subitems) > 0) {
         if ($item->collapsed == true) {
             $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&expand=" . $item->id);
@@ -579,7 +581,7 @@ foreach ($objects as $key => $value) {
 
         // $tpl->set('d', 'CATEGORY', $sCategoryname);
         if (strlen($value->name) > 30) {
-            $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', 'title="' . $value->name . '" class="tooltip"');
+            $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', 'title="' . htmlspecialchars(cSecurity::unFilter($value->name)) . '" class="tooltip"');
         } else {
             $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', '');
         }
@@ -641,7 +643,7 @@ foreach ($objects as $key => $value) {
         $sCatName = $value->name;
 
 #        $aRecord['catn'] = str_replace('\'', '\\\'', $sCatName);
-        $aRecord['catn'] = conHtmlSpecialChars($sCatName);
+        $aRecord['catn'] = $sCatName;
         $sAlias = $value->custom['alias'];
 #        $aRecord['alias'] = str_replace('\'', '\\\'', $sAlias);
         $aRecord['alias'] = conHtmlSpecialChars($sAlias);
@@ -690,7 +692,7 @@ foreach ($objects as $key => $value) {
         $hasChildren = strNextDeeper($value->id);
         $hasArticles = strHasArticles($value->id);
         if (($hasChildren == 0) && ($hasArticles == false) && ($perm->have_perm_area_action($tmp_area, 'str_deletecat') || $perm->have_perm_area_action_item($tmp_area, 'str_deletecat', $value->id))) {
-            $delete = '<a href="javascript://" onclick="confDel(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . conHtmlSpecialChars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "delete.gif\" alt=\"" . i18n("Delete category") . "\" title=\"" . i18n("Delete category") . "\"></a>";
+            $delete = '<a href="javascript://" onclick="confDel(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . addslashes(conHtmlSpecialChars($value->name)) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "delete.gif\" alt=\"" . i18n("Delete category") . "\" title=\"" . i18n("Delete category") . "\"></a>";
             $tpl->set('d', 'DELETEBUTTON', $delete);
         } else {
             $message = i18n("No permission");
@@ -796,7 +798,7 @@ $jsDataArray = "";
 foreach ($aInlineEditData as $iIdCat => $aData) {
     $aTmp = array();
     foreach ($aData as $aKey => $aValue) {
-        $aTmp[] = $aKey . "':'" . $aValue;
+        $aTmp[] = $aKey . "':'" . addslashes($aValue);
     }
     $jsDataArray .= "
     strDataObj[$iIdCat] = {'" . implode("', '", $aTmp) . "'};";

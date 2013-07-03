@@ -241,7 +241,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $aArticles[$sItem]["idart"] = $db->f("idart");
                 $aArticles[$sItem]["idlang"] = $db->f("idlang");
                 $aArticles[$sItem]["idartlang"] = $db->f("idartlang");
-                $aArticles[$sItem]["title"] = $db->f("title");
+                $aArticles[$sItem]["title"] = cSecurity::unFilter($db->f("title"));
                 $aArticles[$sItem]["is_start"] = isStartArticle($db->f("idartlang"), $idcat, $lang);
                 $aArticles[$sItem]["idcatart"] = $db->f("idcatart");
                 $aArticles[$sItem]["idtplcfg"] = $db->f("idtplcfg");
@@ -852,6 +852,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // Show path of selected category to user
         prCreateURLNameLocationString($idcat, ' > ', $cat_name_tmp, true, 'breadcrumb');
+        $cat_name_tmp = cSecurity::unFilter($cat_name_tmp);
 
         if ($cat_name_tmp != '') {
             $cat_name = '<div id="categorypath" class="categorypath">';

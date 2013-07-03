@@ -204,7 +204,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     // Show path of selected category to user
     $catString = '';
     prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
-
+    $catString = cSecurity::unFilter($catString);
     $tpl->set('s', 'TITEL', i18n("SEO administration"));
     $tpl->set('s', 'CATEGORY', i18n("You are here") . ": " . $catString . ' > ' . conHtmlSpecialChars($tmp_title));
 

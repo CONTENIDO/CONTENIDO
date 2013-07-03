@@ -245,9 +245,10 @@ $tpl->set('s', 'HIDDEN', $hidden);
 $oArticle = new cApiArticleLanguage();
 $oArticle->loadByArticleAndLanguageId($idart, $lang);
 
-$sArticleTitle = $oArticle->getField('title');
+$sArticleTitle = cSecurity::unFilter($oArticle->getField('title'));
 $catString = '';
 prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
+$catString = cSecurity::unFilter($catString);
 $category = i18n("You are here") . ": " . $catString;
 if (!empty($sArticleTitle)) {
     $category .= ' > ' . $sArticleTitle;

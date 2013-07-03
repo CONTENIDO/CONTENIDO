@@ -184,7 +184,8 @@ function showTree($iIdcat, &$aWholelist) {
                 }
             }
 
-            $mstr = '<a class="' . $aAnchorClass . '" href="#" title="idcat' . '&#58; ' . $idcat . '">' . $name . '</a>';
+            $strName = cSecurity::unFilter($name);
+            $mstr = '<a class="' . $aAnchorClass . '" href="#" title="idcat' . '&#58; ' . $idcat . '">' . $strName . '</a>';
 
             // Build Tree
             $tpl->set('d', 'CFGDATA', $cfgdata);

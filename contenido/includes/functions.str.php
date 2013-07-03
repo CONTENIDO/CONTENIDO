@@ -39,6 +39,8 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
         return;
     }
 
+    $catname = stripslashes($catname);
+
     $remakeCatTable = true;
     $remakeStrTable = true;
 
@@ -81,7 +83,7 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     // Loop through languages
     $aLanguages = array($lang);
     foreach ($aLanguages as $curLang) {
-        $name = conHtmlSpecialChars($catname, ENT_QUOTES);
+        $name = $catname;
         $urlname = conHtmlSpecialChars(cApiStrCleanURLCharacters($catalias), ENT_QUOTES);
 
         // Insert new category language entry
@@ -122,6 +124,8 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     if (trim($catname) == '') {
         return;
     }
+
+    $catname = stripslashes($catname);
 
     $remakeCatTable = true;
     $remakeStrTable = true;
@@ -167,7 +171,7 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     // Loop through languages
     $aLanguages = array($lang);
     foreach ($aLanguages as $curLang) {
-        $name = conHtmlSpecialChars($catname, ENT_QUOTES);
+        $name = $catname;
         $urlname = conHtmlSpecialChars(cApiStrCleanURLCharacters($catalias), ENT_QUOTES);
 
         // Insert new category language entry
@@ -428,7 +432,7 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
         'urlname' => $oCatLang->get('urlname')
     );
 
-    $name = $newCategoryName;
+    $name = stripslashes($newCategoryName);
     $urlName = (trim($newCategoryAlias) != '') ? trim($newCategoryAlias) : $newCategoryName;
 
     if (trim($newCategoryAlias) != '') {

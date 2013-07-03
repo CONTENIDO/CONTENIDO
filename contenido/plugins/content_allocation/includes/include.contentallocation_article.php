@@ -38,9 +38,10 @@ if ($_GET['step'] == 'collapse') {
 #build category path
 $catString = '';
 prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
+$catString = cSecurity::unFilter($catString);
 $oArticle = new cApiArticleLanguage();
 $oArticle->loadByArticleAndLanguageId($idart, $lang);
-$sArticleTitle = $oArticle->getField('title');
+$sArticleTitle = cSecurity::unFilter($oArticle->getField('title'));
 
 $sLocationString = '<div id="categorypath" class="categorypath">' . i18n('You are here', 'content_allocation') . ": " . $catString . ' > ' . conHtmlSpecialChars($sArticleTitle) . '</div>';
 

@@ -175,6 +175,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // Show path of selected category to user
     $catString = '';
     prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
+    $catString = cSecurity::unFilter($catString);
     $artString = '';
     if (!empty($tmp_title)) {
         $artString = ' > ' . conHtmlSpecialChars($tmp_title);

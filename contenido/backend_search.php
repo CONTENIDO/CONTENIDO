@@ -742,10 +742,12 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
                 $catstring = substr($catstring, 0, strlen($catstring) - 3);
             }
 
+            $strTitle = cSecurity::unFilter($db->f("title"));
+
             if ($perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat)) {
-                $editart = "<a href=\"main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=4&contenido=$sSession\" title=\"idart: $idart idcatart: $idcatart\" alt=\"idart: $idart idcatart: $idcatart\"><i><span style='font-size: 80%'>" . $catstring . "</span></i><br>" . $db->f("title") . "</a>";
+                $editart = "<a href=\"main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=4&contenido=$sSession\" title=\"idart: $idart idcatart: $idcatart\" alt=\"idart: $idart idcatart: $idcatart\"><i><span style='font-size: 80%'>" . $catstring . "</span></i><br>" . $strTitle . "</a>";
             } else {
-                $editart = "<i><span style='font-size: 80%'>" . $catstring . "</span></i><br>" . $db->f("title");
+                $editart = "<i><span style='font-size: 80%'>" . $catstring . "</span></i><br>" . $strTitle;
             }
 
             if ($perm->have_perm_area_action_item("con", "con_duplicate", $idcat)) {
@@ -755,7 +757,17 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             }
 
             if ($perm->have_perm_area_action_item("con", "con_deleteart", $idcat)) {
-                $delete = '<a href="javascript:void(0)" onclick="showConfirmation(&quot;' . $sDeleteArticleQuestion . ':<br><br><b>' . $db->f('title') . '</b>&quot;, function() {deleteArticle(' . $idart . ', ' . $idcat . ');});" title="' . $sDeleteArticle . '"><img src="images/delete.gif" title="' . $sDeleteArticle . '" alt="' . $sDeleteArticle . '"></a>';
+                $delete = '
+                <a
+                    href="javascript:void(0)"
+                    onclick="showConfirmation(&quot;' . $sDeleteArticleQuestion . ':<br><br><b>' . htmlspecialchars($db->f("title")) . '</b>&quot;, function() {deleteArticle(' . $idart . ', ' . $idcat . ');});"
+                    title="' . $sDeleteArticle . '"
+                >
+                    <img
+                        src="images/delete.gif"
+                        title="' . $sDeleteArticle . '"
+                        alt="' . $sDeleteArticle . '" />
+                </a>';
             } else {
                 $delete = "";
             }
