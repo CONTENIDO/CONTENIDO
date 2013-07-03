@@ -56,16 +56,28 @@ if (in_array('nofollow', $robotArray)) {
 
 $newData = array();
 foreach ($availableTags as $key => $value) {
+
     if ($value['metatype'] == 'robots') {
+
         conSetMetaValue($idartlang, $key, $robots);
         $newData[$value['metatype']] = $robots;
+
     } elseif ($value["metatype"] == "date" || $value["metatype"] == "expires") {
-        $atime = date("Y-m-d", strtotime($_POST['META' . $value['metatype']])) . "T" . date("H:iP", strtotime($_POST['META' . $value['metatype']]));
+
+        $atime     = '';
+        $dateValue = $_POST['META' . $value['metatype']];
+
+        if (is_int(strtotime($dateValue))) {
+            $atime = date('c', strtotime($dateValue));
+        }
         conSetMetaValue($idartlang, $key, $atime);
         $newData[$value['metatype']] = $atime;
+
     } else {
+
         conSetMetaValue($idartlang, $key, $_POST['META' . $value['metatype']]);
         $newData[$value['metatype']] = $_POST['META' . $value['metatype']];
+
     }
 }
 
