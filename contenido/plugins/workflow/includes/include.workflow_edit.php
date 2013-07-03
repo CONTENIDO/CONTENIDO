@@ -37,8 +37,8 @@ if ($action == "workflow_save") {
     } elseif ($idworkflow > 0) {
         $page->displayInfo(i18n("Saved changes successfully!", 'workflow'));
     }
-    $workflow->set("name",  mysql_real_escape_string($wfname));
-    $workflow->set("description", mysql_real_escape_string($wfdescription));
+    $workflow->set("name",  $wfname);
+    $workflow->set("description", $wfdescription);
     $idworkflow = $workflow->get("idworkflow");
     $workflow->store();
 }
