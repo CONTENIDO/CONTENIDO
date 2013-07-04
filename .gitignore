@@ -19,6 +19,7 @@ contenido/includes/config.clients.php
 contenido/includes/config.local.php
 contenido/includes/config.php
 contenido/plugins/form_assistant/classes/class.util.helper.php
+data/cache/*
 data/config/production/config.clients.php
 data/config/production/config.local.php
 data/config/production/config.php
