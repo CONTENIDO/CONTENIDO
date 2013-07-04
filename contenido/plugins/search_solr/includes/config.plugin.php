@@ -255,7 +255,6 @@ $cfg['templates']['solr_right_bottom'] = $cfg['plugins'][Solr::getName()] . 'tem
 // include necessary sources, setup autoloader for plugin
 $pluginClassPath = 'contenido/plugins/' . Solr::getName() . '/';
 cAutoload::addClassmapConfig(array(
-    'Util' => $pluginClassPath . 'classes/class.util.helper.php',
     'SolrIndexer' => $pluginClassPath . 'classes/class.solr_indexer.php',
     'SolrSearcherAbstract' => $pluginClassPath . 'classes/class.solr_searcher_abstract.php',
     'SolrSearcherSimple' => $pluginClassPath . 'classes/class.solr_searcher_simple.php',

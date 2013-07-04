@@ -1657,7 +1657,6 @@ contenido/plugins/search_solr/classes/class.solr_indexer.php -text
 contenido/plugins/search_solr/classes/class.solr_search_module.php -text
 contenido/plugins/search_solr/classes/class.solr_searcher_abstract.php -text
 contenido/plugins/search_solr/classes/class.solr_searcher_simple.php -text
-contenido/plugins/search_solr/classes/class.util.helper.php -text
 contenido/plugins/search_solr/docs/readme.txt -text svneol=unset#text/plain
 contenido/plugins/search_solr/docs/schema.orig.xml -text svneol=unset#text/plain
 contenido/plugins/search_solr/docs/schema.xml -text svneol=unset#text/plain

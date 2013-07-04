@@ -507,7 +507,6 @@ class PifaForm extends Item {
                 $values = $this->getValues();
                 foreach ($opt['attachmentNames'] as $column => $path) {
                     if (!file_exists($path)) {
-                        Util::log('could not attach file cause it doesn\'t exist: ' . $path);
                         continue;
                     }
                     $attachment = Swift_Attachment::fromPath($path);
