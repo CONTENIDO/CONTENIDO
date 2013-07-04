@@ -192,44 +192,72 @@ if ($action == "upl_modify_file") {
 
 if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable == true) {
     if (is_array($fdelete)) {
+        // array of cApiUpload objects to be passed to chain function
+        $uploadObjects = array();
+
         // Check if it is in the upload table
         foreach ($fdelete as $file) {
             $uploads->select("idclient = '$client' AND dirname='$qpath' AND filename='$file'");
-            if ($item = $uploads->next()) {
+            if (false !== $item = $uploads->next()) {
                 if (cApiDbfs::isDbfs($qpath)) {
                     $dbfs->remove($qpath . $file);
                 } else {
                     unlink($cfgClient[$client]['upl']['path'] . $qpath . $file);
                 }
 
-                // Call chain
-                $_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.Delete");
+                // call chain once for each deleted file
+                $_cecIterator = cRegistry::getCecRegistry()->getIterator("Contenido.Upl_edit.Delete");
                 if ($_cecIterator->count() > 0) {
-                    while ($chainEntry = $_cecIterator->next()) {
+                    while (false !== $chainEntry = $_cecIterator->next()) {
                         $chainEntry->execute($item->get('idupl'), $qpath, $file);
                     }
                 }
+
+                // add current upload object to array in order to be processed
+                array_push($uploadObjects, $item);
+            }
+        }
+
+        // call chain once for all deleted files
+        $_cecIterator = cRegistry::getCecRegistry()->getIterator("Contenido.Upl_edit.DeleteBatch");
+        if ($_cecIterator->count() > 0) {
+            while (false !== $chainEntry = $_cecIterator->next()) {
+                $chainEntry->execute($uploadObjects);
             }
         }
     }
 }
 
 if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable == true) {
+    // array of cApiUpload objects to be passed to chain function
+    $uploadObjects = array();
+
     $uploads->select("idclient = '$client' AND dirname='$qpath' AND filename='$file'");
     // FIXME Code is similar/redundant to cApiUploadCollection->delete(), in
     // previous version from UploadCollection->delete() too
-    if ($uploads->next()) {
+    if (false !== $item = $uploads->next()) {
         if (cApiDbfs::isDbfs($qpath)) {
             $dbfs->remove($qpath . $file);
         } else {
             unlink($cfgClient[$client]['upl']['path'] . $qpath . $file);
         }
 
-        // Call chain
-        $_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.Delete");
+        // call chain for deleted file
+        $_cecIterator = cRegistry::getCecRegistry()->getIterator("Contenido.Upl_edit.Delete");
         if ($_cecIterator->count() > 0) {
-            while ($chainEntry = $_cecIterator->next()) {
+            while (false !== $chainEntry = $_cecIterator->next()) {
                 $chainEntry->execute($uploads->f('idupl'), $qpath, $file);
+
+                // add current upload object to array in order to be processed
+                array_push($uploadObjects, $item);
+            }
+        }
+
+        // call chain once for all deleted files
+        $_cecIterator = cRegistry::getCecRegistry()->getIterator("Contenido.Upl_edit.DeleteBatch");
+        if ($_cecIterator->count() > 0) {
+            while (false !== $chainEntry = $_cecIterator->next()) {
+                $chainEntry->execute($uploadObjects);
             }
         }
     }

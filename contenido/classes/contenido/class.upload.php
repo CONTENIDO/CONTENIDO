@@ -120,18 +120,31 @@ class cApiUploadCollection extends ItemCollection {
      * @fixme Code is similar/redundant to include.upl_files_overview.php 216-230
      */
     public function delete($id) {
-        global $_cecRegistry, $cfgClient, $client;
+        global $cfgClient, $client;
 
         $oUpload = new cApiUpload();
         $oUpload->loadByPrimaryKey($id);
 
         $sDirFileName = $oUpload->get('dirname') . $oUpload->get('filename');
 
-        // call chain
-        $_cecIterator = $_cecRegistry->getIterator('Contenido.Upl_edit.Delete');
+        // call chain for deleted file
+        $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Upl_edit.Delete');
         if ($_cecIterator->count() > 0) {
             while (($chainEntry = $_cecIterator->next()) !== false) {
                 $chainEntry->execute($oUpload->get('idupl'), $oUpload->get('dirname'), $oUpload->get('filename'));
+            }
+        }
+
+        // call chain once for all deleted files
+        $_cecIterator = cRegistry::getCecRegistry()->getIterator("Contenido.Upl_edit.DeleteBatch");
+        if ($_cecIterator->count() > 0) {
+            // array of cApiUpload objects to be passed to chain function
+            $uploadObjects = array();
+            // add current upload object to array in order to be processed
+            array_push($uploadObjects, $oUpload);
+            // call chain functions
+            while (false !== $chainEntry = $_cecIterator->next()) {
+                $chainEntry->execute($uploadObjects);
             }
         }
 
@@ -145,8 +158,7 @@ class cApiUploadCollection extends ItemCollection {
 
         // delete properties
         // note: parents delete methos does normally this job, but the
-        // properties
-        // are stored by using dirname + filename instead of idupl
+        // properties are stored by using dirname + filename instead of idupl
         $oUpload->deletePropertiesByItemid($sDirFileName);
 
         $this->deleteUploadMetaData($id);

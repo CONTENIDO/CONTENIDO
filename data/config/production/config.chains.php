@@ -432,7 +432,7 @@ $_cecRegistry->registerChain('Contenido.Article.GetCustomTabProperties', 'string
 $_cecRegistry->registerChain('Contenido.Frontend.BaseHrefGeneration', 'string');
 
 /* Chain Contenido.Upl_edit.Delete
- * This chain function is called after a upl-file has been deleted
+ * This chain function is called after deletion of each single upload file.
  *
  * Parameters & order:
  * int          $iIdupl  Upl-File-ID
@@ -443,6 +443,17 @@ $_cecRegistry->registerChain('Contenido.Frontend.BaseHrefGeneration', 'string');
  * - none -
  */
 $_cecRegistry->registerChain('Contenido.Upl_edit.Delete', 'int', 'string', 'string');
+
+/* Chain Contenido.Upl_edit.DeleteBatch
+ * This chain function is called after deletion of one or more upload files.
+ *
+ * Parameters & order:
+ * array        $uploads cApiUpload objects
+ *
+ * Returns:
+ * - none -
+ */
+$_cecRegistry->registerChain('Contenido.Upl_edit.DeleteBatch', 'array');
 
 /* Chain Contenido.Upl_edit.Rows
  * This chain is used to process the rows of the upl-details list.
