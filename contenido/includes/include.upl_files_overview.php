@@ -667,7 +667,7 @@ $output = str_replace("-C-SCROLLLEFT-", $prevpage, $output);
 $output = str_replace("-C-SCROLLRIGHT-", $nextpage, $output);
 $output = str_replace("-C-PAGE-", i18n("Page") . " " . $curpage, $output);
 
-$select = new cHTMLSelectElement("thumbnailmode_input");
+$select = new cHTMLSelectElement("thumbnailmode");
 
 $values = array(
     10 => "10",
@@ -680,7 +680,7 @@ $values = array(
 $select->autoFill($values);
 
 $select->setDefault($thumbnailmode);
-$select->setEvent('change', "document.del.thumbnailmode.value = this.value;");
+$select->setEvent('change', "if (document.del.thumbnailmode[0] != 'undefined') document.del.thumbnailmode[0].value = this.value; if (document.del.thumbnailmode[1] != 'undefined') document.del.thumbnailmode[1].value = this.value; if (document.del.thumbnailmode[2] != 'undefined') document.del.thumbnailmode[2].value = this.value;");
 
 $topbar = $select->render() . '<input class="vAlignMiddle tableElement" type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif">';
 

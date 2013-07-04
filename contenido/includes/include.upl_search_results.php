@@ -384,7 +384,7 @@ $form->setVar("sortby", $sortby);
 $form->setVar("startpage", $startpage);
 $form->setVar("appendparameters", $appendparameters);
 
-$select = new cHTMLSelectElement("thumbnailmode_input");
+$select = new cHTMLSelectElement("thumbnailmode");
 $select->setClass("vAlignMiddle tableElement");
 $values = array(
     25 => "25",
@@ -396,7 +396,7 @@ $values = array(
 $select->autoFill($values);
 
 $select->setDefault($thumbnailmode);
-$select->setEvent('change', "document.options.thumbnailmode.value = this.value");
+$select->setEvent('change', "if (document.options.thumbnailmode[0] != 'undefined') document.options.thumbnailmode[0].value = this.value; if (document.options.thumbnailmode[1] != 'undefined') document.options.thumbnailmode[1].value = this.value;");
 
 $topbar = $select->render() . '<input type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" class="vAlignMiddle tableElement">';
 
