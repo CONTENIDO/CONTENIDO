@@ -260,32 +260,27 @@ function showConfirmation(description, callback, additionalOptions) {
         if (typeof callback === 'function') {
             callback();
         }
-        // unfortunately, the following line does not work if the dialog is
-        // opened from another frame
-        // $(this).dialog('close');
-        // so use this ugly workaround
-        $(this).parent().remove();
+        contentWindow.$('#single_dialog').dialog('close');
     };
     buttons[translations['Cancel']] = function() {
-        // unfortunately, the following line does not work if the dialog is
-        // opened from another frame
-        // $(this).dialog('close');
-        // so use this ugly workaround
-        $(this).parent().remove();
+        contentWindow.$('#single_dialog').dialog('close');
     };
     var options = {
+        modal: true,
         buttons: buttons,
         position: ['center', 50],
         resizable: false,
-        title: translations['Confirmation Required'],
         close: function( event, ui ) {
-        	contentWindow.$("html").find("#single_dialog").remove();
-        }
+            contentWindow.$("html").find("#single_dialog").remove();
+        },
+        title: translations['Confirmation Required']
     };
     options = $.extend(options, additionalOptions);
     // show the dialog in the content window
-    if(contentWindow.$("html").find("#single_dialog").length == 0){
+    if (0 == contentWindow.$("html").find("#single_dialog").length) {
     	contentWindow.$('<div id="single_dialog">' + description + '</div>').dialog(options);	
+    } else {
+        alert('no dialog');
     }
     
 }
