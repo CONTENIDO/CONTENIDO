@@ -24,7 +24,7 @@ form, h1, h2, h3, h4 {
     background-color: #f1f1f1;
     width: 1000px;
     float: left;
-    margin-right: -3px;
+    /*margin-right: -3px;*/
 }
 .left_top_dist {
     padding-left: 17px;
@@ -61,7 +61,8 @@ form, h1, h2, h3, h4 {
 }
 
 #head_info + form#login {
-	margin-top: -2px;
+    margin: 0;
+    overflow: auto;
 }
 .head_nav {
     line-height: 25px;
@@ -72,10 +73,26 @@ form, h1, h2, h3, h4 {
 }
 .head_nav_login {
     background-color: #fff;
-    width: 700px;
-    line-height: 25px;
     float: right;
-    margin-right: 30px;
+    height: 25px;
+    line-height: 25px;
+    margin: 0 30px 0 0;
+    overflow: hidden;
+    width: 700px;
+}
+#request_layer {
+    background-color: #F1F1F1;
+    float: right;
+    /*height:26px;*/
+    line-height:28px;
+    margin: 0 30px 0 0;
+    padding:0 5px;
+    width:250px;
+}
+#request_layer #request_form .message {
+    line-height: 16px;
+    margin: 0 0 5px 0;
+    padding: 0;
 }
 hr.sep {
     border: 0;
