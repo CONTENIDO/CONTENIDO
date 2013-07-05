@@ -80,6 +80,10 @@ form, h1, h2, h3, h4 {
     overflow: hidden;
     width: 700px;
 }
+.head_nav_login input,
+.head_nav_login select  {
+    border: 1px solid #f1f1f1;
+}
 #request_layer {
     background-color: #F1F1F1;
     float: right;
