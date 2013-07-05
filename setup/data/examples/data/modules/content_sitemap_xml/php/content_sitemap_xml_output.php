@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * See http://www.sitemaps.org/ for more informations about XML sitemaps.
  *
  * @package Module
  * @subpackage ContentSitemapXml
