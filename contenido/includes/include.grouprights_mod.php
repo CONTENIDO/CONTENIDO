@@ -132,7 +132,7 @@ $db->query($sql);
 
 while ($db->nextRecord()) {
     $tplname = conHtmlentities($db->f("name"));
-    $description = conHtmlentities($db->f("description"));
+   	$description = conHtmlentities($db->f("description"));
 
     $objItem->updateAttributes(array("class" => "td_rights0"));
     $objItem->setContent($tplname);
@@ -140,7 +140,7 @@ while ($db->nextRecord()) {
     $objItem->advanceID();
 
     $objItem->updateAttributes(array("class" => "td_rights1", "style" => "white-space:normal;"));
-    $objItem->setContent($description);
+    $objItem->setContent($description ? $description : "&nbsp;");
     $items .= $objItem->render();
     $objItem->advanceID();
 
