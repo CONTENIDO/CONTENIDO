@@ -2,15 +2,15 @@
 /**
  * This file contains the the system test class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Mischa Holz
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Mischa Holz
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,36 +18,44 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Provides functions to test the system integrity
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
  */
 class cSystemtest {
+
     /**
      * The minimal PHP version
+     *
      * @var string
      */
     const CON_SETUP_MIN_PHP_VERSION = '5.2.0';
 
     /**
      * Messages have no influence on the result of the system integrity
+     *
      * @var int
      */
     const C_SEVERITY_NONE = 1;
 
     /**
      * Messages are only to inform the user about something.
+     *
      * @var int
      */
     const C_SEVERITY_INFO = 2;
 
     /**
-     * Messages about settings which aren't correct, but CONTENIDO might work anyway
+     * Messages about settings which aren't correct, but CONTENIDO might work
+     * anyway
+     *
      * @var int
      */
     const C_SEVERITY_WARNING = 3;
 
     /**
-     * Messages about settings which aren't correct. CONTENIDO won't work
+     * Messages about settings which aren't correct.
+     * CONTENIDO won't work
+     *
      * @var int
      */
     const C_SEVERITY_ERROR = 4;
@@ -214,7 +222,8 @@ class cSystemtest {
 
     /**
      * Possible result of cSystemtest::testMySQL()
-     * Strict mode is activated. CONTENIDO won't work
+     * Strict mode is activated.
+     * CONTENIDO won't work
      *
      * @var int
      */
@@ -222,33 +231,39 @@ class cSystemtest {
 
     /**
      * Possible result of cSystemtest::testMySQL()
-     * Strict mode is activated. CONTENIDO won't work
+     * Strict mode is activated.
+     * CONTENIDO won't work
      *
      * @var int
      */
     const CON_MYSQL_CANT_CONNECT = 3;
 
     /**
-     * The test results which are stored for display. Every array element is an assoicative array like this:
+     * The test results which are stored for display.
+     * Every array element is an assoicative array like this:
      * $_messages[$i] = array(
-     *                     "result" => $result, //true or false, success or no success
-     *                     "severity" => $severity, //one of the C_SEVERITY constants
-     *                     "headline" => $headline, //the headline of the message
-     *                     "message" => $message //the message
-     *                      );
+     * "result" => $result, //true or false, success or no success
+     * "severity" => $severity, //one of the C_SEVERITY constants
+     * "headline" => $headline, //the headline of the message
+     * "message" => $message //the message
+     * );
+     *
      * @var array
      */
     protected $_messages;
 
     /**
      * The stored config array
+     *
      * @var array
      */
     protected $_config;
 
     /**
      * Caches the given config array for later use.
-     * @param array $config A config array which should be similar to CONTENIDO's $cfg
+     *
+     * @param array $config A config array which should be similar to
+     *            CONTENIDO's $cfg
      */
     public function __construct($config) {
         $this->_config = $config;
@@ -257,7 +272,8 @@ class cSystemtest {
     /**
      * Runs all available tests and stores the resuls in the messages array
      *
-     * @param bool $testFileSystem If this is true the file system checks will be performed too with standard settings.
+     * @param bool $testFileSystem If this is true the file system checks will
+     *            be performed too with standard settings.
      */
     public function runTests($testFileSystem = true) {
         $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), self::CON_SETUP_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), self::CON_SETUP_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . self::CON_SETUP_MIN_PHP_VERSION);
@@ -339,10 +355,14 @@ class cSystemtest {
      *
      * @param bool $result true for success, false otherwise
      * @param int $severity One one of the C_SEVERITY constants
-     * @param string $errorHeadline The headline which will be stored in the case that $result is false
-     * @param string $errorMessage The message which will be stored in the case that $result is false
-     * @param string $successHeadline The headline which will be stored in the case that $result is true
-     * @param string $successMessage The message which will be stored in the case that $result is true
+     * @param string $errorHeadline The headline which will be stored in the
+     *            case that $result is false
+     * @param string $errorMessage The message which will be stored in the case
+     *            that $result is false
+     * @param string $successHeadline The headline which will be stored in the
+     *            case that $result is true
+     * @param string $successMessage The message which will be stored in the
+     *            case that $result is true
      */
     public function storeResult($result, $severity, $errorHeadline = "", $errorMessage = "", $successHeadline = "", $successMessage = "") {
         if ($result) {
@@ -373,30 +393,33 @@ class cSystemtest {
     }
 
     /**
-     * Returns an array with information about the file, especially the file owner
+     * Returns an array with information about the file, especially the file
+     * owner
      *
      * The return array looks like this:
      * array(
-     *     "info" => $info, //'s' for a socket, 'l' for a symbolic link, '-' for a regular file, 'b' "block special", 'd' for a directory, 'c' "character special", 'p' FIFO pipe, 'u' for unkown
-     *     "type" => $type, //A more descriptive version of $info
-     *     "owner" => array(
-     *                 "id" => $id, //the owner id
-     *                 "read" => $read, //true if the owner is allowed to read the file
-     *                 "write" => $write //true if the owner is allowed to write the file
-     *                )
-     *     "group" => array(
-     *                 "id" => $id, //the owner group
-     *                 "read" => $read, //true if the owner group is allowed to read the file
-     *                 "write" => $write //true if the owner group is allowed to write the file
-     *                )
-     *     "others" => array(
-     *                 "read" => $read, //true if others are allowed to read the file
-     *                 "write" => $write //true if others are allowed to write the file
-     *                )
-     *    )
+     * "info" => $info, //'s' for a socket, 'l' for a symbolic link, '-' for a
+     * regular file, 'b' "block special", 'd' for a directory, 'c' "character
+     * special", 'p' FIFO pipe, 'u' for unkown
+     * "type" => $type, //A more descriptive version of $info
+     * "owner" => array(
+     * "id" => $id, //the owner id
+     * "read" => $read, //true if the owner is allowed to read the file
+     * "write" => $write //true if the owner is allowed to write the file
+     * )
+     * "group" => array(
+     * "id" => $id, //the owner group
+     * "read" => $read, //true if the owner group is allowed to read the file
+     * "write" => $write //true if the owner group is allowed to write the file
+     * )
+     * "others" => array(
+     * "read" => $read, //true if others are allowed to read the file
+     * "write" => $write //true if others are allowed to write the file
+     * )
+     * )
      *
      * @param string $sFilename The path to the file
-     * @return boolean|array False if the file can't be accessed
+     * @return boolean array if the file can't be accessed
      */
     protected function getFileInfo($sFilename) {
         if (!cFileHandler::exists($sFilename)) {
@@ -446,12 +469,12 @@ class cSystemtest {
         $aFileinfo = array();
         $aFileinfo["info"] = $info;
         $aFileinfo["type"] = $type;
-        $aFileinfo["owner"]["read"] = ($oiFilePermissions & 0x0100) ? true : false;
-        $aFileinfo["owner"]["write"] = ($oiFilePermissions & 0x0080) ? true : false;
-        $aFileinfo["group"]["read"] = ($oiFilePermissions & 0x0020) ? true : false;
-        $aFileinfo["group"]["write"] = ($oiFilePermissions & 0x0010) ? true : false;
-        $aFileinfo["others"]["read"] = ($oiFilePermissions & 0x0004) ? true : false;
-        $aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002) ? true : false;
+        $aFileinfo["owner"]["read"] = ($oiFilePermissions & 0x0100)? true : false;
+        $aFileinfo["owner"]["write"] = ($oiFilePermissions & 0x0080)? true : false;
+        $aFileinfo["group"]["read"] = ($oiFilePermissions & 0x0020)? true : false;
+        $aFileinfo["group"]["write"] = ($oiFilePermissions & 0x0010)? true : false;
+        $aFileinfo["others"]["read"] = ($oiFilePermissions & 0x0004)? true : false;
+        $aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002)? true : false;
         $aFileinfo["owner"]["id"] = fileowner($sFilename);
         $aFileinfo["group"]["id"] = filegroup($sFilename);
         return ($aFileinfo);
@@ -486,7 +509,7 @@ class cSystemtest {
     /**
      * Returns the current user which runs the PHP interpreter
      *
-     * @return number|boolean User ID or false if unable to determine the user
+     * @return number boolean ID or false if unable to determine the user
      */
     protected function getServerUID() {
         if (function_exists("posix_getuid")) {
@@ -516,7 +539,7 @@ class cSystemtest {
     /**
      * Returns the current group which runs the PHP interpreter
      *
-     * @return number|boolean User ID or false if unable to determine the group
+     * @return number boolean ID or false if unable to determine the group
      */
     protected function getServerGID() {
         if (function_exists("posix_getgid")) {
@@ -537,7 +560,8 @@ class cSystemtest {
     }
 
     /**
-     * Returns one of the CON_PREDICT suggestions depending on the permissions of the given file
+     * Returns one of the CON_PREDICT suggestions depending on the permissions
+     * of the given file
      *
      * @param string $file The path to the file
      * @return int CON_PREDICT_*
@@ -549,20 +573,23 @@ class cSystemtest {
             return self::CON_PREDICT_WINDOWS;
         }
 
-        // Check if the file is read- and writeable. If yes, we don't need to do any
+        // Check if the file is read- and writeable. If yes, we don't need to do
+        // any
         // further checks.
         if (is_writable($file) && is_readable($file)) {
             return self::CON_PREDICT_SUFFICIENT;
         }
 
-        // If we can't find out the web server UID, we cannot predict the correct
+        // If we can't find out the web server UID, we cannot predict the
+        // correct
         // mask.
         $iServerUID = $this->getServerUID();
         if ($iServerUID === false) {
             return self::CON_PREDICT_NOTPREDICTABLE;
         }
 
-        // If we can't find out the web server GID, we cannot predict the correct
+        // If we can't find out the web server GID, we cannot predict the
+        // correct
         // mask.
         $iServerGID = $this->getServerGID();
         if ($iServerGID === false) {
@@ -603,15 +630,19 @@ class cSystemtest {
      * Checks a single file or directory wether it is writeable or not
      *
      * @param string $filename The file
-     * @param int $severity The resulting C_SEVERITY constant should the test fail
+     * @param int $severity The resulting C_SEVERITY constant should the test
+     *            fail
      * @param bool $dir True if the $filename is a directory
-     * @throws Exception Throws a generic Exception in the event that the permissions are wrong
+     * @throws Exception Throws a generic Exception in the event that the
+     *         permissions are wrong
      * @return boolean Returns true if everything is fine
      */
     protected function testSingleFile($filename, $severity, $dir = false) {
         if (strpos($filename, $this->_config["path"]["frontend"]) === 0) {
             $length = strlen($this->_config["path"]["frontend"]) + 1;
             $shortFilename = substr($filename, $length);
+        } else { // for dirs
+            $shortFilename = $filename;
         }
 
         if (!$dir) {
@@ -680,7 +711,7 @@ class cSystemtest {
                 }
             }
 
-            $this->storeResult(false, $severity, $title, $message . "<br><br>" . $predictMessage);
+            $this->storeResult(false, $severity, $title, $message . "<br /><br />" . $predictMessage);
             if ($title && $message) {
                 $status = false;
             }
@@ -738,26 +769,36 @@ class cSystemtest {
      * @param string $host The database host
      * @param string $username The database user
      * @param string $password The database user password
-     * @return boolean|cDb Returns an array with the cDB object on the first place and a boolean on the second
+     * @return boolean cDb an array with the cDB object on the first place and a
+     *         boolean on the second
      */
     protected function doMySQLConnect($host, $username, $password) {
         $aOptions = array(
             'connection' => array(
                 'host' => $host,
                 'user' => $username,
-                'password' => $password,
-            ),
+                'password' => $password
+            )
         );
         try {
             $db = new cDb($aOptions);
         } catch (cDbException $e) {
-            return array($db, false);
+            return array(
+                $db,
+                false
+            );
         }
 
         if ($db->connect() == 0) {
-            return array($db, false);
+            return array(
+                $db,
+                false
+            );
         } else {
-            return array($db, true);
+            return array(
+                $db,
+                true
+            );
         }
     }
 
@@ -934,8 +975,8 @@ class cSystemtest {
             'connection' => array(
                 'host' => $host,
                 'user' => $username,
-                'password' => $password,
-            ),
+                'password' => $password
+            )
         );
 
         $db = new cDb($dbCfg);
@@ -961,7 +1002,7 @@ class cSystemtest {
             return $errorMessage;
         }
 
-        if($handle->getLinkId()->errno == 1045) {
+        if ($handle->getLinkId()->errno == 1045) {
             return self::CON_MYSQL_CANT_CONNECT;
         }
 
@@ -978,22 +1019,70 @@ class cSystemtest {
         $status = true;
 
         $files = array(
-            //check files
-            array('filename' => $this->_config['path']['contenido_logs'] . "errorlog.txt", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_logs'] . "setuplog.txt", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_cronlog'] . "pseudo-cron.log", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_cronlog'] . "session_cleanup.php.job", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_cronlog'] . "send_reminder.php.job", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_cronlog'] . "optimize_database.php.job", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_cronlog'] . "move_old_stats.php.job", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_cronlog'] . "move_articles.php.job", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_cronlog'] . "linkchecker.php.job", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_cronlog'] . "run_newsletter_job.php.job", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_cronlog'] . "setfrontenduserstate.php.job", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_cronlog'] . "advance_workflow.php.job", 'severity' => self::C_SEVERITY_WARNING),
-            array('filename' => $this->_config['path']['contenido_cache'], 'severity' => self::C_SEVERITY_WARNING, 'dir' => true),
-            array('filename' => $this->_config['path']['contenido_temp'], 'severity' => self::C_SEVERITY_WARNING, 'dir' => true),
-            array('filename' => $this->_config['path']['contenido_config'] . "config.php", 'severity' => self::C_SEVERITY_ERROR, 'config' => $testConfig),
+            // check files
+            array(
+                'filename' => $this->_config['path']['contenido_logs'] . "errorlog.txt",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_logs'] . "setuplog.txt",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_cronlog'] . "pseudo-cron.log",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_cronlog'] . "session_cleanup.php.job",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_cronlog'] . "send_reminder.php.job",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_cronlog'] . "optimize_database.php.job",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_cronlog'] . "move_old_stats.php.job",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_cronlog'] . "move_articles.php.job",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_cronlog'] . "linkchecker.php.job",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_cronlog'] . "run_newsletter_job.php.job",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_cronlog'] . "setfrontenduserstate.php.job",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_cronlog'] . "advance_workflow.php.job",
+                'severity' => self::C_SEVERITY_WARNING
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_cache'],
+                'severity' => self::C_SEVERITY_WARNING,
+                'dir' => true
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_temp'],
+                'severity' => self::C_SEVERITY_WARNING,
+                'dir' => true
+            ),
+            array(
+                'filename' => $this->_config['path']['contenido_config'] . "config.php",
+                'severity' => self::C_SEVERITY_ERROR,
+                'config' => $testConfig
+            )
         );
 
         $frontendFiles = array(
@@ -1078,21 +1167,11 @@ class cSystemtest {
             if (!cFileHandler::exists("../" . $dir)) {
                 if (!mkdir("../" . $dir)) {
                     $ret = false;
-                    $this->storeResult(
-                        false,
-                        self::C_SEVERITY_WARNING,
-                        sprintf(i18n("Could not find or create directory %s"), $dir),
-                        i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories.")
-                    );
+                    $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories."));
                 } else {
                     if (!cFileHandler::chmod("../" . $dir, "777")) {
                         $ret = false;
-                        $this->storeResult(
-                            false,
-                            self::C_SEVERITY_WARNING,
-                            sprintf(i18n("Could not find or create directory %s"), $dir),
-                            i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories.")
-                        );
+                        $this->storeResult(false, self::C_SEVERITY_WARNING, sprintf(i18n("Could not find or create directory %s"), $dir), i18n("The frontend expects certain directories to exist and it needs to be able to write to these directories."));
                     }
                 }
             }
@@ -1102,7 +1181,8 @@ class cSystemtest {
     }
 
     /**
-     * Checks for the open_basedir directive and returns one of the CON_BASEDIR constants
+     * Checks for the open_basedir directive and returns one of the CON_BASEDIR
+     * constants
      *
      * @return int
      */
