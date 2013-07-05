@@ -194,15 +194,21 @@ table.borderless tr td {
     margin-left: 54px;
 }
 #username {
+    height: 17px;
+    line-height: 17px;
     margin-left: 13px;
     margin-top: 3px;
+    padding: 0 2px;
 }
 #lblpasswd {
     margin-left: 54px;
 }
 #passwd {
+    height: 17px;
+    line-height: 17px;
     margin-left: 13px;
     margin-top: 3px;
+    padding: 0 2px;
 }
 #lang {
     margin-top: 3px;
