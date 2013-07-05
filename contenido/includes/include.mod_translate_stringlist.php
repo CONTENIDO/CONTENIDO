@@ -2,15 +2,15 @@
 /**
  * This file contains the backend page for managing module translations.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,12 +18,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $moduleTranslation = new cModuleFileTranslation($idmod);
 $translationArray = $moduleTranslation->getTranslationArray();
 
+// sort array
+ksort($translationArray);
+
 $page = new cGuiPage("mod_translate_stringlist");
 
-$link = new cHTMLLink;
+$link = new cHTMLLink();
 $link->setCLink("mod_translate", 4, "");
 
-$mylink = new cHTMLLink;
+$mylink = new cHTMLLink();
 
 $rowCount = 0;
 

@@ -2,15 +2,15 @@
 /**
  * This file contains the backend page for managing module translations.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -63,9 +63,12 @@ foreach ($strings as $string) {
     }
 }
 
+// sort array
+ksort($myTrans);
+
 // If changed save in file
 if (count(array_diff_assoc($myTrans, $translationArray)) > 0 || count(array_diff_assoc($translationArray, $myTrans)) > 0) {
-    $moduleTranslation->saveTranslationArray($myTrans);
+	$moduleTranslation->saveTranslationArray($myTrans);
 }
 
 if (!isset($row)) {
