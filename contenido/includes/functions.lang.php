@@ -2,15 +2,15 @@
 /**
  * This file contains the CONTENIDO language functions.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -200,10 +200,12 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
         $db->query($sql);
 
         // ********** delete from 'code'-cache
-        foreach (new DirectoryIterator($cfgClient[$iIdClient]['code']['path']) as $file) {
-            $extension = substr($file, strpos($file->getBasename(), '.') + 1);
-            if ($file->getFilename() == $iIdClient . "." . $iIdLang && $extension == "php") {
-                unlink($cfgClient[$iIdClient]['code']['path'] . $iIdClient . "." . $iIdLang . 'php');
+        if (is_dir($cfgClient[$iIdClient]['code']['path'])) {
+            foreach (new DirectoryIterator($cfgClient[$iIdClient]['code']['path']) as $file) {
+                $extension = substr($file, strpos($file->getBasename(), '.') + 1);
+                if ($file->getFilename() == $iIdClient . "." . $iIdLang && $extension == "php") {
+                    unlink($cfgClient[$iIdClient]['code']['path'] . $iIdClient . "." . $iIdLang . 'php');
+                }
             }
         }
 
