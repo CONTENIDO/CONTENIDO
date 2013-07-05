@@ -47,7 +47,7 @@ if (!$sess->isRegistered("upl_last_path")) {
 // if path doesn't exist use root path
 // this might happen when the last path is that of another client or deleted outside CONTENIDO
 if (!cFileHandler::exists($cfgClient[$client]["upl"]["path"] . $path)) {
-    $path = '/';
+    $path = '';
 }
 // remember current path as last path
 $upl_last_path = $path;
