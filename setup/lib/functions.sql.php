@@ -168,6 +168,8 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
 
     $sql = "SELECT * FROM " . $table;
     $db->query($sql);
+	
+	$db2 = getSetupMySQLDBConnection(false);
 
     while ($db->nextRecord()) {
         $row = $db->toArray(FETCH_ASSOC);
@@ -180,7 +182,6 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
             $sql .= "`" . $key . "`= '" . cSecurity::escapeDB($value, $db) . "' AND ";
         }
         $sql = substr($sql, 0, strlen($sql) - 5) . ";";
-        $db2 = getSetupMySQLDBConnection(false);
         $db2->query($sql);
     }
 }

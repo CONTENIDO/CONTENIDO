@@ -308,7 +308,7 @@ class cModuleHandler {
 
             $this->_moduleAlias = $cApiModule->get('alias');
             $this->_moduleName = $cApiModule->get('name');
-            $this->_path = $frontendPath . $this->_cfgClient[$this->_client]['module']['path'];
+            $this->_path = $this->_cfgClient[$this->_client]['module']['path'];
             $this->_modulePath = $this->_path . $this->_moduleAlias . '/';
         }
     }

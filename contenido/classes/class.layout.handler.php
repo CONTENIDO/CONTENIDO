@@ -375,9 +375,9 @@ class cLayoutHandler {
      * @param array CONTENIDO config array
      * @throws cException if the layout could not be saved
      */
-    public static function upgrade($adb, $cfg) {
+    public static function upgrade($adb, $cfg, $clientId) {
         // get name of layout and frontendpath
-        if (!$adb->query('SELECT * FROM `%s`', $cfg['tab']['lay'])) {
+        if (!$adb->query("SELECT * FROM `%s` WHERE idclient='%s'", $cfg['tab']['lay'], $clientId)) {
             return;
         }
 
@@ -391,7 +391,8 @@ class cLayoutHandler {
         }
 
         // all layouts are saved, so remove the code field from _lay
-        $adb->query('ALTER TABLE `%s` DROP code', $cfg['tab']['lay']);
+        $sql = sprintf("UPDATE %s SET code = '' WHERE idclient='%s'", $cfg['tab']['lay'], $clientId);
+        $adb->query($sql);
     }
 
 }
