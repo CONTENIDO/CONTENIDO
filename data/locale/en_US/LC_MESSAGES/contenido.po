@@ -6925,3 +6925,6 @@ msgstr ""
 #: ../data/config/production/cfg_actions.inc.php:214
 msgid "Fake permissions"
 msgstr ""
+
+msgid "Article has no raw data"
+msgstr ""
