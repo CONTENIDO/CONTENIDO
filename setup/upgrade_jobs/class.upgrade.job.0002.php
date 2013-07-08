@@ -60,7 +60,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
                 }
             }
         }
-           
+
         // update input and output fields
         $sql = sprintf("UPDATE %s SET input = '', output = '' WHERE idclient='%s'", $cfg['tab']['mod'], $clientId);
         $db->query($sql);
@@ -69,9 +69,9 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
     public function _execute() {
         global $cfg;
         global $client, $lang, $cfgClient;
-        
+
         if ($this->_setupType != 'upgrade') {
-        	return;
+            return;
         }
 
         $sql = "SHOW COLUMNS FROM %s LIKE 'frontendpath'";
@@ -79,8 +79,8 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
 
         $this->_oDb->query($sql);
         if ($this->_oDb->numRows() != 0) {
-        	$sql = "SELECT * FROM " . $cfg['tab']['clients'];
-           	$this->_oDb->query($sql);
+            $sql = "SELECT * FROM " . $cfg['tab']['clients'];
+            $this->_oDb->query($sql);
 
             while ($this->_oDb->nextRecord()) {
                 updateClientCache($this->_oDb->f("idclient"), $this->_oDb->f("htmlpath"), $this->_oDb->f("frontendpath"));
@@ -92,30 +92,30 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             $sql = sprintf("ALTER TABLE %s DROP frontendpath", $cfg['tab']['clients']);
             $this->_oDb->query($sql);
         }
-        
+
         $cfgClient = updateClientCache();
 
         $clientBackup = $client;
         $langBackup = $lang;
-        
+
         $db2 = getSetupMySQLDBConnection();
 
         // Update module aliases
         $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['mod']);
         while ($this->_oDb->nextRecord()) {
-        	$newName = cApiStrCleanURLCharacters($this->_oDb->f('name'));
-        	$sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idmod` = %d", $cfg['tab']['mod'], $newName, $this->_oDb->f('idmod'));
-        	$db2->query($sql);
+            $newName = cApiStrCleanURLCharacters($this->_oDb->f('name'));
+            $sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idmod` = %d", $cfg['tab']['mod'], $newName, $this->_oDb->f('idmod'));
+            $db2->query($sql);
         }
-        
+
         // Update layout aliases
         $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['lay']);
         while ($this->_oDb->nextRecord()) {
-        	$newName = cApiStrCleanURLCharacters($this->_oDb->f('name'));
-        	$sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idlay` = %d", $cfg['tab']['lay'], $newName, $this->_oDb->f('idlay'));
-        	$db2->query($sql);
+            $newName = cApiStrCleanURLCharacters($this->_oDb->f('name'));
+            $sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idlay` = %d", $cfg['tab']['lay'], $newName, $this->_oDb->f('idlay'));
+            $db2->query($sql);
         }
-        
+
         // Makes the new concept of modules (save the modules to the file) save the translation
         cModuleHandler::setEncoding('ISO-8859-1');
 

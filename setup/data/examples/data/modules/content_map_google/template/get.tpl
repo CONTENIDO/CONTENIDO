@@ -16,7 +16,7 @@
     <label class="content_type_label">{$trans.address}</label>
     <div>{$address}</div>
 {ELSE}
-	<div id="address">{$address}</div>
+    <div id="address">{$address}</div>
 {/if}
 
 

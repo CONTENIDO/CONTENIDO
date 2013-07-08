@@ -68,7 +68,7 @@ ksort($myTrans);
 
 // If changed save in file
 if (count(array_diff_assoc($myTrans, $translationArray)) > 0 || count(array_diff_assoc($translationArray, $myTrans)) > 0) {
-	$moduleTranslation->saveTranslationArray($myTrans);
+    $moduleTranslation->saveTranslationArray($myTrans);
 }
 
 if (!isset($row)) {

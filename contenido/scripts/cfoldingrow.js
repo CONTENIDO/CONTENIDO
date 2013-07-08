@@ -12,7 +12,7 @@
 /**
  * Expands or collapses a cGuiFoldingRow.
  * The new state is registered for the given user.
- * 
+ *
  * @param image
  * @param row
  * @param hidden

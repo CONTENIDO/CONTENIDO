@@ -85,11 +85,11 @@ function conLoadFile(script, callback, scope, params) {
     if (!callback) {
         callback = '';
     }
-	
-	if (params === undefined) {
-		params = new Array();
-	}
-	
+
+    if (params === undefined) {
+        params = [];
+    }
+
     // check if callback has to be called on the scope object
     var isObjectCallback = (typeof callback === 'function' && typeof scope === 'object');
 
@@ -302,9 +302,9 @@ function showConfirmation(description, callback, additionalOptions) {
     options = $.extend(options, additionalOptions);
     // show the dialog in the content window
     if (0 == contentWindow.$("html").find("#single_dialog").length) {
-    	contentWindow.$('<div id="single_dialog">' + description + '</div>').dialog(options);	
+        contentWindow.$('<div id="single_dialog">' + description + '</div>').dialog(options);
     }
-    
+
 }
 
 /**

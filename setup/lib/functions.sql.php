@@ -168,8 +168,8 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
 
     $sql = "SELECT * FROM " . $table;
     $db->query($sql);
-	
-	$db2 = getSetupMySQLDBConnection(false);
+
+    $db2 = getSetupMySQLDBConnection(false);
 
     while ($db->nextRecord()) {
         $row = $db->toArray(FETCH_ASSOC);
