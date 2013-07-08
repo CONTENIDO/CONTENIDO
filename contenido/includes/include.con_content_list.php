@@ -161,7 +161,7 @@ $page->set("s", "CAT_STRING", $catString);
 $page->set("s", "TITLE", conHtmlSpecialChars($db->f("title")));
 
 if (count($result) <= 0) {
-    $page->displayInfo(i18n("Nothing to do here"));
+    $page->displayInfo(i18n("Article has no raw data"));
     $page->abortRendering();
     //$layoutcode .= '<div>--- ' . i18n("none") . ' ---</div>';
 } else {
