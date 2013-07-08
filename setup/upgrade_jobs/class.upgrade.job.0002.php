@@ -30,30 +30,6 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
     public $maxVersion = "0";
 
     /**
-     * This method clean the name of moduls table $cfg['tab']['mod'].
-     * Clean means all the charecters (�,*+#...) will be replaced.
-     */
-    private function _changeNameCleanUrl() {
-        global $cfg;
-
-        $myDb = clone $this->_oDb;
-        $db = clone $this->_oDb;
-
-        // select all modules
-        $sql = sprintf('SELECT * FROM %s', $cfg['tab']['mod']);
-        $db->query($sql);
-
-        while ($db->nextRecord()) {
-            // clear name from not allow charecters
-            $newName = cApiStrCleanURLCharacters($db->f('name'), true);
-            if ($newName != $db->f('name')) {
-                $mySql = sprintf("UPDATE %s SET name='%s' WHERE idmod=%s", $cfg['tab']['mod'], $newName, $db->f('idmod'));
-                $myDb->query($mySql);
-            }
-        }
-    }
-
-    /**
      * This method will transfer the moduls from $cfg['tab']['mod'] to the
      * file system.
      * This Method will be called by setup
@@ -67,8 +43,6 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         $db->query($sql);
 
         $moduleHandler = new cModuleHandler();
-        // create all main module directories
-        $moduleHandler->createAllMainDirectories();
 
         while ($db->nextRecord()) {
             // init the ModulHandler with all data of the modul
@@ -125,30 +99,25 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
         $langBackup = $lang;
         
         $db2 = getSetupMySQLDBConnection();
-        
+
         // Update module aliases
         $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['mod']);
         while ($this->_oDb->nextRecord()) {
-        	if ($this->_oDb->f('alias') == '') {
-        		$sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idmod` = %d;", $cfg['tab']['mod'], $this->_oDb->f('name'), $this->_oDb->f('idmod'));
-        		$db2->query($sql);
-        	}
+        	$newName = cApiStrCleanURLCharacters($this->_oDb->f('name'));
+        	$sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idmod` = %d", $cfg['tab']['mod'], $newName, $this->_oDb->f('idmod'));
+        	$db2->query($sql);
         }
         
         // Update layout aliases
         $this->_oDb->query("SELECT * FROM `%s`", $cfg['tab']['lay']);
         while ($this->_oDb->nextRecord()) {
-        	if ($this->_oDb->f('alias') == '') {
-        		$sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idlay` = %d;", $cfg['tab']['lay'], $this->_oDb->f('name'), $this->_oDb->f('idlay'));
-        		$db2->query($sql);
-        	}
+        	$newName = cApiStrCleanURLCharacters($this->_oDb->f('name'));
+        	$sql = $db2->prepare("UPDATE `%s` SET `alias` = '%s' WHERE `idlay` = %d", $cfg['tab']['lay'], $newName, $this->_oDb->f('idlay'));
+        	$db2->query($sql);
         }
         
         // Makes the new concept of modules (save the modules to the file) save the translation
         cModuleHandler::setEncoding('ISO-8859-1');
-        
-        // clean name of module (Umlaute, not allowed character ..) prepare for file system
-        $this->_changeNameCleanUrl();
 
         foreach ($cfgClient as $iClient => $aClient) {
             if ((int) $iClient == 0) {

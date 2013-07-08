@@ -512,36 +512,6 @@ class cModuleHandler {
     }
 
     /**
-     * Make in all clients the module directory
-     *
-     * @throws cException if the frontend path can not be found or the module
-     *         directory cann ot be created
-     */
-    public function createAllMainDirectories() {
-        global $cfg, $cfgClient;
-
-        foreach ($cfgClient as $iIdClient => $aClient) {
-            if (isset($aClient['path']['frontend'])) {
-                $frontendPath = $aClient['path']['frontend'];
-                // test if frontendpath exists
-                if (is_dir($frontendPath) == false) {
-                    throw new cException('Frontendpath was not found: ' . $frontendPath);
-                } else {
-                    $sModulePath = $aClient['module']['path'];
-                    if (!is_dir($sModulePath)) {
-                        // could not make the modul directory in client
-                        if (mkdir($sModulePath, 0777, true) == false) {
-                            throw new cException('Module directory could not be created: ' . $sModulePath);
-                        } else {
-                            cFileHandler::setDefaultDirPerms($sModulePath);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Make main module directory.
      *
      * @return boolean
@@ -556,7 +526,7 @@ class cModuleHandler {
 
         // make
         if (!is_dir($sMainModuleDirectory)) {
-            if (mkdir($sMainModuleDirectory) == false) {
+            if (mkdir($sMainModuleDirectory, 0777, true) == false) {
                 return false;
             } else {
                 cFileHandler::setDefaultDirPerms($sMainModuleDirectory);
