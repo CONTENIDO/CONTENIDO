@@ -6926,5 +6926,6 @@ msgstr ""
 msgid "Fake permissions"
 msgstr ""
 
+#: includes/include.con_content.php:164
 msgid "Article has no raw data"
 msgstr ""
