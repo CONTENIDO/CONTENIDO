@@ -408,30 +408,3 @@ function leave_check() {
 
     }
 }
-
-/**
- * Evaluates the given callbacks.
- *
- * @param array callbacks - array of callbacks. A callback is either a simple string
- *             which can be evaluated or an object with callback, scope and params
- *             properties.
- */
-function conEvaluateCallbacks(callbacks) {
-
-    $.each(callbacks, function(index, value) {
-
-        if (typeof value === 'object' && value['params'] != undefined) {
-
-            // object callback, call it with the appropriate scope
-            value['callback'].apply(value['scope'], value['params']);
-
-        } else if (typeof value === 'string') {
-
-            // simple callback, just evaluate it
-            eval(value);
-
-        }
-
-    });
-
-}

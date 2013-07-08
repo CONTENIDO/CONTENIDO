@@ -49,6 +49,25 @@ var loaded = new Object();
 var stack = new Object();
 
 /**
+ * Evaluates the given callbacks.
+ *
+ * @param array callbacks - array of callbacks. A callback is either a simple string
+ *             which can be evaluated or an object with callback, scope and params
+ *             properties.
+ */
+function conEvaluateCallbacks(callbacks) {
+    $.each(callbacks, function(index, value) {
+        if (typeof value === 'object') {
+            // object callback, call it with the appropriate scope
+            value['callback'].apply(value['scope'], value['params']);
+        } else if (typeof value === 'string') {
+            // simple callback, just evaluate it
+            eval(value);
+        }
+    });
+}
+
+/**
  * Loads the given script and evaluates the given callback function
  * when the script has been loaded successfully. The callback can be
  * a simple string which is evaluated or a function which is called with
@@ -66,6 +85,11 @@ function conLoadFile(script, callback, scope, params) {
     if (!callback) {
         callback = '';
     }
+	
+	if (params === undefined) {
+		params = new Array();
+	}
+	
     // check if callback has to be called on the scope object
     var isObjectCallback = (typeof callback === 'function' && typeof scope === 'object');
 
@@ -104,7 +128,7 @@ function conLoadFile(script, callback, scope, params) {
         }
     } else {
         // script is already loaded, so just evaluate the callback
-        if (isObjectCallback && params != undefined) {
+        if (isObjectCallback) {
             callback.apply(scope, params);
         } else {
             eval(callback);
