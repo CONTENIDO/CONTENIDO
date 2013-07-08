@@ -82,7 +82,7 @@ form, h1, h2, h3, h4 {
 }
 .head_nav_login input,
 .head_nav_login select  {
-    border: 1px solid #f1f1f1;
+    border: 1px solid #999;
 }
 #request_layer {
     background-color: #F1F1F1;
