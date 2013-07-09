@@ -489,7 +489,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
 
-        $cfgClient[$iClient]['name'] = $db->f('name');
+        $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace(array('*/','/*','//'),'', $db->f('name')));
 
         $errsite_idcat[$iClient] = $db->f('errsite_cat');
         $errsite_idart[$iClient] = $db->f('errsite_art');
@@ -548,8 +548,9 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
 
     foreach ($cfgClient as $iIdClient => $aClient) {
         if ((int) $iIdClient > 0 && is_array($aClient)) {
+
             $aConfigFileContent[] = '/* ' . $aClient['name'] . ' */';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["name"] = "'.$aClient['name'].'";';
+            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["name"] = "'. $aClient['name'] .'";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["errsite"]["idcat"] = "'.$aClient["errsite"]["idcat"].'";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["errsite"]["idart"] = "'.$aClient["errsite"]["idart"].'";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["images"] = "'.$aClient["path"]["htmlpath"].'images/";';
@@ -599,6 +600,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["version"]["frontendpath"] = "data/version/";';
             $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
             $aConfigFileContent[] = '';
+
         }
     }
     $aConfigFileContent[] = '$cfgClient["set"] = "set";';
