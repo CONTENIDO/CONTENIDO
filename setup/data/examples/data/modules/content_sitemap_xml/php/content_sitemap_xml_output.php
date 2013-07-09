@@ -1,7 +1,22 @@
 <?php
 
 /**
- * See http://www.sitemaps.org/ for more informations about XML sitemaps.
+ * Generate a XML sitemap.
+ *
+ * The module configuration allows for the selection of a category which is used
+ * as root to determine articles that will be listed in the sitemap.
+ *
+ * An optional filename can be defined too. If no filename is given, the sitemap
+ * is displayed immediatly. With a filename the sitemap is written to the given
+ * file. The filename has to be a basename (no path). The clients frontend path
+ * is used instead. In this case this module makes sure that the sitemap is
+ * generated only once each 23h.
+ *
+ * SETTING: content-xml-sitemap/cat-url-for-startart (default: true)
+ * If set to true for all startarticles the URL is generated for their category
+ * instead for the article itself.
+ * This should be done if the navigation produces category links which is
+ * usually the case..
  *
  * @package Module
  * @subpackage ContentSitemapXml
@@ -12,103 +27,178 @@
  * @author marcus.gnass@4fb.de
  * @copyright four for business AG
  * @link http://www.4fb.de
+ * @see http://www.sitemaps.org/
  */
 
 $client = cRegistry::getClientId();
 $cfgClient = cRegistry::getClientConfig();
-$lang = cRegistry::getLanguageId();
 
-$selected = "CMS_VALUE[1]";
+// get idcat of category to generate sitemap from
+$idcatStart = "CMS_VALUE[1]";
+$idcatStart = cSecurity::toInteger($idcatStart);
+
+// get filename to save sitemap to (optional)
 $filename = "CMS_VALUE[2]";
-
-$selected = cSecurity::toInteger($selected);
-
-// filter the filename value
 if (!empty($filename)) {
     $filename = basename($filename);
-    // make sure that the filename ends with .xml
+    // assert .xml extension
     if (substr($filename, -4) !== '.xml') {
         $filename .= '.xml';
     }
-    $filename = $cfgClient[$client]['sitemap']['path'] . $filename;
 }
 
-// get all categories recursively
-$categoryCollection = new cApiCategoryCollection();
-$categoryIds = $categoryCollection->getAllCategoryIdsRecursive($selected, $client);
+try {
 
-// filter the categories - category must be visible and public!
-foreach ($categoryIds as $key => $categoryId) {
-    $categoryLanguage = new cApiCategoryLanguage();
-    $categoryLanguage->loadByCategoryIdAndLanguageId($categoryId, $lang);
-    if ($categoryLanguage->get('visible') == false || $categoryLanguage->get('public') == false) {
-        unset($categoryIds[$key]);
+    // check if this is a rerun (a cException will then be thrown)
+    // check is skipped when 'rerun' is forced
+    if (!empty($filename) && !array_key_exists('rerun', $_REQUEST)) {
+        checkJobRerun('xml_sitemap_' . cRegistry::getClient()->get('name') . '_' . cRegistry::getLanguage()->get('name'));
     }
-}
 
-$xmlString = <<<EOD
+    // get all categories recursively
+    $categoryCollection = new cApiCategoryCollection();
+    $categoryIds = $categoryCollection->getAllCategoryIdsRecursive($idcatStart, $client);
+
+    $xmlString = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>
 EOD;
 
-$sitemap = new SimpleXMLElement($xmlString);
+    $sitemap = new SimpleXMLElement($xmlString);
 
-$itemCount = 0;
-$itemCount += addArticlesToSitemap($sitemap, $categoryIds);
+    $itemCount = array();
 
-// if there are items
-if (0 < $itemCount) {
-    // provide the possibility to alter the sitemap content
-    $sitemap = cApiCecHook::executeAndReturn('Contenido.Content.XmlSitemapCreate', $sitemap);
+    // loop all languages of current client
+    $clientLanguageCollection = new cApiClientLanguageCollection();
+    foreach ($clientLanguageCollection->getLanguagesByClient($client) as $currentIdlang) {
+
+        // create copy of category ids
+        $arrayObject = new ArrayObject($categoryIds);
+        $currentCategoryIds = $arrayObject->getArrayCopy();
+
+        // filter the categories - category must be visible and public!
+        foreach ($currentCategoryIds as $key => $categoryId) {
+            $categoryLanguage = new cApiCategoryLanguage();
+            $categoryLanguage->loadByCategoryIdAndLanguageId($categoryId, $currentIdlang);
+            if ($categoryLanguage->get('visible') == false || $categoryLanguage->get('public') == false) {
+                unset($currentCategoryIds[$key]);
+            }
+        }
+
+        // skip category containing product related articles
+        // these will be considered in addProductsToSitemap()
+        $productIdcat = getEffectiveSetting('navigation-product', 'idcat', '0');
+        if (0 < $productIdcat) {
+            $key = array_search($productIdcat, $currentCategoryIds);
+            if (false !== $key) {
+                unset($currentCategoryIds[$key]);
+            }
+        }
+
+        $itemCount[] = addArticlesToSitemap($sitemap, $currentCategoryIds, $currentIdlang);
+    }
+
+    // if there are items
+    if (0 < array_sum($itemCount)) {
+        // provide the possibility to alter the sitemap content
+        $sitemap = cApiCecHook::executeAndReturn('Contenido.Content.XmlSitemapCreate', $sitemap);
+    }
+
+    // echo sitemap or write it to file with the specified filename
+    saveSitemap($sitemap, $filename);
+} catch (cException $e) {
+    echo "\n\n[" . date('Y-m-d') . "] " . $e->getMessage() . "\n";
 }
 
-// echo sitemap or write it to file with the specified filename
-saveSitemap($sitemap, $filename);
+/**
+ * Reads timestamp from last job run and compares it to current timestamp.
+ * If last run is less than 23h ago this script will be aborted. Elsethe
+ * current timestamp is stored into job file.
+ *
+ * @param unknown_type $jobname
+ * @throws cException if job was already executed within last 23h
+ */
+function checkJobRerun($jobname) {
+    // get filename of cron job file
+    $cfg = cRegistry::getConfig();
+    $filename = $cfg['path']['contenido_cronlog'] . $jobname . '.job';
+    if (cFileHandler::exists($filename)) {
+        // get timestamp of last runf from cron job file
+        $cronlogContent = file_get_contents($filename);
+        $lastRun = cSecurity::toInteger($cronlogContent);
+        // check timestamp of last run
+        if ($lastRun > strtotime('-23 hour')) {
+            // abort if last run is less than 23h ago
+            throw new cException('job was already executed within last 23h');
+        }
+    }
+    // store current timestamp in cronjob file
+    file_put_contents($filename, time());
+}
 
 /**
  * Add all online and searchable articles of theses categories to the sitemap.
  *
  * @param SimpleXMLElement $sitemap
  */
-function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds) {
-    $cfg = cRegistry::getConfig();
-    $db = cRegistry::getDb();
-    $lang = cRegistry::getLanguageId();
-
+function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds, $lang) {
     $itemCount = 0;
 
     // check if there are categories
     if (0 < count($categoryIds)) {
 
-        // get articles from DB
-        // needed fields: idart, lastmodified, sitemapprio, changefreq
-        $sql = '
-            SELECT
-                `al`.`idart`
-                , UNIX_TIMESTAMP(`al`.`lastmodified`) as lastmod
-                , `al`.`changefreq`
-                , `al`.`sitemapprio`
-            FROM
-                `' . $cfg['tab']['art_lang'] . '` AS `al`
-                , `' . $cfg['tab']['cat_art'] . '` AS `ca`
-            WHERE
-                `al`.`idart` = `ca`.`idart`
-                AND `al`.`idlang` = ' . $lang . '
-                AND `ca`.`idcat` IN (' . implode(',', $categoryIds) . ')
-                AND `al`.`online` = 1
-                AND `al`.`searchable` = 1
-            ;';
+        $cfg = cRegistry::getConfig();
+        $tab = $cfg['tab'];
+        $db = cRegistry::getDb();
 
-        $db->query($sql);
+        $useCategoryUrlsForStartArticles = 'true' == getEffectiveSetting('content-xml-sitemap', 'cat-url-for-startart', 'true');
+
+        $categoryIds = implode(',', $categoryIds);
+
+        // get articles from DB
+        $db->query("
+			SELECT
+				art_lang.idart
+				, UNIX_TIMESTAMP(art_lang.lastmodified) as lastmod
+				, art_lang.changefreq
+				, art_lang.sitemapprio
+				, cat_art.idcat
+				, IF(art_lang.idartlang = cat_lang.startidartlang, 1, 0) AS is_start
+            FROM
+				`$tab[art_lang]` AS art_lang
+				, `$tab[cat_art]` AS cat_art
+				, `$tab[cat_lang]` AS cat_lang
+            WHERE
+				art_lang.idart = cat_art.idart
+                AND art_lang.idlang = $lang
+				AND art_lang.online = 1
+				AND art_lang.searchable = 1
+                AND cat_art.idcat = cat_lang.idcat
+                AND cat_art.idcat IN ($categoryIds)
+                AND cat_lang.idlang = $lang
+			;");
 
         // construct the XML node
         while ($db->nextRecord()) {
+
+            $params = array();
+            $params['lang'] = $lang;
+            $params['changelang'] = $lang;
+
+            // if it is a startarticle the generated URL should be that of
+            // the category (assuming the navigation contains category URLs)
+            if (1 == $db->f('is_start') && $useCategoryUrlsForStartArticles) {
+                $params['idcat'] = $db->f('idcat');
+            } else {
+                $params['idart'] = $db->f('idart');
+            }
+
+            $loc = cUri::getInstance()->build($params, true);
+            $loc = htmlentities($loc);
+
             addUrl($sitemap, array(
                 // construct the link
-                'loc' => cUri::getInstance()->build(array(
-                    'idart' => $db->f('idart'),
-                    'lang' => $lang
-                ), true),
+                'loc' => $loc,
                 // construct the last modified date in ISO 8601
                 'lastmod' => (int) $db->f('lastmod'),
                 // get the sitemap change frequency
@@ -161,9 +251,7 @@ function iso8601Date($time) {
     $tzd = date('O', $time);
     $tzd = chunk_split($tzd, 3, ':');
     $tzd = substr($tzd, 0, 6);
-
     $date = date('Y-m-d\TH:i:s', $time);
-
     return $date . $tzd;
 }
 
@@ -171,23 +259,20 @@ function iso8601Date($time) {
  * Saves the sitemap to the file with the given filename.
  * If no filename is given, it outputs the sitemap.
  *
+ * @todo How can I save this properly formatted?
+ * @see http://stackoverflow.com/questions/1191167/format-output-of-simplexml-asxml
  * @param SimpleXMLElement $sitemap the XML structure of the sitemap
  * @param string $filename [optional] the filename to which the sitemap should
  *        be written
  */
 function saveSitemap(SimpleXMLElement $sitemap, $filename = '') {
-    $cfgClient = cRegistry::getClientConfig();
-    $client = cRegistry::getClientId();
-    if (0 === strlen($filename)) {
+    if (empty($filename)) {
         header('Content-type: text/xml');
         echo $sitemap->asXML();
+    } else if ($sitemap->asXML($cfgClient[$client]['path']['frontend'] . $filename)) {
+        echo mi18n("XML sitemap successfully written to %s", $filename);
     } else {
-        $success = $sitemap->asXML($filename);
-        if ($success) {
-            echo mi18n("XML sitemap successfully written to %s", $filename);
-        } else {
-            echo mi18n("XML sitemap could not be written to %s", $filename);
-        }
+        echo mi18n("XML sitemap could not be written to %s", $filename);
     }
 }
 
