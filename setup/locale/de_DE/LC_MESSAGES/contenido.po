@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Setup\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-09 15:35+0200\n"
-"PO-Revision-Date: 2013-07-09 15:37+0100\n"
-"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
+"POT-Creation-Date: 2013-07-10 00:35+0200\n"
+"PO-Revision-Date: 2013-07-10 00:36+0100\n"
+"Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: CONTENIDO Development\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-Keywords: i18n,trans\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: templates/setup.tpl:37
 #, c-format
@@ -230,7 +230,7 @@ msgstr "Datenbank Benutzername"
 msgid "Table prefix"
 msgstr "Tabellenprefix"
 
-#: steps/forms/setupsummary.php:50 steps/forms/systemdata.php:128
+#: steps/forms/setupsummary.php:50 steps/forms/systemdata.php:131
 msgid "Database character set"
 msgstr "Datenbank Zeichensatz"
 
@@ -571,39 +571,43 @@ msgstr ""
 "diese Informationen stimmen, kontaktieren Sie bitte Ihren Provider oder "
 "Administrator."
 
-#: steps/forms/systemdata.php:116
+#: steps/forms/systemdata.php:109
+msgid "No character set"
+msgstr "Kein Zeichensatz"
+
+#: steps/forms/systemdata.php:119
 msgid "Database Server (IP or name)"
 msgstr "Datenbankserver (IP oder Name)"
 
-#: steps/forms/systemdata.php:119 steps/forms/systemdata.php:121
+#: steps/forms/systemdata.php:122 steps/forms/systemdata.php:124
 msgid "Database Name"
 msgstr "Datenbankname"
 
-#: steps/forms/systemdata.php:119
+#: steps/forms/systemdata.php:122
 msgid "(use empty or non-existant database)"
 msgstr "(leere oder nicht existierende Datenbank)"
 
-#: steps/forms/systemdata.php:125
+#: steps/forms/systemdata.php:128
 msgid "Database Username"
 msgstr "Datenbankbenutzername"
 
-#: steps/forms/systemdata.php:126
+#: steps/forms/systemdata.php:129
 msgid "Database Password"
 msgstr "Datenbankpasswort"
 
-#: steps/forms/systemdata.php:127
+#: steps/forms/systemdata.php:130
 msgid "Table Prefix"
 msgstr "Tabellenpräfix"
 
-#: steps/forms/systemdata.php:145
+#: steps/forms/systemdata.php:148
 msgid "You need to enter a database host."
 msgstr "Sie müssen den Datenbankhost eingeben."
 
-#: steps/forms/systemdata.php:145
+#: steps/forms/systemdata.php:148
 msgid "You need to enter a database name."
 msgstr "Sie müssen den Datenbanknamen eingeben."
 
-#: steps/forms/systemdata.php:145
+#: steps/forms/systemdata.php:148
 msgid "You need to enter a database user."
 msgstr "Sie müssen den Datenbankbenutzer eingeben."
 

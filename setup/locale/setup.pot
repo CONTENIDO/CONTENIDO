@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-09 15:35+0200\n"
+"POT-Creation-Date: 2013-07-10 00:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -185,7 +185,7 @@ msgstr ""
 msgid "Table prefix"
 msgstr ""
 
-#: steps/forms/setupsummary.php:50 steps/forms/systemdata.php:128
+#: steps/forms/setupsummary.php:50 steps/forms/systemdata.php:131
 msgid "Database character set"
 msgstr ""
 
@@ -457,39 +457,43 @@ msgid ""
 "administrator."
 msgstr ""
 
-#: steps/forms/systemdata.php:116
-msgid "Database Server (IP or name)"
-msgstr ""
-
-#: steps/forms/systemdata.php:119 steps/forms/systemdata.php:121
-msgid "Database Name"
+#: steps/forms/systemdata.php:109
+msgid "No character set"
 msgstr ""
 
 #: steps/forms/systemdata.php:119
+msgid "Database Server (IP or name)"
+msgstr ""
+
+#: steps/forms/systemdata.php:122 steps/forms/systemdata.php:124
+msgid "Database Name"
+msgstr ""
+
+#: steps/forms/systemdata.php:122
 msgid "(use empty or non-existant database)"
 msgstr ""
 
-#: steps/forms/systemdata.php:125
+#: steps/forms/systemdata.php:128
 msgid "Database Username"
 msgstr ""
 
-#: steps/forms/systemdata.php:126
+#: steps/forms/systemdata.php:129
 msgid "Database Password"
 msgstr ""
 
-#: steps/forms/systemdata.php:127
+#: steps/forms/systemdata.php:130
 msgid "Table Prefix"
 msgstr ""
 
-#: steps/forms/systemdata.php:145
+#: steps/forms/systemdata.php:148
 msgid "You need to enter a database host."
 msgstr ""
 
-#: steps/forms/systemdata.php:145
+#: steps/forms/systemdata.php:148
 msgid "You need to enter a database name."
 msgstr ""
 
-#: steps/forms/systemdata.php:145
+#: steps/forms/systemdata.php:148
 msgid "You need to enter a database user."
 msgstr ""
 

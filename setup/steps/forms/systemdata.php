@@ -105,12 +105,15 @@ class cSetupSystemData extends cSetupMask {
         $dbcharset = new cHTMLSelectElement('dbcharset');
 
         // Compose charset select box
-        $selectedCharset = (!empty($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : C_SETUP_DBCHARSET;
+        $pos = 0;
+        $option = new cHTMLOptionElement('-- ' . i18n("No character set") . ' --', '');
+        $dbcharset->addOptionElement(++$pos, $option);
+        $selectedCharset = (!empty($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '';
         $aCharsets = fetchMySQLCharsets();
         foreach ($aCharsets as $p => $charset) {
             $selected = ($selectedCharset == $charset);
             $option = new cHTMLOptionElement($charset, $charset, $selected);
-            $dbcharset->addOptionElement($p, $option);
+            $dbcharset->addOptionElement(++$pos, $option);
         }
 
         $this->_oStepTemplate->set('s', 'LABEL_DBHOST', i18n("Database Server (IP or name)"));
