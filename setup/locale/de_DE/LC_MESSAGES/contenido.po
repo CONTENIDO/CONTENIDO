@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Setup\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-17 12:39+0200\n"
-"PO-Revision-Date: 2013-05-17 12:53+0100\n"
+"POT-Creation-Date: 2013-07-09 14:11+0200\n"
+"PO-Revision-Date: 2013-07-09 14:19+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Development\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de_DE\n"
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-Keywords: i18n,trans\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
@@ -22,77 +22,155 @@ msgstr "Kann %s nicht beschreiben"
 
 #: templates/setup.tpl:38
 #, c-format
-msgid "Setup or CONTENIDO can't write to the file %s. Please change the file permissions to correct this problem."
-msgstr "Installationsroutine oder CONTENIDO können nicht die Datei %s beschreiben. Bitte ändern Sie die Dateiberechtigungen, um das Problem zu lösen."
+msgid ""
+"Setup or CONTENIDO can't write to the file %s. Please change the file "
+"permissions to correct this problem."
+msgstr ""
+"Installationsroutine oder CONTENIDO können nicht die Datei %s beschreiben. "
+"Bitte ändern Sie die Dateiberechtigungen, um das Problem zu lösen."
 
 #: templates/setup.tpl:39
-msgid "Your Server runs Windows. Due to that, Setup can't recommend any file permissions."
-msgstr "Ihr Server läuft mit dem Betriebssystem Windows. Daher kann die Installationsroutine keine Dateiberechtigungen empfehlen."
+msgid ""
+"Your Server runs Windows. Due to that, Setup can't recommend any file "
+"permissions."
+msgstr ""
+"Ihr Server läuft mit dem Betriebssystem Windows. Daher kann die "
+"Installationsroutine keine Dateiberechtigungen empfehlen."
 
 #: templates/setup.tpl:40
 #, c-format
-msgid "Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file %s, especially in environments where ACL (Access Control Lists) are used."
-msgstr "Aufgrund einer sehr restriktiven Systemumgebung kann die Installationsroutine keinen Hinweis auf die richtigen Dateirechte geben. Fragen Sie Ihren Systemadministrator nach Schreibrechten für die Datei %s, vor allem in Umgebungen, in denen ACL's (Access Control Lists) verwendet werden."
+msgid ""
+"Due to a very restrictive environment, an advise is not possible. Ask your "
+"system administrator to enable write access to the file %s, especially in "
+"environments where ACL (Access Control Lists) are used."
+msgstr ""
+"Aufgrund einer sehr restriktiven Systemumgebung kann die "
+"Installationsroutine keinen Hinweis auf die richtigen Dateirechte geben. "
+"Fragen Sie Ihren Systemadministrator nach Schreibrechten für die Datei %s, "
+"vor allem in Umgebungen, in denen ACL's (Access Control Lists) verwendet "
+"werden."
 
 #: templates/setup.tpl:41
 #, c-format
-msgid "Your web server and the owner of your files are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the file mask to %s or set the owner to allow writing the file."
-msgstr "Der Webserver und der Besitzer der Datei sind identisch. Sie müssen den Schreibzugriff aktivieren, z. B. mit chmod u+rw %s oder durch das Setzen der Rechtemaske auf %s."
+msgid ""
+"Your web server and the owner of your files are identical. You need to "
+"enable write access for the owner, e.g. using chmod u+rw %s, setting the "
+"file mask to %s or set the owner to allow writing the file."
+msgstr ""
+"Der Webserver und der Besitzer der Datei sind identisch. Sie müssen den "
+"Schreibzugriff aktivieren, z. B. mit chmod u+rw %s oder durch das Setzen der "
+"Rechtemaske auf %s."
 
 #: templates/setup.tpl:42
 #, c-format
-msgid "Your web server's group and the group of your files are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the file mask to %s or set the group to allow writing the file."
-msgstr "Die Webservergruppe und die Gruppe der Datei sind identisch. Aktivieren Sie bitte den Schreibzugriff für die Gruppe, z. B. mit chmod g+rw %s oder durch das Setzen der Rechtemaske auf %s."
+msgid ""
+"Your web server's group and the group of your files are identical. You need "
+"to enable write access for the group, e.g. using chmod g+rw %s, setting the "
+"file mask to %s or set the group to allow writing the file."
+msgstr ""
+"Die Webservergruppe und die Gruppe der Datei sind identisch. Aktivieren Sie "
+"bitte den Schreibzugriff für die Gruppe, z. B. mit chmod g+rw %s oder durch "
+"das Setzen der Rechtemaske auf %s."
 
 #: templates/setup.tpl:43
 #, c-format
-msgid "Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."
-msgstr "Der Webserver entspricht nicht dem Dateibesitzer und befindet sich nicht in der Webserver-Gruppe. Es wäre unsicher, den \"world\"-Schreibzugriff zu aktivieren. Wenn Sie dennoch die Installation fortsetzen möchten, aktivieren Sie bitte den Schreibzugriff für Jedermann (world), z. B. mit chmod o+rw %s oder durch das Setzen der Rechtemaske auf %s."
+msgid ""
+"Your web server is not equal to the file owner, and is not in the "
+"webserver's group. It would be highly insecure to allow world write acess to "
+"the files. If you want to install anyways, enable write access for all "
+"others, e.g. using chmod o+rw %s, setting the file mask to %s or set the "
+"others to allow writing the file."
+msgstr ""
+"Der Webserver entspricht nicht dem Dateibesitzer und befindet sich nicht in "
+"der Webserver-Gruppe. Es wäre unsicher, den \"world\"-Schreibzugriff zu "
+"aktivieren. Wenn Sie dennoch die Installation fortsetzen möchten, aktivieren "
+"Sie bitte den Schreibzugriff für Jedermann (world), z. B. mit chmod o+rw %s "
+"oder durch das Setzen der Rechtemaske auf %s."
 
 #: templates/setup.tpl:44
-msgid "Your Server runs Windows. Due to that, Setup can't recommend any directory permissions."
-msgstr "Ihr Webserver läuft mit Windows. Daher kann die Installationsroutine keine Verzeichnisberechtigungen empfehlen."
+msgid ""
+"Your Server runs Windows. Due to that, Setup can't recommend any directory "
+"permissions."
+msgstr ""
+"Ihr Webserver läuft mit Windows. Daher kann die Installationsroutine keine "
+"Verzeichnisberechtigungen empfehlen."
 
 #: templates/setup.tpl:45
 #, c-format
-msgid "Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file or directory %s, especially in environments where ACL (Access Control Lists) are used."
-msgstr "Aufgrund einer sehr restriktiven Umgebung kann die Installationsroutine keinen Hinweis auf die richtigen Dateirechte geben. Fragen Sie Ihren Systemadministrator nach Schreibrechten auf die Datei oder das Verzeichnis %s, vor allem bei Systemen, bei denen ACL's (Access Control Lists) verwendet werden."
+msgid ""
+"Due to a very restrictive environment, an advise is not possible. Ask your "
+"system administrator to enable write access to the file or directory %s, "
+"especially in environments where ACL (Access Control Lists) are used."
+msgstr ""
+"Aufgrund einer sehr restriktiven Umgebung kann die Installationsroutine "
+"keinen Hinweis auf die richtigen Dateirechte geben. Fragen Sie Ihren "
+"Systemadministrator nach Schreibrechten auf die Datei oder das Verzeichnis "
+"%s, vor allem bei Systemen, bei denen ACL's (Access Control Lists) verwendet "
+"werden."
 
 #: templates/setup.tpl:46
 #, c-format
-msgid "Your web server and the owner of your directory are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the directory mask to %s or set the owner to allow writing the directory."
-msgstr "Der Webserver sowie der Besitzer des Verzeichnisses sind identisch. Sie müssen Schreibzugriff für den Besitzer aktivieren, z. B. mit chmod u+rw %s oder durch das Setzen der Rechtemaske auf %s."
+msgid ""
+"Your web server and the owner of your directory are identical. You need to "
+"enable write access for the owner, e.g. using chmod u+rw %s, setting the "
+"directory mask to %s or set the owner to allow writing the directory."
+msgstr ""
+"Der Webserver sowie der Besitzer des Verzeichnisses sind identisch. Sie "
+"müssen Schreibzugriff für den Besitzer aktivieren, z. B. mit chmod u+rw %s "
+"oder durch das Setzen der Rechtemaske auf %s."
 
 #: templates/setup.tpl:47
 #, c-format
-msgid "Your web server's group and the group of your directory are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the directory mask to %s or set the group to allow writing the directory."
-msgstr "Die Webservergruppe sowie die Gruppe des Verzeichnisses sind identisch. Sie müssen den Schreibzugriff für die Gruppe aktivieren, z. B. mit chmod g+rw %s oder durch Setzen der Rechtemaske auf %s."
+msgid ""
+"Your web server's group and the group of your directory are identical. You "
+"need to enable write access for the group, e.g. using chmod g+rw %s, setting "
+"the directory mask to %s or set the group to allow writing the directory."
+msgstr ""
+"Die Webservergruppe sowie die Gruppe des Verzeichnisses sind identisch. Sie "
+"müssen den Schreibzugriff für die Gruppe aktivieren, z. B. mit chmod g+rw %s "
+"oder durch Setzen der Rechtemaske auf %s."
 
 #: templates/setup.tpl:48
 #, c-format
-msgid "Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."
-msgstr "Der Webserver entspricht nicht dem Verzeichnisbesitzer und ist nicht in der Webserver-Gruppe. Es wäre unsicher, dem Verzeichnis \"world\"-Schreibzugriff zu erlauben. Wenn Sie dennoch die Installation fortsetzen möchten, aktivieren Sie bitte den Schreibzugriff für Jedermann, z. B. mit chmod o+rw %s oder durch das Setzen der Rechtemaske %s."
+msgid ""
+"Your web server is not equal to the directory owner, and is not in the "
+"webserver's group. It would be highly insecure to allow world write acess to "
+"the directory. If you want to install anyways, enable write access for all "
+"others, e.g. using chmod o+rw %s, setting the directory mask to %s or set "
+"the others to allow writing the directory."
+msgstr ""
+"Der Webserver entspricht nicht dem Verzeichnisbesitzer und ist nicht in der "
+"Webserver-Gruppe. Es wäre unsicher, dem Verzeichnis \"world\"-Schreibzugriff "
+"zu erlauben. Wenn Sie dennoch die Installation fortsetzen möchten, "
+"aktivieren Sie bitte den Schreibzugriff für Jedermann, z. B. mit chmod o+rw "
+"%s oder durch das Setzen der Rechtemaske %s."
 
-#: steps/forms/setupresults.php:28
-#: steps/forms/setupresults.php:33
+#: steps/forms/setupresults.php:28 steps/forms/setupresults.php:33
 msgid "Results"
 msgstr "Ergebnisse"
 
 #: steps/forms/setupresults.php:34
 msgid "CONTENIDO was installed and configured successfully on your server."
-msgstr "CONTENIDO wurde erfolgreich auf Ihrem Server installiert und konfiguriert."
+msgstr ""
+"CONTENIDO wurde erfolgreich auf Ihrem Server installiert und konfiguriert."
 
 #: steps/forms/setupresults.php:36
-msgid "Please use username <b>sysadmin</b> and the configured password to login into CONTENIDO Backend."
-msgstr "Bitte benutzen Sie den Benutzernamen <b>sysadmin</b> und das eingegebene Passwort, um sich im Backend von CONTENIDO anzumelden."
+msgid ""
+"Please use username <b>sysadmin</b> and the configured password to login "
+"into CONTENIDO Backend."
+msgstr ""
+"Bitte benutzen Sie den Benutzernamen <b>sysadmin</b> und das eingegebene "
+"Passwort, um sich im Backend von CONTENIDO anzumelden."
 
 #: steps/forms/setupresults.php:40
 msgid "Please choose an item to start working:"
 msgstr "Bitte wählen Sie einen Eintrag, um mit der Arbeit zu beginnen:"
 
 #: steps/forms/setupresults.php:41
-msgid "You can now start using CONTENIDO. Please delete the folder named 'setup'!"
-msgstr "Sie können CONTENIDO nun verwenden. Bitte löschen Sie den Setup-Ordner!"
+msgid ""
+"You can now start using CONTENIDO. Please delete the folder named 'setup'!"
+msgstr ""
+"Sie können CONTENIDO nun verwenden. Bitte löschen Sie den Setup-Ordner!"
 
 #: steps/forms/setupresults.php:65
 msgid "Setup Results"
@@ -100,17 +178,25 @@ msgstr "Installationsergebnisse"
 
 #: steps/forms/setupresults.php:67
 #, php-format
-msgid "An error occured during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information."
-msgstr "Setup Fehler während der Installation. Bitte schauen Sie in die Datei %s (befindet sich im Verzeichnis &quot;data/logs/&quot) für weitere Informationen."
+msgid ""
+"An error occured during installation. Please take a look at the file %s "
+"(located in &quot;data/logs/&quot;) for more information."
+msgstr ""
+"Setup Fehler während der Installation. Bitte schauen Sie in die Datei %s "
+"(befindet sich im Verzeichnis &quot;data/logs/&quot) für weitere "
+"Informationen."
 
-#: steps/forms/setupsummary.php:29
-#: steps/forms/setupsummary.php:30
+#: steps/forms/setupsummary.php:29 steps/forms/setupsummary.php:30
 msgid "Summary"
 msgstr "Zusammenfassung"
 
 #: steps/forms/setupsummary.php:31
-msgid "Please check your settings and click on the next button to start the installation"
-msgstr "Bitte überprüfen Sie Ihre Einstellungen und klicken Sie auf Weiter um die Installation zu beginnen."
+msgid ""
+"Please check your settings and click on the next button to start the "
+"installation"
+msgstr ""
+"Bitte überprüfen Sie Ihre Einstellungen und klicken Sie auf Weiter um die "
+"Installation zu beginnen."
 
 #: steps/forms/setupsummary.php:37
 msgid "Setup"
@@ -144,13 +230,11 @@ msgstr "Datenbank Benutzername"
 msgid "Table prefix"
 msgstr "Tabellenprefix"
 
-#: steps/forms/setupsummary.php:50
-#: steps/forms/systemdata.php:128
+#: steps/forms/setupsummary.php:50 steps/forms/systemdata.php:128
 msgid "Database character set"
 msgstr "Datenbank Zeichensatz"
 
-#: steps/forms/setupsummary.php:55
-#: steps/forms/clientmode.php:36
+#: steps/forms/setupsummary.php:55 steps/forms/clientmode.php:75
 msgid "Client with example modules and example content"
 msgstr "Mandant mit Beispielmodulen und -inhalten"
 
@@ -166,8 +250,7 @@ msgstr "Mandant nicht anlegen"
 msgid "Client installation"
 msgstr "Mandanteninstallation"
 
-#: steps/forms/systemtest.php:35
-#: steps/forms/systemtest.php:36
+#: steps/forms/systemtest.php:35 steps/forms/systemtest.php:36
 msgid "System Test"
 msgstr "Systemüberprüfung"
 
@@ -175,133 +258,201 @@ msgstr "Systemüberprüfung"
 msgid "Your system has been tested for compatibility with CONTENIDO:"
 msgstr "Ihr System wurde auf Kompatibilität mit CONTENIDO überprüft:"
 
-#: steps/forms/systemtest.php:46
+#: steps/forms/systemtest.php:47
 msgid "PHP MySQL Extension missing"
 msgstr "PHP MySQL Extension nicht geladen"
 
-#: steps/forms/systemtest.php:46
-msgid "CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi."
-msgstr "CONTENIDO benötigt die MySQL- oder MySQLi-Extension, um auf MySQL-Datenbanken zuzugreifen. Bitte konfigurieren Sie PHP so, daß PHP entweder MySQL oder MySQLi verwendet."
+#: steps/forms/systemtest.php:47
+msgid ""
+"CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. "
+"Please configure PHP to use either MySQL or MySQLi."
+msgstr ""
+"CONTENIDO benötigt die MySQL- oder MySQLi-Extension, um auf MySQL-"
+"Datenbanken zuzugreifen. Bitte konfigurieren Sie PHP so, daß PHP entweder "
+"MySQL oder MySQLi verwendet."
 
-#: steps/forms/systemtest.php:72
+#: steps/forms/systemtest.php:73
 msgid "Information"
 msgstr "Information"
 
-#: steps/forms/systemtest.php:76
+#: steps/forms/systemtest.php:77
 msgid "Warning"
 msgstr "Warnung"
 
-#: steps/forms/systemtest.php:80
+#: steps/forms/systemtest.php:81
 msgid "Fatal error"
 msgstr "Schwerer Fehler"
 
-#: steps/forms/systemtest.php:88
+#: steps/forms/systemtest.php:89
 msgid "No problems detected"
 msgstr "Keine Probleme gefunden"
 
-#: steps/forms/systemtest.php:88
+#: steps/forms/systemtest.php:89
 msgid "Setup could not detect any problems with your system environment"
-msgstr "Die Installationsroutine konnte keine Probleme mit Ihrer Systemumgebung finden."
+msgstr ""
+"Die Installationsroutine konnte keine Probleme mit Ihrer Systemumgebung "
+"finden."
 
-#: steps/forms/systemtest.php:170
+#: steps/forms/systemtest.php:171
 #, php-format
 msgid "An old Version of Plugin %s is installed on your system."
 msgstr "Eine alte Version des Plugin %s ist auf Ihrem System installiert."
 
-#: steps/forms/systemtest.php:175
-msgid "Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of CONTENIDO. Also delete the old plugin tables after data transfer."
-msgstr "Bitte entfernen Sie alle alten Plugins bevor Sie fortfahren. Um die alten Plugindaten zu übertragen, kopieren Sie bitte die alten Daten aus den Plugintabellen nach der Installation in die neuen Plugintabellen. Die neuen Plugintabellen haben die gleiche Bezeichnung, besitzen jedoch zusätzlich den CONTENIDO Tabellenpräfix. Bitte entfernen Sie auch nach der Datenübertragung die alten Plugintabellen."
+#: steps/forms/systemtest.php:176
+msgid ""
+"Please remove all old plugins before you continue. To transfer old plugin "
+"data, please copy the old plugin data tables into the new plugin data tables "
+"after the installation. The new plugintable names are the same, but contains "
+"the table prefix of CONTENIDO. Also delete the old plugin tables after data "
+"transfer."
+msgstr ""
+"Bitte entfernen Sie alle alten Plugins bevor Sie fortfahren. Um die alten "
+"Plugindaten zu übertragen, kopieren Sie bitte die alten Daten aus den "
+"Plugintabellen nach der Installation in die neuen Plugintabellen. Die neuen "
+"Plugintabellen haben die gleiche Bezeichnung, besitzen jedoch zusätzlich den "
+"CONTENIDO Tabellenpräfix. Bitte entfernen Sie auch nach der Datenübertragung "
+"die alten Plugintabellen."
 
-#: steps/forms/systemtest.php:177
+#: steps/forms/systemtest.php:178
 msgid "Old Plugins are still installed"
 msgstr "Alte Plugins sind noch installiert"
 
-#: steps/forms/systemtest.php:190
+#: steps/forms/systemtest.php:191
 #, php-format
 msgid ""
-"You are updating a previous version of CONTENIDO to %s. Some directories/files have been moved to other sections in %s.\n"
+"You are updating a previous version of CONTENIDO to %s. Some directories/"
+"files have been moved to other sections in %s.\n"
 "\n"
-"Please ensure to copy contenido/includes/config.php to data/config/production/config.php and also other configuration files within contenido/includes/ to data/config/production/."
+"Please ensure to copy contenido/includes/config.php to data/config/"
+"production/config.php and also other configuration files within contenido/"
+"includes/ to data/config/production/."
 msgstr ""
-"Sie aktualisieren von einer früheren CONTENIDO Version auf %s. In der Version %s wurden einige Verzeichnisse / Dateien in andere Bereiche ausgelagert.\n"
+"Sie aktualisieren von einer früheren CONTENIDO Version auf %s. In der "
+"Version %s wurden einige Verzeichnisse / Dateien in andere Bereiche "
+"ausgelagert.\n"
 "\n"
-"Bitte stellen Sie sicher, dass die Datei contenido/includes/config.php in data/config/production/config.php kopiert wird. Das gilt auch für andere Konfigurations-Dateien in contenido/includes/ die bei Bedarf nach data/config/production/ kopiert werden sollten."
+"Bitte stellen Sie sicher, dass die Datei contenido/includes/config.php in "
+"data/config/production/config.php kopiert wird. Das gilt auch für andere "
+"Konfigurations-Dateien in contenido/includes/ die bei Bedarf nach data/"
+"config/production/ kopiert werden sollten."
 
-#: steps/forms/systemtest.php:193
+#: steps/forms/systemtest.php:194
 msgid "Attention: Some directories/files have been moved"
 msgstr "Achtung: Einige Verzeichnisse / Dateien wurden verschoben"
 
-#: steps/forms/systemtest.php:215
+#: steps/forms/systemtest.php:216
 msgid "MySQL database already exists and seems to be filled"
 msgstr "MySQL-Datenbank existiert bereits und scheint gefüllt zu sein"
 
-#: steps/forms/systemtest.php:215
+#: steps/forms/systemtest.php:216
 #, php-format
-msgid "Setup checked the database %s and found the table %s. It seems that you already have a CONTENIDO installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type."
-msgstr "Die Installationsroutine hat die Datenbank %s geprüft und die Tabelle %s gefunden. Es scheint, als ob eine (ältere) CONTENIDO-Version bereits installiert ist. Wenn Sie trotzdem in dieser Datenbank installieren möchten, wählen Sie bitte einen anderen Präfix. Wenn Sie von einer älteren CONTENIDO-Version upgraden möchten, wählen Sie bitte \"Upgrade\" als Installations-Art."
+msgid ""
+"Setup checked the database %s and found the table %s. It seems that you "
+"already have a CONTENIDO installation in this database. If you want to "
+"install anyways, change the database prefix. If you want to upgrade from a "
+"previous version, choose 'upgrade' as setup type."
+msgstr ""
+"Die Installationsroutine hat die Datenbank %s geprüft und die Tabelle %s "
+"gefunden. Es scheint, als ob eine (ältere) CONTENIDO-Version bereits "
+"installiert ist. Wenn Sie trotzdem in dieser Datenbank installieren möchten, "
+"wählen Sie bitte einen anderen Präfix. Wenn Sie von einer älteren CONTENIDO-"
+"Version upgraden möchten, wählen Sie bitte \"Upgrade\" als Installations-Art."
 
-#: steps/forms/systemtest.php:222
+#: steps/forms/systemtest.php:223
 msgid "MySQL test table already exists in the database"
 msgstr "MySQL-Testtabelle existiert bereits in der Datenbank"
 
-#: steps/forms/systemtest.php:222
+#: steps/forms/systemtest.php:223
 #, php-format
-msgid "Setup checked the database %s and found the test table %s. Please remove it before continuing."
-msgstr "Die Installationsroutine hat die Datenbank %s geprüft und die Testtabelle %s gefunden. Bitte entfernen Sie diese, bevor Sie fortfahren."
+msgid ""
+"Setup checked the database %s and found the test table %s. Please remove it "
+"before continuing."
+msgstr ""
+"Die Installationsroutine hat die Datenbank %s geprüft und die Testtabelle %s "
+"gefunden. Bitte entfernen Sie diese, bevor Sie fortfahren."
 
-#: steps/forms/systemtest.php:229
-#: steps/forms/systemtest.php:250
+#: steps/forms/systemtest.php:230 steps/forms/systemtest.php:251
 msgid "Unable to create tables in the selected MySQL database"
 msgstr "Kann keine Tabellen in der gewählten MySQL-Datenbank anlegen"
 
-#: steps/forms/systemtest.php:229
-#: steps/forms/systemtest.php:250
+#: steps/forms/systemtest.php:230 steps/forms/systemtest.php:251
 #, php-format
-msgid "Setup tried to create a test table in the database %s and failed. Please assign table creation permissions to the database user you entered, or ask an administrator to do so."
-msgstr "Die Installationsroutine hat versucht, eine Testtabelle in der Datenbank %s anzulegen und ist gescheitert. Bitte weisen Sie ihrem Datenbankbenutzer entsprechende Rechte zu, oder fragen Sie einen Administrator."
+msgid ""
+"Setup tried to create a test table in the database %s and failed. Please "
+"assign table creation permissions to the database user you entered, or ask "
+"an administrator to do so."
+msgstr ""
+"Die Installationsroutine hat versucht, eine Testtabelle in der Datenbank %s "
+"anzulegen und ist gescheitert. Bitte weisen Sie ihrem Datenbankbenutzer "
+"entsprechende Rechte zu, oder fragen Sie einen Administrator."
 
-#: steps/forms/systemtest.php:236
-#: steps/forms/systemtest.php:257
+#: steps/forms/systemtest.php:237 steps/forms/systemtest.php:258
 msgid "Unable to remove the test table"
 msgstr "Konnte die Testtabelle nicht entfernen"
 
-#: steps/forms/systemtest.php:236
-#: steps/forms/systemtest.php:257
+#: steps/forms/systemtest.php:237 steps/forms/systemtest.php:258
 #, php-format
-msgid "Setup tried to remove the test table %s in the database %s and failed due to insufficient permissions. Please remove the table %s manually."
-msgstr "Die Installationsroutine hat die Testtabelle %s in der Datenbank %s erstellt, konnte sie jedoch aufgrund fehlender Berechtigungen nicht löschen. Bitte löschen Sie die Testtabelle %s manuell."
+msgid ""
+"Setup tried to remove the test table %s in the database %s and failed due to "
+"insufficient permissions. Please remove the table %s manually."
+msgstr ""
+"Die Installationsroutine hat die Testtabelle %s in der Datenbank %s "
+"erstellt, konnte sie jedoch aufgrund fehlender Berechtigungen nicht löschen. "
+"Bitte löschen Sie die Testtabelle %s manuell."
 
-#: steps/forms/systemtest.php:243
+#: steps/forms/systemtest.php:244
 msgid "Unable to create the database in the MySQL server"
 msgstr "Erstellung der Datenbank auf dem MySQL-Server ist fehlgeschlagen"
 
-#: steps/forms/systemtest.php:243
-msgid "Setup tried to create a test database and failed. Please assign database creation permissions to the database user you entered, ask an administrator to do so, or create the database manually."
-msgstr "Die Installationsroutine hat versucht, eine Testdatenbank zu erstellen, jedoch ist die Datenbankerzeugung fehlgeschlagen. Bitte vergeben Sie passende Berechtigungen für den eingegebenen Datenbankbenutzer, fragen Sie ihre Administrator, oder erstellen Sie die Datenbank händisch."
+#: steps/forms/systemtest.php:244
+msgid ""
+"Setup tried to create a test database and failed. Please assign database "
+"creation permissions to the database user you entered, ask an administrator "
+"to do so, or create the database manually."
+msgstr ""
+"Die Installationsroutine hat versucht, eine Testdatenbank zu erstellen, "
+"jedoch ist die Datenbankerzeugung fehlgeschlagen. Bitte vergeben Sie "
+"passende Berechtigungen für den eingegebenen Datenbankbenutzer, fragen Sie "
+"ihre Administrator, oder erstellen Sie die Datenbank händisch."
 
-#: steps/forms/systemtest.php:267
-#: steps/forms/systemtest.php:277
+#: steps/forms/systemtest.php:268 steps/forms/systemtest.php:278
 msgid "No data found for the upgrade"
 msgstr "Keine Daten für das Upgrade gefunden"
 
-#: steps/forms/systemtest.php:267
+#: steps/forms/systemtest.php:268
 #, php-format
-msgid "Setup tried to locate the data for the upgrade, however, the database %s doesn't exist. You need to copy your database first before running setup."
-msgstr "Die Installationsroutine hat versucht, die Daten für das Upgrade zu lokalisieren, jedoch existiert die Datenbank %s nicht. Bitte kopieren Sie die Datenbank bevor Sie das Setup ausführen."
+msgid ""
+"Setup tried to locate the data for the upgrade, however, the database %s "
+"doesn't exist. You need to copy your database first before running setup."
+msgstr ""
+"Die Installationsroutine hat versucht, die Daten für das Upgrade zu "
+"lokalisieren, jedoch existiert die Datenbank %s nicht. Bitte kopieren Sie "
+"die Datenbank bevor Sie das Setup ausführen."
 
-#: steps/forms/systemtest.php:277
+#: steps/forms/systemtest.php:278
 #, php-format
-msgid "Setup tried to locate the data for the upgrade, however, the database %s contains no tables. You need to copy your database first before running setup."
-msgstr "Die Installationsroutine hat versucht, die Daten für das Upgrade zu lokalisieren, jedoch enthält die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank bevor Sie die Installation ausführen."
+msgid ""
+"Setup tried to locate the data for the upgrade, however, the database %s "
+"contains no tables. You need to copy your database first before running "
+"setup."
+msgstr ""
+"Die Installationsroutine hat versucht, die Daten für das Upgrade zu "
+"lokalisieren, jedoch enthält die Datenbank %s keine Tabellen. Bitte kopieren "
+"Sie die Datenbank bevor Sie die Installation ausführen."
 
-#: steps/forms/clientadjust.php:30
-#: steps/forms/clientadjust.php:31
+#: steps/forms/clientadjust.php:30 steps/forms/clientadjust.php:31
 msgid "Client Settings"
 msgstr "Mandanteneinstellungen"
 
 #: steps/forms/clientadjust.php:32
-msgid "Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box."
-msgstr "Bitte prüfen Sie die Verzeichnisse. Wenn Sie einen Mandantenpfad ändern müssen, klicken Sie bitte auf den Namen und geben Sie den neuen Pfad in die Eingabebox ein."
+msgid ""
+"Please check the directories identified by the system. If you need to change "
+"a client path, click on the name and enter your new path in the available "
+"input box."
+msgstr ""
+"Bitte prüfen Sie die Verzeichnisse. Wenn Sie einen Mandantenpfad ändern "
+"müssen, klicken Sie bitte auf den Namen und geben Sie den neuen Pfad in die "
+"Eingabebox ein."
 
 #: steps/forms/clientadjust.php:82
 #, php-format
@@ -323,63 +474,90 @@ msgstr "Alter Webpfad für %s (%s)"
 msgid "New web path for %s (%s)"
 msgstr "Neuer Webpfad für %s (%s)"
 
-#: steps/forms/installer.php:34
-#: steps/forms/installer.php:35
+#: steps/forms/installer.php:34 steps/forms/installer.php:35
 msgid "System Installation"
 msgstr "Systeminstallation"
 
 #: steps/forms/installer.php:36
-msgid "CONTENIDO will be installed, please wait ..."
-msgstr "CONTENIDO wird installiert, bitte warten"
+msgid ""
+"CONTENIDO will be installed, please wait. This porcess may take several "
+"moments!"
+msgstr ""
+"CONTENIDO wird installiert, bitte warten. Dieser Vorgang kann einige Zeit in "
+"Anspruch nehmen!"
 
 #: steps/forms/installer.php:37
 msgid "Setup completed installing. Click on next to continue."
-msgstr "Die Installationsroutine hat die Installation abgeschlossen. Klicken Sie auf den blauen Pfeil, um fortzufahren."
+msgstr ""
+"Die Installationsroutine hat die Installation abgeschlossen. Klicken Sie auf "
+"den blauen Pfeil, um fortzufahren."
 
 #: steps/forms/installer.php:38
 msgid "Setup is installing, please wait..."
 msgstr "Setup installiert, bitte warten"
 
-#: steps/forms/installer.php:43
-#: steps/forms/installer.php:44
+#: steps/forms/installer.php:43 steps/forms/installer.php:44
 msgid "System Upgrade"
 msgstr "Upgrade"
 
 #: steps/forms/installer.php:45
-msgid "CONTENIDO will be upgraded, please wait ..."
-msgstr "CONTENIDO wird aktualisiert, bitte warten"
+msgid ""
+"CONTENIDO will be upgraded, please wait. This porcess may take several "
+"moments!"
+msgstr ""
+"CONTENIDO wird aktualisiert, bitte warten. Dieser Vorgang kann einige Zeit "
+"in Anspruch nehmen!"
 
 #: steps/forms/installer.php:46
 msgid "Setup completed upgrading. Click on next to continue."
-msgstr "Die Installationsroutine hat den Upgradeprozess abgeschlossen. Klicken Sie auf Weiter, um fortzufahren."
+msgstr ""
+"Die Installationsroutine hat den Upgradeprozess abgeschlossen. Klicken Sie "
+"auf Weiter, um fortzufahren."
 
 #: steps/forms/installer.php:47
 msgid "Setup is upgrading, please wait..."
 msgstr "Setup aktualisiert, bitte warten"
 
-#: steps/forms/systemdata.php:62
-#: steps/forms/systemdata.php:63
+#: steps/forms/systemdata.php:62 steps/forms/systemdata.php:63
 msgid "Database Parameters"
 msgstr "Datenbankparameter"
 
 #: steps/forms/systemdata.php:67
-msgid "Please enter the required database information. If you are unsure about the data, ask your provider or administrator."
-msgstr "Bitte geben Sie die benötigten Datenbankinformationen ein. Wenn Sie nicht sicher sind, ob diese Informationen stimmen, kontaktieren Sie bitte Ihren Provider oder Administrator."
+msgid ""
+"Please enter the required database information. If you are unsure about the "
+"data, ask your provider or administrator."
+msgstr ""
+"Bitte geben Sie die benötigten Datenbankinformationen ein. Wenn Sie nicht "
+"sicher sind, ob diese Informationen stimmen, kontaktieren Sie bitte Ihren "
+"Provider oder Administrator."
 
 #: steps/forms/systemdata.php:67
-msgid "If the database does not exist and your database user has the sufficient permissions, setup will create the database automatically."
-msgstr "Wenn die Datenbank nicht existiert und der Datenbankbenutzer ausreichende Rechte besitzt, wird die Installationsroutine die Datenbank automatisch anlegen."
+msgid ""
+"If the database does not exist and your database user has the sufficient "
+"permissions, setup will create the database automatically."
+msgstr ""
+"Wenn die Datenbank nicht existiert und der Datenbankbenutzer ausreichende "
+"Rechte besitzt, wird die Installationsroutine die Datenbank automatisch "
+"anlegen."
 
 #: steps/forms/systemdata.php:70
-msgid "Please enter the required database information. If the database data of your previous installation could have been read, the data will be inserted automatically. If you are unsure about the data, please ask your provider or administrator."
-msgstr "Bitte geben Sie die benötigten Datenbankinformationen ein. Wenn die Datenbankinformationen Ihrer vorheriger Installation lesbar waren, werden die Informationen automatisch eingefügt. Wenn Sie nicht sicher sind, ob diese Informationen stimmen, kontaktieren Sie bitte Ihren Provider oder Administrator."
+msgid ""
+"Please enter the required database information. If the database data of your "
+"previous installation could have been read, the data will be inserted "
+"automatically. If you are unsure about the data, please ask your provider or "
+"administrator."
+msgstr ""
+"Bitte geben Sie die benötigten Datenbankinformationen ein. Wenn die "
+"Datenbankinformationen Ihrer vorheriger Installation lesbar waren, werden "
+"die Informationen automatisch eingefügt. Wenn Sie nicht sicher sind, ob "
+"diese Informationen stimmen, kontaktieren Sie bitte Ihren Provider oder "
+"Administrator."
 
 #: steps/forms/systemdata.php:116
 msgid "Database Server (IP or name)"
 msgstr "Datenbankserver (IP oder Name)"
 
-#: steps/forms/systemdata.php:119
-#: steps/forms/systemdata.php:121
+#: steps/forms/systemdata.php:119 steps/forms/systemdata.php:121
 msgid "Database Name"
 msgstr "Datenbankname"
 
@@ -411,16 +589,19 @@ msgstr "Sie müssen den Datenbanknamen eingeben."
 msgid "You need to enter a database user."
 msgstr "Sie müssen den Datenbankbenutzer eingeben."
 
-#: steps/forms/adminpassword.php:34
-#: steps/forms/adminpassword.php:35
-#: steps/forms/adminpassword.php:64
-#: steps/forms/adminpassword.php:65
+#: steps/forms/adminpassword.php:34 steps/forms/adminpassword.php:35
+#: steps/forms/adminpassword.php:64 steps/forms/adminpassword.php:65
 msgid "Administrator password"
 msgstr "Administrator-Passwort"
 
 #: steps/forms/adminpassword.php:37
-msgid "Please enter the password for the default administrator account sysadmin and specify it's mail address in case you forgot your entered password."
-msgstr "Bitte geben Sie das Passwort für das Benutzerkonto des Systemadministrators ein und weisen dem Benutzer eine E-Mail-Adresse zu für den Fall, dass Sie das eingegebene Passwort vergessen."
+msgid ""
+"Please enter the password for the default administrator account sysadmin and "
+"specify it's mail address in case you forgot your entered password."
+msgstr ""
+"Bitte geben Sie das Passwort für das Benutzerkonto des Systemadministrators "
+"ein und weisen dem Benutzer eine E-Mail-Adresse zu für den Fall, dass Sie "
+"das eingegebene Passwort vergessen."
 
 #: steps/forms/adminpassword.php:65
 msgid "(repeat)"
@@ -442,14 +623,17 @@ msgstr "Die eingegebenen Passwörter stimmen nicht überein."
 msgid "You need to enter a mail address."
 msgstr "Sie müssen eine E-Mail-Adresse eingeben."
 
-#: steps/forms/pathinfo.php:29
-#: steps/forms/pathinfo.php:30
+#: steps/forms/pathinfo.php:29 steps/forms/pathinfo.php:30
 msgid "System Directories"
 msgstr "Systemverzeichnisse"
 
 #: steps/forms/pathinfo.php:31
-msgid "Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box."
-msgstr "Bitte prüfen Sie die Verzeichnisse. Wenn Sie einen Pfad ändern müssen, klicken Sie auf den Namen und geben Sie den neuen Pfad in die Eingabebox ein."
+msgid ""
+"Please check the directories identified by the system. If you need to change "
+"a path, click on the name and enter the new path in the available input box."
+msgstr ""
+"Bitte prüfen Sie die Verzeichnisse. Wenn Sie einen Pfad ändern müssen, "
+"klicken Sie auf den Namen und geben Sie den neuen Pfad in die Eingabebox ein."
 
 #: steps/forms/pathinfo.php:47
 msgid "CONTENIDO Root Path"
@@ -459,8 +643,7 @@ msgstr "CONTENIDO Serverpfad"
 msgid "CONTENIDO Web Path"
 msgstr "CONTENIDO Webpfad"
 
-#: steps/forms/configmode.php:35
-#: steps/forms/configmode.php:36
+#: steps/forms/configmode.php:35 steps/forms/configmode.php:36
 msgid "config.php mode"
 msgstr "config.php Modus"
 
@@ -469,8 +652,21 @@ msgid "Please choose 'save' or 'download'"
 msgstr "Bitte wählen Sie 'Speichern' oder 'Download'"
 
 #: steps/forms/configmode.php:38
-msgid "CONTENIDO requires a configuration file called 'config.php'. This file will be generated by the setup automatically if the filesystem permissions are correct. If 'save' is activated by default, setup can save the file config.php. If not, 'download' is activated by default, and you have to place the file in the directory &quot;data/config/{environment}/&quot; manually when a download prompt appears. The download prompt appears at the end of the setup process."
-msgstr "CONTENIDO benötigt die Konfigurationsdatei 'config.php'. Diese Datei wird durch das Setup automatisch erstellt, wenn Ihre Berechtigungen für das Dateisystem korrekt gesetzt sind. Falls die Option &quot;Speichern&quot; aktiviert ist, kann die Datei automatisch gespeichert werden. Falls die Option 'Download' aktiviert ist, müssen Sie die Datei manuell in das Verzeichnis 'data/config/{umgebung}/' speichern."
+msgid ""
+"CONTENIDO requires a configuration file called 'config.php'. This file will "
+"be generated by the setup automatically if the filesystem permissions are "
+"correct. If 'save' is activated by default, setup can save the file config."
+"php. If not, 'download' is activated by default, and you have to place the "
+"file in the directory &quot;data/config/{environment}/&quot; manually when a "
+"download prompt appears. The download prompt appears at the end of the setup "
+"process."
+msgstr ""
+"CONTENIDO benötigt die Konfigurationsdatei 'config.php'. Diese Datei wird "
+"durch das Setup automatisch erstellt, wenn Ihre Berechtigungen für das "
+"Dateisystem korrekt gesetzt sind. Falls die Option &quot;Speichern&quot; "
+"aktiviert ist, kann die Datei automatisch gespeichert werden. Falls die "
+"Option 'Download' aktiviert ist, müssen Sie die Datei manuell in das "
+"Verzeichnis 'data/config/{umgebung}/' speichern."
 
 #: steps/forms/configmode.php:54
 msgid "Save"
@@ -480,20 +676,39 @@ msgstr "Speichern"
 msgid "Download"
 msgstr "Herunterladen"
 
-#: steps/forms/clientmode.php:29
-#: steps/forms/clientmode.php:30
+#: steps/forms/clientmode.php:30 steps/forms/clientmode.php:31
 msgid "Example Client"
 msgstr "Beispielmandant"
 
-#: steps/forms/clientmode.php:31
-msgid "If you are new to CONTENIDO, you should create an example client to start working with."
-msgstr "Wenn Sie zum ersten Mal mit CONTENIDO arbeiten, empfehlen wir Ihnen den Beispielmandanten."
+#: steps/forms/clientmode.php:32
+msgid ""
+"If you are new to CONTENIDO, you should create an example client to start "
+"working with."
+msgstr ""
+"Wenn Sie zum ersten Mal mit CONTENIDO arbeiten, empfehlen wir Ihnen den "
+"Beispielmandanten."
 
-#: steps/forms/clientmode.php:37
+#: steps/forms/clientmode.php:71
+#, php-format
+msgid ""
+"PLEASE NOTE: Some folders (%s) which are used by the example client aren't "
+"empty. THESE WILL BE OVERWRITTEN"
+msgstr ""
+"Bitte beachten: Einige Ordner (%s), die vom Beispielmandanten verwendet "
+"werden sind nicht leer. DIESE WERDEN ÜBERSCHRIEBEN"
+
+#: steps/forms/clientmode.php:72
+msgid ""
+"PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN"
+msgstr ""
+"Bitte beachten: Der cms/data/modules Ordner ist nicht leer. DIESER WIRD "
+"ÜBERSCHRIEBEN"
+
+#: steps/forms/clientmode.php:76
 msgid "Client with example modules, but without example content"
 msgstr "Mandant mit Beispielmodulen, aber ohne Beispielinhalte"
 
-#: steps/forms/clientmode.php:38
+#: steps/forms/clientmode.php:77
 msgid "Don't create client"
 msgstr "Mandant nicht anlegen"
 
@@ -516,8 +731,12 @@ msgid "This setup type will install CONTENIDO %s."
 msgstr "Diese Installationsroutine installiert CONTENIDO %s."
 
 #: steps/setuptype.php:34
-msgid "Please choose this type if you want to start with an empty or an example installation."
-msgstr "Wählen Sie diese Installations-Art aus, wenn Sie eine leere oder eine Beispielinstallation installieren möchten. "
+msgid ""
+"Please choose this type if you want to start with an empty or an example "
+"installation."
+msgstr ""
+"Wählen Sie diese Installations-Art aus, wenn Sie eine leere oder eine "
+"Beispielinstallation installieren möchten. "
 
 #: steps/setuptype.php:34
 msgid "Recommended for new projects."
@@ -533,8 +752,12 @@ msgid "Upgrade to %s"
 msgstr "Upgraden auf %s"
 
 #: steps/setuptype.php:38
-msgid "This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required)."
-msgstr "Diese Installations-Art wird Ihre bestehende CONTENIDO-Installation (Version 4.6.x oder höher) upgraden. "
+msgid ""
+"This setup type will upgrade your existing installation (CONTENIDO 4.6.x or "
+"later required)."
+msgstr ""
+"Diese Installations-Art wird Ihre bestehende CONTENIDO-Installation (Version "
+"4.6.x oder höher) upgraden. "
 
 #: steps/setuptype.php:38
 msgid "Recommended for existing projects."
@@ -927,8 +1150,8 @@ msgstr "Empfohlen für existierende Projekte."
 #~ msgstr "Keine Daten für die Migration gefunden"
 
 #~ msgid ""
-#~ "Setup tried to locate the data for the migration, however, the database %"
-#~ "s doesn't exist. You need to copy your database first before running "
+#~ "Setup tried to locate the data for the migration, however, the database "
+#~ "%s doesn't exist. You need to copy your database first before running "
 #~ "setup."
 #~ msgstr ""
 #~ "Setup hat versucht, die Daten für die Migration zu lokalisieren, jedoch "
@@ -936,9 +1159,9 @@ msgstr "Empfohlen für existierende Projekte."
 #~ "bevor Sie das Setup ausführen."
 
 #~ msgid ""
-#~ "Setup tried to locate the data for the migration, however, the database %"
-#~ "s contains no tables. You need to copy your database first before running "
-#~ "setup."
+#~ "Setup tried to locate the data for the migration, however, the database "
+#~ "%s contains no tables. You need to copy your database first before "
+#~ "running setup."
 #~ msgstr ""
 #~ "Setup hat versucht, die Daten für die Migration zu lokalisieren, jedoch "
 #~ "enthält die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank "

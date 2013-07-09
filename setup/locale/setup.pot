@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-28 13:59+0200\n"
+"POT-Creation-Date: 2013-07-09 14:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -389,7 +389,9 @@ msgid "System Installation"
 msgstr ""
 
 #: steps/forms/installer.php:36
-msgid "CONTENIDO will be installed, please wait ..."
+msgid ""
+"CONTENIDO will be installed, please wait. This porcess may take several "
+"moments!"
 msgstr ""
 
 #: steps/forms/installer.php:37
@@ -405,7 +407,9 @@ msgid "System Upgrade"
 msgstr ""
 
 #: steps/forms/installer.php:45
-msgid "CONTENIDO will be upgraded, please wait ..."
+msgid ""
+"CONTENIDO will be upgraded, please wait. This porcess may take several "
+"moments!"
 msgstr ""
 
 #: steps/forms/installer.php:46
