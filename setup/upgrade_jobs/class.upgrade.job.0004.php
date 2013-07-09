@@ -52,9 +52,9 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
         $aUploads = array();
         $sSql = "SELECT * FROM " . $cfg['tab']['upl'] . " WHERE `description` != '' ORDER BY idupl ASC";
         $db->query($sSql);
-        
+
         while ($db->nextRecord()) {
-        	$uploadId = $db->f('idupl');
+            $uploadId = $db->f('idupl');
             $aUploads[$uploadId]['description'] = $db->f('description');
             $aUploads[$uploadId]['author'] = $db->f('author');
             $aUploads[$uploadId]['created'] = $db->f('created');
@@ -62,41 +62,41 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
             $aUploads[$uploadId]['modifiedby'] = $db->f('modifiedby');
             $aUploads[$uploadId]['idclient'] = $db->f('idclient');
         }
-        
+
         $aClientLanguages = array();
         $sSql = "SELECT idclient, idlang FROM " . $cfg['tab']['clients_lang'] . " ORDER BY idclient ASC";
         $db->query($sSql);
         while ($db->nextRecord()) {
-        	$clientId = $db->f('idclient');
+            $clientId = $db->f('idclient');
             $aClientLanguages[$clientId][] = $db->f('idlang');
         }
 
         $bError = false;
         $j = 0;
-        
+
         foreach ($aUploads as $idupl => $elem) {
             if ($elem['description'] == '') {
-            	continue;
+                continue;
             }
-            
+
             $clientId = $elem['idclient'];
             if (isset($aClientLanguages[$clientId]) === false) {
-            	continue;
+                continue;
             }
-            
+
             foreach ($aClientLanguages[$clientId] as $idlang) {
-            	$aUplMeta = array();
+                $aUplMeta = array();
                 $sSql = "SELECT * FROM " . $cfg['tab']['upl_meta'] . " WHERE idlang = " . $idlang . "  AND idupl = " . $idupl . " ORDER BY id_uplmeta ASC";
                 $db->query($sSql);
                 $i = 0;
                 while ($db->nextRecord()) {
-                	$aUplMeta[$i]['description'] = $db->f('description');
+                    $aUplMeta[$i]['description'] = $db->f('description');
                     $aUplMeta[$i]['id_uplmeta'] = $db->f('id_uplmeta');
                     $i++;
                 }
 
                 if (count($aUplMeta) < 1) {
-                	//there is no entry in con_upl_meta for this upload
+                    //there is no entry in con_upl_meta for this upload
                     $sSql = "INSERT INTO " . $cfg['tab']['upl_meta'] . " SET
                             idupl = $idupl,
                             idlang = $idlang,
@@ -110,25 +110,25 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract {
                             modifiedby = '" . $elem['modifiedby'] . "',
                             copyright = ''";
                 } elseif (count($aUplMeta) == 1 && $aUplMeta[0]['description'] == '') {
-                	//there is already an entry and the field "description" is empty
+                    //there is already an entry and the field "description" is empty
                     $sSql = "UPDATE " . $cfg['tab']['upl_meta'] . " SET
                             description = '" . $elem['description'] . "'
                             WHERE id_uplmeta = " . $aUplMeta[0]['id_uplmeta'];
                 } else {
-                	//there is already an entry with an exising content in "description"
-                	//do nothing;
+                    //there is already an entry with an exising content in "description"
+                    //do nothing;
                 }
-                
+
                 $db->query($sSql);
                 if ($db->getErrorNumber() != 0) {
-                	$bError = true;
-                	$this->_logError($sSql . "\nMysql Error:" . $db->getErrorMessage() . "(" . $db->getErrorNumber() . ")");
+                    $bError = true;
+                    $this->_logError($sSql . "\nMysql Error:" . $db->getErrorMessage() . "(" . $db->getErrorNumber() . ")");
                 }
             }
-            
+
             $j++;
         }
-        
+
         // At the end remove all values of con_upl.description and drop the field from table
         if ($bError === false && $j == count($aUploads)) {
             $sSql = "ALTER TABLE `" . $cfg['tab']['upl'] . "` DROP `description`";

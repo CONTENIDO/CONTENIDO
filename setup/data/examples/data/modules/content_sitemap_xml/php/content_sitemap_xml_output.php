@@ -147,26 +147,26 @@ function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds, $lang) {
 
         // get articles from DB
         $db->query("
-			SELECT
-				art_lang.idart
-				, UNIX_TIMESTAMP(art_lang.lastmodified) as lastmod
-				, art_lang.changefreq
-				, art_lang.sitemapprio
-				, cat_art.idcat
-				, IF(art_lang.idartlang = cat_lang.startidartlang, 1, 0) AS is_start
+            SELECT
+                art_lang.idart
+                , UNIX_TIMESTAMP(art_lang.lastmodified) as lastmod
+                , art_lang.changefreq
+                , art_lang.sitemapprio
+                , cat_art.idcat
+                , IF(art_lang.idartlang = cat_lang.startidartlang, 1, 0) AS is_start
             FROM
-				`$tab[art_lang]` AS art_lang
-				, `$tab[cat_art]` AS cat_art
-				, `$tab[cat_lang]` AS cat_lang
+                `$tab[art_lang]` AS art_lang
+                , `$tab[cat_art]` AS cat_art
+                , `$tab[cat_lang]` AS cat_lang
             WHERE
-				art_lang.idart = cat_art.idart
+                art_lang.idart = cat_art.idart
                 AND art_lang.idlang = $lang
-				AND art_lang.online = 1
-				AND art_lang.searchable = 1
+                AND art_lang.online = 1
+                AND art_lang.searchable = 1
                 AND cat_art.idcat = cat_lang.idcat
                 AND cat_art.idcat IN ($categoryIds)
                 AND cat_lang.idlang = $lang
-			;");
+            ;");
 
         // construct the XML node
         while ($db->nextRecord()) {
