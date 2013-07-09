@@ -2,17 +2,16 @@
 /**
  * This file contains the system test setup mask.
  *
- * @package    Setup
+ * @package Setup
  * @subpackage Form
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -58,6 +57,10 @@ class cSetupSystemtest extends cSetupMask {
 
             // Check if user updates a system lower than 4.9
             $this->doChangedDirsFilesTest();
+        }
+
+        if((int)ini_get('max_execution_time') == 60){
+            $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to set max_execution_time"), i18n("Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)"));
         }
 
         $results = $this->systemtest->getResults();
@@ -107,7 +110,7 @@ class cSetupSystemtest extends cSetupMask {
             }
 
             $link = new cHTMLLink("#");
-            $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$thisStep."';");
+            $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '" . $thisStep . "';");
             $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
 
             $refreshSetup = new cHTMLAlphaImage();
@@ -282,4 +285,5 @@ class cSetupSystemtest extends cSetupMask {
                 break;
         }
     }
+
 }
