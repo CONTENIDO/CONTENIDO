@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Contenido Setup\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-27 01:01+0200\n"
-"PO-Revision-Date: 2013-04-27 01:14+0100\n"
+"POT-Creation-Date: 2013-07-10 00:50+0200\n"
+"PO-Revision-Date: 2013-07-10 00:52+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -13,11 +13,11 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-Keywords: i18n\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: setup\n"
 
 #: steps/forms/additionalplugins.php:54 steps/forms/additionalplugins.php:55
-#: steps/forms/setupsummary.php:86
+#: steps/forms/setupsummary.php:90
 msgid "Additional Plugins"
 msgstr "Zusätzliche Plugins"
 
@@ -25,7 +25,7 @@ msgstr "Zusätzliche Plugins"
 msgid "Please select Plugins to be installed"
 msgstr "Bitte wählen Sie die zu installierenden Plugins"
 
-#: steps/forms/additionalplugins.php:60 steps/forms/setupsummary.php:107
+#: steps/forms/additionalplugins.php:60 steps/forms/setupsummary.php:111
 msgid "Newsletter"
 msgstr "Newsletter"
 
@@ -41,7 +41,7 @@ msgstr ""
 "Definition von Newsletterempfängern und Empfängergruppen. Layouterstellung "
 "des HTML-Newsletters mit Hilfe von Contenidoartikeln."
 
-#: steps/forms/additionalplugins.php:61 steps/forms/setupsummary.php:110
+#: steps/forms/additionalplugins.php:61 steps/forms/setupsummary.php:114
 msgid "Content Allocation"
 msgstr "Content Allocation"
 
@@ -58,7 +58,7 @@ msgstr ""
 "unterschiedlicher Form dynamisch nach mehreren Kriterien selektiert "
 "darzustellen."
 
-#: steps/forms/additionalplugins.php:62 steps/forms/setupsummary.php:113
+#: steps/forms/additionalplugins.php:62 steps/forms/setupsummary.php:117
 msgid "Mod Rewrite"
 msgstr "Mod Rewrite"
 
@@ -120,7 +120,7 @@ msgstr ""
 "Wenn Sie zum ersten Mal mit Contenido arbeiten, empfehlen wir Ihnen den "
 "Beispielmandanten."
 
-#: steps/forms/clientmode.php:46 steps/forms/setupsummary.php:76
+#: steps/forms/clientmode.php:46 steps/forms/setupsummary.php:80
 msgid "Client with example modules and example content"
 msgstr "Mandant mit Beispielmodulen und -inhalten"
 
@@ -128,7 +128,7 @@ msgstr "Mandant mit Beispielmodulen und -inhalten"
 msgid "Client with example modules, but without example content"
 msgstr "Mandant mit Beispielmodulen, aber ohne Beispielinhalte"
 
-#: steps/forms/clientmode.php:48 steps/forms/setupsummary.php:78
+#: steps/forms/clientmode.php:48 steps/forms/setupsummary.php:82
 msgid "Client without examples"
 msgstr "Mandant ohne Beispiele"
 
@@ -303,31 +303,31 @@ msgstr "Datenbank Parameter"
 msgid "Database host"
 msgstr "Datenbank Host"
 
-#: steps/forms/setupsummary.php:71
+#: steps/forms/setupsummary.php:72
 msgid "Database name"
 msgstr "Datenbank Name"
 
-#: steps/forms/setupsummary.php:71
+#: steps/forms/setupsummary.php:73
 msgid "Database username"
 msgstr "Datenbank Benutzername"
 
-#: steps/forms/setupsummary.php:71
+#: steps/forms/setupsummary.php:74
 msgid "Table prefix"
 msgstr "Tabellenpräfix"
 
-#: steps/forms/setupsummary.php:71 steps/forms/systemdata.php:156
+#: steps/forms/setupsummary.php:75 steps/forms/systemdata.php:160
 msgid "Database character set"
 msgstr "Datenbank Zeichensatz"
 
-#: steps/forms/setupsummary.php:77
+#: steps/forms/setupsummary.php:81
 msgid "Client with example modules but without example content"
 msgstr "Mandant mit Beispielmodulen, aber ohne Beispielinhalte"
 
-#: steps/forms/setupsummary.php:79
+#: steps/forms/setupsummary.php:83
 msgid "Don't create a client"
 msgstr "Mandant nicht anlegen"
 
-#: steps/forms/setupsummary.php:80
+#: steps/forms/setupsummary.php:84
 msgid "Client installation"
 msgstr "Mandanteninstallation"
 
@@ -376,39 +376,43 @@ msgstr ""
 "Stagingsystem) in eine neue Datenbank kopiert haben. Bitte geben Sie die "
 "Datenbankinformationen der neuen Datenbank ein."
 
-#: steps/forms/systemdata.php:143
+#: steps/forms/systemdata.php:121
+msgid "No character set"
+msgstr "Kein Zeichensatz"
+
+#: steps/forms/systemdata.php:147
 msgid "Database Server (IP or name)"
 msgstr "Datenbankserver (IP oder Name)"
 
-#: steps/forms/systemdata.php:147 steps/forms/systemdata.php:149
+#: steps/forms/systemdata.php:151 steps/forms/systemdata.php:153
 msgid "Database Name"
 msgstr "Datenbankname"
 
-#: steps/forms/systemdata.php:147
+#: steps/forms/systemdata.php:151
 msgid "(use empty or non-existant database)"
 msgstr "(leere oder nicht existierende Datenbank)"
 
-#: steps/forms/systemdata.php:153
+#: steps/forms/systemdata.php:157
 msgid "Database Username"
 msgstr "Datenbankbenutzername"
 
-#: steps/forms/systemdata.php:154
+#: steps/forms/systemdata.php:158
 msgid "Database Password"
 msgstr "Datenbankpasswort"
 
-#: steps/forms/systemdata.php:155
+#: steps/forms/systemdata.php:159
 msgid "Table Prefix"
 msgstr "Tabellenpräfix"
 
-#: steps/forms/systemdata.php:175
+#: steps/forms/systemdata.php:179
 msgid "You need to enter a database host."
 msgstr "Sie müssen den Datenbankhost eingeben."
 
-#: steps/forms/systemdata.php:176
+#: steps/forms/systemdata.php:180
 msgid "You need to enter a database name."
 msgstr "Sie müssen den Datenbanknamen eingeben."
 
-#: steps/forms/systemdata.php:177
+#: steps/forms/systemdata.php:181
 msgid "You need to enter a database user."
 msgstr "Sie müssen den Datenbankbenutzer eingeben."
 
@@ -799,11 +803,11 @@ msgstr ""
 "Ihre GD Version unterstützt nicht das Schreiben von PNG Dateien. Dies kann "
 "bei einigen Modulen zu Problemen führen."
 
-#: steps/forms/systemtest.php:413
+#: steps/forms/systemtest.php:415
 msgid "MySQL database connect failed"
 msgstr "Verbindung zur MySQL Datenbank fehlgeschlagen."
 
-#: steps/forms/systemtest.php:414
+#: steps/forms/systemtest.php:416
 #, php-format
 msgid ""
 "Setup was unable to connect to the MySQL Server (Server %s, Username %s). "
@@ -814,11 +818,11 @@ msgstr ""
 "Bitte überprüfen Sie die Verbindungsdaten zur Datenbank und versuchen es "
 "erneut.<br><br>Die Fehlermeldung von MySQL war: %s."
 
-#: steps/forms/systemtest.php:425
+#: steps/forms/systemtest.php:427
 msgid "MySQL is running in strict mode"
 msgstr "MySQL läuft im strict Modus"
 
-#: steps/forms/systemtest.php:426
+#: steps/forms/systemtest.php:428
 msgid ""
 "MySQL is running in strict mode, Contenido will not work with this mode. "
 "Please change your sql_mode!"
@@ -826,11 +830,11 @@ msgstr ""
 "MySQL läuft im strict Modus, Contenido wird nicht in diesem Modus "
 "funktionieren. Bitte ändern Sie die Einstellung sql_mode!"
 
-#: steps/forms/systemtest.php:457
+#: steps/forms/systemtest.php:459
 msgid "MySQL database already exists and seems to be filled"
 msgstr "MySQL-Datenbank existiert bereits und scheint gefüllt zu sein"
 
-#: steps/forms/systemtest.php:458
+#: steps/forms/systemtest.php:460
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -844,11 +848,11 @@ msgstr ""
 "Präfix. Wenn Sie von einer älteren Contenido-Version upgraden möchten, "
 "wählen Sie bitte \"Upgrade\" als Setupart."
 
-#: steps/forms/systemtest.php:472
+#: steps/forms/systemtest.php:474
 msgid "MySQL test table already exists in the database"
 msgstr "MySQL Testtabelle existiert bereits in der Datenbank"
 
-#: steps/forms/systemtest.php:473
+#: steps/forms/systemtest.php:475
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
@@ -857,11 +861,11 @@ msgstr ""
 "Setup hat die Datenbank %s geprüft und die Testtabelle %s gefunden. Bitte "
 "entfernen Sie diese, bevor Sie fortfahren."
 
-#: steps/forms/systemtest.php:484 steps/forms/systemtest.php:539
+#: steps/forms/systemtest.php:486 steps/forms/systemtest.php:541
 msgid "Unable to create tables in the selected MySQL database"
 msgstr "Kann keine Tabellen in der gewählten MySQL-Datenbank anlegen"
 
-#: steps/forms/systemtest.php:485 steps/forms/systemtest.php:540
+#: steps/forms/systemtest.php:487 steps/forms/systemtest.php:542
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -872,13 +876,13 @@ msgstr ""
 "gescheitert. Bitte weisen Sie ihrem Datenbankbenutzer entsprechende Rechte "
 "zu, oder fragen Sie einen Administrator."
 
-#: steps/forms/systemtest.php:497 steps/forms/systemtest.php:552
-#: steps/forms/systemtest.php:613 steps/forms/systemtest.php:661
+#: steps/forms/systemtest.php:499 steps/forms/systemtest.php:554
+#: steps/forms/systemtest.php:615 steps/forms/systemtest.php:663
 msgid "Unable to lock tables in the selected MySQL database"
 msgstr "\"LOCK TABLES\" in der gewählten MySQL-Datenbank fehlgeschlagen"
 
-#: steps/forms/systemtest.php:498 steps/forms/systemtest.php:553
-#: steps/forms/systemtest.php:614 steps/forms/systemtest.php:662
+#: steps/forms/systemtest.php:500 steps/forms/systemtest.php:555
+#: steps/forms/systemtest.php:616 steps/forms/systemtest.php:664
 #, php-format
 msgid ""
 "Setup tried to lock a test table in the database %s and failed. You can "
@@ -892,11 +896,11 @@ msgstr ""
 "kommen kann. Es wird ausdrücklich empfohlen, daß Sie das Recht \"LOCK TABLES"
 "\" Ihrem Datenbankbenutzer zuweisen."
 
-#: steps/forms/systemtest.php:512 steps/forms/systemtest.php:567
+#: steps/forms/systemtest.php:514 steps/forms/systemtest.php:569
 msgid "Unable to remove the test table"
 msgstr "Konnte die Testtabelle nicht entfernen"
 
-#: steps/forms/systemtest.php:513 steps/forms/systemtest.php:568
+#: steps/forms/systemtest.php:515 steps/forms/systemtest.php:570
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
@@ -906,11 +910,11 @@ msgstr ""
 "aufgrund fehlender Berechtigungen nicht löschen. Bitte löschen Sie die "
 "Testtabelle %s manuell."
 
-#: steps/forms/systemtest.php:526
+#: steps/forms/systemtest.php:528
 msgid "Unable to create the database in the MySQL server"
 msgstr "Datenbankerzeugung auf dem MySQL-Server ist fehlgeschlagen"
 
-#: steps/forms/systemtest.php:527
+#: steps/forms/systemtest.php:529
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
@@ -921,11 +925,11 @@ msgstr ""
 "Berechtigungen für den eingegebenen Datenbankbenutzer, fragen Sie ihre "
 "Administrator, oder erstellen Sie die Datenbank händisch."
 
-#: steps/forms/systemtest.php:583 steps/forms/systemtest.php:600
+#: steps/forms/systemtest.php:585 steps/forms/systemtest.php:602
 msgid "No data found for the migration"
 msgstr "Keine Daten für die Migration gefunden"
 
-#: steps/forms/systemtest.php:584
+#: steps/forms/systemtest.php:586
 #, php-format
 msgid ""
 "Setup tried to locate the data for the migration, however, the database %s "
@@ -935,7 +939,7 @@ msgstr ""
 "enthält die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank "
 "bevor Sie das Setup ausführen."
 
-#: steps/forms/systemtest.php:601
+#: steps/forms/systemtest.php:603
 #, php-format
 msgid ""
 "Setup tried to locate the data for the migration, however, the database %s "
@@ -946,11 +950,11 @@ msgstr ""
 "enthält die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank "
 "bevor Sie das Setup ausführen."
 
-#: steps/forms/systemtest.php:631 steps/forms/systemtest.php:648
+#: steps/forms/systemtest.php:633 steps/forms/systemtest.php:650
 msgid "No data found for the upgrade"
 msgstr "Keine Daten für das Upgrade gefunden"
 
-#: steps/forms/systemtest.php:632
+#: steps/forms/systemtest.php:634
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -960,7 +964,7 @@ msgstr ""
 "existiert die Datenbank %s nicht. Bitte kopieren Sie die Datenbank bevor Sie "
 "das Setup ausführen."
 
-#: steps/forms/systemtest.php:649
+#: steps/forms/systemtest.php:651
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -971,12 +975,12 @@ msgstr ""
 "enthält die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank "
 "bevor Sie das Setup ausführen."
 
-#: steps/forms/systemtest.php:774
+#: steps/forms/systemtest.php:776
 #, php-format
 msgid "Can't write %s"
 msgstr "Kann %s nicht schreiben"
 
-#: steps/forms/systemtest.php:775
+#: steps/forms/systemtest.php:777
 #, php-format
 msgid ""
 "Setup or Contenido can't write to the file %s. Please change the file "
@@ -985,7 +989,7 @@ msgstr ""
 "Setup oder Contenido kann nicht die Datei %s schreiben. Bitte ändern Sie die "
 "Dateiberechtigungen, um das Problem zu lösen."
 
-#: steps/forms/systemtest.php:788
+#: steps/forms/systemtest.php:790
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any file "
 "permissions."
@@ -993,7 +997,7 @@ msgstr ""
 "Ihr Server läuft mit Windows. Daher kann das Setup keine Dateiberechtigungen "
 "empfehlen."
 
-#: steps/forms/systemtest.php:791
+#: steps/forms/systemtest.php:793
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -1005,7 +1009,7 @@ msgstr ""
 "nach Schreibrechten für die Datei %s, insbesondere in Umgebungen, in denen "
 "ACL's (Access Control Lists) verwendet werden."
 
-#: steps/forms/systemtest.php:796
+#: steps/forms/systemtest.php:798
 #, php-format
 msgid ""
 "Your web server and the owner of your files are identical. You need to "
@@ -1016,7 +1020,7 @@ msgstr ""
 "Schreibzugriff aktivieren, z.b. mit chmod u+rw %s, oder durch das setzen der "
 "Rechtemaske auf %s."
 
-#: steps/forms/systemtest.php:801
+#: steps/forms/systemtest.php:803
 #, php-format
 msgid ""
 "Your web server's group and the group of your files are identical. You need "
@@ -1027,7 +1031,7 @@ msgstr ""
 "Schreibzugriff für die Gruppe, z.b. mit chmod g+rw %s, oder durch das Setzen "
 "der Rechtemaske auf %s."
 
-#: steps/forms/systemtest.php:806
+#: steps/forms/systemtest.php:808
 #, php-format
 msgid ""
 "Your web server is not equal to the file owner, and is not in the "
@@ -1042,7 +1046,7 @@ msgstr ""
 "Schreibzugriff für jedermann (world), z.b. mit chmod o+rw %s, oder durch das "
 "setzen der Rechtemaske auf %s."
 
-#: steps/forms/systemtest.php:817
+#: steps/forms/systemtest.php:819
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any directory "
 "permissions."
@@ -1050,7 +1054,7 @@ msgstr ""
 "Ihr Webserver läuft mit Windows. Daher kann das Setup keine "
 "Verzeichnisberechtigungen empfehlen."
 
-#: steps/forms/systemtest.php:820
+#: steps/forms/systemtest.php:822
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -1062,7 +1066,7 @@ msgstr ""
 "Schreibrechten auf die Datei oder das Verzeichnis %s, insbesondere bei "
 "Systemen, bei denen ACL's (Access Control Lists) verwendet werden."
 
-#: steps/forms/systemtest.php:825
+#: steps/forms/systemtest.php:827
 #, php-format
 msgid ""
 "Your web server and the owner of your directory are identical. You need to "
@@ -1073,7 +1077,7 @@ msgstr ""
 "müssen Schreibzugriff für den Besitzer aktivieren, z.b. mit chmod u+rw %s, "
 "oder durch das setzen der Rechtemaske auf %s."
 
-#: steps/forms/systemtest.php:830
+#: steps/forms/systemtest.php:832
 #, php-format
 msgid ""
 "Your web server's group and the group of your directory are identical. You "
@@ -1084,7 +1088,7 @@ msgstr ""
 "müssen den Schreibzugriff für die Gruppe aktivieren, z.b. mit chmod g+rw %s, "
 "oder durch setzen der Rechtemaske auf %s."
 
-#: steps/forms/systemtest.php:835
+#: steps/forms/systemtest.php:837
 #, php-format
 msgid ""
 "Your web server is not equal to the directory owner, and is not in the "
