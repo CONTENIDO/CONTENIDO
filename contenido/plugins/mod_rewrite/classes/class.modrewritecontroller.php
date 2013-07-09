@@ -269,7 +269,7 @@ class ModRewriteController extends ModRewriteBase {
 
         // get REQUEST_URI
         $requestUri = $_SERVER['REQUEST_URI'];
-        // use REDIRECT_URL if set
+        // CON-1178 use REDIRECT_URL if set
         if (array_key_exists('REDIRECT_URL', $_SERVER)) {
             $requestUri = $_SERVER['REDIRECT_URL'];
             if (array_key_exists('REDIRECT_QUERY_STRING', $_SERVER)) {
