@@ -116,6 +116,13 @@ class ModRewriteController extends ModRewriteBase {
      * @param  string  $incommingUrl  Incomming URL
      */
     public function __construct($incommingUrl) {
+
+        // CON-1266 make incomming URL lowercase if option "URLS to
+        // lowercase" is set
+        if (1 == $this->getConfig('use_lowercase_uri')) {
+            $incommingUrl = strtolower($incommingUrl);
+        }
+
         $this->_sIncommingUrl = $incommingUrl;
         $this->_aParts = array();
         $this->_sArtName = '';
@@ -262,8 +269,23 @@ class ModRewriteController extends ModRewriteBase {
     private function _extractRequestUri($secondCall = false) {
         global $client;
 
+        // get REQUEST_URI
+        $requestUri = $_SERVER['REQUEST_URI'];
+        // CON-1178 use REDIRECT_URL if set
+        if (array_key_exists('REDIRECT_URL', $_SERVER)) {
+            $requestUri = $_SERVER['REDIRECT_URL'];
+            if (array_key_exists('REDIRECT_QUERY_STRING', $_SERVER)) {
+                $requestUri .= '?' . $_SERVER['REDIRECT_QUERY_STRING'];
+            }
+        }
+        // CON-1266 make request URL lowercase if option "URLS to
+        // lowercase" is set
+        if (1 == $this->getConfig('use_lowercase_uri')) {
+            $requestUri = strtolower($requestUri);
+        }
+
         // check for defined rootdir
-        if (parent::getConfig('rootdir') !== '/' && strpos($_SERVER['REQUEST_URI'], $this->_sIncommingUrl) === 0) {
+        if (parent::getConfig('rootdir') !== '/' && strpos($requestUri, $this->_sIncommingUrl) === 0) {
             $this->_sIncommingUrl = str_replace(parent::getConfig('rootdir'), '/', $this->_sIncommingUrl);
         }
 
