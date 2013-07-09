@@ -12,7 +12,7 @@
  * is used instead. In this case this module makes sure that the sitemap is
  * generated only once each 23h.
  *
- * SETTING: content-xml-sitemap/cat-url-for-startart (default: true)
+ * SETTING: content-sitemap-xml/cat-url-for-startart (default: true)
  * If set to true for all startarticles the URL is generated for their category
  * instead for the article itself.
  * This should be done if the navigation produces category links which is
@@ -141,7 +141,7 @@ function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds, $lang) {
         $tab = $cfg['tab'];
         $db = cRegistry::getDb();
 
-        $useCategoryUrlsForStartArticles = 'true' == getEffectiveSetting('content-xml-sitemap', 'cat-url-for-startart', 'true');
+        $useCategoryUrlsForStartArticles = 'true' == getEffectiveSetting('content-sitemap-xml', 'cat-url-for-startart', 'true');
 
         $categoryIds = implode(',', $categoryIds);
 
