@@ -85,16 +85,6 @@ EOD;
             }
         }
 
-        // skip category containing product related articles
-        // these will be considered in addProductsToSitemap()
-        $productIdcat = getEffectiveSetting('navigation-product', 'idcat', '0');
-        if (0 < $productIdcat) {
-            $key = array_search($productIdcat, $currentCategoryIds);
-            if (false !== $key) {
-                unset($currentCategoryIds[$key]);
-            }
-        }
-
         $itemCount[] = addArticlesToSitemap($sitemap, $currentCategoryIds, $currentIdlang);
     }
 
