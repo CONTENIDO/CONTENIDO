@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-09 14:11+0200\n"
+"POT-Creation-Date: 2013-07-09 15:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -205,50 +205,63 @@ msgstr ""
 msgid "Client installation"
 msgstr ""
 
-#: steps/forms/systemtest.php:35 steps/forms/systemtest.php:36
+#: steps/forms/systemtest.php:34 steps/forms/systemtest.php:35
 msgid "System Test"
 msgstr ""
 
-#: steps/forms/systemtest.php:37
+#: steps/forms/systemtest.php:36
 msgid "Your system has been tested for compatibility with CONTENIDO:"
 msgstr ""
 
-#: steps/forms/systemtest.php:47
+#: steps/forms/systemtest.php:46
 msgid "PHP MySQL Extension missing"
 msgstr ""
 
-#: steps/forms/systemtest.php:47
+#: steps/forms/systemtest.php:46
 msgid ""
 "CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. "
 "Please configure PHP to use either MySQL or MySQLi."
 msgstr ""
 
-#: steps/forms/systemtest.php:73
+#: steps/forms/systemtest.php:63
+msgid "Unable to set max_execution_time"
+msgstr ""
+
+#: steps/forms/systemtest.php:63
+msgid ""
+"Your PHP configuration for max_execution_time can not be changed via this "
+"script. We recommend setting the value for the installation or upgrade "
+"process to 60 seconds. You can try to execute the process with your current "
+"configuration. If the process is stopped, the system is not usable (any "
+"longer)"
+msgstr ""
+
+#: steps/forms/systemtest.php:76
 msgid "Information"
 msgstr ""
 
-#: steps/forms/systemtest.php:77
+#: steps/forms/systemtest.php:80
 msgid "Warning"
 msgstr ""
 
-#: steps/forms/systemtest.php:81
+#: steps/forms/systemtest.php:84
 msgid "Fatal error"
 msgstr ""
 
-#: steps/forms/systemtest.php:89
+#: steps/forms/systemtest.php:92
 msgid "No problems detected"
 msgstr ""
 
-#: steps/forms/systemtest.php:89
+#: steps/forms/systemtest.php:92
 msgid "Setup could not detect any problems with your system environment"
 msgstr ""
 
-#: steps/forms/systemtest.php:171
+#: steps/forms/systemtest.php:174
 #, php-format
 msgid "An old Version of Plugin %s is installed on your system."
 msgstr ""
 
-#: steps/forms/systemtest.php:176
+#: steps/forms/systemtest.php:179
 msgid ""
 "Please remove all old plugins before you continue. To transfer old plugin "
 "data, please copy the old plugin data tables into the new plugin data tables "
@@ -257,11 +270,11 @@ msgid ""
 "transfer."
 msgstr ""
 
-#: steps/forms/systemtest.php:178
+#: steps/forms/systemtest.php:181
 msgid "Old Plugins are still installed"
 msgstr ""
 
-#: steps/forms/systemtest.php:191
+#: steps/forms/systemtest.php:194
 #, php-format
 msgid ""
 "You are updating a previous version of CONTENIDO to %s. Some directories/"
@@ -272,15 +285,15 @@ msgid ""
 "includes/ to data/config/production/."
 msgstr ""
 
-#: steps/forms/systemtest.php:194
+#: steps/forms/systemtest.php:197
 msgid "Attention: Some directories/files have been moved"
 msgstr ""
 
-#: steps/forms/systemtest.php:216
+#: steps/forms/systemtest.php:219
 msgid "MySQL database already exists and seems to be filled"
 msgstr ""
 
-#: steps/forms/systemtest.php:216
+#: steps/forms/systemtest.php:219
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -289,22 +302,22 @@ msgid ""
 "previous version, choose 'upgrade' as setup type."
 msgstr ""
 
-#: steps/forms/systemtest.php:223
+#: steps/forms/systemtest.php:226
 msgid "MySQL test table already exists in the database"
 msgstr ""
 
-#: steps/forms/systemtest.php:223
+#: steps/forms/systemtest.php:226
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
 "before continuing."
 msgstr ""
 
-#: steps/forms/systemtest.php:230 steps/forms/systemtest.php:251
+#: steps/forms/systemtest.php:233 steps/forms/systemtest.php:254
 msgid "Unable to create tables in the selected MySQL database"
 msgstr ""
 
-#: steps/forms/systemtest.php:230 steps/forms/systemtest.php:251
+#: steps/forms/systemtest.php:233 steps/forms/systemtest.php:254
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -312,40 +325,40 @@ msgid ""
 "an administrator to do so."
 msgstr ""
 
-#: steps/forms/systemtest.php:237 steps/forms/systemtest.php:258
+#: steps/forms/systemtest.php:240 steps/forms/systemtest.php:261
 msgid "Unable to remove the test table"
 msgstr ""
 
-#: steps/forms/systemtest.php:237 steps/forms/systemtest.php:258
+#: steps/forms/systemtest.php:240 steps/forms/systemtest.php:261
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
 "insufficient permissions. Please remove the table %s manually."
 msgstr ""
 
-#: steps/forms/systemtest.php:244
+#: steps/forms/systemtest.php:247
 msgid "Unable to create the database in the MySQL server"
 msgstr ""
 
-#: steps/forms/systemtest.php:244
+#: steps/forms/systemtest.php:247
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
 "to do so, or create the database manually."
 msgstr ""
 
-#: steps/forms/systemtest.php:268 steps/forms/systemtest.php:278
+#: steps/forms/systemtest.php:271 steps/forms/systemtest.php:281
 msgid "No data found for the upgrade"
 msgstr ""
 
-#: steps/forms/systemtest.php:268
+#: steps/forms/systemtest.php:271
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
 "doesn't exist. You need to copy your database first before running setup."
 msgstr ""
 
-#: steps/forms/systemtest.php:278
+#: steps/forms/systemtest.php:281
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "

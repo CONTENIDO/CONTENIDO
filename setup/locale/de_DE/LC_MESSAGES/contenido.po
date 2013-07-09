@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Setup\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-09 14:11+0200\n"
-"PO-Revision-Date: 2013-07-09 14:19+0100\n"
+"POT-Creation-Date: 2013-07-09 15:35+0200\n"
+"PO-Revision-Date: 2013-07-09 15:37+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Development\n"
 "Language: de_DE\n"
@@ -250,19 +250,19 @@ msgstr "Mandant nicht anlegen"
 msgid "Client installation"
 msgstr "Mandanteninstallation"
 
-#: steps/forms/systemtest.php:35 steps/forms/systemtest.php:36
+#: steps/forms/systemtest.php:34 steps/forms/systemtest.php:35
 msgid "System Test"
 msgstr "Systemüberprüfung"
 
-#: steps/forms/systemtest.php:37
+#: steps/forms/systemtest.php:36
 msgid "Your system has been tested for compatibility with CONTENIDO:"
 msgstr "Ihr System wurde auf Kompatibilität mit CONTENIDO überprüft:"
 
-#: steps/forms/systemtest.php:47
+#: steps/forms/systemtest.php:46
 msgid "PHP MySQL Extension missing"
 msgstr "PHP MySQL Extension nicht geladen"
 
-#: steps/forms/systemtest.php:47
+#: steps/forms/systemtest.php:46
 msgid ""
 "CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. "
 "Please configure PHP to use either MySQL or MySQLi."
@@ -271,34 +271,52 @@ msgstr ""
 "Datenbanken zuzugreifen. Bitte konfigurieren Sie PHP so, daß PHP entweder "
 "MySQL oder MySQLi verwendet."
 
-#: steps/forms/systemtest.php:73
+#: steps/forms/systemtest.php:63
+msgid "Unable to set max_execution_time"
+msgstr "Max_execution_time konnte nicht geändert werden."
+
+#: steps/forms/systemtest.php:63
+msgid ""
+"Your PHP configuration for max_execution_time can not be changed via this "
+"script. We recommend setting the value for the installation or upgrade "
+"process to 60 seconds. You can try to execute the process with your current "
+"configuration. If the process is stopped, the system is not usable (any "
+"longer)"
+msgstr ""
+"Ihre PHP-Einstellung für max_execution_time kann nicht über dieses Script "
+"geändert werden. Wir empfehlen einen Wert von 60 Sekunden während der "
+"Installation oder des Upgrades. Sie können versuchen, den Prozess mit der "
+"vorhandenen Konfiguration auszuführen. Falls der Prozess abbrechen sollte, "
+"ist das System nicht (mehr) benutzbar."
+
+#: steps/forms/systemtest.php:76
 msgid "Information"
 msgstr "Information"
 
-#: steps/forms/systemtest.php:77
+#: steps/forms/systemtest.php:80
 msgid "Warning"
 msgstr "Warnung"
 
-#: steps/forms/systemtest.php:81
+#: steps/forms/systemtest.php:84
 msgid "Fatal error"
 msgstr "Schwerer Fehler"
 
-#: steps/forms/systemtest.php:89
+#: steps/forms/systemtest.php:92
 msgid "No problems detected"
 msgstr "Keine Probleme gefunden"
 
-#: steps/forms/systemtest.php:89
+#: steps/forms/systemtest.php:92
 msgid "Setup could not detect any problems with your system environment"
 msgstr ""
 "Die Installationsroutine konnte keine Probleme mit Ihrer Systemumgebung "
 "finden."
 
-#: steps/forms/systemtest.php:171
+#: steps/forms/systemtest.php:174
 #, php-format
 msgid "An old Version of Plugin %s is installed on your system."
 msgstr "Eine alte Version des Plugin %s ist auf Ihrem System installiert."
 
-#: steps/forms/systemtest.php:176
+#: steps/forms/systemtest.php:179
 msgid ""
 "Please remove all old plugins before you continue. To transfer old plugin "
 "data, please copy the old plugin data tables into the new plugin data tables "
@@ -313,11 +331,11 @@ msgstr ""
 "CONTENIDO Tabellenpräfix. Bitte entfernen Sie auch nach der Datenübertragung "
 "die alten Plugintabellen."
 
-#: steps/forms/systemtest.php:178
+#: steps/forms/systemtest.php:181
 msgid "Old Plugins are still installed"
 msgstr "Alte Plugins sind noch installiert"
 
-#: steps/forms/systemtest.php:191
+#: steps/forms/systemtest.php:194
 #, php-format
 msgid ""
 "You are updating a previous version of CONTENIDO to %s. Some directories/"
@@ -336,15 +354,15 @@ msgstr ""
 "Konfigurations-Dateien in contenido/includes/ die bei Bedarf nach data/"
 "config/production/ kopiert werden sollten."
 
-#: steps/forms/systemtest.php:194
+#: steps/forms/systemtest.php:197
 msgid "Attention: Some directories/files have been moved"
 msgstr "Achtung: Einige Verzeichnisse / Dateien wurden verschoben"
 
-#: steps/forms/systemtest.php:216
+#: steps/forms/systemtest.php:219
 msgid "MySQL database already exists and seems to be filled"
 msgstr "MySQL-Datenbank existiert bereits und scheint gefüllt zu sein"
 
-#: steps/forms/systemtest.php:216
+#: steps/forms/systemtest.php:219
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -358,11 +376,11 @@ msgstr ""
 "wählen Sie bitte einen anderen Präfix. Wenn Sie von einer älteren CONTENIDO-"
 "Version upgraden möchten, wählen Sie bitte \"Upgrade\" als Installations-Art."
 
-#: steps/forms/systemtest.php:223
+#: steps/forms/systemtest.php:226
 msgid "MySQL test table already exists in the database"
 msgstr "MySQL-Testtabelle existiert bereits in der Datenbank"
 
-#: steps/forms/systemtest.php:223
+#: steps/forms/systemtest.php:226
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
@@ -371,11 +389,11 @@ msgstr ""
 "Die Installationsroutine hat die Datenbank %s geprüft und die Testtabelle %s "
 "gefunden. Bitte entfernen Sie diese, bevor Sie fortfahren."
 
-#: steps/forms/systemtest.php:230 steps/forms/systemtest.php:251
+#: steps/forms/systemtest.php:233 steps/forms/systemtest.php:254
 msgid "Unable to create tables in the selected MySQL database"
 msgstr "Kann keine Tabellen in der gewählten MySQL-Datenbank anlegen"
 
-#: steps/forms/systemtest.php:230 steps/forms/systemtest.php:251
+#: steps/forms/systemtest.php:233 steps/forms/systemtest.php:254
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -386,11 +404,11 @@ msgstr ""
 "anzulegen und ist gescheitert. Bitte weisen Sie ihrem Datenbankbenutzer "
 "entsprechende Rechte zu, oder fragen Sie einen Administrator."
 
-#: steps/forms/systemtest.php:237 steps/forms/systemtest.php:258
+#: steps/forms/systemtest.php:240 steps/forms/systemtest.php:261
 msgid "Unable to remove the test table"
 msgstr "Konnte die Testtabelle nicht entfernen"
 
-#: steps/forms/systemtest.php:237 steps/forms/systemtest.php:258
+#: steps/forms/systemtest.php:240 steps/forms/systemtest.php:261
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
@@ -400,11 +418,11 @@ msgstr ""
 "erstellt, konnte sie jedoch aufgrund fehlender Berechtigungen nicht löschen. "
 "Bitte löschen Sie die Testtabelle %s manuell."
 
-#: steps/forms/systemtest.php:244
+#: steps/forms/systemtest.php:247
 msgid "Unable to create the database in the MySQL server"
 msgstr "Erstellung der Datenbank auf dem MySQL-Server ist fehlgeschlagen"
 
-#: steps/forms/systemtest.php:244
+#: steps/forms/systemtest.php:247
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
@@ -415,11 +433,11 @@ msgstr ""
 "passende Berechtigungen für den eingegebenen Datenbankbenutzer, fragen Sie "
 "ihre Administrator, oder erstellen Sie die Datenbank händisch."
 
-#: steps/forms/systemtest.php:268 steps/forms/systemtest.php:278
+#: steps/forms/systemtest.php:271 steps/forms/systemtest.php:281
 msgid "No data found for the upgrade"
 msgstr "Keine Daten für das Upgrade gefunden"
 
-#: steps/forms/systemtest.php:268
+#: steps/forms/systemtest.php:271
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -429,7 +447,7 @@ msgstr ""
 "lokalisieren, jedoch existiert die Datenbank %s nicht. Bitte kopieren Sie "
 "die Datenbank bevor Sie das Setup ausführen."
 
-#: steps/forms/systemtest.php:278
+#: steps/forms/systemtest.php:281
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
