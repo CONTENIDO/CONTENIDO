@@ -363,8 +363,8 @@ class PifaAjaxHandler {
             $rule = substr($rule, 0, 1023);
             // check if rule is valid
             if (0 === strlen($rule)) {
-                // PASS
-            } else if (false === preg_match($rule, 'And always remember: the world is an orange!')) {
+                $pifaField->set('rule', $rule);
+            } else if (false === @preg_match($rule, 'And always remember: the world is an orange!')) {
                 // PASS
             } else if ($rule === $pifaField->get('rule')) {
                 // PASS
