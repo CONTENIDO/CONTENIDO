@@ -22,8 +22,29 @@ global $contenido_path, $contenido, $client, $load_client, $file;
 // Set path to current frontend
 $frontend_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/';
 
+/*
+ * Do not edit this value!
+*
+* If you want to set a different enviroment value please define it in your .htaccess file
+* or in the server configuration.
+*
+* SetEnv CON_ENVIRONMENT development
+*/
+if (!defined('CON_ENVIRONMENT')) {
+    if (getenv('CONTENIDO_ENVIRONMENT')) {
+        $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
+    } elseif (getenv('CON_ENVIRONMENT')) {
+        $sEnvironment = getenv('CON_ENVIRONMENT');
+    } else {
+        // @TODO: provide a possibility to set the environment value via file
+        $sEnvironment = 'production';
+    }
+
+    define('CON_ENVIRONMENT', $sEnvironment);
+}
+
 // Include the config file of the frontend to init the Client and Language Id
-include_once($frontend_path . 'data/config/config.php');
+include_once($frontend_path . 'data/config/' . CON_ENVIRONMENT . '/config.php');
 
 // CONTENIDO startup process
 if (!is_file($contenido_path . 'includes/startup.php')) {
