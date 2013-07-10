@@ -116,9 +116,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract {
             $db2->query($sql);
         }
 
-        // Makes the new concept of modules (save the modules to the file) save the translation
-        cModuleHandler::setEncoding('ISO-8859-1');
-
+        // Makes the new concept of modules (save the modules to the file) save the translation        
         foreach ($cfgClient as $iClient => $aClient) {
             if ((int) $iClient == 0) {
                 continue;

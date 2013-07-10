@@ -159,11 +159,6 @@ class cModuleHandler {
      */
     protected static $_encodingStore = array();
 
-    /**
-     *
-     * @var string
-     */
-    protected static $_overrideEncoding = '';
 
     /**
      * Construct for the class cModuleHandler.
@@ -196,16 +191,24 @@ class cModuleHandler {
             throw new cException('Can not create main module directory.');
         }
     }
-
-    public static function setEncoding($encoding) {
-        self::$_overrideEncoding = $encoding;
-    }
-
-    public static function getEncoding() {
-        global $lang;
-
-        if (self::$_overrideEncoding != '') {
-            return self::$_overrideEncoding;
+    
+    public static function getEncoding($overrideLanguageId = 0) {
+        $lang = cRegistry::getLanguageId();
+        
+        if ((int) $overrideLanguageId != 0) {
+        	$lang = $overrideLanguageId;
+        }
+        
+        if ((int) $lang == 0) {
+        	$clientId = cRegistry::getClientId();
+    	
+	    	$clientsLangColl = new cApiClientLanguageCollection();
+	    	$clientLanguages = $clientsLangColl->getLanguagesByClient($clientId);
+	    	sort($clientLanguages);
+	    	
+	    	if (isset($clientLanguages[0]) && (int) $clientLanguages[0] != 0) {
+	    		$lang = $clientLanguages[0];
+	    	}
         }
 
         if (!isset(self::$_encodingStore[$lang])) {

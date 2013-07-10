@@ -120,14 +120,14 @@ class cLayoutHandler {
      * @param int $layoutId
      * @param string $layoutCode
      * @param array $cfg
-     * @param string $encoding
+     * @param int $language
      */
-    public function init($layoutId, $layoutCode, $cfg, $encoding) {
+    public function init($layoutId, $layoutCode, $cfg, $language) {
         $this->_layoutCode = $layoutCode;
         $this->_cfg = $cfg;
 
         // set encoding
-        $this->_setEncoding($encoding);
+        $this->_setEncoding($language);
 
         if ((int) $layoutId == 0) {
             return;
@@ -211,13 +211,23 @@ class cLayoutHandler {
      * @param int $lang
      */
     private function _setEncoding($lang) {
-        $cApiLanguage = new cApiLanguage($lang);
+    	if ((int) $lang == 0) {
+    		$clientId = cRegistry::getClientId();
+    		 
+    		$clientsLangColl = new cApiClientLanguageCollection();
+    		$clientLanguages = $clientsLangColl->getLanguagesByClient($clientId);
+    		sort($clientLanguages);
+    	
+    		if (isset($clientLanguages[0]) && (int) $clientLanguages[0] != 0) {
+    			$languageId = $clientLanguages[0];
+    		}
+    	} else {
+    		$languageId = $lang;
+    	}
+
+        $cApiLanguage = new cApiLanguage($languageId);
         $encoding = $cApiLanguage->get('encoding');
-
-        if ($encoding == '') {
-            $encoding = 'ISO-8859-1';
-        }
-
+        
         $this->_encoding = $encoding;
     }
 

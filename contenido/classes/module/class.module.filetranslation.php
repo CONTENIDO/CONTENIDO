@@ -74,6 +74,8 @@ class cModuleFileTranslation extends cModuleHandler {
         if ($overrideIdlang != null) {
             $this->_idlang = $overrideIdlang;
         }
+        
+        $this->_encoding = self::getEncoding($this->_idlang);
 
         // dont open the translations file for each mi18n call
         if ($static == true) {
@@ -92,7 +94,6 @@ class cModuleFileTranslation extends cModuleHandler {
             // set filename lang_[language]_[Country].txt
             $language = $this->_getValueFromProperties('language', 'code');
             $country = $this->_getValueFromProperties('country', 'code');
-            self::$fileName = 'lang_' . $language . '_' . strtoupper($country) . '.txt';
             self::$fileName = 'lang_' . $language . '_' . strtoupper($country) . '.txt';
         }
     }
@@ -121,54 +122,6 @@ class cModuleFileTranslation extends cModuleHandler {
     }
 
     /**
-     * Save all translations from db in Filesystem.
-     * Warning: Only run once! A second time would delete
-     * all translations.
-     */
-    public function saveTranslationsFromDbToFile() {
-        $db = cRegistry::getDb();
-
-        $sql = 'SELECT cl.idlang AS idlang, c.idclient AS idclient, m.idmod AS idmod'
-                . 'FROM `%s` AS cl, `%s` AS m, `%s` AS c WHERE cl.idclient = c.idclient';
-        $sql = $db->prepare($sql, $this->_cfg['tab']['clients_lang'], $this->_cfg['tab']['mod'], $this->_cfg['tab']['clients']);
-        $db->query($sql);
-
-        while ($db->nextRecord()) {
-            $contenidoTranslationsFromFile = new cModuleFileTranslation($db->f('idmod'));
-            $contenidoTranslationsFromFile->saveTranslations();
-        }
-    }
-
-    /**
-     *
-     * @todo noch nicht fertig
-     */
-    public function saveAllTranslations() {
-        $db = cRegistry::getDb();
-
-        $sql = 'SELECT m.idmod, mt.idlang, mt.original, mt.translation FROM `%s` AS mt, `%s` AS m '
-                . 'WHERE mt.idmod = m.idmod ORDER BY m.idmod, mt.idlang';
-        $sql = $db->prepare($sql, $this->_cfg['tab']['mod_translations'], $this->_cfg['tab']['mod']);
-        $db->query($sql);
-
-        $transArray = array();
-        $saveModId = -1;
-        $saveLangId = -1;
-        while ($db->nextRecord()) {
-            $transArray[cSecurity::unfilter($db->f('original'))] = cSecurity::unfilter($db->f('translation'));
-            if ($saveLangId != $db->f('idlang') || $saveModId != $db->f('idmod')) {
-                if ($saveLangId != -1 && $saveModId != -1) {
-                    // reset translations array
-                    $transArray = array();
-                }
-            }
-
-            $saveLangId = $db->f('idlang');
-            $saveModId = $db->f('idmod');
-        }
-    }
-
-    /**
      * Save the hole translations for a idmod and lang.
      * For the upgrade/setup.
      */
@@ -178,7 +131,6 @@ class cModuleFileTranslation extends cModuleHandler {
         $oLangColl = new cApiLanguageCollection();
         $ids = $oLangColl->getAllIds();
         foreach ($ids as $idlang) {
-            // @todo  Move to module translation model
             $sql = 'SELECT * FROM `%s` WHERE idlang = %d AND idmod = %d';
             $sql = $db->prepare($sql, $this->_cfg['tab']['mod_translations'], $idlang, $this->_idmod);
             $db->query($sql);
@@ -191,7 +143,9 @@ class cModuleFileTranslation extends cModuleHandler {
 
             $translations = array();
             while ($db->nextRecord()) {
-                $translations[cSecurity::unfilter($db->f('original'))] = cSecurity::unfilter($db->f('translation'));
+            	$original = urldecode(cSecurity::unfilter($db->f('original')));
+            	$translation = urldecode(cSecurity::unfilter($db->f('translation')));
+                $translations[$original] = $translation;
             }
 
             if (count($translations) != 0) {
