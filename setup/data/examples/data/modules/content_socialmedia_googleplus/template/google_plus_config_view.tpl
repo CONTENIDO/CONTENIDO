@@ -6,8 +6,8 @@
         <td><input type="text" name="url" value="{$url}"></td>
     </tr>
     <tr>
-    	<td>{$automaticURLLabel}</td>
-    	<td><input type="checkbox" name="currentArticleUrl" value="1" {if $currentArticleUrl == "1"} checked="1" {/if}/></td>
+        <td>{$automaticURLLabel}</td>
+        <td><input type="checkbox" name="currentArticleUrl" value="1" {if $currentArticleUrl == "1"} checked="1" {/if}/></td>
     </tr>
     <tr>
         <td>
