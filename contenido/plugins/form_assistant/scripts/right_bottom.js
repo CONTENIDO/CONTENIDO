@@ -184,7 +184,6 @@ $(function() {
     /**
      * Get new options row via Ajax and insert them at the end of list of options.
      */
-    //$('#icon-add-option').on('click', function(event) {
     $('body').delegate('#icon-add-option', 'click', function(event) {
         event.preventDefault();
         var $optionsList = $('#options-list');
@@ -196,6 +195,17 @@ $(function() {
                 $optionsList.append(data);
             }
         });
+    });
+
+    /**
+     * Delete option row. In order for this action to take effect the form has to be saved!
+     */
+    $('body').delegate('.del-option a', 'click', function(event) {
+        event.preventDefault();
+        $(this).parents('.option-outer').hide('slide', function() {
+            $(this).remove();
+        }, 'fast');
+
     });
 
     /**
