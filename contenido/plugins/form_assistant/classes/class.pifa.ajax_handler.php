@@ -194,7 +194,7 @@ class PifaAjaxHandler {
         // option classes (external options datasources)
         $tpl->assign('optionClasses', $optionClasses);
 
-        // build href to call empty option row
+        // build href add new option row
         $tpl->assign('hrefAddOption', 'main.php?' . implode('&', array(
             'area=form_ajax',
             'frame=4',
