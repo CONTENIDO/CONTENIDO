@@ -193,7 +193,16 @@ if ($htmlpath == '') {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Web address"));
-$oTxtWeb = new cHTMLTextbox("htmlpath", conHtmlSpecialChars(str_replace(array('*/','/*','//'),'',$htmlpath), 75, 255));
+
+
+
+
+if((int)strpos($htmlpath,'http://') == 0){
+	$oTxtWeb = new cHTMLTextbox("htmlpath", conHtmlSpecialChars('http://'.str_replace(array('*/','/*','//'),'',substr($htmlpath,7,strlen($htmlpath))), 75, 255));
+}else{
+	$oTxtWeb = new cHTMLTextbox("htmlpath", conHtmlSpecialChars(str_replace(array('*/','/*','//'),'',$htmlpath), 75, 255));
+}
+
 $tpl->set('d', 'CATFIELD', $oTxtWeb->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
