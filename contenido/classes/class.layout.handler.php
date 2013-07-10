@@ -211,23 +211,23 @@ class cLayoutHandler {
      * @param int $lang
      */
     private function _setEncoding($lang) {
-    	if ((int) $lang == 0) {
-    		$clientId = cRegistry::getClientId();
-    		 
-    		$clientsLangColl = new cApiClientLanguageCollection();
-    		$clientLanguages = $clientsLangColl->getLanguagesByClient($clientId);
-    		sort($clientLanguages);
-    	
-    		if (isset($clientLanguages[0]) && (int) $clientLanguages[0] != 0) {
-    			$languageId = $clientLanguages[0];
-    		}
-    	} else {
-    		$languageId = $lang;
-    	}
+        if ((int) $lang == 0) {
+            $clientId = cRegistry::getClientId();
+
+            $clientsLangColl = new cApiClientLanguageCollection();
+            $clientLanguages = $clientsLangColl->getLanguagesByClient($clientId);
+            sort($clientLanguages);
+
+            if (isset($clientLanguages[0]) && (int) $clientLanguages[0] != 0) {
+                $languageId = $clientLanguages[0];
+            }
+        } else {
+            $languageId = $lang;
+        }
 
         $cApiLanguage = new cApiLanguage($languageId);
         $encoding = $cApiLanguage->get('encoding');
-        
+
         $this->_encoding = $encoding;
     }
 

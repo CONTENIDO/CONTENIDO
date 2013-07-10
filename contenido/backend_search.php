@@ -757,11 +757,11 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             }
 
             if ($perm->have_perm_area_action_item("con", "con_deleteart", $idcat)) {
-				$tmp_title = conHtmlSpecialChars($db->f("title"));
+                $tmp_title = conHtmlSpecialChars($db->f("title"));
                 if (strlen($tmp_title) > 30) {
                     $tmp_title = substr($tmp_title, 0, 27) . "...";
                 }
-				
+
                 $delete = '
                 <a
                     href="javascript:void(0)"

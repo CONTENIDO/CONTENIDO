@@ -74,7 +74,7 @@ class cModuleFileTranslation extends cModuleHandler {
         if ($overrideIdlang != null) {
             $this->_idlang = $overrideIdlang;
         }
-        
+
         $this->_encoding = self::getEncoding($this->_idlang);
 
         // dont open the translations file for each mi18n call
@@ -143,8 +143,8 @@ class cModuleFileTranslation extends cModuleHandler {
 
             $translations = array();
             while ($db->nextRecord()) {
-            	$original = urldecode(cSecurity::unfilter($db->f('original')));
-            	$translation = urldecode(cSecurity::unfilter($db->f('translation')));
+                $original = urldecode(cSecurity::unfilter($db->f('original')));
+                $translation = urldecode(cSecurity::unfilter($db->f('translation')));
                 $translations[$original] = $translation;
             }
 
