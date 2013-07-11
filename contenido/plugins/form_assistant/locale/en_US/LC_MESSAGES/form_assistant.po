@@ -161,8 +161,8 @@ msgstr "processbar"
 msgid "SLIDER"
 msgstr "slider"
 
-msgid "CAPTCHA"
-msgstr "captcha"
+;msgid "CAPTCHA"
+;msgstr "captcha"
 
 msgid "BUTTONSUBMIT"
 msgstr "send button"

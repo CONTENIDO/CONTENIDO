@@ -1487,10 +1487,12 @@ contenido/plugins/form_assistant/images/pifa_field_type_7.png -text
 contenido/plugins/form_assistant/images/pifa_field_type_8.png -text
 contenido/plugins/form_assistant/images/pifa_field_type_9.png -text
 contenido/plugins/form_assistant/includes/config.plugin.php -text
-contenido/plugins/form_assistant/includes/include.ajax.php -text
 contenido/plugins/form_assistant/includes/include.left_bottom.php -text
 contenido/plugins/form_assistant/includes/include.left_top.php -text
-contenido/plugins/form_assistant/includes/include.right_bottom.php -text
+contenido/plugins/form_assistant/includes/include.right_bottom.form.php -text
+contenido/plugins/form_assistant/includes/include.right_bottom.form_ajax.php -text
+contenido/plugins/form_assistant/includes/include.right_bottom.form_data.php -text
+contenido/plugins/form_assistant/includes/include.right_bottom.form_fields.php -text
 contenido/plugins/form_assistant/includes/include.right_top.php -text
 contenido/plugins/form_assistant/locale/de_DE/LC_MESSAGES/form_assistant.po -text
 contenido/plugins/form_assistant/locale/en_US/LC_MESSAGES/form_assistant.po -text
@@ -1500,23 +1502,6 @@ contenido/plugins/form_assistant/plugin_uninstall.sql -text
 contenido/plugins/form_assistant/scripts/cmsPifaform.js -text svneol=unset#text/plain
 contenido/plugins/form_assistant/scripts/left_bottom.js -text svneol=unset#text/plain
 contenido/plugins/form_assistant/scripts/right_bottom.js -text svneol=unset#text/plain
-contenido/plugins/form_assistant/securimage/AHGBold.ttf -text
-contenido/plugins/form_assistant/securimage/LICENSE.txt -text svneol=unset#text/plain
-contenido/plugins/form_assistant/securimage/README.FONT.txt -text svneol=unset#text/plain
-contenido/plugins/form_assistant/securimage/README.txt -text svneol=unset#text/plain
-contenido/plugins/form_assistant/securimage/WavFile.php -text
-contenido/plugins/form_assistant/securimage/backgrounds/bg3.jpg -text
-contenido/plugins/form_assistant/securimage/backgrounds/bg4.jpg -text
-contenido/plugins/form_assistant/securimage/backgrounds/bg5.jpg -text
-contenido/plugins/form_assistant/securimage/backgrounds/bg6.png -text
-contenido/plugins/form_assistant/securimage/captcha.html -text svneol=unset#text/plain
-contenido/plugins/form_assistant/securimage/database/.htaccess -text
-contenido/plugins/form_assistant/securimage/database/index.html -text svneol=unset#text/plain
-contenido/plugins/form_assistant/securimage/database/securimage.sqlite -text
-contenido/plugins/form_assistant/securimage/images/audio_icon.png -text
-contenido/plugins/form_assistant/securimage/images/refresh.png -text
-contenido/plugins/form_assistant/securimage/securimage.php -text
-contenido/plugins/form_assistant/securimage/words/words.txt -text svneol=unset#text/plain
 contenido/plugins/form_assistant/styles/right_bottom.css -text svneol=unset#text/plain
 contenido/plugins/form_assistant/templates/template.ajax_field_form.tpl -text
 contenido/plugins/form_assistant/templates/template.ajax_field_row.tpl -text

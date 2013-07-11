@@ -1,25 +1,8 @@
 <!-- form_assistant/templates/template.right_bottom.html -->
 
-<input type="hidden" id="i18n" value="{I18N}" />
+{notification}
+{content}
 
-<div id="tabs">
-    <ul>
-        <li><a href="#tabs-1">{form_tab}</a></li>
-        <li><a href="#tabs-2">{fields_tab}</a></li>
-        <li><a href="#tabs-3">{data_tab}</a></li>
-    </ul>
-    <div id="tabs-1">
-        {notification}
-        {form_form}
-    </div>
-    <div id="tabs-2">
-        {notification}
-        {fields_form}
-    </div>
-    <div id="tabs-3">
-        {notification}
-        {form_data}
-    </div>
-</div>
+<input type="hidden" id="i18n" value="{I18N}" />
 
 <!-- /form_assistant/templates/template.right_bottom.html -->

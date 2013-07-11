@@ -15,7 +15,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // create and render page
 try {
-    $page = new PifaRightBottomPage();
+    $page = new PifaRightBottomFormPage();
     $page->render();
 } catch (Exception $e) {
     Pifa::logException($e);

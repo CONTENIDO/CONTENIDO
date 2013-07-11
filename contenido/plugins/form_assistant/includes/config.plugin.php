@@ -274,27 +274,27 @@ class Pifa {
         return $templates;
     }
 
-    /**
-     */
-    public static function afterLoadPlugins() {
+//     /**
+//      */
+//     public static function afterLoadPlugins() {
 
-        // return;
-        if (!isset($_GET['securimage'])) {
-            return;
-        }
+//         // return;
+//         if (!isset($_GET['securimage'])) {
+//             return;
+//         }
 
-        $e = error_get_last();
+//         $e = error_get_last();
 
-        $img = new Securimage(array(
-            'image_height' => 45,
-            'image_width' => 45 * M_E,
-            'perturbation' => 0,
-            'num_lines' => 3,
-            'session_name' => cRegistry::getClientId() . 'frontend'
-        ));
+//         $img = new Securimage(array(
+//             'image_height' => 45,
+//             'image_width' => 45 * M_E,
+//             'perturbation' => 0,
+//             'num_lines' => 3,
+//             'session_name' => cRegistry::getClientId() . 'frontend'
+//         ));
 
-        $img->show();
-    }
+//         $img->show();
+//     }
 
     /**
      * Translates a camel case string into a string with underscores
@@ -390,7 +390,9 @@ $pluginClassPath = 'contenido/plugins/' . Pifa::getName() . '/';
 cAutoload::addClassmapConfig(array(
     'cContentTypePifaForm' => $pluginClassPath . 'classes/class.content.type.pifa_form.php',
     'PifaLeftBottomPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
-    'PifaRightBottomPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
+    'PifaRightBottomFormPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
+    'PifaRightBottomFormFieldsPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
+    'PifaRightBottomFormDataPage' => $pluginClassPath . 'classes/class.pifa.gui.php',
     'PifaFormCollection' => $pluginClassPath . 'classes/class.pifa.form.php',
     'PifaForm' => $pluginClassPath . 'classes/class.pifa.form.php',
     'PifaFieldCollection' => $pluginClassPath . 'classes/class.pifa.field.php',
@@ -411,5 +413,4 @@ cAutoload::addClassmapConfig(array(
 unset($pluginClassPath);
 
 // define chain functions
-$cecRegistry = cRegistry::getCecRegistry();
-$cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'Pifa::afterLoadPlugins');
+//cRegistry::getCecRegistry()->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'Pifa::afterLoadPlugins');

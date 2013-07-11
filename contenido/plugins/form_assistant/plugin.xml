@@ -21,6 +21,8 @@
 
         <areas>
             <area>form</area>
+            <area parent="form" menuless="0">form_fields</area>
+            <area parent="form" menuless="0">form_data</area>
             <area parent="form">form_ajax</area>
         </areas>
 
@@ -28,8 +30,10 @@
             <frame area="form" filetype="main" name="form_assistant/includes/include.left_top.php" frameId="1" />
             <frame area="form" filetype="main" name="form_assistant/includes/include.left_bottom.php" frameId="2" />
             <frame area="form" filetype="main" name="form_assistant/includes/include.right_top.php" frameId="3" />
-            <frame area="form" filetype="main" name="form_assistant/includes/include.right_bottom.php" frameId="4" />
-            <frame area="form_ajax" filetype="main" name="form_assistant/includes/include.ajax.php" frameId="4" />
+            <frame area="form" filetype="main" name="form_assistant/includes/include.right_bottom.form.php" frameId="4" />
+            <frame area="form_fields" filetype="main" name="form_assistant/includes/include.right_bottom.form_fields.php" frameId="4" />
+            <frame area="form_data" filetype="main" name="form_assistant/includes/include.right_bottom.form_data.php" frameId="4" />
+            <frame area="form_ajax" filetype="main" name="form_assistant/includes/include.right_bottom.form_ajax.php" frameId="4" />
         </frames>
 
         <nav_sub>

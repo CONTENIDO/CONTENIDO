@@ -161,8 +161,8 @@ msgstr "Fortschrittsbalken"
 msgid "SLIDER"
 msgstr "Slider"
 
-msgid "CAPTCHA"
-msgstr "Captcha"
+;msgid "CAPTCHA"
+;msgstr "Captcha"
 
 msgid "BUTTONSUBMIT"
 msgstr "Absenden-Button"
