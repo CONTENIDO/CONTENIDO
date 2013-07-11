@@ -14,20 +14,20 @@ fieldset {
 }
 
 fieldset p {
-	margin: 10px;
+    margin: 10px;
 }
 
 fieldset table {
-	margin: 10px;
+    margin: 10px;
 }
 
 legend {
     background-color: #f1f1f1;
     width: 675px;
     line-height: 10px;
-	margin: 0 -1px 10px -1px;
-	border: 1px solid grey;
-	padding: 10px;
+    margin: 0 -1px 10px -1px;
+    border: 1px solid grey;
+    padding: 10px;
 }
 
 .form-data-export {
