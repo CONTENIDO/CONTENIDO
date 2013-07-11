@@ -10,6 +10,8 @@ $(function() {
     var $pifaFormFieldList = $('#pifa-form-field-list');
     var $pifaFormFieldForm = $('#pifa-form-field-dialog');
 
+    $('#pifa-form #name').focus();
+    
     /**
      * If an edit button in the list of fields is clicked
      * then its form is requested via AJAX and displayed

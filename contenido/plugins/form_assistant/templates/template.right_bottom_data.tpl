@@ -16,29 +16,31 @@ AUTHOR marcus.gnass@4fb.de
     {* an error is a string instead of an array *}
     {$data}
 {else}
-    <p><a href="{$exportUrl}">{$trans.export}</a></p>
-    <table cellpadding="0" class="generic">
+    <a class="form-data-export" href="{$exportUrl}">{$trans.export}</a>
+
+    <!-- table cellpadding="0" class="generic" -->
+    <table class="generic" width="97%" cellspacing="0" cellpadding="2" border="0">
         <tr>
-            <th>id</th>
+            <th nowrap="nowrap">id</th>
     {if $withTimestamp}
-            <th>timestamp</th>
+            <th nowrap="nowrap">timestamp</th>
     {/if}
     {foreach from=$fields item=field}
         {* skip columns that dont store data into DB *}
         {if NULL eq $field->getDbDataType()}{continue}{/if}
         {assign var=columnName value=$field->get('column_name')}
         {if 0 eq $columnName|strlen}
-            <th>&nbsp;</th>
+            <th nowrap="nowrap">&nbsp;</th>
         {else}
-            <th>{$columnName}</th>
+            <th nowrap="nowrap">{$columnName}</th>
         {/if}
     {/foreach}
         </tr>
     {foreach from=$data item=row}
         <tr>
-            <td class="bordercell">{$row.id}</td>
+            <td nowrap="nowrap" class="bordercell">{$row.id}</td>
         {if $withTimestamp}
-            <td class="bordercell">{$row.pifa_timestamp}</td>
+            <td nowrap="nowrap" class="bordercell">{$row.pifa_timestamp}</td>
         {/if}
         {foreach from=$fields item=field}
             {* skip columns that dont store data into DB *}
@@ -46,12 +48,12 @@ AUTHOR marcus.gnass@4fb.de
             {assign var=columnName value=$field->get('column_name')}
             {assign var=columnData value=$row.$columnName}
             {if 0 eq $columnData|strlen}
-            <td class="bordercell">&nbsp;</td>
+            <td nowrap="nowrap" class="bordercell">&nbsp;</td>
             {else if '9' eq $field->get('field_type')}
             {* display INPUTFILE values as link *}
-            <td class="bordercell"><a href="{$getFileUrl}&name={$columnData}&file={$form->get('data_table')}_{$row.id}_{$columnName}">{$columnData}</a></td>
+            <td nowrap="nowrap" class="bordercell"><a href="{$getFileUrl}&name={$columnData}&file={$form->get('data_table')}_{$row.id}_{$columnName}">{$columnData}</a></td>
             {else}
-            <td class="bordercell">{$columnData}</td>
+            <td nowrap="nowrap" class="bordercell">{$columnData}</td>
             {/if}
         {/foreach}
         </tr>

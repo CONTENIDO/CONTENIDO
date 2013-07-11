@@ -9,31 +9,34 @@ form+form {
 
 fieldset {
     border: 1px solid grey;
+    width: 695px;
+    padding: 0 0 10px 0;
+}
+
+fieldset p {
+	margin: 10px;
+}
+
+fieldset table {
+	margin: 10px;
 }
 
 legend {
-    /*
-    font-weight: bold;
-    font-size: 10pt;
-    margin: 0;
-    border: 2px dotted #afbF00;
-    padding: 2px 6px;
-    color: #0060B1;
-    background-color: #BFCF00;
-    width: 170px;
-    text-align: center;
-    */
-    /*
-    width: 684px;
-    height: 30px;
-    margin: 0 2px;
-    border: 1px 1px 1px 0 solid grey;
-    color: black;
-    */
     background-color: #f1f1f1;
-    width: 100%;
-    height: 30px;
-    margin-top: 30px;
+    width: 675px;
+    line-height: 10px;
+	margin: 0 -1px 10px -1px;
+	border: 1px solid grey;
+	padding: 10px;
+}
+
+.form-data-export {
+    background: url("../../../images/importieren.gif") no-repeat scroll 0 2px transparent;
+    display: block;
+    height: 20px;
+    line-height: 2em;
+    padding-left: 20px;
+    margin-left: 10px;
 }
 
 /******************************************************************************/
@@ -71,10 +74,6 @@ legend {
 /******************************************************************************/
 
 #pifa-form fieldset {
-    width: 678px;
-    padding-right: 0;
-    margin-bottom: 30px;
-
 }
 
 #pifa-form fieldset div {
@@ -103,10 +102,6 @@ legend {
 .column_name label {
     text-align: center;
     float: left;
-}
-
-#field-list-field {
-    width: 673px;
 }
 
 #pifa-form-field-list {
@@ -178,11 +173,8 @@ legend {
 /******************************************************************************/
 
 #field-buttons {
-    width: 684px;
-    border-bottom: 0;
-    padding: 0;
     background-color: #E2E2E2;
-    font-family: verdana;
+    border-bottom: 0;
 }
 
 #field-buttons ul {
@@ -219,7 +211,7 @@ legend {
 
 #image-new-form {
     margin-left: 110px;
-    padding-right: 0;
+    padding-right: 10px;
 }
 
 /******************************************************************************/
