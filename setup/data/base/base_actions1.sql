@@ -61,8 +61,8 @@ INSERT INTO !PREFIX!_actions VALUES('56', '2', '', 'con_editart', '', 'rights/co
 INSERT INTO !PREFIX!_actions VALUES('55', '3', '', 'con_saveart', '', '', 0);
 INSERT INTO !PREFIX!_actions VALUES('54', '3', '', 'con_newart', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('378', '1', '', 'con_lock', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES('379', '65', '', 'emptyLog', '', '', '0');
-INSERT INTO !PREFIX!_actions VALUES('380', '66', '', 'sendMail', '', '', '0');
+INSERT INTO !PREFIX!_actions VALUES('379', '65', '', 'empty_log', '', '', '0');
+INSERT INTO !PREFIX!_actions VALUES('380', '66', '', 'send_mail', '', '', '0');
 INSERT INTO !PREFIX!_actions VALUES('381', '7', '', 'upl_rmdir', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('387', '1', '', 'con_syncarticle', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('386', '1', '', 'con_synccat', '', '', '1');

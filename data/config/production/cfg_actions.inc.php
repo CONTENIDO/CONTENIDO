@@ -198,7 +198,7 @@ $lngAct['system_settings']['systemsettings_delete_item']       = i18n('Delete sy
 $lngAct['system_settings']['systemsettings_edit_item']         = i18n('Edit system property');
 $lngAct['system_settings']['systemsettings_save_item']         = i18n('Save system property');
 
-$lngAct['system']['emptyLog']                                  = i18n('Empty log');
+$lngAct['system']['empty_log']                                 = i18n('Empty log');
 $lngAct['system_configuration']['edit_sysconf']                = i18n('Edit system configration');
 $lngAct['system_purge']['do_purge']                            = i18n('Do system purge');
 
@@ -210,7 +210,7 @@ $lngAct['login']['request_pw']                        = i18n('Request password?'
 $lngAct['note']['note_delete']                        = i18n('Delete note');
 $lngAct['note']['note_save_item']                     = i18n('Save note');
 
-$lngAct['']['sendMail']                               = i18n('Send mail');
+$lngAct['']['send_mail']                              = i18n('Send mail');
 $lngAct['']['fake_permission_action']                 = i18n('Fake permissions');
 
 ?>

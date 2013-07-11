@@ -1309,7 +1309,7 @@ contenido/includes/type/action/include.con_newart.action.php -text
 contenido/includes/type/action/include.con_saveart.action.php -text
 contenido/includes/type/action/include.con_tplcfg_edit.action.php -text
 contenido/includes/type/action/include.deletecontype.action.php -text
-contenido/includes/type/action/include.emptyLog.action.php -text
+contenido/includes/type/action/include.empty_log.action.php -text
 contenido/includes/type/action/include.lang_activatelanguage.action.php -text
 contenido/includes/type/action/include.lang_deactivatelanguage.action.php -text
 contenido/includes/type/action/include.lang_deletelanguage.action.php -text

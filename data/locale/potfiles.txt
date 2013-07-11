@@ -633,7 +633,7 @@
 ./includes/type/action/include.deletecontype.action.php
 ./includes/type/action/include.str_renamecat.action.php
 ./includes/type/action/include.con_editart.action.php
-./includes/type/action/include.emptyLog.action.php
+./includes/type/action/include.empty_log.action.php
 ./includes/type/action/include.str_newtree.action.php
 ./includes/type/action/include.str_movedowncat.action.php
 ./includes/type/action/include.str_makepublic.action.php
