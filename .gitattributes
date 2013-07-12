@@ -1963,6 +1963,7 @@ contenido/styles/str_overview.css -text
 contenido/styles/system_integrity.css -text
 contenido/styles/tree.css -text svneol=unset#text/plain
 contenido/subnav.php -text
+contenido/templates/frontend_error.html -text svneol=unset#text/plain
 contenido/templates/index.php -text
 contenido/templates/standard/filler.html -text
 contenido/templates/standard/frameset.html -text
@@ -2429,7 +2430,6 @@ setup/data/examples/templates/cms_teaser_blog.html -text svneol=unset#text/plain
 setup/data/examples/templates/cms_teaser_image.html -text svneol=unset#text/plain
 setup/data/examples/templates/cms_teaser_slider.html -text svneol=unset#text/plain
 setup/data/examples/templates/cms_teaser_text.html -text svneol=unset#text/plain
-setup/data/examples/templates/error_page.html -text svneol=unset#text/plain
 setup/data/examples/templates/index.php -text
 setup/data/examples/upload/contenido_diagramme/contenido_priniciple.png -text
 setup/data/examples/upload/downloads/Logo_4fb.png -text

@@ -201,6 +201,11 @@ $aParams = array(
 );
 $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
 
+$errtpl = $cfgClient[$client]['tpl']['path'] . "frontend_error.html";
+if(cFileHandler::exists($errtpl) === false) {
+    $errtpl = $cfg['path']['contenido'] . "templates/frontend_error.html";
+}
+
 if ($error == 1) {
     header("HTTP/1.0 404 Not found");
 }
@@ -242,7 +247,7 @@ if ($idcatart) {
             $tpl = new cTemplate();
             $tpl->set("s", "ERROR_TITLE", "Fatal error");
             $tpl->set("s", "ERROR_TEXT", "No start article for this category.");
-            $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
+            $tpl->generate($errtpl);
             exit();
         } else {
             header($errsite);
@@ -270,7 +275,7 @@ if ($idcatart) {
             $tpl = new cTemplate();
             $tpl->set("s", "ERROR_TITLE", "Fatal error");
             $tpl->set("s", "ERROR_TEXT", "No start article for this category.");
-            $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
+            $tpl->generate($errtpl);
             exit();
         } else {
             header($errsite);
@@ -296,7 +301,7 @@ if ($idartlang === false) {
             $tpl->set('s', 'CONTENIDO_PATH', $backendUrl);
             $tpl->set('s', 'ERROR_TITLE', i18n('Error page'));
             $tpl->set('s', 'ERROR_TEXT', i18n('Error article/category not found!'));
-            $tpl->generate($backendPath . $cfg['path']['templates'] . 'template.error_page.html');
+            $tpl->generate($errtpl);
         }
         exit();
     } else {
@@ -395,7 +400,7 @@ if ($data[0]['idtplcfg'] === '0') {
     $tpl = new cTemplate();
     $tpl->set("s", "ERROR_TITLE", $errorTitle);
     $tpl->set("s", "ERROR_TEXT", $errorText);
-    $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
+    $tpl->generate($errtpl);
     exit();
 }
 // If mode is 'edit' and user has permission to edit articles in the current
@@ -423,7 +428,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         $tpl = new cTemplate();
         $tpl->set("s", "ERROR_TITLE", "Fatal error");
         $tpl->set("s", "ERROR_TEXT", "The URL of the page you have tried to visit seems to be wrong.");
-        $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
+        $tpl->generate($errtpl);
         exit();
     }
 
@@ -618,7 +623,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 $tpl = new cTemplate();
                 $tpl->set("s", "ERROR_TITLE", "Fatal error");
                 $tpl->set("s", "ERROR_TEXT", "No CONTENIDO session variable set. Probable error cause: Start article in this category is not set on-line.");
-                $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
+                $tpl->generate($errtpl);
                 exit();
             } else {
                 header($errsite);
