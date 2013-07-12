@@ -299,6 +299,11 @@ if (empty($aErrors) && $cronjob != true) {
             $tpl2 = new cTemplate();
             $tpl2->reset();
 
+            // html entities for artname and catname
+            $aRow[$i]['nameart'] = conHtmlentities($aRow[$i]['nameart']);
+            $aRow[$i]['namecat'] = conHtmlentities($aRow[$i]['namecat']);
+
+            // set template variables
             $tpl2->set('s', 'ERRORS_ERROR_TYPE', $aRow[$i]['error_type']);
             $tpl2->set('s', 'ERRORS_ARTID', $aRow[$i]['idart']);
             $tpl2->set('s', 'ERRORS_ARTICLE', $aRow[$i]['nameart']);
