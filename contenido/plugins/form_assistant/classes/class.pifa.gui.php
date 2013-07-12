@@ -98,8 +98,8 @@ class PifaLeftBottomPage extends cGuiPage {
             // $deleteForm = Pifa::i18n('DELETE_FORM');
             // $delete->setAlt($deleteForm);
             // $delete->setContent('<img src="' . $cfg['path']['images'] .
-        // 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm .
-        // '">');
+            // 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm .
+            // '">');
             // $menu->setActions($idform, 'delete', $delete);
         }
 
@@ -223,6 +223,13 @@ class PifaRightBottomFormPage extends cGuiPage {
                 try {
                     $this->_storeForm();
                     $this->setReload();
+                    // reload right_top after saving of form
+                    $idform = $this->_pifaForm->get('idform');
+                    $url = "main.php?area=form&frame=3&action=show_form&idform=$idform";
+                    $url = cRegistry::getSession()->url($url);
+                    $this->addScript("<script type=\"text/javascript\">
+                        parent.parent.frames['right'].frames['right_top'].location.href = '$url';
+                        </script>");
                 } catch (Exception $e) {
                     $notification = Pifa::notifyException($e);
                 }

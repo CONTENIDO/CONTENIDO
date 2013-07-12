@@ -68,7 +68,6 @@ class PifaAjaxHandler {
      * @throws Exception
      */
     function dispatch($action) {
-
         switch ($action) {
 
             case self::GET_FIELD_FORM:
@@ -318,17 +317,21 @@ class PifaAjaxHandler {
             }
         }
 
-        if ($pifaField->showField('option_labels') && array_key_exists('option_labels', $_POST) && is_array($_POST['option_labels'])) {
-            $optionLabels = implode(',', array_map('pifa_ajax_handler_string_cast_deep', $_POST['option_labels']));
-            $optionLabels = substr($optionLabels, 0, 1023);
+        if ($pifaField->showField('option_labels')) {
+            if (array_key_exists('option_labels', $_POST) && is_array($_POST['option_labels'])) {
+                $optionLabels = implode(',', array_map('pifa_ajax_handler_string_cast_deep', $_POST['option_labels']));
+                $optionLabels = substr($optionLabels, 0, 1023);
+            }
             if ($optionLabels !== $pifaField->get('option_labels')) {
                 $pifaField->set('option_labels', $optionLabels);
             }
         }
 
-        if ($pifaField->showField('option_values') && array_key_exists('option_values', $_POST) && is_array($_POST['option_values'])) {
-            $optionValues = implode(',', array_map('pifa_ajax_handler_string_cast_deep', $_POST['option_values']));
-            $optionValues = substr($optionValues, 0, 1023);
+        if ($pifaField->showField('option_values')) {
+            if (array_key_exists('option_values', $_POST) && is_array($_POST['option_values'])) {
+                $optionValues = implode(',', array_map('pifa_ajax_handler_string_cast_deep', $_POST['option_values']));
+                $optionValues = substr($optionValues, 0, 1023);
+            }
             if ($optionValues !== $pifaField->get('option_values')) {
                 $pifaField->set('option_values', $optionValues);
             }
