@@ -419,6 +419,14 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     $oCatArtColl = new cApiCategoryArticleCollection();
     $oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
 
+    if($oCatArt == false) {
+        $tpl = new cTemplate();
+        $tpl->set("s", "ERROR_TITLE", "Fatal error");
+        $tpl->set("s", "ERROR_TEXT", "The URL of the page you have tried to visit seems to be wrong.");
+        $tpl->generate($cfgClient[$client]['tpl']['path'] . "error_page.html");
+        exit();
+    }
+
     if (!cFileHandler::exists($cfgClient[$client]['code']['path'] . $client . "." . $lang . "." . $idcatart . ".php")) {
         cInclude('includes', 'functions.tpl.php');
         cInclude('includes', 'functions.mod.php');
