@@ -5,52 +5,41 @@
 <title>{ERROR_TITLE}</title>
 
 <style type="text/css">
-    #error_container {
-        font-family: verdana, arial, helvetica, sans-serif;
+#error_container {
+    font-family: verdana, arial, helvetica, sans-serif;
+    width: 400px;
+    padding-bottom: 20px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -201px;
+    margin-top: -101px;
+    border: 1px #FF0000 dotted;
+}
 
-        width: 400px;
-        height: 200px;
+#error_title {
+    color: white;
+    text-align: left;
+    max-width: 400px;
+    background: #FF0000;
+    padding: 5px;
+    text-align: center;
+    font-size: 110%;
+}
 
-        position: absolute;
-        left: 50%;
-        top: 50%;
-
-        margin-left: -201px;
-        margin-top: -101px;
-
-        border: 1px #FF0000 dotted;
-    }
-
-    #error_title {
-        font-size: 110%;
-
-        text-align: center;
-        max-width: 400px;
-
-        background: #FF0000;
-
-        padding: 5px;
-    }
-
-    #error_text {
-        font-size: 90%;
-
-        text-align: left;
-        width: 100%;
-
-        padding: 5px;
-    }
+#error_text {
+    font-size: 90%;
+    text-align: center;
+    width: 100%;
+    padding-top: 20px;
+}
 </style>
 
 </head>
 <body>
-<div id="error_container">
-    <div id="error_title">
-        {ERROR_TITLE}
+    <div id="error_container">
+        <div id="error_title">{ERROR_TITLE}</div>
+        <div id="error_text">{ERROR_TEXT}</div>
     </div>
-    <div id="error_text">
-        {ERROR_TEXT}
-    </div>
-</div>
 </body>
 </html>
