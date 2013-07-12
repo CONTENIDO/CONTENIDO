@@ -150,6 +150,9 @@ EOT;
                     $subResult = array();
                     $subResult['idartlang'] = $idartlang;
                 }
+				
+				$subResult['typeid'] = $typeid;
+				
                 if ($db->f('idtype') == $types['CMS_IMG']) {
                     $subResult['idupl'] = $db->f('value');
                     $subResult['imgidcontent'] = $db->f('idcontent');
@@ -162,18 +165,9 @@ EOT;
 
             // iterate over all entries and convert each of them
             foreach ($result as $imageInfo) {
-                // calculate the next unused typeid
-                $sql = 'SELECT MAX(typeid) AS maxtypeid FROM `' . $cfg['tab']['content'] . '` WHERE `idartlang`=' . $imageInfo['idartlang'] . ' AND `idtype`=' . $types['CMS_IMGEDITOR'];
-                $db->query($sql);
-                $db->nextRecord();
-                if ($db->f('maxtypeid') === false) {
-                    $nextTypeId = 1;
-                } else {
-                    $nextTypeId = $db->f('maxtypeid') + 1;
-                }
                 // insert new CMS_IMGEDITOR content entry
                 $contentCollection = new cApiContentCollection();
-                $contentCollection->create($imageInfo['idartlang'], $types['CMS_IMGEDITOR'], $nextTypeId, $imageInfo['idupl'], '');
+                $contentCollection->create($imageInfo['idartlang'], $types['CMS_IMGEDITOR'], $imageInfo['typeid'], $imageInfo['idupl'], '');
                 // save description in con_upl_meta if it does not already exist
                 $sql = 'SELECT `idlang` FROM `' . $cfg['tab']['art_lang'] . '` WHERE `idartlang`=' . $imageInfo['idartlang'];
                 $db->query($sql);
@@ -221,6 +215,9 @@ EOT;
                     $subResult = array();
                     $subResult['idartlang'] = $idartlang;
                 }
+				
+				$subResult['typeid'] = $typeid;
+				
                 if ($db->f('idtype') == $types['CMS_LINK']) {
                     $subResult['link'] = $db->f('value');
                     $subResult['linkidcontent'] = $db->f('idcontent');
@@ -236,15 +233,6 @@ EOT;
 
             // iterate over all entries and convert each of them
             foreach ($result as $linkInfo) {
-                // calculate the next unused typeid
-                $sql = 'SELECT MAX(typeid) AS maxtypeid FROM `' . $cfg['tab']['content'] . '` WHERE `idartlang`=' . $linkInfo['idartlang'] . ' AND `idtype`=' . $types['CMS_LINKEDITOR'];
-                $db->query($sql);
-                $db->nextRecord();
-                if ($db->f('maxtypeid') === false) {
-                    $nextTypeId = 1;
-                } else {
-                    $nextTypeId = $db->f('maxtypeid') + 1;
-                }
                 // construct the XML structure
                 $newWindow = ($linkInfo['linktarget'] == '_blank')? 'true' : 'false';
                 // if link is a relative path, prepend the upload path
@@ -259,7 +247,7 @@ EOT;
 EOT;
                 // insert new CMS_LINKEDITOR content entry
                 $contentCollection = new cApiContentCollection();
-                $contentCollection->create($linkInfo['idartlang'], $types['CMS_LINKEDITOR'], $nextTypeId, $xml, '');
+                $contentCollection->create($linkInfo['idartlang'], $types['CMS_LINKEDITOR'], $linkInfo['typeid'], $xml, '');
 
                 // delete old CMS_LINK, CMS_LINKTARGET and CMS_LINKDESCR content entries
                 $contentCollection->delete($linkInfo['linkidcontent']);
