@@ -650,9 +650,8 @@ abstract class cDbDriverHandler {
      * @return bool
      */
     public function nextRecord() {
-        $currentModule = cRegistry::getCurrentModuleId();
-
         if (!$this->getQueryId()) {
+            $currentModule = cRegistry::getCurrentModuleId();
             if ($currentModule > 0) {
                 $this->halt('next_record called with no query pending in Module ID ' . $currentModule . '.');
             } else {
