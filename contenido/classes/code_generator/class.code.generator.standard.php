@@ -73,6 +73,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
             foreach ($a_container as $key => $value) {
                 if (!isset($a_d[$value]) || !is_numeric($a_d[$value])) {
+                    // No configured module in this container, reset current module
+                    // state and process empty container
+                    $this->_resetModule();
+                    $this->_processCmsContainer($value);
                     continue;
                 }
 

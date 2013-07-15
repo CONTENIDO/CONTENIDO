@@ -457,9 +457,16 @@ abstract class cCodeGeneratorAbstract {
         $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerId\\\"(.*)>(.*)<\/container>/Uis", $cmsContainer, $this->_layoutCode);
         $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerId\\\"(.*)\/>/i", $cmsContainer, $this->_layoutCode);
 
-        // Concatenate final container/module output code
-        $modulePrefix = "<?php\n" . implode("\n", $this->_modulePrefix) . "\n?>";
-        $moduleSuffix = "<?php\n" . implode("\n", $this->_moduleSuffix) . "\n?>";
+        // Concatenate final container/module output code, but generate PHP code only 
+        // if there is something to generate
+        $modulePrefix = trim(implode("\n", $this->_modulePrefix));
+        if (!empty($modulePrefix)) {
+            $modulePrefix = "<?php\n" . $modulePrefix . "\n?>";
+        }
+        $moduleSuffix = trim(implode("\n", $this->_moduleSuffix));
+        if (!empty($moduleSuffix)) {
+            $moduleSuffix = "<?php\n" . $moduleSuffix . "\n?>";
+        }
         $moduleOutput = $modulePrefix . $this->_moduleCode . $moduleSuffix;
 
         // Replace container (CMS_CONTAINER[n]) against the container code
