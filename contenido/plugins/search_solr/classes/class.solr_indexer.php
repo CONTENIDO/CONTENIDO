@@ -257,7 +257,11 @@ class SolrIndexer {
         // What happens if an article could not be deleted cause it was not
         // indexed before? does this throw an exception? if yes an article
         // could never been indexed!
-        $this->deleteArticles();
+        try {
+            $this->deleteArticles();
+        } catch (cException $e) {
+            // ignore exception so that articles can be indexed nonetheless
+        }
 
         // add articles to index
         // will be skipped if article is not indexable
@@ -368,5 +372,4 @@ class SolrIndexer {
             throw new cException($msg);
         }
     }
-
 }
