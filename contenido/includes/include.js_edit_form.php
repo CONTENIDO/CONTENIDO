@@ -97,7 +97,8 @@ if ($action == 'js_delete') {
     }
 
     if (!cFileHandler::writeable($path . $sFilename)) {
-        $notification->displayNotification('warning', i18n("You have no write permissions for this file"));
+        $page->displayWarning(i18n("You have no write permissions for this file"));
+
     }
 
     // Content Type is template
@@ -105,6 +106,7 @@ if ($action == 'js_delete') {
 
     // Create new file
     if ($_REQUEST['action'] == 'js_create' && $_REQUEST['status'] == 'send') {
+
         $sTempFilename = $sFilename;
         // check filename and create new file
         cFileHandler::validateFilename($sFilename);
