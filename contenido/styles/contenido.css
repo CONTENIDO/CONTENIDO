@@ -1940,7 +1940,7 @@ div.bulk_editing_functions a img {
     padding: 4px 1px;
 }
 
-.alltranslations td img {
+.alltranslations td img, .alltranslations td input {
     float: right;
 }
 
@@ -2118,4 +2118,57 @@ input[type=image].vAlignMiddle {
 #cont_users select,
 #cont_users input[type="text"] {
     width: 110px;
+}
+
+#con_translate span.vALignMiddle {
+	line-height: 20px;
+}
+
+#con_translate #newlangsubmit {
+	vertical-align: top;
+	margin-top: 3px;
+}
+
+#con_translate #newlang {
+	margin-top: 1px;
+	height: 20px;
+
+}
+
+#con_translate div.atfilter div.right select, #con_translate div.atfilter div.right input {
+	vertical-align: top;
+	margin-top: 1px;
+	height: 20px;
+	margin-right: 3px;
+}
+
+#con_translate div.atfilter div.right input  {
+	height: 15px;
+	margin-right: 0px;
+}
+
+#con_translate div.atfilter div.right input.vAlignTop {
+	margin-top: 4px;
+}
+
+#con_translate select.elemperpage {
+	margin-right: 3px;
+	margin-left: 3px;
+}
+
+#con_translate #elemperpagesubmit {
+	margin-top:1px;
+	vertical-align: top;
+}
+
+#con_translate div.atpager {
+	height: 18px;
+}
+
+#con_translate span.cpager_currentitem {
+	vertical-align: middle;
+}
+
+#con_translate div.atpager img {
+	margin-top: 1px;
 }

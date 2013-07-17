@@ -442,8 +442,9 @@ foreach ($elemPerPage as $value => $option) {
     }
     $selectElementsPerPage->addOptionElement($value, $option);
 }
+$selectElementsPerPage->setAttribute('class', 'elemperpage');
 $submitElementsPerPage = new cHTMLButton('elemperpagesubmit', i18n("Submit"), 'elemperpagesubmit', false, null, '', 'image');
-$submitElementsPerPage->setImageSource($cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif');
+$submitElementsPerPage->setImageSource($cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_ok.gif');
 
 $formElementsPerPage->setContent($labelElementsPerPage->render() . $selectElementsPerPage->render() . $submitElementsPerPage->render());
 
@@ -484,17 +485,19 @@ if (is_array($aAllTemplates) && count($aAllTemplates) > 0) {
     $filterSelect .= '</optgroup>';
 }
 $searchInput = new cHTMLTextbox('search', $search, 20);
-$searchSubmit = new cHTMLButton('searchsubmit', i18n("Search"));
-$formSearch->SetContent($filterSelect . $searchInput->render() . $searchSubmit->render());
+
+$searchSubmit = ' <input type="image" name="searchsubmit" class="vAlignTop" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_preview.gif">';
+
+$formSearch->SetContent($filterSelect . $searchInput->render() . $searchSubmit);
 
 // The list of translations
 $list = new cGuiScrollListAlltranslations();
 // building parameter array
 $tableHeaders = array(
-    addSortImages(0, i18n('Module name')),
-    addSortImages(1, i18n('In use by')),
-    addSortImages(2, i18n('Translation ID')),
-    addSortImages(3, i18n('Current language') . ': ' . $langstring)
+	addSortImages($i, i18n('Module name')),
+	addSortImages($i, i18n('In use by')),
+    addSortImages(0, i18n('Translation ID')),
+    addSortImages(1, i18n('Current language') . ': ' . $langstring)
 );
 $i = 4;
 foreach ($extraLanguages as $idExtraLang) {
@@ -502,10 +505,14 @@ foreach ($extraLanguages as $idExtraLang) {
     $i++;
 }
 $tableHeaders[] = i18n('Edit row');
+
 call_user_func_array(array(
     $list,
     "setHeader"
 ), $tableHeaders);
+
+
+
 $iHeaders = count($tableHeaders);
 for ($i = 0; $i < $iHeaders; $i++) {
     $list->setSortable($i, true);
@@ -527,7 +534,7 @@ $list->objRow->updateAttributes(array(
     'valign' => 'top'
 ));
 
-$submit = ' <input type="image" class="vAlignTop" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'submit.gif">';
+$submit = ' <input type="image" class="vAlignTop" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_ok.gif">';
 $counter = 1;
 
 foreach ($allTranslations as $hash => $translationArray) {
@@ -572,7 +579,7 @@ foreach ($allTranslations as $hash => $translationArray) {
     }
     $fields = array(
         $counter,
-        $allModules[$translationArray['idmod']],
+		$allModules[$translationArray['idmod']],
         $currentModuleInUse,
         $translationArray['string'],
         $sTranslationFirstLang
@@ -635,6 +642,7 @@ foreach ($allTranslations as $hash => $translationArray) {
         }
         $fields[] = $sLinkEditRow;
     }
+	
     call_user_func_array(array(
         $list,
         "setData"
