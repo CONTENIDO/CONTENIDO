@@ -24,44 +24,44 @@ class PifaAjaxHandler {
      *
      * @var string
      */
-    const GET_FIELD_FORM = 'get_field_form';
+    const GET_FIELD_FORM = 'pifa_get_field_form';
 
     /**
      * to process a form for editing a PIFA form field
      *
      * @var string
      */
-    const POST_FIELD_FORM = 'post_field_form';
+    const POST_FIELD_FORM = 'pifa_post_field_form';
 
     /**
      *
      * @var string
      */
-    const REORDER_FIELDS = 'reorder_fields';
+    const REORDER_FIELDS = 'pifa_reorder_fields';
 
     /**
      *
      * @var string
      */
-    const EXPORT_DATA = 'export_data';
+    const EXPORT_DATA = 'pifa_export_data';
 
     /**
      *
      * @var string
      */
-    const GET_FILE = 'get_file';
+    const GET_FILE = 'pifa_get_file';
 
     /**
      *
      * @var string
      */
-    const DELETE_FIELD = 'delete_field';
+    const DELETE_FIELD = 'pifa_delete_field';
 
     /**
      *
      * @var string
      */
-    const GET_OPTION_ROW = 'get_option_row';
+    const GET_OPTION_ROW = 'pifa_get_option_row';
 
     /**
      *

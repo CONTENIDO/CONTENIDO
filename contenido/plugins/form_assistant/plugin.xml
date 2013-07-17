@@ -26,6 +26,21 @@
             <area parent="form">form_ajax</area>
         </areas>
 
+        <actions>
+            <action area="form">pifa_show_form</action>
+            <action area="form">pifa_store_form</action>
+            <action area="form">pifa_delete_form</action>
+            <action area="form">pifa_show_fields</action>
+            <action area="form">pifa_show_data</action>
+            <action area="form_ajax">pifa_get_field_form</action>
+            <action area="form_ajax">pifa_post_field_form</action>
+            <action area="form_ajax">pifa_reorder_fields</action>
+            <action area="form_ajax">pifa_export_data</action>
+            <action area="form_ajax">pifa_get_file</action>
+            <action area="form_ajax">pifa_delete_field</action>
+            <action area="form_ajax">pifa_get_option_row</action>
+        </actions>
+
         <frames>
             <frame area="form" filetype="main" name="form_assistant/includes/include.left_top.php" frameId="1" />
             <frame area="form" filetype="main" name="form_assistant/includes/include.left_bottom.php" frameId="2" />
@@ -47,4 +62,5 @@
         -->
 
     </contenido>
+
 </plugin>

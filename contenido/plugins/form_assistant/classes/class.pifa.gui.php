@@ -74,13 +74,13 @@ class PifaLeftBottomPage extends cGuiPage {
 
             // create link to show/edit the form
             $link = new cHTMLLink();
-            $link->setMultiLink($area, '', $area, 'show_form');
+            $link->setMultiLink($area, '', $area, PifaRightBottomFormPage::SHOW_FORM);
             $link->setCustom('idform', $idform);
             $menu->setLink($idform, $link);
 
             // create link to delete the form
             $link = new cHTMLLink();
-            $link->setMultiLink($area, 'delete_form', $area, 'delete_form');
+            $link->setMultiLink($area, PifaRightBottomFormPage::DELETE_FORM, $area, PifaRightBottomFormPage::DELETE_FORM);
             $link->setCustom('idform', $idform);
             $link->setClass('pifa-icon-delete-form');
             $deleteForm = Pifa::i18n('DELETE_FORM');
@@ -88,19 +88,6 @@ class PifaLeftBottomPage extends cGuiPage {
             $link->setContent('<img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
             // $menu->setLink($idform, $link);
             $menu->setActions($idform, 'delete', $link);
-
-            // // create link to delete the form
-            // $delete = new cHTMLLink();
-            // $delete->setCLink($area, 2, 'delete_form');
-            // $delete->setTargetFrame('left_bottom');
-            // $delete->setCustom('idform', $idform);
-            // $delete->setClass('pifa-icon-delete-form');
-            // $deleteForm = Pifa::i18n('DELETE_FORM');
-            // $delete->setAlt($deleteForm);
-            // $delete->setContent('<img src="' . $cfg['path']['images'] .
-            // 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm .
-            // '">');
-            // $menu->setActions($idform, 'delete', $delete);
         }
 
         return $menu->render(false);
@@ -113,6 +100,24 @@ class PifaLeftBottomPage extends cGuiPage {
  * @author marcus.gnass
  */
 class PifaRightBottomFormPage extends cGuiPage {
+
+    /**
+     *
+     * @var string
+     */
+    const SHOW_FORM = 'pifa_show_form';
+
+    /**
+     *
+     * @var string
+     */
+    const STORE_FORM = 'pifa_store_form';
+
+    /**
+     *
+     * @var string
+     */
+    const DELETE_FORM = 'pifa_delete_form';
 
     /**
      * model for a single PIFA form
@@ -195,8 +200,7 @@ class PifaRightBottomFormPage extends cGuiPage {
         global $area;
 
         // check for permission
-        $perm = cRegistry::getPerm();
-        if (!$perm->have_perm_area_action($area, $action)) {
+        if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
             throw new IllegalStateException('no permissions');
         }
 
@@ -207,9 +211,8 @@ class PifaRightBottomFormPage extends cGuiPage {
         }
 
         // dispatch actions
-        // @todo dont use actions here anymore
         switch ($action) {
-            case 'show_form':
+            case PifaRightBottomFormPage::SHOW_FORM:
                 $this->set('s', 'notification', $notification);
                 try {
                     $this->set('s', 'content', $this->_showForm());
@@ -218,14 +221,14 @@ class PifaRightBottomFormPage extends cGuiPage {
                 }
                 break;
 
-            case 'store_form':
+            case PifaRightBottomFormPage::STORE_FORM:
                 $notification = '';
                 try {
                     $this->_storeForm();
                     $this->setReload();
                     // reload right_top after saving of form
                     $idform = $this->_pifaForm->get('idform');
-                    $url = "main.php?area=form&frame=3&action=show_form&idform=$idform";
+                    $url = "main.php?area=form&frame=3&idform=$idform&action=" . PifaRightBottomFormPage::SHOW_FORM;
                     $url = cRegistry::getSession()->url($url);
                     $this->addScript("<script type=\"text/javascript\">
                         parent.parent.frames['right'].frames['right_top'].location.href = '$url';
@@ -233,10 +236,10 @@ class PifaRightBottomFormPage extends cGuiPage {
                 } catch (Exception $e) {
                     $notification = Pifa::notifyException($e);
                 }
-                $this->_dispatch('show_form', $notification);
+                $this->_dispatch(PifaRightBottomFormPage::SHOW_FORM, $notification);
                 break;
 
-            case 'delete_form':
+            case PifaRightBottomFormPage::DELETE_FORM:
                 $notification = '';
                 try {
                     $this->_deleteForm();
@@ -266,7 +269,7 @@ class PifaRightBottomFormPage extends cGuiPage {
 
         // get form action
         $formAction = new cHTMLLink();
-        $formAction->setCLink($area, 4, 'store_form');
+        $formAction->setCLink($area, 4, PifaRightBottomFormPage::STORE_FORM);
         $formAction = $formAction->getHref();
 
         // get current or default values for form
@@ -418,6 +421,12 @@ class PifaRightBottomFormPage extends cGuiPage {
 class PifaRightBottomFormFieldsPage extends cGuiPage {
 
     /**
+     *
+     * @var string
+     */
+    const SHOW_FIELDS = 'pifa_show_fields';
+
+    /**
      * model for a single PIFA form
      *
      * @var PifaForm
@@ -498,8 +507,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
         global $area;
 
         // check for permission
-        $perm = cRegistry::getPerm();
-        if (!$perm->have_perm_area_action($area, $action)) {
+        if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
             throw new IllegalStateException('no permissions');
         }
 
@@ -510,9 +518,8 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
         }
 
         // dispatch actions
-        // @todo dont use actions here anymore
         switch ($action) {
-            case 'show_fields':
+            case PifaRightBottomFormFieldsPage::SHOW_FIELDS:
                 $this->set('s', 'notification', $notification);
                 try {
                     $this->set('s', 'content', $this->_showFields());
@@ -520,6 +527,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
                     $this->set('s', 'content', Pifa::notifyException($e));
                 }
                 break;
+
             default:
                 throw new InvalidArgumentException('unknown action ' . $action);
         }
@@ -641,6 +649,12 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
 class PifaRightBottomFormDataPage extends cGuiPage {
 
     /**
+     *
+     * @var string
+     */
+    const SHOW_DATA = 'pifa_show_data';
+
+    /**
      * model for a single PIFA form
      *
      * @var PifaForm
@@ -721,8 +735,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         global $area;
 
         // check for permission
-        $perm = cRegistry::getPerm();
-        if (!$perm->have_perm_area_action($area, $action)) {
+        if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
             throw new IllegalStateException('no permissions');
         }
 
@@ -733,9 +746,8 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         }
 
         // dispatch actions
-        // @todo dont use actions here anymore
         switch ($action) {
-            case 'show_data':
+            case PifaRightBottomFormDataPage::SHOW_DATA:
                 $this->set('s', 'notification', $notification);
                 try {
                     $this->set('s', 'content', $this->_showData());
@@ -743,6 +755,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
                     $this->set('s', 'content', Pifa::notifyException($e));
                 }
                 break;
+
             default:
                 throw new InvalidArgumentException('unknown action ' . $action);
         }

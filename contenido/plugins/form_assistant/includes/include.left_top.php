@@ -18,7 +18,7 @@ global $area;
 $cfg = cRegistry::getConfig();
 
 $link = new cHTMLLink();
-$link->setMultiLink($area, 'show_form', $area, 'show_form');
+$link->setMultiLink($area, PifaRightBottomFormPage::SHOW_FORM, $area, PifaRightBottomFormPage::SHOW_FORM);
 $link->setContent(Pifa::i18n('CREATE_FORM'));
 $link->setTargetFrame('right_bottom');
 
