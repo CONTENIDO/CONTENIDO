@@ -135,19 +135,6 @@ class cApiUploadCollection extends ItemCollection {
             }
         }
 
-        // call chain once for all deleted files
-        $_cecIterator = cRegistry::getCecRegistry()->getIterator("Contenido.Upl_edit.DeleteBatch");
-        if ($_cecIterator->count() > 0) {
-            // array of cApiUpload objects to be passed to chain function
-            $uploadObjects = array();
-            // add current upload object to array in order to be processed
-            array_push($uploadObjects, $oUpload);
-            // call chain functions
-            while (false !== $chainEntry = $_cecIterator->next()) {
-                $chainEntry->execute($uploadObjects);
-            }
-        }
-
         // delete from dbfs or filesystem
         if (cApiDbfs::isDbfs($sDirFileName)) {
             $oDbfs = new cApiDbfsCollection();

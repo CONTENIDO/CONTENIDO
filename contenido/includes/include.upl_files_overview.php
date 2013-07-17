@@ -209,14 +209,13 @@ if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action)
 							$chainEntry->execute($item->get('idupl'), $qpath, $file);
 						}
 					}
-
-					// add current upload object to array in order to be processed
-					array_push($uploadObjects, $item);
-				
                 } else {
 					$uploads->delete($item->get('idupl'));
                     unlink($cfgClient[$client]['upl']['path'] . $qpath . $file);
                 }
+				
+				// add current upload object to array in order to be processed
+				array_push($uploadObjects, $item);
             }
         }
 
