@@ -201,20 +201,22 @@ if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action)
             if (false !== $item = $uploads->next()) {
                 if (cApiDbfs::isDbfs($qpath)) {
                     $dbfs->remove($qpath . $file);
+					
+					// call chain once for each deleted file
+					$_cecIterator = cRegistry::getCecRegistry()->getIterator("Contenido.Upl_edit.Delete");
+					if ($_cecIterator->count() > 0) {
+						while (false !== $chainEntry = $_cecIterator->next()) {
+							$chainEntry->execute($item->get('idupl'), $qpath, $file);
+						}
+					}
+
+					// add current upload object to array in order to be processed
+					array_push($uploadObjects, $item);
+				
                 } else {
+					$uploads->delete($item->get('idupl'));
                     unlink($cfgClient[$client]['upl']['path'] . $qpath . $file);
                 }
-
-                // call chain once for each deleted file
-                $_cecIterator = cRegistry::getCecRegistry()->getIterator("Contenido.Upl_edit.Delete");
-                if ($_cecIterator->count() > 0) {
-                    while (false !== $chainEntry = $_cecIterator->next()) {
-                        $chainEntry->execute($item->get('idupl'), $qpath, $file);
-                    }
-                }
-
-                // add current upload object to array in order to be processed
-                array_push($uploadObjects, $item);
             }
         }
 
