@@ -494,8 +494,8 @@ $formSearch->SetContent($filterSelect . $searchInput->render() . $searchSubmit);
 $list = new cGuiScrollListAlltranslations();
 // building parameter array
 $tableHeaders = array(
-	addSortImages($i, i18n('Module name')),
-	addSortImages($i, i18n('In use by')),
+    addSortImages($i, i18n('Module name')),
+    addSortImages($i, i18n('In use by')),
     addSortImages(0, i18n('Translation ID')),
     addSortImages(1, i18n('Current language') . ': ' . $langstring)
 );
@@ -579,7 +579,7 @@ foreach ($allTranslations as $hash => $translationArray) {
     }
     $fields = array(
         $counter,
-		$allModules[$translationArray['idmod']],
+        $allModules[$translationArray['idmod']],
         $currentModuleInUse,
         $translationArray['string'],
         $sTranslationFirstLang
@@ -642,7 +642,7 @@ foreach ($allTranslations as $hash => $translationArray) {
         }
         $fields[] = $sLinkEditRow;
     }
-	
+
     call_user_func_array(array(
         $list,
         "setData"

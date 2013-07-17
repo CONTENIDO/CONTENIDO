@@ -82,11 +82,11 @@ class cAjaxRequest {
                         if (count($usedTemplates) > 0) {
                             $response = '<br />';
                             foreach ($usedTemplates as $i => $usedTemplate) {
-								if ($i%2 == 0) {
-									$template->set('d', 'CLASS', 'grey');
-								} else {
-									$template->set('d', 'CLASS', 'white');
-								}
+                                if ($i%2 == 0) {
+                                    $template->set('d', 'CLASS', 'grey');
+                                } else {
+                                    $template->set('d', 'CLASS', 'white');
+                                }
                                 $template->set('d', 'NAME', $usedTemplate['tpl_name']);
                                 $template->next();
                             }
@@ -108,12 +108,12 @@ class cAjaxRequest {
                     $usedTemplates = $module->getUsedTemplates();
                     if (count($usedTemplates) > 0) {
                         foreach ($usedTemplates as $i => $usedTemplate) {
-							if ($i%2 == 0) {
-								$template->set('d', 'CLASS', 'grey');
-							} else {
-								$template->set('d', 'CLASS', 'white');
-							}
-								
+                            if ($i%2 == 0) {
+                                $template->set('d', 'CLASS', 'grey');
+                            } else {
+                                $template->set('d', 'CLASS', 'white');
+                            }
+
                             $template->set('d', 'NAME', $usedTemplate['tpl_name']);
                             $template->next();
                         }

@@ -48,8 +48,8 @@ class cSetupSystemtest extends cSetupMask {
             $this->initDB();
         }
 
-		$this->checkCountryLanguageCode();
-		
+        $this->checkCountryLanguageCode();
+
         $cHTMLFoldableErrorMessages = array();
 
         if ($_SESSION["setuptype"] == 'upgrade') {
@@ -199,47 +199,47 @@ class cSetupSystemtest extends cSetupMask {
             $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Attention: Some directories/files have been moved"), $message);
         }
     }
-	
-	function checkCountryLanguageCode() {
-		if ($_SESSION["setuptype"] != 'upgrade') {
-			return;
-		}
-		
-		$errors = array();
-		
-		cDb::setDefaultConfiguration($GLOBALS['cfg']['db']);
 
-		$clientLanguageCollection = new cApiClientLanguageCollection();
+    function checkCountryLanguageCode() {
+        if ($_SESSION["setuptype"] != 'upgrade') {
+            return;
+        }
+
+        $errors = array();
+
+        cDb::setDefaultConfiguration($GLOBALS['cfg']['db']);
+
+        $clientLanguageCollection = new cApiClientLanguageCollection();
         $clientLanguageCollection->query();
 
         while ($item = $clientLanguageCollection->next()) {
-			$client = $item->getField('idclient');
-			$lang = $item->getField('idlang');
-			
-			$oLanguage = new cApiLanguage();
-			$oLanguage->loadByPrimaryKey($lang);
-			
-			$languageCode = $oLanguage->getProperty("language", "code", $client);
-			$contryCode = $oLanguage->getProperty("country", "code", $client);
-			
-			$oClient = new cApiClient();
-			$oClient->loadByPrimaryKey($client);
-			$clientName = $oClient->getField('name');
-			
-			if (strlen($languageCode) == 0 || strlen($contryCode) == 0) {
-				$langName = $oLanguage->getField('name');
-				
-				$oClient = new cApiClient();
-				$oClient->loadByPrimaryKey($client);
-				
-				array_push($errors, sprintf(i18n('Language "%s" (%s) of the client "%s" (%s) is configured without ISO language code.'), $langName, $lang, $clientName, $client));
-			}
-		}
+            $client = $item->getField('idclient');
+            $lang = $item->getField('idlang');
 
-		if (count($errors) > 0) {
-			$this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("The ISO codes are necessary to convert module translations."), implode('<br/>', $errors) );
-		}
-	}
+            $oLanguage = new cApiLanguage();
+            $oLanguage->loadByPrimaryKey($lang);
+
+            $languageCode = $oLanguage->getProperty("language", "code", $client);
+            $contryCode = $oLanguage->getProperty("country", "code", $client);
+
+            $oClient = new cApiClient();
+            $oClient->loadByPrimaryKey($client);
+            $clientName = $oClient->getField('name');
+
+            if (strlen($languageCode) == 0 || strlen($contryCode) == 0) {
+                $langName = $oLanguage->getField('name');
+
+                $oClient = new cApiClient();
+                $oClient->loadByPrimaryKey($client);
+
+                array_push($errors, sprintf(i18n('Language "%s" (%s) of the client "%s" (%s) is configured without ISO language code.'), $langName, $lang, $clientName, $client));
+            }
+        }
+
+        if (count($errors) > 0) {
+            $this->systemtest->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("The ISO codes are necessary to convert module translations."), implode('<br/>', $errors) );
+        }
+    }
 
     function initDB() {
         switch ($_SESSION["setuptype"]) {

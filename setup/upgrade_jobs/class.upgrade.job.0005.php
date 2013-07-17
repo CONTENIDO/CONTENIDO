@@ -150,9 +150,9 @@ EOT;
                     $subResult = array();
                     $subResult['idartlang'] = $idartlang;
                 }
-				
-				$subResult['typeid'] = $typeid;
-				
+
+                $subResult['typeid'] = $typeid;
+
                 if ($db->f('idtype') == $types['CMS_IMG']) {
                     $subResult['idupl'] = $db->f('value');
                     $subResult['imgidcontent'] = $db->f('idcontent');
@@ -192,15 +192,14 @@ EOT;
                 $contentCollection->delete($imageInfo['imgdescridcontent']);
             }
 
-            /*
-             * Convert all DB entries CMS_LINK, CMS_LINKTARGET and CMS_LINKDESCR to CMS_LINKEDITOR.
-            * Old:
-            * In the past, CMS_LINK saved the actual link, CMS_LINKTARGET the corresponding target and
-            * CMS_LINKDESCR the corresponding link text.
-            *
-            * New:
-            * Since CONTENIDO 4.9, CMS_LINKEDITOR contains an XML structure with all information.
-            */
+            /* Convert all DB entries CMS_LINK, CMS_LINKTARGET and CMS_LINKDESCR to CMS_LINKEDITOR.
+             * Old:
+             * In the past, CMS_LINK saved the actual link, CMS_LINKTARGET the corresponding target and
+             * CMS_LINKDESCR the corresponding link text.
+             *
+             * New:
+             * Since CONTENIDO 4.9, CMS_LINKEDITOR contains an XML structure with all information.
+             */
             $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . $cfg['tab']['content'] . '` WHERE `idtype`=' . $types['CMS_LINK'] . ' OR `idtype`=' . $types['CMS_LINKTARGET'] . ' OR `idtype`=' . $types['CMS_LINKDESCR'] . ' ORDER BY `typeid` ASC';
             $db->query($sql);
             $result = array();
@@ -215,9 +214,9 @@ EOT;
                     $subResult = array();
                     $subResult['idartlang'] = $idartlang;
                 }
-				
-				$subResult['typeid'] = $typeid;
-				
+
+                $subResult['typeid'] = $typeid;
+
                 if ($db->f('idtype') == $types['CMS_LINK']) {
                     $subResult['link'] = $db->f('value');
                     $subResult['linkidcontent'] = $db->f('idcontent');

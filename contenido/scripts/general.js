@@ -302,10 +302,10 @@ function showConfirmation(description, callback, additionalOptions) {
     options = $.extend(options, additionalOptions);
     // show the dialog in the content window
     if (0 == contentWindow.$("html").find("#single_dialog").length) {
-		contentWindow.$("html").find("div.ui-dialog").remove();
-		contentWindow.$("html").find("div.ui-widget-overlay").remove();
-		contentWindow.$("html").find("#single_dialog").remove();
-	
+        contentWindow.$("html").find("div.ui-dialog").remove();
+        contentWindow.$("html").find("div.ui-widget-overlay").remove();
+        contentWindow.$("html").find("#single_dialog").remove();
+
         contentWindow.$('<div id="single_dialog">' + description + '</div>').dialog(options);
     }
 
@@ -324,28 +324,28 @@ function showNotification(title, description, additionalOptions, hideButtons) {
     var translations = getTranslations();
     // define the options and extend them with the given ones
     var buttons = {};
-	if (!hideButtons) {
-		buttons[translations['OK']] = function() {
-			// unfortunately, the following line does not work if the dialog is
-			// opened from another frame
-			// $(this).dialog('close');
-			// so use this ugly workaround
-			$(this).parent().remove();
-		};
-	}
+    if (!hideButtons) {
+        buttons[translations['OK']] = function() {
+            // unfortunately, the following line does not work if the dialog is
+            // opened from another frame
+            // $(this).dialog('close');
+            // so use this ugly workaround
+            $(this).parent().remove();
+        };
+    }
     var options = {
         buttons: buttons,
         position: ['center', 50],
         title: title,
-		modal: true
+        modal: true
     };
     options = $.extend(options, additionalOptions);
     // show the dialog in the content window
     var contentWindow = getContentWindow();
-	
-	contentWindow.$("html").find("div.ui-dialog").remove();
-	contentWindow.$("html").find("div.ui-widget-overlay").remove();
-	
+
+    contentWindow.$("html").find("div.ui-dialog").remove();
+    contentWindow.$("html").find("div.ui-widget-overlay").remove();
+
     contentWindow.$('<div>' + description + '</div>').dialog(options);
 }
 
