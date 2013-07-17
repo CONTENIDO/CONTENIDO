@@ -2184,6 +2184,11 @@ input[type=image].vAlignMiddle {
 	font-weight: normal !important;
 }
 
+#ui-dialog-title-single_dialog {
+	font-size: 12px !important;
+	font-weight: bold !important;
+}
+
 .ui-dialog .ui-dialog-titlebar-close {
    position: absolute !important;
    right: 0 !important;
