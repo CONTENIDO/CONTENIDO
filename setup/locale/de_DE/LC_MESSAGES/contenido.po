@@ -1259,3 +1259,9 @@ msgstr "Empfohlen für existierende Projekte."
 
 #~ msgid "Passwords don't match"
 #~ msgstr "Passwörter stimmen nicht überein."
+
+msgid "The ISO codes are necessary to convert module translations."
+msgstr "Die ISO-Codes werden zu Konvertierung der Modulübersetzungen benötigt."
+
+msgid "Language "%s" (%s) of the client "%s" (%s) is configured without ISO language code."
+msgstr "Sprache "%s" (%s) des Mandanten "%s" (%s) ist ohne ISO-Code für die Sprache konfiguriert. "
