@@ -2172,3 +2172,53 @@ input[type=image].vAlignMiddle {
 #con_translate div.atpager img {
 	margin-top: 1px;
 }
+
+.ui-widget-header {
+	border: none !important;
+	background: none !important;
+	margin-top: 10px !important;
+	font-size: 11px !important;
+	font-weight: normal !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+   position: absolute !important;
+   right: 0 !important;
+   top: 0 !important;
+}
+
+.ui-dialog {
+	position: relative !important;
+	z-index: 2000!important;
+}
+
+.ui-widget-header .ui-state-hover {
+	border: none !important;
+	background: none !important;
+}
+
+.ui-widget-overlay {
+	background: none !important;
+	background-color: #333333 !important;
+}
+
+.ui-dialog {
+	border-radius: 0 !important;
+}
+
+table.inuse_lay_mod td, table.inuse_lay_mod th {
+	border: none;
+}
+
+table.inuse_lay_mod {
+	border: 1px solid #CCCCCC;
+}
+
+table.inuse_lay_mod  td.grey{
+	background-color: #EEEEEE;
+}
+
+table.inuse_tpl {
+	margin-bottom: 10px;
+	margin-top: 5px;
+}

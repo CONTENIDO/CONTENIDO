@@ -28,7 +28,7 @@
                     function(data) {
                         var inUseTitle = "i18n("The module '%s' is used for following templates")";
                         inUseTitle = inUseTitle.replace('%s', modName);
-                        showNotification(inUseTitle, data);
+                        showNotification(inUseTitle, data, null, true);
                     }
                 );
             }

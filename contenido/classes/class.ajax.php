@@ -82,11 +82,15 @@ class cAjaxRequest {
                         if (count($usedTemplates) > 0) {
                             $response = '<br />';
                             foreach ($usedTemplates as $i => $usedTemplate) {
+								if ($i%2 == 0) {
+									$template->set('d', 'CLASS', 'grey');
+								} else {
+									$template->set('d', 'CLASS', 'white');
+								}
                                 $template->set('d', 'NAME', $usedTemplate['tpl_name']);
                                 $template->next();
                             }
 
-                            $template->set('s', 'HEAD_NAME', i18n('Template name'));
                             $string = '<div class="inuse_info" >' . $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
                         } else {
                             $string = i18n('No data found!');
@@ -104,11 +108,16 @@ class cAjaxRequest {
                     $usedTemplates = $module->getUsedTemplates();
                     if (count($usedTemplates) > 0) {
                         foreach ($usedTemplates as $i => $usedTemplate) {
+							if ($i%2 == 0) {
+								$template->set('d', 'CLASS', 'grey');
+							} else {
+								$template->set('d', 'CLASS', 'white');
+							}
+								
                             $template->set('d', 'NAME', $usedTemplate['tpl_name']);
                             $template->next();
                         }
 
-                        $template->set('s', 'HEAD_NAME', i18n('Template name'));
                         $string = '<div class="inuse_info" >' . $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
                     } else {
                         $string = i18n('No data found!');
