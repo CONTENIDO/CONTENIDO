@@ -528,7 +528,7 @@ class cModuleHandler {
         $sMainModuleDirectory = $this->_cfgClient[$this->_client]['module']['path'];
 
         // make
-        if (!is_dir($sMainModuleDirectory)) {
+        if (!is_dir($sMainModuleDirectory) && $sMainModuleDirectory != NULL) {
             if (mkdir($sMainModuleDirectory, 0777, true) == false) {
                 return false;
             } else {
