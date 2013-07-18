@@ -2256,6 +2256,11 @@ input[type=image].vAlignMiddle {
     background: none;
 }
 
+.ui-widget-header .ui-state-hover span {
+	background-position: -97px -127px;
+}
+
+
 .ui-widget-overlay {
     background: none;
     background-color: #333;
