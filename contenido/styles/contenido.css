@@ -2228,41 +2228,41 @@ input[type=image].vAlignMiddle {
 }
 
 .ui-widget-header {
-    border: none !important;
-    background: none !important;
-    margin-top: 10px !important;
-    font-size: 11px !important;
-    font-weight: normal !important;
+    border: none;
+    background: none;
+    margin-top: 10px;
+    font-size: 11px;
+    font-weight: normal;
 }
 
 #ui-dialog-title-single_dialog {
-    font-size: 12px !important;
-    font-weight: bold !important;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .ui-dialog .ui-dialog-titlebar-close {
-   position: absolute !important;
-   right: 0 !important;
-   top: 0 !important;
+   position: absolute;
+   right: 0;
+   top: 0;
 }
 
 .ui-dialog {
-    position: relative !important;
-    z-index: 2000!important;
+    position: relative;
+    z-index: 2000;
 }
 
 .ui-widget-header .ui-state-hover {
-    border: none !important;
-    background: none !important;
+    border: none;
+    background: none;
 }
 
 .ui-widget-overlay {
-    background: none !important;
-    background-color: #333 !important;
+    background: none;
+    background-color: #333;
 }
 
 .ui-dialog {
-    border-radius: 0 !important;
+    border-radius: 0;
 }
 
 table.inuse_lay_mod td,
