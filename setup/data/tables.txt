@@ -168,7 +168,7 @@
 "frontendusers";"idfrontenduser";"int(11)";"";"PRI";"0";"";"1"
 "frontendusers";"idclient";"int(11)";"";"";"0";"";""
 "frontendusers";"username";"varchar(255)";"";"";"";"";""
-"frontendusers";"password";"varchar(32)";"";"";"";"";""
+"frontendusers";"password";"varchar(64)";"";"";"";"";""
 "frontendusers";"active";"tinyint(1)";"";"";"0";"";""
 "frontendusers";"author";"varchar(32)";"";"";"";"";""
 "frontendusers";"created";"datetime";"";"";"0000-00-00 00:00:00";"";""
