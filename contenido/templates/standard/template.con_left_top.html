@@ -6,7 +6,7 @@
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
     <script type="text/javascript" src="scripts/browserCheck.js"></script>
@@ -87,14 +87,14 @@
                         var oldlinkclass = $(this).attr("class");
                         var oldlinkid = $(this).parent().parent().attr("id");
                         var aOldlinkids = oldlinkid.split("-");
+                        var newlinkclass;
                         if (cfg.isPublic == 0) {
-                            var newlinkclass = oldlinkclass.replace(/_locked/, "");
+                            newlinkclass = oldlinkclass.replace(/_locked/, "");
                         } else {
                             if (oldlinkclass.search(/_locked/) == -1) {
-                                var newlinkclass = oldlinkclass + "_locked";
-                            }
-                            else {
-                                var newlinkclass = oldlinkclass;
+                                newlinkclass = oldlinkclass + "_locked";
+                            } else {
+                                newlinkclass = oldlinkclass;
                             }
                         }
                         $(this).removeClass(oldlinkclass);
@@ -142,13 +142,13 @@
             if (right_bottom && typeof(right_bottom.initValues) == "function") {
                 right_bottom.initValues();
                 if (typeof(right_bottom.initTheOne) == "function") {
-                right_bottom.initTheOne();
+                    right_bottom.initTheOne();
                 }
             }
 
             if (right_bottom && typeof(right_bottom.refresh_article_search_form) == "function") {
                 right_bottom.refresh_article_search_form('refresh');
-                }
+            }
         }
 
         //Script updates sync Language and reloads left_bottom frame
@@ -159,49 +159,40 @@
 
         // need to insert function in Article Search link
         function resizeFrame(arg) {
-            if(arg == '')
-            {
-            var articleLink = document.getElementById('{ARTICLELINK}');
-            var categoryLink = document.getElementById('{CATEGORYLINK}');
-            var syncLink = document.getElementById('{SYNCLINK}');
-            var legendLink = document.getElementById('{LEGENDLINK}');
+            if (arg == '') {
+                var articleLink = document.getElementById('{ARTICLELINK}');
+                var categoryLink = document.getElementById('{CATEGORYLINK}');
+                var syncLink = document.getElementById('{SYNCLINK}');
+                var legendLink = document.getElementById('{LEGENDLINK}');
 
-            //store current link for later use
-            if (articleLink) {
-                articleURL = articleLink.href;
-                articleLink.href = "javascript:resizeFrame('{ARTICLELINK}');";
-            }
+                //store current link for later use
+                if (articleLink) {
+                    articleURL = articleLink.href;
+                    articleLink.href = "javascript:resizeFrame('{ARTICLELINK}');";
+                }
 
-            if (categoryLink) {
-                categoryURL = categoryLink.href;
-                categoryLink.href = "javascript:resizeFrame('{CATEGORYLINK}');";
-            }
+                if (categoryLink) {
+                    categoryURL = categoryLink.href;
+                    categoryLink.href = "javascript:resizeFrame('{CATEGORYLINK}');";
+                }
 
-            if (syncLink) {
-                syncURL = syncLink.href;
-                syncLink.href = "javascript:resizeFrame('{SYNCLINK}');";
-            }
+                if (syncLink) {
+                    syncURL = syncLink.href;
+                    syncLink.href = "javascript:resizeFrame('{SYNCLINK}');";
+                }
 
-            if (legendLink) {
-                legendURL = legendLink.href;
-                legendLink.href = "javascript:resizeFrame('{LEGENDLINK}');";
-            }
-            }
-            else if(arg == '{ARTICLELINK}')
-            {
-                window.location.href=articleURL;
-            }
-            else if(arg == '{CATEGORYLINK}')
-            {
-                window.location.href=categoryURL;
-            }
-            else if(arg == '{SYNCLINK}')
-            {
-                window.location.href=syncURL;
-            }
-            else if(arg == '{LEGENDLINK}')
-            {
-                window.location.href=legendURL;
+                if (legendLink) {
+                    legendURL = legendLink.href;
+                    legendLink.href = "javascript:resizeFrame('{LEGENDLINK}');";
+                }
+            } else if (arg == '{ARTICLELINK}') {
+                window.location.href = articleURL;
+            } else if (arg == '{CATEGORYLINK}') {
+                window.location.href = categoryURL;
+            } else if (arg == '{SYNCLINK}') {
+                window.location.href = syncURL;
+            } else if (arg == '{LEGENDLINK}') {
+                window.location.href = legendURL;
             }
             // resizing frame
             window.setTimeout("parent.parent.frameResize.resizeTopLeftFrame(document.getElementById('top_left_container').offsetHeight+1)", 10);
@@ -238,7 +229,7 @@
             }
         }
 
-        function resetSearchForm () {
+        function resetSearchForm() {
             oForm = document.backend_search;
 
             oForm.bs_search_text.value = "";
@@ -266,9 +257,6 @@
             oForm.bs_search_author.value = "";
             oForm.bs_search_author.selectedIndex = 0;
         }
-
-
-
     </script>
 </head>
 <body onLoad="resizeFrame('');">

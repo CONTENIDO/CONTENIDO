@@ -7,7 +7,7 @@
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
@@ -77,7 +77,7 @@
                         endDateTextBox.val(dateText);
                     }
                 },
-                onSelect: function(selectedDateTime){
+                onSelect: function(selectedDateTime) {
                     var start = $(this).datetimepicker('getDate');
                     $('#dateend').datetimepicker('option', 'minDate', new Date(start.getTime()));
                 }
@@ -101,9 +101,9 @@
                         startDateTextBox.val(dateText);
                     }
                 },
-                onSelect: function(selectedDateTime){
+                onSelect: function(selectedDateTime) {
                     var end = $(this).datetimepicker('getDate');
-                    $('#datestart').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
+                    $('#datestart').datetimepicker('option', 'maxDate', new Date(end.getTime()));
                 }
             });
         });
@@ -274,7 +274,7 @@
 
     <script type="text/javascript">
         var bNoArticle = {bNoArticle};
-        if(bNoArticle){
+        if (bNoArticle) {
             $("input#saveart").click(function() {
                 conMultiLink('right_top', 'main.php?area=con&frame=3&idcat={iIdcat}&idtpl={iIdtpl}&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=saveart&bNoArticle='+{bNoArticle});
                 if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
@@ -285,8 +285,7 @@
             });
         }
 
-        /* Create a reference to the
-           Article Object in frame 'right_top' */
+        // Create a reference to the Article Object in frame 'right_top'
         artObj = parent.parent.frames["left"].frames["left_top"].artObj;
 
         if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
