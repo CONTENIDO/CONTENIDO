@@ -39,6 +39,8 @@ class PimPluginSetup {
 
     protected $allAreas = array();
 
+    protected $isUpdate = 0; // 0 = No (Standard),
+                             // 1 = Yes
     protected $_extractor; // TODO
     public function addArchiveObject($extractor) {
         $this->_extractor = $extractor;
@@ -189,6 +191,35 @@ class PimPluginSetup {
     }
 
     /**
+     * Get method for "is update?" ($isUpdate)
+     *
+     * 0 = No (Standard)
+     * 1 = Yes
+     *
+     * TODO: Optimize this function (CON-1358)
+     *
+     * @access public
+     */
+    public function getIsUpdate() {
+        return $this->isUpdate;
+    }
+
+    /**
+     * Set method for "is update?" ($isUpdate)
+     *
+     * 0 = No (Standard)
+     * 1 = Yes
+     *
+     * TODO: Optimize this function (CON-1358)
+     *
+     * @access public
+     * @param integer $value
+     */
+    public function setIsUpdate($value) {
+        $this->isUpdate = $value;
+    }
+
+    /**
      * Set method for $tempXml
      *
      * @access public
@@ -265,7 +296,9 @@ class PimPluginSetup {
         $this->_installAddNavSub($tempXml->contenido->nav_sub);
 
         // add specific sql queries
-        $this->_installAddSpecificSql();
+        if ($this->getIsUpdate() == 0) {
+            $this->_installAddSpecificSql();
+        }
 
         // add content types
         $this->_installAddContentTypes($tempXml->content_types);
@@ -546,6 +579,8 @@ class PimPluginSetup {
     /**
      * Uninstall a plugin
      *
+     * TODO: Optimize sql method for update plugins (CON-1358)
+     *
      * @access public
      * @param $pluginId id of uninstall plugid
      * @param $page page class for success message
@@ -612,7 +647,12 @@ class PimPluginSetup {
 
         // delete specific sql entries or tables
         if ($sql == true) {
-            $this->_uninstallDeleteSpecificSql($foldername);
+
+            if ($this->getIsUpdate() == 0) {
+                $this->_uninstallFullDeleteSpecificSql($foldername);
+            } else {
+                $this->_uninstallUpdateDeleteSpecificSql($foldername);
+            }
         }
 
         // pluginname
@@ -629,13 +669,13 @@ class PimPluginSetup {
     }
 
     /**
-     * Delete specific sql entries or tables
+     * Delete specific sql entries or tables, full uninstall mode
      *
      * @access protected
      * @param $foldername foldername of installed plugin
      * @return void
      */
-    protected function _uninstallDeleteSpecificSql($foldername) {
+    protected function _uninstallFullDeleteSpecificSql($foldername) {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
@@ -651,6 +691,46 @@ class PimPluginSetup {
         $tempSqlLines = count($tempSqlContent);
 
         $pattern = '/(DELETE FROM|DROP TABLE) ' . $this->sqlPrefix . '\b/';
+
+        for ($i = 0; $i < $tempSqlLines; $i++) {
+            if (preg_match($pattern, $tempSqlContent[$i])) {
+                $tempSqlContent[$i] = str_replace($this->sqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+                $db->query($tempSqlContent[$i]);
+            }
+        }
+    }
+
+    /**
+     * Delete specific sql entries or tables, update uninstall mode
+     *
+     * TODO: Optimize this function (CON-1358)
+     *
+     * @access protected
+     * @param $foldername foldername of installed plugin
+     * @return void
+     */
+    protected function _uninstallUpdateDeleteSpecificSql($foldername) {
+        $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
+
+        // name of uploaded file
+        $tempFileName = cSecurity::escapeString($_FILES['package']['name']);
+
+        // path to temporary dir
+        $tempFileNewPath = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
+
+        $extractor = new PimPluginArchiveExtractor($tempFileNewPath, $tempFileName);
+        $tempSqlContent = $extractor->extractArchiveFileToVariable('plugin_update.sql');
+
+        if (empty($tempSqlContent)) {
+            return;
+        }
+
+        $tempSqlContent = str_replace("\r\n", "\n", $tempSqlContent);
+        $tempSqlContent = explode("\n", $tempSqlContent);
+        $tempSqlLines = count($tempSqlContent);
+
+        $pattern = '/(UPDATE|ALTER TABLE|DELETE FROM|DROP TABLE) ' . $this->sqlPrefix . '\b/';
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
             if (preg_match($pattern, $tempSqlContent[$i])) {

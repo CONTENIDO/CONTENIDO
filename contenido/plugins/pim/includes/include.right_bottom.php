@@ -42,11 +42,12 @@ switch ($viewAction) {
     case 'update':
         $setup->checkZip();
         $setup->checkSamePlugin($_POST['pluginId']);
+        $setup->setIsUpdate(1);
         $setup->uninstall($_POST['pluginId']);
         installationRoutine($page, true, $_POST['foldername'], true);
         break;
     case 'uninstall':
-        $setup->uninstall($_GET['pluginId'], $page);
+        $setup->uninstall($_GET['pluginId']);
         break;
     case 'uninstall-extracted':
         $setup->uninstallDir($_GET['pluginFoldername'], $page);
