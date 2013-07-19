@@ -537,7 +537,7 @@ class PifaForm extends Item {
 
         // send mail
         if (!$mailer->send($message)) {
-            throw new PifaMailException($this->ErrorInfo);
+            throw new PifaMailException('could not send mail');
         }
     }
 
