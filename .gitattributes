@@ -2174,9 +2174,6 @@ setup/data/examples/data/modules/config_social_media/lang/lang_en_US.txt -text s
 setup/data/examples/data/modules/config_social_media/php/config_social_media_input.php -text
 setup/data/examples/data/modules/config_social_media/php/config_social_media_output.php -text
 setup/data/examples/data/modules/config_social_media/template/get.tpl -text
-setup/data/examples/data/modules/content_auto_indexing/info.xml -text svneol=unset#text/plain
-setup/data/examples/data/modules/content_auto_indexing/php/content_auto_indexing_input.php -text
-setup/data/examples/data/modules/content_auto_indexing/php/content_auto_indexing_output.php -text
 setup/data/examples/data/modules/content_copyright_notice/info.xml -text svneol=unset#text/plain
 setup/data/examples/data/modules/content_copyright_notice/php/content_copyright_notice_input.php -text
 setup/data/examples/data/modules/content_copyright_notice/php/content_copyright_notice_output.php -text
