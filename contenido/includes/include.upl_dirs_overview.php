@@ -13,7 +13,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude("includes", "functions.con.php");
@@ -99,18 +98,21 @@ if ($action == "upl_delete") {
         /* Check for files */
         if (uplHasFiles($path)) {
             $failedFiles = array();
+            if (is_dir($cfgClient[$client]["upl"]["path"] . $path)) {
 
-            $directory = @opendir($cfgClient[$client]["upl"]["path"] . $path);
-            if (false !== $directory) {
-                while (false !== ($dir_entry = readdir($directory))) {
-                    if ($dir_entry != "." && $dir_entry != "..") {
-                        $res = @ unlink($cfgClient[$client]["upl"]["path"] . $path . $dir_entry);
+                $directory = @opendir($cfgClient[$client]["upl"]["path"] . $path);
+                if (false !== $directory) {
+                    while (false !== ($dir_entry = readdir($directory))) {
+                        if ($dir_entry != "." && $dir_entry != "..") {
+                            $res = @ unlink($cfgClient[$client]["upl"]["path"] . $path . $dir_entry);
 
-                        if ($res == false) {
-                            $failedFiles[] = $dir_entry;
+                            if ($res == false) {
+                                $failedFiles[] = $dir_entry;
+                            }
                         }
                     }
                 }
+                closedir($directory);
             }
         }
 
