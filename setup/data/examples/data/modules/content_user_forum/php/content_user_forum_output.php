@@ -27,11 +27,6 @@ if(cRegistry::isBackendEditMode()){
 class UserForumArticle {
 
     /**
-     * Antworten auf beiträge möglich -> Kommentieren Button ausblenden.
-     */
-    // protected $_dat= 0;
-
-    /**
      *
      * @var unknown_type
      */
