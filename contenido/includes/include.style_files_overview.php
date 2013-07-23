@@ -51,7 +51,7 @@ $sScriptTemplate = '
 
 $tpl->set('s', 'JAVASCRIPT', $sScriptTemplate);
 
-if (($handle = opendir($path)) !== false) {
+if (($handle = opendir($path)) !== false && is_dir($path)) {
     $aFiles = array();
 
     while (($file = readdir($handle)) !== false) {
