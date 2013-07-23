@@ -2,17 +2,16 @@
 /**
  * This file contains the main upgrade job class.
  *
- * @package    Setup
+ * @package Setup
  * @subpackage UpgradeJob
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -40,14 +39,14 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
      * Initial update jobs.
      *
      * NOTE: Don't spam this function with additional upgrade tasks.
-     *       Create a new upgrated job file and implement the execute() method!
+     * Create a new upgrated job file and implement the execute() method!
      */
     protected function _executeInitialJobs() {
         global $cfg;
 
         updateContenidoVersion($this->_oDb, $cfg['tab']['system_prop'], CON_SETUP_VERSION);
         if ($this->_setupType == 'setup') {
-            updateSysadminPassword($this->_oDb, $cfg['sql']['sqlprefix'].'_user', $_SESSION['adminpass'], $_SESSION['adminmail']);
+            updateSysadminPassword($this->_oDb, $cfg['sql']['sqlprefix'] . '_user', $_SESSION['adminpass'], $_SESSION['adminmail']);
         }
 
         // Set code creation (on update) flag
@@ -79,6 +78,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
      *
      * This function takes the start articles from con_cat_art.is_start and
      * sets them in con_cat_lang.startidartlang for all available languages.
+     *
      * @todo Move this to an upgrade job
      */
     protected function _jobConvertOldStartArticlesToNewOne() {
@@ -130,7 +130,9 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
                 // Only the old table exists. Rename it.
                 $this->_oDb->query('RENAME TABLE ' . $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5 TO ' . $cfg['sql']['sqlprefix'] . '_user');
             } else {
-                // The new and the old table exists. We trust the old table more since the new one should've been deleted by the setup. Drop the new one and rename the old one
+                // The new and the old table exists. We trust the old table more
+                // since the new one should've been deleted by the setup. Drop
+                // the new one and rename the old one
                 $this->_oDb->query('DROP TABLE ' . $cfg['sql']['sqlprefix'] . '_user');
                 $this->_oDb->query('RENAME TABLE ' . $cfg['sql']['sqlprefix'] . '_phplib_auth_user_md5 TO ' . $cfg['sql']['sqlprefix'] . '_user');
             }
@@ -142,36 +144,41 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
 
     /**
      * Get all upgrade job files
-     * @return  array
+     *
+     * @return array
      */
     protected function _getUpgradeJobFiles() {
         $files = array();
         $dir = CON_SETUP_PATH . '/upgrade_jobs/';
-        if (($hDir = opendir($dir)) !== false) {
-            while (false !== ($file = readdir($hDir))) {
-                if ($file != '.' && $file != '..' && is_file($dir . $file)) {
-                    if (preg_match('/^class\.upgrade\.job\.(\d{4})\.php$/', $file, $match)) {
-                        $files[$match[1]] = $file;
+        if (is_dir($dir)) {
+            if (($hDir = opendir($dir)) !== false) {
+                while (false !== ($file = readdir($hDir))) {
+                    if ($file != '.' && $file != '..' && is_file($dir . $file)) {
+                        if (preg_match('/^class\.upgrade\.job\.(\d{4})\.php$/', $file, $match)) {
+                            $files[$match[1]] = $file;
+                        }
                     }
                 }
+                closedir($hDir);
             }
-            closedir($hDir);
+            ksort($files, SORT_NUMERIC);
         }
-        ksort($files, SORT_NUMERIC);
 
         return $files;
     }
 
     /**
      * Execute passed upgrade job files
-     * @param  array  $upgradeJobs
+     *
+     * @param array $upgradeJobs
      */
     protected function _processUpgradeJobs(array $upgradeJobs) {
         foreach ($upgradeJobs as $index => $file) {
-            require_once(CON_SETUP_PATH . '/upgrade_jobs/' . $file);
+            require_once (CON_SETUP_PATH . '/upgrade_jobs/' . $file);
             $className = 'cUpgradeJob_' . $index;
             if (!class_exists($className)) {
-                continue;;
+                continue;
+                ;
             }
 
             /* @var $obj cUpgradeJobAbstract */
