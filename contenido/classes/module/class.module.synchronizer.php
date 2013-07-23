@@ -150,6 +150,16 @@ class cModuleSynchronizer extends cModuleHandler {
                         $mod->set("type", $modInfo["type"]);
                         $this->setLastModified($lastModInfo, $db->f('idmod'));
                     }
+
+                    if ($modInfo["name"] != $mod->get("name")) {
+                        $mod->set("name", $modInfo["name"]);
+                        $this->setLastModified($lastModInfo, $db->f('idmod'));
+                    }
+
+                    if ($modInfo["alias"] != $mod->get("alias")) {
+                        $mod->set("alias", $modInfo["alias"]);
+                        $this->setLastModified($lastModInfo, $db->f('idmod'));
+                    }
                     $mod->store();
                     $synchLock = 1;
                     $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
