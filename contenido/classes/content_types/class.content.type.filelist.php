@@ -12,7 +12,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
@@ -228,14 +227,17 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             }
 
             foreach ($directories as $directoryName) {
-                $handle = opendir($this->_uploadPath . $directoryName);
-                while (($entry = readdir($handle)) !== false) {
-                    // checking if entry is file and is not a directory
-                    if (is_file($this->_uploadPath . $directoryName . '/' . $entry)) {
-                        $fileList[] = $directoryName . '/' . $entry;
+                if (is_dir($this->_uploadPath . $directoryName)) {
+                    if ($handle = opendir($this->_uploadPath . $directoryName)) {
+                        while (($entry = readdir($handle)) !== false) {
+                            // checking if entry is file and is not a directory
+                            if (is_file($this->_uploadPath . $directoryName . '/' . $entry)) {
+                                $fileList[] = $directoryName . '/' . $entry;
+                            }
+                        }
                     }
+                    closedir($handle);
                 }
-                closedir($handle);
             }
         } else {
             return '';

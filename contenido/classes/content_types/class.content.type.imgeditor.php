@@ -504,7 +504,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
         $i = 1;
-        $handle = opendir($this->_uploadPath . $directoryPath);
+        if (is_dir($this->_uploadPath . $directoryPath)) {
+        if($handle = opendir($this->_uploadPath . $directoryPath)){
         while (($entry = readdir($handle)) != false) {
             if (is_file($this->_uploadPath . $directoryPath . $entry)) {
                 $htmlSelectOption = new cHTMLOptionElement($entry, $directoryPath . $entry);
@@ -513,6 +514,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             }
         }
         closedir($handle);
+        }
+        }
 
         if ($i === 0) {
             $htmlSelectOption = new cHTMLOptionElement(i18n('No files found'), '', false);

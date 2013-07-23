@@ -12,7 +12,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -294,19 +293,22 @@ abstract class cContentTypeAbstract {
         }
 
         $directories = array();
-        $handle = opendir($uploadPath);
-        while (($entry = readdir($handle)) !== false) {
-            // ignore .svn directories as well as links to upper dirs
-            if ($entry != '.svn' && $entry != '.' && $entry != '..' && is_dir($uploadPath . $entry)) {
-                $directory = array();
-                $directory['name'] = $entry;
-                $directory['path'] = str_replace($this->_uploadPath, '', $uploadPath);
-                $directory['sub'] = $this->buildDirectoryList($uploadPath . $entry);
-                $directories[] = $directory;
-            }
-        }
-        closedir($handle);
 
+        if (is_dir($uploadPath)) {
+            if ($handle = opendir($uploadPath)) {
+                while (($entry = readdir($handle)) !== false) {
+                    // ignore .svn directories as well as links to upper dirs
+                    if ($entry != '.svn' && $entry != '.' && $entry != '..' && is_dir($uploadPath . $entry)) {
+                        $directory = array();
+                        $directory['name'] = $entry;
+                        $directory['path'] = str_replace($this->_uploadPath, '', $uploadPath);
+                        $directory['sub'] = $this->buildDirectoryList($uploadPath . $entry);
+                        $directories[] = $directory;
+                    }
+                }
+            }
+            closedir($handle);
+        }
         return $directories;
     }
 

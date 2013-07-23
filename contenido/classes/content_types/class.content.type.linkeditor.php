@@ -12,7 +12,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
@@ -619,15 +618,19 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
         $i = 1;
-        $handle = opendir($this->_uploadPath . $directoryPath);
-        while (($entry = readdir($handle)) !== false) {
-            if (is_file($this->_uploadPath . $directoryPath . $entry)) {
-                $htmlSelectOption = new cHTMLOptionElement($entry, $directoryPath . $entry);
-                $htmlSelect->addOptionElement($i, $htmlSelectOption);
-                $i++;
+
+        if (is_dir($this->_uploadPath . $directoryPath)) {
+            if ($handle = opendir($this->_uploadPath . $directoryPath)) {
+                while (($entry = readdir($handle)) !== false) {
+                    if (is_file($this->_uploadPath . $directoryPath . $entry)) {
+                        $htmlSelectOption = new cHTMLOptionElement($entry, $directoryPath . $entry);
+                        $htmlSelect->addOptionElement($i, $htmlSelectOption);
+                        $i++;
+                    }
+                }
+                closedir($handle);
             }
         }
-        closedir($handle);
 
         if ($i === 0) {
             $htmlSelectOption = new cHTMLOptionElement(i18n('No files found'), '', false);
