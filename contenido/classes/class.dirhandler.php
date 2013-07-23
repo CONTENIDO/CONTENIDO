@@ -157,4 +157,68 @@ class cDirHandler {
 
         return rmdir($dirname);
     }
+
+    /**
+     * This functions reads the content from given directory.
+     * optionally options are to read the directory recursive or to list only directories.
+     *
+     * @param string $dirName directory
+     *
+     * @param bool $recursive flag to read recursive
+     * @param bool $dirOnly flag to list only directories
+     */
+    public static function read($dirName, $recursive = false, $dirOnly = false) {
+        if (!is_dir($dirName)) {
+            return false;
+        } else {
+            $dirContent = array();
+            if ($recursive == false) {
+                $dirHandle = opendir($dirName);
+                $dirContent = array();
+                while (false !== ($file = readdir($dirHandle))) {
+                    if (!self::fileNameIsDot($file)) {
+                        // get only directories
+                        if ($dirOnly == true) {
+                            if (is_dir($dirName . $file)) {
+                                $dirContent[] = $file;
+                            }
+                        } else {
+                            $dirContent[] = $file;
+                        }
+                    }
+                }
+                closedir($dirHandle);
+            }
+
+            else {
+                $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dirName), RecursiveIteratorIterator::SELF_FIRST);
+                foreach ($objects as $name => $file) {
+
+                    if (!self::fileNameIsDot($file)) {
+                        $fileName = str_replace("\\", "/", $file->getPathName());
+
+                        // get only directories
+                        if ($dirOnly == true) {
+
+                            if (is_dir($fileName)) {
+                                $dirContent[] = $fileName;
+                            }
+                        } else {
+                            $dirContent[] = $fileName;
+                        }
+                    }
+                }
+            }
+        }
+        return $dirContent;
+    }
+
+    public static function fileNameIsDot($fileName) {
+        if ($fileName != '.' && $fileName != '..') {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }
