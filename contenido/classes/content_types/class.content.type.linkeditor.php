@@ -69,6 +69,27 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     }
 
     /**
+     * Returns array with configured data (keys: type, externallink, title,
+     * newwindow, idart, filename).
+     * Additionally the key href contains the actual hyperreference.
+     *
+     * @return array
+     */
+    public function getConfiguredData() {
+        $data = array(
+            'type' => $this->_settings['linkeditor_type'],
+            'externallink' => $this->_settings['linkeditor_externallink'],
+            'title' => $this->_settings['linkeditor_title'],
+            'newwindow' => $this->_settings['linkeditor_newwindow'],
+            'idart' => $this->_settings['linkeditor_idart'],
+            'filename' => $this->_settings['linkeditor_filename'],
+            'href' => $this->_generateHref()
+        );
+
+        return $data;
+    }
+
+    /**
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
