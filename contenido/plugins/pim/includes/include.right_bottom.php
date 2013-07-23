@@ -13,7 +13,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // initializing classes
@@ -211,33 +210,37 @@ while (($plugin = $oItem->next()) !== false) {
 }
 
 // get extracted plugins
-$handle = opendir($cfg['path']['plugins']);
-while ($pluginFoldername = readdir($handle)) {
+if(is_dir($cfg['path']['plugins'])){
+if ($handle = opendir($cfg['path']['plugins'])) {
+    while ($pluginFoldername = readdir($handle)) {
 
-    $tempPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername . '/plugin.xml';
+        $tempPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername . '/plugin.xml';
 
-    if (cFileHandler::exists($tempPath) && !in_array($pluginFoldername, $installedPluginFoldernames)) {
+        if (cFileHandler::exists($tempPath) && !in_array($pluginFoldername, $installedPluginFoldernames)) {
 
-        // initalization new template class
-        $pagePlugins = new cTemplate();
+            // initalization new template class
+            $pagePlugins = new cTemplate();
 
-        $pagePlugins->set('s', 'LANG_FOLDERNAME', i18n('Foldername', 'pim'));
-        $pagePlugins->set('s', 'LANG_TOOLTIP_INSTALL', i18n('Install extracted plugin', 'pim'));
-        $pagePlugins->set('s', 'LANG_TOOLTIP_UNINSTALL', i18n('Uninstall extracted plugin (deleted plugin files from filesystem)', 'pim'));
-        $pagePlugins->set('s', 'FOLDERNAME', $pluginFoldername);
-        $pagePlugins->set('s', 'INSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=install-extracted&pluginFoldername=' . $pluginFoldername));
+            $pagePlugins->set('s', 'LANG_FOLDERNAME', i18n('Foldername', 'pim'));
+            $pagePlugins->set('s', 'LANG_TOOLTIP_INSTALL', i18n('Install extracted plugin', 'pim'));
+            $pagePlugins->set('s', 'LANG_TOOLTIP_UNINSTALL', i18n('Uninstall extracted plugin (deleted plugin files from filesystem)', 'pim'));
+            $pagePlugins->set('s', 'FOLDERNAME', $pluginFoldername);
+            $pagePlugins->set('s', 'INSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=install-extracted&pluginFoldername=' . $pluginFoldername));
 
-        // uninstall link
-        if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername)) {
-            $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));
-            $pagePlugins->set('s', 'LANG_WRITABLE', '');
-        } else {
-            $pagePlugins->set('s', 'UNINSTALL_LINK', 'javascript://');
-            $pagePlugins->set('s', 'LANG_WRITABLE', '(<span class="settingWrong">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>)');
+            // uninstall link
+            if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername)) {
+                $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));
+                $pagePlugins->set('s', 'LANG_WRITABLE', '');
+            } else {
+                $pagePlugins->set('s', 'UNINSTALL_LINK', 'javascript://');
+                $pagePlugins->set('s', 'LANG_WRITABLE', '(<span class="settingWrong">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>)');
+            }
+
+            $pluginsExtracted .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_extracted.html', true, false);
         }
-
-        $pluginsExtracted .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_extracted.html', true, false);
     }
+    closedir($handle);
+}
 }
 
 // if pluginsExtracted var is empty
