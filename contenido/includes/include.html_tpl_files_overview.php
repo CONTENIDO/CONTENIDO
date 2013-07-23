@@ -44,8 +44,7 @@ $sScriptTemplate = '
 
 $tpl->set('s', 'JAVASCRIPT', $sScriptTemplate);
 
-if (($handle = opendir($path)) !== false) {
-
+if (($handle = opendir($path)) !== false && is_dir($path)) {
     // determine allowed extensions for template files in client template folder
     $allowedExtensions = cRegistry::getConfigValue('client_template', 'allowed_extensions', 'html');
     $allowedExtensions = explode(',', $allowedExtensions);
