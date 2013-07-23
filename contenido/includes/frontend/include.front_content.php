@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file handles the view of an article in frontend and in backend.
  *
@@ -63,9 +64,8 @@ if ($cfg['use_pseudocron'] == true) {
     chdir($oldpwd);
 }
 
-// Initialize the Database Abstraction Layer, the Session, Authentication and
-// Permissions
-// Handler of the PHPLIB application development toolkit
+// Initialize the database abstraction layer, the session, authentication and
+// permissions handler of the PHPLIB application development toolkit
 // @see http://sourceforge.net/projects/phplib
 // TODO better use cRegistry::getBackendSessionId()?
 if ($contenido) {
@@ -130,6 +130,7 @@ if (isset($changeclient)) {
 if (isset($changelang)) {
     $lang = $changelang;
 }
+
 // Initialize client
 if (!isset($client)) {
     // load_client defined in __FRONTEND_PATH__/data/config/config.php
@@ -156,6 +157,7 @@ if (!isset($lang)) {
 if (!$sess->isRegistered('lang')) {
     $sess->register('lang');
 }
+
 if (!$sess->isRegistered('client')) {
     $sess->register('client');
 }
@@ -202,7 +204,7 @@ $aParams = array(
 $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
 
 $errtpl = $cfgClient[$client]['tpl']['path'] . "frontend_error.html";
-if(cFileHandler::exists($errtpl) === false) {
+if (cFileHandler::exists($errtpl) === false) {
     $errtpl = $cfg['path']['contenido'] . "templates/frontend_error.html";
 }
 
@@ -314,9 +316,9 @@ if ($idartlang === false) {
 if ($cfg['cache']['disable'] != '1') {
     cInclude('frontend', 'includes/concache.php');
     $oCacheHandler = new cOutputCacheHandler($GLOBALS['cfgConCache'], $db);
-    $oCacheHandler->start($iStartTime); // $iStartTime ist optional und ist die
-                                            // startzeit des scriptes, z. b. am
-                                            // anfang von fron_content.php
+    // $iStartTime ist optional und ist die Startzeit des Scriptes,
+    // z.B. am Anfang von fron_content.php
+    $oCacheHandler->start($iStartTime);
 }
 
 // Backend / Frontend editing
@@ -369,8 +371,8 @@ if ($contenido) {
     }
 
     // CEC to check if the user has permission to edit articles in this category
-    cApiCecHook::setBreakCondition(false, true); // break at 'false', default
-                                                 // value 'true'
+    // break at 'false', default value 'true'
+    cApiCecHook::setBreakCondition(false, true);
     $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']);
 }
 
@@ -386,9 +388,10 @@ if ($contenido) {
     $errorText = 'Editing is not possible because there is no template assigned to this category.';
     $errorTitle = 'FATAL ERROR!';
 }
-$db = cRegistry::getDb();
 
+$db = cRegistry::getDb();
 $db->query($sql);
+
 $data = array();
 while ($db->next_record()) {
     array_push($data, $db->toArray());
@@ -417,14 +420,15 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         $markscript = markSubMenuItem(6, true);
     }
 
-    unset($edit); // disable editmode
-                  // 'mode' is preview (Area: Contenido --> Articles -->
-                  // Preview) or article displayed in the front-end
-                  // Code generation
+    // disable editmode
+    // 'mode' is preview (Area: Contenido --> Articles --> Preview)
+    // or article displayed in the front-end code generation
+    unset($edit);
+
     $oCatArtColl = new cApiCategoryArticleCollection();
     $oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
 
-    if($oCatArt == false) {
+    if ($oCatArt == false) {
         $tpl = new cTemplate();
         $tpl->set("s", "ERROR_TITLE", "Fatal error");
         $tpl->set("s", "ERROR_TEXT", "The URL of the page you have tried to visit seems to be wrong.");
@@ -488,9 +492,8 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             }
             if ($validated != 1) {
                 // CEC to check category access
-                cApiCecHook::setBreakCondition(true, false); // break at 'true',
-                                                             // default value
-                                                             // 'false'
+                // break at 'true', default value 'false'
+                cApiCecHook::setBreakCondition(true, false);
                 $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']);
                 if (!$allow) {
                     $auth->restart();
@@ -498,9 +501,8 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             }
         } else {
             // CEC to check category access
-            cApiCecHook::setBreakCondition(true, false); // break at 'true',
-                                                         // default value
-                                                         // 'false'
+            // break at 'true', default value 'false'
+            cApiCecHook::setBreakCondition(true, false);
             $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']);
 
             // In backendeditmode also check if logged in backenduser has
@@ -551,8 +553,8 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         }
     }
 
-    @eval("\$" . "redirect_url = \"$redirect_url\";"); // transform variables
-                                                       // Generate base url
+    // transform variables Generate base url
+    @eval("\$" . "redirect_url = \"$redirect_url\";");
     $insertBaseHref = getEffectiveSetting('generator', 'basehref', 'true');
     if ($insertBaseHref == 'true') {
         $baseHref = cRegistry::getFrontendUrl();
@@ -636,7 +638,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 // End page cache, if enabled
 if ($cfg['cache']['disable'] != '1') {
     $oCacheHandler->end();
-    // cho $oCacheHandler->getInfo();
+    // echo $oCacheHandler->getInfo();
 }
 
 // Configuration settings after the site is displayed.
