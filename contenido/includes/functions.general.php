@@ -2,17 +2,16 @@
 /**
  * Defines the general CONTENIDO functions
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.file.php');
@@ -204,7 +203,7 @@ function getCanonicalDay($iDay) {
  * Returns a formatted date and/or timestring according to the current settings
  *
  * @param mixed $timestamp a timestamp. If no value is given the current time
- *            will be used.
+ *        will be used.
  * @param bool $date if true the date will be included in the string
  * @param bool $time if true the time will be included in the string
  * @return string the formatted time string.
@@ -443,8 +442,10 @@ function htmldecode($string) {
 }
 
 /**
- * Loads the client information from the database and stores it in config.client.php.
- * Reinitializes the $cfgClient array and fills it wih updated information if provided.
+ * Loads the client information from the database and stores it in
+ * config.client.php.
+ * Reinitializes the $cfgClient array and fills it wih updated information if
+ * provided.
  *
  * @param number $idclient client id which will be updated
  * @param string $htmlpath new HTML path. Starting with "http://"
@@ -489,7 +490,11 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
 
-        $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace(array('*/','/*','//'),'', $db->f('name')));
+        $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace(array(
+            '*/',
+            '/*',
+            '//'
+        ), '', $db->f('name')));
 
         $errsite_idcat[$iClient] = $db->f('errsite_cat');
         $errsite_idart[$iClient] = $db->f('errsite_art');
@@ -550,57 +555,56 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         if ((int) $iIdClient > 0 && is_array($aClient)) {
 
             $aConfigFileContent[] = '/* ' . $aClient['name'] . ' */';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["name"] = "'. $aClient['name'] .'";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["errsite"]["idcat"] = "'.$aClient["errsite"]["idcat"].'";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["errsite"]["idart"] = "'.$aClient["errsite"]["idart"].'";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["images"] = "'.$aClient["path"]["htmlpath"].'images/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upload"] = "upload/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["name"] = "' . $aClient['name'] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["errsite"]["idcat"] = "' . $aClient["errsite"]["idcat"] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["errsite"]["idart"] = "' . $aClient["errsite"]["idart"] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["images"] = "' . $aClient["path"]["htmlpath"] . 'images/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upload"] = "upload/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["path"]["frontend"] = "'.$aClient["path"]["frontend"].'";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["frontend"] = "' . $aClient["path"]["frontend"] . '";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["htmlpath"]["frontend"] = "'.$aClient["path"]["htmlpath"].'";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["htmlpath"]["frontend"] = "' . $aClient["path"]["htmlpath"] . '";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upl"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "upload/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upl"]["htmlpath"] = "'.$aClient["htmlpath"]["frontend"].'upload/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["upl"]["frontendpath"] = "upload/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upl"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "upload/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upl"]["htmlpath"] = "' . $aClient["htmlpath"]["frontend"] . 'upload/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["upl"]["frontendpath"] = "upload/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["css"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "css/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["css"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "css/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["js"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "js/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["js"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "js/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["tpl"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "templates/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["tpl"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "templates/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["cache"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "cache/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["cache"]["frontendpath"] = "cache/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["cache"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "cache/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["cache"]["frontendpath"] = "cache/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["code"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "cache/code/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["code"]["frontendpath"] = "cache/code/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["code"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "cache/code/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["code"]["frontendpath"] = "cache/code/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["xml"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "xml/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["xml"]["frontendpath"] = "xml/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["xml"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "xml/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["xml"]["frontendpath"] = "xml/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["template"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "templates/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["template"]["frontendpath"] = "templates/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["template"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "templates/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["template"]["frontendpath"] = "templates/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["data"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["data"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "data/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["module"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/modules/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["module"]["frontendpath"] = "data/modules/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["module"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "data/modules/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["module"]["frontendpath"] = "data/modules/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["config"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/config/'.CON_ENVIRONMENT.'/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["config"]["frontendpath"] = "data/config/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["config"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "data/config/' . CON_ENVIRONMENT . '/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["config"]["frontendpath"] = "data/config/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["layout"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/layouts/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["layout"]["frontendpath"] = "data/layouts/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["layout"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "data/layouts/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["layout"]["frontendpath"] = "data/layouts/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["log"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/logs/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["log"]["frontendpath"] = "data/logs/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["log"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "data/logs/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["log"]["frontendpath"] = "data/logs/";';
 
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["version"]["path"] = $cfgClient['.$iIdClient.']["path"]["frontend"] . "data/version/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["version"]["frontendpath"] = "data/version/";';
-            $aConfigFileContent[] = '$cfgClient['.$iIdClient.']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["version"]["path"] = $cfgClient[' . $iIdClient . ']["path"]["frontend"] . "data/version/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["version"]["frontendpath"] = "data/version/";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
             $aConfigFileContent[] = '';
-
         }
     }
     $aConfigFileContent[] = '$cfgClient["set"] = "set";';
@@ -620,7 +624,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
  * @param string $name The name of the item
  * @param string $value The value of the item
  * @param int $idsystemprop The sysprop id, use optional. If set it allows to
- *            modify type name and value
+ *        modify type name and value
  */
 function setSystemProperty($type, $name, $value, $idsystemprop = 0) {
     if ($type == '' || $name == '') {
@@ -886,7 +890,6 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
     return $selectElem->toHTML();
 }
 
-
 /**
  * Build a Category / Article select Box
  *
@@ -901,7 +904,6 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
 
     $db = cRegistry::getDb();
     $db2 = cRegistry::getDb();
-
 
     $selectElem = new cHTMLSelectElement($sName, "", $sName);
     $selectElem->setClass($sClass);
@@ -964,6 +966,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {
 
 /**
  * Converts a size in bytes in a human readable form
+ *
  * @param int $number Some number of bytes
  * @return string
  */
@@ -994,14 +997,15 @@ function humanReadableSize($number) {
 
 /**
  * Converts a byte size like "8M" to the absolute number of bytes
+ *
  * @param string $sizeString contains the size acquired from ini_get for example
  * @return number
  */
 function machineReadableSize($sizeString) {
     $val = trim($sizeString);
-    $last = strtolower($val[strlen($val)-1]);
+    $last = strtolower($val[strlen($val) - 1]);
     $val = (float) substr($val, 0, strlen($val) - 1);
-    switch($last) {
+    switch ($last) {
         case 'g':
             $val *= 1024;
         case 'm':
@@ -1067,21 +1071,21 @@ function scanPlugins($entity) {
         }
     }
 
-
-
     // Don't scan all the time, but each 5 minutes
     if ($lastscantime + 300 < time()) {
         setSystemProperty('plugin', $entity . '-lastscantime', time());
-
-        $dh = opendir($basedir);
-
-        while (($file = readdir($dh)) !== false) {
-            if (is_dir($basedir . $file) && $file != 'includes' && $file != '.' && $file != '..') {
-                if (!in_array($file, $plugins)) {
-                    if (cFileHandler::exists($basedir . $file . '/' . $file . '.php')) {
-                        $plugins[] = $file;
+        if (is_dir($basedir)) {
+            if ($dh = opendir($basedir)) {
+                while (($file = readdir($dh)) !== false) {
+                    if (is_dir($basedir . $file) && $file != 'includes' && $file != '.' && $file != '..') {
+                        if (!in_array($file, $plugins)) {
+                            if (cFileHandler::exists($basedir . $file . '/' . $file . '.php')) {
+                                $plugins[] = $file;
+                            }
+                        }
                     }
                 }
+                closedir($basedir);
             }
         }
 
@@ -1542,6 +1546,7 @@ function ipMatch($network, $mask, $ip) {
 
 /**
  * Checks if the straing haystack ends with needle
+ *
  * @param string $haystack the string to check
  * @param string $needle the string with which it should end
  * @return boolean
