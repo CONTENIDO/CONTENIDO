@@ -162,14 +162,17 @@ $(function() {
                     $draggedItem.remove();
                 }
             },
-            buttons: [{
-                text: i18n['cancel'],
-                click: function() {
-                    // close dialog
-                    $(this).dialog('close');
-                }
-            }, {
-                text: i18n['save'],
+            buttons: [
+//            {
+//                text: i18n['cancel'],
+//                click: function() {
+//                    // close dialog
+//                    $(this).dialog('close');
+//                }
+//            },
+            {
+                //text: i18n['save'],
+                text: ' ',
                 click: function() {
                     $(this).dialog('close').submit();
                 }

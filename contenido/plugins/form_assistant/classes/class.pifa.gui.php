@@ -157,7 +157,7 @@ class PifaRightBottomFormPage extends cGuiPage {
 
         parent::__construct('right_bottom', Pifa::getName());
 
-        $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
+        $this->addStyle('../plugins/' . Pifa::getName() . '/styles/smoothness/jquery-ui-1.8.20.custom.css');
         $this->addStyle('../plugins/' . Pifa::getName() . '/styles/right_bottom.css');
         $this->addScript('../plugins/' . Pifa::getName() . '/scripts/right_bottom.js');
 
@@ -464,7 +464,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
 
         parent::__construct('right_bottom', Pifa::getName());
 
-        $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
+        $this->addStyle('../plugins/' . Pifa::getName() . '/styles/smoothness/jquery-ui-1.8.20.custom.css');
         $this->addStyle('../plugins/' . Pifa::getName() . '/styles/right_bottom.css');
         $this->addScript('../plugins/' . Pifa::getName() . '/scripts/right_bottom.js');
 
@@ -692,7 +692,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
         parent::__construct('right_bottom', Pifa::getName());
 
-        $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
+        $this->addStyle('../plugins/' . Pifa::getName() . '/styles/smoothness/jquery-ui-1.8.20.custom.css');
         $this->addStyle('../plugins/' . Pifa::getName() . '/styles/right_bottom.css');
         $this->addScript('../plugins/' . Pifa::getName() . '/scripts/right_bottom.js');
 

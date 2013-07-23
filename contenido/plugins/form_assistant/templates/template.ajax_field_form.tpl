@@ -98,8 +98,11 @@ OPTION VALUES
 {if $field->showField('option_labels') or $field->showField('option_values')}
 <p class="pseudo-legend">{$trans.options}</p>
 
-<div class="pseudo-fieldset" id="options-list">
+<div class="pseudo-fieldset">
+
+    <div id="options-list">
     {assign var="options" value=$field->getOptions()}
+
     {if NULL neq $options}
         {foreach from=$options item=option name=option}
             {include
@@ -109,24 +112,25 @@ OPTION VALUES
                 trans=$trans}
         {/foreach}
     {/if}
-</div>
+    </div>
 
-<div id="add-options-div">
-    <a id="icon-add-option" href="{$hrefAddOption}"><img src="images/but_art_new.gif" /></a>
-    <span id="txt-add-options">{$trans.addOption}</span>
-</div>
+    <div id="add-options-div">
+        <a id="icon-add-option" href="{$hrefAddOption}">
+            <img src="images/but_art_new.gif" />
+            <span id="txt-add-options">{$trans.addOption}</span>
+        </a>
+    </div>
 
     {if NULL neq $optionClasses}
-    <div class="pseudo-fieldset">
-        <label for="option_class">{$trans.externalOptionsDatasource}</label>
-        <select id="option_class" name="option_class">
-            {foreach from=$optionClasses item=optionClass}
-            <option value="{$optionClass.value}"{if $optionClass.value eq $field->get('option_class')} selected="selected"{/if}>{$optionClass.label}</option>
-            {/foreach}
-        </select>
-    </div>
+    <label for="option_class">{$trans.externalOptionsDatasource}</label>
+    <select id="option_class" name="option_class">
+        {foreach from=$optionClasses item=optionClass}
+        <option value="{$optionClass.value}"{if $optionClass.value eq $field->get('option_class')} selected="selected"{/if}>{$optionClass.label}</option>
+        {/foreach}
+    </select>
     {/if}
 
+</div>
 {/if}
 {*
 

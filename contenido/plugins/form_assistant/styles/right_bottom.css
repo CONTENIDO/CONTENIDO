@@ -121,7 +121,7 @@ legend {
 #pifa-form-field-list li {
     background-color: #f1f1f1;
     height: 51px;
-    border: 1px solid black;
+    border: 1px solid grey;
     clear: left;
     margin: 1px;
     padding-top: 3px;
@@ -243,6 +243,7 @@ legend {
 .li-label-name {
     padding-top : 4px;
     font-size: 12px;
+    font-weight: bold;
 }
 
 .li-column-name {
@@ -303,7 +304,8 @@ legend {
 .pseudo-fieldset textarea,
 .pseudo-fieldset select {
     width: 310px;
-    -webkit-box-shadow: none;
+    margin: 0;
+	-webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
 }
@@ -420,7 +422,7 @@ legend {
 .ui-dialog-titlebar-close .ui-icon {
      height: 17px;
      width: 17px;
-     background-image: url(../../../images/button_close.png);
+     background-image: url("../images/button_close.png");
      background-position: 0;
      margin-bottom: 4px;
 }
@@ -429,9 +431,33 @@ legend {
     background: #006dbf;
 }
 
+.ui-widget-header {
+	margin: 10px 10px 0 10px;
+}
+
+.ui-widget-header .ui-state-hover span {
+	background-position: 0;
+}
+
 .pifa-icon {
     margin-top: 2px;
     margin-left: 5px;
+}
+
+
+.ui-dialog .ui-button {
+	color: #fff;
+	background: #555555 url("../../../images/but_ok.gif") repeat-x;
+	width: 16px;
+	height: 16px;
+	border: 0;
+}
+.ui-dialog .ui-button.ui-state-hover {
+	color: #fff;
+	background: #0078a3 url("../../../images/but_ok.gif") repeat-x;
+	width: 16px;
+	height: 16px;
+	border: 0;
 }
 
 .pifa-icon-1, .pifa-field-type-1 {background-image:url(../images/pifa_field_type_1.png);}
