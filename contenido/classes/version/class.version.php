@@ -355,7 +355,6 @@ class cVersion {
     protected function initRevisions() {
         $this->aRevisionFiles = array();
         $this->dTimestamp = array();
-
         // Open this Filepath and read then the content.
         $sDir = $this->getFilePath();
         if (is_dir($sDir)) {
