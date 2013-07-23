@@ -1075,7 +1075,7 @@ function scanPlugins($entity) {
     if ($lastscantime + 300 < time()) {
         setSystemProperty('plugin', $entity . '-lastscantime', time());
         if (is_dir($basedir)) {
-            if ($dh = opendir($basedir)) {
+            if (false !== $dh = opendir($basedir)) {
                 while (($file = readdir($dh)) !== false) {
                     if (is_dir($basedir . $file) && $file != 'includes' && $file != '.' && $file != '..') {
                         if (!in_array($file, $plugins)) {
@@ -1085,7 +1085,7 @@ function scanPlugins($entity) {
                         }
                     }
                 }
-                closedir($basedir);
+                closedir($dh);
             }
         }
 
