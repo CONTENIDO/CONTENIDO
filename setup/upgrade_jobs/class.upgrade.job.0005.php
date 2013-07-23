@@ -71,7 +71,8 @@ EOT;
             }
 
             // Convert the value of each CMS_FILELIST entry.
-            $contentCollection = new cApiContentCollection();
+            //$contentCollection = new cApiContentCollection();
+            $contentCollection->resetQuery();
             $contentCollection->setWhere('idtype', $types['CMS_FILELIST']);
             $contentCollection->query();
             while (($item = $contentCollection->next()) !== false) {
@@ -163,10 +164,13 @@ EOT;
                 $result[$key] = $subResult;
             }
 
+            $metaItemCollection = new cApiUploadMetaCollection();
+
             // iterate over all entries and convert each of them
             foreach ($result as $imageInfo) {
                 // insert new CMS_IMGEDITOR content entry
-                $contentCollection = new cApiContentCollection();
+                //$contentCollection = new cApiContentCollection();
+                $contentCollection->resetQuery();
                 $contentCollection->create($imageInfo['idartlang'], $types['CMS_IMGEDITOR'], $imageInfo['typeid'], $imageInfo['idupl'], '');
                 // save description in con_upl_meta if it does not already exist
                 $sql = 'SELECT `idlang` FROM `' . $cfg['tab']['art_lang'] . '` WHERE `idartlang`=' . $imageInfo['idartlang'];
@@ -174,7 +178,8 @@ EOT;
                 if ($db->nextRecord()) {
                     $idlang = $db->f('idlang');
                     $metaItem = new cApiUploadMeta();
-                    $metaItemExists = $metaItem->loadByMany(array('idupl' => $imageInfo['idupl'], 'idlang' => $idlang));
+                    $metaItemExists = $metaItem->loadByUploadIdAndLanguageId($imageInfo['idupl'], $idlang);
+                    // $metaItemExists = $metaItem->loadByMany(array('idupl' => $imageInfo['idupl'], 'idlang' => $idlang));
                     if ($metaItemExists) {
                         // if meta item exists but there is no description, add the description
                         if ($metaItem->get('description') == '') {
@@ -183,7 +188,6 @@ EOT;
                         }
                     } else {
                         // if no meta item exists, create a new one with the description
-                        $metaItemCollection = new cApiUploadMetaCollection();
                         $metaItemCollection->create($imageInfo['idupl'], $idlang, '', $imageInfo['description']);
                     }
                 }
@@ -245,7 +249,8 @@ EOT;
 <linkeditor><type>external</type><externallink>{$link}</externallink><title>{$linkInfo['linkdescr']}</title><newwindow>{$newWindow}</newwindow><idart></idart><filename></filename></linkeditor>
 EOT;
                 // insert new CMS_LINKEDITOR content entry
-                $contentCollection = new cApiContentCollection();
+                //$contentCollection = new cApiContentCollection();
+                $contentCollection->resetQuery();
                 $contentCollection->create($linkInfo['idartlang'], $types['CMS_LINKEDITOR'], $linkInfo['typeid'], $xml, '');
 
                 // delete old CMS_LINK, CMS_LINKTARGET and CMS_LINKDESCR content entries
@@ -265,7 +270,8 @@ EOT;
              * New:
              * <manual_art><array_value>6</array_value><array_value>7</array_value></manual_art>
              */
-            $contentCollection = new cApiContentCollection();
+            //$contentCollection = new cApiContentCollection();
+            $contentCollection->resetQuery();
             $contentCollection->setWhere('idtype', $types['CMS_TEASER']);
             $contentCollection->query();
             while (($item = $contentCollection->next()) !== false) {

@@ -29,7 +29,7 @@ class cUpgradeJob_0013 extends cUpgradeJobAbstract {
     public function _execute() {
         global $cfg, $db;
 
-        $db->query("DELETE FROM " . $cfg["tab"]["system_prop"] . " WHERE `name` = 'available' AND `type`='imagemagick'");
+        // delete
     }
 
 }

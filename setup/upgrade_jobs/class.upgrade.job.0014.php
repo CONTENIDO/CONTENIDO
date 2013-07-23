@@ -29,14 +29,7 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
     public function _execute() {
         global $cfg, $db, $cfgClient;
 
-        foreach ($cfgClient as $aClient) {
-            if (!is_array($aClient)) {
-                continue;
-            }
-            if (cFileHandler::exists($aClient["path"]["frontend"] . "/data/config/config.php")) {
-                cFileHandler::move($aClient["path"]["frontend"] . "/data/config/config.php", $aClient["path"]["frontend"] . "/data/config/" . CON_ENVIRONMENT . "/config.php");
-            }
-        }
+        // delete
     }
 
 }

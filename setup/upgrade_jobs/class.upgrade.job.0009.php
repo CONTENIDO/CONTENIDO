@@ -29,10 +29,11 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
     public function _execute() {
         global $cfg, $db;
 
-        if ($this->_setupType == 'upgrade') {
-            $sql = 'ALTER TABLE `' . $cfg['tab']['groups'] . '` CHANGE `group_id` `group_id` VARCHAR(32) NOT NULL';
-            $db->query($sql);
-        }
+       // if ($this->_setupType == 'upgrade') {
+            //$sql = 'ALTER TABLE `' . $cfg['tab']['groups'] . '` CHANGE `group_id` `group_id` VARCHAR(32) NOT NULL';
+            //$db->query($sql);
+            //
+       // }
     }
 
 }

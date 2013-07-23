@@ -28,19 +28,6 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
 
     const MODE = 0777;
 
-    /**
-     * List of source and destination folder or files based on clients frontend dir.
-     * @var array
-     */
-    protected $_clientCopyList = array(
-        'layouts/' => 'data/layouts/',
-        'logs/' => 'data/logs/',
-        'version/' => 'data/version/',
-        'config.php' => 'data/config/config.php',
-        'config.local.php' => 'data/config/config.local.php',
-        'config.after.php' => 'data/config/config.after.php'
-    );
-
     public function _execute() {
 
         global $cfg, $cfgClient;
@@ -49,6 +36,19 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
 
         if ($this->_setupType == 'upgrade') {
 
+            // List of source and destination folder or files based on clients frontend dir.
+            $clientCopyList = array(
+                'layouts/' => 'data/layouts/',
+                'logs/' => 'data/logs/',
+                'version/' => 'data/version/',
+                'data/config/config.php' => 'data/config/' . CON_ENVIRONMENT . '/config.php',
+                'data/config/config.local.php' => 'data/config/' . CON_ENVIRONMENT . '/config.local.php',
+                'data/config/config.after.php' => 'data/config/' . CON_ENVIRONMENT . '/config.after.php',
+                'config.php' => 'data/config/' . CON_ENVIRONMENT . '/config.php',
+                'config.local.php' => 'data/config/' . CON_ENVIRONMENT . '/config.local.php',
+                'config.after.php' => 'data/config/' . CON_ENVIRONMENT . '/config.after.php'
+            );
+
             // Load client configuration
             setupInitializeCfgClient();
 
@@ -56,7 +56,13 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
 
             // Loop thru al clients and copy old data folder to new data folder
             foreach ($allClients as $idclient => $oClient) {
-                foreach ($this->_clientCopyList as $src => $dst) {
+                // check if config directory exists
+                $configDir = $cfgClient[$idclient]['path']['frontend'] . 'data/config/' . CON_ENVIRONMENT;
+                if (!is_dir($configDir)) {
+                    @mkdir($configDir, self::MODE, true);
+                }
+
+                foreach ($clientCopyList as $src => $dst) {
                     $source = $cfgClient[$idclient]['path']['frontend'] . $src;
                     $destination = $cfgClient[$idclient]['path']['frontend'] . $dst;
                     if (is_dir($source)) {
@@ -67,9 +73,10 @@ class cUpgradeJob_0006 extends cUpgradeJobAbstract {
                             logSetupFailure("Couldn't create client data directory $destination");
                             continue;
                         }
+
                         recursiveCopy($source, $destination, self::MODE);
-                    } elseif (cFileHandler::exists($source)) {
-                        if (cFileHandler::copy($source, $destination)) {
+                    } elseif (cFileHandler::exists($source) && cFileHandler::exists($destination)) {
+                        if (cFileHandler::move($source, $destination)) {
                             cFileHandler::chmod($destination, self::MODE);
                         } else {
                             logSetupFailure("Couldn't copy client file $source");
