@@ -17,6 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.file.php');
 
+
 /**
  * Function reduces long path names and creates a dynamic tooltipp which shows
  * the full path name on mouseover
@@ -90,6 +91,7 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
     // list the files in the dir
     $aCurrentFiles = array();
     while (false !== ($file = readdir($hDir))) {
+    //foreach(cDirHandler::read('.',false,true) as $key => $file){
         if (is_dir($file) && !in_array(strtolower($file), $aDirsToExclude)) {
             $aCurrentFiles[] = $file;
         }
@@ -131,6 +133,7 @@ function uplHasFiles($sDir) {
     }
 
     $bHasContent = false;
+    if(is_dir($cfgClient[$client]['upl']['path'] . $sDir)){
     while (false !== ($sDirEntry = readdir($hDir))) {
         if ($sDirEntry != '.' && $sDirEntry != '..') {
             $bHasContent = true;
@@ -138,7 +141,7 @@ function uplHasFiles($sDir) {
         }
     }
     closedir($hDir);
-
+    }
     return $bHasContent;
 }
 
@@ -156,6 +159,7 @@ function uplHasSubdirs($sDir) {
     }
 
     $bHasSubdir = false;
+    if(is_dir($cfgClient[$client]['upl']['path'] . $sDir)){
     while (false !== ($sDirEntry = readdir($hDir))) {
         if ($sDirEntry != '.' && $sDirEntry != '..') {
             if (is_dir($cfgClient[$client]['upl']['path'] . $sDir . $sDirEntry)) {
@@ -165,6 +169,7 @@ function uplHasSubdirs($sDir) {
         }
     }
     closedir($hDir);
+    }
 
     return $bHasSubdir;
 }
@@ -217,6 +222,7 @@ function uplSyncDirectory($sPath) {
         $aDirsToExclude = uplGetDirectoriesToExclude();
         if (($hDir = opendir($sFullPath)) !== false) {
             while (false !== ($file = readdir($hDir))) {
+            //foreach(cDirHandler::read($sDirectory,false,true) as $key => $file){
                 if (!in_array(strtolower($file), $aDirsToExclude)) {
                     if (is_file($sFullPath . $file)) {
                         $oUploadsColl->sync($sPath, $file);
@@ -366,7 +372,8 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
         $aFiles = array();
 
         // list the files in the dir
-        while (false !== ($file = readdir($hDir))) {
+        foreach(cDirHandler::read($sDirectory,false,true) as $key => $file){
+        //while (false !== ($file = readdir($hDir))) {
             if (!in_array(strtolower($file), $aDirsToExclude)) {
                 if (@chdir($sDirectory . $file . '/')) {
                     if (uplCreateFriendlyName($file) == $file) {
