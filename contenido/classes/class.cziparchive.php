@@ -4,18 +4,21 @@ class cZipArchive {
 
     public static function readExistingFiles($dirPath) {
         $ar = array();
-        if ($handle = opendir($dirPath)) {
+        if (is_dir($dirPath)) {
+            if ($handle = opendir($dirPath)) {
 
-            while (false !== ($file = readdir($handle))) {
+                while (false !== ($file = readdir($handle))) {
 
-                // hotfix : fileHandler returns filename '.' als valid filename
-                if (cFileHandler::validateFilename($file, FALSE) && $file[0] != '.') {
+                    // hotfix : fileHandler returns filename '.' als valid
+                    // filename
+                    if (cFileHandler::validateFilename($file, FALSE) && $file[0] != '.') {
 
-                    $ar[] = $file;
+                        $ar[] = $file;
+                    }
                 }
-            }
 
-            closedir($handle);
+                closedir($handle);
+            }
         }
         return $ar;
     }
