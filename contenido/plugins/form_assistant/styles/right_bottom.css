@@ -227,7 +227,8 @@ legend {
     font-size: 13px;
 }
 
-#value1, #value2 {
+#value1,
+#value2 {
     margin-bottom: 10px;
 }
 
@@ -305,7 +306,7 @@ legend {
 .pseudo-fieldset select {
     width: 310px;
     margin: 0;
-	-webkit-box-shadow: none;
+    -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
 }
@@ -315,13 +316,20 @@ legend {
     margin-left: 0;
 }
 
-.default_value, .help_text , .obligatory,
-.rule , .error_message , .option-labels  , .option-values,
-.field-type-dialog, .req-input {
+.default_value,
+.help_text,
+.obligatory,
+.rule,
+.error_message,
+.option-labels,
+.option-values,
+.field-type-dialog,
+.req-input {
     margin-bottom: 5px;
 }
 
-#error_message, #help_text {
+#error_message,
+#help_text {
     resize: none;
 }
 
@@ -398,10 +406,10 @@ legend {
 }
 
 .ui-widget-header {
-    /*color: #222222;*/
-    color: #ffffff;
+    /*color: #222;*/
+    color: #fff;
     background: #006dbf;
-    border: 1px solid #aaaaaa;
+    border: 1px solid #aaa;
 }
 
 #ui-dialog-title-fieldFormDialog {
@@ -432,32 +440,31 @@ legend {
 }
 
 .ui-widget-header {
-	margin: 10px 10px 0 10px;
+    margin: 10px 10px 0 10px;
 }
 
 .ui-widget-header .ui-state-hover span {
-	background-position: 0;
+    background-position: 0;
+}
+
+.ui-dialog .ui-button {
+    color: #fff;
+    background: #555 url("../../../images/but_ok.gif") repeat-x;
+    width: 16px;
+    height: 16px;
+    border: 0;
+}
+.ui-dialog .ui-button.ui-state-hover {
+    color: #fff;
+    background: #0078a3 url("../../../images/but_ok.gif") repeat-x;
+    width: 16px;
+    height: 16px;
+    border: 0;
 }
 
 .pifa-icon {
     margin-top: 2px;
     margin-left: 5px;
-}
-
-
-.ui-dialog .ui-button {
-	color: #fff;
-	background: #555555 url("../../../images/but_ok.gif") repeat-x;
-	width: 16px;
-	height: 16px;
-	border: 0;
-}
-.ui-dialog .ui-button.ui-state-hover {
-	color: #fff;
-	background: #0078a3 url("../../../images/but_ok.gif") repeat-x;
-	width: 16px;
-	height: 16px;
-	border: 0;
 }
 
 .pifa-icon-1, .pifa-field-type-1 {background-image:url(../images/pifa_field_type_1.png);}
