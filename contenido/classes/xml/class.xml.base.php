@@ -199,7 +199,7 @@ abstract class cXmlBase {
 
     public static function arrayToXml($array, $xml = null, $rootTagName = 'root') {
         if ($xml == null) {
-            $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><' . $rootTagName . '/>');
+            $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><' . $rootTagName . '/>', LIBXML_NOCDATA);
         }
 
         // check whether array is associative
@@ -210,14 +210,20 @@ abstract class cXmlBase {
                 if (is_array($value)) {
                     self::arrayToXml($value, $xml->addChild($key));
                 } else {
-                    $xml->addChild($key, $value);
+                    $child = $xml->addChild($key);
+                    $node = dom_import_simplexml($child);
+                    $no = $node->ownerDocument;
+                    $node->appendChild($no->createCDATASection($value));
                 }
             }
         } else {
             // if array is not associative, use the array values as separate xml
             // nodes
             foreach ($array as $value) {
-                $xml->addChild('array_value', $value);
+                $child = $xml->addChild('array_value');
+                $node = dom_import_simplexml($child);
+                $no = $node->ownerDocument;
+                $node->appendChild($no->createCDATASection($value));
             }
         }
 
@@ -252,7 +258,7 @@ abstract class cXmlBase {
      */
 
     public static function xmlStringToArray($xmlString) {
-        return self::xmlToArray(new SimpleXMLElement($xmlString));
+        return self::xmlToArray(new SimpleXMLElement($xmlString, LIBXML_NOCDATA));
     }
 
     /**
