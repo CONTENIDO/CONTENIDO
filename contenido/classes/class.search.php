@@ -272,7 +272,9 @@ class cSearchIndex extends cSearchBaseAbstract {
         $this->setCmsOptions($cms_options);
 
         $this->createKeywords();
+
         $this->getKeywords();
+		
         $this->saveKeywords();
 
         $new_keys = array_keys($this->_keywords);
@@ -448,7 +450,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function removeSpecialChars($key) {
         $aSpecialChars = array(
-            "-",
+            /*"-",*/
             "_",
             "'",
             ".",
