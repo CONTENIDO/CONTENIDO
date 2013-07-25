@@ -654,9 +654,9 @@ function conDeleteart($idart) {
     }
 
     // Check if there are remaining languages
-    $artLangColl = new cApiArticleLanguageCollection();
+    $artLangColl->resetQuery();
     $artLangColl->select('idart = ' . (int) $idart);
-    if (!$artLangColl->next()) {
+    if ($artLangColl->next()) {
         return;
     }
 
@@ -676,39 +676,18 @@ function conDeleteart($idart) {
         $statColl->deleteBy('idcatart', (int) $oCatArtItem->get('idcatart'));
     }
 
-    $artLangColl = new cApiArticleLanguageCollection();
-    $artLangColl->select('idart = ' . (int) $idart);
-    while (($artLangColl = $catArtColl->next()) !== false) {
-        // Reset startidlang value of related entry in category language table
-        $catLang = new cApiCategoryLanguage();
-        if ($catLang->loadBy('startidartlang', (int) $artLangColl->get('idartlang'))) {
-            $catLang->set('startidartlang', 0);
-            $catLang->store();
-        }
-
-        // Delete entries from content table
-        $contentColl = new cApiContentCollection();
-        $contentColl->deleteBy('idartlang', (int) $artLangColl->get('idartlang'));
-    }
-
     // delete values from con_cat_art only in the correct language
     $catLangColl = new cApiCategoryLanguageCollection();
     $catLangColl->select('`idlang`=' . cSecurity::toInteger($lang));
     $idcats = $catLangColl->getAllIds();
     $idcatsString = "('" . implode(',', $idcats) . "')";
-    $catArtColl = new cApiCategoryArticleCollection();
+	$catArtColl->resetQuery();
     $catArtColl->deleteByWhereClause('`idart`=' . $idart . ' AND `idcat` IN ' . $idcatsString);
 
-    // delete entry from con_art_lang
-    $artLangColl = new cApiArticleLanguageCollection();
-    $artLangColl->deleteBy('idartlang', (int) $idartlang);
-    // delete entry from con_art only if this article does not exist in any
-    // language
-    $artLangColl->select('`idart`=' . $idart);
-    if ($artLangColl->next() === false) {
-        $oArtColl = new cApiArticleCollection();
-        $oArtColl->delete((int) $idart);
-    }
+	
+    // delete entry from con_art
+    $oArtColl = new cApiArticleCollection();
+    $oArtColl->delete((int) $idart);
 
     // Contenido Extension Chain
     // @see docs/techref/plugins/Contenido Extension Chainer.pdf
