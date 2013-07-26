@@ -29,7 +29,7 @@ msgid "DESCRIPTION"
 msgstr "Beschreibung"
 
 msgid "DESCR_HOSTNAME"
-msgstr "Der Name des Solr-Servers."
+msgstr "Der Name des Solr-Servers. <b>Ohne Protokoll!</b>"
 
 msgid "DESCR_PORT"
 msgstr "Die Port-Nummer."

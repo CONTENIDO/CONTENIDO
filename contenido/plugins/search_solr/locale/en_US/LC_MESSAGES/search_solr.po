@@ -29,7 +29,7 @@ msgid "DESCRIPTION"
 msgstr "description"
 
 msgid "DESCR_HOSTNAME"
-msgstr "The hostname for the Solr server."
+msgstr "The hostname for the Solr server. <b>w/o protocol!</b>"
 
 msgid "DESCR_PORT"
 msgstr "The port number."
