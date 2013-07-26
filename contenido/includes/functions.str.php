@@ -656,7 +656,7 @@ function strDeleteCategory($idcat) {
 /**
  * Moves a category upwards.
  *
- * @param   int  $idcat  Id of category to move upwards
+ * @param   int  $idcat  Id of category to  upwards
  */
 function strMoveUpCategory($idcat) {
     // Flag to rebuild the category table
@@ -787,10 +787,16 @@ function strMoveDownCategory($idcat) {
  */
 function strMoveSubtree($idcat, $newParentId, $newPreId = null, $newPostId = null) {
     global $movesubtreeidcat;
-
+	if($newParentId == 0 && $newPreId == 0){
+		return false;
+	}
+	if(!isset($newPostId)){
+		return false;
+	}
     // flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
+	
     $remakeCatTable = true;
     $remakeStrTable = true;
 
