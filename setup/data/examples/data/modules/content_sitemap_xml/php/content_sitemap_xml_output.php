@@ -72,6 +72,12 @@ EOD;
     $clientLanguageCollection = new cApiClientLanguageCollection();
     foreach ($clientLanguageCollection->getLanguagesByClient($client) as $currentIdlang) {
 
+        // skip nonexistant or incative languages
+        $language = new cApiLanguage($currentIdlang);
+        if (!$language->isLoaded() || '1' != $language->get('active')) {
+            continue;
+        }
+
         // create copy of category ids
         $arrayObject = new ArrayObject($categoryIds);
         $currentCategoryIds = $arrayObject->getArrayCopy();
