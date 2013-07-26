@@ -176,9 +176,18 @@
             }
 
             // allow to drag and drop the table rows
+			var sortItems = $categoryList.find('> tr:not(.fixed)');
+			var toSort    = [];
+			sortItems.each(function(i, item) {
+			
+				var idParts = item.id.split('_');
+				if (idParts[1] && parseInt(idParts[1]) != 0) toSort.push(item);
+				
+			});
+			
             $categoryList.sortable({
                 // only allow to drag&drop rows that do not have the 'fixed' class
-                items: '> tr:not(.fixed)',
+                items: toSort,
                 forcePlaceholderSize: true,
                 placeholder: 'ui-state-highlight',
                 cancel: '.' + CSS_CLASS_DISABLED+" ,select",
@@ -429,6 +438,7 @@
             </td>
 
         </tr>
+		
         <!-- BEGIN:BLOCK -->
         <tr id="cat_{CATID}_row" class="text_medium draggable" style="background-color:{BGCOLOR};{HEIGHT}" data-idcat="{CATID}" data-parentid="{PARENTID}" data-level="{LEVEL}" {MOUSEOVER}>
             <td width="3" class="str-style-a" valign="middle">&nbsp;</td>
