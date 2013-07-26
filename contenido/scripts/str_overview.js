@@ -12,13 +12,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
-$(document).ready(function() {
-	$("#data__row").removeClass();
-});
-//var contentToRemove = document.querySelectorAll("#myid");
-//$(contentToRemove).remove(); 	
-
+	
 //Defining vars for translations and CONTENIDO imagepath
 var bMsie = (document.all) ? true : false;
 var bMsie10 = (navigator.appVersion.indexOf("MSIE 10")) == -1 ? false : true;
