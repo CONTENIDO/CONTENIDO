@@ -286,7 +286,6 @@ class cApiCategoryCollection extends ItemCollection {
                     // Deeper element exists, check for language dependent part
                     $sql = "SELECT idcatlang FROM `%s` WHERE idcat = %d AND idlang = %d";
                     $db2->query($sql, $cfg['tab']['cat_lang'], $midcat, $idlang);
-                    $db2->query($sql);
                     if ($db2->nextRecord()) {
                         $aCats[] = $midcat;
                     }
