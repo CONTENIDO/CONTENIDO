@@ -67,13 +67,8 @@ class cSetupMask
 
         $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bNextstep."';");
         $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
-
-        $nextSetup = new cHTMLAlphaImage();
-        $nextSetup->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
-        $nextSetup->setMouseOver(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
-        $nextSetup->setClass("button");
-
-        $link->setContent($nextSetup);
+        $link->setClass("nav");
+        $link->setContent("<span>&raquo;</span>");
 
         if ($this->_bNextstep != "") {
             $this->_oStepTemplate->set("s", "NEXT", $link->render());
@@ -84,13 +79,8 @@ class cSetupMask
         $backlink = new cHTMLLink("#");
         $backlink->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bBackstep."';");
         $backlink->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
-
-        $backSetup = new cHTMLAlphaImage();
-        $backSetup->setSrc("images/controls/back.gif");
-        $backSetup->setMouseOver("images/controls/back.gif");
-        $backSetup->setClass("button");
-        $backSetup->setStyle("margin-right:10px");
-        $backlink->setContent($backSetup);
+        $backlink->setClass("nav navBack");
+        $backlink->setContent("<span>&laquo;</span>");
         $this->_oStepTemplate->set("s", "BACK", $backlink->render());
     }
 

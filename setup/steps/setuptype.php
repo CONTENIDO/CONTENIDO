@@ -37,26 +37,18 @@ class cSetupTypeChooser extends cSetupMask
         $this->_oStepTemplate->set("s", "VERSION_UPGRADE", sprintf(i18n("Upgrade to %s"), CON_SETUP_VERSION));
         $this->_oStepTemplate->set("s", "DESCRIPTION_UPGRADE", i18n("This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required).")."<br><br>".i18n("Recommended for existing projects."));
 
-        $nextSetup = new cHTMLAlphaImage();
-        $nextSetup->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
-        $nextSetup->setMouseOver(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
-        $nextSetup->setClass("button");
-
         $link = new cHTMLLink("#");
-        $link->setContent($nextSetup);
+        $link->setClass("nav");
+        $link->setContent("<span>&raquo;</span>");
         $link->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = 'setup1';");
         $link->attachEventDefinition("setuptypeAttach", "onclick", "document.setupform.setuptype.value = 'setup';");
         $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
 
         $this->_oStepTemplate->set("s", "NEXT_SETUP", $link->render());
 
-        $nextSetup = new cHTMLAlphaImage();
-        $nextSetup->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
-        $nextSetup->setMouseOver(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
-        $nextSetup->setClass("button");
-
         $link = new cHTMLLink("#");
-        $link->setContent($nextSetup);
+        $link->setClass("nav");
+        $link->setContent("<span>&raquo;</span>");
         $link->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = 'upgrade1';");
         $link->attachEventDefinition("setuptypeAttach", "onclick", "document.setupform.setuptype.value = 'upgrade';");
         $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");

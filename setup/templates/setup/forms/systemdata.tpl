@@ -1,12 +1,12 @@
 <table cellspacing="0" cellpadding="0" border="0" class="setupBodyOuterTable setupBodyOuterTableSystemData">
-    <tr>
+    <tr class="row-1">
         <td colspan="2">
             <h1>{TITLE}</h1>
             {DESCRIPTION}
         </td>
     </tr>
-    <tr>
-        <td class="list">
+    <tr class="row-2">
+        <td class="column-1">
             <table border="0">
                 <tr>
                     <td class="first"><div class="description">{LABEL_DBHOST}</div></td>
@@ -34,6 +34,10 @@
                 </tr>
             </table>
         </td>
-        <td class="nav">{BACK}{NEXT}</td>
+        <td class="column-2">
+            <div>
+                {BACK}{NEXT}
+            </div>
+        </td>
     </tr>
 </table>

@@ -33,7 +33,6 @@ class cSetupPath extends cSetupMask
         list($rootPath, $rootHttpPath) = getSystemDirectories(true);
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
-        $cHTMLErrorMessageList->setStyle("width: 580px; height: 200px; overflow: auto; border: 1px solid black;");
         $cHTMLFoldableErrorMessages = array();
 
         list($rootPath2, $rootHttpPath2) = getSystemDirectories();

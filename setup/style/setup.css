@@ -118,6 +118,10 @@ div.errorlist {
     margin: 0;
     padding: 0;
     background-color: #e8e8ee;
+    width: 580px;
+    height: 213px;
+    overflow: auto;
+    border: 1px solid black;
 }
 
 div.entry_closed {
@@ -213,6 +217,81 @@ table.setupBodyOuterTable .progressOutput {
     height: 150px;
 }
 
+table.setupBodyOuterTable tr.row-1 {
+    height: 90px;
+}
+table.setupBodyOuterTable tr.row-2 {
+    height: 225px;
+}
+
+table.setupBodyOuterTable td {
+    vertical-align: top;
+}
+
+table.setupBodyOuterTable td.column-2 div {
+    clear: both;
+    float: right;
+    height: 20px;
+    margin: 0 10px;
+    width: 60px;
+}
+
+
+/* prev/next navigation */
+table.setupBodyOuterTable td.column-2 {
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+
+table.setupBodyOuterTable td.column-2 a.nav {
+    display: block;
+    float: right;
+}
+table.setupBodyOuterTable td.column-2 a.navBack {
+    float: left;
+}
+
+.setupBodyOuterTable a.nav {
+    display: inline-block;
+    display: block;
+    font-size: 0;
+    height: 16px;
+    line-height: 16px;
+    width: 16px;
+    position: relative;
+}
+
+.setupBodyOuterTable a.nav span {
+    display: block;
+    width: 16px;
+    height: 16px;
+    background-image: url(../images/controls/nav.gif);
+    text-indent: -999em;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.setupBodyOuterTable a.nav:hover span {
+	background-position: 0 -30px;
+}
+
+.setupBodyOuterTable a.navBack span,
+.setupBodyOuterTable a.navBack:hover span {
+	background-position: 0 -60px;
+}
+
+.setupBodyOuterTable a.navRefresh span,
+.setupBodyOuterTable a.navRefresh:hover span {
+	background-position: 0 -90px;
+}
+
+
+/* ie 7 hack */
+* + html .setupBodyOuterTable td.column-2 a.nav {
+    display: inline;
+    zoom: 1;
+}
+
 /**
  * @extends table.setupBodyOuterTable
  */
@@ -222,7 +301,6 @@ table.setupBodyOuterTableLanguageChooser {
     border-collapse:collapse;
 }
 table.setupBodyOuterTableLanguageChooser td {
-    vertical-align: top;
     width: 240px;
     padding-right: 20px;
 }
@@ -235,21 +313,30 @@ table.setupBodyOuterTableLanguageChooser td.last {
 /**
  * @extends table.setupBodyOuterTable
  */
+table.setupBodyOuterTableSetupType tr.row-1 {
+    height: 70px;
+}
+table.setupBodyOuterTableSetupType tr.row-2 {
+    height: 130px;
+}
+
 table.setupBodyOuterTableSetupType .row-1 td {
-    vertical-align: top;
-    padding:0 10px;
+    padding: 0 10px;
     width: 210px;
     height: 70px;
-    overflow: hidden;
+/*    overflow: hidden;*/
 }
-table.setupBodyOuterTableSetupType .row-1 td.first {
-    padding-left: 0;
+table.setupBodyOuterTableSetupType .row-2 div {
+    width: 210px;
+    display: inline;
 }
 
 table.setupBodyOuterTableSetupType .row-2 td {
-    vertical-align: top;
-    padding:0 10px;
+    padding: 0 10px;
     width: 210px;
+}
+table.setupBodyOuterTableSetupType .row-1 td.first {
+    padding-left: 0;
 }
 table.setupBodyOuterTableSetupType .row-2 td.first {
     padding-left: 0;
@@ -273,10 +360,6 @@ table.setupBodyOuterTableNotInstallable {
     border-collapse: collapse;
 }
 
-table.setupBodyOuterTableNotInstallable td {
-    vertical-align: top;
-}
-
 table.setupBodyOuterTableNotInstallable td p {
     margin-bottom: 2.0em;
 }
@@ -287,42 +370,39 @@ table.setupBodyOuterTableNotInstallable td p.last {
     margin-bottom: 0;
 }
 
+/**
+ * @extends table.setupBodyOuterTable
+ */
+table.setupBodyOuterTableConfigMode td.header {
+    height: 50px;
+}
 
 /**
  * @extends table.setupBodyOuterTable
  */
-table.setupBodyOuterTableSystemData td {
-    vertical-align: top;
+table.setupBodyOuterTableClientMode td.header {
+    height: 50px;
 }
 
-table.setupBodyOuterTableSystemData td.list {
-    padding-top: 40px;
+table.setupBodyOuterTableClientMode td.column-1 td {
+    padding-bottom: 7px;
 }
 
-table.setupBodyOuterTableSystemData td.list td.first {
+/**
+ * @extends table.setupBodyOuterTable
+ */
+table.setupBodyOuterTableSystemData td.column-1 td.first {
     padding-right: 30px;
 }
-table.setupBodyOuterTableSystemData td.list td.first2 {
+table.setupBodyOuterTableSystemData td.column-1 td.first2 {
     padding-bottom: 11px;
 }
-table.setupBodyOuterTableSystemData td.list td.last {
+table.setupBodyOuterTableSystemData td.column-1 td.last {
     padding-bottom: 10px;
 }
-table.setupBodyOuterTableSystemData td.nav {
-    text-align: right;
-    vertical-align: bottom;
-    white-space: nowrap;
-}
 
-table.setupBodyOuterTableSystemData td.list select {
+table.setupBodyOuterTableSystemData td.column-1 select {
     margin-left: 0;
-}
-
-table.setupBodyOuterTableSystemData td.nav a,
-td.back_next a {
-    width: 16px;
-    height: 16px;
-    margin-right: 10px;
 }
 
 /*Styles for plugin information layer and other elements in step five timo.trautmann*/

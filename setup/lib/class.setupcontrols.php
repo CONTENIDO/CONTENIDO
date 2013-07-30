@@ -20,6 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Setup
  * @subpackage GUI
+ * @deprecated [2013-07-31] Not used anymore!
  */
 class cHTMLAlphaImage extends cHTMLImage {
 
@@ -81,7 +82,7 @@ class cHTMLErrorMessageList extends cHTMLDiv {
         $this->_oTable->setWidth("100%");
         parent::__construct();
         $this->setClass("errorlist");
-        $this->setStyle("width: 450px;height:218px;overflow:auto;border:1px solid black;");
+//        $this->setStyle("width: 450px;height:218px;overflow:auto;border:1px solid black;");
     }
 
     function setContent($content) {
@@ -210,13 +211,6 @@ class cHTMLLanguageLink extends cHTMLDiv {
     function cHTMLLanguageLink($langcode, $langname, $stepnumber) {
         parent::__construct();
 
-        $linkImage = new cHTMLAlphaImage();
-        $linkImage->advanceID();
-        $linkImage->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
-        $linkImage->setMouseover(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
-        $linkImage->setWidth(16);
-        $linkImage->setHeight(16);
-
         $this->setStyle("vertical-align:center;height:40px;width:150px;");
         $link = new cHTMLLink("#");
         $link->setContent($langname);
@@ -225,14 +219,11 @@ class cHTMLLanguageLink extends cHTMLDiv {
         $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
 
         $link2 = new cHTMLLink("#");
-        $link2->setContent($langname);
+        $link2->setClass("nav");
+        $link2->setContent('<span>' . $langname . '</span>');
         $link2->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = '$stepnumber';");
         $link2->attachEventDefinition("languageAttach", "onclick", "document.setupform.elements.language.value = '$langcode';");
         $link2->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
-
-        $link->attachEventDefinition("mouseover", "onmouseover", sprintf("mouseoverHandler(document.getElementById('%s'));", $linkImage->getId()));
-        $link->attachEventDefinition("mouseout", "onmouseout", sprintf("mouseoutHandler(document.getElementById('%s'));", $linkImage->getId()));
-        $link2->setContent($linkImage);
 
         $alignment = '<table border="0" width="100%%" cellspacing="0" cellpadding="0"><tr><td valign="middle">%s</td><td valign="middle" align="right">%s</td></tr></table>';
         $this->setContent(sprintf($alignment, $link->render(), $link2->render()));

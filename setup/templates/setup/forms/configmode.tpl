@@ -1,12 +1,12 @@
-<table cellspacing="0" cellpadding="0" border="0" class="setupBodyOuterTable">
-    <tr>
-        <td valign="top" colspan="2" style="height:50px;overflow:hidden;">
+<table cellspacing="0" cellpadding="0" border="0" class="setupBodyOuterTable setupBodyOuterTableConfigMode">
+    <tr class="row-1">
+        <td class="header" colspan="2">
             <h1>{TITLE}</h1>
             {DESCRIPTION}
         </td>
     </tr>
-    <tr>
-        <td valign="top">
+    <tr class="row-2">
+        <td class="column-1">
             <div class="description">{LABEL_DESCRIPTION}</div><br>
             <table border="0">
                 <tr>
@@ -15,6 +15,10 @@
                 </tr>
             </table>
         </td>
-        <td class="back_next" align="right" valign="bottom" style="white-space:nowrap;">{BACK}{NEXT}</td>
+        <td class="column-2">
+            <div>
+                {BACK}{NEXT}
+            </div>
+        </td>
     </tr>
 </table>

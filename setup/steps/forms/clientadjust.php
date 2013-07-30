@@ -36,7 +36,6 @@ class cSetupClientAdjust extends cSetupMask {
         $aClients = listClients($db, $cfg['tab']['clients']);
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
-        $cHTMLErrorMessageList->setStyle("width:580px;height:200px;overflow:auto;border:1px solid black;");
         $cHTMLFoldableErrorMessages = array();
 
         $aPathList = array();

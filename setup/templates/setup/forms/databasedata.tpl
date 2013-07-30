@@ -1,9 +1,13 @@
-<table style="padding-top:26px;" width="710" height="251" cellspacing="0" cellpadding="0" border="1">
-    <tr>
-        <td colspan="2"><h1>{TITLE}</h1>{DESCRIPTION}</td>
+<!-- @deprecated  Is not in use? -->
+<table style="padding-top:26px;" width="710" height="251" cellspacing="0" cellpadding="0" border="0" class="setupBodyOuterTable setupBodyOuterTableDatabaseData">
+    <tr class="row-1">
+        <td colspan="2">
+            <h1>{TITLE}</h1>
+            {DESCRIPTION}
+        </td>
     </tr>
-    <tr>
-        <td valign="top">
+    <tr class="row-2">
+        <td class="column-1">
             <table border="0">
                 <tr>
                     <td><div class="description">{LABEL_DBHOST}</div></td>
@@ -27,6 +31,10 @@
                 </tr>
             </table>
         </td>
-        <td class="back_next" align="right" valign="bottom" style="white-space:nowrap;">{BACK}{NEXT}</td>
+        <td class="column-2">
+            <div>
+                {BACK}{NEXT}
+            </div>
+        </td>
     </tr>
 </table>
