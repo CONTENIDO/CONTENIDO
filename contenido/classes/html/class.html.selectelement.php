@@ -12,7 +12,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -115,6 +114,11 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * @return cHTMLSelectElement $this
      */
     public function setMultiselect() {
+        $name = $this->getAttribute('name');
+        $strLength = strlen($name);
+        if (substr($name, $strLength - 2, $strLength) != '[]') {
+            $this->updateAttribute('name', $name . '[]');
+        }
         return $this->updateAttribute('multiple', 'multiple');
     }
 
