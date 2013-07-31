@@ -23,9 +23,9 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
-include_once($backendPath . 'plugins/linkchecker/includes/config.plugin.php');
-
 $backendPath = cRegistry::getBackendPath();
+
+include_once($backendPath . 'plugins/linkchecker/includes/config.plugin.php');
 
 global $cfg;
 
