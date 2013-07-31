@@ -23,14 +23,9 @@ if (isset($area) && $area == 'con_content_list') {
             '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
     $path2 = $path1;
 } else {
-    $tmp_area = "con_editcontent";
-    /*$path1 = $backendUrl . "external/backendedit/front_content.php?area=$tmp_area&action=con_editart&idart=$idart&idartlang=$idartlang&idcat=$idcat&changeview=edit&client=$client";
-    $path2 = cRegistry::getFrontendUrl() ."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&changeview=edit&client=$client";
-    */
-    
+    $tmp_area = "con_editcontent";   
     $path1 = $backendUrl . "external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
     $path2 = $backendUrl . "external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client&lang=$lang";
-    
 }
 
 if ($doedit == "1") {
