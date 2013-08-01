@@ -177,7 +177,7 @@ if ($action == 'style_delete') {
         }
 
         $fileInfoCollection = new cApiFileInformationCollection();
-        $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
+        $aFileInfo = $fileInfoCollection->getFileInformation($sOrigFileName, $sTypeContent);
 
         // @fixme: Rework logic. Even if we have already a file, there may be no
         // db entry available!
