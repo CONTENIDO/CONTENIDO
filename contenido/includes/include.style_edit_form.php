@@ -99,8 +99,8 @@ if ($action == 'style_delete') {
     $fileInfoCollection = new cApiFileInformationCollection();
     $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
-    if (!cFileHandler::writeable($path . $sFilename)) {
-        $notification->displayNotification('warning', i18n("You have no write permissions for this file"));
+    if (!cFileHandler::writeable($path . $sFilename) && !cFileHandler::writeable($path . $sOrigFileName)) {
+		$page->displayWarning(i18n("You have no write permissions for this file"));
     }
 
     // Create new file
