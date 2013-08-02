@@ -39,22 +39,11 @@ class cUpgradeJob_0008 extends cUpgradeJobAbstract {
                 $columns[] = $db->f('Field');
             }
 
-            // -> UPDATE con_plugins SET folder=path;
-
             if (in_array('path', $columns)) {
-
-           //     $db2 = clone $db;
-                // iterate over all con_plugin entries and copy the contents
-                // from column "path" to column "folder"
-         //       $sql = 'SELECT `idplugin`, `path` FROM `' . $cfg['tab']['plugins'] . '`';
-         //       $db->query($sql);
-         //       while ($db->nextRecord()) {
-         //           $sql2 = 'UPDATE `' . $cfg['tab']['plugins'] . "` SET `folder`='" . $db->f('path') . "' WHERE `idplugin`=" . $db->f('idplugin');
-         //           $db2->query($sql2);
-
                 // copy path to folder
                 $sql = 'UPDATE con_plugins SET folder=path';
                 $db->query($sql);
+				
                 // drop column "path"
                 $sql = 'ALTER TABLE `' . $cfg['tab']['plugins'] . '` DROP `path`';
                 $db->query($sql);
