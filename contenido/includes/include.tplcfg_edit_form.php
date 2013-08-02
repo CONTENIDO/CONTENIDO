@@ -242,18 +242,8 @@ $tpl->set('s', 'FORMACTION', $formaction);
 $tpl->set('s', 'HIDDEN', $hidden);
 
 // Category Path for user
-$oArticle = new cApiArticleLanguage();
-$oArticle->loadByArticleAndLanguageId($idart, $lang);
-
-$sArticleTitle = cSecurity::unFilter($oArticle->getField('title'));
-$catString = '';
-prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
-$catString = cSecurity::unFilter($catString);
-$category = i18n("You are here") . ": " . $catString;
-if (!empty($sArticleTitle)) {
-    $category .= ' > ' . $sArticleTitle;
-}
-$tpl->set('s', 'CATEGORY', $category);
+$breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
+$tpl->set('s', 'CATEGORY', $breadcrumb);
 
 // SELECT Box for Templates
 

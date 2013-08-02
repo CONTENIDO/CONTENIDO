@@ -849,21 +849,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             // $foreignlang = false;
             // conCreateLocationString($idcat, "&nbsp;/&nbsp;", $cat_name);
         }
-
-        // Show path of selected category to user
-        prCreateURLNameLocationString($idcat, ' > ', $cat_name_tmp, true, 'breadcrumb');
-        $cat_name_tmp = cSecurity::unFilter($cat_name_tmp);
-
-        if ($cat_name_tmp != '') {
-            $cat_name = '<div id="categorypath" class="categorypath">';
-            $cat_name .= i18n("You are here") . ": " . $cat_name_tmp . ' ' . conHtmlSpecialChars($sFistArticleName);
-            $cat_name .= "</div>";
-        } else {
-            $cat_name = '';
-        }
-
-        $cat_idtpl = $db->f("idtpl");
-
+		
+		$cat_idtpl = $db->f("idtpl");
+		
+		renderBackendBreadcrumb($syncoptions, false);		
+		
         // Hinweis wenn kein Artikel gefunden wurde
         if ($no_article) {
             $tpl->set('d', "START", '&nbsp;');

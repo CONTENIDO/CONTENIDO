@@ -172,15 +172,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $tpl->set('s', 'HIDDENFIELDS', $hiddenfields);
 
-    // Show path of selected category to user
-    $catString = '';
-    prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
-    $catString = cSecurity::unFilter($catString);
-    $artString = '';
-    if (!empty($tmp_title)) {
-        $artString = ' > ' . conHtmlSpecialChars($tmp_title);
-    }
-    $tpl->set('s', 'CATEGORY', i18n("You are here") . ": " . $catString . $artString);
+	$breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
+    $tpl->set('s', 'CATEGORY', $breadcrumb);
 
     // Title
     $tpl->set('s', 'TITEL', i18n("Title"));

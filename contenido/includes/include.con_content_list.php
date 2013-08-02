@@ -152,13 +152,8 @@ if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false'
 }
 
 //Show path of selected category to user
-$catString = '';
-prCreateURLNameLocationString($idcat, ' > ', $catString, true, 'breadcrumb');
-$sql = "SELECT * FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
-$db->query($sql);
-$db->nextRecord();
-$page->set("s", "CAT_STRING", $catString);
-$page->set("s", "TITLE", conHtmlSpecialChars($db->f("title")));
+$breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
+$page->set('s', 'CATEGORY', $breadcrumb);
 
 if (count($result) <= 0) {
     $page->displayInfo(i18n("Article has no raw data"));
