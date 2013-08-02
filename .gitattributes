@@ -1993,6 +1993,7 @@ contenido/templates/standard/submenu.html -text
 contenido/templates/standard/template.admin_frontend.html -text
 contenido/templates/standard/template.backend_search_results.html -text
 contenido/templates/standard/template.blank.html -text
+contenido/templates/standard/template.breadcrumb.html -text
 contenido/templates/standard/template.client_edit.html -text
 contenido/templates/standard/template.client_left_top.html -text
 contenido/templates/standard/template.client_menu.html -text
