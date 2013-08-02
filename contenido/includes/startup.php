@@ -40,6 +40,18 @@ global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 // Report all errors except warnings
 error_reporting(E_ALL ^E_NOTICE);
 
+
+/* Initial PHP session settings.
+ * NOTE: When you change these values by custom configuration, the length of the session ID may differ from 32 characters.
+ * As this length was a criteria for session ID validity in previous versions of CONTENIDO, changes may affect your scripts.
+ */
+
+// Set session hash function to SHA-1
+@ini_set('session.hash_function', 1);
+
+// Set 5 bits per character
+@ini_set('session.hash_bits_per_character', 5);
+
 /*
  * Do not edit this value!
  *
