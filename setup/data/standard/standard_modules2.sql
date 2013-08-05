@@ -61,6 +61,19 @@ INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`
 
 INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100001', 'CMS_PIFAFORM', '', 'PIFA form', '0', '', NOW(), NOW());
 
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10103, 10061, '', 'pifa_show_form', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10104, 10061, '', 'pifa_store_form', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10105, 10061, '', 'pifa_delete_form', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10106, 10061, '', 'pifa_show_fields', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10107, 10061, '', 'pifa_show_data', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10108, 10064, '', 'pifa_get_field_form', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10109, 10064, '', 'pifa_post_field_form', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10110, 10064, '', 'pifa_reorder_fields', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10111, 10064, '', 'pifa_export_data', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10112, 10064, '', 'pifa_get_file', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10113, 10064, '', 'pifa_delete_field', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10114, 10064, '', 'pifa_get_option_row', '', '', 1);
+
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(1, 10061, 2, 'area');
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(2, 10062, 2, 'area');
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(3, 10063, 2, 'area');
