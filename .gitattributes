@@ -2434,10 +2434,10 @@ setup/data/examples/js/jquery-ui-1.9.1.custom.min.js -text svneol=unset#text/pla
 setup/data/examples/js/jquery.validate.js -text svneol=unset#text/plain
 setup/data/examples/js/main.js -text svneol=unset#text/plain
 setup/data/examples/templates/cms_filelist_style_default.html -text svneol=unset#text/plain
-setup/data/examples/templates/cms_pifaform_get_default.tpl -text
-setup/data/examples/templates/cms_pifaform_mail_system.tpl -text
-setup/data/examples/templates/cms_pifaform_mail_user.tpl -text
-setup/data/examples/templates/cms_pifaform_post_default.tpl -text
+setup/data/examples/templates/cms_pifaform_default_get.tpl -text
+setup/data/examples/templates/cms_pifaform_default_mail_client.tpl -text
+setup/data/examples/templates/cms_pifaform_default_mail_system.tpl -text
+setup/data/examples/templates/cms_pifaform_default_post.tpl -text
 setup/data/examples/templates/cms_teaser_blog.html -text svneol=unset#text/plain
 setup/data/examples/templates/cms_teaser_image.html -text svneol=unset#text/plain
 setup/data/examples/templates/cms_teaser_slider.html -text svneol=unset#text/plain
