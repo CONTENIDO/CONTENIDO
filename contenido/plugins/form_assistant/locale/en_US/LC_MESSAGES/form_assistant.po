@@ -14,6 +14,44 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-SearchPath-0: \n"
 
+; actions
+
+msgid "pifa_show_form"
+msgstr "view form"
+
+msgid "pifa_show_fields"
+msgstr "view form fields"
+
+msgid "pifa_show_data"
+msgstr "view form data"
+
+msgid "pifa_store_form"
+msgstr "store form"
+
+msgid "pifa_delete_form"
+msgstr "delete form"
+
+msgid "pifa_get_field_form"
+msgstr "view form field dialog"
+
+msgid "pifa_post_field_form"
+msgstr "store form field"
+
+msgid "pifa_reorder_fields"
+msgstr "reorder form fields"
+
+msgid "pifa_export_data"
+msgstr "export form data"
+
+msgid "pifa_get_file"
+msgstr "download form data file"
+
+msgid "pifa_delete_field"
+msgstr "delete form field"
+
+msgid "pifa_get_option_row"
+msgstr "add form field option"
+
 ; class.content.type.pifa_form.php
 
 msgid "form"

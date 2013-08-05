@@ -384,6 +384,22 @@ $cfg['templates']['pifa_ajax_option_row'] = $cfg['plugins'][Pifa::getName()] . '
 $cfg['tab']['pifa_form'] = $cfg['sql']['sqlprefix'] . '_pifa_form';
 $cfg['tab']['pifa_field'] = $cfg['sql']['sqlprefix'] . '_pifa_field';
 
+// define action translations
+global $lngAct;
+$lngAct['form']['pifa_show_form'] = Pifa::i18n('pifa_show_form');
+$lngAct['form']['pifa_store_form'] = Pifa::i18n('pifa_store_form');
+$lngAct['form']['pifa_delete_form'] = Pifa::i18n('pifa_delete_form');
+$lngAct['form']['pifa_show_fields'] = Pifa::i18n('pifa_show_fields');
+$lngAct['form']['pifa_show_data'] = Pifa::i18n('pifa_show_data');
+$lngAct['form_ajax']['pifa_get_field_form'] = Pifa::i18n('pifa_get_field_form');
+$lngAct['form_ajax']['pifa_post_field_form'] = Pifa::i18n('pifa_post_field_form');
+$lngAct['form_ajax']['pifa_reorder_fields'] = Pifa::i18n('pifa_reorder_fields');
+$lngAct['form_ajax']['pifa_reorder_fields'] = Pifa::i18n('pifa_reorder_fields');
+$lngAct['form_ajax']['pifa_export_data'] = Pifa::i18n('pifa_export_data');
+$lngAct['form_ajax']['pifa_get_file'] = Pifa::i18n('pifa_get_file');
+$lngAct['form_ajax']['pifa_delete_field'] = Pifa::i18n('pifa_delete_field');
+$lngAct['form_ajax']['pifa_get_option_row'] = Pifa::i18n('pifa_get_option_row');
+
 // include necessary sources, setup autoloader for plugin
 // @todo Use config variables for $pluginClassPath below!
 $pluginClassPath = 'contenido/plugins/' . Pifa::getName() . '/';
