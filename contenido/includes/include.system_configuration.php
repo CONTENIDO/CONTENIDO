@@ -33,7 +33,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label) {
     if (count($possibleValues) === 2 && (in_array('true', $possibleValues) && in_array('false', $possibleValues) || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues) || in_array('0', $possibleValues) && in_array('1', $possibleValues))) {
         // render a checkbox if there are only the values true and false
         $checked = $value == 'true' || $value == '1' || $value == 'enabled';
-        $html = new cHTMLCheckbox($name, 'true', $name, $checked);
+        $html = new cHTMLCheckbox($name, $possibleValues[0], $name, $checked);
         $html->setLabelText($label);
     } else {
         // otherwise render a select box with the possible values
@@ -122,8 +122,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
                 if (isset($_POST[$fieldName])) {
                     $value = $_POST[$fieldName];
                 } else {
-                    $value = 'false';
+                    $value = (isset($infos['values'][1])) ? $infos['values'][1] : 'false';
                 }
+
                 $storedValue = $settings[$type][$name];
                 if ($storedValue != $value && (is_array($infos['values']) && $value != '' || !is_array($infos['values']))) {
                     if ($type == 'update' && $name == 'check_period' && $value < 60) {
