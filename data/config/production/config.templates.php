@@ -145,4 +145,6 @@ $cfg["templates"]["frontend_left_top_filter"] = "template.frontend_left_top_filt
 $cfg["templates"]["mod_left_top_filter"] = "template.mod_left_top_filter.html";
 
 $cfg["templates"]["rights_left_top_filter"] = "template.rights_left_top_filter.html";
+
+$cfg["templates"]["breadcrumb"] = "template.breadcrumb.html";
 ?>
