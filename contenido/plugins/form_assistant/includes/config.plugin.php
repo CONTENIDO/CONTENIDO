@@ -274,27 +274,27 @@ class Pifa {
         return $templates;
     }
 
-//     /**
-//      */
-//     public static function afterLoadPlugins() {
+    // /**
+    // */
+    // public static function afterLoadPlugins() {
 
-//         // return;
-//         if (!isset($_GET['securimage'])) {
-//             return;
-//         }
+    // // return;
+    // if (!isset($_GET['securimage'])) {
+    // return;
+    // }
 
-//         $e = error_get_last();
+    // $e = error_get_last();
 
-//         $img = new Securimage(array(
-//             'image_height' => 45,
-//             'image_width' => 45 * M_E,
-//             'perturbation' => 0,
-//             'num_lines' => 3,
-//             'session_name' => cRegistry::getClientId() . 'frontend'
-//         ));
+    // $img = new Securimage(array(
+    // 'image_height' => 45,
+    // 'image_width' => 45 * M_E,
+    // 'perturbation' => 0,
+    // 'num_lines' => 3,
+    // 'session_name' => cRegistry::getClientId() . 'frontend'
+    // ));
 
-//         $img->show();
-//     }
+    // $img->show();
+    // }
 
     /**
      * Translates a camel case string into a string with underscores
@@ -364,7 +364,6 @@ class Pifa {
         $isHttps |= array_key_exists('HTTP_X_SSL_CIPHER', $_SERVER);
         return $isHttps;
     }
-
 }
 
 // define plugin path
@@ -421,11 +420,11 @@ cAutoload::addClassmapConfig(array(
     'PifaExternalOptionsDatasourceInterface' => $pluginClassPath . 'classes/class.pifa.external_options_datasource_interface.php',
     'NotImplementedException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'IllegalStateException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
+    // 'Securimage' => $pluginClassPath . 'securimage/securimage.php',
     'PifaNotYetStoredException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaValidationException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaMailException' => $pluginClassPath . 'classes/class.pifa.exceptions.php'
 ));
-    //'Securimage' => $pluginClassPath . 'securimage/securimage.php'
 unset($pluginClassPath);
 
 // define chain functions
