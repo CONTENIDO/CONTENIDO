@@ -2,6 +2,8 @@ CREATE TABLE `!PREFIX!_pi_user_forum` (`id_user_forum` int(11) NOT NULL auto_inc
 INSERT INTO `!PREFIX!_plugins` VALUES (1, 1, 'Smarty Wrapper', 'Provides smarty template engine for CONTENIDO Backend and Frontend', 'Bilal Arslan, Andreas Dieter', 'four for business AG', 'info@4fb.de', 'http://www.4fb.de', '1.0.0', 'smarty', '82b117e94bb2cbcbce4e56b79a7d0c23', '2013-02-14 15:10:51', 1);
 INSERT INTO `!PREFIX!_plugins` VALUES (2, 1, 'Form Assistant', 'Generating forms in backend, includes data storage and mailing', 'Marcus Gnaß (4fb)', 'four for business AG', 'marcus.gnass@4fb.de', 'http://www.4fb.de', '1.0.0', 'form_assistant', '34E59F15-606A-81F4-1520-59E86230BE37', '2013-02-20 13:24:33', 1);
 INSERT INTO `!PREFIX!_plugins` VALUES (3, 1, 'User Forum', 'Administration of user forum entries (Article comments)', 'Claus Schunk (4fb)', 'four for business AG', 'claus.schunk@4fb.de', 'http://www.4fb.de', '1.0.0', 'user_forum', '34E59F15-606A-81F4-1520-59E86230BE38', '2013-05-15 14:29:01', 1);
+
+-- form assistant
 CREATE TABLE `!PREFIX!_pifa_contact` (`id` int(10) unsigned NOT NULL auto_increment COMMENT 'primary key',`salutation` varchar(255) default NULL,`first_name` varchar(255) default NULL,`last_name` varchar(255) default NULL,`company` varchar(255) default NULL,`street` varchar(255) default NULL,`street_number` varchar(255) default NULL,`plz` varchar(255) default NULL,`city` varchar(255) default NULL,`phone` varchar(255) default NULL,`email` varchar(255) default NULL,`message` text,`privacy` varchar(255) default NULL,PRIMARY KEY  (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 CREATE TABLE `!PREFIX!_pifa_field` (`idfield` int(10) unsigned NOT NULL auto_increment COMMENT 'unique identifier for a ConForm field',`idform` int(10) unsigned NOT NULL default '0' COMMENT 'foreign key for the ConForm form',`field_rank` int(10) unsigned NOT NULL default '0' COMMENT 'rank of a field in a form',`field_type` int(10) unsigned NOT NULL default '0' COMMENT 'id which defines type of form field',`column_name` varchar(64) NOT NULL COMMENT 'name of data table column to store values',`label` varchar(1023) default NULL COMMENT 'label to be shown in frontend',`display_label` int(1) NOT NULL default '0' COMMENT '1 means that the label will be displayed',`default_value` varchar(1023) default NULL COMMENT 'default value to be shown for form field',`option_labels` varchar(1023) default NULL COMMENT 'CSV of option labels',`option_values` varchar(1023) default NULL COMMENT 'CSV of option values',`option_class` varchar(1023) default NULL COMMENT 'class implementing external datasource',`help_text` text COMMENT 'help text to be shown for form field',`obligatory` int(1) NOT NULL default '0' COMMENT '1 means that a value is obligatory',`rule` varchar(1023) default NULL COMMENT 'regular expression to validate value',`error_message` varchar(1023) default NULL COMMENT 'error message to be shown for an invalid value',`css_class` varchar(1023) default NULL COMMENT 'CSS classes to be used for field wrapper',PRIMARY KEY  (`idfield`)) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='contains meta data of PIFA fields' AUTO_INCREMENT=1 ;
 INSERT INTO `!PREFIX!_pifa_field` VALUES (4, 1, 1, 6, 'salutation', 'Anrede', 1, NULL, 'Bitte wählen,Frau,Herr', ',Mrs,Mr', NULL, NULL, 1, NULL, 'Bitte wählen Sie die Anrede aus', NULL);
@@ -20,33 +22,62 @@ INSERT INTO `!PREFIX!_pifa_field` VALUES (17, 1, 14, 14, '', 'Zurücksetzen', 0,
 INSERT INTO `!PREFIX!_pifa_field` VALUES (18, 1, 12, 5, 'privacy', 'Datenschutzerklärung', 1, NULL, 'Ich aktzeptiere die Datenschutzerklärung', '1', NULL, NULL, 1, NULL, 'Bitte bestätigen Sie die Datenschutzerklärung', 'privacy');
 CREATE TABLE `!PREFIX!_pifa_form` (`idform` int(10) unsigned NOT NULL auto_increment COMMENT 'unique identifier for a ConForm form',`idclient` int(10) unsigned NOT NULL default '0' COMMENT 'id of form client',`idlang` int(10) unsigned NOT NULL default '0' COMMENT 'id of form language',`name` varchar(1023) NOT NULL default 'new form' COMMENT 'human readable name of form',`data_table` varchar(64) NOT NULL default 'con_pifo_data' COMMENT 'unique name of data table',`method` enum('get','post') NOT NULL default 'post' COMMENT 'method to be used for form submission',PRIMARY KEY  (`idform`)) ENGINE=MyISAM COMMENT='contains meta data of PIFA forms' AUTO_INCREMENT=1 ;
 INSERT INTO `!PREFIX!_pifa_form` VALUES (1, 1, 1, 'contact', 'con_pifa_contact', 'post');
-INSERT INTO `!PREFIX!_area` (idarea, parent_id, name, relevant, online, menuless) VALUES (100001, '0', 'form', 1, 1, 0);
-INSERT INTO `!PREFIX!_area` (idarea, parent_id, name, relevant, online, menuless) VALUES (100002, '100001', 'form_ajax', 1, 1, 0);
+
+-- INSERT INTO `!PREFIX!_area` (idarea, parent_id, name, relevant, online, menuless) VALUES (100001, '0', 'form', 1, 1, 0);
+-- INSERT INTO `!PREFIX!_area` (idarea, parent_id, name, relevant, online, menuless) VALUES (100002, '100001', 'form_ajax', 1, 1, 0);
+INSERT INTO `!PREFIX!_area` (`idarea`, `parent_id`, `name`, `relevant`, `online`, `menuless`) VALUES (10061, '0', 'form', 1, 1, 0);
+INSERT INTO `!PREFIX!_area` (`idarea`, `parent_id`, `name`, `relevant`, `online`, `menuless`) VALUES (10062, 'form', 'form_fields', 1, 1, 0);
+INSERT INTO `!PREFIX!_area` (`idarea`, `parent_id`, `name`, `relevant`, `online`, `menuless`) VALUES (10063, 'form', 'form_data', 1, 1, 0);
+INSERT INTO `!PREFIX!_area` (`idarea`, `parent_id`, `name`, `relevant`, `online`, `menuless`) VALUES (10064, 'form', 'form_ajax', 1, 1, 0);
+
+-- INSERT INTO `!PREFIX!_nav_sub` (idnavs, idnavm, idarea, level, location, online) VALUES (100001, 3, 100001, 0, 'form_assistant/xml/lang_de_DE.xml;plugins/form_assistant/label', 1);
+INSERT INTO `!PREFIX!_nav_sub` (`idnavs`, `idnavm`, `idarea`, `level`, `location`, `online`) VALUES (10045, 3, 10061, 0, 'form_assistant/xml/lang_de_DE.xml;plugins/form_assistant/label', 1);
+
+-- INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100001, 100001, 'form_assistant/includes/include.left_top.php', 'main');
+-- INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100002, 100001, 'form_assistant/includes/include.left_bottom.php', 'main');
+-- INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100003, 100001, 'form_assistant/includes/include.right_top.php', 'main');
+-- INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100004, 100001, 'form_assistant/includes/include.right_bottom.php', 'main');
+-- INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100005, 100002, 'form_assistant/includes/include.ajax.php', 'main');
+INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10094, 10061, 'form_assistant/includes/include.left_top.php', 'main');
+INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10095, 10061, 'form_assistant/includes/include.left_bottom.php', 'main');
+INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10096, 10061, 'form_assistant/includes/include.right_top.php', 'main');
+INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10097, 10061, 'form_assistant/includes/include.right_bottom.form.php', 'main');
+INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10098, 10062, 'form_assistant/includes/include.right_bottom.form_fields.php', 'main');
+INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10099, 10063, 'form_assistant/includes/include.right_bottom.form_data.php', 'main');
+INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10100, 10064, 'form_assistant/includes/include.right_bottom.form_ajax.php', 'main');
+
+-- INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100001, 100001, 1, 100001);
+-- INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100002, 100001, 2, 100002);
+-- INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100003, 100001, 3, 100003);
+-- INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100004, 100001, 4, 100004);
+-- INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100005, 100002, 4, 100005);
+INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10094, 10061, 1, 10094);
+INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10095, 10061, 2, 10095);
+INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10096, 10061, 3, 10096);
+INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10097, 10061, 4, 10097);
+INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10098, 10062, 4, 10098);
+INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10099, 10063, 4, 10099);
+INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10100, 10064, 4, 10100);
+
+INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100001', 'CMS_PIFAFORM', '', 'PIFA form', '0', '', NOW(), NOW());
+
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(1, 10061, 2, 'area');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(2, 10062, 2, 'area');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(3, 10063, 2, 'area');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(4, 10064, 2, 'area');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(5, 10045, 2, 'navs');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(6, 100001, 2, 'ctype');
+
+-- user forum
 INSERT INTO `!PREFIX!_area` (idarea, parent_id, name, relevant, online, menuless) VALUES (100003, '0', 'user_forum', 1, 1, 0);
-INSERT INTO `!PREFIX!_nav_sub` (idnavs, idnavm, idarea, level, location, online) VALUES (100001, 3, 100001, 0, 'form_assistant/xml/lang_de_DE.xml;plugins/form_assistant/label', 1);
 INSERT INTO `!PREFIX!_nav_sub` (idnavs, idnavm, idarea, level, location, online) VALUES (100002, 3, 100003, 0, 'user_forum/xml/lang_de_DE.xml;plugins/user_forum/label', 1);
-INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100001, 100001, 'form_assistant/includes/include.left_top.php', 'main');
-INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100002, 100001, 'form_assistant/includes/include.left_bottom.php', 'main');
-INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100003, 100001, 'form_assistant/includes/include.right_top.php', 'main');
-INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100004, 100001, 'form_assistant/includes/include.right_bottom.php', 'main');
-INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100005, 100002, 'form_assistant/includes/include.ajax.php', 'main');
 INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100006, 100003, 'user_forum/includes/include.left_bottom.php', 'main');
 INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100007, 100003, 'user_forum/includes/include.right_bottom.php', 'main');
 INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100008, 100003, 'user_forum/includes/include.left_top.php', 'main');
-INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100001, 100001, 1, 100001);
-INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100002, 100001, 2, 100002);
-INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100003, 100001, 3, 100003);
-INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100004, 100001, 4, 100004);
-INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100005, 100002, 4, 100005);
 INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100006, 100003, 2, 100006);
 INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100007, 100003, 4, 100007);
 INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100008, 100003, 1, 100008);
-INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100001', 'CMS_PIFAFORM', '', 'PIFA form', '0', '', NOW(), NOW());
 INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100002', 'CMS_USERFORUM', '', 'User forum', '0', '', NOW(), NOW());
-INSERT INTO `!PREFIX!_plugins_rel` VALUES(1, 100001, 2, 'area');
-INSERT INTO `!PREFIX!_plugins_rel` VALUES(2, 100002, 2, 'area');
-INSERT INTO `!PREFIX!_plugins_rel` VALUES(3, 100003, 3, 'area');
-INSERT INTO `!PREFIX!_plugins_rel` VALUES(4, 100001, 2, 'navs');
-INSERT INTO `!PREFIX!_plugins_rel` VALUES(5, 100002, 3, 'navs');
-INSERT INTO `!PREFIX!_plugins_rel` VALUES(6, 100001, 2, 'ctype');
-INSERT INTO `!PREFIX!_plugins_rel` VALUES(7, 100002, 3, 'ctype');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(7, 100003, 3, 'area');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(8, 100002, 3, 'navs');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(9, 100002, 3, 'ctype');
