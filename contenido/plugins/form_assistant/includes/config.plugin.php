@@ -423,9 +423,9 @@ cAutoload::addClassmapConfig(array(
     'IllegalStateException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaNotYetStoredException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
     'PifaValidationException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
-    'PifaMailException' => $pluginClassPath . 'classes/class.pifa.exceptions.php',
-    'Securimage' => $pluginClassPath . 'securimage/securimage.php'
+    'PifaMailException' => $pluginClassPath . 'classes/class.pifa.exceptions.php'
 ));
+    //'Securimage' => $pluginClassPath . 'securimage/securimage.php'
 unset($pluginClassPath);
 
 // define chain functions
