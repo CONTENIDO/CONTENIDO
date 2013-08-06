@@ -533,8 +533,11 @@ class PifaField extends Item {
                 $elemField = new cHTMLTextbox($columnName);
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);
-                $elemField->setAttribute('title', $this->get('default_value'));
-                if (NULL !== $value) {
+                // due to a bug setting NULL as title leads to title="title"
+                if (!is_null($this->get('default_value'))) {
+                	$elemField->setAttribute('title', $this->get('default_value'));
+                }
+                if (!is_null($value)) {
                     $elemField->setValue($value);
                 }
                 break;
@@ -544,8 +547,10 @@ class PifaField extends Item {
                 $elemField = new cHTMLTextarea($columnName);
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);
-                $elemField->setAttribute('title', $this->get('default_value'));
-                if (NULL !== $value) {
+        		if (!is_null($this->get('default_value'))) {
+                	$elemField->setAttribute('title', $this->get('default_value'));
+                }
+                if (!is_null($value)) {
                     $elemField->setValue($value);
                 }
                 break;
@@ -555,8 +560,10 @@ class PifaField extends Item {
                 $elemField = new cHTMLPasswordbox($columnName);
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);
-                $elemField->setAttribute('title', $this->get('default_value'));
-                if (NULL !== $value) {
+       			if (!is_null($this->get('default_value'))) {
+                	$elemField->setAttribute('title', $this->get('default_value'));
+                }
+                if (!is_null($value)) {
                     $elemField->setValue($value);
                 }
                 break;
@@ -612,8 +619,8 @@ class PifaField extends Item {
                 // hidden field to post date in generic date format
                 $hiddenField = new cHTMLHiddenField($columnName);
                 $hiddenField->removeAttribute('id')->setID($id . '-hidden');
-                if (NULL !== $value) {
-                    $hiddenField->setValue($value);
+                if (!is_null($value)) {
+                	$hiddenField->setValue($value);
                 }
 
                 // textbox to display date in localized date format
