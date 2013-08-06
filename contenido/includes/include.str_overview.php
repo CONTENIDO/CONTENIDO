@@ -655,6 +655,8 @@ foreach ($objects as $key => $value) {
         $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(" . $value->id . ");\"><img src=\"" . $cfg["path"]["images"] . "but_todo.gif\" id=\"cat_" . $value->id . "_image\" alt=\"" . i18n("Edit category") . "\" title=\"" . i18n("Edit category") . "\"></a>");
         $tpl->set('d', 'CATID', $value->id);
         $tpl->set('d', 'PARENTID', $value->custom['parentid']);
+        $tpl->set('d', 'POSTID', $value->custom['postid']);
+        $tpl->set('d', 'PREID', $value->custom['preid']);
         $tpl->set('d', 'LEVEL', $value->custom['level']);
 
         if (strlen($template) > 20) {
@@ -757,8 +759,14 @@ foreach ($objects as $key => $value) {
             }
         } else {
             if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->id)) {
-                $tpl->set('d', 'MOVEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=" . $value->id) . "#movesubtreehere\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree.gif\" alt=\"" . i18n("Move tree") . "\" title=\"" . i18n("Move tree") . "\"></a>");
-            } else {
+                //var_dump($value->custom['parentid']);
+                if($value->custom['parentid'] != 0){
+                    $tpl->set('d', 'MOVEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=" . $value->id) . "#movesubtreehere\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree.gif\" alt=\"" . i18n("Move tree") . "\" title=\"" . i18n("Move tree") . "\"></a>");
+                }
+                else{
+                    $tpl->set('d', 'MOVEBUTTON', "<img src=\"" . $cfg["path"]["images"] . "but_move_subtree_grey.png\" >");
+                }
+                } else {
                 $tpl->set('d', 'MOVEBUTTON', '&nbsp;');
             }
         }
