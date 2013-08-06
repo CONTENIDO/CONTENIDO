@@ -243,7 +243,7 @@ msgstr "Formular löschen"
 ; class.pifa.gui.php TODO check if neccessary
 
 msgid "please select a form"
-msgstr "bitte wählen sie ein Formular aus"
+msgstr "Bitte wählen sie ein Formular aus."
 
 msgid "form"
 msgstr "Formular"
