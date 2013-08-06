@@ -358,22 +358,7 @@
 
                 });
 
-                var size3 = sortItems.length;
-                console.log(sortItems.length);
-
-
-                var sortItem2s = $categoryList.find('> tr:not(.fixed)');
-                sortItem2s.each(function(i, item) {
-                    //console.log(item.id);
-                    if (item.id == 'cat__row') {
-                        //console.log(item.);
-                    }
-                });
-                //      for(var i = 0; i < size3; i++){
-                // if( sortItems[i].getAttribute('id') == '#cat__row'){
-                //             console.log(sortItems[i]);
-                //       }
-                //    }
+           
                 $categoryList.sortable({
                     // only allow to drag&drop rows that do not have the 'fixed' class
                     items: toSort,
