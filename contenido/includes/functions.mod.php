@@ -26,7 +26,6 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     $date = date('Y-m-d H:i:s');
     $author = $auth->auth['uname'];
     $contenidoModuleHandler = '';
-    $notification = new cGuiNotification();
     $messageIfError = '';
 
     // Alias for modul name for the file system
@@ -69,14 +68,17 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             $change = true;
             // if modul exist show massage
             if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
-                $notification->displayNotification('error', i18n('Module name exist in module directory, please choose another name.'));
+				cRegistry::addErrorMessage(i18n('Module name exist in module directory, please choose another name.'));
+				$page = new cGuiPage('generic_page');
+				$page->abortRendering();
+				$page->render();
                 die();
             }
         }
 
         // Name of modul changed
         if ($change == true) {
-            $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Renamed module successfully!'));
+			cRegistry::addInfoMessage(i18n('Renamed module successfully!'));
             $cApiModule->set('name', $name);
             $cApiModule->set('template', $template);
             $cApiModule->set('description', $description);
@@ -85,7 +87,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
             // False: The new name of modul dont exist im modul dir
             if ($contenidoModuleHandler->renameModul($oldName, $alias) == false) {
-                $notification->displayNotification('warning', i18n("Can't rename module, is a module file open?! Saving only database changes!"));
+				cRegistry::addWarningMessage(i18n("Can't rename module, is a module file open?! Saving only database changes!"));
             } else {
                 $cApiModule->set('alias', $alias);
             }
@@ -109,7 +111,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
             // Display error
             if ($messageIfError != '') {
-                $notification->displayNotification('error', $messageIfError);
+				cRegistry::addErrorMessage($messageIfError);
                 // Set the old name because module could not rename
                 $cApiModule->set('name', $oldName);
                 $cApiModule->store();
@@ -124,25 +126,25 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             $cApiModule->store();
 
             if ($contenidoModuleHandler->saveInfoXML($name, $description, $type, $alias) == false) {
-                $notification->displayNotification('error', i18n("Can't save xml module info file!"));
+				cRegistry::addErrorMessage(i18n("Can't save xml module info file!"));
             }
 
             if ($retInput == true && $retOutput == true) {
-                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Saved module successfully!'));
+				cRegistry::addInfoMessage(i18n('Saved module successfully!'));
             } else {
                 $messageIfError = '<br>' . i18n("Can't save input !");
                 $messageIfError .= '<br>' . i18n("Can't save output !");
-                $notification->displayNotification(cGuiNotification::LEVEL_INFO, $messageIfError);
+				cRegistry::addErrorMessage($messageIfError);
             }
         }
     } else {
         // No changes for save
         if ($retInput == true && $retOutput == true) {
-            $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Saved module successfully!'));
+			cRegistry::addInfoMessage(i18n('Saved module successfully!'));
         } else {
             $messageIfError = i18n("Can't save input !");
             $messageIfError .= ' ' . i18n("Can't save output !");
-            $notification->displayNotification(cGuiNotification::LEVEL_ERROR, $messageIfError);
+			cRegistry::addErrorMessage($messageIfError);
         }
     }
 
