@@ -14,6 +14,11 @@
  * @link       http: //www.contenido.org
  */
 
+ /* toggle for category list*/
+ .str_overview_toggle{
+	background-color: rgb(189,206,0) !important;
+ }
+ 
 /* some reset */
 form, h1, h2, h3, h4 {
     margin: 0;
