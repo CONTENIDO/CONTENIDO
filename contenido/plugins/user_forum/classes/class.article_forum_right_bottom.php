@@ -348,12 +348,6 @@ EOF;
      */
     protected function getEditModeMenu($post) {
 
-echo <<<EOF
-<script type="text/javascript">
-funcifunci();
-</script>
-EOF;
-
         global $area;
         $changes = 0;
         $cfg = cRegistry::getConfig();
