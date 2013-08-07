@@ -395,8 +395,8 @@ class UserForumArticle {
                 foreach ($arrUserforum as $key => $value) {
 
                     $record = array();
-                    $record['REALNAME'] = $value['realname'];
-                    $record['EMAIL'] = $value['email'];
+                    $record['REALNAME'] = str_replace('\\','',$value['realname']);
+                    $record['EMAIL'] =   str_replace('\\','',$value['email']);
                     $record['NUMBER'] = $number;
                     $number++;
 
@@ -417,7 +417,7 @@ class UserForumArticle {
                         $record['FORUM_QUOTE'] = '';
                     }
 
-                    $record['FORUM'] = $value['forum'];
+                    $record['FORUM'] = str_replace('\\','',$value['forum']);
 
                     if (($value['editedby'] != '') && ($value['editedat'] != "0000-00-00 00:00:00")) {
 
