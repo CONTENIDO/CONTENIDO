@@ -207,6 +207,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 
         // Changing e.g. \' back to ' (magic_quotes)
         $sName = stripslashes($_REQUEST["txtName"]);
+        $sName = conHtmlSpecialChars($sName);
         $sFromEMail = stripslashes($_REQUEST["txtFromEMail"]);
         $sFromName = stripslashes($_REQUEST["txtFromName"]);
         $sSubject = stripslashes($_REQUEST["txtSubject"]);
