@@ -179,8 +179,7 @@ class UserForumArticle {
                 break;
             // user interaction click at save in input new comment dialog
             case 'save_new_forum':
-                $this->_saveForum();
-                if($this->_modMode){
+                if($this->_modMode && $this->_saveForum()){
                     echo '<br />';
                     echo mi18n("FEEDBACK");
                 }
@@ -359,6 +358,7 @@ class UserForumArticle {
                 $this->_tpl->display('user_forum_new.tpl');
             }
         }
+		return $bInputOK;
     }
 
     /**
