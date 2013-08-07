@@ -1,156 +1,440 @@
-body, td {
-		font-family: Verdana, Arial, Helvetica, sans-serif;
-		font-size: 12px;
-		color: #334F77;
-		padding: 0;
-		margin: 0;
+/**
+ * Project:
+ * CONTENIDO Content Management System
+ *
+ * Description:
+ * CSS styles for CONTENIDO setup.
+ *
+ * Requirements:
+ * -/-
+ *
+ * @package    CONTENIDO setup
+ * @version    1.0.1
+ * @author     CONTENIDO
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ *
+ * {@internal
+ *   created  YYYY-MM-DD
+ *   modified 2011-10-27, Murat Purc, progress bar and progress output
+ *   $Id
+ * }}
+ *
+ */
+
+body {
+    background-color: white;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
-p, td, input {
-		font-family: Verdana, Arial, Helvetica, sans-serif;
-		font-size: 12px;
-		color: #334F77;
+#setupPageWrap {
+    width: 752px;
+    height: 480px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -376px;
+    margin-top: -240px;
+}
+
+#setupPage {
+    position: relative;
+}
+
+body,
+td {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #334f77;
+    padding: 0;
+    margin: 0;
+}
+
+p,
+td,
+input {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #334f77;
 }
 
 input.small {
-		font-family: Verdana, Arial, Helvetica, sans-serif;
-		font-size: 10px;
-		color: #334F77;
-		min-width: 515px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    color: #334f77;
+    min-width: 515px;
 }
 
 a {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-weight: bold;
-	color: #0060B1;
-	text-decoration: none;
-	
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #0060B1;
+    text-decoration: none;
 }
+
 span.headerbar {
-		font-family: Verdana, Arial, Helvetica, sans-serif;
-		font-weight: bold;
-		font-size: 13px;
-		color: black;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: black;
 }
 
 h1 {
-	font-size: 12px;
-	font-weight: bold;
-	color: #0060B1;
-	margin: 0px;
-	margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #0060B1;
+    margin: 0;
+    margin-bottom: 8px;
 }
 
 div.description {
-		font-family: Verdana, Arial, Helvetica, sans-serif;
-		font-size: 12px;
-		color: black;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: black;
 }
 
 .black {
-	color: black;
+    color: black;
 }
 
 input.textbox {
-	border: 1px solid #999999;
-	width: 240px;
-	height: 18px;
-	font-size: 10px;
-	vertical-align: middle;
-	
+    border: 1px solid #999;
+    width: 240px;
+    height: 18px;
+    font-size: 10px;
+    vertical-align: middle;
 }
 
 div.errorlist {
-	font-size: 10px;
-	color: black;
-	width: 100%;
-	margin: 0px;
-	padding: 0px;
-	background-color: #e8e8ee;
+    font-size: 10px;
+    color: black;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #e8e8ee;
+    width: 580px;
+    height: 213px;
+    overflow: auto;
+    border: 1px solid black;
 }
 
 div.entry_closed {
-	margin: 0px;
-	width: 100%;
-	color: #666666;
-	display: none;
+    margin: 0;
+    width: 100%;
+    color: #666;
+    display: none;
 }
 
 div.entry_open {
-	color: #666666;
-	margin: 0px;
-	width: 100%;
-	padding-top: 4px;
+    color: #666;
+    margin: 0;
+    width: 100%;
+    padding-top: 4px;
 }
 
 div.entry_open a {
-	font-size: 10px;
+    font-size: 10px;
 }
 
 td.entry {
-	color: black;
-	font-size: 10px;
-	padding: 3px;
-	padding-top: 5px;	
-	border-bottom: 1px solid white;
+    color: black;
+    font-size: 10px;
+    padding: 3px;
+    padding-top: 5px;
+    border-bottom: 1px solid white;
 }
 
 td.entry_nowrap {
-	color: black;
-	font-size: 10px;
-	padding: 3px;
-	padding-top: 5px;	
-	border-bottom: 1px solid white;
-	white-space: nowrap;
+    color: black;
+    font-size: 10px;
+    padding: 3px;
+    padding-top: 5px;
+    border-bottom: 1px solid white;
+    white-space: nowrap;
 }
 
-/* additions rbi 2008-02-26 */
-
 img.closer {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 img.button {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 td.icon {
-	width: 14px;
-	padding: 4px;
-	padding-left: 7px;
-	border-bottom: 1px solid white;
+    width: 14px;
+    padding: 4px;
+    padding-left: 7px;
+    border-bottom: 1px solid white;
 }
 
 input {
-	border:1px solid #B3B3B8;
-	width:240px;
+    border: 1px solid #b3b3b8;
+    width: 240px;
 }
-table td, p {
-	color:#000;
+table td,
+p {
+    color: black;
 }
 
 table.setupBodyOuterTable {
-	width:730px;
-	height:300px;
+    width: 730px;
+    height: 300px;
 }
+
+
+table.setupBodyOuterTable tr.row-1 {
+    height: 90px;
+}
+table.setupBodyOuterTable tr.row-2 {
+    height: 225px;
+}
+
+table.setupBodyOuterTable td {
+    vertical-align: top;
+}
+
+table.setupBodyOuterTable td.column-2 div {
+    clear: both;
+    float: right;
+    height: 20px;
+    margin: 0 10px;
+    width: 60px;
+}
+
+
+/* prev/next navigation */
+table.setupBodyOuterTable td.column-2 {
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+
+table.setupBodyOuterTable td.column-2 a.nav {
+    display: block;
+    float: right;
+}
+table.setupBodyOuterTable td.column-2 a.navBack {
+    float: left;
+}
+
+.setupBodyOuterTable a.nav {
+    display: inline-block;
+    display: block;
+    font-size: 12px;
+    height: 16px;
+    line-height: 16px;
+    width: 16px;
+    position: relative;
+}
+
+.setupBodyOuterTable a.nav span {
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: transparent url(../images/controls/nav.gif) 0 0 no-repeat;
+    text-indent: -999em;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.setupBodyOuterTable a.nav:hover span {
+	background-position: 0 -30px;
+}
+
+.setupBodyOuterTable a.navBack span,
+.setupBodyOuterTable a.navBack:hover span {
+	background-position: 0 -60px;
+}
+
+.setupBodyOuterTable a.navRefresh span,
+.setupBodyOuterTable a.navRefresh:hover span {
+	background-position: 0 -90px;
+}
+
+.setupBodyOuterTable a.navLabel,
+.setupBodyOuterTable a.navLabel:hover {
+    width: auto;
+    padding-right: 20px;
+}
+
+.setupBodyOuterTable a.navLabel span,
+.setupBodyOuterTable a.navLabel:hover span {
+    right: 0;
+    left: auto;
+}
+
+/* ie 7 hack */
+* + html .setupBodyOuterTable td.column-2 a.nav {
+    display: inline;
+    zoom: 1;
+}
+
+
+/**
+ * @section LanguageChooser
+ * @extends table.setupBodyOuterTable
+ */
+table.setupBodyOuterTableLanguageChooser {
+    margin: 0;
+    padding: 0;
+    border-collapse:collapse;
+}
+table.setupBodyOuterTableLanguageChooser td {
+    width: 240px;
+    padding-right: 20px;
+}
+table.setupBodyOuterTableLanguageChooser td.last {
+    width: auto;
+    padding-right: 0;
+}
+
+
+/**
+ * @section SetupType
+ * @extends table.setupBodyOuterTable
+ */
+
+table.setupBodyOuterTableSetupType tr.row-2 {
+    height: auto;
+}
+table.setupBodyOuterTableSetupType .row-1 td {
+    padding: 0 10px 10px 10px;
+    width: 210px;
+    height: 70px;
+}
+table.setupBodyOuterTableSetupType .row-2 div {
+    width: 210px;
+    display: inline;
+}
+
+table.setupBodyOuterTableSetupType .row-2 td {
+    padding: 0 10px 10px 10px;
+    width: 210px;
+}
+table.setupBodyOuterTableSetupType .row-1 td.first {
+    padding-left: 0;
+}
+table.setupBodyOuterTableSetupType .row-2 td.first {
+    padding-left: 0;
+}
+
+table.setupBodyOuterTableSetupType .row-3 td {
+    text-align: center;
+}
+
+table.setupBodyOuterTableSetupType .row-3 td a {
+    display: inline-block;
+}
+
+
+/**
+ * @section NotInstallable
+ * @extends table.setupBodyOuterTable
+ */
+table.setupBodyOuterTableNotInstallable {
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+}
+
+table.setupBodyOuterTableNotInstallable td p {
+    margin-bottom: 2.0em;
+}
+table.setupBodyOuterTableNotInstallable td p.errorMsg {
+    color: red;
+}
+table.setupBodyOuterTableNotInstallable td p.last {
+    margin-bottom: 0;
+}
+
+
+/**
+ * @section ConfigMode
+ * @extends table.setupBodyOuterTable
+ */
+table.setupBodyOuterTableConfigMode td.header {
+    height: 50px;
+}
+
+
+/**
+ * @section ClientMode
+ * @extends table.setupBodyOuterTable
+ */
+table.setupBodyOuterTableClientMode td.header {
+    height: 50px;
+}
+
+table.setupBodyOuterTableClientMode td.column-1 td {
+    padding-bottom: 7px;
+}
+
+/**
+ * @section SystemData
+ * @extends table.setupBodyOuterTable
+ */
+table.setupBodyOuterTableSystemData td.column-1 td.first {
+    padding-right: 30px;
+}
+table.setupBodyOuterTableSystemData td.column-1 td.first2 {
+    padding-bottom: 11px;
+}
+table.setupBodyOuterTableSystemData td.column-1 td.last {
+    padding-bottom: 10px;
+}
+
+table.setupBodyOuterTableSystemData td.column-1 select {
+    margin-left: 0;
+}
+
+
+/**
+ * @section Installer
+ * @extends table.setupBodyOuterTable
+ */
+table.setupBodyOuterTableInstaller tr.row-2 {
+    height: 205px;
+}
+
+
+/**
+ * @section ProgressBar
+ */
+table.setupBodyOuterTable .progressBarModule {
+    border: 1px solid #999;
+    width: 715px;
+    overflow: hidden;
+    background-color: white;
+}
+
+table.setupBodyOuterTable .progressBarModule .progressBarModuleContent {
+    border: 1px solid white;
+    width: 713px;
+    overflow: hidden;
+    background-color: white;
+}
+
+table.setupBodyOuterTable .progressBarModule .progressBarModuleContent #progressbar {
+    width: 0;
+    padding: 0;
+    background: #bfcf00 url(../images/controls/pbend.gif) top right no-repeat;
+    height: 16px;
+    line-height: 16px;
+}
+
+table.setupBodyOuterTable .progressOutput {
+    width: 715px;
+    height: 150px;
+}
+
 
 /*Styles for plugin information layer and other elements in step five timo.trautmann*/
-#setupBox, #setupFootnote {
-	width:750px;
-	color:#000;
-	text-align:left;
-	border:1px solid #B3B3B8;
-}
-
-#setupHead {
-	background-color:#fff;
-	height:70px;
-	padding:30px 0 0 30px;
-}
-* html #setupHead {
-	height:100px;
-}
 
 p.plugin_select {
     padding:0; 
@@ -171,28 +455,6 @@ img.plugin_info {
     margin-left:3px; 
     vertical-align:middle; 
     border:0px;
-}
-
-#setupHeadlinePath {
-	background-color:#E2E2E2;
-	height:30px;
-	line-height:30px;
-	padding:0 0 0 10px;
-	font-size:14px;
-	font-weight:bold;
-}
-
-#setupBody {
-	background-color:#F1F1F1;
-	padding:20px 10px 10px 10px;
-	height:300px;
-}
-
-#setupFootnote {
-	color:#ccc;
-	font-size:10px;
-	border:0;
-	padding-top:10px;
 }
 
 #plugin_layer {
@@ -223,3 +485,61 @@ img.plugin_info {
     margin-top:3px;
 }
 
+
+#setupBox,
+#setupFootnote {
+    width: 750px;
+    color: black;
+    text-align: left;
+    border: 1px solid #b3b3b8;
+}
+
+#setupHead {
+    background-color: white;
+    height: 70px;
+    padding: 30px 0 0 30px;
+}
+* html #setupHead {
+    height: 100px;
+}
+
+#setupHeadlinePath {
+    background-color: #e2e2e2;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 0 0 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#setupHeadlinePath .column-1 {
+    float: left;
+}
+
+#setupHeadlinePath .column-2 {
+    float: right;
+    padding-right: 24px;
+}
+
+#setupBody {
+    background-color: #f1f1f1;
+    padding: 20px 10px 10px 10px;
+    height: 320px;
+}
+
+#setupFootnote {
+    color: #ccc;
+    font-size: 10px;
+    border: none;
+    padding-top: 10px;
+}
+
+.active {
+    background-color: #fff;
+    color: #0060B1;
+}
+
+.additionalInfo {
+    font-size: 80%;
+    color: #b5b5b5;
+}

@@ -1703,6 +1703,9 @@ setup/dbupdate.php -text
 setup/images/controls/arrow_closed.png -text
 setup/images/controls/arrow_open.png -text
 setup/images/controls/back.gif -text
+setup/images/controls/close_all.gif -text
+setup/images/controls/nav.gif -text
+setup/images/controls/open_all.gif -text
 setup/images/controls/pbend.gif -text
 setup/images/controls/up_over.png -text
 setup/images/icons/error.png -text
@@ -1732,6 +1735,7 @@ setup/locale/potfiles.txt -text svneol=unset#text/plain
 setup/locale/setup.pot -text
 setup/makeconfig.php -text
 setup/script/pluginInfo.js -text svneol=unset#text/plain
+setup/script/setup.js -text
 setup/steps/forms/additionalplugins.php -text
 setup/steps/forms/clientadjust.php -text
 setup/steps/forms/clientmode.php -text

@@ -49,6 +49,8 @@ if (array_key_exists('setuptype', $_SESSION)) {
 define('CON_SETUP_MYSQL', 'mysql');
 define('CON_SETUP_MYSQLI', 'mysqli');
 
+define('CON_SETUP_DEBUG', false);
+
 define('C_SETUP_STEPFILE', 'images/steps/s%d.png');
 define('C_SETUP_STEPFILE_ACTIVE', 'images/steps/s%da.png');
 define('C_SETUP_STEPWIDTH', 28);
