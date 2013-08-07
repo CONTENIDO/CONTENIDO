@@ -1693,7 +1693,6 @@ contenido/plugins/smarty/plugin.xml -text
 contenido/plugins/smarty/smarty_source/Smarty.class.php -text
 contenido/plugins/smarty/smarty_source/SmartyBC.class.php -text
 contenido/plugins/smarty/smarty_source/debug.tpl -text
-contenido/plugins/smarty/smarty_source/plugins/block.php.php -text
 contenido/plugins/smarty/smarty_source/plugins/block.textformat.php -text
 contenido/plugins/smarty/smarty_source/plugins/function.counter.php -text
 contenido/plugins/smarty/smarty_source/plugins/function.cycle.php -text
@@ -1786,13 +1785,11 @@ contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_configfilelexe
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_configfileparser.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_data.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_debug.php -text
-contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_filter.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_filter_handler.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_function_call_handler.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_get_include_path.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_nocache_insert.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_parsetree.php -text
-contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_register.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_resource_eval.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_resource_extends.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_resource_file.php -text
@@ -1807,7 +1804,6 @@ contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_templatecompil
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_templatelexer.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_templateparser.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_utility.php -text
-contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_wrapper.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_write_file.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_resource.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_resource_custom.php -text
