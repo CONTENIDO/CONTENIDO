@@ -29,7 +29,7 @@ function smarty_modifiercompiler_escape($params, $compiler)
     if ($_double_encode === null) {
         $_double_encode = version_compare(PHP_VERSION, '5.2.3', '>=');
     }
-
+    
     try {
         $esc_type = smarty_literal_compiler_param($params, 1, 'html');
         $char_set = smarty_literal_compiler_param($params, 2, Smarty::$_CHARSET);
@@ -112,7 +112,7 @@ function smarty_modifiercompiler_escape($params, $compiler)
     }
 
     // could not optimize |escape call, so fallback to regular plugin
-    if ($compiler->tag_nocache | $compiler->nocache) {
+    if ($compiler->template->caching && ($compiler->tag_nocache | $compiler->nocache)) {
         $compiler->template->required_plugins['nocache']['escape']['modifier']['file'] = SMARTY_PLUGINS_DIR .'modifier.escape.php';
         $compiler->template->required_plugins['nocache']['escape']['modifier']['function'] = 'smarty_modifier_escape';
     } else {

@@ -144,9 +144,9 @@ abstract class Smarty_Resource {
 
         $compiled->filepath = $_compile_dir . $_filepath . '.' . $compiled->source->type . $_basename . $_cache . '.php';
     }
-
+    
     /**
-     * Normalize Paths "foo/../bar" to "bar"
+     * Normalize Paths "foo/../bar" to "bar" 
      *
      * @param string $_path path to normalize
      * @param boolean $ds respect windows directory separator
@@ -158,9 +158,9 @@ abstract class Smarty_Resource {
             // don't we all just love windows?
             $_path = str_replace('\\', '/', $_path);
         }
-
+        
         $offset = 0;
-
+        
         // resolve simples
         $_path = preg_replace('#(/\./(\./)*)|/{2,}#', '/', $_path);
         // resolve parents
@@ -172,24 +172,24 @@ abstract class Smarty_Resource {
                 $offset = $_parent + 3;
                 continue;
             }
-
+            
             $_pos = strrpos($_path, '/', $_parent - strlen($_path) - 1);
             if ($_pos === false) {
                 // don't we all just love windows?
                 $_pos = $_parent;
             }
-
+            
             $_path = substr_replace($_path, '', $_pos, $_parent + 3 - $_pos);
         }
-
+        
         if ($ds && DS != '/') {
             // don't we all just love windows?
             $_path = str_replace('/', '\\', $_path);
         }
-
+        
         return $_path;
     }
-
+    
     /**
      * build template filepath by traversing the template_dir array
      *
@@ -584,7 +584,7 @@ abstract class Smarty_Resource {
  * @author Rodney Rehm
  *
  * @property integer $timestamp Source Timestamp
- * @property boolean $exists    Source Existance
+ * @property boolean $exists    Source Existence
  * @property boolean $template  Extended Template reference
  * @property string  $content   Source Content
  */
@@ -811,7 +811,7 @@ class Smarty_Template_Compiled {
     public $timestamp = null;
 
     /**
-     * Compiled Existance
+     * Compiled Existence
      * @var boolean
      */
     public $exists = false;
