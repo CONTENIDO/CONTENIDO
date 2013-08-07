@@ -153,7 +153,6 @@ class ArticleForumCollection extends ItemCollection {
                 $arrforum[$db->f('id_user_forum')]['email'] = $db->f('email');
                 $arrforum[$db->f('id_user_forum')]['realname'] = $db->f('realname');
             }
-
             $arrforum[$db->f('id_user_forum')]['forum'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum'));
             $arrforum[$db->f('id_user_forum')]['forum_quote'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum_quote'));
             $arrforum[$db->f('id_user_forum')]['timestamp'] = $db->f('timestamp');

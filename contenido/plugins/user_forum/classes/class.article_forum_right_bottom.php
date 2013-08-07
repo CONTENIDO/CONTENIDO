@@ -295,13 +295,13 @@ EOF;
             $hiddenId_user_forum->setValue($cont['id_user_forum']);
             $hiddenLike->setValue($cont['like']);
             $hiddenDislike->setValue($cont['dislike']);
-            $hiddenName->setValue($cont['realname']);
-            $hiddenEmail->setValue($cont['email']);
+            $hiddenName->setValue(str_replace('\\','',conHtmlSpecialChars($cont['realname'])));
+            $hiddenEmail->setValue(str_replace('\\','',conHtmlSpecialChars($cont['email'])));
             $hiddenLevel->setValue($cont['level']);
             $hiddenEditdat->setValue($cont['editedat']);
             $hiddenEditedby->setValue($cont['editedby']);
             $hiddenTimestamp->setValue($date);
-            $hiddenForum->setValue(($cont['forum']));
+            $hiddenForum->setValue(str_replace('\\','',conHtmlSpecialChars($cont['forum'])));
             $hiddenOnline->setValue($cont['online']);
             $hiddenMode->setValue('edit');
             $hiddenKey->setValue($key);
@@ -326,8 +326,8 @@ EOF;
             $form->appendContent($hiddenaction);
 
             // generate output text
-            $form->appendContent($date . " von " . $maili . " <br><br>");
-            $form->appendContent(($text) . "<br><br>");
+            $form->appendContent($date . " von " . str_replace('\\','',$maili) . " <br><br>");
+            $form->appendContent((str_replace('\\','',$text)) . "<br><br>");
             $tdForm->setContent($form);
             $tdForm->setAttribute('valign', 'top');
             $tr->setContent($tdForm);
@@ -386,12 +386,14 @@ EOF;
         $likeButton = new cHTMLImage($cfg['path']['images'] . 'like.png');
         $dislikeButton = new cHTMLImage($cfg['path']['images'] . 'dislike.png');
 
-        $name = new cHTMLTextBox("realname", conHtmlSpecialChars($post['realname']), 30, 255);
-        $email = new cHTMLTextBox("email", conHtmlSpecialChars($post['email']), 30, 255);
-        $like = new cHTMLTextBox("like", conHtmlSpecialChars($post['like']), 7, 7);
-        $dislike = new cHTMLTextBox("dislike", conHtmlSpecialChars($post['dislike']), 7, 7);
 
-        $text = str_replace("<br />", "\n", $post['forum']);
+        $name = new cHTMLTextBox("realname", str_replace('\\', '',(conHtmlSpecialChars($post['realname']))), 30, 255);
+        $email = new cHTMLTextBox("email", $post['email'], 30, 255);
+        $like = new cHTMLTextBox("like", $post['like'], 7, 7);
+        $dislike = new cHTMLTextBox("dislike", $post['dislike'], 7, 7);
+
+        $text = str_replace("<br />", "\n", conHtmlSpecialChars($post['forum']));
+        $text = str_replace('\\','',$text);
 
         $forum = new cHTMLTextArea("forum", $text);
 
@@ -401,9 +403,9 @@ EOF;
         $editedatearray = $this->formatTimeString($post['editedat']);
         (empty($editedatearray))? $editedat = '' : $editedat = $editedatearray['day'] . '.' . $editedatearray['month'] . '.' . $editedatearray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $editedatearray['hour'] . ':' . $editedatearray['minute'] . ' ' . UserForum::i18n("CLOCK");
 
-        $timestamp = new cHTMLTextBox("timestamp", conHtmlSpecialChars($date), 30, 255);
-        $editedat = new cHTMLTextBox("editedat", conHtmlSpecialChars($editedat), 30, 255);
-        $editedby = new cHTMLTextBox("editedby", conHtmlSpecialChars($username), 30, 255);
+        $timestamp = new cHTMLTextBox("timestamp", $date, 30, 255);
+        $editedat = new cHTMLTextBox("editedat", $editedat, 30, 255);
+        $editedby = new cHTMLTextBox("editedby", $username, 30, 255);
 
         $editedat->setDisabled(true);
         $timestamp->setDisabled(true);
