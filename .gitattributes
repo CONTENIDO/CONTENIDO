@@ -2564,6 +2564,7 @@ setup/templates/setuptype.tpl -text
 setup/tests/tfile.txt -text
 setup/upgrade_jobs/class.upgrade.job.0007.php -text
 setup/upgrade_jobs/class.upgrade.job.0008.php -text
+setup/upgrade_jobs/class.upgrade.job.0009.php -text
 setup/upgrade_jobs/class.upgrade.job.0010.php -text
 setup/upgrade_jobs/class.upgrade.job.0011.php -text
 setup/upgrade_jobs/class.upgrade.job.0012.php -text

@@ -172,16 +172,24 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
     $db2 = getSetupMySQLDBConnection(false);
 
     while ($db->nextRecord()) {
+		
+		
         $row = $db->toArray(FETCH_ASSOC);
+		
         $sql = "UPDATE " . $table . " SET ";
         foreach ($row as $key => $value) {
-            $sql .= "`" . $key . "`='" . cSecurity::escapeDB(urldecode($value), $db) . "', ";
+			if (strlen($value) > 0) {
+				$sql .= "`" . $key . "`='" . cSecurity::escapeDB(urldecode($value), $db) . "', ";
+			}
         }
         $sql = substr($sql, 0, strlen($sql) - 2) . " WHERE ";
         foreach ($row as $key => $value) {
-            $sql .= "`" . $key . "`= '" . cSecurity::escapeDB($value, $db) . "' AND ";
+			if (strlen($value) > 0) {
+				$sql .= "`" . $key . "`= '" . cSecurity::escapeDB($value, $db) . "' AND ";
+			}
         }
         $sql = substr($sql, 0, strlen($sql) - 5) . ";";
+		
         $db2->query($sql);
     }
 }
