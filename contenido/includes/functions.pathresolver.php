@@ -306,7 +306,7 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
         //create link
 
         if ($makeLink == true) {
-		    $linkUrl = $sess->url("front_content.php?idcat=$idcat&idtpl=$idtpl");
+            $linkUrl = $sess->url("front_content.php?idcat=$idcat&idtpl=$idtpl");
             $name = '<a href="' . $linkUrl . '" class="' . $linkClass . '">' . $name . '</a>';
         }
 

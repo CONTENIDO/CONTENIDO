@@ -849,11 +849,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             // $foreignlang = false;
             // conCreateLocationString($idcat, "&nbsp;/&nbsp;", $cat_name);
         }
-		
-		$cat_idtpl = $db->f("idtpl");
-		
-		renderBackendBreadcrumb($syncoptions, false);		
-		
+
+        $cat_idtpl = $db->f("idtpl");
+
+        renderBackendBreadcrumb($syncoptions, false);
+
         // Hinweis wenn kein Artikel gefunden wurde
         if ($no_article) {
             $tpl->set('d', "START", '&nbsp;');

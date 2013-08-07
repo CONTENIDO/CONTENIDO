@@ -358,7 +358,7 @@ class UserForumArticle {
                 $this->_tpl->display('user_forum_new.tpl');
             }
         }
-		return $bInputOK;
+        return $bInputOK;
     }
 
     /**

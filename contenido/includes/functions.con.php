@@ -681,10 +681,10 @@ function conDeleteart($idart) {
     $catLangColl->select('`idlang`=' . cSecurity::toInteger($lang));
     $idcats = $catLangColl->getAllIds();
     $idcatsString = "('" . implode(',', $idcats) . "')";
-	$catArtColl->resetQuery();
+    $catArtColl->resetQuery();
     $catArtColl->deleteByWhereClause('`idart`=' . $idart . ' AND `idcat` IN ' . $idcatsString);
 
-	
+
     // delete entry from con_art
     $oArtColl = new cApiArticleCollection();
     $oArtColl->delete((int) $idart);

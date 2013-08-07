@@ -274,7 +274,7 @@ class cSearchIndex extends cSearchBaseAbstract {
         $this->createKeywords();
 
         $this->getKeywords();
-		
+
         $this->saveKeywords();
 
         $new_keys = array_keys($this->_keywords);

@@ -22,36 +22,36 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0009 extends cUpgradeJobAbstract {
-	
-	private $_tableMapping = array( '%s_news' => '%s_pi_news',
-								   '%s_news_groupmembers' => '%s_pi_news_groupmembers',
-								   '%s_news_groups' => '%s_pi_news_groups',
-								   '%s_news_jobs' => '%s_pi_news_jobs',
-								   '%s_news_log' => '%s_pi_news_log',
-								   '%s_news_rcp' => '%s_pi_news_rcp');
+
+    private $_tableMapping = array( '%s_news' => '%s_pi_news',
+                                   '%s_news_groupmembers' => '%s_pi_news_groupmembers',
+                                   '%s_news_groups' => '%s_pi_news_groups',
+                                   '%s_news_jobs' => '%s_pi_news_jobs',
+                                   '%s_news_log' => '%s_pi_news_log',
+                                   '%s_news_rcp' => '%s_pi_news_rcp');
 
     public function _execute() {
-		global $cfg;
-		
-        if ($this->_setupType != 'upgrade') {
-			return;
-		}
-		
-		$updateDB = getSetupMySQLDBConnection(false);
-		foreach ($this->_tableMapping as $oldName => $newName) {
-			 $this->_oDb->query('SHOW TABLES LIKE "%s"', sprintf($oldName, $cfg['sql']['sqlprefix']));
-			 $oldTable = $this->_oDb->nextRecord();
+        global $cfg;
 
-			 $this->_oDb->query('SHOW TABLES LIKE "%s"', sprintf($newName, $cfg['sql']['sqlprefix']));
-			 $newTable = $this->_oDb->nextRecord();
-			 
-			 if ($newTable === false && $oldTable === true) {
-				$this->_oDb->query('RENAME TABLE ' . sprintf($oldName, $cfg['sql']['sqlprefix']) . ' TO ' . sprintf($newName, $cfg['sql']['sqlprefix']));
-				
-				alterTableHandling(sprintf($newName, $cfg['sql']['sqlprefix']));
-				urlDecodeTable($updateDB, sprintf($newName, $cfg['sql']['sqlprefix']));
-			 }
-		}
+        if ($this->_setupType != 'upgrade') {
+            return;
+        }
+
+        $updateDB = getSetupMySQLDBConnection(false);
+        foreach ($this->_tableMapping as $oldName => $newName) {
+             $this->_oDb->query('SHOW TABLES LIKE "%s"', sprintf($oldName, $cfg['sql']['sqlprefix']));
+             $oldTable = $this->_oDb->nextRecord();
+
+             $this->_oDb->query('SHOW TABLES LIKE "%s"', sprintf($newName, $cfg['sql']['sqlprefix']));
+             $newTable = $this->_oDb->nextRecord();
+
+             if ($newTable === false && $oldTable === true) {
+                $this->_oDb->query('RENAME TABLE ' . sprintf($oldName, $cfg['sql']['sqlprefix']) . ' TO ' . sprintf($newName, $cfg['sql']['sqlprefix']));
+
+                alterTableHandling(sprintf($newName, $cfg['sql']['sqlprefix']));
+                urlDecodeTable($updateDB, sprintf($newName, $cfg['sql']['sqlprefix']));
+             }
+        }
     }
 
 }

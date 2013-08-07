@@ -172,7 +172,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $tpl->set('s', 'HIDDENFIELDS', $hiddenfields);
 
-	$breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
+    $breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
     $tpl->set('s', 'CATEGORY', $breadcrumb);
 
     // Title

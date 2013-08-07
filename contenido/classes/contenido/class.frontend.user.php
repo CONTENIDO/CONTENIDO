@@ -172,13 +172,13 @@ class cApiFrontendUser extends Item {
      * @return bool True if the password is correct, false otherwise
      */
     public function checkPassword($password) {
-		if ($this->isLoaded() === false) {
-			return false;
-		}
-		
-		$pass = $this->get('password');
+        if ($this->isLoaded() === false) {
+            return false;
+        }
+
+        $pass = $this->get('password');
         $salt = $this->get('salt');
-			
+
         return (hash("sha256", md5($password) . $salt) == $pass);
     }
 

@@ -4,130 +4,130 @@
 
 <html>
 
-	<head>
-	
-	    <title></title>
-	
-	    <meta http-equiv="expires" content="0">
-	    <meta http-equiv="cache-control" content="no-cache">
-	    <meta http-equiv="pragma" content="no-cache">
-	
-	    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-	    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-	    <script type="text/javascript" src="scripts/browserCheck.js"></script>
-	    <script type="text/javascript" src="scripts/general.js"></script>
-	    <script type="text/javascript" src="scripts/header.js"></script>
-	    <script type="text/javascript" src="scripts/help.js.php?contenido={SID}"></script>
-	    <script type="text/javascript" src="scripts/rowMark.js"></script>
-	
-	    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-	
-	    <script type="text/javascript">
-		var sid = "{SID}";
-	    </script>
-	
-	    <style type="text/css">
-	    body {
-			color: black;
-			border-bottom: 1px solid #666;
-			background-color: #f1f1f1;
-			margin: 0;
-			padding: 0;
-		}
-	    </style>
-	
-	</head>
-	
-	<body>
-	
-		<div style="border-top: 1px solid #0060b1;"></div>
-		
-		<div id="head">
-		    
-		    <a id="head_logo" target="content" href="{MAINLOGINLINK}"><img title="CONTENIDO Website" alt="CONTENIDO Website" src="images/conlogo.gif"></a>
-		    
-		    <div id="mhighlight">
-		        <table cellspacing="0" cellpadding="0" border="0">
-		            <tr><td>
-		                <span id="htext">&nbsp;</span>
-		            </td></tr>
-		        </table>
-		    </div>
-		
-		    <div id="head_info" class="head_nav left_dist">
-		        <div id="infobox">
-		            <span class="textg_medium">{CHOSENCLIENT}&nbsp;&nbsp;&nbsp;{CHOSENUSER}</span>
-		        </div>
-		        <div id="operate">
-		            {LANG}
-		            {MYCONTENIDO}
-		            {INFO}
-		            {HELP}
-		            <a class="main" href="{LOGOUT}" target="_top">
-		                <img class="vAlignMiddle" src="images/but_logout.gif" border="0" alt="Logout" title="Logout">
-		            </a>
-		        </div>
-		    </div>
-		
-		    <div id="head_nav1" class="head_nav left_dist">
-		        <!-- BEGIN:BLOCK -->
-		        <span class="right_margin_menu">{CAPTION}</span>
-		        <!-- END:BLOCK -->
-		    </div>
-		
-		    <!-- Submenu Layers -->
-		    <div id="sub_0" class="head_nav left_dist">&nbsp;</div>
-		    <div id="submenus">{SUBMENUS}</div>
-		
-		</div>
-		
-		<div style="min-width: 200px; height: 80px; max-width: 100%; overflow: auto;" id="debug_msg"></div>
-		<div class="clear"></div>
-		
-		<script type="text/javascript">
-		    function selectText() {
-		        if (document.selection) {
-		            var range = document.body.createTextRange();
-		            range.moveToElementText(document.getElementById('debug_msg'));
-		            range.select();
-		        } else if (window.getSelection) {
-		            var range = document.createRange();
-		            range.selectNode(document.getElementById('debug_msg'));
-		            window.getSelection().addRange(range);
-		        }
-		    }
-		
-		    function languageSelectAdd(name, idlang) {
-		        var text = name + ' (' + idlang + ')';
-		        $("#cLanguageSelect").append(new Option(text, idlang, false, false));
-		    }
-		
-		    function languageSelectRemove(idlang) {
-		        var oldLang = $("#cLanguageSelect").val();
-		        $("#cLanguageSelect").find("option[value='" + idlang + "']").remove();
-		        if(oldLang == idlang && $("#cLanguageSelect").val() != null) {
-		            changeContenidoLanguage($("#cLanguageSelect").val());
-		        }
-		    }
-		
-		    function languageSelectUpdate(name, idlang) {
-		        var text = name + ' (' + idlang + ')';
-		        $("#cLanguageSelect").find("option[value='" + idlang + "']").text(text);
-		    }
-		
-		    $(document).ready(function(){
-		        // initialize header menu
-		        {HEADER_MENU_OBJ}.initialize({HEADER_MENU_OPTIONS});
-		        ContenidoRegistry.set("headerMenu", {HEADER_MENU_OBJ});
-		
-		        $(["#head_logo", "#imgMyContenido", "#imgInfo"]).click(function(){
-		            resetHeaderMenu();
-		        });
-		    });
-		
-		    {FOOTER_JS}
-		</script>
-	
-	</body>
+    <head>
+
+        <title></title>
+
+        <meta http-equiv="expires" content="0">
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="pragma" content="no-cache">
+
+        <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+        <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+        <script type="text/javascript" src="scripts/browserCheck.js"></script>
+        <script type="text/javascript" src="scripts/general.js"></script>
+        <script type="text/javascript" src="scripts/header.js"></script>
+        <script type="text/javascript" src="scripts/help.js.php?contenido={SID}"></script>
+        <script type="text/javascript" src="scripts/rowMark.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+
+        <script type="text/javascript">
+        var sid = "{SID}";
+        </script>
+
+        <style type="text/css">
+        body {
+            color: black;
+            border-bottom: 1px solid #666;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+        </style>
+
+    </head>
+
+    <body>
+
+        <div style="border-top: 1px solid #0060b1;"></div>
+
+        <div id="head">
+
+            <a id="head_logo" target="content" href="{MAINLOGINLINK}"><img title="CONTENIDO Website" alt="CONTENIDO Website" src="images/conlogo.gif"></a>
+
+            <div id="mhighlight">
+                <table cellspacing="0" cellpadding="0" border="0">
+                    <tr><td>
+                        <span id="htext">&nbsp;</span>
+                    </td></tr>
+                </table>
+            </div>
+
+            <div id="head_info" class="head_nav left_dist">
+                <div id="infobox">
+                    <span class="textg_medium">{CHOSENCLIENT}&nbsp;&nbsp;&nbsp;{CHOSENUSER}</span>
+                </div>
+                <div id="operate">
+                    {LANG}
+                    {MYCONTENIDO}
+                    {INFO}
+                    {HELP}
+                    <a class="main" href="{LOGOUT}" target="_top">
+                        <img class="vAlignMiddle" src="images/but_logout.gif" border="0" alt="Logout" title="Logout">
+                    </a>
+                </div>
+            </div>
+
+            <div id="head_nav1" class="head_nav left_dist">
+                <!-- BEGIN:BLOCK -->
+                <span class="right_margin_menu">{CAPTION}</span>
+                <!-- END:BLOCK -->
+            </div>
+
+            <!-- Submenu Layers -->
+            <div id="sub_0" class="head_nav left_dist">&nbsp;</div>
+            <div id="submenus">{SUBMENUS}</div>
+
+        </div>
+
+        <div style="min-width: 200px; height: 80px; max-width: 100%; overflow: auto;" id="debug_msg"></div>
+        <div class="clear"></div>
+
+        <script type="text/javascript">
+            function selectText() {
+                if (document.selection) {
+                    var range = document.body.createTextRange();
+                    range.moveToElementText(document.getElementById('debug_msg'));
+                    range.select();
+                } else if (window.getSelection) {
+                    var range = document.createRange();
+                    range.selectNode(document.getElementById('debug_msg'));
+                    window.getSelection().addRange(range);
+                }
+            }
+
+            function languageSelectAdd(name, idlang) {
+                var text = name + ' (' + idlang + ')';
+                $("#cLanguageSelect").append(new Option(text, idlang, false, false));
+            }
+
+            function languageSelectRemove(idlang) {
+                var oldLang = $("#cLanguageSelect").val();
+                $("#cLanguageSelect").find("option[value='" + idlang + "']").remove();
+                if(oldLang == idlang && $("#cLanguageSelect").val() != null) {
+                    changeContenidoLanguage($("#cLanguageSelect").val());
+                }
+            }
+
+            function languageSelectUpdate(name, idlang) {
+                var text = name + ' (' + idlang + ')';
+                $("#cLanguageSelect").find("option[value='" + idlang + "']").text(text);
+            }
+
+            $(document).ready(function(){
+                // initialize header menu
+                {HEADER_MENU_OBJ}.initialize({HEADER_MENU_OPTIONS});
+                ContenidoRegistry.set("headerMenu", {HEADER_MENU_OBJ});
+
+                $(["#head_logo", "#imgMyContenido", "#imgInfo"]).click(function(){
+                    resetHeaderMenu();
+                });
+            });
+
+            {FOOTER_JS}
+        </script>
+
+    </body>
 
 </html>

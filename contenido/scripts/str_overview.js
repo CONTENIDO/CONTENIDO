@@ -12,7 +12,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-	
+
 //Defining vars for translations and CONTENIDO imagepath
 var bMsie = (document.all) ? true : false;
 var bMsie10 = (navigator.appVersion.indexOf("MSIE 10")) == -1 ? false : true;

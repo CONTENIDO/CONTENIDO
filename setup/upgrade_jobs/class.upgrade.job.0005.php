@@ -239,13 +239,13 @@ EOT;
                 // construct the XML structure
                 $newWindow = ($linkInfo['linktarget'] == '_blank')? 'true' : 'false';
                 // if link is a relative path, prepend the upload path
-                
+
                 $link = $type = $articleId = $fileName = '';
 
                 if ((int) $linkInfo['link'] > 0) {
-                	$type = 'internal';
-                	$cApiCategoryArticle = new cApiCategoryArticle($linkInfo['link']);
-                	$articleId = $cApiCategoryArticle->get('idart');
+                    $type = 'internal';
+                    $cApiCategoryArticle = new cApiCategoryArticle($linkInfo['link']);
+                    $articleId = $cApiCategoryArticle->get('idart');
                 } elseif (strpos($linkInfo['link'], 'http://') == 0 || strpos($linkInfo['link'], 'www.') == 0) {
                     $link = $linkInfo['link'];
                     $type = 'external';
@@ -253,7 +253,7 @@ EOT;
                     $fileName = $linkInfo['link'];
                     $type = 'file';
                 }
-                
+
                 $xml = <<<EOT
 <?xml version="1.0" encoding="utf-8"?>
 <linkeditor><type>{$type}</type><externallink>{$link}</externallink><title>{$linkInfo['linkdescr']}</title><newwindow>{$newWindow}</newwindow><idart>{$articleId}</idart><filename>{$fileName}</filename></linkeditor>

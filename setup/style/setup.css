@@ -244,17 +244,17 @@ table.setupBodyOuterTable td.column-2 a.navBack {
     left: 0;
 }
 .setupBodyOuterTable a.nav:hover span {
-	background-position: 0 -30px;
+    background-position: 0 -30px;
 }
 
 .setupBodyOuterTable a.navBack span,
 .setupBodyOuterTable a.navBack:hover span {
-	background-position: 0 -60px;
+    background-position: 0 -60px;
 }
 
 .setupBodyOuterTable a.navRefresh span,
 .setupBodyOuterTable a.navRefresh:hover span {
-	background-position: 0 -90px;
+    background-position: 0 -90px;
 }
 
 .setupBodyOuterTable a.navLabel,

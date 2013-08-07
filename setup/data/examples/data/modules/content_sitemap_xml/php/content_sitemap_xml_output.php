@@ -155,7 +155,7 @@ function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds, $lang) {
         $db->query("
             SELECT
                 art_lang.idart
-				, art_lang.idartlang
+                , art_lang.idartlang
                 , UNIX_TIMESTAMP(art_lang.lastmodified) as lastmod
                 , art_lang.changefreq
                 , art_lang.sitemapprio
@@ -176,12 +176,12 @@ function addArticlesToSitemap(SimpleXMLElement $sitemap, $categoryIds, $lang) {
 
         // construct the XML node
         while ($db->nextRecord()) {
-			$indexState = conGetMetaValue($db->f('idartlang'), 7);
-		
-		    if (preg_match('/noindex/',$indexState)) {
-				continue;
-			}
-			
+            $indexState = conGetMetaValue($db->f('idartlang'), 7);
+
+            if (preg_match('/noindex/', $indexState)) {
+                continue;
+            }
+
             $params = array();
             $params['lang'] = $lang;
             $params['changelang'] = $lang;

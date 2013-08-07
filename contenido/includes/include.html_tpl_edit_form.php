@@ -115,10 +115,10 @@ if ($action == $sActionDelete) {
     // Content Type is template
     $sTypeContent = 'templates';
 
-	if (!cFileHandler::writeable($path . $sFilename) && !cFileHandler::writeable($path . $sOrigFileName)) {
+    if (!cFileHandler::writeable($path . $sFilename) && !cFileHandler::writeable($path . $sOrigFileName)) {
         $page->displayWarning(i18n("You have no write permissions for this file"));
     }
-	
+
     // Create new file
     if ($_REQUEST['action'] == $sActionCreate && $_REQUEST['status'] == 'send') {
         $sTempFilename = $sFilename;

@@ -43,7 +43,7 @@ class cUpgradeJob_0008 extends cUpgradeJobAbstract {
                 // copy path to folder
                 $sql = 'UPDATE con_plugins SET folder=path';
                 $db->query($sql);
-				
+
                 // drop column "path"
                 $sql = 'ALTER TABLE `' . $cfg['tab']['plugins'] . '` DROP `path`';
                 $db->query($sql);

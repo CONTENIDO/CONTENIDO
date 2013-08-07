@@ -28,10 +28,10 @@ if (!isset($idmod)) {
 $contenidoModuleHandler = new cModuleHandler($idmod);
 if (($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
     cRegistry::addErrorMessage(i18n("No permission"));
-	$page = new cGuiPage('generic_page');
-	$page->abortRendering();
-	$page->render();
-	die();
+    $page = new cGuiPage('generic_page');
+    $page->abortRendering();
+    $page->render();
+    die();
 }
 
 if ($action == "mod_delete") {
@@ -40,7 +40,7 @@ if ($action == "mod_delete") {
         $modules = new cApiModuleCollection();
         $modules->delete($idmod);
         // show success message
-		cRegistry::addInfoMessage(i18n("Deleted module successfully!"));
+        cRegistry::addInfoMessage(i18n("Deleted module successfully!"));
         $page = new cGuiPage('generic_page');
         // remove the navigation when module has been deleted
         $script = new cHTMLScript();
@@ -56,11 +56,11 @@ if ($action == "mod_delete") {
 }
 
 if (($action == "mod_sync") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
-	cRegistry::addErrorMessage(i18n("No permission"));
-	$page = new cGuiPage('generic_page');
-	$page->abortRendering();
-	$page->render();
-	die();
+    cRegistry::addErrorMessage(i18n("No permission"));
+    $page = new cGuiPage('generic_page');
+    $page->abortRendering();
+    $page->render();
+    die();
 }
 
 if ($action == "mod_sync") {
@@ -81,11 +81,11 @@ if ($action == "mod_sync") {
 }
 
 if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
-	cRegistry::addErrorMessage(i18n("No permission"));
-	$page = new cGuiPage('generic_page');
-	$page->abortRendering();
-	$page->render();
-	die();
+    cRegistry::addErrorMessage(i18n("No permission"));
+    $page = new cGuiPage('generic_page');
+    $page->abortRendering();
+    $page->render();
+    die();
 }
 
 if ($action == "mod_new") {
@@ -94,11 +94,11 @@ if ($action == "mod_new") {
     $alias = cApiStrCleanURLCharacters(i18n("- Unnamed module -"));
     $contenidoModuleHandler = new cModuleHandler();
     if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
-		cRegistry::addErrorMessage(i18n("The given module name already exists. Please enter another module name."));
-		$page = new cGuiPage('generic_page');
-		$page->abortRendering();
-		$page->render();
-		die();
+        cRegistry::addErrorMessage(i18n("The given module name already exists. Please enter another module name."));
+        $page = new cGuiPage('generic_page');
+        $page->abortRendering();
+        $page->render();
+        die();
     }
 
     $module = $modules->create(i18n("- Unnamed module -"));
@@ -109,13 +109,13 @@ if ($action == "mod_new") {
     $contenidoModuleHandler = new cModuleHandler($module->get("idmod"));
 
     if ($contenidoModuleHandler->createModule() == false) {
-		cRegistry::addErrorMessage(i18n("Unable to create a new module!"));
-		$page = new cGuiPage('generic_page');
-		$page->abortRendering();
-		$page->render();
+        cRegistry::addErrorMessage(i18n("Unable to create a new module!"));
+        $page = new cGuiPage('generic_page');
+        $page->abortRendering();
+        $page->render();
         die();
     } else {
-		cRegistry::addInfoMessage(i18n("New module created successfuly!"));
+        cRegistry::addInfoMessage(i18n("New module created successfuly!"));
     }
 } else {
     $module = new cApiModule($idmod);
@@ -128,7 +128,7 @@ if ($action == "mod_importexport_module") {
     if ($mode == "import") {
         if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
             if (!$module->import($_FILES['upload']['name'], $_FILES["upload"]["tmp_name"])) {
-				cRegistry::addErrorMessage(i18n("Could not import modul:"));
+                cRegistry::addErrorMessage(i18n("Could not import modul:"));
             } else {
                 // Load the item again (clearing slashes from import)
                 $module->loadByPrimaryKey($module->get($module->primaryKey));
@@ -179,7 +179,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     // Check write permissions
     if ($contenidoModuleHandler->moduleWriteable('php') == false) {
-		cRegistry::addWarningMessage(i18n("You have no write permissions for this module"));
+        cRegistry::addWarningMessage(i18n("You have no write permissions for this module"));
     }
 
     // Read the input and output for the editing in Backend from file
@@ -402,7 +402,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     }
 
     if ($module->isOldModule()) {
-		cRegistry::addWarningMessage(i18n("This module uses variables and/or functions which are probably not available in this CONTENIDO version. Please make sure that you use up-to-date modules."));
+        cRegistry::addWarningMessage(i18n("This module uses variables and/or functions which are probably not available in this CONTENIDO version. Please make sure that you use up-to-date modules."));
     }
 
     if ($idmod != 0) {

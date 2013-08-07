@@ -491,10 +491,10 @@ class cFileHandler {
             // validation failure...
             if ($notifyAndExitOnFailure) {
                 // display notification and exit
-				cRegistry::addErrorMessage(i18n('Wrong file name.'));
-				$page = new cGuiPage('generic_page');
-				$page->abortRendering();
-				$page->render();
+                cRegistry::addErrorMessage(i18n('Wrong file name.'));
+                $page = new cGuiPage('generic_page');
+                $page->abortRendering();
+                $page->render();
                 exit();
             }
 

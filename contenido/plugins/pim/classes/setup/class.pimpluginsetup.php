@@ -328,8 +328,8 @@ class PimPluginSetup {
 
         $areaCount = count($tempXml->area);
         for ($i = 0; $i < $areaCount; $i++) {
-			$attributes = array();
-			
+            $attributes = array();
+
             // build attributes
             foreach ($tempXml->area[$i]->attributes() as $key => $value) {
                 $attributes[$key] = $value;

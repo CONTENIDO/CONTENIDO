@@ -44,9 +44,9 @@ class cSystemPurge {
         '.svn',
         '.cvs',
         '.htaccess',
-		'.git',
-		'.gitignore',
-		'.keep',
+        '.git',
+        '.gitignore',
+        '.keep',
     );
 
     /**

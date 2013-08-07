@@ -1567,56 +1567,56 @@ function endsWith($haystack, $needle) {
  * @param string $showArticle show also current article or categories only (optional)
  * @return null
  */
-function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = false) {		
-	$tplBread = new cTemplate();
-	$tplBread->set('s', 'LABEL', i18n("You are here"));
-	$syncoptions = (int) $syncoptions;
-	
-	$helper = cCategoryHelper::getInstance();
-	$categories = $helper->getCategoryPath(cRegistry::getCategoryId(), 1);
-	$catCount = count($categories);
-	$tplCfg = new cApiTemplateConfiguration();
-	$sess = cRegistry::getSession();
-	$cfg = cRegistry::getConfig();
-	$lang = cRegistry::getLanguageId();
-	$idart = cRegistry::getArticleId();
-	
-	
-	for ($i = 0; $i<$catCount; $i++) {
-		$idcat_tpl = 0;
-		$idcat_bread = $categories[$i]->getField('idcat');
-		$idcat_name = $categories[$i]->getField('name');
-		$idcat_tplcfg = $categories[$i]->getField('idtplcfg');
-		if ((int) $idcat_tplcfg > 0) {
-			$tplCfg->loadByPrimaryKey($idcat_tplcfg);
-			if ($tplCfg->isLoaded()) {
-				$idcat_tpl = $tplCfg->getField('idtpl');
-			}
-		}
+function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = false) {
+    $tplBread = new cTemplate();
+    $tplBread->set('s', 'LABEL', i18n("You are here"));
+    $syncoptions = (int) $syncoptions;
 
-		$linkUrl = $sess->url(cRegistry::getBackendUrl() . "main.php?area=con&frame=4&idcat=$idcat_bread&idtpl=$idcat_tpl&syncoptions=$syncoptions&contenido=1");
-		$tplBread->set('d', 'LINK', $linkUrl);
-		$tplBread->set('d', 'NAME', $idcat_name);
-		
-		$sepArrow = '';
-		if ($i < $catCount-1) {
-			$sepArrow  = ' > ';
-		} else {
-			if ((int) $idart > 0 && $showArticle === true) {
-				$art = new cApiArticleLanguage();
-				$art->loadByArticleAndLanguageId($idart, $lang);
-				if ($art->isLoaded()) {
-					$name = $art->getField('title');
-					$sepArrow  = ' > ' . $name;
-				} 
-			} 
-		}
-		$tplBread->set('d', 'SEP_ARROW', $sepArrow);
+    $helper = cCategoryHelper::getInstance();
+    $categories = $helper->getCategoryPath(cRegistry::getCategoryId(), 1);
+    $catCount = count($categories);
+    $tplCfg = new cApiTemplateConfiguration();
+    $sess = cRegistry::getSession();
+    $cfg = cRegistry::getConfig();
+    $lang = cRegistry::getLanguageId();
+    $idart = cRegistry::getArticleId();
 
-		$tplBread->next();		
-	}
-	
-	return $tplBread->generate($cfg['path']['templates'] . $cfg['templates']['breadcrumb'], $return);
+
+    for ($i = 0; $i<$catCount; $i++) {
+        $idcat_tpl = 0;
+        $idcat_bread = $categories[$i]->getField('idcat');
+        $idcat_name = $categories[$i]->getField('name');
+        $idcat_tplcfg = $categories[$i]->getField('idtplcfg');
+        if ((int) $idcat_tplcfg > 0) {
+            $tplCfg->loadByPrimaryKey($idcat_tplcfg);
+            if ($tplCfg->isLoaded()) {
+                $idcat_tpl = $tplCfg->getField('idtpl');
+            }
+        }
+
+        $linkUrl = $sess->url(cRegistry::getBackendUrl() . "main.php?area=con&frame=4&idcat=$idcat_bread&idtpl=$idcat_tpl&syncoptions=$syncoptions&contenido=1");
+        $tplBread->set('d', 'LINK', $linkUrl);
+        $tplBread->set('d', 'NAME', $idcat_name);
+
+        $sepArrow = '';
+        if ($i < $catCount-1) {
+            $sepArrow  = ' > ';
+        } else {
+            if ((int) $idart > 0 && $showArticle === true) {
+                $art = new cApiArticleLanguage();
+                $art->loadByArticleAndLanguageId($idart, $lang);
+                if ($art->isLoaded()) {
+                    $name = $art->getField('title');
+                    $sepArrow  = ' > ' . $name;
+                }
+            }
+        }
+        $tplBread->set('d', 'SEP_ARROW', $sepArrow);
+
+        $tplBread->next();
+    }
+
+    return $tplBread->generate($cfg['path']['templates'] . $cfg['templates']['breadcrumb'], $return);
 }
 
 ?>
