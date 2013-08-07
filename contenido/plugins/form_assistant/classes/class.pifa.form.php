@@ -410,6 +410,25 @@ class PifaForm extends Item {
     }
 
     /**
+     * Stores the loaded and modified item to the database.
+     *
+     * In contrast to its parent method this store() method returns true even if
+     * there were no modiifed values and thus no statement was executed. This
+     * helps in handling database errors.
+     *
+     * @todo check if this could be usefull for PifaField too.
+     *
+     * @return bool
+     */
+    public function store() {
+        if (is_null($this->modifiedValues)) {
+            return true;
+        } else {
+            return parent::store();
+        }
+    }
+
+    /**
      * Stores values of each field of this form in defined data table.
      * For fields of type INPUT_FILE the uploaded file is stored in the
      * FileSystem (in $cfg['path']['contenido_cache'] . 'form_assistant/').
@@ -872,22 +891,26 @@ class PifaForm extends Item {
      * @throws PifaException if form is not loaded
      */
     public function alterTable($oldTableName, $oldWithTimestamp) {
-        $db = cRegistry::getDb();
-
         if (!$this->isLoaded()) {
             throw new PifaException('form is not loaded');
         }
 
-        // rename data table if name has changed
+        // get & check table name
         $tableName = $this->get('data_table');
+
+        // rename data table if name has changed
         if ($oldTableName !== $tableName) {
+            if ($this->existsTable($tableName)) {
+                throw new PifaException('table ' . $tableName . ' already exists');
+            }
+
             $sql = "-- PifaForm->alterTable()
                 RENAME TABLE
                     `$oldTableName`
                 TO
                     `$tableName`
                 ;";
-            $db->query($sql);
+            cRegistry::getDb()->query($sql);
         }
 
         // adds or drop column for timestamp if setting has changed.
@@ -913,7 +936,7 @@ class PifaForm extends Item {
                         `pifa_timestamp`
                     ;";
             }
-            $db->query($sql);
+            cRegistry::getDb()->query($sql);
         }
     }
 

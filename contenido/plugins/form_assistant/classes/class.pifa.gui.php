@@ -320,6 +320,8 @@ class PifaRightBottomFormPage extends cGuiPage {
 
         // read item data from form
         $name = $_POST['name'];
+        $name = cSecurity::unescapeDB($name);
+        $name = cSecurity::toString($name);
         $name = trim($name);
 
         $dataTable = $_POST['data_table'];
@@ -381,7 +383,7 @@ class PifaRightBottomFormPage extends cGuiPage {
         if ($dataTable !== $this->_pifaForm->get('data_table')) {
             $this->_pifaForm->set('data_table', $dataTable);
         }
-        if ($method !== $this->_pifaForm->get('method')) {
+        if (0 !== strcasecmp($method, $this->_pifaForm->get('method'))) {
             $this->_pifaForm->set('method', $method);
         }
         if ($withTimestamp !== (bool) $this->_pifaForm->get('with_timestamp')) {
