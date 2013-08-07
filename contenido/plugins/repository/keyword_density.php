@@ -255,13 +255,6 @@ function calcDensity($singlewordcounter, $string, $quantifier = 1) {
             continue;
         }
 
-        // replace chars
-        // fix 2008-06-25 timo.trautmann - do not remove special chars from
-        // other languages (french etc.)
-        // $patterns = array('#[^-a-zA-Z0-9�������]#ei');
-        // $replaces = array('');
-        // $tmp[$i] = preg_replace($patterns, $replaces, $tmp[$i]);
-
         // replace punctuation marks
         $patterns = array(
             '/[.,:]/'
