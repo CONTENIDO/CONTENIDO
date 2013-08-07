@@ -50,11 +50,9 @@ class pApiContentAllocationTreeView extends pApiTree {
         $result = array();
         foreach ($tree as $item_tmp) {
             $item = array();
-
             // update item
             if ($_GET['step'] == 'rename' && $item_tmp['idpica_alloc'] == $_GET['idpica_alloc']) {
                 $item = array();
-
                 $item['ITEMNAME'] = '
                     <table cellspacing="0" cellpaddin="0" border="0">
                     <form name="rename" action="main.php" method="POST" onsubmit="return fieldCheck();">
@@ -85,21 +83,25 @@ class pApiContentAllocationTreeView extends pApiTree {
                         }
                     </script>';
             } else {
+               echo '<pre>';
                 if ($item_tmp['children'] || $item_tmp['status'] == 'collapsed') {
                     $expandCollapseImg = 'images/close_all.gif';
                     if ($item_tmp['status'] == 'collapsed') {
                         $expandCollapseImg = 'images/open_all.gif';
                     }
 
-                    $expandCollapse = '<a href="main.php?contenido=' . $sess->id . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" border="0" class="vAlignMiddle" width="7" height="7"></a>';
+                    $expandCollapse = '<a href="main.php?contenido=' . $sess->id . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area .  '&oldstate=' . 'huhu' . '&step=collapse&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" border="0" class="vAlignMiddle" width="7" height="7"></a>';
                 } else {
                     $expandCollapseImg = 'images/spacer.gif';
                     $expandCollapse = '<img src="' . $expandCollapseImg . '" border="0" class="vAlignMiddle" width="11" height="11">';
                 }
 
+                if($item_tmp['status'] == 'collapsed'){
+                    $expandCollapse = '<a href="main.php?contenido=' . $sess->id . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=expanded&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" border="0" class="vAlignMiddle" width="7" height="7"></a>';
+                }
                 $item['ITEMNAME'] = $expandCollapse . ' ' . $item_tmp['name'];
             }
-
+            echo '</pre>';
             $item['ITEMINDENT'] = $item_tmp['level'] * 15 + 3;
             $item['ACTION_CREATE'] = '<a href="main.php?contenido=' . $sess->id . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=add&parentid=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_new.gif" border="0" title="' . i18n("New category", 'content_allocation') . '" alt="' . i18n("New category", 'content_allocation') . '"></a>';
 
