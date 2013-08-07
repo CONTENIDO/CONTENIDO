@@ -299,26 +299,23 @@ table.setupBodyOuterTableLanguageChooser td.last {
  * @section SetupType
  * @extends table.setupBodyOuterTable
  */
-table.setupBodyOuterTableSetupType tr.row-1 {
-    height: 70px;
-}
-table.setupBodyOuterTableSetupType tr.row-2 {
-    height: 130px;
-}
 
+table.setupBodyOuterTableSetupType tr.row-2 {
+    height: auto;
+}
 table.setupBodyOuterTableSetupType .row-1 td {
-    padding: 0 10px;
-    width: 210px;
+    padding: 0 10px 10px 10px;
+    width: 355px;
     height: 70px;
 }
 table.setupBodyOuterTableSetupType .row-2 div {
-    width: 210px;
+    width: 355px;
     display: inline;
 }
 
 table.setupBodyOuterTableSetupType .row-2 td {
-    padding: 0 10px;
-    width: 210px;
+    padding: 0 10px 10px 10px;
+    width: 355px;
 }
 table.setupBodyOuterTableSetupType .row-1 td.first {
     padding-left: 0;
