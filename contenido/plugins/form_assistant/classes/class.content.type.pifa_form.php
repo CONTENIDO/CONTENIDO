@@ -18,7 +18,14 @@ cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.upl.php');
 
 /**
- * Content type CMS_PIFAFORM which lets the editor select a PIFA form.
+ * Content type CMS_PIFAFORM which lets the editor configure a PIFA form to be
+ * displayed in frontend.
+ *
+ * This content type offers several choices:
+ * - select a form of those created in the PIFA backend for the current client
+ * - select a module class located in plugins/form_assistant/extensions
+ * - select a processor class located in plugins/form_assistant/extensions
+ * - DOCME several client & system mail settings
  */
 class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
