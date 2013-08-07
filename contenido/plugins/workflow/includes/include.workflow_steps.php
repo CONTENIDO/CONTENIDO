@@ -99,8 +99,8 @@ if ($action == "workflow_save_step" || $action == "workflow_create_user") {
     $workflowitem = new WorkflowItem();
     $workflowitem->loadByPrimaryKey($idworkflowitem);
     $workflowitem->setField('idtask', $wftaskselect);
-    $workflowitem->setField('name', conHtmlentities(conHtmlSpecialChars($wfstepname)));
-    $workflowitem->setField('description', conHtmlentities(conHtmlSpecialChars($wfstepdescription)));
+    $workflowitem->setField('name', str_replace('\\','',$wfstepname));
+    $workflowitem->setField('description', str_replace('\\','',$wfstepdescription));
     $workflowitem->store();
 
     $usersequences = new WorkflowUserSequences();
@@ -259,8 +259,8 @@ function editWorkflowStep($idworkflowitem) {
 
     $workflowactions = new WorkflowActions();
 
-    $stepname = $workflowitem->get("name");
-    $stepdescription = $workflowitem->get("description");
+    $stepname = str_replace('\\','',conHtmlSpecialChars($workflowitem->get("name")));
+    $stepdescription = str_replace('\\','',conHtmlSpecialChars($workflowitem->get("description")));
     $id = $workflowitem->get("idworkflowitem");
     $task = $workflowitem->get("idtask");
 
