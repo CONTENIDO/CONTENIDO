@@ -30,7 +30,7 @@ if ($action == "recipients_create" && $perm->have_perm_area_action($area, $actio
     $oPage->setReload();
 } elseif ($action == "recipients_delete" && $perm->have_perm_area_action($area, $action)) {
     $oRecipients->delete($idrecipient);
-    $recipient = new Recipient;
+    $recipient = new NewsletterRecipient();
     $oPage->setReload();
 } elseif ($action == "recipients_purge" && $perm->have_perm_area_action($area, "recipients_delete")) {
     $oClient = new cApiClient($client);
