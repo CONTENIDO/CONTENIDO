@@ -482,12 +482,17 @@ function mr_buildGeneratedCode($code) {
         // remove fucking tinymce single quote entities:
         $code = str_replace("&#39;", "'", $code);
 
+        // == IE hack with wrong base href interpretation
         // get base uri
         $sBaseUri = cRegistry::getFrontendUrl();
         $sBaseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $sBaseUri);
-
-        // IE hack with wrong base href interpretation
         $code = preg_replace("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/ie", "stripslashes('\\1{$sBaseUri}upload/\\2\\3')", $code);
+
+        // CON-1389 modifier /e is deprecated as of PHP 5.5
+        $code = preg_replace_callback("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/i", create_function('$m', '
+            $baseUri = cRegistry::getFrontendUrl();
+            $baseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $baseUri);
+            return stripslashes($m[1] . $baseUri . "upload/" . $m[2] . $m[3]);'), $code);
 
         // define some preparations to replace /front_content.php & ./front_content.php
         // against front_content.php, because urls should start with front_content.php
