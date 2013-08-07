@@ -484,9 +484,9 @@ function mr_buildGeneratedCode($code) {
 
         // == IE hack with wrong base href interpretation
         // get base uri
-        $sBaseUri = cRegistry::getFrontendUrl();
-        $sBaseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $sBaseUri);
-        $code = preg_replace("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/ie", "stripslashes('\\1{$sBaseUri}upload/\\2\\3')", $code);
+//         $sBaseUri = cRegistry::getFrontendUrl();
+//         $sBaseUri = cApiCecHook::execute("Contenido.Frontend.BaseHrefGeneration", $sBaseUri);
+//         $code = preg_replace("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/ie", "stripslashes('\\1{$sBaseUri}upload/\\2\\3')", $code);
 
         // CON-1389 modifier /e is deprecated as of PHP 5.5
         $code = preg_replace_callback("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/i", create_function('$m', '
