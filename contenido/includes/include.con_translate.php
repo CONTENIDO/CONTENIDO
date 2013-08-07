@@ -128,6 +128,10 @@ function addSortImages($index, $text) {
 
 $page = new cGuiPage("con_translate");
 
+if (empty($action)) {
+    $action = 'con_translate_view';
+}
+
 // Check permission for current user
 if (!$perm->have_perm_area_action($area, $action)) {
     $page->displayCriticalError(i18n('Permission denied'));

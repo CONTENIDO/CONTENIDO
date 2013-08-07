@@ -121,3 +121,4 @@ INSERT INTO !PREFIX!_actions VALUES('857', '105','','deletecontype','','','1');
 INSERT INTO !PREFIX!_actions VALUES('10000', '10000','','pim','','','1');
 INSERT INTO !PREFIX!_actions VALUES('860', '97','','con_translate_edit','','','1');
 INSERT INTO !PREFIX!_actions VALUES('861', '97','','con_translate_save','','','1');
+INSERT INTO !PREFIX!_actions VALUES('862', '97','','con_translate_view','','','1');
