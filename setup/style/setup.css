@@ -159,8 +159,6 @@ td.entry_nowrap {
     white-space: nowrap;
 }
 
-/* additions rbi 2008-02-26 */
-
 img.closer {
     cursor: pointer;
 }
@@ -190,32 +188,6 @@ table.setupBodyOuterTable {
     height: 300px;
 }
 
-table.setupBodyOuterTable .progressBarModule {
-    border: 1px solid #999;
-    width: 700px;
-    overflow: hidden;
-    background-color: white;
-}
-
-table.setupBodyOuterTable .progressBarModule .progressBarModuleContent {
-    border: 1px solid white;
-    width: 698px;
-    overflow: hidden;
-    background-color: white;
-}
-
-table.setupBodyOuterTable .progressBarModule .progressBarModuleContent #progressbar {
-    width: 0;
-    padding: 0;
-    background: #bfcf00 url(../images/controls/pbend.gif) top right no-repeat;
-    height: 16px;
-    line-height: 16px;
-}
-
-table.setupBodyOuterTable .progressOutput {
-    width: 700px;
-    height: 150px;
-}
 
 table.setupBodyOuterTable tr.row-1 {
     height: 90px;
@@ -254,7 +226,7 @@ table.setupBodyOuterTable td.column-2 a.navBack {
 .setupBodyOuterTable a.nav {
     display: inline-block;
     display: block;
-    font-size: 0;
+    font-size: 12px;
     height: 16px;
     line-height: 16px;
     width: 16px;
@@ -265,7 +237,7 @@ table.setupBodyOuterTable td.column-2 a.navBack {
     display: block;
     width: 16px;
     height: 16px;
-    background-image: url(../images/controls/nav.gif);
+    background: transparent url(../images/controls/nav.gif) 0 0 no-repeat;
     text-indent: -999em;
     position: absolute;
     top: 0;
@@ -285,6 +257,17 @@ table.setupBodyOuterTable td.column-2 a.navBack {
 	background-position: 0 -90px;
 }
 
+.setupBodyOuterTable a.navLabel,
+.setupBodyOuterTable a.navLabel:hover {
+    width: auto;
+    padding-right: 20px;
+}
+
+.setupBodyOuterTable a.navLabel span,
+.setupBodyOuterTable a.navLabel:hover span {
+    right: 0;
+    left: auto;
+}
 
 /* ie 7 hack */
 * + html .setupBodyOuterTable td.column-2 a.nav {
@@ -292,7 +275,9 @@ table.setupBodyOuterTable td.column-2 a.navBack {
     zoom: 1;
 }
 
+
 /**
+ * @section LanguageChooser
  * @extends table.setupBodyOuterTable
  */
 table.setupBodyOuterTableLanguageChooser {
@@ -311,6 +296,7 @@ table.setupBodyOuterTableLanguageChooser td.last {
 
 
 /**
+ * @section SetupType
  * @extends table.setupBodyOuterTable
  */
 table.setupBodyOuterTableSetupType tr.row-1 {
@@ -324,7 +310,6 @@ table.setupBodyOuterTableSetupType .row-1 td {
     padding: 0 10px;
     width: 210px;
     height: 70px;
-/*    overflow: hidden;*/
 }
 table.setupBodyOuterTableSetupType .row-2 div {
     width: 210px;
@@ -352,6 +337,7 @@ table.setupBodyOuterTableSetupType .row-3 td a {
 
 
 /**
+ * @section NotInstallable
  * @extends table.setupBodyOuterTable
  */
 table.setupBodyOuterTableNotInstallable {
@@ -370,14 +356,18 @@ table.setupBodyOuterTableNotInstallable td p.last {
     margin-bottom: 0;
 }
 
+
 /**
+ * @section ConfigMode
  * @extends table.setupBodyOuterTable
  */
 table.setupBodyOuterTableConfigMode td.header {
     height: 50px;
 }
 
+
 /**
+ * @section ClientMode
  * @extends table.setupBodyOuterTable
  */
 table.setupBodyOuterTableClientMode td.header {
@@ -389,6 +379,7 @@ table.setupBodyOuterTableClientMode td.column-1 td {
 }
 
 /**
+ * @section SystemData
  * @extends table.setupBodyOuterTable
  */
 table.setupBodyOuterTableSystemData td.column-1 td.first {
@@ -404,6 +395,47 @@ table.setupBodyOuterTableSystemData td.column-1 td.last {
 table.setupBodyOuterTableSystemData td.column-1 select {
     margin-left: 0;
 }
+
+
+/**
+ * @section Installer
+ * @extends table.setupBodyOuterTable
+ */
+table.setupBodyOuterTableInstaller tr.row-2 {
+    height: 205px;
+}
+
+
+/**
+ * @section ProgressBar
+ */
+table.setupBodyOuterTable .progressBarModule {
+    border: 1px solid #999;
+    width: 715px;
+    overflow: hidden;
+    background-color: white;
+}
+
+table.setupBodyOuterTable .progressBarModule .progressBarModuleContent {
+    border: 1px solid white;
+    width: 713px;
+    overflow: hidden;
+    background-color: white;
+}
+
+table.setupBodyOuterTable .progressBarModule .progressBarModuleContent #progressbar {
+    width: 0;
+    padding: 0;
+    background: #bfcf00 url(../images/controls/pbend.gif) top right no-repeat;
+    height: 16px;
+    line-height: 16px;
+}
+
+table.setupBodyOuterTable .progressOutput {
+    width: 715px;
+    height: 150px;
+}
+
 
 /*Styles for plugin information layer and other elements in step five timo.trautmann*/
 #setupBox,
@@ -440,7 +472,6 @@ table.setupBodyOuterTableSystemData td.column-1 select {
     float: right;
     padding-right: 24px;
 }
-
 
 #setupBody {
     background-color: #f1f1f1;

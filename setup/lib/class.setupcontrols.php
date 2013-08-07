@@ -20,7 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package Setup
  * @subpackage GUI
- * @deprecated [2013-07-31] Not used anymore!
+ * @todo  Remove the usage of this class. We dont need special alpha filter for IE anymore.
+ *        The last place where it is still in use are the error lists with content toggle (+ - icons) feature!
  */
 class cHTMLAlphaImage extends cHTMLImage {
 
@@ -45,12 +46,9 @@ class cHTMLAlphaImage extends cHTMLImage {
     }
 
     function toHTML() {
-        $alphaLoader = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'%s\')';
         $imageLocations = "this.imgnormal = '%s'; this.imgover = '%s'; this.clickimgnormal = '%s'; this.clickimgover = '%s';";
 
-        $this->appendStyleDefinition("filter", sprintf($alphaLoader, $this->getAttribute('src')));
         $this->attachEventDefinition("imagelocs", "onload", sprintf($imageLocations, $this->getAttribute('src'), $this->_sMouseoverSrc, $this->_sClickImage, $this->_sMouseoverClickImage));
-        $this->attachEventDefinition("swapper", "onload", 'if (!this.init) {IEAlphaInit(this); IEAlphaApply(this, this.imgnormal); this.init = true;}');
 
         if ($this->_sMouseoverSrc != "") {
             if ($this->_sClickImage != "") {
@@ -58,7 +56,7 @@ class cHTMLAlphaImage extends cHTMLImage {
                 $this->attachEventDefinition("mouseover", "onmouseover", "mouseoverHandler(this);");
                 $this->attachEventDefinition("mouseover", "onmouseout", "mouseoutHandler(this);");
             } else {
-                $sMouseScript = 'if (isMSIE) { this.style.filter = \'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\\\'%1$s\\\');\'; } else { this.src=\'%1$s\'; }';
+                $sMouseScript = 'this.src=\'%1$s\';';
                 $this->attachEventDefinition("mouseover", "onmouseover", sprintf($sMouseScript, $this->_sMouseoverSrc));
                 $this->attachEventDefinition("mouseover", "onmouseout", sprintf($sMouseScript, $this->getAttribute('src')));
             }
@@ -82,7 +80,6 @@ class cHTMLErrorMessageList extends cHTMLDiv {
         $this->_oTable->setWidth("100%");
         parent::__construct();
         $this->setClass("errorlist");
-//        $this->setStyle("width: 450px;height:218px;overflow:auto;border:1px solid black;");
     }
 
     function setContent($content) {
@@ -116,10 +113,10 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow {
         $alphaImage = new cHTMLAlphaImage();
         $alphaImage->setClass("closer");
         $alphaImage->setStyle('margin-top:4px;');
-        $alphaImage->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/open_all.gif");
-        $alphaImage->setMouseover(CON_SETUP_CONTENIDO_HTML_PATH . "images/open_all.gif");
-        $alphaImage->setSwapOnClick(CON_SETUP_CONTENIDO_HTML_PATH . "images/close_all.gif", CON_SETUP_CONTENIDO_HTML_PATH . "images/close_all.gif");
-        $alphaImage->attachEventDefinition("showhide", "onclick", "aldiv = document.getElementById('" . $this->_oMessage->getId() . "');  showHideMessage(this, aldiv);");
+        $alphaImage->setSrc("images/controls/open_all.gif");
+        $alphaImage->setMouseover("images/controls/open_all.gif");
+        $alphaImage->setSwapOnClick("images/controls/close_all.gif", "images/controls/close_all.gif");
+        $alphaImage->attachEventDefinition("showhide", "onclick", "aldiv = document.getElementById('" . $this->_oMessage->getId() . "'); showHideMessage(this, aldiv);");
 
         $this->_oTitle->setContent($sTitle);
         $this->_oTitle->setStyle("cursor:pointer;");
@@ -201,7 +198,8 @@ class cHTMLInfoMessage extends cHTMLTableRow {
 }
 
 /**
- * Setup language link based on cHTMLDiv.
+ * Setup language link based on cHTMLDiv, like
+ * "English    ->"
  *
  * @package Setup
  * @subpackage GUI
@@ -211,28 +209,23 @@ class cHTMLLanguageLink extends cHTMLDiv {
     function cHTMLLanguageLink($langcode, $langname, $stepnumber) {
         parent::__construct();
 
-        $this->setStyle("vertical-align:center;height:40px;width:150px;");
+        $this->setStyle("height:40px;width:150px;");
+
         $link = new cHTMLLink("#");
-        $link->setContent($langname);
+        $link->setClass("nav navLabel");
+        $link->setContent($langname . "<span>&raquo;</span>");
         $link->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = '$stepnumber';");
         $link->attachEventDefinition("languageAttach", "onclick", "document.setupform.elements.language.value = '$langcode';");
         $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
 
-        $link2 = new cHTMLLink("#");
-        $link2->setClass("nav");
-        $link2->setContent('<span>' . $langname . '</span>');
-        $link2->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = '$stepnumber';");
-        $link2->attachEventDefinition("languageAttach", "onclick", "document.setupform.elements.language.value = '$langcode';");
-        $link2->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
-
-        $alignment = '<table border="0" width="100%%" cellspacing="0" cellpadding="0"><tr><td valign="middle">%s</td><td valign="middle" align="right">%s</td></tr></table>';
-        $this->setContent(sprintf($alignment, $link->render(), $link2->render()));
+        $this->setContent($link->render());
     }
 
 }
 
 /**
- * Setup button link based on cHTMLDiv.
+ * Setup button link based on cHTMLDiv, like
+ * "Backend - CMS    ->"
  *
  * @package Setup
  * @subpackage GUI
@@ -242,28 +235,14 @@ class cHTMLButtonLink extends cHTMLDiv {
     function cHTMLButtonLink($href, $title) {
         parent::__construct();
 
-        $linkImage = new cHTMLAlphaImage();
-        $linkImage->advanceID();
-        $linkImage->setSrc(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
-        $linkImage->setMouseover(CON_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
-        $linkImage->setWidth(16);
-        $linkImage->setHeight(16);
+        $this->setStyle("height:40px;width:180px;");
 
-        $this->setStyle("vertical-align:center;height:40px;width:165px;");
         $link = new cHTMLLink($href);
         $link->setAttribute("target", "_blank");
-        $link->setContent($title);
+        $link->setClass("nav navLabel");
+        $link->setContent($title . "<span>&raquo;</span>");
 
-        $link2 = new cHTMLLink($href);
-        $link2->setAttribute("target", "_blank");
-        $link2->setContent($title);
-
-        $link->attachEventDefinition("mouseover", "onmouseover", sprintf("mouseoverHandler(document.getElementById('%s'));", $linkImage->getId()));
-        $link->attachEventDefinition("mouseout", "onmouseout", sprintf("mouseoutHandler(document.getElementById('%s'));", $linkImage->getId()));
-        $link2->setContent($linkImage);
-
-        $alignment = '<table border="0" width="100%%" cellspacing="0" cellpadding="0"><tr><td valign="middle">%s</td><td valign="middle" align="right">%s</td></tr></table>';
-        $this->setContent(sprintf($alignment, $link->render(), $link2->render()));
+        $this->setContent($link->render());
     }
 
 }

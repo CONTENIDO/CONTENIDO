@@ -14,15 +14,19 @@
                 </div>
             </div>
             <script type="text/javascript">
+            var progressElem = null;
             function updateProgressbar(percent)
             {
-                width = ((700 / 100) * percent) + 10;
-                var elem = document.getElementById("progressbar");
-                elem.style.width = "" + width + "px";
+                var width = Math.round(((730 / 100) * percent));
+                if (!progressElem) {
+                    progressElem = document.getElementById("progressbar");
+                }
+                progressElem.style.width = "" + width + "px";
             }
             </script>
             <iframe class="progressOutput" style="visibility:{IFRAMEVISIBILITY};" src="{DBUPDATESCRIPT}"></iframe>
         </td>
+    </tr>
     <tr>
         <td class="column-2">
             <div style="visibility:hidden;" id="next">

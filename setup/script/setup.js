@@ -15,25 +15,8 @@
  */
 
 
-var isMSIE = (navigator.appName == "Microsoft Internet Explorer");
-
-if (navigator.userAgent.indexOf("Opera") != -1) {
-    isMSIE = false;
-}
-
-function IEAlphaInit(obj) {
-    if (isMSIE && !obj.IEswapped) {
-        obj.IEswapped = true;
-        obj.src = 'images/spacer.gif';
-    }
-}
-
-function IEAlphaApply(obj, img) {
-    if (isMSIE) {
-        obj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+img+"');";
-    } else {
-        obj.src = img;
-    }
+function applyImage(obj, img) {
+    obj.src = img;
 }
 
 function clickHandler(obj) {
@@ -41,15 +24,15 @@ function clickHandler(obj) {
 
     if (obj.clicked) {
         if (obj.mouseIn) {
-            IEAlphaApply(obj, obj.clickimgover);
+            applyImage(obj, obj.clickimgover);
         } else {
-            IEAlphaApply(obj, obj.clickimgnormal);
+            applyImage(obj, obj.clickimgnormal);
         }
     } else {
         if (obj.mouseIn) {
-            IEAlphaApply(obj, obj.imgover);
+            applyImage(obj, obj.imgover);
         } else {
-            IEAlphaApply(obj, obj.imgnormal);
+            applyImage(obj, obj.imgnormal);
         }
     }
 }
@@ -58,9 +41,9 @@ function mouseoverHandler(obj) {
     obj.mouseIn = true;
 
     if (obj.clicked) {
-        IEAlphaApply(obj, obj.clickimgover);
+        applyImage(obj, obj.clickimgover);
     } else {
-        IEAlphaApply(obj, obj.imgover);
+        applyImage(obj, obj.imgover);
     }
 }
 
@@ -68,9 +51,9 @@ function mouseoutHandler(obj) {
     obj.mouseIn = false;
 
     if (obj.clicked) {
-        IEAlphaApply(obj, obj.clickimgnormal);
+        applyImage(obj, obj.clickimgnormal);
     } else {
-        IEAlphaApply(obj, obj.imgnormal);
+        applyImage(obj, obj.imgnormal);
     }
 }
 
