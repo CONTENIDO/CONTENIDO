@@ -216,12 +216,14 @@ class PifaAjaxHandler {
      */
     private function _postFieldForm($idform, $idfield) {
 
-        function pifa_ajax_handler_string_cast_deep($value) {
+        $string_cast_deep = create_function('$value', '
             $value = cSecurity::unescapeDB($value);
             $value = cSecurity::toString($value);
             $value = trim($value);
+            // replace comma by comma entity
+            $value = str_replace(\',\', \'&#44;\', $value);
             return $value;
-        }
+        ');
 
         global $area;
         $cfg = cRegistry::getConfig();
@@ -319,7 +321,7 @@ class PifaAjaxHandler {
 
         if ($pifaField->showField('option_labels')) {
             if (array_key_exists('option_labels', $_POST) && is_array($_POST['option_labels'])) {
-                $optionLabels = implode(',', array_map('pifa_ajax_handler_string_cast_deep', $_POST['option_labels']));
+                $optionLabels = implode(',', array_map($string_cast_deep, $_POST['option_labels']));
                 $optionLabels = substr($optionLabels, 0, 1023);
             }
             if ($optionLabels !== $pifaField->get('option_labels')) {
@@ -329,7 +331,7 @@ class PifaAjaxHandler {
 
         if ($pifaField->showField('option_values')) {
             if (array_key_exists('option_values', $_POST) && is_array($_POST['option_values'])) {
-                $optionValues = implode(',', array_map('pifa_ajax_handler_string_cast_deep', $_POST['option_values']));
+                $optionValues = implode(',', array_map($string_cast_deep, $_POST['option_values']));
                 $optionValues = substr($optionValues, 0, 1023);
             }
             if ($optionValues !== $pifaField->get('option_values')) {
@@ -388,7 +390,7 @@ class PifaAjaxHandler {
         }
 
         if ($pifaField->showField('css_class') && array_key_exists('css_class', $_POST) && is_array($_POST['css_class'])) {
-            $cssClass = implode(',', array_map('pifa_ajax_handler_string_cast_deep', $_POST['css_class']));
+            $cssClass = implode(',', array_map($string_cast_deep, $_POST['css_class']));
             $cssClass = substr($cssClass, 0, 1023);
             if ($cssClass !== $pifaField->get('css_class')) {
                 $pifaField->set('css_class', $cssClass);

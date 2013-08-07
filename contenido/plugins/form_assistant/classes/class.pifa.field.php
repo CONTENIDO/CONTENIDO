@@ -1266,6 +1266,16 @@ class PifaField extends Item {
         if (0 < strlen($option_labels . $option_values)) {
             $option_labels = explode(',', $option_labels);
             $option_values = explode(',', $option_values);
+
+            // str_getcsv requires PHP 5.3 :(
+            //$option_labels = str_getcsv($option_labels);
+            //$option_values = str_getcsv($option_values);
+
+            // instead replace commas stored as entities by real commas
+            $func = create_function('$v', 'return str_replace(\'&#44;\', \',\', $v);');
+            $option_labels = array_map($func, $option_labels);
+            $option_values = array_map($func, $option_values);
+
             foreach (array_keys($option_labels) as $key) {
                 $out[] = array(
                     'label' => $option_labels[$key],
