@@ -498,14 +498,14 @@ class cPermission {
     }
 
     /**
-     * Checks if user has permissions tp passed perm.
+     * Checks if user has permissions to passed perm.
      * - Sysadmin has allways permission
      * - Client admin has allways permission
      *
      * @param string $p Permissions (comma separated list of perms) to check
      * @return bool
      */
-    public function have_perm($p = 'x') {
+    public function have_perm($perm = 'x') {
         global $auth, $client;
 
         if (!isset($auth->auth['perm'])) {
@@ -523,7 +523,7 @@ class cPermission {
             // Else check rights for the client and the language
         } else {
             // If there are more permissions to ask split them
-            $pageperm = explode(',', $p);
+            $pageperm = explode(',', $perm);
             foreach ($pageperm as $value) {
                 if (!in_array($value, $userperm)) {
                     return false;
