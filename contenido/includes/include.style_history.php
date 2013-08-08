@@ -32,11 +32,14 @@ $oPage = new cGuiPage('style_history');
 
 if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
     $oPage->displayCriticalError(i18n('Permission denied'));
+    $oPage->abortRendering();
     $oPage->render();
 } else if (!(int) $client > 0) {
+	$oPage->abortRendering();
     $oPage->render();
 } else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
     $oPage->displayWarning(i18n('Versioning is not activated'));
+    $oPage->abortRendering();
     $oPage->render();
 } else {
 
@@ -160,15 +163,16 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
             $oPage->set('s', 'FORM', $sSelectBox . $oForm->render());
         } else {
             $oPage->displayWarning(i18n('No style history available'));
+            $oPage->abortRendering();
         }
     } else {
         if ($bDeleteFile) {
             $oPage->displayWarning(i18n('Version history was cleared'));
-            $oPage->abortRendering();
         } else {
             $oPage->displayWarning(i18n('No style history available'));
-            $oPage->abortRendering();
         }
+        
+        $oPage->abortRendering();
     }
     $oPage->render();
 }

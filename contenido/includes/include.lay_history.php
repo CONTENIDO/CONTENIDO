@@ -27,11 +27,14 @@ $bDeleteFile = false;
 
 if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
     $oPage->displayError(i18n("Permission denied"));
+    $oPage->abortRendering();
     $oPage->render();
 } else if (!(int) $client > 0) {
+	$oPage->abortRendering();
     $oPage->render();
 } else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
     $oPage->displayWarning(i18n("Versioning is not activated"));
+    $oPage->abortRendering();
     $oPage->render();
 } else {
     if ($_POST["lay_send"] == true && $_POST["layname"] != "" && $_POST["laycode"] != "" && (int) $idlay > 0) { // save
@@ -126,6 +129,8 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
         } else {
             $oPage->displayWarning(i18n("No layout history available"));
         }
+        
+        $oPage->abortRendering();
     }
     $oPage->render();
 }

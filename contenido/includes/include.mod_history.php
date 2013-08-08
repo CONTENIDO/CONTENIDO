@@ -28,13 +28,16 @@ $oPage = new cGuiPage('mod_history');
 
 if (!$perm->have_perm_area_action($area, 'mod_history_manage')) {
     $oPage->displayError(i18n("Permission denied"));
+    $oPage->abortRendering();
     $oPage->render();
     return;
 } elseif (!(int) $client > 0) {
+	$oPage->abortRendering();
     $oPage->render();
     return;
 } elseif (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
     $oPage->displayWarning(i18n("Versioning is not activated"));
+    $oPage->abortRendering();
     $oPage->render();
     return;
 }
@@ -127,11 +130,11 @@ if ($sSelectBox != "") {
 } else {
     if ($bDeleteFile) {
         $oPage->displayWarning(i18n("Version history was cleared"));
-        $oPage->abortRendering();
     } else {
         $oPage->displayWarning(i18n("No module history available"));
-        $oPage->abortRendering();
     }
+    
+    $oPage->abortRendering();
 }
 
 $oPage->render();
