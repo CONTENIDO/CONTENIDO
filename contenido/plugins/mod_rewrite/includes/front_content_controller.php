@@ -95,6 +95,9 @@ if ($oMRController->errorOccured()) {
 
 // some debugs
 ModRewriteDebugger::add($mr_preprocessedPageError, 'mr $mr_preprocessedPageError', __FILE__);
+if ($oMRController->getError()) {
+    ModRewriteDebugger::add($oMRController->getError(), 'mr error', __FILE__);
+}
 ModRewriteDebugger::add($idart, 'mr $idart', __FILE__);
 ModRewriteDebugger::add($idcat, 'mr $idcat', __FILE__);
 ModRewriteDebugger::add($lang, 'mr $lang', __FILE__);
