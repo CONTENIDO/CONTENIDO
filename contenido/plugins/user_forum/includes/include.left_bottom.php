@@ -15,8 +15,12 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// generates obj that renders the menustructur on the left side.
+ //generates obj that renders the menustructur on the left side.
 $leftBottom = new ArticleForumLeftBottom('left_bottom', 'commentedArticleList');
-$leftBottom->receiveData($_GET);
-$leftBottom->render();
+$menu = $leftBottom->receiveData($_GET);
+
+$tpl = new cTemplate();
+$tpl->set('s', 'menu', $menu->render());
+$tpl->generate('plugins/user_forum/templates/template.left_bottom.html');
+
 ?>
