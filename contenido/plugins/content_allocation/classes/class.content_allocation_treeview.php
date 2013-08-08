@@ -49,7 +49,6 @@ class pApiContentAllocationTreeView extends pApiTree {
         global $action, $frame, $area, $sess;
         $result = array();
         foreach ($tree as $item_tmp) {
-            print_r($item_tmp);
             $item = array();
             // update item
             if ($_GET['step'] == 'rename' && $item_tmp['idpica_alloc'] == $_GET['idpica_alloc']) {
