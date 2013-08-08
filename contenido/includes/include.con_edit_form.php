@@ -348,7 +348,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tpl->set('s', 'ONLINE', 'Online');
     $tpl->set('s', 'ONLINE-CHECKBOX', $tmp_ocheck);
 
-    // Startartikel
+    // Startarticle
     $tmp_start_checked = $tmp_is_start ? 'checked="checked"' : '';
     if ($perm->have_perm_area_action("con", "con_makestart") || $perm->have_perm_area_action_item("con", "con_makestart", $idcat)) {
         $tmp_start = '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" ' . $tmp_start_checked . '>';
@@ -445,7 +445,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 FROM
                     " . $cfg["tab"]["cat_art"] . "
                 WHERE
-                    idart='" . $idart . "'";
+                    idart = " . cSecurity::toInteger($idart);
         $db->query($sql);
         while ($db->nextRecord()) {
             $tmp_idcat_in_art[] = $db->f("idcat");
