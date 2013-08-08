@@ -1,6 +1,7 @@
 <?php
 /**
- * This file contains the class for visualisation and interactions in the left frame.
+ * This file contains the class for visualisation and interactions in the left
+ * frame.
  *
  * @package Plugin
  * @subpackage UserForum
@@ -12,7 +13,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -55,75 +55,40 @@ class ArticleForumLeftBottom extends cGuiPage {
             return '';
         }
 
-        $table = new cHTMLTable();
-        $table->setCellPadding('100px');
         global $area;
-        $table->updateAttributes(array(
-            "class" => "generic",
-            "cellspacing" => "0",
-            "cellpadding" => "2"
-        ));
-
-        $tr = new cHTMLTableRow();
-        $thleft = new cHTMLTableHead();
-
-        $thright = new cHTMLTableHead();
-        $thleft->setContent(i18n("ARTICLES", "user_forum"));
-        // $thleft->setStyle('widht:20px');
-        $thleft->setStyle('text-align: center');
-        $thleft->setAttribute('valign', 'top');
-        $thright->setContent(i18n("ACTIONS", "user_forum"));
-        $thright->setStyle('widht:20px');
-        $thright->setStyle('text-align: center');
-        $thright->setAttribute('valign', 'center');
-        $tr->appendContent($thleft);
-        $tr->appendContent($thright);
-        $table->appendContent($tr);
-        // $tr->appendContent($th);
 
         $menu = new cGuiMenu();
         for ($i = 0; $i < count($forms); $i++) {
 
-            $tr = new cHTMLTableRow();
-
-            $tdname = new cHTMLTableData();
-            $tdname->setStyle('text-align: center');
-            $tdlink = new cHTMLTableData();
-
-            $res = $result[$i]['idart'];
-
             $formName = $result[$i]['title'];
-            $menu->setTitle("", $formName);
+            $menu->setTitle($i, $formName);
 
             // add 'show form' link
             $link = new cHTMLLink();
+
             $link->setCLink($area, 4, 'show_form');
             $link->setTargetFrame('right_bottom');
-            // $link->setStyle('text-align: center');
             $link->setClass('linktext');
             $link->setCustom('idart', $result[$i]['idart']);
             $link->setCustom('idcat', $result[$i]['idcat']);
-            $link->setContent('' . $formName);
-            $menu->setLink("", $link);
+            $link->setContent($formName);
+            $menu->setLink($i, $link);
+
+            $link = new cHTMLLink();
 
             $arg = $result[$i]['idart'];
             $message = UserForum::i18n('ALLDELETEFROMCAT');
-
-            $deletebutton = '<a title="' . $result[$i]['title'] . '" href="javascript:void(0)"
-            onclick="showConfirmation(&quot;' . $message . '&quot;, function(){deleteArticlesByIdLeft(' . $arg . ');});
-            return false;"><img class="links" src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $message . '" alt="' . $message . '"></a>';
-
-            $tdname->appendContent($link);
-            $tdlink->appendContent($deletebutton);
-            $tr->appendContent($tdname);
-            $tr->appendContent($tdlink);
-            $table->appendContent($tr);
+            $link->setLink('javascript:void(0)');
+            $link->setAttribute("onclick", 'showConfirmation(&quot;' . $message . '&quot;, function(){deleteArticlesByIdLeft(' . $arg . ');}); return false;');
+            $link->setImage($cfg['path']['images'] . 'delete.gif');
+            $link->setAlt($message);
+            $menu->setActions($i, 'delete', $link);
         }
         if (count($forms) > 0) {
-            return $table;
+            return $menu;
         } else {
 
-            return new cHTMLTable();
+            return $menu;
         }
     }
 
@@ -133,7 +98,7 @@ class ArticleForumLeftBottom extends cGuiPage {
             $this->_collection->deleteAllCommentsById($get['idart']);
         }
 
-        $this->appendContent($this->getMenu());
+        return $this->getMenu();
     }
 
 }
