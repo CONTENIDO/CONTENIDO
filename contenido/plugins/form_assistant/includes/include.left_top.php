@@ -15,15 +15,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $area;
 
-$cfg = cRegistry::getConfig();
-
 $link = new cHTMLLink();
 $link->setMultiLink($area, PifaRightBottomFormPage::SHOW_FORM, $area, PifaRightBottomFormPage::SHOW_FORM);
 $link->setContent(Pifa::i18n('CREATE_FORM'));
-$link->setTargetFrame('right_bottom');
+// class addfunction lets display add icon beneath link
+$link->updateAttributes(array(
+    'class' => 'addfunction'
+));
 
-$oUi = new cTemplate();
-$oUi->set("s", "ACTION", $link->render());
-$oUi->generate($cfg["path"]["templates"] . $cfg["templates"]["left_top"]);
+$page = new cGuiPage('left_top', 'form_assistant');
+$page->set('s', 'LINK', $link->render());
+$page->render();
 
 ?>

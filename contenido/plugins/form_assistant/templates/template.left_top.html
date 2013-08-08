@@ -1,0 +1,16 @@
+
+<script type="text/javascript">
+    function resizeFrame() {
+        // resizing frame
+        parent.parent.frameResize.resizeTopLeftFrame(document.getElementById('top_left_container').offsetHeight + 10);
+    }
+
+</script>
+<div id="top_left_container" style="height:2em;border: 1px solid #B3B3B3; padding:5px 0 5px 16px; margin-top:1px">
+{LINK}
+</div>
+<script>
+    $(document).ready(new function() {
+        resizeFrame();
+    });
+</script>

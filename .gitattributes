@@ -1522,6 +1522,7 @@ contenido/plugins/form_assistant/templates/template.ajax_field_form.tpl -text
 contenido/plugins/form_assistant/templates/template.ajax_field_row.tpl -text
 contenido/plugins/form_assistant/templates/template.ajax_option_row.tpl -text
 contenido/plugins/form_assistant/templates/template.left_bottom.html -text svneol=unset#text/plain
+contenido/plugins/form_assistant/templates/template.left_top.html -text svneol=unset#text/plain
 contenido/plugins/form_assistant/templates/template.right_bottom.html -text svneol=unset#text/plain
 contenido/plugins/form_assistant/templates/template.right_bottom_data.tpl -text
 contenido/plugins/form_assistant/templates/template.right_bottom_fields.tpl -text

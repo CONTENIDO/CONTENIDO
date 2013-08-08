@@ -293,7 +293,7 @@ msgstr "download data as CSV"
 ; class.pifa.product_group_options_datasource.php
 
 msgid "CHOOSE_CATEGORY"
-msgstr "please choose a category"
+msgstr "Please choose a category."
 
 ; include.left_top.php
 
