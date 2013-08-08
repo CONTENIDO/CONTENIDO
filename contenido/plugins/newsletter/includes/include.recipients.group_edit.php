@@ -67,7 +67,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
         $aMessages = array();
         $bReload = false;
 
-        $sGroupName = stripslashes($_REQUEST["groupname"]);
+        $sGroupName = htmlentities(stripslashes($_REQUEST["groupname"]));
         if ($oRGroup->get("groupname") != $sGroupName) {
             $oRGroups->resetQuery();
             $oRGroups->setWhere("groupname", $sGroupName);
