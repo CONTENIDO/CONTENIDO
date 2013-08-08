@@ -14,6 +14,11 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-SearchPath-0: \n"
 
+; class.solr_indexer.php
+
+msgid "WARNING_INVALID_CLIENT_OPTIONS"
+msgstr "Artikel konnte nicht indizier werden, da Solr nicht korrekt konfiguriert ist."
+
 ; class.solr.gui.php
 
 msgid "CLIENT_OPTIONS"

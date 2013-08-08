@@ -67,7 +67,7 @@ class Solr {
 
         // log message
         $log = new cLog(cLogWriter::factory('file', array(
-                    'destination' => $filename
+            'destination' => $filename
         )));
         $log->info($prefix . $whatever);
     }
@@ -184,14 +184,32 @@ class Solr {
 
     /**
      *
+     * @param array $options
+     * @throws SolrWarning
+     */
+    public static function validateClientOptions(array $options) {
+        $valid = true;
+        $valid &= array_key_exists('hostname', $options);
+        $valid &= array_key_exists('port', $options);
+        $valid &= array_key_exists('path', $options);
+        $valid &= array_key_exists('login', $options);
+        $valid &= array_key_exists('password', $options);
+
+        if (!$valid) {
+            throw new SolrWarning(Solr::i18n('WARNING_INVALID_CLIENT_OPTIONS'));
+        }
+    }
+
+    /**
+     *
      * @param Exception $e
      */
     public static function logException(Exception $e) {
         $cfg = cRegistry::getConfig();
 
         $log = new cLog(cLogWriter::factory('file', array(
-                    'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
-                )), cLog::ERR);
+            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
+        )), cLog::ERR);
 
         $log->err($e->getMessage());
         $log->err($e->getTraceAsString());
@@ -246,7 +264,6 @@ class Solr {
 
         return $cGuiNotification->returnNotification($level, $message);
     }
-
 }
 
 // define template names
@@ -260,6 +277,8 @@ cAutoload::addClassmapConfig(array(
     'SolrSearcherSimple' => $pluginClassPath . 'classes/class.solr_searcher_simple.php',
     'SolrSearchModule' => $pluginClassPath . 'classes/class.solr_search_module.php',
     'SolrRightBottomPage' => $pluginClassPath . 'classes/class.solr.gui.php',
+    'SolrException' => $pluginClassPath . 'classes/class.solr_exception.php',
+    'SolrWarning' => $pluginClassPath . 'classes/class.solr_warning.php'
 ));
 unset($pluginClassPath);
 

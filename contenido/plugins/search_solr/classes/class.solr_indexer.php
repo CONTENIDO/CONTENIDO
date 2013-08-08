@@ -121,9 +121,9 @@ class SolrIndexer {
             // update given articles
             $indexer->updateArticles();
         } catch (cException $e) {
-            // either deletion or adding of articles failed
+            $lvl = $e instanceof SolrWarning? cGuiNotification::LEVEL_WARNING : cGuiNotification::LEVEL_ERROR;
             $note = new cGuiNotification();
-            $note->displayNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
+            $note->displayNotification($lvl, $e->getMessage());
         }
 
         // destroy indexer to free mem
@@ -138,9 +138,7 @@ class SolrIndexer {
     public function __construct(array $articleIds) {
         $this->_articleIds = $articleIds;
         $options = Solr::getClientOptions();
-        if (empty($options)) {
-            throw new cException('article could not be indexed cause Solr is not configured');
-        }
+        $options = Solr::validateClientOptions($options);
         $this->_solrClient = new SolrClient($options);
     }
 
