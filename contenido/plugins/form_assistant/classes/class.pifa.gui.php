@@ -205,7 +205,9 @@ class PifaRightBottomFormPage extends cGuiPage {
         }
 
         if (NULL === $action) {
-            $this->set('s', 'notification', Pifa::i18n('please select a form'));
+            $cGuiNotification = new cGuiNotification();
+            $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, Pifa::i18n('please select a form'));
+            $this->set('s', 'notification', $notification);
             $this->set('s', 'content', '');
             return;
         }
