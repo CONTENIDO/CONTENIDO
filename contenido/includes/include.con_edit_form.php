@@ -33,7 +33,7 @@ if ($action == "remove_assignments") {
             FROM
                 " . $cfg["tab"]["cat_art"] . "
             WHERE
-                idart=" . cSecurity::toInteger($idart) . "
+                idart = " . cSecurity::toInteger($idart) . "
                 AND idcat != " . cSecurity::toInteger($idcat);
     $db->query($sql);
 }
@@ -50,8 +50,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             FROM
                 " . $cfg["tab"]["cat_art"] . "
             WHERE
-                idart=" . cSecurity::toInteger($idart) . "
-                AND idcat=" . cSecurity::toInteger($idcat);
+                idart = " . cSecurity::toInteger($idart) . "
+                AND idcat = " . cSecurity::toInteger($idcat);
     $db->query($sql);
     $db->nextRecord();
 
@@ -62,8 +62,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             FROM
                 " . $cfg["tab"]["art_lang"] . "
             WHERE
-                idart=" . cSecurity::toInteger($idart) . "
-                AND idlang=" . cSecurity::toInteger($lang);
+                idart = " . cSecurity::toInteger($idart) . "
+                AND idlang = " . cSecurity::toInteger($lang);
     $db->query($sql);
     $db->nextRecord();
 
@@ -384,8 +384,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 FROM
                     " . $cfg["tab"]["art_lang"] . "
                 WHERE
-                    idart=" . cSecurity::toInteger($idart) . "
-                    AND online=1 AND idlang != " . cSecurity::toInteger($lang);
+                    idart = " . cSecurity::toInteger($idart) . "
+                    AND online = 1
+                    AND idlang != " . cSecurity::toInteger($lang);
         $db->query($sql);
 
         if ($db->numRows() > 0) {
@@ -479,10 +480,10 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 " . $cfg["tab"]["cat"] . " AS B,
                 " . $cfg["tab"]["cat_lang"] . " AS C
             WHERE
-                A.idcat=B.idcat AND
-                B.idcat=C.idcat AND
-                C.idlang=" . cSecurity::toInteger($lang) . " AND
-                B.idclient=" . cSecurity::toInteger($client) . "
+                A.idcat = B.idcat AND
+                B.idcat = C.idcat AND
+                C.idlang = " . cSecurity::toInteger($lang) . " AND
+                B.idclient = " . cSecurity::toInteger($client) . "
             ORDER BY
                 A.idtree";
 
@@ -560,10 +561,10 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 " . $cfg["tab"]["cat"] . " AS B,
                 " . $cfg["tab"]["cat_lang"] . " AS C
             WHERE
-                A.idcat=B.idcat AND
-                B.idcat=C.idcat AND
-                C.idlang=" . cSecurity::toInteger($lang) . " AND
-                B.idclient=" . cSecurity::toInteger($client) . "
+                A.idcat = B.idcat AND
+                B.idcat = C.idcat AND
+                C.idlang = " . cSecurity::toInteger($lang) . " AND
+                B.idclient = " . cSecurity::toInteger($client) . "
             ORDER BY
                 A.idtree";
 
@@ -622,9 +623,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 " . $cfg["tab"]["cat_art"] . " AS c
             WHERE
                 a.idclient = " . cSecurity::toInteger($client) . " AND
-                a.idcat    = b.idcat AND
-                c.idcat    = b.idcat AND
-                c.idart    = " . cSecurity::toInteger($idart);
+                a.idcat = b.idcat AND
+                c.idcat = b.idcat AND
+                c.idart = " . cSecurity::toInteger($idart);
 
     $db->query($sql);
     $db->nextRecord();
@@ -638,8 +639,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                     FROM
                         " . $cfg["tab"]["art_lang"] . "
                     WHERE
-                        idart=" . cSecurity::toInteger($idart) . "
-                        AND idlang=" . cSecurity::toInteger($lang);
+                        idart = " . cSecurity::toInteger($idart) . "
+                        AND idlang = " . cSecurity::toInteger($lang);
             $db->query($sql);
             $db->nextRecord();
             $idartlang = $db->f("idartlang");
@@ -653,8 +654,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                     FROM
                         " . $cfg["tab"]["cat_lang"] . "
                     WHERE
-                        idcat=" . cSecurity::toInteger($midcat) . "
-                        AND idlang=" . cSecurity::toInteger($lang);
+                        idcat = " . cSecurity::toInteger($midcat) . "
+                        AND idlang = " . cSecurity::toInteger($lang);
             $db->query($sql);
             $db->nextRecord();
             $idcatlang = $db->f("idcatlang");
@@ -668,8 +669,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                     FROM
                         " . $cfg["tab"]["cat_art"] . "
                     WHERE
-                        idart=" . cSecurity::toInteger($idart) . "
-                        AND idcat=" . cSecurity::toInteger($midcat);
+                        idart = " . cSecurity::toInteger($idart) . "
+                        AND idcat = " . cSecurity::toInteger($midcat);
             $db->query($sql);
             $db->nextRecord();
             $idcatart = $db->f("idcatart");
