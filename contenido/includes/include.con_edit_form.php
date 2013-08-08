@@ -19,6 +19,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.pathresolver.php");
 
+// ugly globals that are used in this script
+global $tpl, $cfg, $db, $perm, $sess;
+global $frame, $area, $action, $contenido, $notification;
+global $client, $lang, $belang;
+global $idcat, $idart, $idcatlang, $idartlang, $idcatart, $idtpl;
+global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $bNoArticle;
+
 $tpl->reset();
 
 if ($action == "remove_assignments") {
@@ -53,10 +60,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tmp_page_title = cSecurity::unFilter(stripslashes($db->f("pagetitle")));
         $tmp_idlang = $db->f("idlang");
         $tmp_title = cSecurity::unFilter($db->f("title"));
-        $tmp_urlname = cSecurity::unFilter($db->f("urlname")); // plugin
-                                                               // Advanced Mod
-                                                               // Rewrite - edit
-                                                               // by stese
+        // plugin Advanced Mod Rewrite - edit by stese
+        $tmp_urlname = cSecurity::unFilter($db->f("urlname"));
         $tmp_artspec = $db->f("artspec");
         $tmp_summary = cSecurity::unFilter($db->f("summary"));
         $tmp_created = $db->f("created");
