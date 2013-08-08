@@ -22,11 +22,9 @@ $create->setMultiLink("workflow", "", "workflow_common", "workflow_create");
 // $create->setCLink("workflow_common",4,"workflow_create");
 $create->setContent(i18n("Create workflow", "workflow"));
 $create->setCustom("idworkflow", "-1");
-
 $aAttributes = array();
 $aAttributes['class'] = "addfunction";
 $create->updateAttributes($aAttributes);
-
 $page->set("s", "LINK", $create->render());
 $page->render();
 

@@ -40,10 +40,11 @@ if ($action == "workflow_delete") {
 $ui = new cGuiMenu();
 $workflows->select("idclient = '$client' AND idlang = '$lang'");
 
+
 while (($workflow = $workflows->next()) !== false) {
     $wfid = $workflow->getField("idworkflow");
-    $wfname = conHtmlSpecialChars($workflow->getField("name"));
-    $wfdescription = $workflow->getField("description");
+    $wfname = preg_replace("/\"/","",($workflow->getField("name")));
+    $wfdescription = preg_replace("/\"/","",($workflow->getField("description")));
 
     /* Create the link to show/edit the workflow */
     $link = new cHTMLLink();

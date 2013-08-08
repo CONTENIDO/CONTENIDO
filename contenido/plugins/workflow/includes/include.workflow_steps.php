@@ -165,7 +165,7 @@ function getWorkflowList() {
 
     while (($workflowitem = $workflowitems->next()) !== false) {
         $pos = $workflowitem->get("position");
-        $name = $workflowitem->get("name");
+        $name = preg_replace("/\"/","",($workflowitem->get("name")));
         $id = $workflowitem->get("idworkflowitem");
 
         $edititem = new cHTMLLink();
