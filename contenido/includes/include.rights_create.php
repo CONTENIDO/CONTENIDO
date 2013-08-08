@@ -22,6 +22,10 @@ if (!$perm->have_perm_area_action($area, $action)) {
     return;
 }
 
+if (!isset($wysi)) {
+	$wysi = 1;
+}
+
 $aPerms = array();
 $sNotification = '';
 $bError = false;
@@ -73,7 +77,7 @@ if ($action == 'user_createuser') {
                 $address_country = '';
                 $address_street = '';
                 $address_zip = '';
-                $wysi = '';
+                $wysi = 1;
                 $valid_from = '';
                 $valid_to = '';
                 $aPerms = array();
