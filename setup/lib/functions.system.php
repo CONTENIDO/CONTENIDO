@@ -84,7 +84,7 @@ function updateSystemProperties($db, $table) {
         array('type' => 'update', 'name' => 'check_period', 'value' => '60'),
         array('type' => 'system', 'name' => 'clickmenu', 'value' => 'false'),
         array('type' => 'versioning', 'name' => 'activated', 'value' => 'true'),
-        array('type' => 'versioning', 'name' => 'prune_limit', 'value' => '0'),
+        array('type' => 'versioning', 'name' => 'prune_limit', 'value' => ''),
         array('type' => 'versioning', 'name' => 'path', 'value' => ''),
         array('type' => 'system', 'name' => 'insite_editing_activated', 'value' => 'true'),
         array('type' => 'backend', 'name' => 'backend_label', 'value' => ''),
