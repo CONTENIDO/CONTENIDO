@@ -574,7 +574,7 @@ class ModRewriteController extends ModRewriteBase {
 
         if ($detectedIdart > 0) {
             $idart = $detectedIdart;
-        } else {
+        } elseif (!empty($currArtName)) {
             $this->_setError(self::ERROR_ARTICLE);
         }
 
