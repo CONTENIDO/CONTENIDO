@@ -29,7 +29,12 @@ global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $b
 $tpl->reset();
 
 if ($action == "remove_assignments") {
-    $sql = "DELETE FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat != " . cSecurity::toInteger($idcat);
+    $sql = "DELETE
+            FROM
+                " . $cfg["tab"]["cat_art"] . "
+            WHERE
+                idart=" . cSecurity::toInteger($idart) . "
+                AND idcat != " . cSecurity::toInteger($idcat);
     $db->query($sql);
 }
 if ($action == "con_newart" && $newart != true) {
@@ -40,13 +45,25 @@ if ($action == "con_newart" && $newart != true) {
 $disabled = '';
 
 if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat)) {
-    $sql = "SELECT * FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat=" . cSecurity::toInteger($idcat);
+    $sql = "SELECT
+                *
+            FROM
+                " . $cfg["tab"]["cat_art"] . "
+            WHERE
+                idart=" . cSecurity::toInteger($idart) . "
+                AND idcat=" . cSecurity::toInteger($idcat);
     $db->query($sql);
     $db->nextRecord();
 
     $tmp_cat_art = $db->f("idcatart");
 
-    $sql = "SELECT * FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
+    $sql = "SELECT
+                *
+            FROM
+                " . $cfg["tab"]["art_lang"] . "
+            WHERE
+                idart=" . cSecurity::toInteger($idart) . "
+                AND idlang=" . cSecurity::toInteger($lang);
     $db->query($sql);
     $db->nextRecord();
 
@@ -322,25 +339,28 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     }
 
     // Online
-    if ($perm->have_perm_area_action("con", "con_makeonline") || $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) {
-        $tmp_ocheck = ($tmp_online != 1)? '<input ' . $disabled . ' id="online" type="checkbox" name="online" value="1">' : '<input type="checkbox" ' . $disabled . ' id="online" name="online" value="1" checked="checked">';
+    $tmp_ochecked = $tmp_online == 1 ? 'checked="checked"' : '';
+    if ($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) {
+        $tmp_ocheck = '<input type="checkbox" ' . $disabled . ' id="online" name="online" value="1" ' . $tmp_ochecked . '>';
     } else {
-        $tmp_ocheck = ($tmp_online != 1)? '<input disabled="disabled" type="checkbox" name="" value="1">' : '<input disabled="disabled" type="checkbox" name="" value="1" checked="checked">';
+        $tmp_ocheck = '<input disabled="disabled" type="checkbox" name="" value="1" ' . $tmp_ochecked . '>';
     }
     $tpl->set('s', 'ONLINE', 'Online');
     $tpl->set('s', 'ONLINE-CHECKBOX', $tmp_ocheck);
 
     // Startartikel
+    $tmp_start_checked = $tmp_is_start ? 'checked="checked"' : '';
     if ($perm->have_perm_area_action("con", "con_makestart") || $perm->have_perm_area_action_item("con", "con_makestart", $idcat)) {
-        $tmp_start = (!$tmp_is_start)? '<input ' . $disabled . ' id="is_start" type="checkbox" name="is_start" value="1">' : '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" checked="checked">';
+        $tmp_start = '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" ' . $tmp_start_checked . '>';
     } else {
-        $tmp_start = (!$tmp_is_start)? '<input disabled="disabled" type="checkbox" name="" value="1">' : '<input disabled="disabled" type="checkbox" name="" value="1" checked="checked">';
+        $tmp_start = '<input disabled="disabled" type="checkbox" name="" value="1" ' . $tmp_start_checked . '>';
     }
     $tpl->set('s', 'STARTARTIKEL', i18n("Start article"));
     $tpl->set('s', 'STARTARTIKEL-CHECKBOX', $tmp_start);
 
     // Searchable / Indexable
-    $tmp_searchable_checkbox = ($tmp_searchable != 1)? '<input ' . $disabled . ' id="searchable" type="checkbox" name="searchable" value="1">' : '<input type="checkbox" ' . $disabled . ' id="searchable" name="searchable" value="1" checked="checked">';
+    $tmp_searchable_checked = $tmp_searchable == 1 ? 'checked="checked"' : '';
+    $tmp_searchable_checkbox = '<input type="checkbox" ' . $disabled . ' id="searchable" name="searchable" value="1" ' . $tmp_searchable_checked . '>';
     $tpl->set('s', 'SEARCHABLE', i18n('Searchable'));
     $tpl->set('s', 'SEARCHABLE-CHECKBOX', $tmp_searchable_checkbox);
 
@@ -359,7 +379,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $moveOK = true;
 
     if ($cValue == false || $sValue == false) {
-        $sql = "SELECT idartlang, online FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND online=1 AND idlang != " . cSecurity::toInteger($lang);
+        $sql = "SELECT
+                    idartlang, online
+                FROM
+                    " . $cfg["tab"]["art_lang"] . "
+                WHERE
+                    idart=" . cSecurity::toInteger($idart) . "
+                    AND online=1 AND idlang != " . cSecurity::toInteger($lang);
         $db->query($sql);
 
         if ($db->numRows() > 0) {
@@ -413,12 +439,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     if (isset($tplinputchanged) && $tplinputchanged == 1) {
         $tmp_idcat_in_art = $idcatnew;
     } else {
-        $sql = "SELECT idcat FROM " . $cfg["tab"]["cat_art"] . " WHERE idart='" . $idart . "'"; // get
-                                                                                                // all
-                                                                                                // idcats
-                                                                                                // that
-                                                                                                // contain
-                                                                                                // art
+        // get all idcats that contain art
+        $sql = "SELECT
+                    idcat
+                FROM
+                    " . $cfg["tab"]["cat_art"] . "
+                WHERE
+                    idart='" . $idart . "'";
         $db->query($sql);
         while ($db->nextRecord()) {
             $tmp_idcat_in_art[] = $db->f("idcat");
@@ -606,7 +633,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     if (isset($idart)) {
         if (!isset($idartlang) || 0 == $idartlang) {
-            $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
+            $sql = "SELECT
+                        idartlang
+                    FROM
+                        " . $cfg["tab"]["art_lang"] . "
+                    WHERE
+                        idart=" . cSecurity::toInteger($idart) . "
+                        AND idlang=" . cSecurity::toInteger($lang);
             $db->query($sql);
             $db->nextRecord();
             $idartlang = $db->f("idartlang");
@@ -615,7 +648,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     if (isset($midcat)) {
         if (!isset($idcatlang) || 0 == $idcatlang) {
-            $sql = "SELECT idcatlang FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat=" . cSecurity::toInteger($midcat) . " AND idlang=" . cSecurity::toInteger($lang);
+            $sql = "SELECT
+                        idcatlang
+                    FROM
+                        " . $cfg["tab"]["cat_lang"] . "
+                    WHERE
+                        idcat=" . cSecurity::toInteger($midcat) . "
+                        AND idlang=" . cSecurity::toInteger($lang);
             $db->query($sql);
             $db->nextRecord();
             $idcatlang = $db->f("idcatlang");
@@ -624,7 +663,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     if (isset($midcat) && isset($idart)) {
         if (!isset($idcatart) || 0 == $idcatart) {
-            $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat=" . cSecurity::toInteger($midcat);
+            $sql = "SELECT
+                        idcatart
+                    FROM
+                        " . $cfg["tab"]["cat_art"] . "
+                    WHERE
+                        idart=" . cSecurity::toInteger($idart) . "
+                        AND idcat=" . cSecurity::toInteger($midcat);
             $db->query($sql);
             $db->nextRecord();
             $idcatart = $db->f("idcatart");
