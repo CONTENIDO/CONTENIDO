@@ -1850,6 +1850,7 @@ contenido/plugins/user_forum/plugin_uninstall.sql -text
 contenido/plugins/user_forum/scripts/cmsUserforum.js -text svneol=unset#text/plain
 contenido/plugins/user_forum/scripts/location.js -text svneol=unset#text/plain
 contenido/plugins/user_forum/styles/right_bottom.css -text svneol=unset#text/plain
+contenido/plugins/user_forum/templates/template.left_bottom.html -text svneol=unset#text/plain
 contenido/plugins/user_forum/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/user_forum/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/workflow/classes/class.workflow.php -text
