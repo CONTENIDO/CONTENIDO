@@ -532,6 +532,8 @@ class ModRewriteController extends ModRewriteBase {
 
         if ($this->_bError) {
             return;
+        } else if ($this->_isRootRequest()) {
+            return;
         }
 
         $iIdCat = (isset($idcat) && (int) $idcat > 0) ? $idcat : 0;
@@ -547,6 +549,13 @@ class ModRewriteController extends ModRewriteBase {
                 // will find the real article name
                 $currArtName = '';
             }
+        }
+
+        // Last check, before detecting article id
+        if ($iIdCat == 0 && $iIdArt == 0 && empty($currArtName)) {
+            // no idcat, idart and article name
+            // must be a request to root or with language name and/or client name part!
+            return;
         }
 
         if ($iIdCat > 0 && $iIdArt == 0 && !empty($currArtName)) {
