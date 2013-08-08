@@ -49,6 +49,7 @@ class pApiContentAllocationTreeView extends pApiTree {
         global $action, $frame, $area, $sess;
         $result = array();
         foreach ($tree as $item_tmp) {
+            print_r($item_tmp);
             $item = array();
             // update item
             if ($_GET['step'] == 'rename' && $item_tmp['idpica_alloc'] == $_GET['idpica_alloc']) {
@@ -63,7 +64,7 @@ class pApiContentAllocationTreeView extends pApiTree {
                     <input type="hidden" name="step" value="storeRename">
                     <input type="hidden" name="treeItemPost[idpica_alloc]" value="' . $item_tmp['idpica_alloc'] . '">
                     <tr>
-                    <td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value="' . $item_tmp['name'] . '"></td>
+                    <td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value="' . conHtmlentities($item_tmp['name']) . '"></td>
                     <td>&nbsp;
                     <a href="main.php?action=' . $action . '&frame=' . $frame . '&area=' . $area . '&contenido=' . $sess->id . '"><img src="images/but_cancel.gif" border="0"></a>
                     <input type="image" src="images/but_ok.gif">
