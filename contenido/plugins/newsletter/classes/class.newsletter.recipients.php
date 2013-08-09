@@ -32,7 +32,6 @@ class NewsletterRecipientCollection extends ItemCollection {
     public function __construct() {
         global $cfg;
         parent::__construct($cfg["tab"]["news_rcp"], "idnewsrcp");
-        $this->_setJoinPartner('NewsletterRecipientGroupMemberCollection');
         $this->_setItemClass("NewsletterRecipient");
     }
 

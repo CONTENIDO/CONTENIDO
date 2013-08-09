@@ -425,12 +425,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             $_REQUEST["optSendTo"] == "all";
         }
     } elseif (is_array($_REQUEST["selGroup"])) {
-        foreach ($_REQUEST["selGroup"] as $sValue) {
-            if (array_key_exists($sValue, $oSelGroup->_options)) {
-                // only select, if item still exists
-                $oSelGroup->_options[$sValue]->setSelected(true);
-            }
-        }
+    	$oSelGroup->setSelected($_REQUEST['selGroup']);
     }
 
     switch ($_REQUEST["optSendTo"]) {

@@ -198,17 +198,14 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
         $oGroupList->setCell(0, 1, "<strong>".i18n("Groupname", 'newsletter')."</strong>");
         $oImgDel = new cHTMLImage("images/delete.gif");
         $oGroupList->setCell(0, 2, $oImgDel->render());
-        $oGroupList->setCellAlignment(0, 2, "right");
 
         // Data
         while ($oAssocGroup = $oAssocGroups->next()) {
-            $oGroup = $oAssocGroups->fetchObject("RecipientGroupCollection");
+            $oGroup = $oAssocGroups->fetchObject("NewsletterRecipientGroupCollection");
 
             $oCkbRemove = new cHTMLCheckbox("ckbRemove[]", $oAssocGroup->get("idnewsgroupmember"));
-            echo ($oGroup->get("idnewsgroupmember"));
             $oGroupList->setCell($oAssocGroup->get("idnewsgroupmember"), 1, $oGroup->get("groupname"));
             $oGroupList->setCell($oAssocGroup->get("idnewsgroupmember"), 2, $oCkbRemove->toHTML(false));
-            $oGroupList->setCellAlignment($oAssocGroup->get("idnewsgroupmember"), 2, "right");
         }
     }
 

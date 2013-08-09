@@ -269,13 +269,20 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oImgDel = new cHTMLImage("images/but_invert_selection.gif");
     $sLnkDelIcon = '<a title="' . i18n("Check all", 'newsletter') . '" href="javascript://" onclick="fncCheckDel(\'deluser[]\');">' . $oImgDel->render() . '</a>';
     $oAddedRecipientList->setCell(0, 2, $sLnkDelIcon);
+    
+    $groupMembers = new NewsletterRecipientGroupMemberCollection();
+    $groupMembers->setWhere("idnewsgroup", $_REQUEST["idrecipientgroup"]);
+    $groupMembers->query();
+    
+    $groupRecipients = array();
+	while ($groupMember = $groupMembers->next()) {
+   		$groupRecipients[] = $groupMember->get('idnewsrcp');
+    }
 
     $oInsiders = new NewsletterRecipientCollection();
-
-    $oInsiders->link("NewsletterRecipientGroupMemberCollection");
     $oInsiders->setWhere("idclient", $client);
     $oInsiders->setWhere("idlang", $lang);
-    $oInsiders->setWhere("idnewsgroup", $_REQUEST["idrecipientgroup"]);
+    $oInsiders->setWhere("idnewsrcp", $groupRecipients, 'IN');
 
     // Get insiders for outsiders list (*sigh!*)
     // TODO: Ask user to have at least mySQL 4.1...
