@@ -27,6 +27,7 @@ cms/images/index.php -text
 cms/images/misc/download_misc.png -text
 cms/images/misc/logo.png -text
 cms/images/misc/sprite.png -text
+cms/images/spacer.gif -text
 cms/includes/concache.php -text
 cms/includes/index.php -text
 cms/index.php -text
