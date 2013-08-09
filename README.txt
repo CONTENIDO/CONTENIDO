@@ -55,10 +55,10 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
   Lizenz:      GNU General Public Licence (GPL)
   Information: http://www.bitfolge.de/?l=en&s=pseudocron
 
-- Securimage 3.2RC2
-  Lizenz:      Securimage license
-  Information: http://www.phpcaptcha.org
-
+- Smarty 3.1.14
+  Lizenz:      GNU Lesser General Public License 2.1 or later
+  Information: http://www.smarty.net/
+  
 - SwiftMailer 4.2.1
   Lizenz:      GNU Lesser General Public License v3
   Information: http://swiftmailer.org/
