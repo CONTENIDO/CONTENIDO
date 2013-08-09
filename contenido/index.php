@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is the main entrance point of the backend.
  *
@@ -20,6 +21,10 @@ if (!defined('CON_FRAMEWORK')) {
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
+// ugly globals that are used in this script
+global $sess, $perm, $area;
+global $belang, $changelang, $changeclient;
+
 cRegistry::bootstrap(array(
     'sess' => 'cSession',
     'auth' => 'cAuthHandlerBackend',
@@ -34,22 +39,22 @@ require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 $sess->register('belang');
 
-// Create CONTENIDO classes
+// create global CONTENIDO class instances
 $db  = cRegistry::getDb();
 $tpl = new cTemplate();
 
-// Sprache wechseln
+// change lang
 if (isset($changelang) && is_numeric($changelang)) {
     $lang = $changelang;
 }
 
-// Change Client
+// change client
 if (isset($changeclient) && is_numeric($changeclient)) {
      $client = $changeclient;
      unset($lang);
 }
 
-// Preselect client, if definied
+// preselect client, if definied
 if (!$sess->isRegistered('client')) { // only check at first login into backend
     $iTmpClient = getEffectiveSetting('backend', 'preferred_idclient', false);
 
@@ -120,4 +125,5 @@ $tpl->set('s', 'CONTENIDOPATH', $backendUrl . 'favicon.ico');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset']);
 
 cRegistry::shutdown();
+
 ?>
