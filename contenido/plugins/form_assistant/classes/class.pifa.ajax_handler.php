@@ -412,7 +412,19 @@ class PifaAjaxHandler {
 
         // store (add, drop or change) column in data table
         $pifaForm = new PifaForm($idform);
-        $pifaForm->storeColumn($pifaField, $oldColumnName);
+        try {
+            $pifaForm->storeColumn($pifaField, $oldColumnName);
+        } catch (PifaException $e) {
+            // if column could not be created
+            if ($isFieldCreated) {
+                // the field has to be deleted if its newly created
+                $pifaField->delete();
+            } else {
+                // the field has to keep its old column name
+                $pifaField->set('column_name', $oldColumnName);
+            }
+            throw $e;
+        }
 
         // store item
         if (false === $pifaField->store()) {
