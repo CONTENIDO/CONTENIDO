@@ -31,6 +31,8 @@ $sNotification = '';
 $bError = false;
 
 if ($action == 'user_createuser') {
+	$username = stripslashes(trim($username));
+	
     if ($username == '') {
         $sNotification = $notification->returnNotification("warning", i18n("Username can't be empty"));
         $bError = true;
