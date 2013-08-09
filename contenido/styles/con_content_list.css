@@ -11,3 +11,7 @@
 .contypeList div {
     min-height: 13px;
 }
+.contypeList span.mceEditor div {
+    min-height: 0;
+}
+
