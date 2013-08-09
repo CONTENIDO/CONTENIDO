@@ -86,7 +86,7 @@ function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
     $maximum_text_length = $maxlen - strlen($fillup);
 
     // Cut it
-    $cutted_string = substr($string, 0, $maximum_text_length);
+    $cutted_string = mb_substr($string, 0, $maximum_text_length);
 
     // Append the fillup string
     $cutted_string .= $fillup;
