@@ -349,9 +349,10 @@ function keywordDensity($headline, $text) {
 
     $text = conHtmlEntityDecode($text);
 
-    // replace all non converted entities and double/more spaces
+    // replace all non converted numbered entities (what about numbered entites?)
+    // replace all double/more spaces
     $patterns = array(
-        '#&[a-zA-Z]+\;#ei',
+        '#&[a-z]+\;#i',
         '#\s+#'
     );
     $replaces = array(
