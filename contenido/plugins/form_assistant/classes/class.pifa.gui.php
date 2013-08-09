@@ -584,6 +584,10 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
             'edit' => Pifa::i18n('edit'),
             'delete' => Pifa::i18n('delete')
         ));
+        // translations (will be displayed as hidden input fields)
+        $tpl->assign('transForJs', array(
+            'confirm_delete_field' => Pifa::i18n('CONFIRM_DELETE_FIELD'),
+        ));
 
         // params
         $tpl->assign('ajaxParams', implode('&', array(

@@ -12,6 +12,11 @@ AUTHOR marcus.gnass@4fb.de
 
 {else}
 
+{* translatable strings used in JS *}
+{foreach from=$transForJs key=id item=value}
+<input type="hidden" id="{$id|escape}" value="{$value|escape}" />
+{/foreach}
+
 {* common ajax requests params *}
 <input type="hidden" id="ajaxParams" value="{$ajaxParams}" />
 {* params used for an AJAX call on sorting form fields *}

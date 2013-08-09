@@ -287,6 +287,9 @@ msgstr "edit"
 msgid "delete"
 msgstr "delete"
 
+msgid "CONFIRM_DELETE_FIELD"
+msgstr "Do you really want to delete this field?"
+
 msgid "download data as CSV"
 msgstr "download data as CSV"
 

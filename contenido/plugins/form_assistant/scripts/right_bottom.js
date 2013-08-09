@@ -38,7 +38,9 @@ $(function() {
      */
     $('body').delegate('.pifa-icon-delete-field', 'click', function(event) {
         event.preventDefault();
-        if (false === confirm('Do you really want to delete this field?')) {
+        // get htmldecoded msg
+        var msg = $('<div/>').html($('#confirm_delete_field').val()).text();
+        if (false === confirm(msg)) {
             return;
         }
         var $li = $(this).parent().parent();

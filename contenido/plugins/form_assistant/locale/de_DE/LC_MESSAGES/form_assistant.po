@@ -287,6 +287,9 @@ msgstr "Bearbeiten"
 msgid "delete"
 msgstr "Löschen"
 
+msgid "CONFIRM_DELETE_FIELD"
+msgstr "Wollen Sie dieses Feld wirklich löschen?"
+
 msgid "download data as CSV"
 msgstr "Formulardaten als CSV herunterladen"
 
