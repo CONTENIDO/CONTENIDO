@@ -2514,8 +2514,8 @@ setup/lib/include.config.controller.php -text
 setup/lib/include.db.controller.php -text
 setup/lib/include.index.controller.php -text
 setup/lib/startup.php -text
-setup/locale/de_DE/LC_MESSAGES/contenido.mo -text
-setup/locale/de_DE/LC_MESSAGES/contenido.po -text
+setup/locale/de_DE/LC_MESSAGES/setup.mo -text
+setup/locale/de_DE/LC_MESSAGES/setup.po -text
 setup/locale/potfiles.txt -text
 setup/locale/setup.pot -text
 setup/script/setup.js -text

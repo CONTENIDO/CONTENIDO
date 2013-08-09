@@ -26,9 +26,9 @@ class cSetupPath extends cSetupMask
     function cSetupPath($step, $previous, $next)
     {
         cSetupMask::cSetupMask("templates/setup/forms/pathinfo.tpl", $step);
-        $this->setHeader(i18n("System Directories"));
-        $this->_oStepTemplate->set("s", "TITLE", i18n("System Directories"));
-        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box."));
+        $this->setHeader(i18n("System Directories", "setup"));
+        $this->_oStepTemplate->set("s", "TITLE", i18n("System Directories", "setup"));
+        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box.", "setup"));
 
         list($rootPath, $rootHttpPath) = getSystemDirectories(true);
 
@@ -43,9 +43,9 @@ class cSetupPath extends cSetupMask
         $oWebPath->setWidth(100);
         $oWebPath->setClass("small");
 
-        $cHTMLFoldableErrorMessages[0] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Root Path").":<br>".$rootPath, $oRootPath);
+        $cHTMLFoldableErrorMessages[0] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Root Path", "setup").":<br>".$rootPath, $oRootPath);
         $cHTMLFoldableErrorMessages[0]->_oContent->setStyle("padding-bottom: 8px;");
-        $cHTMLFoldableErrorMessages[1] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Web Path").":<br>".$rootHttpPath, $oWebPath);
+        $cHTMLFoldableErrorMessages[1] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Web Path", "setup").":<br>".$rootHttpPath, $oWebPath);
         $cHTMLFoldableErrorMessages[1]->_oContent->setStyle("padding-bottom: 8px;");
 
         $cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);

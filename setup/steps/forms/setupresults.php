@@ -25,20 +25,20 @@ class cSetupResults extends cSetupMask
 {
     function cSetupResults($step)
     {
-        $this->setHeader(i18n("Results"));
+        $this->setHeader(i18n("Results", "setup"));
 
         if (!isset($_SESSION["install_failedchunks"]) && !isset($_SESSION["install_failedupgradetable"]) && !isset($_SESSION["configsavefailed"]))
         {
             cSetupMask::cSetupMask("templates/setup/forms/setupresults.tpl", $step);
-            $this->_oStepTemplate->set("s", "TITLE", i18n("Results"));
-            $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO was installed and configured successfully on your server."));
+            $this->_oStepTemplate->set("s", "TITLE", i18n("Results", "setup"));
+            $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO was installed and configured successfully on your server.", "setup"));
             if ($_SESSION["setuptype"] == 'setup') {
-                $this->_oStepTemplate->set("s", "LOGIN_INFO", '<p>'.i18n("Please use username <b>sysadmin</b> and the configured password to login into CONTENIDO Backend.").'</p>');
+                $this->_oStepTemplate->set("s", "LOGIN_INFO", '<p>'.i18n("Please use username <b>sysadmin</b> and the configured password to login into CONTENIDO Backend.", "setup").'</p>');
             } else {
                 $this->_oStepTemplate->set("s", "LOGIN_INFO", '');
             }
-            $this->_oStepTemplate->set("s", "CHOOSENEXTSTEP", i18n("Please choose an item to start working:"));
-            $this->_oStepTemplate->set("s", "FINISHTEXT", i18n("You can now start using CONTENIDO. Please delete the folder named 'setup'!"));
+            $this->_oStepTemplate->set("s", "CHOOSENEXTSTEP", i18n("Please choose an item to start working:", "setup"));
+            $this->_oStepTemplate->set("s", "FINISHTEXT", i18n("You can now start using CONTENIDO. Please delete the folder named 'setup'!", "setup"));
 
             list($rootPath, $rootHttpPath) = getSystemDirectories();
 
@@ -62,9 +62,9 @@ class cSetupResults extends cSetupMask
             $this->_oStepTemplate->set("s", "FAQ", $cHTMLButtonLink->render());
         } else {
             cSetupMask::cSetupMask("templates/setup/forms/setupresultsfail.tpl", $step);
-            $this->_oStepTemplate->set("s", "TITLE", i18n("Setup Results"));
+            $this->_oStepTemplate->set("s", "TITLE", i18n("Setup Results", "setup"));
 
-            $this->_oStepTemplate->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information."), 'setuplog.txt'));
+            $this->_oStepTemplate->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information.", "setup"), 'setuplog.txt'));
 
             switch ($_SESSION["setuptype"]) {
                 case "setup":

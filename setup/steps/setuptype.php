@@ -28,14 +28,14 @@ class cSetupTypeChooser extends cSetupMask
     function cSetupTypeChooser()
     {
         cSetupMask::cSetupMask("templates/setuptype.tpl");
-        $this->setHeader(i18n("Please choose your setup type"));
-        $this->_oStepTemplate->set("s", "TITLE_SETUP", i18n("Install new CONTENIDO version"));
-        $this->_oStepTemplate->set("s", "VERSION_SETUP", sprintf(i18n("Version %s"), CON_SETUP_VERSION));
-        $this->_oStepTemplate->set("s", "DESCRIPTION_SETUP", sprintf(i18n("This setup type will install CONTENIDO %s."), CON_SETUP_VERSION)."<br><br>".i18n("Please choose this type if you want to start with an empty or an example installation.")."<br><br>".i18n("Recommended for new projects."));
+        $this->setHeader(i18n("Please choose your setup type", "setup"));
+        $this->_oStepTemplate->set("s", "TITLE_SETUP", i18n("Install new CONTENIDO version", "setup"));
+        $this->_oStepTemplate->set("s", "VERSION_SETUP", sprintf(i18n("Version %s", "setup"), CON_SETUP_VERSION));
+        $this->_oStepTemplate->set("s", "DESCRIPTION_SETUP", sprintf(i18n("This setup type will install CONTENIDO %s.", "setup"), CON_SETUP_VERSION)."<br><br>".i18n("Please choose this type if you want to start with an empty or an example installation.", "setup")."<br><br>".i18n("Recommended for new projects.", "setup"));
 
-        $this->_oStepTemplate->set("s", "TITLE_UPGRADE", i18n("Upgrade existing installation"));
-        $this->_oStepTemplate->set("s", "VERSION_UPGRADE", sprintf(i18n("Upgrade to %s"), CON_SETUP_VERSION));
-        $this->_oStepTemplate->set("s", "DESCRIPTION_UPGRADE", i18n("This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required).")."<br><br>".i18n("Recommended for existing projects."));
+        $this->_oStepTemplate->set("s", "TITLE_UPGRADE", i18n("Upgrade existing installation", "setup"));
+        $this->_oStepTemplate->set("s", "VERSION_UPGRADE", sprintf(i18n("Upgrade to %s", "setup"), CON_SETUP_VERSION));
+        $this->_oStepTemplate->set("s", "DESCRIPTION_UPGRADE", i18n("This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required).", "setup")."<br><br>".i18n("Recommended for existing projects.", "setup"));
 
         $link = new cHTMLLink("#");
         $link->setClass("nav");

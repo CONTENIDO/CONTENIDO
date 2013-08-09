@@ -27,9 +27,9 @@ class cSetupClientMode extends cSetupMask {
         global $cfgClient;
 
         cSetupMask::cSetupMask("templates/setup/forms/clientmode.tpl", $step);
-        $this->setHeader(i18n("Example Client"));
-        $this->_oStepTemplate->set("s", "TITLE", i18n("Example Client"));
-        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("If you are new to CONTENIDO, you should create an example client to start working with."));
+        $this->setHeader(i18n("Example Client", "setup"));
+        $this->_oStepTemplate->set("s", "TITLE", i18n("Example Client", "setup"));
+        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("If you are new to CONTENIDO, you should create an example client to start working with.", "setup"));
 
         cArray::initializeKey($_SESSION, "clientmode", "");
 
@@ -68,13 +68,13 @@ class cSetupClientMode extends cSetupMask {
             $folders = substr($folders, 0, strlen($folders) - 2);
         }
 
-        $exampleMessage = i18n("PLEASE NOTE: Some folders (%s) which are used by the example client aren't empty. THESE WILL BE OVERWRITTEN");
-        $moduleMessage = i18n("PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN");
+        $exampleMessage = i18n("PLEASE NOTE: Some folders (%s) which are used by the example client aren't empty. THESE WILL BE OVERWRITTEN", "setup");
+        $moduleMessage = i18n("PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN", "setup");
 
         $aChoices = array(
-            "CLIENTEXAMPLES" => i18n("Client with example modules and example content") . ((strlen($folders) > 0) ? " <span class='additionalInfo'>(" . sprintf($exampleMessage, $folders) . ")</span>" : ""),
-            "CLIENTMODULES" => i18n("Client with example modules, but without example content") . (($moduleFolderNotEmpty) ? " <span class='additionalInfo'>(" . $moduleMessage . ")</span>" : ""),
-            "NOCLIENT" => i18n("Don't create client")
+            "CLIENTEXAMPLES" => i18n("Client with example modules and example content", "setup") . ((strlen($folders) > 0) ? " <span class='additionalInfo'>(" . sprintf($exampleMessage, $folders) . ")</span>" : ""),
+            "CLIENTMODULES" => i18n("Client with example modules, but without example content", "setup") . (($moduleFolderNotEmpty) ? " <span class='additionalInfo'>(" . $moduleMessage . ")</span>" : ""),
+            "NOCLIENT" => i18n("Don't create client", "setup")
         );
 
         foreach ($aChoices as $sKey => $sChoice) {

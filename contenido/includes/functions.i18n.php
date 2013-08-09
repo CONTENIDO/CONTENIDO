@@ -56,9 +56,10 @@ function i18nEmulateGettext($string, $domain = 'contenido') {
  *
  * @param string $localePath Path to the locales
  * @param string $langCode Language code to set
+ * @param string $domain Language domain
  */
-function i18nInit($localePath, $langCode) {
-    cI18n::init($localePath, $langCode);
+function i18nInit($localePath, $langCode, $domain = 'contenido') {
+    cI18n::init($localePath, $langCode, $domain);
 }
 
 /**

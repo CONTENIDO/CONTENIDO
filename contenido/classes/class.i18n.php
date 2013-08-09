@@ -39,14 +39,15 @@ class cI18n {
      *
      * @param  string  $localePath  Path to the locales
      * @param  string  $langCode  Language code to set
+     * @param  string  $domain	Language domain
      */
-    public static function init($localePath, $langCode) {
+    public static function init($localePath, $langCode, $domain = 'contenido') {
         if (function_exists('bindtextdomain')) {
             // Bind the domain 'contenido' to our locale path
-            bindtextdomain('contenido', $localePath);
+            bindtextdomain($domain, $localePath);
 
             // Set the default text domain to 'contenido'
-            textdomain('contenido');
+            textdomain($domain);
 
             // Half brute-force to set the locale.
             if (!ini_get('safe_mode')) {
@@ -60,7 +61,7 @@ class cI18n {
             setlocale(LC_CTYPE, $langCode);
         }
 
-        self::$_i18nData['domains']['contenido'] = $localePath;
+        self::$_i18nData['domains'][$domain] = $localePath;
         self::$_i18nData['language'] = $langCode;
     }
 
@@ -96,7 +97,7 @@ class cI18n {
                 $belang = false;
             }
 
-            self::init($cfg['path']['contenido_locale'], $belang);
+            self::init($cfg['path']['contenido_locale'], $belang, $domain);
         }
 
         // Is emulator to use?

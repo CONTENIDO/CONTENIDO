@@ -31,10 +31,10 @@ class cSetupAdminPassword extends cSetupMask {
         cArray::initializeKey($_SESSION, "adminpass", "");
         cArray::initializeKey($_SESSION, "adminpassrepeat", "");
 
-        $this->setHeader(i18n("Administrator password"));
-        $this->_oStepTemplate->set("s", "TITLE", i18n("Administrator password"));
+        $this->setHeader(i18n("Administrator password", "setup"));
+        $this->_oStepTemplate->set("s", "TITLE", i18n("Administrator password", "setup"));
 
-        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please enter the password for the default administrator account sysadmin and specify it's mail address in case you forgot your entered password."));
+        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please enter the password for the default administrator account sysadmin and specify it's mail address in case you forgot your entered password.", "setup"));
 
         if ($_SESSION["adminpass"] != "") {
             $displayadminpass = str_repeat("*", strlen($_SESSION["adminpass"]));
@@ -61,9 +61,9 @@ class cSetupAdminPassword extends cSetupMask {
         $adminpass_hidden = new cHTMLHiddenField("adminpass_changed", "false");
         $adminpassrepeat_hidden = new cHTMLHiddenField("adminpassrepeat_changed", "false");
 
-        $this->_oStepTemplate->set("s", "LABEL_ADMINPASS", i18n("Administrator password"));
-        $this->_oStepTemplate->set("s", "LABEL_ADMINPASSREPEAT", i18n("Administrator password") . " " . i18n("(repeat)"));
-        $this->_oStepTemplate->set("s", "LABEL_ADMINMAIL", i18n("Administrator mail address"));
+        $this->_oStepTemplate->set("s", "LABEL_ADMINPASS", i18n("Administrator password", "setup"));
+        $this->_oStepTemplate->set("s", "LABEL_ADMINPASSREPEAT", i18n("Administrator password", "setup") . " " . i18n("(repeat)", "setup"));
+        $this->_oStepTemplate->set("s", "LABEL_ADMINMAIL", i18n("Administrator mail address", "setup"));
 
         $this->_oStepTemplate->set("s", "INPUT_ADMINPASS", $adminpass->render().$adminpass_hidden->render());
         $this->_oStepTemplate->set("s", "INPUT_ADMINPASSREPEAT", $adminpassrepeat->render().$adminpassrepeat_hidden->render());
@@ -79,9 +79,9 @@ class cSetupAdminPassword extends cSetupMask {
        // if ($_SESSION["setuptype"] == "setup") {
             $checkScript = sprintf(
                 "var msg = ''; if (document.setupform.adminpass.value == '' || document.setupform.adminpassrepeat.value == '') { msg += '%s '; } if (msg == '' && document.setupform.adminpass.value != document.setupform.adminpassrepeat.value) { msg += '%s '; } if (msg == '' && document.setupform.adminmail.value == '') { msg += '%s '; } if (msg == '') { document.setupform.submit(); } else { alert(msg); }",
-                i18n("You need to enter a password."),
-                i18n("The entered passwords are not matching."),
-                i18n("You need to enter a mail address.")
+                i18n("You need to enter a password.", "setup"),
+                i18n("The entered passwords are not matching.", "setup"),
+                i18n("You need to enter a mail address.", "setup")
             );
 
             $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bNextstep."';");

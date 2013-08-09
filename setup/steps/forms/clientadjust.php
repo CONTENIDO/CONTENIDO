@@ -27,9 +27,9 @@ class cSetupClientAdjust extends cSetupMask {
         global $db, $cfg, $cfgClient;
 
         cSetupMask::cSetupMask("templates/setup/forms/pathinfo.tpl", $step);
-        $this->setHeader(i18n("Client Settings"));
-        $this->_oStepTemplate->set("s", "TITLE", i18n("Client Settings"));
-        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box."));
+        $this->setHeader(i18n("Client Settings", "setup"));
+        $this->_oStepTemplate->set("s", "TITLE", i18n("Client Settings", "setup"));
+        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box.", "setup"));
 
         $db = getSetupMySQLDBConnection();
 
@@ -78,9 +78,9 @@ class cSetupClientAdjust extends cSetupMask {
                 }
             }
 
-            $sName = sprintf(i18n("Old server path for %s (%s)"), $name, $idclient);
+            $sName = sprintf(i18n("Old server path for %s (%s)", "setup"), $name, $idclient);
             $sName .= ":<br>" . $frontendPath . "<br><br>";
-            $sName .= sprintf(i18n("New server path for %s (%s)"), $name, $idclient);
+            $sName .= sprintf(i18n("New server path for %s (%s)", "setup"), $name, $idclient);
             $sName .= ":<br>";
             $oSystemPathBox = new cHTMLTextbox("frontendpath[$idclient]", $_SESSION["frontendpath"][$idclient]);
             $oSystemPathBox->setWidth(100);
@@ -90,9 +90,9 @@ class cSetupClientAdjust extends cSetupMask {
 
             $aPathList[] = $oClientSystemPath;
 
-            $sName = sprintf(i18n("Old web path for %s (%s)"), $name, $idclient);
+            $sName = sprintf(i18n("Old web path for %s (%s)", "setup"), $name, $idclient);
             $sName .= ":<br>" . $htmlPath . "<br><br>";
-            $sName .= sprintf(i18n("New web path for %s (%s)"), $name, $idclient);
+            $sName .= sprintf(i18n("New web path for %s (%s)", "setup"), $name, $idclient);
             $sName .= ":<br>";
             $oSystemPathBox = new cHTMLTextbox("htmlpath[$idclient]", $_SESSION["htmlpath"][$idclient]);
             $oSystemPathBox->setWidth(100);
