@@ -83,22 +83,11 @@ class pApiContentAllocation {
     function loadAllocations($idartlang) {
         $result = array();
         // load all tagging keys
-        $sql = 'SELECT a.idpica_alloc FROM con_pica_alloc a , con_pica_alloc_con b WHERE idartlang=' . $idartlang . ' AND a.idpica_alloc=b.idpica_alloc AND parentid=0';
+        $sql = 'SELECT a.idpica_alloc FROM con_pica_alloc a , con_pica_alloc_con b WHERE idartlang=' . $idartlang . ' AND a.idpica_alloc=b.idpica_alloc';
         $this->db->query($sql);
 
         while ($this->db->nextRecord()) {
-            $keys[] = $this->db->f('idpica_alloc');
-        }
-
-        // load all values for keys
-        for ($i = 0; $i < count($keys); $i++) {
-            $sql = 'SELECT a.idpica_alloc FROM con_pica_alloc a , con_pica_alloc_con b WHERE idartlang=' . $idartlang . ' AND a.idpica_alloc=b.idpica_alloc AND parentid=' . $keys[$i];
-            $this->db->query($sql);
-
-            while ($this->db->nextRecord()) {
-                $result[] = $keys[$i];
-                $result[] = $this->db->f('idpica_alloc');
-            }
+            $result[] = $this->db->f('idpica_alloc');
         }
 
         return $result;
