@@ -184,7 +184,8 @@ abstract class PifaAbstractFormModule {
                 $this->doPost();
                 break;
             default:
-                throw new PifaException('unknown request method');
+                $msg = Pifa::i18n('UNKNOWN_REQUEST_METHOD');
+                throw new PifaException($msg);
         }
 
         // fetch || display template

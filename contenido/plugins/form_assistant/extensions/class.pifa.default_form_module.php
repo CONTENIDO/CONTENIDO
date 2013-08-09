@@ -32,7 +32,8 @@ class DefaultFormModule extends PifaAbstractFormModule {
 
         // catch error
         if (true !== $pifaForm->isLoaded()) {
-            throw new PifaException('form could not be loaded');
+            $msg = Pifa::i18n('FORM_LOAD_ERROR');
+            throw new PifaException($msg);
         }
 
         // set values (keep default values if NULL!)
@@ -74,11 +75,15 @@ class DefaultFormModule extends PifaAbstractFormModule {
             $filename = Pifa::fromCamelCase($processorClass);
             $filename = "extensions/class.pifa.$filename.php";
             if (false === file_exists(Pifa::getPath() . $filename)) {
-                throw new PifaException('missing processor file ' . $filename);
+                $msg = Pifa::i18n('MISSING_PROCESSOR_FILE');
+                $msg = sprintf($msg, $filename);
+                throw new PifaException($msg);
             }
             plugin_include(Pifa::getName(), $filename);
             if (false === class_exists($processorClass)) {
-                throw new PifaException('missing processor class ' . $processorClass);
+                $msg = Pifa::i18n('MISSING_PROCESSOR_CLASS');
+                $msg = sprintf($msg, $processorClass);
+                throw new PifaException($msg);
             }
 
             // create processor instance

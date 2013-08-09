@@ -497,11 +497,15 @@ class PifaField extends Item {
             $filename = Pifa::fromCamelCase($optionClass);
             $filename = "extensions/class.pifa.$filename.php";
             if (false === file_exists(Pifa::getPath() . $filename)) {
-                throw new PifaException('missing external options datasource file ' . $filename);
+                $msg = Pifa::i18n('MISSING_EOD_FILE');
+                $msg = sprintf($msg, $filename);
+                throw new PifaException($msg);
             }
             plugin_include(Pifa::getName(), $filename);
             if (false === class_exists($optionClass)) {
-                throw new PifaException('missing external options datasource class ' . $optionClass);
+                $msg = Pifa::i18n('MISSING_EOD_CLASS');
+                $msg = sprintf($msg, $optionClass);
+                throw new PifaException($msg);
             }
             $dataSource = new $optionClass();
             $optionLabels = $dataSource->getOptionLabels();
@@ -720,8 +724,10 @@ class PifaField extends Item {
                 break;
 
             default:
+                $msg = Pifa::i18n('NOT_IMPLEMENTED_FIELDTYPE');
+                $msg = sprintf($msg, $fieldType);
+                throw new NotImplementedException($msg);
 
-                throw new NotImplementedException('field type ' . $fieldType . ' is not implemented');
         }
 
         return $elemField;
@@ -899,7 +905,8 @@ class PifaField extends Item {
      */
     public function getDbDataType() {
         if (!$this->isLoaded()) {
-            throw new PifaException('field is not loaded');
+            $msg = Pifa::i18n('FIELD_LOAD_ERROR');
+            throw new PifaException($msg);
         }
 
         $fieldType = cSecurity::toInteger($this->get('field_type'));
@@ -977,7 +984,9 @@ class PifaField extends Item {
                 return NULL;
 
             default:
-                throw new PifaException('field type ' . $fieldType . ' is not implemented');
+                $msg = Pifa::i18n('NOT_IMPLEMENTED_FIELDTYPE');
+                $msg = sprintf($msg, $fieldType);
+                throw new PifaException($msg);
         }
     }
 
@@ -990,7 +999,8 @@ class PifaField extends Item {
         $db = cRegistry::getDb();
 
         if (!$this->isLoaded()) {
-            throw new PifaException('field is not loaded');
+            $msg = Pifa::i18n('FIELD_LOAD_ERROR');
+            throw new PifaException($msg);
         }
 
         // update ranks of younger siblings
@@ -1016,7 +1026,8 @@ class PifaField extends Item {
                 idfield = " . cSecurity::toInteger($this->get('idfield')) . "
             ;";
         if (false === $db->query($sql)) {
-            throw new PifaException('field could not be deleted');
+            $msg = Pifa::i18n('FIELD_DELETE_ERROR');
+            throw new PifaException($msg);
         }
 
         // drop column of data table
@@ -1031,7 +1042,8 @@ class PifaField extends Item {
                         `" . cSecurity::toString($this->get('column_name')) . "`
                     ;";
                 if (false === $db->query($sql)) {
-                    throw new PifaException('column could not be dropped');
+                    $msg = Pifa::i18n('COLUMN_DROP_ERROR');
+                    throw new PifaException($msg);
                 }
             }
         }
@@ -1250,7 +1262,9 @@ class PifaField extends Item {
                 ));
 
             default:
-                throw new PifaException('field property ' . $columnName . ' is not implemented');
+                $msg = Pifa::i18n('NOT_IMPLEMENTED_FIELDPROP');
+                $msg = sprintf($msg, $columnName);
+                throw new PifaException($msg);
         }
     }
 

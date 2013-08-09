@@ -114,7 +114,8 @@ class PifaAjaxHandler {
                 break;
 
             default:
-                throw new Exception('unknown action ' . $_REQUEST['action']);
+                $msg = Pifa::i18n('UNKNOWN_ACTION');
+                throw new Exception($msg);
         }
     }
 
@@ -142,7 +143,8 @@ class PifaAjaxHandler {
             ));
         } else {
             // bugger off
-            throw new Exception('form could not be created');
+            $msg = Pifa::i18n('FORM_CREATE_ERROR');
+            throw new Exception($msg);
         }
 
         // get option classes
@@ -233,7 +235,8 @@ class PifaAjaxHandler {
             // load field
             $pifaField = new PifaField($idfield);
             if (!$pifaField->isLoaded()) {
-                throw new Exception('field is not loaded');
+                $msg = Pifa::i18n('FIELD_LOAD_ERROR');
+                throw new Exception($msg);
             }
             $isFieldCreated = false;
         } else {
@@ -414,7 +417,9 @@ class PifaAjaxHandler {
 
         // store item
         if (false === $pifaField->store()) {
-            throw new PifaException('could not store field: ' . $pifaField->getLastError());
+            $msg = Pifa::i18n('FIELD_STORE_ERROR');
+            $msg = sprintf($msg, $pifaField->getLastError());
+            throw new PifaException($msg);
         }
 
         // if a new field was created
@@ -476,7 +481,8 @@ class PifaAjaxHandler {
      */
     private function _deleteField($idfield) {
         if (0 == $idfield) {
-            throw new Exception('no idfield given');
+            $msg = Pifa::i18n('MISSING_IDFIELD');
+            throw new Exception($msg);
         }
 
         $pifaField = new PifaField($idfield);

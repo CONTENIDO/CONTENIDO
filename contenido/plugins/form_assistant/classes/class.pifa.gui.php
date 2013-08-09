@@ -43,6 +43,11 @@ class PifaLeftBottomPage extends cGuiPage {
         $this->addScript('../plugins/form_assistant/scripts/left_bottom.js');
 
         $this->set('s', 'menu', $this->_getMenu());
+
+        // add translations to template
+        $this->set('s', 'I18N', json_encode(array(
+            'confirm_delete_form' => Pifa::i18n('CONFIRM_DELETE_FORM')
+        )));
     }
 
     /**
@@ -167,9 +172,9 @@ class PifaRightBottomFormPage extends cGuiPage {
         // load models
         $idform = cSecurity::toInteger($idform);
         if (0 < $idform) {
-            $ret = $this->_pifaForm->loadByPrimaryKey($idform);
-            if (false === $ret) {
-                throw new Exception("could not load form #$idform");
+            if (false === $this->_pifaForm->loadByPrimaryKey($idform)) {
+                $msg = Pifa::i18n('FORM_LOAD_ERROR');
+                throw new Exception($msg);
             }
         }
 
@@ -183,10 +188,10 @@ class PifaRightBottomFormPage extends cGuiPage {
         }
 
         // add translations to template
-        $this->set('s', 'I18N', conHtmlentities(json_encode(array(
+        $this->set('s', 'I18N', json_encode(array(
             'cancel' => Pifa::i18n('CANCEL'),
             'save' => Pifa::i18n('SAVE')
-        ))));
+        )));
     }
 
     /**
@@ -255,7 +260,8 @@ class PifaRightBottomFormPage extends cGuiPage {
                 break;
 
             default:
-                throw new InvalidArgumentException('unknown action ' . $action);
+                $msg = Pifa::i18n('UNKNOWN_ACTION');
+                throw new InvalidArgumentException($msg);
         }
     }
 
@@ -349,16 +355,19 @@ class PifaRightBottomFormPage extends cGuiPage {
 
         // validate item data
         if (0 === strlen($name)) {
-            throw new Exception('form name must not be empty');
+            $msg = Pifa::i18n('EMPTY_FORMNAME_ERROR');
+            throw new Exception($msg);
         }
         if (0 === strlen($dataTable)) {
-            throw new Exception('data table name must not be empty');
+            $msg = Pifa::i18n('EMPTY_DATETABLENAME_ERROR');
+            throw new Exception($msg);
         }
         if (!in_array($method, array(
             'GET',
             'POST'
         ))) {
-            throw new Exception('request method must be either GET or POST');
+            $msg = Pifa::i18n('FORM_METHOD_ERROR');
+            throw new Exception($msg);
         }
 
         if ($isLoaded) {
@@ -394,7 +403,9 @@ class PifaRightBottomFormPage extends cGuiPage {
 
         // store item
         if (false === $this->_pifaForm->store()) {
-            throw new Exception('could not store form: ' . $this->_pifaForm->getLastError());
+            $msg = Pifa::i18n('FORM_STORE_ERROR');
+            $msg = sprintf($msg, $this->_pifaForm->getLastError());
+            throw new Exception($msg);
         }
 
         if ($isLoaded) {
@@ -480,7 +491,8 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
         if (0 < $idform) {
             $ret = $this->_pifaForm->loadByPrimaryKey($idform);
             if (false === $ret) {
-                throw new Exception('could not load form');
+                $msg = Pifa::i18n('FORM_LOAD_ERROR');
+                throw new Exception($msg);
             }
         }
 
@@ -494,10 +506,11 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
         }
 
         // add translations to template
-        $this->set('s', 'I18N', conHtmlentities(json_encode(array(
+        $this->set('s', 'I18N', json_encode(array(
             'cancel' => Pifa::i18n('CANCEL'),
-            'save' => Pifa::i18n('SAVE')
-        ))));
+            'save' => Pifa::i18n('SAVE'),
+            'confirm_delete_field' => Pifa::i18n('CONFIRM_DELETE_FIELD')
+        )));
     }
 
     /**
@@ -512,7 +525,8 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
 
         // check for permission
         if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
-            throw new IllegalStateException('no permissions');
+                $msg = Pifa::i18n('NO_PERMISSIONS');
+                throw new IllegalStateException($msg);
         }
 
         if (NULL === $action) {
@@ -523,6 +537,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
 
         // dispatch actions
         switch ($action) {
+
             case PifaRightBottomFormFieldsPage::SHOW_FIELDS:
                 $this->set('s', 'notification', $notification);
                 try {
@@ -533,7 +548,9 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
                 break;
 
             default:
-                throw new InvalidArgumentException('unknown action ' . $action);
+                $msg = Pifa::i18n('UNKNOWN_ACTION');
+                throw new InvalidArgumentException($msg);
+
         }
     }
 
@@ -583,10 +600,6 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
             'dialogTitle' => Pifa::i18n('edit field'),
             'edit' => Pifa::i18n('edit'),
             'delete' => Pifa::i18n('delete')
-        ));
-        // translations (will be displayed as hidden input fields)
-        $tpl->assign('transForJs', array(
-            'confirm_delete_field' => Pifa::i18n('CONFIRM_DELETE_FIELD'),
         ));
 
         // params
@@ -710,9 +723,9 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         // load models
         $idform = cSecurity::toInteger($idform);
         if (0 < $idform) {
-            $ret = $this->_pifaForm->loadByPrimaryKey($idform);
-            if (false === $ret) {
-                throw new Exception('could not load form');
+            if (false === $this->_pifaForm->loadByPrimaryKey($idform)) {
+                $msg = Pifa::i18n('FORM_LOAD_ERROR');
+                throw new Exception($msg);
             }
         }
 
@@ -726,10 +739,10 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         }
 
         // add translations to template
-        $this->set('s', 'I18N', conHtmlentities(json_encode(array(
+        $this->set('s', 'I18N', json_encode(array(
             'cancel' => Pifa::i18n('CANCEL'),
             'save' => Pifa::i18n('SAVE')
-        ))));
+        )));
     }
 
     /**
@@ -744,7 +757,8 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
         // check for permission
         if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
-            throw new IllegalStateException('no permissions');
+            $msg = Pifa::i18n('NO_PERMISSIONS');
+            throw new IllegalStateException($msg);
         }
 
         if (NULL === $action) {
@@ -755,6 +769,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
         // dispatch actions
         switch ($action) {
+
             case PifaRightBottomFormDataPage::SHOW_DATA:
                 $this->set('s', 'notification', $notification);
                 try {
@@ -765,7 +780,9 @@ class PifaRightBottomFormDataPage extends cGuiPage {
                 break;
 
             default:
-                throw new InvalidArgumentException('unknown action ' . $action);
+                $msg = Pifa::i18n('UNKNOWN_ACTION');
+                throw new InvalidArgumentException($msg);
+
         }
     }
 

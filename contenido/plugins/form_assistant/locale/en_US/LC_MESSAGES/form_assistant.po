@@ -14,6 +14,171 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-SearchPath-0: \n"
 
+; GENERAL exceptions
+
+msgid "INTERNAL_SERVER_ERROR"
+msgstr "An ERROR occured:"
+
+msgid "NO_PERMISSIONS"
+msgstr "no permissions"
+
+msgid "UNKNOWN_REQUEST_METHOD"
+msgstr "unknown request method"
+
+msgid "UNKNOWN_ACTION"
+msgstr "unknown action"
+
+msgid "MISSING_CLIENT"
+msgstr "no given client"
+
+msgid "MISSING_LANG"
+msgstr "no given language"
+
+; FORM exceptions
+
+msgid "MISSING_IDFORM"
+msgstr "no given form"
+
+msgid "FORM_CREATE_ERROR"
+msgstr "form could not be created"
+
+msgid "FORM_LOAD_ERROR"
+msgstr "could not load form"
+
+msgid "FORM_STORE_ERROR"
+msgstr "could not store form: '%s'"
+
+msgid "FORM_DELETE_ERROR"
+msgstr "form could not be deleted"
+
+; FIELD exceptions
+
+msgid "MISSING_IDFIELD"
+msgstr "no given field"
+
+msgid "FIELD_LOAD_ERROR"
+msgstr "could not load field"
+
+msgid "FIELD_STORE_ERROR"
+msgstr "could not store field: %s"
+
+msgid "FIELD_DELETE_ERROR"
+msgstr "field could not be deleted"
+
+msgid "FIELDS_DELETE_ERROR"
+msgstr "fields could not be deleted"
+
+; TABLE exceptions
+
+msgid "MISSING_TABLE_ERROR"
+msgstr "table does not exist"
+
+msgid "TABLE_CREATE_ERROR"
+msgstr "table could not be created"
+
+msgid "TABLE_DROP_ERROR"
+msgstr "data table could not be dropped"
+
+msgid "TABLE_CHECK_ERROR"
+msgstr "existance of table could not be determined '%s'"
+
+msgid "TABLE_EXISTS_ERROR"
+msgstr "table '%s' already exists"
+
+; COLUMN exceptions
+
+msgid "COLUMN_EXISTS_ERROR"
+msgstr "column '%s' already exists"
+
+msgid "COLUMN_ADD_ERROR"
+msgstr "column could not be created"
+
+msgid "COLUMNS_LOAD_ERROR"
+msgstr "columns could not be read"
+
+msgid "COLUMN_ALTER_ERROR"
+msgstr "column could not be updated"
+
+msgid "COLUMN_DROP_ERROR"
+msgstr "column could not be deleted"
+
+; EXTENSION exceptions
+
+msgid "MISSING_MODULE_FILE"
+msgstr "missing module file '%s'"
+
+msgid "MISSING_MODULE_CLASS"
+msgstr "missing module class '%s'"
+
+msgid "MISSING_PROCESSOR_FILE"
+msgstr "missing processor file '%s'"
+
+msgid "MISSING_PROCESSOR_CLASS"
+msgstr "missing processor class '%s'"
+
+msgid "MISSING_EOD_FILE"
+msgstr "missing external options datasource file '%s'"
+
+msgid "MISSING_EOD_CLASS"
+msgstr "missing external options datasource class '%s'"
+
+; MAIL exceptions
+
+msgid "MISSING_SENDER_ADDRESS"
+msgstr "missing sender address"
+
+msgid "MISSING_SENDER_NAME"
+msgstr "missing sender name"
+
+msgid "MISSING_RECIPIENT_ADDRESS"
+msgstr "missing recipient address"
+
+msgid "MISSING_SUBJECT"
+msgstr "missing subject"
+
+msgid "MISSING_EMAIL_BODY"
+msgstr "missing mail body"
+
+msgid "EMAIL_SEND_ERROR"
+msgstr "could not send mail"
+
+; DB exceptions
+
+msgid "DATABASE_CONNECT_ERROR"
+msgstr "could not connect to database"
+
+msgid "SQL_BUILD_ERROR"
+msgstr "could not build SQL"
+
+; MISC exceptions
+
+msgid "FILE_STORE_ERROR"
+msgstr "file could not be stored"
+
+msgid "VALUE_STORE_ERROR"
+msgstr "values could not be stored"
+
+msgid "EMPTY_FORMNAME_ERROR"
+msgstr "form name must not be empty"
+
+msgid "EMPTY_DATETABLENAME_ERROR"
+msgstr "data table name must not be empty"
+
+msgid "FORM_METHOD_ERROR"
+msgstr "request method must be either GET or POST"
+
+msgid "NOT_IMPLEMENTED_FIELDTYPE"
+msgstr "field type '%s' is not implemented"
+
+msgid "NOT_IMPLEMENTED_FIELDPROP"
+msgstr "field property '%s' is not implemented"
+
+msgid "EXTENSION_REGEX_ERROR"
+msgstr "REGEX failed, could not determine class name of PIFA extension from file"
+
+msgid "TEMPLATE_REGEX_ERROR"
+msgstr "REGEX failed, could not determine class name of PIFA template from file"
+
 ; actions
 
 msgid "pifa_show_form"
@@ -286,6 +451,9 @@ msgstr "edit"
 
 msgid "delete"
 msgstr "delete"
+
+msgid "CONFIRM_DELETE_FORM"
+msgstr "Do you really want to delete this form?"
 
 msgid "CONFIRM_DELETE_FIELD"
 msgstr "Do you really want to delete this field?"

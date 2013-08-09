@@ -5,6 +5,16 @@
 $(function() {
 
     /**
+     */
+    function getTrans(key) {
+        // get translations
+        var value = pifaTranslations[key];
+        // htmldecode value
+        value = $('<div/>').html(value).text();
+        return value;
+    }
+    
+    /**
      * list & form (dialog) as global jQuery-objects
      */
     var $pifaFormFieldList = $('#pifa-form-field-list');
@@ -38,9 +48,7 @@ $(function() {
      */
     $('body').delegate('.pifa-icon-delete-field', 'click', function(event) {
         event.preventDefault();
-        // get htmldecoded msg
-        var msg = $('<div/>').html($('#confirm_delete_field').val()).text();
-        if (false === confirm(msg)) {
+        if (false === confirm(getTrans('confirm_delete_field'))) {
             return;
         }
         var $li = $(this).parent().parent();
@@ -147,8 +155,6 @@ $(function() {
      * @var $draggedItem to be removed
      */
     function pifaShowFormFieldDialog($dialog, $draggedItem) {
-        var i18n = $.parseJSON($('#i18n').val());
-        cancel = i18n['cancel'];
         $dialog.dialog({
             width: 520,
             height: 'auto',
@@ -166,14 +172,14 @@ $(function() {
             },
             buttons: [
 //            {
-//                text: i18n['cancel'],
+//                text: getTrans('cancel'),
 //                click: function() {
 //                    // close dialog
 //                    $(this).dialog('close');
 //                }
 //            },
             {
-                //text: i18n['save'],
+                //text: getTrans('save'),
                 text: ' ',
                 click: function() {
                     $(this).dialog('close').submit();
@@ -239,11 +245,12 @@ $(function() {
                 $(jqXHR.responseText).appendTo('body').dialog({
                     modal: true,
                     title: errorThrown,
-                    buttons: {
-                        'close': function(event) {
+                    buttons: [{
+                        text: getTrans('cancel'),
+                        click: function() {
                             $(this).dialog('close');
                         }
-                    }
+                    }]
                 });
             }
         });

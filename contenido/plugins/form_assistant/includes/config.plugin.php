@@ -129,7 +129,7 @@ class Pifa {
      * @param bool $showTrace if trace should be displayed too
      */
     public static function displayException(Exception $e, $showTrace = false) {
-        header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+        header($_SERVER['SERVER_PROTOCOL'] . ' 500 ' . self::i18n('INTERNAL_SERVER_ERROR'), true, 500);
 
         if (true) {
             // error box
@@ -145,7 +145,6 @@ class Pifa {
         echo '<div class="' . $class . ' ui-corner-all">';
         echo '<p>';
         echo '<span class="ui-icon ' . $icon . '"></span>';
-        // echo '<strong>Exception</strong>';
         echo $e->getMessage();
         if (true === $showTrace) {
             echo '<pre style="overflow: auto">';
@@ -182,7 +181,7 @@ class Pifa {
     public static function getExtensionClasses($parentClass) {
 
         // ignore if extensions folder is missing
-        if (false === $dh = opendir(Pifa::getPath() . 'extensions/')) {
+        if (false === $dh = opendir(self::getPath() . 'extensions/')) {
             return array();
         }
 
@@ -200,7 +199,8 @@ class Pifa {
 
             // REGEX failure ... just call Mr. T!
             if (false === $matchCount) {
-                throw new PifaException('REGEX failed, could not determine class name of PIFA extension from file');
+                $msg = self::i18n('EXTENSION_REGEX_ERROR');
+                throw new PifaException($msg);
             }
 
             // some other file .. just skip it
@@ -209,9 +209,9 @@ class Pifa {
             }
 
             // this is a proper PHP class
-            $optionClass = Pifa::toCamelCase($matches[1], true);
+            $optionClass = self::toCamelCase($matches[1], true);
 
-            include_once Pifa::getPath() . 'extensions/' . $file;
+            include_once self::getPath() . 'extensions/' . $file;
 
             $reflection = new ReflectionClass($optionClass);
             if (false === $reflection->isSubclassOf($parentClass)) {
@@ -257,7 +257,8 @@ class Pifa {
 
             // REGEX failure ... just call Mr. T!
             if (false === $matchCount) {
-                throw new PifaException('REGEX failed, could not determine class name of PIFA extension from file');
+                $msg = self::i18n('TEMPLATE_REGEX_ERROR');
+                throw new PifaException($msg);
             }
 
             // some other file .. just skip it

@@ -14,6 +14,171 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-SearchPath-0: \n"
 
+; GENERAL exceptions
+
+msgid "INTERNAL_SERVER_ERROR"
+msgstr "Ein Fehler ist aufgetreten:"
+
+msgid "NO_PERMISSIONS"
+msgstr "keine Berechtigung"
+
+msgid "UNKNOWN_REQUEST_METHOD"
+msgstr "unbekannte Anfragemethode"
+
+msgid "UNKNOWN_ACTION"
+msgstr "unbekannte Aktion"
+
+msgid "MISSING_CLIENT"
+msgstr "Angabe zum Mandanten fehlt"
+
+msgid "MISSING_LANG"
+msgstr "Angabe zur Sprache fehlt"
+
+; FORM exceptions
+
+msgid "MISSING_IDFORM"
+msgstr "Angabe zum Formular fehlt"
+
+msgid "FORM_CREATE_ERROR"
+msgstr "Formular konnte nicht erstellt werden"
+
+msgid "FORM_LOAD_ERROR"
+msgstr "Formular konnte nicht gelesen werden"
+
+msgid "FORM_STORE_ERROR"
+msgstr "Formular konnte nicht gespeichert werden: '%s'"
+
+msgid "FORM_DELETE_ERROR"
+msgstr "Formular konnte nicht gelöscht werden"
+
+; FIELD exceptions
+
+msgid "MISSING_IDFIELD"
+msgstr "Angabe zum Feld fehlt"
+
+msgid "FIELD_LOAD_ERROR"
+msgstr "Feld konnte nicht gelesen werden"
+
+msgid "FIELD_STORE_ERROR"
+msgstr "Feld konnte nicht gespeichert werden: '%s'"
+
+msgid "FIELD_DELETE_ERROR"
+msgstr "Feld konnte nicht gelöscht werden"
+
+msgid "FIELDS_DELETE_ERROR"
+msgstr "Felder konnten nicht gelöscht werden"
+
+; TABLE exceptions
+
+msgid "MISSING_TABLE_ERROR"
+msgstr "Datentabelle existiert nicht"
+
+msgid "TABLE_CREATE_ERROR"
+msgstr "Datentabelle konnte nicht erstellt werden"
+
+msgid "TABLE_DROP_ERROR"
+msgstr "Datentabelle konnte nicht gelöscht werden"
+
+msgid "TABLE_CHECK_ERROR"
+msgstr "Existenz der Datentabelle konnte nicht geprüft werden: '%s'"
+
+msgid "TABLE_EXISTS_ERROR"
+msgstr "Datentabelle '%s' existiert bereits"
+
+; COLUMN exceptions
+
+msgid "COLUMN_EXISTS_ERROR"
+msgstr "Die Spalte '%s' existiert bereits."
+
+msgid "COLUMN_ADD_ERROR"
+msgstr "Spalte konnte nicht erzeugt werden"
+
+msgid "COLUMNS_LOAD_ERROR"
+msgstr "Spalte konnte nicht gelesen werden"
+
+msgid "COLUMN_ALTER_ERROR"
+msgstr "Spalte konnte nicht geändert werden"
+
+msgid "COLUMN_DROP_ERROR"
+msgstr "Spalte konnte nicht gelöscht werden"
+
+; EXTENSION exceptions
+
+msgid "MISSING_MODULE_FILE"
+msgstr "Modul-Datei '%s' fehlt"
+
+msgid "MISSING_MODULE_CLASS"
+msgstr "Modul-Klasse '%s' fehlt"
+
+msgid "MISSING_PROCESSOR_FILE"
+msgstr "Prozessor-Datei '%s' fehlt"
+
+msgid "MISSING_PROCESSOR_CLASS"
+msgstr "Prozessor-Klasse '%s' fehlt"
+
+msgid "MISSING_EOD_FILE"
+msgstr "Datei für externe Options-Datenquelle '%s' fehlt"
+
+msgid "MISSING_EOD_CLASS"
+msgstr "Klasse für externe Options-Datenquelle '%s' fehlt"
+
+; EMAIL exceptions
+
+msgid "MISSING_SENDER_ADDRESS"
+msgstr "Absender-Adresse fehlt"
+
+msgid "MISSING_SENDER_NAME"
+msgstr "Absender-Name fehlt"
+
+msgid "MISSING_RECIPIENT_ADDRESS"
+msgstr "Empfänger-Adresse fehlt"
+
+msgid "MISSING_SUBJECT"
+msgstr "Betreff fehlt"
+
+msgid "MISSING_EMAIL_BODY"
+msgstr "Nachricht fehlt"
+
+msgid "EMAIL_SEND_ERROR"
+msgstr "Email konnte nicht versendet werden"
+
+; DB exceptions
+
+msgid "DATABASE_CONNECT_ERROR"
+msgstr "Datenbank-Verbindung konnte nicht hergestellt werden"
+
+msgid "SQL_BUILD_ERROR"
+msgstr "SQL konne nicht erstellt werden"
+
+; MISC exceptions
+
+msgid "FILE_STORE_ERROR"
+msgstr "Datei konnte nicht gespeichert werden"
+
+msgid "VALUE_STORE_ERROR"
+msgstr "Werte konnten nicht gespeichert werden"
+
+msgid "EMPTY_FORMNAME_ERROR"
+msgstr "Formularname darf nicht leer sein"
+
+msgid "EMPTY_DATETABLENAME_ERROR"
+msgstr "Datentabellenname darf nicht leer sein"
+
+msgid "FORM_METHOD_ERROR"
+msgstr "Anfragemethode muß entweder GET oder POST sein"
+
+msgid "NOT_IMPLEMENTED_FIELDTYPE"
+msgstr "Feldtyp '%s' ist noch nicht implementiert"
+
+msgid "NOT_IMPLEMENTED_FIELDPROP"
+msgstr "Feldeigenschaft '%s' ist noch nicht implementiert"
+
+msgid "EXTENSION_REGEX_ERROR"
+msgstr "der Reguläre Ausdruck hat versagt, konnte den Klassennamen der PIFA-Erweiterung nicht anhand des Dateinamens ermitteln"
+
+msgid "TEMPLATE_REGEX_ERROR"
+msgstr "der Reguläre Ausdruck hat versagt, konnte den Klassennamen der PIFA-Schablone nicht anhand des Dateinamens ermitteln"
+
 ; actions
 
 msgid "pifa_show_form"
@@ -261,7 +426,7 @@ msgid "data table"
 msgstr "Datentabelle"
 
 msgid "method"
-msgstr "Methode"
+msgstr "Anfragemethode"
 
 msgid "with timestamp"
 msgstr "mit Zeitstempel"
@@ -286,6 +451,9 @@ msgstr "Bearbeiten"
 
 msgid "delete"
 msgstr "Löschen"
+
+msgid "CONFIRM_DELETE_FORM"
+msgstr "Wollen Sie dieses Formular wirklich löschen?"
 
 msgid "CONFIRM_DELETE_FIELD"
 msgstr "Wollen Sie dieses Feld wirklich löschen?"
