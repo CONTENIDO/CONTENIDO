@@ -217,7 +217,6 @@ class PifaAjaxHandler {
      * @throws Exception
      */
     private function _postFieldForm($idform, $idfield) {
-
         $string_cast_deep = create_function('$value', '
             $value = cSecurity::unescapeDB($value);
             $value = cSecurity::toString($value);
@@ -462,7 +461,8 @@ class PifaAjaxHandler {
         // translations
         $tpl->assign('trans', array(
             'edit' => Pifa::i18n('EDIT'),
-            'delete' => Pifa::i18n('DELETE')
+            'delete' => Pifa::i18n('DELETE'),
+            'obligatory' => Pifa::i18n('OBLIGATORY')
         ));
 
         // the field

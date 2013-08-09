@@ -138,13 +138,13 @@ legend {
 }
 
 #pifa-form-field-list .edit {
-    width: 8%;
+    width: 70px;
     padding-left: 2px;
     padding-top : 17px;
-    text-align: center;
+    text-align: right;
 }
 
-#pifa-form-field-list .edit a {
+#pifa-form-field-list .edit img {
     padding-right: 4px;
 }
 

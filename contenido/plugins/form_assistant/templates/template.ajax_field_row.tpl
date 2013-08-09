@@ -13,6 +13,10 @@
         </div>
     </div>
     <div class="edit">
+        {if 1 eq $field->get('obligatory')}
+        {* should be another image instead of reminder/prio_high.gif *}
+        <img alt="{$trans.obligatory}" title="{$trans.obligatory}" src="images/reminder/prio_high.gif" />
+        {/if}
         <a href="{$editField}&amp;idfield={$field->get('idfield')}#tabs-2" class="pifa-icon-edit-field" title="{$trans.edit}">
             <img alt="{$trans.edit}" title="{$trans.edit}" src="images/editieren.gif" />
         </a>

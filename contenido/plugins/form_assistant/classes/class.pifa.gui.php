@@ -598,8 +598,9 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
             'legend' => Pifa::i18n('fields'),
             'pleaseSaveFirst' => Pifa::i18n('please save first'),
             'dialogTitle' => Pifa::i18n('edit field'),
-            'edit' => Pifa::i18n('edit'),
-            'delete' => Pifa::i18n('delete')
+            'edit' => Pifa::i18n('EDIT'),
+            'delete' => Pifa::i18n('DELETE'),
+            'obligatory' => Pifa::i18n('OBLIGATORY')
         ));
 
         // params
