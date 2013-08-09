@@ -218,12 +218,12 @@ if ($action == "todo_save_item") {
 
     $todoitem->setProperty("todo", "status", $status);
 
-    if ($priority < 0) {
-        $priority = 0;
+    if ($progress < 0) {
+        $progress = 0;
     }
 
-    if ($priority > 100) {
-        $priority = 100;
+    if ($progress > 100) {
+        $progress = 100;
     }
 
     $todoitem->setProperty("todo", "priority", $priority);
