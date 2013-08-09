@@ -81,18 +81,22 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
 }
 
 if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
-    if ($action == "frontend_save_user") {
+    $username = conHtmlentities(stripslashes(trim($username)));
+	
+	if ($action == "frontend_save_user" && strlen($username) == 0) {
+		$page->displayError(i18n("Username can't be empty"));
+	} else if ($action == "frontend_save_user" && strlen($username) > 0) {
         if (!empty($sReloadScript)) {
             $page->addScript($sReloadScript);
         }
         $messages = array();
 
-        if ($feuser->get("username") != conHtmlentities(stripslashes($username))) {
+        if ($feuser->get("username") != $username) {
             $feusers->select("username = '".$username."' and idclient='$client'");
             if ($feusers->next()) {
                 $messages[] = i18n("Could not set new username: Username already exists");
             } else {
-                $feuser->set("username", conHtmlentities(stripslashes($username)));
+                $feuser->set("username", $username);
             }
         }
 
