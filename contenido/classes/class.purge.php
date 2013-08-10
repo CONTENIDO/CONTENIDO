@@ -94,7 +94,7 @@ class cSystemPurge {
             return false;
         }
 
-        if ($perm->isClientAdmin($clientId, $currentuser) === false || $perm->isSysadmin($currentuser) === false) {
+        if ($perm->isClientAdmin($clientId, $currentuser) === false && $perm->isSysadmin($currentuser) === false) {
             return false;
         }
 
