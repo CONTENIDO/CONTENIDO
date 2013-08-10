@@ -200,11 +200,20 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0) {
         $db->query($sql);
 
         // ********** delete from 'code'-cache
-        if (is_dir($cfgClient[$iIdClient]['code']['path'])) {
+        if (cFileHandler::exists($cfgClient[$iIdClient]['code']['path'])) {
+            /** @var $file SplFileInfo */
             foreach (new DirectoryIterator($cfgClient[$iIdClient]['code']['path']) as $file) {
-                $extension = substr($file, strpos($file->getBasename(), '.') + 1);
-                if ($file->getFilename() == $iIdClient . "." . $iIdLang && $extension == "php") {
-                    unlink($cfgClient[$iIdClient]['code']['path'] . $iIdClient . "." . $iIdLang . 'php');
+                if ($file->isFile() === false) {
+                    continue;
+                }
+
+                $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+                if ($extension != 'php') {
+                    continue;
+                }
+
+                if (preg_match('/' . $iIdClient . '.' . $iIdLang . '.[0-9*]/s', $file->getBasename())) {
+                    cFileHandler::remove($cfgClient[$iIdClient]['code']['path'] . '/' . $file->getFilename());
                 }
             }
         }

@@ -664,10 +664,21 @@ function conDeleteart($idart) {
     $catArtColl->select('idart = ' . (int) $idart);
     while (($oCatArtItem = $catArtColl->next()) !== false) {
         // Delete from code cache
-        foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
-            $extension = substr($file, strpos($file->getBasename(), '.') + 1);
-            if ($file->getFilename() == $oCatArtItem->get('idcatart') && $extension == "php") {
-                unlink($cfgClient[$client]['code']['path'] . $oCatArtItem->get('idcatart') . 'php');
+        if (cFileHandler::exists($cfgClient[$client]['code']['path'])) {
+            /** @var $file SplFileInfo */
+            foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
+                if ($file->isFile() === false) {
+                    continue;
+                }
+
+                $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+                if ($extension != 'php') {
+                    continue;
+                }
+
+                if (preg_match('/[0-9*].[0-9*].' . $oCatArtItem->get('idcatart') . '/s', $file->getBasename())) {
+                    cFileHandler::remove($cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+                }
             }
         }
 
@@ -1093,9 +1104,22 @@ function conSetCodeFlag($idcatart) {
     $oCatArtColl->setCreateCodeFlag($idcatart);
 
     // Delete also generated code files from file system
-    $arr = glob($cfgClient[$client]['code']['path'] . '*.*.' . $idcatart . '.php');
-    foreach ($arr as $file) {
-        cFileHandler::remove($file);
+    if (cFileHandler::exists($cfgClient[$client]['code']['path'])) {
+        /** @var $file SplFileInfo */
+        foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
+            if ($file->isFile() === false) {
+                continue;
+            }
+
+            $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+            if ($extension != 'php') {
+                continue;
+            }
+
+            if (preg_match('/[0-9*].[0-9*].' . $idcatart . '/s', $file->getBasename())) {
+                cFileHandler::remove($cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+            }
+        }
     }
 }
 
@@ -1115,11 +1139,26 @@ function conSetCodeFlagBulkEditing(array $idcatarts) {
     $oCatArtColl = new cApiCategoryArticleCollection();
     $oCatArtColl->setCreateCodeFlag($idcatarts);
 
+    if (cFileHandler::exists($cfgClient[$client]['code']['path']) === false) {
+        return;
+    }
+
     // Delete also generated code files from file system
-    foreach ($idcatarts as $pos => $id) {
-        $arr = glob($cfgClient[$client]['code']['path'] . '*.*.' . $id . '.php');
-        foreach ($arr as $file) {
-            cFileHandler::remove($file);
+    foreach ($idcatarts as $id) {
+        /** @var $file SplFileInfo */
+        foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
+            if ($file->isFile() === false) {
+                continue;
+            }
+
+            $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+            if ($extension != 'php') {
+                continue;
+            }
+
+            if (preg_match('/[0-9*].[0-9*].' . $id . '/s', $file->getBasename())) {
+                cFileHandler::remove($cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+            }
         }
     }
 }
@@ -1582,9 +1621,21 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
     $idcatart = $oCatArt->get('idcatart');
 
     // Delete frome code cache and delete corresponding code
-    // @todo: It's better to move this logic to a model class
-    $mask = $cfgClient[$client]['code']['path'] . '*.' . $idcatart . '.php';
-    array_map('unlink', glob($mask));
+    /** @var $file SplFileInfo */
+    foreach (new DirectoryIterator($cfgClient[$client]['code']['path']) as $file) {
+        if ($file->isFile() === false) {
+            continue;
+        }
+
+        $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+        if ($extension != 'php') {
+            continue;
+        }
+
+        if (preg_match('/[0-9*].[0-9*].' . $idcatart . '/s', $file->getBasename())) {
+            cFileHandler::remove($cfgClient[$client]['code']['path'] . '/' . $file->getFilename());
+        }
+    }
 
     // Delete statistics
     $oStatColl = new cApiStatCollection();

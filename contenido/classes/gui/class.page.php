@@ -177,6 +177,8 @@ class cGuiPage {
         if (cFileHandler::exists($cfg['path']['styles'] . $pagename . ".css")) {
             $this->addStyle($pagename . ".css");
         }
+
+        /** @var $stylefile SplFileInfo */
         foreach (new DirectoryIterator($cfg['path']['styles']) as $stylefile) {
             if (endsWith($stylefile->getFilename(), "." . $pagename . ".css")) {
                 $this->addStyle($stylefile->getFilename());
@@ -186,6 +188,8 @@ class cGuiPage {
         if (cFileHandler::exists($cfg['path']['scripts'] . $pagename . ".js")) {
             $this->addScript($pagename . ".js");
         }
+
+        /** @var $scriptfile SplFileInfo */
         foreach (new DirectoryIterator($cfg['path']['scripts']) as $scriptfile) {
             if (endsWith($scriptfile->getFilename(), "." . $pagename . ".js")) {
                 $this->addScript($scriptfile->getFilename());

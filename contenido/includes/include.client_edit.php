@@ -117,10 +117,19 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
     $properties->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
     // Clear the code cache
-    foreach (new DirectoryIterator($cfgClient[$idclient]['cache']['path']) as $file) {
-        $extension = substr($file, strpos($file->getBasename(), '.') + 1);
-        if ($file->getFilename() == $idclient && $extension == "php") {
-            unlink($cfgClient[$idclient]['cache']['path'] . $idclient . 'php');
+    if (cFileHandler::exists($cfgClient[$idclient]['code']['path']) === true) {
+        /** @var $file SplFileInfo */
+        foreach (new DirectoryIterator($cfgClient[$idclient]['code']['path']) as $file) {
+            if ($file->isFile() === false) {
+                continue;
+            }
+
+            $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+            if ($extension != 'php') {
+                continue;
+            }
+
+            cFileHandler::remove($cfgClient[$idclient]['code']['path'] . '/' . $file->getFilename());
         }
     }
 

@@ -90,22 +90,31 @@ class cSystemPurge {
         global $perm, $currentuser;
         $cfgClient = cRegistry::getClientConfig();
 
-        if (cFileHandler::exists($cfgClient[$clientId]['cache']['path'] . 'code/')) {
+        if (cFileHandler::exists($cfgClient[$clientId]['cache']['path'] . 'code/') === false) {
+            return false;
+        }
 
-            if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-                foreach (new DirectoryIterator($cfgClient[$clientId]['cache']['path'] . 'code/') as $file) {
-                    $extension = substr($file, strpos($file->getBasename(), '.') + 1);
-                    if ($extension == "php") {
-                        if (!unlink($file)) {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            } else {
+        if ($perm->isClientAdmin($clientId, $currentuser) === false || $perm->isSysadmin($currentuser) === false) {
+            return false;
+        }
+
+        /** @var $file SplFileInfo */
+        foreach (new DirectoryIterator($cfgClient[$clientId]['code']['path']) as $file) {
+            if ($file->isFile() === false) {
+                continue;
+            }
+
+            $extension = substr($file, strrpos($file->getBasename(), '.') + 1);
+            if ($extension != 'php') {
+                continue;
+            }
+
+            if (cFileHandler::remove($cfgClient[$clientId]['code']['path'] . '/' . $file->getFilename()) === false) {
                 return false;
             }
         }
+
+        return true;
     }
 
     /**
