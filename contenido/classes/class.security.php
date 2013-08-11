@@ -446,7 +446,7 @@ class Contenido_Security {
 				}
 			}
 
-            return $oDB->Escape($sString);
+            return $oDB->escape($sString);
         }
     }
 
