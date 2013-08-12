@@ -343,8 +343,13 @@ class cFileHandler {
             }
         }
 
-        foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($filename, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST) as $item) {
-            if ($item->isDir()) {
+        foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($filename), RecursiveIteratorIterator::SELF_FIRST) as $item) {
+            // workaround for RecursiveDirectoryIterator::SKIP_DOTS, this was not available in PHP 5.2
+        	if ($item->isDot()) {
+            	continue;
+            }
+            
+        	if ($item->isDir()) {
                 if (!mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
                     return false;
                 }
