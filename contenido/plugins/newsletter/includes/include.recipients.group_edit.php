@@ -280,6 +280,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     }
 
     $oInsiders = '';
+    $aInsiders = array();
     if (count($groupRecipients) > 0) {
     	$oInsiders = new NewsletterRecipientCollection();
     	$oInsiders->setWhere("idclient", $client);
@@ -290,7 +291,6 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     	// TODO: Ask user to have at least mySQL 4.1...
     	$oInsiders->query();
     	
-    	$aInsiders = array();
     	if ($oInsiders->count() > 0) {
     		while ($oInsider = $oInsiders->next()) {
     			$aInsiders[] = $oInsider->get($oInsider->primaryKey);
@@ -487,7 +487,10 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     // group
     // contains a lot of members (e.g. Oracle can't handle more than 1000 items
     // in the brackets)
-    $sSQL = "idclient = '" . $client . "' AND idlang = '" . $lang . "' AND " . "idnewsrcp NOT IN ('" . implode("','", $aInsiders) . "')";
+    $sSQL = "idclient = '" . $client . "' AND idlang = '" . $lang . "'";
+   	if (count($aInsiders) > 0) {
+    	$sSQL .= " AND idnewsrcp NOT IN ('" . implode("','", $aInsiders) . "')";
+    }
 
     if ($_REQUEST["outsider_filter"] != "") {
         $sSQLSearchIn = "";
