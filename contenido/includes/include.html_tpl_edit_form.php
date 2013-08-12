@@ -124,6 +124,25 @@ if ($action == $sActionDelete) {
         $sTempFilename = $sFilename;
         // check filename and create new file
         cFileHandler::validateFilename($sFilename);
+
+
+        // check if file already exists in FS
+        if(cFileHandler::exists($path . $sFilename)){
+            $notification->displayNotification('error', sprintf(i18n('Can not create file %s'), $sFilename));
+            $page->render();
+            exit();
+        }
+
+        // check if file already exists in DB
+        $fileInfoCollection = new cApiFileInformationCollection();
+        $aFileInfo = $fileInfoCollection->getFileInformation($sFilename, $sTypeContent);
+        if (0 < count($aFileInfo)) {
+            $notification->displayNotification('error', sprintf(i18n('Can not create file %s'), $sFilename));
+            $page->render();
+            exit();
+        }
+
+
         cFileHandler::create($path . $sFilename, $_REQUEST['code']);
         $bEdit = cFileHandler::read($path . $sFilename);
         $sReloadScript .= "<script type=\"text/javascript\">
