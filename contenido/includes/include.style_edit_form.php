@@ -112,6 +112,7 @@ if ($action == 'style_delete') {
         // CON-1284 check if file already exists in FS
         if(cFileHandler::exists($path . $sFilename)){
             $notification->displayNotification('error', sprintf(i18n('Can not create file %s'), $sFilename));
+            $page->render();
             exit();
         }
 
@@ -120,6 +121,7 @@ if ($action == 'style_delete') {
         $aFileInfo = $fileInfoCollection->getFileInformation($sFilename, $sTypeContent);
         if (0 < count($aFileInfo)) {
             $notification->displayNotification('error', sprintf(i18n('Can not create file %s'), $sFilename));
+            $page->render();
             exit();
         }
 
@@ -148,6 +150,7 @@ if ($action == 'style_delete') {
             // CON-1284 check if file already exists in FS
             if(cFileHandler::exists($path . $sFilename)){
                 $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $sTempFilename));
+                $page->render();
                 exit();
             }
 
@@ -156,6 +159,7 @@ if ($action == 'style_delete') {
             $aFileInfo = $fileInfoCollection->getFileInformation($sFilename, $sTypeContent);
             if (0 < count($aFileInfo)) {
                 $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $sTempFilename));
+                $page->render();
                 exit();
             }
 
@@ -163,6 +167,7 @@ if ($action == 'style_delete') {
                 $sTempFilename = $sFilename;
             } else {
                 $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $path . $sTempFilename));
+                $page->render();
                 exit();
             }
             $sReloadScript .= "<script type=\"text/javascript\">
