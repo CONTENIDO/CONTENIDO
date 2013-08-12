@@ -345,7 +345,7 @@ class cFileHandler {
 
         foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($filename), RecursiveIteratorIterator::SELF_FIRST) as $item) {
             // workaround for RecursiveDirectoryIterator::SKIP_DOTS, this was not available in PHP 5.2
-        	if ($item->isDot()) {
+       		if ($item->getFilename() == '.' || $item->getFilename() == '..') {
             	continue;
             }
             
