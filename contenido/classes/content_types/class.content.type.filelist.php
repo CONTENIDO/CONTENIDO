@@ -436,7 +436,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $info = exif_imagetype($filePath);
 
         if ($info & (IMAGETYPE_GIF | IMAGETYPE_JPEG | IMAGETYPE_PNG)) {
-            $imgSrc = capiImgScale($filePath, 148, 74);
+            $imgSrc = cApiImgScale($filePath, 148, 74);
         } else {
             // file_put_contents($this->_cfgClient[$this->_client]['cache']['path']
             // .

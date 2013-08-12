@@ -530,8 +530,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // scale image if exists and return it
         if (file_exists($teaserImage)) {
-            // Scale Image using capiImgScale
-            $imgSrc = capiImgScale($teaserImage, $maxX, $maxY, $cropped);
+            // Scale Image using cApiImgScale
+            $imgSrc = cApiImgScale($teaserImage, $maxX, $maxY, $cropped);
 
             if ($this->_useXHTML == 'true') {
                 $letter = ' /';
