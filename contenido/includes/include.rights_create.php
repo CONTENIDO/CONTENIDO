@@ -23,7 +23,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
 }
 
 if (!isset($wysi)) {
-	$wysi = 1;
+    $wysi = 1;
 }
 
 $aPerms = array();
@@ -31,8 +31,8 @@ $sNotification = '';
 $bError = false;
 
 if ($action == 'user_createuser') {
-	$username = stripslashes(trim($username));
-	
+    $username = stripslashes(trim($username));
+
     if ($username == '') {
         $sNotification = $notification->returnNotification("warning", i18n("Username can't be empty"));
         $bError = true;

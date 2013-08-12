@@ -35,7 +35,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
     $oPage->abortRendering();
     $oPage->render();
 } else if (!(int) $client > 0) {
-	$oPage->abortRendering();
+    $oPage->abortRendering();
     $oPage->render();
 } else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
     $oPage->displayWarning(i18n('Versioning is not activated'));
@@ -171,7 +171,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage')) {
         } else {
             $oPage->displayWarning(i18n('No style history available'));
         }
-        
+
         $oPage->abortRendering();
     }
     $oPage->render();

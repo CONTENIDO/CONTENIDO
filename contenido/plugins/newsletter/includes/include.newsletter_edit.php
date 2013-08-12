@@ -425,7 +425,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             $_REQUEST["optSendTo"] == "all";
         }
     } elseif (is_array($_REQUEST["selGroup"])) {
-    	$oSelGroup->setSelected($_REQUEST['selGroup']);
+        $oSelGroup->setSelected($_REQUEST['selGroup']);
     }
 
     switch ($_REQUEST["optSendTo"]) {

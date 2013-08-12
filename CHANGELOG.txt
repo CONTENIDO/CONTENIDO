@@ -73,8 +73,8 @@ Release 4.9.0
     * [CON-1122] - Administration - Users - Content - Plugin rights: labels are not well
     * [CON-1123] - Administration - Languages: Editors language select box changes
     * [CON-1127] - Content - Category: Moving categories by drag and drop does not work
-	* [CON-1128] - Layout problems in contact form
-	* [CON-1129] - Fixes for content type styles
+    * [CON-1128] - Layout problems in contact form
+    * [CON-1129] - Fixes for content type styles
     * [CON-1133] - Imprint (footer navigation) leaves breadcrumb empty
     * [CON-1136] - IE7: Navigation left is missing
     * [CON-1137] - Various problems with cookie directive module
@@ -240,8 +240,8 @@ Release 4.9.0
     * [CON-1431] - Article: SEO: Delete "333"
     * [CON-1432] - Fix missing spacer.gif on contact form (frontend)
     * [CON-1437] - Tagging: Save the level 3 is not possible
-	* [CON-1438] - cFileHandler::recursiveCopy uses PHP 5.3+ functionality
-	
+    * [CON-1438] - cFileHandler::recursiveCopy uses PHP 5.3+ functionality
+
 ** Improvement
     * [CON-572] - Move inline CSS into stylesheet file
     * [CON-855] - Admin: User Management - JavaScript the Sysadmin/Admin section
@@ -290,7 +290,7 @@ Release 4.9.0
     * [CON-1380] - cHTMLSelect::setMultiple() should change name of select element
     * [CON-1417] - On creating new Backend Users, checkbox for Tiny should be checked by default
     * [CON-1434] - PIFA: Message in english
-	
+
 ** New Feature
     * [CON-830] - Implementation of the cookie confirmation
     * [CON-989] - Add notice if category has no assigned template
@@ -310,10 +310,10 @@ Release 4.9.0
     * [CON-1259] - Solr: develop searcher
     * [CON-1260] - Solr: display search results
     * [CON-1357] - PIM: Make difference between full uninstall sql file and update uninstall sql file
-	
+
 ** Story
     * [CON-1000] - Thank you for everything!
-	
+
 ** Task
     * [CON-440] - Removal of internal blocks and @con_php_req from file headers and change of @version value
     * [CON-972] - Remove deprecated sources
@@ -341,11 +341,11 @@ Release 4.9.0
     * [CON-1264] - Check CONTENIDO backend with Internet Explorer versions 7 to 10
     * [CON-1274] - Please translate "Directions"
     * [CON-1303] - Dialog lightbox should block page content
-	* [CON-1338] - Check all upgrade jobs
+    * [CON-1338] - Check all upgrade jobs
     * [CON-1351] - Check module type save and read process
     * [CON-1376] - Review example client data
     * [CON-1389] - Remove usage of deprecated preg_replace modifier /e
-	
+
 ** Technical task
     * [CON-1162] - Preview of meta tags for article on Meta tab
     * [CON-1165] - Add article alias also to tab SEO

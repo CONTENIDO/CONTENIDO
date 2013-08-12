@@ -200,5 +200,5 @@ if (!is_null($extension)) {
 }
 
 if (isset($_SESSION['language'])) {
-	i18nInit('locale/', $_SESSION['language'], 'setup');
+    i18nInit('locale/', $_SESSION['language'], 'setup');
 }

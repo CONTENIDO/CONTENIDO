@@ -39,7 +39,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
     $oPage->abortRendering();
     $oPage->render();
 } else if (!(int) $client > 0) {
-	$oPage->abortRendering();
+    $oPage->abortRendering();
     $oPage->render();
 } else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
     $oPage->displayWarning(i18n('Versioning is not activated'));

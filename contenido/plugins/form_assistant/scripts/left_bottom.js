@@ -10,7 +10,7 @@ $(function() {
         value = $('<div/>').html(value).text();
         return value;
     }
-    
+
     /**
      * Add security question for deleting a form.
      */

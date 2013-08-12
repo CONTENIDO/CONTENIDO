@@ -39,7 +39,7 @@ class cI18n {
      *
      * @param  string  $localePath  Path to the locales
      * @param  string  $langCode  Language code to set
-     * @param  string  $domain	Language domain
+     * @param  string  $domain    Language domain
      */
     public static function init($localePath, $langCode, $domain = 'contenido') {
         if (function_exists('bindtextdomain')) {

@@ -82,10 +82,10 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
 
 if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
     $username = conHtmlentities(stripslashes(trim($username)));
-	
-	if ($action == "frontend_save_user" && strlen($username) == 0) {
-		$page->displayError(i18n("Username can't be empty"));
-	} else if ($action == "frontend_save_user" && strlen($username) > 0) {
+
+    if ($action == "frontend_save_user" && strlen($username) == 0) {
+        $page->displayError(i18n("Username can't be empty"));
+    } else if ($action == "frontend_save_user" && strlen($username) > 0) {
         if (!empty($sReloadScript)) {
             $page->addScript($sReloadScript);
         }

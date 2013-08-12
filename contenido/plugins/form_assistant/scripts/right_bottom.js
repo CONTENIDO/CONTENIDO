@@ -13,7 +13,7 @@ $(function() {
         value = $('<div/>').html(value).text();
         return value;
     }
-    
+
     /**
      * list & form (dialog) as global jQuery-objects
      */

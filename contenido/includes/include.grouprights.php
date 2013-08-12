@@ -179,10 +179,10 @@ if ($oClientLang->isLoaded()) {
     $rights_client = $oClientLang->get('idclient');
     $rights_lang = $oClientLang->get('idlang');
 } else {
-	$page = new cGuiPage('generic_page');
-	$page->displayError(i18n("Current group doesn't have any rights to any client/language."));
-	$page->abortRendering();
-	$page->render();
+    $page = new cGuiPage('generic_page');
+    $page->displayError(i18n("Current group doesn't have any rights to any client/language."));
+    $page->abortRendering();
+    $page->render();
     die();
 }
 
