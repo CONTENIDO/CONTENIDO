@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO Chain.
  * Generate base href for multiple client domains
@@ -21,33 +22,55 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-function cecCreateBaseHref($sCurrentBaseHref)
-{
-    global $cfg, $client;
+function cecCreateBaseHref($currentBaseHref) {
 
-    $oClient = new cApiClient($client);
-    $aSettings = $oClient->getProperties();
-    if (is_array($aSettings)) {
-        foreach ($aSettings as $aClient) {
-            if ($aClient["type"] == "client" && strstr($aClient["name"], "frontend_path") !== false) {
-                $aUrlData = parse_url($aClient["value"]);
+    // get props of current client
+    $props = cRegistry::getClient()->getProperties();
+    //$props = cRegistry::getClient()->getPropertiesByType('client');
 
-                if ($aUrlData["host"] == $_SERVER['HTTP_HOST'] ||
-                    ("www." . $aUrlData["host"]) == $_SERVER['HTTP_HOST'] ||
-                     $aUrlData["host"] ==  "www." . $_SERVER['HTTP_HOST'])
-                {
-                    // The currently used host has been found as
-                    // part of the base href(s) specified in client settings
-
-                    // Return base href as specified in client settings
-                    $sNewBaseHref = $aClient["value"];
-                    return $sNewBaseHref;
-                }
-            }
-        }
+    // return rootdir as defined in AMR if client has no props
+    if (!is_array($props)) {
+        return $currentBaseHref;
     }
 
-    // We are still here, so no alternative href was found - return the default one
-    return $sCurrentBaseHref;
+    foreach ($props as $prop) {
+
+        // skip props that are not of type 'client'
+        if ($prop['type'] != 'client') {
+            continue;
+        }
+
+        // skip props whose name does not contain 'frontend_path'
+        if (false === strstr($prop['name'], 'frontend_path')) {
+            continue;
+        }
+
+        // current host & path (HTTP_HOST & REQUEST_URI)
+        $httpHost = $_SERVER['HTTP_HOST'];
+        $httpPath = $_SERVER['REQUEST_URI'];
+
+        // host & path of configured alternative URL
+        $propHost = parse_url($prop['value'], PHP_URL_HOST);
+        $propPath = parse_url($prop['value'], PHP_URL_PATH);
+
+        // skip if http host does not equal configured host (allowing for optional www)
+        if ($propHost != $httpHost && ('www.' . $propHost) != $httpHost && $propHost != 'www.' . $httpHost) {
+            continue;
+        }
+
+        // skip if http path does not start with configured path
+        if (0 !== strpos($httpPath, $propPath)) {
+            continue;
+        }
+
+        // return URL as specified in client settings
+        $currentBaseHref = $prop['value'];
+
+    }
+
+    // return default
+    return $currentBaseHref;
+
 }
+
 ?>

@@ -283,8 +283,10 @@ class ModRewriteController extends ModRewriteBase {
         }
 
         // check for defined rootdir
-        if (parent::getConfig('rootdir') !== '/' && strpos($requestUri, $this->_sIncommingUrl) === 0) {
-            $this->_sIncommingUrl = str_replace(parent::getConfig('rootdir'), '/', $this->_sIncommingUrl);
+        // allows for root dir being alternativly defined as path of setting client/%frontend_path%
+        $rootdir = cUriBuilderMR::getMultiClientRootDir(parent::getConfig('rootdir'));
+        if ('/' !==  $rootdir && 0 === strpos($requestUri, $this->_sIncommingUrl)) {
+            $this->_sIncommingUrl = str_replace($rootdir, '/', $this->_sIncommingUrl);
         }
 
         $aUrlComponents = $this->_parseUrl($this->_sIncommingUrl);

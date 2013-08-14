@@ -2,15 +2,15 @@
 /**
  * This file contains the uri builder mod rewrite class.
  *
- * @package    Plugin
+ * @package Plugin
  * @subpackage ModRewrite
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -30,7 +30,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @todo Add handling of absolute paths, standardize handling of fragments
  *
- * @package    Plugin
+ * @package Plugin
  * @subpackage ModRewrite
  */
 class cUriBuilderMR extends cUriBuilder {
@@ -78,8 +78,8 @@ class cUriBuilderMR extends cUriBuilder {
         if (ModRewrite::isEnabled()) {
             $this->_aMrCfg = ModRewrite::getConfig();
             $this->_bMREnabled = true;
-            $this->_bIsXHTML = (getEffectiveSetting('generator', 'xhtml', 'false') == 'false') ? false : true;
-            $this->_sAmp = ($this->_bIsXHTML) ? '&amp;' : '&';
+            $this->_bIsXHTML = (getEffectiveSetting('generator', 'xhtml', 'false') == 'false')? false : true;
+            $this->_sAmp = ($this->_bIsXHTML)? '&amp;' : '&';
         }
     }
 
@@ -103,7 +103,7 @@ class cUriBuilderMR extends cUriBuilder {
      *        $params[0] = 'front_content.php?idart=123...'
      *        </code>
      * @param boolean $bUseAbsolutePath Flag to use absolute path (not used at
-     *            the moment)
+     *        the moment)
      * @return string New build url
      */
     public function buildUrl(array $params, $bUseAbsolutePath = false) {
@@ -198,7 +198,72 @@ class cUriBuilderMR extends cUriBuilder {
         // now convert CONTENIDO url to an AMR url
         $sUrl = ModRewriteUrlUtil::getInstance()->toModRewriteUrl($sUrl);
 
-        return mr_removeMultipleChars('/', $this->_aMrCfg['rootdir'] . $sUrl);
+        // prepend rootdir as defined in config
+        // $sUrl = $this->_aMrCfg['rootdir'] . $sUrl;
+        // this version allows for multiple domains of a client
+        $sUrl = self::getMultiClientRootDir($this->_aMrCfg['rootdir']) . $sUrl;
+
+        // remove double slashes
+        $sUrl = mr_removeMultipleChars('/', $sUrl);
+
+        return $sUrl;
+    }
+
+    /**
+     * Returns the defined rootdir.
+     * Allows for root dir being alternativly defined as path of setting
+     * client/%frontend_path%.
+     *
+     * @param string $configuredRootDir defined rootdir
+     * @return unknown mixed
+     */
+    public static function getMultiClientRootDir($configuredRootDir) {
+
+        // get props of current client
+        $props = cRegistry::getClient()->getProperties();
+        // $props = cRegistry::getClient()->getPropertiesByType('client');
+
+        // return rootdir as defined in AMR if client has no props
+        if (!is_array($props)) {
+            return $configuredRootDir;
+        }
+
+        foreach ($props as $prop) {
+            // skip props that are not of type 'client'
+            if ($prop['type'] != 'client') {
+                continue;
+            }
+
+            // skip props whose name does not contain 'frontend_path'
+            if (false === strstr($prop['name'], 'frontend_path')) {
+                continue;
+            }
+
+            // current host & path (HTTP_HOST & REQUEST_URI)
+            $httpHost = $_SERVER['HTTP_HOST'];
+            $httpPath = $_SERVER['REQUEST_URI'];
+
+            // host & path of configured alternative URL
+            $propHost = parse_url($prop['value'], PHP_URL_HOST);
+            $propPath = parse_url($prop['value'], PHP_URL_PATH);
+
+            // skip if http host does not equal configured host (allowing for
+            // optional www)
+            if ($propHost != $httpHost && ('www.' . $propHost) != $httpHost && $propHost != 'www.' . $httpHost) {
+                continue;
+            }
+
+            // skip if http path does not start with configured path
+            if (0 !== strpos($httpPath, $propPath)) {
+                continue;
+            }
+
+            // return path as specified in client settings
+            return $propPath;
+        }
+
+        // return rootdir as defined in AMR
+        return $configuredRootDir;
     }
 
     /**
@@ -213,7 +278,12 @@ class cUriBuilderMR extends cUriBuilder {
         // set list of parameter which are to ignore while setting additional
         // parameter
         $aIgnoredParams = array(
-            'idcat', 'idart', 'lang', 'client', 'idcatart', 'idartlang'
+            'idcat',
+            'idart',
+            'lang',
+            'client',
+            'idcatart',
+            'idartlang'
         );
         if ($this->_aMrCfg['use_language'] == 1) {
             $aIgnoredParams[] = 'changelang';
@@ -259,8 +329,8 @@ class cUriBuilderMR extends cUriBuilder {
 
         // set client if desired
         if ($this->_aMrCfg['use_client'] == 1) {
-            $iChangeClient = (isset($aArgs['changeclient'])) ? (int) $aArgs['changeclient'] : 0;
-            $idclient = ($iChangeClient > 0) ? $iChangeClient : $client;
+            $iChangeClient = (isset($aArgs['changeclient']))? (int) $aArgs['changeclient'] : 0;
+            $idclient = ($iChangeClient > 0)? $iChangeClient : $client;
             if ($this->_aMrCfg['use_client_name'] == 1) {
                 return urlencode(ModRewrite::getClientName($idclient));
             } else {
@@ -281,8 +351,8 @@ class cUriBuilderMR extends cUriBuilder {
 
         // set language if desired
         if ($this->_aMrCfg['use_language'] == 1) {
-            $iChangeLang = (isset($aArgs['changelang'])) ? (int) $aArgs['changelang'] : 0;
-            $idlang = ($iChangeLang > 0) ? $iChangeLang : $lang;
+            $iChangeLang = (isset($aArgs['changelang']))? (int) $aArgs['changelang'] : 0;
+            $idlang = ($iChangeLang > 0)? $iChangeLang : $lang;
             if ($this->_aMrCfg['use_language_name'] == 1) {
                 return urlencode(ModRewrite::getLanguageName($idlang));
             } else {
@@ -299,7 +369,7 @@ class cUriBuilderMR extends cUriBuilder {
      * @return string Path
      */
     private function _getPath(array $aPretty) {
-        $sPath = (isset($aPretty['urlpath'])) ? $aPretty['urlpath'] : '';
+        $sPath = (isset($aPretty['urlpath']))? $aPretty['urlpath'] : '';
 
         // check start directory settings
         if ($this->_aMrCfg['startfromroot'] == 0 && (strlen($sPath) > 0)) {
@@ -324,13 +394,13 @@ class cUriBuilderMR extends cUriBuilder {
      * @return string Articlename
      */
     private function _getArticleName(array $aPretty, array $aArgs) {
-        $sArticle = (isset($aPretty['urlname'])) ? $aPretty['urlname'] : '';
+        $sArticle = (isset($aPretty['urlname']))? $aPretty['urlname'] : '';
 
-        $iIdCat = (isset($aArgs['idcat'])) ? (int) $aArgs['idcat'] : 0;
-        $iIdCatLang = (isset($aArgs['idcatlang'])) ? (int) $aArgs['idcatlang'] : 0;
-        $iIdCatArt = (isset($aArgs['idcatart'])) ? (int) $aArgs['idcatart'] : 0;
-        $iIdArt = (isset($aArgs['idart'])) ? (int) $aArgs['idart'] : 0;
-        $iIdArtLang = (isset($aArgs['idartlang'])) ? (int) $aArgs['idartlang'] : 0;
+        $iIdCat = (isset($aArgs['idcat']))? (int) $aArgs['idcat'] : 0;
+        $iIdCatLang = (isset($aArgs['idcatlang']))? (int) $aArgs['idcatlang'] : 0;
+        $iIdCatArt = (isset($aArgs['idcatart']))? (int) $aArgs['idcatart'] : 0;
+        $iIdArt = (isset($aArgs['idart']))? (int) $aArgs['idart'] : 0;
+        $iIdArtLang = (isset($aArgs['idartlang']))? (int) $aArgs['idartlang'] : 0;
 
         // category id was passed but not article id
         if (($iIdCat > 0 || $iIdCatLang > 0) && $iIdCatArt == 0 && $iIdArt == 0 && $iIdArtLang == 0) {
@@ -340,7 +410,7 @@ class cUriBuilderMR extends cUriBuilder {
                     // use default start article name
                     $sArticle = $this->_aMrCfg['default_startart_name'];
                 } else {
-                    $sArticle = (isset($aPretty['urlname'])) ? $aPretty['urlname'] : '';
+                    $sArticle = (isset($aPretty['urlname']))? $aPretty['urlname'] : '';
                 }
             } else {
                 // url is to create without article name
@@ -350,5 +420,4 @@ class cUriBuilderMR extends cUriBuilder {
 
         return $sArticle;
     }
-
 }
