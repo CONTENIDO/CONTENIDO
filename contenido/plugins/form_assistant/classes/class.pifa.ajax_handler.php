@@ -438,7 +438,7 @@ class PifaAjaxHandler {
         if (true === $isFieldCreated) {
 
             // update ranks of younger siblings
-            $sql = "-- PifaAjaxHandler->_editFieldFormKK()
+            $sql = "-- PifaAjaxHandler->_postFieldForm()
                 UPDATE
                     " . cRegistry::getDbTableName('pifa_field') . "
                 SET

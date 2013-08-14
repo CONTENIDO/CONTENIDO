@@ -372,7 +372,7 @@ class PifaField extends Item {
                         $error = $errors[$this->get('idfield')];
                         $content[] = new cHTMLParagraph($error, 'pifa-error-message');
                     }
-                } catch (NotImplementedException $e) {
+                } catch (PifaNotImplementedException $e) {
                     return NULL; // PASS // warning?
                 }
 
@@ -466,7 +466,7 @@ class PifaField extends Item {
      * TODO should be private, right?
      *
      * @param boolean $error if field elem should be displayed as erroneous
-     * @throws NotImplementedException if field type is not implemented
+     * @throws PifaNotImplementedException if field type is not implemented
      * @return cHTMLTextbox cHTMLTextarea cHTMLPasswordbox cHTMLSpan
      *         cHTMLSelectElement NULL cHTMLButton
      */
@@ -726,7 +726,7 @@ class PifaField extends Item {
             default:
                 $msg = Pifa::i18n('NOT_IMPLEMENTED_FIELDTYPE');
                 $msg = sprintf($msg, $fieldType);
-                throw new NotImplementedException($msg);
+                throw new PifaNotImplementedException($msg);
 
         }
 

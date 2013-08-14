@@ -29,18 +29,16 @@ class PifaDatabaseException extends PifaException {
 
 /**
  *
- * @todo rename to PifaNotImplementedException
  * @author marcus.gnass
  */
-class NotImplementedException extends PifaException {
+class PifaNotImplementedException extends PifaException {
 }
 
 /**
  *
- * @todo rename to PifaIllegalStateException
  * @author marcus.gnass
  */
-class IllegalStateException extends PifaException {
+class PifaIllegalStateException extends PifaException {
 }
 
 /**

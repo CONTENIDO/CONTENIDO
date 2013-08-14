@@ -22,7 +22,7 @@ class PifaLeftBottomPage extends cGuiPage {
 
     /**
      *
-     * @throws IllegalStateException
+     * @throws PifaIllegalStateException
      */
     public function __construct() {
 
@@ -206,7 +206,7 @@ class PifaRightBottomFormPage extends cGuiPage {
 
         // check for permission
         if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
-            throw new IllegalStateException('no permissions');
+            throw new PifaIllegalStateException('no permissions');
         }
 
         if (NULL === $action) {
@@ -526,7 +526,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
         // check for permission
         if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
                 $msg = Pifa::i18n('NO_PERMISSIONS');
-                throw new IllegalStateException($msg);
+                throw new PifaIllegalStateException($msg);
         }
 
         if (NULL === $action) {
@@ -759,7 +759,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         // check for permission
         if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
             $msg = Pifa::i18n('NO_PERMISSIONS');
-            throw new IllegalStateException($msg);
+            throw new PifaIllegalStateException($msg);
         }
 
         if (NULL === $action) {
