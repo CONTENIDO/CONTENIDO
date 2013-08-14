@@ -125,4 +125,20 @@ class cString {
         return $value;
     }
 
+    /**
+     * Checks if the string haystack ends with needle
+     *
+     * @param   string  $haystack  The string to check
+     * @param   string  $needle    The string with which it should end
+     * @return  bool
+     */
+    public static function endsWith($haystack, $needle) {
+        $length = strlen($needle);
+        if ($length == 0) {
+            return true;
+        }
+
+        return (substr($haystack, -$length) === $needle);
+    }
+
 }
