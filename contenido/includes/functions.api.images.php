@@ -652,7 +652,7 @@ function cApiIsImageMagickAvailable() {
     $output = array();
     $retval = 0;
     $imPath = $cfg['images']['image_magick']['path'];
-    $program = '"' . escapeshellcmd($imPath . 'convert') . '" -version';
+    $program = '"' . escapeshellarg($imPath . 'convert') . '" -version';
 
     @exec($program, $output, $retval);
 
