@@ -35,7 +35,7 @@ abstract class PifaAbstractFormProcessor {
 
     /**
      *
-     * @todo should be private as it can be accessed via getForm()
+     * @todo Should be private instead of protected as it can be accessed via getForm()
      * @var PifaForm
      */
     protected $_form = NULL;

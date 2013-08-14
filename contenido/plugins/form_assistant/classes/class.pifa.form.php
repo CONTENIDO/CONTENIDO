@@ -420,8 +420,7 @@ class PifaForm extends Item {
      * there were no modiifed values and thus no statement was executed. This
      * helps in handling database errors.
      *
-     * @todo check if this could be usefull for PifaField too.
-     *
+     * @todo Check if method store() should be implemented for PifaField too.
      * @return bool
      */
     public function store() {
