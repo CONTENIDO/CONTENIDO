@@ -1177,7 +1177,12 @@ function createRandomName($nameLength) {
     return $Name;
 }
 
-function setHelpContext($area) {
+/**
+ * Returns the JavaScript help context code, if help confuguration is enabled
+ * @param string $area  The area name
+ * @return The context context JS code
+ */
+function getJsHelpContext($area) {
     global $cfg;
 
     if ($cfg['help'] == true) {

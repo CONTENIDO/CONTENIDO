@@ -368,7 +368,7 @@ $tpl->set('s', 'LEGEND', $editCategory->render());
 $tpl->set('s', 'LEGENDLINK', $legendlink);
 
 // Help
-$tpl->set('s', 'HELPSCRIPT', setHelpContext("con"));
+$tpl->set('s', 'HELPSCRIPT', getJsHelpContext("con"));
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top']);
 
 function xmlFileToArray($filename, $aData = array(), $aInformation) {

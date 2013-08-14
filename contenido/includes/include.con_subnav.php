@@ -105,7 +105,7 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
         $tpl->set("d", "CLASS", '');
         $tpl->set("d", "OPTIONS", '');
         if ($cfg['help'] == true) {
-            $tpl->set("d", "CAPTION", '<a style="' . $style . '" onclick="' . setHelpContext(i18n("Article") . "/$caption") . 'sub.clicked(this);artObj.doAction(\'' . $tmp_area . '\')">' . $caption . '</a>');
+            $tpl->set("d", "CAPTION", '<a style="' . $style . '" onclick="' . getJsHelpContext(i18n("Article") . "/$caption") . 'sub.clicked(this);artObj.doAction(\'' . $tmp_area . '\')">' . $caption . '</a>');
         } else {
             $tpl->set("d", "CAPTION", '<a style="' . $style . '" onclick="sub.clicked(this);artObj.doAction(\'' . $tmp_area . '\')">' . $caption . '</a>');
         }
