@@ -776,7 +776,7 @@ class PifaForm extends Item {
 
         // add additional fields if given
         if (NULL !== $additionalFields) {
-            array_merge($data, $additionalFields);
+            $data = array_merge($data, $additionalFields);
         }
 
         $out = '';
@@ -787,6 +787,7 @@ class PifaForm extends Item {
                 if (0 < strlen($out)) {
                     $out .= "\n";
                 }
+                $key = "\"$key\"";
                 $value = str_replace("\n", '\n', $value);
                 $value = str_replace("\r", '\r', $value);
                 $value = "\"$value\"";
@@ -801,7 +802,7 @@ class PifaForm extends Item {
                     $header .= ';';
                     $values .= ';';
                 }
-                $header .= $key;
+                $header .= "\"$key\"";
                 $value = str_replace("\n", '\n', $value);
                 $value = str_replace("\r", '\r', $value);
                 $value = "\"$value\"";
