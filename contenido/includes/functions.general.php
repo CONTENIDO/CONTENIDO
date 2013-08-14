@@ -1557,6 +1557,25 @@ function endsWith($haystack, $needle) {
 }
 
 /**
+ * Checks, if a function is disabled or not ('disable_functions' setting in php.ini)
+ * @param  string  $functionName  Name of the function to check
+ * @return bool
+ */
+function isFunctionDisabled($functionName) {
+    static $disabledFunctions;
+
+    if (empty($functionName)) {
+        return true;
+    }
+
+    if (!isset($disabledFunctions)) {
+        $disabledFunctions = array_map('trim', explode(',', ini_get('disable_functions')));
+    }
+
+    return (in_array($functionName, $disabledFunctions));
+}
+
+/**
  * Generates category article breadcrumb for backend
  *
  * @param string $syncoptions syncstate of backend

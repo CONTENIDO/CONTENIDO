@@ -305,6 +305,8 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
 
     if (!cFileHandler::exists($img)) {
         return false;
+    } elseif (isFunctionDisabled('escapeshellarg') || isFunctionDisabled('exec')) {
+        return false;
     }
 
     $filename = $img;
@@ -373,7 +375,10 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
 function cApiImageIsAnimGif($sFile) {
     global $cfg;
 
-    if ('im' != cApiImageCheckImageEditingPosibility()) {
+    if (isFunctionDisabled('escapeshellarg') || isFunctionDisabled('exec')) {
+        // Function escapeshellarg or exec is disabled
+        return false;
+    } elseif ('im' != cApiImageCheckImageEditingPosibility()) {
         // ImageMagick ist not available
         return false;
     }
@@ -645,6 +650,12 @@ function cApiIsImageMagickAvailable() {
 
     // if the check has already been executed, just return the result
     if (is_bool($imagemagickAvailable)) {
+        return $imagemagickAvailable;
+    }
+
+    // check, if escapeshellarg or exec function is disabled, we need both
+    if (isFunctionDisabled('escapeshellarg') || isFunctionDisabled('exec')) {
+        $imagemagickAvailable = false;
         return $imagemagickAvailable;
     }
 
