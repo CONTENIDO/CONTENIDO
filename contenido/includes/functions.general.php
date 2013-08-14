@@ -1924,11 +1924,11 @@ function sendPostRequest($host, $path, $data, $referer = "", $port = 80)
  * @param $file	File to check
  * @return string mime-type
  */
-if (!function_exists("mime_content_type"))
+if (!function_exists('mime_content_type'))
 {
 	function mime_content_type($file)
 	{
-		return exec("file -bi ".escapeshellcmd($file));
+		return exec('file -bi ' . escapeshellarg($file));
 	}
 }
 

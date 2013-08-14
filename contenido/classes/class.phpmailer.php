@@ -414,9 +414,9 @@ class PHPMailer
      */
     function SendmailSend($header, $body) {
         if ($this->Sender != "")
-            $sendmail = sprintf("%s -oi -f %s -t", escapeshellcmd($this->Sendmail), escapeshellarg($this->Sender));
+            $sendmail = sprintf("%s -oi -f %s -t", escapeshellarg($this->Sendmail), escapeshellarg($this->Sender));
         else
-            $sendmail = sprintf("%s -oi -t", escapeshellcmd($this->Sendmail));
+            $sendmail = sprintf("%s -oi -t", escapeshellarg($this->Sendmail));
 
         if(!@$mail = popen($sendmail, "w"))
         {
