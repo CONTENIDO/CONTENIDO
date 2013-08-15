@@ -149,7 +149,7 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         $idaction = $perm->getIDForAction('login');
 
         $authInfo = $this->getAuthInfo();
-        $uid = $authInfo->auth['uid'];
+        $uid = $authInfo['uid'];
 
         // create a actionlog entry
         $actionLogCol = new cApiActionlogCollection();
