@@ -29,12 +29,29 @@ $(function() {
      */
     $('body').delegate('.pifa-icon-edit-field', 'click', function(event) {
         event.preventDefault();
+        var href = $(this).attr('href');
+        // If no href is given user lacks rights to add field.
+        if (0 === href.length) {
+            return;
+        }
         $.ajax({
             type: 'GET',
-            url: $(this).attr('href'),
+            url: href,
             success: function(data, textStatus, jqXHR) {
                 $pifaFormFieldForm.html(data);
                 pifaShowFormFieldDialog($pifaFormFieldForm, null);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $(jqXHR.responseText).appendTo('body').dialog({
+                    modal: true,
+                    title: errorThrown,
+                    buttons: [{
+                        text: getTrans('cancel'),
+                        click: function() {
+                            $(this).dialog('close');
+                        }
+                    }]
+                });
             }
         });
     });
@@ -53,6 +70,10 @@ $(function() {
         }
         var $li = $(this).parent().parent();
         var href = $(this).attr('href');
+        // If no href is given user lacks rights to delete field.
+        if (0 === href.length) {
+            return;
+        }
         $.ajax({
             type: 'GET',
             url: href,
@@ -62,7 +83,16 @@ $(function() {
                 }, 'fast');
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                // TODO show error message
+                $(jqXHR.responseText).appendTo('body').dialog({
+                    modal: true,
+                    title: errorThrown,
+                    buttons: [{
+                        text: getTrans('cancel'),
+                        click: function() {
+                            $(this).dialog('close');
+                        }
+                    }]
+                });
             }
         });
     });
@@ -72,30 +102,32 @@ $(function() {
      * Further params to be send (area, frame, contenido, idform) are read
      * from a hidden input field #sortParams which is filled serverside.
      */
-    $pifaFormFieldList.sortable({
-        placeholder: 'ui-state-highlight',
-        items: 'li:not(.header)',
-        axis: 'y',
-        //containment: 'parent',
-        start: function(e, ui) {
-            ui.placeholder.height(ui.item.height());
-        },
-        revert: true,
-        update: function(event, ui) {
-            var idfields = [];
-            $.each($('li', this), function() {
-                idfields.push($(this).attr('id'));
-            });
-            var sortParams = $('#sortParams').val();
-            if (sortParams) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'main.php',
-                    data: sortParams + '&idfields=' + idfields.join(',')
+    if ($pifaFormFieldList.hasClass('sortable')) {
+        $pifaFormFieldList.sortable({
+            placeholder: 'ui-state-highlight',
+            items: 'li:not(.header)',
+            axis: 'y',
+            //containment: 'parent',
+            start: function(e, ui) {
+                ui.placeholder.height(ui.item.height());
+            },
+            revert: true,
+            update: function(event, ui) {
+                var idfields = [];
+                $.each($('li', this), function() {
+                    idfields.push($(this).attr('id'));
                 });
+                var sortParams = $('#sortParams').val();
+                if (sortParams) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'main.php',
+                        data: sortParams + '&idfields=' + idfields.join(',')
+                    });
+                }
             }
-        }
-    });
+        });
+    }
 
     /**
      * Make field type icons draggable.
@@ -105,17 +137,36 @@ $(function() {
         // make a copy of the dragged icon
         helper: 'clone',
         revert: 'invalid'
-    }).disableSelection().on('click', function(event) {
+    })
+    .disableSelection()
+    .on('click', function(event) {
         // append to list when clicked
         event.preventDefault();
+        var href = $(this).attr('href');
+        // If no href is given user lacks rights to add field.
+        if (0 === href.length) {
+            return;
+        }
         $.ajax({
             type: 'GET',
             url: 'main.php',
-            data: $(this).attr('href'),
+            data: href,
             success: function(data, textStatus, jqXHR) {
                 $pifaFormFieldForm.html(data);
                 $("#field_rank", $pifaFormFieldForm).val($pifaFormFieldList.find('li').length + 1);
                 pifaShowFormFieldDialog($pifaFormFieldForm, null);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $(jqXHR.responseText).appendTo('body').dialog({
+                    modal: true,
+                    title: errorThrown,
+                    buttons: [{
+                        text: getTrans('cancel'),
+                        click: function() {
+                            $(this).dialog('close');
+                        }
+                    }]
+                });
             }
         });
     });
@@ -126,14 +177,31 @@ $(function() {
     $pifaFormFieldList.droppable({
         accept: '.img-draggable', // accept only field type icons
         drop: function(event, ui) {
+            var href = $(ui.draggable).attr('href');
+            // If no href is given user lacks rights to add field.
+            if (0 === href.length) {
+                return;
+            }
             $.ajax({
                 type: 'GET',
                 url: 'main.php',
-                data: $(ui.draggable).attr('href'),
+                data: href,
                 success: function(data, textStatus, jqXHR) {
                     $pifaFormFieldForm.html(data);
                     $("#field_rank", $pifaFormFieldForm).val(ui.draggable.index() + 1);
                     pifaShowFormFieldDialog($pifaFormFieldForm, ui.draggable);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $(jqXHR.responseText).appendTo('body').dialog({
+                        modal: true,
+                        title: errorThrown,
+                        buttons: [{
+                            text: getTrans('cancel'),
+                            click: function() {
+                                $(this).dialog('close');
+                            }
+                        }]
+                    });
                 }
             });
         }
@@ -155,7 +223,7 @@ $(function() {
      * @var $draggedItem to be removed
      */
     function pifaShowFormFieldDialog($dialog, $draggedItem) {
-        $dialog.dialog({
+        var opt = {
             width: 520,
             height: 'auto',
             modal: true,
@@ -169,23 +237,22 @@ $(function() {
                 if (null !== $draggedItem) {
                     $draggedItem.remove();
                 }
-            },
-            buttons: [
-//            {
-//                text: getTrans('cancel'),
-//                click: function() {
-//                    // close dialog
-//                    $(this).dialog('close');
-//                }
-//            },
-            {
-                //text: getTrans('save'),
+            }
+        };
+
+        // form has no hidden action when user lacks rights to save form field
+        // add buttons only if user has approopriate rights
+        if (0 < $('#pifa-form-field-dialog #action').length) {
+            opt.buttons= [{
                 text: ' ',
                 click: function() {
                     $(this).dialog('close').submit();
                 }
-            }]
-        });
+            }];
+        }
+
+        $dialog.dialog(opt);
+        
     }
 
     /**
@@ -193,13 +260,30 @@ $(function() {
      */
     $('body').delegate('#icon-add-option', 'click', function(event) {
         event.preventDefault();
+        var href = $(this).attr('href');
+        // If no href is given user lacks rights to add option.
+        if (0 === href.length) {
+            return;
+        }
         var $optionsList = $('#options-list');
         $.ajax({
             type: 'GET',
-            url: $(this).attr('href'),
+            url: href,
             data: 'index=' + ($optionsList.children().length + 1),
             success: function(data, textStatus, jqXHR) {
                 $optionsList.append(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $(jqXHR.responseText).appendTo('body').dialog({
+                    modal: true,
+                    title: errorThrown,
+                    buttons: [{
+                        text: getTrans('cancel'),
+                        click: function() {
+                            $(this).dialog('close');
+                        }
+                    }]
+                });
             }
         });
     });

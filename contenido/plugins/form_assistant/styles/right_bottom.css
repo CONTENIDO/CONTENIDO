@@ -109,8 +109,11 @@ legend {
     margin: 0;
     border: 0;
     padding: 5px;
-    cursor: move;
     min-height: 200px;
+}
+
+#pifa-form-field-list.sortable li {
+    cursor: move;
 }
 
 #pifa-form-field-list:empty {
@@ -402,10 +405,13 @@ legend {
 
 #field-buttons ul li a {
     background-repeat: no-repeat;
-    cursor: move;
     display: block;
     height: 46px;
     width: 46px;
+}
+
+#field-buttons ul li a.img-draggable {
+    cursor: move;
 }
 
 #add-options-div {

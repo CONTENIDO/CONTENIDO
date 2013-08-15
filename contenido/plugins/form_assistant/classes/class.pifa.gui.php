@@ -84,15 +84,19 @@ class PifaLeftBottomPage extends cGuiPage {
             $menu->setLink($idform, $link);
 
             // create link to delete the form
-            $link = new cHTMLLink();
-            $link->setMultiLink($area, PifaRightBottomFormPage::DELETE_FORM, $area, PifaRightBottomFormPage::DELETE_FORM);
-            $link->setCustom('idform', $idform);
-            $link->setClass('pifa-icon-delete-form');
-            $deleteForm = Pifa::i18n('DELETE_FORM');
-            $link->setAlt($deleteForm);
-            $link->setContent('<img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
-            // $menu->setLink($idform, $link);
-            $menu->setActions($idform, 'delete', $link);
+            if (cRegistry::getPerm()->have_perm_area_action('form', PifaRightBottomFormPage::DELETE_FORM)) {
+                $link = new cHTMLLink();
+                $link->setMultiLink($area, PifaRightBottomFormPage::DELETE_FORM, $area, PifaRightBottomFormPage::DELETE_FORM);
+                $link->setCustom('idform', $idform);
+                $link->setClass('pifa-icon-delete-form');
+                $deleteForm = Pifa::i18n('DELETE_FORM');
+                $link->setAlt($deleteForm);
+                $link->setContent('<img src="' . $cfg['path']['images'] . 'delete.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
+                // $menu->setLink($idform, $link);
+                $menu->setActions($idform, 'delete', $link);
+            } else {
+                $menu->setActions($idform, 'delete', '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" title="' . $deleteForm . '" alt="' . $deleteForm . '">');
+            }
         }
 
         return $menu->render(false);
@@ -138,7 +142,7 @@ class PifaRightBottomFormPage extends cGuiPage {
      * If an ID for an item is given this is loaded from database
      * and its values are stored in the appropriate model.
      *
-     * @throws Exception
+     * @throws PifaException
      */
     public function __construct() {
 
@@ -174,17 +178,8 @@ class PifaRightBottomFormPage extends cGuiPage {
         if (0 < $idform) {
             if (false === $this->_pifaForm->loadByPrimaryKey($idform)) {
                 $msg = Pifa::i18n('FORM_LOAD_ERROR');
-                throw new Exception($msg);
+                throw new PifaException($msg);
             }
-        }
-
-        // dispatch action
-        try {
-            $this->_dispatch($action);
-        } catch (InvalidArgumentException $e) {
-            $cGuiNotification = new cGuiNotification();
-            $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
-            $this->set('s', 'notification', $notification);
         }
 
         // add translations to template
@@ -192,6 +187,16 @@ class PifaRightBottomFormPage extends cGuiPage {
             'cancel' => Pifa::i18n('CANCEL'),
             'save' => Pifa::i18n('SAVE')
         )));
+
+        // dispatch action
+        try {
+            $this->_dispatch($action);
+        } catch (PifaException $e) {
+            $cGuiNotification = new cGuiNotification();
+            $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
+            $this->set('s', 'notification', $notification);
+            $this->set('s', 'content', '');
+        }
     }
 
     /**
@@ -199,14 +204,15 @@ class PifaRightBottomFormPage extends cGuiPage {
      *
      * @param string $action to be executed
      * @param string $notification
-     * @throws InvalidArgumentException if the given action is unknown
+     * @throws PifaException if the given action is unknown
      */
     protected function _dispatch($action, $notification = '') {
         global $area;
 
         // check for permission
         if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
-            throw new PifaIllegalStateException('no permissions');
+            $msg = Pifa::i18n('NO_PERMISSIONS');
+            throw new PifaIllegalStateException($msg);
         }
 
         if (NULL === $action) {
@@ -261,7 +267,7 @@ class PifaRightBottomFormPage extends cGuiPage {
 
             default:
                 $msg = Pifa::i18n('UNKNOWN_ACTION');
-                throw new InvalidArgumentException($msg);
+                throw new PifaException($msg);
         }
     }
 
@@ -276,9 +282,12 @@ class PifaRightBottomFormPage extends cGuiPage {
         $cfg = cRegistry::getConfig();
 
         // get form action
-        $formAction = new cHTMLLink();
-        $formAction->setCLink($area, 4, PifaRightBottomFormPage::STORE_FORM);
-        $formAction = $formAction->getHref();
+        $formAction = '';
+        if (cRegistry::getPerm()->have_perm_area_action('form', self::STORE_FORM)) {
+            $formAction = new cHTMLLink();
+            $formAction->setCLink($area, 4, PifaRightBottomFormPage::STORE_FORM);
+            $formAction = $formAction->getHref();
+        }
 
         // get current or default values for form
         if (!is_null($this->_pifaForm) && $this->_pifaForm->isLoaded()) {
@@ -320,6 +329,8 @@ class PifaRightBottomFormPage extends cGuiPage {
 
     /**
      * Handles a POST request of the first form, showing a forms details.
+     *
+     * @throws PifaException
      */
     private function _storeForm() {
 
@@ -356,18 +367,18 @@ class PifaRightBottomFormPage extends cGuiPage {
         // validate item data
         if (0 === strlen($name)) {
             $msg = Pifa::i18n('EMPTY_FORMNAME_ERROR');
-            throw new Exception($msg);
+            throw new PifaException($msg);
         }
         if (0 === strlen($dataTable)) {
             $msg = Pifa::i18n('EMPTY_DATETABLENAME_ERROR');
-            throw new Exception($msg);
+            throw new PifaException($msg);
         }
         if (!in_array($method, array(
             'GET',
             'POST'
         ))) {
             $msg = Pifa::i18n('FORM_METHOD_ERROR');
-            throw new Exception($msg);
+            throw new PifaException($msg);
         }
 
         if ($isLoaded) {
@@ -405,7 +416,7 @@ class PifaRightBottomFormPage extends cGuiPage {
         if (false === $this->_pifaForm->store()) {
             $msg = Pifa::i18n('FORM_STORE_ERROR');
             $msg = sprintf($msg, $this->_pifaForm->getLastError());
-            throw new Exception($msg);
+            throw new PifaException($msg);
         }
 
         if ($isLoaded) {
@@ -455,7 +466,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
      * If an ID for an item is given this is loaded from database
      * and its values are stored in the appropriate model.
      *
-     * @throws Exception
+     * @throws PifaException
      */
     public function __construct() {
 
@@ -492,17 +503,8 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
             $ret = $this->_pifaForm->loadByPrimaryKey($idform);
             if (false === $ret) {
                 $msg = Pifa::i18n('FORM_LOAD_ERROR');
-                throw new Exception($msg);
+                throw new PifaException($msg);
             }
-        }
-
-        // dispatch action
-        try {
-            $this->_dispatch($action);
-        } catch (InvalidArgumentException $e) {
-            $cGuiNotification = new cGuiNotification();
-            $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
-            $this->set('s', 'notification', $notification);
         }
 
         // add translations to template
@@ -511,6 +513,16 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
             'save' => Pifa::i18n('SAVE'),
             'confirm_delete_field' => Pifa::i18n('CONFIRM_DELETE_FIELD')
         )));
+
+        // dispatch action
+        try {
+            $this->_dispatch($action);
+        } catch (PifaException $e) {
+            $cGuiNotification = new cGuiNotification();
+            $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
+            $this->set('s', 'notification', $notification);
+            $this->set('s', 'content', '');
+        }
     }
 
     /**
@@ -518,15 +530,15 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
      *
      * @param string $action to be executed
      * @param string $notification
-     * @throws InvalidArgumentException if the given action is unknown
+     * @throws PifaException if the given action is unknown
      */
     protected function _dispatch($action, $notification = '') {
         global $area;
 
         // check for permission
         if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
-                $msg = Pifa::i18n('NO_PERMISSIONS');
-                throw new PifaIllegalStateException($msg);
+            $msg = Pifa::i18n('NO_PERMISSIONS');
+            throw new PifaIllegalStateException($msg);
         }
 
         if (NULL === $action) {
@@ -549,8 +561,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
 
             default:
                 $msg = Pifa::i18n('UNKNOWN_ACTION');
-                throw new InvalidArgumentException($msg);
-
+                throw new PifaException($msg);
         }
     }
 
@@ -561,6 +572,9 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
 
         $cfg = cRegistry::getConfig();
 
+        $idform = $idfield = NULL;
+        $fieldTypes = $fields = NULL;
+        $editField = $deleteField = NULL;
         if ($this->_pifaForm->isLoaded()) {
 
             $idform = $this->_pifaForm->get('idform');
@@ -569,25 +583,19 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
             $fieldTypes = $this->_getFieldTypes();
             $fields = $this->_pifaForm->getFields();
 
-            $editField = new cHTMLLink();
-            $editField->setCLink('form_ajax', 4, PifaAjaxHandler::GET_FIELD_FORM);
-            $editField->setCustom('idform', $idform);
-            $editField = $editField->getHref();
+            if (cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::GET_FIELD_FORM)) {
+                $editField = new cHTMLLink();
+                $editField->setCLink('form_ajax', 4, PifaAjaxHandler::GET_FIELD_FORM);
+                $editField->setCustom('idform', $idform);
+                $editField = $editField->getHref();
+            }
 
-            $deleteField = new cHTMLLink();
-            $deleteField->setCLink('form_ajax', 4, PifaAjaxHandler::DELETE_FIELD);
-            $deleteField->setCustom('idform', $idform);
-            $deleteField = $deleteField->getHref();
-        } else {
-
-            $idform = NULL;
-            $idfield = NULL;
-
-            $fieldTypes = NULL;
-            $fields = NULL;
-
-            $editField = NULL;
-            $deleteField = NULL;
+            if (cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::DELETE_FIELD)) {
+                $deleteField = new cHTMLLink();
+                $deleteField->setCLink('form_ajax', 4, PifaAjaxHandler::DELETE_FIELD);
+                $deleteField->setCustom('idform', $idform);
+                $deleteField = $deleteField->getHref();
+            }
         }
 
         // get and fill template
@@ -609,20 +617,24 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
             'frame=4',
             'contenido=' . cRegistry::getBackendSessionId()
         )));
-        $tpl->assign('dragParams', implode('&', array(
-            'area=form_ajax',
-            'frame=4',
-            'contenido=' . cRegistry::getBackendSessionId(),
-            'action=' . PifaAjaxHandler::GET_FIELD_FORM,
-            'idform=' . $idform
-        )));
-        $tpl->assign('sortParams', implode('&', array(
-            'area=form_ajax',
-            'frame=4',
-            'contenido=' . cRegistry::getBackendSessionId(),
-            'action=' . PifaAjaxHandler::REORDER_FIELDS,
-            'idform=' . $this->_pifaForm->get('idform')
-        )));
+        if (cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::GET_FIELD_FORM)) {
+            $tpl->assign('dragParams', implode('&', array(
+                'area=form_ajax',
+                'frame=4',
+                'contenido=' . cRegistry::getBackendSessionId(),
+                'action=' . PifaAjaxHandler::GET_FIELD_FORM,
+                'idform=' . $idform
+            )));
+        }
+        if (cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::REORDER_FIELDS)) {
+            $tpl->assign('sortParams', implode('&', array(
+                'area=form_ajax',
+                'frame=4',
+                'contenido=' . cRegistry::getBackendSessionId(),
+                'action=' . PifaAjaxHandler::REORDER_FIELDS,
+                'idform=' . $this->_pifaForm->get('idform')
+            )));
+        }
 
         // data
         $tpl->assign('idform', $idform);
@@ -690,7 +702,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
      * If an ID for an item is given this is loaded from database
      * and its values are stored in the appropriate model.
      *
-     * @throws Exception
+     * @throws PifaException
      */
     public function __construct() {
 
@@ -726,17 +738,8 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         if (0 < $idform) {
             if (false === $this->_pifaForm->loadByPrimaryKey($idform)) {
                 $msg = Pifa::i18n('FORM_LOAD_ERROR');
-                throw new Exception($msg);
+                throw new PifaException($msg);
             }
-        }
-
-        // dispatch action
-        try {
-            $this->_dispatch($action);
-        } catch (InvalidArgumentException $e) {
-            $cGuiNotification = new cGuiNotification();
-            $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
-            $this->set('s', 'notification', $notification);
         }
 
         // add translations to template
@@ -744,6 +747,16 @@ class PifaRightBottomFormDataPage extends cGuiPage {
             'cancel' => Pifa::i18n('CANCEL'),
             'save' => Pifa::i18n('SAVE')
         )));
+
+        // dispatch action
+        try {
+            $this->_dispatch($action);
+        } catch (PifaException $e) {
+            $cGuiNotification = new cGuiNotification();
+            $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
+            $this->set('s', 'notification', $notification);
+            $this->set('s', 'content', '');
+        }
     }
 
     /**
@@ -751,7 +764,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
      *
      * @param string $action to be executed
      * @param string $notification
-     * @throws InvalidArgumentException if the given action is unknown
+     * @throws PifaException if the given action is unknown
      */
     protected function _dispatch($action, $notification = '') {
         global $area;
@@ -782,8 +795,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
             default:
                 $msg = Pifa::i18n('UNKNOWN_ACTION');
-                throw new InvalidArgumentException($msg);
-
+                throw new PifaException($msg);
         }
     }
 
@@ -801,13 +813,15 @@ class PifaRightBottomFormDataPage extends cGuiPage {
             'export' => Pifa::i18n('download data as CSV')
         ));
 
-        $tpl->assign('exportUrl', 'main.php?' . implode('&', array(
-            'area=form_ajax',
-            'frame=4',
-            'contenido=' . cRegistry::getBackendSessionId(),
-            'action=' . PifaAjaxHandler::EXPORT_DATA,
-            'idform=' . $this->_pifaForm->get('idform')
-        )));
+        if (cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::EXPORT_DATA)) {
+            $tpl->assign('exportUrl', 'main.php?' . implode('&', array(
+                'area=form_ajax',
+                'frame=4',
+                'contenido=' . cRegistry::getBackendSessionId(),
+                'action=' . PifaAjaxHandler::EXPORT_DATA,
+                'idform=' . $this->_pifaForm->get('idform')
+            )));
+        }
         $tpl->assign('form', $this->_pifaForm);
         $tpl->assign('getFileUrl', 'main.php?' . implode('&', array(
             'area=form_ajax',

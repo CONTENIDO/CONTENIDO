@@ -35,7 +35,8 @@ abstract class PifaAbstractFormProcessor {
 
     /**
      *
-     * @todo Should be private instead of protected as it can be accessed via getForm()
+     * @todo Should be private instead of protected as it can be accessed via
+     *       getForm()
      * @var PifaForm
      */
     protected $_form = NULL;
@@ -46,11 +47,13 @@ abstract class PifaAbstractFormProcessor {
      * The idform is read from the given modules settings.
      *
      * In former implementations of the processor the modules had no settings
-     * and thus no idform. Thats why optionally the idfrm gan be given
+     * and thus no idform. Thats why optionally the idform gan be given
      * explicitly. This shoud be removed when all processors are refactored.
      *
      * @param int $idform
-     * @throws ModuleException
+     * @throws PifaException if id of form could not be determined from module
+     *         or param
+     * @throws PifaException if form could not be loaded
      */
     public function __construct(PifaAbstractFormModule $module = NULL, $idform = NULL) {
         $this->_module = $module;
@@ -137,7 +140,7 @@ abstract class PifaAbstractFormProcessor {
      * data or even the form itself. This postprocessing is optional and can be
      * implemented in concrete implementations of this abstratc class
      *
-     * @throws ModuleException if there is no form to process
+     * @throws PifaException if there is no form to process
      * @throws PifaValidationException if data is invalid
      * @throws PifaDatabaseException if data could not be stored
      */

@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @author marcus.gnass
  */
-class PifaException extends Exception {
+class PifaException extends cException {
 }
 
 /**

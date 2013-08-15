@@ -30,8 +30,8 @@
             <action area="form">pifa_show_form</action>
             <action area="form">pifa_store_form</action>
             <action area="form">pifa_delete_form</action>
-            <action area="form">pifa_show_fields</action>
-            <action area="form">pifa_show_data</action>
+            <action area="form_fields">pifa_show_fields</action>
+            <action area="form_data">pifa_show_data</action>
             <action area="form_ajax">pifa_get_field_form</action>
             <action area="form_ajax">pifa_post_field_form</action>
             <action area="form_ajax">pifa_reorder_fields</action>

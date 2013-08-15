@@ -2,8 +2,14 @@
 
 <input type="hidden" id="area" name="area" value="form_ajax" />
 <input type="hidden" id="frame" name="frame" value="4" />
+{* If no $contenido is given user lacks rights to save form. *}
+{if 0 lt $contenido|trim|strlen}
 <input type="hidden" id="contenido" name="contenido" value="{$contenido}" />
+{/if}
+{* If no $action is given user lacks rights to save form. *}
+{if 0 lt $action|trim|strlen}
 <input type="hidden" id="action" name="action" value="{$action}" />
+{/if}
 
 <input type="hidden" id="idform" name="idform" value="{$idform}" />
 <input type="hidden" id="idfield" name="idfield" value="{$field->get('idfield')}" />
@@ -114,12 +120,15 @@ OPTION VALUES
     {/if}
     </div>
 
+    {* If no $hrefAddOption is given user lacks rights to add option. *}
+    {if 0 lt $hrefAddOption|trim|strlen}
     <div id="add-options-div">
         <a id="icon-add-option" href="{$hrefAddOption}">
             <img src="images/but_art_new.gif" />
             <span id="txt-add-options">{$trans.addOption}</span>
         </a>
     </div>
+    {/if}
 
     {if NULL neq $optionClasses}
     <label for="option_class">{$trans.externalOptionsDatasource}</label>
@@ -153,9 +162,6 @@ CSS CLASSES
 </div>
 {/if}
 
-<!--
-<div id="icons-bottom"><input type="image" src="images/but_speichern.gif" id="save-image"></div>
-<input type="submit" id="submit" name="submit" value="{$submitValue}" />
--->
+{* HINT: The save icon is part of the jQuery dialog. See JS if you want to modify it. *}
 
 <!-- /form_assistant/templates/template.ajax_field_form.tpl -->

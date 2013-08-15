@@ -65,9 +65,17 @@ class PifaAjaxHandler {
 
     /**
      *
-     * @throws Exception
+     * @throws PifaException if action is unknown
      */
     function dispatch($action) {
+        global $area;
+
+        // check for permission
+        if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
+            $msg = Pifa::i18n('NO_PERMISSIONS');
+            throw new PifaIllegalStateException($msg);
+        }
+
         switch ($action) {
 
             case self::GET_FIELD_FORM:
@@ -115,7 +123,7 @@ class PifaAjaxHandler {
 
             default:
                 $msg = Pifa::i18n('UNKNOWN_ACTION');
-                throw new Exception($msg);
+                throw new PifaException($msg);
         }
     }
 
@@ -125,7 +133,7 @@ class PifaAjaxHandler {
      * @param int $idform
      * @param int $idfield
      * @param int $fieldType
-     * @throws Exception
+     * @throws PifaException
      */
     private function _getFieldForm($idform, $idfield, $fieldType) {
         $cfg = cRegistry::getConfig();
@@ -143,8 +151,9 @@ class PifaAjaxHandler {
             ));
         } else {
             // bugger off
+            // TODO check error message
             $msg = Pifa::i18n('FORM_CREATE_ERROR');
-            throw new Exception($msg);
+            throw new PifaException($msg);
         }
 
         // get option classes
@@ -181,10 +190,12 @@ class PifaAjaxHandler {
             'externalOptionsDatasource' => Pifa::i18n('EXTERNAL_OPTIONS_DATASOURCE')
         ));
 
-        // hidden form values
-        $tpl->assign('contenido', cRegistry::getBackendSessionId());
-        $tpl->assign('action', self::POST_FIELD_FORM);
-        $tpl->assign('idform', $idform);
+        // hidden form values (requires right to store form field)
+        if (cRegistry::getPerm()->have_perm_area_action('form_ajax', self::POST_FIELD_FORM)) {
+            $tpl->assign('contenido', cRegistry::getBackendSessionId());
+            $tpl->assign('action', self::POST_FIELD_FORM);
+            $tpl->assign('idform', $idform);
+        }
 
         // field
         $tpl->assign('field', $field);
@@ -195,13 +206,15 @@ class PifaAjaxHandler {
         // option classes (external options datasources)
         $tpl->assign('optionClasses', $optionClasses);
 
-        // build href add new option row
-        $tpl->assign('hrefAddOption', 'main.php?' . implode('&', array(
-            'area=form_ajax',
-            'frame=4',
-            'contenido=' . cRegistry::getBackendSessionId(),
-            'action=' . PifaAjaxHandler::GET_OPTION_ROW
-        )));
+        // build href to add new option row (requires right to add option)
+        if (cRegistry::getPerm()->have_perm_area_action('form_ajax', self::POST_FIELD_FORM) && cRegistry::getPerm()->have_perm_area_action('form_ajax', self::GET_OPTION_ROW)) {
+            $tpl->assign('hrefAddOption', 'main.php?' . implode('&', array(
+                'area=form_ajax',
+                'frame=4',
+                'contenido=' . cRegistry::getBackendSessionId(),
+                'action=' . PifaAjaxHandler::GET_OPTION_ROW
+            )));
+        }
 
         // path to partial template for displaying a single option row
         $tpl->assign('partialOptionRow', $cfg['templates']['pifa_ajax_option_row']);
@@ -214,7 +227,7 @@ class PifaAjaxHandler {
      *
      * @param int $idform
      * @param int $idfield
-     * @throws Exception
+     * @throws PifaException
      */
     private function _postFieldForm($idform, $idfield) {
         $string_cast_deep = create_function('$value', '
@@ -235,7 +248,7 @@ class PifaAjaxHandler {
             $pifaField = new PifaField($idfield);
             if (!$pifaField->isLoaded()) {
                 $msg = Pifa::i18n('FIELD_LOAD_ERROR');
-                throw new Exception($msg);
+                throw new PifaException($msg);
             }
             $isFieldCreated = false;
         } else {
@@ -489,12 +502,12 @@ class PifaAjaxHandler {
     /**
      *
      * @param int $idfield
-     * @throws Exception
+     * @throws PifaException
      */
     private function _deleteField($idfield) {
         if (0 == $idfield) {
             $msg = Pifa::i18n('MISSING_IDFIELD');
-            throw new Exception($msg);
+            throw new PifaException($msg);
         }
 
         $pifaField = new PifaField($idfield);

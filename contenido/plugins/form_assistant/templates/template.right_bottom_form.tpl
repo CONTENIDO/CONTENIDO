@@ -6,8 +6,14 @@ author: marcus.gnass
 
 Form to edit meta data for the given form.
 
+If no $formAction is given user lacks the rights to store form.
+
 *}
+{if 0 lt $formAction|trim|strlen}
 <form id="pifa-form" action="{$formAction}" method="post">
+{else}
+<form id="pifa-form">
+{/if}
 
     <input type="hidden" name="idform" value="{$idform}">
 
@@ -17,17 +23,19 @@ Form to edit meta data for the given form.
 
         <div class="field-type">
             <label for="name">{$trans.name}</label>
-            <input type="text" id="name" name="name" value="{$nameValue|escape}" />
+            <input type="text" id="name" name="name" value="{$nameValue|escape}"
+                {if !$allowStoreForm}disabled="disabled"{/if} />
         </div>
 
         <div class="field-type">
             <label for="data_table">{$trans.dataTable}</label>
-            <input type="text" id="data_table" name="data_table" value="{$dataTableValue|escape}" maxlength="64" />
+            <input type="text" id="data_table" name="data_table" value="{$dataTableValue|escape}" maxlength="64"
+                {if !$allowStoreForm}disabled="disabled"{/if} />
         </div>
 
         <div class="field-type">
             <label for="request_method">{$trans.method}</label>
-            <select id="method" name="method">
+            <select id="method" name="method" {if !$allowStoreForm}disabled="disabled"{/if}>
                 <option value="">{$trans.pleaseChoose}</option>
                 <option value="GET"{if "GET" eq $methodValue|strtoupper} selected="selected"{/if}>GET</option>
                 <option value="POST"{if "POST" eq $methodValue|strtoupper} selected="selected"{/if}>POST</option>
@@ -37,11 +45,17 @@ Form to edit meta data for the given form.
         {if $hasWithTimestamp}
         <div class="field-type">
             <label for="with_timestamp">{$trans.withTimestamp}</label>
-            <input type="checkbox" id="with_timestamp" name="with_timestamp" {if $withTimestampValue}checked="checked"{/if} />
+            <input type="checkbox" id="with_timestamp" name="with_timestamp"
+                {if $withTimestampValue}checked="checked"{/if}
+                {if !$allowStoreForm}disabled="disabled"{/if}/>
         </div>
         {/if}
 
-        <input type="image" id="image-new-form" src="images/but_ok.gif" alt="{$trans.saveForm|escape}" title="{$trans.createForm|escape}" />
+        {if 0 lt $formAction|trim|strlen}
+        <input type="image" id="image-new-form" src="images/but_ok.gif" alt="{$trans.saveForm|escape}" title="{$trans.saveForm|escape}" />
+        {else}
+        <img id="image-new-form" src="images/but_ok_off.gif" alt="{$trans.saveForm|escape}" title="{$trans.saveForm|escape}" />
+        {/if}
 
     </fieldset>
 

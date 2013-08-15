@@ -16,7 +16,10 @@ AUTHOR marcus.gnass@4fb.de
     {* an error is a string instead of an array *}
     {$data}
 {else}
+    {* If no $exportUrl is given user lacks rights to download CSV. *}
+    {if 0 lt $exportUrl|trim|strlen}
     <a class="form-data-export" href="{$exportUrl}">{$trans.export}</a>
+    {/if}
 
     <!-- table cellpadding="0" class="generic" -->
     <table class="generic" width="97%" cellspacing="0" cellpadding="2" border="0">
@@ -26,7 +29,7 @@ AUTHOR marcus.gnass@4fb.de
             <th nowrap="nowrap">timestamp</th>
     {/if}
     {foreach from=$fields item=field}
-        {* skip columns that dont store data into DB *}
+        {* skip columns that don't store data into DB *}
         {if NULL eq $field->getDbDataType()}{continue}{/if}
         {assign var=columnName value=$field->get('column_name')}
         {if 0 eq $columnName|strlen}

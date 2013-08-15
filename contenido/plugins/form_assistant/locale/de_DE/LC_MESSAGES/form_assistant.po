@@ -197,7 +197,7 @@ msgid "pifa_delete_form"
 msgstr "Formular löschen"
 
 msgid "pifa_get_field_form"
-msgstr "Formularfelddialog sehen"
+msgstr "Formularfeld sehen"
 
 msgid "pifa_post_field_form"
 msgstr "Formularfeld speichern"

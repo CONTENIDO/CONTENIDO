@@ -197,7 +197,7 @@ msgid "pifa_delete_form"
 msgstr "delete form"
 
 msgid "pifa_get_field_form"
-msgstr "view form field dialog"
+msgstr "view form field"
 
 msgid "pifa_post_field_form"
 msgstr "store form field"
