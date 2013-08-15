@@ -1,0 +1,3 @@
+LOGGED_IN_AS=Eingeloggt als
+LOGOUT=Logout
+LOGIN=Login

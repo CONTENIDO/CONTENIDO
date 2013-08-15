@@ -1,0 +1,4 @@
+LABEL_HEADER_LINKLIST=Link list
+createButton=Create
+createLabel=Please enter the number of the links
+usable_links=Useful Links
