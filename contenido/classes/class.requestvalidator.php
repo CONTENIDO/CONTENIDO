@@ -139,8 +139,9 @@ class cRequestValidator {
 
     /**
      * The constructor sets up the singleton object and reads the config from
-     * 'data/config/' .
-     * CON_ENVIRONMENT . '/config.http_check.php'.
+     *     'data/config/' . CON_ENVIRONMENT . '/config.http_check.php'
+     * It also reads existing local config from
+     *     'data/config/' . CON_ENVIRONMENT . '/config.http_check.local.php'
      *
      * @throws cFileNotFoundException if the configuration can not be loaded
      */
@@ -148,21 +149,25 @@ class cRequestValidator {
         // globals from config.http_check.php file which is included below
         global $bLog, $sMode, $aCheck, $aBlacklist;
 
-        $this->_logPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/logs/security.txt';
+        // some paths...
+        $installationPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..'));
+        $configPath = $installationPath . '/data/config/' . CON_ENVIRONMENT;
+
+        $this->_logPath = $installationPath . '/data/logs/security.txt';
 
         // check config and logging path
-        if (cFileHandler::exists(realpath(dirname(__FILE__) . '/../..') . '/data/config/' . CON_ENVIRONMENT . '/config.http_check.php')) {
-            $this->_configPath = realpath(dirname(__FILE__) . '/../..') . '/data/config/' . CON_ENVIRONMENT;
+        if (cFileHandler::exists($configPath . '/config.http_check.php')) {
+            $this->_configPath = $configPath;
         } else {
-            throw new cFileNotFoundException('Could not load cRequestValidator configuration! (invalid path) ' . realpath(dirname(__FILE__) . '/../..') . '/data/config/' . CON_ENVIRONMENT . '/config.http_check.php');
+            throw new cFileNotFoundException('Could not load cRequestValidator configuration! (invalid path) ' . $configPath . '/config.http_check.php');
         }
 
         // include configuration
-        require ($this->_configPath . '/config.http_check.php');
+        require($this->_configPath . '/config.http_check.php');
 
         // if custom config exists, include it also here
-        if (cFileHandler::exists(dirname($this->_configPath) . '/config.http_check.local.php')) {
-            require (dirname($this->_configPath) . '/config.http_check.local.php');
+        if (cFileHandler::exists($this->_configPath . '/config.http_check.local.php')) {
+            require($this->_configPath . '/config.http_check.local.php');
         }
 
         $this->_log = $bLog;
