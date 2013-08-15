@@ -1,8 +1,0 @@
-URL=Link
-SELECT_TEMPLATE=Template auswählen
-COUNT_ENTRIES=Anzahl
-SAVE=Speichern
-LABEL_OVERVIEW=RSS Reader Konfiguration
-NOTHING_SELECTED=Nichts Ausgewählt
-HOST=Host
-COULD_NOT_READ_RESSOURCE=Die Datei kann nicht geladen werden, bitte prüfen Sie Ihre Einstellungen

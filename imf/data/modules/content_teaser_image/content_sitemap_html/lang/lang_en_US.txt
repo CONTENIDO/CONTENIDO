@@ -1,9 +1,0 @@
-ARTICLE_HINT_LABEL=Note: Show 1 article
-ARTICLE_LABEL=Show artice (0/1):
-CATEGORY_LABEL=Category (idcat nummeric)
-GATEGORY_HINT_LABEL=Note: The site is built recursively from the specified category.
-HEADLINE=HTML Sitemap
-LEVEL_HINT_LABEL=Note: The depth is considered to be the number of levels in the generation.
-LEVEL_LABEL=Depth (numeric)
-NOT_NUMERIC_VALUE=Please enter the numerical values​​.
-NOT_ZERO_OR_ONE=Please enter a 1 or 0.

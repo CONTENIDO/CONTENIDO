@@ -1,4 +1,0 @@
-XML sitemap successfully written to %s=XML sitemap successfully written to %s
-XML sitemap could not be written to %s=XML sitemap could not be written to %s
-Choose tree:=Choose tree:
-Enter filename (optional):=Enter filename (optional):

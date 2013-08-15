@@ -1,6 +1,0 @@
-ADDRESS=Adress
-HEADER=Header
-LATITUDE=Latitude
-LONGITUDE=Longitude
-MARKER_TITLE=Description
-WAY_DESCRIPTION=Directions

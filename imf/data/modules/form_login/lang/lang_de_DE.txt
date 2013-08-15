@@ -1,5 +1,0 @@
-NAME=Benutzername
-PASS=Passwort
-LOGIN=Login
-TXT_WELCOME_USER=Sie sind eingeloggt
-LOGOUT=Logout
