@@ -261,12 +261,12 @@ class PimPluginSetupInstall extends PimPluginSetup {
 			}
         }
 		
-		// check PHP version
+		// Check PHP version
         if (version_compare(phpversion(), parent::$_XmlRequirements->attributes()->php, '<')) {
             parent::error(i18n('You have to install PHP <strong>', 'pim') . parent::$_XmlRequirements->attributes()->php . i18n('</strong> or higher to install this plugin!', 'pim'));
         }
 
-        // check extensions
+        // Check extensions
         if (count(parent::$_XmlRequirements->extension) != 0) {
 
             for ($i = 0; $i < count(parent::$_XmlRequirements->extension); $i++) {
@@ -277,7 +277,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             }
         }
 
-        // check classes
+        // Check classes
         if (count(parent::$_XmlRequirements->class) != 0) {
 
             for ($i = 0; $i < count(parent::$_XmlRequirements->class); $i++) {
@@ -288,7 +288,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             }
         }
 
-        // check functions
+        // Check functions
         if (count(parent::$_XmlRequirements->function) != 0) {
 
             for ($i = 0; $i < count(parent::$_XmlRequirements->function); $i++) {
@@ -580,6 +580,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 		$cfg = cRegistry::getConfig();
         $module = new cApiModule();
 
+		// Set path to modules path
         $modulesPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR;
 
         if (!is_dir($modulesPath)) {
@@ -589,6 +590,8 @@ class PimPluginSetupInstall extends PimPluginSetup {
         foreach (new DirectoryIterator($modulesPath) as $modulesFiles) {
 
             if (substr($modulesFiles->getBasename(), -4) == ".zip") {
+			
+				// Import founded module
                 $module->import($modulesFiles->getBasename(), $modulesFiles->getBasename(), false);
             }
         }
