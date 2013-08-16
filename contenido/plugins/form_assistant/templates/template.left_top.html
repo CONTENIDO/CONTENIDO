@@ -1,15 +1,23 @@
 
+<style type="text/css">
+	#top_left_container {
+		height: 2em;
+		border: 1px solid #B3B3B3;
+		padding: 5px 0 5px 5px;
+		margin-top: 1px;	
+	}
+</style>
+
+<div id="top_left_container">
+	{LINK}
+</div>
+
 <script type="text/javascript">
     function resizeFrame() {
         // resizing frame
-        parent.parent.frameResize.resizeTopLeftFrame(document.getElementById('top_left_container').offsetHeight + 10);
+        var offsetHeight = document.getElementById('top_left_container').offsetHeight;
+        parent.parent.frameResize.resizeTopLeftFrame(offsetHeight + 10);
     }
-
-</script>
-<div id="top_left_container" style="height:2em;border: 1px solid #B3B3B3; padding:5px 0 5px 16px; margin-top:1px">
-{LINK}
-</div>
-<script>
     $(document).ready(new function() {
         resizeFrame();
     });

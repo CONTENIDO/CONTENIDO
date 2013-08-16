@@ -469,4 +469,7 @@ msgstr "Bitte wählen Sie ein Kategorie aus."
 ; include.left_top.php
 
 msgid "CREATE_FORM"
-msgstr "Formular erzeugen"
+msgstr "Formular erstellen"
+
+msgid "CREATE_FORM_NO_PERMISSIONS"
+msgstr "Formular erstellen: keine Berechtigung"

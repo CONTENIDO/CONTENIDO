@@ -23,10 +23,14 @@ if (cRegistry::getPerm()->have_perm_area_action('form_fields', PifaRightBottomFo
     $link->updateAttributes(array(
         'class' => 'addfunction'
     ));
-
-    $page = new cGuiPage('left_top', 'form_assistant');
-    $page->set('s', 'LINK', $link->render());
-    $page->render();
+    $link = $link->render();
+} else {
+    $notification = new cGuiNotification();
+    $link .= $notification->returnNotification(cGuiNotification::LEVEL_WARNING, Pifa::i18n('CREATE_FORM_NO_PERMISSIONS'));
 }
+
+$page = new cGuiPage('left_top', 'form_assistant');
+$page->set('s', 'LINK', $link);
+$page->render();
 
 ?>

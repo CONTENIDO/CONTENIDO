@@ -470,3 +470,6 @@ msgstr "Please choose a category."
 
 msgid "CREATE_FORM"
 msgstr "create form"
+
+msgid "CREATE_FORM_NO_PERMISSIONS"
+msgstr "create form: no permissions"
