@@ -24,16 +24,39 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class ArticleForumCollection extends ItemCollection {
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $cfg = 0;
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $db = 0;
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $item = 0;
+
     // contents array of translations from frontend module
+    /**
+     *
+     * @var unknown_type
+     */
     protected $languageSync = 0;
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $idContentType = 0;
 
+    /**
+     */
     public function __construct() {
         // sync time
         date_default_timezone_set('Europe/Berlin');
@@ -46,11 +69,28 @@ class ArticleForumCollection extends ItemCollection {
         $this->idContentType = $this->getIdUserForumContenType();
     }
 
+    /**
+     *
+     * @return multitype:
+     */
     public function getAllCommentedArticles() {
-        $sql = "SELECT DISTINCT t.title, t.idart, f.idcat FROM con_art_lang t," . $this->table . " f WHERE f.idart=t.idart AND t.idlang = f.idlang ORDER BY id_user_forum ASC ;";
-        $this->db->query($sql);
+        $this->db->query("-- ArticleForumCollection->getAllCommentedArticles()
+            SELECT DISTINCT
+                art_lang.title
+                , art_lang.idart
+                , f.idcat
+            FROM
+                `{$this->cfg[tab][art_lang]}` AS art_lang
+                , `$this->table` AS  f
+            WHERE
+                art_lang.idart = f.idart
+                AND art_lang.idlang = f.idlang
+            ORDER BY
+                id_user_forum ASC
+            ;");
+
         $data = array();
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             array_push($data, $this->db->toArray());
         }
 
@@ -103,6 +143,13 @@ class ArticleForumCollection extends ItemCollection {
         }
     }
 
+    /**
+     *
+     * @param unknown_type $id_cat
+     * @param unknown_type $id_art
+     * @param unknown_type $id_lang
+     * @return multitype:
+     */
     protected function _getCommentHierachrie($id_cat, $id_art, $id_lang) {
         $this->query();
         while (false != $field = $this->next()) {
@@ -117,6 +164,12 @@ class ArticleForumCollection extends ItemCollection {
         return $result;
     }
 
+    /**
+     *
+     * @param unknown_type $arrforum
+     * @param unknown_type $result
+     * @param unknown_type $level
+     */
     public function normalizeArray($arrforum, &$result, $level = 0) {
         if (is_array($arrforum)) {
             foreach ($arrforum as $key => $value) {
@@ -128,21 +181,52 @@ class ArticleForumCollection extends ItemCollection {
         }
     }
 
+    /**
+     *
+     * @param unknown_type $id_cat
+     * @param unknown_type $id_art
+     * @param unknown_type $id_lang
+     * @param unknown_type $arrUsers
+     * @param unknown_type $arrforum
+     * @param unknown_type $parent
+     * @param unknown_type $frontend
+     */
     public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0, $frontend = false) {
         $db = cRegistry::getDb();
-
         if ($frontend) {
             // select only comments that are marked visible in frontendmode.
-            $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat)
-            AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) AND (online = 1) ORDER BY timestamp DESC";
+            $db->query("-- ArticleForumCollection->getTreeLevel()
+                SELECT
+                    *
+                FROM
+                    `{$this->cfg[tab][user_forum]}`
+                WHERE
+                    idart = $id_art
+                    AND idcat = $id_cat
+                    AND idlang = $id_lang
+                    AND id_user_forum_parent = $parent
+                    AND online = 1
+                ORDER BY
+                    timestamp DESC
+                ;");
         } else {
             // select all comments -> used in backendmode.
-            $query = "SELECT * FROM con_pi_user_forum WHERE (idart = $id_art) AND (idcat = $id_cat)
-        AND (idlang = $id_lang) AND (id_user_forum_parent = $parent) ORDER BY timestamp DESC";
+            $db->query("-- ArticleForumCollection->getTreeLevel()
+                SELECT
+                    *
+                FROM
+                    `{$this->cfg[tab][user_forum]}`
+                WHERE
+                    idart = $id_art
+                    AND idcat = $id_cat
+                    AND idlang = $id_lang
+                    AND id_user_forum_parent = $parent
+                ORDER BY
+                    timestamp DESC
+                ;");
         }
-        $db->query($query);
 
-        while ($db->next_record()) {
+        while ($db->nextRecord()) {
             $arrforum[$db->f('id_user_forum')]['userid'] = $db->f('userid');
 
             if (array_key_exists($db->f('userid'), $arrUsers)) {
@@ -173,6 +257,17 @@ class ArticleForumCollection extends ItemCollection {
         }
     }
 
+    /**
+     *
+     * @param unknown_type $id_user_forum
+     * @param unknown_type $name
+     * @param unknown_type $email
+     * @param unknown_type $like
+     * @param unknown_type $dislike
+     * @param unknown_type $forum
+     * @param unknown_type $online
+     * @param unknown_type $checked
+     */
     public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online, $checked) {
         $uuid = cRegistry::getAuth()->isAuthenticated();
 
@@ -230,7 +325,7 @@ class ArticleForumCollection extends ItemCollection {
      * toggles the given input with update in db.
      *
      * @param $onlineState
-     * @param primary key $id_user_forum
+     * @param int $id_user_forum primary key
      */
     public function toggleOnlineState($onlineState, $id_user_forum) {
         // toggle state
@@ -255,6 +350,13 @@ class ArticleForumCollection extends ItemCollection {
      * email notification for registred moderator.
      * before calling this function it is necessary to receive the converted
      * language string from frontend module.
+     *
+     * @param unknown_type $realname
+     * @param unknown_type $email
+     * @param unknown_type $forum
+     * @param unknown_type $idart
+     * @param unknown_type $lang
+     * @param unknown_type $forum_quote
      */
     public function mailToModerator($realname, $email, $forum, $idart, $lang, $forum_quote = 0) {
 
@@ -279,13 +381,28 @@ class ArticleForumCollection extends ItemCollection {
         }
     }
 
+    /**
+     *
+     * @param unknown_type $idart
+     * @param unknown_type $idlang
+     * @return multitype:
+     */
     public function getArticleTitle($idart, $idlang) {
-        $sql = "SELECT DISTINCT t.title FROM con_art_lang t WHERE t.idart=$idart AND t.idlang=$idlang;";
-        $this->db->query($sql);
+        $this->db->query("-- ArticleForumCollection->getArticleTitle()
+            SELECT DISTINCT
+                title
+            FROM
+                `{$this->cfg[tab][art_lang]}` AS art_lang
+            WHERE
+                idart = $idart
+                AND idlang = $idlang
+            ;");
+
         $data = array();
-        while ($this->db->next_record()) {
+        while ($this->db->nextRecord()) {
             array_push($data, $this->db->toArray());
         }
+
         return $data;
     }
 
@@ -295,7 +412,6 @@ class ArticleForumCollection extends ItemCollection {
      * @param $id_art
      * @param $id_lang
      * @return ArticleForumRightBottom
-     *
      */
     public function getExistingforum($id_cat, $id_art, $id_lang) {
         $userColl = new cApiUserCollection();
@@ -308,6 +424,11 @@ class ArticleForumCollection extends ItemCollection {
         return $arrUsers;
     }
 
+    /**
+     *
+     * @param unknown_type $idquote
+     * @return multitype:NULL
+     */
     function selectNameAndNameByForumId($idquote) {
         $ar = array();
         $this->item->loadByPrimaryKey(cSecurity::escapeDB($idquote, $this->db));
@@ -315,6 +436,10 @@ class ArticleForumCollection extends ItemCollection {
         return $ar;
     }
 
+    /**
+     *
+     * @param unknown_type $userid
+     */
     public function selectUser($userid) {
         return $this->item->loadByPrimaryKey(cSecurity::escapeDB($userid, $this->db));
     }
@@ -390,14 +515,9 @@ class ArticleForumCollection extends ItemCollection {
         $db = cRegistry::getDb();
 
         // comments are marked as offline if the moderator mode is turned on.
-        // ($modCheck = $this->getModeModeActive($idart))? $online = 0 : $online
-        // = 1;
+        $modCheck = $this->getModeModeActive($idart);
+        $online = $modCheck? 0 : 1;
 
-        if ($modCheck = $this->getModeModeActive($idart)) {
-            $online = 0;
-        } else {
-            $online = 1;
-        }
         // build array for sql statemant
         $fields = array(
             'id_user_forum' => NULL,
@@ -438,10 +558,17 @@ class ArticleForumCollection extends ItemCollection {
         $this->deleteBy('idart', cSecurity::escapeDB(($idart), $this->db));
     }
 
+    /**
+     *
+     * @param unknown_type $id_cat
+     * @param unknown_type $id_art
+     * @param unknown_type $id_lang
+     * @param unknown_type $frontend
+     * @return multitype:
+     */
     public function getExistingforumFrontend($id_cat, $id_art, $id_lang, $frontend) {
-        global $cfg;
-
-        $db = cRegistry::getDb();
+//         $cfg = cRegistry::getConfig();
+//         $db = cRegistry::getDb();
 
         $userColl = new cApiUserCollection();
         $userColl->query();
@@ -526,24 +653,35 @@ class ArticleForumCollection extends ItemCollection {
         $cfgClient = cRegistry::getClientConfig();
         $idtype = $this->idContentType;
 
-        $sql = "SELECT t.value,f.idart FROM con_art_lang f , con_content t WHERE idtype=$idtype AND t.idartlang=f.idartlang;";
         try {
-            $this->db->query($sql);
+            $this->db->query("
+                SELECT
+                    art_lang.idart
+                    , content.value
+                FROM
+                    `{$this->cfg[tab][art_lang]}` AS art_lang
+                    , `{$this->cfg[tab][content]}` AS content
+                WHERE
+                    art_lang.idartlang = content.idartlang
+                    AND content.idtype = $idtype
+                ;");
+
             $data = array();
-            $ar = array();
-            while ($this->db->next_record()) {
+            while ($this->db->nextRecord()) {
                 array_push($data, $this->db->toArray());
             }
 
+            $array = array();
             for ($i = 0; $i < count($data); $i++) {
-                $ar[$i] = cXmlBase::xmlStringToArray($data[$i]['value']);
+                $array[$i] = cXmlBase::xmlStringToArray($data[$i]['value']);
                 // add articleId
-                $ar[$i]['idart'] = $data[$i]['idart'];
+                $array[$i]['idart'] = $data[$i]['idart'];
             }
         } catch (Exception $e) {
             // var_dump(e);
         }
-        return $ar;
+
+        return $array;
     }
 
     /**
@@ -557,6 +695,10 @@ class ArticleForumCollection extends ItemCollection {
         $this->languageSync = $str;
     }
 
+    /**
+     *
+     * @return unknown_type multitype:
+     */
     public function getlanguageSync() {
         if ($this->languageSync != 0) {
             return $this->languageSync;
@@ -565,25 +707,38 @@ class ArticleForumCollection extends ItemCollection {
         }
     }
 
+    /**
+     *
+     * @param unknown_type $id_user_forum
+     * @return multitype:NULL Ambigous <mixed, boolean>
+     */
     public function getCommentContent($id_user_forum) {
-        $ar = array();
         $item = $this->loadItem($id_user_forum);
-        $ar['name'] = $item->get("realname");
-        $ar['content'] = $item->get("forum");
-
-        return $ar;
+        return array(
+            'name' => $item->get("realname"),
+            'content' => $item->get("forum")
+        );
     }
 
+    /**
+     *
+     * @return Ambigous <mixed, unknown>|boolean
+     */
     protected function getIdUserForumContenType() {
-        $sql = "SELECT idtype from con_type WHERE type='CMS_USERFORUM';";
-        $result = $this->db->query($sql);
-        if ($this->db->next_record()) {
+        $this->db->query("
+            SELECT
+                idtype
+            FROM
+                `{$this->cfg[tab][type]}`
+            WHERE
+                type = 'CMS_USERFORUM'
+            ;");
+        if ($this->db->nextRecord()) {
             return $this->db->f('idtype');
         } else {
             return false;
         }
     }
-
 }
 
 ?>
