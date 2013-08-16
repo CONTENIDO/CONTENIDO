@@ -32,21 +32,18 @@ class cUpgradeJob_0008 extends cUpgradeJobAbstract {
 
         if ($this->_setupType == 'upgrade') {
             // check if the column "path" still exists
+            $db->query("SHOW COLUMNS FROM `{$cfg[tab][plugins]}`;");
+
             $columns = array();
-            $sql = 'SHOW COLUMNS FROM ' . $cfg['tab']['plugins'];
-            $db->query($sql);
             while ($db->nextRecord()) {
                 $columns[] = $db->f('Field');
             }
 
             if (in_array('path', $columns)) {
                 // copy path to folder
-                $sql = 'UPDATE con_plugins SET folder=path';
-                $db->query($sql);
-
+                $db->query("UPDATE `{$cfg[tab][plugins]}` SET folder=path;");
                 // drop column "path"
-                $sql = 'ALTER TABLE `' . $cfg['tab']['plugins'] . '` DROP `path`';
-                $db->query($sql);
+                $db->query("ALTER TABLE `{$cfg[tab][plugins]}` DROP `path`;");
             }
         }
     }
