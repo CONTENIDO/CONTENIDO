@@ -80,12 +80,25 @@ class pApiContentAllocation {
         $this->db->query($sql);
     }
 
+    /**
+     * load all tagging keys
+     *
+     * @param unknown_type $idartlang
+     * @return multitype:Ambigous <mixed, unknown>
+     */
     function loadAllocations($idartlang) {
-        $result = array();
-        // load all tagging keys
-        $sql = 'SELECT a.idpica_alloc FROM con_pica_alloc a , con_pica_alloc_con b WHERE idartlang=' . $idartlang . ' AND a.idpica_alloc=b.idpica_alloc';
-        $this->db->query($sql);
+        $this->db->query("-- pApiContentAllocation->loadAllocations()
+            SELECT
+                a.idpica_alloc
+            FROM
+                `{$this->table[pica_alloc]}` AS a
+                , `{$this->table[pica_alloc_con]}` AS b
+            WHERE
+                idartlang = $idartlang
+                AND a.idpica_alloc=b.idpica_alloc
+            ;");
 
+        $result = array();
         while ($this->db->nextRecord()) {
             $result[] = $this->db->f('idpica_alloc');
         }
