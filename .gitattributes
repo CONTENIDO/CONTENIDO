@@ -1637,7 +1637,9 @@ contenido/plugins/newsletter/xml/lang_it_IT.xml -text svneol=unset#text/plain
 contenido/plugins/newsletter/xml/lang_nl_NL.xml -text svneol=unset#text/plain
 contenido/plugins/pim/classes/class.pim.plugin.collection.php -text
 contenido/plugins/pim/classes/class.pim.plugin.relations.collection.php -text
+contenido/plugins/pim/classes/setup/class.pimpluginsetup.install.php -text
 contenido/plugins/pim/classes/setup/class.pimpluginsetup.php -text
+contenido/plugins/pim/classes/setup/class.pimpluginsetupNEW.php -text
 contenido/plugins/pim/classes/util/zip/class.pimpluginarchiveextractor.php -text
 contenido/plugins/pim/includes/config.plugin.php -text
 contenido/plugins/pim/includes/include.right_bottom.php -text
