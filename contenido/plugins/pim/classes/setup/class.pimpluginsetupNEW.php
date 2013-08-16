@@ -22,7 +22,7 @@ class PimPluginSetup {
     public static $mode = 0;
 
 	// File name of Xml configuration file for plugins
-	protected static $_PimPluginXmlFilename = "plugin.xml";
+	protected static $_PluginXmlFilename = "plugin.xml";
 	
     // Specific sql prefix
     protected static $_SqlPrefix = "!PREFIX!";
@@ -211,7 +211,7 @@ class PimPluginSetup {
     public function __construct($Xml) {
         //self::_setPimPluginArchiveExtractor();
 
-		$XmlPath = cSecurity::escapeString($Xml) . DIRECTORY_SEPARATOR . self::$_PimPluginXmlFilename;
+		$XmlPath = cSecurity::escapeString($Xml) . DIRECTORY_SEPARATOR . self::$_PluginXmlFilename;
 
         if ($this->validXml($XmlPath) === true) {
             $this->_setXml(simplexml_load_string(file_get_contents($XmlPath)));
