@@ -192,11 +192,11 @@ class PimPluginSetup {
         }
 
         // Error template
-        $pageError = new cGuiPage('pim_error', 'pim');
-        $pageError->set('s', 'BACKLINK', $session->url('main.php?area=pim&frame=4'));
-        $pageError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
-        $pageError->displayError($message);
-        $pageError->render();
+        $pimError = new cGuiPage('pim_error', 'pim');
+        $pimError->set('s', 'BACKLINK', $session->url('main.php?area=pim&frame=4'));
+        $pimError->set('s', 'LANG_BACKLINK', i18n('Back to Plugin Manager', 'pim'));
+        $pimError->displayError($message);
+        $pimError->render();
         exit();
     }
 
