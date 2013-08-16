@@ -567,9 +567,8 @@ class ArticleForumCollection extends ItemCollection {
      * @return multitype:
      */
     public function getExistingforumFrontend($id_cat, $id_art, $id_lang, $frontend) {
-//         $cfg = cRegistry::getConfig();
-//         $db = cRegistry::getDb();
-
+        // $cfg = cRegistry::getConfig();
+        // $db = cRegistry::getDb();
         $userColl = new cApiUserCollection();
         $userColl->query();
 
@@ -654,7 +653,7 @@ class ArticleForumCollection extends ItemCollection {
         $idtype = $this->idContentType;
 
         try {
-            $this->db->query("
+            $this->db->query("-- ArticleForumCollection->readXML()
                 SELECT
                     art_lang.idart
                     , content.value
@@ -725,7 +724,7 @@ class ArticleForumCollection extends ItemCollection {
      * @return Ambigous <mixed, unknown>|boolean
      */
     protected function getIdUserForumContenType() {
-        $this->db->query("
+        $this->db->query("-- ArticleForumCollection->getIdUserForumContenType()
             SELECT
                 idtype
             FROM
