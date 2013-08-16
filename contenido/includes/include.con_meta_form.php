@@ -2,34 +2,29 @@
 /**
  * This file contains the backend page for editing meta tags.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Fulai Zhang
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Fulai Zhang
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.pathresolver.php");
 
-
 $tpl->reset();
 
-
-function generateInfoButton($title){
-
-    return '<a id="rootdirInfo1-link" class="infoButton" title="'."$title".'" href="javascript:void(0);"></a>';
+function generateInfoButton($title) {
+    return '<a id="rootdirInfo1-link" class="infoButton" title="' . "$title" . '" href="javascript:void(0);"></a>';
 }
 
-
-
-//echo '<div id="rootdirInfo1" class="nodisplay" title="sdafkjasdfkjasdfasdfjk">';
+// echo '<div id="rootdirInfo1" class="nodisplay"
+// title="sdafkjasdfkjasdfasdfjk">';
 
 if ($action == "remove_assignments") {
     $sql = "DELETE FROM " . $cfg["tab"]["cat_art"] . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idcat != " . cSecurity::toInteger($idcat);
@@ -215,30 +210,29 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     $title_input = '<input class="textField" type="text" ' . $disabled . ' name="page_title" value="' . conHtmlSpecialChars($tmp_page_title) . '">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
 
-    $tpl->set("s","TITLE_INFO",(i18n("The Title-Tag is one of the most important on-page factor for SEO and is no longer than 60 characters. It includes top keywords and the branding.")));
-    $tpl->set("s","EXPIRES_INFO",(i18n("Expires")));
-    $tpl->set("s","REVISIT_INFO",(i18n("The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit.")));
-    $tpl->set("s","ROBOTS_INFO",(i18n("Not important content or not to indicate pictures should be declared with the robot-tag. It has an high relevance for SEO. Only relevant and most visited articels should be indicated.")));
-    $tpl->set("s","SITEMAPRIORITY_INFO",(i18n("The avarage value for the sitemap priority is 0.5. Only important articels should have an value no more than 0.8.")));
-    $tpl->set("s","SITEMAPCHANGEFREQUENCY_INFO",(i18n("The refresh rate is focused on the content.")));
-    $tpl->set("s","CUSTOMMETATAGS_INFO",(i18n("User defined meta tags.")));
-    $tpl->set("s","DESCRIPTION_INFO",(i18n("The Description-Tag describes the article in a short way (no more than 150 characters). The content should be related to the Title-Tag and the H1-Tag.")));
-    $tpl->set("s","KEYWORD_INFO",(i18n("No more than 6 Keywords should be used.")));
-    $tpl->set("s","REVISITED_INFO",(i18n("The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit.")));
+    $tpl->set("s", "TITLE_INFO", (i18n("The Title-Tag is one of the most important on-page factor for SEO and is no longer than 60 characters. It includes top keywords and the branding.")));
+    $tpl->set("s", "EXPIRES_INFO", (i18n("Expires")));
+    $tpl->set("s", "REVISIT_INFO", (i18n("The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit.")));
+    $tpl->set("s", "ROBOTS_INFO", (i18n("Not important content or not to indicate pictures should be declared with the robot-tag. It has an high relevance for SEO. Only relevant and most visited articels should be indicated.")));
+    $tpl->set("s", "SITEMAPRIORITY_INFO", (i18n("The avarage value for the sitemap priority is 0.5. Only important articels should have an value no more than 0.8.")));
+    $tpl->set("s", "SITEMAPCHANGEFREQUENCY_INFO", (i18n("The refresh rate is focused on the content.")));
+    $tpl->set("s", "CUSTOMMETATAGS_INFO", (i18n("User defined meta tags.")));
+    $tpl->set("s", "DESCRIPTION_INFO", (i18n("The Description-Tag describes the article in a short way (no more than 150 characters). The content should be related to the Title-Tag and the H1-Tag.")));
+    $tpl->set("s", "KEYWORD_INFO", (i18n("No more than 6 Keywords should be used.")));
+    $tpl->set("s", "REVISITED_INFO", (i18n("The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit.")));
 
-    $tpl->set("s","EXPIRES_INFO",(i18n("Expires")));
-    $tpl->set("s","REVISIT_INFO",(i18n("The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit.")));
-    $tpl->set("s","ROBOTS_INFO",(i18n("ROBOTS_INFO")));
-    $tpl->set("s","SITEMAPRIORITY_INFO",(i18n("The avarage value for the sitemap priority is 0.5. Only important articels should have an value no more than 0.8.")));
-    $tpl->set("s","SITEMAPCHANGEFREQUENCY_INFO",(i18n("The refresh rate is focused on the content.")));
-    $tpl->set("s","CUSTOMMETATAGS_INFO",(i18n("user defined meta tags")));
-  //  $tpl->set("s","TITLE_INFO",(i18n("TITLE_INFO")));
-  //  $tpl->set("s","TITLE_INFO",(i18n("TITLE_INFO")));
-
+    $tpl->set("s", "EXPIRES_INFO", (i18n("Expires")));
+    $tpl->set("s", "REVISIT_INFO", (i18n("The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit.")));
+    $tpl->set("s", "ROBOTS_INFO", (i18n("ROBOTS_INFO")));
+    $tpl->set("s", "SITEMAPRIORITY_INFO", (i18n("The avarage value for the sitemap priority is 0.5. Only important articels should have an value no more than 0.8.")));
+    $tpl->set("s", "SITEMAPCHANGEFREQUENCY_INFO", (i18n("The refresh rate is focused on the content.")));
+    $tpl->set("s", "CUSTOMMETATAGS_INFO", (i18n("user defined meta tags")));
+    // $tpl->set("s","TITLE_INFO",(i18n("TITLE_INFO")));
+    // $tpl->set("s","TITLE_INFO",(i18n("TITLE_INFO")));
 
     $tpl->set("s", "ALIAS", $tmp_alias);
     $tpl->set("s", "SITEMAP_PRIO", $tmp_sitemap_prio);
-    $tpl->set("s", "SELECTED_".$tmp_sitemap_change_freg, "selected");
+    $tpl->set("s", "SELECTED_" . $tmp_sitemap_change_freg, "selected");
 
     if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
         $langscripts = '<script type="text/javascript" src="scripts/jquery/plugins/timepicker-' . $lang_short . '.js"></script>
@@ -256,7 +250,6 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
 
     // Meta-Tags
     $availableTags = conGetAvailableMetaTagTypes();
-
     $managedTypes = array(
         "author",
         "date",
@@ -273,15 +266,14 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     foreach ($availableTags as $key => $value) {
         $metaPreview[] = array(
             "name" => $value["metatype"],
-            "content" => conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key))
+            "content" => cSecurity::unFilter(stripslashes(conGetMetaValue($tmp_idartlang, $key)))
         );
-
         if (in_array($value["metatype"], $managedTypes)) {
             if ($value["metatype"] == "robots") {
                 if (conGetMetaValue($tmp_idartlang, $key) == "") {
                     conSetMetaValue($tmp_idartlang, $key, "index, follow");
                     $i = 0;
-                    foreach($metaPreview as $metaRow) {
+                    foreach ($metaPreview as $metaRow) {
                         if ($metaRow["name"] == "robots") {
                             $metaPreview[$i]["content"] = "index, follow";
                             break;
@@ -290,17 +282,16 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
                     }
                 }
                 $robot_array = explode(", ", conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)));
-                foreach($robot_array as $instruction) {
+                foreach ($robot_array as $instruction) {
                     $tpl->set("s", strtoupper($instruction), "checked");
                 }
             } else {
-                $tpl->set("s", strtoupper($value["metatype"]), conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)));
+                $tpl->set("s", strtoupper($value["metatype"]), str_replace('\\', '', conHtmlSpecialChars(cSecurity::unFilter(stripslashes(conGetMetaValue($tmp_idartlang, $key))))));
             }
             continue;
         }
 
         $tpl->set('d', 'METAINPUT', 'META' . $value);
-
         switch ($value["fieldtype"]) {
             case "text":
                 if ($value["metatype"] == 'date') {
@@ -310,15 +301,17 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
                 }
                 break;
             case "textarea":
-                $element = '<textarea ' . $disabled . ' class="metaTag" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" rows=3>' . conHtmlSpecialChars(conGetMetaValue($tmp_idartlang, $key)) . '</textarea>';
+                $element = '<textarea ' . $disabled . ' class="metaTag" name="META' . $value["metatype"] . '" id="META' . $value["metatype"] . '" rows=3>' . cSecurity::unFilter(stripslashes(conGetMetaValueconGetMetaValue($tmp_idartlang, $key))) . '</textarea>';
                 break;
         }
+
 
         $tpl->set("d", "ARTICLE_ID", $idart);
         $tpl->set("d", "CAT_ID", $idcat);
         $tpl->set('d', 'METAFIELDTYPE', $element);
         $tpl->set('d', 'IDMETATYPE', $value["idmetatype"]);
         $tpl->set('d', 'METATITLE', $value["metatype"] . ':');
+
         $tpl->next();
     }
 
@@ -473,8 +466,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     $tpl->set('s', 'SESSION', $contenido);
     $tpl->set('s', 'DISPLAY_MENU', 1);
 
-
-    //call the chain to add additional rows
+    // call the chain to add additional rows
     $additionalRows = '';
     $cecRegistry = cApiCecRegistry::getInstance();
     $cecIterator = $cecRegistry->getIterator('Contenido.Backend.ConMetaEditFormAdditionalRows');
@@ -482,10 +474,10 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         $additionalRows .= $chainEntry->execute($idart, $lang, $client);
     }
 
-
     $tpl->set('s', 'ADDITIONAL_ROWS', $additionalRows);
 
-    //call the chain to create meta tags to display any additional tags in the preview
+    // call the chain to create meta tags to display any additional tags in the
+    // preview
     $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Content.CreateMetatags');
     if ($_cecIterator->count() > 0) {
         while (false !== $chainEntry = $_cecIterator->next()) {
@@ -494,7 +486,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     }
 
     $tpl2 = new cTemplate();
-    foreach($metaPreview as $metaRow) {
+    foreach ($metaPreview as $metaRow) {
         if ($metaRow["content"] == "") {
             $tpl2->set("d", "META_SHOWN", "display: none");
         }
