@@ -183,9 +183,10 @@ class Solr {
     }
 
     /**
+     * Check if required options exist.
      *
      * @param array $options
-     * @throws SolrWarning
+     * @throws SolrWarning when required options don't exist
      */
     public static function validateClientOptions(array $options) {
         $valid = true;
