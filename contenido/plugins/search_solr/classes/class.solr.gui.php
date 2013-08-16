@@ -273,33 +273,35 @@ class SolrRightBottomPage extends cGuiPage {
      */
     private function _reindex() {
 
+        $cfg = cRegistry::getConfig();
+
         // statement is not correct if articles are related to more than one category.
         $db = cRegistry::getDb();
         $db->query("-- SolrRightBottomPage->_reindex()
             SELECT
-                con_art.idclient
-                , con_art_lang.idlang
-                , con_cat_art.idcat
-                , con_cat_lang.idcatlang
-                , con_art_lang.idart
-                , con_art_lang.idartlang
+                art.idclient
+                , art_lang.idlang
+                , cat_art.idcat
+                , cat_lang.idcatlang
+                , art_lang.idart
+                , art_lang.idartlang
             FROM
-                con_art_lang
+                `{$cfg[tab][art_lang]}` AS art_lang
             INNER JOIN
-                con_art
+                `{$cfg[tab][art]}` AS art
             ON
-                con_art_lang.idart = con_art.idart
+                art_lang.idart = art.idart
             INNER JOIN
-                con_cat_art
+                `{$cfg[tab][cat_art]}` AS cat_art
             ON
-                con_art_lang.idart = con_cat_art.idart
+                art_lang.idart = cat_art.idart
             INNER JOIN
-                con_cat_lang
+                `{$cfg[tab][cat_lang]}` AS cat_lang
             ON
-                con_cat_art.idcat = con_cat_lang.idcat
-                and con_art_lang.idlang = con_cat_lang.idlang
+                cat_art.idcat = cat_lang.idcat
+                AND art_lang.idlang = cat_lang.idlang
             ORDER BY
-                con_art_lang.idartlang
+                art_lang.idartlang
             ;");
 
         $articleIds = array();
