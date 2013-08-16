@@ -137,9 +137,9 @@ class SolrIndexer {
      */
     public function __construct(array $articleIds) {
         $this->_articleIds = $articleIds;
-        $options = Solr::getClientOptions();
-        $options = Solr::validateClientOptions($options);
-        $this->_solrClient = new SolrClient($options);
+        $opt = Solr::getClientOptions();
+        Solr::validateClientOptions($opt);
+        $this->_solrClient = new SolrClient($opt);
     }
 
     /**
