@@ -2,17 +2,16 @@
 /**
  * Backend action file con_meta_saveart
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Dominik Ziegler
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con2.php');
@@ -32,7 +31,7 @@ $artLang->set('changefreq', $_POST['sitemap_change_freq']);
 $artLang->store();
 
 $robots = '';
-$robotArray = ($_POST['robots'] == null) ? array() : $_POST['robots'];
+$robotArray = ($_POST['robots'] == null)? array() : $_POST['robots'];
 if (in_array('noindex', $robotArray)) {
     $robots .= 'noindex, ';
 } else {
@@ -55,29 +54,28 @@ if (in_array('nofollow', $robotArray)) {
 }
 
 $newData = array();
+
 foreach ($availableTags as $key => $value) {
 
     if ($value['metatype'] == 'robots') {
 
         conSetMetaValue($idartlang, $key, $robots);
         $newData[$value['metatype']] = $robots;
-
     } elseif ($value["metatype"] == "date" || $value["metatype"] == "expires") {
 
-        $atime     = '';
+        $atime = '';
         $dateValue = $_POST['META' . $value['metatype']];
-
-        if (is_int(strtotime($dateValue))) {
-            $atime = date('c', strtotime($dateValue));
-        }
+        // fix store hours and minutes
+            // if (is_int(strtotime($dateValue))) {
+            // $atime = date('c', strtotime($dateValue));
+            // }
+        $atime = $dateValue;
         conSetMetaValue($idartlang, $key, $atime);
         $newData[$value['metatype']] = $atime;
-
     } else {
 
         conSetMetaValue($idartlang, $key, $_POST['META' . $value['metatype']]);
         $newData[$value['metatype']] = $_POST['META' . $value['metatype']];
-
     }
 }
 
