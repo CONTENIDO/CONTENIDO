@@ -515,8 +515,8 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false, $cache
 function cApiImageCheckImageEditingPosibility() {
     global $cfg;
 
-    if (cApiIsImageMagickAvailable()) {
-        if ($cfg['images']['image_magick']['use']) {
+    if ($cfg['images']['image_magick']['use']) {
+        if (cApiIsImageMagickAvailable()) {
             return 'im';
         }
     }
