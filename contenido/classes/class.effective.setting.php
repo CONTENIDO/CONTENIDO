@@ -292,7 +292,7 @@ class cEffectiveSetting {
     protected static function _makeKey($type, $name) {
         global $auth;
 
-        if ($auth instanceof Contenido_Auth) {
+        if ($auth instanceof cAuth) {
             $key = $auth->auth['uid'] . '_' . $type . '_' . $name;
         } else {
             $key = '_' . $type . '_' . $name;
