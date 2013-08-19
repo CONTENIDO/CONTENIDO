@@ -314,4 +314,22 @@ $cfg['content_types']['CMS_LINKEDIT'] = array(
 //         should be skipped
 $cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] = array('application/x-shockwave-flash');
 
+
+/**
+ * Images settings
+ * ---------------
+ *
+ */
+// (bool) Flag to use ImageMagick, if available.
+//        If disabled, the image functions will try to use PHP GD library.
+$cfg['images']['image_magick']['use'] = true;
+
+// (string) Optional, path to ImageMagick binary directory, with ending slash
+//          e. g. C:/Program Files/ImageMagick/
+//          IMPORTANT: use slashes - not backslashes!
+// NOTE: You should set this on a windows os, otherwhise the system could execute
+//       the "convert.exe" from system32 folder. This executable does not belongs
+//       to ImageMagick.
+$cfg['images']['image_magick']['path'] = '';
+
 ?>

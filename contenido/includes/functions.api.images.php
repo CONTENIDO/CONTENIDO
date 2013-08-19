@@ -114,6 +114,8 @@ function capiImgScaleLQ ($img, $maxX, $maxY, $crop = false, $expand = false,
 	}
 
 	$filename	= $img;
+    $maxX = (int) $maxX;
+    $maxY = (int) $maxY;
 	$cacheTime	= (int)$cacheTime;
 	$quality	= (int)$quality;
 
@@ -300,6 +302,8 @@ function capiImgScaleHQ ($img, $maxX, $maxY, $crop = false, $expand = false,
 	}
 
 	$filename = $img;
+    $maxX = (int) $maxX;
+    $maxY = (int) $maxY;
 	$cacheTime	= (int)$cacheTime;
 	$quality	= (int)$quality;
 
@@ -490,9 +494,13 @@ function capiImgScaleImageMagick ($img, $maxX, $maxY, $crop = false, $expand = f
 
 	if (!file_exists($img)) {
 	    return false;
+    } elseif (isFunctionDisabled('escapeshellarg') || isFunctionDisabled('exec')) {
+        return false;
 	}
 
 	$filename = $img;
+    $maxX = (int) $maxX;
+    $maxY = (int) $maxY;
 	$cacheTime	= (int)$cacheTime;
 	$quality	= (int)$quality;
 
@@ -605,12 +613,18 @@ function capiImgScaleImageMagick ($img, $maxX, $maxY, $crop = false, $expand = f
 	/* Try to execute convert */
 	$output = array();
 	$retVal = 0;
+    $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'convert');
+    $source = escapeshellarg($filename);
+    $destination = escapeshellarg($cacheFile);
+
 	if ($crop)
 	{
-		exec ("convert -gravity center -quality ".$quality." -crop {$maxX}x{$maxY}+1+1 \"$filename\" $cacheFile", $output, $retVal);
+		$cmd = "'{$program}' -gravity center -quality {$quality} -crop {$maxX}x{$maxY}+1+1 '{$source}' '{$destination}'";
 	} else {
-		exec ("convert -quality ".$quality." -geometry {$targetX}x{$targetY} \"$filename\" $cacheFile", $output, $retVal );
+		$cmd = "'{$program}' -quality {$quality} -geometry {$targetX}x{$targetY} '{$source}' '{$destination}'";
 	}
+
+	exec($cmd, $output, $retVal);
 
 	if (!file_exists($cacheFile))
 	{
@@ -629,10 +643,23 @@ function capiImgScaleImageMagick ($img, $maxX, $maxY, $crop = false, $expand = f
  */
 function isAnimGif($sFile)
 {
+    global $cfg;
+
+    if (isFunctionDisabled('escapeshellarg') || isFunctionDisabled('exec'))
+    {
+        return false;
+    }
+    elseif ('im' != checkImageEditingPosibility())
+    {
+        return false;
+    }
+
 	$output = array();
 	$retval = 0;
+    $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'identify');
+    $sFile = escapeshellarg($sFile);
 
-	exec('identify ' . $sFile, $output, $retval);
+	exec("'{$program}' '{$sFile}'", $output, $retval);
 
 	if (count($output) == 1)
 	{
@@ -767,32 +794,34 @@ function capiImgScale ($img, $maxX, $maxY, $crop = false, $expand = false,
 * return mixed information about installed image editing extensions/tools
 */
 function checkImageEditingPosibility() {
+    global $cfg;
 
-	if (isImageMagickAvailable())
-	{
-		return 'im';
-	} else
-	{
-		if (extension_loaded('gd'))
-		{
-			if (function_exists('gd_info'))
-			{
-				$arrGDInformations = gd_info();
+    if ($cfg['images']['image_magick']['use'])
+    {
+        if (isImageMagickAvailable()) {
+            return 'im';
+        }
+    }
 
-				if (preg_match('#([0-9\.])+#', $arrGDInformations['GD Version'], $strGDVersion))
-				{
-					if ($strGDVersion[0] >= '2')
-					{
-						return '2';
-					}
-					return '1';
-				}
-				return '1';
-			}
-			return '1';
-		}
-		return '0';
-	}
+    if (extension_loaded('gd'))
+    {
+        if (function_exists('gd_info'))
+        {
+            $arrGDInformations = gd_info();
+
+            if (preg_match('#([0-9\.])+#', $arrGDInformations['GD Version'], $strGDVersion))
+            {
+                if ($strGDVersion[0] >= '2')
+                {
+                    return '2';
+                }
+                return '1';
+            }
+            return '1';
+        }
+        return '1';
+    }
+    return '0';
 }
 
 ?>

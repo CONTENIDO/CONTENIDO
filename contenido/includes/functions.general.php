@@ -1508,6 +1508,7 @@ function str_rpos($haystack, $needle, $start = 0)
  */
 function isImageMagickAvailable()
 {
+    global $cfg;
 	global $_imagemagickAvailable;
 
 	if (is_bool($_imagemagickAvailable))
@@ -1515,16 +1516,17 @@ function isImageMagickAvailable()
 		return $_imagemagickAvailable;
 	}
 
-    if (isFunctionDisabled('exec'))
+    // check, if escapeshellarg or exec function is disabled, we need both
+    if (isFunctionDisabled('escapeshellarg') || isFunctionDisabled('exec'))
     {
-		$_imagemagickAvailable = false;
+        $_imagemagickAvailable = false;
         return $_imagemagickAvailable;
     }
 
 	$output = array();
 	$retval = 0;
-
-	@exec("convert", $output, $retval);
+    $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'convert');
+	exec("'{$program}' -version", $output, $retval);
 
     if (!is_array($output) || count($output) == 0)
     {
