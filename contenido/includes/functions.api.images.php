@@ -347,14 +347,13 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
     // Try to execute convert
     $output = array();
     $retVal = 0;
-    $imPath = $cfg['images']['image_magick']['path'];
-    $program = escapeshellarg($imPath . 'convert');
+    $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'convert');
     $source = escapeshellarg($filename);
     $destination = escapeshellarg($cacheFile);
     if ($crop) {
-        $cmd = "{$program} -gravity center -quality {$quality} -crop {$maxX}x{$maxY}+1+1 {$source} {$destination}";
+        $cmd = "'{$program}' -gravity center -quality {$quality} -crop {$maxX}x{$maxY}+1+1 '{$source}' '{$destination}'";
     } else {
-        $cmd = "{$program} -quality {$quality} -geometry {$targetX}x{$targetY} {$source} {$destination}";
+        $cmd = "'{$program}' -quality {$quality} -geometry {$targetX}x{$targetY} '{$source}' '{$destination}'";
     }
 
     exec($cmd, $output, $retVal);
@@ -385,11 +384,10 @@ function cApiImageIsAnimGif($sFile) {
 
     $output = array();
     $retval = 0;
-    $imPath = $cfg['images']['image_magick']['path'];
-    $program = escapeshellarg($imPath . 'identify');
+    $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'identify');
     $source = escapeshellarg($sFile);
 
-    exec("{$program} {$source}", $output, $retval);
+    exec("'{$program}' '{$source}'", $output, $retval);
 
     if (count($output) == 1) {
         return false;
@@ -663,9 +661,8 @@ function cApiIsImageMagickAvailable() {
     $output = array();
     $retval = 0;
     $imPath = $cfg['images']['image_magick']['path'];
-    $program = '"' . escapeshellarg($imPath . 'convert') . '" -version';
-
-    @exec($program, $output, $retval);
+    $program = escapeshellarg($cfg['images']['image_magick']['path'] . 'convert');
+    @exec("'{$program}' -version", $output, $retval);
 
     if (!is_array($output) || count($output) == 0) {
         // exec is probably disabled, so we assume IM to be unavailable
