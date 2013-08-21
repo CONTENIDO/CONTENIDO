@@ -232,9 +232,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Add new CONTENIDO content types: *_type
         $this->installAddContentTypes();
-		
-		// Add new modules
-		$this->installAddModules();
+
+        // Add new modules
+        $this->installAddModules();
     }
 
     /**
@@ -248,7 +248,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Get config variables
         $cfg = cRegistry::getConfig();
 
-		// Check min CONTENIDO version
+        // Check min CONTENIDO version
         if (version_compare($cfg['version'], parent::$_XmlRequirements->contenido->attributes()->minversion, '<')) {
             parent::error(i18n('You have to install CONTENIDO <strong>', 'pim') . parent::$_XmlRequirements->contenido->attributes()->minversion . i18n('</strong> or higher to install this plugin!', 'pim'));
         }
@@ -257,11 +257,11 @@ class PimPluginSetupInstall extends PimPluginSetup {
         if (parent::$_XmlRequirements->contenido->attributes()->maxversion) {
 
             if (version_compare($cfg['version'], parent::$_XmlRequirements->contenido->attributes()->maxversion, '>')) {
-				parent::error(i18n('Your current CONTENIDO version is to new - max CONTENIDO version: ' . parent::$_XmlRequirements->contenido->attributes()->maxversion . '', 'pim'));
-			}
+                parent::error(i18n('Your current CONTENIDO version is to new - max CONTENIDO version: ' . parent::$_XmlRequirements->contenido->attributes()->maxversion . '', 'pim'));
+            }
         }
-		
-		// Check PHP version
+
+        // Check PHP version
         if (version_compare(phpversion(), parent::$_XmlRequirements->attributes()->php, '<')) {
             parent::error(i18n('You have to install PHP <strong>', 'pim') . parent::$_XmlRequirements->attributes()->php . i18n('</strong> or higher to install this plugin!', 'pim'));
         }
@@ -351,8 +351,8 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $areaCount = count(parent::$_XmlArea->area);
         for ($i = 0; $i < $areaCount; $i++) {
 
-			$attributes = array();
-		
+            $attributes = array();
+
             // Build attributes
             foreach (parent::$_XmlArea->area[$i]->attributes() as $key => $value) {
                 $attributes[$key] = $value;
@@ -517,7 +517,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         if (parent::_getMode() == 1) { // Plugin is already extracted
             $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . '/plugin_install.sql';
-        } elseif (parent::getMode() == 2) { // Plugin is uploaded
+        } elseif (parent::_getMode() == 2) { // Plugin is uploaded
             $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_install.sql', 0);
         }
 
@@ -568,19 +568,18 @@ class PimPluginSetupInstall extends PimPluginSetup {
             }
         }
     }
-	
-	/** 
-	 * Add modules
-	 *
-	 * @access private
-	 * @return void
-	 */
-	private function installAddModules() {
-	
-		$cfg = cRegistry::getConfig();
+
+    /**
+     * Add modules
+     *
+     * @access private
+     * @return void
+     */
+    private function installAddModules() {
+        $cfg = cRegistry::getConfig();
         $module = new cApiModule();
 
-		// Set path to modules path
+        // Set path to modules path
         $modulesPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR;
 
         if (!is_dir($modulesPath)) {
@@ -590,14 +589,14 @@ class PimPluginSetupInstall extends PimPluginSetup {
         foreach (new DirectoryIterator($modulesPath) as $modulesFiles) {
 
             if (substr($modulesFiles->getBasename(), -4) == ".zip") {
-			
-				// Import founded module
+
+                // Import founded module
                 $module->import($modulesFiles->getBasename(), $modulesFiles->getBasename(), false);
             }
         }
 
-		cFileHandler::recursiveRmdir($modulesPath);
-	}
+        cFileHandler::recursiveRmdir($modulesPath);
+    }
 
 }
 ?>

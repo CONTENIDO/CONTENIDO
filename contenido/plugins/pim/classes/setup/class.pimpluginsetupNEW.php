@@ -18,25 +18,28 @@ class PimPluginSetup {
 
     // Initializing variables
     // Variable for installation / update mode:
-	// Extracted or uploaded file?
+    // Extracted or uploaded file?
     public static $mode = 0;
 
-	// File name of Xml configuration file for plugins
-	protected static $_PluginXmlFilename = "plugin.xml";
-	
+    // File name of Xml configuration file for plugins
+    protected static $_PluginXmlFilename = "plugin.xml";
+
     // Specific sql prefix
     protected static $_SqlPrefix = "!PREFIX!";
 
+    // Class variable for cGuiPage
+    protected static $_GuiPage;
+
     // Class variable for PimPluginArchiveExtractor
-    protected $_PimPluginArchiveExtractor;
+    protected static $_PimPluginArchiveExtractor;
 
     // Xml variables
     // General informations of plugin
     public static $_XmlGeneral;
 
-	// Plugin requirements
-	public static $_XmlRequirements;
-	
+    // Plugin requirements
+    public static $_XmlRequirements;
+
     // CONTENIDO areas: *_area
     public static $_XmlArea;
 
@@ -80,47 +83,60 @@ class PimPluginSetup {
     }
 
     /**
+     * Set method for cGuiPage class
+     *
+     * @access public
+     * @param cGuiPage $page
+     * @return void
+     */
+    public function _setPageClass($page) {
+        return self::$_GuiPage = $page;
+    }
+
+    /**
      * Initialzing and set variable for PimPluginArchiveExtractor class
      *
      * @access private
+     * @param string $tempArchiveNewPath Path to Zip archive
+     * @param string $tempArchiveName Name of Zip archive
      * @return PimPluginArchiveExtractor
      */
-    private function _setPimPluginArchiveExtractor() {
-        return $this->_PimPluginArchiveExtractor = new PimPluginArchiveExtractor();
+    private function _setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName) {
+        return self::$_PimPluginArchiveExtractor = new PimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName);
     }
 
     /**
      * Set temporary xml content to static variables
      *
      * @access private
-     * @param string $Xml
+     * @param string $xml
      * @return boid
      */
-    private function _setXml($Xml) {
+    private function _setXml($xml) {
 
         // General plugin informations
-        self::$_XmlGeneral = $Xml->general;
-		
-		// Plugin requirements
-        self::$_XmlRequirements = $Xml->requirements;
+        self::$_XmlGeneral = $xml->general;
+
+        // Plugin requirements
+        self::$_XmlRequirements = $xml->requirements;
 
         // CONTENIDO areas: *_area
-        self::$_XmlArea = $Xml->contenido->areas;
+        self::$_XmlArea = $xml->contenido->areas;
 
         // CONTENIDO actions: *_actions
-        self::$_XmlActions = $Xml->contenido->actions;
+        self::$_XmlActions = $xml->contenido->actions;
 
         // CONTENIDO frames: *_frame_files and *_files
-        self::$_XmlFrames = $Xml->contenido->frames;
+        self::$_XmlFrames = $xml->contenido->frames;
 
         // CONTENIDO main navigations: *_nav_main
-        self::$_XmlNavMain = $Xml->contenido->nav_main;
+        self::$_XmlNavMain = $xml->contenido->nav_main;
 
         // CONTENIDO sub navigations: *_nav_sub
-        self::$_XmlNavSub = $Xml->contenido->nav_sub;
+        self::$_XmlNavSub = $xml->contenido->nav_sub;
 
         // CONTENIDO Content Types: *_type
-        self::$_XmlContentType = $Xml->type;
+        self::$_XmlContentType = $xml->type;
     }
 
     /**
@@ -139,7 +155,7 @@ class PimPluginSetup {
      *
      * @return integer
      */
-    public function _getMode() {
+    public static function _getMode() {
         return self::$mode;
     }
 
@@ -149,22 +165,65 @@ class PimPluginSetup {
      * @access protected
      * @return integer
      */
-    protected function _getPluginId() {
+    protected static function _getPluginId() {
         return self::$pluginId;
     }
 
-    // Help methods for construct function
+    // Help methods
+    /**
+     * checkXml
+     * Load plugin datas and run Xml checks
+     *
+     * @access public
+     * @return void
+     */
+    public function checkXml() {
+        $cfg = cRegistry::getConfig();
+
+        if (self::_getMode() == 1) { // Plugin is already extracted
+            // Get already extracted plugin.xml
+            $XmlData = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($_GET['pluginFoldername']) . DIRECTORY_SEPARATOR . self::$_PluginXmlFilename);
+        } elseif (self::_getMode() == 2) { // Plugin is uploaded
+
+            // Name of uploaded Zip archive
+            $tempArchiveName = cSecurity::escapeString($_FILES['package']['name']);
+
+            // Path to CONTENIDO temp dir
+            $tempArchiveNewPath = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
+
+            // Move temporary archive files into CONTENIDO temp dir
+            move_uploaded_file($_FILES['package']['tmp_name'], $tempArchiveNewPath . $tempArchiveName);
+
+            // Initializing plugin archive extractor
+            try {
+                $this->_setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName);
+            } catch (cException $e) {
+                self::$_PimPluginArchiveExtractor->destroyTempFiles();
+            }
+
+            // Get plugin.xml informations
+            $XmlData = self::$_PimPluginArchiveExtractor->extractArchiveFileToVariable(self::$_PluginXmlFilename);
+        }
+
+        // Check and set plugin.xml
+        if ($this->validXml($XmlData) === true) {
+            $this->_setXml(simplexml_load_string($XmlData));
+        } else {
+            return $this->error(i18n('Invalid Xml document. Please contact the plugin author.', 'pim'));
+        }
+    }
+
     /**
      * Validate Xml source
      *
      * @access private
-     * @param string $Xml
+     * @param string $xml
      * @return boolean
      */
-    private function validXml($Xml) {
+    private function validXml($xml) {
         // Initializing PHP DomDocument class
         $dom = new DomDocument();
-        $dom->load($Xml);
+        $dom->loadXML($xml);
 
         // Validate
         if ($dom->schemaValidate('plugins/pim/xml/plugin_info.xsd')) {
@@ -181,14 +240,14 @@ class PimPluginSetup {
      * @param string $message
      * @return void
      */
-    protected function error($message = '') {
+    protected static function error($message = '') {
 
         // Get session variable
         $session = cRegistry::getSession();
 
         // Destroy temporary files if plugin is uploaded
-        if ($this->mode == 2) {
-            parent::$_PimPluginArchiveExtractor->destroyTempFiles();
+        if (self::_getMode() == 2) {
+            self::$_PimPluginArchiveExtractor->destroyTempFiles();
         }
 
         // Error template
@@ -200,25 +259,17 @@ class PimPluginSetup {
         exit();
     }
 
-    // Begin of program
     /**
-     * Construct function
+     * Info function
      *
-     * @access public
-	 * @param string $Xml
+     * @access protected
+     * @param string $message
      * @return void
      */
-    public function __construct($Xml) {
-        //self::_setPimPluginArchiveExtractor();
-
-		$XmlPath = cSecurity::escapeString($Xml) . DIRECTORY_SEPARATOR . self::$_PluginXmlFilename;
-
-        if ($this->validXml($XmlPath) === true) {
-            $this->_setXml(simplexml_load_string(file_get_contents($XmlPath)));
-        } else {
-            return $this->error(i18n('Invalid Xml document. Please contact the plugin author.', 'pim'));
-        }
+    protected static function info($message = '') {
+        return self::$_GuiPage->displayInfo($message);
     }
+
 
 }
 ?>

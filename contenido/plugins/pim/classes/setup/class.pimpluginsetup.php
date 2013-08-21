@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage PluginManager
  *
  */
-class PimPluginSetup {
+class PimPluginSetupOld {
 
     protected $sqlPrefix = "!PREFIX!";
 
