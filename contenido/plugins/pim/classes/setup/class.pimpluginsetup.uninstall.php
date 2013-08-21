@@ -342,20 +342,20 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @param $page page class for success or error message
      * @return void
      */
-    public function uninstallDir($foldername, $page = null) {
+    public function uninstallDir() {
         $cfg = cRegistry::getConfig();
 
         // delete folders
-        $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($foldername);
+        $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername();
         cFileHandler::recursiveRmdir($folderpath);
 
-        if ($page instanceof cGuiPage) {
+        if (parent::$_GuiPage instanceof cGuiPage) {
 
             // success message
             if (!cFileHandler::exists($folderpath)) {
-                parent::info(i18n('The pluginfolder', 'pim') . ' <strong>' . $foldername . '</strong> ' . i18n('has been successfully uninstalled.', 'pim'));
+                parent::info(i18n('The pluginfolder', 'pim') . ' <strong>' . $this->_getPluginFoldername() . '</strong> ' . i18n('has been successfully uninstalled.', 'pim'));
             } else if (cFileHandler::exists($folderpath)) {
-                parent::info(i18n('The pluginfolder', 'pim') . ' <strong>' . $foldername . '</strong> ' . i18n('could not be uninstalled.', 'pim'));
+                parent::info(i18n('The pluginfolder', 'pim') . ' <strong>' . $this->_getPluginFoldername() . '</strong> ' . i18n('could not be uninstalled.', 'pim'));
             }
         }
     }

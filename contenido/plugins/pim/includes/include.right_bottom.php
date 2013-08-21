@@ -51,22 +51,17 @@ switch ($viewAction) {
         $setup->uninstall($_POST['pluginId']);
         installationRoutine($page, true, $_POST['foldername'], true);
         break;
-    case 'uninstall': // DEV
+    case 'uninstall': // NEW
         $delete = new PimPluginSetupUninstall();
         $setup->setMode('uninstall');
         $setup::_setPluginId($_GET['pluginId']);
         $delete->uninstall();
         break;
-    case 'uninstall-extracted': // DEV
+    case 'uninstall-extracted': // NEW
         $delete = new PimPluginSetupUninstall();
         $setup->setMode('uninstall');
         $delete->_setPluginFoldername($_GET['pluginFoldername']);
-
-        /*
-         * plugin_include('pim', 'classes/setup/class.pimpluginsetup.php');
-         * unset($setup); $setup = new PimPluginSetupOld();
-         * $setup->uninstallDir($_GET['pluginFoldername'], $page);
-         */
+        $delete->uninstallDir();
         break;
     case 'install': // NEW
         $setup->setMode('uploaded');
@@ -80,98 +75,6 @@ switch ($viewAction) {
         $new = new PimPluginSetupInstall();
         $new->install();
         break;
-}
-
-// TODO: Move the following function into classes
-/**
- * Installation steps to install a new plugin.
- * Function differ between extracted
- * and Zip archive plugins
- *
- * @param cGuiPage $page
- * @param boolean $isExtracted
- * @param string $extractedPath foldername from extracted plugin
- * @param boolean $update
- */
-function installationRoutine($page, $isExtracted = false, $extractedPath = '', $update = false) {
-    global $setup;
-    $cfg = cRegistry::getConfig();
-    $sess = cRegistry::getSession();
-
-    if ($isExtracted === false) {
-
-        // name of uploaded file
-        $tempFileName = cSecurity::escapeString($_FILES['package']['name']);
-
-        // path to temporary dir
-        $tempFileNewPath = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
-
-        // move temporary files into CONTENIDO temp dir
-        move_uploaded_file($_FILES['package']['tmp_name'], $tempFileNewPath . $tempFileName);
-
-        // initalizing plugin archive extractor
-        try {
-            $extractor = new PimPluginArchiveExtractor($tempFileNewPath, $tempFileName);
-            $setup->addArchiveObject($extractor);
-        } catch (cException $e) {
-            $extractor->destroyTempFiles();
-        }
-
-        $tempPluginXmlContent = $extractor->extractArchiveFileToVariable('plugin.xml');
-        $setup->setTempXml($tempPluginXmlContent);
-    } else {
-        $tempPluginXmlContent = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . $extractedPath . '/plugin.xml');
-        $setup->setTempXml($tempPluginXmlContent);
-        $setup->setIsExtracted($isExtracted);
-        $setup->setExtractedPath($extractedPath);
-    }
-
-    // xml file validation
-    $setup->checkValidXml();
-
-    // load plugin.xml to an xml-string
-    $tempXml = simplexml_load_string($setup->getTempXml());
-
-    // check plugin specific requirements
-    $setup->checkRequirements();
-
-    // build the new plugin dir
-    $tempPluginDir = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $tempXml->general->plugin_foldername . DIRECTORY_SEPARATOR;
-
-    // extract files into plugin dir
-    if ($setup->getValid() === true && $isExtracted === false) {
-        try {
-            $extractor->setDestinationPath($tempPluginDir);
-        } catch (cException $e) {
-            $extractor->destroyTempFiles();
-        }
-
-        try {
-            $extractor->extractArchive();
-        } catch (cException $e) {
-            $extractor->destroyTempFiles();
-        }
-    }
-
-    if ($isExtracted === true) {
-
-        // sql inserts
-        $setup->install($tempXml);
-
-        // success message
-        if ($update == false) {
-            $page->displayInfo(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
-        } else {
-            $page->displayInfo(i18n('The plugin has been successfully updated. To apply the changes please login into backend again.', 'pim'));
-        }
-    } else {
-
-        // success message
-        $page->displayInfo(i18n('The plugin has been successfully uploaded. Now you can install it.', 'pim'));
-
-        // close extracted archive
-        $extractor->closeArchive();
-    }
 }
 
 // path to pim template files

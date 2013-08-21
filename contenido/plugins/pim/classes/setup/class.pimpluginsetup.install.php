@@ -236,6 +236,11 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Add new modules
         $this->installAddModules();
+
+        // Add new plugin dir only if we install an uploaded plugin
+        if (parent::_getMode() == 2) {
+            $this->installAddDir();
+        }
     }
 
     /**
@@ -597,6 +602,33 @@ class PimPluginSetupInstall extends PimPluginSetup {
         }
 
         cFileHandler::recursiveRmdir($modulesPath);
+    }
+
+    /**
+     * Add plugin dir
+     *
+     * @access private
+     * @return void
+     */
+    private function installAddDir() {
+        $cfg = cRegistry::getConfig();
+
+        // Build the new plugin dir
+        $tempPluginDir = $cfg['path']['contenido'] . $cfg['path']['plugins'] . parent::$_XmlGeneral->plugin_foldername . DIRECTORY_SEPARATOR;
+
+        // Set destination path
+        try {
+            parent::$_PimPluginArchiveExtractor->setDestinationPath($tempPluginDir);
+        } catch (cException $e) {
+            parent::$_PimPluginArchiveExtractor->destroyTempFiles();
+        }
+
+        // Extract Zip archive files into the new plugin dir
+        try {
+            parent::$_PimPluginArchiveExtractor->extractArchive();
+        } catch (cException $e) {
+            parent::$_PimPluginArchiveExtractor->destroyTempFiles();
+        }
     }
 
 }
