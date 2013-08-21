@@ -18,7 +18,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // plugin includes
 plugin_include('pim', 'classes/class.pim.plugin.collection.php');
 plugin_include('pim', 'classes/class.pim.plugin.relations.collection.php');
-// plugin_include('pim', 'classes/setup/class.pimpluginsetup.php');
 plugin_include('pim', 'classes/util/zip/class.pimpluginarchiveextractor.php');
 
 // new
