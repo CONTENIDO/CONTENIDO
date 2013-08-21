@@ -181,7 +181,7 @@ class PimPluginSetup {
         $cfg = cRegistry::getConfig();
 
         if (self::_getMode() == 1) { // Plugin is already extracted
-            // Get already extracted plugin.xml
+                                     // Get already extracted plugin.xml
             $XmlData = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($_GET['pluginFoldername']) . DIRECTORY_SEPARATOR . self::$_PluginXmlFilename);
         } elseif (self::_getMode() == 2) { // Plugin is uploaded
 
@@ -269,7 +269,6 @@ class PimPluginSetup {
     protected static function info($message = '') {
         return self::$_GuiPage->displayInfo($message);
     }
-
 
 }
 ?>
