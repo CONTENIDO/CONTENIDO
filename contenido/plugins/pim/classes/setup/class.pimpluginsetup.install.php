@@ -241,6 +241,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
         if (parent::_getMode() == 2) {
             $this->installAddDir();
         }
+
+        // Success message
+        parent::info(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.'), 'pim');
     }
 
     /**
