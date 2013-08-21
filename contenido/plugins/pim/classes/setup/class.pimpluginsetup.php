@@ -207,7 +207,7 @@ class PimPluginSetup {
             $tempArchiveName = cSecurity::escapeString($_FILES['package']['name']);
 
             // Path to CONTENIDO temp dir
-            $tempArchiveNewPath = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
+            $tempArchiveNewPath = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['temp'];
 
             // Move temporary archive files into CONTENIDO temp dir
             move_uploaded_file($_FILES['package']['tmp_name'], $tempArchiveNewPath . $tempArchiveName);

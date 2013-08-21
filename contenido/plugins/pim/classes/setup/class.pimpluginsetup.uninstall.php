@@ -273,7 +273,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
-        $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $foldername . '/plugin_uninstall.sql';
+        $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $foldername . DIRECTORY_SEPARATOR . 'plugin_uninstall.sql';
 
         if (!cFileHandler::exists($tempSqlFilename)) {
             return;
@@ -311,7 +311,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $tempFileName = cSecurity::escapeString($_FILES['package']['name']);
 
         // path to temporary dir
-        $tempFileNewPath = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
+        $tempFileNewPath = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['temp'];
 
         parent::_setPimPluginArchiveExtractor($tempFileNewPath, $tempFileName);
         $tempSqlContent = self::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_update.sql');

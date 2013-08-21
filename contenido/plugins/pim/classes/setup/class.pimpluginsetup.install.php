@@ -522,7 +522,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $db = cRegistry::getDb();
 
         if (parent::_getMode() == 1) { // Plugin is already extracted
-            $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . '/plugin_install.sql';
+            $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_install.sql';
         } elseif (parent::_getMode() == 2) { // Plugin is uploaded
             $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_install.sql', 0);
         }
