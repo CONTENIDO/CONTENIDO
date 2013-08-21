@@ -398,20 +398,35 @@ class PimPluginSetupInstall extends PimPluginSetup {
     private function installAddActions() {
         $actionCount = count(parent::$_XmlActions->action);
         for ($i = 0; $i < $actionCount; $i++) {
-            // Build attribut
-            $area = parent::$_XmlActions->action[$i]->attributes();
 
-            // Security checks
-            $area = cSecurity::escapeString($area);
+            $attributes = array();
+
+            // Build attributes
+            foreach (parent::$_XmlActions->action[$i]->attributes() as $key => $value) {
+                $attributes[$key] = $value;
+            }
+
+            // Set relevant value if it is empty
+            if (empty($attributes['relevant'])) {
+                $attributes['relevant'] = 1;
+            }
+
+            // Add attributes "area" and "relevant" to an safe array
+            $attributes = array(
+                'area' => cSecurity::escapeString($attributes['area']),
+                'relevant' => cSecurity::toInteger($attributes['relevant'])
+            );
+
+            // Security check for action name
             $action = cSecurity::escapeString(parent::$_XmlActions->action[$i]);
 
             // Check for valid area
-            if (!in_array($area, $this->_getInstalledAreas())) {
-                parent::error(i18n('Defined area', 'pim') . ' <strong>' . $area . '</strong> ' . i18n('are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'));
+            if (!in_array($attributes['area'], $this->_getInstalledAreas())) {
+                parent::error(i18n('Defined area', 'pim') . ' <strong>' . $attributes['area'] . '</strong> ' . i18n('are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'));
             }
 
             // Create a new entry
-            $this->_ApiActionCollection->create($area, $action, '', '', '', 1);
+            $this->_ApiActionCollection->create($attributes['area'], $action, '', '', '', $attributes['relevant']);
         }
     }
 

@@ -101,6 +101,7 @@
                     <xsd:simpleContent>
                         <xsd:extension base="xsd:string">
                             <xsd:attribute name="area" type="xsd:string" use="required" />
+                            <xsd:attribute name="relevant" type="xsd:integer" default="1" />
                         </xsd:extension>
                     </xsd:simpleContent>
                 </xsd:complexType>

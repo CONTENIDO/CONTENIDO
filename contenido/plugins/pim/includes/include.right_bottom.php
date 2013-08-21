@@ -50,8 +50,8 @@ switch ($viewAction) {
         $delete = new PimPluginSetupUninstall();
         $delete->uninstall();
 
-        // Now change mode to extracted
-        $setup->setMode('extracted');
+        // Now change mode to uploaded
+        $setup->setMode('uploaded');
 
         // Check Xml
         $setup->checkXml();
