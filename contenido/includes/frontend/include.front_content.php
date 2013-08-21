@@ -408,7 +408,6 @@ if ($contenido) {
     $errorText = 'Editing is not possible because there is no template assigned to this category.';
     $errorTitle = 'FATAL ERROR!';
 }
-Util::logDump($sql);
 
 $db = cRegistry::getDb();
 $db->query($sql);
