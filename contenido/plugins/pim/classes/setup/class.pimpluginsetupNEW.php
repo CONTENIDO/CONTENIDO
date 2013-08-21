@@ -188,7 +188,19 @@ class PimPluginSetup {
 
         if (self::_getMode() == 1) { // Plugin is already extracted
                                      // Get already extracted plugin.xml
-            $XmlData = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($_GET['pluginFoldername']) . DIRECTORY_SEPARATOR . self::$_PluginXmlFilename);
+
+            /*
+             * Build foldername variable. If we have an plugin to update, _GET
+             * varibale is empty, so we have to use _POST
+             */
+            // TODO: Harmonize variable names
+            if ($_GET['pluginFoldername'] != '') {
+                $foldername = $_GET['pluginFoldername'];
+            } else {
+                $foldername = $_POST['foldername'];
+            }
+
+            $XmlData = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($foldername) . DIRECTORY_SEPARATOR . self::$_PluginXmlFilename);
         } elseif (self::_getMode() == 2) { // Plugin is uploaded
 
             // Name of uploaded Zip archive

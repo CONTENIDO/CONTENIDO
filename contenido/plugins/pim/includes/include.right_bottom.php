@@ -42,24 +42,33 @@ switch ($viewAction) {
         $status->changeActiveStatus($_GET['pluginId']);
         break;
     case 'update': // DEV
-        plugin_include('pim', 'classes/setup/class.pimpluginsetup.php');
-        unset($setup);
-        $setup = new PimPluginSetupOld();
-        $setup->checkZip();
-        $setup->checkSamePlugin($_POST['pluginId']);
-        $setup->setIsUpdate(1);
-        $setup->uninstall($_POST['pluginId']);
-        installationRoutine($page, true, $_POST['foldername'], true);
+                   // Set mode to update
+        $setup->setMode('update');
+        $setup::_setPluginId($_POST['pluginId']);
+
+        // Uninstall plugin
+        $delete = new PimPluginSetupUninstall();
+        $delete->uninstall();
+
+        // Now change mode to extracted
+        $setup->setMode('extracted');
+
+        // Check Xml
+        $setup->checkXml();
+
+        // Install new plugin
+        $new = new PimPluginSetupInstall();
+        $new->install();
         break;
     case 'uninstall': // NEW
-        $delete = new PimPluginSetupUninstall();
         $setup->setMode('uninstall');
         $setup::_setPluginId($_GET['pluginId']);
+        $delete = new PimPluginSetupUninstall();
         $delete->uninstall();
         break;
     case 'uninstall-extracted': // NEW
-        $delete = new PimPluginSetupUninstall();
         $setup->setMode('uninstall');
+        $delete = new PimPluginSetupUninstall();
         $delete->_setPluginFoldername($_GET['pluginFoldername']);
         $delete->uninstallDir();
         break;
