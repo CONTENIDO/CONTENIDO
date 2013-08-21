@@ -37,12 +37,12 @@ if ($cfg['debug']['disable_plugins'] === true) {
 $viewAction = isset($_REQUEST['pim_view'])? $_REQUEST['pim_view'] : 'overview';
 
 switch ($viewAction) {
-    case 'activestatus': // NEW
+    case 'activestatus':
         $status = new PimPluginSetupStatus();
         $status->changeActiveStatus($_GET['pluginId']);
         break;
-    case 'update': // DEV
-                   // Set mode to update
+    case 'update':
+        // Set mode to update
         $setup->setMode('update');
         $setup::_setPluginId($_POST['pluginId']);
 
@@ -60,25 +60,25 @@ switch ($viewAction) {
         $new = new PimPluginSetupInstall();
         $new->install();
         break;
-    case 'uninstall': // NEW
+    case 'uninstall':
         $setup->setMode('uninstall');
         $setup::_setPluginId($_GET['pluginId']);
         $delete = new PimPluginSetupUninstall();
         $delete->uninstall();
         break;
-    case 'uninstall-extracted': // NEW
+    case 'uninstall-extracted':
         $setup->setMode('uninstall');
         $delete = new PimPluginSetupUninstall();
         $delete->_setPluginFoldername($_GET['pluginFoldername']);
         $delete->uninstallDir();
         break;
-    case 'install': // NEW
+    case 'install':
         $setup->setMode('uploaded');
         $setup->checkXml();
         $new = new PimPluginSetupInstall();
         $new->install();
         break;
-    case 'install-extracted': // NEW
+    case 'install-extracted':
         $setup->setMode('extracted');
         $setup->checkXml();
         $new = new PimPluginSetupInstall();
