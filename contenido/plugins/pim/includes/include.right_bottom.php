@@ -52,16 +52,21 @@ switch ($viewAction) {
         installationRoutine($page, true, $_POST['foldername'], true);
         break;
     case 'uninstall': // DEV
-        plugin_include('pim', 'classes/setup/class.pimpluginsetup.php');
-        unset($setup);
-        $setup = new PimPluginSetupOld();
-        $setup->uninstall($_GET['pluginId']);
+        $delete = new PimPluginSetupUninstall();
+        $setup->setMode('uninstall');
+        $setup::_setPluginId($_GET['pluginId']);
+        $delete->uninstall();
         break;
     case 'uninstall-extracted': // DEV
-        plugin_include('pim', 'classes/setup/class.pimpluginsetup.php');
-        unset($setup);
-        $setup = new PimPluginSetupOld();
-        $setup->uninstallDir($_GET['pluginFoldername'], $page);
+        $delete = new PimPluginSetupUninstall();
+        $setup->setMode('uninstall');
+        $delete->_setPluginFoldername($_GET['pluginFoldername']);
+
+        /*
+         * plugin_include('pim', 'classes/setup/class.pimpluginsetup.php');
+         * unset($setup); $setup = new PimPluginSetupOld();
+         * $setup->uninstallDir($_GET['pluginFoldername'], $page);
+         */
         break;
     case 'install': // NEW
         $setup->setMode('uploaded');

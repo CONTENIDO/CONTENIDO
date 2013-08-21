@@ -19,10 +19,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
     // Initializing variables
     // Plugin specific data
     // Foldername of installed plugin
-    protected $PluginFoldername;
+    private $PluginFoldername;
 
     // All area entries from database in an array
-    protected $PluginInstalledAreas = array();
+    private $PluginInstalledAreas = array();
 
     // Classes
     // Class variable for PimPluginCollection
@@ -56,6 +56,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Set variable for plugin foldername
      *
+     * @access public
      * @param string $foldername
      * @return string
      */

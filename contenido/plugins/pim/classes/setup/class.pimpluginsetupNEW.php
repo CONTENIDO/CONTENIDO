@@ -79,6 +79,12 @@ class PimPluginSetup {
             case 'uploaded':
                 self::$mode = 2;
                 break;
+            case 'uninstall':
+                self::$mode = 3;
+                break;
+            case 'update':
+                self::$mode = 4;
+                break;
         }
     }
 
@@ -101,7 +107,7 @@ class PimPluginSetup {
      * @param string $tempArchiveName Name of Zip archive
      * @return PimPluginArchiveExtractor
      */
-    private function _setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName) {
+    protected static function _setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName) {
         return self::$_PimPluginArchiveExtractor = new PimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName);
     }
 
@@ -142,12 +148,12 @@ class PimPluginSetup {
     /**
      * Set method for PluginId
      *
-     * @access protected
+     * @access public
      * @param integer $pluginId
      * @return integer
      */
-    protected function _setPluginId($pluginId = 0) {
-        return $this->pluginId = $pluginId;
+    public function _setPluginId($pluginId = 0) {
+        return self::$pluginId = $pluginId;
     }
 
     /**
@@ -196,7 +202,7 @@ class PimPluginSetup {
 
             // Initializing plugin archive extractor
             try {
-                $this->_setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName);
+                self::_setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName);
             } catch (cException $e) {
                 self::$_PimPluginArchiveExtractor->destroyTempFiles();
             }

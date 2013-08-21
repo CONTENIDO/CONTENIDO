@@ -1640,6 +1640,7 @@ contenido/plugins/pim/classes/class.pim.plugin.relations.collection.php -text
 contenido/plugins/pim/classes/setup/class.pimpluginsetup.install.php -text
 contenido/plugins/pim/classes/setup/class.pimpluginsetup.php -text
 contenido/plugins/pim/classes/setup/class.pimpluginsetup.status.php -text
+contenido/plugins/pim/classes/setup/class.pimpluginsetup.uninstall.php -text
 contenido/plugins/pim/classes/setup/class.pimpluginsetupNEW.php -text
 contenido/plugins/pim/classes/util/zip/class.pimpluginarchiveextractor.php -text
 contenido/plugins/pim/includes/config.plugin.php -text
