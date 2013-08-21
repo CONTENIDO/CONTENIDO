@@ -244,7 +244,7 @@ class PimPluginSetup {
         $dom->loadXML($xml);
 
         // Validate
-        if ($dom->schemaValidate('plugins/pim/xml/plugin_info.xsd')) {
+        if ($dom->schemaValidate('plugins' . DIRECTORY_SEPARATOR . 'pim' . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . 'plugin_info.xsd')) {
             return true;
         } else {
             return false;
