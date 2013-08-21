@@ -41,7 +41,10 @@ switch ($viewAction) {
         $status = new PimPluginSetupStatus();
         $status->changeActiveStatus($_GET['pluginId']);
         break;
-    case 'update':
+    case 'update': // DEV
+        plugin_include('pim', 'classes/setup/class.pimpluginsetup.php');
+        unset($setup);
+        $setup = new PimPluginSetupOld();
         $setup->checkZip();
         $setup->checkSamePlugin($_POST['pluginId']);
         $setup->setIsUpdate(1);
@@ -54,7 +57,10 @@ switch ($viewAction) {
         $setup = new PimPluginSetupOld();
         $setup->uninstall($_GET['pluginId']);
         break;
-    case 'uninstall-extracted':
+    case 'uninstall-extracted': // DEV
+        plugin_include('pim', 'classes/setup/class.pimpluginsetup.php');
+        unset($setup);
+        $setup = new PimPluginSetupOld();
         $setup->uninstallDir($_GET['pluginFoldername'], $page);
         break;
     case 'install': // NEW
