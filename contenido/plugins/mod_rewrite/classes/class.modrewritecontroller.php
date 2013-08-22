@@ -269,13 +269,6 @@ class ModRewriteController extends ModRewriteBase {
 
         // get REQUEST_URI
         $requestUri = $_SERVER['REQUEST_URI'];
-        // CON-1178 use REDIRECT_URL if set
-        if (array_key_exists('REDIRECT_URL', $_SERVER)) {
-            $requestUri = $_SERVER['REDIRECT_URL'];
-            if (array_key_exists('REDIRECT_QUERY_STRING', $_SERVER)) {
-                $requestUri .= '?' . $_SERVER['REDIRECT_QUERY_STRING'];
-            }
-        }
         // CON-1266 make request URL lowercase if option "URLS to
         // lowercase" is set
         if (1 == $this->getConfig('use_lowercase_uri')) {
