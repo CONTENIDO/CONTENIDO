@@ -131,6 +131,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         if ($tmp_locked == 1) {
             $inUse = true;
             $disabled = 'disabled="disabled"';
+            $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
         }
         $newArtStyle = 'table-row';
     } else {

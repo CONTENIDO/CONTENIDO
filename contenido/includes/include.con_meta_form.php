@@ -133,7 +133,11 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
         if ($tmp_locked == 1) {
             $inUse = true;
             $disabled = 'disabled="disabled"';
+            $tpl->set('s', 'DISABLED', ' ' . $disabled);
             $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 1);
+            $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+        } else {
+            $tpl->set('s', 'DISABLED', '');
         }
     } else {
 
@@ -305,7 +309,6 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
                 break;
         }
 
-
         $tpl->set("d", "ARTICLE_ID", $idart);
         $tpl->set("d", "CAT_ID", $idcat);
         $tpl->set('d', 'METAFIELDTYPE', $element);
@@ -434,9 +437,9 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
             }
 
             if (!is_array($result[$db->f("Field")])) {
-                $str = '<input type="text" onblur="restoreOnBlur(this, \'' . $result[$db->f("Field")] . '\')" onfocus="clearOnFocus(this, \'' . $result[$db->f("Field")] . '\');" value="' . $result[$db->f("Field")] . '" maxlength="255" id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '" class="text_medium">';
+                $str = '<input type="text" ' . $disabled . ' onblur="restoreOnBlur(this, \'' . $result[$db->f("Field")] . '\')" onfocus="clearOnFocus(this, \'' . $result[$db->f("Field")] . '\');" value="' . $result[$db->f("Field")] . '" maxlength="255" id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '" class="text_medium">';
             } else {
-                $str = '<select id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '">';
+                $str = '<select id="META' . $db->f("Field") . '" name="META' . $db->f("Field") . '" ' . $disabled . '>';
                 foreach ($result[$db->f("Field")] as $item) {
                     $str .= '<option value="' . $item . '">' . $item . '</option>';
                 }
@@ -471,7 +474,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     $cecRegistry = cApiCecRegistry::getInstance();
     $cecIterator = $cecRegistry->getIterator('Contenido.Backend.ConMetaEditFormAdditionalRows');
     while (($chainEntry = $cecIterator->next()) !== false) {
-        $additionalRows .= $chainEntry->execute($idart, $lang, $client);
+        $additionalRows .= $chainEntry->execute($idart, $lang, $client, $tmp_locked);
     }
 
     $tpl->set('s', 'ADDITIONAL_ROWS', $additionalRows);

@@ -109,6 +109,7 @@ if ($idart) {
             if ($db->f('locked') == 1) {
                 $inUse = true;
                 $disabled = 'disabled="disabled"';
+                $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
             }
         } else {
             if ($idtpl) {

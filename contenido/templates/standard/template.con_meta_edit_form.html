@@ -107,13 +107,13 @@ table.generic td.leftData {
             <tr>
                 <td class="leftData">i18n("Alias")</td>
                 <td class="text_medium"><input class="textField" type="text"
-                    name="alias" value="{ALIAS}" size="24"></td>
+                    name="alias" value="{ALIAS}" size="24"{DISABLED}></td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Description")</td>
                 <td><textarea class="textField metaTag" name="METAdescription"
-                        id="METAdescription" rows=3>{DESCRIPTION}</textarea> <img
+                        id="METAdescription" rows=3{DISABLED}>{DESCRIPTION}</textarea> <img
                     class="vAlignMiddle" title="{DESCRIPTION_INFO}"
                     src="images/info.gif"></td>
             </tr>
@@ -121,7 +121,7 @@ table.generic td.leftData {
             <tr>
                 <td class="leftData">i18n("Keywords")</td>
                 <td><textarea class="textField metaTag" name="METAkeywords"
-                        id="METAkeywords" rows=3>{KEYWORDS}</textarea> <img
+                        id="METAkeywords" rows=3{DISABLED}>{KEYWORDS}</textarea> <img
                     class="vAlignMiddle" title="{KEYWORD_INFO}" src="images/info.gif"></td>
             </tr>
 
@@ -129,32 +129,32 @@ table.generic td.leftData {
                 <td class="leftData" style="border-top: 1px solid #b3b3b3">i18n("Copyright")</td>
                 <td style="border-top: 1px solid #b3b3b3"><input type="text"
                     class="textField metaTag" name="METAcopyright" id="METAcopyright"
-                    value="{COPYRIGHT}" size="24"></td>
+                    value="{COPYRIGHT}" size="24"{DISABLED}></td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Author")</td>
                 <td><input class="textField metaTag" type="text"
-                    name="METAauthor" id="METAauthor" value="{AUTHOR}" size="24">
+                    name="METAauthor" id="METAauthor" value="{AUTHOR}" size="24"{DISABLED}>
                 </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Date")</td>
                 <td><input class="textField metaTag" type="text"
-                    name="METAdate" id="METAdate" value="{DATE}"></td>
+                    name="METAdate" id="METAdate" value="{DATE}"{DISABLED}></td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Expires")</td>
                 <td><input class="textField metaTag" type="text"
-                    name="METAexpires" id="METAexpires" value="{EXPIRES}"></td>
+                    name="METAexpires" id="METAexpires" value="{EXPIRES}"{DISABLED}></td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Revisit after")</td>
                 <td><input class="textField metaTag" type="text"
-                    name="METArevisit-after" id="METArevisit-after" value="" size="24">
+                    name="METArevisit-after" id="METArevisit-after" value="" size="24"{DISABLED}>
                     <img class="vAlignMiddle" title="{REVISIT_INFO}"
                     src="images/info.gif"></td>
             </tr>
@@ -164,18 +164,18 @@ table.generic td.leftData {
                     style="border-top: 1px solid #b3b3b3">i18n("Robots")</td>
                 <td style="border-top: 1px solid #b3b3b3"><input
                     id="metaNoIndex" class="vAlignMiddle robotCheckbox" type="checkbox"
-                    name="robots[]" value="noindex"{NOINDEX}><label
+                    name="robots[]" value="noindex"{DISABLED}><label
                     for="metaNoIndex">noindex</label><br> <input id="metaNoFollow"
                     class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]"
-                    value="nofollow"{NOFOLLOW}><label for="metaNoFollow">nofollow</label><br>
+                    value="nofollow"{DISABLED}><label for="metaNoFollow">nofollow</label><br>
                     <input id="metaNoSnippet" class="vAlignMiddle robotCheckbox"
-                    type="checkbox" name="robots[]" value="nosnippet"{NOSNIPPET}><label
+                    type="checkbox" name="robots[]" value="nosnippet"{DISABLED}><label
                     for="metaNoSnippet">nosnippet</label><br> <input
                     id="metaNoImageIndex" class="vAlignMiddle robotCheckbox"
-                    type="checkbox" name="robots[]" value="noimageindex"{NOIMAGEINDEX}><label
+                    type="checkbox" name="robots[]" value="noimageindex"{DISABLED}><label
                     for="metaNoImageIndex">noimageindex</label><br> <input
                     id="metaNoArchive" class="vAlignMiddle robotCheckbox"
-                    type="checkbox" name="robots[]" value="noarchive"{NOARCHIVE}><label
+                    type="checkbox" name="robots[]" value="noarchive"{DISABLED}><label
                     for="metaNoArchive">noarchive</label><br> <img
                     class="vAlignMiddle" title="{ROBOTS_INFO}" src="images/info.gif">
                 </td>
@@ -186,7 +186,7 @@ table.generic td.leftData {
                     i18n("Sitemap Priority")</td>
                 <td class="leftData" style="border-top: 1px solid #b3b3b3"><input
                     class="textField" type="text" name="sitemap_prio"
-                    value="{SITEMAP_PRIO}" size="24"> <img class="vAlignMiddle"
+                    value="{SITEMAP_PRIO}" size="24"{DISABLED}> <img class="vAlignMiddle"
                     title="{SITEMAPRIORITY_INFO}" src="images/info.gif"></td>
             </tr>
 
@@ -194,7 +194,7 @@ table.generic td.leftData {
                 <td class="leftData" style="border-bottom: 2px solid #b3b3b3">
                     i18n("Sitemap change frequency")</td>
                 <td style="border-bottom: 2px solid #b3b3b3"><select size="1"
-                    name="sitemap_change_freq">
+                    name="sitemap_change_freq"{DISABLED}>
                         <option {SELECTED_}></option>
                         <option {SELECTED_always}>always</option>
                         <option {SELECTED_hourly}>hourly</option>

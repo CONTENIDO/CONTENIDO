@@ -21,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @return string rendered HTML code
  */
-function piUsEditFormAdditionalRows($idart, $idlang, $idclient) {
+function piUsEditFormAdditionalRows($idart, $idlang, $idclient, $disabled) {
     $shortUrl = new cApiShortUrl();
     $shortUrl->loadByMany(array(
         'idart' => $idart,
@@ -38,7 +38,7 @@ function piUsEditFormAdditionalRows($idart, $idlang, $idclient) {
 
     $td = new cHTMLTableData();
     $td->setClass('text_medium');
-    $textbox = new cHTMLTextbox('url_shortener_shorturl', $shortUrl->get('shorturl'), 24);
+    $textbox = new cHTMLTextbox('url_shortener_shorturl', $shortUrl->get('shorturl'), 24, '', '', $disabled);
     $td->setContent($textbox.' <img class="vAlignMiddle" title="'. i18n('INFO', 'url_shortener') .'" src="images/info.gif">');
     $tr->appendContent($td);
 

@@ -2,15 +2,15 @@
 /**
  * This file contains the backend page for displaying all content of an article.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Fulai Zhang
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Fulai Zhang
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -29,7 +29,7 @@ if (!isset($idcat)) {
 $edit = 'true';
 $scripts = '';
 
-//save / set value
+// save / set value
 if ($action == 'savecontype' || $action == 10) {
     if ($data != '') {
         $data = explode('||', substr($data, 0, -2));
@@ -58,8 +58,9 @@ if ($action == 'savecontype' || $action == 10) {
         $oContentColl = new cApiContentCollection();
 
         $linkedTypes = array(
-            4 => 22, // if a CMS_IMG is deleted, the corresponding CMS_IMAGEEDITOR will be deleted too
-            22 => 4  // the same goes for the other way round
+            4 => 22, // if a CMS_IMG is deleted, the corresponding
+                     // CMS_IMAGEEDITOR will be deleted too
+            22 => 4 // the same goes for the other way round
         );
 
         $contentItem = new cApiContent((int) $_REQUEST["idcontent"]);
@@ -76,16 +77,27 @@ if ($action == 'savecontype' || $action == 10) {
     }
 }
 
-//get active value
+// get active value
 
 $result = array();
 $aList = array();
 $typeAktuell = array();
-$sortID = array("CMS_HTMLHEAD", "CMS_HEAD", "CMS_HTML", "CMS_TEXT",
-    "CMS_IMG", "CMS_IMGDESCR", "CMS_IMGEDITOR",
-    "CMS_LINK", "CMS_LINKTARGET", "CMS_LINKDESCR",
+$sortID = array(
+    "CMS_HTMLHEAD",
+    "CMS_HEAD",
+    "CMS_HTML",
+    "CMS_TEXT",
+    "CMS_IMG",
+    "CMS_IMGDESCR",
+    "CMS_IMGEDITOR",
+    "CMS_LINK",
+    "CMS_LINKTARGET",
+    "CMS_LINKDESCR",
     "CMS_LINKEDITOR",
-    "CMS_DATE", "CMS_TEASER", "CMS_FILELIST");
+    "CMS_DATE",
+    "CMS_TEASER",
+    "CMS_FILELIST"
+);
 
 $aIdtype = array();
 $sql = "SELECT DISTINCT typeid FROM %s WHERE idartlang = %d ORDER BY typeid";
@@ -95,9 +107,13 @@ while ($db->nextRecord()) {
 }
 
 foreach ($sortID as $name) {
-//    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM " . $cfg["tab"]["content"] . " as a, " . $cfg["tab"]["type"] . " as b WHERE a.idartlang = " . cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype = b.idtype AND b.type = '" . cSecurity::toString($name) . "' ORDER BY idtype, typeid, idcontent";
-    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b "
-            . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
+    // $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id,
+    // a.value as value FROM " . $cfg["tab"]["content"] . " as a, " .
+    // $cfg["tab"]["type"] . " as b WHERE a.idartlang = " .
+    // cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype = b.idtype
+    // AND b.type = '" . cSecurity::toString($name) . "' ORDER BY idtype,
+    // typeid, idcontent";
+    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b " . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
     $db->query($sql, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
     while ($db->nextRecord() && $db->f("value") != '') {
         $result[$db->f("name")][$db->f("id")] = $db->f("value");
@@ -108,35 +124,36 @@ foreach ($sortID as $name) {
 }
 
 $typeAktuell = getAktuellType($typeAktuell, $aList);
-//print_r($typeAktuell);
-//create Layoutcode
-//if ($action == 'con_content') {
-//@fulai.zhang: Mark submenuitem 'Editor' in the CONTENIDO Backend (Area: Contenido --> Articles --> Editor)
+// print_r($typeAktuell);
+// create Layoutcode
+// if ($action == 'con_content') {
+// @fulai.zhang: Mark submenuitem 'Editor' in the CONTENIDO Backend (Area:
+// Contenido --> Articles --> Editor)
 $markSubItem = markSubMenuItem(5, true);
 
-//Include tiny class
-include($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
+// Include tiny class
+include ($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
 $oEditor = new cTinyMCEEditor('', '');
 $oEditor->setToolbar('inline_edit');
 
-//Get configuration for popup und inline tiny
+// Get configuration for popup und inline tiny
 $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
 $sConfigFullscreen = $oEditor->getConfigFullscreen();
 
 $page = new cGuiPage("con_content_list");
 
-//Replace vars in Script
+// Replace vars in Script
 
 $page->set('s', 'CONTENIDO_FULLHTML', $backendUrl);
 
-//Set urls to file browsers
+// Set urls to file browsers
 $page->set('s', 'IMAGE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $page->set('s', 'FILE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
 $page->set('s', 'FLASH', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $page->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $page->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
-//Add tiny options and fill function leave_check()
+// Add tiny options and fill function leave_check()
 $page->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
 $page->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
 $page->set('s', 'IDARTLANG', $idartlang);
@@ -151,14 +168,14 @@ if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false'
     $page->set('s', 'USE_TINY', 'swapTiny(this);');
 }
 
-//Show path of selected category to user
+// Show path of selected category to user
 $breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
 $page->set('s', 'CATEGORY', $breadcrumb);
 
 if (count($result) <= 0) {
     $page->displayInfo(i18n("Article has no raw data"));
     $page->abortRendering();
-    //$layoutcode .= '<div>--- ' . i18n("none") . ' ---</div>';
+    // $layoutcode .= '<div>--- ' . i18n("none") . ' ---</div>';
 } else {
     foreach ($aIdtype as $idtype) {
         foreach ($sortID as $name) {
@@ -177,7 +194,7 @@ if (count($result) <= 0) {
     }
 }
 
-//breadcrumb onclick
+// breadcrumb onclick
 if (!isset($syncfrom)) {
     $syncfrom = -1;
 }
@@ -206,26 +223,28 @@ if ($cfg["debug"]["codeoutput"]) {
     cDebug::out(conHtmlSpecialChars($code));
 }
 
-//show ContentTypeList
+// show ContentTypeList
 chdir(cRegistry::getFrontendPath());
 eval("?>\n" . $code . "\n<?php\n");
-//}
+// }
 
 cRegistry::shutdown();
 
 /**
- * Processes replacements of all existing CMS_... tags within passed code
+ * Processes replacements of all existing CMS_...
+ * tags within passed code
  *
- * @param  array   $aList  CMS_...tags list
- * @param  array   $contentList  all CMS variables
- * @param  bool    $saveKeywords  Flag to save collected keywords during replacement process.
- * @param  array   $contentList  Assoziative list of CMS variables
+ * @param array $aList CMS_...tags list
+ * @param array $contentList all CMS variables
+ * @param bool $saveKeywords Flag to save collected keywords during replacement
+ *        process.
+ * @param array $contentList Assoziative list of CMS variables
  */
 function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode) {
     // #####################################################################
     // NOTE: Variables below are required in included/evaluated content type
     // codes!
-    global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
+    global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding, $notification;
 
     // NOTE: Variables below are additionally required in included/evaluated
     // content type codes within backend edit mode!
@@ -237,6 +256,15 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
     $client = $_REQUEST['client'];
     $idartlang = $_REQUEST['idartlang'];
     $contenido = $_REQUEST['contenido'];
+
+    // Get locked status (article freeze)
+    $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
+    $locked = $cApiArticleLanguage->getField('locked');
+
+    // If article is locked show notification
+    if($locked == 1) {
+        $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+    }
 
     if (!is_object($db2)) {
         $db2 = cRegistry::getDb();
@@ -286,7 +314,7 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
                 if (cFileHandler::exists($cTypeClassFile)) {
                     $tmp = $a_content[$_typeItem->type][$val];
                     $cTypeObject = new $className($tmp, $val, $a_content);
-                    if (cRegistry::isBackendEditMode()) {
+                    if (cRegistry::isBackendEditMode() && $locked == 0) {
                         $tmp = $cTypeObject->generateEditCode();
                     } else {
                         $tmp = $cTypeObject->generateViewCode();
@@ -301,8 +329,7 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
                 }
                 $sql = "SELECT a.idcontent
                     FROM " . $cfg["tab"]["content"] . " as a, " . $cfg["tab"]["type"] . " as b
-                    WHERE a.idartlang=" . cSecurity::toInteger($_REQUEST["idartlang"]) .
-                        " AND a.idtype=b.idtype AND a.typeid = " . cSecurity::toInteger($val) . " AND b.type = '" . cSecurity::toString($type) . "'
+                    WHERE a.idartlang=" . cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype=b.idtype AND a.typeid = " . cSecurity::toInteger($val) . " AND b.type = '" . cSecurity::toString($type) . "'
                     ORDER BY a.idartlang, a.idtype, a.typeid";
                 $db->query($sql);
                 while ($db->nextRecord()) {
@@ -311,21 +338,25 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
                 $backendUrl = cRegistry::getBackendUrl();
 
                 $search[$val] = sprintf('%s[%s]', $type, $val);
-                $path = $backendUrl . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang .
-                        '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=' . $idcontent;
+                $path = $backendUrl . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=' . $idcontent;
                 if ($_typeItem->idtype == 20 || $_typeItem->idtype == 21) {
                     $tmp = str_replace('";?>', '', $tmp);
                     $tmp = str_replace('<?php echo "', '', $tmp);
-                    //echo "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
+                    // echo
+                    // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
                 }
-                $replacements[$val] = $tmp .
-                        '<a href="javascript:setcontent(\'1\',\'' . $path . '\');">
+
+                if ($locked == 0) { // No freeze
+                    $replacements[$val] = $tmp . '<a href="javascript:setcontent(\'1\',\'' . $path . '\');">
                 <img border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
-                $keycode[$type][$val] = $tmp .
-                        '<a href="javascript:setcontent(\'1\',\'' . $path . '\');">
+                    $keycode[$type][$val] = $tmp . '<a href="javascript:setcontent(\'1\',\'' . $path . '\');">
                 <img border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
+                } else { // Freeze status
+                    $replacements[$val] = $tmp;
+                    $keycode[$type][$val] = $tmp;
+                }
             }
 
             $code = str_ireplace($search, $replacements, $layoutCode);
@@ -340,10 +371,11 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
 }
 
 /**
- * Processes get all existing active CMS_... tags within passed code
+ * Processes get all existing active CMS_...
+ * tags within passed code
  *
- * @param  array   $r  active CMS variables
- * @param  array   $aList  CMS_...tags list
+ * @param array $r active CMS variables
+ * @param array $aList CMS_...tags list
  */
 function getAktuellType($r, $aList) {
     $idcat = $_REQUEST['idcat'];
