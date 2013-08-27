@@ -41,7 +41,7 @@ echo <<<EOF
 </script>
 EOF;
         $this->_collection = new ArticleForumCollection();
-        parent::__construct('right_bottom', 'forumlist');
+        parent::__construct('right_bottom', 'userforum');
         $this->addStyle('right_bottom.css');
         $this->addScript('location.js');
     }
