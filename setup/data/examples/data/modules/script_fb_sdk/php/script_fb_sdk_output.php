@@ -67,75 +67,71 @@ $settingType = 'fb-sdk';
 // app ID from the app dashboard
 $appId = getEffectiveSetting($settingType, 'app-id');
 
-// app ID is required for the SDK to work
-if (0 < strlen(trim($appId))) {
-
-    // channel file for x-domain comms
-    $idartChannel = getEffectiveSetting($settingType, 'idart-channel', 0);
-    $idartChannel = cSecurity::toInteger($idartChannel);
-    $channelUrl = '';
-    if (0 < $idartChannel) {
-        $channelUrl = cUri::getInstance()->build(array(
-            'idart' => $idartChannel,
-            'lang' => cRegistry::getLanguageId()
-        ), true);
-    }
-
-    // enable cookies to allow the server to access the session
-    $cookie = getEffectiveSetting($settingType, 'cookie');
-
-    // This indicates to Facebook that your site or service is directed towards
-    // under-13s.
-    $kidDirectedSite = getEffectiveSetting($settingType, 'kid-directed-site');
-
-    // locale to be used to identify FB all.js
-    $locale = getEffectiveSetting($settingType, 'locale');
-
-    // if none was defined
-    if (0 == strlen(trim($locale))) {
-        // get current locale
-        cApiPropertyCollection::reset();
-        $propColl = new cApiPropertyCollection();
-        $propColl->changeClient(cRegistry::getClientId());
-        $languageCode = $propColl->getValue('idlang', cRegistry::getLanguageId(), 'language', 'code', '');
-        $countryCode = $propColl->getValue('idlang', cRegistry::getLanguageId(), 'country', 'code', '');
-        $locale = $languageCode . '_' . strtoupper($countryCode);
-    }
-
-    // if none
-    if (0 == strlen(trim($locale))) {
-        // get default locale
-        $locale = 'en_US';
-    }
-
-    // By setting status to true, the SDK will attempt to get information about
-    // the current user by hitting the OAuth endpoint. Setting status to false
-    // will improve page load times, but you'll need to manually check for login
-    // status to get an authenticated user. You can find out more about this
-    // process by looking at Facebook Login
-    // (https://developers.facebook.com/docs/javascript/gettingstarted/#login).
-    $status = getEffectiveSetting($settingType, 'status');
-
-    // get name of template to be used
-    $template = getEffectiveSetting($settingType, 'template', 'async');
-
-    // With xfbml set to true, the SDK will parse the DOM to find and initialize
-    // social plugins. If you're not using social plugins on the page, setting
-    // xfbml to false will improve page load times. You can find out more about
-    // this by looking at Social Plugins
-    // (https://developers.facebook.com/docs/javascript/gettingstarted/#plugins).
-    $xfbml = getEffectiveSetting($settingType, 'xfbml');
-
-    // display template
-    $tpl = cSmartyFrontend::getInstance();
-    $tpl->assign('appId', $appId);
-    $tpl->assign('channelUrl', $channelUrl);
-    $tpl->assign('cookie', $cookie);
-    $tpl->assign('kidDirectedSite', $kidDirectedSite);
-    $tpl->assign('locale', $locale);
-    $tpl->assign('status', $status);
-    $tpl->assign('xfbml', $xfbml);
-    $tpl->display($template . '.tpl');
+// channel file for x-domain comms
+$idartChannel = getEffectiveSetting($settingType, 'idart-channel', 0);
+$idartChannel = cSecurity::toInteger($idartChannel);
+$channelUrl = '';
+if (0 < $idartChannel) {
+    $channelUrl = cUri::getInstance()->build(array(
+        'idart' => $idartChannel,
+        'lang' => cRegistry::getLanguageId()
+    ), true);
 }
+
+// enable cookies to allow the server to access the session
+$cookie = getEffectiveSetting($settingType, 'cookie');
+
+// This indicates to Facebook that your site or service is directed towards
+// under-13s.
+$kidDirectedSite = getEffectiveSetting($settingType, 'kid-directed-site');
+
+// locale to be used to identify FB all.js
+$locale = getEffectiveSetting($settingType, 'locale');
+
+// if none was defined
+if (0 == strlen(trim($locale))) {
+    // get current locale
+    cApiPropertyCollection::reset();
+    $propColl = new cApiPropertyCollection();
+    $propColl->changeClient(cRegistry::getClientId());
+    $languageCode = $propColl->getValue('idlang', cRegistry::getLanguageId(), 'language', 'code', '');
+    $countryCode = $propColl->getValue('idlang', cRegistry::getLanguageId(), 'country', 'code', '');
+    $locale = $languageCode . '_' . strtoupper($countryCode);
+}
+
+// if none
+if (0 == strlen(trim($locale))) {
+    // get default locale
+    $locale = 'en_US';
+}
+
+// By setting status to true, the SDK will attempt to get information about
+// the current user by hitting the OAuth endpoint. Setting status to false
+// will improve page load times, but you'll need to manually check for login
+// status to get an authenticated user. You can find out more about this
+// process by looking at Facebook Login
+// (https://developers.facebook.com/docs/javascript/gettingstarted/#login).
+$status = getEffectiveSetting($settingType, 'status');
+
+// get name of template to be used
+$template = getEffectiveSetting($settingType, 'template', 'async');
+
+// With xfbml set to true, the SDK will parse the DOM to find and initialize
+// social plugins. If you're not using social plugins on the page, setting
+// xfbml to false will improve page load times. You can find out more about
+// this by looking at Social Plugins
+// (https://developers.facebook.com/docs/javascript/gettingstarted/#plugins).
+$xfbml = getEffectiveSetting($settingType, 'xfbml');
+
+// display template
+$tpl = cSmartyFrontend::getInstance();
+$tpl->assign('appId', $appId);
+$tpl->assign('channelUrl', $channelUrl);
+$tpl->assign('cookie', $cookie);
+$tpl->assign('kidDirectedSite', $kidDirectedSite);
+$tpl->assign('locale', $locale);
+$tpl->assign('status', $status);
+$tpl->assign('xfbml', $xfbml);
+$tpl->display($template . '.tpl');
 
 ?>

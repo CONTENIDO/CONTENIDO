@@ -35,10 +35,14 @@ $(document).ready(function() {
 {if 0 lt $status|trim|strlen}
             status : {$status},
 {/if}
-{if 0 lt $xfbml|trim|strlen}
-            xfbml : {$xfbml},
+{if 0 lt $appId|trim|strlen}
+            appId : '{$appId}'
 {/if}
-            appId : '{$appId}'{literal}
+{if 0 lt $xfbml|trim|strlen}
+            xfbml : {$xfbml}
+{else}
+            xfbml : false
+{/if}{literal}
         });
         //$('#loginbutton, #feedbutton').removeAttr('disabled');
         //FB.getLoginStatus(updateStatusCallback);
