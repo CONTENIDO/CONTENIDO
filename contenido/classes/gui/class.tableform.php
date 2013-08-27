@@ -2,108 +2,211 @@
 /**
  * This file contains the table form GUI class.
  *
- * @package          Core
- * @subpackage       GUI
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GUI
+ * @version SVN Revision $Rev:$
  *
- * @author           Mischa Holz
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Mischa Holz
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Table form GUI class
+ * Table form GUI class.
  *
- * @package    Core
+ * @package Core
  * @subpackage GUI
  */
 class cGuiTableForm {
 
-    public $items;
-    public $captions;
-    public $id;
-    public $rownames;
-    public $itemType;
+    /**
+     *
+     * @var array
+     */
+    public $items = array();
+
+    /**
+     *
+     * @var array
+     */
+    public $captions = array();
+
+    /**
+     *
+     * @var int
+     */
+    public $id = 0;
+
+    /**
+     *
+     * @var array
+     */
+    public $rownames = array();
+
+    /**
+     *
+     * @var  array
+     */
+    public $itemType = array();
+
+    /**
+     *
+     * @var string
+     */
     public $formname;
+
+    /**
+     *
+     * @var string
+     */
     public $formmethod;
+
+    /**
+     *
+     * @var string
+     */
     public $formaction;
-    public $formvars;
-    public $tableid;
+
+    /**
+     *
+     * @var array
+     */
+    public $formvars = array();
+
+    /**
+     *
+     * @var string
+     */
+    public $tableid = "";
+
+    /**
+     *
+     * @var string
+     */
     public $header;
+
+    /**
+     *
+     * @var string
+     */
     public $cancelLink;
+
+    /**
+     *
+     * @var string
+     */
     public $submitjs;
 
-    public function __construct($name, $action = "", $method = "post") {
-        global $sess;
-        $this->formname = $name;
+    /**
+     *
+     * @var array
+     */
+    public $custom = array();
 
-        if ($action == "") {
-            $this->formaction = "main.php";
-        } else {
-            $this->formaction = $action;
+    /**
+     * Creates a new cGuiTableForm with given name, action & method of form.
+     *
+     * @param string $name of form
+     * @param string $action of form defaults to 'main.php'
+     * @param string $method of form defaults to 'post'
+     */
+    public function __construct($name, $action = 'main.php', $method = 'post') {
+
+        // action defaults to 'main.php'
+        if ($action == '') {
+            $action = 'main.php';
         }
 
+        // set name, action & method
+        $this->formname = $name;
+        $this->formaction = $action;
         $this->formmethod = $method;
 
-        $this->tableid = "";
-        $this->custom = array();
-
-        $this->setActionButton("submit", cRegistry::getBackendUrl() . "images/but_ok.gif", i18n("Save changes"), "s");
+        $this->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok.gif', i18n('Save changes'), 's');
     }
 
+    /**
+     *
+     * @param unknown_type $name
+     * @param unknown_type $value
+     */
     public function setVar($name, $value) {
         $this->formvars[$name] = $value;
     }
 
-    public function add($caption, $field, $rowname = "") {
-        $n = "";
+    /**
+     * Adds a new caption, item and row name.
+     *
+     * @param string $caption
+     * @param array|object|string $item
+     * @param string $rowname
+     */
+    public function add($caption, $item, $rowname = "") {
 
-        if (is_array($field)) {
-            foreach ($field as $value) {
+        // handle item as array of items
+        if (is_array($item)) {
+            $temp = "";
+            foreach ($item as $value) {
                 if (is_object($value) && method_exists($value, "render")) {
-                    $n .= $value->render();
+                    $temp .= $value->render();
                 } else {
-                    $n .= $value;
+                    $temp .= $value;
                 }
             }
-
-            $field = $n;
-        }
-        if (is_object($field) && method_exists($field, "render")) {
-            $n = $field->render();
-            $field = $n;
-        }
-        if ($field == "") {
-            $field = "&nbsp;";
+            $item = $temp;
         }
 
+        // handle item as object
+        if (is_object($item) && method_exists($item, "render")) {
+            $item = $item->render();
+        }
+
+        // increase ID
+        $this->id++;
+
+        // set defaults
         if ($caption == "") {
             $caption = "&nbsp;";
         }
-
-        $this->id++;
-        $this->items[$this->id] = $field;
-        $this->captions[$this->id] = $caption;
-
+        if ($item == "") {
+            $item = "&nbsp;";
+        }
         if ($rowname == "") {
             $rowname = $this->id;
         }
 
+        $this->captions[$this->id] = $caption;
+        $this->items[$this->id] = $item;
         $this->rownames[$this->id] = $rowname;
     }
 
+    /**
+     * Sets an URL as HREF of a cancel icon.
+     *
+     * @param string $link
+     */
     public function addCancel($link) {
         $this->cancelLink = $link;
     }
 
+    /**
+     * Sets the header. The header is *set* not *added*!
+     *
+     * @param string $header
+     * @todo rename addHeader() to setHeader()
+     */
     public function addHeader($header) {
         $this->header = $header;
     }
 
+    /**
+     *
+     * @param string $header
+     */
     public function addSubHeader($header) {
         $this->id++;
         $this->items[$this->id] = '';
@@ -111,14 +214,31 @@ class cGuiTableForm {
         $this->itemType[$this->id] = 'subheader';
     }
 
+    /**
+     *
+     * @param string $js
+     */
     public function setSubmitJS($js) {
         $this->submitjs = $js;
     }
 
+    /**
+     *
+     * @param unknown_type $id
+     * @param unknown_type $event
+     */
     public function setActionEvent($id, $event) {
         $this->custom[$id]["event"] = $event;
     }
 
+    /**
+     *
+     * @param unknown_type $id
+     * @param unknown_type $image
+     * @param unknown_type $description
+     * @param unknown_type $accesskey
+     * @param unknown_type $action
+     */
     public function setActionButton($id, $image, $description = "", $accesskey = false, $action = false) {
         $this->custom[$id]["image"] = $image;
         $this->custom[$id]["type"] = "actionsetter";
@@ -128,19 +248,40 @@ class cGuiTableForm {
         $this->custom[$id]["event"] = "";
     }
 
+    /**
+     *
+     * @param unknown_type $id
+     * @param unknown_type $title
+     * @param unknown_type $description
+     */
     public function setConfirm($id, $title, $description) {
         $this->custom[$id]["confirmtitle"] = $title;
         $this->custom[$id]["confirmdescription"] = $description;
     }
 
+    /**
+     *
+     * @param unknown_type $tableid
+     */
     public function setTableID($tableid) {
         $this->tableid = $tableid;
     }
 
+    /**
+     *
+     * @param unknown_type $id
+     */
     public function unsetActionButton($id) {
         unset($this->custom[$id]);
     }
 
+    /**
+     * Renders this cGuiTableForm and either returs ist markup or echoes it
+     * immediately.
+     *
+     * @param bool $return if true then return markup, else echo immediately
+     * @return Ambigous <string, mixed>
+     */
     public function render($return = true) {
         global $sess, $cfg;
 
@@ -262,10 +403,9 @@ class cGuiTableForm {
         $rendered = $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['generic_table_form'], true);
 
         if ($return == true) {
-            return ($rendered);
+            return $rendered;
         } else {
             echo $rendered;
         }
     }
-
 }
