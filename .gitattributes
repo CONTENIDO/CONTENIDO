@@ -2211,6 +2211,12 @@ setup/data/examples/data/modules/content_download_list/lang/lang_en_US.txt -text
 setup/data/examples/data/modules/content_download_list/php/content_download_list_input.php -text
 setup/data/examples/data/modules/content_download_list/php/content_download_list_output.php -text
 setup/data/examples/data/modules/content_download_list/template/get.tpl -text
+setup/data/examples/data/modules/content_fb_embeddedpost/info.xml -text svneol=unset#text/plain
+setup/data/examples/data/modules/content_fb_embeddedpost/lang/lang_de_DE.txt -text svneol=unset#text/plain
+setup/data/examples/data/modules/content_fb_embeddedpost/lang/lang_en_US.txt -text svneol=unset#text/plain
+setup/data/examples/data/modules/content_fb_embeddedpost/php/content_fb_embeddedpost_input.php -text
+setup/data/examples/data/modules/content_fb_embeddedpost/php/content_fb_embeddedpost_output.php -text
+setup/data/examples/data/modules/content_fb_embeddedpost/template/get.tpl -text
 setup/data/examples/data/modules/content_header_first/info.xml -text svneol=unset#text/plain
 setup/data/examples/data/modules/content_header_first/lang/lang_de_DE.txt -text svneol=unset#text/plain
 setup/data/examples/data/modules/content_header_first/lang/lang_en_US.txt -text svneol=unset#text/plain
@@ -2418,6 +2424,14 @@ setup/data/examples/data/modules/script_cookie_directive/lang/lang_en_US.txt -te
 setup/data/examples/data/modules/script_cookie_directive/php/script_cookie_directive_input.php -text
 setup/data/examples/data/modules/script_cookie_directive/php/script_cookie_directive_output.php -text
 setup/data/examples/data/modules/script_cookie_directive/template/get.tpl -text
+setup/data/examples/data/modules/script_fb_channel/info.xml -text svneol=unset#text/plain
+setup/data/examples/data/modules/script_fb_channel/php/script_fb_channel_input.php -text
+setup/data/examples/data/modules/script_fb_channel/php/script_fb_channel_output.php -text
+setup/data/examples/data/modules/script_fb_sdk/info.xml -text svneol=unset#text/plain
+setup/data/examples/data/modules/script_fb_sdk/php/script_fb_sdk_input.php -text
+setup/data/examples/data/modules/script_fb_sdk/php/script_fb_sdk_output.php -text
+setup/data/examples/data/modules/script_fb_sdk/template/async.tpl -text
+setup/data/examples/data/modules/script_fb_sdk/template/jQuery.tpl -text
 setup/data/examples/data/modules/script_tracker_google/info.xml -text svneol=unset#text/plain
 setup/data/examples/data/modules/script_tracker_google/php/script_tracker_google_input.php -text
 setup/data/examples/data/modules/script_tracker_google/php/script_tracker_google_output.php -text
