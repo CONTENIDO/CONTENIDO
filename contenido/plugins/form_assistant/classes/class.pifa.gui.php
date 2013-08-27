@@ -40,7 +40,7 @@ class PifaLeftBottomPage extends cGuiPage {
 
         parent::__construct('left_bottom', Pifa::getName());
 
-        $this->addScript('../plugins/form_assistant/scripts/left_bottom.js');
+        $this->addScript('left_bottom.js');
 
         $this->set('s', 'menu', $this->_getMenu());
 
@@ -166,9 +166,9 @@ class PifaRightBottomFormPage extends cGuiPage {
 
         parent::__construct('right_bottom', Pifa::getName());
 
-        $this->addStyle('../plugins/' . Pifa::getName() . '/styles/smoothness/jquery-ui-1.8.20.custom.css');
-        $this->addStyle('../plugins/' . Pifa::getName() . '/styles/right_bottom.css');
-        $this->addScript('../plugins/' . Pifa::getName() . '/scripts/right_bottom.js');
+        $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
+        $this->addStyle('right_bottom.css');
+        $this->addScript('right_bottom.js');
 
         // create models
         $this->_pifaForm = new PifaForm();
@@ -490,9 +490,9 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
 
         parent::__construct('right_bottom', Pifa::getName());
 
-        $this->addStyle('../plugins/' . Pifa::getName() . '/styles/smoothness/jquery-ui-1.8.20.custom.css');
-        $this->addStyle('../plugins/' . Pifa::getName() . '/styles/right_bottom.css');
-        $this->addScript('../plugins/' . Pifa::getName() . '/scripts/right_bottom.js');
+        $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
+        $this->addStyle('right_bottom.css');
+        $this->addScript('right_bottom.js');
 
         // create models
         $this->_pifaForm = new PifaForm();
@@ -726,9 +726,9 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
         parent::__construct('right_bottom', Pifa::getName());
 
-        $this->addStyle('../plugins/' . Pifa::getName() . '/styles/smoothness/jquery-ui-1.8.20.custom.css');
-        $this->addStyle('../plugins/' . Pifa::getName() . '/styles/right_bottom.css');
-        $this->addScript('../plugins/' . Pifa::getName() . '/scripts/right_bottom.js');
+        $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
+        $this->addStyle('right_bottom.css');
+        $this->addScript('right_bottom.js');
 
         // create models
         $this->_pifaForm = new PifaForm();

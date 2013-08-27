@@ -29,8 +29,8 @@ class ArticleForumLeftBottom extends cGuiPage {
     public function __construct() {
         parent::__construct('left_bottom', 'articlelist');
         $this->_collection = new ArticleForumCollection();
-        $this->addScript('../plugins/user_forum/scripts/location.js');
-        $this->addStyle('../plugins/user_forum/styles/right_bottom.css');
+        $this->addScript('location.js');
+        $this->addStyle('right_bottom.css');
     }
 
     protected function getMenu() {
@@ -40,7 +40,7 @@ class ArticleForumLeftBottom extends cGuiPage {
             echo UserForum::i18n("NOENTRY");
         }
 
-        // $this->addScript('../scripts/location.js');
+        // $this->addScript('location.js');
         $list = new cHTMLList();
         global $area;
         $ar = array();

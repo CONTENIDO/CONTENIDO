@@ -42,8 +42,8 @@ echo <<<EOF
 EOF;
         $this->_collection = new ArticleForumCollection();
         parent::__construct('right_bottom', 'forumlist');
-        $this->addStyle('../plugins/user_forum/styles/right_bottom.css');
-        $this->addScript('../plugins/user_forum/scripts/location.js');
+        $this->addStyle('right_bottom.css');
+        $this->addScript('location.js');
     }
 
     protected function formatTimeString($timeStamp) {
