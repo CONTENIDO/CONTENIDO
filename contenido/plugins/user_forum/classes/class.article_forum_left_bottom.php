@@ -27,7 +27,7 @@ class ArticleForumLeftBottom extends cGuiPage {
     protected $_collection;
 
     public function __construct() {
-        parent::__construct('left_bottom', 'articlelist');
+        parent::__construct('left_bottom', 'userforum');
         $this->_collection = new ArticleForumCollection();
         $this->addScript('location.js');
         $this->addStyle('right_bottom.css');
@@ -84,12 +84,11 @@ class ArticleForumLeftBottom extends cGuiPage {
             $link->setAlt($message);
             $menu->setActions($i, 'delete', $link);
         }
-        if (count($forms) > 0) {
+        //if (count($forms) > 0) {
+        //    return $menu;
+        //} else {
             return $menu;
-        } else {
-
-            return $menu;
-        }
+      //  }
     }
 
     public function receiveData(&$get) {
