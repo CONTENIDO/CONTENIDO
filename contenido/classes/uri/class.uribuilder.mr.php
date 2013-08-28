@@ -43,6 +43,16 @@ class cUriBuilderMR extends cUriBuilder {
     private static $_instance;
 
     /**
+     * Cached rootdir.
+     * The rootdir can differ from the configured one if an alternate
+     * frontendpath is configured as client setting. In order to determine the
+     * current rootdir only once this is cached as static class member.
+     *
+     * @var string
+     */
+    private static $_cachedRootDir;
+
+    /**
      * Ampersant used for composing several parameter value pairs
      *
      * @var string
@@ -219,12 +229,18 @@ class cUriBuilderMR extends cUriBuilder {
      */
     public static function getMultiClientRootDir($configuredRootDir) {
 
+        // return cached rootdir if set
+        if (isset(self::$_cachedRootDir)) {
+            return self::$_cachedRootDir;
+        }
+
         // get props of current client
         $props = cRegistry::getClient()->getProperties();
         // $props = cRegistry::getClient()->getPropertiesByType('client');
 
         // return rootdir as defined in AMR if client has no props
         if (!is_array($props)) {
+            self::$_cachedRootDir = $configuredRootDir;
             return $configuredRootDir;
         }
 
@@ -259,10 +275,12 @@ class cUriBuilderMR extends cUriBuilder {
             }
 
             // return path as specified in client settings
+            self::$_cachedRootDir = $propPath;
             return $propPath;
         }
 
         // return rootdir as defined in AMR
+        self::$_cachedRootDir = $configuredRootDir;
         return $configuredRootDir;
     }
 
