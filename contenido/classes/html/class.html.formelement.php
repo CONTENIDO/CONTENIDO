@@ -36,7 +36,15 @@ class cHTMLFormElement extends cHTML {
      * @param string $class CSS class name to set
      * @return void
      */
-    public function __construct($name = '', $id = '', $disabled = '', $tabindex = '', $accesskey = '', $class = 'text_medium', $class = '') {
+    public function __construct($name = '',
+                                $id = '',
+                                $disabled = '',
+                                $tabindex = '',
+                                $accesskey = '',
+                                $class = 'text_medium',
+                                $class = ''
+    ) {
+
         parent::__construct();
 
         $this->updateAttribute('name', $name);
@@ -51,6 +59,7 @@ class cHTMLFormElement extends cHTML {
         $this->setDisabled($disabled);
         $this->setTabindex($tabindex);
         $this->setAccessKey($accesskey);
+
     }
 
     /**

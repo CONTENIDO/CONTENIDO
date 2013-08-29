@@ -30,7 +30,7 @@ if (!is_dir($frontendPath)) {
 chdir($frontendPath);
 
 // Include the config file of the frontend to initialize client and language id
-include_once($cfgClient[$client]['config']['path'] . '/config.php');
+include_once($cfgClient[$client]['config']['path'] . CON_ENVIRONMENT . '/config.php');
 
 // Include article view handler
 include(cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.front_content.php');

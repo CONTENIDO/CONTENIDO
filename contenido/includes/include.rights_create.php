@@ -111,26 +111,31 @@ $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Username"));
 $oTxtUser = new cHTMLTextbox('username', $username, 40, 32);
+$oTxtUser->setAttribute('autocomplete', 'off');
 $tpl->set('d', 'CATFIELD', $oTxtUser->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Name"));
 $oTxtName = new cHTMLTextbox('realname', $realname, 40, 255);
+$oTxtName->setAttribute('autocomplete', 'off');
 $tpl->set('d', 'CATFIELD', $oTxtName->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("New password"));
 $oTxtPass = new cHTMLPasswordbox('password', '', 40, 255);
+$oTxtPass->setAttribute('autocomplete', 'off');
 $tpl->set('d', 'CATFIELD', $oTxtPass->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Confirm new password"));
 $oTxtWord = new cHTMLPasswordbox('passwordagain', '', 40, 255);
+$oTxtWord->setAttribute('autocomplete', 'off');
 $tpl->set('d', 'CATFIELD', $oTxtWord->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("E-Mail"));
 $oTxtEmail = new cHTMLTextbox('email', $email, 40, 255);
+$oTxtEmail->setAttribute('autocomplete', 'off');
 $tpl->set('d', 'CATFIELD', $oTxtEmail->render());
 $tpl->next();
 
