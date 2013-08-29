@@ -29,6 +29,7 @@ if (!isset($wysi)) {
 $aPerms = array();
 $sNotification = '';
 $bError = false;
+$userId = null;
 
 if ($action == 'user_createuser') {
     $username = stripslashes(trim($username));
@@ -84,6 +85,7 @@ if ($action == 'user_createuser') {
                 $valid_to = '';
                 $aPerms = array();
                 $password = '';
+                $userId = $oUser->getUserId();
             } else {
                 $sNotification = $notification->returnNotification("error", "Error saving the user to the database.");
                 $bError = true;
@@ -97,6 +99,8 @@ if ($action == 'user_createuser') {
 
 $tpl->reset();
 $tpl->set('s', 'NOTIFICATION', $sNotification);
+$tpl->set('s', 'USERID', $userId);
+$tpl->set('s', 'SID', $sess->id);
 
 $form = '<form name="user_properties" method="post" action="' . $sess->url("main.php?") . '">
         <input type="hidden" name="area" value="' . $area . '">

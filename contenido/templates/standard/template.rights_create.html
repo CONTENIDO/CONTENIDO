@@ -8,7 +8,22 @@
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript">
+
         parent.parent.frames["left"].frames["left_bottom"].location.reload();
+        var createdUserId = '{USERID}';
+        var sid           = '{SID}';
+
+        if (createdUserId != '') {
+
+            parent.frames['right_top'].location = 'main.php?area=user&frame=3&action=&userid=' + createdUserId + '&contenido=' + sid;
+            parent.frames['right_bottom'].location = 'main.php?area=user_overview&frame=4&action=&userid=' + createdUserId + '&contenido=' + sid;
+
+        } else {
+
+            parent.frames['right_top'].location = 'main.php?area=user&frame=3&contenido=' + sid;
+
+        }
+
     </script>
     <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
@@ -18,7 +33,7 @@
     <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
 
     <!-- get javascript files for language != en -->
-   {CAL_LANG}
+    {CAL_LANG}
 
     <style type="text/css">
     #contenido_notification {margin-bottom:5px;}

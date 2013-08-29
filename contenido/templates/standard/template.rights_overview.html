@@ -50,9 +50,9 @@
                 var adminRow = document.getElementById("rights_admin");
                 var clientRow = document.getElementById("rights_languages");
                 var langRow = document.getElementById("rights_clients");
-                adminRow.style.display = (sysAdmin.checked) ? "none" : "";
-                clientRow.style.display = (sysAdmin.checked) ? "none" : "";
-                langRow.style.display = (sysAdmin.checked) ? "none" : "";
+                if  (adminRow) adminRow.style.display = (sysAdmin.checked) ? "none" : "";
+                if  (clientRow) clientRow.style.display = (sysAdmin.checked) ? "none" : "";
+                if  (langRow) langRow.style.display = (sysAdmin.checked) ? "none" : "";
 
                 $("#msysadmin1").bind("change", function() {
                     adminRow.style.display = (adminRow.style.display == "") ? "none" : "";

@@ -29,4 +29,5 @@ data/logs/errorlog.txt
 data/logs/exception.txt
 data/logs/security.txt
 data/logs/setuplog.txt
+/desktop.ini
 /nbproject
