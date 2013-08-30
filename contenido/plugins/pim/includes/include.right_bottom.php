@@ -18,10 +18,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // initializing classes
 $page = new cGuiPage('pim_overview', 'pim');
 
-// NEW Initializing PimPluginSetup class
-$setup = new PimPluginSetup();
-$setup->_setPageClass($page);
-
 // access denied
 if (!$perm->isSysadmin($currentuser)) {
     $page->displayCriticalError(i18n("Permission denied"));
@@ -34,6 +30,10 @@ if ($cfg['debug']['disable_plugins'] === true) {
     $page->displayWarning(i18n('Currently the plugin system is disabled via configuration', 'pim'));
 }
 
+// initializing PimPluginSetup class
+$setup = new PimPluginSetup();
+$setup->setPageClass($page);
+
 $viewAction = isset($_REQUEST['pim_view'])? $_REQUEST['pim_view'] : 'overview';
 
 switch ($viewAction) {
@@ -43,43 +43,34 @@ switch ($viewAction) {
         break;
     case 'update':
         // Set mode to update
-        $setup->setMode('update');
-        $setup::_setPluginId($_POST['pluginId']);
-
-        // Uninstall plugin
-        $delete = new PimPluginSetupUninstall();
-        $delete->uninstall();
-
-        // Now change mode to uploaded
-        $setup->setMode('uploaded');
+        $setup::setMode('update');
+        $setup::setPluginId($_POST['pluginId']);
 
         // Check Xml
         $setup->checkXml();
 
-        // Install new plugin
-        $new = new PimPluginSetupInstall();
-        $new->install();
+        $update = new PimPluginSetupUpdate();
         break;
     case 'uninstall':
-        $setup->setMode('uninstall');
-        $setup::_setPluginId($_GET['pluginId']);
+        $setup::setMode('uninstall');
+        $setup::setPluginId($_GET['pluginId']);
         $delete = new PimPluginSetupUninstall();
         $delete->uninstall();
         break;
     case 'uninstall-extracted':
-        $setup->setMode('uninstall');
+        $setup::setMode('uninstall');
         $delete = new PimPluginSetupUninstall();
-        $delete->_setPluginFoldername($_GET['pluginFoldername']);
+        $delete->setPluginFoldername($_GET['pluginFoldername']);
         $delete->uninstallDir();
         break;
     case 'install':
-        $setup->setMode('uploaded');
+        $setup::setMode('uploaded');
         $setup->checkXml();
         $new = new PimPluginSetupInstall();
         $new->install();
         break;
     case 'install-extracted':
-        $setup->setMode('extracted');
+        $setup::setMode('extracted');
         $setup->checkXml();
         $new = new PimPluginSetupInstall();
         $new->install();

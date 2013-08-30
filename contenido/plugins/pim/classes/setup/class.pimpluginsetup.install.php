@@ -204,46 +204,65 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     public function install() {
 
+        // Does this plugin already exist?
+        $this->_installCheckUuid();
+
         // Requirement checks
-        $this->installCheckRequirements();
+        $this->_installCheckRequirements();
 
         // Add new plugin: *_plugins
-        $this->installAddPlugin();
+        $this->_installAddPlugin();
 
         // Get all area names from database
-        $this->installFillAreas();
+        $this->_installFillAreas();
 
         // Add new CONTENIDO areas: *_area
-        $this->installAddAreas();
+        $this->_installAddAreas();
 
         // Add new CONTENIDO actions: *_actions
-        $this->installAddActions();
+        $this->_installAddActions();
 
         // Add new CONTENIDO frames: *_frame_files and *_files
-        $this->installAddFrames();
+        $this->_installAddFrames();
 
         // Add new CONTENIDO main navigations: *_nav_main
-        $this->installAddNavMain();
+        $this->_installAddNavMain();
 
         // Add new CONTENIDO sub navigations: *_nav_sub
-        $this->installAddNavSub();
+        $this->_installAddNavSub();
 
         // Add specific sql queries
-        $this->installAddSpecificSql();
+        $this->_installAddSpecificSql();
 
         // Add new CONTENIDO content types: *_type
-        $this->installAddContentTypes();
+        $this->_installAddContentTypes();
 
         // Add new modules
-        $this->installAddModules();
+        $this->_installAddModules();
 
-        // Add new plugin dir only if we install an uploaded plugin
-        if (parent::_getMode() == 2) {
-            $this->installAddDir();
+        // Add plugin dir for uploaded plugins
+        if (parent::getMode() == 2) {
+            $this->_installAddDir();
         }
 
-        // Success message
-        parent::info(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.'), 'pim');
+        // Success message for new plugins
+        if (parent::getMode() <= 2) {
+            parent::info(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
+        }
+    }
+
+    /**
+     * Check uuId: You can install a plugin only for one time
+     *
+     * @access private
+     * @return void
+     */
+    private function _installCheckUuid() {
+        $this->_PimPluginCollection->setWhere('uuid', parent::$_XmlGeneral->uuid);
+        $this->_PimPluginCollection->query();
+        if ($this->_PimPluginCollection->count() > 0) {
+            parent::error(i18n('You can install this plugin only for one time.', 'pim'));
+        }
     }
 
     /**
@@ -252,7 +271,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installCheckRequirements() {
+    private function _installCheckRequirements() {
 
         // Get config variables
         $cfg = cRegistry::getConfig();
@@ -315,7 +334,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installAddPlugin() {
+    private function _installAddPlugin() {
         // Add entry at *_plugins
         $pimPlugin = $this->_PimPluginCollection->create(parent::$_XmlGeneral->plugin_name, parent::$_XmlGeneral->description, parent::$_XmlGeneral->author, parent::$_XmlGeneral->copyright, parent::$_XmlGeneral->mail, parent::$_XmlGeneral->website, parent::$_XmlGeneral->version, parent::$_XmlGeneral->plugin_foldername, parent::$_XmlGeneral->uuid, parent::$_XmlGeneral->attributes()->active);
 
@@ -323,7 +342,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $pluginId = $pimPlugin->get('idplugin');
 
         // Set pluginId
-        parent::_setPluginId($pluginId);
+        parent::setPluginId($pluginId);
 
         // Set foldername of new plugin
         $this->_setPluginFoldername(parent::$_XmlGeneral->plugin_foldername);
@@ -335,7 +354,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installFillAreas() {
+    private function _installFillAreas() {
         $oItem = $this->_ApiAreaCollection;
         $this->_ApiAreaCollection->select(null, null, 'name');
         while (($areas = $this->_ApiAreaCollection->next()) !== false) {
@@ -349,7 +368,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installAddAreas() {
+    private function _installAddAreas() {
 
         // Initializing attribute array
         $attributes = array();
@@ -398,7 +417,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installAddActions() {
+    private function _installAddActions() {
         $actionCount = count(parent::$_XmlActions->action);
         for ($i = 0; $i < $actionCount; $i++) {
 
@@ -439,7 +458,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installAddFrames() {
+    private function _installAddFrames() {
 
         // Initializing attribute array
         $attributes = array();
@@ -473,7 +492,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installAddNavMain() {
+    private function _installAddNavMain() {
 
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
@@ -497,7 +516,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installAddNavSub() {
+    private function _installAddNavSub() {
 
         // Initializing attribute array
         $attributes = array();
@@ -535,13 +554,19 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installAddSpecificSql() {
+    private function _installAddSpecificSql() {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
-        if (parent::_getMode() == 1) { // Plugin is already extracted
+        if (parent::getMode() == 1) { // Plugin is already extracted
             $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_install.sql';
-        } elseif (parent::_getMode() == 2) { // Plugin is uploaded
+        } elseif (parent::getMode() == 2 || parent::getMode() == 4) { // Plugin
+                                                                      // is
+                                                                      // uploaded
+                                                                      // or /
+                                                                      // and
+                                                                      // update
+                                                                      // mode
             $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_install.sql', 0);
         }
 
@@ -570,7 +595,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installAddContentTypes() {
+    private function _installAddContentTypes() {
 
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
@@ -599,7 +624,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installAddModules() {
+    private function _installAddModules() {
         $cfg = cRegistry::getConfig();
         $module = new cApiModule();
 
@@ -628,7 +653,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function installAddDir() {
+    private function _installAddDir() {
         $cfg = cRegistry::getConfig();
 
         // Build the new plugin dir

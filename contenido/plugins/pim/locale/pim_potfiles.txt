@@ -1,6 +1,10 @@
 ./classes/class.pim.plugin.collection.php
 ./classes/class.pim.plugin.relations.collection.php
+./classes/setup/class.pimpluginsetup.install.php
 ./classes/setup/class.pimpluginsetup.php
+./classes/setup/class.pimpluginsetup.status.php
+./classes/setup/class.pimpluginsetup.uninstall.php
+./classes/setup/class.pimpluginsetup.update.php
 ./classes/util/zip/class.pimpluginarchiveextractor.php
 ./includes/config.plugin.php
 ./includes/include.right_bottom.php

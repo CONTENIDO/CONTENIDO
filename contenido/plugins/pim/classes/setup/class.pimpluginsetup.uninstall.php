@@ -60,7 +60,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @param string $foldername
      * @return string
      */
-    public function _setPluginFoldername($foldername) {
+    public function setPluginFoldername($foldername) {
         return $this->PluginFoldername = cSecurity::escapeString($foldername);
     }
 
@@ -237,15 +237,16 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $this->_PimPluginCollection->query();
         $pimPluginSql = $this->_PimPluginCollection->next();
 
-        $foldername = $pimPluginSql->get('folder');
+        // Set foldername
+        $this->setPluginFoldername($pimPluginSql->get('folder'));
 
         // Delete specific sql entries or tables
         if ($sql == true) {
 
-            if (parent::_getMode() == 3) { // Uninstall mode
-                $this->_uninstallFullDeleteSpecificSql($foldername);
-            } elseif (parent::_getMode() == 4) { // Update mode
-                $this->_uninstallUpdateDeleteSpecificSql($foldername);
+            if (parent::getMode() == 3) { // Uninstall mode
+                $this->_uninstallFullDeleteSpecificSql();
+            } elseif (parent::getMode() == 4) { // Update mode
+                $this->_uninstallUpdateDeleteSpecificSql();
             }
         }
 
@@ -256,8 +257,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $this->_PimPluginRelationsCollection->deleteByWhereClause('idplugin = ' . parent::_getPluginId());
         $this->_PimPluginCollection->deleteByWhereClause('idplugin = ' . parent::_getPluginId());
 
-        // Success message
-        if (parent::$_GuiPage instanceof cGuiPage) {
+        // Success message for uninstall mode
+        if (parent::$_GuiPage instanceof cGuiPage && parent::getMode() == 3) {
             parent::info(i18n('The plugin', 'pim') . ' <strong>' . $pluginname . '</strong> ' . i18n('has been successfully uninstalled. To apply the changes please login into backend again.', 'pim'));
         }
     }
@@ -266,14 +267,13 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * Delete specific sql entries or tables, full uninstall mode
      *
      * @access protected
-     * @param $foldername foldername of installed plugin
      * @return void
      */
-    protected function _uninstallFullDeleteSpecificSql($foldername) {
+    protected function _uninstallFullDeleteSpecificSql() {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
-        $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $foldername . DIRECTORY_SEPARATOR . 'plugin_uninstall.sql';
+        $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_uninstall.sql';
 
         if (!cFileHandler::exists($tempSqlFilename)) {
             return;
@@ -284,11 +284,11 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $tempSqlContent = explode("\n", $tempSqlContent);
         $tempSqlLines = count($tempSqlContent);
 
-        $pattern = '/(DELETE FROM|DROP TABLE) ' . $this->sqlPrefix . '\b/';
+        $pattern = '/(DELETE FROM|DROP TABLE) ' . parent::$_SqlPrefix . '\b/';
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
             if (preg_match($pattern, $tempSqlContent[$i])) {
-                $tempSqlContent[$i] = str_replace($this->sqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+                $tempSqlContent[$i] = str_replace(parent::$_SqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
                 $db->query($tempSqlContent[$i]);
             }
         }
@@ -300,10 +300,9 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * TODO: Optimize this function (CON-1358)
      *
      * @access protected
-     * @param $foldername foldername of installed plugin
      * @return void
      */
-    protected function _uninstallUpdateDeleteSpecificSql($foldername) {
+    protected function _uninstallUpdateDeleteSpecificSql() {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
@@ -324,11 +323,11 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $tempSqlContent = explode("\n", $tempSqlContent);
         $tempSqlLines = count($tempSqlContent);
 
-        $pattern = '/(UPDATE|ALTER TABLE|DELETE FROM|DROP TABLE) ' . $this->sqlPrefix . '\b/';
+        $pattern = '/(UPDATE|ALTER TABLE|DELETE FROM|DROP TABLE) ' . parent::$_SqlPrefix . '\b/';
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
             if (preg_match($pattern, $tempSqlContent[$i])) {
-                $tempSqlContent[$i] = str_replace($this->sqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+                $tempSqlContent[$i] = str_replace(parent::$_SqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
                 $db->query($tempSqlContent[$i]);
             }
         }

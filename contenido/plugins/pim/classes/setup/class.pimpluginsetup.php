@@ -71,7 +71,7 @@ class PimPluginSetup {
      * @param string $mode
      * @return void
      */
-    public function setMode($mode) {
+    public static function setMode($mode) {
         switch ($mode) {
             case 'extracted':
                 self::$mode = 1;
@@ -95,7 +95,7 @@ class PimPluginSetup {
      * @param cGuiPage $page
      * @return void
      */
-    public function _setPageClass($page) {
+    public function setPageClass($page) {
         return self::$_GuiPage = $page;
     }
 
@@ -152,7 +152,7 @@ class PimPluginSetup {
      * @param integer $pluginId
      * @return integer
      */
-    public function _setPluginId($pluginId = 0) {
+    public function setPluginId($pluginId = 0) {
         return self::$pluginId = $pluginId;
     }
 
@@ -161,7 +161,7 @@ class PimPluginSetup {
      *
      * @return integer
      */
-    public static function _getMode() {
+    public static function getMode() {
         return self::$mode;
     }
 
@@ -186,9 +186,12 @@ class PimPluginSetup {
     public function checkXml() {
         $cfg = cRegistry::getConfig();
 
-        if (self::_getMode() == 1) { // Plugin is already extracted
+        if (self::getMode() == 1) { // Plugin is already extracted
             $XmlData = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($_GET['pluginFoldername']) . DIRECTORY_SEPARATOR . self::$_PluginXmlFilename);
-        } elseif (self::_getMode() == 2) { // Plugin is uploaded
+        } elseif (self::getMode() == 2 || self::getMode() == 4) { // Plugin is uploaded / Update mode
+
+            // Check valid Zip archive
+            $this->checkZip();
 
             // Name of uploaded Zip archive
             $tempArchiveName = cSecurity::escapeString($_FILES['package']['name']);
@@ -214,7 +217,19 @@ class PimPluginSetup {
         if ($this->validXml($XmlData) === true) {
             $this->_setXml(simplexml_load_string($XmlData));
         } else {
-            return $this->error(i18n('Invalid Xml document. Please contact the plugin author.', 'pim'));
+            return self::error(i18n('Invalid Xml document. Please contact the plugin author.', 'pim'));
+        }
+    }
+
+    /**
+     * Check file type, Plugin Manager accepts only Zip archives
+     *
+     * @access private
+     * @return void
+     */
+    private function checkZip() {
+        if (substr($_FILES['package']['name'], -4) != ".zip") {
+            parent::error(i18n('Plugin Manager accepts only Zip archives', 'pim'));
         }
     }
 
@@ -251,7 +266,7 @@ class PimPluginSetup {
         $session = cRegistry::getSession();
 
         // Destroy temporary files if plugin is uploaded
-        if (self::_getMode() == 2) {
+        if (self::getMode() == 2) {
             self::$_PimPluginArchiveExtractor->destroyTempFiles();
         }
 

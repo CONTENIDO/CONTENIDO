@@ -22,4 +22,5 @@ plugin_include('pim', 'classes/util/zip/class.pimpluginarchiveextractor.php');
 plugin_include('pim', 'classes/setup/class.pimpluginsetup.php');
 plugin_include('pim', 'classes/setup/class.pimpluginsetup.install.php');
 plugin_include('pim', 'classes/setup/class.pimpluginsetup.uninstall.php');
+plugin_include('pim', 'classes/setup/class.pimpluginsetup.update.php');
 plugin_include('pim', 'classes/setup/class.pimpluginsetup.status.php');
