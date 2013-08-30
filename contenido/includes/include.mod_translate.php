@@ -66,6 +66,9 @@ foreach ($strings as $string) {
 // sort array
 ksort($myTrans);
 
+// count translations (counter started with one)
+$myTransCount = count($myTrans)-1;
+
 // If changed save in file
 if (count(array_diff_assoc($myTrans, $translationArray)) > 0 || count(array_diff_assoc($translationArray, $myTrans)) > 0) {
     $moduleTranslation->saveTranslationArray($myTrans);
@@ -82,8 +85,16 @@ if (!isset($row)) {
         if ($index == $row) {
             $lastString = $key;
             $lastTranslation = $value;
+
+            // Jump to next entry
+            if ($myTransCount == $index) {
+                $row = 0;
+            } else {
+                $row++;
+            }
             break;
         }
+        // increase index
         $index++;
     }
 }
