@@ -56,6 +56,7 @@ contenido/classes/class.frontend.helper.php -text
 contenido/classes/class.frontend.logic.php -text
 contenido/classes/class.htmlparser.php -text
 contenido/classes/class.htmlvalidator.php -text
+contenido/classes/class.idna_convert.php -text
 contenido/classes/class.input.helper.php -text
 contenido/classes/class.iterator.php -text
 contenido/classes/class.layout.handler.php -text

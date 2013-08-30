@@ -493,4 +493,5 @@ return array(
     'cApiIso6392' => 'contenido/classes/contenido/class.iso6392.php',
     'cApiIso3166Collection' => 'contenido/classes/contenido/class.iso3166.php',
     'cApiIso3166' => 'contenido/classes/contenido/class.iso3166.php',
+    'idna_convert' => 'contenido/classes/class.idna_convert.php',
 );

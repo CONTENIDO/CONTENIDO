@@ -606,6 +606,11 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 }
                 $redirect_url = $oUrl->buildRedirect($aUrl['params']);
             }
+
+            //Encode to punycode/IDNA
+            $IDN = new idna_convert();
+            $redirect_url = $IDN->encode($redirect_url);
+
             header('Location: ' . $redirect_url);
             exit();
         } else {
