@@ -579,11 +579,11 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $tempSqlContent = explode("\n", $tempSqlContent);
         $tempSqlLines = count($tempSqlContent);
 
-        $pattern = '/(CREATE TABLE IF NOT EXISTS|INSERT INTO|UPDATE|ALTER TABLE) ' . parent::$_SqlPrefix . '\b/';
+        $pattern = '/(CREATE TABLE IF NOT EXISTS|INSERT INTO|UPDATE|ALTER TABLE) ' . parent::SQL_PREFIX . '\b/';
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
             if (preg_match($pattern, $tempSqlContent[$i])) {
-                $tempSqlContent[$i] = str_replace(parent::$_SqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+                $tempSqlContent[$i] = str_replace(parent::SQL_PREFIX, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
                 $db->query($tempSqlContent[$i]);
             }
         }

@@ -43,8 +43,8 @@ switch ($viewAction) {
         break;
     case 'update':
         // Set mode to update
-        $setup::setMode('update');
-        $setup::setPluginId($_POST['pluginId']);
+        $setup->setMode('update');
+        $setup->setPluginId($_POST['pluginId']);
 
         // Check Xml
         $setup->checkXml();
@@ -52,25 +52,25 @@ switch ($viewAction) {
         $update = new PimPluginSetupUpdate();
         break;
     case 'uninstall':
-        $setup::setMode('uninstall');
-        $setup::setPluginId($_GET['pluginId']);
+        $setup->setMode('uninstall');
+        $setup->setPluginId($_GET['pluginId']);
         $delete = new PimPluginSetupUninstall();
         $delete->uninstall();
         break;
     case 'uninstall-extracted':
-        $setup::setMode('uninstall');
+        $setup->setMode('uninstall');
         $delete = new PimPluginSetupUninstall();
         $delete->setPluginFoldername($_GET['pluginFoldername']);
         $delete->uninstallDir();
         break;
     case 'install':
-        $setup::setMode('uploaded');
+        $setup->setMode('uploaded');
         $setup->checkXml();
         $new = new PimPluginSetupInstall();
         $new->install();
         break;
     case 'install-extracted':
-        $setup::setMode('extracted');
+        $setup->setMode('extracted');
         $setup->checkXml();
         $new = new PimPluginSetupInstall();
         $new->install();

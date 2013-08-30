@@ -284,11 +284,11 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $tempSqlContent = explode("\n", $tempSqlContent);
         $tempSqlLines = count($tempSqlContent);
 
-        $pattern = '/(DELETE FROM|DROP TABLE) ' . parent::$_SqlPrefix . '\b/';
+        $pattern = '/(DELETE FROM|DROP TABLE) ' . parent::SQL_PREFIX . '\b/';
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
             if (preg_match($pattern, $tempSqlContent[$i])) {
-                $tempSqlContent[$i] = str_replace(parent::$_SqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+                $tempSqlContent[$i] = str_replace(parent::SQL_PREFIX, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
                 $db->query($tempSqlContent[$i]);
             }
         }
@@ -323,11 +323,11 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $tempSqlContent = explode("\n", $tempSqlContent);
         $tempSqlLines = count($tempSqlContent);
 
-        $pattern = '/(UPDATE|ALTER TABLE|DELETE FROM|DROP TABLE) ' . parent::$_SqlPrefix . '\b/';
+        $pattern = '/(UPDATE|ALTER TABLE|DELETE FROM|DROP TABLE) ' . parent::SQL_PREFIX . '\b/';
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
             if (preg_match($pattern, $tempSqlContent[$i])) {
-                $tempSqlContent[$i] = str_replace(parent::$_SqlPrefix, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+                $tempSqlContent[$i] = str_replace(parent::SQL_PREFIX, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
                 $db->query($tempSqlContent[$i]);
             }
         }

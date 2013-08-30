@@ -14,6 +14,12 @@
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Standard class for Plugin Manager (PIM)
+ * @author frederic.schneider
+ *
+ */
 class PimPluginSetup {
 
     // Initializing variables
@@ -22,10 +28,10 @@ class PimPluginSetup {
     public static $mode = 0;
 
     // File name of Xml configuration file for plugins
-    protected static $_PluginXmlFilename = "plugin.xml";
+    const PLUGIN_XML_FILENAME = "plugin.xml";
 
     // Specific sql prefix
-    protected static $_SqlPrefix = "!PREFIX!";
+    const SQL_PREFIX = "!PREFIX!";
 
     // Class variable for cGuiPage
     protected static $_GuiPage;
@@ -187,7 +193,7 @@ class PimPluginSetup {
         $cfg = cRegistry::getConfig();
 
         if (self::getMode() == 1) { // Plugin is already extracted
-            $XmlData = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($_GET['pluginFoldername']) . DIRECTORY_SEPARATOR . self::$_PluginXmlFilename);
+            $XmlData = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($_GET['pluginFoldername']) . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME);
         } elseif (self::getMode() == 2 || self::getMode() == 4) { // Plugin is uploaded / Update mode
 
             // Check valid Zip archive
@@ -210,7 +216,7 @@ class PimPluginSetup {
             }
 
             // Get plugin.xml informations
-            $XmlData = self::$_PimPluginArchiveExtractor->extractArchiveFileToVariable(self::$_PluginXmlFilename);
+            $XmlData = self::$_PimPluginArchiveExtractor->extractArchiveFileToVariable(self::PLUGIN_XML_FILENAME);
         }
 
         // Check and set plugin.xml
