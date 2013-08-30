@@ -16,6 +16,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $oMetaTypeColl = new cApiMetaTypeCollection();
+$oMetaTypeColl->delete((int)$idmetatype);
 
-$oMetaTypeColl->delete((int) $idmetatype);
-
+$oMetaTagColl = new cApiMetaTagCollection();
+$metaTag = $oMetaTagColl->fetchByArtLangAndMetaType((int)$idartlang, (int)$idmetatype);
+$oMetaTagColl->delete($metaTag->getField('idmetatag'));

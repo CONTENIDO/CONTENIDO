@@ -200,6 +200,7 @@ function cecCreateMetatags($metatags) {
             }
         }
     }
+
     return $metatags;
 }
 

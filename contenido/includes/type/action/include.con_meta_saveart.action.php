@@ -83,6 +83,20 @@ foreach ($availableTags as $key => $value) {
 $purge = new cSystemPurge();
 $purge->clearArticleCache($idartlang);
 
+//Add a new Me'a Tag in DB
+if ($METAmetatype) {
+    $sql = "INSERT INTO `" . $cfg['tab']['meta_type'] . "` (
+                `metatype` ,
+                `fieldtype` ,
+                `maxlength` ,
+                `fieldname`
+            )
+            VALUES (
+                '" . $METAmetatype . "', '" . $METAfieldtype . "', '" . $METAmaxlength . "', '" . $METAfieldname . "'
+            );";
+    $db->query($sql);
+}
+
 cApiCecHook::execute('Contenido.Action.con_meta_saveart.AfterCall', $idart, $newData, $oldData);
 
 $notification->displayNotification('info', i18n('Changes saved'));

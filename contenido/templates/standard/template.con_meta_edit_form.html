@@ -74,127 +74,251 @@ table.generic td.leftData {
 
     <form method="post" name="art_props" action="{ACTION}">
 
-        <input type="hidden" name="action" value="con_meta_saveart">
-        {HIDDENFIELDS} <input type="hidden" name="tmp_firstedit"
-            value="{TMP_FIRSTEDIT}"> <input type="hidden" name="idart"
-            value="{IDART}"> <input type="hidden" name="idcat"
-            value="{IDCAT}"> <input type="hidden" name="idartlang"
-            value="{IDARTLANG}">
+        <input type="hidden" name="action" value="con_meta_saveart" />
+        <input type="hidden" name="send" value="1" />
+        <input type="hidden" name="tmp_firstedit" value="{TMP_FIRSTEDIT}" />
+        <input type="hidden" name="idart" value="{IDART}" />
+        <input type="hidden" name="idcat" value="{IDCAT}" />
+        <input type="hidden" name="idartlang" value="{IDARTLANG}" />
 
-        <table style="width: 700px" class="generic" cellspacing="0"
-            cellpadding="2" border="0">
+        <table style="width: 720px" class="generic" cellspacing="0" cellpadding="2" border="0">
 
             <tr>
                 <th colspan="2">{TITEL}</th>
             </tr>
+
             {NOTIFICATION}
 
             <tr>
                 <td class="leftData">i18n("Link")</td>
-                <td><input class="textField" type="text" value="{LINK}"
-                    disabled size="24">&nbsp;<a href="{FULL_LINK}"
-                    target="_blank"><img class="vAlignMiddle"
-                        src="images/submit.gif"></a></td>
+                <td>
+                    <input
+                        class="textField"
+                        type="text"
+                        value="{LINK}"
+                        disabled
+                        size="24"
+                    />&nbsp;
+                    <a
+                        href="{FULL_LINK}"
+                        target="_blank"
+                    >
+                        <img class="vAlignMiddle" src="images/submit.gif">
+                    </a>
+                </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Page title")</td>
 
-                <td colspan="3" class="text_medium">{TITLE-INPUT} <img
-                    class="vAlignMiddle" title="{TITLE_INFO}" src="images/info.gif"></td>
+                <td colspan="3" class="text_medium">
+                    <input
+                        class="textField"
+                        type="text"
+                        name="page_title"
+                        value="{PAGE_TITLE}"
+                        {DISABLED}
+                    />
+                    <img class="vAlignMiddle" title="{PAGE_TITLE_INFO}" src="images/info.gif" />
+                </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Alias")</td>
-                <td class="text_medium"><input class="textField" type="text"
-                    name="alias" value="{ALIAS}" size="24"{DISABLED}></td>
+                <td class="text_medium">
+                    <input class="textField" type="text" name="alias" value="{ALIAS}" size="24" {DISABLED} />
+                </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Description")</td>
-                <td><textarea class="textField metaTag" name="METAdescription"
-                        id="METAdescription" rows=3{DISABLED}>{DESCRIPTION}</textarea> <img
-                    class="vAlignMiddle" title="{DESCRIPTION_INFO}"
-                    src="images/info.gif"></td>
+                <td>
+                    <textarea
+                        class="textField metaTag"
+                        name="METAdescription"
+                        id="METAdescription"
+                        rows="3"
+                        {DISABLED}
+                    >{DESCRIPTION}</textarea>
+                    <img class="vAlignMiddle" title="{DESCRIPTION_INFO}" src="images/info.gif" />
+                </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Keywords")</td>
-                <td><textarea class="textField metaTag" name="METAkeywords"
-                        id="METAkeywords" rows=3{DISABLED}>{KEYWORDS}</textarea> <img
-                    class="vAlignMiddle" title="{KEYWORD_INFO}" src="images/info.gif"></td>
+                <td>
+                    <textarea
+                        class="textField metaTag"
+                        name="METAkeywords"
+                        id="METAkeywords"
+                        rows="3"
+                        {DISABLED}
+                    >{KEYWORDS}</textarea>
+                    <img class="vAlignMiddle" title="{KEYWORD_INFO}" src="images/info.gif" />
+                </td>
             </tr>
 
             <tr>
                 <td class="leftData" style="border-top: 1px solid #b3b3b3">i18n("Copyright")</td>
-                <td style="border-top: 1px solid #b3b3b3"><input type="text"
-                    class="textField metaTag" name="METAcopyright" id="METAcopyright"
-                    value="{COPYRIGHT}" size="24"{DISABLED}></td>
+                <td style="border-top: 1px solid #b3b3b3">
+                    <input
+                        type="text"
+                        class="textField metaTag"
+                        name="METAcopyright"
+                        id="METAcopyright"
+                        value="{COPYRIGHT}"
+                        size="24"
+                        {DISABLED}
+                    />
+                </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Author")</td>
-                <td><input class="textField metaTag" type="text"
-                    name="METAauthor" id="METAauthor" value="{AUTHOR}" size="24"{DISABLED}>
+                <td>
+                    <input
+                        class="textField metaTag"
+                        type="text"
+                        name="METAauthor"
+                        id="METAauthor"
+                        value="{AUTHOR}"
+                        size="24"
+                        {DISABLED}
+                    />
                 </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Date")</td>
-                <td><input class="textField metaTag" type="text"
-                    name="METAdate" id="METAdate" value="{DATE}"{DISABLED}></td>
-            </tr>
-
-            <tr>
-                <td class="leftData">i18n("Expires")</td>
-                <td><input class="textField metaTag" type="text"
-                    name="METAexpires" id="METAexpires" value="{EXPIRES}"{DISABLED}></td>
-            </tr>
-
-            <tr>
-                <td class="leftData">i18n("Revisit after")</td>
-                <td><input class="textField metaTag" type="text"
-                    name="METArevisit-after" id="METArevisit-after" value="" size="24"{DISABLED}>
-                    <img class="vAlignMiddle" title="{REVISIT_INFO}"
-                    src="images/info.gif"></td>
-            </tr>
-
-            <tr>
-                <td class="leftData" valign="top"
-                    style="border-top: 1px solid #b3b3b3">i18n("Robots")</td>
-                <td style="border-top: 1px solid #b3b3b3"><input
-                    id="metaNoIndex" class="vAlignMiddle robotCheckbox" type="checkbox"
-                    name="robots[]" value="noindex"{DISABLED}><label
-                    for="metaNoIndex">noindex</label><br> <input id="metaNoFollow"
-                    class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]"
-                    value="nofollow"{DISABLED}><label for="metaNoFollow">nofollow</label><br>
-                    <input id="metaNoSnippet" class="vAlignMiddle robotCheckbox"
-                    type="checkbox" name="robots[]" value="nosnippet"{DISABLED}><label
-                    for="metaNoSnippet">nosnippet</label><br> <input
-                    id="metaNoImageIndex" class="vAlignMiddle robotCheckbox"
-                    type="checkbox" name="robots[]" value="noimageindex"{DISABLED}><label
-                    for="metaNoImageIndex">noimageindex</label><br> <input
-                    id="metaNoArchive" class="vAlignMiddle robotCheckbox"
-                    type="checkbox" name="robots[]" value="noarchive"{DISABLED}><label
-                    for="metaNoArchive">noarchive</label><br> <img
-                    class="vAlignMiddle" title="{ROBOTS_INFO}" src="images/info.gif">
+                <td>
+                    <input
+                        class="textField metaTag"
+                        type="text"
+                        name="METAdate"
+                        id="METAdate"
+                        value="{DATE}"
+                        {DISABLED}
+                    />
                 </td>
             </tr>
 
             <tr>
+                <td class="leftData">i18n("Expires")</td>
+                <td>
+                    <input
+                        class="textField metaTag"
+                        type="text"
+                        name="METAexpires"
+                        id="METAexpires"
+                        value="{EXPIRES}"
+                        {DISABLED}
+                    />
+                 </td>
+            </tr>
+
+            <tr>
+                <td class="leftData">i18n("Revisit after")</td>
+                <td>
+                    <input
+                        class="textField metaTag"
+                        type="text"
+                        name="METArevisit-after"
+                        id="METArevisit-after"
+                        value="{REVISIT-AFTER}"
+                        size="24"
+                        {DISABLED}
+                    />
+                    <img class="vAlignMiddle" title="{REVISIT_INFO}" src="images/info.gif" />
+                </td>
+            </tr>
+
+            <tr>
+                <td class="leftData" valign="top" style="border-top: 1px solid #b3b3b3">
+                    i18n("Robots")
+                </td>
+                <td style="border-top: 1px solid #b3b3b3">
+                    <input
+                        id="metaNoIndex"
+                        class="vAlignMiddle robotCheckbox"
+                        type="checkbox"
+                        name="robots[]"
+                        value="noindex"
+                        {NOINDEX}
+                        {DISABLED}
+                    />
+                    <label for="metaNoIndex">noindex</label><br />
+                    <input
+                        id="metaNoFollow"
+                        class="vAlignMiddle robotCheckbox"
+                        type="checkbox"
+                        name="robots[]"
+                        value="nofollow"
+                        {NOFOLLOW}
+                        {DISABLED}
+                    />
+                    <label for="metaNoFollow">nofollow</label><br />
+                    <input
+                        id="metaNoSnippet"
+                        class="vAlignMiddle robotCheckbox"
+                        type="checkbox"
+                        name="robots[]"
+                        value="nosnippet"
+                        {NOSNIPPET}
+                        {DISABLED}
+                    />
+                    <label for="metaNoSnippet">nosnippet</label><br />
+                    <input
+                        id="metaNoImageIndex"
+                        class="vAlignMiddle robotCheckbox"
+                        type="checkbox"
+                        name="robots[]"
+                        value="noimageindex"
+                        {NOIMAGEINDEX}
+                        {DISABLED}
+                    />
+                    <label for="metaNoImageIndex">noimageindex</label><br />
+                    <input
+                        id="metaNoArchive"
+                        class="vAlignMiddle robotCheckbox"
+                        type="checkbox"
+                        name="robots[]"
+                        value="noarchive"
+                        {NOARCHIVE}
+                        {DISABLED}
+                    />
+                    <label for="metaNoArchive">noarchive</label><br />
+                    <img
+                        class="vAlignMiddle"
+                        title="{ROBOTS_INFO}"
+                        src="images/info.gif"
+                    />
+                </td>
+            </tr>
+
+            <tr>
+                <td class="leftData" style="border-top: 1px solid #b3b3b3">i18n("Sitemap Priority")</td>
                 <td class="leftData" style="border-top: 1px solid #b3b3b3">
-                    i18n("Sitemap Priority")</td>
-                <td class="leftData" style="border-top: 1px solid #b3b3b3"><input
-                    class="textField" type="text" name="sitemap_prio"
-                    value="{SITEMAP_PRIO}" size="24"{DISABLED}> <img class="vAlignMiddle"
-                    title="{SITEMAPRIORITY_INFO}" src="images/info.gif"></td>
+                    <input
+                        class="textField"
+                        type="text"
+                        name="sitemap_prio"
+                        value="{SITEMAP_PRIO}"
+                        size="24"{DISABLED}
+                    />
+                    <img class="vAlignMiddle" title="{SITEMAPRIORITY_INFO}" src="images/info.gif" />
+                </td>
             </tr>
 
             <tr>
                 <td class="leftData" style="border-bottom: 2px solid #b3b3b3">
-                    i18n("Sitemap change frequency")</td>
-                <td style="border-bottom: 2px solid #b3b3b3"><select size="1"
-                    name="sitemap_change_freq"{DISABLED}>
+                    i18n("Sitemap change frequency")
+                </td>
+                <td style="border-bottom: 2px solid #b3b3b3">
+                    <select
+                        size="1"
+                        name="sitemap_change_freq"
+                        {DISABLED}
+                    >
                         <option {SELECTED_}></option>
                         <option {SELECTED_always}>always</option>
                         <option {SELECTED_hourly}>hourly</option>
@@ -203,8 +327,9 @@ table.generic td.leftData {
                         <option {SELECTED_monthly}>monthly</option>
                         <option {SELECTED_yearly}>yearly</option>
                         <option {SELECTED_never}>never</option>
-                </select> <img class="vAlignMiddle" title="{SITEMAPCHANGEFREQUENCY_INFO}"
-                    src="images/info.gif"></td>
+                    </select>
+                    <img class="vAlignMiddle" title="{SITEMAPCHANGEFREQUENCY_INFO}" src="images/info.gif" />
+                </td>
             </tr>
 
             {ADDITIONAL_ROWS}
@@ -216,9 +341,16 @@ table.generic td.leftData {
             <!-- BEGIN:BLOCK -->
             <tr>
                 <td>{METATITLE}</td>
-                <td class="text_medium">{METAFIELDTYPE}<a
-                    href="main.php?area=con_meta&frame=4&action=con_meta_deletetype&contenido=1&idmetatype={IDMETATYPE}&idart={ARTICLE_ID}&idcat={CAT_ID}"><img
-                        class="vAlignMiddle" style="float: right" src="images/delete.gif"></a></td>
+                <td class="text_medium">
+                    {METAFIELDTYPE}
+                    <a
+                        onclick="showConfirmation('{DELETE_META_CONFIRM}', function(){ deleteMetaTag({IDMETATYPE}, {ARTICLE_ID}, {CAT_ID}, {ARTICLE_LANGUAGE_ID}); }); return false;"
+                        href="javascript:void(0)"
+                        title="Delete Meta tag"
+                    >
+                        <img class="vAlignMiddle" style="float: right" src="images/delete.gif" />
+                    </a>
+                </td>
             </tr>
             <!-- END:BLOCK -->
 
@@ -226,36 +358,54 @@ table.generic td.leftData {
 
             <tr>
                 <td class="text_medium">{ADDMETABTN}</td>
-                <td align="right"><input accesskey="s" type="image"
-                    {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td>
+                <td align="right">
+                    <input
+                        accesskey="s"
+                        type="image"
+                        {BUTTONDISABLE}
+                        src="images/{BUTTONIMAGE}"
+                    />
+                </td>
             </tr>
 
             <tr>
-                <td colspan=2><a href="javascript://"
-                    onclick="$('#metaPreview').toggle();"><img
-                        src="images/but_preview.gif" class="vAlignMiddle">&nbsp;i18n("HTML-View")</a>
-                    <div style="display: none;" id="metaPreview">{META_TAGS}</div></td>
+                <td colspan=2>
+                    <a
+                        href="javascript://"
+                        onclick="$('#metaPreview').toggle();"
+                    >
+                        <img src="images/but_preview.gif" class="vAlignMiddle"/>&nbsp;i18n("HTML-View")
+                    </a>
+                    <div style="display: none;" id="metaPreview">
+                        {META_TAGS}
+                    </div>
+                </td>
             </tr>
 
         </table>
     </form>
 
     <script type="text/javascript">
-        /* Create a reference to the
-           Article Object in frame 'right_top' */
+
+        /* Create a reference to the Article Object in frame 'right_top' */
         artObj = parent.parent.frames["left"].frames["left_top"].artObj;
 
         if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_2')) {
+
             menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_2');
             parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
+
         }
 
         {DATAPUSH}
 
         $('img#addMeta').hover(function() {
+
             $(this).css('cursor','pointer');
+
         });
         $('img#addMeta').click(function() {
+
             $('tr[name=newMeta]').each(function() {
                 $(this).slideToggle();
             });
@@ -263,18 +413,26 @@ table.generic td.leftData {
         });
 
         function clearOnFocus(element, default_value) {
-            if (element.value==default_value) {
-                element.value = '';
-            }
+
+            if (element.value == default_value) element.value = '';
+
         }
 
         function restoreOnBlur(element, default_value) {
-            if (element.value=='') {
-                element.value = default_value;
-            }
+
+            if (element.value == '') element.value = default_value;
+        }
+
+        function deleteMetaTag(idMetaType, articleId, catId, idartlang) {
+
+            var url = 'main.php?area=con_meta&frame=4&action=con_meta_deletetype&contenido=1&idmetatype=' + idMetaType;
+               url += '&idart=' + articleId + '&idcat=' + catId + '&idartlang=' + idartlang;
+            window.location.assign(url);
+
         }
 
         $(document).ready(function() {
+
             $('#METAdate').datetimepicker({
                 buttonImage: '{PATH_TO_CALENDER_PIC}',
                 buttonImageOnly: true,
@@ -283,13 +441,16 @@ table.generic td.leftData {
                 separator: 'T',
                 timeFormat: 'hh:mm:ss tt',
                 onClose: function(text, inst) {
+
                     var id = $(this).attr("id").substr(4);
                     text = formatDates(new Date(text.replace(/\s/g, "")));
                     $("#metaContent_" + id).text(text);
                     $(this).attr("value", text);
+
                 },
                 disabled: {IS_DATETIMEPICKER_DISABLED}
             });
+
             $('#METAexpires').datetimepicker({
                 buttonImage: '{PATH_TO_CALENDER_PIC}',
                 buttonImageOnly: true,
@@ -298,29 +459,28 @@ table.generic td.leftData {
                 separator: 'T',
                 timeFormat: 'hh:mm:ss tt',
                 onClose: function(text, inst) {
+
                     var id = $(this).attr("id").substr(4);
                     text = formatDates(new Date(text.replace(/\s/g, "")));
                     $("#metaContent_" + id).text(text);
                     $(this).attr("value", text);
+
                 },
                 disabled: {IS_DATETIMEPICKER_DISABLED}
             });
 
             $('.metaTag').live("input", function() {
+
                 var id = $(this).attr("id").substr(4);
                 var text = $(this).val();
-                if ($(this).hasClass("hasDatepicker")) {
-                    text = formatDates(new Date(text));
-                }
-                if (text == "") {
-                    $("#metaRow_" + id).hide();
-                } else {
-                    $("#metaRow_" + id).show();
-                }
+                if ($(this).hasClass("hasDatepicker")) text = formatDates(new Date(text));
+                if (text == "") $("#metaRow_" + id).hide();
+                else $("#metaRow_" + id).show();
                 $("#metaContent_" + id).text(text);
             });
 
             $('.robotCheckbox').change(function() {
+
                 var robotString = "";
                 if ($('#metaNoIndex').attr("checked")) {
                     robotString += "noindex, ";
@@ -342,29 +502,10 @@ table.generic td.leftData {
                     robotString += "follow";
                 }
                 $("#metaContent_robots").text(robotString);
+
             })
         });
     </script>
 </body>
 
 </html>
-<!--
-template.con_meta_edit_form
-
-i18n("Page title")
-i18n("Alias")
-i18n("Description")
-i18n("HTML-View")
-i18n("Link")
-i18n("Keywords")
-i18n("Copyright")
-i18n("Author")
-i18n("Date")
-i18n("Expires")
-i18n("Revisit after")
-i18n("Robots")
-i18n("Sitemap Priority")
-i18n("Sitemap change frequency")
-i18n("Custom meta tags")
-
--->
