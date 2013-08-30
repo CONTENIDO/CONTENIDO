@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains abstract class for installation new plugins
+ * This file contains abstract class for change status of installed plugins
  *
  * @package CONTENIDO Plugins
  * @subpackage PluginManager
