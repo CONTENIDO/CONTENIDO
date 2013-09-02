@@ -285,6 +285,7 @@ function uplSyncDirectoryDBFS($sPath) {
 function uplmkdir($sPath, $sName) {
     global $cfgClient, $client, $action;
 
+    //Check DB filesystem
     if (cApiDbfs::isDbfs($sPath)) {
         $sPath = cApiDbfs::stripPath($sPath);
         $sFullPath = $sPath . '/' . $sName . '/.';
@@ -294,15 +295,23 @@ function uplmkdir($sPath, $sName) {
         return;
     }
 
-    $sName = uplCreateFriendlyName($sName);
-    $sName = strtr($sName, "'", '.');
-    if (cFileHandler::exists($cfgClient[$client]['upl']['path'] . $sPath . $sName)) {
+    //Check directory name
+    $dName = uplCreateFriendlyName($sName);
+    $dName = strtr($dName, "'", '.');
+    if ($dName != $sName) {
+        $action = 'upl_mkdir';
+        return '0703';
+    }
+
+    //Check dir or create new
+    $dPath = $cfgClient[$client]['upl']['path'] . $sPath . $dName;
+    if (cDirHandler::read($dPath) !== false) {
+        //Directory already exist
         $action = 'upl_mkdir';
         return '0702';
     } else {
-        $oldumask = umask(0);
-        @mkdir($cfgClient[$client]['upl']['path'] . $sPath . $sName, 0775);
-        umask($oldumask);
+        //Create new dir
+        return cDirHandler::create($dPath);
     }
 }
 

@@ -247,6 +247,14 @@ class cAjaxRequest {
                 $image = new cContentTypeImgeditor($artReturn, $imageId, array());
 
                 $string = $image->uplmkdir($path, $name);
+                switch ($string) {
+                    case '0702' :
+                        $string = i18n('Directory already exist.');
+                        break;
+                    case '0703' :
+                        $string = i18n('Directories with special characters and spaces are not allowed.');
+                        break;
+                }
                 break;
 
             case 'upl_upload':

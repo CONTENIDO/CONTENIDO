@@ -17,12 +17,11 @@
             var myLoc = window.location.href;
             if (myLoc.indexOf('action=upl_delete') != -1) {
                 var right_bottom = top.content.right.right_bottom;
-                $('body', window.parent.parent.right.right_bottom.document).remove();
+                $('body', window.parent.parent.right.right_bottom.document).html('');
                 $('#navlist', window.parent.parent.right.right_top.document).remove();
                 $('#root').click();
             }
         });
-
 
         var sid = "{SID}";
 

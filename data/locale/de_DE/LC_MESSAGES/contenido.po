@@ -3247,6 +3247,10 @@ msgstr "Die folgenden Dateien konnten nicht gelöscht werden:"
 msgid "Failed to remove directory %s"
 msgstr "Folgendes Verzeichnis konnte nicht verschoben werden: %s"
 
+#: includes/include.upl_dirs_overview.php:124
+msgid "Directories with special characters and spaces are not allowed."
+msgstr "Verzeichnisse mit Sonderzeichen und Leerzeichen sind nicht erlaubt."
+
 #: includes/include.upl_dirs_overview.php:137
 msgid "Upload directory"
 msgstr "Upload-Verzeichnis"
@@ -4743,6 +4747,10 @@ msgstr "idart"
 #: classes/class.ajax.php:303
 msgid "Confirmation Required"
 msgstr "Bestätigung erforderlich"
+
+#: classes/class.ajax.php:253
+msgid "Directory already exist."
+msgstr "Verzeichnis bereits vorhanden."
 
 #: classes/content_types/class.content.type.linkeditor.php:200
 msgid "Link settings"

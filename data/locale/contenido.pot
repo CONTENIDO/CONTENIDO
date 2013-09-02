@@ -252,6 +252,10 @@ msgstr ""
 msgid "idart"
 msgstr ""
 
+#: classes/class.ajax.php:253
+msgid "Directory already exist."
+msgstr ""
+
 #: classes/class.ajax.php:303
 msgid "Confirmation Required"
 msgstr ""
@@ -5130,6 +5134,10 @@ msgstr ""
 #: includes/include.upl_dirs_overview.php:124
 #, php-format
 msgid "Failed to remove directory %s"
+msgstr ""
+
+#: includes/include.upl_dirs_overview.php:134
+msgid "Directories with special characters and spaces are not allowed."
 msgstr ""
 
 #: includes/include.upl_dirs_overview.php:137

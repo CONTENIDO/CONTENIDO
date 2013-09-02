@@ -19,7 +19,7 @@ cInclude("includes", "functions.con.php");
 cInclude("includes", "functions.str.php");
 
 if (!(int) $client > 0) {
-    // f there is no client selected, display empty page
+    // if there is no client selected, display empty page
     $oPage = new cGuiPage("upl_dirs_overview");
     $oPage->render();
     return;
@@ -128,6 +128,11 @@ if ($action == "upl_delete") {
 }
 
 $tpl->reset();
+
+// Show notification for error in dir name from upl_mkdir.action
+if ($errno === '0703') {
+    $tpl->set('s', 'WARNING', $notification->returnNotification('error', i18n('Directories with special characters and spaces are not allowed.')));
+}
 
 $file = 'Upload';
 $pathstring = '';

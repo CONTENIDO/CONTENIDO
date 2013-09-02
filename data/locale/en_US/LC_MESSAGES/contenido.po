@@ -3331,6 +3331,10 @@ msgstr ""
 msgid "Failed to remove directory %s"
 msgstr ""
 
+#: includes/include.upl_dirs_overview.php:134
+msgid "Directories with special characters and spaces are not allowed."
+msgstr ""
+
 #: includes/include.upl_dirs_overview.php:137
 msgid "Upload directory"
 msgstr ""
@@ -4774,6 +4778,10 @@ msgstr ""
 
 #: classes/class.ajax.php:303
 msgid "Confirmation Required"
+msgstr ""
+
+#: classes/class.ajax.php:253
+msgid "Directory already exist."
 msgstr ""
 
 #: classes/content_types/class.content.type.linkeditor.php:200
@@ -6980,4 +6988,3 @@ msgstr ""
 #: ../data/config/production/cfg_actions.inc.php:215
 msgid "Fake permissions"
 msgstr ""
-

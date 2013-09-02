@@ -308,7 +308,7 @@ cContentTypeLinkeditor.prototype.createMKDir = function() {
             url: self.pathBackend + 'ajaxmain.php',
             data: 'ajax=upl_mkdir&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&foldername=' + folderName + '&contenido=' + self.session,
             success: function(msg) {//make create folder
-                if (msg !== '0702') {
+                if (msg === '1') {
                     // reset input field
                     $('input[name="foldername"]').val('');
                     // update directory list
@@ -340,6 +340,8 @@ cContentTypeLinkeditor.prototype.createMKDir = function() {
                             }
                         }
                     });
+                } else {
+                    alert(msg);
                 }
             }
         });
