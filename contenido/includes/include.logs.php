@@ -43,6 +43,7 @@ $userselect = '<option value="%">' . i18n("All users") . '</option>';
 $actions = $actionColl->getAvailableActions();
 $actionselect = '<option value="%">' . i18n("All actions") . '</option>';
 $clientList = $clientColl->getAccessibleClients();
+$idqaction = "%";
 
 //select current client per default
 if (!isset($idqclient)) {
@@ -172,7 +173,7 @@ if ($_REQUEST['toyear'] > 0) {
 }
 
 $entries = array(
-    0   => i18n('Unlimited'),
+    1   => i18n('Unlimited'),
     10  => '10 '. i18n('Entries'),
     20  => '20 '. i18n('Entries'),
     30  => '30 '. i18n('Entries'),
@@ -213,9 +214,16 @@ $tpl->set('s', 'LANGUAGE', $olangauge->render());
 
 $fromdate = $fromyear->getDefault() . '-' . $frommonth->getDefault() . '-' . $fromday->getDefault() . ' 00:00:00';
 $todate = $toyear->getDefault() . '-' . $tomonth->getDefault() . '-' . $today->getDefault() . ' 23:59:59';
-$limitsql = ($limit == 0) ? '' : $db->escape($limit);
+$limitsql = "";
+if($limit == 1) {
+    $limitsql = "";
+} else if($limit == 0) {
+    $limitsql = "10";
+} else {
+    $limitsql = $db->escape($limit);
+}
 
-if ($idquser == '%') {
+if ($idquser == '%' || $idquser == "") {
     $userarray = array();
     $users = $userColl->getAccessibleUsers(explode(',', $auth->auth['perm']));
     foreach ($users as $key => $value) {
@@ -307,7 +315,8 @@ while ($oItem = $actionLogColl->next()) {
     $tpl->set('d', 'RUSER' , $users[$oItem->get('user_id')]['username']);
     $tpl->set('d', 'RLANG', $aDisplayLangauge[$oItem->get('idlang')]);
     $areaname = $classarea->getAreaName($actionColl->getAreaForAction($oItem->get('idaction')));
-    $actionDescription =  $lngAct[$areaname][$actionColl->getActionName($oItem->get('idaction'))];
+    //the conversion of areaname may seem pointless, but it's apparently the only way to get the $langAct[''][*] array entries
+    $actionDescription =  $lngAct[($areaname == "") ? "" : $areaname][$actionColl->getActionName($oItem->get('idaction'))];
     if ($actionDescription == '') {
         $actionDescription = $actionColl->getActionName($oItem->get('idaction'));
     }

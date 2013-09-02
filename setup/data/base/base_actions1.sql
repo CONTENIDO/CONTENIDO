@@ -1,5 +1,6 @@
 DELETE FROM !PREFIX!_actions WHERE idaction <= 10000;
 INSERT INTO !PREFIX!_actions VALUES('63', '1', '10', 'con_makestart', '', '', '1');
+INSERT INTO !PREFIX!_actions VALUES('330', '0', '0', 'login', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('2', '1', '33', 'con_makeonline', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('3', '1', '41', 'con_deleteart', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('5', '3', '30', 'con_edit', '', '', '1');
