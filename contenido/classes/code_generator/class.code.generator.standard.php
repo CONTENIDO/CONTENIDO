@@ -267,6 +267,15 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $sMetatags = '';
         foreach ($metaTags as $value) {
 
+            // get meta tag keys
+            $valueKeys = array_keys($value);
+            $nameKey   = 'name';
+            foreach ($valueKeys as $key) {
+
+                if ($key != 'content') $nameKey = $key;
+
+            }
+
             // decode entities and htmlspecialchars, content will be converted
             // later using conHtmlSpecialChars() by render() function
             if (isset($value['content'])) {
@@ -283,7 +292,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $oMetaTagGen->removeAttribute('id');
 
             // check if metatag already exists
-            $sPattern = '/(<meta(?:\s+)name(?:\s*)=(?:\s*)(?:\\"|\\\')(?:\s*)' . $value['name'] . '(?:\s*)(?:\\"|\\\')(?:[^>]+)>\n?)/i';
+            $sPattern = '/(<meta(?:\s+)' . $nameKey . '(?:\s*)=(?:\s*)(?:\\"|\\\')(?:\s*)' . $value[$nameKey] . '(?:\s*)(?:\\"|\\\')(?:[^>]+)>\n?)/i';
             if (preg_match($sPattern, $this->_layoutCode, $aMatch)) {
                 $this->_layoutCode = str_replace($aMatch[1], $oMetaTagGen->render() . "\n", $this->_layoutCode);
             } else {
