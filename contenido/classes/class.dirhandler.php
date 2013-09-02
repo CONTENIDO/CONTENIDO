@@ -112,7 +112,7 @@ class cDirHandler {
         }
         // chmod needs octal value for correct execution.
         $mode = intval($mode, 8);
-        return chmod($dirname, $mode);
+        return @chmod($dirname, $mode);
     }
 
     /**

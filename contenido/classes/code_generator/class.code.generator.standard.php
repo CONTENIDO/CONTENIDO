@@ -322,7 +322,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         if ($this->_layout == false && $this->_save == true) {
             if (!is_dir($cfgClient[$this->_client]['code']['path'])) {
                 mkdir($cfgClient[$this->_client]['code']['path']);
-                chmod($cfgClient[$this->_client]['code']['path'], 0777);
+                @chmod($cfgClient[$this->_client]['code']['path'], 0777);
                 cFileHandler::write($cfgClient[$this->_client]['code']['path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
 
