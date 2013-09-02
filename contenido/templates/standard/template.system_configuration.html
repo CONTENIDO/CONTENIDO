@@ -1,9 +1,34 @@
 <script type="text/javascript">
+	var reloadHeader = {RELOAD_HEADER};
+	
+	var wasNull = false;
+	
     $(function() {
         $('input[name="debug{_}debug_to_screen"]').change(function() {
             $('#debug_msg', parent.parent.frames['header'].window.document).toggle();
         });
-        parent.parent.frames['header'].location.reload();
+        if(reloadHeader) {
+        	parent.parent.frames['header'].location.reload();
+        	reloadMenu();
+        }
     });
+    
+
+    function reloadMenu() {
+    	if(parent.parent.frames['header'].document.getElementById("sub_system") == null) {
+    		wasNull = true;
+    		window.setTimeout("reloadMenu()", 20);
+    		return;
+    	}
+    	if(!wasNull) {
+    		window.setTimeout("reloadMenu()", 20);
+    		return;
+    	}
+
+    	parent.parent.frames['header'].HeaderClickMenu.activate(parent.parent.frames['header'].document.getElementById("main_5"));
+    	parent.parent.frames['header'].HeaderDelayMenu.activate(parent.parent.frames['header'].document.getElementById("main_5"));
+    	parent.parent.frames['header'].HeaderMenu.markActive(parent.parent.frames['header'].document.getElementById("sub_system"));
+    }
+    
 </script>
 {FORM}

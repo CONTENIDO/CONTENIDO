@@ -109,6 +109,7 @@ $propertyTypes = $propertyTypes['properties'];
 // get the stored settings
 $settings = getSystemProperties();
 
+$reloadHeader = false;
 // store the system properties
 if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have_perm_area_action($area, 'edit_sysconf')) {
     if (strpos($auth->auth['perm'], 'sysadmin') === false) {
@@ -137,6 +138,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
                         // also update the settings array because it is used below
                         $settings[$type][$name] = $value;
                         $stored = true;
+
+                        if(($type == "debug" && $name == "debug_to_screen") || ($type == "system" && $name == "clickmenu")) {
+                            $reloadHeader = true;
+                        }
                     }
                 }
             }
@@ -198,6 +203,7 @@ foreach ($groups as $groupName => $groupSettings) {
 
 // show error if user is not allowed to see the page
 if ($perm->have_perm_area_action($area, 'edit_sysconf')) {
+    $page->set("s", "RELOAD_HEADER", ($reloadHeader) ? "true" : "false");
     $page->set('s', 'FORM', $form->render());
 } else {
     $page->displayCriticalError(i18n('Access denied'));
