@@ -49,7 +49,7 @@ if (isset($_GET['appendparameters'])) {
     $tpl->set('s', 'WIDTH', getEffectiveSetting('backend', 'leftframewidth', 245));
 }
 
-$tpl->set('s', 'VERSION',  $cfg['version']);
+$tpl->set('s', 'VERSION',  CON_VERSION);
 $tpl->set('s', 'LOCATION', $backendUrl);
 
 // Hide menu-frame for some areas

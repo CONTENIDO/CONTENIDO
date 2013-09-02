@@ -129,7 +129,7 @@ $tpl->set('s', 'BACKEND_LABEL', $backend_label);
 // Template settings
 $tpl->set('s', 'HEADER', str_replace('&', '&amp;', $sess->url('header.php?changelang=' . $lang . '&changeclient=' . $client)));
 $tpl->set('s', 'CONTENT', str_replace('&', '&amp;', $sess->url('frameset.php?area=mycontenido&frame=1&menuless=1&changelang=' . $changelang . '&lang=' . $lang . '&client=' . $client)));
-$tpl->set('s', 'VERSION', $cfg['version']);
+$tpl->set('s', 'VERSION', CON_VERSION);
 $tpl->set('s', 'LOCATION', $backendUrl);
 $tpl->set('s', 'CONTENIDOPATH', $backendUrl . 'favicon.ico');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset']);

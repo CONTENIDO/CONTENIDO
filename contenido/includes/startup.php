@@ -73,6 +73,15 @@ if (!defined('CON_ENVIRONMENT')) {
     define('CON_ENVIRONMENT', $sEnvironment);
 }
 
+/*
+ * SetEnv CON_VERSION
+ */
+if (!defined('CON_VERSION')) {
+
+    define('CON_VERSION', '4.9.0');
+
+}
+
 // (string) Path to folder containing all contenido configuration files
 //          Use environment setting!
 $cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CON_ENVIRONMENT . '/';

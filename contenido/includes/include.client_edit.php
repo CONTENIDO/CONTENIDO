@@ -180,7 +180,7 @@ $tpl->set('d', 'BRDRT', 1);
 $tpl->set('d', 'BRDRB', 0);
 
 $tpl->set('d', 'CATNAME', i18n("Client name"));
-$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace(array('*/','/*','//','\\','"'),'',$oClient->get("name")), 75, 255));
+$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace(array('*/','/*','//','\\','"'),'',$oClient->get("name"))), 75, 255);
 $tpl->set('d', 'CATFIELD', $oTxtClient->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);

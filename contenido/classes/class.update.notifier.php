@@ -389,7 +389,7 @@ class cUpdateNotifier {
      * Detects and converts the minor release of the system version
      */
     protected function detectMinorRelease() {
-        $sVersion = $this->aCfg['version'];
+        $sVersion = CON_VERSION;
         $aExplode = explode(".", $sVersion);
         $sMinorRelease = "con" . $aExplode[0] . $aExplode[1];
         $this->sMinorRelease = $sMinorRelease;
@@ -581,7 +581,7 @@ class cUpdateNotifier {
      * @return string
      */
     protected function checkPatchLevel() {
-        $sVersionCompare = version_compare($this->aCfg['version'], $this->sVendorVersion);
+        $sVersionCompare = version_compare(CON_VERSION, $this->sVendorVersion);
         return $sVersionCompare;
     }
 
@@ -769,7 +769,7 @@ class cUpdateNotifier {
             $sMessage = sprintf(i18n("A new version of CONTENIDO is available! <br /> <a href='%s' class='blue' target='_blank'>Download %s now!</a>"), $sVendorDownloadURL, $this->sVendorVersion);
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->checkPatchLevel() == "1") {
-            $sMessage = sprintf(i18n('It seems to be that your version string was manipulated. CONTENIDO %s does not exist!'), $this->aCfg['version']);
+            $sMessage = sprintf(i18n('It seems to be that your version string was manipulated. CONTENIDO %s does not exist!'), CON_VERSION);
             $sOutput = $this->renderOutput($sMessage);
         } else {
             $sMessage = i18n('Your version of CONTENIDO is up to date!');

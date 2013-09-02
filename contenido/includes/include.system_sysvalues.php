@@ -102,7 +102,7 @@ $tpl->set('s', 'SYSTEM_STATISTICS', $sSystemStatistics);
 $sql_server_info = $db->getServerInfo();
 
 $aInstalledVersions = array(
-    array(i18n('CONTENIDO version'), $cfg['version']),
+    array(i18n('CONTENIDO version'), CON_VERSION),
     array(i18n('Server operating system'), $_SERVER['SERVER_SOFTWARE']),
     array(i18n('Installed PHP version'), phpversion()),
     array(i18n('Database server version'), $sql_server_info['description']),

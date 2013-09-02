@@ -366,7 +366,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $addVersion = true;
         if ($addVersion) {
             $cfg = cRegistry::getConfig();
-            $aVersion = explode('.', $cfg['version']);
+            $aVersion = explode('.', CON_VERSION);
             $generator .= ' ' . $aVersion[0] . '.' . $aVersion[1];
         }
         $metaTags[] = array(

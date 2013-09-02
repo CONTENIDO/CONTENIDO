@@ -42,7 +42,7 @@ i18nInit($cfg['path']['contenido_locale'], $belang);
 // do not call cRegistry::shutdown(); here because
 // it will print <script> tags which result in errors
 
-$baseurl = $cfg['help_url'] . 'front_content.php?version='.$cfg['version'].'&help=';
+$baseurl = $cfg['help_url'] . 'front_content.php?version='.CON_VERSION.'&help=';
 ?>
 
 function callHelp (path)

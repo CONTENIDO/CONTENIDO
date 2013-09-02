@@ -45,7 +45,7 @@ if (isset($_GET['appendparameters'])) {
     $tpl->set('s', 'FRAME[4]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=4")));
 }
 
-$tpl->set('s', 'VERSION', $cfg['version']);
+$tpl->set('s', 'VERSION', CON_VERSION);
 $tpl->set('s', 'CONTENIDOPATH', cRegistry::getBackendUrl() . 'favicon.ico');
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_right']);

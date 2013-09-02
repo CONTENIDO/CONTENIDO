@@ -47,7 +47,7 @@ if (isset($_GET['appendparameters'])) {
     $tpl->set('s', 'FRAME[3]', 'templates/standard/template.deco.html');
 }
 
-$tpl->set('s', 'VERSION', $cfg['version']);
+$tpl->set('s', 'VERSION', CON_VERSION);
 $tpl->set('s', 'CONTENIDOPATH', cRegistry::getBackendUrl() . 'favicon.ico');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_left']);
 

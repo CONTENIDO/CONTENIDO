@@ -20,7 +20,7 @@ $tpl->reset();
 
 $message = sprintf(i18n("You can find many information and a community forum on the <a href=\"http://forum.contenido.org\" target=\"_blank\">CONTENIDO Portal</a>"));
 
-$tpl->set('s', 'VERSION', $cfg['version']);
+$tpl->set('s', 'VERSION', CON_VERSION);
 $tpl->set('s', 'PORTAL', $message);
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['info']);
 
