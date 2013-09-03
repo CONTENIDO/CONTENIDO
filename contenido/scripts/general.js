@@ -377,3 +377,19 @@ function conMarkSubmenuItem(id) {
     } catch (e) {
     }
 }
+
+
+/**
+ * Returns true if the parameter is a valid URL
+ * 
+ * @param {String} value The string which will be checked
+ * @returns {Boolean} True if value is a URL
+ */
+function validateURL(value) {
+    var urlregex = /(http:\/\/www.|https:\/\/www.|www.|http:\/\/|https:\/\/){1}(([0-9A-Za-z]+\.))|(localhost)/
+    if (urlregex.test(value)) {
+        return true;
+    }
+    return false;
+}
+

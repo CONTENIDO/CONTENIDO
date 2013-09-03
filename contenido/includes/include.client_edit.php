@@ -32,7 +32,19 @@ if (!empty($idclient) && is_numeric($idclient)) {
     $oClient = new cApiClient(cSecurity::toInteger($idclient));
 }
 
-if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))) {
+$valid = ($clientname != "" && $frontendpath != "" && preg_match("^(http:\/\/www.|https:\/\/www.|www.|http:\/\/|https:\/\/){1}(([0-9A-Za-z]+\.))|(localhost)^", $htmlpath));
+if((!strstr($_SERVER["HTTP_REFERER"], "frame=2")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=1")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=3")) && (!$valid)) {
+    $notif = new cGuiNotification();
+    if($clientname == "") {
+        $notif->displayNotification(cGuiNotification::LEVEL_ERROR, i18n("The client must have a name!"));
+    } else if($frontendpath == "") {
+        $notif->displayNotification(cGuiNotification::LEVEL_ERROR, i18n("The client must have a frontend path. This is where the client's files will be stored."));
+    } else {
+        $notif->displayNotification(cGuiNotification::LEVEL_ERROR, i18n("Please enter a valid URL. It has to start with http://... or https://..."));
+    }
+}
+
+if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action)) && $valid) {
     $sNewNotification = '';
     if ($active != '1') {
         $active = '0';
@@ -87,7 +99,6 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
                 $notification->displayNotification('warning', $message);
             }
         }
-
     } else {
         $pathwithoutslash = $frontendpath;
         if (substr($frontendpath, strlen($frontendpath) - 1) != '/') {
@@ -155,8 +166,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
 
 $tpl->reset();
 
-$htmlpath = '';
-$serverpath = '';
+
 if (isset($idclient)) {
     $htmlpath = $cfgClient[$idclient]['path']['htmlpath'];
     $serverpath = $cfgClient[$idclient]['path']['frontend'];
@@ -180,7 +190,7 @@ $tpl->set('d', 'BRDRT', 1);
 $tpl->set('d', 'BRDRB', 0);
 
 $tpl->set('d', 'CATNAME', i18n("Client name"));
-$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace(array('*/','/*','//','\\','"'),'',$oClient->get("name"))), 75, 255);
+$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace(array('*/','/*','//','\\','"'),'', ($oClient->isLoaded()) ? $oClient->get("name") : $clientname)), 75, 255, "clientname");
 $tpl->set('d', 'CATFIELD', $oTxtClient->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
@@ -191,7 +201,7 @@ if ($serverpath == '') {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Server path"));
-$oTxtServer = new cHTMLTextbox("frontendpath", conHtmlSpecialChars($serverpath), 75, 255);
+$oTxtServer = new cHTMLTextbox("frontendpath", conHtmlSpecialChars($serverpath), 75, 255, "frontendpath");
 $tpl->set('d', 'CATFIELD', $oTxtServer->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
@@ -202,7 +212,7 @@ if ($htmlpath == '') {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Web address"));
-$oTxtWeb = new cHTMLTextbox("htmlpath", conHtmlSpecialChars($htmlpath), 75, 255);
+$oTxtWeb = new cHTMLTextbox("htmlpath", conHtmlSpecialChars($htmlpath), 75, 255, "htmlpath");
 $tpl->set('d', 'CATFIELD', $oTxtWeb->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);

@@ -7,6 +7,7 @@
     <meta http-equiv="pragma" content="no-cache">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript">
@@ -17,6 +18,26 @@
             left_bottom.location.href = href+'&idclient='+"{IDCLIENT}";
         }
     </script>
+    
+    <script type="text/javascript">
+    	$(document).ready(function() {
+			$("#submit_button").mousedown(function() {
+				if(!validateURL($("#htmlpath").val())) {
+					showNotification("Error", "i18n("Please enter a valid URL. It has to start with http://... or https://...")");
+					return;
+				}
+				if($("#clientname").val() == "") {
+					showNotification("Error", "i18n("The client must have a name!")");
+					return;
+				}
+				if($("#frontendpath").val() == "") {
+					showNotification("Error", "i18n("The client must have a frontend path. This is where the client's files will be stored.")");
+					return;
+				}
+			});
+    	});
+    </script>
+    
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
 </head>
@@ -36,9 +57,17 @@
     <!-- END:BLOCK -->
     <tr id="{ROWNAME}" >
         <td valign="top" style="border-right-width: 0px; padding-left:{PADDING_LEFT}px">&nbsp;</td>
-        <td valign="top" align="right"><a accesskey="c" href="{CANCELLINK}"><img border="0" src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a><img src="images/spacer.gif" width="20"><input accesskey="s" type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}" border="0"></td>
+        <td valign="top" align="right"><a accesskey="c" href="{CANCELLINK}"><img border="0" src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a><img src="images/spacer.gif" width="20"><input id="submit_button" accesskey="s" type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}" border="0"></td>
     </tr>
 </table>
 </form>
 </body>
 </html>
+
+<!-- 
+
+i18n("Please enter a valid URL. It has to start with http://... or https://...")
+i18n("The client must have a name!")
+i18n("The client must have a frontend path. This is where the client's files will be stored.")
+ -->
+
