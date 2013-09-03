@@ -322,7 +322,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     // Redirect
     $tpl->set('s', 'WEITERLEITUNG', i18n("Redirect"));
-    $tpl->set('s', 'CHECKBOX', '<input ' . $disabled . ' onclick="document.getElementById(\'redirect_url\').disabled = !this.checked;" type="checkbox" name="redirect" value="1" ' . $tmp_redirect_checked . '>');
+    $tpl->set('s', 'CHECKBOX', '<input id="checkbox_forwarding" ' . $disabled . ' onclick="document.getElementById(\'redirect_url\').disabled = !this.checked;" type="checkbox" name="redirect" value="1" ' . $tmp_redirect_checked . '>');
 
     // Redirect - URL
     if ($tmp_redirect_checked != '') {

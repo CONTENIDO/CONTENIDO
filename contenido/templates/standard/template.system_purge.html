@@ -237,11 +237,11 @@
                 <legend>{CLIENT_CHOOSE}</legend>
                 <div class="system_clear_form_row clearfix">
                     <input id="select_all_clients" class="input" name="selectClient" type="radio" value="all">
-                    <label class="labelrightCol">{CLIENT_SELECT_ALL}</label>
+                    <label for="select_all_clients" class="labelrightCol">{CLIENT_SELECT_ALL}</label>
                 </div>
                 <div class="system_clear_form_row clearfix">
                     <input id="available_clients" class="input" name="selectClient" type="radio" value="list">
-                    <label class="labelrightCol">{CLIENT_SELECT}</label>
+                    <label for="available_clients" class="labelrightCol">{CLIENT_SELECT}</label>
                 </div>
                 <div class="system_clear_form_row" id="select_list_clients" style="display:none;">
                     {SELECT_CLIENT}
@@ -249,33 +249,33 @@
             </fieldset>
 
             <div class="system_clear_form_row clearfix">
-                <input class="input" name="conCode" type="checkbox" value="1">
-                <label class="labelrightCol">{CON_CODE}</label>
+                <input id="checkbox_concode" class="input" name="conCode" type="checkbox" value="1">
+                <label for="checkbox_concode" class="labelrightCol">{CON_CODE}</label>
             </div>
 
             <div class="system_clear_form_row clearfix">
-                <input class="input" name="conCatArt" type="checkbox" value="1">
-                <label class="labelrightCol">{CON_CAT_ART}</label>
+                <input id="checkbox_concatart" class="input" name="conCatArt" type="checkbox" value="1">
+                <label for="checkbox_concatart" class="labelrightCol">{CON_CAT_ART}</label>
             </div>
 
             <div class="system_clear_form_row clearfix">
-                <input class="input" name="clientCache" type="checkbox" value="1">
-                <label class="labelrightCol">{CLIENT_CACHE}</label>
+                <input id="checkbox_clientcache" class="input" name="clientCache" type="checkbox" value="1">
+                <label for="checkbox_clientcache" class="labelrightCol">{CLIENT_CACHE}</label>
             </div>
 
             <div class="system_clear_form_row clearfix">
-                <input class="input" name="clientLog" type="checkbox" value="1">
-                <label class="labelrightCol">{CLIENT_LOG}</label>
+                <input id="checkbox_clientlog" class="input" name="clientLog" type="checkbox" value="1">
+                <label for="checkbox_clientlog" class="labelrightCol">{CLIENT_LOG}</label>
             </div>
 
             <div class="system_clear_form_row clearfix">
-                <input class="input" name="clientHistory" type="checkbox" value="1">
-                <label class="labelrightCol">{CLIENT_HISTORY}</label>
+                <input id="checkbox_clienthistory" class="input" name="clientHistory" type="checkbox" value="1">
+                <label for="checkbox_clienthistory" class="labelrightCol">{CLIENT_HISTORY}</label>
             </div>
 
             <div class="system_clear_form_row clearfix">
-                <input class="input" name="keepHistory" type="checkbox" value="1">
-                <label class="label_middle">{NUMBER_OF_HISTORY}: </label>
+                <input id="checkbox_clearhistory" class="input" name="keepHistory" type="checkbox" value="1">
+                <label for="checkbox_clearhistory" class="label_middle">{NUMBER_OF_HISTORY}: </label>
                 <input class="input" name="keepHistoryNumber" type="text" value="10" style="width: 25px;" maxlength="5">
             </div>
 
@@ -289,23 +289,23 @@
         <div class="rightCol clearfix">
 
             <div class="system_clear_form_row clearfix">
-                <input class="input" name="conInuse" type="checkbox" value="1" {DEACTIVATED}>
-                <label class="labelrightCol">{CON_INUSE}</label>
+                <input id="checkbox_coninuse" class="input" name="conInuse" type="checkbox" value="1" {DEACTIVATED}>
+                <label for="checkbox_coninuse" class="labelrightCol">{CON_INUSE}</label>
             </div>
 
             <div class="system_clear_form_row clearfix">
-                <input class="input" name="conLog" type="checkbox" value="1" {DEACTIVATED}>
-                <label class="labelrightCol">{CON_LOG}</label>
+                <input id="checkbox_conlog" class="input" name="conLog" type="checkbox" value="1" {DEACTIVATED}>
+                <label for="checkbox_conlog" class="labelrightCol">{CON_LOG}</label>
             </div>
 
             <div class="system_clear_form_row clearfix">
-                <input class="input" name="conCache" type="checkbox" value="1" {DEACTIVATED}>
-                <label class="labelrightCol">{CON_CACHE}</label>
+                <input id="checkbox_concache" class="input" name="conCache" type="checkbox" value="1" {DEACTIVATED}>
+                <label for="checkbox_concache" class="labelrightCol">{CON_CACHE}</label>
             </div>
 
             <div class="system_clear_form_row clearfix">
-                <input class="input" name="conCronjobs" type="checkbox" value="1" {DEACTIVATED}>
-                <label class="labelrightCol">{CON_CRONJOB}</label>
+                <input id="checkbox_concronjobs" class="input" name="conCronjobs" type="checkbox" value="1" {DEACTIVATED}>
+                <label for="checkbox_concronjobs" class="labelrightCol">{CON_CRONJOB}</label>
             </div>
         </div>
       </div>
