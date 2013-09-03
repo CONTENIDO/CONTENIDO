@@ -1,5 +1,5 @@
 <script type="text/javascript">
-	var reloadHeader = {RELOAD_HEADER};
+	var reloadHeader = {RELOAD_HEADER}; //if a configuration was updated that requires the header frame to reload, this will be true
 	
 	var wasNull = false;
 	
@@ -15,6 +15,9 @@
     
 
     function reloadMenu() {
+    	//we're waiting for the header frame to be completely reloaded. This function is checking if the sub_system link vanishes and reappears
+    	//when this function is first called, the DOM is still loaded which means a simple check for the sub_system link will be true. Which leads to the header reloading AFTER we marked this sub-category
+    	//while the frame is reloading the DOM won't be loaded and we won't be able to find the sub_system tag. After the DOM reappears we're ready to apply changes
     	if(parent.parent.frames['header'].document.getElementById("sub_system") == null) {
     		wasNull = true;
     		window.setTimeout("reloadMenu()", 20);
