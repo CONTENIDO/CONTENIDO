@@ -472,7 +472,7 @@ function workflowSelect($listid, $default, $idcat) {
 function workflowInherit($idcat) {
     global $idclient, $cfg, $frame, $area, $workflowworkflows, $sess;
     $sUrl = $sess->url("main.php?area=$area&frame=$frame&modidcat=$idcat&action=workflow_inherit_down");
-    $sButton = '<a href="' . $sUrl . '"><img src="' . $cfg["path"]["images"] . 'pfeil_runter.gif" class="spaced" title="' . i18n("Inherit workflow to sub-categories") . '"></a>';
+    $sButton = '<a href="' . $sUrl . '"><img src="' . $cfg["path"]["images"] . 'pfeil_runter.gif" class="spaced" title="' . i18n("Inherit workflow to sub-categories", "workflow") . '"></a>';
     return $sButton;
 }
 
