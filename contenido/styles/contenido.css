@@ -2305,3 +2305,16 @@ table.inuse_tpl {
     margin-bottom: 10px;
     margin-top: 5px;
 }
+
+a.infoButton,
+infoButton:hover {
+	display: inline-block;
+	
+	width: 16px; 
+	height: 16px;
+	
+	background:transparent url(../images/info.gif) no-repeat;
+	
+	margin-bottom: -3px;
+}
+

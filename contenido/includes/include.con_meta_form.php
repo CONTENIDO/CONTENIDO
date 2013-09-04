@@ -145,7 +145,6 @@ $tpl->set('s', 'LINK', $art->getLink());
 $tpl->set('s', 'FULL_LINK', $cfgClient[$client]['path']['htmlpath'] . $art->getLink());
 
 $tpl->set('s', 'PAGE_TITLE', conHtmlSpecialChars(cSecurity::unFilter(stripslashes($art->getField('pagetitle')))));
-$tpl->set('s', 'PAGE_TITLE_INFO', i18n('The Title-Tag is one of the most important on-page factor for SEO and is no longer than 60 characters. It includes top keywords and the branding.'));
 
 $tpl->set('s', 'ALIAS', cSecurity::unFilter(stripslashes($art->getField('urlname'))));
 
@@ -258,20 +257,35 @@ foreach ($availableTags as $key => $value) {
 
     $tpl->next();
 }
-$tpl->set('s', 'DESCRIPTION_INFO', i18n('The Description-Tag describes the article in a short way (no more than 150 characters). The content should be related to the Title-Tag and the H1-Tag.'));
-$tpl->set('s', 'KEYWORD_INFO', i18n('No more than 6 Keywords should be used.'));
-$tpl->set('s', 'REVISIT_INFO', i18n('The frequency of the revisit after tag depend on new publications of the content. Nevertheless the robots decide on their own when to visit.'));
-$tpl->set('s', 'ROBOTS_INFO', i18n('Not important content or not to indicate pictures should be declared with the robot-tag. It has an high relevance for SEO. Only relevant and most visited articels should be indicated.'));
 
 $tpl->set('s', 'SITEMAP_PRIO', $art->getField('sitemapprio'));
-$tpl->set('s', 'SITEMAPRIORITY_INFO', i18n('The avarage value for the sitemap priority is 0.5. Only important articels should have an value no more than 0.8.'));
+
+$infoButton = new cGuiBackendHelpbox(i18n('The title-tag is one of the most important on-page factors for SEO and is not longer than 60 characters. It includes top keywords and the branding.'));
+$tpl->set("s", "INFO_BUTTON_PAGE_TITLE", $infoButton->render());
+
+$infoButton->setHelpText(i18n('The description-tag describes the article in a short way (not more than 150 characters). The content should be related to the title-tag and the H1-tag.'));
+$tpl->set("s", "INFO_BUTTON_DESCRIPTION", $infoButton->render());
+
+$infoButton->setHelpText(i18n('No more than 6 Keywords should be used.'));
+$tpl->set("s", "INFO_BUTTON_KEYWORDS", $infoButton->render());
+
+$infoButton->setHelpText(i18n('The frequency of the revisit after tag depends on new publications of the content. Nevertheless the robots decide on their own when to visit.'));
+$tpl->set("s", "INFO_BUTTON_REVISIT", $infoButton->render());
+
+$infoButton->setHelpText(i18n('The robot-tag sets certain rules for search engines. You can tell it to not index certain articles or to keep pictures in this article out of its index. It has a high relevance for SEO. Only relevant and most visited articels should be indexed.'));
+$tpl->set("s", "INFO_BUTTON_ROBOTS", $infoButton->render());
+
+$infoButton->setHelpText(i18n('The avarage value for the sitemap priority is 0.5. Only important articels should have a value no more than 0.8.'));
+$tpl->set("s", "INFO_BUTTON_SITEMAP_PRIORITY", $infoButton->render());
+
+$infoButton->setHelpText(i18n('The refresh rate is focused on the content.'));
+$tpl->set("s", "INFO_BUTTON_SITEMAP_FREQUENCY", $infoButton->render());
 
 $tpl->set('s', 'SELECTED_' . $art->getField('changefreq'), 'selected');
 $sitemapChangeFrequencies = array('', 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never');
 foreach ($sitemapChangeFrequencies as $value) {
     $tpl->set('s', 'SELECTED_' . $value, '');
 }
-$tpl->set('s', 'SITEMAPCHANGEFREQUENCY_INFO', i18n('The refresh rate is focused on the content.'));
 
 //Assign additional rows
 $additionalRows = ''; //call the chain to add additional rows

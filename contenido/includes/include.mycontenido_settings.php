@@ -15,10 +15,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-function generateInfoIcon($title, $id = '', $class = 'vAlignMiddle', $img = 'images/info.gif') {
-    return  '<img class="' . $class . '" id="' . $id . '" title="'. $title . '" src="' . $img . '">';
-}
-
 $cpage = new cGuiPage("mycontenido_settings", "", "2");
 
 $user = new cApiUser($auth->auth["uid"]);
@@ -171,9 +167,13 @@ $format = new cHTMLTextbox("format", $user->getUserProperty("dateformat", "full"
 $format2 = new cHTMLTextbox("formatdate", $user->getUserProperty("dateformat", "date"));
 $format3 = new cHTMLTextbox("formattime", $user->getUserProperty("dateformat", "time"));
 
-$form->add(i18n("Date/Time format"), array($format, ' ', generateInfoIcon(i18n("FORMAT_DATE_TIME")) ,$formathint));
-$form->add(i18n("Date format"), array($format2, ' ',  generateInfoIcon(i18n("FORMAT_DATE"))));
-$form->add(i18n("Time format"), array($format3, ' ',  generateInfoIcon(i18n("FORMATE_TIME"))));
+$infoButton = new cGuiBackendHelpbox(i18n("FORMAT_DATE_TIME"));
+
+$form->add(i18n("Date/Time format"), array($format, ' ', $infoButton->render() ,$formathint));
+$infoButton->setHelpText(i18n("FORMAT_DATE"));
+$form->add(i18n("Date format"), array($format2, ' ',  $infoButton->render()));
+$infoButton->setHelpText(i18n("FORMATE_TIME"));
+$form->add(i18n("Time format"), array($format3, ' ',  $infoButton->render()));
 
 $cpage->setContent(array($form));
 $cpage->render();

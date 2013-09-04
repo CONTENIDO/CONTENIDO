@@ -191,10 +191,15 @@ if ($action == "lang_newlanguage") {
             $form->add(i18n("Text direction"), $directionSelect);
 
             $form->addSubHeader(i18n("Time format"));
-            $form->add(i18n("Date/Time format"), $fulldateformat->render().' '.generateInfoIcon(i18n("FORMAT_DATE_TIME")));
-            $form->add(i18n("Date format"), $dateformat->render().' '.generateInfoIcon(i18n("FORMAT_DATE")));
-            $form->add(i18n("Time format"), $timeformat->render().' '.generateInfoIcon(i18n("FORMATE_TIME")));
-            $form->add(i18n("Date/Time locale"), $dateLocale->render().' '.generateInfoIcon(i18n("LANUAGE_DATE_TIME")));
+
+            $infoButton = new cGuiBackendHelpbox(i18n("FORMAT_DATE_TIME"));
+            $form->add(i18n("Date/Time format"), $fulldateformat->render().' '.$infoButton->render());
+            $infoButton->setHelpText(i18n("FORMAT_DATE"));
+            $form->add(i18n("Date format"), $dateformat->render().' '.$infoButton->render());
+            $infoButton->setHelpText(i18n("FORMATE_TIME"));
+            $form->add(i18n("Time format"), $timeformat->render().' '.$infoButton->render());
+            $infoButton->setHelpText(i18n("LANUAGE_DATE_TIME"));
+            $form->add(i18n("Date/Time locale"), $dateLocale->render().' '.$infoButton->render());
 
             $page->setContent($form);
 

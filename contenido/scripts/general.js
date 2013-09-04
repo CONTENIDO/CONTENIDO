@@ -393,3 +393,16 @@ function validateURL(value) {
     return false;
 }
 
+
+$(document).ready(function () {
+    $("a.i-link").each(function () {
+        var id = $(this).attr("id").substring(0, $(this).attr("id").indexOf("-link"));
+        $(this).aToolTip({
+            clickIt:    true,
+            xOffset:    -20,
+            yOffset:    4,
+            outSpeed:   250,
+            tipContent: $("#" + id).html()
+        });
+    });
+});

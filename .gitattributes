@@ -185,6 +185,7 @@ contenido/classes/exceptions/class.exception.underflow.php -text
 contenido/classes/exceptions/class.exception.unexpectedvalue.php -text
 contenido/classes/genericdb/class.gdb.driver.php -text
 contenido/classes/genericdb/class.gdb.mysql.php -text
+contenido/classes/gui/class.backendhelpbox.php -text
 contenido/classes/gui/class.foldingrow.php -text
 contenido/classes/gui/class.list.php -text
 contenido/classes/gui/class.menu.php -text
@@ -1933,6 +1934,8 @@ contenido/scripts/jquery/ajaxupload.js -text
 contenido/scripts/jquery/fileuploader.js -text svneol=unset#text/plain
 contenido/scripts/jquery/jquery-ui.js -text
 contenido/scripts/jquery/jquery.js -text
+contenido/scripts/jquery/plugins/atooltip.jquery.js -text svneol=unset#text/plain
+contenido/scripts/jquery/plugins/atooltip.min.jquery.js -text svneol=unset#text/plain
 contenido/scripts/jquery/plugins/datepicker-de.js -text svneol=unset#text/plain
 contenido/scripts/jquery/plugins/timepicker-de.js -text svneol=unset#text/plain
 contenido/scripts/jquery/plugins/timepicker.js -text svneol=unset#text/plain
@@ -1963,6 +1966,7 @@ contenido/styles/content_types/cms_teaser.css -text svneol=unset#text/plain
 contenido/styles/index.php -text
 contenido/styles/inuse.css -text
 contenido/styles/jquery/fileuploader.css -text svneol=unset#text/plain
+contenido/styles/jquery/images/infoBtn.gif -text
 contenido/styles/jquery/images/loading.gif -text
 contenido/styles/jquery/images/ui-bg_flat_0_aaaaaa_40x100.png -text
 contenido/styles/jquery/images/ui-bg_flat_75_ffffff_40x100.png -text
@@ -1978,6 +1982,7 @@ contenido/styles/jquery/images/ui-icons_454545_256x240.png -text
 contenido/styles/jquery/images/ui-icons_888888_256x240.png -text
 contenido/styles/jquery/images/ui-icons_cd0a0a_256x240.png -text
 contenido/styles/jquery/jquery-ui.css -text svneol=unset#text/plain
+contenido/styles/jquery/plugins/atooltip.css -text svneol=unset#text/plain
 contenido/styles/jquery/plugins/timepicker.css -text svneol=unset#text/plain
 contenido/styles/jquery/plugins/tipsy.css -text
 contenido/styles/str_overview.css -text

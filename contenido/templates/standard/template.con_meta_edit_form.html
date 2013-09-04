@@ -7,10 +7,12 @@
 <meta http-equiv="pragma" content="no-cache">
 <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
+<link rel="stylesheet" type="text/css" href="styles/jquery/plugins/atooltip.css">
 <link rel="stylesheet" type="text/css" href="styles/contenido.css">
 <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
 <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
+<script type="text/javascript" src="scripts/jquery/plugins/atooltip.jquery.js"></script>
 <script type="text/javascript" src="scripts/general.js"></script>
 <!-- get javascript files for language != en -->
 {CAL_LANG}
@@ -119,7 +121,7 @@ table.generic td.leftData {
                         value="{PAGE_TITLE}"
                         {DISABLED}
                     />
-                    <img class="vAlignMiddle" title="{PAGE_TITLE_INFO}" src="images/info.gif" />
+                    {INFO_BUTTON_PAGE_TITLE}
                 </td>
             </tr>
 
@@ -140,7 +142,7 @@ table.generic td.leftData {
                         rows="3"
                         {DISABLED}
                     >{DESCRIPTION}</textarea>
-                    <img class="vAlignMiddle" title="{DESCRIPTION_INFO}" src="images/info.gif" />
+                    {INFO_BUTTON_DESCRIPTION}
                 </td>
             </tr>
 
@@ -154,7 +156,7 @@ table.generic td.leftData {
                         rows="3"
                         {DISABLED}
                     >{KEYWORDS}</textarea>
-                    <img class="vAlignMiddle" title="{KEYWORD_INFO}" src="images/info.gif" />
+                    {INFO_BUTTON_KEYWORDS}
                 </td>
             </tr>
 
@@ -228,7 +230,7 @@ table.generic td.leftData {
                         size="24"
                         {DISABLED}
                     />
-                    <img class="vAlignMiddle" title="{REVISIT_INFO}" src="images/info.gif" />
+                    {INFO_BUTTON_REVISIT}
                 </td>
             </tr>
 
@@ -287,11 +289,7 @@ table.generic td.leftData {
                         {DISABLED}
                     />
                     <label for="metaNoArchive">noarchive</label><br />
-                    <img
-                        class="vAlignMiddle"
-                        title="{ROBOTS_INFO}"
-                        src="images/info.gif"
-                    />
+					{INFO_BUTTON_ROBOTS}
                 </td>
             </tr>
 
@@ -305,7 +303,7 @@ table.generic td.leftData {
                         value="{SITEMAP_PRIO}"
                         size="24"{DISABLED}
                     />
-                    <img class="vAlignMiddle" title="{SITEMAPRIORITY_INFO}" src="images/info.gif" />
+                    {INFO_BUTTON_SITEMAP_PRIORITY}
                 </td>
             </tr>
 
@@ -328,7 +326,7 @@ table.generic td.leftData {
                         <option {SELECTED_yearly}>yearly</option>
                         <option {SELECTED_never}>never</option>
                     </select>
-                    <img class="vAlignMiddle" title="{SITEMAPCHANGEFREQUENCY_INFO}" src="images/info.gif" />
+                    {INFO_BUTTON_SITEMAP_FREQUENCY}
                 </td>
             </tr>
 
