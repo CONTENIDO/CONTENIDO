@@ -140,6 +140,16 @@ if ($action == "mod_importexport_module") {
 
 $idmod = $module->get("idmod");
 
+//Check correct module Id
+if (!$idmod) {
+
+    $page = new cGuiPage('generic_page');
+    $page->abortRendering();
+    $page->render();
+    die();
+
+}
+
 if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $link = new cHTMLLink();
     $link->setCLink("mod_translate", 4, "");
