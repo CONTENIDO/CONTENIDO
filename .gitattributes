@@ -1497,6 +1497,7 @@ contenido/plugins/form_assistant/includes/include.right_bottom.form.php -text
 contenido/plugins/form_assistant/includes/include.right_bottom.form_ajax.php -text
 contenido/plugins/form_assistant/includes/include.right_bottom.form_data.php -text
 contenido/plugins/form_assistant/includes/include.right_bottom.form_fields.php -text
+contenido/plugins/form_assistant/includes/include.right_bottom.php -text
 contenido/plugins/form_assistant/includes/include.right_top.php -text
 contenido/plugins/form_assistant/locale/de_DE/LC_MESSAGES/form_assistant.po -text
 contenido/plugins/form_assistant/locale/en_US/LC_MESSAGES/form_assistant.po -text

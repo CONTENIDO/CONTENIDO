@@ -298,8 +298,18 @@ class PifaRightBottomFormPage extends cGuiPage {
             $withTimestampValue = (bool) $this->_pifaForm->get('with_timestamp');
         } else {
             $idform = NULL;
-            $nameValue = '';
-            $dataTableValue = '';
+
+            // read item data from form
+            $nameValue = empty($_POST['name']) ? '':$_POST['name'];
+            $nameValue = cSecurity::unescapeDB($nameValue);
+            $nameValue = cSecurity::toString($nameValue);
+            $nameValue = trim($nameValue);
+
+            $dataTableValue = empty($_POST['data_table']) ? '':$_POST['data_table'];
+            $dataTableValue = trim($dataTableValue);
+            $dataTableValue = strtolower($dataTableValue);
+            $dataTableValue = preg_replace('/[^a-z0-9_]/', '_', $dataTableValue);
+
             $methodValue = '';
             $withTimestampValue = true;
         }
