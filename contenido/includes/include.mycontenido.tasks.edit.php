@@ -51,7 +51,7 @@ $ui->add(i18n("Description"), $message->render());
 
 $reminderdue = new cHTMLTextbox("enddate", $todoitem->getProperty("todo", "enddate"), '', '', "enddate");
 
-$ui->add(i18n("End date"),'<table border="0"><tr><td>' . $reminderdue->render() . '</td><td></td></tr></table>');
+$ui->add(i18n("End date"), $reminderdue->render());
 
 $notiemail = new cHTMLCheckbox("notiemail", i18n("E-Mail notification"));
 $notiemail->setChecked($todoitem->getProperty("todo", "emailnoti"));
@@ -76,7 +76,7 @@ if (!$todoitem->getProperty("todo", "emailnoti")) {
     $reminderdate->setDisabled(true);
 }
 
-$ui->add(i18n("Reminder date"), '<table border="0"><tr><td>' . $reminderdate->render() . '</td><td></td></tr></table>');
+$ui->add(i18n("Reminder date"), $reminderdate->render());
 
 $todos = new TODOCollection();
 
@@ -95,10 +95,10 @@ $ui->add(i18n("Progress"), $progress->render()."%");
 
 $cpage->setContent(array($ui));
 $cpage->addStyle("jquery/plugins/timepicker.css");
-$cpage->addStyle("jquery/jquery-ui.css");
+//$cpage->addStyle("jquery/jquery-ui.css");
 
 $cpage->addScript("jquery/plugins/timepicker.js");
-$cpage->addScript("jquery/jquery-ui.js");
+//$cpage->addScript("jquery/jquery-ui.js");
 
 if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
     $cpage->addScript("jquery/plugins/timepicker-".$lang_short.".js");
