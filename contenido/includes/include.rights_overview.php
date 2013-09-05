@@ -71,6 +71,8 @@ if ($action == 'user_edit') {
 
     // update user values
     // New Class User, update password and other values
+    $realname = stripslashes($realname);
+
     $ocApiUser = new cApiUser($userid);
     $ocApiUser->setRealName($realname);
     $ocApiUser->setMail($email);
@@ -108,7 +110,13 @@ if ($action == 'user_edit') {
         $bPassOk = true;
     }
 
-    if (strlen($password) == 0 || $bPassOk == true) {
+    $cleanRealname = preg_replace('/["\'\/\§$%&]/i', '', $realname);
+    if ($realname !== $cleanRealname) {
+        $sNotification = $notification->returnNotification("warning", i18n("Special characters in username and name are not allowed."));
+        $bError = true;
+    }
+
+    if (!$bError && (strlen($password) == 0 || $bPassOk == true)) {
         if ($ocApiUser->store()) {
             $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
             $bError = true;
@@ -157,7 +165,7 @@ $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "name");
 $tpl->set('d', 'CATNAME', i18n("Name"));
-$oTxtName = new cHTMLTextbox("realname", $oUser->getField('realname'), 40, 255);
+$oTxtName = new cHTMLTextbox("realname", htmlspecialchars($oUser->getField('realname')), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtName->render());
 $tpl->next();
 

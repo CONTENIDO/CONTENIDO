@@ -33,9 +33,16 @@ $userId = null;
 
 if ($action == 'user_createuser') {
     $username = stripslashes(trim($username));
+    $realname = stripslashes(trim($realname));
+
+    $cleanUsername = preg_replace('/["\'\/\§$%&]/i', '', $username);
+    $cleanRealname = preg_replace('/["\'\/\§$%&]/i', '', $realname);
 
     if ($username == '') {
         $sNotification = $notification->returnNotification("warning", i18n("Username can't be empty"));
+        $bError = true;
+    } else if ($username !== $cleanUsername || $realname !== $cleanRealname) {
+        $sNotification = $notification->returnNotification("warning", i18n("Special characters in username and name are not allowed."));
         $bError = true;
     } else if ($password == '') {
         $sNotification = $notification->returnNotification("warning", i18n("Password can't be empty"));
@@ -114,13 +121,13 @@ $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Username"));
-$oTxtUser = new cHTMLTextbox('username', $username, 40, 32);
+$oTxtUser = new cHTMLTextbox('username', htmlspecialchars($username), 40, 32);
 $oTxtUser->setAttribute('autocomplete', 'off');
 $tpl->set('d', 'CATFIELD', $oTxtUser->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Name"));
-$oTxtName = new cHTMLTextbox('realname', $realname, 40, 255);
+$oTxtName = new cHTMLTextbox('realname', htmlspecialchars($realname), 40, 255);
 $oTxtName->setAttribute('autocomplete', 'off');
 $tpl->set('d', 'CATFIELD', $oTxtName->render());
 $tpl->next();

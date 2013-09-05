@@ -3308,6 +3308,11 @@ msgstr ""
 msgid "Username can't be empty"
 msgstr ""
 
+#: includes/include.rights_overview.php:115
+#: includes/include.rights_create.php:45
+msgid "Special characters in username and name are not allowed."
+msgstr ""
+
 #: includes/include.frontend.user_edit.php:97
 msgid "Could not set new username: Username already exists"
 msgstr ""

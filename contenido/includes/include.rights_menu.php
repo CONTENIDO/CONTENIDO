@@ -98,10 +98,24 @@ while ($cApiUser = $cApiUserCollection->next()) {
 
         if ($iItemCount > ($elemperpage * ($mPage - 1)) && $iItemCount < (($elemperpage * $mPage) + 1)) {
             if ($perm->have_perm_area_action('user', "user_delete")) {
-                $message = sprintf(i18n("Do you really want to delete the user %s?"), $cApiUser->get("username"));
+                $message = sprintf(
+                    i18n("Do you really want to delete the user %s?"),
+                    htmlspecialchars(addslashes($cApiUser->get("username")))
+                );
 
                 $delTitle = i18n("Delete user");
-                $deletebutton = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function() { deleteBackenduser(&quot;' . $userid . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+                $deletebutton = '<a
+                                    title="' . $delTitle . '"
+                                    href="javascript:void(0)"
+                                    onclick="showConfirmation(&quot;' . $message . '&quot;, function() { deleteBackenduser(&quot;' . $userid . '&quot;); });return false;"
+                                 >
+                                     <img
+                                        src="' . $cfg['path']['images'] . 'delete.gif"
+                                        border="0"
+                                        title="' . $delTitle . '"
+                                        alt="' . $delTitle . '"
+                                     >
+                                 </a>';
             } else {
                 $deletebutton = '';
             }

@@ -3524,6 +3524,11 @@ msgstr "Benutzer erfolgreich gelöscht!"
 msgid "Username can't be empty"
 msgstr "Benutzername darf nicht leer sein"
 
+#: includes/include.rights_overview.php:115
+#: includes/include.rights_create.php:45
+msgid "Special characters in username and name are not allowed."
+msgstr "Sonderzeichen in Benutzernamen und Namen sind nicht erlaubt."
+
 #: includes/include.frontend.user_edit.php:97
 msgid "Could not set new username: Username already exists"
 msgstr ""
