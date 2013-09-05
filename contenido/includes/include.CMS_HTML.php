@@ -50,6 +50,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 <title></title>
 <link rel="stylesheet" type="text/css" href="<?php print $backendUrl . $cfg["path"]["styles"] ?>contenido.css">
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>">
+<script type="text/javascript" src="<?php echo $cfg['path']['contenido_fullhtml'] ?>scripts/jquery/jquery.js"></script>
 </head>
 
 <body>
