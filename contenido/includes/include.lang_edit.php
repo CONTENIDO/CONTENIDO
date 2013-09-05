@@ -20,10 +20,6 @@ if ($action == "lang_newlanguage" && (int) $newidlang > 0) {
     $idlang = $newidlang;
 }
 
-function generateInfoIcon($title, $id = '', $class = 'vAlignMiddle', $img = 'images/info.gif') {
-    return  '<img class="' . $class . '" id="' . $id . '" title="'. $title . '" src="' . $img . '">';
-}
-
 $oLanguage = new cApiLanguage($idlang);
 
 $page = new cGuiPage("lang_edit");
@@ -150,8 +146,6 @@ if ($action == "lang_newlanguage") {
             $eselect->autoFill($charsets);
             $eselect->setDefault($db->f("encoding"));
 
-
-
             $languagecode = new cHTMLSelectElement("languagecode");
             $languagecode->setStyle('width:255px');
             $languagecode->autoFill($iso_639_2_result);
@@ -193,13 +187,13 @@ if ($action == "lang_newlanguage") {
             $form->addSubHeader(i18n("Time format"));
 
             $infoButton = new cGuiBackendHelpbox(i18n("FORMAT_DATE_TIME"));
-            $form->add(i18n("Date/Time format"), $fulldateformat->render().' '.$infoButton->render());
+            $form->add(i18n("Date/Time format"), $fulldateformat->render() . ' ' . $infoButton->render());
             $infoButton->setHelpText(i18n("FORMAT_DATE"));
-            $form->add(i18n("Date format"), $dateformat->render().' '.$infoButton->render());
+            $form->add(i18n("Date format"), $dateformat->render() . ' ' . $infoButton->render());
             $infoButton->setHelpText(i18n("FORMATE_TIME"));
-            $form->add(i18n("Time format"), $timeformat->render().' '.$infoButton->render());
+            $form->add(i18n("Time format"), $timeformat->render() . ' ' . $infoButton->render());
             $infoButton->setHelpText(i18n("LANUAGE_DATE_TIME"));
-            $form->add(i18n("Date/Time locale"), $dateLocale->render().' '.$infoButton->render());
+            $form->add(i18n("Date/Time locale"), $dateLocale->render() . ' ' . $infoButton->render());
 
             $page->setContent($form);
 

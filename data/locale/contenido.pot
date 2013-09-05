@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-03 11:54+0200\n"
+"POT-Creation-Date: 2013-09-05 10:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -234,7 +234,7 @@ msgstr ""
 #: includes/include.mod_edit_form.php:392 includes/include.mod_history.php:116
 #: includes/include.mod_new.php:37 includes/include.mod_script.php:193
 #: includes/include.mod_style.php:222
-#: includes/include.mycontenido_settings.php:118
+#: includes/include.mycontenido_settings.php:114
 #: includes/include.rights_create.php:122
 #: includes/include.rights_left_top.php:97
 #: includes/include.rights_overview.php:159
@@ -1296,7 +1296,7 @@ msgstr ""
 #: includes/include.tpl_edit_form.php:147
 #: includes/include.tplcfg_edit_form.php:432 includes/include.upl_edit.php:75
 #: scripts/langref.php:28
-#: templates/standard/template.con_meta_edit_form.html:134
+#: templates/standard/template.con_meta_edit_form.html:136
 #: templates/standard/template.tpl_edit_form.html:29
 #: templates/standard/template.tpl_edit_form.html:97
 #: templates/standard/template.upl_files_overview.html:166
@@ -1306,7 +1306,7 @@ msgstr ""
 
 #: classes/content_types/class.content.type.imgeditor.php:391
 #: includes/include.upl_edit.php:76
-#: templates/standard/template.con_meta_edit_form.html:148
+#: templates/standard/template.con_meta_edit_form.html:150
 msgid "Keywords"
 msgstr ""
 
@@ -1317,7 +1317,7 @@ msgstr ""
 
 #: classes/content_types/class.content.type.imgeditor.php:395
 #: includes/include.upl_edit.php:78
-#: templates/standard/template.con_meta_edit_form.html:162
+#: templates/standard/template.con_meta_edit_form.html:164
 msgid "Copyright"
 msgstr ""
 
@@ -1629,6 +1629,10 @@ msgstr ""
 msgid "Saturday"
 msgstr ""
 
+#: classes/gui/class.backendhelpbox.php:57
+msgid "More information"
+msgstr ""
+
 #: classes/gui/class.navigation.php:246 xml/navigation.xml:87
 msgid "My CONTENIDO"
 msgstr ""
@@ -1697,7 +1701,7 @@ msgstr ""
 msgid "Last page"
 msgstr ""
 
-#: classes/gui/class.tableform.php:129 includes/include.client_edit.php:174
+#: classes/gui/class.tableform.php:129 includes/include.client_edit.php:184
 #: includes/include.grouprights_create.php:71
 #: includes/include.grouprights_overview.php:95
 #: includes/include.rights_create.php:112
@@ -2093,13 +2097,13 @@ msgid "Please do not use short open tags. (Use <?php instead of <?)."
 msgstr ""
 
 #: includes/functions.rights.php:331 includes/functions.rights.php:386
-#: includes/include.client_edit.php:136
+#: includes/include.client_edit.php:147
 #: includes/include.con_content_list.php:52
 #: includes/include.con_content_list.php:74
 #: includes/include.grouprights_overview.php:62
 #: includes/include.lang_edit.php:105
-#: includes/include.mycontenido_settings.php:57
-#: includes/include.mycontenido_settings.php:95
+#: includes/include.mycontenido_settings.php:53
+#: includes/include.mycontenido_settings.php:91
 #: includes/include.rights_overview.php:113
 #: includes/include.system_configuration.php:150
 #: includes/type/action/include.con_meta_saveart.action.php:102
@@ -2392,7 +2396,7 @@ msgstr ""
 #: includes/include.client_artspec.php:61
 #: includes/include.lay_edit_form.php:214
 #: includes/include.mycontenido.tasks.php:371
-#: includes/include.mycontenido_settings.php:153
+#: includes/include.mycontenido_settings.php:149
 msgid "Options"
 msgstr ""
 
@@ -2433,40 +2437,58 @@ msgstr ""
 msgid "Specification name"
 msgstr ""
 
-#: includes/include.client_edit.php:42
+#: includes/include.client_edit.php:39
+#: templates/standard/template.client_edit.html:70
+msgid "The client must have a name!"
+msgstr ""
+
+#: includes/include.client_edit.php:41
+#: templates/standard/template.client_edit.html:71
+msgid ""
+"The client must have a frontend path. This is where the client's files will "
+"be stored."
+msgstr ""
+
+#: includes/include.client_edit.php:43
+#: templates/standard/template.client_edit.html:69
+msgid ""
+"Please enter a valid URL. It has to start with http://... or https://..."
+msgstr ""
+
+#: includes/include.client_edit.php:54
 msgid ""
 "Notice: In order to use this client, you must create a new language for it."
 msgstr ""
 
-#: includes/include.client_edit.php:46
+#: includes/include.client_edit.php:58
 #, php-format
 msgid "Please click %shere%s to create a new language."
 msgstr ""
 
-#: includes/include.client_edit.php:80
+#: includes/include.client_edit.php:92
 msgid "Couldn't write the file config.php."
 msgstr ""
 
-#: includes/include.client_edit.php:86
+#: includes/include.client_edit.php:98
 #, php-format
 msgid ""
 "The directory %s already exists. The client was created, but you have to "
 "copy the frontend-template yourself"
 msgstr ""
 
-#: includes/include.client_edit.php:102
+#: includes/include.client_edit.php:113
 msgid ""
 "You changed the client path. You might need to copy the frontend to the new "
 "location"
 msgstr ""
 
-#: includes/include.client_edit.php:175
+#: includes/include.client_edit.php:185
 #: includes/include.grouprights_overview.php:96
 #: includes/include.rights_overview.php:148
 msgid "Discard changes"
 msgstr ""
 
-#: includes/include.client_edit.php:177
+#: includes/include.client_edit.php:187
 #: includes/include.grouprights_create.php:73
 #: includes/include.grouprights_overview.php:99
 #: includes/include.grouprights_overview.php:195
@@ -2476,7 +2498,7 @@ msgstr ""
 msgid "Property"
 msgstr ""
 
-#: includes/include.client_edit.php:178 includes/include.clientsettings.php:79
+#: includes/include.client_edit.php:188 includes/include.clientsettings.php:79
 #: includes/include.clientsettings.php:166
 #: includes/include.grouprights_create.php:74
 #: includes/include.grouprights_overview.php:100
@@ -2491,55 +2513,55 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: includes/include.client_edit.php:182
+#: includes/include.client_edit.php:192
 msgid "Client name"
 msgstr ""
 
-#: includes/include.client_edit.php:193
+#: includes/include.client_edit.php:203
 msgid "Server path"
 msgstr ""
 
-#: includes/include.client_edit.php:204
+#: includes/include.client_edit.php:214
 msgid "Web address"
 msgstr ""
 
-#: includes/include.client_edit.php:211
+#: includes/include.client_edit.php:221
 msgid "Error page category"
 msgstr ""
 
-#: includes/include.client_edit.php:218
+#: includes/include.client_edit.php:228
 msgid "Error page article"
 msgstr ""
 
-#: includes/include.client_edit.php:226
+#: includes/include.client_edit.php:236
 msgid "Client logo"
 msgstr ""
 
-#: includes/include.client_edit.php:233
+#: includes/include.client_edit.php:243
 msgid "No"
 msgstr ""
 
-#: includes/include.client_edit.php:233
+#: includes/include.client_edit.php:243
 msgid "Yes"
 msgstr ""
 
-#: includes/include.client_edit.php:246 xml/system.xml:34
+#: includes/include.client_edit.php:256 xml/system.xml:34
 msgid "Generate XHTML"
 msgstr ""
 
-#: includes/include.client_edit.php:253
+#: includes/include.client_edit.php:263
 msgid "On"
 msgstr ""
 
-#: includes/include.client_edit.php:253
+#: includes/include.client_edit.php:263
 msgid "Off"
 msgstr ""
 
-#: includes/include.client_edit.php:266
+#: includes/include.client_edit.php:276
 msgid "Statistic"
 msgstr ""
 
-#: includes/include.client_edit.php:274
+#: includes/include.client_edit.php:284
 msgid "Copy frontend template"
 msgstr ""
 
@@ -2779,7 +2801,7 @@ msgstr ""
 
 #: includes/include.con_edit_form.php:205
 #: includes/include.str_overview.php:493
-#: templates/standard/template.con_meta_edit_form.html:127
+#: templates/standard/template.con_meta_edit_form.html:129
 #: templates/standard/template.str_overview.html:488
 #: templates/standard/template.str_overview.html:583
 #: templates/standard/template.str_overview.html:652
@@ -2949,66 +2971,67 @@ msgstr ""
 msgid "SEO administration"
 msgstr ""
 
-#: includes/include.con_meta_form.php:148
-msgid ""
-"The Title-Tag is one of the most important on-page factor for SEO and is no "
-"longer than 60 characters. It includes top keywords and the branding."
-msgstr ""
-
-#: includes/include.con_meta_form.php:257
+#: includes/include.con_meta_form.php:256
 msgid "Are you sure to delete this Meta tag?"
-msgstr ""
-
-#: includes/include.con_meta_form.php:261
-msgid ""
-"The Description-Tag describes the article in a short way (no more than 150 "
-"characters). The content should be related to the Title-Tag and the H1-Tag."
-msgstr ""
-
-#: includes/include.con_meta_form.php:262
-msgid "No more than 6 Keywords should be used."
 msgstr ""
 
 #: includes/include.con_meta_form.php:263
 msgid ""
-"The frequency of the revisit after tag depend on new publications of the "
+"The title-tag is one of the most important on-page factors for SEO and is "
+"not longer than 60 characters. It includes top keywords and the branding."
+msgstr ""
+
+#: includes/include.con_meta_form.php:266
+msgid ""
+"The description-tag describes the article in a short way (not more than 150 "
+"characters). The content should be related to the title-tag and the H1-tag."
+msgstr ""
+
+#: includes/include.con_meta_form.php:269
+msgid "No more than 6 Keywords should be used."
+msgstr ""
+
+#: includes/include.con_meta_form.php:272
+msgid ""
+"The frequency of the revisit after tag depends on new publications of the "
 "content. Nevertheless the robots decide on their own when to visit."
 msgstr ""
 
-#: includes/include.con_meta_form.php:264
+#: includes/include.con_meta_form.php:275
 msgid ""
-"Not important content or not to indicate pictures should be declared with "
-"the robot-tag. It has an high relevance for SEO. Only relevant and most "
-"visited articels should be indicated."
+"The robot-tag sets certain rules for search engines. You can tell it to not "
+"index certain articles or to keep pictures in this article out of its index. "
+"It has a high relevance for SEO. Only relevant and most visited articels "
+"should be indexed."
 msgstr ""
 
-#: includes/include.con_meta_form.php:267
+#: includes/include.con_meta_form.php:278
 msgid ""
 "The avarage value for the sitemap priority is 0.5. Only important articels "
-"should have an value no more than 0.8."
+"should have a value no more than 0.8."
 msgstr ""
 
-#: includes/include.con_meta_form.php:274
+#: includes/include.con_meta_form.php:281
 msgid "The refresh rate is focused on the content."
 msgstr ""
 
-#: includes/include.con_meta_form.php:298
+#: includes/include.con_meta_form.php:312
 msgid "New meta tag"
 msgstr ""
 
-#: includes/include.con_meta_form.php:311
+#: includes/include.con_meta_form.php:325
 msgid "Meta Type"
 msgstr ""
 
-#: includes/include.con_meta_form.php:315
+#: includes/include.con_meta_form.php:329
 msgid "Field Type"
 msgstr ""
 
-#: includes/include.con_meta_form.php:319
+#: includes/include.con_meta_form.php:333
 msgid "Max Length"
 msgstr ""
 
-#: includes/include.con_meta_form.php:323
+#: includes/include.con_meta_form.php:337
 msgid "Field Name"
 msgstr ""
 
@@ -3304,7 +3327,7 @@ msgid "User name"
 msgstr ""
 
 #: includes/include.frontend.user_edit.php:173
-#: includes/include.mycontenido_settings.php:127
+#: includes/include.mycontenido_settings.php:123
 #: includes/include.rights_create.php:128
 #: includes/include.rights_overview.php:168
 msgid "New password"
@@ -3338,7 +3361,7 @@ msgstr ""
 #: includes/include.frontend.user_edit.php:232
 #: includes/include.upl_edit.php:82
 #: templates/standard/template.con_left_top_art_search.html:50
-#: templates/standard/template.con_meta_edit_form.html:177
+#: templates/standard/template.con_meta_edit_form.html:179
 msgid "Author"
 msgstr ""
 
@@ -3679,7 +3702,7 @@ msgid "Encoding"
 msgstr ""
 
 #: includes/include.lang_edit.php:190
-#: includes/include.mycontenido_settings.php:147
+#: includes/include.mycontenido_settings.php:143
 #: includes/include.rights_create.php:166
 #: includes/include.rights_overview.php:211
 msgid "Country"
@@ -3689,42 +3712,42 @@ msgstr ""
 msgid "Text direction"
 msgstr ""
 
-#: includes/include.lang_edit.php:193 includes/include.lang_edit.php:196
+#: includes/include.lang_edit.php:193 includes/include.lang_edit.php:200
 #: includes/include.mycontenido_settings.php:176
 msgid "Time format"
 msgstr ""
 
-#: includes/include.lang_edit.php:194
-#: includes/include.mycontenido_settings.php:174
-msgid "Date/Time format"
-msgstr ""
-
-#: includes/include.lang_edit.php:194
-#: includes/include.mycontenido_settings.php:174
+#: includes/include.lang_edit.php:195
+#: includes/include.mycontenido_settings.php:170
 msgid "FORMAT_DATE_TIME"
 msgstr ""
 
-#: includes/include.lang_edit.php:195
-#: includes/include.mycontenido_settings.php:175
-msgid "Date format"
+#: includes/include.lang_edit.php:196
+#: includes/include.mycontenido_settings.php:172
+msgid "Date/Time format"
 msgstr ""
 
-#: includes/include.lang_edit.php:195
-#: includes/include.mycontenido_settings.php:175
+#: includes/include.lang_edit.php:197
+#: includes/include.mycontenido_settings.php:173
 msgid "FORMAT_DATE"
 msgstr ""
 
-#: includes/include.lang_edit.php:196
-#: includes/include.mycontenido_settings.php:176
+#: includes/include.lang_edit.php:198
+#: includes/include.mycontenido_settings.php:174
+msgid "Date format"
+msgstr ""
+
+#: includes/include.lang_edit.php:199
+#: includes/include.mycontenido_settings.php:175
 msgid "FORMATE_TIME"
 msgstr ""
 
-#: includes/include.lang_edit.php:197
-msgid "Date/Time locale"
+#: includes/include.lang_edit.php:201
+msgid "LANUAGE_DATE_TIME"
 msgstr ""
 
-#: includes/include.lang_edit.php:197
-msgid "LANUAGE_DATE_TIME"
+#: includes/include.lang_edit.php:202
+msgid "Date/Time locale"
 msgstr ""
 
 #: includes/include.lang_left_top.php:55
@@ -3877,7 +3900,7 @@ msgstr ""
 #: includes/include.logs.php:264 includes/include.mail_log.php:84
 #: includes/include.mail_log.php:170
 #: templates/standard/template.con_left_top_art_search.html:26
-#: templates/standard/template.con_meta_edit_form.html:192
+#: templates/standard/template.con_meta_edit_form.html:194
 msgid "Date"
 msgstr ""
 
@@ -4357,75 +4380,75 @@ msgstr ""
 msgid "Create article"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:38
+#: includes/include.mycontenido_settings.php:34
 msgid "Old password incorrect"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:42
+#: includes/include.mycontenido_settings.php:38
 #: includes/include.rights_create.php:94
 #: includes/include.rights_overview.php:102
 msgid "Passwords don't match"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:97
+#: includes/include.mycontenido_settings.php:93
 #: includes/include.rights_overview.php:116
 msgid "An error occured while saving user info."
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:106
+#: includes/include.mycontenido_settings.php:102
 #, php-format
 msgid "Settings for %s"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:126
+#: includes/include.mycontenido_settings.php:122
 msgid "Old password"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:128
+#: includes/include.mycontenido_settings.php:124
 #: includes/include.rights_create.php:134
 #: includes/include.rights_overview.php:174
 msgid "Confirm new password"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:132
+#: includes/include.mycontenido_settings.php:128
 #: includes/include.rights_create.php:140
 #: includes/include.rights_overview.php:181
 msgid "E-Mail"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:135
+#: includes/include.mycontenido_settings.php:131
 #: includes/include.rights_create.php:146
 #: includes/include.rights_overview.php:187
 msgid "Phone number"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:138
+#: includes/include.mycontenido_settings.php:134
 #: includes/include.rights_create.php:151
 #: includes/include.rights_overview.php:193
 msgid "Street"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:141
+#: includes/include.mycontenido_settings.php:137
 #: includes/include.rights_create.php:156
 #: includes/include.rights_overview.php:199
 msgid "ZIP code"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:144
+#: includes/include.mycontenido_settings.php:140
 #: includes/include.rights_create.php:161
 #: includes/include.rights_overview.php:205
 msgid "City"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:151
+#: includes/include.mycontenido_settings.php:147
 msgid "Use WYSIWYG Editor"
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:155
+#: includes/include.mycontenido_settings.php:151
 msgid "The format is equal to PHP's date() function."
 msgstr ""
 
-#: includes/include.mycontenido_settings.php:157
+#: includes/include.mycontenido_settings.php:153
 msgid "Common date formattings"
 msgstr ""
 
@@ -5420,7 +5443,7 @@ msgid "Flash Movie"
 msgstr ""
 
 #: scripts/langref.php:31
-#: templates/standard/template.con_meta_edit_form.html:93
+#: templates/standard/template.con_meta_edit_form.html:95
 msgid "Link"
 msgstr ""
 
@@ -5518,35 +5541,35 @@ msgstr ""
 msgid "Also copy subcategories"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:112
+#: templates/standard/template.con_meta_edit_form.html:114
 msgid "Page title"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:206
+#: templates/standard/template.con_meta_edit_form.html:208
 msgid "Expires"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:220
+#: templates/standard/template.con_meta_edit_form.html:222
 msgid "Revisit after"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:237
+#: templates/standard/template.con_meta_edit_form.html:239
 msgid "Robots"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:299
+#: templates/standard/template.con_meta_edit_form.html:297
 msgid "Sitemap Priority"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:314
+#: templates/standard/template.con_meta_edit_form.html:312
 msgid "Sitemap change frequency"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:338
+#: templates/standard/template.con_meta_edit_form.html:336
 msgid "Custom meta tags"
 msgstr ""
 
-#: templates/standard/template.con_meta_edit_form.html:377
+#: templates/standard/template.con_meta_edit_form.html:375
 msgid "HTML-View"
 msgstr ""
 

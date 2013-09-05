@@ -18,38 +18,36 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.pathresolver.php');
 
-//ugly globals that are used in this script
+// ugly globals that are used in this script
 global $tpl, $cfg, $db, $perm, $sess, $auth;
 global $frame, $area, $contenido, $notification;
 global $client, $lang, $belang;
 global $idcat, $idart, $idcatlang, $idcatart, $idtpl;
 global $syncoptions, $tmp_notification;
 
-//Reset template
+// Reset template
 $tpl->reset();
 
-//Check permissions
-if (!$perm->have_perm_area_action($area, 'con_meta_edit') &&
-    !$perm->have_perm_area_action_item($area, 'con_meta_edit', $idcat)) {
+// Check permissions
+if (!$perm->have_perm_area_action($area, 'con_meta_edit') && !$perm->have_perm_area_action_item($area, 'con_meta_edit', $idcat)) {
 
-    //User has no permission to see this form
+    // User has no permission to see this form
     $notification->displayNotification('error', i18n('Permission denied'));
     return;
-
 }
 
-//Get article data
+// Get article data
 $art = new cApiArticleLanguage();
 $art->loadByArticleAndLanguageId(cSecurity::toInteger($idart), cSecurity::toInteger($lang));
 
-//Check is form edit available
+// Check is form edit available
 $disabled = '';
 if ($art->getField('created')) {
 
-    //Get cApiInUseCollection
+    // Get cApiInUseCollection
     $col = new cApiInUseCollection();
 
-    //Remove all own marks
+    // Remove all own marks
     $col->removeSessionMarks($sess->id);
     $obj = $col->checkMark('article', $art->getField('idartlang'));
 
@@ -57,7 +55,6 @@ if ($art->getField('created')) {
 
         $col->markInUse('article', $art->getField('idartlang'), $sess->id, $auth->auth['uid']);
         $disabled = '';
-
     } else {
 
         $vuser = new cApiUser($obj->get('userid'));
@@ -67,7 +64,6 @@ if ($art->getField('created')) {
 
         $message = sprintf(i18n('Article is in use by %s (%s)'), $inUseUser, $inUseUserRealName);
         $notification->displayNotification('warning', $message);
-
     }
 
     if ($art->getField('locked') == 1) {
@@ -75,11 +71,9 @@ if ($art->getField('created')) {
         $disabled = 'disabled="disabled"';
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
         $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
-
     } else {
 
         $tpl->set('s', 'DISABLED', '');
-
     }
 
     if ($disabled == '') {
@@ -87,19 +81,16 @@ if ($art->getField('created')) {
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 0);
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok.gif');
         $tpl->set('s', 'BUTTONDISABLE', $disabled);
-
     } else {
 
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 1);
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok_off.gif');
         $tpl->set('s', 'BUTTONDISABLE', $disabled);
-
     }
-
 }
 
-//Assign head values to page
-$lang_short  = substr(strtolower($belang), 0, 2);
+// Assign head values to page
+$lang_short = substr(strtolower($belang), 0, 2);
 $langscripts = '';
 if ($lang_short != 'en') {
 
@@ -111,7 +102,6 @@ if ($lang_short != 'en') {
                         type="text/javascript"
                         src="scripts/jquery/plugins/datepicker-' . $lang_short . '.js">
                     </script>';
-
 }
 $tpl->set('s', 'CAL_LANG', $langscripts);
 $tpl->set('s', 'SID', $sess->id);
@@ -119,28 +109,28 @@ $tpl->set('s', 'DISPLAY_MENU', 1);
 $tpl->set('s', 'SYNCOPTIONS', -1);
 $tpl->set('s', 'SESSION', $contenido);
 
-//Assign body values
+// Assign body values
 $breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
 $tpl->set('s', 'CATEGORY', $breadcrumb);
 
-//Assign form values
-$tpl->set('s', 'ACTION', $sess->url('main.php?area=' . $area. '&frame=' . $frame. '&action=con_meta_saveart'));
+// Assign form values
+$tpl->set('s', 'ACTION', $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_saveart'));
 
-//Assign form hidden elements values
+// Assign form hidden elements values
 $tpl->set('s', 'IDART', $idart);
 $tpl->set('s', 'IDCAT', $idcat);
-$tpl->set('s', 'TMP_FIRSTEDIT', $art->getField('created') ? 0:1);
+$tpl->set('s', 'TMP_FIRSTEDIT', $art->getField('created')? 0 : 1);
 $tpl->set('s', 'IDARTLANG', $art->getField('idartlang'));
 $tpl->set('s', 'TITEL', i18n('SEO administration'));
 
-//Assign notification
+// Assign notification
 if (isset($tmp_notification)) {
     $tpl->set('s', 'NOTIFICATION', '<tr><td colspan="4">' . $tmp_notification . '<br /></td></tr>');
 } else {
     $tpl->set('s', 'NOTIFICATION', '');
 }
 
-//Assign form page seo elements values
+// Assign form page seo elements values
 $tpl->set('s', 'LINK', $art->getLink());
 $tpl->set('s', 'FULL_LINK', $cfgClient[$client]['path']['htmlpath'] . $art->getLink());
 
@@ -148,7 +138,7 @@ $tpl->set('s', 'PAGE_TITLE', conHtmlSpecialChars(cSecurity::unFilter(stripslashe
 
 $tpl->set('s', 'ALIAS', cSecurity::unFilter(stripslashes($art->getField('urlname'))));
 
-//Assign Meta-Tags elements
+// Assign Meta-Tags elements
 $availableTags = conGetAvailableMetaTagTypes();
 $managedTypes = array(
     'author',
@@ -163,7 +153,7 @@ $managedTypes = array(
 
 $metaPreview = array();
 
-//Set meta tags values
+// Set meta tags values
 foreach ($availableTags as $key => $value) {
 
     $metaPreview[] = array(
@@ -172,7 +162,7 @@ foreach ($availableTags as $key => $value) {
         'content' => cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key)))
     );
 
-    //Set meta values to inputs
+    // Set meta values to inputs
     if (in_array($value['metatype'], $managedTypes)) {
 
         if ($value['metatype'] == 'robots') {
@@ -190,34 +180,28 @@ foreach ($availableTags as $key => $value) {
 
                         $metaPreview[$i]['content'] = 'index, follow';
                         break;
-
                     }
 
                     $i++;
-
                 }
-
             }
 
-            //Set robots checkboxes
+            // Set robots checkboxes
             $robot_array = explode(', ', conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key)));
             foreach ($robot_array as $instruction) {
 
                 $tpl->set('s', strtoupper($instruction), 'checked');
-
             }
-
         } else {
 
             $metaType = conHtmlSpecialChars(cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key))));
             $tpl->set('s', strtoupper($value['metatype']), str_replace('\\', '', $metaType));
-
         }
 
         continue;
     }
 
-    //Create add and edit MetaTag form BLOCK
+    // Create add and edit MetaTag form BLOCK
     $tpl->set('d', 'METAINPUT', 'META' . $value);
     switch ($value['fieldtype']) {
 
@@ -244,7 +228,6 @@ foreach ($availableTags as $key => $value) {
                             rows="3"
                         >' . $textValue . '</textarea>';
             break;
-
     }
 
     $tpl->set('d', 'ARTICLE_LANGUAGE_ID', $art->getField('idartlang'));
@@ -282,23 +265,31 @@ $infoButton->setHelpText(i18n('The refresh rate is focused on the content.'));
 $tpl->set("s", "INFO_BUTTON_SITEMAP_FREQUENCY", $infoButton->render());
 
 $tpl->set('s', 'SELECTED_' . $art->getField('changefreq'), 'selected');
-$sitemapChangeFrequencies = array('', 'always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never');
+$sitemapChangeFrequencies = array(
+    '',
+    'always',
+    'hourly',
+    'daily',
+    'weekly',
+    'monthly',
+    'yearly',
+    'never'
+);
 foreach ($sitemapChangeFrequencies as $value) {
     $tpl->set('s', 'SELECTED_' . $value, '');
 }
 
-//Assign additional rows
-$additionalRows = ''; //call the chain to add additional rows
-$cecRegistry    = cApiCecRegistry::getInstance();
-$cecIterator    = $cecRegistry->getIterator('Contenido.Backend.ConMetaEditFormAdditionalRows');
+// Assign additional rows
+$additionalRows = ''; // call the chain to add additional rows
+$cecRegistry = cApiCecRegistry::getInstance();
+$cecIterator = $cecRegistry->getIterator('Contenido.Backend.ConMetaEditFormAdditionalRows');
 while ($chainEntry = $cecIterator->next() !== false) {
 
     $additionalRows .= $chainEntry->execute($idart, $lang, $client, $art->getField('locked'));
-
 }
 $tpl->set('s', 'ADDITIONAL_ROWS', $additionalRows);
 
-//Assign add new meta
+// Assign add new meta
 $result = array(
     'metatype' => '',
     'fieldtype' => array(
@@ -317,7 +308,8 @@ $db->query($sql);
 
 while ($db->nextRecord()) {
 
-    if ($db->f('Field') == 'idmetatype') continue;
+    if ($db->f('Field') == 'idmetatype')
+        continue;
 
     switch ($db->f('Field')) {
 
@@ -348,10 +340,8 @@ while ($db->nextRecord()) {
         foreach ($result[$db->f('Field')] as $item) {
 
             $str .= '<option value="' . $item . '">' . $item . '</option>';
-
         }
         $str .= '<select>';
-
     } else {
 
         $str = '<input
@@ -365,72 +355,63 @@ while ($db->nextRecord()) {
                     name="META' . $db->f('Field') . '"
                     class="text_medium"
                 />';
-
-
-
     }
 
     $tpl2->set('d', 'METAFIELDTYPE', $str);
     $tpl2->next();
-
 }
 
-//accessible by the current user (sysadmin client admin) anymore.
+// accessible by the current user (sysadmin client admin) anymore.
 $aUserPerm = explode(',', $auth->auth['perm']);
 
 if (in_array('sysadmin', $aUserPerm)) {
 
     $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta">');
     $tpl->set('s', 'ADDNEWMETA', $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['con_meta_addnew'], true));
-
-
 } else {
 
     $tpl->set('s', 'ADDMETABTN', '&nbsp;');
     $tpl->set('s', 'ADDNEWMETA', '&nbsp;');
-
 }
 
-//call the chain to create meta tags to display any additional tags in the preview
+// call the chain to create meta tags to display any additional tags in the
+// preview
 $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Content.CreateMetatags');
 if ($_cecIterator->count() > 0) {
 
     while (false !== $chainEntry = $_cecIterator->next()) {
 
         $metaPreview = $chainEntry->execute($metaPreview);
-
     }
-
 }
 
 $tpl2 = new cTemplate();
 foreach ($metaPreview as $metaRow) {
 
-    if ($metaRow['content'] == '') $tpl2->set('d', 'META_SHOWN', 'display: none;');
-    else $tpl2->set('d', 'META_SHOWN', '');
+    if ($metaRow['content'] == '')
+        $tpl2->set('d', 'META_SHOWN', 'display: none;');
+    else
+        $tpl2->set('d', 'META_SHOWN', '');
     $tpl2->set('d', 'META_NAME', $metaRow['fieldname']);
     $tpl2->set('d', 'META_TYPE', $metaRow['name']);
     $tpl2->set('d', 'META_CONTENT', $metaRow['content']);
     $tpl2->next();
-
 }
 
-//render metatags preview
+// render metatags preview
 $tpl->set('s', 'META_TAGS', $tpl2->generate($cfg['path']['templates'] . 'template.con_meta_edit_form_preview.html', true));
 
-//Assign bottom js values
+// Assign bottom js values
 if (0 != $idart && 0 != $idcat) {
 
-    $script  = 'artObj.setProperties("' . $idart . '", "' . $art->getField('idartlang') . '", "';
+    $script = 'artObj.setProperties("' . $idart . '", "' . $art->getField('idartlang') . '", "';
     $script .= $idcat . '", "' . $idcatlang . '", "' . $idcatart . '", "' . $lang . '");';
-
 } else {
 
     $script = 'artObj.reset();';
-
 }
 $tpl->set('s', 'DATAPUSH', $script);
 $tpl->set('s', 'PATH_TO_CALENDER_PIC', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif');
 
-//Genereate the Template
+// Genereate the Template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_meta_edit_form']);

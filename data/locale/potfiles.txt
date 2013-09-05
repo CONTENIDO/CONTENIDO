@@ -161,6 +161,7 @@
 ./classes/genericdb/class.item.cache.php
 ./classes/genericdb/class.item.collection.php
 ./classes/genericdb/class.item.php
+./classes/gui/class.backendhelpbox.php
 ./classes/gui/class.foldingrow.php
 ./classes/gui/class.list.php
 ./classes/gui/class.menu.php

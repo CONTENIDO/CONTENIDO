@@ -2,17 +2,16 @@
 /**
  * This file contains the backend page for the personal user settings.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $cpage = new cGuiPage("mycontenido_settings", "", "2");
@@ -38,7 +37,6 @@ if ($action == "mycontenido_editself") {
             $error = i18n("Passwords don't match");
         }
 
-
         if ($error !== false) {
             $cpage->displayError($error);
         } else {
@@ -46,7 +44,7 @@ if ($action == "mycontenido_editself") {
 
             $iResult = $user->savePassword($newpassword);
 
-            #$user->set("password", md5($newpassword));
+            // user->set("password", md5($newpassword));
 
             if ($iResult == cApiUser::PASS_OK) {
                 $notidisplayed = true;
@@ -113,7 +111,8 @@ $form->addHeader($settingsfor);
 $realname = new cHTMLTextbox("name", $user->get("realname"));
 $form->add(i18n("Name"), $realname);
 
-// @since 2006-07-04 Display password fields if not authenticated via LDAP/AD, only
+// @since 2006-07-04 Display password fields if not authenticated via LDAP/AD,
+// only
 if ($user->get("password") != 'active_directory_auth') {
     $oldpassword = new cHTMLPasswordbox("oldpassword");
     $newpassword = new cHTMLPasswordbox("newpassword");
@@ -146,22 +145,27 @@ $wysiwyg = new cHTMLCheckbox("wysi", 1);
 $wysiwyg->setChecked($user->get("wysi"));
 $wysiwyg->setLabelText(i18n("Use WYSIWYG Editor"));
 
-$form->add(i18n("Options"), array($wysiwyg));
+$form->add(i18n("Options"), array(
+    $wysiwyg
+));
 
-$formathint = "<br>".i18n("The format is equal to PHP's date() function.");
-$formathint.= "<br>";
-$formathint.= i18n("Common date formattings").":";
-$formathint.= "<br>";
-$formathint.= "d M Y H:i => 01 Jan 2004 00:00";
-$formathint.= "<br>";
-$formathint.= "d.m.Y H:i:s => 01.01.2004 00:00:00";
+$formathint = "<br>" . i18n("The format is equal to PHP's date() function.");
+$formathint .= "<br>";
+$formathint .= i18n("Common date formattings") . ":";
+$formathint .= "<br>";
+$formathint .= "d M Y H:i => 01 Jan 2004 00:00";
+$formathint .= "<br>";
+$formathint .= "d.m.Y H:i:s => 01.01.2004 00:00:00";
 
-//$form->addSubHeader(i18n("Time format"));
-//$form->add(i18n("Date/Time format"), $fulldateformat->render().' '.generateInfoIcon(i18n("FORMAT_DATE_TIME")));
-//$form->add(i18n("Date format"), $dateformat->render().' '.generateInfoIcon(i18n("FORMAT_DATE")));
-//$form->add(i18n("Time format"), $timeformat->render().' '.generateInfoIcon(i18n("FORMATE_TIME")));
-//$form->add(i18n("Date/Time locale"), $dateLocale->render().' '.generateInfoIcon(i18n("LANUAGE_DATE_TIME")));
-
+// $form->addSubHeader(i18n("Time format"));
+// $form->add(i18n("Date/Time format"), $fulldateformat->render().'
+// '.generateInfoIcon(i18n("FORMAT_DATE_TIME")));
+// $form->add(i18n("Date format"), $dateformat->render().'
+// '.generateInfoIcon(i18n("FORMAT_DATE")));
+// $form->add(i18n("Time format"), $timeformat->render().'
+// '.generateInfoIcon(i18n("FORMATE_TIME")));
+// $form->add(i18n("Date/Time locale"), $dateLocale->render().'
+// '.generateInfoIcon(i18n("LANUAGE_DATE_TIME")));
 
 $format = new cHTMLTextbox("format", $user->getUserProperty("dateformat", "full"));
 $format2 = new cHTMLTextbox("formatdate", $user->getUserProperty("dateformat", "date"));
@@ -169,11 +173,26 @@ $format3 = new cHTMLTextbox("formattime", $user->getUserProperty("dateformat", "
 
 $infoButton = new cGuiBackendHelpbox(i18n("FORMAT_DATE_TIME"));
 
-$form->add(i18n("Date/Time format"), array($format, ' ', $infoButton->render() ,$formathint));
+$form->add(i18n("Date/Time format"), array(
+    $format,
+    ' ',
+    $infoButton->render(),
+    $formathint
+));
 $infoButton->setHelpText(i18n("FORMAT_DATE"));
-$form->add(i18n("Date format"), array($format2, ' ',  $infoButton->render()));
+$form->add(i18n("Date format"), array(
+    $format2,
+    ' ',
+    $infoButton->render()
+));
 $infoButton->setHelpText(i18n("FORMATE_TIME"));
-$form->add(i18n("Time format"), array($format3, ' ',  $infoButton->render()));
+$form->add(i18n("Time format"), array(
+    $format3,
+    ' ',
+    $infoButton->render()
+));
 
-$cpage->setContent(array($form));
+$cpage->setContent(array(
+    $form
+));
 $cpage->render();
