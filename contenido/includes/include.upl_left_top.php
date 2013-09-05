@@ -109,7 +109,6 @@ $tpl->set('d', 'BGCOLOR', $bgcolor);
 $tpl->set('d', 'INDENT', 3);
 $tpl->set('d', 'DIRNAME', $mstr);
 $tpl->set('d', 'EDITBUTTON', '');
-$tpl->set('d', 'DELETEBUTTON', '<img class="tableElement" src="images/delete_inact.gif">');
 $tpl->set('d', 'COLLAPSE', '');
 $tpl->next();
 

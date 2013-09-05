@@ -161,7 +161,7 @@ $form->setVar('action', 'edit_sysconf');
 
 // show a disabled OK button if user is not a sysadmin
 if (strpos($auth->auth['perm'], 'sysadmin') === false) {
-    $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Save changes'), 's');
+    $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's');
 }
 
 $groups = array();

@@ -64,6 +64,7 @@ if ($art->getField('created')) {
 
         $message = sprintf(i18n('Article is in use by %s (%s)'), $inUseUser, $inUseUserRealName);
         $notification->displayNotification('warning', $message);
+        $tpl->set("s", "REASON", sprintf(i18n('Article is in use by %s (%s)'), $inUseUser, $inUseUserRealName));
     }
 
     if ($art->getField('locked') == 1) {
@@ -71,9 +72,11 @@ if ($art->getField('created')) {
         $disabled = 'disabled="disabled"';
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
         $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+        $tpl->set("s", "REASON", i18n('This article is currently frozen and can not be edited!'));
     } else {
 
         $tpl->set('s', 'DISABLED', '');
+        $tpl->set("s", "REASON", "");
     }
 
     if ($disabled == '') {
@@ -81,11 +84,13 @@ if ($art->getField('created')) {
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 0);
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok.gif');
         $tpl->set('s', 'BUTTONDISABLE', $disabled);
+        $tpl->set("s", "REASON", "");
     } else {
 
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 1);
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok_off.gif');
         $tpl->set('s', 'BUTTONDISABLE', $disabled);
+        $tpl->set("s", "REASON", "");
     }
 }
 

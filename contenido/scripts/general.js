@@ -393,7 +393,7 @@ function validateURL(value) {
     return false;
 }
 
-
+// Assigns the tooltip to backend info boxes
 $(document).ready(function () {
     $("a.i-link").each(function () {
         var id = $(this).attr("id").substring(0, $(this).attr("id").indexOf("-link"));

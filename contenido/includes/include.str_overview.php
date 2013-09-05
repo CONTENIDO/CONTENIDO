@@ -719,12 +719,12 @@ foreach ($objects as $key => $value) {
         if ($perm->have_perm_area_action($tmp_area, 'str_moveupcat') || $perm->have_perm_area_action_item($tmp_area, 'str_moveupcat', $value->id)) {
             $rand = rand();
             if ($value->custom['parentid'] == 0 && $value->custom['preid'] == 0) {
-                $tpl->set('d', 'UPBUTTON', '<img src="images/folder_moveup_inact.gif">');
+                $tpl->set('d', 'UPBUTTON', '<img src="images/folder_moveup_inact.gif" title="' . i18n("This category is already at the top") . '">');
             } else {
                 if ($value->custom['preid'] != 0) {
                     $tpl->set('d', 'UPBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_moveupcat&frame=$frame&idcat=" . $value->id . "&rand=$rand") . "#clickedhere\"><img src=\"images/folder_moveup.gif\" alt=\"" . i18n("Move category up") . "\" title=\"" . i18n("Move category up") . "\"></a>");
                 } else {
-                    $tpl->set('d', 'UPBUTTON', '<img src="images/folder_moveup_inact.gif">');
+                    $tpl->set('d', 'UPBUTTON', '<img src="images/folder_moveup_inact.gif" title="' . i18n("This category is already at the top") . '">');
                 }
             }
         } else {
@@ -734,7 +734,7 @@ foreach ($objects as $key => $value) {
         if ($perm->have_perm_area_action($tmp_area, 'str_movedowncat') || $perm->have_perm_area_action_item($tmp_area, 'str_movedowncat', $value->id)) {
             $rand = rand();
             if ($value->custom['postid'] == 0) {
-                $tpl->set('d', 'DOWNBUTTON', '<img src="images/folder_movedown_inact.gif">');
+                $tpl->set('d', 'DOWNBUTTON', '<img src="images/folder_movedown_inact.gif" title="' . i18n("This category is already at the bottom") . '">');
             } else {
                 $tpl->set('d', 'DOWNBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movedowncat&frame=$frame&idcat=" . $value->id . "&rand=$rand") . "#clickedhere\"><img src=\"images/folder_movedown.gif\" alt=\"" . i18n("Move category down") . "\" title=\"" . i18n("Move category down") . "\"></a>");
             }
@@ -764,7 +764,7 @@ foreach ($objects as $key => $value) {
                     $tpl->set('d', 'MOVEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=" . $value->id) . "#movesubtreehere\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree.gif\" alt=\"" . i18n("Move tree") . "\" title=\"" . i18n("Move tree") . "\"></a>");
                 }
                 else{
-                    $tpl->set('d', 'MOVEBUTTON', "<img src=\"" . $cfg["path"]["images"] . "but_move_subtree_grey.png\" >");
+                    $tpl->set('d', 'MOVEBUTTON', '<img src="' . $cfg["path"]["images"] . 'but_move_subtree_grey.png" title="' . i18n("This category can't be moved since it is already a root category") . '">');
                 }
                 } else {
                 $tpl->set('d', 'MOVEBUTTON', '&nbsp;');

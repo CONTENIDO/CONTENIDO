@@ -113,10 +113,17 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         // Remove all own marks
         $col->removeSessionMarks($sess->id);
 
-        if (($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) {
+        if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked != 1) {
             $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
             $inUse = false;
             $disabled = '';
+            $tpl->set("s", "REASON", "");
+        } else if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked == 1) {
+            $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
+            $inUse = true;
+            $disabled = 'disabled="disabled"';
+            $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+            $tpl->set("s", "REASON", i18n('This article is currently frozen and can not be edited!'));
         } else {
             $vuser = new cApiUser($obj->get("userid"));
             $inUseUser = $vuser->getField("username");
@@ -126,13 +133,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             $notification->displayNotification("warning", $message);
             $inUse = true;
             $disabled = 'disabled="disabled"';
+            $tpl->set("s", "REASON", sprintf(i18n("Article is in use by %s (%s)"), $inUseUser, $inUseUserRealName));
         }
 
-        if ($tmp_locked == 1) {
-            $inUse = true;
-            $disabled = 'disabled="disabled"';
-            $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
-        }
         $newArtStyle = 'table-row';
     } else {
 
