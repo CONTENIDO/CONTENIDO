@@ -15,6 +15,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude('includes', 'functions.tpl.php');
-$idtpl = tplDuplicateTemplate($idtpl);
+if ($perm->have_perm_area_action("tpl", "tpl_duplicate") || $perm->have_perm_area_action_item("tpl", "tpl_duplicate", $idtpl)) {
+    cInclude('includes', 'functions.tpl.php');
+    $idtpl = tplDuplicateTemplate($idtpl);
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
+}
 ?>

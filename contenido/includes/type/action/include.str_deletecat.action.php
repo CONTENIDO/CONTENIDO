@@ -16,5 +16,10 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.str.php');
-$errno = strDeleteCategory($idcat);
+
+if ($perm->have_perm_area_action("str", "str_deletecat") || $perm->have_perm_area_action_item("str", "str_deletecat", $idcat)) {
+    $errno = strDeleteCategory($idcat);
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
+}
 ?>

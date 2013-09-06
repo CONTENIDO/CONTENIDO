@@ -17,10 +17,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.lang.php');
 
-if (!is_numeric($targetclient)) {
-    $targetclient = $client;
-}
+if ($perm->have_perm_area_action("lang", "lang_deletelanguage")) {
+    if (!is_numeric($targetclient)) {
+        $targetclient = $client;
+    }
 
-$newidlang = langNewLanguage("-- ".i18n("New language")." --", $targetclient);
+    $newidlang = langNewLanguage("-- ".i18n("New language")." --", $targetclient);
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
+}
 
 ?>

@@ -15,6 +15,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude('includes', 'functions.tpl.php');
-$idtpl = tplEditTemplate($changelayout, $idtpl, $tplname, $description, $idlay, $c, $vdefault);
+if ($perm->have_perm_area_action("tpl", "tpl_edit") || $perm->have_perm_area_action_item("tpl", "tpl_edit", $idtpl)) {
+    cInclude('includes', 'functions.tpl.php');
+    $idtpl = tplEditTemplate($changelayout, $idtpl, $tplname, $description, $idlay, $c, $vdefault);
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
+}
 ?>

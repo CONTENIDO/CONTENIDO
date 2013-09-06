@@ -16,5 +16,11 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.lay.php');
-$idlay = layEditLayout($idlay, $layname, $description, $code);
+
+if ($perm->have_perm_area_action("lay", "lay_edit")) {
+    $idlay = layEditLayout($idlay, $layname, $description, $code);
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
+}
+
 ?>

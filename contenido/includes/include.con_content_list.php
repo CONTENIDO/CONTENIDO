@@ -30,7 +30,7 @@ $edit = 'true';
 $scripts = '';
 
 // save / set value
-if ($action == 'savecontype' || $action == 10) {
+if (($action == 'savecontype' || $action == 10) && ($perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat))) {
     if ($data != '') {
         $data = explode('||', substr($data, 0, -2));
         foreach ($data as $value) {
@@ -53,7 +53,7 @@ if ($action == 'savecontype' || $action == 10) {
     }
 
     conGenerateCodeForArtInAllCategories($idart);
-} else if ($action == 'deletecontype') {
+} else if ($action == 'deletecontype' && ($perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat))) {
     if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
         $oContentColl = new cApiContentCollection();
 

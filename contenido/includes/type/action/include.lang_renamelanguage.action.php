@@ -17,5 +17,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.lang.php');
 
+// There is no action for this in the database
 $errno = langRenameLanguage($idlang, $name);
 ?>

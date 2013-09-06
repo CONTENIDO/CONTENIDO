@@ -17,11 +17,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.str.php');
 
-strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias);
-cApiCecHook::execute("Contenido.Action.str_renamecat.AfterCall", array(
-    'idcat'            => $idcat,
-    'lang'             => $lang,
-    'newcategoryname'  => $newcategoryname,
-    'newcategoryalias' => $newcategoryalias
-));
+if ($perm->have_perm_area_action("str", "str_renamecat") || $perm->have_perm_area_action_item("str", "str_renamecat", $idcat)) {
+    strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias);
+    cApiCecHook::execute("Contenido.Action.str_renamecat.AfterCall", array(
+        'idcat'            => $idcat,
+        'lang'             => $lang,
+        'newcategoryname'  => $newcategoryname,
+        'newcategoryalias' => $newcategoryalias
+    ));
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
+}
+
 ?>

@@ -15,6 +15,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude("includes", "functions.tpl.php");
-include(cRegistry::getBackendPath() . $cfg["path"]["includes"] . "include.con_content_list.php");
+if ($perm->have_perm_area_action("con", "con_content") || $perm->have_perm_area_action_item("con", "con_content", $idcat)) {
+    cInclude("includes", "functions.tpl.php");
+    include(cRegistry::getBackendPath() . $cfg["path"]["includes"] . "include.con_content_list.php");
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
+}
 ?>

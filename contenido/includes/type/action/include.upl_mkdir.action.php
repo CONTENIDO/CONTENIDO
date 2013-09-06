@@ -15,7 +15,11 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude('includes', 'functions.upl.php');
-$errno = uplmkdir($path, $foldername);
+if ($perm->have_perm_area_action("upl", "upl_mkdir") || $perm->have_perm_area_action_item("upl", "upl_mkdir", $idtpl)) {
+    cInclude('includes', 'functions.upl.php');
+    $errno = uplmkdir($path, $foldername);
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
+}
 
 ?>

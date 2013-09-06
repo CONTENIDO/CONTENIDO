@@ -15,6 +15,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+// rights are being checked by the include file itself
 cInclude("includes", "functions.tpl.php");
 include(cRegistry::getBackendPath() . $cfg["path"]["includes"] . "include.con_content_list.php");
 ?>

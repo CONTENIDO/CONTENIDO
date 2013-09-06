@@ -15,6 +15,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+// the function checks the rights
 cInclude('includes', 'functions.system.php');
 $tmp_notification = emptyLogFile();
 ?>

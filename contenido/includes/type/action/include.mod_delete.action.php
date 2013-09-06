@@ -15,5 +15,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+// apparently this does nothing?
 //modDeleteModule($idmod);
 ?>

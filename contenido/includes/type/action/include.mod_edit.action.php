@@ -17,8 +17,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.mod.php');
 
-if (empty($type)) {
-    $type = $customtype;
-}
+if ($perm->have_perm_area_action("mod", "mod_edit")) {
+    if (empty($type)) {
+        $type = $customtype;
+    }
 
-$idmod = modEditModule($idmod, $name, $descr, $input, $output, $template, $type);
+    $idmod = modEditModule($idmod, $name, $descr, $input, $output, $template, $type);
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
+}

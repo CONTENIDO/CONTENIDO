@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-05 10:27+0200\n"
-"PO-Revision-Date: 2013-09-05 10:34+0100\n"
+"POT-Creation-Date: 2013-09-05 12:11+0200\n"
+"PO-Revision-Date: 2013-09-05 12:13+0100\n"
 "Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -25,7 +25,7 @@ msgstr "Vielen Dank für die Speicherung dieser Suche!"
 #: classes/content_types/class.content.type.linkeditor.php:276
 #: includes/include.con_art_overview.php:63
 #: includes/include.con_art_overview.php:678
-#: includes/include.con_edit_form.php:202
+#: includes/include.con_edit_form.php:205
 #: includes/include.stat_overview.php:87
 #: templates/standard/template.mycontenido_lastarticles.html:63
 #: templates/standard/template.mycontenido_lastarticles.html:91
@@ -198,7 +198,7 @@ msgstr "Keine Daten gefunden!"
 
 #: classes/class.ajax.php:139
 #: classes/content_types/class.content.type.teaser.php:820
-#: includes/include.con_edit_form.php:521
+#: includes/include.con_edit_form.php:524
 #: includes/include.grouprights_con.php:63
 #: includes/include.grouprights_str.php:65 includes/include.logs.php:267
 #: includes/include.note.popup.php:72 includes/include.rights_con.php:63
@@ -233,7 +233,7 @@ msgstr "idlang"
 #: includes/include.mod_edit_form.php:392 includes/include.mod_history.php:116
 #: includes/include.mod_new.php:37 includes/include.mod_script.php:193
 #: includes/include.mod_style.php:222
-#: includes/include.mycontenido_settings.php:114
+#: includes/include.mycontenido_settings.php:112
 #: includes/include.rights_create.php:122
 #: includes/include.rights_left_top.php:97
 #: includes/include.rights_overview.php:159
@@ -1778,7 +1778,7 @@ msgstr "Freitag"
 msgid "Saturday"
 msgstr "Samstag"
 
-#: classes/gui/class.backendhelpbox.php:57
+#: classes/gui/class.backendhelpbox.php:63
 msgid "More information"
 msgstr "Mehr Informationen"
 
@@ -1855,7 +1855,6 @@ msgstr "Letzte Seite"
 #: includes/include.grouprights_overview.php:95
 #: includes/include.rights_create.php:112
 #: includes/include.rights_overview.php:147
-#: includes/include.system_configuration.php:164
 #: templates/standard/template.grouprights_memberselect.html:96
 #: templates/standard/template.mod_translate.html:69
 #: templates/standard/template.upl_files_upload.html:87
@@ -1931,8 +1930,8 @@ msgstr "Die Vorlage wurde erfolgreich gelöscht!"
 #: includes/include.client_artspec.php:38
 #: includes/include.client_artspec.php:46 includes/include.client_edit.php:27
 #: includes/include.con_art_overview.php:947
-#: includes/include.con_edit_form.php:743
-#: includes/include.con_meta_form.php:36
+#: includes/include.con_edit_form.php:746
+#: includes/include.con_meta_form.php:35
 #: includes/include.con_translate.php:137
 #: includes/include.grouprights_area.php:36
 #: includes/include.grouprights_con.php:34
@@ -1946,7 +1945,7 @@ msgstr "Die Vorlage wurde erfolgreich gelöscht!"
 #: includes/include.html_tpl_edit_form.php:33
 #: includes/include.html_tpl_history.php:38
 #: includes/include.js_edit_form.php:30 includes/include.js_history.php:36
-#: includes/include.lang_edit.php:98 includes/include.lay_edit_form.php:34
+#: includes/include.lang_edit.php:94 includes/include.lay_edit_form.php:34
 #: includes/include.lay_edit_form.php:61 includes/include.lay_edit_form.php:69
 #: includes/include.lay_history.php:29 includes/include.logs.php:19
 #: includes/include.mail_log.php:25 includes/include.mod_history.php:30
@@ -2137,8 +2136,9 @@ msgid "Error article/category not found!"
 msgstr "Fehler: Artikel / Kategorie nicht gefunden!"
 
 #: includes/frontend/include.front_content.php:355
-#: includes/include.con_edit_form.php:125
-#: includes/include.con_meta_form.php:68
+#: includes/include.con_edit_form.php:132
+#: includes/include.con_edit_form.php:136
+#: includes/include.con_meta_form.php:65 includes/include.con_meta_form.php:67
 #: includes/include.tplcfg_edit_form.php:41
 #, php-format
 msgid "Article is in use by %s (%s)"
@@ -2270,9 +2270,9 @@ msgstr ""
 #: includes/include.con_content_list.php:52
 #: includes/include.con_content_list.php:74
 #: includes/include.grouprights_overview.php:62
-#: includes/include.lang_edit.php:105
-#: includes/include.mycontenido_settings.php:53
-#: includes/include.mycontenido_settings.php:91
+#: includes/include.lang_edit.php:101
+#: includes/include.mycontenido_settings.php:51
+#: includes/include.mycontenido_settings.php:89
 #: includes/include.rights_overview.php:113
 #: includes/include.system_configuration.php:150
 #: includes/type/action/include.con_meta_saveart.action.php:102
@@ -2560,14 +2560,14 @@ msgid "-File"
 msgstr "-Datei"
 
 #: includes/include.client_artspec.php:60
-#: includes/include.con_edit_form.php:234
+#: includes/include.con_edit_form.php:237
 msgid "Article specification"
 msgstr "Artikelspezifikation"
 
 #: includes/include.client_artspec.php:61
 #: includes/include.lay_edit_form.php:214
 #: includes/include.mycontenido.tasks.php:371
-#: includes/include.mycontenido_settings.php:149
+#: includes/include.mycontenido_settings.php:148
 msgid "Options"
 msgstr "Optionen"
 
@@ -2596,7 +2596,7 @@ msgid "This is the default article specification"
 msgstr "Dies ist die standardmäßige Artikelspezifikation"
 
 #: includes/include.client_artspec.php:141
-#: includes/include.con_edit_form.php:228
+#: includes/include.con_edit_form.php:231
 msgid "No article specifications found!"
 msgstr "Keine Artikelspezifikation gefunden"
 
@@ -2828,7 +2828,7 @@ msgid "not modified yet"
 msgstr "noch nicht modifiziert"
 
 #: includes/include.con_art_overview.php:301
-#: includes/include.con_edit_form.php:309
+#: includes/include.con_edit_form.php:312
 msgid "not yet published"
 msgstr "noch nicht veröffentlicht"
 
@@ -2864,7 +2864,7 @@ msgid "Copy article to the current language"
 msgstr "Artikel in die aktuelle Sprache kopieren"
 
 #: includes/include.con_art_overview.php:495
-#: includes/include.con_edit_form.php:359
+#: includes/include.con_edit_form.php:362
 msgid "Start article"
 msgstr "Startartikel"
 
@@ -2980,13 +2980,14 @@ msgid "Article has no raw data"
 msgstr "Artikel hat keine Rohdaten"
 
 #: includes/include.con_content_list.php:266
-#: includes/include.con_edit_form.php:134
-#: includes/include.con_meta_form.php:77
+#: includes/include.con_edit_form.php:125
+#: includes/include.con_edit_form.php:126
+#: includes/include.con_meta_form.php:74 includes/include.con_meta_form.php:75
 #: includes/include.tplcfg_edit_form.php:112
 msgid "This article is currently frozen and can not be edited!"
 msgstr "Dieser Artikel ist eingefroren und kann nicht editiert werden."
 
-#: includes/include.con_edit_form.php:205
+#: includes/include.con_edit_form.php:208
 #: includes/include.str_overview.php:493
 #: templates/standard/template.con_meta_edit_form.html:129
 #: templates/standard/template.str_overview.html:488
@@ -2995,39 +2996,39 @@ msgstr "Dieser Artikel ist eingefroren und kann nicht editiert werden."
 msgid "Alias"
 msgstr "Alias"
 
-#: includes/include.con_edit_form.php:246
+#: includes/include.con_edit_form.php:249
 msgid "Article link"
 msgstr "Artikellink"
 
-#: includes/include.con_edit_form.php:256
+#: includes/include.con_edit_form.php:259
 msgid "Select an entry to display link"
 msgstr "Eintrag wählen, um einen Link anzuzeigen"
 
-#: includes/include.con_edit_form.php:257
+#: includes/include.con_edit_form.php:260
 msgid "Article only"
 msgstr "Nur Artikel"
 
-#: includes/include.con_edit_form.php:258
+#: includes/include.con_edit_form.php:261
 msgid "Article with category"
 msgstr "Artikel mit Kategorie"
 
-#: includes/include.con_edit_form.php:259
+#: includes/include.con_edit_form.php:262
 msgid "Article with category and language"
 msgstr "Artikel mit Kategorie und Sprache"
 
-#: includes/include.con_edit_form.php:260
+#: includes/include.con_edit_form.php:263
 msgid "Article with language"
 msgstr "Artikel mit Sprache"
 
-#: includes/include.con_edit_form.php:268
+#: includes/include.con_edit_form.php:271
 msgid "open"
 msgstr "Öffnen"
 
-#: includes/include.con_edit_form.php:274
+#: includes/include.con_edit_form.php:277
 msgid "Author (Creator)"
 msgstr "erstellt von"
 
-#: includes/include.con_edit_form.php:296
+#: includes/include.con_edit_form.php:299
 #: includes/include.frontend.left_top.php:43
 #: includes/include.frontend.user_menu.php:41
 #: includes/include.mycontenido.tasks.php:252
@@ -3038,55 +3039,55 @@ msgstr "erstellt von"
 msgid "Created"
 msgstr "Erstelldatum"
 
-#: includes/include.con_edit_form.php:300
+#: includes/include.con_edit_form.php:303
 msgid "Author (Modifier)"
 msgstr "verändert von"
 
-#: includes/include.con_edit_form.php:301
+#: includes/include.con_edit_form.php:304
 msgid "Last modified"
 msgstr "Änderungsdatum"
 
-#: includes/include.con_edit_form.php:305
+#: includes/include.con_edit_form.php:308
 msgid "Publishing date"
 msgstr "Veröffentlichungsdatum"
 
-#: includes/include.con_edit_form.php:313
+#: includes/include.con_edit_form.php:316
 msgid "Publisher"
 msgstr "veröffentlicht von"
 
-#: includes/include.con_edit_form.php:324
+#: includes/include.con_edit_form.php:327
 msgid "Redirect"
 msgstr "Weiterleitung"
 
-#: includes/include.con_edit_form.php:337
+#: includes/include.con_edit_form.php:340
 msgid "New window"
 msgstr "Neues Fenster"
 
-#: includes/include.con_edit_form.php:365
+#: includes/include.con_edit_form.php:368
 msgid "Searchable"
 msgstr "Suchbar"
 
-#: includes/include.con_edit_form.php:369
+#: includes/include.con_edit_form.php:372
 msgid "Sort key"
 msgstr "Sortierschlüssel"
 
-#: includes/include.con_edit_form.php:394
+#: includes/include.con_edit_form.php:397
 msgid ""
 "This article was synchronized before and can not moved to another category!"
 msgstr ""
 "Dieser Artikel wurde synchronisiert und kann nicht in eine andere Kategorie "
 "verschoben werden."
 
-#: includes/include.con_edit_form.php:410
+#: includes/include.con_edit_form.php:413
 #: ../data/config/production/cfg_actions.inc.php:38
 msgid "Remove assignments"
 msgstr "Zuweisungen entfernen"
 
-#: includes/include.con_edit_form.php:412
+#: includes/include.con_edit_form.php:415
 msgid "Remove multiple category assignments"
 msgstr "Mehrfachzuordnung entfernen"
 
-#: includes/include.con_edit_form.php:413
+#: includes/include.con_edit_form.php:416
 msgid ""
 "Do you really want to remove the assignments to all categories except the "
 "current one?"
@@ -3094,7 +3095,7 @@ msgstr ""
 "Möchten Sie wirklich alle Zuweisungen zu allen Kategorien entfernen - außer "
 "zu der aktuellen?"
 
-#: includes/include.con_edit_form.php:427
+#: includes/include.con_edit_form.php:430
 msgid ""
 "Language parts of the articles are existing in other languages and are "
 "online. To change the category assignment, please set the other articles "
@@ -3104,11 +3105,11 @@ msgstr ""
 "sind online. Um die Kategoriezuweisung zu verändern, setzen Sie bitte zuerst "
 "die anderen sprachabhängigen Teile offline."
 
-#: includes/include.con_edit_form.php:616
+#: includes/include.con_edit_form.php:619
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: includes/include.con_edit_form.php:722
+#: includes/include.con_edit_form.php:725
 msgid "Please fill in the start date and/or the end date!"
 msgstr "Bitte geben Sie Startzeitpunkt und / oder Endzeitpunkt ein!"
 
@@ -3161,15 +3162,15 @@ msgstr "Synchronisieren von"
 msgid "Legend"
 msgstr "Legende"
 
-#: includes/include.con_meta_form.php:134
+#: includes/include.con_meta_form.php:129
 msgid "SEO administration"
 msgstr "SEO-Administration"
 
-#: includes/include.con_meta_form.php:256
+#: includes/include.con_meta_form.php:244
 msgid "Are you sure to delete this Meta tag?"
 msgstr "Sind Sie sicher, dass dieser Meta Tag gelöscht werden soll?"
 
-#: includes/include.con_meta_form.php:263
+#: includes/include.con_meta_form.php:251
 msgid ""
 "The title-tag is one of the most important on-page factors for SEO and is "
 "not longer than 60 characters. It includes top keywords and the branding."
@@ -3178,7 +3179,7 @@ msgstr ""
 "optimierter Seitentitel beträgt nicht mehr als 60 Zeichen und beinhaltet "
 "neben den wichtigsten Keywords und auch das Branding."
 
-#: includes/include.con_meta_form.php:266
+#: includes/include.con_meta_form.php:254
 msgid ""
 "The description-tag describes the article in a short way (not more than 150 "
 "characters). The content should be related to the title-tag and the H1-tag."
@@ -3187,13 +3188,13 @@ msgstr ""
 "150 Zeichen werden die Top-Keywords erwähnt, die in Relation zum Title-Tag "
 "und H1-Tag stehen."
 
-#: includes/include.con_meta_form.php:269
+#: includes/include.con_meta_form.php:257
 msgid "No more than 6 Keywords should be used."
 msgstr ""
 "Mittels des Keyword-Tag wird der Artikel mit den wichtigsten Elementen "
 "beschrieben. Es sollten nicht mehr als 6-10 Keywords erwähnt werden."
 
-#: includes/include.con_meta_form.php:272
+#: includes/include.con_meta_form.php:260
 msgid ""
 "The frequency of the revisit after tag depends on new publications of the "
 "content. Nevertheless the robots decide on their own when to visit."
@@ -3202,7 +3203,7 @@ msgstr ""
 "Neuerscheinungen.  Jedoch haben die Robots der Suchmaschinen ihren eigenen "
 "Besuchsrhythmus."
 
-#: includes/include.con_meta_form.php:275
+#: includes/include.con_meta_form.php:263
 msgid ""
 "The robot-tag sets certain rules for search engines. You can tell it to not "
 "index certain articles or to keep pictures in this article out of its index. "
@@ -3214,7 +3215,7 @@ msgstr ""
 "Einfluss auf das Ranking, da nur relevante und besucherreiche Artikeln "
 "indiziert werden sollen."
 
-#: includes/include.con_meta_form.php:278
+#: includes/include.con_meta_form.php:266
 msgid ""
 "The avarage value for the sitemap priority is 0.5. Only important articels "
 "should have a value no more than 0.8."
@@ -3223,27 +3224,27 @@ msgstr ""
 "wichtige Artikel sollten einen Wert nicht über 0.8 erhalten. Ein unwichtiger "
 "Artikel sollten einen Wert nicht über 0.3 erhalten."
 
-#: includes/include.con_meta_form.php:281
+#: includes/include.con_meta_form.php:269
 msgid "The refresh rate is focused on the content."
 msgstr "Der Aktualisierung-Intervall richtet sich am Content."
 
-#: includes/include.con_meta_form.php:312
+#: includes/include.con_meta_form.php:308
 msgid "New meta tag"
 msgstr "Neuer Meta-Tag"
 
-#: includes/include.con_meta_form.php:325
+#: includes/include.con_meta_form.php:322
 msgid "Meta Type"
 msgstr "Meta Typ"
 
-#: includes/include.con_meta_form.php:329
+#: includes/include.con_meta_form.php:326
 msgid "Field Type"
 msgstr "Eingabetyp"
 
-#: includes/include.con_meta_form.php:333
+#: includes/include.con_meta_form.php:330
 msgid "Max Length"
 msgstr "Maximale Länge"
 
-#: includes/include.con_meta_form.php:337
+#: includes/include.con_meta_form.php:334
 msgid "Field Name"
 msgstr "Feldname"
 
@@ -3310,8 +3311,8 @@ msgstr "Übersetzungsvariable"
 msgid "Current language"
 msgstr "Aktuelle Sprache"
 
-#: includes/include.con_translate.php:508 includes/include.lang_edit.php:187
-#: includes/include.lang_edit.php:189 includes/include.logs.php:263
+#: includes/include.con_translate.php:508 includes/include.lang_edit.php:181
+#: includes/include.lang_edit.php:183 includes/include.logs.php:263
 #: main.loginform.php:84 templates/standard/template.log_main.html:27
 #: templates/standard/template.log_main.html:90
 msgid "Language"
@@ -3552,7 +3553,7 @@ msgid "User name"
 msgstr "Benutzername"
 
 #: includes/include.frontend.user_edit.php:173
-#: includes/include.mycontenido_settings.php:123
+#: includes/include.mycontenido_settings.php:122
 #: includes/include.rights_create.php:128
 #: includes/include.rights_overview.php:168
 msgid "New password"
@@ -3563,7 +3564,7 @@ msgid "New password (again)"
 msgstr "Neues Passwort (erneut)"
 
 #: includes/include.frontend.user_edit.php:175
-#: includes/include.lang_edit.php:185
+#: includes/include.lang_edit.php:179
 msgid "Active"
 msgstr "Aktiv"
 
@@ -3904,87 +3905,87 @@ msgstr "Keine JavaScript-Historie verfügbar"
 msgid "Create script"
 msgstr "Skript erstellen"
 
-#: includes/include.lang_edit.php:49
+#: includes/include.lang_edit.php:45
 msgid "Created new language successfully!"
 msgstr "Die neue Sprache wurde erfolgreich angelegt!"
 
-#: includes/include.lang_edit.php:55 includes/include.lang_overview.php:82
+#: includes/include.lang_edit.php:51 includes/include.lang_overview.php:82
 #: includes/type/action/include.lang_newlanguage.action.php:24
 msgid "New language"
 msgstr "Neue Sprache"
 
-#: includes/include.lang_edit.php:67
+#: includes/include.lang_edit.php:63
 msgid "Deleted language successfully!"
 msgstr "Die Sprache wurde erfolgreich gelöscht!"
 
-#: includes/include.lang_edit.php:168
+#: includes/include.lang_edit.php:162
 msgid "Left to right"
 msgstr "Links nach rechts"
 
-#: includes/include.lang_edit.php:169
+#: includes/include.lang_edit.php:163
 msgid "Right to left"
 msgstr "Rechts nach Links"
 
-#: includes/include.lang_edit.php:181
+#: includes/include.lang_edit.php:175
 #: ../data/config/production/cfg_actions.inc.php:123
 msgid "Edit language"
 msgstr "Sprache bearbeiten"
 
-#: includes/include.lang_edit.php:183
+#: includes/include.lang_edit.php:177
 msgid "Language name"
 msgstr "Name der Sprache"
 
-#: includes/include.lang_edit.php:188
+#: includes/include.lang_edit.php:182
 msgid "Encoding"
 msgstr "Enkodierung"
 
-#: includes/include.lang_edit.php:190
-#: includes/include.mycontenido_settings.php:143
+#: includes/include.lang_edit.php:184
+#: includes/include.mycontenido_settings.php:142
 #: includes/include.rights_create.php:166
 #: includes/include.rights_overview.php:211
 msgid "Country"
 msgstr "Land"
 
-#: includes/include.lang_edit.php:191
+#: includes/include.lang_edit.php:185
 msgid "Text direction"
 msgstr "Laufrichtung Text"
 
-#: includes/include.lang_edit.php:193 includes/include.lang_edit.php:200
-#: includes/include.mycontenido_settings.php:176
+#: includes/include.lang_edit.php:187 includes/include.lang_edit.php:194
+#: includes/include.mycontenido_settings.php:189
 msgid "Time format"
 msgstr "Zeitformat"
 
-#: includes/include.lang_edit.php:195
-#: includes/include.mycontenido_settings.php:170
+#: includes/include.lang_edit.php:189
+#: includes/include.mycontenido_settings.php:174
 msgid "FORMAT_DATE_TIME"
 msgstr ""
 "Format der PHP date()-Funktion für Datum und Uhrzeit, bspw. d.m.Y H:i:s"
 
-#: includes/include.lang_edit.php:196
-#: includes/include.mycontenido_settings.php:172
+#: includes/include.lang_edit.php:190
+#: includes/include.mycontenido_settings.php:176
 msgid "Date/Time format"
 msgstr "Format Datum / Zeit"
 
-#: includes/include.lang_edit.php:197
-#: includes/include.mycontenido_settings.php:173
+#: includes/include.lang_edit.php:191
+#: includes/include.mycontenido_settings.php:182
 msgid "FORMAT_DATE"
 msgstr "Format der PHP date()-Funktion ausschließlich für Datum, bspw. d.m.Y"
 
-#: includes/include.lang_edit.php:198
-#: includes/include.mycontenido_settings.php:174
+#: includes/include.lang_edit.php:192
+#: includes/include.mycontenido_settings.php:183
 msgid "Date format"
 msgstr "Datumsformat"
 
-#: includes/include.lang_edit.php:199
-#: includes/include.mycontenido_settings.php:175
+#: includes/include.lang_edit.php:193
+#: includes/include.mycontenido_settings.php:188
 msgid "FORMATE_TIME"
 msgstr "Format der PHP date()-Funktion ausschließlich für Zeit, bspw. H:i:s"
 
-#: includes/include.lang_edit.php:201
+#: includes/include.lang_edit.php:195
 msgid "LANUAGE_DATE_TIME"
 msgstr "Angabe der Sprache für Datum und Zeit, bspw. de_DE"
 
-#: includes/include.lang_edit.php:202
+#: includes/include.lang_edit.php:196
 msgid "Date/Time locale"
 msgstr "Sprache für Datum / Zeit"
 
@@ -4636,75 +4637,75 @@ msgstr "Keine Artikel gefunden"
 msgid "Create article"
 msgstr "Neuen Artikel erstellen"
 
-#: includes/include.mycontenido_settings.php:34
+#: includes/include.mycontenido_settings.php:33
 msgid "Old password incorrect"
 msgstr "Altes Passwort nicht korrekt"
 
-#: includes/include.mycontenido_settings.php:38
+#: includes/include.mycontenido_settings.php:37
 #: includes/include.rights_create.php:94
 #: includes/include.rights_overview.php:102
 msgid "Passwords don't match"
 msgstr "Passwörter stimmen nicht überein"
 
-#: includes/include.mycontenido_settings.php:93
+#: includes/include.mycontenido_settings.php:91
 #: includes/include.rights_overview.php:116
 msgid "An error occured while saving user info."
 msgstr "Ein Fehler ist beim Speichern des Benutzers aufgetreten."
 
-#: includes/include.mycontenido_settings.php:102
+#: includes/include.mycontenido_settings.php:100
 #, php-format
 msgid "Settings for %s"
 msgstr "Einstellungen für %s"
 
-#: includes/include.mycontenido_settings.php:122
+#: includes/include.mycontenido_settings.php:121
 msgid "Old password"
 msgstr "Altes Passwort"
 
-#: includes/include.mycontenido_settings.php:124
+#: includes/include.mycontenido_settings.php:123
 #: includes/include.rights_create.php:134
 #: includes/include.rights_overview.php:174
 msgid "Confirm new password"
 msgstr "Neues Passwort bestätigen"
 
-#: includes/include.mycontenido_settings.php:128
+#: includes/include.mycontenido_settings.php:127
 #: includes/include.rights_create.php:140
 #: includes/include.rights_overview.php:181
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: includes/include.mycontenido_settings.php:131
+#: includes/include.mycontenido_settings.php:130
 #: includes/include.rights_create.php:146
 #: includes/include.rights_overview.php:187
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: includes/include.mycontenido_settings.php:134
+#: includes/include.mycontenido_settings.php:133
 #: includes/include.rights_create.php:151
 #: includes/include.rights_overview.php:193
 msgid "Street"
 msgstr "Strasse"
 
-#: includes/include.mycontenido_settings.php:137
+#: includes/include.mycontenido_settings.php:136
 #: includes/include.rights_create.php:156
 #: includes/include.rights_overview.php:199
 msgid "ZIP code"
 msgstr "Postleitzahl"
 
-#: includes/include.mycontenido_settings.php:140
+#: includes/include.mycontenido_settings.php:139
 #: includes/include.rights_create.php:161
 #: includes/include.rights_overview.php:205
 msgid "City"
 msgstr "Stadt"
 
-#: includes/include.mycontenido_settings.php:147
+#: includes/include.mycontenido_settings.php:146
 msgid "Use WYSIWYG Editor"
 msgstr "WYSIWYG-Editor benutzen"
 
-#: includes/include.mycontenido_settings.php:151
+#: includes/include.mycontenido_settings.php:152
 msgid "The format is equal to PHP's date() function."
 msgstr "Das Format stimmt mit dem der PHP date()-Funktion überein"
 
-#: includes/include.mycontenido_settings.php:153
+#: includes/include.mycontenido_settings.php:154
 msgid "Common date formattings"
 msgstr "Gebräuchliche Datumsformatierungen"
 
@@ -4919,11 +4920,19 @@ msgstr ""
 "Löschen ist nicht möglich, da noch Artikel in dieser Kategorie vorhanden "
 "sind."
 
+#: includes/include.str_overview.php:722 includes/include.str_overview.php:727
+msgid "This category is already at the top"
+msgstr "Diese Kategorie ist bereits an ganz oben."
+
 #: includes/include.str_overview.php:725
 #: templates/standard/template.str_overview.html:664
 #: ../data/config/production/cfg_actions.inc.php:57
 msgid "Move category up"
 msgstr "Eine Kategorie nach oben verschieben"
+
+#: includes/include.str_overview.php:737
+msgid "This category is already at the bottom"
+msgstr "Diese Kategorie ist bereits ganz unten."
 
 #: includes/include.str_overview.php:739
 #: templates/standard/template.str_overview.html:663
@@ -4940,6 +4949,12 @@ msgstr "Baum bewegen"
 #: templates/standard/template.str_overview.html:669
 msgid "Place tree here"
 msgstr "Baum hier einfügen"
+
+#: includes/include.str_overview.php:767
+msgid "This category can't be moved since it is already a root category"
+msgstr ""
+"Diese Kategorie kann nicht bewegt werden, da sie bereits eine Wurzel-"
+"Kategorie ist."
 
 #: includes/include.str_overview.php:775
 #: templates/standard/template.str_overview.html:658
@@ -5007,6 +5022,11 @@ msgstr "Die Aktualisierungsperiode muss mindestens 60 Minuten betragen."
 #: includes/include.system_sysvalues.php:49 xml/navigation.xml:82
 msgid "System configuration"
 msgstr "System-Konfiguration"
+
+#: includes/include.system_configuration.php:164
+msgid "You are not sysadmin. You can't change these settings."
+msgstr ""
+"Sie sind nicht der SysAdmin. Sie können daher keine Einstellungen ändern."
 
 #: includes/include.system_configuration.php:209
 msgid "Access denied"
@@ -5863,7 +5883,7 @@ msgstr "Sitemap Aktualisierungs-Intervall"
 msgid "Custom meta tags"
 msgstr "Benutzerdefinierte Meta Tags"
 
-#: templates/standard/template.con_meta_edit_form.html:375
+#: templates/standard/template.con_meta_edit_form.html:376
 msgid "HTML-View"
 msgstr "HTML-Ansicht"
 

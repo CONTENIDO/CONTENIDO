@@ -15,9 +15,13 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$oMetaTypeColl = new cApiMetaTypeCollection();
-$oMetaTypeColl->delete((int)$idmetatype);
+if ($perm->have_perm_area_action("con", "con_meta_deletetype") || $perm->have_perm_area_action_item("con", "con_meta_deletetype", $idcat)) {
+    $oMetaTypeColl = new cApiMetaTypeCollection();
+    $oMetaTypeColl->delete((int)$idmetatype);
 
-$oMetaTagColl = new cApiMetaTagCollection();
-$metaTag = $oMetaTagColl->fetchByArtLangAndMetaType((int)$idartlang, (int)$idmetatype);
-$oMetaTagColl->delete($metaTag->getField('idmetatag'));
+    $oMetaTagColl = new cApiMetaTagCollection();
+    $metaTag = $oMetaTagColl->fetchByArtLangAndMetaType((int)$idartlang, (int)$idmetatype);
+    $oMetaTagColl->delete($metaTag->getField('idmetatag'));
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
+}

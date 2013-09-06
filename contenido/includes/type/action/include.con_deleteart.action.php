@@ -17,16 +17,21 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.con.php');
 
-if (isset($_POST['idarts'])) {
-    //delete articles (bulk editing)
-    $idarts = json_decode($_POST['idarts'], true);
-    foreach ($idarts as $article) {
-        conDeleteArt($article);
+if ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat)) {
+    if (isset($_POST['idarts'])) {
+        //delete articles (bulk editing)
+        $idarts = json_decode($_POST['idarts'], true);
+        foreach ($idarts as $article) {
+            conDeleteArt($article);
+        }
+    } else  {
+        conDeleteArt($idart);
     }
-} else  {
-    conDeleteArt($idart);
+
+    $tmp_notification = $notification->returnNotification("info", i18n("Article deleted"));
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
 }
 
-$tmp_notification = $notification->returnNotification("info", i18n("Article deleted"));
 
 ?>

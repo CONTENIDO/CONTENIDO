@@ -17,10 +17,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $path = cRegistry::getBackendUrl() . "external/backendedit/";
 
-if ($tmpchangelang != $lang) {
-    $url = $sess->url("front_content.php?changeview=$changeview&client=$client&lang=$lang&action=$action&idartlang=$idartlang&idart=$idart&idcat=$idcat&tmpchangelang=$tmpchangelang");
+if ($perm->have_perm_area_action("con", "con_editart") || $perm->have_perm_area_action_item("con", "con_editart", $idcat)) {
+    if ($tmpchangelang != $lang) {
+        $url = $sess->url("front_content.php?changeview=$changeview&client=$client&lang=$lang&action=$action&idartlang=$idartlang&idart=$idart&idcat=$idcat&tmpchangelang=$tmpchangelang");
+    } else {
+        $url = $sess->url("front_content.php?changeview=$changeview&client=$client&lang=$lang&action=$action&idartlang=$idartlang&idart=$idart&idcat=$idcat&lang=$lang");
+    }
+
+    header("location: $path$url");
 } else {
-    $url = $sess->url("front_content.php?changeview=$changeview&client=$client&lang=$lang&action=$action&idartlang=$idartlang&idart=$idart&idcat=$idcat&lang=$lang");
+    $notification->displayNotification("error", i18n("Permission denied"));
 }
 
-header("location: $path$url");

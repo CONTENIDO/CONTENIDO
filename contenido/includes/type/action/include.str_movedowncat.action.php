@@ -17,7 +17,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.str.php');
 
-strMoveDownCategory($idcat);
-strRemakeTreeTable();
-cApiCecHook::execute("Contenido.Action.str_movedowncat.AfterCall", $idcat);
+if ($perm->have_perm_area_action("str", "str_movedowncat") || $perm->have_perm_area_action_item("str", "str_movedowncat", $idcat)) {
+    strMoveDownCategory($idcat);
+    strRemakeTreeTable();
+    cApiCecHook::execute("Contenido.Action.str_movedowncat.AfterCall", $idcat);
+} else {
+    $notification->displayNotification("error", i18n("Permission denied"));
+}
+
 ?>

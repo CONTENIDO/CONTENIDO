@@ -1629,6 +1629,7 @@ contenido/plugins/newsletter/locale/de_DE/LC_MESSAGES/newsletter.mo -text svneol
 contenido/plugins/newsletter/locale/de_DE/LC_MESSAGES/newsletter.po -text
 contenido/plugins/newsletter/locale/newsletter.pot -text
 contenido/plugins/newsletter/locale/newsletter_potfiles.txt -text
+contenido/plugins/newsletter/locale/potfiles.txt -text svneol=unset#text/plain
 contenido/plugins/newsletter/plugin.xml -text svneol=unset#text/plain
 contenido/plugins/newsletter/plugin_install.sql -text
 contenido/plugins/newsletter/plugin_uninstall.sql -text

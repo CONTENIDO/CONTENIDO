@@ -16,12 +16,17 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
-if (isset($_POST['idarts'])) {
-    $idarts = json_decode($_POST['idarts'], true);
-    $online = $_POST['invert'] == 1 ? 0 : 1;
-    conMakeOnlineBulkEditing($idarts, $lang, $online);
+
+if ($perm->have_perm_area_action("con", "con_changetemplate") || $perm->have_perm_area_action_item("con", "con_changetemplate", $idcat)) {
+    if (isset($_POST['idarts'])) {
+        $idarts = json_decode($_POST['idarts'], true);
+        $online = $_POST['invert'] == 1 ? 0 : 1;
+        conMakeOnlineBulkEditing($idarts, $lang, $online);
+    } else {
+        conMakeOnline($idart, $lang);
+    }
 } else {
-    conMakeOnline($idart, $lang);
+    $notification->displayNotification("error", i18n("Permission denied"));
 }
 
 ?>

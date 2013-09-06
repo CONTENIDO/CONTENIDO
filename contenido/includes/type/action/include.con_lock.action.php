@@ -17,12 +17,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.con.php');
 
-if ($_POST['idarts']) {
-    $idarts = json_decode($_POST['idarts'], true);
-    $lock = $_POST['invert'] == 1 ? 0 : 1;
-    conLockBulkEditing($idarts, $lang, $lock);
+if ($perm->have_perm_area_action("con", "con_lock") || $perm->have_perm_area_action_item("con", "con_lock", $idcat)) {
+    if ($_POST['idarts']) {
+        $idarts = json_decode($_POST['idarts'], true);
+        $lock = $_POST['invert'] == 1 ? 0 : 1;
+        conLockBulkEditing($idarts, $lang, $lock);
+    } else {
+        conLock($idart, $lang);
+    }
 } else {
-    conLock($idart, $lang);
+    $notification->displayNotification("error", i18n("Permission denied"));
 }
+
 
 ?>
