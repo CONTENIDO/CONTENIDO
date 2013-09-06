@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 12:00+0200\n"
+"POT-Creation-Date: 2013-09-06 12:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -231,7 +231,7 @@ msgstr ""
 #: includes/include.html_tpl_history.php:152
 #: includes/include.js_edit_form.php:239 includes/include.js_history.php:149
 #: includes/include.lay_edit_form.php:211 includes/include.lay_history.php:108
-#: includes/include.mod_edit_form.php:402 includes/include.mod_history.php:116
+#: includes/include.mod_edit_form.php:410 includes/include.mod_history.php:116
 #: includes/include.mod_new.php:37 includes/include.mod_script.php:193
 #: includes/include.mod_style.php:222
 #: includes/include.mycontenido_settings.php:112
@@ -1024,40 +1024,44 @@ msgid "-- New layout --"
 msgstr ""
 
 #: classes/contenido/class.module.php:494
-#: includes/include.mod_edit_form.php:94
-#: includes/include.mod_edit_form.php:104
+#: includes/include.mod_edit_form.php:101
+#: includes/include.mod_edit_form.php:111
 #: includes/include.mod_overview.php:115
 msgid "- Unnamed module -"
 msgstr ""
 
-#: classes/contenido/class.module.php:588
-#: classes/contenido/class.module.php:659
+#: classes/contenido/class.module.php:590
+#: classes/contenido/class.module.php:675
 msgid "Module exist!"
 msgstr ""
 
-#: classes/contenido/class.module.php:612
+#: classes/contenido/class.module.php:617
+msgid "Import failed, could load module information!"
+msgstr ""
+
+#: classes/contenido/class.module.php:623
 msgid "Import failed, could not extract zip file!"
 msgstr ""
 
-#: classes/contenido/class.module.php:619
-#: classes/contenido/class.module.php:743
+#: classes/contenido/class.module.php:630
+#: classes/contenido/class.module.php:757
 msgid "Could not open the zip file!"
 msgstr ""
 
-#: classes/contenido/class.module.php:667
+#: classes/contenido/class.module.php:682
 msgid "Could not make a module!"
 msgstr ""
 
-#: classes/contenido/class.module.php:676
+#: classes/contenido/class.module.php:690
 msgid "Could not parse xml file!"
 msgstr ""
 
-#: classes/contenido/class.module.php:711
+#: classes/contenido/class.module.php:725
 #, php-format
 msgid "Could not add file %s to zip!"
 msgstr ""
 
-#: classes/contenido/class.module.php:746
+#: classes/contenido/class.module.php:760
 msgid "Module don't exist on file system!"
 msgstr ""
 
@@ -1243,10 +1247,10 @@ msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:868
 #: classes/module/class.module.template.handler.php:480
-#: includes/include.mod_edit_form.php:455
-#: includes/include.mod_edit_form.php:457
-#: includes/include.mod_import_export.php:115
-#: includes/include.mod_import_export.php:117 xml/navigation.xml:43
+#: includes/include.mod_edit_form.php:463
+#: includes/include.mod_edit_form.php:465
+#: includes/include.mod_import_export.php:116
+#: includes/include.mod_import_export.php:118 xml/navigation.xml:43
 #: xml/navigation.xml:46 xml/navigation.xml:49
 msgid "File"
 msgstr ""
@@ -1287,7 +1291,7 @@ msgstr ""
 #: includes/include.html_tpl_history.php:153
 #: includes/include.js_edit_form.php:240 includes/include.js_history.php:150
 #: includes/include.lay_edit_form.php:212 includes/include.lay_history.php:109
-#: includes/include.mod_edit_form.php:404 includes/include.mod_history.php:117
+#: includes/include.mod_edit_form.php:412 includes/include.mod_history.php:117
 #: includes/include.mod_new.php:55
 #: includes/include.mycontenido.tasks.edit.php:50
 #: includes/include.pretplcfg_edit_form.php:141
@@ -1718,10 +1722,6 @@ msgid "Can't make file: "
 msgstr ""
 
 #: classes/module/class.module.synchronizer.php:54
-#, php-format
-msgid "Module %s successfull synchronized"
-msgstr ""
-
 #: classes/module/class.module.synchronizer.php:165
 #: classes/module/class.module.synchronizer.php:176
 #: classes/module/class.module.synchronizer.php:185
@@ -1729,12 +1729,16 @@ msgstr ""
 msgid "Module %s successfully synchronized"
 msgstr ""
 
+#: classes/module/class.module.synchronizer.php:195
+msgid "All modules are already synchronized"
+msgstr ""
+
 #: classes/module/class.module.synchronizer.php:222
-msgid "Can't make module: "
+msgid "Can not create module"
 msgstr ""
 
 #: classes/module/class.module.template.handler.php:174
-#: includes/include.mod_edit_form.php:192
+#: includes/include.mod_edit_form.php:200
 msgid "You have no write permissions for this module"
 msgstr ""
 
@@ -1799,13 +1803,13 @@ msgstr ""
 #: includes/include.lang_edit.php:94 includes/include.lay_edit_form.php:34
 #: includes/include.lay_edit_form.php:61 includes/include.lay_edit_form.php:69
 #: includes/include.lay_history.php:29 includes/include.logs.php:19
-#: includes/include.mail_log.php:25 includes/include.mod_history.php:30
-#: includes/include.mod_script.php:51 includes/include.mod_style.php:49
-#: includes/include.mod_template.php:38 includes/include.rights_area.php:36
-#: includes/include.rights_con.php:34 includes/include.rights_create.php:21
-#: includes/include.rights_lay.php:37 includes/include.rights_mod.php:35
-#: includes/include.rights_overview.php:24 includes/include.rights_str.php:35
-#: includes/include.rights_tpl.php:35 includes/include.style_edit_form.php:29
+#: includes/include.mail_log.php:25 includes/include.mod_script.php:51
+#: includes/include.mod_style.php:49 includes/include.mod_template.php:38
+#: includes/include.rights_area.php:36 includes/include.rights_con.php:34
+#: includes/include.rights_create.php:21 includes/include.rights_lay.php:37
+#: includes/include.rights_mod.php:35 includes/include.rights_overview.php:24
+#: includes/include.rights_str.php:35 includes/include.rights_tpl.php:35
+#: includes/include.style_edit_form.php:29
 #: includes/include.style_history.php:34 includes/include.system_purge.php:30
 #: includes/include.tpl_edit_form.php:30
 #: includes/include.tplcfg_edit_form.php:129
@@ -2093,38 +2097,38 @@ msgstr ""
 msgid "Can't delete layout!"
 msgstr ""
 
-#: includes/functions.mod.php:71
+#: includes/functions.mod.php:72
 msgid "Module name exist in module directory, please choose another name."
 msgstr ""
 
-#: includes/functions.mod.php:81
+#: includes/functions.mod.php:82
 msgid "Renamed module successfully!"
 msgstr ""
 
-#: includes/functions.mod.php:90
+#: includes/functions.mod.php:91
 msgid ""
 "Can't rename module, is a module file open?! Saving only database changes!"
 msgstr ""
 
-#: includes/functions.mod.php:101 includes/functions.mod.php:135
-#: includes/functions.mod.php:145
+#: includes/functions.mod.php:102 includes/functions.mod.php:136
+#: includes/functions.mod.php:146
 msgid "Can't save input !"
 msgstr ""
 
-#: includes/functions.mod.php:105 includes/functions.mod.php:136
-#: includes/functions.mod.php:146
+#: includes/functions.mod.php:106 includes/functions.mod.php:137
+#: includes/functions.mod.php:147
 msgid "Can't save output !"
 msgstr ""
 
-#: includes/functions.mod.php:109 includes/functions.mod.php:129
+#: includes/functions.mod.php:110 includes/functions.mod.php:130
 msgid "Can't save xml module info file!"
 msgstr ""
 
-#: includes/functions.mod.php:133 includes/functions.mod.php:143
+#: includes/functions.mod.php:134 includes/functions.mod.php:144
 msgid "Saved module successfully!"
 msgstr ""
 
-#: includes/functions.mod.php:253
+#: includes/functions.mod.php:254
 msgid "Please do not use short open tags. (Use <?php instead of <?)."
 msgstr ""
 
@@ -2634,7 +2638,7 @@ msgstr ""
 
 #: includes/include.clientsettings.php:79
 #: includes/include.clientsettings.php:158
-#: includes/include.mod_edit_form.php:403 includes/include.mod_new.php:37
+#: includes/include.mod_edit_form.php:411 includes/include.mod_new.php:37
 #: includes/include.mod_new.php:56 includes/include.systemsettings.php:57
 #: includes/include.systemsettings.php:156
 #: includes/include.upl_files_overview.php:442
@@ -3151,7 +3155,7 @@ msgid "No template"
 msgstr ""
 
 #: includes/include.con_translate.php:581 includes/include.lay_overview.php:64
-#: includes/include.mod_overview.php:158 includes/include.tpl_overview.php:81
+#: includes/include.tpl_overview.php:81
 msgid "Click for more information about usage"
 msgstr ""
 
@@ -3869,9 +3873,7 @@ msgstr ""
 msgid "Synchronize layouts"
 msgstr ""
 
-#: includes/include.lay_overview.php:59 includes/include.mod_edit_form.php:30
-#: includes/include.mod_edit_form.php:59 includes/include.mod_edit_form.php:84
-#: includes/include.mod_overview.php:186 includes/include.str_overview.php:700
+#: includes/include.lay_overview.php:59 includes/include.str_overview.php:700
 msgid "No permission"
 msgstr ""
 
@@ -4027,79 +4029,86 @@ msgstr ""
 msgid "Apply to all selected emails:"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:43
-msgid "Deleted module successfully!"
+#: includes/include.mod_edit_form.php:30 includes/include.mod_edit_form.php:66
+#: includes/include.mod_edit_form.php:91 includes/include.mod_history.php:30
+#: includes/include.mod_overview.php:186
+msgid "No permissions"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:97
+#: includes/include.mod_edit_form.php:48
+msgid "Module was successfully deleted!"
+msgstr ""
+
+#: includes/include.mod_edit_form.php:104
 msgid "The given module name already exists. Please enter another module name."
 msgstr ""
 
-#: includes/include.mod_edit_form.php:112
+#: includes/include.mod_edit_form.php:119
 msgid "Unable to create a new module!"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:118
+#: includes/include.mod_edit_form.php:125
 msgid "New module created successfuly!"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:131
-msgid "Could not import modul:"
+#: includes/include.mod_edit_form.php:138
+#: includes/include.mod_import_export.php:38
+#: includes/include.mod_import_export.php:64
+msgid "Could not import module!"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:160
+#: includes/include.mod_edit_form.php:166
 #, php-format
 msgid "Module is in use by %s (%s)"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:181 includes/include.mod_history.php:81
+#: includes/include.mod_edit_form.php:187 includes/include.mod_history.php:81
 #: ../data/config/production/cfg_actions.inc.php:88
 msgid "Edit module"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:325
-#: includes/include.mod_edit_form.php:329
+#: includes/include.mod_edit_form.php:333
+#: includes/include.mod_edit_form.php:337
 msgid "Custom"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:365
-#: includes/include.mod_edit_form.php:374
+#: includes/include.mod_edit_form.php:373
+#: includes/include.mod_edit_form.php:382
 #, php-format
 msgid "Error in module. Error location: %s"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:368
-#: includes/include.mod_edit_form.php:377
+#: includes/include.mod_edit_form.php:376
+#: includes/include.mod_edit_form.php:385
 msgid "Module successfully compiled"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:407
-#: includes/include.mod_edit_form.php:410 includes/include.mod_new.php:57
+#: includes/include.mod_edit_form.php:415
+#: includes/include.mod_edit_form.php:418 includes/include.mod_new.php:57
 msgid "Input"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:408
-#: includes/include.mod_edit_form.php:411 includes/include.mod_new.php:58
+#: includes/include.mod_edit_form.php:416
+#: includes/include.mod_edit_form.php:419 includes/include.mod_new.php:58
 msgid "Output"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:415
+#: includes/include.mod_edit_form.php:423
 msgid ""
 "This module uses variables and/or functions which are probably not available "
 "in this CONTENIDO version. Please make sure that you use up-to-date modules."
 msgstr ""
 
-#: includes/include.mod_edit_form.php:422
+#: includes/include.mod_edit_form.php:430
 msgid "Import from file"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:423
-#: includes/include.mod_import_export.php:91
+#: includes/include.mod_edit_form.php:431
 msgid "Export to file"
 msgstr ""
 
-#: includes/include.mod_edit_form.php:448
-#: includes/include.mod_import_export.php:111
+#: includes/include.mod_edit_form.php:456
+#: includes/include.mod_import_export.php:112
 msgid "Mode"
 msgstr ""
 
@@ -4123,27 +4132,26 @@ msgstr ""
 msgid "Could not export module!"
 msgstr ""
 
-#: includes/include.mod_import_export.php:38
-#: includes/include.mod_import_export.php:64
-msgid "Could not import module!"
-msgstr ""
-
 #: includes/include.mod_import_export.php:40
-#: includes/include.mod_import_export.php:66
+#: includes/include.mod_import_export.php:67
 msgid "Module import successfully!"
 msgstr ""
 
 #: includes/include.mod_import_export.php:52
-#: includes/include.mod_import_export.php:78
+#: includes/include.mod_import_export.php:79
 msgid "No file uploaded!"
 msgstr ""
 
-#: includes/include.mod_import_export.php:89
-msgid "Import from zip-file"
+#: includes/include.mod_import_export.php:90
+msgid "Import from ZIP file"
 msgstr ""
 
-#: includes/include.mod_import_export.php:90
-msgid "Import from xml-file"
+#: includes/include.mod_import_export.php:91
+msgid "Import from XML file"
+msgstr ""
+
+#: includes/include.mod_import_export.php:92
+msgid "Export to ZIP file"
 msgstr ""
 
 #: includes/include.mod_new.php:28
@@ -4168,8 +4176,12 @@ msgstr ""
 msgid "-- Without type --"
 msgstr ""
 
+#: includes/include.mod_overview.php:158
+msgid "For more information about usage click on this button"
+msgstr ""
+
 #: includes/include.mod_overview.php:167
-msgid "Module in use, cannot delete"
+msgid "Module can not be deleted, because it is already in use!"
 msgstr ""
 
 #: includes/include.mod_overview.php:171
@@ -4179,19 +4191,19 @@ msgstr ""
 
 #: includes/include.mod_overview.php:172
 #, php-format
-msgid "Do you really want to delete the following module:<br><br>%s<br>"
+msgid "Do you really want to delete the following module:<br /><br />%s<br />"
 msgstr ""
 
 #: includes/include.mod_script.php:63
-msgid "No write permissions in javascript folder for this module!"
+msgid "No write permissions in folder js for this module!"
 msgstr ""
 
 #: includes/include.mod_script.php:119
-msgid "Created new js file successfully"
+msgid "Created new javascript file successfully"
 msgstr ""
 
 #: includes/include.mod_script.php:121
-msgid "Could not create a new js file."
+msgid "Could not create a new javascript file!"
 msgstr ""
 
 #: includes/include.mod_script.php:155 includes/include.mod_style.php:176
@@ -4199,7 +4211,7 @@ msgid "Renamed and saved changes successfully!"
 msgstr ""
 
 #: includes/include.mod_style.php:64
-msgid "No write permissions in css folder for this module!"
+msgid "No write permissions in folder css for this module!"
 msgstr ""
 
 #: includes/include.mod_style.php:139
