@@ -27,9 +27,9 @@ global $syncoptions, $tmp_notification;
 
 // Reset template
 $tpl->reset();
-
+//die($area);
 // Check permissions
-if (!$perm->have_perm_area_action($area, 'con_meta_edit') && !$perm->have_perm_area_action_item($area, 'con_meta_edit', $idcat)) {
+if (!$perm->have_perm_area_action($area, 'con_meta_saveart') && !$perm->have_perm_area_action_item($area, 'con_meta_saveart', $idcat)) {
 
     // User has no permission to see this form
     $notification->displayNotification('error', i18n('Permission denied'));

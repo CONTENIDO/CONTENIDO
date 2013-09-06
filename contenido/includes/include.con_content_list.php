@@ -29,51 +29,68 @@ if (!isset($idcat)) {
 $edit = 'true';
 $scripts = '';
 
+$page = new cGuiPage("con_content_list");
+
+if(!($perm->have_perm_area_action("con", "savecontype") || $perm->have_perm_area_action_item("con", "savecontype", $idcat) || $perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat))) {
+    // $page->displayCriticalError(i18n("Permission denied")); (Apparently one of the action files already displays this error message)
+    $page->abortRendering();
+    $page->render();
+    die();
+}
+
 // save / set value
-if (($action == 'savecontype' || $action == 10) && ($perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat))) {
-    if ($data != '') {
-        $data = explode('||', substr($data, 0, -2));
-        foreach ($data as $value) {
-            $value = explode('|', $value);
-            if ($value[3] == '%$%EMPTY%$%') {
-                $value[3] = '';
-            } else {
-                $value[3] = str_replace('%$%SEPERATOR%$%', '|', $value[3]);
+if (($action == 'savecontype' || $action == 10)) {
+    if($perm->have_perm_area_action("con", "savecontype") || $perm->have_perm_area_action_item("con", "savecontype", $idcat)) {
+        if ($data != '') {
+            $data = explode('||', substr($data, 0, -2));
+            foreach ($data as $value) {
+                $value = explode('|', $value);
+                if ($value[3] == '%$%EMPTY%$%') {
+                    $value[3] = '';
+                } else {
+                    $value[3] = str_replace('%$%SEPERATOR%$%', '|', $value[3]);
+                }
+                conSaveContentEntry($value[0], 'CMS_' . $value[1], $value[2], $value[3]);
             }
-            conSaveContentEntry($value[0], 'CMS_' . $value[1], $value[2], $value[3]);
+
+            conMakeArticleIndex($idartlang, $idart);
+
+            // restore orginal values
+            $data = $_REQUEST['data'];
+            $value = $_REQUEST['value'];
+
+            $notification->displayNotification("info", i18n("Changes saved"));
         }
-
-        conMakeArticleIndex($idartlang, $idart);
-
-        // restore orginal values
-        $data = $_REQUEST['data'];
-        $value = $_REQUEST['value'];
-
-        $notification->displayNotification("info", i18n("Changes saved"));
-    }
-
-    conGenerateCodeForArtInAllCategories($idart);
-} else if ($action == 'deletecontype' && ($perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat))) {
-    if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
-        $oContentColl = new cApiContentCollection();
-
-        $linkedTypes = array(
-            4 => 22, // if a CMS_IMG is deleted, the corresponding
-                     // CMS_IMAGEEDITOR will be deleted too
-            22 => 4 // the same goes for the other way round
-        );
-
-        $contentItem = new cApiContent((int) $_REQUEST["idcontent"]);
-        if (isset($linkedTypes[$contentItem->get("idtype")])) {
-            $linkedIds = $oContentColl->getIdsByWhereClause("`idartlang`='" . $idartlang . "' AND `idtype`='" . $linkedTypes[$contentItem->get("idtype")] . "' AND `value`='" . $contentItem->get("value") . "'");
-            foreach ($linkedIds as $linkedId) {
-                $oContentColl->delete($linkedId);
-            }
-        }
-        $oContentColl->delete((int) $_REQUEST['idcontent']);
-        $notification->displayNotification("info", i18n("Changes saved"));
 
         conGenerateCodeForArtInAllCategories($idart);
+    } else {
+        $page->displayError(i18n("Permission denied"));
+    }
+} else if ($action == 'deletecontype') {
+    if($perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat)) {
+       if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
+            $oContentColl = new cApiContentCollection();
+
+            $linkedTypes = array(
+                4 => 22, // if a CMS_IMG is deleted, the corresponding
+                         // CMS_IMAGEEDITOR will be deleted too
+                22 => 4 // the same goes for the other way round
+            );
+
+            $contentItem = new cApiContent((int) $_REQUEST["idcontent"]);
+            if (isset($linkedTypes[$contentItem->get("idtype")])) {
+                $linkedIds = $oContentColl->getIdsByWhereClause("`idartlang`='" . $idartlang . "' AND `idtype`='" . $linkedTypes[$contentItem->get("idtype")] . "' AND `value`='" . $contentItem->get("value") . "'");
+                foreach ($linkedIds as $linkedId) {
+                    $oContentColl->delete($linkedId);
+                }
+            }
+            $oContentColl->delete((int) $_REQUEST['idcontent']);
+            $notification->displayNotification("info", i18n("Changes saved"));
+
+            conGenerateCodeForArtInAllCategories($idart);
+        }
+    } else {
+        $page->displayError(i18n("Permission denied"));
     }
 }
 
@@ -139,8 +156,6 @@ $oEditor->setToolbar('inline_edit');
 // Get configuration for popup und inline tiny
 $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
 $sConfigFullscreen = $oEditor->getConfigFullscreen();
-
-$page = new cGuiPage("con_content_list");
 
 // Replace vars in Script
 
