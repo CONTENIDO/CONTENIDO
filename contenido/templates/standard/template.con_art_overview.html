@@ -282,12 +282,12 @@
     //flip mark
     $('a.flip_mark').click(function() {
         $('div.bulk_editing_functions').hide();
-        $('input.mark_articles').each(function(index, value) {
+        $('input.mark_articles').each(function() {
             if ($(this).prop('checked')) {
-                $(this).removeProp('checked');
+                $(this).prop('checked', false);
             } else {
                 $('div.bulk_editing_functions').show();
-                $(this).prop('checked', 'checked');
+                $(this).prop('checked', true);
             }
         });
     });
