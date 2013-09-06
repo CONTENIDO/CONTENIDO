@@ -33,11 +33,11 @@ if (!isset($syncfrom)) {
 
 $syncoptions = $syncfrom;
 
-if ($action == 'con_duplicate') {
+if ($action == 'con_duplicate' && ($perm->have_perm_area_action("con", "con_duplicate") || $perm->have_perm_area_action_item("con", "con_duplicate", $idcat))) {
     $newidartlang = conCopyArticle($duplicate, $idcat);
 }
 
-if ($action == 'con_syncarticle') {
+if ($action == 'con_syncarticle' && ($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", $idcat))) {
     if ($_POST['idarts']) {
         $idarts = json_decode($_POST['idarts'], true);
     } else {
@@ -725,22 +725,27 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // construct the bulk editing functions
         $bulkEditingFunctions = '';
-        if ($articlesOffline > 0) {
+        if ($articlesOffline > 0 && ($perm->have_perm_area_action("con", "con_makeonline") || $perm->have_perm_area_action_item("con", "con_makeonline", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_makeonline', 'images/online.gif', i18n('Set articles online'));
         }
-        if ($articlesOnline > 0) {
+        if ($articlesOnline > 0 && ($perm->have_perm_area_action("con", "con_makeonline") || $perm->have_perm_area_action_item("con", "con_makeonline", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_makeonline invert', 'images/offline.gif', i18n('Set articles offline'));
         }
-        if ($articlesUnlocked > 0) {
+        if ($articlesUnlocked > 0 && ($perm->have_perm_area_action("con", "con_lock") || $perm->have_perm_area_action_item("con", "con_lock", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_lock', 'images/article_unlocked.gif', i18n('Freeze articles'));
         }
-        if ($articlesLocked > 0) {
+        if ($articlesLocked > 0 && ($perm->have_perm_area_action("con", "con_lock") || $perm->have_perm_area_action_item("con", "con_lock", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_lock invert', 'images/article_locked.gif', i18n('Unfreeze articles'));
         }
-        if ($articlesToSync > 0) {
+        if ($articlesToSync > 0 && ($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_syncarticle', 'images/but_sync_art.gif', i18n('Copy article to the current language'));
         }
-        $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
+        if($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat)) {
+            $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
+        }
+        if($bulkEditingFunctions == "") {
+            $bulkEditingFunctions = i18n("Your permissions do not allow any actions here");
+        }
         $tpl->set('s', 'BULK_EDITING_FUNCTIONS', $bulkEditingFunctions);
 
         if (count($artlist) > 0) {
