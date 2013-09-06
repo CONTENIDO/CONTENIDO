@@ -14,6 +14,12 @@
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Install class for new plugins, extends PimPluginSetup
+ * @author frederic.schneider
+ *
+ */
 class PimPluginSetupInstall extends PimPluginSetup {
 
     // Initializing variables

@@ -14,6 +14,12 @@
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
+/**
+ * Class for change active status of installed plugins, extends PimPluginSetup
+ * @author frederic.schneider
+ *
+ */
 class PimPluginSetupStatus extends PimPluginSetup {
 
     // Classes
