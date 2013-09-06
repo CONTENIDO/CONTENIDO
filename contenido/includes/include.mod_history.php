@@ -27,7 +27,7 @@ $bDeleteFile = false;
 $oPage = new cGuiPage('mod_history');
 
 if (!$perm->have_perm_area_action($area, 'mod_history_manage')) {
-    $oPage->displayError(i18n("Permission denied"));
+    $oPage->displayError(i18n("No permissions"));
     $oPage->abortRendering();
     $oPage->render();
     return;

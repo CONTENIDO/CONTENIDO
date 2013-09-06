@@ -60,7 +60,7 @@ if (!(int) $client > 0) {
 
 // ERROR MESSAGE
 if (!$contenidoModulHandler->moduleWriteable('js')) {
-    $page->displayCriticalError(i18n('No write permissions in javascript folder for this module!'));
+    $page->displayCriticalError(i18n('No write permissions in folder js for this module!'));
     $page->render();
     exit();
 }
@@ -116,9 +116,9 @@ if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
 
     // Show message for user
     if ($ret == true) {
-        $page->displayInfo(i18n('Created new js file successfully'));
+        $page->displayInfo(i18n('Created new javascript file successfully'));
     } else {
-        $page->displayError(i18n('Could not create a new js file.'));
+        $page->displayError(i18n('Could not create a new javascript file!'));
     }
 }
 

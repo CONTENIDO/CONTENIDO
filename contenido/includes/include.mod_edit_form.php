@@ -2,15 +2,15 @@
 /**
  * This file contains the backend page for editing modules.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Olaf Niemann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -27,7 +27,7 @@ if (!isset($idmod)) {
 
 $contenidoModuleHandler = new cModuleHandler($idmod);
 if (($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
-    cRegistry::addErrorMessage(i18n("No permission"));
+    cRegistry::addErrorMessage(i18n("No permissions"));
     $page = new cGuiPage('generic_page');
     $page->abortRendering();
     $page->render();
@@ -35,28 +35,35 @@ if (($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem($area, $
 }
 
 if ($action == "mod_delete") {
-    // if erase had been successfully
-    if ($contenidoModuleHandler->eraseModule() == true) {
-        $modules = new cApiModuleCollection();
-        $modules->delete($idmod);
-        // show success message
-        cRegistry::addInfoMessage(i18n("Deleted module successfully!"));
-        $page = new cGuiPage('generic_page');
-        // remove the navigation when module has been deleted
-        $script = new cHTMLScript();
-        $script->setContent('$(function() { $("#navlist", parent.parent.right.right_top.document).remove(); })');
-        $page->setContent(array(
-            $div
-        ));
-        // setReload so that the modules overview on the left is refreshed
-        $page->setReload();
-        $page->render();
-        exit();
+    $modules = new cApiModuleCollection();
+    $modules->delete($idmod);
+
+    // Delete version modules
+    $moduleVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+    if ($moduleVersion->getRevisionFiles() > 0) {
+        $moduleVersion->deleteFile();
     }
+
+    // show success message
+    cRegistry::addInfoMessage(i18n("Module was successfully deleted!"));
+    $page = new cGuiPage('generic_page');
+
+    $contenidoModuleHandler->eraseModule();
+
+    // remove the navigation when module has been deleted
+    $script = new cHTMLScript();
+    $script->setContent('$(function() { $("#navlist", parent.parent.right.right_top.document).remove(); })');
+    $page->setContent(array(
+        $div
+    ));
+    // setReload so that the modules overview on the left is refreshed
+    $page->setReload();
+    $page->render();
+    exit();
 }
 
 if (($action == "mod_sync") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
-    cRegistry::addErrorMessage(i18n("No permission"));
+    cRegistry::addErrorMessage(i18n("No permissions"));
     $page = new cGuiPage('generic_page');
     $page->abortRendering();
     $page->render();
@@ -81,7 +88,7 @@ if ($action == "mod_sync") {
 }
 
 if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
-    cRegistry::addErrorMessage(i18n("No permission"));
+    cRegistry::addErrorMessage(i18n("No permissions"));
     $page = new cGuiPage('generic_page');
     $page->abortRendering();
     $page->render();
@@ -128,7 +135,7 @@ if ($action == "mod_importexport_module") {
     if ($mode == "import") {
         if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
             if (!$module->import($_FILES['upload']['name'], $_FILES["upload"]["tmp_name"])) {
-                cRegistry::addErrorMessage(i18n("Could not import modul:"));
+                cRegistry::addErrorMessage(i18n("Could not import module!"));
             } else {
                 // Load the item again (clearing slashes from import)
                 $module->loadByPrimaryKey($module->get($module->primaryKey));
@@ -140,14 +147,13 @@ if ($action == "mod_importexport_module") {
 
 $idmod = $module->get("idmod");
 
-//Check correct module Id
+// Check correct module Id
 if (!$idmod) {
 
     $page = new cGuiPage('generic_page');
     $page->abortRendering();
     $page->render();
     die();
-
 }
 
 if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
@@ -181,7 +187,9 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $form->addHeader(i18n("Edit module"));
 
     $name = new cHTMLTextbox("name", cString::stripSlashes(conHtmlSpecialChars($module->get("name"))), 60);
-    $descr = new cHTMLTextarea("descr", str_replace(array('\r\n'), "\r\n", conHtmlSpecialChars($module->get("description"))), 100, 5);
+    $descr = new cHTMLTextarea("descr", str_replace(array(
+        '\r\n'
+    ), "\r\n", conHtmlSpecialChars($module->get("description"))), 100, 5);
 
     // Get input and output code; if specified, prepare row fields
     $sInputData = "";
@@ -404,11 +412,11 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $form->add(i18n("Description"), $descr->render());
 
     if ($sOptionDebugRows == "always" || ($sOptionDebugRows == "onerror" && (!$inputok || !$outputok))) {
-        $form->add(i18n("Input") . $inled .  $oInputRows->render(), $input->render());
+        $form->add(i18n("Input") . $inled . $oInputRows->render(), $input->render());
         $form->add(i18n("Output") . $outled . $oOutputRows->render(), $output->render());
     } else {
         $form->add(i18n("Input") . $inled, $input->render());
-        $form->add(i18n("Output"). $outled, $output->render());
+        $form->add(i18n("Output") . $outled, $output->render());
     }
 
     if ($module->isOldModule()) {

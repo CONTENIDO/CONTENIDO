@@ -3,26 +3,27 @@
  * This file contains the module handler class.
  * TODO: Rework comments of this class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Rusmir Jusufovic
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Rusmir Jusufovic
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class for new modul structere. Saves the Modul-Input in a file (input.php)
+ * Class for new modul structere.
+ * Saves the Modul-Input in a file (input.php)
  * and
  * Modul-Output in a file(output.php).
  * All moduls of a clients are in [frontend]/modules/.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
  */
 class cModuleHandler {
@@ -159,7 +160,6 @@ class cModuleHandler {
      */
     protected static $_encodingStore = array();
 
-
     /**
      * Construct for the class cModuleHandler.
      * With this class you can
@@ -236,7 +236,7 @@ class cModuleHandler {
      * @param string $templateName
      * @param string $fileType
      * @param string $fileContent
-     * @return bool|string
+     * @return bool string
      */
     public function saveContentToFile($templateName, $fileType, $fileContent, $saveDirectory = 'cache') {
         $sSaveDirectory = $this->_cfgClient[$this->_client]['path']['frontend'] . $saveDirectory . '/';
@@ -579,19 +579,12 @@ class cModuleHandler {
      * @return bool true on success or false on failure
      */
     public function eraseModule() {
-        global $area, $frame;
-        $cfg = cRegistry::getConfig();
-        $cfgClient = cRegistry::getClientConfig();
-        $db = cRegistry::getDb();
-        $client = cRegistry::getClientId();
-
-        $moduleVersion = new cVersionModule($this->_idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
-        $success = true;
-        if (count($moduleVersion->getRevisionFiles()) > 0 && !$moduleVersion->deleteFile()) {
-            $success = false;
+        // Delete modules only if we find info.xml at module path
+        if (cFileHandler::exists($this->_modulePath . 'info.xml')) {
+            return cFileHandler::recursiveRmdir($this->_modulePath);
+        } else {
+            return false;
         }
-
-        return $success && cFileHandler::recursiveRmdir($this->_modulePath);
     }
 
     /**
@@ -642,8 +635,7 @@ class cModuleHandler {
             if (!is_dir($this->_modulePath . $this->_directories[$type])) {
                 if (@mkdir($this->_modulePath . $this->_directories[$type]) == false) {
                     return false;
-                }
-                else
+                } else
                     cFileHandler::setDefaultDirPerms($this->_modulePath . $this->_directories[$type]);
             } else {
                 return true;
@@ -861,19 +853,19 @@ class cModuleHandler {
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['php'] . $old . '_input.php'))
                 $retInput = rename($this->_path . $new . '/' . $this->_directories['php'] . $old . '_input.php', $this->_path . $new . '/' . $this->_directories['php'] . $new . '_input.php');
 
-            // if file output exist rename it
+                // if file output exist rename it
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['php'] . $old . '_output.php'))
                 $retOutput = rename($this->_path . $new . '/' . $this->_directories['php'] . $old . '_output.php', $this->_path . $new . '/' . $this->_directories['php'] . $new . '_output.php');
 
-            // rename the css file
+                // rename the css file
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['css'] . $old . '.css'))
                 rename($this->_path . $new . '/' . $this->_directories['css'] . $old . '.css', $this->_path . $new . '/' . $this->_directories['css'] . $new . '.css');
 
-            // rename the javascript file
+                // rename the javascript file
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['js'] . $old . '.js'))
                 rename($this->_path . $new . '/' . $this->_directories['js'] . $old . '.js', $this->_path . $new . '/' . $this->_directories['js'] . $new . '.js');
 
-            // rename the template file
+                // rename the template file
             if (cFileHandler::exists($this->_path . $new . '/' . $this->_directories['template'] . $old . '.html'))
                 rename($this->_path . $new . '/' . $this->_directories['template'] . $old . '.html', $this->_path . $new . '/' . $this->_directories['template'] . $new . '.html');
 

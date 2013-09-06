@@ -569,18 +569,20 @@ class cApiModule extends Item {
      * Imports the a module from a XML file, uses xmlparser and callbacks
      *
      * @param string $file Filename of data file (full path)
-     * @param boolean $show_notification standard: true, mode to turn notifications off
+     * @param boolean $show_notification standard: true, mode to turn
+     *        notifications off
      */
     function import($sFile, $tempName, $show_notification = true) {
         global $cfgClient, $db, $client, $cfg, $encoding, $lang;
         $zip = new ZipArchive();
         $notification = new cGuiNotification();
-        $contenidoModuleHandler = new cModuleHandler($this->get('idmod'));
+
         // file name Hello_World.zip => Hello_World
         // @TODO: fetch file extension correctly
         $modulName = substr($sFile, 0, -4);
 
         $sModulePath = $cfgClient[$client]['module']['path'] . $modulName;
+        $sTempPath = $cfg['path']['temp'] . 'module_import_' . $modulName;
 
         // exist the modul in directory
         if (is_dir($sModulePath)) {
@@ -592,21 +594,30 @@ class cApiModule extends Item {
         }
 
         if ($zip->open($tempName)) {
-            if ($zip->extractTo($sModulePath)) {
+            if ($zip->extractTo($sTempPath)) {
                 $zip->close();
 
-                // make new module
-                $modules = new cApiModuleCollection();
+                // Check module xml information
+                if (cFileHandler::exists($sTempPath . '/info.xml')) {
 
-                $module = $modules->create($modulName);
-                $moduleProperties = $this->_getModuleProperties($sModulePath . '/info.xml');
+                    // make new module
+                    $modules = new cApiModuleCollection();
 
-                // set module properties and save it
-                foreach ($moduleProperties as $key => $value) {
-                    $module->set($key, $value);
+                    $module = $modules->create($modulName);
+                    $moduleProperties = $this->_getModuleProperties($sTempPath . '/info.xml');
+
+                    // set module properties and save it
+                    foreach ($moduleProperties as $key => $value) {
+                        $module->set($key, $value);
+                    }
+
+                    $module->store();
+                } else {
+                    if ($show_notification == true) {
+                        $notification->displayNotification('error', i18n('Import failed, could load module information!'));
+                    }
+                    return false;
                 }
-
-                $module->store();
             } else {
                 if ($show_notification == true) {
                     $notification->displayNotification('error', i18n('Import failed, could not extract zip file!'));
@@ -621,6 +632,9 @@ class cApiModule extends Item {
 
             return false;
         }
+
+        // Move into module dir
+        cDirHandler::rename($sTempPath, $sModulePath);
 
         return true;
     }
@@ -649,15 +663,16 @@ class cApiModule extends Item {
                 }
             }
 
-            $moduleAlias = cApiStrCleanURLCharacters($this->get('name'));
-            // is alias empty??
+            $moduleName = cApiStrCleanURLCharacters($this->get('name'));
+            $moduleAlias = cApiStrCleanURLCharacters($this->get('alias'));
+
+            // Is alias empty? Use module name as alias
             if ($this->get('alias') == '') {
-                $this->set('alias', $moduleAlias);
+                $this->set('alias', $moduleName);
             }
 
             if (is_dir($cfgClient[$client]['module']['path'] . $moduleAlias)) {
                 $notification->displayNotification('error', i18n('Module exist!'));
-
                 return false;
             } else {
                 // save it in db table
@@ -665,7 +680,6 @@ class cApiModule extends Item {
                 $contenidoModuleHandler = new cModuleHandler($this->get('idmod'));
                 if (!$contenidoModuleHandler->createModule($inputOutput['input'], $inputOutput['output'])) {
                     $notification->displayNotification('error', i18n('Could not make a module!'));
-
                     return false;
                 } else {
                     // save the modul data to modul info file

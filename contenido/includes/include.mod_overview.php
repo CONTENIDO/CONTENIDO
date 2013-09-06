@@ -155,7 +155,7 @@ foreach ($allModules as $idmod => $module) {
         $deletebutton = "";
 
         if ($inUse) {
-            $inUseString = i18n("Click for more information about usage");
+            $inUseString = i18n("For more information about usage click on this button");
             $mlist->setActions($iMenu, 'inuse', '
                 <a
                     href="javascript:;"
@@ -164,12 +164,12 @@ foreach ($allModules as $idmod => $module) {
                     border="0"
                     title="' . $inUseString . '"
                     alt="' . $inUseString . '"></a>');
-            $delDescription = i18n("Module in use, cannot delete");
+            $delDescription = i18n("Module can not be deleted, because it is already in use!");
         } else {
             $mlist->setActions($iMenu, 'inuse', '<img src="./images/spacer.gif" border="0" width="16">');
             if ($perm->have_perm_area_action_item("mod", "mod_delete", $idmod)) {
                 $delTitle = i18n("Delete module");
-                $delDescr = sprintf(i18n("Do you really want to delete the following module:<br><br>%s<br>"), $sName);
+                $delDescr = sprintf(i18n("Do you really want to delete the following module:<br /><br />%s<br />"), $sName);
                 $deletebutton = '
                     <a
                         title="' . $delTitle . '"
@@ -183,7 +183,7 @@ foreach ($allModules as $idmod => $module) {
                             alt="' . $delTitle . '" />
                     </a>';
             } else {
-                $delDescription = i18n("No permission");
+                $delDescription = i18n("No permissions");
             }
         }
 

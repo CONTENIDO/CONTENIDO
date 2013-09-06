@@ -62,6 +62,7 @@ if ($action == "mod_importexport_module") {
                 $module = $modules->create($modulName);
                 if (!$module->importModuleFromXML($_FILES["upload"]["tmp_name"])) {
                     $notification->displayNotification('error', i18n("Could not import module!"));
+                    $module->delete();
                 } else {
                     $notification->displayNotification('info', i18n("Module import successfully!"));
                     $idmod = $module->get('idmod');
@@ -86,9 +87,9 @@ $import = new cHTMLRadiobutton("mode", "import");
 $importXML = new cHTMLRadiobutton('mode', 'import_xml');
 $export = new cHTMLRadiobutton("mode", "export");
 
-$import->setLabelText(i18n("Import from zip-file"));
-$importXML->setLabelText(i18n("Import from xml-file"));
-$export->setLabelText(i18n("Export to file"));
+$import->setLabelText(i18n("Import from ZIP file"));
+$importXML->setLabelText(i18n("Import from XML file"));
+$export->setLabelText(i18n("Export to ZIP file"));
 
 $export->setEvent("onclick", "$('#vupload').hide()");
 $importXML->setEvent("onclick", "$('#vupload').show()");

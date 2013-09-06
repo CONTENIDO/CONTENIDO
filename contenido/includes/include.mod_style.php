@@ -61,7 +61,7 @@ $path = $contenidoModulHandler->getCssPath(); // $cfgClient[$client]['css']['pat
 
 // ERROR MESSAGE
 if (!$contenidoModulHandler->moduleWriteable('css')) {
-    $page->displayCriticalError(i18n('No write permissions in css folder for this module!'));
+    $page->displayCriticalError(i18n('No write permissions in folder css for this module!'));
     $page->render();
     exit();
 }

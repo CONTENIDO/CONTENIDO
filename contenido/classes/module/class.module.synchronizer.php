@@ -51,7 +51,7 @@ class cModuleSynchronizer extends cModuleHandler {
             // add new Module in db-tablle
             $this->_addModul($newModulName, $client);
             $notification = new cGuiNotification();
-            $notification->displayNotification('info', sprintf(i18n('Module %s successfull synchronized'), $newModulName));
+            $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $newModulName));
         } else {
             // update the name of the module
             if ($oldModulName != $newModulName) {
@@ -192,7 +192,7 @@ class cModuleSynchronizer extends cModuleHandler {
         }
 
         if ($synchLock == 0) {
-            $notification->displayNotification('info', 'All modules already synchronized');
+            $notification->displayNotification('info', i18n('All modules are already synchronized'));
         }
 
         // we need it for the update of moduls on the left site (module/backend)
@@ -219,7 +219,7 @@ class cModuleSynchronizer extends cModuleHandler {
                 // modul in use, make new modul in filesystem
                 if ($this->createModule() == false) {
                     $notification = new cGuiNotification();
-                    $notification->displayNotification('error', i18n("Can't make module: ") . $db->f('name'));
+                    $notification->displayNotification('error', i18n("Can not create module") . " " . $db->f('name'));
                 }
             } else {
                 // modul not in use, delete it

@@ -2,15 +2,15 @@
 /**
  * This file contains the CONTENIDO module functions.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -43,11 +43,11 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
         cInclude('includes', 'functions.rights.php');
         createRightsForElement('mod', $idmod);
-        $contenidoModuleHandler = new cModuleHandler($idmod);
     } else {
         $cApiModule = new cApiModule($idmod);
-        $contenidoModuleHandler = new cModuleHandler($idmod);
     }
+
+    $contenidoModuleHandler = new cModuleHandler($idmod);
 
     // Save contents of input or output
     $retInput = $contenidoModuleHandler->saveInput(stripslashes($input));
@@ -59,14 +59,15 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
         $purge->clearClientCache($client);
     }
 
-    if ($cApiModule->get('alias') != stripslashes($alias) || $cApiModule->get('template') != stripslashes($template) || $cApiModule->get('description') != stripslashes($description) || $cApiModule->get('type') != stripslashes($type)) {
+    if ($cApiModule->get('name') != stripslashes($name) || $cApiModule->get('alias') != stripslashes($alias) || $cApiModule->get('template') != stripslashes($template) || $cApiModule->get('description') != stripslashes($description) || $cApiModule->get('type') != stripslashes($type)) {
+
         // Rename the module if the name changed
         $change = false;
         $oldName = $cApiModule->get('alias');
 
         if ($cApiModule->get('alias') != $alias) {
             $change = true;
-            // if modul exist show massage
+            // if modul exist show message
             if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
                 cRegistry::addErrorMessage(i18n('Module name exist in module directory, please choose another name.'));
                 $page = new cGuiPage('generic_page');
@@ -98,15 +99,15 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             $contenidoModuleHandler->changeModuleName($alias);
             // Ssave input and output in file
             if ($contenidoModuleHandler->saveInput(stripslashes($input)) == false) {
-                $messageIfError .= '<br>' . i18n("Can't save input !");
+                $messageIfError .= '<br />' . i18n("Can't save input !");
             }
 
             if ($contenidoModuleHandler->saveOutput(stripslashes($output)) == false) {
-                $messageIfError .= '<br>' . i18n("Can't save output !");
+                $messageIfError .= '<br />' . i18n("Can't save output !");
             }
 
             if ($contenidoModuleHandler->saveInfoXML($name, $description, $type, $alias) == false) {
-                $messageIfError .= '<br>' . i18n("Can't save xml module info file!");
+                $messageIfError .= '<br />' . i18n("Can't save xml module info file!");
             }
 
             // Display error
