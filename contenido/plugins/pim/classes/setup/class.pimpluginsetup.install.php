@@ -258,7 +258,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @return void
      */
     private function _installCheckUuid() {
-        $this->_PimPluginCollection->setWhere('uuid', parent::$_XmlGeneral->uuid);
+        $this->_PimPluginCollection->setWhere('uuid', parent::$XmlGeneral->uuid);
         $this->_PimPluginCollection->query();
         if ($this->_PimPluginCollection->count() > 0) {
             parent::error(i18n('You can install this plugin only for one time.', 'pim'));
@@ -277,52 +277,52 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $cfg = cRegistry::getConfig();
 
         // Check min CONTENIDO version
-        if (version_compare(CON_VERSION, parent::$_XmlRequirements->contenido->attributes()->minversion, '<')) {
-            parent::error(i18n('You have to install CONTENIDO <strong>', 'pim') . parent::$_XmlRequirements->contenido->attributes()->minversion . i18n('</strong> or higher to install this plugin!', 'pim'));
+        if (version_compare(CON_VERSION, parent::$XmlRequirements->contenido->attributes()->minversion, '<')) {
+            parent::error(i18n('You have to install CONTENIDO <strong>', 'pim') . parent::$XmlRequirements->contenido->attributes()->minversion . i18n('</strong> or higher to install this plugin!', 'pim'));
         }
 
         // Check max CONTENIDO version
-        if (parent::$_XmlRequirements->contenido->attributes()->maxversion) {
+        if (parent::$XmlRequirements->contenido->attributes()->maxversion) {
 
-            if (version_compare(CON_VERSION, parent::$_XmlRequirements->contenido->attributes()->maxversion, '>')) {
-                parent::error(i18n('Your current CONTENIDO version is to new - max CONTENIDO version: ' . parent::$_XmlRequirements->contenido->attributes()->maxversion . '', 'pim'));
+            if (version_compare(CON_VERSION, parent::$XmlRequirements->contenido->attributes()->maxversion, '>')) {
+                parent::error(i18n('Your current CONTENIDO version is to new - max CONTENIDO version: ' . parent::$XmlRequirements->contenido->attributes()->maxversion . '', 'pim'));
             }
         }
 
         // Check PHP version
-        if (version_compare(phpversion(), parent::$_XmlRequirements->attributes()->php, '<')) {
-            parent::error(i18n('You have to install PHP <strong>', 'pim') . parent::$_XmlRequirements->attributes()->php . i18n('</strong> or higher to install this plugin!', 'pim'));
+        if (version_compare(phpversion(), parent::$XmlRequirements->attributes()->php, '<')) {
+            parent::error(i18n('You have to install PHP <strong>', 'pim') . parent::$XmlRequirements->attributes()->php . i18n('</strong> or higher to install this plugin!', 'pim'));
         }
 
         // Check extensions
-        if (count(parent::$_XmlRequirements->extension) != 0) {
+        if (count(parent::$XmlRequirements->extension) != 0) {
 
-            for ($i = 0; $i < count(parent::$_XmlRequirements->extension); $i++) {
+            for ($i = 0; $i < count(parent::$XmlRequirements->extension); $i++) {
 
-                if (!extension_loaded(parent::$_XmlRequirements->extension[$i]->attributes()->name)) {
-                    parent::error(i18n('The plugin could not find the PHP extension <strong>', 'pim') . parent::$_XmlRequirements->extension[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
+                if (!extension_loaded(parent::$XmlRequirements->extension[$i]->attributes()->name)) {
+                    parent::error(i18n('The plugin could not find the PHP extension <strong>', 'pim') . parent::$XmlRequirements->extension[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
                 }
             }
         }
 
         // Check classes
-        if (count(parent::$_XmlRequirements->class) != 0) {
+        if (count(parent::$XmlRequirements->class) != 0) {
 
-            for ($i = 0; $i < count(parent::$_XmlRequirements->class); $i++) {
+            for ($i = 0; $i < count(parent::$XmlRequirements->class); $i++) {
 
-                if (!class_exists(parent::$_XmlRequirements->class[$i]->attributes()->name)) {
-                    parent::error(i18n('The plugin could not find the class <strong>', 'pim') . parent::$_XmlRequirements->class[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
+                if (!class_exists(parent::$XmlRequirements->class[$i]->attributes()->name)) {
+                    parent::error(i18n('The plugin could not find the class <strong>', 'pim') . parent::$XmlRequirements->class[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
                 }
             }
         }
 
         // Check functions
-        if (count(parent::$_XmlRequirements->function) != 0) {
+        if (count(parent::$XmlRequirements->function) != 0) {
 
-            for ($i = 0; $i < count(parent::$_XmlRequirements->function); $i++) {
+            for ($i = 0; $i < count(parent::$XmlRequirements->function); $i++) {
 
-                if (!function_exists(parent::$_XmlRequirements->function[$i]->attributes()->name)) {
-                    parent::error(i18n('The plugin could not find the function <strong>', 'pim') . parent::$_XmlRequirements->function[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
+                if (!function_exists(parent::$XmlRequirements->function[$i]->attributes()->name)) {
+                    parent::error(i18n('The plugin could not find the function <strong>', 'pim') . parent::$XmlRequirements->function[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
                 }
             }
         }
@@ -336,7 +336,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installAddPlugin() {
         // Add entry at *_plugins
-        $pimPlugin = $this->_PimPluginCollection->create(parent::$_XmlGeneral->plugin_name, parent::$_XmlGeneral->description, parent::$_XmlGeneral->author, parent::$_XmlGeneral->copyright, parent::$_XmlGeneral->mail, parent::$_XmlGeneral->website, parent::$_XmlGeneral->version, parent::$_XmlGeneral->plugin_foldername, parent::$_XmlGeneral->uuid, parent::$_XmlGeneral->attributes()->active);
+        $pimPlugin = $this->_PimPluginCollection->create(parent::$XmlGeneral->plugin_name, parent::$XmlGeneral->description, parent::$XmlGeneral->author, parent::$XmlGeneral->copyright, parent::$XmlGeneral->mail, parent::$XmlGeneral->website, parent::$XmlGeneral->version, parent::$XmlGeneral->plugin_foldername, parent::$XmlGeneral->uuid, parent::$XmlGeneral->attributes()->active);
 
         // Get Id of new plugin
         $pluginId = $pimPlugin->get('idplugin');
@@ -345,7 +345,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         parent::setPluginId($pluginId);
 
         // Set foldername of new plugin
-        $this->_setPluginFoldername(parent::$_XmlGeneral->plugin_foldername);
+        $this->_setPluginFoldername(parent::$XmlGeneral->plugin_foldername);
     }
 
     /**
@@ -376,18 +376,18 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
-        $areaCount = count(parent::$_XmlArea->area);
+        $areaCount = count(parent::$XmlArea->area);
         for ($i = 0; $i < $areaCount; $i++) {
 
             $attributes = array();
 
             // Build attributes
-            foreach (parent::$_XmlArea->area[$i]->attributes() as $key => $value) {
+            foreach (parent::$XmlArea->area[$i]->attributes() as $key => $value) {
                 $attributes[$key] = $value;
             }
 
             // Security check
-            $area = cSecurity::escapeString(parent::$_XmlArea->area[$i]);
+            $area = cSecurity::escapeString(parent::$XmlArea->area[$i]);
 
             // Add attributes "parent" and "menuless" to an array
             $attributes = array(
@@ -418,13 +418,13 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @return void
      */
     private function _installAddActions() {
-        $actionCount = count(parent::$_XmlActions->action);
+        $actionCount = count(parent::$XmlActions->action);
         for ($i = 0; $i < $actionCount; $i++) {
 
             $attributes = array();
 
             // Build attributes
-            foreach (parent::$_XmlActions->action[$i]->attributes() as $key => $value) {
+            foreach (parent::$XmlActions->action[$i]->attributes() as $key => $value) {
                 $attributes[$key] = $value;
             }
 
@@ -440,7 +440,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             );
 
             // Security check for action name
-            $action = cSecurity::escapeString(parent::$_XmlActions->action[$i]);
+            $action = cSecurity::escapeString(parent::$XmlActions->action[$i]);
 
             // Check for valid area
             if (!in_array($attributes['area'], $this->_getInstalledAreas())) {
@@ -463,11 +463,11 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Initializing attribute array
         $attributes = array();
 
-        $frameCount = count(parent::$_XmlFrames->frame);
+        $frameCount = count(parent::$XmlFrames->frame);
         for ($i = 0; $i < $frameCount; $i++) {
 
             // Build attributes with security checks
-            foreach (parent::$_XmlFrames->frame[$i]->attributes() as $sKey => $sValue) {
+            foreach (parent::$XmlFrames->frame[$i]->attributes() as $sKey => $sValue) {
                 $attributes[$sKey] = cSecurity::escapeString($sValue);
             }
 
@@ -497,10 +497,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
-        $navCount = count(parent::$_XmlNavMain->nav);
+        $navCount = count(parent::$XmlNavMain->nav);
         for ($i = 0; $i < $navCount; $i++) {
             // Security check
-            $location = cSecurity::escapeString(parent::$_XmlNavMain->nav[$i]);
+            $location = cSecurity::escapeString(parent::$XmlNavMain->nav[$i]);
 
             // Create a new entry at *_nav_main
             $navMain = $this->_ApiNavMainCollection->create($location);
@@ -524,11 +524,11 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Get Id of plugin
         $pluginId = parent::_getPluginId();
 
-        $navCount = count(parent::$_XmlNavSub->nav);
+        $navCount = count(parent::$XmlNavSub->nav);
         for ($i = 0; $i < $navCount; $i++) {
 
             // Build attributes
-            foreach (parent::$_XmlNavSub->nav[$i]->attributes() as $key => $value) {
+            foreach (parent::$XmlNavSub->nav[$i]->attributes() as $key => $value) {
                 $attributes[$key] = $value;
             }
 
@@ -541,7 +541,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             }
 
             // Create a new entry at *_nav_sub
-            $item = $this->_ApiNavSubCollection->create($attributes['navm'], $attributes['area'], $attributes['level'], parent::$_XmlNavSub->nav[$i], 1);
+            $item = $this->_ApiNavSubCollection->create($attributes['navm'], $attributes['area'], $attributes['level'], parent::$XmlNavSub->nav[$i], 1);
 
             // Set a relation
             $this->_PimPluginRelationsCollection->create($item->get('idnavs'), $pluginId, 'navs');
@@ -602,10 +602,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         $pattern = '/^CMS_.+/';
 
-        $typeCount = count(parent::$_XmlContentType->type);
+        $typeCount = count(parent::$XmlContentType->type);
         for ($i = 0; $i < $typeCount; $i++) {
 
-            $type = cSecurity::toString(parent::$_XmlContentType->type[$i]);
+            $type = cSecurity::toString(parent::$XmlContentType->type[$i]);
 
             if (preg_match($pattern, $type)) {
 
@@ -657,7 +657,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $cfg = cRegistry::getConfig();
 
         // Build the new plugin dir
-        $tempPluginDir = $cfg['path']['contenido'] . $cfg['path']['plugins'] . parent::$_XmlGeneral->plugin_foldername . DIRECTORY_SEPARATOR;
+        $tempPluginDir = $cfg['path']['contenido'] . $cfg['path']['plugins'] . parent::$XmlGeneral->plugin_foldername . DIRECTORY_SEPARATOR;
 
         // Set destination path
         try {

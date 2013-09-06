@@ -69,7 +69,7 @@ class PimPluginSetupUpdate extends PimPluginSetup {
         $this->_PimPluginCollection->query();
         while ($result = $this->_PimPluginCollection->next()) {
 
-            if (parent::$_XmlGeneral->uuid != $result->get('uuid')) {
+            if (parent::$XmlGeneral->uuid != $result->get('uuid')) {
                 parent::error(i18n('You have to update the same plugin', 'pim'));
             }
         }

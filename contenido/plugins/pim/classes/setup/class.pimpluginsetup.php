@@ -41,31 +41,31 @@ class PimPluginSetup {
 
     // Xml variables
     // General informations of plugin
-    public static $_XmlGeneral;
+    public static $XmlGeneral;
 
     // Plugin requirements
-    public static $_XmlRequirements;
+    public static $XmlRequirements;
 
     // CONTENIDO areas: *_area
-    public static $_XmlArea;
+    public static $XmlArea;
 
     // CONTENIDO actions: *_actions
-    public static $_XmlActions;
+    public static $XmlActions;
 
     // CONTENIDO frames: *_frame_files and *_files
-    public static $_XmlFrames;
+    public static $XmlFrames;
 
     // CONTENIDO main navigations: *_nav_main
-    public static $_XmlNavMain;
+    public static $XmlNavMain;
 
     // CONTENIDO sub navigations: *_nav_sub
-    public static $_XmlNavSub;
+    public static $XmlNavSub;
 
     // CONTENIDO content types: *_type
-    public static $_XmlContentType;
+    public static $XmlContentType;
 
     // Id of selected / new plugin
-    protected static $pluginId = 0;
+    protected static $_pluginId = 0;
 
     // GET and SET methods for installation routine
     /**
@@ -127,28 +127,28 @@ class PimPluginSetup {
     private function _setXml($xml) {
 
         // General plugin informations
-        self::$_XmlGeneral = $xml->general;
+        self::$XmlGeneral = $xml->general;
 
         // Plugin requirements
-        self::$_XmlRequirements = $xml->requirements;
+        self::$XmlRequirements = $xml->requirements;
 
         // CONTENIDO areas: *_area
-        self::$_XmlArea = $xml->contenido->areas;
+        self::$XmlArea = $xml->contenido->areas;
 
         // CONTENIDO actions: *_actions
-        self::$_XmlActions = $xml->contenido->actions;
+        self::$XmlActions = $xml->contenido->actions;
 
         // CONTENIDO frames: *_frame_files and *_files
-        self::$_XmlFrames = $xml->contenido->frames;
+        self::$XmlFrames = $xml->contenido->frames;
 
         // CONTENIDO main navigations: *_nav_main
-        self::$_XmlNavMain = $xml->contenido->nav_main;
+        self::$XmlNavMain = $xml->contenido->nav_main;
 
         // CONTENIDO sub navigations: *_nav_sub
-        self::$_XmlNavSub = $xml->contenido->nav_sub;
+        self::$XmlNavSub = $xml->contenido->nav_sub;
 
         // CONTENIDO Content Types: *_type
-        self::$_XmlContentType = $xml->type;
+        self::$XmlContentType = $xml->type;
     }
 
     /**
@@ -159,7 +159,7 @@ class PimPluginSetup {
      * @return integer
      */
     public function setPluginId($pluginId = 0) {
-        return self::$pluginId = $pluginId;
+        return self::$_pluginId = $pluginId;
     }
 
     /**
@@ -178,7 +178,7 @@ class PimPluginSetup {
      * @return integer
      */
     protected static function _getPluginId() {
-        return self::$pluginId;
+        return self::$_pluginId;
     }
 
     // Help methods

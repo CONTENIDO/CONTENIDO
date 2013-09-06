@@ -18,11 +18,8 @@ class PimPluginSetupUninstall extends PimPluginSetup {
 
     // Initializing variables
     // Plugin specific data
-    // Id of installed plugin
-    private $PluginId;
-
     // Foldername of installed plugin
-    private $PluginFoldername;
+    private $_PluginFoldername;
 
     // Classes
     // Class variable for PimPluginCollection
@@ -61,7 +58,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @return string
      */
     public function setPluginFoldername($foldername) {
-        return $this->PluginFoldername = cSecurity::escapeString($foldername);
+        return $this->_PluginFoldername = cSecurity::escapeString($foldername);
     }
 
     /**
@@ -160,7 +157,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @return string
      */
     protected function _getPluginFoldername() {
-        return $this->PluginFoldername;
+        return $this->_PluginFoldername;
     }
 
     // Begin of uninstallation routine
@@ -168,7 +165,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * Construct function
      *
      * @access public
-     * @return void
      */
     public function __construct() {
 
@@ -193,7 +189,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @access public
      * @param boolean $sql Optional parameter to set sql true (standard) or
      *            false
-     * @return void
      */
     public function uninstall($sql = true) {
         $cfg = cRegistry::getConfig();
@@ -267,7 +262,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * Delete specific sql entries or tables, full uninstall mode
      *
      * @access protected
-     * @return void
      */
     protected function _uninstallFullDeleteSpecificSql() {
         $cfg = cRegistry::getConfig();
@@ -300,7 +294,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * TODO: Optimize this function (CON-1358)
      *
      * @access protected
-     * @return void
      */
     protected function _uninstallUpdateDeleteSpecificSql() {
         $cfg = cRegistry::getConfig();
@@ -339,7 +332,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      * @access public
      * @param $foldername name of extracted plugin
      * @param $page page class for success or error message
-     * @return void
      */
     public function uninstallDir() {
         $cfg = cRegistry::getConfig();
