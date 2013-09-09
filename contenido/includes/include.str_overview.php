@@ -652,7 +652,11 @@ foreach ($objects as $key => $value) {
         $aRecord['pTplcfg'] = $bPermTplcfg;
         $aInlineEditData[$value->id] = $aRecord;
 
-        $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(" . $value->id . ");\"><img src=\"" . $cfg["path"]["images"] . "but_todo.gif\" id=\"cat_" . $value->id . "_image\" alt=\"" . i18n("Edit category") . "\" title=\"" . i18n("Edit category") . "\"></a>");
+        if($perm->have_perm_area_action($area, "str_renamecat")) {
+            $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(" . $value->id . ");\"><img src=\"" . $cfg["path"]["images"] . "but_todo.gif\" id=\"cat_" . $value->id . "_image\" alt=\"" . i18n("Edit category") . "\" title=\"" . i18n("Edit category") . "\"></a>");
+        } else {
+            $tpl->set('d', 'RENAMEBUTTON', "");
+        }
         $tpl->set('d', 'CATID', $value->id);
         $tpl->set('d', 'PARENTID', $value->custom['parentid']);
         $tpl->set('d', 'POSTID', $value->custom['postid']);

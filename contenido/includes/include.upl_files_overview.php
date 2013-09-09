@@ -30,6 +30,8 @@ if (!(int) $client > 0) {
     return;
 }
 
+$page = new cGuiPage("upl_files_overview", "", 0);
+
 $appendparameters = $_REQUEST["appendparameters"];
 $file = $_REQUEST['file'];
 
@@ -265,55 +267,61 @@ if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action) && $
 }
 
 if ($action == "upl_upload" && $bDirectoryIsWritable == true) {
-    if (count($_FILES) == 1) {
-        foreach ($_FILES['file']['name'] as $key => $value) {
-            if (isUtf8($_FILES['file']['name'][$key])) {
-                $_FILES['file']['name'][$key] = utf8_decode($_FILES['file']['name'][$key]);
-            }
-            if ($_FILES['file']['tmp_name'][$key] != "") {
-                $tmp_name = $_FILES['file']['tmp_name'][$key];
-                $_cecIterator = $_cecRegistry->getIterator("Contenido.Upload.UploadPreprocess");
+    if($perm->have_perm_area_action($area, "upl_upload")) {
+        if (count($_FILES) == 1) {
+            foreach ($_FILES['file']['name'] as $key => $value) {
+                if (isUtf8($_FILES['file']['name'][$key])) {
+                    $_FILES['file']['name'][$key] = utf8_decode($_FILES['file']['name'][$key]);
+                }
+                if ($_FILES['file']['tmp_name'][$key] != "") {
+                    $tmp_name = $_FILES['file']['tmp_name'][$key];
+                    $_cecIterator = $_cecRegistry->getIterator("Contenido.Upload.UploadPreprocess");
 
-                if ($_cecIterator->count() > 0) {
-                    // Copy file to a temporary location
-                    move_uploaded_file($tmp_name, $backendPath . $cfg["path"]["temp"] . $_FILES['file']['name'][$key]);
-                    $tmp_name = $backendPath . $cfg["path"]["temp"] . $_FILES['file']['name'][$key];
+                    if ($_cecIterator->count() > 0) {
+                        // Copy file to a temporary location
+                        move_uploaded_file($tmp_name, $backendPath . $cfg["path"]["temp"] . $_FILES['file']['name'][$key]);
+                        $tmp_name = $backendPath . $cfg["path"]["temp"] . $_FILES['file']['name'][$key];
 
-                    while ($chainEntry = $_cecIterator->next()) {
-                        if (cApiDbfs::isDbfs($path)) {
-                            $sPathPrepend = '';
-                            $sPathApppend = '/';
-                        } else {
-                            $sPathPrepend = $cfgClient[$client]['upl']['path'];
-                            $sPathApppend = '';
-                        }
+                        while ($chainEntry = $_cecIterator->next()) {
+                            if (cApiDbfs::isDbfs($path)) {
+                                $sPathPrepend = '';
+                                $sPathApppend = '/';
+                            } else {
+                                $sPathPrepend = $cfgClient[$client]['upl']['path'];
+                                $sPathApppend = '';
+                            }
 
-                        $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathApppend . uplCreateFriendlyName($_FILES['file']['name'][$key]));
-                        if ($modified !== false) {
-                            $tmp_name = $modified;
+                            $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathApppend . uplCreateFriendlyName($_FILES['file']['name'][$key]));
+                            if ($modified !== false) {
+                                $tmp_name = $modified;
+                            }
                         }
                     }
-                }
 
-                if (cApiDbfs::isDbfs($qpath)) {
-                    $dbfs->writeFromFile($tmp_name, $qpath . uplCreateFriendlyName($_FILES['file']['name'][$key]));
-                    unlink($tmp_name);
-                } else {
-                    if (is_uploaded_file($tmp_name)) {
-                        $final_filename = $cfgClient[$client]['upl']['path'] . $path . uplCreateFriendlyName($_FILES['file']['name'][$key]);
-
-                        move_uploaded_file($tmp_name, $final_filename);
-
-                        $iterator = $_cecRegistry->getIterator("Contenido.Upload.UploadPostprocess");
-                        while ($chainEntry = $iterator->next()) {
-                            $chainEntry->execute($final_filename);
-                        }
+                    if (cApiDbfs::isDbfs($qpath)) {
+                        $dbfs->writeFromFile($tmp_name, $qpath . uplCreateFriendlyName($_FILES['file']['name'][$key]));
+                        unlink($tmp_name);
                     } else {
-                        rename($tmp_name, $cfgClient[$client]['upl']['path'] . $path . uplCreateFriendlyName($_FILES['file']['name'][$key]));
+                        if (is_uploaded_file($tmp_name)) {
+                            $final_filename = $cfgClient[$client]['upl']['path'] . $path . uplCreateFriendlyName($_FILES['file']['name'][$key]);
+
+                            move_uploaded_file($tmp_name, $final_filename);
+
+                            $iterator = $_cecRegistry->getIterator("Contenido.Upload.UploadPostprocess");
+                            while ($chainEntry = $iterator->next()) {
+                                $chainEntry->execute($final_filename);
+                            }
+                        } else {
+                            rename($tmp_name, $cfgClient[$client]['upl']['path'] . $path . uplCreateFriendlyName($_FILES['file']['name'][$key]));
+                        }
                     }
                 }
             }
         }
+    } else {
+        $page->displayError(i18n("Permission denied"));
+        $page->render();
+        die();
     }
 }
 
@@ -511,7 +519,6 @@ $itemwrap = '<tr>
 $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 
 // Object initializing
-$page = new cGuiPage("upl_files_overview", "", 0);
 $list2 = new UploadList($startwrap, $endwrap, $itemwrap);
 
 $uploads = new cApiUploadCollection();

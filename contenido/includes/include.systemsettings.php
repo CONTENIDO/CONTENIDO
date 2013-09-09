@@ -57,7 +57,10 @@ $list = new cGuiList();
 $list->setCell(1, 1, i18n("Type"));
 $list->setCell(1, 2, i18n("Name"));
 $list->setCell(1, 3, i18n("Value"));
-$list->setCell(1, 4, "&nbsp;");
+
+if (!(strpos($auth->auth["perm"], "sysadmin") === false)) {
+    $list->setCell(1, 4, "&nbsp;");
+}
 
 $backendUrl = cRegistry::getBackendUrl();
 
@@ -131,7 +134,9 @@ if (is_array($settings)) {
             }
 
             if (!in_array($key . '_' . $type, $aManagedValues)) {
-                $list->setCell($count, 4, $spacer->render() . $link->render() . $spacer->render() . $dlink . $spacer->render());
+                if (!(strpos($auth->auth["perm"], "sysadmin") === false)) {
+                    $list->setCell($count, 4, $spacer->render() . $link->render() . $spacer->render() . $dlink . $spacer->render());
+                }
                 $count++;
             }
         }

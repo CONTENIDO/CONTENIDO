@@ -50,11 +50,19 @@ while ($db->nextRecord()) {
     if ($db->f("active") == 0) {
         // activate
         $message = i18n("Activate language");
-        $active = "<a title=\"$message\" href=\"" . $sess->url("main.php?area=$area&action=lang_activatelanguage&frame=$frame&targetclient=$targetclient&idlang=" . $db->f("idlang")) . "#clickedhere\"><img src=\"" . $cfg["path"]["images"] . "offline.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+        if($perm->have_perm_area_action($area, "lang_activatelanguage")) {
+            $active = "<a title=\"$message\" href=\"" . $sess->url("main.php?area=$area&action=lang_activatelanguage&frame=$frame&targetclient=$targetclient&idlang=" . $db->f("idlang")) . "#clickedhere\"><img src=\"" . $cfg["path"]["images"] . "offline.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+        } else {
+            $active = "<img src='" . $cfg["path"]["images"] . "offline.gif' title='" . i18n("Language offline") . "'>";
+        }
     } else {
         // deactivate
         $message = i18n("Deactivate language");
-        $active = "<a title=\"$message\" class=\"action\" href=\"" . $sess->url("main.php?area=$area&action=lang_deactivatelanguage&frame=$frame&targetclient=$targetclient&idlang=" . $db->f("idlang")) . "#clickedhere\"><img src=\"" . $cfg["path"]["images"] . "online.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+        if($perm->have_perm_area_action($area, "lang_deactivatelanguage")) {
+            $active = "<a title=\"$message\" class=\"action\" href=\"" . $sess->url("main.php?area=$area&action=lang_deactivatelanguage&frame=$frame&targetclient=$targetclient&idlang=" . $db->f("idlang")) . "#clickedhere\"><img src=\"" . $cfg["path"]["images"] . "online.gif" . "\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
+        } else {
+            $active = "<img src='" . $cfg["path"]["images"] . "online.gif' title='" . i18n("Language online") . "'>";
+        }
     }
 
     // Delete Button
@@ -64,7 +72,11 @@ while ($db->nextRecord()) {
 
     $tpl->set('d', 'LANGUAGE', '<a target="right_bottom" href="' . $sess->url("main.php?area=lang_edit&idlang=$idlang&targetclient=$targetclient&frame=4") . '">' . $db->f("name") . '&nbsp;<span>(' . $idlang . ')</span></a>');
     $tpl->set('d', 'ACTIVATEBUTTON', $active);
-    $tpl->set('d', 'DELETEBUTTON', $deletebutton);
+    if($perm->have_perm_area_action($area, "lang_deletelanguage")) {
+        $tpl->set('d', 'DELETEBUTTON', $deletebutton);
+    } else {
+        $tpl->set("d", "DELETEBUTTON", "");
+    }
 
     if ($iGetIdlang == $idlang) {
         $tpl->set('d', 'MARKED', ' id="marked" ');

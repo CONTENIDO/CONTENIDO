@@ -549,12 +549,29 @@ p, table, tr, td, th {
     padding-left: 20px;
 }
 
+/* link style for adding anything */
+.addfunction_disabled {
+    background: transparent url(../images/but_cancel.gif) no-repeat scroll 0 8px;
+    display: block;
+    height: 3em;	
+    line-height: 3em;
+    padding-left: 20px;
+}
+
 /* link style for synchronization anything */
 .syncronizefunction {
     background: transparent url(../images/but_refresh.gif) no-repeat scroll 0 2px;
     display: block;
     height: 2em;
     line-height: 2em;
+    padding-left: 20px;
+}
+
+.syncronizefunction_disabled {
+    background: transparent url(../images/but_cancel.gif) no-repeat scroll 0 10px;
+    display: block;
+    height: 3em;
+    line-height: 1.5em;
     padding-left: 20px;
 }
 

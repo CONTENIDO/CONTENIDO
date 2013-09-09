@@ -19,6 +19,12 @@ cInclude("includes", "functions.upl.php");
 
 $page = new cGuiPage("upl_files_upload");
 
+if(!$perm->have_perm_area_action($area, "upl_upload")) {
+    $page->displayCriticalError(i18n("Permission denied"));
+    $page->render();
+    die();
+}
+
 $maxUploadSize = 0;
 $maxPostSize = 0;
 
@@ -47,7 +53,7 @@ if ((cFileHandler::writeable($cfgClient[$client]["upl"]["path"] . $path) || cApi
     if ($_REQUEST['appendparameters'] == "imagebrowser") {
         $page->set("s", "APPENDPARAMETERS", "imagebrowser");
     }
-	
+
 	if ($_REQUEST['appendparameters'] == "filebrowser") {
         $page->set("s", "APPENDPARAMETERS", "filebrowser");
     }

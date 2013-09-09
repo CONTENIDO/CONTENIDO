@@ -35,7 +35,7 @@ if (strpos($auth->auth["perm"],"sysadmin") !== false)
 {
     $tpl->set('s', 'NEWCLIENT', $mstr);
 } else {
-    $tpl->set('s', 'NEWCLIENT', '&nbsp;');
+    $tpl->set('s', 'NEWCLIENT', '<a class="addfunction_disabled" href="#">' . i18n("Only sysadmins can create clients") . '</a>');
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['client_left_top']);

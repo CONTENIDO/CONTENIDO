@@ -65,12 +65,16 @@ $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic
 $tpl->set('s', 'CAPTION', '');
 
 $tmp_mstr = '<a class="addfunction" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-$area = "group";
+// $area = "group"; What is the purpose of this???
 $mstr = sprintf($tmp_mstr, 'right_top',
                                    $sess->url("main.php?area=groups_create&frame=3"),
                                    'right_bottom',
                                    $sess->url("main.php?area=groups_create&frame=4"),
                                    i18n("Create group"));
-$tpl->set('s', 'NEWGROUP', $mstr);
+if($perm->have_perm_area_action("group", "groups_create")) {
+    $tpl->set('s', 'NEWGROUP', $mstr);
+} else {
+    $tpl->set('s', 'NEWGROUP', '<a class="addfunction_disabled" href="#">' . i18n("No permission to create groups") . '</a>');
+}
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_left_top']);

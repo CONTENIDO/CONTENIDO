@@ -93,7 +93,7 @@ class cApiUserCollection extends ItemCollection {
 
             foreach ($allClients as $key => $value) {
                 if (in_array('client[' . $key . ']', $perms) || in_array('admin[' . $key . ']', $perms)) {
-                    $limit[] = 'perms LIKE "%client[' . $$this->escape($key) . ']%"';
+                    $limit[] = 'perms LIKE "%client[' . $this->escape($key) . ']%"';
                     if ($includeAdmins) {
                         $limit[] = 'perms LIKE "%admin[' . $this->escape($key) . ']%"';
                     }

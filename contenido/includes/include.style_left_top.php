@@ -32,7 +32,11 @@ $mstr = sprintf($tmp_mstr, 'right_top',
                                    $sess->url("main.php?area=style&frame=4&action=style_create"),
                                    i18n("Create style"));
 if ((int) $client > 0) {
-    $tpl->set('s', 'NEWSTYLE', $mstr);
+    if($perm->have_perm_area_action($area, "style_create")) {
+        $tpl->set('s', 'NEWSTYLE', $mstr);
+    } else {
+        $tpl->set("s", "NEWSTYLE", '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create new styles") . '</a></div>');
+    }
 } else {
     $tpl->set('s', 'NEWSTYLE', i18n('No Client selected'));
 }

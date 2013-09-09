@@ -25,14 +25,18 @@ $tpl->set('s', 'SESSID', $sess->id);
 $tpl->set('s', 'ACTION', $select);
 
 $tmp_mstr = '<a class="addfunction" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-$area = "style";
+// $area = "style"; What is the purpose of this??
 $mstr = sprintf($tmp_mstr, 'right_top',
                                    $sess->url("main.php?area=js&frame=3"),
                                    'right_bottom',
                                    $sess->url("main.php?area=js&frame=4&action=js_create"),
                                    i18n("Create script"));
 if ((int) $client > 0) {
-    $tpl->set('s', 'NEWSCRIPT', $mstr);
+    if($perm->have_perm_area_action($area, "js_create")) {
+        $tpl->set('s', 'NEWSCRIPT', $mstr);
+    } else {
+        $tpl->set("s", "NEWSCRIPT", '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create new scripts") . '</a></div>');
+    }
 } else {
     $tpl->set('s', 'NEWSCRIPT', i18n('No Client selected'));
 }
