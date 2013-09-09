@@ -362,10 +362,10 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
                 }
 
                 if ($locked == 0) { // No freeze
-                    $replacements[$val] = $tmp . '<a href="javascript:setcontent(\'1\',\'' . $path . '\');">
+                    $replacements[$val] = $tmp . '<a href="#" onclick="showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { setcontent(\'1\',\'' . $path . '\'); });">
                 <img border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
-                    $keycode[$type][$val] = $tmp . '<a href="javascript:setcontent(\'1\',\'' . $path . '\');">
+                    $keycode[$type][$val] = $tmp . '<a href="#" onclick="showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { setcontent(\'1\',\'' . $path . '\'); });">
                 <img border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
                 } else { // Freeze status
