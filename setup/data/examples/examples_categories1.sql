@@ -17,7 +17,7 @@ INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, 
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(63, 1, 8, 10, 0, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(28, 1, 2, 26, 29, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(29, 1, 2, 28, 30, 0, 'sysadmin', NOW(), NOW());
-INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(30, 1, 2, 29, 0, 0, 'sysadmin', NOW(), NOW());
+INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(30, 1, 2, 29, 68, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(46, 1, 1, 8, 57, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(39, 1, 0, 1, 4, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(40, 1, 39, 0, 47, 0, 'sysadmin', NOW(), NOW());
@@ -36,7 +36,8 @@ INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, 
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(65, 1, 63, 64, 66, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(64, 1, 63, 0, 65, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(67, 1, 63, 66, 0, 0, 'sysadmin', NOW(), NOW());
-INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(84, 1, 77, 0, 0, 'sysadmin', NOW(), NOW(), 0);
+INSERT INTO `!PREFIX!_cat` (`idcat`, `idclient`, `parentid`, `preid`, `postid`, `status`, `author`, `created`, `lastmodified`) VALUES(68, 1, 2, 30, 0, 0, 'sysadmin', NOW(), NOW());
+INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(84, 1, 77, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(2, 3, 2, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(12, 2, 3, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(6, 4, 6, 0, 0, 'sysadmin', NOW(), NOW(), 1);
@@ -45,14 +46,14 @@ INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `statu
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(9, 4, 9, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(10, 4, 10, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(14, 2, 12, 0, 0, 'sysadmin', NOW(), NOW(), 1);
-INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(15, 5, 13, 0, 0, 'sysadmin', NOW(), NOW(), 0);
+INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(15, 5, 13, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(17, 2, 15, 0, 0, 'sysadmin', NOW(), NOW(), 1);
-INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(18, 30, 16, 0, 0, 'sysadmin', NOW(), NOW(), 0);
+INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(18, 30, 16, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(19, 28, 17, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(21, 12, 19, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(22, 26, 20, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(23, 25, 21, 0, 0, 'sysadmin', NOW(), NOW(), 1);
-INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(27, 8, 24, 0, 0, 'sysadmin', NOW(), NOW(), 0);
+INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(27, 8, 24, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(32, 9, 29, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(34, 10, 31, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(35, 13, 32, 0, 0, 'sysadmin', NOW(), NOW(), 1);
@@ -86,8 +87,9 @@ INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `statu
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(89, 63, 82, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(90, 64, 83, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(91, 66, 84, 0, 0, 'sysadmin', NOW(), NOW(), 1);
-INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(92, 67, 85, 0, 0, 'sysadmin', NOW(), NOW(), 0);
+INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(92, 67, 85, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(93, 65, 86, 0, 0, 'sysadmin', NOW(), NOW(), 1);
+INSERT INTO `!PREFIX!_cat_art` (`idcatart`, `idcat`, `idart`, `is_start`, `status`, `author`, `created`, `lastmodified`, `createcode`) VALUES(94, 68, 87, 0, 0, 'sysadmin', NOW(), NOW(), 1);
 INSERT INTO `!PREFIX!_cat_lang` (`idcatlang`, `idcat`, `idlang`, `idtplcfg`, `name`, `visible`, `public`, `status`, `author`, `created`, `lastmodified`, `startidartlang`, `urlname`, `urlpath`) VALUES(1, 1, 1, 2, 'Hauptnavigation', 1, 1, 0, 'sysadmin', NOW(), NOW(), 117, 'Hauptnavigation', '');
 INSERT INTO `!PREFIX!_cat_lang` (`idcatlang`, `idcat`, `idlang`, `idtplcfg`, `name`, `visible`, `public`, `status`, `author`, `created`, `lastmodified`, `startidartlang`, `urlname`, `urlpath`) VALUES(2, 2, 1, 3, 'Systemseiten', 1, 1, 0, 'sysadmin', NOW(), NOW(), 0, 'Systemseiten', '');
 INSERT INTO `!PREFIX!_cat_lang` (`idcatlang`, `idcat`, `idlang`, `idtplcfg`, `name`, `visible`, `public`, `status`, `author`, `created`, `lastmodified`, `startidartlang`, `urlname`, `urlpath`) VALUES(4, 4, 1, 12, 'Servicenavigation', 1, 1, 0, 'sysadmin', NOW(), NOW(), 0, 'Servicenavigation', '');
@@ -158,6 +160,9 @@ INSERT INTO `!PREFIX!_cat_lang` (`idcatlang`, `idcat`, `idlang`, `idtplcfg`, `na
 INSERT INTO `!PREFIX!_cat_lang` (`idcatlang`, `idcat`, `idlang`, `idtplcfg`, `name`, `visible`, `public`, `status`, `author`, `created`, `lastmodified`, `startidartlang`, `urlname`, `urlpath`) VALUES(99, 66, 1, 158, 'XING', 1, 1, 0, 'sysadmin', NOW(), NOW(), 130, 'XING', '');
 INSERT INTO `!PREFIX!_cat_lang` (`idcatlang`, `idcat`, `idlang`, `idtplcfg`, `name`, `visible`, `public`, `status`, `author`, `created`, `lastmodified`, `startidartlang`, `urlname`, `urlpath`) VALUES(100, 65, 1, 159, 'Twitter', 1, 1, 0, 'sysadmin', NOW(), NOW(), 129, 'Twitter', '');
 INSERT INTO `!PREFIX!_cat_lang` (`idcatlang`, `idcat`, `idlang`, `idtplcfg`, `name`, `visible`, `public`, `status`, `author`, `created`, `lastmodified`, `startidartlang`, `urlname`, `urlpath`) VALUES(101, 64, 1, 160, 'Facebook', 1, 1, 0, 'sysadmin', NOW(), NOW(), 128, 'Facebook', '');
+INSERT INTO `!PREFIX!_cat_lang` (`idcatlang`, `idcat`, `idlang`, `idtplcfg`, `name`, `visible`, `public`, `status`, `author`, `created`, `lastmodified`, `startidartlang`, `urlname`, `urlpath`) VALUES(102, 68, 1, 167, 'Facebook Channel', 1, 1, 0, 'sysadmin', NOW(), NOW(), 132, 'Facebook-Channel', '');
+INSERT INTO `!PREFIX!_cat_lang` (`idcatlang`, `idcat`, `idlang`, `idtplcfg`, `name`, `visible`, `public`, `status`, `author`, `created`, `lastmodified`, `startidartlang`, `urlname`, `urlpath`) VALUES(103, 68, 2, 169, 'Facebook Channel', 1, 1, 0, 'sysadmin', NOW(), NOW(), 133, 'Facebook-Channel', '');
+INSERT INTO `!PREFIX!_cat_tree` (`idtree`, `idcat`, `level`) VALUES(10750, 68, 1);
 INSERT INTO `!PREFIX!_cat_tree` (`idtree`, `idcat`, `level`) VALUES(10518, 30, 1);
 INSERT INTO `!PREFIX!_cat_tree` (`idtree`, `idcat`, `level`) VALUES(10517, 29, 1);
 INSERT INTO `!PREFIX!_cat_tree` (`idtree`, `idcat`, `level`) VALUES(10516, 28, 1);

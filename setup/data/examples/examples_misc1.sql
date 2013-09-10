@@ -21,6 +21,7 @@ INSERT INTO `!PREFIX!_template` (`idclient`, `idlay`, `idtpl`, `idtplcfg`, `name
 INSERT INTO `!PREFIX!_template` (`idclient`, `idlay`, `idtpl`, `idtplcfg`, `name`, `description`, `deletable`, `status`, `defaulttemplate`, `author`, `created`, `lastmodified`) VALUES(1, 1, 19, 152, 'standard_social_google', '', 1, NULL, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_template` (`idclient`, `idlay`, `idtpl`, `idtplcfg`, `name`, `description`, `deletable`, `status`, `defaulttemplate`, `author`, `created`, `lastmodified`) VALUES(1, 1, 20, 154, 'standard_social_twitter', '', 1, NULL, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_template` (`idclient`, `idlay`, `idtpl`, `idtplcfg`, `name`, `description`, `deletable`, `status`, `defaulttemplate`, `author`, `created`, `lastmodified`) VALUES(1, 3, 21, 165, 'google_sitemap', '', 1, NULL, 0, 'sysadmin', NOW(), NOW());
+INSERT INTO `!PREFIX!_template` (`idclient`, `idlay`, `idtpl`, `idtplcfg`, `name`, `description`, `deletable`, `status`, `defaulttemplate`, `author`, `created`, `lastmodified`) VALUES(1, 3, 22, 168, 'facebook_channel', '', 1, NULL, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(1, 1, NULL, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(2, 3, NULL, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(3, 1, NULL, 'sysadmin', NOW(), NOW());
@@ -154,6 +155,9 @@ INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(164, 19, 0, '', NOW(), NOW());
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(165, 21, NULL, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(166, 21, NULL, NULL, NOW(), NOW());
+INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(167, 22, NULL, 'sysadmin', NOW(), NOW());
+INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(168, 22, NULL, 'sysadmin', NOW(), NOW());
+INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(169, 22, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_upl` (`idupl`, `idclient`, `filename`, `dirname`, `filetype`, `size`, `status`, `author`, `created`, `lastmodified`, `modifiedby`) VALUES(2, 1, 'logo.png', 'logos/', 'png', 4374, 0, '48a365b4ce1e322a55ae9017f3daf0c0', '2012-11-11 02:36:28', '2012-11-11 02:36:28', '48a365b4ce1e322a55ae9017f3daf0c0');
 INSERT INTO `!PREFIX!_upl` (`idupl`, `idclient`, `filename`, `dirname`, `filetype`, `size`, `status`, `author`, `created`, `lastmodified`, `modifiedby`) VALUES(55, 1, 'galerie_06.jpg', 'picture_gallery/', 'jpg', 91124, 0, '48a365b4ce1e322a55ae9017f3daf0c0', NOW(), NOW(), '48a365b4ce1e322a55ae9017f3daf0c0');
 INSERT INTO `!PREFIX!_upl` (`idupl`, `idclient`, `filename`, `dirname`, `filetype`, `size`, `status`, `author`, `created`, `lastmodified`, `modifiedby`) VALUES(54, 1, 'galerie_05.jpg', 'picture_gallery/', 'jpg', 76037, 0, '48a365b4ce1e322a55ae9017f3daf0c0', NOW(), NOW(), '48a365b4ce1e322a55ae9017f3daf0c0');
