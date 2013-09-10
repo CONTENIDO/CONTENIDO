@@ -95,3 +95,13 @@ INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, 
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(7, 100003, 3, 'area');
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(8, 100002, 3, 'navs');
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(9, 100002, 3, 'ctype');
+
+-- Facebook SDK
+INSERT INTO `!PREFIX!_system_prop` (`idsystemprop`, `type`, `name`, `value`) VALUES(24, 'fb-sdk', 'app-id', NULL);
+INSERT INTO `!PREFIX!_system_prop` (`idsystemprop`, `type`, `name`, `value`) VALUES(25, 'fb-sdk', 'idart-channel', '87');
+INSERT INTO `!PREFIX!_system_prop` (`idsystemprop`, `type`, `name`, `value`) VALUES(26, 'fb-sdk', 'kid-directed-site', 'false');
+INSERT INTO `!PREFIX!_system_prop` (`idsystemprop`, `type`, `name`, `value`) VALUES(27, 'fb-sdk', 'locale', 'de_DE');
+INSERT INTO `!PREFIX!_system_prop` (`idsystemprop`, `type`, `name`, `value`) VALUES(28, 'fb-sdk', 'status', 'false');
+INSERT INTO `!PREFIX!_system_prop` (`idsystemprop`, `type`, `name`, `value`) VALUES(29, 'fb-sdk', 'template', 'jQuery');
+INSERT INTO `!PREFIX!_system_prop` (`idsystemprop`, `type`, `name`, `value`) VALUES(30, 'fb-sdk', 'xfbml', 'true');
+INSERT INTO `!PREFIX!_system_prop` (`idsystemprop`, `type`, `name`, `value`) VALUES(31, 'fb-sdk', 'html5', 'false');
