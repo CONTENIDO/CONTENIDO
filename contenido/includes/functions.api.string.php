@@ -193,7 +193,7 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  * cApiStrReplaceDiacritics: Converts diactritics to english characters whenever possible.
  *
  * For german umlauts, this function converts the umlauts to their ASCII
- * equalients (e.g. � => ae).
+ * equalients (e.g. ä => ae).
  *
  * For more information about diacritics, refer to
  * http://en.wikipedia.org/wiki/Diacritic
@@ -201,13 +201,13 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  * For other languages, the diacritic marks are removed, if possible.
  *
  * @param  string  $sString         The string to operate on
- * @param  string  $sourceEncoding  The source encoding (default: ISO-8859-1)
- * @param  string  $targetEncoding  The target encoding (default: ISO-8859-1)
+ * @param  string  $sourceEncoding  The source encoding (default: UTF-8)
+ * @param  string  $targetEncoding  The target encoding (default: UTF-8)
  * @return string  The resulting string
  */
-function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'ISO-8859-1', $targetEncoding = 'ISO-8859-1') {
+function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8') {
     if ($sourceEncoding != 'UTF-8') {
-        $sString = utf8_decode($sString);
+        $sString = cApiStrRecodeString($sString, $sourceEncoding, "UTF-8");
     }
 
     // replace regular german umlauts and other common characters with diacritics
@@ -220,7 +220,7 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'ISO-8859-1', $tar
 
     // TODO: Additional converting
 
-    return $sString;
+    return cApiStrRecodeString($sString, "UTF-8", $targetEncoding);
 }
 
 /**
