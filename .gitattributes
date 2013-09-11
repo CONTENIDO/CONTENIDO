@@ -274,7 +274,6 @@ contenido/cronjobs/index.php -text
 contenido/cronjobs/linkchecker.php -text
 contenido/cronjobs/linkchecker.php.job -text
 contenido/cronjobs/move_articles.php -text
-contenido/cronjobs/move_articles.php.job -text
 contenido/cronjobs/move_old_stats.php -text
 contenido/cronjobs/move_old_stats.php.job -text
 contenido/cronjobs/optimize_database.php -text
@@ -282,11 +281,8 @@ contenido/cronjobs/optimize_database.php.job -text
 contenido/cronjobs/run_newsletter_job.php -text
 contenido/cronjobs/run_newsletter_job.php.job -text
 contenido/cronjobs/send_reminder.php -text
-contenido/cronjobs/send_reminder.php.job -text
 contenido/cronjobs/session_cleanup.php -text
-contenido/cronjobs/session_cleanup.php.job -text
 contenido/cronjobs/setfrontenduserstate.php -text
-contenido/cronjobs/setfrontenduserstate.php.job -text
 contenido/external/backendedit/front_content.php -text
 contenido/external/edit_area/autocompletion.js -text svneol=unset#text/plain
 contenido/external/edit_area/class.edit_area.php -text
