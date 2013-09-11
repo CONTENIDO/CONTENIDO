@@ -37,7 +37,7 @@ Contenido_Security::checkRequests();
 
 cInclude("includes", "functions.pathresolver.php");
 
-if(!$perm->have_perm_area_action($area, $action)) {
+if(!($perm->have_perm_area_action($area, "storeallocation") || $perm->have_perm_area_action_item($area, "storeallocation", $idcat))) {
     $notification->displayNotification("error", i18n("Permission denied"));
     return;
 }
