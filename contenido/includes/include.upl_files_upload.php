@@ -54,7 +54,7 @@ if ((cFileHandler::writeable($cfgClient[$client]["upl"]["path"] . $path) || cApi
         $page->set("s", "APPENDPARAMETERS", "imagebrowser");
     }
 
-	if ($_REQUEST['appendparameters'] == "filebrowser") {
+    if ($_REQUEST['appendparameters'] == "filebrowser") {
         $page->set("s", "APPENDPARAMETERS", "filebrowser");
     }
 

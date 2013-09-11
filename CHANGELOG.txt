@@ -241,7 +241,7 @@ Release 4.9.0
     * [CON-1432] - Fix missing spacer.gif on contact form (frontend)
     * [CON-1437] - Tagging: Save the level 3 is not possible
     * [CON-1438] - cFileHandler::recursiveCopy uses PHP 5.3+ functionality
-	* [CON-1441] - Check error handling and notifications for css, js and template menu
+    * [CON-1441] - Check error handling and notifications for css, js and template menu
 
 ** Improvement
     * [CON-572] - Move inline CSS into stylesheet file

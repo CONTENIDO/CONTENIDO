@@ -252,7 +252,7 @@ $(function() {
         }
 
         $dialog.dialog(opt);
-        
+
     }
 
     /**

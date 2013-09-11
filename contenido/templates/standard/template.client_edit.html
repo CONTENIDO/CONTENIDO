@@ -18,26 +18,26 @@
             left_bottom.location.href = href+'&idclient='+"{IDCLIENT}";
         }
     </script>
-    
+
     <script type="text/javascript">
-    	$(document).ready(function() {
-			$("#submit_button").mousedown(function() {
-				if(!validateURL($("#htmlpath").val())) {
-					showNotification("Error", "i18n("Please enter a valid URL. It has to start with http://... or https://...")");
-					return;
-				}
-				if($("#clientname").val() == "") {
-					showNotification("Error", "i18n("The client must have a name!")");
-					return;
-				}
-				if($("#frontendpath").val() == "") {
-					showNotification("Error", "i18n("The client must have a frontend path. This is where the client's files will be stored.")");
-					return;
-				}
-			});
-    	});
+        $(document).ready(function() {
+            $("#submit_button").mousedown(function() {
+                if (!validateURL($("#htmlpath").val())) {
+                    showNotification("Error", "i18n("Please enter a valid URL. It has to start with http://... or https://...")");
+                    return;
+                }
+                if ($("#clientname").val() == "") {
+                    showNotification("Error", "i18n("The client must have a name!")");
+                    return;
+                }
+                if ($("#frontendpath").val() == "") {
+                    showNotification("Error", "i18n("The client must have a frontend path. This is where the client's files will be stored.")");
+                    return;
+                }
+            });
+        });
     </script>
-    
+
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
 </head>
@@ -64,7 +64,7 @@
 </body>
 </html>
 
-<!-- 
+<!--
 
 i18n("Please enter a valid URL. It has to start with http://... or https://...")
 i18n("The client must have a name!")

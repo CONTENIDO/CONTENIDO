@@ -42,8 +42,8 @@
 
     </contenido>
 
-	<content_types>
-		<type>CMS_LINKCHECKER</type>
-	</content_types>
+    <content_types>
+        <type>CMS_LINKCHECKER</type>
+    </content_types>
 
 </plugin>

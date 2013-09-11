@@ -125,15 +125,15 @@ abstract class cDbDriverHandler {
         // use default connection configuration, but overwrite it by passed
         // options
         $this->_dbCfg = array_merge(self::$_defaultDbCfg, $options);
-        
-   	 	// in case we do not have any configuration for database, try to load it from configuration
+
+            // in case we do not have any configuration for database, try to load it from configuration
         if (count($this->_dbCfg) == 0) {
-        	$cfg = cRegistry::getConfig();
-        	if (isset($cfg['db']) && count($cfg['db']) > 0) {
-        		$this->_dbCfg = $cfg['db'];
-        	} else {
-        		throw new cDbException("Unable to establish a database connection without options!");
-        	}        	
+            $cfg = cRegistry::getConfig();
+            if (isset($cfg['db']) && count($cfg['db']) > 0) {
+                $this->_dbCfg = $cfg['db'];
+            } else {
+                throw new cDbException("Unable to establish a database connection without options!");
+            }
         }
 
         if (isset($this->_dbCfg['haltBehavior'])) {

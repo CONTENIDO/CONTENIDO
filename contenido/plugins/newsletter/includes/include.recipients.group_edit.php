@@ -282,63 +282,63 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oInsiders = '';
     $aInsiders = array();
     if (count($groupRecipients) > 0) {
-    	$oInsiders = new NewsletterRecipientCollection();
-    	$oInsiders->setWhere("idclient", $client);
-    	$oInsiders->setWhere("idlang", $lang);
-    	$oInsiders->setWhere("idnewsrcp", $groupRecipients, 'IN');
-    	
-    	// Get insiders for outsiders list (*sigh!*)
-    	// TODO: Ask user to have at least mySQL 4.1...
-    	$oInsiders->query();
-    	
-    	if ($oInsiders->count() > 0) {
-    		while ($oInsider = $oInsiders->next()) {
-    			$aInsiders[] = $oInsider->get($oInsider->primaryKey);
-    		}
-    	}
-    	
-    	// Filter
-    	if ($_REQUEST["member_filter"] != "") {
-    		if ($_REQUEST["member_searchin"] == "--all--" || $_REQUEST["member_searchin"] == "") {
-    			foreach ($aFields as $sKey => $aData) {
-    				if (strpos($aData["type"], "search") !== false) {
-    					$oInsiders->setWhereGroup("filter", $aData["field"], $_REQUEST["member_filter"], "LIKE");
-    				}
-    			}
-    			$oInsiders->setInnerGroupCondition("filter", "OR");
-    		} else {
-    			$oInsiders->setWhere($_REQUEST["member_searchin"], $_REQUEST["member_filter"], "LIKE");
-    		}
-    	}
-    	
-    	// If elemperpage is something else than "all", get item count based on
-    	// filters
-    	if ($_REQUEST["member_elemperpage"] > 0) {
-    		$oInsiders->query();
-    		$iMembers = $oInsiders->count(); // Getting item count without limit
-    		// (for page function) - better idea
-    		// anybody (performance)?
-    	
-    		$oInsiders->setLimit($_REQUEST["member_elemperpage"] * ($_REQUEST["member_page"] - 1), $_REQUEST["member_elemperpage"]);
-    	} else {
-    		$iMembers = 0;
-    	}
-    	
-    	// Get data
-    	$sSortSQL = $_REQUEST["member_sortby"] . " " . $_REQUEST["member_sortorder"];
-    	if ($_REQUEST["member_sortby"] == "name") {
-    		// Name field may be empty, add email as sort criteria
-    		$sSortSQL .= ", email " . $_REQUEST["member_sortorder"];
-    	}
-    	
-    	$oInsiders->setOrder($sSortSQL);
-    	$oInsiders->query();
-    	
-    	$iItems = $oInsiders->count();
+        $oInsiders = new NewsletterRecipientCollection();
+        $oInsiders->setWhere("idclient", $client);
+        $oInsiders->setWhere("idlang", $lang);
+        $oInsiders->setWhere("idnewsrcp", $groupRecipients, 'IN');
+
+        // Get insiders for outsiders list (*sigh!*)
+        // TODO: Ask user to have at least mySQL 4.1...
+        $oInsiders->query();
+
+        if ($oInsiders->count() > 0) {
+            while ($oInsider = $oInsiders->next()) {
+                $aInsiders[] = $oInsider->get($oInsider->primaryKey);
+            }
+        }
+
+        // Filter
+        if ($_REQUEST["member_filter"] != "") {
+            if ($_REQUEST["member_searchin"] == "--all--" || $_REQUEST["member_searchin"] == "") {
+                foreach ($aFields as $sKey => $aData) {
+                    if (strpos($aData["type"], "search") !== false) {
+                        $oInsiders->setWhereGroup("filter", $aData["field"], $_REQUEST["member_filter"], "LIKE");
+                    }
+                }
+                $oInsiders->setInnerGroupCondition("filter", "OR");
+            } else {
+                $oInsiders->setWhere($_REQUEST["member_searchin"], $_REQUEST["member_filter"], "LIKE");
+            }
+        }
+
+        // If elemperpage is something else than "all", get item count based on
+        // filters
+        if ($_REQUEST["member_elemperpage"] > 0) {
+            $oInsiders->query();
+            $iMembers = $oInsiders->count(); // Getting item count without limit
+            // (for page function) - better idea
+            // anybody (performance)?
+
+            $oInsiders->setLimit($_REQUEST["member_elemperpage"] * ($_REQUEST["member_page"] - 1), $_REQUEST["member_elemperpage"]);
+        } else {
+            $iMembers = 0;
+        }
+
+        // Get data
+        $sSortSQL = $_REQUEST["member_sortby"] . " " . $_REQUEST["member_sortorder"];
+        if ($_REQUEST["member_sortby"] == "name") {
+            // Name field may be empty, add email as sort criteria
+            $sSortSQL .= ", email " . $_REQUEST["member_sortorder"];
+        }
+
+        $oInsiders->setOrder($sSortSQL);
+        $oInsiders->query();
+
+        $iItems = $oInsiders->count();
     } else {
-    	$iItems = 0;
+        $iItems = 0;
     }
-    
+
     if ($iItems == 0 && $_REQUEST["member_filter"] == "" && ($_REQUEST["member_elemperpage"] == 0 || $iMembers == 0)) {
         $oAddedRecipientList->setCell(1, 1, i18n("No recipients are added to this group yet", 'newsletter'));
         $oAddedRecipientList->setCell(1, 2, '&nbsp;');
@@ -488,8 +488,8 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     // contains a lot of members (e.g. Oracle can't handle more than 1000 items
     // in the brackets)
     $sSQL = "idclient = '" . $client . "' AND idlang = '" . $lang . "'";
-   	if (count($aInsiders) > 0) {
-    	$sSQL .= " AND idnewsrcp NOT IN ('" . implode("','", $aInsiders) . "')";
+    if (count($aInsiders) > 0) {
+        $sSQL .= " AND idnewsrcp NOT IN ('" . implode("','", $aInsiders) . "')";
     }
 
     if ($_REQUEST["outsider_filter"] != "") {

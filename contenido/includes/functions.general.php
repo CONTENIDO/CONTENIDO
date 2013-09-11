@@ -1550,7 +1550,7 @@ function ipMatch($network, $mask, $ip) {
 }
 
 /**
- * @deprecated [2013-08-14]  Use cString::endsWith() instead 
+ * @deprecated [2013-08-14]  Use cString::endsWith() instead
  */
 function endsWith($haystack, $needle) {
     return cString::endsWith($haystack, $needle);

@@ -553,7 +553,7 @@ p, table, tr, td, th {
 .addfunction_disabled {
     background: transparent url(../images/but_cancel.gif) no-repeat scroll 0 8px;
     display: block;
-    height: 3em;	
+    height: 3em;
     line-height: 3em;
     padding-left: 20px;
 }
@@ -2314,7 +2314,7 @@ table.inuse_lay_mod {
     border: 1px solid #ccc;
 }
 
-table.inuse_lay_mod  td.grey {
+table.inuse_lay_mod td.grey {
     background-color: #eee;
 }
 
@@ -2325,13 +2325,9 @@ table.inuse_tpl {
 
 a.infoButton,
 infoButton:hover {
-	display: inline-block;
-	
-	width: 16px; 
-	height: 16px;
-	
-	background:transparent url(../images/info.gif) no-repeat;
-	
-	margin-bottom: -3px;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: transparent url(../images/info.gif) no-repeat;
+    margin-bottom: -3px;
 }
-
