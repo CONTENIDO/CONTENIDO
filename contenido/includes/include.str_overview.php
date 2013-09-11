@@ -26,14 +26,6 @@ if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_dupl
     strCopyTree($idcat, $parentid);
 }
 
-// Everybody is allowed to update aliases, if there is no Permission to update
-// category names, this block updates category alias only
-if ($action == 'str_renamecat' && isset($_POST['newcategoryalias'])) {
-    if (!($perm->have_perm_area_action($tmp_area, 'str_renamecat') || $perm->have_perm_area_action_item($tmp_area, 'str_renamecat', $idcat))) {
-        strRenameCategoryAlias($idcat, $lang, $_POST['newcategoryalias']);
-    }
-}
-
 $oDirectionDb = cRegistry::getDb();
 
 /**
