@@ -179,8 +179,6 @@ foreach ($availableTags as $key => $value) {
                 $i = 0;
                 foreach ($metaPreview as $k => $metaRow) {
 
-                    echo $k;
-
                     if ($metaRow['name'] == 'robots') {
 
                         $metaPreview[$i]['content'] = 'index, follow';
