@@ -303,6 +303,7 @@
 "plugins";"version";"varchar(10)";"";"";"";"";""
 "plugins";"folder";"varchar(255)";"";"";"";"";""
 "plugins";"uuid";"varchar(255)";"";"";"";"";""
+"plugins";"executionorder";"int(11)";"";"";"0";"";""
 "plugins";"installed";"datetime";"";"";"0000-00-00 00:00:00";"";""
 "plugins";"active";"tinyint(1)";"YES";"";"";"";""
 "properties";"idproperty";"int(11)";"";"PRI";"0";"";"1"
