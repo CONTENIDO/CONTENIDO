@@ -17,6 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Standard class for Plugin Manager (PIM)
+ *
  * @author frederic.schneider
  *
  */
@@ -38,6 +39,16 @@ class PimPluginSetup {
 
     // Class variable for PimPluginArchiveExtractor
     protected static $_PimPluginArchiveExtractor;
+
+    /**
+     * Help variable.
+     * If this variable is true PIM does not run uninstall and install
+     * sql file. Standard value: false (update sql file does not exist)
+     *
+     * @access private
+     * @var boolean
+     */
+    private static $_updateSqlFileExist = false;
 
     // Xml variables
     // General informations of plugin
@@ -101,6 +112,16 @@ class PimPluginSetup {
      */
     public function setPageClass($page) {
         return self::$_GuiPage = $page;
+    }
+
+    /**
+     * Set method to change updateSqlFileExist variable
+     *
+     * @access protected
+     * @param boolean $value
+     */
+    protected function _setUpdateSqlFileExist($value) {
+        self::$_updateSqlFileExist = cSecurity::toBoolean($value);
     }
 
     /**
@@ -178,6 +199,15 @@ class PimPluginSetup {
         return self::$_pluginId;
     }
 
+    /**
+     * Set method for updateSqlFileExist variable
+     *
+     * @return boolean
+     */
+    protected function _getUpdateSqlFileExist() {
+        return self::$_updateSqlFileExist;
+    }
+
     // Help methods
     /**
      * checkXml
@@ -190,16 +220,18 @@ class PimPluginSetup {
 
         if (self::getMode() == 1) { // Plugin is already extracted
             $XmlData = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($_GET['pluginFoldername']) . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME);
-        } elseif (self::getMode() == 2 || self::getMode() == 4) { // Plugin is uploaded / Update mode
+        } elseif (self::getMode() == 2 || self::getMode() == 4) { // Plugin is
+                                                                  // uploaded /
+                                                                  // Update mode
 
             // Check valid Zip archive
             $this->checkZip();
 
-            // Name of uploaded Zip archive
-            $tempArchiveName = cSecurity::escapeString($_FILES['package']['name']);
-
             // Path to CONTENIDO temp dir
             $tempArchiveNewPath = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['temp'];
+
+            // Name of uploaded Zip archive
+            $tempArchiveName = cSecurity::escapeString($_FILES['package']['name']);
 
             // Move temporary archive files into CONTENIDO temp dir
             move_uploaded_file($_FILES['package']['tmp_name'], $tempArchiveNewPath . $tempArchiveName);
@@ -230,7 +262,7 @@ class PimPluginSetup {
      */
     private function checkZip() {
         if (substr($_FILES['package']['name'], -4) != ".zip") {
-            parent::error(i18n('Plugin Manager accepts only Zip archives', 'pim'));
+            self::error(i18n('Plugin Manager accepts only Zip archives', 'pim'));
         }
     }
 

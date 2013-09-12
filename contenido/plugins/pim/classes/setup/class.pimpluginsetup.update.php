@@ -17,13 +17,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Update class for existing plugins, extends PimPluginSetup
+ *
  * @author frederic.schneider
  *
  */
 class PimPluginSetupUpdate extends PimPluginSetup {
 
     // Classes
-    // Class variable for PimPluginCollection
+    /**
+     * Variable for PIM class PimPluginCollection
+     *
+     * @access protected
+     * @var PimPluginCollection
+     */
     protected $_PimPluginCollection;
 
     /**
@@ -50,7 +56,10 @@ class PimPluginSetupUpdate extends PimPluginSetup {
         $this->_setPimPluginCollection();
 
         // Check same plugin (uuid)
-        $this->checkSamePlugin();
+        $this->_checkSamePlugin();
+
+        // Check for update specific sql files
+        $this->_updateSql();
 
         // Delete "old" plugin
         $delete = new PimPluginSetupUninstall();
@@ -70,7 +79,7 @@ class PimPluginSetupUpdate extends PimPluginSetup {
      * @access private
      * @return void
      */
-    private function checkSamePlugin() {
+    private function _checkSamePlugin() {
         $this->_PimPluginCollection->setWhere('idplugin', parent::_getPluginId());
         $this->_PimPluginCollection->query();
         while ($result = $this->_PimPluginCollection->next()) {
@@ -78,6 +87,44 @@ class PimPluginSetupUpdate extends PimPluginSetup {
             if (parent::$XmlGeneral->uuid != $result->get('uuid')) {
                 parent::error(i18n('You have to update the same plugin', 'pim'));
             }
+        }
+    }
+
+    /**
+     * Check for update specific sql files.
+     * If some valid sql file available, PIM does not run uninstall and install
+     * sql files.
+     *
+     * @access private
+     */
+    private function _updateSql() {
+        $cfg = cRegistry::getConfig();
+        $db = cRegistry::getDb();
+
+        // Filename to update sql file
+        $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_update.sql', 0);
+
+        if (cFileHandler::exists($tempSqlFilename)) {
+
+            // Execute update sql file
+            $tempSqlContent = cFileHandler::read($tempSqlFilename);
+            $tempSqlContent = str_replace("\r\n", "\n", $tempSqlContent);
+            $tempSqlContent = explode("\n", $tempSqlContent);
+            $tempSqlLines = count($tempSqlContent);
+
+            $pattern = '/(CREATE TABLE IF NOT EXISTS|INSERT INTO|UPDATE|ALTER TABLE) ' . parent::SQL_PREFIX . '\b/';
+
+            for ($i = 0; $i < $tempSqlLines; $i++) {
+                if (preg_match($pattern, $tempSqlContent[$i])) {
+                    $tempSqlContent[$i] = str_replace(parent::SQL_PREFIX, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
+                    $db->query($tempSqlContent[$i]);
+                }
+            }
+
+            // Do not run uninstall and install sql files
+            PimPluginSetup::_setUpdateSqlFileExist(true);
+        } else {
+            return false;
         }
     }
 

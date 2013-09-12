@@ -17,6 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Install class for new plugins, extends PimPluginSetup
+ *
  * @author frederic.schneider
  *
  */
@@ -237,8 +238,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Add new CONTENIDO sub navigations: *_nav_sub
         $this->_installAddNavSub();
 
-        // Add specific sql queries
-        $this->_installAddSpecificSql();
+        // Add specific sql queries, run only if we have no update sql file
+        if (PimPluginSetup::_getUpdateSqlFileExist() == false) {
+            $this->_installAddSpecificSql();
+        }
 
         // Add new CONTENIDO content types: *_type
         $this->_installAddContentTypes();

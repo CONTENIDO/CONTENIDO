@@ -17,6 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Uninstall class for existing plugins, extends PimPluginSetup
+ *
  * @author frederic.schneider
  *
  */
@@ -194,7 +195,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      *
      * @access public
      * @param boolean $sql Optional parameter to set sql true (standard) or
-     *            false
+     *        false
      */
     public function uninstall($sql = true) {
         $cfg = cRegistry::getConfig();
@@ -241,14 +242,10 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         // Set foldername
         $this->setPluginFoldername($pimPluginSql->get('folder'));
 
-        // Delete specific sql entries or tables
-        if ($sql == true) {
-
-            if (parent::getMode() == 3) { // Uninstall mode
-                $this->_uninstallFullDeleteSpecificSql();
-            } elseif (parent::getMode() == 4) { // Update mode
-                $this->_uninstallUpdateDeleteSpecificSql();
-            }
+        // Delete specific sql entries or tables, run only if we have no update
+        // sql file
+        if ($sql == true && PimPluginSetup::_getUpdateSqlFileExist() == false) {
+            $this->_uninstallDeleteSpecificSql();
         }
 
         // Pluginname
@@ -269,7 +266,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      *
      * @access protected
      */
-    protected function _uninstallFullDeleteSpecificSql() {
+    protected function _uninstallDeleteSpecificSql() {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
@@ -285,44 +282,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $tempSqlLines = count($tempSqlContent);
 
         $pattern = '/(DELETE FROM|DROP TABLE) ' . parent::SQL_PREFIX . '\b/';
-
-        for ($i = 0; $i < $tempSqlLines; $i++) {
-            if (preg_match($pattern, $tempSqlContent[$i])) {
-                $tempSqlContent[$i] = str_replace(parent::SQL_PREFIX, $cfg['sql']['sqlprefix'] . '_pi', $tempSqlContent[$i]);
-                $db->query($tempSqlContent[$i]);
-            }
-        }
-    }
-
-    /**
-     * Delete specific sql entries or tables, update uninstall mode
-     *
-     * TODO: Optimize this function (CON-1358)
-     *
-     * @access protected
-     */
-    protected function _uninstallUpdateDeleteSpecificSql() {
-        $cfg = cRegistry::getConfig();
-        $db = cRegistry::getDb();
-
-        // name of uploaded file
-        $tempFileName = cSecurity::escapeString($_FILES['package']['name']);
-
-        // path to temporary dir
-        $tempFileNewPath = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['temp'];
-
-        parent::_setPimPluginArchiveExtractor($tempFileNewPath, $tempFileName);
-        $tempSqlContent = self::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_update.sql');
-
-        if (empty($tempSqlContent)) {
-            return;
-        }
-
-        $tempSqlContent = str_replace("\r\n", "\n", $tempSqlContent);
-        $tempSqlContent = explode("\n", $tempSqlContent);
-        $tempSqlLines = count($tempSqlContent);
-
-        $pattern = '/(UPDATE|ALTER TABLE|DELETE FROM|DROP TABLE) ' . parent::SQL_PREFIX . '\b/';
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
             if (preg_match($pattern, $tempSqlContent[$i])) {
