@@ -318,7 +318,7 @@ class cAjaxRequest {
                 $type = $_REQUEST['logfile'];
                 $numberOfLines = $_REQUEST['numberOfLines'];
                 $cfg = cRegistry::getConfig();
-                $filename = $cfg['path']['frontend'] . DS . $cfg['path']['logs'] . $type;
+                $filename = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['logs'] . $type;
                 $string = cFileHandler::read($filename);
                 $lines = file($filename);
                 $lines = array_splice($lines, $numberOfLines * -1);
