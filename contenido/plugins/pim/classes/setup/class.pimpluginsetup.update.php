@@ -101,8 +101,12 @@ class PimPluginSetupUpdate extends PimPluginSetup {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
 
+        // Build sql filename with installed plugin version and new plugin
+        // version, i. e.: "plugin_update_100_to_101.sql" (without dots)
+        $tempSqlFilename = "plugin_update_" . str_replace('.', '', $this->_getInstalledPluginVersion()) . "_to_" . str_replace('.', '', parent::$XmlGeneral->version) . ".sql";
+
         // Filename to update sql file
-        $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_update.sql', 0);
+        $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable($tempSqlFilename, 0);
 
         if (cFileHandler::exists($tempSqlFilename)) {
 
@@ -125,6 +129,19 @@ class PimPluginSetupUpdate extends PimPluginSetup {
             PimPluginSetup::_setUpdateSqlFileExist(true);
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Get installed plugin version
+     *
+     * @access private
+     */
+    private function _getInstalledPluginVersion() {
+        $this->_PimPluginCollection->setWhere('idplugin', parent::_getPluginId());
+        $this->_PimPluginCollection->query();
+        while ($result = $this->_PimPluginCollection->next()) {
+            return $result->get('version');
         }
     }
 
