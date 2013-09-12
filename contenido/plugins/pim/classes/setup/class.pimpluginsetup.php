@@ -75,7 +75,6 @@ class PimPluginSetup {
      *
      * @access public
      * @param string $mode
-     * @return void
      */
     public static function setMode($mode) {
         switch ($mode) {
@@ -99,7 +98,6 @@ class PimPluginSetup {
      *
      * @access public
      * @param cGuiPage $page
-     * @return void
      */
     public function setPageClass($page) {
         return self::$_GuiPage = $page;
@@ -122,7 +120,6 @@ class PimPluginSetup {
      *
      * @access private
      * @param string $xml
-     * @return boid
      */
     private function _setXml($xml) {
 
@@ -187,7 +184,6 @@ class PimPluginSetup {
      * Load plugin datas and run Xml checks
      *
      * @access public
-     * @return void
      */
     public function checkXml() {
         $cfg = cRegistry::getConfig();
@@ -231,7 +227,6 @@ class PimPluginSetup {
      * Check file type, Plugin Manager accepts only Zip archives
      *
      * @access private
-     * @return void
      */
     private function checkZip() {
         if (substr($_FILES['package']['name'], -4) != ".zip") {
@@ -264,7 +259,6 @@ class PimPluginSetup {
      *
      * @access protected
      * @param string $message
-     * @return void
      */
     protected static function error($message = '') {
 
@@ -290,7 +284,6 @@ class PimPluginSetup {
      *
      * @access protected
      * @param string $message
-     * @return void
      */
     protected static function info($message = '') {
         return self::$_GuiPage->displayInfo($message);
