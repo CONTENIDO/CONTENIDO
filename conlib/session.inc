@@ -1,12 +1,12 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Session Management for PHP3
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
@@ -18,8 +18,8 @@
  * @link       http://www.contenido.org
  * @since      file available since contenido release <Contenido Version>
  * @deprecated file deprecated in contenido release <Contenido Version>
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2000-01-01
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
@@ -27,7 +27,7 @@
  *
  *   $Id: session.inc 1177 2010-07-03 17:34:19Z oldperl $:
  * }}
- * 
+ *
  */
 // if(!defined('CON_FRAMEWORK')) {
 //   die('Illegal call');
@@ -43,13 +43,13 @@ class Session {
   var $magic = "";                    ## Some string you should change.
   var $mode = "cookie";               ## We propagate session IDs with cookies
   var $fallback_mode;                 ## If this doesn't work, fall back...
-  var $lifetime = 0;                  ## 0 = do session cookies, else minutes
+  var $lifetime;                  ## 0 = do session cookies, else minutes
 
   var $cookie_domain = "";            ## If set, the domain for which the
                                       ## session cookie is set.
 
-  var $gc_time  = 1440;               ## Purge all session data older than 1440 minutes.
-  var $gc_probability = 5;            ## Garbage collect probability in percent
+  var $gc_time;               ## Purge all session data older than 1440 minutes.
+  var $gc_probability;            ## Garbage collect probability in percent
 
   var $auto_init = "";                ## Name of the autoinit-File, if any.
   var $secure_auto_init = 1;          ## Set to 0 only, if all pages call
@@ -87,10 +87,10 @@ class Session {
       }
     }
   }
-  
+
   function setExpires ($time)
   {
-  	$this->_expires = $time;	
+  	$this->_expires = $time;
   }
 
   function is_registered($name) {
@@ -502,21 +502,21 @@ class Session {
       default:
       	$rand = md5(mt_rand());
       	$mod_gmt = gmdate("D, d M Y H:i:s", time()-3600) . " GMT";
-        
+
         if ($this->_expires > 0)
         {
         	header("Expires: ". gmdate("D, d M Y H:i:s", $this->_expires) . " GMT");
         } else {
-        	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");	
+        	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
         }
-        
+
         header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
         header("Cache-Control:no-store, no-cache, must-revalidate");
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Cache-control: private, no-cache");
         header("Pragma: no-cache");
         header("ETag: $rand");
-        
+
       break;
     }
   }
@@ -528,7 +528,7 @@ class Session {
   ##
   function gc() {
     srand(time());
-    if ((rand()%100) < $this->gc_probability) {
+    if ((rand()%100) <= $this->gc_probability * 100) {
       $this->that->ac_gc($this->gc_time, $this->name);
     }
   }
@@ -543,8 +543,8 @@ class Session {
     $this->put_headers();
     $this->release_token($sid);
     $this->get_id($sid);
-    $this->thaw();
     $this->gc();
+    $this->thaw();
     $this->setExpires(0);
   }
 

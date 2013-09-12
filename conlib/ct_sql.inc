@@ -1,12 +1,12 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * PHPLIB Data Storage Container using a SQL database
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
@@ -18,15 +18,15 @@
  * @link       http://www.contenido.org
  * @since      file available since contenido release <Contenido Version>
  * @deprecated file deprecated in contenido release <Contenido Version>
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2002-07-21
  *   modified 2008-07-03, bilal arslan, added security fix
  *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id: ct_sql.inc 1094 2009-11-06 01:22:13Z xmurrix $:
  * }}
- * 
+ *
  */
 
  if(!defined('CON_FRAMEWORK')) {
@@ -162,7 +162,7 @@ class CT_Sql {
       $this->database_table,
       Contenido_Security::escapeDB($id, $this->db),
       Contenido_Security::escapeDB($name, $this->db)));
-     
+
     if ($this->db->next_record()) {
       $str  = $this->db->f("val");
       $str2 = base64_decode( $str );

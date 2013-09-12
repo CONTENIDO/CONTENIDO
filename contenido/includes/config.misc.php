@@ -332,4 +332,17 @@ $cfg['images']['image_magick']['use'] = true;
 //       to ImageMagick.
 $cfg['images']['image_magick']['path'] = '';
 
+
+/**
+ * Session settings
+ * ----------------
+ *
+ * Below you can find the settings for the lifetime of the frontend and the backend sessions.
+ */
+$cfg['session']['frontend']['lifetime'] = 60; //time in minutes after which the session becomes invalid
+$cfg['session']['frontend']['gc_probability'] = 0.05; //probabiltiy in values from 0 - 1 that the lifetime of each sesion will be checked (a value of 0.05 means that only in 5% of the requests CONTENIDO will check for invalid sessiosn)
+
+$cfg['session']['backend']['lifetime'] = 60;
+$cfg['session']['backend']['gc_probability'] = 0.05;
+
 ?>

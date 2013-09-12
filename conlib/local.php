@@ -235,10 +235,13 @@ class Contenido_Session extends Session {
   var $fallback_mode  	= "cookie";
   var $lifetime       	= 0;                  ## 0 = do session cookies, else minutes
   var $that_class     	= "Contenido_CT_Sql"; ## name of data storage container
-  var $gc_probability 	= 5;
 
   function Contenido_Session () {
       global $cfg;
+
+      $this->gc_time = $cfg['session']['backend']['lifetime'];
+      $this->gc_probability = $cfg['session']['backend']['gc_probability'];
+	  $this->lifetime = $cfg['session']['backend']['lifetime'];
 
       $sFallback = 'sql';
       $sClassPrefix = 'Contenido_CT_';
@@ -272,12 +275,14 @@ class Contenido_Frontend_Session extends Session {
   var $magic          = "Phillipip";        ## ID seed
   var $mode           = "cookie";           ## We propagate session IDs with cookies
   var $fallback_mode  = "cookie";
-  var $lifetime       = 0;                  ## 0 = do session cookies, else minutes
   var $that_class     = "Contenido_CT_Sql"; ## name of data storage container
-  var $gc_probability = 5;
 
   function Contenido_Frontend_Session () {
 	global $load_lang, $load_client, $cfg;
+
+    $this->gc_time = $cfg['session']['frontend']['lifetime'];
+	$this->gc_probability = $cfg['session']['frontend']['gc_probability'];
+	$this->lifetime = $cfg['session']['frontend']['lifetime'];
 
   	$this->cookiename = "sid_".$load_client."_".$load_lang;
 
