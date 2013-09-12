@@ -26,6 +26,7 @@ if ($cfg['debug']['disable_plugins'] === false) {
     // Load all active plugins
     $pluginColl = new PimPluginCollection();
     $pluginColl->setWhere('active', 1);
+    $pluginColl->setOrder('executionorder ASC');
     $pluginColl->query();
 
     while (($plugin = $pluginColl->next()) !== false) {
