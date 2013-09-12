@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Upgrade job 13.
- * Removes deleted files from con_files.
+ * Adds the missing login action so that it can be logged again.
  *
  * @package Setup
  * @subpackage UpgradeJob
