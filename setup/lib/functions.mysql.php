@@ -1,11 +1,11 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
- * 
- * Requirements: 
+ *
+ * Description:
+ *
+ * Requirements:
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
@@ -17,14 +17,14 @@
  * @link       http://www.contenido.org
  * @since      file available since contenido release <Contenido Version>
  * @deprecated file deprecated in contenido release <Contenido Version>
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
  *
  *   $Id: functions.mysql.php 740 2008-08-27 10:45:04Z timo.trautmann $:
  * }}
- * 
+ *
  */
  if(!defined('CON_FRAMEWORK')) {
                 die('Illegal call');
@@ -48,7 +48,7 @@ function doMySQLConnect ($host, $username, $password)
 	if ($db->connect() == 0) {
 		return array($db, false);
 	} else {
-		return array($db, true);	
+		return array($db, true);
 	}
 }
 
@@ -63,9 +63,9 @@ function doMySQLSelectDB($linkid, $database)
     $extension = getMySQLDatabaseExtension();
 
     if (CON_SETUP_MYSQLI === $extension) {
-        return (@mysqli_select_db($linkid, $database)) ? true : false;
+        return (@mysqli_select_db($linkid, $database));
     } elseif (CON_SETUP_MYSQL === $extension) {
-        return (@mysql_select_db($database, $linkid)) ? true : false;
+        return (@mysql_select_db($database, $linkid));
     } else {
         return false;
     }
@@ -96,17 +96,17 @@ function fetchMySQLVersion($db)
 function fetchMySQLUser ($db)
 {
 	$db->query("SELECT USER()");
-	
+
     return ($db->next_record()) ? $db->f(0) : false;
 }
 
 function checkMySQLDatabaseCreation($db, $database)
 {
 	if (checkMySQLDatabaseExists($db,  $database)) {
-		return true;	
+		return true;
 	} else {
 		$db->query("CREATE DATABASE `$database`");
-		return ($db->Errno == 0) ? true : false;	
+		return ($db->Errno == 0) ? true : false;
 	}
 }
 
@@ -117,7 +117,7 @@ function checkMySQLDatabaseExists($db, $database)
     if (doMySQLSelectDB($db->Link_ID, $database)) {
         return true;
     } else {
-        $db->query("SHOW DATABASES LIKE '%s'", $database);
+        $test = $db->query(sprintf("SHOW DATABASES LIKE '%s'", $database));
         return ($db->next_record()) ? true : false;
     }
 }
@@ -133,10 +133,10 @@ function checkMySQLTableCreation($db, $database, $table)
 	if (checkMySQLDatabaseUse($db, $database) == false) {
 		return false;
 	}
-	
+
 	$db->query("CREATE TABLE `$table` (test INT(1) NOT NULL) ENGINE = MYISAM;");
-	
-    return ($db->Errno == 0) ? true : false;	
+
+    return ($db->Errno == 0) ? true : false;
 }
 
 function checkMySQLLockTable($db, $database, $table)
@@ -147,7 +147,7 @@ function checkMySQLLockTable($db, $database, $table)
 
 	$db->query("LOCK TABLES `$table` WRITE");
 
-    return ($db->Errno == 0) ? true : false;	
+    return ($db->Errno == 0) ? true : false;
 }
 
 function checkMySQLUnlockTables($db, $database)
@@ -158,25 +158,25 @@ function checkMySQLUnlockTables($db, $database)
 
 	$db->query("UNLOCK TABLES");
 
-    return ($db->Errno == 0) ? true : false;	
+    return ($db->Errno == 0) ? true : false;
 }
 
 function checkMySQLDropTable($db, $database, $table)
 {
 	if (checkMySQLDatabaseUse($db, $database) == false) {
 		return false;
-	}	
+	}
 
 	$db->query("DROP TABLE `$table`");
 
-    return ($db->Errno == 0) ? true : false;	
+    return ($db->Errno == 0) ? true : false;
 }
 
 function checkMySQLDropDatabase($db, $database)
 {
 	$db->query("DROP DATABASE `$database`");
 
-    return ($db->Errno == 0) ? true : false;	
+    return ($db->Errno == 0) ? true : false;
 }
 
 function fetchMySQLStorageEngines($db)
@@ -188,7 +188,7 @@ function fetchMySQLStorageEngines($db)
 	while ($db->next_record()) {
 		$engines[] = $db->f(0);
 	}
-	
+
 	return $engines;
 }
 
