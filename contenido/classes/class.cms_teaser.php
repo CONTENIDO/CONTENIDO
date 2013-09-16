@@ -1,17 +1,17 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Class for handling CMS Type Teaser
  * Teaser is able to teaser all articles in a category. It is also possible to set a list of articles
  * which were displayed as manual teaser. This function is not category dependant. There are also
  * several more properties like sort defintions, character limits for teaser text and a teaser headline
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Content Types
  * @version    1.0.5
@@ -21,8 +21,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release 4.8.12
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2009-04-08
  *   modified 2009-04-14 - added possibility to expand template select by client or system setting using type 'cms_teaser'
  *   modofied 2009-04-21 - added seperate handling for xhtml
@@ -34,11 +34,11 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 
-if(!defined('CON_FRAMEWORK')) { 
+if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
@@ -46,7 +46,7 @@ cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.api.images.php');
 
 /**
- * Class handles content type teaser, its editmode and viewmode. All properties of teaser content type 
+ * Class handles content type teaser, its editmode and viewmode. All properties of teaser content type
  * were stored as xml document in database as content in {prefix}_content
  *
  */
@@ -58,7 +58,7 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $aCfg;
-	
+
 	/**
 	 * Current id of content type CMS_TEASER[3] -> 3
 	 *
@@ -66,7 +66,7 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $iId;
-	
+
 	/**
 	 * Contenido database object
 	 *
@@ -74,7 +74,7 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $oDb;
-	
+
 	/**
 	 * Idartlang of article, which is currently in edit- or viewmode
 	 *
@@ -82,7 +82,7 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $iIdArtLang;
-	
+
 	/**
 	 * List of fieldnames in frontend (properties) which the teaser has
 	 * and which were also described in the config xml document
@@ -91,17 +91,17 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $aTeaserData;
-	
+
 	/**
 	 * String contains value of stored content in database
-	 * in this case this is the config xml document which is 
+	 * in this case this is the config xml document which is
 	 * later parsed and its settings were stored in $aSettings
 	 *
 	 * @var string
 	 * @access private
 	 */
 	private $sContent;
-	
+
 	/**
 	 * Array which contains current teaser settings
 	 *
@@ -109,7 +109,7 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $aSettings;
-	
+
 	/**
 	 * Array which contains all avariable CMS_Types and its ids
 	 * in current Contenido isntallation (described as hash [idtype => cmstypename])
@@ -118,7 +118,7 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $aCMSTypes;
-	
+
 	/**
 	 * current Contenido client id
 	 *
@@ -126,7 +126,7 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $iClient;
-	
+
 	/**
 	 * current Contenido language id
 	 *
@@ -134,7 +134,7 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $iLang;
-	
+
 	/**
 	 * Contenido Session object
 	 *
@@ -142,7 +142,7 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $oSess;
-	
+
 	/**
 	 * Contenido configuration array for currently active client
 	 *
@@ -150,7 +150,7 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $aCfgClient;
-	
+
 	/**
 	 * print XHTML
 	 *
@@ -158,7 +158,7 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $sUseXHTML;
-	
+
 	/**
 	 * Placeholders for labels in frontend.
 	 * Important: This must be a static array!
@@ -195,40 +195,40 @@ class Cms_Teaser {
 		$this->iLang = $iLang;
 		$this->aCfgClient = $aCfgClient;
 		$this->oSess = $oSess;
-		
+
 		if (!array_key_exists("generate_xhtml", $aCfg)) {
 			$this->sUseXHTML = getEffectiveSetting("generator", "xhtml", 'false');
 		} else {
 			$this->sUseXHTML = $aCfg['generate_xhtml'];
 		}
-		
+
 		//init other variables with default values
 		$this->aCMSTypes = null;
 		$this->aSettings = array();
 		$this->oDb = new DB_Contenido();
-		
+
 		//define class array which contains all names of teaser properties. They were also base for generating dynamic javascripts for
 		//retrival this properties out of html forms and retriving their values to screen
 		$this->aTeaserData = array('teaser_title', 'teaser_category', 'teaser_count', 'teaser_style', 'teaser_manual',
-		                           'teaser_start', 'teaser_source_head', 'teaser_source_head_count', 'teaser_source_text', 
-								   'teaser_source_text_count', 'teaser_source_image', 'teaser_source_image_count', 'teaser_filter', 
-								   'teaser_sort', 'teaser_sort_order', 'teaser_character_limit', 'teaser_image_width', 
-								   'teaser_image_height', 'teaser_manual_art', 'teaser_image_crop', 'teaser_source_date', 
+		                           'teaser_start', 'teaser_source_head', 'teaser_source_head_count', 'teaser_source_text',
+								   'teaser_source_text_count', 'teaser_source_image', 'teaser_source_image_count', 'teaser_filter',
+								   'teaser_sort', 'teaser_sort_order', 'teaser_character_limit', 'teaser_image_width',
+								   'teaser_image_height', 'teaser_manual_art', 'teaser_image_crop', 'teaser_source_date',
 								   'teaser_source_date_count');
-		
+
 		//if form is submitted there is a need to store current teaser settings
 		//notice: there is also a need, that teaser_id is the same (case: more than ohne cms teaser is used on the same page
 		if (isset($_POST['teaser_action']) && $_POST['teaser_action'] == 'store' &&
 		    isset($_POST['teaser_id']) && (int)$_POST['teaser_id'] == $this->iId) {
 			$this->storeTeaser();
 		}
-		
+
 		//in sContent XML Document is stored, which contains teaser settings, call function which parses this document and store
 		//properties as easy accessible array into $aSettings
 		if (trim($this->sContent) != '') {
 			$this->readSettings();
 		}
-		
+
 		$this->setDefaultValues();
 	}
 
@@ -242,10 +242,10 @@ class Cms_Teaser {
 		foreach(self::$aTranslations as $sValue) {
 			$aTranslationStrings[] = $sValue;
 		}
-		
+
 		return $aTranslationStrings;
 	}
-	
+
 	/**
 	 * Functen parses XML Document which contains teaser settings
 	 * and store properties as array into $aSettings
@@ -264,7 +264,7 @@ class Cms_Teaser {
 		$bPutInArtArray = false;
 		//array for previous described manual art array
 		$this->aSettings['teaser_manual_art'] = array();
-		
+
 		while($oXmlReader->read()) {
 			switch ($oXmlReader->nodeType) {
 			  //read property name (ignore root node or block of manual arts for teaser)
@@ -278,7 +278,7 @@ class Cms_Teaser {
 				$bPutInArtArray = true;
 			  }
 			  break;
-			  
+
 			  //in case of a textnode we have previous propertyname and corrsponding value -> store into aSettings
 			  //if we were in <art> mode store to corresponding array
 			  case XMLReader::TEXT:
@@ -286,7 +286,7 @@ class Cms_Teaser {
 					$bPutInArtArray = false;
 					array_push($this->aSettings['teaser_manual_art'], Contenido_Security::unfilter($oXmlReader->value));
 				} else {
-					$this->aSettings[$sLastNode] = Contenido_Security::unfilter($oXmlReader->value);
+					$this->aSettings[$sLastNode] = utf8_decode(Contenido_Security::unfilter($oXmlReader->value));
 				}
 				break;
 		  }
@@ -294,19 +294,19 @@ class Cms_Teaser {
 	}
 
 	/**
-	 * Function gets all submitted values for new teaser properties from 
+	 * Function gets all submitted values for new teaser properties from
 	 * $_POST array, generates new corresponding config XML Document and
 	 * stores it as content, using contenido conSaveContentEntry() function
 	 *
 	 * @access private
 	 */
-	private function storeTeaser() {	
+	private function storeTeaser() {
 		//create new xml document, its encoding and root node
 		$oXmlDom = new DOMDocument('1.0', 'iso-8859-1');
 		$oXmlDom->formatOutput = true;
 		$oRootNode = $oXmlDom->createElement('teaser');
 		$oXmlDom->appendChild($oRootNode);
-		
+
 		//$this->aTeaserData defines all teaser properties, so try to read them from %_POST
 		foreach ($this->aTeaserData as $sParam) {
 			//in case of article list for manual teaser do a special behaviour
@@ -324,19 +324,19 @@ class Cms_Teaser {
 				}
 			} else {
 				//generate xml node for current property and store its value
-				$oParam = $oXmlDom->createElement(str_replace('teaser_', '', $sParam), Contenido_Security::filter($_POST[$sParam], $this->oDb));
+				$oParam = $oXmlDom->createElement(str_replace('teaser_', '', $sParam), utf8_encode($_POST[$sParam]));
 			}
 
 			$oXmlDom->firstChild->appendChild($oParam);
-		}	
-		
+		}
+
 		//serialize xml document and store new version in class variable and database
 		conSaveContentEntry($this->iIdArtLang, 'CMS_TEASER', $this->iId, $oXmlDom->saveXML(), true);
 		$this->sContent = $oXmlDom->saveXML();
 	}
-	
+
 	/**
-	 * Function which generated a select box for setting number of articles which were 
+	 * Function which generated a select box for setting number of articles which were
 	 * displayed in teaser as a maximum. Only important in editmode
 	 *
 	 * @param string $sSelected - value of select box which is selected
@@ -346,26 +346,26 @@ class Cms_Teaser {
 	 */
 	private function getCountSelect($sSelected) {
 		$this->oDb = new DB_Contenido();
-		
+
 		$oHtmlSelect = new 	cHTMLSelectElement ('teaser_count', "", 'teaser_count');
-    
+
 		//set please chose option element
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
 		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
-		
+
 		//generate a select box containing count 1 to 20 for maximum teaser count
 		for ($i = 1; $i <= 20; $i++) {
 			$oHtmlSelectOption = new cHTMLOptionElement($i, $i, false);
 			$oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
 		}
-		
+
 		//set default value
 		$oHtmlSelect->setDefault($sSelected);
-		
+
 		return $oHtmlSelect->render();
 	}
-	
-	
+
+
 	/**
 	 * Function which generated a select box for setting teaser style
 	 * currently two seperate teaser templates were supported
@@ -377,34 +377,34 @@ class Cms_Teaser {
 	 */
 	private function getStyleSelect($sSelected) {
 		$oHtmlSelect = new 	cHTMLSelectElement ('teaser_style', "", 'teaser_style');
-		
+
 		//set please chose option element
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
 		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
-		
+
 		//set other avariable options manually
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Block style"), 'cms_teaser_style_block.html', false);
 		$oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
-		
+
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Blog style"), 'cms_teaser_style_blog.html', false);
 		$oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
-		
+
 		$aAdditionalOptions = getEffectiveSettingsByType('cms_teaser');
 		$i = 3;
 		foreach ($aAdditionalOptions as $sLabel => $sTemplate) {
 			$oHtmlSelectOption = new cHTMLOptionElement($sLabel, $sTemplate, false);
 			$oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
 			$i++;
-		}	
-		
+		}
+
 		//set default value
 		$oHtmlSelect->setDefault($sSelected);
-		
+
 		return $oHtmlSelect->render();
 	}
-	
+
 	/**
-	 * Function which generated a select box for setting teaser 
+	 * Function which generated a select box for setting teaser
 	 * sort order argument
 	 *
 	 * @param string $sSelected - value of select box which is selected
@@ -414,24 +414,24 @@ class Cms_Teaser {
 	 */
 	private function getSortOrderSelect($sSelected) {
 		$oHtmlSelect = new 	cHTMLSelectElement ('teaser_sort_order', "", 'teaser_sort_order');
-		
+
 		//set please chose option element
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
 		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
-		
+
 		//set other avariable options manually
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Ascending"), 'asc', false);
 		$oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
-		
+
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Descending"), 'desc', false);
 		$oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
-		
+
 		//set default value
 		$oHtmlSelect->setDefault($sSelected);
-		
+
 		return $oHtmlSelect->render();
 	}
-    
+
     /**
 	 * Function which provides select option for cropping teaser images
 	 *
@@ -442,26 +442,26 @@ class Cms_Teaser {
 	 */
 	private function getCropSelect($sSelected) {
 		$oHtmlSelect = new 	cHTMLSelectElement ('teaser_image_crop', "", 'teaser_image_crop');
-		
+
 		//set please chose option element
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
 		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
-		
+
 		//set other avariable options manually
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Scaled"), 'false', false);
 		$oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
-		
+
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Cropped"), 'true', false);
 		$oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
-		
+
 		//set default value
 		$oHtmlSelect->setDefault($sSelected);
-		
+
 		return $oHtmlSelect->render();
 	}
-	
+
 	/**
-	 * Function which generated a select box for setting teaser 
+	 * Function which generated a select box for setting teaser
 	 * sort argument
 	 *
 	 * @param string $sSelected - value of select box which is selected
@@ -471,7 +471,7 @@ class Cms_Teaser {
 	 */
 	private function getSortSelect($sSelected) {
 		$oHtmlSelect = new 	cHTMLSelectElement ('teaser_sort', "", 'teaser_sort');
-		
+
 		//set please chose option element
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
 		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
@@ -482,19 +482,19 @@ class Cms_Teaser {
 
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Creationdate"), 'creationdate', false);
 		$oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
-		
+
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Publisheddate"), 'publisheddate', false);
 		$oHtmlSelect->addOptionElement(3, $oHtmlSelectOption);
 
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Modificationdate"), 'modificationdate', false);
 		$oHtmlSelect->addOptionElement(4, $oHtmlSelectOption);
-		
+
 		//set default value
 		$oHtmlSelect->setDefault($sSelected);
-		
+
 		return $oHtmlSelect->render();
 	}
-	
+
 	/**
 	 * Function which gets all currenty avariable content types and their ids
 	 * from database and store it into class variable aCMSTypes. Because this
@@ -505,16 +505,16 @@ class Cms_Teaser {
 	 */
 	private function initCmsTypes() {
 		$this->aCMSTypes = array();
-		
+
 		$sSql = 'SELECT * from %s ORDER BY type';
-		
+
 		$this->oDb->query(sprintf($sSql, $this->aCfg['tab']['type']));
-		
+
 		while ($this->oDb->next_record()) {
 			$this->aCMSTypes[$this->oDb->f('idtype')] = $this->oDb->f('type');
-		}	
+		}
 	}
-	
+
 	/**
 	 * Teaser gets informations from other articles and their content typs
 	 * Function builds a select box in which coresponding cms type can be selected
@@ -532,13 +532,13 @@ class Cms_Teaser {
 	private function getTypeSelect($sSelectName, $sSelected, $sValue) {
 		//generate textbox for content type id
 		$oHtmlInput = new cHTMLTextbox ($sSelectName.'_count', $sValue, "", "", $sSelectName.'_count');
-		
+
 		//generate content type select
 		$oHtmlSelect = new cHTMLSelectElement ($sSelectName, "", $sSelectName);
-    
+
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
 		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
-		
+
 		//use $this->aCMSTypes as basis for this select box which contains all avariable content types in system
 		foreach ($this->aCMSTypes as $sKey => $sValue) {
 			$oHtmlSelectOption = new cHTMLOptionElement($sValue, $sValue, false);
@@ -546,15 +546,15 @@ class Cms_Teaser {
 		}
 
 		$oHtmlSelect->setStyle("width:147px;");
-		
+
 		//set default value
 		$oHtmlSelect->setDefault($sSelected);
-		
+
 		$oHtmlInput->setStyle("width:50px;");
-		
-		return $oHtmlSelect->render().$oHtmlInput->render();		
+
+		return $oHtmlSelect->render().$oHtmlInput->render();
 	}
-	
+
 	/**
 	 * Function is called in editmode of contenido an returns teaser view and editbutton
 	 *
@@ -564,7 +564,7 @@ class Cms_Teaser {
 	 */
 	public function getAllWidgetEdit() {
 		$this->initCmsTypes();
-	
+
 		$oTpl = new Template();
 		/*Set some values into javascript for a better handling*/
 		$oTpl->set('s', 'CON_PATH', $this->aCfg['path']['contenido_fullhtml']);
@@ -572,8 +572,8 @@ class Cms_Teaser {
 		$oTpl->set('s', 'IDARTLANG', $this->iIdArtLang);
 		$oTpl->set('s', 'CONTENIDO', $_REQUEST['contenido']);
 		//output fields for use in javascript
-		$oTpl->set('s', 'FIELDS', "'".implode("','",$this->aTeaserData)."'");		
-		
+		$oTpl->set('s', 'FIELDS', "'".implode("','",$this->aTeaserData)."'");
+
 		/*Start set a lot of translations*/
 		$oTpl->set('s', 'LABEL_TEASERSETTINGS', i18n("Teasersettings"));
 		$oTpl->set('s', 'LABEL_TEASERTITLE', i18n("Teasertitle"));
@@ -591,10 +591,10 @@ class Cms_Teaser {
 		$oTpl->set('s', 'LABEL_SOURCETEXT', i18n("Source text"));
 		$oTpl->set('s', 'LABEL_SOURCEIMAGE', i18n("Source image"));
 		$oTpl->set('s', 'LABEL_SOURCEDATE', i18n("Source date"));
-		
+
 		$oTpl->set('s', 'LABEL_CAT', i18n("Category"));
 		$oTpl->set('s', 'LABEL_ART', i18n("Article"));
-		
+
 		$oTpl->set('s', 'GENERAL', i18n("General"));
 		$oTpl->set('s', 'ADVANCED', i18n("Advanced"));
 		$oTpl->set('s', 'MANUAL', i18n("Manual"));
@@ -602,29 +602,29 @@ class Cms_Teaser {
 		$oTpl->set('s', 'LABEL_ADD_ARTICLE', i18n("Add article"));
 		$oTpl->set('s', 'LABEL_MANUAL', i18n("Manual teaser settings"));
 		$oTpl->set('s', 'LABEL_USE_MANUAL', i18n("Manual teaser"));
-		
-		
+
+
 		$oTpl->set('s', 'SIZE_SETTINGS', i18n("Size settings"));
 		$oTpl->set('s', 'LABEL_CHARACTER_LIMIT', i18n("Character length"));
 		$oTpl->set('s', 'LABEL_IMAGE_WIDTH', i18n("Image width"));
 		$oTpl->set('s', 'LABEL_IMAGE_HEIGHT', i18n("Image height"));
         $oTpl->set('s', 'LABEL_IMAGE_CROP', i18n("Image scale"));
 		/*End set a lot of translations*/
-		
+
 		/*Start set values into configuration array and generate select boxes used previous defined values CASE CHECKBOXES*/
 		if ($this->aSettings['teaser_start'] == 'true') {
 			$oTpl->set('s', 'START_CHECKED', 'checked');
 		} else {
 			$oTpl->set('s', 'START_CHECKED', '');
-		}	
-		
+		}
+
 		if ($this->aSettings['teaser_manual'] == 'true') {
 			$oTpl->set('s', 'MANUAL_CHECKED', 'checked');
 		} else {
 			$oTpl->set('s', 'MANUAL_CHECKED', '');
 		}
-		/*Start set values into configuration array and generate select boxes used previous defined values CASE CHECKBOXES*/		
-		
+		/*Start set values into configuration array and generate select boxes used previous defined values CASE CHECKBOXES*/
+
 		/*Start set values into configuration array and generate select boxes used previous defined values*/
 		$sCatSelect = buildCategorySelect('teaser_category', $this->aSettings['teaser_category'], 0);
 
@@ -646,7 +646,7 @@ class Cms_Teaser {
 		$oTpl->set('s', 'IMAGE_WIDTH', $this->aSettings['teaser_image_width']);
 		$oTpl->set('s', 'IMAGE_HEIGHT', $this->aSettings['teaser_image_height']);
 		$oTpl->set('s', 'LABEL_ADD', i18n('Add'));
-		
+
 		$sOptions = '';
 		if (is_array($this->aSettings['teaser_manual_art'])) {
 			foreach ($this->aSettings['teaser_manual_art'] as $iIdArt) {
@@ -655,14 +655,14 @@ class Cms_Teaser {
 		}
 		$oTpl->set('s', 'MANUAL_OPTIONS', $sOptions);
 		/*End set values into configuration array and generate select boxes used previous defined values*/
-		
+
 		$sCode = $oTpl->generate($this->aCfg['path']['contenido'].'templates/standard/template.cms_teaser_edit.html', 1);
-		
+
 		//return $this->encodeForOutput($sCode);
-		
+
 		return $this->getAllWidgetView( true ) . $this->encodeForOutput($sCode);
 	}
-	
+
 	/**
 	 * In Contenido content type code is evaled by php. To make this possible,
 	 * this function prepares code for evaluation
@@ -674,14 +674,14 @@ class Cms_Teaser {
 	 */
 	private function encodeForOutput($sCode) {
 		$sCode = (string) $sCode;
-		
+
 		$sCode = AddSlashes(AddSlashes($sCode));
 		$sCode = str_replace("\\\'", "'", $sCode);
 		$sCode = str_replace("\$", '\\\$', $sCode);
-		
+
 		return $sCode;
 	}
-	
+
 	/**
 	 * Function sets some default values for teaser in case that there is no
 	 * value definied
@@ -693,63 +693,63 @@ class Cms_Teaser {
 		if ((int) $this->aSettings['teaser_character_limit'] == 0) {
 			$this->aSettings['teaser_character_limit'] = 120;
 		}
-		
+
 		//teaser cont is 6 by default
 		if ((int) $this->aSettings['teaser_count'] == 0) {
 			$this->aSettings['teaser_count'] = 6;
 		}
-		
+
 		//teasersort is creationdate by default
 		if (strlen($this->aSettings['teaser_sort']) == 0) {
 			$this->aSettings['teaser_sort'] = 'creationdate';
 		}
-		
+
 		//teaser style is liststyle by default
 		if (strlen($this->aSettings['teaser_style']) == 0) {
 			$this->aSettings['teaser_style'] = 'cms_teaser_style_blog.html';
 		}
-		
+
 		//teaser image width default
 		if ((int)$this->aSettings['teaser_image_width'] == 0) {
 			$this->aSettings['teaser_image_width'] = 100;
 		}
-		
+
 		//teaser image height default
 		if ((int)$this->aSettings['teaser_image_height'] == 0) {
 			$this->aSettings['teaser_image_height'] = 75;
 		}
-		
+
 		//cms type head default
 		if (strlen($this->aSettings['teaser_source_head']) == 0) {
 			$this->aSettings['teaser_source_head'] = 'CMS_HTMLHEAD';
 		}
-		
+
 		//cms type text default
 		if (strlen($this->aSettings['teaser_source_text']) == 0) {
 			$this->aSettings['teaser_source_text'] = 'CMS_HTML';
 		}
-		
+
 		//cms type image default
 		if (strlen($this->aSettings['teaser_source_image']) == 0) {
 			$this->aSettings['teaser_source_image'] = 'CMS_IMG';
 		}
-		
+
 		//cms type date default
 		if (strlen($this->aSettings['teaser_source_date']) == 0) {
 			$this->aSettings['teaser_source_date'] = 'CMS_DATE';
 		}
-		
+
 		//sort order of teaser articles
 		if (strlen($this->aSettings['teaser_sort_order']) == 0) {
 			$this->aSettings['teaser_sort_order'] = 'asc';
 		}
-        
+
         //teaser image crop option
         if (strlen($this->aSettings['teaser_image_crop']) == 0 || $this->aSettings['teaser_image_crop'] == 'false') {
             $this->aSettings['teaser_image_crop'] = 'false';
         }
 	}
-	
+
 	/**
 	 * Function gets path to an image of base of idupload in contenido,
 	 * scales this image on basis of teaser settings and returns path to
@@ -772,12 +772,12 @@ class Cms_Teaser {
         } else {
             $bCropped = false;
         }
-		
+
 		//check if there is a need to get image path
 		if ($bIsFile == false) {
 			//get path out of database
 			$sSQL = 'SELECT * FROM '.$this->aCfg['tab']['upl'].' WHERE idupl = '.$iImage;
-		
+
 			$this->oDb->query($sSQL);
 			if ($this->oDb->next_record()) {
 				$sTeaserImage = $this->aCfgClient[$this->iClient]['path']['frontend'].'upload/'.$this->oDb->f("dirname").$this->oDb->f("filename");
@@ -800,10 +800,10 @@ class Cms_Teaser {
 			//Put Image into the teasertext
             $sContent = '<img alt="" src="'.$sImgSrc.'" class="teaser_image"'.$sLetter.'>'.$sContent;
         }
-		
+
 		return $sContent;
 	}
-	
+
 	/**
 	 * Function retrives name of an article by its id from database
 	 *
@@ -814,7 +814,7 @@ class Cms_Teaser {
 	 */
 	private function getArtName($iIdArt) {
 		$iIdArt = (int) $iIdArt;
-		
+
 		//get article name from database
 		$sSql = 'SELECT * FROM '.$this->aCfg['tab']['art_lang'].' WHERE idart = '.$iIdArt;
 		$this->oDb->query($sSql);
@@ -824,7 +824,7 @@ class Cms_Teaser {
 			return 'Unknown Article';
 		}
 	}
-	
+
 	/**
 	 * Teaser allows to get a list of ids in which article content is searched in
 	 * article like 1,2,5,6 the result with largest character count is returned
@@ -838,7 +838,7 @@ class Cms_Teaser {
 	 */
 	private function getArtContent(&$oArticle, $sIdType, $iIdType) {
 		$sReturn = '';
-		
+
 		//split ids, if there is only one id, array has only one place filled, that is also ok
 		$aIds = explode(',', $iIdType);
 		foreach ($aIds as $iCurIdType) {
@@ -848,10 +848,10 @@ class Cms_Teaser {
 				$sReturn = $sTmp;
 			}
 		}
-		
+
 		return $sReturn;
 	}
-	
+
 	/**
 	 * When a HTML Code is given for a Teaser image try to find a image in this code and generate
 	 * Teaser image on that basis
@@ -863,10 +863,10 @@ class Cms_Teaser {
 	 */
 	private function extractImage($sContent) {
 		$sImage = '';
-		
+
 		//search an image tag
 		$sRegEx = "/<img[^>]*?>.*?/i";
-		
+
 		$aMatch = array ();
 		preg_match($sRegEx, $sContent, $aMatch);
 
@@ -882,12 +882,12 @@ class Cms_Teaser {
 			$sFile = $this->aCfgClient[$this->iClient]['path']['frontend'].$aImg[4];
 			$sImage = $this->getImage($sFile, $this->aSettings['teaser_image_width'], $this->aSettings['teaser_image_height'], $this->aSettings['teaser_image_crop'], true);
 		}
-		
+
 		return $sImage;
 	}
-	
+
 	/**
-	 * In edit and view mode this function fills teaser template with informations from an 
+	 * In edit and view mode this function fills teaser template with informations from an
 	 * Contenido article object
 	 *
 	 * @param object $oArticle - Contenido Article object
@@ -898,7 +898,7 @@ class Cms_Teaser {
 	 */
 	private function fillTeaserTemplateEntry($oArticle, &$oTpl) {
 		global $cCurrentModule;
-		
+
 		//get necessary informations for teaser from articles use properties in a Settings for retirval
 		$sTitle = $this->getArtContent($oArticle, $this->aSettings['teaser_source_head'], $this->aSettings['teaser_source_head_count']);
 		$sText = $this->getArtContent($oArticle, $this->aSettings['teaser_source_text'], $this->aSettings['teaser_source_text_count']);
@@ -907,9 +907,9 @@ class Cms_Teaser {
 		$iIdArt = $oArticle->getField('idart');
 		$iPublished = $oArticle->getField('published');
 		$iOnline = $oArticle->getField('online');
-		
+
 		if ( $iOnline == 1 ) {
-			//teaserfilter defines strings which must be contained in text for display. 
+			//teaserfilter defines strings which must be contained in text for display.
 			//if string is defined check if article contains this string and abort, if article does not contain this string
 			if ($this->aSettings['teaser_filter'] != '') {
 				$iPosText = strrpos(conHtmlEntityDecode($sText), $this->aSettings['teaser_filter']);
@@ -918,19 +918,19 @@ class Cms_Teaser {
 					return false;
 				}
 			}
-			
+
 			//convert date to readable format
 			if (preg_match('/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/', $iPublished, $aResults)) {
 				$iPublished = $aResults[3].'.'.$aResults[2].'.'.$aResults[1];
 			}
-			
+
 			//strip tags in teaser text and cut it if it is to long
 			$sTitle = trim(strip_tags($sTitle));
 			$sText = trim(strip_tags($sText));
 			if (strlen($sText) >  $this->aSettings['teaser_character_limit']) {
 				$sText = capiStrTrimAfterWord($sText, $this->aSettings['teaser_character_limit']).'...';
 			}
-			
+
 			//try to get a teaser image directly from cms_img or try to extract if a content type is given, wich contains html
 			if ((int) $iImage > 0) {
 				$sImage = $this->getImage($iImage, $this->aSettings['teaser_image_width'], $this->aSettings['teaser_image_height'], $this->aSettings['teaser_image_crop']);
@@ -945,35 +945,35 @@ class Cms_Teaser {
 			}else{
 				$oTpl->set('d', 'IMAGE', '');
 			}
-			
+
 			// strip all tags from manual teaser date
 			$sDate = strip_tags($sDate);
-			
+
 			//set generated values to teaser template
 			$oTpl->set('d', 'TITLE', $sTitle);
 			$oTpl->set('d', 'TEXT', $sText);
-			
+
 			$oTpl->set('d', 'IDART', $iIdArt);
 			$oTpl->set('d', 'ART_URL', 'front_content.php?idart='.$iIdArt);
 			$oTpl->set('d', 'PUBLISHED', $iPublished);
 			$oTpl->set('d', 'PUBLISHED_MANUAL', $sDate);
-			
+
 			if ( $sDate != "" ) {
 				$oTpl->set('d', 'PUBLISHED_COMBINED', $sDate);
 			} else {
 				$oTpl->set('d', 'PUBLISHED_COMBINED', $iPublished);
 			}
-			
+
 			foreach( self::$aTranslations as $sKey => $sValue ) {
 				$oTpl->set('d', $sKey, mi18n( $sValue ));
 			}
-			
+
 			$oTpl->next();
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Function is called in edit- and viewmode in order to generate teasercode for output
 	 *
@@ -982,24 +982,24 @@ class Cms_Teaser {
 	 *
 	 * @access public
 	 */
-	public function getAllWidgetOutput($bEditmode = false) { 
+	public function getAllWidgetOutput($bEditmode = false) {
 		$oTpl = new Template();
 		//set title of teaser
 		$oTpl->set('s', 'TITLE', $this->aSettings['teaser_title']);
-		
+
 		//decide if it is a manual or category teaser
 		if ($this->aSettings['teaser_manual'] == 'true' && count($this->aSettings['teaser_manual_art']) > 0) {
 			$i = 0;
 			//in manual case get all art to display and generate article objects manually
 			foreach ($this->aSettings['teaser_manual_art'] as $iIdArt) {
 				$oArticle = new Article($iIdArt, $this->iClient, $this->iLang);
-				
+
 				//try to fill teaser image
 				if ($this->fillTeaserTemplateEntry($oArticle, $oTpl)) {
 					$i++;
-					
+
 					//break render, if teaser limit is reached
-					if ($i == $this->aSettings['teaser_count']) 
+					if ($i == $this->aSettings['teaser_count'])
 						break;
 				}
 			}
@@ -1012,7 +1012,7 @@ class Cms_Teaser {
 			} else {
 				$aArticles = $oConCatArt->getNonStartArticlesInCategory($this->aSettings['teaser_category'], $this->aSettings['teaser_sort'], $this->aSettings['teaser_sort_order']);
 			}
-			
+
 			$i = 0;
 			//iterate over all found articles
 			foreach ($aArticles as $oArticle) {
@@ -1020,36 +1020,36 @@ class Cms_Teaser {
 				if ($this->fillTeaserTemplateEntry($oArticle, $oTpl)) {
 					$i++;
 					//break render, if teaser limit is reached
-					if ($i == $this->aSettings['teaser_count']) 
+					if ($i == $this->aSettings['teaser_count'])
 						break;
 				}
 			}
 		}
-		
+
         $sCode = '';
 		//generate teasertemplate
         if (file_exists($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/'.$this->aSettings['teaser_style'])) {
             $sCode = $oTpl->generate($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/'.$this->aSettings['teaser_style'], 1);
         }
-        
+
 		return $sCode;
 		//use this to show xml document which contains teaser settings
 		#return '<pre>'.conHtmlentities($this->sContent).'</pre>';
 	}
-	
+
 	/**
-	 * Dynamic filelist generator. 
+	 * Dynamic filelist generator.
 	 * This method is executed every time the filelist is displayed.
-	 * 
+	 *
 	 * @return	string	output of the filelist
 	 */
 	public function getAllWidgetView() {
-		$sCode = '\";?><?php 	 
+		$sCode = '\";?><?php
 					$oTeaser = new Cms_Teaser(\'%s\', %s, 0, "", $cfg, null, "", $client, $lang, $cfgClient, null);
-					
+
 					echo $oTeaser->getAllWidgetOutput();
 				 ?><?php echo \"';
-		
+
 		$sCode = sprintf($sCode, $this->sContent, $this->iId);
 		return $sCode;
 	}
