@@ -267,12 +267,16 @@ class cApiClickableQuestionAction extends cApiClickableAction {
 
     /**
      *
-     * @param unknown_type $question
+     * @param string $question
      */
     public function setQuestion($question) {
         $this->_question = $question;
     }
 
+    /**
+     *
+     * @param string $var
+     */
     public function setResultVar($var) {
         $this->_resultVar = $var;
     }
