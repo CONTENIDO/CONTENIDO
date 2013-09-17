@@ -280,7 +280,7 @@ function uplSyncDirectoryDBFS($sPath) {
  *        upload
  *        directory or a dbfs path
  * @param string $sName Name of directory to create
- * @param string|void Octal value of filemode as string ('0702') or nothing
+ * @return string|void Octal value of filemode as string ('0702') or nothing
  */
 function uplmkdir($sPath, $sName) {
     global $cfgClient, $client, $action;
