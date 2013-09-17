@@ -40,8 +40,6 @@ abstract class cDbDriverAbstract {
      * Currently stores the given configuration locally.
      *
      * @param   array $dbCfg  database configuration
-     *
-     * @return cDbDriverAbstract
      */
     public function __construct($dbCfg) {
         $this->_dbCfg = $dbCfg;
@@ -120,6 +118,7 @@ abstract class cDbDriverAbstract {
      * If optional param $className is set, the result object is an instance of class
      * $className.
      *
+     * @param string $className
      * @return object
      */
     abstract public function getResultObject($className = NULL);
@@ -144,7 +143,6 @@ abstract class cDbDriverAbstract {
 
     /**
      * Discard the query result
-     * @return  int
      */
     abstract public function free();
 

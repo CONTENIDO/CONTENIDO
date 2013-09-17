@@ -23,16 +23,40 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 abstract class cDbDriverHandler {
 
+    /**
+     *
+     * @var string
+     */
     const HALT_YES = 'yes';
 
+    /**
+     *
+     * @var string
+     */
     const HALT_NO = 'no';
 
+    /**
+     *
+     * @var string
+     */
     const HALT_REPORT = 'report';
 
+    /**
+     *
+     * @var string
+     */
     const FETCH_NUMERIC = 'numeric';
 
+    /**
+     *
+     * @var string
+     */
     const FETCH_ASSOC = 'assoc';
 
+    /**
+     *
+     * @var string
+     */
     const FETCH_BOTH = 'both';
 
     /**
@@ -58,13 +82,13 @@ abstract class cDbDriverHandler {
 
     /**
      * Assoziative list of database connections
-     * @array
+     * @var array
      */
     protected static $_connectionCache = array();
 
     /**
      * Assoziative list of database tables metadata
-     * @array
+     * @var array
      */
     protected static $_metaCache = array();
 
@@ -120,6 +144,7 @@ abstract class cDbDriverHandler {
      *        - $options['connection']['database'] (string) Database name
      *        - $options['connection']['user'] (string) User name
      *        - $options['connection']['password'] (string) User password
+     * @throws cDbException
      */
     public function __construct($options = array()) {
         // use default connection configuration, but overwrite it by passed
@@ -328,9 +353,10 @@ abstract class cDbDriverHandler {
      * array('mytab' => 'tablename', 'myid' => 123));
      * </pre>
      *
+     * Accepts additional unlimited parameter, where the parameter will be
+     * replaced against formatting sign in query.
+     *
      * @param string $statement The sql statement to prepare.
-     * @param        mixed      Accepts additional unlimited parameter, where the parameter
-     *                          will be replaced against formatting sign in query.
      *
      * @return string The prepared sql statement
      * @throws Exception If statement is empty or function is called with less
@@ -604,9 +630,10 @@ abstract class cDbDriverHandler {
      * 'tablename', 'myid' => 123));
      * </pre>
      *
+     * Accepts additional unlimited parameter, where the parameter will be
+     * replaced against formatting sign in query.
+     *
      * @param string $statement The SQL statement to execute.
-     * @param        mixed      Accepts additional unlimited parameter, where the parameter
-     *                          will be replaced against formatting sign in query.
      *
      * @return resource int object bool database driver, false on error
      */
@@ -678,9 +705,9 @@ abstract class cDbDriverHandler {
      * This method returns the current result set as object or null if no result
      * set is left.
      * If optional param $className is set, the result object is an instance of
-     * class
-     * $className.
+     * class $className.
      *
+     * @param string $className
      * @return object
      */
     public function getResultObject($className = NULL) {
@@ -742,6 +769,7 @@ abstract class cDbDriverHandler {
      * Moves the cursor (position inside current result sets).
      *
      * @param int $iPos The positon to move to inside the current result set
+     * @return int
      */
     public function seek($pos) {
         $status = $this->getDriver()->seek($pos);
@@ -914,6 +942,7 @@ abstract class cDbDriverHandler {
      * self::HALT_YES
      *
      * @param string $message The message to use for error handling
+     * @throws cDbException
      */
     public function halt($message) {
         if ($this->_haltBehaviour == self::HALT_REPORT) {
@@ -949,6 +978,9 @@ abstract class cDbDriverHandler {
     }
 
     /**
+     * Returns the number of rows from last executed select query.
+     *
+     * @return int The number of rows from last select query result
      * @see cDbDriverHandler::numRows
      */
     public function num_rows() {
@@ -956,6 +988,9 @@ abstract class cDbDriverHandler {
     }
 
     /**
+     * Returns number of affected rows from last executed query (update, delete)
+     *
+     * @return int Number of affected rows
      * @see cDbDriverHandler::affectedRows
      */
     public function affected_rows() {
@@ -963,6 +998,9 @@ abstract class cDbDriverHandler {
     }
 
     /**
+     * Returns the number of fields (columns) from current record set
+     *
+     * @return int Number of fields
      * @see cDbDriverHandler::numFields
      */
     public function num_fields() {
@@ -970,6 +1008,9 @@ abstract class cDbDriverHandler {
     }
 
     /**
+     * Fetches the next record set from result set
+     *
+     * @return bool
      * @see cDbDriverHandler::nextRecord
      */
     public function next_record() {

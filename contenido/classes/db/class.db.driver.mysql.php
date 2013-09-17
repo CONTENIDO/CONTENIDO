@@ -163,6 +163,9 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
+     *
+     * @param string $className
+     * @return Ambigous <NULL, object, false>
      * @see cDbDriverAbstract::getResultObject
      */
     public function getResultObject($className = NULL) {
@@ -225,6 +228,8 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
+     * @param int $pos
+     * @return int
      * @see cDbDriverAbstract::seek
      */
     public function seek($pos = 0) {
