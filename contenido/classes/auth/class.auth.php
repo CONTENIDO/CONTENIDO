@@ -2,15 +2,15 @@
 /**
  * This file contains the global authentication class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Authentication
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Dominik Ziegler
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,30 +18,43 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains functions for global authentication in CONTENIDO.
  *
- * @package    Core
+ * @package Core
  * @subpackage Authentication
  */
 class cAuth {
 
+    /**
+     * authentification user ID for nobody
+     *
+     * @var string
+     */
     const AUTH_UID_NOBODY = 'nobody';
 
+    /**
+     * authentification user ID for calling login form
+     *
+     * @var string
+     */
     const AUTH_UID_FORM = 'form';
 
     /**
      * Lifetime for authenticated users in minutes.
      * After that time the authentication expires.
+     *
      * @var integer
      */
     protected $_lifetime = 15;
 
     /**
      * The global auth information array.
+     *
      * @var array
      */
     public $auth = array();
 
     /**
      * Automatic authentication as nobody.
+     *
      * @var bool
      */
     protected $_defaultNobody = false;
@@ -49,6 +62,7 @@ class cAuth {
     /**
      * The "in flag".
      * Nobody knows, for which reasons it exists.
+     *
      * @var bool
      */
     private $_in = false;
@@ -131,13 +145,13 @@ class cAuth {
      * Resets the global authentication information.
      *
      * @param bool $nobody If flag set to true, the default authentication is
-     *                     switched to nobody. (optional, default: false)
+     *        switched to nobody. (optional, default: false)
      */
     public function resetAuthInfo($nobody = false) {
-        $this->auth['uid'] = ($nobody == false ? '' : self::AUTH_UID_NOBODY);
+        $this->auth['uid'] = ($nobody == false? '' : self::AUTH_UID_NOBODY);
         $this->auth['perm'] = '';
 
-        $this->_setExpiration($nobody == false ? 0 : 0x7fffffff);
+        $this->_setExpiration($nobody == false? 0 : 0x7fffffff);
     }
 
     /**
@@ -154,7 +168,7 @@ class cAuth {
         $sess->unregister('auth');
         unset($this->auth['uname']);
 
-        $this->resetAuthInfo($nobody == false ? $this->_defaultNobody : $nobody);
+        $this->resetAuthInfo($nobody == false? $this->_defaultNobody : $nobody);
         $sess->freeze();
 
         return true;
@@ -162,6 +176,7 @@ class cAuth {
 
     /**
      * Getter for the auth information.
+     *
      * @return array auth information
      */
     public function getAuthInfo() {
@@ -170,6 +185,7 @@ class cAuth {
 
     /**
      * Checks, if user is authenticated (NOT logged in!).
+     *
      * @return bool
      */
     public function isAuthenticated() {
@@ -184,6 +200,7 @@ class cAuth {
 
     /**
      * Checks, if user is currently in login form mode.
+     *
      * @return bool
      */
     public function isLoginForm() {
@@ -196,7 +213,7 @@ class cAuth {
      * Sets or refreshs the expiration of the authentication.
      *
      * @param int $expiration new expiration (optional, default: null = current
-     *                        time plus lifetime minutes)
+     *        time plus lifetime minutes)
      */
     protected function _setExpiration($expiration = NULL) {
         if ($expiration === NULL) {
@@ -209,8 +226,8 @@ class cAuth {
     /**
      * Sets the authentication info for a user.
      *
-     * @param string $userId     user ID to set
-     * @param int    $expiration expiration (optional, default: null)
+     * @param string $userId user ID to set
+     * @param int $expiration expiration (optional, default: null)
      */
     protected function _setAuthInfo($userId, $expiration = NULL) {
         $this->auth['uid'] = $userId;
