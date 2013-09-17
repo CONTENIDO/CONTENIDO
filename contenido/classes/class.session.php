@@ -2,15 +2,15 @@
 /**
  * This file contains the the backend and frontend session class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Session
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Frederic Schneider
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Frederic Schneider
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Backend session class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Session
  */
 class cSession {
@@ -111,6 +111,7 @@ class cSession {
      * Checks if a variable is registered
      *
      * @param string $name The name of the variable (e.g. "idclient")
+     * @return boolean
      */
     public function isRegistered($name) {
         if (isset($this->_pt[$name]) && $this->_pt[$name] == true) {
@@ -121,10 +122,11 @@ class cSession {
 
     /**
      * Attaches "&contenido=sessionid" at the end of the URL.
-     * This is no longer needed
-     * to make sessions work but some CONTENIDO functions/classes rely on it
+     * This is no longer needed to make sessions work but some CONTENIDO
+     * functions/classes rely on it
      *
      * @param string $url A URL
+     * @return mixed
      */
     public function url($url) {
 
@@ -157,11 +159,10 @@ class cSession {
 
     /**
      * Attaches "&contenido=1" at the end of the current URL.
-     * This is no longer
-     * needed to make sessions work but some CONTENIDO functions/classes rely on
-     * it
+     * This is no longer needed to make sessions work but some CONTENIDO
+     * functions/classes rely on it
      *
-     * @param string $url A URL
+     * @return mixed
      */
     public function selfURL() {
         return $this->url($_SERVER['PHP_SELF'] . ((isset($_SERVER['QUERY_STRING']) && ('' != $_SERVER['QUERY_STRING']))? '?' . $_SERVER['QUERY_STRING'] : ''));
@@ -263,7 +264,6 @@ class cSession {
     public function start() {
         $this->thaw();
     }
-
 }
 
 /**
@@ -271,7 +271,7 @@ class cSession {
  * It uses a different prefix. The rest is the
  * same
  *
- * @package    Core
+ * @package Core
  * @subpackage Session
  */
 class cFrontendSession extends cSession {
@@ -290,6 +290,8 @@ class cFrontendSession extends cSession {
      * attached to the URL for the frontend
      *
      * @see cSession::url()
+     * @param string $url A URL
+     * @return mixed
      */
     public function url($url) {
         $url = preg_replace('/([&?])' . quotemeta(urlencode($this->name)) . '=' . $this->id . '(&|$)/', "\\1", $url);
@@ -312,7 +314,6 @@ class cFrontendSession extends cSession {
 
         return $url;
     }
-
 }
 
 ?>

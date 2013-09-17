@@ -200,6 +200,7 @@ class cMailer extends Swift_Mailer {
      * @param string|array $replyTo [optional] address to which replies should
      *        be sent
      * @param bool $resend [optional] whether the mail is resent
+     * @param string $contentType
      * @return int number of recipients to which the mail has been sent
      */
     public function sendMail($from, $to, $subject, $body = '', $cc = null, $bcc = null, $replyTo = null, $resend = false, $contentType = 'text/plain') {
@@ -224,6 +225,10 @@ class cMailer extends Swift_Mailer {
      * Sends the given Swift_Mime_Message and logs it if $resend is false.
      *
      * @see Swift_Mailer::send()
+     * @param Swift_Mime_Message $message
+     * @param array &$failedRecipients, optional
+     * @param bool $resend, optional
+     * @return int
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = null, $resend = false) {
         if (!is_array($failedRecipients)) {

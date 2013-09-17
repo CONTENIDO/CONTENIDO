@@ -80,6 +80,7 @@ class cTemplate {
 
     /**
      * Constructor function
+     * @param array|bool $tags
      */
     public function __construct($tags = false) {
         if (is_array($tags)) {

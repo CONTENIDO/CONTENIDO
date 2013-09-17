@@ -2,15 +2,15 @@
 /**
  * This file contains the iterator class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Util
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -23,7 +23,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * to step trough the list.
  *
  * An instance of an iterator is usually created by a class returning multiple
- * items and automatically filled using the $aItems parameter of the constructor,
+ * items and automatically filled using the $aItems parameter of the
+ * constructor,
  * and then returned to the caller.
  *
  * The caller receives the iterator object and can step trough all items using
@@ -31,13 +32,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @todo Add more stepping methods, as well as retrieving items
  *
- * @package    Core
+ * @package Core
  * @subpackage Util
  */
 class cIterator {
 
     /**
      * Holds the items which should be iterated
+     *
      * @var array
      */
     var $_aIteratorItems;
@@ -48,7 +50,7 @@ class cIterator {
      * This function initializes the constructor, adds the passed items
      * and moves the iterator to the first element.
      *
-     * @param $aItems array Items to add
+     * @param array $aItems Items to add
      */
     public function __construct($aItems) {
         if (is_array($aItems)) {
@@ -95,7 +97,6 @@ class cIterator {
     public function count() {
         return count($this->_aIteratorItems);
     }
-
 }
 
 ?>

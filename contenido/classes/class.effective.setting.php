@@ -276,7 +276,6 @@ class cEffectiveSetting {
      *
      * @param string $key The setting key
      * @param string $value Value to store
-     * @return string bool setting value or false
      */
     protected static function _set($key, $value) {
         self::$_settings[$key] = $value;

@@ -2,15 +2,15 @@
 /**
  * This file contains the layout handler class.
  *
- * @package    Core
+ * @package Core
  * @subpackage LayoutHandler
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Rusmir Jusufovic
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Rusmir Jusufovic
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,38 +18,48 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class controls all layouts in filesystem.
  *
- * @package    Core
+ * @package Core
  * @subpackage LayoutHandler
  */
 class cLayoutHandler {
 
     /**
      * The ID of the layout
+     *
      * @var int
      */
     protected $_layoutId = 0;
 
     /**
      * The code of the layout
+     *
      * @var string
      */
     protected $_layoutCode = "";
-    protected $_db = null;
+
+    /**
+     *
+     * @var cDb
+     */
+    protected $_db = NULL;
 
     /**
      * Layout name
+     *
      * @var string
      */
     protected $_layoutName = "";
 
     /**
      * The contenido cfg
+     *
      * @var array
      */
     protected $_cfg = array();
 
     /**
      * Encoding of the page
+     *
      * @var string
      */
     protected $_encoding;
@@ -57,6 +67,7 @@ class cLayoutHandler {
     /**
      * Layout path
      * [layout_path].layoutName/
+     *
      * @var string
      */
     protected $_layoutPath = "";
@@ -64,21 +75,29 @@ class cLayoutHandler {
     /**
      * Main path of layouts.
      * [layout_path].layouts
+     *
      * @var string
      */
     protected $_layoutMainPath = "";
 
     /**
      * File name of the layout ([layoutname].html
+     *
      * @var string
      */
     protected $_fileName = "";
 
     /**
      * Construct of the class
+     *
+     * @param int $layoutId
+     * @param string $layoutCode
+     * @param array $cfg
+     * @param int $lang
+     * @param cDb $db
      */
-    public function __construct($layoutId = 0, $layoutCode = "", $cfg = array(), $lang = 0, $db = null) {
-        if ($db === null) {
+    public function __construct($layoutId = 0, $layoutCode = "", array $cfg = array(), $lang = 0, cDb $db = NULL) {
+        if ($db === NULL) {
             $db = cRegistry::getDb();
         }
 
@@ -89,6 +108,7 @@ class cLayoutHandler {
 
     /**
      * Get method for Layout path
+     *
      * @return string
      */
     public function _getLayoutPath() {
@@ -97,6 +117,7 @@ class cLayoutHandler {
 
     /**
      * Get method for Filename
+     *
      * @return string
      */
     public function _getFileName() {
@@ -107,7 +128,9 @@ class cLayoutHandler {
      * Look in layout directory if layout [$layoutAlias] directory exists
      *
      * @param string $layoutAlias
-     * @return boolean if file exist true
+     * @param array $cfgClient
+     * @param int $client
+     * @return bool true if file exist
      */
     static function existLayout($layoutAlias, $cfgClient, $client) {
         $file = $cfgClient[$client]['layout']['path'] . $layoutAlias . '/';
@@ -150,6 +173,7 @@ class cLayoutHandler {
 
     /**
      * Get the layout name
+     *
      * @return string layoutname
      */
     public function getLayoutName() {
@@ -175,7 +199,9 @@ class cLayoutHandler {
     }
 
     /**
-     * Make all directories for layout. Main directory and Layout directory
+     * Make all directories for layout.
+     * Main directory and Layout directory
+     *
      * @return boolean true if successfully
      */
     private function _makeDirectories() {
@@ -190,6 +216,7 @@ class cLayoutHandler {
 
     /**
      * Make directory
+     *
      * @param string $directory
      * @return boolean true if succssesfully
      */
@@ -208,6 +235,7 @@ class cLayoutHandler {
 
     /**
      * Save encoding from language.
+     *
      * @param int $lang
      */
     private function _setEncoding($lang) {
@@ -236,7 +264,7 @@ class cLayoutHandler {
      *
      * @param string $fileName file name
      * @param string $directory directory where is the file
-     * @return boolean, success true else false
+     * @return bool true on success else false
      */
     public function isWritable($fileName, $directory) {
         if (cFileHandler::exists($fileName)) {
@@ -274,6 +302,7 @@ class cLayoutHandler {
      * Use it for upgrade!
      *
      * @param string $layoutCode
+     * @return boolean
      */
     public function saveLayoutByUpgrade($layoutCode = '') {
         // if file exist dont overwirte it
@@ -284,6 +313,11 @@ class cLayoutHandler {
         return $this->_save($layoutCode);
     }
 
+    /**
+     *
+     * @param string $layoutCode
+     * @return boolean
+     */
     private function _save($layoutCode = '') {
         if ($layoutCode == '') {
             $layoutCode = $this->_layoutCode;
@@ -327,8 +361,10 @@ class cLayoutHandler {
 
     /**
      * Rename the Layout directory and layout file
+     *
      * @param string $old
      * @param string $new
+     * @return boolean
      */
     public function rename($old, $new) {
         // try to rename the dir
@@ -383,6 +419,7 @@ class cLayoutHandler {
      *
      * @param cDb database object
      * @param array CONTENIDO config array
+     * @param int $clientId
      * @throws cException if the layout could not be saved
      */
     public static function upgrade($adb, $cfg, $clientId) {
@@ -404,5 +441,4 @@ class cLayoutHandler {
         $sql = sprintf("UPDATE %s SET code = '' WHERE idclient='%s'", $cfg['tab']['lay'], $clientId);
         $adb->query($sql);
     }
-
 }

@@ -205,15 +205,15 @@ class cFileHandler {
         if (!is_readable($dir)) {
             return false;
         }
-        if(is_dir($dir)){
-        if ($handle = opendir($dir)) {
-            while (false !== ($entry = readdir($handle))) {
-                if ($entry != "." && $entry != "..") {
-                    return false;
+        if (is_dir($dir)) {
+            if ($handle = opendir($dir)) {
+                while (false !== ($entry = readdir($handle))) {
+                    if ($entry != "." && $entry != "..") {
+                        return false;
+                    }
                 }
             }
-        }
-        closedir($handle);
+            closedir($handle);
         }
         return true;
     }
@@ -344,8 +344,9 @@ class cFileHandler {
         }
 
         foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($filename), RecursiveIteratorIterator::SELF_FIRST) as $item) {
-            // workaround for RecursiveDirectoryIterator::SKIP_DOTS, this was not available in PHP 5.2
-               if ($item->getFilename() == '.' || $item->getFilename() == '..') {
+            // workaround for RecursiveDirectoryIterator::SKIP_DOTS, this was
+            // not available in PHP 5.2
+            if ($item->getFilename() == '.' || $item->getFilename() == '..') {
                 continue;
             }
 
@@ -526,6 +527,7 @@ class cFileHandler {
      * Deletes a directory and all of its contents.
      *
      * @param string $dirname the name of the directory which should be deleted
+     * @throws cInvalidArgumentException if dirname is empty
      * @return bool true on success or false on failure
      */
     public static function recursiveRmdir($dirname) {
@@ -553,5 +555,4 @@ class cFileHandler {
 
         return rmdir($dirname);
     }
-
 }

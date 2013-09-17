@@ -2,15 +2,15 @@
 /**
  * This file contains the frontend helper class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Frontend_Util
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Dominik Ziegler
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,19 +18,22 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains functions for the frontend helper class in CONTENIDO.
  *
- * @package    Core
+ * @package Core
  * @subpackage Frontend_Util
  */
 class cFrontendHelper {
+
     /**
      * Instance of the helper class.
+     *
      * @var cFrontendHelper
      */
-    static private $_instance = NULL;
+    private static $_instance = NULL;
 
     /**
      * Returns the instance of this class.
-     * @return    cFrontendHelper
+     *
+     * @return cFrontendHelper
      */
     public static function getInstance() {
         if (self::$_instance === NULL) {
@@ -42,17 +45,21 @@ class cFrontendHelper {
 
     /**
      * Constructor of the class.
-     * @return    void
+     *
+     * @return void
      */
     protected function __construct() {
     }
 
     /**
      * Fetches the requested category tree.
-     * @param    int            $baseCategoryId        root category ID
-     * @param    int            $depth                maximum depth
-     * @param    int            $currentCategoryId    the current category ID
-     * @return    array    category tree
+     *
+     * @param int $baseCategoryId root category ID
+     * @param int $depth maximum depth
+     * @param int $currentCategoryId the current category ID
+     * @throws cUnexpectedValueException if given category ID is not greater
+     *         than 0
+     * @return array category tree
      */
     protected function _fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId) {
         if ((int) $baseCategoryId == 0) {
@@ -96,9 +103,11 @@ class cFrontendHelper {
 
     /**
      * Helper function to render the navigation.
-     * @param    int            $baseCategoryId        root category ID
-     * @param    int            $depth                maximum depth
-     * @param    int            $currentCategoryId    the current category ID
+     *
+     * @param int $baseCategoryId root category ID
+     * @param int $depth maximum depth
+     * @param int $currentCategoryId the current category ID
+     * @return array category tree
      */
     public function renderNavigation($baseCategoryId, $depth, $currentCategoryId) {
         $tree = $this->_fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId);
@@ -108,10 +117,11 @@ class cFrontendHelper {
 
     /**
      * Helper function to render the sitemap.
-     * @param    int            $baseCategoryId        root category ID
-     * @param    int            $depth                maximum depth
-     * @param    cTemplate    $tpl                template reference
-     * @return    void
+     *
+     * @param int $baseCategoryId root category ID
+     * @param int $depth maximum depth
+     * @param cTemplate $tpl template reference
+     * @return void
      */
     public function renderSitemap($baseCategoryId, $depth, cTemplate &$tpl) {
         $tree = $this->_fetchCategoryTree($baseCategoryId, $depth, 0);

@@ -2,15 +2,15 @@
 /**
  * This file contains the the I18N class.
  *
- * @package    Core
+ * @package Core
  * @subpackage I18N
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,13 +18,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Internationalization (i18n) class.
  *
- * @package    Core
+ * @package Core
  * @subpackage I18N
  */
 class cI18n {
 
     /**
      * i18n related assoziative data cache.
+     *
      * @var array
      */
     protected static $_i18nData = array(
@@ -37,9 +38,9 @@ class cI18n {
     /**
      * Initializes the i18n.
      *
-     * @param  string  $localePath  Path to the locales
-     * @param  string  $langCode  Language code to set
-     * @param  string  $domain    Language domain
+     * @param string $localePath Path to the locales
+     * @param string $langCode Language code to set
+     * @param string $domain Language domain
      */
     public static function init($localePath, $langCode, $domain = 'contenido') {
         if (function_exists('bindtextdomain')) {
@@ -68,9 +69,9 @@ class cI18n {
     /**
      * Returns translation of a specific text, wrapper for translate().
      *
-     * @param  string  $string  The string to translate
-     * @param  string  $domain  The domain to look up
-     * @return string  Returns the translation
+     * @param string $string The string to translate
+     * @param string $domain The domain to look up
+     * @return string Returns the translation
      */
     public static function __($string, $domain = 'contenido') {
         return self::translate($string, $domain);
@@ -79,10 +80,10 @@ class cI18n {
     /**
      * Returns translation of a specific text
      *
-     * @param  string  $string  The string to translate
-     * @param  string  $domain  The domain to look up
+     * @param string $string The string to translate
+     * @param string $domain The domain to look up
      * @throws cException if this is the backend mode and the $belang is not set
-     * @return string  Returns the translation
+     * @return string Returns the translation
      */
     public static function translate($string, $domain = 'contenido') {
         global $cfg, $belang, $contenido;
@@ -132,15 +133,17 @@ class cI18n {
 
     /**
      * Returns the current language (if already defined)
-     * @return  string|false
+     *
+     * @return string false
      */
     public static function getLanguage() {
-        return (self::$_i18nData['language']) ? self::$_i18nData['language'] : false;
+        return (self::$_i18nData['language'])? self::$_i18nData['language'] : false;
     }
 
     /**
      * Returns list of registered domains
-     * @return  array
+     *
+     * @return array
      */
     public static function getDomains() {
         return self::$_i18nData['domains'];
@@ -148,7 +151,8 @@ class cI18n {
 
     /**
      * Returns list of cached tranlation files
-     * @return  array
+     *
+     * @return array
      */
     public static function getFiles() {
         return self::$_i18nData['files'];
@@ -156,7 +160,8 @@ class cI18n {
 
     /**
      * Returns list of cached tranlations
-     * @return  array
+     *
+     * @return array
      */
     public static function getCache() {
         return self::$_i18nData['cache'];
@@ -175,9 +180,9 @@ class cI18n {
     /**
      * Emulates GNU gettext
      *
-     * @param  string  $string  The string to translate
-     * @param  string  $domain  The domain to look up
-     * @return string  Returns the translation
+     * @param string $string The string to translate
+     * @param string $domain The domain to look up
+     * @return string Returns the translation
      */
     public static function emulateGettext($string, $domain = 'contenido') {
         if ($string == '') {
@@ -201,19 +206,45 @@ class cI18n {
             self::$_i18nData['files'][$domain] = self::_loadTranslationFile($translationFile);
         }
 
-        $stringStart = strpos(self::$_i18nData['files'][$domain], '"' . str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $string) . '"');
+        $stringStart = strpos(self::$_i18nData['files'][$domain], '"' . str_replace(array(
+            "\n",
+            "\r",
+            "\t"
+        ), array(
+            '\n',
+            '\r',
+            '\t'
+        ), $string) . '"');
         if ($stringStart === false) {
             return $string;
         }
 
         $matches = array();
-        $quotedString = preg_quote(str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $string), '/');
+        $quotedString = preg_quote(str_replace(array(
+            "\n",
+            "\r",
+            "\t"
+        ), array(
+            '\n',
+            '\r',
+            '\t'
+        ), $string), '/');
         $result = preg_match("/msgid.*\"(" . $quotedString . ")\"(?:\s*)?\nmsgstr(?:\s*)\"(.*)\"/", self::$_i18nData['files'][$domain], $matches);
-        # Old: preg_match("/msgid.*\"".preg_quote($string,"/")."\".*\nmsgstr(\s*)\"(.*)\"/", self::$_i18nData['files'][$domain], $matches);
+        // Old:
+        // preg_match("/msgid.*\"".preg_quote($string,"/")."\".*\nmsgstr(\s*)\"(.*)\"/",
+        // self::$_i18nData['files'][$domain], $matches);
 
         if ($result && !empty($matches[2])) {
             // Translation found, cache it
-            self::$_i18nData['cache'][$domain][$string] = stripslashes(str_replace(array('\n', '\r', '\t'), array("\n", "\r", "\t"), $matches[2]));
+            self::$_i18nData['cache'][$domain][$string] = stripslashes(str_replace(array(
+                '\n',
+                '\r',
+                '\t'
+            ), array(
+                "\n",
+                "\r",
+                "\t"
+            ), $matches[2]));
         } else {
             // Translation not found, cache original string
             self::$_i18nData['cache'][$domain][$string] = $string;
@@ -225,9 +256,8 @@ class cI18n {
     /**
      * Registers a new i18n domain.
      *
-     * @param  string  $localePath  Path to the locales
-     * @param  string  $domain  Domain to bind to
-     * @return string  Returns the translation
+     * @param string $localePath Path to the locales
+     * @param string $domain Domain to bind to
      */
     public static function registerDomain($domain, $localePath) {
         if (function_exists('bindtextdomain')) {
@@ -238,9 +268,11 @@ class cI18n {
     }
 
     /**
-     * Loads gettext translation and file does some operations like stripping comments on the content.
-     * @param   string  $translationFile
-     * @return  string  The preparend translation file content
+     * Loads gettext translation and file does some operations like stripping
+     * comments on the content.
+     *
+     * @param string $translationFile
+     * @return string The preparend translation file content
      */
     protected static function _loadTranslationFile($translationFile) {
         $content = cFileHandler::read($translationFile);
@@ -253,30 +285,20 @@ class cI18n {
         $content = preg_replace('/^#.+\n/m', '', $content);
 
         // Prepare for special po edit format
-        /* Something like:
-          #, php-format
-          msgid ""
-          "Hello %s,\n"
-          "\n"
-          "you've got a new reminder for the client '%s' at\n"
-          "%s:\n"
-          "\n"
-          "%s"
-          msgstr ""
-          "Hallo %s,\n"
-          "\n"
-          "du hast eine Wiedervorlage erhalten für den Mandanten '%s' at\n"
-          "%s:\n"
-          "\n"
-          "%s"
-
-          has to be converted to:
-          msgid "Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s"
-          msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage erhalten für den Mandanten '%s' at\n%s:\n\n%s"
+        /*
+         * Something like: #, php-format msgid "" "Hello %s,\n" "\n" "you've got
+         * a new reminder for the client '%s' at\n" "%s:\n" "\n" "%s" msgstr ""
+         * "Hallo %s,\n" "\n" "du hast eine Wiedervorlage erhalten für den
+         * Mandanten '%s' at\n" "%s:\n" "\n" "%s" has to be converted to: msgid
+         * "Hello %s,\n\nyou've got a new reminder for the client '%s'
+         * at\n%s:\n\n%s" msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage
+         * erhalten für den Mandanten '%s' at\n%s:\n\n%s"
          */
-        // assemble broken long message lines (remove double quotes with a line break in between, e. g. "\n")
+        // assemble broken long message lines (remove double quotes with a line
+        // break in between, e. g. "\n")
         $content = preg_replace('/(""\\s+")/m', '"', $content);
-        // replace line breaks followed by a whitespace character against a line break
+        // replace line breaks followed by a whitespace character against a line
+        // break
         $content = preg_replace('/\\n"\\s+"/m', '\\n', $content);
         // remove multiple line breaks
         $content = preg_replace('/("\n+")/m', '', $content);
@@ -285,5 +307,4 @@ class cI18n {
 
         return $content;
     }
-
 }

@@ -2,15 +2,15 @@
 /**
  * This file contains the backend class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Jan Lengowski
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class controls all backend actions.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
  */
 class cBackend {
@@ -59,18 +59,19 @@ class cBackend {
     protected $_area = '';
 
     /**
-     * Set the frame number in which the file is loaded
+     * Set the frame number in which the file is loaded.
+     *
+     * @param int $frame as number
      */
-    public function setFrame($frame_nr = 0) {
-        $frame_nr = cSecurity::toInteger($frame_nr);
-        $this->_frame = $frame_nr;
+    public function setFrame($frame = 0) {
+        $this->_frame = cSecurity::toInteger($frame);
     }
 
     /**
      * Loads all required data from the DB and stores it in the $_actions and
-     * $_files array
+     * $_files array.
      *
-     * @param $area string selected area
+     * @param string $area selected area
      */
     public function select($area) {
         // Required global vars
@@ -200,8 +201,8 @@ class cBackend {
      * Checks if choosen action exists.
      * If so, execute/eval it.
      *
-     * @param $action String Action to execute
-     * @return string $action Code for selected Action
+     * @param string $action action to execute
+     * @return string $action code for selected action
      */
     public function getCode($action) {
         $actionCodeFile = cRegistry::getBackendPath() . 'includes/type/action/include.' . $action . '.action.php';
@@ -219,7 +220,8 @@ class cBackend {
      * 'inc' => Required file like functions/classes etc.
      * 'main' => Main file
      *
-     * @param $which String 'inc' / 'main'
+     * @param string $which 'inc' / 'main'
+     * @return multitype:
      */
     public function getFile($which) {
         if (isset($this->_files[$which])) {
@@ -234,7 +236,7 @@ class cBackend {
      * @param int $idart Article-ID
      * @param int $client Client-ID
      * @param int $lang Language-ID
-     * @param int|string $idaction  Action (ID or canonical name)
+     * @param int|string $idaction Action (ID or canonical name)
      */
     public function log($idcat, $idart, $client, $lang, $idaction) {
         global $perm, $auth;
@@ -272,5 +274,4 @@ class cBackend {
             echo $oldaction . ' is not in the actions table!<br><br>';
         }
     }
-
 }

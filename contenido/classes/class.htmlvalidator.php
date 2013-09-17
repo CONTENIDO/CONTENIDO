@@ -2,15 +2,15 @@
 /**
  * This file contains the html validator class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author timo.hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,11 +18,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class validates HTML.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
  */
 class cHTMLValidator {
 
+    /**
+     *
+     * @var array
+     */
     protected $_doubleTags = array(
         "form",
         "head",
@@ -39,30 +43,47 @@ class cHTMLValidator {
         "div"
     );
 
-    protected $_html;
-
-    protected $_nestingLevel = array();
-
+    /**
+     *
+     * @var array
+     */
     public $missingNodes = array();
 
+    /**
+     *
+     * @var string
+     * @deprecated not used anymore
+     */
     public $iNodeName;
 
+    /**
+     *
+     * @var string
+     */
+    protected $_html;
+
+    /**
+     *
+     * @var array
+     */
+    protected $_nestingLevel = array();
+
+    /**
+     *
+     * @var array
+     */
     protected $_nestingNodes = array();
 
+    /**
+     *
+     * @var array
+     */
     protected $_existingTags = array();
 
-    protected function _cleanHTML($html) {
-        // remove all php code from layout
-        $resultingHTML = preg_replace('/<\?(php)?((.)|(\s))*?\?>/i', '', $html);
-
-        // We respect only \n, but we need to take care of windows (\n\r) and
-        // other systems (\r)
-        $resultingHTML = str_replace("\r\n", "\n", $resultingHTML);
-        $resultingHTML = str_replace("\r", "\n", $resultingHTML);
-
-        return $resultingHTML;
-    }
-
+    /**
+     *
+     * @param string $html
+     */
     public function validate($html) {
         $nestingLevel = 0;
 
@@ -138,6 +159,11 @@ class cHTMLValidator {
         }
     }
 
+    /**
+     *
+     * @param string $tag
+     * @return boolean
+     */
     public function tagExists($tag) {
         if (in_array($tag, $this->_existingTags)) {
             return true;
@@ -146,6 +172,28 @@ class cHTMLValidator {
         }
     }
 
+    /**
+     *
+     * @param string $html
+     * @return mixed
+     */
+    protected function _cleanHTML($html) {
+        // remove all php code from layout
+        $resultingHTML = preg_replace('/<\?(php)?((.)|(\s))*?\?>/i', '', $html);
+
+        // We respect only \n, but we need to take care of windows (\n\r) and
+        // other systems (\r)
+        $resultingHTML = str_replace("\r\n", "\n", $resultingHTML);
+        $resultingHTML = str_replace("\r", "\n", $resultingHTML);
+
+        return $resultingHTML;
+    }
+
+    /**
+     *
+     * @return string
+     * @deprecated not used anymore
+     */
     protected function _returnErrorMap() {
         $html = "<pre>";
 
@@ -175,6 +223,11 @@ class cHTMLValidator {
         return $html;
     }
 
+    /**
+     *
+     * @param int $charpos
+     * @return multitype:number
+     */
     protected function _getLineAndCharPos($charpos) {
         $mangled = substr($this->_html, 0, $charpos);
 
@@ -186,5 +239,4 @@ class cHTMLValidator {
             $char
         );
     }
-
 }

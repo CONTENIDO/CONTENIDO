@@ -2,16 +2,16 @@
 /**
  * This file contains the CEC registry class.
  *
- * @package          Core
- * @subpackage       CEC
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage CEC
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo A. Hummel
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo A. Hummel
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -25,14 +25,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * no
  * break conditions, @see cApiCecHook::execute()
  * - Callbacks, which should return a value and/or should modify a passed
- *                        parameter,
+ * parameter,
  *
- * @see                   cApiCecHook::executeAndReturn() - Callbacks, which should be processed
- *                        untill a defined break condition achieves,
- * @see                   cApiCecHook::executeWhileBreakCondition()
+ * @see cApiCecHook::executeAndReturn() - Callbacks, which should be processed
+ *      untill a defined break condition achieves,
+ * @see cApiCecHook::executeWhileBreakCondition()
  *
- * @package               Core
- * @subpackage            CEC
+ * @package Core
+ * @subpackage CEC
  */
 class cApiCecRegistry {
 
@@ -79,14 +79,11 @@ class cApiCecRegistry {
 
     /**
      * Registers a chain (adds the chain to the internal chain holder)
+     * NOTE: The number of parameter is not restricted.
+     * You can pass
+     * as much parameter as you want.
      *
      * @param string $sChainName
-     * @param        mixed First chain parameter
-     * @param        mixed Second chain parameter
-     * @param        mixed Third chain parameter...
-     *                     NOTE: The number of parameter is not restricted, you can pass
-     *                     parameter as
-     *                     much as you want.
      */
     public function registerChain($sChainName) {
         $aParam = array();
@@ -149,8 +146,8 @@ class cApiCecRegistry {
     /**
      * Adds the chain to the internal chain holder
      *
-     * @param string $sChainName  Chain name
-     * @param array  $aParameters Chain parameter
+     * @param string $sChainName Chain name
+     * @param array $aParameters Chain parameter
      */
     protected function _addChain($sChainName, array $aParameters = array()) {
         $cfg = cRegistry::getConfig();
@@ -166,18 +163,19 @@ class cApiCecRegistry {
     /**
      * Adds a chain function which is to invoke.
      *
-     * @param string $sChainName    Chain name
+     * @param string $sChainName Chain name
      * @param string $sFunctionName Name of function/callback to invoke.
-     *                              Feasible values are:
+     *        Feasible values are:
      *        - "ClassName->methodName" to invoke a method of a ClassName
-     *                              instance.
-     *                              A instance of the clas will be created here.
+     *        instance.
+     *        A instance of the clas will be created here.
      *        - "ClassName::methodName" to invoke a static method of ClassName.
      *        - "FunctionName" to invoke a function.
-     *                              NOTE: Necessary files must be manually included before or by
-     *                              defined autoloader.
+     *        NOTE: Necessary files must be manually included before or by
+     *        defined autoloader.
      *
-     * @throws cInvalidArgumentException if the given chain is not registered or the given callback is not callable
+     * @throws cInvalidArgumentException if the given chain is not registered or
+     *         the given callback is not callable
      * @return bool True on success, otherwhise false
      */
     public function addChainFunction($sChainName, $sFunctionName) {
@@ -201,7 +199,8 @@ class cApiCecRegistry {
                 throw new cInvalidArgumentException('Method ' . $method . ' in class ' . $class . ' doesn\'t exist, can\'t add ' . $sFunctionName . ' to chain ' . $sChainName);
             }
             $call = array(
-                new $class(), $method
+                new $class(),
+                $method
             );
         } elseif (strpos($sFunctionName, '::') > 0) {
             // chain function is static method of a object
@@ -211,7 +210,10 @@ class cApiCecRegistry {
             } elseif (!method_exists($class, $method)) {
                 throw new cInvalidArgumentException('Method ' . $method . ' in class ' . $class . ' doesn\'t exist, can\'t add ' . $sFunctionName . ' to chain ' . $sChainName);
             }
-            $call = array($class, $method);
+            $call = array(
+                $class,
+                $method
+            );
         } else {
             // chain function is a function
             if (!function_exists($sFunctionName)) {
@@ -235,7 +237,7 @@ class cApiCecRegistry {
     /**
      * Checks if a chain function exists.
      *
-     * @param string $sChainName    Chain name
+     * @param string $sChainName Chain name
      * @param string $sFunctionName Name of function to check
      *
      * @return bool
@@ -259,7 +261,7 @@ class cApiCecRegistry {
     /**
      * Removes a chain function.
      *
-     * @param string $sChainName    Chain name
+     * @param string $sChainName Chain name
      * @param string $sFunctionName Name of function to remove from chain.
      */
     public function removeChainFunction($sChainName, $sFunctionName) {
@@ -302,13 +304,12 @@ class cApiCecRegistry {
         $iterator = $this->getIterator($sChainName);
         $iterator->reset();
     }
-
 }
 
 /**
  * CEC chain item class.
  *
- * @package    Core
+ * @package Core
  * @subpackage CEC
  */
 class cApiCecChainItem {
@@ -356,7 +357,7 @@ class cApiCecChainItem {
      *
      * @param string $sChainName
      * @param string $sFunctionName
-     * @param array  $aParameters
+     * @param array $aParameters
      */
     public function __construct($sChainName, $sFunctionName, $aParameters) {
         $this->setChainName($sChainName);
@@ -422,8 +423,9 @@ class cApiCecChainItem {
     /**
      * Sets the callback
      *
-     * @throws cInvalidArgumentException if the given callback is not a string or an array
-     * @return string array
+     * @param string|array $callback
+     * @throws cInvalidArgumentException if the given callback is not a string
+     *         or an array
      */
     public function setCallback($callback) {
         if (is_string($callback) || is_array($callback)) {
@@ -455,10 +457,10 @@ class cApiCecChainItem {
 
     /**
      * Will be invoked by execute() method.
-     * If temporary arguments where set before,
-     * it returns them and resets the property.
+     * If temporary arguments where set before, it returns them and resets the
+     * property.
      *
-     * @param array $args
+     * @return multitype:
      */
     public function getTemporaryArguments() {
         $args = $this->_mTemporaryArguments;
@@ -481,5 +483,4 @@ class cApiCecChainItem {
 
         return call_user_func_array($this->getCallback(), $args);
     }
-
 }

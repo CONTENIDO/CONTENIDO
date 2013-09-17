@@ -2,15 +2,15 @@
 /**
  * This file contains the category helper class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Frontend_Util
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Dominik Ziegler
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,55 +18,64 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains functions for the category helper class in CONTENIDO.
  *
- * @package    Core
+ * @package Core
  * @subpackage Frontend_Util
  */
 class cCategoryHelper {
+
     /**
      * Instance of the helper class.
+     *
      * @var cCategoryHelper
      */
-    static private $_instance = NULL;
+    private static $_instance = NULL;
 
     /**
      * Local stored language ID
-     * @var    int    language ID
+     *
+     * @var int language ID
      */
     protected $_languageId = 0;
 
     /**
      * Local stored client ID
-     * @var    int    client ID
+     *
+     * @var int client ID
      */
     protected $_clientId = 0;
 
     /**
      * Local cache of category levels.
-     * @var    array
+     *
+     * @var array
      */
     protected $_levelCache = array();
 
     /**
      * Auth object to use.
-     * @var    cAuth
+     *
+     * @var cAuth
      */
     protected $_auth = NULL;
 
     /**
      * Array with current frontend user groups.
-     * @var    array
+     *
+     * @var array
      */
     protected $_feGroups = array();
 
     /**
      * Object for frontend permission collection.
-     * @var    cApiFrontendPermissionCollection
+     *
+     * @var cApiFrontendPermissionCollection
      */
     protected $_fePermColl = NULL;
 
     /**
      * Returns the instance of this class.
-     * @return    cCategoryHelper
+     *
+     * @return cCategoryHelper
      */
     public static function getInstance() {
         if (self::$_instance === NULL) {
@@ -84,7 +93,8 @@ class cCategoryHelper {
 
     /**
      * Sets an auth object to use on category access check.
-     * @param    cAuth    $auth    auth object
+     *
+     * @param cAuth $auth auth object
      */
     public function setAuth($auth) {
         $this->_auth = $auth;
@@ -98,22 +108,17 @@ class cCategoryHelper {
     }
 
     /**
-     * Sets the client ID to store it locally in the class.
-     * @param    int    $clientId    client ID
-     */
-    public function setClientId($clientId = 0) {
-        $this->_clientId = (int) $clientId;
-    }
-
-    /**
      * Returns the local stored client ID
-     * @return    int    client ID
+     *
+     * @throws cInvalidArgumentException if no active client ID specified or
+     *         found
+     * @return int client ID
      */
     public function getClientId() {
         if ($this->_clientId == 0) {
             $clientId = cRegistry::getClientId();
             if ($clientId == 0) {
-                throw new cInvalidArgumentException("No active client ID specified or found.");
+                throw new cInvalidArgumentException('No active client ID specified or found.');
             }
 
             return $clientId;
@@ -123,22 +128,26 @@ class cCategoryHelper {
     }
 
     /**
-     * Sets the language ID to store it locally in the class.
-     * @param    int    $languageId    language ID
+     * Sets the client ID to store it locally in the class.
+     *
+     * @param int $clientId client ID
      */
-    public function setLanguageId($languageId = 0) {
-        $this->_languageId = (int) $languageId;
+    public function setClientId($clientId = 0) {
+        $this->_clientId = (int) $clientId;
     }
 
     /**
      * Returns the local stored language ID
-     * @return    int    language ID
+     *
+     * @throws cInvalidArgumentException if no active language ID specified or
+     *         found
+     * @return int language ID
      */
     public function getLanguageId() {
         if ($this->_languageId == 0) {
             $languageId = cRegistry::getLanguageId();
             if ($languageId == 0) {
-                throw new cInvalidArgumentException("No active language ID specified or found.");
+                throw new cInvalidArgumentException('No active language ID specified or found.');
             }
 
             return $languageId;
@@ -148,9 +157,19 @@ class cCategoryHelper {
     }
 
     /**
+     * Sets the language ID to store it locally in the class.
+     *
+     * @param int $languageId language ID
+     */
+    public function setLanguageId($languageId = 0) {
+        $this->_languageId = (int) $languageId;
+    }
+
+    /**
      * Return the ID of the top most category based on a given category ID.
-     * @param    int    $categoryId    Base category ID to search on
-     * @return    int    Top most category ID
+     *
+     * @param int $categoryId Base category ID to search on
+     * @return int Top most category ID
      */
     public function getTopMostCategoryId($categoryId) {
         $category = new cApiCategory($categoryId);
@@ -165,11 +184,15 @@ class cCategoryHelper {
     }
 
     /**
-     * Returns an array with ordered cApiCategoryLanguage objects e.g. for a breadcrumb.
-     * @param    int    $categoryId    Last category ID in list.
-     * @param    int    $startingLevel    Define here, at which level the list should start. (optional, default: 1)
-     * @param    int    $maxDepth    Amount of the max depth of categories. (optional, default: 20)
-     * @return    array    Array with cApiCategoryLanguage objects
+     * Returns an array with ordered cApiCategoryLanguage objects e.g.
+     * for a breadcrumb.
+     *
+     * @param int $categoryId Last category ID in list.
+     * @param int $startingLevel Define here, at which level the list should
+     *        start. (optional, default: 1)
+     * @param int $maxDepth Amount of the max depth of categories. (optional,
+     *        default: 20)
+     * @return array Array with cApiCategoryLanguage objects
      */
     public function getCategoryPath($categoryId, $startingLevel = 1, $maxDepth = 20) {
         $clientId = $this->getClientId();
@@ -203,9 +226,11 @@ class cCategoryHelper {
 
     /**
      * Fetch all parent category IDs of a given category.
-     * @param    int    $categoryId    Base category to search on.
-     * @param    int    $maxDepth    Amount of the max depth of categories. (optional, default: 20)
-     * @return    array    Array with parent category IDs.
+     *
+     * @param int $categoryId Base category to search on.
+     * @param int $maxDepth Amount of the max depth of categories. (optional,
+     *        default: 20)
+     * @return array Array with parent category IDs.
      */
     public function getParentCategoryIds($categoryId, $maxDepth = 20) {
         $categoryIds = array();
@@ -228,8 +253,9 @@ class cCategoryHelper {
 
     /**
      * Fetchs the level of a category by a given category ID.
-     * @param    int    $categoryId    Category ID to fetch the level of.
-     * @return    int    category level
+     *
+     * @param int $categoryId Category ID to fetch the level of.
+     * @return int category level
      */
     public function getCategoryLevel($categoryId) {
         if (isset($this->_levelCache[$categoryId]) === false) {
@@ -251,9 +277,10 @@ class cCategoryHelper {
     /**
      * Return the subcategories of the given category ID.
      * TODO: Use Generic DB instead of SQL queries
-     * @param    int    $categoryId    ID of the category to load
-     * @param    int    $depth    the maximum depth
-     * @return    array    array with subcategories
+     *
+     * @param int $categoryId ID of the category to load
+     * @param int $depth the maximum depth
+     * @return array array with subcategories
      */
     public function getSubCategories($categoryId, $depth) {
         $cfg = cRegistry::getConfig();
@@ -287,8 +314,7 @@ class cCategoryHelper {
                     cat.idcat    = cat_lang.idcat AND
                     cat.idclient = ' . $clientId . ' AND
                     cat_lang.idlang   = ' . $languageId . ' AND
-                    cat_lang.visible  = 1 AND ' .
-                    $sqlSnippetPublic . '
+                    cat_lang.visible  = 1 AND ' . $sqlSnippetPublic . '
                     cat.parentid = ' . $categoryId . '
                 ORDER BY
                     cat_tree.idtree';
@@ -328,8 +354,9 @@ class cCategoryHelper {
 
     /**
      * Checks if set auth object has access to the specific category.
-     * @param    cApiCategoryLanguage    $categoryLanguage    category language object
-     * @return    bool    result of access check
+     *
+     * @param cApiCategoryLanguage $categoryLanguage category language object
+     * @return bool result of access check
      */
     public function hasCategoryAccess(cApiCategoryLanguage $categoryLanguage) {
         $useAuthorization = ($this->_auth !== NULL && $this->_fePermColl !== NULL);

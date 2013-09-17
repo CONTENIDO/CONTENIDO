@@ -2,15 +2,15 @@
 /**
  * This file contains the backend ajax handler class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Timo Trautmann
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Timo Trautmann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Class for outputting some content for Ajax use
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
  */
 class cAjaxRequest {
@@ -27,6 +27,7 @@ class cAjaxRequest {
      * Function for handling requested ajax data
      *
      * @param string $action - name of requested ajax action
+     * @return string
      */
     public function handle($action) {
         $backendPath = cRegistry::getBackendPath();
@@ -82,7 +83,7 @@ class cAjaxRequest {
                         if (count($usedTemplates) > 0) {
                             $response = '<br />';
                             foreach ($usedTemplates as $i => $usedTemplate) {
-                                if ($i%2 == 0) {
+                                if ($i % 2 == 0) {
                                     $template->set('d', 'CLASS', 'grey');
                                 } else {
                                     $template->set('d', 'CLASS', 'white');
@@ -108,7 +109,7 @@ class cAjaxRequest {
                     $usedTemplates = $module->getUsedTemplates();
                     if (count($usedTemplates) > 0) {
                         foreach ($usedTemplates as $i => $usedTemplate) {
-                            if ($i%2 == 0) {
+                            if ($i % 2 == 0) {
                                 $template->set('d', 'CLASS', 'grey');
                             } else {
                                 $template->set('d', 'CLASS', 'white');
@@ -198,14 +199,12 @@ class cAjaxRequest {
                 // if can not scale, so $sString is null, then show the original
                 // image.
                 if ($string == '') {
-                    $filename = str_replace($frontendPath,$frontendURL, $filename_a);
+                    $filename = str_replace($frontendPath, $frontendURL, $filename_a);
                     $string = $filename;
                 }
                 break;
 
             case 'imagelist':
-                global $cfg, $client, $lang, $cfgClient;
-
                 $dirName = (string) $_REQUEST['dir'];
                 $imageId = (int) $_REQUEST['id'];
                 $idArtLang = (int) $_REQUEST['idartlang'];
@@ -248,10 +247,10 @@ class cAjaxRequest {
 
                 $string = $image->uplmkdir($path, $name);
                 switch ($string) {
-                    case '0702' :
+                    case '0702':
                         $string = i18n('Directory already exist.');
                         break;
-                    case '0703' :
+                    case '0703':
                         $string = i18n('Directories with special characters and spaces are not allowed.');
                         break;
                 }
@@ -333,5 +332,4 @@ class cAjaxRequest {
 
         return $string;
     }
-
 }

@@ -255,8 +255,6 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *
      * @param array $aElements Array with "values" of the cHTMLOptionElement to
      *        set
-     *
-     * @return none
      */
     public function setSelected($aElements) {
         if (is_array($this->_options) && is_array($aElements)) {
@@ -282,40 +280,111 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
  */
 class UI_Config_Table {
 
+    /**
+     *
+     * @var string
+     */
     var $_sTplCellCode;
 
+    /**
+     *
+     * @var string
+     */
     var $_sTplTableFile;
 
+    /**
+     *
+     * @var unknown_type
+     */
     var $_sWidth;
 
+    /**
+     *
+     * @var int
+     */
     var $_sBorder;
 
+    /**
+     *
+     * @var unknown_type
+     */
     var $_sBorderColor;
 
+    /**
+     *
+     * @var unknown_type
+     */
     var $_bSolidBorder;
 
+    /**
+     *
+     * @var int
+     */
     var $_sPadding;
 
+    /**
+     *
+     * @var array
+     */
     var $_aCells;
 
+    /**
+     *
+     * @var array
+     */
     var $_aCellAlignment;
 
+    /**
+     *
+     * @var array
+     */
     var $_aCellVAlignment;
 
+    /**
+     *
+     * @var unknown_type
+     */
     var $_aCellColSpan;
 
+    /**
+     *
+     * @var array
+     */
     var $_aCellClass;
 
+    /**
+     *
+     * @var unknown_type
+     */
     var $_aRowBgColor;
 
+    /**
+     *
+     * @var unknown_type
+     */
     var $_aRowExtra;
 
+    /**
+     *
+     * @var bool
+     */
     var $_bAddMultiSelJS;
 
+    /**
+     *
+     * @var unknown_type
+     */
     var $_sColorLight;
 
+    /**
+     *
+     * @var unknown_type
+     */
     var $_sColorDark;
 
+    /**
+     *
+     */
     function UI_Config_Table() {
         global $cfg;
         $backendPath = cRegistry::getBackendPath();
@@ -327,31 +396,67 @@ class UI_Config_Table {
         $this->_sTplCellCode =  $backendPath . $cfg['path']['templates'] . $cfg['templates']['input_helper_row'];
     }
 
+    /**
+     *
+     * @param string $sCode
+     */
     function setCellTemplate($sCode) {
         $this->_sTplCellCode = $sCode;
     }
 
+    /**
+     *
+     * @param string $sPath
+     */
     function setTableTemplateFile($sPath) {
         $this->_sTplTableFile = $sPath;
     }
 
+    /**
+     *
+     * @param unknown_type $sRow
+     * @param unknown_type $sCell
+     * @param unknown_type $sContent
+     */
     function setCell($sRow, $sCell, $sContent) {
         $this->_aCells[$sRow][$sCell] = $sContent;
         $this->_aCellAlignment[$sRow][$sCell] = "";
     }
 
+    /**
+     *
+     * @param unknown_type $sRow
+     * @param unknown_type $sCell
+     * @param unknown_type $sAlignment
+     */
     function setCellAlignment($sRow, $sCell, $sAlignment) {
         $this->_aCellAlignment[$sRow][$sCell] = $sAlignment;
     }
 
+    /**
+     *
+     * @param unknown_type $sRow
+     * @param unknown_type $sCell
+     * @param unknown_type $sAlignment
+     */
     function setCellVAlignment($sRow, $sCell, $sAlignment) {
         $this->_aCellVAlignment[$sRow][$sCell] = $sAlignment;
     }
 
+    /**
+     *
+     * @param unknown_type $sRow
+     * @param unknown_type $sCell
+     * @param unknown_type $sClass
+     */
     function setCellClass($sRow, $sCell, $sClass) {
         $this->_aCellClass[$sRow][$sCell] = $sClass;
     }
 
+    /**
+     *
+     * @return string
+     */
     function _addMultiSelJS() {
         // Trick: To save multiple selections in <select>-Element, add some JS
         // which saves the
@@ -364,6 +469,11 @@ class UI_Config_Table {
         return $sSkript;
     }
 
+    /**
+     *
+     * @param unknown_type $bPrint
+     * @return Ambigous <string, mixed>
+     */
     function render($bPrint = false) {
         $oTable = new cTemplate();
         $oTable->reset();

@@ -502,10 +502,12 @@ class cRegistry {
      * Bootstraps the CONTENIDO framework and initializes the global variables
      * sess, auth and perm.
      *
-     * @param $features array array with class name definitions
+     * @param array $features array with class name definitions
      */
     public final static function bootstrap($features) {
         $cfg = self::getConfig();
+
+        $sessClass = $authClass = $permClass = NULL;
 
         $bootstrapFeatures = array(
             'sess',
@@ -544,6 +546,8 @@ class cRegistry {
 
     /**
      * Shutdowns the CONTENIDO framework on page close.
+     *
+     * @param bool $debugShowAll
      */
     public final static function shutdown($debugShowAll = true) {
         if ($debugShowAll == true) {
@@ -619,5 +623,4 @@ class cRegistry {
     public static function isTrackingAllowed() {
         return (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] != 1) || !isset($_SERVER['HTTP_DNT']);
     }
-
 }

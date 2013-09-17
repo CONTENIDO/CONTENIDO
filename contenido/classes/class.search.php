@@ -96,7 +96,6 @@ abstract class cSearchBaseAbstract {
         }
         cDebug::out($dump);
     }
-
 }
 
 /**
@@ -261,7 +260,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function start($idart, $aContent, $place = 'auto', $cms_options = array(), $aStopwords = array()) {
         if (!is_int((int) $idart) || $idart < 0) {
-            return null;
+            return;
         } else {
             $this->idart = $idart;
         }
@@ -445,8 +444,8 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * remove special characters from index term
      *
-     * @param $key string Keyword
-     * @return $key
+     * @param string $key Keyword
+     * @return mixed
      */
     public function removeSpecialChars($key) {
         $aSpecialChars = array(
@@ -525,13 +524,9 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * @modified 2008-04-17, Timo Trautmann - reverse function to
-     * removeSpecialChars
-     * (important for syntaxhighlighting searchterm in searchresults)
-     * adds umlauts to search term
      *
-     * @param $key string Keyword
-     * @return $key
+     * @param string $key Keyword
+     * @return string
      */
     public function addSpecialUmlauts($key) {
         $key = conHtmlentities($key, null, getEncodingByLanguage($this->db, $this->lang));
@@ -579,6 +574,8 @@ class cSearchIndex extends cSearchBaseAbstract {
 
     /**
      * set the cms_options array of cms types which should be treated special
+     *
+     * @param mixed $cms_options
      */
     public function setCmsOptions($cms_options) {
         if (is_array($cms_options) && count($cms_options) > 0) {
@@ -605,7 +602,7 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * check if the current cms type is in the cms_options array
      *
-     * @param $idtype
+     * @param string $idtype
      * @return boolean
      */
     public function checkCmsType($idtype) {
@@ -628,7 +625,6 @@ class cSearchIndex extends cSearchBaseAbstract {
     public function getCmsTypeSuffix() {
         return $this->_cmsTypeSuffix;
     }
-
 }
 
 /**
@@ -846,6 +842,8 @@ class cSearch extends cSearchBaseAbstract {
      * Array of article id's with information about cms-types, occurence of
      * keyword/searchword, similarity .
      *
+     *
+     *
      * @var array
      */
     protected $_searchResult = array();
@@ -909,6 +907,7 @@ class cSearch extends cSearchBaseAbstract {
      * @param string $searchwords The search words
      * @param string $searchwords_exclude The words, which should be excluded
      *        from search
+     * @return boolean multitype:
      */
     public function searchIndex($searchwords, $searchwords_exclude = '') {
         if (strlen(trim($searchwords)) > 0) {
@@ -1054,7 +1053,8 @@ class cSearch extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $cms_options The cms-types (htmlhead, html, ...) which should
+     * @param mixed $cms_options The cms-types (htmlhead, html, ...) which
+     *            should
      *        explicitly be searched
      */
     public function setCmsOptions($cms_options) {
@@ -1065,8 +1065,8 @@ class cSearch extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $searchwords The search-words
-     * @return Array of stripped search-words
+     * @param string $searchwords The search-words
+     * @return array of stripped search-words
      */
     public function stripWords($searchwords) {
         // remove backslash and html tags
@@ -1097,7 +1097,7 @@ class cSearch extends cSearchBaseAbstract {
      *
      * @param int $cat_start Root of a category tree
      * @return array Category Tree
-     * @todo This is not the job for search, should be oursourced...
+     * @todo This is not the job for search, should be outsourced ...
      */
     public function getSubTree($cat_start) {
         $sql = "SELECT
@@ -1274,6 +1274,7 @@ class cSearch extends cSearchBaseAbstract {
      * (client dependent but language independent)
      *
      * @param string $sArtSpecName
+     * @return boolean
      */
     public function addArticleSpecificationsByName($sArtSpecName) {
         if (!isset($sArtSpecName) || strlen($sArtSpecName) == 0) {
@@ -1293,7 +1294,6 @@ class cSearch extends cSearchBaseAbstract {
             $this->_articleSpecs[] = $this->db->f('idartspec');
         }
     }
-
 }
 
 /**
@@ -1392,6 +1392,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * keyword/searchword, similarity .
      *
      *
+     *
+     *
      * @var array
      */
     protected $_searchResult = array();
@@ -1436,8 +1438,8 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $ranked_search
-     * @param $result_per_page
+     * @param array $ranked_search
+     * @param int $result_per_page
      */
     public function setOrderedSearchResult($ranked_search, $result_per_page) {
         asort($ranked_search);
@@ -1454,8 +1456,9 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $cms_type
      * @param $art_id int Id of an article
+     * @param string $cms_type
+     * @param int $id
      * @return string Content of an article, specified by it's content type
      */
     public function getContent($art_id, $cms_type, $id = 0) {
@@ -1466,8 +1469,9 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $cms_type string Content type
-     * @param $art_id int Id of an article
+     * @param int $art_id Id of an article
+     * @param string $cms_type Content type
+     * @param int $cms_nr
      * @return string Content of an article in search result, specified by its
      *         type
      */
@@ -1587,7 +1591,7 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $art_id int Id of an article
+     * @param int $art_id Id of an article
      * @return int Similarity between searchword and matching word in article
      */
     public function getSimilarity($art_id) {
@@ -1596,8 +1600,8 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $art_id int Id of an article
-     * @return Number of matching searchwords found in article
+     * @param int $art_id Id of an article
+     * @return number of matching searchwords found in article
      */
     public function getOccurrence($art_id) {
         $aOccurence = $this->_searchResult[$art_id]['occurence'];
@@ -1625,7 +1629,7 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $artid
+     * @param int $artid
      * @return int Category Id
      * @todo Is not job of search, should be outsourced!
      */
@@ -1637,5 +1641,4 @@ class cSearchResult extends cSearchBaseAbstract {
             return $this->db->f('idcat');
         }
     }
-
 }

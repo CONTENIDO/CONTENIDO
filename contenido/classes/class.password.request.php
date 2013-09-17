@@ -171,10 +171,11 @@ class cPasswordRequest {
 
     /**
      * Function displays form for password request and sets new password, if
-     * password is submitted this function
-     * also starts the passwort change an sending process
+     * password is submitted this function also starts the passwort change an
+     * sending process
      *
      * @param bool $return Return or print template
+     * @return void Ambigous mixed>
      */
     public function renderForm($return = 0) {
         // if feature is not enabled, do nothing
@@ -227,6 +228,8 @@ class cPasswordRequest {
     /**
      * Function checks password request for errors an delegate request to
      * setNewPassword() if there is no error
+     *
+     * @return Ambigous <string, string>
      */
     protected function _handleNewPassword() {
         // notification message, which is returned to caller
@@ -354,5 +357,4 @@ class cPasswordRequest {
 
         return $password;
     }
-
 }

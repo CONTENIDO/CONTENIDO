@@ -263,7 +263,7 @@ class cSystemtest {
      * Caches the given config array for later use.
      *
      * @param array $config A config array which should be similar to
-     *            CONTENIDO's $cfg
+     *        CONTENIDO's $cfg
      */
     public function __construct($config) {
         $this->_config = $config;
@@ -273,7 +273,7 @@ class cSystemtest {
      * Runs all available tests and stores the resuls in the messages array
      *
      * @param bool $testFileSystem If this is true the file system checks will
-     *            be performed too with standard settings.
+     *        be performed too with standard settings.
      */
     public function runTests($testFileSystem = true) {
         $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), self::CON_SETUP_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), self::CON_SETUP_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . self::CON_SETUP_MIN_PHP_VERSION);
@@ -356,13 +356,13 @@ class cSystemtest {
      * @param bool $result true for success, false otherwise
      * @param int $severity One one of the C_SEVERITY constants
      * @param string $errorHeadline The headline which will be stored in the
-     *            case that $result is false
+     *        case that $result is false
      * @param string $errorMessage The message which will be stored in the case
-     *            that $result is false
+     *        that $result is false
      * @param string $successHeadline The headline which will be stored in the
-     *            case that $result is true
+     *        case that $result is true
      * @param string $successMessage The message which will be stored in the
-     *            case that $result is true
+     *        case that $result is true
      */
     public function storeResult($result, $severity, $errorHeadline = "", $errorMessage = "", $successHeadline = "", $successMessage = "") {
         if ($result) {
@@ -631,7 +631,7 @@ class cSystemtest {
      *
      * @param string $filename The file
      * @param int $severity The resulting C_SEVERITY constant should the test
-     *            fail
+     *        fail
      * @param bool $dir True if the $filename is a directory
      * @throws Exception Throws a generic Exception in the event that the
      *         permissions are wrong
@@ -838,9 +838,9 @@ class cSystemtest {
     }
 
     /**
-     * Test functions
+     * Test PHP function
      *
-     * They all return true if the test passed and false if not
+     * @return boolean true if the test passed and false if not
      */
     public function testPHPVersion() {
         if (version_compare(phpversion(), CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
@@ -850,6 +850,10 @@ class cSystemtest {
         }
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function getSafeModeStatus() {
         if ($this->getPHPIniSetting("safe_mode") == "1") {
             return true;
@@ -858,6 +862,10 @@ class cSystemtest {
         }
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function getSafeModeGidStatus() {
         if ($this->getPHPIniSetting("safe_mode_gid") == "1") {
             return true;
@@ -866,51 +874,99 @@ class cSystemtest {
         }
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testXMLParserCreate() {
         return function_exists("xml_parser_create");
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testFileUploadSetting() {
         return $this->getPHPIniSetting('file_uploads');
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testMagicQuotesRuntimeSetting() {
         return !$this->getPHPIniSetting('magic_quotes_runtime');
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testMagicQuotesSybaseSetting() {
         return !$this->getPHPIniSetting('magic_quotes_sybase');
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testMaxExecutionTime() {
         return intval($this->getPHPIniSetting('max_execution_time')) >= 30;
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testZIPArchive() {
         return class_exists("ZipArchive");
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testMemoryLimit() {
         $memoryLimit = $this->getAsBytes($this->getPHPIniSetting("memory_limit"));
         return ($memoryLimit > 1024 * 1024 * 32) || ($memoryLimit == 0);
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testPHPSQLSafeMode() {
         return !$this->getPHPIniSetting('sql.safe_mode');
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testDOMDocument() {
         return class_exists("DOMDocument");
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testPHPExtension($ext) {
         return $this->isPHPExtensionLoaded($ext) == CON_EXTENSION_AVAILABLE;
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testIconv() {
         return function_exists("iconv");
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testGDGIFRead() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
@@ -918,6 +974,10 @@ class cSystemtest {
         return function_exists("imagecreatefromgif");
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testGDGIFWrite() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
@@ -925,6 +985,10 @@ class cSystemtest {
         return function_exists("imagegif");
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testGDJPEGRead() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
@@ -932,6 +996,10 @@ class cSystemtest {
         return function_exists("imagecreatefromjpeg");
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testGDJPEGWrite() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
@@ -939,6 +1007,10 @@ class cSystemtest {
         return function_exists("imagejpeg");
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testGDPNGRead() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
@@ -946,6 +1018,10 @@ class cSystemtest {
         return function_exists("imagecreatefrompng");
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testGDPNGWrite() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
             return false;
@@ -953,6 +1029,10 @@ class cSystemtest {
         return function_exists("imagepng");
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testMySQLExtension() {
         if ($this->isPHPExtensionLoaded("mysql") == self::CON_EXTENSION_AVAILABLE) {
             return true;
@@ -961,6 +1041,10 @@ class cSystemtest {
         }
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testMySQLiExtension() {
         if ($this->isPHPExtensionLoaded("mysqli") == self::CON_EXTENSION_AVAILABLE) {
             return true;
@@ -969,6 +1053,10 @@ class cSystemtest {
         }
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testMySQLModeStrict($host, $username, $password) {
         // host, user and password
         $dbCfg = array(
@@ -989,6 +1077,10 @@ class cSystemtest {
         return true;
     }
 
+    /**
+     *
+     * @return int 1 if the test passed and > 1 if not
+     */
     public function testMySQL($host, $username, $password) {
         list($handle, $status) = $this->doMySQLConnect($host, $username, $password);
 
@@ -1013,6 +1105,10 @@ class cSystemtest {
         return self::CON_MYSQL_OK;
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testFilesystem($testConfig = true, $testFrontend = true) {
         global $cfgClient;
 
@@ -1142,6 +1238,10 @@ class cSystemtest {
         return $status;
     }
 
+    /**
+     *
+     * @return boolean true if the test passed and false if not
+     */
     public function testFrontendFolderCreation() {
         $directories = array(
             "cms/cache",
@@ -1241,7 +1341,4 @@ class cSystemtest {
             return self::CON_IMAGERESIZE_NOTHINGAVAILABLE;
         }
     }
-
 }
-
-?>

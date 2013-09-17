@@ -24,27 +24,27 @@ class cLayoutSynchronizer {
 
     /**
      *
-     * @var unknown_type
+     * @var array
      */
     protected $_cfg;
 
     /**
      *
-     * @var unknown_type
+     * @var array
+     */
+    protected $_cfgClient;
+
+    /**
+     *
+     * @var int
      */
     protected $_lang;
 
     /**
      *
-     * @var unknown_type
+     * @var int
      */
     protected $_client;
-
-    /**
-     *
-     * @var unknown_type
-     */
-    protected $_cfgClient;
 
     /**
      *
@@ -54,10 +54,10 @@ class cLayoutSynchronizer {
 
     /**
      *
-     * @param unknown_type $cfg
-     * @param unknown_type $cfgClient
-     * @param unknown_type $lang
-     * @param unknown_type $client
+     * @param array $cfg
+     * @param array $cfgClient
+     * @param int $lang
+     * @param int $client
      */
     public function __construct($cfg, $cfgClient, $lang, $client) {
         $this->_cfg = $cfg;
@@ -119,6 +119,7 @@ class cLayoutSynchronizer {
      * @param string $dirNameOld
      * @param string $dirNameNew
      * @param int $client
+     * @return boolean
      */
     private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client) {
         if (rename($dir . $dirNameOld, $dir . $dirNameNew) == false) {
@@ -135,6 +136,7 @@ class cLayoutSynchronizer {
      *
      * @param string $alias layout name
      * @param int $idclient client id
+     * @return boolean
      */
     private function _isExistInTable($alias, $idclient) {
         // Select depending from idclient all moduls wiht the name $name
@@ -223,6 +225,9 @@ class cLayoutSynchronizer {
         }
     }
 
+    /**
+     *
+     */
     private function _showOutputMessage() {
         $emptyMessage = true;
         $notification = new cGuiNotification();
@@ -251,6 +256,8 @@ class cLayoutSynchronizer {
     /**
      * Synchronize the Layout directory with the lay-table und the lay-table
      * with directory.
+     *
+     * @return boolean
      */
     public function synchronize() {
         // update file and layout

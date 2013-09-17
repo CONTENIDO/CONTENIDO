@@ -2,13 +2,13 @@
 /**
  * This file contains the html parser class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Starnetsys, LLC.
- * @copyright  Starnetsys, LLC.
- * @link       http://starnetsys.com
+ * @author Starnetsys, LLC.
+ * @copyright Starnetsys, LLC.
+ * @link http://starnetsys.com
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,16 +20,51 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * When parse() returns true, $iNodeType, $iNodeName
  * $iNodeValue and $iNodeAttributes are updated.
  *
- * Copyright (c) 2003 Starnetsys, LLC.  All rights reserved.
+ * Copyright (c) 2003 Starnetsys, LLC. All rights reserved.
  * Redistribution of source must retain this copyright notice.
  *
  * Starnetsys, LLC (http://starnetsys.com) specializes in
  * website design and software consulting
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
  */
 class HtmlParser {
+
+    /**
+     * node type ID for elements
+     *
+     * @var int
+     */
+    const NODE_TYPE_ELEMENT = 1;
+
+    /**
+     * node type ID for endelements
+     *
+     * @var int
+     */
+    const NODE_TYPE_ENDELEMENT = 2;
+
+    /**
+     * node type ID for texts
+     *
+     * @var int
+     */
+    const NODE_TYPE_TEXT = 3;
+
+    /**
+     * node type ID for comments
+     *
+     * @var int
+     */
+    const NODE_TYPE_COMMENT = 4;
+
+    /**
+     * node type ID when done
+     *
+     * @var int
+     */
+    const NODE_TYPE_DONE = 5;
 
     /**
      * Field iNodeType.
@@ -40,12 +75,16 @@ class HtmlParser {
     /**
      * Field iNodeName.
      * For elements, it's the name of the element.
+     *
+     * @var string
      */
     var $iNodeName = "";
 
     /**
      * Field iNodeValue.
      * For text nodes, it's the text.
+     *
+     * @var string
      */
     var $iNodeValue = "";
 
@@ -53,29 +92,38 @@ class HtmlParser {
      * Field iNodeAttributes.
      * A string-indexed array containing attribute values
      * of the current node. Indexes are always lowercase.
+     *
+     * @var array
      */
     var $iNodeAttributes;
-    // The following fields should be
-    // considered private:
 
+    /**
+     *
+     * @var unknown_type
+     * @todo should be private
+     */
     var $iHtmlText;
+
+    /**
+     *
+     * @var unknown_type
+     * @todo should be private
+     */
     var $iHtmlTextLength;
+
+    /**
+     *
+     * @var unknown_type
+     * @todo should be private
+     */
     var $iHtmlTextIndex = 0;
-
-    const NODE_TYPE_ELEMENT = 1;
-
-    const NODE_TYPE_ENDELEMENT = 2;
-
-    const NODE_TYPE_TEXT = 3;
-
-    const NODE_TYPE_COMMENT = 4;
-
-    const NODE_TYPE_DONE = 5;
 
     /**
      * Constructor.
      * Constructs an HtmlParser instance with
      * the HTML text given.
+     *
+     * @param string $aHtmlText
      */
     function HtmlParser($aHtmlText) {
         $this->iHtmlText = $aHtmlText;
@@ -84,9 +132,10 @@ class HtmlParser {
 
     /**
      * Method parse.
-     * Parses the next node. Returns false only if
-     * the end of the HTML text has been reached.
-     * Updates values of iNode* fields.
+     * Parses the next node. Returns false only if the end of the HTML text has
+     * been reached. Updates values of iNode* fields.
+     *
+     * @return boolean
      */
     function parse() {
         $text = $this->skipToElement();
@@ -99,10 +148,16 @@ class HtmlParser {
         return $this->readTag();
     }
 
+    /**
+     */
     function clearAttributes() {
         $this->iNodeAttributes = array();
     }
 
+    /**
+     *
+     * @return boolean
+     */
     function readTag() {
         if ($this->currentChar() != "<") {
             $this->iNodeType = self::NODE_TYPE_DONE;
@@ -166,38 +221,93 @@ class HtmlParser {
         return true;
     }
 
+    /**
+     *
+     * @param string $name
+     * @return number
+     */
     function isValidTagIdentifier($name) {
         return preg_match('/[A-Za-z0-9]+/', $name);
     }
 
+    /**
+     *
+     * @return boolean
+     */
     function skipBlanksInTag() {
-        return "" != ($this->skipInTag(array(" ", "\t", "\r", "\n")));
+        return "" != ($this->skipInTag(array(
+            " ",
+            "\t",
+            "\r",
+            "\n"
+        )));
     }
 
+    /**
+     *
+     * @return Ambigous <string, number, unknown_type>
+     */
     function skipToBlanksOrEqualsInTag() {
-        return $this->skipToInTag(array(" ", "\t", "\r", "\n", "="));
+        return $this->skipToInTag(array(
+            " ",
+            "\t",
+            "\r",
+            "\n",
+            "="
+        ));
     }
 
+    /**
+     *
+     * @return Ambigous <string, number, unknown_type>
+     */
     function skipToBlanksInTag() {
-        return $this->skipToInTag(array(" ", "\t", "\r", "\n"));
+        return $this->skipToInTag(array(
+            " ",
+            "\t",
+            "\r",
+            "\n"
+        ));
     }
 
+    /**
+     *
+     * @return Ambigous <unknown, string, number, unknown_type>
+     */
     function skipEqualsInTag() {
-        return $this->skipInTag(array("="));
+        return $this->skipInTag(array(
+            "="
+        ));
     }
 
+    /**
+     *
+     * @return Ambigous <string, Ambigous, number, unknown_type>
+     */
     function readValueInTag() {
         $ch = $this->currentChar();
         $value = "";
 
         if ($ch == "\"") {
-            $this->skipInTag(array("\""));
-            $value = $this->skipToInTag(array("\""));
-            $this->skipInTag(array("\""));
+            $this->skipInTag(array(
+                "\""
+            ));
+            $value = $this->skipToInTag(array(
+                "\""
+            ));
+            $this->skipInTag(array(
+                "\""
+            ));
         } else if ($ch == "\'") {
-            $this->skipInTag(array("\'"));
-            $value = $this->skipToInTag(array("\'"));
-            $this->skipInTag(array("\'"));
+            $this->skipInTag(array(
+                "\'"
+            ));
+            $value = $this->skipToInTag(array(
+                "\'"
+            ));
+            $this->skipInTag(array(
+                "\'"
+            ));
         } else {
             $value = $this->skipToBlanksInTag();
         }
@@ -205,6 +315,10 @@ class HtmlParser {
         return $value;
     }
 
+    /**
+     *
+     * @return number string
+     */
     function currentChar() {
         if ($this->iHtmlTextIndex >= $this->iHtmlTextLength) {
             return -1;
@@ -212,6 +326,10 @@ class HtmlParser {
         return $this->iHtmlText{$this->iHtmlTextIndex};
     }
 
+    /**
+     *
+     * @return boolean
+     */
     function moveNext() {
         if ($this->iHtmlTextIndex < $this->iHtmlTextLength) {
             $this->iHtmlTextIndex++;
@@ -221,6 +339,10 @@ class HtmlParser {
         }
     }
 
+    /**
+     *
+     * @return string Ambigous number, number, unknown_type>
+     */
     function skipEndOfTag() {
         $sb = "";
         if (($ch = $this->currentChar()) !== -1) {
@@ -234,6 +356,11 @@ class HtmlParser {
         return $sb;
     }
 
+    /**
+     *
+     * @param string $chars
+     * @return string Ambigous number, number, unknown_type>
+     */
     function skipInTag($chars) {
         $sb = "";
         while (($ch = $this->currentChar()) !== -1) {
@@ -257,6 +384,11 @@ class HtmlParser {
         return $sb;
     }
 
+    /**
+     *
+     * @param string $chars
+     * @return string Ambigous number, number, unknown_type>
+     */
     function skipToInTag($chars) {
         $sb = "";
         while (($ch = $this->currentChar()) !== -1) {
@@ -278,6 +410,10 @@ class HtmlParser {
         return $sb;
     }
 
+    /**
+     *
+     * @return string Ambigous number, number, unknown_type>
+     */
     function skipToElement() {
         $sb = "";
         while (($ch = $this->currentChar()) !== -1) {
@@ -292,9 +428,13 @@ class HtmlParser {
 
     /**
      * Returns text between current position and $needle,
-     * inclusive, or "" if not found. The current index is moved to a point
+     * inclusive, or "" if not found.
+     * The current index is moved to a point
      * after the location of $needle, or not moved at all
      * if nothing is found.
+     *
+     * @param string $needle
+     * @return string
      */
     function skipToStringInTag($needle) {
         $pos = strpos($this->iHtmlText, $needle, $this->iHtmlTextIndex);
@@ -306,7 +446,4 @@ class HtmlParser {
         $this->iHtmlTextIndex = $top;
         return $retvalue;
     }
-
 }
-
-?>

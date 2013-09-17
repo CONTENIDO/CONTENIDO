@@ -23,11 +23,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class TODOCollection extends cApiCommunicationCollection {
 
+    /**
+     *
+     */
     public function __construct() {
         parent::__construct();
         $this->_setItemClass('TODOItem');
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see ItemCollection::select()
+     */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
         if ($where == '') {
             $where = "comtype='todo'";
@@ -72,6 +79,10 @@ class TODOCollection extends cApiCommunicationCollection {
         return $item;
     }
 
+    /**
+     *
+     * @return multitype:string Ambigous <string, string>
+     */
     public function getStatusTypes() {
         $statusTypes = array(
             'new' => i18n('New'),
@@ -83,6 +94,10 @@ class TODOCollection extends cApiCommunicationCollection {
         return ($statusTypes);
     }
 
+    /**
+     *
+     * @return multitype:string Ambigous <string, string>
+     */
     public function getPriorityTypes() {
         $priorityTypes = array(
             'low' => i18n('Low'),
@@ -102,6 +117,11 @@ class TODOCollection extends cApiCommunicationCollection {
  * @subpackage GenericDB_Model
  */
 class TODOItem extends cApiCommunication {
+
+    /**
+     * (non-PHPdoc)
+     * @see Item::setProperty()
+     */
     public function setProperty($type, $name, $value, $client = 0) {
         if ($type == 'todo' && $name == 'emailnoti') {
             if ($value) {
@@ -125,6 +145,13 @@ class TODOItem extends cApiCommunication {
  */
 class TODOLink extends cHTMLLink {
 
+    /**
+     *
+     * @param unknown_type $itemtype
+     * @param unknown_type $itemid
+     * @param unknown_type $subject
+     * @param unknown_type $message
+     */
     public function __construct($itemtype, $itemid, $subject, $message) {
         global $sess;
         parent::__construct();

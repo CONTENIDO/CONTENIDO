@@ -2,15 +2,15 @@
 /**
  * This file contains the update notifier class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Security
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Dominik Ziegler
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains function for the update notifier.
  *
- * @package    Core
+ * @package Core
  * @subpackage Security
  */
 class cUpdateNotifier {
@@ -252,10 +252,13 @@ class cUpdateNotifier {
     /**
      * Constructor of Contenido_UpdateNotifier
      *
-     * @param string $sConVersion
+     * @param array $aCfg
+     * @param cApiUser $oUser
+     * @param cPermission $oPerm
+     * @param cSession $oSession
+     * @param string $sBackendLanguage
      */
     public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
-
         $this->oProperties = new cApiPropertyCollection();
         $this->oSession = $oSession;
         $this->aCfg = $aCfg;
@@ -318,7 +321,7 @@ class cUpdateNotifier {
     /**
      * Updates the system property for activation/deactivation requests
      *
-     * @param $sAction string
+     * @param string $sAction
      */
     protected function updateSystemProperty($sAction) {
         if ($sAction == "activate") {
@@ -427,8 +430,8 @@ class cUpdateNotifier {
             }
         }
 
-        //echo $this->sXMLContent;
-        //echo $this->sRSSContent;
+        // echo $this->sXMLContent;
+        // echo $this->sRSSContent;
         if ($this->sXMLContent != "") {
 
             $this->oXML = simplexml_load_string($this->sXMLContent);
@@ -449,6 +452,8 @@ class cUpdateNotifier {
 
     /**
      * Handles the update of files coming per vendor host
+     *
+     * @param array $aXMLContent
      */
     protected function handleVendorUpdate($aXMLContent) {
         $bValidXMLFile = true;
@@ -505,7 +510,6 @@ class cUpdateNotifier {
         $this->sRSSContent = $aXMLContent[$this->sRSSFile];
         $this->updateCacheFiles($aXMLContent);
         $this->updateHashProperty($aXMLContent);
-
     }
 
     /**
@@ -534,7 +538,7 @@ class cUpdateNotifier {
     /**
      * Updates the files in cache
      *
-     * @param $aRSSContent array
+     * @param array $aRSSContent
      */
     protected function updateCacheFiles($aRSSContent) {
         $aWriteCache = array();
@@ -564,7 +568,7 @@ class cUpdateNotifier {
     /**
      * Updates the xml file hash in the property table
      *
-     * @param $aRSSContent array
+     * @param array $aRSSContent
      */
     protected function updateHashProperty($aXMLContent) {
         $sXML = $aXMLContent[$this->sVendorXMLFile];
@@ -599,7 +603,7 @@ class cUpdateNotifier {
     /**
      * Generates the output for the backend
      *
-     * @param $sMessage string
+     * @param string $sMessage
      * @return string
      */
     protected function renderOutput($sMessage) {
@@ -640,7 +644,7 @@ class cUpdateNotifier {
     /**
      * Generates the output for the rss informations
      *
-     * @param $oTpl
+     * @param cTemplate $oTpl
      * @return cTemplate CONTENIDO template object
      */
     protected function renderRss($oTpl) {
@@ -660,7 +664,8 @@ class cUpdateNotifier {
                 $description = $doc->getXpathValue('*/channel/item/description', $iCnt);
                 $date = $doc->getXpathValue('*/channel/item/pubDate', $iCnt);
 
-                // hotfix do not call conHtmlentities because of different umlaut handling on PHP 5.3 and PHP 5.4
+                // hotfix do not call conHtmlentities because of different
+                // umlaut handling on PHP 5.3 and PHP 5.4
                 // perhaps it is a bug in conHtmlentities.
                 $title = utf8_encode($title);
                 $sText = utf8_encode($description);
@@ -707,6 +712,7 @@ class cUpdateNotifier {
      *
      * @todo add a retry counter and a deathpoint with warning in errorlog
      * @param string $sUrl
+     * @return boolean Ambigous string>
      */
     private function fetchUrl($sUrl) {
         if ($this->bVendorHostReachable != true) {
@@ -729,17 +735,15 @@ class cUpdateNotifier {
 
             while (!feof($oSocket)) {
                 $sVendorFile .= fgets($oSocket, 128);
-
             }
 
             $sSeparator = strpos($sVendorFile, "\r\n\r\n");
             $sVendorFile = substr($sVendorFile, $sSeparator + 4);
 
-
             fclose($oSocket);
         }
 
-        return ($sVendorFile != "") ? $sVendorFile : false;
+        return ($sVendorFile != "")? $sVendorFile : false;
     }
 
     /**
@@ -778,5 +782,4 @@ class cUpdateNotifier {
 
         return $sOutput;
     }
-
 }

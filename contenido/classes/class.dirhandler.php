@@ -132,11 +132,12 @@ class cDirHandler {
      * Deletes a directory and all of its content.
      *
      * @param string $dirname the name of the directory which should be deleted
+     * @throws cInvalidArgumentException if dirname is empty
      * @return bool Returns true on success or false on failure.
      */
     public static function recursiveRmdir($dirname) {
         if ($dirname == '') {
-            throw new cInvalidArgumentException("Directory name must not be empty.");
+            throw new cInvalidArgumentException('Directory name must not be empty.');
         }
 
         // make sure $dirname ends with a slash
@@ -160,12 +161,13 @@ class cDirHandler {
 
     /**
      * This functions reads the content from given directory.
-     * optionally options are to read the directory recursive or to list only directories.
+     * Optionally options are to read the directory recursive or to list only
+     * directories.
      *
      * @param string $dirName directory
-     *
      * @param bool $recursive flag to read recursive
      * @param bool $dirOnly flag to list only directories
+     * @return boolean Ambigous multitype:unknown string mixed >
      */
     public static function read($dirName, $recursive = false, $dirOnly = false) {
         if (!is_dir($dirName)) {
@@ -213,6 +215,12 @@ class cDirHandler {
         return $dirContent;
     }
 
+    /**
+     * Check if given filename is either '.' or '..'.
+     *
+     * @param string $fileName
+     * @return boolean
+     */
     public static function fileNameIsDot($fileName) {
         if ($fileName != '.' && $fileName != '..') {
             return false;
@@ -220,5 +228,4 @@ class cDirHandler {
             return true;
         }
     }
-
 }

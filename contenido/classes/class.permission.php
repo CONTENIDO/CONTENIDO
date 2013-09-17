@@ -2,15 +2,15 @@
 /**
  * This file contains the the permission class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Boris Erdmann, Kristian Koehntopp
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Boris Erdmann, Kristian Koehntopp
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class handles the permission management
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
  */
 class cPermission {
@@ -62,7 +62,7 @@ class cPermission {
 
         $oGroupMemberColl = new cApiGroupMemberCollection();
         $oGroupMemberColl->select("user_id='" . $oGroupMemberColl->escape($userId) . "'");
-        while ($oItem = $oGroupMemberColl->next()) {
+        while (false !== $oItem = $oGroupMemberColl->next()) {
             $groups[] = $oItem->get('group_id');
         }
 
@@ -85,7 +85,7 @@ class cPermission {
 
         $oAreaColl = new cApiAreaCollection();
         $oAreaColl->select("name='" . $oAreaColl->escape($area) . "'");
-        if ($oItem = $oAreaColl->next()) {
+        if (false !== $oItem = $oAreaColl->next()) {
             $this->areacache[$area] = $oItem->get('idarea');
             $area = $oItem->get('idarea');
         }
@@ -109,7 +109,7 @@ class cPermission {
 
         $oActionColl = new cApiActionCollection();
         $oActionColl->select("name='" . $oActionColl->escape($action) . "'");
-        if ($oItem = $oActionColl->next()) {
+        if (false !== $oItem = $oActionColl->next()) {
             $this->actioncache[$action] = $oItem->get('idaction');
             $action = $oItem->get('idaction');
         }
@@ -178,7 +178,7 @@ class cPermission {
         if (!is_array($area_rights)) {
             $area_rights = array();
         }
-        while ($oItem = $oRightColl->next()) {
+        while (false !== $oItem = $oRightColl->next()) {
             $idarea = $oItem->get('idarea');
             $idaction = $oItem->get('idaction');
             $area_rights[$idarea][$idaction] = true;
@@ -187,7 +187,7 @@ class cPermission {
         // Select Rights for Article and Sructure (Attention Hard code Areas)
         $oAreaColl = new cApiAreaCollection();
         $oAreaColl->select();
-        while ($oItem = $oAreaColl->next()) {
+        while (false !== $oItem = $oAreaColl->next()) {
             $idarea = $oItem->get('idarea');
             $tmp_area[] = $idarea;
         }
@@ -199,7 +199,7 @@ class cPermission {
         $sWhere .= " AND idarea IN ('$tmp_area_string')";
         $sWhere .= "AND idcat != 0";
         $oRightColl->select($sWhere);
-        while ($oItem = $oRightColl->next()) {
+        while (false !== $oItem = $oRightColl->next()) {
             $idarea = $oItem->get('idarea');
             $idaction = $oItem->get('idaction');
             $idcat = $oItem->get('idcat');
@@ -207,6 +207,12 @@ class cPermission {
         }
     }
 
+    /**
+     *
+     * @param string $area
+     * @param string $action
+     * @return boolean
+     */
     public function have_perm_area_action_anyitem($area, $action = 0) {
         global $item_rights;
 
@@ -220,6 +226,13 @@ class cPermission {
         return (isset($item_rights[$area][$action]));
     }
 
+    /**
+     *
+     * @param string $area
+     * @param string $action
+     * @param mixed $itemid
+     * @return boolean
+     */
     public function have_perm_area_action_item($area, $action, $itemid) {
         global $item_rights, $auth, $client, $lang, $cfg;
 
@@ -257,7 +270,7 @@ class cPermission {
                 return false;
             }
 
-            while ($oItem = $oRightsColl->next()) {
+            while (false !== $oItem = $oRightsColl->next()) {
                 $item_rights[$oItem->get('idarea')][$oItem->get('idaction')][$oItem->get('idcat')] = $oItem->get('idcat');
             }
 
@@ -271,11 +284,22 @@ class cPermission {
         return false;
     }
 
+    /**
+     *
+     * @param string $area
+     * @return Ambigous <string, int|string, mixed, unknown>
+     */
     public function getParentAreaId($area) {
         $oAreaColl = new cApiAreaCollection();
         return $oAreaColl->getParentAreaID($area);
     }
 
+    /**
+     *
+     * @param string $area
+     * @param string $action
+     * @return boolean
+     */
     public function have_perm_area_action($area, $action = 0) {
         global $area_rights, $client, $lang, $cfg;
 
@@ -307,6 +331,12 @@ class cPermission {
         return true;
     }
 
+    /**
+     *
+     * @param int $client
+     * @param int $lang
+     * @return boolean
+     */
     public function have_perm_client_lang($client, $lang) {
         global $auth;
 
@@ -431,6 +461,7 @@ class cPermission {
      * Checks if the given user has sysadmin permission
      *
      * @param object $oUser User object to check against
+     * @return boolean
      */
     public function isSysadmin($oUser) {
         $oUser = $this->_checkUserObject($oUser);
@@ -448,10 +479,12 @@ class cPermission {
      * Checks if the given object is a user object.
      *
      * If oUser is false, initialize the object from the currently logged in
-     * user. If oUser is not an object of the class cApiUser, throw an exception.
+     * user. If oUser is not an object of the class cApiUser, throw an
+     * exception.
      *
      * @param object $oUser User object
-     * @throws cInvalidArgumentException if the given or constructed user is not a cApiUser object
+     * @throws cInvalidArgumentException if the given or constructed user is not
+     *         a cApiUser object
      * @return object
      */
     private function _checkUserObject($oUser) {
@@ -472,6 +505,11 @@ class cPermission {
         return $oUser;
     }
 
+    /**
+     *
+     * @param string $p
+     * @return boolean
+     */
     public function have_perm_client($p = 'x') {
         global $auth, $client;
 
@@ -605,6 +643,11 @@ class cPermission {
         return $flg;
     }
 
+    /**
+     *
+     * @param string|int $mainarea
+     * @return Ambigous <number, string|int, multitype:, mixed, boolean>
+     */
     public function showareas($mainarea) {
         global $area_tree, $sess, $perm, $cfg;
 
@@ -634,5 +677,4 @@ class cPermission {
         }
         return $mainarea;
     }
-
 }

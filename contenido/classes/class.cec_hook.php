@@ -2,24 +2,23 @@
 /**
  * This file contains the CEC hook class.
  *
- * @package          Core
- * @subpackage       CEC
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage CEC
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo A. Hummel
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo A. Hummel
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Static CEC Hook class, provides some public methods to process registered
- * chains
- * at CEC (CONTENIDO Extension Chainer).
+ * chains at CEC (CONTENIDO Extension Chainer).
  *
  * Usage:
  * <code>
@@ -35,7 +34,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * $param = array('foo' => $bar, 'foo2' => $bar2);
  * $param = cApiCecHook::execute('Contenido.Content.Somewhere', $param);
  *
- *
  * // example of executing a cec without a parameter but a return value (with
  * predefined
  * // default return value)
@@ -49,14 +47,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * cApiCecHook::executeAndReturn('Contenido.Frontend.BaseHrefGeneration',
  * $baseHref);
  *
- *
  * // example of executing a cec with a break condition and default return value
  * cApiCecHook::setBreakCondition(false, true); // break condition = "false",
  * default return value = "true"
- * $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit',
+ * $allow =
+ * cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit',
  * $lang, $idcat, $idart, $auth->auth['uid']);
  * if ($allow == false) {
- *     die('You're not coming in!');
+ * die('You're not coming in!');
  * }
  *
  * // another example of executing a cec with a break condition and default
@@ -67,11 +65,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess',
  * $lang, $idcat, $auth->auth['uid']);
  * if ($allow == false) {
- *     die('I said, you're not coming in!');
+ * die('I said, you're not coming in!');
  * }
  * </code>
  *
- * @package    Core
+ * @package Core
  * @subpackage CEC
  */
 class cApiCecHook {
@@ -128,28 +126,19 @@ class cApiCecHook {
      * @throws cInvalidArgumentException if the given position is less than 1
      */
     public static function setReturnArgumentPos($pos) {
-        if ((int)$pos < 1) {
+        if ((int) $pos < 1) {
             throw new cInvalidArgumentException('Return position has to be greater or equal than 1.');
         }
-        self::$_returnArgumentPos = (int)$pos;
+        self::$_returnArgumentPos = (int) $pos;
     }
 
     /**
      * Method to execute registered functions for CONTENIDO Extension Chainer
      * (CEC).
-     *
      * Gets the desired CEC iterator and executes each registered chain function
-     * by passing the achieved
-     * arguments to it. There is
-     *
-     * @param string $chainName The chain name to process
-     * @param mixed  $param1    First parameter which will be forwarded to
-     *                          registered chain functions
-     * @param mixed  $param2    Second parameter which will be forwarded to
-     *                          registered chain functions
-     * @param mixed  $param3    Third parameter which will be forwarded to
-     *                          registered chain functions
-     *                          NOTE: There is no restriction for number of passed parameter.
+     * by passing the given arguments to it. NOTE: the first param is interpeted
+     * as $chainName. NOTE: There is no restriction for number of passed
+     * parameter.
      */
     public static function execute() {
         // get arguments
@@ -177,24 +166,13 @@ class cApiCecHook {
     /**
      * Method to execute registered functions for CONTENIDO Extension Chainer
      * (CEC).
-     *
      * Gets the desired CEC iterator and executes each registered chain
-     * function. You can pass as much
-     * parameter as you want.
-     *
-     * @param string $chainName The chain name to process
-     * @param mixed  $param1    First parameter which will be forwarded to
-     *                          registered chain functions
-     * @param mixed  $param2    Second parameter which will be forwarded to
-     *                          registered chain functions
-     * @param mixed  $param3    Third parameter which will be forwarded to
-     *                          registered chain functions
-     *                          NOTE: There is no restriction for number of passed parameter.
+     * function. You can pass as much parameter as you want. NOTE: the first
+     * param is interpeted as $chainName. NOTE: There is no restriction for
+     * number of passed parameter. NOTE: If no chain function is registered,
+     * $_defaultReturnValue will be returned.
      *
      * @return mixed Parameter changed/processed by chain functions.
-     *         Note: If no chain function is registered, the first parameter
-     *         $param after
-     *         $chainName will be returned
      */
     public static function executeAndReturn() {
         // get arguments
@@ -238,17 +216,10 @@ class cApiCecHook {
      * CEC function to process chains untill a break condition occurs.
      *
      * Gets the desired CEC iterator and executes each registered chain function
-     * as long as defined break
-     * condition doesn't occur.
-     *
-     * @param string $chainName The chain name to process
-     * @param mixed  $param1    First parameter which will be forwarded to
-     *                          registered chain functions
-     * @param mixed  $param2    Second parameter which will be forwarded to
-     *                          registered chain functions
-     * @param mixed  $param3    Third parameter which will be forwarded to
-     *                          registered chain functions
-     *                          NOTE: There is no restriction for number of passed parameter.
+     * as long as defined break condition doesn't occur. NOTE: the first
+     * param is interpeted as $chainName. NOTE: There is no restriction for
+     * number of passed parameter. NOTE: If no chain function is registered,
+     * $_defaultReturnValue will be returned.
      *
      * @return mixed The break condition or it's default value
      */
@@ -300,15 +271,17 @@ class cApiCecHook {
     /**
      * Used to debug some status informations.
      *
-     * @todo Implement cec_hook debug mode for automatic logging when activated. Writes the debug value into a logfile (see contenido/data/log/cec_hook_debug.log).
+     * @todo Implement cec_hook debug mode for automatic logging when activated.
+     *       Writes the debug value into a logfile (see
+     *       contenido/data/log/cec_hook_debug.log).
      *
-     * @param mixed  $var The variable to dump
+     * @param mixed $var The variable to dump
      * @param string $msg Additional message
      */
     private static function _debug($var, $msg = '') {
         global $cfg;
 
-        $content = ($msg !== '') ? $msg . ': ' : '';
+        $content = ($msg !== '')? $msg . ': ' : '';
         if (is_object($var) || is_array($var)) {
             $content .= print_r($var, true);
         } else {
@@ -320,6 +293,5 @@ class cApiCecHook {
 
         cDebug::out($content);
     }
-
 }
 

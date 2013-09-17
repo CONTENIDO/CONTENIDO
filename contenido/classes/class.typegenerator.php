@@ -26,31 +26,31 @@ class cTypeGenerator {
 
     /**
      *
-     * @var $cfg
+     * @var array
      */
     private $cfg = NULL;
 
     /**
      *
-     * @var $db
+     * @var cDb
      */
     private static $db = NULL;
 
     /**
      *
-     * @var $a_content
+     * @var array
      */
     private static $a_content = array();
 
     /**
      *
-     * @var $_idart
+     * @var int
      */
     private $_idart = NULL;
 
     /**
      *
-     * @var $_idlang
+     * @var int
      */
     private $_idlang = NULL;
 
@@ -58,7 +58,6 @@ class cTypeGenerator {
      * Constructor function
      */
     public function __construct() {
-
         $this->_idart = cRegistry::getArticleId(true);
         $this->_idlang = cRegistry::getLanguageId(true);
         $this->cfg = cRegistry::getConfig();
@@ -88,8 +87,9 @@ class cTypeGenerator {
      *
      * @param string $type Content type, e. g. CMS_HTMLHEAD
      * @return string The full path e. g.
-     * {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
-     * for content type CMS_HTMLHEAD
+     *
+     *         {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
+     *         for content type CMS_HTMLHEAD
      */
     protected function _getContentTypeCodeFilePathName($type) {
         global $cfg;
@@ -126,27 +126,29 @@ class cTypeGenerator {
      *
      * @param string $type
      * @param int $index
+     * @return string
      */
     private function _processCmsTags($type, $index) {
-        $_typeList = array();
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
-        while ($oType = $oTypeColl->next()) {
-            $_typeList[] = $oType->toObject();
+
+        $typeList = array();
+        while (false !== $oType = $oTypeColl->next()) {
+            $typeList[] = $oType->toObject();
         }
 
         // Replace all CMS_TAGS[]
-        foreach ($_typeList as $_typeItem) {
+        foreach ($typeList as $typeItem) {
 
-            if ($type === $_typeItem->type) {
+            if ($type === $typeItem->type) {
 
-                $items[] = $_typeItem->type;
+                $items[] = $typeItem->type;
 
-                $typeClassName = $this->_getContentTypeClassName($_typeItem->type);
-                $typeCodeFile = $this->_getContentTypeCodeFilePathName($_typeItem->type);
-                $cTypeObject = new $typeClassName(self::$a_content[$this->_idart][$_typeItem->type][$index], $index, $items);
+                $typeClassName = $this->_getContentTypeClassName($typeItem->type);
+                $typeCodeFile = $this->_getContentTypeCodeFilePathName($typeItem->type);
+
+                $cTypeObject = new $typeClassName(self::$a_content[$this->_idart][$typeItem->type][$index], $index, $items);
                 if (cRegistry::isBackendEditMode()) {
-
                     $tmp = $cTypeObject->generateEditCode();
                 } else {
                     $tmp = $cTypeObject->generateViewCode();
@@ -156,7 +158,6 @@ class cTypeGenerator {
             }
         }
     }
-
 
     /**
      * Helper function to call a private function
@@ -169,7 +170,6 @@ class cTypeGenerator {
     public function getGeneratedCmsTag($type, $index) {
         return $this->_processCmsTags($type, $index);
     }
-
 }
 
 ?>

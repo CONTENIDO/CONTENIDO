@@ -2,15 +2,15 @@
 /**
  * This file contains the the pager class.
  *
- * @package    Core
+ * @package Core
  * @subpackage GUI
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Timo Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -19,44 +19,50 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * cPager
  * Basic pager class without presentation logic
  *
- * @package    Core
+ * @package Core
  * @subpackage GUI
  */
 class cPager {
 
     /**
      * Amount of items
-     * @var integer
+     *
+     * @var int
      */
     private $_items;
 
     /**
      * Item padding (before and after the current item)
-     * @var integer
+     *
+     * @var int
      */
     private $_itemPadding;
 
     /**
      * Items on the left side
-     * @var integer
+     *
+     * @var int
      */
     private $_previousItems;
 
     /**
      * Items on the right side
-     * @var integer
+     *
+     * @var int
      */
     private $_nextItems;
 
     /**
      * Current page
-     * @var integer
+     *
+     * @var int
      */
     private $_currentPage;
 
     /**
      * Items per page
-     * @var integer
+     *
+     * @var int
      */
     private $_itemsPerPage;
 
@@ -64,9 +70,9 @@ class cPager {
      * Constructor Function
      * Initializes the pager
      *
-     * @param $items         int Amount of items
-     * @param $itemsPerPage int Items displayed per page
-     * @param $currentPage    int Defines the current page
+     * @param int $items Amount of items
+     * @param int $itemsPerPage Items displayed per page
+     * @param int $currentPage Defines the current page
      */
     public function __construct($items, $itemsPerPage, $currentPage) {
         $this->_items = $items;
@@ -81,6 +87,8 @@ class cPager {
 
     /**
      * Returns the current page
+     *
+     * @return int
      */
     public function getCurrentPage() {
         return $this->_currentPage;
@@ -131,7 +139,7 @@ class cPager {
      * Returns an array with the pager structure.
      *
      * Array format:
-     * Key  : Page Number
+     * Key : Page Number
      * Value: | for "...", "current" for the current item, page number otherwise
      *
      * @return array Pager structure
@@ -178,5 +186,4 @@ class cPager {
 
         return ($items);
     }
-
 }
