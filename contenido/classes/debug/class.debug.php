@@ -2,16 +2,16 @@
 /**
  * This file contains the static debugger class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Rudi Bieller
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Rudi Bieller
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -19,28 +19,60 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Debugger class
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
  */
 class cDebug {
 
+    /**
+     *
+     * @var string
+     */
     const DEBUGGER_VISIBLE = 'visible';
+
+    /**
+     *
+     * @var string
+     */
     const DEBUGGER_VISIBLE_ADV = 'visible_adv';
+
+    /**
+     *
+     * @var string
+     */
     const DEBUGGER_HIDDEN = 'hidden';
+
+    /**
+     *
+     * @var string
+     */
     const DEBUGGER_FILE = 'file';
+
+    /**
+     *
+     * @var string
+     */
     const DEBUGGER_VISIBLE_AND_FILE = 'vis_and_file';
+
+    /**
+     *
+     * @var string
+     */
     const DEBUGGER_DEVNULL = 'devnull';
 
     /**
      * Default debugger, defined in system settings
+     *
      * @var string
      */
     protected static $_defaultDebuggerName;
 
     /**
-     * Returns instance of debugger. If not defined, it returns the debugger from the current system settings.
+     * Returns instance of debugger.
+     * If not defined, it returns the debugger from the current system settings.
      *
-     * @param  string $sType  The debugger to get, empty string to get debugger defined in system settings
+     * @param string $sType The debugger to get, empty string to get debugger
+     *            defined in system settings
      *
      * @throws cInvalidArgumentException If type of debugger is unknown
      * @return cDebugInterface
@@ -79,20 +111,25 @@ class cDebug {
     }
 
     /**
-     * Prints a debug message if the settings allow it. The debug messages will be
-     * in a textrea in the header and in the file debuglog.txt. All messages are immediately
-     * written to the filesystem but they will only show up when cDebug::showAll() is called.
+     * Prints a debug message if the settings allow it.
+     * The debug messages will be
+     * in a textrea in the header and in the file debuglog.txt. All messages are
+     * immediately
+     * written to the filesystem but they will only show up when
+     * cDebug::showAll() is called.
      *
-     * @param  string $message  Message to display. NOTE: You can use buildStackString to show stacktraces
+     * @param string $message Message to display. NOTE: You can use
+     *            buildStackString to show stacktraces
      */
     public static function out($message) {
         self::getDebugger()->out($message);
     }
 
     /**
-     * Adds a variable to the debugger. This variable will be watched.
+     * Adds a variable to the debugger.
+     * This variable will be watched.
      *
-     * @param mixed  $var   A variable or an object
+     * @param mixed $var A variable or an object
      * @param string $label An optional description for the variable
      */
     public static function add($var, $label = '') {
@@ -108,6 +145,7 @@ class cDebug {
 
     /**
      * Returns default debugger name.
+     *
      * @return string
      */
     public static function getDefaultDebuggerName() {
@@ -116,6 +154,7 @@ class cDebug {
 
     /**
      * Returns the debugger defined in system settings.
+     *
      * @return string
      */
     protected static function _getSystemSettingDebugger() {
@@ -134,5 +173,4 @@ class cDebug {
 
         return self::$_defaultDebuggerName;
     }
-
 }

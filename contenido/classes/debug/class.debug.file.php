@@ -2,15 +2,15 @@
 /**
  * This file contains the file debug class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Rudi Bieller
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -21,18 +21,47 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * this object writes
  * the info to a file located in /data/logs/debug.log.
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
  */
 class cDebugFile implements cDebugInterface {
 
+    /**
+     * Singleton instance
+     *
+     * @var cDebugFile
+     */
     private static $_instance;
 
+    /**
+     *
+     * @var string
+     */
     private $_sPathToLogs;
 
+    /**
+     *
+     * @var string
+     */
     private $_sFileName;
 
+    /**
+     *
+     * @var string
+     */
     private $_sPathToFile;
+
+    /**
+     * Return singleton instance.
+     *
+     * @return cDebugFile
+     */
+    public static function getInstance() {
+        if (self::$_instance == null) {
+            self::$_instance = new cDebugFile();
+        }
+        return self::$_instance;
+    }
 
     /**
      * Constructor
@@ -46,15 +75,10 @@ class cDebugFile implements cDebugInterface {
     }
 
     /**
-     * static
+     * (non-PHPdoc)
+     *
+     * @see cDebugInterface::out()
      */
-    static public function getInstance() {
-        if (self::$_instance == null) {
-            self::$_instance = new cDebugFile();
-        }
-        return self::$_instance;
-    }
-
     public function out($msg) {
         if (cFileHandler::writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
@@ -100,5 +124,4 @@ class cDebugFile implements cDebugInterface {
      */
     public function showAll() {
     }
-
 }

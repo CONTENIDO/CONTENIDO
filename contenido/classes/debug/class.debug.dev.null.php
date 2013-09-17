@@ -2,15 +2,15 @@
 /**
  * This file contains the dev null debug class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Rudi Bieller
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,12 +20,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Note: Be careful when using $bExit = true as this will NOT cause a die() in
  * this object!
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
  */
 class cDebugDevNull implements cDebugInterface {
 
+    /**
+     * Singleton instance
+     *
+     * @var cDebugDevNull
+     */
     private static $_instance;
+
+    /**
+     * Return singleton instance.
+     *
+     * @return cDebugDevNull
+     */
+    public static function getInstance() {
+        if (self::$_instance == null) {
+            self::$_instance = new cDebugDevNull();
+        }
+        return self::$_instance;
+    }
 
     /**
      * Constructor
@@ -33,17 +50,12 @@ class cDebugDevNull implements cDebugInterface {
     private function __construct() {
     }
 
-    public function out($msg) {
-    }
-
     /**
-     * static
+     * (non-PHPdoc)
+     *
+     * @see cDebugInterface::out()
      */
-    public static function getInstance() {
-        if (self::$_instance == null) {
-            self::$_instance = new cDebugDevNull();
-        }
-        return self::$_instance;
+    public function out($msg) {
     }
 
     /**
@@ -77,5 +89,4 @@ class cDebugDevNull implements cDebugInterface {
      */
     public function showAll() {
     }
-
 }

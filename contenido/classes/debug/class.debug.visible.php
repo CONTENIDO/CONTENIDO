@@ -2,15 +2,15 @@
 /**
  * This file contains the visible debug class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Rudi Bieller
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -26,16 +26,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cDebugVisible implements cDebugInterface {
 
+    /**
+     * Singleton instance
+     *
+     * @var cDebugVisible
+     */
     private static $_instance;
 
     /**
-     * Constructor
-     */
-    private function __construct() {
-    }
-
-    /**
-     * static
+     * Return singleton instance.
+     *
+     * @return cDebugVisible
      */
     static public function getInstance() {
         if (self::$_instance == null) {
@@ -44,6 +45,17 @@ class cDebugVisible implements cDebugInterface {
         return self::$_instance;
     }
 
+    /**
+     * Constructor
+     */
+    private function __construct() {
+    }
+
+    /**
+     * (non-PHPdoc)
+     *
+     * @see cDebugInterface::out()
+     */
     public function out($msg) {
     }
 
@@ -135,5 +147,4 @@ class cDebugVisible implements cDebugInterface {
      */
     public function showAll() {
     }
-
 }

@@ -2,15 +2,15 @@
 /**
  * This file contains the visible adv debug class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Rudi Bieller
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -26,16 +26,42 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * When using method Debug_VisibleAdv::showAll() you'll produce invalid HTML
  * when having an XHTML doctype.
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
  */
 class cDebugVisibleAdv implements cDebugInterface, Countable {
 
+    /**
+     * Singleton instance
+     *
+     * @var cDebugVisibleAdv
+     */
     private static $_instance;
 
+    /**
+     *
+     * @var array
+     */
     private $_aItems;
 
+    /**
+     *
+     * @var string
+     */
     private $_buffer;
+
+    /**
+     * Return singleton instance.
+     *
+     * @return cDebugVisibleAdv
+     */
+    public static function getInstance() {
+        if (self::$_instance == NULL) {
+            self::$_instance = new cDebugVisibleAdv();
+        }
+
+        return self::$_instance;
+    }
 
     /**
      * Constructor
@@ -45,20 +71,9 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     }
 
     /**
-     * static
-     */
-    static public function getInstance() {
-        if (self::$_instance == NULL) {
-            self::$_instance = new cDebugVisibleAdv();
-        }
-
-        return self::$_instance;
-    }
-
-    /**
      * Add a Debug item to internal collection.
      *
-     * @param mixed  $mVariable
+     * @param mixed $mVariable
      * @param string $sVariableDescription
      */
     public function add($mVariable, $sVariableDescription = '') {
@@ -97,7 +112,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 
             $i = 1;
             foreach ($this->_aItems as $oItem) {
-                $sItemName = strlen($oItem->getDescription()) > 0 ? $oItem->getDescription() : ('debug item #' . $i);
+                $sItemName = strlen($oItem->getDescription()) > 0? $oItem->getDescription() : ('debug item #' . $i);
                 $sItemValue = $this->_prepareValue($oItem->getValue());
 
                 $tpl->set("d", "DBG_ITEM_COUNT", $i);
@@ -196,10 +211,10 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
     /**
      * Outputs contents of passed variable in a preformatted, readable way
      *
-     * @param mixed   $mVariable            The variable to be displayed
-     * @param string  $sVariableDescription The variable's name or description
-     * @param boolean $bExit                If set to true, your app will die() after output of
-     *                                      current var
+     * @param mixed $mVariable The variable to be displayed
+     * @param string $sVariableDescription The variable's name or description
+     * @param boolean $bExit If set to true, your app will die() after output of
+     *        current var
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         try {
@@ -210,33 +225,27 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
         }
         $oDbgVisible->show($mVariable, $sVariableDescription, $bExit);
     }
-
 }
 
 /**
  * An object representing one Debug item of a Debug_VisibleBlock.
- * @package    Core
+ *
+ * @package Core
  * @subpackage Debug
  */
 class cDebugVisibleAdvItem {
 
+    /**
+     *
+     * @var mixed
+     */
     private $_mValue;
 
+    /**
+     *
+     * @var string
+     */
     private $_sDescription;
-
-    /**
-     * Set value of item
-     */
-    public function setValue($mValue) {
-        $this->_mValue = $mValue;
-    }
-
-    /**
-     * Set name/description of item
-     */
-    public function setDescription($sDescription) {
-        $this->_sDescription = $sDescription;
-    }
 
     /**
      * Get value of item
@@ -248,11 +257,29 @@ class cDebugVisibleAdvItem {
     }
 
     /**
+     * Set value of item
+     *
+     * @param mixed $mValue
+     */
+    public function setValue($mValue) {
+        $this->_mValue = $mValue;
+    }
+
+    /**
      * Get name/description of item
      *
      * @return string
      */
     public function getDescription() {
         return $this->_sDescription;
+    }
+
+    /**
+     * Set name/description of item
+     *
+     * @param string $sDescription
+     */
+    public function setDescription($sDescription) {
+        $this->_sDescription = $sDescription;
     }
 }

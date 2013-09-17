@@ -2,15 +2,15 @@
 /**
  * This file contains the file and vis adv debug class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Rudi Bieller
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -21,30 +21,57 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * this object writes
  * the info to a file located in /data/logs/debug.log.
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
  */
 class cDebugFileAndVisAdv extends cDebugVisibleAdv {
 
+    /**
+     * Singleton instance
+     *
+     * @var cDebugFileAndVisAdv
+     * @todo should be private
+     */
     protected static $_instance;
 
+    /**
+     *
+     * @var array
+     */
     private $_aItems;
 
+    /**
+     *
+     * @var string
+     */
     private $_filePathName;
 
-    private function __construct() {
-        global $cfg;
-        $this->_aItems = array();
-        $this->_filePathName = $cfg['path']['contenido_logs'] . 'debug.log';
-    }
-
-    static public function getInstance() {
+    /**
+     * Return singleton instance.
+     *
+     * @return cDebugFileAndVisAdv
+     */
+    public static function getInstance() {
         if (self::$_instance == null) {
             self::$_instance = new cDebugFileAndVisAdv();
         }
         return self::$_instance;
     }
 
+    /**
+     * Constructor
+     */
+    private function __construct() {
+        global $cfg;
+        $this->_aItems = array();
+        $this->_filePathName = $cfg['path']['contenido_logs'] . 'debug.log';
+    }
+
+    /**
+     * (non-PHPdoc)
+     *
+     * @see cDebugVisibleAdv::out()
+     */
     public function out($msg) {
         parent::out($msg);
 
@@ -54,6 +81,11 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see cDebugVisibleAdv::show()
+     */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         parent::show($mVariable, $sVariableDescription, $bExit);
 
@@ -63,5 +95,4 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
             cFileHandler::write($this->_filePathName, $sContent, true);
         }
     }
-
 }

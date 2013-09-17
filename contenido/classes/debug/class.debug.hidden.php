@@ -2,15 +2,15 @@
 /**
  * This file contains the hidden debug class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Rudi Bieller
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Rudi Bieller
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,21 +18,22 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Debug object to show info hidden in HTML comment-blocks.
  *
- * @package    Core
+ * @package Core
  * @subpackage Debug
  */
 class cDebugHidden implements cDebugInterface {
 
+    /**
+     * Singleton instance
+     *
+     * @var cDebugHidden
+     */
     private static $_instance;
 
     /**
-     * Constructor
-     */
-    private function __construct() {
-    }
-
-    /**
-     * static
+     * Return singleton instance.
+     *
+     * @return cDebugHidden
      */
     static public function getInstance() {
         if (self::$_instance == null) {
@@ -41,6 +42,17 @@ class cDebugHidden implements cDebugInterface {
         return self::$_instance;
     }
 
+    /**
+     * Constructor
+     */
+    private function __construct() {
+    }
+
+    /**
+     * (non-PHPdoc)
+     *
+     * @see cDebugInterface::out()
+     */
     public function out($msg) {
         echo ("\n <!-- dbg\n");
         echo ($msg);
@@ -95,5 +107,4 @@ class cDebugHidden implements cDebugInterface {
      */
     public function showAll() {
     }
-
 }
