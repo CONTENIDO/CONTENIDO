@@ -23,12 +23,27 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cDatatypeNumber extends cDatatype {
 
+    /**
+     *
+     * @var int
+     */
     protected $_iPrecision;
 
+    /**
+     *
+     * @var string
+     */
     protected $_sThousandSeparatorCharacter;
 
+    /**
+     *
+     * @var string
+     */
     protected $_sDecimalPointCharacter;
 
+    /**
+     *
+     */
     public function __construct() {
         $language = cI18n::getLanguage();
 
@@ -41,32 +56,60 @@ class cDatatypeNumber extends cDatatype {
         parent::__construct();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see cDatatype::set()
+     */
     public function set($value) {
         $this->_mValue = floatval($value);
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see cDatatype::get()
+     */
     public function get() {
         return $this->_mValue;
     }
 
+    /**
+     *
+     * @param int $iPrecision
+     */
     public function setPrecision($iPrecision) {
         $this->_iPrecision = $iPrecision;
     }
 
+    /**
+     *
+     * @param string $sCharacter
+     */
     public function setDecimalPointCharacter($sCharacter) {
         $this->_sDecimalPointCharacter = $sCharacter;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getDecimalPointCharacter() {
-        return ($this->_sDecimalPointCharacter);
+        return $this->_sDecimalPointCharacter;
     }
 
+    /**
+     *
+     * @param string $sCharacter
+     */
     public function setThousandSeparatorCharacter($sCharacter) {
         $this->_sThousandSeparatorCharacter = $sCharacter;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getThousandSeparatorCharacter() {
-        return ($this->_sThousandSeparatorCharacter);
+        return $this->_sThousandSeparatorCharacter;
     }
 
     /**
@@ -86,6 +129,10 @@ class cDatatypeNumber extends cDatatype {
         $this->_mValue = floatval($value);
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see cDatatype::render()
+     */
     public function render() {
         return number_format($this->_mValue, $this->_iPrecision, $this->_sDecimalPointCharacter, $this->_sThousandSeparatorCharacter);
     }

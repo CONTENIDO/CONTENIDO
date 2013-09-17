@@ -24,11 +24,14 @@ abstract class cContentTypeAbstract {
 
     /**
      * Constant defining that the settings should be interpreted as plaintext.
+     *
+     * @var string
      */
     const SETTINGS_TYPE_PLAINTEXT = 'plaintext';
 
     /**
      * Constant defining that the settings should be interpreted as XML.
+     * @var string
      */
     const SETTINGS_TYPE_XML = 'xml';
 
@@ -195,9 +198,6 @@ abstract class cContentTypeAbstract {
      * Reads all settings from the $_rawSettings attribute (XML or plaintext)
      * and stores them in the $_settings attribute (associative array or
      * plaintext).
-     *
-     * @param string $rawSettings the raw settings which should be parsed
-     * @return void
      */
     protected function _readSettings() {
         // if no settings have been given, do nothing

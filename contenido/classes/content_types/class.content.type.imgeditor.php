@@ -599,7 +599,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *        upload
      *        directory or a dbfs path
      * @param string $name Name of directory to create
-     * @param string|void Octal value of filemode as string ('0702') or nothing
+     * @return string|void Octal value of filemode as string ('0702') or nothing
      */
     public function uplmkdir($path, $name) {
         return uplmkdir($path, $name);

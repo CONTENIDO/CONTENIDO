@@ -22,12 +22,22 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage       Datatype
  */
 class cDatatype {
-    /* Effective value */
+
+    /**
+     * Effective value
+     * @var mixed
+     */
     protected $_mValue;
 
-    /* Displayed value */
+    /**
+     * Displayed value
+     * @var mixed
+     */
     protected $_mDisplayedValue;
 
+    /**
+     *
+     */
     public function __construct() {
     }
 

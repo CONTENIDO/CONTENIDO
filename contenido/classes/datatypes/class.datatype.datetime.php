@@ -23,6 +23,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cDatatypeDateTime extends cDatatype {
 
+    /**
+     *
+     * @var int
+     */
     protected $_iFirstDayOfWeek;
 
     /**
@@ -124,7 +128,9 @@ class cDatatypeDateTime extends cDatatype {
      */
     const SATURDAY = 6;
 
-    /* This datatype stores its date format in ISO */
+    /**
+     * This datatype stores its date format in ISO
+     */
     public function __construct() {
         $this->setTargetFormat(self::FORMAT_LOCALE);
         $this->setSourceFormat(self::FORMAT_UNIX);
@@ -140,46 +146,91 @@ class cDatatypeDateTime extends cDatatype {
         parent::__construct();
     }
 
+    /**
+     *
+     * @param string $targetFormat
+     */
     public function setCustomTargetFormat($targetFormat) {
         $this->_sCustomTargetFormat = $targetFormat;
     }
 
+    /**
+     *
+     * @param string $sourceFormat
+     */
     public function setCustomSourceFormat($sourceFormat) {
         $this->_sCustomSourceFormat = $sourceFormat;
     }
 
-    public function setSourceFormat($cSourceFormat) {
-        $this->_cSourceFormat = $cSourceFormat;
+    /**
+     *
+     * @param int $iSourceFormat
+     */
+    public function setSourceFormat($iSourceFormat) {
+        $this->_cSourceFormat = $iSourceFormat;
     }
 
+    /**
+     *
+     * @param unknown_type $cTargetFormat
+     */
     public function setTargetFormat($cTargetFormat) {
         $this->_cTargetFormat = $cTargetFormat;
     }
 
+    /**
+     *
+     * @param int $iYear
+     */
     public function setYear($iYear) {
         $this->_iYear = $iYear;
     }
 
+    /**
+     *
+     * @return int
+     */
     public function getYear() {
-        return ($this->_iYear);
+        return $this->_iYear;
     }
 
+    /**
+     *
+     * @param int $iMonth
+     */
     public function setMonth($iMonth) {
         $this->_iMonth = $iMonth;
     }
 
+    /**
+     *
+     * @return int
+     */
     public function getMonth() {
         return ($this->_iMonth);
     }
 
+    /**
+     *
+     * @param int $iDay
+     */
     public function setDay($iDay) {
         $this->_iDay = $iDay;
     }
 
+    /**
+     *
+     * @return int
+     */
     public function getDay() {
         return ($this->_iDay);
     }
 
+    /**
+     *
+     * @param int $iMonth
+     * @return string
+     */
     public function getMonthName($iMonth) {
         switch ($iMonth) {
             case 1:
@@ -209,6 +260,11 @@ class cDatatypeDateTime extends cDatatype {
         }
     }
 
+    /**
+     *
+     * @param int $iDayOfWeek
+     * @return string
+     */
     public function getDayName($iDayOfWeek) {
         switch ($iDayOfWeek) {
             case 0:
@@ -232,6 +288,10 @@ class cDatatypeDateTime extends cDatatype {
         }
     }
 
+    /**
+     *
+     * @return array
+     */
     public function getDayOrder() {
         $aDays = array(
             0, 1, 2, 3, 4, 5, 6
@@ -240,9 +300,15 @@ class cDatatypeDateTime extends cDatatype {
 
         $aReturnDays = array_merge($aDays, $aRemainderDays);
 
-        return ($aReturnDays);
+        return $aReturnDays;
     }
 
+    /**
+     *
+     * @param int $iMonth
+     * @param int $iYear
+     * @return string
+     */
     public function getNumberOfMonthDays($iMonth = false, $iYear = false) {
         if ($iMonth === false) {
             $iMonth = $this->_iMonth;
@@ -255,18 +321,36 @@ class cDatatypeDateTime extends cDatatype {
         return date("t", mktime(0, 0, 0, $iMonth, 1, $iYear));
     }
 
+    /**
+     *
+     * @param int $iDay
+     */
     public function setFirstDayOfWeek($iDay) {
         $this->_iFirstDayOfWeek = $iDay;
     }
 
+    /**
+     *
+     * @return int
+     */
     public function getFirstDayOfWeek() {
         return $this->_iFirstDayOfWeek;
     }
 
+    /**
+     *
+     * @return int
+     */
     public function getLeapDay() {
         return end($this->getDayOrder());
     }
 
+    /**
+     *
+     * @param string|int $value
+     * @param bool $iOverrideFormat
+     * @see cDatatype::set()
+     */
     public function set($value, $iOverrideFormat = false) {
         if ($value == "") {
             return;
@@ -396,9 +480,11 @@ class cDatatypeDateTime extends cDatatype {
     }
 
     /**
+     * Returns the effective value
      *
-     * @throws cInvalidArgumentException if the given format is not supported
-     *         yet
+     * @param int|bool $iOverrideFormat
+     * @return  mixed
+     * @see cDatatype::get()
      */
     public function get($iOverrideFormat = false) {
         if ($iOverrideFormat !== false) {
@@ -432,6 +518,10 @@ class cDatatypeDateTime extends cDatatype {
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see cDatatype::render()
+     */
     public function render($iOverrideFormat = false) {
         if ($iOverrideFormat !== false) {
             $iFormat = $iOverrideFormat;
@@ -458,6 +548,10 @@ class cDatatypeDateTime extends cDatatype {
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see cDatatype::parse()
+     */
     public function parse($value) {
         if ($value == "") {
             return;

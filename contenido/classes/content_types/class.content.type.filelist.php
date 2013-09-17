@@ -164,9 +164,6 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * Reads all settings from the $_rawSettings attribute (XML or plaintext)
      * and stores them in the $_settings attribute (associative array or
      * plaintext).
-     *
-     * @param string $rawSettings the raw settings which should be parsed
-     * @return void
      */
     protected function _readSettings() {
         parent::_readSettings();
@@ -205,6 +202,11 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         return $code;
     }
 
+    /**
+     *
+     * @return void|string|array
+     * @todo unify return values
+     */
     public function getConfiguredFiles() {
         $files = array();
 
@@ -228,7 +230,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
             foreach ($directories as $directoryName) {
                 if (is_dir($this->_uploadPath . $directoryName)) {
-                    if ($handle = opendir($this->_uploadPath . $directoryName)) {
+                    if (false !== $handle = opendir($this->_uploadPath . $directoryName)) {
                         while (($entry = readdir($handle)) !== false) {
                             // checking if entry is file and is not a directory
                             if (is_file($this->_uploadPath . $directoryName . '/' . $entry)) {
