@@ -2,15 +2,15 @@
 /**
  * This file contains the online user collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -24,9 +24,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiOnlineUserCollection extends ItemCollection {
 
     /**
-     * Constructor function.
+     * Create a new collection of items.
      *
-     * @param string $select Select statement (see ItemCollection::select())
+     * @param string $select where clause to use for selection (see
+     *        ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -249,5 +250,4 @@ class cApiOnlineUser extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
 }
