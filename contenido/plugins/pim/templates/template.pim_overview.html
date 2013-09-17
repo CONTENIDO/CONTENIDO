@@ -112,6 +112,16 @@
 					}
 				});
         	});
+        	$(".uninstallSQL").change(function() {
+        		var link = $("#removalLink-" + $(this).attr("data-idplugin"));
+        		if(this.checked) {
+        			var newLink = link.attr("onclick").replace("uninstallsql=0", "uninstallsql=1");
+        			link.attr("onclick", newLink);
+        		} else {
+        			var newLink = link.attr("onclick").replace("uninstallsql=1", "uninstallsql=0");
+        			link.attr("onclick", newLink);
+        		}
+        	});
         });
         </script>
 

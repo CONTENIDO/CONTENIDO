@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-17 15:31+0200\n"
+"POT-Creation-Date: 2013-09-17 15:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -144,84 +144,88 @@ msgstr ""
 msgid "Currently the plugin system is disabled via configuration"
 msgstr ""
 
-#: includes/include.right_bottom.php:96
+#: includes/include.right_bottom.php:100
 msgid "Y-m-d"
 msgstr ""
 
-#: includes/include.right_bottom.php:110
+#: includes/include.right_bottom.php:114
 msgid "Installed since"
 msgstr ""
 
-#: includes/include.right_bottom.php:111
+#: includes/include.right_bottom.php:115
 msgid "Author"
 msgstr ""
 
-#: includes/include.right_bottom.php:112
+#: includes/include.right_bottom.php:116
 msgid "Contact"
 msgstr ""
 
-#: includes/include.right_bottom.php:114 includes/include.right_bottom.php:116
+#: includes/include.right_bottom.php:118 includes/include.right_bottom.php:120
 msgid "Update"
 msgstr ""
 
-#: includes/include.right_bottom.php:115
+#: includes/include.right_bottom.php:119
 msgid "Please choose your new file"
 msgstr ""
 
-#: includes/include.right_bottom.php:122
+#: includes/include.right_bottom.php:121
+msgid "Execute uninstall.sql"
+msgstr ""
+
+#: includes/include.right_bottom.php:127
 msgid "Disable plugin"
 msgstr ""
 
-#: includes/include.right_bottom.php:124
+#: includes/include.right_bottom.php:129
 msgid "Enable plugin"
 msgstr ""
 
-#: includes/include.right_bottom.php:129
+#: includes/include.right_bottom.php:134
 msgid ""
 "Are you sure to delete this plugin? Files are not deleted in filesystem."
 msgstr ""
 
-#: includes/include.right_bottom.php:129
+#: includes/include.right_bottom.php:134
 msgid "Uninstall"
 msgstr ""
 
-#: includes/include.right_bottom.php:149
+#: includes/include.right_bottom.php:154
 msgid "Foldername"
 msgstr ""
 
-#: includes/include.right_bottom.php:150
+#: includes/include.right_bottom.php:155
 msgid "Install extracted plugin"
 msgstr ""
 
-#: includes/include.right_bottom.php:151
+#: includes/include.right_bottom.php:156
 msgid "Uninstall extracted plugin (deleted plugin files from filesystem)"
 msgstr ""
 
-#: includes/include.right_bottom.php:161
+#: includes/include.right_bottom.php:166
 msgid "This plugin is not writeable, please set the rights manually"
 msgstr ""
 
-#: includes/include.right_bottom.php:173
+#: includes/include.right_bottom.php:178
 msgid "No entries"
 msgstr ""
 
-#: includes/include.right_bottom.php:177
+#: includes/include.right_bottom.php:182
 msgid "Upload a new plugin"
 msgstr ""
 
-#: includes/include.right_bottom.php:178
+#: includes/include.right_bottom.php:183
 msgid "Please choose a plugin package"
 msgstr ""
 
-#: includes/include.right_bottom.php:179
+#: includes/include.right_bottom.php:184
 msgid "Upload plugin package"
 msgstr ""
 
-#: includes/include.right_bottom.php:180
+#: includes/include.right_bottom.php:185
 msgid "Installed Plugins"
 msgstr ""
 
-#: includes/include.right_bottom.php:181
+#: includes/include.right_bottom.php:186
 msgid "Not installed Plugins"
 msgstr ""
 
