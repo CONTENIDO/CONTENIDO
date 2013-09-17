@@ -1,3 +1,10 @@
+        <!-- 
+        
+        i18n("This plugin is already at the top!")
+        i18n("This plugin is already at the bottom!")
+        i18n("Error")
+        
+         -->
         <script type="text/javascript">
         function toggleTableBody(tableId) {
             var collapseButton = 'images/close_all.gif';
@@ -33,6 +40,79 @@
                 curDiv.style.display = "block";
             }
         }
+        
+        function updateSortButtons() {
+			$(".sortPluginUp").css("visibility", "visible");
+			$(".sortPluginUp").first().css('visibility', 'hidden');
+			$(".sortPluginDown").css("visibility", "visible");
+			$(".sortPluginDown").last().css('visibility', 'hidden');
+        }
+        
+        $(document).ready(function() {
+        	updateSortButtons();
+			
+        	$(".sortPluginDown").click(function() {
+        		var pluginId = $(this).attr("data-plugin-id");
+        		var pluginRow = $("#plugin-row-" + pluginId);
+        		var pluginTable = pluginRow.parent().parent();
+        		
+        		var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
+        		var newOrder = oldOrder + 1;
+        		if(newOrder > {INSTALLED_PLUGINS}) {
+        			showNotification("i18n('Error')", "i18n('This plugin is already at the bottom!')");
+        			return;
+        		}
+				pluginRow.attr("data-plugin-execorder", newOrder);
+				pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
+				
+				$.ajax({
+					url: "ajaxmain.php",
+					type: "POST",
+					data: {
+						ajax: "updatepluginorder",
+						neworder: newOrder,
+						idplugin: pluginId
+					},
+					success: function(data, status, jqxhr) {
+						if(data == "ok") {
+							pluginTable.next().after(pluginTable);
+				        	updateSortButtons();
+						}
+					}
+				});
+				
+        	});
+        	$(".sortPluginUp").click(function() {
+        		var pluginId = $(this).attr("data-plugin-id");
+        		var pluginRow = $("#plugin-row-" + pluginId);
+        		var pluginTable = pluginRow.parent().parent();
+
+        		var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
+        		var newOrder = oldOrder - 1;
+        		if(newOrder == 0) {
+        			showNotification("i18n('Error')", "i18n('This plugin is already at the top!')");
+        			return;
+        		}
+				pluginRow.attr("data-plugin-execorder", newOrder);
+				pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
+
+				$.ajax({
+					url: "ajaxmain.php",
+					type: "POST",
+					data: {
+						ajax: "updatepluginorder",
+						neworder: newOrder,
+						idplugin: pluginId
+					},
+					success: function(data, status, jqxhr) {
+						if(data == "ok") {
+							pluginTable.prev().before(pluginTable);
+				        	updateSortButtons();
+						}
+					}
+				});
+        	});
+        });
         </script>
 
         <style type="text/css">

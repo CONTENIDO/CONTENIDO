@@ -85,7 +85,7 @@ $installedPluginFoldernames = array();
 
 // get all installed plugins
 $oItem = new PimPluginCollection();
-$oItem->select(null, null, 'name');
+$oItem->select(null, null, 'executionorder');
 
 while (($plugin = $oItem->next()) !== false) {
 
@@ -105,6 +105,7 @@ while (($plugin = $oItem->next()) !== false) {
     $pagePlugins->set('s', 'WEBSITE', $plugin->get('website'));
     $pagePlugins->set('s', 'COPYRIGHT', $plugin->get('copyright'));
     $pagePlugins->set('s', 'INSTALLED', $date);
+    $pagePlugins->set('s', 'EXECUTIONORDER', $plugin->get("executionorder"));
 
     $pagePlugins->set('s', 'LANG_INSTALLED', i18n('Installed since', 'pim'));
     $pagePlugins->set('s', 'LANG_AUTHOR', i18n('Author', 'pim'));

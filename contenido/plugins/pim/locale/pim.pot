@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-30 13:57+0200\n"
+"POT-Creation-Date: 2013-09-17 15:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,122 +17,122 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: classes/setup/class.pimpluginsetup.install.php:250
+#: classes/setup/class.pimpluginsetup.install.php:259
 msgid ""
 "The plugin has been successfully installed. To apply the changes please "
 "login into backend again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:264
+#: classes/setup/class.pimpluginsetup.install.php:273
 msgid "You can install this plugin only for one time."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:281
+#: classes/setup/class.pimpluginsetup.install.php:290
 msgid "You have to install CONTENIDO <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:281
-#: classes/setup/class.pimpluginsetup.install.php:294
+#: classes/setup/class.pimpluginsetup.install.php:290
+#: classes/setup/class.pimpluginsetup.install.php:303
 msgid "</strong> or higher to install this plugin!"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:288
+#: classes/setup/class.pimpluginsetup.install.php:297
 msgid "Your current CONTENIDO version is to new - max CONTENIDO version: "
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:294
+#: classes/setup/class.pimpluginsetup.install.php:303
 msgid "You have to install PHP <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:303
+#: classes/setup/class.pimpluginsetup.install.php:312
 msgid "The plugin could not find the PHP extension <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:303
-#: classes/setup/class.pimpluginsetup.install.php:314
-#: classes/setup/class.pimpluginsetup.install.php:325
+#: classes/setup/class.pimpluginsetup.install.php:312
+#: classes/setup/class.pimpluginsetup.install.php:323
+#: classes/setup/class.pimpluginsetup.install.php:334
 msgid ""
 "</strong>. Because this is required by the plugin, it can not be installed."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:314
+#: classes/setup/class.pimpluginsetup.install.php:323
 msgid "The plugin could not find the class <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:325
+#: classes/setup/class.pimpluginsetup.install.php:334
 msgid "The plugin could not find the function <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:447
-#: classes/setup/class.pimpluginsetup.install.php:476
-#: classes/setup/class.pimpluginsetup.install.php:540
+#: classes/setup/class.pimpluginsetup.install.php:456
+#: classes/setup/class.pimpluginsetup.install.php:485
+#: classes/setup/class.pimpluginsetup.install.php:549
 msgid "Defined area"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:447
-#: classes/setup/class.pimpluginsetup.install.php:476
-#: classes/setup/class.pimpluginsetup.install.php:540
+#: classes/setup/class.pimpluginsetup.install.php:456
+#: classes/setup/class.pimpluginsetup.install.php:485
+#: classes/setup/class.pimpluginsetup.install.php:549
 msgid ""
 "are not found on your CONTENIDO installation. Please contact your plugin "
 "author."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:220
+#: classes/setup/class.pimpluginsetup.php:254
 msgid "Invalid Xml document. Please contact the plugin author."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:232
+#: classes/setup/class.pimpluginsetup.php:265
 msgid "Plugin Manager accepts only Zip archives"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:276
+#: classes/setup/class.pimpluginsetup.php:308
 msgid "Back to Plugin Manager"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.status.php:112
-#: classes/setup/class.pimpluginsetup.status.php:124
-#: classes/setup/class.pimpluginsetup.uninstall.php:262
+#: classes/setup/class.pimpluginsetup.status.php:118
+#: classes/setup/class.pimpluginsetup.status.php:130
+#: classes/setup/class.pimpluginsetup.uninstall.php:260
 msgid "The plugin"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.status.php:112
+#: classes/setup/class.pimpluginsetup.status.php:118
 msgid ""
 "has been sucessfully disabled. To apply the changes please login into "
 "backend again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.status.php:124
+#: classes/setup/class.pimpluginsetup.status.php:130
 msgid ""
 "has been sucessfully enabled. To apply the changes please login into backend "
 "again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:262
+#: classes/setup/class.pimpluginsetup.uninstall.php:260
 msgid ""
 "has been successfully uninstalled. To apply the changes please login into "
 "backend again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:355
-#: classes/setup/class.pimpluginsetup.uninstall.php:357
+#: classes/setup/class.pimpluginsetup.uninstall.php:312
+#: classes/setup/class.pimpluginsetup.uninstall.php:314
 msgid "The pluginfolder"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:355
+#: classes/setup/class.pimpluginsetup.uninstall.php:312
 msgid "has been successfully uninstalled."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:357
+#: classes/setup/class.pimpluginsetup.uninstall.php:314
 msgid "could not be uninstalled."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.update.php:58
+#: classes/setup/class.pimpluginsetup.update.php:73
 msgid ""
 "The plugin has been successfully updated. To apply the changes please login "
 "into backend again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.update.php:73
+#: classes/setup/class.pimpluginsetup.update.php:88
 msgid "You have to update the same plugin"
 msgstr ""
 
@@ -148,79 +148,91 @@ msgstr ""
 msgid "Y-m-d"
 msgstr ""
 
-#: includes/include.right_bottom.php:109
+#: includes/include.right_bottom.php:110
 msgid "Installed since"
 msgstr ""
 
-#: includes/include.right_bottom.php:110
+#: includes/include.right_bottom.php:111
 msgid "Author"
 msgstr ""
 
-#: includes/include.right_bottom.php:111
+#: includes/include.right_bottom.php:112
 msgid "Contact"
 msgstr ""
 
-#: includes/include.right_bottom.php:113 includes/include.right_bottom.php:115
+#: includes/include.right_bottom.php:114 includes/include.right_bottom.php:116
 msgid "Update"
 msgstr ""
 
-#: includes/include.right_bottom.php:114
+#: includes/include.right_bottom.php:115
 msgid "Please choose your new file"
 msgstr ""
 
-#: includes/include.right_bottom.php:121
+#: includes/include.right_bottom.php:122
 msgid "Disable plugin"
 msgstr ""
 
-#: includes/include.right_bottom.php:123
+#: includes/include.right_bottom.php:124
 msgid "Enable plugin"
 msgstr ""
 
-#: includes/include.right_bottom.php:128
+#: includes/include.right_bottom.php:129
 msgid ""
 "Are you sure to delete this plugin? Files are not deleted in filesystem."
 msgstr ""
 
-#: includes/include.right_bottom.php:128
+#: includes/include.right_bottom.php:129
 msgid "Uninstall"
 msgstr ""
 
-#: includes/include.right_bottom.php:148
+#: includes/include.right_bottom.php:149
 msgid "Foldername"
 msgstr ""
 
-#: includes/include.right_bottom.php:149
+#: includes/include.right_bottom.php:150
 msgid "Install extracted plugin"
 msgstr ""
 
-#: includes/include.right_bottom.php:150
+#: includes/include.right_bottom.php:151
 msgid "Uninstall extracted plugin (deleted plugin files from filesystem)"
 msgstr ""
 
-#: includes/include.right_bottom.php:160
+#: includes/include.right_bottom.php:161
 msgid "This plugin is not writeable, please set the rights manually"
 msgstr ""
 
-#: includes/include.right_bottom.php:172
+#: includes/include.right_bottom.php:173
 msgid "No entries"
 msgstr ""
 
-#: includes/include.right_bottom.php:176
+#: includes/include.right_bottom.php:177
 msgid "Upload a new plugin"
 msgstr ""
 
-#: includes/include.right_bottom.php:177
+#: includes/include.right_bottom.php:178
 msgid "Please choose a plugin package"
 msgstr ""
 
-#: includes/include.right_bottom.php:178
+#: includes/include.right_bottom.php:179
 msgid "Upload plugin package"
 msgstr ""
 
-#: includes/include.right_bottom.php:179
+#: includes/include.right_bottom.php:180
 msgid "Installed Plugins"
 msgstr ""
 
-#: includes/include.right_bottom.php:180
+#: includes/include.right_bottom.php:181
 msgid "Not installed Plugins"
+msgstr ""
+
+#: templates/template.pim_overview.html:3
+msgid "This plugin is already at the top!"
+msgstr ""
+
+#: templates/template.pim_overview.html:4
+msgid "This plugin is already at the bottom!"
+msgstr ""
+
+#: templates/template.pim_overview.html:5
+msgid "Error"
 msgstr ""

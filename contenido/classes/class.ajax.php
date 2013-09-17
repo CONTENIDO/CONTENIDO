@@ -324,6 +324,25 @@ class cAjaxRequest {
                 $string = implode('', $lines);
                 break;
 
+            case 'updatepluginorder':
+                if(cRegistry::getPerm()->have_perm()) { // only sysadmins can do this
+                    $newOrder = cSecurity::toInteger($_POST['neworder']);
+                    $pluginColl = new PimPluginCollection();
+                    $pluginColl->select();
+                    if($newOrder <= 0 || $newOrder > $pluginColl->count()) {
+                        $string = 'order must be > 0 and <= number of plugins';
+                        break;
+                    }
+
+                    $pluginId = cSecurity::toInteger($_POST['idplugin']);
+                    $plugin = new PimPlugin($pluginId);
+                    $plugin->updateExecOrder($newOrder);
+                    $string = 'ok';
+                } else {
+                    $string = 'Unknown Ajax Action';
+                }
+                break;
+
             default:
                 // if action is unknown generate error message
                 $string = 'Unknown Ajax Action';

@@ -40,7 +40,7 @@ class PimPluginCollection extends ItemCollection {
      *
      * @param none
      */
-    public function create($name, $description, $author, $copyright, $mail, $website, $version, $foldername, $uuId, $active) {
+    public function create($name, $description, $author, $copyright, $mail, $website, $version, $foldername, $uuId, $active, $execOrder = 0) {
         global $client;
 
         $nextId = $this->_getNextId();
@@ -72,6 +72,13 @@ class PimPluginCollection extends ItemCollection {
         $item->set('uuid', $uuId);
         $item->set('installed', date("Y-m-d H:i:s"), false);
         $item->set('active', $active);
+
+        // set execution order to the last of the list or to what was specified in create
+        if($execOrder == 0) {
+            $this->select();
+            $execOrder = $this->count();
+        }
+        $item->set("executionorder", $execOrder);
 
         $item->store();
 
@@ -138,4 +145,30 @@ class PimPlugin extends Item {
         }
     }
 
+    /**
+     * Change the execution order of this plugin and update the order for every other plugin
+     *
+     * @param int $newOrder New execution order for this plugin
+     */
+    public function updateExecOrder($newOrder) {
+        $oldOrder = $this->get('executionorder'); // get the old value
+        $idplugin = $this->get("idplugin");
+
+        $this->set('executionorder', $newOrder); // update this plugin to the new value
+        $this->store();
+
+        // move the other plugins up or down
+        $pluginColl = new PimPluginCollection();
+        $pluginColl->select('executionorder >= "' . min($newOrder, $oldOrder) . '" AND executionorder <= "' . max($newOrder, $oldOrder) . '" AND idplugin != "' . $idplugin . '"', null, 'executionorder'); // select every plugin that needs to be updated
+
+        while($plugin = $pluginColl->next()) {
+            if($newOrder < $oldOrder) {
+                $plugin->set("executionorder", $plugin->get("executionorder") + 1); // increment the execution order after we moved the plugin up
+                $plugin->store();
+            } else if($oldOrder < $newOrder) {
+                $plugin->set("executionorder", $plugin->get("executionorder") - 1); // decrement the execution value after we moved the plugin down
+                $plugin->store();
+            }
+        }
+    }
 }
