@@ -1,36 +1,32 @@
 <?php
 /**
- * This file contains the clickable action and clickable question action widget class.
+ * This file contains the clickable action and clickable question action widget
+ * class.
  *
- * @package    Core
+ * @package Core
  * @subpackage GUI
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * cApiClickableAction is a subclass of cApiAction.
- * It provides an image for visual
- * representation. Inherited classes should call the "setNamedAction" operation
- * in
- * their constructors; on-the-fly-implementations should call it directly after
- * creating an object instance.
+ * It provides an image for visual representation. Inherited classes should call
+ * the "setNamedAction" operation in their constructors;
+ * on-the-fly-implementations should call it directly after creating an object
+ * instance.
  *
- * @package    Core
+ * @package Core
  * @subpackage GUI
  */
 class cApiClickableAction extends cApiAction {
-
-    /**
-     * * Attributes: **
-     */
 
     /**
      * Help text
@@ -53,10 +49,20 @@ class cApiClickableAction extends cApiAction {
      */
     private $_img;
 
+    /**
+     *
+     * @var string
+     */
     const QUESTIONACTION_PROMPT = 'prompt';
 
+    /**
+     *
+     * @var string
+     */
     const QUESTIONACTION_YESNO = 'yesno';
 
+    /**
+     */
     public function __construct() {
         global $area;
 
@@ -80,13 +86,17 @@ class cApiClickableAction extends cApiAction {
      * Sets the action icon for this action.
      *
      * @param string icon Path to the icon. Relative to the backend, if not
-     *            passed as absolute path.
+     *        passed as absolute path.
      * @return void
      */
     public function setIcon($icon) {
         $this->_img->setSrc($icon);
     }
 
+    /**
+     *
+     * @return cHTMLImage
+     */
     public function getIcon() {
         return $this->_img;
     }
@@ -95,7 +105,7 @@ class cApiClickableAction extends cApiAction {
      * Sets this class to use a specific action, example "con_makestart".
      *
      * @param string actionName Name of the action to use. This action must
-     *            exist in the actions table before
+     *        exist in the actions table before
      *        using it, otherwise, this method will fail.
      * @return void
      */
@@ -112,19 +122,27 @@ class cApiClickableAction extends cApiAction {
         }
     }
 
+    /**
+     */
     public function setDisabled() {
         $this->_enabled = false;
         $this->_onDisable();
     }
 
+    /**
+     */
     public function setEnabled() {
         $this->_enabled = true;
         $this->_onEnable();
     }
 
+    /**
+     */
     protected function _onDisable() {
     }
 
+    /**
+     */
     protected function _onEnable() {
     }
 
@@ -135,6 +153,10 @@ class cApiClickableAction extends cApiAction {
         $this->_area = $sArea;
     }
 
+    /**
+     *
+     * @param string $parameter
+     */
     public function wantParameter($parameter) {
         $this->_wantParameters[] = $parameter;
 
@@ -151,19 +173,35 @@ class cApiClickableAction extends cApiAction {
         $this->_helpText = $helptext;
     }
 
+    /**
+     */
     public function getHelpText() {
         return $this->_helpText;
     }
 
+    /**
+     *
+     * @param string $name
+     * @param string $value
+     */
     public function setParameter($name, $value) {
         $this->_parameters[$name] = $value;
     }
 
+    /**
+     *
+     * @param mixed $parameters
+     * @return boolean
+     */
     public function process($parameters) {
         echo "Process should be overridden";
         return false;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function render() {
         $this->_img->setAlt($this->_helpText);
 
@@ -183,6 +221,10 @@ class cApiClickableAction extends cApiAction {
         }
     }
 
+    /**
+     *
+     * @return string
+     */
     public function renderText() {
         foreach ($this->_parameters as $name => $value) {
             $this->_link->setCustom($name, $value);
@@ -199,25 +241,34 @@ class cApiClickableAction extends cApiAction {
             return ($this->_helpText);
         }
     }
-
 }
 
 /**
  * Clickable question action class.
  *
- * @package    Core
+ * @package Core
  * @subpackage GUI
  */
 class cApiClickableQuestionAction extends cApiClickableAction {
 
+    /**
+     */
     public function __construct() {
         parent::__construct();
     }
 
+    /**
+     *
+     * @param string $mode
+     */
     public function setQuestionMode($mode) {
         $this->_mode = $mode;
     }
 
+    /**
+     *
+     * @param unknown_type $question
+     */
     public function setQuestion($question) {
         $this->_question = $question;
     }
@@ -226,6 +277,11 @@ class cApiClickableQuestionAction extends cApiClickableAction {
         $this->_resultVar = $var;
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see cApiClickableAction::render()
+     */
     public function render() {
         switch ($this->_mode) {
             case self::QUESTIONACTION_PROMPT:
@@ -239,5 +295,4 @@ class cApiClickableQuestionAction extends cApiClickableAction {
 
         return parent::render();
     }
-
 }
