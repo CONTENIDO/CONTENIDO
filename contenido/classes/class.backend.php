@@ -221,8 +221,6 @@ class cBackend {
      * 'main' => Main file
      *
      * @param string $which 'inc' / 'main'
-     *
-     * @param unknown_type $which
      * @return array
      */
     public function getFile($which) {

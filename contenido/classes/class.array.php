@@ -124,7 +124,6 @@ class cArray {
      * $array = cArray::csort($array,'town','age', SORT_DESC, 'name');
      * </pre>
      *
-     * @param multiple
      * @return array
      */
     public static function csort() {

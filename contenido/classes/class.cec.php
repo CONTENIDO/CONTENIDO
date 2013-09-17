@@ -458,7 +458,7 @@ class cApiCecChainItem {
      * If temporary arguments where set before, it returns them and resets the
      * property.
      *
-     * @return multitype:
+     * @return array
      */
     public function getTemporaryArguments() {
         $args = $this->_mTemporaryArguments;
