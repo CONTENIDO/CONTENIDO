@@ -13,19 +13,20 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * This class contains the functionalities to handle zip archives.
  *
- * @author claus.schunk
+ * @author claus.schunk@4fb.de
  */
 class cZipArchive {
 
     /**
+     * This function reads all files from given path.
      *
      * @param string $dirPath
-     * @return multitype:string
+     * @return array of files
      */
     public static function readExistingFiles($dirPath) {
 
@@ -56,6 +57,7 @@ class cZipArchive {
     }
 
     /**
+     * This function checks if the given path already exists.
      *
      * @param string $dirPath
      * @return boolean
@@ -71,10 +73,12 @@ class cZipArchive {
     }
 
     /**
+     * This function contains the functionality to extract archive and overwrite
+     * existing files.
      *
-     * @param string $file
-     * @param string $extractPath
-     * @param string $extractPathUserInput
+     * @param string $file zip file
+     * @param string $extractPath extraction path
+     * @param string $extractPathUserInput user specified extraction path
      */
     public static function extractOverRide($file, $extractPath, $extractPathUserInput = NULL) {
 
@@ -105,10 +109,11 @@ class cZipArchive {
     }
 
     /**
+     * This function contains the functionality to extract archive.
      *
-     * @param string $file
-     * @param string $extractPath
-     * @param string $extractPathUserInput
+     * @param string $file zip file
+     * @param string $extractPath extraction path
+     * @param string $extractPathUserInput user specified extraction path
      */
     public static function extract($file, $extractPath, $extractPathUserInput = NULL) {
         if (isset($extractPathUserInput)) {
@@ -120,8 +125,6 @@ class cZipArchive {
         if (file_exists($extractPath) and is_dir($extractPath)) {
             $ar = cZipArchive::readExistingFiles($extractPath);
         }
-        // :: OVERRIDE
-
         $zip = new ZipArchive();
 
         // try to open archive
@@ -131,7 +134,6 @@ class cZipArchive {
         }
 
         // check if directory already exist
-        // TODO keep code DRY
         if (cZipArchive::isExtracted($extractPath)) {
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $file = $zip->getNameIndex($i);
@@ -156,10 +158,11 @@ class cZipArchive {
     }
 
     /**
+     * This function contains the functionality to create archives.
      *
-     * @param string $zipFilePath
-     * @param string $dirPath
-     * @param array $filePathes
+     * @param string $zipFilePath file path
+     * @param string $dirPath directory path
+     * @param array $filePathes files to store in archive
      */
     public static function createZip($zipFilePath, $dirPath, array $filePathes) {
         $zip = new ZipArchive();
@@ -170,4 +173,5 @@ class cZipArchive {
             $zip->close();
         }
     }
+
 }
