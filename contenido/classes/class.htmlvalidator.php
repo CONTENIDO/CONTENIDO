@@ -226,7 +226,7 @@ class cHTMLValidator {
     /**
      *
      * @param int $charpos
-     * @return multitype:number
+     * @return array
      */
     protected function _getLineAndCharPos($charpos) {
         $mangled = substr($this->_html, 0, $charpos);

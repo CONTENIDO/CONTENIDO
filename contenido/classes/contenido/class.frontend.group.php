@@ -39,7 +39,7 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * Creates a new group
      *
      * @param string $groupname Specifies the groupname
-     * @param string $password Specifies the password (optional)
+     * @return Item
      */
     public function create($groupname) {
         global $client;
@@ -56,7 +56,6 @@ class cApiFrontendGroupCollection extends ItemCollection {
         }
 
         $item = parent::createNewItem();
-
         $item->set('idclient', $client);
         $item->set('groupname', $groupname);
         $item->store();
@@ -69,6 +68,7 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * before deleting group
      *
      * @param int $itemID specifies the frontend user group
+     * @todo should return return value of overloaded method
      */
     public function delete($itemID) {
         $associations = new cApiFrontendGroupMemberCollection();

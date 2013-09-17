@@ -2,29 +2,29 @@
 /**
  * This file contains various to-do classes.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class uses the communication collection to serve a special collection for to-do entries.
+ * This class uses the communication collection to serve a special collection
+ * for to-do entries.
  *
- * @package    Core
+ * @package Core
  * @subpackage GenericDB_Model
  */
 class TODOCollection extends cApiCommunicationCollection {
 
     /**
-     *
      */
     public function __construct() {
         parent::__construct();
@@ -33,6 +33,7 @@ class TODOCollection extends cApiCommunicationCollection {
 
     /**
      * (non-PHPdoc)
+     *
      * @see ItemCollection::select()
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
@@ -47,13 +48,23 @@ class TODOCollection extends cApiCommunicationCollection {
 
     /**
      * Creates a new communication item
+     *
+     * @param unknown_type $itemtype
+     * @param unknown_type $itemid
+     * @param unknown_type $reminderdate
+     * @param string $subject
+     * @param string $content
+     * @param unknown_type $notimail
+     * @param unknown_type $notibackend
+     * @param string $recipient
+     * @return Ambigous <cApiCommunication, Item, object>
      */
     public function createItem($itemtype, $itemid, $reminderdate, $subject, $content, $notimail, $notibackend, $recipient) {
         $item = parent::create();
 
+        $item->set('comtype', 'todo');
         $item->set('subject', $subject);
         $item->set('message', $content);
-        $item->set('comtype', 'todo');
         $item->set('recipient', $recipient);
         $item->store();
 
@@ -81,46 +92,46 @@ class TODOCollection extends cApiCommunicationCollection {
 
     /**
      *
-     * @return multitype:string Ambigous <string, string>
+     * @return array
      */
     public function getStatusTypes() {
-        $statusTypes = array(
+        return array(
             'new' => i18n('New'),
             'progress' => i18n('In progress'),
             'done' => i18n('Done'),
             'waiting' => i18n('Waiting for action'),
             'deferred' => i18n('Deferred')
         );
-        return ($statusTypes);
     }
 
     /**
      *
-     * @return multitype:string Ambigous <string, string>
+     * @return array
      */
     public function getPriorityTypes() {
-        $priorityTypes = array(
+        return array(
             'low' => i18n('Low'),
             'medium' => i18n('Medium'),
             'high' => i18n('High'),
             'immediately' => i18n('Immediately')
         );
-        return ($priorityTypes);
     }
-
 }
 
 /**
- * This class uses the communication collection to serve a special collection for to-do entries.
+ * This class uses the communication collection to serve a special collection
+ * for to-do entries.
  *
- * @package    Core
+ * @package Core
  * @subpackage GenericDB_Model
  */
 class TODOItem extends cApiCommunication {
 
     /**
      * (non-PHPdoc)
+     *
      * @see Item::setProperty()
+     * @todo should return return value of overloaded method
      */
     public function setProperty($type, $name, $value, $client = 0) {
         if ($type == 'todo' && $name == 'emailnoti') {
@@ -134,13 +145,12 @@ class TODOItem extends cApiCommunication {
 
         parent::setProperty($type, $name, $value);
     }
-
 }
 
 /**
  * This class uses the link GUI class to serve a special link for to-do entries.
  *
- * @package    Core
+ * @package Core
  * @subpackage GUI
  */
 class TODOLink extends cHTMLLink {
@@ -170,7 +180,6 @@ class TODOLink extends cHTMLLink {
         $this->setContent($img->render());
         $this->setAlt(i18n('Set reminder / add to todo list'));
     }
-
 }
 
 ?>

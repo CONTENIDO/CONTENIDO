@@ -448,8 +448,6 @@ class cApiCecChainItem {
      * Another way to set the arguments before invoking execute() method.
      *
      * @param array $args
-     *
-     * @return void
      */
     public function setTemporaryArguments(array $args = array()) {
         $this->_mTemporaryArguments = $args;

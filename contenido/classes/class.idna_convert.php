@@ -89,7 +89,6 @@ class idna_convert
      * the constructor
      *
      * @param array $options
-     * @return boolean
      * @since 0.5.2
      */
     public function __construct($options = false)
@@ -387,7 +386,6 @@ class idna_convert
 
     /**
      * Use this method to get the last error ocurred
-     * @param    void
      * @return   string   The last error, that occured
      */
     public function get_last_error()
@@ -1013,7 +1011,7 @@ class idna_convert
      * Holds all relevant mapping tables
      * See RFC3454 for details
      *
-     * @private array
+     * @var array
      * @since 0.5.2
      */
     protected static $NP = array

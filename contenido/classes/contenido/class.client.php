@@ -229,6 +229,7 @@ class cApiClient extends Item {
      * @param mixed $name Entry name
      * @param mixed $value Value
      * @param mixed $idproperty
+     * @todo should return return value as overwritten method
      */
     public function setProperty($type, $name, $value, $idproperty = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -323,6 +324,7 @@ class cApiClient extends Item {
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @todo should return return value of overloaded method
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

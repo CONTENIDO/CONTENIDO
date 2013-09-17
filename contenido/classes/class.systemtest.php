@@ -949,7 +949,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @param string $ext
+     * @return bool true if the test passed and false if not
      */
     public function testPHPExtension($ext) {
         return $this->isPHPExtensionLoaded($ext) == CON_EXTENSION_AVAILABLE;
@@ -1055,6 +1056,9 @@ class cSystemtest {
 
     /**
      *
+     * @param string $host
+     * @param string $username
+     * @param string $password
      * @return boolean true if the test passed and false if not
      */
     public function testMySQLModeStrict($host, $username, $password) {
@@ -1079,6 +1083,9 @@ class cSystemtest {
 
     /**
      *
+     * @param string $host
+     * @param string $username
+     * @param string $password
      * @return int 1 if the test passed and > 1 if not
      */
     public function testMySQL($host, $username, $password) {
@@ -1107,7 +1114,9 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @param bool $testConfig
+     * @param bool $testFrontend
+     * @return bool true if the test passed and false if not
      */
     public function testFilesystem($testConfig = true, $testFrontend = true) {
         global $cfgClient;

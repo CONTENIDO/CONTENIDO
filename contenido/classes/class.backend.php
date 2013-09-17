@@ -221,7 +221,9 @@ class cBackend {
      * 'main' => Main file
      *
      * @param string $which 'inc' / 'main'
-     * @return multitype:
+     *
+     * @param unknown_type $which
+     * @return array
      */
     public function getFile($which) {
         if (isset($this->_files[$which])) {

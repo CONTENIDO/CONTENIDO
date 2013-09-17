@@ -255,6 +255,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *
      * @param array $aElements Array with "values" of the cHTMLOptionElement to
      *        set
+     * @return cHTMLSelectElement $this for chaining
      */
     public function setSelected($aElements) {
         if (is_array($this->_options) && is_array($aElements)) {
@@ -268,6 +269,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
                 }
             }
         }
+        return $this;
     }
 
 }

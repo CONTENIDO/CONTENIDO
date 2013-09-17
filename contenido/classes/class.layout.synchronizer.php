@@ -226,7 +226,6 @@ class cLayoutSynchronizer {
     }
 
     /**
-     *
      */
     private function _showOutputMessage() {
         $emptyMessage = true;
@@ -316,7 +315,6 @@ class cLayoutSynchronizer {
 
         $this->_showOutputMessage();
     }
-
 }
 
 ?>

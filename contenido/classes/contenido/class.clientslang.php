@@ -200,6 +200,7 @@ class cApiClientLanguage extends Item {
      * @param int $client Client id
      * @todo Use parents method
      * @see Item::setProperty()
+     * @todo should return return value as overwritten method
      */
     public function setProperty($mType, $mName, $mValue, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();

@@ -573,7 +573,7 @@ class cApiModule extends Item {
      * Save the modul properties (description,type...)
      *
      * @param string $sFile Where is the modul info.xml file
-     * @return multitype:string
+     * @return array
      */
     private function _getModuleProperties($sFile) {
         $ret = array();
@@ -796,6 +796,7 @@ class cApiModule extends Item {
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @todo should return return value of overloaded method
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

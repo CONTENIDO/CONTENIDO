@@ -122,6 +122,7 @@ class cApiType extends Item {
      * @param string $name
      * @param mixed $value
      * @param bool $safe Flag to run defined inFilter on passed value
+     * @todo should return return value of overloaded method
      */
     public function setField($name, $value, $safe = true) {
         if ('status' === $name) {

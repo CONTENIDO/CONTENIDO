@@ -69,6 +69,8 @@ class HtmlParser {
     /**
      * Field iNodeType.
      * May be one of the NODE_TYPE_* constants above.
+     *
+     * @var int
      */
     var $iNodeType;
 

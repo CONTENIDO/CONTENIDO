@@ -159,6 +159,7 @@ class cApiLayout extends Item {
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @todo should return return value of overloaded method
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
