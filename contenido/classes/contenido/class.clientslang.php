@@ -2,15 +2,15 @@
 /**
  * This file contains the client language collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -120,7 +120,6 @@ class cApiClientLanguageCollection extends ItemCollection {
 
         return ($this->db->nextRecord())? (int) $this->db->f('idlang') : null;
     }
-
 }
 
 /**
@@ -195,12 +194,12 @@ class cApiClientLanguage extends Item {
     /**
      * Set client property
      *
-     * @todo Use parents method @see Item::setProperty()
-     *
      * @param mixed $mType Type of the data to store (arbitary data)
      * @param mixed $mName Entry name
      * @param mixed $mValue Value
-     * @param int $client  Client id
+     * @param int $client Client id
+     * @todo Use parents method
+     * @see Item::setProperty()
      */
     public function setProperty($mType, $mName, $mValue, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -214,7 +213,8 @@ class cApiClientLanguage extends Item {
      *
      * @param mixed $mType Type of the data to get
      * @param mixed $mName Entry name
-     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
+     * @param int $client Client id (not used, it's declared because of PHP
+     *        strict warnings)
      * @return mixed Value
      */
     public function getProperty($mType, $mName, $client = 0) {
@@ -230,7 +230,8 @@ class cApiClientLanguage extends Item {
      *
      * @param int $idprop Id of property
      * @param int $p2 Not used, is here to prevent PHP Strict warnings
-     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
+     * @param int $client Client id (not used, it's declared because of PHP
+     *        strict warnings)
      * @return void
      */
     public function deleteProperty($idprop, $p2 = null, $client = 0) {
@@ -252,10 +253,9 @@ class cApiClientLanguage extends Item {
     /**
      * Get all client properties
      *
-     * @param mixed $mType Type of the data to get
      * @return array false array
-     * @todo return value should be the same as getPropertiesByType(), e. g. an
-     *       empty array instead false
+     * @todo return value should be the same as getPropertiesByType(), e.g. an
+     *       empty array instead of false
      */
     public function getProperties() {
         $itemtype = cSecurity::escapeDB($this->primaryKey, $this->db);
@@ -281,7 +281,8 @@ class cApiClientLanguage extends Item {
     /**
      * Lazy instantiation and return of properties object
      *
-     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
+     * @param int $client Client id (not used, it's declared because of PHP
+     *        strict warnings)
      * @return cApiPropertyCollection
      */
     protected function _getPropertiesCollectionInstance($client = 0) {
@@ -292,5 +293,4 @@ class cApiClientLanguage extends Item {
         }
         return $this->_oPropertyCollection;
     }
-
 }

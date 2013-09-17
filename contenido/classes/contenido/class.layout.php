@@ -23,6 +23,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cApiLayoutCollection extends ItemCollection {
 
+    /**
+     * Constructor
+     */
     public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['lay'], 'idlay');
@@ -114,8 +117,8 @@ class cApiLayout extends Item {
      * Checks if the layout is in use in any templates.
      *
      * @param bool $setData Flag to set used templates data structure
-     * @throws cException If layout item has not been loaded before
      * @return bool
+     * @throws cException If layout item has not been loaded before
      */
     public function isInUse($setData = false) {
         if (!$this->isLoaded()) {

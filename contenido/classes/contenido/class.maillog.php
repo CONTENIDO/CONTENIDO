@@ -2,15 +2,15 @@
 /**
  * This file contains the maillog collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Simon Sprankel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Simon Sprankel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -70,7 +70,6 @@ class cApiMailLogCollection extends ItemCollection {
 
         return $item->get('idmail');
     }
-
 }
 
 /**
@@ -82,6 +81,7 @@ class cApiMailLogCollection extends ItemCollection {
 class cApiMailLog extends Item {
 
     /**
+     * Constructor
      *
      * @param mixed $mId
      */
@@ -93,5 +93,4 @@ class cApiMailLog extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
 }

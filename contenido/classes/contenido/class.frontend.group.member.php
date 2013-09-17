@@ -2,15 +2,15 @@
 /**
  * This file contains the frontend group memeber collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -25,8 +25,6 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
 
     /**
      * Constructor Function
-     *
-     * @param none
      */
     public function __construct() {
         global $cfg;
@@ -41,9 +39,9 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
     /**
      * Creates a new association
      *
-     * @param $idfrontendgroup int specifies the frontend group
-     * @param $idfrontenduser int specifies the frontend user
-     * @return cApiFrontendGroupMember|bool
+     * @param int $idfrontendgroup specifies the frontend group
+     * @param int $idfrontenduser specifies the frontend user
+     * @return cApiFrontendGroupMember bool
      */
     public function create($idfrontendgroup, $idfrontenduser) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup . ' AND idfrontenduser = ' . (int) $idfrontenduser);
@@ -99,7 +97,6 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
 
         return ($objects);
     }
-
 }
 
 /**
@@ -122,5 +119,4 @@ class cApiFrontendGroupMember extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
 }

@@ -1,21 +1,8 @@
 <?php
+
 /**
  * This file contains the property collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
- *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
- */
-
-defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
-
-/*
  * Custom properties
  * -----------------
  * Custom properties are properties which can be assigned to virtually any element
@@ -58,7 +45,20 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * class keeps also track of changed and deleted properties and synchronizes
  * them with cached values, as long as you use the interface of
  * cApiPropertyCollection to manage the properties.
+ *
+ * @package          Core
+ * @subpackage       GenericDB_Model
+ * @version          SVN Revision $Rev:$
+ *
+ * @author           Murat Purc <murat@purc.de>
+ * @copyright        four for business AG <www.4fb.de>
+ * @license          http://www.contenido.org/license/LIZENZ.txt
+ * @link             http://www.4fb.de
+ * @link             http://www.contenido.org
  */
+
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 
 /**
  * Property collection
@@ -213,6 +213,7 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $itemid ID of the item (example: 31)
      * @param mixed $type Type of the data to store (arbitary data)
      * @param mixed $name Entry name
+     * @param mixed $default to be returned if no item was found
      * @return mixed Value
      */
     public function getValue($itemtype, $itemid, $type, $name, $default = false) {
@@ -228,12 +229,12 @@ class cApiPropertyCollection extends ItemCollection {
         if (isset($this->client)) {
             $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'");
         } else {
-            // @fixme We never get here, since this class will always have a set client property!
+            // @todo We never get here, since this class will always have a set client property!
             $this->select("itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'");
         }
 
-        if (($item = $this->next()) !== false) {
-            return (cSecurity::unescapeDB($item->get('value')));
+        if (false !== $item = $this->next()) {
+            return cSecurity::unescapeDB($item->get('value'));
         }
 
         return $default;
@@ -554,12 +555,18 @@ class cApiPropertyCollection extends ItemCollection {
         }
     }
 
-    protected function _useCache($itemtype = null, $itemid = null) {
+    /**
+     *
+     * @param string $itemtype
+     * @param int $itemid
+     * @return bool
+     */
+    protected function _useCache($itemtype = NULL, $itemid = NULL) {
         global $client;
         $ok = (self::$_enableCache && $this->client == $client);
         if (!$ok) {
             return $ok;
-        } elseif ($itemtype == null || $itemid == null) {
+        } elseif ($itemtype == NULL || $itemid == NULL) {
             return $ok;
         }
 
@@ -627,6 +634,7 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $itemid ID of the item (example: 31)
      * @param mixed $type Type of the data to store (arbitary data)
      * @param mixed $name Entry name
+     * @param mixed $default to be returned if no item was found
      * @return mixed Value
      */
     protected function _getValueFromCache($itemtype, $itemid, $type, $name, $default = false) {

@@ -2,15 +2,15 @@
 /**
  * This file contains the upload meta collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Dominik Ziegler
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -23,6 +23,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cApiUploadMetaCollection extends ItemCollection {
 
+    /**
+     * Create a new collection of items.
+     */
     public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['upl_meta'], 'id_uplmeta');
@@ -79,7 +82,6 @@ class cApiUploadMetaCollection extends ItemCollection {
 
         return $oItem;
     }
-
 }
 
 /**
@@ -144,5 +146,4 @@ class cApiUploadMeta extends Item {
 
         parent::setField($name, $value, $bSafe);
     }
-
 }

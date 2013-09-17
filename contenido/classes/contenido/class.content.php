@@ -23,6 +23,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cApiContentCollection extends ItemCollection {
 
+    /**
+     * Create a new collection of items.
+     */
     public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['content'], 'idcontent');

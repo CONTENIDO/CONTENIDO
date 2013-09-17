@@ -213,9 +213,9 @@ class cApiInUseCollection extends ItemCollection {
      *            name)
      * @param bool $allowOverride True if the user can override the lock
      * @param string $location Value to append to the override lock button
-     * @return bool array returnWarning is false, returns a boolean value wether
+     * @return bool array returnWarning is false, returns a bool value wether
      *         the object is locked. If returnWarning is true, returns a 2 item
-     *         array (boolean inUse, string errormessage).
+     *         array (bool inUse, string errormessage).
      */
     public function checkAndMark($type, $objectid, $returnWarning = false, $warningTemplate = '', $allowOverride = false, $location = '') {
         global $sess, $auth, $notification, $area, $frame, $perm;

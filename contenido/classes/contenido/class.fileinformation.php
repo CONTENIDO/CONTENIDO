@@ -2,15 +2,15 @@
 /**
  * This file contains the file information collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Konstantinos Katikakis
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Konstantinos Katikakis
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,11 +20,14 @@ cInclude('includes', 'functions.file.php');
 /**
  * File information collection.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiFileInformationCollection extends ItemCollection {
 
+    /**
+     * Constructor
+     */
     public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['file_information'], 'idsfi');
@@ -34,9 +37,9 @@ class cApiFileInformationCollection extends ItemCollection {
     /**
      * Creates a new entry in the database
      *
-     * @param $typeContent type of the entry
-     * @param $filename name of the file
-     * @param $description an optional description
+     * @param string $typeContent type of the entry
+     * @param string $filename name of the file
+     * @param string $description an optional description
      * @return cApiFileInformation the new item
      */
     public function create($typeContent, $filename, $description = '') {
@@ -70,11 +73,11 @@ class cApiFileInformationCollection extends ItemCollection {
     /**
      * updates a new entry in the database
      *
-     * @param $filename name of the file
-     * @param $typeContent type of the entry
-     * @param $description an optional description
-     * @param $newFilename an optional new filename
-     * @param $author an optional author
+     * @param string $filename name of the file
+     * @param string $typeContent type of the entry
+     * @param string $description an optional description
+     * @param string $newFilename an optional new filename
+     * @param string $author an optional author
      * @return cApiFileInformation the updated item
      */
     public function updateFile($filename, $typeContent, $description = '', $newFilename = '', $author = '') {
@@ -105,10 +108,11 @@ class cApiFileInformationCollection extends ItemCollection {
     }
 
     /**
-     * Deletes all found items in the table matching the passed field and it's value.
+     * Deletes all found items in the table matching the passed field and it's
+     * value.
      * Deletes also cached e entries and any existing properties.
      *
-     * @param array wioth parameters
+     * @param array $values with parameters
      * @return void
      */
     public function removeFileInformation(array $values) {
@@ -121,8 +125,8 @@ class cApiFileInformationCollection extends ItemCollection {
     /**
      * return an array with fileinformations from the database
      *
-     * @param $filename name of the file
-     * @param $type type of the entry
+     * @param string $filename name of the file
+     * @param string $type type of the entry
      * @return array
      */
     public function getFileInformation($filename, $type) {
@@ -144,17 +148,20 @@ class cApiFileInformationCollection extends ItemCollection {
         }
         return $fileInformation;
     }
-
 }
 
 /**
  * File information item.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
+ * @package Core
+ * @subpackage GenericDB_Model
  */
 class cApiFileInformation extends Item {
 
+    /**
+     *
+     * @param string $id
+     */
     public function __construct($id = false) {
         global $cfg;
         parent::__construct($cfg['tab']['file_information'], 'idsfi');
@@ -162,5 +169,4 @@ class cApiFileInformation extends Item {
             $this->loadByPrimaryKey($id);
         }
     }
-
 }

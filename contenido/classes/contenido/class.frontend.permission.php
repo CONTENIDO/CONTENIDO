@@ -2,15 +2,15 @@
 /**
  * This file contains the frontend permission collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -24,6 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiFrontendPermissionCollection extends ItemCollection {
 
     /**
+     * instance of cApiFrontendPermission to access defined filters
      *
      * @var cApiFrontendPermission
      */
@@ -143,7 +144,6 @@ class cApiFrontendPermissionCollection extends ItemCollection {
         }
         return false;
     }
-
 }
 
 /**
@@ -166,5 +166,4 @@ class cApiFrontendPermission extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
 }

@@ -144,7 +144,6 @@ class cApiModuleCollection extends ItemCollection {
 
         return $aUsedTemplates;
     }
-
 }
 
 /**
@@ -156,20 +155,30 @@ class cApiModuleCollection extends ItemCollection {
 class cApiModule extends Item {
 
     /**
-     * var for finding module translations in source code of module
+     * for finding module translations in source code of module
+     *
+     * @var string
      */
     private $_translationPatternText = '/mi18n([\s]*)\("((\\\\"|[^"])*)"(([\s]*),([\s]*)[^\),]+)*\)/';
 
     /**
-     * var for finding basic module translations in source code of module
+     * for finding basic module translations in source code of module
+     *
+     * @var string
      */
     private $_translationPatternBase = '/mi18n([\s]*)\(([\s]*)"/';
 
     /**
-     * var for replacing base module translations in source code of module
+     * for replacing base module translations in source code of module
+     *
+     * @var string
      */
     private $_translationReplacement = 'mi18n("';
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_error;
 
     /**
@@ -238,7 +247,7 @@ class cApiModule extends Item {
     /**
      * Sets the translated name of the module
      *
-     * @param $name string Translated name of the module
+     * @param string $name Translated name of the module
      */
     public function setTranslatedName($name) {
         global $lang;
@@ -246,8 +255,13 @@ class cApiModule extends Item {
     }
 
     /**
-     * This method get the input and output for translating
-     * from files and not from db-table.
+     * This method get the input and output for translating from files and not
+     * from db-table.
+     *
+     * @param array $cfg
+     * @param int $client
+     * @param int $lang
+     * @return bool multitype:
      */
     function parseModuleForStringsLoadFromFile($cfg, $client, $lang) {
         global $client;
@@ -414,7 +428,9 @@ class cApiModule extends Item {
     /**
      * Checks if the module is in use
      *
-     * @return bool Specifies if the module is in use
+     * @param int $module
+     * @param bool $bSetData
+     * @return bool true if the module is in use
      */
     public function moduleInUse($module, $bSetData = false) {
         global $cfg;
@@ -485,6 +501,10 @@ class cApiModule extends Item {
         }
     }
 
+    /**
+     *
+     * @see Item::getField()
+     */
     public function getField($field) {
         $value = parent::getField($field);
 
@@ -498,6 +518,11 @@ class cApiModule extends Item {
         return ($value);
     }
 
+    /**
+     *
+     * @param bool $bJustStore
+     * @see Item::store()
+     */
     public function store($bJustStore = false) {
         if ($bJustStore) {
             // Just store changes, e.g. if specifying the mod package
@@ -548,6 +573,7 @@ class cApiModule extends Item {
      * Save the modul properties (description,type...)
      *
      * @param string $sFile Where is the modul info.xml file
+     * @return multitype:string
      */
     private function _getModuleProperties($sFile) {
         $ret = array();
@@ -568,9 +594,11 @@ class cApiModule extends Item {
     /**
      * Imports the a module from a XML file, uses xmlparser and callbacks
      *
-     * @param string $file Filename of data file (full path)
-     * @param boolean $show_notification standard: true, mode to turn
+     * @param string $sFile Filename of data file (full path)
+     * @param string $tempName of archive
+     * @param bool $show_notification standard: true, mode to turn
      *        notifications off
+     * @return bool
      */
     function import($sFile, $tempName, $show_notification = true) {
         global $cfgClient, $db, $client, $cfg, $encoding, $lang;
@@ -642,7 +670,8 @@ class cApiModule extends Item {
     /**
      * Imports the a module from a XML file, uses xmlparser and callbacks
      *
-     * @param string $file Filename of data file (full path)
+     * @param string $sFile Filename of data file (full path)
+     * @return bool
      */
     function importModuleFromXML($sFile) {
         global $db, $cfgClient, $client, $cfg, $encoding, $lang;
@@ -781,7 +810,6 @@ class cApiModule extends Item {
 
         parent::setField($name, $value, $bSafe);
     }
-
 }
 
 ?>

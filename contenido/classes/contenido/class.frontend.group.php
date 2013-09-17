@@ -2,15 +2,15 @@
 /**
  * This file contains the frontend group collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -38,8 +38,8 @@ class cApiFrontendGroupCollection extends ItemCollection {
     /**
      * Creates a new group
      *
-     * @param $groupname string Specifies the groupname
-     * @param $password string Specifies the password (optional)
+     * @param string $groupname Specifies the groupname
+     * @param string $password Specifies the password (optional)
      */
     public function create($groupname) {
         global $client;
@@ -68,7 +68,7 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * Overridden delete method to remove groups from groupmember table
      * before deleting group
      *
-     * @param $itemID int specifies the frontend user group
+     * @param int $itemID specifies the frontend user group
      */
     public function delete($itemID) {
         $associations = new cApiFrontendGroupMemberCollection();
@@ -79,7 +79,6 @@ class cApiFrontendGroupCollection extends ItemCollection {
         }
         parent::delete($itemID);
     }
-
 }
 
 /**
@@ -102,5 +101,4 @@ class cApiFrontendGroup extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
 }

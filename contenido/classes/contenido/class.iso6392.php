@@ -2,15 +2,15 @@
 /**
  * This file contains the ISO6392 collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Alexander Scheider
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Alexander Scheider
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -23,6 +23,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cApiIso6392Collection extends ItemCollection {
 
+    /**
+     * Create a new collection of items.
+     *
+     * @param string $select where clause to use for selection (see
+     *            ItemCollection::select())
+     */
     public function __construct($select = false) {
         parent::__construct(cRegistry::getDbTableName('iso_639_2'), 'iso');
         $this->_setItemClass('cApiIso6392');
@@ -31,7 +37,6 @@ class cApiIso6392Collection extends ItemCollection {
             $this->select($select);
         }
     }
-
 }
 
 /**
@@ -54,5 +59,4 @@ class cApiIso6392 extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
 }

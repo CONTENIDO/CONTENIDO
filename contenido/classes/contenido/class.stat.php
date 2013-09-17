@@ -2,15 +2,15 @@
 /**
  * This file contains the stat collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -80,7 +80,7 @@ class cApiStatCollection extends ItemCollection {
      *
      * @param int $iIdCatArt
      * @param int $iIdLang
-     * @return cApiStat|null
+     * @return cApiStat null
      */
     public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
@@ -98,7 +98,6 @@ class cApiStatCollection extends ItemCollection {
         $where = 'idcatart = ' . (int) $idcatart . ' AND idlang = ' . (int) $idlang;
         return $this->deleteByWhereClause($where);
     }
-
 }
 
 /**
@@ -123,9 +122,11 @@ class cApiStat extends Item {
         }
     }
 
+    /**
+     * Increment and store property 'visited'.
+     */
     public function increment() {
         $this->set('visited', $this->get('visited') + 1);
         $this->store();
     }
-
 }

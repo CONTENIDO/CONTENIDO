@@ -2,15 +2,15 @@
 /**
  * This file contains the action collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Action collection
  *
- * @package    Core
+ * @package Core
  * @subpackage GenericDB_Model
  */
 class cApiActionCollection extends ItemCollection {
@@ -41,9 +41,9 @@ class cApiActionCollection extends ItemCollection {
      * @param string|int $area
      * @param string|int $name
      * @param string|int $alt_name
-     * @param string     $code
-     * @param string     $location
-     * @param int        $relevant
+     * @param string $code
+     * @param string $location
+     * @param int $relevant
      *
      * @return cApiAction
      */
@@ -76,7 +76,7 @@ class cApiActionCollection extends ItemCollection {
         $item->set('alt_name', $alt_name);
         $item->set('code', $code);
         $item->set('location', $location);
-        $item->set('relevant', (int)$relevant);
+        $item->set('relevant', (int) $relevant);
 
         $item->store();
 
@@ -119,7 +119,7 @@ class cApiActionCollection extends ItemCollection {
     public function getActionName($action) {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
 
-        return ($this->db->nextRecord()) ? $this->db->f('name') : NULL;
+        return ($this->db->nextRecord())? $this->db->f('name') : NULL;
     }
 
     /**
@@ -136,15 +136,14 @@ class cApiActionCollection extends ItemCollection {
             $this->db->query("SELECT idarea FROM `%s` WHERE idaction = %d", $this->table, $action);
         }
 
-        return ($this->db->nextRecord()) ? $this->db->f('idarea') : NULL;
+        return ($this->db->nextRecord())? $this->db->f('idarea') : NULL;
     }
-
 }
 
 /**
  * Action item
  *
- * @package    Core
+ * @package Core
  * @subpackage GenericDB_Model
  */
 class cApiAction extends Item {
@@ -152,8 +151,9 @@ class cApiAction extends Item {
     /**
      *
      * @var bool
+     * @deprecated is not used by any core class
      */
-    protected $_objectInvalid;
+    protected $_objectInvalid = false;
 
     /**
      * Constructor Function
@@ -162,7 +162,6 @@ class cApiAction extends Item {
      */
     public function __construct($mId = false) {
         global $cfg;
-        $this->_objectInvalid = false;
 
         parent::__construct($cfg['tab']['actions'], 'idaction');
         $this->setFilters(array(

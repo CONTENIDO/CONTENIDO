@@ -2,16 +2,16 @@
 /**
  * This file contains the system property collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Bjoern Behrens
- * @author           Holger Librenz
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Bjoern Behrens
+ * @author Holger Librenz
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -44,7 +44,7 @@ class cApiUserCollection extends ItemCollection {
      * Createa a user by user name.
      *
      * @param string $username
-     * @return cApiUser|false
+     * @return cApiUser false
      */
     public function create($username) {
         $primaryKeyValue = md5($username);
@@ -55,7 +55,7 @@ class cApiUserCollection extends ItemCollection {
         }
 
         $item->set('username', $username);
-        $item->set('salt', md5($username.rand(1000, 9999).rand(1000, 9999).rand(1000, 9999)));
+        $item->set('salt', md5($username . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999)));
         $item->store();
 
         return $item;
@@ -169,8 +169,7 @@ class cApiUserCollection extends ItemCollection {
     /**
      * Returns all system admins available in the system
      *
-     * @param boolean $forceActive Is forceActive true return only activ
-     *        Sysadmins
+     * @param bool $forceActive flag if only active sysadmins should be returned
      * @return cApiUser[] Array of user objects
      */
     public function fetchSystemAdmins($forceActive = false) {
@@ -208,7 +207,6 @@ class cApiUserCollection extends ItemCollection {
 
         return $users;
     }
-
 }
 
 /**
@@ -271,7 +269,7 @@ class cApiUser extends Item {
      * Password is ok and stored.
      *
      * @var int
-
+     *
      */
     const PASS_OK = 0;
 
@@ -279,7 +277,7 @@ class cApiUser extends Item {
      * Given password is to short
      *
      * @var int
-
+     *
      */
     const PASS_TO_SHORT = 1;
 
@@ -287,7 +285,7 @@ class cApiUser extends Item {
      * Given password is not strong enough
      *
      * @var int
-
+     *
      */
     const PASS_NOT_STRONG = 2;
 
@@ -295,7 +293,7 @@ class cApiUser extends Item {
      * Given password is not complex enough
      *
      * @var int
-
+     *
      */
     const PASS_NOT_COMPLEX = 3;
 
@@ -303,7 +301,7 @@ class cApiUser extends Item {
      * Password does not contain enough numbers.
      *
      * @var int
-
+     *
      */
     const PASS_NOT_ENOUGH_NUMBERS = 4;
 
@@ -318,7 +316,7 @@ class cApiUser extends Item {
      * Password does not contain enough mixed characters.
      *
      * @var int
-
+     *
      */
     const PASS_NOT_ENOUGH_MIXED_CHARS = 6;
 
@@ -326,7 +324,7 @@ class cApiUser extends Item {
      * Password does not contain enough different characters.
      *
      * @var int
-
+     *
      */
     const PASS_NOT_ENOUGH_DIFFERENT_CHARS = 7;
 
@@ -335,7 +333,7 @@ class cApiUser extends Item {
      * that already exists.
      *
      * @var int
-
+     *
      */
     const EXCEPTION_USERNAME_EXISTS = 8;
 
@@ -344,7 +342,7 @@ class cApiUser extends Item {
      * that is not valid.
      *
      * @var int
-
+     *
      */
     const EXCEPTION_PASSWORD_INVALID = 9;
 
@@ -353,7 +351,7 @@ class cApiUser extends Item {
      * for passwords are set via $cfg['password']['min_length']
      *
      * @var int
-
+     *
      */
     const MIN_PASS_LENGTH_DEFAULT = 8;
 
@@ -394,6 +392,7 @@ class cApiUser extends Item {
     /**
      * Checks if a user with the id $userId exists
      *
+     * @param string $userId
      * @return bool user exists or not
      */
     public static function userExists($userId) {
@@ -498,7 +497,7 @@ class cApiUser extends Item {
      * @return string Encoded password
      */
     public function encodePassword($password) {
-        return hash("sha256", md5($password).$this->get("salt"));
+        return hash("sha256", md5($password) . $this->get("salt"));
     }
 
     /**
@@ -507,6 +506,8 @@ class cApiUser extends Item {
      * @param string $sField Field name
      * @param string $mValue Value to set
      * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @return bool
+     * @see Item::setField()
      */
     public function setField($sField, $mValue, $bSafe = true) {
         if ('perms' === $sField) {
@@ -1077,7 +1078,6 @@ class cApiUser extends Item {
      *        retrieve
      * @param string $name Name of the property to retrieve
      * @param string $value Value to insert
-     * @return cApiUserProperty
      */
     public function setUserProperty($type, $name, $value) {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
@@ -1134,5 +1134,4 @@ class cApiUser extends Item {
 
         return $sError;
     }
-
 }

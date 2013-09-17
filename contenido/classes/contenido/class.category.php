@@ -2,15 +2,15 @@
 /**
  * This file contains the category collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -24,9 +24,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cApiCategoryCollection extends ItemCollection {
 
     /**
-     * Constructor function.
+     * Create a new collection of items.
      *
-     * @param string $select Select statement (see ItemCollection::select())
+     * @param string $select where clause to use for selection (see
+     *            ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -88,7 +89,7 @@ class cApiCategoryCollection extends ItemCollection {
      * Last entry has no parentid and no postid.
      *
      * @param int $idclient
-     * @return cApiCategory|null
+     * @return cApiCategory null
      */
     public function fetchLastCategoryTree($idclient) {
         $where = 'parentid=0 AND postid=0 AND idclient=' . (int) $idclient;
@@ -421,7 +422,6 @@ class cApiCategoryCollection extends ItemCollection {
 
         return $aCats;
     }
-
 }
 
 /**
@@ -481,6 +481,7 @@ class cApiCategory extends Item {
 
     /**
      * Returns the link to the current object.
+     *
      * @param integer $changeLangId change language id for URL (optional)
      * @return string link
      */
@@ -491,14 +492,11 @@ class cApiCategory extends Item {
 
         $options = array();
         $options['idcat'] = $this->get('idcat');
-        $options['lang'] = ($changeLangId == 0) ? cRegistry::getLanguageId() : $changeLangId;
+        $options['lang'] = ($changeLangId == 0)? cRegistry::getLanguageId() : $changeLangId;
         if ($changeLangId > 0) {
             $options['changelang'] = $changeLangId;
         }
 
-
-
         return cUri::getInstance()->build($options);
     }
-
 }

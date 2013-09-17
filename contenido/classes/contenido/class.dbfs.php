@@ -2,15 +2,15 @@
 /**
  * This file contains the DBFS collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -75,7 +75,8 @@ class cApiDbfsCollection extends ItemCollection {
             header("Content-Type: $mimetype");
             header('Etag: ' . md5(mt_rand()));
 
-            // Check, if output of Content-Disposition header should be skipped for the mimetype
+            // Check, if output of Content-Disposition header should be skipped
+            // for the mimetype
             $contentDispositionHeader = true;
             foreach ($cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] as $mt) {
                 if (strtolower($mt) == strtolower($mimetype)) {
@@ -224,12 +225,24 @@ class cApiDbfsCollection extends ItemCollection {
         }
     }
 
+    /**
+     *
+     * @param string $path
+     * @return string
+     */
     public function parent_dir($path) {
         $path = dirname($path);
 
         return $path;
     }
 
+    /**
+     *
+     * @param string $path
+     * @param string $mimetype
+     * @param string $content
+     * @return void Ambigous object>
+     */
     public function create($path, $mimetype = '', $content = '') {
         global $client, $auth;
 
@@ -287,6 +300,11 @@ class cApiDbfsCollection extends ItemCollection {
         return ($item);
     }
 
+    /**
+     *
+     * @param string $path
+     * @param string $content
+     */
     public function setContent($path, $content) {
         global $client;
 
@@ -307,6 +325,11 @@ class cApiDbfsCollection extends ItemCollection {
         }
     }
 
+    /**
+     *
+     * @param string $path
+     * @return Ambigous <mixed, bool>
+     */
     public function getSize($path) {
         global $client;
 
@@ -325,6 +348,11 @@ class cApiDbfsCollection extends ItemCollection {
         }
     }
 
+    /**
+     *
+     * @param string $path
+     * @return Ambigous <mixed, bool>
+     */
     public function getContent($path) {
         global $client;
 
@@ -342,6 +370,10 @@ class cApiDbfsCollection extends ItemCollection {
         }
     }
 
+    /**
+     *
+     * @param string $path
+     */
     public function remove($path) {
         global $client;
 
@@ -365,6 +397,7 @@ class cApiDbfsCollection extends ItemCollection {
      * in period
      *
      * @param string $sPath
+     * @param cApiPropertyCollection $oProperties
      * @return bool $bAvailable
      */
     public function checkTimeManagement($sPath, $oProperties) {
@@ -409,6 +442,11 @@ class cApiDbfsCollection extends ItemCollection {
  */
 class cApiDbfs extends Item {
 
+    /**
+     * DBFS protocol
+     *
+     * @var string
+     */
     const PROTOCOL_DBFS = 'dbfs:';
 
     /**
@@ -469,5 +507,4 @@ class cApiDbfs extends Item {
     public static function isDbfs($file) {
         return (substr($file, 0, 5) == self::PROTOCOL_DBFS);
     }
-
 }

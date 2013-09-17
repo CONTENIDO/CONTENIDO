@@ -23,6 +23,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cApiGroupMemberCollection extends ItemCollection {
 
+    /**
+     * Constructor
+     */
     public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['groupmembers'], 'idgroupuser');

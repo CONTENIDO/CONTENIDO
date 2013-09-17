@@ -1,17 +1,18 @@
 <?php
 /**
  * This file contains the upload collection and item class.
+ *
  * @todo Reset in/out filters of parent classes.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -116,8 +117,8 @@ class cApiUploadCollection extends ItemCollection {
      * @global array $cfgClient
      * @global int $client
      * @param int $id
-     * @return bool
-     * @fixme Code is similar/redundant to include.upl_files_overview.php 216-230
+     * @return bool @fixme Code is similar/redundant to
+     *         include.upl_files_overview.php 216-230
      */
     public function delete($id) {
         global $cfgClient, $client;
@@ -155,9 +156,6 @@ class cApiUploadCollection extends ItemCollection {
     }
 
     /**
-     *
-     *
-     *
      * Deletes meta-data from con_upl_meta table if file is deleting
      *
      * @param int $idupl
@@ -183,7 +181,6 @@ class cApiUploadCollection extends ItemCollection {
             $this->delete($oUpload->get('idupl'));
         }
     }
-
 }
 
 /**
@@ -318,5 +315,4 @@ class cApiUpload extends Item {
         }
         return $this->_oPropertyCollection;
     }
-
 }

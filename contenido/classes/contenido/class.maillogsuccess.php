@@ -2,15 +2,15 @@
 /**
  * This file contains the maillog success collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Simon Sprankel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Simon Sprankel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -40,9 +40,9 @@ class cApiMailLogSuccessCollection extends ItemCollection {
      *
      * @param int $idmail
      * @param array $recipient
-     * @param boolean $success
+     * @param bool $success
      * @param string $exception
-     * @return boolean
+     * @return bool
      */
     public function create($idmail, $recipient, $success, $exception) {
         $item = parent::createNewItem();
@@ -56,7 +56,6 @@ class cApiMailLogSuccessCollection extends ItemCollection {
 
         return true;
     }
-
 }
 
 /**
@@ -68,6 +67,7 @@ class cApiMailLogSuccessCollection extends ItemCollection {
 class cApiMailLogSuccess extends Item {
 
     /**
+     * Constructor
      *
      * @param mixed $mId
      */
@@ -79,5 +79,4 @@ class cApiMailLogSuccess extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
 }

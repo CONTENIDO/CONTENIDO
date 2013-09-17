@@ -2,15 +2,15 @@
 /**
  * This file contains the client collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Bjoern Behrens
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Bjoern Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -110,7 +110,7 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns first client available in the system
      *
-     * @return cApiClient|null
+     * @return cApiClient null
      */
     public function getFirstAccessibleClient() {
         global $perm;
@@ -149,7 +149,6 @@ class cApiClientCollection extends ItemCollection {
 
         return $client->hasLanguages();
     }
-
 }
 
 /**
@@ -161,6 +160,10 @@ class cApiClientCollection extends ItemCollection {
  */
 class cApiClient extends Item {
 
+    /**
+     *
+     * @var int
+     */
     public $idclient;
 
     /**
@@ -237,7 +240,8 @@ class cApiClient extends Item {
      *
      * @param mixed $type Type of the data to get
      * @param mixed $name Entry name
-     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
+     * @param int $client Client id (not used, it's declared because of PHP
+     *            strict warnings)
      * @return mixed Value
      */
     public function getProperty($type, $name, $client = 0) {
@@ -250,7 +254,8 @@ class cApiClient extends Item {
      *
      * @param int $idProp Id of property
      * @param string $p2 Not used, is here to prevent PHP Strict warnings
-     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
+     * @param int $client Client id (not used, it's declared because of PHP
+     *            strict warnings)
      * @return void
      */
     public function deleteProperty($idProp, $p2 = "", $client = 0) {
@@ -272,10 +277,9 @@ class cApiClient extends Item {
     /**
      * Get all client properties
      *
-     * @param mixed $mType Type of the data to get
      * @return array false array
-     * @todo return value should be the same as getPropertiesByType(), e. g. an
-     *       empty array instead false
+     * @todo return value should be the same as getPropertiesByType(), e.g. an
+     *       empty array instead of false
      */
     public function getProperties() {
         $propertyColl = $this->_getPropertiesCollectionInstance();
@@ -333,7 +337,9 @@ class cApiClient extends Item {
 
     /**
      * Lazy instantiation and return of properties object
-     * @param int $client  Client id (not used, it's declared because of PHP strict warnings)
+     *
+     * @param int $client Client id (not used, it's declared because of PHP
+     *            strict warnings)
      *
      * @return cApiPropertyCollection
      */
@@ -345,5 +351,4 @@ class cApiClient extends Item {
         }
         return $this->_oPropertyCollection;
     }
-
 }

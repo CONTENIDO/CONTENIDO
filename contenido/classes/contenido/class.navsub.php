@@ -36,6 +36,16 @@ class cApiNavSubCollection extends ItemCollection {
         $this->_setJoinPartner('cApiAreaCollection');
     }
 
+    /**
+     * Create new item with given values.
+     *
+     * @param int $navm
+     * @param int $area
+     * @param int $level
+     * @param string $location
+     * @param int $online
+     * @return Ambigous <Item, object>
+     */
     public function create($navm, $area, $level, $location, $online = '1') {
         $item = parent::createNewItem();
 
@@ -51,16 +61,11 @@ class cApiNavSubCollection extends ItemCollection {
             }
         }
 
-        $navm = cSecurity::toInteger($navm);
-        $level = cSecurity::toInteger($level);
-        $location = cSecurity::escapeString($location);
-        $online = cSecurity::toInteger($online);
-
-        $item->set('idnavm', $navm);
+        $item->set('idnavm', cSecurity::toInteger($navm));
         $item->set('idarea', $area);
-        $item->set('level', $level);
-        $item->set('location', $location);
-        $item->set('online', $online);
+        $item->set('level', cSecurity::toInteger($level));
+        $item->set('location', cSecurity::escapeString($location));
+        $item->set('online', cSecurity::toInteger($online));
 
         $item->store();
 

@@ -2,15 +2,15 @@
 /**
  * This file contains the nav main collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Frederic Schneider
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Frederic Schneider
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -32,17 +32,18 @@ class cApiNavMainCollection extends ItemCollection {
         $this->_setItemClass('cApiNavMain');
     }
 
+    /**
+     * Create new item with given values.
+     *
+     * @param string $location
+     * @return Ambigous <Item, object>
+     */
     public function create($location) {
         $item = parent::createNewItem();
-
-        $location = cSecurity::escapeString($location);
-        $item->set('location', $location);
-
+        $item->set('location', cSecurity::escapeString($location));
         $item->store();
-
-        return ($item);
+        return $item;
     }
-
 }
 
 /**
@@ -70,5 +71,4 @@ class cApiNavMain extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-
 }

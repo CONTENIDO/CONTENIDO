@@ -2,15 +2,15 @@
 /**
  * This file contains the area collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -114,6 +114,7 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Returns the name for a given areaid
      *
+     * @param string $area
      * @return string String with the name for the area
      */
     public function getAreaName($area) {
@@ -124,6 +125,7 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Returns the idarea for a given area name
      *
+     * @param string $area
      * @return int Integer with the ID for the area
      */
     public function getAreaID($area) {
@@ -132,7 +134,6 @@ class cApiAreaCollection extends ItemCollection {
 
         return $oItem->get('idarea');
     }
-
 }
 
 /**

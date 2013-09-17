@@ -2,15 +2,15 @@
 /**
  * This file contains the group collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Dominik Ziegler
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -23,6 +23,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cApiGroupCollection extends ItemCollection {
 
+    /**
+     * Constructor
+     */
     public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['groups'], 'group_id');
@@ -161,7 +164,6 @@ class cApiGroupCollection extends ItemCollection {
         }
         return $groups;
     }
-
 }
 
 /**
@@ -172,6 +174,11 @@ class cApiGroupCollection extends ItemCollection {
  */
 class cApiGroup extends Item {
 
+    /**
+     * Prefix to be used for group names.
+     *
+     * @var string
+     */
     const PREFIX = 'grp_';
 
     /**
@@ -215,6 +222,8 @@ class cApiGroup extends Item {
      * @param string $sField Field name
      * @param string $mValue Value to set
      * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @return bool
+     * @see Item::setField()
      */
     public function setField($sField, $mValue, $bSafe = true) {
         if ('perms' === $sField) {
@@ -238,7 +247,8 @@ class cApiGroup extends Item {
     /**
      * Returns name of group.
      *
-     * @return bool $removePrefix Flag to remove "grp_" prefix from group name
+     * @param bool $removePrefix Flag to remove "grp_" prefix from group name
+     * @return Ambigous <string, mixed, bool>
      */
     public function getGroupName($removePrefix = false) {
         $groupname = $this->get('groupname');
@@ -324,10 +334,10 @@ class cApiGroup extends Item {
      *
      * @param string $type Type (class, category etc) for the property to delete
      * @param string $name Name of the property to delete
+     * @return bool
      */
     public function deleteGroupProperty($type, $name) {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         return $groupPropColl->deleteByGroupIdTypeName($type, $name);
     }
-
 }

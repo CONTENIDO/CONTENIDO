@@ -2,15 +2,15 @@
 /**
  * This file contains the article language collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Bjoern Behrens
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Bjoern Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,6 +22,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GenericDB_Model
  */
 class cApiArticleLanguageCollection extends ItemCollection {
+
+    /**
+     * Create a new collection of items.
+     *
+     * @param string $select where clause to use for selection (see
+     *            ItemCollection::select())
+     */
     public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['art_lang'], 'idartlang');
@@ -142,7 +149,6 @@ class cApiArticleLanguageCollection extends ItemCollection {
         $this->db->query($sql, $this->table, $idart, $idlang);
         return ($this->db->nextRecord())? $this->db->f('idartlang') : 0;
     }
-
 }
 
 /**
@@ -497,6 +503,7 @@ class cApiArticleLanguage extends Item {
 
     /**
      * Returns the link to the current object.
+     *
      * @param integer $changeLangId change language id for URL (optional)
      * @return string link
      */
@@ -507,12 +514,11 @@ class cApiArticleLanguage extends Item {
 
         $options = array();
         $options['idart'] = $this->get('idart');
-        $options['lang'] = ($changeLangId == 0) ? $this->get('idlang') : $changeLangId;
+        $options['lang'] = ($changeLangId == 0)? $this->get('idlang') : $changeLangId;
         if ($changeLangId > 0) {
             $options['changelang'] = $changeLangId;
         }
 
         return cUri::getInstance()->build($options);
     }
-
 }

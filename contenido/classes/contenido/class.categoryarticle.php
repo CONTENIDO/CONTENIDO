@@ -2,15 +2,15 @@
 /**
  * This file contains the category article collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -23,6 +23,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cApiCategoryArticleCollection extends ItemCollection {
 
+    /**
+     * Create a new collection of items.
+     *
+     * @param string $select where clause to use for selection (see
+     *            ItemCollection::select())
+     */
     public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['cat_art'], 'idcatart');
@@ -117,7 +123,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
-     * @return cApiCategoryArticle|null
+     * @return cApiCategoryArticle null
      */
     public function fetchByCategoryIdAndArticleId($idcat, $idart) {
         $aProps = array(
@@ -141,7 +147,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
-     * @return int|null
+     * @return int null
      */
     public function getIdByCategoryIdAndArticleId($idcat, $idart) {
         $where = "idcat = %d AND idart = %d";
@@ -244,7 +250,6 @@ class cApiCategoryArticleCollection extends ItemCollection {
         $this->db->query($sql);
         return $this->db->affectedRows();
     }
-
 }
 
 /**

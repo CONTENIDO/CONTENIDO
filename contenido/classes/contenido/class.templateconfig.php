@@ -2,15 +2,15 @@
 /**
  * This file contains the template configuration collection and item class.
  *
- * @package          Core
- * @subpackage       GenericDB_Model
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -23,6 +23,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cApiTemplateConfigurationCollection extends ItemCollection {
 
+    /**
+     * Create a new collection of items.
+     *
+     * @param string $select where clause to use for selection (see
+     *            ItemCollection::select())
+     */
     public function __construct($select = false) {
         global $cfg;
         parent::__construct($cfg['tab']['tpl_conf'], 'idtplcfg');
@@ -111,7 +117,6 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
             }
         }
     }
-
 }
 
 /**
@@ -153,5 +158,4 @@ class cApiTemplateConfiguration extends Item {
 
         parent::setField($name, $value, $bSafe);
     }
-
 }
