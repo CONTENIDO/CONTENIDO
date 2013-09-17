@@ -2,9 +2,10 @@
 /**
  * This file contains the Extractor for plugin archive files
  *
- * @package     Plugin
- * @subpackage  PluginManager
+ * @package Plugin
+ * @subpackage PluginManager
  * @version SVN Revision $Rev:$
+ *
  * @author Frederic Schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -19,6 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package     Plugin
  * @subpackage  PluginManager
+ * @author Frederic Schneider
  */
 class PimPluginArchiveExtractor {
 

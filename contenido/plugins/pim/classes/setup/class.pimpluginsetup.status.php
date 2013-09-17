@@ -2,7 +2,7 @@
 /**
  * This file contains abstract class for change status of installed plugins
  *
- * @package CONTENIDO Plugins
+ * @package Plugin
  * @subpackage PluginManager
  * @version SVN Revision $Rev:$
  *
@@ -17,8 +17,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Class for change active status of installed plugins, extends PimPluginSetup
- * @author frederic.schneider
  *
+ * @package Plugin
+ * @subpackage PluginManager
+ * @author frederic.schneider
  */
 class PimPluginSetupStatus extends PimPluginSetup {
 

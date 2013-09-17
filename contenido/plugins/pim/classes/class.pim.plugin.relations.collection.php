@@ -18,9 +18,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Plugin Manager Relations recipient class.
  *
- * @package Plugin
- * @subpackage PluginManager
- *
+ * @package     Plugin
+ * @subpackage  PluginManager
+ * @author Frederic Schneider
  */
 class PimPluginRelationsCollection extends ItemCollection {
 

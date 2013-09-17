@@ -2,7 +2,7 @@
 /**
  * This file contains abstract class for installation new plugins
  *
- * @package CONTENIDO Plugins
+ * @package Plugin
  * @subpackage PluginManager
  * @version SVN Revision $Rev:$
  *
@@ -18,8 +18,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Uninstall class for existing plugins, extends PimPluginSetup
  *
+ * @package Plugin
+ * @subpackage PluginManager
  * @author frederic.schneider
- *
  */
 class PimPluginSetupUninstall extends PimPluginSetup {
 
