@@ -182,7 +182,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
      *
      * @param array $elements Array with "values" of the cHTMLOptionElement to
      *        set
-     * @return cHTMLSelectElement $this
+     * @return cHTMLSelectElement $this for chaining
      */
     public function setSelected(array $elements) {
         foreach ($this->_options as $key => $option) {
