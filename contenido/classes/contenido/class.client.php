@@ -120,7 +120,7 @@ class cApiClientCollection extends ItemCollection {
                 return $item;
             }
         }
-        return null;
+        return NULL;
     }
 
     /**

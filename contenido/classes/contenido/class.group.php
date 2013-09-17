@@ -45,7 +45,7 @@ class cApiGroupCollection extends ItemCollection {
 
         $item = parent::createNewItem($primaryKeyValue);
         if (!is_object($item)) {
-            return null;
+            return NULL;
         }
 
         $groupname = cApiGroup::prefixedGroupName($groupname);

@@ -46,7 +46,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      *
      * @param string $userId Id of user
      */
-    public function startUsersTracking($userId = null) {
+    public function startUsersTracking($userId = NULL) {
         global $auth;
 
         $userId = (string) $userId;

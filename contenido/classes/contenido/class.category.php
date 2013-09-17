@@ -225,7 +225,7 @@ class cApiCategoryCollection extends ItemCollection {
      *        deeper category in this language.
      * @return int
      */
-    public function getFirstChildCategoryId($idcat, $idlang = null) {
+    public function getFirstChildCategoryId($idcat, $idlang = NULL) {
         global $cfg;
 
         $sql = "SELECT idcat FROM `%s` WHERE parentid = %d AND preid = 0";
@@ -233,7 +233,7 @@ class cApiCategoryCollection extends ItemCollection {
         $this->db->query($sql);
         if ($this->db->nextRecord()) {
             $midcat = (int) $this->db->f('idcat');
-            if (null == $idlang) {
+            if (NULL == $idlang) {
                 return $midcat;
             }
 
@@ -269,7 +269,7 @@ class cApiCategoryCollection extends ItemCollection {
      * @param int|null $idlang
      * @return array
      */
-    public function getAllChildCategoryIds($idcat, $idlang = null) {
+    public function getAllChildCategoryIds($idcat, $idlang = NULL) {
         global $cfg;
 
         $aCats = array();
@@ -281,7 +281,7 @@ class cApiCategoryCollection extends ItemCollection {
         if ($this->db->nextRecord()) {
             while ($bLoop) {
                 $midcat = $this->db->f('idcat');
-                if (null == $idlang) {
+                if (NULL == $idlang) {
                     $aCats[] = $midcat;
                 } else {
                     // Deeper element exists, check for language dependent part
@@ -340,7 +340,7 @@ class cApiCategoryCollection extends ItemCollection {
 
         $openList[] = $idcat;
 
-        while (($actId = array_pop($openList)) != null) {
+        while (($actId = array_pop($openList)) != NULL) {
             if (in_array($actId, $catList)) {
                 continue;
             }

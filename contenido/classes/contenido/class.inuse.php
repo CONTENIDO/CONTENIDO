@@ -53,7 +53,7 @@ class cApiInUseCollection extends ItemCollection {
 
         $this->select("type='" . $type . "' AND objectid='" . $objectid . "'");
 
-        $newitem = null;
+        $newitem = NULL;
         if (!$this->next()) {
             $newitem = parent::createNewItem();
             $newitem->set('type', $type);

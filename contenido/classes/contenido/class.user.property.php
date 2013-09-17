@@ -193,7 +193,7 @@ class cApiUserPropertyCollection extends ItemCollection {
         if (($property = $this->next()) !== false) {
             return $property;
         }
-        return null;
+        return NULL;
     }
 
     /**
@@ -318,7 +318,7 @@ class cApiUserPropertyCollection extends ItemCollection {
                 return $obj;
             }
         }
-        return null;
+        return NULL;
     }
 
     /**

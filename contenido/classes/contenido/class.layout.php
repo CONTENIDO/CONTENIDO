@@ -48,10 +48,10 @@ class cApiLayoutCollection extends ItemCollection {
      * @param string $lastmodified
      * @return cApiLayout
      */
-    public function create($name, $idclient = null, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '') {
+    public function create($name, $idclient = NULL, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '') {
         global $client, $auth;
 
-        if (null === $idclient) {
+        if (NULL === $idclient) {
             $idclient = $client;
         }
 

@@ -118,7 +118,7 @@ class cApiClientLanguageCollection extends ItemCollection {
 
         $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
 
-        return ($this->db->nextRecord())? (int) $this->db->f('idlang') : null;
+        return ($this->db->nextRecord())? (int) $this->db->f('idlang') : NULL;
     }
 }
 
@@ -235,7 +235,7 @@ class cApiClientLanguage extends Item {
      *        strict warnings)
      * @return void
      */
-    public function deleteProperty($idprop, $p2 = null, $client = 0) {
+    public function deleteProperty($idprop, $p2 = NULL, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->delete($idprop);
     }

@@ -82,7 +82,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
     public function setTypeNameValueById($type, $name, $value, $id) {
         $item = $this->fetchById($id);
         if (!$item) {
-            return null;
+            return NULL;
         }
 
         $item->set('type', $this->escape($type));
@@ -176,7 +176,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
         }
 
         $item = parent::fetchById($id);
-        return ($item && $item->isLoaded())? $item : null;
+        return ($item && $item->isLoaded())? $item : NULL;
     }
 
     /**
@@ -195,7 +195,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
         if (($property = $this->next()) !== false) {
             return $property;
         }
-        return null;
+        return NULL;
     }
 
     /**
@@ -308,7 +308,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
                 return $obj;
             }
         }
-        return null;
+        return NULL;
     }
 
     /**
@@ -326,7 +326,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
                 return $obj;
             }
         }
-        return null;
+        return NULL;
     }
 
     /**

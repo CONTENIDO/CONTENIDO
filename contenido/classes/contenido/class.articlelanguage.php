@@ -251,7 +251,7 @@ class cApiArticleLanguage extends Item {
      *
      * @var array
      */
-    public $content = null;
+    public $content = NULL;
 
     /**
      * Constructor Function
@@ -339,7 +339,7 @@ class cApiArticleLanguage extends Item {
     protected function _getArticleContent() {
         global $cfg;
 
-        if (null !== $this->content) {
+        if (NULL !== $this->content) {
             return;
         }
 
@@ -461,8 +461,8 @@ class cApiArticleLanguage extends Item {
      * @param int|null $id Id of the content
      * @return string array data
      */
-    public function getContent($type, $id = null) {
-        if (null === $this->content) {
+    public function getContent($type, $id = NULL) {
+        if (NULL === $this->content) {
             $this->_getArticleContent();
         }
 

@@ -115,7 +115,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
             $oItem->loadByRecordSet($this->db->toArray());
             return $oItem;
         }
-        return null;
+        return NULL;
     }
 
     /**
@@ -153,7 +153,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
         $where = "idcat = %d AND idart = %d";
         $where = $this->db->prepare("idcat = %d AND idart = %d", $idcat, $idart);
         $aIds = $this->getIdsByWhereClause($where);
-        return (count($aIds) > 0)? $aIds[0] : null;
+        return (count($aIds) > 0)? $aIds[0] : NULL;
     }
 
     /**

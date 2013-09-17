@@ -77,7 +77,7 @@ class cApiGroupMemberCollection extends ItemCollection {
         if ($this->select($where)) {
             return $this->next();
         } else {
-            return null;
+            return NULL;
         }
     }
 

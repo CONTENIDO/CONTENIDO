@@ -45,7 +45,7 @@ class cApiDbfsCollection extends ItemCollection {
     public function outputFile($path) {
         global $cfg, $client, $auth;
 
-        $path = cSecurity::escapeDB($path, null);
+        $path = cSecurity::escapeDB($path, NULL);
         $client = (int) $client;
         $path = cApiDbfs::stripPath($path);
         $dir = dirname($path);

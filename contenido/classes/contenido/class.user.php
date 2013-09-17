@@ -908,8 +908,8 @@ class cApiUser extends Item {
      *        (description)"
      * @return array
      */
-    public function getGroupNamesByUserID($userid = null, $bAddDescription = true) {
-        $userid = (null === $userid)? $this->get('user_id') : $userid;
+    public function getGroupNamesByUserID($userid = NULL, $bAddDescription = true) {
+        $userid = (NULL === $userid)? $this->get('user_id') : $userid;
 
         $aGroups = array();
 
@@ -941,7 +941,7 @@ class cApiUser extends Item {
      * @return array
      */
     public function getGroupIDsByUserID($userid) {
-        $userid = (null === $userid)? $this->get('user_id') : $userid;
+        $userid = (NULL === $userid)? $this->get('user_id') : $userid;
 
         $aGroups = array();
 

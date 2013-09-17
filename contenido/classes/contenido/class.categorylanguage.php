@@ -130,7 +130,7 @@ class cApiCategoryLanguageCollection extends ItemCollection {
      * @param int $idlang Check language id additionally
      * @return bool
      */
-    public function isStartArticle($idartlang, $idcat = null, $idlang = null) {
+    public function isStartArticle($idartlang, $idcat = NULL, $idlang = NULL) {
         $where = 'startidartlang = ' . (int) $idartlang;
         if (is_numeric($idcat)) {
             $where .= ' AND idcat = ' . $idcat;
