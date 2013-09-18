@@ -120,7 +120,7 @@
                 {HEADER_MENU_OBJ}.initialize({HEADER_MENU_OPTIONS});
                 ContenidoRegistry.set("headerMenu", {HEADER_MENU_OBJ});
 
-                $(["#head_logo", "#imgMyContenido", "#imgInfo"]).click(function(){
+                $('#head_logo, #imgMyContenido, #imgInfo').click(function(){
                     resetHeaderMenu();
                 });
             });
