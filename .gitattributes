@@ -32,6 +32,7 @@ cms/images/spacer.gif -text
 cms/includes/concache.php -text
 cms/includes/index.php -text
 cms/index.php -text
+cms/js/main.js -text svneol=unset#text/plain
 cms/robots.txt -text
 contenido/.htaccess_recommended -text
 contenido/ajaxmain.php -text
