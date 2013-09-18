@@ -2170,6 +2170,8 @@ docs/techref/modules/output-gen.jpg -text
 docs/techref/modules/writing.modules.html -text
 docs/techref/plugins/Contenido[!!-~]Extension[!!-~]Chainer.pdf -text
 docs/techref/plugins/plugin.config.html -text
+setup/autoinstall-example.ini -text svneol=unset#text/plain
+setup/autoinstall.php -text
 setup/data/base.txt -text
 setup/data/base/base_actions1.sql -text
 setup/data/base/base_area1.sql -text
@@ -2530,6 +2532,7 @@ setup/index.php -text
 setup/lib/class.setupcontrols.php -text
 setup/lib/class.setupmask.php -text
 setup/lib/defines.php -text
+setup/lib/functions.cliinstall.php -text
 setup/lib/functions.environment.php -text
 setup/lib/functions.filesystem.php -text
 setup/lib/functions.libraries.php -text
