@@ -23,10 +23,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cZipArchive {
 
     /**
-     * This function reads all files from given path.
+     * Read all files from given path excluding files which names start with a
+     * dot or are not valid according to CONTENIDO standards
+     * (validateFilename()).
      *
      * @param string $dirPath
      * @return array of files
+     * @see cFileHandler::validateFilename()
      */
     public static function readExistingFiles($dirPath) {
 
@@ -43,8 +46,15 @@ class cZipArchive {
         // gather all files in $dirPath that are "valid" filenames
         $array = array();
         while (false !== $file = readdir($handle)) {
-            // hotfix : fileHandler returns filename '.' als valid filename
-            if (cFileHandler::validateFilename($file, FALSE) && $file[0] != '.') {
+            if ('.' === $file[0]) {
+                // exclude file if name starts with a dot
+                // hotfix : fileHandler returns filename '.' als valid filename
+                continue;
+            } else if (!cFileHandler::validateFilename($file, false)) {
+                // exclude file if name is not valid according to CONTENIDO
+                // standards
+                continue;
+            } else {
                 $array[] = $file;
             }
         }
@@ -173,5 +183,4 @@ class cZipArchive {
             $zip->close();
         }
     }
-
 }
