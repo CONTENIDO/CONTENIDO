@@ -198,11 +198,12 @@ class cBackend {
     }
 
     /**
-     * Checks if choosen action exists.
-     * If so, execute/eval it.
+     * Return code of action.
+     * Checks if code file for given action exists. If so, read and return it
+     * else return an empty string.
      *
-     * @param string $action action to execute
-     * @return string $action code for selected action
+     * @param string $action action to be read
+     * @return string code for given action
      */
     public function getCode($action) {
         $actionCodeFile = cRegistry::getBackendPath() . 'includes/type/action/include.' . $action . '.action.php';
