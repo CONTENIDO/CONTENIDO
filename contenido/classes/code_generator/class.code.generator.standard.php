@@ -73,8 +73,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
             foreach ($a_container as $key => $value) {
                 if (!isset($a_d[$value]) || !is_numeric($a_d[$value])) {
-                    // No configured module in this container, reset current module
-                    // state and process empty container
+                    // No configured module in this container
+                    // reset current module state and process empty container
                     $this->_resetModule();
                     $this->_processCmsContainer($value);
                     continue;
@@ -216,10 +216,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * Processes and adds or replaces title tag for an article.
-     *
      * Calls also the CEC 'Contenido.Content.CreateTitletag' for user defined
-     * title
-     * creation.
+     * title creation.
+     *
+     * @see cCodeGeneratorAbstract::_processCodeTitleTag()
+     * @return string
      */
     protected function _processCodeTitleTag() {
         if ($this->_pageTitle == '') {
@@ -269,11 +270,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
             // get meta tag keys
             $valueKeys = array_keys($value);
-            $nameKey   = 'name';
+            $nameKey = 'name';
             foreach ($valueKeys as $key) {
 
-                if ($key != 'content') $nameKey = $key;
-
+                if ($key != 'content')
+                    $nameKey = $key;
             }
 
             // decode entities and htmlspecialchars, content will be converted
@@ -394,8 +395,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // update (!) index setting of robots meta tag
         // the follow value will not be changed
-        //$index = (bool) $this->getArtLangObject()->get('searchable');
-        //$metaTags = $this->_updateMetaRobots($metaTags, $index, NULL);
+        // $index = (bool) $this->getArtLangObject()->get('searchable');
+        // $metaTags = $this->_updateMetaRobots($metaTags, $index, NULL);
 
         return $metaTags;
     }
@@ -410,7 +411,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * @param array $metaTags array of meta elements to amend
      * @param bool|NULL $index if article should be indexed
      * @param bool|NULL $follow if links in article should be followed
-     * @return multitype:multitype: Ambigous <string, unknown>
+     * @return array
      */
     protected function _updateMetaRobots(array $metaTags, $index, $follow) {
 
@@ -476,12 +477,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      *
      * Both, the reduced array of meta elements and the meta element to be
      * extracted are returned as an array. If the meta element to be extracted
-     * could ot be found, NULL will be returned in its place.
+     * could not be found, NULL will be returned in its place.
      *
      * @param array $metaTags
      * @param string $type either 'name' or 'http-equiv'
      * @param string $nameOrEquiv
-     * @return multitype:multitype: Ambigous <string, unknown>
+     * @return array
      */
     protected function _extractMetaElement(array $metaTags, $type, $nameOrEquiv) {
 

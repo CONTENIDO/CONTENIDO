@@ -315,6 +315,7 @@ abstract class Item extends cItemBaseAbstract {
      * @param  string  $sField  Field name
      * @param  string  $mValue  Value to set
      * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($sField, $mValue, $bSafe = true) {
         if ($this->virgin == true) {
