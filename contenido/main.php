@@ -166,6 +166,7 @@ if (isset($action) && $action != '') {
     $backend->log($idcat, $idart, $client, $lang, $action);
 }
 
+// include action file if it exists
 if (isset($action)) {
     $actionCodeFile = $backendPath . 'includes/type/action/include.' . $action . '.action.php';
     if (cFileHandler::exists($actionCodeFile)) {
