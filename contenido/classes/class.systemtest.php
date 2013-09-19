@@ -1350,4 +1350,92 @@ class cSystemtest {
             return self::CON_IMAGERESIZE_NOTHINGAVAILABLE;
         }
     }
+
+    public function checkSetupMysql($setupType, $databaseName, $databasePrefix) {
+        switch ($setupType) {
+        	case "setup":
+
+        	    $db = getSetupMySQLDBConnection(false);
+
+        	    // Check if the database exists
+        	    $status = checkMySQLDatabaseExists($db, $databaseName);
+
+        	    if ($status) {
+        	        // Yes, database exists
+        	        $db = getSetupMySQLDBConnection();
+        	        $db->connect();
+
+        	        // Check if data already exists
+        	        $db->query('SHOW TABLES LIKE "%s_actions"', $databasePrefix);
+
+        	        if ($db->nextRecord()) {
+        	            $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("MySQL database already exists and seems to be filled", "setup"), sprintf(i18n("Setup checked the database %s and found the table %s. It seems that you already have a CONTENIDO installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type.", "setup"), $databaseName, sprintf("%s_actions", $databasePrefix)));
+        	            return;
+        	        }
+
+        	        // Check if data already exists
+        	        $db->query('SHOW TABLES LIKE "%s_test"', $databasePrefix);
+        	        if ($db->nextRecord()) {
+        	            $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("MySQL test table already exists in the database", "setup"), sprintf(i18n("Setup checked the database %s and found the test table %s. Please remove it before continuing.", "setup"), $databaseName, sprintf("%s_test", $databasePrefix)));
+        	            return;
+        	        }
+
+        	        // Good, table doesn't exist. Check for database permisions
+        	        $status = checkMySQLTableCreation($db, $databaseName, sprintf("%s_test", $databasePrefix));
+        	        if (!$status) {
+        	            $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Unable to create tables in the selected MySQL database", "setup"), sprintf(i18n("Setup tried to create a test table in the database %s and failed. Please assign table creation permissions to the database user you entered, or ask an administrator to do so.", "setup"), $databaseName));
+        	            return;
+        	        }
+
+        	        // Good, we could create a table. Now remove it again
+        	        $status = checkMySQLDropTable($db, $databaseName, sprintf("%s_test", $databasePrefix));
+        	        if (!$status) {
+        	            $this->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to remove the test table", "setup"), sprintf(i18n("Setup tried to remove the test table %s in the database %s and failed due to insufficient permissions. Please remove the table %s manually.", "setup"), sprintf("%s_test", $databasePrefix), $databaseName, sprintf("%s_test", $databasePrefix)));
+        	        }
+        	    } else {
+        	        $db->connect();
+        	        // Check if database can be created
+        	        $status = checkMySQLDatabaseCreation($db, $databaseName);
+        	        if (!$status) {
+        	            $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Unable to create the database in the MySQL server", "setup"), sprintf(i18n("Setup tried to create a test database and failed. Please assign database creation permissions to the database user you entered, ask an administrator to do so, or create the database manually.", "setup")));
+        	            return;
+        	        }
+
+        	        // Check for database permisions
+        	        $status = checkMySQLTableCreation($db, $databaseName, sprintf("%s_test", $databasePrefix));
+        	        if (!$status) {
+        	            $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Unable to create tables in the selected MySQL database", "setup"), sprintf(i18n("Setup tried to create a test table in the database %s and failed. Please assign table creation permissions to the database user you entered, or ask an administrator to do so.", "setup"), $databaseName));
+        	            return;
+        	        }
+
+        	        // Good, we could create a table. Now remove it again
+        	        $status = checkMySQLDropTable($db, $databaseName, sprintf("%s_test", $databasePrefix));
+        	        if (!$status) {
+        	            $this->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to remove the test table", "setup"), sprintf(i18n("Setup tried to remove the test table %s in the database %s and failed due to insufficient permissions. Please remove the table %s manually.", "setup"), sprintf("%s_test", $databasePrefix), $databaseName, sprintf("%s_test", $databasePrefix)));
+        	        }
+        	    }
+        	    break;
+        	case "upgrade":
+        	    $db = getSetupMySQLDBConnection(false);
+
+        	    // Check if the database exists
+        	    $status = checkMySQLDatabaseExists($db, $databaseName);
+        	    if (!$status) {
+        	        $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("No data found for the upgrade", "setup"), sprintf(i18n("Setup tried to locate the data for the upgrade, however, the database %s doesn't exist. You need to copy your database first before running setup.", "setup"), $databaseName));
+        	        return;
+        	    }
+
+        	    $db = getSetupMySQLDBConnection();
+
+        	    // Check if data already exists
+        	    $sql = 'SHOW TABLES LIKE "%s_actions"';
+        	    $db->query(sprintf($sql, $databasePrefix));
+        	    if (!$db->nextRecord()) {
+        	        $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("No data found for the upgrade", "setup"), sprintf(i18n("Setup tried to locate the data for the upgrade, however, the database %s contains no tables. You need to copy your database first before running setup.", "setup"), $databaseName));
+        	        return;
+        	    }
+
+        	    break;
+        }
+    }
 }
