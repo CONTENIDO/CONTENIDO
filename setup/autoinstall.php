@@ -26,7 +26,7 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 // include the console helper functions
-include_once('lib/functions.cliinstall.php');
+include_once('lib/functions.clisetup.php');
 include_once('lib/class.clisetup.php');
 
 // parse the arguments of the script and store them in an array
@@ -44,13 +44,14 @@ initializeVariables();
 // read the command line and gather all setup settings accordingly
 $cliSetup->interpretCommandline();
 
-// write the settings to the places where the CONTENIDO setup expects it
+// write the settings to the places where the CONTENIDO setup expects them
 $cliSetup->applySettings();
 
 // check every parameter that is needed for the setup
 if(!checkInstallationSettings()) {
     if(!$args['noninteractive']) {
         do {
+            // ask the user for the settings if some are missing and the interactive mode is allowed
             prntln(i18n('Please enter the missing settings below:', 'setup'));
             $cliSetup->getUserInputSettings();
             $cliSetup->applySettings();

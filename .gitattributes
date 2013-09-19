@@ -2533,7 +2533,7 @@ setup/lib/class.clisetup.php -text
 setup/lib/class.setupcontrols.php -text
 setup/lib/class.setupmask.php -text
 setup/lib/defines.php -text
-setup/lib/functions.cliinstall.php -text
+setup/lib/functions.clisetup.php -text
 setup/lib/functions.environment.php -text
 setup/lib/functions.filesystem.php -text
 setup/lib/functions.libraries.php -text

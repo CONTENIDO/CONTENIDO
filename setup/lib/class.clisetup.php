@@ -144,6 +144,9 @@ class cCLISetup {
         }
     }
 
+    /**
+     * Prints the settings json encoded to the console but removes passwords from it
+     */
     public function printSettings() {
         prntln(i18n('CONTENIDO will be installed with the following settings: ', 'setup'));
         $noPasswordArray = $this->settings;
@@ -236,6 +239,9 @@ class cCLISetup {
             prntln(i18n('Please choose "yes" (to install the modules AND the content), "modules" (to install only the modules) or "no"', 'setup'));
             prnt(i18n('Examples? (yes/modules/no)', 'setup') . '[' . $displayStandard . ']: ', 1);
             $line = strtolower(trim(fgets(STDIN)));
+            if($line == "") {
+                $line = $displayStandard;
+            }
             if($line == 'yes' || $line == i18n('yes', 'setup')) {
                 $this->settings['setup']['client_mode'] = 'CLIENTEXAMPLES';
             } else if($line == 'modules' || $line == i18n('modules', 'setup')) {

@@ -229,13 +229,16 @@ function executeSystemTests() {
 
     $fine = true;
 
-    // load the CONTENIDO locale
+    // load the CONTENIDO locale for the test results
     i18nInit('../data/locale/', $belang);
+
+    // run the tests
     $test = new cSystemtest($cfg);
-    $test->runTests(false);
-    $test->testFilesystem(true, false);
-    $test->testFrontendFolderCreation();
-    $test->checkSetupMysql('setup', $cfg['db']['connection']['database'], $_SESSION['dbprefix']);
+    $test->runTests(false); // general php tests
+    $test->testFilesystem(true, false); // file system permission tests
+    $test->testFrontendFolderCreation(); // more file system permission tests
+    $test->checkSetupMysql('setup', $cfg['db']['connection']['database'], $_SESSION['dbprefix']); // test the SQL connection and database creation
+
     $testResults = $test->getResults();
 
     foreach($testResults as $testResult) {
