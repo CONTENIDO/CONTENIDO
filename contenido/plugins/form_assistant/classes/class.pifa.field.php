@@ -14,12 +14,14 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * PIFA field collection.
  *
  * @author marcus.gnass
  */
 class PifaFieldCollection extends ItemCollection {
 
     /**
+     * Creates a PIFA field collection.
      *
      * @param mixed $where clause to be used to load items or false
      */
@@ -59,101 +61,116 @@ class PifaFieldCollection extends ItemCollection {
 class PifaField extends Item {
 
     /**
-     * size to use for VARCHAR fields
+     * Size to use for VARCHAR fields.
      * Remember: the maximum row size for the used table type, not counting
      * BLOBs, is 65535.
-     * TODO PIFA should be able to calculate the size for one record by the size
-     * of its fields and handle it accordingly.
      *
      * @var int
+     * @todo PIFA should be able to calculate the size for one record by the
+     *       size of its fields and handle it accordingly.
      */
     const VARCHAR_SIZE = 255;
 
     /**
+     * Input field for single-line text.
      *
      * @var int
      */
     const INPUTTEXT = 1;
 
     /**
+     * Input field for multi-line text.
      *
      * @var int
      */
     const TEXTAREA = 2;
 
     /**
+     * Input field for single-line password.
      *
      * @var int
      */
     const INPUTPASSWORD = 3;
 
     /**
+     * Radiobox.
      *
      * @var int
      */
     const INPUTRADIO = 4;
 
     /**
+     * Checkbox
      *
      * @var int
      */
     const INPUTCHECKBOX = 5;
 
     /**
+     * Selectbox allowing for selection of a single option.
      *
      * @var int
      */
     const SELECT = 6;
 
     /**
+     * Selectbox allowing for selection of multiple options.
      *
      * @var int
      */
     const SELECTMULTI = 7;
 
     /**
+     * Input field for date selection.
      *
      * @var int
      */
     const DATEPICKER = 8;
 
     /**
+     * Input field for file selection.
      *
      * @var int
      */
     const INPUTFILE = 9;
 
     /**
+     * Processbar.
      *
      * @var int
      */
     const PROCESSBAR = 10;
 
     /**
+     * Slider.
      *
      * @var int
      */
     const SLIDER = 11;
 
-//     /**
-//      *
-//      * @var int
-//      */
-//     const CAPTCHA = 12;
+    // /**
+    // * Captcha.
+    // *
+    // * @var int
+    // */
+    // const CAPTCHA = 12;
 
     /**
+     * Button to submit a form.
      *
      * @var int
      */
     const BUTTONSUBMIT = 13;
 
     /**
+     * Button to reset a form.
      *
      * @var int
      */
     const BUTTONRESET = 14;
 
     /**
+     * Button to navigate back.
      *
      * @var int
      */
@@ -174,30 +191,35 @@ class PifaField extends Item {
     const PARA = 17;
 
     /**
+     * A hidden input field.
      *
      * @var int
      */
     const INPUTHIDDEN = 18;
 
     /**
+     * Begin of a fieldset.
      *
      * @var int
      */
     const FIELDSET_BEGIN = 19;
 
     /**
+     * End of a fieldset.
      *
      * @var int
      */
     const FIELDSET_END = 20;
 
     /**
+     * The form fields value.
      *
      * @var mixed
      */
     private $_value = NULL;
 
     /**
+     * The file that was transmitted in case of INPUTFILE.
      *
      * @var array
      */
@@ -409,10 +431,8 @@ class PifaField extends Item {
 
     /**
      *
-     *
-     * TODO should be private, right?
-     *
      * @return cHTMLLabel
+     * @todo should be private, right?
      */
     public function _getElemLabel() {
         if (1 !== cSecurity::toInteger($this->get('display_label'))) {
@@ -463,12 +483,11 @@ class PifaField extends Item {
      * has to be the fields column name which is set if the form is displayed
      * for the first time and user hasn't entered another value.
      *
-     * TODO should be private, right?
-     *
      * @param boolean $error if field elem should be displayed as erroneous
      * @throws PifaNotImplementedException if field type is not implemented
      * @return cHTMLTextbox cHTMLTextarea cHTMLPasswordbox cHTMLSpan
      *         cHTMLSelectElement NULL cHTMLButton
+     * @todo should be private, right?
      */
     public function _getElemField() {
 
@@ -564,7 +583,7 @@ class PifaField extends Item {
                 $elemField = new cHTMLPasswordbox($columnName);
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);
-                   if (!is_null($this->get('default_value'))) {
+                if (!is_null($this->get('default_value'))) {
                     $elemField->setAttribute('title', $this->get('default_value'));
                 }
                 if (!is_null($value)) {
@@ -661,25 +680,25 @@ class PifaField extends Item {
                 // $elemField = new cHTML();
                 break;
 
-//             case self::CAPTCHA:
+            // case self::CAPTCHA:
 
-//                 // input
-//                 $elemField = new cHTMLTextbox($columnName);
-//                 // set ID (workaround: remove ID first!)
-//                 $elemField->removeAttribute('id')->setID($id);
-//                 if (NULL !== $value) {
-//                     $elemField->setValue($value);
-//                 }
+            // // input
+            // $elemField = new cHTMLTextbox($columnName);
+            // // set ID (workaround: remove ID first!)
+            // $elemField->removeAttribute('id')->setID($id);
+            // if (NULL !== $value) {
+            // $elemField->setValue($value);
+            // }
 
-//                 // surrounding div
-//                 // img src (front_content.php?securimage) will be caught by
-//                 // Pifa::afterLoadPlugins
-//                 $elemField = new cHTMLDiv(array(
-//                     new cHTMLImage('front_content.php?securimage'),
-//                     $elemField
-//                 ));
+            // // surrounding div
+            // // img src (front_content.php?securimage) will be caught by
+            // // Pifa::afterLoadPlugins
+            // $elemField = new cHTMLDiv(array(
+            // new cHTMLImage('front_content.php?securimage'),
+            // $elemField
+            // ));
 
-//                 break;
+            // break;
 
             case self::BUTTONSUBMIT:
             case self::BUTTONRESET:
@@ -727,16 +746,15 @@ class PifaField extends Item {
                 $msg = Pifa::i18n('NOT_IMPLEMENTED_FIELDTYPE');
                 $msg = sprintf($msg, $fieldType);
                 throw new PifaNotImplementedException($msg);
-
         }
 
         return $elemField;
     }
 
     /**
-     * TODO should be private, right?
      *
      * @return Ambigous <NULL, cHTMLParagraph>
+     * @todo should be private, right?
      */
     public function _getElemHelp() {
         $helpText = $this->get('help_text');
@@ -750,9 +768,9 @@ class PifaField extends Item {
     }
 
     /**
-     * TODO should be private, right?
      *
      * @return Ambigous <NULL, cHTMLScript>
+     * @todo should be private, right?
      */
     public function _getElemScript() {
 
@@ -770,20 +788,23 @@ class PifaField extends Item {
                     altField: '$sel-hidden'
                 });});";
                 break;
-//             case self::CAPTCHA:
-//                 $sel = '#pifa-field-' . $idfield . ' label';
-//                 $newCaptchaCode = mi18n("NEW_CAPTCHA_CODE");
-//                 $script = "jQuery(function(){\n";
-//                 // implement captcha reload on click
-//                 $script .= "jQuery('$sel').click(function (e) {\n";
-//                 $script .= "e.preventDefault();\n";
-//                 $script .= "var url = 'front_content.php?securimage&' + Math.random();\n";
-//                 $script .= "jQuery(this).parent().find('img').attr('src', url);\n";
-//                 $script .= "});\n";
-//                 // append 'New Captcha Code' to label
-//                 $script .= "jQuery('$sel').append('<br/><br/><span style=\"cursor:pointer\">$newCaptchaCode</span>');";
-//                 $script .= "});\n";
-//                 break;
+            // case self::CAPTCHA:
+            // $sel = '#pifa-field-' . $idfield . ' label';
+            // $newCaptchaCode = mi18n("NEW_CAPTCHA_CODE");
+            // $script = "jQuery(function(){\n";
+            // // implement captcha reload on click
+            // $script .= "jQuery('$sel').click(function (e) {\n";
+            // $script .= "e.preventDefault();\n";
+            // $script .= "var url = 'front_content.php?securimage&' +
+            // Math.random();\n";
+            // $script .= "jQuery(this).parent().find('img').attr('src',
+            // url);\n";
+            // $script .= "});\n";
+            // // append 'New Captcha Code' to label
+            // $script .= "jQuery('$sel').append('<br/><br/><span
+            // style=\"cursor:pointer\">$newCaptchaCode</span>');";
+            // $script .= "});\n";
+            // break;
             default:
                 $script = '';
         }
@@ -798,9 +819,9 @@ class PifaField extends Item {
     }
 
     /**
-     * TODO add different icons for different form field types
      *
      * @param int $fieldType
+     * @todo add different icons for different form field types
      */
     public static function getFieldTypeIcon($fieldType) {
         switch ($fieldType) {
@@ -815,7 +836,7 @@ class PifaField extends Item {
             case self::INPUTFILE:
             case self::PROCESSBAR:
             case self::SLIDER:
-            //case self::CAPTCHA:
+            // case self::CAPTCHA:
             case self::BUTTONSUBMIT:
             case self::BUTTONRESET:
             case self::BUTTONBACK:
@@ -855,7 +876,7 @@ class PifaField extends Item {
             self::INPUTFILE => Pifa::i18n('INPUTFILE'),
             self::PROCESSBAR => Pifa::i18n('PROCESSBAR'),
             self::SLIDER => Pifa::i18n('SLIDER'),
-            //self::CAPTCHA => Pifa::i18n('CAPTCHA'),
+            // self::CAPTCHA => Pifa::i18n('CAPTCHA'),
             self::BUTTONSUBMIT => Pifa::i18n('BUTTONSUBMIT'),
             self::BUTTONRESET => Pifa::i18n('BUTTONRESET'),
             self::BUTTONBACK => Pifa::i18n('BUTTONBACK'),
@@ -975,7 +996,7 @@ class PifaField extends Item {
             // type to use.
             case self::PROCESSBAR:
             case self::SLIDER:
-            //case self::CAPTCHA:
+            // case self::CAPTCHA:
             case self::MATRIX:
             case self::PARA:
             case self::FIELDSET_BEGIN:
@@ -1081,7 +1102,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    //self::CAPTCHA,
+                    // self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTONBACK,
@@ -1107,7 +1128,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    //self::CAPTCHA,
+                    // self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTONBACK,
@@ -1133,7 +1154,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    //self::CAPTCHA,
+                    // self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTONBACK,
@@ -1164,7 +1185,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    //self::CAPTCHA,
+                    // self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTONBACK,
@@ -1186,7 +1207,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    //self::CAPTCHA,
+                    // self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTONBACK,
@@ -1207,7 +1228,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    //self::CAPTCHA,
+                    // self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTONBACK,
@@ -1228,7 +1249,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    //self::CAPTCHA,
+                    // self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTONBACK,
@@ -1249,7 +1270,7 @@ class PifaField extends Item {
                     self::INPUTFILE,
                     self::PROCESSBAR,
                     self::SLIDER,
-                    //self::CAPTCHA,
+                    // self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTONBACK,
@@ -1282,8 +1303,8 @@ class PifaField extends Item {
             $option_values = explode(',', $option_values);
 
             // str_getcsv requires PHP 5.3 :(
-            //$option_labels = str_getcsv($option_labels);
-            //$option_values = str_getcsv($option_values);
+            // $option_labels = str_getcsv($option_labels);
+            // $option_values = str_getcsv($option_values);
 
             // instead replace commas stored as entities by real commas
             $func = create_function('$v', 'return str_replace(\'&#44;\', \',\', $v);');
