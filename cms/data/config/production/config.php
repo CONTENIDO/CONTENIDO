@@ -23,7 +23,7 @@ $load_lang = '1';
 $load_client = '1';
 
 // Various debugging options
-$frontend_debug['general_information'] = true;
+$frontend_debug['general_information'] = false;
 $frontend_debug['container_display'] = false;
 $frontend_debug['module_display'] = false;
 $frontend_debug['module_timing'] = false;
