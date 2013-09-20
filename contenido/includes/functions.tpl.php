@@ -39,7 +39,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         set_magic_quotes_gpc($description);
 
         $template = new cApiTemplate();
-        $template->loadBy("name", $name);
+        $template->loadByMany(array("idclient" => $client, "name" => $name));
         if ($template->isLoaded() && $template->get('idtpl') != $idtpl) {
             cRegistry::addErrorMessage(i18n("Template name already exists"));
             return -1;
