@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-17 15:56+0200\n"
-"PO-Revision-Date: 2013-09-17 15:57+0100\n"
-"Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
+"PO-Revision-Date: 2013-09-20 11:23+0100\n"
+"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -13,16 +13,11 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-Basepath: .\n"
 "X-Generator: Poedit 1.5.7\n"
-"X-Poedit-SearchPath-0: C:\\projects\\workspace\\contenido\\contenido\\plugins"
-"\\pim\n"
+"X-Poedit-SearchPath-0: C:\\projects\\workspace\\contenido\\contenido\\plugins\\pim\n"
 
 #: classes/setup/class.pimpluginsetup.install.php:259
-msgid ""
-"The plugin has been successfully installed. To apply the changes please "
-"login into backend again."
-msgstr ""
-"Das Plugin wurde erfolgreich installiert. Damit die &Auml;nderungen wirksam "
-"werden, melden Sie sich bitte neu im Backend an."
+msgid "The plugin has been successfully installed. To apply the changes please login into backend again."
+msgstr "Das Plugin wurde erfolgreich installiert. Damit die &Auml;nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
 
 #: classes/setup/class.pimpluginsetup.install.php:273
 msgid "You can install this plugin only for one time."
@@ -35,13 +30,11 @@ msgstr "Sie ben&ouml;tigen mindestens die CONTENIDO-Version <strong>"
 #: classes/setup/class.pimpluginsetup.install.php:290
 #: classes/setup/class.pimpluginsetup.install.php:303
 msgid "</strong> or higher to install this plugin!"
-msgstr ""
-"</strong> oder h&ouml;her, um dieses Plugin installieren zu k&ouml;nnen!"
+msgstr "</strong> oder h&ouml;her, um dieses Plugin installieren zu k&ouml;nnen!"
 
 #: classes/setup/class.pimpluginsetup.install.php:297
 msgid "Your current CONTENIDO version is to new - max CONTENIDO version: "
-msgstr ""
-"Ihre aktuelle CONTENIDO-Version ist zu neu - maximale CONTENDIO-Version:"
+msgstr "Ihre aktuelle CONTENIDO-Version ist zu neu - maximale CONTENDIO-Version:"
 
 #: classes/setup/class.pimpluginsetup.install.php:303
 msgid "You have to install PHP <strong>"
@@ -54,11 +47,8 @@ msgstr "Das Plugin konnte die PHP-Erweiterung <strong>"
 #: classes/setup/class.pimpluginsetup.install.php:312
 #: classes/setup/class.pimpluginsetup.install.php:323
 #: classes/setup/class.pimpluginsetup.install.php:334
-msgid ""
-"</strong>. Because this is required by the plugin, it can not be installed."
-msgstr ""
-"</strong> nicht finden. Da diese vom Plugin vorausgesetzt wird, kann es "
-"nicht installiert werden."
+msgid "</strong>. Because this is required by the plugin, it can not be installed."
+msgstr "</strong> nicht finden. Da diese vom Plugin vorausgesetzt wird, kann es nicht installiert werden."
 
 #: classes/setup/class.pimpluginsetup.install.php:323
 msgid "The plugin could not find the class <strong>"
@@ -77,17 +67,12 @@ msgstr "Die definierte Area"
 #: classes/setup/class.pimpluginsetup.install.php:456
 #: classes/setup/class.pimpluginsetup.install.php:485
 #: classes/setup/class.pimpluginsetup.install.php:549
-msgid ""
-"are not found on your CONTENIDO installation. Please contact your plugin "
-"author."
-msgstr ""
-"konnte nicht in Ihrer CONTENIDO-Installation gefunden werden. Bitte "
-"kontaktieren Sie den Plugin-Entwickler."
+msgid "are not found on your CONTENIDO installation. Please contact your plugin author."
+msgstr "konnte nicht in Ihrer CONTENIDO-Installation gefunden werden. Bitte kontaktieren Sie den Plugin-Entwickler."
 
 #: classes/setup/class.pimpluginsetup.php:254
 msgid "Invalid Xml document. Please contact the plugin author."
-msgstr ""
-"Ung&uuml;ltiges Xml-Dokument. Bitte kontaktieren Sie den Plugin-Entwickler."
+msgstr "Ung&uuml;ltiges Xml-Dokument. Bitte kontaktieren Sie den Plugin-Entwickler."
 
 #: classes/setup/class.pimpluginsetup.php:265
 msgid "Plugin Manager accepts only Zip archives"
@@ -104,28 +89,16 @@ msgid "The plugin"
 msgstr "Das Plugin"
 
 #: classes/setup/class.pimpluginsetup.status.php:118
-msgid ""
-"has been sucessfully disabled. To apply the changes please login into "
-"backend again."
-msgstr ""
-"wurde erfolgreich deaktiviert. Damit die &Auml;nderungen wirksam werden, "
-"melden Sie sich bitte neu im Backend an."
+msgid "has been sucessfully disabled. To apply the changes please login into backend again."
+msgstr "wurde erfolgreich deaktiviert. Damit die &Auml;nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
 
 #: classes/setup/class.pimpluginsetup.status.php:130
-msgid ""
-"has been sucessfully enabled. To apply the changes please login into backend "
-"again."
-msgstr ""
-"wurde erfolgreich aktiviert. Damit die &Auml;nderungen wirksam werden, "
-"melden Sie sich bitte neu im Backend an."
+msgid "has been sucessfully enabled. To apply the changes please login into backend again."
+msgstr "wurde erfolgreich aktiviert. Damit die &Auml;nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
 
 #: classes/setup/class.pimpluginsetup.uninstall.php:260
-msgid ""
-"has been successfully uninstalled. To apply the changes please login into "
-"backend again."
-msgstr ""
-"wurde erfolgreich entfernt. Damit die &Auml;nderungen wirksam werden, melden "
-"Sie sich bitte neu im Backend an."
+msgid "has been successfully uninstalled. To apply the changes please login into backend again."
+msgstr "wurde erfolgreich entfernt. Damit die &Auml;nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
 
 #: classes/setup/class.pimpluginsetup.uninstall.php:312
 #: classes/setup/class.pimpluginsetup.uninstall.php:314
@@ -141,12 +114,8 @@ msgid "could not be uninstalled."
 msgstr "konnte nicht entfernt werden."
 
 #: classes/setup/class.pimpluginsetup.update.php:73
-msgid ""
-"The plugin has been successfully updated. To apply the changes please login "
-"into backend again."
-msgstr ""
-"Das Plugin wurde erfolgreich aktualisiert. Damit die &Auml;nderungen wirksam "
-"werden, melden Sie sich bitte neu im Backend an."
+msgid "The plugin has been successfully updated. To apply the changes please login into backend again."
+msgstr "Das Plugin wurde erfolgreich aktualisiert. Damit die &Auml;nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
 
 #: classes/setup/class.pimpluginsetup.update.php:88
 msgid "You have to update the same plugin"
@@ -176,7 +145,8 @@ msgstr "Autor"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: includes/include.right_bottom.php:118 includes/include.right_bottom.php:120
+#: includes/include.right_bottom.php:118
+#: includes/include.right_bottom.php:120
 msgid "Update"
 msgstr "Aktualisieren"
 
@@ -186,7 +156,7 @@ msgstr "Plugin-Paket auswählen"
 
 #: includes/include.right_bottom.php:121
 msgid "Execute uninstall.sql"
-msgstr "unistall.sql ausführen"
+msgstr "uninstall.sql ausführen"
 
 #: includes/include.right_bottom.php:127
 msgid "Disable plugin"
@@ -197,11 +167,8 @@ msgid "Enable plugin"
 msgstr "Aktiviere das Plugin"
 
 #: includes/include.right_bottom.php:134
-msgid ""
-"Are you sure to delete this plugin? Files are not deleted in filesystem."
-msgstr ""
-"Sind Sie sicher, dass Sie dieses Plugin entfernen m&ouml;chten? Die Dateien "
-"werden nicht aus dem Dateisystem entfernt."
+msgid "Are you sure to delete this plugin? Files are not deleted in filesystem."
+msgstr "Sind Sie sicher, dass Sie dieses Plugin entfernen m&ouml;chten? Die Dateien werden nicht aus dem Dateisystem entfernt."
 
 #: includes/include.right_bottom.php:134
 msgid "Uninstall"
@@ -217,15 +184,11 @@ msgstr "Installiere das extrahierte Plugin"
 
 #: includes/include.right_bottom.php:156
 msgid "Uninstall extracted plugin (deleted plugin files from filesystem)"
-msgstr ""
-"Entferne das extrahierte Plugin (das entfernte Plugin wird aus dem "
-"Dateisystem gel&ouml;scht)"
+msgstr "Entferne das extrahierte Plugin (das entfernte Plugin wird aus dem Dateisystem gel&ouml;scht)"
 
 #: includes/include.right_bottom.php:166
 msgid "This plugin is not writeable, please set the rights manually"
-msgstr ""
-"Dieses Plugin ist nicht beschreibbar, bitte setzen Sie die Dateirechte "
-"manuell"
+msgstr "Dieses Plugin ist nicht beschreibbar, bitte setzen Sie die Dateirechte manuell"
 
 #: includes/include.right_bottom.php:178
 msgid "No entries"
