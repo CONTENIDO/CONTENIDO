@@ -19,6 +19,9 @@ if(PHP_SAPI != 'cli') {
     die('This program is suppsoed to be run from the command line.');
 }
 
+// some standard configurations of the php cli have a max execution limit
+set_time_limit(0);
+
 echo('startup...');
 
 if(!defined('CON_FRAMEWORK')) {
