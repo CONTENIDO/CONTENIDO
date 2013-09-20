@@ -121,7 +121,7 @@ class cRequestValidator {
      *
      * @var string
      */
-    const CHECK_BELANG = '/^[a-z]{2}_[A-Z]{2}$/';
+    const CHECK_BELANG = '/^de_DE|en_US|fr_FR|it_IT|nl_NL$/';
 
     /**
      * Regexp for valid area values.
