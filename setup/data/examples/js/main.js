@@ -87,7 +87,7 @@ $(function() {
             $(".galery .pagination").append('<li><a href="">' + x + '</a></li>');
         }
         // @fixme Translate this
-        $(".galery .pagination").append('<li><a href="">Weiter</a></li>');
+        $(".galery .pagination").append('<li><a id="forward"  href="">Weiter</a></li>');
     }
     iniPagination();
 
@@ -100,7 +100,7 @@ $(function() {
         $(".galery .slider").html("");
         $(".galery .source li").slice(sliceFrom, sliceTo).each(function() {
             var $a = $(this).children("a");
-            $(".galery .slider").append('<li><a href="' + $a.attr("href") + '" rel="' + $a.attr("rel") + '" title="' + $a.attr("title") + '"><img src="' + $a.text() + '" alt="" style="' + $a.attr("style") + '" /></a></li>');
+           $(".galery .slider").append('<li><a href="' + $a.attr("href") + '" rel="' + $a.attr("rel") + '" title="' + $a.attr("title") + '"><img src="' + $a.text() + '" alt="" style="' + $a.attr("style") + '" /></a></li>');
         });
         $(".galery .slider li:odd").addClass("odd");
 
@@ -129,10 +129,11 @@ $(function() {
     });
     /* ----- GALERY LIGHTBOX ----- */
     jQuery(window).load(function() {
-        $(".galery .slider").delegate("a", "click", function(e) {
+        $(".galery .slider, .galery .source").delegate("a", "click", function(e) {
             e.preventDefault();
-            var left = "", right = "",
+            var left = "", right = "";
                 count = $(this).parent().parent().find("li").length;
+                    
 
             if (count > 1) {
                 var index = $(this).parent().index();
@@ -143,7 +144,12 @@ $(function() {
                     right = '<a href="' + (index + 1) + '" class="next_image">&raquo;</a>';
                 }
             }
-            $(".galery .lightbox").html(left + right + '<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + ': ' + $(this).attr("title") + '</p>').dialog({
+            
+            var colon = '';
+            if($(this).attr("rel") != '' && $(this).attr("title") !='' ){
+                colon = ':'; 
+            }           
+            $(".galery .lightbox").html(left + right + '<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + colon + $(this).attr("title") + '</p>').dialog({
                 modal: true,
                 width: "auto",
                 height: "auto",
@@ -163,7 +169,16 @@ $(function() {
             e.preventDefault();
             var index = parseInt($(this).attr("href"));
             $(".lightbox").dialog("close");
-            $('.galery .slider li:eq(' + index + ') a').click();
+            $('.galery .source li:eq(' + index + ') a').click();
+            
+            // switch pages when image is on other page.            
+            if(index % 6 == 0 && e.currentTarget.className == 'next_image'){
+                    $('#forward').click();
+            }
+            else if (index % 6 == 5 && e.currentTarget.className == 'prev_image'){
+                $('#back').click();
+            }
+            
         });
 
     });
