@@ -21,6 +21,8 @@ if(PHP_SAPI != 'cli') {
 
 // some standard configurations of the php cli have a max execution limit
 set_time_limit(0);
+// some systems also report notices to the console which is rather annoying
+error_reporting(E_ALL ^ E_NOTICE);
 
 echo('startup...');
 
