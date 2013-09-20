@@ -431,33 +431,37 @@ abstract class cCodeGeneratorAbstract {
      *        (container code)
      */
     protected function _processFrontendDebug($containerId, array $module) {
+        global $containerinf;
+
+        $data = $this->_getTemplateData();
+
         if (empty($this->_feDebugOptions)) {
             return;
         }
 
         $sFeDebug = '';
         if ($this->_feDebugOptions['container_display'] == true) {
-            $sFeDebug .= "Container: CMS_CONTAINER[$containerId]\\n";
+            $this->_modulePrefix[] = 'if($frontend_debug[\'container_display\']) echo "<!-- START CONTAINER ' . $containerinf[$data['idlay']][$containerId]['name'] . ' (' . $containerId . ') -->";';
         }
+
         if ($this->_feDebugOptions['module_display'] == true) {
-            $sFeDebug .= "Module: " . $module['name'] . "\\n";
+            $this->_modulePrefix[] = 'if($frontend_debug[\'module_display\']) echo "<!-- START MODULE ' . $module['name'] . ' (' . $module['idmod'] . ') -->";';
         }
 
-        if ($this->_feDebugOptions['module_timing_summary'] == true || $this->_feDebugOptions['module_timing'] == true) {
-            $sFeDebug .= 'Eval-Time: $modTime' . $containerId . "\\n";
-            $this->_modulePrefix[] = '$modStart' . $containerId . ' = getmicrotime(true);';
-            $this->_moduleSuffix[] = '$modEnd' . $containerId . ' = getmicrotime(true);';
-            $this->_moduleSuffix[] = '$modTime' . $containerId . ' = $modEnd' . $containerId . ' - $modStart' . $containerId . ';';
+        if ($this->_feDebugOptions['module_timing'] == true) {
+            $this->_modulePrefix[] = '$modTime' . $containerId . ' = -getmicrotime(true);';
+            $this->_moduleSuffix[] = '$modTime' . $containerId . ' += getmicrotime(true);';
         }
 
-        if ($sFeDebug != '') {
-            $this->_modulePrefix[] = 'echo \'<img onclick="javascript:showmod' . $containerId . '();" src="' . cRegistry::getBackendUrl() . 'images/but_preview.gif"><br>\';';
+        if ($this->_feDebugOptions['module_display'] == true) {
+            $this->_moduleSuffix[] = 'if($frontend_debug[\'module_display\']) echo "<!-- END MODULE ' . $module['name'] . ' (' . $module['idmod'] . ')";';
+            if ($this->_feDebugOptions['module_timing'] == true) {
+                $this->_moduleSuffix[] = 'if($frontend_debug[\'module_timing\']) echo(" AFTER " . $modTime' . $containerId . ');';
+            }
+            $this->_moduleSuffix[] = 'if($frontend_debug[\'module_display\']) echo " -->";';
         }
-
-        if ($this->_feDebugOptions['module_timing_summary'] == true) {
-            $this->_moduleSuffix[] = 'echo \'<script type="text/javascript">function showmod' . $containerId . '(){window.alert(\\\'\'. "' . addslashes($sFeDebug) . '".\'\\\');} </script>\';';
-            $this->_moduleSuffix[] = '$cModuleTimes["' . $containerId . '"] = $modTime' . $containerId . ';';
-            $this->_moduleSuffix[] = '$cModuleNames["' . $containerId . '"] = "' . addslashes($module['name']) . '";';
+        if ($this->_feDebugOptions['container_display'] == true) {
+            $this->_moduleSuffix[] = 'if($frontend_debug[\'container_display\']) echo "<!-- END CONTAINER ' . $containerinf[$data['idlay']][$containerId]['name'] . ' (' . $containerId . ') -->";';
         }
     }
 

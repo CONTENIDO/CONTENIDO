@@ -49,6 +49,16 @@ class cSmartyWrapper extends Smarty {
         return parent::fetch($template, $cache_id, $compile_id, $parent, $display, $merge_tpl_vars, $no_output_filter);
     }
 
+    public function display($template = null, $cache_id = null, $compile_id = null, $parent = null) {
+        global $frontend_debug;
+
+        if($frontend_debug['template_display']) {
+            echo("<!-- SMARTY TEMPLATE " . $template . " -->");
+        }
+
+        return parent::display($template, $cache_id, $compile_id, $parent);
+    }
+
     /**
      *
      * @see Smarty_Internal_TemplateBase::display()

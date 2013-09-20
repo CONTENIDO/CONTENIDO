@@ -192,6 +192,41 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
         }
 
+        if($this->_feDebugOptions['general_information']) {
+            $debugPrefix = '';
+
+            $debugPrefix .= "<?php\nif(\$frontend_debug['general_information']) {\n";
+            $debugPrefix .= "\techo(\"<!-- \\n\\n\");\n";
+
+            $layout = new cApiLayout($idlay);
+            $layouName = $layout->get('name');
+            $debugPrefix .= "\techo(\"Layout: " . $layouName . " (" . $idlay . ")\\n\");\n";
+
+            $debugPrefix .= "\techo(\"Template: " . $this->_tplName . " (" . $idtpl . ")\\n\");\n";
+
+            $article = new cApiArticleLanguage($this->_idartlang);
+            $catart = new cApiCategoryArticle();
+            $cat = new cApiCategoryLanguage();
+            $cat->loadByCategoryIdAndLanguageId($this->_idcat, $article->get('idlang'));
+            $catart->loadByMany(array(
+            	'idcat' => $cat->get('idcat'),
+                'idart' => $article->get('idart')
+            ));
+            $lang = new cApiLanguage($article->get('idlang'));
+            $debugPrefix .= "\techo(\"Language: " . $lang->get('idlang') . " (" . $lang->get('name') . ")\\n\");\n";
+
+            $debugPrefix .= "\techo(\"Category: " . $cat->get('idcat') . " (" . $cat->get('name') . ")\\n\");\n";
+
+            $articleName = $article->get('title');
+            $debugPrefix .= "\techo(\"Article: " . $articleName . " (catart = " . $catart->get('idcatart') . ", artlang = " . $this->_idartlang . ", art = " . $article->get('idart') . ")\\n\");\n";
+
+
+            $debugPrefix .= "\techo(\"\\n--> \\n\");\n";
+            $debugPrefix .= "}\n?>";
+
+            $this->_layoutCode = $debugPrefix . $this->_layoutCode;
+        }
+
         // Save the generated code
         $this->_saveGeneratedCode($idcatart);
 

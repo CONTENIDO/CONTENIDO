@@ -159,7 +159,7 @@ class cTemplate {
      * @return string Complete Template string
      */
     public function generate($template, $return = 0, $note = 0) {
-        global $cCurrentModule, $cfg;
+        global $cCurrentModule, $cfg, $frontend_debug;
 
         $moduleHandler = NULL;
         if (!is_null($cCurrentModule)) {
@@ -171,6 +171,9 @@ class cTemplate {
             if (is_object($moduleHandler) && is_file($moduleHandler->getTemplatePath($template))) {
                 // Module directory has higher priority
                 $content = $moduleHandler->getFilesContent('template', '', $template);
+                if($frontend_debug['template_display']) {
+                    echo('<!-- CTEMPLATE ' . $template . ' -->');
+                }
             } else {
                 // Template is a string (it is a reference to save memory!!!)
                 $content = &$template;
