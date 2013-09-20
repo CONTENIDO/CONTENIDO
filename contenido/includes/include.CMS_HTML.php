@@ -16,6 +16,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $backendUrl = cRegistry::getBackendUrl();
+$frontendUrl = cRegistry::getFrontendUrl();
 
 if (isset($area) && $area == 'con_content_list') {
     $tmp_area = $area;
@@ -47,10 +48,11 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
-<title></title>
-<link rel="stylesheet" type="text/css" href="<?php print $backendUrl . $cfg["path"]["styles"] ?>contenido.css">
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>">
-<script type="text/javascript" src="<?php echo $cfg['path']['contenido_fullhtml'] ?>scripts/jquery/jquery.js"></script>
+    <base href="<?php echo $frontendUrl; ?>">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="<?php print $backendUrl . $cfg["path"]["styles"] ?>contenido.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>">
+    <script type="text/javascript" src="<?php echo $cfg['path']['contenido_fullhtml'] ?>scripts/jquery/jquery.js"></script>
 </head>
 
 <body>

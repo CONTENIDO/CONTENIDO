@@ -640,8 +640,11 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $htmlSelectOption = new cHTMLOptionElement(i18n('Default style'), 'cms_filelist_style_default.html', true);
         $htmlSelect->appendOptionElement($htmlSelectOption);
         $additionalOptions = getEffectiveSettingsByType('cms_filelist_style');
-        $htmlSelect->autoFill($additionalOptions);
-
+        $options = array();
+        foreach($additionalOptions as $key => $value) {
+            $options[$value] = $key;
+        }
+        $htmlSelect->autoFill($options);
         $htmlSelect->setDefault($this->_settings['filelist_style']);
         return $htmlSelect->render();
     }

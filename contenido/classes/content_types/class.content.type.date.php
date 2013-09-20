@@ -68,21 +68,21 @@ class cContentTypeDate extends cContentTypeAbstract {
 
         // initialise the date formats
         $this->_dateFormatsPhp = array(
-                conHtmlSpecialChars('{"dateFormat":"","timeFormat":""}') => '',
-                conHtmlSpecialChars('{"dateFormat":"d.m.Y","timeFormat":""}') => $this->_formatDate('d.m.Y'),
-                conHtmlSpecialChars('{"dateFormat":"D, d.m.Y","timeFormat":""}') => $this->_formatDate('D, d.m.Y'),
-                conHtmlSpecialChars('{"dateFormat":"d. F Y","timeFormat":""}') => $this->_formatDate('d. F Y'),
-                conHtmlSpecialChars('{"dateFormat":"Y-m-d","timeFormat":""}') => $this->_formatDate('Y-m-d'),
-                conHtmlSpecialChars('{"dateFormat":"d/F/Y","timeFormat":""}') => $this->_formatDate('d/F/Y'),
-                conHtmlSpecialChars('{"dateFormat":"d/m/y","timeFormat":""}') => $this->_formatDate('d/m/y'),
-                conHtmlSpecialChars('{"dateFormat":"F y","timeFormat":""}') => $this->_formatDate('F y'),
-                conHtmlSpecialChars('{"dateFormat":"F-y","timeFormat":""}') => $this->_formatDate('F-y'),
-                conHtmlSpecialChars('{"dateFormat":"d.m.Y","timeFormat":"H:i"}') => $this->_formatDate('d.m.Y H:i'),
-                conHtmlSpecialChars('{"dateFormat":"m.d.Y","timeFormat":"H:i:s"}') => $this->_formatDate('m.d.Y H:i:s'),
-                conHtmlSpecialChars('{"dateFormat":"","timeFormat":"H:i"}') => $this->_formatDate('H:i'),
-                conHtmlSpecialChars('{"dateFormat":"","timeFormat":"H:i:s"}') => $this->_formatDate('H:i:s'),
-                conHtmlSpecialChars('{"dateFormat":"","timeFormat":"h:i A"}') => $this->_formatDate('h:i A'),
-                conHtmlSpecialChars('{"dateFormat":"","timeFormat":"h:i:s A"}') => $this->_formatDate('h:i:s A')
+            conHtmlSpecialChars('{"dateFormat":"","timeFormat":""}') => '',
+            conHtmlSpecialChars('{"dateFormat":"d.m.Y","timeFormat":""}') => $this->_formatDate('d.m.Y'),
+            conHtmlSpecialChars('{"dateFormat":"D, d.m.Y","timeFormat":""}') => $this->_formatDate('D, d.m.Y'),
+            conHtmlSpecialChars('{"dateFormat":"d. F Y","timeFormat":""}') => $this->_formatDate('d. F Y'),
+            conHtmlSpecialChars('{"dateFormat":"Y-m-d","timeFormat":""}') => $this->_formatDate('Y-m-d'),
+            conHtmlSpecialChars('{"dateFormat":"d/F/Y","timeFormat":""}') => $this->_formatDate('d/F/Y'),
+            conHtmlSpecialChars('{"dateFormat":"d/m/y","timeFormat":""}') => $this->_formatDate('d/m/y'),
+            conHtmlSpecialChars('{"dateFormat":"F y","timeFormat":""}') => $this->_formatDate('F y'),
+            conHtmlSpecialChars('{"dateFormat":"F-y","timeFormat":""}') => $this->_formatDate('F-y'),
+            conHtmlSpecialChars('{"dateFormat":"d.m.Y","timeFormat":"H:i"}') => $this->_formatDate('d.m.Y H:i'),
+            conHtmlSpecialChars('{"dateFormat":"m.d.Y","timeFormat":"H:i:s"}') => $this->_formatDate('m.d.Y H:i:s'),
+            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"H:i"}') => $this->_formatDate('H:i'),
+            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"H:i:s"}') => $this->_formatDate('H:i:s'),
+            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"h:i A"}') => $this->_formatDate('h:i A'),
+            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"h:i:s A"}') => $this->_formatDate('h:i:s A')
         );
 
         // add formats from client settings
