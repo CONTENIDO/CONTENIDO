@@ -57,7 +57,7 @@ function prntst($str = '') {
  */
 function passwordPrompt($title, $tab = 0) {
     if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        prntln(i18n('Be careful! The password will be readable in the console window!', 'setup'));
+        prntln(i18n('Be careful! The password will be readable in the console window!', 'setup'), $tab);
     }
     prnt($title . ': ', $tab);
     $line = trim(fgets(STDIN));

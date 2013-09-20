@@ -64,7 +64,7 @@ class cCLISetup {
 
         $this->args = $args;
 
-        $this->args['interactive'] = ($this->args['interactive']) ? true : $this->args['i']; // -i can be used instead of --interactive
+        $this->args['interactive'] = isset($this->args['interactive']) || isset($this->args['i']); // -i can be used instead of --interactive
 
         // the setup will search for autoinstall.ini first or use the file which is passed to the script with the --ini switch
         $this->settingsFile = 'autoinstall.ini';
