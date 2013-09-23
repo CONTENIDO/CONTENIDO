@@ -14,6 +14,6 @@
 
     <div class="clear"></div>
     <ul class="pagination">
-        <li><a href="">Zurück</a></li>
+        <li><a id="back" href="">Zurück</a></li>
     </ul>
 </div>
