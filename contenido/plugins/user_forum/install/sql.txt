@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `con_pi_user_forum` (
   `realname` varchar(50) NOT NULL default '',
   `forum` mediumtext NOT NULL,
   `forum_quote` mediumtext NOT NULL,
+  `idclient` int(11) NOT NULL,
   `like` int(11) NOT NULL,
   `dislike` int(11) NOT NULL,
   `editedat` datetime NOT NULL default '0000-00-00 00:00:00',

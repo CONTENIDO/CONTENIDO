@@ -74,6 +74,10 @@ class ArticleForumCollection extends ItemCollection {
      * @return multitype:
      */
     public function getAllCommentedArticles() {
+
+        $idclient = cRegistry::getClientId();
+
+
         $this->db->query("-- ArticleForumCollection->getAllCommentedArticles()
             SELECT DISTINCT
                 art_lang.title
@@ -85,6 +89,7 @@ class ArticleForumCollection extends ItemCollection {
             WHERE
                 art_lang.idart = f.idart
                 AND art_lang.idlang = f.idlang
+                AND idclient = ".$idclient."
             ORDER BY
                 id_user_forum ASC
             ;");
@@ -445,7 +450,7 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     /**
-     * this function inkrements the actual value of likes from a comment and
+     * this function increments the actual value of likes from a comment and
      * persists it.
      *
      * @param $forum_user_id identifies a comment.
@@ -530,6 +535,7 @@ class ArticleForumCollection extends ItemCollection {
             'realname' => cSecurity::escapeDB($realname, $db),
             'forum' => ($forum),
             'forum_quote' => ($forum_quote),
+            'idclient' => cRegistry::getClientId(),
             'like' => 0,
             'dislike' => 0,
             'editedat' => NULL,
