@@ -6,7 +6,6 @@
 /UPGRADE.pdf -text
 cms/cache/code/.htaccess -text
 cms/cache/index.php -text
-cms/css/main.css -text svneol=unset#text/plain
 cms/data/.htaccess -text
 cms/data/config/production/config.php -text
 cms/data/logs/index.php -text
@@ -32,7 +31,6 @@ cms/images/spacer.gif -text
 cms/includes/concache.php -text
 cms/includes/index.php -text
 cms/index.php -text
-cms/js/main.js -text svneol=unset#text/plain
 cms/robots.txt -text
 contenido/.htaccess_recommended -text
 contenido/ajaxmain.php -text
