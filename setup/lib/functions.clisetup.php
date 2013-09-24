@@ -219,7 +219,7 @@ function getArgs() {
 }
 
 /**
- * Executes the CONTENIDO system tests and prints the result to the user
+ * Executes the CONTENIDO system tests and prints the result to the user.
  * In case of an error it asks if the user wants to continue anyway and,
  * if not, quits the script.
  *
@@ -278,7 +278,7 @@ function executeSystemTests() {
                 $answer = "n";
             }
         }
-        if(strtolower($answer) == "n" || $answer == strtolower(i18n('n', 'setup'))) {
+        if(strtolower($answer) == "n" || strtolower($answer) == strtolower(i18n('n', 'setup'))) {
             exit(3);
         }
     } else {
