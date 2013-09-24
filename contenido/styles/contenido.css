@@ -156,6 +156,7 @@ table.topborder {
 table.generic td {
     border-bottom: 1px solid #b3b3b3;
     border-right: 1px solid #b3b3b3;
+    padding: 4px !important;
 }
 
 table.generic th {
@@ -163,7 +164,7 @@ table.generic th {
     border-right: 1px solid #b3b3b3;
     background-color: #e2e2e2;
     text-align: left;
-    padding: 2px;
+    padding: 4px !important;
     font-weight: normal;
     color: #666;
 }
@@ -173,7 +174,7 @@ table.strong_headline th {
     border-right: 1px solid #b3b3b3;
     background-color: #e2e2e2;
     text-align: left;
-    padding: 2px;
+    padding: 4px !important;
     font-weight: normal;
     color: #666;
 }
@@ -183,7 +184,6 @@ table.generic th.center {
     border-right: 1px solid #b3b3b3;
     background-color: #e2e2e2;
     text-align: center;
-    padding: 2px;
     font-weight: normal;
     color: #666;
 }
