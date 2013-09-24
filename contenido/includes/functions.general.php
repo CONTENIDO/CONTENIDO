@@ -2424,8 +2424,11 @@ function checkMySQLConnectivity() {
 	if ($cfg["database_extension"] == "mysqli") {
 		if (($iPos = strpos($contenido_host, ":")) !== false) {
 			list($sHost, $sPort) = explode(":", $contenido_host);
-
-			$res = @ mysqli_connect($sHost, $contenido_user, $contenido_password, "", $sPort);
+            if(is_numeric($sPort)) {
+			     $res = @ mysqli_connect($sHost, $contenido_user, $contenido_password, "", $sPort);
+            } else {
+			     $res = @ mysqli_connect($sHost, $contenido_user, $contenido_password, "", 0, $sPort);
+            }
 		} else {
 			$res = @ mysqli_connect($contenido_host, $contenido_user, $contenido_password);
 		}

@@ -106,6 +106,7 @@ class DB_Sql
     /* public: connection management */
     function connect($Database = "", $Host = "", $User = "", $Password = "")
     {
+        
         /* Handle defaults */
         if ("" == $Database)
             $Database = $this->Database;
@@ -122,8 +123,11 @@ class DB_Sql
             if (($iPos = strpos($Host, ":")) !== false)
             {
                 list($sHost, $sPort) = explode(":", $Host);
-
-                $this->Link_ID = @mysqli_connect($sHost, $User, $Password, "", $sPort);
+                if(is_numeric($sPort)) { // sPort is indeed a port
+                    $this->Link_ID = @mysqli_connect($sHost, $User, $Password, "", $sPort);
+                } else { // sPort is most likely a socket
+                    $this->Link_ID = @mysqli_connect($sHost, $User, $Password, "", 0, $sPort);
+                }
             } else {
                 $this->Link_ID = @mysqli_connect($Host, $User, $Password);
             }

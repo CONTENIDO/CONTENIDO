@@ -93,7 +93,7 @@ class DB_Contenido extends DB_Sql {
   // Wrapper for parent connect methods in order to allow only 1 database connection
   function connect($Database = "", $Host = "", $User = "", $Password = "") {
       global $db_link;
-
+      
       if ((0 == $db_link || !is_resource($db_link)) && !is_object($db_link)) {
           $db_link = parent::connect($Database, $Host, $User, $Password);
           global $contenido_charset;
