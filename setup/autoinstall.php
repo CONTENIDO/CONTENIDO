@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 /**
  * This is the automated install script for CONTENIDO
