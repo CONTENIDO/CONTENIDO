@@ -132,7 +132,7 @@ if ($cfg["debug"]["codeoutput"]) {
 }
 
 chdir(cRegistry::getFrontendPath());
-eval("?>\n" . $code . "\n<?php\n");
+eval("?>\n\n<!-- asdasd -->\n" . $code . "\n<?php\n");
 
 cRegistry::shutdown();
 
