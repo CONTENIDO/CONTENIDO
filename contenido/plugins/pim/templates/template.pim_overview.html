@@ -1,21 +1,21 @@
-        <!-- 
-        
+        <!--
+
         i18n("This plugin is already at the top!")
         i18n("This plugin is already at the bottom!")
         i18n("Error")
-        
+
          -->
         <script type="text/javascript">
         function toggleTableBody(tableId) {
             var collapseButton = 'images/close_all.gif';
             var expandButton = 'images/open_all.gif';
             var curTable = document.getElementById(tableId);
-            var curButton = document.getElementById(tableId+'_img');
+            var curButton = document.getElementById(tableId + '_img');
 
             if (curTable.style.display == "table-row" || curTable.style.display == "") {
                 curTable.style.display = "none";
                 curButton.src = expandButton;
-            } else if(curTable.style.display == "none") {
+            } else if (curTable.style.display == "none") {
                 curTable.style.display = "table-row";
                 curButton.src = collapseButton;
             }
@@ -24,9 +24,9 @@
         function toggleTableBodyWithoutButton(tableId) {
             var curTable = document.getElementById(tableId);
 
-            if(curTable.style.display == "table-row" || curTable.style.display == "") {
+            if (curTable.style.display == "table-row" || curTable.style.display == "") {
                 curTable.style.display = "none";
-            } else if(curTable.style.display == "none") {
+            } else if (curTable.style.display == "none") {
                 curTable.style.display = "table-row";
             }
         }
@@ -34,94 +34,94 @@
         function toggleDiv(divId) {
             var curDiv = document.getElementById(divId);
 
-            if(curDiv.style.display == "block" || curDiv.style.display == "") {
+            if (curDiv.style.display == "block" || curDiv.style.display == "") {
                 curDiv.style.display = "none";
-            } else if(curDiv.style.display == "none") {
+            } else if (curDiv.style.display == "none") {
                 curDiv.style.display = "block";
             }
         }
-        
+
         function updateSortButtons() {
-			$(".sortPluginUp").css("visibility", "visible");
-			$(".sortPluginUp").first().css('visibility', 'hidden');
-			$(".sortPluginDown").css("visibility", "visible");
-			$(".sortPluginDown").last().css('visibility', 'hidden');
+            $(".sortPluginUp").css("visibility", "visible");
+            $(".sortPluginUp").first().css('visibility', 'hidden');
+            $(".sortPluginDown").css("visibility", "visible");
+            $(".sortPluginDown").last().css('visibility', 'hidden');
         }
-        
+
         $(document).ready(function() {
-        	updateSortButtons();
-			
-        	$(".sortPluginDown").click(function() {
-        		var pluginId = $(this).attr("data-plugin-id");
-        		var pluginRow = $("#plugin-row-" + pluginId);
-        		var pluginTable = pluginRow.parent().parent();
-        		
-        		var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
-        		var newOrder = oldOrder + 1;
-        		if(newOrder > {INSTALLED_PLUGINS}) {
-        			showNotification("i18n('Error')", "i18n('This plugin is already at the bottom!')");
-        			return;
-        		}
-				pluginRow.attr("data-plugin-execorder", newOrder);
-				pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
-				
-				$.ajax({
-					url: "ajaxmain.php",
-					type: "POST",
-					data: {
-						ajax: "updatepluginorder",
-						neworder: newOrder,
-						idplugin: pluginId
-					},
-					success: function(data, status, jqxhr) {
-						if(data == "ok") {
-							pluginTable.next().after(pluginTable);
-				        	updateSortButtons();
-						}
-					}
-				});
-				
-        	});
-        	$(".sortPluginUp").click(function() {
-        		var pluginId = $(this).attr("data-plugin-id");
-        		var pluginRow = $("#plugin-row-" + pluginId);
-        		var pluginTable = pluginRow.parent().parent();
+            updateSortButtons();
 
-        		var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
-        		var newOrder = oldOrder - 1;
-        		if(newOrder == 0) {
-        			showNotification("i18n('Error')", "i18n('This plugin is already at the top!')");
-        			return;
-        		}
-				pluginRow.attr("data-plugin-execorder", newOrder);
-				pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
+            $(".sortPluginDown").click(function() {
+                var pluginId = $(this).attr("data-plugin-id");
+                var pluginRow = $("#plugin-row-" + pluginId);
+                var pluginTable = pluginRow.parent().parent();
 
-				$.ajax({
-					url: "ajaxmain.php",
-					type: "POST",
-					data: {
-						ajax: "updatepluginorder",
-						neworder: newOrder,
-						idplugin: pluginId
-					},
-					success: function(data, status, jqxhr) {
-						if(data == "ok") {
-							pluginTable.prev().before(pluginTable);
-				        	updateSortButtons();
-						}
-					}
-				});
-        	});
-        	$(".uninstallSQL").change(function() {
-        		var link = $("#removalLink-" + $(this).attr("data-idplugin"));
-        		if(this.checked) {
-        			var newLink = link.attr("onclick").replace("uninstallsql=0", "uninstallsql=1");
-        			link.attr("onclick", newLink);
-        		} else {
-        			var newLink = link.attr("onclick").replace("uninstallsql=1", "uninstallsql=0");
-        			link.attr("onclick", newLink);
-        		}
-        	});
+                var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
+                var newOrder = oldOrder + 1;
+                if (newOrder > {INSTALLED_PLUGINS}) {
+                    showNotification("i18n('Error')", "i18n('This plugin is already at the bottom!')");
+                    return;
+                }
+                pluginRow.attr("data-plugin-execorder", newOrder);
+                pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
+
+                $.ajax({
+                    url: "ajaxmain.php",
+                    type: "POST",
+                    data: {
+                        ajax: "updatepluginorder",
+                        neworder: newOrder,
+                        idplugin: pluginId
+                    },
+                    success: function(data, status, jqxhr) {
+                        if (data == "ok") {
+                            pluginTable.next().after(pluginTable);
+                            updateSortButtons();
+                        }
+                    }
+                });
+
+            });
+            $(".sortPluginUp").click(function() {
+                var pluginId = $(this).attr("data-plugin-id");
+                var pluginRow = $("#plugin-row-" + pluginId);
+                var pluginTable = pluginRow.parent().parent();
+
+                var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
+                var newOrder = oldOrder - 1;
+                if (newOrder == 0) {
+                    showNotification("i18n('Error')", "i18n('This plugin is already at the top!')");
+                    return;
+                }
+                pluginRow.attr("data-plugin-execorder", newOrder);
+                pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
+
+                $.ajax({
+                    url: "ajaxmain.php",
+                    type: "POST",
+                    data: {
+                        ajax: "updatepluginorder",
+                        neworder: newOrder,
+                        idplugin: pluginId
+                    },
+                    success: function(data, status, jqxhr) {
+                        if (data == "ok") {
+                            pluginTable.prev().before(pluginTable);
+                            updateSortButtons();
+                        }
+                    }
+                });
+            });
+            $(".uninstallSQL").change(function() {
+                var link = $("#removalLink-" + $(this).attr("data-idplugin"));
+                if (this.checked) {
+                    var newLink = link.attr("onclick").replace("uninstallsql=0", "uninstallsql=1");
+                    link.attr("onclick", newLink);
+                } else {
+                    var newLink = link.attr("onclick").replace("uninstallsql=1", "uninstallsql=0");
+                    link.attr("onclick", newLink);
+                }
+            });
         });
         </script>
 

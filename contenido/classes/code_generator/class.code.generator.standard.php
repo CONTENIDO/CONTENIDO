@@ -209,7 +209,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $cat = new cApiCategoryLanguage();
             $cat->loadByCategoryIdAndLanguageId($this->_idcat, $article->get('idlang'));
             $catart->loadByMany(array(
-            	'idcat' => $cat->get('idcat'),
+                'idcat' => $cat->get('idcat'),
                 'idart' => $article->get('idart')
             ));
             $lang = new cApiLanguage($article->get('idlang'));

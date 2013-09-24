@@ -58,17 +58,19 @@
 <div id="alertbox">{NOTI}</div>
 
 <script type="text/javascript">
-$(document).ready(function() {
-    $("#lang").change(function() {
-        $("#login").submit();
-    });
+(function($) {
+    $(document).ready(function() {
+        $("#lang").change(function() {
+            $("#login").submit();
+        });
 
-    if ("" === $("#username").val()) {
-        $("#username").focus();
-    } else {
-        $("#passwd").focus();
-    }
-});
+        if ("" === $("#username").val()) {
+            $("#username").focus();
+        } else {
+            $("#passwd").focus();
+        }
+    });
+})(jQuery);
 </script>
 
 </body>

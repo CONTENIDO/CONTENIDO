@@ -133,7 +133,7 @@ $(function() {
             e.preventDefault();
             var left = "", right = "";
                 count = $(this).parent().parent().find("li").length;
-                    
+
 
             if (count > 1) {
                 var index = $(this).parent().index();
@@ -144,11 +144,11 @@ $(function() {
                     right = '<a href="' + (index + 1) + '" class="next_image">&raquo;</a>';
                 }
             }
-            
+
             var colon = '';
-            if($(this).attr("rel") != '' && $(this).attr("title") !='' ){
-                colon = ':'; 
-            }           
+            if ($(this).attr("rel") != '' && $(this).attr("title") !='' ) {
+                colon = ':';
+            }
             $(".galery .lightbox").html(left + right + '<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + colon + $(this).attr("title") + '</p>').dialog({
                 modal: true,
                 width: "auto",
@@ -170,15 +170,14 @@ $(function() {
             var index = parseInt($(this).attr("href"));
             $(".lightbox").dialog("close");
             $('.galery .source li:eq(' + index + ') a').click();
-            
-            // switch pages when image is on other page.            
-            if(index % 6 == 0 && e.currentTarget.className == 'next_image'){
+
+            // switch pages when image is on other page.
+            if (index % 6 == 0 && e.currentTarget.className == 'next_image') {
                     $('#forward').click();
-            }
-            else if (index % 6 == 5 && e.currentTarget.className == 'prev_image'){
+            } else if (index % 6 == 5 && e.currentTarget.className == 'prev_image') {
                 $('#back').click();
             }
-            
+
         });
 
     });
@@ -188,9 +187,7 @@ $(function() {
     //fix for safer sliding in IE 7/8
     $(".slider .images li").not(".active").css({"opacity": "0"});
 
-
     var slider = window.setInterval(function() {
-
         var index = $(".slider .images li.active").index();
         $(".slider .pagination li a").removeClass("active");
         $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function() {
@@ -226,7 +223,7 @@ $(function() {
     $(".slider .pagination li").delegate("a", "click", function(e) {
         e.preventDefault();
         var old = $(".slider .pagination li a.active").parent().index(),
-                next = $(this).parent().index();
+            next = $(this).parent().index();
         $(".slider .images li:eq(" + old + ")").animate({"opacity": "0"}, 500, function() {
             $(".slider .pagination li:eq(" + old + ") a").removeClass("active");
         });
@@ -251,6 +248,5 @@ $(function() {
     $('.teaser_img').click(function() {
         var link = $(this).children("p").children("a").attr('href');
         document.location.href = link;
-
     });
 });

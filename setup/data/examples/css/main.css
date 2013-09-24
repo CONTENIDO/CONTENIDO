@@ -606,7 +606,7 @@ p+.button.red {
     border: 3px solid #ccc;
     margin-bottom: 20px;
     overflow: hidden;
-	margin-top:1px;
+    margin-top: 1px;
 }
 
 .galery .slider li img {
@@ -650,7 +650,7 @@ p+.button.red {
     text-align: center;
     top: 50%;
     margin-top: -18px;
-	margin-left: 5px;
+    margin-left: 5px;
     text-decoration: none;
 }
 .lightbox .next_image {

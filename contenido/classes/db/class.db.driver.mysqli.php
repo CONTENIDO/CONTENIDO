@@ -5,7 +5,7 @@
  * @package Core
  * @subpackage Database
  * @version SVN Revision $Rev:$
- *         
+ *
  * @author Dominik Ziegler
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -74,7 +74,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
             $this->_handler->halt('Can not initialize database connection.');
             return null;
         }
-        
+
         if (isset($this->_dbCfg['connection'])) {
             $connectConfig = $this->_dbCfg['connection'];
         }
@@ -88,7 +88,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
                 mysqli_options($dbHandler, $optKey, $optVal);
             }
         }
-        
+
         if (($iPos = strpos($connectConfig['host'], ':')) !== false) {
             $hostData = explode(':', $connectConfig['host']);
             $connectConfig['host'] = $hostData[0];
@@ -98,23 +98,23 @@ class cDbDriverMysqli extends cDbDriverAbstract {
                 $connectConfig['socket'] = $hostData[1];
             }
         }
-        
+
         if (!isset($connectConfig['port'])) {
             $connectConfig['port'] = null;
         }
         if (!isset($connectConfig['socket'])) {
             $connectConfig['socket'] = null;
         }
-        
+
         if (!isset($connectConfig['flags'])) {
             $connectConfig['flags'] = null;
         }
         if (!isset($connectConfig['database'])) {
             $connectConfig['database'] = null;
         }
-        
+
         $res = mysqli_real_connect($dbHandler, $connectConfig['host'], $connectConfig['user'], $connectConfig['password'], $connectConfig['database'], $connectConfig['port'], $connectConfig['socket'], $connectConfig['flags']);
-        
+
         if ($res && $dbHandler && $connectConfig['database']) {
             if (!@mysqli_select_db($dbHandler, $connectConfig['database'])) {
                 $this->_handler->halt('MySQLi _connect() Cannot use database ' . $connectConfig['database']);
@@ -129,7 +129,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
                 }
             }
         }
-        
+
         return $dbHandler;
     }
 
@@ -140,7 +140,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     public function buildInsert($tableName, array $fields) {
         $fieldList = '';
         $valueList = '';
-        
+
         foreach ($fields as $field => $value) {
             $fieldList .= '`' . $field . '`, ';
             if (is_int($value)) {
@@ -149,7 +149,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
                 $valueList .= "'" . $this->escape($value) . "', ";
             }
         }
-        
+
         $fieldList = substr($fieldList, 0, -2);
         $valueList = substr($valueList, 0, -2);
         return sprintf('INSERT INTO `%s` (%s) VALUES (%s)', $tableName, $fieldList, $valueList);
@@ -162,7 +162,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     public function buildUpdate($tableName, array $fields, array $whereClauses) {
         $updateList = '';
         $whereList = '';
-        
+
         foreach ($fields as $field => $value) {
             $updateList .= '`' . $field . '`=';
             if (is_int($value)) {
@@ -171,7 +171,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
                 $updateList .= "'" . $this->escape($value) . "', ";
             }
         }
-        
+
         foreach ($whereClauses as $field => $value) {
             $whereList .= '`' . $field . '`=';
             if (is_int($value)) {
@@ -180,10 +180,10 @@ class cDbDriverMysqli extends cDbDriverAbstract {
                 $whereList .= "'" . $this->escape($value) . "' AND ";
             }
         }
-        
+
         $updateList = substr($updateList, 0, -2);
         $whereList = substr($whereList, 0, -5);
-        
+
         return sprintf('UPDATE `%s` SET %s WHERE %s', $tableName, $updateList, $whereList);
     }
 
@@ -194,7 +194,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     public function query($query) {
         $linkId = $this->_handler->getLinkId();
         $queryId = mysqli_query($linkId, $query);
-        
+
         $this->_handler->setQueryId($queryId);
         $this->_handler->setRow(0);
         $this->_handler->setErrorNumber($this->getErrorNumber());
@@ -208,12 +208,12 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     public function nextRecord() {
         $queryId = $this->_handler->getQueryId();
         $record = mysqli_fetch_array($queryId, MYSQLI_BOTH);
-        
+
         $this->_handler->setRecord($record);
         $this->_handler->incrementRow();
         $this->_handler->setErrorNumber($this->getErrorNumber());
         $this->_handler->setErrorMessage($this->getErrorMessage());
-        
+
         return is_array($record);
     }
 
@@ -224,7 +224,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     public function getResultObject($className = null) {
         $result = null;
         $queryId = $this->_handler->getQueryId();
-        
+
         if ($queryId) {
             if ($className == null) {
                 $result = mysqli_fetch_object($queryId);
@@ -232,7 +232,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
                 $result = mysqli_fetch_object($queryId, $className);
             }
         }
-        
+
         return $result;
     }
 
@@ -271,7 +271,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
         if (!is_object($this->_handler->getQueryId())) {
             return $this;
         }
-        
+
         mysqli_free_result($this->_handler->getQueryId());
         $this->_handler->setQueryId(0);
     }
@@ -291,14 +291,14 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      */
     public function seek($pos = 0) {
         $queryId = $this->_handler->getQueryId();
-        
+
         $status = mysqli_data_seek($queryId, $pos);
         if ($status) {
             $this->_handler->setRow($pos);
         } else {
             return 0;
         }
-        
+
         return 1;
     }
 
@@ -308,16 +308,16 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      */
     public function getMetaData($tableName, $full = false) {
         $res = array();
-        
+
         $this->query('SELECT * FROM `%s` LIMIT 1', $tableName);
         $id = $this->getQueryId();
         if (!$id) {
             $this->_handler->halt('Metadata query failed.');
             return false;
         }
-        
+
         $count = mysqli_num_fields($id);
-        
+
         // made this IF due to performance (one if is faster than $count if's)
         for ($i = 0; $i < $count; $i++) {
             $finfo = mysqli_fetch_field($id);
@@ -333,9 +333,9 @@ class cDbDriverMysqli extends cDbDriverAbstract {
         if ($full) {
             $res['num_fields'] = $count;
         }
-        
+
         $this->free();
-        
+
         return $res;
     }
 
@@ -354,7 +354,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
                     'database' => $this->_dbCfg['connection']['database']
                 );
             }
-            
+
             $this->free();
         }
         return $return;
@@ -366,13 +366,13 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      */
     public function getServerInfo() {
         $linkId = $this->_handler->getLinkId();
-        
+
         if ($linkId) {
             $arr = array();
             $arr['description'] = mysqli_get_server_info($linkId);
             return $arr;
         }
-        
+
         return null;
     }
 
@@ -382,7 +382,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      */
     public function getErrorNumber() {
         $linkId = $this->_handler->getLinkId();
-        
+
         if ($linkId) {
             return @mysqli_errno($linkId);
         } else {
@@ -396,7 +396,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      */
     public function getErrorMessage() {
         $linkId = $this->_handler->getLinkId();
-        
+
         if ($linkId) {
             return @mysqli_error($linkId);
         } else {
