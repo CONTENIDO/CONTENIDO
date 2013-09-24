@@ -886,4 +886,213 @@ class cModuleHandler {
         return is_dir($this->_modulePath);
     }
 
+    /*
+     * Test input code
+     *
+     * @return array (bool state, string errorMessage)
+     */
+    public function testInput() {
+
+        return $this->_testCode('input');
+
+    }
+
+    /*
+     * Test output code
+     *
+     * @return array (bool state, string errorMessage)
+     */
+    public function testOutput() {
+
+        return $this->_testCode('output');
+
+    }
+
+    /*
+     * Test module code
+     *
+     * @param $inputType string code field type
+     *
+     * @return array (bool state, string errorMessage)
+     */
+    protected function _testCode($inputType) {
+
+        $result = array(
+            'state' => false,
+            'errorMessage' => 'Module path not exist'
+        );
+
+        if (!$this->modulePathExists()) return $result;
+
+        $module  = new cApiModule($this->_idmod);
+        $isError = 'none';
+
+        //Set code as error before checking, if fatal exist
+        switch ($module->get("error")) {
+            case 'none';
+            $toCheck = $inputType;
+            break;
+            case 'input';
+            if ($inputType == 'output') $toCheck = 'both';
+            break;
+            case 'output';
+            if ($inputType == 'input') $toCheck = 'both';
+            break;
+            case 'both';
+
+            break;
+        }
+        if ($toCheck !== $module->get("error")) {
+            $module->set("error", $toCheck);
+            $module->store();
+        }
+
+        //check code
+        switch($inputType) {
+            case 'input':
+
+                $code       = $this->readInput();
+                $result = $this->_verifyCode($code, $this->_idmod . "i");
+                if ($result['state'] !== true) $isError = 'input';
+
+                break;
+            case 'output':
+
+                $code       = $this->readOutput();
+                $result = $this->_verifyCode($code, $this->_idmod . "o", true);
+                if ($result['state'] !== true) $isError = 'output';
+
+                break;
+        }
+
+        //update error value for input and output
+        switch ($module->get("error")) {
+            case 'none';
+
+            break;
+            case 'input';
+            if ($isError == 'none' && $inputType == 'output') $isError = 'input';
+            if ($isError == 'output') $isError = 'both';
+            break;
+            case 'output';
+            if ($isError == 'none' && $inputType == 'input') $isError = 'output';
+            if ($isError == 'input') $isError = 'both';
+            break;
+            case 'both';
+            if ($isError == 'none' && $inputType == 'input') $isError = 'output';
+            if ($isError == 'none' && $inputType == 'output') $isError = 'input';
+            break;
+        }
+
+        //Store error information in the database (to avoid re-eval for module
+        //overview/menu)
+        if ($isError !== $module->get("error")) {
+            $module->set("error", $isError);
+            $module->store();
+        }
+
+        return $result;
+
+    }
+
+    /**
+     * Check module php code
+     *
+     * @param string $code Code to evaluate
+     * @param string $id Unique ID for the test function
+     * @param string $mode true if start in php mode, otherwise false
+     *
+     * @return array (bool state, string errorMessage)
+     */
+    protected function _verifyCode($code, $id, $output = false) {
+
+        $result = array(
+            'state' => false,
+            'errorMessage' => null
+        );
+
+        // Put a $ in front of all CMS variables to prevent PHP error messages
+        $sql = 'SELECT type FROM ' . $this->_cfg['tab']['type'];
+        $this->_db->query($sql);
+        while ($this->_db->nextRecord()) {
+            $code = str_replace($this->_db->f('type') . '[', '$' . $this->_db->f('type') . '[', $code);
+        }
+
+        $code = preg_replace(',\[(\d+)?CMS_VALUE\[(\d+)\](\d+)?\],i', '[\1\2\3]', $code);
+        $code = str_replace('CMS_VALUE', '$CMS_VALUE', $code);
+        $code = str_replace('CMS_VAR', '$CMS_VAR', $code);
+
+        // If the module is an output module, escape PHP since all output modules
+        // enter php mode
+        if ($output == true) {
+            $code = "?>\n" . $code . "\n<?php";
+        }
+
+        // Looks ugly: Paste a function declarator in front of the code
+        $code = 'function foo' . $id . ' () {' . $code;
+        $code .= "\n}\n";
+
+        // To parse the error message, we prepend and append a phperror tag in front
+        // of the output
+        $sErs = ini_get('error_prepend_string'); // Save current setting (see below)
+        $sEas = ini_get('error_append_string'); // Save current setting (see below)
+        @ini_set('error_prepend_string', '<phperror>');
+        @ini_set('error_append_string', '</phperror>');
+
+        // Turn off output buffering and error reporting, eval the code
+        ob_start();
+        $display_errors = ini_get('display_errors');
+        @ini_set('display_errors', true);
+        $output = eval($code);
+        @ini_set('display_errors', $display_errors);
+
+        // Get the buffer contents and turn it on again
+        $output = ob_get_contents();
+        ob_end_clean();
+
+        // Remove the prepend and append settings
+        /*
+         * 19.09.2006: Following lines have been disabled, as ini_restore has been
+         * disabled by some hosters as there is a security leak in PHP (PHP <= 5.1.6
+         * & <= 4.4.4)
+         */
+        // ini_restore('error_prepend_string');
+        // ini_restore('error_append_string');
+        @ini_set('error_prepend_string', $sErs); // Restoring settings (see above)
+        @ini_set('error_append_string', $sEas); // Restoring settings (see above)
+
+        // Strip out the error message
+        $isError = strpos($output, '<phperror>');
+
+        // More stripping: Users shouldnt see where the file is located, but they
+        // should see the error line
+        if ($isError !== false) {
+
+            $pattern         = '/(<phperror>|<\/phperror>|<b>|<\/b>|<br>|<br \/>)/im';
+            $modErrorMessage = trim(preg_replace($pattern, '', $output));
+            $errorPart1      = substr($modErrorMessage, 0, strpos($modErrorMessage, ' in '));
+            $errorPart2      = substr($modErrorMessage, strpos($modErrorMessage, ' on line '));
+            $modErrorMessage = $errorPart1 . $errorPart2;
+            $result['errorMessage'] = sprintf(i18n("Error in module. Error location: %s"), $modErrorMessage);
+
+        }
+
+        // Check if there are any php short tags in code, and display error
+        $bHasShortTags = false;
+        if (preg_match('/<\?\s+/', $code)) {
+            $bHasShortTags = true;
+            $result['errorMessage'] = i18n('Please do not use short open tags. (Use <?php instead of <?).');
+        }
+
+        // Now, check if the magic value is 941. If not, the function didn't compile
+        if ($bHasShortTags || $isError !== false) {
+            $result['state'] = false;
+        } else {
+            $result['state'] = true;
+        }
+
+        return $result;
+
+    }
+
 }

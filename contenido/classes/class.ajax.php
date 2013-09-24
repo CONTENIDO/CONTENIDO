@@ -343,6 +343,41 @@ class cAjaxRequest {
                 }
                 break;
 
+            case 'verify_module':
+
+                $idmod       = isset($_POST['idmod']) ? $_POST['idmod']:null;
+                $inputType   = isset($_POST['type']) ? $_POST['type']:null;
+                $modulecheck = getSystemProperty("system", "modulecheck") ? :true;
+                $result      = array(
+                    'state'       => 'error',
+                    'message'     => 'No cModuleHandler for ' + $idmod + ', or wrong code type: ' + $inputType
+                );
+                if ($idmod && $inputType && $modulecheck === true) {
+
+                    $contenidoModuleHandler = new cModuleHandler($idmod);
+                    switch($inputType) {
+                        case 'input':
+                            $result = $contenidoModuleHandler->testInput();
+                            break;
+                        case 'output':
+                            $result = $contenidoModuleHandler->testOutput();
+                            break;
+                    }
+
+                    //create answer
+                    if ($result['state']) {
+                        $result['state']   = 'ok';
+                        $result['message'] = i18n("Module successfully compiled");
+                    } else {
+                        $result['state']   = 'error';
+                        $result['message'] = $result['errorMessage'];
+                    }
+
+                }
+
+                $string = json_encode($result);
+                breaK;
+
             default:
                 // if action is unknown generate error message
                 $string = 'Unknown Ajax Action';

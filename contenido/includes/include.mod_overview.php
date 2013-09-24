@@ -116,29 +116,15 @@ foreach ($allModules as $idmod => $module) {
         $sName = cString::stripSlashes(conHtmlSpecialChars($moduleName)); //$cApiModule->get("name");
         $descr = cString::stripSlashes(conHtmlSpecialChars($module ['description']));
 
-        if ($sOptionModuleCheck !== "false" && $sOptionForceCheck !== "false") {
-            // Check module and force check has been enabled - check module (surprisingly...)
-            $inputok = modTestModule($module['input'], $idmod . "i", false);
-            $outputok = modTestModule($module['output'], $idmod . "o", true);
+        // Do not check modules (or don't force it) - so, let's take a look into the database
+        $sModuleError = $module['error']; //$cApiModule->get("error");
 
-            if ($inputok && $outputok) {        // Everything ok
-                $colName = $sName;            // The set default color: none :)
-            } else if ($inputok || $outputok) {   // Input or output has a problem
-                $colName = '<span class="moduleError">' . $sName . '</span>';
-            } else {                           // Input >and< output has a problem
-                $colName = '<span class="moduleCriticalError">' . $sName . '</span>';
-            }
+        if ($sModuleError == "none") {
+            $colName = $sName;
+        } else if ($sModuleError == "input" || $sModuleError == "output") {
+            $colName = '<span class="moduleError">' . $sName . '</span>';
         } else {
-            // Do not check modules (or don't force it) - so, let's take a look into the database
-            $sModuleError = $module['error']; //$cApiModule->get("error");
-
-            if ($sModuleError == "none") {
-                $colName = $sName;
-            } else if ($sModuleError == "input" || $sModuleError == "output") {
-                $colName = '<span class="moduleError">' . $sName . '</span>';
-            } else {
-                $colName = '<span class="moduleCriticalError">' . $sName . '</span>';
-            }
+            $colName = '<span class="moduleCriticalError">' . $sName . '</span>';
         }
 
         $iMenu++;

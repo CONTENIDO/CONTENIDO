@@ -53,4 +53,70 @@ function insertTab(event, obj) {
     }
 }
 //--></script>
+
 {FORM}
+
+<script>
+function verifyModuleRequest(img, modId, type) {
+
+    $.ajax({
+        url: "ajaxmain.php",
+        type: "POST",
+        data: {
+            ajax: "verify_module",
+            idmod: modId,
+            type: type
+        },
+        success: function(data, status, jqxhr) {
+
+            try {
+                var result = $.parseJSON(data);
+            } catch(e) {
+                var result = data;
+            }
+
+            if (typeof result == 'string') {
+
+                var state = 'error';
+                var src   = 'images/but_online_no.gif';
+                var msg   = $.trim(result.replace(/(<b>|<\/b>|<phperror>|<\/phperror>|<br \/>|<br>|<br\/>)/igm, ''));
+                var errPart1 = msg.substr(0, msg.search(' in '));
+                var errPart2 = msg.substr(msg.search(' on line '));
+                msg = errPart1 + errPart2;
+
+            } else {
+
+                if (result.state == 'ok') {
+                    var src = 'images/but_online.gif';
+                } else {
+                    var src = 'images/but_online_no.gif';
+                }
+                var state = result.state;
+                var msg   = result.message;
+
+            }
+
+            img.attr('src', src);
+            img.attr('title', msg);
+            img.attr('alt', msg);
+
+            //refresh left sidebar if need
+            if (state == 'ok' && img.attr('data-state') != 'none') {
+                parent.parent.frames["left"].frames["left_bottom"].location.reload();
+            }
+            if (state == 'error' && img.attr('data-state') == 'none') {
+                parent.parent.frames["left"].frames["left_bottom"].location.reload();
+            }
+
+        }
+    });
+
+}
+
+var imgInput  = $('#mod_edit img.inputok');
+var imgOutput = $('#mod_edit img.outputok');
+var inpIdmod  = $('#mod_edit_form input[name="idmod"]');
+
+verifyModuleRequest(imgInput, inpIdmod.val(), 'input');
+verifyModuleRequest(imgOutput, inpIdmod.val(), 'output');
+</script>

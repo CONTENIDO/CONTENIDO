@@ -352,66 +352,31 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     }
 
     $modulecheck = getSystemProperty("system", "modulecheck");
-
-    $inputok = true;
-    $outputok = true;
-
-    $inputModTest = "";
-    $outputModTest = "";
-
-    // get input/output from file
-    if ($contenidoModuleHandler->modulePathExists() == true) {
-        $inputModTest = $contenidoModuleHandler->readInput();
-        $outputModTest = $contenidoModuleHandler->readOutput();
-    } else {
-        // donut
-    }
-
+    $isCodeError = $module->get('error');
     if ($modulecheck !== "false") {
-        $outputok = modTestModule($outputModTest, $module->get("idmod") . "o", true);
-        if (!$outputok) {
-            $errorMessage = sprintf(i18n("Error in module. Error location: %s"), $modErrorMessage);
-            $outled = '<img align="right" src="images/but_online_no.gif" alt="' . $errorMessage . '" title="' . $errorMessage . '">';
-        } else {
-            $okMessage = i18n("Module successfully compiled");
-            $outled = '<img align="right" src="images/but_online.gif" alt="' . $okMessage . '" title="' . $okMessage . '">';
-        }
 
-        $inputok = modTestModule($inputModTest, $module->get("idmod") . "i");
-        if (!$inputok) {
-            $errorMessage = sprintf(i18n("Error in module. Error location: %s"), $modErrorMessage);
-            $inled = '<img align="right" src="images/but_online_no.gif" alt="' . $errorMessage . '" title="' . $errorMessage . '">';
-        } else {
-            $okMessage = i18n("Module successfully compiled");
-            $inled = '<img align="right" src="images/but_online.gif" alt="' . $okMessage . '" title="' . $okMessage . '">';
-        }
+        $outled = '<img align="right"
+                        src="images/ajax-loader_16x16.gif"
+                        class="outputok"
+                        alt=""
+                        title=""
+                        data-state="' . htmlentities($isCodeError) . '"
+                   />';
+        $inled  = '<img align="right"
+                        src="images/ajax-loader_16x16.gif"
+                        class="inputok"
+                        alt=""
+                        title=""
+                        data-state="' . htmlentities($isCodeError) . '"
+                   />';
 
-        // Store error information in the database (to avoid re-eval for module
-        // overview/menu)
-        if ($inputok && $outputok) {
-            $sStatus = "none";
-        } else if ($inputok) {
-            $sStatus = "input";
-        } else if ($outputok) {
-            $sStatus = "output";
-        } else {
-            $sStatus = "both";
-        }
-
-        // If status has been changed, store and show in overview
-        $sPrevStatus = $module->get("error");
-        if ($sPrevStatus !== $sStatus) {
-            $module->set("error", $sStatus);
-            $module->store();
-            $page->setReload();
-        }
     }
 
     $form->add(i18n("Name"), $name->render());
     $form->add(i18n("Type"), $typeselect->render() . $custom->render());
     $form->add(i18n("Description"), $descr->render());
 
-    if ($sOptionDebugRows == "always" || ($sOptionDebugRows == "onerror" && (!$inputok || !$outputok))) {
+    if ($sOptionDebugRows == "always" || ($sOptionDebugRows == "onerror" && $isCodeError !== 'none')) {
         $form->add(i18n("Input") . $inled . $oInputRows->render(), $input->render());
         $form->add(i18n("Output") . $outled . $oOutputRows->render(), $output->render());
     } else {
