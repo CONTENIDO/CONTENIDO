@@ -22,7 +22,7 @@ function initCodeMirror(textAreaId, properties) {
 	cm_fullscreen[textAreaId] = { height: cm_div[textAreaId].height(), width: cm_div[textAreaId].width() }
 	var codeWidth = $(cm_editor[textAreaId].getWrapperElement()).width();
 	
-	$('.CodeMirror').resizable({
+	$('#' + textAreaId).next().resizable({
 		resize: function() {
 			cm_editor[textAreaId].setSize(codeWidth, $(this).height());
 			cm_editor[textAreaId].refresh();
