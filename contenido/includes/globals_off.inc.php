@@ -3,10 +3,9 @@
  * Makes available those super global arrays that are made available in versions
  * of PHP after v4.1.0.
  * This file is where all the "magic" begins. We ignore register_globals setting
- * and retrieve any
- * variable from wherever and transform them to global variables. This is highly
- * insecure, so variables
- * need to be checked carefully.
+ * and retrieve any variable from wherever and transform them to global
+ * variables. This is highly insecure, so variables need to be checked
+ * carefully.
  *
  * @package Core
  * @subpackage Backend
