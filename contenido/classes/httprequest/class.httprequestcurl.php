@@ -182,11 +182,11 @@ class cHttpRequestCurl extends cHttpRequest {
 
         if($return) {
             if(!$returnHeaders) {
-                $string = substr(strstr($string, "\r\n\r\n"), strlen("\r\n\r\n"));
+                $string = substr(cString::strstr($string, "\r\n\r\n"), strlen("\r\n\r\n"));
             }
             return $string;
         } else {
-            return strpos(strstr($string, "\r\n", true), '200') !== false || strpos(strstr($string, "\r\n", true), '100') !== false;
+            return strpos(cString::strstr($string, "\r\n", true), '200') !== false || strpos(cString::strstr($string, "\r\n", true), '100') !== false;
         }
     }
 

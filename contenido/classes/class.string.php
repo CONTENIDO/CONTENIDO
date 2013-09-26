@@ -141,7 +141,31 @@ class cString {
         return (substr($haystack, -$length) === $needle);
     }
 
-    public function contains($haystack, $needle) {
+    /**
+     * Returns true if needle can be found in haystack
+     * 
+     * @param string $haystack String to be searched
+     * @param string $needle String to search for
+     * @return boolean
+     */
+    public static function contains($haystack, $needle) {
         return !(strpos($haystack, $needle) === false);
+    }
+    
+    /**
+     * Implementation of PHP 5.3's strstr with beforeNeedle
+     * 
+     * @param string $haystack String to be searched
+     * @param string $needle String to search for
+     * @param string $beforeNeedle If true, return everything BEFORE needle
+     * @return string
+     * @link http://php.net/manual/de/function.strstr.php
+     */
+    public static function strstr($haystack, $needle, $beforeNeedle = false) {
+        if(!$beforeNeedle) {
+            return strstr($haystack, $needle);
+        } else {
+            return strtok($haystack, $needle);
+        }
     }
 }

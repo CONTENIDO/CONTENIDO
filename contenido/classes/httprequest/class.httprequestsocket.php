@@ -223,11 +223,11 @@ class cHttpRequestSocket extends cHttpRequest {
         
         if($return) {
             if(!$returnHeaders) {
-                $ret = substr(strstr($ret, "\r\n\r\n"), strlen("\r\n\r\n"));
+                $ret = substr(cString::strstr($ret, "\r\n\r\n"), strlen("\r\n\r\n"));
             }
             return $ret;
         } else {
-            return strpos(strstr($ret, '\r\n', true), '200') !== false;
+            return strpos(cString::strstr($ret, '\r\n', true), '200') !== false;
         }
     }
 
