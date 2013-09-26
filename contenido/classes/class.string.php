@@ -141,4 +141,7 @@ class cString {
         return (substr($haystack, -$length) === $needle);
     }
 
+    public function contains($haystack, $needle) {
+        return !(strpos($haystack, $needle) === false);
+    }
 }

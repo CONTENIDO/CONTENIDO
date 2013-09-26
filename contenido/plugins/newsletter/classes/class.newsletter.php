@@ -435,55 +435,26 @@ class Newsletter extends Item
                 unset($oArticles);
 
                 $sFile = "front_content.php?client=$client&lang=$lang&idcat=$iIDCat&idart=$iIDArt&noex=1&send=1";
-                $aURL  = parse_url($frontendURL);
-
-                // TODO: Other schemes than http should be tested before use!
-                if ($aURL["scheme"] == "https") {
-                    $iPort   = 443;
-                    $sTarget = "ssl://".$aURL["host"];
-                } else {
-                    $iPort   = 80;
-                    $sTarget = $aURL["host"];
+                
+                $handler = cHttpRequest::getHttpRequest($frontendURL.$sFile);
+                $headers = array();
+                
+                // Maybe the website has been protected using .htaccess, then login
+                if ($sHTTPUserName != "" && $sHTTPPassword != "") {
+                    $headers['Authorization'] = "Basic " . base64_encode("$sHTTPUserName:$sHTTPPassword");
                 }
-                if ($aURL["port"]) {
-                    $iPort   = $aURL["port"];
-                }
+                
+                $headers['Referer'] = "Referer: http://".$frontendURL;
+                $headers['User-Agent'] = "User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+                
+                $handler->setHeaders($headers);
 
                 $iErrorNo    = 0;
                 $sErrorMsg   = "";
-                if ($iHandler = fsockopen($sTarget, $iPort, $iErrorNo, $sErrorMsg, 30)) {
-                    // If you use HTTP 1.1 you may get chunked data... you could solve
-                    // this easily by using HTTP 1.0, but then you get a problem with
-                    // virtual servers, as HTTP 1.0 doesn't use the host information...
-                    fputs($iHandler, "GET ".$aURL["path"].$sFile." HTTP/1.1\r\n");
-                    fputs($iHandler, "Host: ".$aURL["host"]."\r\n");
-
-                    // Maybe the website has been protected using .htaccess, then login
-                    if ($sHTTPUserName != "" && $sHTTPPassword != "") {
-                        fputs($iHandler, "Authorization: Basic " . base64_encode("$sHTTPUserName:$sHTTPPassword") . "\r\n");
-                    }
-
-                    fputs($iHandler, "Referer: http://".$aURL["host"]."\r\n");
-                    fputs($iHandler, "User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)\r\n");
-                    fputs($iHandler, "Connection: close\r\n\r\n");
-
+                if ($output = $handler->getRequest(true, true)) {
                     // Get the HTTP header and body separately
-                    $sHTML   = "";
-                    $sHeader = "";
-                    $bBody   = false;
-                    while (!feof($iHandler)) {
-                        // $sLine = fgets($iHandler, 4096);
-                        $sLine = fgets($iHandler, 1024);
-                        if ($bBody) {
-                            $sHTML .= $sLine;
-                        } else if ($sLine == "\r\n") {
-                            $bBody = true;
-                        } else {
-                            $sHeader .= $sLine;
-                        }
-                    }
-                    fclose ($iHandler);
-
+                    $sHTML   = strstr(strstr($output, "200"), "\r\n\r\n");
+                    $sHeader = strstr($output, "\r\n\r\n", true);
                     $sHTML = $this->_deChunkHTTPBody($sHeader, $sHTML);
 
                     // If someone likes to use anchors in html newsletters (*sigh*)

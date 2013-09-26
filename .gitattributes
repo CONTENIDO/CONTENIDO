@@ -241,6 +241,9 @@ contenido/classes/html/class.html.textbox.php -text
 contenido/classes/html/class.html.time.php -text
 contenido/classes/html/class.html.upload.php -text
 contenido/classes/html/class.html.video.php -text
+contenido/classes/httprequest/class.httprequest.php -text
+contenido/classes/httprequest/class.httprequestcurl.php -text
+contenido/classes/httprequest/class.httprequestsocket.php -text
 contenido/classes/index.php -text
 contenido/classes/log/class.log.php -text
 contenido/classes/log/class.log.writer.file.php -text

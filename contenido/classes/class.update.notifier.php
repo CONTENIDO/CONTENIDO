@@ -436,6 +436,7 @@ class cUpdateNotifier {
 
             $this->oXML = simplexml_load_string($this->sXMLContent);
             if (!is_object($this->oXML)) {
+                die('test:<pre>' . htmlentities($this->sXMLContent));
                 $sErrorMessage = i18n('Unable to check for new updates!') . " " . i18n('Could not handle server response!');
                 $this->sErrorOutput = $this->renderOutput($sErrorMessage);
             } else {
@@ -718,32 +719,18 @@ class cUpdateNotifier {
         if ($this->bVendorHostReachable != true) {
             return false;
         }
-
-        $oSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout);
-        if (!is_resource($oSocket)) {
+        
+        $handler = cHttpRequest::getHttpRequest($this->sVendorHost . '/' . $sUrl);
+        $output = $handler->getRequest();
+        
+        if (!$output) {
             $sErrorMessage = i18n('Unable to check for new updates!') . " " . i18n('Connection to contenido.org failed!');
             $this->sErrorOutput = $this->renderOutput($sErrorMessage);
             $this->bVendorHostReachable = false;
             return false;
-        } else {
-            // get file
-            if (!fputs($oSocket, "GET /" . $sUrl . " HTTP/1.0\r\nHost: " . $this->sVendorHost . "\r\n\r\n")) {
-                return false;
-            }
-
-            $sVendorFile = '';
-
-            while (!feof($oSocket)) {
-                $sVendorFile .= fgets($oSocket, 128);
-            }
-
-            $sSeparator = strpos($sVendorFile, "\r\n\r\n");
-            $sVendorFile = substr($sVendorFile, $sSeparator + 4);
-
-            fclose($oSocket);
         }
 
-        return ($sVendorFile != "")? $sVendorFile : false;
+        return ($output != "")? $output : false;
     }
 
     /**
