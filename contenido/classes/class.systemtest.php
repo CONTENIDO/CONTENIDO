@@ -627,100 +627,6 @@ class cSystemtest {
     }
 
     /**
-     * Checks a single file or directory wether it is writeable or not
-     *
-     * @param string $filename The file
-     * @param int $severity The resulting C_SEVERITY constant should the test
-     *        fail
-     * @param bool $dir True if the $filename is a directory
-     * @throws Exception Throws a generic Exception in the event that the
-     *         permissions are wrong
-     * @return boolean Returns true if everything is fine
-     */
-    protected function testSingleFile($filename, $severity, $dir = false) {
-        if (strpos($filename, $this->_config["path"]["frontend"]) === 0) {
-            $length = strlen($this->_config["path"]["frontend"]) + 1;
-            $shortFilename = substr($filename, $length);
-        } else { // for dirs
-            $shortFilename = $filename;
-        }
-
-        if (!$dir) {
-            $status = $this->canWriteFile($filename);
-        } else {
-            $status = $this->canWriteDir($filename);
-        }
-
-        $title = sprintf(i18n("Can't write %s"), $shortFilename);
-        $message = sprintf(i18n("Setup or CONTENIDO can't write to the file %s. Please change the file permissions to correct this problem."), $shortFilename);
-
-        if ($status == false) {
-            if (cFileHandler::exists($filename)) {
-                $perm = $this->predictCorrectFilepermissions($filename);
-
-                switch ($perm) {
-                    case self::CON_PREDICT_WINDOWS:
-                        $predictMessage = i18n("Your Server runs Windows. Due to that, Setup can't recommend any file permissions.");
-                        break;
-                    case self::CON_PREDICT_NOTPREDICTABLE:
-                        $predictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file %s, especially in environments where ACL (Access Control Lists) are used."), $shortFilename);
-                        break;
-                    case self::CON_PREDICT_CHANGEPERM_SAMEOWNER:
-                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
-                        $mfileperms{0} = intval($mfileperms{0}) | 0x6;
-                        $predictMessage = sprintf(i18n("Your web server and the owner of your files are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the file mask to %s or set the owner to allow writing the file."), $shortFilename, $mfileperms);
-                        break;
-                    case self::CON_PREDICT_CHANGEPERM_SAMEGROUP:
-                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
-                        $mfileperms{1} = intval($mfileperms{1}) | 0x6;
-                        $predictMessage = sprintf(i18n("Your web server's group and the group of your files are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the file mask to %s or set the group to allow writing the file."), $shortFilename, $mfileperms);
-                        break;
-                    case self::CON_PREDICT_CHANGEPERM_OTHERS:
-                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
-                        $mfileperms{2} = intval($mfileperms{2}) | 0x6;
-                        $predictMessage = sprintf(i18n("Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."), $shortFilename, $mfileperms);
-                        break;
-                }
-            } else {
-                $target = dirname($filename);
-
-                $perm = $this->predictCorrectFilepermissions($target);
-
-                switch ($perm) {
-                    case self::CON_PREDICT_WINDOWS:
-                        $predictMessage = i18n("Your Server runs Windows. Due to that, Setup can't recommend any directory permissions.");
-                        break;
-                    case self::CON_PREDICT_NOTPREDICTABLE:
-                        $predictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file or directory %s, especially in environments where ACL (Access Control Lists) are used."), dirname($shortFilename));
-                        break;
-                    case self::CON_PREDICT_CHANGEPERM_SAMEOWNER:
-                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
-                        $mfileperms{0} = intval($mfileperms{0}) | 0x6;
-                        $predictMessage = sprintf(i18n("Your web server and the owner of your directory are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the directory mask to %s or set the owner to allow writing the directory."), dirname($shortFilename), $mfileperms);
-                        break;
-                    case self::CON_PREDICT_CHANGEPERM_SAMEGROUP:
-                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
-                        $mfileperms{1} = intval($mfileperms{1}) | 0x6;
-                        $predictMessage = sprintf(i18n("Your web server's group and the group of your directory are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the directory mask to %s or set the group to allow writing the directory."), dirname($shortFilename), $mfileperms);
-                        break;
-                    case self::CON_PREDICT_CHANGEPERM_OTHERS:
-                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
-                        $mfileperms{2} = intval($mfileperms{2}) | 0x6;
-                        $predictMessage = sprintf(i18n("Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."), dirname($shortFilename), $mfileperms);
-                        break;
-                }
-            }
-
-            $this->storeResult(false, $severity, $title, $message . "<br /><br />" . $predictMessage);
-            if ($title && $message) {
-                $status = false;
-            }
-        }
-
-        return $status;
-    }
-
-    /**
      * Gets a PHP setting with ini_get
      *
      * @param string $setting A PHP setting
@@ -1241,6 +1147,100 @@ class cSystemtest {
                         $status = false;
                     }
                 }
+            }
+        }
+
+        return $status;
+    }
+
+    /**
+     * Checks a single file or directory wether it is writeable or not
+     *
+     * @param string $filename The file
+     * @param int $severity The resulting C_SEVERITY constant should the test
+     *        fail
+     * @param bool $dir True if the $filename is a directory
+     * @throws Exception Throws a generic Exception in the event that the
+     *         permissions are wrong
+     * @return boolean Returns true if everything is fine
+     */
+    protected function testSingleFile($filename, $severity, $dir = false) {
+        if (strpos($filename, $this->_config["path"]["frontend"]) === 0) {
+            $length = strlen($this->_config["path"]["frontend"]) + 1;
+            $shortFilename = substr($filename, $length);
+        } else { // for dirs
+            $shortFilename = $filename;
+        }
+
+        if (!$dir) {
+            $status = $this->canWriteFile($filename);
+        } else {
+            $status = $this->canWriteDir($filename);
+        }
+
+        $title = sprintf(i18n("Can't write %s"), $shortFilename);
+        $message = sprintf(i18n("Setup or CONTENIDO can't write to the file %s. Please change the file permissions to correct this problem."), $shortFilename);
+
+        if ($status == false) {
+            if (cFileHandler::exists($filename)) {
+                $perm = $this->predictCorrectFilepermissions($filename);
+
+                switch ($perm) {
+                    case self::CON_PREDICT_WINDOWS:
+                        $predictMessage = i18n("Your Server runs Windows. Due to that, Setup can't recommend any file permissions.");
+                        break;
+                    case self::CON_PREDICT_NOTPREDICTABLE:
+                        $predictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file %s, especially in environments where ACL (Access Control Lists) are used."), $shortFilename);
+                        break;
+                    case self::CON_PREDICT_CHANGEPERM_SAMEOWNER:
+                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
+                        $mfileperms{0} = intval($mfileperms{0}) | 0x6;
+                        $predictMessage = sprintf(i18n("Your web server and the owner of your files are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the file mask to %s or set the owner to allow writing the file."), $shortFilename, $mfileperms);
+                        break;
+                    case self::CON_PREDICT_CHANGEPERM_SAMEGROUP:
+                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
+                        $mfileperms{1} = intval($mfileperms{1}) | 0x6;
+                        $predictMessage = sprintf(i18n("Your web server's group and the group of your files are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the file mask to %s or set the group to allow writing the file."), $shortFilename, $mfileperms);
+                        break;
+                    case self::CON_PREDICT_CHANGEPERM_OTHERS:
+                        $mfileperms = substr(sprintf("%o", fileperms($filename)), -3);
+                        $mfileperms{2} = intval($mfileperms{2}) | 0x6;
+                        $predictMessage = sprintf(i18n("Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."), $shortFilename, $mfileperms);
+                        break;
+                }
+            } else {
+                $target = dirname($filename);
+
+                $perm = $this->predictCorrectFilepermissions($target);
+
+                switch ($perm) {
+                    case self::CON_PREDICT_WINDOWS:
+                        $predictMessage = i18n("Your Server runs Windows. Due to that, Setup can't recommend any directory permissions.");
+                        break;
+                    case self::CON_PREDICT_NOTPREDICTABLE:
+                        $predictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file or directory %s, especially in environments where ACL (Access Control Lists) are used."), dirname($shortFilename));
+                        break;
+                    case self::CON_PREDICT_CHANGEPERM_SAMEOWNER:
+                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
+                        $mfileperms{0} = intval($mfileperms{0}) | 0x6;
+                        $predictMessage = sprintf(i18n("Your web server and the owner of your directory are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the directory mask to %s or set the owner to allow writing the directory."), dirname($shortFilename), $mfileperms);
+                        break;
+                    case self::CON_PREDICT_CHANGEPERM_SAMEGROUP:
+                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
+                        $mfileperms{1} = intval($mfileperms{1}) | 0x6;
+                        $predictMessage = sprintf(i18n("Your web server's group and the group of your directory are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the directory mask to %s or set the group to allow writing the directory."), dirname($shortFilename), $mfileperms);
+                        break;
+                    case self::CON_PREDICT_CHANGEPERM_OTHERS:
+                        $mfileperms = substr(sprintf("%o", @fileperms($target)), -3);
+                        $mfileperms{2} = intval($mfileperms{2}) | 0x6;
+                        $predictMessage = sprintf(i18n("Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."), dirname($shortFilename), $mfileperms);
+                        break;
+                }
+            }
+
+            $this->storeResult(false, $severity, $title, $message . "<br /><br />" . $predictMessage);
+            if ($title && $message) {
+                $status = false;
             }
         }
 
