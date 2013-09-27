@@ -21,8 +21,8 @@
 class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
 
     /**
-     *
-     * @todo missing implementation
+     * Test trimming of items in empty array, nonempty array and nonempty array
+     * with arbitrary character.
      */
     public function testTrim() {
 
@@ -34,11 +34,10 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
         $exp = explode(',', 'foo,bar,baz');
         $this->assertEquals($exp, cArray::trim($data));
 
-        // nonempty array
+        // nonempty array with arbitrary character
         $data = explode(',', 'foo,bar,baz');
         $exp = explode(',', 'foo,ar,az');
         $this->assertEquals($exp, cArray::trim($data, 'b'));
-
     }
 
     /**
