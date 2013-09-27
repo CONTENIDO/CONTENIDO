@@ -1439,6 +1439,7 @@ contenido/plugins/cronjobs_overview/includes/config.plugin.php -text
 contenido/plugins/cronjobs_overview/includes/include.left_bottom.php -text
 contenido/plugins/cronjobs_overview/includes/include.left_top.php -text
 contenido/plugins/cronjobs_overview/includes/include.right_bottom.php -text
+contenido/plugins/cronjobs_overview/includes/include.right_top.php -text
 contenido/plugins/cronjobs_overview/locale/cronjobs_overview.pot -text
 contenido/plugins/cronjobs_overview/locale/de_DE/LC_MESSAGES/cronjobs_overview.mo -text
 contenido/plugins/cronjobs_overview/locale/de_DE/LC_MESSAGES/cronjobs_overview.po -text
