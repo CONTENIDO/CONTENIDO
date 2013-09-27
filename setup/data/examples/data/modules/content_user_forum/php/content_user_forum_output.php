@@ -503,8 +503,9 @@ class UserForumArticle {
                 $content = $this->_collection->selectNameAndNameByForumId($idquote);
                 (count($content) > 0)? $empty = false : $empty = true;
                 if (!$empty) {
+                    $ar = $this->_collection->getCommentContent($idquote);
                     $transTemplate = mi18n("quoteFrom");
-                    $this->_tpl->assign('INPUT_FORUM_QUOTE', $transTemplate . ' ' . $content['realname'] . "\n" . $content['forum']);
+                    $this->_tpl->assign('INPUT_FORUM_QUOTE', $transTemplate . ' ' . $ar['name'] . "\n" . $ar['content']);
                     $this->_tpl->assign('DISPLAY', 'display:block');
                 } else {
                     $this->_tpl->assign('DISPLAY', 'display:none');
