@@ -1,9 +1,7 @@
 * text=auto !eol
 /CHANGELOG.txt -text
-/INSTALL.pdf -text
 /LICENSE.txt -text
 /README.txt -text
-/UPGRADE.pdf -text
 cms/cache/code/.htaccess -text
 cms/cache/index.php -text
 cms/data/.htaccess -text
@@ -2153,10 +2151,15 @@ data/locale/de_DE/LC_MESSAGES/contenido.po -text
 data/locale/en_US/LC_MESSAGES/contenido.mo -text
 data/locale/en_US/LC_MESSAGES/contenido.po -text
 data/locale/potfiles.txt -text
-docs/NOTICE.txt -text
 docs/coding_convention_zend_10_1_php.xml -text svneol=unset#text/plain
 docs/coding_convention_zend_js.xml -text svneol=unset#text/plain
 docs/coding_convention_zend_php.xml -text svneol=unset#text/plain
+docs/de02-installationsanleitung.pdf -text
+docs/de03-aktualiserungsanleitung.pdf -text
+docs/en01-system-requirements.pdf -text
+docs/en02-installation-guide.pdf -text
+docs/en03-upgrade-guide.pdf -text
+docs/techref/NOTICE.txt -text
 docs/techref/assets/conlogo.gif -text
 docs/techref/backend/backend.autoloader.html -text
 docs/techref/backend/backend.customizing.1.gif -text

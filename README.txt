@@ -19,6 +19,14 @@ No Warranty - take a look at the GPL at the end of this file.
 
 -------------------------------------------------------------------
 
+	Anleitungen zur Installation oder Aktualiserung finden sie im
+	Verzeichnis docs/ oder unter https://docs.contenido.org/display/COND.
+	
+	Installation or upgrade guides can be found in the docs/ folder
+	or at https://docs.contenido.org/display/CONE.
+
+-------------------------------------------------------------------
+
 Weitere Informationen zu CONTENIDO / More information on CONTENIDO:
 
 http://www.contenido.org            Homepage
@@ -33,6 +41,7 @@ http://twitter.com/contenido        Twitter
 http://facebook.com/cms.contenido   Facebook
 
 -------------------------------------------------------------------
+
 Lizenzen von verwendeten Produkten / Licenses of used third party products:
 
 - CodeMirror 2.32
