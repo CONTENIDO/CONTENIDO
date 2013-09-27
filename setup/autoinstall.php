@@ -65,10 +65,8 @@ if(!checkInstallationSettings()) {
     }
 }
 
-prnt(i18n('Testing your system...', 'setup'));
-
 // execute the system tests
-executeSystemTests();
+$cliSetup->executeSystemTests();
 
 // if we are here, the user either ignored errors or everything is fine - start the installation
 prntln(i18n('Starting setup', 'setup'));

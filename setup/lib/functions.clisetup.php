@@ -219,75 +219,6 @@ function getArgs() {
 }
 
 /**
- * Executes the CONTENIDO system tests and prints the result to the user.
- * In case of an error it asks if the user wants to continue anyway and,
- * if not, quits the script.
- *
- */
-function executeSystemTests() {
-    global $cfg, $args;
-
-    $fine = true;
-
-    // load the CONTENIDO locale for the test results
-    i18nInit('../data/locale/', $belang);
-
-    // run the tests
-    $test = new cSystemtest($cfg);
-    $test->runTests(false); // general php tests
-    $test->testFilesystem(true, false); // file system permission tests
-    $test->testFrontendFolderCreation(); // more file system permission tests
-    $test->checkSetupMysql('setup', $cfg['db']['connection']['database'], $_SESSION['dbprefix']); // test the SQL connection and database creation
-
-    $testResults = $test->getResults();
-
-    foreach($testResults as $testResult) {
-        if ($testResult["severity"] == cSystemtest::C_SEVERITY_NONE) {
-            continue;
-        }
-
-        if($testResult['result'] == false) {
-            $fine = false;
-        }
-    }
-    if(!$fine) {
-        prntln(i18n('error', 'setup'));
-        foreach($testResults as $testResult) {
-            if ($testResult["severity"] == cSystemtest::C_SEVERITY_NONE) {
-                continue;
-            }
-
-            if($testResult['result'] == false) {
-                prntln(html_entity_decode(strip_tags($testResult['headline'], 1)));
-                prntln(html_entity_decode(strip_tags($testResult['message'], 2)));
-            }
-        }
-        prntln();
-        prntln(i18n('There have been errors during the system check.', 'setup'));
-        prntln(i18n('However this might be caused by differing configurations between the CLI php and the CGI php.', 'setup'));
-
-        if($args['noninteractive']) {
-            exit(3);
-        }
-
-        $answer = '';
-        while($answer != 'y' && $answer != 'n' && $answer != i18n('y', 'setup') && $answer != i18n('n', 'setup')) {
-            prnt(i18n('Do you want to continue despite the errors? (y/n) [n]: ', 'setup'));
-            $answer = trim(fgets(STDIN));
-            if($answer == "") {
-                $answer = "n";
-            }
-        }
-        if(strtolower($answer) == "n" || strtolower($answer) == strtolower(i18n('n', 'setup'))) {
-            exit(3);
-        }
-    } else {
-        prntln(i18n('Your system seems to be okay.', 'setup'));
-        prntln();
-    }
-}
-
-/**
  * Prints the help text
  */
 function printHelpText() {
@@ -295,8 +226,8 @@ function printHelpText() {
     prntln(i18n('This script will install CONTENIDO to your computer', 'setup'));
     prntln();
     prntln(i18n("CONTENIDO can be installed using the interactive mode or a non-interactive mode.", 'setup'));
-    prntln(i18n("If the script is executed without any parameters it will look for the\nautoinstall.ini file (or any other ini file specified with \"--ini\").", 'setup'));
-    prntln(i18n("If that file is present, the non-interactive mode will be used. The script will\nask for user input in case of errors though.\nIf you want to prevent the script from ever waiting for user input use\n\"--non-interactive\".", 'setup'));
+    prntln(i18n("If the script is executed without any parameters it will look for the\nautoinstall.ini file (or any other file specified with \"--file\").", 'setup'));
+    prntln(i18n("If that file is present, the non-interactive mode will be used. The script will\nask for user input in the case of errors though.\nIf you want to prevent the script from ever waiting for user input use\n\"--non-interactive\".", 'setup'));
     prntln(i18n("In case the ini file can not be found, the script will wait for user input\non all relevant information.", 'setup'));
     prntln();
     prntln('--interactive, -i');

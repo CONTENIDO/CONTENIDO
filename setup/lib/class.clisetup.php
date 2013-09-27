@@ -95,11 +95,11 @@ class cCLISetup {
 
         // first check for the interactive switch
         if($this->args['interactive']) {
-            // user wants the setup to be interactive - ignore any ini files and start the configuration
+            // user wants the setup to be interactive - ignore any files and start the configuration
             prntln();
             prntln();
-            // the settings from the command line overwrite the ini settings but the UI settings overwrite everything
-            // settings from the command line and the ini file (if existent) will be provided to the user as standard values for the questions
+            // the settings from the command line overwrite the settings but the UI settings overwrite everything
+            // settings from the command line and the file (if existent) will be provided to the user as standard values for the questions
             $this->getSettingsFromFile($this->settingsFile);
             $this->getSettingsFromCommandLine($this->args);
             $this->getUserInputSettings();
@@ -122,10 +122,10 @@ class cCLISetup {
                 exit(1);
             }
         } else {
-            // default mode - look for the ini file. if it's there, use it. Otherwise start the interactive setup
+            // default mode - look for the file. if it's there, use it. Otherwise start the interactive setup
             echo(i18n('Looking for ', 'setup') . $this->settingsFile . '...');
             if(file_exists($this->settingsFile)) {
-                // read the ini file
+                // read the file
                 prntln(i18n('found', 'setup'));
                 prntln(i18n('CONTENIDO will use the specified settings from ', 'setup') . $this->settingsFile);
                 prntln();
@@ -174,6 +174,7 @@ class cCLISetup {
 
         $this->settings['admin_user']['password'] = ($this->args['adminuserpassword'] == '') ? $this->settings['admin_user']['password'] : $this->args['adminuserpassword'];
         $this->settings['admin_user']['email'] = ($this->args['adminuseremail'] == '') ? $this->settings['admin_user']['email'] : $this->args['adminuseremail'];
+        $this->settings['advanced']['delete_database'] = ($this->args['advanceddeletedatabase'] == '') ? $this->settings['advanced']['delete_database'] : $this->args['advanceddeletedatabase'];
     }
 
     /**
@@ -310,6 +311,7 @@ class cCLISetup {
         
                 $this->settings['admin_user']['password'] = trim($xml->admin_user->password);
                 $this->settings['admin_user']['email'] = trim($xml->admin_user->email);
+                $this->settings['advanced']['delete_database'] = trim($xml->advanced->delete_database);
                 break;
             case 'json':
                 $this->settings = json_decode(file_get_contents($file), true);
@@ -318,6 +320,98 @@ class cCLISetup {
 
     }
 
+    /**
+     * Executes the CONTENIDO system tests and prints the result to the user.
+     * In case of an error it asks if the user wants to continue anyway and,
+     * if not, quits the script.
+     *
+     */
+    public function executeSystemTests() {
+    	global $cfg, $args;
+
+    	if($this->settings['advanced']['delete_database'] == 'YESPLEASE') {
+    		$answer = '';
+    		while($answer != 'Y' && $answer != 'N') {
+    			prnt(sprintf(i18n("You chose in the configuration file to delete the database '%s' before installing.\nDO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]: ", 'setup'), $this->settings['db']['database']));
+    			$answer = trim(fgets(STDIN));
+    			if($answer == "") {
+    				$answer = "N";
+    			}
+    		}
+    		if($answer != "Y") {
+    			exit(3);
+    		}
+    	
+    		$db = getSetupMySQLDBConnection(false);
+    		$db->query('DROP DATABASE ' . $this->settings['db']['database']);
+    		
+    		prntln();
+    		prntln(sprintf(i18n('THE DATABASE %s HAS BEEN DELETED!!!', 'setup'), $this->settings['db']['database']));
+    		prntln();
+    	}
+    	
+    	prnt(i18n('Testing your system...', 'setup'));
+    	
+    	$fine = true;
+    
+    	// load the CONTENIDO locale for the test results
+    	i18nInit('../data/locale/', $belang);
+    
+    	// run the tests
+    	$test = new cSystemtest($cfg);
+    	$test->runTests(false); // general php tests
+    	$test->testFilesystem(true, false); // file system permission tests
+    	$test->testFrontendFolderCreation(); // more file system permission tests
+    	$test->checkSetupMysql('setup', $cfg['db']['connection']['database'], $_SESSION['dbprefix']); // test the SQL connection and database creation
+    
+    	$testResults = $test->getResults();
+    
+    	foreach($testResults as $testResult) {
+    		if ($testResult["severity"] == cSystemtest::C_SEVERITY_NONE) {
+    			continue;
+    		}
+    
+    		if($testResult['result'] == false) {
+    			$fine = false;
+    		}
+    	}
+    	if(!$fine) {
+    		prntln(i18n('error', 'setup'));
+    		foreach($testResults as $testResult) {
+    			if ($testResult["severity"] == cSystemtest::C_SEVERITY_NONE) {
+    				continue;
+    			}
+    
+    			if($testResult['result'] == false) {
+    				prntln(html_entity_decode(strip_tags($testResult['headline'], 1)));
+    				prntln(html_entity_decode(strip_tags($testResult['message'], 2)));
+    			}
+    		}
+    		prntln();
+    		prntln(i18n('There have been errors during the system check.', 'setup'));
+    		prntln(i18n('However this might be caused by differing configurations between the CLI php and the CGI php.', 'setup'));
+    
+    		if($args['noninteractive']) {
+    			exit(3);
+    		}
+    
+    		$answer = '';
+    		while($answer != 'y' && $answer != 'n' && $answer != i18n('y', 'setup') && $answer != i18n('n', 'setup')) {
+    			prnt(i18n('Do you want to continue despite the errors? (y/n) [n]: ', 'setup'));
+    			$answer = trim(fgets(STDIN));
+    			if($answer == "") {
+    				$answer = "n";
+    			}
+    		}
+    		if(strtolower($answer) == "n" || strtolower($answer) == strtolower(i18n('n', 'setup'))) {
+    			exit(3);
+    		}
+    	} else {
+    		prntln(i18n('Your system seems to be okay.', 'setup'));
+    		prntln();
+    	}
+    }
+    
     /**
      * Take the settings from the settings array and write them to the appropriate places
      */
