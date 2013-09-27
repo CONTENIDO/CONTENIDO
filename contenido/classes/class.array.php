@@ -24,15 +24,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cArray {
 
     /**
-     * Strip whitespace (or other characters) from the beginning and end of each
-     * item in array.
-     * Similar to trim() function.
+     * Strip whitespaces (or other characters) from the beginning and end of
+     * each item in array. Similar to trim() function.
      *
-     * @param array $arr
-     * @param string $charlist
-     * @return array The trimmer array
+     * @param array $arr Array of strings that will be trimmed.
+     * @param string $charlist Optionally, the stripped characters can also be
+     *        specified using the charlist parameter. Simply list all characters
+     *        that you want to be stripped. With .. you can specify a range of
+     *        characters.
+     * @return array Array of trimmed strings.
      */
-    public static function trim(array $arr, $charlist = null) {
+    public static function trim(array $arr, $charlist = NULL) {
         foreach ($arr as $key => $value) {
             $arr[$key] = trim($value, $charlist);
         }
