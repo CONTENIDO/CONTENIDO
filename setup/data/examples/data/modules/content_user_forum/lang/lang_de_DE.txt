@@ -34,4 +34,4 @@ yourArticle=Ihr Beitrag
 yourArticleSaved=Ihr Beitrag wurde gespeichert.
 yourMailAddress=Ihre E-Mail-Adresse
 yourName=Ihr Name
-MODEMODETEXT=Dieses forum wird moderiert, neue Beiträge werden nach der Freischaltung durch den Moderator angezeigt.
+MODEMODETEXT=Dieses Forum wird moderiert, neue Beiträge werden nach der Freischaltung durch den Moderator angezeigt.
