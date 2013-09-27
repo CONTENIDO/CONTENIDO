@@ -142,11 +142,6 @@ function url_is_uri($sUrl) {
     }
 }
 
-/* Check: Changes after last check? */
-$sql = "SELECT lastmodified FROM " . $cfg['tab']['content'] . " content
-        LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idartlang = content.idartlang)
-        WHERE art.online = '1'";
-
 /* Whitelist: Add */
 if (!empty($_GET['whitelist'])) {
 
