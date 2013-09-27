@@ -25,6 +25,20 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
      * @todo missing implementation
      */
     public function testTrim() {
+
+        // empty array
+        $this->assertEquals(array(), cArray::trim(array()));
+
+        // nonempty array
+        $data = explode(',', 'foo , bar, baz ');
+        $exp = explode(',', 'foo,bar,baz');
+        $this->assertEquals($exp, cArray::trim($data));
+
+        // nonempty array
+        $data = explode(',', 'foo,bar,baz');
+        $exp = explode(',', 'foo,ar,az');
+        $this->assertEquals($exp, cArray::trim($data, 'b'));
+
     }
 
     /**
