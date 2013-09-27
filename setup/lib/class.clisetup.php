@@ -66,7 +66,7 @@ class cCLISetup {
 
         $this->args['interactive'] = isset($this->args['interactive']) || isset($this->args['i']); // -i can be used instead of --interactive
 
-        // the setup will search for autoinstall.ini first or use the file which is passed to the script with the --ini switch
+        // the setup will search for autoinstall.ini first or use the file which is passed to the script with the --file switch
         $this->settingsFile = 'autoinstall.ini';
     }
 
@@ -87,8 +87,8 @@ class cCLISetup {
         }
 
         // set the configuration file
-        if(isset($this->args['ini'])) {
-            $this->settingsFile = $this->args['ini'];
+        if(isset($this->args['file'])) {
+            $this->settingsFile = $this->args['file'];
         }
 
         prntln("\r" . i18n('This program will install CONTENIDO on this computer.', 'setup'));
@@ -100,18 +100,18 @@ class cCLISetup {
             prntln();
             // the settings from the command line overwrite the ini settings but the UI settings overwrite everything
             // settings from the command line and the ini file (if existent) will be provided to the user as standard values for the questions
-            $this->getINISettings($this->settingsFile);
+            $this->getSettingsFromFile($this->settingsFile);
             $this->getSettingsFromCommandLine($this->args);
             $this->getUserInputSettings();
         } else if($this->args['noninteractive']) {
-            // user does not want the setup to be interactive - look for the ini file
+            // user does not want the setup to be interactive - look for the file
             echo(i18n('Looking for ', 'setup') . $this->settingsFile . '...');
             if(file_exists($this->settingsFile)) {
                 // file found - read the settings and start installing
                 prntln(i18n('found', 'setup'));
                 prntln(i18n('CONTENIDO will use the specified settings from ', 'setup') . $this->settingsFile);
                 prntln();
-                $this->getINISettings($this->settingsFile);
+                $this->getSettingsFromFile($this->settingsFile);
                 $this->getSettingsFromCommandLine($this->args);
                 $this->printSettings();
             } else {
@@ -129,7 +129,7 @@ class cCLISetup {
                 prntln(i18n('found', 'setup'));
                 prntln(i18n('CONTENIDO will use the specified settings from ', 'setup') . $this->settingsFile);
                 prntln();
-                $this->getINISettings($this->settingsFile);
+                $this->getSettingsFromFile($this->settingsFile);
                 $this->getSettingsFromCommandLine($this->args);
                 $this->printSettings();
             } else {
@@ -137,7 +137,7 @@ class cCLISetup {
                 prntln(i18n('not found', 'setup'));
                 prntln();
                 prntln();
-                $this->getINISettings($this->settingsFile);
+                $this->getSettingsFromFile($this->settingsFile);
                 $this->getSettingsFromCommandLine($this->args);
                 $this->getUserInputSettings();
             }
@@ -276,16 +276,46 @@ class cCLISetup {
     }
 
     /**
-     * Reads the specified ini file and saves the values in the appropriate places
+     * Reads the specified file and saves the values in the appropriate places
      *
-     * @param string $file path to the ini file
+     * @param string $file path to the file
      */
-    public function getINISettings($file) {
+    public function getSettingsFromFile($file) {
         if(!cFileHandler::exists($file)) {
             return;
         }
+        
+        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        
+        switch($ext) {
+        	case 'ini':
+                $this->settings = parse_ini_file($file, true);
+                break;
+            case 'xml':
+                $xml = simplexml_load_file($file);
+                if(!$xml) {
+                    return;
+                }
+                
+                $this->settings['db']['host'] = trim($xml->db->host);
+                $this->settings['db']['user'] = trim($xml->db->user);
+                $this->settings['db']['password'] = trim($xml->db->password);
+                $this->settings['db']['charset'] = trim($xml->db->charset);
+                $this->settings['db']['database'] = trim($xml->db->database);
+                $this->settings['db']['prefix'] = trim($xml->db->prefix);
+        
+                $this->settings['paths']['http_root_path'] = trim($xml->path->http_root_path);
+        
+                $this->settings['setup']['client_mode'] = trim($xml->client->client_mode);
+        
+                $this->settings['admin_user']['password'] = trim($xml->admin_user->password);
+                $this->settings['admin_user']['email'] = trim($xml->admin_user->email);
+                break;
+            case 'json':
+                $this->settings = json_decode(file_get_contents($file), true);
+                break;
+        }
 
-        $this->settings = parse_ini_file($file, true);
     }
 
     /**

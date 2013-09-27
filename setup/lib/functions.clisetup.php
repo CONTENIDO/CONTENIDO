@@ -303,8 +303,8 @@ function printHelpText() {
     prntln(i18n("Forces the script to be interactive and wait for user input even if the\n\tautoinstall.ini file is present.", 'setup'), 1);
     prntln('--non-interactive');
     prntln(i18n("Will prevent all waiting for user input. The script will abort\n\tin case of any errors", 'setup'), 1);
-    prntln('--ini [' . i18n('file', 'setup') . ']');
-    prntln(i18n('Use [file] instead of the default autoinstall.ini', 'setup'), 1);
+    prntln('--file [' . i18n('file', 'setup') . ']');
+    prntln(i18n('Use [file] instead of the default autoinstall.ini.', 'setup'), 1);
     prntln('--locale [' . i18n('language code', 'setup') . ']');
     prntln(i18n("Provide a country and language code to use. Defaults to \"en_US\"", 'setup'), 1);
     prntln('--help, -h');
