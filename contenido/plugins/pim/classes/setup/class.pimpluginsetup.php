@@ -225,17 +225,11 @@ class PimPluginSetup {
                                                                   // uploaded /
                                                                   // Update mode
 
-            // Check valid Zip archive
-            $this->checkZip();
-
             // Path to CONTENIDO temp dir
             $tempArchiveNewPath = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['temp'];
 
             // Name of uploaded Zip archive
             $tempArchiveName = cSecurity::escapeString($_FILES['package']['name']);
-
-            // Move temporary archive files into CONTENIDO temp dir
-            move_uploaded_file($_FILES['package']['tmp_name'], $tempArchiveNewPath . $tempArchiveName);
 
             // Initializing plugin archive extractor
             try {
@@ -243,6 +237,12 @@ class PimPluginSetup {
             } catch (cException $e) {
                 self::$_PimPluginArchiveExtractor->destroyTempFiles();
             }
+
+            // Check valid Zip archive
+            $this->checkZip();
+
+            // Move temporary archive files into CONTENIDO temp dir
+            move_uploaded_file($_FILES['package']['tmp_name'], $tempArchiveNewPath . $tempArchiveName);
 
             // Get plugin.xml informations
             $XmlData = self::$_PimPluginArchiveExtractor->extractArchiveFileToVariable(self::PLUGIN_XML_FILENAME);
