@@ -41,43 +41,58 @@ class cArray {
     }
 
     /**
+     * Search for given value in given array and return key of its first
+     * occurance.
      *
-     * @todo : Ask timo to document this.
+     * If value wasn't found at all false will be returned. If given array
+     * contains subarrays, these will be searched too. If value is found in
+     * subarray the returned key is that of the subarray.
      *
-     *       Note: If subarrays exists, this function currently returns the key
-     *       of the array
-     *       given by $arr, and not from the subarrays (todo: add flag to allow
-     *       this)
+     * Usually the values are tested for equality with the given $search. If the
+     * flag $partial is not false values are tested to contain $search.
+     * Otherwise, if $strict equals true values are tested for identity with
+     * $search. Otherwise (which is the default) values are tested for equality.
      *
-     * @param array $arr The array to search
-     * @param mixed $search The value to search in the array
-     * @param bool $partial
-     * @param bool $strict
-     * @return mixed bool key/index of the array containing the searched value
-     *         or false.
+     * Be carefull when searching by equality in arrays containing values that
+     * are no strings! The same is true for searching by equality for values
+     * that are no strings. PHPs behaviour is quite weird concerning comparision
+     * of different data types. E.g. '0' equals '0.0', 'foo' equals 0, 'foo'
+     * equals 0.0, NULL equals '' and false equals '0'! When dealing with
+     * nonstrings consider to use the strict mode!
+     *
+     * Another caveat is when searching for an empty string when using the
+     * partial mode. This would lead to an error and is considered a bug!
+     *
+     * @param array $arr array to search
+     * @param mixed $search value to search for
+     * @param bool $partial if values are tested to contain $search
+     * @param bool $strict if values are tested for identity
+     * @return mixed key of the array containing the searched value or false
+     * @todo There should be only one flag for $partial and $strict in order to
+     *       avoid ambiguities (imagine $partial=true & $strict=true).
      */
     public static function searchRecursive(array $arr, $search, $partial = false, $strict = false) {
         foreach ($arr as $key => $value) {
             if (is_array($value)) {
-                $val = self::searchRecursive($value, $search, $partial, $strict);
-                if ($val !== false) {
-                    return $key;
+                $ret = self::searchRecursive($value, $search, $partial, $strict);
+                if ($ret !== false) {
+                    return $ret;
                 }
             } else {
-                if ($partial == false) {
-                    if ($strict == true) {
-                        if ($value === $search) {
-                            return $key;
-                        }
-                    } else {
-                        if ($value == $search) {
-                            return $key;
-                        }
-                    }
+                if ($partial !== false) {
+                    // search partial
+                    $found = false !== strpos($value, $search);
+                } else if ($strict == true) {
+                    // search by identity
+                    $found = $value === $search;
                 } else {
-                    if (strpos($value, $search) !== false) {
-                        return $key;
-                    }
+                    // search by equality
+                    $found = $value == $search;
+                }
+                if ($found) {
+                    // echo "\nfound key $key:\nvalue "; var_dump($value);
+                    // echo "search "; var_dump($search); echo "\n";
+                    return $key;
                 }
             }
         }
