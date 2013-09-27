@@ -160,9 +160,9 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     unset($oUser);
 
     if ($bSend) {
-        $oPage->displayInfo(i18n("Test newsletter has been sent to:", 'newsletter') . "<br>" . implode("<br>", $aRecipients) . "<br>");
+        $oPage->displayInfo(i18n("Test newsletter has been sent to:", 'newsletter') . "<br />" . implode("<br />", $aRecipients) . "<br />");
     } else {
-        $oPage->displayWarning(i18n("Test newsletter has not been sent (partly or completely):", 'newsletter') . "<br>" . i18n("Successful:", 'newsletter') . "<br>" . implode("<br>", $aRecipients, 'newsletter') . "<br>" . i18n("Error messages:", 'newsletter') . "<br>" . $oNewsletter->_sError, 'newsletter');
+        $oPage->displayWarning(i18n("Test newsletter has not been sent (partly or completely):", 'newsletter') . "<br />" . i18n("Successful:", 'newsletter') . "<br />" . implode("<br />", $aRecipients) . "<br>" . i18n("Error messages:", 'newsletter') . "<br />" . $oNewsletter->_sError, 'newsletter');
     }
 } else {
     // No action, just get selected newsletter (if any newsletter was selected)

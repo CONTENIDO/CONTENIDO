@@ -148,7 +148,7 @@ class Newsletter extends Item
      * @var string Error storage
      * @access private
      */
-    protected $_sError;
+    public $_sError;
 
     /**
      * Constructor Function
@@ -435,18 +435,18 @@ class Newsletter extends Item
                 unset($oArticles);
 
                 $sFile = "front_content.php?client=$client&lang=$lang&idcat=$iIDCat&idart=$iIDArt&noex=1&send=1";
-                
+
                 $handler = cHttpRequest::getHttpRequest($frontendURL.$sFile);
                 $headers = array();
-                
+
                 // Maybe the website has been protected using .htaccess, then login
                 if ($sHTTPUserName != "" && $sHTTPPassword != "") {
                     $headers['Authorization'] = "Basic " . base64_encode("$sHTTPUserName:$sHTTPPassword");
                 }
-                
+
                 $headers['Referer'] = "Referer: http://".$frontendURL;
                 $headers['User-Agent'] = "User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-                
+
                 $handler->setHeaders($headers);
 
                 $iErrorNo    = 0;
