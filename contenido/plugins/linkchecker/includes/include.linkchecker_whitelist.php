@@ -35,10 +35,9 @@ if (!empty($_GET['url_to_delete'])) {
 }
 
 // Get whitelist
-// TODO $iWhitelist_timeout or $iWhitelistTimeout ... what is correct?
 $sql = "SELECT url, lastview
         FROM " . $cfg['tab']['whitelist'] . "
-        WHERE lastview < " . (time() + $iWhitelist_timeout) . "
+        WHERE lastview < " . (time() + $iWhitelistTimeout) . "
         AND lastview > " . (time() - $iWhitelistTimeout) . "
         ORDER BY lastview DESC";
 $db->query($sql);
