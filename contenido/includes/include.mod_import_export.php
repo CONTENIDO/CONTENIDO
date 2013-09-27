@@ -62,7 +62,7 @@ if ($action == "mod_importexport_module") {
                 $module = $modules->create($modulName);
                 if (!$module->importModuleFromXML($_FILES["upload"]["tmp_name"])) {
                     $notification->displayNotification('error', i18n("Could not import module!"));
-                    $module->delete();
+                    $modules->delete($module->get('idmod'));
                 } else {
                     $notification->displayNotification('info', i18n("Module import successfully!"));
                     $idmod = $module->get('idmod');
