@@ -32,7 +32,7 @@ $mstr = sprintf($tmp_mstr, 'right_top',
                                    $sess->url("main.php?area=js&frame=4&action=js_create"),
                                    i18n("Create script"));
 if ((int) $client > 0) {
-    if($perm->have_perm_area_action($area, "js_create")) {
+    if ($perm->have_perm_area_action($area, "js_create")) {
         $tpl->set('s', 'NEWSCRIPT', $mstr);
     } else {
         $tpl->set("s", "NEWSCRIPT", '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create new scripts") . '</a></div>');

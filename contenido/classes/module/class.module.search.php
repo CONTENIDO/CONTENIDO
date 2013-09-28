@@ -199,9 +199,8 @@ class cModuleSearch extends cModuleHandler {
         global $cfg, $client;
         $idClient = $client;
 
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
-                            type LIKE '%s' AND name LIKE '%s' )
-                            ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
+        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (type LIKE '%s' AND name LIKE '%s')
+                        ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
 
         $db = cRegistry::getDb();
         $db->query($sql);
@@ -259,9 +258,8 @@ class cModuleSearch extends cModuleHandler {
         global $cfg, $client;
         $idClient = $client;
 
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
-                            type LIKE '%s' AND output LIKE '%s' )
-                            ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
+        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (type LIKE '%s' AND output LIKE '%s' )
+                        ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
 
         $db = cRegistry::getDb();
         $db->query($sql);

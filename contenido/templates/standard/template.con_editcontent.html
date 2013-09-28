@@ -57,7 +57,7 @@
     //Configuration of tiny, when tiny is opened set event which stores original
     //content to global var aEditdataOrig
     var tinymceConfigs = {
-    		document_base_url: "{FRONTEND}",
+        document_base_url: "{FRONTEND}",
     {TINY_OPTIONS},
         fullscreen_settings: {
             {TINY_FULLSCREEN}
@@ -72,17 +72,17 @@
 
     //add tiny to elements which contains classname contentEditable
     //tiny toggles on click
-    $(document).ready( function(){
-        $('div[contenteditable=true]').each( function(){
+    $(document).ready(function() {
+        $('div[contenteditable=true]').each(function() {
             $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
-            $(this).bind( "click", function(){
+            $(this).bind("click", function() {
                 {USE_TINY}
             });
         });
     });
 
     //activate save confirmation on page leave
-    $(window).unload(function(){
+    $(window).unload(function() {
         leave_check();
     });
 

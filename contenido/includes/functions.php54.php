@@ -12,17 +12,19 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (function_exists('conPhp54Check') == false) {
 
     function conPhp54Check() {
         if (!defined('CON_PHP54')) {
-            define('CON_PHP54', version_compare(PHP_VERSION, '5.4.0', '<')? 0 : 1);
+            define('CON_PHP54', version_compare(PHP_VERSION, '5.4.0', '<') ? 0 : 1);
         }
 
         return CON_PHP54;
     }
+
 }
 
 if (function_exists('conHtmlSpecialChars') == false) {
@@ -31,14 +33,15 @@ if (function_exists('conHtmlSpecialChars') == false) {
         $isPhp54 = conPhp54Check();
 
         if ($isPhp54 == 1) {
-            $flags = ($flags == '')? ENT_COMPAT | ENT_HTML401 : $flags;
-            $encoding = ($encoding == '')? 'UTF-8' : $encoding;
+            $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
+            $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
         } else {
-            $flags = ($flags == '')? ENT_COMPAT : $flags;
+            $flags = ($flags == '') ? ENT_COMPAT : $flags;
         }
 
         return htmlspecialchars($value, $flags, $encoding);
     }
+
 }
 
 if (function_exists('conHtmlEntityDecode') == false) {
@@ -47,14 +50,15 @@ if (function_exists('conHtmlEntityDecode') == false) {
         $isPhp54 = conPhp54Check();
 
         if ($isPhp54 == 1) {
-            $flags = ($flags == '')? ENT_COMPAT | ENT_HTML401 : $flags;
-            $encoding = ($encoding == '')? 'UTF-8' : $encoding;
+            $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
+            $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
         } else {
-            $flags = ($flags == '')? ENT_COMPAT : $flags;
+            $flags = ($flags == '') ? ENT_COMPAT : $flags;
         }
 
         return html_entity_decode($value, $flags, $encoding);
     }
+
 }
 
 if (function_exists('conHtmlentities') == false) {
@@ -63,14 +67,15 @@ if (function_exists('conHtmlentities') == false) {
         $isPhp54 = conPhp54Check();
 
         if ($isPhp54 == 1) {
-            $flags = ($flags == '')? ENT_COMPAT | ENT_HTML401 : $flags;
-            $encoding = ($encoding == '')? 'UTF-8' : $encoding;
+            $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
+            $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
         } else {
-            $flags = ($flags == '')? ENT_COMPAT : $flags;
+            $flags = ($flags == '') ? ENT_COMPAT : $flags;
         }
 
         return htmlentities($value, $flags, $encoding);
     }
+
 }
 
 if (function_exists('conGetHtmlTranslationTable') == false) {
@@ -79,14 +84,14 @@ if (function_exists('conGetHtmlTranslationTable') == false) {
         $isPhp54 = conPhp54Check();
 
         if ($isPhp54 == 1) {
-            $table = ($table == '')? HTML_SPECIALCHARS : $table;
-            $flags = ($flags == '')? ENT_COMPAT | ENT_HTML401 : $flags;
+            $table = ($table == '') ? HTML_SPECIALCHARS : $table;
+            $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
         } else {
-            $flags = ($flags == '')? ENT_COMPAT : $flags;
+            $flags = ($flags == '') ? ENT_COMPAT : $flags;
         }
 
         return get_html_translation_table($table, $flags);
     }
-}
 
+}
 ?>

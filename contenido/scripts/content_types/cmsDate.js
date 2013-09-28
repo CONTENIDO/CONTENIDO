@@ -199,10 +199,10 @@ cContentTypeDate.prototype.appendFormField = function(name, value) {
 var Base64 = {
 
     // private property
-    _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+    _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
 
     // public method for encoding
-    encode : function (input) {
+    encode: function(input) {
         var output = "";
         var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
         var i = 0;
@@ -236,7 +236,7 @@ var Base64 = {
     },
 
     // public method for decoding
-    decode : function (input) {
+    decode: function(input) {
         var output = "";
         var chr1, chr2, chr3;
         var enc1, enc2, enc3, enc4;
@@ -273,7 +273,7 @@ var Base64 = {
     },
 
     // private method for UTF-8 encoding
-    _utf8_encode : function (string) {
+    _utf8_encode: function(string) {
         string = string.replace(/\r\n/g,"\n");
         var utftext = "";
 
@@ -298,12 +298,12 @@ var Base64 = {
     },
 
     // private method for UTF-8 decoding
-    _utf8_decode : function (utftext) {
+    _utf8_decode: function(utftext) {
         var string = "";
         var i = 0;
         var c = c1 = c2 = 0;
 
-        while ( i < utftext.length ) {
+        while (i < utftext.length) {
 
             c = utftext.charCodeAt(i);
 

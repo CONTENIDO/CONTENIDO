@@ -14,7 +14,7 @@
  */
 
 // first, check if the file is being called by the CLI
-if(PHP_SAPI != 'cli') {
+if (PHP_SAPI != 'cli') {
     die('This program is suppsoed to be run from the command line.');
 }
 
@@ -25,7 +25,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 echo('startup...');
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
 
@@ -52,8 +52,8 @@ $cliSetup->interpretCommandline();
 $cliSetup->applySettings();
 
 // check every parameter that is needed for the setup
-if(!checkInstallationSettings()) {
-    if(!$args['noninteractive']) {
+if (!checkInstallationSettings()) {
+    if (!$args['noninteractive']) {
         do {
             // ask the user for the settings if some are missing and the interactive mode is allowed
             prntln(i18n('Please enter the missing settings below:', 'setup'));
@@ -71,7 +71,7 @@ $cliSetup->executeSystemTests();
 // if we are here, the user either ignored errors or everything is fine - start the installation
 prntln(i18n('Starting setup', 'setup'));
 prnt(i18n('Writing data...', 'setup'));
-if(!$args['noninteractive']) { // print the fancy progress bar only if the user did not specify the non-interactive mode
+if (!$args['noninteractive']) { // print the fancy progress bar only if the user did not specify the non-interactive mode
     prntln();
     progressBar(50, 0);
 }
@@ -83,11 +83,11 @@ $output = ob_get_contents();
 ob_end_clean();
 
 // loop until totalSteps is reached
-for($i = 2; $i < $totalSteps; $i++) {
+for ($i = 2; $i < $totalSteps; $i++) {
     // set the variable for include.db.controller.php
     $_GET['step'] = $i;
 
-    if(!$args['noninteractive']) {
+    if (!$args['noninteractive']) {
         progressBar(50, round($i * 100 / ($totalSteps - 1)));
     }
 
@@ -97,7 +97,7 @@ for($i = 2; $i < $totalSteps; $i++) {
     $output = ob_get_contents();
     ob_end_clean();
 }
-if($args['noninteractive']) {
+if ($args['noninteractive']) {
     prnt(i18n('done', 'setup'));
 }
 

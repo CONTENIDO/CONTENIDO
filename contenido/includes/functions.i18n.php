@@ -436,7 +436,6 @@ function mi18n($key) {
     }
 
     return trim($translation);
-
 }
 
 ?>

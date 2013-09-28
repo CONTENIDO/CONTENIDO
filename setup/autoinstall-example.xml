@@ -3,45 +3,45 @@
 <!-- For a more detailed documentation see the autoinstall-example.ini
 The configurable settings are mostly the same -->
 <setup>
-	<db>
-		<host>
-			HOST_NAME
-		</host>
-		<user>
-			USER
-		</user>
-		<password>
-			PASSWORD
-		</password>
-		<database>
-			DATABASE_NAME
-		</database>
-		<charset>
-			DATABASE_CHARSET
-		</charset>
-		<prefix>
-			DATABASE_PREFIX
-		</prefix>
-	</db>
-	
-	<path>
-		<http_root_path>
-			CONTENIDO_WEB_ROOT
-		</http_root_path>
-	</path>
-	
-	<client>
-		<client_mode>
-			CLIENTEXAMPLES
-		</client_mode>
-	</client>
-	
-	<admin_user>
-		<password>
-			SYSADMIN_PASSWORD
-		</password>
-		<email>
-			SYSADMIN_EMAIL
-		</email>
-	</admin_user>
+    <db>
+        <host>
+            HOST_NAME
+        </host>
+        <user>
+            USER
+        </user>
+        <password>
+            PASSWORD
+        </password>
+        <database>
+            DATABASE_NAME
+        </database>
+        <charset>
+            DATABASE_CHARSET
+        </charset>
+        <prefix>
+            DATABASE_PREFIX
+        </prefix>
+    </db>
+
+    <path>
+        <http_root_path>
+            CONTENIDO_WEB_ROOT
+        </http_root_path>
+    </path>
+
+    <client>
+        <client_mode>
+            CLIENTEXAMPLES
+        </client_mode>
+    </client>
+
+    <admin_user>
+        <password>
+            SYSADMIN_PASSWORD
+        </password>
+        <email>
+            SYSADMIN_EMAIL
+        </email>
+    </admin_user>
 </setup>

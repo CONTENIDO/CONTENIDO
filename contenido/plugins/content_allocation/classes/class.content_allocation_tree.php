@@ -319,7 +319,7 @@ class pApiTree {
             $treeItem['name'] = $this->_inFilter($treeItem['name']);
 
             $sql = "INSERT INTO " . $this->table['pica_alloc'] . "
-                    ( parentid, sortorder)
+                    (parentid, sortorder)
                     VALUES
                     (" . cSecurity::toInteger($treeItem['parentid']) . ", " . cSecurity::toInteger($treeItem['sortorder']) . ")";
             $this->db->query($sql);
@@ -352,7 +352,7 @@ class pApiTree {
                 }
 
                 #Insert new translation
-                $sql = "INSERT INTO " . $this->table['pica_lang'] . "(idpica_alloc, idlang, name, online) VALUES ( ".cSecurity::toInteger($treeItem['idpica_alloc']).", ".cSecurity::toInteger($this->lang).",
+                $sql = "INSERT INTO " . $this->table['pica_lang'] . "(idpica_alloc, idlang, name, online) VALUES (".cSecurity::toInteger($treeItem['idpica_alloc']).", ".cSecurity::toInteger($this->lang).",
                         '".cSecurity::escapeDB($treeItem['name'], $this->db)."', ".cSecurity::toInteger($online_status).")";
             }
 

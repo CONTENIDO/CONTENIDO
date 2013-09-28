@@ -325,11 +325,11 @@ class cAjaxRequest {
                 break;
 
             case 'updatepluginorder':
-                if(cRegistry::getPerm()->have_perm()) { // only sysadmins can do this
+                if (cRegistry::getPerm()->have_perm()) { // only sysadmins can do this
                     $newOrder = cSecurity::toInteger($_POST['neworder']);
                     $pluginColl = new PimPluginCollection();
                     $pluginColl->select();
-                    if($newOrder <= 0 || $newOrder > $pluginColl->count()) {
+                    if ($newOrder <= 0 || $newOrder > $pluginColl->count()) {
                         $string = 'order must be > 0 and <= number of plugins';
                         break;
                     }

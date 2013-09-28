@@ -81,20 +81,20 @@ class cCLISetup {
         cI18n::init(CON_SETUP_PATH . '/locale/', $belang, 'setup');
 
         // check if we just need to print the help text
-        if(isset($this->args['h']) || $this->args['help']) {
+        if (isset($this->args['h']) || $this->args['help']) {
             printHelpText();
             exit(0);
         }
 
         // set the configuration file
-        if(isset($this->args['file'])) {
+        if (isset($this->args['file'])) {
             $this->settingsFile = $this->args['file'];
         }
 
         prntln("\r" . i18n('This program will install CONTENIDO on this computer.', 'setup'));
 
         // first check for the interactive switch
-        if($this->args['interactive']) {
+        if ($this->args['interactive']) {
             // user wants the setup to be interactive - ignore any files and start the configuration
             prntln();
             prntln();
@@ -103,10 +103,10 @@ class cCLISetup {
             $this->getSettingsFromFile($this->settingsFile);
             $this->getSettingsFromCommandLine($this->args);
             $this->getUserInputSettings();
-        } else if($this->args['noninteractive']) {
+        } else if ($this->args['noninteractive']) {
             // user does not want the setup to be interactive - look for the file
             echo(i18n('Looking for ', 'setup') . $this->settingsFile . '...');
-            if(file_exists($this->settingsFile)) {
+            if (file_exists($this->settingsFile)) {
                 // file found - read the settings and start installing
                 prntln(i18n('found', 'setup'));
                 prntln(i18n('CONTENIDO will use the specified settings from ', 'setup') . $this->settingsFile);
@@ -124,7 +124,7 @@ class cCLISetup {
         } else {
             // default mode - look for the file. if it's there, use it. Otherwise start the interactive setup
             echo(i18n('Looking for ', 'setup') . $this->settingsFile . '...');
-            if(file_exists($this->settingsFile)) {
+            if (file_exists($this->settingsFile)) {
                 // read the file
                 prntln(i18n('found', 'setup'));
                 prntln(i18n('CONTENIDO will use the specified settings from ', 'setup') . $this->settingsFile);
@@ -228,26 +228,26 @@ class cCLISetup {
         // ask for the setup mode
         prntln();
         $displayStandard = i18n('yes', 'setup');
-        if($this->settings['setup']['client_mode'] == 'CLIENTMODULES') {
+        if ($this->settings['setup']['client_mode'] == 'CLIENTMODULES') {
             $displayStandard = i18n('modules', 'setup');
-        } else if($this->settings['setup']['client_mode'] == 'NOCLIENT') {
+        } else if ($this->settings['setup']['client_mode'] == 'NOCLIENT') {
             $displayStandard = i18n('no', 'setup');
         }
         $first = true;
-        while($this->settings['setup']['client_mode'] == "" || $first) {
+        while ($this->settings['setup']['client_mode'] == "" || $first) {
             $first = false;
             prntln(i18n('Do you want to install the example client?', 'setup'));
             prntln(i18n('Please choose "yes" (to install the modules AND the content), "modules" (to install only the modules) or "no"', 'setup'));
             prnt(i18n('Examples? (yes/modules/no)', 'setup') . '[' . $displayStandard . ']: ', 1);
             $line = strtolower(trim(fgets(STDIN)));
-            if($line == "") {
+            if ($line == "") {
                 $line = $displayStandard;
             }
-            if($line == 'yes' || $line == i18n('yes', 'setup')) {
+            if ($line == 'yes' || $line == i18n('yes', 'setup')) {
                 $this->settings['setup']['client_mode'] = 'CLIENTEXAMPLES';
-            } else if($line == 'modules' || $line == i18n('modules', 'setup')) {
+            } else if ($line == 'modules' || $line == i18n('modules', 'setup')) {
                 $this->settings['setup']['client_mode'] = 'CLIENTMODULES';
-            } else if($line == 'no' || $line == i18n('no', 'setup')) {
+            } else if ($line == 'no' || $line == i18n('no', 'setup')) {
                 $this->settings['setup']['client_mode'] = 'NOCLIENT';
             }
         }
@@ -257,7 +257,7 @@ class cCLISetup {
         $password2 = "something else";
         prntln();
         prntln(i18n('Admin information:'));
-        while($password1 != $password2) {
+        while ($password1 != $password2) {
             prntln(i18n('You have to enter the password twice and they have to match', 'setup'), 1);
             $password1 = passwordPrompt(i18n('Admin password', 'setup'), 1);
 
@@ -282,33 +282,33 @@ class cCLISetup {
      * @param string $file path to the file
      */
     public function getSettingsFromFile($file) {
-        if(!cFileHandler::exists($file)) {
+        if (!cFileHandler::exists($file)) {
             return;
         }
-        
+
         $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-        
-        switch($ext) {
-        	case 'ini':
+
+        switch ($ext) {
+            case 'ini':
                 $this->settings = parse_ini_file($file, true);
                 break;
             case 'xml':
                 $xml = simplexml_load_file($file);
-                if(!$xml) {
+                if (!$xml) {
                     return;
                 }
-                
+
                 $this->settings['db']['host'] = trim($xml->db->host);
                 $this->settings['db']['user'] = trim($xml->db->user);
                 $this->settings['db']['password'] = trim($xml->db->password);
                 $this->settings['db']['charset'] = trim($xml->db->charset);
                 $this->settings['db']['database'] = trim($xml->db->database);
                 $this->settings['db']['prefix'] = trim($xml->db->prefix);
-        
+
                 $this->settings['paths']['http_root_path'] = trim($xml->path->http_root_path);
-        
+
                 $this->settings['setup']['client_mode'] = trim($xml->client->client_mode);
-        
+
                 $this->settings['admin_user']['password'] = trim($xml->admin_user->password);
                 $this->settings['admin_user']['email'] = trim($xml->admin_user->email);
                 $this->settings['advanced']['delete_database'] = trim($xml->advanced->delete_database);
@@ -327,91 +327,91 @@ class cCLISetup {
      *
      */
     public function executeSystemTests() {
-    	global $cfg, $args;
+        global $cfg, $args;
 
-    	if($this->settings['advanced']['delete_database'] == 'YESPLEASE') {
-    		$answer = '';
-    		while($answer != 'Y' && $answer != 'N') {
-    			prnt(sprintf(i18n("You chose in the configuration file to delete the database '%s' before installing.\nDO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]: ", 'setup'), $this->settings['db']['database']));
-    			$answer = trim(fgets(STDIN));
-    			if($answer == "") {
-    				$answer = "N";
-    			}
-    		}
-    		if($answer != "Y") {
-    			exit(3);
-    		}
-    	
-    		$db = getSetupMySQLDBConnection(false);
-    		$db->query('DROP DATABASE ' . $this->settings['db']['database']);
-    		
-    		prntln();
-    		prntln(sprintf(i18n('THE DATABASE %s HAS BEEN DELETED!!!', 'setup'), $this->settings['db']['database']));
-    		prntln();
-    	}
-    	
-    	prnt(i18n('Testing your system...', 'setup'));
-    	
-    	$fine = true;
-    
-    	// load the CONTENIDO locale for the test results
-    	i18nInit('../data/locale/', $belang);
-    
-    	// run the tests
-    	$test = new cSystemtest($cfg);
-    	$test->runTests(false); // general php tests
-    	$test->testFilesystem(true, false); // file system permission tests
-    	$test->testFrontendFolderCreation(); // more file system permission tests
-    	$test->checkSetupMysql('setup', $cfg['db']['connection']['database'], $_SESSION['dbprefix']); // test the SQL connection and database creation
-    
-    	$testResults = $test->getResults();
-    
-    	foreach($testResults as $testResult) {
-    		if ($testResult["severity"] == cSystemtest::C_SEVERITY_NONE) {
-    			continue;
-    		}
-    
-    		if($testResult['result'] == false) {
-    			$fine = false;
-    		}
-    	}
-    	if(!$fine) {
-    		prntln(i18n('error', 'setup'));
-    		foreach($testResults as $testResult) {
-    			if ($testResult["severity"] == cSystemtest::C_SEVERITY_NONE) {
-    				continue;
-    			}
-    
-    			if($testResult['result'] == false) {
-    				prntln(html_entity_decode(strip_tags($testResult['headline'], 1)));
-    				prntln(html_entity_decode(strip_tags($testResult['message'], 2)));
-    			}
-    		}
-    		prntln();
-    		prntln(i18n('There have been errors during the system check.', 'setup'));
-    		prntln(i18n('However this might be caused by differing configurations between the CLI php and the CGI php.', 'setup'));
-    
-    		if($args['noninteractive']) {
-    			exit(3);
-    		}
-    
-    		$answer = '';
-    		while($answer != 'y' && $answer != 'n' && $answer != i18n('y', 'setup') && $answer != i18n('n', 'setup')) {
-    			prnt(i18n('Do you want to continue despite the errors? (y/n) [n]: ', 'setup'));
-    			$answer = trim(fgets(STDIN));
-    			if($answer == "") {
-    				$answer = "n";
-    			}
-    		}
-    		if(strtolower($answer) == "n" || strtolower($answer) == strtolower(i18n('n', 'setup'))) {
-    			exit(3);
-    		}
-    	} else {
-    		prntln(i18n('Your system seems to be okay.', 'setup'));
-    		prntln();
-    	}
+        if ($this->settings['advanced']['delete_database'] == 'YESPLEASE') {
+            $answer = '';
+            while ($answer != 'Y' && $answer != 'N') {
+                prnt(sprintf(i18n("You chose in the configuration file to delete the database '%s' before installing.\nDO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]: ", 'setup'), $this->settings['db']['database']));
+                $answer = trim(fgets(STDIN));
+                if ($answer == "") {
+                    $answer = "N";
+                }
+            }
+            if ($answer != "Y") {
+                exit(3);
+            }
+
+            $db = getSetupMySQLDBConnection(false);
+            $db->query('DROP DATABASE ' . $this->settings['db']['database']);
+
+            prntln();
+            prntln(sprintf(i18n('THE DATABASE %s HAS BEEN DELETED!!!', 'setup'), $this->settings['db']['database']));
+            prntln();
+        }
+
+        prnt(i18n('Testing your system...', 'setup'));
+
+        $fine = true;
+
+        // load the CONTENIDO locale for the test results
+        i18nInit('../data/locale/', $belang);
+
+        // run the tests
+        $test = new cSystemtest($cfg);
+        $test->runTests(false); // general php tests
+        $test->testFilesystem(true, false); // file system permission tests
+        $test->testFrontendFolderCreation(); // more file system permission tests
+        $test->checkSetupMysql('setup', $cfg['db']['connection']['database'], $_SESSION['dbprefix']); // test the SQL connection and database creation
+
+        $testResults = $test->getResults();
+
+        foreach ($testResults as $testResult) {
+            if ($testResult["severity"] == cSystemtest::C_SEVERITY_NONE) {
+                continue;
+            }
+
+            if ($testResult['result'] == false) {
+                $fine = false;
+            }
+        }
+        if (!$fine) {
+            prntln(i18n('error', 'setup'));
+            foreach ($testResults as $testResult) {
+                if ($testResult["severity"] == cSystemtest::C_SEVERITY_NONE) {
+                    continue;
+                }
+
+                if ($testResult['result'] == false) {
+                    prntln(html_entity_decode(strip_tags($testResult['headline'], 1)));
+                    prntln(html_entity_decode(strip_tags($testResult['message'], 2)));
+                }
+            }
+            prntln();
+            prntln(i18n('There have been errors during the system check.', 'setup'));
+            prntln(i18n('However this might be caused by differing configurations between the CLI php and the CGI php.', 'setup'));
+
+            if ($args['noninteractive']) {
+                exit(3);
+            }
+
+            $answer = '';
+            while ($answer != 'y' && $answer != 'n' && $answer != i18n('y', 'setup') && $answer != i18n('n', 'setup')) {
+                prnt(i18n('Do you want to continue despite the errors? (y/n) [n]: ', 'setup'));
+                $answer = trim(fgets(STDIN));
+                if ($answer == "") {
+                    $answer = "n";
+                }
+            }
+            if (strtolower($answer) == "n" || strtolower($answer) == strtolower(i18n('n', 'setup'))) {
+                exit(3);
+            }
+        } else {
+            prntln(i18n('Your system seems to be okay.', 'setup'));
+            prntln();
+        }
     }
-    
+
     /**
      * Take the settings from the settings array and write them to the appropriate places
      */

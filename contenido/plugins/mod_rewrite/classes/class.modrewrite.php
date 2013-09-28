@@ -301,7 +301,7 @@ class ModRewrite extends ModRewriteBase {
             while (self::$_db->nextRecord()) {
                 $aCatIds[] = "idcat = " . (int) self::$_db->f('idcat');
             }
-            $sWhere .= " AND ( " . join(" OR ", $aCatIds) . ")";
+            $sWhere .= " AND (" . join(" OR ", $aCatIds) . ")";
         } else {
             $sWhere .= " AND ca.idcat = " . $iCatId;
         }

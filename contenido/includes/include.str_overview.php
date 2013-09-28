@@ -644,7 +644,7 @@ foreach ($objects as $key => $value) {
         $aRecord['pTplcfg'] = $bPermTplcfg;
         $aInlineEditData[$value->id] = $aRecord;
 
-        if($perm->have_perm_area_action($area, "str_renamecat")) {
+        if ($perm->have_perm_area_action($area, "str_renamecat")) {
             $tpl->set('d', 'RENAMEBUTTON', "<a class=\"action\" href=\"javascript:handleInlineEdit(" . $value->id . ");\"><img src=\"" . $cfg["path"]["images"] . "but_todo.gif\" id=\"cat_" . $value->id . "_image\" alt=\"" . i18n("Edit category") . "\" title=\"" . i18n("Edit category") . "\"></a>");
         } else {
             $tpl->set('d', 'RENAMEBUTTON', "");
@@ -756,13 +756,12 @@ foreach ($objects as $key => $value) {
         } else {
             if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->id)) {
                 //var_dump($value->custom['parentid']);
-                if($value->custom['parentid'] != 0){
+                if ($value->custom['parentid'] != 0) {
                     $tpl->set('d', 'MOVEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=" . $value->id) . "#movesubtreehere\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree.gif\" alt=\"" . i18n("Move tree") . "\" title=\"" . i18n("Move tree") . "\"></a>");
-                }
-                else{
+                } else {
                     $tpl->set('d', 'MOVEBUTTON', '<img src="' . $cfg["path"]["images"] . 'but_move_subtree_grey.png" title="' . i18n("This category can't be moved since it is already a root category") . '">');
                 }
-                } else {
+            } else {
                 $tpl->set('d', 'MOVEBUTTON', '&nbsp;');
             }
         }

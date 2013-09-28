@@ -29,7 +29,7 @@ function init(transOpen, transClose) {
             var aIds = aStatrows[i].id.split('_');
 
             if (oButton && oButton.id == aStatrows[i].id+'_img') {
-                if (aIds.length > level ) {
+                if (aIds.length > level) {
                     preButton.src = sCollapseButton;
                     preButton.title = sCollapseString;
                     preButton.alt = sCollapseString;

@@ -29,7 +29,6 @@
  * @property {Object|String} settings The settings of this content type.
  */
 function cContentTypeTeaser(frameId, imageId, pathBackend, pathFrontend, idArtLang, id, fields, prefix, session, settings) {
-
     // call the constructor of the parent class with the same arguments
     cContentTypeAbstractTabbed.apply(this, arguments);
 
@@ -146,12 +145,9 @@ cContentTypeTeaser.prototype.removeManualTeaser = function() {
     });
 };
 
-$(document).ready(function(){
-
+$(document).ready(function() {
     $("#del_art_3").click(function() {
-
         $("#teaser_manual_art_3 option:selected").remove();
     });
-
 });
 

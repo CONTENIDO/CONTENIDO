@@ -21,13 +21,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param   string  $table
  * @return  array  Assoziative array where the key and the value is the index name
  */
-function dbGetIndexes($db, $table)
-{
+function dbGetIndexes($db, $table) {
     if (!is_object($db)) {
         return false;
     }
 
-    $sql = 'SHOW INDEX FROM '.cSecurity::escapeDB($table, $db);
+    $sql = 'SHOW INDEX FROM ' . cSecurity::escapeDB($table, $db);
     $db->query($sql);
 
     $indexes = array();
@@ -38,7 +37,6 @@ function dbGetIndexes($db, $table)
 
     return ($indexes);
 }
-
 
 /**
  * Updates a specific table. Used e. g. by CONTENIDO setup to create or update
@@ -78,9 +76,7 @@ function dbGetIndexes($db, $table)
  * @param  bool  $bRemoveIndexes  Flag to remove all indexes
  * @return  bool
  */
-function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extra,
-                        $upgradeStatement, $bRemoveIndexes = false)
-{
+function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extra, $upgradeStatement, $bRemoveIndexes = false) {
     global $columnCache;
     global $tableCache;
 
@@ -120,7 +116,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
     }
 
     if (!dbTableExists($db, $table)) {
-        $sql = "CREATE TABLE `".$db->escape($table)."` (`".$db->escape($field)."` $type ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'] .")";
+        $sql = "CREATE TABLE `" . $db->escape($table) . "` (`" . $db->escape($field) . "` $type " . $parameter['NULL'] . " " . $parameter['DEFAULT'] . " " . $parameter['KEY'] . ")";
         $db->query($sql);
         $tableCache[] = $table;
         return true;
@@ -132,7 +128,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
         if ($structure[$field]['NULL'] == '') {
             $structure[$field]['NULL'] = 'NOT NULL';
         }
-        $sql = "ALTER TABLE `".$db->escape($table)."` CHANGE COLUMN `".$db->escape($field)."` `".$db->escape($field)."` ".$db->escape($type)." ".$structure[$field]['NULL']." ".$structure[$field]['DEFAULT']." ".$structure[$field]['KEY'];
+        $sql = "ALTER TABLE `" . $db->escape($table) . "` CHANGE COLUMN `" . $db->escape($field) . "` `" . $db->escape($field) . "` " . $db->escape($type) . " " . $structure[$field]['NULL'] . " " . $structure[$field]['DEFAULT'] . " " . $structure[$field]['KEY'];
         $db->query($sql);
     }
 
@@ -143,10 +139,10 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
             $sql = '';
             if ($index == 'PRIMARY') {
                 if (isset($structure[$field]) && $structure[$field]['Key'] == 'PRI') {
-                    $sql = 'ALTER TABLE `'.$db->escape($table).'` DROP PRIMARY KEY';
+                    $sql = 'ALTER TABLE `' . $db->escape($table) . '` DROP PRIMARY KEY';
                 }
             } else {
-                $sql = 'ALTER TABLE `'.$db->escape($table).'` DROP INDEX '.$db->escape($index);
+                $sql = 'ALTER TABLE `' . $db->escape($table) . '` DROP INDEX ' . $db->escape($index);
             }
             if (!empty($sql)) {
                 $db->query($sql);
@@ -174,7 +170,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
             foreach ($arrPreviousName as $strPrevious) {
                 // Maybe someone has used field1, field2, ..., trim spaces
                 $strPrevious = trim($strPrevious);
-                if (array_key_exists($strPrevious,$structure)) {
+                if (array_key_exists($strPrevious, $structure)) {
                     $blnFound = true;
                     break;
                 }
@@ -184,9 +180,9 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
         if ($blnFound) {
             // Rename column, update array, proceed
             if ($structure[$strPrevious]['Null'] == 'YES') {
-                $sql = "ALTER TABLE `".$db->escape($table)."` CHANGE COLUMN `".$db->escape($strPrevious)."` `".$db->escape($field)."` ".$structure[$strPrevious]['Type']." DEFAULT '".$structure[$strPrevious]['Default']."'";
+                $sql = "ALTER TABLE `" . $db->escape($table) . "` CHANGE COLUMN `" . $db->escape($strPrevious) . "` `" . $db->escape($field) . "` " . $structure[$strPrevious]['Type'] . " DEFAULT '" . $structure[$strPrevious]['Default'] . "'";
             } else {
-                $sql = "ALTER TABLE `".$db->escape($table)."` CHANGE COLUMN `".$db->escape($strPrevious)."` `".$db->escape($field)."` ".$structure[$strPrevious]['Type']." NOT NULL DEFAULT '".$structure[$strPrevious]['Default']."'";
+                $sql = "ALTER TABLE `" . $db->escape($table) . "` CHANGE COLUMN `" . $db->escape($strPrevious) . "` `" . $db->escape($field) . "` " . $structure[$strPrevious]['Type'] . " NOT NULL DEFAULT '" . $structure[$strPrevious]['Default'] . "'";
             }
             $db->query($sql);
 
@@ -194,7 +190,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
             $structure = dbGetColumns($db, $table);
         } else {
             // Add column as specified
-            $sql = "ALTER TABLE `".$db->escape($table)."` ADD COLUMN `".$db->escape($field)."` ".$db->escape($type)." ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'];
+            $sql = "ALTER TABLE `" . $db->escape($table) . "` ADD COLUMN `" . $db->escape($field) . "` " . $db->escape($type) . " " . $parameter['NULL'] . " " . $parameter['DEFAULT'] . " " . $parameter['KEY'];
             $db->query($sql);
 
             $columnCache[$table] = '';
@@ -206,15 +202,15 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     // Third check: Compare field properties
     if (($structure[$field]['Type'] != $type) ||
-       ($structure[$field]['Null'] != $null) ||
-       ($structure[$field]['Key'] != $key) ||
-       ($structure[$field]['Default'] != $default) ||
-       ($structure[$field]['Extra'] != $extra)) {
+            ($structure[$field]['Null'] != $null) ||
+            ($structure[$field]['Key'] != $key) ||
+            ($structure[$field]['Default'] != $default) ||
+            ($structure[$field]['Extra'] != $extra)) {
 
         if ($structure[$field]['Key'] == 'PRI') {
-            $sql = "ALTER TABLE `".$db->escape($table)."` ADD PRIMARY KEY (".$db->escape($field).") ";
+            $sql = "ALTER TABLE `" . $db->escape($table) . "` ADD PRIMARY KEY (" . $db->escape($field) . ") ";
         } else {
-            $sql = "ALTER TABLE `".$db->escape($table)."` CHANGE COLUMN `".$db->escape($field)."` `".$db->escape($field)."` ".$db->escape($type)." ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'];
+            $sql = "ALTER TABLE `" . $db->escape($table) . "` CHANGE COLUMN `" . $db->escape($field) . "` `" . $db->escape($field) . "` " . $db->escape($type) . " " . $parameter['NULL'] . " " . $parameter['DEFAULT'] . " " . $parameter['KEY'];
         }
         $db->query($sql);
 
@@ -224,15 +220,13 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
     return true;
 }
 
-
 /**
  * Checks, if passed table exists in the database
  * @param   cDb  $db
  * @param   string  $table
  * @return  bool
  */
-function dbTableExists($db, $table)
-{
+function dbTableExists($db, $table) {
     global $tableCache;
 
     if (!is_object($db)) {
@@ -255,15 +249,13 @@ function dbTableExists($db, $table)
     }
 }
 
-
 /**
  * Returns the column structure of a table
  * @param   cDb  $db
  * @param   string  $table
  * @return  array|bool  Either assoziative column array or false
  */
-function dbGetColumns($db, $table)
-{
+function dbGetColumns($db, $table) {
     global $columnCache;
 
     if (!is_object($db)) {
@@ -287,15 +279,13 @@ function dbGetColumns($db, $table)
     return $structure;
 }
 
-
 /**
  * Returns the primary key column of a table
  * @param   cDb  $db
  * @param   string  $table
  * @return  string
  */
-function dbGetPrimaryKeyName($db, $table)
-{
+function dbGetPrimaryKeyName($db, $table) {
     $sReturn = '';
     $structure = dbGetColumns($db, $table);
 

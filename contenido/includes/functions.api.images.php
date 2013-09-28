@@ -248,7 +248,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
         $targetImage = imagecreatetruecolor($targetX, $targetY);
 
         // Preserve transparency
-        if (strtolower($filetype) == '.gif' or strtolower($filetype) == '.png'){
+        if (strtolower($filetype) == '.gif' or strtolower($filetype) == '.png') {
             imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
             imagealphablending($targetImage, false);
             imagesavealpha($targetImage, true);

@@ -16,7 +16,7 @@
 
 defined('CON_FRAMEWORK') or die('Illegal call');
 //call userforum administration
-if(cRegistry::isBackendEditMode()){
+if (cRegistry::isBackendEditMode()) {
     echo "CMS_USERFORUM[2]";
 }
 
@@ -179,7 +179,7 @@ class UserForumArticle {
                 break;
             // user interaction click at save in input new comment dialog
             case 'save_new_forum':
-                if($this->_modMode && $this->_saveForum()){
+                if ($this->_modMode && $this->_saveForum()) {
                     echo '<br />';
                     echo mi18n("FEEDBACK");
                 }

@@ -215,9 +215,9 @@ $tpl->set('s', 'LANGUAGE', $olangauge->render());
 $fromdate = $fromyear->getDefault() . '-' . $frommonth->getDefault() . '-' . $fromday->getDefault() . ' 00:00:00';
 $todate = $toyear->getDefault() . '-' . $tomonth->getDefault() . '-' . $today->getDefault() . ' 23:59:59';
 $limitsql = "";
-if($limit == 1) {
+if ($limit == 1) {
     $limitsql = "";
-} else if($limit == 0) {
+} else if ($limit == 0) {
     $limitsql = "10";
 } else {
     $limitsql = $db->escape($limit);

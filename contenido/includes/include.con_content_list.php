@@ -31,7 +31,7 @@ $scripts = '';
 
 $page = new cGuiPage("con_content_list");
 
-if(!($perm->have_perm_area_action("con", "savecontype") || $perm->have_perm_area_action_item("con", "savecontype", $idcat) || $perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat))) {
+if (!($perm->have_perm_area_action("con", "savecontype") || $perm->have_perm_area_action_item("con", "savecontype", $idcat) || $perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat))) {
     // $page->displayCriticalError(i18n("Permission denied")); (Apparently one of the action files already displays this error message)
     $page->abortRendering();
     $page->render();
@@ -40,7 +40,7 @@ if(!($perm->have_perm_area_action("con", "savecontype") || $perm->have_perm_area
 
 // save / set value
 if (($action == 'savecontype' || $action == 10)) {
-    if($perm->have_perm_area_action("con", "savecontype") || $perm->have_perm_area_action_item("con", "savecontype", $idcat)) {
+    if ($perm->have_perm_area_action("con", "savecontype") || $perm->have_perm_area_action_item("con", "savecontype", $idcat)) {
         if ($data != '') {
             $data = explode('||', substr($data, 0, -2));
             foreach ($data as $value) {
@@ -67,7 +67,7 @@ if (($action == 'savecontype' || $action == 10)) {
         $page->displayError(i18n("Permission denied"));
     }
 } else if ($action == 'deletecontype') {
-    if($perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat)) {
+    if ($perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat)) {
        if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
             $oContentColl = new cApiContentCollection();
 
@@ -277,7 +277,7 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
     $locked = $cApiArticleLanguage->getField('locked');
 
     // If article is locked show notification
-    if($locked == 1) {
+    if ($locked == 1) {
         $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
     }
 

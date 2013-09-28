@@ -13,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.con.php');
@@ -51,12 +52,12 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     $client = (int) $client;
     $lang = (int) $lang;
 
-    $visible = ($visible == 1)? 1 : 0;
+    $visible = ($visible == 1) ? 1 : 0;
     if (!$perm->have_perm_area_action('str', 'str_makevisible')) {
         $visible = 0;
     }
 
-    $public = ($public == 1)? 1 : 0;
+    $public = ($public == 1) ? 1 : 0;
     if (!$perm->have_perm_area_action('str', 'str_makepublic')) {
         $public = 1;
     }
@@ -64,7 +65,7 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     // Get last category tree
     $oCatColl = new cApiCategoryCollection();
     $oLastCatTree = $oCatColl->fetchLastCategoryTree($client);
-    $lastCatTreeId = (is_object($oLastCatTree))? $oLastCatTree->get('idcat') : 0;
+    $lastCatTreeId = (is_object($oLastCatTree)) ? $oLastCatTree->get('idcat') : 0;
 
     // Insert new category tree
     $oCatColl2 = new cApiCategoryCollection();
@@ -139,12 +140,12 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     $client = (int) $client;
     $lang = (int) $lang;
 
-    $visible = ($visible == 1)? 1 : 0;
+    $visible = ($visible == 1) ? 1 : 0;
     if (!$perm->have_perm_area_action('str', 'str_makevisible')) {
         $visible = 0;
     }
 
-    $public = ($public == 1)? 1 : 0;
+    $public = ($public == 1) ? 1 : 0;
     if (!$perm->have_perm_area_action('str', 'str_makepublic')) {
         $public = 1;
     }
@@ -153,7 +154,7 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     $oCatColl = new cApiCategoryCollection();
     $oCatColl->select('parentid=' . $parentid . ' AND postid = 0 AND idclient = ' . $client);
     $oPrevCat = $oCatColl->next();
-    $preIdcat = (is_object($oPrevCat))? $oPrevCat->get('idcat') : 0;
+    $preIdcat = (is_object($oPrevCat)) ? $oPrevCat->get('idcat') : 0;
 
     // Insert new category tree
     $oCatColl2 = new cApiCategoryCollection();
@@ -361,7 +362,7 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
 function strNextDeeper($idcat, $ignoreLang = false) {
     global $lang;
 
-    $languageId = (true == $ignoreLang)? $lang : null;
+    $languageId = (true == $ignoreLang) ? $lang : null;
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getFirstChildCategoryId($idcat, $languageId);
 }
@@ -412,7 +413,7 @@ function strNextBackwards($idcat) {
 function strNextDeeperAll($idcat, $ignoreLang = false) {
     global $lang;
 
-    $languageId = (true == $ignoreLang)? $lang : null;
+    $languageId = (true == $ignoreLang) ? $lang : null;
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getAllChildCategoryIds($idcat, $languageId);
 }
@@ -443,7 +444,7 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
     );
 
     $name = stripslashes($newCategoryName);
-    $urlName = (trim($newCategoryAlias) != '')? trim($newCategoryAlias) : $newCategoryName;
+    $urlName = (trim($newCategoryAlias) != '') ? trim($newCategoryAlias) : $newCategoryName;
 
     if (trim($newCategoryAlias) != '') {
         // overfluous assignment
@@ -905,7 +906,7 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = null, $newPostId = nul
  * @return bool
  */
 function strMoveCatTargetallowed($idcat, $source) {
-    return ($idcat == $source)? 0 : 1;
+    return ($idcat == $source) ? 0 : 1;
 }
 
 /**
@@ -939,7 +940,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
             $aRs = $oCatLang->toArray();
 
             // Copy the template configuration, if exists
-            $newidtplcfg = ($aRs['idtplcfg'] != 0)? tplcfgDuplicate($aRs['idtplcfg']) : 0;
+            $newidtplcfg = ($aRs['idtplcfg'] != 0) ? tplcfgDuplicate($aRs['idtplcfg']) : 0;
 
             $visible = 0;
             $startidartlang = 0;
@@ -1094,7 +1095,7 @@ function strAssignTemplate($idcat, $client, $idTplCfg) {
     global $perm;
 
     // Template permission check
-    $iIdtplcfg = ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg'))? (int) $idTplCfg : 0;
+    $iIdtplcfg = ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) ? (int) $idTplCfg : 0;
 
     $idtpl = null;
     if ($iIdtplcfg == 0) {

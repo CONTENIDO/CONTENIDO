@@ -18,28 +18,28 @@
     <script type="text/javascript" src="scripts/parameterCollector.js"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
             var left_bottom = parent.parent.frames["left"].frames["left_bottom"];
 
-            $("a#expander").click(function () {
+            $("a#expander").click(function() {
                 parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree #root ul li.collapsed").removeClass("collapsed");
                 var catlist = parent.parent.frames["left"].frames["left_bottom"].scatlist;
-                $.post("{AJAXURL}", { area: "{AREA}", action: "expandall", wholelist: catlist, contenido: "{SESSION}" } );
+                $.post("{AJAXURL}", { area: "{AREA}", action: "expandall", wholelist: catlist, contenido: "{SESSION}" });
                 return false;
             });
 
-            $("a#collapser").click(function () {
+            $("a#collapser").click(function() {
                 parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li ul").parent().addClass("collapsed");
                 var catlist = parent.parent.frames["left"].frames["left_bottom"].scatlist;
-                $.post("{AJAXURL}", { area: "{AREA}", action: "collapseall", wholelist: catlist, contenido: "{SESSION}" } );
+                $.post("{AJAXURL}", { area: "{AREA}", action: "collapseall", wholelist: catlist, contenido: "{SESSION}" });
                 return false;
             });
 
-            $("a#changetpl").click(function () {
+            $("a#changetpl").click(function() {
                 if (cfg.catId > 0 && cfg.hasRight['template_cfg'] == 1) {
                     var templateselect = document.TemplateSelect.oTplSel.selectedIndex;
                     var templateid = document.TemplateSelect.oTplSel.options[templateselect].value;
-                    $.post("{AJAXURL}", { area: "{AREA}", action: "con_changetemplate", idcat: cfg.catId, idtpl: templateid, contenido: "{SESSION}" } );
+                    $.post("{AJAXURL}", { area: "{AREA}", action: "con_changetemplate", idcat: cfg.catId, idtpl: templateid, contenido: "{SESSION}" });
                     var oldid = cfg.catId + '-' + cfg.tplId + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
                     var newid = cfg.catId + '-' + templateid + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
                     left_bottom.$("#con_str_tree li#root ul li#"+oldid).attr("id", newid);
@@ -47,11 +47,11 @@
                 }
             });
 
-            $("div#oOnline_label a").click(function () {
+            $("div#oOnline_label a").click(function() {
                 if (cfg.catId > 0 && cfg.hasRight['online'] == 1) {
                     var oldid = cfg.idString;
-                    var oldobject = parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#"+oldid);
-                    var oldlink = parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#"+oldid+" > div > a");
+                    var oldobject = parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#" + oldid);
+                    var oldlink = parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#" + oldid + " > div > a");
                     var oldclass = oldlink.attr("class");
                     if (cfg.isOnline == 0) {
                         var newonline = 1;
@@ -65,14 +65,14 @@
                     oldlink.addClass(newclass);
 
                     oldobject.attr("id", newid);
-                    $.post("{AJAXURL}", { area: "{AREA}", action: "con_makecatonline", idcat: cfg.catId, online: newonline, contenido: "{SESSION}" } );
+                    $.post("{AJAXURL}", { area: "{AREA}", action: "con_makecatonline", idcat: cfg.catId, online: newonline, contenido: "{SESSION}" });
 
                     parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#"+newid+" > div").click();
                     return false;
                 }
             });
 
-            $("div#oLock_label a").click(function () {
+            $("div#oLock_label a").click(function() {
                 newid = false;
                 if (cfg.catId > 0 && cfg.hasRight['public'] == 1) {
                     if (cfg.isPublic == 0) {
@@ -106,7 +106,7 @@
                         }
                     });
 
-                    $.post("{AJAXURL}", { area: "{AREA}", action: "con_makepublic", idcat: cfg.catId, public: newpublic, contenido: "{SESSION}" } );
+                    $.post("{AJAXURL}", { area: "{AREA}", action: "con_makepublic", idcat: cfg.catId, public: newpublic, contenido: "{SESSION}" });
 
                     cfg.isPublic = newpublic;
 

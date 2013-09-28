@@ -96,8 +96,8 @@ if (!isset($syncfrom)) {
 }
 $syncoptions = $syncfrom;
 $sLocationString .= "<script type='text/javascript'>
-        $(document).ready(function(){
-            $('div#categorypath > a').click(function () {
+        $(document).ready(function() {
+            $('div#categorypath > a').click(function() {
                 var url = $(this).attr('href');
                 var sVal = url.split('idcat=');
                 var aVal = sVal[1].split('&');

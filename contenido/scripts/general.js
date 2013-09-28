@@ -294,7 +294,7 @@ function showConfirmation(description, callback, additionalOptions) {
         buttons: buttons,
         position: ['center', 50],
         resizable: false,
-        close: function( event, ui ) {
+        close: function(event, ui) {
             contentWindow.$("html").find("#single_dialog").remove();
         },
         title: translations['Confirmation Required']
@@ -394,8 +394,8 @@ function validateURL(value) {
 }
 
 // Assigns the tooltip to backend info boxes
-$(document).ready(function () {
-    $("a.i-link").each(function () {
+$(document).ready(function() {
+    $("a.i-link").each(function() {
         var id = $(this).attr("id").substring(0, $(this).attr("id").indexOf("-link"));
         $(this).aToolTip({
             clickIt:    true,

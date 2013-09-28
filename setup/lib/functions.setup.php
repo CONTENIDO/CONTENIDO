@@ -68,7 +68,7 @@ function setupInitializeCfgClient($reset = false) {
             $db = getSetupMySQLDBConnection();
 
             $db->query("SELECT * FROM " . $cfg["tab"]["clients"]);
-            while($db->nextRecord()) {
+            while ($db->nextRecord()) {
                 updateClientCache($db->f("idclient"), $db->f("htmlpath"), $db->f("frontendpath"));
             }
         }

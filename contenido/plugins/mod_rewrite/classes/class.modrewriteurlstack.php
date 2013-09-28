@@ -275,7 +275,7 @@ WHERE
         al.idart = ca.idart AND
         ca.idcat = cl.idcat AND
         al.idlang = cl.idlang AND
-        ( $sWhere )
+        ($sWhere)
 SQL;
         ModRewriteDebugger::add($sql, 'ModRewriteUrlStack->_chunkSetPrettyUrlParts() $sql');
 

@@ -33,11 +33,11 @@ if (!empty($idclient) && is_numeric($idclient)) {
 }
 
 $valid = ($clientname != "" && $frontendpath != "" && preg_match("^(http:\/\/www.|https:\/\/www.|www.|http:\/\/|https:\/\/){1}(([0-9A-Za-z]+\.))|(localhost)^", $htmlpath));
-if((!strstr($_SERVER["HTTP_REFERER"], "frame=2")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=1")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=3")) && (!$valid)) {
+if ((!strstr($_SERVER["HTTP_REFERER"], "frame=2")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=1")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=3")) && (!$valid)) {
     $notif = new cGuiNotification();
-    if($clientname == "") {
+    if ($clientname == "") {
         $notif->displayNotification(cGuiNotification::LEVEL_ERROR, i18n("The client must have a name!"));
-    } else if($frontendpath == "") {
+    } else if ($frontendpath == "") {
         $notif->displayNotification(cGuiNotification::LEVEL_ERROR, i18n("The client must have a frontend path. This is where the client's files will be stored."));
     } else {
         $notif->displayNotification(cGuiNotification::LEVEL_ERROR, i18n("Please enter a valid URL. It has to start with http://... or https://..."));

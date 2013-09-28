@@ -126,19 +126,19 @@
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#available_clients').click(function () {
+            $('#available_clients').click(function() {
                 if ($('#select_list_clients').css('display') != 'block') {
                     $('#select_list_clients').fadeIn('middle');
                 }
             })
 
-            $('#select_all_clients').click(function () {
+            $('#select_all_clients').click(function() {
                 if ($('#select_list_clients').css('display') != 'none') {
                     $('#select_list_clients').fadeOut('middle');
                 }
             })
 
-            $('input[name="clientHistory"]').change(function () {
+            $('input[name="clientHistory"]').change(function() {
                 if ($(this).attr('checked')) {
                     $('input[name="keepHistory"]').attr('checked', true);
                 } else {

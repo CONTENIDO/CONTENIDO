@@ -110,7 +110,7 @@ if ($action == 'style_delete') {
         cFileHandler::validateFilename($sFilename);
 
         // CON-1284 check if file already exists in FS
-        if(cFileHandler::exists($path . $sFilename)){
+        if (cFileHandler::exists($path . $sFilename)) {
             $notification->displayNotification('error', sprintf(i18n('Can not create file %s'), $sFilename));
             $page->render();
             exit();
@@ -148,7 +148,7 @@ if ($action == 'style_delete') {
             cFileHandler::validateFilename($sFilename);
 
             // CON-1284 check if file already exists in FS
-            if(cFileHandler::exists($path . $sFilename)){
+            if (cFileHandler::exists($path . $sFilename)) {
                 $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $sTempFilename));
                 $page->render();
                 exit();

@@ -740,10 +740,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         if ($articlesToSync > 0 && ($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_syncarticle', 'images/but_sync_art.gif', i18n('Copy article to the current language'));
         }
-        if($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat)) {
+        if ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat)) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
         }
-        if($bulkEditingFunctions == "") {
+        if ($bulkEditingFunctions == "") {
             $bulkEditingFunctions = i18n("Your permissions do not allow any actions here");
         }
         $tpl->set('s', 'BULK_EDITING_FUNCTIONS', $bulkEditingFunctions);

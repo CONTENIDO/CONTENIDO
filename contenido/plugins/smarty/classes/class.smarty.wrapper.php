@@ -52,7 +52,7 @@ class cSmartyWrapper extends Smarty {
     public function display($template = null, $cache_id = null, $compile_id = null, $parent = null) {
         global $frontend_debug;
 
-        if($frontend_debug['template_display']) {
+        if ($frontend_debug['template_display']) {
             echo("<!-- SMARTY TEMPLATE " . $template . " -->");
         }
 

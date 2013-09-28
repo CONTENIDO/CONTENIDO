@@ -75,7 +75,7 @@ function filter (id) {
 
     //remove all options
     var iLen = oOptions.length;
-    for (var i=0; i <iLen; i++) {
+    for (var i = 0; i < iLen; i++) {
         sSelectBox.removeChild(oOptions[0]);
     }
 
@@ -85,7 +85,7 @@ function filter (id) {
 
     //iterate over all hidden options
     var count = 0;
-    for (var i=0; i<oOptionsAll.length; i++) {
+    for (var i = 0; i < oOptionsAll.length; i++) {
         //get the label of the option
         var label = oOptionsAll[i].firstChild.nodeValue;
 
@@ -102,7 +102,7 @@ function filter (id) {
     }
 
     //if there are no options, deactivate corresponding move button
-    if(count == 0) {
+    if (count == 0) {
         document.getElementById(sSelectId+'_button').disabled = true;
     } else {
         document.getElementById(sSelectId+'_button').disabled = false;

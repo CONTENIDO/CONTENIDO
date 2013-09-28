@@ -79,7 +79,7 @@ var mrPlugin = {
     },
 
     _initializeTooltip: function() {
-        $(".mrPlugin a.i-link").each(function () {
+        $(".mrPlugin a.i-link").each(function() {
             $(this).attr("href", "javascript:void(0);");
             $(this).attr("title", mrPlugin.lng.more_informations);
             var id = $(this).attr("id").substring(0, $(this).attr("id").indexOf("-link"));

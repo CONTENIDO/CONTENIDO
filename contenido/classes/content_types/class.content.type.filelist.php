@@ -641,7 +641,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $htmlSelect->appendOptionElement($htmlSelectOption);
         $additionalOptions = getEffectiveSettingsByType('cms_filelist_style');
         $options = array();
-        foreach($additionalOptions as $key => $value) {
+        foreach ($additionalOptions as $key => $value) {
             $options[$value] = $key;
         }
         $htmlSelect->autoFill($options);

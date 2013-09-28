@@ -53,7 +53,7 @@ $facesvalue = $art->getContent("CMS_HTML", 1003);
 $width = $art->getContent("CMS_HTML", 1004);
 $height = $art->getContent("CMS_HTML", 1005);
 $useAutomaticURL = $art->getContent("CMS_HTML", 1006);
-if($useAutomaticURL == "1") {
+if ($useAutomaticURL == "1") {
     $url = cRegistry::getFrontendUrl() . $art->getLink();
 }
 

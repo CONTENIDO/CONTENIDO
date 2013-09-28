@@ -38,10 +38,10 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
     $div = new cHTMLDiv($text, "text_medium", "idElement14");
     $div->appenStyleDefinition("border", "1px solid #e8e8ee");
     $div->appendStyleDefinition("position", "absolute");
-    $div->appendStyleDefinition("top", $x."px");
-    $div->appendStyleDefinition("left", $y."px");
-    $div->appendStyleDefinition("width", $w."px");
-    $div->appendStyleDefinition("height", $h."px");
+    $div->appendStyleDefinition("top", $x . "px");
+    $div->appendStyleDefinition("left", $y . "px");
+    $div->appendStyleDefinition("width", $w . "px");
+    $div->appendStyleDefinition("height", $h . "px");
 
     return $div->toHTML();
 }
@@ -67,7 +67,7 @@ function statsArchive($yearmonth) {
     while ($db->nextRecord()) {
         $insertSQL = "INSERT INTO
                           " . $cfg["tab"]["stat_archive"] . "
-                          ( archived, idcatart, idlang, idclient, visited, visitdate)
+                          (archived, idcatart, idlang, idclient, visited, visitdate)
                       VALUES
                           (
                            " . $yearmonth . ",
@@ -96,7 +96,7 @@ function statsArchive($yearmonth) {
     while ($db->nextRecord()) {
         $insertSQL = "INSERT INTO
                           " . $cfg["tab"]["stat"] . "
-                          ( idcatart, idlang, idclient, visited )
+                          (idcatart, idlang, idclient, visited)
                       VALUES (
                           " . cSecurity::toInteger($db->f(0)) . ",
                           " . cSecurity::toInteger($db->f(2)) . ",
@@ -274,7 +274,7 @@ function statsOverviewAll($yearmonth) {
         $db3->free();
 
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
-        $tpl->set('d', 'TEXT', $text.' (idcat: '.cSecurity::toInteger($db->f('idcat')).')');
+        $tpl->set('d', 'TEXT', $text . ' (idcat: ' . cSecurity::toInteger($db->f('idcat')) . ')');
         $tpl->set('d', 'ONCLICK', $onclick);
         $tpl->set('d', 'ICON', $icon);
         $tpl->set('d', 'STATUS', $offonline);
@@ -378,7 +378,7 @@ function statsOverviewAll($yearmonth) {
 
             $icon = '<img src="' . $cfg['path']['images'] . 'article.gif"  class="vAlignMiddle">';
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
-            $tpl->set('d', 'TEXT', $text.' (idart: '.cSecurity::toInteger($db3->f('idart')).')');
+            $tpl->set('d', 'TEXT', $text . ' (idart: ' . cSecurity::toInteger($db3->f('idart')) . ')');
             $tpl->set('d', 'ONCLICK', "");
             $tpl->set('d', 'ICON', $icon);
             $tpl->set('d', 'STATUS', $offonline);
@@ -585,7 +585,7 @@ function statsOverviewYear($year) {
         $db3->free();
 
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
-        $tpl->set('d', 'TEXT', $text.' (idcat: '.cSecurity::toInteger($db->f('idcat')).')');
+        $tpl->set('d', 'TEXT', $text . ' (idcat: ' . cSecurity::toInteger($db->f('idcat')) . ')');
         $tpl->set('d', 'ONCLICK', $onclick);
         $tpl->set('d', 'ICON', $icon);
         $tpl->set('d', 'STATUS', $offonline);
@@ -670,7 +670,7 @@ function statsOverviewYear($year) {
 
             $icon = '<img src="' . $cfg['path']['images'] . 'article.gif" class="vAlignMiddle">';
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
-            $tpl->set('d', 'TEXT', $text.' (idart: '.cSecurity::toInteger($idart).')');
+            $tpl->set('d', 'TEXT', $text . ' (idart: ' . cSecurity::toInteger($idart) . ')');
             $tpl->set('d', 'ONCLICK', "");
             $tpl->set('d', 'ICON', $icon);
             $tpl->set('d', 'STATUS', $offonline);
@@ -780,7 +780,7 @@ function statsOverviewTop($yearmonth, $top) {
         statCreateLocationString($db->f(2), "&nbsp;/&nbsp;", $cat_name);
         $tpl->set('d', 'PADDING_LEFT', '5');
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
-        $tpl->set('d', 'TEXT', $db->f(0).' (idart: '.cSecurity::toInteger($db->f('idart')).')');
+        $tpl->set('d', 'TEXT', $db->f(0) . ' (idart: ' . cSecurity::toInteger($db->f('idart')) . ')');
         $tpl->set('d', 'TOTAL', $db->f(1));
         $tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idart=' . $db->f('idart'));
         $tpl->next();
@@ -845,7 +845,7 @@ function statsOverviewTopYear($year, $top) {
 
         $tpl->set('d', 'PADDING_LEFT', '0');
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;" . $cat_name);
-        $tpl->set('d', 'TEXT', $db->f(0).' (idart: '.cSecurity::toInteger($db->f('idart')).')');
+        $tpl->set('d', 'TEXT', $db->f(0) . ' (idart: ' . cSecurity::toInteger($db->f('idart')) . ')');
         $tpl->set('d', 'TOTAL', $db->f(1));
         $tpl->set('d', 'ULR_TO_PAGE', $frontendURL . 'front_content.php?idart=' . $db->f('idart'));
         $tpl->next();

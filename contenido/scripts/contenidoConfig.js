@@ -20,7 +20,7 @@
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-function contenidoConfig( instanceName ,actionFrameName ) {
+function contenidoConfig(instanceName, actionFrameName) {
 
     /* Name of the Instance for external calls
        or CallBacks. Defaults to 'cfg' */
@@ -37,11 +37,11 @@ function contenidoConfig( instanceName ,actionFrameName ) {
 
     /* Userright properties Array */
     this.hasRight = [];
-    this.hasRight['template']   = 0;
-    this.hasRight['template_cfg']   = 0;
-    this.hasRight['online']     = 0;
-    this.hasRight['public']     = 0;
-    this.hasRight['syncable']     = 0;
+    this.hasRight['template'] = 0;
+    this.hasRight['template_cfg'] = 0;
+    this.hasRight['online'] = 0;
+    this.hasRight['public'] = 0;
+    this.hasRight['syncable'] = 0;
 
     /* Actionstatus */
     this.action = '';
@@ -66,8 +66,8 @@ function contenidoConfig( instanceName ,actionFrameName ) {
 
     /* idString */
     this.idString = 0;
+}
 
-} // end function
 
 /**
  * Initializes the class.
@@ -79,11 +79,10 @@ function contenidoConfig( instanceName ,actionFrameName ) {
  * @param string Id of the Lock/Unlock image
  * @param string Id of the Template select
  */
-contenidoConfig.prototype.init = function( imgOnlineId, imgPublicId, imgSelectId, imgTemplateCfgId) {
+contenidoConfig.prototype.init = function(imgOnlineId, imgPublicId, imgSelectId, imgTemplateCfgId) {
+    this.objRef = this.createRefs(imgOnlineId, imgPublicId, imgSelectId, imgTemplateCfgId);
 
-    this.objRef = this.createRefs( imgOnlineId, imgPublicId, imgSelectId, imgTemplateCfgId);
-
-    if ( this.objRef.length == 4 ) {
+    if (this.objRef.length == 4) {
 
         this.status = true;
         /* Set the object ID's */
@@ -92,38 +91,45 @@ contenidoConfig.prototype.init = function( imgOnlineId, imgPublicId, imgSelectId
         this.objRef[3].setId('template_cfg');
 
         // HARDCODED STUFF
-        this.objRef[1].setImgSrc( 'images/online.gif', 'images/offline.gif' );
-        this.objRef[2].setImgSrc( 'images/folder_delock.gif', 'images/folder_lock.gif');
-        this.objRef[3].setImgSrc( 'images/but_cat_conf2.gif', 'images/but_cat_conf2.gif' );
+        this.objRef[1].setImgSrc('images/online.gif', 'images/offline.gif');
+        this.objRef[2].setImgSrc('images/folder_delock.gif', 'images/folder_lock.gif');
+        this.objRef[3].setImgSrc('images/but_cat_conf2.gif', 'images/but_cat_conf2.gif');
         return true;
     }
+}
 
-} // end function
 
 /**
  * Loads a configuration and calls
  * the updateScreen method
  *
- * @param int CONTENIDO Template Id
- * @param int CONTENIDO Online flag
- * @param int CONTENIDO Public flag
+ * @param number idCat
+ * @param number idTpl
+ * @param boolean isOnline
+ * @param boolean isPublic
+ * @param ?? rightTpl
+ * @param ?? rightOn
+ * @param ?? rightPublic
+ * @param ?? rightTemplateCfg
+ * @param ?? rightIsSyncable
+ * @param string idString
  */
-contenidoConfig.prototype.load = function( Idcat, Idtpl, Online, Public, RightTpl, RightOn, RightPublic, RightTemplateCfg, RightIsSyncable, idString ) {
-    this.catId = Idcat;
-    this.tplId = Idtpl;
-    this.isOnline = Online;
-    this.isPublic = Public;
+contenidoConfig.prototype.load = function(idCat, idTpl, isOnline, isPublic, rightTpl, rightOn, rightPublic, rightTemplateCfg, rightIsSyncable, idString) {
+    this.catId = idCat;
+    this.tplId = idTpl;
+    this.isOnline = isOnline;
+    this.isPublic = isPublic;
     this.idString = idString;
 
-    this.hasRight['template'] = RightTpl;
-    this.hasRight['template_cfg'] = RightTemplateCfg;
-    this.hasRight['online']   = RightOn;
-    this.hasRight['public']   = RightPublic;
-    this.hasRight['syncable']   = RightIsSyncable;
+    this.hasRight['template'] = rightTpl;
+    this.hasRight['template_cfg'] = rightTemplateCfg;
+    this.hasRight['online'] = rightOn;
+    this.hasRight['public'] = rightPublic;
+    this.hasRight['syncable'] = rightIsSyncable;
 
     this.updateScreen();
+}
 
-} // end function
 
 /**
  * Creates objects of class HTMLObj
@@ -132,16 +138,14 @@ contenidoConfig.prototype.load = function( Idcat, Idtpl, Online, Public, RightTp
  * @return array Array storing the objects
  */
 contenidoConfig.prototype.createRefs = function() {
+    var objects = [];
 
-    var objects = new Array;
-
-    for ( i = 0; i < arguments.length; i ++ ) {
-        objects[i] = new HTMLObj( arguments[i] );
+    for (i = 0; i < arguments.length; i ++) {
+        objects[i] = new HTMLObj(arguments[i]);
     }
 
     return objects;
-
-} // end function
+}
 
 /**
  * Updates the screen with the
@@ -149,38 +153,36 @@ contenidoConfig.prototype.createRefs = function() {
  * @return void
  */
 contenidoConfig.prototype.updateScreen = function() {
-    if ( this.status ) {
+    if (this.status) {
         /* Template select dropdown */
-        if ( this.hasRight['template'] == 1 ) {
+        if (this.hasRight['template'] == 1) {
 
             /* User has right to change
                the template, enable dropdown, select template */
-            this.objRef[0].obj.removeAttribute( "disabled" );
+            this.objRef[0].obj.removeAttribute("disabled");
             this.objRef[0].select(this.tplId);
 
         } else {
 
             /* User has NO right to change
                the template, disable the dropdown */
-            this.objRef[0].obj.setAttribute( "disabled", "true" );
+            this.objRef[0].obj.setAttribute("disabled", "true");
             this.objRef[0].select(this.tplId);
         }
 
         /* On-/Offline */
-        if ( 0 == this.isOnline && this.hasRight['online'] == 1 ) {
+        if (0 == this.isOnline && this.hasRight['online'] == 1) {
             this.objRef[1].over();
-
-        } else if ( 1 == this.isOnline && this.hasRight['online'] == 1 ) {
+        } else if (1 == this.isOnline && this.hasRight['online'] == 1) {
             this.objRef[1].out();
-
-        } else if ( 0 == this.hasRight['online'] ) {
+        } else if (0 == this.hasRight['online']) {
             this.objRef[1].lock();
         }
 
         /* Public / Non-Public */
-        if ( 0 == this.isPublic && 1 == this.hasRight['public'] ) {
+        if (0 == this.isPublic && 1 == this.hasRight['public']) {
             this.objRef[2].over();
-        } else if ( 1 == this.isPublic && 1 == this.hasRight['public'] ) {
+        } else if (1 == this.isPublic && 1 == this.hasRight['public']) {
             this.objRef[2].out() ;
         } else {
             this.objRef[2].lock();
@@ -193,9 +195,8 @@ contenidoConfig.prototype.updateScreen = function() {
             this.objRef[3].lock();
         }
 
-    } // end if this.status
-
-} // end function
+    }
+}
 
 /**
  * Set the action property and
@@ -203,10 +204,8 @@ contenidoConfig.prototype.updateScreen = function() {
  * @param string action
  */
 contenidoConfig.prototype.setAction = function(action) {
-
     //this.actionFrame.location.href = action;
-
-} // end function
+}
 
 /**
  * Change template for a marked category
@@ -216,9 +215,7 @@ contenidoConfig.prototype.setAction = function(action) {
  * @copyright four for business AG <www.4fb.de>
  */
 contenidoConfig.prototype.changeTemplate = function() {
-
-    if ( this.catId && this.hasRight['template'] == 1 ) {
-
+    if (this.catId && this.hasRight['template'] == 1) {
         /* create action string */
         str  = "";
         str += "main.php?area=con";
@@ -242,11 +239,9 @@ contenidoConfig.prototype.changeTemplate = function() {
  *
  * @return bool has template changed?
  */
-contenidoConfig.prototype.templateChanged = function () {
-
-    return ( this.nTplId != null ) ? true : false;
-
-} // end function
+contenidoConfig.prototype.templateChanged = function() {
+    return (this.nTplId != null) ? true : false;
+}
 
 
 
@@ -280,26 +275,23 @@ contenidoConfig.prototype.getRowId = function() {
     sRowId += this.hasRight['syncable'];
 
     return sRowId;
-
-} // end function
+}
 
 /**
  * Reset the config object -> load default values;
  * @return String RowId String
  */
 contenidoConfig.prototype.reset = function() {
-
-    this.catId    = 0;
-    this.tplId    = 0;
+    this.catId = 0;
+    this.tplId = 0;
     this.isOnline = 0;
     this.isPublic = 0;
 
-    this.hasRight['template_cfg']   = 0;
+    this.hasRight['template_cfg'] = 0;
     this.hasRight['template'] = 0;
-    this.hasRight['online']   = 0;
-    this.hasRight['public']   = 0;
+    this.hasRight['online'] = 0;
+    this.hasRight['public'] = 0;
 
     this.updateScreen();
-
-} // end function
+}
 

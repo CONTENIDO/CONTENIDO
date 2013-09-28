@@ -74,7 +74,7 @@ class PimPluginCollection extends ItemCollection {
         $item->set('active', $active);
 
         // set execution order to the last of the list or to what was specified in create
-        if($execOrder == 0) {
+        if ($execOrder == 0) {
             $this->select();
             $execOrder = $this->count();
         }
@@ -161,11 +161,11 @@ class PimPlugin extends Item {
         $pluginColl = new PimPluginCollection();
         $pluginColl->select('executionorder >= "' . min($newOrder, $oldOrder) . '" AND executionorder <= "' . max($newOrder, $oldOrder) . '" AND idplugin != "' . $idplugin . '"', null, 'executionorder'); // select every plugin that needs to be updated
 
-        while($plugin = $pluginColl->next()) {
-            if($newOrder < $oldOrder) {
+        while ($plugin = $pluginColl->next()) {
+            if ($newOrder < $oldOrder) {
                 $plugin->set("executionorder", $plugin->get("executionorder") + 1); // increment the execution order after we moved the plugin up
                 $plugin->store();
-            } else if($oldOrder < $newOrder) {
+            } else if ($oldOrder < $newOrder) {
                 $plugin->set("executionorder", $plugin->get("executionorder") - 1); // decrement the execution value after we moved the plugin down
                 $plugin->store();
             }

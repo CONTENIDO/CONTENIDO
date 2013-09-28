@@ -50,24 +50,24 @@ class cHttpRequestSocket extends cHttpRequest {
      * @var string
      */
     protected $url;
-    
+
     /**
      * Boundary for the multipart from-data
-     * 
+     *
      * @var string
      */
     protected $boundary;
-    
+
     /**
      * The HTTP header
-     * 
+     *
      * @var string
      */
     protected $header;
-    
+
     /**
      * The HTTP body
-     * 
+     *
      * @var string
      */
     protected $body;
@@ -82,13 +82,13 @@ class cHttpRequestSocket extends cHttpRequest {
     public function __construct($url = '') {
         $this->url = $url;
     }
-    
+
     /**
      * @see cHttpRequest::setURL()
      */
     public function setURL($url) {
         $this->url = $url;
-        
+
         return $this;
     }
 
@@ -97,7 +97,7 @@ class cHttpRequestSocket extends cHttpRequest {
      */
     public function setGetParams($array) {
         $this->getArray = $array;
-        
+
         return $this;
     }
 
@@ -106,7 +106,7 @@ class cHttpRequestSocket extends cHttpRequest {
      */
     public function setPostParams($array) {
         $this->postArray = $array;
-        
+
         return $this;
     }
 
@@ -115,7 +115,7 @@ class cHttpRequestSocket extends cHttpRequest {
      */
     public function setHeaders($array) {
         $this->headerArray = $array;
-        
+
         return $this;
     }
 
@@ -124,12 +124,12 @@ class cHttpRequestSocket extends cHttpRequest {
      */
     protected function prepareHeaders() {
         $this->header = '';
-        if(!is_array($this->headerArray)) {
+        if (!is_array($this->headerArray)) {
             return;
         }
-        foreach($this->headerArray as $key => $value) {
+        foreach ($this->headerArray as $key => $value) {
             $headerString = '';
-            if(is_array($value)) {
+            if (is_array($value)) {
                 $headerString .= $value[0] . ': ' . $value[1];
             } else {
                 $headerString .= $key . ': ' . $value;
@@ -142,13 +142,13 @@ class cHttpRequestSocket extends cHttpRequest {
      * Appends teh GET array to the URL
      */
     protected function prepareGetRequest() {
-        if(is_array($this->getArray)) {
-            if(!cString::contains($this->url, '?')) {
+        if (is_array($this->getArray)) {
+            if (!cString::contains($this->url, '?')) {
                 $this->url .= '?';
             } else {
                 $this->url .= '&';
             }
-            foreach($this->getArray as $key => $value) {
+            foreach ($this->getArray as $key => $value) {
                 $this->url .= urlencode($key) . '=' . urlencode($value) . '&';
             }
             $this->url = substr($this->url, 0, strlen($this->url) - 1);
@@ -162,9 +162,9 @@ class cHttpRequestSocket extends cHttpRequest {
         $this->boundary = md5(time()) . md5(time() * rand());
         $this->headerArray['Content-Type'] = 'multipart/form-data; boundary=' . $this->boundary;
         $this->boundary = '--' . $this->boundary;
-        
+
         $this->body = $this->boundary . "\r\n";
-        foreach($this->postArray as $key => $value) {
+        foreach ($this->postArray as $key => $value) {
             $this->body .= 'Content-Disposition: form-data; name="' . $key . "\"\r\n\r\n";
             $this->body .= $value . "\r\n";
             $this->body .= $this->boundary . "\r\n";
@@ -181,29 +181,29 @@ class cHttpRequestSocket extends cHttpRequest {
      * @return string|boolean
      */
     protected function sendRequest($return, $method, $returnHeaders = false) {
-        if(!(strpos($this->url, 'http') === 0)) {
+        if (!(strpos($this->url, 'http') === 0)) {
             $this->url = 'http://' . $this->url;
         }
-        
+
         $urlInfo = @parse_url($this->url);
         $scheme = '';
-        if($urlInfo['port'] == '') {
-            if($urlInfo['scheme'] == 'https') {
+        if ($urlInfo['port'] == '') {
+            if ($urlInfo['scheme'] == 'https') {
                 $urlInfo['port'] = 443;
                 $scheme = 'ssl://';
             } else {
                 $urlInfo['port'] = 80;
             }
         }
-        
+
         $this->headerArray['Host'] = ($this->headerArray['Host'] != '') ? $this->headerArray['Host'] : $urlInfo['host'];
         $this->headerArray['Connection'] = ($this->headerArray['Connection'] != '') ? $this->headerArray['Host'] : 'close';
         $this->headerArray['Accept'] = ($this->headerArray['Accept'] != '') ? $this->headerArray['Host'] : '*/*';
 
         $this->prepareHeaders();
-        
+
         $handle = @fsockopen($scheme . $urlInfo['host'], $urlInfo['port']);
-        if(!$handle) {
+        if (!$handle) {
             return false;
         }
 
@@ -211,18 +211,18 @@ class cHttpRequestSocket extends cHttpRequest {
         $request .= $urlInfo['path'] . '?' . $urlInfo['query'] . ' HTTP/1.1' . "\r\n";
         $request .= $this->header . "\r\n";
         $request .= $this->body;
-        
+
         fwrite($handle, $request);
-        
+
         $ret = '';
-        while(!feof($handle)) {
+        while (!feof($handle)) {
             $ret .= fgets($handle);
         }
-        
+
         fclose($handle);
-        
-        if($return) {
-            if(!$returnHeaders) {
+
+        if ($return) {
+            if (!$returnHeaders) {
                 $ret = substr(cString::strstr($ret, "\r\n\r\n"), strlen("\r\n\r\n"));
             }
             return $ret;
@@ -236,7 +236,7 @@ class cHttpRequestSocket extends cHttpRequest {
      */
     public function postRequest($return = true, $returnHeaders = false) {
         $this->preparePostRequest();
-        
+
         return $this->sendRequest($return, 'POST', $returnHeaders);
     }
 
@@ -245,7 +245,7 @@ class cHttpRequestSocket extends cHttpRequest {
      */
     public function getRequest($return = true, $returnHeaders = false) {
         $this->prepareGetRequest();
-        
+
         return $this->sendRequest($return, 'GET', $returnHeaders);
     }
 
@@ -255,7 +255,7 @@ class cHttpRequestSocket extends cHttpRequest {
     public function request($return = true, $returnHeaders = false) {
         $this->prepareGetRequest();
         $this->preparePostRequest();
-        
+
         return $this->sendRequest($return, 'POST', $returnHeaders);
     }
 }

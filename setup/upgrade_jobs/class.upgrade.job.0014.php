@@ -34,7 +34,7 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
         $pluginColl = new PimPluginCollection();
         $pluginColl->select();
         $i = 1;
-        while($plugin = $pluginColl->next()) {
+        while ($plugin = $pluginColl->next()) {
             $plugin->set('executionorder', $i);
             $plugin->store();
 

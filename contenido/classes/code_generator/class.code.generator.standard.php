@@ -192,10 +192,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
         }
 
-        if($this->_feDebugOptions['general_information']) {
+        if ($this->_feDebugOptions['general_information']) {
             $debugPrefix = '';
 
-            $debugPrefix .= "<?php\nif(\$frontend_debug['general_information']) {\n";
+            $debugPrefix .= "<?php\nif (\$frontend_debug['general_information']) {\n";
             $debugPrefix .= "\techo(\"<!-- \\n\\n\");\n";
 
             $layout = new cApiLayout($idlay);

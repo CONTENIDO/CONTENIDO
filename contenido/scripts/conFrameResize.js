@@ -10,8 +10,7 @@
  * $Author: timo.hummel $ $Date: 2005/08/22 12:21:18 $
  * $RCSfile: conFrameResize.js,v $
  */
-function conFrameResize(parentFrameId, frameOne, frameTwo, frameThree, frameFour)
-{
+function conFrameResize(parentFrameId, frameOne, frameTwo, frameThree, frameFour) {
     /* Class correctly initialized */
     this.ok = false;
 
@@ -40,7 +39,7 @@ function conFrameResize(parentFrameId, frameOne, frameTwo, frameThree, frameFour
     /* Object reference main frameset */
     this.frameSet = '';
 
-   /* References to the 4 CONTENIDO frames */
+    /* References to the 4 CONTENIDO frames */
     this.frames = [];
 
     /* Name of the frames
@@ -52,7 +51,7 @@ function conFrameResize(parentFrameId, frameOne, frameTwo, frameThree, frameFour
     this.frameNames[4] = frameFour  || 'right_bottom';
 
     /* Object reference to the left image */
-    this.imgLeft = document.getElementById( 'toggleImage' );
+    this.imgLeft = document.getElementById('toggleImage');
 
     /* Left image source */
     this.imgLeftSrc = 'images/toggle_frame_left.gif';
@@ -97,9 +96,7 @@ function conFrameResize(parentFrameId, frameOne, frameTwo, frameThree, frameFour
  * @param none
  * @return none
  */
-conFrameResize.prototype.toggle = function()
-{
-
+conFrameResize.prototype.toggle = function() {
     if (this.ok) {
 
         if (this.status == 'normal') {
@@ -150,7 +147,6 @@ conFrameResize.prototype.toggle = function()
         this.frameSet.rows = this.frameSet.rows;  //IE10 bug fix
 
     }
-
 }
 
 /**
@@ -159,8 +155,7 @@ conFrameResize.prototype.toggle = function()
  * @param none
  * @return void
  */
-conFrameResize.prototype.init = function()
-{
+conFrameResize.prototype.init = function() {
     /* Create reference to other frames with this
        init method because of different load times */
     this.frameSet = document.getElementById(this.frameSetId);
@@ -177,23 +172,17 @@ conFrameResize.prototype.init = function()
  * @param none
  * @return none
  */
-conFrameResize.prototype.initFrame = function()
-{
+conFrameResize.prototype.initFrame = function() {
     this.count ++;
 
-    if (this.count == 4)
-    {
-        for (i=2; i<this.frameNames.length; i++)
-        {
-            with (this.frames[i])
-            {
-                document.onmouseover = function()
-                {
+    if (this.count == 4) {
+        for (i = 2; i < this.frameNames.length; i++) {
+            with (this.frames[i]) {
+                document.onmouseover = function() {
                     //frameResize.stopDrag();
                 }
 
-                document.onclick = function()
-                {
+                document.onclick = function() {
                     //frameResize.stopDrag();
                 }
             }
@@ -203,11 +192,9 @@ conFrameResize.prototype.initFrame = function()
     }
 }
 
-conFrameResize.prototype.getOptimalSize = function()
-{
+conFrameResize.prototype.getOptimalSize = function() {
     var refs = this.frames[2].document.getElementsByTagName("TABLE");
-    if (refs.length > 0)
-    {
+    if (refs.length > 0) {
         this.optimalSize = refs[0].offsetWidth;
     }
 }
@@ -219,13 +206,12 @@ conFrameResize.prototype.getOptimalSize = function()
  * @param int Resize by this value in pixels
  * @return void
  */
-conFrameResize.prototype.dragTo = function(px)
-{
+conFrameResize.prototype.dragTo = function(px) {
     this.size = px;
     this.status = 'dragged';
 
-    if (this.size < this.defaultSize)
-    {   // Smallest size is default size
+    if (this.size < this.defaultSize) {
+        // Smallest size is default size
         this.size = this.defaultSize;
     }
 
@@ -239,20 +225,16 @@ conFrameResize.prototype.dragTo = function(px)
  * @param none
  * @return none
  */
-conFrameResize.prototype.captureMousePosition = function()
-{
-    with (this.frames[1])
-    {
+conFrameResize.prototype.captureMousePosition = function() {
+    with (this.frames[1]) {
         // Capture events
         document.captureEvents(Event.MOUSEMOVE);
 
         // Capture mouse position
-        document.onmousemove = function(e)
-        {
+        document.onmousemove = function(e) {
             frameResize.x = e.pageX;
 
-            if (frameResize.drag)
-            {
+            if (frameResize.drag) {
                 frameResize.dragTo(frameResize.dragDiff + frameResize.x);
             }
 
@@ -260,8 +242,7 @@ conFrameResize.prototype.captureMousePosition = function()
         }
 
         // Leave drag mode
-        document.onmouseup = function()
-        {
+        document.onmouseup = function() {
             frameResize.drag = false;
             frameResize.dragPosX = 0;
         }
@@ -273,19 +254,15 @@ conFrameResize.prototype.captureMousePosition = function()
  * @param string Id of the Drag Element
  * @return true
  */
-conFrameResize.prototype.setDragEvents = function(id)
-{
-    if (is.NS)
-    {
+conFrameResize.prototype.setDragEvents = function(id) {
+    if (is.NS) {
         this.dragObj = this.frames[1].document.getElementById(id);
 
-        this.dragObj.onmouseover = function()
-        {
+        this.dragObj.onmouseover = function() {
             this.style.cursor = 'hand';
         }
 
-        this.dragObj.onmousedown = function()
-        {
+        this.dragObj.onmousedown = function() {
             this.style.cursor = 'move';
 
             frameResize.drag = true;
@@ -293,30 +270,25 @@ conFrameResize.prototype.setDragEvents = function(id)
             frameResize.dragDiff = frameResize.size - frameResize.dragPosX;
         }
 
-        this.dragObj.onmouseup = function()
-        {
+        this.dragObj.onmouseup = function() {
             this.style.cursor = 'default';
 
             frameResize.drag = false;
 
-            if (frameResize.x == frameResize.dragPosX)
-            {
+            if (frameResize.x == frameResize.dragPosX) {
                 frameResize.toggle();
             }
         }
     }
 
-    if (is.IE)
-    {
+    if (is.IE) {
         this.dragObj = window.frames[this.frameNames[1]].document.getElementById(id);
 
-        this.dragObj.onmouseover = function()
-        {
+        this.dragObj.onmouseover = function() {
             this.style.cursor = 'hand';
         }
 
-        this.dragObj.onclick = function()
-        {
+        this.dragObj.onclick = function() {
             frameResize.toggle();
         }
     }
@@ -327,8 +299,7 @@ conFrameResize.prototype.setDragEvents = function(id)
  * @param none
  * @access private
  */
-conFrameResize.prototype.stopDrag = function()
-{
+conFrameResize.prototype.stopDrag = function() {
     this.drag = false;
 }
 
@@ -336,23 +307,20 @@ conFrameResize.prototype.stopDrag = function()
  * Calc total height of given objects
  *
  **/
-conFrameResize.prototype.totalHeight = function(elements)
- {
-     var sum=0;
-     for(var i=0; i<elements.length; i++)
-     {
-         sum += elements[i].offsetHeight;
-     }
-     return sum;
- }
+conFrameResize.prototype.totalHeight = function(elements) {
+    var sum = 0;
+    for (var i = 0; i < elements.length; i++) {
+        sum += elements[i].offsetHeight;
+    }
+    return sum;
+}
 
 /**
  * Resize framestructure for top left
  *
  **/
-conFrameResize.prototype.resizeTopLeftFrame = function(height)
- {
-     var framesetDimension = window.frames['left'].document.getElementById('framesetleft').rows;
-     var dimensionList = framesetDimension.split(',');
-     window.frames['left'].document.getElementById('framesetleft').rows = dimensionList[0] + "," + height + "," + dimensionList[2];
- }
+conFrameResize.prototype.resizeTopLeftFrame = function(height) {
+    var framesetDimension = window.frames['left'].document.getElementById('framesetleft').rows;
+    var dimensionList = framesetDimension.split(',');
+    window.frames['left'].document.getElementById('framesetleft').rows = dimensionList[0] + "," + height + "," + dimensionList[2];
+}

@@ -71,7 +71,7 @@ $mstr = sprintf($tmp_mstr, 'right_top',
                                    'right_bottom',
                                    $sess->url("main.php?area=groups_create&frame=4"),
                                    i18n("Create group"));
-if($perm->have_perm_area_action("group", "groups_create")) {
+if ($perm->have_perm_area_action("group", "groups_create")) {
     $tpl->set('s', 'NEWGROUP', $mstr);
 } else {
     $tpl->set('s', 'NEWGROUP', '<a class="addfunction_disabled" href="#">' . i18n("No permission to create groups") . '</a>');

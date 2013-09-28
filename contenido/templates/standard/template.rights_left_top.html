@@ -71,7 +71,7 @@
                 if (i>0 && formelements[i].name != "" && formelements[i].name != "area" && formelements[i].name != "frame" &&formelements[i].value != "") {
                     multilink += "&";
                 }
-                if (formelements[i].name != "" && formelements[i].value != "" && formelements[i].name != "area" && formelements[i].name != "frame" ) {
+                if (formelements[i].name != "" && formelements[i].value != "" && formelements[i].name != "area" && formelements[i].name != "frame") {
                     multilink += formelements[i].name + "=" + formelements[i].value;
                 }
             }
@@ -89,7 +89,7 @@
                     } else {
                         oBase.style.display = 'none';
                     }
-                } else if (oBase){
+                } else if (oBase) {
                     oBase.previousSibling.style.display = 'none';
                     oBase.style.display = 'none';
                 }

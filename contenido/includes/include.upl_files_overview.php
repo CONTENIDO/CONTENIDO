@@ -96,7 +96,7 @@ if ($action == "upl_modify_file") {
         $uplPath .= $_REQUEST['path'];
     }
 
-    if (isset($_REQUEST['efolder']) && $_REQUEST['efolder'] != NULL ) {
+    if (isset($_REQUEST['efolder']) && $_REQUEST['efolder'] != NULL) {
         $extractFolder = $_REQUEST['efolder'];
     }
 
@@ -267,7 +267,7 @@ if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action) && $
 }
 
 if ($action == "upl_upload" && $bDirectoryIsWritable == true) {
-    if($perm->have_perm_area_action($area, "upl_upload")) {
+    if ($perm->have_perm_area_action($area, "upl_upload")) {
         if (count($_FILES) == 1) {
             foreach ($_FILES['file']['name'] as $key => $value) {
                 if (isUtf8($_FILES['file']['name'][$key])) {

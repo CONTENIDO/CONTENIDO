@@ -223,7 +223,7 @@ $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 //send new object pager to left_top
 $sRefreshPager = '
     <script type="text/javascript">
-    (function(){
+    (function() {
         var sNavigation = \'' . $sPagerContent . '\',
             left_top = parent.left_top, oPager, oInsert;
         if (left_top.document) {

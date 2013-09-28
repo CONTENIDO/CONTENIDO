@@ -19,9 +19,8 @@
         var catlist = new Array({WHOLELIST});
         var scatlist = catlist.join(',');
 
-        $(document).ready(function(){
-
-            $(function(){
+        $(document).ready(function() {
+            $(function() {
                 //If browser is IE, disable BackgroundImageCache
                 //if (jQuery.browser.msie)
                 //{
@@ -35,16 +34,16 @@
 
             $("#con_str_tree li:last-child").addClass('last');
 
-            $("#con_str_tree #root li div em a").click(function () {
+            $("#con_str_tree #root li div em a").click(function() {
                 $(this).parent().parent().parent().toggleClass("collapsed");
                 var sRowid = $(this).parent().parents("li").attr('id');
                 var aRowids = sRowid.split("-");
                 var iIdcat = aRowids[0];
-                $.post("{AJAXURL}", { area: "{AREA}", action: "toggle", idcat: iIdcat, wholelist: scatlist, contenido: "{SESSION}" } );
+                $.post("{AJAXURL}", { area: "{AREA}", action: "toggle", idcat: iIdcat, wholelist: scatlist, contenido: "{SESSION}" });
                 return false;
             });
 
-            $("#con_str_tree li div > a").click(function () {
+            $("#con_str_tree li div > a").click(function() {
               if ($(this).attr('class') != 'off_disabled') {
                   var collapsed = $(this).parent().parent("li").hasClass("collapsed");
                   $(this).parent().parent("li").removeClass("collapsed");
@@ -69,7 +68,7 @@
                 $(this).removeClass('hover');
             });
 
-            $("#con_str_tree #root li div").mousedown(function () {
+            $("#con_str_tree #root li div").mousedown(function() {
                 $("#con_str_tree #root li div.active").removeClass("active");
                 $(this).addClass("active");
             });

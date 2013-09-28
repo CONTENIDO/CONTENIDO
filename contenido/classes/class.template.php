@@ -171,7 +171,7 @@ class cTemplate {
             if (is_object($moduleHandler) && is_file($moduleHandler->getTemplatePath($template))) {
                 // Module directory has higher priority
                 $content = $moduleHandler->getFilesContent('template', '', $template);
-                if($frontend_debug['template_display']) {
+                if ($frontend_debug['template_display']) {
                     echo('<!-- CTEMPLATE ' . $template . ' -->');
                 }
             } else {

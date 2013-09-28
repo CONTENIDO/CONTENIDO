@@ -18,6 +18,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -40,9 +41,8 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     $sFilename = cSecurity::filter((string) $sFilename, $oDb);
     $sType = cSecurity::filter((string) $sType, $oDb);
 
-    $sSql = "DELETE FROM `" . $cfg["tab"]["file_information"] . "` WHERE idclient=$iIdClient AND
-                                                            filename='$sFilename' AND
-                                                            type='$sType';";
+    $sSql = "DELETE FROM `" . $cfg["tab"]["file_information"] . "` WHERE idclient = $iIdClient AND
+            filename = '$sFilename' AND type = '$sType';";
     $oDb->query($sSql);
     $oDb->free();
 }
@@ -76,9 +76,8 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     $sType = cSecurity::filter((string) $sType, $oDb);
 
     $aFileInformation = array();
-    $sSql = "SELECT * FROM `" . $cfg["tab"]["file_information"] . "` WHERE idclient=$iIdClient AND
-                                                            filename='$sFilename' AND
-                                                            type='$sType';";
+    $sSql = "SELECT * FROM `" . $cfg["tab"]["file_information"] . "` WHERE idclient = $iIdClient AND
+            filename = '$sFilename' AND type = '$sType';";
     $oDb->query($sSql);
     if ($oDb->numRows() > 0) {
         $oDb->nextRecord();
@@ -126,40 +125,38 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
     $sDescription = cSecurity::filter((string) stripslashes($sDescription), $oDb);
     $sAuthor = cSecurity::filter((string) $sAuthor, $oDb);
 
-    $sSql = "SELECT * from `" . $cfg["tab"]["file_information"] . "` WHERE idclient=$iIdClient AND
-                                                            filename='$sFilename' AND
-                                                            type='$sType';";
+    $sSql = "SELECT * from `" . $cfg["tab"]["file_information"] . "` WHERE idclient = $iIdClient AND
+            filename = '$sFilename' AND type = '$sType';";
     $oDb->query($sSql);
     if ($oDb->numRows() == 0) {
         // $iNextId = $oDb->nextid('con_style_file_information');
         $sSql = "INSERT INTO `" . $cfg["tab"]["file_information"] . "` (
-                                                            `idclient` ,
-                                                            `type` ,
-                                                            `filename` ,
-                                                            `created` ,
-                                                            `lastmodified` ,
-                                                            `author` ,
-                                                            `modifiedby` ,
-                                                            `description` )
-                                                        VALUES (
-                                                            $iIdClient,
-                                                            '$sType',
-                                                            '$sFilenameNew',
-                                                            NOW(),
-                                                            '0000-00-00 00:00:00',
-                                                            '$sAuthor',
-                                                            '',
-                                                            '$sDescription'
-                                                        );";
+                    `idclient` ,
+                    `type` ,
+                    `filename` ,
+                    `created` ,
+                    `lastmodified` ,
+                    `author` ,
+                    `modifiedby` ,
+                    `description`)
+                VALUES (
+                    $iIdClient,
+                    '$sType',
+                    '$sFilenameNew',
+                    NOW(),
+                    '0000-00-00 00:00:00',
+                    '$sAuthor',
+                    '',
+                    '$sDescription'
+                );";
     } else {
         $sSql = "UPDATE `" . $cfg["tab"]["file_information"] . "` SET `lastmodified` = NOW(),
-                                                         `modifiedby` = '$sAuthor',
-                                                         `description` = '$sDescription',
-                                                         `filename` = '$sFilenameNew'
-
-                                                         WHERE idclient=$iIdClient AND
-                                                               filename='$sFilename' AND
-                                                               type='$sType';";
+                `modifiedby` = '$sAuthor',
+                `description` = '$sDescription',
+                `filename` = '$sFilenameNew'
+                WHERE idclient=$iIdClient AND
+                      filename='$sFilename' AND
+                      type='$sType';";
     }
 
     $oDb->free();
@@ -266,7 +263,7 @@ function recursiveCopy($sourcePath, $destinationPath, $mode = 0777, array $optio
         mkdir($destinationPath, $mode);
     }
 
-    $forceOverwrite = (isset($options['force_overwrite']))? (bool) $options['force_overwrite'] : false;
+    $forceOverwrite = (isset($options['force_overwrite'])) ? (bool) $options['force_overwrite'] : false;
     $oldPath = getcwd();
 
     if (is_dir($sourcePath)) {

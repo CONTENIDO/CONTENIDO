@@ -96,7 +96,7 @@ class pApiContentAllocationTreeView extends pApiTree {
                     $expandCollapse = '<img src="' . $expandCollapseImg . '" border="0" class="vAlignMiddle" width="11" height="11">';
                 }
 
-                if($item_tmp['status'] == 'collapsed'){
+                if ($item_tmp['status'] == 'collapsed') {
                     $expandCollapse = '<a href="main.php?contenido=' . $sess->id . '&idart=' . $idart . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=expanded&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="' . $expandCollapseImg . '" border="0" class="vAlignMiddle" width="7" height="7"></a>';
                 }
                 $item['ITEMNAME'] = $expandCollapse . ' ' . $item_tmp['name'];

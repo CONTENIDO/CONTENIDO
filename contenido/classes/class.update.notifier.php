@@ -719,10 +719,10 @@ class cUpdateNotifier {
         if ($this->bVendorHostReachable != true) {
             return false;
         }
-        
+
         $handler = cHttpRequest::getHttpRequest($this->sVendorHost . '/' . $sUrl);
         $output = $handler->getRequest();
-        
+
         if (!$output) {
             $sErrorMessage = i18n('Unable to check for new updates!') . " " . i18n('Connection to contenido.org failed!');
             $this->sErrorOutput = $this->renderOutput($sErrorMessage);

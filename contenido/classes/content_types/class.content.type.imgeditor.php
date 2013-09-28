@@ -505,16 +505,16 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         $i = 1;
         if (is_dir($this->_uploadPath . $directoryPath)) {
-        if($handle = opendir($this->_uploadPath . $directoryPath)){
-        while (($entry = readdir($handle)) != false) {
-            if (is_file($this->_uploadPath . $directoryPath . $entry)) {
-                $htmlSelectOption = new cHTMLOptionElement($entry, $directoryPath . $entry);
-                $htmlSelect->addOptionElement($i, $htmlSelectOption);
-                $i++;
+            if ($handle = opendir($this->_uploadPath . $directoryPath)) {
+                while (($entry = readdir($handle)) != false) {
+                    if (is_file($this->_uploadPath . $directoryPath . $entry)) {
+                        $htmlSelectOption = new cHTMLOptionElement($entry, $directoryPath . $entry);
+                        $htmlSelect->addOptionElement($i, $htmlSelectOption);
+                        $i++;
+                    }
+                }
+                closedir($handle);
             }
-        }
-        closedir($handle);
-        }
         }
 
         if ($i === 0) {

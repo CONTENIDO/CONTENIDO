@@ -207,7 +207,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
  * available
  * content of this type. The array has the following schema:
  *
- * array( number => content );
+ * array(number => content);
  *
  * $headlines = $obj->getContent("htmlhead");
  *

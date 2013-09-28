@@ -32,7 +32,7 @@ $mstr = sprintf($tmp_mstr, 'right_top',
                                    $sess->url("main.php?area=htmltpl&frame=4&action=htmltpl_create"),
                                    i18n("Create module template"));
 if ((int) $client > 0) {
-    if($perm->have_perm_area_action($area, "htmltpl_create")) {
+    if ($perm->have_perm_area_action($area, "htmltpl_create")) {
         $tpl->set('s', 'NEWSTYLE', $mstr);
     } else {
         $tpl->set("s", "NEWSTYLE", '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create new files") . '</a></div>');

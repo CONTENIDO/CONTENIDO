@@ -55,7 +55,7 @@ switch ($viewAction) {
         $setup->setMode('uninstall');
         $setup->setPluginId($_GET['pluginId']);
         $delete = new PimPluginSetupUninstall();
-        if($_GET['uninstallsql'] == '1') {
+        if ($_GET['uninstallsql'] == '1') {
             $delete->uninstall(true);
         } else {
             $delete->uninstall(false);

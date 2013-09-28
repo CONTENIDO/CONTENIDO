@@ -36,13 +36,13 @@ class cUpgradeJob_0013 extends cUpgradeJobAbstract {
 
         $needsUpdate = !isset($actionArray[330]);
 
-        foreach($actionArray as $action) {
-            if($action["name"] == "login") {
+        foreach ($actionArray as $action) {
+            if ($action["name"] == "login") {
                 $needsUpdate = false;
             }
         }
 
-        if($needsUpdate) {
+        if ($needsUpdate) {
             $db->query("INSERT INTO " . $cfg['tab']['actions'] . " VALUES('330', '0', '0', 'login', '', '', '1');");
         }
     }

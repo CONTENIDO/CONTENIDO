@@ -441,11 +441,11 @@ abstract class cCodeGeneratorAbstract {
 
         $sFeDebug = '';
         if ($this->_feDebugOptions['container_display'] == true) {
-            $this->_modulePrefix[] = 'if($frontend_debug[\'container_display\']) echo "<!-- START CONTAINER ' . $containerinf[$data['idlay']][$containerId]['name'] . ' (' . $containerId . ') -->";';
+            $this->_modulePrefix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- START CONTAINER ' . $containerinf[$data['idlay']][$containerId]['name'] . ' (' . $containerId . ') -->";';
         }
 
         if ($this->_feDebugOptions['module_display'] == true) {
-            $this->_modulePrefix[] = 'if($frontend_debug[\'module_display\']) echo "<!-- START MODULE ' . $module['name'] . ' (' . $module['idmod'] . ') -->";';
+            $this->_modulePrefix[] = 'if ($frontend_debug[\'module_display\']) echo "<!-- START MODULE ' . $module['name'] . ' (' . $module['idmod'] . ') -->";';
         }
 
         if ($this->_feDebugOptions['module_timing'] == true) {
@@ -454,14 +454,14 @@ abstract class cCodeGeneratorAbstract {
         }
 
         if ($this->_feDebugOptions['module_display'] == true) {
-            $this->_moduleSuffix[] = 'if($frontend_debug[\'module_display\']) echo "<!-- END MODULE ' . $module['name'] . ' (' . $module['idmod'] . ')";';
+            $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_display\']) echo "<!-- END MODULE ' . $module['name'] . ' (' . $module['idmod'] . ')";';
             if ($this->_feDebugOptions['module_timing'] == true) {
-                $this->_moduleSuffix[] = 'if($frontend_debug[\'module_timing\']) echo(" AFTER " . $modTime' . $containerId . ');';
+                $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_timing\']) echo(" AFTER " . $modTime' . $containerId . ');';
             }
-            $this->_moduleSuffix[] = 'if($frontend_debug[\'module_display\']) echo " -->";';
+            $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_display\']) echo " -->";';
         }
         if ($this->_feDebugOptions['container_display'] == true) {
-            $this->_moduleSuffix[] = 'if($frontend_debug[\'container_display\']) echo "<!-- END CONTAINER ' . $containerinf[$data['idlay']][$containerId]['name'] . ' (' . $containerId . ') -->";';
+            $this->_moduleSuffix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- END CONTAINER ' . $containerinf[$data['idlay']][$containerId]['name'] . ' (' . $containerId . ') -->";';
         }
     }
 

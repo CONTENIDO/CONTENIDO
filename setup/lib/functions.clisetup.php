@@ -21,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param number $tab number of tab characters which should preceed the string
  */
 function prnt($str = '', $tab = 0) {
-    for($i = 0; $i < $tab; $i++) {
+    for ($i = 0; $i < $tab; $i++) {
         echo("\t");
     }
     echo($str);
@@ -56,15 +56,15 @@ function prntst($str = '') {
  * @return string user entered password
  */
 function passwordPrompt($title, $tab = 0) {
-    if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         prntln(i18n('Be careful! The password will be readable in the console window!', 'setup'), $tab);
     }
     prnt($title . ': ', $tab);
     $line = trim(fgets(STDIN));
-    if(!(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')) {
+    if (!(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')) {
         echo("\033[1A"); // move the cursor up one line
         prnt($title . ': ', $tab); // reprint the label
-        for($i = 0; $i < strlen($line); $i++) {
+        for ($i = 0; $i < strlen($line); $i++) {
             echo("*"); // replace the password with asterisks
         }
         echo("\r\n");
@@ -82,10 +82,10 @@ function progressBar($width, $filled) {
     echo("\r");
     echo("|");
     $i = 0;
-    for($i = 0; $i <= $filled / 100 * $width; $i++) {
+    for ($i = 0; $i <= $filled / 100 * $width; $i++) {
         echo("#");
     }
-    for($j = $i; $j <= $width; $j++) {
+    for ($j = $i; $j <= $width; $j++) {
         echo(" ");
     }
     echo("| ");
@@ -130,52 +130,52 @@ function checkInstallationSettings() {
 
     $fine = true;
 
-    if($cfg['db']['connection']['host'] == '') {
+    if ($cfg['db']['connection']['host'] == '') {
         prntln(i18n('You did not specify a database host!', 'setup'));
         $fine = false;
     }
-    if($cfg['db']['connection']['user'] == '') {
+    if ($cfg['db']['connection']['user'] == '') {
         prntln(i18n('You did not specify a database user!', 'setup'));
         $fine = false;
     }
-    if($cfg['db']['connection']['password'] == '') {
+    if ($cfg['db']['connection']['password'] == '') {
         prntln(i18n('You did not specify a database password!', 'setup'));
         $fine = false;
     }
-    if($cfg['db']['connection']['charset'] == '') {
+    if ($cfg['db']['connection']['charset'] == '') {
         prntln(i18n('You did not specify a database charset!', 'setup'));
         $fine = false;
     }
-    if($cfg['db']['connection']['database'] == '') {
+    if ($cfg['db']['connection']['database'] == '') {
         prntln(i18n('You did not specify a database name!', 'setup'));
         $fine = false;
     }
-    if($_SESSION['dbprefix'] == '') {
+    if ($_SESSION['dbprefix'] == '') {
         prntln(i18n('You did not specify a database prefix!', 'setup'));
         $fine = false;
     }
 
     // append a slash to the http path if it isn't there already
-    if(!(substr($_SESSION['override_root_http_path'], -strlen("/")) === "/")) {
+    if (!(substr($_SESSION['override_root_http_path'], -strlen("/")) === "/")) {
         $_SESSION['override_root_http_path'] = $_SESSION['override_root_http_path'] . "/";
     }
-    if($_SESSION['override_root_http_path'] == '') {
+    if ($_SESSION['override_root_http_path'] == '') {
         prntln(i18n('You did not specify an http root path!', 'setup'));
         $fine = false;
     }
-    if($_SESSION['clientmode'] == '') {
+    if ($_SESSION['clientmode'] == '') {
         prntln(i18n('You did not specify if you want to install the example client or not!', 'setup'));
         $fine = false;
     }
-    if(!($_SESSION['clientmode'] == "CLIENTEXAMPLES" || $_SESSION['clientmode'] == "CLIENTMODULES" || $_SESSION['clientmode'] == "NOCLIENT")) {
+    if (!($_SESSION['clientmode'] == "CLIENTEXAMPLES" || $_SESSION['clientmode'] == "CLIENTMODULES" || $_SESSION['clientmode'] == "NOCLIENT")) {
         prntln(i18n('You did not specify if you want to install the example client or not!', 'setup'));
         $fine = false;
     }
-    if($_SESSION['adminpass'] == '') {
+    if ($_SESSION['adminpass'] == '') {
         prntln(i18n('You did not specify an admin password!', 'setup'));
         $fine = false;
     }
-    if($_SESSION['adminmail'] == '') {
+    if ($_SESSION['adminmail'] == '') {
         prntln(i18n('You did not specify an admin email!', 'setup'));
         $fine = false;
     }
@@ -195,7 +195,7 @@ function getArgs() {
     $last_arg = null;
 
     for ($i = 1, $il = sizeof($args); $i < $il; $i++) {
-        if(preg_match("/^--(.+)/", $args[$i], $match)) {
+        if (preg_match("/^--(.+)/", $args[$i], $match)) {
             $parts = explode("=", $match[1]);
             $key = preg_replace("/[^a-z0-9]+/", "", $parts[0]);
 
@@ -205,13 +205,13 @@ function getArgs() {
                 $out[$key] = true;
             }
             $last_arg = $key;
-        } else if(preg_match("/^-([a-zA-Z0-9]+)/", $args[$i], $match)) {
+        } else if (preg_match("/^-([a-zA-Z0-9]+)/", $args[$i], $match)) {
             for ($j = 0, $jl = strlen($match[1]); $j < $jl; $j++) {
                 $key = $match[1]{$j};
                 $out[$key] = true;
             }
             $last_arg = $key;
-        } else if($last_arg !== null) {
+        } else if ($last_arg !== null) {
             $out[$last_arg] = $args[$i];
         }
     }

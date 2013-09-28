@@ -20,7 +20,7 @@
         var sid = "{SID}";
 
         // Function for deleting articles
-        function deleteArticle(idart, idcat, next){
+        function deleteArticle(idart, idcat, next) {
             conMultiLink('right_bottom', "main.php?area=con&action=con_deleteart&frame=4&idcat=" + idcat + "&idart=" + idart + "&next=" + next + "&contenido=" + sid,
             'right_top', 'main.php?area=con&frame=3&idcat=' + idcat + '&idtpl={iIdtpl}&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=deleteArt');
         }
@@ -55,14 +55,14 @@
                 });
             }
         });
-        function refreshSubMenu(iId){
+        function refreshSubMenu(iId) {
             if (parent.parent.frames["right"].frames["right_top"].document.getElementById(iId)) {
                 menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById(iId);
                 parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
             }
             return true;
         }
-        $('#properties').click(function(){
+        $('#properties').click(function() {
             refreshSubMenu('c_1');
         });
     </script>
@@ -239,7 +239,7 @@
             }
         }
         var datastring  = obj.id;
-        var data        = datastring.split( "-" );
+        var data        = datastring.split("-");
 
         if (data.length == 6) {
             /* Send data to articleObject instance:
@@ -274,7 +274,7 @@
         $('div.bulk_editing_functions').hide();
         if ($(this).prop('checked')) {
             $('div.bulk_editing_functions').show();
-        } else if($('input.mark_articles:checked').length > 0) {
+        } else if ($('input.mark_articles:checked').length > 0) {
             $('div.bulk_editing_functions').show();
         }
     });

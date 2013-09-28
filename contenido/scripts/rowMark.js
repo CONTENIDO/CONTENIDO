@@ -61,7 +61,6 @@ function rowMark(overColor, markedColor, overMarked, onClick, instanceName) {
      * @access private
      */
     this.browser = '';
-
 }
 
 /**
@@ -69,23 +68,21 @@ function rowMark(overColor, markedColor, overMarked, onClick, instanceName) {
  * @param object oRow table row object
  */
 function rowMark_over(oRow) {
-    if (oRow == null)
-    {
+    if (oRow == null) {
         return;
     }
 
-    if ( oRow.style.backgroundColor != this.markedColor ) {
+    if (oRow.style.backgroundColor != this.markedColor) {
         this.oldColor = oRow.style.backgroundColor;
     }
 
     oRow.style.backgroundColor = this.overColor;
 
-    /*if ( oRow.style.backgroundColor == this.markedColor ) {
+    /*if (oRow.style.backgroundColor == this.markedColor) {
         oRow.style.backgroundColor = this.overMarked;
     } else {
         oRow.style.backgroundColor = this.overColor;
     }*/
-
 }
 
 /**
@@ -93,9 +90,8 @@ function rowMark_over(oRow) {
  * @param object oRow table row object
  */
 function rowMark_out(oRow) {
-
     if (oRow == this.markedRow) {
-        if (oRow.className=="con_sync") {
+        if (oRow.className === "con_sync") {
             oRow.style.backgroundColor = this.markedSyncColor;
         } else {
             oRow.style.backgroundColor = this.markedColor;
@@ -112,9 +108,9 @@ function rowMark_reset () {
 
     for (var i = 0; i < oObjects.length; i++) {
         var sOnclick = String(oObjects[i].onclick);
-        if (sOnclick != '' && sOnclick != 'undefined') {
+        if (sOnclick != '' && sOnclick !== 'undefined') {
             if (sOnclick.match(pattern)) {
-                if (oObjects[i].className=="con_sync") {
+                if (oObjects[i].className === "con_sync") {
                     oObjects[i].style.backgroundColor = this.syncColor;
                 } else {
                     oObjects[i].style.backgroundColor = '#FFFFFF';
@@ -131,13 +127,11 @@ function rowMark_reset () {
  */
 function rowMark_click(oRow)
 {
-    if (oRow == null)
-    {
+    if (oRow == null) {
         return;
     }
-    if (typeof this.markedRow != "object")
-    {
-        if (oRow.className=="con_sync") {
+    if (typeof this.markedRow !== "object") {
+        if (oRow.className === "con_sync") {
             oRow.style.backgroundColor = this.markedSyncColor;
         } else {
             oRow.style.backgroundColor = this.markedColor;
@@ -145,17 +139,14 @@ function rowMark_click(oRow)
 
         this.markedRow = oRow;
         this.oldColorMarked = this.oldColor;
-        if ( this.onClick != "")
-            {
-            eval( this.onClick );
-            }
-           }
-   else if (this.markedRow != oRow)
-    {
+        if (this.onClick != "") {
+            eval(this.onClick);
+        }
+   } else if (this.markedRow != oRow) {
         /* reset old */
         this.markedRow.style.backgroundColor = this.oldColorMarked;
         /* highlight new*/
-        if (oRow.className=="con_sync") {
+        if (oRow.className === "con_sync") {
             oRow.style.backgroundColor = this.markedSyncColor;
         } else {
             oRow.style.backgroundColor = this.markedColor;
@@ -164,9 +155,8 @@ function rowMark_click(oRow)
         this.markedRow = oRow;
         this.oldColorMarked = this.oldColor;
 
-        if ( this.onClick != "")
-        {
-          eval(this.onClick);
+        if (this.onClick != "") {
+            eval(this.onClick);
         }
     }
 }
@@ -218,7 +208,7 @@ function imgMark(overColor, markedColor, overMarked, imgOutSrc, imgOverSrc, onCl
     var str = this.over + '';
     var astr = str.split('\n');
     var fstr = 'var img = oRow.getElementsByTagName("IMG"); img[imgId].src = this.imgOverSrc;';
-    for (i=2; i<astr.length-2; i++) {
+    for (i = 2; i < astr.length - 2; i++) {
         fstr += astr[i];
     }
     this.over = new Function ('oRow', 'imgId', fstr);
@@ -231,7 +221,7 @@ function imgMark(overColor, markedColor, overMarked, imgOutSrc, imgOverSrc, onCl
     var astr = str.split('\n');
     var fstr = 'var img = oRow.getElementsByTagName("IMG");img[imgId].src = this.imgOutSrc;';
 
-    for (i=2; i<astr.length-2; i++) {
+    for (i = 2; i < astr.length - 2; i++) {
         fstr += astr[i];
     }
     this.out = new Function ('oRow', 'imgId', fstr);
@@ -239,9 +229,10 @@ function imgMark(overColor, markedColor, overMarked, imgOutSrc, imgOverSrc, onCl
 }
 imgMark.prototype = new rowMark;
 
+
 /* Sets the path value
    in the area 'upl' */
-function setPath( obj ) {
+function setPath(obj) {
     parent.parent.frames["left"].frames['left_top'].document.forms[1].path.value = obj.id;
     parent.parent.frames["left"].frames['left_top'].document.getElementById("caption2").innerHTML = obj.id;
 }
@@ -300,7 +291,7 @@ function conInjectData(obj) {
     tmp_data = obj.id;
     data = tmp_data.split("-");
 
-    if ( data.length == 9 ) {
+    if (data.length == 9) {
         /* Transfer data to the cfg object
            through the .load() method */
         //cfgObj.load(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
@@ -323,10 +314,13 @@ function conInjectData(obj) {
     str += "Right for Template Config: "   + data[7] + "\n";
     str += "data7: "   + data[7] + "\n";
 
-    if (is.NS)
-    {
-        if (!parent.parent.frames["left"].frames['left_top'].cfg.scrollX) parent.parent.frames["left"].frames['left_top'].cfg.scrollX = 0;
-        if (!parent.parent.frames["left"].frames['left_top'].cfg.scrollY) parent.parent.frames["left"].frames['left_top'].cfg.scrollY = 0;
+    if (is.NS) {
+        if (!parent.parent.frames["left"].frames['left_top'].cfg.scrollX) {
+            parent.parent.frames["left"].frames['left_top'].cfg.scrollX = 0;
+        }
+        if (!parent.parent.frames["left"].frames['left_top'].cfg.scrollY) {
+            parent.parent.frames["left"].frames['left_top'].cfg.scrollY = 0;
+        }
 
         parent.parent.frames["left"].frames['left_top'].cfg.scrollX = scrollX;
         parent.parent.frames["left"].frames['left_top'].cfg.scrollY = scrollY;
@@ -368,8 +362,7 @@ artRow = new rowMark('#f9fbdd', '#ecf1b2', '#ecf1b2', 'if (conArtOverviewExtract
    area 'lay' */
 lay = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'saveObj(oRow)', 'lay');
 
-function saveObj(oRow)
-{
+function saveObj(oRow) {
     parent.parent.frames["left"].frames["left_top"].obj = oRow.id;
 }
 
@@ -393,19 +386,16 @@ function refreshPathFrame(oRow) {
 /**refreshSelectedBaseCategory
  * Generic function to reMark a row
  */
-function reMark(sObjId)
-{
+function reMark(sObjId) {
     var elm = document.getElementById(sObjId);
 
-    if (typeof elm == 'object')
-    {
+    if (typeof elm == 'object') {
         lay.over(elm);
         lay.click(elm);
 
-         if (elm && elm != null)
-         {
+        if (elm && elm != null) {
             elm.scrollIntoView(false);
-         }
+        }
     }
 }
 

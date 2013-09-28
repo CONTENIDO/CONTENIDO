@@ -41,8 +41,7 @@
     table.content td { border:0px; border-top:1px; border-right:1px; border-style:solid; border-color:{BORDERCOLOR}; }
     </style>
     <script type="text/javascript">
-    $(document).ready(function () {
-
+    $(document).ready(function() {
         $('#valid_from').datetimepicker({
             buttonImage: '{PATH_TO_CALENDER_PIC}',
             buttonImageOnly: true,
@@ -58,7 +57,7 @@
                     }
                 }
             },
-            onSelect: function (selectedDateTime){
+            onSelect: function (selectedDateTime) {
                 var start = $(this).datetimepicker('getDate');
             }
         });
@@ -78,7 +77,7 @@
                     }
                 }
             },
-            onSelect: function (selectedDateTime){
+            onSelect: function (selectedDateTime) {
                 var end = $(this).datetimepicker('getDate');
             }
         });

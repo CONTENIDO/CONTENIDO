@@ -735,10 +735,10 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             $catArt = new cApiCategoryArticle($idcatart);
             $catArray = $categoryHelper->getCategoryPath($catArt->get("idcat"));
             $catstring = "";
-            foreach($catArray as $cat) {
+            foreach ($catArray as $cat) {
                 $catstring .= $cat->get("name") . "-> ";
             }
-            if(strlen($catstring) > 0) {
+            if (strlen($catstring) > 0) {
                 $catstring = substr($catstring, 0, strlen($catstring) - 3);
             }
 

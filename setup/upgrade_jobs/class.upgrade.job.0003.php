@@ -30,7 +30,7 @@ class cUpgradeJob_0003 extends cUpgradeJobAbstract {
         global $cfg;
 
         convertToDatetime($this->_oDb, $cfg);
-        if($_SESSION['setuptype'] == 'upgrade') { // we don't want this to happen during the setup since it would decode the example client which is already decoded
+        if ($_SESSION['setuptype'] == 'upgrade') { // we don't want this to happen during the setup since it would decode the example client which is already decoded
             urlDecodeTables($this->_oDb);
         }
     }

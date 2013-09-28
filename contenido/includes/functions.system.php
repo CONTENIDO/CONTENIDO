@@ -15,7 +15,6 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
 /**
  * Clears CONTENIDO standard errorlog.txt
  * @return  string   Message if clearing was successfull or not
@@ -66,7 +65,7 @@ function phpInfoToHtml() {
 function systemHavePerm($client) {
     global $auth;
 
-    if (!isset ($auth->perm['perm'])) {
+    if (!isset($auth->perm['perm'])) {
         $auth->perm['perm'] = '';
     }
 
@@ -74,9 +73,9 @@ function systemHavePerm($client) {
 
     if (in_array('sysadmin', $userPerm)) { // is user sysadmin ?
         return true;
-    } elseif (in_array('admin['.$client.']', $userPerm)) { // is user admin for this client ?
+    } elseif (in_array('admin[' . $client . ']', $userPerm)) { // is user admin for this client ?
         return true;
-    } elseif (in_array('client['.$client.']', $userPerm)) { // has user access to this client ?
+    } elseif (in_array('client[' . $client . ']', $userPerm)) { // has user access to this client ?
         return true;
     }
     return false;
@@ -142,7 +141,6 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
             }
 
             return '2';
-
         } else { // isn't
             if (compareUrlStrings($arrConUrl, $arrBrowserUrl)) {
                 return '1';
@@ -160,15 +158,14 @@ function checkPathInformation($strConUrl, $strBrowserUrl) {
  */
 function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false) {
     // && $isIP == false
-
     // remove 'www.' if needed
     if (strpos($arrConUrl['host'], 'www.') == 0 || strpos($arrBrowserUrl['host'], 'www.') == 0) {
         $arrConUrl['host'] = str_replace('www.', '', $arrConUrl);
         $arrBrowserUrl['host'] = str_replace('www.', '', $arrBrowserUrl);
     }
 
-    $strConUrl = $arrConUrl['scheme'].'://'.$arrConUrl['host'].$arrConUrl['path'];
-    $strBrowserUrl = $arrBrowserUrl['scheme'].'://'.$arrBrowserUrl['host'].$arrBrowserUrl['path'];
+    $strConUrl = $arrConUrl['scheme'] . '://' . $arrConUrl['host'] . $arrConUrl['path'];
+    $strBrowserUrl = $arrBrowserUrl['scheme'] . '://' . $arrBrowserUrl['host'] . $arrBrowserUrl['path'];
 
     if (strcmp($strConUrl, $strBrowserUrl) != 0) {
         return false;

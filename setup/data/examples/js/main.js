@@ -146,7 +146,7 @@ $(function() {
             }
 
             var colon = '';
-            if ($(this).attr("rel") != '' && $(this).attr("title") !='' ) {
+            if ($(this).attr("rel") != '' && $(this).attr("title") != '') {
                 colon = ':';
             }
             $(".galery .lightbox").html(left + right + '<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + colon + $(this).attr("title") + '</p>').dialog({

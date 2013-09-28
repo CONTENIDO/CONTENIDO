@@ -8,30 +8,25 @@ if (parent.parent.frames['left'].frames['left_bottom'].location != 'about:blank'
 }
 
 (function($) {
-    $(document).ready(
-            function() {
-                var $cindyCrawford = $("body");
+    $(document).ready(function() {
+        var $cindyCrawford = $("body");
 
-                // Handler for clicked image anchors
-                $cindyCrawford.delegate("a.jsZoom", "click", function() {
-                    iZoom($(this).attr("href"));
-                    return false;
-                });
+        // Handler for clicked image anchors
+        $cindyCrawford.delegate("a.jsZoom", "click", function() {
+            iZoom($(this).attr("href"));
+            return false;
+        });
 
-                // Handler for mouseover/mouseout on images
-                $cindyCrawford.delegate("a.jsZoom img.hover", "mouseover",
-                        function() {
-                            correctPosition(this, $(this).attr("data-width"),
-                                    $(this).attr("data-height"));
-                        });
-                $cindyCrawford.delegate("a.jsZoom img.hover", "mouseout",
-                        function() {
-                            if (typeof (previewHideIe6) == "function") {
-                                previewHideIe6(this);
-                            }
-                            ;
-                        });
-            });
+        // Handler for mouseover/mouseout on images
+        $cindyCrawford.delegate("a.jsZoom img.hover", "mouseover", function() {
+            correctPosition(this, $(this).attr("data-width"), $(this).attr("data-height"));
+        });
+        $cindyCrawford.delegate("a.jsZoom img.hover", "mouseout", function() {
+            if (typeof (previewHideIe6) == "function") {
+                previewHideIe6(this);
+            }
+        });
+    });
 })(jQuery);
 
 // Invert selection of checkboxes
@@ -64,7 +59,7 @@ function getX(e) {
 function findPreviewImage(smallImg) {
     var prevImages = document.getElementsByName("prevImage");
 
-    for ( var i = 0; i < prevImages.length; i++) {
+    for (var i = 0; i < prevImages.length; i++) {
         if (prevImages[i].src == smallImg.src) {
             return prevImages[i];
         }

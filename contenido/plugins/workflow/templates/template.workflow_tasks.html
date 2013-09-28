@@ -37,8 +37,6 @@
         <div class="clearb"></div>
     </div>
 
-
-
     <table width="100%" border="0" cellspacing="0" cellpadding="2" class="generic" style="display:{DISPLAY}">
     <tr>
         <th width="1%" nowrap="nowrap">{TH_START}</th>
@@ -83,7 +81,7 @@
        properties. e.g. Some article was edited and we are now back in the
        overview mask. There is now no marked article, the articleObject data
        should be reset.  */
-    if ( artObj ) {
+    if (artObj) {
         artObj.reset();
         artObj.enable();
         artObj.setHrefOverview(document.location.href);
@@ -95,35 +93,34 @@
     /* Javascript-Error work-around... try to create the reference after
        250ms again... and hope it works.. */
     function createReference() {
-        if( !artObj ) {
-            artObj=parent.parent.frames["left"].frames["left_top"].artObj;
-            if( artObj ) {
+        if (!artObj) {
+            artObj = parent.parent.frames["left"].frames["left_top"].artObj;
+            if (artObj) {
                 artObj.reset();
                 artObj.enable();
                 artObj.setHrefOverview(document.location.href);
             }
         }
-        if( !artObj ) {
+        if (!artObj) {
             return false;
-          }
+        }
     }
-
 
     /* Extract data from the article grid and send
        them to the articleObject Instance. The data is stored in the
        attribute 'id' of the row object. */
-    function conArtOverviewExtractData( obj ) {
-        if( !artObj ) {
-            var rval=createReference();
-            if (rval== false) {
+    function conArtOverviewExtractData(obj) {
+        if (!artObj) {
+            var rval = createReference();
+            if (rval == false) {
                 return false;
             }
         }
 
-        var datastring=obj.id;
-        var data=datastring.split( "-" );
+        var datastring = obj.id;
+        var data = datastring.split( "-" );
 
-        if ( data.length== 6 ) {
+        if (data.length === 6) {
               /* Send data to articleObject instance:
                  0: idart
                  1: idartlang
@@ -137,17 +134,18 @@
     }
 
     /* Mark the first submenu item i.e. 'Overview' */
-    if( parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0') ) {
-        menuItem=parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0');
+    if (parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0')) {
+        menuItem = parent.parent.frames['right'].frames['right_top'].document.getElementById('c_0');
         parent.parent.frames['right'].frames['right_top'].sub.click(menuItem);
     }
 
     function initTheOne() {
        var theOne = document.getElementById("{FIRST_ROWID}");
        artRow.reset();
-       artRow.over( theOne );
-       artRow.click( theOne )
+       artRow.over(theOne);
+       artRow.click(theOne)
     }
+
     initTheOne();
 //-->
 </script>

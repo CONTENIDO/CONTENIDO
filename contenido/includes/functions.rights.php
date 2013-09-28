@@ -59,16 +59,15 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
 
     // get all user_id values for con_rights
     $userIDContainer = $perm->getGroupsForUser($auth->auth['uid']); // add
-                                                                    // groups if
-                                                                    // available
+    // groups if
+    // available
     $userIDContainer[] = $auth->auth['uid']; // add user_id of current user
     foreach ($userIDContainer as $key) {
         $whereUsers[] = "user_id = '" . $oDestRightCol->escape($key) . "'";
     }
     $whereUsers = '(' . implode(' OR ', $whereUsers) . ')'; // only duplicate on
-                                                            // user and where
-                                                            // user is member of
-
+    // user and where
+    // user is member of
     // get all idarea values for $area
     $areaContainer = $area_tree[$perm->showareas($area)];
 
@@ -79,12 +78,11 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false) {
         $whereAreaActions[] = '(idarea = ' . (int) $oItem->get('idarea') . ' AND idaction = ' . (int) $oItem->get('idaction') . ')';
     }
     $whereAreaActions = '(' . implode(' OR ', $whereAreaActions) . ')'; // only
-                                                                        // correct
-                                                                        // area
-                                                                        // action
-                                                                        // pairs
-                                                                        // possible
-
+    // correct
+    // area
+    // action
+    // pairs
+    // possible
     // final where clause to get all affected elements in con_right
     $sWhere = "{$whereAreaActions} AND {$whereUsers} AND idcat = {$iditem}";
     if ($idlang) {
@@ -129,16 +127,15 @@ function createRightsForElement($area, $iditem, $idlang = false) {
 
     // get all user_id values for con_rights
     $userIDContainer = $perm->getGroupsForUser($auth->auth['uid']); // add
-                                                                    // groups if
-                                                                    // available
+    // groups if
+    // available
     $userIDContainer[] = $auth->auth['uid']; // add user_id of current user
     foreach ($userIDContainer as $key) {
         $whereUsers[] = "user_id = '" . $oDestRightCol->escape($key) . "'";
     }
     $whereUsers = '(' . implode(' OR ', $whereUsers) . ')'; // only duplicate on
-                                                            // user and where
-                                                            // user is member of
-
+    // user and where
+    // user is member of
     // get all idarea values for $area short way
     $areaContainer = $area_tree[$perm->showareas($area)];
 
@@ -216,21 +213,21 @@ function buildUserOrGroupPermsFromRequest($bAddUserToClient = false) {
 
     $bSysadmin = (isset($msysadmin) && $msysadmin);
 
-    $aAdmin = (isset($madmin) && is_array($madmin))? $madmin : array();
+    $aAdmin = (isset($madmin) && is_array($madmin)) ? $madmin : array();
     foreach ($aAdmin as $p => $value) {
         if (!is_numeric($value)) {
             unset($aAdmin[$p]);
         }
     }
 
-    $aClient = (isset($mclient) && is_array($mclient))? $mclient : array();
+    $aClient = (isset($mclient) && is_array($mclient)) ? $mclient : array();
     foreach ($aClient as $p => $value) {
         if (!is_numeric($value)) {
             unset($aClient[$p]);
         }
     }
 
-    $aLang = (isset($mlang) && is_array($mlang))? $mlang : array();
+    $aLang = (isset($mlang) && is_array($mlang)) ? $mlang : array();
     foreach ($aLang as $p => $value) {
         if (!is_numeric($value)) {
             unset($aLang[$p]);

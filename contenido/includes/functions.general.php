@@ -12,6 +12,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.file.php');
@@ -96,12 +97,12 @@ function isUtf8($input) {
         if ($char < 0x80) { // ASCII char
             continue;
         } else if (($char & 0xE0) === 0xC0 && $char > 0xC1) { // 2 byte long
-                                                              // char
+            // char
             $n = 1;
         } else if (($char & 0xF0) === 0xE0) { // 3 byte long char
             $n = 2;
         } else if (($char & 0xF8) === 0xF0 && $char < 0xF5) { // 4 byte long
-                                                              // char
+            // char
             $n = 3;
         } else {
             return false;
@@ -265,7 +266,7 @@ function markSubMenuItem($menuitem, $return = false) {
     $str = '
     <script type="text/javascript">
     // @todo  Use conMarkSubmenuItem(id) in general.js, but we have to ensure to load the file!
-    (function(id){
+    (function(id) {
         var menuItem;
 
         try {
@@ -494,7 +495,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
             '*/',
             '/*',
             '//'
-        ), '', $db->f('name')));
+                        ), '', $db->f('name')));
 
         $errsite_idcat[$iClient] = $db->f('errsite_cat');
         $errsite_idart[$iClient] = $db->f('errsite_art');
@@ -699,7 +700,7 @@ function getSystemProperties($bGetPropId = false) {
 function getSystemProperty($type, $name) {
     $systemPropColl = new cApiSystemPropertyCollection();
     $prop = $systemPropColl->fetchByTypeName($type, $name);
-    return ($prop)? $prop->get('value') : false;
+    return ($prop) ? $prop->get('value') : false;
 }
 
 /**
@@ -1492,7 +1493,7 @@ function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html') {
     }
 
     if (is_string($use_encoding)) {
-        $use_encoding = ($use_encoding == 'false')? false : true;
+        $use_encoding = ($use_encoding == 'false') ? false : true;
     }
 
     if ($use_encoding != false) {
@@ -1597,7 +1598,7 @@ function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = fa
     $idart = cRegistry::getArticleId();
 
 
-    for ($i = 0; $i<$catCount; $i++) {
+    for ($i = 0; $i < $catCount; $i++) {
         $idcat_tpl = 0;
         $idcat_bread = $categories[$i]->getField('idcat');
         $idcat_name = $categories[$i]->getField('name');
@@ -1614,15 +1615,15 @@ function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = fa
         $tplBread->set('d', 'NAME', $idcat_name);
 
         $sepArrow = '';
-        if ($i < $catCount-1) {
-            $sepArrow  = ' > ';
+        if ($i < $catCount - 1) {
+            $sepArrow = ' > ';
         } else {
             if ((int) $idart > 0 && $showArticle === true) {
                 $art = new cApiArticleLanguage();
                 $art->loadByArticleAndLanguageId($idart, $lang);
                 if ($art->isLoaded()) {
                     $name = $art->getField('title');
-                    $sepArrow  = ' > ' . $name;
+                    $sepArrow = ' > ' . $name;
                 }
             }
         }

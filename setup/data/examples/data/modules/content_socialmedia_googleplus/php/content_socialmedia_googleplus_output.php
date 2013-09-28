@@ -46,7 +46,7 @@ $size = $art->getContent("CMS_HTML", 3001);
 $counter = $art->getContent("CMS_HTML", 3002);
 $currentArticleUrl = $art->getContent("CMS_HTML", 3003);
 
-if($currentArticleUrl == "1") {
+if ($currentArticleUrl == "1") {
     $url = cRegistry::getFrontendUrl() . $art->getLink();
 }
 

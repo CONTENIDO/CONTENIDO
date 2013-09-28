@@ -42,8 +42,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param  int  $minLevel  The level to extract
  * @return int  The category node on a specific level
  */
-function cApiCatGetLevelNode($idcat, $minLevel = 0)
-{
+function cApiCatGetLevelNode($idcat, $minLevel = 0) {
     global $cfg, $client, $lang;
 
     $db = cRegistry::getDb();
@@ -67,7 +66,7 @@ function cApiCatGetLevelNode($idcat, $minLevel = 0)
     $db->query($sql);
     $db->nextRecord();
 
-    $parentid  = $db->f('parentid');
+    $parentid = $db->f('parentid');
     $thislevel = $db->f('level');
 
     if ($parentid != 0 && $thislevel >= $minLevel) {

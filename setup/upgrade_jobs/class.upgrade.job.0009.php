@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cUpgradeJob_0009 extends cUpgradeJobAbstract {
 
-    private $_tableMapping = array( '%s_news' => '%s_pi_news',
+    private $_tableMapping = array('%s_news' => '%s_pi_news',
                                    '%s_news_groupmembers' => '%s_pi_news_groupmembers',
                                    '%s_news_groups' => '%s_pi_news_groups',
                                    '%s_news_jobs' => '%s_pi_news_jobs',

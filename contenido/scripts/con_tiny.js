@@ -27,9 +27,7 @@
 var first = true;
 
 function myCustomSetupContent(editor_id, body, doc) {
-
     tinyMCE.get(editor_id).setContent(tinyMCE.get(editor_id).getContent());
-
 }
 
 
@@ -37,28 +35,21 @@ function myCustomSetupContent(editor_id, body, doc) {
  * Callback function for tiny which gets a selected image in CONTENIDO
  * image browser, close browser and set this selected image in tiny
  */
-function updateImageFilebrowser () {
-
+function updateImageFilebrowser() {
     //error handling
-    if (!fb_handle.left)
-    {
+    if (!fb_handle.left) {
         return;
     }
 
-    if (!fb_handle.left.left_top)
-    {
+    if (!fb_handle.left.left_top) {
         return;
     }
 
-    if (!fb_handle.left.left_top.document.getElementById("selectedfile"))
-    {
+    if (!fb_handle.left.left_top.document.getElementById("selectedfile")) {
         return;
     }
 
-
-    if (fb_handle.left.left_top.document.getElementById("selectedfile").value != "")
-    {
-
+    if (fb_handle.left.left_top.document.getElementById("selectedfile").value != "") {
         //get selected image from popup and close it
         fb_win.document.forms[0].elements[fb_fieldname].value = fb_handle.left.left_top.document.getElementById("selectedfile").value;
 
@@ -66,12 +57,10 @@ function updateImageFilebrowser () {
         window.clearInterval(fb_intervalhandle);
 
         //set this selected image in tiny
-        if (fb_win.ImageDialog != null && fb_win.ImageDialog.showPreviewImage)
-        {
+        if (fb_win.ImageDialog != null && fb_win.ImageDialog.showPreviewImage) {
             fb_win.ImageDialog.showPreviewImage(fb_win.document.forms[0].elements[fb_fieldname].value);
         }
     }
-
 }
 
 
@@ -84,7 +73,6 @@ function updateImageFilebrowser () {
  * @return string - converted content
  */
 function CustomCleanupContent(type, value) {
-
     switch (type) {
         case "get_from_editor":
         case "insert_to_editor":
@@ -102,18 +90,14 @@ function CustomCleanupContent(type, value) {
  * Notice: Global js vars were defined in include.con_editcontent.php
  */
 function storeCurrentTinyContent() {
-
     //store last tiny changes if tiny is still open
     var editor = tinyMCE.getInstanceById(active_id);
 
     if (editor) {
-
         var content          = editor.getContent();
         content              = content.replace(frontend_path, '');
         aEditdata[active_id] = content;
-
     }
-
 }
 
 /**
@@ -125,7 +109,6 @@ function storeCurrentTinyContent() {
  * @param string act - actionurl of form (optional)
  */
 function setcontent(idartlang, act) {
-
     //do not ask user for storage
     bCheckLeave = false;
 
@@ -136,10 +119,8 @@ function setcontent(idartlang, act) {
 
     //forach content in js array aEditdata
     for (var sId in aEditdata) {
-
         //check if content has changed, if it has serialize it to string
         if (aEditdataOrig[sId] != aEditdata[sId]) {
-
             var data = sId.split("_");
 
             // data[0] is the fieldname * needed
@@ -148,9 +129,7 @@ function setcontent(idartlang, act) {
 
             // build the string which will be send
             str += buildDataEntry(idartlang , data[0] , data[2] , prepareString(aEditdata[sId]));
-
         }
-
     }
 
     // set the string
@@ -163,7 +142,6 @@ function setcontent(idartlang, act) {
 
     // submit the form
     document.forms.editcontent.submit();
-
 }
 
 /**
@@ -175,18 +153,13 @@ function setcontent(idartlang, act) {
  * @return string - string with escaped chars
  */
 function prepareString(aContent) {
-
     if (aContent == "&nbsp;" || aContent == "") {
-
         aContent = "%$%EMPTY%$%";
-
     } else {
-
         // if there is an | in the text set a replacement chr because we use it later as isolator
-        while( aContent.search(/\|/) != -1 ) {
+        while (aContent.search(/\|/) != -1) {
             aContent = aContent.replace(/\|/,"%$%SEPERATOR%$%");
         }
-
     }
 
     return aContent;
@@ -228,10 +201,8 @@ function addDataEntry(idartlang, type, typeid, value) {
   *
   */
 function closeTiny() {
-
     //check if tiny is currently open
     if (active_id && tinyMCE.getInstanceById(active_id)) {
-
         //save current tiny content to js var
         storeCurrentTinyContent();
 
@@ -243,17 +214,14 @@ function closeTiny() {
         //close current open tiny and set active vars to null
         var tmpId = active_id;
         setTimeout(function() {
-
-
-            if (tmpId) tinyMCE.execCommand('mceRemoveControl', false, tmpId);
-
+            if (tmpId) {
+                tinyMCE.execCommand('mceRemoveControl', false, tmpId);
+            }
         }, 0);
 
         active_id     = null;
         active_object = null;
-
     }
-
 }
 
 /**
@@ -265,7 +233,6 @@ function closeTiny() {
  * @param object obj - div object which was clicked
  */
 function swapTiny(obj) {
-
     //check if tiny is currently open
     closeTiny();
 
@@ -284,29 +251,21 @@ function swapTiny(obj) {
 
         //remove height information of clicked div
         document.getElementById(active_id).style.height = '';
-
     }
-
 }
 
 /**
-   * Function sets focus on toggled editor if its loading proccess was completed
-   *
-   */
+ * Function sets focus on toggled editor if its loading proccess was completed
+ *
+ */
 function setFocus() {
-
     var activeTinyId = tinyMCE.getInstanceById(active_id);
 
     if (!activeTinyId) {
-
         window.setTimeout('setFocus()', 50);
-
     } else {
-
         tinyMCE.execInstanceCommand(activeTinyId, 'mceFocus', false);
-
     }
-
 }
 
 /**
@@ -360,16 +319,17 @@ function myCustomFileBrowser(field_name, url, type, win) {
  * @param string sContent - original content string
  */
 function updateContent(sContent) {
-
     //if original content was already set do not overwrite
     //this happens if tiny is reopened on same content
     if (aEditdataOrig[active_id] == undefined) {
-
         sContent = sContent.replace(frontend_path, '');
         aEditdataOrig[active_id] = sContent;
-
     }
+}
 
+// @deprecated  Use leaveCheck()
+function leave_check() {
+    leaveCheck();
 }
 
 /**
@@ -379,8 +339,7 @@ function updateContent(sContent) {
  * Notice: Global js vars were defined in include.con_editcontent.php
  * (aEditdata, aEditdataOrig, sQuestion, iIdartlang)
  */
-function leave_check() {
-
+function leaveCheck() {
     //If tiny is still open store its content
     storeCurrentTinyContent();
 
@@ -398,13 +357,11 @@ function leave_check() {
     //a case in which he leaves this page but by pressing save button he
     //also saves all changes
     if (bAsk && bCheckLeave) {
-
         check = confirm(sQuestion);
         //If he wants to save content call function setcontent();
 
         if (check == true) {
             setcontent(iIdartlang, '0');
         }
-
     }
 }

@@ -122,7 +122,7 @@ cContentTypeFilelist.prototype.addClickEvent = function() {
         $(self.frameId + ' #manual_filelist_setting').hide();
     }
 
-    $(self.frameId + ' #filelist_manual_' + self.id).click(function () {
+    $(self.frameId + ' #filelist_manual_' + self.id).click(function() {
         $(self.frameId + ' #manual_filelist_setting').slideToggle();
     });
 
@@ -133,7 +133,7 @@ cContentTypeFilelist.prototype.addClickEvent = function() {
         $(self.frameId + ' #metaDataList').hide();
     }
 
-    $(self.frameId + ' #filelist_incl_metadata_' + self.id).click(function () {
+    $(self.frameId + ' #filelist_incl_metadata_' + self.id).click(function() {
         $(self.frameId + ' #metaDataList').slideToggle();
     });
 
@@ -155,7 +155,7 @@ cContentTypeFilelist.prototype.addExtensionActions = function() {
     var self = this;
     // let the user select all file extensions at once
     $(self.frameId + ' #filelist_all_extensions').css('cursor', 'pointer');
-    $(self.frameId + ' #filelist_all_extensions').click(function () {
+    $(self.frameId + ' #filelist_all_extensions').click(function() {
         // only react if the extensions should not be ignored
         if ($(self.frameId + ' #filelist_extensions_' + self.id).is(':not(:disabled)')) {
             // check if all options are selected
@@ -179,7 +179,7 @@ cContentTypeFilelist.prototype.addExtensionActions = function() {
     });
 
     // disable the file extension select if file extensions should be ignored
-    $(self.frameId + ' #filelist_ignore_extensions_' + self.id).click(function () {
+    $(self.frameId + ' #filelist_ignore_extensions_' + self.id).click(function() {
         if ($(this).is(':checked')) {
             $(self.frameId + ' #filelist_extensions_' + self.id).attr('disabled', 'disabled');
         } else {
@@ -196,7 +196,7 @@ cContentTypeFilelist.prototype.addExtensionActions = function() {
 cContentTypeFilelist.prototype.addNaviActions = function() {
     var self = this;
     $(self.frameId + ' #manual #directoryList_' + self.id + '_manual a[class="on"]').parent('div').unbind('click');
-    $(self.frameId + ' #manual #directoryList_' + self.id + '_manual a[class="on"]').parent('div').click(function () {
+    $(self.frameId + ' #manual #directoryList_' + self.id + '_manual a[class="on"]').parent('div').click(function() {
         var dirname = $(this).children('a[class="on"]').attr('title');
         $.ajax({
             type: 'POST',
@@ -211,7 +211,7 @@ cContentTypeFilelist.prototype.addNaviActions = function() {
     });
 
     $(self.frameId + ' #directories #directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
-    $(self.frameId + ' #directories #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function () {
+    $(self.frameId + ' #directories #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
         } else {
@@ -222,12 +222,12 @@ cContentTypeFilelist.prototype.addNaviActions = function() {
     });
 
     $(self.frameId + ' .directoryList em a').unbind('click');
-    $(self.frameId + ' .directoryList em a').click(function () {
+    $(self.frameId + ' .directoryList em a').click(function() {
         var divContainer = $(this).parent().parent();
         var dirname = $(this).parent('em').parent().find('a[class="on"]').attr('title');
 
         if (divContainer.next('ul').length > 0) {
-            divContainer.next('ul').toggle(function () {
+            divContainer.next('ul').toggle(function() {
                 if (divContainer.next('ul').is(':hidden')) {
                     divContainer.parent().addClass('collapsed');
                 } else {
@@ -262,7 +262,7 @@ cContentTypeFilelist.prototype.addSaveEvent = function() {
     $(self.frameId + ' .save_settings').click(function() {
         // the chosen directory is no form field, so add it to the editform manually
         var value = '';
-        $(self.frameId + ' #directories #directoryList_' + self.id + ' div[class="active"]').each(function () {
+        $(self.frameId + ' #directories #directoryList_' + self.id + ' div[class="active"]').each(function() {
             if (value === '') {
                 value = $(this).find('a[class="on"]').attr('title');
             } else {

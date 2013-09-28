@@ -139,7 +139,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
                         $settings[$type][$name] = $value;
                         $stored = true;
 
-                        if(($type == "debug" && $name == "debug_to_screen") || ($type == "system" && $name == "clickmenu")) {
+                        if (($type == "debug" && $name == "debug_to_screen") || ($type == "system" && $name == "clickmenu")) {
                             $reloadHeader = true;
                         }
                     }

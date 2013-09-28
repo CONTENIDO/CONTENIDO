@@ -112,7 +112,7 @@ if ($action == 'js_delete') {
 
 
         // check if file already exists in FS
-        if(cFileHandler::exists($path . $sFilename)){
+        if (cFileHandler::exists($path . $sFilename)) {
             $notification->displayNotification('error', sprintf(i18n('Can not create file %s'), $sFilename));
             $page->render();
             exit();
