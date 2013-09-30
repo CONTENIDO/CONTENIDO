@@ -25,7 +25,8 @@ class cArray {
 
     /**
      * Strip whitespaces (or other characters) from the beginning and end of
-     * each item in array. Similar to trim() function.
+     * each item in array.
+     * Similar to trim() function.
      *
      * @param array $arr Array of strings that will be trimmed.
      * @param string $charlist Optionally, the stripped characters can also be
@@ -122,20 +123,25 @@ class cArray {
 
     /**
      * Very cool algorithm for sorting multi-dimensional arrays.
+     *
      * Found at http://us2.php.net/manual/en/function.array-multisort.php
+     *
      * Syntax:
      * <pre>
      * $new_array = cArray::csort($array [, 'col1' [, SORT_FLAG [,
      * SORT_FLAG]]]...);
      * </pre>
-     * Explanation: $array is the array you want to sort, 'col1' is the name of
-     * the column
-     * you want to sort, SORT_FLAGS are : SORT_ASC, SORT_DESC, SORT_REGULAR,
-     * SORT_NUMERIC, SORT_STRING
-     * you can repeat the 'col',FLAG,FLAG, as often you want, the highest
-     * prioritiy is given to
-     * the first - so the array is sorted by the last given column first, then
-     * the one before ...
+     *
+     * Explanation:
+     * - $array is the array you want to sort
+     * - 'col1' is the name of the column you want to sort
+     * - SORT_FLAGS are: SORT_ASC, SORT_DESC, SORT_REGULAR, SORT_NUMERIC,
+     * SORT_STRING
+     *
+     * You can repeat the 'col', FLAG, FLAG as often as you want. The highest
+     * prioritiy is given to the first - so the array is sorted by the last
+     * given column first, then the one before ...
+     *
      * Example:
      * <pre>
      * $array = cArray::csort($array,'town','age', SORT_DESC, 'name');
@@ -166,7 +172,7 @@ class cArray {
     }
 
     /**
-     * Ensures that the passed array has the key, sets it by using te value
+     * Ensures that the passed array has the key, sets it by using the value.
      *
      * @param array $aArray
      * @param string $sKey
