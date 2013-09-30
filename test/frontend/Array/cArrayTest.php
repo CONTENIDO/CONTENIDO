@@ -175,8 +175,6 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
     /**
      * Tests initializing of array values in empty and nonempty array, with
      * existant and nonexistant keys and default or custom default values.
-     *
-     * @todo add test
      */
     public function testInitializeKey() {
 
@@ -184,14 +182,14 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
         $actual = array();
         cArray::initializeKey($actual, 'key');
         $this->assertSame(1, count($actual));
-        $this->arrayHasKey('key');
+        $this->assertArrayHasKey('key', $actual);
         $this->assertSame('', $actual['key']);
 
         // test empty array w/ nonexistant key and custom default
         $actual = array();
         cArray::initializeKey($actual, 'key', 'custom');
         $this->assertSame(1, count($actual));
-        $this->arrayHasKey('key');
+        $this->assertArrayHasKey('key', $actual);
         $this->assertSame('custom', $actual['key']);
 
         // test empty array w/ existant key and default default => IMPOSSIBLE
@@ -203,9 +201,9 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
         );
         cArray::initializeKey($actual, 'key');
         $this->assertSame(2, count($actual));
-        $this->arrayHasKey('key');
+        $this->assertArrayHasKey('key', $actual);
         $this->assertSame('', $actual['key']);
-        $this->arrayHasKey('foo');
+        $this->assertArrayHasKey('foo', $actual);
         $this->assertSame('bar', $actual['foo']);
 
         // test nonempty array w/ nonexistant key and custom default
@@ -214,9 +212,9 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
         );
         cArray::initializeKey($actual, 'key', 'custom');
         $this->assertSame(2, count($actual));
-        $this->arrayHasKey('key');
+        $this->assertArrayHasKey('key', $actual);
         $this->assertSame('custom', $actual['key']);
-        $this->arrayHasKey('foo');
+        $this->assertArrayHasKey('foo', $actual);
         $this->assertSame('bar', $actual['foo']);
 
         // test nonempty array w/ nonexistant key and default default
@@ -225,9 +223,9 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
         );
         cArray::initializeKey($actual, 'key');
         $this->assertSame(2, count($actual));
-        $this->arrayHasKey('key');
+        $this->assertArrayHasKey('key', $actual);
         $this->assertSame('', $actual['key']);
-        $this->arrayHasKey('foo');
+        $this->assertArrayHasKey('foo', $actual);
         $this->assertSame('bar', $actual['foo']);
 
         // test nonempty array w/ nonexistant key and custom default
@@ -236,9 +234,9 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
         );
         cArray::initializeKey($actual, 'key', 'custom');
         $this->assertSame(2, count($actual));
-        $this->arrayHasKey('key');
+        $this->assertArrayHasKey('key', $actual);
         $this->assertSame('custom', $actual['key']);
-        $this->arrayHasKey('foo');
+        $this->assertArrayHasKey('foo', $actual);
         $this->assertSame('bar', $actual['foo']);
 
         // test nonempty array w/ existant key and default default
@@ -247,7 +245,7 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
         );
         cArray::initializeKey($actual, 'key');
         $this->assertSame(1, count($actual));
-        $this->arrayHasKey('key');
+        $this->assertArrayHasKey('key', $actual);
         $this->assertSame('old', $actual['key']);
 
         // test nonempty array w/ nonexistant key and custom default
@@ -256,7 +254,7 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
         );
         cArray::initializeKey($actual, 'key', 'custom');
         $this->assertSame(1, count($actual));
-        $this->arrayHasKey('key');
+        $this->assertArrayHasKey('key', $actual);
         $this->assertSame('old', $actual['key']);
     }
 }
