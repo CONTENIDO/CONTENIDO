@@ -137,10 +137,23 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     *
-     * @todo missing implementation
      */
     public function testSortWithLocale() {
+
+        $orig = explode(',', 'ß,ü,ö,ä,z,y,x,w,v,u,t,s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a');
+
+        $us = explode(',', 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ä,ö,ü,ß');
+        $this->assertEquals($us, cArray::sortWithLocale($orig, 'us'));
+
+        $us_EN = explode(',', 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ä,ö,ü,ß');
+        $this->assertEquals($us_EN, cArray::sortWithLocale($orig, 'us_EN'));
+
+        $de = explode(',', 'a,ä,b,c,d,e,f,g,h,i,j,k,l,m,n,o,ö,p,q,r,s,t,u,ü,v,w,x,y,z,ß');
+        $this->assertEquals($de, cArray::sortWithLocale($orig, 'de'));
+
+        $de_DE = explode(',', 'a,ä,b,c,d,e,f,g,h,i,j,k,l,m,n,o,ö,p,q,r,s,t,u,ü,v,w,x,y,z,ß');
+        $this->assertEquals($de_DE, cArray::sortWithLocale($orig, 'de_DE'));
+
     }
 
     /**
