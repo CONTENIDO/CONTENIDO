@@ -166,10 +166,76 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
      */
     public function testCsort() {
 
-        // $de_DE = explode(',', '');
-        // $this->assertSame($de_DE, cArray::csort($orig));
+        // source data
+        $tr_31_we = array(
+            'name' => 'Trautmann',
+            'age' => '31',
+            'town' => 'Weitengesäß'
+        );
+        $zi_23_ba = array(
+            'name' => 'Ziegler',
+            'age' => '23',
+            'town' => 'Bad Nauheim'
+        );
+        $gn_142_of = array(
+            'name' => 'Gnaß',
+            'age' => '142',
+            'town' => 'Offenbach am Main'
+        );
+        $src = array($tr_31_we, $zi_23_ba, $gn_142_of);
 
-        // $array = cArray::csort($array, 'town','age', SORT_DESC, 'name');
+        // name ASC
+        $exp = array($gn_142_of, $tr_31_we, $zi_23_ba);
+        $this->assertSame($exp, cArray::csort($src, 'name', SORT_ASC));
+        // name DESC
+        $exp = array($zi_23_ba, $tr_31_we, $gn_142_of);
+        $this->assertSame($exp, cArray::csort($src, 'name', SORT_DESC));
+        // name REGULAR
+        $exp = array($gn_142_of, $tr_31_we, $zi_23_ba);
+        $this->assertSame($exp, cArray::csort($src, 'name', SORT_REGULAR));
+//         // name NUMERIC
+//         $exp = array($gn_142_of, $tr_31_we, $zi_23_ba);
+//         $this->assertSame($exp, cArray::csort($src, 'name', SORT_NUMERIC));
+        // name STRING
+        $exp = array($gn_142_of, $tr_31_we, $zi_23_ba);
+        $this->assertSame($exp, cArray::csort($src, 'name', SORT_STRING));
+
+        // ////////////////////////////////////////////////////////////////////
+
+        // age ASC (implicit numeric)
+        $exp = array($zi_23_ba, $tr_31_we, $gn_142_of);
+        $this->assertSame($exp, cArray::csort($src, 'age', SORT_ASC));
+        // age DESC (implicit numeric)
+        $exp = array($gn_142_of, $tr_31_we, $zi_23_ba);
+        $this->assertSame($exp, cArray::csort($src, 'age', SORT_DESC));
+        // age REGULAR (implicit numeric)
+        $exp = array($zi_23_ba, $tr_31_we, $gn_142_of);
+        $this->assertSame($exp, cArray::csort($src, 'age', SORT_REGULAR));
+        // age NUMERIC
+        $exp = array($zi_23_ba, $tr_31_we, $gn_142_of);
+        $this->assertSame($exp, cArray::csort($src, 'age', SORT_NUMERIC));
+        // age STRING
+        $exp = array($gn_142_of, $zi_23_ba, $tr_31_we);
+        $this->assertSame($exp, cArray::csort($src, 'age', SORT_STRING));
+
+        // ////////////////////////////////////////////////////////////////////
+
+        // town ASC
+        $exp = array($zi_23_ba, $gn_142_of, $tr_31_we);
+        $this->assertSame($exp, cArray::csort($src, 'town', SORT_ASC));
+        // town DESC
+        $exp = array($tr_31_we, $gn_142_of, $zi_23_ba);
+        $this->assertSame($exp, cArray::csort($src, 'town', SORT_DESC));
+        // town REGULAR
+        $exp = array($zi_23_ba, $gn_142_of, $tr_31_we);
+        $this->assertSame($exp, cArray::csort($src, 'town', SORT_REGULAR));
+//         // town NUMERIC
+//         $exp = array($zi_23_ba, $gn_142_of, $tr_31_we);
+//         $this->assertSame($exp, cArray::csort($src, 'town', SORT_NUMERIC));
+        // town STRING
+        $exp = array($zi_23_ba, $gn_142_of, $tr_31_we);
+        $this->assertSame($exp, cArray::csort($src, 'town', SORT_STRING));
+
     }
 
     /**
