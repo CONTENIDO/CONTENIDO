@@ -2621,5 +2621,13 @@ setup/upgrade_jobs/class.upgrade.job.0014.php -text
 test/AllTests.php -text
 test/frontend/Array/cArrayTest.php -text
 test/frontend/Chains/cApiCecRegistry.php -text
+test/frontend/Item/item_test.php -text
+test/frontend/Item/sqlStatements.php -text
+test/frontend/ItemCollection/item_collection_test.php -text
+test/frontend/ItemCollection/sqlStatements.php -text
+test/frontend/ItemCollectionTestSuite.php -text
+test/frontend/ItemTestSuite.php -text
+test/frontend/Template/template.php -text
 test/frontend/Validator/cValidatorEmail.php -text
 test/frontend/ValidatorTestSuite.php -text
+test/frontend/templateTestSuite.php -text
