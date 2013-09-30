@@ -161,8 +161,6 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
     /**
      * $new_array = cArray::csort($array [, 'col1' [, SORT_FLAG]+]);
      * SORT_FLAG = [SORT_ASC|SORT_DESC|SORT_REGULAR|SORT_NUMERIC|SORT_STRING]
-     *
-     * @todo add test
      */
     public function testCsort() {
 
