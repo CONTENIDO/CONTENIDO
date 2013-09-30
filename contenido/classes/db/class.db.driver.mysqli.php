@@ -309,8 +309,9 @@ class cDbDriverMysqli extends cDbDriverAbstract {
     public function getMetaData($tableName, $full = false) {
         $res = array();
 
-        $this->query('SELECT * FROM `%s` LIMIT 1', $tableName);
-        $id = $this->getQueryId();
+        $this->query(sprintf('SELECT * FROM `%s` LIMIT 1', $tableName));
+
+        $id = $this->_handler->getQueryId();
         if (!$id) {
             $this->_handler->halt('Metadata query failed.');
             return false;
