@@ -117,7 +117,8 @@ class cAutoload {
 
         // load n' store autoloader class map file
         $file = $cfg['path']['contenido_config'] . 'config.autoloader.php';
-        if ($arr = include_once ($file)) {
+        $arr = include_once ($file);
+        if ($arr) {
             self::addClassmapConfig($arr);
         }
 
@@ -185,7 +186,8 @@ class cAutoload {
      */
     public static function addClassmapConfigFile($configFile) {
         if (is_file($configFile)) {
-            if ($arr = include_once ($configFile)) {
+            $arr = include_once ($configFile);
+            if ($arr) {
                 self::addClassmapConfig($arr);
             }
         }
@@ -207,9 +209,9 @@ class cAutoload {
             return;
         }
 
-        $file = '';
+        $file = self::_getContenidoClassFile($className);
 
-        if ($file = self::_getContenidoClassFile($className)) {
+        if ($file) {
             // load class file from class map
             self::_loadFile($file);
         }
