@@ -15,6 +15,7 @@
  */
 
 /**
+ * This class tests the static class methods uf the cArray util class.
  *
  * @author marcus.gnass
  */
@@ -57,7 +58,7 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(false, cArray::searchRecursive($data, 'foo'));
         $this->assertEquals(false, cArray::searchRecursive($data, 'bar'));
 
-        // nonempty array (which is even nested)
+        // nonempty nested array
         $data = array(
             array(
                 'NULL',
@@ -137,9 +138,11 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     * Test sorting of characters in array according to given locale.
+     *
+     * @todo add further locales and further locale specific characters
      */
     public function testSortWithLocale() {
-
         $orig = explode(',', 'ß,ü,ö,ä,z,y,x,w,v,u,t,s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a');
 
         $us = explode(',', 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ä,ö,ü,ß');
@@ -153,19 +156,18 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
 
         $de_DE = explode(',', 'a,ä,b,c,d,e,f,g,h,i,j,k,l,m,n,o,ö,p,q,r,s,t,u,ü,v,w,x,y,z,ß');
         $this->assertEquals($de_DE, cArray::sortWithLocale($orig, 'de_DE'));
-
     }
 
     /**
      *
-     * @todo missing implementation
+     * @todo add test
      */
     public function testCsort() {
     }
 
     /**
      *
-     * @todo missing implementation
+     * @todo add test
      */
     public function testInitializeKey() {
     }
