@@ -52,7 +52,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // Include the config file of the frontend to init the Client and Language Id
-include_once('data/config/config.php');
+include_once('data/config/production/config.php');
 
 // Contenido startup process
 if (!is_file($contenido_path . 'includes/startup.php')) {
