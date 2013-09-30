@@ -1,5 +1,6 @@
 <?php
-require_once ('sqlStatements.php');
+$path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../ItemCollection/'));
+require_once ($path . '/sqlStatements.php');
 class ItemTest extends PHPUnit_Framework_TestCase {
 
     /**
