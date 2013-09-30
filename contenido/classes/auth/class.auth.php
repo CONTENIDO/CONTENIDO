@@ -24,18 +24,25 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cAuth {
 
     /**
-     * authentification user ID for nobody
+     * Authentification user ID for nobody.
      *
      * @var string
      */
     const AUTH_UID_NOBODY = 'nobody';
 
     /**
-     * authentification user ID for calling login form
+     * Authentification user ID for calling login form.
      *
      * @var string
      */
     const AUTH_UID_FORM = 'form';
+
+    /**
+     * The global auth information array.
+     *
+     * @var array
+     */
+    public $auth = array();
 
     /**
      * Lifetime for authenticated users in minutes.
@@ -46,13 +53,6 @@ class cAuth {
     protected $_lifetime = 15;
 
     /**
-     * The global auth information array.
-     *
-     * @var array
-     */
-    public $auth = array();
-
-    /**
      * Automatic authentication as nobody.
      *
      * @var bool
@@ -61,7 +61,7 @@ class cAuth {
 
     /**
      * The "in flag".
-     * Nobody knows, for which reasons it exists.
+     * Nobody knows, for which reason it exists.
      *
      * @var bool
      */
@@ -177,7 +177,7 @@ class cAuth {
     /**
      * Getter for the auth information.
      *
-     * @return array auth information
+     * @return array
      */
     public function getAuthInfo() {
         return $this->auth;
@@ -224,6 +224,23 @@ class cAuth {
     }
 
     /**
+     * Fetches the login form.
+     */
+    protected function _fetchLoginForm() {
+        $sess = cRegistry::getSession();
+
+        $this->_setAuthInfo(self::AUTH_UID_FORM, 0x7fffffff);
+
+        // TODO Method displayLoginForm() is declared in cAuthHandlerAbstract
+        // which is extending this class! Better declare it in this class and
+        // make it abstract!
+        $this->displayLoginForm();
+
+        $sess->freeze();
+        exit();
+    }
+
+    /**
      * Sets the authentication info for a user.
      *
      * @param string $userId user ID to set
@@ -232,18 +249,5 @@ class cAuth {
     protected function _setAuthInfo($userId, $expiration = NULL) {
         $this->auth['uid'] = $userId;
         $this->_setExpiration($expiration);
-    }
-
-    /**
-     * Fetches the login form.
-     */
-    protected function _fetchLoginForm() {
-        $sess = cRegistry::getSession();
-
-        $this->_setAuthInfo(self::AUTH_UID_FORM, 0x7fffffff);
-        $this->displayLoginForm();
-
-        $sess->freeze();
-        exit();
     }
 }
