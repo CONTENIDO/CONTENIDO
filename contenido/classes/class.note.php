@@ -390,7 +390,7 @@ class NoteLink extends cHTMLLink {
     }
 
     /**
-     * Renders the resulting link
+     * @see cHTML::render()
      */
     public function render($return = false) {
         global $sess;

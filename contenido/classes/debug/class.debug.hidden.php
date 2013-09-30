@@ -36,7 +36,7 @@ class cDebugHidden implements cDebugInterface {
      * @return cDebugHidden
      */
     static public function getInstance() {
-        if (self::$_instance == null) {
+        if (self::$_instance == NULL) {
             self::$_instance = new cDebugHidden();
         }
         return self::$_instance;

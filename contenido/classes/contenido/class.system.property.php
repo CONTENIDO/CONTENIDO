@@ -77,7 +77,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @param string $name
      * @param string $value
      * @param int $id
-     * @return cApiSystemProperty|null
+     * @return cApiSystemProperty|NULL
      */
     public function setTypeNameValueById($type, $name, $value, $id) {
         $item = $this->fetchById($id);
@@ -168,7 +168,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * Returns system property by it's id.
      *
      * @param int $id
-     * @return cApiSystemProperty null
+     * @return cApiSystemProperty NULL
      */
     public function fetchById($id) {
         if (self::$_enableCache) {
@@ -184,7 +184,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
-     * @return cApiSystemProperty null
+     * @return cApiSystemProperty NULL
      */
     public function fetchByTypeName($type, $name) {
         if (self::$_enableCache) {
@@ -298,7 +298,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * Fetches entry by id from cache.
      *
      * @param int $id
-     * @return cApiSystemProperty|null
+     * @return cApiSystemProperty|NULL
      */
     protected function _fetchByIdFromCache($id) {
         $obj = new cApiSystemProperty();
@@ -316,7 +316,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
-     * @return cApiSystemProperty|null
+     * @return cApiSystemProperty|NULL
      */
     protected function _fetchByTypeNameFromCache($type, $name) {
         $obj = new cApiSystemProperty();

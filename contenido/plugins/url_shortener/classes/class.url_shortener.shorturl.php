@@ -41,7 +41,7 @@ class cApiShortUrlCollection extends ItemCollection {
         $this->_setItemClass('cApiShortUrl');
     }
 
-    public function create($shorturl, $idart = null, $idlang = null, $idclient = null) {
+    public function create($shorturl, $idart = NULL, $idlang = NULL, $idclient = NULL) {
         if (is_null($idart)) {
             $idart = cRegistry::getArticleId();
         }

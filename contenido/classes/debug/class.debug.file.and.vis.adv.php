@@ -52,7 +52,7 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
      * @return cDebugFileAndVisAdv
      */
     public static function getInstance() {
-        if (self::$_instance == null) {
+        if (self::$_instance == NULL) {
             self::$_instance = new cDebugFileAndVisAdv();
         }
         return self::$_instance;

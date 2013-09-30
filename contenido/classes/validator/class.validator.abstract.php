@@ -55,10 +55,10 @@ abstract class cValidatorAbstract {
     /**
      * Option getter.
      * @param   string  $name
-     * @return  mixed|null
+     * @return  mixed|NULL
      */
     public function getOption($name) {
-        return isset($this->_options[$name]) ? $this->_options[$name] : null;
+        return isset($this->_options[$name]) ? $this->_options[$name] : NULL;
     }
 
     /**

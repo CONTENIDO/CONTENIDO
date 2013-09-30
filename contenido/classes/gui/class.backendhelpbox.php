@@ -24,8 +24,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cGuiBackendHelpbox {
 
     /**
+     * the text that will appear in the tooltip
      *
-     * @var string the text that will appear in the tooltip
+     * @var string
      */
     protected $helpText;
 
@@ -54,8 +55,8 @@ class cGuiBackendHelpbox {
      * atooltip.css are embedded on the site
      *
      * @param string $returnAsString if true the rendered button will be
-     *            returned. Otherwise it will be echoed
-     * @return string null rendered button or nothing if it's been printed
+     *        returned. Otherwise it will be echoed
+     * @return string|NULL rendered button or nothing if it's been printed
      */
     function render($returnAsString = true) {
         $id = md5(rand()) . "-Info";
@@ -67,10 +68,9 @@ class cGuiBackendHelpbox {
             return $ret;
         } else {
             echo ($ret);
-            return null;
+            return NULL;
         }
     }
-
 }
 
 ?>

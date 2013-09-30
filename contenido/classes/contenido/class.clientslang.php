@@ -109,7 +109,7 @@ class cApiClientLanguageCollection extends ItemCollection {
      * Returns the id of first language for a specific client.
      *
      * @param int $client
-     * @return int null
+     * @return int NULL
      */
     public function getFirstLanguageIdByClient($client) {
         global $cfg;

@@ -2,113 +2,122 @@
 /**
  * This file contains the abstract base item class of the generic db.
  *
- * @package          Core
- * @subpackage       GenericDB
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB
+ * @version SVN Revision $Rev:$
  *
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $cfg;
-
-// TODO: check if this is needed any longer because we have autoloading feature
-
 // Try to load GenericDB database driver
+// TODO: check if this is needed any longer because we have autoloading feature
+global $cfg;
 $driver_filename = cRegistry::getBackendPath() . $cfg['path']['classes'] . 'drivers/' . $cfg['sql']['gdb_driver'] . '/class.gdb.' . $cfg['sql']['gdb_driver'] . '.php';
-
 if (cFileHandler::exists($driver_filename)) {
-    include_once($driver_filename);
+    include_once ($driver_filename);
 }
 
 /**
  * Class cItemBaseAbstract.
- * Base class with common features for database based items and item collections.
+ * Base class with common features for database based items and item
+ * collections.
  *
  * NOTE:
  * Because of required downwards compatibilitiy all protected/private member
  * variables or methods don't have an leading underscore.
  *
- * @package          Core
- * @subpackage       GenericDB
+ * @package Core
+ * @subpackage GenericDB
  */
 abstract class cItemBaseAbstract extends cGenericDb {
 
     /**
      * Database instance, contains the database object
-     * @var  cDb
+     *
+     * @var cDb
      */
     protected $db;
 
     /**
      * Second DB instance, is required for some additional queries without
      * losing an current existing query result.
-     * @var  cDb
+     *
+     * @var cDb
      */
     protected $secondDb;
 
     /**
      * Property collection instance
-     * @var  cApiPropertyCollection
+     *
+     * @var cApiPropertyCollection
      */
     protected $properties;
 
     /**
      * Item cache instance
-     * @var  cItemCache
+     *
+     * @var cItemCache
      */
     protected $_oCache;
 
     /**
      * GenericDB settings, see $cfg['sql']
-     * @var  array
+     *
+     * @var array
      */
     protected $_settings;
 
     /**
      * Storage of the source table to use for the information
-     * @var  string
+     *
+     * @var string
      */
     protected $table;
 
     /**
      * Storage of the primary key
-     * @var  string
+     *
+     * @var string
      * @todo remove access from public
      */
     public $primaryKey;
 
     /**
-     * Checks for the virginity of created objects. If true, the object
+     * Checks for the virginity of created objects.
+     * If true, the object
      * is virgin and no operations on it except load-Functions are allowed.
+     *
      * @todo remove access from public
-     * @var  bool
+     * @var bool
      */
     public $virgin;
 
     /**
      * Storage of the last occured error
-     * @var  string
+     *
+     * @var string
      */
     protected $lasterror = '';
 
     /**
      * Classname of current instance
-     * @var  string
+     *
+     * @var string
      */
     protected $_className;
 
     /**
      * Sets some common properties
      *
-     * @param  string  $sTable       Name of table
-     * @param  string  $sPrimaryKey  Primary key of table
-     * @param  string  $sClassName   Name of parent class
+     * @param string $sTable Name of table
+     * @param string $sPrimaryKey Primary key of table
+     * @param string $sClassName Name of parent class
      * @throws cInvalidArgumentException If table name or primary key is not set
      */
     protected function __construct($sTable, $sPrimaryKey, $sClassName) {
@@ -127,7 +136,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
         $this->_settings = $cfg['sql'];
 
         // instantiate caching
-        $aCacheOpt = (isset($this->_settings['cache'])) ? $this->_settings['cache'] : array();
+        $aCacheOpt = (isset($this->_settings['cache']))? $this->_settings['cache'] : array();
         $this->_oCache = cItemCache::getInstance($sTable, $aCacheOpt);
 
         $this->table = $sTable;
@@ -139,8 +148,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
     /**
      * Escape string for using in SQL-Statement.
      *
-     * @param   string  $sString  The string to escape
-     * @return  string  Escaped string
+     * @param string $sString The string to escape
+     * @return string Escaped string
      */
     public function escape($sString) {
         return $this->db->escape($sString);
@@ -150,7 +159,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * Returns the second database instance, usable to run additional statements
      * without losing current query results.
      *
-     * @return  cDb
+     * @return cDb
      */
     protected function _getSecondDBInstance() {
         if (!isset($this->secondDb) || !($this->secondDb instanceof cDb)) {
@@ -161,11 +170,13 @@ abstract class cItemBaseAbstract extends cGenericDb {
 
     /**
      * Returns properties instance, instantiates it if not done before.
-     * NOTE: This funtion changes always the client variable of property collection instance.
+     * NOTE: This funtion changes always the client variable of property
+     * collection instance.
      *
-     * @param   int  $idclient  Id of client to use in property collection. If not passed
-     *                          it uses global variable
-     * @return  cApiPropertyCollection
+     * @param int $idclient Id of client to use in property collection. If not
+     *        passed
+     *        it uses global variable
+     * @return cApiPropertyCollection
      */
     protected function _getPropertiesCollectionInstance($idclient = 0) {
         global $client;
@@ -185,7 +196,6 @@ abstract class cItemBaseAbstract extends cGenericDb {
 
         return $this->properties;
     }
-
 }
 
 ?>

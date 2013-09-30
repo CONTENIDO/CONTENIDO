@@ -89,7 +89,7 @@ $installedPluginFoldernames = array();
 
 // get all installed plugins
 $oItem = new PimPluginCollection();
-$oItem->select(null, null, 'executionorder');
+$oItem->select(NULL, NULL, 'executionorder');
 
 while (($plugin = $oItem->next()) !== false) {
 

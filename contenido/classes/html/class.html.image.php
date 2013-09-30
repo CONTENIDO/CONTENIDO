@@ -31,7 +31,7 @@ class cHTMLImage extends cHTML {
      * @param string $class the class of this element
      * @return void
      */
-    public function __construct($src = null, $class = '') {
+    public function __construct($src = NULL, $class = '') {
         parent::__construct();
 
         $this->_tag = 'img';
@@ -48,7 +48,7 @@ class cHTMLImage extends cHTML {
      * @return cHTMLImage $this
      */
     public function setSrc($src) {
-        if ($src === null) {
+        if ($src === NULL) {
             $src = 'images/spacer.gif';
         }
 

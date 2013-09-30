@@ -69,7 +69,7 @@ class cDb extends cDbDriverHandler {
     /**
      * Returns the query ID resource.
      *
-     * @return null resource
+     * @return NULL resource
      */
     public function getQueryId() {
         return $this->_queryId;
@@ -88,7 +88,7 @@ class cDb extends cDbDriverHandler {
     /**
      * Returns the link ID resource.
      *
-     * @return null resource
+     * @return NULL resource
      */
     public function getLinkId() {
         return $this->_linkId;

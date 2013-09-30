@@ -54,7 +54,7 @@ class cMailer extends Swift_Mailer {
      *
      * @var string
      */
-    private $_mailEncryption = null;
+    private $_mailEncryption = NULL;
 
     /**
      * The port to use at the host
@@ -82,7 +82,7 @@ class cMailer extends Swift_Mailer {
      *
      * @param Swift_Transport $transport [optional] the transport type
      */
-    public function __construct($transport = null) {
+    public function __construct($transport = NULL) {
         // get sender mail from system properties
         $mailSender = getSystemProperty('system', 'mail_sender');
         if (Swift_Validate::email($mailSender)) {
@@ -144,7 +144,7 @@ class cMailer extends Swift_Mailer {
      * @param string $mailPass [optional] the mail password
      * @return Swift_SmtpTransport Swift_MailTransport the transport object
      */
-    public static function constructTransport($mailHost, $mailPort, $mailEncryption = null, $mailUser = null, $mailPass = null) {
+    public static function constructTransport($mailHost, $mailPort, $mailEncryption = NULL, $mailUser = NULL, $mailPass = NULL) {
         // try to use SMTP
         $transport = Swift_SmtpTransport::newInstance($mailHost, $mailPort, $mailEncryption);
         if (!empty($mailUser)) {
@@ -203,7 +203,7 @@ class cMailer extends Swift_Mailer {
      * @param string $contentType
      * @return int number of recipients to which the mail has been sent
      */
-    public function sendMail($from, $to, $subject, $body = '', $cc = null, $bcc = null, $replyTo = null, $resend = false, $contentType = 'text/plain') {
+    public function sendMail($from, $to, $subject, $body = '', $cc = NULL, $bcc = NULL, $replyTo = NULL, $resend = false, $contentType = 'text/plain') {
         $message = Swift_Message::newInstance($subject, $body, $contentType);
         if (empty($from) || is_array($from) && count($from) > 1) {
             $message->setFrom(array(
@@ -230,7 +230,7 @@ class cMailer extends Swift_Mailer {
      * @param bool $resend, optional
      * @return int
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null, $resend = false) {
+    public function send(Swift_Mime_Message $message, &$failedRecipients = NULL, $resend = false) {
         if (!is_array($failedRecipients)) {
             $failedRecipients = array();
         }

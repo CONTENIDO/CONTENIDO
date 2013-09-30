@@ -78,7 +78,7 @@ class cUriBuilderMR extends cUriBuilder {
      *
      * @var array
      */
-    private $_aMrCfg = null;
+    private $_aMrCfg = NULL;
 
     /**
      * Constructor, tries to set some member variables.
@@ -99,7 +99,7 @@ class cUriBuilderMR extends cUriBuilder {
      * @return cUriBuilderMR
      */
     public static function getInstance() {
-        if (self::$_instance == null) {
+        if (self::$_instance == NULL) {
             self::$_instance = new self();
         }
         return self::$_instance;
@@ -340,7 +340,7 @@ class cUriBuilderMR extends cUriBuilder {
      * Returns client id or name depending on settings.
      *
      * @param array $aArgs Additional arguments
-     * @return mixed Client id, client name or null
+     * @return mixed Client id, client name or NULL
      */
     private function _getClientParameter(array $aArgs) {
         global $client;
@@ -355,14 +355,14 @@ class cUriBuilderMR extends cUriBuilder {
                 return $idclient;
             }
         }
-        return null;
+        return NULL;
     }
 
     /**
      * Returns language id or name depending on settings.
      *
      * @param array $aArgs Additional arguments
-     * @return mixed Language id, language name or null
+     * @return mixed Language id, language name or NULL
      */
     private function _getLanguageParameter(array $aArgs) {
         global $lang;
@@ -377,7 +377,7 @@ class cUriBuilderMR extends cUriBuilder {
                 return $idlang;
             }
         }
-        return null;
+        return NULL;
     }
 
     /**

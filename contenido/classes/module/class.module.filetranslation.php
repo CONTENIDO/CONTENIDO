@@ -61,17 +61,17 @@ class cModuleFileTranslation extends cModuleHandler {
      * @param bool $static if true it will load once the translation from file
      * @param int $overrideIdlang use different language if not NULL
      */
-    public function __construct($idmodul = null, $static = false, $overrideIdlang = null) {
+    public function __construct($idmodul = NULL, $static = false, $overrideIdlang = NULL) {
         parent::__construct($idmodul);
 
         // $this->_debug = true;
 
-        if ($idmodul != null) {
+        if ($idmodul != NULL) {
             $this->_modulePath = $this->getModulePath();
         }
 
         // override language if specified
-        if ($overrideIdlang != null) {
+        if ($overrideIdlang != NULL) {
             $this->_idlang = $overrideIdlang;
         }
 

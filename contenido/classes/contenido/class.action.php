@@ -114,7 +114,7 @@ class cApiActionCollection extends ItemCollection {
      *
      * @param int Id of action
      *
-     * @return string null
+     * @return string NULL
      */
     public function getActionName($action) {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
@@ -127,7 +127,7 @@ class cApiActionCollection extends ItemCollection {
      *
      * @param string|int Name or id of action
      *
-     * @return int null with the area ID for the given action or null
+     * @return int NULL with the area ID for the given action or NULL
      */
     function getAreaForAction($action) {
         if (!is_numeric($action)) {

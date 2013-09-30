@@ -44,7 +44,7 @@ if (($action == 'group_edit')) {
             $bError = true;
         } else {
             foreach ($mlang as $ilang) {
-                if (!checkLangInClients($mclient, $ilang, null, null)) {
+                if (!checkLangInClients($mclient, $ilang, NULL, NULL)) {
                     $sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
                     $bError = true;
                     break;

@@ -25,7 +25,7 @@ plugin_include('repository', 'custom/FrontendNavigation.php');
  */
 class pApiContentAllocationArticle extends pApiTree {
 
-    var $tpl = null;
+    var $tpl = NULL;
     var $template = '';
 
     var $load = array();

@@ -186,7 +186,7 @@ if ($oClientLang->isLoaded()) {
     die();
 }
 
-// current set it on null
+// current set it on NULL
 $oTpl->set('s', 'NOTIFICATION', '');
 
 $oTpl->set('s', 'OB_CONTENT', '');

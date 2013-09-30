@@ -110,7 +110,7 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns first client available in the system
      *
-     * @return cApiClient null
+     * @return cApiClient NULL
      */
     public function getFirstAccessibleClient() {
         global $perm;

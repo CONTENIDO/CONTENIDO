@@ -70,7 +70,7 @@ abstract class ModRewrite_ControllerAbstract {
      * Template file or template string to render
      * @var  string
      */
-    protected $_template = null;
+    protected $_template = NULL;
 
     /**
      * Additional properties list
@@ -148,7 +148,7 @@ abstract class ModRewrite_ControllerAbstract {
      * @param   mixed   $default
      * @return  mixed
      */
-    public function getProperty($key, $default = null) {
+    public function getProperty($key, $default = NULL) {
         return (isset($this->_properties[$key])) ? $this->_properties[$key] : $default;
     }
 
@@ -175,12 +175,12 @@ abstract class ModRewrite_ControllerAbstract {
      * @throws cException if no template is set
      * @return  string
      */
-    public function render($template = null) {
-        if ($template == null) {
+    public function render($template = NULL) {
+        if ($template == NULL) {
             $template = $this->_template;
         }
 
-        if ($template == null) {
+        if ($template == NULL) {
             throw new cException('Missing template to render.');
         }
 
@@ -200,7 +200,7 @@ abstract class ModRewrite_ControllerAbstract {
      * @param   mixed   $default  The default value
      * @return  mixed
      */
-    protected function _getParam($key, $default = null) {
+    protected function _getParam($key, $default = NULL) {
         if (isset($_GET[$key])) {
             return $_GET[$key];
         } elseif (isset($_POST[$key])) {

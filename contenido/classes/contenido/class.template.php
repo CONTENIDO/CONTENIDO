@@ -48,7 +48,7 @@ class cApiTemplateCollection extends ItemCollection {
      * Returns the default template configuration item
      *
      * @param int $idclient
-     * @return cApiTemplateConfiguration null
+     * @return cApiTemplateConfiguration NULL
      */
     public function selectDefaultTemplate($idclient) {
         $this->select('defaulttemplate = 1 AND idclient = ' . $idclient);

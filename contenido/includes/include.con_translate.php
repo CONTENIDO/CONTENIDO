@@ -415,7 +415,7 @@ if (is_array($allLanguages)) {
             $countExtraLangOptions++;
         }
     }
-    $submitExtraLangs = new cHTMLButton('newlangsubmit', i18n("Add"), 'newlangsubmit', false, null, '', 'image', "vAlignTop tableElement");
+    $submitExtraLangs = new cHTMLButton('newlangsubmit', i18n("Add"), 'newlangsubmit', false, NULL, '', 'image', "vAlignTop tableElement");
     $submitExtraLangs->setImageSource($cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_art_new.gif');
 
     $formExtraLangs->setContent($labelExtraLangs->render() . $selectExtraLangs->render() . $submitExtraLangs->render());
@@ -447,7 +447,7 @@ foreach ($elemPerPage as $value => $option) {
     $selectElementsPerPage->addOptionElement($value, $option);
 }
 $selectElementsPerPage->setAttribute('class', 'elemperpage');
-$submitElementsPerPage = new cHTMLButton('elemperpagesubmit', i18n("Submit"), 'elemperpagesubmit', false, null, '', 'image');
+$submitElementsPerPage = new cHTMLButton('elemperpagesubmit', i18n("Submit"), 'elemperpagesubmit', false, NULL, '', 'image');
 $submitElementsPerPage->setImageSource($cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_ok.gif');
 
 $formElementsPerPage->setContent($labelElementsPerPage->render() . $selectElementsPerPage->render() . $submitElementsPerPage->render());

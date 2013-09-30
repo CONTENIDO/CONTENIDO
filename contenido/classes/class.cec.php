@@ -348,7 +348,7 @@ class cApiCecChainItem {
     /**
      * Temporary arguments holder
      *
-     * @var array null
+     * @var array NULL
      */
     protected $_mTemporaryArguments;
 

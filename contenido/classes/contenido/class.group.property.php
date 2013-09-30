@@ -167,7 +167,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
-     * @return cApiGroupProperty null
+     * @return cApiGroupProperty NULL
      */
     public function fetchByGroupIdTypeName($type, $name) {
         if (self::$_enableCache) {
@@ -311,7 +311,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
-     * @return cApiGroupProperty null
+     * @return cApiGroupProperty NULL
      */
     protected function _fetchByGroupIdTypeNameFromCache($type, $name) {
         $props = array();

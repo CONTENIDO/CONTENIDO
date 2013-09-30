@@ -932,7 +932,7 @@ function uplGetFileExtension($sFile) {
  * @return array
  */
 function uplGetDirectoriesToExclude() {
-    static $mDirsToExclude = null;
+    static $mDirsToExclude = NULL;
     if (isset($mDirsToExclude)) {
         return $mDirsToExclude;
     }

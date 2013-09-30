@@ -252,7 +252,7 @@ abstract class cContentTypeAbstract {
                 }
                 $settings[$keyWithoutPrefix] = $this->_settings[$key];
             }
-            $xml = cXmlBase::arrayToXml($settings, null, $this->_prefix);
+            $xml = cXmlBase::arrayToXml($settings, NULL, $this->_prefix);
             $settingsToStore = $xml->asXML();
         } else {
             $settingsToStore = $this->_settings;

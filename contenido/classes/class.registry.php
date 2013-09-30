@@ -445,7 +445,7 @@ class cRegistry {
      *        variable doesn't exists
      * @return mixed
      */
-    public static function getAppVar($key, $default = null) {
+    public static function getAppVar($key, $default = NULL) {
         return (isset(self::$_appVars[$key]))? self::$_appVars[$key] : $default;
     }
 

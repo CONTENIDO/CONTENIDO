@@ -165,14 +165,14 @@ class mpClassTypeFinder
      *
      * @param   SplFileInfo    $fileInfo
      * @param   bool           $recursive  Flag to parse directory recursive
-     * @return  array|null     Either a assoziative array where the key is the class
-     *                         type token and the value is the path or null.
+     * @return  array|NULL     Either a assoziative array where the key is the class
+     *                         type token and the value is the path or NULL.
      */
     public function findInDir(SplFileInfo $fileInfo, $recursive=true)
     {
         if (!$fileInfo->isDir() || !$fileInfo->isReadable()) {
             $this->_debug('findInDir: Invalid/Not readable directory ' . $fileInfo->getPathname());
-            return null;
+            return NULL;
         }
         $this->_debug('findInDir: Processing dir ' . $fileInfo->getPathname() . ' (realpath: ' . $fileInfo->getRealPath() . ')');
 
@@ -189,7 +189,7 @@ class mpClassTypeFinder
             }
         }
 
-        return (count($classTypeTokens) > 0) ? $classTypeTokens : null;
+        return (count($classTypeTokens) > 0) ? $classTypeTokens : NULL;
     }
 
 
@@ -197,14 +197,14 @@ class mpClassTypeFinder
      * Detects all available class type tokens in passed file
      *
      * @param   SplFileInfo    $fileInfo
-     * @return  array|null     Either a assoziative array where the key is the class
-     *                         type token and the value is the path or null.
+     * @return  array|NULL     Either a assoziative array where the key is the class
+     *                         type token and the value is the path or NULL.
      */
     public function findInFile(SplFileInfo $fileInfo)
     {
         if (!$fileInfo->isFile() || !$fileInfo->isReadable()) {
             $this->_debug('findInFile: Invalid/Not readable file ' . $fileInfo->getPathname());
-            return null;
+            return NULL;
         }
         $this->_debug('findInFile: Processing file ' . $fileInfo->getPathname() . ' (realpath: ' . $fileInfo->getRealPath() . ')');
 
@@ -231,7 +231,7 @@ class mpClassTypeFinder
             }
         }
 
-        return (count($classTypeTokens) > 0) ? $classTypeTokens : null;
+        return (count($classTypeTokens) > 0) ? $classTypeTokens : NULL;
     }
 
 

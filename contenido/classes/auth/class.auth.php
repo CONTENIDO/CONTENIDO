@@ -212,7 +212,7 @@ class cAuth {
     /**
      * Sets or refreshs the expiration of the authentication.
      *
-     * @param int $expiration new expiration (optional, default: null = current
+     * @param int $expiration new expiration (optional, default: NULL = current
      *        time plus lifetime minutes)
      */
     protected function _setExpiration($expiration = NULL) {
@@ -227,7 +227,7 @@ class cAuth {
      * Sets the authentication info for a user.
      *
      * @param string $userId user ID to set
-     * @param int $expiration expiration (optional, default: null)
+     * @param int $expiration expiration (optional, default: NULL)
      */
     protected function _setAuthInfo($userId, $expiration = NULL) {
         $this->auth['uid'] = $userId;

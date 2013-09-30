@@ -2,15 +2,15 @@
 /**
  * This file contains the datetime datatype class.
  *
- * @package          Core
- * @subpackage       Datatype
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Datatype
+ * @version SVN Revision $Rev:$
  *
- * @author           unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,8 +18,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Datetime datatype class.
  *
- * @package          Core
- * @subpackage       Datatype
+ * @package Core
+ * @subpackage Datatype
  */
 class cDatatypeDateTime extends cDatatype {
 
@@ -294,7 +294,13 @@ class cDatatypeDateTime extends cDatatype {
      */
     public function getDayOrder() {
         $aDays = array(
-            0, 1, 2, 3, 4, 5, 6
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
         );
         $aRemainderDays = array_splice($aDays, 0, $this->_iFirstDayOfWeek);
 
@@ -483,7 +489,8 @@ class cDatatypeDateTime extends cDatatype {
      * Returns the effective value
      *
      * @param int|bool $iOverrideFormat
-     * @return  mixed
+     * @return mixed
+     * @throws cInvalidArgumentException if given format is not yet supported
      * @see cDatatype::get()
      */
     public function get($iOverrideFormat = false) {
@@ -513,13 +520,14 @@ class cDatatypeDateTime extends cDatatype {
                 return date("YmdHis", $sTemporaryTimestamp);
                 break;
             default:
-                throw new cInvalidArgumentException('The given format is not supported yet');
+                throw new cInvalidArgumentException('The given format is not yet supported.');
                 break;
         }
     }
 
     /**
-     * (non-PHPdoc)
+     *
+     * @var bool $iOverrideFormat
      * @see cDatatype::render()
      */
     public function render($iOverrideFormat = false) {
@@ -549,7 +557,8 @@ class cDatatypeDateTime extends cDatatype {
     }
 
     /**
-     * (non-PHPdoc)
+     *
+     * @var string $value
      * @see cDatatype::parse()
      */
     public function parse($value) {
@@ -691,5 +700,4 @@ class cDatatypeDateTime extends cDatatype {
                 break;
         }
     }
-
 }

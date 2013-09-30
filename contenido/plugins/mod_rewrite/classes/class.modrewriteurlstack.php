@@ -116,7 +116,7 @@ class ModRewriteUrlStack {
      * @return  ModRewriteUrlStack
      */
     public static function getInstance() {
-        if (self::$_instance == null) {
+        if (self::$_instance == NULL) {
             self::$_instance = new ModRewriteUrlStack();
         }
         return self::$_instance;

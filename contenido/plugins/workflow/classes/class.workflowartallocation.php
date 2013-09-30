@@ -216,11 +216,11 @@ class WorkflowArtAllocation extends Item {
 
                         while ($db->nextRecord()) {
                             $user->loadByPrimaryKey($db->f("user_id"));
-                            $mailer->sendMail(null, $user->getField("email"), stripslashes(i18n('Workflow notification')), $filledMail);
+                            $mailer->sendMail(NULL, $user->getField("email"), stripslashes(i18n('Workflow notification')), $filledMail);
                         }
                     } else {
                         $user->loadByPrimaryKey($usersequence->get("iduser"));
-                        $mailer->sendMail(null, $user->getField("email"), stripslashes(i18n('Workflow notification')), $filledMail);
+                        $mailer->sendMail(NULL, $user->getField("email"), stripslashes(i18n('Workflow notification')), $filledMail);
                     }
                 } else {
                     $email = "Hello %s,\n\n" . "you are assigned as the escalator for the Article %s.\n\n" . "More informations:\n" . "Article: %s\n" . "Category: %s\n" . "Editor: %s\n" . "Author: %s\n" . "Editable from: %s\n" . "Editable to: %s\n";
@@ -237,11 +237,11 @@ class WorkflowArtAllocation extends Item {
 
                         while ($db->nextRecord()) {
                             $user->loadByPrimaryKey($db->f("user_id"));
-                            $mailer->sendMail(null, $user->getField("email"), stripslashes(i18n('Workflow escalation')), $filledMail);
+                            $mailer->sendMail(NULL, $user->getField("email"), stripslashes(i18n('Workflow escalation')), $filledMail);
                         }
                     } else {
                         $user->loadByPrimaryKey($usersequence->get("iduser"));
-                        $mailer->sendMail(null, $user->getField("email"), stripslashes(i18n('Workflow escalation')), $filledMail);
+                        $mailer->sendMail(NULL, $user->getField("email"), stripslashes(i18n('Workflow escalation')), $filledMail);
                     }
                 }
             }

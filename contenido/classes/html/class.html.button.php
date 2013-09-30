@@ -40,7 +40,7 @@ class cHTMLButton extends cHTMLFormElement {
      * @param string $class the class of this element
      * @return void
      */
-    public function __construct($name, $title = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $mode = 'submit', $class = '') {
+    public function __construct($name, $title = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $mode = 'submit', $class = '') {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
         $this->_tag = 'input';
         $this->_contentlessTag = true;

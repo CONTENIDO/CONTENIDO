@@ -182,7 +182,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
-     * @return cApiUserProperty|null
+     * @return cApiUserProperty|NULL
      */
     public function fetchByUserIdTypeName($type, $name) {
         if (self::$_enableCache) {
@@ -307,7 +307,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
-     * @return cApiUserProperty|null
+     * @return cApiUserProperty|NULL
      */
     public function _fetchByUserIdTypeNameFromCache($type, $name) {
         $props = array();

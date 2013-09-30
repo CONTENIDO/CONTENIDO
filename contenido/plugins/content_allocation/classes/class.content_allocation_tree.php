@@ -30,12 +30,12 @@ class pApiTree {
      * Contenido DB
      * @var cDb
      */
-    var $db = null;
+    var $db = NULL;
 
     /**
      *
      */
-    var $table = null;
+    var $table = NULL;
 
     /**
      *
@@ -55,12 +55,12 @@ class pApiTree {
     /**
      *
      */
-    var $logger = null;
+    var $logger = NULL;
 
     /**
      *
      */
-    var $user = null;
+    var $user = NULL;
 
     /**
      *
@@ -70,7 +70,7 @@ class pApiTree {
     /**
      *
      */
-    var $uuid = null;
+    var $uuid = NULL;
 
     /**
      *

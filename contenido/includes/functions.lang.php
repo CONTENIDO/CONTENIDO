@@ -270,7 +270,7 @@ function langActivateDeactivateLanguage($idlang, $active) {
  * @param cDb $db Is not in use
  * @return string 'ltr' or 'rtl'
  */
-function langGetTextDirection($idlang, $db = null) {
+function langGetTextDirection($idlang, $db = NULL) {
     static $oLang;
     if (!isset($oLang)) {
         $oLang = new cApiLanguage();

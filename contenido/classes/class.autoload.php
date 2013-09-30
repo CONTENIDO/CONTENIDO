@@ -43,12 +43,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cAutoload {
 
     /**
+     * Identifier for error if class file could not be found.
      *
      * @var string
      */
     const ERROR_FILE_NOT_FOUND = 'file_not_found';
 
     /**
+     * Identifier for error if class already exists.
      *
      * @var string
      */
@@ -60,21 +62,21 @@ class cAutoload {
      *
      * @var string
      */
-    private static $_conRootPath = null;
+    private static $_conRootPath = NULL;
 
     /**
      * Array of interface/class names with related files to include
      *
      * @var array
      */
-    private static $_includeFiles = null;
+    private static $_includeFiles = NULL;
 
     /**
      * Flag containing initialized status
      *
      * @var bool
      */
-    private static $_initialized = null;
+    private static $_initialized = NULL;
 
     /**
      * Array to store loaded classnames and the paths to the class files.
@@ -262,11 +264,11 @@ class cAutoload {
      * classname
      *
      * @param string $className
-     * @return Ambigous <(string, null), NULL, string> Path and filename or null
+     * @return Ambigous <(string, NULL), NULL, string> Path and filename or NULL
      */
     private static function _getContenidoClassFile($className) {
         $classNameLower = strtolower($className);
-        $file = isset(self::$_includeFiles[$classNameLower])? self::$_conRootPath . self::$_includeFiles[$classNameLower] : null;
+        $file = isset(self::$_includeFiles[$classNameLower])? self::$_conRootPath . self::$_includeFiles[$classNameLower] : NULL;
         return self::_validateClassAndFile($className, $file);
     }
 
@@ -275,7 +277,7 @@ class cAutoload {
      *
      * @param string $className
      * @param string $filePathName
-     * @return NULL unknown if validation was successfull, otherwise null
+     * @return NULL unknown if validation was successfull, otherwise NULL
      */
     private static function _validateClassAndFile($className, $filePathName) {
         if (class_exists($className)) {
@@ -284,14 +286,14 @@ class cAutoload {
                 'file' => str_replace(self::$_conRootPath, '', $filePathName),
                 'error' => self::ERROR_CLASS_EXISTS
             );
-            return null;
+            return NULL;
         } elseif (!is_file($filePathName)) {
             self::$_errors[] = array(
                 'class' => $className,
                 'file' => str_replace(self::$_conRootPath, '', $filePathName),
                 'error' => self::ERROR_FILE_NOT_FOUND
             );
-            return null;
+            return NULL;
         }
 
         return $filePathName;

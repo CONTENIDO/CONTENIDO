@@ -297,7 +297,7 @@ class cVersion {
      */
     public function createNewXml($sDirectory, $sFileName) {
         $oWriter = new cXmlWriter();
-        $oRootElement = $oWriter->addElement('version', '', null, array(
+        $oRootElement = $oWriter->addElement('version', '', NULL, array(
             'xml:lang' => 'de'
         ));
         $oHeadElement = $oWriter->addElement('head', '', $oRootElement);

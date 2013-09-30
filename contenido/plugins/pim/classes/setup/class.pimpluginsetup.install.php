@@ -366,7 +366,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installFillAreas() {
         $oItem = $this->_ApiAreaCollection;
-        $this->_ApiAreaCollection->select(null, null, 'name');
+        $this->_ApiAreaCollection->select(NULL, NULL, 'name');
         while (($areas = $this->_ApiAreaCollection->next()) !== false) {
             $this->PluginInstalledAreas[] = $areas->get('name');
         }

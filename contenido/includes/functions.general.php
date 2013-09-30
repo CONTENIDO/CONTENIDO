@@ -1581,7 +1581,7 @@ function isFunctionDisabled($functionName) {
  *
  * @param string $syncoptions syncstate of backend
  * @param string $showArticle show also current article or categories only (optional)
- * @return null
+ * @return NULL
  */
 function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = false) {
     $tplBread = new cTemplate();

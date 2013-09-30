@@ -120,12 +120,12 @@ class cHTML {
      * @param array $attributes Associative array of table tag attributes
      * @return void
      */
-    public function __construct(array $attributes = null) {
+    public function __construct(array $attributes = NULL) {
         if (!is_null($attributes)) {
             $this->setAttributes($attributes);
         }
 
-        if (self::$_generateXHTML === null) {
+        if (self::$_generateXHTML === NULL) {
             if (getEffectiveSetting('generator', 'xhtml', 'false') == 'true') {
                 self::$_generateXHTML = true;
             } else {
@@ -527,7 +527,7 @@ class cHTML {
      * Returns the value of the given attribute.
      *
      * @param string $attributeName Attribute name
-     * @return string null value or null if the attribute does not
+     * @return string NULL value or NULL if the attribute does not
      *         exist
      */
     public function getAttribute($attributeName) {
@@ -537,7 +537,7 @@ class cHTML {
             return $this->_attributes[$attributeName];
         }
 
-        return null;
+        return NULL;
     }
 
     /**

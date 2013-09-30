@@ -766,7 +766,7 @@ class cModuleHandler {
         }
 
         $oWriter = new cXmlWriter();
-        $oRootElement = $oWriter->addElement('module', '', null);
+        $oRootElement = $oWriter->addElement('module', '', NULL);
 
         $oWriter->addElement('name', conHtmlSpecialChars($moduleName), $oRootElement);
         $oWriter->addElement('description', conHtmlSpecialChars($description), $oRootElement);
@@ -1008,7 +1008,7 @@ class cModuleHandler {
 
         $result = array(
             'state' => false,
-            'errorMessage' => null
+            'errorMessage' => NULL
         );
 
         // Put a $ in front of all CMS variables to prevent PHP error messages

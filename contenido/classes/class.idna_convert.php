@@ -76,7 +76,7 @@ class idna_convert
     protected $_scount = 11172; // _lcount * _tcount * _vcount
     protected $_error = false;
 
-    protected static $_mb_string_overload = null;
+    protected static $_mb_string_overload = NULL;
 
     // See {@link set_paramter()} for details of how to change the following
     // settings from within your script / application
@@ -100,7 +100,7 @@ class idna_convert
         }
 
         // populate mbstring overloading cache if not set
-        if (self::$_mb_string_overload === null) {
+        if (self::$_mb_string_overload === NULL) {
             self::$_mb_string_overload = (extension_loaded('mbstring')
                 && (ini_get('mbstring.func_overload') & 0x02) === 0x02);
         }

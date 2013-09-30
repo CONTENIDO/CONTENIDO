@@ -1351,6 +1351,12 @@ class cSystemtest {
         }
     }
 
+    /**
+     *
+     * @param string $setupType
+     * @param string $databaseName
+     * @param string $databasePrefix
+     */
     public function checkSetupMysql($setupType, $databaseName, $databasePrefix) {
         switch ($setupType) {
             case "setup":

@@ -50,7 +50,7 @@ class NewsletterJobCollection extends ItemCollection {
             $iIDCatArt = cSecurity::toInteger($iIDCatArt);
             $lang = cSecurity::toInteger($lang);
             $client = cSecurity::toInteger($client);
-            $sName = cSecurity::escapeDB($sName, null);
+            $sName = cSecurity::escapeDB($sName, NULL);
 
             $oItem = parent::createNewItem();
 

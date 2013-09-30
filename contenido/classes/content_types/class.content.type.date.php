@@ -122,9 +122,9 @@ class cContentTypeDate extends cContentTypeAbstract {
      *            formatted
      * @return string the formatted, localised date
      */
-    private function _formatDate($format, $timestamp = null) {
+    private function _formatDate($format, $timestamp = NULL) {
         $result = '';
-        if ($timestamp === null) {
+        if ($timestamp === NULL) {
             $timestamp = time();
         }
         $replacements = array(

@@ -76,7 +76,7 @@ ob_start();
 $oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
 
 // Selectbox for clients
-$oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang', false, null, "", "vAlignMiddle");
+$oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang', false, NULL, "", "vAlignMiddle");
 
 $oClientColl = new cApiClientCollection();
 $clientList = $oClientColl->getAccessibleClients();

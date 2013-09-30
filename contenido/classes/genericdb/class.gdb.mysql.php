@@ -2,15 +2,15 @@
 /**
  * This file contains the MySQL database driver for the generic db.
  *
- * @package          Core
- * @subpackage       GenericDB
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB
+ * @version SVN Revision $Rev:$
  *
- * @author           Bjoern Behrens
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Bjoern Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -18,11 +18,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * MySQL database driver
  *
- * @package    Core
+ * @package Core
  * @subpackage GenericDB
  */
 class cGenericDbDriverMysql extends cGenericDbDriver {
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see cGenericDbDriver::buildJoinQuery()
+     */
     public function buildJoinQuery($destinationTable, $destinationClass, $destinationPrimaryKey, $sourceClass, $primaryKey) {
         // Build a regular LEFT JOIN
         $field = "$destinationClass.$destinationPrimaryKey";
@@ -38,6 +43,11 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
         );
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see cGenericDbDriver::buildOperator()
+     */
     public function buildOperator($sField, $sOperator, $sRestriction) {
         $sOperator = strtolower($sOperator);
 
@@ -111,5 +121,4 @@ class cGenericDbDriverMysql extends cGenericDbDriver {
 
         return $sWhereStatement;
     }
-
 }

@@ -310,7 +310,7 @@ class ModRewriteController extends ModRewriteBase {
 
                         // add query parameter to superglobal _GET
                         if (isset($aUrlComponents['query'])) {
-                            $vars = null;
+                            $vars = NULL;
                             parse_str($aUrlComponents['query'], $vars);
                             $_GET = array_merge($_GET, $vars);
                         }
@@ -509,7 +509,7 @@ class ModRewriteController extends ModRewriteBase {
         if ($idcat == 0) {
             // category couldn't resolved
             $this->_setError(self::ERROR_CATEGORY);
-            $idcat = null;
+            $idcat = NULL;
         } else {
             // unset $this->_sPath if $idcat could set, otherwhise it would be resolved again.
             unset($this->_sPath);
@@ -593,8 +593,8 @@ class ModRewriteController extends ModRewriteBase {
 
             // prevention of duplicated content if '/firstcat/' is directly requested!
 
-            $idcat = (isset($idcat) && (int) $idcat > 0) ? $idcat : null;
-            $idart = (isset($idart) && (int) $idart > 0) ? $idart : null;
+            $idcat = (isset($idcat) && (int) $idcat > 0) ? $idcat : NULL;
+            $idart = (isset($idart) && (int) $idart > 0) ? $idart : NULL;
 
             // compose new parameter
             $param = '';
@@ -624,7 +624,7 @@ class ModRewriteController extends ModRewriteBase {
             // now the new generated uri should be identical with the request uri
             if ($incommingUrl !== $url) {
                 $this->_setError(self::ERROR_POST_VALIDATION);
-                $idcat = null;
+                $idcat = NULL;
             }
         }
     }

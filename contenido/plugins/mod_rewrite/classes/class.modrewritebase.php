@@ -53,9 +53,9 @@ abstract class ModRewriteBase {
      * @return  mixed   Desired value mr configuration, either the full configuration
      *                  or one of the desired subpart
      */
-    public static function getConfig($key = null, $default = null) {
+    public static function getConfig($key = NULL, $default = NULL) {
         global $cfg;
-        if ($key == null) {
+        if ($key == NULL) {
             return $cfg['mod_rewrite'];
         } elseif ((string) $key !== '') {
             return (isset($cfg['mod_rewrite'][$key])) ? $cfg['mod_rewrite'][$key] : $default;

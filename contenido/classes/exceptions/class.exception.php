@@ -30,7 +30,7 @@ class cException extends Exception {
      *
      * @var cLog the logger instance
      */
-    protected $_logger = null;
+    protected $_logger = NULL;
 
     /**
      * Saves whether the exception should be logged - defaults to true.
@@ -47,7 +47,7 @@ class cException extends Exception {
      * @param Exception $previous The previous exception used for the exception
      *            chaining.
      */
-    public function __construct($message, $code = 0, Exception $previous = null) {
+    public function __construct($message, $code = 0, Exception $previous = NULL) {
         parent::__construct($message, $code, $previous);
 
         // create a logger class and save it for all logging purposes

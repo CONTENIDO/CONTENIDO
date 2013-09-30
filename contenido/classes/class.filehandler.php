@@ -58,13 +58,13 @@ class cFileHandler {
         }
 
         if ($reverse) {
-            return file_get_contents($filename, false, null, filesize($filename) - $length - $offset, $length);
+            return file_get_contents($filename, false, NULL, filesize($filename) - $length - $offset, $length);
         } else if ($length > 0 && $offset == 0) {
-            return file_get_contents($filename, false, null, 0, $length);
+            return file_get_contents($filename, false, NULL, 0, $length);
         } else if ($offset > 0 && $length == 0) {
-            return file_get_contents($filename, false, null, $offset);
+            return file_get_contents($filename, false, NULL, $offset);
         } else if ($offset > 0 && $length > 0) {
-            return file_get_contents($filename, false, null, $offset, $length);
+            return file_get_contents($filename, false, NULL, $offset, $length);
         } else {
             return file_get_contents($filename);
         }
@@ -102,7 +102,7 @@ class cFileHandler {
             $waste = fgets($f);
         }
 
-        $ret = null;
+        $ret = NULL;
         if ($lines > 1) {
             $ret = array();
             for ($i = 0; $i < $lines; $i++) {

@@ -219,7 +219,7 @@ abstract class cCodeGeneratorAbstract {
      * Returns the template configuration id, either by configured article or by
      * configured category.
      *
-     * @return int null
+     * @return int|NULL
      */
     protected function _getTemplateConfigurationId() {
         // Get configuration for article

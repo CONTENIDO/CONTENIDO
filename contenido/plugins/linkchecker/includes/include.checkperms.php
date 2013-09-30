@@ -15,7 +15,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-function cCatPerm($widcat, $db = null) {
+function cCatPerm($widcat, $db = NULL) {
     global $cfg, $sess, $auth, $group_id, $_arrCatIDs_cCP;
 
     if (strpos($auth->auth['perm'], 'admin') !== FALSE) {

@@ -159,7 +159,7 @@ class PimPlugin extends Item {
 
         // move the other plugins up or down
         $pluginColl = new PimPluginCollection();
-        $pluginColl->select('executionorder >= "' . min($newOrder, $oldOrder) . '" AND executionorder <= "' . max($newOrder, $oldOrder) . '" AND idplugin != "' . $idplugin . '"', null, 'executionorder'); // select every plugin that needs to be updated
+        $pluginColl->select('executionorder >= "' . min($newOrder, $oldOrder) . '" AND executionorder <= "' . max($newOrder, $oldOrder) . '" AND idplugin != "' . $idplugin . '"', NULL, 'executionorder'); // select every plugin that needs to be updated
 
         while ($plugin = $pluginColl->next()) {
             if ($newOrder < $oldOrder) {

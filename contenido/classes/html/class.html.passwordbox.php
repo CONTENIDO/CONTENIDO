@@ -41,7 +41,7 @@ class cHTMLPasswordbox extends cHTMLFormElement {
      * @param string $class the class of this element
      * @return void
      */
-    public function __construct($name, $initvalue = '', $width = '', $maxlength = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = '') {
+    public function __construct($name, $initvalue = '', $width = '', $maxlength = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
         $this->_tag = 'input';
         $this->setValue($initvalue);

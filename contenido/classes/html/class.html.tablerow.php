@@ -28,7 +28,7 @@ class cHTMLTableRow extends cHTMLContentElement {
      *
      * @return void
      */
-    public function __construct($content = null) {
+    public function __construct($content = NULL) {
         parent::__construct($content);
         $this->_tag = 'tr';
     }

@@ -23,9 +23,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 abstract class cXmlBase {
 
-    protected $_dom = null;
+    protected $_dom = NULL;
 
-    protected $_xpath = null;
+    protected $_xpath = NULL;
 
     /**
      * Creates a new XML document using DOMDocument.
@@ -193,12 +193,12 @@ abstract class cXmlBase {
      * @param SimpleXMLElement $xml [optional] the element to which the array
      *            should be added
      * @param string $rootTagName [optional] the root tag name which should be
-     *            used - is only used when $xml is null!
+     *            used - is only used when $xml is NULL!
      * @return SimpleXMLElement the array as a SimpleXMLElement
      */
 
-    public static function arrayToXml($array, $xml = null, $rootTagName = 'root') {
-        if ($xml == null) {
+    public static function arrayToXml($array, $xml = NULL, $rootTagName = 'root') {
+        if ($xml == NULL) {
             $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><' . $rootTagName . '/>', LIBXML_NOCDATA);
         }
 

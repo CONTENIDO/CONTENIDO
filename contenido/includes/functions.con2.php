@@ -93,7 +93,7 @@ function conGetAvailableMetaTagTypes() {
  * @return  string
  */
 function conGetMetaValue($idartlang, $idmetatype) {
-    static $oMetaTagColl = null;
+    static $oMetaTagColl = NULL;
     if (!isset($oMetaTagColl)) {
         $oMetaTagColl = new cApiMetaTagCollection();
     }
@@ -119,7 +119,7 @@ function conGetMetaValue($idartlang, $idmetatype) {
  * @return bool whether the meta value has been saved successfully
  */
 function conSetMetaValue($idartlang, $idmetatype, $value) {
-    static $metaTagColl = null;
+    static $metaTagColl = NULL;
     if (!isset($metaTagColl)) {
         $metaTagColl = new cApiMetaTagCollection();
     }
@@ -144,7 +144,7 @@ function conSetMetaValue($idartlang, $idmetatype, $value) {
 function conGenerateKeywords($client, $lang) {
     global $cfg;
 
-    static $oDB = null;
+    static $oDB = NULL;
     if (!isset($oDB)) {
         $oDB = cRegistry::getDb();
     }
@@ -179,7 +179,7 @@ function conGenerateKeywords($client, $lang) {
 function conGetContentFromArticle($iIdArtLang) {
     global $cfg;
 
-    static $oDB = null;
+    static $oDB = NULL;
     if (!isset($oDB)) {
         $oDB = cRegistry::getDb();
     }
@@ -238,7 +238,7 @@ function conGetContainerConfiguration($idtplcfg) {
  *
  * @param  int  $idcat
  * @param  int  $idart
- * @return  int|null
+ * @return  int|NULL
  */
 function conGetCategoryArticleId($idcat, $idart) {
     global $cfg, $db;
@@ -248,7 +248,7 @@ function conGetCategoryArticleId($idcat, $idart) {
     $sql = $db->prepare($sql, $cfg['tab']['cat_art'], $idcat, $idart);
     $db->query($sql);
 
-    return ($db->nextRecord()) ? $db->f('idcatart') : null;
+    return ($db->nextRecord()) ? $db->f('idcatart') : NULL;
 }
 
 /**
@@ -258,7 +258,7 @@ function conGetCategoryArticleId($idcat, $idart) {
  * @param  int  $idcat  NOT used
  * @param  int  $lang
  * @param  int  $client
- * @return  int|null
+ * @return  int|NULL
  */
 function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client) {
     global $cfg, $db;
@@ -269,7 +269,7 @@ function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client)
     $sql = $db->prepare($sql, $cfg['tab']['art_lang'], $cfg['tab']['art'], $idart, $lang, $client);
     $db->query($sql);
 
-    return ($db->nextRecord()) ? $db->f('idtplcfg') : null;
+    return ($db->nextRecord()) ? $db->f('idtplcfg') : NULL;
 }
 
 /**
@@ -278,7 +278,7 @@ function conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client)
  * @param  int  $idcat
  * @param  int  $lang
  * @param  int  $client
- * @return  int|null
+ * @return  int|NULL
  */
 function conGetTemplateConfigurationIdForCategory($idcat, $lang, $client) {
     global $cfg, $db;
@@ -289,5 +289,5 @@ function conGetTemplateConfigurationIdForCategory($idcat, $lang, $client) {
     $sql = $db->prepare($sql, $cfg['tab']['cat_lang'], $cfg['tab']['cat'], $idcat, $lang, $client);
     $db->query($sql);
 
-    return ($db->nextRecord()) ? $db->f('idtplcfg') : null;
+    return ($db->nextRecord()) ? $db->f('idtplcfg') : NULL;
 }

@@ -89,7 +89,7 @@ class cApiCategoryCollection extends ItemCollection {
      * Last entry has no parentid and no postid.
      *
      * @param int $idclient
-     * @return cApiCategory null
+     * @return cApiCategory NULL
      */
     public function fetchLastCategoryTree($idclient) {
         $where = 'parentid=0 AND postid=0 AND idclient=' . (int) $idclient;
@@ -221,7 +221,7 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @global array $cfg
      * @param int $idcat
-     * @param int|null $idlang If defined, it checks also if there is a next
+     * @param int|NULL $idlang If defined, it checks also if there is a next
      *        deeper category in this language.
      * @return int
      */
@@ -266,7 +266,7 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @global array $cfg
      * @param int $idcat
-     * @param int|null $idlang
+     * @param int|NULL $idlang
      * @return array
      */
     public function getAllChildCategoryIds($idcat, $idlang = NULL) {

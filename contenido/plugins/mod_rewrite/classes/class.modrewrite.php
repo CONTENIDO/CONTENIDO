@@ -276,7 +276,7 @@ class ModRewrite extends ModRewriteBase {
      * @param   string    $sArtName  Websafe name
      * @param   int       $iCatId    Category id
      * @param   int       $iLangId   Language id
-     * @return  int|null  Recent article id or null
+     * @return  int|NULL  Recent article id or NULL
      */
     public static function getArtIdByWebsafeName($sArtName = '', $iCatId = 0, $iLangId = 0) {
         global $cfg, $lang;
@@ -313,7 +313,7 @@ class ModRewrite extends ModRewriteBase {
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData['idart'];
         } else {
-            return null;
+            return NULL;
         }
     }
 
@@ -612,7 +612,7 @@ class ModRewrite extends ModRewriteBase {
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData['urlname'];
         }
-        return null;
+        return NULL;
     }
 
     /**
@@ -629,7 +629,7 @@ class ModRewrite extends ModRewriteBase {
         if ($aData = mr_queryAndNextRecord($sql)) {
             return $aData['urlname'];
         }
-        return null;
+        return NULL;
     }
 
     /**

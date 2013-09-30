@@ -42,7 +42,7 @@ class NewsletterCollection extends ItemCollection
     {
         global $client, $lang, $auth;
 
-        $sName  = cSecurity::escapeDB($sName, null);
+        $sName  = cSecurity::escapeDB($sName, NULL);
         $client = cSecurity::toInteger($client);
         $lang   = cSecurity::toInteger($lang);
 
@@ -62,7 +62,7 @@ class NewsletterCollection extends ItemCollection
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);
         $oItem->set("created", date('Y-m-d H:i:s'), false);
-        $oItem->set("author", cSecurity::escapeDB($auth->auth["uid"], null));
+        $oItem->set("author", cSecurity::escapeDB($auth->auth["uid"], NULL));
 
         $oItem->store();
 

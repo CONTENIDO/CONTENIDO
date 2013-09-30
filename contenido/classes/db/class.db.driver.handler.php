@@ -265,7 +265,7 @@ abstract class cDbDriverHandler {
      *
      * @param mixed $data Connection data array or variable
      *
-     * @return mixed Either The connection (object, resource, integer) or null
+     * @return mixed Either The connection (object, resource, integer) or NULL
      */
     protected function _getConnection($data) {
         $hash = md5($this->_driverType . '-' . (is_array($data) ? implode('-', $data) : (string)$data));
@@ -472,8 +472,8 @@ abstract class cDbDriverHandler {
     /**
      * Establishes a connection to the database server.
      *
-     * @return object resource int null value depends on
-     *         used driver and is null in case of an error.
+     * @return object resource int NULL value depends on
+     *         used driver and is NULL in case of an error.
      */
     public function connect() {
         if (isset($this->_dbCfg['connection']) && $this->_linkId = $this->_getConnection($this->_dbCfg['connection'])) {
@@ -702,7 +702,7 @@ abstract class cDbDriverHandler {
     }
 
     /**
-     * This method returns the current result set as object or null if no result
+     * This method returns the current result set as object or NULL if no result
      * set is left.
      * If optional param $className is set, the result object is an instance of
      * class $className.
@@ -785,7 +785,7 @@ abstract class cDbDriverHandler {
      *
      * @param string $tableName
      *
-     * @return int null id of table
+     * @return int NULL id of table
      */
     public function getLastInsertedId($tableName = '') {
         $lastId = NULL;
@@ -827,8 +827,8 @@ abstract class cDbDriverHandler {
     /**
      * Returns names of existing tables.
      *
-     * @return array null array containing assoziative table data as
-     *         follows or null:
+     * @return array NULL array containing assoziative table data as
+     *         follows or NULL:
      *         - $info[$i]['table_name']
      *         - $info[$i]['tablespace_name']
      *         - $info[$i]['database']
@@ -846,7 +846,7 @@ abstract class cDbDriverHandler {
      * The return value depends always on
      * used DBMS.
      *
-     * @return array null array as follows or null:
+     * @return array NULL array as follows or NULL:
      *         - $arr['description'] (string) Optional, server description
      *         - $arr['version'] (string) Optional, server version
      */

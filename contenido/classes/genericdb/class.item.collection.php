@@ -2,16 +2,16 @@
 /**
  * This file contains the generic db item collection class.
  *
- * @package          Core
- * @subpackage       GenericDB
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GenericDB
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @author           Murat Purc <murat@purc.de>
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @author Murat Purc <murat@purc.de>
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -20,15 +20,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Class ItemCollection
  * Abstract class for database based item collections.
  *
- * @package          Core
- * @subpackage       GenericDB
+ * @package Core
+ * @subpackage GenericDB
  */
 abstract class ItemCollection extends cItemBaseAbstract {
 
     /**
-     * Storage of all result items
+     * Storage of all result items.
+     * Contains all result items.
      *
-     * @var string Contains all result items
+     * @var string
      */
     protected $objects;
 
@@ -47,56 +48,65 @@ abstract class ItemCollection extends cItemBaseAbstract {
     protected $_collectionCache = array();
 
     /**
+     * Single item class
      *
-     * @var string Single item class
+     * @var string
      */
     protected $_itemClass;
 
     /**
+     * Iterator object for the next() method
      *
-     * @var object Iterator object for the next() method
+     * @var object
      */
     protected $_iteratorItem;
 
     /**
+     * Reverse join partners for this data object
      *
-     * @var array Reverse join partners for this data object
+     * @var array
      */
     protected $_JoinPartners = array();
 
     /**
+     * Forward join partners for this data object
      *
-     * @var array Forward join partners for this data object
+     * @var array
      */
     protected $_forwardJoinPartners;
 
     /**
+     * Where restrictions for the query
      *
-     * @var array Where restrictions for the query
+     * @var array
      */
     protected $_whereRestriction;
 
     /**
+     * Inner group conditions
      *
-     * @var array Inner group conditions
+     * @var array
      */
     protected $_innerGroupConditions = array();
 
     /**
+     * Group conditions
      *
-     * @var array Group conditions
+     * @var array
      */
     protected $_groupConditions;
 
     /**
+     * Result fields for the query
      *
-     * @var array Result fields for the query
+     * @var array
      */
     protected $_resultFields = array();
 
     /**
+     * Encoding
      *
-     * @var string Encoding
+     * @var string
      */
     protected $_encoding;
 
@@ -117,8 +127,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
     /**
      * Flag to select all fields in a query.
-     * Reduces the number of queries send
-     * to the database.
+     * Reduces the number of queries send to the database.
      *
      * @var bool
      */
@@ -196,13 +205,6 @@ abstract class ItemCollection extends cItemBaseAbstract {
             'LIKE',
             'DIACRITICS'
         );
-    }
-
-    /**
-     * Constructor function for downwards compatibility
-     */
-    public function ItemCollection($sTable, $sPrimaryKey, $iLifetime = 10) {
-        $this->__construct($sTable, $sPrimaryKey, $iLifetime);
     }
 
     /**
@@ -856,7 +858,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     /**
      * Fetches the resultset related to current loaded primary key as an object
      *
-     * @param Item
+     * @param string $sClassName
      */
     public function fetchObject($sClassName) {
         $sKey = strtolower($sClassName);
@@ -869,12 +871,16 @@ abstract class ItemCollection extends cItemBaseAbstract {
     }
 
     /**
-     * Prelimary documentation $aFields = array with the fields to fetch. Notes:
+     * Notes:
      * If the array contains keys, the key will be used as alias for the field.
      * Example: array('id' => 'idcat') will put 'idcat' into field 'id'
      * $aObjects = array with the objects to fetch. Notes: If the array contains
      * keys, the key will be used as alias for the object. If you specify more
      * than one object with the same key, the array will be multi-dimensional.
+     *
+     * @param array $aFields array with the fields to fetch
+     * @param array $aObjects
+     * @return array
      */
     public function fetchTable(array $aFields = array(), array $aObjects = array()) {
         $row = 1;
@@ -948,6 +954,12 @@ abstract class ItemCollection extends cItemBaseAbstract {
         return $aResult;
     }
 
+    /**
+     *
+     * @param array $aObjects
+     * @param array $aResult
+     * @return array
+     */
     protected function _recursiveStructuredFetch(array $aObjects, array $aResult) {
         $i = array_shift($aObjects);
 
@@ -1071,10 +1083,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @throws cInvalidArgumentException If Item class doesn't match the defined
      *         _itemClass property
      *         or passed Item instance has no loaded recordset
-     * @return object Item null
+     * @return object Item NULL
      */
     public function copyItem($srcItem, array $fieldsToOverwrite = array()) {
-
         if (get_class($srcItem) !== $this->_itemClass) {
             throw new cInvalidArgumentException("Item class doesn't match");
         } elseif (!$srcItem->isLoaded()) {
@@ -1364,5 +1375,4 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         return $aResult;
     }
-
 }

@@ -62,7 +62,7 @@ class cTypeGenerator {
         $this->_idlang = cRegistry::getLanguageId(true);
         $this->cfg = cRegistry::getConfig();
 
-        if (self::$db === null) {
+        if (self::$db === NULL) {
             self::$db = cRegistry::getDb();
         }
         if (!isset(self::$a_content[$this->_idart])) {

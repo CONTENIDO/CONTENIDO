@@ -120,7 +120,7 @@ function piUsConSaveArtAfter($editedIdArt, $values) {
  * @param int $errorCode the error code
  * @return string the error message describing the given error code
  */
-function piUsGetErrorMessage($errorCode, $shortUrlItem = null) {
+function piUsGetErrorMessage($errorCode, $shortUrlItem = NULL) {
     switch ($errorCode) {
         case cApiShortUrlCollection::ERR_INVALID_CHARS:
             return i18n('The entered short URL contains invalid characters!', 'url_shortener');
@@ -140,7 +140,7 @@ function piUsGetErrorMessage($errorCode, $shortUrlItem = null) {
         case cApiShortUrlCollection::ERR_ALREADY_EXISTS:
             $message = i18n('The entered short URL already exists!', 'url_shortener');
             $message .= '<br />';
-            if ($shortUrlItem !== null) {
+            if ($shortUrlItem !== NULL) {
                 // add the client name to the error message
                 $clientColl = new cApiClientCollection();
                 $message .= i18n('Client', 'url_shortener') . ': ' . $clientColl->getClientname($shortUrlItem->get('idclient'));;

@@ -113,7 +113,7 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      *
      * @param string $path
      * @param int $idlang
-     * @return cApiPathresolveCache|null
+     * @return cApiPathresolveCache|NULL
      */
     public function fetchLatestByPathAndLanguage($path, $idlang) {
         $this->select("path LIKE '" . $this->db->escape($path) . "' AND idlang=" . (int) $idlang, '', 'lastcached DESC', '1');

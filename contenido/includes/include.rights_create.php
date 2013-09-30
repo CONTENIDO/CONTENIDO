@@ -29,7 +29,7 @@ if (!isset($wysi)) {
 $aPerms = array();
 $sNotification = '';
 $bError = false;
-$userId = null;
+$userId = NULL;
 
 if ($action == 'user_createuser') {
     $username = stripslashes(trim($username));

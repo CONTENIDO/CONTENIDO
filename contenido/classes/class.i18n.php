@@ -29,7 +29,7 @@ class cI18n {
      * @var array
      */
     protected static $_i18nData = array(
-        'language' => null,
+        'language' => NULL,
         'domains' => array(),
         'files' => array(),
         'cache' => array()
@@ -171,7 +171,7 @@ class cI18n {
      * Resets cached translation data (language, domains, files, and cache)
      */
     public static function reset() {
-        self::$_i18nData['language'] = null;
+        self::$_i18nData['language'] = NULL;
         self::$_i18nData['domains'] = array();
         self::$_i18nData['files'] = array();
         self::$_i18nData['cache'] = array();

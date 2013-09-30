@@ -32,7 +32,7 @@ if ($perm->have_perm_area_action("con", "con_meta_saveart") || $perm->have_perm_
     $artLang->store();
 
     $robots = '';
-    $robotArray = ($_POST['robots'] == null)? array() : $_POST['robots'];
+    $robotArray = ($_POST['robots'] == NULL)? array() : $_POST['robots'];
     if (in_array('noindex', $robotArray)) {
         $robots .= 'noindex, ';
     } else {

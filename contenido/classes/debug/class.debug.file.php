@@ -57,7 +57,7 @@ class cDebugFile implements cDebugInterface {
      * @return cDebugFile
      */
     public static function getInstance() {
-        if (self::$_instance == null) {
+        if (self::$_instance == NULL) {
             self::$_instance = new cDebugFile();
         }
         return self::$_instance;

@@ -325,6 +325,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Builds an array with category information.
      *
+     * @param int $level
+     * @param int $parentid
      * @return array with directory information
      */
     public function buildCategoryArray($level = 0, $parentid = 0) {
@@ -537,7 +539,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $contenido = new cHTMLHiddenField('contenido', $_REQUEST['contenido']);
         $path = new cHTMLHiddenField('path');
         $foldername = new cHTMLTextbox('foldername');
-        $button = new cHTMLButton('', '', '', false, null, '', 'image');
+        $button = new cHTMLButton('', '', '', false, NULL, '', 'image');
         $button->setAttribute('src', $this->_cfg['path']['contenido_fullhtml'] . 'images/submit.gif');
         $newDirContent = new cHTMLDiv(array(
             $area,

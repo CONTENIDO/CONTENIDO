@@ -40,7 +40,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     private $_selectedFile;
     private $_reloadScript;
     private $_page = NULL;
-    private $_notification = null;
+    private $_notification = NULL;
 
     /**
      * The file end of template files.

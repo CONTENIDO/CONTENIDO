@@ -47,7 +47,7 @@ class cHTMLTextbox extends cHTMLFormElement {
                                 $maxlength = '',
                                 $id = '',
                                 $disabled = false,
-                                $tabindex = null,
+                                $tabindex = NULL,
                                 $accesskey = '',
                                 $class = ''
     ) {

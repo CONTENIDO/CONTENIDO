@@ -59,7 +59,7 @@ class cGuiFoldingRow extends cHTML {
      */
     protected $_contentData;
 
-    public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = null) {
+    public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL) {
         global $auth;
 
         $this->setCaption($caption);
@@ -87,7 +87,7 @@ class cGuiFoldingRow extends cHTML {
 
         $user = new cApiUser($auth->auth["uid"]);
 
-        if ($bExpanded == null) {
+        if ($bExpanded == NULL) {
             // Check for expandstate
             if (!$user->virgin) {
                 if ($user->getProperty("expandstate", $uuid) == "true") {

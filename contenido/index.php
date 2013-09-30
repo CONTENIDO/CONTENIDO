@@ -71,7 +71,7 @@ if (!is_numeric($client) || $client == '') {
     $oClientColl = new cApiClientCollection();
     $oClientColl->select('', '', 'idclient ASC', '1');
     $oClient = $oClientColl->next();
-    if ($oClient == null) {
+    if ($oClient == NULL) {
         $client = 0;
     } else {
         $client = $oClient->get('idclient');

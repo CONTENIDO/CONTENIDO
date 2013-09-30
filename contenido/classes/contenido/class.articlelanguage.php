@@ -458,7 +458,7 @@ class cApiArticleLanguage extends Item {
      * swf - Upload id of the element
      *
      * @param string $type CMS_TYPE - Legal cms type string
-     * @param int|null $id Id of the content
+     * @param int|NULL $id Id of the content
      * @return string array data
      */
     public function getContent($type, $id = NULL) {

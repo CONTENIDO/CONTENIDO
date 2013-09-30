@@ -64,8 +64,8 @@ function dbGetIndexes($db, $table) {
  * @param  string  $field  Name of field to create/update
  * @param  string  $type  Data type of field. Feasible values are all possible data types
  *                        e. g. int(10), varchar(32), datetime, varchar(255), text, tinyint(1)
- * @param  string  $null  Parameter to forbid null values, feasible values '', 'NULL' or 'YES'
- *                        where 'NULL' or 'YES' allows null values and '' doesn't
+ * @param  string  $null  Parameter to forbid NULL values, feasible values '', 'NULL' or 'YES'
+ *                        where 'NULL' or 'YES' allows NULL values and '' doesn't
  * @param  string  $key   The field will be added as a primary key, if value is 'PRI',
  *                        otherwhise the value should be empty ''
  * @param  string  $default  The default value for the field. Feasible is each possible

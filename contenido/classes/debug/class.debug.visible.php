@@ -39,7 +39,7 @@ class cDebugVisible implements cDebugInterface {
      * @return cDebugVisible
      */
     static public function getInstance() {
-        if (self::$_instance == null) {
+        if (self::$_instance == NULL) {
             self::$_instance = new cDebugVisible();
         }
         return self::$_instance;

@@ -223,7 +223,7 @@ $page->set("s", "IDARTLANG", $idartlang);
 $page->set("s", "IDCLIENT", $client);
 
 // generate code
-$code = _processCmsTags($aList, $result, true, $page->render(null, true));
+$code = _processCmsTags($aList, $result, true, $page->render(NULL, true));
 ;
 
 if ($code == "0601") {

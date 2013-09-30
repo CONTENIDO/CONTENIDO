@@ -39,7 +39,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @param int $iTabIndex Tab index for form elements
      * @param string $sAccessKey Key to access the field
      */
-    public function __construct($sName, $iWidth = "", $sID = "", $bDisabled = false, $iTabIndex = null, $sAccessKey = "") {
+    public function __construct($sName, $iWidth = "", $sID = "", $bDisabled = false, $iTabIndex = NULL, $sAccessKey = "") {
         parent::__construct($sName, $iWidth, $sID, $bDisabled, $iTabIndex, $sAccessKey);
     }
 
@@ -385,7 +385,7 @@ class UI_Config_Table {
     var $_sColorDark;
 
     /**
-     *
+     * Create a config table instance.
      */
     function UI_Config_Table() {
         global $cfg;

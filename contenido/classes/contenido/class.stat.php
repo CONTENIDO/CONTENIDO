@@ -80,7 +80,7 @@ class cApiStatCollection extends ItemCollection {
      *
      * @param int $iIdCatArt
      * @param int $iIdLang
-     * @return cApiStat null
+     * @return cApiStat NULL
      */
     public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);

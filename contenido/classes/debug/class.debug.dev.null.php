@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the dev null debug class.
+ * This file contains the cDebugDevNull class.
  *
  * @package Core
  * @subpackage Debug
@@ -38,7 +38,7 @@ class cDebugDevNull implements cDebugInterface {
      * @return cDebugDevNull
      */
     public static function getInstance() {
-        if (self::$_instance == null) {
+        if (self::$_instance == NULL) {
             self::$_instance = new cDebugDevNull();
         }
         return self::$_instance;

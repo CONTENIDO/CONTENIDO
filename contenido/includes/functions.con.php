@@ -1245,12 +1245,12 @@ function conMoveArticles() {
 function conCopyTemplateConfiguration($srcidtplcfg) {
     $oTemplateConf = new cApiTemplateConfiguration((int) $srcidtplcfg);
     if (!$oTemplateConf->isLoaded()) {
-        return null;
+        return NULL;
     }
 
     $oTemplateConfColl = new cApiTemplateConfigurationCollection();
     $oNewTemplateConf = $oTemplateConfColl->create($oTemplateConf->get('idtpl'));
-    return (is_object($oNewTemplateConf))? $oNewTemplateConf->get('idtplcfg') : null;
+    return (is_object($oNewTemplateConf))? $oNewTemplateConf->get('idtplcfg') : NULL;
 }
 
 /**
@@ -1572,10 +1572,10 @@ function conSyncArticle($idart, $srclang, $dstlang) {
  * @param int $idartlang
  * @param int $idcat
  * @param int $idlang
- * @param cDb|null $db (NOT used)
+ * @param cDb|NULL $db (NOT used)
  * @return bool
  */
-function isStartArticle($idartlang, $idcat, $idlang, $db = null) {
+function isStartArticle($idartlang, $idcat, $idlang, $db = NULL) {
     $oCatLangColl = new cApiCategoryLanguageCollection();
     return $oCatLangColl->isStartArticle($idartlang, $idcat, $idlang);
 }
@@ -1584,10 +1584,10 @@ function isStartArticle($idartlang, $idcat, $idlang, $db = null) {
  * Returns all categories in which the given article is in.
  *
  * @param int $idart Article ID
- * @param cDb|null $db If specified, uses the given db object (NOT used)
+ * @param cDb|NULL $db If specified, uses the given db object (NOT used)
  * @return array Flat array which contains all category id's
  */
-function conGetCategoryAssignments($idart, $db = null) {
+function conGetCategoryAssignments($idart, $db = NULL) {
     $categories = array();
     $oCatArtColl = new cApiCategoryArticleCollection();
     $entries = $oCatArtColl->getFieldsByWhereClause(array(

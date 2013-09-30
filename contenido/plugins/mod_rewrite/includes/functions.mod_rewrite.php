@@ -513,7 +513,7 @@ function mr_buildGeneratedCode($code) {
         $oMRUrlStack = ModRewriteUrlStack::getInstance();
         $oMRUrlStack->add('front_content.php');
 
-        $matches = null;
+        $matches = NULL;
         preg_match_all("/([\"|\'|=])front_content\.php(.?|.+?)([\"|\'|>])/i", $code, $matches, PREG_SET_ORDER);
         foreach ($matches as $val) {
             $oMRUrlStack->add('front_content.php' . $val[2]);
@@ -619,7 +619,7 @@ function mr_loadConfiguration($clientId, $forceReload = false) {
  * config.mod_rewrite_{client_id}.php.
  *
  * @param   int   $clientId     Id of client
- * @return  array|null
+ * @return  array|NULL
  */
 function mr_getConfiguration($clientId) {
     global $cfg;
@@ -628,12 +628,12 @@ function mr_getConfiguration($clientId) {
 
     $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
     if (!is_file($file) || !is_readable($file)) {
-        return null;
+        return NULL;
     }
     if ($content = cFileHandler::read($file)) {
         return unserialize($content);
     } else {
-        return null;
+        return NULL;
     }
 }
 
@@ -727,7 +727,7 @@ function mr_i18n($key) {
  * </code>
  *
  * @param   string  $query  Query to execute
- * @return  mixed   Assoziative array including recordset or null
+ * @return  mixed   Assoziative array including recordset or NULL
  */
 function mr_queryAndNextRecord($query) {
     static $db;
@@ -735,9 +735,9 @@ function mr_queryAndNextRecord($query) {
         $db = cRegistry::getDb();
     }
     if (!$db->query($query)) {
-        return null;
+        return NULL;
     }
-    return ($db->nextRecord()) ? $db->getRecord() : null;
+    return ($db->nextRecord()) ? $db->getRecord() : NULL;
 }
 
 /**
@@ -771,7 +771,7 @@ function mr_queryAndNextRecord($query) {
  * @param   mixed  $default  Default value to return
  * @return  mixed  Either the found value or the default value
  */
-function mr_arrayValue($array, $key, $default = null) {
+function mr_arrayValue($array, $key, $default = NULL) {
     if (!is_array($array)) {
         return $default;
     } elseif (!isset($array[$key])) {
@@ -805,7 +805,7 @@ function mr_arrayValue($array, $key, $default = null) {
  *
  * @return  mixed  Cleaned data
  */
-function mr_requestCleanup(&$data, $options = null) {
+function mr_requestCleanup(&$data, $options = NULL) {
     if (!mr_arrayValue($options, 'filter')) {
         $options['filter'] = array('trim', 'strip_tags', 'stripslashes');
     }
@@ -839,7 +839,7 @@ function mr_requestCleanup(&$data, $options = null) {
  * @param   mixed   $default  Default value to return
  * @return  mixed   The value
  */
-function mr_getRequest($key, $default = null) {
+function mr_getRequest($key, $default = NULL) {
     static $cache;
     if (!isset($cache)) {
         $cache = array();

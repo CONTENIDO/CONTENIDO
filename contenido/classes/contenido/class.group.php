@@ -38,7 +38,7 @@ class cApiGroupCollection extends ItemCollection {
      * @param string $groupname
      * @param string $perms
      * @param string $description
-     * @return cApiGroup null
+     * @return cApiGroup NULL
      */
     public function create($groupname, $perms, $description) {
         $primaryKeyValue = md5($groupname);

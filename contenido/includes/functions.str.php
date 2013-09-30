@@ -27,7 +27,7 @@ cInclude('includes', 'functions.database.php');
  * @param int $visible Flag about visible status
  * @param int $public Flag about public status
  * @param int $iIdtplcfg Id of template configuration
- * @return (int null) of new generated category or nothing on failure
+ * @return (int NULL) of new generated category or nothing on failure
  */
 function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0) {
     global $client, $lang, $perm;
@@ -113,7 +113,7 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
  * @param int $visible Flag about visible status
  * @param int $public Flag about public status
  * @param int $iIdtplcfg Id of template configuration
- * @return (int null) of new generated category or nothing on failure
+ * @return (int NULL) of new generated category or nothing on failure
  */
 function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0) {
     global $client, $lang, $perm;
@@ -284,7 +284,7 @@ function strRemakeTreeTable() {
  * @return array
  */
 function strSortPrePost($arr) {
-    $firstElement = null;
+    $firstElement = NULL;
     foreach ($arr as $row) {
         if ($row['preid'] == 0) {
             $firstElement = $row['idcat'];
@@ -362,7 +362,7 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
 function strNextDeeper($idcat, $ignoreLang = false) {
     global $lang;
 
-    $languageId = (true == $ignoreLang) ? $lang : null;
+    $languageId = (true == $ignoreLang) ? $lang : NULL;
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getFirstChildCategoryId($idcat, $languageId);
 }
@@ -413,7 +413,7 @@ function strNextBackwards($idcat) {
 function strNextDeeperAll($idcat, $ignoreLang = false) {
     global $lang;
 
-    $languageId = (true == $ignoreLang) ? $lang : null;
+    $languageId = (true == $ignoreLang) ? $lang : NULL;
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getAllChildCategoryIds($idcat, $languageId);
 }
@@ -798,7 +798,7 @@ function strMoveDownCategory($idcat) {
  * @param int $newPreId Id of new previous category
  * @param int $newPostId Id of new post category
  */
-function strMoveSubtree($idcat, $newParentId, $newPreId = null, $newPostId = null) {
+function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NULL) {
     global $movesubtreeidcat;
 
     $idlang = cRegistry::getLanguageId();
@@ -1097,7 +1097,7 @@ function strAssignTemplate($idcat, $client, $idTplCfg) {
     // Template permission check
     $iIdtplcfg = ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) ? (int) $idTplCfg : 0;
 
-    $idtpl = null;
+    $idtpl = NULL;
     if ($iIdtplcfg == 0) {
         // Get default template
         $oTemplateColl = new cApiTemplateCollection('defaulttemplate = 1 AND idclient = ' . (int) $client);

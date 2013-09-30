@@ -34,14 +34,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cDbDriverMysql extends cDbDriverAbstract {
 
     /**
-     * @see cDbDriverAbstract::check
+     * @see cDbDriverAbstract::check()
      */
     public function check() {
         return function_exists("mysql_connect");
     }
 
     /**
-     * @see cDbDriverAbstract::connect
+     * @see cDbDriverAbstract::connect()
      */
     public function connect() {
         if (isset($this->_dbCfg['connection'])) {
@@ -82,7 +82,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::buildInsert
+     * @see cDbDriverAbstract::buildInsert()
      */
     public function buildInsert($tableName, array $fields) {
         $fieldList = '';
@@ -104,7 +104,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::buildUpdate
+     * @see cDbDriverAbstract::buildUpdate()
      */
     public function buildUpdate($tableName, array $fields, array $whereClauses) {
         $updateList = '';
@@ -135,7 +135,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::query
+     * @see cDbDriverAbstract::query()
      */
     public function query($query) {
         $linkId = $this->_handler->getLinkId();
@@ -148,7 +148,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::nextRecord
+     * @see cDbDriverAbstract::nextRecord()
      */
     public function nextRecord() {
         $queryId = $this->_handler->getQueryId();
@@ -166,7 +166,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
      *
      * @param string $className
      * @return Ambigous <NULL, object, false>
-     * @see cDbDriverAbstract::getResultObject
+     * @see cDbDriverAbstract::getResultObject()
      */
     public function getResultObject($className = NULL) {
         $result = NULL;
@@ -184,7 +184,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::affectedRows
+     * @see cDbDriverAbstract::affectedRows()
      */
     public function affectedRows() {
         $linkId = $this->_handler->getLinkId();
@@ -193,7 +193,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::numRows
+     * @see cDbDriverAbstract::numRows()
      */
     public function numRows() {
         $queryId = $this->_handler->getQueryId();
@@ -202,7 +202,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::numFields
+     * @see cDbDriverAbstract::numFields()
      */
     public function numFields() {
         $queryId = $this->_handler->getQueryId();
@@ -211,7 +211,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::free
+     * @see cDbDriverAbstract::free()
      */
     public function free() {
         @mysql_free_result($this->_handler->getQueryId());
@@ -219,7 +219,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::escape
+     * @see cDbDriverAbstract::escape()
      */
     public function escape($string) {
         $linkId = $this->_handler->getLinkId();
@@ -230,7 +230,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     /**
      * @param int $pos
      * @return int
-     * @see cDbDriverAbstract::seek
+     * @see cDbDriverAbstract::seek()
      */
     public function seek($pos = 0) {
         $queryId = $this->_handler->getQueryId();
@@ -246,7 +246,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::getMetaData
+     * @see cDbDriverAbstract::getMetaData()
      */
     public function getMetaData($tableName, $full = false) {
         $res = array();
@@ -259,9 +259,8 @@ class cDbDriverMysql extends cDbDriverAbstract {
             return false;
         }
 
-        $count = @mysql_num_fields($id);
-
         // made this IF due to performance (one if is faster than $count if's)
+        $count = @mysql_num_fields($id);
         for ($i = 0; $i < $count; $i++) {
             $res[$i]['table'] = @mysql_field_table($id, $i);
             $res[$i]['name'] = @mysql_field_name($id, $i);
@@ -282,7 +281,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::getTableNames
+     * @see cDbDriverAbstract::getTableNames()
      */
     public function getTableNames() {
         $return = array();
@@ -302,7 +301,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::getServerInfo
+     * @see cDbDriverAbstract::getServerInfo()
      */
     public function getServerInfo() {
         $linkId = $this->_handler->getLinkId();
@@ -318,7 +317,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::getErrorNumber
+     * @see cDbDriverAbstract::getErrorNumber()
      */
     public function getErrorNumber() {
         $linkId = $this->_handler->getLinkId();
@@ -331,7 +330,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::getErrorMessage
+     * @see cDbDriverAbstract::getErrorMessage()
      */
     public function getErrorMessage() {
         $linkId = $this->_handler->getLinkId();
@@ -344,7 +343,7 @@ class cDbDriverMysql extends cDbDriverAbstract {
     }
 
     /**
-     * @see cDbDriverAbstract::disconnect
+     * @see cDbDriverAbstract::disconnect()
      */
     public function disconnect() {
         mysql_close($this->_handler->getLinkId());

@@ -43,7 +43,7 @@ class cApiInUseCollection extends ItemCollection {
      * @param string $session Specifies the session for which the "in use" mark
      *            is valid
      * @param string $user Specifies the user which requested the in-use flag
-     * @return cApiInUse|null
+     * @return cApiInUse|NULL
      */
     public function markInUse($type, $objectid, $session, $user) {
         $type = $this->escape($type);

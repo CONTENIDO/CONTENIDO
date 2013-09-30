@@ -27,7 +27,7 @@ class pApiContentAllocationTreeView extends pApiTree {
 
     /**
      */
-    var $tpl = null;
+    var $tpl = NULL;
 
     /**
      */

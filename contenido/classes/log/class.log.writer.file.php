@@ -25,7 +25,7 @@ class cLogWriterFile extends cLogWriter {
     /**
      * @var    resource    Destination handle
      */
-    protected $_handle = null;
+    protected $_handle = NULL;
 
     /**
      * Constructor of the writer instance.

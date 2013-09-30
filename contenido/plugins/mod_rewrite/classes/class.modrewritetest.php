@@ -94,7 +94,7 @@ class ModRewriteTest {
      *   $arr[idcat]['articles'][idart] = Article dataset
      * </code>
      */
-    public function fetchFullStructure($idclient = null, $idlang = null) {
+    public function fetchFullStructure($idclient = NULL, $idlang = NULL) {
         global $client, $lang;
 
         $db = cRegistry::getDb();

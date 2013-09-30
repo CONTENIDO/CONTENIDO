@@ -52,7 +52,7 @@ class cUriBuilderFrontcontent extends cUriBuilder {
      * @return cUriBuilderFrontcontent
      */
     public static function getInstance() {
-        if (self::$_instance == null) {
+        if (self::$_instance == NULL) {
             self::$_instance = new self();
         }
         return self::$_instance;

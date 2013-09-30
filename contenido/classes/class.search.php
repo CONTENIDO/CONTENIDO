@@ -65,7 +65,7 @@ abstract class cSearchBaseAbstract {
      * @param cDb $oDB Optional database instance
      * @param bool $bDebug Optional, flag to enable debugging (no longer needed)
      */
-    protected function __construct($oDB = null, $bDebug = false) {
+    protected function __construct($oDB = NULL, $bDebug = false) {
         global $cfg, $lang, $client;
 
         $this->cfg = $cfg;
@@ -74,7 +74,7 @@ abstract class cSearchBaseAbstract {
 
         $this->bDebug = $bDebug;
 
-        if ($oDB == null || !is_object($oDB)) {
+        if ($oDB == NULL || !is_object($oDB)) {
             $this->db = cRegistry::getDb();
         } else {
             $this->db = $oDB;
@@ -231,7 +231,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @param cDb $db CONTENIDO Database object
      * @return void
      */
-    public function __construct($db = null) {
+    public function __construct($db = NULL) {
         parent::__construct($db);
 
         $this->setContentTypes();
@@ -498,7 +498,7 @@ class cSearchIndex extends cSearchBaseAbstract {
         $sEncoding = getEncodingByLanguage($this->db, $this->lang);
 
         if (strtolower($sEncoding) != 'iso-8859-2') {
-            $key = conHtmlentities($key, null, $sEncoding);
+            $key = conHtmlentities($key, NULL, $sEncoding);
         } else {
             $key = htmlentities_iso88592($key);
         }
@@ -529,7 +529,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      * @return string
      */
     public function addSpecialUmlauts($key) {
-        $key = conHtmlentities($key, null, getEncodingByLanguage($this->db, $this->lang));
+        $key = conHtmlentities($key, NULL, getEncodingByLanguage($this->db, $this->lang));
         $aUmlautMap = array(
             'ue' => '&Uuml;',
             'ue' => '&uuml;',
@@ -875,7 +875,7 @@ class cSearch extends cSearchBaseAbstract {
      *        be searchable
      * @param cDb $db Optional database instance
      */
-    public function __construct($options, $db = null) {
+    public function __construct($options, $db = NULL) {
         parent::__construct($db);
 
         $this->_index = new cSearchIndex($db);
@@ -1414,7 +1414,7 @@ class cSearchResult extends cSearchBaseAbstract {
      * @param cDb $oDB Optional db instance
      * @param bool $bDebug Optional flag to enable debugging
      */
-    public function __construct($search_result, $result_per_page, $oDB = null, $bDebug = false) {
+    public function __construct($search_result, $result_per_page, $oDB = NULL, $bDebug = false) {
         parent::__construct($oDB, $bDebug);
 
         $this->_index = new cSearchIndex($oDB);
@@ -1456,7 +1456,7 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param $art_id int Id of an article
+     * @param int $art_id Id of an article
      * @param string $cms_type
      * @param int $id
      * @return string Content of an article, specified by it's content type

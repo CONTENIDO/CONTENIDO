@@ -67,7 +67,7 @@ class cApiLanguageCollection extends ItemCollection {
      * @global int $client
      * @global int $lang
      *
-     * @return cApiLanguage|null
+     * @return cApiLanguage|NULL
      */
     public function nextAccessible() {
         global $perm, $client, $lang;

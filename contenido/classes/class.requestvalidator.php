@@ -28,7 +28,7 @@ class cRequestValidator {
      *
      * @var cRequestValidator
      */
-    private static $_instance = null;
+    private static $_instance = NULL;
 
     /**
      * Path and filename of logfile
@@ -191,7 +191,7 @@ class cRequestValidator {
      * @return cRequestValidator
      */
     public static function getInstance() {
-        if (self::$_instance === null) {
+        if (self::$_instance === NULL) {
             self::$_instance = new self();
         }
 

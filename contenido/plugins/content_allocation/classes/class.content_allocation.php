@@ -29,15 +29,15 @@ class pApiContentAllocation {
      *
      * @var cDb
      */
-    var $db = null;
+    var $db = NULL;
 
-    var $table = null;
+    var $table = NULL;
 
-    var $lang = null;
+    var $lang = NULL;
 
-    var $client = null;
+    var $client = NULL;
 
-    var $treeObj = null;
+    var $treeObj = NULL;
 
     /**
      * @modified 27.10.2005 new class variable $this->bDebug (if true print
@@ -135,7 +135,7 @@ class pApiContentAllocation {
      * @return string SQL
      *         @modified 17.11.2005 by Willi Man
      */
-    function findMatchingContent($restrictions = null, $max = 0) {
+    function findMatchingContent($restrictions = NULL, $max = 0) {
         if (!is_array($restrictions)) {
             return false;
         }

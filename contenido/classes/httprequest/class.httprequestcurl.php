@@ -66,7 +66,7 @@ class cHttpRequestCurl extends cHttpRequest {
      * @see cHttpRequest::getHttpRequest()
      */
     public function __construct($url = '') {
-        $this->curl = curl_init(($url == '') ? null : $url);
+        $this->curl = curl_init(($url == '') ? NULL : $url);
         $this->setURL($url);
     }
 

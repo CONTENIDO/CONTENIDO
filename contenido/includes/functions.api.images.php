@@ -644,7 +644,7 @@ function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
  */
 function cApiIsImageMagickAvailable() {
     global $cfg;
-    static $imagemagickAvailable = null;
+    static $imagemagickAvailable = NULL;
 
     // if the check has already been executed, just return the result
     if (is_bool($imagemagickAvailable)) {

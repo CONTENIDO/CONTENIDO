@@ -126,21 +126,21 @@ class cUpdateNotifier {
      *
      * @var object
      */
-    protected $oXML = null;
+    protected $oXML = NULL;
 
     /**
      * Properties object
      *
      * @var object
      */
-    protected $oProperties = null;
+    protected $oProperties = NULL;
 
     /**
      * Session object
      *
      * @var object
      */
-    protected $oSession = null;
+    protected $oSession = NULL;
 
     /**
      * Timeout for the fsockopen connection

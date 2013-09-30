@@ -196,7 +196,7 @@ class cAjaxRequest {
                         $string = $filename_a;
                         break;
                 }
-                // if can not scale, so $sString is null, then show the original
+                // if can not scale, so $sString is NULL, then show the original
                 // image.
                 if ($string == '') {
                     $filename = str_replace($frontendPath, $frontendURL, $filename_a);
@@ -345,8 +345,8 @@ class cAjaxRequest {
 
             case 'verify_module':
 
-                $idmod       = isset($_POST['idmod']) ? $_POST['idmod']:null;
-                $inputType   = isset($_POST['type']) ? $_POST['type']:null;
+                $idmod       = isset($_POST['idmod']) ? $_POST['idmod']:NULL;
+                $inputType   = isset($_POST['type']) ? $_POST['type']:NULL;
                 $modulecheck = getSystemProperty("system", "modulecheck") ? :true;
                 $result      = array(
                     'state'       => 'error',
