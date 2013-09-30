@@ -28,17 +28,17 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
     public function testTrim() {
 
         // empty array
-        $this->assertEquals(array(), cArray::trim(array()));
+        $this->assertSame(array(), cArray::trim(array()));
 
         // nonempty array
         $data = explode(',', 'foo , bar, baz ');
         $exp = explode(',', 'foo,bar,baz');
-        $this->assertEquals($exp, cArray::trim($data));
+        $this->assertSame($exp, cArray::trim($data));
 
         // nonempty array with arbitrary character
         $data = explode(',', 'foo,bar,baz');
         $exp = explode(',', 'foo,ar,az');
-        $this->assertEquals($exp, cArray::trim($data, 'b'));
+        $this->assertSame($exp, cArray::trim($data, 'b'));
     }
 
     /**
@@ -50,13 +50,13 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
 
         // empty array
         $data = array();
-        $this->assertEquals(false, cArray::searchRecursive($data, NULL));
-        $this->assertEquals(false, cArray::searchRecursive($data, 0));
-        $this->assertEquals(false, cArray::searchRecursive($data, 0.0));
-        $this->assertEquals(false, cArray::searchRecursive($data, false));
-        $this->assertEquals(false, cArray::searchRecursive($data, ''));
-        $this->assertEquals(false, cArray::searchRecursive($data, 'foo'));
-        $this->assertEquals(false, cArray::searchRecursive($data, 'bar'));
+        $this->assertSame(false, cArray::searchRecursive($data, NULL));
+        $this->assertSame(false, cArray::searchRecursive($data, 0));
+        $this->assertSame(false, cArray::searchRecursive($data, 0.0));
+        $this->assertSame(false, cArray::searchRecursive($data, false));
+        $this->assertSame(false, cArray::searchRecursive($data, ''));
+        $this->assertSame(false, cArray::searchRecursive($data, 'foo'));
+        $this->assertSame(false, cArray::searchRecursive($data, 'bar'));
 
         // nonempty nested array
         $data = array(
@@ -88,53 +88,53 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
             false
         );
 
-        $this->assertEquals(0, cArray::searchRecursive($data, 'NULL'));
-        $this->assertEquals(1, cArray::searchRecursive($data, '0'));
+        $this->assertSame(0, cArray::searchRecursive($data, 'NULL'));
+        $this->assertSame(1, cArray::searchRecursive($data, '0'));
         // '0.0' equals '0'
-        $this->assertEquals(1, cArray::searchRecursive($data, '0.0'));
-        $this->assertEquals(3, cArray::searchRecursive($data, 'false'));
-        $this->assertEquals(4, cArray::searchRecursive($data, 'foo'));
-        $this->assertEquals(5, cArray::searchRecursive($data, 'bar'));
+        $this->assertSame(1, cArray::searchRecursive($data, '0.0'));
+        $this->assertSame(3, cArray::searchRecursive($data, 'false'));
+        $this->assertSame(4, cArray::searchRecursive($data, 'foo'));
+        $this->assertSame(5, cArray::searchRecursive($data, 'bar'));
         // 'ba' equals 0!
-        $this->assertEquals(9, cArray::searchRecursive($data, 'ba'));
+        $this->assertSame(9, cArray::searchRecursive($data, 'ba'));
         // NULL equals ''!
-        $this->assertEquals(7, cArray::searchRecursive($data, NULL));
+        $this->assertSame(7, cArray::searchRecursive($data, NULL));
         // 0 equals 'NULL'!
-        $this->assertEquals(0, cArray::searchRecursive($data, 0));
+        $this->assertSame(0, cArray::searchRecursive($data, 0));
         // 0.0 equals 'NULL'!
-        $this->assertEquals(0, cArray::searchRecursive($data, 0.0));
+        $this->assertSame(0, cArray::searchRecursive($data, 0.0));
         // false equals '0'!
-        $this->assertEquals(1, cArray::searchRecursive($data, false));
-        $this->assertEquals(7, cArray::searchRecursive($data, ''));
+        $this->assertSame(1, cArray::searchRecursive($data, false));
+        $this->assertSame(7, cArray::searchRecursive($data, ''));
 
         // partial search
-        $this->assertEquals(0, cArray::searchRecursive($data, 'NULL', true));
-        $this->assertEquals(1, cArray::searchRecursive($data, '0', true));
-        $this->assertEquals(2, cArray::searchRecursive($data, '0.0', true));
-        $this->assertEquals(3, cArray::searchRecursive($data, 'false', true));
-        $this->assertEquals(4, cArray::searchRecursive($data, 'foo', true));
-        $this->assertEquals(5, cArray::searchRecursive($data, 'bar', true));
-        $this->assertEquals(5, cArray::searchRecursive($data, 'ba', true));
+        $this->assertSame(0, cArray::searchRecursive($data, 'NULL', true));
+        $this->assertSame(1, cArray::searchRecursive($data, '0', true));
+        $this->assertSame(2, cArray::searchRecursive($data, '0.0', true));
+        $this->assertSame(3, cArray::searchRecursive($data, 'false', true));
+        $this->assertSame(4, cArray::searchRecursive($data, 'foo', true));
+        $this->assertSame(5, cArray::searchRecursive($data, 'bar', true));
+        $this->assertSame(5, cArray::searchRecursive($data, 'ba', true));
         // @todo ERROR: strpos(): Empty delimiter
-        $this->assertEquals(4, cArray::searchRecursive($data, '', true));
-        $this->assertEquals(0, cArray::searchRecursive($data, NULL, true));
-        $this->assertEquals(false, cArray::searchRecursive($data, 0, true));
-        $this->assertEquals(false, cArray::searchRecursive($data, 0.0, true));
-        $this->assertEquals(false, cArray::searchRecursive($data, false, true));
+        $this->assertSame(4, cArray::searchRecursive($data, '', true));
+        $this->assertSame(0, cArray::searchRecursive($data, NULL, true));
+        $this->assertSame(false, cArray::searchRecursive($data, 0, true));
+        $this->assertSame(false, cArray::searchRecursive($data, 0.0, true));
+        $this->assertSame(false, cArray::searchRecursive($data, false, true));
 
         // strict search
-        $this->assertEquals(0, cArray::searchRecursive($data, 'NULL', false, true));
-        $this->assertEquals(1, cArray::searchRecursive($data, '0', false, true));
-        $this->assertEquals(2, cArray::searchRecursive($data, '0.0', false, true));
-        $this->assertEquals(3, cArray::searchRecursive($data, 'false', false, true));
-        $this->assertEquals(4, cArray::searchRecursive($data, 'foo', false, true));
-        $this->assertEquals(5, cArray::searchRecursive($data, 'bar', false, true));
-        $this->assertEquals(false, cArray::searchRecursive($data, 'ba', false, true));
-        $this->assertEquals(7, cArray::searchRecursive($data, '', false, true));
-        $this->assertEquals(8, cArray::searchRecursive($data, NULL, false, true));
-        $this->assertEquals(9, cArray::searchRecursive($data, 0, false, true));
-        $this->assertEquals(10, cArray::searchRecursive($data, 0.0, false, true));
-        $this->assertEquals(11, cArray::searchRecursive($data, false, false, true));
+        $this->assertSame(0, cArray::searchRecursive($data, 'NULL', false, true));
+        $this->assertSame(1, cArray::searchRecursive($data, '0', false, true));
+        $this->assertSame(2, cArray::searchRecursive($data, '0.0', false, true));
+        $this->assertSame(3, cArray::searchRecursive($data, 'false', false, true));
+        $this->assertSame(4, cArray::searchRecursive($data, 'foo', false, true));
+        $this->assertSame(5, cArray::searchRecursive($data, 'bar', false, true));
+        $this->assertSame(false, cArray::searchRecursive($data, 'ba', false, true));
+        $this->assertSame(7, cArray::searchRecursive($data, '', false, true));
+        $this->assertSame(8, cArray::searchRecursive($data, NULL, false, true));
+        $this->assertSame(9, cArray::searchRecursive($data, 0, false, true));
+        $this->assertSame(10, cArray::searchRecursive($data, 0.0, false, true));
+        $this->assertSame(11, cArray::searchRecursive($data, false, false, true));
     }
 
     /**
@@ -146,29 +146,117 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
         $orig = explode(',', 'ß,ü,ö,ä,z,y,x,w,v,u,t,s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a');
 
         $us = explode(',', 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ä,ö,ü,ß');
-        $this->assertEquals($us, cArray::sortWithLocale($orig, 'us'));
+        $this->assertSame($us, cArray::sortWithLocale($orig, 'us'));
 
         $us_EN = explode(',', 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ä,ö,ü,ß');
-        $this->assertEquals($us_EN, cArray::sortWithLocale($orig, 'us_EN'));
+        $this->assertSame($us_EN, cArray::sortWithLocale($orig, 'us_EN'));
 
         $de = explode(',', 'a,ä,b,c,d,e,f,g,h,i,j,k,l,m,n,o,ö,p,q,r,s,t,u,ü,v,w,x,y,z,ß');
-        $this->assertEquals($de, cArray::sortWithLocale($orig, 'de'));
+        $this->assertSame($de, cArray::sortWithLocale($orig, 'de'));
 
         $de_DE = explode(',', 'a,ä,b,c,d,e,f,g,h,i,j,k,l,m,n,o,ö,p,q,r,s,t,u,ü,v,w,x,y,z,ß');
-        $this->assertEquals($de_DE, cArray::sortWithLocale($orig, 'de_DE'));
+        $this->assertSame($de_DE, cArray::sortWithLocale($orig, 'de_DE'));
     }
 
     /**
+     * $new_array = cArray::csort($array [, 'col1' [, SORT_FLAG]+]);
+     * SORT_FLAG = [SORT_ASC|SORT_DESC|SORT_REGULAR|SORT_NUMERIC|SORT_STRING]
      *
      * @todo add test
      */
     public function testCsort() {
+
+        // $de_DE = explode(',', '');
+        // $this->assertSame($de_DE, cArray::csort($orig));
+
+        // $array = cArray::csort($array, 'town','age', SORT_DESC, 'name');
     }
 
     /**
+     * Tests initializing of array values in empty and nonempty array, with
+     * existant and nonexistant keys and default or custom default values.
      *
      * @todo add test
      */
     public function testInitializeKey() {
+
+        // test empty array w/ nonexistant key and default default
+        $actual = array();
+        cArray::initializeKey($actual, 'key');
+        $this->assertSame(1, count($actual));
+        $this->arrayHasKey('key');
+        $this->assertSame('', $actual['key']);
+
+        // test empty array w/ nonexistant key and custom default
+        $actual = array();
+        cArray::initializeKey($actual, 'key', 'custom');
+        $this->assertSame(1, count($actual));
+        $this->arrayHasKey('key');
+        $this->assertSame('custom', $actual['key']);
+
+        // test empty array w/ existant key and default default => IMPOSSIBLE
+        // test empty array w/ existant key and custom default => IMPOSSIBLE
+
+        // test nonempty array w/ nonexistant key and default default
+        $actual = array(
+            'foo' => 'bar'
+        );
+        cArray::initializeKey($actual, 'key');
+        $this->assertSame(2, count($actual));
+        $this->arrayHasKey('key');
+        $this->assertSame('', $actual['key']);
+        $this->arrayHasKey('foo');
+        $this->assertSame('bar', $actual['foo']);
+
+        // test nonempty array w/ nonexistant key and custom default
+        $actual = array(
+            'foo' => 'bar'
+        );
+        cArray::initializeKey($actual, 'key', 'custom');
+        $this->assertSame(2, count($actual));
+        $this->arrayHasKey('key');
+        $this->assertSame('custom', $actual['key']);
+        $this->arrayHasKey('foo');
+        $this->assertSame('bar', $actual['foo']);
+
+        // test nonempty array w/ nonexistant key and default default
+        $actual = array(
+            'foo' => 'bar'
+        );
+        cArray::initializeKey($actual, 'key');
+        $this->assertSame(2, count($actual));
+        $this->arrayHasKey('key');
+        $this->assertSame('', $actual['key']);
+        $this->arrayHasKey('foo');
+        $this->assertSame('bar', $actual['foo']);
+
+        // test nonempty array w/ nonexistant key and custom default
+        $actual = array(
+            'foo' => 'bar'
+        );
+        cArray::initializeKey($actual, 'key', 'custom');
+        $this->assertSame(2, count($actual));
+        $this->arrayHasKey('key');
+        $this->assertSame('custom', $actual['key']);
+        $this->arrayHasKey('foo');
+        $this->assertSame('bar', $actual['foo']);
+
+        // test nonempty array w/ existant key and default default
+        $actual = array(
+            'key' => 'old'
+        );
+        cArray::initializeKey($actual, 'key');
+        $this->assertSame(1, count($actual));
+        $this->arrayHasKey('key');
+        $this->assertSame('old', $actual['key']);
+
+        // test nonempty array w/ nonexistant key and custom default
+        $actual = array(
+            'key' => 'old'
+        );
+        cArray::initializeKey($actual, 'key', 'custom');
+        $this->assertSame(1, count($actual));
+        $this->arrayHasKey('key');
+        $this->assertSame('old', $actual['key']);
     }
 }
