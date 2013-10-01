@@ -17,6 +17,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $backendUrl = cRegistry::getBackendUrl();
 
+// before we do anything, let's check if everything works
+// in case something doesn't work the user doesn't just see a white page
+$ret = strCheckTreeForErrors();
+if(is_array($ret)) {
+    $string = '';
+    foreach($ret as $errorMessage) {
+        $string .= $errorMessage . '<br>';
+    }
+    $string .= '<br>' . i18n('Be careful! Further editing of the category tree might corrupt it more. Please fix the errors first.');
+    $notification->displayNotification(cGuiNotification::LEVEL_WARNING, $string);
+}
+
 strRemakeTreeTable();
 
 $tmp_area = 'str';
@@ -202,7 +214,6 @@ function insertEmptyStrRow($listColumns) {
     $tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $additionalColumns));
     $tpl->next();
 }
-
 getTemplateSelect();
 
 $sess->register("remakeStrTable");
@@ -634,10 +645,10 @@ foreach ($objects as $key => $value) {
         $aRecord = array();
         $sCatName = $value->name;
 
-#        $aRecord['catn'] = str_replace('\'', '\\\'', $sCatName);
+//        $aRecord['catn'] = str_replace('\'', '\\\'', $sCatName);
         $aRecord['catn'] = $sCatName;
         $sAlias = $value->custom['alias'];
-#        $aRecord['alias'] = str_replace('\'', '\\\'', $sAlias);
+//        $aRecord['alias'] = str_replace('\'', '\\\'', $sAlias);
         $aRecord['alias'] = conHtmlSpecialChars($sAlias);
         $aRecord['idtplcfg'] = $value->custom['idtplcfg'];
         $aRecord['pName'] = $bPermRename;

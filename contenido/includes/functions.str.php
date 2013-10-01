@@ -71,11 +71,23 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     $oCatColl2 = new cApiCategoryCollection();
     $oNewCat = $oCatColl2->create($client, 0, $lastCatTreeId, 0);
     $newIdcat = $oNewCat->get('idcat');
+    $oldPostId = -1;
 
     // Update last category tree
     if (is_object($oLastCatTree)) {
+        $oldPostId = $oLastCatTree->get('postid');
         $oLastCatTree->set('postid', $newIdcat);
         $oLastCatTree->store();
+    }
+
+    $error = strCheckTreeForErrors();
+    if(!($error === false)) {
+        if($oldPostId != -1) {
+            $oLastCatTree->set('postid', $oldPostId);
+            $oLastCatTree->store();
+        }
+        $oCatColl->delete($oNewCat->get('idcat'));
+        return;
     }
 
     cInclude('includes', 'functions.rights.php');
@@ -160,14 +172,26 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     $oCatColl2 = new cApiCategoryCollection();
     $oNewCat = $oCatColl2->create($client, $parentid, $preIdcat, 0);
     $newIdcat = $oNewCat->get('idcat');
+    $oldPostId = -1;
 
     // Update previous category, if exists
     if (is_object($oPrevCat)) {
+        $oldPostId = $oPrevCat->get('postid');
         $oPrevCat->set('postid', $newIdcat);
         $oPrevCat->set('lastmodified', date('Y-m-d H:i:s'));
         $oPrevCat->store();
     }
 
+    $error = strCheckTreeForErrors();
+    if(!($error === false)) {
+        if($oldPostId != -1) {
+            $oPrevCat->set('postid', $oldPostId);
+            $oPrevCat->store();
+        }
+        $oCatColl2->delete($oNewCat->get('idcat'));
+        return;
+    }
+    
     cInclude('includes', 'functions.rights.php');
 
     // Loop through languages
@@ -235,6 +259,11 @@ function strRemakeTreeTable() {
         // There are no categories to build the tree from!
         return;
     }
+    
+    $errors = strCheckTreeForErrors();
+    if(!($errors === false)) {
+        return;
+    }
 
     $remakeCatTable = true;
     $remakeStrTable = true;
@@ -294,17 +323,6 @@ function strSortPrePost($arr) {
     $curId = $firstElement;
     $array = array();
 
-    // Test for inifinite loops in the category list (1=>2; 2=>1 || 1=>1)
-    $checkedIds = array();
-    foreach ($arr as $row) {
-        if (in_array($row['postid'], $checkedIds) || $row['idcat'] == $row['postid']) {
-            // die(i18n("The list of categories is messed up. The order in the
-            // list creates an infinite loop. Check you database."));
-            continue;
-        }
-        $checkedIds[] = $row['idcat'];
-    }
-
     // Test for a last element in the category list
     $fine = false;
     foreach ($arr as $row) {
@@ -314,7 +332,7 @@ function strSortPrePost($arr) {
         }
     }
     if (!$fine) {
-        die(i18n("The list of categories is messed up. The order in the list creates an infinite loop. Check you database."));
+        die(); // we already displayed an error message through strCheckTree
     }
 
     while ($curId != 0) {
@@ -639,6 +657,21 @@ function strDeleteCategory($idcat) {
         $oPostCat->set('preid', $preid);
         $oPostCat->store();
     }
+    
+    $error = strCheckTreeForErrors(array(), array($idcat));
+    if(!($error === false)) {
+        if ($preid != 0) {
+            $oPreCat = new cApiCategory($preid);
+            $oPreCat->set('postid', $idcat);
+            $oPreCat->store();
+        }
+        if ($postid != 0) {
+            $oPostCat = new cApiCategory($postid);
+            $oPostCat->set('preid', $idcat);
+            $oPostCat->store();
+        }
+        return '0600';
+    }
 
     // Delete category
     $oCatColl = new cApiCategoryCollection();
@@ -707,25 +740,41 @@ function strMoveUpCategory($idcat) {
         $oPostCat->loadByPrimaryKey((int) $postid);
     }
 
+    $updateCats = array();
+    
     // Update category before previous, if exists
     if ($oPrePreCat->isLoaded()) {
         $oPrePreCat->set('postid', $idcat);
-        $oPrePreCat->store();
+        $updateCats[$prePreid] = $oPrePreCat;
     }
 
     // Update previous category
     $oPreCat->set('preid', $idcat);
     $oPreCat->set('postid', $postid);
-    $oPreCat->store();
+    $updateCats[$preid] = $oPreCat;
 
     // Update current category
     $oCat->set('preid', $prePreid);
     $oCat->set('postid', $preid);
-    $oCat->store();
+    $updateCats[$idcat] = $oCat;
 
     // Update post category, if exists!
     $oPostCat->set('preid', $preIdcat);
-    $oPostCat->store();
+    $updateCats[$postid] = $oPostCat;
+
+    $error = strCheckTreeForErrors($updateCats);
+    if($error === false) {
+        foreach($updateCats as $cat) {
+            $cat->store();
+        }
+    } else {
+        $string = '';
+        foreach($error as $msg) {
+            $string .= $msg . '<br>';
+        }
+        $notification->displayNotification(cGuiNotification::LEVEL_WARNING, $msg . '<br><br>' . i18n('Something went wrong while trying to perform this operation. Please try again.'));
+        return;
+    }
 }
 
 /**
@@ -765,28 +814,44 @@ function strMoveDownCategory($idcat) {
     $oPostCat->loadByPrimaryKey((int) $postid);
     $postIdcat = $oPostCat->get('idcat');
     $postPostid = $oPostCat->get('postid');
+    
+    $updateCats = array();
 
     if ($preIdcat != 0) {
         // Update previous category, if exists
         $oPreCat->set('postid', (int) $postIdcat);
-        $oPreCat->store();
+        $updateCats[$preIdcat] = $oPreCat;
     }
 
     // Update current category
     $oCat->set('preid', $postid);
     $oCat->set('postid', $postPostid);
-    $oCat->store();
+    $updateCats[$idcat] = $oCat;
 
     // Update post category
     $oPostCat->set('preid', $preIdcat);
     $oPostCat->set('postid', $idcat);
-    $oPostCat->store();
+    $updateCats[$postid] = $oPostCat;
 
     if ($postPostid != 0) {
         // Update post post category, if exists
         $oPostPostCat = new cApiCategory($postPostid);
         $oPostPostCat->set('preid', $idcat);
-        $oPostPostCat->store();
+        $updateCats[$postPostid] = $oPostPostCat;
+    }
+    
+    $error = strCheckTreeForErrors($updateCats);
+    if($error === false) {
+        foreach($updateCats as $cat) {
+            $cat->store();
+        }
+    } else {
+        $string = '';
+        foreach($error as $msg) {
+            $string .= $msg . '<br>';
+        }
+        $notification->displayNotification(cGuiNotification::LEVEL_WARNING, $msg . '<br><br>' . i18n('Something went wrong while trying to perform this operation. Please try again.'));
+        return;
     }
 }
 
@@ -799,7 +864,7 @@ function strMoveDownCategory($idcat) {
  * @param int $newPostId Id of new post category
  */
 function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NULL) {
-    global $movesubtreeidcat;
+    global $movesubtreeidcat, $notification;
 
     $idlang = cRegistry::getLanguageId();
     $cat = new cApiCategoryCollection();
@@ -820,7 +885,7 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
         return false;
     }
     if (!isset($newPostId)) {
-        return false;
+        //return false;
     }
     // flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
@@ -844,19 +909,26 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
         $category = new cApiCategory($idcat);
         $oldPreId = $category->get('preid');
         $oldPostId = $category->get('postid');
+        $oldParentId = $category->get('parentid');
+        
+        $updateCats = array();
 
         // update old predecessor (pre) category
         if ($oldPreId != 0) {
             $oldPreCategory = new cApiCategory($oldPreId);
             $oldPreCategory->set('postid', $oldPostId);
-            $oldPreCategory->store();
+            $updateCats[$oldPreId] = $oldPreCategory;
         }
 
         // update old follower (post) category
         if ($oldPostId != 0) {
-            $oldPostCategory = new cApiCategory($oldPostId);
-            $oldPostCategory->set('preid', $oldPreId);
-            $oldPostCategory->store();
+            if(isset($updateCats[$oldPostId])) {
+                $updateCats[$oldPostId]->set('preid', $oldPreId);
+            } else {
+                $oldPostCategory = new cApiCategory($oldPostId);
+                $oldPostCategory->set('preid', $oldPreId);
+                $updateCats[$oldPostId] = $oldPostCategory;
+            }
         }
 
         // update new predecessor (pre) category
@@ -866,30 +938,49 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
             $categoryCollection = new cApiCategoryCollection();
             $categoryCollection->select("parentid = " . $newParentId . " AND postid = 0");
             $newPreCategory = $categoryCollection->next();
-        } else {
-            $newPreCategory = new cApiCategory($newPreId);
-        }
-        if ($newPreCategory) {
-            $newPreCategory->set('postid', $idcat);
-            $newPreCategory->store();
-            $newPreId = $newPreCategory->get('idcat');
-        } else {
             $newPreId = 0;
+        } else {
+            if(isset($updateCats[$newPreId])) {
+                $updateCats[$newPreId]->set('postid', $idcat);
+            } else {
+                $newPreCategory = new cApiCategory($newPreId);
+                $newPreCategory->set('postid', $idcat);
+                $updateCats[$newPreId] = $newPreCategory;
+                $newPreId = $newPreCategory->get('idcat');
+            }
         }
 
         // update new follower (post) category
         if ($newPostId != 0) {
-            $newPostCategory = new cApiCategory($newPostId);
-            $newPostCategory->set('preid', $idcat);
-            $newPostCategory->store();
+            if(isset($updateCats[$newPostId])) {
+                $updateCats[$newPostId]->set('preid', $idcat);
+            } else {
+                $newPostCategory = new cApiCategory($newPostId);
+                $newPostCategory->set('preid', $idcat);
+                $updateCats[$newPostId] = $newPostCategory;
+            }
         }
 
         // Update current category
         $category->set('parentid', $newParentId);
         $category->set('preid', $newPreId);
         $category->set('postid', $newPostId);
-        $category->store();
+        $updateCats[$idcat] = $category;
 
+        $error = strCheckTreeForErrors($updateCats);
+        if($error === false) {
+            foreach($updateCats as $cat) {
+                $cat->store();
+            }
+        } else {
+            $string = '';
+            foreach($error as $msg) {
+                $string .= $msg . '<br>';
+            }
+            $notification->displayNotification(cGuiNotification::LEVEL_WARNING, $msg . '<br><br>' . i18n('Something went wrong while trying to perform this operation. Please try again.'));
+            return false;
+        }
+        
         $movesubtreeidcat = 0;
     }
 
@@ -1115,5 +1206,176 @@ function strAssignTemplate($idcat, $client, $idTplCfg) {
         while (($oCatLang = $oCatLangColl->next()) !== false) {
             $oCatLang->assignTemplate($idtpl);
         }
+    }
+}
+
+/**
+ * Checks the category tree for errors
+ * Returns FALSE if there are NO errors.
+ * If there are errors, an array with erorr messages will be returned
+ * 
+ * @param array $addCats An array of cApiCategory objects which overwrite categories from the database
+ * @param array $ignoreCats An array of idcat's which will be treated like they don't exist in the database
+ * @return multitype:string |boolean An array of error messages if something is wrong. If nothing is wrong false will be returned
+ */
+function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
+    $errorMessages = array();
+    
+    // Get all categories into memory
+    $cats = new cApiCategoryCollection();
+    $cats->select();
+    
+    $catArray = array();
+    // first add the ones from the parameters
+    foreach($addCats as $addCat) {
+        if($addCat->get('idcat') == 0) {
+            continue;
+        }
+        $catArray[$addCat->get('idcat')] = $addCat;
+    }
+    
+    // add every category from the database
+    while($cat = $cats->next()) {
+        if(in_array($ignoreCats, $cat->get('idcat'))) {
+            continue;
+        }
+        if(isset($catArray[$cat->get('idcat')])) {
+            continue;
+        }
+        $catArray[$cat->get('idcat')] = $cat;
+    }
+    
+    ksort($catArray);
+    
+    // build an array with the parentids at the top level and every child category as member
+    // aka
+    // $parents[parentId][catIdOfChildToParentId] = cApiCategory(catIdOfChildToParent)
+    // check if every parent that is mentioned in the database actually exists
+    $fine = true;
+    $parents = array();
+    foreach($catArray as $idcat => $cat) {
+        if(!array_key_exists($cat->get('parentid'), $catArray) && $cat->get('parentid') != 0) {
+            $fine = false;
+            $errorMessages[] = sprintf(i18n('Category %s has a parent id (%s) which does not exist!'), $idcat, $cat->get('parentid'));
+        }
+        $parents[$cat->get('parentid')][$idcat] = $cat;
+    }
+
+    // check for consistency in every parent
+    foreach($parents as $parentId => $parent) {
+        // first, check for multiple preids and postids
+        // the category tree will miss some categories if multiple categories share preids and/or postids
+        $preIds = array();
+        $postIds = array();
+        foreach($parent as $idcat => $cat) {
+            $preId = $cat->get('preid');
+            $postId = $cat->get('postid');
+            if(in_array($preId, $preIds)) {
+                $fine = false;
+                $errorMessages[] = sprintf(i18n('There are multiple categories in %s that share the same pre-id (%s - second occurence at %s). Sorting will fail and not all categories will be shown.'), $parentId, $preId, $idcat);
+            }
+            if(in_array($postId, $postIds)) {
+                $fine = false;
+                $errorMessages[] = sprintf(i18n('There are multiple categories in %s that share the same post-id (%s - second occurence at %s). Sorting will fail and not all categories will be shown.'), $parentId, $postId, $idcat);
+            }
+            $preIds[] = $preId;
+            $postIds[] = $postId;
+        }
+        
+        // check the consistency of the postids
+        // find the start
+        $startCat = null;
+        foreach($parent as $cat) {
+            if($cat->get('preid') == 0) {
+                $startCat = $cat;
+                break;
+            }
+        }
+        // if not start was found then something is wrong
+        if($startCat == null) {
+            $fine = false;
+            $errorMessages[] = sprintf(i18n('There is no defined start (a category with preid == 0) in %s. Sorting impossible.'), $parentId);
+            continue;
+        }
+        // loop through the categories using the postid
+        $actCat = $startCat;
+        $checkedCats = array();
+        $checkedCats[] = $startCat->get('idcat');
+        while($actCat != null) {
+            $catId = $actCat->get('idcat');
+            $postId = $actCat->get('postid');
+            if($postId == 0) {
+                break;
+            }
+            // check if the postid is actually a child of the parent
+            if(!array_key_exists($postId, $parent)) {
+                $fine = false;
+                $errorMessages[] = sprintf(i18n('%s has an invalid post-id (%s). The category does not exist in this parent! Sorting impossible.'), $catId, $postId);
+                break;
+            }
+            $actCat = $catArray[$postId];
+            // check if the postid was seen before. if yes that would mean there's a loop in the tree
+            if(in_array($actCat->get('idcat'), $checkedCats)) {
+                $fine = false;
+                $errorMessages[] = sprintf(i18n('The sorting in category %s creates an infinite loop (postid = %s). Sorting the category is impossible! (Cause of failure is near category %s)'), $parentId, $postId, $catId);
+                break;
+            }
+            $checkedCats[] = $actCat->get('idcat');
+        }
+        
+        // check the consistency of the preids
+        // find the last element (which is the start of the preids)
+        $startCat = null;
+        foreach($parent as $cat) {
+            if($cat->get('postid') == 0) {
+                $startCat = $cat;
+                break;
+            }
+        }
+        // if no end was found => error (this most likely means there's some kind of loop too)
+        if($startCat == null) {
+            $fine = false;
+            $errorMessages[] = sprintf(i18n('There is no defined end (a category with postid == 0) in %s. Sorting impossible.'), $parentId);
+            continue;
+        }
+        // loop through the categories using the preid
+        $actCat = $startCat;
+        $checkedCats = array();
+        $checkedCats[] = $startCat->get('idcat');
+        while($actCat != null) {
+            $catId = $actCat->get('idcat');
+            $preId = $actCat->get('preid');
+            if($preId == 0) {
+                break;
+            }
+            // if the preid isn't a child of the parent => error
+            if(!array_key_exists($preId, $parent)) {
+                $fine = false;
+                $errorMessages[] = sprintf(i18n('%s has an invalid pre-id (%s). The category does not exist in this parent! Sorting impossible.'), $catId, $preId);
+                break;
+            }
+            $actCat = $catArray[$preId];
+            // if we've seen this preid before, that means there is some kind of loop => error
+            if(in_array($actCat->get('idcat'), $checkedCats)) {
+                $fine = false;
+                $errorMessages[] = sprintf(i18n('The sorting in category %s creates an infinite loop (preid = %s). Sorting the category is impossible! (Cause of failure is near category %s)'), $parentId, $preId, $catId);
+                break;
+            }
+            $checkedCats[] = $actCat->get('idcat');
+        }
+    }
+    // if everything is fine, return false
+    // otherwise return the collected error messages
+    if(!$fine) {
+        $messages = array();
+        foreach($errorMessages as $errorMessage) {
+            if(in_array($errorMessage, $messages)) {
+                continue;
+            }
+            $messages[] = $errorMessage;
+        }
+        return $messages;
+    } else {
+        return false;
     }
 }

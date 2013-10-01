@@ -217,6 +217,9 @@
 ./classes/html/class.html.time.php
 ./classes/html/class.html.upload.php
 ./classes/html/class.html.video.php
+./classes/httprequest/class.httprequest.php
+./classes/httprequest/class.httprequestcurl.php
+./classes/httprequest/class.httprequestsocket.php
 ./classes/index.php
 ./classes/log/class.log.php
 ./classes/log/class.log.writer.file.php
