@@ -18,13 +18,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $plugin_name = "linkchecker";
 $cfg = cRegistry::getConfig();
 
-if (!$perm->have_perm_area_action($plugin_name, $plugin_name) && $cronjob != true) {
-    exit();
-}
+if(!$cronjob) {
+    if (!$perm->have_perm_area_action($plugin_name, $plugin_name) && $cronjob != true) {
+        exit();
+    }
 
-if (cRegistry::getClientId() == 0 && $cronjob != true) {
-    $notification->displayNotification("error", i18n("No Client selected"));
-    exit();
+    if (cRegistry::getClientId() == 0 && $cronjob != true) {
+        $notification->displayNotification("error", i18n("No Client selected"));
+        exit();
+    }
 }
 
 // If no mode defined, use mode three
@@ -62,18 +64,20 @@ if ($cronjob != true) {
 }
 
 // Fill Subnav I
-$sLink = $sess->url("main.php?area=linkchecker&frame=4&action=linkchecker") . '&mode=';
+if(!$cronjob) {
+    $sLink = $sess->url("main.php?area=linkchecker&frame=4&action=linkchecker") . '&mode=';
 
-// Fill Subnav II
-$tpl->set('s', 'INTERNS_HREF', $sLink . '1');
-$tpl->set('s', 'INTERNS_LABEL', i18n("Interns", $plugin_name));
-$tpl->set('s', 'EXTERNS_HREF', $sLink . '2');
-$tpl->set('s', 'EXTERNS_LABEL', i18n("Externs", $plugin_name));
-$tpl->set('s', 'INTERNS_EXTERNS_HREF', $sLink . '3');
-$tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links", $plugin_name));
+    // Fill Subnav II
+    $tpl->set('s', 'INTERNS_HREF', $sLink . '1');
+    $tpl->set('s', 'INTERNS_LABEL', i18n("Interns", $plugin_name));
+    $tpl->set('s', 'EXTERNS_HREF', $sLink . '2');
+    $tpl->set('s', 'EXTERNS_LABEL', i18n("Externs", $plugin_name));
+    $tpl->set('s', 'INTERNS_EXTERNS_HREF', $sLink . '3');
+    $tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links", $plugin_name));
 
-// Fill Subnav III
-$tpl->set('s', 'UPDATE_HREF', $sLink . cSecurity::toInteger($_GET['mode']) . '&live=1');
+    // Fill Subnav III
+    $tpl->set('s', 'UPDATE_HREF', $sLink . cSecurity::toInteger($_GET['mode']) . '&live=1');
+}
 
 // Cache options
 $aCacheName = array(
