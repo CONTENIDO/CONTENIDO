@@ -329,7 +329,7 @@ class cCLISetup {
     public function executeSystemTests() {
         global $cfg, $args;
 
-        if ($this->settings['advanced']['delete_database'] == 'YESPLEASE') {
+        if ($this->settings['advanced']['delete_database'] == 'YES') {
             $answer = '';
             while ($answer != 'Y' && $answer != 'N') {
                 prnt(sprintf(i18n("You chose in the configuration file to delete the database '%s' before installing.\nDO YOU REALLY WANT TO CONTINUE WITH DELETING THIS DATABASE? (Y/N) [N]: ", 'setup'), $this->settings['db']['database']));
