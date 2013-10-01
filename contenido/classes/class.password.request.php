@@ -148,7 +148,7 @@ class cPasswordRequest {
         if (preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $sendermail)) {
             $this->_sendermail = $sendermail;
         } else {
-            $this->_sendermail = 'noreply@contenido-passwordservice.de';
+            $this->_sendermail = 'info@contenido.org';
         }
 
         // get systemproperty for senders name, if not set use CONTENIDO Backend
