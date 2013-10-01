@@ -78,7 +78,7 @@ if (!defined('CON_ENVIRONMENT')) {
  */
 if (!defined('CON_VERSION')) {
 
-    define('CON_VERSION', '4.9.0');
+    define('CON_VERSION', '4.9.1');
 
 }
 
