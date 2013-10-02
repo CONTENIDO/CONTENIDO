@@ -32,6 +32,19 @@ require_once(CON_UNITTEST_LIB_DIR . 'PHPUnit/Framework/TestCase.php');
 require_once(CON_TEST_PATH . '/lib/TestSuiteHelper.php');
 require_once(CON_TEST_PATH . '/lib/ContenidoTestHelper.php');
 
+if (!defined('CON_ENVIRONMENT')) {
+    if (getenv('CONTENIDO_ENVIRONMENT')) {
+        $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
+    } elseif (getenv('CON_ENVIRONMENT')) {
+        $sEnvironment = getenv('CON_ENVIRONMENT');
+    } else {
+        // @TODO: provide a possibility to set the environment value via file
+        $sEnvironment = 'production';
+    }
+
+    define('CON_ENVIRONMENT', $sEnvironment);
+}
+
 
 ################################################################################
 # CONTENIDO frontend initialization
@@ -52,7 +65,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // Include the config file of the frontend to init the Client and Language Id
-include_once('data/config/production/config.php');
+include_once('data/config/' . CON_ENVIRONMENT . '/config.php');
 
 // Contenido startup process
 if (!is_file($contenido_path . 'includes/startup.php')) {
