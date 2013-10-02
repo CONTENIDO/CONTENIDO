@@ -223,6 +223,8 @@ class cHttpRequestCurl extends cHttpRequest {
      */
     public function setOpt($curlOpt, $value) {
         curl_setopt($this->curl, $curlOpt, $value);
+
+        return $this;
     }
 
     /**
