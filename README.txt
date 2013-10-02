@@ -48,6 +48,10 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
   Lizenz:      CodeMirror license
   Information: http://codemirror.net/LICENSE
 
+- IDNA Converter 0.8.0
+  Lizenz: 	   GNU Lesser General Public License 2.1
+  Information: http://phlylabs.de
+  
 - jQuery 1.8.2
   Lizenz:      MIT License
   Information: http://www.jquery.com
