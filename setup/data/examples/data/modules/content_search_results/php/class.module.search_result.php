@@ -149,7 +149,7 @@ class SearchResultModule {
     /**
      */
     public function render() {
-        $tpl = Contenido_SmartyWrapper::getInstance();
+        $tpl = cSmartyFrontend::getInstance(true);
 
         $tpl->assign('label', $this->_label);
         $tpl->assign('searchTerm', $this->_dispSearchTerm);
