@@ -413,17 +413,19 @@ if ($idart) {
     $tpl->set('s', 'MARKSUBMENU', "");
 }
 
+$cancelbutton = '';
+$acceptbutton = '';
 if ($idart || $area == 'con_tplcfg') {
-    $buttons = '<a accesskey="c" href="' . $sess->url("main.php?area=con&frame=4&idcat=$idcat") . '"><img src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
+    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=con&frame=4&idcat=$idcat") . '"><img src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
+    $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
 } else {
-    $buttons = '<a accesskey="c" href="' . $sess->url("main.php?area=str&frame=4&idcat=$idcat") . '"><img src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
+    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=str&frame=4&idcat=$idcat") . '"><img src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
+    $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
 }
 if ($idtpl != 0 && $inUse == false) {
-    $tpl->set('s', 'BUTTONS', $buttons);
+    $tpl->set('s', 'BUTTONS', $cancelbutton.$acceptbutton);
 } else {
-    $tpl->set('s', 'BUTTONS', '');
+    $tpl->set('s', 'BUTTONS', $cancelbutton);
 }
 
 // Display template description
