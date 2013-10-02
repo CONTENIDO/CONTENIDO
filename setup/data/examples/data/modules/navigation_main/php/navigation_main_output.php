@@ -33,10 +33,10 @@ function navigation_main_filter(cApiCategoryLanguage $categoryLanguage) {
 $path = array_map('navigation_main_filter', $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1));
 
 // use template to display navigation
-$tpl = cSmartyFrontend::getInstance();
-$tpl->assign('ulId', 'navigation');
-$tpl->assign('tree', $tree);
-$tpl->assign('path', $path);
-$tpl->display('get.tpl');
+$smarty = cSmartyFrontend::getInstance();
+$smarty->assign('ulId', 'navigation');
+$smarty->assign('tree', $tree);
+$smarty->assign('path', $path);
+$smarty->display('get.tpl');
 
 ?>
