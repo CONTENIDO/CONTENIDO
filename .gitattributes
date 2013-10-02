@@ -2655,4 +2655,5 @@ test/frontend/html/test_listitem.php -text
 test/frontend/html/test_nav.php -text
 test/frontend/html/test_optgroup.php -text
 test/frontend/html/test_paragraph.php -text
+test/frontend/html/test_video.php -text
 test/frontend/templateTestSuite.php -text

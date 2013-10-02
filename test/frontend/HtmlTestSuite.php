@@ -50,6 +50,7 @@ class ContenidoHtmlAllTest {
         $suite->addTestSuite('cHtmlNavTest');
         $suite->addTestSuite('cHtmlOptGroupTest');
         $suite->addTestSuite('cHtmlParagraphTest');
+        $suite->addTestSuite('cHtmlVideoTest');
 
 
 
