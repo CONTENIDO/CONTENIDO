@@ -2289,6 +2289,7 @@ setup/data/examples/data/modules/content_search_results/php/class.module.search_
 setup/data/examples/data/modules/content_search_results/php/content_search_results_input.php -text
 setup/data/examples/data/modules/content_search_results/php/content_search_results_output.php -text
 setup/data/examples/data/modules/content_search_results/template/get.tpl -text
+setup/data/examples/data/modules/content_search_results/template/old.tpl -text
 setup/data/examples/data/modules/content_sitemap_html/css/content_sitemap_html.css -text svneol=unset#text/plain
 setup/data/examples/data/modules/content_sitemap_html/info.xml -text svneol=unset#text/plain
 setup/data/examples/data/modules/content_sitemap_html/lang/lang_de_DE.txt -text svneol=unset#text/plain
