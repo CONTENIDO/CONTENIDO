@@ -1,4 +1,14 @@
 <?PHP
+/**
+ *
+ * @version SVN Revision $Rev:$
+ *
+ * @author claus.schunk@4fb.de
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ */
 class cHtmlVideoTest extends PHPUnit_Framework_TestCase {
 
     protected $_cVideo = null;
@@ -24,25 +34,22 @@ class cHtmlVideoTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('controls', $this->_cVideo->getAttribute('controls'));
         $this->_cVideo->setControls(false);
         $this->assertSame(NULL, $this->_cVideo->getAttribute('controls'));
-
     }
 
-     public function testSetAutoplay() {
-         $this->assertSame(NULL, $this->_cVideo->getAttribute('autoplay'));
-         $this->_cVideo->setAutoplay(true);
-         $this->assertSame('autoplay', $this->_cVideo->getAttribute('autoplay'));
-         $this->_cVideo->setAutoplay(false);
-         $this->assertSame(NULL, $this->_cVideo->getAttribute('autoplay'));
+    public function testSetAutoplay() {
+        $this->assertSame(NULL, $this->_cVideo->getAttribute('autoplay'));
+        $this->_cVideo->setAutoplay(true);
+        $this->assertSame('autoplay', $this->_cVideo->getAttribute('autoplay'));
+        $this->_cVideo->setAutoplay(false);
+        $this->assertSame(NULL, $this->_cVideo->getAttribute('autoplay'));
     }
 
-    public function testSetPoster(){
-
+    public function testSetPoster() {
         $this->assertSame(NULL, $this->_cVideo->getAttribute('poster'));
         $this->_cVideo->setPoster('poster');
         $this->assertSame('poster', $this->_cVideo->getAttribute('poster'));
         $this->_cVideo->setPoster('');
         $this->assertSame('', $this->_cVideo->getAttribute('poster'));
-
     }
 
 }
