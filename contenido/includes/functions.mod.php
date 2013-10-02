@@ -163,3 +163,11 @@ function modDeleteModule($idmod) {
     cInclude('includes', 'functions.rights.php');
     deleteRightsForElement('mod', $idmod);
 }
+
+/**
+ * @deprecated [2013-10-02]  This function is not longer supported and will always return false.
+ */
+function modTestModule($code, $id, $output = false) {
+	cDeprecated("This function is not longer supported and will always return false. Use cModuleHandler::testInput() and cModuleHandler::testOutput() instead.");
+	return false;
+}
