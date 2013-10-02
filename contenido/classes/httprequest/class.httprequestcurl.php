@@ -163,7 +163,7 @@ class cHttpRequestCurl extends cHttpRequest {
      * Send the request to the server
      *
      * @param bool $return Wether the function should return the servers response
-     * @param string $method GET or PUT
+     * @param string $method GET or POST
      * @param bool $returnHeaders Wether the headers should be included in the response
      * @return string|boolean
      */
