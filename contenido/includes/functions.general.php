@@ -1179,6 +1179,14 @@ function createRandomName($nameLength) {
 }
 
 /**
+ * @deprecated [2013-10-02]  Use getJsHelpContext() instead
+ */
+function setHelpContext($area) {
+    cDeprecated("The function setHelpContext() is deprecated. Use getJsHelpContext() instead.");
+    return getJsHelpContext($area);
+}
+
+/**
  * Returns the JavaScript help context code, if help confuguration is enabled
  * @param string $area  The area name
  * @return The context context JS code
@@ -1554,6 +1562,7 @@ function ipMatch($network, $mask, $ip) {
  * @deprecated [2013-08-14]  Use cString::endsWith() instead
  */
 function endsWith($haystack, $needle) {
+	cDeprecated("The function endsWith is deprecated. Use cString::endsWith() instead.");
     return cString::endsWith($haystack, $needle);
 }
 
