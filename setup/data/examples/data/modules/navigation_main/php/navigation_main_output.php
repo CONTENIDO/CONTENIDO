@@ -27,10 +27,8 @@ $categoryHelper->setAuth(cRegistry::getAuth());
 $tree = $categoryHelper->getSubCategories($rootIdcat, $depth);
 
 // get path (breadcrumb) of current category
-function navigation_main_filter(cApiCategoryLanguage $categoryLanguage) {
-    return $categoryLanguage->get('idcat');
-}
-$path = array_map('navigation_main_filter', $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1));
+$filter = create_function('cApiCategoryLanguage $item', 'return $item->get(\'idcat\');');
+$path = array_map($filter, $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1));
 
 // use template to display navigation
 $smarty = cSmartyFrontend::getInstance();
