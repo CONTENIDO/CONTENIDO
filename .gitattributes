@@ -2178,6 +2178,7 @@ docs/techref/plugins/Contenido[!!-~]Extension[!!-~]Chainer.pdf -text
 docs/techref/plugins/plugin.config.html -text
 setup/autoinstall-example.ini -text svneol=unset#text/plain
 setup/autoinstall-example.xml -text svneol=unset#text/plain
+setup/autoinstall.ini -text svneol=unset#text/plain
 setup/autoinstall.php -text
 setup/data/base.txt -text
 setup/data/base/base_actions1.sql -text
