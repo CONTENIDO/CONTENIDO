@@ -15,8 +15,9 @@
  */
 
 // get category path
-$helper = cCategoryHelper::getInstance();
-$categories = $helper->getCategoryPath(cRegistry::getCategoryId(), 1);
+$categoryHelper = cCategoryHelper::getInstance();
+$categoryHelper->setAuth(cRegistry::getAuth());
+$categories = $categoryHelper->getCategoryPath(cRegistry::getCategoryId(), 1);
 
 // get breadcrumb (w/o first level)
 $breadcrumb = array();
@@ -33,10 +34,10 @@ $headline = '';
 // $headline = strip_tags($article->getContent('CMS_HTMLHEAD', 1));
 
 // build template
-$tpl = cSmartyFrontend::getInstance();
-$tpl->assign('label_breadcrumb', mi18n("LABEL_BREADCRUMB"));
-$tpl->assign('breadcrumb', $breadcrumb);
-$tpl->assign('headline', $headline);
-$tpl->display('get.tpl');
+$smarty = cSmartyFrontend::getInstance();
+$smarty->assign('label_breadcrumb', mi18n("LABEL_BREADCRUMB"));
+$smarty->assign('breadcrumb', $breadcrumb);
+$smarty->assign('headline', $headline);
+$smarty->display('get.tpl');
 
 ?>
