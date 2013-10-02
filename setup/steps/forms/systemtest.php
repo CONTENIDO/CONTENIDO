@@ -40,8 +40,10 @@ class cSetupSystemtest extends cSetupMask {
 
         $this->systemtest = new cSystemtest($cfg);
         $this->systemtest->runTests(false);
-        $this->systemtest->testFilesystem($_SESSION["configmode"] == "save", false);
-        $this->systemtest->testFrontendFolderCreation();
+        $this->systemtest->testFilesystem($_SESSION["configmode"] == "save", $_SESSION['setuptype'] == 'upgrade');
+        if($_SESSION['setuptype'] == 'setup') {
+            $this->systemtest->testFrontendFolderCreation();
+        }
 
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
 
