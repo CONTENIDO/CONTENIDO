@@ -48,7 +48,7 @@ class cHTMLVideo extends cHTMLContentElement {
         if ($autoplay) {
             $this->setAttribute('autoplay', 'autoplay');
         } else {
-            $this->removeAttribute('autplay');
+            $this->removeAttribute('autoplay');
         }
     }
 
