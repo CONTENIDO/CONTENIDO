@@ -133,7 +133,7 @@ class cFileHandler {
      */
     public static function write($filename, $content, $append = false) {
         $flag = 0;
-        if ($append) {
+        if ($append && self::exists($filename)) {
             $flag = FILE_APPEND;
         }
 

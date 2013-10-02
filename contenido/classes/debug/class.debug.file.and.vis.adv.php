@@ -75,10 +75,8 @@ class cDebugFileAndVisAdv extends cDebugVisibleAdv {
     public function out($msg) {
         parent::out($msg);
 
-        if (is_writeable($this->_filePathName)) {
-            $sDate = date('Y-m-d H:i:s');
-            cFileHandler::write($this->_filePathName, $sDate . ": " . $msg . "\n", true);
-        }
+        $sDate = date('Y-m-d H:i:s');
+        cFileHandler::write($this->_filePathName, $sDate . ": " . $msg . "\n", true);
     }
 
     /**
