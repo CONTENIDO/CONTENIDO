@@ -1,5 +1,4 @@
 <?php
-
 /**
  * description:
  *
@@ -15,6 +14,7 @@
  */
 
 defined('CON_FRAMEWORK') or die('Illegal call');
+
 //call userforum administration
 if (cRegistry::isBackendEditMode()) {
     echo "CMS_USERFORUM[2]";
@@ -151,16 +151,17 @@ class UserForumArticle {
     /**
      * main method for controlling different actions received from $_REQUEST[]
      *
-     * @param received $_REQUEST[]
+     * @param  array  $request  received $_REQUEST[]
      */
     public function receiveData(array $request) {
         $this->_checkCookie();
 
-        (stristr($auth->auth['perm'], 'admin') === FALSE)? $this->_allowDeleting = false : $this->_allowDeleting = true;
-        (getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1')? $bAllowAnonymousforum = true : $bAllowAnonymousforum = false;
+        $auth = cRegistry::getAuth();
+        $this->_allowDeleting = (stristr($auth->auth['perm'], 'admin') === FALSE) ? false : true;
+        $bAllowAnonymousforum = (getEffectiveSetting('user_forum', 'allow_anonymous_forum', '1') == '1') ? true : false;
 
         $this->_getUser($auth->auth['uid']);
-        ($bAllowAnonymousforum || $this->_userLoggedIn && !$bAllowAnonymousforum)? $this->_allowedToEditForum = true : $this->_allowedToEditForum = false;
+        $this->_allowedToEditForum = ($bAllowAnonymousforum || $this->_userLoggedIn && !$bAllowAnonymousforum) ? true : false;
 
         switch ($_REQUEST['user_forum_action']) {
             // user interaction click on like button
@@ -196,8 +197,6 @@ class UserForumArticle {
      * @param unknown_type $userid
      */
     private function _getUser($userid) {
-        $db = cRegistry::getDb();
-        $cfg = cRegistry::getConfig();
         if (($userid != '') && ($userid != 'nobody')) {
             $this->_userLoggedIn = true;
             $user = $this->_collection->selectUser($userid);
@@ -340,7 +339,7 @@ class UserForumArticle {
                 if ($replyId > 0) {
 
                     $content = $this->_collection->selectNameAndNameByForumId($replyId);
-                    (count($content) > 0)? $empty = false : $empty = true;
+                    $empty = (count($content) > 0) ? false : true;
 
                     if (!$empty) {
                         $transTemplate = mi18n("answerToQuote");
@@ -395,8 +394,8 @@ class UserForumArticle {
                 foreach ($arrUserforum as $key => $value) {
 
                     $record = array();
-                    $record['REALNAME'] = str_replace('\\','',$value['realname']);
-                    $record['EMAIL'] =   str_replace('\\','',$value['email']);
+                    $record['REALNAME'] = str_replace('\\', '', $value['realname']);
+                    $record['EMAIL'] = str_replace('\\', '', $value['email']);
                     $record['NUMBER'] = $number;
                     $number++;
 
@@ -417,7 +416,7 @@ class UserForumArticle {
                         $record['FORUM_QUOTE'] = '';
                     }
 
-                    $record['FORUM'] = str_replace('\\','',$value['forum']);
+                    $record['FORUM'] = str_replace('\\', '', $value['forum']);
 
                     if (($value['editedby'] != '') && ($value['editedat'] != "0000-00-00 00:00:00")) {
 
@@ -495,13 +494,12 @@ class UserForumArticle {
      */
     private function _newEntry() {
         if ($this->_allowedToEditForum) {
-            $db = cRegistry::getDb();
             $this->_tpl->assign('MESSAGE', $this->_messageText);
             $idquote = (int) $_REQUEST['user_forum_quote'];
 
             if ($idquote > 0) {
                 $content = $this->_collection->selectNameAndNameByForumId($idquote);
-                (count($content) > 0)? $empty = false : $empty = true;
+                $empty = (count($content) > 0) ? false : true;
                 if (!$empty) {
                     $ar = $this->_collection->getCommentContent($idquote);
                     $transTemplate = mi18n("quoteFrom");
@@ -520,7 +518,7 @@ class UserForumArticle {
 
             if ($replyId > 0) {
                 $content = $this->_collection->selectNameAndNameByForumId($replyId);
-                (count($content) > 0)? $empty = false : $empty = true;
+                $empty = (count($content) > 0) ? false : true;
 
                 if (!$empty) {
                     // Quote anser content
@@ -564,12 +562,13 @@ class UserForumArticle {
     /**
      * this function sets a cookie when receiving a click on like/dislike -
      * buttons.
-     * After the first click the user canÂ´t add likes/dislikes for the same
+     * After the first click the user can´t add likes/dislikes for the same
      * comment for a fixed time intervall (value in cookie).
+     * @TODO: Use $_REQUEST passed to receiveData()
      */
     private function _checkCookie() {
         // global $REMOTE_ADDR;
-        $ip = $REMOTE_ADDR? $REMOTE_ADDR : $_SERVER['REMOTE_ADDR'];
+        $ip = $REMOTE_ADDR ? $REMOTE_ADDR : $_SERVER['REMOTE_ADDR'];
         $time = time();
 
         if ($_REQUEST['user_forum_action'] == 'dislike_forum' && isset($_COOKIE['cookie'][$ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {
@@ -585,10 +584,10 @@ class UserForumArticle {
             $this->_counter = true;
         }
     }
+
 }
 
 // generate object
 $userForumArticle = new UserForumArticle();
 $userForumArticle->receiveData($_REQUEST);
-
 ?>
