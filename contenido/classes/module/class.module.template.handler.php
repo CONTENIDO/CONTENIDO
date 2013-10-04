@@ -462,7 +462,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aAdd->setCustom('idmod', $this->_idmod);
         $aAdd->setCustom('file', $this->_file);
 
-        // $tb_name = new cHTMLLabel($sFilename,'');
+        // $tb_name = new cHTMLLabel($sFilename, '');
         $tb_name = new cHTMLTextbox('file', $this->_file, 60);
 
         $ta_code = new cHTMLTextarea('code', conHtmlSpecialChars($this->_code), 100, 35, 'code');

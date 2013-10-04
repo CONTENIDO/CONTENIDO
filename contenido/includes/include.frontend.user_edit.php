@@ -163,10 +163,10 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
 
     $form->addHeader(i18n("Edit user"));
 
-    $username = new cHTMLTextbox("username", $feuser->get("username"),40);
-    $newpw    = new cHTMLPasswordBox("newpd","",40);
-    $newpw2   = new cHTMLPasswordBox("newpd2","",40);
-    $active   = new cHTMLCheckbox("active","1");
+    $username = new cHTMLTextbox("username", $feuser->get("username"), 40);
+    $newpw    = new cHTMLPasswordBox("newpd", "", 40);
+    $newpw2   = new cHTMLPasswordBox("newpd2", "", 40);
+    $active   = new cHTMLCheckbox("active", "1");
     $active->setChecked($feuser->get("active"));
 
     $form->add(i18n("User name"), $username->render());

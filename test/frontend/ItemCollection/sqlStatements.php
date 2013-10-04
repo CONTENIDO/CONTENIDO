@@ -12,7 +12,7 @@ class SqlStatement {
     }
 
     public static function getInsertConTestStatement() {
-        return "INSERT INTO `con_test` VALUES (1,'Kabul','AFG','Kabol',1780000),(2,'Qandahar','AFG','Qandahar',237500),(3,'Herat','AFG','Herat',186800);";
+        return "INSERT INTO `con_test` VALUES (1, 'Kabul', 'AFG', 'Kabol', 1780000), (2, 'Qandahar', 'AFG', 'Qandahar', 237500), (3, 'Herat', 'AFG', 'Herat', 186800);";
     }
 
     public static function getInserDogStatement() {
@@ -34,7 +34,7 @@ class SqlStatement {
                         `id` int(11) NOT NULL auto_increment,
                         `name` varchar(255) default NULL,
                         `descr` text,
-                        `size` enum('small','medium','large') default NULL,
+                        `size` enum('small', 'medium', 'large') default NULL,
                         `date` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
                         PRIMARY KEY  (`id`)
                 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;";
@@ -56,7 +56,7 @@ class SqlStatement {
                       `dog_id` int(11) NOT NULL,
                       `bar_code` varchar(128) NOT NULL,
                       `notes` text,
-                      `iso_compliant` enum('y','n') default 'n',
+                      `iso_compliant` enum('y', 'n') default 'n',
                       `date` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
                       PRIMARY KEY  (`dog_id`)
                 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;";

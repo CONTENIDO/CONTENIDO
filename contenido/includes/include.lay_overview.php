@@ -76,7 +76,7 @@ while (($layout = $oLayouts->next()) !== false) {
                   . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
         $tpl->set('d', 'DELETE', $delLink);
     } else {
-        $tpl->set('d', 'DELETE','<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescr.'" alt="'.$delDescr.'">');
+        $tpl->set('d', 'DELETE', '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescr.'" alt="'.$delDescr.'">');
     }
 
     $todo = new TODOLink('idlay', $idlay, i18n("Layout") . ': ' . $name, '');

@@ -19,11 +19,11 @@ No Warranty - take a look at the GPL at the end of this file.
 
 -------------------------------------------------------------------
 
-	Anleitungen zur Installation oder Aktualiserung finden sie im
-	Verzeichnis docs/ oder unter https://docs.contenido.org/display/COND.
-	
-	Installation or upgrade guides can be found in the docs/ folder
-	or at https://docs.contenido.org/display/CONE.
+    Anleitungen zur Installation oder Aktualiserung finden sie im
+    Verzeichnis docs/ oder unter https://docs.contenido.org/display/COND.
+
+    Installation or upgrade guides can be found in the docs/ folder
+    or at https://docs.contenido.org/display/CONE.
 
 -------------------------------------------------------------------
 
@@ -49,9 +49,9 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
   Information: http://codemirror.net/LICENSE
 
 - IDNA Converter 0.8.0
-  Lizenz: 	   GNU Lesser General Public License 2.1
+  Lizenz:      GNU Lesser General Public License 2.1
   Information: http://phlylabs.de
-  
+
 - jQuery 1.8.2
   Lizenz:      MIT License
   Information: http://www.jquery.com

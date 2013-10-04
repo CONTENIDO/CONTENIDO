@@ -216,4 +216,5 @@ $tpl->set('s', 'CLIENTS', $sClients);
 
 // parse out template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['system_variables']);
+
 ?>

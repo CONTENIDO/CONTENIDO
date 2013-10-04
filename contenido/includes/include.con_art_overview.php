@@ -554,7 +554,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
 
                 $confirmString = sprintf(i18n("Are you sure to delete the following article:<br><br><b>%s</b>"), conHtmlSpecialChars($tmp_title));
-                $tmp_del = '<a href="javascript:void(0)" onclick="showConfirmation(&quot;' . $confirmString . '&quot;, function(){ deleteArticle(' . $idart . ', ' . $idcat . ', ' . $next . '); });return false;" title="' . i18n("Delete article") . '"><img class="vAlignMiddle tableElement" src="images/delete.gif" title="' . i18n("Delete article") . '" alt="' . i18n("Delete article") . '"></a>';
+                $tmp_del = '<a href="javascript:void(0)" onclick="showConfirmation(&quot;' . $confirmString . '&quot;, function() { deleteArticle(' . $idart . ', ' . $idcat . ', ' . $next . '); });return false;" title="' . i18n("Delete article") . '"><img class="vAlignMiddle tableElement" src="images/delete.gif" title="' . i18n("Delete article") . '" alt="' . i18n("Delete article") . '"></a>';
             } else {
                 $tmp_del = '';
             }
@@ -882,8 +882,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         // Kategorie anzeigen und Konfigurieren button
         /*
          * JL 23.06.03 Check right from "Content" instead of "Category" if
-         * ($perm->have_perm_area_action("str_tplcfg","str_tplcfg") ||
-         * $perm->have_perm_area_action_item("str_tplcfg","str_tplcfg",$lidcat))
+         * ($perm->have_perm_area_action("str_tplcfg", "str_tplcfg") ||
+         * $perm->have_perm_area_action_item("str_tplcfg", "str_tplcfg", $lidcat))
          */
 
         if (($perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action('con', 'con_tplcfg_edit')) && $foreignlang == false) {

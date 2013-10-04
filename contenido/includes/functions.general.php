@@ -1562,7 +1562,7 @@ function ipMatch($network, $mask, $ip) {
  * @deprecated [2013-08-14]  Use cString::endsWith() instead
  */
 function endsWith($haystack, $needle) {
-	cDeprecated("The function endsWith is deprecated. Use cString::endsWith() instead.");
+    cDeprecated("The function endsWith is deprecated. Use cString::endsWith() instead.");
     return cString::endsWith($haystack, $needle);
 }
 

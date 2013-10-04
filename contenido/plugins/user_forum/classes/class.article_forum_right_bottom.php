@@ -54,10 +54,10 @@ EOF;
             $ar = (date_parse($timeStamp));
             // if elements are smaller than 2 digits add a '0' at front. e.g
             // 2:10 -> 02:10
-            (strlen($ar['day']) < 2)? $ar['day'] = $nullstring . $ar['day'] : '';
-            (strlen($ar['month']) < 2)? $ar['month'] = $nullstring . $ar['month'] : '';
-            (strlen($ar['minute']) < 2)? $ar['minute'] = $nullstring . $ar['minute'] : '';
-            (strlen($ar['hour']) < 2)? $ar['hour'] = $nullstring . $ar['hour'] : '';
+            (strlen($ar['day']) < 2) ? $ar['day'] = $nullstring . $ar['day'] : '';
+            (strlen($ar['month']) < 2) ? $ar['month'] = $nullstring . $ar['month'] : '';
+            (strlen($ar['minute']) < 2) ? $ar['minute'] = $nullstring . $ar['minute'] : '';
+            (strlen($ar['hour']) < 2) ? $ar['hour'] = $nullstring . $ar['hour'] : '';
         }
 
         return $ar;
@@ -143,7 +143,7 @@ EOF;
         $idaart = $cont['idart'];
 
         // button with delete action
-        $deleteButton = '<a title="' . $cont['title'] . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function(){deleteArticlesByIdRight(' . $level . ',' . $keyy . ',' . $id . ',' . $idacat . ',' . $idaart . ');});return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $message . '" alt="' . $message . '"></a>';
+        $deleteButton = '<a title="' . $cont['title'] . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdRight(' . $level . ', ' . $keyy . ', ' . $id . ', ' . $idacat . ', ' . $idaart . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $message . '" alt="' . $message . '"></a>';
 
         // insert buttons to array for return
         $buttons['online'] = $online;
@@ -200,7 +200,7 @@ EOF;
             $timestamp = $cont['timestamp'];
 
             $datearray = $this->formatTimeString($cont['timestamp']);
-            (empty($datearray))? $date = '' : $date = $datearray['day'] . '.' . $datearray['month'] . '.' . $datearray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $datearray['hour'] . ':' . $datearray['minute'] . ' ' . UserForum::i18n("CLOCK");
+            $date =  (empty($datearray)) ? '' : $datearray['day'] . '.' . $datearray['month'] . '.' . $datearray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $datearray['hour'] . ':' . $datearray['minute'] . ' ' . UserForum::i18n("CLOCK");
 
             $buttons = array();
             $buttons = $this->buildOnlineButtonBackendListMode($key, $cont, $cfg);
@@ -214,7 +214,7 @@ EOF;
             $trLike = new cHTMLTableRow();
 
             $likeButton = new cHTMLImage($cfg['path']['images'] . 'like.png');
-            // $likeButton->setAttribute('valign','bottom');
+            // $likeButton->setAttribute('valign', 'bottom');
             $dislikeButton = new cHTMLImage($cfg['path']['images'] . 'dislike.png');
 
             // valid email
@@ -224,7 +224,7 @@ EOF;
             $timestamp = $cont['editedat'];
 
             $editarray = $this->formatTimeString($cont['editedat']);
-            (empty($editarray))? $editdate = '' : $editdate = $editarray['day'] . '.' . $editarray['month'] . '.' . $editarray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $editarray['hour'] . ':' . $editarray['minute'] . ' ' . UserForum::i18n("CLOCK");
+            $editdate = (empty($editarray)) ? '' : $editarray['day'] . '.' . $editarray['month'] . '.' . $editarray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $editarray['hour'] . ':' . $editarray['minute'] . ' ' . UserForum::i18n("CLOCK");
 
             $userColl = new cApiUserCollection();
             $user = $userColl->loadItem($cont['editedby'])->get('username');
@@ -295,13 +295,13 @@ EOF;
             $hiddenId_user_forum->setValue($cont['id_user_forum']);
             $hiddenLike->setValue($cont['like']);
             $hiddenDislike->setValue($cont['dislike']);
-            $hiddenName->setValue(str_replace('\\','',conHtmlSpecialChars($cont['realname'])));
-            $hiddenEmail->setValue(str_replace('\\','',conHtmlSpecialChars($cont['email'])));
+            $hiddenName->setValue(str_replace('\\', '', conHtmlSpecialChars($cont['realname'])));
+            $hiddenEmail->setValue(str_replace('\\', '', conHtmlSpecialChars($cont['email'])));
             $hiddenLevel->setValue($cont['level']);
             $hiddenEditdat->setValue($cont['editedat']);
             $hiddenEditedby->setValue($cont['editedby']);
             $hiddenTimestamp->setValue($date);
-            $hiddenForum->setValue(str_replace('\\','',conHtmlSpecialChars($cont['forum'])));
+            $hiddenForum->setValue(str_replace('\\', '', conHtmlSpecialChars($cont['forum'])));
             $hiddenOnline->setValue($cont['online']);
             $hiddenMode->setValue('edit');
             $hiddenKey->setValue($key);
@@ -326,8 +326,8 @@ EOF;
             $form->appendContent($hiddenaction);
 
             // generate output text
-            $form->appendContent($date . " von " . str_replace('\\','',$maili) . " <br><br>");
-            $form->appendContent((str_replace('\\','',$text)) . "<br><br>");
+            $form->appendContent($date . " von " . str_replace('\\', '', $maili) . " <br><br>");
+            $form->appendContent((str_replace('\\', '', $text)) . "<br><br>");
             $tdForm->setContent($form);
             $tdForm->setAttribute('valign', 'top');
             $tr->setContent($tdForm);
@@ -387,15 +387,15 @@ EOF;
         $dislike = new cHTMLTextBox("dislike", $post['dislike'], 7, 7);
 
         $text = str_replace("<br />", "\n", conHtmlSpecialChars($post['forum']));
-        $text = str_replace('\\','',$text);
+        $text = str_replace('\\', '', $text);
 
         $forum = new cHTMLTextArea("forum", $text);
 
         $datearray = $this->formatTimeString($post['timestamp']);
-        (empty($datearray))? $date = '' : $date = $datearray['day'] . '.' . $datearray['month'] . '.' . $datearray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $datearray['hour'] . ':' . $datearray['minute'] . ' ' . UserForum::i18n("CLOCK");
+        $date = (empty($datearray)) ? '' : $datearray['day'] . '.' . $datearray['month'] . '.' . $datearray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $datearray['hour'] . ':' . $datearray['minute'] . ' ' . UserForum::i18n("CLOCK");
 
         $editedatearray = $this->formatTimeString($post['editedat']);
-        (empty($editedatearray))? $editedat = '' : $editedat = $editedatearray['day'] . '.' . $editedatearray['month'] . '.' . $editedatearray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $editedatearray['hour'] . ':' . $editedatearray['minute'] . ' ' . UserForum::i18n("CLOCK");
+        $editedat = (empty($editedatearray)) ? '' : $editedatearray['day'] . '.' . $editedatearray['month'] . '.' . $editedatearray['year'] . ' ' . UserForum::i18n("AT") . ' ' . $editedatearray['hour'] . ':' . $editedatearray['minute'] . ' ' . UserForum::i18n("CLOCK");
 
         $timestamp = new cHTMLTextBox("timestamp", $date, 30, 255);
         $editedat = new cHTMLTextBox("editedat", $editedat, 30, 255);
@@ -416,7 +416,7 @@ EOF;
 
         $onlineBox = new cHTMLCheckbox("onlineState", "");
 
-        ($post['online'] == 1)? $onlineBox->setChecked(true) : $onlineBox->setChecked(false);
+        $onlineBox->setChecked(($post['online'] == 1) ? true : false);
         $form1->add(UserForum::i18n("ONLINE"), $onlineBox, '');
 
         $idart = $post['idart'];
@@ -485,7 +485,7 @@ EOF;
         $idart = $_REQUEST['idart'];
         $idcat = $_REQUEST['idcat'];
         $action = $_REQUEST["action"];
-        (isset($_REQUEST['onlineState']))? $online = 1 : $online = 0;
+        $online = (isset($_REQUEST['onlineState'])) ? 1 : 0;
 
         switch ($action) {
 

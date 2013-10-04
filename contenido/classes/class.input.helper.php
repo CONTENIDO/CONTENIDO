@@ -204,7 +204,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *
      * @param int $iIDCatArt Article id
      * @param string $sTypeRange Komma separated list of CONTENIDO type ids
-     *        which may be in the resulting list (e.g. '1','17','28')
+     *        which may be in the resulting list (e.g. '1', '17', '28')
      *
      * @return int Number of items added
      *

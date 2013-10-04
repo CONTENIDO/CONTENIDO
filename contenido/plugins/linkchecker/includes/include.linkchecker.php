@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $plugin_name = "linkchecker";
 $cfg = cRegistry::getConfig();
 
-if(!$cronjob) {
+if (!$cronjob) {
     if (!$perm->have_perm_area_action($plugin_name, $plugin_name) && $cronjob != true) {
         exit();
     }
@@ -64,7 +64,7 @@ if ($cronjob != true) {
 }
 
 // Fill Subnav I
-if(!$cronjob) {
+if (!$cronjob) {
     $sLink = $sess->url("main.php?area=linkchecker&frame=4&action=linkchecker") . '&mode=';
 
     // Fill Subnav II

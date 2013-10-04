@@ -55,7 +55,7 @@ $ui->add(i18n("End date"), $reminderdue->render());
 
 $notiemail = new cHTMLCheckbox("notiemail", i18n("E-Mail notification"));
 $notiemail->setChecked($todoitem->getProperty("todo", "emailnoti"));
-$notiemail->setEvent("click","if(this.checked){ document.forms['reminder'].reminderdate.disabled=false; } else { document.forms['reminder'].reminderdate.disabled=true; }");
+$notiemail->setEvent("click", "if (this.checked) { document.forms['reminder'].reminderdate.disabled = false; } else { document.forms['reminder'].reminderdate.disabled = true; }");
 
 $ui->add(i18n("Reminder options"), $notiemail->toHTML());
 

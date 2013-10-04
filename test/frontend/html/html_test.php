@@ -228,9 +228,9 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
         // '_attributes');
         $this->assertInstanceOf('cHTML', $this->_cHtml->setClass(''));
     }
-    // public function testSetEvent(){
+    // public function testSetEvent() {
     // }
-    // public function testUnsetEvent(){
+    // public function testUnsetEvent() {
     // }
     public function testSetAttribute() {
         $this->_cHtml->setAttribute('test0', 'test1');
@@ -315,7 +315,7 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
 
         $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
 
-        // $this->_cHtml->appendStyleDefinition('','');
+        // $this->_cHtml->appendStyleDefinition('', '');
         // $ar[''] = '';
         // $this->assertSame($ar,PHPUnit_Framework_Assert::readAttribute($this->_cHtml,
     // '_styleDefinitions'));
@@ -336,7 +336,7 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
         $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_cHtml, '_styleDefinitions'));
     }
 
-    public function testAddRequiredScript(){
+    public function testAddRequiredScript() {
 
         $ar = array();
 
@@ -359,11 +359,11 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
 
     }
 
-  //  public function testSetContent(){
+  //  public function testSetContent() {
 
 
   //  }
-    public function testSetContent(){
+    public function testSetContent() {
 
         $cHtml = new cHtml();
         $cHtml->appendStyleDefinition('margin-left', '10px !important');
@@ -392,7 +392,7 @@ class cHtmlTest extends PHPUnit_Framework_TestCase {
 
     }
 
-    public function testPAppendContent(){
+    public function testPAppendContent() {
 
         $cHtml = new cHtml();
         $cHtml->appendStyleDefinition('margin-left', '10px !important');

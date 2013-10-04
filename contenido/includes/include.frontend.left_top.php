@@ -108,7 +108,7 @@ $grouplink = new cHTMLLink();
 $grouplink->setCLink("frontendgroups", 2, "");
 
 $userlink = "javascript:execFilter(2);";
-$grouplink = "javascript:conMultiLink('left_bottom','main.php?area=frontendgroups&frame=2&action=&contenido=" . $sess->id . "')";
+$grouplink = "javascript:conMultiLink('left_bottom', 'main.php?area=frontendgroups&frame=2&action=&contenido=" . $sess->id . "')";
 
 // Init view by javascript (decide which tab is activated)
 $imgUserId = 'img_user';

@@ -29,10 +29,10 @@ if (isset($_GET['path'])) {
     $sql = "SELECT
                 idarea
             FROM
-                ".$cfg["tab"]["area"]." AS a
+                " . $cfg["tab"]["area"] . " AS a
             WHERE
-                a.name = '".cSecurity::escapeDB($area, $db)."' OR
-                a.parent_id = '".cSecurity::escapeDB($area, $db)."'
+                a.name = '" . cSecurity::escapeDB($area, $db) . "' OR
+                a.parent_id = '" . cSecurity::escapeDB($area, $db) . "'
             ORDER BY
                 idarea";
 
@@ -44,18 +44,18 @@ if (isset($_GET['path'])) {
         $in_str .= $db->f('idarea') . ',';
     }
 
-    $len = strlen($in_str)-1;
+    $len = strlen($in_str) - 1;
     $in_str = substr($in_str, 0, $len);
-    $in_str = '('.$in_str.')';
+    $in_str = '(' . $in_str . ')';
 
     $sql = "SELECT
                 b.location AS location,
                 a.name AS name
             FROM
-                ".$cfg["tab"]["area"]." AS a,
-                ".$cfg["tab"]["nav_sub"]." AS b
+                " . $cfg["tab"]["area"] . " AS a,
+                " . $cfg["tab"]["nav_sub"] . " AS b
             WHERE
-                b.idarea IN ".$in_str." AND
+                b.idarea IN " . $in_str . " AND
                 b.idarea = a.idarea AND
                 b.level = 1 AND
                 b.online = 1
@@ -73,10 +73,10 @@ if (isset($_GET['path'])) {
         if ($perm->have_perm_area_action($tmp_area)) {
             if ($tmp_area != "upl_edit") {
                 // Set template data
-                $tpl->set("d", "ID",      'c_'.$tpl->dyn_cnt);
-                $tpl->set("d", "CLASS",   '');
+                $tpl->set("d", "ID", 'c_' . $tpl->dyn_cnt);
+                $tpl->set("d", "CLASS", '');
                 $tpl->set("d", "OPTIONS", '');
-                $tpl->set("d", "CAPTION", '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$tmp_area&frame=4&path=$path&appendparameters=$appendparameters").'">'.$caption.'</a>');
+                $tpl->set("d", "CAPTION", '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="' . $sess->url("main.php?area=$tmp_area&frame=4&path=$path&appendparameters=$appendparameters") . '">' . $caption . '</a>');
                 $tpl->next();
             }
         }
@@ -89,4 +89,5 @@ if (isset($_GET['path'])) {
 } else {
     include(cRegistry::getBackendPath() . $cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
 }
+
 ?>

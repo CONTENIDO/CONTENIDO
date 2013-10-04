@@ -15,14 +15,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$sql = "SELECT
-            *
-        FROM
-            " . $cfg["tab"]["tpl"] . "
-        WHERE
-            idclient = '" . cSecurity::toInteger($client) . "'
-        ORDER BY
-            name";
+$sql = "SELECT * FROM " . $cfg["tab"]["tpl"] . " WHERE idclient = '" . cSecurity::toInteger($client) . "'
+        ORDER BY name";
 
 $db->query($sql);
 $tpl->reset();
@@ -32,11 +26,11 @@ $tpl->set('s', 'SID', $sess->id);
 while ($db->nextRecord()) {
 
     if ($perm->have_perm_item($area, $db->f("idtpl")) ||
-        $perm->have_perm_area_action("tpl", "tpl_delete") ||
-        $perm->have_perm_area_action("tpl", "tpl_duplicate") ||
-        $perm->have_perm_area_action("tpl_edit", "tpl_edit") ||
-        $perm->have_perm_area_action("tpl_edit", "tpl_new") ||
-        $perm->have_perm_area_action("tpl_visual", "tpl_visedit")
+            $perm->have_perm_area_action("tpl", "tpl_delete") ||
+            $perm->have_perm_area_action("tpl", "tpl_duplicate") ||
+            $perm->have_perm_area_action("tpl_edit", "tpl_edit") ||
+            $perm->have_perm_area_action("tpl_edit", "tpl_new") ||
+            $perm->have_perm_area_action("tpl_visual", "tpl_visedit")
     ) {
         $name = (strlen(trim($db->f('name'))) > 0) ? $db->f('name') : i18n("-- New template --");
         $descr = $db->f('description');
@@ -47,23 +41,11 @@ while ($db->nextRecord()) {
 
         if ($db->f("defaulttemplate") == 1) {
             $mstr = sprintf(
-                $tmp_mstr,
-                conHtmlSpecialChars($descr),
-                'right_top',
-                $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"),
-                'right_bottom',
-                $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"),
-                "<b>" . $name . "</b>"
+                    $tmp_mstr, conHtmlSpecialChars($descr), 'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"), "<b>" . $name . "</b>"
             );
         } else {
             $mstr = sprintf(
-                $tmp_mstr,
-                conHtmlSpecialChars($descr),
-                'right_top',
-                $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"),
-                'right_bottom',
-                $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"),
-                $name
+                    $tmp_mstr, conHtmlSpecialChars($descr), 'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"), $name
             );
         }
 
@@ -75,7 +57,7 @@ while ($db->nextRecord()) {
 
         $tpl->set("d", "DESCRIPTION", ($descr == "") ? '' : $descr);
 
-        /* Check if template is in use */
+        // Check if template is in use
         $inUse = tplIsTemplateInUse($idtpl);
 
         $inUseString = i18n("Click for more information about usage");
@@ -83,32 +65,31 @@ while ($db->nextRecord()) {
         if (!$inUse && ($perm->have_perm_area_action_item("tpl", "tpl_delete", $db->f("idtpl")))) {
             $delTitle = i18n("Delete template");
             $delDescr = sprintf(
-                i18n("Do you really want to delete the following template:<br><br>%s<br>"),
-                conHtmlSpecialChars($name)
+                    i18n("Do you really want to delete the following template:<br><br>%s<br>"), conHtmlSpecialChars($name)
             );
 
             $tpl->set('d', 'DELETE', '
                 <a
                     title="' . $delTitle . '"
                     href="javascript:void(0)"
-                    onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteTemplate(' . $idtpl . '); });return false;">
-                        <img
-                            src="' . $cfg['path']['images'] . 'delete.gif"
-                            border="0"
-                            title="' . $delTitle . '"
-                            alt="' . $delTitle . '" />
+                    onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteTemplate(' . $idtpl . '); });return false;"
+                >
+                    <img
+                        src="' . $cfg['path']['images'] . 'delete.gif"
+                        border="0"
+                        title="' . $delTitle . '"
+                        alt="' . $delTitle . '" />
                 </a>');
             $tpl->set('d', 'INUSE', '<img src="images/spacer.gif" width="16">');
         } else {
             $delDescription = i18n("Template in use, cannot delete");
-            $tpl->set('d', 'DELETE',
-                '<img
+            $tpl->set('d', 'DELETE', '<img
                     src="' . $cfg['path']['images'] . 'delete_inact.gif"
                     border="0" title="' . $delDescription . '"
                     alt="' . $delDescription . '" />'
             );
-            $tpl->set('d', 'INUSE',
-                '<a
+            $tpl->set('d', 'INUSE', '
+                <a
                     href="javascript:;"
                     rel="' . (int) $db->f("idtpl") . '"
                     class="in_used_tpl"

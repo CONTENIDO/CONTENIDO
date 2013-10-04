@@ -139,7 +139,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
                         $settings[$type][$name] = $value;
                         $stored = true;
 
-                        if (($type == "debug" && $name == "debug_to_screen") || ($type == "system" && $name == "clickmenu")) {
+                        if (($type == 'debug' && $name == 'debug_to_screen') || ($type == 'system' && $name == 'clickmenu')) {
                             $reloadHeader = true;
                         }
                     }
@@ -170,7 +170,7 @@ $leftContent = '';
 // iterate over all property types
 foreach ($propertyTypes as $type => $properties) {
     foreach ($properties as $name => $infos) {
-        // $infos is an array with the keys "values", "label" and "group"
+        // $infos is an array with the keys 'values', 'label' and 'group'
         // extend the groups array if it is a new group
         if (!isset($groups[$infos['group']])) {
             $groups[$infos['group']] = '';
@@ -191,7 +191,7 @@ foreach ($propertyTypes as $type => $properties) {
             $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']));
         }
 
-        $groups[$infos['group']] .= new cHTMLDiv($htmlElement['label'] . $htmlElement['input'], "systemSetting");
+        $groups[$infos['group']] .= new cHTMLDiv($htmlElement['label'] . $htmlElement['input'], 'systemSetting');
     }
 }
 
@@ -203,7 +203,7 @@ foreach ($groups as $groupName => $groupSettings) {
 
 // show error if user is not allowed to see the page
 if ($perm->have_perm_area_action($area, 'edit_sysconf')) {
-    $page->set("s", "RELOAD_HEADER", ($reloadHeader) ? "true" : "false");
+    $page->set('s', 'RELOAD_HEADER', ($reloadHeader) ? 'true' : 'false');
     $page->set('s', 'FORM', $form->render());
 } else {
     $page->displayCriticalError(i18n('Access denied'));

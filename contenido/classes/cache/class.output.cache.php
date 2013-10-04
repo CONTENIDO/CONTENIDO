@@ -454,7 +454,7 @@ class cOutputCacheHandler extends cOutputCache {
      *        - $a['idoptions'] array. several variables 2 create a unique id,
      *            if the output depends
      *        on them. e. g.
-     *            array('uri'=>$_SERVER['REQUEST_URI'],'post'=>$_POST,'get'=>$_GET);
+     *            array('uri' => $_SERVER['REQUEST_URI'], 'post' => $_POST, 'get' => $_GET);
      * @param cDb $db CONTENIDO database object
      * @param int $iCreateCode Flag of createcode state from table con_cat_art
      */

@@ -86,9 +86,9 @@ function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
     $maximum_text_length = $maxlen - strlen($fillup);
 
     // Cut it
-    if (preg_match('/(*UTF8)^.{0,'.$maximum_text_length.'}/', $string ,$result_array)) {
+    if (preg_match('/(*UTF8)^.{0,' . $maximum_text_length . '}/', $string ,$result_array)) {
         $cutted_string = $result_array[0];
-    } else if (preg_match('/^.{0,'.$maximum_text_length.'}/u', $string ,$result_array)) {
+    } else if (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string ,$result_array)) {
         $cutted_string = $result_array[0];
     } else {
          $cutted_string = substr($string, 0, $maximum_text_length);

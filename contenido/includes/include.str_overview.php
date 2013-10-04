@@ -20,9 +20,9 @@ $backendUrl = cRegistry::getBackendUrl();
 // before we do anything, let's check if everything works
 // in case something doesn't work the user doesn't just see a white page
 $ret = strCheckTreeForErrors();
-if(is_array($ret)) {
+if (is_array($ret)) {
     $string = '';
-    foreach($ret as $errorMessage) {
+    foreach ($ret as $errorMessage) {
         $string .= $errorMessage . '<br>';
     }
     $string .= '<br>' . i18n('Be careful! Further editing of the category tree might corrupt it more. Please fix the errors first.');

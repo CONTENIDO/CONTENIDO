@@ -26,7 +26,7 @@ foreach ($areas as $key => $value)
 {
     $areaSelectTemplate->set('d', 'VALUE', $key);
     $areaSelectTemplate->set('d', 'CAPTION', $value['name']);
-    $areaSelectTemplate->set('d', 'SELECTED','');
+    $areaSelectTemplate->set('d', 'SELECTED', '');
     $areaSelectTemplate->next();
 }
 

@@ -144,7 +144,7 @@ class cArray {
      *
      * Example:
      * <pre>
-     * $array = cArray::csort($array,'town','age', SORT_DESC, 'name');
+     * $array = cArray::csort($array, 'town', 'age', SORT_DESC, 'name');
      * </pre>
      *
      * @return array

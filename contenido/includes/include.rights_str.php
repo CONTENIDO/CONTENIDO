@@ -88,7 +88,7 @@ foreach ($right_list["str"] as $value2) {
                 $items .= $objHeaderItem->render();
                 $objHeaderItem->advanceID();
 
-                $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','')\">";
+                $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "', '$value3', '')\">";
             }
         }
     }
@@ -192,7 +192,7 @@ while ($db->nextRecord()) {
         $objItem->advanceID();
 
         $objItem->updateAttributes(array("class" => "td_rights0"));
-        $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\" alt=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\" title=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\"></a> <a href=\"javascript:rightsInheritanceDown('" . $db->f("idcat") . "')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\" alt=\"" . i18n("Apply rights for this category to all categories below the current category") . "\" title=\"" . i18n("Apply rights for this category to all categories below the current category") . "\"></a>");
+        $objItem->setContent("<a href=\"javascript:rightsInheritanceUp('$parentid', '$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\" alt=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\" title=\"" . i18n("Apply rights for this category to all categories on the same level or above") . "\"></a> <a href=\"javascript:rightsInheritanceDown('" . $db->f("idcat") . "')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\" alt=\"" . i18n("Apply rights for this category to all categories below the current category") . "\" title=\"" . i18n("Apply rights for this category to all categories below the current category") . "\"></a>");
         $items .= $objItem->render();
         $objItem->advanceID();
         // look for possible actions in mainarea[]
@@ -222,7 +222,7 @@ while ($db->nextRecord()) {
 
         //checkbox for checking all actions fore this itemid
         $objItem->updateAttributes(array("class" => "td_rights3"));
-        $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_" . $value3 . "_" . $db->f("idcat") . "\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','" . $db->f("idcat") . "')\">");
+        $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_" . $value3 . "_" . $db->f("idcat") . "\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "', '$value3', '" . $db->f("idcat") . "')\">");
         $items .= $objItem->render();
         $objItem->advanceID();
     }
@@ -236,7 +236,7 @@ while ($db->nextRecord()) {
 //table footer
 $footeroutput = "";
 $objItem->updateAttributes(array("class" => "", "valign" => "top", "align" => "right", "colspan" => "15"));
-$objItem->setContent("<a href=javascript:submitrightsform('','area')><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('user_edit','')><img src=\"" . $cfg['path']['images'] . "but_ok.gif\" border=0></a>");
+$objItem->setContent("<a href=javascript:submitrightsform('', 'area')><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('user_edit', '')><img src=\"" . $cfg['path']['images'] . "but_ok.gif\" border=0></a>");
 $items = $objItem->render();
 $objItem->advanceID();
 $objFooterRow->setContent($items);

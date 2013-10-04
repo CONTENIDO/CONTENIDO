@@ -90,7 +90,7 @@ if ((is_writable($cfgClient[$client]["upl"]["path"] . $path) || cApiDbfs::isDbfs
 if ($action == "upl_modify_file") {
 
     $extractFolder = NULL;
-    $uplPath =  $cfgClient[$client]['upl']['path'];
+    $uplPath = $cfgClient[$client]['upl']['path'];
 
     if (isset($_REQUEST['path']) && $_REQUEST['path'] != NULL) {
         $uplPath .= $_REQUEST['path'];
@@ -102,7 +102,7 @@ if ($action == "upl_modify_file") {
 
     if (isset($_REQUEST['extractZip']) && !isset($_REQUEST['overwrite'])) {
         $zipFile = $uplPath . $_REQUEST['file'];
-        cZipArchive::extract($zipFile, $uplPath ,$extractFolder);
+        cZipArchive::extract($zipFile, $uplPath, $extractFolder);
     }
     if (isset($_REQUEST['extractZip']) && isset($_REQUEST['overwrite'])) {
         $zipFile = $uplPath . $_REQUEST['file'];
@@ -770,8 +770,8 @@ $jsCode = '
 $jsScript->setContent($jsCode);
 
 $page->setContent(array(
- $delform,
- $jsScript
+    $delform,
+    $jsScript
 ));
 
 $page->render();

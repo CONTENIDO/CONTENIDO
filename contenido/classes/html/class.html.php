@@ -247,7 +247,7 @@ class cHTML {
      * Adds an "on???" javascript event handler
      *
      * example:
-     * $item->setEvent('change','document.forms[0].submit');
+     * $item->setEvent('change', 'document.forms[0].submit');
      *
      * @param string $event Type of the event, e. g. "change" for "onchange"
      * @param string $action Function or action to call (JavaScript Code)

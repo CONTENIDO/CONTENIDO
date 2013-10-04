@@ -199,7 +199,7 @@ class cGuiNavigation {
                     $link->setContent(i18n($value[0]));
 
                     if ($cfg['help'] == true) {
-                        $sJsEvents .= "\n\t" . '$("#sub_' . $value[1] . '").click(function(){ $("#help").attr("data", "' . $value[0] . '"); })';
+                        $sJsEvents .= "\n\t" . '$("#sub_' . $value[1] . '").click(function() { $("#help").attr("data", "' . $value[0] . '"); })';
                     }
                     $sub->set('d', 'CAPTION', $link->render());
 
@@ -324,7 +324,7 @@ class cGuiNavigation {
         // additional footer javascript
         $footerJs = '';
         if ($sJsEvents !== '') {
-            $footerJs = '$(document).ready(function(){' . $sJsEvents . '});';
+            $footerJs = '$(document).ready(function() {' . $sJsEvents . '});';
         }
         $main->set('s', 'FOOTER_JS', $footerJs);
 

@@ -140,4 +140,5 @@ $(document).ready(function() {
     $cpage->addScript($calscript);
     $cpage->setcontent($ui);
 }
+
 $cpage->render();

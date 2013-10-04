@@ -783,7 +783,7 @@ class PifaField extends Item {
                 $sel = '#pifa-field-elm-' . $idfield;
                 // dateFormat: 'yy-mm-dd', // could be different
                 // altFormat as ISO_8601
-                $script = "jQuery(function(){jQuery('$sel').datepicker({
+                $script = "jQuery(function(){ jQuery('$sel').datepicker({
                     altFormat: 'yy-mm-dd',
                     altField: '$sel-hidden'
                 });});";

@@ -84,7 +84,7 @@ foreach ($right_list['lay'] as $value2) {
             $objHeaderItem->setContent($lngAct[$value2['perm']][$value3] ? $lngAct[$value2['perm']][$value3] : '&nbsp;');
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
-            $aSecondHeaderRow[] = '<input type="checkbox" name="checkall_' . $value2['perm'] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2['perm'] . "','$value3','')\">";
+            $aSecondHeaderRow[] = '<input type="checkbox" name="checkall_' . $value2['perm'] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2['perm'] . "', '$value3', '')\">";
         }
     }
 }
@@ -166,7 +166,7 @@ while ($db->nextRecord()) {
     }
 
     // checkbox for checking all actions fore this itemid
-    $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_" . $value3 . "_" . $db->f("idlay") . "\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "','$value3','" . $db->f("idlay") . "')\">");
+    $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_" . $value3 . "_" . $db->f("idlay") . "\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "', '$value3', '" . $db->f("idlay") . "')\">");
     $items .= $objItem->render();
     $objItem->advanceID();
 
@@ -179,7 +179,7 @@ while ($db->nextRecord()) {
 //table footer
 $footeroutput = "";
 $objItem->updateAttributes(array("class" => "", "valign" => "top", "align" => "right", "colspan" => "8"));
-$objItem->setContent("<a href=javascript:submitrightsform('','area')><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"><a href=javascript:submitrightsform('group_edit','')><img src=\"" . $cfg['path']['images'] . "but_ok.gif\" border=0></a>");
+$objItem->setContent("<a href=javascript:submitrightsform('', 'area')><img src=\"" . $cfg['path']['images'] . "but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"><a href=javascript:submitrightsform('group_edit', '')><img src=\"" . $cfg['path']['images'] . "but_ok.gif\" border=0></a>");
 $items = $objItem->render();
 $objItem->advanceID();
 $objFooterRow->setContent($items);

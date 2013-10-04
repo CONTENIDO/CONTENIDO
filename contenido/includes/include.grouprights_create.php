@@ -34,7 +34,7 @@ if ($action == 'group_create') {
     if ($groupname == '') {
         $groupname = cApiGroup::PREFIX . i18n("New Group");
     }
-    $groupname = stripcslashes(preg_replace("/\"/","",($groupname)));
+    $groupname = stripcslashes(preg_replace("/\"/", "", ($groupname)));
 
     $oGroup = new cApiGroup();
     $oGroup->loadGroupByGroupname($groupname);
@@ -43,7 +43,7 @@ if ($action == 'group_create') {
         $bError = true;
     } else {
         $oGroupColl = new cApiGroupCollection();
-        //$description = stripcslashes(preg_replace("/\"/","",($description)));
+        //$description = stripcslashes(preg_replace("/\"/", "", ($description)));
         $oGroup = $oGroupColl->create($groupname, implode(',', $aPerms), $description);
         if (is_object($oGroup)) {
             // clean "old" values...
@@ -59,7 +59,7 @@ if ($action == 'group_create') {
 }
 
 $tpl->reset();
-$tpl->set('s','NOTIFICATION', $sNotification);
+$tpl->set('s', 'NOTIFICATION', $sNotification);
 
 $form = '<form name="group_properties" method="post" action="'.$sess->url("main.php?").'">
              <input type="hidden" name="area" value="'.$area.'">
@@ -77,13 +77,13 @@ $tpl->set('d', 'CATNAME', i18n("Group name"));
 if ($action == 'group_create' && !$bError) {
     $tpl->set('d', 'CATFIELD', cApiGroup::getUnprefixedGroupName($groupname));
 } else {
-    $oTxtName = new cHTMLTextbox('groupname', stripcslashes(preg_replace("/\"/","",(cApiGroup::getUnprefixedGroupName($groupname)))), 40, 32);
+    $oTxtName = new cHTMLTextbox('groupname', stripcslashes(preg_replace("/\"/", "", (cApiGroup::getUnprefixedGroupName($groupname)))), 40, 32);
     $tpl->set('d', 'CATFIELD', $oTxtName->render());
 }
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Description"));
-$oTxtDesc = new cHTMLTextbox('description', stripcslashes(preg_replace("/\"/","",($description))), 40, 255);
+$oTxtDesc = new cHTMLTextbox('description', stripcslashes(preg_replace("/\"/", "", ($description))), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtDesc->render());
 $tpl->next();
 

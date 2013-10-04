@@ -37,8 +37,8 @@ if ($action == "workflow_save") {
     } elseif ($idworkflow > 0) {
         $page->displayInfo(i18n("Saved changes successfully!", 'workflow'));
     }
-    $workflow->set("name",  str_replace('\\','',$wfname));
-    $workflow->set("description", str_replace('\\','',$wfdescription));
+    $workflow->set("name",  str_replace('\\', '', $wfname));
+    $workflow->set("description", str_replace('\\', '', $wfdescription));
     $idworkflow = $workflow->get("idworkflow");
     $workflow->store();
 }

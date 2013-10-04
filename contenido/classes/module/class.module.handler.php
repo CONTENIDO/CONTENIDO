@@ -135,7 +135,7 @@ class cModuleHandler {
 
     /**
      * Which format of encoding should be files (input/output/translation...)
-     * getEffectiveSetting('encoding', 'file_encoding','UTF-8')
+     * getEffectiveSetting('encoding', 'file_encoding', 'UTF-8')
      *
      * @var string
      */

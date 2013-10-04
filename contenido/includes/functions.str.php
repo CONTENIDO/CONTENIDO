@@ -81,8 +81,8 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     }
 
     $error = strCheckTreeForErrors();
-    if(!($error === false)) {
-        if($oldPostId != -1) {
+    if (!($error === false)) {
+        if ($oldPostId != -1) {
             $oLastCatTree->set('postid', $oldPostId);
             $oLastCatTree->store();
         }
@@ -183,8 +183,8 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     }
 
     $error = strCheckTreeForErrors();
-    if(!($error === false)) {
-        if($oldPostId != -1) {
+    if (!($error === false)) {
+        if ($oldPostId != -1) {
             $oPrevCat->set('postid', $oldPostId);
             $oPrevCat->store();
         }
@@ -261,7 +261,7 @@ function strRemakeTreeTable() {
     }
 
     $errors = strCheckTreeForErrors();
-    if(!($errors === false)) {
+    if (!($errors === false)) {
         return;
     }
 
@@ -659,7 +659,7 @@ function strDeleteCategory($idcat) {
     }
 
     $error = strCheckTreeForErrors(array(), array($idcat));
-    if(!($error === false)) {
+    if (!($error === false)) {
         if ($preid != 0) {
             $oPreCat = new cApiCategory($preid);
             $oPreCat->set('postid', $idcat);
@@ -763,13 +763,13 @@ function strMoveUpCategory($idcat) {
     $updateCats[$postid] = $oPostCat;
 
     $error = strCheckTreeForErrors($updateCats);
-    if($error === false) {
-        foreach($updateCats as $cat) {
+    if ($error === false) {
+        foreach ($updateCats as $cat) {
             $cat->store();
         }
     } else {
         $string = '';
-        foreach($error as $msg) {
+        foreach ($error as $msg) {
             $string .= $msg . '<br>';
         }
         $notification->displayNotification(cGuiNotification::LEVEL_WARNING, $msg . '<br><br>' . i18n('Something went wrong while trying to perform this operation. Please try again.'));
@@ -841,13 +841,13 @@ function strMoveDownCategory($idcat) {
     }
 
     $error = strCheckTreeForErrors($updateCats);
-    if($error === false) {
-        foreach($updateCats as $cat) {
+    if ($error === false) {
+        foreach ($updateCats as $cat) {
             $cat->store();
         }
     } else {
         $string = '';
-        foreach($error as $msg) {
+        foreach ($error as $msg) {
             $string .= $msg . '<br>';
         }
         $notification->displayNotification(cGuiNotification::LEVEL_WARNING, $msg . '<br><br>' . i18n('Something went wrong while trying to perform this operation. Please try again.'));
@@ -922,7 +922,7 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
 
         // update old follower (post) category
         if ($oldPostId != 0) {
-            if(isset($updateCats[$oldPostId])) {
+            if (isset($updateCats[$oldPostId])) {
                 $updateCats[$oldPostId]->set('preid', $oldPreId);
             } else {
                 $oldPostCategory = new cApiCategory($oldPostId);
@@ -940,7 +940,7 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
             $newPreCategory = $categoryCollection->next();
             $newPreId = 0;
         } else {
-            if(isset($updateCats[$newPreId])) {
+            if (isset($updateCats[$newPreId])) {
                 $updateCats[$newPreId]->set('postid', $idcat);
             } else {
                 $newPreCategory = new cApiCategory($newPreId);
@@ -952,7 +952,7 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
 
         // update new follower (post) category
         if ($newPostId != 0) {
-            if(isset($updateCats[$newPostId])) {
+            if (isset($updateCats[$newPostId])) {
                 $updateCats[$newPostId]->set('preid', $idcat);
             } else {
                 $newPostCategory = new cApiCategory($newPostId);
@@ -968,13 +968,13 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
         $updateCats[$idcat] = $category;
 
         $error = strCheckTreeForErrors($updateCats);
-        if($error === false) {
-            foreach($updateCats as $cat) {
+        if ($error === false) {
+            foreach ($updateCats as $cat) {
                 $cat->store();
             }
         } else {
             $string = '';
-            foreach($error as $msg) {
+            foreach ($error as $msg) {
                 $string .= $msg . '<br>';
             }
             $notification->displayNotification(cGuiNotification::LEVEL_WARNING, $msg . '<br><br>' . i18n('Something went wrong while trying to perform this operation. Please try again.'));
@@ -1227,19 +1227,19 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
 
     $catArray = array();
     // first add the ones from the parameters
-    foreach($addCats as $addCat) {
-        if($addCat->get('idcat') == 0) {
+    foreach ($addCats as $addCat) {
+        if ($addCat->get('idcat') == 0) {
             continue;
         }
         $catArray[$addCat->get('idcat')] = $addCat;
     }
 
     // add every category from the database
-    while($cat = $cats->next()) {
-        if(in_array($ignoreCats, $cat->get('idcat'))) {
+    while ($cat = $cats->next()) {
+        if (in_array($ignoreCats, $cat->get('idcat'))) {
             continue;
         }
-        if(isset($catArray[$cat->get('idcat')])) {
+        if (isset($catArray[$cat->get('idcat')])) {
             continue;
         }
         $catArray[$cat->get('idcat')] = $cat;
@@ -1253,8 +1253,8 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
     // check if every parent that is mentioned in the database actually exists
     $fine = true;
     $parents = array();
-    foreach($catArray as $idcat => $cat) {
-        if(!array_key_exists($cat->get('parentid'), $catArray) && $cat->get('parentid') != 0) {
+    foreach ($catArray as $idcat => $cat) {
+        if (!array_key_exists($cat->get('parentid'), $catArray) && $cat->get('parentid') != 0) {
             $fine = false;
             $errorMessages[] = sprintf(i18n('Category %s has a parent id (%s) which does not exist!'), $idcat, $cat->get('parentid'));
         }
@@ -1262,19 +1262,19 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
     }
 
     // check for consistency in every parent
-    foreach($parents as $parentId => $parent) {
+    foreach ($parents as $parentId => $parent) {
         // first, check for multiple preids and postids
         // the category tree will miss some categories if multiple categories share preids and/or postids
         $preIds = array();
         $postIds = array();
-        foreach($parent as $idcat => $cat) {
+        foreach ($parent as $idcat => $cat) {
             $preId = $cat->get('preid');
             $postId = $cat->get('postid');
-            if(in_array($preId, $preIds)) {
+            if (in_array($preId, $preIds)) {
                 $fine = false;
                 $errorMessages[] = sprintf(i18n('There are multiple categories in %s that share the same pre-id (%s - second occurence at %s). Sorting will fail and not all categories will be shown.'), $parentId, $preId, $idcat);
             }
-            if(in_array($postId, $postIds)) {
+            if (in_array($postId, $postIds)) {
                 $fine = false;
                 $errorMessages[] = sprintf(i18n('There are multiple categories in %s that share the same post-id (%s - second occurence at %s). Sorting will fail and not all categories will be shown.'), $parentId, $postId, $idcat);
             }
@@ -1285,14 +1285,14 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
         // check the consistency of the postids
         // find the start
         $startCat = null;
-        foreach($parent as $cat) {
-            if($cat->get('preid') == 0) {
+        foreach ($parent as $cat) {
+            if ($cat->get('preid') == 0) {
                 $startCat = $cat;
                 break;
             }
         }
         // if not start was found then something is wrong
-        if($startCat == null) {
+        if ($startCat == null) {
             $fine = false;
             $errorMessages[] = sprintf(i18n('There is no defined start (a category with preid == 0) in %s. Sorting impossible.'), $parentId);
             continue;
@@ -1301,21 +1301,21 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
         $actCat = $startCat;
         $checkedCats = array();
         $checkedCats[] = $startCat->get('idcat');
-        while($actCat != null) {
+        while ($actCat != null) {
             $catId = $actCat->get('idcat');
             $postId = $actCat->get('postid');
-            if($postId == 0) {
+            if ($postId == 0) {
                 break;
             }
             // check if the postid is actually a child of the parent
-            if(!array_key_exists($postId, $parent)) {
+            if (!array_key_exists($postId, $parent)) {
                 $fine = false;
                 $errorMessages[] = sprintf(i18n('%s has an invalid post-id (%s). The category does not exist in this parent! Sorting impossible.'), $catId, $postId);
                 break;
             }
             $actCat = $catArray[$postId];
             // check if the postid was seen before. if yes that would mean there's a loop in the tree
-            if(in_array($actCat->get('idcat'), $checkedCats)) {
+            if (in_array($actCat->get('idcat'), $checkedCats)) {
                 $fine = false;
                 $errorMessages[] = sprintf(i18n('The sorting in category %s creates an infinite loop (postid = %s). Sorting the category is impossible! (Cause of failure is near category %s)'), $parentId, $postId, $catId);
                 break;
@@ -1323,9 +1323,9 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
             $checkedCats[] = $actCat->get('idcat');
 
             // check that all categories in this parent belong to the same client
-            if(isset($catArray[$parentId])) {
+            if (isset($catArray[$parentId])) {
                 $parentClientId = $catArray[$parentId]->get('idclient');
-                if($actCat->get('idclient') != $parentClientId) {
+                if ($actCat->get('idclient') != $parentClientId) {
                     $fine = false;
                     $errorMessages[] = sprintf(i18n('The category %s has a sub category (%s) that belongs to another client!'), $parentId, $catId);
                     break;
@@ -1336,14 +1336,14 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
         // check the consistency of the preids
         // find the last element (which is the start of the preids)
         $startCat = null;
-        foreach($parent as $cat) {
-            if($cat->get('postid') == 0) {
+        foreach ($parent as $cat) {
+            if ($cat->get('postid') == 0) {
                 $startCat = $cat;
                 break;
             }
         }
         // if no end was found => error (this most likely means there's some kind of loop too)
-        if($startCat == null) {
+        if ($startCat == null) {
             $fine = false;
             $errorMessages[] = sprintf(i18n('There is no defined end (a category with postid == 0) in %s. Sorting impossible.'), $parentId);
             continue;
@@ -1352,21 +1352,21 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
         $actCat = $startCat;
         $checkedCats = array();
         $checkedCats[] = $startCat->get('idcat');
-        while($actCat != null) {
+        while ($actCat != null) {
             $catId = $actCat->get('idcat');
             $preId = $actCat->get('preid');
-            if($preId == 0) {
+            if ($preId == 0) {
                 break;
             }
             // if the preid isn't a child of the parent => error
-            if(!array_key_exists($preId, $parent)) {
+            if (!array_key_exists($preId, $parent)) {
                 $fine = false;
                 $errorMessages[] = sprintf(i18n('%s has an invalid pre-id (%s). The category does not exist in this parent! Sorting impossible.'), $catId, $preId);
                 break;
             }
             $actCat = $catArray[$preId];
             // if we've seen this preid before, that means there is some kind of loop => error
-            if(in_array($actCat->get('idcat'), $checkedCats)) {
+            if (in_array($actCat->get('idcat'), $checkedCats)) {
                 $fine = false;
                 $errorMessages[] = sprintf(i18n('The sorting in category %s creates an infinite loop (preid = %s). Sorting the category is impossible! (Cause of failure is near category %s)'), $parentId, $preId, $catId);
                 break;
@@ -1376,10 +1376,10 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
     }
     // if everything is fine, return false
     // otherwise return the collected error messages
-    if(!$fine) {
+    if (!$fine) {
         $messages = array();
-        foreach($errorMessages as $errorMessage) {
-            if(in_array($errorMessage, $messages)) {
+        foreach ($errorMessages as $errorMessage) {
+            if (in_array($errorMessage, $messages)) {
                 continue;
             }
             $messages[] = $errorMessage;

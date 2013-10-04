@@ -57,13 +57,8 @@ if ($db->nextRecord()) {
     $vdefault = $db->f("defaulttemplate");
 }
 
-$sql = "SELECT
-        number, idmod
-        FROM
-        " . $cfg['tab']['container'] . "
-        WHERE
-        idtpl='" . cSecurity::toInteger($idtpl) . "'";
-
+$sql = "SELECT number, idmod FROM " . $cfg['tab']['container'] . "
+        WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "'";
 $db->query($sql);
 while ($db->nextRecord()) {
     $a_c[$db->f("number")] = $db->f("idmod");
@@ -85,16 +80,11 @@ if ($idlay != 0) {
     $tpl2->set('d', 'SELECTED', 'selected');
     $tpl2->next();
 }
-$sql = "SELECT
-        idlay, name
-        FROM
-        " . $cfg['tab']['lay'] . "
-        WHERE
-        idclient='" . cSecurity::toInteger($client) . "'
+
+$sql = "SELECT idlay, name FROM " . $cfg['tab']['lay'] . "
+        WHERE idclient='" . cSecurity::toInteger($client) . "'
         ORDER BY name";
-
 $db->query($sql);
-
 while ($db->nextRecord()) {
     if ($db->f("idlay") != $idlay) {
         $tpl2->set('d', 'VALUE', $db->f("idlay"));
@@ -111,14 +101,9 @@ while ($db->nextRecord()) {
 
 $select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 
-$sql = "SELECT
-        idmod, name, type
-        FROM
-        " . $cfg['tab']['mod'] . "
-        WHERE
-        idclient='" . cSecurity::toInteger($client) . "'
+$sql = "SELECT idmod, name, type FROM " . $cfg['tab']['mod'] . "
+        WHERE idclient='" . cSecurity::toInteger($client) . "'
         ORDER BY name";
-
 $db->query($sql);
 
 $modules = array();
@@ -133,7 +118,7 @@ $form->setVar("area", $area);
 $form->setVar("changelayout", 0);
 $form->setVar("frame", $frame);
 $form->setVar("action", "tpl_edit");
-$form->setVar("idtpl", $idtpl != -1 ? $idtpl: "");
+$form->setVar("idtpl", $idtpl != -1 ? $idtpl : "");
 
 if (!$idlay) {
     $form->setVar("createmode", 1);
@@ -240,9 +225,8 @@ $href = $sess->url("main.php?area=tpl&frame=2&idtpl=" . $idtpl);
 $page->setReload();
 $page->setSubnav("idtpl=$idtpl", "tpl");
 
-$page->setContent(array(
-        $form
-));
+$page->setContent(array($form));
+
 if ($_POST["idtpl"] === "" && $idtpl > 0) {
     $page->displayInfo(i18n("Created new Template successfully!"));
 } elseif ($idtpl > 0 && (isset($_POST["submit_x"]) || ($_POST["idtpl"] == $idtpl && $action != 'tpl_new'))) {

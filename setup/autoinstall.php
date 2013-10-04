@@ -59,7 +59,7 @@ if (!checkInstallationSettings()) {
             prntln(i18n('Please enter the missing settings below:', 'setup'));
             $cliSetup->getUserInputSettings();
             $cliSetup->applySettings();
-        } while(!checkInstallationSettings());
+        } while (!checkInstallationSettings());
     } else {
         exit(2);
     }
