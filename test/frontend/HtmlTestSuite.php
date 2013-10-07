@@ -51,11 +51,7 @@ class ContenidoHtmlAllTest {
         $suite->addTestSuite('cHtmlOptGroupTest');
         $suite->addTestSuite('cHtmlParagraphTest');
         $suite->addTestSuite('cHtmlVideoTest');
-
-
-
-
-
+        $suite->addTestSuite('cHtmlOptionElementTest');
 
         return $suite;
     }
