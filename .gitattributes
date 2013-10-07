@@ -2643,6 +2643,8 @@ test/frontend/html/test_checkbox.php -text
 test/frontend/html/test_div.php -text
 test/frontend/html/test_fieldset.php -text
 test/frontend/html/test_footer.php -text
+test/frontend/html/test_form.php -text
+test/frontend/html/test_formelement.php -text
 test/frontend/html/test_header.php -text
 test/frontend/html/test_headergroup.php -text
 test/frontend/html/test_hiddenfield.php -text

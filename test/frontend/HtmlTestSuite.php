@@ -60,14 +60,12 @@ class ContenidoHtmlAllTest {
         $suite->addTestSuite('cHtmlUploadTest');
         $suite->addTestSuite('cHtmlTimeTest');
         $suite->addTestSuite('cHtmlTextAreaTest');
-      //  $suite->addTestSuite('');
-      //  $suite->addTestSuite('');
-      //  $suite->addTestSuite('');
-
-
-
-
-
+        $suite->addTestSuite('cHtmlFormTest');
+        $suite->addTestSuite('cHtmlFormElementTest');
+        // $suite->addTestSuite('');
+        // $suite->addTestSuite('');
+        // $suite->addTestSuite('');
+        // $suite->addTestSuite('');
 
         return $suite;
     }
