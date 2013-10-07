@@ -2652,6 +2652,7 @@ test/frontend/html/test_iframe.php -text
 test/frontend/html/test_image.php -text
 test/frontend/html/test_label.php -text
 test/frontend/html/test_legend.php -text
+test/frontend/html/test_link.php -text
 test/frontend/html/test_list.php -text
 test/frontend/html/test_listitem.php -text
 test/frontend/html/test_nav.php -text
