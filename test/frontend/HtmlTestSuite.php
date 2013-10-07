@@ -54,6 +54,12 @@ class ContenidoHtmlAllTest {
         $suite->addTestSuite('cHtmlOptionElementTest');
         $suite->addTestSuite('cHtmlPasswordBoxTest');
         $suite->addTestSuite('cHtmlRadioButtonTest');
+        $suite->addTestSuite('cHtmlScriptTest');
+        $suite->addTestSuite('cHtmlSectionTest');
+        $suite->addTestSuite('cHtmlSpanTest');
+        $suite->addTestSuite('cHtmlTextBoxTest');
+
+
 
 
 
