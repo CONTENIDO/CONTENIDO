@@ -58,7 +58,7 @@ class ContenidoHtmlAllTest {
         $suite->addTestSuite('cHtmlSectionTest');
         $suite->addTestSuite('cHtmlSpanTest');
         $suite->addTestSuite('cHtmlUploadTest');
-      //  $suite->addTestSuite('');
+        $suite->addTestSuite('cHtmlTimeTest');
       //  $suite->addTestSuite('');
       //  $suite->addTestSuite('');
       //  $suite->addTestSuite('');

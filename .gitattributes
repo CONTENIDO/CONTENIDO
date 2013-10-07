@@ -2662,6 +2662,7 @@ test/frontend/html/test_script.php -text
 test/frontend/html/test_section.php -text
 test/frontend/html/test_span.php -text
 test/frontend/html/test_textbox.php -text
+test/frontend/html/test_time.php -text
 test/frontend/html/test_upload.php -text
 test/frontend/html/test_video.php -text
 test/frontend/templateTestSuite.php -text
