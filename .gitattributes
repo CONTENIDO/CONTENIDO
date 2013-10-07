@@ -2656,5 +2656,6 @@ test/frontend/html/test_nav.php -text
 test/frontend/html/test_optgroup.php -text
 test/frontend/html/test_optionelement.php -text
 test/frontend/html/test_paragraph.php -text
+test/frontend/html/test_passwordbox.php -text
 test/frontend/html/test_video.php -text
 test/frontend/templateTestSuite.php -text
