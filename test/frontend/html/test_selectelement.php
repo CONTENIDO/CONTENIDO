@@ -99,19 +99,19 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
 //         $this->assertSame('testValue', $ar['value']);
 //     }
 
-    public function testAppendOptionElement() {
-        $this->_select->appendOptionElement(new cHTMLOptionElement('testTitle', 'testValue'));
-        $ret = (object) PHPUnit_Framework_Assert::readAttribute($this->_select, '_options');
-        $this->assertSame('testTitle', PHPUnit_Framework_Assert::readAttribute($ret[0], '_title'));
-        $ar = PHPUnit_Framework_Assert::readAttribute($ret[0], '_attributes');
-        $this->assertSame('testValue', $ar['value']);
-    }
+//     public function testAppendOptionElement() {
+//         $this->_select->appendOptionElement(new cHTMLOptionElement('testTitle', 'testValue'));
+//         $ret = (object) PHPUnit_Framework_Assert::readAttribute($this->_select, '_options');
+//         $this->assertSame('testTitle', PHPUnit_Framework_Assert::readAttribute($ret[0], '_title'));
+//         $ar = PHPUnit_Framework_Assert::readAttribute($ret[0], '_attributes');
+//         $this->assertSame('testValue', $ar['value']);
+//     }
 
-    public function testSetMultiSelect() {
-        $this->assertSame(NULL, $this->_select->getAttribute('multiple'));
-        $this->_select->setMultiselect();
-        $this->assertSame('multiple', $this->_select->getAttribute('multiple'));
-    }
+//     public function testSetMultiSelect() {
+//         $this->assertSame(NULL, $this->_select->getAttribute('multiple'));
+//         $this->_select->setMultiselect();
+//         $this->assertSame('multiple', $this->_select->getAttribute('multiple'));
+//     }
 
     /**
      *
