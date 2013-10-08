@@ -2669,6 +2669,7 @@ test/frontend/html/test_tablebody.php -text
 test/frontend/html/test_tabledata.php -text
 test/frontend/html/test_tablehead.php -text
 test/frontend/html/test_tableheader.php -text
+test/frontend/html/test_tablerow.php -text
 test/frontend/html/test_textarea.php -text
 test/frontend/html/test_textbox.php -text
 test/frontend/html/test_time.php -text
