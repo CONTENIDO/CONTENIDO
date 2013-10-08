@@ -9,7 +9,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class cHtmlTableHeadTest extends PHPUnit_Framework_TestCase {
+class cHtmlTableHeaderTest extends PHPUnit_Framework_TestCase {
 
     protected $_tableHeader;
 

@@ -2663,6 +2663,7 @@ test/frontend/html/test_passwordbox.php -text
 test/frontend/html/test_radiobutton.php -text
 test/frontend/html/test_script.php -text
 test/frontend/html/test_section.php -text
+test/frontend/html/test_selectelement.php -text
 test/frontend/html/test_span.php -text
 test/frontend/html/test_table.php -text
 test/frontend/html/test_tablebody.php -text
