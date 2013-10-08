@@ -147,8 +147,12 @@ function isRegisterLongArraysActive() {
     return true;
 }
 
+/**
+ * Checks, if current installed PHP version matches the minimum required PHP version to run CONTENIDO.
+ * @return bool
+ */
 function isPHPCompatible() {
-    if (version_compare(phpversion(), CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
+    if (version_compare(PHP_VERSION, CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
         return true;
     } else {
         return false;

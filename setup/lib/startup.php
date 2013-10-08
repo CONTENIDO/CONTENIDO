@@ -178,8 +178,8 @@ checkAndInclude(CON_SETUP_PATH . '/lib/functions.sql.php');
 checkAndInclude(CON_SETUP_PATH . '/lib/functions.setup.php');
 checkAndInclude(CON_SETUP_PATH . '/lib/class.setupmask.php');
 
-// PHP verion check
-if (phpversion() < CON_SETUP_MIN_PHP_VERSION) {
+// PHP version check
+if (false === isPHPCompatible()) {
     $sNotInstallableReason = 'php_version';
     checkAndInclude(CON_SETUP_PATH . '/steps/notinstallable.php');
 }
