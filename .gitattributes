@@ -2667,6 +2667,7 @@ test/frontend/html/test_span.php -text
 test/frontend/html/test_table.php -text
 test/frontend/html/test_tablebody.php -text
 test/frontend/html/test_tabledata.php -text
+test/frontend/html/test_tablehead.php -text
 test/frontend/html/test_textarea.php -text
 test/frontend/html/test_textbox.php -text
 test/frontend/html/test_time.php -text
