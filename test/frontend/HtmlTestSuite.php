@@ -69,6 +69,9 @@ class ContenidoHtmlAllTest {
         $suite->addTestSuite('cHtmlTableHeadTest');
         $suite->addTestSuite('cHtmlTableHeaderTest');
         $suite->addTestSuite('cHtmlTableRowTest');
+        $suite->addTestSuite('cHTMLSelectElementTest');
+
+
 
         // $suite->addTestSuite('');
 
