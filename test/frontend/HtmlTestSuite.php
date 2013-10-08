@@ -63,7 +63,7 @@ class ContenidoHtmlAllTest {
         $suite->addTestSuite('cHtmlFormTest');
         $suite->addTestSuite('cHtmlFormElementTest');
         $suite->addTestSuite('cHtmlLinkTest');
-        // $suite->addTestSuite('');
+        $suite->addTestSuite('cHtmlTableTest');
         // $suite->addTestSuite('');
         // $suite->addTestSuite('');
 
