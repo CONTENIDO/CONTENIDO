@@ -107,11 +107,11 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
 //         $this->assertSame('testValue', $ar['value']);
 //     }
 
-//     public function testSetMultiSelect() {
-//         $this->assertSame(NULL, $this->_select->getAttribute('multiple'));
-//         $this->_select->setMultiselect();
-//         $this->assertSame('multiple', $this->_select->getAttribute('multiple'));
-//     }
+    public function testSetMultiSelect() {
+        $this->assertSame(NULL, $this->_select->getAttribute('multiple'));
+        $this->_select->setMultiselect();
+        $this->assertSame('multiple', $this->_select->getAttribute('multiple'));
+    }
 
     /**
      *
