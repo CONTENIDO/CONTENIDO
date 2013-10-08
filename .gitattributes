@@ -2664,6 +2664,7 @@ test/frontend/html/test_radiobutton.php -text
 test/frontend/html/test_script.php -text
 test/frontend/html/test_section.php -text
 test/frontend/html/test_span.php -text
+test/frontend/html/test_table.php -text
 test/frontend/html/test_textarea.php -text
 test/frontend/html/test_textbox.php -text
 test/frontend/html/test_time.php -text
