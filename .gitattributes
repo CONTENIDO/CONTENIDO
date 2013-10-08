@@ -2634,6 +2634,7 @@ test/frontend/Template/template.php -text
 test/frontend/Validator/cValidatorEmail.php -text
 test/frontend/ValidatorTestSuite.php -text
 test/frontend/html/html_test.php -text
+test/frontend/html/test_alignmenttable.php -text
 test/frontend/html/test_article.php -text
 test/frontend/html/test_aside.php -text
 test/frontend/html/test_audio.php -text

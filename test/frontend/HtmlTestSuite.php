@@ -70,6 +70,7 @@ class ContenidoHtmlAllTest {
         $suite->addTestSuite('cHtmlTableHeaderTest');
         $suite->addTestSuite('cHtmlTableRowTest');
         $suite->addTestSuite('cHTMLSelectElementTest');
+        $suite->addTestSuite('cHTMLAlignmentTableTest');
 
 
 
