@@ -70,8 +70,56 @@ class cHtmlLinkTest extends PHPUnit_Framework_TestCase {
     public function testGetHref() {
         $this->assertSame('', $this->_link->getHref());
         $this->_link = new cHTMLLink('contenido.org');
-       // $this->_link->setAnchor('contenido.org');
-       // $this->assertSame('contenido.org', $this->_link->getHref());
+        // $this->_link->setAnchor('contenido.org');
+        // $this->assertSame('contenido.org', $this->_link->getHref());
+    }
+
+    public function testSetCLink() {
+        $this->_link->setCLink('top', 'frame4');
+        $this->assertSame('clink', PHPUnit_Framework_Assert::readAttribute($this->_link, '_type'));
+        $this->assertSame('top', PHPUnit_Framework_Assert::readAttribute($this->_link, '_targetarea'));
+        $this->assertSame('frame4', PHPUnit_Framework_Assert::readAttribute($this->_link, '_targetframe'));
+        $this->assertSame('', PHPUnit_Framework_Assert::readAttribute($this->_link, '_targetaction'));
+    }
+
+    public function testSetMultiLink() {
+        $this->_link->setMultiLink('right_top', 'right_top', 'right_bottom', 'right_bottom');
+        $this->assertSame('multilink', PHPUnit_Framework_Assert::readAttribute($this->_link, '_type'));
+        $this->assertSame('right_top', PHPUnit_Framework_Assert::readAttribute($this->_link, '_targetarea'));
+        $this->assertSame(3, PHPUnit_Framework_Assert::readAttribute($this->_link, '_targetframe'));
+        $this->assertSame('right_top', PHPUnit_Framework_Assert::readAttribute($this->_link, '_targetaction'));
+
+        $this->assertSame('right_bottom', PHPUnit_Framework_Assert::readAttribute($this->_link, '_targetarea2'));
+        $this->assertSame(4, PHPUnit_Framework_Assert::readAttribute($this->_link, '_targetframe2'));
+        $this->assertSame('right_bottom', PHPUnit_Framework_Assert::readAttribute($this->_link, '_targetaction2'));
+    }
+
+    public function testEnableautomaticParameterAppend() {
+        $this->_link->enableAutomaticParameterAppend();
+        $this->assertSame('var doit = true; try { var i = get_registered_parameters() } catch (e) { doit = false; }; if (doit == true) { this.href += i; }', $this->_link->getAttribute('onclick'));
+    }
+
+    public function testDisableeautomaticParameterAppend() {
+        $this->_link->enableAutomaticParameterAppend();
+        $this->assertSame('var doit = true; try { var i = get_registered_parameters() } catch (e) { doit = false; }; if (doit == true) { this.href += i; }', $this->_link->getAttribute('onclick'));
+        $this->_link->disableAutomaticParameterAppend();
+        $this->assertSame(NULL, $this->_link->getAttribute('onclick'));
+    }
+
+    public function testSetCustom(){
+        $this->_link->setCustom('testKey', 'testValue');
+        $ret = PHPUnit_Framework_Assert::readAttribute($this->_link, '_custom');
+        $this->assertSame('testValue', $ret['testKey']);
+    }
+
+    public function testUnSetCustom(){
+        $this->_link->setCustom('testKey', 'testValue');
+        $ret = PHPUnit_Framework_Assert::readAttribute($this->_link, '_custom');
+        $this->assertSame('testValue', $ret['testKey']);
+        $this->_link->unsetCustom('testKey');
+        $this->assertSame(array(),PHPUnit_Framework_Assert::readAttribute($this->_link, '_custom'));
+
+
     }
 
 }
