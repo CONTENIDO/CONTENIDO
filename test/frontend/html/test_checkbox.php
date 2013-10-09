@@ -17,7 +17,11 @@ class cHtmlCheckBoxTest extends PHPUnit_Framework_TestCase {
         $this->_cCheckBox = new cHTMLCheckbox('testName', 'testValue');
     }
 
+    /**
+     * @todo This test has not been implemented yet.
+     */
     public function testConstruct() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
     public function testSetChecked() {

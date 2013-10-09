@@ -115,6 +115,13 @@ class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
     }
 
+    /**
+     * @todo This test has not been implemented yet.
+     */
+    public function testSetValue() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
     public function testToHtml() {
         $area = new cHTMLTextarea('testName', 'testInitValue');
         $this->assertSame($area->toHtml(), $area->toHTML());

@@ -25,14 +25,28 @@ class cHtmlTableTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(NULL, $this->_table->getAttribute('width'));
     }
 
+    public function testSetCellSpacing() {
+        $this->_table->setCellSpacing(100);
+        $this->assertSame(100, $this->_table->getAttribute('cellspacing'));
+    }
+
+    /**
+     * @todo This test has not been implemented yet.
+     */
+    public function testSetSpacing() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
     public function testSetCellPadding() {
         $this->_table->setCellPadding(100);
         $this->assertSame(100, $this->_table->getAttribute('cellpadding'));
     }
 
-    public function testSetCellSpacing() {
-        $this->_table->setCellSpacing(100);
-        $this->assertSame(100, $this->_table->getAttribute('cellspacing'));
+    /**
+     * @todo This test has not been implemented yet.
+     */
+    public function testSetPadding() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
     public function testSetBorder() {

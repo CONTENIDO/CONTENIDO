@@ -66,16 +66,6 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('testClass', $this->_select->getAttribute('class'));
     }
 
-    public function testSetSize() {
-        $this->assertSame(NULL, $this->_select->getAttribute('size'));
-        $this->_select->setSize(100);
-        $this->assertSame(100, $this->_select->getAttribute('size'));
-    }
-
-    public function testToHtml() {
-        $this->assertSame($this->_select->toHtml(), $this->_select->toHTML());
-    }
-
     public function testAutoFill() {
         $this->_select = new cHTMLSelectElement('testName', 100, 'testId');
         $stuff = array(
@@ -91,21 +81,29 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('value3', PHPUnit_Framework_Assert::readAttribute($ret['key3'], '_title'));
     }
 
-//     public function testAddOptionElement() {
+    /**
+     * @todo This test has not been implemented yet.
+     */
+    public function testAddOptionElement() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
 //         $this->_select->addOptionElement(new cHTMLOptionElement('testTitle', 'testValue'));
 //         $ret = (object) PHPUnit_Framework_Assert::readAttribute($this->_select, '_options');
 //         $this->assertSame('testTitle', PHPUnit_Framework_Assert::readAttribute($ret[0], '_title'));
 //         $ar = PHPUnit_Framework_Assert::readAttribute($ret[0], '_attributes');
 //         $this->assertSame('testValue', $ar['value']);
-//     }
+    }
 
-//     public function testAppendOptionElement() {
-//         $this->_select->appendOptionElement(new cHTMLOptionElement('testTitle', 'testValue'));
+    /**
+     * @todo This test has not been implemented yet.
+     */
+    public function testAppendOptionElement() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+        //         $this->_select->appendOptionElement(new cHTMLOptionElement('testTitle', 'testValue'));
 //         $ret = (object) PHPUnit_Framework_Assert::readAttribute($this->_select, '_options');
 //         $this->assertSame('testTitle', PHPUnit_Framework_Assert::readAttribute($ret[0], '_title'));
 //         $ar = PHPUnit_Framework_Assert::readAttribute($ret[0], '_attributes');
 //         $this->assertSame('testValue', $ar['value']);
-//     }
+    }
 
     public function testSetMultiSelect() {
         $this->assertSame(NULL, $this->_select->getAttribute('multiple'));
@@ -113,20 +111,35 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('multiple', $this->_select->getAttribute('multiple'));
     }
 
-    /**
-     *
-     * @todo
-     *
-     */
-    public function testSetDefault() {
+    public function testSetSize() {
+        $this->assertSame(NULL, $this->_select->getAttribute('size'));
+        $this->_select->setSize(100);
+        $this->assertSame(100, $this->_select->getAttribute('size'));
     }
 
     /**
-     *
-     * @todo
-     *
+     * @todo This test has not been implemented yet.
+     */
+    public function testSetDefault() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
+    /**
+     * @todo This test has not been implemented yet.
      */
     public function testGetDefault() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
+    /**
+     * @todo This test has not been implemented yet.
+     */
+    public function testSetSelected() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
+    public function testToHtml() {
+        $this->assertSame($this->_select->toHtml(), $this->_select->toHTML());
     }
 
 }

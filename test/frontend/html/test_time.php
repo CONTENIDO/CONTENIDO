@@ -22,5 +22,12 @@ class cHtmlTimeTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('<time id="testId" class="testClass" datetime="testDateTime">testContent</time>', $time->toHTML());
     }
 
+    /**
+     * @todo This test has not been implemented yet.
+     */
+    public function testSetDatetime() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
 }
 ?>

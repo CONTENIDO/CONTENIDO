@@ -55,5 +55,12 @@ class cHtmlImageTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('', $this->_cImage->getAttribute('border'));
     }
 
+    /**
+     * @todo This test has not been implemented yet.
+     */
+    public function testApplyDimensions() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
 }
 ?>
