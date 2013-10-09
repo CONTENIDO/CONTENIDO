@@ -10,6 +10,9 @@
  * @link http://www.contenido.org
  */
 require_once 'sqlStatements.php';
+/**
+ * idcat 13: teaser category with 4 articles
+ */
 class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
 
     protected $_db = null;
@@ -491,10 +494,23 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * rewind position
+     * rewind position to position 0
      */
     public function testRewind() {
-        $this->markTestIncomplete('This test has not been implemented yet.');
+        // idcat 13 Teaser cat with 4 articles
+        $this->_aColl = new cArticleCollector(array(
+            'idcat' => 13,
+            'start' => true
+        ));
+        $this->assertSame(4, $this->_aColl->count());
+
+        $this->assertSame(0, $this->_aColl->key());
+        $this->_aColl->next();
+        $this->assertSame(1, $this->_aColl->key());
+        $this->_aColl->rewind();
+        $this->assertSame(0, $this->_aColl->key());
+
+
     }
 
     /**
