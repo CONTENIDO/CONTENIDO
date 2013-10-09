@@ -515,6 +515,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
 
     /**
      * get start article out of given categorie
+     * @expectedException cBadMethodCallException
      */
     public function testStartArticle() {
         $this->_aColl = new cArticleCollector(array(
@@ -529,6 +530,12 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         ));
 
         $this->assertSame('31', $this->_aColl->startArticle()->get('idartlang'));
+
+        $this->_aColl = new cArticleCollector(array(
+        ));
+
+        $this->_aColl->startArticle();
+
     }
 
     /**
