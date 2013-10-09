@@ -33,7 +33,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $cfg['tab']['cat'] = 'con_cat_test';
         $cfg['tab']['art'] = 'con_art_test';
 
-        $this->_aColl = new cApiArticleCollection();
+        $this->_aColl = new cArticleCollector();
         $this->_db = cRegistry::getDb();
 
         // con_art_lang_test
@@ -69,6 +69,9 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $this->_db->query($sql);
     }
 
+    /**
+     * check member after constructor call
+     */
     public function testConstruct() {
         $ar = array();
         $this->_aColl = new cArticleCollector(array());
@@ -376,6 +379,9 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(false, $this->_aColl->nextArticle());
     }
 
+    /**
+     * test next article
+     */
     public function testNextArticle() {
         $this->_aColl = new cArticleCollector(array(
             'idcat' => 10,
@@ -411,6 +417,9 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(false, $this->_aColl->nextArticle());
     }
 
+    /**
+     * set result page
+     */
     public function testSetResultPerPage() {
         $this->_aColl = new cArticleCollector(array(
             'start' => true
@@ -419,9 +428,11 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $this->_aColl->setResultPerPage(10);
         $this->_aColl->setPage(2);
         $this->_aColl->setResultPerPage(0);
-        // var_dump($this->_aColl->valid());
     }
 
+    /**
+     * check valid article entries
+     */
     public function testValid() {
         $this->_aColl = new cArticleCollector(array(
             'start' => true
@@ -432,20 +443,105 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(false, $this->_aColl->valid());
     }
 
+    /**
+     * check loaded articles
+     */
     public function testLoadArticles() {
+
+        // articles including start articles
         $this->_db->query('SELECT * FROM con_art_lang_test WHERE idlang = 1 AND online = 1');
-        $ret = $this->_db->affected_rows();
+        $ret = $this->_db->affectedRows();
         $this->_aColl = new cArticleCollector(array(
             'start' => true
         ));
 
+        // articles without start articles
         $this->assertSame($ret, $this->_aColl->count());
         $this->_db->query('SELECT * FROM con_art_lang_test WHERE idlang = 1 AND online = 1 AND idartlang NOT IN (SELECT startidartlang FROM con_cat_lang_test WHERE startidartlang>0)');
-        $ret = $this->_db->affected_rows();
+        $ret = $this->_db->affectedRows();
         $this->_aColl = new cArticleCollector(array(
             'start' => false
         ));
         $this->assertSame($ret, $this->_aColl->count());
+
+        // offline articles
+        $this->_db->query('SELECT * FROM con_art_lang_test WHERE idlang = 1 AND online = 0');
+        $ret = $this->_db->affectedRows();
+
+        $ret = $this->_db->affectedRows();
+        $this->_aColl = new cArticleCollector(array(
+            'offlineonly' => true
+        ));
+
+        $this->assertSame($ret, $this->_aColl->count());
+    }
+
+    /**
+     * call seek over article size
+     * @expectedException cOutOfBoundsException
+     */
+    public function testSeek() {
+        $this->_aColl = new cArticleCollector(array(
+            'idcat' => 10,
+            'start' => true
+        ));
+        $this->assertSame(1, $this->_aColl->count());
+
+        var_dump($this->_aColl->seek(3));
+    }
+
+    /**
+     * rewind position
+     */
+    public function testRewind() {
+        $this->markTestIncomplete('This test has not been implemented yet.');
+    }
+
+    /**
+     * get start article out of given categorie
+     */
+    public function testStartArticle() {
+        $this->_aColl = new cArticleCollector(array(
+            'idcat' => 10
+        ));
+
+        $this->assertSame('31', $this->_aColl->startArticle()->get('idartlang'));
+        $this->assertSame(0, $this->_aColl->count());
+
+        $this->_aColl = new cArticleCollector(array(
+            'idcat' => 10
+        ));
+
+        $this->assertSame('31', $this->_aColl->startArticle()->get('idartlang'));
+    }
+
+    /**
+     * check iterations and valid entries
+     */
+    public function testKey() {
+        $this->_aColl = new cArticleCollector(array(
+            'idcat' => 13,
+            'start' => true
+        ));
+        $this->assertSame(4, $this->_aColl->count());
+
+        $this->assertSame(0, $this->_aColl->key());
+        $this->_aColl->next();
+        $this->assertSame(1, $this->_aColl->key());
+        $this->_aColl->next();
+        $this->assertSame(2, $this->_aColl->key());
+        $this->_aColl->next();
+        $this->assertSame(3, $this->_aColl->key());
+        $this->_aColl->next();
+        $this->assertSame(4, $this->_aColl->key());
+        // check more iterations over found article limit
+        $this->assertSame(NULL, $this->_aColl->next());
+        $this->assertSame(5, $this->_aColl->key());
+        for ($i = 6; $i < 100; $i++) {
+            $this->_aColl->next();
+            $this->assertSame($i, $this->_aColl->key());
+            $this->assertSame(false, $this->_aColl->valid());
+        }
     }
 
 }

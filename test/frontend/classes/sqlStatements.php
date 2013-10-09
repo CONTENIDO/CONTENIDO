@@ -83,30 +83,6 @@ class SqlStatement {
                 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;";
     }
 
-    // public static function getInsertConCatLangTest() {
-    // return "CREATE TABLE `con_cat_lang_test` (
-    // `idcatlang` int(11) NOT NULL auto_increment,
-    // `idcat` int(11) NOT NULL default '0',
-    // `idlang` int(11) NOT NULL default '0',
-    // `idtplcfg` int(11) NOT NULL default '0',
-    // `name` varchar(255) NOT NULL,
-    // `visible` tinyint(1) NOT NULL default '0',
-    // `public` tinyint(1) NOT NULL default '0',
-    // `status` int(11) NOT NULL default '0',
-    // `author` varchar(32) NOT NULL,
-    // `created` datetime NOT NULL default '0000-00-00 00:00:00',
-    // `lastmodified` datetime NOT NULL default '0000-00-00 00:00:00',
-    // `startidartlang` int(11) NOT NULL default '0',
-    // `urlname` varchar(64) NOT NULL,
-    // `urlpath` varchar(255) NOT NULL,
-    // PRIMARY KEY (`idcatlang`),
-    // KEY `idcat` (`idcat`),
-    // KEY `idlang` (`idlang`),
-    // KEY `idtplcfg` (`idtplcfg`),
-    // KEY `idlang_2` (`idlang`,`visible`),
-    // KEY `idlang_3` (`idlang`,`idcat`)
-    // ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;";
-    // }
     public static function getInsertConArtTest() {
         return "INSERT INTO `con_art_test` (`idart`, `idclient`)
             VALUES(1, 1),
