@@ -94,6 +94,29 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         ));
         $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_aColl, '_options'));
 
+        $ar = array();
+        $this->_aColl = new cArticleCollector(array());
+        $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_aColl, '_options'));
+
+
+        $ar = array();
+        $ar['start'] = false;
+        $ar['categories'] = array();
+        $ar['lang'] = cRegistry::getLanguageId();
+        $ar['client'] = cRegistry::getClientId();
+        $ar['startonly'] = false;
+        $ar['offline'] = false;
+        $ar['offlineonly'] = false;
+        $ar['order'] = 'created';
+        $ar['artspecs'] = array();
+        $ar['direction'] = 'DESC';
+        $ar['limit'] = 0;
+
+        $this->_aColl = new cArticleCollector(array(
+            'start' => false
+        ));
+        $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_aColl, '_options'));
+
         $this->_aColl = new cArticleCollector(array(
             'idcat' => 10,
             'limit' => 10
