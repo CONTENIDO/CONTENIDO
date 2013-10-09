@@ -2631,8 +2631,11 @@ test/frontend/ItemCollection/sqlStatements.php -text
 test/frontend/ItemCollectionTestSuite.php -text
 test/frontend/ItemTestSuite.php -text
 test/frontend/Template/template.php -text
+test/frontend/TestSuite.php -text
 test/frontend/Validator/cValidatorEmail.php -text
 test/frontend/ValidatorTestSuite.php -text
+test/frontend/classes/sqlStatements.php -text
+test/frontend/classes/test.class.article.collector.php -text
 test/frontend/html/html_test.php -text
 test/frontend/html/test_alignmenttable.php -text
 test/frontend/html/test_article.php -text

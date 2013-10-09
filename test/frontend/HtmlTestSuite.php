@@ -71,9 +71,6 @@ class ContenidoHtmlAllTest {
         $suite->addTestSuite('cHtmlTableRowTest');
         $suite->addTestSuite('cHTMLSelectElementTest');
         $suite->addTestSuite('cHTMLAlignmentTableTest');
-
-
-
         // $suite->addTestSuite('');
 
         return $suite;
