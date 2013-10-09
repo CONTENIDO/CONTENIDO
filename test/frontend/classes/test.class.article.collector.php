@@ -98,7 +98,6 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $this->_aColl = new cArticleCollector(array());
         $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_aColl, '_options'));
 
-
         $ar = array();
         $ar['start'] = false;
         $ar['categories'] = array();
@@ -375,17 +374,6 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(1, $this->_aColl->count());
         $this->_aColl->nextArticle();
         $this->assertSame(false, $this->_aColl->nextArticle());
-
-        // $this->_db->query('SELECT * FROM con_cat_lang_test WHERE
-        // startidartlang=0;');
-        // $i = 0;
-        // while($this->_db->next_record()){
-        // $i++;
-        // }
-
-        // var_dump($i);
-
-        // var_dump($this->_aColl->count());
     }
 
     public function testNextArticle() {
@@ -421,6 +409,26 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(1, $this->_aColl->count());
         $this->_aColl->nextArticle();
         $this->assertSame(false, $this->_aColl->nextArticle());
+    }
+
+    public function testSetResultPerPage() {
+        $this->_aColl = new cArticleCollector(array(
+            'start' => true
+        ));
+        $this->assertSame(51, $this->_aColl->count());
+        $this->_aColl->setResultPerPage(10);
+        $this->_aColl->setPage(2);
+        // var_dump($this->_aColl->valid());
+    }
+
+    public function testValid() {
+        $this->_aColl = new cArticleCollector(array(
+            'start' => true
+        ));
+        $this->assertSame(51, $this->_aColl->count());
+        $this->assertSame(true, $this->_aColl->valid());
+        $this->_aColl = new cArticleCollector(array());
+        $this->assertSame(false, $this->_aColl->valid());
     }
 
 }
