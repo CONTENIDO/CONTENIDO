@@ -235,7 +235,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['artspecs'] = array();
 
         $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_aColl, '_options'));
-// check order -----
+        // check order -----
         $this->_aColl = new cArticleCollector(array(
             'idcat' => 10,
             'limit' => 10,
@@ -347,7 +347,11 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['artspecs'] = array();
 
         $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_aColl, '_options'));
-// ------check order
+        // ------check order
+
+        $this->assertSame(1, $this->_aColl->count());
+        $this->_aColl->nextArticle();
+        $this->assertSame(false, $this->_aColl->nextArticle());
 
         // $this->_db->query('SELECT * FROM con_cat_lang_test WHERE
         // startidartlang=0;');
@@ -359,6 +363,41 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         // var_dump($i);
 
         // var_dump($this->_aColl->count());
+    }
+
+    public function testNextArticle() {
+        $this->_aColl = new cArticleCollector(array(
+            'idcat' => 10,
+            'limit' => 10,
+            'start' => true,
+            'startonly' => true,
+            'offline' => true,
+            'offlineonly' => true,
+            'direction' => 'ASC',
+            'order' => 'creationdate'
+        ));
+        $ar = array();
+        $ar['idcat'] = 10;
+        $ar['limit'] = 10;
+        $ar['start'] = true;
+        $ar['startonly'] = true;
+        $ar['offline'] = true;
+        $ar['offlineonly'] = true;
+        $ar['direction'] = 'ASC';
+        $ar['order'] = 'created';
+        $ar['categories'] = array(
+            10
+        );
+        $ar['lang'] = cRegistry::getLanguageId();
+        $ar['client'] = cRegistry::getClientId();
+        $ar['artspecs'] = array();
+
+        $this->assertSame($ar, PHPUnit_Framework_Assert::readAttribute($this->_aColl, '_options'));
+        // ------check order
+
+        $this->assertSame(1, $this->_aColl->count());
+        $this->_aColl->nextArticle();
+        $this->assertSame(false, $this->_aColl->nextArticle());
     }
 
 }
