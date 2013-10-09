@@ -418,6 +418,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(51, $this->_aColl->count());
         $this->_aColl->setResultPerPage(10);
         $this->_aColl->setPage(2);
+        $this->_aColl->setResultPerPage(0);
         // var_dump($this->_aColl->valid());
     }
 
@@ -429,6 +430,22 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(true, $this->_aColl->valid());
         $this->_aColl = new cArticleCollector(array());
         $this->assertSame(false, $this->_aColl->valid());
+    }
+
+    public function testLoadArticles() {
+        $this->_db->query('SELECT * FROM con_art_lang_test WHERE idlang = 1 AND online = 1');
+        $ret = $this->_db->affected_rows();
+        $this->_aColl = new cArticleCollector(array(
+            'start' => true
+        ));
+
+        $this->assertSame($ret, $this->_aColl->count());
+        $this->_db->query('SELECT * FROM con_art_lang_test WHERE idlang = 1 AND online = 1 AND idartlang NOT IN (SELECT startidartlang FROM con_cat_lang_test WHERE startidartlang>0)');
+        $ret = $this->_db->affected_rows();
+        $this->_aColl = new cArticleCollector(array(
+            'start' => false
+        ));
+        $this->assertSame($ret, $this->_aColl->count());
     }
 
 }
