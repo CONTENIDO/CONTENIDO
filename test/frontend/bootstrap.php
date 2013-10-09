@@ -185,12 +185,6 @@ $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
 
 ///////////////////// initial code from front_content.php //////////////////////
 
-PHPUnit_Util_Filter::$addUncoveredFilesFromWhitelist = true;
-
-PHPUnit_Util_Filter::addDirectoryToWhitelist(realpath(CON_TEST_PATH . '/../')); 
-//PHPUnit_Util_Filter::removeDirectoryFromWhitelist(cPATH.'/cms/modules/'); 
-
-
 ################################################################################
 # Back to the roots
 
