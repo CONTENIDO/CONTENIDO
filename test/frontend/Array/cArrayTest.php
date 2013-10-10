@@ -19,7 +19,20 @@
  *
  * @author marcus.gnass
  */
-class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
+class cArrayTest extends PHPUnit_Framework_TestCase {
+
+    /**
+     *
+     * @var array
+     */
+    private $_orig;
+
+    /**
+     */
+    public function setUp() {
+        // data for sortWithLocale
+        $this->_orig = explode(',', 'ß,ü,ö,ä,z,y,x,w,v,u,t,s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a');
+    }
 
     /**
      * Test trimming of items in empty array, nonempty array and nonempty array
@@ -142,20 +155,39 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
      *
      * @todo add further locales and further locale specific characters
      */
-    public function testSortWithLocale() {
-        $orig = explode(',', 'ß,ü,ö,ä,z,y,x,w,v,u,t,s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a');
+    public function testSortWithLocaleUs() {
+        $us = explode(',', 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ß,ä,ö,ü');
+        $this->assertSame($us, cArray::sortWithLocale($this->_orig, 'us'));
+    }
 
-        $us = explode(',', 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ä,ö,ü,ß');
-        $this->assertSame($us, cArray::sortWithLocale($orig, 'us'));
+    /**
+     * Test sorting of characters in array according to given locale.
+     *
+     * @todo add further locales and further locale specific characters
+     */
+    public function testSortWithLocaleUsEn() {
+        $us_EN = explode(',', 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ß,ä,ö,ü');
+        $this->assertSame($us_EN, cArray::sortWithLocale($this->_orig, 'us_EN'));
+    }
 
-        $us_EN = explode(',', 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,ä,ö,ü,ß');
-        $this->assertSame($us_EN, cArray::sortWithLocale($orig, 'us_EN'));
-
+    /**
+     * Test sorting of characters in array according to given locale.
+     *
+     * @todo add further locales and further locale specific characters
+     */
+    public function testSortWithLocaleDe() {
         $de = explode(',', 'a,ä,b,c,d,e,f,g,h,i,j,k,l,m,n,o,ö,p,q,r,s,t,u,ü,v,w,x,y,z,ß');
-        $this->assertSame($de, cArray::sortWithLocale($orig, 'de'));
+        $this->assertSame($de, cArray::sortWithLocale($this->_orig, 'de'));
+    }
 
+    /**
+     * Test sorting of characters in array according to given locale.
+     *
+     * @todo add further locales and further locale specific characters
+     */
+    public function testSortWithLocaleDeDe() {
         $de_DE = explode(',', 'a,ä,b,c,d,e,f,g,h,i,j,k,l,m,n,o,ö,p,q,r,s,t,u,ü,v,w,x,y,z,ß');
-        $this->assertSame($de_DE, cArray::sortWithLocale($orig, 'de_DE'));
+        $this->assertSame($de_DE, cArray::sortWithLocale($this->_orig, 'de_DE'));
     }
 
     /**
@@ -180,60 +212,115 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
             'age' => '142',
             'town' => 'Offenbach am Main'
         );
-        $src = array($tr_31_we, $zi_23_ba, $gn_142_of);
+        $src = array(
+            $tr_31_we,
+            $zi_23_ba,
+            $gn_142_of
+        );
 
         // name ASC
-        $exp = array($gn_142_of, $tr_31_we, $zi_23_ba);
+        $exp = array(
+            $gn_142_of,
+            $tr_31_we,
+            $zi_23_ba
+        );
         $this->assertSame($exp, cArray::csort($src, 'name', SORT_ASC));
         // name DESC
-        $exp = array($zi_23_ba, $tr_31_we, $gn_142_of);
+        $exp = array(
+            $zi_23_ba,
+            $tr_31_we,
+            $gn_142_of
+        );
         $this->assertSame($exp, cArray::csort($src, 'name', SORT_DESC));
         // name REGULAR
-        $exp = array($gn_142_of, $tr_31_we, $zi_23_ba);
+        $exp = array(
+            $gn_142_of,
+            $tr_31_we,
+            $zi_23_ba
+        );
         $this->assertSame($exp, cArray::csort($src, 'name', SORT_REGULAR));
-//         // name NUMERIC
-//         $exp = array($gn_142_of, $tr_31_we, $zi_23_ba);
-//         $this->assertSame($exp, cArray::csort($src, 'name', SORT_NUMERIC));
+        // // name NUMERIC
+        // $exp = array($gn_142_of, $tr_31_we, $zi_23_ba);
+        // $this->assertSame($exp, cArray::csort($src, 'name', SORT_NUMERIC));
         // name STRING
-        $exp = array($gn_142_of, $tr_31_we, $zi_23_ba);
+        $exp = array(
+            $gn_142_of,
+            $tr_31_we,
+            $zi_23_ba
+        );
         $this->assertSame($exp, cArray::csort($src, 'name', SORT_STRING));
 
         // ////////////////////////////////////////////////////////////////////
 
         // age ASC (implicit numeric)
-        $exp = array($zi_23_ba, $tr_31_we, $gn_142_of);
+        $exp = array(
+            $zi_23_ba,
+            $tr_31_we,
+            $gn_142_of
+        );
         $this->assertSame($exp, cArray::csort($src, 'age', SORT_ASC));
         // age DESC (implicit numeric)
-        $exp = array($gn_142_of, $tr_31_we, $zi_23_ba);
+        $exp = array(
+            $gn_142_of,
+            $tr_31_we,
+            $zi_23_ba
+        );
         $this->assertSame($exp, cArray::csort($src, 'age', SORT_DESC));
         // age REGULAR (implicit numeric)
-        $exp = array($zi_23_ba, $tr_31_we, $gn_142_of);
+        $exp = array(
+            $zi_23_ba,
+            $tr_31_we,
+            $gn_142_of
+        );
         $this->assertSame($exp, cArray::csort($src, 'age', SORT_REGULAR));
         // age NUMERIC
-        $exp = array($zi_23_ba, $tr_31_we, $gn_142_of);
+        $exp = array(
+            $zi_23_ba,
+            $tr_31_we,
+            $gn_142_of
+        );
         $this->assertSame($exp, cArray::csort($src, 'age', SORT_NUMERIC));
         // age STRING
-        $exp = array($gn_142_of, $zi_23_ba, $tr_31_we);
+        $exp = array(
+            $gn_142_of,
+            $zi_23_ba,
+            $tr_31_we
+        );
         $this->assertSame($exp, cArray::csort($src, 'age', SORT_STRING));
 
         // ////////////////////////////////////////////////////////////////////
 
         // town ASC
-        $exp = array($zi_23_ba, $gn_142_of, $tr_31_we);
+        $exp = array(
+            $zi_23_ba,
+            $gn_142_of,
+            $tr_31_we
+        );
         $this->assertSame($exp, cArray::csort($src, 'town', SORT_ASC));
         // town DESC
-        $exp = array($tr_31_we, $gn_142_of, $zi_23_ba);
+        $exp = array(
+            $tr_31_we,
+            $gn_142_of,
+            $zi_23_ba
+        );
         $this->assertSame($exp, cArray::csort($src, 'town', SORT_DESC));
         // town REGULAR
-        $exp = array($zi_23_ba, $gn_142_of, $tr_31_we);
+        $exp = array(
+            $zi_23_ba,
+            $gn_142_of,
+            $tr_31_we
+        );
         $this->assertSame($exp, cArray::csort($src, 'town', SORT_REGULAR));
-//         // town NUMERIC
-//         $exp = array($zi_23_ba, $gn_142_of, $tr_31_we);
-//         $this->assertSame($exp, cArray::csort($src, 'town', SORT_NUMERIC));
+        // // town NUMERIC
+        // $exp = array($zi_23_ba, $gn_142_of, $tr_31_we);
+        // $this->assertSame($exp, cArray::csort($src, 'town', SORT_NUMERIC));
         // town STRING
-        $exp = array($zi_23_ba, $gn_142_of, $tr_31_we);
+        $exp = array(
+            $zi_23_ba,
+            $gn_142_of,
+            $tr_31_we
+        );
         $this->assertSame($exp, cArray::csort($src, 'town', SORT_STRING));
-
     }
 
     /**
@@ -245,14 +332,14 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
         // test empty array w/ nonexistant key and default default
         $actual = array();
         cArray::initializeKey($actual, 'key');
-        $this->assertSame(1, count($actual));
+        $this->assertCount(1, $actual);
         $this->assertArrayHasKey('key', $actual);
         $this->assertSame('', $actual['key']);
 
         // test empty array w/ nonexistant key and custom default
         $actual = array();
         cArray::initializeKey($actual, 'key', 'custom');
-        $this->assertSame(1, count($actual));
+        $this->assertCount(1, $actual);
         $this->assertArrayHasKey('key', $actual);
         $this->assertSame('custom', $actual['key']);
 
@@ -264,7 +351,7 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
             'foo' => 'bar'
         );
         cArray::initializeKey($actual, 'key');
-        $this->assertSame(2, count($actual));
+        $this->assertCount(2, $actual);
         $this->assertArrayHasKey('key', $actual);
         $this->assertSame('', $actual['key']);
         $this->assertArrayHasKey('foo', $actual);
@@ -275,7 +362,7 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
             'foo' => 'bar'
         );
         cArray::initializeKey($actual, 'key', 'custom');
-        $this->assertSame(2, count($actual));
+        $this->assertCount(2, $actual);
         $this->assertArrayHasKey('key', $actual);
         $this->assertSame('custom', $actual['key']);
         $this->assertArrayHasKey('foo', $actual);
@@ -286,7 +373,7 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
             'foo' => 'bar'
         );
         cArray::initializeKey($actual, 'key');
-        $this->assertSame(2, count($actual));
+        $this->assertCount(2, $actual);
         $this->assertArrayHasKey('key', $actual);
         $this->assertSame('', $actual['key']);
         $this->assertArrayHasKey('foo', $actual);
@@ -297,7 +384,7 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
             'foo' => 'bar'
         );
         cArray::initializeKey($actual, 'key', 'custom');
-        $this->assertSame(2, count($actual));
+        $this->assertCount(2, $actual);
         $this->assertArrayHasKey('key', $actual);
         $this->assertSame('custom', $actual['key']);
         $this->assertArrayHasKey('foo', $actual);
@@ -308,7 +395,7 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
             'key' => 'old'
         );
         cArray::initializeKey($actual, 'key');
-        $this->assertSame(1, count($actual));
+        $this->assertCount(1, $actual);
         $this->assertArrayHasKey('key', $actual);
         $this->assertSame('old', $actual['key']);
 
@@ -317,7 +404,7 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase {
             'key' => 'old'
         );
         cArray::initializeKey($actual, 'key', 'custom');
-        $this->assertSame(1, count($actual));
+        $this->assertCount(1, $actual);
         $this->assertArrayHasKey('key', $actual);
         $this->assertSame('old', $actual['key']);
     }
