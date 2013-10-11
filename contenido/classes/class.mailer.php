@@ -118,8 +118,13 @@ class cMailer extends Swift_Mailer {
             'tls',
             'ssl'
         );
-        if (in_array(strtolower(getSystemProperty('system', 'mail_encryption')), $encryptions)) {
-            $this->_mailEncryption = strtolower(getSystemProperty('system', 'mail_encryption'));
+        $mail_encryption = strtolower(getSystemProperty('system', 'mail_encryption'));
+        if (in_array($mail_encryption, $encryptions)) {
+            $this->_mailEncryption = $mail_encryption;
+        } elseif ('1' == $mail_encryption) {
+            $this->_mailEncryption = 'ssl';
+        } else {
+            $this->_mailEncryption = 'tls';
         }
 
         // get mailserver port from system properties
@@ -382,4 +387,5 @@ class cMailer extends Swift_Mailer {
 
         return $idmail;
     }
+
 }
