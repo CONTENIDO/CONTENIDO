@@ -67,6 +67,14 @@ class ItemTest extends PHPUnit_Framework_TestCase {
             'foo' => 'bar',
             'spam' => 'eggs'
         );
+
+        $db = cRegistry::getDb();
+        $db->query(SqlStatement::getCreateConTestStatement());
+        $db->query(SqlStatement::getInsertConTestStatement());
+        $db->query(SqlStatement::getCreateDogStatement());
+        $db->query(SqlStatement::getInserDogStatement());
+        $db->query(SqlStatement::getCreateDogRfidStatement());
+        $db->query(SqlStatement::getInserDogRfidStatement());
     }
 
     /**
@@ -84,12 +92,6 @@ class ItemTest extends PHPUnit_Framework_TestCase {
         unset($cfg['tab']['con_test_dog']);
         unset($cfg['tab']['con_test_rfid_dog']);
     }
-
-    /*
-     * ************************************************************************
-     * ************************************************************************
-     * ************************************************************************
-     */
 
     /**
      */
@@ -178,8 +180,26 @@ class ItemTest extends PHPUnit_Framework_TestCase {
 
     /**
      *
+     * @todo missing implementation
      */
     public function testLoadByPrimaryKey() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testLoadByRecordSet() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testIsLoaded() {
+        $this->markTestIncomplete('missing implementation');
     }
 
     /**
@@ -211,7 +231,122 @@ class ItemTest extends PHPUnit_Framework_TestCase {
             $this->assertSame('Undefined index: bar', $e->getMessage());
         }
     }
+
+    /**
+     * Test getting field of item.
+     */
+    public function testGet() {
+        $this->markTestSkipped('this is just an alias for getField');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testSetField() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     * Test getting field of item.
+     */
+    public function testSet() {
+        $this->markTestSkipped('this is just an alias for setField');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testStore() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testToArray() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testToObject() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testSetProperty() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testGetProperty() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testDeleteProperty() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testDeletePropertyById() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testDelete() {
+        $this->markTestSkipped('method is commented');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testSetFilters() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function test_InFilter() {
+        $this->markTestIncomplete('missing implementation');
+    }
+
+    /**
+     *
+     * @todo missing implementation
+     */
+    public function testGetMetaObject() {
+        $this->markTestIncomplete('missing implementation');
+    }
 }
+
+/**
+ *
+ * @author marcus.gnass@4fb.de
+ */
 class DummyItem extends Item {
 
     public function __construct() {
