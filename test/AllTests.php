@@ -20,7 +20,7 @@ class AllTests extends PHPUnit_Framework_TestCase {
     static function suite() {
         $suite = new PHPUnit_Framework_TestSuite('CONTENIDO Total Unit Tests');
 
-        $directories = array('frontend/Chains', 'frontend/Security', 'frontend/Url', 'frontend/Validator');
+        $directories = array('frontend/Array', 'frontend/Chains', 'frontend/classes', 'frontend/html', 'frontend/Item', 'frontend/ItemCollection', 'frontend/Security', 'frontend/Template', 'frontend/Url', 'frontend/Validator');
         foreach ($directories as $directory) {
             $directory = rtrim(__DIR__ . "/" . $directory);
             foreach (glob($directory . "/*.php") as $filename) {
