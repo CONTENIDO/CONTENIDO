@@ -31,13 +31,14 @@ $art = new cApiArticleLanguage();
 $art->loadByArticleAndLanguageId($artId, $lang);
 $linkCount = (int) $art->getContent($type, $typeid);
 
-if ($_POST['linkCount']) {
-    $linkCount = (int) $_POST['linkCount'];
-    conSaveContentEntry($idartlang, $type, $typeid, $linkCount);
-}
-
 // if backendmode then add additional fields
 if (cRegistry::isBackendEditMode()) {
+
+    if ($_POST['linkCount']) {
+        $linkCount = (int) $_POST['linkCount'];
+        conSaveContentEntry($idartlang, $type, $typeid, $linkCount);
+    }
+
     $backend = TRUE;
     $label = mi18n("LABEL_HEADER_LINKLIST");
     $createLabel = mi18n("createLabel");

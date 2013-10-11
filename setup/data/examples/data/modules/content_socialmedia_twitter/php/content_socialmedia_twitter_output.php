@@ -36,7 +36,7 @@ $idclient = cRegistry::getClientId();
 $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
-if ('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'twitter') {
+if (cRegistry::isBackendEditMode() && 'POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'twitter') {
     conSaveContentEntry($idartlang, "CMS_HTML", 4000, $_POST['twitter_name']);
     conSaveContentEntry($idartlang, "CMS_HTML", 4001, $_POST['width']);
     conSaveContentEntry($idartlang, "CMS_HTML", 4002, $_POST['height']);

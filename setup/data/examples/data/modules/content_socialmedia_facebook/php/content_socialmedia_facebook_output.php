@@ -35,7 +35,7 @@ $idclient = cRegistry::getClientId();
 $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
-if ('POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'facebook') {
+if (cRegistry::isBackendEditMode() && 'POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'facebook') {
     conSaveContentEntry($idartlang, "CMS_HTML", 1000, $_POST['url']);
     conSaveContentEntry($idartlang, "CMS_HTML", 1001, $_POST['plugin']);
     conSaveContentEntry($idartlang, "CMS_HTML", 1002, $_POST['layout']);
