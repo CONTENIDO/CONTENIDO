@@ -1,33 +1,36 @@
 <?php
+
 /**
- * Template TestSuite
+ * HTML TestSuite
  *
  * @package Testing
- * @subpackage Test_Security
+ * @subpackage Test_HTML
  * @version SVN Revision $Rev:$
  *
  * @author claus schunk <claus.schunk@4fb.de>
- *
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
 require_once ('bootstrap.php');
-// foldername of the test
 
+// foldername of the test
 TestSuiteHelper::loadFeSuite('html');
 
-require_once ('util.php');
+require_once 'util.php';
 
 /**
  * Template Testsuite.
  */
 class ContenidoHtmlAllTest {
 
+    /**
+     *
+     * @return PHPUnit_Framework_TestSuite
+     */
     public static function suite() {
         $suite = new PHPUnit_Framework_TestSuite('html test');
-        // class name of the test
         $suite->addTestSuite('cHtmlTest');
         $suite->addTestSuite('cHtmlArticleTest');
         $suite->addTestSuite('cHtmlAsideTest');
@@ -71,8 +74,6 @@ class ContenidoHtmlAllTest {
         $suite->addTestSuite('cHtmlTableRowTest');
         $suite->addTestSuite('cHTMLSelectElementTest');
         $suite->addTestSuite('cHTMLAlignmentTableTest');
-        // $suite->addTestSuite('');
-
         return $suite;
     }
 

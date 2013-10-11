@@ -101,6 +101,35 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
+     */
+    public function testLoadItem() {
+        $item = $this->_collection->loadItem(1);
+        $ar = array(
+            'ID' => '1',
+            'Name' => 'Kabul',
+            'CountryCode' => 'AFG',
+            'District' => 'Kabol',
+            'Population' => '1780000'
+        );
+        $this->assertSame($item->toArray(), $ar);
+
+        $ar = array(
+            'ID' => '1',
+            'Name' => 'Kabul',
+            'CountryCode' => 'AFG',
+            'District' => 'Kabol',
+            'Population' => '178888'
+        );
+        $item->set('Population', '178888');
+        $this->assertSame($item->toArray(), $ar);
+        $this->assertEquals(true, $item->get('ID') == $item->set('ID', '5'));
+
+        $item->store();
+        $item = $this->_tCollection->loadItem(1);
+        $this->assertFalse($item->get('ID') === $ar['ID'] && $item->get('Population') === $ar['Population']);
+    }
+
+    /**
      * @test
      */
     public function GetAllIdsTest() {

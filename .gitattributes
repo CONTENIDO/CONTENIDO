@@ -2624,7 +2624,11 @@ test/AllTests.php -text
 test/frontend/Array/cArrayTest.php -text
 test/frontend/Chains/cApiCecRegistry.php -text
 test/frontend/HtmlTestSuite.php -text
-test/frontend/Item/item_test.php -text
+test/frontend/Item/class.dog_item.php -text
+test/frontend/Item/class.dog_rfid_item.php -text
+test/frontend/Item/class.item.test.php -text
+test/frontend/Item/class.test_item.php -text
+test/frontend/Item/class.tf_item.php -text
 test/frontend/Item/sqlStatements.php -text
 test/frontend/ItemCollection/item_collection_test.php -text
 test/frontend/ItemCollection/sqlStatements.php -text
