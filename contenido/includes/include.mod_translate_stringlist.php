@@ -31,17 +31,18 @@ $mylink = new cHTMLLink();
 $rowCount = 0;
 
 foreach ($translationArray as $key => $value) {
-    $link->setCustom("idmod", $idmod);
+    $link->setCustom("idmod", cSecurity::toInteger($idmod));
     $link->setCustom("row", $rowCount);
 
-    $href = $link->getHREF();
-    $mylink->setLink(conHtmlSpecialChars('javascript:parent.location="' . $href . '"'));
-    $mylink->setContent($key);
-    if ($rowCount == $row) {
+    if ($rowCount == $current) {
         $style = "active";
     } else {
         $style = "";
     }
+
+    $href = $link->getHREF();
+    $mylink->setLink(conHtmlSpecialChars('javascript:parent.location="' . $href . '"'));
+    $mylink->setContent($key);
 
     $page->set("d", "STYLE", $style);
     $page->set("d", "TRANSLATION_LINK", $mylink->render());

@@ -66,7 +66,7 @@ foreach ($strings as $string) {
 // sort array
 ksort($myTrans);
 
-// count translations (counter started with one)
+// count translations (counter started with zero)
 $myTransCount = count($myTrans)-1;
 
 // If changed save in file
@@ -75,7 +75,7 @@ if (count(array_diff_assoc($myTrans, $translationArray)) > 0 || count(array_diff
 }
 
 if (!isset($row)) {
-    $row = 0; // first string
+    $row = 0; // first stringS
     $lastString = reset($strings);
     $lastTranslation = $myTrans[$lastString];
 } else {
@@ -85,6 +85,9 @@ if (!isset($row)) {
         if ($index == $row) {
             $lastString = $key;
             $lastTranslation = $value;
+
+            // Current string
+            $current = $row;
 
             // Jump to next entry
             if ($myTransCount == $index) {
@@ -100,6 +103,7 @@ if (!isset($row)) {
 }
 
 $page->set("s", "IDMOD", $idmod);
+$page->set("s", "CURRENT", $current);
 $page->set("s", "ROW", $row);
 $page->set("s", "HEADER", sprintf(i18n("Translate module '%s'"), $module->get('name')));
 $page->set("s", "TRANSLATION_FOR", sprintf(i18n("Translation for %s"), $langstring));
