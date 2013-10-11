@@ -11,6 +11,22 @@
  */
 class cHtmlFormTest extends PHPUnit_Framework_TestCase {
 
+    /**
+     *
+     * @var cHTMLForm
+     */
+    private $_form;
+
+    /**
+     * Creates tables with values of different datatypes.
+     */
+    public function setUp() {
+        $this->_form = new cHTMLForm();
+    }
+
+    /**
+     *
+     */
     public function testConstruct() {
         $form = new cHTMLForm();
         $this->assertSame('', PHPUnit_Framework_Assert::readAttribute($form, '_name'));
@@ -47,17 +63,32 @@ class cHtmlFormTest extends PHPUnit_Framework_TestCase {
     /**
      *
      * @todo
-     *
      */
     public function testToHtml() {
+        $act = $this->_form->toHTML();
+        $exp = '<form id="" name="" method="post" action="main.php"></form>';
+        $this->assertSame($exp, $act);
     }
 
     /**
      *
      * @todo
-     *
      */
     public function testSetVar() {
+        // Oupsi $_form has no $_vars ... but this is probably correct!?!
+        //$act = PHPUnit_Framework_Assert::readAttribute($this->_form, '_vars');
+        $exp = array();
+        //$this->assertSame($exp, $act);
+
+        $this->_form->setVar('foo', 'bar');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_form, '_vars');
+        $exp['foo'] = 'bar';
+        $this->assertSame($exp, $act);
+
+        $this->_form->setVar('spam', 'eggs');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_form, '_vars');
+        $exp['spam'] = 'eggs';
+        $this->assertSame($exp, $act);
     }
 
 }

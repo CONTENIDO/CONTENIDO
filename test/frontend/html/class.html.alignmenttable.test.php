@@ -1,13 +1,21 @@
-<?PHP
+<?php
+
 /**
  *
  * @version SVN Revision $Rev:$
  *
  * @author claus.schunk@4fb.de
+ * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
+ */
+
+/**
+ *
+ * @author claus.schunk@4fb.de
+ * @author marcus.gnass@4fb.de
  */
 class cHTMLAlignmentTableTest extends PHPUnit_Framework_TestCase {
 
@@ -85,8 +93,7 @@ class cHTMLAlignmentTableTest extends PHPUnit_Framework_TestCase {
      * Is already tested by test of parent class!
      */
     public function testConstructTag() {
-        $table = $this->_tableEmpty;
-        $act = PHPUnit_Framework_Assert::readAttribute($table, '_tag');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_tableEmpty, '_tag');
         $exp = 'table';
         $this->assertSame($exp, $act);
     }
@@ -202,7 +209,7 @@ class cHTMLAlignmentTableTest extends PHPUnit_Framework_TestCase {
      */
     public function testRenderData() {
         $act = $this->_tableData->render();
-        $exp = '';
+        $exp = ''; // TODO this is not the expected value!
         $this->assertSame($exp, $act);
     }
 }

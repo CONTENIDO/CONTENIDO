@@ -1,16 +1,38 @@
-<?PHP
+<?php
+
 /**
  *
  * @version SVN Revision $Rev:$
  *
  * @author claus.schunk@4fb.de
+ * @author marcus.gnass@4fb.de
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
+/**
+ *
+ * @author claus.schunk@4fb.de
+ * @author marcus.gnass@4fb.de
+ */
 class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
 
+    /**
+     *
+     * @var cHTMLTextarea
+     */
+    private $_textarea;
+
+    /**
+     */
+    public function setUp() {
+        $this->_textarea = new cHTMLTextarea('name');
+    }
+
+    /**
+     */
     public function testConstruct() {
         $area = new cHTMLTextarea('testName');
         $this->assertSame(4, count($area->getAttributes()));
@@ -86,6 +108,8 @@ class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('testClass', $area->getAttribute('class'));
     }
 
+    /**
+     */
     public function testSetWidth() {
         $area = new cHTMLTextarea('testName', 'testInitValue', 200);
         $this->assertSame(4, count($area->getAttributes()));
@@ -102,6 +126,8 @@ class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(1, $area->getAttribute('cols'));
     }
 
+    /**
+     */
     public function testSetHeight() {
         $area = new cHTMLTextarea('testName', 'testInitValue');
         $this->assertSame(4, count($area->getAttributes()));
@@ -116,16 +142,26 @@ class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @todo This test has not been implemented yet.
      */
     public function testSetValue() {
-        $this->markTestIncomplete('This test has not been implemented yet.');
+        // test w/o value
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_textarea, '_value');
+        $exp = '';
+        $this->assertSame($exp, $act);
+
+        // test w/ value
+        $this->_textarea->setValue('value');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_textarea, '_value');
+        $exp = 'value';
+        $this->assertSame($exp, $act);
     }
 
+    /**
+     */
     public function testToHtml() {
         $area = new cHTMLTextarea('testName', 'testInitValue');
         $this->assertSame($area->toHtml(), $area->toHTML());
     }
-
 }
+
 ?>
