@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Upgrade job 13.
- * Adds the missing login action so that it can be logged again.
+ * Adds the missing login action so that it can be logged again and adds front_allow action
  *
  * @package Setup
  * @subpackage UpgradeJob
@@ -44,6 +44,7 @@ class cUpgradeJob_0013 extends cUpgradeJobAbstract {
 
         if ($needsUpdate) {
             $db->query("INSERT INTO " . $cfg['tab']['actions'] . " VALUES('330', '0', '0', 'login', '', '', '1');");
+            $db->query("INSERT INTO " . $cfg['tab']['actions'] . " VALUES('359', '6', '', 'front_allow', '', '', '1');");
         }
     }
 

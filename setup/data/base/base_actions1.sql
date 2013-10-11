@@ -58,6 +58,7 @@ INSERT INTO !PREFIX!_actions VALUES('355', '60', '', 'group_create', '', '', '1'
 INSERT INTO !PREFIX!_actions VALUES('356', '61', '', 'group_edit', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('357', '63', '', 'group_deletemember', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('358', '63', '', 'group_addmember', '', '', '1');
+INSERT INTO !PREFIX!_actions VALUES('359', '6', '', 'front_allow', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('56', '2', '', 'con_editart', '', 'rights/content/article/edit', '1');
 INSERT INTO !PREFIX!_actions VALUES('55', '3', '', 'con_saveart', '', '', 0);
 INSERT INTO !PREFIX!_actions VALUES('54', '3', '', 'con_newart', '', '', '1');
