@@ -52,9 +52,9 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @var array
      */
     private $_forwardTypes = array(
-        "CMS_EASYIMG" => "CMS_IMG",
-        "CMS_IMGEDITOR" => "CMS_IMG",
-        "CMS_LINKEDITOR" => "CMS_LINK"
+        "CMS_EASYIMG" => "CMS_IMGEDITOR",
+        "CMS_IMG" => "CMS_IMGEDITOR",
+        "CMS_LINK" => "CMS_LINKEDITOR"
     );
 
     /**
