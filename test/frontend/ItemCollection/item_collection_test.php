@@ -44,13 +44,13 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         $this->_collection = new TCollection();
         $this->_noItemClassCollection = new TFCollection();
 
-        $this->_db->query(SqlStatement::getCreateConTestStatement());
-        $this->_db->query(SqlStatement::getCreateDogStatement());
-        $this->_db->query(SqlStatement::getCreateDogRfidStatement());
+        $this->_db->query(SqlItemCollection::getCreateConTestStatement());
+        $this->_db->query(SqlItemCollection::getCreateDogStatement());
+        $this->_db->query(SqlItemCollection::getCreateDogRfidStatement());
 
-        $this->_db->query(SqlStatement::getInserDogStatement());
-        $this->_db->query(SqlStatement::getInserDogRfidStatement());
-        $this->_db->query(SqlStatement::getInsertConTestStatement());
+        $this->_db->query(SqlItemCollection::getInserDogStatement());
+        $this->_db->query(SqlItemCollection::getInserDogRfidStatement());
+        $this->_db->query(SqlItemCollection::getInsertConTestStatement());
     }
 
     public function tearDown() {

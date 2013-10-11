@@ -9,7 +9,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-class SqlStatement {
+class SqlArticleCollector {
 
     public static function getDeleteStatement(array $tables) {
         $sql = 'DROP TABLE IF EXISTS';

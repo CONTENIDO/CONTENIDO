@@ -1,5 +1,5 @@
 <?php
-class SqlStatement {
+class SqlItemCollection {
 
     public static function getDeleteStatement(array $tables) {
         $sql = 'DROP TABLE IF EXISTS';

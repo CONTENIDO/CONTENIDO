@@ -67,7 +67,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $this->_db = cRegistry::getDb();
         $this->_aColl = new cArticleCollector();
 
-        $sql = SqlStatement::getDeleteStatement(array(
+        $sql = SqlArticleCollector::getDeleteStatement(array(
             'con_art_lang_test',
             'con_cat_art_test',
             'con_cat_lang_test',
@@ -83,31 +83,31 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $cfg['tab']['art'] = 'con_art_test';
 
         // con_art_lang_test
-        $this->_db->query(SqlStatement::getCreateConArtLangTest());
-        $this->_db->query(SqlStatement::getInsertConArtLangTest());
+        $this->_db->query(SqlArticleCollector::getCreateConArtLangTest());
+        $this->_db->query(SqlArticleCollector::getInsertConArtLangTest());
 
         // con_cat_art_test
-        $this->_db->query(SqlStatement::getCreateConCatArtTest());
-        $this->_db->query(SqlStatement::getInsertConCatArtTest());
+        $this->_db->query(SqlArticleCollector::getCreateConCatArtTest());
+        $this->_db->query(SqlArticleCollector::getInsertConCatArtTest());
 
         // con_cat_lang_test
-        $this->_db->query(SqlStatement::getCreateConCatLangTest());
-        $this->_db->query(SqlStatement::getInsertConCatLangTest());
+        $this->_db->query(SqlArticleCollector::getCreateConCatLangTest());
+        $this->_db->query(SqlArticleCollector::getInsertConCatLangTest());
 
         // con_cat_test
-        $this->_db->query(SqlStatement::getCreateConCatTest());
-        $this->_db->query(SqlStatement::getInsertConCatTest());
+        $this->_db->query(SqlArticleCollector::getCreateConCatTest());
+        $this->_db->query(SqlArticleCollector::getInsertConCatTest());
 
         // con_art_test
-        $this->_db->query(SqlStatement::getCreateConArtTest());
-        $this->_db->query(SqlStatement::getInsertConArtTest());
+        $this->_db->query(SqlArticleCollector::getCreateConArtTest());
+        $this->_db->query(SqlArticleCollector::getInsertConArtTest());
     }
 
     /**
      */
     public function tearDown() {
         $this->_db = cRegistry::getDb();
-        $sql = SqlStatement::getDeleteStatement(array(
+        $sql = SqlArticleCollector::getDeleteStatement(array(
             'con_art_lang_test',
             'con_cat_art_test',
             'con_cat_lang_test',

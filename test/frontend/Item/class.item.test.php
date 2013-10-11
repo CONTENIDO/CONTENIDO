@@ -69,18 +69,18 @@ class ItemTest extends PHPUnit_Framework_TestCase {
         );
 
         $db = cRegistry::getDb();
-        $db->query(SqlStatement::getCreateConTestStatement());
-        $db->query(SqlStatement::getInsertConTestStatement());
-        $db->query(SqlStatement::getCreateDogStatement());
-        $db->query(SqlStatement::getInserDogStatement());
-        $db->query(SqlStatement::getCreateDogRfidStatement());
-        $db->query(SqlStatement::getInserDogRfidStatement());
+        $db->query(SqlItem::getCreateConTestStatement());
+        $db->query(SqlItem::getInsertConTestStatement());
+        $db->query(SqlItem::getCreateDogStatement());
+        $db->query(SqlItem::getInserDogStatement());
+        $db->query(SqlItem::getCreateDogRfidStatement());
+        $db->query(SqlItem::getInserDogRfidStatement());
     }
 
     /**
      */
     public function tearDown() {
-        $sql = SqlStatement::getDeleteStatement(array(
+        $sql = SqlItem::getDeleteStatement(array(
             'con_test',
             'con_test_dog',
             'con_test_rfid_dog'
