@@ -19,13 +19,13 @@ i18n("Backend")
 i18n("Use TinyMce as insite editor")
 i18n("Log mails")
 i18n("Mailserver")
-i18n("Mailserver host")
-i18n("Mailserver user")
-i18n("Mailserver password")
-i18n("Mailserver encryption")
-i18n("Mailserver port")
-i18n("Mailserver sender mail")
-i18n("Mailserver sender name")
+i18n("Host")
+i18n("User")
+i18n("Password")
+i18n("Encryption (empty, "ssl" or "tls")")
+i18n("Port")
+i18n("Sender mail")
+i18n("Sender name")
 i18n("Use passwordrequest in Backend")
 i18n("Activate maintenance mode")
 i18n("Use CodeMirror for code highlighting")
@@ -37,6 +37,7 @@ i18n("Use image magic (if available)")
 i18n("Debug to file")
 i18n("Visible debug")
 i18n("Allow all HTML tags and attributes in TinyMCE")
+i18n("Optional backend label")
 
 -->
 
@@ -112,40 +113,37 @@ i18n("Allow all HTML tags and attributes in TinyMCE")
             </mail_log>
             <mail_host>
                 <values/>
-                <label>Mailserver host</label>
+                <label>Host</label>
                 <group>Mailserver</group>
             </mail_host>
             <mail_user>
                 <values/>
-                <label>Mailserver user</label>
+                <label>User</label>
                 <group>Mailserver</group>
             </mail_user>
             <mail_pass>
                 <values/>
-                <label>Mailserver password</label>
+                <label>Password</label>
                 <group>Mailserver</group>
             </mail_pass>
             <mail_encryption>
-                <values>
-                    <array_value>true</array_value>
-                    <array_value>false</array_value>
-                </values>
-                <label>Mailserver encryption</label>
+                <values/>
+                <label>Encryption (empty, "ssl" or "tls")</label>
                 <group>Mailserver</group>
             </mail_encryption>
             <mail_port>
                 <values/>
-                <label>Mailserver port</label>
+                <label>Port</label>
                 <group>Mailserver</group>
             </mail_port>
             <mail_sender>
                 <values/>
-                <label>Mailserver sender mail</label>
+                <label>Sender mail</label>
                 <group>Mailserver</group>
             </mail_sender>
             <mail_sender_name>
                 <values/>
-                <label>Mailserver sender name</label>
+                <label>Sender name</label>
                 <group>Mailserver</group>
             </mail_sender_name>
         </system>
