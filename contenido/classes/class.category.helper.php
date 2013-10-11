@@ -283,6 +283,10 @@ class cCategoryHelper {
      * @return array array with subcategories
      */
     public function getSubCategories($categoryId, $depth) {
+    	if ((int) $categoryId <= 0 || (int) $depth < 0) {
+    		return array();
+    	}
+    	
         $cfg = cRegistry::getConfig();
 
         $categories = array();
