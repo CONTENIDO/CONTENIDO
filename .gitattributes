@@ -2621,6 +2621,7 @@ setup/upgrade_jobs/class.upgrade.job.0012.php -text
 setup/upgrade_jobs/class.upgrade.job.0013.php -text
 setup/upgrade_jobs/class.upgrade.job.0014.php -text
 test/AllTests.php -text
+test/contenido/classes/html/class.html.test.php -text
 test/frontend/Array/cArrayTest.php -text
 test/frontend/Chains/cApiCecRegistry.php -text
 test/frontend/HtmlTestSuite.php -text
