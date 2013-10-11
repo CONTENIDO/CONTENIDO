@@ -6,8 +6,6 @@ cms/cache/*
 cms/cache/code/*
 cms/cache/templates_c/*
 cms/css
-cms/css/*.css
-cms/css/*.php
 cms/data/layouts
 cms/data/logs/*
 cms/data/modules
@@ -18,8 +16,6 @@ cms/data/version/layout/*
 cms/data/version/module/*
 cms/data/version/templates/*
 cms/js
-cms/js/*.js
-cms/js/*.php
 cms/templates
 cms/upload
 cms/xml/*
