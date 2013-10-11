@@ -22,7 +22,7 @@ i18n("Mailserver")
 i18n("Host")
 i18n("User")
 i18n("Password")
-i18n("Encryption (empty, "ssl" or "tls")")
+i18n("Encryption (empty, ssl or tls)")
 i18n("Port")
 i18n("Sender mail")
 i18n("Sender name")
@@ -128,7 +128,7 @@ i18n("Optional backend label")
             </mail_pass>
             <mail_encryption>
                 <values/>
-                <label>Encryption (empty, "ssl" or "tls")</label>
+                <label>Encryption (empty, ssl or tls)</label>
                 <group>Mailserver</group>
             </mail_encryption>
             <mail_port>
