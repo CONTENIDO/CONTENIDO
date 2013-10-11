@@ -104,23 +104,23 @@ class cEffectiveSetting {
             $value = self::_getUserInstance()->getUserProperty($type, $name, true);
         }
 
-        if (false == $value) {
+        if (false === $value) {
             $value = self::_getLanguageInstance()->getProperty($type, $name);
         }
 
-        if (false == $value) {
+        if (false === $value) {
             $value = self::_getClientLanguageInstance()->getProperty($type, $name);
         }
 
-        if (false == $value) {
+        if (false === $value) {
             $value = self::_getClientInstance()->getProperty($type, $name);
         }
 
-        if ($value == false) {
+        if ($value === false) {
             $value = getSystemProperty($type, $name);
         }
 
-        if ($value == false) {
+        if ($value === false) {
             $value = $default;
         }
 
