@@ -27,7 +27,7 @@ global $syncoptions, $tmp_notification;
 
 // Reset template
 $tpl->reset();
-//die($area);
+// die($area);
 // Check permissions
 if (!$perm->have_perm_area_action($area, 'con_meta_saveart') && !$perm->have_perm_area_action_item($area, 'con_meta_saveart', $idcat)) {
 
@@ -286,8 +286,7 @@ foreach ($sitemapChangeFrequencies as $value) {
 $additionalRows = ''; // call the chain to add additional rows
 $cecRegistry = cApiCecRegistry::getInstance();
 $cecIterator = $cecRegistry->getIterator('Contenido.Backend.ConMetaEditFormAdditionalRows');
-while ($chainEntry = $cecIterator->next() !== false) {
-
+while (false !== $chainEntry = $cecIterator->next()) {
     $additionalRows .= $chainEntry->execute($idart, $lang, $client, $art->getField('locked'));
 }
 $tpl->set('s', 'ADDITIONAL_ROWS', $additionalRows);
