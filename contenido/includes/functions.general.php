@@ -991,20 +991,20 @@ function getEffectiveSetting($type, $name, $default = "")
 		$value = false;
 	}
 
-    if ($value == false) {
+    if ($value === false) {
         $oClient = new cApiClientLanguage(false, $client, $lang);
         $value = $oClient->getProperty($type, $name);
         unset ($oClient);
     }
 
-	if ($value == false)
+	if ($value === false)
 	{
 		$oClient = new cApiClient($client);
 		$value = $oClient->getProperty($type, $name);
         unset ($oClient);
 	}
 
-	if ($value == false)
+	if ($value === false)
 	{
 		$value = getSystemProperty($type, $name);
 	}
