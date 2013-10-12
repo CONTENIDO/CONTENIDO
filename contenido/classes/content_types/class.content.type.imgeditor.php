@@ -136,11 +136,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             'idupl' => $this->_rawSettings,
             'idlang' => $this->_lang
         ));
-        $this->_medianame = ($uploadMeta->get('medianame') !== false)? $uploadMeta->get('medianame') : '';
-        $this->_description = ($uploadMeta->get('description') !== false)? $uploadMeta->get('description') : '';
-        $this->_keywords = ($uploadMeta->get('keywords') !== false)? $uploadMeta->get('keywords') : '';
-        $this->_internalNotice = ($uploadMeta->get('internal_notice') !== false)? $uploadMeta->get('internal_notice') : '';
-        $this->_copyright = ($uploadMeta->get('copyright') !== false)? $uploadMeta->get('copyright') : '';
+        $this->_medianame = ($uploadMeta->get('medianame') !== false) ? $uploadMeta->get('medianame') : '';
+        $this->_description = ($uploadMeta->get('description') !== false) ? $uploadMeta->get('description') : '';
+        $this->_keywords = ($uploadMeta->get('keywords') !== false) ? $uploadMeta->get('keywords') : '';
+        $this->_internalNotice = ($uploadMeta->get('internal_notice') !== false) ? $uploadMeta->get('internal_notice') : '';
+        $this->_copyright = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
 
         // if form is submitted, store the current teaser settings
         // notice: also check the ID of the content type (there could be more
@@ -582,11 +582,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         ));
 
         $imageMeta = array();
-        $imageMeta['medianame'] = ($uploadMeta->get('medianame') !== false)? $uploadMeta->get('medianame') : '';
-        $imageMeta['description'] = ($uploadMeta->get('description') !== false)? $uploadMeta->get('description') : '';
-        $imageMeta['keywords'] = ($uploadMeta->get('keywords') !== false)? $uploadMeta->get('keywords') : '';
-        $imageMeta['internal_notice'] = ($uploadMeta->get('internal_notice') !== false)? $uploadMeta->get('internal_notice') : '';
-        $imageMeta['copyright'] = ($uploadMeta->get('copyright') !== false)? $uploadMeta->get('copyright') : '';
+        $imageMeta['medianame'] = ($uploadMeta->get('medianame') !== false) ? $uploadMeta->get('medianame') : '';
+        $imageMeta['description'] = ($uploadMeta->get('description') !== false) ? $uploadMeta->get('description') : '';
+        $imageMeta['keywords'] = ($uploadMeta->get('keywords') !== false) ? $uploadMeta->get('keywords') : '';
+        $imageMeta['internal_notice'] = ($uploadMeta->get('internal_notice') !== false) ? $uploadMeta->get('internal_notice') : '';
+        $imageMeta['copyright'] = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
 
         return json_encode($imageMeta);
     }

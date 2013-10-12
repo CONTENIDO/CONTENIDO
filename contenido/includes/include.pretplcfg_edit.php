@@ -74,7 +74,7 @@ if (isset($idtplcfg)) {
         foreach ($varstring as $col=>$val) {
             // insert all containers
             $sql  = "INSERT INTO ".$cfg["tab"]["container_conf"]." (idtplcfg, number, container) ".
-                    "VALUES ('".cSecurity::toInteger($idtplcfg)."', '".cSecurity::toInteger($col)."', '".cSecurity::escapeDB($val, $db)."') ";
+                    "VALUES ('".cSecurity::toInteger($idtplcfg)."', '".cSecurity::toInteger($col)."', '".$db->escape($val)."') ";
             $db->query($sql);
         }
     }

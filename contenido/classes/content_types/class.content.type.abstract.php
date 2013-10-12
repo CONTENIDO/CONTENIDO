@@ -325,7 +325,7 @@ abstract class cContentTypeAbstract {
 
         foreach ($dirs as $dirData) {
             // set the active class if this is the chosen directory
-            $divClass = ($this->_isActiveDirectory($dirData))? 'active' : '';
+            $divClass = ($this->_isActiveDirectory($dirData)) ? 'active' : '';
             $template->set('d', 'DIVCLASS', $divClass);
 
             $template->set('d', 'TITLE', $dirData['path'] . $dirData['name']);

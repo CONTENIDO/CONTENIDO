@@ -469,12 +469,12 @@ class cSystemtest {
         $aFileinfo = array();
         $aFileinfo["info"] = $info;
         $aFileinfo["type"] = $type;
-        $aFileinfo["owner"]["read"] = ($oiFilePermissions & 0x0100)? true : false;
-        $aFileinfo["owner"]["write"] = ($oiFilePermissions & 0x0080)? true : false;
-        $aFileinfo["group"]["read"] = ($oiFilePermissions & 0x0020)? true : false;
-        $aFileinfo["group"]["write"] = ($oiFilePermissions & 0x0010)? true : false;
-        $aFileinfo["others"]["read"] = ($oiFilePermissions & 0x0004)? true : false;
-        $aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002)? true : false;
+        $aFileinfo["owner"]["read"] = ($oiFilePermissions & 0x0100) ? true : false;
+        $aFileinfo["owner"]["write"] = ($oiFilePermissions & 0x0080) ? true : false;
+        $aFileinfo["group"]["read"] = ($oiFilePermissions & 0x0020) ? true : false;
+        $aFileinfo["group"]["write"] = ($oiFilePermissions & 0x0010) ? true : false;
+        $aFileinfo["others"]["read"] = ($oiFilePermissions & 0x0004) ? true : false;
+        $aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002) ? true : false;
         $aFileinfo["owner"]["id"] = fileowner($sFilename);
         $aFileinfo["group"]["id"] = filegroup($sFilename);
         return ($aFileinfo);

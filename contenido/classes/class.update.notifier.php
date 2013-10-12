@@ -730,7 +730,7 @@ class cUpdateNotifier {
             return false;
         }
 
-        return ($output != "")? $output : false;
+        return ($output != "") ? $output : false;
     }
 
     /**

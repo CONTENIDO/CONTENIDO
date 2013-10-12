@@ -168,7 +168,7 @@ function generateJs($aValues) {
         global $sSaveAuthor;
         global $sSaveName;
 
-        return 'function refresh_article_search_form (refresh) {
+        return 'function refresh_article_search_form(refresh) {
                     var oFrame = top.content.left.left_top;
                     if (oFrame) {
                         oForm = oFrame.document.backend_search;
@@ -191,7 +191,7 @@ function generateJs($aValues) {
                         oForm.bs_search_author.value = "' . $aValues[$sSaveAuthor] . '";
                     }
                 }
-                refresh_article_search_form ();
+                refresh_article_search_form();
                 ';
     } else {
         return false;
@@ -435,24 +435,24 @@ if ($iSearchId > 0) {
 
 // Text search
 if (!empty($sSearchStr)) {
-    $sWhere .= " AND ((a.title LIKE '%" . mask(cSecurity::escapeDB($sSearchStr, $db)) . "%')";
-    $sWhere .= " OR (f.value LIKE '%" . mask(cSecurity::escapeDB($sSearchStr, $db)) . "%'))";
+    $sWhere .= " AND ((a.title LIKE '%" . mask($db->escape($sSearchStr)) . "%')";
+    $sWhere .= " OR (f.value LIKE '%" . mask($db->escape($sSearchStr)) . "%'))";
     $bNoCriteria = false;
 }
 
 if (!empty($sSearchStrDateFrom) && ($sDateFieldName != '')) {
-    $sWhere .= " AND (a." . cSecurity::escapeDB($sDateFieldName, $db) . " >= '" . mask(cSecurity::escapeDB($sSearchStrDateFrom, $db)) . "')";
+    $sWhere .= " AND (a." . $db->escape($sDateFieldName) . " >= '" . mask($db->escape($sSearchStrDateFrom)) . "')";
     $bNoCriteria = false;
 }
 
 if (!empty($sSearchStrDateTo) && ($sDateFieldName != '')) {
-    $sWhere .= " AND (a." . $sDateFieldName . " <= '" . mask(cSecurity::escapeDB($sSearchStrDateTo, $db)) . "')";
+    $sWhere .= " AND (a." . $sDateFieldName . " <= '" . mask($db->escape($sSearchStrDateTo)) . "')";
     $bNoCriteria = false;
 }
 
 if (!empty($sSearchStrAuthor) && ($sSearchStrAuthor != 'n/a')) {
     // Author seach
-    $sWhere .= " AND ((a.author = '" . mask(cSecurity::escapeDB($sSearchStrAuthor, $db)) . "') OR (a.modifiedby = '" . mask(cSecurity::escapeDB($sSearchStrAuthor, $db)) . "'))";
+    $sWhere .= " AND ((a.author = '" . mask($db->escape($sSearchStrAuthor)) . "') OR (a.modifiedby = '" . mask($db->escape($sSearchStrAuthor)) . "'))";
     $bNoCriteria = false;
 }
 
@@ -462,18 +462,18 @@ if (!empty($sWhere)) {
     $db->query($sql);
 } elseif ($bLostAndFound) {
     $sql = "SELECT
-          DISTINCT a.idart, a.idartlang, a.title, a.online, a.locked, a.idartlang, a.created, a.published,
-          a.artsort, a.lastmodified, b.idcat, b.idcatart, b.idcatart, c.startidartlang,
-          c.idcatlang, e.name as 'tplname'
-        FROM " . $cfg['tab']['art_lang'] . " as a
-          LEFT JOIN " . $cfg['tab']['cat_art'] . " as b ON a.idart = b.idart
-          LEFT JOIN " . $cfg['tab']['cat_lang'] . " as c ON a.idartlang = c.startidartlang
-          LEFT JOIN " . $cfg['tab']['tpl_conf'] . " as d ON a.idtplcfg = d.idtplcfg
-          LEFT JOIN " . $cfg['tab']['tpl'] . " as e ON d.idtpl = e.`idtpl`
-        WHERE
-            (a.idart NOT IN (SELECT " . $cfg['tab']['cat_art'] . ".idart FROM " . $cfg['tab']['cat_art'] . "))
-        OR
-            (b.idcat NOT IN (SELECT " . $cfg['tab']['cat'] . ".idcat FROM " . $cfg['tab']['cat'] . "));";
+              DISTINCT a.idart, a.idartlang, a.title, a.online, a.locked, a.idartlang, a.created, a.published,
+              a.artsort, a.lastmodified, b.idcat, b.idcatart, b.idcatart, c.startidartlang,
+              c.idcatlang, e.name as 'tplname'
+            FROM " . $cfg['tab']['art_lang'] . " as a
+              LEFT JOIN " . $cfg['tab']['cat_art'] . " as b ON a.idart = b.idart
+              LEFT JOIN " . $cfg['tab']['cat_lang'] . " as c ON a.idartlang = c.startidartlang
+              LEFT JOIN " . $cfg['tab']['tpl_conf'] . " as d ON a.idtplcfg = d.idtplcfg
+              LEFT JOIN " . $cfg['tab']['tpl'] . " as e ON d.idtpl = e.`idtpl`
+            WHERE
+                (a.idart NOT IN (SELECT " . $cfg['tab']['cat_art'] . ".idart FROM " . $cfg['tab']['cat_art'] . "))
+            OR
+                (b.idcat NOT IN (SELECT " . $cfg['tab']['cat'] . ".idcat FROM " . $cfg['tab']['cat'] . "));";
     $db->query($sql);
 }
 
@@ -594,7 +594,8 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             // Check if any rights are applied to current user or his groups
             $sql = "SELECT *
                     FROM " . $cfg["tab"]["rights"] . "
-                    WHERE user_id IN ('" . $sTmpUserString . "') AND idclient = '" . cSecurity::toInteger($client) . "' AND idlang = '" . cSecurity::toInteger($lang) . "' AND idcat = '" . cSecurity::toInteger($idcat) . "'";
+                    WHERE user_id IN ('" . $sTmpUserString . "') AND idclient = " . cSecurity::toInteger($client) . "
+                        AND idlang = " . cSecurity::toInteger($lang) . " AND idcat = " . cSecurity::toInteger($idcat);
             $db2->query($sql);
 
             if ($db2->numRows() != 0) {
@@ -699,23 +700,23 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             } else {
                 $db2 = cRegistry::getDb();
                 $sql2 = "SELECT
-                    c.idtpl AS idtpl,
-                    c.name AS name,
-                    c.description,
-                    b.idtplcfg AS idtplcfg
-                FROM
-                    " . $cfg['tab']['tpl_conf'] . " AS a,
-                    " . $cfg['tab']['cat_lang'] . " AS b,
-                    " . $cfg['tab']['tpl'] . " AS c
-                WHERE
-                    b.idcat     = " . cSecurity::toInteger($idcat) . " AND
-                    b.idlang    = " . cSecurity::toInteger($lang) . " AND
-                    b.idtplcfg  = a.idtplcfg AND
-                    c.idtpl     = a.idtpl AND
-                    c.idclient  = " . cSecurity::toInteger($client);
+                            c.idtpl AS idtpl,
+                            c.name AS name,
+                            c.description,
+                            b.idtplcfg AS idtplcfg
+                        FROM
+                            " . $cfg['tab']['tpl_conf'] . " AS a,
+                            " . $cfg['tab']['cat_lang'] . " AS b,
+                            " . $cfg['tab']['tpl'] . " AS c
+                        WHERE
+                            b.idcat     = " . cSecurity::toInteger($idcat) . " AND
+                            b.idlang    = " . cSecurity::toInteger($lang) . " AND
+                            b.idtplcfg  = a.idtplcfg AND
+                            c.idtpl     = a.idtpl AND
+                            c.idclient  = " . cSecurity::toInteger($client);
                 $db2->query($sql2);
                 $db2->nextRecord();
-                $sTemplateName = $db2->f("name")? '<i>' . $db2->f("name") . '</i>' : "--- " . i18n("None") . " ---";
+                $sTemplateName = $db2->f("name") ? '<i>' . $db2->f("name") . '</i>' : "--- " . i18n("None") . " ---";
             }
 
             $sTodoListSubject = i18n("Reminder");

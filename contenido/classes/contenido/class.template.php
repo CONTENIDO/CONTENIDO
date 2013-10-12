@@ -45,13 +45,59 @@ class cApiTemplateCollection extends ItemCollection {
     }
 
     /**
+     * Creates a template entry.
+     *
+     * @param int $idclient
+     * @param int $idlay
+     * @param int $idtplcfg  Either a valid template configuration id or an empty string
+     * @param string $name
+     * @param string $description
+     * @param int $deletable
+     * @param int $status
+     * @param int $defaulttemplate
+     * @param string $author
+     * @param string $created
+     * @param string $lastmodified
+     * @return cApiTemplate
+     */
+    public function create($idclient, $idlay, $idtplcfg, $name, $description, $deletable = 1, $status = 0, $defaulttemplate = 0, $author = '', $created = '', $lastmodified = '') {
+        if (empty($author)) {
+            $auth = cRegistry::getAuth();
+            $author = $auth->auth['uname'];
+        }
+        if (empty($created)) {
+            $created = date('Y-m-d H:i:s');
+        }
+        if (empty($lastmodified)) {
+            $lastmodified = date('Y-m-d H:i:s');
+        }
+
+        $oItem = parent::createNewItem();
+
+        $oItem->set('idclient', $idclient);
+        $oItem->set('idlay', $idlay);
+        $oItem->set('idtplcfg', $idtplcfg);
+        $oItem->set('name', $name);
+        $oItem->set('description', $description);
+        $oItem->set('deletable', $deletable);
+        $oItem->set('status', $status);
+        $oItem->set('defaulttemplate', $defaulttemplate);
+        $oItem->set('author', $author);
+        $oItem->set('created', $created);
+        $oItem->set('lastmodified', $lastmodified);
+        $oItem->store();
+
+        return $oItem;
+    }
+
+    /**
      * Returns the default template configuration item
      *
      * @param int $idclient
      * @return cApiTemplateConfiguration NULL
      */
     public function selectDefaultTemplate($idclient) {
-        $this->select('defaulttemplate = 1 AND idclient = ' . $idclient);
+        $this->select('defaulttemplate = 1 AND idclient = ' . (int) $idclient);
         return $this->next();
     }
 
@@ -62,7 +108,7 @@ class cApiTemplateCollection extends ItemCollection {
      * @return cApiTemplate[]
      */
     public function fetchByIdLay($idlay) {
-        $this->select('idlay = ' . $idlay);
+        $this->select('idlay = ' . (int) $idlay);
         $entries = array();
         while (($entry = $this->next()) !== false) {
             $entries[] = clone $entry;
@@ -92,4 +138,34 @@ class cApiTemplate extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
+
+    /**
+     * Userdefined setter for template fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @todo should return return value of overloaded method
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'deletable':
+            case 'status':
+            case 'defaulttemplate':
+                $value = ($value == 1) ? 1 : 0;
+                break;
+            case 'idclient':
+            case 'idlay':
+                $value = (int) $value;
+                break;
+            case 'idtplcfg':
+                if (!is_numeric($value)) {
+                    $value = '';
+                }
+                break;
+        }
+
+        parent::setField($name, $value, $bSafe);
+    }
+
 }

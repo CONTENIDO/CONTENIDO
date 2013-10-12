@@ -205,7 +205,7 @@ if ($action == 'js_delete') {
         $fileInfoCollection = new cApiFileInformationCollection();
         $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
-        $sAction = ($bEdit)? 'js_edit' : $_REQUEST['action'];
+        $sAction = ($bEdit) ? 'js_edit' : $_REQUEST['action'];
 
         if ($_REQUEST['action'] == 'js_edit') {
             $sCode = cFileHandler::read($path . $sFilename);

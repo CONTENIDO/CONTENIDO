@@ -42,7 +42,7 @@ class NewsletterCollection extends ItemCollection
     {
         global $client, $lang, $auth;
 
-        $sName  = cSecurity::escapeDB($sName, NULL);
+        $sName  = $this->escape($sName);
         $client = cSecurity::toInteger($client);
         $lang   = cSecurity::toInteger($lang);
 
@@ -54,7 +54,7 @@ class NewsletterCollection extends ItemCollection
         $this->query();
 
         if ($this->next()) {
-            return $this->create($sName."_".substr(md5(rand()), 0, 10));
+            return $this->create($sName . "_" . substr(md5(rand()), 0, 10));
         }
 
         $oItem = parent::createNewItem();
@@ -62,7 +62,7 @@ class NewsletterCollection extends ItemCollection
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);
         $oItem->set("created", date('Y-m-d H:i:s'), false);
-        $oItem->set("author", cSecurity::escapeDB($auth->auth["uid"], NULL));
+        $oItem->set("author", $auth->auth["uid"]);
 
         $oItem->store();
 
@@ -86,7 +86,7 @@ class NewsletterCollection extends ItemCollection
         $oBaseItem->loadByPrimaryKey($iItemID);
 
         $oItem = parent::createNewItem();
-        $oItem->set("name", $oBaseItem->get("name")."_".substr(md5(rand()), 0, 10));
+        $oItem->set("name", $oBaseItem->get("name") . "_" . substr(md5(rand()), 0, 10));
 
         $iIDArt = 0;
         if ($oBaseItem->get("type") == "html" && $oBaseItem->get("idart") > 0 && $oBaseItem->get("template_idart") > 0) {
@@ -94,8 +94,9 @@ class NewsletterCollection extends ItemCollection
 
             if ($oClientLang->getProperty("newsletter", "html_newsletter") == "true") {
                 $iIDArt = conCopyArticle($oBaseItem->get("idart"),
-                                         $oClientLang->getProperty("newsletter", "html_newsletter_idcat"),
-                                         sprintf(i18n("Newsletter: %s"), $oItem->get("name")));
+                    $oClientLang->getProperty("newsletter", "html_newsletter_idcat"),
+                    sprintf(i18n("Newsletter: %s"), $oItem->get("name"))
+                );
                 conMakeOnline($iIDArt, $lang); // Article has to be online for sending...
             }
             unset($oClientLang);

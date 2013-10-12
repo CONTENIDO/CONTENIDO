@@ -132,7 +132,7 @@ class cSystemPurge {
             $sSql = ' UPDATE ' . $cfg['tab']['cat_art'] . ' cca, ' . $cfg['tab']['cat'] . ' cc, ' . $cfg['tab']['art'] . ' ca ' . ' SET cca.createcode=1 ' . ' WHERE cc.idcat = cca.idcat ' . ' AND ca.idart = cca.idart ' . ' AND cc.idclient = ' . (int) $clientId . ' AND ca.idclient = ' . (int) $clientId;
             $db->query($sSql);
 
-            return ($db->getErrorMessage() == '')? true : false;
+            return ($db->getErrorMessage() == '') ? true : false;
         } else {
             return false;
         }
@@ -152,7 +152,7 @@ class cSystemPurge {
             $sql = 'DELETE FROM ' . $cfg['tab']['inuse'];
             $db->query($sql);
 
-            return ($db->getErrorMessage() == '')? true : false;
+            return ($db->getErrorMessage() == '') ? true : false;
         } else {
             return false;
         }
@@ -171,7 +171,7 @@ class cSystemPurge {
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             $cacheDir = $cfgClient[$clientId]['cache']['path'];
             if (is_dir($cacheDir)) {
-                return ($this->clearDir($cacheDir, $cacheDir)? true : false);
+                return ($this->clearDir($cacheDir, $cacheDir) ? true : false);
             }
             return false;
         } else {
@@ -203,7 +203,7 @@ class cSystemPurge {
 
                         $count = count($tmpFile[$sKey]);
                         // find the total number to delete
-                        $countDelete = ($count <= $fileNumber)? 0 : ($count - $fileNumber);
+                        $countDelete = ($count <= $fileNumber) ? 0 : ($count - $fileNumber);
                         // delete the files
                         for ($i = 0; $i < $countDelete; $i++) {
                             if (cFileHandler::exists($tmpFile[$sKey][$i]) && is_writable($tmpFile[$sKey][$i])) {
@@ -294,7 +294,7 @@ class cSystemPurge {
         $cacheDir = $cfg['path']['contenido_cache'];
         if ($perm->isSysadmin($currentuser)) {
             if (is_dir($cacheDir)) {
-                return ($this->clearDir($cacheDir, $cacheDir)? true : false);
+                return ($this->clearDir($cacheDir, $cacheDir) ? true : false);
             }
             return false;
         } else {
@@ -412,7 +412,7 @@ class cSystemPurge {
             }
 
             // true if all files are cleaned
-            return ($count == $countCleared)? true : false;
+            return ($count == $countCleared) ? true : false;
         }
 
         return false;

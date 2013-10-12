@@ -184,7 +184,7 @@ if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
 // Generate edit form
 if (isset($actionRequest)) {
 
-    $sAction = ($bEdit)? $sActionEdit : $actionRequest;
+    $sAction = ($bEdit) ? $sActionEdit : $actionRequest;
 
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 

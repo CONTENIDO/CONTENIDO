@@ -21,8 +21,11 @@ include_once(cRegistry::getBackendPath() . 'includes/include.rights.php');
 
 // set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas('lay')]) . "'";
-$sql = 'SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ' . $cfg['tab']['rights'] . ' AS A, ' . $cfg['tab']['area'] . ' AS B, ' . $cfg['tab']['actions'] . " AS C WHERE user_id='" . cSecurity::escapeDB($userid, $db) . "'
-        AND idclient='" . cSecurity::toInteger($rights_client) . "' AND A.type = 0 AND idlang='" . cSecurity::toInteger($rights_lang) . "' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+$sql = 'SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
+        FROM ' . $cfg['tab']['rights'] . ' AS A, ' . $cfg['tab']['area'] . ' AS B, ' . $cfg['tab']['actions'] . " AS C
+        WHERE user_id = '" . $db->escape($userid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
+            AND A.type = 0 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
+            AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 
 $rights_list_old = array();

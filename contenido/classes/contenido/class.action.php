@@ -119,7 +119,7 @@ class cApiActionCollection extends ItemCollection {
     public function getActionName($action) {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
 
-        return ($this->db->nextRecord())? $this->db->f('name') : NULL;
+        return ($this->db->nextRecord()) ? $this->db->f('name') : NULL;
     }
 
     /**
@@ -136,7 +136,7 @@ class cApiActionCollection extends ItemCollection {
             $this->db->query("SELECT idarea FROM `%s` WHERE idaction = %d", $this->table, $action);
         }
 
-        return ($this->db->nextRecord())? $this->db->f('idarea') : NULL;
+        return ($this->db->nextRecord()) ? $this->db->f('idarea') : NULL;
     }
 }
 

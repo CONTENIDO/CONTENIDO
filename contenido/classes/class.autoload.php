@@ -268,7 +268,7 @@ class cAutoload {
      */
     private static function _getContenidoClassFile($className) {
         $classNameLower = strtolower($className);
-        $file = isset(self::$_includeFiles[$classNameLower])? self::$_conRootPath . self::$_includeFiles[$classNameLower] : NULL;
+        $file = isset(self::$_includeFiles[$classNameLower]) ? self::$_conRootPath . self::$_includeFiles[$classNameLower] : NULL;
         return self::_validateClassAndFile($className, $file);
     }
 

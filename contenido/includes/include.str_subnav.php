@@ -28,8 +28,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
             FROM
                 ".$cfg["tab"]["area"]." AS a
             WHERE
-                a.name = '".cSecurity::escapeDB($area, $db)."' OR
-                a.parent_id = '".cSecurity::escapeDB($area, $db)."'
+                a.name = '".$db->escape($area)."' OR
+                a.parent_id = '".$db->escape($area)."'
             ORDER BY
                 idarea";
 

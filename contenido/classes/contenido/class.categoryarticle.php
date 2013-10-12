@@ -76,7 +76,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
         $item->set('author', $this->escape($author));
         $item->set('created', $this->escape($created));
         $item->set('lastmodified', $this->escape($lastmodified));
-        $item->set('createcode', ($createcode == 1)? 1 : 0);
+        $item->set('createcode', ($createcode == 1) ? 1 : 0);
 
         $item->store();
         return $item;
@@ -153,7 +153,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
         $where = "idcat = %d AND idart = %d";
         $where = $this->db->prepare("idcat = %d AND idart = %d", $idcat, $idart);
         $aIds = $this->getIdsByWhereClause($where);
-        return (count($aIds) > 0)? $aIds[0] : NULL;
+        return (count($aIds) > 0) ? $aIds[0] : NULL;
     }
 
     /**
@@ -218,7 +218,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
         ));
         $this->db->query($sql);
 
-        return ($this->db->nextRecord())? true : false;
+        return ($this->db->nextRecord()) ? true : false;
     }
 
     /**
@@ -230,7 +230,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      * @return int Number of updated entries
      */
     public function setCreateCodeFlag($idcatart, $createcode = 1) {
-        $createcode = ($createcode == 1)? 1 : 0;
+        $createcode = ($createcode == 1) ? 1 : 0;
         if (is_array($idcatart)) {
             // Multiple ids
             if (count($idcatart) == 0) {

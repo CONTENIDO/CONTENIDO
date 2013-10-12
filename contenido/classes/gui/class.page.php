@@ -180,7 +180,7 @@ class cGuiPage {
 
         /** @var $stylefile SplFileInfo */
         foreach (new DirectoryIterator($cfg['path']['styles']) as $stylefile) {
-            if (endsWith($stylefile->getFilename(), "." . $pagename . ".css")) {
+            if (cString::endsWith($stylefile->getFilename(), "." . $pagename . ".css")) {
                 $this->addStyle($stylefile->getFilename());
             }
         }
@@ -191,7 +191,7 @@ class cGuiPage {
 
         /** @var $scriptfile SplFileInfo */
         foreach (new DirectoryIterator($cfg['path']['scripts']) as $scriptfile) {
-            if (endsWith($scriptfile->getFilename(), "." . $pagename . ".js")) {
+            if (cString::endsWith($scriptfile->getFilename(), "." . $pagename . ".js")) {
                 $this->addScript($scriptfile->getFilename());
             }
         }

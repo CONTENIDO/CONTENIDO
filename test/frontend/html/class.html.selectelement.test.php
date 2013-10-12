@@ -228,7 +228,7 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
             $exp = in_array($key, array(
                 'foo',
                 'bar'
-            ))? true : false;
+            )) ? true : false;
             $this->assertSame($exp, $act);
         }
     }

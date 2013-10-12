@@ -118,7 +118,7 @@ class cApiClientLanguageCollection extends ItemCollection {
 
         $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
 
-        return ($this->db->nextRecord())? (int) $this->db->f('idlang') : NULL;
+        return ($this->db->nextRecord()) ? (int) $this->db->f('idlang') : NULL;
     }
 }
 
@@ -259,8 +259,8 @@ class cApiClientLanguage extends Item {
      *       empty array instead of false
      */
     public function getProperties() {
-        $itemtype = cSecurity::escapeDB($this->primaryKey, $this->db);
-        $itemid = cSecurity::escapeDB($this->get($this->primaryKey), $this->db);
+        $itemtype = $this->db->escape($this->primaryKey);
+        $itemid = $this->db->escape($this->get($this->primaryKey));
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->select("itemtype='" . $itemtype . "' AND itemid='" . $itemid . "'", '', 'type, value ASC');
 

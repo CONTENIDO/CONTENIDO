@@ -21,8 +21,8 @@ cInclude('includes', 'functions.pathresolver.php');
 $firstMark = false;
 $db2 = cRegistry::getDb();
 
-$idcat = (isset($_REQUEST['idcat']) && is_numeric($_REQUEST['idcat']))? $_REQUEST['idcat'] : -1;
-$next = (isset($_REQUEST['next']) && is_numeric($_REQUEST['next']) && $_REQUEST['next'] > 0)? $_REQUEST['next'] : 0;
+$idcat = (isset($_REQUEST['idcat']) && is_numeric($_REQUEST['idcat'])) ? $_REQUEST['idcat'] : -1;
+$next = (isset($_REQUEST['next']) && is_numeric($_REQUEST['next']) && $_REQUEST['next'] > 0) ? $_REQUEST['next'] : 0;
 
 $dateformat = getEffectiveSetting('dateformat', 'date', 'Y-m-d');
 $templateDescription = '';
@@ -298,7 +298,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $locked = $sart["locked"];
             $redirect = $sart["redirect"];
 
-            $published = ($published != '0000-00-00 00:00:00')? date($dateformat, strtotime($published)) : i18n("not yet published");
+            $published = ($published != '0000-00-00 00:00:00') ? date($dateformat, strtotime($published)) : i18n("not yet published");
             $created = date($dateformat, strtotime($created));
             $alttitle = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
 
@@ -464,7 +464,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     c.idclient  = " . cSecurity::toInteger($client);
                 $db2->query($sql2);
                 $db2->nextRecord();
-                $a_tplname = $db2->f("name")? '<i>' . $db2->f("name") . '</i>' : "--- " . i18n("None") . " ---";
+                $a_tplname = $db2->f("name") ? '<i>' . $db2->f("name") . '</i>' : "--- " . i18n("None") . " ---";
             }
 
             // Make Startarticle button
@@ -675,7 +675,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         );
         foreach ($listColumns as $key => $listColumn) {
             // Dirty hack to force column widths
-            $width = ($key == 'title' || $listColumn == i18n('Title'))? '100%' : '1%';
+            $width = ($key == 'title' || $listColumn == i18n('Title')) ? '100%' : '1%';
             // if it should be possible to sort by this column, add a link
             if (in_array($key, array_keys($sortColumns))) {
                 $newSortmode = 'asc';
@@ -686,7 +686,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
                 // add the appropriate sorting image if necessary
                 if ($sortby == $sortColumns[$key]) {
-                    $imageSrc = ($sortmode == 'asc')? 'images/sort_up.gif' : 'images/sort_down.gif';
+                    $imageSrc = ($sortmode == 'asc') ? 'images/sort_up.gif' : 'images/sort_down.gif';
                     $sortImage = '<img src="' . $imageSrc . '">';
                 } else {
                     $sortImage = '';
@@ -813,15 +813,15 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $tpl2->set('s', 'OPTIONS', 'onchange="changeElemPerPage(this)"');
 
         foreach ($aElemPerPage as $key => $value) {
-            $selected = ($elemperpage == $key)? 'selected="selected"' : '';
+            $selected = ($elemperpage == $key) ? 'selected="selected"' : '';
             $tpl2->set('d', 'VALUE', $key);
             $tpl2->set('d', 'CAPTION', $value);
             $tpl2->set('d', 'SELECTED', $selected);
             $tpl2->next();
         }
 
-        $select = (!$no_article)? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '&nbsp;';
-        $caption = (!$no_article)? i18n("Items per page:") : '&nbsp;';
+        $select = (!$no_article) ? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '&nbsp;';
+        $caption = (!$no_article) ? i18n("Items per page:") : '&nbsp;';
 
         $tpl->set('s', 'ELEMPERPAGECAPTION', $caption);
         $tpl->set('s', 'ELEMPERPAGE', $select);

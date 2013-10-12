@@ -42,7 +42,7 @@ if (CON_STRIPSLASHES) {
      *             cString::addSlashes() for own purposes
      */
     function addslashes_deep($value) {
-        $value = is_array($value)? array_map('addslashes_deep', $value) : addslashes($value);
+        $value = is_array($value) ? array_map('addslashes_deep', $value) : addslashes($value);
         return $value;
     }
 
@@ -56,7 +56,7 @@ if (CON_STRIPSLASHES) {
      *             cString::stripSlashes() for own purposes
      */
     function stripslashes_deep($value) {
-        $value = is_array($value)? array_map('stripslashes_deep', $value) : stripslashes($value);
+        $value = is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value);
         return $value;
     }
 

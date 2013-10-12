@@ -628,7 +628,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         // verified,
         // if enabling will result in negative side effects.
         $this->_bAllMode = false;
-        return ($result)? true : false;
+        return ($result) ? true : false;
     }
 
     /**
@@ -749,7 +749,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             $sLimit = ' LIMIT ' . $sLimit;
         }
 
-        $sFields = ($this->_settings['select_all_mode'])? '*' : $this->primaryKey;
+        $sFields = ($this->_settings['select_all_mode']) ? '*' : $this->primaryKey;
         $sql = 'SELECT ' . $sFields . ' FROM `' . $this->table . '`' . $sWhere . $sGroupBy . $sOrderBy . $sLimit;
         $this->db->query($sql);
         $this->_lastSQL = $sql;
@@ -828,7 +828,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $oDb = $this->_getSecondDBInstance();
         $sql = "SELECT `%s` FROM %s WHERE %s='%s'";
         $oDb->query($sql, $this->primaryKey, $this->table, $this->primaryKey, $mId);
-        return ($oDb->nextRecord())? true : false;
+        return ($oDb->nextRecord()) ? true : false;
     }
 
     /**
@@ -1237,7 +1237,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * @return int Number of deleted entries
      */
     public function deleteBy($sField, $mValue) {
-        $where = (is_string($mValue))? "`%s` = '%s'" : "`%s` = %d";
+        $where = (is_string($mValue)) ? "`%s` = '%s'" : "`%s` = %d";
         $where = $this->db->prepare($where, $sField, $mValue);
 
         return $this->deleteByWhereClause($where);

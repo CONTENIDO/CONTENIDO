@@ -542,7 +542,7 @@ class cOutputCacheHandler extends cOutputCache {
             unset($oApiCatArtColl);
         }
 
-        return ($iCreateCode == 1)? true : false;
+        return ($iCreateCode == 1) ? true : false;
     }
 }
 

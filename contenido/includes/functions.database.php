@@ -26,7 +26,7 @@ function dbGetIndexes($db, $table) {
         return false;
     }
 
-    $sql = 'SHOW INDEX FROM ' . cSecurity::escapeDB($table, $db);
+    $sql = 'SHOW INDEX FROM ' . $db->escape($table);
     $db->query($sql);
 
     $indexes = array();

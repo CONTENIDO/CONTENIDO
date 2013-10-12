@@ -607,7 +607,7 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function checkCmsType($idtype) {
         $idtype = strtoupper($idtype);
-        return (in_array($idtype, $this->_cmsOptions))? false : true;
+        return (in_array($idtype, $this->_cmsOptions)) ? false : true;
     }
 
     /**
@@ -883,12 +883,12 @@ class cSearch extends cSearchBaseAbstract {
         $this->_cmsType = $this->_index->cms_type;
         $this->_cmsTypeSuffix = $this->_index->cms_type_suffix;
 
-        $this->_searchOption = (array_key_exists('db', $options))? strtolower($options['db']) : 'regexp';
-        $this->_searchCombination = (array_key_exists('combine', $options))? strtolower($options['combine']) : 'or';
-        $this->_protected = (array_key_exists('protected', $options))? $options['protected'] : true;
-        $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options))? $options['dontshowofflinearticles'] : false;
-        $this->_exclude = (array_key_exists('exclude', $options))? $options['exclude'] : true;
-        $this->_articleSpecs = (array_key_exists('artspecs', $options) && is_array($options['artspecs']))? $options['artspecs'] : array();
+        $this->_searchOption = (array_key_exists('db', $options)) ? strtolower($options['db']) : 'regexp';
+        $this->_searchCombination = (array_key_exists('combine', $options)) ? strtolower($options['combine']) : 'or';
+        $this->_protected = (array_key_exists('protected', $options)) ? $options['protected'] : true;
+        $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options)) ? $options['dontshowofflinearticles'] : false;
+        $this->_exclude = (array_key_exists('exclude', $options)) ? $options['exclude'] : true;
+        $this->_articleSpecs = (array_key_exists('artspecs', $options) && is_array($options['artspecs'])) ? $options['artspecs'] : array();
         $this->_index->setCmsOptions($this->_cmsTypeSuffix);
 
         if (array_key_exists('searchable_articles', $options) && is_array($options['searchable_articles'])) {

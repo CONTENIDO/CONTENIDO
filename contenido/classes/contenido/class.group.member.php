@@ -62,7 +62,7 @@ class cApiGroupMemberCollection extends ItemCollection {
      */
     public function deleteByUserId($userId) {
         $result = $this->deleteBy('user_id', $userId);
-        return ($result > 0)? true : false;
+        return ($result > 0) ? true : false;
     }
 
     /**

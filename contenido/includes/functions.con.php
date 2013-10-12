@@ -58,7 +58,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     $page_title   = addslashes($page_title);
     $title        = stripslashes($title);
     $redirect_url = stripslashes($redirect_url);
-    $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
+    $urlname = (trim($urlname) == '') ? trim($title) : trim($urlname);
 
     if ($isstart == 1) {
         $timemgmt = 0;
@@ -86,7 +86,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
 
     // Table 'con_art_lang', one entry for every language
     foreach ($aLanguages as $curLang) {
-        $lastmodified = ($lang == $curLang)? $lastmodified : '';
+        $lastmodified = ($lang == $curLang) ? $lastmodified : '';
         $modifiedby = '';
 
         if ($online == 1) {
@@ -150,8 +150,8 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
 
     // Update article language for all languages
     foreach ($aLanguages as $curLang) {
-        $curOnline = ($lang == $curLang)? $online : 0;
-        $curLastmodified = ($lang == $curLang)? $lastmodified : '';
+        $curOnline = ($lang == $curLang) ? $online : 0;
+        $curLastmodified = ($lang == $curLang) ? $lastmodified : '';
 
         $oArtLang = new cApiArticleLanguage();
         $oArtLang->loadByArticleAndLanguageId($idart, $curLang);
@@ -222,8 +222,8 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $title        = stripslashes($title);
     $redirect_url = stripslashes($redirect_url);
 
-    $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
-    $usetimemgmt = ((int) $timemgmt == 1)? 1 : 0;
+    $urlname = (trim($urlname) == '') ? trim($title) : trim($urlname);
+    $usetimemgmt = ((int) $timemgmt == 1) ? 1 : 0;
     if ($timemgmt == '1' && (($datestart == '' && $dateend == '') || ($datestart == '0000-00-00 00:00:00' && $dateend == '0000-00-00 00:00:00'))) {
         $usetimemgmt = 0;
     }
@@ -469,7 +469,7 @@ function conMakeOnline($idart, $lang) {
     }
 
     // Reverse current value
-    $online = ($artLang->get('online') == 0)? 1 : 0;
+    $online = ($artLang->get('online') == 0) ? 1 : 0;
 
     $artLang->set('online', $online);
 
@@ -521,7 +521,7 @@ function conLock($idart, $lang) {
         return;
     }
 
-    $locked = ($artLang->get('locked') == 0)? 1 : 0;
+    $locked = ($artLang->get('locked') == 0) ? 1 : 0;
 
     $artLang->set('locked', $locked);
     $artLang->store();
@@ -577,7 +577,7 @@ function conMakeCatOnline($idcat, $lang, $status) {
         return;
     }
 
-    $status = (1 == $status)? 1 : 0;
+    $status = (1 == $status) ? 1 : 0;
 
     $catLang->set('visible', $status);
     $catLang->set('lastmodified', date('Y-m-d H:i:s'));
@@ -604,7 +604,7 @@ function conMakePublic($idcat, $lang, $public) {
         return;
     }
 
-    $public = (1 == $public)? 1 : 0;
+    $public = (1 == $public) ? 1 : 0;
 
     $catLang->set('public', $public);
     $catLang->set('lastmodified', date('Y-m-d H:i:s'));
@@ -1223,7 +1223,7 @@ function conMoveArticles() {
     $rsList = $oArtLangColl->getFieldsByWhereClause($fields, $where);
 
     foreach ($rsList as $rs) {
-        $online = ($rs['time_online_move'] == '1')? 1 : 0;
+        $online = ($rs['time_online_move'] == '1') ? 1 : 0;
         $sql = array();
         $sql[] = 'UPDATE ' . $cfg['tab']['art_lang'] . ' SET timemgmt = 0, online = 0 WHERE idartlang = ' . (int) $rs['idartlang'] . ';';
         $sql[] = 'UPDATE ' . $cfg['tab']['cat_art'] . ' SET idcat = ' . (int) $rs['time_target_cat'] . ', createcode = 1 WHERE idart = ' . (int) $rs['idart'] . ';';
@@ -1250,7 +1250,7 @@ function conCopyTemplateConfiguration($srcidtplcfg) {
 
     $oTemplateConfColl = new cApiTemplateConfigurationCollection();
     $oNewTemplateConf = $oTemplateConfColl->create($oTemplateConf->get('idtpl'));
-    return (is_object($oNewTemplateConf))? $oNewTemplateConf->get('idtplcfg') : NULL;
+    return (is_object($oNewTemplateConf)) ? $oNewTemplateConf->get('idtplcfg') : NULL;
 }
 
 /**
@@ -1271,7 +1271,7 @@ function conCopyContainerConf($srcidtplcfg, $dstidtplcfg) {
         ));
         $counter++;
     }
-    return ($counter > 0)? true : false;
+    return ($counter > 0) ? true : false;
 }
 
 /**
@@ -1420,9 +1420,9 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = '', $useCopyLabel
         // Insert destination category article entry
         $oCatArtColl2 = new cApiCategoryArticleCollection();
         $fieldsToOverwrite = array(
-            'idcat' => ($targetcat != 0)? $targetcat : $oCatArt->get('idcat'),
+            'idcat' => ($targetcat != 0) ? $targetcat : $oCatArt->get('idcat'),
             'idart' => $dstidart,
-            'status' => ($oCatArt->get('status') !== '')? $oCatArt->get('status') : 0,
+            'status' => ($oCatArt->get('status') !== '') ? $oCatArt->get('status') : 0,
             'createcode' => 1,
             'is_start' => 0
         );

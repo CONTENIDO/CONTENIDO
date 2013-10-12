@@ -327,7 +327,7 @@ class pApiTree {
             $sql = "INSERT INTO " . $this->table['pica_lang'] . "
                     (idpica_alloc, idlang, name)
                     VALUES
-                    (" . cSecurity::toInteger($treeItem['idpica_alloc']) . ", " . cSecurity::toInteger($this->lang) . ", '" . cSecurity::escapeDB($treeItem['name'], $this->db) . "')";
+                    (" . cSecurity::toInteger($treeItem['idpica_alloc']) . ", " . cSecurity::toInteger($this->lang) . ", '" . $this->db->escape($treeItem['name']) . "')";
             $this->db->query($sql);
 
         } else { // update
@@ -338,7 +338,7 @@ class pApiTree {
 
             if ($this->db->numRows() > 0) {
                 #Update existing translation
-                $sql = "UPDATE " . $this->table['pica_lang'] . " SET name = '" . cSecurity::escapeDB($treeItem['name'], $this->db) . "' WHERE idpica_alloc = " . cSecurity::toInteger($treeItem['idpica_alloc']) . "
+                $sql = "UPDATE " . $this->table['pica_lang'] . " SET name = '" . $this->db->escape($treeItem['name']) . "' WHERE idpica_alloc = " . cSecurity::toInteger($treeItem['idpica_alloc']) . "
                         AND idlang = " . cSecurity::toInteger($this->lang);
             } else {
                 #Get current online status for item
@@ -353,7 +353,7 @@ class pApiTree {
 
                 #Insert new translation
                 $sql = "INSERT INTO " . $this->table['pica_lang'] . "(idpica_alloc, idlang, name, online) VALUES (".cSecurity::toInteger($treeItem['idpica_alloc']).", ".cSecurity::toInteger($this->lang).",
-                        '".cSecurity::escapeDB($treeItem['name'], $this->db)."', ".cSecurity::toInteger($online_status).")";
+                        '".$this->db->escape($treeItem['name'])."', ".cSecurity::toInteger($online_status).")";
             }
 
             $this->db->query($sql);

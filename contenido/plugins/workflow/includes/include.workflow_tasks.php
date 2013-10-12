@@ -69,8 +69,8 @@ if (is_array($userids)) {
 
         if ($user->loadByPrimaryKey($value) == false) {
             // Yes, it's a group. Let's try to load the group members!
-            $sql = "SELECT user_id FROM " . $cfg["tab"]["groupmembers"] . " WHERE group_id = '" . $value . "'";
-            $db2->query(cSecurity::escapeDB($sql, $db2));
+            $sql = "SELECT user_id FROM " . $cfg["tab"]["groupmembers"] . " WHERE group_id = '" . $db2->escape($value) . "'";
+            $db2->query($sql);
 
             while ($db2->nextRecord()) {
                 if ($db2->f("user_id") == $usershow) {

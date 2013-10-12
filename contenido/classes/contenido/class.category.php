@@ -140,7 +140,7 @@ class cApiCategoryCollection extends ItemCollection {
             if ($this->db->nextRecord()) {
                 // Parent from post can't be 0
                 $parentid = (int) $this->db->f('parentid');
-                return ($parentid != 0)? $idcat : 0;
+                return ($parentid != 0) ? $idcat : 0;
             } else {
                 return 99;
             }
@@ -187,7 +187,7 @@ class cApiCategoryCollection extends ItemCollection {
                     if ($this->db->nextRecord()) {
                         // Parent from post must not be 0
                         $parentid = (int) $this->db->f('parentid');
-                        return ($parentid != 0)? $idcat : 0;
+                        return ($parentid != 0) ? $idcat : 0;
                     } else {
                         return 99;
                     }
@@ -241,7 +241,7 @@ class cApiCategoryCollection extends ItemCollection {
             $sql = "SELECT idcatlang FROM `%s` WHERE idcat = %d AND idlang = %d";
             $sql = $this->db->prepare($sql, $cfg['tab']['cat_lang'], $idcat, $idlang);
             $this->db->query($sql);
-            return ($this->db->nextRecord())? $midcat : 0;
+            return ($this->db->nextRecord()) ? $midcat : 0;
         } else {
             // Deeper element does not exist
             return 0;
@@ -493,7 +493,7 @@ class cApiCategory extends Item {
 
         $options = array();
         $options['idcat'] = $this->get('idcat');
-        $options['lang'] = ($changeLangId == 0)? cRegistry::getLanguageId() : $changeLangId;
+        $options['lang'] = ($changeLangId == 0) ? cRegistry::getLanguageId() : $changeLangId;
         if ($changeLangId > 0) {
             $options['changelang'] = $changeLangId;
         }

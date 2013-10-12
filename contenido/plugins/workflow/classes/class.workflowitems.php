@@ -38,30 +38,30 @@ class WorkflowItems extends ItemCollection {
         global $cfg;
         $item = new WorkflowItem();
         $item->loadByPrimaryKey($id);
-        $pos = $item->get("position");
-        $idworkflow = $item->get("idworkflow");
+        $pos = (int) $item->get("position");
+        $idworkflow = (int) $item->get("idworkflow");
         $oDb = cRegistry::getDb();
 
-        $this->select("position > $pos AND idworkflow = '" . cSecurity::escapeDB($idworkflow, $oDb) . "'");
+        $this->select("position > {$pos} AND idworkflow = {$idworkflow}");
         while (($obj = $this->next()) !== false) {
             $obj->setPosition($obj->get("position") - 1);
             $obj->store();
         }
 
         $aUserSequencesDelete = array();
-        $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem = ' . $id . ';';
+        $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem = ' . (int) $id;
         $oDb->query($sSql);
         while ($oDb->nextRecord()) {
-            array_push($aUserSequencesDelete, cSecurity::escapeDB($oDb->f('idusersequence'), $oDb));
+            $aUserSequencesDelete[] = (int) $oDb->f('idusersequence');
         }
 
-        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_actions"] . ' WHERE idworkflowitem = ' . cSecurity::escapeDB($id, $oDb) . ';';
+        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_actions"] . ' WHERE idworkflowitem = ' . (int) $id;
         $oDb->query($sSql);
 
         $this->updateArtAllocation($id, 1);
 
         if (count($aUserSequencesDelete) > 0) {
-            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idusersequence in (' . implode(',', $aUserSequencesDelete) . ');';
+            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idusersequence in (' . implode(',', $aUserSequencesDelete) . ')';
             $oDb->query($sSql);
         }
     }
@@ -71,21 +71,21 @@ class WorkflowItems extends ItemCollection {
         $oDb = cRegistry::getDb();
 
         $aUserSequences = array();
-        $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem = ' . cSecurity::escapeDB($idworkflowitem, $oDb) . ';';
+        $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem = ' . (int) $idworkflowitem;
 
         $oDb->query($sSql);
         while ($oDb->nextRecord()) {
-            array_push($aUserSequences, cSecurity::escapeDB($oDb->f('idusersequence'), $oDb));
+            $aUserSequences[] = (int) $oDb->f('idusersequence');
         }
 
         $aIdArtLang = array();
         if (count($aUserSequences) > 0) {
-            $sSql = 'SELECT idartlang FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequences) . ');';
+            $sSql = 'SELECT idartlang FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequences) . ')';
             $oDb->query($sSql);
             while ($oDb->nextRecord()) {
-                array_push($aIdArtLang, $oDb->f('idartlang'));
+                $aIdArtLang[] = (int) $oDb->f('idartlang');
             }
-            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequences) . ');';
+            $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence in (' . implode(',', $aUserSequences) . ')';
             $oDb->query($sSql);
         }
 
@@ -99,7 +99,11 @@ class WorkflowItems extends ItemCollection {
     }
 
     public function swap($idworkflow, $pos1, $pos2) {
-        $this->select("idworkflow = '$idworkflow' AND position = '$pos1'");
+        $idworkflow = (int) $idworkflow;
+        $pos1 = (int) $pos1;
+        $pos2 = (int) $pos2;
+
+        $this->select("idworkflow = {$idworkflow} AND position = {$pos1}");
         if (($item = $this->next()) === false) {
             $this->lasterror = i18n("Swapping items failed: Item doesn't exist", "workflow");
             return false;
@@ -107,7 +111,7 @@ class WorkflowItems extends ItemCollection {
 
         $pos1ID = $item->getField("idworkflowitem");
 
-        $this->select("idworkflow = '$idworkflow' AND position = '$pos2'");
+        $this->select("idworkflow = {$idworkflow} AND position = {$pos2}");
         if (($item = $this->next()) === false) {
             $this->lasterror = i18n("Swapping items failed: Item doesn't exist", "workflow");
             return false;
@@ -129,16 +133,17 @@ class WorkflowItems extends ItemCollection {
     }
 
     public function create($idworkflow) {
-        $workflows = new Workflows();
+        $idworkflow = (int) $idworkflow;
 
-        $workflows->select("idworkflow = '$idworkflow'");
+        $workflows = new Workflows();
+        $workflows->select("idworkflow = {$idworkflow}");
 
         if ($workflows->next() === false) {
             $this->lasterror = i18n("Can't add item to workflow: Workflow doesn't exist", "workflow");
             return false;
         }
 
-        $this->select("idworkflow = '$idworkflow'", "", "position DESC", "1");
+        $this->select("idworkflow = {$idworkflow}", "", "position DESC", "1");
 
         $item = $this->next();
 

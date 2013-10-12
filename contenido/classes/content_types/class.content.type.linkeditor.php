@@ -108,7 +108,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         if (empty($linktext)) {
             $linktext = $href;
         }
-        $target = ($this->_settings['linkeditor_newwindow'] === 'true')? '_blank' : '';
+        $target = ($this->_settings['linkeditor_newwindow'] === 'true') ? '_blank' : '';
 
         $link = new cHTMLLink($href);
         $link->setAlt($alt);
@@ -374,7 +374,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         foreach ($categories as $category) {
             $activeIdcats = $this->_getActiveIdcats();
             // set the active class if this is the chosen directory
-            $divClass = (isset($activeIdcats[0]) && $category['idcat'] == $activeIdcats[0])? 'active' : '';
+            $divClass = (isset($activeIdcats[0]) && $category['idcat'] == $activeIdcats[0]) ? 'active' : '';
             $template->set('d', 'DIVCLASS', $divClass);
 
             $template->set('d', 'TITLE', $category['idcat']);

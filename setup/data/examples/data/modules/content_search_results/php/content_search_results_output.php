@@ -27,7 +27,7 @@ if (isset($_GET['search_term'])) {
 }
 
 // get page number
-$page = isset($_GET['page'])? abs(cSecurity::toInteger($_GET['page'])) : 1;
+$page = isset($_GET['page']) ? abs(cSecurity::toInteger($_GET['page'])) : 1;
 
 // create & render module
 $mod = new SearchResultModule(array(

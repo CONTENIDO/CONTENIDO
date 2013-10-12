@@ -149,7 +149,7 @@ function url_is_uri($sUrl) {
 /* Whitelist: Add */
 if (!empty($_GET['whitelist'])) {
 
-    $sql = "REPLACE INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . cSecurity::escapeDB(base64_decode($_GET['whitelist']), $db) . "', '" . time() . "')";
+    $sql = "REPLACE INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . $db->escape(base64_decode($_GET['whitelist'])) . "', '" . time() . "')";
     $db->query($sql);
 
     $oCache->remove($aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
@@ -306,13 +306,13 @@ if (empty($aErrors) && $cronjob != true) {
             $tpl2->set('s', 'ERRORS_ERROR_TYPE', $aRow[$i]['error_type']);
             $tpl2->set('s', 'ERRORS_ARTID', $aRow[$i]['idart']);
             $tpl2->set('s', 'ERRORS_ARTICLE', $aRow[$i]['nameart']);
-            $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', substr($aRow[$i]['nameart'], 0, 20) . ((strlen($aRow[$i]['nameart']) > 20)? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', substr($aRow[$i]['nameart'], 0, 20) . ((strlen($aRow[$i]['nameart']) > 20) ? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_CATID', $aRow[$i]['idcat']);
             $tpl2->set('s', 'ERRORS_LINK', $aRow[$i]['url']);
             $tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($aRow[$i]['url']));
-            $tpl2->set('s', 'ERRORS_LINK_SHORT', substr($aRow[$i]['url'], 0, 55) . ((strlen($aRow[$i]['url']) > 55)? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_LINK_SHORT', substr($aRow[$i]['url'], 0, 55) . ((strlen($aRow[$i]['url']) > 55) ? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_CATNAME', $aRow[$i]['namecat']);
-            $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20)? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20) ? ' ...' : ''));
             $tpl2->set('s', 'MODE', $_GET['mode']);
             $tpl2->set('s', 'URL_BACKEND', $aUrl['contenido']);
             $tpl2->set('s', 'URL_FRONTEND', $aUrl['cms']);

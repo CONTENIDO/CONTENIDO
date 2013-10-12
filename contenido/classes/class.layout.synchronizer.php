@@ -142,7 +142,7 @@ class cLayoutSynchronizer {
         // Select depending from idclient all moduls wiht the name $name
         $oLayColl = new cApiLayoutCollection();
         $ids = $oLayColl->getIdsByWhereClause("alias='" . $oLayColl->escape($alias) . "' AND idclient=" . (int) $idclient);
-        return (count($ids) > 0)? true : false;
+        return (count($ids) > 0) ? true : false;
     }
 
     /**

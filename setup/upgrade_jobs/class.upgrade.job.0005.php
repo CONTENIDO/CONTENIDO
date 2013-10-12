@@ -237,7 +237,7 @@ EOT;
             // iterate over all entries and convert each of them
             foreach ($result as $linkInfo) {
                 // construct the XML structure
-                $newWindow = ($linkInfo['linktarget'] == '_blank')? 'true' : 'false';
+                $newWindow = ($linkInfo['linktarget'] == '_blank') ? 'true' : 'false';
                 // if link is a relative path, prepend the upload path
 
                 $link = $type = $articleId = $fileName = '';

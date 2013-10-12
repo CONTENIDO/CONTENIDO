@@ -451,7 +451,7 @@ abstract class Item extends cItemBaseAbstract {
      */
     public function toObject() {
         $return = $this->toArray();
-        return (false !== $return)? (object) $return : $return;
+        return (false !== $return) ? (object) $return : $return;
     }
 
     /**

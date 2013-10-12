@@ -49,7 +49,7 @@ class cApiFrontendUserCollection extends ItemCollection {
         $feUsers->setWhere('username', strtolower($sUsername));
         $feUsers->query();
 
-        return ($feUsers->next())? true : false;
+        return ($feUsers->next()) ? true : false;
     }
 
     /**
@@ -63,7 +63,7 @@ class cApiFrontendUserCollection extends ItemCollection {
         global $client, $auth;
 
         // Check if the username already exists
-        $this->select("idclient=" . (int) $client . " AND username='" . $username . "'");
+        $this->select("idclient = " . (int) $client . " AND username = '" . $this->escape($username) . "'");
 
         if ($this->next()) {
             return $this->create($username . '_' . substr(md5(rand()), 0, 10), $password);
@@ -72,7 +72,7 @@ class cApiFrontendUserCollection extends ItemCollection {
         $item = parent::createNewItem();
         $item->set('idclient', $client);
         $item->set('username', $username);
-        $item->set('salt', md5($username.rand(1000, 9999).rand(1000, 9999).rand(1000, 9999)));
+        $item->set('salt', md5($username . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999)));
         $item->set('password', $password);
         $item->set('created', date('Y-m-d H:i:s'), false);
         $item->set('author', $auth->auth['uid']);
@@ -82,7 +82,7 @@ class cApiFrontendUserCollection extends ItemCollection {
 
         // Put this user into the default groups
         $feGroups = new cApiFrontendGroupCollection();
-        $feGroups->select("idclient=" . (int) $client . " AND defaultgroup=1");
+        $feGroups->select("idclient = " . (int) $client . " AND defaultgroup = 1");
 
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
 
@@ -106,7 +106,7 @@ class cApiFrontendUserCollection extends ItemCollection {
     public function delete($itemId) {
         // delete group memberships
         $feGroupMembers = new cApiFrontendGroupMemberCollection();
-        $feGroupMembers->select('idfrontenduser=' . (int) $itemId);
+        $feGroupMembers->select('idfrontenduser = ' . (int) $itemId);
         while (($item = $feGroupMembers->next()) !== false) {
             $feGroupMembers->delete($item->get('idfrontendgroupmember'));
         }
@@ -149,7 +149,7 @@ class cApiFrontendUser extends Item {
      */
     public function setField($field, $value, $safe = true) {
         if ($field == 'password') {
-            return parent::setField($field, hash("sha256", md5($value).$this->get("salt")), $safe);
+            return parent::setField($field, hash('sha256', md5($value) . $this->get('salt')), $safe);
         } else {
             return parent::setField($field, $value, $safe);
         }
@@ -179,7 +179,7 @@ class cApiFrontendUser extends Item {
         $pass = $this->get('password');
         $salt = $this->get('salt');
 
-        return (hash("sha256", md5($password) . $salt) == $pass);
+        return (hash('sha256', md5($password) . $salt) == $pass);
     }
 
     /**

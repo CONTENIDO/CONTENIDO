@@ -43,14 +43,11 @@ class cApiContainerCollection extends ItemCollection {
     }
 
     /**
-     *
+     * Deletes all configurations by given template id
      * @param int $idtpl
      */
     public function clearAssignments($idtpl) {
-        $this->select('idtpl = ' . (int) $idtpl);
-        while (($item = $this->next()) !== false) {
-            $this->delete($item->get('idcontainer'));
-        }
+        $this->deleteBy('idtpl', (int) $idtpl);
     }
 
     /**
@@ -59,10 +56,10 @@ class cApiContainerCollection extends ItemCollection {
      * @param int $number
      * @param int $idmod
      */
-    public function assignModul($idtpl, $number, $idmod) {
+    public function assignModule($idtpl, $number, $idmod) {
         $this->select('idtpl = ' . (int) $idtpl . ' AND number = ' . (int) $number);
         if (($item = $this->next()) !== false) {
-            $item->set('idmod', (int) $idmod);
+            $item->set('idmod', $idmod);
             $item->store();
         } else {
             $this->create($idtpl, $number, $idmod);
@@ -70,17 +67,29 @@ class cApiContainerCollection extends ItemCollection {
     }
 
     /**
+     * @deprecated [20131012] Use assignModule instead
+     */
+    public function assignModul($idtpl, $number, $idmod) {
+        $this->assignModule($idtpl, $number, $idmod);
+    }
+
+    /**
+     * Creates a container item entry
      *
      * @param int $idtpl
      * @param int $number
      * @param int $idmod
+     * @return cApiContainer
      */
     public function create($idtpl, $number, $idmod) {
         $item = parent::createNewItem();
-        $item->set('idtpl', (int) $idtpl);
-        $item->set('number', (int) $number);
-        $item->set('idmod', (int) $idmod);
+
+        $item->set('idtpl', $idtpl);
+        $item->set('number', $number);
+        $item->set('idmod', $idmod);
         $item->store();
+
+        return $item;
     }
 }
 
@@ -104,5 +113,25 @@ class cApiContainer extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
+    }
+
+    /**
+     * Userdefined setter for container fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @todo should return return value of overloaded method
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idtpl':
+            case 'number':
+            case 'idmod':
+                $value = (int) $value;
+                break;
+        }
+
+        parent::setField($name, $value, $bSafe);
     }
 }

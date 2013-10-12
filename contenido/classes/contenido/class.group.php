@@ -101,7 +101,7 @@ class cApiGroupCollection extends ItemCollection {
     public function deleteGroupByGroupname($groupname) {
         $groupname = cApiGroup::prefixedGroupName($groupname);
         $result = $this->deleteBy('groupname', $groupname);
-        return ($result > 0)? true : false;
+        return ($result > 0) ? true : false;
     }
 
     /**
@@ -252,7 +252,7 @@ class cApiGroup extends Item {
      */
     public function getGroupName($removePrefix = false) {
         $groupname = $this->get('groupname');
-        return (false === $removePrefix)? $groupname : self::getUnprefixedGroupName($groupname);
+        return (false === $removePrefix) ? $groupname : self::getUnprefixedGroupName($groupname);
     }
 
     /**
@@ -288,7 +288,7 @@ class cApiGroup extends Item {
     public function getGroupProperty($type, $name) {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         $groupProp = $groupPropColl->fetchByGroupIdTypeName($type, $name);
-        return ($groupProp)? $groupProp->get('value') : false;
+        return ($groupProp) ? $groupProp->get('value') : false;
     }
 
     /**

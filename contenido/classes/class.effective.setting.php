@@ -268,7 +268,7 @@ class cEffectiveSetting {
      * @return string bool setting value or false
      */
     protected static function _get($key) {
-        return (isset(self::$_settings[$key]))? self::$_settings[$key] : false;
+        return (isset(self::$_settings[$key])) ? self::$_settings[$key] : false;
     }
 
     /**

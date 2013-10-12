@@ -76,7 +76,7 @@ while (($obj = $workflowartallocations->next()) !== false) {
 
         if ($maxtime < time()) {
             $pos = $pos + 1;
-            $workflowusersequences->select("idworkflowitem = '$wfitem' AND position = '" . cSecurity::escapeDB($pos, NULL) . "'");
+            $workflowusersequences->select("idworkflowitem = '$wfitem' AND position = " . $pos);
             if (($wfobj = $workflowusersequences->next()) !== false) {
                 $obj->set("idusersequence", $wfobj->get("idusersequence"));
                 $obj->store();

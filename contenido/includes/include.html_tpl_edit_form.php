@@ -218,7 +218,7 @@ if ($action == $sActionDelete) {
 
     // Generate edit form
     if (isset($_REQUEST['action'])) {
-        $sAction = ($bEdit)? $sActionEdit : $_REQUEST['action'];
+        $sAction = ($bEdit) ? $sActionEdit : $_REQUEST['action'];
 
         if ($_REQUEST['action'] == $sActionEdit) {
             $sCode = cFileHandler::read($path . $sFilename);

@@ -169,7 +169,7 @@ class cApiPathresolveCache extends Item {
         if (!$this->isLoaded()) {
             throw new cException('Item not loaded!');
         }
-        $cacheTime = (isset($cfg['pathresolve_heapcache_time']))? $cfg['pathresolve_heapcache_time'] : 60 * 60 * 24;
+        $cacheTime = (isset($cfg['pathresolve_heapcache_time'])) ? $cfg['pathresolve_heapcache_time'] : 60 * 60 * 24;
         return ($this->get('lastcached') + $cacheTime < time());
     }
 

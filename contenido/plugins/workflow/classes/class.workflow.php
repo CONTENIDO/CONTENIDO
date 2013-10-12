@@ -74,7 +74,7 @@ class Workflows extends ItemCollection {
         $sSql = 'SELECT idworkflowitem FROM ' . $cfg["tab"]["workflow_items"] . ' WHERE idworkflow = ' . cSecurity::toInteger($idWorkflow) . ';';
         $oDb->query($sSql);
         while ($oDb->nextRecord()) {
-            $aItemIdsDelete[] = cSecurity::escapeDB($oDb->f('idworkflowitem'), $oDb);
+            $aItemIdsDelete[] = (int) $oDb->f('idworkflowitem');
         }
 
         if (!empty($aItemIdsDelete)) {
@@ -82,7 +82,7 @@ class Workflows extends ItemCollection {
             $sSql = 'SELECT idusersequence FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
             $oDb->query($sSql);
             while ($oDb->nextRecord()) {
-                $aUserSequencesDelete[] = cSecurity::escapeDB($oDb->f('idusersequence'), $oDb);
+                $aUserSequencesDelete[] = (int) $oDb->f('idusersequence');
             }
 
             $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_user_sequences"] . ' WHERE idworkflowitem in (' . implode(',', $aItemIdsDelete) . ');';
@@ -147,7 +147,7 @@ function getWorkflowForCat($idcat) {
         // Sanity: Check if the workflow still exists
         $workflow = new Workflow();
         $res = $workflow->loadByPrimaryKey($obj->get('idworkflow'));
-        return ($res == true)? $obj->get('idworkflow') : 0;
+        return ($res == true) ? $obj->get('idworkflow') : 0;
     }
 }
 
@@ -155,7 +155,7 @@ function getCatLang($idcat, $idlang) {
     // Get the idcatlang
     $oCatLangColl = new cApiCategoryLanguageCollection();
     $aIds = $oCatLangColl->getIdsByWhereClause('idlang = ' . (int) $idlang . ' AND idcat = ' . (int) $idcat);
-    return (count($aIds) > 0)? $aIds[0] : 0;
+    return (count($aIds) > 0) ? $aIds[0] : 0;
 }
 
 ?>

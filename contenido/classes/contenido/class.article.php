@@ -111,7 +111,7 @@ class cApiArticle extends Item {
 
         $options = array();
         $options['idart'] = $this->get('idart');
-        $options['lang'] = ($changeLangId == 0)? cRegistry::getLanguageId() : $changeLangId;
+        $options['lang'] = ($changeLangId == 0) ? cRegistry::getLanguageId() : $changeLangId;
         if ($changeLangId > 0) {
             $options['changelang'] = $changeLangId;
         }

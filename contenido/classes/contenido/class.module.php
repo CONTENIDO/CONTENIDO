@@ -802,7 +802,7 @@ class cApiModule extends Item {
         switch ($name) {
             case 'deletable':
             case 'static':
-                $value = ($value == 1)? 1 : 0;
+                $value = ($value == 1) ? 1 : 0;
                 break;
             case 'idclient':
                 $value = (int) $value;

@@ -141,11 +141,10 @@ function checkLinks() {
         }
     }
 
-    if (count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http,
-                                            // www, dfbs)
+    if (count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http, www, dfbs)
 
         // Select userrights (is the user admin or sysadmin?)
-        $sql = "SELECT username FROM " . $cfg['tab']['user'] . " WHERE user_id='" . cSecurity::escapeDB($auth->auth['uid'], $db) . "' AND perms LIKE '%admin%'";
+        $sql = "SELECT username FROM " . $cfg['tab']['user'] . " WHERE user_id='" . $db->escape($auth->auth['uid']) . "' AND perms LIKE '%admin%'";
         $db->query($sql);
 
         if ($db->numRows() > 0 || $cronjob == true) { // User is admin when he

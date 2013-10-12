@@ -246,7 +246,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      */
     public function affectedRows() {
         $linkId = $this->_handler->getLinkId();
-        return ($linkId)? mysqli_affected_rows($linkId) : 0;
+        return ($linkId) ? mysqli_affected_rows($linkId) : 0;
     }
 
     /**
@@ -255,7 +255,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      */
     public function numRows() {
         $queryId = $this->_handler->getQueryId();
-        return ($queryId)? mysqli_num_rows($queryId) : 0;
+        return ($queryId) ? mysqli_num_rows($queryId) : 0;
     }
 
     /**
@@ -264,7 +264,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      */
     public function numFields() {
         $queryId = $this->_handler->getQueryId();
-        return ($queryId)? mysqli_num_fields($queryId) : 0;
+        return ($queryId) ? mysqli_num_fields($queryId) : 0;
     }
 
     /**

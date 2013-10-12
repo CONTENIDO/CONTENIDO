@@ -362,7 +362,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 cFileHandler::write($cfgClient[$this->_client]['code']['path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
 
-            $fileCode = ($code == '')? $this->_layoutCode : $code;
+            $fileCode = ($code == '') ? $this->_layoutCode : $code;
 
             $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
             cFileHandler::write($cfgClient[$this->_client]['code']['path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);

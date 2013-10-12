@@ -176,7 +176,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
         }
 
         $item = parent::fetchById($id);
-        return ($item && $item->isLoaded())? $item : NULL;
+        return ($item && $item->isLoaded()) ? $item : NULL;
     }
 
     /**
@@ -191,7 +191,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
             return $this->_fetchByTypeNameFromCache($type, $name);
         }
 
-        $this->select("type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        $this->select("type = '" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
         if (($property = $this->next()) !== false) {
             return $property;
         }
@@ -209,7 +209,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
             return $this->_fetchByTypeFromCache($type);
         }
 
-        $this->select("type='" . $this->escape($type) . "'");
+        $this->select("type = '" . $this->escape($type) . "'");
         $props = array();
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
@@ -225,7 +225,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @return bool
      */
     public function deleteByTypeName($type, $name) {
-        $this->select("type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        $this->select("type = '" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
         return $this->_deleteSelected();
     }
 
@@ -236,7 +236,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @return bool
      */
     public function deleteByType($type) {
-        $this->select("type='" . $this->escape($type) . "'");
+        $this->select("type = '" . $this->escape($type) . "'");
         return $this->_deleteSelected();
     }
 

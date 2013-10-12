@@ -114,7 +114,7 @@ $perm->load_permissions();
 if (isset($area)) {
     $sess_area = $area;
 } else {
-    $area = (isset($sess_area))? $sess_area : 'login';
+    $area = (isset($sess_area)) ? $sess_area : 'login';
 }
 
 $backendUrl = cRegistry::getBackendUrl();

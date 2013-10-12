@@ -30,7 +30,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
 
     /**
      * Constructor.
-     * Creates an HTML select field (aka "DropDown").
+     * Creates an HTML select field (aka 'DropDown').
      *
      * @param string $sName Name of the element
      * @param int $iWidth Width of the select element
@@ -39,7 +39,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @param int $iTabIndex Tab index for form elements
      * @param string $sAccessKey Key to access the field
      */
-    public function __construct($sName, $iWidth = "", $sID = "", $bDisabled = false, $iTabIndex = NULL, $sAccessKey = "") {
+    public function __construct($sName, $iWidth = '', $sID = '', $bDisabled = false, $iTabIndex = NULL, $sAccessKey = '') {
         parent::__construct($sName, $iWidth, $sID, $bDisabled, $iTabIndex, $sAccessKey);
     }
 
@@ -50,32 +50,33 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @param int $iIDCat idcat of the category to be listed
      * @param bool $bColored Add color information to option elements
      * @param bool $bArtOnline If true, only online articles will be added
-     * @param string $sSpaces Just some "&nbsp;" to show data hierarchically
+     * @param string $sSpaces Just some '&nbsp;' to show data hierarchically
      *        (used in conjunction with addCategories)
      *
      * @return int Number of items added
      *
      */
-    public function addArticles($iIDCat, $bColored = false, $bArtOnline = true, $sSpaces = "") {
+    public function addArticles($iIDCat, $bColored = false, $bArtOnline = true, $sSpaces = '') {
         global $cfg, $lang;
 
         $oDB = cRegistry::getDb();
 
         if (is_numeric($iIDCat) && $iIDCat > 0) {
-            $sSQL = "SELECT tblArtLang.title AS title, tblArtLang.idartlang AS idartlang, tblCatArt.idcat AS idcat, ";
-            $sSQL .= "tblCatArt.idcatart AS idcatart, tblCatArt.is_start AS isstart, tblArtLang.online AS online, ";
-            $sSQL .= "tblCatLang.startidartlang as idstartartlang ";
-            $sSQL .= "FROM " . $cfg["tab"]["art_lang"] . " AS tblArtLang, " . $cfg["tab"]["cat_art"] . " AS tblCatArt, ";
-            $sSQL .= $cfg["tab"]["cat_lang"] . " AS tblCatLang ";
-            $sSQL .= "WHERE tblCatArt.idcat = '" . cSecurity::toInteger($iIDCat) . "' AND tblCatLang.idcat = tblCatArt.idcat AND tblCatLang.idlang = tblArtLang.idlang AND ";
+            $sql = "SELECT al.title AS title, al.idartlang AS idartlang, ca.idcat AS idcat,
+                        ca.idcatart AS idcatart, ca.is_start AS isstart, al.online AS online,
+                        cl.startidartlang AS idstartartlang
+                    FROM " . $cfg["tab"]["art_lang"] . " AS al, " . $cfg["tab"]["cat_art"] . " AS ca,
+                        " . $cfg["tab"]["cat_lang"] . " AS cl
+                    WHERE ca.idcat = '" . cSecurity::toInteger($iIDCat) . "' AND cl.idcat = ca.idcat
+                        AND cl.idlang = al.idlang AND ";
 
             if ($bArtOnline) {
-                $sSQL .= "tblArtLang.online = '1' AND ";
+                $sql .= "al.online = 1 AND ";
             }
 
-            $sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '" . cSecurity::escapeDB($lang, $oDB) . "' ORDER BY tblArtLang.title";
+            $sql .= "al.idart = ca.idart AND al.idlang = " . (int) $lang . " ORDER BY al.title";
 
-            $oDB->query($sSQL);
+            $oDB->query($sql);
 
             $iCount = $oDB->numRows();
             if ($iCount == 0) {
@@ -84,20 +85,20 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
                 $iCounter = count($this->_options);
                 while ($oDB->nextRecord()) {
                     // Generate new option element
-                    $oOption = new cHTMLOptionElement($sSpaces . "&nbsp;&nbsp;&nbsp;" . substr($oDB->f("title"), 0, 32), $oDB->f("idcatart"));
+                    $oOption = new cHTMLOptionElement($sSpaces . '&nbsp;&nbsp;&nbsp;' . substr($oDB->f('title'), 0, 32), $oDB->f('idcatart'));
 
                     if ($bColored) {
-                        if ($oDB->f("idstartartlang") == $oDB->f("idartlang")) {
-                            if ($oDB->f("online") == 0) {
+                        if ($oDB->f('idstartartlang') == $oDB->f('idartlang')) {
+                            if ($oDB->f('online') == 0) {
                                 // Start article, but offline -> red
-                                $oOption->setStyle("color: #ff0000;");
+                                $oOption->setStyle('color: #ff0000;');
                             } else {
                                 // Start article -> blue
-                                $oOption->setStyle("color: #0000ff;");
+                                $oOption->setStyle('color: #0000ff;');
                             }
-                        } else if ($oDB->f("online") == 0) {
+                        } else if ($oDB->f('online') == 0) {
                             // Offline article -> grey
-                            $oOption->setStyle("color: #666666;");
+                            $oOption->setStyle('color: #666666;');
                         }
                     }
 
@@ -116,7 +117,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * Function addCategories.
      * Adds category elements (optionally including articles) to select box
      * values.
-     * Note: Using "with articles" adds the articles also - but the categories
+     * Note: Using 'with articles' adds the articles also - but the categories
      * will get a negative value!
      * There is no way to distinguish between a category id and an article id...
      *
@@ -137,19 +138,15 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
 
         $oDB = cRegistry::getDb();
 
-        $sSQL = "SELECT tblCat.idcat AS idcat, tblCatLang.name AS name, ";
-        $sSQL .= "tblCatLang.visible AS visible, tblCatLang.public AS public, tblCatTree.level AS level ";
-        $sSQL .= "FROM " . $cfg["tab"]["cat"] . " AS tblCat, " . $cfg["tab"]["cat_lang"] . " AS tblCatLang, ";
-        $sSQL .= $cfg["tab"]["cat_tree"] . " AS tblCatTree ";
-        $sSQL .= "WHERE tblCat.idclient = '" . cSecurity::escapeDB($client, $oDB) . "' AND tblCatLang.idlang = '" . cSecurity::escapeDB($lang, $oDB) . "' AND ";
-        $sSQL .= "tblCatLang.idcat = tblCat.idcat AND tblCatTree.idcat = tblCat.idcat ";
-
+        $sql = "SELECT c.idcat AS idcat, cl.name AS name, cl.visible AS visible, cl.public AS public, ct.level AS level
+                FROM " . $cfg["tab"]["cat"] . " AS c, " . $cfg["tab"]["cat_lang"] . " AS cl, " . $cfg["tab"]["cat_tree"] . " AS ct
+                WHERE c.idclient = " . (int) $client . " AND cl.idlang = " . (int) $lang . " AND cl.idcat = c.idcat AND ct.idcat = c.idcat ";
         if ($iMaxLevel > 0) {
-            $sSQL .= "AND tblCatTree.level < '" . cSecurity::escapeDB($iMaxLevel, $oDB) . "' ";
+            $sql .= "AND ct.level < " . (int) $iMaxLevel . " ";
         }
-        $sSQL .= "ORDER BY tblCatTree.idtree";
+        $sql .= "ORDER BY ct.idtree";
 
-        $oDB->query($sSQL);
+        $oDB->query($sql);
 
         $iCount = $oDB->numRows();
         if ($iCount == 0) {
@@ -157,32 +154,32 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
         } else {
             $iCounter = count($this->_options);
             while ($oDB->nextRecord()) {
-                $sSpaces = "";
-                $sStyle = "";
-                $iID = $oDB->f("idcat");
+                $sSpaces = '';
+                $sStyle = '';
+                $iID = $oDB->f('idcat');
 
-                for ($i = 0; $i < $oDB->f("level"); $i++) {
-                    $sSpaces .= "&nbsp;&nbsp;&nbsp;";
+                for ($i = 0; $i < $oDB->f('level'); $i++) {
+                    $sSpaces .= '&nbsp;&nbsp;&nbsp;';
                 }
 
                 // Generate new option element
-                if (($bCatVisible && $oDB->f("visible") == 0) || ($bCatPublic && $oDB->f("public") == 0)) {
+                if (($bCatVisible && $oDB->f('visible') == 0) || ($bCatPublic && $oDB->f('public') == 0)) {
                     // If category has to be visible or public and it isn't,
                     // don't add value
-                    $sValue = "";
+                    $sValue = '';
                 } else if ($bWithArt) {
                     // If article will be added, set negative idcat as value
-                    $sValue = "-" . $iID;
+                    $sValue = '-' . $iID;
                 } else {
                     // Show only categories - and everything is fine...
                     $sValue = $iID;
                 }
-                $oOption = new cHTMLOptionElement($sSpaces . ">&nbsp;" . $oDB->f("name"), $sValue);
+                $oOption = new cHTMLOptionElement($sSpaces . '>&nbsp;' . $oDB->f('name'), $sValue);
 
                 // Coloring option element, restricted shows grey color
-                $oOption->setStyle("background-color: #EFEFEF");
-                if ($bColored && ($oDB->f("visible") == 0 || $oDB->f("public") == 0)) {
-                    $oOption->setStyle("color: #666666;");
+                $oOption->setStyle('background-color: #EFEFEF');
+                if ($bColored && ($oDB->f('visible') == 0 || $oDB->f('public') == 0)) {
+                    $oOption->setStyle('color: #666666;');
                 }
 
                 // Add option element to the list
@@ -209,26 +206,25 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @return int Number of items added
      *
      */
-    public function addTypesFromArt($iIDCatArt, $sTypeRange = "") {
+    public function addTypesFromArt($iIDCatArt, $sTypeRange = '') {
         global $cfg, $lang;
 
         $oDB = cRegistry::getDb();
 
         if (is_numeric($iIDCatArt) && $iIDCatArt > 0) {
-            $sSQL = "SELECT tblContent.typeid AS typeid, tblContent.idtype AS idtype, tblType.type AS type, tblType.description AS description, ";
-            $sSQL .= "tblContent.value AS value ";
-            $sSQL .= "FROM " . $cfg["tab"]["content"] . " AS tblContent, " . $cfg["tab"]["art_lang"] . " AS tblArtLang, ";
-            $sSQL .= $cfg["tab"]["cat_art"] . " AS tblCatArt, " . $cfg["tab"]["type"] . " AS tblType ";
-            $sSQL .= "WHERE tblContent.idtype = tblType.idtype AND tblContent.idartlang = tblArtLang.idartlang AND ";
-            $sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '" . cSecurity::escapeDB($lang, $oDB) . "' AND tblCatArt.idcatart = '" . cSecurity::toInteger($iIDCatArt) . "' ";
+            $sql = "SELECT t.typeid AS typeid, t.idtype AS idtype, t.type AS type, t.description AS description, t.value AS value
+                    FROM " . $cfg["tab"]["content"] . " AS t, " . $cfg["tab"]["art_lang"] . " AS al,
+                         " . $cfg["tab"]["cat_art"] . " AS ca, " . $cfg["tab"]["type"] . " AS t
+                    WHERE t.idtype = t.idtype AND t.idartlang = al.idartlang AND al.idart = ca.idart
+                        AND al.idlang = " . (int) $lang . " AND ca.idcatart = " . (int) $iIDCatArt . " ";
 
             if ($sTypeRange != "") {
-                $sSQL .= "AND tblContent.idtype IN (" . cSecurity::escapeDB($sTypeRange, $oDB) . ") ";
+                $sql .= "AND t.idtype IN (" . $oDB->escape($sTypeRange) . ") ";
             }
 
-            $sSQL .= "ORDER BY tblContent.idtype, tblContent.typeid";
+            $sql .= "ORDER BY t.idtype, t.typeid";
 
-            $oDB->query($sSQL);
+            $oDB->query($sql);
 
             $iCount = $oDB->numRows();
             if ($iCount == 0) {
@@ -488,7 +484,7 @@ class UI_Config_Table {
             foreach ($this->_aCells as $sRow => $aCells) {
                 $iColCount++;
                 // $bDark = !$bDark;
-                $sLine = "";
+                $sLine = '';
                 $iCount = 0;
 
                 foreach ($aCells as $sCell => $sData) {
@@ -496,22 +492,22 @@ class UI_Config_Table {
                     $tplCell = new cTemplate();
                     $tplCell->reset();
 
-                    if ($this->_aCellClass[$sRow][$sCell] != "") {
-                        $tplCell->set("s", "CLASS", $this->_aCellClass[$sRow][$sCell]);
+                    if ($this->_aCellClass[$sRow][$sCell] != '') {
+                        $tplCell->set('s', 'CLASS', $this->_aCellClass[$sRow][$sCell]);
                     } else {
-                        $tplCell->set("s", "CLASS", "");
+                        $tplCell->set('s', 'CLASS', '');
                     }
 
-                    if ($this->_aCellAlignment[$sRow][$sCell] != "") {
-                        $tplCell->set("s", "ALIGN", $this->_aCellAlignment[$sRow][$sCell]);
+                    if ($this->_aCellAlignment[$sRow][$sCell] != '') {
+                        $tplCell->set('s', 'ALIGN', $this->_aCellAlignment[$sRow][$sCell]);
                     } else {
-                        $tplCell->set("s", "ALIGN", "left");
+                        $tplCell->set('s', 'ALIGN', 'left');
                     }
 
-                    if ($this->_aCellVAlignment[$sRow][$sCell] != "") {
-                        $tplCell->set("s", "VALIGN", $this->_aCellAlignment[$sRow][$sCell]);
+                    if ($this->_aCellVAlignment[$sRow][$sCell] != '') {
+                        $tplCell->set('s', 'VALIGN', $this->_aCellAlignment[$sRow][$sCell]);
                     } else {
-                        $tplCell->set("s", "VALIGN", "top");
+                        $tplCell->set('s', 'VALIGN', 'top');
                     }
 
                     // Multi selection javascript
@@ -520,7 +516,7 @@ class UI_Config_Table {
                         $this->_bAddMultiSelJS = false;
                     }
 
-                    $tplCell->set("s", "CONTENT", $sData);
+                    $tplCell->set('s', 'CONTENT', $sData);
                     $sLine .= $tplCell->generate($this->_sTplCellCode, true, false);
                 }
 

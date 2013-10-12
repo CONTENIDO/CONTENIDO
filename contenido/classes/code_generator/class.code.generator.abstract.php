@@ -236,7 +236,7 @@ abstract class cCodeGeneratorAbstract {
             }
         }
 
-        return (is_numeric($idtplcfg))? $idtplcfg : NULL;
+        return (is_numeric($idtplcfg)) ? $idtplcfg : NULL;
     }
 
     /**

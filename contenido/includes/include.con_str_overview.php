@@ -371,10 +371,11 @@ $arrArtCache = array();
 if (count($arrIn) > 0) {
     $sIn = implode(',', $arrIn);
 
-    $sql2 = "SELECT b.idcat, a.idart, idlang FROM " . $cfg["tab"]["art_lang"] . " AS a,
-            " . $cfg["tab"]["cat_art"] . " AS b
-            WHERE b.idcat IN (" . cSecurity::escapeDB($sIn, $db) . ") AND (a.idlang = '" . cSecurity::toInteger($syncoptions) . "' OR a.idlang = '" . cSecurity::toInteger($lang) . "')
-            AND b.idart = a.idart";
+    $sql2 = "SELECT b.idcat, a.idart, idlang
+            FROM " . $cfg["tab"]["art_lang"] . " AS a, " . $cfg["tab"]["cat_art"] . " AS b
+            WHERE b.idcat IN (" . $db->escape($sIn) . ")
+                AND (a.idlang = " . cSecurity::toInteger($syncoptions) . " OR a.idlang = " . cSecurity::toInteger($lang) . ")
+                AND b.idart = a.idart";
     $db->query($sql2);
 
     while ($db->nextRecord()) {

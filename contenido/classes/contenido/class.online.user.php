@@ -80,7 +80,7 @@ class cApiOnlineUserCollection extends ItemCollection {
             $oItem->set('lastaccessed', $created);
             $oItem->store();
         }
-        return ($oItem)? true : false;
+        return ($oItem) ? true : false;
     }
 
     /**
@@ -199,7 +199,7 @@ class cApiOnlineUserCollection extends ItemCollection {
         // gives us the possibility to hook (CEC) into each deleted entry.
         $where = "DATE_SUB(NOW(), INTERVAL '$iSetTimeOut' Minute) >= `lastaccessed`";
         $result = $this->deleteByWhereClause($where);
-        return ($result > 0)? true : false;
+        return ($result > 0) ? true : false;
     }
 
     /**

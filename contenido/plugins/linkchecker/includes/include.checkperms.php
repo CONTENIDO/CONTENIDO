@@ -27,7 +27,7 @@ function cCatPerm($widcat, $db = NULL) {
     }
 
     $group_ids = getGroupIDs($db);
-    $group_ids[] = cSecurity::escapeDB($auth->auth['uid'], $db);
+    $group_ids[] = $db->escape($auth->auth['uid']);
 
     if (!is_array($_arrCatIDs_cCP)) {
         $_arrCatIDs_cCP = array();
@@ -54,7 +54,7 @@ function getGroupIDs(&$db) {
         return $_arrGroupIDs_gGI;
     }
 
-    $sql = "SELECT group_id FROM " . $cfg["tab"]["groupmembers"] . " WHERE user_id='" . cSecurity::escapeDB($auth->auth["uid"], $db) . "'";
+    $sql = "SELECT group_id FROM " . $cfg["tab"]["groupmembers"] . " WHERE user_id='" . $db->escape($auth->auth["uid"]) . "'";
     $db->query($sql);
 
     $_arrGroupIDs_gGI = array();

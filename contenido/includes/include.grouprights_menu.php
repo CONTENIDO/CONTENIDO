@@ -19,17 +19,13 @@ $tpl->reset();
 $tpl->set('s', 'SID', $sess->id);
 
 if (($action == "group_delete") && ($perm->have_perm_area_action($area, $action))) {
-
-    $sql = "DELETE FROM " . $cfg["tab"]["groups"] . " WHERE
-             group_id = \"" . cSecurity::escapeDB($groupid, $db) . "\"";
+    $sql = "DELETE FROM " . $cfg["tab"]["groups"] . " WHERE group_id = '" . $db->escape($groupid) . "'";
     $db->query($sql);
 
-    $sql = "DELETE FROM " . $cfg["tab"]["groupmembers"] . " WHERE group_id = \"" . cSecurity::escapeDB($groupid, $db) . "\"";
-
+    $sql = "DELETE FROM " . $cfg["tab"]["groupmembers"] . " WHERE group_id = '" . $db->escape($groupid) . "'";
     $db->query($sql);
 
-    $sql = "DELETE FROM " . $cfg["tab"]["rights"] . " WHERE user_id = \"" . cSecurity::escapeDB($groupid, $db) . "\"";
-
+    $sql = "DELETE FROM " . $cfg["tab"]["rights"] . " WHERE user_id = '" . $db->escape($groupid) . "'";
     $db->query($sql);
 }
 
@@ -125,7 +121,7 @@ while ($db->nextRecord()) {
 
         if ($perm->have_perm_area_action('groups', "groups_delete")) {
             $message = sprintf(i18n("Do you really want to delete the group %s?"), conHtmlSpecialChars($groupname));
-            $deletebutton = "<a onClick=\"event.cancelBubble=true;check=confirm('" . $message . "'); if (check==true) { location.href='" . $sess->url("main.php?area=groups&action=group_delete&frame=$frame&groupid=$groupid&del=") . "#deletethis'};\" href=\"#\"><img src=\"" . $cfg['path']['images'] . "delete.gif\" border=\"0\" width=\"13\" height=\"13\" alt=\"" . i18n("Delete group") . "\" title=\"" . i18n("Delete group") . "\"></a>";
+            $deletebutton = "<a onclick=\"event.cancelBubble=true;check=confirm('" . $message . "'); if (check==true) { location.href='" . $sess->url("main.php?area=groups&action=group_delete&frame=$frame&groupid=$groupid&del=") . "#deletethis'};\" href=\"#\"><img src=\"" . $cfg['path']['images'] . "delete.gif\" border=\"0\" width=\"13\" height=\"13\" alt=\"" . i18n("Delete group") . "\" title=\"" . i18n("Delete group") . "\"></a>";
         } else {
             $deletebutton = "";
         }

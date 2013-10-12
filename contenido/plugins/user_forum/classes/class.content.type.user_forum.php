@@ -61,8 +61,8 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         // if form is submitted, store the current settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        $action = isset($_POST['userforum_action'])? $_POST['userforum_action'] : NULL;
-        $id = isset($_POST['userforum_id'])? $_POST['userforum_id'] : NULL;
+        $action = isset($_POST['userforum_action']) ? $_POST['userforum_action'] : NULL;
+        $id = isset($_POST['userforum_id']) ? $_POST['userforum_id'] : NULL;
         if ('store' === $action && $this->_id == $id) {
             $this->_storeSettings();
         }
@@ -148,7 +148,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $checkBoxMod->setID($id);
 
         // check state
-        ($this->_settings['userforum_modactive'] === 'false')? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
+        ($this->_settings['userforum_modactive'] === 'false') ? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
 
         // build div element as wrapper
         $div = new cHTMLDiv(array(
@@ -171,7 +171,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $checkBoxMod->setID($id);
 
         // check state
-        ($this->_settings['userforum_subcomments'] === 'false')? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
+        ($this->_settings['userforum_subcomments'] === 'false') ? $checkBoxMod->setChecked(false) : $checkBoxMod->setChecked(true);
 
         // build div element as wrapper
         $div = new cHTMLDiv(array(

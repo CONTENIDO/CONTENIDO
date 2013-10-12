@@ -43,15 +43,15 @@ class cApiAreaCollection extends ItemCollection {
      * @return cApiArea
      */
     public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0) {
-        $parentid = (is_string($parentid))? $this->escape($parentid) : (int) $parentid;
+        $parentid = (is_string($parentid)) ? $this->escape($parentid) : (int) $parentid;
 
         $item = parent::createNewItem();
 
         $item->set('parent_id', $parentid);
         $item->set('name', $this->escape($name));
-        $item->set('relevant', (1 == $relevant)? 1 : 0);
-        $item->set('online', (1 == $online)? 1 : 0);
-        $item->set('menuless', (1 == $menuless)? 1 : 0);
+        $item->set('relevant', (1 == $relevant) ? 1 : 0);
+        $item->set('online', (1 == $online) ? 1 : 0);
+        $item->set('menuless', (1 == $menuless) ? 1 : 0);
 
         $item->store();
 
@@ -71,7 +71,7 @@ class cApiAreaCollection extends ItemCollection {
             $sql = "SELECT b.name FROM `%s` AS a, `%s` AS b WHERE a.name = '%s' AND b.name = a.parent_id";
         }
         $this->db->query($sql, $this->table, $this->table, $area);
-        return ($this->db->nextRecord())? $this->db->f('name') : $area;
+        return ($this->db->nextRecord()) ? $this->db->f('name') : $area;
     }
 
     /**

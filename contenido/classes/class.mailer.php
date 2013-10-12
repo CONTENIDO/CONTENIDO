@@ -110,8 +110,8 @@ class cMailer extends Swift_Mailer {
         }
 
         // get mailserver user and pass from system properties
-        $this->_mailUser = (getSystemProperty('system', 'mail_user'))? getSystemProperty('system', 'mail_user') : '';
-        $this->_mailPass = (getSystemProperty('system', 'mail_pass'))? getSystemProperty('system', 'mail_pass') : '';
+        $this->_mailUser = (getSystemProperty('system', 'mail_user')) ? getSystemProperty('system', 'mail_user') : '';
+        $this->_mailPass = (getSystemProperty('system', 'mail_pass')) ? getSystemProperty('system', 'mail_pass') : '';
 
         // get mailserver encryption from system properties
         $encryptions = array(

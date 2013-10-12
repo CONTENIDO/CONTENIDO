@@ -14,7 +14,7 @@
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$client = (isset($client))? $client : $load_client;
+$client = (isset($client)) ? $client : $load_client;
 
 // Load smarty
 if (!defined('SMARTY_DIR')) {

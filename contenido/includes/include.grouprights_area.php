@@ -22,7 +22,11 @@ $debug = (cDebug::getDefaultDebuggerName() != cDebug::DEBUGGER_DEVNULL);
 
 //set the areas which are in use for selecting these
 
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C WHERE user_id='" . cSecurity::escapeDB($groupid, $db) . "' AND idclient='" . cSecurity::toInteger($rights_client) . "' AND idlang='" . cSecurity::toInteger($rights_lang) . "' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
+        FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
+        WHERE user_id = '" . $db->escape($groupid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
+            AND idlang = " . cSecurity::toInteger($rights_lang) . " AND idcat = 0
+            AND A.idaction = C.idaction AND A.idarea = B.idarea";
 $db->query($sql);
 $rights_list_old = array();
 while ($db->nextRecord()) { //set a new rights list for this user
@@ -47,7 +51,7 @@ $sJsBefore .= "var areatree = new Array();\n";
 
 if (!isset($rights_perms) || $action == "" || !isset($action)) {
     //search for the permissions of this user
-    $sql = "SELECT perms FROM " . $cfg["tab"]["groups"] . " WHERE group_id='" . cSecurity::escapeDB($groupid, $db) . "'";
+    $sql = "SELECT perms FROM " . $cfg["tab"]["groups"] . " WHERE group_id = '" . $db->escape($groupid) . "'";
 
     $db->query($sql);
     $db->nextRecord();
@@ -66,7 +70,7 @@ $objItem = new cHTMLTableData;
 
 //table header
 $headeroutput = "";
-$aTh = array(array("&nbsp;", "&nbsp;", i18n("Check all")), array("&nbsp;", "&nbsp;", "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAllAreas()\">"));
+$aTh = array(array("&nbsp;", "&nbsp;", i18n("Check all")), array("&nbsp;", "&nbsp;", '<input type="checkbox" name="checkall" value="" onclick="setRightsForAllAreas()">'));
 foreach ($aTh as $i => $tr) {
     $items = "";
     foreach ($tr as $td) {

@@ -23,8 +23,8 @@ $sql = "SELECT
             FROM
                 " . $cfg["tab"]["area"] . " AS a
             WHERE
-                a.name = '" . cSecurity::escapeDB($parentarea, $db) . "' OR
-                a.parent_id = '" . cSecurity::escapeDB($parentarea, $db) . "'
+                a.name = '" . $db->escape($parentarea) . "' OR
+                a.parent_id = '" . $db->escape($parentarea) . "'
             ORDER BY
                 idarea";
 
@@ -47,7 +47,7 @@ $sql = "SELECT
                 " . $cfg["tab"]["area"] . " AS a,
                 " . $cfg["tab"]["nav_sub"] . " AS b
             WHERE
-                b.idarea IN " . cSecurity::escapeDB($in_str, $db) . " AND
+                b.idarea IN " . $db->escape($in_str) . " AND
                 b.idarea = a.idarea AND
                 b.level = 1
             ORDER BY

@@ -179,13 +179,13 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
         $sql = "UPDATE " . $table . " SET ";
         foreach ($row as $key => $value) {
             if (strlen($value) > 0) {
-                $sql .= "`" . $key . "`='" . cSecurity::escapeDB(urldecode($value), $db) . "', ";
+                $sql .= "`" . $key . "`='" . $db->escape(urldecode($value)) . "', ";
             }
         }
         $sql = substr($sql, 0, strlen($sql) - 2) . " WHERE ";
         foreach ($row as $key => $value) {
             if (strlen($value) > 0) {
-                $sql .= "`" . $key . "`= '" . cSecurity::escapeDB($value, $db) . "' AND ";
+                $sql .= "`" . $key . "`= '" . $db->escape($value) . "' AND ";
             }
         }
         $sql = substr($sql, 0, strlen($sql) - 5) . ";";

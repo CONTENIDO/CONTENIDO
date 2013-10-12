@@ -21,15 +21,10 @@ if (isset($_GET['file'])) {
 
     $nav = new cGuiNavigation();
 
-    $sql = "SELECT
-                idarea
-            FROM
-                ".$cfg['tab']['area']." AS a
-            WHERE
-                a.name = '".cSecurity::escapeDB($area, $db)."' OR
-                a.parent_id = '".cSecurity::escapeDB($area, $db)."'
-            ORDER BY
-                idarea";
+    $sql = "SELECT idarea
+            FROM ".$cfg['tab']['area']." AS a
+            WHERE a.name = '".$db->escape($area)."' OR a.parent_id = '".$db->escape($area)."'
+            ORDER BY idarea";
 
     $db->query($sql);
 

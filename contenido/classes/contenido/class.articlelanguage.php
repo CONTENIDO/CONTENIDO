@@ -95,7 +95,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
+        $urlname = (trim($urlname) == '') ? trim($title) : trim($urlname);
 
         $item = parent::createNewItem();
 
@@ -147,7 +147,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
     public function getIdByArticleIdAndLanguageId($idart, $idlang) {
         $sql = "SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d";
         $this->db->query($sql, $this->table, $idart, $idlang);
-        return ($this->db->nextRecord())? $this->db->f('idartlang') : 0;
+        return ($this->db->nextRecord()) ? $this->db->f('idartlang') : 0;
     }
 }
 
@@ -413,7 +413,7 @@ class cApiArticleLanguage extends Item {
             case 'redirect':
             case 'external_redirect':
             case 'locked':
-                $value = ($value == 1)? 1 : 0;
+                $value = ($value == 1) ? 1 : 0;
                 break;
             case 'idart':
             case 'idlang':
@@ -425,7 +425,7 @@ class cApiArticleLanguage extends Item {
                 $value = (int) $value;
                 break;
             case 'redirect_url':
-                $value = ($value == 'http://' || $value == '')? '0' : $value;
+                $value = ($value == 'http://' || $value == '') ? '0' : $value;
                 break;
         }
 
@@ -486,7 +486,7 @@ class cApiArticleLanguage extends Item {
         }
 
         // return String
-        return (isset($this->content[$type][$id]))? $this->content[$type][$id] : '';
+        return (isset($this->content[$type][$id])) ? $this->content[$type][$id] : '';
     }
 
     /**
@@ -515,7 +515,7 @@ class cApiArticleLanguage extends Item {
 
         $options = array();
         $options['idart'] = $this->get('idart');
-        $options['lang'] = ($changeLangId == 0)? $this->get('idlang') : $changeLangId;
+        $options['lang'] = ($changeLangId == 0) ? $this->get('idlang') : $changeLangId;
         if ($changeLangId > 0) {
             $options['changelang'] = $changeLangId;
         }

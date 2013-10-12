@@ -30,7 +30,7 @@ $tpl->set('s', 'SID', $sess->id);
 
 /* Whitelist: Delete */
 if (!empty($_GET['url_to_delete'])) {
-    $sql = "DELETE FROM " . $cfg['tab']['whitelist'] . " WHERE url = '" . cSecurity::escapeDB(base64_decode($_GET['url_to_delete']), $db) . "'";
+    $sql = "DELETE FROM " . $cfg['tab']['whitelist'] . " WHERE url = '" . $db->escape(base64_decode($_GET['url_to_delete'])) . "'";
     $db->query($sql);
 }
 

@@ -34,7 +34,7 @@ if ($cfg['debug']['disable_plugins'] === true) {
 $setup = new PimPluginSetup();
 $setup->setPageClass($page);
 
-$viewAction = isset($_REQUEST['pim_view'])? $_REQUEST['pim_view'] : 'overview';
+$viewAction = isset($_REQUEST['pim_view']) ? $_REQUEST['pim_view'] : 'overview';
 
 switch ($viewAction) {
     case 'activestatus':

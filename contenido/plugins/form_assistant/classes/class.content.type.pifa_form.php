@@ -38,7 +38,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
      * @return number as expected for a comparision function used for sorting
      */
     public static function sortByLabel($a, $b) {
-        return ($a['label'] == $b['label'])? 0 : (($a['label'] < $b['label'])? -1 : 1);
+        return ($a['label'] == $b['label']) ? 0 : (($a['label'] < $b['label']) ? -1 : 1);
     }
 
     /**
@@ -83,8 +83,8 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
         // if form is submitted, store the current settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        $action = isset($_POST['pifaform_action'])? $_POST['pifaform_action'] : NULL;
-        $id = isset($_POST['pifaform_id'])? $_POST['pifaform_id'] : NULL;
+        $action = isset($_POST['pifaform_action']) ? $_POST['pifaform_action'] : NULL;
+        $id = isset($_POST['pifaform_id']) ? $_POST['pifaform_id'] : NULL;
         if ('store' === $action && $this->_id == $id) {
             $this->_storeSettings();
         }

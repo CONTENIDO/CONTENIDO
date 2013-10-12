@@ -382,7 +382,7 @@ class cRegistry {
             return $clientConfig;
         }
 
-        return (isset($clientConfig[$clientId])? $clientConfig[$clientId] : array());
+        return (isset($clientConfig[$clientId]) ? $clientConfig[$clientId] : array());
     }
 
     /**
@@ -446,7 +446,7 @@ class cRegistry {
      * @return mixed
      */
     public static function getAppVar($key, $default = NULL) {
-        return (isset(self::$_appVars[$key]))? self::$_appVars[$key] : $default;
+        return (isset(self::$_appVars[$key])) ? self::$_appVars[$key] : $default;
     }
 
     /**

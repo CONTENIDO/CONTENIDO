@@ -89,7 +89,7 @@ function isCurrentEditor($uid) {
 
         // Yes, it's a group. Let's try to load the group members!
         $sql = "SELECT user_id FROM " . $cfg["tab"]["groupmembers"] . "
-                WHERE group_id = '" . cSecurity::escapeDB($uid, $db2) . "'";
+                WHERE group_id = '" . $db2->escape($uid) . "'";
 
         $db2->query($sql);
 
@@ -305,10 +305,12 @@ function getLastWorkflowStatus($idartlang) {
 function doWorkflowAction($idartlang, $action) {
     global $cfg, $idcat;
 
+    $idartlang = (int) $idartlang;
+
     switch ($action) {
         case "last":
             $artAllocations = new WorkflowArtAllocations();
-            $artAllocations->select("idartlang = '$idartlang'");
+            $artAllocations->select("idartlang = {$idartlang}");
 
             if (($obj = $artAllocations->next()) !== false) {
                 $usersequence = new WorkflowUserSequence();
@@ -324,7 +326,7 @@ function doWorkflowAction($idartlang, $action) {
                 }
 
                 $workflowitems = new WorkflowItems();
-                $workflowitems->select("idworkflow = '$idworkflow' AND position = '" . cSecurity::escapeDB($newpos, NULL) . "'");
+                $workflowitems->select("idworkflow = '$idworkflow' AND position = " . (int) $newpos);
 
                 if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
@@ -342,7 +344,7 @@ function doWorkflowAction($idartlang, $action) {
             break;
         case "next":
             $artAllocations = new WorkflowArtAllocations();
-            $artAllocations->select("idartlang = '$idartlang'");
+            $artAllocations->select("idartlang = {$idartlang}");
 
             if (($obj = $artAllocations->next()) !== false) {
                 $usersequence = new WorkflowUserSequence();
@@ -354,7 +356,7 @@ function doWorkflowAction($idartlang, $action) {
                 $newpos = $workflowitem->get("position") + 1;
 
                 $workflowitems = new WorkflowItems();
-                $workflowitems->select("idworkflow = '$idworkflow' AND position = '" . cSecurity::escapeDB($newpos, NULL) . "'");
+                $workflowitems->select("idworkflow = '$idworkflow' AND position = " . (int) $newpos);
 
                 if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
@@ -368,7 +370,7 @@ function doWorkflowAction($idartlang, $action) {
                         $obj->store();
                     }
                 } else {
-                    $workflowitems->select("idworkflow = '$idworkflow' AND position = '" . cSecurity::escapeDB($workflowitem->get("position"), NULL) . "'");
+                    $workflowitems->select("idworkflow = '$idworkflow' AND position = " . (int) $workflowitem->get("position"));
                     if (($nextObj = $workflowitems->next()) !== false) {
                         $userSequences = new WorkflowUserSequences();
                         $idworkflowitem = $nextObj->get("idworkflowitem");
@@ -386,7 +388,7 @@ function doWorkflowAction($idartlang, $action) {
             break;
         case "reject":
             $artAllocations = new WorkflowArtAllocations();
-            $artAllocations->select("idartlang = '$idartlang'");
+            $artAllocations->select("idartlang = {$idartlang}");
 
             if (($obj = $artAllocations->next()) !== false) {
                 $usersequence = new WorkflowUserSequence();
@@ -398,7 +400,7 @@ function doWorkflowAction($idartlang, $action) {
                 $newpos = 1;
 
                 $workflowitems = new WorkflowItems();
-                $workflowitems->select("idworkflow = '$idworkflow' AND position = '" . cSecurity::escapeDB($newpos, NULL) . "'");
+                $workflowitems->select("idworkflow = '$idworkflow' AND position = " . (int) $newpos);
 
                 if (($nextObj = $workflowitems->next()) !== false) {
                     $userSequences = new WorkflowUserSequences();
@@ -417,7 +419,7 @@ function doWorkflowAction($idartlang, $action) {
 
         case "revise":
             $db = cRegistry::getDb();
-            $sql = "SELECT idart, idlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = '" . cSecurity::escapeDB($idartlang, $db) . "'";
+            $sql = "SELECT idart, idlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = " $idartlang;
             $db->query($sql);
             $db->nextRecord();
             $idart = $db->f("idart");

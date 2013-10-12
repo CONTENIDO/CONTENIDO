@@ -136,7 +136,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
         $this->_settings = $cfg['sql'];
 
         // instantiate caching
-        $aCacheOpt = (isset($this->_settings['cache']))? $this->_settings['cache'] : array();
+        $aCacheOpt = (isset($this->_settings['cache'])) ? $this->_settings['cache'] : array();
         $this->_oCache = cItemCache::getInstance($sTable, $aCacheOpt);
 
         $this->table = $sTable;

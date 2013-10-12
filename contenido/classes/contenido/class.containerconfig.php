@@ -50,9 +50,9 @@ class cApiContainerConfigurationCollection extends ItemCollection {
      */
     public function create($idtplcfg, $number, $container) {
         $item = parent::createNewItem();
-        $item->set('idtplcfg', (int) $idtplcfg);
-        $item->set('number', (int) $number);
-        $item->set('container', $this->escape($container));
+        $item->set('idtplcfg', $idtplcfg);
+        $item->set('number', $number);
+        $item->set('container', $container);
         $item->store();
     }
 }
@@ -77,5 +77,24 @@ class cApiContainerConfiguration extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
+    }
+
+    /**
+     * Userdefined setter for container config fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @todo should return return value of overloaded method
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idtplcfg':
+            case 'number':
+                $value = (int) $value;
+                break;
+        }
+
+        parent::setField($name, $value, $bSafe);
     }
 }

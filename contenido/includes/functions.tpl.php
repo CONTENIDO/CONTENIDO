@@ -21,90 +21,75 @@ cInclude("includes", "functions.con.php");
  * Edit or create a new Template
  */
 function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c, $default) {
-    global $db, $sess, $auth, $client, $cfg, $area_tree, $perm;
+    global $db, $sess, $auth, $client, $cfg;
 
-    $db2 = cRegistry::getDb();
-    $date = date('Y-m-d H:i:s');
-    $author = "" . $auth->auth["uname"] . "";
+    $author = (string) $auth->auth['uname'];
 
     //******** entry in 'tpl'-table ***************
-    set_magic_quotes_gpc($name);
-    set_magic_quotes_gpc($description);
+#    set_magic_quotes_gpc($name);
+#    set_magic_quotes_gpc($description);
 
     $template = new cApiTemplate();
-    $template->loadByMany(array("idclient" => $client, "name" => $name));
+    $template->loadByMany(array('idclient' => $client, 'name' => $name));
     if ($template->isLoaded() && $template->get('idtpl') != $idtpl) {
         cRegistry::addErrorMessage(i18n("Template name already exists"));
         return -1;
     }
 
     if (!$idtpl) {
-        /* Insert new entry in the
-          Template table */
-        $sql = "INSERT INTO " . $cfg["tab"]["tpl"] . "
-                    (idtplcfg, name, description, deletable, idlay, idclient, author, created, lastmodified) VALUES
-                    ('" . cSecurity::toInteger(0) . "', '" . cSecurity::escapeDB($name, $db) . "', '" . cSecurity::escapeDB($description, $db) . "',
-                    '1', '" . cSecurity::toInteger($idlay) . "', '" . cSecurity::toInteger($client) . "', '" . cSecurity::escapeDB($author, $db) . "', '" . cSecurity::escapeDB($date, $db) . "',
-                    '" . cSecurity::escapeDB($date, $db) . "')";
+        // Insert new entry in the Template table
+        $templateColl = new cApiTemplateCollection();
+        $template = $templateColl->create($idclient, $idlay, 0, $name, $description, 1, 0, 0);
+        $idtpl = $template->get('idtpl');
 
-        $db->query($sql);
-        $idtpl = $db->getLastInsertedId($cfg["tab"]["tpl"]);
+        // Insert new entry in the Template Conf table
+        $templateConfColl = new cApiTemplateConfigurationCollection();
+        $templateConf = $templateConfColl->create($idtpl);
+        $idtplcfg = $templateConf->get('idtplcfg');
 
-        /* Insert new entry in the
-          Template Conf table */
-        $sql = "INSERT INTO " . $cfg["tab"]["tpl_conf"] . "
-                    (idtpl, author) VALUES
-                   ('" . cSecurity::toInteger($idtpl) . "', '" . cSecurity::escapeDB($auth->auth["uname"], $db) . "')";
+        // Update new idtplconf
+        $template->set('idtplcfg', $idtplcfg);
+        $template->store();
 
-        $db->query($sql);
-        $idtplcfg = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
-
-        /* Update new idtplconf */
-        $sql = "UPDATE " . $cfg["tab"]["tpl"] . " SET idtplcfg='" . cSecurity::toInteger($idtplcfg) . "'
-            WHERE idtpl='" . cSecurity::toInteger($idtpl) . "'";
-        $db->query($sql);
-
-        // set correct rights for element
-        cInclude("includes", "functions.rights.php");
-        createRightsForElement("tpl", $idtpl);
+        // Set correct rights for element
+        cInclude('includes', 'functions.rights.php');
+        createRightsForElement('tpl', $idtpl);
     } else {
 
-        /* Update */
-        $sql = "UPDATE " . $cfg["tab"]["tpl"] . " SET name='" . cSecurity::escapeDB($name, $db) . "', description='" . cSecurity::escapeDB($description, $db) . "', idlay='" . cSecurity::toInteger($idlay) . "',
-                    author='" . cSecurity::escapeDB($author, $db) . "', lastmodified='" . cSecurity::escapeDB($date, $db) . "' WHERE idtpl='" . cSecurity::toInteger($idtpl) . "'";
-        $db->query($sql);
+        // Update existing entry in the Template table
+        $template = new cApiTemplate($idtpl);
+        $template->set('name', $name);
+        $template->set('description', $description);
+        $template->set('idlay', $idlay);
+        $template->set('author', $author);
+        $template->set('lastmodified', $lastmodified);
+        $template->store();
 
         if (is_array($c)) {
-            /* Delete all container assigned to this template */
-            $sql = "DELETE FROM " . $cfg["tab"]["container"] . " WHERE idtpl='" . cSecurity::toInteger($idtpl, $db) . "'";
-            $db->query($sql);
+            // Delete all container assigned to this template
+            $containerColl = new cApiContainerCollection();
+            $containerColl->clearAssignments($idtpl);
 
             foreach ($c as $idcontainer => $dummyval) {
-                $sql = "INSERT INTO " . $cfg["tab"]["container"] . " (idtpl, number, idmod) VALUES ";
-                $sql .= "(";
-                $sql .= "'" . cSecurity::toInteger($idtpl) . "', ";
-                $sql .= "'" . cSecurity::toInteger($idcontainer) . "', ";
-                $sql .= "'" . cSecurity::toInteger($c[$idcontainer]) . "'";
-                $sql .= ") ";
-                $db->query($sql);
+                $containerColl2 = new cApiContainerCollection();
+                $containerColl2->create($idtpl, $idcontainer, $c[$idcontainer]);
             }
         }
 
-        /* Generate code */
+        // Generate code
         conGenerateCodeForAllartsUsingTemplate($idtpl);
     }
 
     if ($default == 1) {
-        $sql = "UPDATE " . $cfg["tab"]["tpl"] . " SET defaulttemplate = '0' WHERE idclient = '" . cSecurity::toInteger($client) . "'";
+        $sql = "UPDATE " . $cfg["tab"]["tpl"] . " SET defaulttemplate = 0 WHERE idclient = " . cSecurity::toInteger($client);
         $db->query($sql);
 
-        $sql = "UPDATE " . $cfg["tab"]["tpl"] . " SET defaulttemplate = '1' WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "' AND idclient = '" . cSecurity::toInteger($client) . "'";
-        $db->query($sql);
+        $template->set('defaulttemplate', 1);
+        $template->store();
     } else {
-        $sql = "UPDATE " . $cfg["tab"]["tpl"] . " SET defaulttemplate = '0' WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "' AND idclient = '" . cSecurity::toInteger($client) . "'";
-        $db->query($sql);
+        $template->set('defaulttemplate', 0);
+        $template->store();
     }
-
 
     //******** if layout is changed stay at 'tpl_edit' otherwise go to 'tpl'
     //if ($changelayout != 1) {
@@ -119,8 +104,6 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
  * Delete a template
  *
  * @param int $idtpl ID of the template to duplicate
- *
- * @return $new_idtpl ID of the duplicated template
  */
 function tplDeleteTemplate($idtpl) {
 
@@ -165,7 +148,6 @@ function tplBrowseLayoutForContainers($idlay) {
 
     $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
     $code = $layoutInFile->getLayoutCode();
-
 
     preg_match_all("/CMS_CONTAINER\[([0-9]*)\]/", $code, $a_container);
     $iPosBody = stripos($code, '<body>');
@@ -321,95 +303,61 @@ function tplPreparseLayout($idlay) {
  *
  * @param int $idtpl ID of the template to duplicate
  *
- * @return $new_idtpl ID of the duplicated template
+ * @return  int  ID of the duplicated template
  */
 function tplDuplicateTemplate($idtpl) {
     global $db, $client, $lang, $cfg, $sess, $auth;
 
-    $db2 = cRegistry::getDb();
+    $idtpl = (int) $idtpl;
+    $template = new cApiTemplate($idtpl);
 
-    $sql = "SELECT * FROM " . $cfg["tab"]["tpl"] . "
-            WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "'";
-
-    $db->query($sql);
-    $db->nextRecord();
-
-    $idclient = $db->f("idclient");
-    $idlay = $db->f("idlay");
-    //$new_idtpl  = $db->nextid($cfg["tab"]["tpl"]);
-
-    $name = sprintf(i18n("%s (Copy)"), $db->f("name"));
-    $descr = $db->f("description");
-    $author = $auth->auth["uname"];
-    $created = date('Y-m-d H:i:s');
-    $lastmod = date('Y-m-d H:i:s');
-
-    $idtpl_conf = $db->f("idtplcfg");
-    if ($idtpl_conf) {
-        // after inserted con_template, we have to update idptl
-        $templateConf = array('idtpl' => 0, 'status' => 0, 'author' => $author, 'created' => $created);
-        $db->insert($cfg["tab"]["tpl_conf"], $templateConf);
-        $new_idtpl_conf = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
+    $newidtplcfg = 0;
+    $idtplcfg = (int) $template->get('idtplcfg');
+    if ($idtplcfg) {
+        // NB: after inserted new template, we have to update idptl
+        $templateConfigColl = new cApiTemplateConfigurationCollection();
+        $templateConfig = $templateConfigColl->create(0);
+        $newidtplcfg = (int) $templateConfig->get('idtplcfg');
     }
 
-    $sql = "INSERT INTO
-                " . $cfg["tab"]["tpl"] . "
-                (idclient, idlay, " . ($idtpl_conf ? 'idtplcfg,' : '') . " name, description, deletable,author, created, lastmodified)
-            VALUES
-                ('" . cSecurity::toInteger($idclient) . "', '" . cSecurity::toInteger($idlay) . "', " . ($idtpl_conf ? "'" . cSecurity::toInteger($new_idtpl_conf) . "', " : '') . " '" . cSecurity::escapeDB($name, $db) . "',
-                 '" . cSecurity::escapeDB($descr, $db) . "', '1', '" . cSecurity::escapeDB($author, $db) . "', '" . cSecurity::escapeDB($created, $db) . "', '" . cSecurity::escapeDB($lastmod, $db) . "')";
-    $db->query($sql);
-    $new_idtpl = $db->getLastInsertedId($cfg["tab"]["tpl"]);
+    // Copy template
+    $templateColl = new cApiTemplateCollection();
+    $newTemplate = $templateColl->copyItem($template, array(
+        'name' => sprintf(i18n("%s (Copy)"), $template->get('name')),
+        'author' => (string) $auth->auth['uname'],
+        'created' => date('Y-m-d H:i:s'),
+        'lastmodified' => date('Y-m-d H:i:s'),
+    ));
+    $newidtpl = (int) $newTemplate->get('idtpl');
 
-    // update template_conf, set idtpl width right value.
-    $db->update($cfg["tab"]["tpl_conf"], array('idtpl' => $new_idtpl), array('idtplcfg' => $new_idtpl_conf));
-
-    $a_containers = array();
-
-    $sql = "SELECT * FROM " . $cfg["tab"]["container"] . "
-            WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "'
-            ORDER BY number";
-
-    $db->query($sql);
-
-    while ($db->nextRecord()) {
-        $a_containers[$db->f("number")] = $db->f("idmod");
+    // Update template configuration, set idtpl width new value
+    if ($idtplcfg) {
+        $templateConfig->set('idtpl', $newidtpl);
+        $templateConfig->store();
     }
 
-    foreach ($a_containers as $key => $value) {
-        //$nextid = $db->nextid($cfg["tab"]["container"]);
-        $sql = "INSERT INTO " . $cfg["tab"]["container"] . "
-                (idtpl, number, idmod) VALUES ('" . cSecurity::toInteger($new_idtpl) . "', '" . cSecurity::toInteger($key) . "', '" . cSecurity::toInteger($value) . "')";
-        $db->query($sql);
+    // Copy container from old template to new template
+    $containerColl = new cApiContainerCollection();
+    $containerColl->select('idtpl = ' . $idtpl . ' ORDER BY number');
+    while (($container = $containerColl->next()) !== false) {
+        $containerColl2 = new cApiContainerCollection();
+        $containerColl2->copyItem($container, array('idtpl' => $newidtpl));
     }
 
-    //modified (added) 2008-06-30 timo.trautmann added fix module settings were also copied
-    if ($idtpl_conf) {
-        $a_container_cfg = array();
-        $sql = "SELECT * FROM " . $cfg["tab"]["container_conf"] . "
-                WHERE idtplcfg = " . cSecurity::toInteger($idtpl_conf) . "
-                ORDER BY number";
-
-        $db->query($sql);
-
-        while ($db->nextRecord()) {
-            $a_container_cfg[$db->f("number")] = $db->f("container");
-        }
-
-        foreach ($a_container_cfg as $key => $value) {
-            $sql = "INSERT INTO " . $cfg["tab"]["container_conf"] . "
-                       (idtplcfg, number, container) VALUES
-                       (" . cSecurity::toInteger($new_idtpl_conf) . ", '" . cSecurity::escapeDB($key, $db) . "', '" . cSecurity::escapeDB($value, $db) . "')";
-
-            $db->query($sql);
+    // Copy container configuration from old template configuration to new template configuration
+    if ($idtplcfg) {
+        $containerConfigColl = new cApiContainerConfigurationCollection();
+        $containerConfigColl->select('idtplcfg = ' . $idtplcfg . ' ORDER BY number');
+        while (($containerConfig = $containerConfigColl->next()) !== false) {
+            $containerConfigColl2 = new cApiContainerConfigurationCollection();
+            $containerConfigColl2->copyItem($containerConfig, array('idtplcfg' => $newidtplcfg));
         }
     }
-    //modified (added) 2008-06-30 end
 
-    cInclude("includes", "functions.rights.php");
-    copyRightsForElement("tpl", $idtpl, $new_idtpl);
+    cInclude('includes', 'functions.rights.php');
+    copyRightsForElement('tpl', $idtpl, $newidtpl);
 
-    return $new_idtpl;
+    return $newidtpl;
 }
 
 /**
@@ -527,72 +475,37 @@ function tplGetInUsedData($idtpl) {
  * Copies a complete template configuration
  *
  * @param int $idtplcfg Template Configuration ID
- *
  * @return int new template configuration ID
- *
  */
 function tplcfgDuplicate($idtplcfg) {
-    global $cfg;
+    $templateConfig = new cApiTemplateConfiguration((int) $idtplcfg);
+    if (!$templateConfig->isLoaded()) {
+        return 0;
+    }
 
-    $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
+    // Copy template configuration
+    $templateConfigColl = new cApiTemplateConfigurationCollection();
+    $newTemplateConfig = $templateConfigColl->copyItem($templateConfig, array(
+        'author' => (string) $auth->auth['uname'],
+        'created' => date('Y-m-d H:i:s'),
+        'lastmodified' => date('Y-m-d H:i:s'),
+    ));
+    $newidtplcfg = $newTemplateConfig->get('idtplcfg');
 
-    $sql = "SELECT
-                idtpl, status, author, created, lastmodified
-            FROM
-                " . $cfg["tab"]["tpl_conf"] . "
-            WHERE
-                idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
-
-    $db->query($sql);
-
-    if ($db->nextRecord()) {
-        //$newidtplcfg = $db2->nextid($cfg["tab"]["tpl_conf"]);
-        $idtpl = $db->f("idtpl");
-        $status = $db->f("status");
-        $author = $db->f("author");
-        $created = $db->f("created");
-        $lastmodified = $db->f("lastmodified");
-
-        $sql = "INSERT INTO
-                " . $cfg["tab"]["tpl_conf"] . "
-                (idtpl, status, author, created, lastmodified)
-                VALUES
-                ('" . cSecurity::toInteger($idtpl) . "', '" . cSecurity::toInteger($status) . "', '" . cSecurity::escapeDB($author, $db2) . "',
-                '" . cSecurity::escapeDB($created, $db2) . "', '" . cSecurity::escapeDB($lastmodified, $db2) . "')";
-
-        $db2->query($sql);
-        $newidtplcfg = $db2->getLastInsertedId($cfg["tab"]["tpl_conf"]);
-
-        /* Copy container configuration */
-        $sql = "SELECT
-                    number, container
-                FROM
-                    " . $cfg["tab"]["container_conf"] . "
-                WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
-
-        $db->query($sql);
-
-        while ($db->nextRecord()) {
-            //$newidcontainerc = $db2->nextid($cfg["tab"]["container_conf"]);
-            $number = $db->f("number");
-            $container = $db->f("container");
-
-            $sql = "INSERT INTO
-                    " . $cfg["tab"]["container_conf"] . "
-                    ( idtplcfg, number, container)
-                    VALUES
-                    ('" . cSecurity::toInteger($newidtplcfg) . "', '" . cSecurity::toInteger($number) . "', '" . cSecurity::escapeDB($container, $db2) . "')";
-            $db2->query($sql);
+    // Copy container configuration from old template configuration to new template configuration
+    if ($idtplcfg) {
+        $containerConfigColl = new cApiContainerConfigurationCollection();
+        $containerConfigColl->select('idtplcfg = ' . $idtplcfg . ' ORDER BY number');
+        while (($containerConfig = $containerConfigColl->next()) !== false) {
+            $containerConfigColl2 = new cApiContainerConfigurationCollection();
+            $containerConfigColl2->copyItem($containerConfig, array('idtplcfg' => $newidtplcfg));
         }
     }
 
-    return ($newidtplcfg);
+    return $newidtplcfg;
 }
 
 /*
- * tplAutoFillModules
- *
  * This function fills in modules automatically using this logic:
  *
  * - If the container mode is fixed, insert the named module (if exists)
@@ -634,7 +547,7 @@ function tplAutoFillModules($idtpl) {
                 if ($containerinf[$idlay][$container]["default"] != "") {
                     $sql = "SELECT idmod FROM " . $cfg["tab"]["mod"]
                             . " WHERE name = '" .
-                            cSecurity::escapeDB($containerinf[$idlay][$container]["default"], $db_autofill) . "'";
+                            $db->escape($containerinf[$idlay][$container]["default"]) . "'";
 
                     $db_autofill->query($sql);
 
@@ -666,7 +579,7 @@ function tplAutoFillModules($idtpl) {
                 if ($containerinf[$idlay][$container]["default"] != "") {
                     $sql = "SELECT idmod FROM " . $cfg["tab"]["mod"] .
                             " WHERE name = '" .
-                            cSecurity::escapeDB($containerinf[$idlay][$container]["default"], $db) . "'";
+                            $db->escape($containerinf[$idlay][$container]["default"]) . "'";
 
                     $db_autofill->query($sql);
 

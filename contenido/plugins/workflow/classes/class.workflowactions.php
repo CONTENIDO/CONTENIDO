@@ -35,7 +35,7 @@ class WorkflowActions extends ItemCollection {
     }
 
     public function get($idworkflowitem, $action) {
-        $this->select("idworkflowitem = '" . cSecurity::escapeDB($idworkflowitem, NULL) . "' AND action = '" . cSecurity::escapeDB($action, NULL) . "'");
+        $this->select("idworkflowitem = " . (int) $idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if ($this->next()) {
             return true;
         } else {
@@ -59,7 +59,7 @@ class WorkflowActions extends ItemCollection {
     }
 
     public function set($idworkflowitem, $action) {
-        $this->select("idworkflowitem = '" . cSecurity::escapeDB($idworkflowitem, NULL) . "' AND action = '" . cSecurity::escapeDB($action, NULL) . "'");
+        $this->select("idworkflowitem = " . (int) $idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if (!$this->next()) {
             $newitem = parent::createNewItem();
             $newitem->setField("idworkflowitem", $idworkflowitem);
@@ -69,7 +69,7 @@ class WorkflowActions extends ItemCollection {
     }
 
     public function remove($idworkflowitem, $action) {
-        $this->select("idworkflowitem = '$idworkflowitem' AND action = '$action'");
+        $this->select("idworkflowitem = " . (int) $idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if (($item = $this->next()) !== false) {
             $this->delete($item->getField("idworkflowaction"));
         }

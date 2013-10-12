@@ -71,10 +71,10 @@ if ($_REQUEST['filtertype'] == '--wotype--') {
 }
 
 if (!empty($_REQUEST['filtertype']) && $_REQUEST['filtertype'] != '--wotype--' && $_REQUEST['filtertype'] != '--all--') {
-    $searchOptions['moduleType'] = cSecurity::escapeDB($_REQUEST['filtertype'], $db);
+    $searchOptions['moduleType'] = $db->escape($_REQUEST['filtertype']);
 }
 
-$searchOptions['filter'] = cSecurity::escapeDB($_REQUEST['filter'], $db);
+$searchOptions['filter'] = $db->escape($_REQUEST['filter']);
 
 //search in
 $searchOptions['searchIn'] = 'all';

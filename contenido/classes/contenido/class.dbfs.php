@@ -45,7 +45,7 @@ class cApiDbfsCollection extends ItemCollection {
     public function outputFile($path) {
         global $cfg, $client, $auth;
 
-        $path = cSecurity::escapeDB($path, NULL);
+        $path = $this->escape($path);
         $client = (int) $client;
         $path = cApiDbfs::stripPath($path);
         $dir = dirname($path);
@@ -211,7 +211,7 @@ class cApiDbfsCollection extends ItemCollection {
 
         $path = cApiDbfs::stripPath($path);
 
-        if ($path == "") {
+        if ($path == '') {
             return true;
         }
 
@@ -382,8 +382,8 @@ class cApiDbfsCollection extends ItemCollection {
         $dirname = dirname($path);
         $filename = basename($path);
 
-        if ($dirname == ".") {
-            $dirname = "";
+        if ($dirname == '.') {
+            $dirname = '';
         }
 
         $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");

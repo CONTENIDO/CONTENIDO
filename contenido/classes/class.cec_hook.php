@@ -281,7 +281,7 @@ class cApiCecHook {
     private static function _debug($var, $msg = '') {
         global $cfg;
 
-        $content = ($msg !== '')? $msg . ': ' : '';
+        $content = ($msg !== '') ? $msg . ': ' : '';
         if (is_object($var) || is_array($var)) {
             $content .= print_r($var, true);
         } else {

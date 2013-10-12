@@ -70,7 +70,7 @@ class cContentTypeLinktarget extends cContentTypeLinkeditor {
      *         shown in frontend
      */
     public function generateViewCode() {
-        $target = ($this->_settings['linkeditor_newwindow'] == 'true')? '_blank' : '';
+        $target = ($this->_settings['linkeditor_newwindow'] == 'true') ? '_blank' : '';
         return $this->_encodeForOutput($target);
     }
 

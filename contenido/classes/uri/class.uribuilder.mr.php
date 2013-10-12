@@ -88,8 +88,8 @@ class cUriBuilderMR extends cUriBuilder {
         if (ModRewrite::isEnabled()) {
             $this->_aMrCfg = ModRewrite::getConfig();
             $this->_bMREnabled = true;
-            $this->_bIsXHTML = (getEffectiveSetting('generator', 'xhtml', 'false') == 'false')? false : true;
-            $this->_sAmp = ($this->_bIsXHTML)? '&amp;' : '&';
+            $this->_bIsXHTML = (getEffectiveSetting('generator', 'xhtml', 'false') == 'false') ? false : true;
+            $this->_sAmp = ($this->_bIsXHTML) ? '&amp;' : '&';
         }
     }
 
@@ -347,8 +347,8 @@ class cUriBuilderMR extends cUriBuilder {
 
         // set client if desired
         if ($this->_aMrCfg['use_client'] == 1) {
-            $iChangeClient = (isset($aArgs['changeclient']))? (int) $aArgs['changeclient'] : 0;
-            $idclient = ($iChangeClient > 0)? $iChangeClient : $client;
+            $iChangeClient = (isset($aArgs['changeclient'])) ? (int) $aArgs['changeclient'] : 0;
+            $idclient = ($iChangeClient > 0) ? $iChangeClient : $client;
             if ($this->_aMrCfg['use_client_name'] == 1) {
                 return urlencode(ModRewrite::getClientName($idclient));
             } else {
@@ -369,8 +369,8 @@ class cUriBuilderMR extends cUriBuilder {
 
         // set language if desired
         if ($this->_aMrCfg['use_language'] == 1) {
-            $iChangeLang = (isset($aArgs['changelang']))? (int) $aArgs['changelang'] : 0;
-            $idlang = ($iChangeLang > 0)? $iChangeLang : $lang;
+            $iChangeLang = (isset($aArgs['changelang'])) ? (int) $aArgs['changelang'] : 0;
+            $idlang = ($iChangeLang > 0) ? $iChangeLang : $lang;
             if ($this->_aMrCfg['use_language_name'] == 1) {
                 return urlencode(ModRewrite::getLanguageName($idlang));
             } else {
@@ -387,7 +387,7 @@ class cUriBuilderMR extends cUriBuilder {
      * @return string Path
      */
     private function _getPath(array $aPretty) {
-        $sPath = (isset($aPretty['urlpath']))? $aPretty['urlpath'] : '';
+        $sPath = (isset($aPretty['urlpath'])) ? $aPretty['urlpath'] : '';
 
         // check start directory settings
         if ($this->_aMrCfg['startfromroot'] == 0 && (strlen($sPath) > 0)) {
@@ -412,13 +412,13 @@ class cUriBuilderMR extends cUriBuilder {
      * @return string Articlename
      */
     private function _getArticleName(array $aPretty, array $aArgs) {
-        $sArticle = (isset($aPretty['urlname']))? $aPretty['urlname'] : '';
+        $sArticle = (isset($aPretty['urlname'])) ? $aPretty['urlname'] : '';
 
-        $iIdCat = (isset($aArgs['idcat']))? (int) $aArgs['idcat'] : 0;
-        $iIdCatLang = (isset($aArgs['idcatlang']))? (int) $aArgs['idcatlang'] : 0;
-        $iIdCatArt = (isset($aArgs['idcatart']))? (int) $aArgs['idcatart'] : 0;
-        $iIdArt = (isset($aArgs['idart']))? (int) $aArgs['idart'] : 0;
-        $iIdArtLang = (isset($aArgs['idartlang']))? (int) $aArgs['idartlang'] : 0;
+        $iIdCat = (isset($aArgs['idcat'])) ? (int) $aArgs['idcat'] : 0;
+        $iIdCatLang = (isset($aArgs['idcatlang'])) ? (int) $aArgs['idcatlang'] : 0;
+        $iIdCatArt = (isset($aArgs['idcatart'])) ? (int) $aArgs['idcatart'] : 0;
+        $iIdArt = (isset($aArgs['idart'])) ? (int) $aArgs['idart'] : 0;
+        $iIdArtLang = (isset($aArgs['idartlang'])) ? (int) $aArgs['idartlang'] : 0;
 
         // category id was passed but not article id
         if (($iIdCat > 0 || $iIdCatLang > 0) && $iIdCatArt == 0 && $iIdArt == 0 && $iIdArtLang == 0) {
@@ -428,7 +428,7 @@ class cUriBuilderMR extends cUriBuilder {
                     // use default start article name
                     $sArticle = $this->_aMrCfg['default_startart_name'];
                 } else {
-                    $sArticle = (isset($aPretty['urlname']))? $aPretty['urlname'] : '';
+                    $sArticle = (isset($aPretty['urlname'])) ? $aPretty['urlname'] : '';
                 }
             } else {
                 // url is to create without article name

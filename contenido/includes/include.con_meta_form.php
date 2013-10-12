@@ -124,7 +124,7 @@ $tpl->set('s', 'ACTION', $sess->url('main.php?area=' . $area . '&frame=' . $fram
 // Assign form hidden elements values
 $tpl->set('s', 'IDART', $idart);
 $tpl->set('s', 'IDCAT', $idcat);
-$tpl->set('s', 'TMP_FIRSTEDIT', $art->getField('created')? 0 : 1);
+$tpl->set('s', 'TMP_FIRSTEDIT', $art->getField('created') ? 0 : 1);
 $tpl->set('s', 'IDARTLANG', $art->getField('idartlang'));
 $tpl->set('s', 'TITEL', i18n('SEO administration'));
 

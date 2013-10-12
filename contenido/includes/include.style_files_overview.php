@@ -78,7 +78,7 @@ if (($handle = opendir($path)) !== false && is_dir($path)) {
 
             $tpl->set('d', 'FILENAME', $html_filename);
 
-            $tpl->set("d", "DESCRIPTION", ($fileInfo["description"] == "")? '' : $fileInfo["description"]);
+            $tpl->set("d", "DESCRIPTION", ($fileInfo["description"] == '') ? '' : $fileInfo["description"]);
 
             $delTitle = i18n('Delete File');
             $delDescr = sprintf(i18n('Do you really want to delete the following file:<br><br>%s<br>'), $filename);

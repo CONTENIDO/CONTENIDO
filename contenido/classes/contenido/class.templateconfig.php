@@ -60,7 +60,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
     }
 
     /**
-     * Creates an template config item entry
+     * Creates a template config item entry
      *
      * @param int $idtpl
      * @param int $status

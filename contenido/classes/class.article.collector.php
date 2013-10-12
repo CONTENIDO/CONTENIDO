@@ -178,7 +178,7 @@ class cArticleCollector implements SeekableIterator, Countable {
 
         $cfg = cRegistry::getConfig();
 
-        $sqlCat = (count($this->_options['categories']) > 0)? " idcat IN ('" . implode("','", $this->_options['categories']) . "') AND " : '';
+        $sqlCat = (count($this->_options['categories']) > 0) ? " idcat IN ('" . implode("','", $this->_options['categories']) . "') AND " : '';
 
         $db = cRegistry::getDb();
         $sql = "SELECT startidartlang, idcat FROM " . $cfg['tab']['cat_lang'] . " WHERE " . $sqlCat . " idlang=" . $this->_options['lang'];
@@ -198,8 +198,8 @@ class cArticleCollector implements SeekableIterator, Countable {
             return;
         }
 
-        $sqlCat = (count($this->_options['categories']) > 0)? " c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND " : '';
-        $sqlArtSpecs = (count($this->_options['artspecs']) > 0)? " a.artspec IN ('" . implode("','", $this->_options['artspecs']) . "') AND " : '';
+        $sqlCat = (count($this->_options['categories']) > 0) ? " c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND " : '';
+        $sqlArtSpecs = (count($this->_options['artspecs']) > 0) ? " a.artspec IN ('" . implode("','", $this->_options['artspecs']) . "') AND " : '';
 
         if ($this->_options['start'] == false && count($this->_startArticles) > 0) {
             $sqlStartArticles = "a.idartlang NOT IN ('" . implode("','", $this->_startArticles) . "') AND ";

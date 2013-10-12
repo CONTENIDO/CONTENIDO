@@ -137,7 +137,7 @@ class cI18n {
      * @return string|false
      */
     public static function getLanguage() {
-        return (self::$_i18nData['language'])? self::$_i18nData['language'] : false;
+        return (self::$_i18nData['language']) ? self::$_i18nData['language'] : false;
     }
 
     /**

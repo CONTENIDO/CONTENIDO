@@ -69,7 +69,7 @@ class cApiUserCollection extends ItemCollection {
      */
     public function deleteUserByUsername($username) {
         $result = $this->deleteBy('username', $username);
-        return ($result > 0)? true : false;
+        return ($result > 0) ? true : false;
     }
 
     /**
@@ -909,7 +909,7 @@ class cApiUser extends Item {
      * @return array
      */
     public function getGroupNamesByUserID($userid = NULL, $bAddDescription = true) {
-        $userid = (NULL === $userid)? $this->get('user_id') : $userid;
+        $userid = (NULL === $userid) ? $this->get('user_id') : $userid;
 
         $aGroups = array();
 
@@ -941,7 +941,7 @@ class cApiUser extends Item {
      * @return array
      */
     public function getGroupIDsByUserID($userid) {
-        $userid = (NULL === $userid)? $this->get('user_id') : $userid;
+        $userid = (NULL === $userid) ? $this->get('user_id') : $userid;
 
         $aGroups = array();
 
@@ -993,7 +993,7 @@ class cApiUser extends Item {
             $result = $userProp->get('value');
         }
 
-        return ($result !== false)? $result : false;
+        return ($result !== false) ? $result : false;
     }
 
     /**

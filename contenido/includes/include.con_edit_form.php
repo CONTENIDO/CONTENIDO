@@ -99,9 +99,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tmp_onlineaftermove = $db->f("time_online_move");
         $tmp_usetimemgmt = $db->f("timemgmt");
         $tmp_locked = $db->f("locked");
-        $tmp_redirect_checked = ($db->f("redirect") == '1')? 'checked' : '';
-        $tmp_redirect_url = ($db->f("redirect_url") != '0')? $db->f("redirect_url") : "http://";
-        $tmp_external_redirect_checked = ($db->f("external_redirect") == '1')? 'checked' : '';
+        $tmp_redirect_checked = ($db->f("redirect") == '1') ? 'checked' : '';
+        $tmp_redirect_url = ($db->f("redirect_url") != '0') ? $db->f("redirect_url") : "http://";
+        $tmp_external_redirect_checked = ($db->f("external_redirect") == '1') ? 'checked' : '';
         $idtplinput = $db->f("idtplinput");
 
         if ($tmp_modifiedby == '') {
@@ -295,7 +295,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tpl->set('s', 'AUTOR-AENDERUNG-NAME', $modifiedByRealname);
 
     // Created
-    $tmp_erstellt = ($tmp_firstedit == 1)? '<input type="hidden" name="created" value="' . date("Y-m-d H:i:s") . '">' : '<input type="hidden" name="created" value="' . $tmp_created . '">';
+    $tmp_erstellt = ($tmp_firstedit == 1) ? '<input type="hidden" name="created" value="' . date("Y-m-d H:i:s") . '">' : '<input type="hidden" name="created" value="' . $tmp_created . '">';
     $tpl->set('s', 'ERSTELLT', i18n("Created"));
     $tpl->set('s', 'ERSTELLUNGS-DATUM', $tmp2_created . $tmp_erstellt);
 

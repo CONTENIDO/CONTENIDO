@@ -108,14 +108,14 @@ class cApiFrontendPermissionCollection extends ItemCollection {
         $item = $this->_frontendPermission->_inFilter($item);
 
         // Check for global permisson
-        $this->select("idlang=" . $lang . " AND idfrontendgroup=" . $group . " AND plugin='" . $plugin . "' AND action='" . $action . "' AND item='__GLOBAL__'");
+        $this->select("idlang = " . $lang . " AND idfrontendgroup = " . $group . " AND plugin = '" . $plugin . "' AND action = '" . $action . "' AND item = '__GLOBAL__'");
         if ($this->next()) {
             return true;
         }
 
         // Check for item permisson
-        $this->select("idlang=" . $lang . " AND idfrontendgroup=" . $group . " AND plugin='" . $plugin . "' AND action='" . $action . "' AND item='" . $item . "'");
-        return ($this->next())? true : false;
+        $this->select("idlang = " . $lang . " AND idfrontendgroup = " . $group . " AND plugin = '" . $plugin . "' AND action = '" . $action . "' AND item = '" . $item . "'");
+        return ($this->next()) ? true : false;
     }
 
     /**
@@ -138,7 +138,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
         $action = $this->_frontendPermission->_inFilter($action);
         $item = $this->_frontendPermission->_inFilter($item);
 
-        $this->select("idlang=" . $lang . " AND idfrontendgroup=" . $group . " AND plugin='" . $plugin . "' AND action='" . $action . "' AND item='" . $item . "'");
+        $this->select("idlang = " . $lang . " AND idfrontendgroup = " . $group . " AND plugin = '" . $plugin . "' AND action = '" . $action . "' AND item = '" . $item . "'");
         if (($myitem = $this->next()) !== false) {
             return $this->delete($myitem->get('idfrontendpermission'));
         }

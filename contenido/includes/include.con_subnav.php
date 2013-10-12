@@ -72,7 +72,7 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
                 " . $cfg["tab"]["area"] . " AS a,
                 " . $cfg["tab"]["nav_sub"] . " AS b
             WHERE
-                b.idarea IN " . cSecurity::escapeDB($in_str, $db) . " AND
+                b.idarea IN " . $db->escape($in_str) . " AND
                 b.idarea = a.idarea AND
                 b.level = 1 AND
                 b.online = 1

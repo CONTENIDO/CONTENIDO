@@ -446,7 +446,7 @@ class cFileHandler {
     public static function getExtension($basename) {
         $aFileName = explode('.', trim($basename, '.'));
 
-        return (count($aFileName) > 1)? $aFileName[count($aFileName) - 1] : '';
+        return (count($aFileName) > 1) ? $aFileName[count($aFileName) - 1] : '';
     }
 
     /**

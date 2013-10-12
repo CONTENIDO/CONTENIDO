@@ -42,7 +42,7 @@ class WorkflowUserSequences extends ItemCollection {
 
         $pos = $item->get("position");
         $idworkflowitem = $item->get("idworkflowitem");
-        $this->select("position > $pos AND idworkflowitem = '" . cSecurity::escapeDB($idworkflowitem, NULL) . "'");
+        $this->select("position > $pos AND idworkflowitem = " . (int) $idworkflowitem);
         while (($obj = $this->next()) !== false) {
             $pos = $obj->get("position") - 1;
             $obj->setPosition($pos);
@@ -59,13 +59,13 @@ class WorkflowUserSequences extends ItemCollection {
         $oDb = cRegistry::getDb();
 
         $aIdArtLang = array();
-        $sSql = 'SELECT idartlang FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence = ' . cSecurity::escapeDB($idusersequence, $oDb) . ';';
+        $sSql = 'SELECT idartlang FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence = ' . $oDb->escape($idusersequence) . ';';
         $oDb->query($sSql);
         while ($oDb->nextRecord()) {
             array_push($aIdArtLang, $oDb->f('idartlang'));
         }
 
-        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence = ' . cSecurity::escapeDB($idusersequence, $oDb) . ';';
+        $sSql = 'DELETE FROM ' . $cfg["tab"]["workflow_art_allocation"] . ' WHERE idusersequence = ' . $oDb->escape($idusersequence) . ';';
         $oDb->query($sSql);
 
         foreach ($aIdArtLang as $iIdArtLang) {
@@ -82,7 +82,7 @@ class WorkflowUserSequences extends ItemCollection {
             return false;
         }
 
-        $this->select("idworkflowitem = '" . cSecurity::escapeDB($idworkflowitem, NULL) . "'", "", "position DESC", "1");
+        $this->select("idworkflowitem = " . (int) $idworkflowitem, "", "position DESC", "1");
 
         $item = $this->next();
 
@@ -101,7 +101,7 @@ class WorkflowUserSequences extends ItemCollection {
     }
 
     public function swap($idworkflowitem, $pos1, $pos2) {
-        $this->select("idworkflowitem = '$idworkflowitem' AND position = '" . cSecurity::escapeDB($pos1, NULL) . "'");
+        $this->select("idworkflowitem = '$idworkflowitem' AND position = " . (int) $pos1);
         if (($item = $this->next()) === false) {
             $this->lasterror = i18n("Swapping items failed: Item doesn't exist", "workflow");
             return false;
@@ -109,7 +109,7 @@ class WorkflowUserSequences extends ItemCollection {
 
         $pos1ID = $item->getField("idusersequence");
 
-        $this->select("idworkflowitem = '$idworkflowitem' AND position = '" . cSecurity::escapeDB($pos2, NULL) . "'");
+        $this->select("idworkflowitem = '$idworkflowitem' AND position = " . (int) $pos2);
         if (($item = $this->next()) === false) {
             $this->lasterror(i18n("Swapping items failed: Item doesn't exist", "workflow"));
             return false;
@@ -179,11 +179,11 @@ class WorkflowUserSequence extends Item {
             case "iduser":
                 if ($value != 0) {
                     $db = cRegistry::getDb();
-                    $sql = "SELECT user_id FROM " . $cfg['tab']['user'] . " WHERE user_id = '" . cSecurity::escapeDB($value, $db) . "'";
+                    $sql = "SELECT user_id FROM " . $cfg['tab']['user'] . " WHERE user_id = '" . $db->escape($value) . "'";
                     $db->query($sql);
 
                     if (!$db->nextRecord()) {
-                        $sql = "SELECT group_id FROM " . $cfg["tab"]["groups"] . " WHERE group_id = '" . cSecurity::escapeDB($value, $db) . "'";
+                        $sql = "SELECT group_id FROM " . $cfg["tab"]["groups"] . " WHERE group_id = '" . $db->escape($value) . "'";
 
                         $db->query($sql);
                         if (!$db->nextRecord()) {

@@ -91,7 +91,7 @@ class cBackend {
         }
 
         $itemid = cSecurity::toInteger($itemid);
-        $area = cSecurity::escapeDB($area, $db);
+        $area = $db->escape($area);
 
         // Store Area
         $this->_area = $area;
