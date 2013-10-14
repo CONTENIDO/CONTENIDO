@@ -56,3 +56,5 @@ http://www.phpunit.de/manual/2.3/de/
 
 A short tutorial about PHPUnit:
 http://pear.php.net/manual/en/package.php.phpunit.intro.php
+
+phpunit --log-junit /var/www/conqa/reports/phpunit.xml --bootstrap /var/www/con49_trunk/test/frontend/bootstrap.php /var/www/con49_trunk/test/frontend/Array/cArrayTest.php

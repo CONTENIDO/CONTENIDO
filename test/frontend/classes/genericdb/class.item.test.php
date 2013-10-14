@@ -16,9 +16,10 @@
 // '/../ItemCollection/'));
 // require_once ($path . '/sqlStatements.php');
 
-require_once 'sqlStatements.php';
-require_once 'class.test_item.php';
-require_once 'class.tf_item.php';
+require_once 'mockup/class.sql_item.php';
+
+require_once 'mockup/class.test_item.php';
+require_once 'mockup/class.tf_item.php';
 
 /**
  *
