@@ -59,8 +59,7 @@ class cDirHandler {
         if (!cFileHandler::exists($dirname)) {
             throw new cInvalidArgumentException('The directory ' . $dirname . ' could not be accessed because it does not exist.');
         }
-
-        return unlink($dirname);
+        return rmdir($dirname);
     }
 
     /**
@@ -228,4 +227,5 @@ class cDirHandler {
             return true;
         }
     }
+
 }
