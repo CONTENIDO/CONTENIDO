@@ -2631,6 +2631,7 @@ test/frontend/Template/template.php -text
 test/frontend/TestSuite.php -text
 test/frontend/Validator/cValidatorEmail.php -text
 test/frontend/ValidatorTestSuite.php -text
+test/frontend/classes/genericdb/class.item.collection.test.php -text
 test/frontend/classes/genericdb/class.item.test.php -text
 test/frontend/classes/genericdb/class.item_collection.test.php -text
 test/frontend/classes/genericdb/mockup/class.dog_item.php -text
