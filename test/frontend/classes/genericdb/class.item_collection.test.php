@@ -65,80 +65,306 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException cInvalidArgumentException
      */
     public function testConstruct() {
-        $col = new ITCollection();
-    }
+        // test construction w/o specified table
+        try {
+            $col = new ITCollection();
+            $this->fail('should have thrown cInvalidArgumentException');
+        } catch (cInvalidArgumentException $e) {
+            $this->assertEquals('ItemCollection: No table specified. Inherited classes *need* to set a table', $e->getMessage());
+        }
 
-    /**
-     * @expectedException cInvalidArgumentException
-     */
-    public function testConstruct2() {
-        $col = new TITCollection();
+        // test construction w/o specified primary key
+        try {
+            $col = new TITCollection();
+            $this->fail('should have thrown cInvalidArgumentException');
+        } catch (cInvalidArgumentException $e) {
+            $this->assertEquals('No primary key specified. Inherited classes *need* to set a primary key', $e->getMessage());
+        }
     }
 
     /**
      */
     public function testSetEncoding() {
-        $this->markTestIncomplete('incomplete implementation');
+        $encoding = 'UTF-8';
+        $this->_collection->setEncoding($encoding);
+
+        // test member _encoding of collection
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_encoding');
+        $this->assertEquals($encoding, $act);
+
+        // test member _sEncoding of driver of collection
+        $_driver = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_driver');
+        $act = PHPUnit_Framework_Assert::readAttribute($_driver, '_sEncoding');
+        $this->assertEquals($encoding, $act);
     }
 
     /**
-     * @expectedException cInvalidArgumentException
      */
     public function testLink() {
         $dogColl = new DogCollection();
+
+        // test linking of known class
         $dogColl->link('DogRfidCollection');
-        $dogColl = new DogCollection();
-        $dogColl->link('non_existing_class');
+        $_links = PHPUnit_Framework_Assert::readAttribute($dogColl, '_links');
+        $this->assertSame(true, is_array($_links));
+        $this->assertSame(true, array_key_exists('DogRfidCollection', $_links));
+        $this->assertSame(true, $_links['DogRfidCollection'] instanceof DogRfidCollection);
+
+        // test linking of unknown class
+        try {
+            $dogColl->link('non_existing_class');
+            $this->fail('should have thrown cInvalidArgumentException');
+        } catch (cInvalidArgumentException $e) {
+            $this->assertEquals('Could not find class [non_existing_class] for use with link in class DogCollection', $e->getMessage());
+        }
     }
 
     /**
      */
     public function testSetLimit() {
-        $this->markTestIncomplete('incomplete implementation');
+        $_limitStart = 1;
+        $_limitCount = 2;
+        $this->_collection->setLimit($_limitStart, $_limitCount);
+
+        // test member _limitStart of collection
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_limitStart');
+        $this->assertEquals($_limitStart, $act);
+
+        // test member _limitCount of collection
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_limitCount');
+        $this->assertEquals($_limitCount, $act);
     }
 
     /**
+     * Test setting a global where condition w/o operator.
      */
     public function testSetWhere() {
-        $ar = array(
-            'id' => '1',
-            'name' => 'Max',
-            'descr' => 'Its distinctive appearance and deep foghorn voice make it stand out in a crowd.',
-            'size' => 'medium',
-            'date' => '2013-09-26 12:14:28'
-        );
-        $dogColl = new DogCollection();
-        $dogColl->setWhere('name', 'Jake', '=');
-        $dogColl->setWhere('size', 'medium', '=');
-        $dogColl->deleteWhere('name', 'Jake', '=');
-        $dogColl->query();
-        $dogColl->setLimit(0, 1);
-        $dogColl->query();
-
-        $ref = $dogColl->next();
-        // print_r($ref);
-        $this->assertEquals($ref->toArray(), $ar);
+        $this->_collection->setWhere('foo', 'bar');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['global']['foo'] = array();
+        $exp['global']['foo']['operator'] = '=';
+        $exp['global']['foo']['restriction'] = 'bar';
+        $exp['groups'] = array();
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
     }
 
     /**
+     * Test setting a global where condition w/ operator.
      */
-    public function testDeleteWhere() {
-        $this->markTestIncomplete('incomplete implementation');
+    public function testSetWhereOperator() {
+        $this->_collection->setWhere('foo', 'bar', 'LIKE');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['global']['foo'] = array();
+        $exp['global']['foo']['operator'] = 'LIKE';
+        $exp['global']['foo']['restriction'] = 'bar';
+        $exp['groups'] = array();
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
+    }
+
+    /**
+     * This method tests deleting nonexistant where conditions from a collection
+     * which has no conditions at all.
+     */
+    public function testDeleteWhereUnconditioned() {
+        // test deleting a nonexistant where condition
+        $this->_collection->deleteWhere('foo', 'bar');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['groups'] = array();
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
+
+        // test deleting a nonexistant where condition w/ default operator
+        $this->_collection->deleteWhere('foo', 'bar', '=');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['groups'] = array();
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
+
+        // test deleting a nonexistant where condition w/ nondefault operator
+        $this->_collection->deleteWhere('foo', 'bar', 'LIKE');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['groups'] = array();
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
+    }
+
+    /**
+     * This method tests deleting nonexistant where conditions from a collection
+     * which has some conditions defined.
+     */
+    public function testDeleteWhereConditioned() {
+        // test deleting a where condition when there is another condition for
+        // this field but w/ another restriction
+        $this->_collection->setWhere('foo', 'bar');
+        $this->_collection->deleteWhere('foo', 'eggs');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['global']['foo'] = array();
+        $exp['global']['foo']['operator'] = '=';
+        $exp['global']['foo']['restriction'] = 'bar';
+        $exp['groups'] = array();
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
+
+        // test deleting a where condition when there is another condition for
+        // this restriction but w/ another field
+        $this->_collection->setWhere('foo', 'bar');
+        $this->_collection->deleteWhere('spam', 'bar');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['global']['foo'] = array();
+        $exp['global']['foo']['operator'] = '=';
+        $exp['global']['foo']['restriction'] = 'bar';
+        $exp['groups'] = array();
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
+
+        // test deleting a where condition when there is another condition for
+        // this restriction but w/ another field
+        $this->_collection->setWhere('foo', 'bar');
+        $this->_collection->deleteWhere('foo', 'bar', 'LIKE');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['global']['foo'] = array();
+        $exp['global']['foo']['operator'] = '=';
+        $exp['global']['foo']['restriction'] = 'bar';
+        $exp['groups'] = array();
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
+
+        // test deleting a where condition when there is a condition for this
+        // field w/ this restriction
+        $this->_collection->setWhere('foo', 'bar');
+        $this->_collection->deleteWhere('foo', 'bar');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['groups'] = array();
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
     }
 
     /**
      */
     public function testSetWhereGroup() {
-        $this->markTestIncomplete('incomplete implementation');
+        $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['groups'] = array();
+        $exp['groups']['myGroup'] = array();
+        $exp['groups']['myGroup']['foo'] = array();
+        $exp['groups']['myGroup']['foo']['operator'] = '=';
+        $exp['groups']['myGroup']['foo']['restriction'] = 'bar';
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
     }
 
     /**
      */
-    public function testDeleteWhereGroup() {
-        $this->markTestIncomplete('incomplete implementation');
+    public function testSetWhereGroupOperator() {
+        $this->_collection->setWhereGroup('myGroup', 'foo', 'bar', 'LIKE');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['groups'] = array();
+        $exp['groups']['myGroup'] = array();
+        $exp['groups']['myGroup']['foo'] = array();
+        $exp['groups']['myGroup']['foo']['operator'] = 'LIKE';
+        $exp['groups']['myGroup']['foo']['restriction'] = 'bar';
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
+    }
+
+    /**
+     * @todo should behave the same way as deleteWhere().
+     * @see testDeleteWhereUnconditioned()
+     */
+    public function testDeleteWhereGroupUnconditioned() {
+        try {
+            $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar');
+            $this->fail('should have thrown PHPUnit_Framework_Error_Notice');
+        } catch (PHPUnit_Framework_Error_Notice $e) {
+            $this->assertEquals('Undefined index: myGroup', $e->getMessage());
+        }
+    }
+
+    /**
+     */
+    public function testDeleteWhereGroupConditioned() {
+        // test deleting a where condition when there is another condition for
+        // this field but w/ another restriction
+        $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
+        $this->_collection->deleteWhereGroup('myGroup', 'foo', 'eggs');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['groups'] = array();
+        $exp['groups']['myGroup'] = array();
+        $exp['groups']['myGroup']['foo'] = array();
+        $exp['groups']['myGroup']['foo']['operator'] = '=';
+        $exp['groups']['myGroup']['foo']['restriction'] = 'bar';
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
+
+        // test deleting a where condition when there is another condition for
+        // this restriction but w/ another field
+        $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
+        $this->_collection->deleteWhereGroup('myGroup', 'spam', 'bar');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['groups'] = array();
+        $exp['groups']['myGroup'] = array();
+        $exp['groups']['myGroup']['foo'] = array();
+        $exp['groups']['myGroup']['foo']['operator'] = '=';
+        $exp['groups']['myGroup']['foo']['restriction'] = 'bar';
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
+
+        // test deleting a where condition when there is another condition for
+        // this restriction but w/ another field
+        $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
+        $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar', 'LIKE');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['groups'] = array();
+        $exp['groups']['myGroup'] = array();
+        $exp['groups']['myGroup']['foo'] = array();
+        $exp['groups']['myGroup']['foo']['operator'] = '=';
+        $exp['groups']['myGroup']['foo']['restriction'] = 'bar';
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
+
+        // test deleting a where condition when there is a condition for this
+        // field w/ this restriction
+        $this->_collection->setWhereGroup('myGroup', 'foo', 'bar');
+        $this->_collection->deleteWhereGroup('myGroup', 'foo', 'bar');
+        $act = PHPUnit_Framework_Assert::readAttribute($this->_collection, '_where');
+        $exp = array();
+        $exp['global'] = array();
+        $exp['groups'] = array();
+        $exp['groups']['myGroup'] = array();
+        $this->assertEquals(true, is_array($act));
+        $this->assertEquals(0, count($this->arrayRecursiveDiff($act, $exp)));
     }
 
     /**
@@ -432,5 +658,28 @@ class ItemCollectionTest extends PHPUnit_Framework_TestCase {
         $ret->deleteProperty('bla', 'muh');
 
         $this->assertFalse($ret->getProperty('bla', 'muh'));
+    }
+
+    /**
+     *
+     * @param array $a1
+     * @param array $a2
+     * @return array
+     */
+    private function arrayRecursiveDiff(array $a1, array $a2) {
+        $ret = array();
+        foreach ($a1 as $key => $value) {
+            if (!array_key_exists($key, $a2)) {
+                $ret[$key] = $value;
+            } else if (is_array($value)) {
+                $aRecursiveDiff = $this->arrayRecursiveDiff($value, $a2[$key]);
+                if (count($aRecursiveDiff)) {
+                    $ret[$key] = $aRecursiveDiff;
+                }
+            } else if ($value != $a2[$key]) {
+                $ret[$key] = $value;
+            }
+        }
+        return $ret;
     }
 }
