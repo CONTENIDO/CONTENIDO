@@ -282,7 +282,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $tempSqlContent = explode("\n", $tempSqlContent);
         $tempSqlLines = count($tempSqlContent);
 
-        $pattern = '/(DELETE FROM|DROP TABLE) ' . parent::SQL_PREFIX . '\b/';
+        $pattern = '/^(DELETE FROM|DROP TABLE) `?' . parent::SQL_PREFIX . '`?\b/';
 
         for ($i = 0; $i < $tempSqlLines; $i++) {
             if (preg_match($pattern, $tempSqlContent[$i])) {

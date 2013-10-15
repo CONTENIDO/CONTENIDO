@@ -117,7 +117,7 @@ class PimPluginSetupUpdate extends PimPluginSetup {
             $tempSqlContent = explode("\n", $tempSqlContent);
             $tempSqlLines = count($tempSqlContent);
 
-            $pattern = '/(CREATE TABLE IF NOT EXISTS|INSERT INTO|UPDATE|ALTER TABLE) ' . parent::SQL_PREFIX . '\b/';
+            $pattern = '/^(CREATE TABLE IF NOT EXISTS|INSERT INTO|UPDATE|ALTER TABLE) `?' . parent::SQL_PREFIX . '`?\b/';
 
             for ($i = 0; $i < $tempSqlLines; $i++) {
                 if (preg_match($pattern, $tempSqlContent[$i])) {
