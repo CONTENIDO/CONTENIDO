@@ -166,12 +166,12 @@ class SearchResultModule {
         // depends upon if plugin mod_rewrite is enabled
         if (class_exists('ModRewrite') && ModRewrite::isEnabled()) {
             $tpl->assign('action', cUri::getInstance()->build(array(
-                'idart' => cRegistry::getArticleLanguageId(),
+                'idart' => cRegistry::getArticleId(),
                 'lang' => cRegistry::getLanguageId()
             )));
         } else {
             $tpl->assign('action', 'front_content.php');
-            $tpl->assign('idart', cRegistry::getArticleLanguageId());
+            $tpl->assign('idart', cRegistry::getArticleId());
             $tpl->assign('idlang', cRegistry::getLanguageId());
         }
 
