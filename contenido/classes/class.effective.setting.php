@@ -120,7 +120,7 @@ class cEffectiveSetting {
             $value = getSystemProperty($type, $name);
         }
 
-        if ($value === false || $value === '') {
+        if ($value === false || $value === '' || $value === NULL) {
             $value = $default;
         }
 
