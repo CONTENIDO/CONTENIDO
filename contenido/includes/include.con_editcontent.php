@@ -2,17 +2,18 @@
 /**
  * This file contains the backend page for editing articles content.
  *
- * @todo replace code generation by Contenido_CodeGenerator (see contenido/classes/CodeGenerator)
+ * @todo replace code generation by Contenido_CodeGenerator (see
+ *       contenido/classes/CodeGenerator)
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -132,6 +133,7 @@ if ($cfg["debug"]["codeoutput"]) {
 }
 
 chdir(cRegistry::getFrontendPath());
+
 eval("?>\n" . $code . "\n<?php\n");
 
 cRegistry::shutdown();
