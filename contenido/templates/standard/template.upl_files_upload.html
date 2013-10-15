@@ -20,6 +20,30 @@
             }
         });
     });
+    
+    /**
+     * Replaces or adds a variable in a URL.
+     *
+     * @param    {String}    url
+     * @param    {String}    param
+     * @param    {String}    value
+     *
+     * @returns  {String}
+     */
+    function replaceQueryString(url, param, value) {
+        var re = new RegExp("([?|&])" + param + "=.*?(&|$)", "i");
+        if (url.match(re)) {
+            return url.replace(re, '$1' + param + "=" + value + '$2');
+        } else {
+            if (url.indexOf('.php?') > 0) {
+                prefixSign = '&';
+            } else {
+                prefixSign = '?';
+            }
+
+            return url + prefixSign + param + "=" + value;
+        }
+    }
 </script>
 
 <div id="dropbox_area">
@@ -95,6 +119,12 @@ i18n("Waiting...")
 <script type="text/javascript">
 var oRef = parent.parent.frames['right'].frames['right_top'].document.getElementById('c_1');
 if (oRef) parent.parent.frames['right'].frames['right_top'].sub.clicked(oRef.getElementsByTagName('a')[0]);
+
 // to reload the left frame after delete/insert new files
+redirectUrl = parent.parent.frames['left'].frames['left_bottom'].location;
+redirectUrl = replaceQueryString(redirectUrl, 'action', '');
+redirectUrl = replaceQueryString(redirectUrl, 'path', '');
+
+parent.parent.frames['left'].frames['left_bottom'].location.href = redirectUrl;
 parent.parent.frames['left'].frames['left_bottom'].location.reload();
 </script>
