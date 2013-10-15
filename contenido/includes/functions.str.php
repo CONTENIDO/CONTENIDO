@@ -1236,7 +1236,7 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
 
     // add every category from the database
     while ($cat = $cats->next()) {
-        if (in_array($ignoreCats, $cat->get('idcat'))) {
+        if (in_array($cat->get('idcat'), $ignoreCats)) {
             continue;
         }
         if (isset($catArray[$cat->get('idcat')])) {
