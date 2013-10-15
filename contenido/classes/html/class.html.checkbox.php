@@ -42,7 +42,7 @@ class cHTMLCheckbox extends cHTMLFormElement {
      * Creates an HTML checkbox element.
      *
      * @param string $name Name of the element
-     * @param string $value Value of the radio button
+     * @param string $value Value of the checkbox
      * @param string $id ID of the element
      * @param bool $checked Is element checked?
      * @param string $disabled Item disabled flag (non-empty to set disabled)

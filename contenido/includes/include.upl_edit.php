@@ -87,7 +87,7 @@ if ($upload = $uploads->next()) {
         //echo '<input type="button" value="test";
 
         if (isset($_SESSION['zip']) && $_SESSION['zip'] === 'extract') {
-            
+
         }
 
         $link = new cHTMLLink();
@@ -127,7 +127,7 @@ if ($upload = $uploads->next()) {
                 break;
 
             case 'zip':
-                $sCell = new cHTMLCheckbox('extractZip');
+                $sCell = new cHTMLCheckbox('extractZip', '');
                 $sCell->setEvent('onclick', 'show();');
                 // $sCell->setClass('ZipExtract');
                 break;
@@ -138,7 +138,7 @@ if ($upload = $uploads->next()) {
                 $box->setValue(strstr($_REQUEST['file'], '.', TRUE));
                 $box->setClass('ZipExtract');
                 $sCell = $box;
-                $checkbox = new cHTMLCheckbox('overwrite');
+                $checkbox = new cHTMLCheckbox('overwrite', i18n('overwrite'));
                 $checkbox->setID('overwrite');
                 $checkbox->setLabelText(i18n('overwrite'));
                 $checkbox->setClass('ZipExtract');
