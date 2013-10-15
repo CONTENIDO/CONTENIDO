@@ -256,6 +256,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         }
 
         // Success message for new plugins
+        // Get only for extracted (1) and installed mode (2)
         if (parent::getMode() <= 2) {
             parent::info(i18n('The plugin has been successfully installed. To apply the changes please login into backend again.', 'pim'));
         }
