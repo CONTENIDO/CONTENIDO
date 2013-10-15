@@ -23,9 +23,10 @@ include_once (cRegistry::getBackendPath() . 'includes/include.grouprights.php');
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("str")]) . "'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
         FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
-        WHERE user_id = " . $db->escape($groupid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
+        WHERE user_id = '" . $db->escape($groupid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
             AND A.type = 1 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
             AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+
 $db->query($sql);
 $rights_list_old = array();
 while ($db->nextRecord()) { // set a new rights list fore this user
