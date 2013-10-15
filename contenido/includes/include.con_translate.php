@@ -2,15 +2,15 @@
 /**
  * This file contains the mass module translation backend page in content area.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Ingo van Peeren
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Ingo van Peeren
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -100,6 +100,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
             $this->data = cArray::csort($this->data, "$field", $order);
         }
     }
+
 }
 
 /**
@@ -515,8 +516,6 @@ call_user_func_array(array(
     "setHeader"
 ), $tableHeaders);
 
-
-
 $iHeaders = count($tableHeaders);
 for ($i = 0; $i < $iHeaders; $i++) {
     $list->setSortable($i, true);
@@ -539,7 +538,6 @@ $list->objRow->updateAttributes(array(
 ));
 
 $submit = ' <input type="image" class="vAlignTop" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_ok.gif">';
-$counter = 1;
 
 foreach ($allTranslations as $hash => $translationArray) {
     if (!$inUse && $perm->have_perm_area_action($area, 'con_translate_edit') && $action == 'con_translate_edit' && ($editstring == 'all' || $editstring == $hash) && ($editlang == 'all' || $editlang == $lang)) {
@@ -653,6 +651,10 @@ foreach ($allTranslations as $hash => $translationArray) {
     ), $fields);
     $counter++;
 }
+
+// Count all founded translations
+// Important to calculate needed pages
+$counter = count($allTranslations);
 
 $list->sort($_REQUEST["sortby"], $_REQUEST["sortmode"]);
 $list->setListStart($_REQUEST["page"]);
