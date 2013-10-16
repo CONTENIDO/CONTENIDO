@@ -1009,12 +1009,14 @@ function getEffectiveSetting($type, $name, $default = "")
 		$value = getSystemProperty($type, $name);
 	}
 
-	if ($value === false)
+	if ($value === false || $value === '' || $value === NULL)
 	{
 		return $default;
 	} else {
 		return $value;
 	}
+	
+	
 }
 
 /**
