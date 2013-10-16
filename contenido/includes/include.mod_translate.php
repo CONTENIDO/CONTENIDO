@@ -75,7 +75,7 @@ if (count(array_diff_assoc($myTrans, $translationArray)) > 0 || count(array_diff
 }
 
 if (!isset($row)) {
-    $row = 0; // first stringS
+    $row = 0; // first string
     $lastString = reset($strings);
     $lastTranslation = $myTrans[$lastString];
 } else {
