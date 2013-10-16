@@ -67,9 +67,10 @@ class cApiContainerCollection extends ItemCollection {
     }
 
     /**
-     * @deprecated [20131012] Use assignModule instead
+     * @deprecated [2013-10-12] Use assignModule instead
      */
     public function assignModul($idtpl, $number, $idmod) {
+    	cDeprecated("The method assignModul() is deprecated. Use assignModule() instead.");
         $this->assignModule($idtpl, $number, $idmod);
     }
 
