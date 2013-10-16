@@ -1,8 +1,112 @@
----------------------------------------------------------------------
+﻿---------------------------------------------------------------------
 ------------------------ CONTENIDO CHANGELOG ------------------------
 ---------------------------------------------------------------------
-Release 4.9.0
+Release 4.9.1
 ----------------------------------------------------------------------
+** Bug
+    * [CON-1268] - Different layout of tables on system settings page
+    * [CON-1294] - Tooltip for action workflow_inherit_down in category overview
+    * [CON-1404] - Administration User: Problems with special characters
+    * [CON-1405] - Administration Frontend: Problems with user name and "
+    * [CON-1406] - Administration System: 2nd level Categories disappear
+    * [CON-1418] - Right frames are not updated correctly when user was created
+    * [CON-1419] - Password field is autocompleted when editing own user account
+    * [CON-1424] - Edit articles: Display bug with mouseover images
+    * [CON-1426] - Article redirects: Bug with umlaut domains on Mozilla Firefox
+    * [CON-1427] - ToDo: Can not edit time with date / time selector
+    * [CON-1429] - Invalid validation of article redirect URL
+    * [CON-1430] - Invalid validation of SEO fields
+    * [CON-1433] - PIFA: Method was not selected
+    * [CON-1435] - Layout: comment - Text runs out of the gray box
+    * [CON-1436] - Freezing article does not totally prevent editing
+    * [CON-1440] - Invocation of chmod in class.filehandler.php may throw a warning
+    * [CON-1442] - Rework category renaming logic (action str_renamecat)
+    * [CON-1446] - AMR Controller - Multiple Domains
+    * [CON-1449] - Some database queries do not respect table prefix
+    * [CON-1450] - Missing login action in database
+    * [CON-1451] - AMR plug-in: Replacement of server variable REQUEST_URI breaks plug-in logic
+    * [CON-1452] - Multiple issues with SEO tab
+    * [CON-1453] - Code generator ignores fieldname on custom meta tags
+    * [CON-1455] - PIFA: rights for formfield and form data tabs
+    * [CON-1457] - Convert letters with accents & umlauts to ascii equivalents
+    * [CON-1458] - Leftover of old class name Contenido_Auth in effective setting class
+    * [CON-1462] - Fix magic_quotes_gpc handling in globals_off.inc.php
+    * [CON-1463] - Missing German translation for "All modules already synchronized"
+    * [CON-1464] - Some trouble with module import / export, module names and deleting modules
+    * [CON-1465] - Module synchronization: Misrepresentation for write authorisation
+    * [CON-1468] - No fallback and error message when calling database driver handler without options
+    * [CON-1472] - CMS_LINKEDITOR does not use cUriBuilder for internal links
+    * [CON-1478] - Module translation: ALT+SHIFT+S doesn't jump to next line
+    * [CON-1481] - Duplicate entries by template's renaming
+    * [CON-1483] - Article bulk editing does not check permissions
+    * [CON-1484] - Missing permission checks in action code files
+    * [CON-1488] - Wrong logic in function autoFill by class.html.selectelement.php
+    * [CON-1489] - Content-edit, WYSIWYG editor: Align management has no effect
+    * [CON-1495] - cRequestValidator::CHECK_BELANG is hard coded
+    * [CON-1499] - Tricky problem with wrong php syntax at module input / output
+    * [CON-1500] - Can not create same template name at two difference clients
+    * [CON-1501] - Userforum: User can see post titles from other clients at backend
+    * [CON-1503] - Userforum: Cite function does not work correct
+    * [CON-1504] - Implode and error bug with test newsletter
+    * [CON-1505] - Backend want to include right_top frame, but can not find include.right_top.php
+    * [CON-1506] - Add plausibility check on moving categories
+    * [CON-1510] - Retrieval of database table metadata does not work
+    * [CON-1512] - Linkchecker cronjob does not work
+    * [CON-1513] - Upgrade fails for client folder not named "cms"
+    * [CON-1518] - Check missing teaser image CMS_IMG
+    * [CON-1519] - Possible security vulnerability in example modules
+    * [CON-1522] - Restore removed action "front_allow"
+    * [CON-1523] - Invalid PHP version check in setup
+    * [CON-1524] - Setting "Mailserver encryption" under "System configuration"
+    * [CON-1525] - Fix retrieving of value for settings having value '0' or empty string ''
+    * [CON-1526] - Active url_shortener plugin breaks SEO tab
+    * [CON-1527] - Module translation: Wrong mark for active string
+    * [CON-1529] - Encoding problem with utf8 and password request
+    * [CON-1531] - PIM: You can not use backticks for tablenames
+    * [CON-1534] - Filemanager: Can not change into dbfs after delete a directory
+    * [CON-1535] - Content: Translations: Wrong pages
+
+** Improvement
+    * [CON-933] - PIM: Move the installationRoutine function into classes
+    * [CON-1110] - picture gallery of the example client: Improve navigation within pictures
+    * [CON-1188] - Content - File Manager: Special character in file name
+    * [CON-1335] - Add validation for server path and web address at client settings
+    * [CON-1358] - PIM: Optimize method for specific sql files to update plugins
+    * [CON-1361] - PIM: Add checkbox whether uninstall SQL file should be executed or not
+    * [CON-1409] - PIM: Add attribute "relevant" for actions to plugin XML file
+    * [CON-1443] - Change usage of $cfg['version'] to new constant CON_VERSION
+    * [CON-1444] - Do not show buttons for actions the current user has no permissions
+    * [CON-1445] - All grey icons should have title attribute with explanation for unavailable action
+    * [CON-1459] - Setting for ImageMagic usage
+    * [CON-1460] - PIM: Add a message for updated plugins
+    * [CON-1461] - PIM: Add a message for installed plugins
+    * [CON-1473] - Add confirmation dialog when deleting content from tab "raw data"
+    * [CON-1474] - Make height of CodeMirror editor boxes changable
+    * [CON-1475] - Adapt the AMR styled help boxes to core and replace all previous help boxes
+    * [CON-1476] - Connect labels with their checkboxes on system purge and article properties page
+    * [CON-1477] - Display cancel button on template configuration when no template is selected
+    * [CON-1479] - Reset backend menu activity state when clicking on the logo or MyCONTENIDO icon
+    * [CON-1485] - Include jQuery to legacy content type files for CMS_HTML and CMS_HTMLHEAD
+    * [CON-1487] - Remove invalid mail address noreply@contenido-passwordservice.de
+    * [CON-1497] - Image URLs are not properly replaced in inline TinyMCE after save
+    * [CON-1498] - Setup: Add support for typing host + socket for DB connection
+
+** New Feature
+    * [CON-1149] - Add new frontend debugging
+    * [CON-1209] - Implement (unattended) setup via console
+    * [CON-1366] - PIM: Add up and down arrow buttons for new execution order
+
+** Task
+    * [CON-568] - Implement a function to handle HTTP-Requests
+    * [CON-1447] - Replace usage of escapeshellcmd() against escapeshellarg()
+    * [CON-1467] - Please update German language file before release
+    * [CON-1470] - Implement the new facebook embedded post modules into example client
+    * [CON-1480] - PIM: Optimize update routine
+
+
+---------------------------------------------------------------------
+Release 4.9.0
+---------------------------------------------------------------------
 ** Bug
     * [CON-321] - Search index generates no keyword entries for keywords with encodings like utf-8
     * [CON-870] - Extras-Workflow: problems with special characters
@@ -372,7 +476,7 @@ Release 4.9.0 RC 1
     * [CON-849] - Admin: PIM - not able to upload new plugin
     * [CON-851] - Style-Layout/Modules: " Sign changes name
     * [CON-852] - Content: Category: Language change; in the content is not changed in the language
-    * [CON-853] - Category: the second level in the tree can�t edited
+    * [CON-853] - Category: the second level in the tree can´t edited
     * [CON-854] - Style-Java Script Editor: Typo when creating new js file
     * [CON-856] - Content: URL Shortener: short url does not work
     * [CON-858] - Content: Articles: articles can not be tagged
@@ -510,7 +614,7 @@ Release 4.9.0 RC 1
     * [CON-894] - As a editor I want the system to unlock all articles, which are in use, to allow modifications by others.
 
 ** Task
-    * [CON-838] - PIM: Make "copyright" mandatory field and set maxOccurs for general-fields to �1�
+    * [CON-838] - PIM: Make "copyright" mandatory field and set maxOccurs for general-fields to “1”
     * [CON-901] - Check user rights
     * [CON-915] - Add more configurable filetypes to CMS_LINKEDIT
     * [CON-971] - Removal of outdated character converter
