@@ -65,6 +65,7 @@ Release 4.9.1
     * [CON-1531] - PIM: You can not use backticks for tablenames
     * [CON-1534] - Filemanager: Can not change into dbfs after delete a directory
     * [CON-1535] - Content: Translations: Wrong pages
+    * [CON-1542] - New templates are assigned to client 0
 
 ** Improvement
     * [CON-933] - PIM: Move the installationRoutine function into classes
