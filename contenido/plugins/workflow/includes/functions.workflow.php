@@ -419,7 +419,7 @@ function doWorkflowAction($idartlang, $action) {
 
         case "revise":
             $db = cRegistry::getDb();
-            $sql = "SELECT idart, idlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = " $idartlang;
+            $sql = "SELECT idart, idlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = " . $idartlang;
             $db->query($sql);
             $db->nextRecord();
             $idart = $db->f("idart");
