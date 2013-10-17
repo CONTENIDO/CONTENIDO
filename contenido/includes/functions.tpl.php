@@ -39,7 +39,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
     if (!$idtpl) {
         // Insert new entry in the Template table
         $templateColl = new cApiTemplateCollection();
-        $template = $templateColl->create($idclient, $idlay, 0, $name, $description, 1, 0, 0);
+        $template = $templateColl->create($client, $idlay, 0, $name, $description, 1, 0, 0);
         $idtpl = $template->get('idtpl');
 
         // Insert new entry in the Template Conf table
