@@ -81,7 +81,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
     }
 
     if ($default == 1) {
-        $sql = "UPDATE " . $cfg["tab"]["tpl"] . " SET defaulttemplate = 0 WHERE idclient = " . cSecurity::toInteger($client);
+        $sql = "UPDATE " . $cfg["tab"]["tpl"] . " SET defaulttemplate = 0 WHERE idclient = " . cSecurity::toInteger($client) . " AND idtpl != " . cSecurity::toInteger($template->get('idtpl'));
         $db->query($sql);
 
         $template->set('defaulttemplate', 1);
