@@ -81,7 +81,7 @@ class cAjaxRequest {
                         $template = new cTemplate();
                         $usedTemplates = $layout->getUsedTemplates();
                         if (count($usedTemplates) > 0) {
-                            $response = '<br />';
+                            $response = '<br>';
                             foreach ($usedTemplates as $i => $usedTemplate) {
                                 if ($i % 2 == 0) {
                                     $template->set('d', 'CLASS', 'grey');

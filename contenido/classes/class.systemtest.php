@@ -1238,7 +1238,7 @@ class cSystemtest {
                 }
             }
 
-            $this->storeResult(false, $severity, $title, $message . "<br /><br />" . $predictMessage);
+            $this->storeResult(false, $severity, $title, $message . "<br><br>" . $predictMessage);
             if ($title && $message) {
                 $status = false;
             }

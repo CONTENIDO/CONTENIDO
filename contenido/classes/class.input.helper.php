@@ -462,7 +462,28 @@ class UI_Config_Table {
         // Try ... catch prevents error messages, if function is added more than
         // once
         // if (!fncUpdateSel) in JS has not worked...
-        $sSkript = '              <script type="text/javascript"><!--' . "\n" . '                 try {' . "\n" . '                    function fncUpdateSel(sSelectBox, sStorage)' . "\n" . '                    {' . "\n" . '                       var sSelection = "";' . "\n" . '                       var oSelectBox = document.getElementsByName(sSelectBox)[0];' . "\n" . '                       var oStorage   = document.getElementsByName(sStorage)[0];' . "\n" . '                       ' . "\n" . '                       if (oSelectBox && oStorage)' . "\n" . '                       {' . "\n" . '                          for (i = 0; i < oSelectBox.length; i++)' . "\n" . '                          {' . "\n" . '                             if (oSelectBox.options[i].selected == true)' . "\n" . '                             {' . "\n" . '                                if (sSelection != "")' . "\n" . '                                   sSelection = sSelection + ",";' . "\n" . '                                sSelection = sSelection + oSelectBox.options[i].value;' . "\n" . '                             }' . "\n" . '                          }' . "\n" . '                          oStorage.value = sSelection;' . "\n" . '                       }' . "\n" . '                    }' . "\n" . '                 } catch (e) { }' . "\n" . '              //--></script>' . "\n";
+        $sSkript = '
+<script type="text/javascript"><!--
+try {
+    function fncUpdateSel(sSelectBox, sStorage) {
+        var sSelection = "";
+        var oSelectBox = document.getElementsByName(sSelectBox)[0];
+        var oStorage   = document.getElementsByName(sStorage)[0];
+        if (oSelectBox && oStorage) {
+            for (i = 0; i < oSelectBox.length; i++) {
+                if (oSelectBox.options[i].selected == true){
+                    if (sSelection != "") {
+                        sSelection = sSelection + ",";
+                    }
+                    sSelection = sSelection + oSelectBox.options[i].value;
+                }
+            }
+            oStorage.value = sSelection;
+        }
+    }
+} catch (e) { }
+//--></script>
+';
 
         return $sSkript;
     }

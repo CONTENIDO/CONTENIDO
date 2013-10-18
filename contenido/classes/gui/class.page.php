@@ -147,7 +147,7 @@ class cGuiPage {
      *        highlighted when this page is shown.
      */
     public function __construct($pagename, $pluginname = "", $submenu = "") {
-        global $lang, $cfg;
+        global $lang, $cfg, $sess;
 
         $this->_pagename = $pagename;
         $this->_pluginname = $pluginname;
@@ -300,10 +300,11 @@ class cGuiPage {
             $aarea = $area;
         }
 
-        $this->_subnav = '<script type="text/javascript">';
-        $this->_subnav .= 'parent.frames["right_top"].location.href = "';
-        $this->_subnav .= $sess->url("main.php?area=" . $aarea . "&frame=3&" . $additional) . '";';
-        $this->_subnav .= '</script>';
+        $this->_subnav = '
+        <script type="text/javascript">
+        parent.frames["right_top"].location.href = "' . $sess->url("main.php?area={$aarea}&frame=3&{$additional}") . '";
+        </script>
+        ';
     }
 
     /**

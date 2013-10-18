@@ -387,11 +387,11 @@ class cModuleTemplateHandler extends cModuleHandler {
                 if ($idqualifier != '') {
                     $idqualifier = "($idqualifier)";
                 }
-                $msg .= sprintf(i18n("Tag '%s' %s has no end tag (start tag is on line %s char %s)"), $value['tag'], $idqualifier, $value['line'], $value['char']) . '<br />';
+                $msg .= sprintf(i18n("Tag '%s' %s has no end tag (start tag is on line %s char %s)"), $value['tag'], $idqualifier, $value['line'], $value['char']) . '<br>';
             }
 
             if ($msg != '') {
-                $notification->displayNotification('warning', $msg) . '<br />';
+                $notification->displayNotification('warning', $msg) . '<br>';
             }
         }
     }

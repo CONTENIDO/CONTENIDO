@@ -296,7 +296,7 @@ class cRequestValidator {
             $content .= '    POST array: ' . print_r($_POST, true) . "\n";
             cFileHandler::write($this->_logPath, $content, true);
         } elseif ($this->_mode == 'continue') {
-            echo "\n<br />VIOLATION: URL contains invalid or undefined paramaters! URL: '" . conHtmlentities($_SERVER['QUERY_STRING']) . "' <br />\n";
+            echo "\n<br>VIOLATION: URL contains invalid or undefined paramaters! URL: '" . conHtmlentities($_SERVER['QUERY_STRING']) . "' <br>\n";
         }
     }
 
