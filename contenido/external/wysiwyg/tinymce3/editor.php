@@ -33,7 +33,7 @@ if ($a_content[$type][$typenr]) {
     // if not set it is possible to use available content from var $editor_content
 }
 
-$editor_content = str_replace('<img src="upload', '<img src="'.$cfgClient[$client]['path']['htmlpath'].'upload', $editor_content);
+$editor_content = str_replace('src="upload', 'src="'.$cfgClient[$client]['path']['htmlpath'].'upload', $editor_content);
 
 $editor_content = conHtmlSpecialChars($editor_content);
 
