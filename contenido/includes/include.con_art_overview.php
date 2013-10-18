@@ -857,7 +857,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         $cat_idtpl = $db->f("idtpl");
 
-        renderBackendBreadcrumb($syncoptions, false);
+        $cat_name = renderBackendBreadcrumb($syncoptions, false, true);
 
         // Hinweis wenn kein Artikel gefunden wurde
         if ($no_article) {
