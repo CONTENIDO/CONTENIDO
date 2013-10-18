@@ -150,7 +150,7 @@ abstract class cCodeGeneratorAbstract {
      *
      * @var cApiArticleLanguage
      */
-    protected $oArtLang;
+    protected $_oArtLang;
 
     /**
      */
@@ -194,14 +194,14 @@ abstract class cCodeGeneratorAbstract {
         $this->_layout = (bool) $layout;
         $this->_save = (bool) $save;
 
-        $this->oArtLang = new cApiArticleLanguage();
-        $this->oArtLang->loadByArticleAndLanguageId($idart, $lang);
-        if (!$this->oArtLang->isLoaded()) {
+        $this->_oArtLang = new cApiArticleLanguage();
+        $this->_oArtLang->loadByArticleAndLanguageId($idart, $lang);
+        if (!$this->_oArtLang->isLoaded()) {
             throw new cInvalidArgumentException('Couldn\'t load article language for idart=' . $idart . 'AND idlang=' . $lang);
         }
 
-        $this->_idartlang = $this->oArtLang->get('idartlang');
-        $this->_pageTitle = stripslashes($this->oArtLang->get('pagetitle'));
+        $this->_idartlang = $this->_oArtLang->get('idartlang');
+        $this->_pageTitle = stripslashes($this->_oArtLang->get('pagetitle'));
 
         return $this->_generate($contype);
     }
@@ -564,6 +564,6 @@ abstract class cCodeGeneratorAbstract {
      * @return cApiArticleLanguage the artlang object
      */
     protected function getArtLangObject() {
-        return $this->oArtLang;
+        return $this->_oArtLang;
     }
 }
