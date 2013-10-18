@@ -14,23 +14,6 @@
  * @link       http: //www.contenido.org
  */
 
- /* toggle for category list*/
- .str_overview_toggle {
-    opacity: 0.3 !important;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-
-  /* IE 5-7 */
-  filter: alpha(opacity=30) !important;
-
-  /* Netscape */
-  -moz-opacity: 0.3 !important;
-
-  /* Safari 1.x */
-  -khtml-opacity: 0.3 !important;
-
-  /* Good browsers */
-  opacity: 0.3 !important;
- }
 
 /* some reset */
 form, h1, h2, h3, h4 {
@@ -1305,13 +1288,13 @@ p.column_header {
 }
 
 #shelf {
-    width: 480px;
+    width: 500px;
 }
 
 div.shelf_elem {
     width: 100%;
     margin-bottom: 10px;
-    padding: 5px;
+    padding: 5px 0;
 }
 
 div.shelf_elem_titlelabel {
@@ -2330,4 +2313,23 @@ infoButton:hover {
     height: 16px;
     background: transparent url(../images/info.gif) no-repeat;
     margin-bottom: -3px;
+}
+
+
+ /* toggle for category list*/
+.str_overview_toggle {
+    opacity: 0.3 !important;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+
+    /* IE 5-7 */
+    filter: alpha(opacity=30) !important;
+
+    /* Netscape */
+    -moz-opacity: 0.3 !important;
+
+    /* Safari 1.x */
+    -khtml-opacity: 0.3 !important;
+
+    /* Good browsers */
+    opacity: 0.3 !important;
 }
