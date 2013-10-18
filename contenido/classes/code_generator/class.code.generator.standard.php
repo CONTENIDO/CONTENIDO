@@ -147,7 +147,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $cssFile = '';
         if (strlen($this->_cssData) > 0) {
             if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData)) !== false) {
-                $cssFile = '<link rel="stylesheet" type="text/css" href="' . $myFileCss . '" />';
+                $oHTML = new cHTML(array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => $myFileCss));
+                $oHTML->setTag('link');
+                $cssFile = $oHTML->render();
             }
         }
 
