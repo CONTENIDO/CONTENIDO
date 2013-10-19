@@ -173,8 +173,7 @@ function urlDecodeTable($db, $table, $checkTableExists = false) {
 
     while ($db->nextRecord()) {
 
-
-        $row = $db->toArray(FETCH_ASSOC);
+        $row = $db->toArray(cDb::FETCH_ASSOC);
 
         $sql = "UPDATE " . $table . " SET ";
         foreach ($row as $key => $value) {
