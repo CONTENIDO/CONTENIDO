@@ -178,7 +178,6 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
             $className = 'cUpgradeJob_' . $index;
             if (!class_exists($className)) {
                 continue;
-                ;
             }
 
             /* @var $obj cUpgradeJobAbstract */
