@@ -610,8 +610,8 @@ class cPermission {
                     }
                 }
             } elseif ($item_rights[$value] != 'noright') {
-                $groupsForUser = $this->getGroupsForUser($auth->auth[uid]);
-                $groupsForUser[] = $auth->auth[uid];
+                $groupsForUser = $this->getGroupsForUser($auth->auth['uid']);
+                $groupsForUser[] = $auth->auth['uid'];
 
                 // else search for rights for this user in this area
                 $sql = "SELECT

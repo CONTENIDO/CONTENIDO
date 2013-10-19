@@ -91,8 +91,8 @@ class pApiContentAllocation {
             SELECT
                 a.idpica_alloc
             FROM
-                `{$this->table[pica_alloc]}` AS a
-                , `{$this->table[pica_alloc_con]}` AS b
+                `{$this->table['pica_alloc']}` AS a
+                , `{$this->table['pica_alloc_con']}` AS b
             WHERE
                 idartlang = $idartlang
                 AND a.idpica_alloc=b.idpica_alloc

@@ -84,7 +84,7 @@ class ArticleForumCollection extends ItemCollection {
                 , art_lang.idart
                 , f.idcat
             FROM
-                `{$this->cfg[tab][art_lang]}` AS art_lang
+                `{$this->cfg['tab']['art_lang']}` AS art_lang
                 , `$this->table` AS  f
             WHERE
                 art_lang.idart = f.idart
@@ -204,7 +204,7 @@ class ArticleForumCollection extends ItemCollection {
                 SELECT
                     *
                 FROM
-                    `{$this->cfg[tab][user_forum]}`
+                    `{$this->cfg['tab']['user_forum']}`
                 WHERE
                     idart = $id_art
                     AND idcat = $id_cat
@@ -220,7 +220,7 @@ class ArticleForumCollection extends ItemCollection {
                 SELECT
                     *
                 FROM
-                    `{$this->cfg[tab][user_forum]}`
+                    `{$this->cfg['tab']['user_forum']}`
                 WHERE
                     idart = $id_art
                     AND idcat = $id_cat

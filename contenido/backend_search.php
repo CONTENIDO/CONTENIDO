@@ -587,8 +587,8 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
         // Check rights per cat
         if (!$bCheckRights) {
             // hotfix timo trautmann 2008-12-10 also check rights in associated groups
-            $aGroupsForUser = $perm->getGroupsForUser($auth->auth[uid]);
-            $aGroupsForUser[] = $auth->auth[uid];
+            $aGroupsForUser = $perm->getGroupsForUser($auth->auth['uid']);
+            $aGroupsForUser[] = $auth->auth['uid'];
             $sTmpUserString = implode("','", $aGroupsForUser);
 
             // Check if any rights are applied to current user or his groups

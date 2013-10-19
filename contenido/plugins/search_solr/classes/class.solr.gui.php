@@ -286,17 +286,17 @@ class SolrRightBottomPage extends cGuiPage {
                 , art_lang.idart
                 , art_lang.idartlang
             FROM
-                `{$cfg[tab][art_lang]}` AS art_lang
+                `{$cfg['tab']['art_lang']}` AS art_lang
             INNER JOIN
-                `{$cfg[tab][art]}` AS art
+                `{$cfg['tab']['art']}` AS art
             ON
                 art_lang.idart = art.idart
             INNER JOIN
-                `{$cfg[tab][cat_art]}` AS cat_art
+                `{$cfg['tab']['cat_art']}` AS cat_art
             ON
                 art_lang.idart = cat_art.idart
             INNER JOIN
-                `{$cfg[tab][cat_lang]}` AS cat_lang
+                `{$cfg['tab']['cat_lang']}` AS cat_lang
             ON
                 cat_art.idcat = cat_lang.idcat
                 AND art_lang.idlang = cat_lang.idlang

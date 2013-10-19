@@ -241,7 +241,7 @@ function parseElement($element, &$targetArray, $numberOfElements) {
 
 function decDate(&$dateArr, $amount, $unit, $PC_debug) {
     if ($PC_debug) {
-        echo sprintf("Decreasing from %02d.%02d. %02d:%02d by %d %6s ", $dateArr[mday], $dateArr[mon], $dateArr[hours], $dateArr[minutes], $amount, $unit);
+        echo sprintf("Decreasing from %02d.%02d. %02d:%02d by %d %6s ", $dateArr['mday'], $dateArr['mon'], $dateArr['hours'], $dateArr['minutes'], $amount, $unit);
     }
     if ($unit == "mday") {
         $dateArr["hours"] = 23;
