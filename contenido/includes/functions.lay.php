@@ -156,8 +156,8 @@ function layDeleteLayout($idlay) {
         // delete the layout in file system
         $layoutInFile = new cLayoutHandler($idlay, '', $cfg, 1);
         if ($layoutInFile->eraseLayout()) {
-            if (cFileHandler::exists($cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPERATOR . $idlay)) {
-                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPERATOR . $idlay);
+            if (cFileHandler::exists($cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPARATOR . $idlay)) {
+                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "layout" . DIRECTORY_SEPARATOR . $idlay);
             }
 
             // delete layout in database
