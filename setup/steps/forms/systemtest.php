@@ -38,6 +38,11 @@ class cSetupSystemtest extends cSetupMask {
         // reload i18n for contenido locale
         i18nInit('../data/locale/', $_SESSION['language']);
 
+        // Initializing cfgClient
+        if ($_SESSION['setuptype'] == 'upgrade') {
+            setupInitializeCfgClient(true);
+        }
+
         $this->systemtest = new cSystemtest($cfg);
         $this->systemtest->runTests(false);
         $this->systemtest->testFilesystem($_SESSION["configmode"] == "save", $_SESSION['setuptype'] == 'upgrade');
@@ -120,7 +125,8 @@ class cSetupSystemtest extends cSetupMask {
             $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '" . $thisStep . "';");
             $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
             $link->setClass("nav navRefresh");
-            $link->setContent("<span>R</span>"); // @todo traslation for "refresh"
+            $link->setContent("<span>R</span>"); // @todo traslation for
+                                                 // "refresh"
 
             $this->_oStepTemplate->set("s", "NEXT", $link->render());
         } else {
