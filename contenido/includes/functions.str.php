@@ -52,12 +52,12 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     $client = (int) $client;
     $lang = (int) $lang;
 
-    $visible = ($visible == 1) ? 1 : 0;
+    $visible = ($visible == 1)? 1 : 0;
     if (!$perm->have_perm_area_action('str', 'str_makevisible')) {
         $visible = 0;
     }
 
-    $public = ($public == 1) ? 1 : 0;
+    $public = ($public == 1)? 1 : 0;
     if (!$perm->have_perm_area_action('str', 'str_makepublic')) {
         $public = 1;
     }
@@ -65,7 +65,7 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     // Get last category tree
     $oCatColl = new cApiCategoryCollection();
     $oLastCatTree = $oCatColl->fetchLastCategoryTree($client);
-    $lastCatTreeId = (is_object($oLastCatTree)) ? $oLastCatTree->get('idcat') : 0;
+    $lastCatTreeId = (is_object($oLastCatTree))? $oLastCatTree->get('idcat') : 0;
 
     // Insert new category tree
     $oCatColl2 = new cApiCategoryCollection();
@@ -152,12 +152,12 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     $client = (int) $client;
     $lang = (int) $lang;
 
-    $visible = ($visible == 1) ? 1 : 0;
+    $visible = ($visible == 1)? 1 : 0;
     if (!$perm->have_perm_area_action('str', 'str_makevisible')) {
         $visible = 0;
     }
 
-    $public = ($public == 1) ? 1 : 0;
+    $public = ($public == 1)? 1 : 0;
     if (!$perm->have_perm_area_action('str', 'str_makepublic')) {
         $public = 1;
     }
@@ -166,7 +166,7 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     $oCatColl = new cApiCategoryCollection();
     $oCatColl->select('parentid=' . $parentid . ' AND postid = 0 AND idclient = ' . $client);
     $oPrevCat = $oCatColl->next();
-    $preIdcat = (is_object($oPrevCat)) ? $oPrevCat->get('idcat') : 0;
+    $preIdcat = (is_object($oPrevCat))? $oPrevCat->get('idcat') : 0;
 
     // Insert new category tree
     $oCatColl2 = new cApiCategoryCollection();
@@ -183,6 +183,7 @@ function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '',
     }
 
     $error = strCheckTreeForErrors();
+
     if (!($error === false)) {
         if ($oldPostId != -1) {
             $oPrevCat->set('postid', $oldPostId);
@@ -347,10 +348,10 @@ function strSortPrePost($arr) {
  * Builds values part of the SQL used to recreate the category tree table
  *
  * @param array|?? $aCats Assoziative categories array or something else, but
- *            what?
+ *        what?
  * @param string $sInsertQuery The insert statement
  * @param array $aAllCats Assoziative categories array holding the complete
- *            category structure
+ *        category structure
  * @param int $iLevel Category level
  * @return string
  */
@@ -374,13 +375,13 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
  * @global int $lang
  * @param int $idcat Category id to check next deeper item
  * @param bool $ignoreLang Flag to check for existing entry in category language
- *            table
+ *        table
  * @return int
  */
 function strNextDeeper($idcat, $ignoreLang = false) {
     global $lang;
 
-    $languageId = (true == $ignoreLang) ? $lang : NULL;
+    $languageId = (true == $ignoreLang)? $lang : NULL;
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getFirstChildCategoryId($idcat, $languageId);
 }
@@ -431,7 +432,7 @@ function strNextBackwards($idcat) {
 function strNextDeeperAll($idcat, $ignoreLang = false) {
     global $lang;
 
-    $languageId = (true == $ignoreLang) ? $lang : NULL;
+    $languageId = (true == $ignoreLang)? $lang : NULL;
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getAllChildCategoryIds($idcat, $languageId);
 }
@@ -462,7 +463,7 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias) {
     );
 
     $name = stripslashes($newCategoryName);
-    $urlName = (trim($newCategoryAlias) != '') ? trim($newCategoryAlias) : $newCategoryName;
+    $urlName = (trim($newCategoryAlias) != '')? trim($newCategoryAlias) : $newCategoryName;
 
     if (trim($newCategoryAlias) != '') {
         // overfluous assignment
@@ -658,7 +659,9 @@ function strDeleteCategory($idcat) {
         $oPostCat->store();
     }
 
-    $error = strCheckTreeForErrors(array(), array($idcat));
+    $error = strCheckTreeForErrors(array(), array(
+        $idcat
+    ));
     if (!($error === false)) {
         if ($preid != 0) {
             $oPreCat = new cApiCategory($preid);
@@ -885,7 +888,7 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
         return false;
     }
     if (!isset($newPostId)) {
-        //return false;
+        // return false;
     }
     // flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
@@ -997,7 +1000,7 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
  * @return bool
  */
 function strMoveCatTargetallowed($idcat, $source) {
-    return ($idcat == $source) ? 0 : 1;
+    return ($idcat == $source)? 0 : 1;
 }
 
 /**
@@ -1031,7 +1034,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
             $aRs = $oCatLang->toArray();
 
             // Copy the template configuration, if exists
-            $newidtplcfg = ($aRs['idtplcfg'] != 0) ? tplcfgDuplicate($aRs['idtplcfg']) : 0;
+            $newidtplcfg = ($aRs['idtplcfg'] != 0)? tplcfgDuplicate($aRs['idtplcfg']) : 0;
 
             $visible = 0;
             $startidartlang = 0;
@@ -1186,7 +1189,7 @@ function strAssignTemplate($idcat, $client, $idTplCfg) {
     global $perm;
 
     // Template permission check
-    $iIdtplcfg = ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) ? (int) $idTplCfg : 0;
+    $iIdtplcfg = ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg'))? (int) $idTplCfg : 0;
 
     $idtpl = NULL;
     if ($iIdtplcfg == 0) {
@@ -1212,18 +1215,21 @@ function strAssignTemplate($idcat, $client, $idTplCfg) {
 /**
  * Checks the category tree for errors
  * Returns FALSE if there are NO errors.
- * If there are errors, an array with erorr messages will be returned
+ * If there are errors, an array with error messages will be returned
  *
- * @param array $addCats An array of cApiCategory objects which overwrite categories from the database
- * @param array $ignoreCats An array of idcat's which will be treated like they don't exist in the database
- * @return multitype:string |boolean An array of error messages if something is wrong. If nothing is wrong false will be returned
+ * @param array $addCats An array of cApiCategory objects which overwrite
+ *        categories from the database
+ * @param array $ignoreCats An array of idcat's which will be treated like they
+ *        don't exist in the database
+ * @return multitype:string |boolean An array of error messages if something is
+ *         wrong. If nothing is wrong false will be returned
  */
 function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
     $errorMessages = array();
 
     // Get all categories into memory
     $cats = new cApiCategoryCollection();
-    $cats->select();
+    $cats->select("idclient = '" . cSecurity::toInteger(cRegistry::getClientId()) . "'");
 
     $catArray = array();
     // first add the ones from the parameters
@@ -1247,9 +1253,11 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
 
     ksort($catArray);
 
-    // build an array with the parentids at the top level and every child category as member
+    // build an array with the parentids at the top level and every child
+    // category as member
     // aka
-    // $parents[parentId][catIdOfChildToParentId] = cApiCategory(catIdOfChildToParent)
+    // $parents[parentId][catIdOfChildToParentId] =
+    // cApiCategory(catIdOfChildToParent)
     // check if every parent that is mentioned in the database actually exists
     $fine = true;
     $parents = array();
@@ -1264,7 +1272,8 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
     // check for consistency in every parent
     foreach ($parents as $parentId => $parent) {
         // first, check for multiple preids and postids
-        // the category tree will miss some categories if multiple categories share preids and/or postids
+        // the category tree will miss some categories if multiple categories
+        // share preids and/or postids
         $preIds = array();
         $postIds = array();
         foreach ($parent as $idcat => $cat) {
@@ -1314,7 +1323,8 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
                 break;
             }
             $actCat = $catArray[$postId];
-            // check if the postid was seen before. if yes that would mean there's a loop in the tree
+            // check if the postid was seen before. if yes that would mean
+            // there's a loop in the tree
             if (in_array($actCat->get('idcat'), $checkedCats)) {
                 $fine = false;
                 $errorMessages[] = sprintf(i18n('The sorting in category %s creates an infinite loop (postid = %s). Sorting the category is impossible! (Cause of failure is near category %s)'), $parentId, $postId, $catId);
@@ -1322,7 +1332,8 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
             }
             $checkedCats[] = $actCat->get('idcat');
 
-            // check that all categories in this parent belong to the same client
+            // check that all categories in this parent belong to the same
+            // client
             if (isset($catArray[$parentId])) {
                 $parentClientId = $catArray[$parentId]->get('idclient');
                 if ($actCat->get('idclient') != $parentClientId) {
@@ -1342,7 +1353,8 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
                 break;
             }
         }
-        // if no end was found => error (this most likely means there's some kind of loop too)
+        // if no end was found => error (this most likely means there's some
+        // kind of loop too)
         if ($startCat == null) {
             $fine = false;
             $errorMessages[] = sprintf(i18n('There is no defined end (a category with postid == 0) in %s. Sorting impossible.'), $parentId);
@@ -1365,7 +1377,8 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
                 break;
             }
             $actCat = $catArray[$preId];
-            // if we've seen this preid before, that means there is some kind of loop => error
+            // if we've seen this preid before, that means there is some kind of
+            // loop => error
             if (in_array($actCat->get('idcat'), $checkedCats)) {
                 $fine = false;
                 $errorMessages[] = sprintf(i18n('The sorting in category %s creates an infinite loop (preid = %s). Sorting the category is impossible! (Cause of failure is near category %s)'), $parentId, $preId, $catId);
@@ -1384,6 +1397,7 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
             }
             $messages[] = $errorMessage;
         }
+        var_dump($messages);
         return $messages;
     } else {
         return false;
