@@ -1397,7 +1397,6 @@ function strCheckTreeForErrors($addCats = array(), $ignoreCats = array()) {
             }
             $messages[] = $errorMessage;
         }
-        var_dump($messages);
         return $messages;
     } else {
         return false;
