@@ -27,7 +27,7 @@ checkAndInclude($cfg['path']['contenido'] . 'includes/functions.api.string.php')
  */
 class cUpgradeJob_0002 extends cUpgradeJobAbstract {
 
-    public $maxVersion = "0";
+    public $maxVersion = "4.9.0-alpha1";
 
     /**
      * This method will transfer the moduls from $cfg['tab']['mod'] to the
