@@ -330,9 +330,9 @@ class cSearchIndex extends cSearchBaseAbstract {
                             // index terms are stored with lower case
                             // $value = strtolower($value);
 
-                            $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
+                            $value = conHtmlentities($value);
                             $value = trim(strtolower($value));
-                            $value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');
+                            $value = conHtmlEntityDecode($value);
 
                             if (!in_array($value, $this->_stopwords)) {
                                 // eliminate stopwords
