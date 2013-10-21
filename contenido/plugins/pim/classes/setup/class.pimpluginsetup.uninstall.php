@@ -312,7 +312,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
             if (!cFileHandler::exists($folderpath)) {
                 parent::info(i18n('The pluginfolder', 'pim') . ' <strong>' . $this->_getPluginFoldername() . '</strong> ' . i18n('has been successfully uninstalled.', 'pim'));
             } else if (cFileHandler::exists($folderpath)) {
-                parent::info(i18n('The pluginfolder', 'pim') . ' <strong>' . $this->_getPluginFoldername() . '</strong> ' . i18n('could not be uninstalled.', 'pim'));
+                parent::error(i18n('The pluginfolder', 'pim') . ' <strong>' . $this->_getPluginFoldername() . '</strong> ' . i18n('could not be uninstalled.', 'pim'));
             }
         }
     }
