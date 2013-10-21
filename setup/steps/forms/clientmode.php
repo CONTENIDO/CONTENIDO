@@ -24,7 +24,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cSetupClientMode extends cSetupMask {
 
     function cSetupClientMode($step, $previous, $next) {
-        global $cfgClient;
 
         cSetupMask::cSetupMask("templates/setup/forms/clientmode.tpl", $step);
         $this->setHeader(i18n("Example Client", "setup"));
