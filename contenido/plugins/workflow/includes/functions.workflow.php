@@ -305,7 +305,7 @@ function getLastWorkflowStatus($idartlang) {
 function doWorkflowAction($idartlang, $action) {
     global $cfg, $idcat;
 
-    $idartlang = (int) $idartlang;
+    $idartlang = cSecurity::toInteger($idartlang);
 
     switch ($action) {
         case "last":
