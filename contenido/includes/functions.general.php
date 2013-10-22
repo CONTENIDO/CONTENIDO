@@ -724,18 +724,20 @@ function getSystemPropertiesByType($type) {
 }
 
 /**
- * Returns the current effective setting for a property.
+ * Returns effective setting for a property.
  *
- * The order is:
- * System => Client => Group => User
+ * The order is: System => Client => Client (language) => Group => User
  *
- * System properties can be overridden by the group, and group
- * properties can be overridden by the user.
+ * System properties can be overridden by the group, and group properties
+ * can be overridden by the user.
  *
- * @param string $type The type of the item
- * @param string $name The name of the item
- * @param string $default Optional default value
- * @return mixed boolean false if nothing was found
+ * NOTE: If you provide a default value (other than empty string), then it will be returned back
+ *       in case of not existing or empty setting.
+ *
+ * @param  string  $type  The type of the item
+ * @param  string  $name  The name of the item
+ * @param  string  $default  Optional default value
+ * @return  bool|string  Setting value or false
  */
 function getEffectiveSetting($type, $name, $default = '') {
     return cEffectiveSetting::get($type, $name, $default);

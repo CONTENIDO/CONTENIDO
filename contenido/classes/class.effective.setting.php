@@ -69,24 +69,25 @@ class cEffectiveSetting {
 
     /**
      * Returns effective setting for a property.
-     * The requested setting will be cached at first time, the next time the
-     * cached value will be returned.
      *
      * The order is: System => Client => Client (language) => Group => User
      *
      * System properties can be overridden by the group, and group properties
      * can be overridden by the user.
      *
-     * @param string $type The type of the item
-     * @param string $name The name of the item
-     * @param string $default Optional default value
-     * @return string bool setting value or false
+     * NOTE: If you provide a default value (other than empty string), then it will be returned back
+     *       in case of not existing or empty setting.
+     *
+     * @param  string  $type  The type of the item
+     * @param  string  $name  The name of the item
+     * @param  string  $default  Optional default value
+     * @return  bool|string  Setting value or false
      */
     public static function get($type, $name, $default = '') {
         global $contenido;
 
-        // if the DB object is not available, just return
-        // the default value in order to avoid PHP notices
+        // If the DB object is not available, just return the default value in order
+        // to avoid PHP notices
         try {
             $db = new cDb();
         } catch (cException $e) {
@@ -116,11 +117,14 @@ class cEffectiveSetting {
             $value = self::_getClientInstance()->getProperty($type, $name);
         }
 
-        if ($value === false) {
+        if (false === $value) {
             $value = getSystemProperty($type, $name);
         }
 
-        if ($value === false || $value === '' || $value === NULL) {
+        if (false === $value || NULL === $value) {
+            $value = $default;
+        } else if ('' === $value && '' !== $default) {
+            // NOTE: An non empty default value overrides an empty value
             $value = $default;
         }
 
