@@ -1,6 +1,22 @@
 ﻿---------------------------------------------------------------------
 ------------------------ CONTENIDO CHANGELOG ------------------------
 ---------------------------------------------------------------------
+Release 4.9.2
+----------------------------------------------------------------------
+** Bug
+    * [CON-1521] - Users can not be deleted on rights management pages
+    * [CON-1541] - Path to uploads is not properly replaced when using classes in TinyMCE
+    * [CON-1543] - The module "content_auto_indexing" is added via SQL although it is not part of example client
+    * [CON-1544] - Single page TinyMCE editor loads tiny_mce.js with relative path
+    * [CON-1545] - Deleting articles with IE8 is not possible
+    * [CON-1546] - Two PHP errors in workflow plugin
+    * [CON-1547] - Saving the default template once again will remove its default flag
+    * [CON-1556] - Can not create new category tree with parentId 0 at new client
+    * [CON-1559] - Wrong display of modules with umlauts after upgrade
+    * [CON-1560] - Upgrade: Database error with module translations
+    * [CON-1562] - Setup process does not find cfgClient variable
+
+---------------------------------------------------------------------
 Release 4.9.1
 ----------------------------------------------------------------------
 ** Bug
