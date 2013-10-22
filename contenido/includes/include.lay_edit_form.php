@@ -216,16 +216,7 @@ if (!$layout->virgin) {
     $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
     $page->addScript($oCodeMirror->renderScript());
 
-    $sScript = '<script type="text/javascript">
-                            if (document.getElementById(\'scroll\')) {
-                                document.getElementById(\'scroll\').onmousedown = resizer.triggerClickOn;
-                                document.getElementById(\'scroll\').onmouseup = resizer.triggerClickOff;
-                                document.getElementById(\'scroll\').style.paddingTop=\'4px\';
-                                document.getElementById(\'scroll\').style.paddingBottom=\'5px\';
-                            }
-                        </script>';
-
-    $page->set('s', 'FORM', $form->render() . $sScript);
+    $page->set('s', 'FORM', $form->render());
 } else {
     $page->set('s', 'FORM', '');
 }

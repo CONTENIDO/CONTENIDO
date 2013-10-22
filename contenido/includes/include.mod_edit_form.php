@@ -435,14 +435,6 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $form2->setVar("idmod", $idmod);
         $form2->custom["submit"]["accesskey"] = '';
 
-        $sScript = '<script type="text/javascript">
-                        if (document.getElementById(\'scroll\')) {
-                            document.getElementById(\'scroll\').onmousedown = triggerClickOn;
-                            document.getElementById(\'scroll\').onmouseup = triggerClickOff;
-                            document.getElementById(\'scroll\').style.paddingTop=\'4px\';
-                            document.getElementById(\'scroll\').style.paddingBottom=\'5px\';
-                        }
-                    </script>';
         // Dont show form if we delete or synchronize a module
         if ($action == "mod_sync" || $action == "mod_delete") {
             $page->abortRendering();
