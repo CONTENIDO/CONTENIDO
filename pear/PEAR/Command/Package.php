@@ -17,6 +17,8 @@
 // |          Martin Jansen <mj@php.net>                                  |
 // +----------------------------------------------------------------------+
 //
+// modified 2013-10-23, Murat Purc, Replaced deprecated /e modifier preg_replace() calls (deprecated since PHP 5.5)
+//
 // $Id: Package.php,v 1.1 2003/08/21 08:15:24 timo.hummel Exp $
 
 require_once 'PEAR/Common.php';
@@ -560,6 +562,28 @@ Wrote: /usr/src/redhat/RPMS/i386/PEAR::Net_Socket-1.0-1.i386.rpm
     }
 
     // }}}
+    // {{{ getCommandPackaging()
+    /**
+     * For unit testing purposes
+     */
+    function &getCommandPackaging(&$ui, &$config)
+    {
+        if (!class_exists('PEAR_Command_Packaging')) {
+            if ($fp = @fopen('PEAR/Command/Packaging.php', 'r', true)) {
+                fclose($fp);
+                include_once 'PEAR/Command/Packaging.php';
+            }
+        }
+
+        if (class_exists('PEAR_Command_Packaging')) {
+            $a = &new PEAR_Command_Packaging($ui, $config);
+        } else {
+            $a = null;
+        }
+
+        return $a;
+    }
+    // }}}
     // {{{ doMakeRPM()
     /*
     (cox)
@@ -574,105 +598,22 @@ Wrote: /usr/src/redhat/RPMS/i386/PEAR::Net_Socket-1.0-1.i386.rpm
 
     function doMakeRPM($command, $options, $params)
     {
-        if (sizeof($params) != 1) {
-            return $this->raiseError("bad parameter(s), try \"help $command\"");
-        }
-        if (!file_exists($params[0])) {
-            return $this->raiseError("file does not exist: $params[0]");
-        }
-        include_once "Archive/Tar.php";
-        include_once "PEAR/Installer.php";
-        include_once "System.php";
-        $tar = new Archive_Tar($params[0]);
-        $tmpdir = System::mktemp('-d pear2rpm');
-        $instroot = System::mktemp('-d pear2rpm');
-        $tmp = $this->config->get('verbose');
-        $this->config->set('verbose', 0);
-        $installer = new PEAR_Installer($this->ui);
-        $info = $installer->install($params[0],
-                                    array('installroot' => $instroot,
-                                          'nodeps' => true));
-        $pkgdir = "$info[package]-$info[version]";
-        $info['rpm_xml_dir'] = '/var/lib/pear';
-        $this->config->set('verbose', $tmp);
-        if (!$tar->extractList("package.xml", $tmpdir, $pkgdir)) {
-            return $this->raiseError("failed to extract $params[0]");
-        }
-        if (!file_exists("$tmpdir/package.xml")) {
-            return $this->raiseError("no package.xml found in $params[0]");
-        }
-        if (isset($options['spec-template'])) {
-            $spec_template = $options['spec-template'];
-        } else {
-            $spec_template = $this->config->get('data_dir') .
-                '/PEAR/template.spec';
-        }
-        if (isset($options['rpm-pkgname'])) {
-            $rpm_pkgname_format = $options['rpm-pkgname'];
-        } else {
-            $rpm_pkgname_format = "PEAR::%s";
+        // Check to see if PEAR_Command_Packaging is installed, and
+        // transparently switch to use the "make-rpm-spec" command from it
+        // instead, if it does. Otherwise, continue to use the old version
+        // of "makerpm" supplied with this package (PEAR).
+        $packaging_cmd = $this->getCommandPackaging($this->ui, $this->config);
+        if ($packaging_cmd !== null) {
+            $this->ui->outputData('PEAR_Command_Packaging is installed; using '.
+                'newer "make-rpm-spec" command instead');
+            return $packaging_cmd->run('make-rpm-spec', $options, $params);
         }
 
-        $info['extra_headers'] = '';
-        $info['doc_files'] = '';
-        $info['files'] = '';
-        $info['rpm_package'] = sprintf($rpm_pkgname_format, $info['package']);
-        $srcfiles = 0;
-        foreach ($info['filelist'] as $name => $attr) {
-            if ($attr['role'] == 'doc') {
-                $info['doc_files'] .= " $name";
-            // Map role to the rpm vars
-            } else {
-                $c_prefix = '%{_libdir}/php/pear';
-                switch ($attr['role']) {
-                    case 'php':
-                        $prefix = $c_prefix; break;
-                    case 'ext':
-                        $prefix = '%{_libdir}/php'; break; // XXX good place?
-                    case 'src':
-                        $srcfiles++;
-                        $prefix = '%{_includedir}/php'; break; // XXX good place?
-                    case 'test':
-                        $prefix = "$c_prefix/tests/" . $info['package']; break;
-                    case 'data':
-                        $prefix = "$c_prefix/data/" . $info['package']; break;
-                    case 'script':
-                        $prefix = '%{_bindir}'; break;
-                }
-                $info['files'] .= "$prefix/$name\n";
-            }
-        }
-        if ($srcfiles > 0) {
-            include_once "OS/Guess.php";
-            $os = new OS_Guess;
-            $arch = $os->getCpu();
-        } else {
-            $arch = 'noarch';
-        }
-        $cfg = array('master_server', 'php_dir', 'ext_dir', 'doc_dir',
-                     'bin_dir', 'data_dir', 'test_dir');
-        foreach ($cfg as $k) {
-            $info[$k] = $this->config->get($k);
-        }
-        $info['arch'] = $arch;
-        $fp = @fopen($spec_template, "r");
-        if (!$fp) {
-            return $this->raiseError("could not open RPM spec file template $spec_template: $php_errormsg");
-        }
-        $spec_contents = preg_replace('/@([a-z0-9_-]+)@/e', '$info["\1"]', fread($fp, filesize($spec_template)));
-        fclose($fp);
-        $spec_file = "$info[rpm_package]-$info[version].spec";
-        $wp = fopen($spec_file, "wb");
-        if (!$wp) {
-            return $this->raiseError("could not write RPM spec file $spec_file: $php_errormsg");
-        }
-        fwrite($wp, $spec_contents);
-        fclose($wp);
-        $this->ui->outputData("Wrote RPM spec file $spec_file", $command);
-
+        $this->ui->outputData('WARNING: "pear makerpm" is no longer available; an '.
+          'improved version is available via "pear make-rpm-spec", which '.
+          'is available by installing PEAR_Command_Packaging');
         return true;
     }
-
     // }}}
 }
 

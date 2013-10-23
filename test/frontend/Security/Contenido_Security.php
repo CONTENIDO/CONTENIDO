@@ -92,7 +92,7 @@ class Contenido_SecurityTest extends PHPUnit_Framework_TestCase
     {
         $params = Contenido_Security::getMustbeNumericParameters();
         foreach ($params as $param) {
-            $_REQUEST[$param] = preg_replace('/([0-9])/e', 'chr((\\1+112))', rand(100000, 999999));
+            $_REQUEST[$param] = substr(str_shuffle(str_repeat("abcdefghijklmnopqrstuvwxyz", 6)), 0, 6);
         }
         Contenido_Security::checkRequestMustbeNumericParameter();
 

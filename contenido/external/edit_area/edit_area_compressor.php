@@ -6,6 +6,7 @@
 	 *	Released under LGPL, Apache and BSD licenses
 	 *	v1.1.3 (2007/01/18)	 
 	 *
+     *  modified 2013-10-23, Murat Purc, Replaced deprecated /e modifier preg_replace() calls (deprecated since PHP 5.5)
 	******/
 	
 	// CONFIG
@@ -138,14 +139,20 @@
 			$loader= $this->get_content("edit_area_loader.js")."\n";
 			
 			// get the list of other files to load
-	    	$loader= preg_replace("/(t\.scripts_to_load=\s*)\[([^\]]*)\];/e"
-						, "\$this->replace_scripts('script_list', '\\1', '\\2')"
-						, $loader);
-		
-			$loader= preg_replace("/(t\.sub_scripts_to_load=\s*)\[([^\]]*)\];/e"
-						, "\$this->replace_scripts('sub_script_list', '\\1', '\\2')"
-						, $loader);
-
+            preg_match_all("/(t\.scripts_to_load=\s*)\[([^\]]*)\];/", $loader, $matches, PREG_SET_ORDER);
+            foreach ($matches as $val)
+            {
+                $newValue = $this->replace_scripts("script_list", $val[1], $val[2]);
+                $loader = str_replace($val[0], $newValue, $loader);
+            }
+            
+            preg_match_all("/(t\.sub_scripts_to_load=\s*)\[([^\]]*)\];/", $loader, $matches, PREG_SET_ORDER);
+            foreach ($matches as $val)
+            {
+                $newValue = $this->replace_scripts("sub_script_list", $val[1], $val[2]);
+                $loader = str_replace($val[0], $newValue, $loader);
+            }
+            
 			// replace languages names
 			$reg_path= $this->path."reg_syntax/";
 			$a_displayName	= array();

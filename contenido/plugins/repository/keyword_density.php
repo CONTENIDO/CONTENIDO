@@ -13,7 +13,7 @@ function calcDensity ($singlewordcounter, $string, $quantifier = 1) {
         
         // replace chars
 		//fix 2008-06-25 timo.trautmann - do not remove special chars from other languages (french etc.)
-        //$patterns = array('#[^-a-zA-Z0-9äöüÄÖÜß]#ei');
+        //$patterns = array('#[^-a-zA-Z0-9äöüÄÖÜß]#i');
         //$replaces = array('');
         //$tmp[$i] = preg_replace($patterns, $replaces, $tmp[$i]);
         
@@ -87,8 +87,9 @@ function keywordDensity ($headline, $text) {
     
 	$text = conHtmlEntityDecode($text);
 	
-	// replace all non converted entities and double/more spaces
-	$patterns = array('#&[a-zA-Z]+\;#ei', '#\s+#');
+    // replace all non converted numbered entities (what about numbered entites?)
+    // replace all double/more spaces
+	$patterns = array('#&[a-zA-Z]+\;#i', '#\s+#');
 	$replaces = array('', ' ');
 	$text = preg_replace($patterns, $replaces, $text);
 

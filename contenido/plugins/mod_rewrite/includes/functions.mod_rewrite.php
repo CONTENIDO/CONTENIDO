@@ -481,7 +481,9 @@ function mr_buildGeneratedCode($code) {
 
         // anchor hack
         $code = preg_replace_callback(
-                "/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", create_function('$arr_matches', 'return ModRewrite::rewriteHtmlAnchor($arr_matches);'), $code
+            "/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i",
+            create_function('$matches', 'return ModRewrite::rewriteHtmlAnchor($matches);'),
+            $code
         );
 
         // remove tinymce single quote entities:
@@ -492,7 +494,11 @@ function mr_buildGeneratedCode($code) {
         $sBaseUri = CEC_Hook::execute("Contenido.Frontend.BaseHrefGeneration", $sBaseUri);
 
         // IE hack with wrong base href interpretation
-        $code = preg_replace("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/ie", "stripslashes('\\1{$sBaseUri}upload/\\2\\3')", $code);
+        $code = preg_replace_callback(
+            "/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/i",
+            create_function('$matches', 'return stripslashes($matches[1]' . $sBaseUri . ' . "upload/" . $matches[2] . $matches[3]);'),
+            $code
+        );
 
         // define some preparations to replace /front_content.php & ./front_content.php
         // against front_content.php, because urls should start with front_content.php
@@ -519,11 +525,13 @@ function mr_buildGeneratedCode($code) {
             $oMRUrlStack->add('front_content.php' . $val[2]);
         }
 
-        // ok let it beginn, start mod rewrite class
+        // ok let it beginn, build the clean urls
         $code = str_replace('"front_content.php"', '"' . mr_buildNewUrl('front_content.php') . '"', $code);
         $code = str_replace("'front_content.php'", "'" . mr_buildNewUrl('front_content.php') . "'", $code);
         $code = preg_replace_callback(
-                "/([\"|\'|=])front_content\.php(.?|.+?)([\"|\'|>])/i", create_function('$aMatches', 'return $aMatches[1] . mr_buildNewUrl("front_content.php" . $aMatches[2]) . $aMatches[3];'), $code
+            "/([\"|\'|=])front_content\.php(.?|.+?)([\"|\'|>])/i",
+            create_function('$aMatches', 'return $aMatches[1] . mr_buildNewUrl("front_content.php" . $aMatches[2]) . $aMatches[3];'),
+            $code
         );
 
         ModRewriteDebugger::add($code, 'mr_buildGeneratedCode() out');
@@ -532,7 +540,9 @@ function mr_buildGeneratedCode($code) {
     } else {
         // anchor hack for non modrewrite websites
         $code = preg_replace_callback(
-                "/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", create_function('$arr_matches', 'return ModRewrite::contenidoHtmlAnchor($arr_matches, $GLOBALS["is_XHTML"]);'), $code
+            "/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i",
+            create_function('$matches', 'return ModRewrite::contenidoHtmlAnchor($matches, $GLOBALS["is_XHTML"]);'),
+            $code
         );
     }
 

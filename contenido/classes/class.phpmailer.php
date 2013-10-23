@@ -25,6 +25,7 @@
  *   modified 2006-07-30, HerrB, changes for contenido
  *   modified 2008-06-30, Frederic Schneider, add security fix
  *   modified 2009-11-06, Murat Purc, Workaround for invoking deprecated function in PHP 5.3
+ *   modified 2013-10-23, Murat Purc, Replaced deprecated /e modifier preg_replace() calls (deprecated since PHP 5.5)
  *
  *   $Id: class.phpmailer.php 1094 2009-11-06 01:22:13Z xmurrix $:
  * }}
@@ -1224,55 +1225,75 @@ class PHPMailer
     }
     
     /**
-     * Encode string to quoted-printable.  
-     * @access private
+     * Encode a string in quoted-printable format.
+     * According to RFC2045 section 6.7.
+     * @access public
+     * @param string $str The text to encode
+     * @param integer $line_max Number of chars allowed on a line before wrapping
      * @return string
+     * @link PHP version adapted from http://www.php.net/manual/en/function.quoted-printable-decode.php#89417
      */
-    function EncodeQP ($str) {
-        $encoded = $this->FixEOL($str);
-        if (substr($encoded, -(strlen($this->LE))) != $this->LE)
-            $encoded .= $this->LE;
+    function EncodeQP ($str, $line_max = 76) {
+        $string = $this->FixEOL($str);
 
-        // Replace every high ascii, control and = characters
-        $encoded = preg_replace('/([\000-\010\013\014\016-\037\075\177-\377])/e',
-                  "'='.sprintf('%02X', ord('\\1'))", $encoded);
-        // Replace every spaces and tabs when it's the last character on a line
-        $encoded = preg_replace("/([\011\040])".$this->LE."/e",
-                  "'='.sprintf('%02X', ord('\\1')).'".$this->LE."'", $encoded);
-
-        // Maximum line length of 76 characters before CRLF (74 + space + '=')
-        $encoded = $this->WrapText($encoded, 74, true);
-
-        return $encoded;
+        if (function_exists('quoted_printable_encode')) { //Use native function if it's available (>= PHP5.3)
+            return quoted_printable_encode($string);
+        }
+        //Fall back to a pure PHP implementation
+        $string = str_replace(
+            array('%20', '%0D%0A.', '%0D%0A', '%'),
+            array(' ', "\r\n=2E", "\r\n", '='),
+            rawurlencode($string)
+        );
+        $string = preg_replace('/[^\r\n]{' . ($line_max - 3) . '}[^=\r\n]{2}/', "$0=\r\n", $string);
+        return $string;
     }
 
     /**
-     * Encode string to q encoding.  
-     * @access private
+     * Encode a string using Q encoding.
+     * @link http://tools.ietf.org/html/rfc2047
+     * @param string $str the text to encode
+     * @param string $position Where the text is going to be used, see the RFC for what that means
+     * @access public
      * @return string
      */
     function EncodeQ ($str, $position = "text") {
-        // There should not be any EOL in the string
-        $encoded = preg_replace("[\r\n]", "", $str);
-
+        //There should not be any EOL in the string
+        $pattern = '';
+        $encoded = str_replace(array("\r", "\n"), '', $str);
         switch (strtolower($position)) {
-          case "phrase":
-            $encoded = preg_replace("/([^A-Za-z0-9!*+\/ -])/e", "'='.sprintf('%02X', ord('\\1'))", $encoded);
-            break;
-          case "comment":
-            $encoded = preg_replace("/([\(\)\"])/e", "'='.sprintf('%02X', ord('\\1'))", $encoded);
-          case "text":
-          default:
-            // Replace every high ascii, control =, ? and _ characters
-            $encoded = preg_replace('/([\000-\011\013\014\016-\037\075\077\137\177-\377])/e',
-                  "'='.sprintf('%02X', ord('\\1'))", $encoded);
-            break;
+            case 'phrase':
+                //RFC 2047 section 5.3
+                $pattern = '^A-Za-z0-9!*+\/ -';
+                break;
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 'comment':
+                //RFC 2047 section 5.2
+                $pattern = '\(\)"';
+                //intentional fall-through
+                //for this reason we build the $pattern without including delimiters and []
+            case 'text':
+            default:
+                //RFC 2047 section 5.1
+                //Replace every high ascii, control, =, ? and _ characters
+                $pattern = '\000-\011\013\014\016-\037\075\077\137\177-\377' . $pattern;
+                break;
         }
-        
-        // Replace every spaces to _ (more readable than =20)
-        $encoded = str_replace(" ", "_", $encoded);
-
-        return $encoded;
+        $matches = array();
+        if (preg_match_all("/[{$pattern}]/", $encoded, $matches)) {
+            //If the string contains an '=', make sure it's the first thing we replace
+            //so as to avoid double-encoding
+            $s = array_search('=', $matches[0]);
+            if ($s !== false) {
+                unset($matches[0][$s]);
+                array_unshift($matches[0], '=');
+            }
+            foreach (array_unique($matches[0]) as $char) {
+                $encoded = str_replace($char, '=' . sprintf('%02X', ord($char)), $encoded);
+            }
+        }
+        //Replace every spaces to _ (more readable than =20)
+        return str_replace(' ', '_', $encoded);
     }
 
     /**
