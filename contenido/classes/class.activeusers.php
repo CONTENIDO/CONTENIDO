@@ -273,13 +273,13 @@ class ActiveUsers {
 	 **/
 	function getNumberOfUsers() {
 
-		$iAnzahl= 0;
-		$sql= "SELECT user_id  FROM `" . $this->oCfg["tab"]["online_user"];
-		if ($this->oDb->query($sql)) {
-			$iAnzahl= $this->oDb->num_rows();
-		}
-
-		return $iAnzahl;
+        $sql = sprintf('SELECT COUNT(*) AS cnt FROM `%s`', $this->oCfg["tab"]["online_user"]);
+        $result = $this->oDb->query($sql);
+        if ($result) {
+            $this->oDb->next_record();
+            return (int) $this->oDb->f('cnt');
+        }
+        return 0;
 	}
 
 	/**
