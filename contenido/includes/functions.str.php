@@ -381,7 +381,7 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
 function strNextDeeper($idcat, $ignoreLang = false) {
     global $lang;
 
-    $languageId = (true == $ignoreLang)? $lang : NULL;
+    $languageId = (true == $ignoreLang) ? NULL : $lang;
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getFirstChildCategoryId($idcat, $languageId);
 }
