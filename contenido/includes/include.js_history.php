@@ -81,7 +81,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
                 $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $oVersionJScript->getPathFile() . $sFileName));
                 exit();
             }
-            $oPage->addScript('reload', $oVersionJScript->renderReloadScript('js', $sJScriptName, $sess));
+            $oPage->addScript($oVersionJScript->renderReloadScript('js', $sJScriptName, $sess));
         }
 
         cFileHandler::validateFilename($sJScriptName);

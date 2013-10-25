@@ -48,7 +48,7 @@ if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $a
     $_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
     $oPage->setReload();
     $sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\')</script>';
-    $oPage->addScript('refreshlefttop', $sRefreshLeftTopScript);
+    $oPage->addScript($sRefreshLeftTopScript);
 } elseif ($action == "recipientgroup_delete" && $perm->have_perm_area_action($area, $action)) {
     $oRGroups->delete($_REQUEST["idrecipientgroup"]);
     $sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'remove\')</script>';
