@@ -139,7 +139,9 @@ class cHTML {
             $this->_skeletonSingle = '<%s%s>';
         }
 
-        $this->advanceID();
+        if (isset($attributes['id']) === false) {
+            $this->advanceID();
+        }
     }
 
     /**
