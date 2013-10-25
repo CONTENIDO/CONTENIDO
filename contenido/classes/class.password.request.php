@@ -175,12 +175,12 @@ class cPasswordRequest {
      * sending process
      *
      * @param bool $return Return or print template
-     * @return void Ambigous mixed>
+     * @return string rendered HTML code
      */
     public function renderForm($return = 0) {
         // if feature is not enabled, do nothing
         if (!$this->_isEnabled) {
-            return;
+            return '';
         }
 
         $message = '';
