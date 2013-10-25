@@ -98,7 +98,7 @@ if (($action == 'savecontype' || $action == 10)) {
 
 $result = array();
 $aList = array();
-$typeAktuell = array();
+$currentTypes = array();
 $sortID = array(
     "CMS_HTMLHEAD",
     "CMS_HEAD",
@@ -140,8 +140,8 @@ foreach ($sortID as $name) {
     }
 }
 
-$typeAktuell = getAktuellType($typeAktuell, $aList);
-// print_r($typeAktuell);
+$currentTypes = _getCurrentTypes($currentTypes, $aList);
+// print_r($currentTypes);
 // create Layoutcode
 // if ($action == 'con_content') {
 // @fulai.zhang: Mark submenuitem 'Editor' in the CONTENIDO Backend (Area:
@@ -195,7 +195,7 @@ if (count($result) <= 0) {
     foreach ($aIdtype as $idtype) {
         foreach ($sortID as $name) {
             if (in_array($name, array_keys($result)) && $result[$name][$idtype] != '') {
-                if (in_array($name . "[" . $idtype . "]", $typeAktuell)) {
+                if (in_array($name . "[" . $idtype . "]", $currentTypes)) {
                     $class = '';
                 } else {
                     $class = ' noactive';
@@ -224,7 +224,6 @@ $page->set("s", "IDCLIENT", $client);
 
 // generate code
 $code = _processCmsTags($aList, $result, true, $page->render(NULL, true));
-;
 
 if ($code == "0601") {
     markSubMenuItem("1");
@@ -339,7 +338,7 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
                     include ($typeCodeFile);
                 } elseif (!empty($_typeItem->code)) {
                     // old version, evaluate CMS type code
-                    cDeprecated("Move code for $type from table into file system (contenido/includes/cms/code/)");
+                    cDeprecated("Move code for $type from table into file system (contenido/includes/type/code/)");
                     eval($_typeItem->code);
                 }
                 $sql = "SELECT a.idcontent
@@ -386,13 +385,12 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
 }
 
 /**
- * Processes get all existing active CMS_...
- * tags within passed code
+ * Processes get all existing active CMS_... tags within passed code
  *
  * @param array $r active CMS variables
  * @param array $aList CMS_...tags list
  */
-function getAktuellType($r, $aList) {
+function _getCurrentTypes($r, $aList) {
     $idcat = $_REQUEST['idcat'];
     $idart = $_REQUEST['idart'];
     $lang = $_REQUEST['lang'];
