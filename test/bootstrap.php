@@ -23,7 +23,7 @@
 define('CON_UNITTEST_LIB_DIR', '');
 
 // set dir to CONTENIDO test location
-define('CON_TEST_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')));
+define('CON_TEST_PATH', dirname(__FILE__));
 
 // UnitTest sources
 require_once(CON_UNITTEST_LIB_DIR . 'PHPUnit/Framework/TestCase.php');
