@@ -32,6 +32,20 @@ abstract class cTestingTestCase extends PHPUnit_Framework_TestCase {
     protected static $_testDirectories = array();
 
     /**
+     * Original database prefix
+     * @var
+     */
+    protected static $_originalSqlPrefix;
+
+    /**
+     * Sets the original database prefix
+     * @param $sqlPrefix
+     */
+    public static function setOriginalSqlPrefix($sqlPrefix) {
+        self::$_originalSqlPrefix = $sqlPrefix;
+    }
+
+    /**
      * Creates a test suite.
      * @return PHPUnit_Framework_TestSuite
      * @throws cTestingException
@@ -66,5 +80,50 @@ abstract class cTestingTestCase extends PHPUnit_Framework_TestCase {
         }
 
         return $suite;
+    }
+
+    /**
+     * @see PHPUnit_Framework_Assert::readAttribute
+     */
+    protected function _readAttribute($classOrObject, $attributeName) {
+        return PHPUnit_Framework_Assert::readAttribute($classOrObject, $attributeName);
+    }
+
+    /**
+     * Returns the content of the required SQL data file.
+     * @param $databaseTable
+     *
+     * @return array
+     * @throws cTestingException
+     */
+    protected function _fetchSqlFileContent($databaseTable) {
+        $cfg = cRegistry::getConfig();
+
+        $fileName = CON_TEST_PATH . '/sql/test_' . $databaseTable . '.sql';
+        if (file_exists($fileName) === false) {
+            throw new cTestingException('Can not load SQL data for this table - the source does not exist.');
+        }
+
+        if ($cfg['sql']['sqlprefix'] == self::$_originalSqlPrefix) {
+            throw new cTestingException('Original database SQL prefix matches current installation prefix - can not proceed.');
+        }
+
+        $sqlStatements = array();
+        $content = file($fileName);
+        $lineBuffer = '';
+        foreach ($content as $fileLine) {
+            $lineBuffer .= str_replace('!PREFIX!', $cfg['sql']['sqlprefix'], $fileLine);
+
+            if (substr(trim($fileLine), -1) == ';') {
+                $sqlStatements[] = $lineBuffer;
+                $lineBuffer = '';
+            }
+        }
+
+        if ($lineBuffer != '') {
+            $sqlStatements[] = $lineBuffer;
+        }
+
+        return $sqlStatements;
     }
 }

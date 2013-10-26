@@ -74,6 +74,11 @@ if (!is_file($contenido_path . 'includes/startup.php')) {
 }
 include_once($contenido_path.'includes/startup.php');
 
+// overwrite the SQL table prefix and reload the database table definitions
+cTestingTestCase::setOriginalSqlPrefix($cfg['sql']['sqlprefix']);
+$cfg['sql']['sqlprefix'] = 'test';
+require($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
+
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.con2.php');
 cInclude('includes', 'functions.api.php');

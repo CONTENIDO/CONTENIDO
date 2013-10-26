@@ -10,12 +10,10 @@
  * @link http://www.contenido.org
  */
 
-require_once 'sqlStatements.php';
-
 /**
  * idcat 13: teaser category with 4 articles
  */
-class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
+class cArticleCollectorTest extends cTestingTestCase {
 
     /**
      * Default options that are set when no other options are given.
@@ -37,15 +35,6 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
     protected $_aColl = null;
 
     /**
-     * Return attribute of given object.
-     *
-     * @param object $coll
-     * @param string $attr
-     */
-    private static function attr($coll, $attr) {
-        return PHPUnit_Framework_Assert::readAttribute($coll, $attr);
-    }
-    /**
      */
     public function setUp() {
 
@@ -65,56 +54,25 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         );
 
         $this->_db = cRegistry::getDb();
+
+        $sqlStatements = array();
+        $sqlStatements = array_merge($sqlStatements, $this->_fetchSqlFileContent('art'));
+        $sqlStatements = array_merge($sqlStatements, $this->_fetchSqlFileContent('art_lang'));
+        $sqlStatements = array_merge($sqlStatements, $this->_fetchSqlFileContent('cat'));
+        $sqlStatements = array_merge($sqlStatements, $this->_fetchSqlFileContent('cat_art'));
+        $sqlStatements = array_merge($sqlStatements, $this->_fetchSqlFileContent('cat_lang'));
+
+        foreach ($sqlStatements as $sqlStatement) {
+            $this->_db->query($sqlStatement);
+        }
+
         $this->_aColl = new cArticleCollector();
-
-        $sql = SqlArticleCollector::getDeleteStatement(array(
-            'con_art_lang_test',
-            'con_cat_art_test',
-            'con_cat_lang_test',
-            'con_cat_test',
-            'con_art_test'
-        ));
-        $this->_db->query($sql);
-        global $cfg;
-        $cfg['tab']['art_lang'] = 'con_art_lang_test';
-        $cfg['tab']['cat_art'] = 'con_cat_art_test';
-        $cfg['tab']['cat_lang'] = 'con_cat_lang_test';
-        $cfg['tab']['cat'] = 'con_cat_test';
-        $cfg['tab']['art'] = 'con_art_test';
-
-        // con_art_lang_test
-        $this->_db->query(SqlArticleCollector::getCreateConArtLangTest());
-        $this->_db->query(SqlArticleCollector::getInsertConArtLangTest());
-
-        // con_cat_art_test
-        $this->_db->query(SqlArticleCollector::getCreateConCatArtTest());
-        $this->_db->query(SqlArticleCollector::getInsertConCatArtTest());
-
-        // con_cat_lang_test
-        $this->_db->query(SqlArticleCollector::getCreateConCatLangTest());
-        $this->_db->query(SqlArticleCollector::getInsertConCatLangTest());
-
-        // con_cat_test
-        $this->_db->query(SqlArticleCollector::getCreateConCatTest());
-        $this->_db->query(SqlArticleCollector::getInsertConCatTest());
-
-        // con_art_test
-        $this->_db->query(SqlArticleCollector::getCreateConArtTest());
-        $this->_db->query(SqlArticleCollector::getInsertConArtTest());
     }
 
     /**
      */
     public function tearDown() {
-        $this->_db = cRegistry::getDb();
-        $sql = SqlArticleCollector::getDeleteStatement(array(
-            'con_art_lang_test',
-            'con_cat_art_test',
-            'con_cat_lang_test',
-            'con_cat_test',
-            'con_art_test'
-        ));
-        $this->_db->query($sql);
+        // No need for tear down
     }
 
     /**
@@ -125,7 +83,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         // test empty options
         $this->_aColl = new cArticleCollector(array());
         $ar = array();
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test option idcat
         $this->_aColl = new cArticleCollector(array(
@@ -145,7 +103,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['artspecs'] = array();
         $ar['direction'] = 'DESC';
         $ar['limit'] = 0;
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test option start
         $this->_aColl = new cArticleCollector(array(
@@ -163,7 +121,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['artspecs'] = array();
         $ar['direction'] = 'DESC';
         $ar['limit'] = 0;
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test options idcat & limit
         $this->_aColl = new cArticleCollector(array(
@@ -185,7 +143,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['order'] = 'created';
         $ar['artspecs'] = array();
         $ar['direction'] = 'DESC';
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test options idcat, limit & start
         $this->_aColl = new cArticleCollector(array(
@@ -208,7 +166,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['order'] = 'created';
         $ar['artspecs'] = array();
         $ar['direction'] = 'DESC';
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test options idcat, limit, start & startonly
         $this->_aColl = new cArticleCollector(array(
@@ -232,7 +190,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['order'] = 'created';
         $ar['artspecs'] = array();
         $ar['direction'] = 'DESC';
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test options idcat, limit, start, startonly & offline
         $this->_aColl = new cArticleCollector(array(
@@ -257,7 +215,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['order'] = 'created';
         $ar['artspecs'] = array();
         $ar['direction'] = 'DESC';
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test options idcat, limit, start, startonly, offline & offlineonly
         $this->_aColl = new cArticleCollector(array(
@@ -283,7 +241,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['order'] = 'created';
         $ar['artspecs'] = array();
         $ar['direction'] = 'DESC';
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test options idcat, limit, start, startonly, offline, offlineonly &
         // direction
@@ -311,7 +269,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['client'] = cRegistry::getClientId();
         $ar['order'] = 'created';
         $ar['artspecs'] = array();
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test options idcat, limit, start, startonly, offline, offlineonly,
         // direction & order (publisheddate)
@@ -340,7 +298,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['lang'] = cRegistry::getLanguageId();
         $ar['client'] = cRegistry::getClientId();
         $ar['artspecs'] = array();
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test options idcat, limit, start, startonly, offline, offlineonly,
         // direction & order (sortsequence)
@@ -369,7 +327,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['lang'] = cRegistry::getLanguageId();
         $ar['client'] = cRegistry::getClientId();
         $ar['artspecs'] = array();
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test options idcat, limit, start, startonly, offline, offlineonly,
         // direction & order (modificationdate)
@@ -398,7 +356,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['lang'] = cRegistry::getLanguageId();
         $ar['client'] = cRegistry::getClientId();
         $ar['artspecs'] = array();
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // test options idcat, limit, start, startonly, offline, offlineonly,
         // direction & order (creationdate)
@@ -427,7 +385,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['lang'] = cRegistry::getLanguageId();
         $ar['client'] = cRegistry::getClientId();
         $ar['artspecs'] = array();
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
 
         // ------check order
         $this->assertSame(1, $this->_aColl->count());
@@ -443,7 +401,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $act = array();
         $exp = array_merge($this->_defaultOptions, array());
         $this->_aColl->setOptions($act);
-        $this->assertSame($exp, self::attr($this->_aColl, '_options'));
+        $this->assertSame($exp, $this->_readAttribute($this->_aColl, '_options'));
     }
 
     /**
@@ -460,7 +418,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
             )
         ));
         $this->_aColl->setOptions($act);
-        $diff = array_diff($exp, self::attr($this->_aColl, '_options'));
+        $diff = array_diff($exp, $this->_readAttribute($this->_aColl, '_options'));
         $this->assertEmpty($diff);
     }
 
@@ -658,7 +616,7 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
         $ar['client'] = cRegistry::getClientId();
         $ar['artspecs'] = array();
 
-        $this->assertSame($ar, self::attr($this->_aColl, '_options'));
+        $this->assertSame($ar, $this->_readAttribute($this->_aColl, '_options'));
         // ------check order
 
         $this->assertSame(1, $this->_aColl->count());
@@ -760,9 +718,9 @@ class cArticleCollectorTest extends PHPUnit_Framework_TestCase {
      * Test method "next" of the iterator implamentation.
      */
     public function testNext() {
-        $this->assertSame(0, self::attr($this->_aColl, '_currentPosition'));
+        $this->assertSame(0, $this->_readAttribute($this->_aColl, '_currentPosition'));
         $this->_aColl->next();
-        $this->assertSame(1, self::attr($this->_aColl, '_currentPosition'));
+        $this->assertSame(1, $this->_readAttribute($this->_aColl, '_currentPosition'));
     }
 
     /**
