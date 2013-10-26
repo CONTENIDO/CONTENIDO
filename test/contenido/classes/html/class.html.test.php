@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file contains tests for the class cHTML.
  *
@@ -15,11 +14,11 @@
  */
 
 /**
- * This class tests the static class methods uf the cArray util class.
+ * This class tests the class methods of the cHTML class.
  *
  * @author marcus.gnass
  */
-class cHTMLTest extends PHPUnit_Framework_TestCase {
+class cHTMLTest extends cTestingTestCase {
 
     public function setUp() {
         // create XHTML

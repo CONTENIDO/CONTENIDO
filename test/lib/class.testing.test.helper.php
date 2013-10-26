@@ -18,7 +18,7 @@
  * @package          Testing
  * @subpackage       Helper
  */
-class ContenidoTestHelper
+class cTestingTestHelper
 {
     /**
      * Database instance

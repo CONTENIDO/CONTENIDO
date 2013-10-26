@@ -88,7 +88,7 @@ class cHTMLAlignmentTableTest extends PHPUnit_Framework_TestCase {
         $this->_tableBool = new cHTMLAlignmentTable(true);
         $this->_tableNull = new cHTMLAlignmentTable(NULL);
         $this->_tableObject = new cHTMLAlignmentTable(new stdClass());
-        //$this->_tableData = new cHTMLAlignmentTable(0, 1.0, '', ' foo ', true, NULL, new stdClass());
+        $this->_tableData = new cHTMLAlignmentTable(0, 1.0, '', ' foo ', true, NULL, new stdClass());
     }
 
     /**

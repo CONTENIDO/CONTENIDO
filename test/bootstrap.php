@@ -29,8 +29,9 @@ define('CON_TEST_PATH', dirname(__FILE__));
 require_once(CON_UNITTEST_LIB_DIR . 'PHPUnit/Framework/TestCase.php');
 
 // CONTENIDO test related classes
-require_once(CON_TEST_PATH . '/lib/TestSuiteHelper.php');
-require_once(CON_TEST_PATH . '/lib/ContenidoTestHelper.php');
+require_once(CON_TEST_PATH . '/lib/class.testing.exception.php');
+require_once(CON_TEST_PATH . '/lib/class.testing.test.case.php');
+require_once(CON_TEST_PATH . '/lib/class.testing.test.helper.php');
 
 if (!defined('CON_ENVIRONMENT')) {
     if (getenv('CONTENIDO_ENVIRONMENT')) {
@@ -102,9 +103,6 @@ cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();
 
-$sess->register('cfgClient');
-$sess->register('errsite_idcat');
-$sess->register('errsite_idart');
 $sess->register('encoding');
 
 // Initialize encodings
@@ -119,7 +117,7 @@ if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
 }
 
 // update urlbuilder set http base path
-cUri::getInstance()->getUriBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
+cUri::getInstance()->getUriBuilder()->setHttpBasePath(cRegistry::getFrontendUrl());
 
 // Initialize language
 if (!isset($lang)) {
@@ -156,8 +154,8 @@ if (isset($logout)) {
 }
 
 // Local configuration
-if (file_exists('config.local.php')) {
-    @include('config.local.php');
+if (file_exists('data/config/' . CON_ENVIRONMENT . '/config.local.php')) {
+    @include('data/config/' . CON_ENVIRONMENT . '/config.local.php');
 }
 
 // If the path variable was passed, try to resolve it to a Category Id
@@ -178,7 +176,7 @@ if (isset($path) && strlen($path) > 1) {
 
 // Error page
 $aParams = array(
-    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
+    'client' => $client, 'idcat' => $cfgClient[$client]['errsite']['idcat'], 'idart' => $cfgClient[$client]['errsite']['idart'],
     'lang' => $lang, 'error'=> '1'
 );
 $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);

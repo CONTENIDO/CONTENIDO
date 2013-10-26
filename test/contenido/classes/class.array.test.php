@@ -15,11 +15,11 @@
  */
 
 /**
- * This class tests the static class methods uf the cArray util class.
+ * This class tests the static class methods of the cArray util class.
  *
  * @author marcus.gnass
  */
-class cArrayTest extends PHPUnit_Framework_TestCase {
+class cArrayTest extends cTestingTestCase {
 
     /**
      *
