@@ -17,7 +17,7 @@
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
-class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
+class cHTMLSelectElementTest extends cTestingTestCase {
 
     /**
      *
@@ -66,49 +66,49 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
      */
     public function testConstruct() {
         // $section = new cHTMLSection('testContent', 'testClass', 'testId');
-        $this->assertSame('select', PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_tag'));
-        $this->assertSame(false, PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_contentlessTag'));
+        $this->assertSame('select', $this->_readAttribute($this->_selectData, '_tag'));
+        $this->assertSame(false, $this->_readAttribute($this->_selectData, '_contentlessTag'));
         $this->assertSame(2, count($this->_selectData->getAttributes()));
         $this->assertSame('testName', $this->_selectData->getAttribute('name'));
         $this->assertSame(NULL, $this->_selectData->getAttribute('class'));
         $this->assertSame(NULL, $this->_selectData->getAttribute('disabled'));
 
         $this->_selectData = new cHTMLSelectElement('testName', 100);
-        $this->assertSame('select', PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_tag'));
-        $this->assertSame(false, PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_contentlessTag'));
+        $this->assertSame('select', $this->_readAttribute($this->_selectData, '_tag'));
+        $this->assertSame(false, $this->_readAttribute($this->_selectData, '_contentlessTag'));
         $this->assertSame(2, count($this->_selectData->getAttributes()));
         $this->assertSame('testName', $this->_selectData->getAttribute('name'));
         $this->assertSame(NULL, $this->_selectData->getAttribute('class'));
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_styleDefinitions');
+        $ret = $this->_readAttribute($this->_selectData, '_styleDefinitions');
         $this->assertSame(100, $ret['width']);
 
         $this->_selectData = new cHTMLSelectElement('testName', 100, 'testId');
-        $this->assertSame('select', PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_tag'));
-        $this->assertSame(false, PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_contentlessTag'));
+        $this->assertSame('select', $this->_readAttribute($this->_selectData, '_tag'));
+        $this->assertSame(false, $this->_readAttribute($this->_selectData, '_contentlessTag'));
         $this->assertSame(2, count($this->_selectData->getAttributes()));
         $this->assertSame('testName', $this->_selectData->getAttribute('name'));
         $this->assertSame(NULL, $this->_selectData->getAttribute('class'));
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_styleDefinitions');
+        $ret = $this->_readAttribute($this->_selectData, '_styleDefinitions');
         $this->assertSame(100, $ret['width']);
         $this->assertSame('testId', $this->_selectData->getAttribute('id'));
 
         $this->_selectData = new cHTMLSelectElement('testName', 100, 'testId', true);
-        $this->assertSame('select', PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_tag'));
-        $this->assertSame(false, PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_contentlessTag'));
+        $this->assertSame('select', $this->_readAttribute($this->_selectData, '_tag'));
+        $this->assertSame(false, $this->_readAttribute($this->_selectData, '_contentlessTag'));
         $this->assertSame(3, count($this->_selectData->getAttributes()));
         $this->assertSame('testName', $this->_selectData->getAttribute('name'));
         $this->assertSame(NULL, $this->_selectData->getAttribute('class'));
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_styleDefinitions');
+        $ret = $this->_readAttribute($this->_selectData, '_styleDefinitions');
         $this->assertSame(100, $ret['width']);
         $this->assertSame('testId', $this->_selectData->getAttribute('id'));
         $this->assertSame('disabled', $this->_selectData->getAttribute('disabled'));
 
         $this->_selectData = new cHTMLSelectElement('testName', 100, 'testId', false, null, '', 'testClass');
-        $this->assertSame('select', PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_tag'));
-        $this->assertSame(false, PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_contentlessTag'));
+        $this->assertSame('select', $this->_readAttribute($this->_selectData, '_tag'));
+        $this->assertSame(false, $this->_readAttribute($this->_selectData, '_contentlessTag'));
         $this->assertSame(3, count($this->_selectData->getAttributes()));
         $this->assertSame('testName', $this->_selectData->getAttribute('name'));
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_styleDefinitions');
+        $ret = $this->_readAttribute($this->_selectData, '_styleDefinitions');
         $this->assertSame(100, $ret['width']);
         $this->assertSame('testClass', $this->_selectData->getAttribute('class'));
     }
@@ -123,11 +123,11 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
             'key3' => 'value3'
         );
         $this->_selectData->autoFill($stuff);
-        $this->assertSame(3, count(PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_options')));
-        $ret = PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_options');
-        $this->assertSame('value1', PHPUnit_Framework_Assert::readAttribute($ret['key1'], '_title'));
-        $this->assertSame('value2', PHPUnit_Framework_Assert::readAttribute($ret['key2'], '_title'));
-        $this->assertSame('value3', PHPUnit_Framework_Assert::readAttribute($ret['key3'], '_title'));
+        $this->assertSame(3, count($this->_readAttribute($this->_selectData, '_options')));
+        $ret = $this->_readAttribute($this->_selectData, '_options');
+        $this->assertSame('value1', $this->_readAttribute($ret['key1'], '_title'));
+        $this->assertSame('value2', $this->_readAttribute($ret['key2'], '_title'));
+        $this->assertSame('value3', $this->_readAttribute($ret['key3'], '_title'));
     }
 
     /**
@@ -135,14 +135,14 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
     public function testAddOptionElement() {
         // test first element
         $this->_selectEmpty->addOptionElement(0, $this->_foo);
-        $options = PHPUnit_Framework_Assert::readAttribute($this->_selectEmpty, '_options');
+        $options = $this->_readAttribute($this->_selectEmpty, '_options');
         $this->assertSame(true, is_array($options));
         $this->assertSame(1, count($options));
         $this->assertSame($this->_foo, $options[0]);
 
         // test second element
         $this->_selectEmpty->addOptionElement(1, $this->_bar);
-        $options = PHPUnit_Framework_Assert::readAttribute($this->_selectEmpty, '_options');
+        $options = $this->_readAttribute($this->_selectEmpty, '_options');
         $this->assertSame(true, is_array($options));
         $this->assertSame(2, count($options));
         $this->assertSame($this->_foo, $options[0]);
@@ -154,14 +154,14 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
     public function testAppendOptionElement() {
         // test first element
         $this->_selectEmpty->appendOptionElement($this->_foo);
-        $options = PHPUnit_Framework_Assert::readAttribute($this->_selectEmpty, '_options');
+        $options = $this->_readAttribute($this->_selectEmpty, '_options');
         $this->assertSame(true, is_array($options));
         $this->assertSame(1, count($options));
         $this->assertSame($this->_foo, $options[0]);
 
         // test second element
         $this->_selectEmpty->appendOptionElement($this->_bar);
-        $options = PHPUnit_Framework_Assert::readAttribute($this->_selectEmpty, '_options');
+        $options = $this->_readAttribute($this->_selectEmpty, '_options');
         $this->assertSame(true, is_array($options));
         $this->assertSame(2, count($options));
         $this->assertSame($this->_foo, $options[0]);
@@ -188,7 +188,7 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
      */
     public function testSetDefault() {
         // no option is selected
-        $options = PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_options');
+        $options = $this->_readAttribute($this->_selectData, '_options');
         $this->assertSame(true, is_array($options));
         foreach ($options as $key => $option) {
             $act = $option->isSelected();
@@ -198,7 +198,7 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
 
         // option foo is selected
         $this->_selectData->setDefault('foo');
-        $options = PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_options');
+        $options = $this->_readAttribute($this->_selectData, '_options');
         $this->assertSame(true, is_array($options));
         foreach ($options as $key => $option) {
             $act = $option->isSelected();
@@ -208,7 +208,7 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
 
         // option bar is selected
         $this->_selectData->setDefault('bar');
-        $options = PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_options');
+        $options = $this->_readAttribute($this->_selectData, '_options');
         $this->assertSame(true, is_array($options));
         foreach ($options as $key => $option) {
             $act = $option->isSelected();
@@ -221,7 +221,7 @@ class cHTMLSelectElementTest extends PHPUnit_Framework_TestCase {
             'foo',
             'bar'
         ));
-        $options = PHPUnit_Framework_Assert::readAttribute($this->_selectData, '_options');
+        $options = $this->_readAttribute($this->_selectData, '_options');
         $this->assertSame(true, is_array($options));
         foreach ($options as $key => $option) {
             $act = $option->isSelected();

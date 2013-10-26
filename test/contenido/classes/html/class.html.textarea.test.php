@@ -17,7 +17,7 @@
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
-class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
+class cHtmlTextAreaTest extends cTestingTestCase {
 
     /**
      *
@@ -38,42 +38,42 @@ class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
         $this->assertSame(4, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
         $this->assertSame(NULL, $area->getAttribute('value'));
-        $this->assertSame('textarea', PHPUnit_Framework_Assert::readAttribute($area, '_tag'));
+        $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
 
         $area = new cHTMLTextarea('testName', 'testInitValue');
         $this->assertSame(4, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
-        $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
-        $this->assertSame('textarea', PHPUnit_Framework_Assert::readAttribute($area, '_tag'));
+        $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
+        $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
 
         $area = new cHTMLTextarea('testName', 'testInitValue', 200);
         $this->assertSame(4, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
-        $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
-        $this->assertSame('textarea', PHPUnit_Framework_Assert::readAttribute($area, '_tag'));
+        $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
+        $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
         $this->assertSame(200, $area->getAttribute('cols'));
 
         $area = new cHTMLTextarea('testName', 'testInitValue', 200, 100);
         $this->assertSame(4, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
-        $this->assertSame('textarea', PHPUnit_Framework_Assert::readAttribute($area, '_tag'));
-        $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
+        $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
+        $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
         $this->assertSame(200, $area->getAttribute('cols'));
         $this->assertSame(100, $area->getAttribute('rows'));
 
         $area = new cHTMLTextarea('testName', 'testInitValue', 200, 100, 'testId');
         $this->assertSame(4, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
-        $this->assertSame('textarea', PHPUnit_Framework_Assert::readAttribute($area, '_tag'));
-        $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
+        $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
+        $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
         $this->assertSame(200, $area->getAttribute('cols'));
         $this->assertSame(100, $area->getAttribute('rows'));
 
         $area = new cHTMLTextarea('testName', 'testInitValue', 200, 100, 'testId');
         $this->assertSame(4, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
-        $this->assertSame('textarea', PHPUnit_Framework_Assert::readAttribute($area, '_tag'));
-        $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
+        $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
+        $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
         $this->assertSame(200, $area->getAttribute('cols'));
         $this->assertSame(100, $area->getAttribute('rows'));
         $this->assertSame('testId', $area->getAttribute('id'));
@@ -81,8 +81,8 @@ class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
         $area = new cHTMLTextarea('testName', 'testInitValue', 200, 100, 'testId', false);
         $this->assertSame(4, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
-        $this->assertSame('textarea', PHPUnit_Framework_Assert::readAttribute($area, '_tag'));
-        $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
+        $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
+        $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
         $this->assertSame(200, $area->getAttribute('cols'));
         $this->assertSame(100, $area->getAttribute('rows'));
         $this->assertSame('testId', $area->getAttribute('id'));
@@ -90,8 +90,8 @@ class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
         $area = new cHTMLTextarea('testName', 'testInitValue', 200, 100, 'testId', true);
         $this->assertSame(5, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
-        $this->assertSame('textarea', PHPUnit_Framework_Assert::readAttribute($area, '_tag'));
-        $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
+        $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
+        $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
         $this->assertSame(200, $area->getAttribute('cols'));
         $this->assertSame(100, $area->getAttribute('rows'));
         $this->assertSame('testId', $area->getAttribute('id'));
@@ -100,8 +100,8 @@ class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
         $area = new cHTMLTextarea('testName', 'testInitValue', 200, 100, 'testId', false, NULL, '', 'testClass');
         $this->assertSame(5, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
-        $this->assertSame('textarea', PHPUnit_Framework_Assert::readAttribute($area, '_tag'));
-        $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
+        $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
+        $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
         $this->assertSame(200, $area->getAttribute('cols'));
         $this->assertSame(100, $area->getAttribute('rows'));
         $this->assertSame('testId', $area->getAttribute('id'));
@@ -114,8 +114,8 @@ class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
         $area = new cHTMLTextarea('testName', 'testInitValue', 200);
         $this->assertSame(4, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
-        $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
-        $this->assertSame('textarea', PHPUnit_Framework_Assert::readAttribute($area, '_tag'));
+        $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
+        $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
         $this->assertSame(200, $area->getAttribute('cols'));
 
         $area->setWidth(-1);
@@ -132,26 +132,26 @@ class cHtmlTextAreaTest extends PHPUnit_Framework_TestCase {
         $area = new cHTMLTextarea('testName', 'testInitValue');
         $this->assertSame(4, count($area->getAttributes()));
         $this->assertSame('testName', $area->getAttribute('name'));
-        $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
-        $this->assertSame('textarea', PHPUnit_Framework_Assert::readAttribute($area, '_tag'));
+        $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
+        $this->assertSame('textarea', $this->_readAttribute($area, '_tag'));
 
         $area->setValue('testTestInitValue');
-        $this->assertSame('testTestInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
+        $this->assertSame('testTestInitValue', $this->_readAttribute($area, '_value'));
         $area->setValue('testInitValue');
-        $this->assertSame('testInitValue', PHPUnit_Framework_Assert::readAttribute($area, '_value'));
+        $this->assertSame('testInitValue', $this->_readAttribute($area, '_value'));
     }
 
     /**
      */
     public function testSetValue() {
         // test w/o value
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_textarea, '_value');
+        $act = $this->_readAttribute($this->_textarea, '_value');
         $exp = '';
         $this->assertSame($exp, $act);
 
         // test w/ value
         $this->_textarea->setValue('value');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_textarea, '_value');
+        $act = $this->_readAttribute($this->_textarea, '_value');
         $exp = 'value';
         $this->assertSame($exp, $act);
     }

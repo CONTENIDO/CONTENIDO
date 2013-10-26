@@ -17,7 +17,7 @@
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
-class cHtmlTimeTest extends PHPUnit_Framework_TestCase {
+class cHtmlTimeTest extends cTestingTestCase {
 
     /**
      *
@@ -41,7 +41,7 @@ class cHtmlTimeTest extends PHPUnit_Framework_TestCase {
         $exp = 3;
         $this->assertSame($exp, $act);
 
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_time, '_tag');
+        $act = $this->_readAttribute($this->_time, '_tag');
         $exp = 'time';
         $this->assertSame($exp, $act);
 

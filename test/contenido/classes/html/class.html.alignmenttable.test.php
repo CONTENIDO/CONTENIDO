@@ -17,7 +17,7 @@
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
-class cHTMLAlignmentTableTest extends PHPUnit_Framework_TestCase {
+class cHTMLAlignmentTableTest extends cTestingTestCase {
 
     /**
      *
@@ -96,7 +96,7 @@ class cHTMLAlignmentTableTest extends PHPUnit_Framework_TestCase {
      * Is already tested by test of parent class!
      */
     public function testConstructTag() {
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_tableEmpty, '_tag');
+        $act = $this->_readAttribute($this->_tableEmpty, '_tag');
         $exp = 'table';
         $this->assertSame($exp, $act);
     }
@@ -105,7 +105,7 @@ class cHTMLAlignmentTableTest extends PHPUnit_Framework_TestCase {
      * Test constructor which sets the member $_contentlessTag.
      */
     public function testConstructContentlessTag() {
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_tableEmpty, '_contentlessTag');
+        $act = $this->_readAttribute($this->_tableEmpty, '_contentlessTag');
         $exp = false;
         $this->assertSame($exp, $act);
     }
@@ -116,7 +116,7 @@ class cHTMLAlignmentTableTest extends PHPUnit_Framework_TestCase {
      * @todo Test of member $_data does not work.
      */
     public function testConstructData() {
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_tableEmpty, '_data');
+        $act = $this->_readAttribute($this->_tableEmpty, '_data');
         $this->assertSame(true, is_array($act));
 //         $exp = array(
 //             0,

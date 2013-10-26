@@ -16,7 +16,7 @@
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
-class cHtmlTableTest extends PHPUnit_Framework_TestCase {
+class cHtmlTableTest extends cTestingTestCase {
 
     /**
      *
@@ -34,7 +34,7 @@ class cHtmlTableTest extends PHPUnit_Framework_TestCase {
      */
     public function testConstructor() {
         // test member $_tag
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_table, '_tag');
+        $act = $this->_readAttribute($this->_table, '_tag');
         $exp = 'table';
         $this->assertSame($exp, $act);
         // test attribute cellpadding

@@ -17,7 +17,7 @@
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
-class cHtmlImageTest extends PHPUnit_Framework_TestCase {
+class cHtmlImageTest extends cTestingTestCase {
 
     /**
      *
@@ -55,7 +55,7 @@ class cHtmlImageTest extends PHPUnit_Framework_TestCase {
      * Test constructor which sets the member $_tag.
      */
     public function testConstructTag() {
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_imageEmpty, '_tag');
+        $act = $this->_readAttribute($this->_imageEmpty, '_tag');
         $exp = 'img';
         $this->assertSame($exp, $act);
     }
@@ -64,7 +64,7 @@ class cHtmlImageTest extends PHPUnit_Framework_TestCase {
      * Test constructor which sets the member $_contentlessTag.
      */
     public function testConstructContentlessTag() {
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_imageEmpty, '_contentlessTag');
+        $act = $this->_readAttribute($this->_imageEmpty, '_contentlessTag');
         $exp = true;
         $this->assertSame($exp, $act);
     }

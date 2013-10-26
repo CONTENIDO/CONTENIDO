@@ -17,7 +17,7 @@
  * @author claus.schunk@4fb.de
  * @author marcus.gnass@4fb.de
  */
-class cHtmlCheckBoxTest extends PHPUnit_Framework_TestCase {
+class cHtmlCheckBoxTest extends cTestingTestCase {
 
     /**
      *
@@ -36,7 +36,7 @@ class cHtmlCheckBoxTest extends PHPUnit_Framework_TestCase {
      * Test constructor which sets the member $_tag.
      */
     public function testConstructTag() {
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_checkbox, '_tag');
+        $act = $this->_readAttribute($this->_checkbox, '_tag');
         $exp = 'input';
         $this->assertSame($exp, $act);
     }
@@ -45,7 +45,7 @@ class cHtmlCheckBoxTest extends PHPUnit_Framework_TestCase {
      * Test constructor which sets the member $_value.
      */
     public function testConstructValue() {
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_checkbox, '_value');
+        $act = $this->_readAttribute($this->_checkbox, '_value');
         $exp = 'value';
         $this->assertSame($exp, $act);
     }
@@ -54,7 +54,7 @@ class cHtmlCheckBoxTest extends PHPUnit_Framework_TestCase {
      * Test constructor which sets the member $_contentlessTag.
      */
     public function testConstructContentlessTag() {
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_checkbox, '_contentlessTag');
+        $act = $this->_readAttribute($this->_checkbox, '_contentlessTag');
         $exp = true;
         $this->assertSame($exp, $act);
     }
@@ -74,12 +74,12 @@ class cHtmlCheckBoxTest extends PHPUnit_Framework_TestCase {
     public function testSetLabelText() {
         // set label
         $this->_checkbox->setLabelText('label');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_checkbox, '_labelText');
+        $act = $this->_readAttribute($this->_checkbox, '_labelText');
         $exp = 'label';
         $this->assertSame($exp, $act);
         // unset label
         $this->_checkbox->setLabelText('');
-        $act = PHPUnit_Framework_Assert::readAttribute($this->_checkbox, '_labelText');
+        $act = $this->_readAttribute($this->_checkbox, '_labelText');
         $exp = '';
         $this->assertSame($exp, $act);
     }
