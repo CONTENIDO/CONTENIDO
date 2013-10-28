@@ -402,7 +402,7 @@ function XML_RPC_ee($parser_resource, $name)
 
     case 'METHODNAME':
     case 'RPCMETHODNAME':
-        $XML_RPC_xh[$parser]['method'] = ereg_replace("^[\n\r\t ]+", '',
+        $XML_RPC_xh[$parser]['method'] = preg_replace("^[\n\r\t ]+", '',
                                                       $XML_RPC_xh[$parser]['ac']);
         break;
     }
@@ -886,7 +886,7 @@ class XML_RPC_Client extends XML_RPC_Base {
            $this->headers = 'POST ';
         }
         $this->headers .= $this->path. " HTTP/1.0\r\n";
-        
+
         $this->headers .= "User-Agent: PEAR XML_RPC\r\n";
         $this->headers .= 'Host: ' . $this->server . "\r\n";
 
@@ -1108,7 +1108,7 @@ class XML_RPC_Message extends XML_RPC_Base
         }
         $this->payload .= "</params>\n";
         $this->payload .= $this->xml_footer();
-        $this->payload = ereg_replace("[\r\n]+", "\r\n", $this->payload);
+        $this->payload = preg_replace("[\r\n]+", "\r\n", $this->payload);
     }
 
     /**
@@ -1333,7 +1333,7 @@ class XML_RPC_Message extends XML_RPC_Base
                 $r = new XML_RPC_Response($v);
             }
         }
-        $r->hdrs = split("\r?\n", $XML_RPC_xh[$parser]['ha'][1]);
+        $r->hdrs = preg_split("\r?\n", $XML_RPC_xh[$parser]['ha'][1]);
         return $r;
     }
 }

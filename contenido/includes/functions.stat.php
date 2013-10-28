@@ -74,7 +74,7 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
 function statsArchive($yearmonth) {
     global $cfg;
 
-    $yearmonth = ereg_replace(" ", "0", $yearmonth);
+    $yearmonth = preg_replace('/\s/', '0', $yearmonth);
 
     $db = new DB_Contenido();
     $db2 = new DB_Contenido();

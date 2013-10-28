@@ -97,16 +97,16 @@ class OS_Guess
         static $sysmap = array(
             'HP-UX' => 'hpux',
             'IRIX64' => 'irix',
-            // Darwin?
         );
         static $cpumap = array(
             'i586' => 'i386',
             'i686' => 'i386',
+            'ppc' => 'powerpc',
         );
         if ($uname === null) {
             $uname = php_uname();
         }
-        $parts = split('[[:space:]]+', trim($uname));
+        $parts = preg_split('/\s+/', trim($uname));
         $n = count($parts);
 
         $release = $machine = $cpu = '';
@@ -119,10 +119,10 @@ class OS_Guess
         }
 
         switch ($sysname) {
-            case 'AIX':
+            case 'AIX' :
                 $release = "$parts[3].$parts[2]";
                 break;
-            case 'Windows':
+            case 'Windows' :
                 switch ($parts[1]) {
                     case '95/98':
                         $release = '9x';
@@ -133,16 +133,33 @@ class OS_Guess
                 }
                 $cpu = 'i386';
                 break;
-            case 'Linux':
+            case 'Linux' :
                 $extra = $this->_detectGlibcVersion();
                 // use only the first two digits from the kernel version
-                $release = ereg_replace('^([[:digit:]]+\.[[:digit:]]+).*', '\1', $parts[2]);
+                $release = preg_replace('/^([0-9]+\.[0-9]+).*/', '\1', $parts[2]);
+                break;
+            case 'Mac' :
+                $sysname = 'darwin';
+                $nodename = $parts[2];
+                $release = $parts[3];
+                if ($cpu == 'Macintosh') {
+                    if ($parts[$n - 2] == 'Power') {
+                        $cpu = 'powerpc';
+                    }
+                }
+                break;
+            case 'Darwin' :
+                if ($cpu == 'Macintosh') {
+                    if ($parts[$n - 2] == 'Power') {
+                        $cpu = 'powerpc';
+                    }
+                }
+                $release = preg_replace('/^([0-9]+\.[0-9]+).*/', '\1', $parts[2]);
                 break;
             default:
-                $release = ereg_replace('-.*', '', $parts[2]);
+                $release = preg_replace('/-.*/', '', $parts[2]);
                 break;
         }
-
 
         if (isset($sysmap[$sysname])) {
             $sysname = $sysmap[$sysname];

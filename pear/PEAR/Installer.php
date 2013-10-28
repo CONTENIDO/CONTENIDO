@@ -675,8 +675,8 @@ class PEAR_Installer extends PEAR_Common
             }
 
             // don't want strange characters
-            $pkgname    = ereg_replace ('[^a-zA-Z0-9._]', '_', $pkginfo['package']);
-            $pkgversion = ereg_replace ('[^a-zA-Z0-9._\-]', '_', $pkginfo['version']);
+            $pkgname    = preg_replace('[^a-zA-Z0-9._]', '_', $pkginfo['package']);
+            $pkgversion = preg_replace('[^a-zA-Z0-9._\-]', '_', $pkginfo['version']);
             $tmp_path = dirname($descfile);
             if (substr($pkgfile, -4) != '.xml') {
                 $tmp_path .= DIRECTORY_SEPARATOR . $pkgname . '-' . $pkgversion;
