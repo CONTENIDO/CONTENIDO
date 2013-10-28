@@ -202,7 +202,7 @@ if ($currentstep < $totalsteps) {
         rereadClients_Setup();
 
         // Check if table *_mod_history exists
-        if (in_array($tables, $_SESSION['dbprefix'] . '_mod_history')) {
+        if (in_array($_SESSION['dbprefix'] . '_mod_history', $tables)) {
         	$oVersion = new VersionImport($cfg, $cfgClient, $db, $client, $area, $frame);
         	$oVersion->CreateHistoryVersion();
         }
