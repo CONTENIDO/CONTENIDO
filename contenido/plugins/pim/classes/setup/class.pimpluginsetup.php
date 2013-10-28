@@ -166,8 +166,8 @@ class PimPluginSetup {
         // CONTENIDO sub navigations: *_nav_sub
         self::$XmlNavSub = $xml->contenido->nav_sub;
 
-        // CONTENIDO Content Types: *_type
-        self::$XmlContentType = $xml->type;
+        // CONTENIDO Content Types: *_content_types
+        self::$XmlContentType = $xml->content_types;
     }
 
     /**
