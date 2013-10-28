@@ -4,7 +4,7 @@
  * Contenido Content Management System
  *
  * Description:
- * Creates/Updates the database tables and fills them with entries (depending on 
+ * Creates/Updates the database tables and fills them with entries (depending on
  * selected options during setup process)
  *
  * Requirements:
@@ -191,19 +191,21 @@ if ($currentstep < $totalsteps) {
     $sql = 'SHOW TABLES';
     $db->query($sql);
 
+	$tables = array();
+    while ($db->next_record()) {
+        $tables[] = $db->f(0);
+    }
+
     // For import mod_history rows to versioning
     if ($_SESSION['setuptype'] == 'migration' || $_SESSION['setuptype'] == 'upgrade') {
         $cfgClient = array();
         rereadClients_Setup();
 
-        $oVersion = new VersionImport($cfg, $cfgClient, $db, $client, $area, $frame);
-        $oVersion->CreateHistoryVersion();
-    }
-
-    $tables = array();
-
-    while ($db->next_record()) {
-        $tables[] = $db->f(0);
+        // Check if table *_mod_history exists
+        if (in_array($tables, $_SESSION['dbprefix'] . '_mod_history')) {
+        	$oVersion = new VersionImport($cfg, $cfgClient, $db, $client, $area, $frame);
+        	$oVersion->CreateHistoryVersion();
+        }
     }
 
     foreach ($tables as $table) {
