@@ -34,12 +34,12 @@
             <tr class="text_medium" style="background-color: {BGCOLOR_CONTENT};" >
                 <td colspan="2" valign="top" style="border: 0px; border-left: 1px; border-top:1px;border-bottom:0px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:3px">         
                      <div class="memberselect">
-                        <p class="column_header">i18n('Groupmembers')</p>
+                        <p class="column_header">i18n("Groupmembers")</p>
                         <div style="float:right;">
                              <input type="text" name="filter_in" id="user_in_group_filter_value" value="{IN_GROUP_VALUE}" class="filterBox text_medium" onkeyup="keyHandler('user_in_group_filter_value')">
                              <img src="./images/submit.gif" class="submit_image" onclick="filter('user_in_group_filter_value')">
                         </div>
-                        <div style="padding-top:3px;">i18n('Filter'):</div>
+                        <div style="padding-top:3px;">i18n("Filter"):</div>
                         <select name="user_in_group[]" id="user_in_group" size="20" class="memberselect text_medium" multiple>
                         </select>
                         <select id="all_user_in_group" style="display:none" multiple>
@@ -47,16 +47,16 @@
                         </select>
                      </div>
                      <div class="memberselect_button">
-                         <input type="button" name="toggle" id="newmember_button" value="<=" onclick="setAction('{ADD_ACTION}')" alt="i18n('Add to group')" title="i18n('Add to group')" DISABLED> 
-                         <input type="button" name="toggle" id="user_in_group_button" value="=>" onclick="setAction('{DELETE_ACTION}')" alt="i18n('Remove from group')" title="i18n('Remove from group')" DISABLED>         
+                         <input type="button" name="toggle" id="newmember_button" value="<=" onclick="setAction('{ADD_ACTION}')" alt="i18n("Add to group")" title="i18n("Add to group")" DISABLED> 
+                         <input type="button" name="toggle" id="user_in_group_button" value="=>" onclick="setAction('{DELETE_ACTION}')" alt="i18n("Remove from group")" title="i18n("Remove from group")" DISABLED>         
                      </div>
                      <div class="memberselect">
-                         <p class="column_header">i18n('Non Groupmembers')</p>
+                         <p class="column_header">i18n("Non Groupmembers")</p>
                          <div style="float:right;">
                              <input type="text" name="filter_non" id="newmember_filter_value" value="{NON_GROUP_VALUE}" class="filterBox text_medium" onkeyup="keyHandler('newmember_filter_value')">
                              <img src="./images/submit.gif" class="submit_image" onclick="filter('newmember_filter_value')">
                          </div>
-                         <div style="padding-top:3px;">i18n('Filter'):</div>
+                         <div style="padding-top:3px;">i18n("Filter"):</div>
                          <select name="newmember[]" id="newmember" size="20" class="memberselect text_medium" multiple>
                          </select> 
                          <select id="all_newmember" style="display:none" multiple>
@@ -68,10 +68,10 @@
             </tr>
             <tr class="text_medium" style="background-color: {BGCOLOR_CONTENT};" >
                 <td colspan="2" valign="top" style="border: 0px; border-left: 1px; border-top:1px;border-bottom:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:{PADDING_LEFT}px">
-                    <div>&lt;=: i18n('Add right side selected users to group').</div>
+                    <div>&lt;=: i18n("Add right side selected users to group").</div>
                     <div>
-                        <img style="display:{DISPLAY_OK}; margin-left: 5px; float:right;" title="i18n('Save changes')" alt="i18n('Save changes')" src="./images/but_ok.gif" onclick="document.group_properties.submit();" accesskey="s">
-                        =&gt;: i18n('Remove left side selected users from group').
+                        <img style="display:{DISPLAY_OK}; margin-left: 5px; float:right;" title="i18n("Save changes")" alt="i18n("Save changes")" src="./images/but_ok.gif" onclick="document.group_properties.submit();" accesskey="s">
+                        =&gt;: i18n("Remove left side selected users from group").
                     </div>
                 </td>
             </tr>
@@ -81,14 +81,14 @@
 <!--
 template.grouprights_memberselect
 
-i18n('Groupmembers')
-i18n('Filter')
-i18n('Add to group')
-i18n('Remove from group')
-i18n('Non Groupmembers')
-i18n('Filter')
-i18n('Add right side selected users to group')
-i18n('Save changes')
-i18n('Remove left side selected users from group')
+i18n("Groupmembers")
+i18n("Filter")
+i18n("Add to group")
+i18n("Remove from group")
+i18n("Non Groupmembers")
+i18n("Filter")
+i18n("Add right side selected users to group")
+i18n("Save changes")
+i18n("Remove left side selected users from group")
 -->
 </html>

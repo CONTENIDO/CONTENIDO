@@ -136,7 +136,7 @@ if (count($clients) > 1) {
 	$tpl->set('s', 'OKBUTTON', '');
 	$sClientForm = '';
 	if ( count($clients) == 0 ) {
-		$sClientForm = i18n('No clients available!');
+		$sClientForm = i18n("No clients available!");
 	}
 	$tpl->set('s', 'CLIENTFORM', $sClientForm);
 	$tpl->set('s', 'CLIENTFORMCLOSE', '');

@@ -213,9 +213,9 @@ EOD;
         $oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
         $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
 		$oScriptTpl->set('s', 'CON_PATH', $cfg["path"]["contenido_fullhtml"]);
-		$oScriptTpl->set('s', 'CLOSE', i18n('Close editor'));
-		$oScriptTpl->set('s', 'SAVE', i18n('Close editor and save changes'));
-        $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
+		$oScriptTpl->set('s', 'CLOSE', i18n("Close editor"));
+		$oScriptTpl->set('s', 'SAVE', i18n("Close editor and save changes"));
+        $oScriptTpl->set('s', 'QUESTION', i18n("Do you want to save changes?"));
 		
 		if (getEffectiveSetting('system', 'insight_editing_activated', 'true') == 'false') {
 			$oScriptTpl->set('s', 'USE_TINY', '');

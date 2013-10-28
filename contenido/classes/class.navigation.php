@@ -435,7 +435,7 @@ class Contenido_Navigation {
             }
         } else {
             $tpl->set('d', 'VALUE', 0);
-            $tpl->set('d', 'CAPTION', '-- ' . i18n('No language available') . ' --');
+            $tpl->set('d', 'CAPTION', '-- ' . i18n("No language available") . ' --');
             $tpl->next();
         }
 

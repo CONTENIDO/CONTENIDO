@@ -645,7 +645,7 @@ class Cms_Teaser {
 		$oTpl->set('s', 'CHARACTER_LIMIT', $this->aSettings['teaser_character_limit']);
 		$oTpl->set('s', 'IMAGE_WIDTH', $this->aSettings['teaser_image_width']);
 		$oTpl->set('s', 'IMAGE_HEIGHT', $this->aSettings['teaser_image_height']);
-		$oTpl->set('s', 'LABEL_ADD', i18n('Add'));
+		$oTpl->set('s', 'LABEL_ADD', i18n("Add"));
 
 		$sOptions = '';
 		if (is_array($this->aSettings['teaser_manual_art'])) {

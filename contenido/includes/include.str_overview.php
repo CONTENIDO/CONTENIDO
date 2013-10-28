@@ -483,7 +483,7 @@ if ( $perm->have_perm_area_action($area) ) {
     $tpl->set('s', 'SRC_CANCEL', $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_cancel.gif');
     $tpl->set('s', 'SRC_OK', $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_ok.gif');
     $tpl->set('s', 'HREF_CANCEL', "javascript:handleInlineEdit(0)");
-    $tpl->set('s', 'LABEL_ALIAS_NAME', i18n('Alias'));
+    $tpl->set('s', 'LABEL_ALIAS_NAME', i18n("Alias"));
     $tpl->set('s', 'TEMPLATE_URL', $sess->url("main.php?area=str_tplcfg&frame=$frame"));
     $message = addslashes(i18n("Do you really want to duplicate the following category:<br><br><b>%s</b><br><br>Notice: The duplicate process can take up to several minutes, depending on how many subitems and articles you've got."));
     $tpl->set('s', 'DUPLICATE_MESSAGE', $message);
@@ -894,7 +894,7 @@ if ( $perm->have_perm_area_action($area) ) {
         $perm->have_perm_area_action($tmp_area,"str_newcat") ||
         $bAreaAddNewCategory)
         && (int) $client > 0 && (int) $lang > 0) {
-        $tpl->set('s', 'NEWCAT', $string . "<a class=\"black\" id=\"new_tree_button\" href=\"javascript:showNewForm();\"><img src=\"images/folder_new.gif\">&nbsp;".i18n('Create new category')."</a>");
+        $tpl->set('s', 'NEWCAT', $string . "<a class=\"black\" id=\"new_tree_button\" href=\"javascript:showNewForm();\"><img src=\"images/folder_new.gif\">&nbsp;".i18n("Create new category")."</a>");
         if ($perm->have_perm_area_action($tmp_area,"str_newtree")) {
             if ($perm->have_perm_area_action($tmp_area,"str_newcat") || $bAreaAddNewCategory) {
                 $tpl->set('s', 'PERMISSION_NEWTREE', '');
@@ -923,23 +923,23 @@ if ( $perm->have_perm_area_action($area) ) {
         }
 
         if ($perm->have_perm_area_action("str_tplcfg", "str_tplcfg")) {
-            $tpl->set('s', 'TEMPLATE_BUTTON_NEW', '<a href="javascript:showTemplateSelect();"><img src="'.$sImagepath.'template_properties.gif" id="cat_category_select_button" title="'.i18n('Configure category').'" alt="'.i18n('Configure category').'"></a>');
+            $tpl->set('s', 'TEMPLATE_BUTTON_NEW', '<a href="javascript:showTemplateSelect();"><img src="'.$sImagepath.'template_properties.gif" id="cat_category_select_button" title="'.i18n("Configure category").'" alt="'.i18n("Configure category").'"></a>');
             $tpl->set('s', 'SELECT_TEMPLATE', getTemplateSelect());
         } else {
-            $tpl->set('s', 'TEMPLATE_BUTTON_NEW', '<img src="'.$sImagepath.'template_properties_off.gif" id="cat_category_select_button" title="'.i18n('Configure category').'" alt="'.i18n('Configure category').'">');
+            $tpl->set('s', 'TEMPLATE_BUTTON_NEW', '<img src="'.$sImagepath.'template_properties_off.gif" id="cat_category_select_button" title="'.i18n("Configure category").'" alt="'.i18n("Configure category").'">');
             $tpl->set('s', 'SELECT_TEMPLATE', '');
         }
 
         if ($perm->have_perm_area_action($tmp_area, "str_makevisible")) {
-            $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<a href="javascript:changeVisible();"><img src="'.$sImagepath.'offline.gif" id="visible_image" title="'.i18n('Make online').'" alt="'.i18n('Make online').'"></a>');
+            $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<a href="javascript:changeVisible();"><img src="'.$sImagepath.'offline.gif" id="visible_image" title="'.i18n("Make online").'" alt="'.i18n("Make online").'"></a>');
         } else {
-            $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<img src="'.$sImagepath.'offline_off.gif" id="visible_image" title="'.i18n('Make online').'" alt="'.i18n('Make online').'">');
+            $tpl->set('s', 'MAKEVISIBLE_BUTTON_NEW', '<img src="'.$sImagepath.'offline_off.gif" id="visible_image" title="'.i18n("Make online").'" alt="'.i18n("Make online").'">');
         }
 
         if ($perm->have_perm_area_action($tmp_area, "str_makepublic")) {
-            $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<a href="javascript:changePublic();"><img src="'.$sImagepath.'folder_delock.gif" id="public_image" title="'.i18n('Protect category').'" alt="'.i18n('Protect category').'"></a>');
+            $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<a href="javascript:changePublic();"><img src="'.$sImagepath.'folder_delock.gif" id="public_image" title="'.i18n("Protect category").'" alt="'.i18n("Protect category").'"></a>');
         } else {
-            $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<img src="'.$sImagepath.'folder_delocked.gif" id="public_image" title="'.i18n('Protect category').'" alt="'.i18n('Protect category').'">');
+            $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<img src="'.$sImagepath.'folder_delocked.gif" id="public_image" title="'.i18n("Protect category").'" alt="'.i18n("Protect category").'">');
         }
     } else {
         $tpl->set('s', 'NEWCAT', $string);
@@ -968,7 +968,7 @@ if ( $perm->have_perm_area_action($area) ) {
 		} else {
 			$sLimiter = "";
 		}
-		$sButtonDesc = sprintf( i18n( 'Cancel moving %s' ), '"' . substr( $sMoveSubtreeCatName, 0, 30) . $sLimiter . '"' );
+		$sButtonDesc = sprintf(i18n("Cancel moving %s"), '"' . substr( $sMoveSubtreeCatName, 0, 30) . $sLimiter . '"');
 		$tpl->set('s', 'CANCEL_MOVE_TREE', '<a class="black" id="cancel_move_tree_button" href="javascript:cancelMoveTree(\'' . $movesubtreeidcat . '\');"><img src="images/but_cancel.gif" alt="'.$sButtonDesc.'" />&nbsp;'.$sButtonDesc.'</a>');
 	} else {
 		$tpl->set('s', 'CANCEL_MOVE_TREE', '');

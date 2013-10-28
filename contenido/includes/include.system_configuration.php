@@ -90,24 +90,24 @@ function getPostValue($aProperty) {
 }
 
 $aManagedProperties = array(
-                          array('type' => 'versioning', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Versioning activated'), 'group' => i18n('Versioning')),
-                          array('type' => 'versioning', 'name' => 'path', 'value' => '', 'label' => i18n('Serverpath to version files'), 'group' => i18n('Versioning')),
-                          array('type' => 'versioning', 'name' => 'prune_limit', 'value' => 'integer', 'label' => i18n('Maximum number of stored versions'), 'group' => i18n('Versioning')),
-                          array('type' => 'update', 'name' => 'check', 'value' => array('false', 'true'), 'label' => i18n('Check for updates'), 'group' => i18n('Update notifier')),
-                          array('type' => 'update', 'name' => 'news_feed', 'value' => array('false', 'true'), 'label' => i18n('Get news from contenido.org'), 'group' => i18n('Update notifier')),
-                          array('type' => 'update', 'name' => 'check_period', 'value' => 'integer', 'label' => i18n('Update check period (minutes)'), 'group' => i18n('Update notifier')),
-                          array('type' => 'system', 'name' => 'clickmenu', 'value' => array('false', 'true'), 'label' => i18n('Clickable menu in backend'), 'group' => i18n('Backend')),
-                          array('type' => 'pw_request', 'name' => 'enable', 'value' => array('false', 'true'), 'label' => i18n('Use passwordrequest in Backend'), 'group' => i18n('Backend')),
-                          array('type' => 'maintenance', 'name' => 'mode', 'value' => array('disabled', 'enabled'), 'label' => i18n('Activate maintenance mode'), 'group' => i18n('Backend')),
-                          array('type' => 'edit_area', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Use editarea for code highlighting'), 'group' => i18n('Backend')),
-                          array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => array('false', 'true'), 'label' => i18n('Use TinyMce as insight editor'), 'group' => i18n('Backend')),
-						  array('type' => 'backend', 'name' => 'preferred_idclient', 'value' => 'integer', 'label' => i18n('Default client (ID)'), 'group' => i18n('Backend')),
-                          array('type' => 'system', 'name' => 'mail_host', 'value' => '', 'label' => i18n('Mailserver host'), 'group' => i18n('Mailserver')),
-                          array('type' => 'system', 'name' => 'mail_sender', 'value' => '', 'label' => i18n('Mailserver sender mail'), 'group' => i18n('Mailserver')),
-                          array('type' => 'system', 'name' => 'mail_sender_name', 'value' => '', 'label' => i18n('Mailserver sender name'), 'group' => i18n('Mailserver')),
-                          array('type' => 'generator', 'name' => 'xhtml', 'value' => array('false', 'true'), 'label' => i18n('Generate XHTML'), 'group' => i18n('Development')),
-                          array('type' => 'generator', 'name' => 'basehref', 'value' => array('false', 'true'), 'label' => i18n('Generate basehref'), 'group' => i18n('Development')),
-                          array('type' => 'imagemagick', 'name' => 'available', 'value' => array('0', '1'), 'label' => i18n('Use image magic (if available)'), 'group' => i18n('Development'))
+                          array('type' => 'versioning', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n("Versioning activated"), 'group' => i18n("Versioning")),
+                          array('type' => 'versioning', 'name' => 'path', 'value' => '', 'label' => i18n("Serverpath to version files"), 'group' => i18n("Versioning")),
+                          array('type' => 'versioning', 'name' => 'prune_limit', 'value' => 'integer', 'label' => i18n("Maximum number of stored versions"), 'group' => i18n("Versioning")),
+                          array('type' => 'update', 'name' => 'check', 'value' => array('false', 'true'), 'label' => i18n("Check for updates"), 'group' => i18n("Update notifier")),
+                          array('type' => 'update', 'name' => 'news_feed', 'value' => array('false', 'true'), 'label' => i18n("Get news from contenido.org"), 'group' => i18n("Update notifier")),
+                          array('type' => 'update', 'name' => 'check_period', 'value' => 'integer', 'label' => i18n("Update check period (minutes)"), 'group' => i18n("Update notifier")),
+                          array('type' => 'system', 'name' => 'clickmenu', 'value' => array('false', 'true'), 'label' => i18n("Clickable menu in backend"), 'group' => i18n("Backend")),
+                          array('type' => 'pw_request', 'name' => 'enable', 'value' => array('false', 'true'), 'label' => i18n("Use passwordrequest in Backend"), 'group' => i18n("Backend")),
+                          array('type' => 'maintenance', 'name' => 'mode', 'value' => array('disabled', 'enabled'), 'label' => i18n("Activate maintenance mode"), 'group' => i18n("Backend")),
+                          array('type' => 'edit_area', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n("Use editarea for code highlighting"), 'group' => i18n("Backend")),
+                          array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => array('false', 'true'), 'label' => i18n("Use TinyMCE as insight editor"), 'group' => i18n("Backend")),
+						  array('type' => 'backend', 'name' => 'preferred_idclient', 'value' => 'integer', 'label' => i18n("Default client (ID)"), 'group' => i18n("Backend")),
+                          array('type' => 'system', 'name' => 'mail_host', 'value' => '', 'label' => i18n("Mailserver host"), 'group' => i18n("Mailserver")),
+                          array('type' => 'system', 'name' => 'mail_sender', 'value' => '', 'label' => i18n("Mailserver sender mail"), 'group' => i18n("Mailserver")),
+                          array('type' => 'system', 'name' => 'mail_sender_name', 'value' => '', 'label' => i18n("Mailserver sender name"), 'group' => i18n("Mailserver")),
+                          array('type' => 'generator', 'name' => 'xhtml', 'value' => array('false', 'true'), 'label' => i18n("Generate XHTML"), 'group' => i18n("Development")),
+                          array('type' => 'generator', 'name' => 'basehref', 'value' => array('false', 'true'), 'label' => i18n("Generate basehref"), 'group' => i18n("Development")),
+                          array('type' => 'imagemagick', 'name' => 'available', 'value' => array('0', '1'), 'label' => i18n("Use image magic (if available)"), 'group' => i18n("Development"))
 					  );
 
 $aSettings = getSystemProperties(1);
@@ -189,7 +189,7 @@ $oPage = new cPage;
 if ($perm->have_perm_area_action($area, 'edit_sysconf')) {
     $oPage->setContent($sNotification.$oForm->render());
 } else {
-    $oPage->setContent($notification->returnNotification("error", i18n('Access denied'), 1));
+    $oPage->setContent($notification->returnNotification("error", i18n("Access denied"), 1));
 }
 $oPage->addScript('setMenu', $sJs);
 $oPage->render();

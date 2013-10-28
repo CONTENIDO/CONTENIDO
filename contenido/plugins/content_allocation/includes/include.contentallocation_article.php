@@ -88,7 +88,7 @@ $oTree->setChecked($loadedAllocations);
 $result = $oTree->renderTree(true);
 
 if ($result == false) {
-    $result = $notification->returnNotification("warning", i18n('There is no Content Allocation tree.', "content_allocation"));
+    $result = $notification->returnNotification("warning", i18n("There is no Content Allocation tree.", "content_allocation"));
 } else {
 	if (!is_object($tpl)) { $tpl = new Template; }
 	$hiddenfields = '<input type="hidden" name="action" value="storeallocation">

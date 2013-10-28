@@ -524,10 +524,10 @@ if ( $idtpl != 0 && $inUse == false) {
 }
 
 if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
-    $tpl->set('s', 'HEADER', i18n('Categorytemplate configuration'));
+    $tpl->set('s', 'HEADER', i18n("Categorytemplate configuration"));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
 } else if ($area == 'con_tplcfg' && (int) $idart > 0) {
-    $tpl->set('s', 'HEADER', i18n('Articletemplate configuration'));
+    $tpl->set('s', 'HEADER', i18n("Articletemplate configuration"));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
 } else {
     $tpl->set('s', 'HEADER', '');

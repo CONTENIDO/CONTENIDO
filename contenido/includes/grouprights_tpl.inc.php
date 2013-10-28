@@ -98,7 +98,7 @@ foreach($right_list["tpl"] as $value2)
 
 
 //checkbox for all rights
-$sTable .= $table->header_cell(i18n('Check all'));
+$sTable .= $table->header_cell(i18n("Check all"));
 array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
 $sTable .= $table->end_row();
 $colspan++;

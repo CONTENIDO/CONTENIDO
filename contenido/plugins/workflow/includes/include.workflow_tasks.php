@@ -145,7 +145,7 @@ if ($perm->have_perm_area_action($area, "workflow_task_user_select"))
     $tpl->set('s', 'USERSELECT', '');
 }
 
-$pageTitle = i18n('Search results').' - '.i18n('Workflow tasks', 'workflow');
+$pageTitle = i18n("Search results").' - '.i18n("Workflow tasks", "workflow");
 $tpl->set('s', 'PAGE_TITLE', $pageTitle);
 
 $tpl->set('s', 'TH_START', i18n("Article"));

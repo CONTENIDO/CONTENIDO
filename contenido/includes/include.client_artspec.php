@@ -90,11 +90,11 @@ if(!empty($artspec)) {
 
     $link = new Link;
     $link->setCLink($area, $frame, "client_artspec_edit");
-    $link->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n('Edit').'" title="'.i18n('Edit').'">');
+    $link->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
 
     $dlink = new Link;
     $dlink->setCLink($area, $frame, "client_artspec_delete");
-    $dlink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete.gif" alt="'.i18n('Delete').'" title="'.i18n('Delete').'">');
+    $dlink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">');
 
     $olink = new Link;
     $olink->setCLink($area, $frame, "client_artspec_online");
@@ -129,7 +129,7 @@ if(!empty($artspec)) {
     				$inputbox = new cHTMLTextbox ("artspectext", urldecode($artspec[$id]['artspec']));
     				$inputbox->setStyle("border:1px;border-style:solid;border-color:black;");
     				$form->add("name",$inputbox->render());
-    				$form->add("submit", '<input type="image" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif" alt="'.i18n('Save').'" title="'.i18n('Save').'">');
+    				$form->add("submit", '<input type="image" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif" alt="'.i18n("Save").'" title="'.i18n("Save").'">');
 
        			$list->setCell($count,1, $form->render(true));
         		} else {
@@ -138,11 +138,11 @@ if(!empty($artspec)) {
 
         	if ($artspec[$id]['online'] == 0)
         	{ //it is offline (std!)
-    				$olink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'offline.gif" alt="'.i18n('Make online').'" title="'.i18n('Make online').'">');
+    				$olink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'offline.gif" alt="'.i18n("Make online").'" title="'.i18n("Make online").'">');
     				$olink->setCustom("online", 1);
         	} else
         	{
-        		$olink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'online.gif" alt="'.i18n('Make offline').'" title="'.i18n('Make offline').'">');
+        		$olink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'online.gif" alt="'.i18n("Make offline").'" title="'.i18n("Make offline").'">');
         		$olink->setCustom("online", 0);
         	}
 

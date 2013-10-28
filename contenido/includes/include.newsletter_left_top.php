@@ -604,7 +604,7 @@ if ($iTimeframe <= 0) {
 if ($perm->have_perm_area_action("recipients", "recipients_delete"))
 {	
 	$oLink = new cHTMLLink;
-	$oLink->setLink('javascript:showPurgeMsg("'.i18n('Purge recipients').'", "'.sprintf(i18n("Do you really want to remove recipients, that have not been confirmed since %s days and over?"), '"+purgetimeframe+"').'")');
+	$oLink->setLink('javascript:showPurgeMsg("'.i18n("Purge recipients").'", "'.sprintf(i18n("Do you really want to remove recipients, that have not been confirmed since %s days and over?"), '"+purgetimeframe+"').'")');
 
 	$oLink->setContent('<img style="margin-right: 4px;" src="'.$cfg["path"]["images"] . 'delete.gif" align="middle">'.i18n("Purge recipients").'</a>');
 

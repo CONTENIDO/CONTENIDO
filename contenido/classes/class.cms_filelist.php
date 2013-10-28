@@ -538,8 +538,8 @@ class Cms_FileList {
 		}
 
 		if ( $i == 0 ) {
-			$oHtmlSelectOption = new cHTMLOptionElement( i18n('No files found'), '', false );
-			$oHtmlSelectOption->setAlt( i18n('No files found') );
+			$oHtmlSelectOption = new cHTMLOptionElement( i18n("No files found"), '', false );
+			$oHtmlSelectOption->setAlt( i18n("No files found") );
 			$oHtmlSelectOption->setDisabled( true );
 			$oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
 			$oHtmlSelect->setDisabled( true );
@@ -733,14 +733,14 @@ class Cms_FileList {
 
 		$oTpl->set('s', 'LABEL_STYLE', 							i18n("File list style"));
 		$oTpl->set('s', 'LABEL_SOURCE_DIRECTORY', 				i18n("Source directory"));
-		$oTpl->set('s', 'LABEL_INCLUDE_SUBDIRECTORIES', 		i18n('Include subdirectories?'));
-		$oTpl->set('s', 'LABEL_INCLUDE_METADATA', 				i18n('Include meta data?'));
+		$oTpl->set('s', 'LABEL_INCLUDE_SUBDIRECTORIES', 		i18n("Include subdirectories?"));
+		$oTpl->set('s', 'LABEL_INCLUDE_METADATA', 				i18n("Include meta data?"));
 		$oTpl->set('s', 'LABEL_SORT', 							i18n("File list sort"));
 		$oTpl->set('s', 'LABEL_SORTORDER', 						i18n("Sort order"));
 		$oTpl->set('s', 'LABEL_FILE_EXTENSIONS', 				i18n("Displayed file extensions"));
-		$oTpl->set('s', 'LABEL_IGNORESELECTION', 				i18n('Ignore selection (use all)'));
-		$oTpl->set('s', 'LABEL_SELECTIONWILLBEIGNORED', 		i18n('Selection will be ignored!'));
-		$oTpl->set('s', 'LABEL_SELECTALLENTRIES', 				i18n('Select all entries'));
+		$oTpl->set('s', 'LABEL_IGNORESELECTION', 				i18n("Ignore selection (use all)"));
+		$oTpl->set('s', 'LABEL_SELECTIONWILLBEIGNORED', 		i18n("Selection will be ignored!"));
+		$oTpl->set('s', 'LABEL_SELECTALLENTRIES', 				i18n("Select all entries"));
 		$oTpl->set('s', 'LABEL_MANUAL_FILELIST', 				i18n("Use manual file list?"));
 		$oTpl->set('s', 'LABEL_DIRECTORY',						i18n("Directory"));
 		$oTpl->set('s', 'LABEL_FILE', 							i18n("File"));

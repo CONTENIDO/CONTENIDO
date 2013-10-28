@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Contenido Content Allocation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-11 22:53+0200\n"
-"PO-Revision-Date: 2012-10-11 22:59+0100\n"
+"POT-Creation-Date: 2013-10-28 17:40+0100\n"
+"PO-Revision-Date: 2013-10-28 17:54+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-Basepath: ../../../\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: classes/class.content_allocation_article.php:107
 #: classes/class.content_allocation_treeview.php:224
@@ -63,7 +63,7 @@ msgstr "Sind Sie sicher, dass sie die folgende Kategorie löschen möchten"
 msgid "Actions"
 msgstr "Aktionen"
 
-#: includes/config.plugin.php:64
+#: includes/config.plugin.php:59
 msgid "Store content allocations"
 msgstr "Content Allocations speichern"
 
@@ -71,15 +71,19 @@ msgstr "Content Allocations speichern"
 msgid "Content Allocation"
 msgstr "Content Allocation"
 
-#: includes/include.contentallocation_article.php:86
+#: includes/include.contentallocation_article.php:41
+msgid "Permission denied"
+msgstr "Zugriff verweigert"
+
+#: includes/include.contentallocation_article.php:91
 msgid "There is no Content Allocation tree."
 msgstr "Es gibt noch keinen Tagging Baum."
 
-#: includes/include.contentallocation_article.php:111
+#: includes/include.contentallocation_article.php:116
 msgid "Remove all"
 msgstr "Alles entfernen"
 
-#: includes/include.contentallocation_article.php:112
+#: includes/include.contentallocation_article.php:117
 msgid "Remove"
 msgstr "Entfernen"
 

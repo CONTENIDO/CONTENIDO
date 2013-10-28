@@ -65,7 +65,7 @@ while($db->next_record()) {
 	$tpl2->set('s', 'SID', $sess->id);
 	$tpl2->set('s', 'URL', $db->f("url"));
 	$tpl2->set('s', 'URL_ENCODE', base64_encode($db->f("url")));
-	$tpl2->set('s', 'ENTRY', strftime(i18n('%Y-%m-%d, %I:%M%S %p', $plugin_name), $db->f("lastview")));
+	$tpl2->set('s', 'ENTRY', strftime(i18n("%Y-%m-%d, %I:%M%S %p", $plugin_name), $db->f("lastview")));
 
 	$aWhitelist .= $tpl2->generate($cfg['templates']['linkchecker_whitelist_urls'], 1);
     

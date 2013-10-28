@@ -57,9 +57,9 @@ class cSetupAdditionalPlugins extends cSetupMask
         
 		// add new plugins to this array and you're done.
 		$aPlugins = array();
-		$aPlugins['plugin_newsletter'] = array('label' => i18n('Newsletter'), 'desc' => i18n('Newsletterfunctionality for dispatching text newsletters and HTML-Newsletters, extensible with professional newsletter extensions. Definition of newsletter recipients and groups of recipients. Layout design of the HTML-Newsletters by Contenido articles.'));
-		$aPlugins['plugin_content_allocation'] = array('label' => i18n('Content Allocation'), 'desc' => i18n('For the representation and administration of content, 4fb developed the Content Allocation and content include technology. This technology dynamically allows on basis of a Template, to put the content in different places and in different formats according to several criteria.'));
-		$aPlugins['plugin_mod_rewrite'] = array('label' => i18n('Mod Rewrite'), 'desc' => i18n('Creates so called Clean URLs for a Contenido installation'));
+		$aPlugins['plugin_newsletter'] = array('label' => i18n("Newsletter"), 'desc' => i18n("Newsletterfunctionality for dispatching text newsletters and HTML-Newsletters, extensible with professional newsletter extensions. Definition of newsletter recipients and groups of recipients. Layout design of the HTML-Newsletters by Contenido articles."));
+		$aPlugins['plugin_content_allocation'] = array('label' => i18n("Content Allocation"), 'desc' => i18n("For the representation and administration of content, 4fb developed the Content Allocation and content include technology. This technology dynamically allows on basis of a Template, to put the content in different places and in different formats according to several criteria."));
+		$aPlugins['plugin_mod_rewrite'] = array('label' => i18n("Mod Rewrite"), 'desc' => i18n("Creates so called Clean URLs for a Contenido installation"));
 		
 		$sCheckBoxes = '';
 		if (sizeof($aPlugins) > 0) {
@@ -69,7 +69,7 @@ class cSetupAdditionalPlugins extends cSetupMask
                                      <input type="checkbox" class="plugin_checkbox" id="'.$sInternalName.'" name="'.$sInternalName.'" value="true"'.$sChecked.'> 
                                      <label for="'.$sInternalName.'">'.$aPluginData['label'].'</label>
                                      <a href="javascript://" onclick="showPluginInfo(\''.$aPluginData['label'].'\', \''.$aPluginData['desc'].'\');">
-                                         <img src="../contenido/images/info.gif" alt="'.i18n('More information').'" title="'.i18n('More information').'" class="plugin_info">
+                                         <img src="../contenido/images/info.gif" alt="'.i18n("More information").'" title="'.i18n("More information").'" class="plugin_info">
                                      </a>
                                  </p>';
 			}

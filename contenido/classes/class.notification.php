@@ -53,21 +53,21 @@ class Contenido_Notification {
         switch ($level)
         {
         case "error":
-            $head = i18n('Error');
+            $head = i18n("Error");
             $head_class = 'alertbox_error';
             $frameColor = $cfg["color"]["notify_error"];
             $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."icon_fatalerror.gif";
           break;
                 
         case "warning":
-            $head = i18n('Warning');
+            $head = i18n("Warning");
             $head_class = 'alertbox_warning';
             $bgColor = $cfg["color"]["notify_warning"];
             $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."icon_warning.gif";
           break;
                 
         case "info":
-            $head = i18n('Info');
+            $head = i18n("Info");
             $head_class = 'alertbox_info';
             $message = '<span style="color:#435d06">'.$message.'</span>';
             $bgColor = $cfg["color"]["notify_info"];
@@ -75,7 +75,7 @@ class Contenido_Notification {
           break;
 
         default:
-            $head = i18n('Notification');
+            $head = i18n("Notification");
             $head_class = 'alertbox_notification';
             $message = '<span style="color:#435d06">'.$message.'</span>';
             $bgColor = $cfg["color"]["notify"];

@@ -288,28 +288,28 @@ function writeSystemValuesOutput($usage)
 	/* generate sysvalue output */
 	$i = 0; // array start value
 	// current Contenido version
-	$sysvalues[$i]['variable'] = i18n('Contenido version');
+	$sysvalues[$i]['variable'] = i18n("Contenido version");
 	$sysvalues[$i ++]['value'] = $cfg['version'];
 	// paths from config.php
-	$sysvalues[$i]['variable'] = i18n('Contenido path');
+	$sysvalues[$i]['variable'] = i18n("Contenido path");
 	$sysvalues[$i ++]['value'] = $cfg['path']['contenido'];
-	$sysvalues[$i]['variable'] = i18n('Contenido HTML path');
+	$sysvalues[$i]['variable'] = i18n("Contenido HTML path");
 	$sysvalues[$i ++]['value'] = $cfg['path']['contenido_html'];
-	$sysvalues[$i]['variable'] = i18n('Contenido full HTML path');
+	$sysvalues[$i]['variable'] = i18n("Contenido full HTML path");
 	$sysvalues[$i ++]['value'] = $contenidoFullHtml;
-	$sysvalues[$i]['variable'] = i18n('Contenido frontend path');
+	$sysvalues[$i]['variable'] = i18n("Contenido frontend path");
 	$sysvalues[$i ++]['value'] = $cfg['path']['frontend'];
-	$sysvalues[$i]['variable'] = i18n('Contenido PHPLIB path');
+	$sysvalues[$i]['variable'] = i18n("Contenido PHPLIB path");
 	$sysvalues[$i ++]['value'] = $cfg['path']['phplib'];
-	$sysvalues[$i]['variable'] = i18n('Contenido wysiwyg path');
+	$sysvalues[$i]['variable'] = i18n("Contenido wysiwyg path");
 	$sysvalues[$i ++]['value'] = $cfg['path']['wysiwyg'];
-	$sysvalues[$i]['variable'] = i18n('Contenido wysiwyg HTML path');
+	$sysvalues[$i]['variable'] = i18n("Contenido wysiwyg HTML path");
 	$sysvalues[$i ++]['value'] = $cfg['path']['wysiwyg_html'];
 	// host name
-	$sysvalues[$i]['variable'] = i18n('Host name');
+	$sysvalues[$i]['variable'] = i18n("Host name");
 	$sysvalues[$i ++]['value'] = $_SERVER['HTTP_HOST'];
 	// Contenido browser path 
-	$sysvalues[$i]['variable'] = i18n('Browser path');
+	$sysvalues[$i]['variable'] = i18n("Browser path");
 	/* cut of file information */
 	$sysvalues[$i ++]['value'] = $browserPath;
 	// get number of clients
@@ -394,49 +394,49 @@ function writeSystemValuesOutput($usage)
 
 	$clientInformation .= '</table>';
 
-	$clientdata = i18n('Number of installed clients: ').$clientcount."<br>".$clientInformation;
+	$clientdata = i18n("Number of installed clients: ").$clientcount."<br>".$clientInformation;
 
 	// client quantity and their assigned language and are they online 
-	$sysvalues[$i]['variable'] = i18n('Client informations');
+	$sysvalues[$i]['variable'] = i18n("Client informations");
 	$sysvalues[$i ++]['value'] = "$clientdata";
 	// get number of users installed
 	$sql = "SELECT count(user_id) usercount FROM ".$cfg["tab"]["phplib_auth_user_md5"];
 	$db->query($sql);
 	$db->next_record();
 	// number of users
-	$sysvalues[$i]['variable'] = i18n('Number of users');
+	$sysvalues[$i]['variable'] = i18n("Number of users");
 	$sysvalues[$i ++]['value'] = $db->f("usercount");
 	//get number of articles
 	$sql = "SELECT count(idart) articlecount FROM ".$cfg["tab"]["art"];
 	$db->query($sql);
 	$db->next_record();
 	// number of articles
-	$sysvalues[$i]['variable'] = i18n('Number of articles');
+	$sysvalues[$i]['variable'] = i18n("Number of articles");
 	$sysvalues[$i ++]['value'] = $db->f("articlecount");
 	// server operating system
-	$sysvalues[$i]['variable'] = i18n('Server operating system');
+	$sysvalues[$i]['variable'] = i18n("Server operating system");
 	$sysvalues[$i ++]['value'] = $_SERVER['SERVER_SOFTWARE'];
 	// SQL version
 	$sql_server_info = $db->server_info();
-	$sysvalues[$i]['variable'] = i18n('PHP database extension');
+	$sysvalues[$i]['variable'] = i18n("PHP database extension");
 	$sysvalues[$i ++]['value'] = $cfg["database_extension"];
-	$sysvalues[$i]['variable'] = i18n('Database server version');
+	$sysvalues[$i]['variable'] = i18n("Database server version");
 	$sysvalues[$i ++]['value'] = $sql_server_info['description'];
 	// php version
-	$sysvalues[$i]['variable'] = i18n('Installed PHP version');
+	$sysvalues[$i]['variable'] = i18n("Installed PHP version");
 	$sysvalues[$i ++]['value'] = phpversion();
 	// php config values
 	// config values
 	// php safe_mode
-	 (ini_get('safe_mode') == 1) ? $safe_mode = "<span stlye=\"color:red;\">".i18n('activated')."</span>" : $safe_mode = "<span style=\"color:green;\">".i18n('deactivated')."</span>";
+	 (ini_get('safe_mode') == 1) ? $safe_mode = "<span stlye=\"color:red;\">".i18n("activated")."</span>" : $safe_mode = "<span style=\"color:green;\">".i18n("deactivated")."</span>";
 	$sysvalues[$i]['variable'] = "safe_mode";
 	$sysvalues[$i ++]['value'] = $safe_mode;
 	// magig quotes GPC
-	 (ini_get('magic_quotes_gpc') == 1) ? $magic_quotes_gpc = i18n('activated') : $magic_quotes_gpc = i18n('deactivated');
+	 (ini_get('magic_quotes_gpc') == 1) ? $magic_quotes_gpc = i18n("activated") : $magic_quotes_gpc = i18n("deactivated");
 	$sysvalues[$i]['variable'] = "magic_quotes_gpc";
 	$sysvalues[$i ++]['value'] = $magic_quotes_gpc;
 	// magic quotes runtime
-	 (ini_get('magic_quotes_runtime') == 1) ? $magic_quotes_runtime = i18n('activated') : $magic_quotes_runtime = i18n('deactivated');
+	 (ini_get('magic_quotes_runtime') == 1) ? $magic_quotes_runtime = i18n("activated") : $magic_quotes_runtime = i18n("deactivated");
 	$sysvalues[$i]['variable'] = "magic_quotes_runtime";
 	$sysvalues[$i ++]['value'] = $magic_quotes_runtime;
 	// GPC order
@@ -449,15 +449,15 @@ function writeSystemValuesOutput($usage)
 	$sysvalues[$i]['variable'] = "max_execution_time";
 	$sysvalues[$i ++]['value'] = ini_get('max_execution_time');
 	// disabled functions
-	 (strlen(ini_get('disable_functions')) > 0) ? $disable_functions = "<span style=\"color:red;\">".ini_get('disable_functions')."</span>" : $disable_functions = "<span style=\"color:green\">".i18n('nothing disabled')."</span>";
-	$sysvalues[$i]['variable'] = i18n('Disabled functions');
+	 (strlen(ini_get('disable_functions')) > 0) ? $disable_functions = "<span style=\"color:red;\">".ini_get('disable_functions')."</span>" : $disable_functions = "<span style=\"color:green\">".i18n("nothing disabled")."</span>";
+	$sysvalues[$i]['variable'] = i18n("Disabled functions");
 	$sysvalues[$i ++]['value'] = $disable_functions;
 	// gettext loaded
-	 (extension_loaded('gettext') == true) ? $gettext = "<span style=\"color:green;\">".i18n('loaded')."</span>" : $gettext = "<span stlye=\"color:red;\">".i18n('not loaded')."</span>";
-	$sysvalues[$i]['variable'] = i18n('Gettext extension');
+	 (extension_loaded('gettext') == true) ? $gettext = "<span style=\"color:green;\">".i18n("loaded")."</span>" : $gettext = "<span stlye=\"color:red;\">".i18n("not loaded")."</span>";
+	$sysvalues[$i]['variable'] = i18n("Gettext extension");
 	$sysvalues[$i ++]['value'] = $gettext;
 	// sql.safe_mode
-	 (ini_get('sql.safe_mode') == 1) ? $sql_safe_mode = "<span style=\"color:red;\">".i18n('activated')."</span>" : $sql_safe_mode = "<span style=\"color:green;\">".i18n('deactivated')."</span>";
+	 (ini_get('sql.safe_mode') == 1) ? $sql_safe_mode = "<span style=\"color:red;\">".i18n("activated")."</span>" : $sql_safe_mode = "<span style=\"color:green;\">".i18n("deactivated")."</span>";
 	$sysvalues[$i]['variable'] = "sql.safe_mode";
 	$sysvalues[$i ++]['value'] = $sql_safe_mode;
 	// gdlib with installed features
@@ -483,7 +483,7 @@ function writeSystemValuesOutput($usage)
 		        </tr>";
 	}
 	$gdLibFeatures .= '</table>';
-	$sysvalues[$i]['variable'] = i18n('GD library');
+	$sysvalues[$i]['variable'] = i18n("GD library");
 	$sysvalues[$i ++]['value'] = $gdLibFeatures;
 
 	// include path settings

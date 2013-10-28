@@ -199,7 +199,7 @@ function modTestModule ($code, $id, $output = false)
     $bHasShortTags = false;
     if (preg_match('/<\?\s+/', $code) && $magicvalue == 941) {
         $bHasShortTags = true;
-        $modErrorMessage = i18n('Please do not use short open Tags. (Use <?php instead of <?).');
+        $modErrorMessage = i18n("Please do not use short open Tags. (Use <?php instead of <?).");
     }
     
     

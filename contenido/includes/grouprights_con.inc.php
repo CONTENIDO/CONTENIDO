@@ -108,7 +108,7 @@ $oTable = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"][
         }
 
         //checkbox for all rights
-		$sTable .= $oTable->header_cell(i18n('Check all'));
+		$sTable .= $oTable->header_cell(i18n("Check all"));
 		array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
         $colspan++;
 

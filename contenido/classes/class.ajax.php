@@ -100,7 +100,7 @@ class Ajax {
 							$oTpl->next();						
 						}
 						
-						$oTpl->set('s', 'HEAD_NAME', i18n('Template name'));
+						$oTpl->set('s', 'HEAD_NAME', i18n("Template name"));
 						$sString = '<div class="inuse_info" >' . 
 									$oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . 
 													$cfg['templates']['inuse_lay_mod'], true) . 
@@ -125,7 +125,7 @@ class Ajax {
 							$oTpl->next();
 						}
 						
-						$oTpl->set('s', 'HEAD_NAME', i18n('Template name'));
+						$oTpl->set('s', 'HEAD_NAME', i18n("Template name"));
 						$sString = '<div class="inuse_info" >' . 
 									$oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . 
 													$cfg['templates']['inuse_lay_mod'], true) . 
@@ -152,16 +152,16 @@ class Ajax {
 					$aUsedData = tplGetInUsedData((int) $_REQUEST['id']);
 					
 					if (isset($aUsedData['cat'])) {
-						$oTpl->set('s', 'HEAD_TYPE', i18n('Category'));
+						$oTpl->set('s', 'HEAD_TYPE', i18n("Category"));
 						foreach ($aUsedData['cat'] as $i => $aCat) {
 							$oTpl->set('d', 'ID', $aCat['idcat']);
 							$oTpl->set('d', 'LANG', $aCat['lang']);
 							$oTpl->set('d', 'NAME', $aCat['name']);
 							$oTpl->next();
 						}
-						$oTpl->set('s', 'HEAD_ID', i18n('idcat'));
-						$oTpl->set('s', 'HEAD_LANG', i18n('idlang'));
-						$oTpl->set('s', 'HEAD_NAME', i18n('Name'));
+						$oTpl->set('s', 'HEAD_ID', i18n("idcat"));
+						$oTpl->set('s', 'HEAD_LANG', i18n("idlang"));
+						$oTpl->set('s', 'HEAD_NAME', i18n("Name"));
 						$sResponse = $oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
 					}
 					
@@ -169,16 +169,16 @@ class Ajax {
 					$oTpl->reset();
 					
 					if (isset($aUsedData['art'])) {
-						$oTpl->set('s', 'HEAD_TYPE', i18n('Article'));
+						$oTpl->set('s', 'HEAD_TYPE', i18n("Article"));
 						foreach ($aUsedData['art'] as $i => $aArt) {
 							$oTpl->set('d', 'ID', $aArt['idart']);
 							$oTpl->set('d', 'LANG', $aArt['lang']);
 							$oTpl->set('d', 'NAME', $aArt['title']);
 							$oTpl->next();						
 						}
-						$oTpl->set('s', 'HEAD_ID', i18n('idart'));
-						$oTpl->set('s', 'HEAD_LANG', i18n('idlang'));
-						$oTpl->set('s', 'HEAD_NAME', i18n('Name'));
+						$oTpl->set('s', 'HEAD_ID', i18n("idart"));
+						$oTpl->set('s', 'HEAD_LANG', i18n("idlang"));
+						$oTpl->set('s', 'HEAD_NAME', i18n("Name"));
 						$sResponse .= $oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
 					}
 					

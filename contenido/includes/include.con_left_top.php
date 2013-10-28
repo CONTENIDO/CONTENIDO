@@ -128,10 +128,10 @@ while ($db->next_record()) {
 
 $arrDateTypes = array();
 
-$arrDateTypes['n/a'] = i18n('Ignore');
-$arrDateTypes['created'] = i18n('Date created');
-$arrDateTypes['lastmodified'] = i18n('Date modified');
-$arrDateTypes['published'] = i18n('Date published');
+$arrDateTypes['n/a'] = i18n("Ignore");
+$arrDateTypes['created'] = i18n("Date created");
+$arrDateTypes['lastmodified'] = i18n("Date modified");
+$arrDateTypes['published'] = i18n("Date published");
 
 $articleLink="editarticle";
 $oListOptionRow = new cFoldingRow("3498dbba-ed4a-4618-8e49-3a3635396e22", i18n("Article Search"), $articleLink, $bShowArticleSearch);

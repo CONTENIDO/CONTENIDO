@@ -51,7 +51,7 @@ $mstr = sprintf($tmp_mstr, 'right_top',
 if ((int) $client > 0) {
     $tpl->set('s', 'NEWSCRIPT', $mstr);
 } else {
-    $tpl->set('s', 'NEWSCRIPT', i18n('No client selected'));
+    $tpl->set('s', 'NEWSCRIPT', i18n("No client selected"));
 }
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['js_left_top']);
 ?>

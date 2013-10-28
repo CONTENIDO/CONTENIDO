@@ -358,7 +358,7 @@ function fileValidateFilename($filename, $notifyAndExitOnFailure = true) {
         // validation failure...
         if ($notifyAndExitOnFailure == true) {
             // display notification and exit
-            $notification->displayNotification('error', i18n('Wrong filename.'));
+            $notification->displayNotification('error', i18n("Wrong filename."));
             exit;
         }
         return false;

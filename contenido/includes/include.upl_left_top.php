@@ -49,7 +49,7 @@ $tpl->set('s', 'CAPTION2', $sDisplayPath);
 
 #display notification, if there is no client
 if ((int) $client == 0) {
-    $sNoClientNotification = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;">'.i18n('No client selected').'</div>';
+    $sNoClientNotification = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;">'.i18n("No client selected").'</div>';
     $tpl->set('s', 'NOTIFICATION', $sNoClientNotification);
 } else {
     $tpl->set('s', 'NOTIFICATION', '');

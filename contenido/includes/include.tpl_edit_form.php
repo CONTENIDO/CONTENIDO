@@ -234,7 +234,7 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 					}
 					
 					if ( $default != "" && $modules[$a_c[$value]]["name"] != $default && $createmode != 1 ) {
-						$defaultModuleNotice = "&nbsp;(" . i18n('Default') . ": " . $default . ")";
+						$defaultModuleNotice = "&nbsp;(" . i18n("Default") . ": " . $default . ")";
 					}
 				}
 

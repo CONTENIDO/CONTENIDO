@@ -46,7 +46,7 @@ $oFrmRange = new UI_Table_Form('range');
 $oFrmRange->setVar('area',$area);
 $oFrmRange->setVar('frame', $frame);
 $oFrmRange->setVar('idclient', $idclient);
-$oFrmRange->addHeader(i18n('Select range'));
+$oFrmRange->addHeader(i18n("Select range"));
 
 $oSelRange 	= new cHTMLSelectElement ('idclientslang');
 $oOption	= new cHTMLOptionElement(i18n("Language independent"), 0);
@@ -75,7 +75,7 @@ if (is_numeric($_REQUEST["idclientslang"])) {
 
 $oSelRange->setStyle('border:1px;border-style:solid;border-color:black;');
 $oSelRange->setEvent("onchange", "document.forms.range.submit();");
-$oFrmRange->add(i18n('Range'),$oSelRange->render());
+$oFrmRange->add(i18n("Range"),$oSelRange->render());
 
 if (!is_numeric($_REQUEST["idclientslang"]) || $_REQUEST["idclientslang"] == 0) {
 	$oClient = new cApiClient($idclient);
@@ -94,7 +94,7 @@ if ($_GET['action'] == 'clientsettings_delete_item')
 	$oClient->deleteProperty($_GET['idprop']);
 }
 
-$oList->setHeader(i18n('Type'), i18n('Name'), i18n('Value'), '&nbsp;');
+$oList->setHeader(i18n("Type"), i18n("Name"), i18n("Value"), '&nbsp;');
 $oList->objHeaderItem->updateAttributes(array('width' => 52));
 $oList->objRow->updateAttributes(array('valign' => 'top'));
 
@@ -177,19 +177,19 @@ $oForm->setVar('frame', $frame);
 $oForm->setVar('action', 'clientsettings_save_item');
 $oForm->setVar('idclient', $idclient);
 $oForm->setVar('idclientslang', $_REQUEST["idclientslang"]);
-$oForm->addHeader(i18n('Add new variable'));
+$oForm->addHeader(i18n("Add new variable"));
 
 $oInputbox = new cHTMLTextbox ('cstype');
 $oInputbox->setStyle('border:1px;border-style:solid;border-color:black;');
-$oForm->add(i18n('Type'),$oInputbox->render());
+$oForm->add(i18n("Type"),$oInputbox->render());
 
 $oInputbox = new cHTMLTextbox ('csname');
 $oInputbox->setStyle('border:1px;border-style:solid;border-color:black;');
-$oForm->add(i18n('Name'),$oInputbox->render());
+$oForm->add(i18n("Name"),$oInputbox->render());
 
 $oInputbox = new cHTMLTextbox ('csvalue');
 $oInputbox->setStyle('border:1px;border-style:solid;border-color:black;');
-$oForm->add(i18n('Value'),$oInputbox->render());
+$oForm->add(i18n("Value"),$oInputbox->render());
 
 if (($_GET['action'] == "clientsettings_edit_item"))
 {

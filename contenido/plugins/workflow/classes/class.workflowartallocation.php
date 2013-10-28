@@ -277,7 +277,7 @@ class WorkflowArtAllocation extends Item {
             					$user->loadUserByUserID($db->f("user_id"));
 								//modified : 2008-06-25 - use php mailer class instead of mail()
 								$oMail->AddAddress($user->getField("email"), "");
-						        $oMail->Subject = stripslashes (i18n('Workflow notification'));
+						        $oMail->Subject = stripslashes (i18n("Workflow notification"));
 						        $oMail->Body = $filledMail;
 								$oMail->Send();
             				}
@@ -286,7 +286,7 @@ class WorkflowArtAllocation extends Item {
                     	$user->loadUserByUserID($usersequence->get("iduser"));
 						//modified : 2008-06-25 - use php mailer class instead of mail()
                     	$oMail->AddAddress($user->getField("email"), "");
-				        $oMail->Subject = stripslashes (i18n('Workflow notification'));
+				        $oMail->Subject = stripslashes (i18n("Workflow notification"));
 				        $oMail->Body = $filledMail;
 						$oMail->Send();
                     }
@@ -327,7 +327,7 @@ class WorkflowArtAllocation extends Item {
             					echo "mail to ".$user->getField("email")."<br>";
 								//modified : 2008-06-25 - use php mailer class instead of mail()
 								$oMail->AddAddress($user->getField("email"), "");
-						        $oMail->Subject = stripslashes (i18n('Workflow escalation'));
+						        $oMail->Subject = stripslashes (i18n("Workflow escalation"));
 						        $oMail->Body = $filledMail;
 								$oMail->Send();								
             				}
@@ -337,7 +337,7 @@ class WorkflowArtAllocation extends Item {
                     	echo "mail to ".$user->getField("email")."<br>";
 						//modified : 2008-06-25 - use php mailer class instead of mail()
 						$oMail->AddAddress($user->getField("email"), "");
-						$oMail->Subject = stripslashes (i18n('Workflow escalation'));
+						$oMail->Subject = stripslashes (i18n("Workflow escalation"));
 						$oMail->Body = $filledMail;
 						$oMail->Send();	
                     }

@@ -292,7 +292,7 @@ if($sCache_errors && $_GET['live'] != 1) {
 /* Analysis of the errors */
 // Templateset
 if($cronjob != true) {
-	$tpl->set('s', 'TITLE', i18n('Link analysis from ', $plugin_name) . strftime(i18n('%Y-%m-%d', $plugin_name), time()));
+	$tpl->set('s', 'TITLE', i18n("Link analysis from ", $plugin_name) . strftime(i18n("%Y-%m-%d", $plugin_name), time()));
 }
 
 // If no errors found, say that

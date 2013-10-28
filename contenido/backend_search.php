@@ -490,7 +490,7 @@ $tpl->setEncoding('iso-8859-1');
 $tpl->set('s', 'SESSID', $sSession);
 $tpl->set('s', 'SCRIPT', $sScript);
 $tpl->set('s', 'SESSNAME', $sess->name);
-$tpl->set('s', 'TITLE', i18n('Search results'));
+$tpl->set('s', 'TITLE', i18n("Search results"));
 $tpl->set('s', 'TH_START', i18n("Article"));
 $tpl->set('s', 'TH_TITLE', i18n("Title"));
 $tpl->set('s', 'TH_CHANGED', i18n("Changed"));
@@ -636,10 +636,10 @@ if ($iAffectedRows <= 0 || empty($where)) {
 		    /* Funktion zum umwandeln in Startartikel/normale Artikel*/
 			if ($perm->have_perm_area_action_item("con", "con_makestart",$idcat) && 0 == 1) {
 			    if( $startidartlang == $idartlang ) {
-			        $sFlagTitle = i18n('Flag as normal article');
+			        $sFlagTitle = i18n("Flag as normal article");
 			        $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&contenido=$sSession\" title=\"{$sFlagTitle}\"><img src=\"images/isstart1.gif\" border=\"0\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\"></a></td>";
 			    } else {
-			        $sFlagTitle = i18n('Flag as start article');
+			        $sFlagTitle = i18n("Flag as start article");
 			        $makeStartarticle = "<td nowrap=\"nowrap\" class=\"bordercell\"><a href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&contenido=$sSession\" title=\"{$sFlagTitle}\"><img src=\"images/isstart0.gif\" border=\"0\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\"></a></td>";
 			    }
 			} else {
@@ -652,20 +652,20 @@ if ($iAffectedRows <= 0 || empty($where)) {
 
 		    /* Funktion zum online/offline stellen */
 		    if( $online==1 ) {
-		        $sOnlineStatus = i18n('Make offline');
+		        $sOnlineStatus = i18n("Make offline");
 		        $bgColorRow = "background-color: #E2E2E2;";
 		        $setOnOff = "<a href=\"main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sOnlineStatus}\"><img src=\"images/online.gif\" title=\"{$sOnlineStatus}\" alt=\"{$sOnlineStatus}\" border=\"0\"></a>";
 		    } else {
-		        $sOnlineStatus = i18n('Make online');
+		        $sOnlineStatus = i18n("Make online");
 		        $bgColorRow = "background-color: #E2D9D9;";
 		        $setOnOff = "<a href=\"main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sOnlineStatus}\"><img src=\"images/offline.gif\" title=\"{$sOnlineStatus}\" alt=\"{$sOnlineStatus}\" border=\"0\"></a>";
 		    }
 		    /* Funktion zum Artikel sperren/entsperren */
 		    if( $locked==1 ) {
-		        $sLockStatus = i18n('Unfreeze article');
+		        $sLockStatus = i18n("Unfreeze article");
 		        $lockArticle = "<a href=\"main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sLockStatus}\"><img src=\"images/lock_closed.gif\" title=\"{$sLockStatus}\" alt=\"{$sLockStatus}\" border=\"0\"></a>";
 		    } else {
-		        $sLockStatus = i18n('Freeze article');
+		        $sLockStatus = i18n("Freeze article");
 		        $lockArticle = "<a href=\"main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&contenido=$sSession\" title=\"{$sLockStatus}\"><img src=\"images/lock_open.gif\" title=\"{$sLockStatus}\" alt=\"{$sLockStatus}\" border=\"0\"></a>";
 		    }
 
@@ -771,7 +771,7 @@ if( sizeof($_GET) == 0 && isset($_POST) ) {
     $searchForm .= '<input type="hidden" name="'.$save_author.'" id="'.$save_author.'" value="'.$sSearchStrAuthor.'">';
     $searchForm .= '<label for="save_searchname">'.i18n("Search Name").': </label>';
     $searchForm .= '<input type="text" class="text_medium" name="'.$save_name.'" id="'.$save_name.'" value="Die Suche" style="vertical-align:middle;">';
-    $searchForm .= '<input type="image" style="margin-left: 5px; vertical-align: middle;" src="./images/but_ok.gif" alt="'.i18n('Store').'" title="'.i18n('Store').'" value="'.i18n('Store').'" name="submit">';
+    $searchForm .= '<input type="image" style="margin-left: 5px; vertical-align: middle;" src="./images/but_ok.gif" alt="'.i18n("Store").'" title="'.i18n("Store").'" value="'.i18n("Store").'" name="submit">';
     $searchForm .= '</form>';
     $tpl->set('s', 'STORESEARCHFORM', $searchForm);
 

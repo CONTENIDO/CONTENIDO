@@ -44,7 +44,7 @@ if ($action == "systemsettings_save_item")
     if (!in_array($systype.'_'.$sysname, $aManagedValues)) {
         setSystemProperty ($systype, $sysname, $sysvalue, $csidsystemprop);
     } else {
-       $sWarning = $notification->returnNotification("warning", i18n('Please set this property in systemsettings directly'), 1).'<br>';
+       $sWarning = $notification->returnNotification("warning", i18n("Please set this property in systemsettings directly"), 1).'<br>';
     }
 }
 

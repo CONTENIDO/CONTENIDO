@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Contenido Linkchecker\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-05 20:32+0200\n"
-"PO-Revision-Date: 2012-10-05 20:36+0100\n"
+"POT-Creation-Date: 2013-10-28 17:40+0100\n"
+"PO-Revision-Date: 2013-10-28 17:55+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language: de_DE\n"
@@ -12,12 +12,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: H:\\frederic.schneider\\\n"
 "X-Poedit-KeywordsList: i18n\n"
-"X-Generator: Poedit 1.5.3\n"
+"X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: H:\\frederic.schneider\\contenido\\plugins"
 "\\linkchecker\\includes\n"
 
 #: includes/include.linkchecker.php:49
-msgid "No Client selected"
+msgid "No client selected"
 msgstr "Kein Mandant ausgewählt"
 
 #: includes/include.linkchecker.php:96
@@ -161,6 +161,11 @@ msgid ""
 msgstr ""
 "Diese Links befinden sich auf der weißen Liste und werden nicht vom "
 "Linkchecker überprüft."
+
+#: templates/standard/template.linkchecker_noerrors.html:29
+#: templates/standard/template.linkchecker_test.html:62
+msgid "Refresh"
+msgstr "Aktualisieren"
 
 #~ msgid "View whitelist"
 #~ msgstr "Whitelist anzeigen"

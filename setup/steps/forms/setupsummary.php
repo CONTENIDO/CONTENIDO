@@ -108,13 +108,13 @@ class cSetupSetupSummary extends cSetupMask
     {
         $aPlugins = array();
         if ($_SESSION['plugin_newsletter'] == 'true') {
-            $aPlugins[] = i18n('Newsletter');
+            $aPlugins[] = i18n("Newsletter");
         }
         if ($_SESSION['plugin_content_allocation'] == 'true') {
-            $aPlugins[] = i18n('Content Allocation');
+            $aPlugins[] = i18n("Content Allocation");
         }
         if ($_SESSION['plugin_mod_rewrite'] == 'true') {
-            $aPlugins[] = i18n('Mod Rewrite');
+            $aPlugins[] = i18n("Mod Rewrite");
         }
         return $aPlugins;
     }

@@ -434,12 +434,12 @@ class Contenido_UpdateNotifier
         if ($this->sXMLContent != "") {
             $this->oXML = simplexml_load_string($this->sXMLContent);
 			if (!is_object($this->oXML)) {
-                   $sErrorMessage = i18n('Unable to check for new updates!')." ".i18n('Could not handle server response!');
+                   $sErrorMessage = i18n("Unable to check for new updates!")." ".i18n("Could not handle server response!");
                 $this->sErrorOutput = $this->renderOutput($sErrorMessage);
             } else {
                 $oVersion = $this->oXML->xpath("/fourforbusiness/contenido/releases/".$this->sMinorRelease);
                 if (!isset($oVersion[0])) {
-                    $sErrorMessage = i18n('Unable to check for new updates!')." ".i18n('Could not determine vendor version!');
+                    $sErrorMessage = i18n("Unable to check for new updates!")." ".i18n("Could not determine vendor version!");
                     $this->sErrorOutput = $this->renderOutput($sErrorMessage);
                 } else {
                     $this->sVendorVersion = $oVersion[0];
@@ -520,7 +520,7 @@ class Contenido_UpdateNotifier
 
         $hSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout);
         if (!is_resource($hSocket)) {
-            $sErrorMessage = i18n('Unable to check for new updates!')." ".i18n('Connection to contenido.org failed!');
+            $sErrorMessage = i18n("Unable to check for new updates!")." ".i18n("Connection to contenido.org failed!");
             $this->sErrorOutput = $this->renderOutput($sErrorMessage);
         } else {
             // get update file
@@ -653,30 +653,30 @@ class Contenido_UpdateNotifier
         $oTpl->set('s', 'UPDATE_MESSAGE', $sMessage);
 
         if ($this->bEnableCheck == true) {
-            $oTpl->set('s', 'UPDATE_ACTIVATION', i18n('Disable update notification'));
+            $oTpl->set('s', 'UPDATE_ACTIVATION', i18n("Disable update notification"));
             $oTpl->set('s', 'IMG_BUT_UPDATE', 'but_cancel.gif');
-            $oTpl->set('s', 'LABEL_BUT_UPDATE', i18n('Disable notification'));
+            $oTpl->set('s', 'LABEL_BUT_UPDATE', i18n("Disable notification"));
             $oTpl->set('s', 'URL_UPDATE', $this->oSession->url('main.php?frame=4&amp;area=mycontenido&amp;do=deactivate'));
         } else {
-            $oTpl->set('s', 'UPDATE_ACTIVATION', i18n('Enable update notification (recommended)'));
+            $oTpl->set('s', 'UPDATE_ACTIVATION', i18n("Enable update notification (recommended)"));
             $oTpl->set('s', 'IMG_BUT_UPDATE', 'but_ok.gif');
-            $oTpl->set('s', 'LABEL_BUT_UPDATE', i18n('Enable notification'));
+            $oTpl->set('s', 'LABEL_BUT_UPDATE', i18n("Enable notification"));
             $oTpl->set('s', 'URL_UPDATE', $this->oSession->url('main.php?frame=4&amp;area=mycontenido&amp;do=activate'));
         }
 
         if ($this->bEnableCheckRss == true) {
-            $oTpl->set('s', 'RSS_ACTIVATION', i18n('Disable RSS notification'));
+            $oTpl->set('s', 'RSS_ACTIVATION', i18n("Disable RSS notification"));
             $oTpl->set('s', 'IMG_BUT_RSS', 'but_cancel.gif');
-            $oTpl->set('s', 'LABEL_BUT_RSS', i18n('Disable notification'));
+            $oTpl->set('s', 'LABEL_BUT_RSS', i18n("Disable notification"));
             $oTpl->set('s', 'URL_RSS', $this->oSession->url('main.php?frame=4&amp;area=mycontenido&amp;do=deactivate_rss'));
 
             $oTpl = $this->renderRss($oTpl);
         } else {
-            $oTpl->set('s', 'RSS_ACTIVATION', i18n('Enable RSS notification (recommended)'));
+            $oTpl->set('s', 'RSS_ACTIVATION', i18n("Enable RSS notification (recommended)"));
             $oTpl->set('s', 'IMG_BUT_RSS', 'but_ok.gif');
-            $oTpl->set('s', 'LABEL_BUT_RSS', i18n('Enable notification'));
+            $oTpl->set('s', 'LABEL_BUT_RSS', i18n("Enable notification"));
             $oTpl->set('s', 'URL_RSS', $this->oSession->url('main.php?frame=4&amp;area=mycontenido&amp;do=activate_rss'));
-            $oTpl->set('s', 'NEWS_NOCONTENT', i18n('RSS notification is disabled'));
+            $oTpl->set('s', 'NEWS_NOCONTENT', i18n("RSS notification is disabled"));
             $oTpl->set("s", "DISPLAY_DISABLED", 'block');
         }
 
@@ -724,7 +724,7 @@ class Contenido_UpdateNotifier
                 $oTpl->set("d", "NEWS_TITLE", $aItem['title']);
                 $oTpl->set("d", "NEWS_TEXT", $sText);
                 $oTpl->set("d", "NEWS_URL", $aItem['link']);
-                $oTpl->set("d", "LABEL_MORE", i18n('read more'));
+                $oTpl->set("d", "LABEL_MORE", i18n("read more"));
                 $oTpl->next();
                 $iCnt++;
 
@@ -741,7 +741,7 @@ class Contenido_UpdateNotifier
                 $oTpl->set("s", "DISPLAY_DISABLED", 'none');
             }
         } else if ( $this->bNoWritePermissions == true ) {
-            $oTpl->set("s", "NEWS_NOCONTENT", i18n('Your webserver does not have write permissions for the directory /contenido/cache/!'));
+            $oTpl->set("s", "NEWS_NOCONTENT", i18n("Your webserver does not have write permissions for the directory /contenido/cache/!"));
         } else {
             $oTpl->set("s", "NEWS_NOCONTENT", i18n("No RSS content available"));
         }
@@ -759,28 +759,28 @@ class Contenido_UpdateNotifier
         if (!$this->bEnableView) {
             $sOutput = "";
         } else if ($this->bNoWritePermissions == true ) {
-            $sMessage = i18n('Your webserver does not have write permissions for the directory /contenido/cache/!');
+            $sMessage = i18n("Your webserver does not have write permissions for the directory /contenido/cache/!");
             $sOutput = $this->renderOutput($sMessage);
         } else if (!$this->bEnableCheck) {
-            $sMessage = i18n('Update notification is disabled! For actual update information, please activate.');
+            $sMessage = i18n("Update notification is disabled! For actual update information, please activate.");
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->sErrorOutput != "") {
             $sOutput = $this->sErrorOutput;
 		} else if ($this->sVendorVersion == '') {
-            $sMessage = i18n('You have an unknown or unsupported version of Contenido!');
+            $sMessage = i18n("You have an unknown or unsupported version of Contenido!");
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->sVendorVersion == "deprecated") {
-            $sMessage = sprintf(i18n('Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href="%s" class="blue" target="_blank">Download now!</a>'), 'http://www.contenido.org');
+            $sMessage = sprintf(i18n("Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href='%s' class='blue' target='_blank'>Download now!</a>"), 'http://www.contenido.org');
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->checkPatchLevel() == "-1") {
             $sVendorDownloadURL = $this->getDownloadURL();
-            $sMessage = sprintf(i18n('A new version of Contenido is available! <br /> <a href="%s" class="blue" target="_blank">Download %s now!</a>'), $sVendorDownloadURL, $this->sVendorVersion);
+            $sMessage = sprintf(i18n("A new version of Contenido is available! <br /> <a href='%s' class='blue' target='_blank'>Download %s now!</a>"), $sVendorDownloadURL, $this->sVendorVersion);
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->checkPatchLevel() == "1") {
-            $sMessage = sprintf(i18n('It seems to be that your version string was manipulated. Contenido %s does not exist!'), $this->aCfg['version']);
+            $sMessage = sprintf(i18n("It seems to be that your version string was manipulated. Contenido %s does not exist!"), $this->aCfg['version']);
             $sOutput = $this->renderOutput($sMessage);
         } else {
-            $sMessage = i18n('Your version of Contenido is up to date!');
+            $sMessage = i18n("Your version of Contenido is up to date!");
             $sOutput = $this->renderOutput($sMessage);
         }
 

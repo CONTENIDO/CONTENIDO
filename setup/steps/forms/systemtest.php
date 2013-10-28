@@ -148,12 +148,12 @@ class cSetupSystemtest extends cSetupMask {
             }
 
             if ($bPluginExists) {
-                $sMessage .= sprintf(i18n('An old Version of Plugin %s is installed on your system.')."<br>\n", $sPlugin);
+                $sMessage .= sprintf(i18n("An old Version of Plugin %s is installed on your system.")."<br>\n", $sPlugin);
             }
         }
 
         if ($sMessage) {
-            $sMessage .= '<br>'.i18n('Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of contenido. Also delete the old plugin tables after data transfer.');
+            $sMessage .= '<br>'.i18n("Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of contenido. Also delete the old plugin tables after data transfer.");
 
             $this->runTest(false,
                            C_SEVERITY_WARNING,
@@ -177,8 +177,8 @@ class cSetupSystemtest extends cSetupMask {
         if (!version_compare(phpversion(), "5.0.0", ">=") && $_SESSION["setuptype"] == 'setup') {
             $this->runTest(false,
                            C_SEVERITY_WARNING,
-                           i18n('Contenido demo client requires PHP 5 or higher'),
-                           i18n('The Contenido demo client requires PHP 5 or higher. If you want to install the demo client, please update your PHP version.'));
+                           i18n("Contenido demo client requires PHP 5 or higher"),
+                           i18n("The Contenido demo client requires PHP 5 or higher. If you want to install the demo client, please update your PHP version."));
         }
 
         $this->runTest(phpversion(),
@@ -406,8 +406,8 @@ class cSetupSystemtest extends cSetupMask {
         $db = new DB_Contenido($_SESSION["dbhost"], "", $_SESSION["dbuser"], $_SESSION["dbpass"]);
 
         $this->runTest(!$this->isSqlModeStrict(),
-                       C_SEVERITY_ERROR, i18n('MySQL is running in strict mode'),
-                       i18n('MySQL is running in strict mode, Contenido will not work with this mode. Please change your sql_mode!'));
+                       C_SEVERITY_ERROR, i18n("MySQL is running in strict mode"),
+                       i18n("MySQL is running in strict mode, Contenido will not work with this mode. Please change your sql_mode!"));
 
         switch ($_SESSION["setuptype"]) {
             case "setup":

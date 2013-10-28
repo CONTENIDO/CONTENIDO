@@ -51,7 +51,7 @@ $mstr = sprintf($tmp_mstr, 'right_top',
 if ((int) $client > 0) {
     $tpl->set('s', 'NEWSTYLE', $mstr);
 } else {
-    $tpl->set('s', 'NEWSTYLE', i18n('No client selected'));
+    $tpl->set('s', 'NEWSTYLE', i18n("No client selected"));
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['html_tpl_left_top']);

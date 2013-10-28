@@ -191,25 +191,25 @@ header("Content-Type: text/html; charset=ISO-8859-1");
     					}
     					?>
     					</select>
-                      <label id="lbllang" for="lang"><?php echo i18n('Language'); ?></label>
+                      <label id="lbllang" for="lang"><?php echo i18n("Language"); ?></label>
 
-                      <div class="text_medium_bold login_title"><?php echo i18n('Contenido Backend'); ?></div>
+                      <div class="text_medium_bold login_title"><?php echo i18n("Contenido Backend"); ?></div>
 
-    				    <label id="lblusername" for="username" style="width:75px; display:block; float:left;"><?php echo i18n('Login'); ?>:</label>
+    				    <label id="lblusername" for="username" style="width:75px; display:block; float:left;"><?php echo i18n("Login"); ?>:</label>
     				    <input id="username" tabindex="1" type="text" class="text_medium" name="username" size="25" maxlength="32" value="<?php echo ( isset($this->auth["uname"]) ) ? conHtmlentities(strip_tags($this->auth["uname"])) : ""  ?>" />
     			</div>
     			<div id="head_nav2" class="head_nav_login left_dist">
                     <input id="okbutton" tabindex="4" type="image" title="Login" alt="Login" src="images/but_ok.gif" />
                     <div style="float:right; margin-right:25px;" class="text_error">
                         <?php if ( isset($username) && $username != '') {
-                                    echo i18n('Invalid Login or Password!');
+                                    echo i18n("Invalid Login or Password!");
                                 }
                          ?>
                     </div>
                     <div style="clear:both;display:none;"></div>
                     <div class="text_medium_bold login_title">&nbsp;</div>
 
-                    <label id="lblpasswd" for="passwd" style="width:75px; display:block; float:left;"><?php echo i18n('Password'); ?>:</label>
+                    <label id="lblpasswd" for="passwd" style="width:75px; display:block; float:left;"><?php echo i18n("Password"); ?>:</label>
                     <input id="passwd" tabindex="2" type="password" class="text_medium" name="password" size="25" />
 
                     <input type="hidden" name="vaction" value="login" />

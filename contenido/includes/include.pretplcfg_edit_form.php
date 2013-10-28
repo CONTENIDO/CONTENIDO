@@ -162,7 +162,7 @@ $tpl->set('s', 'SCRIPT',        '');
 $tpl->set('s', 'MARKSUBMENU',   '');
 $tpl->set('s', 'CATEGORY',      '');
 
-$tpl->set('s', 'HEADER', i18n('Template preconfiguration'));
+$tpl->set('s', 'HEADER', i18n("Template preconfiguration"));
 $tpl->set('s', 'DISPLAY_HEADER', 'block');
 
 $buttons = '<a href="javascript:history.back()"><img src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;

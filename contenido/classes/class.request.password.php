@@ -244,11 +244,11 @@ class RequestPassword {
         $oForm->setVar('belang', $GLOBALS['belang']);
 
         //generate submitbutton and fill the form
-        $oForm->add('submit', '<input type="image" src="images/submit.gif" alt="'.i18n('Submit').'" title="'.i18n('Submit').'" style="vertical-align:top; margin-top:2px; float:right; margin-right:6px;">');
+        $oForm->add('submit', '<input type="image" src="images/submit.gif" alt="'.i18n("Submit").'" title="'.i18n("Submit").'" style="vertical-align:top; margin-top:2px; float:right; margin-right:6px;">');
         $oForm->add('request_username', $oInputUsername->render());
         $this->oTpl->set('s', 'FORM', $oForm->render());
         $this->oTpl->set('s', 'MESSAGE', $sMessage);
-        $this->oTpl->set('s', 'LABEL', i18n('Please enter your login').':');
+        $this->oTpl->set('s', 'LABEL', i18n("Please enter your login").':');
 
         //if handleNewPassword() returns a message, display it
         $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates'].$this->aCfg['templates']['request_password']);
@@ -288,28 +288,28 @@ class RequestPassword {
                 if ($iNow-$iLastRequest < (60*$this->iReloadTime)) {
                     //user is not allowed to request new password, he has to wait
                     $bIsAllowed = false;
-                    $sMessage = sprintf(i18n('Password requests are allowed every %s minutes.'), $this->iReloadTime);
+                    $sMessage = sprintf(i18n("Password requests are allowed every %s minutes."), $this->iReloadTime);
                 }
             }
 
             //check if syntax of users mail adress is correct and there is no standard mailadress like admin_kunde@IhreSite.de or sysadmin@IhreSite.de
             if ((!preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $this->sEmail) || $this->sEmail == 'sysadmin@IhreSite.de' || $this->sEmail == 'admin_kunde@IhreSite.de') && $bIsAllowed) {
                 $bIsAllowed = false;
-                //$sMessage = i18n('The requested user has no valid e-mail address. Submitting new password is not possible. Please contact your system- administrator for further support.');
-                $sMessage = i18n('No matching data found. Please contact your systemadministrator.');
+                //$sMessage = i18n("The requested user has no valid e-mail address. Submitting new password is not possible. Please contact your system- administrator for further support.");
+                $sMessage = i18n("No matching data found. Please contact your systemadministrator.");
             }
 
             //if there are no errors, call function setNewPassword(), else wait a while, then return error message
             if ($bIsAllowed) {
                 $this->setNewPassword();
-                $sMessage = i18n('New password was submitted to your e-mail address.');
+                $sMessage = i18n("New password was submitted to your e-mail address.");
             } else {
                 sleep(5);
             }
         } else {
             //slepp a while, then return error message
-            //$sMessage = i18n('This user does not exist.');
-            $sMessage = i18n('No matching data found. Please contact your systemadministrator.');
+            //$sMessage = i18n("This user does not exist.");
+            $sMessage = i18n("No matching data found. Please contact your systemadministrator.");
             sleep(5);
         }
         return $sMessage;
@@ -359,7 +359,7 @@ class RequestPassword {
         //set users e mail adress as recipient
         $oMail->AddAddress($this->sEmail, "");
         //set mail subject
-        $oMail->Subject = stripslashes (i18n('Your new password for Contenido Backend'));
+        $oMail->Subject = stripslashes (i18n("Your new password for Contenido Backend"));
         //append mail body
         $oMail->Body = $sMailBody;
         //wrap after 1000 chars
