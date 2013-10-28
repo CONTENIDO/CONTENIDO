@@ -126,6 +126,26 @@ if ( $idart ) {
 		}
     } else {
 
+        // Checks for locked information
+        $sql = "SELECT
+            		locked
+            	FROM
+            		" . $cfg["tab"]["art_lang"] . "
+            	WHERE
+            	    idart = '" . Contenido_Security::toInteger($idart) . "' AND
+                	idlang    = '".Contenido_Security::toInteger($lang)."'";
+
+        $db->query($sql);
+        $db->next_record();
+
+        // If article is locked, disable selection box
+        if ($db->f("locked") == 1)
+        {
+            $inUse = true;
+            $disabled = 'disabled="disabled"';
+        }
+
+        // Add new template
         if ($idtpl) {
 
             /* create new configuration entry */
