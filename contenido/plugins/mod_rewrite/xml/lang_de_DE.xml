@@ -2,13 +2,13 @@
 <!-- CONTENIDO XML language file -->
 <language>
     <navigation>
-        <content>
+        <extra>
             <mod_rewrite>
                 <main>AMR</main>
                 <settings>Einstellungen</settings>
                 <expert>Funktionen</expert>
                 <test>Test</test>
             </mod_rewrite>
-        </content>
+        </extra>
     </navigation>
 </language>

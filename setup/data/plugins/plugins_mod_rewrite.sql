@@ -16,7 +16,7 @@ INSERT INTO !PREFIX!_frame_files VALUES ('701', '700', '4', '701');
 INSERT INTO !PREFIX!_frame_files VALUES ('702', '701', '4', '702');
 INSERT INTO !PREFIX!_frame_files VALUES ('703', '702', '4', '703');
 
-INSERT INTO !PREFIX!_nav_sub VALUES('700', '1', '700', '0', 'mod_rewrite/xml/;navigation/content/mod_rewrite/main', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('701', '0', '700', '1', 'mod_rewrite/xml/;navigation/content/mod_rewrite/settings', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('702', '0', '701', '1', 'mod_rewrite/xml/;navigation/content/mod_rewrite/expert', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('703', '0', '702', '1', 'mod_rewrite/xml/;navigation/content/mod_rewrite/test', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('700', '3', '700', '0', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/main', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('701', '0', '700', '1', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/settings', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('702', '0', '701', '1', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/expert', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('703', '0', '702', '1', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/test', '1');

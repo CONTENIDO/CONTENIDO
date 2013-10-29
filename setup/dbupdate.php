@@ -219,6 +219,7 @@ if ($currentstep < $totalsteps) {
         updateSysadminPassword($db, $_SESSION['dbprefix'].'_phplib_auth_user_md5', 'sysadmin');
     }
 
+    // Flush code table
     $sql = 'DELETE FROM %s';
     $db->query(sprintf($sql, $_SESSION['dbprefix'].'_code'));
 
@@ -226,23 +227,51 @@ if ($currentstep < $totalsteps) {
     $sql = "UPDATE %s SET createcode = '1'";
     $db->query(sprintf($sql, $_SESSION['dbprefix'].'_cat_art'));
 
+    // Migration: Update paths for clients
     if ($_SESSION['setuptype'] == 'migration') {
         $aClients = listClients($db, $_SESSION['dbprefix'].'_clients');
-
         foreach ($aClients as $iIdClient => $aInfo) {
             updateClientPath($db, $_SESSION['dbprefix'].'_clients', $iIdClient, $_SESSION['frontendpath'][$iIdClient], $_SESSION['htmlpath'][$iIdClient]);
         }
     }
 
+    // Upgrade: Detection of old start-article behaviour (see $cfg['is_start_compatible']) in cat_art table
     $_SESSION['start_compatible'] = false;
-
     if ($_SESSION['setuptype'] == 'upgrade') {
         $sql = "SELECT is_start FROM %s WHERE is_start = 1";
         $db->query(sprintf($sql, $_SESSION['dbprefix'].'_cat_art'));
-
         if ($db->next_record()) {
             $_SESSION['start_compatible'] = true;
         }
+    }
+
+    // Upgrade: Relocate mod_rewrite plugin in backend from "Content" to "Extras"
+    if ($_SESSION['setuptype'] == 'upgrade') {
+        $navSubEntries = array();
+        $sql = "SELECT * FROM `%s` WHERE location LIKE '%s'";
+        $db->query(sprintf($sql, $_SESSION['dbprefix'] . '_nav_sub', '%navigation/content/mod_rewrite/%'));
+        while ($db->next_record()) {
+            $navSubEntries[$db->f('idnavs')] = array(
+                'idnavm' => (int) $db->f('idnavm'),
+                'location' => $db->f('location')
+            );
+        }
+        if (count($navSubEntries) > 0) {
+            // Get main navigation id
+            $sql = "SELECT idnavm FROM `%s` WHERE location = '%s'";
+            $db->query(sprintf($sql, $_SESSION['dbprefix'] . '_nav_main', 'navigation/extra/main'));
+            if ($db->next_record()) {
+                $idnavmExtra = (int) $db->f('idnavm');
+                // Update sub navigation entries
+                foreach ($navSubEntries as $idnavsub => $entry) {
+                    $entry['location'] = str_replace('navigation/content/mod_rewrite/', 'navigation/extra/mod_rewrite/', $entry['location']);
+                    $idnavm = ($entry['idnavm'] !== 0) ? $idnavmExtra : 0; // Modify only idnavm > 0
+                    $sql = "UPDATE `%s` SET location = '%s', idnavm = %d WHERE idnavs = %d";
+                    $db->query(sprintf($sql, $_SESSION['dbprefix'] . '_nav_sub', $location, $idnavm, $idnavsub));
+                }
+            }
+        }
+        unset($navSubEntries);
     }
 
     // Update Keys
