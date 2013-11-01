@@ -459,10 +459,20 @@ class cGuiNavigation {
         return $html . $editButton->render();
     }
 
+    /**
+     * Returns true if the class encountered errors while building the navigation
+     *
+     * @return boolean
+     */
     public function hasErrors() {
         return count($this->errors) > 0;
     }
 
+    /**
+     * Returns an array of localized error messages
+     *
+     * @return array
+     */
     public function getErrors() {
         return $this->errors;
     }
