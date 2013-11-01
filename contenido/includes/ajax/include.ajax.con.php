@@ -31,33 +31,37 @@ if (!is_array($aConexpandedList))  {
     $aConexpandedList = array();
 }
 
+if (!is_array($aConexpandedList[$client])) {
+    $aConexpandedList[$client] = array();
+}
+
 if ($bDebug) {
-    print_r($aConexpandedList);
+    print_r($aConexpandedList[$client]);
     print_r($aCatlist);
 }
 
 if ($action == 'toggle') {
-    $sKey = array_search($idcat, $aConexpandedList);
+    $sKey = array_search($idcat, $aConexpandedList[$client]);
     if ($sKey !== false) {
-        unset($aConexpandedList[$sKey]);
+        unset($aConexpandedList[$client][$sKey]);
     } elseif (in_array($idcat, $aCatlist)) {
-        $aConexpandedList[] = $idcat;
+        $aConexpandedList[$client][] = $idcat;
     }
 } elseif ($action == 'expand') {
-    if (!in_array($idcat, $aConexpandedList) && in_array($idcat, $aCatlist)) {
-        $aConexpandedList[] = $idcat;
+    if (!in_array($idcat, $aConexpandedList[$client]) && in_array($idcat, $aCatlist)) {
+        $aConexpandedList[$client][] = $idcat;
     }
 } elseif ($action == 'collapse') {
-    $sKey = array_search($idcat, $aConexpandedList);
+    $sKey = array_search($idcat, $aConexpandedList[$client]);
     if ($sKey !== false) {
-        unset($aConexpandedList[$sKey]);
+        unset($aConexpandedList[$client][$sKey]);
     }
 } elseif ($action == 'collapseall') {
-    if (count($aConexpandedList)) {
-        $aConexpandedList = array();
+    if (count($aConexpandedList[$client])) {
+        $aConexpandedList[$client] = array();
     }
 } elseif ($action == 'expandall') {
-    $aConexpandedList = $aCatlist;
+    $aConexpandedList[$client] = $aCatlist;
 }
 
 $currentuser->setUserProperty("system", "con_cat_expandstate", serialize($aConexpandedList));

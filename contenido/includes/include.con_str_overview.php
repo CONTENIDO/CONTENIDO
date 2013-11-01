@@ -586,12 +586,16 @@ if (!is_array($conexpandedList)) {
     $conexpandedList = array();
 }
 
+if (!is_array($conexpandedList[$client])) {
+    $conexpandedList[$client] = array();
+}
+
 $navigationTree = array();
 $aWholelist = array();
 
 while ($db->nextRecord()) {
     if (!isset($navigationTree[$db->f('parentid')][$db->f('idcat')]) && ($db->f('idlang') == $lang || $db->f('idlang') == $syncoptions)) {
-        if (in_array($db->f('idcat'), $conexpandedList)) {
+        if (in_array($db->f('idcat'), $conexpandedList[$client])) {
             $collapsed = false;
         } else {
             $collapsed = true;
@@ -651,7 +655,7 @@ $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
 
 $tpl->set('s', 'AJAXURL',  cRegistry::getBackendUrl() . 'ajaxmain.php');
 $tpl->set('s', 'WHOLELIST', implode(', ', $aWholelist));
-$tpl->set('s', 'EXPANDEDLIST', implode(', ', $conexpandedList));
+$tpl->set('s', 'EXPANDEDLIST', implode(', ', $conexpandedList[$client]));
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_str_overview']);
 
