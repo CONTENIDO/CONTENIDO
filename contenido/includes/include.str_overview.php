@@ -411,8 +411,8 @@ buildTree($rootStrItem, $items);
 
 $expandedList = unserialize($currentuser->getUserProperty('system', 'cat_expandstate'));
 
-if (is_array($expandedList)) {
-    $rootStrItem->markExpanded($expandedList);
+if (is_array($expandedList[$client])) {
+    $rootStrItem->markExpanded($expandedList[$client]);
 }
 
 if (isset($collapse) && is_numeric($collapse)) {
@@ -435,12 +435,12 @@ if ($action === 'str_newcat') {
     $rootStrItem->markExpanded($idcat);
 }
 
-$expandedList = array();
+$expandedList[$client] = array();
 $objects = array();
 
 $rootStrItem->traverse($objects);
 
-$rootStrItem->getExpandedList($expandedList);
+$rootStrItem->getExpandedList($expandedList[$client]);
 $currentuser->setUserProperty('system', 'cat_expandstate', serialize($expandedList));
 
 // Reset Template
