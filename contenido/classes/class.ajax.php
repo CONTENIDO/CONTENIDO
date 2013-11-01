@@ -347,7 +347,7 @@ class cAjaxRequest {
 
                 $idmod       = isset($_POST['idmod']) ? $_POST['idmod']:NULL;
                 $inputType   = isset($_POST['type']) ? $_POST['type']:NULL;
-                $modulecheck = getSystemProperty("system", "modulecheck") ? :true;
+                $modulecheck = getSystemProperty("system", "modulecheck", true);
                 $result      = array(
                     'state'       => 'error',
                     'message'     => 'No cModuleHandler for ' + $idmod + ', or wrong code type: ' + $inputType
