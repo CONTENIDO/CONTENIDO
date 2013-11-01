@@ -224,11 +224,6 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         // Reset Template
         $tpl->reset();
 
-        // Categories without start article
-        if (strHasStartArticle($idcat, $lang) === false) {
-            $notification->displayNotification('warning', i18n('This category does not have a configured start article.'));
-        }
-
         // No article
         $no_article = true;
 
@@ -904,23 +899,29 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // SELF_URL (Variable f�r das javascript);
         $tpl->set('s', 'SELF_URL', $sess->url("main.php?area=con&frame=4&idcat=$idcat"));
+        
+        // Categories without start article
+        $warningBox = '';
+        if (strHasStartArticle($idcat, $lang) === false) {
+        	$warningBox = $notification->returnNotification('warning', i18n('This category does not have a configured start article.'));
+        }
 
         // New Article link
         if (($perm->have_perm_area_action('con_editart', 'con_newart') || $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat)) && $foreignlang == false) {
             if ($idcat != 0 && $cat_idtpl != 0) {
                 $tpl->set('s', 'NEWARTICLE_TEXT', '<a id="newArtTxt" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '">' . i18n("Create new article") . '</a>');
                 $tpl->set('s', 'NEWARTICLE_IMG', '<a id="newArtImg" href="' . $sess->url("main.php?area=con_editart&frame=$frame&action=con_newart&idcat=$idcat") . '" title="' . i18n("Create new article") . '"><img src="images/but_art_new.gif" border="0" alt="' . i18n("Create new article") . '"></a>');
-                $tpl->set('s', 'CATTEMPLATE', '');
+                $tpl->set('s', 'CATTEMPLATE', $warningBox);
             } else {
                 $notification_text = $notification->returnNotification("error", i18n("Creation of articles is only possible if the category has a assigned template."));
                 $tpl->set('s', 'CATTEMPLATE', $notification_text);
                 $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
                 $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
             }
-        } else {
+        } else {        	
             $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
             $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
-            $tpl->set('s', 'CATTEMPLATE', '');
+            $tpl->set('s', 'CATTEMPLATE', $warningBox);
         }
 
         $str = '';
