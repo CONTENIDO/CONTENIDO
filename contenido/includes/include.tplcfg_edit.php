@@ -38,7 +38,7 @@ if ($idtpl != 0 && $idtplcfg != 0) {
                 if (!isset($varstring[$i])) {
                     $varstring[$i] = "";
                 }
-                $varstring[$i] = $varstring[$i] . $key . "=" . $value . "&";
+                $varstring[$i] = $varstring[$i] . $key . "=" . urlencode($value) . "&";
             }
         }
     }

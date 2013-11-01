@@ -208,7 +208,6 @@ if (!$db->nextRecord()) {
         }
     }
 }
-
 if (count($_POST) > 0 && $message == '') {
     $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Save change successfully!"));
 }
@@ -284,14 +283,14 @@ while ($db->nextRecord()) {
 
 $select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 $tpl->set('s', 'TEMPLATESELECTBOX', $select);
-// modul input bereich von allen container anzeigen
+// show module input area of all containers
 $sql = "SELECT * FROM " . $cfg['tab']['container'] . " WHERE idtpl=" . cSecurity::toInteger($idtpl) . " ORDER BY number ASC";
 $db->query($sql);
 
 $a_d = array();
 
 while ($db->nextRecord()) {
-    // liste der benutzten module generieren
+    // generate list of used modules
     $a_d[$db->f('number')] = $db->f('idmod');
 }
 
@@ -324,9 +323,11 @@ if (isset($a_d) && is_array($a_d)) {
 
                 foreach ($tmp1 as $key1 => $value1) {
                     $tmp2 = explode("=", $value1);
-                    foreach ($tmp2 as $key2 => $value2) {
-                        $varstring[$tmp2[0]] = $tmp2[1];
+                    $varstring[$tmp2[0]] = '';
+                    for($i = 1; $i < count($tmp2); $i++) {
+                        $varstring[$tmp2[0]] .= $tmp2[$i].'=';
                     }
+                    $varstring[$tmp2[0]] = urldecode(substr($varstring[$tmp2[0]], 0, strlen($varstring[$tmp2[0]]) - 1));
                 }
             }
 
