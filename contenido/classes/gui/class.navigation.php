@@ -33,6 +33,12 @@ class cGuiNavigation {
     public $data = array();
 
     /**
+     * Array storing all errors
+     * @var  array
+     */
+    protected $errors = array();
+
+    /**
      * Constructor. Loads the XML language file using cXmlReader.
      *
      * @throws cException if XML language files could not be loaded
@@ -150,7 +156,12 @@ class cGuiNavigation {
                         continue;
                     }
                     // Extract names from the XML document.
-                    $name = $this->getName($db2->f('location'));
+                    try {
+                        $name = $this->getName($db2->f('location'));
+                    } catch(cException $e) {
+                        $this->errors[] = i18n('Unable to load ' . $db2->f('location'));
+                        continue;
+                    }
                     $this->data[$db->f('idnavm')][] = array($name, $area);
                 }
             }
@@ -285,7 +296,19 @@ class cGuiNavigation {
         }
 
         $main->set('s', 'ACTION', $sess->url('index.php'));
-        $main->set('s', 'LANG', $this->_renderLanguageSelect());
+
+        if($this->hasErrors()) {
+            $errors = $this->getErrors();
+            $errorString = '';
+            foreach($errors as $error) {
+                $errorString .= $error.'<br>';
+            }
+            $errorString .= '<br>' . i18n('Some plugin menus can not be shown because of these errors.');
+            $helpBox = new cGuiBackendHelpbox($errorString, './images/but_warn.gif');
+			$main->set('s', 'LANG', $helpBox->render(true) . $this->_renderLanguageSelect());
+        } else {
+			$main->set('s', 'LANG', $this->_renderLanguageSelect());
+        }
 
         $sClientName = $clientCollection->getClientName($client);
         if (strlen($sClientName) > 25) {
@@ -436,4 +459,11 @@ class cGuiNavigation {
         return $html . $editButton->render();
     }
 
+    public function hasErrors() {
+        return count($this->errors) > 0;
+    }
+
+    public function getErrors() {
+        return $this->errors;
+    }
 }

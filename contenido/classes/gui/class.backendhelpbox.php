@@ -30,14 +30,18 @@ class cGuiBackendHelpbox {
      */
     protected $helpText;
 
+    protected $imageURL;
+
     /**
      * Basic constructor.
      * Assigns a help text
      *
      * @param string $helpText the text that will appear in the tooltip
+     * @param string $imageURL This image will be used for the tooltip
      */
-    function __construct($helpText) {
+    public function __construct($helpText, $imageURL = '') {
         $this->setHelpText($helpText);
+        $this->setImageURL($imageURL);
     }
 
     /**
@@ -45,8 +49,17 @@ class cGuiBackendHelpbox {
      *
      * @param string $helpText the text that will appear in the tooltip
      */
-    function setHelpText($helpText) {
+    public function setHelpText($helpText) {
         $this->helpText = $helpText;
+    }
+
+    /**
+     * Set the image for the tooltip
+     *
+     * @param string $imageURL the image file
+     */
+    public function setImageURL($imageURL) {
+        $this->imageURL = $imageURL;
     }
 
     /**
@@ -58,10 +71,15 @@ class cGuiBackendHelpbox {
      *        returned. Otherwise it will be echoed
      * @return string|NULL rendered button or nothing if it's been printed
      */
-    function render($returnAsString = true) {
+    public function render($returnAsString = true) {
         $id = md5(rand()) . "-Info";
 
-        $ret = "<a href='javascript://' id='" . $id . "-link' title='" . i18n("More information") . "' class='i-link infoButton'></a>";
+        $style = '';
+        if($this->imageURL != '') {
+            $style = 'style="background: transparent url(' . $this->imageURL . ') no-repeat;"';
+        }
+
+        $ret = "<a " . $style . " href='javascript://' id='" . $id . "-link' title='" . i18n("More information") . "' class='i-link infoButton'></a>";
         $ret .= "<div id='" . $id . "' style='display: none;'>" . $this->helpText . "</div>";
 
         if ($returnAsString) {
