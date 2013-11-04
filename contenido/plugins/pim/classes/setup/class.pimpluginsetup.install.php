@@ -64,7 +64,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Set variable for plugin foldername
      *
-     * @access public
+     * @access private
      * @param string $foldername
      * @return string
      */
