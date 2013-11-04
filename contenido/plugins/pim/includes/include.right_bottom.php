@@ -34,6 +34,9 @@ if ($cfg['debug']['disable_plugins'] === true) {
 $setup = new PimPluginSetup();
 $setup->setPageClass($page);
 
+// initializing PimPluginViewNavSub class
+$navSubView = new PimPluginViewNavSub();
+
 $viewAction = isset($_REQUEST['pim_view']) ? $_REQUEST['pim_view'] : 'overview';
 
 switch ($viewAction) {
@@ -96,6 +99,12 @@ while (($plugin = $oItem->next()) !== false) {
     // initialization new template class
     $pagePlugins = new cTemplate();
 
+    // changed foldername for nav_sub view class
+    $navSubView->setPluginFoldername($plugin->get('folder'));
+
+    // display navigation entries
+    $pagePlugins->set('s', 'NAVSUB', $navSubView->getNavSubentries());
+
     // date
     $date = date_format(date_create($plugin->get('installed')), i18n('Y-m-d', 'pim'));
 
@@ -147,7 +156,6 @@ if (is_dir($cfg['path']['plugins'])) {
             $tempPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername . '/plugin.xml';
 
             if (cFileHandler::exists($tempPath) && !in_array($pluginFoldername, $installedPluginFoldernames)) {
-
                 // initalization new template class
                 $pagePlugins = new cTemplate();
 

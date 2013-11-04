@@ -1650,6 +1650,7 @@ contenido/plugins/pim/classes/setup/class.pimpluginsetup.status.php -text
 contenido/plugins/pim/classes/setup/class.pimpluginsetup.uninstall.php -text
 contenido/plugins/pim/classes/setup/class.pimpluginsetup.update.php -text
 contenido/plugins/pim/classes/util/zip/class.pimpluginarchiveextractor.php -text
+contenido/plugins/pim/classes/view/class.pimpluginview.navsub.php -text
 contenido/plugins/pim/includes/config.plugin.php -text
 contenido/plugins/pim/includes/include.right_bottom.php -text
 contenido/plugins/pim/locale/de_DE/LC_MESSAGES/pim.mo -text

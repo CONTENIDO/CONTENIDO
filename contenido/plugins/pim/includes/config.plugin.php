@@ -24,3 +24,4 @@ plugin_include('pim', 'classes/setup/class.pimpluginsetup.install.php');
 plugin_include('pim', 'classes/setup/class.pimpluginsetup.uninstall.php');
 plugin_include('pim', 'classes/setup/class.pimpluginsetup.update.php');
 plugin_include('pim', 'classes/setup/class.pimpluginsetup.status.php');
+plugin_include('pim', 'classes/view/class.pimpluginview.navsub.php');
