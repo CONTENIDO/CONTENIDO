@@ -210,7 +210,6 @@ class PimPluginViewNavSub {
      * @return boolean
      */
     private function _checkAndGetPluginNavigation() {
-        global $belang;
         $cfg = cRegistry::getConfig();
 
         // path to CONTENIDO navigation xml file
