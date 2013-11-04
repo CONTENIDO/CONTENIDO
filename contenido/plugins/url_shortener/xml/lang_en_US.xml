@@ -2,10 +2,10 @@
 <!-- CONTENIDO XML language file -->
 <language>
     <navigation>
-        <content>
+        <extra>
             <url_shortener>
                 <main>URL Shortener</main>
             </url_shortener>
-        </content>
+        </extra>
     </navigation>
 </language>
