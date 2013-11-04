@@ -45,6 +45,9 @@ class PimPluginViewNavSub {
     // Class variable for DOMDocument
     protected $_DOMDocument;
 
+    // Class variable for cApiNavMainCollection
+    protected $_ApiNavMainCollection;
+
     // Class variable for cApiNavSubCollection
     protected $_ApiNavSubCollection;
 
@@ -56,6 +59,16 @@ class PimPluginViewNavSub {
      */
     private function _setDOMDocument() {
         return $this->_DOMDocument = new DOMDocument();
+    }
+
+    /**
+     * Initializing and set variable for cApiNavMainCollection
+     *
+     * @access private
+     * @return cApiNavMainCollection
+     */
+    private function _setApiNavMainCollection() {
+        return $this->_ApiNavMainCollection = new cApiNavMainCollection();
     }
 
     /**
@@ -80,6 +93,7 @@ class PimPluginViewNavSub {
         $this->_setDOMDocument();
 
         // cApiClasses
+        $this->_setApiNavMainCollection();
         $this->_setApiNavSubCollection();
     }
 
@@ -190,7 +204,8 @@ class PimPluginViewNavSub {
     }
 
     /**
-     * Checks for plugin navigation entry and get plugin navigation entries
+     * Checks for plugin navigation entry and get navigation entries from
+     * CONTENIDO navigation xml file
      *
      * @return boolean
      */
@@ -198,25 +213,22 @@ class PimPluginViewNavSub {
         global $belang;
         $cfg = cRegistry::getConfig();
 
-        // path to plugin specific navigation xml file with selected backend
-        // language
-        $pluginLanguageFileLang = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->PluginFoldername . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . $cfg['lang'][$belang];
+        // path to CONTENIDO navigation xml file
+        $contenidoLanguageFileLang = $cfg['path']['contenido'] . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME;
 
-        if (cFileHandler::exists($pluginLanguageFileLang)) {
+        if (cFileHandler::exists($contenidoLanguageFileLang)) {
 
             for ($i = 0; $i < $this->_NavCount; $i++) {
 
-                // get only navigation value (pattern)
-                preg_match(self::PATTERN, self::$XmlNavSub->nav[$i], $matches);
-
-                // get single navigation values
-                $navSubEntries = explode("/", $matches[1]);
+                $this->_ApiNavMainCollection->setWhere('idnavm', cSecurity::toInteger(self::$XmlNavSub->nav[$i]->attributes()->navm));
+                $this->_ApiNavMainCollection->query();
+                $row = $this->_ApiNavMainCollection->next();
 
                 // define query
-                $query = '//' . $matches[1];
+                $query = '//' . $row->get('location');
 
                 // load plugin navigation xml file
-                $this->_DOMDocument->load($pluginLanguageFileLang);
+                $this->_DOMDocument->load($contenidoLanguageFileLang);
 
                 // create new DOMXPath
                 $xpath = new DOMXPath($this->_DOMDocument);
@@ -275,7 +287,15 @@ class PimPluginViewNavSub {
                 }
 
                 foreach ($entriesLang as $entry) {
-                    $founded[] = i18n('You find this plugin at navigation section', 'pim') . " &quot;{$contenidoNav}&quot; " . i18n('as', 'pim') . " &quot;{$entry->firstChild->nodeValue}&quot;<br />";
+
+                    // if we have more then one navigation entry, define
+                    // menuname for other entries
+                    if (self::$XmlNavSub->nav[$i]->attributes()->level == 0 && $this->_NavCount > 1) {
+                        $menuName = $entry->nodeValue;
+                        continue;
+                    }
+
+                    $founded[] = i18n('You find this plugin at navigation section', 'pim') . " &quot;{$contenidoNav}&quot; " . i18n('as', 'pim') . (($menuName != "")? ' &quot;' . $menuName . '&quot; ->' : '') . " &quot;{$entry->nodeValue}&quot;<br />";
                 }
             }
 
@@ -286,8 +306,8 @@ class PimPluginViewNavSub {
             $output = "";
 
             // convert founded array to an string
-            foreach($founded as $entry) {
-            	$output .= $entry;
+            foreach ($founded as $entry) {
+                $output .= $entry;
             }
 
             return $output;
