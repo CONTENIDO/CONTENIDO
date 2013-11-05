@@ -2413,6 +2413,7 @@ setup/data/examples/data/modules/navigation_breadcrumb/lang/lang_en_US.txt -text
 setup/data/examples/data/modules/navigation_breadcrumb/php/navigation_breadcrumb_input.php -text
 setup/data/examples/data/modules/navigation_breadcrumb/php/navigation_breadcrumb_output.php -text
 setup/data/examples/data/modules/navigation_breadcrumb/template/get.tpl -text
+setup/data/examples/data/modules/navigation_breadcrumb/template/old.tpl -text
 setup/data/examples/data/modules/navigation_lang_changer/css/lang_changer.css -text svneol=unset#text/plain
 setup/data/examples/data/modules/navigation_lang_changer/css/navigation_lang_changer.css -text svneol=unset#text/plain
 setup/data/examples/data/modules/navigation_lang_changer/info.xml -text svneol=unset#text/plain
@@ -2425,6 +2426,7 @@ setup/data/examples/data/modules/navigation_main/info.xml -text svneol=unset#tex
 setup/data/examples/data/modules/navigation_main/php/navigation_main_input.php -text
 setup/data/examples/data/modules/navigation_main/php/navigation_main_output.php -text
 setup/data/examples/data/modules/navigation_main/template/get.tpl -text
+setup/data/examples/data/modules/navigation_main/template/old.tpl -text
 setup/data/examples/data/modules/navigation_searchform_top/info.xml -text svneol=unset#text/plain
 setup/data/examples/data/modules/navigation_searchform_top/lang/lang_de_DE.txt -text svneol=unset#text/plain
 setup/data/examples/data/modules/navigation_searchform_top/lang/lang_en_US.txt -text svneol=unset#text/plain
