@@ -261,6 +261,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $articlesLocked = 0;
         $articlesUnlocked = 0;
         $articlesToSync = 0;
+        $articlesToRemove = 0;
 
         foreach ($aArticles as $sart) {
             $idart = $sart["idart"];
@@ -297,18 +298,20 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $created = date($dateformat, strtotime($created));
             $alttitle = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
 
-            if ($online == 1) {
-                $articlesOnline++;
-            } else {
-                $articlesOffline++;
-            }
-            if ($locked == 1) {
-                $articlesLocked++;
-            } else {
-                $articlesUnlocked++;
-            }
             if ($idlang != $lang) {
                 $articlesToSync++;
+            } else {
+            	if ($online == 1) {
+            		$articlesOnline++;
+            	} else {
+            		$articlesOffline++;
+            	}
+            	if ($locked == 1) {
+            		$articlesLocked++;
+            	} else {
+            		$articlesUnlocked++;
+            	}
+            	$articlesToRemove++;
             }
 
             if ((($obj = $col->checkMark("article", $idartlang)) === false) || $obj->get("userid") == $auth->auth['uid']) {
@@ -414,6 +417,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     $tmp_sync = '<a href="' . $sess->url("main.php?area=con&action=con_syncarticle&idart=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next") . '" title="' . i18n("Copy article to the current language") . '"><img class="vAlignMiddle tableElement" src="' . $cfg["path"]["images"] . 'but_sync_art.gif" alt="' . i18n("Copy article to the current language") . '" title="' . i18n("Copy article to the current language") . '" border="0"></a>';
                 } else {
                     $tmp_sync = '';
+                    $articlesToSync--;
+                    $articlesToRemove--;
                 }
             }
 
@@ -479,7 +484,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             $imgsrc .= '.gif';
 
-            if (($perm->have_perm_area_action('con', 'con_makestart') || $perm->have_perm_area_action_item('con', 'con_makestart', $idcat)) && $idcat != 0) {
+            if ($idlang == $lang && ($perm->have_perm_area_action('con', 'con_makestart') || $perm->have_perm_area_action_item('con', 'con_makestart', $idcat)) && $idcat != 0) {
                 if ($is_start == false) {
                     $tmp_link = '<a href="' . $sess->url("main.php?area=con&amp;idcat=$idcat&amp;action=con_makestart&amp;idcatart=$idcatart&amp;frame=4&is_start=1&amp;next=$next") . '" title="' . i18n("Flag as start article") . '"><img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" border="0" title="' . i18n("Flag as start article") . '" alt="' . i18n("Flag as start article") . '"></a>';
                 } else {
@@ -513,12 +518,16 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $duplicatelink = $tmp_link;
             }
 
-            $subject = urlencode(sprintf(i18n("Reminder for article '%s'"), $title));
-            $mycatname = '';
-            conCreateLocationString($idcat, "&nbsp;/&nbsp;", $mycatname);
-            $message = urlencode(sprintf(i18n("Reminder for article '%s'\nCategory: %s"), $title, $mycatname));
-
-            $todolink = new TODOLink("idart", $idart, $subject, $message);
+            
+            $todolink =  '';
+            if ($tmp_sync != '') {
+	            $subject = urlencode(sprintf(i18n("Reminder for article '%s'"), $title));
+	            $mycatname = '';
+	            conCreateLocationString($idcat, "&nbsp;/&nbsp;", $mycatname);
+	            $message = urlencode(sprintf(i18n("Reminder for article '%s'\nCategory: %s"), $title, $mycatname));
+	
+	            $todolink = new TODOLink("idart", $idart, $subject, $message);
+            }
 
             // Make On-/Offline button
             if ($online) {
@@ -595,7 +604,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         foreach ($actionList as $actionItem) {
                             switch ($actionItem) {
                                 case "todo":
-                                    $actionValue = $todolink->render();
+                                    $actionValue = $todolink;
                                     break;
                                 case "artconf":
                                     $actionValue = $tmp_artconf;
@@ -636,9 +645,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         }
 
                         // add properties button
-                        $actions[] = '<a id="properties" href="main.php?area=con_editart&action=con_edit&frame=4&idcat=' . $idcat . '&idart=' . $idart . '&contenido=' . $contenido . '">
-                            <img class="vAlignMiddle tableElement" onmouseover="this.style.cursor=\'pointer\'" src="images/but_art_conf2.gif" title="' . i18n("Display properties") . '" alt="' . i18n("Display properties") . '" style="cursor: pointer;">
-                        </a>';
+                        if ($tmp_sync != '') {
+	                        $actions[] = '<a id="properties" href="main.php?area=con_editart&action=con_edit&frame=4&idcat=' . $idcat . '&idart=' . $idart . '&contenido=' . $contenido . '">
+	                            <img class="vAlignMiddle tableElement" onmouseover="this.style.cursor=\'pointer\'" src="images/but_art_conf2.gif" title="' . i18n("Display properties") . '" alt="' . i18n("Display properties") . '" style="cursor: pointer;">
+	                        </a>';
+                        }
 
                         $value = implode("\n", $actions);
                         break;
@@ -735,9 +746,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         if ($articlesToSync > 0 && ($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_syncarticle', 'images/but_sync_art.gif', i18n('Copy article to the current language'));
         }
-        if ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat)) {
+        if ($articlesToRemove > 0 && ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
         }
+        
         if ($bulkEditingFunctions == "") {
             $bulkEditingFunctions = i18n("Your permissions do not allow any actions here");
         }
