@@ -152,6 +152,9 @@ msgstr "SQL konne nicht erstellt werden"
 
 ; MISC exceptions
 
+msgid "FOLDER_CREATE_ERROR"
+msgstr "Verzeichnis konnte nicht erzeugt werden"
+
 msgid "FILE_STORE_ERROR"
 msgstr "Datei konnte nicht gespeichert werden"
 

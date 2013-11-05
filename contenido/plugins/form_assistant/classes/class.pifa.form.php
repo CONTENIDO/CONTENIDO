@@ -483,12 +483,17 @@ class PifaForm extends Item {
             if (!is_array($file)) {
                 continue;
             }
+            $tmpName = $file['tmp_name'];
             // if no file was submitted tmp_name is an empty string
-            if (0 === strlen($file['tmp_name'])) {
+            if (0 === strlen($tmpName)) {
                 continue;
             }
-            $tmpName = $file['tmp_name'];
             $destPath = $cfg['path']['contenido_cache'] . 'form_assistant/';
+            // CON-1566 create folder (create() checks if it exists!)
+            if (!cDirHandler::create($destPath)) {
+                $msg = Pifa::i18n('FOLDER_CREATE_ERROR');
+                throw new PifaException($msg);
+            }
             $destName = $this->get('data_table') . '_' . $lastInsertedId . '_' . $column;
             $destName = preg_replace('/[^a-z0-9_]+/i', '_', $destName);
             if (false === move_uploaded_file($tmpName, $destPath . $destName)) {
