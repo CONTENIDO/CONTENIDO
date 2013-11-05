@@ -221,8 +221,15 @@ class PimPluginViewNavSub {
 
                 $this->_ApiNavMainCollection->setWhere('idnavm', cSecurity::toInteger(self::$XmlNavSub->nav[$i]->attributes()->navm));
                 $this->_ApiNavMainCollection->query();
-                $row = $this->_ApiNavMainCollection->next();
 
+				// if no entry at nav_sub database table founded,
+				// return false
+				if ($this->_ApiNavMainCollection->count() == 0) {
+					return false;
+				}
+
+				$row = $this->_ApiNavMainCollection->next();
+				
                 // define query
                 $query = '//' . $row->get('location');
 
