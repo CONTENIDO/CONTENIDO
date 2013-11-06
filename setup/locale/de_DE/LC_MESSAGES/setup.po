@@ -559,7 +559,7 @@ msgid ""
 msgstr ""
 "Sie aktualisieren von einer früheren CONTENIDO Version auf %s. In der Version %s wurden einige Verzeichnisse / Dateien in andere Bereiche ausgelagert.\n"
 "\n"
-"Bitte stellen Sie sicher, dass die Datei contenido/includes/config.php in data/config/production/config.php kopiert wird. Das gilt auch für andere Konfigurations-Dateien in contenido/includes/ die bei Bedarf nach data/config/production/ kopiert werden sollten."
+"Bitte stellen Sie sicher, dass die Datei contenido/includes/config.php in data/config/production/config.php kopiert wird. Das gilt auch für andere Konfigurations-Dateien mit dem prefix 'config' in contenido/includes/ die bei Bedarf nach data/config/production/ kopiert werden sollten."
 
 #: steps/forms/systemtest.php:199
 msgid "Attention: Some directories/files have been moved"
