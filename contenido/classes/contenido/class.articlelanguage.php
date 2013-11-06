@@ -343,7 +343,8 @@ class cApiArticleLanguage extends Item {
             return;
         }
 
-        $sql = 'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b ' . 'WHERE a.idartlang = %d AND b.idtype = a.idtype ' . 'ORDER BY a.idtype, a.typeid';
+        $sql = 'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b '
+             . 'WHERE a.idartlang = %d AND b.idtype = a.idtype ORDER BY a.idtype, a.typeid';
 
         $this->db->query($sql, $cfg['tab']['content'], $cfg['tab']['type'], $this->get('idartlang'));
 
