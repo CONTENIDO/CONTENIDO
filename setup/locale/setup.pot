@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-11 15:55+0200\n"
+"POT-Creation-Date: 2013-11-06 15:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -502,7 +502,7 @@ msgstr ""
 msgid "Database character set"
 msgstr ""
 
-#: steps/forms/setupsummary.php:55 steps/forms/clientmode.php:75
+#: steps/forms/setupsummary.php:55 steps/forms/clientmode.php:74
 msgid "Client with example modules and example content"
 msgstr ""
 
@@ -526,21 +526,21 @@ msgstr ""
 msgid "Your system has been tested for compatibility with CONTENIDO:"
 msgstr ""
 
-#: steps/forms/systemtest.php:51
+#: steps/forms/systemtest.php:56
 msgid "PHP MySQL Extension missing"
 msgstr ""
 
-#: steps/forms/systemtest.php:51
+#: steps/forms/systemtest.php:56
 msgid ""
 "CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. "
 "Please configure PHP to use either MySQL or MySQLi."
 msgstr ""
 
-#: steps/forms/systemtest.php:70
+#: steps/forms/systemtest.php:75
 msgid "Unable to set max_execution_time"
 msgstr ""
 
-#: steps/forms/systemtest.php:70
+#: steps/forms/systemtest.php:75
 msgid ""
 "Your PHP configuration for max_execution_time can not be changed via this "
 "script. We recommend setting the value for the installation or upgrade "
@@ -549,32 +549,32 @@ msgid ""
 "longer)"
 msgstr ""
 
-#: steps/forms/systemtest.php:83
+#: steps/forms/systemtest.php:88
 msgid "Information"
 msgstr ""
 
-#: steps/forms/systemtest.php:87
+#: steps/forms/systemtest.php:92
 msgid "Warning"
 msgstr ""
 
-#: steps/forms/systemtest.php:91
+#: steps/forms/systemtest.php:96
 msgid "Fatal error"
 msgstr ""
 
-#: steps/forms/systemtest.php:99
+#: steps/forms/systemtest.php:104
 msgid "No problems detected"
 msgstr ""
 
-#: steps/forms/systemtest.php:99
+#: steps/forms/systemtest.php:104
 msgid "Setup could not detect any problems with your system environment"
 msgstr ""
 
-#: steps/forms/systemtest.php:176
+#: steps/forms/systemtest.php:182
 #, php-format
 msgid "An old Version of Plugin %s is installed on your system."
 msgstr ""
 
-#: steps/forms/systemtest.php:181
+#: steps/forms/systemtest.php:187
 msgid ""
 "Please remove all old plugins before you continue. To transfer old plugin "
 "data, please copy the old plugin data tables into the new plugin data tables "
@@ -583,11 +583,11 @@ msgid ""
 "transfer."
 msgstr ""
 
-#: steps/forms/systemtest.php:183
+#: steps/forms/systemtest.php:189
 msgid "Old Plugins are still installed"
 msgstr ""
 
-#: steps/forms/systemtest.php:196
+#: steps/forms/systemtest.php:202
 #, php-format
 msgid ""
 "You are updating a previous version of CONTENIDO to %s. Some directories/"
@@ -598,18 +598,18 @@ msgid ""
 "includes/ to data/config/production/."
 msgstr ""
 
-#: steps/forms/systemtest.php:199
+#: steps/forms/systemtest.php:205
 msgid "Attention: Some directories/files have been moved"
 msgstr ""
 
-#: steps/forms/systemtest.php:235
+#: steps/forms/systemtest.php:241
 #, php-format
 msgid ""
 "Language \"%s\" (%s) of the client \"%s\" (%s) is configured without ISO "
 "language code."
 msgstr ""
 
-#: steps/forms/systemtest.php:240
+#: steps/forms/systemtest.php:246
 msgid "The ISO codes are necessary to convert module translations."
 msgstr ""
 
@@ -820,33 +820,33 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-#: steps/forms/clientmode.php:30 steps/forms/clientmode.php:31
+#: steps/forms/clientmode.php:29 steps/forms/clientmode.php:30
 msgid "Example Client"
 msgstr ""
 
-#: steps/forms/clientmode.php:32
+#: steps/forms/clientmode.php:31
 msgid ""
 "If you are new to CONTENIDO, you should create an example client to start "
 "working with."
 msgstr ""
 
-#: steps/forms/clientmode.php:71
+#: steps/forms/clientmode.php:70
 #, php-format
 msgid ""
 "PLEASE NOTE: Some folders (%s) which are used by the example client aren't "
 "empty. THESE WILL BE OVERWRITTEN"
 msgstr ""
 
-#: steps/forms/clientmode.php:72
+#: steps/forms/clientmode.php:71
 msgid ""
 "PLEASE NOTE: The cms/data/modules folder is not empty. IT WILL BE OVERWRITTEN"
 msgstr ""
 
-#: steps/forms/clientmode.php:76
+#: steps/forms/clientmode.php:75
 msgid "Client with example modules, but without example content"
 msgstr ""
 
-#: steps/forms/clientmode.php:77
+#: steps/forms/clientmode.php:76
 msgid "Don't create client"
 msgstr ""
 

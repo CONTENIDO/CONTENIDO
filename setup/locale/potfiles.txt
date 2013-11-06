@@ -138,6 +138,7 @@
 ./data/examples/data/modules/script_fb_sdk/info.xml
 ./data/examples/data/modules/navigation_main/php/navigation_main_output.php
 ./data/examples/data/modules/navigation_main/php/navigation_main_input.php
+./data/examples/data/modules/navigation_main/template/old.tpl
 ./data/examples/data/modules/navigation_main/template/get.tpl
 ./data/examples/data/modules/navigation_main/info.xml
 ./data/examples/data/modules/config_social_media/php/config_social_media_output.php
@@ -156,6 +157,7 @@
 ./data/examples/data/modules/content_socialmedia_xing/info.xml
 ./data/examples/data/modules/navigation_breadcrumb/php/navigation_breadcrumb_output.php
 ./data/examples/data/modules/navigation_breadcrumb/php/navigation_breadcrumb_input.php
+./data/examples/data/modules/navigation_breadcrumb/template/old.tpl
 ./data/examples/data/modules/navigation_breadcrumb/template/get.tpl
 ./data/examples/data/modules/navigation_breadcrumb/info.xml
 ./data/examples/data/modules/content_teaser_image/php/content_teaser_image_input.php
