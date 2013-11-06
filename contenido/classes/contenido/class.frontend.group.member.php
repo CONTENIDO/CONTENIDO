@@ -38,10 +38,10 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
 
     /**
      * Creates a new association
-     *
+     * @TODO Should return null in case of failure
      * @param int $idfrontendgroup specifies the frontend group
      * @param int $idfrontenduser specifies the frontend user
-     * @return cApiFrontendGroupMember bool
+     * @return cApiFrontendGroupMember|bool
      */
     public function create($idfrontendgroup, $idfrontenduser) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup . ' AND idfrontenduser = ' . (int) $idfrontenduser);

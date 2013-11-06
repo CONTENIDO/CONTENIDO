@@ -178,7 +178,7 @@ class cApiDbfsCollection extends ItemCollection {
      * @param string $path
      * @return bool
      */
-    public function file_exists($path) {
+    public function fileExists($path) {
         global $client;
 
         $path = cApiDbfs::stripPath($path);
@@ -200,13 +200,21 @@ class cApiDbfsCollection extends ItemCollection {
     }
 
     /**
+     * @deprecated [20131106]  Use cApiDbfsCollection->fileExists() instead
+     */
+    public function file_exists($path) {
+        cDeprecated('The method file_exists() is deprecated. Use fileExists() instead.');
+        return $this->fileExists($path);
+    }
+
+    /**
      * Checks, if a dbfs directory exists.
      *
      * @global int $client
      * @param string $path
      * @return bool
      */
-    public function dir_exists($path) {
+    public function dirExists($path) {
         global $client;
 
         $path = cApiDbfs::stripPath($path);
@@ -226,27 +234,44 @@ class cApiDbfsCollection extends ItemCollection {
     }
 
     /**
+     * @deprecated [20131106]  Use cApiDbfsCollection->dirExists() instead
+     */
+    public function dir_exists($path) {
+        cDeprecated('The method dir_exists() is deprecated. Use dirExists() instead.');
+        return $this->dirExists($path);
+    }
+
+    /**
      *
      * @param string $path
      * @return string
      */
-    public function parent_dir($path) {
+    public function parentDir($path) {
         $path = dirname($path);
 
         return $path;
     }
 
     /**
-     *
+     * @deprecated [20131106]  Use cApiDbfsCollection->parentDir() instead
+     */
+    public function parent_dir($path) {
+        cDeprecated('The method parent_dir() is deprecated. Use parentDir() instead.');
+        return $this->parentDir($path);
+    }
+
+    /**
+     * Creates a dbfs item entry
      * @param string $path
      * @param string $mimetype
      * @param string $content
-     * @return void Ambigous object>
+     * @return  cApiDbfs|null
      */
     public function create($path, $mimetype = '', $content = '') {
         global $client, $auth;
 
         $client = (int) $client;
+        $item = null;
 
         if (substr($path, 0, 1) == '/') {
             $path = substr($path, 1);
@@ -260,7 +285,7 @@ class cApiDbfsCollection extends ItemCollection {
         }
 
         if ($file == '') {
-            return;
+            return $item;
         }
 
         if ($file != '.') {
@@ -297,7 +322,8 @@ class cApiDbfsCollection extends ItemCollection {
             $item->set('author', $auth->auth['uid']);
             $item->store();
         }
-        return ($item);
+
+        return $item;
     }
 
     /**

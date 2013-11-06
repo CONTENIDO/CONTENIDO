@@ -43,17 +43,21 @@ class cApiContainerConfigurationCollection extends ItemCollection {
     }
 
     /**
-     *
+     * Creates a container configuration item
      * @param int $idtplcfg
      * @param int $number
      * @param string $container
+     * @return cApiContainerConfiguration
      */
     public function create($idtplcfg, $number, $container) {
         $item = parent::createNewItem();
+
         $item->set('idtplcfg', $idtplcfg);
         $item->set('number', $number);
         $item->set('container', $container);
         $item->store();
+
+        return $item;
     }
 }
 

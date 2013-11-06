@@ -79,7 +79,8 @@ class cApiLayoutCollection extends ItemCollection {
         $item->set('created', $created);
         $item->set('lastmodified', $lastmodified);
         $item->store();
-        return ($item);
+
+        return $item;
     }
 
 }

@@ -36,7 +36,7 @@ class cApiFileInformationCollection extends ItemCollection {
 
     /**
      * Creates a new entry in the database
-     *
+     * @TODO  Pass additional fields as optional parameters
      * @param string $typeContent type of the entry
      * @param string $filename name of the file
      * @param string $description an optional description
@@ -72,7 +72,7 @@ class cApiFileInformationCollection extends ItemCollection {
 
     /**
      * updates a new entry in the database
-     *
+     * @TODO  Pass additional fields as optional parameters
      * @param string $filename name of the file
      * @param string $typeContent type of the entry
      * @param string $description an optional description

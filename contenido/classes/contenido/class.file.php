@@ -36,11 +36,11 @@ class cApiFileCollection extends ItemCollection {
     }
 
     /**
-     *
+     * Creates a file item entry
      * @param string $area
      * @param string $filename
      * @param string $filetype
-     * @return Ambigous <Item, object>
+     * @return cApiFile
      */
     public function create($area, $filename, $filetype = 'main') {
         $item = parent::createNewItem();
@@ -68,7 +68,7 @@ class cApiFileCollection extends ItemCollection {
 
         $item->store();
 
-        return ($item);
+        return $item;
     }
 }
 

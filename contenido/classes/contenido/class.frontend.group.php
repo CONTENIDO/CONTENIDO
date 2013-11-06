@@ -39,7 +39,7 @@ class cApiFrontendGroupCollection extends ItemCollection {
      * Creates a new group
      *
      * @param string $groupname Specifies the groupname
-     * @return Item
+     * @return cApiFrontendGroup
      */
     public function create($groupname) {
         global $client;

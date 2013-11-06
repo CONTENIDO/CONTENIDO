@@ -36,7 +36,7 @@ class cApiNavMainCollection extends ItemCollection {
      * Create new item with given values.
      *
      * @param string $location
-     * @return Ambigous <Item, object>
+     * @return cApiNavMain
      */
     public function create($location) {
         $item = parent::createNewItem();

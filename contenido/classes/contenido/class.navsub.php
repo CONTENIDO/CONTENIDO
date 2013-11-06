@@ -40,13 +40,13 @@ class cApiNavSubCollection extends ItemCollection {
      * Create new item with given values.
      *
      * @param int $navm
-     * @param int $area
+     * @param int|string  $area  Aread id or area name
      * @param int $level
      * @param string $location
      * @param int $online
-     * @return Ambigous <Item, object>
+     * @return cApiNavSub
      */
-    public function create($navm, $area, $level, $location, $online = '1') {
+    public function create($navm, $area, $level, $location, $online = 1) {
         $item = parent::createNewItem();
 
         if (is_string($area)) {
@@ -61,15 +61,15 @@ class cApiNavSubCollection extends ItemCollection {
             }
         }
 
-        $item->set('idnavm', cSecurity::toInteger($navm));
+        $item->set('idnavm', $navm);
         $item->set('idarea', $area);
-        $item->set('level', cSecurity::toInteger($level));
-        $item->set('location', cSecurity::escapeString($location));
-        $item->set('online', cSecurity::toInteger($online));
+        $item->set('level', $level);
+        $item->set('location', $location);
+        $item->set('online', $online);
 
         $item->store();
 
-        return ($item);
+        return $item;
     }
 
 }
@@ -98,6 +98,29 @@ class cApiNavSub extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
+    }
+
+    /**
+     * Userdefined setter for navsub fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @todo should return return value of overloaded method
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idarea':
+            case 'idnavm':
+            case 'level':
+                $value = (int) $value;
+                break;
+            case 'online':
+                $value = (1 == $value) ? 1 : 0;
+                break;
+        }
+
+        parent::setField($name, $value, $bSafe);
     }
 
 }

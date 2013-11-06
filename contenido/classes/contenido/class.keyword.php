@@ -39,7 +39,7 @@ class cApiKeywordCollection extends ItemCollection {
      * @param string $auto
      * @param string $self
      * @param int $idlang
-     * @return Ambigous <Item, object>
+     * @return cApiKeyword
      */
     public function create($keyword, $exp = '', $auto, $self = '', $idlang) {
         $item = parent::createNewItem();
@@ -58,7 +58,7 @@ class cApiKeywordCollection extends ItemCollection {
 
         $item->store();
 
-        return ($item);
+        return $item;
     }
 
 }

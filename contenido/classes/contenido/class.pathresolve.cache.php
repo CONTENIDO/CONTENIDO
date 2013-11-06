@@ -99,10 +99,10 @@ class cApiPathresolveCacheCollection extends ItemCollection {
             $lastcached = time();
         }
 
-        $oItem->set('path', $this->db->escape($path), false);
-        $oItem->set('idcat', (int) $idcat, false);
-        $oItem->set('idlang', (int) $idlang, false);
-        $oItem->set('lastcached', $this->escape($lastcached), false);
+        $oItem->set('path', $path, false);
+        $oItem->set('idcat', $idcat, false);
+        $oItem->set('idlang', $idlang, false);
+        $oItem->set('lastcached', $lastcached, false);
         $oItem->store();
 
         return $oItem;
@@ -171,6 +171,25 @@ class cApiPathresolveCache extends Item {
         }
         $cacheTime = (isset($cfg['pathresolve_heapcache_time'])) ? $cfg['pathresolve_heapcache_time'] : 60 * 60 * 24;
         return ($this->get('lastcached') + $cacheTime < time());
+    }
+
+    /**
+     * Userdefined setter for pathresolve cache fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @todo should return return value of overloaded method
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idcat':
+            case 'idlang':
+                $value = (int) $value;
+                break;
+        }
+
+        parent::setField($name, $value, $bSafe);
     }
 
 }

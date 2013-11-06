@@ -188,7 +188,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      */
     public function deleteInactiveUser() {
         global $cfg;
-        include_once ($cfg['path']['contenido_config'] . 'config.misc.php');
+        include_once($cfg['path']['contenido_config'] . 'config.misc.php');
         $iSetTimeOut = (int) $cfg['backend']['timeout'];
         if ($iSetTimeOut <= 0) {
             $iSetTimeOut = 10;

@@ -174,6 +174,7 @@ class cApiPropertyCollection extends ItemCollection {
 
         $item = parent::createNewItem();
 
+        // @TODO: $item->store() escapes allways all string values!
         if (!$bDontEscape) {
             $itemtype = $this->db->escape($itemtype);
             $itemid = $this->db->escape($itemid);
@@ -197,7 +198,7 @@ class cApiPropertyCollection extends ItemCollection {
             $this->_addToCache($item);
         }
 
-        return ($item);
+        return $item;
     }
 
     /**

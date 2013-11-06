@@ -34,7 +34,7 @@ class cApiMailLogCollection extends ItemCollection {
 
     /**
      * Creates a new mail log entry with the given data.
-     *
+     * @FIXME  Should return the cApiMailLog item. All create() methods should return the created item, no special treatments!
      * @param string|array $from
      * @param string|array $to
      * @param string|array $replyTo

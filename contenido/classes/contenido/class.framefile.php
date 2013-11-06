@@ -37,11 +37,11 @@ class cApiFrameFileCollection extends ItemCollection {
     }
 
     /**
-     *
+     * Creates a frame file item
      * @param string $area
      * @param int $idframe
      * @param int $idfile
-     * @return Ambigous <Item, object>
+     * @return cApiFrameFile
      */
     public function create($area, $idframe, $idfile) {
         $item = parent::createNewItem();
@@ -64,7 +64,7 @@ class cApiFrameFileCollection extends ItemCollection {
 
         $item->store();
 
-        return ($item);
+        return $item;
     }
 }
 
