@@ -179,33 +179,33 @@
 				<td width="75%" colspan="3" class="text_medium">{DIRECTLINK}</td>
 			</tr>
 
-			<tr valign="top" style="display: {NEWARTSTYLE">
+			<tr valign="top" style="display: {NEWARTSTYLE}">
 				<td width="25%" class="text_medium">{ARTIKELART}</td>
 				<td width="75%" colspan="3" class="text_medium">{ARTIKELARTSELECT}</td>
 			</tr>
 
-			<tr valign="top" style="display: {NEWARTSTYLE">
+			<tr valign="top" style="display: {NEWARTSTYLE}">
 				<td class="text_medium">{ARTIKELID}</td>
 				<td class="text_medium">{ARTID}</td>
 				<td class="text_medium">{ZUORDNUNGSID}</td>
 				<td class="text_medium">{ALLOCID}</td>
 			</tr>
 
-			<tr valign="top" style="display: {NEWARTSTYLE">
+			<tr valign="top" style="display: {NEWARTSTYLE}">
 				<td class="text_medium">{ERSTELLT}</td>
 				<td class="text_medium">{ERSTELLUNGS-DATUM}</td>
 				<td class="text_medium">{AUTHOR_CREATOR}</td>
 				<td class="text_medium">{AUTOR-ERSTELLUNGS-NAME}</td>
 			</tr>
 
-			<tr valign="top" style="display: {NEWARTSTYLE">
+			<tr valign="top" style="display: {NEWARTSTYLE}">
 				<td class="text_medium">{LETZTE-AENDERUNG}</td>
 				<td class="text_medium">{AENDERUNGS-DATUM}</td>
 				<td class="text_medium">{AUTHOR_MODIFIER}</td>
 				<td class="text_medium">{AUTOR-AENDERUNG-NAME}</td>
 			</tr>
 
-			<tr valign="top" style="display: {NEWARTSTYLE">
+			<tr valign="top" style="display: {NEWARTSTYLE}">
 				<td class="text_medium">{PUBLISHING_DATE_LABEL}</td>
 				<td class="text_medium"><input type="text"
 					name="publishing_date" id="publishing_date"
@@ -219,28 +219,26 @@
 				<td class="text_medium"><label for="checkbox_forwarding">{WEITERLEITUNG}</label></td>
 				<td valign="bottom" colspan="3" class="text_medium">
 					{CHECKBOX}{URL}{CHECKBOX-NEWWINDOW} <select id="redirect_mode"
-					name="redirect_mode"> {REDIRECT_OPTIONS}
+					name="redirect_mode">{REDIRECT_OPTIONS}
 				</select>
 				</td>
-
+	
 			</tr>
 			<tr>
 				<td class="text_medium" valign="top">i18n("Time control")</td>
 				<td colspan="3" class="text_medium">
-					<table border="0" cellspacing="0" cellpadding="0">
+					<table border="0" cellspacing="0" cellpadding="0" style="margin-left:-4px;">
 						<tr>
 							<td valign="top" style="border: none;"><input
 								type="checkbox"
 								onclick="javascript:disableFunctionsOnTimeControl();"
 								name="timemgmt" id="timemgmt" value="1"{TIMEMGMTCHECKED}></td>
 							<td style="width: 500px; border: none;" colspan="2"
-								class="text_medium"><label for="timemgmt">i18n("Use
-									time control")</label></td>
+								class="text_medium"><label for="timemgmt">i18n("Use time control")</label></td>
 						</tr>
 						<tr>
 							<td valign="top" style="border: none;">&nbsp;</td>
-							<td class="text_medium" style="border: none;">i18n("Start
-								date"):</td>
+							<td class="text_medium" style="border: none;">i18n("Start date"):</td>
 							<td style="border: none;"><input type="text"
 								name="datestart" id="datestart"
 								onkeyup="disableFunctionsOnTimeControl();"
@@ -249,8 +247,7 @@
 						</tr>
 						<tr>
 							<td valign="top" style="border: none;">&nbsp;</td>
-							<td class="text_medium" style="border: none;">i18n("End
-								date"):</td>
+							<td class="text_medium" style="border: none;">i18n("End date"):</td>
 							<td style="border: none;"><input type="text" name="dateend"
 								id="dateend" value="{ENDDATE}" {EDOPTS} size="20" maxlength="40"
 								class="text_medium"></td>
@@ -260,8 +257,7 @@
 								type="checkbox" id="time_move_cat" name="time_move_cat"
 								value="1"{MOVETOCATCHECKED}></td>
 							<td class="text_medium" style="border: none;"><label
-								for="time_move_cat">i18n("When expired, move to
-									category"):</label></td>
+								for="time_move_cat">i18n("When expired, move to category"):</label></td>
 							<td style="border: none;">{MOVETOCATEGORYSELECT}</td>
 						</tr>
 						<tr>
