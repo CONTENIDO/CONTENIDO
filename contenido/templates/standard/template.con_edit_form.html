@@ -30,6 +30,21 @@
             window.location.href = url;
         }
 
+        // status code switch
+        $(document).ready(function() {
+        $('#checkbox_forwarding').click(function(){
+            var checked = $(this).is(':checked');
+            if(checked){
+                $('#redirect_mode').removeAttr('disabled');
+            }
+            else{
+                $('#redirect_mode').prop('disabled', 'disabled');
+            }
+        });
+        });
+        
+        
+        
         $(document).ready(function() {
             $('#publishing_date').datetimepicker({
                 buttonImage: '{PATH_TO_CALENDER_PIC}',
@@ -203,7 +218,8 @@
 			<tr valign="top">
 				<td class="text_medium"><label for="checkbox_forwarding">{WEITERLEITUNG}</label></td>
 				<td valign="bottom" colspan="3" class="text_medium">
-					{CHECKBOX}{URL}{CHECKBOX-NEWWINDOW} <select {DISABLE_SELECT} name="redirect_mode"> {REDIRECT_OPTIONS}
+					{CHECKBOX}{URL}{CHECKBOX-NEWWINDOW} <select id="redirect_mode"
+					name="redirect_mode"> {REDIRECT_OPTIONS}
 				</select>
 				</td>
 
