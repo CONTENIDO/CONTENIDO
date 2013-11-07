@@ -34,6 +34,12 @@ msgstr "Vielen Dank für die Speicherung dieser Suche!"
 msgid "Title"
 msgstr "Titel"
 
+msgid "Temporary"
+msgstr "Temporär"
+
+msgid "Permanently"
+msgstr "Permanent"
+
 #: backend_search.php:488
 #: includes/include.con_art_overview.php:64
 msgid "Changed"

@@ -29,6 +29,12 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
+msgid "Temporary"
+msgstr ""
+
+msgid "Permanently"
+msgstr ""
+
 #: main.loginform.php:85
 msgid "CONTENIDO Backend"
 msgstr ""
