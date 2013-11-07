@@ -549,7 +549,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Check if an article is start article of the category
     $oCatLang = new cApiCategoryLanguage();
     $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
-    $isstart = ($oCatLang->get('idartlang') == $idartlang) ? 1 : 0;
+    $isstart = ($oCatLang->get('idartlang') == $idartlang)? 1 : 0;
 
     // Time management, redirect
     $oArtLang = new cApiArticleLanguage();
@@ -607,11 +607,21 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 $redirect_url = $oUrl->buildRedirect($aUrl['params']);
             }
 
-            //Encode to punycode/IDNA
+            // Encode to punycode/IDNA
             $IDN = new idna_convert();
             $redirect_url = $IDN->encode($redirect_url);
 
-            header('Location: ' . $redirect_url, TRUE, $oArtLang->get('redirect_code'));
+            $redirect_mode = $oArtLang->get('redirect_mode');
+
+            $protocol = ($_SERVER['SERVER_PROTOCOL']);
+            $redirect_code = null;
+            if ($redirect_mode === 'temporary') {
+                ($protocol === 'HTTP/1.1')? $redirect_code = 307 : $redirect_code = 302;
+            } elseif ($redirect_mode === 'permanently') {
+                $redirect_code = 301;
+            }
+
+            header('Location: ' . $redirect_url, TRUE, $redirect_code);
             exit();
         } else {
             if ($cfg['debug']['codeoutput']) {
