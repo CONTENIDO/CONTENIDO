@@ -36,7 +36,7 @@ if ($idtpl != 0 && $idtplcfg != 0) {
             }
             // NOTE: We could use http_build_query here!
             foreach ($_POST[$CiCMS_VAR] as $key => $value) {
-                $varstring[$number] .= $key . '=' . urlencode($value) . '&';
+                $varstring[$number] .= $key . '=' . urlencode(stripslashes($value)) . '&';
             }
         }
     }
