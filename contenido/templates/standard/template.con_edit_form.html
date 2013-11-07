@@ -203,15 +203,11 @@
 			<tr valign="top">
 				<td class="text_medium"><label for="checkbox_forwarding">{WEITERLEITUNG}</label></td>
 				<td valign="bottom" colspan="3" class="text_medium">
-					{CHECKBOX}{URL}{CHECKBOX-NEWWINDOW}</td>
-			</tr>
-			<tr>
-				<td>{LABEL_REDIRECT_CODE}</td>
-				<td valign="bottom" colspan="3" class="text_medium"><select
-					name="redirect_code"> {REDIRECT_OPTIONS}
-				</select></td>
-			</tr>
+					{CHECKBOX}{URL}{CHECKBOX-NEWWINDOW} <select {DISABLE_SELECT} name="redirect_mode"> {REDIRECT_OPTIONS}
+				</select>
+				</td>
 
+			</tr>
 			<tr>
 				<td class="text_medium" valign="top">i18n("Time control")</td>
 				<td colspan="3" class="text_medium">
