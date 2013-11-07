@@ -101,7 +101,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tmp_redirect_checked = ($db->f("redirect") == '1')? 'checked' : '';
         $tmp_redirect_url = ($db->f("redirect_url") != '0')? $db->f("redirect_url") : "http://";
         $tmp_external_redirect_checked = ($db->f("external_redirect") == '1')? 'checked' : '';
-        $tmp_redirect_code = (int) $db->f('redirect_code');
+        $tmp_redirect_mode = $db->f('redirect_mode');
         $idtplinput = $db->f("idtplinput");
 
         if ($tmp_modifiedby == '') {
@@ -338,13 +338,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $tpl->set('s', 'LABEL_REDIRECT_CODE', i18n("Status code"));
 
-    $option307 = '<option value="307"> Temporary redirect 307</option>';
-    $option301 = '<option value="301">Moved permanently 301</option>';
-    if ($tmp_redirect_code === 307) {
+    $tpl->set('s', 'DISABLE_SELECT', $forceDisable);
 
+    $option307 = '<option value="temporary">' . i18n("Temporary") . '</option>';
+    $option301 = '<option value="permanently">' . i18n("Permanently").  '</option>';
+    if ($tmp_redirect_mode === 'temporary') {
         $tpl->set('s', 'REDIRECT_OPTIONS', $option307 . $option301);
     } else {
-
         $tpl->set('s', 'REDIRECT_OPTIONS', $option301 . $option307);
     }
 
