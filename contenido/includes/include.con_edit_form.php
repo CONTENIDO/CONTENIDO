@@ -13,7 +13,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude("includes", "functions.str.php");
@@ -99,9 +98,10 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tmp_onlineaftermove = $db->f("time_online_move");
         $tmp_usetimemgmt = $db->f("timemgmt");
         $tmp_locked = $db->f("locked");
-        $tmp_redirect_checked = ($db->f("redirect") == '1') ? 'checked' : '';
-        $tmp_redirect_url = ($db->f("redirect_url") != '0') ? $db->f("redirect_url") : "http://";
-        $tmp_external_redirect_checked = ($db->f("external_redirect") == '1') ? 'checked' : '';
+        $tmp_redirect_checked = ($db->f("redirect") == '1')? 'checked' : '';
+        $tmp_redirect_url = ($db->f("redirect_url") != '0')? $db->f("redirect_url") : "http://";
+        $tmp_external_redirect_checked = ($db->f("external_redirect") == '1')? 'checked' : '';
+        $tmp_redirect_code = (int) $db->f('redirect_code');
         $idtplinput = $db->f("idtplinput");
 
         if ($tmp_modifiedby == '') {
@@ -143,7 +143,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
         if (!$idart) {
             $tmp_firstedit = 1; // **** is needed when input is written to db
-                                // (update or insert)
+                                    // (update or insert)
         }
 
         $tmp_idartlang = 0;
@@ -191,6 +191,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tpl->set('s', 'IDCAT', $idcat);
     $tpl->set('s', 'IDARTLANG', $tmp_idartlang);
     $tpl->set('s', 'NEWARTSTYLE', $newArtStyle);
+    // $tpl->set('s', $db->f('redirect_code'));
 
     $hiddenfields = '<input type="hidden" name="idcat" value="' . $idcat . '">
                      <input type="hidden" name="idart" value="' . $idart . '">
@@ -295,7 +296,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tpl->set('s', 'AUTOR-AENDERUNG-NAME', $modifiedByRealname);
 
     // Created
-    $tmp_erstellt = ($tmp_firstedit == 1) ? '<input type="hidden" name="created" value="' . date("Y-m-d H:i:s") . '">' : '<input type="hidden" name="created" value="' . $tmp_created . '">';
+    $tmp_erstellt = ($tmp_firstedit == 1)? '<input type="hidden" name="created" value="' . date("Y-m-d H:i:s") . '">' : '<input type="hidden" name="created" value="' . $tmp_created . '">';
     $tpl->set('s', 'ERSTELLT', i18n("Created"));
     $tpl->set('s', 'ERSTELLUNGS-DATUM', $tmp2_created . $tmp_erstellt);
 
@@ -335,6 +336,18 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     }
     $tpl->set('s', 'URL', '<input type="text" ' . $disabled . ' ' . $forceDisable . ' class="text_medium redirectURL" name="redirect_url" id="redirect_url" value="' . conHtmlSpecialChars($tmp_redirect_url) . '">');
 
+    $tpl->set('s', 'LABEL_REDIRECT_CODE', i18n("Status code"));
+
+    $option307 = '<option value="307"> Temporary redirect 307</option>';
+    $option301 = '<option value="301">Moved permanently 301</option>';
+    if ($tmp_redirect_code === 307) {
+
+        $tpl->set('s', 'REDIRECT_OPTIONS', $option307 . $option301);
+    } else {
+
+        $tpl->set('s', 'REDIRECT_OPTIONS', $option301 . $option307);
+    }
+
     // Redirect - New window
     if (getEffectiveSetting("articles", "show-new-window-checkbox", "false") == "true") {
         $tpl->set('s', 'CHECKBOX-NEWWINDOW', '<input type="checkbox" ' . $disabled . ' id="external_redirect" name="external_redirect" value="1" ' . $tmp_external_redirect_checked . '></td><td><label for="external_redirect">' . i18n("New window") . '</label>');
@@ -343,7 +356,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     }
 
     // Online
-    $tmp_ochecked = $tmp_online == 1 ? 'checked="checked"' : '';
+    $tmp_ochecked = $tmp_online == 1? 'checked="checked"' : '';
     if ($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) {
         $tmp_ocheck = '<input type="checkbox" ' . $disabled . ' id="online" name="online" value="1" ' . $tmp_ochecked . '>';
     } else {
@@ -353,7 +366,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tpl->set('s', 'ONLINE-CHECKBOX', $tmp_ocheck);
 
     // Startarticle
-    $tmp_start_checked = $tmp_is_start ? 'checked="checked"' : '';
+    $tmp_start_checked = $tmp_is_start? 'checked="checked"' : '';
     if ($perm->have_perm_area_action("con", "con_makestart") || $perm->have_perm_area_action_item("con", "con_makestart", $idcat)) {
         $tmp_start = '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" ' . $tmp_start_checked . '>';
     } else {
@@ -363,7 +376,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tpl->set('s', 'STARTARTIKEL-CHECKBOX', $tmp_start);
 
     // Searchable / Indexable
-    $tmp_searchable_checked = $tmp_searchable == 1 ? 'checked="checked"' : '';
+    $tmp_searchable_checked = $tmp_searchable == 1? 'checked="checked"' : '';
     $tmp_searchable_checkbox = '<input type="checkbox" ' . $disabled . ' id="searchable" name="searchable" value="1" ' . $tmp_searchable_checked . '>';
     $tpl->set('s', 'SEARCHABLE', i18n('Searchable'));
     $tpl->set('s', 'SEARCHABLE-CHECKBOX', $tmp_searchable_checkbox);
