@@ -611,7 +611,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             $IDN = new idna_convert();
             $redirect_url = $IDN->encode($redirect_url);
 
-            header('Location: ' . $redirect_url);
+            header('Location: ' . $redirect_url, TRUE, $oArtLang->get('redirect_code'));
             exit();
         } else {
             if ($cfg['debug']['codeoutput']) {
