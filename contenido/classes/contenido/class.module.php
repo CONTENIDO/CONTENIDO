@@ -114,6 +114,29 @@ class cApiModuleCollection extends ItemCollection {
     }
 
     /**
+     * Returns list of all modules used by client id
+     *
+     * @param int $idclient
+     *
+     * @return array
+     */
+    public function getAllByIdclient($idclient, $oderBy = 'name') {
+        $records = array();
+
+        if (!empty($oderBy)) {
+            $oderBy = ' ORDER BY ' . $this->db->escape($oderBy);
+        }
+        $sql = "SELECT * FROM `%s` WHERE idclient = %d{$oderBy}";
+        $sql = $this->db->prepare($sql, $this->table, $idclient);
+        $this->db->query($sql);
+        while ($this->db->nextRecord()) {
+            $records[$this->db->f('idmod')] = $this->db->toArray();
+        }
+
+        return $records;
+    }
+
+    /**
      * Checks if any modules are in use and returns the data
      *
      * @return array Returns all templates for all modules
@@ -811,6 +834,52 @@ class cApiModule extends Item {
 
         parent::setField($name, $value, $bSafe);
     }
+
+    /**
+     * Processes container placeholder (e. g. CMS_VAR[123], CMS_VALUE[123]) in given module input code.
+     * Tries to find the proper container tag and replaces its value against
+     * container configuration.
+     * @param  int  $containerNr  The container number to process
+     * @param  string  $containerCfg  Container configuration string containing key/values paird for all containers
+     * @param  string  $moduleInputCode
+     * @return  string
+     */
+    public static function processContainerInInputCode($containerNr, $containerCfg, $moduleInputCode) {
+        $containerConfigurations = array();
+        if (!empty($containerCfg)) {
+            $containerConfigurations = cApiContainerConfiguration::parseContainerValue($containerCfg);
+        }
+
+        $CiCMS_Var = '$C' . $containerNr . 'CMS_VALUE';
+        $CiCMS_Values = array();
+
+        foreach ($containerConfigurations as $key3 => $value3) {
+            // Convert special characters and escape backslashes!
+            $tmp = conHtmlSpecialChars($value3);
+            $tmp = str_replace('\\', '\\\\', $tmp);
+
+            $CiCMS_Values[] = $CiCMS_Var . '[' . $key3 . '] = "' . $tmp . '";';
+            $moduleInputCode = str_replace("\$CMS_VALUE[$key3]", $tmp, $moduleInputCode);
+            $moduleInputCode = str_replace("CMS_VALUE[$key3]", $tmp, $moduleInputCode);
+        }
+
+        $moduleInputCode = str_replace('CMS_VALUE', $CiCMS_Var, $moduleInputCode);
+        $moduleInputCode = str_replace("\$" . $CiCMS_Var, $CiCMS_Var, $moduleInputCode);
+        $moduleInputCode = str_replace('CMS_VAR', 'C' . $containerNr . 'CMS_VAR', $moduleInputCode);
+
+        $CiCMS_Values = implode("\n", $CiCMS_Values);
+
+        return $CiCMS_Values . "\n" . $moduleInputCode;
+    }
+
+    public static function processContainerForOutput($containerNr, $containerCfg, $moduleInputCode) {
+return; // @TODO implement me
+        $containerConfigurations = array();
+        if (!empty($containerCfg)) {
+            $containerConfigurations = cApiContainerConfiguration::parseContainerValue($containerCfg);
+        }
+    }
+
 }
 
 ?>

@@ -212,18 +212,6 @@ if (count($_POST) > 0 && $message == '') {
     $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Save change successfully!"));
 }
 
-// Get template configuration from 'con_container_conf' and create configuration
-// data array
-$sql = "SELECT * FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . cSecurity::toInteger($idtplcfg) . " ORDER BY number";
-$db->query($sql);
-
-$a_c = array();
-
-while ($db->nextRecord()) {
-    // varstring is stored in array $a_c
-    $a_c[$db->f('number')] = $db->f('container');
-}
-
 $tmp_area = 'tplcfg';
 
 // Form
@@ -283,87 +271,53 @@ while ($db->nextRecord()) {
 
 $select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 $tpl->set('s', 'TEMPLATESELECTBOX', $select);
-// show module input area of all containers
-$sql = "SELECT * FROM " . $cfg['tab']['container'] . " WHERE idtpl=" . cSecurity::toInteger($idtpl) . " ORDER BY number ASC";
-$db->query($sql);
 
-$a_d = array();
+// List of configured container
+$containerConfigurations = conGetContainerConfiguration($idtplcfg);
 
-while ($db->nextRecord()) {
-    // generate list of used modules
-    $a_d[$db->f('number')] = $db->f('idmod');
-}
+// List of used modules in container
+$containerModules = conGetUsedModules($idtpl);
 
-if (isset($a_d) && is_array($a_d)) {
-    foreach ($a_d as $cnumber => $value) {
-        // show only the containers which contain a module
-        if (0 != $value) {
-            $sql = "SELECT * FROM " . $cfg['tab']['mod'] . " WHERE idmod=" . cSecurity::toInteger($a_d[$cnumber]);
-            $db->query($sql);
-            $db->nextRecord();
-
-            global $cCurrentModule, $cCurrentContainer;
-            $cCurrentModule = $db->f('idmod');
-            $cCurrentContainer = $cnumber;
-            $modulecaption = i18n("Module in container") . ' ' . $cnumber . ': ';
-            $modulename = $db->f('name');
-
-            $input = "\n";
-            $contenidoModuleHandler = new cModuleHandler($db->f('idmod'));
-
-            // load data from file
-            if ($contenidoModuleHandler->modulePathExists() == true) {
-                $input = $contenidoModuleHandler->readInput() . "\n";
-            }
-
-// ############ @FIXME Same code as in contenido/includes/include.pretplcfg_edit_form.php
-            $varstring = array();
-
-            if (isset($a_c[$cnumber])) {
-                $a_c[$cnumber] = preg_replace("/&$/", "", $a_c[$cnumber]);
-                $tmp1 = preg_split("/&/", $a_c[$cnumber]);
-
-                foreach ($tmp1 as $key1 => $value1) {
-                    $tmp2 = explode("=", $value1);
-                    foreach ($tmp2 as $key2 => $value2) {
-                        $varstring[$tmp2[0]] = urldecode($tmp2[1]);
-                    }
-                }
-            }
-
-            $CiCMS_Var = '$C' . $cnumber . 'CMS_VALUE';
-            $CiCMS_VALUE = '';
-
-            foreach ($varstring as $key3 => $value3) {
-                // Convert special characters and escape backslashes!
-                $tmp = conHtmlSpecialChars($value3);
-                $tmp = str_replace('\\', '\\\\', $tmp);
-
-                $CiCMS_VALUE .= $CiCMS_Var . '[' . $key3 . '] = "' . $tmp . '"; ';
-                $input = str_replace("\$CMS_VALUE[$key3]", $tmp, $input);
-                $input = str_replace("CMS_VALUE[$key3]", $tmp, $input);
-            }
-
-            $input = str_replace("CMS_VALUE", $CiCMS_Var, $input);
-            $input = str_replace("\$" . $CiCMS_Var, $CiCMS_Var, $input);
-            $input = str_replace("CMS_VAR", "C" . $cnumber . "CMS_VAR", $input);
-
-            ob_start();
-            eval($CiCMS_VALUE . "\n" . $input);
-            $modulecode = ob_get_contents();
-            ob_end_clean();
-// ###### END FIXME
-
-            $tpl->set('d', 'MODULECAPTION', $modulecaption);
-            $tpl->set('d', 'MODULENAME', $modulename);
-            if ($inUse == false) {
-                $tpl->set('d', 'MODULECODE', $modulecode);
-            } else {
-                $tpl->set('d', 'MODULECODE', '&nbsp;');
-            }
-            $tpl->next();
-        }
+foreach ($containerModules as $containerNumber => $containerModuleId) {
+    // Show only the container which contains a module
+    if (0 == $containerModuleId) {
+        continue;
     }
+
+    $moduleItem = new cApiModule($containerModuleId);
+    if (!$moduleItem->isLoaded()) {
+        continue;
+    }
+
+    global $cCurrentModule, $cCurrentContainer;
+    $cCurrentModule = $containerModuleId;
+    $cCurrentContainer = $containerNumber;
+
+    $input = "\n";
+
+    // Read the input for the editing in Backend from file
+    $contenidoModuleHandler = new cModuleHandler($containerModuleId);
+    if ($contenidoModuleHandler->modulePathExists() == true) {
+        $input = stripslashes($contenidoModuleHandler->readInput()) . "\n";
+    }
+
+    $modulecode = cApiModule::processContainerInInputCode($containerNumber, $containerConfigurations[$containerNumber], $input);
+
+    ob_start();
+    eval($modulecode);
+    $modulecode = ob_get_contents();
+    ob_end_clean();
+
+    $modulecaption = i18n("Module in container") . ' ' . $containerNumber . ': ';
+
+    $tpl->set('d', 'MODULECAPTION', $modulecaption);
+    $tpl->set('d', 'MODULENAME', $moduleItem->get('name'));
+    if ($inUse == false) {
+        $tpl->set('d', 'MODULECODE', $modulecode);
+    } else {
+        $tpl->set('d', 'MODULECODE', '&nbsp;');
+    }
+    $tpl->next();
 }
 
 $script = '

@@ -40,21 +40,9 @@ $idlay = (int) $db->f('idlay');
 $laydescription = nl2br($db->f('laydescription'));
 $bIsDefault = $db->f('defaulttemplate');
 
-
-$sql = "SELECT number, idmod FROM " . $cfg['tab']['container'] . " WHERE idtpl='" . $idtpl . "'";
-$db->query($sql);
-while ($db->nextRecord()) {
-    $a_c[$db->f('number')] = $db->f('idmod');
-}
-
-$modules = array();
-$sql = "SELECT idmod, name, type FROM " . $cfg['tab']['mod'] . " WHERE idclient='" . $client . "' ORDER BY name";
-$db->query($sql);
-while ($db->nextRecord()) {
-    $modules[$db->f('idmod')]['name'] = $db->f('name');
-    $modules[$db->f('idmod')]['type'] = $db->f('type');
-}
-
+// Get all modules by clients
+$moduleColl = new cApiModuleCollection();
+$modules = $moduleColl->getAllByIdclient($client);
 
 #$code = $db->f('code');
 $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
@@ -69,107 +57,111 @@ $tags = $base;
 
 $code = str_replace('<head>', "<head>\n" . $tags . "\n", $code);
 
-tplPreparseLayout($idlay);
-$containers = tplBrowseLayoutForContainers($idlay);
-
-$a_container = explode('&', $containers);
 $sContainerInHead = '';
 
-foreach ($a_container as $key => $value) {
+// List of configured container
+$containerNumbers = tplGetContainerNumbersInLayout($idlay);
 
-    if ($value != 0) {
-        //*************** Loop through containers ****************
-        $name = tplGetContainerName($idlay, $value);
+// List of used modules in container
+$containerModules = conGetUsedModules($idtpl);
 
-        $modselect = new cHTMLSelectElement('c[' . $value . ']');
-        $modselect->setAttribute('title', "Container $value ($name)");
+foreach ($containerNumbers as $containerNr) {
+    if (empty($containerNr)) {
+        continue;
+    }
 
-        $mode = tplGetContainerMode($idlay, $value);
+    //*************** Loop through containers ****************
+    $name = tplGetContainerName($idlay, $containerNr);
 
-        if ($mode == 'fixed') {
-            $default = tplGetContainerDefault($idlay, $value);
+    $modselect = new cHTMLSelectElement("c[{$containerNr}]");
+    $modselect->setAttribute('title', "Container {$containerNr} ($name)");
 
-            foreach ($modules as $key => $val) {
-                if ($val['name'] == $default) {
-                    if (strlen($val['name']) > 20) {
-                        $short_name = cApiStrTrimHard($val['name'], 20);
-                        $option = new cHTMLOptionElement($short_name, $key);
-                        $option->setAttribute('title', "Container $value ($name) " . $val['name']);
-                    } else {
-                        $option = new cHTMLOptionElement($val['name'], $key);
-                        $option->setAttribute('title', "Container $value ($name)");
-                    }
+    $mode = tplGetContainerMode($idlay, $containerNr);
 
-                    if ($a_c[$value] == $key) {
-                        $option->setSelected(true);
-                    }
+    if ($mode == 'fixed') {
+        $default = tplGetContainerDefault($idlay, $containerNr);
 
-                    $modselect->addOptionElement($key, $option);
-                }
-            }
-        } else {
-
-            $default = tplGetContainerDefault($idlay, $value);
-
-            if ($mode == 'optional' || $mode == '') {
-                $option = new cHTMLOptionElement('-- ' . i18n("none") . ' --', 0);
-
-                if (isset($a_c[$value]) && $a_c[$value] != '0') {
-                    $option->setSelected(false);
+        foreach ($modules as $key => $val) {
+            if ($val['name'] == $default) {
+                if (strlen($val['name']) > 20) {
+                    $shortName = cApiStrTrimHard($val['name'], 20);
+                    $option = new cHTMLOptionElement($shortName, $key);
+                    $option->setAttribute('title', "Container $containerNr ({$name}) {$val['name']}");
                 } else {
+                    $option = new cHTMLOptionElement($val['name'], $key);
+                    $option->setAttribute('title', "Container $containerNr ({$name})");
+                }
+
+                if ($containerModules[$containerNr] == $key) {
                     $option->setSelected(true);
                 }
 
-                $modselect->addOptionElement(0, $option);
-            }
-
-            $allowedtypes = tplGetContainerTypes($idlay, $value);
-
-            foreach ($modules as $key => $val) {
-                $short_name = $val['name'];
-                if (strlen($val['name']) > 20) {
-                    $short_name = cApiStrTrimHard($val['name'], 20);
-                }
-
-                $option = new cHTMLOptionElement($short_name, $key);
-
-                if (strlen($val['name']) > 20) {
-                    $option->setAttribute('title', "Container $value ($name) " . $val['name']);
-                }
-
-                if ($a_c[$value] == $key || ($a_c[$value] == 0 && $val['name'] == $default)) {
-                    $option->setSelected(true);
-                }
-
-                if (count($allowedtypes) > 0) {
-                    if (in_array($val['type'], $allowedtypes) || $val['type'] == '') {
-                        $modselect->addOptionElement($key, $option);
-                    }
-                } else {
-                    $modselect->addOptionElement($key, $option);
-                }
+                $modselect->addOptionElement($key, $option);
             }
         }
+    } else {
 
-        // visual edit item container
-        $sLabelAndSelect = '<label for="' . $modselect->getAttribute('id') . '">' . $value . ':</label>' . $modselect->render();
-        $sVisualEditItem = '<div class="visedit_item" onmouseover="this.style.zIndex = \'20\'" onmouseout="this.style.zIndex = \'10\'">' . $sLabelAndSelect . '</div>';
+        $default = tplGetContainerDefault($idlay, $containerNr);
 
-        // collect containers in head for displaying them at the start of body
-        if (is_array($containerinf) && isset($containerinf[$idlay]) && isset($containerinf[$idlay][$value]) &&
-                isset($containerinf[$idlay][$value]['is_body']) && $containerinf[$idlay][$value]['is_body'] == false) {
-            // replace container inside head with empty values and collect the container
-            $code = preg_replace("/<container( +)id=\"$value\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$value]", $code);
-            $code = preg_replace("/<container( +)id=\"$value\"(.*)\/>/i", "CMS_CONTAINER[$value]", $code);
-            $code = str_ireplace("CMS_CONTAINER[$value]", '', $code);
-            $sContainerInHead .= $sVisualEditItem . "\n";
-        } else {
-            // replace other container
-            $code = preg_replace("/<container( +)id=\"$value\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$value]", $code);
-            $code = preg_replace("/<container( +)id=\"$value\"(.*)\/>/i", "CMS_CONTAINER[$value]", $code);
-            $code = str_ireplace("CMS_CONTAINER[$value]", $sVisualEditItem, $code);
+        if ($mode == 'optional' || $mode == '') {
+            $option = new cHTMLOptionElement('-- ' . i18n("none") . ' --', 0);
+
+            if (isset($containerModules[$containerNr]) && $containerModules[$containerNr] != '0') {
+                $option->setSelected(false);
+            } else {
+                $option->setSelected(true);
+            }
+
+            $modselect->addOptionElement(0, $option);
+        }
+
+        $allowedtypes = tplGetContainerTypes($idlay, $containerNr);
+
+        foreach ($modules as $key => $val) {
+            $short_name = $val['name'];
+            if (strlen($val['name']) > 20) {
+                $short_name = cApiStrTrimHard($val['name'], 20);
+            }
+
+            $option = new cHTMLOptionElement($short_name, $key);
+
+            if (strlen($val['name']) > 20) {
+                $option->setAttribute('title', "Container $containerNr ({$name}) {$val['name']}");
+            }
+
+            if ($containerModules[$containerNr] == $key || ($containerModules[$containerNr] == 0 && $val['name'] == $default)) {
+                $option->setSelected(true);
+            }
+
+            if (count($allowedtypes) > 0) {
+                if (in_array($val['type'], $allowedtypes) || $val['type'] == '') {
+                    $modselect->addOptionElement($key, $option);
+                }
+            } else {
+                $modselect->addOptionElement($key, $option);
+            }
         }
     }
+
+    // visual edit item container
+    $sLabelAndSelect = '<label for="' . $modselect->getAttribute('id') . '">' . $containerNr . ':</label>' . $modselect->render();
+    $sVisualEditItem = '<div class="visedit_item" onmouseover="this.style.zIndex = \'20\'" onmouseout="this.style.zIndex = \'10\'">' . $sLabelAndSelect . '</div>';
+
+    // collect containers in head for displaying them at the start of body
+    if (is_array($containerinf) && isset($containerinf[$idlay]) && isset($containerinf[$idlay][$containerNr]) &&
+            isset($containerinf[$idlay][$containerNr]['is_body']) && $containerinf[$idlay][$containerNr]['is_body'] == false) {
+        // replace container inside head with empty values and collect the container
+        $code = preg_replace("/<container( +)id=\"$containerNr\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$containerNr]", $code);
+        $code = preg_replace("/<container( +)id=\"$containerNr\"(.*)\/>/i", "CMS_CONTAINER[$containerNr]", $code);
+        $code = str_ireplace("CMS_CONTAINER[$containerNr]", '', $code);
+        $sContainerInHead .= $sVisualEditItem . "\n";
+    } else {
+        // replace other container
+        $code = preg_replace("/<container( +)id=\"$containerNr\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$containerNr]", $code);
+        $code = preg_replace("/<container( +)id=\"$containerNr\"(.*)\/>/i", "CMS_CONTAINER[$containerNr]", $code);
+        $code = str_ireplace("CMS_CONTAINER[$containerNr]", $sVisualEditItem, $code);
+    }
+
 }
 
 // Get rid of any forms

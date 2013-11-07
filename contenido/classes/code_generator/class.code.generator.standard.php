@@ -46,7 +46,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             return '0601';
         }
 
-        $a_c = conGetContainerConfiguration($this->_idtplcfg);
+        // List of configured container
+        $containerConfigurations = conGetContainerConfiguration($this->_idtplcfg);
 
         // Set idlay and idmod array
         $data = $this->_getTemplateData();
@@ -55,7 +56,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $this->_tplName = cApiStrCleanURLCharacters($data['name']);
 
         // List of used modules
-        $a_d = conGetUsedModules($idtpl);
+        $containerModules = conGetUsedModules($idtpl);
 
         // Load layout code from file
         $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $this->_lang);
@@ -67,20 +68,19 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // Create code for all containers
         if ($idlay) {
             cInclude('includes', 'functions.tpl.php');
-            tplPreparseLayout($idlay);
-            $tmp_returnstring = tplBrowseLayoutForContainers($idlay);
-            $a_container = explode('&', $tmp_returnstring);
+            $containerNumbers = tplGetContainerNumbersInLayout($idlay);
 
-            foreach ($a_container as $key => $value) {
-                if (!isset($a_d[$value]) || !is_numeric($a_d[$value])) {
+            foreach ($containerNumbers as $containerNr) {
+                if (!isset($containerModules[$containerNr]) || !is_numeric($containerModules[$containerNr])) {
                     // No configured module in this container
                     // reset current module state and process empty container
                     $this->_resetModule();
-                    $this->_processCmsContainer($value);
+                    $this->_processCmsContainer($containerNr);
                     continue;
                 }
 
-                $oModule = new cApiModule($a_d[$value]);
+                $containerModuleId = $containerModules[$containerNr];
+                $oModule = new cApiModule($containerModuleId);
                 $module = $oModule->toArray();
                 if (false === $module) {
                     $module = array();
@@ -88,10 +88,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
                 $this->_resetModule();
 
-                $this->_modulePrefix[] = '$cCurrentModule = ' . $a_d[$value] . ';';
-                $this->_modulePrefix[] = '$cCurrentContainer = ' . $value . ';';
+                $this->_modulePrefix[] = '$cCurrentModule = ' . $containerModuleId . ';';
+                $this->_modulePrefix[] = '$cCurrentContainer = ' . $containerNr . ';';
 
-                $moduleHandler = new cModuleHandler($a_d[$value]);
+                $moduleHandler = new cModuleHandler($containerModuleId);
                 $input = '';
 
                 // Get the contents of input and output from files and not from
@@ -113,7 +113,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 $this->_moduleCode = $this->_moduleCode . "\n";
 
                 // Process CMS value tags
-                $containerCmsValues = $this->_processCmsValueTags($value, $a_c[$value]);
+                $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNumber]);
 
                 // Add CMS value code to module prefix code
                 if ($containerCmsValues) {
@@ -121,10 +121,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 }
 
                 // Process frontend debug
-                $this->_processFrontendDebug($value, $module);
+                $this->_processFrontendDebug($containerNumber, $module);
 
                 // Replace new containers
-                $this->_processCmsContainer($value);
+                $this->_processCmsContainer($containerNumber);
             }
         }
 

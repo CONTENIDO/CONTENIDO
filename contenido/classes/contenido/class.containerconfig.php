@@ -59,6 +59,24 @@ class cApiContainerConfigurationCollection extends ItemCollection {
 
         return $item;
     }
+
+    /**
+     * Returns list of all configured container by template configuration id
+     *
+     * @param  int  $idtplcfg  Template configuration id
+     * @return  array  Assoziative array where the key is the number and
+     *                 value the container configuration.
+     */
+    public function getByTemplateConfiguration($idtplcfg) {
+        $configuration = array();
+
+        $this->select('idtplcfg = ' . (int) $idtplcfg, '', 'number ASC');
+        while (($item = $this->next()) !== false) {
+            $configuration[(int) $item->get('number')] = $item->get('container');
+        }
+
+        return $configuration;
+    }
 }
 
 /**
@@ -101,4 +119,38 @@ class cApiContainerConfiguration extends Item {
 
         parent::setField($name, $value, $bSafe);
     }
+
+    /**
+     * Adds a key value pair to passed container string and returns the modified
+     * container string
+     * @param string $container
+     * @param string $key
+     * @param string $value
+     * @return string
+     */
+    public static function addContainerValue($container, $key, $value) {
+        $container .= $key . '=' . urlencode(stripslashes($value)) . '&';
+        return $container;
+    }
+    
+    /**
+     * Parses the container value to its variables
+     * @param string $value
+     * @return array
+     */
+    public static function parseContainerValue($value) {
+        $vars = array();
+
+        $value = preg_replace('/&$/', '', $value);
+        $parts = preg_split('/&/', $value);
+        foreach ($parts as $key1 => $value1) {
+            $param = explode('=', $value1);
+            foreach ($param as $key2 => $value2) {
+                $vars[$param[0]] = urldecode($param[1]);
+            }
+        }
+
+        return $vars;
+    }
+
 }

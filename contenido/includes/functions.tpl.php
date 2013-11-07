@@ -146,15 +146,18 @@ function tplDeleteTemplate($idtpl) {
 function tplBrowseLayoutForContainers($idlay) {
     global $db, $cfg, $containerinf, $lang;
 
-    $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
+    $layoutInFile = new cLayoutHandler($idlay, '', $cfg, $lang);
     $code = $layoutInFile->getLayoutCode();
 
-    preg_match_all("/CMS_CONTAINER\[([0-9]*)\]/", $code, $a_container);
-    $iPosBody = stripos($code, '<body>');
-    $sCodeBeforeHeader = substr($code, 0, $iPosBody);
+    $containerNumbers = array();
+    $returnStr = '';
 
-    foreach ($a_container[1] as $value) {
-        if (preg_match("/CMS_CONTAINER\[$value\]/", $sCodeBeforeHeader)) {
+    preg_match_all("/CMS_CONTAINER\[([0-9]*)\]/", $code, $containerMatches);
+    $posBody = stripos($code, '<body>');
+    $codeBeforeHeader = substr($code, 0, $posBody);
+
+    foreach ($containerMatches[1] as $value) {
+        if (preg_match("/CMS_CONTAINER\[$value\]/", $codeBeforeHeader)) {
             $containerinf[$idlay][$value]["is_body"] = false;
         } else {
             $containerinf[$idlay][$value]["is_body"] = true;
@@ -163,24 +166,39 @@ function tplBrowseLayoutForContainers($idlay) {
 
     if (is_array($containerinf[$idlay])) {
         foreach ($containerinf[$idlay] as $key => $value) {
-            $a_container[1][] = $key;
+            $containerMatches[1][] = $key;
         }
     }
 
-    $container = Array();
-
-    foreach ($a_container[1] as $value) {
-        if (!in_array($value, $container)) {
-            $container[] = $value;
+    foreach ($containerMatches[1] as $value) {
+        if (!in_array($value, $containerNumbers)) {
+            $containerNumbers[] = $value;
         }
     }
+    asort($containerNumbers);
 
-    asort($container);
+    $returnStr = implode('&', $containerNumbers);
 
-    if (is_array($container)) {
-        $tmp_returnstring = implode("&", $container);
+    return $returnStr;
+}
+
+/**
+ * Wrapper for tplPreparseLayout() and tplBrowseLayoutForContainers().
+ * Calls both functions to get the container numbers from layout and return
+ * the list of found container numbers.
+ * @param  int  $idlay
+ * @return array
+ */
+function tplGetContainerNumbersInLayout($idlay) {
+    $containerNumbers = array();
+
+    tplPreparseLayout($idlay);
+    $containerNumbersStr = tplBrowseLayoutForContainers($idlay);
+    if (!empty($containerNumbersStr)) {
+        $containerNumbers = explode('&', $containerNumbersStr);
     }
-    return $tmp_returnstring;
+
+    return $containerNumbers;
 }
 
 /**
@@ -532,43 +550,38 @@ function tplAutoFillModules($idtpl) {
     $idlay = $db_autofill->f("idlay");
 
     if (!(is_array($containerinf) && array_key_exists($idlay, $containerinf) && array_key_exists($idlay, $_autoFillcontainerCache))) {
-        tplPreparseLayout($idlay);
-        $_autoFillcontainerCache[$idlay] = tplBrowseLayoutForContainers($idlay);
+        $_autoFillcontainerCache[$idlay] = tplGetContainerNumbersInLayout($idlay);
     }
 
-    $a_container = explode("&", $_autoFillcontainerCache[$idlay]);
+    $containerNumbers = $_autoFillcontainerCache[$idlay];
 
     $db = cRegistry::getDb();
 
-    foreach ($a_container as $container) {
-        switch ($containerinf[$idlay][$container]["mode"]) {
+    foreach ($containerNumbers as $containerNr) {
+        $currContainerInfo = $containerinf[$idlay][$containerNr];
+
+        switch ($currContainerInfo["mode"]) {
             /* Fixed mode */
             case "fixed":
-                if ($containerinf[$idlay][$container]["default"] != "") {
-                    $sql = "SELECT idmod FROM " . $cfg["tab"]["mod"]
-                            . " WHERE name = '" .
-                            $db->escape($containerinf[$idlay][$container]["default"]) . "'";
-
+                if ($currContainerInfo["default"] != "") {
+                    $sql = "SELECT idmod FROM " . $cfg["tab"]["mod"] . " WHERE name = '" . $db->escape($currContainerInfo["default"]) . "'";
                     $db_autofill->query($sql);
 
                     if ($db_autofill->nextRecord()) {
                         $idmod = $db_autofill->f("idmod");
 
-                        $sql = "SELECT idcontainer FROM " . $cfg["tab"]["container"] . " WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "' AND number = '" . cSecurity::toInteger($container) . "'";
-
+                        $sql = "SELECT idcontainer FROM " . $cfg["tab"]["container"] . " WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "' AND number = '" . cSecurity::toInteger($containerNr) . "'";
                         $db_autofill->query($sql);
 
                         if ($db_autofill->nextRecord()) {
                             $sql = "UPDATE " . $cfg["tab"]["container"] .
                                     " SET idmod = '" . cSecurity::toInteger($idmod) . "' WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "'" .
-                                    " AND number = '" . cSecurity::toInteger($container) . "' AND " .
+                                    " AND number = '" . cSecurity::toInteger($containerNr) . "' AND " .
                                     " idcontainer = '" . cSecurity::toInteger($db_autofill->f("idcontainer")) . "'";
                             $db_autofill->query($sql);
                         } else {
-                            $sql = "INSERT INTO " . $cfg["tab"]["container"] .
-                                    " (idtpl, number, idmod) " .
-                                    " VALUES ( " .
-                                    " '$idtpl', '$container', '$idmod')";
+                            $sql = "INSERT INTO " . $cfg["tab"]["container"] . " (idtpl, number, idmod) " .
+                                    " VALUES ('$idtpl', '$containerNr', '$idmod')";
                             $db_autofill->query($sql);
                         }
                     }
@@ -576,32 +589,66 @@ function tplAutoFillModules($idtpl) {
 
             case "mandatory":
 
-                if ($containerinf[$idlay][$container]["default"] != "") {
-                    $sql = "SELECT idmod FROM " . $cfg["tab"]["mod"] .
-                            " WHERE name = '" .
-                            $db->escape($containerinf[$idlay][$container]["default"]) . "'";
-
+                if ($currContainerInfo["default"] != "") {
+                    $sql = "SELECT idmod FROM " . $cfg["tab"]["mod"] . " WHERE name = '" . $db->escape($currContainerInfo["default"]) . "'";
                     $db_autofill->query($sql);
 
                     if ($db_autofill->nextRecord()) {
                         $idmod = $db_autofill->f("idmod");
 
-                        $sql = "SELECT idcontainer, idmod FROM " . $cfg["tab"]["container"]
-                                . " WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "' AND number = '" . cSecurity::toInteger($container) . "'";
-
+                        $sql = "SELECT idcontainer FROM " . $cfg["tab"]["container"] . " WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "' AND number = '" . cSecurity::toInteger($containerNr) . "'";
                         $db_autofill->query($sql);
 
                         if ($db_autofill->nextRecord()) {
                             // donut
                         } else {
-                            $sql = "INSERT INTO " . $cfg["tab"]["container"] .
-                                    " (idtpl, number, idmod) " .
-                                    " VALUES ( " .
-                                    " '" . cSecurity::toInteger($idtpl) . "', '" . cSecurity::toInteger($container) . "', '" . cSecurity::toInteger($idmod) . "')";
+                            $sql = "INSERT INTO " . $cfg["tab"]["container"] . " (idtpl, number, idmod) " .
+                                    " VALUES ('" . cSecurity::toInteger($idtpl) . "', '" . cSecurity::toInteger($containerNr) . "', '" . cSecurity::toInteger($idmod) . "')";
                             $db_autofill->query($sql);
                         }
                     }
                 }
         }
     }
+}
+
+/**
+ * Takes over send container configuration data, stores send data (via POST) by article
+ * or template configuration in container configuration table.
+ * @param int $idtpl
+ * @param int  $idtplcfg
+ * @param array $postData  Usually $_POST
+ */
+function tplProcessSendContainerConfiguration($idtpl, $idtplcfg, array $postData) {
+
+    $containerColl = new cApiContainerCollection();
+    $containerConfColl = new cApiContainerConfigurationCollection();
+    $containerData = array();
+
+    // Get all container numbers, loop through them and collect send container data
+    $containerNumbers = $containerColl->getNumbersByTemplate($idtpl);
+    foreach ($containerNumbers as $number) {
+        $CiCMS_VAR = 'C' . $number . 'CMS_VAR';
+
+        if (isset($postData[$CiCMS_VAR]) && is_array($postData[$CiCMS_VAR])) {
+            if (!isset($containerData[$number])) {
+                $containerData[$number] = '';
+            }
+            foreach ($postData[$CiCMS_VAR] as $key => $value) {
+                $containerData[$number] = cApiContainerConfiguration::addContainerValue($containerData[$number], $key, $value);
+            }
+        }
+    }
+
+    // Update/insert in container_conf
+    if (count($containerData) > 0) {
+        // Delete all containers
+        $containerConfColl->deleteBy('idtplcfg', (int) $idtplcfg);
+
+        // Insert new containers
+        foreach ($containerData as $col => $val) {
+            $containerConfColl->create($idtplcfg, $col, $val);
+        }
+    }
+
 }

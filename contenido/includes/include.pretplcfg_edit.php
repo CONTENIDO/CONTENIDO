@@ -16,76 +16,28 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (!isset($idtplcfg)) {
-    $sql = "SELECT
-                idtplcfg
-            FROM
-                ".$cfg["tab"]["tpl"]."
-            WHERE
-                idtpl = '".cSecurity::toInteger($idtpl)."'";
-
-    $db->query($sql);
-    $db->nextRecord();
-
-    $idtplcfg = $db->f("idtplcfg");
+    // Load template configuration for current template, create it if not done before
+    $tplItem = new cApiTemplate($idtpl);
+    $idtplcfg = $tplItem->get('idtplcfg');
 
     if ($idtplcfg == 0) {
-        //$nextid = $db->nextid($cfg["tab"]["tpl_conf"]);
-        $timestamp = time();
-        $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]."
-                    (idtpl, status, author, created, lastmodified)
-                VALUES
-                    ('".cSecurity::toInteger($idtpl)."', '', '', '".$timestamp."', '".$timestamp."')";
+        // Create new template configuration entry
+        $tplConfColl = new cApiTemplateConfigurationCollection();
+        $tplConf = $tplConfColl->create($idtpl);
+        $idtplcfg = $tplConf->get('idtplcfg');
 
-        $db->query($sql);
-        $idtplcfg = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
-
-        $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET idtplcfg = '".cSecurity::toInteger($idtplcfg)."' WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
-        $db->query($sql);
+        $tplItem->set('idtplcfg', $idtplcfg);
+        $tplItem->store();
     }
-
 }
 
 if (isset($idtplcfg)) {
-// ############ @FIXME Same code as in contenido/includes/include.tplcfg_edit.php
-    $sql = "SELECT number FROM " . $cfg["tab"]["container"] . " WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "'";
-    $db->query($sql);
+    tplProcessSendContainerConfiguration($idtpl, $idtplcfg, $_POST);
 
-    $varstring = array();
-
-    while ($db->nextRecord()) {
-        $number = $db->f('number');
-        $CiCMS_VAR = "C{$number}CMS_VAR";
-
-        if (isset($_POST[$CiCMS_VAR]) && is_array($_POST[$CiCMS_VAR])) {
-            if (!isset($varstring[$number])) {
-                $varstring[$number] = '';
-            }
-            // NOTE: We could use http_build_query here!
-            foreach ($_POST[$CiCMS_VAR] as $key => $value) {
-                $varstring[$number] .= $key . '=' . urlencode(stripslashes($value)) . '&';
-            }
-        }
-    }
-
-    // Update/insert in container_conf
-    if (count($varstring) > 0) {
-        // Delete all containers
-        $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
-        $db->query($sql);
-
-        foreach ($varstring as $col => $val) {
-            // Insert all containers
-            $sql = "INSERT INTO " . $cfg["tab"]["container_conf"] . " (idtplcfg, number, container) " .
-                    "VALUES ('" . cSecurity::toInteger($idtplcfg) . "', '" . cSecurity::toInteger($col) . "', '" . $db->escape($val) . "') ";
-
-            $db->query($sql);
-        }
-    }
-// ###### END FIXME
-
-    //is form send
+    // Is form send
     if ($x > 0) {
-        $notification->displayNotification(cGuiNotification::LEVEL_INFO,i18n("Saved changes successfully!"));
+        $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved changes successfully!"));
     }
 }
+
 ?>

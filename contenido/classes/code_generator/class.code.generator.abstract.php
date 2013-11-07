@@ -385,7 +385,7 @@ abstract class cCodeGeneratorAbstract {
      * Replaces all container/module configuration tags (CMS_VALUE[n] values)
      * against their settings.
      *
-     * @param int $containerId Container id
+     * @param int $containerNumber Container number
      * @param string $containerCfg A string being formatted like concatenated
      *        query
      *        parameter, e. g. param1=value1&param2=value2...
@@ -393,7 +393,7 @@ abstract class cCodeGeneratorAbstract {
      * @return string Concatenated PHP code containing CMS_VALUE variables and
      *         their values
      */
-    protected function _processCmsValueTags($containerId, $containerCfg) {
+    protected function _processCmsValueTags($containerNumber, $containerCfg) {
         $containerCfgList = array();
 
         $containerCfg = preg_replace('/(&\$)/', '', $containerCfg);
@@ -404,12 +404,13 @@ abstract class cCodeGeneratorAbstract {
          * $value2) { $containerCfgList["$tmp2[0]"] = $tmp2[1]; } }
          */
 
-        $CiCMS_Var = '$C' . $containerId . 'CMS_VALUE';
+        $CiCMS_Var = '$C' . $containerNumber . 'CMS_VALUE';
         $CiCMS_Values = array();
 
         foreach ($containerCfgList as $key3 => $value3) {
-            $tmp = $value3;
-            $tmp = str_replace("\'", "'", $tmp);
+            // Convert special characters and escape backslashes!
+            $tmp = conHtmlSpecialChars($value3);
+            $tmp = str_replace('\\', '\\\\', $tmp);
             $CiCMS_Values[] = $CiCMS_Var . '[' . $key3 . '] = "' . $tmp . '"; ';
             $this->_moduleCode = str_replace("\$CMS_VALUE[$key3]", $tmp, $this->_moduleCode);
             $this->_moduleCode = str_replace("CMS_VALUE[$key3]", $tmp, $this->_moduleCode);
@@ -426,11 +427,11 @@ abstract class cCodeGeneratorAbstract {
      * Extends container code by adding several debug features, if enabled and
      * configured.
      *
-     * @param int $containerId Container id
+     * @param int $containerNumber Container number (The id attribute in container tag)
      * @param array $module Recordset as assoziative array of related module
      *        (container code)
      */
-    protected function _processFrontendDebug($containerId, array $module) {
+    protected function _processFrontendDebug($containerNumber, array $module) {
         global $containerinf;
 
         $data = $this->_getTemplateData();
@@ -441,7 +442,7 @@ abstract class cCodeGeneratorAbstract {
 
         $sFeDebug = '';
         if ($this->_feDebugOptions['container_display'] == true) {
-            $this->_modulePrefix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- START CONTAINER ' . $containerinf[$data['idlay']][$containerId]['name'] . ' (' . $containerId . ') -->";';
+            $this->_modulePrefix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- START CONTAINER ' . $containerinf[$data['idlay']][$containerNumber]['name'] . ' (' . $containerNumber . ') -->";';
         }
 
         if ($this->_feDebugOptions['module_display'] == true) {
@@ -449,19 +450,19 @@ abstract class cCodeGeneratorAbstract {
         }
 
         if ($this->_feDebugOptions['module_timing'] == true) {
-            $this->_modulePrefix[] = '$modTime' . $containerId . ' = -getmicrotime(true);';
-            $this->_moduleSuffix[] = '$modTime' . $containerId . ' += getmicrotime(true);';
+            $this->_modulePrefix[] = '$modTime' . $containerNumber . ' = -getmicrotime(true);';
+            $this->_moduleSuffix[] = '$modTime' . $containerNumber . ' += getmicrotime(true);';
         }
 
         if ($this->_feDebugOptions['module_display'] == true) {
             $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_display\']) echo "<!-- END MODULE ' . $module['name'] . ' (' . $module['idmod'] . ')";';
             if ($this->_feDebugOptions['module_timing'] == true) {
-                $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_timing\']) echo(" AFTER " . $modTime' . $containerId . ');';
+                $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_timing\']) echo(" AFTER " . $modTime' . $containerNumber . ');';
             }
             $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_display\']) echo " -->";';
         }
         if ($this->_feDebugOptions['container_display'] == true) {
-            $this->_moduleSuffix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- END CONTAINER ' . $containerinf[$data['idlay']][$containerId]['name'] . ' (' . $containerId . ') -->";';
+            $this->_moduleSuffix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- END CONTAINER ' . $containerinf[$data['idlay']][$containerNumber]['name'] . ' (' . $containerNumber . ') -->";';
         }
     }
 
@@ -469,15 +470,15 @@ abstract class cCodeGeneratorAbstract {
      * Replaces container tag in layout against the parsed container code
      * (module code).
      *
-     * @param int $containerId Container id
+     * @param int $containerNumber Container number (The id attribute in container tag)
      */
-    protected function _processCmsContainer($containerId) {
-        $cmsContainer = "CMS_CONTAINER[$containerId]";
+    protected function _processCmsContainer($containerNumber) {
+        $cmsContainer = "CMS_CONTAINER[$containerNumber]";
 
         // Replace new container (<container id="n"..>) against old one
         // (CMS_CONTAINER[n])
-        $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerId\\\"(.*)>(.*)<\/container>/Uis", $cmsContainer, $this->_layoutCode);
-        $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerId\\\"(.*)\/>/i", $cmsContainer, $this->_layoutCode);
+        $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerNumber\\\"(.*)>(.*)<\/container>/Uis", $cmsContainer, $this->_layoutCode);
+        $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerNumber\\\"(.*)\/>/i", $cmsContainer, $this->_layoutCode);
 
         // Concatenate final container/module output code, but generate PHP code
         // only

@@ -57,13 +57,6 @@ if ($db->nextRecord()) {
     $vdefault = $db->f("defaulttemplate");
 }
 
-$sql = "SELECT number, idmod FROM " . $cfg['tab']['container'] . "
-        WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "'";
-$db->query($sql);
-while ($db->nextRecord()) {
-    $a_c[$db->f("number")] = $db->f("idmod");
-}
-
 // *************** List layouts ****************
 $tpl2->set('s', 'NAME', 'idlay');
 $tpl2->set('s', 'CLASS', 'text_medium');
@@ -101,17 +94,10 @@ while ($db->nextRecord()) {
 
 $select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 
-$sql = "SELECT idmod, name, type FROM " . $cfg['tab']['mod'] . "
-        WHERE idclient='" . cSecurity::toInteger($client) . "'
-        ORDER BY name";
-$db->query($sql);
 
-$modules = array();
-
-while ($db->nextRecord()) {
-    $modules[$db->f("idmod")]["name"] = $db->f("name");
-    $modules[$db->f("idmod")]["type"] = $db->f("type");
-}
+// Get all modules by clients
+$moduleColl = new cApiModuleCollection();
+$modules = $moduleColl->getAllByIdclient($client);
 
 $form = new cGuiTableForm("tplform");
 $form->setVar("area", $area);
@@ -138,85 +124,80 @@ $form->add(i18n("Layout"), $select);
 $form->add(i18n("Layout description"), $laydescription);
 
 if ($idlay) {
-    tplPreparseLayout($idlay);
 
-    $tmp_returnstring = tplBrowseLayoutForContainers($idlay);
+    // List of configured container
+    $containerNumbers = tplGetContainerNumbersInLayout($idlay);
 
-    $a_container = explode("&", $tmp_returnstring);
+    // List of used modules in container
+    $containerModules = conGetUsedModules($idtpl);
 
-    foreach ($a_container as $key => $value) {
-        if ($value != 0) {
-            // Loop through containers ****************
-            $name = tplGetContainerName($idlay, $value);
-
-            $modselect = new cHTMLSelectElement("c[" . $value . "]");
-
-            if ($name != "") {
-                $caption = $name . " (Container $value)";
-            } else {
-                $caption = 'Container ' . $value;
-            }
-
-            $mode = tplGetContainerMode($idlay, $value);
-            $defaultModuleNotice = '';
-
-            if ($mode == "fixed") {
-                $default = tplGetContainerDefault($idlay, $value);
-
-                foreach ($modules as $key => $val) {
-
-                    if ($val["name"] == $default) {
-                        $option = new cHTMLOptionElement($val["name"], $key);
-
-                        if ($a_c[$value] == $key) {
-                            $option->setSelected(true);
-                        }
-
-                        $modselect->addOptionElement($key, $option);
-                    }
-                }
-            } else {
-                $default = tplGetContainerDefault($idlay, $value);
-
-                if ($mode == "optional" || $mode == "") {
-                    $option = new cHTMLOptionElement("-- " . i18n("none") . " --", 0);
-
-                    if (isset($a_c[$value]) && $a_c[$value] != 0) {
-                        $option->setSelected(false);
-                    } else {
-                        $option->setSelected(true);
-                    }
-
-                    $modselect->addOptionElement(0, $option);
-                }
-
-                $allowedtypes = tplGetContainerTypes($idlay, $value);
-
-                foreach ($modules as $key => $val) {
-                    $option = new cHTMLOptionElement($val["name"], $key);
-
-                    // if ($a_c[$value] == $key || ($a_c[$value] == 0 &&
-                    // $val["name"] == $default))
-                    if ($a_c[$value] == $key || (($a_c[$value] == 0 && $val["name"] == $default) && $createmode == 1)) {
-                        $option->setSelected(true);
-                    }
-
-                    if (count($allowedtypes) > 0) {
-                        if (in_array($val["type"], $allowedtypes) || $val["type"] == "") {
-                            $modselect->addOptionElement($key, $option);
-                        }
-                    } else {
-                        $modselect->addOptionElement($key, $option);
-                    }
-                }
-
-                if ($default != "" && $modules[$a_c[$value]]["name"] != $default && $createmode != 1) {
-                    $defaultModuleNotice = "&nbsp;(" . i18n('Default') . ": " . $default . ")";
-                }
-            }
-
-            $form->add($caption, $modselect->render() . $defaultModuleNotice);
+    foreach ($containerNumbers as $containerNr) {
+        if (empty($containerNr)) {
+            continue;
         }
+
+        // Loop through containers ****************
+        $name = tplGetContainerName($idlay, $containerNr);
+
+        $modselect = new cHTMLSelectElement("c[{$containerNr}]");
+
+        $caption = ($name != '') ? "{$name} (Container {$containerNr})" : "Container {$containerNr}";
+
+        $mode = tplGetContainerMode($idlay, $containerNr);
+        $defaultModuleNotice = '';
+
+        if ($mode == 'fixed') {
+            $default = tplGetContainerDefault($idlay, $containerNr);
+
+            foreach ($modules as $key => $val) {
+                if ($val['name'] == $default) {
+                    $option = new cHTMLOptionElement($val['name'], $key);
+                    if ($containerModules[$containerNr] == $key) {
+                        $option->setSelected(true);
+                    }
+
+                    $modselect->addOptionElement($key, $option);
+                }
+            }
+        } else {
+            $default = tplGetContainerDefault($idlay, $containerNr);
+
+            if ($mode == 'optional' || $mode == '') {
+                $option = new cHTMLOptionElement('-- ' . i18n("none") . ' --', 0);
+
+                if (isset($containerModules[$containerNr]) && $containerModules[$containerNr] != 0) {
+                    $option->setSelected(false);
+                } else {
+                    $option->setSelected(true);
+                }
+
+                $modselect->addOptionElement(0, $option);
+            }
+
+            $allowedtypes = tplGetContainerTypes($idlay, $containerNr);
+
+            foreach ($modules as $key => $val) {
+                $option = new cHTMLOptionElement($val['name'], $key);
+
+                if ($containerModules[$containerNr] == $key || (($containerModules[$containerNr] == 0 && $val['name'] == $default) && $createmode == 1)) {
+                    $option->setSelected(true);
+                }
+
+                if (count($allowedtypes) > 0) {
+                    if (in_array($val['type'], $allowedtypes) || $val['type'] == '') {
+                        $modselect->addOptionElement($key, $option);
+                    }
+                } else {
+                    $modselect->addOptionElement($key, $option);
+                }
+            }
+
+            if ($default != '' && $modules[$containerModules[$containerNr]]['name'] != $default && $createmode != 1) {
+                $defaultModuleNotice = '&nbsp;(' . i18n('Default') . ': ' . $default . ')';
+            }
+        }
+
+        $form->add($caption, $modselect->render() . $defaultModuleNotice);
     }
 }
 

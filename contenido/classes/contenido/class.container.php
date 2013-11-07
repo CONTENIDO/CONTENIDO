@@ -43,6 +43,41 @@ class cApiContainerCollection extends ItemCollection {
     }
 
     /**
+     * Creates a container item entry
+     *
+     * @param int $idtpl
+     * @param int $number
+     * @param int $idmod
+     * @return cApiContainer
+     */
+    public function create($idtpl, $number, $idmod) {
+        $item = parent::createNewItem();
+
+        $item->set('idtpl', $idtpl);
+        $item->set('number', $number);
+        $item->set('idmod', $idmod);
+        $item->store();
+
+        return $item;
+    }
+
+    /**
+     * Returns list of container numbers by passed template id.
+     *
+     * @param int $idtpl
+     * @return array
+     */
+    public function getNumbersByTemplate($idtpl) {
+        $list = array();
+        $sql = "SELECT number FROM `%s` WHERE idtpl = %d";
+        $this->db->query($sql, $this->table, $idtpl);
+        while ($this->db->nextRecord()) {
+            $list[] = $this->db->f('number');
+        }
+        return $list;
+    }
+
+    /**
      * Deletes all configurations by given template id
      * @param int $idtpl
      */
@@ -72,25 +107,6 @@ class cApiContainerCollection extends ItemCollection {
     public function assignModul($idtpl, $number, $idmod) {
     	cDeprecated("The method assignModul() is deprecated. Use assignModule() instead.");
         $this->assignModule($idtpl, $number, $idmod);
-    }
-
-    /**
-     * Creates a container item entry
-     *
-     * @param int $idtpl
-     * @param int $number
-     * @param int $idmod
-     * @return cApiContainer
-     */
-    public function create($idtpl, $number, $idmod) {
-        $item = parent::createNewItem();
-
-        $item->set('idtpl', $idtpl);
-        $item->set('number', $number);
-        $item->set('idmod', $idmod);
-        $item->store();
-
-        return $item;
     }
 }
 
@@ -135,4 +151,5 @@ class cApiContainer extends Item {
 
         parent::setField($name, $value, $bSafe);
     }
+
 }

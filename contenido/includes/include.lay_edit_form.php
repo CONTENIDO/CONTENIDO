@@ -92,7 +92,7 @@ if ($refreshtemplates != "") {
 }
 
 if (!$layout->virgin) {
-    $msg = "";
+    $msg = '';
 
     $idlay = $layout->get("idlay");
     $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
@@ -106,38 +106,35 @@ if (!$layout->virgin) {
     }
 
     // Search for duplicate containers
-    tplPreparseLayout($idlay);
-    $ret = tplBrowseLayoutForContainers($idlay);
-
-    if (strlen($ret) != 0) {
-        $containers = explode("&", $ret);
-
+    $containerNumbers = tplGetContainerNumbersInLayout($idlay);
+    if (count($containerNumbers) > 0) {
         $types = array();
+        $containerCounter = array();
 
-        foreach ($containers as $value) {
-            if ($value != "") {
-                $container[$value] = 0;
+        foreach ($containerNumbers as $containerNr) {
+            if (empty($containerNr)) {
+                continue;
+            }
 
-                // Search for old-style CMS_CONTAINER[x]
-                $container[$value] += substr_count($code, "CMS_CONTAINER[$value]");
+            $containerCounter[$containerNr] = 0;
 
-                // Search for the new-style containers
-                $count = preg_match_all("/<container( +)id=\\\\\"$value\\\\\"(.*)>(.*)<\/container>/i", addslashes($code), $matches);
+            // Search for old-style CMS_CONTAINER[x]
+            $containerCounter[$containerNr] += substr_count($code, "CMS_CONTAINER[$containerNr]");
 
-                $container[$value] += $count;
+            // Search for the new-style containers
+            $count = preg_match_all("/<container( +)id=\\\\\"$containerNr\\\\\"(.*)>(.*)<\/container>/i", addslashes($code), $matches);
 
-                if (is_array(tplGetContainerTypes($idlay, $value))) {
-                    $types = array_merge($types, tplGetContainerTypes($idlay, $value));
-                }
+            $containerCounter[$containerNr] += $count;
+
+            if (is_array(tplGetContainerTypes($idlay, $containerNr))) {
+                $types = array_merge($types, tplGetContainerTypes($idlay, $containerNr));
             }
         }
 
         $types = array_unique($types);
         $layout->setProperty("layout", "used-types", implode($types, ";"));
 
-        $msg = "";
-
-        foreach ($container as $key => $value) {
+        foreach ($containerCounter as $key => $value) {
             if ($value > 1) {
                 $msg .= sprintf(i18n("Container %s was defined %s times"), $key, $value) . "<br>";
             }
