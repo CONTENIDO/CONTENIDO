@@ -80,8 +80,8 @@ class cApiRightCollection extends ItemCollection {
 
         $sql = "SELECT :pk FROM `:rights` AS A, `:actions` AS B, `:area` AS C
                 WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = ':userid'
-					AND A.idcat = :idcat AND A.idarea = C.idarea AND B.idaction = A.idaction
-				LIMIT 1";
+                    AND A.idcat = :idcat AND A.idarea = C.idarea AND B.idaction = A.idaction
+                LIMIT 1";
 
         $params = array(
             'pk' => $this->primaryKey,

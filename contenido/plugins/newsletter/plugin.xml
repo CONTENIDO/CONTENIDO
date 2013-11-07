@@ -65,7 +65,7 @@
             <frame area="recipients_import" filetype="main" name="newsletter/includes/include.recipients_import.php" frameId="4" />
         </frames>
         <nav_sub>
-        	<nav area="news" level="0" navm="3">newsletter/xml/;navigation/extra/newsletter</nav>
+            <nav area="news" level="0" navm="3">newsletter/xml/;navigation/extra/newsletter</nav>
             <nav area="recipients" level="1" navm="3">newsletter/xml/;navigation/extra/recipients</nav>
             <nav area="recipientgroups" level="1" navm="3">newsletter/xml/;navigation/extra/recipientgroups</nav>
         </nav_sub>

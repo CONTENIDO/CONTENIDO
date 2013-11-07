@@ -40,6 +40,6 @@ cContentTypeUserForum.prototype = new cContentTypeAbstractTabbed();
 cContentTypeUserForum.prototype.constructor = cContentTypeUserForum;
 
 
-    
+
 
 

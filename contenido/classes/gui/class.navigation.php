@@ -305,9 +305,9 @@ class cGuiNavigation {
             }
             $errorString .= '<br>' . i18n('Some plugin menus can not be shown because of these errors.');
             $helpBox = new cGuiBackendHelpbox($errorString, './images/but_warn.gif');
-			$main->set('s', 'LANG', $helpBox->render(true) . $this->_renderLanguageSelect());
+            $main->set('s', 'LANG', $helpBox->render(true) . $this->_renderLanguageSelect());
         } else {
-			$main->set('s', 'LANG', $this->_renderLanguageSelect());
+            $main->set('s', 'LANG', $this->_renderLanguageSelect());
         }
 
         $sClientName = $clientCollection->getClientName($client);

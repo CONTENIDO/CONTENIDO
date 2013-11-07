@@ -132,7 +132,7 @@ class cApiContainerConfiguration extends Item {
         $container .= $key . '=' . urlencode(stripslashes($value)) . '&';
         return $container;
     }
-    
+
     /**
      * Parses the container value to its variables
      * @param string $value
