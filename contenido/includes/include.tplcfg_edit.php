@@ -20,43 +20,42 @@ if (!isset($idtpl)) {
 }
 
 if ($idtpl != 0 && $idtplcfg != 0) {
+// ############ @FIXME Same code as in contenido/includes/include.pretplcfg_edit.php
     $sql = "SELECT number FROM " . $cfg["tab"]["container"] . " WHERE idtpl = '" . cSecurity::toInteger($idtpl) . "'";
     $db->query($sql);
 
+    $varstring = array();
+
     while ($db->nextRecord()) {
-        $i = $db->f("number");
-        $CiCMS_VAR = "C" . $i . "CMS_VAR";
+        $number = $db->f('number');
+        $CiCMS_VAR = "C{$number}CMS_VAR";
 
-        if (isset($_POST[$CiCMS_VAR])) {
-            $tmp = $_POST[$CiCMS_VAR];
-        } else {
-            unset($tmp);
-        }
-
-        if (isset($tmp)) {
-            foreach ($tmp as $key => $value) {
-                if (!isset($varstring[$i])) {
-                    $varstring[$i] = "";
-                }
-                $varstring[$i] = $varstring[$i] . $key . "=" . urlencode($value) . "&";
+        if (isset($_POST[$CiCMS_VAR]) && is_array($_POST[$CiCMS_VAR])) {
+            if (!isset($varstring[$number])) {
+                $varstring[$number] = '';
+            }
+            // NOTE: We could use http_build_query here!
+            foreach ($_POST[$CiCMS_VAR] as $key => $value) {
+                $varstring[$number] .= $key . '=' . urlencode($value) . '&';
             }
         }
     }
 
-    // update/insert in container_conf
-    if (isset($varstring) && is_array($varstring)) {
-        // delete all containers
+    // Update/insert in container_conf
+    if (count($varstring) > 0) {
+        // Delete all containers
         $sql = "DELETE FROM " . $cfg["tab"]["container_conf"] . " WHERE idtplcfg = '" . cSecurity::toInteger($idtplcfg) . "'";
         $db->query($sql);
 
         foreach ($varstring as $col => $val) {
-            // insert all containers
+            // Insert all containers
             $sql = "INSERT INTO " . $cfg["tab"]["container_conf"] . " (idtplcfg, number, container) " .
                     "VALUES ('" . cSecurity::toInteger($idtplcfg) . "', '" . cSecurity::toInteger($col) . "', '" . $db->escape($val) . "') ";
 
             $db->query($sql);
         }
     }
+// ###### END FIXME
 
     if ($idart) {
         //echo "art: idart: $idart, idcat: $idcat";

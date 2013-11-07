@@ -315,6 +315,8 @@ if (isset($a_d) && is_array($a_d)) {
             if ($contenidoModuleHandler->modulePathExists() == true) {
                 $input = $contenidoModuleHandler->readInput() . "\n";
             }
+
+// ############ @FIXME Same code as in contenido/includes/include.pretplcfg_edit_form.php
             $varstring = array();
 
             if (isset($a_c[$cnumber])) {
@@ -323,11 +325,9 @@ if (isset($a_d) && is_array($a_d)) {
 
                 foreach ($tmp1 as $key1 => $value1) {
                     $tmp2 = explode("=", $value1);
-                    $varstring[$tmp2[0]] = '';
-                    for($i = 1; $i < count($tmp2); $i++) {
-                        $varstring[$tmp2[0]] .= $tmp2[$i].'=';
+                    foreach ($tmp2 as $key2 => $value2) {
+                        $varstring[$tmp2[0]] = urldecode($tmp2[1]);
                     }
-                    $varstring[$tmp2[0]] = urldecode(substr($varstring[$tmp2[0]], 0, strlen($varstring[$tmp2[0]]) - 1));
                 }
             }
 
@@ -337,7 +337,7 @@ if (isset($a_d) && is_array($a_d)) {
             foreach ($varstring as $key3 => $value3) {
                 $tmp = $value3;
                 $tmp = str_replace("\'", "'", $tmp);
-                $CiCMS_VALUE .= $CiCMS_Var . '[' . $key3 . ']="' . $tmp . '"; ';
+                $CiCMS_VALUE .= $CiCMS_Var . '[' . $key3 . '] = "' . $tmp . '"; ';
                 $input = str_replace("\$CMS_VALUE[$key3]", $tmp, $input);
                 $input = str_replace("CMS_VALUE[$key3]", $tmp, $input);
             }
@@ -348,9 +348,9 @@ if (isset($a_d) && is_array($a_d)) {
 
             ob_start();
             eval($CiCMS_VALUE . "\n" . $input);
-
             $modulecode = ob_get_contents();
             ob_end_clean();
+// ###### END FIXME
 
             $tpl->set('d', 'MODULECAPTION', $modulecaption);
             $tpl->set('d', 'MODULENAME', $modulename);

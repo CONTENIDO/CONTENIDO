@@ -84,9 +84,9 @@ if (isset($a_d) && is_array($a_d)) {
             $modulecaption = sprintf(i18n("Module in Container %s"), $cnumber);
             $modulename    = $db->f("name");
 
-//          echo "$a_c[$cnumber]<br><br>";
-
+// ############ @FIXME Same code as in contenido/includes/include.tplcfg_edit_form.php
             $varstring = array();
+
             if (isset($a_c[$cnumber])) {
                 $a_c[$cnumber] = preg_replace("/&$/", "", $a_c[$cnumber]);
                 $tmp1 = preg_split("/&/", $a_c[$cnumber]);
@@ -94,29 +94,31 @@ if (isset($a_d) && is_array($a_d)) {
                 foreach ($tmp1 as $key1 => $value1) {
                     $tmp2 = explode("=", $value1);
                     foreach ($tmp2 as $key2 => $value2) {
-                        $varstring[$tmp2[0]] = $tmp2[1];
+                        $varstring[$tmp2[0]] = urldecode($tmp2[1]);
                     }
                 }
             }
-            $CiCMS_Var = '$C'.$cnumber.'CMS_VALUE';
+
+            $CiCMS_Var = '$C' . $cnumber . 'CMS_VALUE';
             $CiCMS_VALUE = '';
 
             foreach ($varstring as $key3 => $value3) {
                 $tmp = $value3;
                 $tmp = str_replace("\'", "'", $tmp);
-                $CiCMS_VALUE .= $CiCMS_Var.'['.$key3.']="'.$tmp.'"; ';
+                $CiCMS_VALUE .= $CiCMS_Var . '[' . $key3 . '] = "' . $tmp . '"; ';
                 $input = str_replace("\$CMS_VALUE[$key3]", $tmp, $input);
                 $input = str_replace("CMS_VALUE[$key3]", $tmp, $input);
             }
 
             $input = str_replace("CMS_VALUE", $CiCMS_Var, $input);
-            $input = str_replace("\$".$CiCMS_Var, $CiCMS_Var, $input);
-            $input = str_replace("CMS_VAR", "C".$cnumber."CMS_VAR" , $input);
+            $input = str_replace("\$" . $CiCMS_Var, $CiCMS_Var, $input);
+            $input = str_replace("CMS_VAR", "C" . $cnumber . "CMS_VAR", $input);
 
             ob_start();
-            eval($CiCMS_VALUE." \r\n ".$input);
+            eval($CiCMS_VALUE . "\n" . $input);
             $modulecode = ob_get_contents();
             ob_end_clean();
+// ###### END FIXME
 
             $tpl->set('d', 'MODULECAPTION', $modulecaption);
             $tpl->set('d', 'MODULENAME', $modulename);
