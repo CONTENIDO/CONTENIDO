@@ -614,7 +614,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             $redirect_mode = $oArtLang->get('redirect_mode');
 
             $protocol = ($_SERVER['SERVER_PROTOCOL']);
-            $redirect_code = null;
+            $redirect_code = 302;
             if ($redirect_mode === 'temporary') {
                 ($protocol === 'HTTP/1.1')? $redirect_code = 307 : $redirect_code = 302;
             } elseif ($redirect_mode === 'permanently') {
