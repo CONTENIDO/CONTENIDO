@@ -339,6 +339,10 @@ $cfg['images']['image_magick']['use'] = true;
 $cfg['images']['image_magick']['path'] = '';
 
 
+//configuration of the compression rate used bey the function cApiImgScale
+$cfg['images']['image_quality']['compression_rate'] = 75;
+
+
 /* Code generator settings
  * -----------------------------------------------------------------------------
  */
