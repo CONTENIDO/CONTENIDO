@@ -3452,6 +3452,9 @@ msgstr ""
 msgid "Redirect"
 msgstr ""
 
+msgid "Status code"
+msgstr ""
+
 #: includes/include.con_edit_form.php:314
 msgid "New window"
 msgstr ""

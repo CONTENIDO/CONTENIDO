@@ -3059,6 +3059,9 @@ msgstr "veröffentlicht von"
 msgid "Redirect"
 msgstr "Weiterleitung"
 
+msgid "Status code"
+msgstr "Status code"
+
 #: includes/include.con_edit_form.php:340
 msgid "New window"
 msgstr "Neues Fenster"
