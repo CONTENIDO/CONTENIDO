@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-07 08:41+0100\n"
+"POT-Creation-Date: 2013-11-07 16:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -132,8 +132,8 @@ msgstr ""
 #: includes/include.lay_edit_form.php:212
 #: includes/include.grouprights_tpl.php:77 includes/include.mod_new.php:63
 #: includes/include.grouprights_overview.php:106
-#: includes/include.tplcfg_edit_form.php:435
-#: includes/include.pretplcfg_edit_form.php:141
+#: includes/include.tplcfg_edit_form.php:437
+#: includes/include.pretplcfg_edit_form.php:145
 #: includes/include.style_history.php:150 includes/include.js_history.php:150
 #: includes/include.mycontenido.tasks.edit.php:50
 #: includes/include.grouprights_mod.php:79
@@ -1511,7 +1511,7 @@ msgstr ""
 
 #: classes/module/class.module.template.handler.php:244
 #: includes/include.js_edit_form.php:199
-#: includes/include.pretplcfg_edit.php:83
+#: includes/include.pretplcfg_edit.php:88
 #: includes/include.html_tpl_edit_form.php:186
 #: includes/include.systemsettings.php:35 includes/include.mod_style.php:180
 #: includes/include.frontend.group_edit.php:100
@@ -2237,30 +2237,30 @@ msgstr ""
 msgid "Rights type"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:216
-#: templates/standard/template.con_edit_form.html:337
+#: templates/standard/template.con_edit_form.html:228
+#: templates/standard/template.con_edit_form.html:349
 #: includes/include.upl_edit.php:80
 msgid "Time control"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:260
-#: templates/standard/template.con_edit_form.html:342
+#: templates/standard/template.con_edit_form.html:272
+#: templates/standard/template.con_edit_form.html:354
 msgid "Make online after move"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:338
+#: templates/standard/template.con_edit_form.html:350
 #: includes/include.upl_edit.php:227
 msgid "Use time control"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:339
+#: templates/standard/template.con_edit_form.html:351
 #: templates/standard/template.log_main.html:39
 #: templates/standard/template.log_main.html:92
 #: includes/include.upl_edit.php:232
 msgid "Start date"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:340
+#: templates/standard/template.con_edit_form.html:352
 #: templates/standard/template.log_main.html:43
 #: templates/standard/template.log_main.html:93
 #: includes/include.mycontenido.tasks.edit.php:54
@@ -2268,25 +2268,25 @@ msgstr ""
 msgid "End date"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:341
+#: templates/standard/template.con_edit_form.html:353
 msgid "When expired, move to category"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:251
+#: templates/standard/template.con_edit_form.html:263
 msgid "When expired, move to"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:240
+#: templates/standard/template.con_edit_form.html:252
 msgid "End"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:230
+#: templates/standard/template.con_edit_form.html:242
 #: templates/standard/template.mycontenido_lastarticles.html:62
 #: templates/standard/template.mycontenido_lastarticles.html:90
 msgid "Start"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:225
+#: templates/standard/template.con_edit_form.html:237
 msgid "Use"
 msgstr ""
 
@@ -4002,6 +4002,14 @@ msgstr ""
 msgid "Status code"
 msgstr ""
 
+#: includes/include.con_edit_form.php:343
+msgid "Temporary"
+msgstr ""
+
+#: includes/include.con_edit_form.php:344
+msgid "Permanently"
+msgstr ""
+
 #: includes/include.con_edit_form.php:353
 msgid "New window"
 msgstr ""
@@ -4362,22 +4370,22 @@ msgstr ""
 msgid "Module in container"
 msgstr ""
 
-#: includes/include.tplcfg_edit_form.php:442
+#: includes/include.tplcfg_edit_form.php:444
 msgid "Category template configuration"
 msgstr ""
 
-#: includes/include.tplcfg_edit_form.php:445
+#: includes/include.tplcfg_edit_form.php:447
 msgid "Article template configuration"
 msgstr ""
 
-#: includes/include.tplcfg_edit_form.php:478
+#: includes/include.tplcfg_edit_form.php:480
 #, php-format
 msgid ""
 "This article has no template. Therefore the categories template (%s) is "
 "used. You can set the article template below."
 msgstr ""
 
-#: includes/include.tplcfg_edit_form.php:480
+#: includes/include.tplcfg_edit_form.php:482
 msgid ""
 "no template with this categories and/or article associated. You must be set "
 "a template."
@@ -4508,7 +4516,7 @@ msgstr ""
 msgid "Module in Container %s"
 msgstr ""
 
-#: includes/include.pretplcfg_edit_form.php:133
+#: includes/include.pretplcfg_edit_form.php:137
 msgid "Template preconfiguration"
 msgstr ""
 
