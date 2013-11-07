@@ -38,6 +38,7 @@
 "art_lang";"online";"tinyint(1)";"";"";"0";"";""
 "art_lang";"redirect";"int(6)";"";"";"0";"";""
 "art_lang";"redirect_url";"varchar(255)";"";"";"";"";""
+"art_lang";"redirect_code";"int(3)";"";"";"307";"";""
 "art_lang";"artsort";"int(11)";"";"";"0";"";""
 "art_lang";"timemgmt";"tinyint(1)";"YES";"";"";"";""
 "art_lang";"datestart";"datetime";"YES";"";"";"";""
