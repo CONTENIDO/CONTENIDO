@@ -84,8 +84,8 @@ function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
  *        png
  * @return string url to the resulting image (http://...
  */
-function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 75, $keepType = false) {
-    global $cfgClient, $client;
+function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = false) {
+    global $cfgClient, $client, $cfg;
 
     if (!cFileHandler::exists($img)) {
         return false;
@@ -98,7 +98,6 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     if ($quality == 0) {
         $quality = 75;
     }
-
 
     $filename = $img;
     $maxX = (int) $maxX;
@@ -212,8 +211,8 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
  *        png
  * @return string Url to the resulting image (http://...)
  */
-function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 75, $keepType = true) {
-    global $cfgClient, $client;
+function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = true) {
+    global $cfgClient, $client, $cfg;
 
     if (!cFileHandler::exists($img)) {
         return false;
@@ -349,7 +348,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
  *        png
  * @return string Url to the resulting image (http://...)
  */
-function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 75, $keepType = false) {
+function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = false, $cacheTime = 10, $quality = 0, $keepType = false) {
     global $cfg, $cfgClient, $client;
 
     if (!cFileHandler::exists($img)) {
@@ -365,7 +364,6 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
     if ($quality == 0) {
         $quality = 75;
     }
-
 
     $filename = $img;
     $maxX = (int) $maxX;
