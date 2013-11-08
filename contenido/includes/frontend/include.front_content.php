@@ -44,8 +44,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Clients local configuration
-if (file_exists($frontend_path . 'data/config/config.local.php')) {
-    @include ($frontend_path . 'data/config/config.local.php');
+if (file_exists($cfgClient[$client]['config']['path'] . '/config.local.php')) {
+    @include ($cfgClient[$client]['config']['path'] . '/config.local.php');
 }
 
 cInclude('includes', 'functions.con.php');
@@ -418,8 +418,6 @@ while ($db->next_record()) {
 }
 
 if ($data[0]['idtplcfg'] === '0') {
-    // echo 'Editing is not possible because there is no template assigned to
-    // this category.';
     $tpl = new cTemplate();
     $tpl->set("s", "ERROR_TITLE", $errorTitle);
     $tpl->set("s", "ERROR_TEXT", $errorText);
@@ -432,7 +430,6 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     cInclude('includes', 'functions.tpl.php');
     include ($backendPath . $cfg['path']['includes'] . 'include.con_editcontent.php');
 } else {
-
     // Frontend view
     // Mark submenuitem 'Preview' in the CONTENIDO Backend (Area: Contenido -->
     // Articles --> Preview)
