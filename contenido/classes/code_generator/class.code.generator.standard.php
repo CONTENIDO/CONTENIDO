@@ -113,7 +113,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 $this->_moduleCode = $this->_moduleCode . "\n";
 
                 // Process CMS value tags
-                $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNumber]);
+                $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNr]);
 
                 // Add CMS value code to module prefix code
                 if ($containerCmsValues) {
@@ -121,10 +121,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 }
 
                 // Process frontend debug
-                $this->_processFrontendDebug($containerNumber, $module);
+                $this->_processFrontendDebug($containerNr, $module);
 
                 // Replace new containers
-                $this->_processCmsContainer($containerNumber);
+                $this->_processCmsContainer($containerNr);
             }
         }
 
