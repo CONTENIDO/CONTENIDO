@@ -1,18 +1,18 @@
 <?php
 /**
- * This file contains the backend page for displaying structure (category tree) overview.
+ * This file contains the backend page for displaying structure (category tree)
+ * overview.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Olaf Niemann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Olaf Niemann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $backendUrl = cRegistry::getBackendUrl();
@@ -209,7 +209,7 @@ function insertEmptyStrRow($listColumns) {
     $additionalColumns = array();
     foreach ($listColumns as $content) {
         // Content rows
-        $additionalColumns[] = '<td class="emptyCell" nowrap="nowrap">&nbsp;</td>';
+        $additionalColumns[] = '<td class="emptyCell2" nowrap="nowrap">&nbsp;</td>';
     }
     $tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $additionalColumns));
     $tpl->next();
@@ -645,10 +645,10 @@ foreach ($objects as $key => $value) {
         $aRecord = array();
         $sCatName = $value->name;
 
-//        $aRecord['catn'] = str_replace('\'', '\\\'', $sCatName);
+        // $aRecord['catn'] = str_replace('\'', '\\\'', $sCatName);
         $aRecord['catn'] = $sCatName;
         $sAlias = $value->custom['alias'];
-//        $aRecord['alias'] = str_replace('\'', '\\\'', $sAlias);
+        // $aRecord['alias'] = str_replace('\'', '\\\'', $sAlias);
         $aRecord['alias'] = conHtmlSpecialChars($sAlias);
         $aRecord['idtplcfg'] = $value->custom['idtplcfg'];
         $aRecord['pName'] = $bPermRename;
@@ -766,7 +766,7 @@ foreach ($objects as $key => $value) {
             }
         } else {
             if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->id)) {
-                //var_dump($value->custom['parentid']);
+                // var_dump($value->custom['parentid']);
                 if ($value->custom['parentid'] != 0) {
                     $tpl->set('d', 'MOVEBUTTON', "<a href=\"" . $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=" . $value->id) . "#movesubtreehere\"><img src=\"" . $cfg["path"]["images"] . "but_move_subtree.gif\" alt=\"" . i18n("Move tree") . "\" title=\"" . i18n("Move tree") . "\"></a>");
                 } else {
