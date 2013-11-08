@@ -676,7 +676,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLLabel(i18n('Number of articles'), 'teaser_count_' . $this->_id);
         $wrapperContent[] = $this->_generateCountSelect();
 
-        $wrapperContent[] = new cHTMLLabel(i18n("TEASER_START_ARTICLE"), 'teaser_start_' . $this->_id);
+        $wrapperContent[] = new cHTMLLabel(i18n("Include start article"), 'teaser_start_' . $this->_id);
         $wrapperContent[] = new cHTMLCheckbox('teaser_start_' . $this->_id, '', 'teaser_start_' . $this->_id, ($this->_settings['teaser_start'] == 'true'));
 
         $wrapperContent[] = new cHTMLLabel(i18n("Teaser sort"), 'teaser_sort_' . $this->_id);
