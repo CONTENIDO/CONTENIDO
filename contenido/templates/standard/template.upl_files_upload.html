@@ -118,10 +118,12 @@ i18n("Waiting...")
 
 <script type="text/javascript">
 var oRef = parent.parent.frames['right'].frames['right_top'].document.getElementById('c_1');
-if (oRef) parent.parent.frames['right'].frames['right_top'].sub.clicked(oRef.getElementsByTagName('a')[0]);
+if (oRef) {
+    parent.parent.frames['right'].frames['right_top'].sub.clicked(oRef.getElementsByTagName('a')[0]);
+}
 
 // to reload the left frame after delete/insert new files
-redirectUrl = parent.parent.frames['left'].frames['left_bottom'].location;
+var redirectUrl = parent.parent.frames['left'].frames['left_bottom'].location.href;
 redirectUrl = replaceQueryString(redirectUrl, 'action', '');
 redirectUrl = replaceQueryString(redirectUrl, 'path', '');
 
