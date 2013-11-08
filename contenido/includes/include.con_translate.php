@@ -219,7 +219,7 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 }
 
 // Save translations
-if ($action == 'con_translate_save') {
+if ($action == 'con_translate_edit') {
     $error = false;
 
     $savetranslations = $_REQUEST["modtrans"];
@@ -660,7 +660,7 @@ $list->sort($_REQUEST["sortby"], $_REQUEST["sortmode"]);
 $list->setListStart($_REQUEST["page"]);
 $form = new cHTMLForm('all_mod_translations');
 $form->setVar('area', $area);
-$form->setVar('action', 'con_translate_save');
+$form->setVar('action', 'con_translate_edit');
 $form->setVar('frame', 4);
 $form->setVar("elemperpage", $_REQUEST["elemperpage"]);
 $form->setVar("page", $_REQUEST["page"]);
