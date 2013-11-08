@@ -2163,20 +2163,11 @@ docs/en02-installation-guide.pdf -text
 docs/en03-upgrade-guide.pdf -text
 docs/techref/NOTICE.txt -text
 docs/techref/assets/conlogo.gif -text
-docs/techref/backend/backend.autoloader.html -text
-docs/techref/backend/backend.customizing.1.gif -text
-docs/techref/backend/backend.customizing.html -text
-docs/techref/backend/backend.localconfig.html -text
-docs/techref/backend/backend.plugauth.html -text
 docs/techref/frontend/frontend.customizing.html -text
 docs/techref/frontend/frontend.permissions.html -text
 docs/techref/frontend/frontend.protectedcategories.html -text
 docs/techref/frontend/frontend.session.html -text
 docs/techref/modules/module.login.html -text
-docs/techref/modules/output-gen.jpg -text
-docs/techref/modules/writing.modules.html -text
-docs/techref/plugins/Contenido[!!-~]Extension[!!-~]Chainer.pdf -text
-docs/techref/plugins/plugin.config.html -text
 setup/autoinstall-example.ini -text svneol=unset#text/plain
 setup/autoinstall-example.xml -text svneol=unset#text/plain
 setup/autoinstall.php -text
