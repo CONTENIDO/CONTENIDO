@@ -633,7 +633,7 @@ class cApiModule extends Item {
         $modulName = substr($sFile, 0, -4);
 
         $sModulePath = $cfgClient[$client]['module']['path'] . $modulName;
-        $sTempPath = $cfg['path']['temp'] . 'module_import_' . $modulName;
+        $sTempPath = $cfg['path']['contenido_temp'] . 'module_import_' . $modulName;
 
         // exist the modul in directory
         if (is_dir($sModulePath)) {
@@ -793,18 +793,20 @@ class cApiModule extends Item {
         if ($moduleHandler->modulePathExists()) {
             $zip = new ZipArchive();
             $zipName = $this->get('alias') . '.zip';
-            if ($zip->open($zipName, ZipArchive::CREATE)) {
+            $cfg = cRegistry::getConfig();
+            $path = $cfg['path']['contenido_temp'];
+            if ($zip->open($path . $zipName, ZipArchive::CREATE)) {
                 $this->_addFolderToZip($moduleHandler->getModulePath(), $zip);
 
                 $zip->close();
                 // Stream the file to the client
                 header('Content-Type: application/zip');
-                header('Content-Length: ' . filesize($zipName));
+                header('Content-Length: ' . filesize($path . $zipName));
                 header("Content-Disposition: attachment; filename=\"$zipName\"");
-                readfile($zipName);
+                readfile($path . $zipName);
 
                 // erase the file
-                unlink($zipName);
+                unlink($path . $zipName);
             } else {
                 $notification->displayNotification('error', i18n('Could not open the zip file!'));
             }
