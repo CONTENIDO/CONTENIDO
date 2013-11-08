@@ -844,7 +844,7 @@ class cApiModule extends Item {
      * @param  string  $moduleInputCode
      * @return  string
      */
-    public static function processContainerInInputCode($containerNr, $containerCfg, $moduleInputCode) {
+    public static function processContainerInputCode($containerNr, $containerCfg, $moduleInputCode) {
         $containerConfigurations = array();
         if (!empty($containerCfg)) {
             $containerConfigurations = cApiContainerConfiguration::parseContainerValue($containerCfg);

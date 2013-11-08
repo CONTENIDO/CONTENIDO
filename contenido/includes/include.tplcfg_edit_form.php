@@ -301,7 +301,7 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
         $input = stripslashes($contenidoModuleHandler->readInput()) . "\n";
     }
 
-    $modulecode = cApiModule::processContainerInInputCode($containerNumber, $containerConfigurations[$containerNumber], $input);
+    $modulecode = cApiModule::processContainerInputCode($containerNumber, $containerConfigurations[$containerNumber], $input);
 
     ob_start();
     eval($modulecode);
