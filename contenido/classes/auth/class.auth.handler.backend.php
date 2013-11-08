@@ -43,7 +43,15 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
     }
 
     public function displayLoginForm() {
-        include (cRegistry::getBackendPath() . 'main.loginform.php');
+        // @TODO  We need a better solution for this. One idea could be to set the request/response
+        //        type in global $cfg array instead of checking $_REQUEST['ajax'] everywhere...
+        if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
+            $oAjax = new cAjaxRequest();
+            $sReturn = $oAjax->handle('authentication_fail');
+            echo $sReturn;
+        } else {
+            include(cRegistry::getBackendPath() . 'main.loginform.php');
+        }
     }
 
     public function validateCredentials() {

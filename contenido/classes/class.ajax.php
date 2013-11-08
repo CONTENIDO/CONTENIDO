@@ -344,19 +344,22 @@ class cAjaxRequest {
                 break;
 
             case 'verify_module':
+                // Module syntax check
+                $idmod = isset($_POST['idmod']) ? $_POST['idmod'] : NULL;
+                $inputType = isset($_POST['type']) ? $_POST['type'] : NULL;
 
-                $idmod       = isset($_POST['idmod']) ? $_POST['idmod']:NULL;
-                $inputType   = isset($_POST['type']) ? $_POST['type']:NULL;
-                // the default setting is to check the modules
-                $modulecheck = getSystemProperty("system", "modulecheck") == "" || getSystemProperty("system", "modulecheck") == "true";
-                $result      = array(
-                    'state'       => 'error',
-                    'message'     => 'No cModuleHandler for ' + $idmod + ', or wrong code type: ' + $inputType
+                // NOTE: The default setting is to check the modules
+                $moduleCheck = getSystemProperty('system', 'modulecheck');
+                $moduleCheck = $moduleCheck == '' || $moduleCheck == 'true';
+
+                $result = array(
+                    'state' => 'error',
+                    'message' => 'No cModuleHandler for ' + $idmod + ', or wrong code type: ' + $inputType
                 );
-                if ($idmod && $inputType && $modulecheck === true) {
 
+                if ($idmod && $inputType && $moduleCheck === true) {
                     $contenidoModuleHandler = new cModuleHandler($idmod);
-                    switch($inputType) {
+                    switch ($inputType) {
                         case 'input':
                             $result = $contenidoModuleHandler->testInput();
                             break;
@@ -367,24 +370,34 @@ class cAjaxRequest {
 
                     //create answer
                     if ($result['state']) {
-                        $result['state']   = 'ok';
+                        $result['state'] = 'ok';
                         $result['message'] = i18n("Module successfully compiled");
                     } else {
-                        $result['state']   = 'error';
+                        $result['state'] = 'error';
                         $result['message'] = $result['errorMessage'];
                     }
-
                 }
 
                 $string = json_encode($result);
-                breaK;
+                break;
+
+            case 'authentication_fail':
+                // Not authenticated AJAX request, e. g. invalid or expired session
+                $result = array(
+                    'state' => 'error',
+                    'code' => 401,
+                    'message' => 'Unauthorized',
+                );
+                $string = json_encode($result);
+                break;
 
             default:
-                // if action is unknown generate error message
+                // If action is unknown generate error message
                 $string = 'Unknown Ajax Action';
                 break;
         }
 
         return $string;
     }
+
 }
