@@ -171,6 +171,21 @@ table.generic th.center {
     color: #666;
 }
 
+table.generic table.genericEscape th {
+	padding: 0px;
+	border: 0px;
+}
+
+table.generic table.genericEscape td {
+	padding: 0px;
+	border: 0px;
+}
+
+table.generic table.genericEscape tr {
+	padding: 0px;
+	border: 0px;
+}
+
 table.borderless {
     border: 0px;
     border-color: #b3b3b3;
@@ -2073,6 +2088,12 @@ input[type=image].vAlignMiddle {
  */
 .tableElement {
     margin-left: 3px;
+}
+
+.conEditForm {
+	width: 700px;
+	min-width: 700px;
+	max-width: 700px;
 }
 
 .conEditForm input.text_medium {
