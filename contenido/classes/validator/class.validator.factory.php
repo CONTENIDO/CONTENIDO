@@ -22,6 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Validation
  */
 class cValidatorFactory {
+
     /**
      * Instantiates and returns the validator. Sets also validators default options.
      *
@@ -41,35 +42,41 @@ class cValidatorFactory {
      * @param   string $validator  Validator to get
      * @param   array  $options  Options to use for the validator. Any passed option
      *                           overwrites the related option in global validator configuration.
-     * @throws cInvalidArgumentException If type of validator is unknown or not available
+     * @throws cInvalidArgumentException If type of validator is unknown or not available or if someone
+     *                                   tries to get cValidatorFactory instance.
      * @return  cValidatorAbstract
      */
     public static function getInstance($validator, array $options = array()) {
         global $cfg;
 
-        $className = 'cValidator' . ucfirst(strtolower($validator));
-        $fileName = ucfirst(strtolower($validator)) . '.class.php';
+        $name = strtolower($validator);
+        $className = 'cValidator' . ucfirst($name);
+
+        if ('factory' === $name) {
+            throw new cInvalidArgumentException("Can't use validator factory '{$validator}' as validator!");
+        }
+
         if (class_exists($className)) {
             $obj = new $className();
         } else {
+            // Try to load validator class file (in this folder)
             $path = str_replace('\\', '/', dirname(__FILE__)) . '/';
+            $fileName = sprintf('class.validator.%s.php', $name);
             if (!cFileHandler::exists($path . $fileName)) {
-                throw new cInvalidArgumentException("The class file of Contenido_Validator couldn't included by cValidatorFactory: " . $validator . "!");
+                throw new cInvalidArgumentException("The file '{$fileName}' for validator '{$validator}' couldn't included by cValidatorFactory!");
             }
 
+            // Try to instantiate the class
             require_once($path . $fileName);
             if (!class_exists($className)) {
-                throw new cInvalidArgumentException("The class of Contenido_Validator couldn't included by uriBuilderFactory: " . $validator . "!");
+                throw new cInvalidArgumentException("Missing validator class '{$className}' for validator '{$validator}' !");
             }
-
             $obj = new $className();
         }
 
-        $cfgName = strtolower($validator);
-
         // Merge passed options with global configured options.
-        if (isset($cfg['validator']) && isset($cfg['validator'][$cfgName]) && is_array($cfg['validator'][$cfgName])) {
-            $options = array_merge($cfg['validator'][$cfgName], $options);
+        if (isset($cfg['validator']) && isset($cfg['validator'][$name]) && is_array($cfg['validator'][$name])) {
+            $options = array_merge($cfg['validator'][$name], $options);
         }
         $obj->setOptions($options);
 
