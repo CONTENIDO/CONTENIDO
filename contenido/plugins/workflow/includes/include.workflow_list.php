@@ -69,5 +69,5 @@ while (($workflow = $workflows->next()) !== false) {
 if (!empty($sScript)) {
     $page->addScript($sScript);
 }
-$page->set("s", "FORM", $ui->render());
+$page->set("s", "FORM", $ui->render(0));
 $page->render();
