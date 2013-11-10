@@ -113,7 +113,7 @@ class cApiFileInformationCollection extends ItemCollection {
      * Deletes also cached e entries and any existing properties.
      *
      * @param array $values with parameters
-     * @return void
+     * @return bool
      */
     public function removeFileInformation(array $values) {
         $item = new cApiFileInformation();
