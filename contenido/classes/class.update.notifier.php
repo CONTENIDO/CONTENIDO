@@ -373,7 +373,7 @@ class cUpdateNotifier {
         }
 
         if ($bUpdateNecessity == false) {
-            $iLastUpdate = cFileHandler::read($this->sCacheDirectory . $this->sTimestampCacheFile);
+            $iLastUpdate = (int) cFileHandler::read($this->sCacheDirectory . $this->sTimestampCacheFile);
 
             $iCheckTimestamp = $iLastUpdate + ($this->iCacheDuration * 60);
             $iCurrentTime = time();

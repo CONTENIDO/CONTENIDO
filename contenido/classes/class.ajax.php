@@ -354,7 +354,7 @@ class cAjaxRequest {
 
                 $result = array(
                     'state' => 'error',
-                    'message' => 'No cModuleHandler for ' + $idmod + ', or wrong code type: ' + $inputType
+                    'message' => 'No cModuleHandler for ' . $idmod . ', or wrong code type: ' . $inputType
                 );
 
                 if ($idmod && $inputType && $moduleCheck === true) {

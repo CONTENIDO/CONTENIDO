@@ -179,7 +179,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $form->setVar("area", "mod_edit");
     $form->setVar("frame", $frame);
     $form->setVar("idmod", $idmod);
-    $page->setSubnav('action=' + $action);
+    $page->setSubnav('action=' . $action);
     if (!$bInUse) {
         $form->setVar("action", "mod_edit");
     }

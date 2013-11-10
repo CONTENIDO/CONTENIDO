@@ -1062,7 +1062,7 @@ function scanPlugins($entity) {
     }
 
     $pluginorder = getSystemProperty('plugin', $entity . '-pluginorder');
-    $lastscantime = getSystemProperty('plugin', $entity . '-lastscantime');
+    $lastscantime = (int) getSystemProperty('plugin', $entity . '-lastscantime');
 
     $plugins = array();
 
