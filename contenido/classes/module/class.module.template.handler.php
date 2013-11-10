@@ -295,7 +295,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $files = $this->getAllFilesFromDirectory('template');
 
         if (is_array($files)) {
-            if (!key_exists('0', $files)) {
+            if (!array_key_exists('0', $files)) {
                 $this->_file = '';
                 $this->_tmp_file = '';
             } else {

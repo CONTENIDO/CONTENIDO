@@ -114,7 +114,7 @@ while ($db->nextRecord()) {
     $aDisplayLangauge[$db->f('idlang')] = $db->f('name');
 }
 
-if (key_exists($_REQUEST['display_langauge'], $aDisplayLangauge)) {
+if (array_key_exists($_REQUEST['display_langauge'], $aDisplayLangauge)) {
     $selectedLangauge = $_REQUEST['display_langauge'];
 }
 
