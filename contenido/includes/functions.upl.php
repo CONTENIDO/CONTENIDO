@@ -500,7 +500,6 @@ function uplGetThumbnail($sFile, $iMaxSize) {
         case "bmp":
         case "jpeg":
         case "jpg":
-        case "bmp":
         case "iff":
         case "xbm":
         case "wbmp":
