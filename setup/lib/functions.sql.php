@@ -259,7 +259,7 @@ function removeComments(&$output) {
 /**
  * Will strip the sql comment lines out of an uploaded sql file
  * @param   string  $sql
- * @return  string
+ * @return  array
  */
 function removeRemarks($sql) {
     $lines = explode("\n", $sql);
