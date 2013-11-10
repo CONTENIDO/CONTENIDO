@@ -109,7 +109,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     $oPage->displayInfo(i18n("Deleted newsletter successfully!", 'newsletter'));
 } elseif ($action == "news_add_job" && $perm->have_perm_area_action($area, "news_add_job")) {
     // Create job
-    $oJobs = new cNewsletterJobCollection();
+    $oJobs = new NewsletterJobCollection();
     $oJob = $oJobs->create($idnewsletter, $oClientLang->getProperty("newsletter", "idcatart"));
     unset($oJobs);
 
