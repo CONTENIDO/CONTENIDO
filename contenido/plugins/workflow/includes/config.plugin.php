@@ -262,6 +262,7 @@ function piworkflowRenderAction($idcat, $idart, $idartlang, $type) {
             if ($wfRights["templateedit"] == true) {
                 return $tplconf_link;
             }
+            break;
         default:
             break;
     }
