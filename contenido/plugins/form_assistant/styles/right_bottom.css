@@ -43,23 +43,31 @@ legend {
 /* FORM: form                                                                 */
 /******************************************************************************/
 
-#pifa-form div {
+
+#pifa-form div,
+#pifa-form-export div,
+#pifa-form-import div {
     clear: left;
     margin-top: 4px;
     margin-bottom : 12px;
 }
 
-#pifa-form label {
+#pifa-form label,
+#pifa-form-export label,
+#pifa-form-import label {
     float: left;
     width: 20%;
     text-align: center;
 }
 
 #pifa-form div input,
-#pifa-form div select {
+#pifa-form div select,
+#pifa-form-export div input,
+#pifa-form-export div select,
+#pifa-form-import div input,
+#pifa-form-import div select {
     width: 65%;
 }
-
 
 /******************************************************************************/
 /* FORM: add field                                                            */
@@ -92,8 +100,10 @@ legend {
     margin-right: 200px;
 }
 
-#pifa-form fieldset #image-new-form {
-    float: right;
+#pifa-form fieldset input[type="image"],
+#pifa-form-export fieldset input[type="image"],
+#pifa-form-import fieldset input[type="image"] {
+	float: right;
 }
 
 /* ORIGINAL STYLES
@@ -212,8 +222,9 @@ legend {
     border: 1px dashed grey;
 }
 
+input[type="image"],
 #image-new-form {
-    margin-left: 110px;
+	margin-left: 110px;
     padding-right: 10px;
 }
 

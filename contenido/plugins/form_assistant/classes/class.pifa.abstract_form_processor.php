@@ -42,7 +42,7 @@ abstract class PifaAbstractFormProcessor {
     protected $_form = NULL;
 
     /**
-     * Instantiates the processor.
+     * Create an instance.
      * The processor aggregates the form module and the form.
      * The idform is read from the given modules settings.
      *

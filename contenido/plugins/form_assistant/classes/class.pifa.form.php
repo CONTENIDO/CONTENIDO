@@ -14,12 +14,15 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * PIFA form item collection class.
+ * It's a kind of a model.
  *
  * @author marcus.gnass
  */
 class PifaFormCollection extends ItemCollection {
 
     /**
+     * Create an instance.
      *
      * @param mixed $where clause to be used to load items or false
      */
@@ -136,7 +139,8 @@ class PifaFormCollection extends ItemCollection {
 }
 
 /**
- * contains meta data of PIFA forms
+ * PIFA form item class.
+ * It's a kind of a model.
  *
  * @author marcus.gnass
  */
@@ -163,6 +167,7 @@ class PifaForm extends Item {
     private $_lastInsertedId = NULL;
 
     /**
+     * Create an instance.
      *
      * @param mixed $id ID of item to be loaded or false
      */
@@ -192,19 +197,31 @@ class PifaForm extends Item {
     }
 
     /**
+     * Read this forms fields from database and aggregate them.
+     *
+     * @param array $_errors
+     */
+    public function loadFields() {
+        $col = new PifaFieldCollection();
+        $col->setWhere('PifaFieldCollection.idform', $this->get('idform'));
+        $col->setOrder('PifaFieldCollection.field_rank');
+        $col->query();
+        $this->_fields = array();
+        while (false !== $pifaField = $col->next()) {
+            $this->_fields[] = clone $pifaField;
+        }
+    }
+
+    /**
+     * Returns aggregated list of PIFA fields.
+     * If no fields are aggregated, this forms fields are read from database and
+     * aggregated.
      *
      * @return array:PifaField
      */
     public function getFields() {
         if (NULL === $this->_fields) {
-            $col = new PifaFieldCollection();
-            $col->setWhere('PifaFieldCollection.idform', $this->get('idform'));
-            $col->setOrder('PifaFieldCollection.field_rank');
-            $col->query();
-            $this->_fields = array();
-            while (false !== $pifaField = $col->next()) {
-                $this->_fields[] = clone $pifaField;
-            }
+            $this->loadFields();
         }
 
         return $this->_fields;
@@ -859,7 +876,12 @@ class PifaForm extends Item {
     }
 
     /**
+     * Create data table for form if it does not already exist.
+     * If there are any fields defined for this form, their columns will be
+     * created too! N.b. these fields don't have to be aggregated yet. They will
+     * be read from database if this form does not aggregate them yet.
      *
+     * @param bool $withTimestamp if table should include column for timestamp
      * @throws PifaException if form is not loaded
      * @throws PifaException if existance of table could not be determined
      * @throws PifaException if table already exists
@@ -881,15 +903,29 @@ class PifaForm extends Item {
 
         // prepare column definitions
         $createDefinitions = array();
-        $createDefinitions[] = "id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'primary key'";
+        array_push($createDefinitions, "id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'primary key'");
         if ($withTimestamp) {
-            $createDefinitions[] = "pifa_timestamp TIMESTAMP NOT NULL COMMENT 'automatic PIFA timestamp'";
+            array_push($createDefinitions, "pifa_timestamp TIMESTAMP NOT NULL COMMENT 'automatic PIFA timestamp'");
+        }
+        // read fields from DB if none are found!
+        if (NULL === $this->_fields) {
+            $this->loadFields();
+        }
+        foreach ($this->_fields as $pifaField) {
+            $columnName = $pifaField->get('column_name');
+            // skip fields w/o column
+            if (0 === strlen(trim($columnName))) {
+                continue;
+            }
+            $dataType = $pifaField->getDbDataType();
+            array_push($createDefinitions, "`$columnName` $dataType");
         }
         $createDefinitions = join(',', $createDefinitions);
 
         // prepare statement
         $sql = "-- PifaForm->createTable()
-            CREATE TABLE IF NOT EXISTS
+            CREATE TABLE
+                -- IF NOT EXISTS
                 `$tableName`
             ($createDefinitions)
             ENGINE=MyISAM

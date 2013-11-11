@@ -182,6 +182,12 @@ msgstr "REGEX failed, could not determine class name of PIFA extension from file
 msgid "TEMPLATE_REGEX_ERROR"
 msgstr "REGEX failed, could not determine class name of PIFA template from file"
 
+msgid "READ_XML_ERROR"
+msgstr "XML file could not be read"
+
+msgid "IMPORT_SUCCESS"
+msgstr "form has successfully been imported"
+
 ; actions
 
 msgid "pifa_show_form"
@@ -192,6 +198,12 @@ msgstr "view form fields"
 
 msgid "pifa_show_data"
 msgstr "view form data"
+
+msgid "pifa_export_form"
+msgstr "export form"
+
+msgid "pifa_import_form"
+msgstr "import form"
 
 msgid "pifa_store_form"
 msgstr "store form"
@@ -400,7 +412,7 @@ msgstr "unknown"
 ; class.pifa.gui.php
 
 msgid "FORM_DELETED"
-msgstr "form was deleted"
+msgstr "form has successfully been deleted"
 
 msgid "SHOW_FORM"
 msgstr "show form"
@@ -421,6 +433,12 @@ msgstr "fields"
 
 msgid "data"
 msgstr "data"
+
+msgid "EXPORT"
+msgstr "Export"
+
+msgid "IMPORT"
+msgstr "Import"
 
 msgid "form name"
 msgstr "form name"
@@ -464,6 +482,12 @@ msgstr "Do you really want to delete this field?"
 msgid "download data as CSV"
 msgstr "download data as CSV"
 
+msgid "EXPORT_FORM"
+msgstr "export form"
+
+msgid "WITH_DATA"
+msgstr "include form data"
+
 ; class.pifa.product_group_options_datasource.php
 
 msgid "CHOOSE_CATEGORY"
@@ -476,3 +500,9 @@ msgstr "create form"
 
 msgid "CREATE_FORM_NO_PERMISSIONS"
 msgstr "create form: no permissions"
+
+msgid "IMPORT_FORM"
+msgstr "import form"
+
+msgid "IMPORT_FORM_NO_PERMISSIONS"
+msgstr "import form: no permissions"

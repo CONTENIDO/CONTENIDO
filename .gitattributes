@@ -1457,10 +1457,12 @@ contenido/plugins/form_assistant/classes/class.pifa.abstract_form_module.php -te
 contenido/plugins/form_assistant/classes/class.pifa.abstract_form_processor.php -text
 contenido/plugins/form_assistant/classes/class.pifa.ajax_handler.php -text
 contenido/plugins/form_assistant/classes/class.pifa.exceptions.php -text
+contenido/plugins/form_assistant/classes/class.pifa.exporter.php -text
 contenido/plugins/form_assistant/classes/class.pifa.external_options_datasource_interface.php -text
 contenido/plugins/form_assistant/classes/class.pifa.field.php -text
 contenido/plugins/form_assistant/classes/class.pifa.form.php -text
 contenido/plugins/form_assistant/classes/class.pifa.gui.php -text
+contenido/plugins/form_assistant/classes/class.pifa.importer.php -text
 contenido/plugins/form_assistant/docs/.htaccess -text
 contenido/plugins/form_assistant/docs/example.module.css -text svneol=unset#text/plain
 contenido/plugins/form_assistant/docs/install.sql -text
@@ -1499,7 +1501,9 @@ contenido/plugins/form_assistant/includes/include.left_top.php -text
 contenido/plugins/form_assistant/includes/include.right_bottom.form.php -text
 contenido/plugins/form_assistant/includes/include.right_bottom.form_ajax.php -text
 contenido/plugins/form_assistant/includes/include.right_bottom.form_data.php -text
+contenido/plugins/form_assistant/includes/include.right_bottom.form_export.php -text
 contenido/plugins/form_assistant/includes/include.right_bottom.form_fields.php -text
+contenido/plugins/form_assistant/includes/include.right_bottom.form_import.php -text
 contenido/plugins/form_assistant/includes/include.right_bottom.php -text
 contenido/plugins/form_assistant/includes/include.right_top.php -text
 contenido/plugins/form_assistant/locale/de_DE/LC_MESSAGES/form_assistant.po -text
@@ -1532,8 +1536,10 @@ contenido/plugins/form_assistant/templates/template.left_bottom.html -text svneo
 contenido/plugins/form_assistant/templates/template.left_top.html -text svneol=unset#text/plain
 contenido/plugins/form_assistant/templates/template.right_bottom.html -text svneol=unset#text/plain
 contenido/plugins/form_assistant/templates/template.right_bottom_data.tpl -text
+contenido/plugins/form_assistant/templates/template.right_bottom_export.tpl -text
 contenido/plugins/form_assistant/templates/template.right_bottom_fields.tpl -text
 contenido/plugins/form_assistant/templates/template.right_bottom_form.tpl -text
+contenido/plugins/form_assistant/templates/template.right_bottom_import.tpl -text
 contenido/plugins/form_assistant/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/form_assistant/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/frontendlogic/category/category.php -text

@@ -14,50 +14,63 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * Class for area "form_ajax" handling all Ajax requests for the PIFA backend.
  *
  * @author marcus.gnass
  */
 class PifaAjaxHandler {
 
     /**
-     * to display a form for editing a PIFA form field
+     * Action constant to display a form for editing a PIFA form field.
      *
      * @var string
      */
     const GET_FIELD_FORM = 'pifa_get_field_form';
 
     /**
-     * to process a form for editing a PIFA form field
+     * Action constant to process a form for editing a PIFA form field.
      *
      * @var string
      */
     const POST_FIELD_FORM = 'pifa_post_field_form';
 
     /**
+     * Action constant.
      *
      * @var string
      */
     const REORDER_FIELDS = 'pifa_reorder_fields';
 
     /**
+     * Action constant.
      *
      * @var string
      */
     const EXPORT_DATA = 'pifa_export_data';
 
     /**
+     * Action constant.
+     *
+     * @var string
+     */
+    const EXPORT_FORM = 'pifa_export_form';
+
+    /**
+     * Action constant.
      *
      * @var string
      */
     const GET_FILE = 'pifa_get_file';
 
     /**
+     * Action constant.
      *
      * @var string
      */
     const DELETE_FIELD = 'pifa_delete_field';
 
     /**
+     * Action constant.
      *
      * @var string
      */
@@ -110,6 +123,17 @@ class PifaAjaxHandler {
                 $this->_exportData($idform);
                 break;
 
+            case self::EXPORT_FORM:
+                $idform = cSecurity::toInteger($_POST['idform']);
+                $withData = 'on' === $_POST['with_data'];
+                $this->_exportForm($idform, $withData);
+                break;
+
+            case self::IMPORT_FORM:
+                $xml = $_FILES['xml'];
+                $this->_importForm($xml);
+                break;
+
             case self::GET_FILE:
                 $name = cSecurity::toString($_GET['name']);
                 $file = cSecurity::toString($_GET['file']);
@@ -123,6 +147,7 @@ class PifaAjaxHandler {
 
             default:
                 $msg = Pifa::i18n('UNKNOWN_ACTION');
+                // Util::log(get_class($this) . ': ' . $msg . ': ' . $action);
                 throw new PifaException($msg);
         }
     }
@@ -164,7 +189,7 @@ class PifaAjaxHandler {
         ));
 
         // create form
-        $tpl = Contenido_SmartyWrapper::getInstance(true);
+        $tpl = cSmartyBackend::getInstance(true);
 
         // translations
         $tpl->assign('trans', array(
@@ -481,7 +506,7 @@ class PifaAjaxHandler {
         $deleteField->setCustom('idform', $idform);
         $deleteField = $deleteField->getHref();
 
-        $tpl = Contenido_SmartyWrapper::getInstance(true);
+        $tpl = cSmartyBackend::getInstance(true);
 
         // translations
         $tpl->assign('trans', array(
@@ -554,6 +579,41 @@ class PifaAjaxHandler {
     }
 
     /**
+     * Create an PIFA form export file as XML and displays this as attachment
+     * for download.
+     *
+     * @param int $idform of form to be exported
+     * @param bool $withData if form data should be included
+     */
+    private function _exportForm($idform, $withData) {
+
+        // read and echo data
+        $pifaForm = new PifaForm($idform);
+        $filename = $pifaForm->get('data_table') . date('_Y_m_t_H_i_s') . '.xml';
+
+        $pifaExporter = new PifaExporter($pifaForm);
+        $xml = $pifaExporter->export($withData);
+
+        // prevent caching
+        session_cache_limiter('private');
+        session_cache_limiter('must-revalidate');
+
+        // set header
+        header('Pragma: cache');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Cache-Control: private');
+        header('Content-Type: text/xml');
+        // header('Content-Type: application/xml');
+        header('Content-Length: ' . strlen($data));
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Content-Transfer-Encoding: binary');
+
+        // echo payload
+        echo $xml;
+    }
+
+    /**
      *
      * @param string $name
      * @param string $file
@@ -601,7 +661,7 @@ class PifaAjaxHandler {
     private function _getOptionRow($index) {
         $cfg = cRegistry::getConfig();
 
-        $tpl = Contenido_SmartyWrapper::getInstance(true);
+        $tpl = cSmartyBackend::getInstance(true);
 
         // translations
         $tpl->assign('trans', array(

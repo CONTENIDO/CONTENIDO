@@ -23,6 +23,8 @@
             <area>form</area>
             <area parent="form" menuless="0">form_fields</area>
             <area parent="form" menuless="0">form_data</area>
+            <area parent="form" menuless="0">form_export</area>
+            <area parent="form" menuless="0">form_import</area>
             <area parent="form">form_ajax</area>
         </areas>
 
@@ -32,6 +34,8 @@
             <action area="form">pifa_delete_form</action>
             <action area="form_fields">pifa_show_fields</action>
             <action area="form_data">pifa_show_data</action>
+            <action area="form_export">pifa_export_form</action>
+            <action area="form_import">pifa_import_form</action>
             <action area="form_ajax">pifa_get_field_form</action>
             <action area="form_ajax">pifa_post_field_form</action>
             <action area="form_ajax">pifa_reorder_fields</action>
@@ -45,9 +49,12 @@
             <frame area="form" filetype="main" name="form_assistant/includes/include.left_top.php" frameId="1" />
             <frame area="form" filetype="main" name="form_assistant/includes/include.left_bottom.php" frameId="2" />
             <frame area="form" filetype="main" name="form_assistant/includes/include.right_top.php" frameId="3" />
+            <frame area="form_import" filetype="main" name="form_assistant/includes/include.right_top.php" frameId="3" />
             <frame area="form" filetype="main" name="form_assistant/includes/include.right_bottom.form.php" frameId="4" />
             <frame area="form_fields" filetype="main" name="form_assistant/includes/include.right_bottom.form_fields.php" frameId="4" />
             <frame area="form_data" filetype="main" name="form_assistant/includes/include.right_bottom.form_data.php" frameId="4" />
+            <frame area="form_export" filetype="main" name="form_assistant/includes/include.right_bottom.form_export.php" frameId="4" />
+            <frame area="form_import" filetype="main" name="form_assistant/includes/include.right_bottom.form_import.php" frameId="4" />
             <frame area="form_ajax" filetype="main" name="form_assistant/includes/include.right_bottom.form_ajax.php" frameId="4" />
         </frames>
 

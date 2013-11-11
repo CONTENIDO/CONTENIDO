@@ -13,56 +13,85 @@
 // assert CONTENIDO framework
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $action, $idform;
+global $area, $action, $idform;
 
 $cfg = cRegistry::getConfig();
+$sess = cRegistry::getSession();
 
-if (PifaRightBottomFormPage::DELETE_FORM === $action) {
+$anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
 
-    // show blank menu when form was just deleted
-    cInclude('templates', $cfg['templates']['right_top_blank']);
-} else if (0 < cSecurity::toInteger($idform)) {
+$tpl = new cTemplate();
 
-    $anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
-    $sess = cRegistry::getSession();
+switch ($area) {
+    case 'form':
+    case 'form_fields':
+    case 'form_data':
+    case 'form_export':
 
-    $tpl = new cTemplate();
+        // show blank menu when form was just deleted
+        if (PifaRightBottomFormPage::DELETE_FORM === $action) {
+            cInclude('templates', $cfg['templates']['right_top_blank']);
+            break;
+        }
 
-    // Set template data
-    if (cRegistry::getPerm()->have_perm_area_action('form', PifaRightBottomFormPage::SHOW_FORM)) {
-        $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
-        $tpl->set('d', 'CLASS', '');
-        $tpl->set('d', 'OPTIONS', '');
-        $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form&action=" . PifaRightBottomFormPage::SHOW_FORM . "&frame=4&idform=$idform"), i18n("form", 'form_assistant')));
-        $tpl->next();
-    }
+        // Set template data
+        if (cRegistry::getPerm()->have_perm_area_action('form', PifaRightBottomFormPage::SHOW_FORM)) {
+            $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+            $tpl->set('d', 'CLASS', '');
+            $tpl->set('d', 'OPTIONS', '');
+            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form&action=" . PifaRightBottomFormPage::SHOW_FORM . "&frame=4&idform=$idform"), i18n("form", 'form_assistant')));
+            $tpl->next();
+        }
 
-    // Set template data
-    if (cRegistry::getPerm()->have_perm_area_action('form_fields', PifaRightBottomFormFieldsPage::SHOW_FIELDS)) {
-        $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
-        $tpl->set('d', 'CLASS', '');
-        $tpl->set('d', 'OPTIONS', '');
-        $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form_fields&action=" . PifaRightBottomFormFieldsPage::SHOW_FIELDS . "&frame=4&idform=$idform"), i18n("fields", 'form_assistant')));
-        $tpl->next();
-    }
+        if (0 < cSecurity::toInteger($idform)) {
 
-    // Set template data
-    if (cRegistry::getPerm()->have_perm_area_action('form_data', PifaRightBottomFormDataPage::SHOW_DATA)) {
-        $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
-        $tpl->set('d', 'CLASS', '');
-        $tpl->set('d', 'OPTIONS', '');
-        $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form_data&action=" . PifaRightBottomFormDataPage::SHOW_DATA . "&frame=4&idform=$idform"), i18n("data", 'form_assistant')));
-        $tpl->next();
-    }
+            // Set template data
+            if (cRegistry::getPerm()->have_perm_area_action('form_fields', PifaRightBottomFormFieldsPage::SHOW_FIELDS)) {
+                $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+                $tpl->set('d', 'CLASS', '');
+                $tpl->set('d', 'OPTIONS', '');
+                $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form_fields&action=" . PifaRightBottomFormFieldsPage::SHOW_FIELDS . "&frame=4&idform=$idform"), i18n("fields", 'form_assistant')));
+                $tpl->next();
+            }
 
-    $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
+            // Set template data
+            if (cRegistry::getPerm()->have_perm_area_action('form_data', PifaRightBottomFormDataPage::SHOW_DATA)) {
+                $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+                $tpl->set('d', 'CLASS', '');
+                $tpl->set('d', 'OPTIONS', '');
+                $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form_data&action=" . PifaRightBottomFormDataPage::SHOW_DATA . "&frame=4&idform=$idform"), i18n("data", 'form_assistant')));
+                $tpl->next();
+            }
 
-    // Generate the third navigation layer
-    $tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav']);
-} else {
+            // Set template data
+            if (cRegistry::getPerm()->have_perm_area_action('form_export', PifaRightBottomFormExportPage::EXPORT_FORM)) {
+                $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+                $tpl->set('d', 'CLASS', '');
+                $tpl->set('d', 'OPTIONS', '');
+                $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form_export&action=" . PifaRightBottomFormExportPage::EXPORT_FORM . "&frame=4&idform=$idform"), i18n("EXPORT", 'form_assistant')));
+                $tpl->next();
+            }
+        }
 
-    // show blank menu when no form was selected
-    cInclude('templates', $cfg['templates']['right_top_blank']);
+        break;
+
+    case 'form_import':
+
+        // Set template data
+        if (cRegistry::getPerm()->have_perm_area_action('form_import', PifaRightBottomFormImportPage::IMPORT_FORM)) {
+            $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+            $tpl->set('d', 'CLASS', '');
+            $tpl->set('d', 'OPTIONS', '');
+            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form_import&action=" . PifaRightBottomFormImportPage::IMPORT_FORM . "&frame=4"), i18n("IMPORT", 'form_assistant')));
+            $tpl->next();
+        }
+
+        break;
 }
+
+$tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
+
+// Generate the third navigation layer
+$tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav']);
 
 ?>

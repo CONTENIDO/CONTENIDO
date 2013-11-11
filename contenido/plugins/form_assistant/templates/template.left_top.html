@@ -1,24 +1,18 @@
 
-<style type="text/css">
-    #top_left_container {
-        height: 2em;
-        border: 1px solid #B3B3B3;
-        padding: 5px 0 5px 5px;
-        margin-top: 1px;
-    }
-</style>
-
 <div id="top_left_container">
-    {LINK}
+	<!-- BEGIN:BLOCK -->
+	<div class="leftTopAction">
+		{ACTION}
+	</div>
+	<!-- END:BLOCK -->
 </div>
 
 <script type="text/javascript">
-    function resizeFrame() {
-        // resizing frame
-        var offsetHeight = document.getElementById('top_left_container').offsetHeight;
-        parent.parent.frameResize.resizeTopLeftFrame(offsetHeight + 10);
-    }
-    $(document).ready(new function() {
-        resizeFrame();
-    });
+	/**
+	 * resize frame
+	 */
+	$(function() {
+		var offsetHeight = document.getElementById('top_left_container').offsetHeight;
+		parent.parent.frameResize.resizeTopLeftFrame(offsetHeight + 10);
+	});
 </script>

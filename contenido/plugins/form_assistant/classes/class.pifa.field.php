@@ -14,14 +14,15 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * PIFA field collection.
+ * PIFA field item collection class.
+ * It's a kind of a model.
  *
  * @author marcus.gnass
  */
 class PifaFieldCollection extends ItemCollection {
 
     /**
-     * Creates a PIFA field collection.
+     * Create an instance.
      *
      * @param mixed $where clause to be used to load items or false
      */
@@ -54,7 +55,8 @@ class PifaFieldCollection extends ItemCollection {
 }
 
 /**
- * contains meta data of a PIFA field
+ * PIFA field item class.
+ * It's a kind of a model.
  *
  * @author marcus.gnass
  */
@@ -226,6 +228,7 @@ class PifaField extends Item {
     private $_file = NULL;
 
     /**
+     * Create an instance.
      *
      * @param mixed $id ID of item to be loaded or false
      */
@@ -819,37 +822,6 @@ class PifaField extends Item {
     }
 
     /**
-     *
-     * @param int $fieldType
-     * @todo add different icons for different form field types
-     */
-    public static function getFieldTypeIcon($fieldType) {
-        switch ($fieldType) {
-            case self::INPUTTEXT:
-            case self::TEXTAREA:
-            case self::INPUTPASSWORD:
-            case self::INPUTRADIO:
-            case self::INPUTCHECKBOX:
-            case self::SELECT:
-            case self::SELECTMULTI:
-            case self::DATEPICKER:
-            case self::INPUTFILE:
-            case self::PROCESSBAR:
-            case self::SLIDER:
-            // case self::CAPTCHA:
-            case self::BUTTONSUBMIT:
-            case self::BUTTONRESET:
-            case self::BUTTONBACK:
-            case self::MATRIX:
-            case self::PARA:
-            case self::INPUTHIDDEN:
-            case self::FIELDSET_BEGIN:
-            case self::FIELDSET_END:
-                return 'icon.png';
-        }
-    }
-
-    /**
      * Returns an array containing all field type ids.
      *
      * @return array
@@ -1007,6 +979,7 @@ class PifaField extends Item {
             default:
                 $msg = Pifa::i18n('NOT_IMPLEMENTED_FIELDTYPE');
                 $msg = sprintf($msg, $fieldType);
+                Util::logDump($this->values);
                 throw new PifaException($msg);
         }
     }

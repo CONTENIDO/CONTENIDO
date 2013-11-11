@@ -182,6 +182,12 @@ msgstr "der Reguläre Ausdruck hat versagt, konnte den Klassennamen der PIFA-Erw
 msgid "TEMPLATE_REGEX_ERROR"
 msgstr "der Reguläre Ausdruck hat versagt, konnte den Klassennamen der PIFA-Schablone nicht anhand des Dateinamens ermitteln"
 
+msgid "READ_XML_ERROR"
+msgstr "Die XML-Datei konnte nicht gelesen werden."
+
+msgid "IMPORT_SUCCESS"
+msgstr "Das Formular wurde erfolgreich importiert."
+
 ; actions
 
 msgid "pifa_show_form"
@@ -192,6 +198,12 @@ msgstr "Formularfelder sehen"
 
 msgid "pifa_show_data"
 msgstr "Formulardaten sehen"
+
+msgid "pifa_export_form"
+msgstr "Formular exportieren"
+
+msgid "pifa_import_form"
+msgstr "Formular importieren"
 
 msgid "pifa_store_form"
 msgstr "Formular speichern"
@@ -400,7 +412,7 @@ msgstr "unbekannt"
 ; class.pifa.gui.php
 
 msgid "FORM_DELETED"
-msgstr "Formular wurde gelöscht"
+msgstr "Das Formular wurde erfolgreich gelöscht."
 
 msgid "SHOW_FORM"
 msgstr "Formular anzeigen"
@@ -421,6 +433,12 @@ msgstr "Formularfelder"
 
 msgid "data"
 msgstr "Formulardaten"
+
+msgid "EXPORT"
+msgstr "Export"
+
+msgid "IMPORT"
+msgstr "Import"
 
 msgid "form name"
 msgstr "Formularname"
@@ -464,6 +482,12 @@ msgstr "Wollen Sie dieses Feld wirklich löschen?"
 msgid "download data as CSV"
 msgstr "Formulardaten als CSV herunterladen"
 
+msgid "EXPORT_FORM"
+msgstr "Formular exportieren"
+
+msgid "WITH_DATA"
+msgstr "mit Formulardaten"
+
 ; class.pifa.product_group_options_datasource.php
 
 msgid "CHOOSE_CATEGORY"
@@ -476,3 +500,9 @@ msgstr "Formular erstellen"
 
 msgid "CREATE_FORM_NO_PERMISSIONS"
 msgstr "Formular erstellen: keine Berechtigung"
+
+msgid "IMPORT_FORM"
+msgstr "Formular importieren"
+
+msgid "IMPORT_FORM_NO_PERMISSIONS"
+msgstr "Formular importieren: keine Berechtigung"

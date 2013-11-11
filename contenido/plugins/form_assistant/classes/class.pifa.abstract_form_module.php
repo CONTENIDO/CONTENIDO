@@ -1,11 +1,6 @@
 <?php
 
 /**
- * Abstract base class for all classes that are used as PIFA form module.
- *
- * In order for an extension class to be displayed in the CMS_PIFAFORM's editor
- * as module class it has to extend this class and implement its abstract
- * methods doGet() & doPost().
  *
  * @package Plugin
  * @subpackage FormAssistant
@@ -19,6 +14,11 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * Abstract base class for all classes that are used as PIFA form module.
+ *
+ * In order for an extension class to be displayed in the CMS_PIFAFORM's editor
+ * as module class it has to extend this class and implement its abstract
+ * methods doGet() & doPost().
  *
  * @author marcus.gnass
  */
@@ -75,7 +75,7 @@ abstract class PifaAbstractFormModule {
     public function __construct(array $settings = NULL) {
         $this->_settings = $settings;
         $this->_idform = cSecurity::toInteger($this->_settings['pifaform_idform']);
-        $this->_tpl = Contenido_SmartyWrapper::getInstance(true);
+        $this->_tpl = cSmartyFrontend::getInstance(true);
     }
 
     /**

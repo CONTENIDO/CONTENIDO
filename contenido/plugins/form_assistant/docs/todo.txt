@@ -5,30 +5,37 @@
 [x] M: add form fields for option labels and option values
 [x] M: add security confirmation on deletion of a form
 [x] M: implement display of SELECT & SELECTMULTI
+[x] M: FieldType File tries to store file even if none was selected
+        this also occurs if field is not mandatory ...
 
 [x] S: fix sorting problem (due to float: left)
 
 [x] C: move securimage into form_assistant (needed for CAPTCHA)
+[x] C: implement display of DATEPICKER
+[x] C: implement display of INPUTFILE
+[x] C: implement display of CAPTCHA
+[x] C: determine which data type to use for INPUTFILE
+[x] C: determine which data type to use for CAPTCHA
 
 [x] W: create translations for Pifa::i18n()
+[x] W: add but_ok.gif to field form
+[x] W: fix error on saving unchanged data (CONTENIDO GDB problem)
+[x] W: implement adding of fields to form by Drag & Drop from a list of field types
+[x] W: show asterisk for obli fields in backend
 
 == TODO ==
 
 [_] M: write proper CSS (Kostas, Anne)
-[_] M: FieldType File tries to store file even if none was selected
-        this also occurs if field is not mandatory ...
 
-[_] C: implement display of DATEPICKER, INPUTFILE, PROCESSBAR, SLIDER, CAPTCHA
-[_] C: determine which data type to use for INPUTFILE, PROCESSBAR, SLIDER, CAPTCHA
+[_] C: implement display of PROCESSBAR
+[_] C: implement display of SLIDER
+[_] C: determine which data type to use for PROCESSBAR
+[_] C: determine which data type to use for SLIDER
 
 [_] W: write documentation
-[_] W: add but_ok.gif to field form
-[_] W: fix error on saving unchanged data (CONTENIDO GDB problem)
-[_] W: add different icons for different form field types in PifaField::getFieldTypeIcon
-[_] W: implement adding of fields to form by Drag & Drop from a list of field types
 [_] W: implement display of MATRIX
 [_] W: determine which data type to use for MATRIX
-[_] W: show asterisk for obli fields in backend
+[/] W: add different icons for different form field types in PifaField::getFieldTypeIcon
 
 == UNSORTED ==
 [x] schwarze schrift in field form dialog
