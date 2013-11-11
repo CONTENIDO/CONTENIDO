@@ -196,29 +196,6 @@ class cFileHandler {
     }
 
     /**
-     * Checks if a directory is empty
-     *
-     * @param string $dir Name of the directory
-     * @return boolean true if the directory is empty
-     */
-    public static function isDirectoryEmpty($dir) {
-        if (!is_readable($dir)) {
-            return false;
-        }
-        if (is_dir($dir)) {
-            if ($handle = opendir($dir)) {
-                while (false !== ($entry = readdir($handle))) {
-                    if ($entry != "." && $entry != "..") {
-                        return false;
-                    }
-                }
-            }
-            closedir($handle);
-        }
-        return true;
-    }
-
-    /**
      * Removes a file from the filesystem
      *
      * @param string $filename the name and path of the file
@@ -320,57 +297,6 @@ class cFileHandler {
     }
 
     /**
-     * Copies a directory and all of its subfolders.
-     *
-     * @param string $filename the name and path of the file
-     * @param string $destination the destination. Note that existing files get
-     *        overwritten
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
-     * @return bool true on success
-     */
-    public static function recursiveCopy($filename, $destination) {
-        if (!cFileHandler::exists($filename)) {
-            throw new cInvalidArgumentException('The file ' . $filename . ' could not be accessed because it does not exist.');
-        }
-
-        if (!cFileHandler::exists($destination)) {
-            if (!mkdir($destination)) {
-                return false;
-            }
-            if (!self::chmod($destination, "777")) {
-                return false;
-            }
-        }
-
-        foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($filename), RecursiveIteratorIterator::SELF_FIRST) as $item) {
-            // workaround for RecursiveDirectoryIterator::SKIP_DOTS, this was
-            // not available in PHP 5.2
-            if ($item->getFilename() == '.' || $item->getFilename() == '..') {
-                continue;
-            }
-
-            if ($item->isDir()) {
-                if (!mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
-                    return false;
-                }
-                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
-                    return false;
-                }
-            } else {
-                if (!copy($item, $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
-                    return false;
-                }
-                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Changes the file permissions
      *
      * @param string $filename the name and path of the file
@@ -446,7 +372,7 @@ class cFileHandler {
     public static function getExtension($basename) {
         $aFileName = explode('.', trim($basename, '.'));
 
-        return (count($aFileName) > 1) ? $aFileName[count($aFileName) - 1] : '';
+        return (count($aFileName) > 1)? $aFileName[count($aFileName) - 1] : '';
     }
 
     /**
@@ -467,20 +393,43 @@ class cFileHandler {
     }
 
     /**
-     * Sets the default directory permissions on the given directory.
      *
-     * @param string $pathname the name of the directory
-     * @return boolean true on success or false on failure
+     * @see cDirHandler::recursiveRmdir()
+     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
      */
-    public static function setDefaultDirPerms($pathname) {
-        $cfg = cRegistry::getConfig();
+    public static function recursiveRmdir($dirname) {
+        cDeprecated("Use the class cDirHandler instead.");
+        return cDirHandler::recursiveRmdir($dirname);
+    }
 
-        if (isset($cfg['default_perms']['directory']) === false) {
-            return false;
-        }
+    /**
+     *
+     * @see cDirHandler::recursiveCopy()
+     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
+     */
+    public static function recursiveCopy($filename, $destination) {
+        cDeprecated("Use the class cDirHandler instead.");
+        return cDirHandler::recursiveCopy($filename, $destination);
+    }
 
-        $dirPerms = $cfg['default_perms']['directory'];
-        return cFileHandler::chmod($pathname, $dirPerms);
+    /**
+     *
+     * @see cDirHandler::isDirectoryEmpty()
+     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
+     */
+    public static function isDirectoryEmpty($dir) {
+        cDeprecated("Use the class cDirHandler instead.");
+        return cDirHandler::isDirectoryEmpty($dir);
+    }
+
+    /**
+     *
+     * @see cDirHandler::setDefaultDirPerms()
+     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
+     */
+    public static function setDefaultDirPerms($dirname) {
+        cDeprecated("Use the class cDirHandler instead.");
+        return cDirHandler::setDefaultDirPerms($dirname);
     }
 
     /**
@@ -524,35 +473,17 @@ class cFileHandler {
     }
 
     /**
-     * Deletes a directory and all of its contents.
+     * Check if given filename is either '.' or '..'.
      *
-     * @param string $dirname the name of the directory which should be deleted
-     * @throws cInvalidArgumentException if dirname is empty
-     * @return bool true on success or false on failure
+     * @param string $fileName
+     * @return boolean
      */
-    public static function recursiveRmdir($dirname) {
-        if ($dirname == '') {
-            throw new cInvalidArgumentException("Directory name must not be empty.");
+    public static function fileNameIsDot($fileName) {
+        if ($fileName != '.' && $fileName != '..') {
+            return false;
+        } else {
+            return true;
         }
-
-        // make sure $dirname ends with a slash
-        if (substr($dirname, -1) !== '/') {
-            $dirname .= '/';
-        }
-
-        foreach (new DirectoryIterator($dirname) as $file) {
-
-            if ($file != "." && $file != "..") {
-
-                $file = $dirname . $file;
-                if (is_dir($file)) {
-                    self::recursiveRmdir($file);
-                } else {
-                    unlink($file);
-                }
-            }
-        }
-
-        return rmdir($dirname);
     }
+
 }
