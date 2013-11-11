@@ -1466,6 +1466,7 @@ contenido/plugins/form_assistant/classes/class.pifa.importer.php -text
 contenido/plugins/form_assistant/docs/.htaccess -text
 contenido/plugins/form_assistant/docs/example.module.css -text svneol=unset#text/plain
 contenido/plugins/form_assistant/docs/install.sql -text
+contenido/plugins/form_assistant/docs/pifa.xsd -text svneol=unset#text/plain
 contenido/plugins/form_assistant/docs/todo.txt -text svneol=unset#text/plain
 contenido/plugins/form_assistant/docs/todo_de.txt -text svneol=unset#text/plain
 contenido/plugins/form_assistant/docs/uninstall.sql -text
