@@ -451,6 +451,7 @@ contenido/external/codemirror/keymap/emacs.js -text
 contenido/external/codemirror/keymap/vim.js -text
 contenido/external/codemirror/lib/codemirror.css -text
 contenido/external/codemirror/lib/codemirror.js -text
+contenido/external/codemirror/lib/contenido_integration.css -text
 contenido/external/codemirror/lib/contenido_integration.js -text
 contenido/external/codemirror/lib/lang/de.js -text
 contenido/external/codemirror/lib/lang/en.js -text
@@ -1144,6 +1145,7 @@ contenido/includes/chains/include.chain.content.indexarticle.php -text
 contenido/includes/chains/include.chain.frontend.cat_access.php -text
 contenido/includes/chains/include.chain.frontend.cat_backendaccess.php -text
 contenido/includes/chains/include.chain.frontend.createbasehref.php -text
+contenido/includes/chains/include.chain.template.parsetemplate.php -text
 contenido/includes/functions.api.category.php -text
 contenido/includes/functions.api.images.php -text
 contenido/includes/functions.api.php -text
@@ -1913,6 +1915,7 @@ contenido/plugins/workflow/plugin.xml -text svneol=unset#text/plain
 contenido/plugins/workflow/plugin_install.sql -text
 contenido/plugins/workflow/plugin_uninstall.sql -text
 contenido/plugins/workflow/plugin_workflow.xml -text
+contenido/plugins/workflow/styles/workflow.css -text
 contenido/plugins/workflow/templates/template.workflow_left_top.html -text
 contenido/plugins/workflow/templates/template.workflow_list.html -text
 contenido/plugins/workflow/templates/template.workflow_steps.html -text
@@ -1927,6 +1930,7 @@ contenido/scripts/calendar.mycontenido.tasks.edit.js -text
 contenido/scripts/cfoldingrow.js -text
 contenido/scripts/conFrameResize.js -text
 contenido/scripts/con_tiny.js -text
+contenido/scripts/contenido.js -text
 contenido/scripts/contenidoConfig.js -text
 contenido/scripts/content_types/cmsAbstractTabbed.js -text svneol=unset#text/plain
 contenido/scripts/content_types/cmsDate.js -text svneol=unset#text/plain
@@ -1939,6 +1943,7 @@ contenido/scripts/expandCollapse.js -text
 contenido/scripts/general.js -text
 contenido/scripts/group_association.js -text
 contenido/scripts/header.js -text
+contenido/scripts/help.js -text
 contenido/scripts/help.js.php -text
 contenido/scripts/iZoom.js.php -text
 contenido/scripts/include.upl_edit.js -text
@@ -1964,6 +1969,7 @@ contenido/scripts/reload.js -text
 contenido/scripts/rights.js -text
 contenido/scripts/rowMark.js -text
 contenido/scripts/setPager.js -text
+contenido/scripts/startup.js -text
 contenido/scripts/str_overview.js -text
 contenido/scripts/subnav.js -text
 contenido/scripts/system_log_sysvalues.js -text svneol=unset#text/plain
@@ -2001,6 +2007,7 @@ contenido/styles/jquery/plugins/timepicker.css -text svneol=unset#text/plain
 contenido/styles/jquery/plugins/tipsy.css -text
 contenido/styles/str_overview.css -text
 contenido/styles/system_integrity.css -text
+contenido/styles/system_purge.css -text
 contenido/styles/tree.css -text svneol=unset#text/plain
 contenido/subnav.php -text
 contenido/templates/frontend_error.html -text svneol=unset#text/plain
@@ -2059,6 +2066,7 @@ contenido/templates/standard/template.files_overview.html -text
 contenido/templates/standard/template.front.loginform.html -text svneol=unset#text/plain
 contenido/templates/standard/template.frontend.group_menu.html -text
 contenido/templates/standard/template.frontend.user_menu.html -text
+contenido/templates/standard/template.frontend_left_top.html -text
 contenido/templates/standard/template.frontend_left_top_filter.html -text svneol=unset#text/plain
 contenido/templates/standard/template.generic_form.html -text
 contenido/templates/standard/template.generic_left_top.html -text

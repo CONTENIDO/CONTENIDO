@@ -1,0 +1,27 @@
+/**
+ * CONTENIDO CodeMirror integration styles
+ *
+ * @package    TODO
+ * @subpackage TODO
+ * @version    SVN Revision $Rev$
+ *
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
+
+/* @TODO: Display the editor in real full screen mode! */
+/*
+.con-CodeMirror-fullscreen {
+    background: #fff;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+}
+*/

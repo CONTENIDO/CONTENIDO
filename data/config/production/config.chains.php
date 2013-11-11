@@ -905,3 +905,12 @@ $_cecRegistry->registerChain('Contenido.Backend.ConMetaEditFormAdditionalRows', 
  * array oldData An associative array with the old meta data for the article
  */
 $_cecRegistry->registerChain('Contenido.Action.con_meta_saveart.AfterCall', 'int', 'array', 'array');
+
+/**
+ * This chain is called before parsing a template in cTemplate
+ *
+ * Parameters & order:
+ * string  The template string
+ * cTemplate  Template object instance
+ */
+$_cecRegistry->registerChain('Contenido.Template.BeforeParse', 'string', 'cTemplate');

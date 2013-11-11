@@ -24,7 +24,7 @@ if (isset($syncoptions)) {
 if (!isset($syncfrom)) {
     $syncfrom = 0;
 }
-if (!isset($idcat) || $idcat == "") {
+if (!isset($idcat) || $idcat == '') {
     $idcat = 0;
 }
 
@@ -120,6 +120,7 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
 
         // Set template data
         $tpl->set("d", "ID", 'c_' . $tpl->dyn_cnt);
+        $tpl->set("d", "DATA_NAME", $tmp_area);
         $tpl->set("d", "CLASS", '');
         $tpl->set("d", "OPTIONS", '');
         if ($cfg['help'] == true) {
@@ -132,16 +133,15 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
     }
 
 
-    $tpl->set("s", "iID", 'c_' . $num);
-
+    $tpl->set('s', 'iID', 'c_' . $num);
     $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
     $tpl->set('s', 'IDCAT', $idcat);
-    $tpl->set('s', 'SESSID', $sess->id);
     $tpl->set('s', 'CLIENT', $client);
     $tpl->set('s', 'LANG', $lang);
 
     // Generate the third navigation layer
-    $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["con_subnav"]);
+    $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_subnav']);
 } else {
-    include(cRegistry::getBackendPath() . $cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
+    $tpl->reset();
+    $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
 }

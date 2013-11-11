@@ -66,14 +66,16 @@ if ($action == $sActionDelete) {
             $page->displayInfo(i18n('Deleted template file successfully!'));
         }
     }
-    $sReloadScript = "<script type=\"text/javascript\">
-        var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-        if (left_bottom) {
-            var href = left_bottom.location.href;
-            href = href.replace(/&file[^&]*/, '');
-            left_bottom.location.href = href+'&file='+'" . $sFilename . "';
-        }
-    </script>";
+    $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
+    }
+})(Con, Con.$);
+</script>
+JS;
 
     $page->addScript($sReloadScript);
     $page->render();
@@ -100,14 +102,16 @@ if ($action == $sActionDelete) {
     }
 
     if (stripslashes($_REQUEST['file'])) {
-        $sReloadScript = "<script type=\"text/javascript\">
-                             var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                             if (left_bottom) {
-                                 var href = left_bottom.location.href;
-                                 href = href.replace(/&file[^&]*/, '');
-                                 left_bottom.location.href = href+'&file='+'" . $sFilename . "';
-                             }
-                         </script>";
+        $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
+    }
+})(Con, Con.$);
+</script>
+JS;
     } else {
         $sReloadScript = '';
     }
@@ -145,13 +149,17 @@ if ($action == $sActionDelete) {
 
         cFileHandler::create($path . $sFilename, $_REQUEST['code']);
         $bEdit = cFileHandler::read($path . $sFilename);
-        $sReloadScript .= "<script type=\"text/javascript\">
-                 var right_top = top.content.right.right_top;
-                 if (right_top) {
-                     var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
-                     right_top.location.href = href;
-                 }
-                 </script>";
+        $reloadScriptUrl = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
+        $sReloadScript .= <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+     var frame = Con.getFrame('right_top');
+     if (frame) {
+         frame.location.href = '{$reloadScriptUrl}';
+     }
+})(Con, Con.$);
+</script>
+JS;
         $fileInfoCollection = new cApiFileInformationCollection();
         $fileInfoCollection->create('templates', $sFilename, $_REQUEST['description']);
 
@@ -169,13 +177,17 @@ if ($action == $sActionDelete) {
                 $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $path . $sTempFilename));
                 exit();
             }
-            $sReloadScript .= "<script type=\"text/javascript\">
-                 var right_top = top.content.right.right_top;
-                 if (right_top) {
-                     var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
-                     right_top.location.href = href;
-                 }
-                 </script>";
+            $reloadScriptUrl = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
+            $sReloadScript .= <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+     var frame = Con.getFrame('right_top');
+     if (frame) {
+         frame.location.href = '{$reloadScriptUrl}';
+     }
+})(Con, Con.$);
+</script>
+JS;
         } else {
             $sTempFilename = $sFilename;
         }

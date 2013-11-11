@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // notice $oTpl is filled and generated in file include.rights.php this file
 // renders $oTpl to browser
-include_once (cRegistry::getBackendPath() . 'includes/include.grouprights.php');
+include_once(cRegistry::getBackendPath() . 'includes/include.grouprights.php');
 
 // set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("str")]) . "'";
@@ -303,6 +303,6 @@ $oTpl->set("s", "JS_SCRIPT_BEFORE", $sJsBefore);
 $oTpl->set("s", "JS_SCRIPT_AFTER", $sJsAfter);
 $oTpl->set("s", "EXTERNAL_SCRIPTS", $sJsExternal);
 
-$oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);
+$oTpl->generate('templates/standard/' . $cfg['templates']['rights']);
 
 ?>

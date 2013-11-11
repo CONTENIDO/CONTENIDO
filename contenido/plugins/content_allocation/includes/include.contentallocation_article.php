@@ -95,23 +95,24 @@ if (!isset($syncfrom)) {
     $syncfrom = -1;
 }
 $syncoptions = $syncfrom;
-$sLocationString .= "<script type='text/javascript'>
-        $(document).ready(function() {
-            $('div#categorypath > a').click(function() {
-                var url = $(this).attr('href');
-                var sVal = url.split('idcat=');
-                var aVal = sVal[1].split('&');
-                var iIdcat = aVal[0];
-                sVal = url.split('idtpl=');
-                aVal = sVal[1].split('&');
-                var iIdtpl = aVal[0];
-                conMultiLink('right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu=1&syncoptions=" . $syncoptions . "&contenido=" . $contenido . "',
+$sLocationString = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        $('div#categorypath > a').click(function() {
+            var url = $(this).attr('href'),
+                params = Con.UtilUrl.getParams(url);
+            Con.multiLink(
+                'right_top', 'main.php?area=con&frame=3&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&display_menu=1&syncoptions={$syncoptions}&contenido={$contenido}',
                 'right_bottom', url,
-                'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido=" . $contenido . "');
-                return false;
-            });
+                'left_bottom', 'main.php?area=con&frame=2&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&contenido={$contenido}'
+            );
+            return false;
         });
-    </script>";
+    });
+})(Con, Con.$);
+</script>
+JS;
 
 $div = new cHTMLDiv();
 $div->setContent($sLocationString . $result);

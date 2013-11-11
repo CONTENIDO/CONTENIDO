@@ -256,33 +256,35 @@ class CodeMirror {
             $js .= '<script type="text/javascript" src="' . $path . 'lib/util/search.js"></script>' . PHP_EOL;
             $js .= '<script type="text/javascript" src="' . $path . 'lib/contenido_integration.js"></script>' . PHP_EOL;
             $js .= $this->_getSyntaxScripts();
-            $js .= '<link rel="stylesheet" href="' . $path . 'lib/codemirror.css" />' . PHP_EOL;
-            $js .= '<link rel="stylesheet" href="' . $path . 'lib/util/dialog.css" />' . PHP_EOL;
+            $js .= '<link rel="stylesheet" href="' . $path . 'lib/codemirror.css">' . PHP_EOL;
+            $js .= '<link rel="stylesheet" href="' . $path . 'lib/util/dialog.css">' . PHP_EOL;
+            $js .= '<link rel="stylesheet" href="' . $path . 'lib/contenido_integration.css">' . PHP_EOL;
         }
 
         // define template for CodeMirror script
-        $js .= "<script type=\"text/javascript\">
-                function toggleCodeMirrorFullscreen_{ID}() {
-                    toggleCodeMirrorFullscreenEditor('{ID}');
+        $js .= <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        if (!$('#{ID}')[0]) {
+            // Node is missing, nothing to initialize here...
+            return;
+        }
+        Con.CodeMirrorHelper.init('{ID}', {
+            extraKeys: {
+                'F11': function() {
+                    Con.CodeMirrorHelper.toggleFullscreenEditor('{ID}');
+                },
+                'Esc': function() {
+                    Con.CodeMirrorHelper.toggleFullscreenEditor('{ID}');
                 }
-
-                $(function() {
-                    if (!$('#{ID}')[0]) {
-                        // Node is missing, nothing to initialize here...
-                        return;
-                    }
-
-                    var properties_{ID} = {
-                        extraKeys: {
-                            'F11': toggleCodeMirrorFullscreen_{ID},
-                            'Esc': toggleCodeMirrorFullscreen_{ID}
-                        }
-                        {PROPERTIES}
-                    };
-
-                    initCodeMirror(\"{ID}\", properties_{ID});
-                });
-                </script>";
+            }
+            {PROPERTIES}
+        });
+    });
+})(Con, Con.$);
+</script>
+JS;
 
         $this->setProperty('mode', $this->_getSyntaxName(), false);
         $this->setProperty('theme', 'default ' . $this->_textareaId, false);
@@ -292,9 +294,9 @@ class CodeMirror {
         $properties = '';
         foreach ($this->_properties as $property) {
             if ($property['is_numeric'] == true) {
-                $properties .= ', ' . $property['name'] . ':' . $property['value'] . "\n";
+                $properties .= ', ' . $property['name'] . ': ' . $property['value'];
             } else {
-                $properties .= ', ' . $property['name'] . ': "' . $property['value'] . "\"\n";
+                $properties .= ', ' . $property['name'] . ': "' . $property['value'] . '"';
             }
         }
 

@@ -4,30 +4,28 @@
 
 <html>
 
-    <head>
+<head>
 
-        <title>:: ::{BACKEND_LABEL}:: :: CONTENIDO {VERSION} {LOCATION}</title>
+    <title>:: ::{BACKEND_LABEL}:: :: CONTENIDO {VERSION} {LOCATION}</title>
+{_META_HEAD_CONTENIDO_}
+    <link rel="SHORTCUT ICON" href="{CONTENIDOPATH}">
+    <style type="text/css">
+    frameset, frame{border: none; margin: 0; padding: 0;}
+    </style>
+{_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript">
+    window.name = "CONTENIDO_Backend";
+    </script>
+</head>
 
-        <meta http-equiv="expires" content="0">
-        <meta http-equiv="cache-control" content="no-cache">
-        <meta http-equiv="pragma" content="no-cache">
+<frameset rows="82,*" frameborder="0" framespacing="0">
 
-        <link rel="SHORTCUT ICON" href="{CONTENIDOPATH}">
+    <!-- Header -->
+    <frame name="header" src="{HEADER}" scrolling="no" noresize="noresize" frameborder="0">
 
-        <style type="text/css">
-            frameset, frame{border: none; margin: 0; padding: 0;}
-        </style>
+    <!-- Content -->
+    <frame name="content" src="{CONTENT}" scrolling="no" noresize="noresize" frameborder="0">
 
-    </head>
-
-    <frameset rows="82,*" frameborder="0" framespacing="0">
-
-        <!-- Header -->
-        <frame name="header" src="{HEADER}" scrolling="no" noresize="noresize" frameborder="0">
-
-        <!-- Content -->
-        <frame name="content" src="{CONTENT}" scrolling="no" noresize="noresize" frameborder="0">
-
-    </frameset>
+</frameset>
 
 </html>

@@ -646,13 +646,10 @@ if (count($navigationTree[0])) {
     $sCategories = showTree(0, $aWholelist);
 }
 
-$tpl->set('s', 'SID', $sess->id);
 $tpl->set('s', 'CATS', $sCategories);
 $tpl->set('s', 'AREA', $area);
-$tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'DIRECTION', 'dir="' . langGetTextDirection($lang) . '"');
 $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
-
 $tpl->set('s', 'AJAXURL',  cRegistry::getBackendUrl() . 'ajaxmain.php');
 $tpl->set('s', 'WHOLELIST', implode(', ', $aWholelist));
 $tpl->set('s', 'EXPANDEDLIST', implode(', ', $conexpandedList[$client]));

@@ -39,14 +39,16 @@ if ($action == "mod_importexport_module") {
                 } else {
                     $notification->displayNotification('info', i18n("Module import successfully!"));
                     $idmod = $module->get('idmod');
-                    $sScript = "<script type=\"text/javascript\">
-                                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                                         if (left_bottom) {
-                                             var href = left_bottom.location.href;
-                                             href = href.replace(/&idmod[^&]*/, '');
-                                             left_bottom.location.href = href+'&idmod='+'" . $idmod . "';
-                                         }
-                                </script>";
+                    $sScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {idmod: {$idmod}});
+    }
+})(Con, Con.$);
+</script>
+JS;
                 }
             } else {
                 $notification->displayNotification('error', i18n("No file uploaded!"));
@@ -66,14 +68,16 @@ if ($action == "mod_importexport_module") {
                 } else {
                     $notification->displayNotification('info', i18n("Module import successfully!"));
                     $idmod = $module->get('idmod');
-                    $sScript = "<script type=\"text/javascript\">
-                                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                                         if (left_bottom) {
-                                             var href = left_bottom.location.href;
-                                             href = href.replace(/&idmod[^&]*/, '');
-                                             left_bottom.location.href = href+'&idmod='+'" . $idmod . "';
-                                         }
-                                </script>";
+                    $sScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {idmod: {$idmod}});
+    }
+})(Con, Con.$);
+</script>
+JS;
                 }
             } else {
                 $notification->displayNotification('error', i18n("No file uploaded!"));

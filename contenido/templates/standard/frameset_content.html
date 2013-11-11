@@ -4,65 +4,68 @@
 
 <html>
 
-    <head>
+<head>
 
-        <title>:: :: :: :: CONTENIDO {VERSION} {LOCATION}</title>
+    <title>:: :: :: :: CONTENIDO {VERSION} {LOCATION}</title>
 
-        <meta http-equiv="expires" content="0">
-        <meta http-equiv="cache-control" content="no-cache">
-        <meta http-equiv="pragma" content="no-cache">
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
 
-        <link rel="SHORTCUT ICON" href="{CONTENIDOPATH}">
-        <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <link rel="SHORTCUT ICON" href="{CONTENIDOPATH}">
 
-        <script type="text/javascript" src="scripts/browserCheck.js"></script>
-        <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-        <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-        <script type="text/javascript" src="scripts/conFrameResize.js"></script>
-        <script type="text/javascript" src="scripts/general.js"></script>
-        <script type="text/javascript">
-            frameResize = new conFrameResize();
-        </script>
-
-    </head>
-
+{_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript" src="scripts/conFrameResize.js"></script>
     <script type="text/javascript">
-    var ua = navigator.userAgent;
-    var m = false;
-    m = ua.match(/MSIE\s([^;]*)/);
-    s = ua.match(/safari/gi); /*If there is no frameborder, safari does not allow to resize frame*/
-    if (m && m[1]) {
-        document.writeln("<frameset id=\"contentFrame\" cols=\"{WIDTH},*\" bordercolor=\"white\" border=\"5\" frameborder=\"0\" framespacing=\"5\">");
-        document.writeln("<frame name=\"left\" id=\"left\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{LEFT}\" bordercolor=\"white\" frameborder=\"0\">");
-        document.writeln("<frame name=\"right\" id=\"right\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{RIGHT}\" bordercolor=\"white\" frameborder=\"0\">");
-    } else if (s) {
-        document.writeln("<frameset id=\"contentFrame\" cols=\"{WIDTH},*\" bordercolor=\"white\" border=\"5\" frameborder=\"1\" framespacing=\"5\">");
-        document.writeln("<frame name=\"left\" id=\"left\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{LEFT}\" bordercolor=\"white\" frameborder=\"1\">");
-        document.writeln("<frame name=\"right\" id=\"right\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{RIGHT}\" bordercolor=\"white\" frameborder=\"0\">");
-    } else {
-        document.writeln("<frameset id=\"contentFrame\" cols=\"{WIDTH},*\" bordercolor=\"white\" border=\"5\" frameborder=\"1\" framespacing=\"5\">");
-        document.writeln("<frame name=\"left\" id=\"left\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{LEFT}\" bordercolor=\"white\" frameborder=\"0\">");
-        document.writeln("<frame name=\"right\" id=\"right\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{RIGHT}\" bordercolor=\"white\" frameborder=\"0\">");
-    }
-    document.writeln("<\/frameset>");
+    var frameResize = new Con.FrameResize();
+    </script>
 
-    /**
-     * modified 2009-07-10 Ortwin Pinke, using try & catch now for better crossbrowser compability
-     */
-    function initFrame() {
-        if (typeof window.frames['left'].left_top != 'undefined') {
-            try {
-                var iHeight = window.frames['left'].left_top.document.getElementsByTagName('body')[0].offsetHeight;
-                frameResize.resizeTopLeftFrame(iHeight+1);
-            } catch(e) {
-                if (e) {
-                    window.setTimeout("initFrame()", 250);
+</head>
+
+<script type="text/javascript">
+var ua = navigator.userAgent,
+    m = ua.match(/MSIE\s([^;]*)/),
+    s = ua.match(/safari/gi), // If there is no frameborder, safari does not allow to resize frame
+    contentFrameBorder = 0,
+    leftBorder = 0;
+
+if (m && m[1]) {
+    contentFrameBorder = 0;
+    leftBorder = 0;
+} else if (s) {
+    contentFrameBorder = 1;
+    leftBorder = 1;
+} else {
+    contentFrameBorder = 1;
+    leftBorder = 0;
+}
+
+document.writeln('<frameset id="contentFrame" cols="{WIDTH},*" bordercolor="white" border="5" frameborder="' + contentFrameBorder + '" framespacing="5">');
+document.writeln('    <frame name="left" id="left" bordercolor="#FFF" scrolling="no" src="{LEFT}" bordercolor="white" frameborder="' + leftBorder + '">');
+document.writeln('    <frame name="right" id="right" bordercolor="#FFF" scrolling="no" src="{RIGHT}" bordercolor="white" frameborder="0">');
+document.writeln('</frameset>');
+</script>
+
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        var attempts = 0;
+        function initFrame() {
+            var frame = Con.getFrame('left_top');
+            if (frame) {
+                try {
+                    frameResize.resizeTopLeftFrame($('body', frame).height() + 1);
+                } catch(e) {
+                    if (++attempts < 3) {
+                        window.setTimeout(function() {
+                            initFrame();
+                        }, 100);
+                    }
                 }
             }
         }
-    }
 
-    initFrame();
-    </script>
-
+        initFrame();
+    });
+})(Con, Con.$);
+</script>
 </html>

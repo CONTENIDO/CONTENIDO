@@ -23,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
 // CONTENIDO startup process
 include_once('../includes/startup.php');
 
-header('Content-Type: text/javascript');
+header('Content-Type: application/javascript');
 
 cRegistry::bootstrap(array(
     'sess' => 'cSession',
@@ -46,468 +46,449 @@ while ($chainEntry = $iterator->next()) {
         $aTabs = array_merge($aTabs, $aTmpArray);
     }
 }
+
+$aCustomTabs = array();
+
+foreach ($aTabs as $key => $sTab) {
+    $iterator = $_cecRegistry->getIterator('Contenido.Article.GetCustomTabProperties');
+    while ($chainEntry = $iterator->next()) {
+        $aTmpArray = $chainEntry->execute($sTab);
+        if (is_array($aTmpArray)) {
+            $aCustomTabs[$sTab] = array(
+                'area' => $aTmpArray[0],
+                'action' => $aTmpArray[1],
+                'custom' => $aTmpArray[2],
+            );
+            break;
+        }
+    }
+}
+
+$aCustomTabs['foo'] = array(
+    'area' => 'foo_area',
+    'action' => 'foo_action',
+    'custom' => 'foo_custom',
+);
+$aCustomTabs['bar'] = array(
+    'area' => 'bar_area',
+    'action' => 'bar_action',
+    'custom' => 'bar_custom',
+);
+
+
 ?>
 
 /**
- * Object of an article
+ * Article related logic module
  *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- */
-function articleObject(actionFrameName, frameNumber) {
-    /* Name of the Actionframe.
-       Defaults to 'right_bottom' */
-    this.actionFrameName = actionFrameName || 'right_bottom';
-
-    /* Reference to the Actionframe */
-    this.actionFrame = parent.parent.frames["right"].frames[this.actionFrameName];
-
-    /* Frame-number.
-       Defaults to '4' */
-    this.frame      = frameNumber || 4;
-
-    /* Filename of the CONTENIDO
-       main file - defaults to 'main.php' */
-    this.filename   = "main.php?"
-
-    /* CONTENIDO session name -
-       defaults to 'contenido' */
-    this.sessionName = "contenido"
-
-    /* Current page selection (first shown article number) */
-    this.next       = 0;
-
-    /* Global Vars */
-    this.sessid     = 0;
-    this.client     = 0;
-    this.lang       = 0;
-
-    /* Article Properties*/
-    this.idart      = 0;
-    this.idartlang  = 0;
-    this.idcat      = 0;
-    this.idcatlang  = 0;
-    this.idcatart   = 0;
-    this.idlang        = 0;
-
-    /* Menu visible / invisible */
-    this.vis        = 1;
-
-    this.customTabs = new Array();
-
-    /* Href of OverviewPage */
-    this.hrefOverview = null;
-
-    <?php
-    foreach ($aTabs as $key => $sTab) {
-        echo 'this.customTabs[\''.$sTab.'\'] = new Object();'."\n";
-
-        $iterator = $_cecRegistry->getIterator("Contenido.Article.GetCustomTabProperties");
-
-        $aTabs = array();
-        while ($chainEntry = $iterator->next()) {
-            $aTmpArray = $chainEntry->execute($sTab);
-            if (is_array($aTmpArray)) {
-                break;
-            }
-        }
-        echo 'this.customTabs[\''.$sTab.'\'][\'area\'] = "'.$aTmpArray[0].'";'."\n";
-        echo 'this.customTabs[\''.$sTab.'\'][\'action\'] = "'.$aTmpArray[1].'";'."\n";
-        echo 'this.customTabs[\''.$sTab.'\'][\'custom\'] = "'.$aTmpArray[2].'";'."\n";
-    }
-    ?>
-}
-
-/**
- * Define required global variables
+ * @module     article-object
+ * @package    TODO
+ * @subpackage TODO
+ * @version    SVN Revision $Rev:$
+ * @requires   jQuery
  *
- * @return void
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
+ * @author     Unknown
+ * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
+ * @author     Timo Trautmann <timo.trautmann@4fb.de>
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
-articleObject.prototype.setGlobalVars = function(sessid, client, lang) {
-    this.sessid = sessid;
-    this.client = client;
-    this.lang   = lang;
-}
 
-/**
- * Sets href to overview page, which was last visited
- *
- * @return void
- * @author Timo Trautmann <timo.trautmann@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- */
-articleObject.prototype.setHrefOverview = function(href) {
-    /*copy url - cut all actions*/
-    if (href.match(/backend_search.php$/g)) {
-        this.hrefOverview = 'javascript:top.content.left.left_top.document.getElementById(\'backend_search\').submit.click();';
-    } else if (href.match(/backend_search/g) || href.match(/area=con_workflow/g)) {
-        this.hrefOverview = href.replace(/action=([^&]*)&?/g, '');
-    } else {
+
+(function(Con, $) {
+    'use strict';
+
+    var NAME = 'article-object';
+
+    /**
+     * Article object class
+     * @class  ArticleObject
+     * @constructor
+     */
+     Con.ArticleObject = function(actionFrameName, frameNumber) {
+        /* Name of the Actionframe. Defaults to 'right_bottom' */
+        this.actionFrameName = actionFrameName || 'right_bottom';
+
+        /* Reference to the Actionframe */
+        this.actionFrame = Con.getFrame(this.actionFrameName);
+
+        /* Frame-number. Defaults to '4' */
+        this.frame      = frameNumber || 4;
+
+        /* Reference to navigation frame */
+        this.navFrame = Con.getFrame('right_top');
+
+        /* Filename of the CONTENIDO main file - defaults to 'main.php' */
+        this.filename   = 'main.php?';
+
+        /* CONTENIDO session name - defaults to 'contenido' */
+        this.sessionName = 'contenido';
+
+        /* Current page selection (first shown article number) */
+        this.next       = 0;
+
+        /* Global Vars */
+        this.sessid     = 0;
+        this.client     = 0;
+        this.lang       = 0;
+
+        /* Article Properties*/
+        this.idart      = 0;
+        this.idartlang  = 0;
+        this.idcat      = 0;
+        this.idcatlang  = 0;
+        this.idcatart   = 0;
+        this.idlang     = 0;
+
+        /* Menu visible / invisible */
+        this.vis        = 1;
+
+        this.customTabs = new Array();
+
+        /* Href of OverviewPage */
         this.hrefOverview = null;
-    }
+
+        /* Dynamically created custom tabs */
+<?php
+$cutomTabsJs = '';
+$prefix = str_repeat(' ', 8);
+foreach ($aCustomTabs as $key => $params) {
+    $cutomTabsJs .= $prefix . "this.customTabs.{$key} = {area: '{$params['area']}', action: '{$params['action']}', custom: '{$params['custom']}'};\n";
 }
+echo $cutomTabsJs;
+?>
 
-/**
- * Reset properties
- *
- * @return void
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- */
-articleObject.prototype.reset = function() {
-    this.idart      = 0;
-    this.idartlang  = 0;
-    this.idcatlang  = 0;
-    this.idcatart   = 0;
-    this.idlang     = 0;
-}
+    };
 
-/**
- * Define required global variables
- *
- * @return string with attached frame & session parameters
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- */
-articleObject.prototype.sessUrl = function(str) {
-    var tmp_str = str;
-    tmp_str += '&frame=' + this.frame;
-    tmp_str += '&'+this.sessionName+'='+this.sessid;
-    return tmp_str;
-}
+    Con.ArticleObject.prototype = {
+        /**
+         * Define required global variables
+         * @method setGlobalVars
+         * @param  {String}  sessid  Session id
+         * @param  {Number}  client  Client id
+         * @param  {Number}  lang  Language id
+         */
+        setGlobalVars: function(sessid, client, lang) {
+            this.sessid = sessid;
+            this.client = client;
+            this.lang   = lang;
+        },
 
-/**
- * Execute an action
- *
- * @return bool Action executes Yes/No
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- */
-articleObject.prototype.doAction = function(str) {
-    /* Flag if action will be executed. */
-    var doAction = false;
-
-    /* Notify Headline */
-    var headline = "<?php echo i18n("Error"); ?>";
-
-    /* Default error string */
-    var err_str = "<?php echo i18n("Error"); ?>";
-
-    switch (str) {
-        /* Article overview mask */
-        case 'con':
-            /* Check if required parameters are set  */
-            if (this.hrefOverview) {
-                url_str = this.hrefOverview;
-                doAction = true;
+        /**
+         * Sets href to overview page, which was last visited
+         * @method setHrefOverview
+         * @param  {String}  href
+         */
+        setHrefOverview: function(href) {
+            // copy url - cut all actions
+            if (href.match(/backend_search.php$/g)) {
+                this.hrefOverview = 'javascript:Con.getFrame(\'left_top\').document.getElementById(\'backend_search\').submit.click();';
+            } else if (href.match(/backend_search/g) || href.match(/area=con_workflow/g)) {
+                this.hrefOverview = href.replace(/action=([^&]*)&?/g, '');
             } else {
-                if (0 != this.idcat) {
-                    url_str = this.sessUrl(this.filename + "area=" + str + "&idcat=" + this.idcat + "&next=" + this.next);
-                    doAction = true;
-                } else {
-                    /* This ERROR should never happen, i.e. the property idcat will not
-                       be reseted once set. */
-                    err_str = "<?php echo i18n("Overview cannot be displayed"); ?>";
-                }
+                this.hrefOverview = null;
             }
-            break;
+        },
 
-        /* Edit article properties */
-        case 'con_editart':
-            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
-                err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
+        /**
+         * Reset properties
+         * @method reset
+         */
+        reset: function() {
+            this.idart = 0;
+            this.idartlang = 0;
+            this.idcatlang = 0;
+            this.idcatart = 0;
+            this.idlang = 0;
+        },
 
-                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                    parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
-                }
-            } else {
-                /* Check if required parameters are set  */
-                if (0 != this.idart) {
-                    url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_edit&idart=" + this.idart + "&idcat=" + this.idcat);
-                    doAction = true;
-                } else {
-                    /* There is no selected article,
-                       we do not have the neccessary
-                       data to display the Article-
-                       properties mask */
-                    err_str = "<?php echo i18n("Article can't be displayed")."<br>".i18n("No article was selected"); ?>";
+        /**
+         * Adds the frame and session parameter to the given url
+         * @method sessUrl
+         * @param  {String}  str
+         * @return {String}  String with attached frame & session parameters
+         */
+        sessUrl: function(str) {
+            var url = str + '&frame=' + this.frame + '&' + this.sessionName + '=' + this.sessid;
+            return url;
+        },
 
-                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                        parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
+        /**
+         * Execute an action.
+         * @method doAction
+         * @param   {String}  str  The action to execute
+         * @return  {Boolean}  Action executes Yes/No
+         */
+        doAction: function(str) {
+            // Flag if action will be executed
+            var doAction = false;
+
+            // Notify Headline
+            var headline = "<?php echo i18n("Error"); ?>";
+
+            // Default error string
+            var error = "<?php echo i18n("Error"); ?>";
+
+            var url = '';
+
+            switch (str) {
+                // Article overview mask
+                case 'con':
+                    // Check if required parameters are set
+                    if (this.hrefOverview) {
+                        url = this.hrefOverview;
+                        doAction = true;
+                    } else {
+                        if (0 != this.idcat) {
+                            url = this.sessUrl(this.filename + 'area=' + str + '&idcat=' + this.idcat + '&next=' + this.next);
+                            doAction = true;
+                        } else {
+                            // This ERROR should never happen, i.e. the property idcat will not
+                            // be reseted once set.
+                            error = "<?php echo i18n("Overview cannot be displayed"); ?>";
+                        }
                     }
-                }
-            }
-            break;
+                    break;
 
-        /* Template configuration */
-        case 'con_tplcfg':
-
-            /* Check if required parameters are set  */
-            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
-                err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
-
-                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                    parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
-                }
-            } else {
-                if (0 != this.idart && 0 != this.idcat) {
-                    url_str = this.sessUrl(this.filename + "area=" + str + "&action=tplcfg_edit&idart=" + this.idart + "&idcat=" + this.idcat);
-                    doAction = true;
-                } else {
-                    /* There is no selected article, we do not have the neccessary
-                       data to display the Template- configuration mask */
-                    err_str = "<?php echo i18n("Template configuration can't be displayed")."<br>".i18n("No article was selected"); ?>";
-
-                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                        parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
+                // Edit article properties
+                case 'con_editart':
+                    if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
+                        error = "<?php echo i18n("Editor can't be displayed") . '<br>' . i18n("Can't edit articles in foreign languages."); ?>";
+                        Con.markSubmenuItem('c_0');
+                    } else {
+                        // Check if required parameters are set
+                        if (0 != this.idart) {
+                            url = this.sessUrl(this.filename + 'area=' + str + '&action=con_edit&idart=' + this.idart + '&idcat=' + this.idcat);
+                            doAction = true;
+                        } else {
+                            // There is no selected article, we do not have the neccessary
+                            // data to display the Article- properties mask
+                            error = "<?php echo i18n("Article can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
+                            Con.markSubmenuItem('c_0');
+                        }
                     }
-                }
-            }
-            break;
+                    break;
 
-        /* Edit article */
-        case 'con_editcontent':
-            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
-                err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
-
-                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                    parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
-                }
-            } else {
-
-                /* Check if required parameters are set  */
-                if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
-                    url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_editart&changeview=edit&idart=" + this.idart + "&idartlang=" + this.idartlang + "&idcat=" + this.idcat);
-                    doAction = true;
-                } else {
-                    /* There is no selected article,
-                       we do not have the neccessary
-                       data to display the Editor */
-                    err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("No article was selected"); ?>";
-
-                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                        parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
+                // Template configuration
+                case 'con_tplcfg':
+                    // Check if required parameters are set
+                    if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
+                        error = "<?php echo i18n("Editor can't be displayed") . '<br>' . i18n("Can't edit articles in foreign languages."); ?>";
+                        Con.markSubmenuItem('c_0');
+                    } else {
+                        if (0 != this.idart && 0 != this.idcat) {
+                            url = this.sessUrl(this.filename + 'area=' + str + '&action=tplcfg_edit&idart=' + this.idart + '&idcat=' + this.idcat);
+                            doAction = true;
+                        } else {
+                            // There is no selected article, we do not have the neccessary
+                            // data to display the Template- configuration mask
+                            error = "<?php echo i18n("Template configuration can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
+                            Con.markSubmenuItem('c_0');
+                        }
                     }
-                }
-            }
-            break;
+                    break;
 
-        /* Preview article */
-        case 'con_preview':
-
-            /* Check if required parameters are set  */
-            if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
-                url_str = this.sessUrl(this.filename + "area=con_editcontent&action=con_editart&changeview=prev&idart=" + this.idart + "&idartlang=" + this.idartlang + "&idcat=" + this.idcat + "&tmpchangelang="+ this.idlang);
-                doAction = true;
-            } else {
-                /* There is no selected article, we do not have the neccessary
-                   data to display the Editor */
-                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                    parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
-                }
-                err_str = "<?php echo i18n("Preview can't be displayed")."<br>".i18n("No article was selected"); ?>";
-            }
-            break;
-
-        /* Meta article */
-        case 'con_meta':
-            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
-                err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
-
-                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                    parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
-                }
-            } else {
-                /* Check if required parameters are set  */
-                if (0 != this.idart && 0 != this.idcat) {
-                    url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_meta_edit&idart=" + this.idart + "&idcat=" + this.idcat);
-                    doAction = true;
-                } else {
-                    /* There is no selected article,
-                       we do not have the neccessary
-                       data to display the Article-
-                       properties mask */
-                    err_str = "<?php echo i18n("Article can't be displayed")."<br>".i18n("No article was selected"); ?>";
-
-                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                        parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
+                // Edit article
+                case 'con_editcontent':
+                    if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
+                        error = "<?php echo i18n("Editor can't be displayed") . '<br>' . i18n("Can't edit articles in foreign languages."); ?>";
+                        Con.markSubmenuItem('c_0');
+                    } else {
+                        // Check if required parameters are set
+                        if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
+                            url = this.sessUrl(this.filename + 'area=' + str + '&action=con_editart&changeview=edit&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat);
+                            doAction = true;
+                        } else {
+                            // There is no selected article, we do not have the neccessary data to display the Editor
+                            error = "<?php echo i18n("Editor can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
+                            Con.markSubmenuItem('c_0');
+                        }
                     }
-                }
+                    break;
+
+                // Preview article
+                case 'con_preview':
+                    // Check if required parameters are set
+                    if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
+                        url = this.sessUrl(this.filename + 'area=con_editcontent&action=con_editart&changeview=prev&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat + '&tmpchangelang='+ this.idlang);
+                        doAction = true;
+                    } else {
+                        // There is no selected article, we do not have the neccessary
+                        // data to display the Editor
+                        error = "<?php echo i18n("Preview can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
+                        Con.markSubmenuItem('c_0');
+                    }
+                    break;
+
+                // Meta article
+                case 'con_meta':
+                    if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
+                        error = "<?php echo i18n("Editor can't be displayed") . '<br>' . i18n("Can't edit articles in foreign languages."); ?>";
+                        Con.markSubmenuItem('c_0');
+                    } else {
+                        // Check if required parameters are set
+                        if (0 != this.idart && 0 != this.idcat) {
+                            url = this.sessUrl(this.filename + 'area=' + str + '&action=con_meta_edit&idart=' + this.idart + '&idcat=' + this.idcat);
+                            doAction = true;
+                        } else {
+                            // There is no selected article, we do not have the neccessary
+                            // data to display the Article- properties mask
+                            error = "<?php echo i18n("Article can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
+                            Con.markSubmenuItem('c_0');
+                        }
+                    }
+                    break;
+
+                // Content: list of all content_type
+                case 'con_content_list':
+                    if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
+                        error = "<?php echo i18n("Editor can't be displayed") . '<br>' . i18n("Can't edit articles in foreign languages."); ?>";
+                        Con.markSubmenuItem('c_0');
+                    } else {
+                        // Check if required parameters are set
+                        if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
+                            url = this.sessUrl(this.filename + 'area=' + str + '&action=con_content&changeview=edit&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat + '&client=' + this.client + '&lang=' + this.lang);
+                            doAction = true;
+                        } else {
+                            // There is no selected article, we do not have the neccessary
+                            // data to display the Editor
+                            error = "<?php echo i18n("Editor can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
+                            Con.markSubmenuItem('c_0');
+                        }
+                    }
+                    break;
+
+                default:
+                    if (this.customTabs[str]) {
+                        var obj = this.customTabs[str];
+                        if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
+                            url = this.sessUrl(this.filename + 'area=' + obj.area + '&action=' + obj.action + '&idart=' + this.idart + '&idartlang=' + this.idartlang + '&idcat=' + this.idcat + '&tmpchangelang='+ this.idlang + '&' + obj.custom);
+                            doAction = true;
+                        } else {
+                            // There is no selected article, we do not have the neccessary
+                            // data to display the Editor
+                            error = "<?php echo i18n("Tab can't be displayed") . '<br>' . i18n("No article was selected"); ?>";
+                            Con.markSubmenuItem('c_0');
+                        }
+                    }
+                    break;
             }
-            break;
 
-        /* Content: list of all content_type */
-        case 'con_content_list':
-            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang) {
-                err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
-
-                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                    parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
-                }
+            if (doAction) {
+                this.actionFrame.location.href = url;
+                return true;
             } else {
+                Con.showNotification(headline, error);
+            }
 
-                /* Check if required parameters are set  */
-                if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
-                    url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_content&changeview=edit&idart=" + this.idart + "&idartlang=" + this.idartlang + "&idcat=" + this.idcat + "&client=" + this.client + "&lang=" + this.lang);
-                    doAction = true;
-                } else {
-                    /* There is no selected article, we do not have the neccessary
-                       data to display the Editor */
-                    err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("No article was selected"); ?>";
+            return false;
+        },
 
-                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                        parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
+        /**
+         * Define article and category related properties
+         * @method setProperties
+         * @param  {Number}  idart
+         * @param  {Number}  idartlang
+         * @param  {Number}  idcat
+         * @param  {Number}  idcatlang
+         * @param  {Number}  idcatart
+         * @param  {Number}  idlang
+         */
+        setProperties: function(idart, idartlang, idcat, idcatlang, idcatart, idlang) {
+            this.idart      = idart;
+            this.idartlang  = idartlang;
+            this.idcat      = idcat;
+            this.idcatlang  = idcatlang;
+            this.idcatart   = idcatart;
+            this.idlang     = idlang;
+        },
+
+        /**
+         * Disables the navigation
+         * @method disable
+         */
+        disable: function() {
+            var oDoc = $(this.navFrame.document);
+            var index = 0;
+
+            if (this.vis == 1) {
+                oDoc.find('ul#navlist li').each(function() {
+                    if (index > 0) {
+                        $(this).css('visibility', 'hidden');
                     }
-                }
-            }
-            break;
+                    index++;
+                });
 
-        default:
-            if (this.customTabs[str]) {
-                var obj = this.customTabs[str];
-                if (0 != this.idart && 0 != this.idartlang && 0 != this.idcat) {
-                    url_str = this.sessUrl(this.filename + "area=" + obj["area"] + "&action=" + obj["action"] + "&idart=" + this.idart + "&idartlang=" + this.idartlang + "&idcat=" + this.idcat + "&tmpchangelang="+ this.idlang + "&" + obj["custom"]);
-                    doAction = true;
-                } else {
-                    /* There is no selected article, we do not have the neccessary
-                       data to display the Editor */
-                    if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) {
-                        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-                        parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
+                this.navFrame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(1)').attr('id'));
+            }
+
+            this.vis = 0;
+        },
+
+        /**
+         * Disables the navigation
+         * @method disableNavForNewArt
+         */
+        disableNavForNewArt: function() {
+            var oDoc = $(this.navFrame.document);
+            var index = 0;
+
+            oDoc.find('ul#navlist li').each(function() {
+                if (index > 1) {
+                    $(this).css('visibility', 'hidden');
+                }
+                index++;
+            });
+
+            this.navFrame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(2)').attr('id'));
+        },
+
+        /**
+         * Enables the navigation
+         * @method enableNavForArt
+         */
+        enableNavForArt: function() {
+            var oDoc = $(this.navFrame.document);
+            var index = 0;
+
+            oDoc.find('ul#navlist li').each(function() {
+                if (index > 1) {
+                    $(this).css('visibility', 'visible');
+                }
+                index++;
+            });
+
+            this.navFrame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(2)').attr('id'));
+        },
+
+        /**
+         * Enables the navigation
+         * @method enable
+         */
+        enable: function() {
+            var oDoc = $(this.navFrame.document);
+            var index = 0;
+
+            if (this.vis == 0) {
+                oDoc.find('ul#navlist li').each(function() {
+                    if (index > 0) {
+                        $(this).css('visibility', 'visible');
                     }
-                    err_str = "<?php echo i18n("Tab can't be displayed")."<br>".i18n("No article was selected"); ?>";
-                }
+                    index++;
+                });
+
+                this.navFrame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(1)').attr('id'));
             }
-            break;
-    }
 
-    if (doAction) {
-        this.actionFrame.location.href = url_str;
-        return true;
-    } else {
-        showNotification(headline, err_str);
-    }
-
-    return false;
-}
-
-/**
- * Define article and category related properties
- *
- * @return void
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- */
-articleObject.prototype.setProperties = function() {
-    this.idart      = arguments[0];
-    this.idartlang  = arguments[1];
-    this.idcat      = arguments[2];
-    this.idcatlang  = arguments[3];
-    this.idcatart   = arguments[4];
-    this.idlang     = arguments[5];
-}
-
-/**
- * Disables the navigation
- *
- * @param none
- * @return void
- */
-articleObject.prototype.disable = function() {
-    var frame = parent.parent.frames["right"].frames["right_top"];
-    var oDoc = $(frame.document);
-
-    var index = 0;
-    if (this.vis == 1) {
-        oDoc.find('ul#navlist li').each(function() {
-            if (index > 0) {
-                $(this).css('visibility', 'hidden');
-            }
-            index++;
-        });
-
-        frame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(1)').attr('id'));
-    }
-
-    this.vis = 0;
-}
-
-/**
- * Disables the navigation
- *
- * @param none
- * @return void
- */
-articleObject.prototype.disableNavForNewArt = function() {
-    var frame = parent.parent.frames["right"].frames["right_top"];
-    var oDoc = $(frame.document);
-    var index = 0;
-
-    oDoc.find('ul#navlist li').each(function() {
-        if (index > 1) {
-            $(this).css('visibility', 'hidden');
+            this.vis = 1;
         }
-        index++;
-    });
 
-    frame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(2)').attr('id'));
-}
+    };
 
-/**
- * Enables the navigation
- *
- * @param none
- * @return void
- */
- articleObject.prototype.enableNavForArt = function() {
-    var frame = parent.parent.frames["right"].frames["right_top"];
-    var oDoc = $(frame.document);
-    var index = 0;
+    // @deprecated [2013-10-22] Assign to windows scope (downwards compatibility)
+    window.articleObject = Con.ArticleObject;
 
-    oDoc.find('ul#navlist li').each(function() {
-        if (index > 1) {
-            $(this).css('visibility', 'visible');
-        }
-        index++;
-    });
-
-    frame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(2)').attr('id'));
- }
-
-/**
- * Enables the navigation
- *
- * @param none
- * @return void
- */
-articleObject.prototype.enable = function() {
-    var frame = parent.parent.frames["right"].frames["right_top"];
-    var oDoc = $(frame.document);
-    var index = 0;
-
-    if (this.vis == 0) {
-        oDoc.find('ul#navlist li').each(function() {
-            if (index > 0) {
-                $(this).css('visibility', 'visible');
-            }
-            index++;
-        });
-
-        frame.sub.clickedById(oDoc.find('ul#navlist li:nth-child(1)').attr('id'));
-    }
-
-    this.vis = 1;
-}
+})(Con, Con.$);

@@ -19,18 +19,16 @@ $tpl->set('s', 'ID', 'oTplSel');
 $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'CAPTION', '');
-$tpl->set('s', 'SESSID', $sess->id);
-
-
 $tpl->set('s', 'ACTION', $select);
 
-$tmp_mstr = '<a class="addfunction" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-$area = "htmltpl";
-$mstr = sprintf($tmp_mstr, 'right_top',
-                                   $sess->url("main.php?area=htmltpl&frame=3"),
-                                   'right_bottom',
-                                   $sess->url("main.php?area=htmltpl&frame=4&action=htmltpl_create"),
-                                   i18n("Create module template"));
+$tmp_mstr = '<div class="leftTopAction"><a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
+$area = 'htmltpl';
+$mstr = sprintf(
+    $tmp_mstr,
+    'right_top', $sess->url("main.php?area=htmltpl&frame=3"),
+    'right_bottom', $sess->url("main.php?area=htmltpl&frame=4&action=htmltpl_create"),
+    i18n("Create module template")
+);
 if ((int) $client > 0) {
     if ($perm->have_perm_area_action($area, "htmltpl_create")) {
         $tpl->set('s', 'NEWSTYLE', $mstr);
@@ -42,4 +40,3 @@ if ((int) $client > 0) {
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['html_tpl_left_top']);
-?>

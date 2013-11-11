@@ -1,5 +1,4 @@
-$(document).ready(function() {
-
+$(function() {
     $('#reminderdate').datetimepicker({
         buttonImage: 'images/calendar.gif',
         buttonImageOnly: true,

@@ -19,7 +19,7 @@
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @modified Timo Trautmann <timo.trautmann@4fb.de> added support for second marked Color used as active sync color, defined by class
-                                                                                   variable markedSyncColor Each table row containing class name con_sync gets this marked color
+                                                    variable markedSyncColor Each table row containing class name con_sync gets this marked color
  * @version 1.2
  * @copyright Jan Lengowski 2002
  */
@@ -102,7 +102,7 @@ function rowMark_out(oRow) {
 
 }
 
-function rowMark_reset () {
+function rowMark_reset() {
     var oObjects = document.getElementsByTagName('tr');
     var pattern=eval("/" + this.instanceName + "\\.click\\(this\\)/m");
 
@@ -230,11 +230,14 @@ function imgMark(overColor, markedColor, overMarked, imgOutSrc, imgOverSrc, onCl
 imgMark.prototype = new rowMark;
 
 
-/* Sets the path value
-   in the area 'upl' */
+/*
+Sets the path value in the area 'upl'
+@deprecated [2013-10-16] Not in use anymore, see rowMarkUplClick
+*/
 function setPath(obj) {
-    parent.parent.frames["left"].frames['left_top'].document.forms[1].path.value = obj.id;
-    parent.parent.frames["left"].frames['left_top'].document.getElementById("caption2").innerHTML = obj.id;
+    var frame = Con.getFrame('left_top');
+    frame.document.forms[1].path.value = obj.id;
+    frame.document.getElementById("caption2").innerHTML = obj.id;
 }
 
 /**
@@ -245,20 +248,20 @@ function setPath(obj) {
  * @author Timo Trautmann <timo.trautmann@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-function refreshSyncScreen(permSyncCat) {
+function rowMarkRefreshSyncScreen(permSyncCat) {
     //curLanguageSync = syncFrom;
-    var frame = parent.parent.frames["left"].frames['left_top'];
-    var syncElem = frame.document.getElementById('sync_cat_single');
-    var syncElemMultiple = frame.document.getElementById('sync_cat_multiple');
-    if (syncElem && syncElemMultiple) {
+    var frame = Con.getFrame('left_top'),
+        $syncElem = Con.$('#sync_cat_single', frame),
+        $syncElemMultiple = Con.$('#sync_cat_multiple', frame);
+    if ($syncElem[0] && $syncElemMultiple[0]) {
         if (permSyncCat == 0) {
-            syncElem.style.display = 'none';
-            syncElemMultiple.style.display = 'none';
+            $syncElem.css('display', 'none');
+            $syncElemMultiple.css('display', 'none');
         } else {
-            syncElem.style.display = 'block';
-            syncElemMultiple.style.display = 'block';
+            $syncElem.css('display', 'block');
+            $syncElemMultiple.css('display', 'block');
         }
-        parent.parent.frameResize.resizeTopLeftFrame(frame.document.getElementById('top_left_container').offsetHeight+1);
+        Con.FrameLeftTop.resize({resizegap: 1});
     }
 }
 
@@ -273,9 +276,11 @@ function refreshSyncScreen(permSyncCat) {
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-function conInjectData(obj) {
+function rowMarkConClick(obj) {
+    var frame = Con.getFrame('left_top');
+
     /* Configuration Object Reference */
-    cfgObj = parent.parent.frames["left"].frames['left_top'].cfg;
+    cfgObj = frame.cfg;
 
     /* Split the data string.
        0 -> category id
@@ -296,10 +301,10 @@ function conInjectData(obj) {
            through the .load() method */
         //cfgObj.load(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
         cfgObj.load(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], obj.id);
-        refreshSyncScreen(data[8]);
+        rowMarkRefreshSyncScreen(data[8]);
     } else {
         cfgObj.reset();
-        refreshSyncScreen(0);
+        rowMarkRefreshSyncScreen(0);
     }
 
     /* String for debugging */
@@ -314,79 +319,49 @@ function conInjectData(obj) {
     str += "Right for Template Config: "   + data[7] + "\n";
     str += "data7: "   + data[7] + "\n";
 
-    if (is.NS) {
-        if (!parent.parent.frames["left"].frames['left_top'].cfg.scrollX) {
-            parent.parent.frames["left"].frames['left_top'].cfg.scrollX = 0;
+    if (Con.isNs) {
+        if (!frame.cfg.scrollX) {
+            frame.cfg.scrollX = 0;
         }
-        if (!parent.parent.frames["left"].frames['left_top'].cfg.scrollY) {
-            parent.parent.frames["left"].frames['left_top'].cfg.scrollY = 0;
+        if (!frame.cfg.scrollY) {
+            frame.cfg.scrollY = 0;
         }
 
-        parent.parent.frames["left"].frames['left_top'].cfg.scrollX = scrollX;
-        parent.parent.frames["left"].frames['left_top'].cfg.scrollY = scrollY;
+        frame.cfg.scrollX = scrollX;
+        frame.cfg.scrollY = scrollY;
     }
 }
 
-/**
-rowMark instances
-**/
-
-/* rowMark instance for the
-   general use */
-row = new rowMark('#f9fbdd', '#ecf1b2', '#cccccc', 'row');
-
-/* rowMark instance for the
-   Subnavigation */
-sub = new rowMark('red', '#FFF', 'blue', 'sub');
-
-/* rowMark instance for the
-   Content area */
-con = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'conInjectData(oRow)', 'con');
-
-/* rowMark instance for the
-   Content Category area */
-str = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'refreshSelectedBaseCategory(oRow)', 'str');
-
-/* rowMark instance for the
-   Upload area */
-//upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'setPath(oRow)', 'upl');
-upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'refreshPathFrame(oRow)', 'upl');
-
-/* Create a new rowMark
-   Instance for the Content-
-   Article overview area */
-artRow = new rowMark('#f9fbdd', '#ecf1b2', '#ecf1b2', 'if (conArtOverviewExtractData(oRow) == false) { window.setTimeout(conArtOverviewExtractData(oRow), 250); }', 'artRow');
-
-
-/* rowMark instance for
-   area 'lay' */
-lay = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'saveObj(oRow)', 'lay');
-
-function saveObj(oRow) {
-    parent.parent.frames["left"].frames["left_top"].obj = oRow.id;
+function rowMarkLayClick(oRow) {
+    Con.getFrame('left_top').obj = oRow.id;
 }
 
-function refreshPathFrame(oRow) {
-    var newPath = oRow.id;
-    var left_top = parent.parent.frames["left"].frames["left_top"];
+/**
+ * Sets the path value in the area 'upl'
+ * @param {HTMLElement} oRow
+ */
+function rowMarkUplClick(oRow) {
+    var newPath = oRow.getAttribute("data-path");
+    var frame = Con.getFrame('left_top');
 
-    if (left_top) {
-        if (left_top.document.getElementById('caption2')) {
-            left_top.document.getElementById('caption2').innerHTML = newPath;
+    if (frame) {
+        if (frame.document.getElementById('caption2')) {
+            frame.document.getElementById('caption2').innerHTML = newPath;
         }
 
-        if (left_top.document.newdir) {
-            left_top.document.newdir.path.value = newPath;
+        if (frame.document.newdir) {
+            frame.document.newdir.path.value = newPath;
         }
 
         id_path = newPath;
     }
 }
 
-/**refreshSelectedBaseCategory
- * Generic function to reMark a row
+/**
+ * Generic function to reMark a row in layout
+ * @param {String|HTMLElement} sObjId
  */
-function reMark(sObjId) {
+function rowMarkLayReMark(sObjId) {
     var elm = document.getElementById(sObjId);
 
     if (typeof elm == 'object') {
@@ -399,3 +374,62 @@ function reMark(sObjId) {
     }
 }
 
+/**
+ * Function gets currently selected categroy row an set it as default in select box for base category
+ * (selectbox in category new layer) Function is also called by row instance 'str', when selected row
+ * changes
+ */
+function rowMarkStrClick(elemId) {
+    var select = document.getElementById(elemId),
+        iCatId = 0;
+
+    if (str.markedRow) {
+        if (str.markedRow.id.match(/^cat_(\d+)_row$/g)) {
+            iCatId = parseInt(RegExp.$1);
+        }
+    }
+
+    if (select && iCatId > 0) {
+        var aOptions = select.getElementsByTagName('option');
+        for (var i = 0; i < aOptions.length; i++) {
+            aOptions[i].selected = false;
+            if (!aOptions[i].disabled) {
+                var iValueOption = parseInt(aOptions[i].value);
+                if (iValueOption > 0 && iValueOption == iCatId) {
+                    aOptions[i].selected = true;
+                }
+            }
+        }
+    }
+}
+
+function rowMarkArtRowClick(oRow) {
+    if (conArtOverviewExtractData(oRow) == false) {
+        window.setTimeout(conArtOverviewExtractData(oRow), 250);
+    }
+}
+
+/**
+rowMark instances
+**/
+
+// rowMark instance for the general use
+row = new rowMark('#f9fbdd', '#ecf1b2', '#cccccc', 'void(0)', 'row');
+
+// rowMark instance for the Subnavigation
+sub = new rowMark('red', '#FFF', 'blue', 'void(0)', 'sub');
+
+// rowMark instance for the Content area
+con = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'rowMarkConClick(oRow)', 'con');
+
+// rowMark instance for the Content Category area
+str = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'rowMarkStrClick("new_idcat")', 'str');
+
+// rowMark instance for the Upload area
+upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'rowMarkUplClick(oRow)', 'upl');
+
+// Create a new rowMark Instance for the Content-Article overview area
+artRow = new rowMark('#f9fbdd', '#ecf1b2', '#ecf1b2', 'rowMarkArtRowClick(oRow)', 'artRow');
+
+// rowMark instance for area 'lay'
+lay = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'rowMarkLayClick(oRow)', 'lay');

@@ -1,35 +1,23 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <title>left_top.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/cfoldingrow.js"></script>
     <script type="text/javascript" src="scripts/parameterCollector.js"></script>
     <script type="text/javascript" src="scripts/contenidoConfig.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
-
-    <script type="text/javascript">
-        function resizeFrame() {
-            parent.parent.frameResize.resizeTopLeftFrame(document.getElementById('top_left_container').offsetHeight+16);
-        }
-    </script>
 </head>
 
-<body class="mg0 mgt1 borderB3 pdt7 pdl10 bgcwhite" onLoad="resizeFrame();" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<div id="top_left_container" class="mgb5">
-    <table cellspacing='0' cellpadding='0' border='0'>
-        <tr>
-            <td class='pdr10 mgl10'><img border="0" src="images/but_edittext.gif"></td>
-            <td><a href="{ROW}">{LABLE_CRONJOB_EDIT}</a></td>
-        </tr>
-    </table>
+<body>
+
+<div id="top_left_container" data-resizegap="10">
+    <div class="leftTopAction">
+        <a class="editfunction" href="{ROW}">{LABLE_CRONJOB_EDIT}</a>
+    </div>
 </div>
+
 </body>
 </html>

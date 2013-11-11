@@ -257,41 +257,69 @@ function getParentAreaId($area) {
 }
 
 /**
- * Write JavaScript to mark
+ * Write JavaScript to mark submenu item.
  *
- * @param int $menuitem Which menuitem to mark
+ * @param int $menuitem  Which menuitem to mark
  * @param bool $return Return or echo script
  */
 function markSubMenuItem($menuitem, $return = false) {
-    $str = '
-    <script type="text/javascript">
-    // @todo  Use conMarkSubmenuItem(id) in general.js, but we have to ensure to load the file!
-    (function(id) {
-        var menuItem;
+    global $changeview;
 
-        try {
-            // Check if we are in a dual-frame or a quad-frame
-            if (parent.parent.frames[0].name == "header") {
-                if (parent.frames["right_top"].document.getElementById(id)) {
-                    menuItem = parent.frames["right_top"].document.getElementById(id).getElementsByTagName("a")[0];
-                    parent.frames["right_top"].sub.clicked(menuItem);
-                }
-            } else {
-                // Check if submenuItem is existing and mark it
-                if (parent.parent.frames["right"].frames["right_top"].document.getElementById(id)) {
-                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById(id).getElementsByTagName("a")[0];
-                    parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem);
-                }
+    if (!isset($changeview) || 'prev' !== $changeview) {
+        // CONTENIDO backend but not in preview mode
+        $str = <<<JS
+<script type="text/javascript">
+Con.markSubmenuItem('c_{$menuitem}');
+</script>
+JS;
+    } else {
+        // CONTENIDO backend and article preview mode. We don't have the JavaScript object Con here!
+        $str = <<<JS
+<script type="text/javascript">
+(function(id) {
+    var menuItem;
+    try {
+        // Check if we are in a dual-frame or a quad-frame
+        if (parent.parent.frames[0].name == 'header') {
+            if (parent.frames.right_top.document.getElementById(id)) {
+                menuItem = parent.frames.right_top.document.getElementById(id).getElementsByTagName('a')[0];
+                parent.frames.right_top.sub.clicked(menuItem);
             }
-        } catch (e) {}
-    })("c_' . $menuitem . '");
-    </script>';
+        } else {
+            // Check if submenuItem is existing and mark it
+            if (parent.parent.frames.right.frames.right_top.document.getElementById(id)) {
+                menuItem = parent.parent.frames.right.frames.right_top.document.getElementById(id).getElementsByTagName('a')[0];
+                parent.parent.frames.right.frames.right_top.sub.clicked(menuItem);
+            }
+        }
+    } catch (e) {}
+})('c_{$menuitem}');
+</script>
+JS;
+    }
 
     if ($return) {
         return $str;
     } else {
         echo $str;
     }
+}
+
+/**
+ * Creates a inline script wrapped with a self executing function
+ *
+ * @param int $menuitem Which menuitem to mark
+ * @param bool $return Return or echo script
+ */
+function conMakeInlineScript($content) {
+    $script = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+{$content}
+})(Con, Con.$);
+</script>
+JS;
+    return $script;
 }
 
 /**

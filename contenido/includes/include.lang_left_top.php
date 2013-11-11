@@ -18,10 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'CAPTION', '');
-$tpl->set('s', 'SESSID', $sess->id);
-
 $tpl->set('s', 'ACTION', '');
-$tpl->set('s', 'SID', $sess->id);
 
 $clients = $classclient->getAccessibleClients();
 

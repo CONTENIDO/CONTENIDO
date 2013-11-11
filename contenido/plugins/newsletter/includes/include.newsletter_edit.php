@@ -482,15 +482,14 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 
     $sExecScript = '
     <script type="text/javascript">
-        // Enabled/Disable group box
-        function checkSelection(strValue)
-        {
-            if (strValue == "selection") {
-                document.getElementById("groupselect").disabled = false;
-            } else {
-                document.getElementById("groupselect").disabled = true;
-            }
+    // Enabled/Disable group box
+    function checkSelection(strValue) {
+        if (strValue == "selection") {
+            document.getElementById("groupselect").disabled = false;
+        } else {
+            document.getElementById("groupselect").disabled = true;
         }
+    }
     </script>';
     $oPage->addScript($sExecScript);
 

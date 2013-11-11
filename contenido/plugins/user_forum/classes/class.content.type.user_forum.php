@@ -77,7 +77,6 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $cfg = cRegistry::getConfig();
         // build top code
         $tplTop = new cTemplate();
-        $tplTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $tplTop->set('s', 'ICON', 'plugins/user_forum/images/con_button.gif');
         $tplTop->set('s', 'ID', $this->_id);
         $tplTop->set('s', 'PREFIX', $this->_prefix);
@@ -100,12 +99,10 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
 
         // build bottom code
         $tplBottom = new cTemplate();
-        $tplBottom->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $tplBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $tplBottom->set('s', 'ID', $this->_id);
         $tplBottom->set('s', 'PREFIX', $this->_prefix);
         $tplBottom->set('s', 'IDARTLANG', $this->_idArtLang);
-        $tplBottom->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $tplBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $tplBottom->set('s', 'SETTINGS', json_encode($this->_settings));
         $tplBottom->set('s', 'JS_CLASS_SCRIPT', UserForum::getUrl() . 'scripts/cmsUserforum.js');
@@ -119,6 +116,10 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed {
         $code .= $this->_generateActionCode();
         $code .= $this->_encodeForOutput($codeBottom);
         $code .= $this->generateViewCode();
+
+$code = "\n\n<!-- CODE (class.content.type.user_forum.php) -->
+$code
+<!-- /CODE -->\n\n";
 
         return $code;
     }

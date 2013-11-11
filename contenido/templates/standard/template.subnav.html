@@ -1,39 +1,39 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- template.subnav, @fixme: merge with template.default_subnav, template.subnav_blank, template.file_subnav -->
+<!-- template.subnav, @fixme: merge with template.subnav_blank, template.file_subnav -->
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <title>template.subnav.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/subnav.js"></script>
 </head>
 <body class="page_subnav">
 
-<div id="navcontainer">
+<div id="navcontainer" class="{CLASS}">
     <div class="frame_handle">
         <img src="images/frame_handle_re.gif" alt="">
-        <img id="toggleimage" src="images/spacer.gif" alt="">
+        <img id="toggleimage" src="images/toggle_frame_right.gif" style="display:none;" alt="">
     </div>
     <ul id="navlist">
         <!-- BEGIN:BLOCK -->
-        <li id="{ID}">{CAPTION}</li>
+        <li id="{ID}"  data-name="{DATA_NAME}">{CAPTION}</li>
         <!-- END:BLOCK -->
     </ul>
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        if (parent.parent.frames[0].name != "header") {
-            parent.parent.frameResize.init();
+(function(Con, $) {
+    $(function() {
+        if (parent.parent.frames[0].name != 'header') {
+            Con.getFrame('content').frameResize.init();
             sub.init();
         }
-        $("#toggleimage").click(function() {
-            parent.parent.frameResize.toggle();
+        $('#toggleimage').click(function() {
+            Con.getFrame('content').frameResize.toggle();
         });
     });
+})(Con, Con.$);
 </script>
 
 </body>

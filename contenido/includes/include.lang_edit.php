@@ -29,16 +29,17 @@ $newOption = '';
 
 $db2 = cRegistry::getDb();
 
-$sReload = '<script type="text/javascript">
-            (function() {
-                var left_bottom = top.content.left.left_bottom;
-                if (left_bottom) {
-                    var href = left_bottom.location.href;
-                    href = href.replace(/&idlang[^&]*/, \'\');
-                    left_bottom.location.href = href+"&idlang="+"' . $idlang . '";
-                }
-            })();
-            </script>';
+$sReload = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        var href = Con.UtilUrl.replaceParams(left_bottom.location.href, {idlang: {$idlang}});
+        frame.location.href = href;
+    }
+})(Con, Con.$);
+</script>
+JS;
 
 if ($action == "lang_newlanguage") {
 
@@ -46,11 +47,14 @@ if ($action == "lang_newlanguage") {
 
     // update language dropdown in header, but only for current client
     if ($targetclient == $client) {
-        $jsCode = '<script type="text/javascript">
-                        (function() {
-                            top.header.languageSelectAdd("' . i18n("New language") . '", "' . $idlang . '");
-                        })();
-                      </script>';
+        $msgNewLanguage = i18n("New language");
+        $jsCode = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    Con.getFrame('header').languageSelectAdd("{$msgNewLanguage}", {$idlang});
+})(Con, Con.$);
+</script>
+JS;
         $page->addScript($jsCode);
     }
 
@@ -64,11 +68,13 @@ if ($action == "lang_newlanguage") {
 
     // finally delete from dropdown in header, but only for current client
     if ($targetclient == $client) {
-        $jsCode = '<script type="text/javascript">
-                        (function() {
-                            top.header.languageSelectRemove(' . $idlang . ');
-                        })();
-                      </script>';
+        $jsCode = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    Con.getFrame('header').languageSelectRemove({$idlang});
+})(Con, Con.$);
+</script>
+JS;
         $page->addScript($jsCode);
     }
 
@@ -104,8 +110,8 @@ if ($action == "lang_newlanguage") {
             $tpl->reset();
 
             $sql = "SELECT
-                        A.idlang AS idlang, A.name AS name, A.active as active, A.encoding as encoding, A.direction as direction,
-                        B.idclient AS idclient
+                        A.idlang AS idlang, A.name AS name, A.active as active, A.encoding as encoding,
+                        A.direction as direction, B.idclient AS idclient
                     FROM
                         " . $cfg["tab"]["lang"] . " AS A,
                         " . $cfg["tab"]["clients_lang"] . " AS B
@@ -200,12 +206,14 @@ if ($action == "lang_newlanguage") {
             // update language dropdown in header, but only for current client
             if ($targetclient == $client) {
                 // update dropdown in header
-                $jsCode = '<script type="text/javascript">
-                            (function() {
-                                top.header.languageSelectUpdate("' . $db->f("name") . '", "' . $idlang . '");
-                            })();
-                          </script>';
-
+                $languageName = $db->f("name");
+                $jsCode = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    Con.getFrame('header').languageSelectUpdate("{$languageName}", {$idlang});
+})(Con, Con.$);
+</script>
+JS;
                 $page->addScript($jsCode);
             }
 

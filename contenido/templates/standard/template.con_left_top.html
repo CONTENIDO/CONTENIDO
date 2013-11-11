@@ -1,266 +1,23 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-    <script type="text/javascript" src="scripts/browserCheck.js"></script>
-    <script type="text/javascript" src="scripts/articleObject.js.php?contenido={SESSID}"></script>
+    <title>template.con_left_top.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+    <style type="text/css">
+    .page_con_left_top #top_left_container {margin-top:1px;}
+    </style>
+{_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript" src="scripts/articleObject.js.php?contenido={_SID_}"></script>
     <script type="text/javascript" src="scripts/HTMLObj.js"></script>
     <script type="text/javascript" src="scripts/contenidoConfig.js"></script>
     <script type="text/javascript" src="scripts/cfoldingrow.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript" src="scripts/parameterCollector.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var left_bottom = parent.parent.frames["left"].frames["left_bottom"];
-
-            $("a#expander").click(function() {
-                parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree #root ul li.collapsed").removeClass("collapsed");
-                var catlist = parent.parent.frames["left"].frames["left_bottom"].scatlist;
-                $.post("{AJAXURL}", { area: "{AREA}", action: "expandall", wholelist: catlist, contenido: "{SESSION}" });
-                return false;
-            });
-
-            $("a#collapser").click(function() {
-                parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li ul").parent().addClass("collapsed");
-                var catlist = parent.parent.frames["left"].frames["left_bottom"].scatlist;
-                $.post("{AJAXURL}", { area: "{AREA}", action: "collapseall", wholelist: catlist, contenido: "{SESSION}" });
-                return false;
-            });
-
-            $("a#changetpl").click(function() {
-                if (cfg.catId > 0 && cfg.hasRight['template_cfg'] == 1) {
-                    var templateselect = document.TemplateSelect.oTplSel.selectedIndex;
-                    var templateid = document.TemplateSelect.oTplSel.options[templateselect].value;
-                    $.post("{AJAXURL}", { area: "{AREA}", action: "con_changetemplate", idcat: cfg.catId, idtpl: templateid, contenido: "{SESSION}" });
-                    var oldid = cfg.catId + '-' + cfg.tplId + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
-                    var newid = cfg.catId + '-' + templateid + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
-                    left_bottom.$("#con_str_tree li#root ul li#"+oldid).attr("id", newid);
-                    return false;
-                }
-            });
-
-            $("div#oOnline_label a").click(function() {
-                if (cfg.catId > 0 && cfg.hasRight['online'] == 1) {
-                    var oldid = cfg.idString;
-                    var oldobject = parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#" + oldid);
-                    var oldlink = parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#" + oldid + " > div > a");
-                    var oldclass = oldlink.attr("class");
-                    if (cfg.isOnline == 0) {
-                        var newonline = 1;
-                        var newclass = oldclass.replace(/off/, "on");
-                    } else {
-                        var newonline = 0;
-                        var newclass = oldclass.replace(/on/, "off");
-                    }
-                    var newid = cfg.catId + '-' + cfg.tplId + '-' + newonline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
-                    oldlink.removeClass(oldclass);
-                    oldlink.addClass(newclass);
-
-                    oldobject.attr("id", newid);
-                    $.post("{AJAXURL}", { area: "{AREA}", action: "con_makecatonline", idcat: cfg.catId, online: newonline, contenido: "{SESSION}" });
-
-                    parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#"+newid+" > div").click();
-                    return false;
-                }
-            });
-
-            $("div#oLock_label a").click(function() {
-                newid = false;
-                if (cfg.catId > 0 && cfg.hasRight['public'] == 1) {
-                    if (cfg.isPublic == 0) {
-                        var newpublic = 1;
-                    } else {
-                        var newpublic = 0;
-                    }
-                    var oldid = cfg.idString;
-                    var oldobject = parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#"+oldid);
-                    var oldlink = parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#"+oldid+" div > a");
-                    oldlink.each(function(i) {
-                        var oldlinkclass = $(this).attr("class");
-                        var oldlinkid = $(this).parent().parent().attr("id");
-                        var aOldlinkids = oldlinkid.split("-");
-                        var newlinkclass;
-                        if (cfg.isPublic == 0) {
-                            newlinkclass = oldlinkclass.replace(/_locked/, "");
-                        } else {
-                            if (oldlinkclass.search(/_locked/) == -1) {
-                                newlinkclass = oldlinkclass + "_locked";
-                            } else {
-                                newlinkclass = oldlinkclass;
-                            }
-                        }
-                        $(this).removeClass(oldlinkclass);
-                        $(this).addClass(newlinkclass);
-                        var newlinkid = aOldlinkids[0] + '-' + aOldlinkids[1] + '-' + aOldlinkids[2] + '-' + newpublic + '-' + aOldlinkids[4] + '-' + aOldlinkids[5] + '-' + aOldlinkids[6] + '-' + aOldlinkids[7]  + '-' + aOldlinkids[8];
-                        $("#con_str_tree li#root ul li#"+oldlinkid).attr("id", newlinkid);
-                        if (newid == false) {
-                            newid = newlinkid;
-                        }
-                    });
-
-                    $.post("{AJAXURL}", { area: "{AREA}", action: "con_makepublic", idcat: cfg.catId, public: newpublic, contenido: "{SESSION}" });
-
-                    cfg.isPublic = newpublic;
-
-                    parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li#"+newid+" > div").click();
-                    cfg.updateScreen();
-                    return false;
-                }
-            });
-        });
-
-        var sid = "{SESSID}";
-        cfg = new contenidoConfig();
-        artObj = new articleObject();
-        var articleURL='';
-        var categoryURL='';
-        var linkcheckerURL='';
-        var curLanguageSync = {SYNC_LANG};
-
-        //This function tries to get recent Informations from other frames, if this frame is reloaded
-        function initData() {
-            var left_bottom = parent.parent.frames["left"].frames["left_bottom"];
-            var right_bottom = parent.parent.frames["right"].frames["right_bottom"];
-            var right_top = parent.parent.frames["right"].frames["right_top"];
-
-            if (left_bottom && typeof(left_bottom.irgendwas) == "function") {
-                left_bottom.irgendwas();
-            }
-
-            if (right_top && typeof(right_top.refreshArticleProp) == "function") {
-                right_top.refreshArticleProp();
-            }
-
-            if (right_bottom && typeof(right_bottom.initValues) == "function") {
-                right_bottom.initValues();
-                if (typeof(right_bottom.initTheOne) == "function") {
-                    right_bottom.initTheOne();
-                }
-            }
-
-            if (right_bottom && typeof(right_bottom.refresh_article_search_form) == "function") {
-                right_bottom.refresh_article_search_form('refresh');
-            }
-        }
-
-        //Script updates sync Language and reloads left_bottom frame
-        function updateCurLanguageSync() {
-            curLanguageSync = document.syncfrom.syncoptions.value;
-            {UPDATE_SYNC_REFRESH_FRAMES}
-        }
-
-        // need to insert function in Article Search link
-        function resizeFrame(arg) {
-            if (arg == '') {
-                var articleLink = document.getElementById('{ARTICLELINK}');
-                var categoryLink = document.getElementById('{CATEGORYLINK}');
-                var syncLink = document.getElementById('{SYNCLINK}');
-                var legendLink = document.getElementById('{LEGENDLINK}');
-
-                //store current link for later use
-                if (articleLink) {
-                    articleURL = articleLink.href;
-                    articleLink.href = "javascript:resizeFrame('{ARTICLELINK}');";
-                }
-
-                if (categoryLink) {
-                    categoryURL = categoryLink.href;
-                    categoryLink.href = "javascript:resizeFrame('{CATEGORYLINK}');";
-                }
-
-                if (syncLink) {
-                    syncURL = syncLink.href;
-                    syncLink.href = "javascript:resizeFrame('{SYNCLINK}');";
-                }
-
-                if (legendLink) {
-                    legendURL = legendLink.href;
-                    legendLink.href = "javascript:resizeFrame('{LEGENDLINK}');";
-                }
-            } else if (arg == '{ARTICLELINK}') {
-                window.location.href = articleURL;
-            } else if (arg == '{CATEGORYLINK}') {
-                window.location.href = categoryURL;
-            } else if (arg == '{SYNCLINK}') {
-                window.location.href = syncURL;
-            } else if (arg == '{LEGENDLINK}') {
-                window.location.href = legendURL;
-            }
-            // resizing frame
-            window.setTimeout("parent.parent.frameResize.resizeTopLeftFrame(document.getElementById('top_left_container').offsetHeight+1)", 10);
-        }
-
-        function toggle_tr_visibility(tr_id) {
-            if (document.forms['backend_search'].elements['bs_search_date_type'].options[document.forms['backend_search'].elements['bs_search_date_type'].selectedIndex].value == 'n/a') {
-                document.getElementById(tr_id).style.display = 'none';
-            } else {
-                if (!window.ActiveXObject) {
-                    document.getElementById(tr_id).style.display = 'table-row';
-                } else {
-                    document.getElementById(tr_id).style.display = 'block';
-                }
-            }
-        }
-
-        function configureCategory() {
-            if (cfg.catId > 0 && cfg.hasRight['template_cfg'] == 1) {
-                var sHref = '{CAT_HREF}';
-                sHref = sHref+cfg.catId;
-                parent.parent.frames["right"].frames["right_bottom"].document.location.href = sHref;
-            }
-        }
-
-        function generateSyncAction(bIsMultiple) {
-            var href = '{SYNC_HREF}';
-            if (curLanguageSync > 0 && cfg.catId > 0) {
-                if (bIsMultiple == 1) {
-                    conMultiLink('left_bottom', href+'&syncfromlang='+curLanguageSync+'&syncidcat='+cfg.catId+'&multiple=1');
-                } else {
-                    conMultiLink('left_bottom', href+'&syncfromlang='+curLanguageSync+'&syncidcat='+cfg.catId+'&multiple=0');
-                }
-            }
-        }
-
-        function resetSearchForm() {
-            oForm = document.backend_search;
-
-            oForm.bs_search_text.value = "";
-            oForm.bs_search_id.value = "";
-            oForm.bs_search_date_type.value = "";
-            oForm.bs_search_date_type.selectedIndex = 0;
-
-            toggle_tr_visibility("tr_date_from");
-            toggle_tr_visibility("tr_date_to");
-
-            oForm.bs_search_date_from_day.value = "";
-            oForm.bs_search_date_from_month.value = "";
-            oForm.bs_search_date_from_year.value = "";
-            oForm.bs_search_date_from_day.selectedIndex = 0;
-            oForm.bs_search_date_from_month.selectedIndex = 0;
-            oForm.bs_search_date_from_year.selectedIndex = 0;
-
-            oForm.bs_search_date_to_day.value = "";
-            oForm.bs_search_date_to_month.value = "";
-            oForm.bs_search_date_to_year.value = "";
-            oForm.bs_search_date_to_day.selectedIndex = 0;
-            oForm.bs_search_date_to_month.selectedIndex = 0;
-            oForm.bs_search_date_to_year.selectedIndex = 0;
-
-            oForm.bs_search_author.value = "";
-            oForm.bs_search_author.selectedIndex = 0;
-        }
-    </script>
 </head>
-<body onLoad="resizeFrame('');">
-    <div id="top_left_container" style="margin-top:1px">
+<body class="page_con_left_top">
+
+    <div id="top_left_container" data-resizegap="1" data-resizeinitcb="frameLeftTopResizeInitCallback">
         <!-- Article Search -->
         <table class="generic" width="100%" cellspacing="0" cellpadding="0" border="0">
             {SEARCH}
@@ -308,13 +65,265 @@
             </tr>
         </table>
     </div>
-    <script type="text/javascript">
-        cfg.init('oTplSel', 'oOnline', 'oLock', 'oTemplatecfg');
-        cfg.reset();
 
-        //If this frame is reloaded, recall functions in other frames to reinit values
-        initData();
-    </script>
+<script type="text/javascript">
+
+var cfg = new Con.Config(),
+    artObj = new articleObject(),
+    articleURL = '',
+    categoryURL = '',
+    linkcheckerURL = '',
+    curLanguageSync = {SYNC_LANG};
+
+//This function tries to get recent Informations from other frames, if this frame is reloaded
+function initData() {
+    var left_bottom = Con.getFrame('left_bottom'),
+        right_bottom = Con.getFrame('right_bottom'),
+        right_top = Con.getFrame('right_top');
+
+    if (left_bottom && typeof(left_bottom.irgendwas) == "function") {
+        left_bottom.irgendwas();
+    }
+
+    if (right_top && typeof(right_top.refreshArticleProp) == "function") {
+        right_top.refreshArticleProp();
+    }
+
+    if (right_bottom && typeof(right_bottom.initValues) == "function") {
+        right_bottom.initValues();
+        if (typeof(right_bottom.initTheOne) == "function") {
+            right_bottom.initTheOne();
+        }
+    }
+
+    if (right_bottom && typeof(right_bottom.refreshArticleSearchForm) == "function") {
+        right_bottom.refreshArticleSearchForm('refresh');
+    }
+}
+
+//Script updates sync Language and reloads left_bottom frame
+function updateCurLanguageSync() {
+    curLanguageSync = document.syncfrom.syncoptions.value;
+    {UPDATE_SYNC_REFRESH_FRAMES}
+}
+
+// need to insert function in Article Search link
+function resizeFrame(arg) {
+    if (arg == '') {
+        var articleLink = document.getElementById('{ARTICLELINK}'),
+            categoryLink = document.getElementById('{CATEGORYLINK}'),
+            syncLink = document.getElementById('{SYNCLINK}'),
+            legendLink = document.getElementById('{LEGENDLINK}');
+
+        //store current link for later use
+        if (articleLink) {
+            articleURL = articleLink.href;
+            articleLink.href = "javascript:resizeFrame('{ARTICLELINK}');";
+        }
+
+        if (categoryLink) {
+            categoryURL = categoryLink.href;
+            categoryLink.href = "javascript:resizeFrame('{CATEGORYLINK}');";
+        }
+
+        if (syncLink) {
+            syncURL = syncLink.href;
+            syncLink.href = "javascript:resizeFrame('{SYNCLINK}');";
+        }
+
+        if (legendLink) {
+            legendURL = legendLink.href;
+            legendLink.href = "javascript:resizeFrame('{LEGENDLINK}');";
+        }
+    } else if (arg == '{ARTICLELINK}') {
+        window.location.href = articleURL;
+    } else if (arg == '{CATEGORYLINK}') {
+        window.location.href = categoryURL;
+    } else if (arg == '{SYNCLINK}') {
+        window.location.href = syncURL;
+    } else if (arg == '{LEGENDLINK}') {
+        window.location.href = legendURL;
+    }
+
+    // resizing frame
+    window.setTimeout(function() {
+        Con.FrameLeftTop.resize();
+    }, 10);
+}
+
+function toggle_tr_visibility(tr_id) {
+    if (document.forms['backend_search'].elements['bs_search_date_type'].options[document.forms['backend_search'].elements['bs_search_date_type'].selectedIndex].value == 'n/a') {
+        document.getElementById(tr_id).style.display = 'none';
+    } else {
+        if (!window.ActiveXObject) {
+            document.getElementById(tr_id).style.display = 'table-row';
+        } else {
+            document.getElementById(tr_id).style.display = 'block';
+        }
+    }
+}
+
+function configureCategory() {
+    if (cfg.catId > 0 && cfg.hasRight['template_cfg'] == 1) {
+        var sHref = '{CAT_HREF}';
+        sHref = sHref+cfg.catId;
+        Con.getFrame('right_bottom').document.location.href = sHref;
+    }
+}
+
+function generateSyncAction(bIsMultiple) {
+    var href = '{SYNC_HREF}';
+    if (curLanguageSync > 0 && cfg.catId > 0) {
+        if (bIsMultiple == 1) {
+            Con.multiLink('left_bottom', href+'&syncfromlang='+curLanguageSync+'&syncidcat='+cfg.catId+'&multiple=1');
+        } else {
+            Con.multiLink('left_bottom', href+'&syncfromlang='+curLanguageSync+'&syncidcat='+cfg.catId+'&multiple=0');
+        }
+    }
+}
+
+function resetSearchForm() {
+    var oForm = document.backend_search;
+
+    oForm.bs_search_text.value = "";
+    oForm.bs_search_id.value = "";
+    oForm.bs_search_date_type.value = "";
+    oForm.bs_search_date_type.selectedIndex = 0;
+
+    toggle_tr_visibility("tr_date_from");
+    toggle_tr_visibility("tr_date_to");
+
+    oForm.bs_search_date_from_day.value = "";
+    oForm.bs_search_date_from_month.value = "";
+    oForm.bs_search_date_from_year.value = "";
+    oForm.bs_search_date_from_day.selectedIndex = 0;
+    oForm.bs_search_date_from_month.selectedIndex = 0;
+    oForm.bs_search_date_from_year.selectedIndex = 0;
+
+    oForm.bs_search_date_to_day.value = "";
+    oForm.bs_search_date_to_month.value = "";
+    oForm.bs_search_date_to_year.value = "";
+    oForm.bs_search_date_to_day.selectedIndex = 0;
+    oForm.bs_search_date_to_month.selectedIndex = 0;
+    oForm.bs_search_date_to_year.selectedIndex = 0;
+
+    oForm.bs_search_author.value = "";
+    oForm.bs_search_author.selectedIndex = 0;
+}
+
+function frameLeftTopResizeInitCallback() {
+    resizeFrame('');
+}
+
+cfg.init('oTplSel', 'oOnline', 'oLock', 'oTemplatecfg');
+cfg.reset();
+
+//If this frame is reloaded, recall functions in other frames to reinit values
+initData();
+
+(function(Con, $) {
+    $(function() {
+
+        var left_bottom = Con.getFrame('left_bottom');
+
+        $("a#expander").click(function() {
+            left_bottom.$("#con_str_tree #root ul li.collapsed").removeClass("collapsed");
+            var catlist = left_bottom.scatlist;
+            $.post("{AJAXURL}", { area: "{AREA}", action: "expandall", wholelist: catlist, contenido: Con.sid });
+            return false;
+        });
+
+        $("a#collapser").click(function() {
+            left_bottom.$("#con_str_tree li#root ul li ul").parent().addClass("collapsed");
+            var catlist = left_bottom.scatlist;
+            $.post("{AJAXURL}", { area: "{AREA}", action: "collapseall", wholelist: catlist, contenido: Con.sid });
+            return false;
+        });
+
+        $("a#changetpl").click(function() {
+            if (cfg.catId > 0 && cfg.hasRight['template_cfg'] == 1) {
+                var templateselect = document.TemplateSelect.oTplSel.selectedIndex;
+                var templateid = document.TemplateSelect.oTplSel.options[templateselect].value;
+                $.post("{AJAXURL}", { area: "{AREA}", action: "con_changetemplate", idcat: cfg.catId, idtpl: templateid, contenido: Con.sid });
+                var oldid = cfg.catId + '-' + cfg.tplId + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
+                var newid = cfg.catId + '-' + templateid + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
+                left_bottom.$("#con_str_tree li#root ul li#"+oldid).attr("id", newid);
+                return false;
+            }
+        });
+
+        $("div#oOnline_label a").click(function() {
+            if (cfg.catId > 0 && cfg.hasRight['online'] == 1) {
+                var oldid = cfg.idString;
+                var oldobject = left_bottom.$("#con_str_tree li#root ul li#" + oldid);
+                var oldlink = left_bottom.$("#con_str_tree li#root ul li#" + oldid + " > div > a");
+                var oldclass = oldlink.attr("class");
+                if (cfg.isOnline == 0) {
+                    var newonline = 1;
+                    var newclass = oldclass.replace(/off/, "on");
+                } else {
+                    var newonline = 0;
+                    var newclass = oldclass.replace(/on/, "off");
+                }
+                var newid = cfg.catId + '-' + cfg.tplId + '-' + newonline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
+                oldlink.removeClass(oldclass);
+                oldlink.addClass(newclass);
+
+                oldobject.attr("id", newid);
+                $.post("{AJAXURL}", { area: "{AREA}", action: "con_makecatonline", idcat: cfg.catId, online: newonline, contenido: Con.sid });
+
+                left_bottom.$("#con_str_tree li#root ul li#"+newid+" > div").click();
+                return false;
+            }
+        });
+
+        $("div#oLock_label a").click(function() {
+            newid = false;
+            if (cfg.catId > 0 && cfg.hasRight['public'] == 1) {
+                if (cfg.isPublic == 0) {
+                    var newpublic = 1;
+                } else {
+                    var newpublic = 0;
+                }
+                var oldid = cfg.idString;
+                var oldobject = left_bottom.$("#con_str_tree li#root ul li#"+oldid);
+                var oldlink = left_bottom.$("#con_str_tree li#root ul li#"+oldid+" div > a");
+                oldlink.each(function(i) {
+                    var oldlinkclass = $(this).attr("class");
+                    var oldlinkid = $(this).parent().parent().attr("id");
+                    var aOldlinkids = oldlinkid.split("-");
+                    var newlinkclass;
+                    if (cfg.isPublic == 0) {
+                        newlinkclass = oldlinkclass.replace(/_locked/, "");
+                    } else {
+                        if (oldlinkclass.search(/_locked/) == -1) {
+                            newlinkclass = oldlinkclass + "_locked";
+                        } else {
+                            newlinkclass = oldlinkclass;
+                        }
+                    }
+                    $(this).removeClass(oldlinkclass);
+                    $(this).addClass(newlinkclass);
+                    var newlinkid = aOldlinkids[0] + '-' + aOldlinkids[1] + '-' + aOldlinkids[2] + '-' + newpublic + '-' + aOldlinkids[4] + '-' + aOldlinkids[5] + '-' + aOldlinkids[6] + '-' + aOldlinkids[7]  + '-' + aOldlinkids[8];
+                    $("#con_str_tree li#root ul li#"+oldlinkid).attr("id", newlinkid);
+                    if (newid == false) {
+                        newid = newlinkid;
+                    }
+                });
+
+                $.post("{AJAXURL}", { area: "{AREA}", action: "con_makepublic", idcat: cfg.catId, public: newpublic, contenido: Con.sid });
+
+                cfg.isPublic = newpublic;
+
+                left_bottom.$("#con_str_tree li#root ul li#"+newid+" > div").click();
+                cfg.updateScreen();
+                return false;
+            }
+        });
+    });
+})(Con, Con.$);
+</script>
+
 </body>
 </html>
 <!--

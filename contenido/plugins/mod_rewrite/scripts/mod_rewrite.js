@@ -41,7 +41,7 @@ var mrPlugin = {
     },
 
     initializeSettingsPage: function() {
-        $(document).ready(function() {
+        $(function() {
             $("#mr_use_language").change(function() {
                 if (true == $(this).attr("checked")) {
                     $("#mr_use_language_name").removeAttr("disabled");
@@ -73,7 +73,7 @@ var mrPlugin = {
     },
 
     initializeExterpPage: function() {
-        $(document).ready(function() {
+        $(function() {
             mrPlugin._initializeTooltip();
         });
     },

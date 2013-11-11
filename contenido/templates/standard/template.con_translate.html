@@ -10,20 +10,17 @@
     <div class="right">{ELEMPERPAGE}</div>{PAGER}
 </div>
 <script type="text/javascript">
-    var sid = "1";
-
-</script>
-<script type="text/javascript">
-    $(document).ready(function() {
+(function(Con, $) {
+    $(function() {
         $(".in_used_mod").live("click", function() {
             var iId = $(this).attr("rel"),
                 modName = $(this).parents("td").prev().text();
             if (iId) {
-                $.post("ajaxmain.php", { area: "mod", ajax: "inused_module", id: iId, contenido: sid },
+                $.post("ajaxmain.php", { area: "mod", ajax: "inused_module", id: iId, contenido: Con.sid },
                     function(data) {
                         var inUseTitle = "{MODULEINUSETEXT}";
                         inUseTitle = inUseTitle.replace("%s", modName);
-                        showNotification(inUseTitle, data, null, true);
+                        Con.showNotification(inUseTitle, data, null, true);
                     }
                 );
             }
@@ -35,4 +32,5 @@
             }
         });
     });
+})(Con, Con.$);
 </script>

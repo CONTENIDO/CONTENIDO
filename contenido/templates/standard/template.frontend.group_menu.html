@@ -1,22 +1,21 @@
 <script type="text/javascript">
-    // Session-ID
-    var sid = "1";
-
-    // Function for deleting frontend groups
-    function deleteFrontendGroup(idfrontendgroup) {
-        var url  = "main.php?area=frontendgroups";
-        url += "&action=frontendgroup_delete";
-        url += "&frame=4";
-        url += "&idfrontendgroup=" + idfrontendgroup;
-        url += "&contenido=" + sid;
-        parent.parent.right.right_bottom.location.href = url;
-    }
+// Function for deleting frontend groups
+function deleteFrontendGroup(idfrontendgroup) {
+    var url  = "main.php?area=frontendgroups";
+    url += "&action=frontendgroup_delete";
+    url += "&frame=4";
+    url += "&idfrontendgroup=" + idfrontendgroup;
+    url += "&contenido=" + Con.sid;
+    Con.getFrame('right_bottom').location.href = url;
+}
 </script>
 
 {FORM}
 
 <script type="text/javascript">
-    if (document.getElementById('marked')) {
-        row.markedRow = document.getElementById('marked');
+(function(Con, $) {
+    if ($('#marked')) {
+        row.markedRow = $('#marked')[0];
     }
+})(Con, Con.$);
 </script>

@@ -204,7 +204,7 @@ class cHTMLLink extends cHTMLContentElement {
                 break;
             case 'multilink':
                 $this->disableAutomaticParameterAppend();
-                $tmp_mstr = 'javascript:conMultiLink(\'%s\',\'%s\',\'%s\',\'%s\');';
+                $tmp_mstr = 'javascript:Con.multiLink(\'%s\',\'%s\',\'%s\',\'%s\');';
                 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url('main.php?area=' . $this->_targetarea . '&frame=' . $this->_targetframe . '&action=' . $this->_targetaction . $custom), 'right_bottom', $sess->url('main.php?area=' . $this->_targetarea2 . '&frame=' . $this->_targetframe2 . '&action=' . $this->_targetaction2 . $custom));
                 return $mstr;
                 break;

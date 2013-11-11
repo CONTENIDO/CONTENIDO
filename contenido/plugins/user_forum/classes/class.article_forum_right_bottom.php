@@ -33,13 +33,16 @@ class ArticleForumRightBottom extends cGuiPage {
     function __construct() {
 
 //reload left bottom in this code because of irregular update problems in the location file
-echo <<<EOF
+echo <<<JS
 <script type="text/javascript">
-    reloadLeftBottom = 'main.php?area=user_forum';
-    reloadLeftBottom += '&frame=2';
-    parent.parent.left.left_bottom.location.href = reloadLeftBottom;
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.build('main.php', {area: 'user_forum', frame: 2});
+    }
+})(Con, Con.$);
 </script>
-EOF;
+JS;
         $this->_collection = new ArticleForumCollection();
         parent::__construct('right_bottom', 'user_forum');
         $this->addStyle('right_bottom.css');
@@ -143,7 +146,7 @@ EOF;
         $idaart = $cont['idart'];
 
         // button with delete action
-        $deleteButton = '<a title="' . $cont['title'] . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdRight(' . $level . ', ' . $keyy . ', ' . $id . ', ' . $idacat . ', ' . $idaart . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $message . '" alt="' . $message . '"></a>';
+        $deleteButton = '<a title="' . $cont['title'] . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdRight(' . $level . ', ' . $keyy . ', ' . $id . ', ' . $idacat . ', ' . $idaart . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $message . '" alt="' . $message . '"></a>';
 
         // insert buttons to array for return
         $buttons['online'] = $online;

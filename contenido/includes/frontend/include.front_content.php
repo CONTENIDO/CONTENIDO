@@ -364,7 +364,7 @@ if ($contenido) {
     $sHtmlInUseMessage = '';
     if ($inUse == true) {
         $disabled = 'disabled="disabled"';
-        $sHtmlInUseCss = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/inuse.css" />';
+        $sHtmlInUseCss = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/inuse.css">';
         $sHtmlInUseMessage = $message;
     }
 
@@ -435,8 +435,9 @@ if ($data[0]['idtplcfg'] === '0') {
 // category
 if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat))) {
     cInclude('includes', 'functions.tpl.php');
-    include ($backendPath . $cfg['path']['includes'] . 'include.con_editcontent.php');
+    include($backendPath . $cfg['path']['includes'] . 'include.con_editcontent.php');
 } else {
+
     // Frontend view
     // Mark submenuitem 'Preview' in the CONTENIDO Backend (Area: Contenido -->
     // Articles --> Preview)
@@ -682,7 +683,7 @@ if ($cfg['cache']['disable'] != '1') {
 
 // Configuration settings after the site is displayed.
 if (file_exists($cfgClient[$client]['config']['path'] . 'config.after.php')) {
-    @include ($cfgClient[$client]['config']['path'] . 'config.after.php');
+    @include($cfgClient[$client]['config']['path'] . 'config.after.php');
 }
 
 if (isset($savedlang)) {

@@ -144,34 +144,33 @@ while ($oRcpGroup = $oRcpGroups->next()) {
     }
 }
 
-$sExecScript = '
-    <script type="text/javascript">
-        // Session-ID
-        var sid = "' . $sess->id . '";
+$sExecScript = <<<JS
+<script type="text/javascript">
+function showDelMsg(lngId, strElement) {
+    Con.showConfirmation("{$aMsg["DelDescr"]}<b>" + strElement + "</b>", function() {
+        deleteRecipientGroup(lngId);
+    });
+}
 
-        function showDelMsg(lngId, strElement) {
-            showConfirmation("' . $aMsg["DelDescr"] . '<b>" + strElement + "</b>", function() { deleteRecipientGroup(lngId); });
-        }
+// Function for deleting recipient groups
+function deleteRecipientGroup(idrecipientgroup) {
+    var oForm = Con.getFrame("left_top").document.getElementById("groups_listoptionsform");
 
-        // Function for deleting recipient groups
-        function deleteRecipientGroup(idrecipientgroup) {
-            oForm = top.content.left.left_top.document.getElementById("groups_listoptionsform");
+    var url = "main.php?area=recipientgroups";
+    url += "&action=recipientgroup_delete";
+    url += "&frame=4";
+    url += "&idrecipientgroup=" + idrecipientgroup;
+    url += "&contenido=" + Con.sid;
+    url += get_registered_parameters();
+    url += "&sortby=" + oForm.sortby.value;
+    url += "&sortorder=" + oForm.sortorder.value;
+    url += "&filter=" + oForm.filter.value;
+    url += "&elemperpage=" + oForm.elemperpage.value;
 
-            url = "main.php?area=recipientgroups";
-            url += "&action=recipientgroup_delete";
-            url += "&frame=4";
-            url += "&idrecipientgroup=" + idrecipientgroup;
-            url += "&contenido=" + sid;
-            url += get_registered_parameters();
-            url += "&sortby=" + oForm.sortby.value;
-            url += "&sortorder=" + oForm.sortorder.value;
-            url += "&filter=" + oForm.filter.value;
-            url += "&elemperpage=" + oForm.elemperpage.value;
-
-            parent.parent.right.right_bottom.location.href = url;
-        }
-
-    </script>';
+    Con.getFrame("right_bottom").location.href = url;
+}
+</script>
+JS;
 
 $oPage->addScript($sExecScript);
 // $oPage->addScript('cfoldingrow.js', '<script type="text/javascript"
@@ -204,20 +203,19 @@ $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
 // Send new object pager to left_top
-// Send new object pager to left_top
 $oPage->addScript('setPager.js');
 
-$sRefreshPager = '
-    <script type="text/javascript">
-        var sNavigation = \'' . $sPagerContent . '\';
-
-        // Activate time to refresh pager folding row in left top
-        var oTimer = window.setInterval("fncSetPager(\'' . $sPagerId . '\',\'' . $_REQUEST["page"] . '\')", 200);
-    </script>';
+$sRefreshPager = <<<JS
+<script type="text/javascript">
+var sNavigation = '{$sPagerContent}';
+// Activate time to refresh pager folding row in left top
+var oTimer = window.setInterval(function() {
+    fncSetPager('{$sPagerId}', '{$_REQUEST["page"]}');
+}, 200);
+</script>
+JS;
 
 $oPage->addScript($sRefreshPager);
 
-// $oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0"
-// width="100%">', '</table>', $oMenu->render(false)));
 $oPage->setContent($oMenu);
 $oPage->render();

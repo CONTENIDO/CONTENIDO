@@ -1,24 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <script type="text/javascript" src="scripts/general.js"></script>
+    <title>template.stat_left_top.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/contenidoConfig.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript">
-        function resizeFrame() {
-            // resizing frame
-            parent.parent.frameResize.resizeTopLeftFrame(document.getElementById('top_left_container').offsetHeight+2);
-        }
-    </script>
 </head>
-<body onLoad="resizeFrame();">
+<body>
 
-<div id="top_left_container"></div>
+<div id="top_left_container" data-resizegap="10"></div>
 
 </body>
 </html>

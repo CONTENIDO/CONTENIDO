@@ -256,17 +256,14 @@ $tpl2->set('d', 'SELECTED', '');
 $tpl2->next();
 
 while ($db->nextRecord()) {
+    $tpl2->set('d', 'VALUE', $db->f('idtpl'));
+    $tpl2->set('d', 'CAPTION', $db->f('name'));
     if ($db->f('idtpl') != "$idtpl") {
-        $tpl2->set('d', 'VALUE', $db->f('idtpl'));
-        $tpl2->set('d', 'CAPTION', $db->f('name'));
         $tpl2->set('d', 'SELECTED', '');
-        $tpl2->next();
     } else {
-        $tpl2->set('d', 'VALUE', $db->f('idtpl'));
-        $tpl2->set('d', 'CAPTION', $db->f('name'));
         $tpl2->set('d', 'SELECTED', 'selected="selected"');
-        $tpl2->next();
     }
+    $tpl2->next();
 }
 
 $select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
@@ -320,11 +317,12 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
     $tpl->next();
 }
 
-$script = '
-    var sid = "' . $sess->id . '";
-
+$changedUrl = $sess->url("main.php?area=con&force=1&frame=2");
+$script = <<<JS
+(function(Con, $) {
+    var obj, artObj, tmpIdtpl, changed, sData;
     try {
-        obj = parent.parent.frames["left"].frames["left_top"].cfg;
+        obj = Con.getFrame('left_top').cfg;
     } catch (e) {
         // catch error exception
     }
@@ -340,21 +338,24 @@ $script = '
             6 -> has right for: public
             7 -> idstring not splitted */
 
-        tmp_idtpl = ("' . $idtpl . '" == "") ? 0 : "' . $idtpl . '";
-
-        changed = (obj.tplId != tmp_idtpl);
-
-        sData = "' . $idcat . '-' . $idtpl . '-"+obj.isOnline+"-"+obj.isPublic+"-"+obj.hasRight["template"]+"-"+obj.hasRight["online"]+"-"+obj.hasRight["public"];
+        tmpIdtpl = ("{$idtpl}" == "") ? 0 : "{$idtpl}";
+        changed = (obj.tplId != tmpIdtpl);
+        sData = "{$idcat}-{$idtpl}-" + obj.isOnline + "-" + obj.isPublic + "-" + obj.hasRight["template"] + "-" + obj.hasRight["online"] + "-" + obj.hasRight["public"];
 
         if (changed) {
-            obj.load("' . $idcat . '", "' . $idtpl . '", obj.isOnline, obj.isPublic, obj.hasRight["template"], obj.hasRight["online"], obj.hasRight["public"], sData);
-            parent.parent.frames["left"].frames["left_bottom"].location.href = "' . $sess->url("main.php?area=con&force=1&frame=2") . '";
+            obj.load(
+                "{$idcat}", "{$idtpl}", obj.isOnline, obj.isPublic, obj.hasRight["template"],
+                obj.hasRight["online"], obj.hasRight["public"], sData
+            );
+            Con.getFrame('left_bottom').location.href = "{$changedUrl}";
         }
     }
 
-    // parent.parent.frames["right"].frames["right_top"].location.href = "main.php?area=con&frame=3&idcat=0&contenido=' . $sess->id . '";
-    artObj = parent.parent.frames["left"].frames["left_top"].artObj;
-    artObj.disable();';
+    // Con.getFrame('right_top').location.href = "main.php?area=con&frame=3&idcat=0&contenido={$sess->id}";
+    artObj = Con.getFrame('left_top').artObj;
+    artObj.disable();
+})(Con, Con.$);
+JS;
 
 // Change template select only when configuring a category
 if (!$idart && $area != "str_tplcfg") {
@@ -409,7 +410,6 @@ if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
 $tpl->set('s', 'iIdcat', $idcat);
 $tpl->set('s', 'iIdtpl', $idtpl);
 $tpl->set('s', 'SYNCOPTIONS', -1);
-$tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'DISPLAY_MENU', 1);
 
 // Improve display of inherited templates

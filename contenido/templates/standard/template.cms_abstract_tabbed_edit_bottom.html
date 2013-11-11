@@ -1,27 +1,26 @@
+
+<!-- template.cms_abstract_tabbed_edit_bottom.html -->
 </div>
 
 <script type="text/javascript">
-    //<![CDATA[
-    conLoadFile('{PATH_BACKEND}scripts/content_types/cmsAbstractTabbed.js', '{PREFIX}{ID}AbstractTabbedClassLoaded();');
-
-    function {PREFIX}{ID}AbstractTabbedClassLoaded() {
-        conLoadFile('{JS_CLASS_SCRIPT}', '{PREFIX}{ID}ContentTypeClassLoaded();');
-    }
-
-    function {PREFIX}{ID}ContentTypeClassLoaded() {
+//<![CDATA[
+conLoadFile(Con.cfg.urlBackend + 'scripts/content_types/cmsAbstractTabbed.js', function() {
+    conLoadFile('{JS_CLASS_SCRIPT}', function() {
         var contentTypeInstance = new {JS_CLASS_NAME}(
             '#cms_{PREFIX}_{ID}_settings',
             '#cms_{PREFIX}_{ID}',
-            '{PATH_BACKEND}',
+            Con.cfg.urlBackend,
             '{PATH_FRONTEND}',
             '{IDARTLANG}',
             '{ID}',
             Array({FIELDS}),
             '{PREFIX}',
-            '{CONTENIDO}',
+            Con.sid,
             {SETTINGS}
         );
         contentTypeInstance.initialise();
-    }
-    //]]>
+    });
+});
+//]]>
 </script>
+<!-- /template.cms_abstract_tabbed_edit_bottom.html -->

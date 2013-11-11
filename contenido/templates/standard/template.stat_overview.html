@@ -1,125 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
+    <title>template.stat_overview.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript">
-        var bMsie = (document.all) ? true : false;
-        var sExpandString = 'i18n("Open category")';
-        var sCollapseString = 'i18n("Close category")';
-        var sCollapseButton = '{IMG_COLLAPSE}';
-        var sExpandButton = '{IMG_EXPAND}';
-
-        function top10Action(selObj) {
-
-            var url = '{SELF_URL}';
-            var i = selObj.selectedIndex;
-            var sortkey = selObj.options[i].value;
-
-            window.location.href = url + '&action=stat_show&displaytype=' + sortkey + '&yearmonth=' + document.hiddenValues.yearmonth.value;
-
-        }
-        function top10ActionYearly(selObj) {
-
-            var url = '{SELF_URL}';
-            var i = selObj.selectedIndex;
-            var sortkey = selObj.options[i].value;
-
-            window.location.href = url + '&action=stat_show&displaytype=' + sortkey + '&showYear=1&year=' + document.hiddenValues.yearmonth.value;
-
-        }
-
-        function collapseAll() {
-            var aStatrows = document.getElementsByTagName('tr');
-            for (var i = 0; i < aStatrows.length; i++) {
-                var aIds = aStatrows[i].id.split('_');
-
-                if (aIds.length > 1) {
-                    aStatrows[i].style.display = 'none';
-                }
-
-                var oButton = aStatrows[i].getElementsByTagName('img')[0];
-                if (oButton && oButton.id == aStatrows[i].id+'_img') {
-                    oButton.src = sExpandButton;
-                    oButton.title = sExpandString;
-                    oButton.alt = sExpandString;
-                }
-            }
-        }
-
-        function expandAll() {
-            var aStatrows = document.getElementsByTagName('tr');
-            var sDisplay = '';
-
-            if (bMsie) {
-                sDisplay = 'block';
-            } else {
-                sDisplay = 'table-row';
-            }
-
-            for (var i = 0; i < aStatrows.length; i++) {
-                if (aStatrows[i].id) {
-                    aStatrows[i].style.display = sDisplay;
-
-                    var oButton = aStatrows[i].getElementsByTagName('img')[0];
-                    if (oButton && oButton.id == aStatrows[i].id+'_img') {
-                        oButton.src = sCollapseButton;
-                        oButton.title = sCollapseString;
-                        oButton.alt = sCollapseString;
-                    }
-                }
-            }
-        }
-
-        function changeVisibility (sIdClicked, iLevel, iIdCat) {
-            var sDisplay = '';
-            var aIdsClicked = sIdClicked.split('_');
-
-            var oButton = document.getElementById (sIdClicked+'_img');
-
-            if (oButton.src == sExpandButton) {
-                oButton.src = sCollapseButton;
-                oButton.title = sCollapseString;
-                oButton.alt = sCollapseString;
-                if (bMsie) {
-                    sDisplay = 'block';
-                } else {
-                    sDisplay = 'table-row';
-                }
-            } else {
-                oButton.src = sExpandButton;
-                oButton.title = sExpandString;
-                oButton.alt = sExpandString;
-                sDisplay = 'none';
-            }
-
-            var aStatrows = document.getElementsByTagName('tr');
-            for (var i = 0; i < aStatrows.length; i++) {
-                var aIds = aStatrows[i].id.split('_');
-
-                if (aIds[iLevel] == iIdCat) {
-                    if (sDisplay == 'none' && aIds.length > aIdsClicked.length) {
-                        aStatrows[i].style.display = sDisplay;
-
-                        var oButton = aStatrows[i].getElementsByTagName('img')[0];
-                        if (oButton && oButton.id == aStatrows[i].id+'_img') {
-                            oButton.src = sExpandButton;
-                            oButton.title = sExpandString;
-                            oButton.alt = sExpandString;
-                        }
-                    } else if ((aIdsClicked.length+1) == aIds.length) {
-                        aStatrows[i].style.display = sDisplay;
-                    }
-                }
-            }
-        }
-
-    </script>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
 </head>
 <body style="margin:10px">
 
@@ -175,6 +62,106 @@
         <td align="right" nowrap>{SUMINTHISLANGUAGE}&nbsp;</td>
     </tr>
 </table>
+
+<script type="text/javascript">
+var sExpandString = 'i18n("Open category")';
+var sCollapseString = 'i18n("Close category")';
+var sCollapseButton = '{IMG_COLLAPSE}';
+var sExpandButton = '{IMG_EXPAND}';
+
+function top10Action(selObj) {
+    var url = '{SELF_URL}';
+    var i = selObj.selectedIndex;
+    var sortkey = selObj.options[i].value;
+
+    window.location.href = url + '&action=stat_show&displaytype=' + sortkey + '&yearmonth=' + document.hiddenValues.yearmonth.value;
+}
+
+function top10ActionYearly(selObj) {
+    var url = '{SELF_URL}';
+    var i = selObj.selectedIndex;
+    var sortkey = selObj.options[i].value;
+
+    window.location.href = url + '&action=stat_show&displaytype=' + sortkey + '&showYear=1&year=' + document.hiddenValues.yearmonth.value;
+}
+
+function collapseAll() {
+    var aStatrows = document.getElementsByTagName('tr');
+    for (var i = 0; i < aStatrows.length; i++) {
+        var aIds = aStatrows[i].id.split('_');
+
+        if (aIds.length > 1) {
+            aStatrows[i].style.display = 'none';
+        }
+
+        var oButton = aStatrows[i].getElementsByTagName('img')[0];
+        if (oButton && oButton.id == aStatrows[i].id+'_img') {
+            oButton.src = sExpandButton;
+            oButton.title = sExpandString;
+            oButton.alt = sExpandString;
+        }
+    }
+}
+
+function expandAll() {
+    var aStatrows = document.getElementsByTagName('tr');
+    var sDisplay = (Con.isMsie) ? 'block' : 'table-row';
+
+    for (var i = 0; i < aStatrows.length; i++) {
+        if (aStatrows[i].id) {
+            aStatrows[i].style.display = sDisplay;
+
+            var oButton = aStatrows[i].getElementsByTagName('img')[0];
+            if (oButton && oButton.id == aStatrows[i].id+'_img') {
+                oButton.src = sCollapseButton;
+                oButton.title = sCollapseString;
+                oButton.alt = sCollapseString;
+            }
+        }
+    }
+}
+
+function changeVisibility(sIdClicked, iLevel, iIdCat) {
+    var sDisplay = '';
+    var aIdsClicked = sIdClicked.split('_');
+
+    var oButton = document.getElementById (sIdClicked+'_img');
+
+    if (oButton.src == sExpandButton) {
+        oButton.src = sCollapseButton;
+        oButton.title = sCollapseString;
+        oButton.alt = sCollapseString;
+        sDisplay = (Con.isMsie) ? 'block' : 'table-row';
+    } else {
+        oButton.src = sExpandButton;
+        oButton.title = sExpandString;
+        oButton.alt = sExpandString;
+        sDisplay = 'none';
+    }
+
+    var aStatrows = document.getElementsByTagName('tr');
+    for (var i = 0; i < aStatrows.length; i++) {
+        var aIds = aStatrows[i].id.split('_');
+
+        if (aIds[iLevel] == iIdCat) {
+            if (sDisplay == 'none' && aIds.length > aIdsClicked.length) {
+                aStatrows[i].style.display = sDisplay;
+
+                var oButton = aStatrows[i].getElementsByTagName('img')[0];
+                if (oButton && oButton.id == aStatrows[i].id+'_img') {
+                    oButton.src = sExpandButton;
+                    oButton.title = sExpandString;
+                    oButton.alt = sExpandString;
+                }
+            } else if ((aIdsClicked.length+1) == aIds.length) {
+                aStatrows[i].style.display = sDisplay;
+            }
+        }
+    }
+}
+
+</script>
+
 </body>
 </html>
 <!--

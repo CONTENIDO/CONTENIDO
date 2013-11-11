@@ -52,7 +52,7 @@ if ($action == "mod_delete") {
 
     // remove the navigation when module has been deleted
     $script = new cHTMLScript();
-    $script->setContent('$(function() { $("#navlist", parent.parent.right.right_top.document).remove(); })');
+    $script->setContent('$(function() { $("#navlist", Con.getFrame("right_top").document).remove(); })');
     $page->setContent(array(
         $div
     ));
@@ -149,7 +149,6 @@ $idmod = $module->get("idmod");
 
 // Check correct module Id
 if (!$idmod) {
-
     $page = new cGuiPage('generic_page');
     $page->abortRendering();
     $page->render();
@@ -207,24 +206,11 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     }
 
     if ($sOptionDebugRows !== "never") {
-        $iInputNewLines = substr_count($sInputData, "\n") + 2; // +2: Just
-                                                               // sanity, to
-                                                               // have at least
-                                                               // two more lines
-                                                               // than the code
-        $iOutputNewLines = substr_count($sOutputData, "\n") + 2; // +2: Just
-                                                                 // sanity, to
-                                                                 // have at
-                                                                 // least two
-                                                                 // more lines
-                                                                 // than the
-                                                                 // code
-                                                                 // Have at
-                                                                 // least 15 + 2
-                                                                 // lines (15 =
-                                                                 // code
-                                                                 // textarea
-                                                                 // lines count)
+        // +2: Just sanity, to have at least two more lines than the code
+        $iInputNewLines = substr_count($sInputData, "\n") + 2;
+        $iOutputNewLines = substr_count($sOutputData, "\n") + 2;
+        // +2: Just sanity, to have at least two more lines than the code have at
+        // least 15 + 2 lines (15 = code textarea lines count)
         if ($iInputNewLines < 21) {
             $iInputNewLines = 21;
         }
@@ -302,8 +288,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     // Check, if tabs may be inserted in text areas (instead jumping to next
     // element)
     if (getEffectiveSetting("modules", "edit-with-tabs", "false") == "true") {
-        $input->setEvent("onkeydown", "return insertTab(event,this);");
-        $output->setEvent("onkeydown", "return insertTab(event,this);");
+        $input->setEvent("onkeydown", "return insertTab(event, this);");
+        $output->setEvent("onkeydown", "return insertTab(event, this);");
     }
 
     // Prepare type select box
@@ -354,22 +340,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $modulecheck = getSystemProperty("system", "modulecheck");
     $isCodeError = $module->get('error');
     if ($modulecheck !== "false") {
-
-        $outled = '<img align="right"
-                        src="images/ajax-loader_16x16.gif"
-                        class="outputok"
-                        alt=""
-                        title=""
-                        data-state="' . htmlentities($isCodeError) . '"
-                   />';
-        $inled  = '<img align="right"
-                        src="images/ajax-loader_16x16.gif"
-                        class="inputok"
-                        alt=""
-                        title=""
-                        data-state="' . htmlentities($isCodeError) . '"
-                   />';
-
+        $outled = '<img align="right" src="images/ajax-loader_16x16.gif" class="outputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '">';
+        $inled  = '<img align="right" src="images/ajax-loader_16x16.gif" class="inputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '">';
     }
 
     $form->add(i18n("Name"), $name->render());

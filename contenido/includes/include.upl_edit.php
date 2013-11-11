@@ -275,19 +275,18 @@ if ($upload = $uploads->next()) {
 
     $sScript = '';
     if (cApiDbfs::isDbfs($_REQUEST['path'])) {
-        $sScript = '
-
-       <script type="text/javascript">
-       var startcal = new calendar1(document.properties.elements["datestart"]);
-       startcal.year_scroll = true;
-       startcal.time_comp = true;
-       var endcal = new calendar1(document.properties.elements["dateend"]);
-       endcal.year_scroll = true;
-       endcal.time_comp = true;
-
-       </script>
-
-       ';
+        $sScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var startcal = new calendar1(document.properties.elements["datestart"]);
+    startcal.year_scroll = true;
+    startcal.time_comp = true;
+    var endcal = new calendar1(document.properties.elements["dateend"]);
+    endcal.year_scroll = true;
+    endcal.time_comp = true;
+})(Con, Con.$);
+</script>
+JS;
     }
 
     if ($bDirectoryIsWritable == false) {

@@ -4,34 +4,29 @@
 
 <html>
 
-    <head>
+<head>
 
-        <title>:: :: :: :: CONTENIDO {VERSION}</title>
+    <title>:: :: :: :: CONTENIDO {VERSION}</title>
 
-        <meta http-equiv="expires" content="0">
-        <meta http-equiv="cache-control" content="no-cache">
-        <meta http-equiv="pragma" content="no-cache">
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
 
-        <script type="text/javascript" src="scripts/browserCheck.js"></script>
+    <link rel="SHORTCUT ICON" href="{CONTENIDOPATH}">
 
-        <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+</head>
 
-        <link rel="SHORTCUT ICON" href="{CONTENIDOPATH}">
+<frameset id="framesetleft" rows="29,150,*" frameborder="0" framespacing="0" border="0">
 
-    </head>
+    <frame src="{FRAME[3]}" name="left_deco" frameborder="0" scrolling="no">
+    <frame src="{FRAME[1]}" name="left_top" frameborder="0" scrolling="no">
+    <frame src="{FRAME[2]}" name="left_bottom" frameborder="0" scrolling="yes">
 
-    <frameset id="framesetleft" rows="29,150,*" frameborder="0" framespacing="0" border="0">
+    <noframes>
+        <body bgcolor="#000000">
+            CONTENIDO uses frames but your browser does not support frames
+        </body>
+    </noframes>
 
-        <frame src="{FRAME[3]}" name="left_deco" frameborder="0" scrolling="no">
-        <frame src="{FRAME[1]}" name="left_top" frameborder="0" scrolling="no">
-        <frame src="{FRAME[2]}" name="left_bottom" frameborder="0" scrolling="yes">
-
-        <noframes>
-            <body bgcolor="#000000">
-                CONTENIDO uses frames but your browser does not support frames
-            </body>
-        </noframes>
-
-    </frameset>
+</frameset>
 
 </html>

@@ -58,9 +58,7 @@ $aUrl = array(
 
 // Template- and languagevars
 if ($cronjob != true) {
-    $tpl->set('s', 'URL_BACKEND', $aUrl['contenido']);
     $tpl->set('s', 'MODE', cSecurity::toInteger($_GET['mode']));
-    $tpl->set('s', 'SID', $sess->id);
 }
 
 // Fill Subnav I
@@ -172,7 +170,6 @@ if (!empty($_GET['idartlang']) && !empty($_GET['oldlink']) && !empty($_GET['repa
 
 /* Whitelist: Add */
 if (!empty($_GET['whitelist'])) {
-
     $sql = "REPLACE INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . $db->escape(base64_decode($_GET['whitelist'])) . "', '" . time() . "')";
     $db->query($sql);
 
@@ -203,7 +200,6 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $db->query($sql);
 
     while ($db->nextRecord()) {
-
         if ($cronjob != true) { // Check userrights, if no cronjob
             $iCheck = cCatPerm($db->f("idcat"), $db2);
 
@@ -237,7 +233,6 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $db->query($sql);
 
     while ($db->nextRecord()) {
-
         // Text decode
         $value = $db->f("value");
 
@@ -260,7 +255,6 @@ if ($sCache_errors && $_GET['live'] != 1) {
     $db->query($sql);
 
     while ($db->nextRecord()) {
-
         // Search links
         searchLinks($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idartlang"), $db->f("idlang"), "Redirect");
 
@@ -282,7 +276,6 @@ if ($cronjob != true) {
 
 // If no errors found, say that
 if (empty($aErrors) && $cronjob != true) {
-
     // Remove older cache
     $oCache->remove($aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
 
@@ -342,9 +335,7 @@ if (empty($aErrors) && $cronjob != true) {
             $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20)? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_REDIRECT', $aRow[$i]['redirect']);
             $tpl2->set('s', 'MODE', $_GET['mode']);
-            $tpl2->set('s', 'URL_BACKEND', $aUrl['contenido']);
             $tpl2->set('s', 'URL_FRONTEND', $aUrl['cms']);
-            $tpl2->set('s', 'SID', $sess->id);
 
             if ($aRow[$i]['error_type'] == "unknown") {
                 $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Unknown", $plugin_name));
@@ -386,19 +377,18 @@ if (empty($aErrors) && $cronjob != true) {
             if ($sKey != "cat") {
                 $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors'], 1);
             } else {
-                $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors_cat'], 1); // special
-                                                                                                                   // template
-                                                                                                                   // for
-                                                                                                                   // idcats
+                // special template for idcats
+                $aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors_cat'], 1);
             }
         }
     }
 
-    /* Counter */
-    if ($iCounter = $oCache->get($aCacheName['errorscount'], cSecurity::toInteger($_GET['mode']))) { // Cache
-                                                                                                     // exists?
+    // Counter
+    if ($iCounter = $oCache->get($aCacheName['errorscount'], cSecurity::toInteger($_GET['mode']))) {
+        // Cache exists?
         $iErrorsCountChecked = $iCounter;
-    } else { // Count searched links: idarts + idcats + idcatarts + others
+    } else {
+        // Count searched links: idarts + idcats + idcatarts + others
         $iErrorsCountChecked = count($aSearchIDInfosArt) + count($aSearchIDInfosCat) + count($aSearchIDInfosCatArt) + count($aSearchIDInfosNonID);
     }
 

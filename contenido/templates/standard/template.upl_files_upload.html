@@ -1,57 +1,9 @@
-<script type="text/javascript">
-    var contenido_id = '1';
-    var upload_path = '{PATH}';
-    var maxFileSize = {MAX_FILE_SIZE};
-
-    var text_aborting = "i18n("Cancelling...")";
-    var text_finished = "i18n("Finished!")";
-    var text_error = "i18n("Upload failed!")";
-    var text_aborted = "i18n("Cancelled")";
-    var text_uploading = "i18n("Uploading...")";
-    var text_cancelButton = "i18n("Cancel")";
-    var text_waiting = "i18n("Waiting...")";
-    var text_fileIsTooBig = "i18n("This file is too large.")";
-
-    $(document).ready(function() {
-        $(".file_upload").bind('change', function() {
-            if (this.files && this.files.length > 0 && this.files[0].size > maxFileSize) {
-                this.files = null;
-                alert(this.files[0].name + ": " + $('<div />').html(text_fileIsTooBig).text());
-            }
-        });
-    });
-
-    /**
-     * Replaces or adds a variable in a URL.
-     *
-     * @param    {String}    url
-     * @param    {String}    param
-     * @param    {String}    value
-     *
-     * @returns  {String}
-     */
-    function replaceQueryString(url, param, value) {
-        var re = new RegExp("([?|&])" + param + "=.*?(&|$)", "i");
-        if (url.match(re)) {
-            return url.replace(re, '$1' + param + "=" + value + '$2');
-        } else {
-            if (url.indexOf('.php?') > 0) {
-                prefixSign = '&';
-            } else {
-                prefixSign = '?';
-            }
-
-            return url + prefixSign + param + "=" + value;
-        }
-    }
-</script>
 
 <div id="dropbox_area">
     <div class="dropbox" id="dropbox">i18n("Drop your files here")</div>
     <div class="shelf" id="shelf"></div>
 
-    <form enctype="multipart/form-data" style="margin: 0px"
-        name="properties" method="post" action="main.php">
+    <form enctype="multipart/form-data" style="margin: 0px" name="properties" method="post" action="main.php">
         <input type="hidden" name="frame" value="4">
         <input type="hidden" name="area" value="upl">
         <input type="hidden" name="path" value="{PATH}">
@@ -74,24 +26,23 @@
             <tr id="2">
                 <td nowrap="nowrap" valign="top" style="padding-left: 0px; white-space: nowrap;" width="1"><nobr>i18n("Upload files")</nobr></td>
                 <td nowrap="nowrap" valign="top" align="left">
-                <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
-                <input id="m2" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
-                <input id="m3" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
-                <input id="m4" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
-                <input id="m5" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
-                <input id="m6" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
-                <input id="m7" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
-                <input id="m8" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
-                <input id="m9" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
-                <input id="m10" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                    <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                    <input id="m2" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                    <input id="m3" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                    <input id="m4" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                    <input id="m5" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                    <input id="m6" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                    <input id="m7" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                    <input id="m8" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                    <input id="m9" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
+                    <input id="m10" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
                 </td>
             </tr>
             <tr id="3">
                 <td nowrap="nowrap" valign="top" style="padding-left: 0px;">&nbsp;</td>
-                <td nowrap="nowrap" valign="top" style="white-space: nowrap;"
-                    align="right"><input style="margin-left: 5px;" title="i18n("
-                    Save changes")" alt="i18n(" Save changes")" type="image"
-                    src="images/but_ok.gif" name="submit" onclick="" accesskey="s">
+                <td nowrap="nowrap" valign="top" style="white-space: nowrap;" align="right">
+                    <input style="margin-left: 5px;" title="i18n("Save changes")" alt="i18n("Save changes")" type="image"
+                        src="images/but_ok.gif" name="submit" onclick="" accesskey="s">
                 </td>
             </tr>
         </table>
@@ -117,16 +68,65 @@ i18n("Waiting...")
 -->
 
 <script type="text/javascript">
-var oRef = parent.parent.frames['right'].frames['right_top'].document.getElementById('c_1');
-if (oRef) {
-    parent.parent.frames['right'].frames['right_top'].sub.clicked(oRef.getElementsByTagName('a')[0]);
-}
+(function(Con, $) {
 
-// to reload the left frame after delete/insert new files
-var redirectUrl = parent.parent.frames['left'].frames['left_bottom'].location.href;
-redirectUrl = replaceQueryString(redirectUrl, 'action', '');
-redirectUrl = replaceQueryString(redirectUrl, 'path', '');
+    var upload_path = '{PATH}';
+    var maxFileSize = {MAX_FILE_SIZE};
+    var text_aborting = "i18n("Cancelling...")";
+    var text_finished = "i18n("Finished!")";
+    var text_error = "i18n("Upload failed!")";
+    var text_aborted = "i18n("Cancelled")";
+    var text_uploading = "i18n("Uploading...")";
+    var text_cancelButton = "i18n("Cancel")";
+    var text_waiting = "i18n("Waiting...")";
+    var text_fileIsTooBig = "i18n("This file is too large.")";
 
-parent.parent.frames['left'].frames['left_bottom'].location.href = redirectUrl;
-parent.parent.frames['left'].frames['left_bottom'].location.reload();
+    $(function() {
+
+        // Instantiate drag & drop upload component
+        var uplFilesUpload = new Con.UplFilesUpload({
+            selectorDropbox: "#dropbox",
+            selectorShelf: "#shelf",
+            sid: Con.sid,
+            urlHost: Con.cfg.urlBackend,
+            urlUpload: Con.cfg.urlBackend + "main.php",
+            uploadPath: upload_path,
+            maxFileSize: maxFileSize,
+            text_aborting: text_aborting,
+            text_finished: text_finished,
+            text_error: text_error,
+            text_aborted: text_aborted,
+            text_uploading: text_uploading,
+            text_cancelButton: text_cancelButton,
+            text_waiting: text_waiting,
+            text_fileIsTooBig: text_fileIsTooBig,
+            onDragDropUploadDone: function(success) {
+                if (success) {
+                    window.location.href = "main.php?area=upl&frame=4&path=" + upload_path + "&appendparameters=&contenido=" + Con.sid
+                } else {
+                    // to do on fail
+                }
+            }
+        });
+
+        // Bind to file upload changes
+        $('.file_upload').bind('change', function() {
+            if (this.files && this.files.length > 0 && this.files[0].size > maxFileSize) {
+                this.files = null;
+                alert(this.files[0].name + ': ' + $('<div />').html(text_fileIsTooBig).text());
+            }
+        });
+    });
+
+    if (false === Con.markSubmenuItem('c_1')) {
+        Con.markSubmenuItem('c_0');
+    }
+
+    // to reload the left frame after delete/insert new files
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {action: null, path: null});
+    }
+
+})(Con, Con.$);
 </script>

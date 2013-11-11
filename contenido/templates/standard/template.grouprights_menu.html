@@ -1,49 +1,40 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <title>template.grouprights_menu.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <script type="text/javascript">
-        var sid = "{SID}";
-
-        // Function for deleting modules
-        function deleteGroup(idgroup) {
-            url  = 'main.php?area=groups';
-            url += '&action=group_delete';
-            url += '&frame=2';
-            url += '&groupid=' + idgroup;
-            url += '&contenido=' + sid;
-            window.location.href = url;
-
-            parent.parent.right.right_top.location.href = 'main.php?area=groups&frame=3&contenido=' + sid;
-            parent.parent.right.right_bottom.location.href = 'main.php?area=groups&frame=4&contenido=' + sid;
-        }
-    </script>
 </head>
 <body>
 
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
     <tr class="text_medium" id="{ID_MARKED}" style="background-color: {BGCOLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
-            <td>{ICON}</td>
-            <td width="100%">{TEXT}</td><td align="right">{DELETE}</td>
+        <td>{ICON}</td>
+        <td width="100%">{TEXT}</td>
+        <td align="right">{DELETE}</td>
     </tr>
     <!-- END:BLOCK -->
 
 </table>
 <script type="text/javascript">
-    if (document.getElementById('marked')) {
-        row.markedRow = document.getElementById('marked');
+// Function for deleting modules
+function deleteGroup(idgroup) {
+    var url = 'main.php?area=groups&action=group_delete&frame=2&groupid=' + idgroup + '&contenido=' + Con.sid;
+    window.location.href = url;
+
+    Con.getFrame('right_top').location.href = 'main.php?area=groups&frame=3&contenido=' + Con.sid;
+    Con.getFrame('right_bottom').location.href = 'main.php?area=groups&frame=4&contenido=' + Con.sid;
+}
+
+(function(Con, $) {
+    if ($('#marked')) {
+        row.markedRow = $('#marked')[0];
     }
+})(Con, Con.$);
 </script>
 </body>
 </html>

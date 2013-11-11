@@ -1,11 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <title>template.tpl_edit_form.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
 </head>
 
 <body style="margin: 10px">
@@ -81,9 +80,13 @@
 </form>
 
 <script type="text/javascript">
-    var sid = "{SID}";
-    var url = "main.php?area=tpl&frame=2&contenido=" + sid;
-    parent.parent.frames["left"].frames["left_bottom"].location.href = url;
+(function(Con, $) {
+    var url = Con.UtilUrl.build("main.php", {
+        area: 'tpl',
+        frame: 2
+    });
+    Con.getFrame('left_bottom').location.href = url;
+})(Con, Con.$);
 </script>
 
 {MARK}
@@ -97,6 +100,5 @@ i18n("Name")
 i18n("Description")
 i18n("Layout")
 i18n("Layout description")
-
 
 -->

@@ -133,6 +133,13 @@ class cGuiPage {
     protected $_metaTags;
 
     /**
+     * Array of class attribute values for body tag.
+     *
+     * @var array
+     */
+    protected $_bodyClassNames;
+
+    /**
      * The constructor initializes the class and tries to get the encoding from
      * the currently selected language.
      * It will also add every script in the form of /scripts/*.PAGENAME.js and
@@ -146,7 +153,7 @@ class cGuiPage {
      * @param string $submenu The number of the submenu which should be
      *        highlighted when this page is shown.
      */
-    public function __construct($pagename, $pluginname = "", $submenu = "") {
+    public function __construct($pagename, $pluginname = '', $submenu = '') {
         global $lang, $cfg, $sess;
 
         $this->_pagename = $pagename;
@@ -155,43 +162,50 @@ class cGuiPage {
         $this->_contenttemplate = new cTemplate();
         $this->_scripts = array();
         $this->_styles = array();
-        $this->_subnav = "";
-        $this->_markscript = "";
-        $this->_error = "";
-        $this->_warning = "";
-        $this->_info = "";
+        $this->_subnav = '';
+        $this->_markscript = '';
+        $this->_error = '';
+        $this->_warning = '';
+        $this->_info = '';
         $this->_abort = false;
         $this->_objects = array();
         $this->_metaTags = array();
+        $this->_bodyClassNames = array();
 
         // Try to extract the current CONTENIDO language
         $clang = new cApiLanguage($lang);
 
         if ($clang->isLoaded()) {
-            $this->setEncoding($clang->get("encoding"));
+            $this->setEncoding($clang->get('encoding'));
         }
 
-        $this->_pagetemplate->set("s", "SUBMENU", $submenu);
-        $this->_pagetemplate->set("s", "PAGENAME", $pagename);
+        $this->_pagetemplate->set('s', 'SUBMENU', $submenu);
+        $this->_pagetemplate->set('s', 'PAGENAME', $pagename);
+        $pageid = str_replace('.', '_', $pagename);
+        $this->_pagetemplate->set('s', 'PAGENAME', $pagename);
+        $this->_pagetemplate->set('s', 'PAGEID', $pageid);
 
-        if (cFileHandler::exists($cfg['path']['styles'] . $pagename . ".css")) {
-            $this->addStyle($pagename . ".css");
+        $this->addBodyClassName('page_generic');
+        $this->addBodyClassName('page_' . $pageid);
+
+        if (cFileHandler::exists($cfg['path']['styles'] . $pagename . '.css')) {
+            $this->addStyle($pagename . '.css');
         }
 
         /** @var $stylefile SplFileInfo */
         foreach (new DirectoryIterator($cfg['path']['styles']) as $stylefile) {
-            if (cString::endsWith($stylefile->getFilename(), "." . $pagename . ".css")) {
+            if (cString::endsWith($stylefile->getFilename(), '.' . $pagename . '.css')) {
                 $this->addStyle($stylefile->getFilename());
             }
         }
 
-        if (cFileHandler::exists($cfg['path']['scripts'] . $pagename . ".js")) {
-            $this->addScript($pagename . ".js");
+        if (cFileHandler::exists($cfg['path']['scripts'] . $pagename . '.js')) {
+            $this->addScript($pagename . '.js');
         }
 
         /** @var $scriptfile SplFileInfo */
         foreach (new DirectoryIterator($cfg['path']['scripts']) as $scriptfile) {
-            if (cString::endsWith($scriptfile->getFilename(), "." . $pagename . ".js")) {
+            if (cString::endsWith($scriptfile->getFilename(), '.' . $pagename . '.js')) {
                 $this->addScript($scriptfile->getFilename());
             }
         }
@@ -221,7 +235,7 @@ class cGuiPage {
             }
             // the given script path is absolute
             $this->_scripts[] = $script;
-        } else if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['scripts'] . $script)) {
+        } else if (!empty($this->_pluginname) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['scripts'] . $script)) {
             // the given script path is relative to the plugin scripts folder
             $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['scripts'] . $script;
             $this->_scripts[] = $fullpath;
@@ -248,7 +262,7 @@ class cGuiPage {
         if (strpos($stylesheet, 'http') === 0 || strpos($stylesheet, '//') === 0) {
             // the given stylesheet path is absolute
             $this->_styles[] = $stylesheet;
-        } else if (cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['styles'] . $stylesheet)) {
+        } else if (!empty($this->_pluginname) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['styles'] . $stylesheet)) {
             // the given stylesheet path is relative to the plugin stylesheets
             // folder
             $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['styles'] . $stylesheet;
@@ -286,6 +300,17 @@ class cGuiPage {
     }
 
     /**
+     * Adds class attribute value to the body tag.
+     *
+     * @param  string  $className
+     */
+    public function addBodyClassName($className) {
+        if (!in_array($className, $this->_bodyClassNames)) {
+            $this->_bodyClassNames[] = $className;
+        }
+    }
+
+    /**
      * Loads the subnavigation of the current area upon rendering.
      *
      * @param string $additional Additional parameters the subnavigation might
@@ -293,16 +318,16 @@ class cGuiPage {
      * @param string $aarea The area of the subnavigation. If none is given the
      *        current area will be loaded
      */
-    public function setSubnav($additional = "", $aarea = "") {
+    public function setSubnav($additional = '', $aarea = '') {
         global $area, $sess;
 
-        if ($aarea == "") {
+        if ($aarea == '') {
             $aarea = $area;
         }
 
         $this->_subnav = '
         <script type="text/javascript">
-        parent.frames["right_top"].location.href = "' . $sess->url("main.php?area={$aarea}&frame=3&{$additional}") . '";
+        Con.getFrame("right_top").location.href = "' . $sess->url("main.php?area={$aarea}&frame=3&{$additional}") . '";
         </script>
         ';
     }
@@ -311,7 +336,7 @@ class cGuiPage {
      * Adds the reload script for the left_bottom frame to the website
      */
     public function setReload() {
-        $this->_scripts[] = "reload.js";
+        $this->_scripts[] = 'reload.js';
     }
 
     /**
@@ -387,7 +412,7 @@ class cGuiPage {
      * @param string $msg A message
      */
     public function displayError($msg) {
-        $this->_error .= $msg . "<br>";
+        $this->_error .= $msg . '<br>';
     }
 
     /**
@@ -396,7 +421,7 @@ class cGuiPage {
      * @param string $msg The warning
      */
     public function displayWarning($msg) {
-        $this->_warning .= $msg . "<br>";
+        $this->_warning .= $msg . '<br>';
     }
 
     /**
@@ -405,7 +430,7 @@ class cGuiPage {
      * @param string $msg The info message
      */
     public function displayInfo($msg) {
-        $this->_info .= $msg . "<br>";
+        $this->_info .= $msg . '<br>';
     }
 
     /**
@@ -460,13 +485,13 @@ class cGuiPage {
     public function setStyleDirect($filepath) {
         global $cfg;
         $path = $cfg['pica']['style_complexlist'];
-        $this->_pagetemplate->set("s", "SCRIPTS", $path);
+        $this->_pagetemplate->set('s', 'SCRIPTS', $path);
 
-        $strstyle = "";
+        $strstyle = '';
 
         $strstyle .= "<link href='styles/" . $path . "' type='text/css' rel='stylesheet'>\n";
 
-        $this->_pagetemplate->set("s", "STYLES", $strstyle);
+        $this->_pagetemplate->set('s', 'STYLES', $strstyle);
         return $this->_pagetemplate->generate($cfg['path']['templates'] . $cfg['templates']['generic_page'], false);
     }
 
@@ -486,7 +511,9 @@ class cGuiPage {
         }
 
         // render the meta tags
-        $produceXhtml = getEffectiveSetting('generator', 'xhtml', 'false');
+        // NB! We don't produce xhtml in the backend
+#        $produceXhtml = getEffectiveSetting('generator', 'xhtml', 'false');
+        $produceXhtml = false;
         $meta = '';
         foreach ($this->_metaTags as $metaTag) {
             $tag = '<meta';
@@ -502,30 +529,33 @@ class cGuiPage {
         if (!empty($meta)) {
             $this->_pagetemplate->set('s', 'META', $meta);
         } else {
-            $this->_pagetemplate->set('s', 'META', "");
+            $this->_pagetemplate->set('s', 'META', '');
         }
 
         $strscript = $this->_subnav . "\n" . $this->_markscript . "\n";
         foreach ($this->_scripts as $script) {
-            if (strpos($script, "http") === 0 || strpos($script, "//") === 0) {
+            if (strpos($script, 'http') === 0 || strpos($script, '//') === 0) {
                 $strscript .= '<script type="text/javascript" src="' . $script . '"></script>' . "\n";
-            } else if (strpos($script, "<script") === false) {
+            } else if (strpos($script, '<script') === false) {
                 $strscript .= '<script type="text/javascript" src="scripts/' . $script . '"></script>' . "\n";
             } else {
                 $strscript .= $script;
             }
         }
-        $this->_pagetemplate->set("s", "SCRIPTS", $strscript);
+        $this->_pagetemplate->set('s', 'SCRIPTS', $strscript);
 
-        $strstyle = "";
+        $strstyle = '';
         foreach ($this->_styles as $style) {
-            if (strpos($style, "http") === 0 || strpos($style, "//") === 0) {
+            if (strpos($style, 'http') === 0 || strpos($style, '//') === 0) {
                 $strstyle .= '<link href="' . $style . '" type="text/css" rel="stylesheet">' . "\n";
             } else {
                 $strstyle .= '<link href="styles/' . $style . '" type="text/css" rel="stylesheet">' . "\n";
             }
         }
-        $this->_pagetemplate->set("s", "STYLES", $strstyle);
+        $this->_pagetemplate->set('s', 'STYLES', $strstyle);
+
+        // Set body class attribute values
+        $this->_pagetemplate->set('s', 'PAGECLASS', implode(' ', $this->_bodyClassNames));
 
         // get messages from cRegistry
         $infoMessages = cRegistry::getInfoMessages();
@@ -542,35 +572,35 @@ class cGuiPage {
         foreach ($warningMessages as $message) {
             $this->displayWarning($message);
         }
-        $text = "";
-        if ($this->_info != "") {
-            $text .= $notification->returnNotification("info", $this->_info) . "<br>";
+        $text = '';
+        if ($this->_info != '') {
+            $text .= $notification->returnNotification('info', $this->_info) . '<br>';
         }
-        if ($this->_warning != "") {
-            $text .= $notification->returnNotification("warning", $this->_warning) . "<br>";
+        if ($this->_warning != '') {
+            $text .= $notification->returnNotification('warning', $this->_warning) . '<br>';
         }
-        if ($this->_error != "") {
-            $text .= $notification->returnNotification("error", $this->_error) . "<br>";
+        if ($this->_error != '') {
+            $text .= $notification->returnNotification('error', $this->_error) . '<br>';
         }
 
-        $file = "";
-        if ($this->_pluginname == "") {
-            $file = $cfg['path']['templates'] . "template." . $this->_pagename . ".html";
+        $file = '';
+        if ($this->_pluginname == '') {
+            $file = $cfg['path']['templates'] . 'template.' . $this->_pagename . '.html';
         } else {
-            $file = $cfg['path']['plugins'] . $this->_pluginname . "/templates/template." . $this->_pagename . ".html";
+            $file = $cfg['path']['plugins'] . $this->_pluginname . '/templates/template.' . $this->_pagename . '.html';
         }
 
         if (!$this->_abort) {
             if (count($this->_objects) == 0) {
                 if (cFileHandler::exists($file)) {
-                    $this->_pagetemplate->set("s", "CONTENT", $text . $template->generate($file, true));
+                    $this->_pagetemplate->set('s', 'CONTENT', $text . $template->generate($file, true));
                 } else {
-                    $this->_pagetemplate->set("s", "CONTENT", $text);
+                    $this->_pagetemplate->set('s', 'CONTENT', $text);
                 }
             } else {
-                $str = "";
+                $str = '';
                 foreach ($this->_objects as $obj) {
-                    if (method_exists($obj, "render")) {
+                    if (method_exists($obj, 'render')) {
                         // Ridiculous workaround because some objects return
                         // code if the parameter is true and some return the
                         // code if the parameter is false.
@@ -588,10 +618,10 @@ class cGuiPage {
                         ob_end_clean();
                     }
                 }
-                $this->_pagetemplate->set("s", "CONTENT", $text . $str);
+                $this->_pagetemplate->set('s', 'CONTENT', $text . $str);
             }
         } else {
-            $this->_pagetemplate->set("s", "CONTENT", $text);
+            $this->_pagetemplate->set('s', 'CONTENT', $text);
         }
 
         return $this->_pagetemplate->generate($cfg['path']['templates'] . $cfg['templates']['generic_page'], $return);

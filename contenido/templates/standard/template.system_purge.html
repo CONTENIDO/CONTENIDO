@@ -1,216 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <style type="text/css">
-      .system_clear {
-        border: 1px solid #B3B3B3;
-        width: 570px;
-        margin-top: 10px;
-      }
-
-      .system_clear_header {
-        background-color: #E2E2E2;
-        height: 11px;
-        color: #666;
-        padding: 2px 5px 5px 5px;
-      }
-
-      .system_clear_form_row {
-        padding: 2px;
-        padding-left: 5px;
-        clear: left;
-        width: 300px;
-      }
-
-      #select_list_clients select{
-        width: 150px;
-        margin-top: 5px;
-        border: 1;
-      }
-
-      .system_clear_form_row .label {
-        width: 180px;
-        display: block;
-        float:left
-      }
-
-      .system_clear_form_row .label_middle {
-        float:left;
-        padding-right: 5px;
-        padding-top: 2px;
-      }
-      .system_clear_form_row .labelrightCol {
-        display: block;
-        padding-left: 10px;
-        padding-top: 2px;
-      }
-
-      .system_clear_form_row .input {
-        display: block;
-        float:left;
-        vertical-align: middle;
-      }
-
-      .system_clear_group {
-        border-top: 1px solid #B3B3B3;
-      }
-
-      .system_clear_group .leftCol{
-        float:left;
-        width: 150px;
-        padding: 5px;
-      }
-
-      .system_clear_group .rightCol{
-        float:left;
-        border-left: 1px solid #B3B3B3;
-        padding-bottom: 5px;
-        white-space: nowrap;
-      }
-
-      .system_clear_group .bottom{
-        text-align: right;
-        padding: 5px;
-      }
-
-      .system_clear_group .clear_float {
-        clear:both;
-        display: none;
-      }
-
-      #select_list_clients {
-        margin-left: 20px;
-        width: 150px;
-      }
-
-     .clearfix:after{
-        content:".";
-        display:block;
-        clear: both;
-        height:0px;
-        visibility:hidden;
-        line-height: 0;
-      }
-
-      .clearfix {
-        display:block;
-      }
-
-      #system_clear_error_box {
-          display: none;
-      }
-
-      #contenido_notification {
-          padding-top: 5px;
-      }
-
-      *+html .clearfix:after, * html .clearfix:after{
-        height: 1px;
-      }
-
-      *+html .clearfix, * html .clearfix {
-        height: 1%;
-        display: inline-block;
-      }
-
-    </style>
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <title>template.system_purge.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+    <link rel="stylesheet" type="text/css" href="styles/system_purge.css">
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#available_clients').click(function() {
-                if ($('#select_list_clients').css('display') != 'block') {
-                    $('#select_list_clients').fadeIn('middle');
-                }
-            })
-
-            $('#select_all_clients').click(function() {
-                if ($('#select_list_clients').css('display') != 'none') {
-                    $('#select_list_clients').fadeOut('middle');
-                }
-            })
-
-            $('input[name="clientHistory"]').change(function() {
-                if ($(this).attr('checked')) {
-                    $('input[name="keepHistory"]').attr('checked', true);
-                } else {
-                    $('input[name="keepHistory"]').attr('checked', false);
-                }
-            });
-
-            $('#imgFormSubmit').click(function() {
-                var iSelClient = $('input[name="selectClient"]:checked', '#frmSystemPurge').val()
-                var bSelClient = false;
-                var iActionSel = $('input[type="checkbox"]:checked').length
-                var sErrMsg = '';
-                var bErr = false;
-
-                if ($.trim($('#system_clear_info_box').html()) != '') {
-                    $('#system_clear_info_box').html('');
-                }
-
-                if (typeof iSelClient != 'undefined') {
-                    if (iSelClient == 'all') {
-                        bSelClient = true;
-                    } else if (iSelClient == 'list') {
-                        var countClient = $('#client_select option:selected', '#frmSystemPurge').length;
-                        if (countClient > 0) {
-                            bSelClient = true;
-                        } else {
-                            bSelClient = false;
-                        }
-                    }
-                } else {
-                    bSelClient = false;
-                }
-                var bSelClientAction = false;
-                if (bSelClient == false) {
-                    if ($('input[name="conCode"]:checked').length > 0) {
-                        bSelClientAction = true;
-                    }
-                    if ($('input[name="conCatArt"]:checked').length > 0) {
-                        bSelClientAction = true;
-                    }
-                    if ($('input[name="clientCache"]:checked').length > 0) {
-                        bSelClientAction = true;
-                    }
-                    if ($('input[name="clientLog"]:checked').length > 0) {
-                        bSelClientAction = true;
-                    }
-                    if ($('input[name="clientHistory"]:checked').length > 0) {
-                        bSelClientAction = true;
-                    }
-                }
-
-                if (bSelClient == false && bSelClientAction == true) {
-                    sErrMsg += "{ERR_MSG_SELECT_CLIENT}<br>";
-                    bErr = true;
-                }
-
-                if (iActionSel == 0) {
-                    sErrMsg += '{ERR_MSG_NO_ACTION}';
-                    bErr = true;
-                }
-
-                if (bErr == false) {
-                    showConfirmation('{BOX_MESSAGE}', function() { document.frmSystemPurge.submit() });
-                } else {
-                    $('#system_clear_error_box span').html(sErrMsg);
-                    if ($('#system_clear_error_box').css('display') == 'none') {
-                        $('#system_clear_error_box').css('display', 'block');
-                    }
-                }
-            });
-        });
-    </script>
 </head>
 
 <body style="margin: 10px;">
@@ -311,13 +107,103 @@
       </div>
 
       <div class="system_clear_group clearfix">
-            <div class="bottom">
-                <input type="hidden" name="send" value="store">
-                <img id="imgFormSubmit" src="images/but_ok.gif" alt="{SUBMIT_TEXT}" border="0">
-            </div>
-        </div>
+          <div class="bottom">
+              <input type="hidden" name="send" value="store">
+              <img id="imgFormSubmit" src="images/but_ok.gif" alt="{SUBMIT_TEXT}" border="0">
+          </div>
+      </div>
     </div>
 </form>
+
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        $('#available_clients').click(function() {
+            if ($('#select_list_clients').css('display') != 'block') {
+                $('#select_list_clients').fadeIn('middle');
+            }
+        })
+
+        $('#select_all_clients').click(function() {
+            if ($('#select_list_clients').css('display') != 'none') {
+                $('#select_list_clients').fadeOut('middle');
+            }
+        })
+
+        $('input[name="clientHistory"]').change(function() {
+            if ($(this).attr('checked')) {
+                $('input[name="keepHistory"]').attr('checked', true);
+            } else {
+                $('input[name="keepHistory"]').attr('checked', false);
+            }
+        });
+
+        $('#imgFormSubmit').click(function() {
+            var iSelClient = $('input[name="selectClient"]:checked', '#frmSystemPurge').val()
+            var bSelClient = false;
+            var iActionSel = $('input[type="checkbox"]:checked').length
+            var sErrMsg = '';
+            var bErr = false;
+
+            if ($.trim($('#system_clear_info_box').html()) != '') {
+                $('#system_clear_info_box').html('');
+            }
+
+            if (typeof iSelClient != 'undefined') {
+                if (iSelClient == 'all') {
+                    bSelClient = true;
+                } else if (iSelClient == 'list') {
+                    var countClient = $('#client_select option:selected', '#frmSystemPurge').length;
+                    if (countClient > 0) {
+                        bSelClient = true;
+                    } else {
+                        bSelClient = false;
+                    }
+                }
+            } else {
+                bSelClient = false;
+            }
+            var bSelClientAction = false;
+            if (bSelClient == false) {
+                if ($('input[name="conCode"]:checked').length > 0) {
+                    bSelClientAction = true;
+                }
+                if ($('input[name="conCatArt"]:checked').length > 0) {
+                    bSelClientAction = true;
+                }
+                if ($('input[name="clientCache"]:checked').length > 0) {
+                    bSelClientAction = true;
+                }
+                if ($('input[name="clientLog"]:checked').length > 0) {
+                    bSelClientAction = true;
+                }
+                if ($('input[name="clientHistory"]:checked').length > 0) {
+                    bSelClientAction = true;
+                }
+            }
+
+            if (bSelClient == false && bSelClientAction == true) {
+                sErrMsg += "{ERR_MSG_SELECT_CLIENT}<br>";
+                bErr = true;
+            }
+
+            if (iActionSel == 0) {
+                sErrMsg += '{ERR_MSG_NO_ACTION}';
+                bErr = true;
+            }
+
+            if (bErr == false) {
+                Con.showConfirmation('{BOX_MESSAGE}', function() { document.frmSystemPurge.submit() });
+            } else {
+                $('#system_clear_error_box span').html(sErrMsg);
+                if ($('#system_clear_error_box').css('display') == 'none') {
+                    $('#system_clear_error_box').css('display', 'block');
+                }
+            }
+        });
+    });
+})(Con, Con.$);
+</script>
 
 </body>
 </html>

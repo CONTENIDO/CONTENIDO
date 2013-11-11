@@ -143,13 +143,7 @@ foreach ($allModules as $idmod => $module) {
         if ($inUse) {
             $inUseString = i18n("For more information about usage click on this button");
             $mlist->setActions($iMenu, 'inuse', '
-                <a
-                    href="javascript:;"
-                    rel="' . $idmod . '"
-                    class="in_used_mod"><img src="' . $cfg['path']['images'] . 'exclamation.gif"
-                    border="0"
-                    title="' . $inUseString . '"
-                    alt="' . $inUseString . '"></a>');
+                <a href="javascript:;" rel="' . $idmod . '" class="in_used_mod"><img src="' . $cfg['path']['images'] . 'exclamation.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '"></a>');
             $delDescription = i18n("Module can not be deleted, because it is already in use!");
         } else {
             $mlist->setActions($iMenu, 'inuse', '<img src="./images/spacer.gif" border="0" width="16">');
@@ -157,16 +151,8 @@ foreach ($allModules as $idmod => $module) {
                 $delTitle = i18n("Delete module");
                 $delDescr = sprintf(i18n("Do you really want to delete the following module:<br /><br />%s<br />"), $sName);
                 $deletebutton = '
-                    <a
-                        title="' . $delTitle . '"
-                        href="javascript:void(0)"
-                        onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteModule(' . $idmod . '); });return false;"
-                    >
-                        <img
-                            src="' . $cfg['path']['images'] . 'delete.gif"
-                            border="0"
-                            title="' . $delTitle . '"
-                            alt="' . $delTitle . '" />
+                    <a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteModule(' . $idmod . '); });return false;" >
+                        <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '">
                     </a>';
             } else {
                 $delDescription = i18n("No permissions");
@@ -176,11 +162,7 @@ foreach ($allModules as $idmod => $module) {
         if ($deletebutton == "") {
             //$deletebutton = '<img src="images/spacer.gif" width="16" height="16">';
             $deletebutton = '
-                <img
-                    src="' . $cfg['path']['images'] . 'delete_inact.gif"
-                    border="0"
-                    title="' . $delDescription . '"
-                    alt="' . $delDescription . '" />';
+                <img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . $delDescription . '" alt="' . $delDescription . '">';
         }
 
         $todo = new TODOLink("idmod", $idmod, "Module: $sName", "");
@@ -221,21 +203,22 @@ $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
 //send new object pager to left_top
-$sRefreshPager = '
-    <script type="text/javascript">
-    (function() {
-        var sNavigation = \'' . $sPagerContent . '\',
-            left_top = parent.left_top, oPager, oInsert;
-        if (left_top.document) {
-            oPager = left_top.document.getElementById(\'02420d6b-a77e-4a97-9395-7f6be480f497\');
-            if (oPager) {
-                oInsert = oPager.firstChild;
-                oInsert.innerHTML = sNavigation;
-                left_top.toggle_pager(\'02420d6b-a77e-4a97-9395-7f6be480f497\');
-            }
+$sRefreshPager = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var sNavigation = '{$sPagerContent}',
+        left_top = Con.getFrame('left_top'), oPager, oInsert;
+    if (left_top) {
+        oPager = left_top.document.getElementById('02420d6b-a77e-4a97-9395-7f6be480f497');
+        if (oPager) {
+            oInsert = oPager.firstChild;
+            oInsert.innerHTML = sNavigation;
+            left_top.toggle_pager('02420d6b-a77e-4a97-9395-7f6be480f497');
         }
-    })();
-    </script>';
+    }
+})(Con, Con.$);
+</script>
+JS;
 
 $oPage->addScript($sRefreshPager);
 

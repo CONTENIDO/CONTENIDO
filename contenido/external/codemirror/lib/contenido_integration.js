@@ -1,31 +1,92 @@
-var cm_editor = new Array();
-var cm_div = new Array();
-var cm_fullscreen = new Array();
+/**
+ * CONTENIDO CodeMirror integration helper module
+ *
+ * @package    TODO
+ * @subpackage TODO
+ * @version    SVN Revision $Rev:$
+ * @requires   jQuery
+ *
+ * @author     Unknown
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
 
-function toggleCodeMirrorFullscreenEditor(editorId) {
-    if (!cm_div[editorId].hasClass('CodeMirror-fullscreen')) {
-        cm_div[editorId].addClass('CodeMirror-fullscreen');
-        cm_div[editorId].height('100%');
-        cm_div[editorId].width('100%');
-    } else {
-        cm_div[editorId].removeClass('CodeMirror-fullscreen');
-        cm_div[editorId].height(cm_fullscreen[editorId].height + 'px');
-        cm_div[editorId].width(cm_fullscreen[editorId].width + 'px');
-    }
 
-    cm_editor[editorId].refresh();
-}
+(function(Con, $) {
+    "use strict";
 
-function initCodeMirror(textAreaId, properties) {
-    cm_editor[textAreaId] = CodeMirror.fromTextArea(document.getElementById(textAreaId), properties);
-    cm_div[textAreaId] = $('div.cm-s-' + textAreaId + '.CodeMirror-scroll');
-    cm_fullscreen[textAreaId] = { height: cm_div[textAreaId].height(), width: cm_div[textAreaId].width() }
-    var codeWidth = $(cm_editor[textAreaId].getWrapperElement()).width();
+    // Some variables to store editor elements
+    var _cmEditor = [],
+        _cmDiv = [],
+        _cmFullscreen = [];
 
-    $('#' + textAreaId).next().resizable({
-        resize: function() {
-            cm_editor[textAreaId].setSize(codeWidth, $(this).height());
-            cm_editor[textAreaId].refresh();
+    /**
+     * CodeMirror integration helper class
+     * @class  CodeMirrorHelper
+     * @namespace  Con
+     * @static
+     */
+    Con.CodeMirrorHelper = {
+
+        /**
+         * Initializes an element as a CodeMirror editor.
+         * @param  {String}  textAreaId
+         * @param  {Object}  properties
+         */
+        init: function(textAreaId, properties) {
+            var $textArea = $('#' + textAreaId);
+            if (!$textArea[0]) {
+                Con.log("init: Failed to get textarea with id " + textAreaId, "contenido_integration.js", "warn");
+                return;
+            }
+
+            _cmEditor[textAreaId] = CodeMirror.fromTextArea($textArea[0], properties);
+            _cmDiv[textAreaId] = $('div.cm-s-' + textAreaId + '.CodeMirror-scroll');
+            _cmFullscreen[textAreaId] = {
+                height: _cmDiv[textAreaId].height(),
+                width: _cmDiv[textAreaId].width()
+            };
+            var codeWidth = $(_cmEditor[textAreaId].getWrapperElement()).width();
+
+            $textArea.next().resizable({
+                resize: function() {
+                    _cmEditor[textAreaId].setSize(codeWidth, $(this).height());
+                    _cmEditor[textAreaId].refresh();
+                }
+            });
+        },
+
+        /**
+         * Toggles the fullscreen state of a specific editor element
+         * @param  {String}  editorId
+         */
+        toggleFullscreenEditor: function(editorId) {
+            if (!_cmDiv[editorId]) {
+                Con.log("toggleFullscreenEditor: Missing editor element with id " + editorId, "contenido_integration.js", "warn");
+                return;
+            }
+
+            // @TODO: Display the editor in real full screen mode!
+            if (!_cmDiv[editorId].hasClass('con-CodeMirror-fullscreen')) {
+                _cmDiv[editorId].addClass('con-CodeMirror-fullscreen');
+                _cmDiv[editorId].height('100%');
+                _cmDiv[editorId].width('100%');
+            } else {
+                _cmDiv[editorId].removeClass('con-CodeMirror-fullscreen');
+                _cmDiv[editorId].height(_cmFullscreen[editorId].height + 'px');
+                _cmDiv[editorId].width(_cmFullscreen[editorId].width + 'px');
+            }
+
+            _cmEditor[editorId].refresh();
         }
-    });
-}
+
+    };
+
+    // @deprecated [2013-10-22] Assign to windows scope (downwards compatibility)
+    window.initCodeMirror = Con.CodeMirrorHelper.init;
+    window.toggleCodeMirrorFullscreenEditor = Con.CodeMirrorHelper.toggleFullscreenEditor;
+
+})(Con, Con.$);

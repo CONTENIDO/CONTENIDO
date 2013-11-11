@@ -190,7 +190,7 @@ function checkLinks() {
                         "error_type" => "unknown"
                     ));
                 }
-            } elseif (substr($aSearchIDInfosNonID[$i]['url'], 0, 20) == "dbfs.php?file=dbfs:/") {
+            } elseif (substr($aSearchIDInfosNonID[$i]['url'], 0, 20) == "dbfs.php?file=" . cApiDbfs::PROTOCOL_DBFS . "/") {
 
                 $sDBurl = substr($aSearchIDInfosNonID[$i]['url'], 20, strlen($aSearchIDInfosNonID[$i]['url']));
 

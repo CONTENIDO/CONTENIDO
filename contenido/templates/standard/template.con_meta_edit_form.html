@@ -1,89 +1,47 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title></title>
-<meta http-equiv="expires" content="0">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="pragma" content="no-cache">
-<link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-<link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
-<link rel="stylesheet" type="text/css" href="styles/jquery/plugins/atooltip.css">
-<link rel="stylesheet" type="text/css" href="styles/contenido.css">
-<script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-<script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-<script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
-<script type="text/javascript" src="scripts/jquery/plugins/atooltip.jquery.js"></script>
-<script type="text/javascript" src="scripts/general.js"></script>
-<!-- get javascript files for language != en -->
-{CAL_LANG}
-<script type="text/javascript">
-    var sid = "{SID}";
-
-    $(document).ready(function() {
-        $("div#categorypath > a").click(function() {
-            var url = $(this).attr('href');
-            var sVal = url.split("idcat=");
-            var aVal = sVal[1].split("&");
-            var iIdcat = aVal[0];
-            sVal = url.split("idtpl=");
-            aVal = sVal[1].split("&");
-            var iIdtpl = aVal[0];
-            conMultiLink(
-                'right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
-                'right_bottom', url,
-                'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}'
-            );
-            return false;
-        });
-    });
-
-    function pad(str) {
-        var str = str + "";
-        if (str.length == 1) {
-            str = "0" + str;
-        }
-
-        return str;
+    <title>template.con_meta_edit_form.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/atooltip.css">
+{_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
+    <script type="text/javascript" src="scripts/jquery/plugins/atooltip.jquery.js"></script>
+    <!-- get javascript files for language != en -->
+    {CAL_LANG}
+    <style type="text/css">
+    body {
+        margin: 10px;
     }
-
-    function formatDates(date) {
-        if (date == "Invalid Date") {
-            return "";
-        }
-        var ret = date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate()) + "T" + pad(date.getHours()) + ":" + pad(date.getMinutes()) + ":" +  pad(date.getSeconds());
-
-        var offset = date.getTimezoneOffset();
-        offset = (offset < 0 ? "+" : "-") + pad(parseInt(Math.abs(offset / 60))) + ":" + pad(Math.abs(offset % 60));
-        return ret + offset;
+    table.generic {
+        width: 720px;
     }
-</script>
-
-<style>
-table.generic td.leftData {
-    width: 1px;
-    white-space: nowrap;
-    padding: 2px;
-}
-
-.textField {
-    width: 475px;
-}
-</style>
+    table.generic td.leftData {
+        width: 1px;
+        white-space: nowrap;
+        padding: 2px;
+    }
+    .textField {
+        width: 475px;
+    }
+    </style>
 </head>
-<body style="margin: 10px">
+<body>
 
     {CATEGORY}
 
     <form method="post" name="art_props" action="{ACTION}">
 
-        <input type="hidden" name="action" value="con_meta_saveart" />
-        <input type="hidden" name="send" value="1" />
-        <input type="hidden" name="tmp_firstedit" value="{TMP_FIRSTEDIT}" />
-        <input type="hidden" name="idart" value="{IDART}" />
-        <input type="hidden" name="idcat" value="{IDCAT}" />
-        <input type="hidden" name="idartlang" value="{IDARTLANG}" />
+        <input type="hidden" name="action" value="con_meta_saveart">
+        <input type="hidden" name="send" value="1">
+        <input type="hidden" name="tmp_firstedit" value="{TMP_FIRSTEDIT}">
+        <input type="hidden" name="idart" value="{IDART}">
+        <input type="hidden" name="idcat" value="{IDCAT}">
+        <input type="hidden" name="idartlang" value="{IDARTLANG}">
 
-        <table style="width: 720px" class="generic" cellspacing="0" cellpadding="2" border="0">
+        <table class="generic" cellspacing="0" cellpadding="2" border="0">
 
             <tr>
                 <th colspan="2">{TITEL}</th>
@@ -94,17 +52,8 @@ table.generic td.leftData {
             <tr>
                 <td class="leftData">i18n("Link")</td>
                 <td>
-                    <input
-                        class="textField"
-                        type="text"
-                        value="{LINK}"
-                        disabled
-                        size="24"
-                    />&nbsp;
-                    <a
-                        href="{FULL_LINK}"
-                        target="_blank"
-                    >
+                    <input class="textField" type="text" value="{LINK}" disabled size="24">&nbsp;
+                    <a href="{FULL_LINK}" target="_blank">
                         <img class="vAlignMiddle" src="images/submit.gif">
                     </a>
                 </td>
@@ -112,15 +61,8 @@ table.generic td.leftData {
 
             <tr>
                 <td class="leftData">i18n("Page title")</td>
-
                 <td colspan="3" class="text_medium">
-                    <input
-                        class="textField"
-                        type="text"
-                        name="page_title"
-                        value="{PAGE_TITLE}"
-                        {DISABLED}
-                    />
+                    <input class="textField" type="text" name="page_title" value="{PAGE_TITLE}" {DISABLED}>
                     {INFO_BUTTON_PAGE_TITLE}
                 </td>
             </tr>
@@ -128,20 +70,14 @@ table.generic td.leftData {
             <tr>
                 <td class="leftData">i18n("Alias")</td>
                 <td class="text_medium">
-                    <input class="textField" type="text" name="alias" value="{ALIAS}" size="24" {DISABLED} />
+                    <input class="textField" type="text" name="alias" value="{ALIAS}" size="24" {DISABLED}>
                 </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Description")</td>
                 <td>
-                    <textarea
-                        class="textField metaTag"
-                        name="METAdescription"
-                        id="METAdescription"
-                        rows="3"
-                        {DISABLED}
-                    >{DESCRIPTION}</textarea>
+                    <textarea class="textField metaTag" name="METAdescription" id="METAdescription" rows="3" {DISABLED}>{DESCRIPTION}</textarea>
                     {INFO_BUTTON_DESCRIPTION}
                 </td>
             </tr>
@@ -149,13 +85,7 @@ table.generic td.leftData {
             <tr>
                 <td class="leftData">i18n("Keywords")</td>
                 <td>
-                    <textarea
-                        class="textField metaTag"
-                        name="METAkeywords"
-                        id="METAkeywords"
-                        rows="3"
-                        {DISABLED}
-                    >{KEYWORDS}</textarea>
+                    <textarea class="textField metaTag" name="METAkeywords" id="METAkeywords" rows="3" {DISABLED}>{KEYWORDS}</textarea>
                     {INFO_BUTTON_KEYWORDS}
                 </td>
             </tr>
@@ -163,73 +93,35 @@ table.generic td.leftData {
             <tr>
                 <td class="leftData" style="border-top: 1px solid #b3b3b3">i18n("Copyright")</td>
                 <td style="border-top: 1px solid #b3b3b3">
-                    <input
-                        type="text"
-                        class="textField metaTag"
-                        name="METAcopyright"
-                        id="METAcopyright"
-                        value="{COPYRIGHT}"
-                        size="24"
-                        {DISABLED}
-                    />
+                    <input type="text" class="textField metaTag" name="METAcopyright" id="METAcopyright" value="{COPYRIGHT}" size="24" {DISABLED}>
                 </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Author")</td>
                 <td>
-                    <input
-                        class="textField metaTag"
-                        type="text"
-                        name="METAauthor"
-                        id="METAauthor"
-                        value="{AUTHOR}"
-                        size="24"
-                        {DISABLED}
-                    />
+                    <input class="textField metaTag" type="text" name="METAauthor" id="METAauthor" value="{AUTHOR}" size="24" {DISABLED}>
                 </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Date")</td>
                 <td>
-                    <input
-                        class="textField metaTag"
-                        type="text"
-                        name="METAdate"
-                        id="METAdate"
-                        value="{DATE}"
-                        {DISABLED}
-                    />
+                    <input class="textField metaTag" type="text" name="METAdate" id="METAdate" value="{DATE}" {DISABLED}>
                 </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Expires")</td>
                 <td>
-                    <input
-                        class="textField metaTag"
-                        type="text"
-                        name="METAexpires"
-                        id="METAexpires"
-                        value="{EXPIRES}"
-                        {DISABLED}
-                    />
+                    <input class="textField metaTag" type="text" name="METAexpires" id="METAexpires" value="{EXPIRES}" {DISABLED}>
                  </td>
             </tr>
 
             <tr>
                 <td class="leftData">i18n("Revisit after")</td>
                 <td>
-                    <input
-                        class="textField metaTag"
-                        type="text"
-                        name="METArevisit-after"
-                        id="METArevisit-after"
-                        value="{REVISIT-AFTER}"
-                        size="24"
-                        {DISABLED}
-                    />
+                    <input class="textField metaTag" type="text" name="METArevisit-after" id="METArevisit-after" value="{REVISIT-AFTER}" size="24" {DISABLED}>
                     {INFO_BUTTON_REVISIT}
                 </td>
             </tr>
@@ -239,56 +131,16 @@ table.generic td.leftData {
                     i18n("Robots")
                 </td>
                 <td style="border-top: 1px solid #b3b3b3">
-                    <input
-                        id="metaNoIndex"
-                        class="vAlignMiddle robotCheckbox"
-                        type="checkbox"
-                        name="robots[]"
-                        value="noindex"
-                        {NOINDEX}
-                        {DISABLED}
-                    />
-                    <label for="metaNoIndex">noindex</label><br />
-                    <input
-                        id="metaNoFollow"
-                        class="vAlignMiddle robotCheckbox"
-                        type="checkbox"
-                        name="robots[]"
-                        value="nofollow"
-                        {NOFOLLOW}
-                        {DISABLED}
-                    />
-                    <label for="metaNoFollow">nofollow</label><br />
-                    <input
-                        id="metaNoSnippet"
-                        class="vAlignMiddle robotCheckbox"
-                        type="checkbox"
-                        name="robots[]"
-                        value="nosnippet"
-                        {NOSNIPPET}
-                        {DISABLED}
-                    />
-                    <label for="metaNoSnippet">nosnippet</label><br />
-                    <input
-                        id="metaNoImageIndex"
-                        class="vAlignMiddle robotCheckbox"
-                        type="checkbox"
-                        name="robots[]"
-                        value="noimageindex"
-                        {NOIMAGEINDEX}
-                        {DISABLED}
-                    />
-                    <label for="metaNoImageIndex">noimageindex</label><br />
-                    <input
-                        id="metaNoArchive"
-                        class="vAlignMiddle robotCheckbox"
-                        type="checkbox"
-                        name="robots[]"
-                        value="noarchive"
-                        {NOARCHIVE}
-                        {DISABLED}
-                    />
-                    <label for="metaNoArchive">noarchive</label><br />
+                    <input id="metaNoIndex" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noindex" {NOINDEX} {DISABLED}>
+                    <label for="metaNoIndex">noindex</label><br>
+                    <input id="metaNoFollow" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="nofollow" {NOFOLLOW} {DISABLED}>
+                    <label for="metaNoFollow">nofollow</label><br>
+                    <input id="metaNoSnippet" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="nosnippet" {NOSNIPPET} {DISABLED}>
+                    <label for="metaNoSnippet">nosnippet</label><br>
+                    <input id="metaNoImageIndex" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noimageindex" {NOIMAGEINDEX} {DISABLED}>
+                    <label for="metaNoImageIndex">noimageindex</label><br>
+                    <input id="metaNoArchive" class="vAlignMiddle robotCheckbox" type="checkbox" name="robots[]" value="noarchive" {NOARCHIVE} {DISABLED}>
+                    <label for="metaNoArchive">noarchive</label><br>
                     {INFO_BUTTON_ROBOTS}
                 </td>
             </tr>
@@ -296,13 +148,7 @@ table.generic td.leftData {
             <tr>
                 <td class="leftData" style="border-top: 1px solid #b3b3b3">i18n("Sitemap Priority")</td>
                 <td class="leftData" style="border-top: 1px solid #b3b3b3">
-                    <input
-                        class="textField"
-                        type="text"
-                        name="sitemap_prio"
-                        value="{SITEMAP_PRIO}"
-                        size="24"{DISABLED}
-                    />
+                    <input class="textField" type="text" name="sitemap_prio" value="{SITEMAP_PRIO}" size="24" {DISABLED}>
                     {INFO_BUTTON_SITEMAP_PRIORITY}
                 </td>
             </tr>
@@ -312,11 +158,7 @@ table.generic td.leftData {
                     i18n("Sitemap change frequency")
                 </td>
                 <td style="border-bottom: 2px solid #b3b3b3">
-                    <select
-                        size="1"
-                        name="sitemap_change_freq"
-                        {DISABLED}
-                    >
+                    <select size="1" name="sitemap_change_freq" {DISABLED}>
                         <option {SELECTED_}></option>
                         <option {SELECTED_always}>always</option>
                         <option {SELECTED_hourly}>hourly</option>
@@ -341,12 +183,8 @@ table.generic td.leftData {
                 <td>{METATITLE}</td>
                 <td class="text_medium">
                     {METAFIELDTYPE}
-                    <a
-                        onclick="showConfirmation('{DELETE_META_CONFIRM}', function() { deleteMetaTag({IDMETATYPE}, {ARTICLE_ID}, {CAT_ID}, {ARTICLE_LANGUAGE_ID}); }); return false;"
-                        href="javascript:void(0)"
-                        title="Delete Meta tag"
-                    >
-                        <img class="vAlignMiddle" style="float: right" src="images/delete.gif" />
+                    <a href="javascript://" onclick="Con.showConfirmation('{DELETE_META_CONFIRM}', function() { deleteMetaTag({IDMETATYPE}, {ARTICLE_ID}, {CAT_ID}, {ARTICLE_LANGUAGE_ID}); }); return false;" title="Delete Meta tag">
+                        <img class="vAlignMiddle" style="float: right" src="images/delete.gif">
                     </a>
                 </td>
             </tr>
@@ -357,23 +195,14 @@ table.generic td.leftData {
             <tr>
                 <td class="text_medium">{ADDMETABTN}</td>
                 <td align="right">
-                    <input
-                        accesskey="s"
-                        type="image"
-                        {BUTTONDISABLE}
-                        src="images/{BUTTONIMAGE}"
-                        title="{REASON}"
-                    />
+                    <input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}" title="{REASON}">
                 </td>
             </tr>
 
             <tr>
-                <td colspan=2>
-                    <a
-                        href="javascript://"
-                        onclick="$('#metaPreview').toggle();"
-                    >
-                        <img src="images/but_preview.gif" class="vAlignMiddle"/>&nbsp;i18n("HTML-View")
+                <td colspan="2">
+                    <a href="javascript://" onclick="$('#metaPreview').toggle();">
+                        <img src="images/but_preview.gif" class="vAlignMiddle">&nbsp;i18n("HTML-View")
                     </a>
                     <div style="display: none;" id="metaPreview">
                         {META_TAGS}
@@ -384,127 +213,147 @@ table.generic td.leftData {
         </table>
     </form>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        /* Create a reference to the Article Object in frame 'right_top' */
-        artObj = parent.parent.frames["left"].frames["left_top"].artObj;
+// Get a reference to the Article Object in frame 'right_top'
+var artObj = Con.getFrame('left_top').artObj;
+{DATAPUSH}
 
-        if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_2')) {
+Con.markSubmenuItem('c_2');
 
-            menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_2');
-            parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
+function pad(str) {
+    var str = str + "";
+    if (str.length == 1) {
+        str = "0" + str;
+    }
 
-        }
+    return str;
+}
 
-        {DATAPUSH}
+function formatDates(date) {
+    if (date == "Invalid Date") {
+        return "";
+    }
+    var ret = date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate()) + "T" + pad(date.getHours()) + ":" + pad(date.getMinutes()) + ":" +  pad(date.getSeconds());
+
+    var offset = date.getTimezoneOffset();
+    offset = (offset < 0 ? "+" : "-") + pad(parseInt(Math.abs(offset / 60))) + ":" + pad(Math.abs(offset % 60));
+    return ret + offset;
+}
+
+function clearOnFocus(element, default_value) {
+    if (element.value == default_value) {
+        element.value = '';
+    }
+}
+
+function restoreOnBlur(element, default_value) {
+    if (element.value == '') {
+        element.value = default_value;
+    }
+}
+
+function deleteMetaTag(idMetaType, articleId, catId, idartlang) {
+    var url = 'main.php?area=con_meta&frame=4&action=con_meta_deletetype&contenido=1&idmetatype=' + idMetaType;
+       url += '&idart=' + articleId + '&idcat=' + catId + '&idartlang=' + idartlang;
+    window.location.assign(url);
+}
+
+(function(Con, $) {
+    $(function() {
 
         $('img#addMeta').hover(function() {
-
-            $(this).css('cursor','pointer');
-
-        });
-        $('img#addMeta').click(function() {
-
+            $(this).css('cursor', 'pointer');
+        }).click(function() {
             $('tr[name=newMeta]').each(function() {
                 $(this).slideToggle();
             });
-
         });
 
-        function clearOnFocus(element, default_value) {
+        $("div#categorypath > a").click(function() {
+            var url = $(this).attr('href'),
+                params = Con.UtilUrl.getParams(url);
+            Con.multiLink(
+                'right_top', 'main.php?area=con&frame=3&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido=' + Con.sid,
+                'right_bottom', url,
+                'left_bottom', 'main.php?area=con&frame=2&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&contenido=' + Con.sid
+            );
+            return false;
+        });
 
-            if (element.value == default_value) element.value = '';
-
-        }
-
-        function restoreOnBlur(element, default_value) {
-
-            if (element.value == '') element.value = default_value;
-        }
-
-        function deleteMetaTag(idMetaType, articleId, catId, idartlang) {
-
-            var url = 'main.php?area=con_meta&frame=4&action=con_meta_deletetype&contenido=1&idmetatype=' + idMetaType;
-               url += '&idart=' + articleId + '&idcat=' + catId + '&idartlang=' + idartlang;
-            window.location.assign(url);
-
-        }
-
-        $(document).ready(function() {
-
-            $('#METAdate').datetimepicker({
-                buttonImage: '{PATH_TO_CALENDER_PIC}',
-                buttonImageOnly: true,
-                showOn: 'both',
-                dateFormat: 'yy-mm-dd',
-                separator: 'T',
-                timeFormat: 'hh:mm:ss tt',
-                onClose: function(text, inst) {
-
-                    var id = $(this).attr("id").substr(4);
-                    text = formatDates(new Date(text.replace(/\s/g, "")));
-                    $("#metaContent_" + id).text(text);
-                    $(this).attr("value", text);
-
-                },
-                disabled: {IS_DATETIMEPICKER_DISABLED}
-            });
-
-            $('#METAexpires').datetimepicker({
-                buttonImage: '{PATH_TO_CALENDER_PIC}',
-                buttonImageOnly: true,
-                showOn: 'both',
-                dateFormat: 'yy-mm-dd',
-                separator: 'T',
-                timeFormat: 'hh:mm:ss tt',
-                onClose: function(text, inst) {
-
-                    var id = $(this).attr("id").substr(4);
-                    text = formatDates(new Date(text.replace(/\s/g, "")));
-                    $("#metaContent_" + id).text(text);
-                    $(this).attr("value", text);
-
-                },
-                disabled: {IS_DATETIMEPICKER_DISABLED}
-            });
-
-            $('.metaTag').live("input", function() {
-
+        $('#METAdate').datetimepicker({
+            buttonImage: '{PATH_TO_CALENDER_PIC}',
+            buttonImageOnly: true,
+            showOn: 'both',
+            dateFormat: 'yy-mm-dd',
+            separator: 'T',
+            timeFormat: 'hh:mm:ss tt',
+            onClose: function(text, inst) {
                 var id = $(this).attr("id").substr(4);
-                var text = $(this).val();
-                if ($(this).hasClass("hasDatepicker")) text = formatDates(new Date(text));
-                if (text == "") $("#metaRow_" + id).hide();
-                else $("#metaRow_" + id).show();
+                text = formatDates(new Date(text.replace(/\s/g, "")));
                 $("#metaContent_" + id).text(text);
-            });
-
-            $('.robotCheckbox').change(function() {
-
-                var robotString = "";
-                if ($('#metaNoIndex').attr("checked")) {
-                    robotString += "noindex, ";
-                } else {
-                    robotString += "index, ";
-                }
-                if ($('#metaNoImageIndex').attr("checked")) {
-                    robotString += "noimageindex, ";
-                }
-                if ($('#metaNoArchive').attr("checked")) {
-                    robotString += "noarchive, ";
-                }
-                if ($('#metaNoSnippet').attr("checked")) {
-                    robotString += "nosnippet, ";
-                }
-                if ($('#metaNoFollow').attr("checked")) {
-                    robotString += "nofollow";
-                } else {
-                    robotString += "follow";
-                }
-                $("#metaContent_robots").text(robotString);
-
-            })
+                $(this).attr("value", text);
+            },
+            disabled: {IS_DATETIMEPICKER_DISABLED}
         });
-    </script>
-</body>
 
+        $('#METAexpires').datetimepicker({
+            buttonImage: '{PATH_TO_CALENDER_PIC}',
+            buttonImageOnly: true,
+            showOn: 'both',
+            dateFormat: 'yy-mm-dd',
+            separator: 'T',
+            timeFormat: 'hh:mm:ss tt',
+            onClose: function(text, inst) {
+                var id = $(this).attr("id").substr(4);
+                text = formatDates(new Date(text.replace(/\s/g, "")));
+                $("#metaContent_" + id).text(text);
+                $(this).attr("value", text);
+            },
+            disabled: {IS_DATETIMEPICKER_DISABLED}
+        });
+
+        $('.metaTag').live("input", function() {
+            var id = $(this).attr("id").substr(4);
+            var text = $(this).val();
+            if ($(this).hasClass("hasDatepicker")) {
+                text = formatDates(new Date(text));
+            }
+            if (text == "") {
+                $("#metaRow_" + id).hide();
+            } else {
+                $("#metaRow_" + id).show();
+            }
+            $("#metaContent_" + id).text(text);
+        });
+
+        $('.robotCheckbox').change(function() {
+            var robotString = "";
+            if ($('#metaNoIndex').attr("checked")) {
+                robotString += "noindex, ";
+            } else {
+                robotString += "index, ";
+            }
+            if ($('#metaNoImageIndex').attr("checked")) {
+                robotString += "noimageindex, ";
+            }
+            if ($('#metaNoArchive').attr("checked")) {
+                robotString += "noarchive, ";
+            }
+            if ($('#metaNoSnippet').attr("checked")) {
+                robotString += "nosnippet, ";
+            }
+            if ($('#metaNoFollow').attr("checked")) {
+                robotString += "nofollow";
+            } else {
+                robotString += "follow";
+            }
+            $("#metaContent_robots").text(robotString);
+        });
+    });
+})(Con, Con.$);
+
+</script>
+
+</body>
 </html>

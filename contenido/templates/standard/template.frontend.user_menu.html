@@ -1,43 +1,43 @@
-<script>
-    var sid = "1";
-
-    function deleteFrontenduser(idfrontenduser) {
-        form = parent.left_top.document.getElementById("filter");
-        url  = 'main.php?area=frontend';
-        url += '&action=frontend_delete';
-        url += '&frame=4';
-        url += '&idfrontenduser=' + idfrontenduser;
-        url += '&contenido=' + sid;
-        url += get_registered_parameters();
-        url += '&sortby=' +form.sortby.value;
-        url += '&sortorder=' +form.sortorder.value;
-        url += '&filter=' +form.filter.value;
-        url += '&searchin=' +form.searchin.value;
-        url += '&elemperpage=' +form.elemperpage.value;
-        url += '&restrictgroup=' +form.restrictgroup.value;
-        url += '&page={MPAGE}';
-        parent.parent.right.right_bottom.location.href = url;
-    }
-</script>
 <script type="text/javascript">
-    var sNavigation = '{PAGER_CONTENT}';
-    var left_top = parent.left_top;
-    if (left_top.document) {
-        var oPager = left_top.document.getElementById('25c6a67d-a3f1-4ea4-8391-446c131952c9');
+function deleteFrontenduser(idfrontenduser) {
+    var form = Con.getFrame('left_top').document.getElementById("filter");
+    var url  = 'main.php?area=frontend';
+    url += '&action=frontend_delete';
+    url += '&frame=4';
+    url += '&idfrontenduser=' + idfrontenduser;
+    url += '&contenido=' + Con.sid;
+    url += get_registered_parameters();
+    url += '&sortby=' +form.sortby.value;
+    url += '&sortorder=' +form.sortorder.value;
+    url += '&filter=' +form.filter.value;
+    url += '&searchin=' +form.searchin.value;
+    url += '&elemperpage=' +form.elemperpage.value;
+    url += '&restrictgroup=' +form.restrictgroup.value;
+    url += '&page={MPAGE}';
+    Con.getFrame('right_bottom').location.href = url;
+}
 
+(function(Con, $) {
+    var sNavigation = '{PAGER_CONTENT}';
+    var left_top = Con.getFrame('left_top');
+    if (left_top) {
+        var oPager = left_top.document.getElementById('25c6a67d-a3f1-4ea4-8391-446c131952c9');
         if (oPager) {
-            oInsert = oPager.firstChild;
+            var oInsert = oPager.firstChild;
             oInsert.innerHTML = sNavigation;
-             left_top.iPage = '{PAGE}';
-             left_top.toggle_pager('25c6a67d-a3f1-4ea4-8391-446c131952c9');
+            left_top.iPage = '{PAGE}';
+            left_top.toggle_pager('25c6a67d-a3f1-4ea4-8391-446c131952c9');
         }
     }
+})(Con, Con.$);
 </script>
 
 {FORM}
 
 <script type="text/javascript">
-    if (document.getElementById('marked')) {
-        row.markedRow = document.getElementById('marked');
+(function(Con, $) {
+    if ($('#marked')) {
+        row.markedRow = $('#marked')[0];
     }
+})(Con, Con.$);
 </script>

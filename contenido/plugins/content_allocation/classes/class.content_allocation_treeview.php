@@ -71,16 +71,16 @@ class pApiContentAllocationTreeView extends pApiTree {
                     </form>
                     </table>
                     <script type="text/javascript">
-                        controller = document.getElementById("itemname");
-                        controller.focus();
-                        function fieldCheck() {
-                            if (controller.value == "") {
-                                alert("' . i18n("Please enter a category name", 'content_allocation') . '");
-                                controller.focus();
-                                return false;
-                            }
-                        return true;
+                    var controller = document.getElementById("itemname");
+                    controller.focus();
+                    function fieldCheck() {
+                        if (controller.value == "") {
+                            alert("' . i18n("Please enter a category name", 'content_allocation') . '");
+                            controller.focus();
+                            return false;
                         }
+                        return true;
+                    }
                     </script>';
             } else {
                echo '<pre>';
@@ -120,7 +120,7 @@ class pApiContentAllocationTreeView extends pApiTree {
                 $item['ACTION_DELETE'] = '<img src="images/delete_inact.gif" border="0" alt="' . i18n("One or more subcategories exist, unable to delete", 'content_allocation') . '" title="' . i18n("One or more subcategories exist, unable to delete", 'content_allocation') . '">';
             } else {
                 $name = str_replace("\"", "&amp;quot;", str_replace("'", "\'", $item_tmp['name']));
-                $item['ACTION_DELETE'] = '<a href="javascript:void(0)" onclick="showConfirmation(&quot;' . i18n("Are you sure to delete the following category", 'content_allocation') . '&quot;, function() { deleteCategory(' . $item_tmp['idpica_alloc'] . '); });return false;"><img src="images/delete.gif" border="0" alt="' . i18n("Delete category") . '" title="' . i18n("Delete category", 'content_allocation') . '"></a>';
+                $item['ACTION_DELETE'] = '<a href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . i18n("Are you sure to delete the following category", 'content_allocation') . '&quot;, function() { deleteCategory(' . $item_tmp['idpica_alloc'] . '); });return false;"><img src="images/delete.gif" border="0" alt="' . i18n("Delete category") . '" title="' . i18n("Delete category", 'content_allocation') . '"></a>';
             }
 
             $result[] = $item;
@@ -152,16 +152,16 @@ class pApiContentAllocationTreeView extends pApiTree {
                     </form>
                     </table>
                     <script type="text/javascript">
-                        controller = document.getElementById("itemname");
-                        controller.focus();
-                        function fieldCheck() {
-                            if (controller.value == "") {
-                                alert("' . i18n("Please enter a category name", 'content_allocation') . '");
-                                controller.focus();
-                                return false;
-                            }
-                        return true;
+                    var controller = document.getElementById("itemname");
+                    controller.focus();
+                    function fieldCheck() {
+                        if (controller.value == "") {
+                            alert("' . i18n("Please enter a category name", 'content_allocation') . '");
+                            controller.focus();
+                            return false;
                         }
+                        return true;
+                    }
                     </script>';
                 $item['ITEMINDENT'] = ($item_tmp['level'] + 1) * 15;
                 $item['ACTION_CREATE'] = '<img src="images/spacer.gif" width="15" height="13">';

@@ -1,96 +1,94 @@
+
+<!-- template.con_content_list.html -->
+<!-- @TODO Similar to template.con_editcontent.html, merge them -->
 <style type="text/css">
     .defaultSkin table.mceLayout {position: absolute; z-index: 10000;}
     .defaultSkin #mce_fullscreen_tbl {z-index: 20000;}
     .defaultSkin .mcePlaceHolder {position: absolute; z-index: 10000;}
 </style>
 
-<script src="{CONTENIDO_FULLHTML}scripts/con_tiny.js" type="text/javascript"></script>
+<script src="{_PATH_CONTENIDO_FULLHTML_}scripts/con_tiny.js" type="text/javascript"></script>
 <!-- tinyMCE -->
-<script src="{CONTENIDO_FULLHTML}external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>
+<script src="{_PATH_CONTENIDO_FULLHTML_}external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+
+(function(Con, $) {
+
+    // Configuration of tiny, when tiny is opened set event which stores original
+    // content to Con.Tiny.editDataOrg
+    var wysiwygSettings = {
+        document_base_url: '{FRONTEND}',
+        {TINY_OPTIONS},
+        fullscreen_settings: {
+            {TINY_FULLSCREEN}
+        },
+        'setup': function(ed) {
+            ed.onSetContent.add(function(ed, o) {
+                Con.Tiny.updateContent(ed.getContent());
+            });
+        }
+    };
+
+    // Initialize CONTENIDO tiny module
+    Con.Tiny.init({
+        fileUrl: '{FILE}',
+        imageUrl: '{IMAGE}',
+        flashUrl: '{FLASH}',
+        mediaUrl: '{MEDIA}',
+        frontendPath: '{FRONTEND}',
+        txtQuestion: '{QUESTION}',
+        idartlang: '{IDARTLANG}',
+        settings: wysiwygSettings
+    });
+
+    // Create ClosePlugin
     tinymce.create('tinymce.plugins.ClosePlugin', {
         init: function(ed, url) {
-
             ed.addButton('save', {
-                title   : '{SAVE}',
-                image   : '{CON_PATH}images/but_save_tiny.gif',
-                icons   : false,
-                onclick : function(ed) {
-
-                    setcontent(iIdartlang, '0');
-
+                title: '{SAVE}',
+                image: '{_PATH_CONTENIDO_FULLHTML_}images/but_save_tiny.gif',
+                icons: false,
+                onclick: function(ed) {
+                    Con.Tiny.setContent(Con.Tiny.idartlang);
                 }
             });
 
             ed.addButton('close', {
-                title   : '{CLOSE}',
-                image   : '{CON_PATH}images/but_close_tiny.gif',
-                icons   : false,
-                onclick : function(ed) {
-
-                    closeTiny();
-
+                title: '{CLOSE}',
+                image: '{_PATH_CONTENIDO_FULLHTML_}images/but_close_tiny.gif',
+                icons: false,
+                onclick: function(ed) {
+                    Con.Tiny.closeTiny();
                 }
             });
-
         }
     });
 
     // Register plugin with a short name
     tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
 
-    var active_id = null;  //id of div on which tiny is active
-    var active_object = null;  //onject of div on which tiny is active
-    var aEditdata = new Object();  //global array which stores edited content
-    var aEditdataOrig = new Object();  //global array which stored original content (Importent for decision if content has changed)
-    var bCheckLeave = true;  //globak var which defines if user is asked to store changes
+    tinymce.settings = wysiwygSettings;
 
-    //Global vars for CONTENIDO popup filebrowser
-    var fb_fieldname;
-    var fb_handle;
-    var fb_intervalhandle;
-    var fb_win;
-
-    //Configuration of tiny, when tiny is opened set event which stores original
-    //content to global var aEditdataOrig
-    var tinymceConfigs = {
-    {TINY_OPTIONS},
-        fullscreen_settings: {
-            {TINY_FULLSCREEN}
-        },
-        'setup': function(ed) {
-            ed.onSetContent.add(function(ed, o) {
-                updateContent(ed.getContent());
-            });
-        }
-    };
-    tinyMCE.settings = tinymceConfigs;
-
-    //add tiny to elements which contains classname contentEditable
-    //tiny toggles on click
-    $(document).ready(function() {
+    // Add tiny to elements which contains classname contentEditable
+    // tiny toggles on click
+    $(function() {
+        var useTiny = '{USE_TINY}';
         $('div[contenteditable=true]').each(function() {
             $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
-            $(this).bind("click", function() {
-                {USE_TINY}
+            $(this).bind('click', function() {
+                if (useTiny) {
+                    Con.Tiny.swapTiny(this);
+                }
             });
         });
     });
 
-    //activate save confirmation on page leave
+    // Activate save confirmation on page leave
     $(window).unload(function() {
-        leave_check();
+        Con.Tiny.leaveCheck();
     });
-
-    var file_url = "{FILE}"; //Global var which contains url to CONTENIDO image browser
-    var image_url = "{IMAGE}"; //Global var which contains url to CONTENIDO file browser
-    var flash_url = "{FLASH}"; //Global var which contains url to CONTENIDO flash browser
-    var media_url = "{MEDIA}"; //Global var which contains url to CONTENIDO media browser
-    var frontend_path = "{FRONTEND}";
-
-    var iIdartlang = '{IDARTLANG}'; //Idartlang which is currently edited
-    var sQuestion = '{QUESTION}'; //Translation of save confirmation
+})(Con, Con.$);
 
 </script>
 
@@ -103,25 +101,26 @@
     {NAME}[{ID_TYPE}]
 </div>
 <!-- END:BLOCK -->
+
 <script type='text/javascript'>
-     $(document).ready(function() {
-         $('div#categorypath > a').click(function() {
-             var url = $(this).attr('href');
-             var sVal = url.split('idcat=');
-             var aVal = sVal[1].split('&');
-             var iIdcat = aVal[0];
-             sVal = url.split('idtpl=');
-             aVal = sVal[1].split('&');
-             var iIdtpl = aVal[0];
-             var path = url.split('?');
-             conMultiLink('right_top', path[0] + '?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu=1&syncoptions={SYNCOPTIONS}&contenido=1',
-             'right_bottom', url,
-             'left_bottom', path[0] + '?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido=1');
-             return false;
-         });
-     });
+(function(Con, $) {
+    $(function() {
+        $('div#categorypath > a').click(function() {
+            var url = $(this).attr('href');
+            var params = Con.UtilUrl.getParams(url);
+            var path = url.split('?');
+            Con.multiLink(
+                'right_top', path[0] + '?area=con&frame=3&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&display_menu=1&syncoptions={SYNCOPTIONS}&contenido=' + Con.sid,
+                'right_bottom', url,
+                'left_bottom', path[0] + '?area=con&frame=2&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&contenido=' + Con.sid
+            );
+            return false;
+        });
+    });
+})(Con, Con.$);
 </script>
-<form name="editcontent" method="post" action="{CONTENIDO_FULLHTML}main.php?area=con_content_list&action=savecontype&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
+
+<form name="editcontent" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=savecontype&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
     <input type="hidden" name="changeview" value="edit">
     <input type="hidden" name="data" value="">
 </form>

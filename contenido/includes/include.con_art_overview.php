@@ -18,7 +18,6 @@ cInclude('includes', 'functions.tpl.php');
 cInclude('includes', 'functions.str.php');
 cInclude('includes', 'functions.pathresolver.php');
 
-$firstMark = false;
 $db2 = cRegistry::getDb();
 
 $idcat = (isset($_REQUEST['idcat']) && is_numeric($_REQUEST['idcat'])) ? $_REQUEST['idcat'] : -1;
@@ -558,7 +557,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
 
                 $confirmString = sprintf(i18n("Are you sure to delete the following article:<br><br><b>%s</b>"), conHtmlSpecialChars($tmp_title));
-                $tmp_del = '<a href="javascript:void(0)" onclick="showConfirmation(&quot;' . $confirmString . '&quot;, function() { deleteArticle(' . $idart . ', ' . $idcat . ', ' . $next . '); });return false;" title="' . i18n("Delete article") . '"><img class="vAlignMiddle tableElement" src="images/delete.gif" title="' . i18n("Delete article") . '" alt="' . i18n("Delete article") . '"></a>';
+                $tmp_del = '<a href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $confirmString . '&quot;, function() { deleteArticle(' . $idart . ', ' . $idcat . ', ' . $next . '); });return false;" title="' . i18n("Delete article") . '"><img class="vAlignMiddle tableElement" src="images/delete.gif" title="' . i18n("Delete article") . '" alt="' . i18n("Delete article") . '"></a>';
             } else {
                 $tmp_del = '';
             }
@@ -747,7 +746,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_syncarticle', 'images/but_sync_art.gif', i18n('Copy article to the current language'));
         }
         if ($articlesToRemove > 0 && ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat))) {
-            $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
+            $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'Con.showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
         }
         
         if ($bulkEditingFunctions == "") {
@@ -757,17 +756,6 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         if (count($artlist) > 0) {
             foreach ($artlist as $key2 => $artitem) {
-                if ($firstMark == false) {
-                    $script = 'function initTheOne() {
-                                   var theOne = document.getElementById("' . $key2 . '");
-                                   artRow.reset();
-                                   artRow.over(theOne);
-                                   artRow.click(theOne);
-                               }
-                               initTheOne()';
-                    $firstMark = true;
-                    $tpl->set('s', 'ROWMARKSCRIPT', $script);
-                }
 
                 $cells = array();
 
@@ -801,7 +789,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         } else {
             $emptyCell = '<td nowrap="nowrap" class="bordercell" colspan="' . count($listColumns) . '">' . i18n("No articles found") . '</td>';
             $tpl->set('d', 'CELLS', $emptyCell);
-            $tpl->set('s', 'ROWMARKSCRIPT', '');
+            $tpl->set('d', 'CSS_CLASS', '');
+            $tpl->set('d', 'ROWID', '');
         }
 
         // Elements per Page select
@@ -938,25 +927,20 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         $str = '';
 
-        // Session ID
-        $tpl->set('s', 'SID', $sess->id);
-
         $tpl->set('s', 'NOTIFICATION', $str);
         // modified by fulai.zhang 17.07.2012
         // display if there are articles
         if ($no_article) {
-            $tpl->set('s', 'noArticle', "display: none;");
-            $tpl->set('s', 'bNoArticle', 'true');
+            $tpl->set('s', 'NOARTICLE_CSS', "display: none;");
+            $tpl->set('s', 'NOARTICLE_JS', 'true');
         } else {
-            $tpl->set('s', 'noArticle', "");
-            $tpl->set('s', 'bNoArticle', 'false');
+            $tpl->set('s', 'NOARTICLE_CSS', "");
+            $tpl->set('s', 'NOARTICLE_JS', 'false');
         }
 
         // breadcrumb onclick
-        $tpl->set('s', 'iIdcat', $idcat);
-        $tpl->set('s', 'iIdtpl', $idtpl? $idtpl : $cat_idtpl);
+        $tpl->set('s', 'IDTPL', $idtpl ? $idtpl : $cat_idtpl);
         $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
-        $tpl->set('s', 'SESSION', $contenido);
         $tpl->set('s', 'DISPLAY_MENU', 1);
 
         // Generate template

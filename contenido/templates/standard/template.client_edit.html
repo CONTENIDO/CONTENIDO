@@ -1,46 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
+    <title>template.client_edit.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript">
-        var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-        if (left_bottom) {
-            var href = left_bottom.location.href;
-            href = href.replace(/&idclient.*/, '');
-            left_bottom.location.href = href+'&idclient='+"{IDCLIENT}";
-        }
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#submit_button").mousedown(function() {
-                if (!validateURL($("#htmlpath").val())) {
-                    showNotification("Error", "i18n("Please enter a valid URL. It has to start with http://... or https://...")");
-                    return;
-                }
-                if ($("#clientname").val() == "") {
-                    showNotification("Error", "i18n("The client must have a name!")");
-                    return;
-                }
-                if ($("#frontendpath").val() == "") {
-                    showNotification("Error", "i18n("The client must have a frontend path. This is where the client's files will be stored.")");
-                    return;
-                }
-            });
-        });
-    </script>
-
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
 </head>
+
 <body style="margin:10px">
 
 {FORM}
@@ -61,6 +29,33 @@
     </tr>
 </table>
 </form>
+
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {idclient: {IDCLIENT}});
+    }
+
+    $(function() {
+        $("#submit_button").mousedown(function() {
+            if (!Con.UtilUrl.validate($("#htmlpath").val())) {
+                Con.showNotification("Error", "i18n("Please enter a valid URL. It has to start with http://... or https://...")");
+                return;
+            }
+            if ($("#clientname").val() == "") {
+                Con.showNotification("Error", "i18n("The client must have a name!")");
+                return;
+            }
+            if ($("#frontendpath").val() == "") {
+                Con.showNotification("Error", "i18n("The client must have a frontend path. This is where the client's files will be stored.")");
+                return;
+            }
+        });
+    });
+})(Con, Con.$);
+</script>
+
 </body>
 </html>
 

@@ -64,7 +64,7 @@ class cGuiBackendHelpbox {
 
     /**
      * Render the helpbox.
-     * Please make sure that the general.js, the atooltip.jquery.js and the
+     * Please make sure that the atooltip.jquery.js and the
      * atooltip.css are embedded on the site
      *
      * @param string $returnAsString if true the rendered button will be

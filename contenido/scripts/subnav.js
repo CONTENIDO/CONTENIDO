@@ -7,14 +7,11 @@
 var sub = {
 
     /**
-     * Highlights the first tab by default (div#navcontainer li#c_0 a) by
+     * Highlights the first tab by default (#navlist li#c_0) by
      * setting the class to 'current'. Is called in subnavigation template.
      */
-    init : function() {
-        var anchors = this._getAnchors();
-        if (anchors[0]) {
-            anchors[0].className = 'current';
-        }
+    init: function() {
+        $('#navlist li:first').attr('class', 'current');
     },
 
     /**
@@ -24,10 +21,16 @@ var sub = {
      *            cElm Clicked a-element, resp. the tab to highlight.
      * @todo Consider new name ("highlight"?) and rename remaining instances.
      */
-    clicked : function(cElm) {
+    clicked: function(cElm) {
+        var elem = ("string" === $.type(cElm)) ? $("#" + cElm + " a")[0] : cElm;
+        if (!elem) {
+            Con.log("Couldn't get menu element for " + cElm, "subnav.js", "warn");
+            return;
+        }
+
         var anchors = this._getAnchors(), i;
         for (i = 0; i < anchors.length; i++) {
-            if (anchors[i] === cElm) {
+            if (anchors[i] === elem) {
                 anchors[i].className = 'current';
             } else {
                 anchors[i].className = '';
@@ -42,7 +45,7 @@ var sub = {
      *            cElm Clicked a-element, resp. the tab to highlight.
      * @todo Consider new name ("highlight"?) and rename remaining instances.
      */
-    clickedById : function(cElm) {
+    clickedById: function(cElm) {
         $('#navlist li a').attr('class', '');
         $('#navlist li#'+cElm+' a').attr('class', 'current');
     },
@@ -59,7 +62,7 @@ var sub = {
      *            frameset) top.content.right_top (when there is no left/right
      *            frameset)
      */
-    highlightById : function(id, frame) {
+    highlightById: function(id, frame) {
         this._reset(frame);
         var elem = this._getAnchorById(id, frame);
         if (elem) {
@@ -76,7 +79,7 @@ var sub = {
      * @return {Array} List of found HTMLElement
      * @protected
      */
-    _getAnchors : function(frame) {
+    _getAnchors: function(frame) {
         var obj = (frame) ? frame.document : document;
         try {
             var list = obj.getElementById("navlist").getElementsByTagName("a");
@@ -97,7 +100,7 @@ var sub = {
      * @return {HTMLElement|null}
      * @protected
      */
-    _getAnchorById : function(id, frame) {
+    _getAnchorById: function(id, frame) {
         var obj = (frame) ? frame.document : document;
         try {
             var elem = obj.getElementById(id).getElementsByTagName('a')[0];
@@ -114,7 +117,7 @@ var sub = {
      *            navigation
      * @protected
      */
-    _reset : function(frame) {
+    _reset: function(frame) {
         frame = frame || null;
         var anchors = this._getAnchors(frame), i;
         for (i = 0; i < anchors.length; i++) {
@@ -134,7 +137,7 @@ var sub = {
      *
      * @todo Locate remaining inline calls to sub.click() and remove them
      */
-    'click' : function() {
+    'click': function() {
         // console.log("remove me");
         return;
     }

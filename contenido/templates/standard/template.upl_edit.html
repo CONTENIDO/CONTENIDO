@@ -1,50 +1,53 @@
 <script type="text/javascript">
-$(document).ready(function() {
-    $("#datestart").datetimepicker({
-        buttonImage: "images/calendar.gif",
-        buttonImageOnly: true,
-        showOn: "both",
-        dateFormat: "yy-mm-dd",
-        onClose: function(dateText, inst) {
-            var endDateTextBox = $("#dateend");
-            if (endDateTextBox.val() != "") {
-                var testStartDate = new Date(dateText);
-                var testEndDate = new Date(endDateTextBox.val());
-                if (testStartDate > testEndDate) {
+(function(Con, $) {
+    $(function() {
+        $("#datestart").datetimepicker({
+            buttonImage: "images/calendar.gif",
+            buttonImageOnly: true,
+            showOn: "both",
+            dateFormat: "yy-mm-dd",
+            onClose: function(dateText, inst) {
+                var endDateTextBox = $("#dateend");
+                if (endDateTextBox.val() != "") {
+                    var testStartDate = new Date(dateText);
+                    var testEndDate = new Date(endDateTextBox.val());
+                    if (testStartDate > testEndDate) {
+                        endDateTextBox.val(dateText);
+                    }
+                } else {
                     endDateTextBox.val(dateText);
                 }
-            } else {
-                endDateTextBox.val(dateText);
+            },
+            onSelect: function(selectedDateTime) {
+                var start = $(this).datetimepicker("getDate");
+                $("#dateend").datetimepicker("option", "minDate", new Date(start.getTime()));
             }
-        },
-        onSelect: function (selectedDateTime) {
-            var start = $(this).datetimepicker("getDate");
-            $("#dateend").datetimepicker("option", "minDate", new Date(start.getTime()));
-        }
-    });
-    $("#dateend").datetimepicker({
-        buttonImage: "images/calendar.gif",
-        buttonImageOnly: true,
-        showOn: "both",
-        dateFormat: "yy-mm-dd",
-        onClose: function(dateText, inst) {
-            var startDateTextBox = $("#datestart");
-            if (startDateTextBox.val() != "") {
-                var testStartDate = new Date(startDateTextBox.val());
-                var testEndDate = new Date(dateText);
-                if (testStartDate > testEndDate) {
+        });
+
+        $("#dateend").datetimepicker({
+            buttonImage: "images/calendar.gif",
+            buttonImageOnly: true,
+            showOn: "both",
+            dateFormat: "yy-mm-dd",
+            onClose: function(dateText, inst) {
+                var startDateTextBox = $("#datestart");
+                if (startDateTextBox.val() != "") {
+                    var testStartDate = new Date(startDateTextBox.val());
+                    var testEndDate = new Date(dateText);
+                    if (testStartDate > testEndDate) {
+                        startDateTextBox.val(dateText);
+                    }
+                } else {
                     startDateTextBox.val(dateText);
                 }
-            } else {
-                startDateTextBox.val(dateText);
+            },
+            onSelect: function(selectedDateTime) {
+                var end = $(this).datetimepicker("getDate");
+                $("#datestart").datetimepicker("option", "maxDate", new Date(end.getTime()));
             }
-        },
-        onSelect: function (selectedDateTime) {
-            var end = $(this).datetimepicker("getDate");
-            $("#datestart").datetimepicker("option", "maxDate", new Date(end.getTime()));
-        }
+        });
     });
-});
+})(Con, Con.$);
 </script>
 
 {FORM}

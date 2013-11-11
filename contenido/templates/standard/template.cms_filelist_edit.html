@@ -1,7 +1,7 @@
-<img id="cms_filelist_{ID}" class="cms_filelist_img cms_filelist_{ID}_EDIT CMS_LINK_EDIT" src="{CON_PATH}images/but_downloadlist.gif">
+<img id="cms_filelist_{ID}" class="cms_filelist_img cms_filelist_{ID}_EDIT CMS_LINK_EDIT" src="{_PATH_CONTENIDO_FULLHTML_}images/but_downloadlist.gif">
 <div style="display:none" id="cms_filelist_{ID}_settings" class="cms_filelist">
     <div class="close" id="filelist_close">
-        <img src="{CON_PATH}images/but_cancel.gif">
+        <img src="{_PATH_CONTENIDO_FULLHTML_}images/but_cancel.gif">
     </div>
     <p class="head">{LABEL_FILELIST_SETTINGS}</p>
 
@@ -102,34 +102,30 @@
                 </div>
                 <br>
                 <label for="teaser_art" class="small">{LABEL_FILE}:</label>
-                {FILE_SELECT}<span>&nbsp;<img id="add_file" src="{CON_PATH}images/but_art_new.gif" alt=""></span>
+                {FILE_SELECT}<span>&nbsp;<img id="add_file" src="{_PATH_CONTENIDO_FULLHTML_}images/but_art_new.gif" alt=""></span>
             </div>
         </div>
     </div>
 
     <div class="toolbar">
-        <img class="save_settings" src="{CON_PATH}images/but_ok.gif">
-        <img class="filelist_cancel" src="{CON_PATH}images/but_cancel.gif">
+        <img class="save_settings" src="{_PATH_CONTENIDO_FULLHTML_}images/but_ok.gif">
+        <img class="filelist_cancel" src="{_PATH_CONTENIDO_FULLHTML_}images/but_cancel.gif">
     </div>
 </div>
 
 <script type="text/javascript">
-    <!--
+(function(Con, $) {
     var fileListImage{ID} = '#cms_filelist_{ID}';
     var fileListFrame{ID} = '#cms_filelist_{ID}_settings';
-    var aFileListData{ID} = Array({FIELDS});
-    var dateFields = Array("filelist_creationdatefilter_from", "filelist_creationdatefilter_to", "filelist_modifydatefilter_from", "filelist_modifydatefilter_to");
-    var sPath = '{CON_PATH}';
-    var sSession = '{CONTENIDO}';
+    var aFileListData{ID} = [{FIELDS}];
+    var dateFields = ["filelist_creationdatefilter_from", "filelist_creationdatefilter_to", "filelist_modifydatefilter_from", "filelist_modifydatefilter_to"];
     var iIdArtLang = '{IDARTLANG}';
     var sLabelIgnoreExtensionsOn = '{LABEL_SELECTIONWILLBEIGNORED}';
     var sLabelIgnoreExtensionsOff = '{LABEL_IGNORESELECTION}';
     var bIgnoreExtensions{ID} = '{IGNOREEXTENSIONS}';
 
-    conLoadFile(sPath+'scripts/cmsFilelist.js', 'addFileListEvents{ID}();');
-
-    function addFileListEvents{ID} () {
-        addFileListEvents(fileListFrame{ID}, fileListImage{ID}, sPath, sSession, iIdArtLang, {ID}, aFileListData{ID}, bIgnoreExtensions{ID});
-    }
-    -->
+    conLoadFile(Con.cfg.urlBackend + 'scripts/cmsFilelist.js', function() {
+        addFileListEvents(fileListFrame{ID}, fileListImage{ID}, sPath, Con.sid, iIdArtLang, {ID}, aFileListData{ID}, bIgnoreExtensions{ID});
+    });
+})(Con, Con.$);
 </script>

@@ -15,77 +15,74 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-    if (!isset($path))
-    {
-        $path = "";
-    }
-    $area = $_GET['area'];
+if (!isset($path)) {
+    $path = '';
+}
 
-    $nav = new cGuiNavigation;
+$anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
 
-    $sql = "SELECT
-                idarea
-            FROM
-                ".$cfg["tab"]["area"]." AS a
-            WHERE
-                a.name = '".$db->escape($area)."' OR
-                a.parent_id = '".$db->escape($area)."'
-            ORDER BY
-                idarea";
+$area = $_GET['area'];
+$anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
 
-    $db->query($sql);
+$nav = new cGuiNavigation();
 
-    $in_str = "";
+$sql = "SELECT
+            idarea
+        FROM
+            ".$cfg['tab']['area']." AS a
+        WHERE
+            a.name = '".$db->escape($area)."' OR
+            a.parent_id = '".$db->escape($area)."'
+        ORDER BY
+            idarea";
 
-    while ($db->nextRecord()) {
-        $in_str .= $db->f('idarea') . ',';
-    }
+$db->query($sql);
 
-    $len = strlen($in_str)-1;
-    $in_str = substr($in_str, 0, $len);
-    $in_str = '('.$in_str.')';
+$in_str = '';
 
-    $sql = "SELECT
-                b.location AS location,
-                a.name AS name
-            FROM
-                ".$cfg["tab"]["area"]." AS a,
-                ".$cfg["tab"]["nav_sub"]." AS b
-            WHERE
-                b.idarea IN ".$in_str." AND
-                b.idarea = a.idarea AND
-                b.level = 1 AND
-                b.online = 1
-            ORDER BY
-                b.idnavs";
+while ($db->nextRecord()) {
+    $in_str .= $db->f('idarea') . ',';
+}
 
-    $db->query($sql);
+$len = strlen($in_str) - 1;
+$in_str = substr($in_str, 0, $len);
+$in_str = '('.$in_str.')';
 
-    while ($db->nextRecord()) {
+$sql = "SELECT
+            b.location AS location,
+            a.name AS name
+        FROM
+            ".$cfg['tab']['area']." AS a,
+            ".$cfg['tab']['nav_sub']." AS b
+        WHERE
+            b.idarea IN ".$in_str." AND
+            b.idarea = a.idarea AND
+            b.level = 1 AND
+            b.online = 1
+        ORDER BY
+            b.idnavs";
 
-        /* Extract names from the XML document. */
-        $caption = $nav->getName($db->f("location"));
+$db->query($sql);
 
-        $tmp_area = $db->f("name");
+while ($db->nextRecord()) {
+    // Extract names from the XML document.
+    $caption = $nav->getName($db->f('location'));
 
-        if ($perm->have_perm_area_action($tmp_area))
-        {
-            if ($tmp_area != "upl_edit")
-            {
-                # Set template data
-                $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
-                $tpl->set("d", "CLASS",     '');
-                $tpl->set("d", "OPTIONS",   '');
-                $tpl->set("d", "CAPTION",   '<a onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$tmp_area&frame=4&path=$path").'">'.$caption.'</a>');
-                $tpl->next();
-            }
+    $tmp_area = $db->f('name');
 
+    if ($perm->have_perm_area_action($tmp_area)) {
+        if ($tmp_area != 'upl_edit') {
+            // Set template data
+            $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+            $tpl->set('d', 'CLASS', '');
+            $tpl->set('d', 'OPTIONS', '');
+            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$tmp_area&frame=4&path=$path"), $caption));
+            $tpl->next();
         }
     }
+}
 
-    $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
+$tpl->set('s', 'CLASS', 'menuless'); // With menu (left frame)
 
-    # Generate the third
-    # navigation layer
-    $tpl->generate($cfg["path"]["templates"] . "template.subnav_noleft.html");
-?>
+// Generate the third navigation layer
+$tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav']);

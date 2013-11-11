@@ -107,7 +107,6 @@ if ($action == 'user_createuser') {
 $tpl->reset();
 $tpl->set('s', 'NOTIFICATION', $sNotification);
 $tpl->set('s', 'USERID', $userId);
-$tpl->set('s', 'SID', $sess->id);
 
 $form = '<form name="user_properties" method="post" action="' . $sess->url("main.php?") . '">
         <input type="hidden" name="area" value="' . $area . '">

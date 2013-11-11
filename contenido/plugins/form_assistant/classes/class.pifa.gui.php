@@ -250,7 +250,7 @@ class PifaRightBottomFormPage extends cGuiPage {
                     $url = "main.php?area=form&frame=3&idform=$idform&action=" . PifaRightBottomFormPage::SHOW_FORM;
                     $url = cRegistry::getSession()->url($url);
                     $this->addScript("<script type=\"text/javascript\">
-                        parent.parent.frames['right'].frames['right_top'].location.href = '$url';
+                        Con.getFrame('right_top').location.href = '$url';
                         </script>");
                 } catch (Exception $e) {
                     $notification = Pifa::notifyException($e);

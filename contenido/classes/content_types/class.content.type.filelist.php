@@ -439,8 +439,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         // If file is an image (extensions gif, jpg, jpeg, png) scale it
         // otherwise use default png image
-        switch ($fileData['extension'])
-        {
+        switch ($fileData['extension']) {
         	case 'gif':
         	case 'jpg':
         	case 'jpeg':
@@ -493,10 +492,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      */
     public function generateEditCode() {
         $template = new cTemplate();
-        $template->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
-        $template->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $template->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
 
         $templateTabs = new cTemplate();
@@ -530,7 +527,6 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         // construct the top code of the template
         $templateTop = new cTemplate();
-        $templateTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateTop->set('s', 'ICON', 'images/but_editlink.gif');
         $templateTop->set('s', 'ID', $this->_id);
         $templateTop->set('s', 'PREFIX', $this->_prefix);
@@ -547,12 +543,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         // construct the bottom code of the template
         $templateBottom = new cTemplate();
-        $templateBottom->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $templateBottom->set('s', 'ID', $this->_id);
         $templateBottom->set('s', 'PREFIX', $this->_prefix);
         $templateBottom->set('s', 'IDARTLANG', $this->_idArtLang);
-        $templateBottom->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
         $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsFilelist.js');
@@ -736,7 +730,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         $wrapperContent[] = new cHTMLLabel(i18n('Displayed file extensions'), 'filelist_extensions_' . $this->_id);
         $wrapperContent[] = $this->_generateExtensionSelect();
-        $wrapperContent[] = '<br />';
+        $wrapperContent[] = '<br>';
         $link = new cHTMLLink('#');
         $link->setID('filelist_all_extensions');
         $link->setContent(i18n('Select all entries'));

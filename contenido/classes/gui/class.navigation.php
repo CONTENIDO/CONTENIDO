@@ -327,7 +327,7 @@ class cGuiNavigation {
             $frontendPath = cRegistry::getFrontendPath();
 
             if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($frontendPath . $clientImage)) {
-                $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" />';
+                $sClientImageTemplate = '<img src="%s" alt="%s" title="%s">';
 
                 $sThumbnailPath = cApiImgScale($frontendPath . $clientImage, 80, 25, 0, 1);
                 $sClientImageTag = sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
@@ -341,13 +341,12 @@ class cGuiNavigation {
         }
 
         $main->set('s', 'CHOSENUSER', "<b>" . i18n("User") . ":</b> " . $oUser->getEffectiveName());
-        $main->set('s', 'SID', $sess->id);
         $main->set('s', 'MAINLOGINLINK', $sess->url("frameset.php?area=mycontenido&frame=4"));
 
         // additional footer javascript
         $footerJs = '';
         if ($sJsEvents !== '') {
-            $footerJs = '$(document).ready(function() {' . $sJsEvents . '});';
+            $footerJs = '$(function() {' . $sJsEvents . '});';
         }
         $main->set('s', 'FOOTER_JS', $footerJs);
 

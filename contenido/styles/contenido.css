@@ -208,6 +208,23 @@ table.borderless tr td {
 
 /**
  * #############################################################################
+ * @section Page_Generic
+ */
+.page_generic {
+    margin: 10px;
+}
+
+/**
+ * #############################################################################
+ * @section page_left_top
+ * @extends Page_Generic
+ */
+.page_left_top {
+    margin: 0;
+}
+
+/**
+ * #############################################################################
  * @section Page_Login_Form
  */
 #lblusername {
@@ -542,7 +559,7 @@ p, table, tr, td, th {
 .addfunction {
     background: transparent url(../images/folder_new.gif) no-repeat scroll 0 2px;
     display: block;
-    height: 20px;
+    height: 2em;
     line-height: 2em;
     padding-left: 20px;
 }
@@ -575,7 +592,15 @@ p, table, tr, td, th {
 
 .deletefunction {
     display: block;
-    background: transparent url(../images/delete.gif) no-repeat scroll 0 2px;
+    background: transparent url(../images/users.gif) no-repeat scroll 0 2px;
+    height: 2em;
+    line-height: 2em;
+    padding-left: 20px;
+}
+
+.editfunction {
+    background: transparent url(../images/but_edittext.gif) no-repeat scroll 0 2px;
+    display: block;
     height: 2em;
     line-height: 2em;
     padding-left: 20px;
@@ -855,6 +880,12 @@ input.textbox_readonly {
     padding: 1px 1px 3px 1px;
 }
 
+/**
+ * #############################################################################
+ * @section Foldingrow
+ */
+
+/* @deprecated, not in use anymore */
 div.folding_content {
     border-right: 1px solid #b3b3b3;
     padding-left: 15px;
@@ -875,10 +906,15 @@ td.foldingrow_content {
 }
 a.foldingrow {
     background-color: #e2e2e2;
+    display: block;
     font-weight: bold;
     text-decoration: none;
-    margin-left: 15px;
 }
+a.foldingrow img {
+    margin: 0 4px 0 12px;
+}
+
+
 span.cpager_currentitem {
     color: #000;
     font-weight: bold;
@@ -1267,6 +1303,27 @@ p.column_header {
 
 /**
  * #############################################################################
+ * @section Frame_Left_Deco
+ */
+.page_deco {
+    background-color: #e2e2e2;
+}
+.page_deco .frame_handle {
+    height: 28px;
+    border-bottom: 1px solid #b3b3b3;
+}
+.page_deco .frame_handle img {
+    border: none;
+    float: right;
+}
+.page_deco .frame_handle img#toggleimage {
+    cursor: pointer;
+    float: none;
+    margin:7px 0 0 17px;
+}
+
+/**
+ * #############################################################################
  * @section Frame_Sub_Navigation
  */
 .page_subnav .frame_handle {
@@ -1277,8 +1334,9 @@ p.column_header {
     float: left;
 }
 .page_subnav .frame_handle img#toggleimage {
-    margin: 7px 0 0 7px;
+    cursor: pointer;
     float: none;
+    margin: 7px 0 0 6px;
 }
 .page_subnav div.menuless {
     padding-left: 250px;
@@ -1856,11 +1914,6 @@ a.h1e {
     max-width: 100%;
     overflow: auto;
 }
-div#top_left_container.admin_frontend {
-    border: 1px solid #b3b3b3;
-    margin: 1px 0 0 0;
-    padding-top: 7px;
-}
 div#top_left_container.lang_left_top {
     border: 1px solid #b3b3b3;
     padding: 5px 0 5px 16px;
@@ -1903,11 +1956,6 @@ div#top_left_container.style_left_top {
     margin-top: 1px
 }
 
-div#top_left_container.admin_frontend > div:first-child {
-    height: 2em;
-    margin: 0 0 0 17px;
-    padding-bottom: 5px;
-}
 .mg10 .workflow_tasks {
     border: 1px solid #b3b3b3;
     background: #e2e2e2;
@@ -2130,11 +2178,17 @@ input[type=image].vAlignMiddle {
     margin-left: 15px;
 }
 
+/* @TODO: Rename to left_top_action */
 .leftTopAction {
     min-height: 2em;
     border: 1px solid #b3b3b3;
     padding: 5px 0 5px 16px;
     margin-top: 1px;
+}
+.leftTopActionNext {
+    border-top: none;
+    padding: 5px 0 5px 16px;
+    margin-top: 0;
 }
 
 .leftTopAction input[type=text] {
@@ -2335,7 +2389,6 @@ infoButton:hover {
     background: transparent url(../images/info.gif) no-repeat;
     margin-bottom: -3px;
 }
-
 
  /* toggle for category list*/
 .str_overview_toggle {

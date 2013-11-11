@@ -15,7 +15,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude("includes", "functions.lang.php");
+cInclude('includes', 'functions.lang.php');
 
 /**
  * The object cTinyMCEEditor is a wrapper class to the TinyMCE WYSIWYG Editor.
@@ -76,8 +76,8 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         $this->_setSetting("theme_advanced_toolbar_location", "top");
         $this->_setSetting("theme_advanced_path_location", "bottom");
         $this->_setSetting("remove_script_host", false);
-        $this->_setSetting("file_browser_callback", "myCustomFileBrowser", true);
-        //$this->_setSetting("urlconverter_callback", "CustomURLConverter");
+        $this->_setSetting("file_browser_callback", "Con.Tiny.customFileBrowserCallback", true);
+        //$this->_setSetting("urlconverter_callback", "Con.Tiny.customURLConverterCallback");
         // New in V3.x
         $this->_setSetting("theme_advanced_resizing", true);
         $this->_setSetting("pagebreak_separator", "<!-- my page break -->"); // needs pagebreak plugin
@@ -267,7 +267,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         if ($bEnabled) {
             $this->_setSetting("cleanup_callback", "", true);
         } else {
-            $this->_setSetting("cleanup_callback", "CustomCleanupContent", true);
+            $this->_setSetting("cleanup_callback", "Con.Tiny.customCleanupCallback", true);
         }
     }
 
@@ -363,7 +363,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
                 $this->_setSetting("theme_advanced_buttons2", "", true);
                 $this->_setSetting("theme_advanced_buttons3", "", true);
 
-                $this->_setSetting("setupcontent_callback", "myCustomSetupContent", true);
+                $this->_setSetting("setupcontent_callback", "Con.Tiny.customSetupContentCallback", true);
 
                 $this->_unsetSetting("width");
                 $this->_unsetSetting("theme_advanced_toolbar_location");
@@ -478,12 +478,12 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         $sess->register("browserparameters");
 
         // Contenido-specific: Set article_url_suffix setting as it is used in plugins/advlink/jscripts/functions.js on anchor tags
-        $this->_setSetting("setupcontent_callback", 'myCustomSetupContent', true);
-        $this->_setSetting("save_callback", 'cutFullpath', true);
+        $this->_setSetting("setupcontent_callback", 'Con.Tiny.customSetupContentCallback', true);
+        $this->_setSetting("save_callback", 'Con.Tiny.customSaveCallback', true);
 
         // Set browser windows
         // Difference between file and image browser is with (file) or without categories/articles (image)
-        $oTemplate = new cTemplate;
+        $oTemplate = new cTemplate();
         $oTemplate->set('s', 'IMAGEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
         $oTemplate->set('s', 'FILEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
         $oTemplate->set('s', 'FLASHBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
@@ -491,12 +491,21 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         $oTemplate->set('s', 'FRONTEND_PATH', $cfgClient[$client]["path"]["htmlpath"]);
 
         // GZIP support options
+        $sGZIPScript = '';
         if ($this->_bUseGZIP) {
-            $sGZIPScript = "<script language=\"JavaScript\" type=\"text/javascript\">\n" . "    tinyMCE_GZ.init({ \n" . "    plugins : '" . $this->_aSettings["plugins"] . "', \n" . "    themes : '" . $this->_aSettings["theme"] . "', \n" . "    languages : '" . $this->_aSettings["language"] . "', \n" . "    disk_cache : true, \n" . "    debug : false \n" . "});\n" . "</script>\n";
-            $oTemplate->set('s', 'COMPRESSOR', $sGZIPScript);
-        } else {
-            $oTemplate->set('s', 'COMPRESSOR', '');
+            $sGZIPScript = <<<JS
+<script type="text/javascript">
+tinyMCE_GZ.init({
+    plugins: '{$this->_aSettings["plugins"]}',
+    themes: '{$this->_aSettings["theme"]}',
+    languages: '{$this->_aSettings["language"]}',
+    disk_cache: true,
+    debug: false
+});
+</script>
+JS;
         }
+        $oTemplate->set('s', 'COMPRESSOR', $sGZIPScript);
 
         // Calculate the configuration
         $sConfig = '';

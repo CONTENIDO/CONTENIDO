@@ -358,6 +358,31 @@ $cfg['code_generator']['name'] = 'Standard';
 // (int) Livetime in seconds
 $cfg['inuse']['lifetime'] = 3600;
 
+
+/* Backend template settings
+ * -----------------------------------------------------------------------------
+ */
+
+// (array)  List of default link tags for CSS files to render in backend pages
+//          The wildcard {basePath} will be replaced dynamically
+$cfg['backend_template']['css_files'] = array(
+    '{basePath}styles/jquery/jquery-ui.css',
+    '{basePath}styles/contenido.css',
+);
+
+// (array)  List of default script tags for JS files to render in backend pages
+//          The wildcard {basePath} will be replaced dynamically
+//          The item '_CONFIG_' is a marker to inject the configuration at this place!
+$cfg['backend_template']['js_files'] = array(
+    '{basePath}scripts/jquery/jquery.js',
+    '{basePath}scripts/jquery/jquery-ui.js',
+    '{basePath}scripts/contenido.js',
+    '{basePath}scripts/general.js',
+    '_CONFIG_',
+    '{basePath}scripts/startup.js',
+);
+
+
 /* Client template settings
  * -----------------------------------------------------------------------------
  */

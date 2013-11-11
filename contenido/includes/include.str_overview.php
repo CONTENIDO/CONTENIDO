@@ -445,7 +445,6 @@ $currentuser->setUserProperty('system', 'cat_expandstate', serialize($expandedLi
 
 // Reset Template
 $tpl->reset();
-$tpl->set('s', 'SID', $sess->id);
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'FRAME', $frame);
 

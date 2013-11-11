@@ -30,7 +30,7 @@ $cronjobs = new Cronjobs($contenidoVars);
 foreach ($cronjobs->getAllCronjobs() as $row) {
     $tpl->set('d','FILE', $row);
     $file = urlencode($row);
-    $tpl->set('d', 'ROW', 'javascript:conMultiLink(\'right_bottom\', \''.$sess->url("main.php?area=cronjob&frame=4&action=cronjob_overview&file=$file").'\');');
+    $tpl->set('d', 'ROW', 'javascript:Con.multiLink(\'right_bottom\', \''.$sess->url("main.php?area=cronjob&frame=4&action=cronjob_overview&file=$file").'\');');
     $tpl->next();
 }
 

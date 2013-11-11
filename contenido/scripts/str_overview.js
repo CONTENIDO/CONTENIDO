@@ -163,42 +163,13 @@ function showNewForm() {
     oHideEditLayer.style.visibility = 'visible';
     oHideEditLayer.style.display = 'none';
 
-    refreshSelectedBaseCategory();
+    rowMarkStrClick('new_idcat');
 
     if ($('#category_list tr').length <= 4) {
         $('#is_tree').attr('checked', 'checked');
     }
 
     oEditLayer.style.visibility = 'visible';
-}
-
-/**
- * Function gets currently selected categroy row an set it as default in select box for base category
- * (selectbox in category new layer) Function is also called by row instance 'str', when selected row
- * changes
- */
-function refreshSelectedBaseCategory() {
-    var select = document.getElementById('new_idcat'),
-        iCatId = 0;
-
-    if (str.markedRow) {
-        if (str.markedRow.id.match(/^cat_(\d+)_row$/g)) {
-            iCatId = parseInt(RegExp.$1);
-        }
-    }
-
-    if (select && iCatId > 0) {
-        var aOptions = select.getElementsByTagName('option');
-        for (var i = 0; i < aOptions.length; i++) {
-            aOptions[i].selected = false;
-            if (!aOptions[i].disabled) {
-                var iValueOption = parseInt(aOptions[i].value);
-                if (iValueOption > 0 && iValueOption == iCatId) {
-                    aOptions[i].selected = true;
-                }
-            }
-        }
-    }
 }
 
 /**
@@ -305,13 +276,13 @@ function checkForm() {
 
     // Categoryname is a required field
     if (category == '') {
-        showNotification(sFormError, sEmptyCatname);
+        Con.showNotification(sFormError, sEmptyCatname);
         return false;
     }
 
     // If Category is no tree, a target category must be selected
     if (!checkbox.checked && input.value == '') {
-        showNotification(sFormError, sEmptyCatSourcename);
+        Con.showNotification(sFormError, sEmptyCatSourcename);
         return false;
     }
 }

@@ -1,103 +1,18 @@
+
+<!-- contenido/external/wysiwyg/tinymce3/tinymce.tpl.html -->
+<script src="{_PATH_CONTENIDO_FULLHTML_}scripts/con_tiny.js" type="text/javascript"></script>
+<script src="{_PATH_CONTENIDO_FULLHTML_}external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>
+
 <script language="javascript" type="text/javascript">
-var fb_fieldname;
-var fb_handle;
-var fb_intervalhandle;
-var fb_win;
-var frontend_path = '{FRONTEND_PATH}';
-
-/**
- */
-function myCustomSetupContent(editor_id, body, doc) {
-    tinyMCE.get(editor_id).setContent(tinyMCE.get(editor_id).getContent());
-}
-
-/**
- */
-function cutFullpath(element_id, html, body) {
-    return html.replace(frontend_path, '');
-}
-
-/**
- */
-function myCustomFileBrowser(field_name, url, type, win) {
-    switch (type) {
-        case "image":
-            fb_handle = window.open("{IMAGEBROWSER}", "filebrowser", "dialog=yes,resizable=yes");
-            fb_fieldname = field_name;
-            fb_win = win;
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
-            break;
-        case "file":
-            fb_handle = window.open("{FILEBROWSER}", "filebrowser", "dialog=yes,resizable=yes");
-            fb_fieldname = field_name;
-            fb_win = win;
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
-            break;
-        case "flash":
-            fb_handle = window.open("{FLASHBROWSER}", "filebrowser", "dialog=yes,resizable=yes");
-            fb_fieldname = field_name;
-            fb_win = win;
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
-            break;
-        case "media":
-            fb_handle = window.open("{MEDIABROWSER}", "filebrowser", "dialog=yes,resizable=yes");
-            fb_fieldname = field_name;
-            fb_win = win;
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
-            break;
-        default:
-            alert(type);
-            break;
-    }
-}
-
-/**
- */
-function updateImageFilebrowser() {
-    if (!fb_handle.left) {
-        return;
-    }
-    if (!fb_handle.left.left_top) {
-        return;
-    }
-    if (!fb_handle.left.left_top.document.getElementById("selectedfile")) {
-        return;
-    }
-    if (fb_handle.left.left_top.document.getElementById("selectedfile").value != "") {
-        fb_win.document.forms[0].elements[fb_fieldname].value = fb_handle.left.left_top.document.getElementById("selectedfile").value;
-        fb_handle.close();
-        window.clearInterval(fb_intervalhandle);
-        if (fb_win.ImageDialog != null && fb_win.ImageDialog.showPreviewImage) {
-            fb_win.ImageDialog.showPreviewImage(fb_win.document.forms[0].elements[fb_fieldname].value);
-        }
-    }
-}
-
-/**
- * This is where you insert your custom filebrowser logic.
- */
-function CustomfileBrowserCallBack(field_name, url, type) {
-    alert("Filebrowser callback: " + field_name + "," + url + "," + type);
-}
-
-/**
- * Removes xhtml styled tags.
- */
-function CustomCleanupContent(type, value) {
-    switch (type) {
-        case "get_from_editor":
-        case "insert_to_editor":
-            value = value.replace(/[\s]*\/>/g,'>');
-            break;
-    }
-    return value;
-}
+Con.Tiny.init({
+    frontendPath: '{FRONTEND}'
+});
 </script>
 {COMPRESSOR}
 
 <!-- Needs to be seperate script tags! -->
 <script language="JavaScript" type="text/javascript">
-tinyMCE.init({
+tinymce.init({
     {CONFIG}
 });
 </script>

@@ -6,6 +6,7 @@
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  * @version 0.9
+ * @deprecated [2013-10-16] Logic moved to contenido.js
  */
 function browserCheck()
 {

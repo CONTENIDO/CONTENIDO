@@ -249,7 +249,6 @@ $db->query($sql);
 $tpl->set('s', 'ID', 'oTplSel');
 $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');
-$tpl->set('s', 'SESSID', $sess->id);
 $tpl->set('s', 'BELANG', $belang);
 
 $tpl->set('d', 'VALUE', '0');
@@ -319,7 +318,7 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
     $oListOptionRow->setContentData($tplSync->generate($cfg["path"]["templates"] . $cfg["templates"]["con_left_top_sync"], true));
 
     $link = $sess->url("main.php?area=" . $area . "&frame=2") . '&syncoptions=';
-    $sJsLink = 'conMultiLink(\'left_bottom\', \'' . $link . '\'+document.getElementsByName(\'syncoptions\')[0].value+\'&refresh_syncoptions=true\');';
+    $sJsLink = "Con.multiLink('left_bottom', '{$link}' + document.getElementsByName('syncoptions')[0].value + '&refresh_syncoptions=true');";
     $tpl->set('s', 'UPDATE_SYNC_REFRESH_FRAMES', $sJsLink);
     $tpl->set('s', 'SYNCRONIZATION', $oListOptionRow->render());
     $tpl->set('s', 'SYNCLINK', $sListId);
@@ -340,14 +339,13 @@ $tpl->set('s', 'EXPAND_LINK', $expandlink);
 
 // necessary for expanding/collapsing of navigation tree per javascript/AJAX (I. van Peeren)
 $tpl->set('s', 'AREA', $area);
-$tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'AJAXURL', cRegistry::getBackendUrl() . 'ajaxmain.php');
 
 // LEGEND
 $legendlink = 'legend';
 $editCategory = new cGuiFoldingRow("31f52be2-7499-4d21-8175-3917129e6014", i18n("Legend"), $legendlink);
 
-$divLegend = new cHTMLDiv("", "", "legend");
+$divLegend = new cHTMLDiv("", "", "legend-content");
 
 $aInformation = array('imgsrc', 'description');
 $aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformation);

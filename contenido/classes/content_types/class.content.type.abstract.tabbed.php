@@ -51,7 +51,6 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
     protected function _generateActionCode() {
         $template = new cTemplate();
 
-        $template->set('s', 'CON_PATH', $this->_cfg['path']['contenido_fullhtml']);
         $code = $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_action.html', true);
 
         return $this->_encodeForOutput($code);

@@ -37,7 +37,7 @@ function addToList(obj) {
     }
 }
 
-function removeFromList (id) {
+function removeFromList(id) {
     var list = document.getElementById("choosenValues");
     var remElm = document.getElementById("rl" + id);
 
@@ -48,7 +48,7 @@ function removeFromList (id) {
     }
 }
 
-function removeAll () {
+function removeAll() {
     var list = document.getElementById("choosenValues");
 
     formElms = document.forms["contentallocation"].elements;
@@ -63,14 +63,17 @@ function removeAll () {
 
 {ARRAY_CHECKED_BOXES}
 
-function listAllCheckedBoxes () {
-    if (checkedBoxes.length == 0) return false;
+function listAllCheckedBoxes() {
+    if (checkedBoxes.length == 0) {
+        return false;
+    }
 
     for (i = 0; i < checkedBoxes.length; i++) {
         obj = document.getElementById("e" + checkedBoxes[i]);
         addToList(obj);
     }
 }
+
 listAllCheckedBoxes();
 
 </script>

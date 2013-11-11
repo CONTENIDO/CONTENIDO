@@ -36,19 +36,25 @@ $sArea = 'js';
 $sActionDelete = 'js_delete';
 $sActionEdit = 'js_edit';
 
-$sScriptTemplate = '
+$sScriptTemplate = <<<JS
 <script type="text/javascript">
-    function deleteFile(file) {
-        parent.parent.frames["right"].frames["right_bottom"].location.href = "main.php?action='.$sActionDelete.'&delfile="+file+"&area='.$sArea.'&frame=4&contenido='.$sSession.'";
+function deleteFile(file) {
+    var url = Con.UtilUrl.build("main.php", {
+        area: "{$sArea}",
+        action: "{$sActionDelete}",
+        frame: 4,
+        delfile: file
+    });
+    Con.getFrame('right_bottom').location.href = url;
 
-        url  = "main.php?area='.$sArea.'";
-        //url += "&action='.$sActionDelete.'";
-        url += "&frame=2";
-        //url += "&delfile=" + file;
-        url += "&contenido='.$sSession.'";
-        window.location.href = url;
-    }
-</script>';
+    var url = Con.UtilUrl.build("main.php", {
+        area: "{$sArea}",
+        frame: 2
+    });
+    window.location.href = url;
+}
+</script>
+JS;
 
 $tpl->set('s', 'JAVASCRIPT', $sScriptTemplate);
 
@@ -73,22 +79,23 @@ if (($handle = opendir($path)) !== false && is_dir($path)) {
             $file = new cApiFileInformationCollection();
             $fileInfo = $file->getFileInformation($filename, "js");
 
-            $tmp_mstr = '<a class=\"action\" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')" alt="%s">%s</a>';
+            $tmp_mstr = '<a class="action" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')" alt="%s">%s</a>';
 
-            $html_filename = sprintf($tmp_mstr, 'right_top',
-                           $sess->url("main.php?area=$area&frame=3&file=$filename"),
-                           'right_bottom',
-                           $sess->url("main.php?area=$area&frame=4&action=$sActionEdit&file=$filename&tmp_file=$filename"),
-                           $filename, $filename, conHtmlSpecialChars($filename));
+            $filenameHtml = sprintf(
+                $tmp_mstr,
+                'right_top', $sess->url("main.php?area=$area&frame=3&file=$filename"),
+                'right_bottom', $sess->url("main.php?area=$area&frame=4&action=$sActionEdit&file=$filename&tmp_file=$filename"),
+                $filename, $filename, conHtmlSpecialChars($filename)
+            );
 
-            $tpl->set('d', 'FILENAME', $html_filename);
+            $tpl->set('d', 'FILENAME', $filenameHtml);
             $tpl->set("d", "DESCRIPTION", ($fileInfo["description"] == "") ? '' : $fileInfo["description"]);
 
             $delTitle = i18n("Delete File");
-            $delDescr = sprintf(i18n("Do you really want to delete the following file:<br><br>%s<br>"),$filename);
+            $delDescr = sprintf(i18n("Do you really want to delete the following file:<br><br>%s<br>"), $filename);
 
             if ($perm->have_perm_area_action('js', $sActionDelete)) {
-                $tpl->set('d', 'DELETE', '<a title="'.$delTitle.'" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(&quot;' . $filename . '&quot;); });return false;"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'"></a>');
+                $tpl->set('d', 'DELETE', '<a title="'.$delTitle.'" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(&quot;' . $filename . '&quot;); });return false;"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'"></a>');
             } else {
                 $tpl->set('d', 'DELETE', '');
             }

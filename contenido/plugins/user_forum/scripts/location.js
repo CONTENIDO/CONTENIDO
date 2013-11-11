@@ -1,34 +1,38 @@
 function deleteArticlesByIdLeft(idart) {
+    var left_bottom = Con.getFrame('left_bottom'),
+        right_bottom = Con.getFrame('right_bottom');
 
-    url = 'main.php?area=user_forum';
-    url += '&action=delete_form';
-    url += '&frame=2';
-    url += '&idart=';
-    url += idart;
+    if (left_bottom) {
+        left_bottom.location.href = Con.UtilUrl.build('main.php', {
+            area: 'user_forum',
+            action: 'delete_form',
+            frame: 2,
+            idart: idart
+        });
+    }
 
-    reloadRightBottom = 'main.php?area=user_forum';
-    reloadRightBottom += '&action=empty';
-    reloadRightBottom += '&frame=4';
-
-    parent.parent.left.left_bottom.location.href = url;
-    parent.parent.right.right_bottom.location.href = reloadRightBottom;
+    if (right_bottom) {
+        right_bottom.location.href = Con.UtilUrl.build('main.php', {
+            area: 'user_forum',
+            action: 'empty',
+            frame: 4,
+            idart: idart
+        });
+    }
 }
 
 function deleteArticlesByIdRight(level, key, id, idcat, idart) {
-
-    url = 'main.php?area=user_forum';
-    url += '&action=deleteComment';
-    url += '&frame=4';
-    url += '&idart=';
-    url += idart;
-    url += '&key=';
-    url += key;
-    url += '&idcat=';
-    url += idcat;
-    url += '&level=';
-    url += level;
-    url += '&id_user_forum=';
-    url += id;
-
-    parent.parent.right.right_bottom.location.href = url;
+    var right_bottom = Con.getFrame('right_bottom');
+    if (right_bottom) {
+        right_bottom.location.href = Con.UtilUrl.build('main.php', {
+            area: 'user_forum',
+            action: 'deleteComment',
+            frame: 4,
+            idart: idart,
+            idcat: idcat,
+            key: key,
+            level: level,
+            id_user_forum: id
+        });
+    }
 }

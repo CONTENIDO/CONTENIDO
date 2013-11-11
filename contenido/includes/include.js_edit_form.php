@@ -62,14 +62,16 @@ if ($action == 'js_delete') {
         }
     }
 
-    $sReloadScript = "<script type=\"text/javascript\">
-                        var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                        if (left_bottom) {
-                            var href = left_bottom.location.href;
-                            href = href.replace(/&file[^&]*/, '');
-                            left_bottom.location.href = href+'&file='+'" . $sFilename . "';
-                        }
-                      </script>";
+    $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
+    }
+})(Con, Con.$);
+</script>
+JS;
     $page->addScript($sReloadScript);
     $page->render();
 } else {
@@ -84,14 +86,16 @@ if ($action == 'js_delete') {
     }
 
     if (stripslashes($_REQUEST['file'])) {
-        $sReloadScript = "<script type=\"text/javascript\">
-                             var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                             if (left_bottom) {
-                                 var href = left_bottom.location.href;
-                                 href = href.replace(/&file[^&]*/, '');
-                                 left_bottom.location.href = href+'&file='+'" . $sFilename . "';
-                             }
-                         </script>";
+        $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
+    }
+})(Con, Con.$);
+</script>
+JS;
     } else {
         $sReloadScript = '';
     }
@@ -132,13 +136,17 @@ if ($action == 'js_delete') {
         $bEdit = cFileHandler::read($path . $sFilename);
         $fileInfoCollection = new cApiFileInformationCollection();
         $fileInfoCollection->create('js', $sFilename, $_REQUEST['description']);
-        $sReloadScript .= "<script type=\"text/javascript\">
-                 var right_top = top.content.right.right_top;
-                 if (right_top) {
-                     var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
-                     right_top.location.href = href;
-                 }
-                 </script>";
+        $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
+        $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+     var frame = Con.getFrame('right_top');
+     if (frame) {
+         frame.location.href = '{$urlReload}';
+     }
+})(Con, Con.$);
+</script>
+JS;
         // if ($bEdit) {
         $page->displayInfo(i18n('Created new JS-File successfully!'));
         // }
@@ -156,13 +164,18 @@ if ($action == 'js_delete') {
                 $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $path . $sTempFilename));
                 exit();
             }
-            $sReloadScript .= "<script type=\"text/javascript\">
-                 var right_top = top.content.right.right_top;
-                 if (right_top) {
-                     var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
-                     right_top.location.href = href;
-                 }
-                 </script>";
+
+            $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
+            $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+     var frame = Con.getFrame('right_top');
+     if (frame) {
+         frame.location.href = '{$urlReload}';
+     }
+})(Con, Con.$);
+</script>
+JS;
         } else {
             $sTempFilename = $sFilename;
         }
@@ -213,9 +226,8 @@ if ($action == 'js_delete') {
                 exit();
             }
         } else {
-            $sCode = stripslashes($_REQUEST['code']); // stripslashes is
-                                                          // required here in case
-                                                          // of creating a new file
+            // stripslashes is required here in case of creating a new file
+            $sCode = stripslashes($_REQUEST['code']);
         }
 
         $form = new cGuiTableForm('file_editor');

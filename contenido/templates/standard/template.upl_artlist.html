@@ -1,11 +1,32 @@
-<div style="margin-bottom: 10px; padding: 2px; border: 1px; border-color: #B3B3B3; border-style: solid; background-color: #F4F4F7;">
-    <a href="javascript://" onclick="parent.parent.frames['left'].frames['left_top'].document.getElementById('selectedfile').value= '{CATLINK}'; window.returnValue='{CATLINK}'; window.close();">
-        <img class="vAlignMiddle" alt="i18n("Use this category")" title="i18n("Use this category")" style="padding-right: 4px;" src="images/folder_movedown.gif">
+<style type="text/css">
+#use_category {
+    margin-bottom: 10px;
+    padding: 2px;
+    border: 1px;
+    border-color: #B3B3B3;
+    border-style: solid;
+    background-color: #F4F4F7;
+}
+#use_category img {
+    padding-right: 4px;
+}
+
+#article_list .article {
+    cursor: pointer;
+}
+#article_list .article img {
+    text-align: center;
+}
+</style>
+
+<div id="use_category">
+    <a href="javascript://">
+        <img class="vAlignMiddle" alt="i18n("Use this category")" title="i18n("Use this category")" src="images/folder_movedown.gif">
     </a>
     {CATSTR}
 </div>
 
-<table class="generic" width="100%" border="0" cellspacing="0" cellpadding="2">
+<table id="article_list" class="generic" width="100%" border="0" cellspacing="0" cellpadding="2">
     <tr>
         <th>i18n("Article")</th>
         <th width="100%">i18n("Title")</th>
@@ -14,9 +35,9 @@
         <th>i18n("Online")</th>
     </tr>
     <!-- BEGIN:BLOCK -->
-    <tr style="cursor: pointer;" onclick="parent.parent.frames['left'].frames['left_top'].document.getElementById('selectedfile').value= '{ARTLINK}'; window.returnValue='{ARTLINK}'; window.close();">
+    <tr class="article" data-articlelink="{ARTLINK}">
         <td class="nowrap">
-            <img class="vAlignMiddle" style="text-align: center;" src="images/isstart{ISSTART}.gif">
+            <img class="vAlignMiddle" src="images/isstart{ISSTART}.gif" alt="">
         </td>
         <td class="nowrap">
             {TITLE}
@@ -28,11 +49,31 @@
             {CREATED}
         </td>
         <td class="nowrap">
-            <img class="vAlignMiddle" style="text-align: center;" src="images/{ONLINE}.gif">
+            <img class="vAlignMiddle" src="images/{ONLINE}.gif" alt="">
         </td>
     </tr>
     <!-- END:BLOCK -->
 </table>
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        // On "Use this category" click
+        $("#use_category a").click(function() {
+            Con.getFrame('left_top').$('selectedfile').val('{CATLINK}');
+            window.returnValue = '{CATLINK}';
+            window.close();
+        });
+
+        // On article list table row click
+        $("#article_list").delegate(".article", "click", function() {
+            var artLink = $(this).data("articlelink");
+            Con.getFrame('left_top').$('selectedfile').val(artLink);
+            window.returnValue = artLink;
+            window.close();
+        });
+    });
+})(Con, Con.$);
+</script>
 <!--
 template.upl_artlist
 

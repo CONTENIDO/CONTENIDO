@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $cfg;
 $driver_filename = cRegistry::getBackendPath() . $cfg['path']['classes'] . 'drivers/' . $cfg['sql']['gdb_driver'] . '/class.gdb.' . $cfg['sql']['gdb_driver'] . '.php';
 if (cFileHandler::exists($driver_filename)) {
-    include_once ($driver_filename);
+    include_once($driver_filename);
 }
 
 /**

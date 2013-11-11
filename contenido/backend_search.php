@@ -168,8 +168,8 @@ function generateJs($aValues) {
         global $sSaveAuthor;
         global $sSaveName;
 
-        return 'function refresh_article_search_form(refresh) {
-                    var oFrame = top.content.left.left_top;
+        return 'function refreshArticleSearchForm(refresh) {
+                    var oFrame = Con.getFrame("left_top");
                     if (oFrame) {
                         oForm = oFrame.document.backend_search;
 
@@ -191,7 +191,7 @@ function generateJs($aValues) {
                         oForm.bs_search_author.value = "' . $aValues[$sSaveAuthor] . '";
                     }
                 }
-                refresh_article_search_form();
+                refreshArticleSearchForm();
                 ';
     } else {
         return false;
@@ -315,7 +315,7 @@ if (sizeof($_GET) == 0 && isset($_POST['save_search'])) {
     $sScript = generateJs($aSearchResults);
 
     // Reload top left to show new search name
-    $sRefreshScript .= 'top.content.left.left_top.location.href = top.content.left.left_top.location.href+"&save_search=true";';
+    $sRefreshScript .= 'Con.getFrame("left_top").location.href = Con.getFrame("left_top").location.href + "&save_search=true";';
 
     // Message for successful saving
     $sSaveSuccessfull = i18n("Thank you for saving this search from extinction!");
@@ -500,7 +500,7 @@ foreach ($sSortByValues as $value) {
     // Add the sorting arrow
     if ($value == $sSortBy) {
         $imageSrc = ($sSortMode == 'asc') ? 'images/sort_up.gif' : 'images/sort_down.gif';
-        $sTableHeader .= '<img src="' . $imageSrc . '" />';
+        $sTableHeader .= '<img src="' . $imageSrc . '">';
     }
     $aTableHeaders[$value] = $sTableHeader;
 }
@@ -508,9 +508,7 @@ foreach ($sSortByValues as $value) {
 $tpl = new cTemplate();
 
 $tpl->setEncoding('iso-8859-1');
-$tpl->set('s', 'SESSID', $sSession);
 $tpl->set('s', 'SCRIPT', $sScript);
-$tpl->set('s', 'SESSNAME', $sess->name);
 $tpl->set('s', 'TITLE', i18n('Search results'));
 $tpl->set('s', 'TH_START', i18n("Article"));
 $tpl->set('s', 'TH_TITLE', $aTableHeaders['title']);
@@ -542,7 +540,7 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
 
     $sRow = '<tr><td colspan="7" class="bordercell">' . $sErrOut . '</td></tr>';
     $tpl->set('d', 'ROWS', $sRow);
-    $sLoadSubnavi = 'parent.parent.frames["right"].frames["right_top"].location.href = \'main.php?area=con&frame=3&idcat=0&idtpl=' . $iIdTpl . '&contenido=' . $sSession . "';";
+    $sLoadSubnavi = 'Con.getFrame(\'right_top\').location.href = \'main.php?area=con&frame=3&idcat=0&idtpl=' . $iIdTpl . '&contenido=' . $sSession . "';";
     $tpl->next();
 } else {
     $bHit = false;
@@ -770,13 +768,10 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
                 $delete = '
                 <a
                     href="javascript:void(0)"
-                    onclick="showConfirmation(&quot;' . $sDeleteArticleQuestion . ':<br><br><b>' . conHtmlSpecialChars($tmp_title) . '</b>&quot;, function() {deleteArticle(' . $idart . ', ' . $idcat . ');});"
+                    onclick="Con.showConfirmation(&quot;' . $sDeleteArticleQuestion . ':<br><br><b>' . conHtmlSpecialChars($tmp_title) . '</b>&quot;, function() {deleteArticle(' . $idart . ', ' . $idcat . ');});"
                     title="' . $sDeleteArticle . '"
                 >
-                    <img
-                        src="images/delete.gif"
-                        title="' . $sDeleteArticle . '"
-                        alt="' . $sDeleteArticle . '" />
+                    <img src="images/delete.gif" title="' . $sDeleteArticle . '" alt="' . $sDeleteArticle . '">
                 </a>';
             } else {
                 $delete = "";
@@ -813,7 +808,7 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
     if ($bLostAndFound) {
         $iDisplayMenu = 1;
     }
-    $sLoadSubnavi = 'parent.parent.frames["right"].frames["right_top"].location.href = \'main.php?area=con&frame=3&idcat=' . $iIdCat . '&idtpl=' . $iIdTpl . '&display_menu=' . $iDisplayMenu . '&contenido=' . $sSession . "';";
+    $sLoadSubnavi = 'Con.getFrame(\'right_top\').location.href = \'main.php?area=con&frame=3&idcat=' . $iIdCat . '&idtpl=' . $iIdTpl . '&display_menu=' . $iDisplayMenu . '&contenido=' . $sSession . "';";
 }
 
 

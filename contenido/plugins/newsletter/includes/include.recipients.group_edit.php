@@ -47,11 +47,11 @@ if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $a
     $oRGroup = $oRGroups->create(" " . i18n("-- New group --", 'newsletter'));
     $_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
     $oPage->setReload();
-    $sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\')</script>';
+    $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\')</script>';
     $oPage->addScript($sRefreshLeftTopScript);
 } elseif ($action == "recipientgroup_delete" && $perm->have_perm_area_action($area, $action)) {
     $oRGroups->delete($_REQUEST["idrecipientgroup"]);
-    $sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'remove\')</script>';
+    $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'remove\')</script>';
     $oPage->addScript($sRefreshLeftTopScript);
 
     $_REQUEST["idrecipientgroup"] = 0;
@@ -115,8 +115,8 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
             }
         }
 
-        $sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'remove\');
-                                    top.content.left.left_top.refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\', \'' . $sGroupName . '\');</script>';
+        $sRefreshLeftTopScript = '<script type="text/javascript">Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'remove\');
+                                    Con.getFrame("left_top").refreshGroupOption(\'' . $_REQUEST["idrecipientgroup"] . '\', \'add\', \'' . $sGroupName . '\');</script>';
         $oPage->addScript($sRefreshLeftTopScript);
     }
 
@@ -580,21 +580,22 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     unset($oOutsiderListOptionRow);
     unset($oOutsiderPager);
 
-    $sDelMarkScript = '    <script type="text/javascript">
-        /* Function to select all ckbDel boxes */
-        function fncCheckDel(elementname) {
-            var aBoxes = document.getElementsByName(elementname);
+    $sDelMarkScript = '
+    <script type="text/javascript">
+    /* Function to select all ckbDel boxes */
+    function fncCheckDel(elementname) {
+        var aBoxes = document.getElementsByName(elementname);
 
-            if (aBoxes.length > 0) {
-                for (var i = 0; i < aBoxes.length; i++) {
-                    if (aBoxes[i].checked) {
-                       aBoxes[i].checked = false;
-                    } else {
-                       aBoxes[i].checked = true;
-                    }
+        if (aBoxes.length > 0) {
+            for (var i = 0; i < aBoxes.length; i++) {
+                if (aBoxes[i].checked) {
+                   aBoxes[i].checked = false;
+                } else {
+                   aBoxes[i].checked = true;
                 }
             }
         }
+    }
     </script>';
 
     $oPage->addScript($sDelMarkScript);

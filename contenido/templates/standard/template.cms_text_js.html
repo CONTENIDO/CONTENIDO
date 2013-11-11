@@ -1,4 +1,5 @@
 <script type="text/javascript">
+(function(Con, $) {
     $(function() {
         // replace the text div with an input field if the div or the edit button is clicked
         $('#{PREFIX}_editbutton_{ID}, #{PREFIX}_text_{ID}').click(function() {
@@ -45,7 +46,9 @@
             cContentType{PREFIX}AppendFormField{ID}('{PREFIX}_id', '{ID}');
             var text = $('#{PREFIX}_text_{ID}').val();
             cContentType{PREFIX}AppendFormField{ID}('{PREFIX}_text_{ID}', text);
-            setcontent('{IDARTLANG}', '0');
+            Con.Tiny.setContent('{IDARTLANG}');
         }
     });
+})(Con, Con.$);
+
 </script>

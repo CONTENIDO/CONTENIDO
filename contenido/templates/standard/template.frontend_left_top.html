@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+    <title>template.frontend_left_top.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+    <style type="text/css">
+    /* @TODO: style like addfunction (see contenido.css) */
+    .leftTopAction .selectuserfunction,
+    .leftTopAction .selectgroupfunction {
+        display: inline-block;
+        height: 16px;
+        line-height: 16px;
+        margin-top: 2px;
+        /* for IE */
+        zoom: 1;
+        *display: inline;
+        /* for IE */
+    }
+    </style>
+{_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript" src="scripts/cfoldingrow.js"></script>
+    <script type="text/javascript" src="scripts/parameterCollector.js"></script>
+</head>
+
+<body class="page_frontend_left_top">
+
+<div id="top_left_container" data-resizegap="1" data-resizeinitcb="frameLeftTopResizeInitCallback">
+    <div class="leftTopAction">
+        {BUTTONROW}
+    </div>
+    {CUSERS}
+    {CGROUPS}
+</div>
+
+<script type="text/javascript">
+
+var sDisplay = (Con.isMsie) ? 'block' : 'table-row';
+
+// save status of buttons
+var iPage = {PAGE};
+var selectedButton = '';
+var actionURL = '';
+var listoptionURL = '';
+var pagingURL = '';
+
+// Buttons and their images
+var butUser     = {imgId:'{IUSER}', containerId:'{ID_USERS}', imgOff:'images/users_o.gif', imgOn:'images/users.gif'};
+var butGroups   = {imgId:'{IGROUP}', containerId:'{ID_GROUPS}', imgOff:'images/groups_o.gif', imgOn:'images/groups.gif'};
+var buttonArray = new Array(butUser, butGroups);
+
+function resizeFrame(arg, bIgnore) {
+    if (arg == '') {
+      // Fetch links and store for later usage
+        var actionLink = document.getElementById('{ACTIONLINK}');
+        var listoptionLink = document.getElementById('{LISTOPTIONLINK}');
+        var pagingLink = document.getElementById('{PAGINGLINK}');
+
+        actionURL = actionLink.href;
+        listoptionURL = listoptionLink.href;
+        if (pagingLink) {
+            pagingURL = pagingLink.href;
+        }
+
+        // clicking the link now calls this function
+        actionLink.href = "javascript:resizeFrame('{ACTIONLINK}')";
+        listoptionLink.href = "javascript:resizeFrame('{LISTOPTIONLINK}')";
+        if (pagingLink) {
+            pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}')";
+        }
+
+      // for first load set focus to newsletter
+      hoverEffect('{ID_USERS}', 'on');
+    } else if (arg == '{ACTIONLINK}') {
+        window.location.href = actionURL;
+    } else if (arg == '{LISTOPTIONLINK}') {
+        window.location.href = listoptionURL;
+    } else if (arg == '{PAGINGLINK}' && bIgnore != 1) {
+        window.location.href = pagingURL;
+    }
+
+    // resizing frame
+    window.setTimeout(function() {
+        Con.FrameLeftTop.resize();
+    }, 10);
+}
+
+function toggleContainer(activeButton) {
+    // remember selected
+    selectedButton = activeButton;
+
+    for (var i = 0; i < buttonArray.length; i++) {
+        // make selected container visible
+        if (activeButton == buttonArray[i].imgId) {
+            document.getElementById(buttonArray[i].containerId).style.display = 'block';
+        } else {
+            // render other containers invisible
+            document.getElementById(buttonArray[i].containerId).style.display = 'none';
+        }
+    }
+    hoverEffect(activeButton, 'in');
+    resizeFrame(activeButton);
+}
+
+function hoverEffect(actButton, stat) {
+    // fetch the button object
+    var i;
+    for (i = 0; i < buttonArray.length; i++) {
+        // highlight image on enter, gray image on mouse out
+        if (buttonArray[i].imgId == actButton && actButton != selectedButton) {
+            if (stat == 'in') {
+                document.getElementById(buttonArray[i].imgId).src = buttonArray[i].imgOn;
+            } else {
+                document.getElementById(buttonArray[i].imgId).src = buttonArray[i].imgOff;
+            }
+        } else if (buttonArray[i].imgId != selectedButton) {
+            document.getElementById(buttonArray[i].imgId).src = buttonArray[i].imgOff;
+        }
+    }
+}
+
+function refresh() {
+    var sFilterParam = execFilter(1),
+        sActionsRowState = document.getElementById('m9').value
+        sFilterRowState = document.getElementById('m17').value;
+    sFilterParam += '&frame=1&view='+selectedButton+'&actionrow='+sActionsRowState+'&filterrow='+sFilterRowState+'&page='+iPage;
+    window.location.href = sFilterParam;
+}
+
+function execFilter(bGet) {
+    var multilink = "main.php?",
+        formelements = document.filter, i;
+
+    for (i = 0; i < formelements.length; i++) {
+        if (i > 0 && formelements[i].name != "" && formelements[i].name != "area" && formelements[i].name != "frame" && formelements[i].value != "") {
+            multilink += "&";
+        }
+        if (formelements[i].name != "" && formelements[i].value != "" && formelements[i].name != "area" && formelements[i].name != "frame") {
+            multilink += formelements[i].name + "=" + formelements[i].value;
+        }
+    }
+
+    if (bGet == 2 || bGet == 1) {
+        multilink+='&page='+iPage;
+    }
+
+    if (bGet == 1) {
+        return multilink+'&area=frontend';
+    } else {
+        Con.multiLink("left_bottom", multilink+'&area=frontend&frame=2');
+    }
+}
+
+function toggle_pager(sId) {
+    var oBase = document.getElementById(sId);
+
+    if (oBase) {
+        if (oBase.firstChild && oBase.firstChild.firstChild && oBase.firstChild.firstChild) {
+            var sExpandstate = document.getElementsByName('expandstate_'+sId)[0].value;
+
+            oBase.previousSibling.style.display = sDisplay;
+            if (sExpandstate == 'expanded') {
+                oBase.style.display = sDisplay;
+            } else {
+                oBase.style.display = 'none';
+            }
+        } else if (oBase) {
+            oBase.previousSibling.style.display = 'none';
+            oBase.style.display = 'none';
+        }
+    }
+
+    switch (sId) {
+        case '25c6a67d-a3f1-4ea4-8391-446c131952c9':
+            resizeFrame('{PAGINGLINK}', 1);
+            break;
+    }
+}
+
+function frameLeftTopResizeInitCallback() {
+    resizeFrame('');
+}
+
+(function(Con, $) {
+    $(function() {
+        toggleContainer('{IINIT}');
+    });
+})(Con, Con.$);
+
+</script>
+
+</body>
+</html>

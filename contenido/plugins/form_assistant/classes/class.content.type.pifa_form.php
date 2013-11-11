@@ -99,7 +99,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // build top code
         $tplTop = new cTemplate();
-        $tplTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $tplTop->set('s', 'ICON', 'plugins/form_assistant/images/icon_form.png');
         $tplTop->set('s', 'ID', $this->_id);
         $tplTop->set('s', 'PREFIX', $this->_prefix);
@@ -122,12 +121,10 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
 
         // build bottom code
         $tplBottom = new cTemplate();
-        $tplBottom->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $tplBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $tplBottom->set('s', 'ID', $this->_id);
         $tplBottom->set('s', 'PREFIX', $this->_prefix);
         $tplBottom->set('s', 'IDARTLANG', $this->_idArtLang);
-        $tplBottom->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $tplBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         // encode dollar sign so that contained PHP style variable will not be
         // interpreted

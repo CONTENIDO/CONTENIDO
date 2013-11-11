@@ -64,7 +64,7 @@ $iTimeframe = $oClient->getProperty("newsletter", "purgetimeframe");
 if (isset($_REQUEST["txtPurgeTimeframe"]) && $_REQUEST["txtPurgeTimeframe"] > 0 && $_REQUEST["txtPurgeTimeframe"] != $iTimeframe && $perm->have_perm_area_action($area, "recipients_delete")) {
     $oClient->setProperty("newsletter", "purgetimeframe", $_REQUEST["txtPurgeTimeframe"]);
     // $sRefreshTop = '<script
-    // type="text/javascript">parent.left_top.purgetimeframe =
+    // type="text/javascript">Con.getFrame('left_top').purgetimeframe =
     // '.$_REQUEST["txtPurgeTimeframe"].'</script>';
 }
 
@@ -215,34 +215,34 @@ while ($oRecipient = $oRecipients->next()) {
     }
 }
 
-$sExecScript = '
-    <script type="text/javascript">
-        // Session-ID
-        var sid = "' . $sess->id . '";
+$sExecScript = <<<JS
+<script type="text/javascript">
+function showDelMsg(lngId, strElement) {
+    Con.showConfirmation("{$aMsg["DelDescr"]}<b>" + strElement + "</b>", function() {
+        deleteRecipient(lngId);
+    });
+}
 
-        function showDelMsg(lngId, strElement) {
-            showConfirmation("' . $aMsg["DelDescr"] . '<b>" + strElement + "</b>", function() { deleteRecipient(lngId); });
-        }
+// Function for deleting recipients
+function deleteRecipient(idrecipient) {
+    var oForm = Con.getFrame("left_top").document.getElementById("options");
 
-        // Function for deleting recipients
-        function deleteRecipient(idrecipient) {
-            oForm = top.content.left.left_top.document.getElementById("options");
+    var url = "main.php?area=recipients";
+    url += "&action=recipients_delete";
+    url += "&frame=4";
+    url += "&idrecipient=" + idrecipient;
+    url += "&contenido=" + Con.sid;
+    url += get_registered_parameters();
+    url += "&restrictgroup=" + oForm.restrictgroup.value;
+    url += "&sortby=" + oForm.sortby.value;
+    url += "&sortorder=" + oForm.sortorder.value;
+    url += "&filter=" + oForm.filter.value;
+    url += "&elemperpage=" + oForm.elemperpage.value;
 
-            url = "main.php?area=recipients";
-            url += "&action=recipients_delete";
-            url += "&frame=4";
-            url += "&idrecipient=" + idrecipient;
-            url += "&contenido=" + sid;
-            url += get_registered_parameters();
-            url += "&restrictgroup=" + oForm.restrictgroup.value;
-            url += "&sortby=" + oForm.sortby.value;
-            url += "&sortorder=" + oForm.sortorder.value;
-            url += "&filter=" + oForm.filter.value;
-            url += "&elemperpage=" + oForm.elemperpage.value;
-
-            parent.parent.right.right_bottom.location.href = url;
-        }
-    </script>';
+    Con.getFrame("right_bottom").location.href = url;
+}
+</script>
+JS;
 
 $oPage->addScript($sExecScript);
 $oPage->addScript('parameterCollector.js');
@@ -277,17 +277,17 @@ $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 // Send new object pager to left_top
 $oPage->addScript('setPager.js');
 
-$sRefreshPager = '
-    <script type="text/javascript">
-        var sNavigation = \'' . $sPagerContent . '\';
-
-        // Activate time to refresh pager folding row in left top
-        var oTimer = window.setInterval("fncSetPager(\'' . $sPagerId . '\',\'' . $_REQUEST["page"] . '\')", 200);
-    </script>';
+$sRefreshPager = <<<JS
+<script type="text/javascript">
+var sNavigation = '{$sPagerContent}';
+// Activate time to refresh pager folding row in left top
+var oTimer = window.setInterval(function() {
+    fncSetPager('{$sPagerId}', '{$_REQUEST["page"]}');
+}, 200);
+</script>
+JS;
 
 $oPage->addScript($sRefreshPager);
 
-// $oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0"
-// width="100%">', '</table>', $sMsg . $oMenu->render(false)));
 $oPage->setContent($oMenu);
 $oPage->render();

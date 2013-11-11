@@ -1,86 +1,119 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <title>template.grouprights_memberselect.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+    <style type="text/css">
+    #btn_save_changes {margin-left:5px; float:right;}
+    </style>
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript" src="scripts/group_association.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
-    <script type="text/javascript">
-        init('{ADD_ACTION}', '{DELETE_ACTION}');
-    </script>
     {RELOADSCRIPT}
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
 </head>
-<body style="margin:10px" onload="filter('user_in_group_filter_value'); filter('newmember_filter_value')">
-    <form name="group_properties" id="group_properties" method="post" action="{FORM_ACTION}">
-        <input type="hidden" name="area" value="{AREA}">
-        <input type="hidden" name="action" value="{STANDARD_ACTION}">
-        <input type="hidden" name="frame" value="{FRAME}">
-        <input type="hidden" name="{RECORD_ID_NAME}" value="{GROUPID}">
-        <input type="hidden" name="idlang" value="{IDLANG}">
-        <table id="stats" class="generic" cellspacing="0" cellpadding="4">
-            <tr class="text_medium" >
-                <th colspan="2" align="left" valign="top" style="font-weight: normal; padding-left:3px">{CATNAME}</td>
-            </tr>
-            <!-- BEGIN:BLOCK -->
-            <tr class="text_medium" >
-                <td valign="top" style="padding-left:3px; vertical-align:middle;">{LABEL}</td>
-                <td valign="top" style="padding-left:3px; vertical-align:middle;">{INPUT}</td>
-            </tr>
-            <!-- END:BLOCK -->
-            <tr class="text_medium" >
-                <td colspan="2" valign="top" style="padding-left:3px">
-                     <div class="memberselect">
-                        <p class="column_header">i18n('Groupmembers')</p>
-                        <div style="float:right;">
-                             <input type="text" name="filter_in" id="user_in_group_filter_value" value="{IN_GROUP_VALUE}" class="filterBox text_medium" onkeyup="keyHandler('user_in_group_filter_value')">
-                             <img src="./images/submit.gif" class="submit_image" onclick="filter('user_in_group_filter_value')">
-                        </div>
-                        <div style="padding-top:3px;">i18n('Filter'):</div>
-                        <select name="user_in_group[]" id="user_in_group" size="20" class="memberselect text_medium" multiple>
-                        </select>
-                        <select id="all_user_in_group" style="display:none" multiple>
-                           {IN_GROUP_OPTIONS}
-                        </select>
-                     </div>
-                     <div class="memberselect_button">
-                         <input type="button" name="toggle" id="newmember_button" value="<=" onclick="setAction('{ADD_ACTION}')" alt="i18n('Add to group')" title="i18n('Add to group')" DISABLED>
-                         <input type="button" name="toggle" id="user_in_group_button" value="=>" onclick="setAction('{DELETE_ACTION}')" alt="i18n('Remove from group')" title="i18n('Remove from group')" DISABLED>
-                     </div>
-                     <div class="memberselect">
-                         <p class="column_header">i18n('Non groupmembers')</p>
-                         <div style="float:right;">
-                             <input type="text" name="filter_non" id="newmember_filter_value" value="{NON_GROUP_VALUE}" class="filterBox text_medium" onkeyup="keyHandler('newmember_filter_value')">
-                             <img src="./images/submit.gif" class="submit_image" onclick="filter('newmember_filter_value')">
-                         </div>
-                         <div style="padding-top:3px;">i18n('Filter'):</div>
-                         <select name="newmember[]" id="newmember" size="20" class="memberselect text_medium" multiple>
-                         </select>
-                         <select id="all_newmember" style="display:none" multiple>
-                           {NON_GROUP_OPTIONS}
-                        </select>
-                     </div>
-                     <div class="clear"></div>
-                </td>
-            </tr>
-            <tr class="text_medium" >
-                <td colspan="2" valign="top" style="padding-left:{PADDING_LEFT}px">
-                    <div>&lt;=: i18n('Add right side selected users to group').</div>
-                    <div>
-                        <img style="display:{DISPLAY_OK}; margin-left: 5px; float:right;" title="i18n('Save changes')" alt="i18n('Save changes')" src="./images/but_ok.gif" onclick="document.group_properties.submit();" accesskey="s">
-                        =&gt;: i18n('Remove left side selected users from group').
+<body style="margin:10px">
+
+<form name="group_properties" id="group_properties" method="post" action="{FORM_ACTION}">
+    <input type="hidden" name="area" value="{AREA}">
+    <input type="hidden" name="action" value="{STANDARD_ACTION}">
+    <input type="hidden" name="frame" value="{FRAME}">
+    <input type="hidden" name="{RECORD_ID_NAME}" value="{GROUPID}">
+    <input type="hidden" name="idlang" value="{IDLANG}">
+    <table id="stats" class="generic" cellspacing="0" cellpadding="4">
+        <tr class="text_medium">
+            <th colspan="2" align="left" valign="top" style="font-weight: normal; padding-left:3px">{CATNAME}</td>
+        </tr>
+        <!-- BEGIN:BLOCK -->
+        <tr class="text_medium">
+            <td valign="top" style="padding-left:3px; vertical-align:middle;">{LABEL}</td>
+            <td valign="top" style="padding-left:3px; vertical-align:middle;">{INPUT}</td>
+        </tr>
+        <!-- END:BLOCK -->
+        <tr class="text_medium">
+            <td colspan="2" valign="top" style="padding-left:3px">
+                 <div class="memberselect">
+                    <p class="column_header">i18n('Groupmembers')</p>
+                    <div style="float:right;">
+                         <input type="text" name="filter_in" id="user_in_group_filter_value" value="{IN_GROUP_VALUE}" class="filterBox text_medium">
+                         <img src="./images/submit.gif" class="submit_image">
                     </div>
-                </td>
-            </tr>
-        </table>
-    </form>
+                    <div style="padding-top:3px;">i18n('Filter'):</div>
+                    <select name="user_in_group[]" id="user_in_group" size="20" class="memberselect text_medium" multiple>
+                    </select>
+                    <select id="all_user_in_group" style="display:none" multiple>
+                       {IN_GROUP_OPTIONS}
+                    </select>
+                 </div>
+                 <div class="memberselect_button">
+                     <input type="button" name="toggle" id="newmember_button" value="<=" onclick="setAction('{ADD_ACTION}')" alt="i18n('Add to group')" title="i18n('Add to group')" disabled>
+                     <input type="button" name="toggle" id="user_in_group_button" value="=>" onclick="setAction('{DELETE_ACTION}')" alt="i18n('Remove from group')" title="i18n('Remove from group')" disabled>
+                 </div>
+                 <div class="memberselect">
+                     <p class="column_header">i18n('Non groupmembers')</p>
+                     <div style="float:right;">
+                         <input type="text" name="filter_non" id="newmember_filter_value" value="{NON_GROUP_VALUE}" class="filterBox text_medium">
+                         <img src="./images/submit.gif" class="submit_image">
+                     </div>
+                     <div style="padding-top:3px;">i18n('Filter'):</div>
+                     <select name="newmember[]" id="newmember" size="20" class="memberselect text_medium" multiple>
+                     </select>
+                     <select id="all_newmember" style="display:none" multiple>
+                       {NON_GROUP_OPTIONS}
+                    </select>
+                 </div>
+                 <div class="clear"></div>
+            </td>
+        </tr>
+        <tr class="text_medium" >
+            <td colspan="2" valign="top" style="padding-left:{PADDING_LEFT}px">
+                <div>&lt;=: i18n('Add right side selected users to group').</div>
+                <div>
+                    <img id="btn_save_changes" style="display:{DISPLAY_OK};" title="i18n('Save changes')" alt="i18n('Save changes')" src="./images/but_ok.gif" accesskey="s">
+                    =&gt;: i18n('Remove left side selected users from group').
+                </div>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+
+        var $form = $('#group_properties');
+
+        var obj = new Con.GoupAssociation({
+            selectorForm: 'group_properties',
+            add: '{ADD_ACTION}',
+            del: '{DELETE_ACTION}',
+        });
+
+        obj.filter('user_in_group_filter_value');
+        obj.filter('newmember_filter_value');
+
+        $('#user_in_group_filter_value').keyup(function() {
+            obj.keyHandler('user_in_group_filter_value');
+        });
+        $('#user_in_group_filter_value').next('.submit_image').click(function() {
+            obj.filter('user_in_group_filter_value');
+        });
+
+        $('#newmember_filter_value').keyup(function() {
+            obj.keyHandler('newmember_filter_value');
+        });
+        $('#newmember_filter_value').next('.submit_image').click(function() {
+            obj.filter('newmember_filter_value');
+        });
+
+        $('#btn_save_changes').click(function() {
+            $form.submit();
+        });
+    });
+})(Con, Con.$);
+</script>
+
 </body>
 </html>
 <!--

@@ -1,33 +1,42 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- template.generic_page.html -->
 <html>
 <head>
     <title>{PAGENAME}</title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
+{_META_HEAD_CONTENIDO_}
     {META}
 
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+{_CSS_HEAD_CONTENIDO_}
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/atooltip.css">
+    {STYLES}
+
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/jquery/plugins/atooltip.jquery.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
-    <script type="text/javascript">
-        conMarkSubmenuItem("c_{SUBMENU}");
-    </script>
     {SCRIPTS}
-
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
-    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/atooltip.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    {STYLES}
 </head>
 
-<body style="margin: 10px;" id="{PAGENAME}">
+<body class="{PAGECLASS}" id="{PAGEID}">
+
 {CONTENT}
+
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        var subMenu = '{SUBMENU}';
+        if (false === isNaN(subMenu)) {
+            // Old style, menu position as number
+            Con.markSubmenuItem('c_' + subMenu);
+        } else if ('string' === $.type(subMenu) && subMenu.length > 0) {
+            // Old style, area name
+            Con.markSubmenuItem(subMenu);
+        }
+    });
+})(Con, Con.$);
+</script>
 </body>
 </html>

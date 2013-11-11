@@ -78,7 +78,6 @@ class cGuiFoldingRow extends cHTML {
         $this->_hiddenField = new cHTMLHiddenField("expandstate_" . $this->_contentRow->getID());
 
         $this->_foldingImage = new cHTMLImage();
-        $this->_foldingImage->setStyle("margin-right: 4px;");
 
         $this->setExpanded(false);
 
@@ -106,12 +105,12 @@ class cGuiFoldingRow extends cHTML {
     public function setExpanded($expanded = false) {
         if ($expanded == true) {
             $this->_foldingImage->setSrc("images/widgets/foldingrow/expanded.gif");
-            $this->_foldingImage->updateAttributes(array("data" => "expanded"));
+            $this->_foldingImage->updateAttributes(array("data-state" => "expanded"));
             $this->_contentRow->setStyle("display: ;");
             $this->_hiddenField->setValue('expanded');
         } else {
             $this->_foldingImage->setSrc("images/widgets/foldingrow/collapsed.gif");
-            $this->_foldingImage->updateAttributes(array("data" => "collapsed"));
+            $this->_foldingImage->updateAttributes(array("data-state" => "collapsed"));
             $this->_contentRow->setStyle("display: none;");
             $this->_hiddenField->setValue('collapsed');
         }
@@ -146,7 +145,7 @@ class cGuiFoldingRow extends cHTML {
         $hiddenid = $this->_hiddenField->getID();
         $uuid = $this->_uuid;
 
-        $this->_link->setLink("javascript:cGuiFoldingRow_expandCollapse('$imgid', '$rowid', '$hiddenid', '$uuid');");
+        $this->_link->setLink("javascript:void(0);");
         $this->_link->setContent($this->_foldingImage->render() . $this->_caption);
 
         $this->_headerData->setContent(array($this->_hiddenField, $this->_link));
@@ -156,6 +155,21 @@ class cGuiFoldingRow extends cHTML {
 
         $output = $this->_headerRow->render();
         $output .= $this->_contentRow->render();
+
+$output = <<<HTML
+<!-- cGuiFoldingRow -->
+{$output}
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        $("#{$this->_linkId}").click(function() {
+            Con.FoldingRow.toggle("{$imgid}", "{$rowid}", "{$hiddenid}", "{$uuid}");
+        });
+    });
+})(Con, Con.$);
+</script>
+<!-- /cGuiFoldingRow -->
+HTML;
 
         return ($output);
     }

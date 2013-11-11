@@ -79,7 +79,7 @@ class ArticleForumLeftBottom extends cGuiPage {
             $arg = $result[$i]['idart'];
             $message = UserForum::i18n('ALLDELETEFROMCAT');
             $link->setLink('javascript:void(0)');
-            $link->setAttribute("onclick", 'showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdLeft(' . $arg . '); }); return false;');
+            $link->setAttribute("onclick", 'Con.showConfirmation(&quot;' . $message . '&quot;, function(){ deleteArticlesByIdLeft(' . $arg . '); }); return false;');
             $link->setImage($cfg['path']['images'] . 'delete.gif');
             $link->setAlt($message);
             $menu->setActions($i, 'delete', $link);

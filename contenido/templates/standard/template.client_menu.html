@@ -1,17 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <title>template.client_menu.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
 </head>
 <body>
 
@@ -24,43 +19,34 @@
     <!-- END:BLOCK -->
 
 </table>
+
 <script type="text/javascript">
-var sid = "{SID}";
+(function(Con, $) {
+    $(function() {
+        // Register some events for rows
+        // @todo move this to rowMark.js
+        $("table tr").mouseover(function() {
+            row.over(this);
+        }).mouseout(function() {
+            row.out(this);
+        }).click(function() {
+            row.click(this);
+        })
 
-$(document).ready(function() {
-    // Register some events for rows
-    // @todo move this to rowMark.js
-    $("table tr").mouseover(function() {
-        row.over(this);
-    }).mouseout(function() {
-        row.out(this);
-    }).click(function() {
-        row.click(this);
-    })
-
-    // Mark element having the marked id value
-    if ($("#marked")) {
-        row.click($("#marked").get(0));
-    }
-});
+        // Mark element having the marked id value
+        if ($("#marked")) {
+            row.click($("#marked").get(0));
+        }
+    });
+})(Con, Con.$);
 
 // Function for deleting clients
-function deleteClient(iduser) {
-    var url_right_bottom  = 'main.php?area=client';
-    url_right_bottom += '&frame=4';
-    url_right_bottom += '&contenido=' + sid;
+function deleteClient(idclient) {
+    var url_right_bottom  = Con.UtilUrl.build('main.php', {area: 'client', frame: 4});
+        url_top  = Con.UtilUrl.build('main.php', {area: 'client', frame: 3});
+        url_left_bottom  = Con.UtilUrl.build('main.php', {area: 'client', action: 'client_delete', frame: 2, idclientdelete: idclient});
 
-    var url_right_top  = 'main.php?area=client';
-    url_right_top += '&frame=3';
-    url_right_top += '&contenido=' + sid;
-
-    var url_left_bottom  = 'main.php?area=client';
-    url_left_bottom += '&action=client_delete';
-    url_left_bottom += '&frame=2';
-    url_left_bottom += '&idclientdelete=' + iduser;
-    url_left_bottom += '&contenido=' + sid;
-
-    conMultiLink('right_top', url_right_top, 'right_bottom', url_right_bottom, 'left_bottom', url_left_bottom);
+    Con.multiLink('right_top', url_top, 'right_bottom', url_right_bottom, 'left_bottom', url_left_bottom);
 }
 </script>
 </body>

@@ -35,7 +35,7 @@ if (isset($_POST['belang']) && $_POST['belang'] != '') {
 $noti = '';
 if (getSystemProperty('maintenance', 'mode') == 'enabled') {
     $notification = new cGuiNotification();
-    $noti = $notification->returnMessageBox('warning', i18n("CONTENIDO is in maintenance mode. Only sysadmins are allowed to login. Please try again later.") . '<br />');
+    $noti = $notification->returnMessageBox('warning', i18n("CONTENIDO is in maintenance mode. Only sysadmins are allowed to login. Please try again later.") . '<br>');
 }
 
 // Fill template

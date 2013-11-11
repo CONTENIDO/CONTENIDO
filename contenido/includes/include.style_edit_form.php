@@ -25,17 +25,17 @@ $page->setEncoding('utf-8');
 
 $tpl->reset();
 
+// Some checks
 if (!$perm->have_perm_area_action($area, $action)) {
     $page->displayCriticalError(i18n('Permission denied'));
     $page->render();
     exit();
-}
-
-if (!(int) $client > 0) {
+} elseif (!(int) $client > 0) {
     // If there is no client selected, display empty page
     $page->render();
     exit();
 }
+
 if ($action == 'style_delete') {
     $path = $cfgClient[$client]['css']['path'];
     // Delete file
@@ -73,14 +73,17 @@ if ($action == 'style_delete') {
 } else {
     $path = $cfgClient[$client]['css']['path'];
     if (stripslashes($_REQUEST['file'])) {
-        $sReloadScript = "<script type=\"text/javascript\">
-                             var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                             if (left_bottom) {
-                                 var href = left_bottom.location.href;
-                                 href = href.replace(/&file.*/, '');
-                                 left_bottom.location.href = href+'&file='+'" . $_REQUEST['file'] . "';
-                             }
-                         </script>";
+        $reloadFile = stripslashes($_REQUEST['file']);
+        $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$reloadFile}'});
+    }
+})(Con, Con.$);
+</script>
+JS;
     } else {
         $sReloadScript = '';
     }
@@ -129,13 +132,17 @@ if ($action == 'style_delete') {
         $bEdit = cFileHandler::read($path . $sFilename);
         $fileInfoCollection = new cApiFileInformationCollection();
         $fileInfoCollection->create('css', $sFilename, $_REQUEST['description']);
-        $sReloadScript .= "<script type=\"text/javascript\">
-                     var right_top = top.content.right.right_top;
-                     if (right_top) {
-                         var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
-                         right_top.location.href = href;
-                     }
-                     </script>";
+        $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
+        $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('right_top');
+    if (frame) {
+        frame.location.href = '{$urlReload}';
+    }
+})(Con, Con.$);
+</script>
+JS;
         // if ($bEdit) {
         $page->displayInfo(i18n('Created new CSS file successfully!'));
         // }
@@ -170,13 +177,17 @@ if ($action == 'style_delete') {
                 $page->render();
                 exit();
             }
-            $sReloadScript .= "<script type=\"text/javascript\">
-                     var right_top = top.content.right.right_top;
-                     if (right_top) {
-                         var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
-                         right_top.location.href = href;
-                     }
-                     </script>";
+            $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
+            $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('right_top');
+    if (frame) {
+        frame.location.href = '{$urlReload}';
+    }
+})(Con, Con.$);
+</script>
+JS;
         } else {
             $sTempFilename = $sFilename;
         }

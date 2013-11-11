@@ -5,20 +5,20 @@
     <title>{TITEL}</title>
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <link rel="shortcut icon" href="{BASEPATH}favicon.ico">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript">
-        if (top != self) {
-            top.location = "index.php";
-        }
-    </script>
     <style type="text/css">
-        #page {border-top:1px solid #0060b1;height:110px;/*overflow:hidden;*/}
-        #lblusername {width:75px; display:block; float:left;}
-        #lblpasswd {width:75px; display:block; float:left;}
-        #navcontainer {border-top:1px solid #666; clear: left;}
-        .text_login_error {float:right; margin-right:15px;}
-        .style1 {background-color:#f1f1f1;height:80px;}
+    #page {border-top:1px solid #0060b1;height:110px;/*overflow:hidden;*/}
+    #lblusername {width:75px; display:block; float:left;}
+    #lblpasswd {width:75px; display:block; float:left;}
+    #navcontainer {border-top:1px solid #666; clear: left;}
+    .text_login_error {float:right; margin-right:15px;}
+    .style1 {background-color:#f1f1f1;height:80px;}
     </style>
+{_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript">
+    if (top != self) {
+        top.location = "index.php";
+    }
+    </script>
 </head>
 <body>
 <div id="page">
@@ -58,8 +58,8 @@
 <div id="alertbox">{NOTI}</div>
 
 <script type="text/javascript">
-(function($) {
-    $(document).ready(function() {
+(function(Con, $) {
+    $(function() {
         $("#lang").change(function() {
             $("#login").submit();
         });
@@ -70,7 +70,7 @@
             $("#passwd").focus();
         }
     });
-})(jQuery);
+})(Con, Con.$);
 </script>
 
 </body>

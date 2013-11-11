@@ -1,88 +1,35 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
+    <title>template.rights_create.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
+    <style type="text/css">
+    #contenido_notification {margin-bottom:5px;}
+    table.content {border:0; border-left:1px; border-bottom:1px; border-style:solid;}
+    table.content td {border:0; border-top:1px; border-right:1px; border-style:solid; border-color:{BORDERCOLOR};}
+    </style>
+{_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript">
-
-        parent.parent.frames["left"].frames["left_bottom"].location.reload();
+    (function(Con, $) {
+        Con.getFrame('left_bottom').location.reload();
         var createdUserId = '{USERID}';
-        var sid           = '{SID}';
 
         if (createdUserId != '') {
-
-            parent.frames['right_top'].location = 'main.php?area=user&frame=3&action=&userid=' + createdUserId + '&contenido=' + sid;
-            parent.frames['right_bottom'].location = 'main.php?area=user_overview&frame=4&action=&userid=' + createdUserId + '&contenido=' + sid;
-
+            Con.getFrame('right_top').location = 'main.php?area=user&frame=3&action=&userid=' + createdUserId + '&contenido=' + Con.sid;
+            Con.getFrame('right_bottom').location = 'main.php?area=user_overview&frame=4&action=&userid=' + createdUserId + '&contenido=' + Con.sid;
         } else {
-
-            parent.frames['right_top'].location = 'main.php?area=user&frame=3&contenido=' + sid;
-
+            Con.getFrame('right_top').location = 'main.php?area=user&frame=3&contenido=' + Con.sid;
         }
-
+    })(Con, Con.$);
     </script>
-    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-    <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
-
     <!-- get javascript files for language != en -->
     {CAL_LANG}
 
-    <style type="text/css">
-    #contenido_notification {margin-bottom:5px;}
-    table.content { border:0px; border-left:1px; border-bottom:1px; border-style:solid; }
-    table.content td { border:0px; border-top:1px; border-right:1px; border-style:solid; border-color:{BORDERCOLOR}; }
-    </style>
-    <script type="text/javascript">
-    $(document).ready(function() {
-        $('#valid_from').datetimepicker({
-            buttonImage: '{PATH_TO_CALENDER_PIC}',
-            buttonImageOnly: true,
-            showOn: 'both',
-            dateFormat: 'yy-mm-dd',
-            onClose: function(dateText, inst) {
-                var endDateTextBox = $('#valid_to');
-                if (endDateTextBox.val() != '') {
-                    var testStartDate = new Date(dateText);
-                    var testEndDate = new Date(endDateTextBox.val());
-                    if (testStartDate > testEndDate) {
-                        endDateTextBox.val(dateText);
-                    }
-                }
-            },
-            onSelect: function (selectedDateTime) {
-                var start = $(this).datetimepicker('getDate');
-            }
-        });
-
-        $('#valid_to').datetimepicker({
-            buttonImage: '{PATH_TO_CALENDER_PIC}',
-            buttonImageOnly: true,
-            showOn: 'both',
-            dateFormat: 'yy-mm-dd',
-            onClose: function(dateText, inst) {
-                var startDateTextBox = $('#valid_from');
-                if (startDateTextBox.val() != '') {
-                    var testStartDate = new Date(startDateTextBox.val());
-                    var testEndDate = new Date(dateText);
-                    if (testStartDate > testEndDate) {
-                        startDateTextBox.val(dateText);
-                    }
-                }
-            },
-            onSelect: function (selectedDateTime) {
-                var end = $(this).datetimepicker('getDate');
-            }
-        });
-    });
-    </script>
 </head>
 <body style="margin:10px">
 {NOTIFICATION}
@@ -106,5 +53,52 @@
     </tr>
 </table>
 </form>
+
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        $('#valid_from').datetimepicker({
+            buttonImage: '{PATH_TO_CALENDER_PIC}',
+            buttonImageOnly: true,
+            showOn: 'both',
+            dateFormat: 'yy-mm-dd',
+            onClose: function(dateText, inst) {
+                var endDateTextBox = $('#valid_to');
+                if (endDateTextBox.val() != '') {
+                    var testStartDate = new Date(dateText),
+                        testEndDate = new Date(endDateTextBox.val());
+                    if (testStartDate > testEndDate) {
+                        endDateTextBox.val(dateText);
+                    }
+                }
+            },
+            onSelect: function (selectedDateTime) {
+                var start = $(this).datetimepicker('getDate');
+            }
+        });
+
+        $('#valid_to').datetimepicker({
+            buttonImage: '{PATH_TO_CALENDER_PIC}',
+            buttonImageOnly: true,
+            showOn: 'both',
+            dateFormat: 'yy-mm-dd',
+            onClose: function(dateText, inst) {
+                var startDateTextBox = $('#valid_from');
+                if (startDateTextBox.val() != '') {
+                    var testStartDate = new Date(startDateTextBox.val()),
+                        testEndDate = new Date(dateText);
+                    if (testStartDate > testEndDate) {
+                        startDateTextBox.val(dateText);
+                    }
+                }
+            },
+            onSelect: function (selectedDateTime) {
+                var end = $(this).datetimepicker('getDate');
+            }
+        });
+    });
+})(Con, Con.$);
+</script>
+
 </body>
 </html>

@@ -25,8 +25,6 @@ if (!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
 $backendUrl = cRegistry::getBackendUrl();
 
 // Template-definition
-$tpl->set('s', 'CONTENIDO_URL', $backendUrl);
-$tpl->set('s', 'SID', $sess->id);
 
 /* Whitelist: Delete */
 if (!empty($_GET['url_to_delete'])) {
@@ -43,12 +41,9 @@ $sql = "SELECT url, lastview
 $db->query($sql);
 
 while ($db->nextRecord()) {
-
     $tpl2 = new cTemplate();
     $tpl2->reset();
 
-    $tpl2->set('s', 'CONTENIDO_URL', $backendUrl);
-    $tpl2->set('s', 'SID', $sess->id);
     $tpl2->set('s', 'URL', $db->f("url"));
     $tpl2->set('s', 'URL_ENCODE', base64_encode($db->f("url")));
     $tpl2->set('s', 'ENTRY', strftime(i18n('%Y-%m-%d, %I:%M%S %p', $plugin_name), $db->f("lastview")));

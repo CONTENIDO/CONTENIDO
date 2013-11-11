@@ -38,14 +38,14 @@ $sActionDelete = 'style_delete';
 $sScriptTemplate = '
 <script type="text/javascript">
     function deleteFile(file) {
-        //parent.parent.frames["right"].frames["right_bottom"].location.href = "main.php?area=' . $sArea . '&frame=4&action=' . $sActionDelete . '&delfile="+file+"&contenido=' . $sSession . '";
-        url  = "main.php?area=' . $sArea . '";
+        //Con.getFrame("right_bottom").location.href = "main.php?area=' . $sArea . '&frame=4&action=' . $sActionDelete . '&delfile="+file+"&contenido=' . $sSession . '";
+        var url = "main.php?area=' . $sArea . '";
         url += "&action=' . $sActionDelete . '";
         url += "&frame=2";
         //url += "&idsfi=" + idsfi;
         url += "&contenido=' . $sSession . '";
         //window.location.href = url;
-        parent.parent.frames["right"].frames["right_bottom"].location.href = "main.php?area=' . $sArea . '&frame=4&action=' . $sActionDelete . '&delfile="+file+"&contenido=' . $sSession . '";
+        Con.getFrame("right_bottom").location.href = "main.php?area=' . $sArea . '&frame=4&action=' . $sActionDelete . '&delfile="+file+"&contenido=' . $sSession . '";
     }
 </script>';
 
@@ -72,7 +72,7 @@ if (($handle = opendir($path)) !== false && is_dir($path)) {
             $file = new cApiFileInformationCollection();
             $fileInfo = $file->getFileInformation($filename, "css");
 
-            $tmp_mstr = '<a class=\"action\" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')" alt="%s">%s</a>';
+            $tmp_mstr = '<a class=\"action\" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')" alt="%s">%s</a>';
 
             $html_filename = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&file=$filename"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&action=$sActionEdit&file=$filename&tmp_file=$filename"), $filename, $filename, conHtmlSpecialChars($filename));
 
@@ -90,9 +90,9 @@ if (($handle = opendir($path)) !== false && is_dir($path)) {
                     $idsfi = $db->f('idsfi');
                 }
                 if (cSecurity::isInteger($idsfi)) {
-                    $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(' . cSecurity::toInteger($idsfi) . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');
+                    $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(' . cSecurity::toInteger($idsfi) . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');
                 } else {
-                    $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(&quot;' . cSecurity::toString($filename) . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');
+                    $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(&quot;' . cSecurity::toString($filename) . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');
                 }
             } else {
                 $tpl->set('d', 'DELETE', '');

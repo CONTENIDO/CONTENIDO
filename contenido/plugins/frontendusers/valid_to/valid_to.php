@@ -41,39 +41,41 @@ function frontendusers_valid_to_display ()
     // js-includes are defined in valid_from
     $sValidFrom = '<input type="text" id="valid_to" name="valid_to" value="'.$currentValue.'">';
     $sValidFrom .= '<script type="text/javascript">
- $("#valid_to").datetimepicker({
-             buttonImage: "'. $path_to_calender_pic .'",
-               buttonImageOnly: true,
-               showOn: "both",
-               dateFormat: "yy-mm-dd",
-            onClose: function(dateText, inst) {
-                var startDateTextBox = $("#valid_from");
-                if (startDateTextBox.val() != "") {
-                    var testStartDate = new Date(startDateTextBox.val());
-                    var testEndDate = new Date(dateText);
-                    if (testStartDate > testEndDate)
-                        startDateTextBox.val(dateText);
-                }
-                else {
+(function(Con, $) {
+    $("#valid_to").datetimepicker({
+        buttonImage: "'. $path_to_calender_pic .'",
+        buttonImageOnly: true,
+        showOn: "both",
+        dateFormat: "yy-mm-dd",
+        onClose: function(dateText, inst) {
+            var startDateTextBox = $("#valid_from");
+            if (startDateTextBox.val() != "") {
+                var testStartDate = new Date(startDateTextBox.val());
+                var testEndDate = new Date(dateText);
+                if (testStartDate > testEndDate) {
                     startDateTextBox.val(dateText);
                 }
-            },
-            onSelect: function (selectedDateTime) {
-                var end = $(this).datetimepicker("getDate");
-                $("#valid_from").datetimepicker("option", "maxDate", new Date(end.getTime()));
+            } else {
+                startDateTextBox.val(dateText);
             }
-        });
+        },
+        onSelect: function(selectedDateTime) {
+            var end = $(this).datetimepicker("getDate");
+            $("#valid_from").datetimepicker("option", "maxDate", new Date(end.getTime()));
+        }
+    });
+})(Con, Con.$);
 </script>';
 
     return sprintf($template,$sValidFrom);
 }
 
-function frontendusers_valid_to_wantedVariables ()
+function frontendusers_valid_to_wantedVariables()
 {
     return (array("valid_to"));
 }
 
-function frontendusers_valid_to_store ($variables)
+function frontendusers_valid_to_store($variables)
 {
     global $feuser;
 

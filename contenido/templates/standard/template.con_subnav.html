@@ -1,24 +1,20 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- template.con_subnav -->
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <title>template.con_subnav.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/subnav.js"></script>
     <script type="text/javascript">
-        var artObj = null;
-        function refreshArticleProp() {
-            var leftTopFrame = parent.parent.frames["left"].frames["left_top"];
-            artObj = parent.parent.frames["left"].frames["left_top"].artObj;
-            artObj.setGlobalVars("{SESSID}", {CLIENT}, {LANG});
-            artObj.idcat = {IDCAT};
-        }
-        refreshArticleProp();
+    var artObj = null;
+    function refreshArticleProp() {
+        artObj = Con.getFrame('left_top').artObj;
+        artObj.setGlobalVars(Con.sid, {CLIENT}, {LANG});
+        artObj.idcat = {IDCAT};
+    }
+    refreshArticleProp();
     </script>
 </head>
 <body class="page_subnav">
@@ -26,29 +22,33 @@
 <div id="navcontainer">
     <div class="frame_handle">
         <img src="images/frame_handle_re.gif" alt="">
-        <img id="toggleimage" src="images/spacer.gif" alt="">
+        <img id="toggleimage" src="images/toggle_frame_right.gif" style="display:none;" alt="">
     </div>
     <ul id="navlist">
         <!-- BEGIN:BLOCK -->
-        <li id="{ID}">{CAPTION}</li>
+        <li id="{ID}" data-name="{DATA_NAME}">{CAPTION}</li>
         <!-- END:BLOCK -->
     </ul>
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+(function(Con, $) {
+    $(function() {
         if (parent.parent.frames[0].name != "header") {
-            parent.parent.frameResize.init();
+            Con.getFrame("content").frameResize.init();
             sub.init();
         }
         $("#toggleimage").click(function() {
-            parent.parent.frameResize.toggle();
+            Con.getFrame("content").frameResize.toggle();
         });
-        if (document.getElementById('{iID}')) {
-            menuItem = document.getElementById('{iID}');
+
+        var elem = $("#{iID}");
+        if (elem) {
+            menuItem = elem[0];
             sub.clicked(menuItem.firstChild);
         }
     });
+})(Con, Con.$);
 </script>
 
 </body>

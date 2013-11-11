@@ -172,20 +172,24 @@ class cVersionFile extends cVersion {
      * @return string - Javascript for refrehing frames
      */
     public function renderReloadScript($sArea, $sFilename, $sess) {
-        $sReloadScript = "<script type=\"text/javascript\">
-                 var right_top = top.content.right.right_top;
-                 var left_bottom = top.content.left.left_bottom;
+        $urlRightTop = $sess->url("main.php?area=$sArea&frame=3&file=$sFilename&history=true");
+        $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&file=$sFilename");
+        $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var right_top = Con.getFrame('right_top'),
+        left_bottom = Con.getFrame('left_bottom');
 
-                 if (right_top) {
-                     var href = '" . $sess->url("main.php?area=$sArea&frame=3&file=$sFilename&history=true") . "';
-                     right_top.location.href = href;
-                 }
+    if (right_top) {
+        right_top.location.href = '{$urlRightTop}';
+    }
 
-                 if (left_bottom) {
-                    var href = '" . $sess->url("main.php?area=$sArea&frame=2&file=$sFilename") . "';
-                    left_bottom.location.href = href;
-                 }
-                 </script>";
+    if (left_bottom) {
+        left_bottom.location.href = '{$urlLeftBottom}';
+    }
+})(Con, Con.$);
+</script>
+JS;
         return $sReloadScript;
     }
 

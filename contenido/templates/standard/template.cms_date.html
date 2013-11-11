@@ -1,21 +1,17 @@
 <script type="text/javascript">
 //<![CDATA[
-
-conLoadFile('{PATH_BACKEND}scripts/content_types/cmsDate.js', '{PREFIX}{ID}ClassLoaded();');
-
-function {PREFIX}{ID}ClassLoaded() {
+conLoadFile(Con.cfg.urlBackend + 'scripts/content_types/cmsDate.js', function() {
     var contentTypeInstance = new cContentTypeDate(
         '#cms_{PREFIX}_{ID}_settings',
         '{PREFIX}',
         {ID},
         '{IDARTLANG}',
-        '{PATH_BACKEND}',
+        '{_PATH_CONTENIDO_FULLHTML_}',
         '{LANG}',
         {SETTINGS},
         '{BELANG}'
     );
     contentTypeInstance.initialise('{PATH_TO_CALENDAR_PIC}');
-}
-
+});
 //]]>
 </script>

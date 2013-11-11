@@ -560,10 +560,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         $template = new cTemplate();
         // Set some values into javascript for a better handling
-        $template->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
-        $template->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $template->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
 
         $templateTabs = new cTemplate();
@@ -591,7 +589,6 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // construct the top code of the template
         $templateTop = new cTemplate();
-        $templateTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateTop->set('s', 'ICON', 'images/isstart0.gif');
         $templateTop->set('s', 'ID', $this->_id);
         $templateTop->set('s', 'PREFIX', $this->_prefix);
@@ -607,12 +604,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
         // construct the bottom code of the template
         $templateBottom = new cTemplate();
-        $templateBottom->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $templateBottom->set('s', 'ID', $this->_id);
         $templateBottom->set('s', 'PREFIX', $this->_prefix);
         $templateBottom->set('s', 'IDARTLANG', $this->_idArtLang);
-        $templateBottom->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
         $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsTeaser.js');

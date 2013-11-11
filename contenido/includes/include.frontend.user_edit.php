@@ -48,17 +48,21 @@ if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "fr
 }
 
 if ($idfrontenduser && $action != '') {
-    $sReloadScript = "<script type=\"text/javascript\">
-                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                         if (left_bottom) {
-                             var href = left_bottom.location.href;
-                             href = href.replace(/&frontenduser.*/, '');
-                             left_bottom.location.href = href+'&frontenduser='+".$idfrontenduser.";
-                             if (window.top.content.left.left_top.refresh()) {
-                                 top.content.left.left_top.refresh();
-                             }
-                         }
-                     </script>";
+    $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        var href = Con.UtilUrl.replaceParams(frame.location.href, {frontenduser: {$idfrontenduser}});
+        frame.location.href = href;
+        var frame2 = Con.getFrame('left_top');
+        if (frame2 && 'function' === $.type(frame2.refresh)) {
+            frame2.refresh();
+        }
+    }
+})(Con, Con.$);
+</script>
+JS;
 } else {
     $sReloadScript = "";
 }

@@ -1,3 +1,5 @@
+/* global Con: true, tinymce: true */
+
 /**
  * Project:
  * CONTENIDO Content Management System
@@ -5,10 +7,11 @@
  * Description:
  * File contains functions for tinymce to handle it as an insight-editor
  *
- *
+ * @module tiny
  * @package    CONTENIDO Backend includes
  * @version    1.0
  * @author     Timo Trautmann
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -24,344 +27,575 @@
  *
  */
 
-var first = true;
 
-function myCustomSetupContent(editor_id, body, doc) {
-    tinyMCE.get(editor_id).setContent(tinyMCE.get(editor_id).getContent());
-}
+(function(Con, $) {
+    'use strict';
 
+    var NAME = 'tiny';
 
-/**
- * Callback function for tiny which gets a selected image in CONTENIDO
- * image browser, close browser and set this selected image in tiny
- */
-function updateImageFilebrowser() {
-    //error handling
-    if (!fb_handle.left) {
-        return;
-    }
+    /**
+     * Edit content form reference
+     * @property _form
+     * @type {HTMLElement}
+     * @private
+     */
+    var $_form = null;
 
-    if (!fb_handle.left.left_top) {
-        return;
-    }
+    /**
+     * TinyMCE editor handler
+     * @class  Tiny
+     * @static
+     */
+    Con.Tiny = {
 
-    if (!fb_handle.left.left_top.document.getElementById("selectedfile")) {
-        return;
-    }
+        /**
+         * Id of div on which tiny is active
+         * @property activeId
+         * @type {String|NULL}
+         */
+        activeId: null,
+        /**
+         * Object of div on which tiny is active
+         * @property activeObject
+         * @type {HTMLElement|NULL}
+         */
+        activeObject: null,
+        /**
+         * Object to store edited content
+         * @property editData
+         * @type {Object}
+         */
+        editData: {},
+        /**
+         * Object to store to store original content (Importent for decision if content has changed)
+         * @property editDataOrg
+         * @type {Object}
+         */
+        editDataOrg: {},
+        /**
+         * Flag to ask the user to store changes when the window
+         * @property checkOnLeave
+         * @type {Boolean}
+         */
+        checkOnLeave: true,
+        /**
+         * Tiny settings, used during swap
+         * @property settings
+         * @type {Object}
+         */
+        settings: {},
+        /**
+         * Filebrowser popup field name
+         * @property fbFieldName
+         * @type {String}
+         */
+        fbFieldName: null,
+        /**
+         * Filebrowser popup window
+         * @property fbPopupWindow
+         * @type {Window}
+         */
+        fbPopupWindow: null,
+        /**
+         * Filebrowser popup interval handle
+         * @property fbIntervalHandle
+         * @type {Numeric}
+         */
+        fbIntervalHandle: null,
+        /**
+         * Filebrowser popup window
+         * @property fbWindow
+         * @type {Window}
+         */
+        fbWindow: null,
+        /**
+         * Url to CONTENIDO file browser
+         * @property fileUrl
+         * @type {String}
+         */
+        fileUrl: '',
+        /**
+         * Url to CONTENIDO image browser
+         * @property imageUrl
+         * @type {String}
+         */
+        imageUrl: '',
+        /**
+         * Url to CONTENIDO flash browser
+         * @property flashUrl
+         * @type {String}
+         */
+        flashUrl: '',
+        /**
+         * Url to CONTENIDO media browser
+         * @property mediaUrl
+         * @type {String}
+         */
+        mediaUrl: '',
+        /**
+         * Url to current clients frontend
+         * @property frontendPath
+         * @type {String}
+         */
+        frontendPath: '',
+        /**
+         * Confirmation text to save
+         * @property txtQuestion
+         * @type {String}
+         */
+        txtQuestion: '',
+        /**
+         * Idartlang which is currently edited
+         * @property idartlang
+         * @type {Number}
+         */
+        idartlang: 0,
 
-    if (fb_handle.left.left_top.document.getElementById("selectedfile").value != "") {
-        //get selected image from popup and close it
-        fb_win.document.forms[0].elements[fb_fieldname].value = fb_handle.left.left_top.document.getElementById("selectedfile").value;
+        /**
+         * Initializer
+         * @method init
+         * @param {Object}  options  Several options to initialize static Con.Tiny object
+         * @static
+         */
+        init: function(options) {
+            $.each(options, function(key, value) {
+                Con.Tiny[key] = value;
+            });
 
-        fb_handle.close();
-        window.clearInterval(fb_intervalhandle);
+            // Get reference to editcontent form
+            $_form = $('form[name="editcontent"]');
+        },
 
-        //set this selected image in tiny
-        if (fb_win.ImageDialog != null && fb_win.ImageDialog.showPreviewImage) {
-            fb_win.ImageDialog.showPreviewImage(fb_win.document.forms[0].elements[fb_fieldname].value);
-        }
-    }
-}
+        /**
+         * Custom content setup callback function for TinyMCE, see TinyMCE setting
+         * 'setupcontent_callback'.
+         * @method customSetupContentCallback
+         * @param  {String}  editorId
+         * @param  {HTMLElement}  body
+         * @param  {HTMLElement}  doc
+         * @static
+         */
+        customSetupContentCallback: function(editorId, body, doc) {
+            tinymce.get(editorId).setContent(tinymce.get(editorId).getContent());
+        },
 
-
-/**
- * Function converts a given content string (callback of tiny)
- *
- * @param string type - type of content
- * @param string value - string of content
- *
- * @return string - converted content
- */
-function CustomCleanupContent(type, value) {
-    switch (type) {
-        case "get_from_editor":
-        case "insert_to_editor":
-            // Remove xhtml styled tags
-            value = value.replace(/[\s]*\/>/g,'>');
-            break;
-    }
-
-    return value;
-}
-
-/**
- * Function stores content of current opened tiny into global var aEditdata
- * this content is later stored by submitting setcontent()
- * Notice: Global js vars were defined in include.con_editcontent.php
- */
-function storeCurrentTinyContent() {
-    //store last tiny changes if tiny is still open
-    var editor = tinyMCE.getInstanceById(active_id);
-
-    if (editor) {
-        var content          = editor.getContent();
-        content              = content.replace(frontend_path, '');
-        aEditdata[active_id] = content;
-    }
-}
-
-/**
- * Function gets all content stored in aEditdata and sends it as string to server
- * for storage it into database
- * Notice: Global js vars were defined in include.con_editcontent.php
- *
- * @param integer idartlang - idartlang of article which is currently edited
- * @param string act - actionurl of form (optional)
- */
-function setcontent(idartlang, act) {
-    //do not ask user for storage
-    bCheckLeave = false;
-
-    //check if there is still a tiny open and get its content
-    storeCurrentTinyContent();
-
-    var str = '';
-
-    //forach content in js array aEditdata
-    for (var sId in aEditdata) {
-        //check if content has changed, if it has serialize it to string
-        if (aEditdataOrig[sId] != aEditdata[sId]) {
-            var data = sId.split("_");
-
-            // data[0] is the fieldname * needed
-            // data[1] is the idtype
-            // data[2] is the typeid * needed
-
-            // build the string which will be send
-            str += buildDataEntry(idartlang , data[0] , data[2] , prepareString(aEditdata[sId]));
-        }
-    }
-
-    // set the string
-    document.forms.editcontent.data.value = str + document.forms.editcontent.data.value;
-
-    // set the action string
-    if (act != 0) {
-        document.forms.editcontent.action = act;
-    }
-
-    // submit the form
-    document.forms.editcontent.submit();
-}
-
-/**
- * Function escapes chars in content for inserting into submit string.
- * An empty content &nbsp; is replaced by %$%EMPTY%$%
- * | were seperators in string and were replaced by %$%SEPERATOR%$%
- *
- * @param string aContent - content which should be escaped
- * @return string - string with escaped chars
- */
-function prepareString(aContent) {
-    if (aContent == "&nbsp;" || aContent == "") {
-        aContent = "%$%EMPTY%$%";
-    } else {
-        // if there is an | in the text set a replacement chr because we use it later as isolator
-        while (aContent.search(/\|/) != -1) {
-            aContent = aContent.replace(/\|/,"%$%SEPERATOR%$%");
-        }
-    }
-
-    return aContent;
-}
-
-/**
- * Function serializes given args to string and return it. Seperator is |
- *
- * @param integer idartlang - idartlang of article which is currently edited
- * @param string type - type name of content (CMS_HTML)
- * @param integer typeid - id of content (CMS_HTML[4] => 4)
- * @param string value - value of content
- * @return string - serialized vars
- */
-function buildDataEntry(idartlang, type, typeid, value) {
-
-    return idartlang +'|'+ type +'|'+ typeid +'|'+ value +'||';
-
-}
-
-/**
- * Function adds a custom content type to submit strings, adds all other content
- * information and submits it to server using setcontent()
- *
- * @param integer idartlang - idartlang of article which is currently edited
- * @param string type - type name of content (CMS_HTML)
- * @param integer typeid - id of content (CMS_HTML[4] => 4)
- * @param string value - value of content
- */
-function addDataEntry(idartlang, type, typeid, value) {
-
-    document.forms.editcontent.data.value = (buildDataEntry(idartlang, type, typeid, prepareString(value)));
-
-    setcontent(idartlang, '0');
-}
-
-/**
-  * Function closses currently opened tiny
-  *
-  */
-function closeTiny() {
-    //check if tiny is currently open
-    if (active_id && tinyMCE.getInstanceById(active_id)) {
-        //save current tiny content to js var
-        storeCurrentTinyContent();
-
-        //if content was empty set div height. Empty divs were ignored by most browsers
-        if (aEditdata[active_id] == '') {
-            //document.getElementById(active_id).style.height = '15px';
-        }
-
-        //close current open tiny and set active vars to null
-        var tmpId = active_id;
-        setTimeout(function() {
-            if (tmpId) {
-                tinyMCE.execCommand('mceRemoveControl', false, tmpId);
+        /**
+         * Custom cleanup callback function for TinyMCE, see TinyMCE setting
+         * 'cleanup_callback'.
+         * Converts a given content string (callback of tiny)
+         * @method customCleanupCallback
+         * @param  {String}  type  Type of content
+         * @param  {String}  value  String of content
+         * @return  {String}  Converted content
+         * @static
+         */
+        customCleanupCallback: function(type, value) {
+            switch (type) {
+                case 'get_from_editor':
+                case 'insert_to_editor':
+                    // Remove xhtml styled tags
+                    value = value.replace(/[\s]*\/>/g,'>');
+                    break;
             }
-        }, 0);
 
-        active_id     = null;
-        active_object = null;
-    }
-}
+            return value;
+        },
 
-/**
- * Function swaps tiny to a content editable div. If tiny is already open on
- * another div, this tiny was swapped to current div by closing it first
- * tiny swaps on click
- * Notice: Global js vars were defined in include.con_editcontent.php
- *
- * @param object obj - div object which was clicked
- */
-function swapTiny(obj) {
-    //check if tiny is currently open
-    closeTiny();
+        /**
+         * Custom file browser callback function for TinyMCE, see TinyMCE setting
+         * 'file_browser_callback'.
+         * Opens CONTENIDO file browser in popup.
+         *
+         * @method customFileBrowserCallback
+         * @param {String} fieldName  Name of relevant HTML field
+         * @param {String} url  Tiny default but not used in function
+         * @param {String} type  Type of content to add (image, file, ..)
+         * @param {Window} win  Corresponding window object
+         * @static
+         */
+        customFileBrowserCallback: function(fieldName, url, type, win) {
+            switch (type) {
+                case 'image':
+                    Con.Tiny.fbPopupWindow = window.open(Con.Tiny.imageUrl, 'filebrowser', 'dialog=yes,resizable=yes');
+                    Con.Tiny.fbFieldName = fieldName;
+                    Con.Tiny.fbWindow = win;
+                    Con.Tiny.fbIntervalHandle = window.setInterval(function() {
+                        Con.Tiny.updateImageFilebrowser();
+                    }, 250);
+                    break;
+                case 'file':
+                    Con.Tiny.fbPopupWindow = window.open(Con.Tiny.fileUrl, 'filebrowser', 'dialog=yes,resizable=yes');
+                    Con.Tiny.fbFieldName = fieldName;
+                    Con.Tiny.fbWindow = win;
+                    Con.Tiny.fbIntervalHandle = window.setInterval(function() {
+                        Con.Tiny.updateImageFilebrowser();
+                    }, 250);
+                    break;
+                case 'flash':
+                    Con.Tiny.fbPopupWindow = window.open(Con.Tiny.flashUrl, 'filebrowser', 'dialog=yes,resizable=yes');
+                    Con.Tiny.fbFieldName = fieldName;
+                    Con.Tiny.fbWindow = win;
+                    Con.Tiny.fbIntervalHandle = window.setInterval(function() {
+                        Con.Tiny.updateImageFilebrowser();
+                    }, 250);
+                    break;
+                case 'media':
+                    Con.Tiny.fbPopupWindow = window.open(Con.Tiny.mediaUrl, 'filebrowser', 'dialog=yes,resizable=yes');
+                    Con.Tiny.fbFieldName = fieldName;
+                    Con.Tiny.fbWindow = win;
+                    Con.Tiny.fbIntervalHandle = window.setInterval(function() {
+                        Con.Tiny.updateImageFilebrowser();
+                    }, 250);
+                    break;
+                default:
+                    alert(type);
+                    break;
+            }
+        },
 
-    //rest tinymce configs defined in include.con_editcontent.php
-    tinyMCE.settings = tinymceConfigs;
+        /**
+         * Custom save callback function for TinyMCE, see TinyMCE setting
+         * 'save_callback'.
+         * @method customSaveCallback
+         * @param  {String}  elementId
+         * @param  {String}  html
+         * @param  {HTMLElement}  body
+         * @return {String}
+         * @static
+         */
+        customSaveCallback: function(elementId, html, body) {
+            return html.replace(Con.Tiny.frontendPath, '');
+        },
 
-    //set clicked object as active object
-    active_id     = obj.id;
-    active_object = obj;
+        /**
+         * Custom url converter callback function for TinyMCE, see TinyMCE setting
+         * 'urlconverter_callback'.
+         * NOTE: This is not used at the moment.
+         * @method customURLConverterCallback
+         *
+         * @param unknown ...
+         * @static
+         */
+        customURLConverterCallback: function() {
+            // could be implemented if needed
+        },
 
-    //show thiny and focus it
-    if (active_id) {
+        /**
+         * Callback function for tiny which gets a selected image in CONTENIDO
+         * image browser, close browser and set this selected image in tiny
+         * @method updateImageFilebrowser
+         * @static
+         */
+        updateImageFilebrowser: function() {
+            // Check for popup window Error handling
+            if (!Con.Tiny.fbPopupWindow.left) {
+                return;
+            } else if (!Con.Tiny.fbPopupWindow.left.left_top) {
+                return;
+            } else if (!Con.Tiny.fbPopupWindow.left.left_top.document.getElementById('selectedfile')) {
+                return;
+            }
 
-        tinyMCE.execCommand('mceAddControl', false, active_id);
-        setFocus();
+            var leftTopFrame = Con.Tiny.fbPopupWindow.left.left_top;
 
-        //remove height information of clicked div
-        document.getElementById(active_id).style.height = '';
-    }
-}
+            if (leftTopFrame.document.getElementById('selectedfile').value !== '') {
+                // Get selected image from popup and close it
+                Con.Tiny.fbWindow.document.forms[0].elements[Con.Tiny.fbFieldName].value = leftTopFrame.document.getElementById('selectedfile').value;
 
-/**
- * Function sets focus on toggled editor if its loading proccess was completed
- *
- */
-function setFocus() {
-    var activeTinyId = tinyMCE.getInstanceById(active_id);
+                Con.Tiny.fbPopupWindow.close();
+                window.clearInterval(Con.Tiny.fbIntervalHandle);
 
-    if (!activeTinyId) {
-        window.setTimeout('setFocus()', 50);
-    } else {
-        tinyMCE.execInstanceCommand(activeTinyId, 'mceFocus', false);
-    }
-}
+                // Set this selected image in tiny
+                if (Con.Tiny.fbWindow.ImageDialog && "function" === $.type(Con.Tiny.fbWindow.ImageDialog.showPreviewImage)) {
+                    Con.Tiny.fbWindow.ImageDialog.showPreviewImage(Con.Tiny.fbWindow.document.forms[0].elements[Con.Tiny.fbFieldName].value);
+                }
+            }
+        },
 
-/**
- * Callback function of Tiny which opens CONTENIDO file browser in popup
- * Notice: Global js vars were defined in include.con_editcontent.php
- * (image_url, file_url, flash_url, media_url)
- *
- * @param string field_name - Name of relevant HTML field
- * @param string url - Tiny default but not used in function
- * @param string type - Type of content to add (image, file, ..)
- * @param Object win - Corresponding window object
- */
-function myCustomFileBrowser(field_name, url, type, win) {
+        /**
+         * Function stores content of current opened tiny into property editData
+         * this content is later stored by submitting setcontent()
+         * @method storeCurrentTinyContent
+         * @static
+         */
+        storeCurrentTinyContent: function() {
+            // Store last tiny changes if tiny is still open
+            var editor = tinymce.getInstanceById(Con.Tiny.activeId);
 
-    switch (type) {
-        case "image":
-            fb_handle         = window.open(image_url, "filebrowser", "dialog=yes,resizable=yes");
-            fb_fieldname      = field_name;
-            fb_win            = win;
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
-            break;
-        case "file":
-            fb_handle         = window.open(file_url, "filebrowser", "dialog=yes,resizable=yes");
-            fb_fieldname      = field_name;
-            fb_win            = win;
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
-            break;
-        case "flash":
-            fb_handle         = window.open(flash_url, "filebrowser", "dialog=yes,resizable=yes");
-            fb_fieldname      = field_name;
-            fb_win            = win;
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
-            break;
-        case "media":
-            fb_handle         = window.open(media_url, "filebrowser", "dialog=yes,resizable=yes");
-            fb_fieldname      = field_name;
-            fb_win            = win;
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
-            break;
-        default:
-            alert(type);
-            break;
-    }
+            if (editor) {
+                var content = editor.getContent();
+                content = content.replace(Con.Tiny.frontendPath, '');
+                Con.Tiny.editData[Con.Tiny.activeId] = content;
+            }
+        },
 
-}
+        /**
+         * Function gets all content stored in editData and sends it as string to server
+         * for storage it into database
+         *
+         * @method setContent
+         * @param  {Number}  idartlang - idartlang of article which is currently edited
+         * @param  {String}  [action=''] - actionurl of form (optional)
+         * @static
+         */
+        setContent: function(idartlang, action) {
+            action = action || '';
 
-/**
- * Function like storeCurrentTinyContent() which stores original content to
- * global array aEditdataOrig for a later decision if content has changed
- *
- * @param string sContent - original content string
- */
-function updateContent(sContent) {
-    //if original content was already set do not overwrite
-    //this happens if tiny is reopened on same content
-    if (aEditdataOrig[active_id] == undefined) {
-        sContent = sContent.replace(frontend_path, '');
-        aEditdataOrig[active_id] = sContent;
-    }
-}
+            // Do not ask user for storage
+            Con.Tiny.checkOnLeave = false;
 
-// @deprecated  Use leaveCheck()
-function leave_check() {
-    leaveCheck();
-}
+            // Check if there is still a tiny open and get its content
+            Con.Tiny.storeCurrentTinyContent();
 
-/**
- * Function checks if content has changed if user leaves page.
- * Then he has the possiblity to save this content. So there is no
- * guess, that changes get lost.
- * Notice: Global js vars were defined in include.con_editcontent.php
- * (aEditdata, aEditdataOrig, sQuestion, iIdartlang)
- */
-function leaveCheck() {
-    //If tiny is still open store its content
-    storeCurrentTinyContent();
+            var str = '';
 
-    //Check if any content in aEditdata was changed
-    var bAsk = false;
-    for (var sId in aEditdata) {
-        if (aEditdataOrig[sId] != aEditdata[sId]) {
-            bAsk = true;
+            // Forach content in js object editData
+            $.each(Con.Tiny.editData, function(id, val) {
+                // Check if content has changed, if it has serialize it to string
+                if (Con.Tiny.editDataOrg[id] != val) {
+                    // data[0] = fieldname, data[1] = idtype, data[2] = typeid
+                    var data = id.split('_');
+                    // Build the string which will be send
+                    str += Con.Tiny.buildDataEntry(idartlang , data[0] , data[2] , Con.Tiny.prepareString(val));
+                }
+            });
+
+            // Set the string
+            $_form.find('name=["data"]').val(str + $_form.find('name=["data"]').val());
+
+            // Set the action
+            if (action !== 0 && action !== '') {
+                $_form.attr('action', action);
+            }
+
+            // Submit the form
+            $_form.submit();
+        },
+
+        /**
+         * Function escapes chars in content for inserting into submit string.
+         * An empty content &nbsp; is replaced by %$%EMPTY%$%
+         * | were seperators in string and were replaced by %$%SEPERATOR%$%
+         *
+         * @method prepareString
+         * @param {String} str  Content string which should be escaped
+         * @return {String}  String with escaped chars
+         * @static
+         */
+        prepareString: function(str) {
+            if (str === '&nbsp;' || str === '') {
+                str = '%$%EMPTY%$%';
+            } else {
+                // if there is an | in the text set a replacement chr because we use it later as isolator
+                while (str.search(/\|/) != -1) {
+                    str = str.replace(/\|/, '%$%SEPERATOR%$%');
+                }
+            }
+
+            return str;
+        },
+
+        /**
+         * Function serializes given args to string and return it. Seperator is |
+         *
+         * @method buildDataEntry
+         * @param {Number} idartlang  Idartlang of article which is currently edited
+         * @param {String} type  Type name of content (CMS_HTML)
+         * @param {Number} typeid  Id of content (CMS_HTML[4] => 4)
+         * @param {String} value  Value of content
+         * @return {String}  Serialized vars
+         * @static
+         */
+        buildDataEntry: function(idartlang, type, typeid, value) {
+            return idartlang + '|' + type + '|' + typeid + '|' + value + '||';
+        },
+
+        /**
+         * Function adds a custom content type to submit strings, adds all other content
+         * information and submits it to server using setContent()
+         *
+         * @method addDataEntry
+         * @param {Number} idartlang  Idartlang of article which is currently edited
+         * @param {String} type  Type name of content (CMS_HTML)
+         * @param {Number} typeid  Id of content (CMS_HTML[4] => 4)
+         * @param {String} value  Value of content
+         * @static
+         */
+        addDataEntry: function(idartlang, type, typeid, value) {
+            $_form.find('name=["data"]').val(
+                Con.Tiny.buildDataEntry(idartlang, type, typeid, Con.Tiny.prepareString(value))
+            );
+            Con.Tiny.setContent(idartlang);
+        },
+
+        /**
+         * Function closses currently opened tiny
+         * @method closeTiny
+         * @static
+         */
+        closeTiny: function() {
+            //check if tiny is currently open
+            if (Con.Tiny.activeId && tinymce.getInstanceById(Con.Tiny.activeId)) {
+                //save current tiny content to js var
+                Con.Tiny.storeCurrentTinyContent();
+
+                //if content was empty set div height. Empty divs were ignored by most browsers
+                if (Con.Tiny.editData[Con.Tiny.activeId] === '') {
+                    //document.getElementById(Con.Tiny.activeId).style.height = '15px';
+                }
+
+                //close current open tiny and set active vars to null
+                var tmpId = Con.Tiny.activeId;
+                setTimeout(function() {
+                    if (tmpId) {
+                        tinymce.execCommand('mceRemoveControl', false, tmpId);
+                    }
+                }, 0);
+
+                Con.Tiny.activeId = null;
+                Con.Tiny.activeObject = null;
+            }
+        },
+
+        /**
+         * Function swaps tiny to a content editable div. If tiny is already open on
+         * another div, this tiny was swapped to current div by closing it first
+         * tiny swaps on click
+         *
+         * @method swapTiny
+         * @param {HTMLElement} obj - div object which was clicked
+         * @static
+         */
+        swapTiny: function(obj) {
+            // Check if tiny is currently open
+            Con.Tiny.closeTiny();
+
+            // Set tinymce configs
+            tinymce.settings = Con.Tiny.settings;
+
+            // Set clicked object as active object
+            Con.Tiny.activeId = obj.id;
+            Con.Tiny.activeObject = obj;
+
+            // Show thiny and focus it
+            if (Con.Tiny.activeId) {
+                tinymce.execCommand('mceAddControl', false, Con.Tiny.activeId);
+                Con.Tiny.setFocus();
+
+                // Remove height information of clicked div
+                $('#' + Con.Tiny.activeId).css('height', '');
+            }
+        },
+
+        /**
+         * Function sets focus on toggled editor if its loading proccess was completed
+         * @method setFocus
+         * @static
+         */
+        setFocus: function() {
+            var activeTinyId = tinymce.getInstanceById(Con.Tiny.activeId);
+
+            if (!activeTinyId) {
+                window.setTimeout(function () {
+                    Con.Tiny.setFocus();
+                }, 50);
+            } else {
+                tinymce.execInstanceCommand(activeTinyId, 'mceFocus', false);
+            }
+        },
+
+        /**
+         * Function like storeCurrentTinyContent() which stores original content to
+         * property editDataOrg for a later decision if content has changed
+         *
+         * @method updateContent
+         * @param {String} sContent - original content string
+         * @static
+         */
+        updateContent: function(sContent) {
+            // If original content was already set do not overwrite
+            // this happens if tiny is reopened on same content
+            if ('undefined' === $.type(Con.Tiny.editDataOrg[Con.Tiny.activeId])) {
+                sContent = sContent.replace(Con.Tiny.frontendPath, '');
+                Con.Tiny.editDataOrg[Con.Tiny.activeId] = sContent;
+            }
+        },
+
+        /**
+         * Function checks if content has changed if user leaves page.
+         * Then he has the possiblity to save this content. So there is no
+         * guess, that changes get lost.
+         * @method leaveCheck
+         * @static
+         */
+        leaveCheck: function() {
+            // If tiny is still open store its content
+            Con.Tiny.storeCurrentTinyContent();
+
+            // The proerty checkOnLeave is false when user clicks save button.
+            // This is also a case in which he leaves this page but by pressing
+            // save button he also saves all changes
+            if (false === Con.Tiny.checkOnLeave) {
+                // There is no need to perform the check...
+                return;
+            }
+
+            // Check if any content in editData was changed
+            var hasChanges = false;
+            $.each(Con.Tiny.editData, function(id, val) {
+                if (Con.Tiny.editDataOrg[id] !== val) {
+                    hasChanges = true;
+                    return false; // break the loop by return false
+                }
+            });
+
+            // If content was changed ask user if he wants to save content.
+            if (hasChanges) {
+                var check = confirm(Con.Tiny.txtQuestion);
+                // If he wants to save content call function setContent();
+                if (true === check) {
+                    Con.Tiny.setContent(Con.Tiny.idartlang);
+                }
+            }
         }
-    }
 
-    //If content was changed and global var bCheckLeave is set to true
-    //ask user if he wants to save content
-    //ex bCheckLeave is false when user clicks save button. This is also
-    //a case in which he leaves this page but by pressing save button he
-    //also saves all changes
-    if (bAsk && bCheckLeave) {
-        check = confirm(sQuestion);
-        //If he wants to save content call function setcontent();
+    };
 
-        if (check == true) {
-            setcontent(iIdartlang, '0');
-        }
-    }
-}
+
+    // @deprecated [2013-10-25] Assign to windows scope (downwards compatibility)
+    window.myCustomSetupContent = Con.Tiny.customCleanupCallback;
+    window.myCustomFileBrowser = Con.Tiny.customFileBrowserCallback;
+    window.updateImageFilebrowser = Con.Tiny.updateImageFilebrowser;
+    window.CustomCleanupContent = Con.Tiny.customCleanupCallback;
+    window.cutFullpath = Con.Tiny.customSaveCallback;
+    window.storeCurrentTinyContent = Con.Tiny.storeCurrentTinyContent;
+    window.setcontent = Con.Tiny.setContent;
+    window.prepareString = Con.Tiny.prepareString;
+    window.buildDataEntry = Con.Tiny.buildDataEntry;
+    window.addDataEntry = Con.Tiny.addDataEntry;
+    window.closeTiny = Con.Tiny.closeTiny;
+    window.swapTiny = Con.Tiny.swapTiny;
+    window.setFocus = Con.Tiny.setFocus;
+    window.updateContent = Con.Tiny.updateContent;
+    // @deprecated  Use leaveCheck()
+    window.leave_check = Con.Tiny.leaveCheck;
+    window.leaveCheck = Con.Tiny.leaveCheck;
+    window.active_id = Con.Tiny.activeId;
+    window.active_object = Con.Tiny.activeObject;
+    window.aEditdata = Con.Tiny.editData;
+    window.aEditdataOrig = Con.Tiny.editDataOrg;
+    window.bCheckLeave = Con.Tiny.checkOnLeave;
+    window.tinymceConfigs = Con.Tiny.settings;
+    window.fb_fieldname = Con.Tiny.fbFieldName;
+    window.fb_handle = Con.Tiny.fbPopupWindow;
+    window.fb_intervalhandle = Con.Tiny.fbIntervalHandle;
+    window.fb_win = Con.Tiny.fbWindow;
+    window.file_url = Con.Tiny.fileUrl;
+    window.image_url = Con.Tiny.imageUrl;
+    window.flash_url = Con.Tiny.flashUrl;
+    window.media_url = Con.Tiny.mediaUrl;
+    window.frontend_path = Con.Tiny.frontendPath;
+    window.iIdartlang = Con.Tiny.idartlang;
+    window.sQuestion = Con.Tiny.txtQuestion;
+
+})(Con, Con.$);

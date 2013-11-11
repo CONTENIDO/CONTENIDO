@@ -18,6 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 plugin_include('workflow', 'classes/class.workflow.php');
 
 $page = new cGuiPage("workflow_edit", "workflow");
+$page->addStyle('workflow.css');
 
 if ($action == "workflow_delete") {
     $page->displayInfo(i18n('Deleted workflow successfully!', 'workflow'));
@@ -48,19 +49,23 @@ if ((int) $idworkflow == 0) {
 }
 
 if ($idworkflow) {
-    $sReloadScript = "<script type=\"text/javascript\">
-                         var left_bottom = top.content.frames['left'].frames['left_bottom'];
-                         var right_top = top.content.frames['right'].frames['right_top'];
-                         if (left_bottom) {
-                             var href = left_bottom.location.href;
-                             href = href.replace(/&action=workflow_delete/, '');
-                             left_bottom.location.href = href+'&idworkflow='+" . $idworkflow . ";
-                         }
+    $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var left_bottom = Con.getFrame('left_bottom');
+    var right_top = Con.getFrame('right_top');
+    if (left_bottom) {
+        var href = Con.UtilUrl.replaceParams(left_bottom.location.href, {idworkflow: {$idworkflow}, action: null});
+        left_bottom.location.href = href;
+    }
 
-                         if (right_top) {
-                            right_top.location.href = right_top.location.href+'&idworkflow='+" . $idworkflow . ";
-                         }
-                     </script>";
+    if (right_top) {
+        right_top.location.href = right_top.location.href + '&idworkflow={$idworkflow}';
+    }
+})(Con, Con.$);
+</script>
+JS;
+
 } else {
     $sReloadScript = '';
 }
@@ -100,5 +105,3 @@ if (!empty($sReloadScript)) {
 }
 
 $page->render();
-
-?>

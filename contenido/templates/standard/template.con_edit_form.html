@@ -1,16 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
+    <title>template.con_edit_form.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
     <!-- get javascript files for language != en -->
     {CAL_LANG}
@@ -183,37 +177,31 @@
     </form>
 
 <script type="text/javascript">
-var sid = "{SID}";
-
 var bNoArticle = {bNoArticle};
 if (bNoArticle) {
     $("input#saveart").click(function() {
-        conMultiLink('right_top', 'main.php?area=con&frame=3&idcat={iIdcat}&idtpl={iIdtpl}&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}&action=saveart&bNoArticle='+{bNoArticle});
-        if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
-            menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1');
-            parent.parent.frames["right"].frames["right_top"].menuItem.firstChild;
-        }
+        Con.multiLink(
+            'right_top', 'main.php?area=con&frame=3&idcat={iIdcat}&idtpl={iIdtpl}&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido=' + Con.sid + '&action=saveart&bNoArticle='+{bNoArticle}
+        );
+        Con.markSubmenuItem('c_1');
         return true;
     });
 }
 
 // Create a reference to the Article Object in frame 'right_top'
-artObj = parent.parent.frames["left"].frames["left_top"].artObj;
+var artObj = Con.getFrame('left_top').artObj;
 
-if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1')) {
-    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_1');
-    parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
-}
+Con.markSubmenuItem('c_1');
 
 {DATAPUSH}
 
 function removeAssignments(idart, idcat) {
-    url  = 'main.php?area=con_editart';
+    var url  = 'main.php?area=con_editart';
     url += '&action=remove_assignments';
     url += '&frame=4';
     url += '&idart=' + idart;
     url += '&idcat=' + idcat;
-    url += '&contenido=' + sid;
+    url += '&contenido=' + Con.sid;
     window.location.href = url;
 }
 
@@ -239,98 +227,96 @@ function disableFunctionsOnTimeControl() {
     }
 }
 
-$(document).ready(function() {
-    $('#publishing_date').datetimepicker({
-        buttonImage: '{PATH_TO_CALENDER_PIC}',
-        buttonImageOnly: true,
-        showOn: 'both',
-        dateFormat: 'yy-mm-dd'
-    });
+(function(Con, $) {
+    $(function() {
+        $('#publishing_date').datetimepicker({
+            buttonImage: '{PATH_TO_CALENDER_PIC}',
+            buttonImageOnly: true,
+            showOn: 'both',
+            dateFormat: 'yy-mm-dd'
+        });
 
-    $('#datestart').datetimepicker({
-        buttonImage: '{PATH_TO_CALENDER_PIC}',
-        buttonImageOnly: true,
-        showOn: 'both',
-        dateFormat: 'yy-mm-dd',
-        disabled: {IS_DATETIMEPICKER_DISABLED},
-        onClose: function(dateText, inst) {
-            var endDateTextBox = $('#dateend');
-            if (endDateTextBox.val() != '') {
-                var testStartDate = new Date(dateText);
-                var testEndDate = new Date(endDateTextBox.val());
-                if (testStartDate > testEndDate) {
+        $('#datestart').datetimepicker({
+            buttonImage: '{PATH_TO_CALENDER_PIC}',
+            buttonImageOnly: true,
+            showOn: 'both',
+            dateFormat: 'yy-mm-dd',
+            disabled: {IS_DATETIMEPICKER_DISABLED},
+            onClose: function(dateText, inst) {
+                var endDateTextBox = $('#dateend');
+                if (endDateTextBox.val() != '') {
+                    var testStartDate = new Date(dateText);
+                    var testEndDate = new Date(endDateTextBox.val());
+                    if (testStartDate > testEndDate) {
+                        endDateTextBox.val(dateText);
+                    }
+                } else {
                     endDateTextBox.val(dateText);
                 }
-            } else {
-                endDateTextBox.val(dateText);
+            },
+            onSelect: function(selectedDateTime) {
+                var start = $(this).datetimepicker('getDate');
+                $('#dateend').datetimepicker('option', 'minDate', new Date(start.getTime()));
             }
-        },
-        onSelect: function(selectedDateTime) {
-            var start = $(this).datetimepicker('getDate');
-            $('#dateend').datetimepicker('option', 'minDate', new Date(start.getTime()));
-        }
-    });
+        });
 
-    $('#dateend').datetimepicker({
-        buttonImage: '{PATH_TO_CALENDER_PIC}',
-        buttonImageOnly: true,
-        showOn: 'both',
-        dateFormat: 'yy-mm-dd',
-        disabled:{IS_DATETIMEPICKER_DISABLED},
-        onClose: function(dateText, inst) {
-            var startDateTextBox = $('#datestart');
-            if (startDateTextBox.val() != '') {
-                var testStartDate = new Date(startDateTextBox.val());
-                var testEndDate = new Date(dateText);
-                if (testStartDate > testEndDate) {
+        $('#dateend').datetimepicker({
+            buttonImage: '{PATH_TO_CALENDER_PIC}',
+            buttonImageOnly: true,
+            showOn: 'both',
+            dateFormat: 'yy-mm-dd',
+            disabled:{IS_DATETIMEPICKER_DISABLED},
+            onClose: function(dateText, inst) {
+                var startDateTextBox = $('#datestart');
+                if (startDateTextBox.val() != '') {
+                    var testStartDate = new Date(startDateTextBox.val());
+                    var testEndDate = new Date(dateText);
+                    if (testStartDate > testEndDate) {
+                        startDateTextBox.val(dateText);
+                    }
+                } else {
                     startDateTextBox.val(dateText);
                 }
-            } else {
-                startDateTextBox.val(dateText);
+            },
+            onSelect: function(selectedDateTime) {
+                var end = $(this).datetimepicker('getDate');
+                $('#datestart').datetimepicker('option', 'maxDate', new Date(end.getTime()));
             }
-        },
-        onSelect: function(selectedDateTime) {
-            var end = $(this).datetimepicker('getDate');
-            $('#datestart').datetimepicker('option', 'maxDate', new Date(end.getTime()));
-        }
+        });
+
+        $("div#categorypath > a").click(function() {
+            var url = $(this).attr('href');
+            var params = Con.UtilUrl.getParams(url);
+            Con.multiLink(
+                'right_top', 'main.php?area=con&frame=3&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido=' + Con.sid,
+                'right_bottom', url,
+                'left_bottom', 'main.php?area=con&frame=2&idcat=' + params.idcat + '&idtpl=' + params.idtpl + '&contenido=' + Con.sid
+            );
+            return false;
+        });
+
+        // status code switch
+        var $checkForwarding = $('#checkbox_forwarding');
+
+        var _onCheckForwardingClick = function(event) {
+            if ($checkForwarding.is(':checked')) {
+                $('#redirect_mode').removeAttr('disabled');
+            } else {
+                $('#redirect_mode').prop('disabled', 'disabled');
+            }
+        };
+
+        $checkForwarding.click(_onCheckForwardingClick);
+
+        // set initial status code switch state
+        _onCheckForwardingClick();
+
+        disableFunctionsOnTimeControl();
     });
+})(Con, Con.$);
 
-    $("div#categorypath > a").click(function() {
-        var url = $(this).attr('href');
-        var sVal = url.split("idcat=");
-        var aVal = sVal[1].split("&");
-        var iIdcat = aVal[0];
-        sVal = url.split("idtpl=");
-        aVal = sVal[1].split("&");
-        var iIdtpl = aVal[0];
-        conMultiLink(
-            'right_top', 'main.php?area=con&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu={DISPLAY_MENU}&syncoptions={SYNCOPTIONS}&contenido={SESSION}',
-            'right_bottom', url,
-            'left_bottom', 'main.php?area=con&frame=2&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&contenido={SESSION}'
-        );
-        return false;
-    });
-
-    // status code switch
-    var $checkForwarding = $('#checkbox_forwarding');
-
-    var _onCheckForwardingClick = function(event) {
-        if ($checkForwarding.is(':checked')) {
-            $('#redirect_mode').removeAttr('disabled');
-        } else {
-            $('#redirect_mode').prop('disabled', 'disabled');
-        }
-    };
-
-    $checkForwarding.click(_onCheckForwardingClick);
-
-    // set initial status code switch state
-    _onCheckForwardingClick();
-
-    disableFunctionsOnTimeControl();
-
-});
 </script>
+
 </body>
 </html>
 <!--

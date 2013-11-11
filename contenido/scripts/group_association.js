@@ -1,144 +1,228 @@
-/*****************************************
-*
-* $Id$
-*
-* File      :   $RCSfile: group_association.js,v $
-* Project   : CONTENIDO
-* Descr     : File contains java script functions for filtering users in select areas, handling short keys and submitting form
-*                This functions are used in template template.grouprights_memberselect.html
-*
-* Author    :   $Author: timo.trautmann$
-* Modified  :   $Date: 2008/03/13 16:37:44 $
-*
-* © four for business AG, www.4fb.de
-******************************************/
-
-
-var keycode = 0; //last pressed key
-var addAction = ''; //CONTENIDO action for adding user to group - (different fpr frontentgroups and backendgroups)
-var deleteAction = ''; //CONTENIDO action for removing user from group - (different fpr frontentgroups and backendgroups)
+/* global Con: true, jQuery: true */
 
 /**
- * Initialization of previous defined variables
+ * Project:
+ * CONTENIDO Content Management System
  *
- * @param string add - adding user CONTENIDO action
- * @param string del - removing user CONTENIDO action
+ * Description:
+ * File contains java script functions for filtering users in select areas, handling
+ * short keys and submitting form. This functions are used in template
+ * template.grouprights_memberselect.html
  *
- */
-function init(add, del) {
-    addAction = add;
-    deleteAction = del;
-}
-
-/**
- * Function submits form when users were added to group or removed from group
+ * @module     goup-association
+ * @package    CONTENIDO Backend Scripts
+ * @version    1.0.0
+ * @author     Timo Trautmann
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  *
- * @param string isAdded - CONTENIDO action string
- *
- */
-function setAction(isAdded) {
-    var selectId = null;
-    //case of adding new members
-    if (isAdded == addAction) {
-        selectId = 'newmember';
-        document.group_properties.action.value = addAction;
-    //case of removing existing members
-    } else {
-        selectId = 'user_in_group';
-        document.group_properties.action.value = deleteAction;
-    }
-
-    var sSelectBox = document.getElementById(selectId);
-    //only submit form, if a user is selected
-    if (sSelectBox.selectedIndex != -1) {
-        document.group_properties.submit();
-    }
-}
-
-/**
- * Function filters entries in select box and shows only relevant users for selection
- *
- * @param string id - id of textbox, which contains the search string
+ * {@internal
+ *   created ??
+ *   modified 2013-10-17  Murat Purc - Refactored code, made a module
+ *   $Id$
+ * }}
  *
  */
-function filter (id) {
-    //get search string ans buid regular expression
-    var sFilterValue = document.getElementById(id).value;
-    var oReg = new RegExp(sFilterValue,"gi");
 
-    //build id of corresponding select box
-    var sSelectId = id.replace(/_filter_value/, '');
+(function(Con, $) {
+    'use strict';
 
-    //get select box and corresponding options
-    var sSelectBox = document.getElementById(sSelectId);
-    var oOptions = sSelectBox.getElementsByTagName('option');
+    // #########################################################################
+    // Some constants
 
-    //remove all options
-    var iLen = oOptions.length;
-    for (var i = 0; i < iLen; i++) {
-        sSelectBox.removeChild(oOptions[0]);
-    }
+    var NAME = 'goup-association';
 
-    //get all options which where avariable in hidden select box
-    var sSelectBoxAll = document.getElementById('all_'+sSelectId);
-    var oOptionsAll = sSelectBoxAll.getElementsByTagName('option');
+    var SELECTOR_ACTION = 'input[name="action"]';
 
-    //iterate over all hidden options
-    var count = 0;
-    for (var i = 0; i < oOptionsAll.length; i++) {
-        //get the label of the option
-        var label = oOptionsAll[i].firstChild.nodeValue;
+    /**
+     * Group association class
+     * @class  GoupAssociation
+     * @constructor
+     * @param {Object}  options  Configuration properties as follows
+     * <pre>
+     *    selectorForm  (String)
+     *    add  (String)
+     *    del  (String)
+     * </pre>
+     */
+    Con.GoupAssociation = function(options) {
 
-        //if option label matches to search string
-        if (label.match(oReg)) {
-            //generate new option element, fill it with the hidden values and append it to the select box which is viewable
-            var newOption = document.createElement('option');
-            newOption.value = oOptionsAll[i].value;
-            newOption.innerHTML = label;
-            newOption.disabled = false;
-            sSelectBox.appendChild(newOption);
-            count++;
+        // #####################################################################
+        // Setup and private variables
+
+        /**
+         * Last pressed key
+         * @property keycode
+         * @type {Number}
+         * @private
+         */
+        var keycode = 0; //
+        /**
+         * CONTENIDO action for adding user to group - (different fpr frontentgroups and backendgroups)
+         * @property addAction
+         * @type {String}
+         * @private
+         */
+        var addAction = options.add;
+        /**
+         * CONTENIDO action for removing user from group - (different fpr frontentgroups and backendgroups)
+         * @property deleteAction
+         * @type {String}
+         * @private
+         */
+        var deleteAction = options.del;
+        /**
+         * Reference to form
+         * @property $form
+         * @type {HTMLElement}
+         * @private
+         */
+        var $form = $(options.selectorForm);
+
+        // #####################################################################
+        // Private functions
+
+        /**
+         * Function submits form when users were added to group or removed from group
+         * @method setAction
+         * @param  {String}  isAdded - CONTENIDO action string
+         * @private
+         */
+        function setAction(isAdded) {
+            var selectId = null;
+            //case of adding new members
+            if (isAdded == addAction) {
+                selectId = '#newmember';
+                $form.find(SELECTOR_ACTION).val(addAction);
+            //case of removing existing members
+            } else {
+                selectId = '#user_in_group';
+                $form.find(SELECTOR_ACTION).val(deleteAction);
+            }
+
+            //only submit form, if a user is selected
+            if ($(selectId).prop('selectedIndex') != -1) {
+                $form.submit();
+            }
         }
-    }
 
-    //if there are no options, deactivate corresponding move button
-    if (count == 0) {
-        document.getElementById(sSelectId+'_button').disabled = true;
-    } else {
-        document.getElementById(sSelectId+'_button').disabled = false;
-    }
-}
+        /**
+         * Function filters entries in select box and shows only relevant users for selection
+         * @method _filter
+         * @param  {String}  id - id of textbox, which contains the search string
+         * @private
+         */
+        function _filter(id) {
+            //get search string ans buid regular expression
+            var sFilterValue = document.getElementById(id).value;
+            var oReg = new RegExp(sFilterValue, 'gi');
 
-/**
- * Function is callend when user types into the filter inputs
- *
- * @param string id - id of textbox, which contains the search string
- *
- */
-function keyHandler(id)  {
-    //if user pressed enter key into filter input, js function filter is called
-    if (keycode == 13) {
-        filter(id);
-    }
-}
+            //build id of corresponding select box
+            var sSelectId = id.replace(/_filter_value/, '');
 
-/**
- * Function is callend when user presses a key
- *
- * @param object event - event object
- *
- */
-function setKeyCode (event) {
-    if (!event)
-        event = window.event;
-    if (event.keyCode) {
-        //for ie: store keycode, which is pressed into global variable
-        keycode = event.keyCode;
-    } else if (event.which) {
-        //for mozilla: store keycode, which is pressed into global variable
-        keycode = event.which;
-    }
-}
+            //get select box and corresponding options
+            var sSelectBox = document.getElementById(sSelectId);
+            var oOptions = sSelectBox.getElementsByTagName('option');
 
-//Activate listener, which calls function setKeyCode when user presses a key on keyboard
-document.onkeydown = setKeyCode;
+            //remove all options
+            var iLen = oOptions.length;
+            for (var i = 0; i < iLen; i++) {
+                sSelectBox.removeChild(oOptions[0]);
+            }
+
+            //get all options which where avariable in hidden select box
+            var sSelectBoxAll = document.getElementById('all_'+sSelectId);
+            var oOptionsAll = sSelectBoxAll.getElementsByTagName('option');
+
+            //iterate over all hidden options
+            var count = 0;
+            for (var i = 0; i < oOptionsAll.length; i++) {
+                //get the label of the option
+                var label = oOptionsAll[i].firstChild.nodeValue;
+
+                //if option label matches to search string
+                if (label.match(oReg)) {
+                    //generate new option element, fill it with the hidden values and append it to the select box which is viewable
+                    var newOption = document.createElement('option');
+                    newOption.value = oOptionsAll[i].value;
+                    newOption.innerHTML = label;
+                    newOption.disabled = false;
+                    sSelectBox.appendChild(newOption);
+                    count++;
+                }
+            }
+
+            //if there are no options, deactivate corresponding move button
+            if (count == 0) {
+                document.getElementById(sSelectId+'_button').disabled = true;
+            } else {
+                document.getElementById(sSelectId+'_button').disabled = false;
+            }
+        }
+
+        /**
+         * Function is callend when user types into the filter inputs
+         * @method _keyHandler
+         * @param  {String}  id - id of textbox, which contains the search string
+         * @private
+         */
+        function _keyHandler(id)  {
+            //if user pressed enter key into filter input, js function filter is called
+            if (keycode == 13) {
+                _filter(id);
+            }
+        }
+
+        /**
+         * Function is callend when user presses a key
+         * @method setKeyCode
+         * @param  {Event}  event  - event object
+         * @private
+         */
+        function setKeyCode(event) {
+            if (!event) {
+                event = window.event;
+            }
+            if (event.keyCode) {
+                //for ie: store keycode, which is pressed into global variable
+                keycode = event.keyCode;
+            } else if (event.which) {
+                //for mozilla: store keycode, which is pressed into global variable
+                keycode = event.which;
+            }
+        }
+
+        // #####################################################################
+        // Initialize module and bind ui
+
+        // Activate listener, which calls function setKeyCode when user presses a key on keyboard
+        document.onkeydown = setKeyCode;
+
+        // #####################################################################
+        // Public interface
+
+        return {
+
+            /**
+             * @method filter
+             * @param {String}  id
+             */
+            filter: function(id) {
+                return _filter(id);
+            },
+            /**
+             * @method keyHandler
+             * @param {String}  id
+             */
+            keyHandler: function(id) {
+                return _keyHandler(id);
+            }
+
+        };
+
+    };
+
+})(Con, Con.$);

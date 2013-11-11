@@ -16,7 +16,6 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $tpl->reset();
-$tpl->set('s', 'SID', $sess->id);
 
 if (($action == "group_delete") && ($perm->have_perm_area_action($area, $action))) {
     $sql = "DELETE FROM " . $cfg["tab"]["groups"] . " WHERE group_id = '" . $db->escape($groupid) . "'";
@@ -81,7 +80,6 @@ $thisperm = explode(',', $auth->auth['perm']);
 $accessibleClients = $classclient->getAccessibleClients();
 
 while ($db->nextRecord()) {
-
     $groupperm = explode(',', $db->f('perms'));
 
     $allow = false;
@@ -100,20 +98,18 @@ while ($db->nextRecord()) {
 
     // Group check
     foreach ($groupperm as $localperm) {
-
         if (in_array($localperm, $thisperm)) {
             $allow = true;
         }
     }
 
     if ($allow == true) {
-
         $groupid = $db->f("group_id");
         $groupname = $db->f("groupname");
 
         $groupname = substr($groupname, 4);
 
-        $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+        $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
         $area = "groups";
         $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&groupid=$groupid"), 'right_bottom', $sess->url("main.php?area=groups_overview&frame=4&groupid=$groupid"), $groupname);
 
@@ -139,7 +135,7 @@ while ($db->nextRecord()) {
             $delTitle = i18n("Delete group");
             $delDescr = sprintf(i18n("Do you really want to delete the following group:<br><br>%s<br>"), conHtmlSpecialChars($groupname));
 
-            $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteGroup(&quot;' . $groupid . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>');
+            $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteGroup(&quot;' . $groupid . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>');
         } else {
             $tpl->set('d', 'DELETE', '&nbsp;');
         }

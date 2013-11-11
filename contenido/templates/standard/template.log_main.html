@@ -1,13 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
+    <title>template.log_main.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
 </head>
 
 <body style="margin:10px">
@@ -15,54 +14,62 @@
 {FORM}
 <table class="generic" id="optionselect" cellspacing="0" cellpadding="2">
     <tr>
-        <th valign="top" cellspacing="0" cellpadding="2">i18n("Filter")</th>
-        <th valign="top" cellspacing="0" cellpadding="2">i18n("Value")</th>
+        <th valign="top">i18n("Filter")</th>
+        <th valign="top">i18n("Value")</th>
     </tr>
     <tr>
-        <td valign="top" cellspacing="0" cellpadding="2">i18n("Client"):</td>
-        <td valign="top" cellspacing="0" cellpadding="2"><select name="idqclient" >{CLIENTS}</select></td>
+        <td valign="top">i18n("Client"):</td>
+        <td valign="top"><select name="idqclient">{CLIENTS}</select></td>
     </tr>
 
      <tr>
-        <td valign="top"  cellspacing="0" cellpadding="2">i18n("Language"):</td>
-        <td valign="top"  cellspacing="0" cellpadding="2">{LANGUAGE}</td>
+        <td valign="top">i18n("Language"):</td>
+        <td valign="top">{LANGUAGE}</td>
     </tr>
     <tr>
-        <td valign="top"  cellspacing="0" cellpadding="2">i18n("User"):</td>
-        <td valign="top"  cellspacing="0" cellpadding="2"><select name="idquser" >{USERS}</select></td>
+        <td valign="top">i18n("User"):</td>
+        <td valign="top"><select name="idquser">{USERS}</select></td>
     </tr>
     <tr>
-        <td valign="top"  cellspacing="0" cellpadding="2">i18n("Action"):</td>
-        <td valign="top"  cellspacing="0" cellpadding="2"><select name="idqaction" >{ACTION}</select></td>
+        <td valign="top">i18n("Action"):</td>
+        <td valign="top"><select name="idqaction">{ACTION}</select></td>
     </tr>
     <tr>
-        <td valign="top"  cellspacing="0" cellpadding="2">i18n("Start date"):</td>
-        <td valign="top"  cellspacing="0" cellpadding="2">{FROMDAY}{FROMMONTH}{FROMYEAR}</td>
+        <td valign="top">i18n("Start date"):</td>
+        <td valign="top">
+            {FROMDAY}
+            {FROMMONTH}
+            {FROMYEAR}
+        </td>
      </tr>
       <tr>
-        <td valign="top"  cellspacing="0" cellpadding="2">i18n("End date"):</td>
-        <td valign="top"  cellspacing="0" cellpadding="2">{TODAY}{TOMONTH}{TOYEAR}</td>
+        <td valign="top">i18n("End date"):</td>
+        <td valign="top">
+            {TODAY}
+            {TOMONTH}
+            {TOYEAR}
+        </td>
      </tr>
      <tr>
-        <td valign="top"  cellspacing="0" cellpadding="2">i18n("Limit"):</td>
-        <td valign="top"  cellspacing="0" cellpadding="2">{LIMIT}</td>
+        <td valign="top">i18n("Limit"):</td>
+        <td valign="top">{LIMIT}</td>
     </tr>
-
-
-    <tr id="{ROWNAME}">
-        <td valign="top" align="right" colspan="5"><INPUT type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}"></td>
+    <tr>
+        <td valign="top" align="right" colspan="5">
+            <input type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}">
+        </td>
     </tr>
 </table>
 <br>
-<table class="generic" id="results"  cellspacing="0" cellpadding="2">
-    <tr id="{ROWNAME}">
-      <th valign="top">{LABEL_CLIENT}</th>
-      <th valign="top">{LABEL_LANG}</th>
-      <th valign="top">{LABEL_DATE}</th>
-      <th valign="top">{LABEL_USER}</th>
-      <th valign="top">{LABEL_ACTION}</th>
-      <th valign="top">{LABEL_CATEGORY}</th>
-      <th valign="top">{LABEL_ARTICLE}</th>
+<table class="generic" id="results" cellspacing="0" cellpadding="2">
+    <tr>
+        <th valign="top">{LABEL_CLIENT}</th>
+        <th valign="top">{LABEL_LANG}</th>
+        <th valign="top">{LABEL_DATE}</th>
+        <th valign="top">{LABEL_USER}</th>
+        <th valign="top">{LABEL_ACTION}</th>
+        <th valign="top">{LABEL_CATEGORY}</th>
+        <th valign="top">{LABEL_ARTICLE}</th>
     </tr>
     <!-- BEGIN:BLOCK -->
     <tr id="{ROWNAME}">
@@ -76,7 +83,6 @@
     </tr>
     <!-- END:BLOCK -->
     {NORESULTS}
-
 </table>
 </form>
 </body>

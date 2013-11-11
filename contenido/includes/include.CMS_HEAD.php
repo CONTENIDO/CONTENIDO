@@ -16,11 +16,12 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $backendUrl = cRegistry::getBackendUrl();
+$frontendUrl = cRegistry::getFrontendUrl();
 
 if (isset($area) && $area == 'con_content_list') {
     $tmp_area = $area;
-    $path1 = $backendUrl . 'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
-            '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
+    $path1 = $backendUrl . 'main.php?area=con_content_list&action=10&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang .
+            '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido;
     $path2 = $path1;
 } else {
     $tmp_area = "con_editcontent";
@@ -32,63 +33,70 @@ if ($doedit == "1") {
     conSaveContentEntry($idartlang, "CMS_HEAD", $typenr, $CMS_HEAD);
     conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
-    header("Location:".$sess->url($path1)."");
+    header("Location:" . $sess->url($path1) . "");
 }
+
+getAvailableContentTypes($idartlang);
+
 header("Content-Type: text/html; charset={$encoding[$lang]}");
+
+ob_start();
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="<?php print $backendUrl . $cfg["path"]["styles"] ?>contenido.css">
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>">
+    <base href="<?php echo $frontendUrl; ?>">
+    <title>include.CMS_HEAD.php</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_FULLHTML_}
+    <style type="text/css">
+    body.cms_edit {margin: 19px;}
+    .cms_edit_row {padding: 4px 0; margin: 0;}
+    </style>
+{_JS_HEAD_CONTENIDO_FULLHTML_}
 </head>
-<body marginheight=0 marginwidth=0 leftmargin=0 topmargin=0>
-<table width="100%"  border=0 cellspacing="0" cellpadding="0">
-  <tr>
-    <td width="10" rowspan="4"><img src="<?php print $backendUrl . $cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
-    <td width="100%"><img src="<?php print $backendUrl . $cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
-    <td width="10" rowspan="4"><img src="<?php print $backendUrl . $cfg["path"]["images"] ?>spacer.gif" width="10" height="10"></td>
-  </tr>
-  <tr>
-    <td>
 
-<?php
+<body class="cms_edit">
+    <div class="cms_edit_wrap">
+        <form method="post" action="<?php echo $backendUrl . $cfg["path"]["includes"] ?>include.backendedit.php">
+            <input type="hidden" name="action" value="10">
+            <input type="hidden" name="changeview" value="edit">
+            <input type="hidden" name="doedit" value="1">
+            <input type="hidden" name="idart" value="<?php echo $idart ?>">
+            <input type="hidden" name="idartlang" value="<?php echo $idartlang ?>">
+            <input type="hidden" name="idcat" value="<?php echo $idcat ?>">
+            <input type="hidden" name="lang" value="<?php echo $lang ?>">
+            <!--
+            <input type="hidden" name="submit" value="editcontent">
+            -->
+            <input type="hidden" name="type" value="<?php echo $type ?>">
+            <input type="hidden" name="typenr" value="<?php echo $typenr ?>">
 
+<?php if ($type == "CMS_HEAD") : ?>
 
+            <p class="cms_edit_row text_medium">
+                &nbsp;<?php echo $typenr?>.&nbsp;<?php echo $a_description[$type][$typenr]?>:&nbsp;
+            </p>
 
-    getAvailableContentTypes($idartlang);
+            <div class="cms_edit_row">
+                <input type="text" name="CMS_HEAD" value="<?php echo conHtmlSpecialChars($a_content[$type][$typenr]) ?>" size="90">
+            </div>
 
-    echo "  <form method=\"post\" action=\"". $backendUrl .$cfg["path"]["includes"]."include.backendedit.php\">";
-    echo "  <input type=hidden name=lang value=\"$lang\">";
-//        echo "  <input type=hidden name=submit value=\"editcontent\">";
-    echo "  <input type=hidden name=typenr value=\"$typenr\">";
-    echo "  <input type=hidden name=idart value=\"$idart\">";
-    echo "  <input type=hidden name=idcat value=\"$idcat\">";
-    echo "  <input type=hidden name=idartlang value=\"$idartlang\">";
-    echo "  <input type=hidden name=action value=\"10\">";
-    echo "  <input type=hidden name=doedit value=1>";
-    echo "  <input type=hidden name=type value=\"$type\">";
-    echo "<input type=hidden name=changeview value=\"edit\">";
+<?php endif; ?>
 
-    echo "  <table cellpadding=$cellpadding cellspacing=$cellpadding border=0>";
-
-    if ($type == "CMS_HEAD") {
-            echo "  <tr><td valign=\"top\" class=text_medium>&nbsp;".$typenr.".&nbsp;".$a_description[$type][$typenr].":&nbsp;</td><td class=content>";
-            echo "  <input type=text name=\"CMS_HEAD\" value=\"".conHtmlSpecialChars($a_content[$type][$typenr])."\" size=90>";
-            echo "  </td></tr>";
-    }
-
-    echo "  <tr valign=top><td colspan=2><br>
-                  <a href=".$sess->url($path2)."><img src=\"". $backendUrl . $backendUrl ."but_cancel.gif\" border=0></a>
-                  <input type=image name=submit value=editcontent src=\"". $backendUrl .$cfg["path"]["images"]."but_ok.gif\" border=0>
-                  </td></tr>";
-
-    echo "  </table>
-                  </form>";
-
-?>
-</td></tr></table>
+            <div class="cms_edit_row">
+                <a href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" border="0"></a>
+                <input type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" border="0">
+            </div>
+        </form>
+    </div>
 </body>
 </html>
+<?php
+
+$output = ob_get_contents();
+ob_end_clean();
+
+$tpl = new cTemplate();
+$tpl->generate($output);

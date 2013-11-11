@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
     $(".ZipExtract").hide();
     $("#13").hide();
 });

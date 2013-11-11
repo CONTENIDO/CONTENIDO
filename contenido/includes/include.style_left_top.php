@@ -19,18 +19,16 @@ $tpl->set('s', 'ID', 'oTplSel');
 $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'CAPTION', '');
-$tpl->set('s', 'SESSID', $sess->id);
-
-
 $tpl->set('s', 'ACTION', $select);
 
-$tmp_mstr = '<div class="leftTopAction"><a class="addfunction" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
-$area = "style";
-$mstr = sprintf($tmp_mstr, 'right_top',
-                                   $sess->url("main.php?area=style&frame=3"),
-                                   'right_bottom',
-                                   $sess->url("main.php?area=style&frame=4&action=style_create"),
-                                   i18n("Create style"));
+$tmp_mstr = '<div class="leftTopAction"><a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a></div>';
+$area = 'style';
+$mstr = sprintf(
+    $tmp_mstr,
+    'right_top', $sess->url("main.php?area=style&frame=3"),
+    'right_bottom', $sess->url("main.php?area=style&frame=4&action=style_create"),
+    i18n("Create style")
+);
 if ((int) $client > 0) {
     if ($perm->have_perm_area_action($area, "style_create")) {
         $tpl->set('s', 'NEWSTYLE', $mstr);
@@ -40,5 +38,5 @@ if ((int) $client > 0) {
 } else {
     $tpl->set('s', 'NEWSTYLE', i18n('No Client selected'));
 }
+
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['style_left_top']);
-?>

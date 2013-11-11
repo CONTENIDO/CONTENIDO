@@ -44,9 +44,13 @@ $cfg['templates']['generic_list']         = 'template.generic_list.html';
 $cfg['templates']['input_helper_row']     = 'template.input_helper_row.html';
 $cfg['templates']['input_helper']         = 'template.input_helper.html';
 $cfg['templates']['left_top']             = 'template.left_top.html';
+$cfg['templates']['left_top_blank']       = 'template.left_top_blank.html';
 $cfg['templates']['right_top_blank']      = 'template.right_top_blank.html';
 
-$cfg['templates']['admin_frontend']       = 'template.admin_frontend.html';
+$cfg['templates']['admin_frontend']           = 'template.admin_frontend.html'; // @deprecated: Use $cfg['templates']['frontend_left_top'], name doesn't follows naming conventions!!!
+$cfg['templates']['frontend_left_top']        = 'template.frontend_left_top.html';
+$cfg['templates']['frontend_left_top_filter'] = 'template.frontend_left_top_filter.html';
+
 
 $cfg['templates']['con_edit_form']        = 'template.con_edit_form.html';
 $cfg['templates']['con_meta_edit_form']   = 'template.con_meta_edit_form.html';
@@ -56,6 +60,9 @@ $cfg['templates']['con_str_overview']     = 'template.con_str_overview.html';
 $cfg['templates']['con_art_overview']     = 'template.con_art_overview.html';
 $cfg['templates']['con_left_top']         = 'template.con_left_top.html';
 $cfg['templates']['con_subnav']           = 'template.con_subnav.html';
+$cfg['templates']['con_left_top_art_search'] = 'template.con_left_top_art_search.html';
+$cfg['templates']['con_left_top_cat_edit'] = 'template.con_left_top_cat_edit.html';
+$cfg['templates']['con_left_top_sync']    = 'template.con_left_top_sync.html';
 
 $cfg['templates']['str_overview']         = 'template.str_overview.html';
 
@@ -67,6 +74,7 @@ $cfg['templates']['lay_edit_form']        = 'template.lay_edit_form.html';
 $cfg['templates']['lay_left_top']         = 'template.lay_left_top.html';
 
 $cfg['templates']['mod_left_top']         = 'template.mod_left_top.html';
+$cfg['templates']['mod_left_top_filter']  = 'template.mod_left_top_filter.html';
 
 $cfg['templates']['tpl_overview']         = 'template.tpl_overview.html';
 
@@ -82,14 +90,15 @@ $cfg['templates']['stat_top']             = 'template.stat_top.html';
 $cfg['templates']['stat_menu']            = 'template.stat_menu.html';
 
 $cfg['templates']['rights_left_top']      = 'template.rights_left_top.html';
+$cfg['templates']['rights_left_top_filter'] = 'template.rights_left_top_filter.html';
 $cfg['templates']['rights_menu']          = 'template.rights_menu.html';
 $cfg['templates']['rights_overview']      = 'template.rights_overview.html';
 $cfg['templates']['rights_create']        = 'template.rights_create.html';
-$cfg['templates']['include.rights']       = 'template.rights.html';
+$cfg['templates']['rights']               = 'template.rights.html';
+$cfg['templates']['include.rights']       = 'template.rights.html';  // @deprecated: Use $cfg['templates']['rights'], name doesn't follows naming conventions!!!
 
 $cfg['templates']['log_main']             = 'template.log_main.html';
 
-$cfg['templates']['left_top_blank']       = 'template.left_top_blank.html';
 $cfg['templates']['subnav_blank']         = 'template.subnav_blank.html';
 
 $cfg['templates']['tplcfg_edit_form']     = 'template.tplcfg_edit_form.html';
@@ -107,7 +116,6 @@ $cfg['templates']['mycontenido_lastarticles'] = 'template.mycontenido_lastarticl
 $cfg['templates']['grouprights_left_top'] = 'template.grouprights_left_top.html';
 $cfg['templates']['grouprights_create']   = 'template.grouprights_create.html';
 $cfg['templates']['grouprights_memberselect'] = 'template.grouprights_memberselect.html';
-
 $cfg['templates']['grouprights_menu']     = 'template.grouprights_menu.html';
 $cfg['templates']['grouprights_overview'] = 'template.grouprights_overview.html';
 
@@ -128,24 +136,14 @@ $cfg['templates']['system_purge']         = 'template.system_purge.html';
 $cfg['templates']['inuse_tpl']            = 'template.inuse_tpl.html';
 $cfg['templates']['inuse_lay_mod']        = 'template.inuse_lay_mod.html';
 
-$cfg['templates']['default_subnav']       = 'template.default_subnav.html';
+$cfg['templates']['default_subnav']       = 'template.default_subnav.html'; // @deprecated: [2013-10-24] Use $cfg['templates']['subnav']
 
 $cfg['templates']['debug_visibleadv']     = 'template.debug.visibleadv.html';
 $cfg['templates']['debug_header']         = 'template.debug.header.html';
 $cfg['templates']['debug_visible']        = 'template.debug.visible.html';
 
-$cfg["templates"]["front_loginform"]      = "template.front.loginform.html";
+$cfg['templates']['front_loginform']      = 'template.front.loginform.html';
 
-$cfg["templates"]["con_left_top_art_search"] = "template.con_left_top_art_search.html";
-$cfg["templates"]["con_left_top_cat_edit"] = "template.con_left_top_cat_edit.html";
-$cfg["templates"]["con_left_top_sync"]    = "template.con_left_top_sync.html";
-
-$cfg["templates"]["frontend_left_top_filter"] = "template.frontend_left_top_filter.html";
-
-$cfg["templates"]["mod_left_top_filter"]  = "template.mod_left_top_filter.html";
-
-$cfg["templates"]["rights_left_top_filter"] = "template.rights_left_top_filter.html";
-
-$cfg["templates"]["breadcrumb"]           = "template.breadcrumb.html";
+$cfg['templates']['breadcrumb']           = 'template.breadcrumb.html';
 
 ?>

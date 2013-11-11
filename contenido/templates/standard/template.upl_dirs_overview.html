@@ -1,56 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <title>template.upl_dirs_overview.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/parameterCollector.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var myLoc = window.location.href;
-            if (myLoc.indexOf('action=upl_delete') != -1) {
-                var right_bottom = top.content.right.right_bottom;
-                $('body', window.parent.parent.right.right_bottom.document).html('');
-                $('#navlist', window.parent.parent.right.right_top.document).remove();
-                $('#root').click();
-            }
-        });
-
-        var sid = "{SID}";
-
-        function deleteDirectory(path) {
-            var url = 'main.php?area=upl';
-            url += '&frame=2';
-            url += '&contenido=' + sid;
-            {APPENDPARAMETERS}
-            url += '&path=' + path;
-            url += '&action=upl_delete';
-            window.location.href = url;
-        }
-
-        function renameDir (oldname, parent) {
-            var newname = prompt("{RENAME}", oldname);
-            var url;
-
-            if (newname) {
-                url  = 'main.php?area=upl';
-                url += '&action=upl_renamedir';
-                url += '&frame=2';
-                url += '&newname=' + newname;
-                url += '&oldname=' + oldname;
-                url += '&parent=' + parent;
-                url += '&contenido=' + sid;
-                window.location.href = url;
-            }
-        }
-    </script>
 </head>
 <body>
 
@@ -59,7 +15,7 @@
 
 <table width="87%" style="margin:10px 10px 10px 17px;" cellspacing="0" cellpadding="0" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr id="{PATH}" onmouseover="upl.over(this)" onmouseout="upl.out(this)" onclick="upl.click(this)">
+    <tr id="{ID_PATH}" data-path="{DATA_PATH}" onmouseover="upl.over(this)" onmouseout="upl.out(this)" onclick="upl.click(this)">
         <td style="padding-left: {INDENT}px">
             <table style="margin-top:-1px;" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
@@ -71,24 +27,79 @@
     </tr>
     <!-- END:BLOCK -->
 </table>
+
 <script type="text/javascript">
-    var id_path = '{ID_PATH}';
-    if (id_path != '' && document.getElementById(id_path)) {
-        upl.click(document.getElementById(id_path));
+
+var idPath = '{ID_PATH}';
+
+function refreshMenu() {
+    var frame = Con.getFrame('left_top');
+
+    if (frame.document.getElementById('caption2')) {
+        frame.document.getElementById('caption2').innerHTML = idPath;
     }
 
-    function refreshMenu() {
-        var left_top = top.content.left.left_top;
-
-        if (left_top.document.getElementById('caption2')) {
-            left_top.document.getElementById('caption2').innerHTML = id_path;
-        }
-
-        if (left_top.document.newdir) {
-            left_top.document.newdir.selectedfile.value = id_path;
-            left_top.document.newdir.path.value = id_path;
-        }
+    if (frame.document.newdir) {
+        frame.document.newdir.selectedfile.value = idPath;
+        frame.document.newdir.path.value = idPath;
     }
+}
+
+function deleteDirectory(path) {
+    var url = Con.UtilUrl.build('main.php', {
+        area: 'upl',
+        action: 'upl_delete',
+        frame: 2,
+        path: path,
+    });
+    url += {APPENDPARAMETERS};
+    window.location.href = url;
+}
+
+function renameDir(oldname, parent) {
+    var newname = prompt("{RENAME}", oldname);
+    if (newname) {
+        var url = Con.UtilUrl.build('main.php', {
+            area: 'upl',
+            action: 'upl_renamedir',
+            frame: 2,
+            newname: newname,
+            oldname: oldname,
+            parent: parent
+        });
+        window.location.href = url;
+    }
+}
+
+(function(Con, $) {
+    $(function() {
+        if (idPath != '' && $('#' + idPath)) {
+            upl.click($('#' + idPath)[0]);
+        }
+
+/*
+    <a title="' . i18n("Delete directory") . '" href="javascript:void(0)" onclick="event.cancelBubble=true;Con.showConfirmation(&quot;' . i18n("Do you really want to delete the following directory:") . '<b>' . $file . '</b>' . '&quot;, function() { deleteDirectory(&quot;' . $pathstring . '&quot;); });return false;">
+
+*/
+        $('.jsDelete').click(function(e) {
+            e.stopPropagation();
+            var deleteMsg = "{DELETE_MSG}";
+            var path = $(this).parent('[data-path]').data('path');
+            Con.showConfirmation(deleteMsg.replace('{path}', path), function() {
+                deleteDirectory(path);
+            });
+            return false;
+        });
+
+        var myLoc = window.location.href;
+        if (myLoc.indexOf('action=upl_delete') != -1) {
+            $('body', Con.getFrame('right_bottom').document).html('');
+            $('#navlist', Con.getFrame('right_top').document).remove();
+            $('#root').click();
+        }
+    });
+})(Con, Con.$);
+
 </script>
 </body>
 </html>

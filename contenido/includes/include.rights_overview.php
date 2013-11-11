@@ -144,7 +144,6 @@ if (count($aPerms) == 0 || $action == '' || !isset($action)) {
 }
 
 $tpl->reset();
-$tpl->set('s', 'SID', $sess->id);
 $tpl->set('s', 'NOTIFICATION', $sNotification);
 
 $tpl->set("s", "AREA", $area);

@@ -15,17 +15,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$page = new cGuiPage("workflow_left_top", "workflow");
+$page = new cGuiPage('workflow_left_top', 'workflow');
+$page->addStyle('workflow.css');
+$page->addBodyClassName('page_left_top');
 
 $create = new cHTMLLink();
-$create->setMultiLink("workflow", "", "workflow_common", "workflow_create");
-// $create->setCLink("workflow_common",4,"workflow_create");
-$create->setContent(i18n("Create workflow", "workflow"));
-$create->setCustom("idworkflow", "-1");
+$create->setMultiLink('workflow', '', 'workflow_common', 'workflow_create');
+// $create->setCLink('workflow_common',4,'workflow_create');
+$create->setContent(i18n('Create workflow', 'workflow'));
+$create->setCustom('idworkflow', '-1');
 $aAttributes = array();
-$aAttributes['class'] = "addfunction";
+$aAttributes['class'] = 'addfunction';
 $create->updateAttributes($aAttributes);
-$page->set("s", "LINK", $create->render());
+$page->set('s', 'LINK', $create->render());
 $page->render();
-
-?>

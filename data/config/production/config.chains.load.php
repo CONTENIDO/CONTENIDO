@@ -22,6 +22,7 @@ cInclude('includes', 'chains/include.chain.frontend.cat_access.php');
 cInclude('includes', 'chains/include.chain.content.createmetatags.php');
 cInclude('includes', 'chains/include.chain.frontend.createbasehref.php');
 cInclude('includes', 'chains/include.chain.content.indexarticle.php');
+cInclude('includes', 'chains/include.chain.template.parsetemplate.php');
 
 // get cec registry instance
 $_cecRegistry = cApiCecRegistry::getInstance();
@@ -30,3 +31,5 @@ $_cecRegistry->addChainFunction('Contenido.Frontend.CategoryAccess', 'cecFronten
 $_cecRegistry->addChainFunction('Contenido.Content.CreateMetatags', 'cecCreateMetatags');
 $_cecRegistry->addChainFunction('Contenido.Frontend.BaseHrefGeneration', 'cecCreateBaseHref');
 $_cecRegistry->addChainFunction('Contenido.Content.AfterStore', 'cecIndexArticle');
+$_cecRegistry->addChainFunction('Contenido.Template.BeforeParse', 'cecParseTemplate');
+

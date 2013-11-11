@@ -327,9 +327,5 @@ while ($oItem = $actionLogColl->next()) {
     $tpl->next();
 }
 
-
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['log_main']);
-
-
-?>

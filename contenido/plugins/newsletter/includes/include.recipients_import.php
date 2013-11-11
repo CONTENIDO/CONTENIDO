@@ -362,17 +362,17 @@ unset($sInfo);
 
 $sExecScript = '
 <script type="text/javascript">
-    /* Enabled/Disable group box */
-    function fncShowHide(strItemID) {
-        objItem = document.getElementById(strItemID);
+// Enabled/Disable group box
+function fncShowHide(strItemID) {
+    objItem = document.getElementById(strItemID);
 
-        if (objItem.style.display == "none") {
-           objItem.style.display = "inline";
-        } else {
-           objItem.style.display = "none";
-        }
+    if (objItem.style.display == "none") {
+       objItem.style.display = "inline";
+    } else {
+       objItem.style.display = "none";
     }
-    </script>';
+}
+</script>';
 $oPage->addScript($sExecScript);
 $oPage->setContent($oForm);
 $oPage->render();

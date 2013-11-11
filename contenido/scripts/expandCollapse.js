@@ -1,4 +1,3 @@
-var bMsie = (document.all) ? true : false;
 
 var sExpandString = '';
 var sCollapseString = '';
@@ -10,13 +9,7 @@ function init(transOpen, transClose) {
     sExpandString = transOpen;
 
     var aStatrows = document.getElementsByTagName('tr');
-    var sDisplay = '';
-
-    if (bMsie) {
-        sDisplay = 'block';
-    } else {
-        sDisplay = 'table-row';
-    }
+    var sDisplay = (Con.isMsie) ? 'block' : 'table-row';
     var preButton = null;
     var preAIds = null;
     var level = 1;
@@ -47,17 +40,13 @@ function changeVisibility (sIdClicked, iLevel, iIdCat) {
     var sDisplay = '';
     var aIdsClicked = sIdClicked.split('_');
 
-    var oButton = document.getElementById (sIdClicked+'_img');
+    var oButton = document.getElementById(sIdClicked + '_img');
 
     if (oButton.src.match(/open_all.gif/)) {
         oButton.src = sCollapseButton;
         oButton.title = sCollapseString;
         oButton.alt = sCollapseString;
-        if (bMsie) {
-            sDisplay = 'block';
-        } else {
-            sDisplay = 'table-row';
-        }
+        sDisplay = (Con.isMsie) ? 'block' : 'table-row';
     } else {
         oButton.src = sExpandButton;
         oButton.title = sExpandString;

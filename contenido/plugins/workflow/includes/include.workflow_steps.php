@@ -20,6 +20,7 @@ plugin_include('workflow', 'includes/functions.workflow.php');
 cInclude("includes", "functions.encoding.php");
 
 $page = new cGuiPage("workflow_steps", "workflow");
+$page->addStyle('workflow.css');
 
 $iIdMarked = (int) $_GET['idworkflowitem'];
 

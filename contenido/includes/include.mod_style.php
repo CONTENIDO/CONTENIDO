@@ -69,14 +69,16 @@ if (!$contenidoModulHandler->moduleWriteable('css')) {
 $contenidoModulHandler->createModuleFile('css'); // Make automatic a new css file
 
 if (stripslashes($file)) {
-    $sReloadScript = "<script type=\"text/javascript\">
-                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                         if (left_bottom) {
-                             var href = left_bottom.location.href;
-                             href = href.replace(/&file.*/, '');
-                             left_bottom.location.href = href+'&file='+'" . $file . "';
-                         }
-                     </script>";
+    $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$file}'});
+    }
+})(Con, Con.$);
+</script>
+JS;
 } else {
     $sReloadScript = '';
 }
@@ -91,14 +93,16 @@ if (getFileType($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
 }
 
 if (stripslashes($file)) {
-    $sReloadScript = "<script type=\"text/javascript\">
-                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                         if (left_bottom) {
-                             var href = left_bottom.location.href;
-                             href = href.replace(/&file[^&]*/, '');
-                             left_bottom.location.href = href+'&file='+'" . $sFilename . "';
-                         }
-                     </script>";
+    $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
+    }
+})(Con, Con.$);
+</script>
+JS;
 } else {
     $sReloadScript = '';
 }
@@ -127,13 +131,17 @@ if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
     $fileInfoCollection = new cApiFileInformationCollection();
     $fileInfoCollection->updateFile($sFilename, 'css', $_REQUEST['description'], $auth->auth['uid']);
 
-    $sReloadScript .= "<script type=\"text/javascript\">
-                 var right_top = top.content.right.right_top;
-                 if (right_top) {
-                     var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
-                     right_top.location.href = href;
-                 }
-                 </script>";
+    $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
+    $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('right_top');
+    if (frame) {
+        frame.location.href = '{$urlReload}';
+    }
+})(Con, Con.$);
+</script>
+JS;
 
     if ($ret && $bEdit) {
         $page->displayInfo(i18n('Created new css file successfully'));
@@ -152,13 +160,18 @@ if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
             $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $path . $sTempFilename));
             exit();
         }
-        $sReloadScript .= "<script type=\"text/javascript\">
-                             var right_top = top.content.right.right_top;
-                             if (right_top) {
-                                 var href = '" . $sess->url("main.php?area=$area&frame=3&file=$sTempFilename") . "';
-                                 right_top.location.href = href;
-                             }
-                             </script>";
+
+        $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
+        $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('right_top');
+    if (frame) {
+        frame.location.href = '{$urlReload}';
+    }
+})(Con, Con.$);
+</script>
+JS;
     } else {
         $sTempFilename = $sFilename;
     }
@@ -195,9 +208,8 @@ if (isset($actionRequest)) {
         }
         $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(), $sCode);
     } else {
-        $sCode = stripslashes($_REQUEST['code']); // stripslashes is required
-                                                      // here in case of creating a
-                                                      // new file
+        // stripslashes is required here in case of creating a new file
+        $sCode = stripslashes($_REQUEST['code']); 
     }
     $fileInfoCollection = new cApiFileInformationCollection();
     $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, 'css');

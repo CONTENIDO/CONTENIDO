@@ -32,8 +32,8 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
    $fegroup = $fegroups->create(" ".i18n("-- New group --"));
    $idfrontendgroup = $fegroup->get("idfrontendgroup");
    $sRefreshRightTopLink = $sess->url('main.php?frame=3&area='.$area.'&idfrontendgroup='.$idfrontendgroup);
-   $sRefreshRightTopLink = "conMultiLink('right_top', '".$sRefreshRightTopLink."')";
-   $sRefreshRightTopLinkJs = "<script type=\"text/javascript\">".$sRefreshRightTopLink."</script>";
+   $sRefreshRightTopLink = "Con.multiLink('right_top', '".$sRefreshRightTopLink."')";
+   $sRefreshRightTopLinkJs = '<script type="text/javascript">' . $sRefreshRightTopLink . '</script>';
    $successMessage = i18n("Created new frontend-group successfully");
 } else if ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action)) {
     $aDeleteMembers = array();
@@ -69,18 +69,21 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
 }
 
 if ($action != '') {
-    $sReloadScript = "<script type=\"text/javascript\">
-                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                         if (left_bottom) {
-                             var href = left_bottom.location.href;
-                             href = href.replace(/&idfrontendgroup[^&]*/, '');
-                             href = href.replace(/&action[^&]*/, '');
-                             left_bottom.location.href = href+'&idfrontendgroup='+".$idfrontendgroup.";
-                             if (window.top.content.left.left_top.refresh()) {
-                                 top.content.left.left_top.refresh();
-                             }
-                         }
-                     </script>";
+    $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        var href = Con.UtilUrl.replaceParams(frame.location.href, {idfrontendgroup: {$idfrontendgroup}, action: null});
+        frame.location.href = href;
+        var frame2 = Con.getFrame('left_top');
+        if (frame2 && 'function' === $.type(frame2.refresh)) {
+            frame2.refresh();
+        }
+    }
+})(Con, Con.$);
+</script>
+JS;
 } else {
     $sReloadScript = '';
 }

@@ -1,18 +1,8 @@
 
-<div id="top_left_container">
-	<!-- BEGIN:BLOCK -->
-	<div class="leftTopAction">
-		{ACTION}
-	</div>
-	<!-- END:BLOCK -->
+<div id="top_left_container" data-resizegap="10">
+    <!-- BEGIN:BLOCK -->
+    <div class="leftTopAction">
+        {ACTION}
+    </div>
+    <!-- END:BLOCK -->
 </div>
-
-<script type="text/javascript">
-	/**
-	 * resize frame
-	 */
-	$(function() {
-		var offsetHeight = document.getElementById('top_left_container').offsetHeight;
-		parent.parent.frameResize.resizeTopLeftFrame(offsetHeight + 10);
-	});
-</script>

@@ -27,6 +27,7 @@ if (isset($_REQUEST['path'])) {
     $sDisplayPath = $sCurrentPathInfo;
 }
 
+echo "<pre>$sDisplayPath</pre>";
 $sDisplayPath = generateDisplayFilePath($sDisplayPath, 35);
 $tpl->set('s', 'CAPTION2', $sDisplayPath);
 
@@ -41,11 +42,11 @@ if ((int) $client == 0) {
 // Form for 'Search'
 if ($appendparameters != 'filebrowser' && (int) $client > 0) {
     $search = new cHTMLTextbox('searchfor', $_REQUEST['searchfor'], 26);
-    $search->setStyle('width:170px');
+    $search->setClass('text_small vAlignMiddle');
     $sSearch = $search->render();
 
     $form = new cHTMLForm('search');
-    $form->appendContent('<table border="0" cellspacing="0" cellpadding="0"><tr><td>' . $sSearch . '</td><td><input class="tableElement" type="image" src="images/submit.gif"></td></tr></table>');
+    $form->appendContent($sSearch . ' <input class="vAlignMiddle tableElement" type="image" src="images/submit.gif">');
     $form->setVar('area', $area);
     $form->setVar('frame', $frame);
     $form->setVar('contenido', $sess->id);
@@ -92,17 +93,26 @@ if ($perm->have_perm_area_action('upl', 'upl_mkdir') && (int) $client > 0) {
 if ($searchfor != '') {
     $items = uplSearch($searchfor);
 
-    $tmp_mstr = 'conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')';
-    $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_search_results&frame=4&searchfor=$searchfor&appendparameters=$appendparameters"), 'right_top', $sess->url("main.php?area=$area&frame=3&appendparameters=$appendparameters"));
-    $refreshMenu = "\n" . 'if (top.content.left.left_bottom) top.content.left.left_bottom.refreshMenu()';
+    $tmp_mstr = 'Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')';
+    $mstr = sprintf(
+        $tmp_mstr,
+        'right_bottom', $sess->url("main.php?area=upl_search_results&frame=4&searchfor=$searchfor&appendparameters=$appendparameters"),
+        'right_top', $sess->url("main.php?area=$area&frame=3&appendparameters=$appendparameters")
+    );
+    $refreshMenu = "\n" . 'if (Con.getFrame(\'left_bottom\')) { Con.getFrame(\'left_bottom\').refreshMenu(); }';
     $tpl->set('s', 'RESULT', $mstr . $refreshMenu);
 } else {
     $tpl->set('s', 'RESULT', '');
 }
 
 // Create javascript multilink
-$tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\',\'%s\', \'%s\')">%s</a>';
-$mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img src="images/ordner_oben.gif" align="middle" alt="" border="0"><img align="middle" src="images/spacer.gif" width="5" border="0">' . $file);
+$tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\',\'%s\', \'%s\')">%s</a>';
+$mstr = sprintf(
+    $tmp_mstr,
+    'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"),
+    'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"),
+    '<img src="images/ordner_oben.gif" align="middle" alt="" border="0"><img align="middle" src="images/spacer.gif" width="5" border="0">' . $file
+);
 
 $tpl->set('d', 'PATH', $pathstring);
 $tpl->set('d', 'BGCOLOR', $bgcolor);

@@ -21,8 +21,6 @@ $sql = "SELECT * FROM " . $cfg["tab"]["tpl"] . " WHERE idclient = '" . cSecurity
 $db->query($sql);
 $tpl->reset();
 
-$tpl->set('s', 'SID', $sess->id);
-
 while ($db->nextRecord()) {
 
     if ($perm->have_perm_item($area, $db->f("idtpl")) ||
@@ -37,15 +35,21 @@ while ($db->nextRecord()) {
         $idtpl = $db->f("idtpl");
 
         // create javascript multilink
-        $tmp_mstr = '<a title="%s" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+        $tmp_mstr = '<a title="%s" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 
         if ($db->f("defaulttemplate") == 1) {
             $mstr = sprintf(
-                    $tmp_mstr, conHtmlSpecialChars($descr), 'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"), "<b>" . $name . "</b>"
+                $tmp_mstr, conHtmlSpecialChars($descr),
+                'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"),
+                'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"),
+                '<b>' . $name . '</b>'
             );
         } else {
             $mstr = sprintf(
-                    $tmp_mstr, conHtmlSpecialChars($descr), 'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"), $name
+                $tmp_mstr, conHtmlSpecialChars($descr),
+                'right_top', $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"),
+                'right_bottom', $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"),
+                $name
             );
         }
 
@@ -55,7 +59,7 @@ while ($db->nextRecord()) {
             $tpl->set('d', 'NAME', $name);
         }
 
-        $tpl->set("d", "DESCRIPTION", ($descr == "") ? '' : $descr);
+        $tpl->set('d', 'DESCRIPTION', ($descr == '') ? '' : $descr);
 
         // Check if template is in use
         $inUse = tplIsTemplateInUse($idtpl);
@@ -65,58 +69,32 @@ while ($db->nextRecord()) {
         if (!$inUse && ($perm->have_perm_area_action_item("tpl", "tpl_delete", $db->f("idtpl")))) {
             $delTitle = i18n("Delete template");
             $delDescr = sprintf(
-                    i18n("Do you really want to delete the following template:<br><br>%s<br>"), conHtmlSpecialChars($name)
+                i18n("Do you really want to delete the following template:<br><br>%s<br>"), conHtmlSpecialChars($name)
             );
 
             $tpl->set('d', 'DELETE', '
-                <a
-                    title="' . $delTitle . '"
-                    href="javascript:void(0)"
-                    onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteTemplate(' . $idtpl . '); });return false;"
-                >
-                    <img
-                        src="' . $cfg['path']['images'] . 'delete.gif"
-                        border="0"
-                        title="' . $delTitle . '"
-                        alt="' . $delTitle . '" />
-                </a>');
+                <a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteTemplate(' . $idtpl . '); });return false;">
+                    <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '">
+                </a>'
+            );
             $tpl->set('d', 'INUSE', '<img src="images/spacer.gif" width="16">');
         } else {
             $delDescription = i18n("Template in use, cannot delete");
-            $tpl->set('d', 'DELETE', '<img
-                    src="' . $cfg['path']['images'] . 'delete_inact.gif"
-                    border="0" title="' . $delDescription . '"
-                    alt="' . $delDescription . '" />'
-            );
+            $tpl->set('d', 'DELETE', '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . $delDescription . '" alt="' . $delDescription . '">');
             $tpl->set('d', 'INUSE', '
-                <a
-                    href="javascript:;"
-                    rel="' . (int) $db->f("idtpl") . '"
-                    class="in_used_tpl"
-                >
-                    <img
-                        src="' . $cfg['path']['images'] . 'exclamation.gif"
-                        border="0"
-                        title="' . $inUseString . '"
-                        alt="' . $inUseString . '" />
-                </a>');
+                <a href="javascript:;" rel="' . (int) $db->f("idtpl") . '" class="in_used_tpl">
+                    <img src="' . $cfg['path']['images'] . 'exclamation.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '">
+                </a>'
+            );
         }
 
         if ($perm->have_perm_area_action_item("tpl", "tpl_dup", $db->f("idtpl"))) {
             $copybutton = '
-                <a
-                    target="right_bottom"
-                    href="' . $sess->url("main.php?area=tpl_edit&action=tpl_duplicate&idtpl=$idtpl&frame=4") . '"
-                    title="' . i18n("Duplicate template") . '"
-                >
-                    <img
-                        src="' . $cfg["path"]["images"] . 'but_copy.gif' . '"
-                        border="0"
-                        title="' . i18n("Duplicate template") . '"
-                        alt="' . i18n("Duplicate template") . '" />
+                <a target="right_bottom" href="' . $sess->url("main.php?area=tpl_edit&action=tpl_duplicate&idtpl=$idtpl&frame=4") . '" title="' . i18n("Duplicate template") . '">
+                    <img src="' . $cfg["path"]["images"] . 'but_copy.gif' . '" border="0" title="' . i18n("Duplicate template") . '" alt="' . i18n("Duplicate template") . '">
                 </a>';
         } else {
-            $copybutton = '<img src="images/spacer.gif" width="14" height="1" />';
+            $copybutton = '<img src="images/spacer.gif" width="14" height="1">';
         }
 
         $tpl->set('d', 'COPY', $copybutton);
@@ -128,7 +106,7 @@ while ($db->nextRecord()) {
 
 // datas for show of used info per ajax
 $tpl->set('s', 'AREA', $area);
-$tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'AJAXURL', cRegistry::getBackendUrl() . 'ajaxmain.php');
 $tpl->set('s', 'BOX_TITLE', i18n("The template '%s' is used for following categories and articles") . ":");
+
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tpl_overview']);

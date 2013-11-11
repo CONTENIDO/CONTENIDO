@@ -16,15 +16,18 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $oPage = new cGuiPage("frontend.user_menu");
-//
-// /* Set default values */
+
 $oUser = new cApiUser($auth->auth["uid"]);
+
+// Set default values
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] <= 0) {
     $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
 if (!is_numeric($_REQUEST['elemperpage'])) {
     $_REQUEST['elemperpage'] = 25;
 }
+
+// Save user property
 $oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
 unset($oUser);
 
@@ -42,19 +45,28 @@ $aFieldsToSort = array(
     "modified" => i18n("Modified")
 );
 
-$aFieldSources = array();
-$aFieldSources["username"] = "base";
-$aFieldSources["created"] = "created";
-$aFieldSources["modified"] = "modified";
+$aFieldSources = array(
+    "username" => "base",
+    "created" => "created",
+    "modified" => "modified"
+);
+
+$aElementsPerPage = array(
+    25 => 25,
+    50 => 50,
+    75 => 75,
+    100 => 100
+);
+
+$aSortOrderOptions = array(
+    "asc" => i18n("Ascending"),
+    "desc" => i18n("Descending")
+);
 
 $bUsePlugins = getEffectiveSetting("frontendusers", "pluginsearch", "true");
+$bUsePlugins = ($bUsePlugins == "false") ? false : true;
 
-if ($bUsePlugins == "false") {
-    $bUsePlugins = false;
-} else {
-    $bUsePlugins = true;
-}
-
+// @TODO  Why do we have to include plugins, if they should not be used?
 if (is_array($cfg['plugins']['frontendusers'])) {
     foreach ($cfg['plugins']['frontendusers'] as $plugin) {
         plugin_include("frontendusers", $plugin . "/" . $plugin . ".php");
@@ -91,43 +103,36 @@ if ($bUsePlugins == true) {
     }
 }
 
-$aSortOrderOptions = array(
-    "asc" => i18n("Ascending"),
-    "desc" => i18n("Descending")
-);
-
+// Elements per page
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelectItemsPerPage->autoFill(array(
-    25 => 25,
-    50 => 50,
-    75 => 75,
-    100 => 100
-));
+$oSelectItemsPerPage->autoFill($aElementsPerPage);
 $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
 
 asort($aFieldsToSort);
 asort($aFieldsToSearch);
 
+// Sort by filter
 $oSelectSortBy = new cHTMLSelectElement("sortby");
 $oSelectSortBy->autoFill($aFieldsToSort);
 $oSelectSortBy->setDefault($_REQUEST["sortby"]);
 
+// Sort order filter
 $oSelectSortOrder = new cHTMLSelectElement("sortorder");
 $oSelectSortOrder->autoFill($aSortOrderOptions);
 $oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
 
+// Search in filter
 $oSelectSearchIn = new cHTMLSelectElement("searchin");
 $oSelectSearchIn->autoFill($aFieldsToSearch);
 $oSelectSearchIn->setDefault($_REQUEST["searchin"]);
 
+// Frontend groups filter
 $fegroups = new cApiFrontendGroupCollection();
 $fegroups->setWhere("idclient", $client);
 $fegroups->query();
-
 $aFEGroups = array(
     "--all--" => i18n("-- All Groups --")
 );
-
 while ($fegroup = $fegroups->next()) {
     $aFEGroups[$fegroup->get("idfrontendgroup")] = $fegroup->get("groupname");
 }
@@ -136,6 +141,7 @@ $oSelectRestrictGroup = new cHTMLSelectElement("restrictgroup");
 $oSelectRestrictGroup->autoFill($aFEGroups);
 $oSelectRestrictGroup->setDefault($_REQUEST["restrictgroup"]);
 
+// Search text filter
 $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
 
 $oFEUsers = new cApiFrontendUserCollection();
@@ -223,17 +229,10 @@ while ($feuser = $oFEUsers->next()) {
     }
 }
 
-if ($_REQUEST["sortorder"] == "desc") {
-    $sortorder = SORT_DESC;
-} else {
-    $sortorder = SORT_ASC;
-}
+$sortorder = ($_REQUEST["sortorder"] == "desc") ? SORT_DESC : SORT_ASC;
+$sortby = ($_REQUEST["sortby"]) ? $_REQUEST["sortby"] : "username";
 
-if ($_REQUEST["sortby"]) {
-    $aUserTable = cArray::csort($aUserTable, $_REQUEST["sortby"], $sortorder);
-} else {
-    $aUserTable = cArray::csort($aUserTable, "username", $sortorder);
-}
+$aUserTable = cArray::csort($aUserTable, $sortby, $sortorder);
 
 $mlist = new cGuiMenu();
 $iMenu = 0;
@@ -250,10 +249,8 @@ foreach ($aUserTable as $mkey => $params) {
     if (($iItemCount > ($elemperpage * ($mPage - 1)) && $iItemCount < (($elemperpage * $mPage) + 1)) || $bUsePlugins == false) {
         $iMenu++;
 
-        $message = sprintf(i18n("Do you really want to delete the user %s?"), conHtmlSpecialChars($params["username"]));
-
         $delTitle = i18n("Delete user");
-        $deletebutton = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function() { deleteFrontenduser(' . $idfrontenduser . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+        $deletebutton = '<a title="' . $delTitle . '" data-username="' . conHtmlSpecialChars($params["username"]) . '" data-idfrontenduser="' . $idfrontenduser . '" class="jsDelete" href="javascript:void(0)"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
 
         $mlist->setTitle($iMenu, $params["username"]);
         $mlist->setLink($iMenu, $link);
@@ -273,6 +270,26 @@ if ($bUsePlugins == false) {
 // $oPage->addScript('cfoldingrow.js', '<script type="text/javascript"
 // src="scripts/cfoldingrow.js"></script>');
 $oPage->addScript('parameterCollector.js');
+
+$message = i18n("Do you really want to delete the user %s?");
+$sPageContent = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        var msg = "{$message}";
+        $('a.jsDelete').click(function() {
+            var username = $(this).data('username'),
+                idfrontenduser = $(this).data('idfrontenduser');
+            Con.showConfirmation(msg.replace('%s', username), function() {
+                deleteFrontenduser(idfrontenduser);
+            });
+            return false;
+        });
+    });
+})(Con, Con.$);
+</script>
+JS;
+$oPage->addScript($sPageContent);
 
 // generate current content for Object Pager
 $oPagerLink = new cHTMLLink();

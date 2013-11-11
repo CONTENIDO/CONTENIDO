@@ -164,13 +164,17 @@ class cVersionLayout extends cVersion {
      * @return string - Javascript for refrehing frames
      */
     public function renderReloadScript($sArea, $iIdLayout, $sess) {
-        $sReloadScript = "<script type=\"text/javascript\">
-                 var left_bottom = top.content.left.left_bottom;
-                 if (left_bottom) {
-                    var href = '" . $sess->url("main.php?area=$sArea&frame=2&idlay=$iIdLayout") . "';
-                    left_bottom.location.href = href;
-                 }
-                 </script>";
+        $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idlay=$iIdLayout");
+        $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = '{$urlLeftBottom}';
+    }
+})(Con, Con.$);
+</script>
+JS;
         return $sReloadScript;
     }
 

@@ -51,7 +51,7 @@ foreach ($_GET as $sTempKey => $sTempValue) {
     }
 }
 
-// is loading from main.php
+// Is loading from main.php
 // dann ist die Anzahl aller gueltigen Variablen mit den in GET identisch
 if ($iCountBasicVal == count($_GET)) {
     $bVirgin = true;
@@ -75,6 +75,7 @@ switch ($area) {
 // Debug
 cDebug::out('Url-Params: ' . $sUrlParams);
 
+$anchorTpl = '<a class="white%s" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
 
 // Select NavSubItems from DB
 $nav = new cGuiNavigation();
@@ -105,40 +106,38 @@ $db->query($sql);
 
 while ($db->nextRecord()) {
     // Name
-    $sArea = $db->f('name');
+    $areaName = $db->f('name');
+//##echo "<pre>" . print_r($db->toArray(), true) . "</pre>\n";
 
     // Set translation path
-    $sCaption = $nav->getName($db->f('location'));
+    $caption = $nav->getName($db->f('location'));
 
     // for Main-Area
-    if ($sArea == $area) {
+    if ($areaName == $area) {
         // Menueless
         $bMenuless = $db->f('menuless') ? true : false;
 
         if ($bVirgin && !$bMenuless && $db->f('name') == $area) {
-            // ist loading fron Main, Main-Area and Menuless -> stop this 'while'
+            // Is loading from main, main-area and menuless -> stop this 'while'
             break;
         }
     }
 
-    // Link
-    $sLink = $sess->url('main.php?area='.$sArea.'&frame=4'.($appendparameters?'&appendparameters='.$appendparameters:'').'&contenido='.$sess->id.$sUrlParams);
-
     // CSS Class
-    if ($sArea == $area) {
-        $sClass = ' current';
-    } else {
-        $sClass = '';
-    }
+    $sClass = ($areaName == $area) ? ' current' : '';
+
+    // Link
+    $sLink = $sess->url('main.php?area='.$areaName.'&frame=4'.($appendparameters?'&appendparameters='.$appendparameters:'').$sUrlParams);
 
     // Fill template
-    $tpl->set('d', 'ID', 'c_'.$tpl->dyn_cnt);
-    $tpl->set('d', 'CLASS', 'item '.$sArea);
-    $tpl->set('d', 'CAPTION', '<a class="white'.$sClass.'" onclick="sub.clicked(this)" target="right_bottom" href="'.$sLink.'">'.$sCaption.'</a>');
+    $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+    $tpl->set('d', 'DATA_NAME', $areaName);
+    $tpl->set('d', 'CLASS', 'item ' . $areaName);
+    $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sClass, $sLink, $caption));
     $tpl->next();
 }
 
-// Have area a menue
+// Is there a menu (left frame)?
 if ($db->numRows() == 0) {
     $sql = $db->prepare("SELECT menuless FROM `%s` WHERE name = '%s' AND parent_id = 0", $cfg['tab']['area'], $area);
     $db->query($sql);
@@ -147,20 +146,15 @@ if ($db->numRows() == 0) {
     }
 }
 
-
 if (!$bVirgin || $bMenuless) {
     $tpl->set('s', 'CLASS', $bMenuless ? 'menuless' : '');
-    $tpl->set('s', 'SESSID', $sess->id);
 
-    $sTpl = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['default_subnav'], true);
+    $sTpl = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav'], true);
 
-    cDebug::out('sExectime: '.substr($sExectime,0,7).' sec');
-
+    cDebug::out('sExectime: ' . substr($sExectime, 0, 7) . ' sec');
     echo $sTpl;
 } else {
     // Is loading from main.php
     $tpl->reset();
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
 }
-
-?>

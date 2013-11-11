@@ -1,140 +1,135 @@
 <style type="text/css">
-select {
-    vertical-align:middle;
-}
-a.invert_hover:active, a.invert_hover:link, a.invert_hover:visited {
-    cursor: pointer;
-    color: #0060B1;
-}
-a.invert_hover:hover {
-    color: #000000;
-}
+select {vertical-align: middle;}
+a.invert_hover:active,
+a.invert_hover:link,
+a.invert_hover:visited {cursor: pointer; color: #0060B1;}
+a.invert_hover:hover {color: #000;}
 </style>
 
 <script type="text/javascript">
-    function uplSort(selObj) {
-        var url = '{SELF_URL}',
-            i = selObj.selectedIndex,
-            sortkey = selObj.options[i].value;
-        window.location.href = url + '&sort=' + sortkey;
-    }
+function uplSort(selObj) {
+    var url = '{SELF_URL}',
+        i = selObj.selectedIndex,
+        sortkey = selObj.options[i].value;
+    window.location.href = url + '&sort=' + sortkey;
+}
 
-    function iZoom(path, defaultWidth, defaultHeight) {
-        //var defaultWidth = 640;
-        //var defaultHeight = 480;
-        var xwin = parseInt((screen.availWidth / 2) - (defaultWidth / 2)),
-            ywin = parseInt((screen.availHeight / 2) - (defaultHeight / 2));
+function iZoom(path, defaultWidth, defaultHeight) {
+    //var defaultWidth = 640;
+    //var defaultHeight = 480;
+    var xwin = parseInt((screen.availWidth / 2) - (defaultWidth / 2)),
+        ywin = parseInt((screen.availHeight / 2) - (defaultHeight / 2));
 
-        zwin = window.open("","","left="+xwin+",top="+ywin+",width=" + defaultWidth + ",height=" + defaultHeight + "\"");
-        zwin.moveTo(xwin,ywin);
+    var zwin = window.open("","","left="+xwin+",top="+ywin+",width=" + defaultWidth + ",height=" + defaultHeight + "\"");
+    zwin.moveTo(xwin, ywin);
 
-        zcon  = "<html>\n<head>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/contenido.css\"><title>i18n("Click to close")</title>\n</head>\n";
-        zcon += "<body leftmargin=\"0\" topmargin=\"0\"><table width=\"100%\" height=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tr><td valign=\"top\" align=\"center\" valign=\"middle\">";
-        zcon += "<body self.moveTo((screen.availWidth / 2) - (defaultWidth / 2 + 5),(screen.availHeight / 2) - (defaultHeight / 2 + 20))\" leftmargin=\"0\" topmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">\n";
-        zcon += "<a class=\"text_medium\" href=\"javascript:self.close()\"><img name=\"zimg\" src=\""+path+"\" border=\"0\" alt=\"i18n("Click to close")\"><br>i18n("Close")</a>\n";
-        zcon += "</td></tr></table></body>\n</html>";
+    zcon  = "<html>\n<head>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/contenido.css\"><title>i18n("Click to close")</title>\n</head>\n";
+    zcon += "<body leftmargin=\"0\" topmargin=\"0\"><table width=\"100%\" height=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tr><td valign=\"top\" align=\"center\" valign=\"middle\">";
+    zcon += "<body self.moveTo((screen.availWidth / 2) - (defaultWidth / 2 + 5),(screen.availHeight / 2) - (defaultHeight / 2 + 20))\" leftmargin=\"0\" topmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">\n";
+    zcon += "<a class=\"text_medium\" href=\"javascript:self.close()\"><img name=\"zimg\" src=\""+path+"\" border=\"0\" alt=\"i18n("Click to close")\"><br>i18n("Close")</a>\n";
+    zcon += "</td></tr></table></body>\n</html>";
 
-        zwin.document.open();
-        zwin.document.write(zcon);
-        zwin.document.close();
-    }
+    zwin.document.open();
+    zwin.document.write(zcon);
+    zwin.document.close();
+}
 
-    function showDelMsg(strElement, path, file, page) {
-        showConfirmation('i18n("Do you really want to delete the following file"):<br><b>' + strElement + '</b>', function() { deleteFile('"' + path + '"', '"' + file + '"', '"' + page + '"'); });
-    }
+function showDelMsg(strElement, path, file, page) {
+    Con.showConfirmation('i18n("Do you really want to delete the following file"):<br><b>' + strElement + '</b>', function() {
+        deleteFile('"' + path + '"', '"' + file + '"', '"' + page + '"');
+    });
+}
 
-    // Function for deleting items
-    function deleteFile(path, file, page) {
-        url  = 'main.php?area=upl';
-        url += '&action=upl_delete';
-        url += '&frame=4';
-        url += '&path=' + path;
-        url += '&file=' + file;
-        url += '&startpage=' + page;
-        url += '&contenido=1';
-        url += '&appendparameters={APPENDPARAMETERS}';
+// Function for deleting items
+function deleteFile(path, file, page) {
+    var url = Con.UtilUrl.build('main.php', {
+        area: 'upl',
+        action: 'upl_delete',
+        frame: 4,
+        path: path,
+        file: file,
+        startpage: page,
+        appendparameters: '{APPENDPARAMETERS}'
+    });
+
+    window.location.href = url;
+}
+
+function renameFile(oldname, path, page) {
+    var newname = prompt("i18n("Enter new filename")", oldname),
+        url;
+
+    if (newname) {
+        url = Con.UtilUrl.build('main.php', {
+            area: 'upl',
+            action: 'upl_renamefile',
+            frame: 4,
+            path: path,
+            file: file,
+            startpage: page,
+            newname: newname,
+            oldname: oldname
+        });
 
         window.location.href = url;
     }
+}
 
-    function renameFile (oldname, path, page) {
-        var newname = prompt("i18n("Enter new filename")", oldname),
-            url;
+function getY(e) {
+    var y = 0;
+    while (e) {
+        y += e.offsetTop;
+        e = e.offsetParent;
+    }
+    return y;
+}
 
-        if (newname) {
-            url  = 'main.php?area=upl';
-            url += '&action=upl_renamefile';
-            url += '&frame=4';
-            url += '&newname=' + newname;
-            url += '&oldname=' + oldname;
-            url += '&startpage=' + page;
-            url += '&path=' + path;
-            url += '&contenido=1';
+function getX(e) {
+    var x = 0;
+    while (e) {
+        x += e.offsetLeft;
+        e = e.offsetParent;
+    }
+    return x;
+}
 
-            window.location.href = url;
+function findPreviewImage(smallImg) {
+    var prevImages = document.getElementsByName("prevImage"),
+        i;
+
+    for (i = 0; i < prevImages.length; i++) {
+        if (prevImages[i].src == smallImg.src) {
+            return prevImages[i];
         }
     }
+}
 
-    function getY(e) {
-        var y = 0;
-        while (e) {
-            y += e.offsetTop;
-            e = e.offsetParent;
-        }
-        return y;
+// Hoverbox
+function correctPosition(theImage, iWidth, iHeight) {
+    var previewImage = findPreviewImage(theImage);
+
+    if (typeof(previewShowIe6) == "function") {
+        previewShowIe6(previewImage);
     }
+    previewImage.style.width = iWidth;
+    previewImage.style.height = iHeight;
+    previewImage.style.marginTop = getY(theImage);
+    previewImage.style.marginLeft = getX(theImage) + 100;
+}
 
-    function getX(e) {
-        var x = 0;
-        while (e) {
-            x += e.offsetLeft;
-            e = e.offsetParent;
-        }
-        return x;
+// Invert selection of checkboxes
+function invertSelection() {
+    var delcheckboxes = document.getElementsByName('fdelete[]'),
+        i;
+
+    for (i = 0; i < delcheckboxes.length; i++) {
+        delcheckboxes[i].checked = !(delcheckboxes[i].checked);
     }
+}
 
-    function findPreviewImage(smallImg) {
-        var prevImages = document.getElementsByName("prevImage"),
-            i;
+Con.markSubmenuItem('c_0');
 
-        for (i=0; i<prevImages.length; i++) {
-            if (prevImages[i].src == smallImg.src) {
-                return prevImages[i];
-            }
-        }
-    }
-
-    // Hoverbox
-    function correctPosition(theImage, iWidth, iHeight) {
-        var previewImage = findPreviewImage(theImage);
-
-        if (typeof(previewShowIe6) == "function") {
-            previewShowIe6(previewImage);
-        }
-        previewImage.style.width = iWidth;
-        previewImage.style.height = iHeight;
-        previewImage.style.marginTop = getY(theImage);
-        previewImage.style.marginLeft = getX(theImage) + 100;
-    }
-
-    // Invert selection of checkboxes
-    function invertSelection() {
-        var delcheckboxes = document.getElementsByName("fdelete[]"),
-            i;
-
-        for (i=0; i<delcheckboxes.length; i++) {
-            delcheckboxes[i].checked = !(delcheckboxes[i].checked);
-        }
-    }
-
-    if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_0')) {
-        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_0');
-        parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
-    }
-</script>
-
-<script type="text/javascript">
-    parent.parent.frames["left"].frames["left_bottom"].location.reload();
+Con.getFrame('left_bottom').location.reload();
 </script>
 
 {FORM}

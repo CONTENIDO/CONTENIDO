@@ -16,7 +16,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // CONTENIDO startup process
-include_once ('../../../includes/startup.php');
+include_once('../../../includes/startup.php');
 
 require_once ($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 cInclude("includes", "functions.con.php");

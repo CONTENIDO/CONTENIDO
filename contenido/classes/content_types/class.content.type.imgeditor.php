@@ -253,7 +253,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
     public function generateEditCode() {
         // construct the top code of the template
         $templateTop = new cTemplate();
-        $templateTop->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateTop->set('s', 'ICON', 'images/but_editimage.gif');
         $templateTop->set('s', 'ID', $this->_id);
         $templateTop->set('s', 'PREFIX', $this->_prefix);
@@ -291,12 +290,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         // construct the bottom code of the template
         $templateBottom = new cTemplate();
-        $templateBottom->set('s', 'PATH_BACKEND', $this->_cfg['path']['contenido_fullhtml']);
         $templateBottom->set('s', 'PATH_FRONTEND', $this->_cfgClient[$this->_client]['path']['htmlpath']);
         $templateBottom->set('s', 'ID', $this->_id);
         $templateBottom->set('s', 'PREFIX', $this->_prefix);
         $templateBottom->set('s', 'IDARTLANG', $this->_idArtLang);
-        $templateBottom->set('s', 'CONTENIDO', $_REQUEST['contenido']);
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
         $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsImgeditor.js');

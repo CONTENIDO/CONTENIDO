@@ -129,7 +129,7 @@ if (isset($action)) {
     $actionCodeFile = $backendPath . 'includes/type/action/include.' . $action . '.action.php';
     if (cFileHandler::exists($actionCodeFile)) {
         cDebug::out('Including action file for ' . $action);
-        include_once $actionCodeFile;
+        include_once($actionCodeFile);
     } else {
         cDebug::out('No action file found for ' . $action);
     }

@@ -182,7 +182,17 @@ function prepareWorkflowItems() {
 function piworkflowCategoryRenderColumn($idcat, $type) {
     switch ($type) {
         case "workflow":
-            $value = workflowInherit($idcat) . '<script type="text/javascript" id="wf' . $idcat . '">printWorkflowSelect(' . $idcat . ', ' . (int) getWorkflowForCat($idcat) . ');</script>';
+            $wfForCat = (int) getWorkflowForCat($idcat);
+            $value = workflowInherit($idcat);
+            $value .= <<<JS
+            <script type="text/javascript" id="wf{$idcat}">
+            (function(Con, $) {
+                $(function() {
+                    printWorkflowSelect({$idcat}, {$wfForCat});
+                });
+            })(Con, Con.$);
+            </script>
+JS;
             break;
     }
 
@@ -416,7 +426,7 @@ function piworkflowCreateTasksFolder() {
     $item = array();
 
     // Create workflow tasks folder
-    $tmp_mstr = '<a href="javascript://" onclick="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+    $tmp_mstr = '<a href="javascript://" onclick="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 
     $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=con_workflow&frame=4"), 'right_top', $sess->url("main.php?area=con_workflow&frame=3"), 'Workflow / Todo');
 

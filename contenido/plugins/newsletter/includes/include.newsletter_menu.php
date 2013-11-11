@@ -243,62 +243,65 @@ if ($_REQUEST["selTestDestination"] > 0 && $perm->have_perm_area_action($area, "
 
 $aMsg["SendTestDescr"] = sprintf(i18n("Do you really want to send the newsletter to:<br><strong>%s</strong>", 'newsletter'), $sSendTestTarget);
 
-$sExecScript = '
-    <script type="text/javascript">
-        var sid = "' . $sess->id . '";
+$sExecScript = <<<JS
+<script type="text/javascript">
+function showSendTestMsg(lngId) {
+    Con.showConfirmation("{$aMsg["SendTestDescr"]}", function() {
+        sendTestNewsletter(lngId);
+    });
+}
 
-        function showSendTestMsg(lngId) {
-            showConfirmation("' . $aMsg["SendTestDescr"] . '", function() { sendTestNewsletter(lngId); });
-        }
+function showDelMsg(lngId, strElement) {
+    Con.showConfirmation("{$aMsg["DelDescr"]}<b>" + strElement + "</b>", function() {
+        deleteNewsletter(lngId);
+    });
+}
 
-        function showDelMsg(lngId, strElement) {
-            showConfirmation("' . $aMsg["DelDescr"] . '<b>" + strElement + "</b>", function() { deleteNewsletter(lngId); });
-        }
+function checkSelection(strValue) {
+    if (strValue == "selection") {
+        document.getElementById("groupselect").disabled = false;
+    } else {
+        document.getElementById("groupselect").disabled = true;
+    }
+}
 
-        function checkSelection(strValue) {
-            if (strValue == "selection") {
-                document.getElementById("groupselect").disabled = false;
-            } else {
-                document.getElementById("groupselect").disabled = true;
-            }
-        }
+// Function for sending test newsletter
+function sendTestNewsletter(idnewsletter) {
+    var oForm = Con.getFrame("left_top").document.getElementById("newsletter_listoptionsform");
 
-        // Function for sending test newsletter
-        function sendTestNewsletter(idnewsletter) {
-            oForm = top.content.left.left_top.document.getElementById("newsletter_listoptionsform");
+    var url = "main.php?area=news";
+    url += "&action=news_send_test";
+    url += "&frame=4";
+    url += "&idnewsletter=" + idnewsletter;
+    url += "&contenido=" + Con.sid;
+    url += get_registered_parameters();
+    url += "&sortby=" + oForm.sortby.value;
+    url += "&sortorder=" + oForm.sortorder.value;
+    url += "&filter=" + oForm.filter.value;
+    url += "&elemperpage=" + oForm.elemperpage.value;
 
-            url = "main.php?area=news";
-            url += "&action=news_send_test";
-            url += "&frame=4";
-            url += "&idnewsletter=" + idnewsletter;
-            url += "&contenido=" + sid;
-            url += get_registered_parameters();
-            url += "&sortby=" + oForm.sortby.value;
-            url += "&sortorder=" + oForm.sortorder.value;
-            url += "&filter=" + oForm.filter.value;
-            url += "&elemperpage=" + oForm.elemperpage.value;
+    Con.getFrame("right_bottom").location.href = url;
+}
 
-            parent.parent.right.right_bottom.location.href = url;
-        }
+// Function for deleting newsletters
+function deleteNewsletter(idnewsletter) {
+    var oForm = Con.getFrame("left_top").document.getElementById("newsletter_listoptionsform");
 
-        // Function for deleting newsletters
-        function deleteNewsletter(idnewsletter) {
-            oForm = top.content.left.left_top.document.getElementById("newsletter_listoptionsform");
+    var url = "main.php?area=news";
+    url += "&action=news_delete";
+    url += "&frame=4";
+    url += "&idnewsletter=" + idnewsletter;
+    url += "&contenido=" + Con.sid;
+    url += get_registered_parameters();
+    url += "&sortby=" + oForm.sortby.value;
+    url += "&sortorder=" + oForm.sortorder.value;
+    url += "&filter=" + oForm.filter.value;
+    url += "&elemperpage=" + oForm.elemperpage.value;
 
-            url = "main.php?area=news";
-            url += "&action=news_delete";
-            url += "&frame=4";
-            url += "&idnewsletter=" + idnewsletter;
-            url += "&contenido=" + sid;
-            url += get_registered_parameters();
-            url += "&sortby=" + oForm.sortby.value;
-            url += "&sortorder=" + oForm.sortorder.value;
-            url += "&filter=" + oForm.filter.value;
-            url += "&elemperpage=" + oForm.elemperpage.value;
-
-            parent.parent.right.right_bottom.location.href = url;
-        }
-    </script>';
+    Con.getFrame("right_bottom").location.href = url;
+}
+</script>
+JS;
 
 // Messagebox JS has to be included before ExecScript!
 $oPage->addScript($sExecScript);
@@ -334,17 +337,17 @@ $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 // Send new object pager to left_top
 $oPage->addScript('setPager.js');
 
-$oScript = new cHTMLScript();
-$oScript->setAttribute('type', 'text/javascript');
-$sRefreshPager = '
-    var sNavigation = \'' . $sPagerContent . '\',
-    // Activate time to refresh pager folding row in left top
-    oTimer = window.setInterval("fncSetPager(\'' . $sPagerId . '\',\'' . $_REQUEST["page"] . '\')", 200);
-';
-$oScript->setContent($jsCode);
+$sRefreshPager = <<<JS
+<script type="text/javascript">
+var sNavigation = '{$sPagerContent}';
+// Activate time to refresh pager folding row in left top
+var oTimer = window.setInterval(function() {
+    fncSetPager('{$sPagerId}', '{$_REQUEST["page"]}');
+}, 200);
+</script>
+JS;
 
-$oPage->setContent(array(
-    $oMenu,
-    $oScript
-));
+$oPage->addScript($sRefreshPager);
+
+$oPage->setContent($oMenu);
 $oPage->render();

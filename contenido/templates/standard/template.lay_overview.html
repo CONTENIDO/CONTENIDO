@@ -1,63 +1,20 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <title>template.lay_overview.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
     <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
-    <script type="text/javascript">
-        /* Session-ID */
-        var sid = "{SID}";
-
-        /* Function for deleting
-           modules */
-        function deleteLayout(idlay) {
-            var url = 'main.php?area=lay_edit';
-            url += '&action=lay_delete';
-            url += '&frame=4';
-            url += '&idlay=' + idlay;
-            url += '&contenido=' + sid;
-            parent.parent.frames["right"].frames["right_bottom"].window.location.href = url;
-        }
-
-        $(document).ready(function() {
-            // select a frame with jquery
-            //$(parent.parent.frames["right"].frames["right_bottom"].document).find('body').html();
-
-            $('.in_used_lay').live('click', function() {
-                var iId = $(this).attr('rel');
-                if (iId) {
-                    var sTemplateName = $(this).parents().filter('td:first').prev().text();
-                    $.post(
-                       "{AJAXURL}",
-                         { area: "{AREA}", ajax: "inused_layout", id: iId, contenido: sid },
-                         function(data) {
-                            var sInUseTitle = "{BOX_TITLE}";
-                            sInUseTitle = sInUseTitle.replace('%s', sTemplateName);
-                            showNotification(sInUseTitle, data, null, true);
-                         }
-                    );
-                }
-            });
-
-            $(".layout_row").tipsy();
-        });
-    </script>
 </head>
 <body>
 
 <table class="borderless" style="margin: 5px 0 0 0;" width="100%" cellspacing="0" cellpadding="2" border="0">
 
     <!-- BEGIN:BLOCK -->
-    <tr id="{ID}" class="layout_row" original-title="{DESCRIPTION}" nmouseover="lay.over(this)" onmouseout="lay.out(this)" onclick="lay.click(this)">
+    <tr id="{ID}" class="layout_row" original-title="{DESCRIPTION}">
          <td></td>
         <td class="textw_small">{NAME}</td>
         <td align="right" class="nowrap">{INUSE}&nbsp;{TODO}&nbsp;{DELETE}&nbsp;</td>
@@ -67,9 +24,59 @@
 </table>
 
 <script type="text/javascript">
-    if (document.getElementById('marked')) {
-        lay.click(document.getElementById('marked'));
-    }
+
+// Function for deleting layout
+function deleteLayout(idlay) {
+    var url = Con.UtilUrl.build("main.php", {
+        area: "lay_edit",
+        action: "lay_delete",
+        frame: 4,
+        idlay: idlay
+    });
+
+    Con.getFrame('right_bottom').location.href = url;
+}
+
+(function(Con, $) {
+	$(function() {
+        // select a frame with jquery
+        //$(Con.getFrame('right_bottom').document).find('body').html();
+
+        $('.in_used_lay').live('click', function() {
+            var iId = $(this).attr('rel');
+            if (iId) {
+                var sTemplateName = $(this).parents().filter('td:first').prev().text();
+                $.post(
+                   "{AJAXURL}",
+                     { area: "{AREA}", ajax: "inused_layout", id: iId, contenido: Con.sid },
+                     function(data) {
+                        var sInUseTitle = "{BOX_TITLE}";
+                        sInUseTitle = sInUseTitle.replace('%s', sTemplateName);
+                        Con.showNotification(sInUseTitle, data, null, true);
+                     }
+                );
+            }
+        });
+
+        $(".layout_row").tipsy();
+
+        // Register some events for rows
+        // ## @todo move this to rowMark.js
+        $("tr.layout_row").mouseover(function() {
+            row.over(this);
+        }).mouseout(function() {
+            row.out(this);
+        }).click(function() {
+            row.click(this);
+        })
+
+        if ($('#marked')) {
+            lay.click($('#marked')[0]);
+        }
+        // ## @todo move this to rowMark.js
+
+	});
+})(Con, Con.$);
 </script>
 
 </body>

@@ -16,8 +16,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $oUser = new cApiUser($auth->auth["uid"]);
-if (!isset($elemperpage) || !is_numeric($elemperpage) || $elemperpage < 0)
-{
+if (!isset($elemperpage) || !is_numeric($elemperpage) || $elemperpage < 0) {
     $elemperpage = $oUser->getProperty("itemsperpage", $area);
     $_REQUEST['elemperpage'] = $elemperpage;
     if ((int) $elemperpage <= 0) {
@@ -30,11 +29,9 @@ if (!isset($elemperpage) || !is_numeric($elemperpage) || $elemperpage < 0)
     $_REQUEST['elemperpage'] = $elemperpage;
 }
 
-// The following lines unset all right objects since
-// I don't know (or I was unable to find out) if they
-// are global and/or session variables - so if you are
-// switching between groups and user management, we are
-// safe.
+// The following lines unset all right objects since I don't know (or I was unable
+// to find out) if they are global and/or session variables - so if you are
+// switching between groups and user management, we are safe.
 unset($right_list);
 unset($rights_list_old);
 unset($rights_perms);
@@ -45,34 +42,24 @@ $rights_perms = "";
 $tpl->set('s', 'ID', 'restrict');
 $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');
-$tpl->set('s', 'SID', $sess->id);
-$tpl->set('s', 'SESSID', $sess->id);
 
-
-$tpl2 = new cTemplate;
+$tpl2 = new cTemplate();
 $tpl2->set('s', 'NAME', 'restrict');
 $tpl2->set('s', 'CLASS', 'text_medium');
 $tpl2->set('s', 'OPTIONS', 'onchange="userChangeRestriction()"');
 
 $limit = array(
-            "2" => i18n("All"),
-            "1" => i18n("Frontend only"),
-            "3" => i18n("Backend only"));
+    "2" => i18n("All"),
+    "1" => i18n("Frontend only"),
+    "3" => i18n("Backend only")
+);
 
 foreach ($limit as $key => $value) {
-
-        if ($restrict == $key)
-        {
-            $selected = "selected";
-        } else {
-            $selected = "";
-        }
-
-        $tpl2->set('d', 'VALUE',    $key);
-        $tpl2->set('d', 'CAPTION',  $value);
-        $tpl2->set('d', 'SELECTED', $selected);
-        $tpl2->next();
-
+    $selected = ($restrict == $key) ? "selected" : "";
+    $tpl2->set('d', 'VALUE', $key);
+    $tpl2->set('d', 'CAPTION', $value);
+    $tpl2->set('d', 'SELECTED', $selected);
+    $tpl2->next();
 }
 
 $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true);
@@ -80,9 +67,9 @@ $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic
 $tpl->set('s', 'ACTION', '');
 
 $tmp_mstr = '<div class="leftTopAction">
-              <a class="addfunction" href="javascript:conMultiLink(\'%s\', \'%s\')">%s</a></div>';
+              <a class="addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\')">%s</a></div>';
 $area = "user";
-$mstr = sprintf($tmp_mstr, 'right_bottom',$sess->url("main.php?area=user_create&frame=4"),i18n("Create user"));
+$mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=user_create&frame=4"), i18n("Create user"));
 
 if ($perm->have_perm_area_action('user_create', "user_createuser")) {
     $tpl->set('s', 'NEWUSER', $mstr);
@@ -98,7 +85,7 @@ $aSortByOptions = array("username" => i18n("User name"), "realname" => i18n("Nam
 
 $aSortOrderOptions = array("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
 
-$listOptionId="listoption";
+$listOptionId = "listoption";
 $tpl->set('s', 'LISTOPLINK', $listOptionId);
 $oListOptionRow = new cGuiFoldingRow("5498dbba-ed4a-4618-8e49-3a3635396e22", i18n("List options"), $listOptionId);
 $oListOptionRow->setExpanded('true');
@@ -129,7 +116,7 @@ $tpl->set('s', 'LISTOPTIONS', $oListOptionRow->render());
 #########
 # Paging
 #########
-$cApiUserCollection    = new cApiUserCollection;
+$cApiUserCollection = new cApiUserCollection;
 $cApiUserCollection->query();
 $iItemCount = $cApiUserCollection->count();
 
@@ -145,7 +132,7 @@ $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 
-$pagerID="pager";
+$pagerID = "pager";
 $oPager = new cGuiObjectPager("44b41691-0dd4-443c-a594-66a8164e25fd", $iItemCount, $elemperpage, $page, $oPagerLink, "page", $pagerID);
 $oPager->setExpanded('true');
 $tpl->set('s', 'PAGINGLINK', $pagerID);

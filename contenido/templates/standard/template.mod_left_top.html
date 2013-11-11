@@ -1,98 +1,96 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <title>template.mod_left_top.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/cfoldingrow.js"></script>
     <script type="text/javascript" src="scripts/parameterCollector.js"></script>
-    <script type="text/javascript" src="scripts/general.js"></script>
-    <script type="text/javascript">
-        var listopURL='';
-        var pagingURL='';
-        var sDisplay = 'table-row';
-        var bMsie = (document.all) ? true : false;
-        if (bMsie) {
-            sDisplay = 'block';
-        }
-
-        // need to insert function in Article Search link
-        function resizeFrame(arg, bIgnore) {
-            if (arg == '') {
-                var listopLink = document.getElementById('{LISTOPLINK}');
-                var pagingLink = document.getElementById('{PAGINGLINK}');
-
-                // store current link for later use
-                listopURL = listopLink.href;
-                if (pagingLink) {
-                    pagingURL = pagingLink.href;
-                }
-
-                // clicking the link now calls this function
-                listopLink.href = "javascript:resizeFrame('{LISTOPLINK}');";
-                if (pagingLink) {
-                    pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}');";
-                }
-            } else if (arg == '{LISTOPLINK}') {
-                window.location.href=listopURL;
-            } else if (arg == '{PAGINGLINK}' && bIgnore != 1) {
-                window.location.href=pagingURL;
-            }
-
-            // resizing frame
-            window.setTimeout("parent.parent.frameResize.resizeTopLeftFrame(document.getElementById('top_left_container').offsetHeight)", 10);
-        }
-
-        function execFilter() {
-            var multilink = "main.php?";
-            var formelements = document.filter;
-
-            for (var i=0; i<formelements.length; i++) {
-                if (i>0 && formelements[i].name != "" && formelements[i].name != "area" && formelements[i].name != "frame" &&formelements[i].value != "") {
-                    multilink += "&";
-                }
-                if (formelements[i].name != "" && formelements[i].value != "" && formelements[i].name != "area" && formelements[i].name != "frame") {
-                    multilink += formelements[i].name + "=" + formelements[i].value;
-                }
-            }
-            conMultiLink("left_bottom", multilink+'&area=mod&frame=2');
-        }
-
-        function toggle_pager(sId) {
-            var oBase = document.getElementById(sId);
-            if (oBase) {
-                if (oBase.firstChild && oBase.firstChild.firstChild && oBase.firstChild.firstChild) {
-                    var sExpandstate = document.getElementsByName('expandstate_'+sId)[0].value;
-                    oBase.previousSibling.style.display = sDisplay;
-                    if (sExpandstate == 'expanded') {
-                        oBase.style.display = sDisplay;
-                    } else {
-                        oBase.style.display = 'none';
-                    }
-                } else if (oBase) {
-                    oBase.previousSibling.style.display = 'none';
-                    oBase.style.display = 'none';
-                }
-            }
-
-            switch(sId) {
-                case '02420d6b-a77e-4a97-9395-7f6be480f497':
-                    resizeFrame('{PAGINGLINK}', 1);
-                    break;
-            }
-        }
-    </script>
 </head>
-<body onLoad="resizeFrame('');">
+<body>
 
-<div id="top_left_container">
+<div id="top_left_container" data-resizegap="1" data-resizeinitcb="frameLeftTopResizeInitCallback">
     {ACTION}
 </div>
+
+<script type="text/javascript">
+var listopURL = '';
+var pagingURL = '';
+var sDisplay = (Con.isMsie) ? 'block' : 'table-row';
+
+// need to insert function in Article Search link
+function resizeFrame(arg, bIgnore) {
+    if (arg == '') {
+        var listopLink = document.getElementById('{LISTOPLINK}');
+        var pagingLink = document.getElementById('{PAGINGLINK}');
+
+        // store current link for later use
+        listopURL = listopLink.href;
+        if (pagingLink) {
+            pagingURL = pagingLink.href;
+        }
+
+        // clicking the link now calls this function
+        listopLink.href = "javascript:resizeFrame('{LISTOPLINK}');";
+        if (pagingLink) {
+            pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}');";
+        }
+    } else if (arg == '{LISTOPLINK}') {
+        window.location.href = listopURL;
+    } else if (arg == '{PAGINGLINK}' && bIgnore != 1) {
+        window.location.href = pagingURL;
+    }
+
+    // resizing frame
+    window.setTimeout(function() {
+        Con.FrameLeftTop.resize();
+    }, 10);
+}
+
+function execFilter() {
+    var multilink = "main.php?";
+    var formelements = document.filter;
+
+    for (var i = 0; i<formelements.length; i++) {
+        if (i > 0 && formelements[i].name != "" && formelements[i].name != "area" && formelements[i].name != "frame" &&formelements[i].value != "") {
+            multilink += "&";
+        }
+        if (formelements[i].name != "" && formelements[i].value != "" && formelements[i].name != "area" && formelements[i].name != "frame") {
+            multilink += formelements[i].name + "=" + formelements[i].value;
+        }
+    }
+    Con.multiLink("left_bottom", multilink+'&area=mod&frame=2');
+}
+
+function toggle_pager(sId) {
+    var oBase = document.getElementById(sId);
+    if (oBase) {
+        if (oBase.firstChild && oBase.firstChild.firstChild && oBase.firstChild.firstChild) {
+            var sExpandstate = document.getElementsByName('expandstate_' + sId)[0].value;
+            oBase.previousSibling.style.display = sDisplay;
+            if (sExpandstate == 'expanded') {
+                oBase.style.display = sDisplay;
+            } else {
+                oBase.style.display = 'none';
+            }
+        } else if (oBase) {
+            oBase.previousSibling.style.display = 'none';
+            oBase.style.display = 'none';
+        }
+    }
+
+    switch(sId) {
+        case '02420d6b-a77e-4a97-9395-7f6be480f497':
+            resizeFrame('{PAGINGLINK}', 1);
+            break;
+    }
+}
+
+function frameLeftTopResizeInitCallback() {
+    resizeFrame('');
+}
+</script>
 
 </body>
 </html>

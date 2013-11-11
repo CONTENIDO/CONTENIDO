@@ -213,7 +213,7 @@ while (($shortUrl = $shortUrlColl->next()) !== false) {
 
     // create the action buttons
     $link = new cHTMLLink('javascript: void(0)');
-    $link->setEvent('click', 'showConfirmation("' . sprintf(i18n('Do you really want to delete the short URL %s?', 'url_shortener'), $shortUrl->get('shorturl')) . '", function() { deleteShortUrl(' . $shortUrl->get('idshorturl') . '); }); return false;');
+    $link->setEvent('click', 'Con.showConfirmation("' . sprintf(i18n('Do you really want to delete the short URL %s?', 'url_shortener'), $shortUrl->get('shorturl')) . '", function() { deleteShortUrl(' . $shortUrl->get('idshorturl') . '); }); return false;');
     $image = new cHTMLImage('images/but_delete.gif');
     $link->setContent($image);
     $contents[] = $link;

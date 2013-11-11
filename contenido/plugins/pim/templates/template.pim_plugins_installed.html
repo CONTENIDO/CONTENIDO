@@ -1,6 +1,6 @@
         <table style="width: 800px; margin-bottom: 3px;" class="pluginoverview">
             <tr id="plugin-row-{IDPLUGIN}" data-plugin-execorder="{EXECUTIONORDER}">
-                <td style="width: 3%;"><a href="#" onclick="javascript:toggleTableBody('plugin-{IDPLUGIN}')" style="margin-left: 5px;"><img src="images/open_all.gif" id="plugin-{IDPLUGIN}_img" /></a></td>
+                <td style="width: 3%;"><a href="#" onclick="javascript:toggleTableBody('plugin-{IDPLUGIN}')" style="margin-left: 5px;"><img src="images/open_all.gif" id="plugin-{IDPLUGIN}_img"></a></td>
                 <td style="width: 90%;"><strong>{NAME}</strong> <em>{VERSION}</em></td>
                 <td style="width: 7%; text-align: right;"><a href="javascript://" class="sortPluginUp" data-plugin-id="{IDPLUGIN}"><img src="images/sort_up.gif" style="padding: 5px;"></a><a href="javascript://" class="sortPluginDown" data-plugin-id="{IDPLUGIN}"><img src="images/sort_down.gif" style="padding: 5px;"></a></td>
             </tr>
@@ -37,16 +37,16 @@
                             <td colspan="2">
                                 <table class="updateplugin">
                                     <tr>
-                                        <td>{LANG_UPDATE_CHOOSE}<br />
+                                        <td>{LANG_UPDATE_CHOOSE}<br>
                                         <form action="main.php" method="post" enctype="multipart/form-data">
-                                        <input type="hidden" name="area" value="pim" />
-                                        <input type="hidden" name="frame" value="4" />
-                                        <input type="hidden" name="contenido" value="{SESSID}" />
-                                        <input type="hidden" name="pim_view" value="update" />
-                                        <input type="hidden" name="pluginId" value="{IDPLUGIN}" />
-                                        <input type="hidden" name="foldername" value="{FOLDERNAME}" />
-                                        <input type="file" name="package" id="package" /><br />
-                                        <input type="submit" name="upload_package" id="upload_package" value="{LANG_UPDATE_UPLOAD}" />
+                                        <input type="hidden" name="area" value="pim">
+                                        <input type="hidden" name="frame" value="4">
+                                        <input type="hidden" name="contenido" value="{_SID_}">
+                                        <input type="hidden" name="pim_view" value="update">
+                                        <input type="hidden" name="pluginId" value="{IDPLUGIN}">
+                                        <input type="hidden" name="foldername" value="{FOLDERNAME}">
+                                        <input type="file" name="package" id="package"><br>
+                                        <input type="submit" name="upload_package" id="upload_package" value="{LANG_UPDATE_UPLOAD}">
                                         </form></td>
                                     </tr>
                                 </table>

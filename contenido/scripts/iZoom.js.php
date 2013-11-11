@@ -51,17 +51,15 @@ i18nInit($cfg['path']['contenido_locale'], $belang);
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG
  */
-function iZoom(path)
-{
+function iZoom(path) {
     var defaultWidth = 640;
     var defaultHeight = 480;
-
 
     var xwin = parseInt((screen.availWidth / 2) - (defaultWidth / 2));
     var ywin = parseInt((screen.availHeight / 2) - (defaultHeight / 2));
 
-    zwin = window.open("","","menubar=no,status=no,resizable=no,toolbar=no,statusbar=no,scrollbars=no,left="+xwin+",top="+ywin+",width=" + defaultWidth + ",height=" + defaultHeight + "\"");
-    zwin.moveTo(xwin,ywin);
+    zwin = window.open("", "", "menubar=no,status=no,resizable=no,toolbar=no,statusbar=no,scrollbars=no,left="+xwin+",top="+ywin+",width=" + defaultWidth + ",height=" + defaultHeight + "\"");
+    zwin.moveTo(xwin, ywin);
 
     zcon  = "<html>\n<head>\n<title><?php echo i18n("Click to close"); ?></title>\n</head>\n";
     zcon += "<body bgcolor=\"#ffffff\" onload=\"self.resizeTo(zimg.offsetWidth+40,zimg.offsetHeight+80);self.moveTo((screen.availWidth / 2) - (zimg.offsetWidth / 2 + 5),(screen.availHeight / 2) - (zimg.offsetHeight / 2 + 20))\" leftmargin=\"0\" topmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">\n";
@@ -72,5 +70,4 @@ function iZoom(path)
     zwin.document.open();
     zwin.document.write(zcon);
     zwin.document.close();
-
 }

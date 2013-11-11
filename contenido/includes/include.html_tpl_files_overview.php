@@ -35,12 +35,19 @@ $sArea = 'htmltpl';
 $sActionDelete = 'htmltpl_delete';
 $sActionEdit = 'htmltpl_edit';
 
-$sScriptTemplate = '
+$sScriptTemplate = <<<JS
 <script type="text/javascript">
-    function deleteFile(file) {
-        parent.parent.frames["right"].frames["right_bottom"].location.href = "main.php?area=' . $sArea . '&frame=4&action=' . $sActionDelete . '&delfile="+file+"&contenido=' . $sSession . '";
-    }
-</script>';
+function deleteFile(file) {
+    var url = Con.UtilUrl.build("main.php", {
+        area: "{$sArea}",
+        action: "{$sActionDelete}",
+        frame: 4,
+        delfile: file
+    });
+    Con.getFrame('right_bottom').location.href = url;
+}
+</script>
+JS;
 
 $tpl->set('s', 'JAVASCRIPT', $sScriptTemplate);
 
@@ -76,7 +83,7 @@ if (($handle = opendir($path)) !== false && is_dir($path)) {
             $file = new cApiFileInformationCollection();
             $fileInfo = $file->getFileInformation($filename, "templates");
 
-            $tmp_mstr = '<a class=\"action\" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')" alt="%s">%s</a>';
+            $tmp_mstr = '<a class="action" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')" alt="%s">%s</a>';
 
             $html_filename = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&file=$filename"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&action=$sActionEdit&file=$filename&tmp_file=$filename"), $filename, $filename, conHtmlSpecialChars($filename));
 
@@ -87,7 +94,7 @@ if (($handle = opendir($path)) !== false && is_dir($path)) {
             $delDescr = sprintf(i18n("Do you really want to delete the following file:<br><br>%s<br>"), $filename);
 
             if ($perm->have_perm_area_action('htmltpl', $sActionDelete)) {
-                $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(&quot;' . $filename . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');
+                $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(&quot;' . $filename . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');
             } else {
                 $tpl->set('d', 'DELETE', '');
             }

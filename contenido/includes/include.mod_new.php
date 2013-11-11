@@ -31,9 +31,9 @@ if ((int) $client > 0) {
         $str = '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create modules") . '</a> </div>';
     }
     if ($perm->have_perm_area_action($area, "mod_sync")) {
-        $strSync = '<div class="leftTopAction"><a class="syncronizefunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_sync") . '">' . i18n("Synchronize modules") . '</a></div>';
+        $strSync = '<div class="leftTopAction leftTopActionNext"><a class="syncronizefunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_sync") . '">' . i18n("Synchronize modules") . '</a></div>';
     } else {
-        $strSync = '<div class="leftTopAction"><a class="syncronizefunction_disabled" href="#">' . i18n("No permission to synchronize modules") . '</a> </div>';
+        $strSync = '<div class="leftTopAction leftTopActionNext"><a class="syncronizefunction_disabled" href="#">' . i18n("No permission to synchronize modules") . '</a> </div>';
     }
 } else {
     $str = '<div class="leftTopAction">' . i18n('No client selected') . '</div>';
@@ -84,6 +84,7 @@ if ((int) $client > 0) {
     $oSelectTypeFilter->autoFill($aFilterType);
     $oSelectTypeFilter->setDefault($_REQUEST["filtertype"]);
     $oTextboxFilter = new cHTMLTextbox("filter", stripslashes($_REQUEST["filter"]), 15);
+    $oTextboxFilter->setClass('text_small vAlignMiddle');
 
     $tplModFilter = new cTemplate();
     $tplModFilter->set("s", "PAGE", $_REQUEST["page"]);

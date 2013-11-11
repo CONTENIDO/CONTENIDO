@@ -149,7 +149,7 @@ $currentTypes = _getCurrentTypes($currentTypes, $aList);
 $markSubItem = markSubMenuItem(5, true);
 
 // Include tiny class
-include ($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
+include($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
 $oEditor = new cTinyMCEEditor('', '');
 $oEditor->setToolbar('inline_edit');
 
@@ -159,8 +159,6 @@ $sConfigFullscreen = $oEditor->getConfigFullscreen();
 
 // Replace vars in Script
 
-$page->set('s', 'CONTENIDO_FULLHTML', $backendUrl);
-
 // Set urls to file browsers
 $page->set('s', 'IMAGE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $page->set('s', 'FILE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
@@ -168,11 +166,10 @@ $page->set('s', 'FLASH', $backendUrl . 'frameset.php?area=upl&contenido=' . $ses
 $page->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $page->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
-// Add tiny options and fill function leave_check()
+// Add tiny options
 $page->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
 $page->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
 $page->set('s', 'IDARTLANG', $idartlang);
-$page->set('s', 'CON_PATH', $backendUrl);
 $page->set('s', 'CLOSE', i18n('Close editor'));
 $page->set('s', 'SAVE', i18n('Close editor and save changes'));
 $page->set('s', 'QUESTION', i18n('Do you want to save changes?'));
@@ -180,7 +177,7 @@ $page->set('s', 'QUESTION', i18n('Do you want to save changes?'));
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $page->set('s', 'USE_TINY', '');
 } else {
-    $page->set('s', 'USE_TINY', 'swapTiny(this);');
+    $page->set('s', 'USE_TINY', '1');
 }
 
 // Show path of selected category to user
@@ -335,7 +332,7 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
                     }
                 } else if (cFileHandler::exists($typeCodeFile)) {
                     // include CMS type code
-                    include ($typeCodeFile);
+                    include($typeCodeFile);
                 } elseif (!empty($_typeItem->code)) {
                     // old version, evaluate CMS type code
                     cDeprecated("Move code for $type from table into file system (contenido/includes/type/code/)");
@@ -361,10 +358,10 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
                 }
 
                 if ($locked == 0) { // No freeze
-                    $replacements[$val] = $tmp . '<a href="#" onclick="showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { setcontent(\'1\',\'' . $path . '\'); });">
+                    $replacements[$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); });">
                 <img border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
-                    $keycode[$type][$val] = $tmp . '<a href="#" onclick="showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { setcontent(\'1\',\'' . $path . '\'); });">
+                    $keycode[$type][$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); });">
                 <img border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
                 } else { // Freeze status

@@ -446,7 +446,7 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
         $parent = dirname($dbitem->get('dirname'));
 
         if ($dirname != '.' && $file != '.') {
-            $item[$dirname] = new TreeItem($file, 'dbfs:/' . $dirname, true);
+            $item[$dirname] = new TreeItem($file, cApiDbfs::PROTOCOL_DBFS . '/' . $dirname, true);
             $item[$dirname]->custom['level'] = $level;
             $item[$dirname]->custom['parent'] = $parent;
             $item[$dirname]->custom['lastitem'] = true;

@@ -102,10 +102,10 @@ function verifyModuleRequest(img, modId, type) {
 
             //refresh left sidebar if need
             if (state == 'ok' && img.attr('data-state') != 'none') {
-                parent.parent.frames["left"].frames["left_bottom"].location.reload();
+                Con.getFrame('left_bottom').location.reload();
             }
             if (state == 'error' && img.attr('data-state') == 'none') {
-                parent.parent.frames["left"].frames["left_bottom"].location.reload();
+                Con.getFrame('left_bottom').location.reload();
             }
 
         }

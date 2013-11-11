@@ -187,7 +187,6 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tpl->set('s', 'ACTION', $sess->url("main.php?area=$area&frame=$frame&action=con_saveart"));
     $tpl->set('s', 'TMP_FIRSTEDIT', $tmp_firstedit);
     $tpl->set('s', 'IDART', $idart);
-    $tpl->set('s', 'SID', $sess->id);
     $tpl->set('s', 'IDCAT', $idcat);
     $tpl->set('s', 'IDARTLANG', $tmp_idartlang);
     $tpl->set('s', 'NEWARTSTYLE', $newArtStyle);
@@ -428,7 +427,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 $boxTitle = i18n("Remove multiple category assignments");
                 $boxDescr = i18n("Do you really want to remove the assignments to all categories except the current one?");
 
-                $rbutton->setEvent("click", 'showConfirmation("' . $boxDescr . '", function() { removeAssignments(' . $idart . ',' . $idcat . '); });return false;');
+                $rbutton->setEvent("click", 'Con.showConfirmation("' . $boxDescr . '", function() { removeAssignments(' . $idart . ',' . $idcat . '); });return false;');
                 $button = "<br>" . $rbutton->render();
 
                 $moveOK = false;
@@ -749,7 +748,6 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tpl->set('s', 'iIdcat', $idcat);
     $tpl->set('s', 'iIdtpl', $idtpl);
     $tpl->set('s', 'SYNCOPTIONS', -1);
-    $tpl->set('s', 'SESSION', $contenido);
     $tpl->set('s', 'DISPLAY_MENU', 1);
 
     // Genereate the template

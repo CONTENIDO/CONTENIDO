@@ -197,7 +197,7 @@ function conGetContentFromArticle($iIdArtLang) {
 }
 
 /**
- * Returns list of all used modules by template id
+ * Returns list of all container with configured modules by template id
  *
  * @param  int $idtpl  Template id
  * @return  array  Assoziative array where the key is the number and value the module id
@@ -215,22 +215,15 @@ function conGetUsedModules($idtpl) {
 }
 
 /**
- * Returns list of all configured container by template configuration id
+ * Returns list of all configured container configurations by template configuration id
  *
  * @param  int  $idtplcfg  Template configuration id
  * @return  array  Assoziative array where the key is the number and value the container
  *                 configuration
  */
 function conGetContainerConfiguration($idtplcfg) {
-    $configuration = array();
-
-    $oContainerConfColl = new cApiContainerConfigurationCollection();
-    $oContainerConfColl->select('idtplcfg = ' . (int) $idtplcfg, '', 'number ASC');
-    while (($oContainerConf = $oContainerConfColl->next()) !== false) {
-        $configuration[(int) $oContainerConf->get('number')] = $oContainerConf->get('container');
-    }
-
-    return $configuration;
+    $containerConfColl = new cApiContainerConfigurationCollection();
+    return $containerConfColl->getByTemplateConfiguration($idtplcfg);
 }
 
 /**

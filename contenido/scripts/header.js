@@ -5,7 +5,9 @@
  * Description:
  * Header frame related JavaScript
  *
- *
+ * @module     header
+ * @version    SVN Revision $Rev:$
+ * @requires   jQuery
  * @package    CONTENIDO Header menu
  * @version    1.1.0
  * @author     Timo Hummel
@@ -16,11 +18,32 @@
  * @requires   jQuery JavaScript Framework
  */
 
+(function(Con, $) {
+    'use strict';
+
+    var NAME = 'header';
+
+    /**
+     * Header class
+     * @class Header
+     * @static
+     */
+    Con.Header = {
+        // @todo Implement me
+    };
+
+})(Con, Con.$);
+
 var active_main;
 var active_sub;
 var active_link;
 var active_sub_link;
 
+/**
+ * @method show
+ * @param {String} id
+ * @param {String|HTMLElement} slink
+ */
 function show(id, slink) {
     $("#sub_0").css("display", "none");
 
@@ -44,6 +67,11 @@ function show(id, slink) {
     active_main = id;
 }
 
+
+/**
+ * @method hide
+ * @param {String} id
+ */
 function hide(id) {
     $("#" + id).css("display", "none");
     active_main = 0;
@@ -52,108 +80,92 @@ function hide(id) {
 
 /**
  * Switches the backend language, by reloading top frame with new langugage.
- *
- * @param    {Integer}  idlang
+ * @method changeContenidoLanguage
+ * @param  {Number}  idlang
  */
 function changeContenidoLanguage(idlang) {
-    if (top.content.left) {
-        if (top.content.left.left_top) {
-            top.content.left.left_top.location.href = replaceQueryString(top.content.left.left_top.location.href, 'changelang', idlang);
-        }
+    var frame;
 
-        if (top.content.left.left_bottom) {
-            top.content.left.left_bottom.location.href = replaceQueryString(top.content.left.left_bottom.location.href, 'changelang', idlang);
-        }
+    frame = Con.getFrame('left_top');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {changelang: idlang});
     }
 
-    if (top.content.right) {
-        if (top.content.right.right_top) {
-            // remove the action parameter, so that actions are not executed in the other language
-            var href = replaceQueryString(top.content.right.right_top.location.href, 'action', '');
-            href = replaceQueryString(href, 'changelang', idlang);
-            top.content.right.right_top.location.href = href;
-        }
-
-        if (top.content.right.right_bottom) {
-            // remove the action parameter, so that actions are not executed in the other language
-            var href = replaceQueryString(top.content.right.right_bottom.location.href, 'action', '');
-            href = replaceQueryString(href, 'changelang', idlang);
-            href = replaceQueryString(href, 'frame', 4);
-            top.content.right.right_bottom.location.href = href;
-        }
+    frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {changelang: idlang});
     }
 
-    if (top.content.right_bottom) {
-        var href = replaceQueryString(top.content.right_bottom.location.href, 'action', '');
-        href = replaceQueryString(href, 'changelang', idlang);
-        href = replaceQueryString(href, 'frame', 4);
-        href = replaceQueryString(href, 'menuless', 1);
-        top.content.right_bottom.location.href = href;
+    frame = Con.getFrame('right_top');
+    if (frame) {
+        // remove the action parameter, so that actions are not executed in the other language
+        var href = Con.UtilUrl.replaceParams(frame.location.href, {action: null, changelang: idlang});
+        frame.location.href = href;
     }
 
-    top.header.location.href = replaceQueryString(top.header.location.href, 'changelang', idlang);
+    frame = Con.getFrame('right_bottom');
+    if (frame) {
+        // remove the action parameter, so that actions are not executed in the other language
+        var href = Con.UtilUrl.replaceParams(frame.location.href, {action: null, changelang: idlang, frame: 4});
+        frame.location.href = href;
+    }
+
+    frame = Con.getFrame('header');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {changelang: idlang});
+    }
 }
 
 /**
  * Switches the backend client, by reloading top frame with new client.
- *
- * @param    {Integer}  idclient
+ * @method changeContenidoClient
+ * @param  {Number}  idclient
  */
 function changeContenidoClient(idclient) {
-    parent.window.document.location.href = replaceQueryString(parent.window.document.location.href, 'changeclient', idclient);
+    parent.window.document.location.href = Con.UtilUrl.replaceParams(parent.window.document.location.href, {changeclient: idclient});
     return;
+
+    var frame;
+
     // TODO when the startup process has been reworked, it should be possible to reload the frames individually, so that the current page stays the same
-    if (top.content.left) {
-        if (top.content.left.left_top) {
-            top.content.left.left_top.location.href = replaceQueryString(top.content.left.left_top.location.href, 'changeclient', idclient);
-        }
-
-        if (top.content.left.left_bottom) {
-            top.content.left.left_bottom.location.href = replaceQueryString(top.content.left.left_bottom.location.href, 'changeclient', idclient);
-        }
+    frame = Con.getFrame('left_top');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {changeclient: idclient});
     }
 
-    if (top.content.right) {
-        if (top.content.right.right_top) {
-            // remove the action parameter, so that actions are not executed in the other language
-            var href = replaceQueryString(top.content.right.right_top.location.href, 'action', '');
-            href = replaceQueryString(href, 'changeclient', idclient);
-            top.content.right.right_top.location.href = href;
-        }
-
-        if (top.content.right.right_bottom) {
-            // remove the action parameter, so that actions are not executed in the other language
-            var href = replaceQueryString(top.content.right.right_bottom.location.href, 'action', '');
-            href = replaceQueryString(href, 'changeclient', idclient);
-            top.content.right.right_bottom.location.href = href;
-        }
+    frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {changeclient: idclient});
     }
 
-    top.header.location.href = replaceQueryString(top.header.location.href, 'changeclient', idclient);
+    frame = Con.getFrame('right_top');
+    if (frame) {
+        // remove the action parameter, so that actions are not executed in the other language
+        var href = Con.UtilUrl.replaceParams(frame.location.href, {action: null, changeclient: idclient});
+        frame.location.href = href;
+    }
+
+    frame = Con.getFrame('right_bottom');
+    if (frame) {
+        // remove the action parameter, so that actions are not executed in the other language
+        var href = Con.UtilUrl.replaceParams(frame.location.href, {action: null, changeclient: idclient});
+        frame.location.href = href;
+    }
+
+    frame = Con.getFrame('header');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {changeclient: idclient});
+    }
 }
 
 /**
- * Replaces or adds a variable in a URL.
- *
- * @param    {String}    url
- * @param    {String}    param
- * @param    {String}    value
- *
- * @returns  {String}
+ * @deprecated [2013-10-17] Use Con.UtilUrl.replaceParams instead
  */
 function replaceQueryString(url, param, value) {
-    var re = new RegExp("([?|&])" + param + "=.*?(&|$)", "i");
-    if (url.match(re)) {
-        return url.replace(re, '$1' + param + "=" + value + '$2');
-    } else {
-        if (url.indexOf('.php?') > 0) {
-            prefixSign = '&';
-        } else {
-            prefixSign = '?';
-        }
-
-        return url + prefixSign + param + "=" + value;
-    }
+    Con.log("replaceQueryString: Deprecated, use Con.UtilUrl.replaceParams instead", "header.js", "warn");
+    var o = {};
+    o[param] = value;
+    return Con.UtilUrl.replaceParams(url, o);
 }
 
 $(function() {
@@ -166,9 +178,10 @@ $(function() {
 
 /**
  * Resets the header menu.
+ * @method resetHeaderMenu
  */
 function resetHeaderMenu() {
-    var menu = ContenidoRegistry.get("headerMenu");
+    var menu = Con.Registry.get("headerMenu");
     menu.reset();
 
     $("#submenus a").attr("class", "sub");
@@ -186,18 +199,19 @@ function resetHeaderMenu() {
 var HeaderTimer = {
     /**
      * Mouseout timeout handler
-     *
-     * @type  {Integer}
+     * @property out
+     * @type  {Number}
      */
     out: null,
     /**
      * Mouseover timeout handler
-     *
-     * @type  {Integer}
+     * @property over
+     * @type  {Number}
      */
     over: null,
     /**
      * Clear a existing mouseout handler
+     * @method resetOut
      */
     resetOut: function() {
         if (this.out) {
@@ -206,6 +220,7 @@ var HeaderTimer = {
     },
     /**
      * Clear a existing mouseover handler
+     * @method resetOver
      */
     resetOver: function() {
         if (this.over) {
@@ -229,93 +244,105 @@ var HeaderMenu = {
     DEFAULT_SUBMENU_ID: "sub_0",
     _currentActiveMenuId: null,
     _currentActiveSubmenusId: null,
+
     /**
      * Menu initialization
-     *
+     * @method initialize
      * @param  {Object}  options  Option object
      * @abstract
      */
     initialize: function(options) {
         throw("Abstract function: must be overwritten by child");
     },
+
     /**
      * Resets the stored menu ids (main menu and sub menu)
+     * @method reset
      */
     reset: function() {
         this.setActiveMenu(this.DEFAULT_MENU_ID);
         this.setActiveSubMenu(this.DEFAULT_SUBMENU_ID);
     },
+
     /**
      * Getter for active main menu
-     *
-     * @returns  {String}
+     * @method getActiveMenu
+     * @return  {String}
      */
     getActiveMenu: function() {
         return this._currentActiveMenuId;
     },
+
     /**
      * Setter for active main menu
-     *
+     * @method setActiveMenu
      * @param  {String}  menuId
      */
     setActiveMenu: function(menuId) {
         this._currentActiveMenuId = menuId;
     },
+
     /**
      * Getter for active sub menu
-     *
-     * @returns  {String}
+     * @method getActiveSubMenu
+     * @return  {String}
      */
     getActiveSubMenu: function() {
         return this._currentActiveSubmenusId;
     },
+
     /**
      * Setter for active sub menu
-     *
+     * @method setActiveSubMenu
      * @param  {String}  subMenuId
      */
     setActiveSubMenu: function(subMenuId) {
         this._currentActiveSubmenusId = subMenuId;
     },
+
     /**
      * Returns the superior main menu id of passed sub menu id
-     *
+     * @method getMenuIdBySubMenuId
      * @param    {String}  subMenuId
-     * @returns  {String}
+     * @return  {String}
      */
     getMenuIdBySubMenuId: function(subMenuId) {
         return subMenuId.replace("sub_", "main_");
     },
+
     /**
      * Returns the inferior sub menu id of passed main menu id
-     *
+     * @method getSubMenuIdByMenuId
      * @param    {String}  menuId
-     * @returns  {String}
+     * @return  {String}
      */
     getSubMenuIdByMenuId: function(menuId) {
         return menuId.replace("main_", "sub_");
     },
+
     /**
      * Activates a menue.
-     *
+     * @method activate
      * @param  {Object}  obj  Main menu item object
      * @abstract
      */
     activate: function(obj) {
         throw("Abstract function: must be overwritten by child");
     },
+
     /**
      * Deactivates a menu.
-     *
+     * @method deactivate
      * @param  {Object}  obj  Main menu item object
      * @abstract
      */
     deactivate: function(obj) {
         throw("Abstract function: must be overwritten by child");
     },
+
     /**
      * Marks menu item as active menu when a anchor of one of its subitems is clicked.
-     *
+     * @method markActive
      * @param  {Object}  obj  Anchor item object
      */
     markActive: function(obj) {
@@ -348,15 +375,19 @@ var HeaderMenu = {
  */
 var HeaderClickMenu = jQuery.extend(true, {}, HeaderMenu);
 
+/**
+ * @method initialize
+ * @param  {Object}  [options={}]
+ */
 HeaderClickMenu.initialize = function(options) {
 
-    if (typeof options == "undefined") {
+    if (typeof options === "undefined") {
         options = {};
     }
-    if (typeof options.menuId == "undefined") {
+    if (typeof options.menuId === "undefined") {
         options.menuId = this.DEFAULT_MENU_ID;
     }
-    if (typeof options.subMenuId == "undefined") {
+    if (typeof options.subMenuId === "undefined") {
         options.subMenuId = this.DEFAULT_SUBMENU_ID;
     }
 
@@ -373,7 +404,7 @@ HeaderClickMenu.initialize = function(options) {
 
 /**
  * Activates a menue.
- *
+ * @method activate
  * @param  {Object}  obj  Main menu item object
  */
 HeaderClickMenu.activate = function(obj) {
@@ -384,7 +415,7 @@ HeaderClickMenu.activate = function(obj) {
 
 /**
  * Empty function.
- *
+ * @method deactivate
  * @param  {Object}  obj  Main menu item object
  */
 HeaderClickMenu.deactivate = function(obj) {
@@ -404,23 +435,27 @@ HeaderClickMenu.deactivate = function(obj) {
  */
 var HeaderDelayMenu = jQuery.extend(true, {}, HeaderMenu);
 
+/**
+ * @method initialize
+ * @param  {Object}  [options={}]
+ */
 HeaderDelayMenu.initialize = function(options) {
     this._mouseOverDelay = 300;
     this._mouseOutDelay = 1000;
 
-    if (typeof options == "undefined") {
+    if (typeof options === "undefined") {
         options = {};
     }
-    if (typeof options.menuId == "undefined") {
+    if (typeof options.menuId === "undefined") {
         options.menuId = this.DEFAULT_MENU_ID;
     }
-    if (typeof options.subMenuId == "undefined") {
+    if (typeof options.subMenuId === "undefined") {
         options.subMenuId = this.DEFAULT_SUBMENU_ID;
     }
-    if (typeof options.mouseOverDelay == "undefined" || isNaN(options.mouseOverDelay)) {
+    if (typeof options.mouseOverDelay === "undefined" || isNaN(options.mouseOverDelay)) {
         options.mouseOverDelay = this._mouseOverDelay;
     }
-    if (typeof options.mouseOutDelay == "undefined" || isNaN(options.mouseOutDelay)) {
+    if (typeof options.mouseOutDelay === "undefined" || isNaN(options.mouseOutDelay)) {
         options.mouseOutDelay = this._mouseOutDelay;
     }
 
@@ -445,7 +480,11 @@ HeaderDelayMenu.initialize = function(options) {
     });
 };
 
-
+/**
+ * Activates a menue.
+ * @method activate
+ * @param  {Object}  obj  Main menu item object
+ */
 HeaderDelayMenu.activate = function(obj) {
     HeaderTimer.resetOut();
     var ident = this.getSubMenuIdByMenuId($(obj).attr("id"));
@@ -458,7 +497,7 @@ HeaderDelayMenu.activate = function(obj) {
 
 /**
  * Deactivates a menu by hiding its submenu using a defined delay time.
- *
+ * @method deactivate
  * @param  {Object}  obj  Main menu item object
  */
 HeaderDelayMenu.deactivate = function(obj) {
@@ -469,25 +508,3 @@ HeaderDelayMenu.deactivate = function(obj) {
     }, that._mouseOutDelay);
 };
 
-
-// #################################################################################################
-
-/**
- * Firebug emulation, to prevent errors if firebug is not available
- */
-if (!("console" in window) || !("firebug" in console)) {
-    (function() {
-        window.console = {
-            log: function() {
-            },
-            debug: function() {
-            },
-            info: function() {
-            },
-            warn: function() {
-            },
-            error: function() {
-            }
-        };
-    })();
-}

@@ -18,7 +18,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // CONTENIDO startup process
-include_once ('./includes/startup.php');
+include_once('./includes/startup.php');
 
 //includes the backendpath
 $backendPath = cRegistry::getBackendPath();
@@ -111,6 +111,7 @@ if (!is_numeric($client) || (!$perm->have_perm_client('client[' . $client . ']')
 if (!is_numeric($lang) || $lang == '') {
     $sess->register('lang');
     // search for the first language of this client
+    // @TODO  Move this to cApiClientLanguageCollection
     $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang'] . " AS B WHERE A.idlang=B.idlang AND idclient=" . cSecurity::toInteger($client) . " ORDER BY A.idlang ASC";
     $db->query($sql);
     $db->nextRecord();
@@ -153,7 +154,7 @@ $cfg['debug']['backend_exectime']['start'] = getmicrotime();
 // one file is required.
 if (is_array($backend->getFile('inc'))) {
     foreach ($backend->getFile('inc') as $filename) {
-        include_once ($backendPath . $filename);
+        include_once($backendPath . $filename);
     }
 }
 
@@ -183,14 +184,14 @@ $sFilename = "";
 if (is_array($backend->getFile('main'))) {
     foreach ($backend->getFile('main') as $id => $filename) {
         $sFilename = $filename;
-        include_once ($backendPath . $filename);
+        include_once($backendPath . $filename);
     }
 } elseif ($frame == 3) {
-    include_once ($backendPath . $cfg['path']['includes'] . 'include.default_subnav.php');
-    $sFilename = "include.default_subnav.php";
+    include_once($backendPath . $cfg['path']['includes'] . 'include.default_subnav.php');
+    $sFilename = 'include.default_subnav.php';
 } else {
-    include_once ($backendPath . $cfg['path']['includes'] . 'include.blank.php');
-    $sFilename = "include.blank.php";
+    include_once($backendPath . $cfg['path']['includes'] . 'include.blank.php');
+    $sFilename = 'include.blank.php';
 }
 
 $cfg['debug']['backend_exectime']['end'] = getmicrotime();

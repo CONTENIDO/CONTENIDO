@@ -99,15 +99,15 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             $contenidoModuleHandler->changeModuleName($alias);
             // Ssave input and output in file
             if ($contenidoModuleHandler->saveInput(stripslashes($input)) == false) {
-                $messageIfError .= '<br />' . i18n("Can't save input !");
+                $messageIfError .= '<br>' . i18n("Can't save input !");
             }
 
             if ($contenidoModuleHandler->saveOutput(stripslashes($output)) == false) {
-                $messageIfError .= '<br />' . i18n("Can't save output !");
+                $messageIfError .= '<br>' . i18n("Can't save output !");
             }
 
             if ($contenidoModuleHandler->saveInfoXML($name, $description, $type, $alias) == false) {
-                $messageIfError .= '<br />' . i18n("Can't save xml module info file!");
+                $messageIfError .= '<br>' . i18n("Can't save xml module info file!");
             }
 
             // Display error

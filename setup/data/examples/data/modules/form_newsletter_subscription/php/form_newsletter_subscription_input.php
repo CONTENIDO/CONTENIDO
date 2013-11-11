@@ -152,19 +152,22 @@ if ($oRcpGroups->Count() == 0) {
     // Show groups
     // Trick: To save multiple selections in <select>-Element, add some JS which saves the
     // selection, comma separated in a hidden input field on change.
-    $sSkript = '              <script type="text/javascript"><!--'."\n".
-             '                  function fncUpdateSel() {'."\n".
-             '                     var strSel = "";'."\n".
-             '                     for (i = 0; i < document.forms[0].selGroup'.$cnumber.'.length; i++) {'."\n".
-             '                        if (document.forms[0].selGroup'.$cnumber.'.options[i].selected == true) {'."\n".
-             '                           if (strSel != "")'."\n".
-             '                              strSel = strSel + ",";'."\n".
-             '                           strSel = strSel + document.forms[0].selGroup'.$cnumber.'.options[i].value;'."\n".
-             '                        }'."\n".
-             '                     }'."\n".
-             '                     document.forms[0].elements["hidJoinGroups'.$cnumber.'"].value = strSel;'."\n".
-             '                  }'."\n".
-             '                  //--></script>'."\n";
+    $sSkript = '
+<script type="text/javascript"><!--
+function fncUpdateSel() {
+    var strSel = "";
+    for (i = 0; i < document.forms[0].selGroup'.$cnumber.'.length; i++) {
+        if (document.forms[0].selGroup'.$cnumber.'.options[i].selected == true) {
+            if (strSel != "") {
+                strSel = strSel + ",";
+            }
+            strSel = strSel + document.forms[0].selGroup'.$cnumber.'.options[i].value;
+        }
+    }
+    document.forms[0].elements["hidJoinGroups'.$cnumber.'"].value = strSel;
+}
+//--></script>
+';
 
     if ($aSettings['JoinSel'] == 'Default') {
         $oSelGroup = new cHTMLSelectElement('selGroup'.$cnumber, '', '', true);

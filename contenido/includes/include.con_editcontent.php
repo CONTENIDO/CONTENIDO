@@ -72,7 +72,7 @@ if ($action == 10) {
 $markSubItem = markSubMenuItem(4, true);
 
 // Include tiny class
-include ($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
+include($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
 $oEditor = new cTinyMCEEditor('', '');
 $oEditor->setToolbar('inline_edit');
 
@@ -83,7 +83,7 @@ $sConfigFullscreen = $oEditor->getConfigFullscreen();
 // Replace vars in Script
 $oScriptTpl = new cTemplate();
 
-$oScriptTpl->set('s', 'CONTENIDO_FULLHTML', $backendUrl);
+$oScriptTpl->set('s', 'JS_EDITCONTENT', $markSubItem);
 
 // Set urls to file browsers
 $oScriptTpl->set('s', 'IMAGE', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
@@ -92,11 +92,10 @@ $oScriptTpl->set('s', 'FLASH', $backendUrl . 'frameset.php?area=upl&contenido=' 
 $oScriptTpl->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
 $oScriptTpl->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
-// Add tiny options and fill function leave_check()
+// Add tiny options
 $oScriptTpl->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
 $oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
 $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
-$oScriptTpl->set('s', 'CON_PATH', cRegistry::getBackendUrl());
 $oScriptTpl->set('s', 'CLOSE', utf8_encode(html_entity_decode(i18n('Close editor'))));
 $oScriptTpl->set('s', 'SAVE', utf8_encode(html_entity_decode(i18n('Close editor and save changes'))));
 $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
@@ -104,7 +103,7 @@ $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $oScriptTpl->set('s', 'USE_TINY', '');
 } else {
-    $oScriptTpl->set('s', 'USE_TINY', 'swapTiny(this);');
+    $oScriptTpl->set('s', 'USE_TINY', '1');
 }
 
 $scripts = $oScriptTpl->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['con_editcontent'], 1);
@@ -123,7 +122,7 @@ if ($code == "0601") {
     $code = "<script type='text/javascript'>location.href = '" . $backendUrl . "main.php?frame=4&area=con_editart&action=con_edit&idart=" . $idart . "&idcat=" . $idcat . "&contenido=" . $contenido . "'; /*console.log(location.href);*/</script>";
 } else {
     // inject some additional markup
-    $code = cString::iReplaceOnce("</head>", "$markSubItem $scripts\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$encoding[$lang]\"></head>", $code);
+    $code = cString::iReplaceOnce("</head>", "$scripts\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$encoding[$lang]\"></head>", $code);
     $code = cString::iReplaceOnceReverse("</body>", "$contentform</body>", $code);
     $code = cString::iReplaceOnce("<head>", "<head>\n" . '<base href="' . cRegistry::getFrontendUrl() . '">', $code);
 }

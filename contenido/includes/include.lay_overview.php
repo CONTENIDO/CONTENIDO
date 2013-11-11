@@ -16,11 +16,11 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $oLayouts = new cApiLayoutCollection();
-$oLayouts->select("idclient = '$client'", '', 'name ASC');
+$oLayouts->select("idclient = " . (int) $client, '', 'name ASC');
 
 $tpl->reset();
 
-$tpl->set('s', 'SID', $sess->id);
+$requestIdlay = (isset($_REQUEST['idlay'])) ? (int) $_REQUEST['idlay'] : 0;
 
 $darkrow = false;
 while (($layout = $oLayouts->next()) !== false) {
@@ -34,17 +34,15 @@ while (($layout = $oLayouts->next()) !== false) {
     $idlay = $layout->get('idlay');
 
     if (strlen($descr) > 64) {
-        $descr = substr($descr, 0, 64);
-        $descr .= ' ..';
+        $descr = substr($descr, 0, 64) . ' ..';
     }
 
-    $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')" title="%s" alt="%s">%s</a>';
+    $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')" title="%s" alt="%s">%s</a>';
     $area = 'lay';
     $mstr = sprintf(
-        $tmp_mstr, 'right_top',
-        $sess->url("main.php?area=$area&frame=3&idlay=$idlay"),
-        'right_bottom',
-        $sess->url("main.php?area=lay_edit&frame=4&idlay=$idlay"),
+        $tmp_mstr,
+        'right_top', $sess->url("main.php?area=$area&frame=3&idlay=$idlay"),
+        'right_bottom', $sess->url("main.php?area=lay_edit&frame=4&idlay=$idlay"),
         $descr, $descr, $name
     );
 
@@ -72,7 +70,7 @@ while (($layout = $oLayouts->next()) !== false) {
     if ($perm->have_perm_area_action_item('lay', 'lay_delete', $idlay) && !$inUse) {
         $delTitle = i18n("Delete layout");
         $delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"), conHtmlentities(conHtmlSpecialChars($name)));
-        $delLink  = '<a title="'.$delTitle.'" href="javascript://" onclick="showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteLayout(' . $idlay . '); });return false;">'
+        $delLink  = '<a title="'.$delTitle.'" href="javascript://" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteLayout(' . $idlay . '); });return false;">'
                   . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
         $tpl->set('d', 'DELETE', $delLink);
     } else {
@@ -83,18 +81,14 @@ while (($layout = $oLayouts->next()) !== false) {
 
     $tpl->set('d', 'TODO', $todo->render());
 
-    if (stripslashes($_REQUEST['idlay']) == $idlay) {
-        $tpl->set('d', 'ID', 'marked');
-    } else {
-        $tpl->set('d', 'ID', '');
-    }
+    $marked = ($requestIdlay == $idlay) ? 'marked' : '';
+    $tpl->set('d', 'ID', $marked);
 
     $tpl->next();
 }
 
 //datas for show of used info per ajax
 $tpl->set('s', 'AREA', $area);
-$tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'AJAXURL',  cRegistry::getBackendUrl() . 'ajaxmain.php');
 $tpl->set('s', 'BOX_TITLE', i18n("The layout '%s' is used for following templates") . ":");
 

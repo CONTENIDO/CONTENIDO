@@ -91,8 +91,6 @@ if (is_array($userids)) {
 
 $tpl->reset();
 $tpl->setEncoding('iso-8859-1');
-$tpl->set('s', 'SESSID', $sSession);
-$tpl->set('s', 'SESSNAME', $sess->name);
 $iIDCat = 0;
 $iIDTpl = 0;
 
@@ -157,7 +155,7 @@ if (is_array($isCurrent)) {
                 $idart = $db->f("idart");
 
                 // Create javascript multilink
-                $tmp_mstr = '<a href="javascript://" onclick="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '" alt="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '">%s</a>';
+                $tmp_mstr = '<a href="javascript://" onclick="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '" alt="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '">%s</a>';
 
                 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"), $db->f("title"));
 
@@ -218,7 +216,7 @@ if ($i > 0) {
     $tpl->set('s', 'NO_ARTICLES_ROW', $sRow);
 }
 
-$sLoadSubnavi = 'parent.parent.frames["right"].frames["right_top"].location.href = \'main.php?area=con&frame=3&idcat=' . $iIDCat . '&idtpl=' . $iIDTpl . '&contenido=' . $sSession . "';";
+$sLoadSubnavi = 'Con.getFrame(\'right_top\').location.href = \'main.php?area=con&frame=3&idcat=' . $iIDCat . '&idtpl=' . $iIDTpl . '&contenido=' . $sSession . "';";
 $tpl->set('s', 'SUBNAVI', $sLoadSubnavi);
 
 $frame = ob_get_contents();

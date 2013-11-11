@@ -15,7 +15,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-include_once (cRegistry::getBackendPath() . 'includes/functions.rights.php');
+include_once(cRegistry::getBackendPath() . 'includes/functions.rights.php');
 
 if (!isset($actionarea)) {
     $actionarea = 'area';
@@ -245,6 +245,6 @@ if ($bEndScript == true) {
     $oTpl->set('s', 'JS_SCRIPT_AFTER', '');
     $oTpl->set('s', 'RIGHTS_CONTENT', '');
     $oTpl->set('s', 'EXTERNAL_SCRIPTS', '');
-    $oTpl->generate('templates/standard/' . $cfg['templates']['include.rights']);
+    $oTpl->generate('templates/standard/' . $cfg['templates']['rights']);
     die();
 }

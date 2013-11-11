@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
 </head>
 <body>
 
@@ -28,15 +28,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 </div>
 
 <script type="text/javascript">
-
-    // First sub menu item
-    /* DEs: when does this fire?
-    if (cObj = document.getElementById('c_0'))
-    {
-        sub.click(cObj);
-    }
-    */
-
+// First sub menu item
+/* DEs: when does this fire?
+if (cObj = document.getElementById('c_0')) {
+    sub.click(cObj);
+}
+*/
 </script>
 <!--{DEFAULT}-->
 

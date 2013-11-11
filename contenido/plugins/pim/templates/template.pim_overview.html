@@ -48,81 +48,84 @@
             $(".sortPluginDown").last().css('visibility', 'hidden');
         }
 
-        $(document).ready(function() {
-            updateSortButtons();
+        (function(Con, $) {
+            $(function() {
+                updateSortButtons();
 
-            $(".sortPluginDown").click(function() {
-                var pluginId = $(this).attr("data-plugin-id");
-                var pluginRow = $("#plugin-row-" + pluginId);
-                var pluginTable = pluginRow.parent().parent();
+                $(".sortPluginDown").click(function() {
+                    var pluginId = $(this).attr("data-plugin-id");
+                    var pluginRow = $("#plugin-row-" + pluginId);
+                    var pluginTable = pluginRow.parent().parent();
 
-                var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
-                var newOrder = oldOrder + 1;
-                if (newOrder > {INSTALLED_PLUGINS}) {
-                    showNotification("i18n('Error')", "i18n('This plugin is already at the bottom!')");
-                    return;
-                }
-                pluginRow.attr("data-plugin-execorder", newOrder);
-                pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
-
-                $.ajax({
-                    url: "ajaxmain.php",
-                    type: "POST",
-                    data: {
-                        ajax: "updatepluginorder",
-                        neworder: newOrder,
-                        idplugin: pluginId
-                    },
-                    success: function(data, status, jqxhr) {
-                        if (data == "ok") {
-                            pluginTable.next().after(pluginTable);
-                            updateSortButtons();
-                        }
+                    var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
+                    var newOrder = oldOrder + 1;
+                    if (newOrder > {INSTALLED_PLUGINS}) {
+                        Con.showNotification("i18n('Error')", "i18n('This plugin is already at the bottom!')");
+                        return;
                     }
+                    pluginRow.attr("data-plugin-execorder", newOrder);
+                    pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
+
+                    $.ajax({
+                        url: "ajaxmain.php",
+                        type: "POST",
+                        data: {
+                            ajax: "updatepluginorder",
+                            neworder: newOrder,
+                            idplugin: pluginId
+                        },
+                        success: function(data, status, jqxhr) {
+                            if (data == "ok") {
+                                pluginTable.next().after(pluginTable);
+                                updateSortButtons();
+                            }
+                        }
+                    });
                 });
 
-            });
-            $(".sortPluginUp").click(function() {
-                var pluginId = $(this).attr("data-plugin-id");
-                var pluginRow = $("#plugin-row-" + pluginId);
-                var pluginTable = pluginRow.parent().parent();
+                $(".sortPluginUp").click(function() {
+                    var pluginId = $(this).attr("data-plugin-id");
+                    var pluginRow = $("#plugin-row-" + pluginId);
+                    var pluginTable = pluginRow.parent().parent();
 
-                var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
-                var newOrder = oldOrder - 1;
-                if (newOrder == 0) {
-                    showNotification("i18n('Error')", "i18n('This plugin is already at the top!')");
-                    return;
-                }
-                pluginRow.attr("data-plugin-execorder", newOrder);
-                pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
+                    var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
+                    var newOrder = oldOrder - 1;
+                    if (newOrder == 0) {
+                        Con.showNotification("i18n('Error')", "i18n('This plugin is already at the top!')");
+                        return;
+                    }
+                    pluginRow.attr("data-plugin-execorder", newOrder);
+                    pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
 
-                $.ajax({
-                    url: "ajaxmain.php",
-                    type: "POST",
-                    data: {
-                        ajax: "updatepluginorder",
-                        neworder: newOrder,
-                        idplugin: pluginId
-                    },
-                    success: function(data, status, jqxhr) {
-                        if (data == "ok") {
-                            pluginTable.prev().before(pluginTable);
-                            updateSortButtons();
+                    $.ajax({
+                        url: "ajaxmain.php",
+                        type: "POST",
+                        data: {
+                            ajax: "updatepluginorder",
+                            neworder: newOrder,
+                            idplugin: pluginId
+                        },
+                        success: function(data, status, jqxhr) {
+                            if (data == "ok") {
+                                pluginTable.prev().before(pluginTable);
+                                updateSortButtons();
+                            }
                         }
+                    });
+                });
+
+                $(".uninstallSQL").change(function() {
+                    var link = $("#removalLink-" + $(this).attr("data-idplugin"));
+                    if (this.checked) {
+                        var newLink = link.attr("onclick").replace("uninstallsql=0", "uninstallsql=1");
+                        link.attr("onclick", newLink);
+                    } else {
+                        var newLink = link.attr("onclick").replace("uninstallsql=1", "uninstallsql=0");
+                        link.attr("onclick", newLink);
                     }
                 });
             });
-            $(".uninstallSQL").change(function() {
-                var link = $("#removalLink-" + $(this).attr("data-idplugin"));
-                if (this.checked) {
-                    var newLink = link.attr("onclick").replace("uninstallsql=0", "uninstallsql=1");
-                    link.attr("onclick", newLink);
-                } else {
-                    var newLink = link.attr("onclick").replace("uninstallsql=1", "uninstallsql=0");
-                    link.attr("onclick", newLink);
-                }
-            });
-        });
+        })(Con, Con.$);
         </script>
 
         <style type="text/css">
@@ -177,14 +180,14 @@
             </tr>
         </table>
         <div id="uploadplugin" style="display: none">
-            {LANG_UPLOAD_CHOOSE}<br />
+            {LANG_UPLOAD_CHOOSE}<br>
             <form action="main.php" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="area" value="pim" />
-                <input type="hidden" name="frame" value="4" />
-                <input type="hidden" name="contenido" value="{SESSID}" />
-                <input type="hidden" name="pim_view" value="install" />
-                <input type="file" name="package" id="package" />
-                <input type="submit" name="upload_package" id="upload_package" value="{LANG_UPLOAD_BUTTON}" />
+                <input type="hidden" name="area" value="pim">
+                <input type="hidden" name="frame" value="4">
+                <input type="hidden" name="contenido" value="{_SID_}">
+                <input type="hidden" name="pim_view" value="install">
+                <input type="file" name="package" id="package">
+                <input type="submit" name="upload_package" id="upload_package" value="{LANG_UPLOAD_BUTTON}">
             </form>
         </div>
         <div>&#160;</div>

@@ -260,7 +260,6 @@ class cContentTypeDate extends cContentTypeAbstract {
         $template->set('s', 'PREFIX', $this->_prefix);
         $template->set('s', 'ID', $this->_id);
         $template->set('s', 'IDARTLANG', $this->_idArtLang);
-        $template->set('s', 'PATH_BACKEND', $pathBackend);
         $template->set('s', 'LANG', substr(cRegistry::getBackendLanguage(), 0, 2));
         $template->set('s', 'PATH_TO_CALENDAR_PIC', $pathBackend . $this->_cfg['path']['images'] . 'calendar.gif');
         $setting = $this->_settings;

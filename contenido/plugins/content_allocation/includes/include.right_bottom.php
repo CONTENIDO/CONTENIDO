@@ -96,16 +96,16 @@ if ($_GET['step'] == 'createRoot') { // create new root item
         </form>
         </table>
         <script type="text/javascript">
-            controller = document.getElementById("itemname");
-            controller.focus();
-            function fieldCheck() {
-                if (controller.value == "") {
-                    alert("'.i18n("Please enter a category name.", 'content_allocation').'");
-                    controller.focus();
-                    return false;
-                }
-                return true;
+        var controller = document.getElementById("itemname");
+        controller.focus();
+        function fieldCheck() {
+            if (controller.value == "") {
+                alert("'.i18n("Please enter a category name.", 'content_allocation').'");
+                controller.focus();
+                return false;
             }
+            return true;
+        }
         </script>';
     $oDiv->updateAttributes(array('style' => 'padding: 5px; width: 400px; border: 1px #B3B3B3 solid; background-color: #FFFFFF;'));
     $oDiv->setContent($form);
@@ -123,7 +123,7 @@ $treeDiv->setContent($result);
 
 $js = '
 <script type="text/javascript">
-/* Function for deleting categories*/
+// Function for deleting categories
 function deleteCategory(idpica_alloc) {
     var url = "main.php?area='.$area.'&action='.$action.'&step=deleteItem&idpica_alloc=" + idpica_alloc + "&frame='.$frame.'&contenido='.$sess->id.'";
     window.location.href = url;

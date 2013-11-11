@@ -377,7 +377,7 @@ class cGuiTableForm {
                     $action = 'document.forms["' . $this->formname . '"].elements["action"].value = "' . $value['action'] . '";';
                     $action .= 'document.forms["' . $this->formname . '"].submit()';
 
-                    $onclick = 'showConfirmation("' . $value['confirmdescription'] . '", function() { ' . $action . ' });return false;';
+                    $onclick = 'Con.showConfirmation("' . $value['confirmdescription'] . '", function() { ' . $action . ' });return false;';
                 } else {
                     $onclick = 'document.forms["' . $this->formname . '"].elements["action"].value = "' . $value['action'] . '";';
                 }

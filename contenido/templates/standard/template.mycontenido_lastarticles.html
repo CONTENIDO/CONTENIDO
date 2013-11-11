@@ -1,33 +1,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
+    <title>template.mycontenido_lastarticles.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+    <style type="text/css">
+    table.content th.col-first {border:1px; border-bottom:0; border-color:#b3b3b3; border-style:solid}
+    table.content th.col-mid   {border:1px; border-bottom:0px; border-left:0px; border-color: #B3B3B3; border-style: solid}
+    table.content th.col-last  {border:1px; border-bottom:0px; border-left:0px; border-color: #B3B3B3; border-style: solid}
+
+    table.content td.col-first {border:1px; border-top:0; border-color:#b3b3b3; border-style:solid}
+    table.content td.col-mid   {border:1px; border-left:0; border-top:0; border-color:#b3b3b3; border-style:solid;}
+    table.content td.col-last  {border:1px; border-left:0; border-top:0; border-right:1px; border-color:#b3b3b3; border-style:solid}
+    </style>
+{_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript">
-        //iBox = new infoBox(2);
-        function artSort(selObj) {
-            var url = '{SELF_URL}';
-            var i = selObj.selectedIndex;
-            var sortkey = selObj.options[i].value;
-            window.location.href = url + '&sort=' + sortkey;
-        }
-
-        {HELP}
-    </script>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <style type="text/css">
-        table.content th.col-first {border:1px; border-bottom:0; border-color:#b3b3b3; border-style:solid}
-        table.content th.col-mid   {border:1px; border-bottom:0px; border-left:0px; border-color: #B3B3B3; border-style: solid}
-        table.content th.col-last  {border:1px; border-bottom:0px; border-left:0px; border-color: #B3B3B3; border-style: solid}
-
-        table.content td.col-first {border:1px; border-top:0; border-color:#b3b3b3; border-style:solid}
-        table.content td.col-mid   {border:1px; border-left:0; border-top:0; border-color:#b3b3b3; border-style:solid;}
-        table.content td.col-last  {border:1px; border-left:0; border-top:0; border-right:1px; border-color:#b3b3b3; border-style:solid}
-    </style>
 </head>
 
 <body style="margin:10px">
@@ -80,6 +68,18 @@
     </tr>
     <!-- END:BLOCK -->
 </table>
+
+<script type="text/javascript">
+//iBox = new infoBox(2);
+function artSort(selObj) {
+    var url = '{SELF_URL}';
+    var i = selObj.selectedIndex;
+    var sortkey = selObj.options[i].value;
+    window.location.href = url + '&sort=' + sortkey;
+}
+
+{HELP}
+</script>
 
 </body>
 </html>

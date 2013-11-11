@@ -13,6 +13,5 @@
  * @link       http://www.contenido.org
  */
 
-// show blank menu when no form was selected
-cInclude('templates', $cfg['templates']['right_top_blank']);
-?>
+$tpl = new cTemplate();
+$tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);

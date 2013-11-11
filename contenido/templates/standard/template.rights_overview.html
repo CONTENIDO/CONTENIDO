@@ -1,140 +1,147 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-    <head>
-        <title></title>
-        <meta http-equiv="expires" content="0">
-        <meta http-equiv="cache-control" content="no-cache">
-        <meta http-equiv="pragma" content="no-cache">
-        <script type="text/javascript" src="scripts/rowMark.js"></script>
-        <script type="text/javascript" src="scripts/infoBox.js"></script>
-        <script type="text/javascript">
-            var sid = "{SID}";
+<head>
+    <title>template.rights_overview.html</title>
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
+    <style type="text/css">
+    #contenido_notification {margin-bottom:5px;}
+    table.content {border:0px; border-left:1px; border-bottom:1px; border-style:solid;}
+    table.content td {border:0px; border-top:1px; border-right:1px; border-style:solid; border-color:{BORDERCOLOR};}
+    </style>
+{_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/infoBox.js"></script>
+    <script type="text/javascript">
+    (function(Con, $) {
+        var frame = Con.getFrame('left_bottom');
+        if (frame.get_registered_parameters) {
+            frame.location.href = frame.location.href + frame.get_registered_parameters() + '&userid={GET_USERID}';
+        } else {
+            frame.location.href = frame.location.href + '&userid={GET_USERID}';
+        }
+    })(Con, Con.$);
+    </script>
 
-            // Function for deleting user
-            function deleteUser(iduser) {
-                url = 'main.php?area=user';
-                url += '&action=user_delete';
-                url += '&frame=2';
-                url += '&iduser=' + iduser;
-                url += '&contenido=' + sid;
-                window.location.href = url;
-            }
-        </script>
-        <script type="text/javascript">
-            if (parent.parent.frames['left'].frames['left_bottom'].get_registered_parameters) {
-                parent.parent.frames['left'].frames['left_bottom'].location.href = parent.parent.frames['left'].frames['left_bottom'].location.href + parent.parent.frames['left'].frames['left_bottom'].get_registered_parameters() + '&userid={GET_USERID}';
-            } else {
-                parent.parent.frames['left'].frames['left_bottom'].location.href = parent.parent.frames['left'].frames['left_bottom'].location.href + '&userid={GET_USERID}';
-            }
-        </script>
-        <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/timepicker.css">
-        <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
-        <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-        <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-        <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-        <script type="text/javascript" src="scripts/jquery/plugins/timepicker.js"></script>
+    <!-- get javascript files for language != en -->
+    {CAL_LANG}
+</head>
+<body style="margin:10px">
+    {NOTIFICATION}
+    <form name="user_properties" method="post" action="main.php?contenido=1">
+        <input type="hidden" name="area" value="{AREA}">
+        <input type="hidden" name="action" value="user_edit">
+        <input type="hidden" name="frame" value="{FRAME}">
+        <input type="hidden" name="userid" value="{USERID}">
+        <input type="hidden" name="idlang" value="{LANG}">
+        <table class="generic" cellspacing="0" cellpadding="2" border="0">
+            <tr>
+                <th valign="top">{PROPERTY}</th>
+                <th valign="top" align="left">{VALUE}</th>
+            </tr>
+            <!-- BEGIN:BLOCK -->
+            <tr id="{ROW_ID}">
+                <td valign="top">{CATNAME}</td>
+                <td valign="top" align="left">{CATFIELD}</td>
+            </tr>
+            <!-- END:BLOCK -->
+            <tr class="text_medium" style="background-color:#FFFFFF;">
+                <td valign="top" style="border-right:0px; border-color:{BORDERCOLOR};">&nbsp;</td>
+                <td valign="top" style="border-color:{BORDERCOLOR};" align="right">
+                    <a href="{CANCELLINK}"><img border="0" src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a><img src="images/spacer.gif" width="20"><input type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}" accesskey="s" border="0">
+                </td>
+            </tr>
+        </table>
+    </form>
 
-        <!-- get javascript files for language != en -->
-        {CAL_LANG}
+<script type="text/javascript">
+// Function for deleting user
+// @TODO: Deleting user here in rights overview???
+function deleteUser(iduser) {
+    var url = Con.UtilUrl.build("main.php", {
+        area: "user",
+        action: "user_delete",
+        frame: 2,
+        iduser: iduser
+    });
+    window.location.href = url;
+}
 
-        <style type="text/css">
-            #contenido_notification { margin-bottom:5px; }
-            table.content { border:0px; border-left:1px; border-bottom:1px; border-style:solid; }
-            table.content td { border:0px; border-top:1px; border-right:1px; border-style:solid; border-color:{BORDERCOLOR}; }
-        </style>
+(function(Con, $) {
+    $(function() {
 
-        <script type="text/javascript">
-            $(document).ready(function() {
+        var sysAdmin = document.getElementById("msysadmin1"),
+            adminRow = document.getElementById("rights_admin"),
+            clientRow = document.getElementById("rights_languages"),
+            langRow = document.getElementById("rights_clients");
 
-                var sysAdmin = document.getElementById("msysadmin1");
-                var adminRow = document.getElementById("rights_admin");
-                var clientRow = document.getElementById("rights_languages");
-                var langRow = document.getElementById("rights_clients");
-                if  (adminRow) adminRow.style.display = (sysAdmin.checked) ? "none" : "";
-                if  (clientRow) clientRow.style.display = (sysAdmin.checked) ? "none" : "";
-                if  (langRow) langRow.style.display = (sysAdmin.checked) ? "none" : "";
+        if (adminRow) {
+            adminRow.style.display = (sysAdmin.checked) ? "none" : "";
+        }
+        if (clientRow) {
+            clientRow.style.display = (sysAdmin.checked) ? "none" : "";
+        }
+        if (langRow) {
+            langRow.style.display = (sysAdmin.checked) ? "none" : "";
+        }
 
-                $("#msysadmin1").bind("change", function() {
-                    adminRow.style.display = (adminRow.style.display == "") ? "none" : "";
-                    clientRow.style.display = (clientRow.style.display == "") ? "none" : "";
-                    langRow.style.display = (langRow.style.display == "") ? "none" : "";
-                });
+        $("#msysadmin1").bind("change", function() {
+            adminRow.style.display = (adminRow.style.display == "") ? "none" : "";
+            clientRow.style.display = (clientRow.style.display == "") ? "none" : "";
+            langRow.style.display = (langRow.style.display == "") ? "none" : "";
+        });
 
-                $('#valid_from').datetimepicker({
-                    buttonImage: '{PATH_TO_CALENDER_PIC}',
-                    buttonImageOnly: true,
-                    showOn: 'both',
-                    dateFormat: 'yy-mm-dd',
-                    onClose: function(dateText, inst) {
-                        var endDateTextBox = $('#valid_to');
-                        if (endDateTextBox.val() != '') {
-                            var testStartDate = new Date(dateText);
-                            var testEndDate = new Date(endDateTextBox.val());
-                            if (testStartDate > testEndDate) {
-                                endDateTextBox.val(dateText);
-                            }
-                        } else {
-                            endDateTextBox.val(dateText);
-                        }
-                    },
-                    onSelect: function(selectedDateTime) {
-                        var start = $(this).datetimepicker('getDate');
-                        $('#valid_to').datetimepicker('option', 'minDate', new Date(start.getTime()));
+        $('#valid_from').datetimepicker({
+            buttonImage: '{PATH_TO_CALENDER_PIC}',
+            buttonImageOnly: true,
+            showOn: 'both',
+            dateFormat: 'yy-mm-dd',
+            onClose: function(dateText, inst) {
+                var endDateTextBox = $('#valid_to');
+                if (endDateTextBox.val() != '') {
+                    var testStartDate = new Date(dateText);
+                    var testEndDate = new Date(endDateTextBox.val());
+                    if (testStartDate > testEndDate) {
+                        endDateTextBox.val(dateText);
                     }
-                });
+                } else {
+                    endDateTextBox.val(dateText);
+                }
+            },
+            onSelect: function(selectedDateTime) {
+                var start = $(this).datetimepicker('getDate');
+                $('#valid_to').datetimepicker('option', 'minDate', new Date(start.getTime()));
+            }
+        });
 
-                $('#valid_to').datetimepicker({
-                    buttonImage: '{PATH_TO_CALENDER_PIC}',
-                    buttonImageOnly: true,
-                    showOn: 'both',
-                    dateFormat: 'yy-mm-dd',
-                    onClose: function(dateText, inst) {
-                        var startDateTextBox = $('#valid_from');
-                        if (startDateTextBox.val() != '') {
-                            var testStartDate = new Date(startDateTextBox.val());
-                            var testEndDate = new Date(dateText);
-                            if (testStartDate > testEndDate) {
-                                startDateTextBox.val(dateText);
-                            }
-                        } else {
-                            startDateTextBox.val(dateText);
-                        }
-                    },
-                    onSelect: function(selectedDateTime) {
-                        var end = $(this).datetimepicker('getDate');
-                        $('#valid_from').datetimepicker('option', 'maxDate', new Date(end.getTime()));
+        $('#valid_to').datetimepicker({
+            buttonImage: '{PATH_TO_CALENDER_PIC}',
+            buttonImageOnly: true,
+            showOn: 'both',
+            dateFormat: 'yy-mm-dd',
+            onClose: function(dateText, inst) {
+                var startDateTextBox = $('#valid_from');
+                if (startDateTextBox.val() != '') {
+                    var testStartDate = new Date(startDateTextBox.val());
+                    var testEndDate = new Date(dateText);
+                    if (testStartDate > testEndDate) {
+                        startDateTextBox.val(dateText);
                     }
-                });
-            });
-        </script>
+                } else {
+                    startDateTextBox.val(dateText);
+                }
+            },
+            onSelect: function(selectedDateTime) {
+                var end = $(this).datetimepicker('getDate');
+                $('#valid_from').datetimepicker('option', 'maxDate', new Date(end.getTime()));
+            }
+        });
+    });
+})(Con, Con.$);
 
-    </head>
-    <body style="margin:10px">
-        {NOTIFICATION}
-        <form name="user_properties" method="post" action="main.php?contenido=1">
-            <input type="hidden" name="area" value="{AREA}">
-            <input type="hidden" name="action" value="user_edit">
-            <input type="hidden" name="frame" value="{FRAME}">
-            <input type="hidden" name="userid" value="{USERID}">
-            <input type="hidden" name="idlang" value="{LANG}">
-            <table class="generic" cellspacing="0" cellpadding="2" border="0">
-                <tr>
-                    <th valign="top">{PROPERTY}</th>
-                    <th valign="top" align="left">{VALUE}</th>
-                </tr>
-                <!-- BEGIN:BLOCK -->
-                <tr id="{ROW_ID}">
-                    <td valign="top">{CATNAME}</td>
-                    <td valign="top" align="left">{CATFIELD}</td>
-                </tr>
-                <!-- END:BLOCK -->
-                <tr class="text_medium" style="background-color:#FFFFFF;">
-                    <td valign="top" style="border-right:0px; border-color:{BORDERCOLOR};">&nbsp;</td>
-                    <td valign="top" style="border-color:{BORDERCOLOR};" align="right">
-                        <a href="{CANCELLINK}"><img border="0" src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a><img src="images/spacer.gif" width="20"><input type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}" accesskey="s" border="0">
-                    </td>
-                </tr>
-            </table>
-        </form>
+</script>
+
 </body>
 </html>

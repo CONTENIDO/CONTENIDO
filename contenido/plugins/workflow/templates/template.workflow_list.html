@@ -1,24 +1,21 @@
 <script type="text/javascript">
-    /* Session-ID */
-    var sid = "1";
-
-    /* Function for deleting
-       modules */
-
-    function deleteWorkflow(idworkflow) {
-        url  = "main.php?area=workflow";
-        url += "&action=workflow_delete";
-        url += "&frame=2";
-        url += "&idworkflow=" + idworkflow;
-        url += "&contenido=" + sid;
-        parent.left_bottom.location.href = url;
-    }
+// Function for deleting workflows
+function deleteWorkflow(idworkflow) {
+    var url = "main.php?area=workflow";
+    url += "&action=workflow_delete";
+    url += "&frame=2";
+    url += "&idworkflow=" + idworkflow;
+    url += "&contenido=" + Con.sid;
+    parent.left_bottom.location.href = url;
+}
 </script>
 
 {FORM}
 
 <script type="text/javascript">
-    if (document.getElementById('marked')) {
-        row.markedRow = document.getElementById('marked');
+(function(Con, $) {
+    if ($('#marked')) {
+        row.markedRow = $('#marked')[0];
     }
+})(Con, Con.$);
 </script>

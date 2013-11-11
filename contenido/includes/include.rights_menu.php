@@ -104,17 +104,8 @@ while ($cApiUser = $cApiUserCollection->next()) {
                 );
 
                 $delTitle = i18n("Delete user");
-                $deletebutton = '<a
-                                    title="' . $delTitle . '"
-                                    href="javascript:void(0)"
-                                    onclick="showConfirmation(&quot;' . $message . '&quot;, function() { deleteBackenduser(&quot;' . $userid . '&quot;); });return false;"
-                                 >
-                                     <img
-                                        src="' . $cfg['path']['images'] . 'delete.gif"
-                                        border="0"
-                                        title="' . $delTitle . '"
-                                        alt="' . $delTitle . '"
-                                     >
+                $deletebutton = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $message . '&quot;, function() { deleteBackenduser(&quot;' . $userid . '&quot;); });return false;">
+                                     <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '">
                                  </a>';
             } else {
                 $deletebutton = '';
@@ -138,41 +129,36 @@ while ($cApiUser = $cApiUserCollection->next()) {
     }
 }
 
-$deleteScript = '<script type="text/javascript">
+$deleteScript = <<<JS
+<script type="text/javascript">
+// Function for deleting backend user
+function deleteBackenduser(userid) {
+    var form = Con.getFrame("left_top").document.filter;
+    var url = 'main.php?area=user_overview';
+    url += '&action=user_delete';
+    url += '&frame=4';
+    url += '&userid=' + userid;
+    url += '&contenido=' + Con.sid;
+    url += get_registered_parameters();
+    url += '&sortby=' + form.sortby.value;
+    url += '&sortorder=' + form.sortorder.value;
+    url += '&filter=' + form.filter.value;
+    url += '&elemperpage=' + form.elemperpage.value;
+    url += '&page={$mPage}';
+    Con.getFrame("right_bottom").location.href = url;
+    Con.getFrame("right_top").location.href = 'main.php?area=user&frame=3&contenido=' + Con.sid;
+}
+</script>
+JS;
 
-        /* Session-ID */
-        var sid = "' . $sess->id . '";
-
-        /* Function for deleting
-           modules */
-
-        function deleteBackenduser(userid) {
-
-            form = parent.parent.left.left_top.document.filter;
-
-            url  = \'main.php?area=user_overview\';
-            url += \'&action=user_delete\';
-            url += \'&frame=4\';
-            url += \'&userid=\' + userid;
-            url += \'&contenido=\' + sid;
-            url += get_registered_parameters();
-            url += \'&sortby=\' +form.sortby.value;
-            url += \'&sortorder=\' +form.sortorder.value;
-            url += \'&filter=\' +form.filter.value;
-            url += \'&elemperpage=\' +form.elemperpage.value;
-            url += \'&page=\' +\'' . $mPage . '\';
-            parent.parent.right.right_bottom.location.href = url;
-            parent.parent.right.right_top.location.href = \'main.php?area=user&frame=3&contenido=\'+sid;
-
-        }
-
-    </script>';
-
-$markActiveScript = '<script type="text/javascript">
-                         if (document.getElementById(\'marked\')) {
-                             row.markedRow = document.getElementById(\'marked\');
-                         }
-                    </script>';
+$markActiveScript = '
+<script type="text/javascript">
+(function(Con, $) {
+    if ($("#marked")) {
+        row.markedRow = $("#marked")[0];
+    }
+})(Con, Con.$);
+</script>';
 // <script type="text/javascript" src="scripts/rowMark.js"></script>
 $oPage->addScript('parameterCollector.js');
 $oPage->addScript($deleteScript);
@@ -205,20 +191,22 @@ $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
 // send new object pager to left_top
-$sRefreshPager = '
-    <script type="text/javascript">
-        var sNavigation = \'' . $sPagerContent . '\';
-        var left_top = parent.left_top;
-        if (left_top.document) {
-            var oPager = left_top.document.getElementById(\'44b41691-0dd4-443c-a594-66a8164e25fd\');
-
-            if (oPager) {
-                oInsert = oPager.firstChild;
-                oInsert.innerHTML = sNavigation;
-                left_top.toggle_pager(\'44b41691-0dd4-443c-a594-66a8164e25fd\');
-            }
+$sRefreshPager = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var sNavigation = '{$sPagerContent}';
+    var left_top = Con.getFrame("left_top");
+    if (left_top.document) {
+        var oPager = left_top.document.getElementById("44b41691-0dd4-443c-a594-66a8164e25fd");
+        if (oPager) {
+            var oInsert = oPager.firstChild;
+            oInsert.innerHTML = sNavigation;
+            left_top.toggle_pager("44b41691-0dd4-443c-a594-66a8164e25fd");
         }
-    </script>';
+    }
+})(Con, Con.$);
+</script>
+JS;
 $oPage->addScript($sRefreshPager);
 
 $oPage->render();

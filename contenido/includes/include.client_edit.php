@@ -54,7 +54,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         $sLangNotification = i18n('Notice: In order to use this client, you must create a new language for it.');
         $sTarget = $sess->url('frameset.php?area=lang');
         $sJsLink = "parent.parent.location.href='" . $sTarget . "';
-                    top.header.markActive(top.header.document.getElementById('sub_lang'));";
+                    Con.getFrame('header').markActive(Con.getFrame('header').document.getElementById('sub_lang'));";
         $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="' . $sJsLink . '">', '</a>');
         $sNewNotification = '<br>' . $sLangNotification . '<br>' . $sLangNotificationLink;
         if (substr($frontendpath, strlen($frontendpath) - 1) != '/') {

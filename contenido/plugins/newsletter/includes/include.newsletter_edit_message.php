@@ -216,37 +216,37 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 
     $sExecScript = '
     <script type="text/javascript">
-        // Enabled/Disable group box
-        function fncShowHide(strItemID) {
-            objItem = document.getElementById(strItemID);
+    // Enabled/Disable group box
+    function fncShowHide(strItemID) {
+        objItem = document.getElementById(strItemID);
 
-            if (objItem.style.display == "none") {
-                objItem.style.display = "inline";
+        if (objItem.style.display == "none") {
+            objItem.style.display = "inline";
+        } else {
+            objItem.style.display = "none";
+        }
+    }
+
+    // If html newsletter template selection has changed, ask user
+    // if he/she may like to save this change (e.g. to get an html
+    // newsletter immediately)
+    function askSubmitOnTplChange(oSelectObject) {
+        var iOriginalTplIDArt = ' . $iTplIDArt . ';
+
+        if (iOriginalTplIDArt != oSelectObject.options[oSelectObject.selectedIndex].value) {
+            if (iOriginalTplIDArt == 0) {
+                // Everything fine: Just selecting a template for the first time
+                submitForm();
             } else {
-                objItem.style.display = "none";
+                // You may loose information, warn!
+                Con.showConfirmation("' . i18n("HTML template has been changed. Do you like to save now to apply changes?<br><br><b>Note, that existing HTML newsletter content will get lost!</b>", 'newsletter') . '", submitForm);
             }
         }
+    }
 
-        // If html newsletter template selection has changed, ask user
-        // if he/she may like to save this change (e.g. to get an html
-        // newsletter immediately)
-        function askSubmitOnTplChange(oSelectObject) {
-            iOriginalTplIDArt = ' . $iTplIDArt . ';
-
-            if (iOriginalTplIDArt != oSelectObject.options[oSelectObject.selectedIndex].value) {
-                if (iOriginalTplIDArt == 0) {
-                    // Everything fine: Just selecting a template for the first time
-                    submitForm();
-                } else {
-                    // You may loose information, warn!
-                    showConfirmation("' . i18n("HTML template has been changed. Do you like to save now to apply changes?<br><br><b>Note, that existing HTML newsletter content will get lost!</b>", 'newsletter') . '", submitForm);
-                }
-            }
-        }
-
-        function submitForm() {
-            document.frmNewsletterMsg.submit();
-        }
+    function submitForm() {
+        document.frmNewsletterMsg.submit();
+    }
     </script>';
     $oPage->addScript($sExecScript);
     $oPage->setContent($oForm);

@@ -4,33 +4,28 @@
 
 <html>
 
-    <head>
+<head>
 
-        <title>:: :: :: :: CONTENIDO {VERSION}</title>
+    <title>:: :: :: :: CONTENIDO {VERSION}</title>
 
-        <meta http-equiv="expires" content="0">
-        <meta http-equiv="cache-control" content="no-cache">
-        <meta http-equiv="pragma" content="no-cache">
+{_META_HEAD_CONTENIDO_}
+{_CSS_HEAD_CONTENIDO_}
 
-        <script type="text/javascript" src="scripts/browserCheck.js"></script>
+    <link rel="SHORTCUT ICON" href="{CONTENIDOPATH}">
 
-        <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+</head>
 
-        <link rel="SHORTCUT ICON" href="{CONTENIDOPATH}">
+<frameset rows="32,*">
 
-    </head>
+    <frame src="{FRAME[3]}" name="right_top" frameborder="0" scrolling="no">
+    <frame src="{FRAME[4]}" name="right_bottom" frameborder="0" scrolling="auto">
 
-    <frameset rows="32,*">
+    <noframes>
+        <body bgcolor="#000000">
+            CONTENIDO uses frames but your browser does not support frames
+        </body>
+    </noframes>
 
-        <frame src="{FRAME[3]}" name="right_top" frameborder="0" scrolling="no">
-        <frame src="{FRAME[4]}" name="right_bottom" frameborder="0" scrolling="auto">
-
-        <noframes>
-            <body bgcolor="#000000">
-                CONTENIDO uses frames but your browser does not support frames
-            </body>
-        </noframes>
-
-    </frameset>
+</frameset>
 
 </html>

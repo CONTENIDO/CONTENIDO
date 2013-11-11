@@ -1061,6 +1061,4 @@ $sContainer = '<div id="' . $sContainerId . '">
 $oTpl->set('s', 'CRECIPIENTGROUP', $sContainer);
 $oTpl->set('s', 'ID_CRECIPIENTGROUP', $sContainerId);
 
-$oTpl->set('s', 'SESSID', $sess->id);
-
 $oTpl->generate(cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.newsletter_left_top.html');

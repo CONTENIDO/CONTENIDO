@@ -19,7 +19,7 @@ $tpl = new cTemplate();
 
 $user = new cApiUser($auth->auth["uid"]);
 
-/* Set default values */
+// Set default values
 $oUser = new cApiUser($auth->auth["uid"]);
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] <= 0) {
     $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
@@ -108,22 +108,25 @@ $grouplink = new cHTMLLink();
 $grouplink->setCLink("frontendgroups", 2, "");
 
 $userlink = "javascript:execFilter(2);";
-$grouplink = "javascript:conMultiLink('left_bottom', 'main.php?area=frontendgroups&frame=2&action=&contenido=" . $sess->id . "')";
+$grouplink = "javascript:Con.multiLink('left_bottom', 'main.php?area=frontendgroups&frame=2&action=&contenido=" . $sess->id . "')";
 
 // Init view by javascript (decide which tab is activated)
 $imgUserId = 'img_user';
 $tpl->set('s', 'IUSER', $imgUserId);
 
-$buttonRow .= '<a href="' . $userlink . '" onclick="toggleContainer(\'' . $imgUserId . '\');">';
-$buttonRow .= '<img onmouseover="hoverEffect(\'' . $imgUserId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgUserId . '\', \'out\')" alt="' . i18n("Frontend users") . '" title="' . i18n("Frontend users") . '" id="' . $imgUserId . '" src="' . $cfg["path"]["images"] . 'users.gif">';
-$buttonRow .= '</a>';
+$buttonRow .= '
+<a class="selectuserfunction" href="' . $userlink . '" onclick="toggleContainer(\'' . $imgUserId . '\');">
+    <img onmouseover="hoverEffect(\'' . $imgUserId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgUserId . '\', \'out\')" alt="' . i18n("Frontend users") . '" title="' . i18n("Frontend users") . '" id="' . $imgUserId . '" src="' . $cfg["path"]["images"] . 'users.gif">
+</a>';
 
 // Frontend Groups
 $imgGroupId = 'img_group';
 $tpl->set('s', 'IGROUP', $imgGroupId);
-$buttonRow .= '<a class="tableElement" href="' . $grouplink . '" onclick="toggleContainer(\'' . $imgGroupId . '\');">';
-$buttonRow .= '<img onmouseover="hoverEffect(\'' . $imgGroupId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgGroupId . '\', \'out\')" alt="' . i18n("Frontend groups") . '" title="' . i18n("Frontend groups") . '" id="' . $imgGroupId . '" src="' . $cfg["path"]["images"] . 'groups.gif">';
-$buttonRow .= '</a>';
+$buttonRow .= '
+<a class="selectgroupfunction" href="' . $grouplink . '" onclick="toggleContainer(\'' . $imgGroupId . '\');">
+    <img onmouseover="hoverEffect(\'' . $imgGroupId . '\', \'in\')" onmouseout="hoverEffect(\'' . $imgGroupId . '\', \'out\')" alt="' . i18n("Frontend groups") . '" title="' . i18n("Frontend groups") . '" id="' . $imgGroupId . '" src="' . $cfg["path"]["images"] . 'groups.gif">
+</a>
+';
 
 $tpl->set('s', 'BUTTONROW', $buttonRow);
 
@@ -224,6 +227,7 @@ $oSelectRestrictGroup = new cHTMLSelectElement("restrictgroup");
 $oSelectRestrictGroup->autoFill($aFEGroups);
 $oSelectRestrictGroup->setDefault($_REQUEST["restrictgroup"]);
 $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
+$oTextboxFilter->setClass("text_medium");
 
 $tplFilter = new cTemplate();
 $tplFilter->set("s", "ITEMS_PER_PAGE", $oSelectItemsPerPage->render());
@@ -232,7 +236,7 @@ $tplFilter->set("s", "SORT_ORDER", $oSelectSortOrder->render());
 $tplFilter->set("s", "FILTER_GROUP", $oSelectRestrictGroup->render());
 $tplFilter->set("s", "FILTER_USER", $oTextboxFilter->render());
 $tplFilter->set("s", "SEARCH_IN", $oSelectSearchIn->render());
-$oListOptionRow->setContentData($tplFilter->generate($cfg["path"]["templates"] . $cfg["templates"]["frontend_left_top_filter"], true));
+$oListOptionRow->setContentData($tplFilter->generate($cfg['path']['templates'] . $cfg['templates']['frontend_left_top_filter'], true));
 
 $oFEUsers = new cApiFrontendUserCollection();
 $oFEUsers->setWhere("cApiFrontendUserCollection.idclient", $client);
@@ -343,7 +347,7 @@ foreach ($aUserTable as $mkey => $params) {
         $message = sprintf(i18n("Do you really want to delete the user %s?"), conHtmlSpecialChars($params["username"]));
 
         $delTitle = i18n("Delete user");
-        $deletebutton = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="showConfirmation(&quot;' . $message . '&quot;, function() { deleteFrontenduser(' . $idfrontenduser . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
+        $deletebutton = '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $message . '&quot;, function() { deleteFrontenduser(' . $idfrontenduser . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '"></a>';
 
         $mlist->setTitle($iMenu, $params["username"]);
         $mlist->setLink($iMenu, $link);
@@ -386,7 +390,7 @@ $link = new cHTMLLink();
 $menu = new cGuiMenu();
 if ((int) $client > 0) {
     if ($perm->have_perm_area_action($area, "frontendgroup_create")) {
-        $link->setLink('javascript:conMultiLink(\'right_bottom\', \'' . $sess->url("main.php?area=frontendgroups&frame=4&action=frontendgroup_create") . '\');');
+        $link->setLink('javascript:Con.multiLink(\'right_bottom\', \'' . $sess->url("main.php?area=frontendgroups&frame=4&action=frontendgroup_create") . '\');');
         $menu->setTitle("-2", i18n("Create group"));
     } else {
         $link->setLink('#');
@@ -428,4 +432,4 @@ $tpl->set('s', 'CGROUPS', $containerGroups);
 $tpl->set('s', 'ID_GROUPS', $containerGroupsId);
 
 $tpl->set('s', 'PAGE', $_REQUEST["page"]);
-$tpl->generate($cfg['path']['templates'] . $cfg['templates']['admin_frontend']);
+$tpl->generate($cfg['path']['templates'] . $cfg['templates']['frontend_left_top']);
