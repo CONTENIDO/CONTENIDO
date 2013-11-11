@@ -24,6 +24,9 @@ $plugin_name = "linkchecker";
 $cfg['plugins']['linkchecker'] = cRegistry::getBackendPath() . "plugins/" . $plugin_name . "/";
 $cfg['tab']['whitelist'] = $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist';
 
+// plugin include
+plugin_include('linkchecker', 'classes/class.linkchecker.repair.php');
+
 // Templates
 $cfg['templates']['linkchecker_test'] = $cfg['plugins']['linkchecker'] . "templates/standard/template.linkchecker_test.html";
 $cfg['templates']['linkchecker_test_errors'] = $cfg['plugins']['linkchecker'] . "templates/standard/template.linkchecker_test_errors.html";

@@ -1552,6 +1552,7 @@ contenido/plugins/frontendusers/groupselect/groupselect.php -text
 contenido/plugins/frontendusers/valid_from/valid_from.php -text
 contenido/plugins/frontendusers/valid_to/valid_to.php -text
 contenido/plugins/index.php -text
+contenido/plugins/linkchecker/classes/class.linkchecker.repair.php -text
 contenido/plugins/linkchecker/includes/config.plugin.php -text
 contenido/plugins/linkchecker/includes/include.checkperms.php -text
 contenido/plugins/linkchecker/includes/include.linkchecker.php -text

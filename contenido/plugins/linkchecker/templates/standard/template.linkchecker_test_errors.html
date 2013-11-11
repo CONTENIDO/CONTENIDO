@@ -6,11 +6,14 @@
     <td valign="top" class="noborder borderrB5 width20 tooltip" title="{ERRORS_CATNAME}">
         {ERRORS_CATNAME_SHORT} ({ERRORS_CATID})
     </td>
-    <td valign="top" class="noborder borderrB5 width40 tooltip" title="{ERRORS_LINK}">
+    <td valign="top" class="noborder borderrB5 width25 tooltip" title="{ERRORS_LINK}">
         {ERRORS_LINK_SHORT}
     </td>
-    <td valign="top" class="noborder borderrB5 width10 tooltip" title="{ERRORS_ERROR_TYPE_HELP}">
+    <td valign="top" class="noborder borderrB5 width15 tooltip" title="{ERRORS_ERROR_TYPE_HELP}">
         {ERRORS_ERROR_TYPE}
+    </td>
+        <td valign="top" class="noborder borderrB5 tgcenter width10 tooltip" title="{ERRORS_REPAIRED_LINK}">
+        <a href="javascript:void(0)" onclick="javascript:showConfirmation('{ERRORS_REPAIRED_QUESTION}<br /><br /><strong>{ERRORS_REPAIRED_LINK}</strong>', function() { window.location.href='{URL_BACKEND}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&amp;action=linkchecker&amp;mode={MODE}&amp;idartlang={ERRORS_LANGARTID}&amp;oldlink={ERRORS_LINK_ENCODE}&amp;repairedlink={ERRORS_REPAIRED_LINK_ENCODE}&amp;redirect={ERRORS_REDIRECT}';})"><img src="{URL_BACKEND}images/but_editlink.gif" alt="" border="0"></a>
     </td>
     <td valign="top" class="noborder pdr5 tgcenter width10">
         <a href="{URL_BACKEND}main.php?area=linkchecker&amp;frame=4&amp;contenido={SID}&action=linkchecker&mode={MODE}&whitelist={ERRORS_LINK_ENCODE}"><img src="{URL_BACKEND}images/folder_new.gif" alt="" border="0"></a>

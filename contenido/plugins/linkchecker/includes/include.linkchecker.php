@@ -146,6 +146,30 @@ function url_is_uri($sUrl) {
     }
 }
 
+/* Repaire some selected link */
+if (!empty($_GET['idartlang']) && !empty($_GET['oldlink']) && !empty($_GET['repairedlink'])) {
+
+    if ($_GET['redirect'] == true) { // Update redirect
+        $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET redirect_url = '" . $db->escape(base64_decode($_GET['repairedlink'])) . "' WHERE idartlang = '" . cSecurity::toInteger($_GET['idartlang']) . "'";
+        $db->query($sql);
+    } else { // Update content
+
+        // Get old value
+        $sql = "SELECT value FROM " . $cfg['tab']['content'] . " WHERE idartlang = '" . cSecurity::toInteger($_GET['idartlang']) . "'";
+        $db->query($sql);
+        $db->next_record();
+
+        // Generate new value
+        $newvalue = str_replace(base64_decode($_GET['oldlink']), base64_decode($_GET['repairedlink']), $db->f("value"));
+
+        // Update database table with new value
+        $sql = "UPDATE " . $cfg['tab']['content'] . " SET value = '" . $newvalue . "' WHERE idartlang = '" . cSecurity::toInteger($_GET['idartlang']) . "'";
+        $db->query($sql);
+    }
+
+    $oCache->remove($aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
+}
+
 /* Whitelist: Add */
 if (!empty($_GET['whitelist'])) {
 
@@ -198,20 +222,17 @@ if ($sCache_errors && $_GET['live'] != 1) {
         $aCats_Sql = "AND cat.idcat IN (0, " . join(", ", $aCats) . ")";
     }
 
-    // Use Sql-WHERE if lang is not zero
-    if ($langart != 0) {
-        $sLang_Sql = "AND art.idlang = '" . cSecurity::toInteger($langart) . "' AND catName.idlang = '" . cSecurity::toInteger($langart) . "'";
-    } elseif (!isset($langart)) {
-        $sLang_Sql = "AND art.idlang = '" . cSecurity::toInteger($lang) . "' AND catName.idlang = '" . cSecurity::toInteger($lang) . "'";
-    }
+    // Get languageId
+    $languageId = cRegistry::getLanguageId();
 
     // How many articles exist? [Text]
-    $sql = "SELECT art.title, art.idlang, cat.idart, cat.idcat, catName.name AS namecat, con.value FROM " . $cfg['tab']['cat_art'] . " cat
+    $sql = "SELECT art.title, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat, con.value FROM " . $cfg['tab']['cat_art'] . " cat
             LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
             LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
             LEFT JOIN " . $cfg['tab']['content'] . " con ON (con.idartlang = art.idartlang)
             WHERE (con.value LIKE '%action%' OR con.value LIKE '%data%' OR con.value LIKE '%href%' OR con.value LIKE '%src%')
-            " . $aCats_Sql . " AND cat.idcat != '0' " . $sLang_where . "
+            " . $aCats_Sql . " AND cat.idcat != '0'
+            AND art.idlang = '" . cSecurity::toInteger($languageId) . "' AND catName.idlang = '" . cSecurity::toInteger($languageId) . "'
             AND art.online = '1' AND art.redirect = '0'";
     $db->query($sql);
 
@@ -221,7 +242,7 @@ if ($sCache_errors && $_GET['live'] != 1) {
         $value = $db->f("value");
 
         // Search the text
-        searchLinks($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"));
+        searchLinks($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idartlang"), $db->f("idlang"));
 
         // Search front_content.php-links
         if ($_GET['mode'] != 2) {
@@ -230,16 +251,18 @@ if ($sCache_errors && $_GET['live'] != 1) {
     }
 
     // How many articles exist? [Redirects]
-    $sql = "SELECT art.title, art.redirect_url, art.idlang, cat.idart, cat.idcat, catName.name AS namecat FROM " . $cfg['tab']['cat_art'] . " cat
+    $sql = "SELECT art.title, art.redirect_url, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat FROM " . $cfg['tab']['cat_art'] . " cat
             LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
             LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
-            WHERE art.online = '1' AND art.redirect = '1' " . $aCats_Sql . " AND cat.idcat != '0' " . $sLang_Sql;
+            WHERE art.online = '1' AND art.redirect = '1' " . $aCats_Sql . "
+            AND art.idlang = '" . cSecurity::toInteger($languageId) . "' AND catName.idlang = '" . cSecurity::toInteger($languageId) . "'
+            AND cat.idcat != '0'";
     $db->query($sql);
 
     while ($db->nextRecord()) {
 
         // Search links
-        searchLinks($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"), "Redirect");
+        searchLinks($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idartlang"), $db->f("idlang"), "Redirect");
 
         // Search front_content.php-links
         if ($_GET['mode'] != 2) {
@@ -273,6 +296,7 @@ if (empty($aErrors) && $cronjob != true) {
     $tpl->set('s', 'ERRORS_HEADLINE_CATID', i18n("idcat", $plugin_name));
     $tpl->set('s', 'ERRORS_HEADLINE_CATNAME', i18n("Category", $plugin_name));
     $tpl->set('s', 'ERRORS_HEADLINE_DESCRIPTION', i18n("Description", $plugin_name));
+    $tpl->set('s', 'ERRORS_HEADLINE_REPAIRED', i18n("Repair", $plugin_name));
     $tpl->set('s', 'ERRORS_HEADLINE_LINK', i18n("Linkerror", $plugin_name));
     $tpl->set('s', 'ERRORS_HEADLINE_LINKS_ARTICLES', i18n("Links to articles", $plugin_name));
     $tpl->set('s', 'ERRORS_HEADLINE_LINKS_CATEGORYS', i18n("Links to categories", $plugin_name));
@@ -289,6 +313,8 @@ if (empty($aErrors) && $cronjob != true) {
         'others' => ''
     );
 
+    $repair = new LinkcheckerRepair();
+
     foreach ($aErrors as $sKey => $aRow) {
 
         $aRow = linksort($aRow);
@@ -303,29 +329,57 @@ if (empty($aErrors) && $cronjob != true) {
             $aRow[$i]['namecat'] = conHtmlentities($aRow[$i]['namecat']);
 
             // set template variables
-            $tpl2->set('s', 'ERRORS_ERROR_TYPE', $aRow[$i]['error_type']);
             $tpl2->set('s', 'ERRORS_ARTID', $aRow[$i]['idart']);
             $tpl2->set('s', 'ERRORS_ARTICLE', $aRow[$i]['nameart']);
-            $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', substr($aRow[$i]['nameart'], 0, 20) . ((strlen($aRow[$i]['nameart']) > 20) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', substr($aRow[$i]['nameart'], 0, 20) . ((strlen($aRow[$i]['nameart']) > 20)? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_CATID', $aRow[$i]['idcat']);
+            $tpl2->set('s', 'ERRORS_LANGARTID', $aRow[$i]['idartlang']);
             $tpl2->set('s', 'ERRORS_LINK', $aRow[$i]['url']);
             $tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($aRow[$i]['url']));
-            $tpl2->set('s', 'ERRORS_LINK_SHORT', substr($aRow[$i]['url'], 0, 55) . ((strlen($aRow[$i]['url']) > 55) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_LINK_SHORT', substr($aRow[$i]['url'], 0, 45) . ((strlen($aRow[$i]['url']) > 45)? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_CATNAME', $aRow[$i]['namecat']);
-            $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20)? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_REDIRECT', $aRow[$i]['redirect']);
             $tpl2->set('s', 'MODE', $_GET['mode']);
             $tpl2->set('s', 'URL_BACKEND', $aUrl['contenido']);
             $tpl2->set('s', 'URL_FRONTEND', $aUrl['cms']);
             $tpl2->set('s', 'SID', $sess->id);
 
             if ($aRow[$i]['error_type'] == "unknown") {
+                $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Unknown", $plugin_name));
                 $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Unknown: articles, documents etc. do not exist.", $plugin_name));
             } elseif ($aRow[$i]['error_type'] == "offline") {
+                $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Offline", $plugin_name));
                 $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Offline: article or category is offline.", $plugin_name));
             } elseif ($aRow[$i]['error_type'] == "startart") {
+                $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Offline startarticle", $plugin_name));
                 $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Offline: article or category is offline.", $plugin_name));
             } elseif ($aRow[$i]['error_type'] == "dbfs") {
+                $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Filemanager", $plugin_name));
                 $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("dbfs: no matches found in the dbfs database.", $plugin_name));
+            } elseif ($aRow[$i]['error_type'] == "invalidurl") {
+                $tpl2->set('s', 'ERRORS_ERROR_TYPE', i18n("Invalid url", $plugin_name));
+                $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Invalid url, i. e. syntax error.", $plugin_name));
+
+                // Try to repair this link misstage
+                $repairedlink = $repair->checkLink($aRow[$i]['url']);
+            }
+
+            // Repaire question
+            $tpl2->set('s', 'ERRORS_REPAIRED_QUESTION', i18n("Linkchecker has found a way to repair your wrong link. Do you want to automatically repair the link to the URL below?", $plugin_name));
+
+            // Generate repaired link variables
+            if ($aRow[$i]['error_type'] != "invalidurl") { // No invalid url
+                                                           // case
+                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '-');
+                $tpl2->set('s', 'ERRORS_REPAIRED_LINK_ENCODE', '');
+            } elseif ($repairedlink == false) { // Linkchecker can not repaire
+                                                // this link
+                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', i18n("No repaired link", $plugin_name));
+                $tpl2->set('s', 'ERRORS_REPAIRED_LINK_ENCODE', '');
+            } else { // Yeah, we have an repaired link!
+                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', $repairedlink);
+                $tpl2->set('s', 'ERRORS_REPAIRED_LINK_ENCODE', base64_encode($repairedlink));
             }
 
             if ($sKey != "cat") {

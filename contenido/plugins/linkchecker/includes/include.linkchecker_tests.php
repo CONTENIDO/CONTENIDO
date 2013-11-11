@@ -2,15 +2,15 @@
 /**
  * This is the tests backend page for the linkchecker plugin.
  *
- * @package    Plugin
+ * @package Plugin
  * @subpackage Linkchecker
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Frederic Schneider
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Frederic Schneider
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -40,7 +40,7 @@ function checkLinks() {
 
         while ($db->nextRecord()) {
             $aFind[$db->f("idart")] = array(
-                    "online" => $db->f("online")
+                "online" => $db->f("online")
             );
         }
 
@@ -48,11 +48,11 @@ function checkLinks() {
 
             if (isset($aFind[$aSearchIDInfosArt[$i]['id']]) && $aFind[$aSearchIDInfosArt[$i]['id']]['online'] == 0) {
                 $aErrors['art'][] = array_merge($aSearchIDInfosArt[$i], array(
-                        "error_type" => "offline"
+                    "error_type" => "offline"
                 ));
             } elseif (!isset($aFind[$aSearchIDInfosArt[$i]['id']])) {
                 $aErrors['art'][] = array_merge($aSearchIDInfosArt[$i], array(
-                        "error_type" => "unknown"
+                    "error_type" => "unknown"
                 ));
             }
         }
@@ -76,8 +76,8 @@ function checkLinks() {
 
         while ($db->nextRecord()) {
             $aFind[$db->f("idcat")] = array(
-                    "online" => $db->f("visible"),
-                    "startidart" => $db->f("startidartlang")
+                "online" => $db->f("visible"),
+                "startidart" => $db->f("startidartlang")
             );
         }
 
@@ -85,15 +85,15 @@ function checkLinks() {
 
             if (is_array($aFind[$aSearchIDInfosCat[$i]['id']]) && $aFind[$aSearchIDInfosCat[$i]['id']]['startidart'] == 0) {
                 $aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], array(
-                        "error_type" => "startart"
+                    "error_type" => "startart"
                 ));
             } elseif (is_array($aFind[$aSearchIDInfosCat[$i]['id']]) && $aFind[$aSearchIDInfosCat[$i]['id']]['online'] == 0) {
                 $aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], array(
-                        "error_type" => "offline"
+                    "error_type" => "offline"
                 ));
             } elseif (!is_array($aFind[$aSearchIDInfosCat[$i]['id']])) {
                 $aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], array(
-                        "error_type" => "unknown"
+                    "error_type" => "unknown"
                 ));
             }
 
@@ -104,7 +104,7 @@ function checkLinks() {
 
                 if ($db->numRows() == 0) {
                     $aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], array(
-                            "error_type" => "startart"
+                        "error_type" => "startart"
                     ));
                 }
             }
@@ -135,21 +135,22 @@ function checkLinks() {
 
             if (!in_array($aSearchIDInfosCatArt[$i]['id'], $aFind)) {
                 $aErrors['art'][] = array_merge($aSearchIDInfosCatArt[$i], array(
-                        "error_type" => "unknown"
+                    "error_type" => "unknown"
                 ));
             }
         }
     }
 
-    if (count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http, www, dfbs)
+    if (count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http,
+                                            // www, dfbs)
 
         // Select userrights (is the user admin or sysadmin?)
         $sql = "SELECT username FROM " . $cfg['tab']['user'] . " WHERE user_id='" . $db->escape($auth->auth['uid']) . "' AND perms LIKE '%admin%'";
         $db->query($sql);
 
         if ($db->numRows() > 0 || $cronjob == true) { // User is admin when he
-                                                       // is or when he run the
-                                                       // cronjob
+                                                      // is or when he run the
+                                                      // cronjob
             $iAdmin = true;
         }
 
@@ -157,7 +158,11 @@ function checkLinks() {
         $frontendURL = cRegistry::getFrontendUrl();
 
         for ($i = 0; $i < count($aSearchIDInfosNonID); $i++) {
-            if (url_is_uri($aSearchIDInfosNonID[$i]['url'])) {
+            if (!filter_var($aSearchIDInfosNonID[$i]['url'], FILTER_VALIDATE_URL) && !url_is_image($aSearchIDInfosNonID[$i]['url'])) {
+                $aErrors['others'][] = array_merge($aSearchIDInfosNonID[$i], array(
+                    "error_type" => "invalidurl"
+                ));
+            } elseif (url_is_uri($aSearchIDInfosNonID[$i]['url'])) {
                 if (substr($aSearchIDInfosNonID[$i]['url'], 0, strlen($aSearchIDInfosNonID[$i]['url'])) == $frontendURL) {
                     $iPing = @cFileHandler::exists(str_replace($frontendURL, $frontendPath, $aSearchIDInfosNonID[$i]['url']));
                 } else {
@@ -168,11 +173,11 @@ function checkLinks() {
 
                     if (url_is_image($aSearchIDInfosNonID[$i]['url'])) {
                         $aErrors['docimages'][] = array_merge($aSearchIDInfosNonID[$i], array(
-                                "error_type" => "unknown"
+                            "error_type" => "unknown"
                         ));
                     } else {
                         $aErrors['others'][] = array_merge($aSearchIDInfosNonID[$i], array(
-                                "error_type" => "unknown"
+                            "error_type" => "unknown"
                         ));
                     }
                 }
@@ -182,7 +187,7 @@ function checkLinks() {
 
                 if (!$iPing) {
                     $aErrors['art'][] = array_merge($aSearchIDInfosNonID[$i], array(
-                            "error_type" => "unknown"
+                        "error_type" => "unknown"
                     ));
                 }
             } elseif (substr($aSearchIDInfosNonID[$i]['url'], 0, 20) == "dbfs.php?file=dbfs:/") {
@@ -199,7 +204,7 @@ function checkLinks() {
 
                 if ($db->numRows() == 0) {
                     $aErrors['docimages'][] = array_merge($aSearchIDInfosNonID[$i], array(
-                            "error_type" => "dbfs"
+                        "error_type" => "dbfs"
                     ));
                 }
             } else {
@@ -208,11 +213,11 @@ function checkLinks() {
 
                     if (url_is_image($aSearchIDInfosNonID[$i]['url'])) {
                         $aErrors['docimages'][] = array_merge($aSearchIDInfosNonID[$i], array(
-                                "error_type" => "unknown"
+                            "error_type" => "unknown"
                         ));
                     } else {
                         $aErrors['others'][] = array_merge($aSearchIDInfosNonID[$i], array(
-                                "error_type" => "unknown"
+                            "error_type" => "unknown"
                         ));
                     }
                 }
@@ -233,13 +238,13 @@ function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
         for ($i = 0; $i < count($matches[0]); $i++) {
             if (!in_array($matches[0][$i], $aWhitelist)) {
                 $aSearchIDInfosArt[] = array(
-                        "id" => $matches[1][$i],
-                        "url" => $matches[0][$i],
-                        "idart" => $iArt,
-                        "nameart" => $sArt,
-                        "idcat" => $iCat,
-                        "namecat" => $sCat,
-                        "urltype" => "intern"
+                    "id" => $matches[1][$i],
+                    "url" => $matches[0][$i],
+                    "idart" => $iArt,
+                    "nameart" => $sArt,
+                    "idcat" => $iCat,
+                    "namecat" => $sCat,
+                    "urltype" => "intern"
                 );
             }
         }
@@ -251,13 +256,13 @@ function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
         for ($i = 0; $i < count($matches[0]); $i++) {
             if (!in_array($matches[0][$i], $aWhitelist)) {
                 $aSearchIDInfosCat[] = array(
-                        "id" => $matches[1][$i],
-                        "url" => $matches[0][$i],
-                        "idart" => $iArt,
-                        "nameart" => $sArt,
-                        "idcat" => $iCat,
-                        "namecat" => $sCat,
-                        "urltype" => "intern"
+                    "id" => $matches[1][$i],
+                    "url" => $matches[0][$i],
+                    "idart" => $iArt,
+                    "nameart" => $sArt,
+                    "idcat" => $iCat,
+                    "namecat" => $sCat,
+                    "urltype" => "intern"
                 );
             }
         }
@@ -269,13 +274,13 @@ function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
         for ($i = 0; $i < count($matches[0]); $i++) {
             if (!in_array($matches[0][$i], $aWhitelist)) {
                 $aSearchIDInfosCatArt[] = array(
-                        "id" => $matches[1][$i],
-                        "url" => $matches[0][$i],
-                        "idart" => $iArt,
-                        "nameart" => $sArt,
-                        "idcat" => $iCat,
-                        "namecat" => $sCat,
-                        "urltype" => "intern"
+                    "id" => $matches[1][$i],
+                    "url" => $matches[0][$i],
+                    "idart" => $iArt,
+                    "nameart" => $sArt,
+                    "idcat" => $iCat,
+                    "namecat" => $sCat,
+                    "urltype" => "intern"
                 );
             }
         }
@@ -283,7 +288,7 @@ function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
 }
 
 // Searchs extern and intern links
-function searchLinks($sValue, $iArt, $sArt, $iCat, $sCat, $iLang, $sFromtype = "") {
+function searchLinks($sValue, $iArt, $sArt, $iCat, $sCat, $iArtLang, $iLang, $sFromtype = "") {
     global $aUrl, $aSearchIDInfosNonID, $aWhitelist;
 
     // Extern URL
@@ -293,13 +298,14 @@ function searchLinks($sValue, $iArt, $sArt, $iCat, $sCat, $iLang, $sFromtype = "
 
             if (!in_array($aMatches[1][$i], $aWhitelist)) {
                 $aSearchIDInfosNonID[] = array(
-                        "url" => $aMatches[1][$i],
-                        "idart" => $iArt,
-                        "nameart" => $sArt,
-                        "idcat" => $iCat,
-                        "namecat" => $sCat,
-                        "lang" => $iLang,
-                        "urltype" => "extern"
+                    "url" => $aMatches[1][$i],
+                    "idart" => $iArt,
+                    "nameart" => $sArt,
+                    "idcat" => $iCat,
+                    "namecat" => $sCat,
+                    "idartlang" => $iArtLang,
+                    "lang" => $iLang,
+                    "urltype" => "extern"
                 );
             }
         }
@@ -308,13 +314,15 @@ function searchLinks($sValue, $iArt, $sArt, $iCat, $sCat, $iLang, $sFromtype = "
     // Redirect
     if ($sFromtype == "Redirect" && (preg_match('!(' . preg_quote($aUrl['cms']) . '[^\s]*)!i', $sValue, $aMatches) || (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $sValue, $aMatches) && $_GET['mode'] != 1)) && (stripos($sValue, 'front_content.php') === false) && !in_array($aMatches[0], $aWhitelist)) {
         $aSearchIDInfosNonID[] = array(
-                "url" => $aMatches[0],
-                "idart" => $iArt,
-                "nameart" => $sArt,
-                "idcat" => $iCat,
-                "namecat" => $sCat,
-                "lang" => $iLang,
-                "urltype" => "unknown"
+            "url" => $aMatches[0],
+            "idart" => $iArt,
+            "nameart" => $sArt,
+            "idcat" => $iCat,
+            "namecat" => $sCat,
+            "idartlang" => $iArtLang,
+            "lang" => $iLang,
+            "urltype" => "unknown",
+            "redirect" => true
         );
     }
 
@@ -325,13 +333,14 @@ function searchLinks($sValue, $iArt, $sArt, $iCat, $sCat, $iLang, $sFromtype = "
 
             if (strpos($aMatches[1][$i], "front_content.php") === false && !in_array($aMatches[1][$i], $aWhitelist)) {
                 $aSearchIDInfosNonID[] = array(
-                        "url" => $aMatches[1][$i],
-                        "idart" => $iArt,
-                        "nameart" => $sArt,
-                        "idcat" => $iCat,
-                        "namecat" => $sCat,
-                        "lang" => $iLang,
-                        "urltype" => "intern"
+                    "url" => $aMatches[1][$i],
+                    "idart" => $iArt,
+                    "nameart" => $sArt,
+                    "idcat" => $iCat,
+                    "namecat" => $sCat,
+                    "idartlang" => $iArtLang,
+                    "lang" => $iLang,
+                    "urltype" => "intern"
                 );
             }
         }

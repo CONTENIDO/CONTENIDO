@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Linkchecker\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-05 13:55+0200\n"
-"PO-Revision-Date: 2013-04-25 14:19+0100\n"
+"POT-Creation-Date: 2013-11-11 16:58+0100\n"
+"PO-Revision-Date: 2013-11-11 16:58+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "MIME-Version: 1.0\n"
@@ -13,124 +13,164 @@ msgstr ""
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-Basepath: ../../../\n"
 "X-Poedit-KeywordsList: i18n\n"
-"X-Poedit-SearchPath-0: H:\\frederic.schneider\\contenido\\plugins\\linkchecker\\includes\n"
+"X-Poedit-SearchPath-0: C:\\projects\\workspace\\contenido\\contenido\\plugins\\linkchecker\n"
 
-#: includes/include.linkchecker.php:32
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:27
 msgid "No Client selected"
 msgstr "Kein Client ausgewählt"
 
-#: includes/include.linkchecker.php:75
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:72
 msgid "Interns"
 msgstr "Interne"
 
-#: includes/include.linkchecker.php:77
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:74
 msgid "Externs"
 msgstr "Externe"
 
-#: includes/include.linkchecker.php:79
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:76
 msgid "Intern/extern Links"
 msgstr "Interne / externe Links"
 
-#: includes/include.linkchecker.php:264
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:280
 msgid "Link analysis from "
 msgstr "Link-Analyse vom "
 
-#: includes/include.linkchecker.php:264
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:280
 msgid "%Y-%m-%d"
 msgstr "%d.%m.%Y"
 
-#: includes/include.linkchecker.php:273
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:289
 msgid "<strong>No errors</strong> were found."
 msgstr "Es wurden <strong>keine Fehler</strong> gefunden."
 
-#: includes/include.linkchecker.php:277
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:293
 msgid "Total checked links"
 msgstr "Insgesamt geprüfte Links"
 
-#: includes/include.linkchecker.php:278
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:294
 msgid "idart"
 msgstr "idart"
 
-#: includes/include.linkchecker.php:279
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:295
 msgid "Article"
 msgstr "Artikel"
 
-#: includes/include.linkchecker.php:280
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:296
 msgid "idcat"
 msgstr "idcat"
 
-#: includes/include.linkchecker.php:281
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:297
 msgid "Category"
 msgstr "Kategorie"
 
-#: includes/include.linkchecker.php:282
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:298
 msgid "Description"
 msgstr "Beschreibung"
 
-#: includes/include.linkchecker.php:283
-msgid "Linkerror"
-msgstr "Linkfehler"
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:299
+msgid "Repair"
+msgstr "Reparieren"
 
-#: includes/include.linkchecker.php:284
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:300
+msgid "Linkerror"
+msgstr "Fehlerhafter Link"
+
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:301
 msgid "Links to articles"
 msgstr "Links auf Artikel"
 
-#: includes/include.linkchecker.php:285
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:302
 msgid "Links to categories"
 msgstr "Links auf Kategorien"
 
-#: includes/include.linkchecker.php:286
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:303
 msgid "Links to documents and images"
 msgstr "Links auf Bilder und Dokumente"
 
-#: includes/include.linkchecker.php:287
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:304
 msgid "Links to extern sites and not defined links"
 msgstr "Links zu externen Quellen und nicht definierte Links"
 
-#: includes/include.linkchecker.php:289
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:306
 msgid "Wrong links"
 msgstr "Fehlerhafte Links"
 
-#: includes/include.linkchecker.php:324
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:349
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:350
 msgid "Unknown: articles, documents etc. do not exist."
 msgstr "Unknown: Artikel, Dokumente et cetera existieren nicht."
 
-#: includes/include.linkchecker.php:326
-#: includes/include.linkchecker.php:328
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:352
+msgid "Offline"
+msgstr "Offline"
+
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:353
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:356
 msgid "Offline: article or category is offline."
 msgstr "Offline: Artikel oder Kategorie ist offline."
 
-#: includes/include.linkchecker.php:330
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:355
+msgid "Offline startarticle"
+msgstr "Startartikel offline"
+
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:358
+msgid "Filemanager"
+msgstr "Dateimanager"
+
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:359
 msgid "dbfs: no matches found in the dbfs database."
 msgstr "dbfs: In der dbfs-Datenbank ist die gesuchte Datei nicht vorhanden."
 
-#: includes/include.linkchecker.php:365
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:361
+#, fuzzy
+msgid "Invalid url"
+msgstr "Ung&uuml;ltige URL"
+
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:362
+msgid "Invalid url, i. e. syntax error."
+msgstr "Ung&uuml;ltige URL, z. B. ein Syntaxfehler."
+
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:369
+msgid "Linkchecker has found a way to repair your wrong link. Do you want to automatically repair the link to the URL below?"
+msgstr "Der Linkchecker hat einen Weg gefunden, um Ihren fehlerhaften Link zu beheben. M&ouml;chten Sie den Link automatisch durch folgende URL ersetzen?"
+
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:378
+msgid "No repaired link"
+msgstr "Kein reparierter Link"
+
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker.php:417
 msgid "No errors for this type."
 msgstr "Es wurden für diesen Linktyp keine Fehler gefunden."
 
-#: includes/include.linkchecker_whitelist.php:59
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker_whitelist.php:54
 msgid "%Y-%m-%d, %I:%M%S %p"
 msgstr "%d.%m.%Y, %H:%M:%S"
 
-#: includes/include.linkchecker_whitelist.php:65
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker_whitelist.php:60
 msgid "Links at whitelist"
 msgstr "Links auf der Whitelist"
 
-#: includes/include.linkchecker_whitelist.php:66
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker_whitelist.php:61
 msgid "Delete"
 msgstr "Entfernen"
 
-#: includes/include.linkchecker_whitelist.php:67
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker_whitelist.php:62
 msgid "Entry"
 msgstr "Eintragung"
 
-#: includes/include.linkchecker_whitelist.php:68
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker_whitelist.php:63
 msgid "URLs"
 msgstr "Links"
 
-#: includes/include.linkchecker_whitelist.php:69
+#: C:\projects\workspace\contenido\contenido\plugins\linkchecker/includes/include.linkchecker_whitelist.php:64
 msgid "This links are on the whitelist. Whitelist-links won't be check at linkchecker."
 msgstr "Diese Links befinden sich auf der Whitelist und werden nicht vom Linkchecker überprüft."
+
+#~ msgid "Invalid url."
+#~ msgstr "Ung&uuml;ltige URL"
 
 #~ msgid "View whitelist"
 #~ msgstr "Whitelist anzeigen"
