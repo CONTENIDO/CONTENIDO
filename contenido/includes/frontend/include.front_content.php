@@ -606,15 +606,15 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
             // Encode to punycode/IDNA
             $IDN = new idna_convert();
-            $redirect_url = $IDN->encode($redirect_url);
 
+            $redirect_url = $IDN->encode($redirect_url);
             $redirect_mode = $oArtLang->get('redirect_mode');
 
-            $protocol = ($_SERVER['SERVER_PROTOCOL']);
-            $redirect_code = 302;
-            if ($redirect_mode === 'temporary') {
-                ($protocol === 'HTTP/1.1')? $redirect_code = 307 : $redirect_code = 302;
-            } elseif ($redirect_mode === 'permanently') {
+            // default redirection is temporary
+            // with status code 302 or 307 (since HTTP/1.1)
+            $protocol = $_SERVER['SERVER_PROTOCOL'];
+            $redirect_code = ($protocol === 'HTTP/1.1')? 307 : 302;
+            if ($redirect_mode === 'permanently') {
                 $redirect_code = 301;
             }
 
