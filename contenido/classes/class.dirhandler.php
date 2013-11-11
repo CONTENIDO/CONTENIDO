@@ -159,6 +159,80 @@ class cDirHandler {
     }
 
     /**
+     * Copies a directory and all of its subfolders.
+     *
+     * @param string $filename the name and path of the file
+     * @param string $destination the destination. Note that existing files get
+     *        overwritten
+     * @throws cInvalidArgumentException if the file with the given filename
+     *         does not exist
+     * @return bool true on success
+     */
+    public static function recursiveCopy($filename, $destination) {
+        if (!cFileHandler::exists($filename)) {
+            throw new cInvalidArgumentException('The file ' . $filename . ' could not be accessed because it does not exist.');
+        }
+
+        if (!cFileHandler::exists($destination)) {
+            if (!mkdir($destination)) {
+                return false;
+            }
+            if (!self::chmod($destination, "777")) {
+                return false;
+            }
+        }
+
+        foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($filename), RecursiveIteratorIterator::SELF_FIRST) as $item) {
+            // workaround for RecursiveDirectoryIterator::SKIP_DOTS, this was
+            // not available in PHP 5.2
+            if ($item->getFilename() == '.' || $item->getFilename() == '..') {
+                continue;
+            }
+
+            if ($item->isDir()) {
+                if (!mkdir($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
+                    return false;
+                }
+                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
+                    return false;
+                }
+            } else {
+                if (!copy($item, $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
+                    return false;
+                }
+                if (!self::chmod($destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName(), "777")) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if a directory is empty
+     *
+     * @param string $dir Name of the directory
+     * @return boolean true if the directory is empty
+     */
+    public static function isDirectoryEmpty($dir) {
+        if (!is_readable($dir)) {
+            return false;
+        }
+        if (is_dir($dir)) {
+            if ($handle = opendir($dir)) {
+                while (false !== ($entry = readdir($handle))) {
+                    if ($entry != "." && $entry != "..") {
+                        return false;
+                    }
+                }
+            }
+            closedir($handle);
+        }
+        return true;
+    }
+
+    /**
      * This functions reads the content from given directory.
      * Optionally options are to read the directory recursive or to list only
      * directories.
@@ -177,7 +251,7 @@ class cDirHandler {
                 $dirHandle = opendir($dirName);
                 $dirContent = array();
                 while (false !== ($file = readdir($dirHandle))) {
-                    if (!self::fileNameIsDot($file)) {
+                    if (!cFileHandler::fileNameIsDot($file)) {
                         // get only directories
                         if ($dirOnly == true) {
                             if (is_dir($dirName . $file)) {
@@ -195,7 +269,7 @@ class cDirHandler {
                 $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dirName), RecursiveIteratorIterator::SELF_FIRST);
                 foreach ($objects as $name => $file) {
 
-                    if (!self::fileNameIsDot($file)) {
+                    if (!cFileHandler::fileNameIsDot($file)) {
                         $fileName = str_replace("\\", "/", $file->getPathName());
 
                         // get only directories
@@ -215,17 +289,13 @@ class cDirHandler {
     }
 
     /**
-     * Check if given filename is either '.' or '..'.
      *
-     * @param string $fileName
-     * @return boolean
+     * @see cFileHandler::fileNameIsDot()
+     * @deprecated 2013-11-11 - Use the class cFileHandler instead.
      */
     public static function fileNameIsDot($fileName) {
-        if ($fileName != '.' && $fileName != '..') {
-            return false;
-        } else {
-            return true;
-        }
+        cDeprecated("Use the class cFileHandler instead.");
+        return cFileHandler::fileNameIsDot($fileName);
     }
 
 }
