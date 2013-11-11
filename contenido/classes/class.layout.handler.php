@@ -226,7 +226,7 @@ class cLayoutHandler {
         } else {
             $success = mkdir($directory);
             if ($success) {
-                cFileHandler::setDefaultDirPerms($directory);
+                cDirHandler::setDefaultDirPerms($directory);
             }
         }
 
@@ -356,7 +356,7 @@ class cLayoutHandler {
             $success = false;
         }
 
-        return $success && cFileHandler::recursiveRmdir($this->_layoutPath);
+        return $success && cDirHandler::recursiveRmdir($this->_layoutPath);
     }
 
     /**
