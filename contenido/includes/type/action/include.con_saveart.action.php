@@ -2,17 +2,16 @@
 /**
  * Backend action file con_saveart
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Dominik Ziegler
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Dominik Ziegler
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (!isset($idtpl)) {
@@ -217,5 +216,11 @@ $newData = array(
     'published' => $publishing_date,
     'artsort' => $artsort
 );
+
+if (isset($_POST['redirect_mode']) && ($_POST['redirect_mode'] === 'permanently' || $_POST['redirect_mode'] === 'temporary')) {
+    $article = new cApiArticleLanguage($idartlang);
+    $article->set('redirect_mode', ($_POST['redirect_mode']));
+    $article->store();
+}
 
 cApiCecHook::execute("Contenido.Action.con_saveart.AfterCall", $newData, $oldData);
