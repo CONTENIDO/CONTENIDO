@@ -35,28 +35,28 @@ class cSetupClientMode extends cSetupMask {
         $folders = "";
         $moduleFolderNotEmpty = false;
         if (cFileHandler::exists("../cms/css")) {
-            if (!cFileHandler::isDirectoryEmpty("../cms/css")) {
+            if (!cDirHandler::isDirectoryEmpty("../cms/css")) {
                 $folders .= "cms/css/, ";
             }
         }
         if (cFileHandler::exists("../cms/js")) {
-            if (!cFileHandler::isDirectoryEmpty("../cms/js")) {
+            if (!cDirHandler::isDirectoryEmpty("../cms/js")) {
                 $folders .= "cms/js/, ";
             }
         }
         if (cFileHandler::exists("../cms/templates")) {
-            if (!cFileHandler::isDirectoryEmpty("../cms/templates")) {
+            if (!cDirHandler::isDirectoryEmpty("../cms/templates")) {
                 $folders .= "cms/templates/, ";
             }
         }
         if (cFileHandler::exists("../cms/data/modules")) {
-            if (!cFileHandler::isDirectoryEmpty("../cms/data/modules")) {
+            if (!cDirHandler::isDirectoryEmpty("../cms/data/modules")) {
                 $folders .= "cms/data/modules/, ";
                 $moduleFolderNotEmpty = true;
             }
         }
         if (cFileHandler::exists("../cms/data/layouts")) {
-            if (!cFileHandler::isDirectoryEmpty("../cms/data/layouts")) {
+            if (!cDirHandler::isDirectoryEmpty("../cms/data/layouts")) {
                 $folders .= "cms/data/layouts/, ";
             }
         }
