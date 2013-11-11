@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-04 15:35+0100\n"
-"PO-Revision-Date: 2013-11-04 15:36+0100\n"
+"POT-Creation-Date: 2013-11-11 17:18+0100\n"
+"PO-Revision-Date: 2013-11-11 17:18+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "MIME-Version: 1.0\n"
@@ -121,18 +121,22 @@ msgstr "Das Plugin wurde erfolgreich aktualisiert. Damit die &Auml;nderungen wir
 msgid "You have to update the same plugin"
 msgstr "Sie m&uuml;ssen das gleiche Plugin aktualisieren"
 
-#: classes/view/class.pimpluginview.navsub.php:121
-#: classes/view/class.pimpluginview.navsub.php:140
+#: classes/view/class.pimpluginview.navsub.php:136
+#: classes/view/class.pimpluginview.navsub.php:155
 msgid "No navigation configuration founded"
 msgstr "Keine Men&uuml;konfigurationen gefunden"
 
-#: classes/view/class.pimpluginview.navsub.php:278
+#: classes/view/class.pimpluginview.navsub.php:305
 msgid "You find this plugin at navigation section"
 msgstr "Sie finden dieses Plugin unter dem Men&uuml;punkt"
 
-#: classes/view/class.pimpluginview.navsub.php:278
+#: classes/view/class.pimpluginview.navsub.php:305
 msgid "as"
 msgstr "als"
+
+#: includes/config.plugin.php:20
+msgid "Run Plugin Manager"
+msgstr "Plugin Manager ausf&uuml;hren"
 
 #: includes/include.right_bottom.php:23
 msgid "Permission denied"

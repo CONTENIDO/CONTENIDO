@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-04 15:35+0100\n"
+"POT-Creation-Date: 2013-11-11 17:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -136,17 +136,21 @@ msgstr ""
 msgid "You have to update the same plugin"
 msgstr ""
 
-#: classes/view/class.pimpluginview.navsub.php:121
-#: classes/view/class.pimpluginview.navsub.php:140
+#: classes/view/class.pimpluginview.navsub.php:136
+#: classes/view/class.pimpluginview.navsub.php:155
 msgid "No navigation configuration founded"
 msgstr ""
 
-#: classes/view/class.pimpluginview.navsub.php:278
+#: classes/view/class.pimpluginview.navsub.php:305
 msgid "You find this plugin at navigation section"
 msgstr ""
 
-#: classes/view/class.pimpluginview.navsub.php:278
+#: classes/view/class.pimpluginview.navsub.php:305
 msgid "as"
+msgstr ""
+
+#: includes/config.plugin.php:20
+msgid "Run Plugin Manager"
 msgstr ""
 
 #: includes/include.right_bottom.php:23

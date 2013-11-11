@@ -15,6 +15,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+// global translation for userright management
+global $lngAct;
+$lngAct['pim']['pim'] = i18n('Run Plugin Manager', 'pim');
+
 // plugin includes
 plugin_include('pim', 'classes/class.pim.plugin.collection.php');
 plugin_include('pim', 'classes/class.pim.plugin.relations.collection.php');
