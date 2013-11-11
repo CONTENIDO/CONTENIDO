@@ -37,7 +37,7 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract {
                         cFileHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "css");
                         mkdir($this->_aCfgClient[1]["path"]["frontend"] . "css");
                     }
-                    cFileHandler::recursiveCopy("data/examples/css", $this->_aCfgClient[1]["path"]["frontend"] . "css");
+                    cDirHandler::recursiveCopy("data/examples/css", $this->_aCfgClient[1]["path"]["frontend"] . "css");
 
                     // copy the scripts folder to the cms folder for the example
                     // client
@@ -45,7 +45,8 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract {
                         cFileHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "js");
                         mkdir($this->_aCfgClient[1]["path"]["frontend"] . "js");
                     }
-                    cFileHandler::recursiveCopy("data/examples/js", $this->_aCfgClient[1]["path"]["frontend"] . "js");
+
+                    cDirHandler::recursiveCopy("data/examples/js", $this->_aCfgClient[1]["path"]["frontend"] . "js");
 
                     // copy the template folder to the cms folder for the
                     // example client
@@ -53,7 +54,7 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract {
                         cFileHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "templates");
                         mkdir($this->_aCfgClient[1]["path"]["frontend"] . "templates");
                     }
-                    cFileHandler::recursiveCopy("data/examples/templates", $this->_aCfgClient[1]["path"]["frontend"] . "templates");
+                    cDirHandler::recursiveCopy("data/examples/templates", $this->_aCfgClient[1]["path"]["frontend"] . "templates");
 
                     // copy the upload folder to the cms folder for the example
                     // client
@@ -61,7 +62,7 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract {
                         cFileHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "upload");
                         mkdir($this->_aCfgClient[1]["path"]["frontend"] . "upload");
                     }
-                    cFileHandler::recursiveCopy("data/examples/upload", $this->_aCfgClient[1]["path"]["frontend"] . "upload");
+                    cDirHandler::recursiveCopy("data/examples/upload", $this->_aCfgClient[1]["path"]["frontend"] . "upload");
 
                     // copy the layout folder to the cms folder for the example
                     // client
@@ -69,7 +70,7 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract {
                         cFileHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
                         mkdir($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
                     }
-                    cFileHandler::recursiveCopy("data/examples/data/layouts", $this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
+                    cDirHandler::recursiveCopy("data/examples/data/layouts", $this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
                 case "CLIENTMODULES":
                     // copy the module folder to the cms folder for the example
                     // client
@@ -77,7 +78,7 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract {
                         cFileHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
                         mkdir($this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
                     }
-                    cFileHandler::recursiveCopy("data/examples/data/modules", $this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
+                    cDirHandler::recursiveCopy("data/examples/data/modules", $this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
             }
         }
     }
