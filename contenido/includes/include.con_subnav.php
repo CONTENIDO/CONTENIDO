@@ -83,7 +83,22 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
     $num = 0;
 
     while ($db->nextRecord()) {
-        if ($iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) ||
+    	/*
+    	 * Tab display "logic"
+    	 * Show all tabs
+     	 * - if category ID is empty (lost and found)
+    	 * - if category has articles
+    	 *
+    	 * Show first tab
+    	 * - if category has no articles
+    	 *
+    	 * Show first tab only
+    	 * - if article was deleted
+    	 * 
+    	 * Show second tab
+    	 * - if article is created or saved
+    	 */
+        if (cSecurity::toInteger($idcat) == 0 || $iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) ||
                 ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') ||
                 ($bNoArticle == 'true' && $action == 'saveart') ||
                 ($iArticleCount <= 0 && $tpl->dyn_cnt == 0 && $action == 'deleteArt')) {
@@ -91,10 +106,13 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
         } else {
             $style = 'display:none;';
         }
+        
+        // Tab select "logic"
         if (($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') ||
                 ($tpl->dyn_cnt == 1 && $bNoArticle == 'true' && $action == 'saveart')) {
             $num = $tpl->dyn_cnt;
         }
+        
         // Extract names from the XML document.
         $caption = $nav->getName($db->f("location"));
 

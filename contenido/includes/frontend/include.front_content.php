@@ -166,6 +166,11 @@ if (isset($username)) {
     $auth->restart();
 }
 
+// check if category ID is empty (like in lost and found)
+if (!$idcat) {
+	$idcat = 0;
+}
+
 // Send HTTP header with encoding
 header("Content-Type: text/html; charset={$encoding[$lang]}");
 
@@ -293,6 +298,8 @@ if (0 != $idart && 0 != $idcat) {
         $idcatart = $oCatArt->get('idcatart');
     }
 }
+
+
 
 $idartlang = getArtLang($idart, $lang);
 if ($idartlang === false) {
