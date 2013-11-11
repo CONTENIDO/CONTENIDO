@@ -11,16 +11,23 @@
  */
 
 /**
+ * This class is the default implementation for PIFA form modules.
+ * On a GET request it displays a form. On a POST request the posted data is
+ * processed. If an error occurs the form is displayed again only that now all
+ * valid data is displayed in the form and error messages (if defined) are
+ * displayed for all invalid form fields.
  *
  * @author marcus.gnass
  */
 class DefaultFormModule extends PifaAbstractFormModule {
 
     /**
+     * Handle GET request.
      *
-     * @param array $values
-     * @param array $errors TODO not yet implemented
+     * @param array $values to be displayed in form
+     * @param array $errors to be displayed in form
      * @throws Exception if form could not be loaded
+     * @see PifaAbstractFormModule::doGet()
      */
     protected function doGet(array $values = array(), array $errors = array()) {
 
@@ -58,6 +65,7 @@ class DefaultFormModule extends PifaAbstractFormModule {
     }
 
     /**
+     * Handle POST request.
      *
      * @see PifaAbstractFormModule::doPost()
      */

@@ -64,7 +64,7 @@ abstract class PifaAbstractFormModule {
 
     /**
      *
-     * @var Smarty
+     * @var cSmartyFrontend
      */
     private $_tpl = NULL;
 
@@ -80,7 +80,7 @@ abstract class PifaAbstractFormModule {
 
     /**
      *
-     * @return the $_settings
+     * @return array
      */
     public function getSettings() {
         return $this->_settings;
@@ -88,7 +88,8 @@ abstract class PifaAbstractFormModule {
 
     /**
      *
-     * @return the $_settings
+     * @param string $key
+     * @return mixed
      */
     public function getSetting($key) {
         return $this->_settings[$key];
@@ -96,15 +97,15 @@ abstract class PifaAbstractFormModule {
 
     /**
      *
-     * @param multitype: $_settings
+     * @param array $_settings
      */
-    public function setSettings($_settings) {
+    public function setSettings(array $_settings) {
         $this->_settings = $_settings;
     }
 
     /**
      *
-     * @return the $_idform
+     * @return int
      */
     public function getIdform() {
         return $this->_idform;
@@ -112,7 +113,7 @@ abstract class PifaAbstractFormModule {
 
     /**
      *
-     * @param number $_idform
+     * @param int $_idform
      */
     public function setIdform($_idform) {
         $this->_idform = $_idform;
@@ -120,7 +121,7 @@ abstract class PifaAbstractFormModule {
 
     /**
      *
-     * @return the $_templateName
+     * @return string
      */
     public function getTemplateName() {
         return $this->_templateName;
@@ -136,7 +137,7 @@ abstract class PifaAbstractFormModule {
 
     /**
      *
-     * @return the $_tpl
+     * @return cSmartyFrontend
      */
     public function getTpl() {
         return $this->_tpl;
@@ -144,9 +145,9 @@ abstract class PifaAbstractFormModule {
 
     /**
      *
-     * @param Smarty $_tpl
+     * @param cSmartyFrontend $_tpl
      */
-    public function setTpl($_tpl) {
+    public function setTpl(cSmartyFrontend $_tpl) {
         $this->_tpl = $_tpl;
     }
 
@@ -164,6 +165,9 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
+     *
+     * @param bool $return
+     * @throws PifaException if request method is unknown
      */
     public function render($return = false) {
 
@@ -199,6 +203,7 @@ abstract class PifaAbstractFormModule {
     }
 
     /**
+     * Handle GET request.
      *
      * @param array $values
      * @param array $errors
@@ -206,6 +211,7 @@ abstract class PifaAbstractFormModule {
     abstract protected function doGet(array $values = array(), array $errors = array());
 
     /**
+     * Handle POST request.
      */
     abstract protected function doPost();
 }

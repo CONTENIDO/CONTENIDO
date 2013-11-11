@@ -14,6 +14,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
+ * Base class for all PIFA related exceptions.
  *
  * @author marcus.gnass
  */
@@ -21,6 +22,7 @@ class PifaException extends cException {
 }
 
 /**
+ * Exceptions indicating a problem when PIFA tries to access the database.
  *
  * @author marcus.gnass
  */
@@ -28,6 +30,7 @@ class PifaDatabaseException extends PifaException {
 }
 
 /**
+ * Exceptions indicating that a certain PIFA feature is not yet implemented.
  *
  * @author marcus.gnass
  */
@@ -35,6 +38,8 @@ class PifaNotImplementedException extends PifaException {
 }
 
 /**
+ * Exceptions indicating that PIFA reached an illegal state.
+ * This happens e.g. if permissions for a certain action are missing.
  *
  * @author marcus.gnass
  */
@@ -42,6 +47,7 @@ class PifaIllegalStateException extends PifaException {
 }
 
 /**
+ * Currently not in use.
  *
  * @author marcus.gnass
  */
@@ -49,6 +55,8 @@ class PifaNotYetStoredException extends PifaException {
 }
 
 /**
+ * Exceptions indicating that invalid data was found when PIFA tried to process
+ * posted data.
  *
  * @author marcus.gnass
  */
@@ -79,6 +87,7 @@ class PifaValidationException extends PifaException {
 }
 
 /**
+ * Exceptions indicating a problem when PIFA tries to send a mail.
  *
  * @author marcus.gnass
  */

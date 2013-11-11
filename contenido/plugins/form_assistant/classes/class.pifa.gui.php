@@ -24,8 +24,6 @@ class PifaLeftBottomPage extends cGuiPage {
 
     /**
      * Create an instance.
-     *
-     * @throws PifaIllegalStateException
      */
     public function __construct() {
 
@@ -211,6 +209,7 @@ class PifaRightBottomFormPage extends cGuiPage {
      * @param string $action to be executed
      * @param string $notification
      * @throws PifaException if the given action is unknown
+     * @throws PifaIllegalStateException if permissions are missing
      */
     protected function _dispatch($action, $notification = '') {
         global $area;
@@ -548,6 +547,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
      * @param string $action to be executed
      * @param string $notification
      * @throws PifaException if the given action is unknown
+     * @throws PifaIllegalStateException if permissions are missing
      */
     protected function _dispatch($action, $notification = '') {
         global $area;
@@ -762,6 +762,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
      * @param string $action to be executed
      * @param string $notification
      * @throws PifaException if the given action is unknown
+     * @throws PifaIllegalStateException if permissions are missing
      */
     protected function _dispatch($action, $notification = '') {
         global $area;
@@ -926,6 +927,7 @@ class PifaRightBottomFormExportPage extends cGuiPage {
      * @param string $action to be executed
      * @param string $notification
      * @throws PifaException if the given action is unknown
+     * @throws PifaIllegalStateException if permissions are missing
      */
     protected function _dispatch($action, $notification = '') {
         global $area;
@@ -1034,6 +1036,7 @@ class PifaRightBottomFormImportPage extends cGuiPage {
      * @param string $action to be executed
      * @param string $notification
      * @throws PifaException if the given action is unknown
+     * @throws PifaIllegalStateException if permissions are missing
      */
     protected function _dispatch($action, $notification = '') {
         global $area;
