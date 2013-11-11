@@ -532,7 +532,7 @@ class cModuleHandler {
             if (mkdir($sMainModuleDirectory, 0777, true) == false) {
                 return false;
             } else {
-                cFileHandler::setDefaultDirPerms($sMainModuleDirectory);
+                cDirHandler::setDefaultDirPerms($sMainModuleDirectory);
             }
         }
 
@@ -581,7 +581,7 @@ class cModuleHandler {
     public function eraseModule() {
         // Delete modules only if we find info.xml at module path
         if (cFileHandler::exists($this->_modulePath . 'info.xml')) {
-            return cFileHandler::recursiveRmdir($this->_modulePath);
+            return cDirHandler::recursiveRmdir($this->_modulePath);
         } else {
             return false;
         }
@@ -636,7 +636,7 @@ class cModuleHandler {
                 if (@mkdir($this->_modulePath . $this->_directories[$type]) == false) {
                     return false;
                 } else
-                    cFileHandler::setDefaultDirPerms($this->_modulePath . $this->_directories[$type]);
+                    cDirHandler::setDefaultDirPerms($this->_modulePath . $this->_directories[$type]);
             } else {
                 return true;
             }
@@ -802,7 +802,7 @@ class cModuleHandler {
         if (mkdir($this->_modulePath) == false) {
             return false;
         } else {
-            cFileHandler::setDefaultDirPerms($this->_modulePath);
+            cDirHandler::setDefaultDirPerms($this->_modulePath);
         }
 
         // make others directorys
@@ -811,7 +811,7 @@ class cModuleHandler {
                 if (mkdir($this->_modulePath . $directory) == false) {
                     return false;
                 } else {
-                    cFileHandler::setDefaultDirPerms($this->_modulePath . $directory);
+                    cDirHandler::setDefaultDirPerms($this->_modulePath . $directory);
                 }
             }
         }
