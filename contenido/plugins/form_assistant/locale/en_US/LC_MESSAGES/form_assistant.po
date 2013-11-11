@@ -482,9 +482,6 @@ msgstr "Do you really want to delete this field?"
 msgid "download data as CSV"
 msgstr "download data as CSV"
 
-msgid "EXPORT_FORM"
-msgstr "export form"
-
 msgid "WITH_DATA"
 msgstr "include form data"
 
@@ -500,9 +497,6 @@ msgstr "create form"
 
 msgid "CREATE_FORM_NO_PERMISSIONS"
 msgstr "create form: no permissions"
-
-msgid "IMPORT_FORM"
-msgstr "import form"
 
 msgid "IMPORT_FORM_NO_PERMISSIONS"
 msgstr "import form: no permissions"

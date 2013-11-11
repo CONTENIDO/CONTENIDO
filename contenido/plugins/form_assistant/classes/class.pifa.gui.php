@@ -963,7 +963,7 @@ class PifaRightBottomFormExportPage extends cGuiPage {
 
         // translations
         $tpl->assign('trans', array(
-            'legend' => Pifa::i18n('EXPORT_FORM'),
+            'legend' => Pifa::i18n('pifa_export_form'),
             'withData' => Pifa::i18n('WITH_DATA'),
             'export' => Pifa::i18n('EXPORT')
         ));
@@ -1084,7 +1084,7 @@ class PifaRightBottomFormImportPage extends cGuiPage {
 
                 // translations
                 $tpl->assign('trans', array(
-                    'legend' => Pifa::i18n('IMPORT_FORM'),
+                    'legend' => Pifa::i18n('pifa_import_form'),
                     'xml' => Pifa::i18n('XML'),
                     'export' => Pifa::i18n('IMPORT')
                 ));

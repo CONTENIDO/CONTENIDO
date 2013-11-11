@@ -482,9 +482,6 @@ msgstr "Wollen Sie dieses Feld wirklich löschen?"
 msgid "download data as CSV"
 msgstr "Formulardaten als CSV herunterladen"
 
-msgid "EXPORT_FORM"
-msgstr "Formular exportieren"
-
 msgid "WITH_DATA"
 msgstr "mit Formulardaten"
 
@@ -500,9 +497,6 @@ msgstr "Formular erstellen"
 
 msgid "CREATE_FORM_NO_PERMISSIONS"
 msgstr "Formular erstellen: keine Berechtigung"
-
-msgid "IMPORT_FORM"
-msgstr "Formular importieren"
 
 msgid "IMPORT_FORM_NO_PERMISSIONS"
 msgstr "Formular importieren: keine Berechtigung"

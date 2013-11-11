@@ -99,7 +99,7 @@ class PifaExporter {
         $attr = array();
         $attr['name'] = $pifaForm->get('name');
         $attr['table'] = $pifaForm->get('data_table');
-        $attr['method'] = $pifaForm->get('method');
+        $attr['method'] = strtolower($pifaForm->get('method'));
         if ($pifaForm->get('with_timestamp')) {
             $attr['timestamp'] = 'true';
         } else {
