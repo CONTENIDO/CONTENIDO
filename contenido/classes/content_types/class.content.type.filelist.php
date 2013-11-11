@@ -437,16 +437,19 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         $info = exif_imagetype($filePath);
 
-        if ($info & (IMAGETYPE_GIF | IMAGETYPE_JPEG | IMAGETYPE_PNG)) {
-            $imgSrc = cApiImgScale($filePath, 148, 74);
-        } else {
-            // file_put_contents($this->_cfgClient[$this->_client]['cache']['path']
-            // .
-            // 'empty.gif',"\107\111\106\70\71\141\001\000\001\000\360\001\000\377\377\377\000\000\000\041\371\004\001\012\000\000\000\054\000\000\000\000\001\000\001\000\000\002\002\104\001\000\073");
-            // $imgSrc =
-            // $this->_cfgClient[$this->_client]['cache']['frontendpath'] .
-            // 'empty.gif';
-            $imgSrc = $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'images/misc/download_misc.png';
+        // If file is an image (extensions gif, jpg, jpeg, png) scale it
+        // otherwise use default png image
+        switch ($fileData['extension'])
+        {
+        	case 'gif':
+        	case 'jpg':
+        	case 'jpeg':
+        	case 'png':
+        	    $imgSrc = cApiImgScale($filePath, 148, 74);
+        	    break;
+        	default:
+        	    $imgSrc = $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'images/misc/download_misc.png';
+        	    break;
         }
 
         $filesize = $fileData['filesize'];
