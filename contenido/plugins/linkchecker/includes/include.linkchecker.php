@@ -313,6 +313,7 @@ if (empty($aErrors) && $cronjob != true) {
         'others' => ''
     );
 
+    // Initializing repair class
     $repair = new LinkcheckerRepair();
 
     foreach ($aErrors as $sKey => $aRow) {
