@@ -40,6 +40,7 @@ class PimPluginViewNavSub {
     // CONTENIDO sub navigations: *_nav_sub
     public static $XmlNavSub;
 
+    // Varianle for counted nav entries
     protected $_NavCount = 0;
 
     // Class variable for DOMDocument
