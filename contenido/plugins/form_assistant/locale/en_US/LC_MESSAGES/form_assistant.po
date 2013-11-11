@@ -85,6 +85,9 @@ msgstr "existance of table could not be determined '%s'"
 msgid "TABLE_EXISTS_ERROR"
 msgstr "table '%s' already exists"
 
+msgid "USED_TABLE_NAME_ERROR"
+msgstr "The defined data table already exists. Please give another data table name."
+
 ; COLUMN exceptions
 
 msgid "COLUMN_EXISTS_ERROR"

@@ -50,6 +50,13 @@ class PifaImporter {
     private $_pifaFieldColl;
 
     /**
+     * Name of data table to create
+     *
+     * @var string
+     */
+    private $_tableName;
+
+    /**
      * Create an instance.
      * Creates XML reader member instances.
      */
@@ -60,6 +67,13 @@ class PifaImporter {
     }
 
     /**
+     * @param string $_tableName
+     */
+    public function setTableName($_tableName) {
+        $this->_tableName = $_tableName;
+    }
+
+	/**
      * Import the given XML.
      *
      * @param string $xml to import
@@ -77,6 +91,10 @@ class PifaImporter {
 
         // import form
         $formElem = $this->_reader->getXpathNode('/pifa/form');
+        if (is_null($this->_tableName)) {
+            $this->_tableName = $formElem->getAttribute('table');
+        }
+        $this->_checkTableName();
         $pifaForm = $this->_createPifaForm($formElem);
 
         // import fields
@@ -118,7 +136,7 @@ class PifaImporter {
             'idclient' => cRegistry::getClientId(),
             'idlang' => cRegistry::getLanguageId(),
             'name' => $formElem->getAttribute('name'),
-            'data_table' => $formElem->getAttribute('table'),
+            'data_table' => $this->_tableName,
             'method' => $formElem->getAttribute('method'),
             'with_timestamp' => (int) ('true' === $formElem->getAttribute('timestamp'))
         ));
@@ -202,6 +220,20 @@ class PifaImporter {
         }
 
         return $this->_pifaFieldColl->createNewItem($data);
+    }
+
+    /**
+     */
+    private function _checkTableName() {
+        $db = cRegistry::getDb();
+        $sql = '-- _checkTableName()
+            show tables
+                like "' . $db->escape($this->_tableName) . '"
+            ;';
+        $db->query($sql);
+        if (0 < $db->numRows()) {
+            throw new PifaDatabaseException("table $this->_tableName already exists");
+        }
     }
 
     /**

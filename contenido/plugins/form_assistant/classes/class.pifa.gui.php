@@ -82,6 +82,7 @@ class PifaLeftBottomPage extends cGuiPage {
             $link = new cHTMLLink();
             $link->setMultiLink($area, '', $area, PifaRightBottomFormPage::SHOW_FORM);
             $link->setCustom('idform', $idform);
+            $link->setAttribute('title', 'idform: ' . $idform);
             $menu->setLink($idform, $link);
 
             // create link to delete the form
@@ -811,15 +812,6 @@ class PifaRightBottomFormDataPage extends cGuiPage {
             'export' => Pifa::i18n('download data as CSV')
         ));
 
-        if (cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::EXPORT_DATA)) {
-            $tpl->assign('exportUrl', 'main.php?' . implode('&', array(
-                'area=form_ajax',
-                'frame=4',
-                'contenido=' . cRegistry::getBackendSessionId(),
-                'action=' . PifaAjaxHandler::EXPORT_DATA,
-                'idform=' . $this->_pifaForm->get('idform')
-            )));
-        }
         $tpl->assign('form', $this->_pifaForm);
         $tpl->assign('getFileUrl', 'main.php?' . implode('&', array(
             'area=form_ajax',
@@ -837,7 +829,17 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         $tpl->assign('withTimestamp', (bool) $this->_pifaForm->get('with_timestamp'));
 
         try {
-            $tpl->assign('data', $this->_pifaForm->getData());
+            $data = $this->_pifaForm->getData();
+            $tpl->assign('data', $data);
+            if (!empty($data)&&cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::EXPORT_DATA)) {
+                $tpl->assign('exportUrl', 'main.php?' . implode('&', array(
+                    'area=form_ajax',
+                    'frame=4',
+                    'contenido=' . cRegistry::getBackendSessionId(),
+                    'action=' . PifaAjaxHandler::EXPORT_DATA,
+                    'idform=' . $this->_pifaForm->get('idform')
+                )));
+            }
         } catch (Exception $e) {
             $tpl->assign('data', Pifa::notifyException($e));
         }
@@ -1053,7 +1055,17 @@ class PifaRightBottomFormImportPage extends cGuiPage {
             case self::IMPORT_FORM:
                 $this->set('s', 'notification', $notification);
                 try {
-                    $this->set('s', 'content', $this->_importForm());
+
+                    switch (strtoupper($_SERVER['REQUEST_METHOD'])) {
+                        case 'GET':
+                            $this->set('s', 'content', $this->_importFormGet());
+                            break;
+
+                        case 'POST':
+                            $this->set('s', 'content', $this->_importFormPost());
+                            break;
+                    }
+
                     $this->setReload();
                 } catch (SmartyCompilerException $e) {
                     $this->set('s', 'content', Pifa::notifyException($e));
@@ -1076,52 +1088,72 @@ class PifaRightBottomFormImportPage extends cGuiPage {
      *
      * @return string
      */
-    private function _importForm() {
+    private function _importFormGet($showTableNameField = false) {
+
+        $cfg = cRegistry::getConfig();
+
+        $tpl = cSmartyBackend::getInstance(true);
+
+        // translations
+        $tpl->assign('trans', array(
+            'legend' => Pifa::i18n('pifa_import_form'),
+            'xml' => Pifa::i18n('XML'),
+            'used_table_name_error' => Pifa::i18n('USED_TABLE_NAME_ERROR'),
+            'table_name' => Pifa::i18n('data table'),
+            'export' => Pifa::i18n('IMPORT')
+        ));
+
+        $tpl->assign('formAction', 'main.php?' . implode('&', array(
+            'area=form_import',
+            'frame=4',
+            'contenido=' . cRegistry::getBackendSessionId(),
+            'action=' . self::IMPORT_FORM
+        )));
+
+        $tpl->assign('showTableNameField', $showTableNameField);
+
+        $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_import']);
+
+        return $out;
+    }
+
+    /**
+     * Handles the GET & POST request for the form_import area.
+     * On a GET request a form is displayed that allows for uploading an XML
+     * export file and an additional checkbox to select if gathered data should
+     * be imported too.
+     * On a POST request the import of the uploaded file is performed via
+     * PifaImporter. Eventually a notification is displayed.
+     *
+     * @return string
+     */
+    private function _importFormPost() {
+
         $cGuiNotification = new cGuiNotification();
 
-        switch (strtoupper($_SERVER['REQUEST_METHOD'])) {
-            case 'GET':
-                $cfg = cRegistry::getConfig();
+        // read XML from file
+        $xml = file_get_contents($_FILES['xml']['tmp_name']);
+        $tableName = isset($_POST['table_name'])? $_POST['table_name'] : NULL;
 
-                $tpl = cSmartyBackend::getInstance(true);
+        // check read operation
+        if (false === $xml) {
+            $note = Pifa::i18n('READ_XML_ERROR');
+            $out = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $note);
+            break;
+        }
 
-                // translations
-                $tpl->assign('trans', array(
-                    'legend' => Pifa::i18n('pifa_import_form'),
-                    'xml' => Pifa::i18n('XML'),
-                    'export' => Pifa::i18n('IMPORT')
-                ));
+        try {
 
-                $tpl->assign('formAction', 'main.php?' . implode('&', array(
-                    'area=form_import',
-                    'frame=4',
-                    'contenido=' . cRegistry::getBackendSessionId(),
-                    'action=' . self::IMPORT_FORM
-                )));
+            // perform import process
+            $pifaImporter = new PifaImporter();
+            $pifaImporter->setTableName($tableName);
+            $pifaImporter->import($xml);
 
-                $out = $tpl->fetch($cfg['templates']['pifa_right_bottom_import']);
-                break;
-
-            case 'POST':
-
-                // read XML from file
-                $xml = file_get_contents($_FILES['xml']['tmp_name']);
-
-                // check read operation
-                if (false === $xml) {
-                    $note = Pifa::i18n('READ_XML_ERROR');
-                    $out = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $note);
-                    break;
-                }
-
-                // perform import process
-                $pifaImporter = new PifaImporter();
-                $pifaImporter->import($xml);
-
-                // display success message
-                $note = Pifa::i18n('IMPORT_SUCCESS');
-                $out = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, $note);
-                break;
+            // display success message
+            $note = Pifa::i18n('IMPORT_SUCCESS');
+            $out = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, $note);
+        } catch (PifaDatabaseException $e) {
+            $out = $this->_importFormGet(true);
         }
 
         return $out;

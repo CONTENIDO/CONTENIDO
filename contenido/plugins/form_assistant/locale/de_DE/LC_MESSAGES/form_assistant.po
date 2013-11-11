@@ -85,6 +85,9 @@ msgstr "Existenz der Datentabelle konnte nicht geprüft werden: '%s'"
 msgid "TABLE_EXISTS_ERROR"
 msgstr "Datentabelle '%s' existiert bereits"
 
+msgid "USED_TABLE_NAME_ERROR"
+msgstr "Die angegebene Datentabelle existiert bereits. Bitte geben sie einen alternativen Tabellennamen an."
+
 ; COLUMN exceptions
 
 msgid "COLUMN_EXISTS_ERROR"

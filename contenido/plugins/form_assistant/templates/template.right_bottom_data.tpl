@@ -39,7 +39,12 @@ AUTHOR marcus.gnass@4fb.de
         {/if}
     {/foreach}
         </tr>
-    {foreach from=$data item=row}
+    {if 0 eq $data|count}
+        <tr>
+            <td colspan="{$fields|count}">no data</td>
+        </tr>
+    {else}
+        {foreach from=$data item=row}
         <tr>
             <td nowrap="nowrap" class="bordercell">{$row.id}</td>
         {if $withTimestamp}
@@ -60,7 +65,8 @@ AUTHOR marcus.gnass@4fb.de
             {/if}
         {/foreach}
         </tr>
-    {/foreach}
+        {/foreach}
+    {/if}
     </table>
 {/if}
 </fieldset>
