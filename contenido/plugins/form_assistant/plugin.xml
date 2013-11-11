@@ -10,7 +10,7 @@
         <copyright>four for business AG</copyright>
         <mail>marcus.gnass@4fb.de</mail>
         <website>http://www.4fb.de</website>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </general>
 
     <requirements php="5.2.3">
