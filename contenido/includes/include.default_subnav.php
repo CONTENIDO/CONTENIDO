@@ -77,47 +77,21 @@ cDebug::out('Url-Params: ' . $sUrlParams);
 
 $anchorTpl = '<a class="white%s" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
 
-// Select NavSubItems from DB
-$nav = new cGuiNavigation();
+// Get all sub navigation items
+$navSubColl = new cApiNavSubCollection();
+$areasNavSubs = $navSubColl->getSubnavigationsByAreaName($area);
 
-$sql = "SELECT
-            navsub.location AS location,
-            area.name       AS name,
-            area.menuless   AS menuless
-        FROM
-            ".$cfg['tab']['area']."    AS area,
-            ".$cfg['tab']['nav_sub']." AS navsub
-        WHERE
-            area.idarea = navsub.idarea
-        AND
-            navsub.level = 1
-        AND
-            navsub.online = 1
-        AND (
-            area.parent_id = '".$db->escape($area)."'
-            OR
-            area.name = '".$db->escape($area)."'
-        )
-        ORDER BY
-            area.parent_id ASC,
-            navsub.idnavs ASC";
-
-$db->query($sql);
-
-while ($db->nextRecord()) {
+foreach ($areasNavSubs as $areasNavSub) {
     // Name
-    $areaName = $db->f('name');
-//##echo "<pre>" . print_r($db->toArray(), true) . "</pre>\n";
-
-    // Set translation path
-    $caption = $nav->getName($db->f('location'));
+    $areaName = $areasNavSub['name'];
+//##echo "<pre>" . print_r($areasNavSub, true) . "</pre>\n";
 
     // for Main-Area
     if ($areaName == $area) {
         // Menueless
-        $bMenuless = $db->f('menuless') ? true : false;
+        $bMenuless = $areasNavSub['menuless'] ? true : false;
 
-        if ($bVirgin && !$bMenuless && $db->f('name') == $area) {
+        if ($bVirgin && !$bMenuless && $areasNavSub['name'] == $area) {
             // Is loading from main, main-area and menuless -> stop this 'while'
             break;
         }
@@ -127,13 +101,13 @@ while ($db->nextRecord()) {
     $sClass = ($areaName == $area) ? ' current' : '';
 
     // Link
-    $sLink = $sess->url('main.php?area='.$areaName.'&frame=4'.($appendparameters?'&appendparameters='.$appendparameters:'').$sUrlParams);
+    $sLink = $sess->url('main.php?area=' . $areaName . '&frame=4' . ($appendparameters ? '&appendparameters=' . $appendparameters : '') . $sUrlParams);
 
     // Fill template
     $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
     $tpl->set('d', 'DATA_NAME', $areaName);
     $tpl->set('d', 'CLASS', 'item ' . $areaName);
-    $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sClass, $sLink, $caption));
+    $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sClass, $sLink, $areasNavSub['caption']));
     $tpl->next();
 }
 

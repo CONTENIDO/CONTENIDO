@@ -72,6 +72,64 @@ class cApiNavSubCollection extends ItemCollection {
         return $item;
     }
 
+    /**
+     * Returns sub navigation by area name
+     * @param  string  $area
+     * @param  int  $level
+     * @param  int  $online
+     * @return  array  List of assiziative arrays like
+     * <pre>
+     *  $arr[] = array(
+     *      'location' => location xml path
+     *      'caption' => The tanslation of location from XML file 
+     *      'name' => area name for sub navigation item
+     *      'menulesss' => Menuless state
+     *  );
+     * </pre>
+     */
+    public function getSubnavigationsByAreaName($area, $level = 1, $online = 1) {
+        global $cfg;
+
+        $level = (int) $level;
+        $online = (1 == $online) ? 1 : 0;
+
+        $areasNsRs = array();
+
+        $nav = new cGuiNavigation();
+
+        $sql = "SELECT
+                    ns.location AS location,
+                    a.name AS name,
+                    a.menuless AS menuless
+                FROM
+                    " . $cfg['tab']['area'] . " AS a,
+                    " . $this->table . " AS ns
+                WHERE
+                    a.idarea = ns.idarea
+                AND
+                    ns.level = " . $level . "
+                AND
+                    ns.online = " . $online . "
+                AND (
+                    a.parent_id = '" . $this->db->escape($area) . "'
+                    OR
+                    a.name = '" . $this->db->escape($area) . "'
+                )
+                ORDER BY
+                    a.parent_id ASC,
+                    ns.idnavs ASC";
+
+        $this->db->query($sql);
+
+        while ($this->db->nextRecord()) {
+            $rs = $this->db->toArray();
+            $rs['caption'] = $nav->getName($rs['location']);
+            $areasNsRs[] = $rs;
+        }
+
+        return $areasNsRs;
+    }
+
 }
 
 /**

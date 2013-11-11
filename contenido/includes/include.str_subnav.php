@@ -24,59 +24,20 @@ $anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom"
 $area = $_GET['area'];
 $anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
 
-$nav = new cGuiNavigation();
+// Get all sub navigation items
+$navSubColl = new cApiNavSubCollection();
+$areasNavSubs = $navSubColl->getSubnavigationsByAreaName($area);
 
-$sql = "SELECT
-            idarea
-        FROM
-            ".$cfg['tab']['area']." AS a
-        WHERE
-            a.name = '".$db->escape($area)."' OR
-            a.parent_id = '".$db->escape($area)."'
-        ORDER BY
-            idarea";
+foreach ($areasNavSubs as $areasNavSub) {
+    $areaName = $areasNavSub['name'];
 
-$db->query($sql);
-
-$in_str = '';
-
-while ($db->nextRecord()) {
-    $in_str .= $db->f('idarea') . ',';
-}
-
-$len = strlen($in_str) - 1;
-$in_str = substr($in_str, 0, $len);
-$in_str = '('.$in_str.')';
-
-$sql = "SELECT
-            b.location AS location,
-            a.name AS name
-        FROM
-            ".$cfg['tab']['area']." AS a,
-            ".$cfg['tab']['nav_sub']." AS b
-        WHERE
-            b.idarea IN ".$in_str." AND
-            b.idarea = a.idarea AND
-            b.level = 1 AND
-            b.online = 1
-        ORDER BY
-            b.idnavs";
-
-$db->query($sql);
-
-while ($db->nextRecord()) {
-    // Extract names from the XML document.
-    $caption = $nav->getName($db->f('location'));
-
-    $tmp_area = $db->f('name');
-
-    if ($perm->have_perm_area_action($tmp_area)) {
-        if ($tmp_area != 'upl_edit') {
+    if ($perm->have_perm_area_action($areaName)) {
+        if ($areaName != 'upl_edit') {
             // Set template data
             $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
             $tpl->set('d', 'CLASS', '');
             $tpl->set('d', 'OPTIONS', '');
-            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$tmp_area&frame=4&path=$path"), $caption));
+            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$areaName&frame=4&path=$path"), $areasNavSub['caption']));
             $tpl->next();
         }
     }

@@ -25,47 +25,12 @@ $area = $_GET['area'];
 
 $anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
 
-$nav = new cGuiNavigation();
+// Get all sub navigation items
+$navSubColl = new cApiNavSubCollection();
+$areasNavSubs = $navSubColl->getSubnavigationsByAreaName($area);
 
-$sql = "SELECT
-            idarea
-        FROM
-            ".$cfg['tab']['area']." AS a
-        WHERE
-            a.name = '".$db->escape($area)."' OR
-            a.parent_id = '".$db->escape($area)."'
-        ORDER BY
-            idarea";
-
-$db->query($sql);
-
-$in_str = '';
-while ($db->nextRecord()) {
-    $in_str .= $db->f('idarea') . ',';
-}
-$in_str = substr($in_str, 0, -1);
-
-$sql = "SELECT
-            b.location AS location,
-            a.name AS name
-        FROM
-            ".$cfg['tab']['area']." AS a,
-            ".$cfg['tab']['nav_sub']." AS b
-        WHERE
-            b.idarea IN (".$in_str.") AND
-            b.idarea = a.idarea AND
-            b.level = 1 AND
-            b.online = 1
-        ORDER BY
-            b.idnavs";
-
-$db->query($sql);
-
-while ($db->nextRecord()) {
-    // Extract names from the XML document.
-    $caption = $nav->getName($db->f('location'));
-
-    $areaName = $db->f('name');
+foreach ($areasNavSubs as $areasNavSub) {
+    $areaName = $areasNavSub['name'];
     if ($areaName == 'style') {
         $sAction = '&action=style_edit';
     } elseif ($areaName == 'js') {
@@ -81,7 +46,7 @@ while ($db->nextRecord()) {
         $tpl->set('d', 'DATA_NAME', $areaName);
         $tpl->set('d', 'CLASS', '');
         $tpl->set('d', 'OPTIONS', '');
-        $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area={$areaName}&frame=4{$sAction}&file={$file}&tmp_file={$file}"), $caption));
+        $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area={$areaName}&frame=4{$sAction}&file={$file}&tmp_file={$file}"), $areasNavSub['caption']));
         $tpl->next();
     }
 }
