@@ -10,7 +10,7 @@
  */
 
 //get smarty instance
-$tpl = Contenido_SmartyWrapper::getInstance();
+$tpl = cSmartyFrontend::getInstance();
 
 //init vars and objects
 $urlLabel = mi18n("URL");

@@ -10,7 +10,7 @@
  */
 
 //get smarty instance
-$tpl = Contenido_SmartyWrapper::getInstance();
+$tpl = cSmartyFrontend::getInstance();
 
 //get translations
 $label_overview = mi18n("OVERVIEW");

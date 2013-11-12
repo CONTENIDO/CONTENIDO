@@ -8,7 +8,7 @@
  *
  */
 
-$tpl = Contenido_SmartyWrapper::getInstance();
+$tpl = cSmartyFrontend::getInstance();
 
 $urlProfileLabel = mi18n("URL_PROFILE");
 $lookLabel = mi18n("LOOK");

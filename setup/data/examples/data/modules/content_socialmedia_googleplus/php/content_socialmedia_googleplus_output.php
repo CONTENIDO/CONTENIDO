@@ -12,7 +12,7 @@
  * }}
  */
 
-$tpl = Contenido_SmartyWrapper::getInstance();
+$tpl = cSmartyFrontend::getInstance();
 
 $urlLabel = mi18n("URL");
 $automaticURLLabel = mi18n("AUTOMATIC_URL_LABEL");
