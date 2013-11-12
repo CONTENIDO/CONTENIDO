@@ -28,81 +28,37 @@
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-	if (!isset($path))
-	{
-		$path = "";	
-	}
-    $area = $_GET['area'];
+if (!isset($path)) {
+	$path = "";	
+}
 
-	$nav = new Contenido_Navigation;
-	
-    $sql = "SELECT
-                idarea
-            FROM
-                ".$cfg["tab"]["area"]." AS a
-            WHERE
-                a.name = '".Contenido_Security::escapeDB($area, $db)."' OR
-                a.parent_id = '".Contenido_Security::escapeDB($area, $db)."'
-            ORDER BY
-                idarea";
+$area = $_GET['area'];
 
-    $db->query($sql);
- 
-    $in_str = "";
+$areasNavSubs = getSubnavigationsByAreaName($area);
 
-    while ( $db->next_record() ) {
-        $in_str .= $db->f('idarea') . ',';
+foreach ($areasNavSubs as $areasNavSub) {
+    $areaName = $areasNavSub['name'];
+    $caption = $areasNavSub['caption'];
+
+    if ($perm->have_perm_area_action($areaName)) {
+    	if ($areaName != "upl_edit") {
+            # Set template data
+            $tpl->set("d", "ID", 'c_'.$tpl->dyn_cnt);
+            $tpl->set("d", "CLASS", '');
+            $tpl->set("d", "OPTIONS", '');
+            $tpl->set("d", "CAPTION", '<a onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$areaName&frame=4&path=$path").'">'.$caption.'</a>');
+            $tpl->next();
+    	}
     }
+}
 
-    $len = strlen($in_str)-1;
-    $in_str = substr($in_str, 0, $len);
-    $in_str = '('.$in_str.')';
+$tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
 
-    $sql = "SELECT
-                b.location AS location,
-                a.name AS name
-            FROM
-                ".$cfg["tab"]["area"]." AS a,
-                ".$cfg["tab"]["nav_sub"]." AS b
-            WHERE
-                b.idarea IN ".$in_str." AND
-                b.idarea = a.idarea AND
-                b.level = 1 AND 
-				b.online = 1
-            ORDER BY
-                b.idnavs";
+# Generate the third navigation layer
+$tpl->generate($cfg["path"]["templates"] . "template.subnav_noleft.html");
 
-    $db->query($sql);
-
-    while ( $db->next_record() ) {
-
-        /* Extract names from the XML document. */
-		$caption = $nav->getName($db->f("location"));
-		
-        $tmp_area = $db->f("name");
-
-        if ($perm->have_perm_area_action($tmp_area))
-        {
-        	if ($tmp_area != "upl_edit")
-        	{
-                # Set template data
-                $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
-                $tpl->set("d", "CLASS",     '');
-                $tpl->set("d", "OPTIONS",   '');
-                $tpl->set("d", "CAPTION",   '<a onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$tmp_area&frame=4&path=$path").'">'.$caption.'</a>');
-                $tpl->next();
-        	}
-
-        }
-    }
-
-    $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
-
-    # Generate the third
-    # navigation layer
-    $tpl->generate($cfg["path"]["templates"] . "template.subnav_noleft.html");
 ?>

@@ -34,99 +34,49 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-if ( isset($_GET['groupid']) ) {
+if (isset($_GET['groupid'])) {
 
     $area = $_GET['area'];
 
-	$nav = new Contenido_Navigation;
-	
+    $areasNavSubs = getSubnavigationsByAreaName($area);
 
+    foreach ($areasNavSubs as $areasNavSub) {
+        $areaName = $areasNavSub['name'];
+        $caption = $areasNavSub['caption'];
 
-    $sql = "SELECT
-                idarea
-            FROM
-                ".$cfg["tab"]["area"]." AS a
-            WHERE
-                a.name = '".Contenido_Security::escapeDB($area, $db)."' OR
-                a.parent_id = '".Contenido_Security::escapeDB($area, $db)."'
-            ORDER BY
-                idarea";
-
-    $db->query($sql);
-
-    $in_str = "";
-
-    while ( $db->next_record() ) {
-        $in_str .= $db->f('idarea') . ',';
-    }
-
-    $len = strlen($in_str)-1;
-    $in_str = substr($in_str, 0, $len);
-    $in_str = '('.$in_str.')';
-
-    $sql = "SELECT
-                b.location AS location,
-                a.name AS name
-            FROM
-                ".$cfg["tab"]["area"]." AS a,
-                ".$cfg["tab"]["nav_sub"]." AS b
-            WHERE
-                b.idarea IN ".Contenido_Security::escapeDB($in_str, $db)." AND
-                b.idarea = a.idarea AND
-                b.level = 1 AND 
-				b.online = 1
-            ORDER BY
-                b.idnavs";
-
-    $db->query($sql);
-
-    while ( $db->next_record() ) {
-
-        /* Extract names from the XML document. */
-      	$caption = $nav->getName($db->f("location"));
-        $tmp_area = $db->f("name");
-
-        if ($perm->have_perm_area_action($tmp_area))
-        {
+        if ($perm->have_perm_area_action($areaName)) {
             # Set template data
-            $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
-            $tpl->set("d", "CLASS",     '');
-            $tpl->set("d", "OPTIONS",   '');
-            $tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$tmp_area&frame=4&groupid=$groupid").'">'.$caption.'</a>');
+            $tpl->set("d", "ID", 'c_'.$tpl->dyn_cnt);
+            $tpl->set("d", "CLASS", '');
+            $tpl->set("d", "OPTIONS", '');
+            $tpl->set("d", "CAPTION", '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$areaName&frame=4&groupid=$groupid").'">'.$caption.'</a>');
             $tpl->next();
-
         }
     }
 
 	$_cecIterator = $_cecRegistry->getIterator("Contenido.Permissions.Group.Areas");
 
-	if ($_cecIterator->count() > 0)
-	{
-		while ($chainEntry = $_cecIterator->next())
-		{
+	if ($_cecIterator->count() > 0) {
+		while ($chainEntry = $_cecIterator->next()) {
 		    $aInfo = $chainEntry->execute();
 		    
-		    foreach ($aInfo as $key => $sAreaID)
-		    {
+		    foreach ($aInfo as $key => $sAreaID) {
 		    	$sAreaName = false;
 				$_cecIterator2 = $_cecRegistry->getIterator("Contenido.Permissions.Group.GetAreaName");
-				while ($chainEntry2 = $_cecIterator2->next())
-				{
+				while ($chainEntry2 = $_cecIterator2->next()) {
 				    $aInfo2 = $chainEntry2->execute($sAreaID);
-				    if ($aInfo2 !== false)
-				    {
+				    if ($aInfo2 !== false) {
 				    	$sAreaName = $aInfo2;
 				    	break;	
 				    }		    	
 			    }
 			    
-			    if ($sAreaName !== false)
-			    {
+			    if ($sAreaName !== false) {
 		            # Set template data
-		            $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
-		            $tpl->set("d", "CLASS",     '');
-		            $tpl->set("d", "OPTIONS",   '');
-		            $tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=group_external&frame=4&external_area=$sAreaID&groupid=$groupid").'">'.$sAreaName.'</a>');
+		            $tpl->set("d", "ID", 'c_'.$tpl->dyn_cnt);
+		            $tpl->set("d", "CLASS", '');
+		            $tpl->set("d", "OPTIONS", '');
+		            $tpl->set("d", "CAPTION", '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=group_external&frame=4&external_area=$sAreaID&groupid=$groupid").'">'.$sAreaName.'</a>');
 		            $tpl->next();			    	
 			    }
 		    }
@@ -134,8 +84,7 @@ if ( isset($_GET['groupid']) ) {
 	}	
     $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
 
-    # Generate the third
-    # navigation layer
+    # Generate the third navigation layer
     $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
 
 } else {
