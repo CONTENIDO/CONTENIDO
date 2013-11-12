@@ -220,7 +220,12 @@ class cHTML {
      * @return cHTML $this
      */
     public function setID($id) {
-        return $this->updateAttribute('id', $id);
+        if ($id != "") {
+            return $this->updateAttribute('id', $id);
+        } else {
+            return $this;
+        }
+
     }
 
     /**
