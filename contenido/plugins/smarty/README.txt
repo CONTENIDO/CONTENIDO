@@ -1,6 +1,6 @@
 The smarty object is treated as a Singleton
 You can now use the smarty object via
-	$oMySmarty = Contenido_SmartyWrapper::getInstance();
+	$oMySmarty = cSmartyFrontend::getInstance();
 in any contenido context.
 	
 	
@@ -9,7 +9,7 @@ Smarty templates are named as followed:
 	
 	
 Reset of the smarty paths to default values is possible via:
-	Contenido_SmartyWrapper::resetPaths();
+	cSmartyFrontend::resetPaths();
 
 Instructions for Smarty Upgrade/Update
 	If you want to use the latest version of smarty go to
