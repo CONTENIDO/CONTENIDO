@@ -75,7 +75,6 @@ function cecParseTemplate($template, cTemplate $templateObj) {
     (function(Con, $) {
         Con.sid = "' . $sessid . '";
         $.extend(Con.cfg, {
-            version: "' . CON_VERSION . '",
             urlBackend: "' .  $backendPath . '",
             urlHelp: "' . $cfg['help_url'] . '",
             belang: "' . $backendLang . '",
