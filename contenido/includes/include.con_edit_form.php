@@ -14,7 +14,6 @@
  * @link http://www.contenido.org
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
-
 cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.pathresolver.php");
 
@@ -24,6 +23,117 @@ global $frame, $area, $action, $contenido, $notification;
 global $client, $lang, $belang;
 global $idcat, $idart, $idcatlang, $idartlang, $idcatart, $idtpl;
 global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $bNoArticle;
+
+// build log view
+// ------------------
+
+// receive data
+$conCatColl = new cApiCategoryArticleCollection();
+$catArt = $conCatColl->getFieldsByWhereClause(array(
+    'idcatart'
+), 'idart=' . $idart);
+
+$permClause = '';
+if ($perm->isClientAdmin($client, false) === false && $perm->isSysadmin(false) === false) {
+    $permClause = " AND user_id = '" . $auth->auth['uid'] . "'";
+}
+
+$actionCollection = new cApiActionlogCollection();
+$query = $actionCollection->getFieldsByWhereClause(array(
+    'idaction',
+    'idlang',
+    'idclient',
+    'logtimestamp',
+    'user_id'
+), 'idcatart=' . $catArt[0]['idcatart'] . $permClause);
+
+$actionsCollection = new cApiActionCollection();
+$actionsCollection->query();
+
+$actions = $areas = array();
+while (($actionItem = $actionsCollection->next()) !== false) {
+    $actions[$actionItem->get('idaction')] = $actionItem->get('name');
+    $areas[$actionItem->get('idaction')] = $classarea->getAreaName($actionItem->get('idarea'));
+}
+
+// get language id
+$langId = cRegistry::getLanguageId();
+$langItem = new cApiLanguage($langId);
+$language = $langItem->get('name');
+
+// set extended values
+foreach ($query as $key => $val) {
+    $actionName = $actions[$val['idaction']];
+    $areaName = $areas[$val['idaction']];
+    $query[$key]['action'] = $lngAct[$areaName][$actionName];
+    $user = new cApiUser($val['user_id']);
+    $query[$key]['user'] = $user->get('username');
+
+    // if backend language id and log language id are the same set the backend
+    // id. Else get the language name from the language id set in action log.
+    if ($langId === (int) $val['idlang']) {
+        $query[$key]['language'] = $language;
+    } else {
+        $languageItem = new cApiLanguage($val['idlang']);
+        $query[$key]['language'] = $languageItem->get('name');
+    }
+}
+
+// <div style="height:200px;overflow-y:scroll;width:700px;">
+
+$div = new cHTMLDiv();
+$div->setStyle("height:200px;overflow-y:scroll;width:700px;");
+
+// generate table
+$table = new cHTMLTable();
+$table->setWidth('680px');
+$table->setClass('generic');
+
+$tr = new cHTMLTableRow();
+
+// build table header
+$th = new cHTMLTableHead();
+$th->setContent(i18n('Language'));
+
+$th2 = new cHTMLTableHead();
+$th2->setContent(i18n('User'));
+
+$th3 = new cHTMLTableHead();
+$th3->setContent(i18n('Date'));
+
+$th4 = new cHTMLTableHead();
+$th4->setContent(i18n('Action'));
+
+$tr->appendContent($th);
+$tr->appendContent($th2);
+$tr->appendContent($th3);
+$tr->appendContent($th4);
+$table->appendContent($tr);
+
+// assign values to table
+foreach ($query as $key => $val) {
+    $tr = new cHTMLTableRow();
+    $data = new cHTMLTableData();
+    $data->setContent($val['language']);
+    $tr->appendContent($data);
+
+    $data = new cHTMLTableData();
+    $data->setContent($val['user']);
+    $tr->appendContent($data);
+
+    $data = new cHTMLTableData();
+    $data->setContent($val['logtimestamp']);
+    $tr->appendContent($data);
+
+    $data = new cHTMLTableData();
+    $data->setContent($val['action']);
+    $tr->appendContent($data);
+
+    $table->appendContent($tr);
+}
+
+$div->appendContent($table);
+// ------------------
 
 $tpl->reset();
 
@@ -337,10 +447,12 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $tpl->set('s', 'LABEL_REDIRECT_CODE', i18n("Status code"));
 
+    $tpl->set('s', 'LOGTABLE', $div->render());
+
     $tpl->set('s', 'DISABLE_SELECT', $forceDisable);
 
     $option307 = '<option value="temporary">' . i18n("Temporary") . '</option>';
-    $option301 = '<option value="permanently">' . i18n("Permanently").  '</option>';
+    $option301 = '<option value="permanently">' . i18n("Permanently") . '</option>';
     if ($tmp_redirect_mode === 'temporary') {
         $tpl->set('s', 'REDIRECT_OPTIONS', $option307 . $option301);
     } else {
