@@ -12,16 +12,21 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Wrapper class for Integration of smarty.
  *
+ * @deprecated 2013-11-12 - Use the class cSmartyBackend instead.
  * @package Plugin
  * @subpackage SmartyWrapper
  */
 class Contenido_Backend_SmartyWrapper extends cSmartyBackend {
+
+    public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
+        cDeprecated("Use the class cSmartyBackend instead.");
+        parent::__construct($aCfg, $aClientCfg, $bSanityCheck);
+    }
 
 }
 /**
@@ -30,7 +35,7 @@ class Contenido_Backend_SmartyWrapper extends cSmartyBackend {
  * @package Plugin
  * @subpackage SmartyWrapper
  */
-class cSmartyBackend extends Contenido_SmartyWrapper {
+class cSmartyBackend extends cSmartyFrontend {
 
     public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
         parent::__construct($aCfg, $aClientCfg, false);
