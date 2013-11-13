@@ -611,7 +611,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $templateBottom->set('s', 'FIELDS', "'" . implode("','", $this->_formFields) . "'");
         $templateBottom->set('s', 'SETTINGS', json_encode($this->_settings));
         $templateBottom->set('s', 'JS_CLASS_SCRIPT', $this->_cfg['path']['contenido_fullhtml'] . 'scripts/content_types/cmsTeaser.js');
-        $templateBottom->set('s', 'JS_CLASS_NAME', 'cContentTypeTeaser');
+        $templateBottom->set('s', 'JS_CLASS_NAME', 'Con.cContentTypeTeaser');
         $codeBottom = $templateBottom->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_abstract_tabbed_edit_bottom.html', true);
 
         // construct the whole template code

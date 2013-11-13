@@ -1,7 +1,7 @@
 /* global Con: true, jQuery: true */
 
 /**
- * This file contains the ContentTypeDate JS class.
+ * This file contains the cContentTypeDate JS class.
  *
  * @module  content-type
  * @submodule  content-type-cms-date
@@ -22,7 +22,7 @@
     var NAME = 'content-type-cms-date';
 
     /**
-     * @class ContentTypeDate
+     * @class cContentTypeDate
      * @constructor
      * @property {String} frameId The ID of the frame in which the content type can be set up.
      * @property {String} prefix The prefix of the content type.
@@ -33,187 +33,177 @@
      * @property {Object|String} settings The settings of this content type.
      * @property {String} belang The backend language (e.g. de_DE).
      */
-    var ContentTypeDate = function(frameId, prefix, id, idArtLang, pathBackend, lang, settings, belang) {
+    function cContentTypeDate(frameId, prefix, id, idArtLang, pathBackend, lang, settings, belang) {
 
         /**
          * ID of the frame in which all settings are made.
-         * @property frameId
+         *
          * @type String
          */
         this.frameId = frameId;
 
         /**
          * The prefix of this content type.
-         * @property prefix
+         *
          * @type String
          */
         this.prefix = prefix;
 
         /**
          * ID of the content type, e.g. 3 if CMS_TEASER[3] is used.
-         * @property id
+         *
          * @type Number
          */
         this.id = id;
 
         /**
          * IdArtLang of the article which is currently in edit- or viewmode.
-         * @property idArtLang
+         *
          * @type Number
          */
         this.idArtLang = idArtLang;
 
         /**
          * The HTTP path to the CONTENIDO backend.
-         * @property pathBackend
+         *
          * @type String
          */
         this.pathBackend = pathBackend;
 
         /**
          * The language which should be used.
-         * @property lang
+         *
          * @type String
          */
         this.lang = lang;
 
         /**
          * The old settings.
-         * @property settings
+         *
          * @type Object|String
          */
         this.settings = settings;
 
         /**
          * The backend language.
-         * @property belang
+         *
          * @type String
          */
         this.belang = belang;
+
+    }
+
+    /**
+     * Initialises the content type by adding event handlers etc.
+     */
+    cContentTypeDate.prototype.initialise = function(calendarPic) {
+        this.loadExternalFiles(calendarPic);
+        this.addSaveEvent();
     };
 
-    ContentTypeDate.prototype = {
-
-        /**
-         * Initialises the content type by adding event handlers etc.
-         * @method initialise
-         */
-        initialise: function(calendarPic) {
-            this.loadExternalFiles(calendarPic);
-            this.addSaveEvent();
-        },
-
-        /**
-         * Loads external styles and scripts so that they are only loaded when they are
-         * really needed.
-         * @method loadExternalFiles
-         */
-        loadExternalFiles: function(calendarPic) {
-            if ($('#cms_date_styles').length === 0) {
-                $('head').append('<link rel="stylesheet" id="cms_date_styles" href="' + this.pathBackend + 'styles/content_types/cms_date.css" type="text/css" media="all" />');
-            }
-            if ($('#jquery_ui_styles').length === 0) {
-                $('head').append('<link rel="stylesheet" id="jquery_ui_styles" href="' + this.pathBackend + 'styles/jquery/jquery-ui.css" type="text/css" media="all" />');
-            }
-            conLoadFile(this.pathBackend + 'scripts/jquery/jquery-ui.js', this.jQueryUiCallback, this, [calendarPic]);
-        },
-
-        /**
-         * Callback function which is executed when jQuery UI has successfully been
-         * loaded. Loads the appropriate language.
-         * @method jQueryUiCallback
-         */
-        jQueryUiCallback: function(calendarPic) {
-            conLoadFile(this.pathBackend + 'scripts/jquery/plugins/timepicker.js', this.jQueryUiTimepickerCallback, this, [calendarPic]);
-        },
-
-        /**
-         * Callback function which is executed when jQuery UI has successfully been
-         * loaded. Loads the appropriate language.
-         * @method jQueryUiTimepickerCallback
-         */
-        jQueryUiTimepickerCallback: function(calendarPic) {
-            var self = this;
-
-            // initialise the datepicker
-            $('#date_timestamp_' + self.id).datetimepicker({
-                buttonImage: calendarPic,
-                buttonImageOnly: true,
-                changeYear: true,
-                showOn: 'both'
-            });
-            $(function() {
-                // set the initial date
-                var date = new Date();
-                if (!isNaN(self.settings.date_timestamp)) {
-                    date = new Date(self.settings.date_timestamp * 1000);
-                }
-                $('#date_timestamp_' + self.id).datetimepicker('setDate', date);
-                // set the format
-                var dateFormat = 'yy-mm-dd';
-                var timeFormat = 'hh:mm:ssTT';
-                if (self.belang == 'de_DE') {
-                    dateFormat = 'dd.mm.yy';
-                    timeFormat = 'hh:mm:ss';
-                }
-                $('#date_timestamp_' + self.id).datetimepicker('option', 'dateFormat', dateFormat);
-                $('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', timeFormat);
-            });
-            // only load the localisation file if the language is not english
-            if (self.lang !== 'en') {
-                conLoadFile(self.pathBackend + 'scripts/jquery/plugins/datepicker-' + self.lang + '.js');
-                conLoadFile(self.pathBackend + 'scripts/jquery/plugins/timepicker-' + self.lang + '.js');
-            }
-        },
-
-        /**
-         * Adds save event to the save button of content type edit form.
-         * @method addSaveEvent
-         */
-        addSaveEvent: function() {
-            var self = this;
-            $(self.frameId + ' .save_settings').css('cursor', 'pointer');
-            $(self.frameId + ' .save_settings').click(function() {
-                var date = $('#date_timestamp_' + self.id).datetimepicker('getDate') || $('#date_timestamp_' + self.id).datepicker('getDate') || $('#date_timestamp_' + self.id).timepicker('getDate');
-                var timestamp = Math.floor(date.getTime() / 1000);
-                var format = $(self.frameId + ' #date_format_select_' + self.id).val();
-                format = Base64.encode(format);
-                self.appendFormField(self.prefix + '_timestamp', timestamp);
-                self.appendFormField(self.prefix + '_format', format);
-                self.appendFormField(self.prefix + '_action', 'store');
-                self.appendFormField(self.prefix + '_id', self.id);
-                Con.Tiny.setContent(self.idArtLang);
-            });
-        },
-
-        /**
-         * Adds the given name/value pair as a hidden field to the editform so that it
-         * is submitted to CONTENIDO. If a hidden field with the given name already
-         * exists, the value is overriden.
-         *
-         * @method appendFormField
-         * @param {String} name The name of the form field which should be added.
-         * @param {String} value The value of the form field which should be added.
-         */
-        appendFormField: function(name, value) {
-            // if a hidden input field with the given name already exists, just set the value
-            if ($('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').length > 0) {
-                $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
-            } else {
-                // otherwise append a new field to the form
-                $('form[name="editcontent"]').append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
-            }
+    /**
+     * Loads external styles and scripts so that they are only loaded when they are
+     * really needed.
+     */
+    cContentTypeDate.prototype.loadExternalFiles = function(calendarPic) {
+        if ($('#cms_date_styles').length === 0) {
+            $('head').append('<link rel="stylesheet" id="cms_date_styles" href="' + this.pathBackend + 'styles/content_types/cms_date.css" type="text/css" media="all" />');
         }
-
+        if ($('#jquery_ui_styles').length === 0) {
+            $('head').append('<link rel="stylesheet" id="jquery_ui_styles" href="' + this.pathBackend + 'styles/jquery/jquery-ui.css" type="text/css" media="all" />');
+        }
+        conLoadFile(this.pathBackend + 'scripts/jquery/jquery-ui.js', cContentTypeDate.prototype.jQueryUiCallback, this, new Array(calendarPic));
     };
 
-    Con.ContentTypeDate = ContentTypeDate;
+    /**
+     * Callback function which is executed when jQuery UI has successfully been
+     * loaded. Loads the appropriate language.
+     */
+    cContentTypeDate.prototype.jQueryUiCallback = function(calendarPic) {
+        conLoadFile(this.pathBackend + 'scripts/jquery/plugins/timepicker.js', cContentTypeDate.prototype.jQueryUiTimepickerCallback, this, new Array(calendarPic));
+    };
+
+    /**
+     * Callback function which is executed when jQuery UI has successfully been
+     * loaded. Loads the appropriate language.
+     */
+    cContentTypeDate.prototype.jQueryUiTimepickerCallback = function(calendarPic) {
+        var self = this;
+        // initialise the datepicker
+        $('#date_timestamp_' + self.id).datetimepicker({
+            buttonImage: calendarPic,
+            buttonImageOnly: true,
+            changeYear: true,
+            showOn: 'both'
+        });
+        $(function() {
+            // set the initial date
+            var date = new Date();
+            if (!isNaN(self.settings.date_timestamp)) {
+                date = new Date(self.settings.date_timestamp * 1000);
+            }
+            $('#date_timestamp_' + self.id).datetimepicker('setDate', date);
+            // set the format
+            var dateFormat = 'yy-mm-dd';
+            var timeFormat = 'hh:mm:ssTT';
+            if (self.belang == 'de_DE') {
+                dateFormat = 'dd.mm.yy';
+                timeFormat = 'hh:mm:ss';
+            }
+            $('#date_timestamp_' + self.id).datetimepicker('option', 'dateFormat', dateFormat);
+            $('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', timeFormat);
+        });
+        // only load the localisation file if the language is not english
+        if (self.lang !== 'en') {
+            conLoadFile(self.pathBackend + 'scripts/jquery/plugins/datepicker-' + self.lang + '.js');
+            conLoadFile(self.pathBackend + 'scripts/jquery/plugins/timepicker-' + self.lang + '.js');
+        }
+    };
+
+    /**
+     * Adds save event to the save button of content type edit form.
+     */
+    cContentTypeDate.prototype.addSaveEvent = function() {
+        var self = this;
+        $(self.frameId + ' .save_settings').css('cursor', 'pointer');
+        $(self.frameId + ' .save_settings').click(function() {
+            var date = $('#date_timestamp_' + self.id).datetimepicker('getDate') || $('#date_timestamp_' + self.id).datepicker('getDate') || $('#date_timestamp_' + self.id).timepicker('getDate');
+            var timestamp = Math.floor(date.getTime() / 1000);
+            var format = $(self.frameId + ' #date_format_select_' + self.id).val();
+            format = Base64.encode(format);
+            self.appendFormField(self.prefix + '_timestamp', timestamp);
+            self.appendFormField(self.prefix + '_format', format);
+            self.appendFormField(self.prefix + '_action', 'store');
+            self.appendFormField(self.prefix + '_id', self.id);
+            setcontent(self.idArtLang, '0');
+        });
+    };
+
+    /**
+     * Adds the given name/value pair as a hidden field to the editform so that it
+     * is submitted to CONTENIDO. If a hidden field with the given name already
+     * exists, the value is overriden.
+     *
+     * @param {String} name The name of the form field which should be added.
+     * @param {String} value The value of the form field which should be added.
+     */
+    cContentTypeDate.prototype.appendFormField = function(name, value) {
+        // if a hidden input field with the given name already exists, just set the value
+        if ($('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').length > 0) {
+            $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
+        } else {
+            // otherwise append a new field to the form
+            $('form[name="editcontent"]').append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
+        }
+    };
+
+
+    Con.cContentTypeDate = cContentTypeDate;
 
     // @deprecated [2013-11-10] Assign to windows scope (downwards compatibility)
-    window.cContentTypeDate = ContentTypeDate;
+    window.cContentTypeDate = cContentTypeDate;
 
 })(Con, Con.$);
-
 
 
 /**
