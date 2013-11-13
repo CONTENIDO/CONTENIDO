@@ -327,8 +327,8 @@ function rowMarkConClick(obj) {
             frame.cfg.scrollY = 0;
         }
 
-        frame.cfg.scrollX = scrollX;
-        frame.cfg.scrollY = scrollY;
+        frame.cfg.scrollX = window.scrollX;
+        frame.cfg.scrollY = window.scrollY;
     }
 }
 
