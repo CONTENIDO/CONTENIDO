@@ -49,13 +49,13 @@ if (isset($_GET['path'])) {
         $areaName = $areasNavSub['name'];
         $caption = $areasNavSub['caption'];
 
-        if ($perm->have_perm_area_action($tmp_area)) {
-        	if ($tmp_area != "upl_edit") {
+        if ($perm->have_perm_area_action($areaName)) {
+        	if ($areaName != "upl_edit") {
                 # Set template data
                 $tpl->set("d", "ID", 'c_'.$tpl->dyn_cnt);
                 $tpl->set("d", "CLASS", '');
                 $tpl->set("d", "OPTIONS", '');
-                $tpl->set("d", "CAPTION", '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$tmp_area&frame=4&path=$path&appendparameters=$appendparameters").'">'.$caption.'</a>');
+                $tpl->set("d", "CAPTION", '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$areaName&frame=4&path=$path&appendparameters=$appendparameters").'">'.$caption.'</a>');
                 $tpl->next();
         	}
         }
