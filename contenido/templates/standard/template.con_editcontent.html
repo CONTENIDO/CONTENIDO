@@ -1,15 +1,11 @@
 
 <!-- template.con_editcontent.html -->
 <!-- @TODO Similar to template.con_content_list.html, merge them -->
-<style type="text/css">
-.defaultSkin table.mceLayout {position: absolute; z-index: 10000;}
-.defaultSkin #mce_fullscreen_tbl {z-index: 20000;}
-.defaultSkin .mcePlaceHolder {position: absolute; z-index: 10000;}
-</style>
-
 {_JS_HEAD_CONTENIDO_FULLHTML_}
 
 {JS_EDITCONTENT}
+
+<link rel="stylesheet" type="text/css" href="{_PATH_CONTENIDO_FULLHTML_}styles/con_tiny.css">
 
 <script src="{_PATH_CONTENIDO_FULLHTML_}scripts/con_tiny.js" type="text/javascript"></script>
 <!-- tinyMCE -->
@@ -34,64 +30,31 @@
         }
     };
 
-    // Initialize CONTENIDO tiny module
-    Con.Tiny.init({
-        fileUrl: '{FILE}',
-        imageUrl: '{IMAGE}',
-        flashUrl: '{FLASH}',
-        mediaUrl: '{MEDIA}',
-        frontendPath: '{FRONTEND}',
-        txtQuestion: '{QUESTION}',
-        idartlang: '{IDARTLANG}',
-        settings: wysiwygSettings
+    // Initilalize/setup TinyMCE editor
+    Con.Tiny.tinymceInit(tinymce, wysiwygSettings, {
+        saveTitle: '{SAVE}',
+        saveImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_save_tiny.gif',
+        closeTitle: '{CLOSE}',
+        closeImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_close_tiny.gif'
     });
 
-    // Create ClosePlugin
-    tinymce.create('tinymce.plugins.ClosePlugin', {
-        init: function(ed, url) {
-            ed.addButton('save', {
-                title: '{SAVE}',
-                image: '{_PATH_CONTENIDO_FULLHTML_}images/but_save_tiny.gif',
-                icons: false,
-                onclick: function(ed) {
-                    Con.Tiny.setContent(Con.Tiny.idartlang);
-                }
-            });
-
-            ed.addButton('close', {
-                title: '{CLOSE}',
-                image: '{_PATH_CONTENIDO_FULLHTML_}images/but_close_tiny.gif',
-                icons: false,
-                onclick: function(ed) {
-                    Con.Tiny.closeTiny();
-                }
-            });
-        }
-    });
-
-    // Register plugin with a short name
-    tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
-
-    tinymce.settings = wysiwygSettings;
-
-    // Add tiny to elements which contains classname contentEditable
-    // tiny toggles on click
     $(function() {
-        var useTiny = '{USE_TINY}';
-        $('div[contenteditable=true]').each(function() {
-            $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
-            $(this).bind('click', function() {
-                if (useTiny) {
-                    Con.Tiny.swapTiny(this);
-                }
-            });
+        // Initialize CONTENIDO tiny module
+        Con.Tiny.init({
+            fileUrl: '{FILE}',
+            imageUrl: '{IMAGE}',
+            flashUrl: '{FLASH}',
+            mediaUrl: '{MEDIA}',
+            frontendPath: '{FRONTEND}',
+            txtQuestion: '{QUESTION}',
+            idartlang: '{IDARTLANG}',
+            settings: wysiwygSettings
         });
-    });
 
-    // Activate save confirmation on page leave
-    $(window).unload(function() {
-        Con.Tiny.leaveCheck();
+        // Bind to some events like contenteditables click or window unload
+        Con.Tiny.bindEvents({useTiny: '{USE_TINY}'});
     });
 
 })(Con, Con.$);
 </script>
+<!-- /template.con_editcontent.html -->

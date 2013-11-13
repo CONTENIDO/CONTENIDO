@@ -1,0 +1,28 @@
+/**
+ * Project:
+ * CONTENIDO Content Management System
+ *
+ * Description:
+ * Styles for TinyMCE integration in Backend
+ *
+ * @package    CONTENIDO Backend styles
+ * @version    0.1.0
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http: //www.contenido.org/license/LIZENZ.txt
+ * @link       http: //www.4fb.de
+ * @link       http: //www.contenido.org
+ */
+
+
+.defaultSkin table.mceLayout {
+	position: absolute;
+	z-index: 10000;
+}
+.defaultSkin #mce_fullscreen_tbl {
+	z-index: 20000;
+}
+.defaultSkin .mcePlaceHolder {
+	position: absolute;
+	z-index: 10000;
+}

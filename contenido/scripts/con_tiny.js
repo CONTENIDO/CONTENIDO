@@ -42,6 +42,14 @@
     var $_form = null;
 
     /**
+     * Data field in form
+     * @property _dataField
+     * @type {HTMLElement}
+     * @private
+     */
+    var $_dataField = null;
+
+    /**
      * TinyMCE editor handler
      * @class  Tiny
      * @static
@@ -161,9 +169,9 @@
             $.each(options, function(key, value) {
                 Con.Tiny[key] = value;
             });
-
             // Get reference to editcontent form
             $_form = $('form[name="editcontent"]');
+            $_dataField = $_form.find('[name="data"]');
         },
 
         /**
@@ -361,7 +369,7 @@
             });
 
             // Set the string
-            $_form.find('name=["data"]').val(str + $_form.find('name=["data"]').val());
+            $_dataField.val(str + $_dataField.val());
 
             // Set the action
             if (action !== 0 && action !== '') {
@@ -422,7 +430,7 @@
          * @static
          */
         addDataEntry: function(idartlang, type, typeid, value) {
-            $_form.find('name=["data"]').val(
+            $_dataField.val(
                 Con.Tiny.buildDataEntry(idartlang, type, typeid, Con.Tiny.prepareString(value))
             );
             Con.Tiny.setContent(idartlang);
@@ -557,8 +565,74 @@
                     Con.Tiny.setContent(Con.Tiny.idartlang);
                 }
             }
-        }
+        },
 
+        /**
+         * Initializes the TinyMCE instance, creates/registers addititional plugins and assigns
+         * given wysiwygSettings to the TinyMCE instance.
+         * @method tinymceInit
+         * @param {Object} tinymce  The current TinyMCE instance
+         * @param {Object} wysiwygSettings  Editor settins to assign to TinyMCE instance
+         * @param {Object} options  Common options
+         * @static
+         */
+        tinymceInit: function(tinymce, wysiwygSettings, options) {
+            // Create ClosePlugin
+            tinymce.create('tinymce.plugins.ClosePlugin', {
+                init: function(ed, url) {
+                    ed.addButton('save', {
+                        title: options.saveTitle,
+                        image: options.saveImage,
+                        icons: false,
+                        onclick: function(ed) {
+                            Con.Tiny.setContent(Con.Tiny.idartlang);
+                        }
+                    });
+
+                    ed.addButton('close', {
+                        title: options.closeTitle,
+                        image: options.closeImage,
+                        icons: false,
+                        onclick: function(ed) {
+                            Con.Tiny.closeTiny();
+                        }
+                    });
+                }
+            });
+
+            // Register plugin with a short name
+            tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
+
+            tinymce.settings = wysiwygSettings;
+        },
+
+        /**
+         * Binds click actions on contenteditable elements and registers also a handler to check for
+         * nonsaved content on page unload.
+         * @method bindEvents
+         * @param {Object} options  Options like
+         * <pre>
+         * - options.useTiny  (Boolean)  Flag to use (swap) tiny
+         * </pre>
+         * @static
+         */
+        bindEvents: function(options) {
+            // Add tiny to elements which contains classname contentEditable
+            // tiny toggles on click
+            $('div[contenteditable=true]').each(function() {
+                $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
+                $(this).bind('click', function() {
+                    if (options.useTiny) {
+                        Con.Tiny.swapTiny(this);
+                    }
+                });
+            });
+
+            // Activate save confirmation on page leave
+            $(window).unload(function() {
+                Con.Tiny.leaveCheck();
+            });
+        }
     };
 
 

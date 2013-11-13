@@ -1975,6 +1975,7 @@ contenido/scripts/subnav.js -text
 contenido/scripts/system_log_sysvalues.js -text svneol=unset#text/plain
 contenido/scripts/upl_files_overview.js -text svneol=unset#text/plain
 contenido/styles/con_content_list.css -text svneol=unset#text/plain
+contenido/styles/con_tiny.css -text
 contenido/styles/contenido.css -text
 contenido/styles/content_types/cms_abstract_tabbed.css -text svneol=unset#text/plain
 contenido/styles/content_types/cms_date.css -text svneol=unset#text/plain
