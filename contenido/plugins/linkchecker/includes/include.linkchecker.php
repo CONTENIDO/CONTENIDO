@@ -165,6 +165,7 @@ if (!empty($_GET['idartlang']) && !empty($_GET['oldlink']) && !empty($_GET['repa
         $db->query($sql);
     }
 
+	// Reset cache
     $oCache->remove($aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
 }
 
@@ -276,7 +277,7 @@ if ($cronjob != true) {
 
 // If no errors found, say that
 if (empty($aErrors) && $cronjob != true) {
-    // Remove older cache
+    // Reset cache
     $oCache->remove($aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
 
     $tpl->set('s', 'NO_ERRORS', i18n("<strong>No errors</strong> were found.", $plugin_name));
@@ -421,7 +422,7 @@ if (empty($aErrors) && $cronjob != true) {
     $tpl->generate($cfg['templates']['linkchecker_test']);
 
     /* Cache */
-    // Remove older cache
+    // Reset cache
     $oCache->remove($aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
 
     // Build new cache
