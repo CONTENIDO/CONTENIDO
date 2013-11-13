@@ -285,13 +285,13 @@ class cGuiNavigation {
 
         if (getEffectiveSetting('system', 'clickmenu') == 'true') {
             // set click menu
-            $main->set('s', 'HEADER_MENU_OBJ', 'HeaderClickMenu');
+            $main->set('s', 'HEADER_MENU_OBJ', 'Con.HeaderClickMenu');
             $main->set('s', 'HEADER_MENU_OPTIONS', '{menuId: "main_0", subMenuId: "sub_0"}');
         } else {
             // set delay menu
             $mouseOver = getEffectiveSetting('system', 'delaymenu_mouseover', 300);
             $mouseOot = getEffectiveSetting('system', 'delaymenu_mouseout', 1000);
-            $main->set('s', 'HEADER_MENU_OBJ', 'HeaderDelayMenu');
+            $main->set('s', 'HEADER_MENU_OBJ', 'Con.HeaderDelayMenu');
             $main->set('s', 'HEADER_MENU_OPTIONS', '{menuId: "main_0", subMenuId: "sub_0", mouseOverDelay: ' . $mouseOver . ', mouseOutDelay: ' . $mouseOot . '}');
         }
 
