@@ -18,7 +18,7 @@ global $area, $action, $idform;
 $cfg = cRegistry::getConfig();
 $sess = cRegistry::getSession();
 
-$anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
+$anchorTpl = '<a class="white" target="right_bottom" href="%s">%s</a>';
 
 $tpl = new cTemplate();
 
@@ -37,6 +37,7 @@ switch ($area) {
         // Set template data
         if (cRegistry::getPerm()->have_perm_area_action('form', PifaRightBottomFormPage::SHOW_FORM)) {
             $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+            $tpl->set('d', 'DATA_NAME', 'form');
             $tpl->set('d', 'CLASS', '');
             $tpl->set('d', 'OPTIONS', '');
             $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form&action=" . PifaRightBottomFormPage::SHOW_FORM . "&frame=4&idform=$idform"), i18n("form", 'form_assistant')));
@@ -48,6 +49,7 @@ switch ($area) {
             // Set template data
             if (cRegistry::getPerm()->have_perm_area_action('form_fields', PifaRightBottomFormFieldsPage::SHOW_FIELDS)) {
                 $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+                $tpl->set('d', 'DATA_NAME', 'form_fields');
                 $tpl->set('d', 'CLASS', '');
                 $tpl->set('d', 'OPTIONS', '');
                 $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form_fields&action=" . PifaRightBottomFormFieldsPage::SHOW_FIELDS . "&frame=4&idform=$idform"), i18n("fields", 'form_assistant')));
@@ -57,6 +59,7 @@ switch ($area) {
             // Set template data
             if (cRegistry::getPerm()->have_perm_area_action('form_data', PifaRightBottomFormDataPage::SHOW_DATA)) {
                 $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+                $tpl->set('d', 'DATA_NAME', 'form_data');
                 $tpl->set('d', 'CLASS', '');
                 $tpl->set('d', 'OPTIONS', '');
                 $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form_data&action=" . PifaRightBottomFormDataPage::SHOW_DATA . "&frame=4&idform=$idform"), i18n("data", 'form_assistant')));
@@ -66,6 +69,7 @@ switch ($area) {
             // Set template data
             if (cRegistry::getPerm()->have_perm_area_action('form_export', PifaRightBottomFormExportPage::EXPORT_FORM)) {
                 $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+                $tpl->set('d', 'DATA_NAME', 'form_export');
                 $tpl->set('d', 'CLASS', '');
                 $tpl->set('d', 'OPTIONS', '');
                 $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form_export&action=" . PifaRightBottomFormExportPage::EXPORT_FORM . "&frame=4&idform=$idform"), i18n("EXPORT", 'form_assistant')));
@@ -80,6 +84,7 @@ switch ($area) {
         // Set template data
         if (cRegistry::getPerm()->have_perm_area_action('form_import', PifaRightBottomFormImportPage::IMPORT_FORM)) {
             $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+            $tpl->set('d', 'DATA_NAME', 'form_import');
             $tpl->set('d', 'CLASS', '');
             $tpl->set('d', 'OPTIONS', '');
             $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=form_import&action=" . PifaRightBottomFormImportPage::IMPORT_FORM . "&frame=4"), i18n("IMPORT", 'form_assistant')));

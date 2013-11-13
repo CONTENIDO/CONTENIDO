@@ -75,7 +75,7 @@ switch ($area) {
 // Debug
 cDebug::out('Url-Params: ' . $sUrlParams);
 
-$anchorTpl = '<a class="white%s" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
+$anchorTpl = '<a class="white%s" target="right_bottom" href="%s">%s</a>';
 
 // Get all sub navigation items
 $navSubColl = new cApiNavSubCollection();

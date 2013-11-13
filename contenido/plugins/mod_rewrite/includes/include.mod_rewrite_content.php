@@ -184,10 +184,10 @@ $oView->lng_plugin_settings = i18n('Plugin settings', 'mod_rewrite');
 $oView->lng_note = i18n('Note', 'mod_rewrite');
 
 $sMsg = i18n('The .htaccess file could not found either in CONTENIDO installation directory nor in client directory.<br>It should set up in %sFunctions%s area, if needed.', 'mod_rewrite');
-$oView->lng_msg_no_htaccess_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido=' . $oView->sessid . '&idclient=' . $client . '" onclick="parent.right_top.sub.clicked(parent.right_top.document.getElementById(\'c_1\').firstChild);">', '</a>');
+$oView->lng_msg_no_htaccess_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido=' . $oView->sessid . '&idclient=' . $client . '" onclick="Con.markSubmenuItem(\'mod_rewrite_expert\');">', '</a>');
 
 $sMsg = i18n('Found some category and/or article aliases. It is recommended to run the reset function in %sFunctions%s area, if needed.', 'mod_rewrite');
-$oView->lng_msg_no_emptyaliases_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido=' . $oView->sessid . '&idclient=' . $client . '" onclick="parent.right_top.sub.clicked(parent.right_top.document.getElementById(\'c_1\').firstChild);">', '</a>');
+$oView->lng_msg_no_emptyaliases_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido=' . $oView->sessid . '&idclient=' . $client . '" onclick="Con.markSubmenuItem(\'mod_rewrite_expert\');">', '</a>');
 
 $oView->lng_enable_amr = i18n('Enable Advanced Mod Rewrite', 'mod_rewrite');
 

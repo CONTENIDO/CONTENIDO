@@ -27,7 +27,7 @@
     $(function() {
         if (parent.parent.frames[0].name != 'header') {
             Con.getFrame('content').frameResize.init();
-            sub.init();
+            Con.Subnav.init();
         }
         $('#toggleimage').click(function() {
             Con.getFrame('content').frameResize.toggle();

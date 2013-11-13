@@ -19,10 +19,8 @@ if (!isset($path)) {
     $path = '';
 }
 
-$anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
-
 $area = $_GET['area'];
-$anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
+$anchorTpl = '<a class="white" target="right_bottom" href="%s">%s</a>';
 
 // Get all sub navigation items
 $navSubColl = new cApiNavSubCollection();
@@ -35,6 +33,7 @@ foreach ($areasNavSubs as $areasNavSub) {
         if ($areaName != 'upl_edit') {
             // Set template data
             $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+            $tpl->set('d', 'DATA_NAME', $areaName);
             $tpl->set('d', 'CLASS', '');
             $tpl->set('d', 'OPTIONS', '');
             $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=$areaName&frame=4&path=$path"), $areasNavSub['caption']));

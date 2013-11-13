@@ -30,9 +30,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 <script type="text/javascript">
 // First sub menu item
 /* DEs: when does this fire?
-if (cObj = document.getElementById('c_0')) {
-    sub.click(cObj);
-}
+NOTE: We don't have Con object and the JS module subnav here
+Con.markSubmenuItem('c_0');
 */
 </script>
 <!--{DEFAULT}-->

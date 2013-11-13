@@ -29,11 +29,10 @@ if (!isset($idcat) || $idcat == '') {
 }
 
 if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
-    $nav = new cGuiNavigation();
 
-    $oAreaColl = new cApiAreaCollection();
-    $aIdareas = $oAreaColl->getIdareasByAreaNameOrParentId($area);
-    $in_str = '(' . implode(',', $aIdareas) . ')';
+    $anchorTpl = '<a class="white" style="%s" onclick="%s">%s</a>';
+
+    $nav = new cGuiNavigation();
 
     // Simple SQL statement to get the number of articles
     $sql_count =
@@ -62,27 +61,16 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
 
     $db->query($sql_count);
     while ($db->nextRecord()) {
-        $iArticleCount = $db->f("article_count");
+        $iArticleCount = $db->f('article_count');
     }
 
-    $sql = "SELECT
-                b.location AS location,
-                a.name AS name
-            FROM
-                " . $cfg["tab"]["area"] . " AS a,
-                " . $cfg["tab"]["nav_sub"] . " AS b
-            WHERE
-                b.idarea IN " . $db->escape($in_str) . " AND
-                b.idarea = a.idarea AND
-                b.level = 1 AND
-                b.online = 1
-            ORDER BY
-                b.idnavs";
-
-    $db->query($sql);
     $num = 0;
 
-    while ($db->nextRecord()) {
+    // Get all sub navigation items
+    $navSubColl = new cApiNavSubCollection();
+    $areasNavSubs = $navSubColl->getSubnavigationsByAreaName($area);
+
+    foreach ($areasNavSubs as $areasNavSub) {
     	/*
     	 * Tab display "logic"
     	 * Show all tabs
@@ -106,32 +94,29 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
         } else {
             $style = 'display:none;';
         }
-        
+
         // Tab select "logic"
         if (($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') ||
                 ($tpl->dyn_cnt == 1 && $bNoArticle == 'true' && $action == 'saveart')) {
             $num = $tpl->dyn_cnt;
         }
-        
-        // Extract names from the XML document.
-        $caption = $nav->getName($db->f("location"));
 
-        $tmp_area = $db->f("name");
+        $caption = $areasNavSub['caption'];
+        $areaName = $areasNavSub['name'];
 
         // Set template data
-        $tpl->set("d", "ID", 'c_' . $tpl->dyn_cnt);
-        $tpl->set("d", "DATA_NAME", $tmp_area);
-        $tpl->set("d", "CLASS", '');
-        $tpl->set("d", "OPTIONS", '');
+        $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
+        $tpl->set('d', 'DATA_NAME', $areaName);
+        $tpl->set('d', 'CLASS', '');
+        $tpl->set('d', 'OPTIONS', '');
         if ($cfg['help'] == true) {
-            $tpl->set("d", "CAPTION", '<a style="' . $style . '" onclick="' . getJsHelpContext(i18n("Article") . "/$caption") . 'sub.clicked(this);artObj.doAction(\'' . $tmp_area . '\')">' . $caption . '</a>');
+            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $style, getJsHelpContext(i18n("Article") . "/$caption") . 'artObj.doAction(\'' . $areaName . '\');' , $caption));
         } else {
-            $tpl->set("d", "CAPTION", '<a style="' . $style . '" onclick="sub.clicked(this);artObj.doAction(\'' . $tmp_area . '\')">' . $caption . '</a>');
+            $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $style, 'artObj.doAction(\'' . $areaName . '\');' , $caption));
         }
 
         $tpl->next();
     }
-
 
     $tpl->set('s', 'iID', 'c_' . $num);
     $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);

@@ -21,11 +21,12 @@
 </div>
 
 <script type="text/javascript">
-if (parent.parent.frames[0].name != "header") {
-    Con.getFrame("content").frameResize.init();
-}
-
-sub.init();
+(function(Con, $) {
+	if (parent.parent.frames[0].name != "header") {
+	    Con.getFrame("content").frameResize.init();
+	}
+	Con.Subnav.init();
+})(Con, Con.$);
 </script>
 
 </body>

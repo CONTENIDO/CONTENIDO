@@ -6,11 +6,10 @@
  * Upload files dropped on a div to the CONTENIDO backend
  *
  *
- * @module     con-upl-files-upload
+ * @module     upl-files-upload
  * @package    CONTENIDO Backend Scripts
  * @version    1.0.0
- * @author     Mischa Holz
- * @author     Murat Purc <murat@purc.de>
+ * @author     Mischa Holz, Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de

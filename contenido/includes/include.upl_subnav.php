@@ -28,7 +28,7 @@ if (!isset($_GET['path'])) {
 
 $path = $_GET['path'];
 $area = $_GET['area'];
-$anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
+$anchorTpl = '<a class="white" target="right_bottom" href="%s">%s</a>';
 
 // Get all sub navigation items
 $navSubColl = new cApiNavSubCollection();

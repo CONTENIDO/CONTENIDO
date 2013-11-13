@@ -36,7 +36,7 @@
     $(function() {
         if (parent.parent.frames[0].name != "header") {
             Con.getFrame("content").frameResize.init();
-            sub.init();
+            Con.Subnav.init();
         }
         $("#toggleimage").click(function() {
             Con.getFrame("content").frameResize.toggle();
@@ -45,7 +45,7 @@
         var elem = $("#{iID}");
         if (elem) {
             menuItem = elem[0];
-            sub.clicked(menuItem.firstChild);
+            Con.Subnav.clicked(menuItem.firstChild);
         }
     });
 })(Con, Con.$);

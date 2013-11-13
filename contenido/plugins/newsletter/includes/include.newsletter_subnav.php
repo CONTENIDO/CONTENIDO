@@ -21,7 +21,7 @@ if (!isset($_GET['idnewsletter']) || (int) $_GET['idnewsletter'] <= 0) {
     return;
 }
 
-$anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
+$anchorTpl = '<a class="white" target="right_bottom" href="%s">%s</a>';
 $idnewsletter = (int) $_GET['idnewsletter'];
 
 // Set template data

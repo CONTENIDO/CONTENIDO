@@ -30,9 +30,9 @@
         if (parent.parent.frames[0].name != "header") {
             Con.getFrame("content").frameResize.init();
             if (bActivateHistory) {
-                sub.clicked($("#c_1 a:first")[0]);
+                Con.Subnav.clicked($("#c_1 a:first")[0]);
             } else {
-                sub.init();
+                Con.Subnav.init();
             }
         }
         $("#toggleimage").click(function() {

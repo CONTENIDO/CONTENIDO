@@ -21,7 +21,7 @@ if (!isset($_GET['idcat'])) {
     return;
 }
 
-$anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
+$anchorTpl = '<a class="white" target="right_bottom" href="%s">%s</a>';
 
 $nav = new cGuiNavigation();
 
