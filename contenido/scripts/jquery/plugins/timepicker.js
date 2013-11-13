@@ -20,6 +20,9 @@
 
 /*jslint evil: true, maxlen: 300, white: false, undef: false, nomen: false, onevar: false */
 
+(function($, jQuery) {
+
+
 (function($) {
 
 // Prevent "Uncaught RangeError: Maximum call stack size exceeded"
@@ -1685,3 +1688,5 @@ $.timepicker.handleRange = function( method, startTime, endTime, options ) {
 $.timepicker.version = "1.0.2";
 
 })(jQuery);
+
+})(Con.$, Con.$);

@@ -18,6 +18,9 @@ Creates following node:
 </div>
 
 */
+
+(function($, jQuery) {
+
 (function($) {
     $.fn.aToolTip = function(options) {
 
@@ -116,3 +119,5 @@ Creates following node:
         return this;
     };
 })(jQuery);
+
+})(Con.$, Con.$);

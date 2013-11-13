@@ -3,6 +3,8 @@
 // (c) 2008-2010 jason frame [jason@onehackoranother.com]
 // released under the MIT license
 
+(function($, jQuery) {
+
 (function($) {
 
     function maybeCall(thing, ctx) {
@@ -256,3 +258,5 @@
     };
 
 })(jQuery);
+
+})(Con.$, Con.$);

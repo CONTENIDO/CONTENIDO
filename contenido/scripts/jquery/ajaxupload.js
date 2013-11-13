@@ -9,6 +9,10 @@
  * http://api.jqueryui.com/jQuery.widget/
  */
 
+
+(function($, jQuery) {
+
+
 (function (factory) {
     if (typeof define === "function" && define.amd) {
         // Register as an anonymous AMD module:
@@ -549,7 +553,7 @@ if ( $.uiBackCompat !== false ) {
         define(['jquery'], factory);
     } else {
         // Browser globals:
-        factory(window.jQuery);
+        factory(jQuery);
     }
 }(function ($) {
     'use strict';
@@ -739,7 +743,7 @@ if ( $.uiBackCompat !== false ) {
         ], factory);
     } else {
         // Browser globals:
-        factory(window.jQuery);
+        factory(jQuery);
     }
 }(function ($) {
     'use strict';
@@ -1829,3 +1833,5 @@ if ( $.uiBackCompat !== false ) {
     });
 
 }));
+
+})(Con.$, Con.$);
