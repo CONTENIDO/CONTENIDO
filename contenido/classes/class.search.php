@@ -874,7 +874,7 @@ class Search {
             }
         }
 
-        if ($this->search_option == 'regexp') { // regexp search
+        if ($this->search_option == 'regexp' && !empty($tmp_searchwords)) { // regexp search if searchwords are not empty
             $search_regexp = implode('|', $tmp_searchwords);
 
             $sql = "SELECT keyword, auto FROM " . $this->cfg['tab']['keywords']
@@ -898,7 +898,9 @@ class Search {
             echo "<pre>$sql</pre>";
         }
 
-        $this->db->query($sql);
+        if ($sql) {
+	        $this->db->query($sql);
+        }
 
         while ($this->db->next_record()) {
             $aIndexItems = preg_split("/&/", $this->db->f('auto'), -1, PREG_SPLIT_NO_EMPTY);
