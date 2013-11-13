@@ -158,7 +158,7 @@ if (!empty($_GET['idartlang']) && !empty($_GET['oldlink']) && !empty($_GET['repa
         $db->next_record();
 
         // Generate new value
-        $newvalue = str_replace(base64_decode($_GET['oldlink']), base64_decode($_GET['repairedlink']), $db->f("value"));
+        $newvalue = str_replace($db->escape(base64_decode($_GET['oldlink'])), $db->escape(base64_decode($_GET['repairedlink'])), $db->f("value"));
 
         // Update database table with new value
         $sql = "UPDATE " . $cfg['tab']['content'] . " SET value = '" . $newvalue . "' WHERE idartlang = '" . cSecurity::toInteger($_GET['idartlang']) . "'";
