@@ -61,8 +61,12 @@ $langId = cRegistry::getLanguageId();
 $langItem = new cApiLanguage($langId);
 $language = $langItem->get('name');
 
+$query = array_reverse($query);
+$query = array_slice($query, 0, 100);
+
 // set extended values
 foreach ($query as $key => $val) {
+
     $actionName = $actions[$val['idaction']];
     $areaName = $areas[$val['idaction']];
     $query[$key]['action'] = $lngAct[$areaName][$actionName];
@@ -82,14 +86,16 @@ foreach ($query as $key => $val) {
 // <div style="height:200px;overflow-y:scroll;width:700px;">
 
 $div = new cHTMLDiv();
-$div->setStyle("height:200px;overflow-y:scroll;width:700px;");
+$div->setStyle("height:200px;width:700px;");
 
 // generate table
 $table = new cHTMLTable();
 $table->setWidth('680px');
 $table->setClass('generic');
 
-$tr = new cHTMLTableRow();
+$thead = new cHTMLTableHeader();
+
+// $tr = new cHTMLTableRow();
 
 // build table header
 $th = new cHTMLTableHead();
@@ -104,11 +110,13 @@ $th3->setContent(i18n('Date'));
 $th4 = new cHTMLTableHead();
 $th4->setContent(i18n('Action'));
 
-$tr->appendContent($th);
-$tr->appendContent($th2);
-$tr->appendContent($th3);
-$tr->appendContent($th4);
-$table->appendContent($tr);
+$thead->appendContent($th);
+$thead->appendContent($th2);
+$thead->appendContent($th3);
+$thead->appendContent($th4);
+$table->appendContent($thead);
+
+// $table->appendContent($tr);
 
 // assign values to table
 foreach ($query as $key => $val) {
@@ -129,7 +137,14 @@ foreach ($query as $key => $val) {
     $data->setContent($val['action']);
     $tr->appendContent($data);
 
-    $table->appendContent($tr);
+    // filter empty action names
+    if (!isset($val['action'])) {
+
+        continue;
+    } else {
+        // append data to table
+        $table->appendContent($tr);
+    }
 }
 
 $div->appendContent($table);
