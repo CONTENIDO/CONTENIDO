@@ -4,21 +4,12 @@
     <title>mod_rewrite_content</title>
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
-    <link rel="stylesheet" type="text/css" href="plugins/mod_rewrite/external/aToolTip/css/atooltip.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/atooltip.css">
     <link rel="stylesheet" type="text/css" href="plugins/mod_rewrite/styles/styles.css">
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="plugins/mod_rewrite/external/aToolTip/js/atooltip.jquery.js"></script>
-    <script type="text/javascript" src="plugins/mod_rewrite/scripts/mod_rewrite.js"></script>
-    <script type="text/javascript"><!--
-    // setup translation
-    mrPlugin.lng.more_informations = "{LNG_MORE_INFORMATIONS}";
-
-    // initialize page
-    mrPlugin.initializeSettingsPage();
-    // --></script>
 </head>
 
-<body class="mrPlugin">
+<body class="mrPlugin mrPluginSettings">
 
 <div class="headerBox">
     <div class="pluginInfo">
@@ -26,7 +17,7 @@
             <a href="#" id="pluginInfoDetails-link" class="main i-link infoButton" title=""></a><div class="clear"></div></div>
         <div id="pluginInfoDetails" class="nodisplay">
             <ul class="list">
-                <li class="first"><strong>{LNG_AUTHOR}:</strong> Murat Purc, <a href="mailto:murat@purc.de" title="{LNG_MAIL_TO_AUTHOR}">murat@purc.de</a></li>
+                <li class="first"><strong>{LNG_AUTHOR}:</strong> Murat Pur&ccedil;, <a href="mailto:murat@purc.de" title="{LNG_MAIL_TO_AUTHOR}">murat@purc.de</a></li>
                 <li><strong>{LNG_PLUGINPAGE}:</strong> <a href="http://www.purc.de/playground-coding-contenido_plugin_-_advanced_mod_rewrite-a.109.html" onclick="window.open(this.href); return false;" title="{LNG_VISIT_PLUGINPAGE} ({LNG_OPENS_IN_NEW_WINDOW})">{LNG_VISIT_PLUGINPAGE}</a></li>
                 <li><strong>{LNG_CONTENIDO_FORUM}:</strong> <a href="http://forum.contenido.org/viewtopic.php?t=21578" onclick="window.open(this.href); return false;" title="{LNG_PLUGINTHREAD_IN_CONTENIDO_FORUM} ({LNG_OPENS_IN_NEW_WINDOW})">{LNG_PLUGINTHREAD_IN_CONTENIDO_FORUM}</a></li>
             </ul>
@@ -358,6 +349,16 @@
 </form>
 
 {CONTENT_AFTER}
+
+<script type="text/javascript" src="scripts/jquery/plugins/atooltip.jquery.js"></script>
+<script type="text/javascript" src="plugins/mod_rewrite/scripts/mod_rewrite.js"></script>
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        new Con.Plugin.ModRewrite('settings', {lng: {more_informations: "{LNG_MORE_INFORMATIONS}"}});
+    });
+})(Con, Con.$);
+</script>
 
 </body>
 </html>

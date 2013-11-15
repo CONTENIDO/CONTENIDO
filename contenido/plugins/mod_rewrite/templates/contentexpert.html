@@ -4,27 +4,12 @@
     <title>mod_rewrite_content_expert</title>
 {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
-    <link rel="stylesheet" type="text/css" href="plugins/mod_rewrite/external/aToolTip/css/atooltip.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/atooltip.css">
     <link rel="stylesheet" type="text/css" href="plugins/mod_rewrite/styles/styles.css">
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="plugins/mod_rewrite/scripts/mod_rewrite.js"></script>
-    <script type="text/javascript" src="plugins/mod_rewrite/external/aToolTip/js/atooltip.jquery.js"></script>
-    <script type="text/javascript"><!--
-    // setup translation
-    mrPlugin.lng.more_informations = "{LNG_MORE_INFORMATIONS}";
-
-    // initialize page
-    mrPlugin.initializeSettingsPage();
-
-    function mrPlugin_sendForm(action, params) {
-        $('#mr_expert_action').val(action);
-        var frm = $('#mr_expert');
-        frm.attr('action', frm.attr('action') + '?' + params).submit();
-    }
-    // --></script>
 </head>
 
-<body class="mrPlugin">
+<body class="mrPlugin mrPluginExpert">
 
 <div class="headerBox">
 {LNG_PLUGIN_FUNCTIONS}
@@ -36,7 +21,7 @@
 
     <input type="hidden" name="contenido" value="{_SID_}">
     <input type="hidden" name="area" value="{AREA}">
-    <input type="hidden" name="mr_action" id="mr_expert_action" value="">
+    <input type="hidden" name="mr_action" value="">
     <input type="hidden" name="frame" value="4">
     <input type="hidden" name="idclient" value="{IDCLIENT}">
 
@@ -72,16 +57,14 @@
 
         {LNG_COPY_HTACCESS_TO}<br>
         <br>
-        <a class="blockLeft mgr15" href="javascript:mrPlugin_sendForm('copyhtaccess', 'copy=contenido');">
-            <img src="images/collapsed.gif" width="10" height="9" alt=""> {LNG_COPY_HTACCESS_TO_CONTENIDO}</a>
+        <a class="actionLink" data-action="copyhtaccess" data-params="copy=contenido">{LNG_COPY_HTACCESS_TO_CONTENIDO}</a>
         <a href="#" id="copyHtaccessInfo2-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="copyHtaccessInfo2" class="nodisplay">
         {LNG_COPY_HTACCESS_TO_CONTENIDO_INFO}
         </div>
         <br>
 
-        <a class="blockLeft mgr15" href="javascript:mrPlugin_sendForm('copyhtaccess', 'copy=cms');">
-            <img src="images/collapsed.gif" width="10" height="9" alt=""> {LNG_COPY_HTACCESS_TO_CLIENT}</a>
+        <a class="actionLink" data-action="copyhtaccess" data-params="copy=cms">{LNG_COPY_HTACCESS_TO_CLIENT}</a>
         <a href="#" id="copyHtaccessInfo3-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="copyHtaccessInfo3" class="nodisplay">
         {LNG_COPY_HTACCESS_TO_CLIENT_INFO}
@@ -90,8 +73,7 @@
 
         {LNG_OR}<br>
         <br>
-        <a class="blockLeft mgr15" href="javascript:mrPlugin_sendForm('downloadhtaccess', '');">
-            <img src="images/collapsed.gif" width="10" height="9" alt=""> {LNG_DOWNLOAD}</a>
+        <a class="actionLink" data-action="downloadhtaccess" data-params="">{LNG_DOWNLOAD}</a>
         <a href="#" id="showHtaccessInfo-link1" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="showHtaccessInfo" class="nodisplay">
         {LNG_DOWNLOAD_INFO}
@@ -108,16 +90,14 @@
     {LNG_RESETALIASES}
     </td>
     <td class="text_medium col-II">
-        <a class="blockLeft mgr15" href="javascript:mrPlugin_sendForm('resetempty', '');">
-            <img src="images/collapsed.gif" width="10" height="9" alt=""> {LNG_RESETEMPTY_LINK}</a>
+        <a class="actionLink" data-action="resetempty" data-params="">{LNG_RESETEMPTY_LINK}</a>
         <a href="#" id="resetAliasesInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="resetAliasesInfo1" class="nodisplay">
         {LNG_RESETEMPTY_INFO}
         </div>
         <br>
 
-        <a class="blockLeft mgr15" href="javascript:mrPlugin_sendForm('reset', '');">
-            <img src="images/collapsed.gif" width="10" height="9" alt=""> {LNG_RESETALL_LINK}</a>
+        <a class="actionLink" data-action="reset" data-params="">{LNG_RESETALL_LINK}</a>
         <a href="#" id="resetAliasesInfo2-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="resetAliasesInfo2" class="nodisplay">
         {LNG_RESETALL_INFO}
@@ -141,6 +121,16 @@
 </form>
 
 {CONTENT_AFTER}
+
+<script type="text/javascript" src="scripts/jquery/plugins/atooltip.jquery.js"></script>
+<script type="text/javascript" src="plugins/mod_rewrite/scripts/mod_rewrite.js"></script>
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        new Con.Plugin.ModRewrite('expert', {lng: {more_informations: "{LNG_MORE_INFORMATIONS}"}});
+    });
+})(Con, Con.$);
+</script>
 
 </body>
 </html>

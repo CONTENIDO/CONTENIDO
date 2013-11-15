@@ -1589,14 +1589,6 @@ contenido/plugins/mod_rewrite/classes/controller/class.modrewrite_content_contro
 contenido/plugins/mod_rewrite/classes/controller/class.modrewrite_contentexpert_controller.php -text
 contenido/plugins/mod_rewrite/classes/controller/class.modrewrite_contenttest_controller.php -text
 contenido/plugins/mod_rewrite/classes/controller/class.modrewrite_controller_abstract.php -text
-contenido/plugins/mod_rewrite/external/aToolTip/css/atooltip.css -text
-contenido/plugins/mod_rewrite/external/aToolTip/css/style.css -text
-contenido/plugins/mod_rewrite/external/aToolTip/demos.html -text
-contenido/plugins/mod_rewrite/external/aToolTip/images/bg.png -text
-contenido/plugins/mod_rewrite/external/aToolTip/images/infoBtn.gif -text
-contenido/plugins/mod_rewrite/external/aToolTip/js/atooltip.jquery.js -text
-contenido/plugins/mod_rewrite/external/aToolTip/js/atooltip.min.jquery.js -text
-contenido/plugins/mod_rewrite/external/aToolTip/js/jquery.min.js -text
 contenido/plugins/mod_rewrite/files/htaccess_restrictive.txt -text
 contenido/plugins/mod_rewrite/files/htaccess_simple.txt -text
 contenido/plugins/mod_rewrite/includes/config.mod_rewrite_default.php -text
