@@ -69,7 +69,7 @@ if ($action == 10) {
 
 // @fulai.zhang: Mark submenuitem 'Editor' in the CONTENIDO Backend (Area:
 // Contenido --> Articles --> Editor)
-$markSubItem = markSubMenuItem(4, true);
+$markSubItem = markSubMenuItem(5, true);
 
 // Include tiny class
 include($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
