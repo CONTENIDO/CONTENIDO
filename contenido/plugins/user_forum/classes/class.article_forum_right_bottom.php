@@ -32,9 +32,13 @@ class ArticleForumRightBottom extends cGuiPage {
 
     function __construct() {
 
-//reload left bottom in this code because of irregular update problems in the location file
-echo <<<JS
-<script type="text/javascript">
+        $this->_collection = new ArticleForumCollection();
+        parent::__construct('right_bottom', 'user_forum');
+        $this->addStyle('right_bottom.css');
+        $this->addScript('location.js');
+        // Reload left bottom in this code because of irregular update problems in the location file
+        $this->addScript("
+<script type='text/javascript'>
 (function(Con, $) {
     var frame = Con.getFrame('left_bottom');
     if (frame) {
@@ -42,11 +46,8 @@ echo <<<JS
     }
 })(Con, Con.$);
 </script>
-JS;
-        $this->_collection = new ArticleForumCollection();
-        parent::__construct('right_bottom', 'user_forum');
-        $this->addStyle('right_bottom.css');
-        $this->addScript('location.js');
+");
+
     }
 
     protected function formatTimeString($timeStamp) {
