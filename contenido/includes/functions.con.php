@@ -702,6 +702,10 @@ function conDeleteart($idart) {
     $oArtColl = new cApiArticleCollection();
     $oArtColl->delete((int) $idart);
 
+    // this will delete all keywords associated with the article
+    $search = new cSearchIndex();
+    $search->start($idart, array());
+
     // Contenido Extension Chain
     // @see docs/techref/plugins/Contenido Extension Chainer.pdf
     $iterator = $_cecRegistry->getIterator("Contenido.Content.DeleteArticle");
