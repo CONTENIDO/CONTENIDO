@@ -33,6 +33,7 @@
      * @static
      */
     var Con;
+//    var $ = jQuery.noConflict();
     var $ = jQuery;
 
     // Create Con namespace in scope (window)
@@ -49,7 +50,7 @@
      * @type {Object}
      * @static
      */
-    scope.Con = scope.Con || {cfg: {}, sid: 0};
+    scope.Con = scope.Con || {Plugin: {}, cfg: {}, sid: 0};
 
     Con = scope.Con;
 
@@ -69,6 +70,22 @@
     Con.isNs = (agent.indexOf('netscape') >= 0 || agent.indexOf('mozilla') >= 0) ? true : false;
 
     Con.cfg.enableLog = true;
+
+    /**
+     * Registers namespace in global scope (window), if not exists.
+     * @method namespace
+     * @param  {String}  namespace  The full path to the desired namespace, like "Con.MyNamespace"
+     * @return {Object}  The existing of new created namespace
+     */
+    Con.namespace = function(namespace) {
+        var ns = namespace.split('.'),
+            o = scope, i;
+        for (i = 0; i < ns.length; i++) {
+            o[ns[i]] = o[ns[i]] || {};
+            o = o[ns[i]];
+        }
+        return o;
+    };
 
     /**
      * Simple template parser.
