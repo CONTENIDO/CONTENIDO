@@ -41,6 +41,7 @@ class PifaLeftBottomPage extends cGuiPage {
 
         parent::__construct('left_bottom', Pifa::getName());
 
+        $this->addScript('form_assistant.js');
         $this->addScript('left_bottom.js');
 
         $this->set('s', 'menu', $this->_getMenu());
@@ -173,6 +174,7 @@ class PifaRightBottomFormPage extends cGuiPage {
 
         $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
         $this->addStyle('right_bottom.css');
+        $this->addScript('form_assistant.js');
         $this->addScript('right_bottom.js');
 
         // create models
@@ -509,6 +511,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
 
         $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
         $this->addStyle('right_bottom.css');
+        $this->addScript('form_assistant.js');
         $this->addScript('right_bottom.js');
 
         // create models
@@ -726,6 +729,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
         $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
         $this->addStyle('right_bottom.css');
+        $this->addScript('form_assistant.js');
         $this->addScript('right_bottom.js');
 
         // create models
@@ -898,6 +902,7 @@ class PifaRightBottomFormExportPage extends cGuiPage {
 
         $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
         $this->addStyle('right_bottom.css');
+        $this->addScript('form_assistant.js');
         $this->addScript('right_bottom.js');
 
         // create models
@@ -1019,6 +1024,7 @@ class PifaRightBottomFormImportPage extends cGuiPage {
 
         $this->addStyle('smoothness/jquery-ui-1.8.20.custom.css');
         $this->addStyle('right_bottom.css');
+        $this->addScript('form_assistant.js');
         $this->addScript('right_bottom.js');
 
         // dispatch action

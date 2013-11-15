@@ -3,21 +3,14 @@
 
     $(function() {
 
-        /**
-         */
-        function getTrans(key) {
-            // get translations
-            var value = Con.Plugin.FormAssistant.translations[key];
-            // htmldecode value
-            value = $('<div/>').html(value).text();
-            return value;
-        }
+        // Get reference to FormAssistant
+        var formAssistant = Con.Plugin.FormAssistant;
 
         /**
          * Add security question for deleting a form.
          */
         $('.pifa-icon-delete-form').on('click', function(e) {
-            return confirm(getTrans('confirm_delete_form'));
+            return confirm(formAssistant.getTrans('confirm_delete_form'));
         });
 
     });

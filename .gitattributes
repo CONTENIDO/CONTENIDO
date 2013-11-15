@@ -1515,6 +1515,7 @@ contenido/plugins/form_assistant/plugin.xml -text
 contenido/plugins/form_assistant/plugin_install.sql -text
 contenido/plugins/form_assistant/plugin_uninstall.sql -text
 contenido/plugins/form_assistant/scripts/cmsPifaform.js -text svneol=unset#text/plain
+contenido/plugins/form_assistant/scripts/form_assistant.js -text
 contenido/plugins/form_assistant/scripts/left_bottom.js -text svneol=unset#text/plain
 contenido/plugins/form_assistant/scripts/right_bottom.js -text svneol=unset#text/plain
 contenido/plugins/form_assistant/styles/right_bottom.css -text svneol=unset#text/plain

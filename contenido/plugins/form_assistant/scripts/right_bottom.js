@@ -6,15 +6,8 @@
      */
     $(function() {
 
-        /**
-         */
-        function getTrans(key) {
-            // get translations
-            var value = Con.Plugin.FormAssistant.translations[key];
-            // htmldecode value
-            value = $('<div/>').html(value).text();
-            return value;
-        }
+        // Get reference to FormAssistant
+        var formAssistant = Con.Plugin.FormAssistant;
 
         /**
          * list & form (dialog) as global jQuery-objects
@@ -48,7 +41,7 @@
                         modal: true,
                         title: errorThrown,
                         buttons: [{
-                            text: getTrans('cancel'),
+                            text: formAssistant.getTrans('cancel'),
                             click: function() {
                                 $(this).dialog('close');
                             }
@@ -67,7 +60,7 @@
          */
         $('body').delegate('.pifa-icon-delete-field', 'click', function(event) {
             event.preventDefault();
-            if (false === confirm(getTrans('confirm_delete_field'))) {
+            if (false === confirm(formAssistant.getTrans('confirm_delete_field'))) {
                 return;
             }
             var $li = $(this).parent().parent();
@@ -89,7 +82,7 @@
                         modal: true,
                         title: errorThrown,
                         buttons: [{
-                            text: getTrans('cancel'),
+                            text: formAssistant.getTrans('cancel'),
                             click: function() {
                                 $(this).dialog('close');
                             }
@@ -163,7 +156,7 @@
                         modal: true,
                         title: errorThrown,
                         buttons: [{
-                            text: getTrans('cancel'),
+                            text: formAssistant.getTrans('cancel'),
                             click: function() {
                                 $(this).dialog('close');
                             }
@@ -198,7 +191,7 @@
                             modal: true,
                             title: errorThrown,
                             buttons: [{
-                                text: getTrans('cancel'),
+                                text: formAssistant.getTrans('cancel'),
                                 click: function() {
                                     $(this).dialog('close');
                                 }
@@ -280,7 +273,7 @@
                         modal: true,
                         title: errorThrown,
                         buttons: [{
-                            text: getTrans('cancel'),
+                            text: formAssistant.getTrans('cancel'),
                             click: function() {
                                 $(this).dialog('close');
                             }
@@ -332,7 +325,7 @@
                         modal: true,
                         title: errorThrown,
                         buttons: [{
-                            text: getTrans('cancel'),
+                            text: formAssistant.getTrans('cancel'),
                             click: function() {
                                 $(this).dialog('close');
                             }
