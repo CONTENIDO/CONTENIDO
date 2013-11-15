@@ -5,6 +5,11 @@
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
+    <style type="text/css">
+    .toggleLink {line-height:14px;width:14px;height:14px;display:block;background:transparent url(images/close_all.gif) center center no-repeat;}
+    .toggleLink span {text-indent: -999em;}
+    .toggleLink.closed {background-image: url(images/open_all.gif)}
+    </style>
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/cfoldingrow.js"></script>
@@ -53,18 +58,18 @@
     <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
         <tr class="text_medium bgcE2">
             <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
-                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&amp;frame=4&amp;contenido={_SID_}&action=linkchecker&mode={MODE}&sort=nameart">{ERRORS_HEADLINE_ARTICLE}</a>
+                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=nameart">{ERRORS_HEADLINE_ARTICLE}</a>
                 (ID)
             </td>
             <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
-                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&amp;frame=4&amp;contenido={_SID_}&action=linkchecker&mode={MODE}&sort=namecat">{ERRORS_HEADLINE_CATNAME}</a>
+                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=namecat">{ERRORS_HEADLINE_CATNAME}</a>
                 (ID)
             </td>
             <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width25">
-                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&amp;frame=4&amp;contenido={_SID_}&action=linkchecker&mode={MODE}&sort=wronglink">{ERRORS_HEADLINE_LINK}</a>
+                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=wronglink">{ERRORS_HEADLINE_LINK}</a>
             </td>
             <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width15">
-                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&amp;frame=4&amp;contenido={_SID_}&action=linkchecker&mode={MODE}&sort=error_type">{ERRORS_HEADLINE_DESCRIPTION}</a>
+                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=error_type">{ERRORS_HEADLINE_DESCRIPTION}</a>
             </td>
             <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap tgcenter width5">
                 {ERRORS_HEADLINE_REPAIRED}
@@ -86,11 +91,11 @@
                     ({ERRORS_COUNT_ERRORS_ART})
                 </td>
                 <td align="center" class="pd0 widthpx22">
-                    <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_ARTICLES}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_ARTICLES}_img"></a>
+                    <a href="#" class="toggleLink" data-idtoggle="id_links_articles"><span class="ui-helper-hidden-accessible">-</span></a>
                 </td>
             </tr>
         </table><!-- Table Body -->
-        <div id="{ID_LINKS_ARTICLES}">
+        <div id="id_links_articles">
             <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_ART}
             </table>
@@ -106,11 +111,11 @@
                     ({ERRORS_COUNT_ERRORS_DOCIMAGES})
                 </td>
                 <td align="center" class="pd0 widthpx22">
-                    <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_DOCSIMGS}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_DOCSIMGS}_img"></a>
+                    <a href="#" class="toggleLink" data-idtoggle="id_links_docsimgs"><span class="ui-helper-hidden-accessible">-</span></a>
                 </td>
             </tr>
         </table><!-- Table Body -->
-        <div id="{ID_LINKS_DOCSIMGS}">
+        <div id="id_links_docsimgs">
             <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_DOCIMAGES}
             </table>
@@ -126,11 +131,11 @@
                     ({ERRORS_COUNT_ERRORS_OTHERS})
                 </td>
                 <td align="center" class="pd0 widthpx22">
-                    <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_EXTERNAL}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_EXTERNAL}_img"></a>
+                    <a href="#" class="toggleLink" data-idtoggle="id_links_external"><span class="ui-helper-hidden-accessible">-</span></a>
                 </td>
             </tr>
         </table><!-- Table Body -->
-        <div id="{ID_LINKS_EXTERNAL}">
+        <div id="id_links_external">
             <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_OTHERS}
             </table>
@@ -139,18 +144,18 @@
     <table width="100%" class="borderlB5" cellspacing="0" cellpadding="3" border="0">
         <tr class="text_medium bgcE2">
             <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
-                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&amp;frame=4&amp;contenido={_SID_}&action=linkchecker&mode={MODE}&sort=namecat">{ERRORS_HEADLINE_CATNAME}</a>
+                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=namecat">{ERRORS_HEADLINE_CATNAME}</a>
                 (ID)
             </td>
             <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width20">
-                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&amp;frame=4&amp;contenido={_SID_}&action=linkchecker&mode={MODE}&sort=nameart">{ERRORS_HEADLINE_ARTICLE}</a>
+                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=nameart">{ERRORS_HEADLINE_ARTICLE}</a>
                 (ID)
             </td>
             <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width25">
-                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&amp;frame=4&amp;contenido={_SID_}&action=linkchecker&mode={MODE}&sort=wronglink">{ERRORS_HEADLINE_LINK}</a>
+                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=wronglink">{ERRORS_HEADLINE_LINK}</a>
             </td>
             <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap width25">
-                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&amp;frame=4&amp;contenido={_SID_}&action=linkchecker&mode={MODE}&sort=error_type">{ERRORS_HEADLINE_DESCRIPTION}</a>
+                <a class="color6" href="{_PATH_CONTENIDO_FULLHTML_}main.php?area=linkchecker&frame=4&contenido={_SID_}&action=linkchecker&mode={MODE}&sort=error_type">{ERRORS_HEADLINE_DESCRIPTION}</a>
             </td>
             <td nowrap="nowrap" valign="top" class="color6 borderB5 noborderl nowrap tgcenter width10">
                 {ERRORS_HEADLINE_WHITELIST}
@@ -167,11 +172,11 @@
                     ({ERRORS_COUNT_ERRORS_CAT})
                 </td>
                 <td align="center" class="pd0 widthpx22">
-                    <a href="#" onclick="javascript:toggleTableBody('{ID_LINKS_CATEGORIES}')" style="height:1em;line-height:1em;width:100%;height:100%;display:block;"><img class="pdt5" src="images/close_all.gif" id = "{ID_LINKS_CATEGORIES}_img"></a>
+                    <a href="#" class="toggleLink" data-idtoggle="id_links_categories"><span class="ui-helper-hidden-accessible">-</span></a>
                 </td>
             </tr>
         </table><!-- Table Body -->
-        <div id="{ID_LINKS_CATEGORIES}">
+        <div id="id_links_categories">
             <table width="100%" class="borderB5 nobordert" cellspacing="0" cellpadding="3" border="0">
                 {ERRORS_SHOW_CAT}
             </table>
@@ -179,22 +184,25 @@
     </div>
     <!-- Print Button --><a class="mgl3" href="javascript:print()"><img src="{_PATH_CONTENIDO_FULLHTML_}images/print.gif" alt="" border="0"></a>
 
-    <script type="text/javascript">
-    function toggleTableBody(tableId) {
-        var collapseButton = 'images/close_all.gif';
-        var expandButton = 'images/open_all.gif';
-        var curTable = document.getElementById(tableId);
-        var curButton = document.getElementById(tableId + '_img');
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        $('a.toggleLink').click(function() {
+            var $element = $('#' + $(this).data('idtoggle')),
+                $span = $(this).find('span:first');
+            $element.toggle();
+            if ($element.is(':visible')) {
+                $(this).removeClass('closed');
+                $span.text('-');
+            } else {
+                $(this).addClass('closed');
+                $span.text('+');
+            }
+        });
+    });
+})(Con, Con.$);
+</script>
 
-        if (curTable.style.display == "inline" || curTable.style.display == "") {
-            curTable.style.display = "none";
-            curButton.src = expandButton;
-        } else if (curTable.style.display == "none") {
-            curTable.style.display = "inline";
-            curButton.src = collapseButton;
-        }
-    }
-    </script>
 </body>
 </html>
 <!--
