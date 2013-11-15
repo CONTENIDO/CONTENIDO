@@ -1,7 +1,10 @@
 <!-- form_assistant/templates/template.left_bottom.html -->
 
 <script type="text/javascript">
-var pifaTranslations = {I18N};
+(function(Con, $) {
+    var formAssistant = Con.namespace('Con.Plugin.FormAssistant');
+    formAssistant.translations = {I18N};
+})(Con, Con.$);
 </script>
 
 {menu}
