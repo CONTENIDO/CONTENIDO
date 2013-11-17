@@ -231,7 +231,7 @@
             }
             self.appendFormField(self.prefix + '_action', 'store');
             self.appendFormField(self.prefix + '_id', self.id);
-            setcontent(self.idArtLang);
+            Con.Tiny.setContent(self.idArtLang);
         });
     };
 
