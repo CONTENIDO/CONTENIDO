@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Abstract datatype class.
- *
+ * @deprecated 2013-11-17 This class is not longer supported.
  * @package          Core
  * @subpackage       Datatype
  */
@@ -39,6 +39,7 @@ class cDatatype {
      *
      */
     public function __construct() {
+        cDeprecated("The cDatatype classes are not longer supported.");
     }
 
     /**

@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Datetime datatype class.
- *
+ * @deprecated 2013-11-17 This class is not longer supported.
  * @package Core
  * @subpackage Datatype
  */
