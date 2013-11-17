@@ -1,7 +1,7 @@
 /* global Con: true, jQuery: true */
 
 /**
- * This file contains general functions which are potentially helpful for every
+ * This file contains general modules which are potentially helpful for every
  * backend page. The file should therefore be included in every backend page.
  *
  * Following modules are implemented here:
@@ -89,127 +89,200 @@
     var NAME = 'loader';
 
     /**
-     * Asset (script) loader class
+     * Asset (script) loader class.
+     * Supports loading of one or multiple assets (css and/or js files at once).
+     *
      * @submodule  base-loader
      * @class  Loader
      * @static
      */
-     Con.Loader = {
-        /**
-         * @property _loaded
-         * @type {Object}
-         * @private
-         */
-        _loaded: {},
-        /**
-         * @property _stack
-         * @type {Object}
-         * @private
-         */
-        _stack: {},
 
-        /**
-         * Evaluates the given callbacks.
-         * @method _conEvaluateCallbacks
-         * @param  {Array}  callbacks  List of callbacks. A callback is either a simple string
-         *             which can be evaluated or an object with callback, scope and params
-         *             properties.
-         * @private
-         * @static
-         */
-        _conEvaluateCallbacks: function(callbacks) {
-            $.each(callbacks, function(index, value) {
-                var type = $.type(value);
-                if ('object' === type) {
-                    // Object callback, call it with the appropriate scope
-                    value.callback.apply(value.scope, value.params);
-                } else if ('string' === type) {
-                    // Simple callback, just evaluate it
-                    Con.log('_conEvaluateCallbacks: Deprecated string callback!', NAME, 'warn');
-                    eval(value);
+
+    /**
+     * @property _loaded
+     * @type {Object}
+     * @private
+     */
+    var _loaded = {};
+
+    /**
+     * @property _stack
+     * @type {Object}
+     * @private
+     */
+    var _stack = {};
+
+    var _head = $('head')[0];
+
+    // Loads on or more files
+    var _load = function(files, callback) {
+        var numFiles = files.length;
+        var cb = function() {
+            numFiles--;
+            if (0 === numFiles) {
+                callback();
+            }
+        };
+
+        $.each(files, function(index, item) {
+            if (item.search(/\.css\b/) > 0) {
+                _loadCss(item, cb);
+            } else {
+                _loadJs(item, cb);
+            }
+        });
+    };
+
+    // Checks if a file exists or not
+    var _fileExists = function(file) {
+        if (file.search(/\.css\b/) > 0) {
+            if ($('link[href="' + file + '"]')[0]) {
+                return true;
+            }
+        } else {
+            if ($('script[src="' + file + '"]')[0]) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // Loads CSS file
+    var _loadCss = function(file, callback) {
+        var link = document.createElement('link');
+        link.href = file;
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        _head.appendChild(link);
+        callback();
+    };
+
+    // Loads JavaScript file
+    var _loadJs = function(file, callback) {
+        $.getScript(file, function() {
+            callback();
+        });
+    };
+
+    // Loads desired files, if nor done before
+    var _get = function(files, key) {
+        var key = files.join('$$$');
+        var _toLoad = [];
+        $.each(files, function(index, item) {
+            if (!_loaded[item]) {
+                if (true === _fileExists(item)) {
+                    _loaded[item] = true;
+                } else {
+                    _loaded[item] = false;
+                    _toLoad.push(item);
                 }
-            });
-        },
+            }
+        });
 
+        if (0 === _toLoad.length) {
+            _removeFromStack(key);
+        } else {
+            _load(files, function() {
+                _removeFromStack(key);
+                $.each(files, function(index, item) {
+                    _loaded[item] = true;
+                });
+            });
+        }
+    };
+
+    // Adds a entry to the stack
+    var _addToStack = function(files, callback, scope, params) {
+        var key = files.join('$$$');
+        // Check if callback has to be called on the scope object
+        var isObjectCallback = (typeof callback === 'function' && typeof scope === 'object');
+
+        // Initialise callback stack
+        if ('undefined' === $.type(_stack[key])) {
+            _stack[key] = [];
+        }
+
+        // Push new entry onto the callback stack depending on the callback type
+        if (isObjectCallback) {
+            _stack[key].push({
+                callback: callback,
+                scope: scope,
+                params: params
+            });
+        } else {
+            _stack[key].push(callback);
+        }
+
+        return key;
+    };
+
+    // Removes entry from stack and processes related callback
+    var _removeFromStack = function(key) {
+        if ('undefined' === $.type(_stack[key])) {
+            return;
+        }
+
+        var callbacks = _stack[key];
+        $.each(callbacks, function(index, value) {
+            var type = $.type(value);
+            if ('object' === type) {
+                // Object callback, call it with the appropriate scope
+                value.callback.apply(value.scope, value.params);
+            } else if ('string' === type) {
+                // Simple callback, just evaluate it
+                Con.log('_removeFromStack: Deprecated string callback!', NAME, 'warn');
+                eval(value);
+            }
+        });
+
+        delete _stack[key];
+    };
+
+    Con.Loader = {
         /**
          * Loads the given script and evaluates the given callback function
          * when the script has been loaded successfully. The callback can be
          * a simple string which is evaluated or a function which is called with
          * the given scope and params.
          *
+         * Example:
+         * <pre>
+         * // Loading of 4 files at once
+         * Con.Loader.get(
+         *     ['path/to/file.js', 'path/to/file2.js', 'path/to/file.css', 'path/to/file2.css'],
+         *     function() {
+         *         // To do when everything was loaded...
+         *     }
+         * );
+         * </pre>
+         *
          * @method get
-         * @param {String}  script  The path to the script which should be loaded
-         * @param {Function|String}  [callback='']  Code which should be evaluated
-         *             after the script has been loaded or a callback function
+         * @param {String|String[]}  file  One or more files (JS or CSS) to load
+         * @param {Function}  [callback=function(){}]  Callback to call after the files where loaded
          *             which is called with the given params and the given scope
          * @param {Object}  [scope=this]  The scope with which the callback function should be called
          * @param {Array}  [params=[]]  Array of params which should be passed to the callback function
          * @return {Boolean}
          * @static
          */
-        get: function(script, callback, scope, params) {
-    //console.log('conLoadFile, script', script);
+        get: function(file, callback, scope, params) {
             callback = ('undefined' === $.type(callback)) ? function() {} : callback;
             scope = ('undefined' === $.type(scope)) ? this : scope;
             params = ('undefined' === $.type(params)) ? [] : params;
 
-            // check if callback has to be called on the scope object
-            var isObjectCallback = (typeof callback === 'function' && typeof scope === 'object');
-
-            // only load the script if it has not been loaded yet
-            if (Con.Loader._loaded[script] !== 'true') {
-                // initialise callback stack
-                if ('undefined' === $.type(Con.Loader._stack[script])) {
-                    Con.Loader._stack[script] = [];
-                }
-
-                // push new entry onto the callback stack depending on the callback type
-                if (isObjectCallback) {
-                    var newCallback = {
-                        callback: callback,
-                        scope: scope,
-                        params: params
-                    };
-                    Con.Loader._stack[script].push(newCallback);
-                } else {
-                    Con.Loader._stack[script].push(callback);
-                }
-
-                // if script is not already loading, load it and evaluate the callbacks
-                if (Con.Loader._loaded[script] !== 'pending') {
-                    Con.Loader._loaded[script] = 'pending';
-                    $.getScript(script).done(function() {
-
-                        // A loaded script doesn't mean that the required code vas initialized and
-                        // processes imediately. Wait few ms before coninue with it...
-                        window.setTimeout(function() {
-                            Con.Loader._loaded[script] = 'true';
-                            Con.Loader._conEvaluateCallbacks(Con.Loader._stack[script]);
-    //console.log('conLoadFile, done', script);
-                        }, 50);
-                    }).fail(function(jqxhr, settings, exception) {
-                        //console.log('failed to load ' + script);
-                        //console.log(jqxhr);
-                        //console.log(settings);
-                        //console.log(exception);
-                    });
-                }
-            } else {
-    //console.log('conLoadFile, loaded', script);
-                // script is already loaded, so just evaluate the callback
-                if (isObjectCallback) {
-                    callback.apply(scope, params);
-                } else {
-                    eval(callback);
-                }
+            if ('array' !== $.type(file)) {
+                file = [file];
             }
 
-            return true;
+            var key = _addToStack(file, callback, scope, params);
+            _get(file, key);
         }
     };
 
     // @deprecated [2013-10-15] Assign to windows scope (downwards compatibility)
-    window.conEvaluateCallbacks = Con.Loader._conEvaluateCallbacks;
+    window.conEvaluateCallbacks = function() {
+        alert('Deprecated conEvaluateCallbacks');
+    };
     window.conLoadFile = Con.Loader.get;
 
 })(Con, Con.$);
@@ -712,8 +785,6 @@
             selector, menuItem;
 
         if (frame) {
-//console.log(cElm.search(sub._posPrefix), 'cElm.search(sub._posPrefix)');
-//console.log("#navlist [data-name='" + cElm + "'] a", 'data selektor');
             if (0 === subMenu.search('c_')) {
                 selector = "#" + subMenu + " a:first";
             } else {
@@ -722,7 +793,7 @@
 
             menuItem = $(selector, frame.document)[0];
             if (menuItem) {
-                frame.sub.clicked(menuItem);
+                frame.Con.Subnav.clicked(menuItem);
                 return true;
             }
         }
