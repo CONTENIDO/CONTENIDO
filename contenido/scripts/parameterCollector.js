@@ -1,13 +1,14 @@
-/*****************************************
-* File      :   $RCSfile: class.article.php,v $
-* Project   :   CONTENIDO
-* Descr     :   JavaScript parameter collector function
-* Modified  :   $Date: 2004/07/02 10:59:20 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id$
-******************************************/
+/**
+ * CONTENIDO JavaScript parameter collector module
+ *
+ * @version    SVN Revision $Rev$
+ * @author     ???
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @todo       Rework this, make a CONTENIDO module
+ */
 
 var m_documentParameters = new Array();
 

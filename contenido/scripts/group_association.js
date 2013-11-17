@@ -1,34 +1,23 @@
 /* global Con: true, jQuery: true */
 
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * File contains java script functions for filtering users in select areas, handling
  * short keys and submitting form. This functions are used in template
  * template.grouprights_memberselect.html
  *
  * @module     goup-association
  * @package    CONTENIDO Backend Scripts
- * @version    1.0.0
+ * @version    SVN Revision $Rev$
  * @author     Timo Trautmann
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created ??
- *   modified 2013-10-17  Murat Purc - Refactored code, made a module
- *   $Id$
- * }}
- *
  */
 
 (function(Con, $) {
-    'use strict';
+//    'use strict';
 
     // #########################################################################
     // Some constants

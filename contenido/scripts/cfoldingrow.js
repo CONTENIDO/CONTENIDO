@@ -4,11 +4,8 @@
  * FoldingRow JavaScript helper module
  *
  * @module     folding-row
- * @package    TODO
- * @subpackage TODO
- * @version    SVN Revision $Rev:$
- * @requires   jQuery
- *
+ * @version    SVN Revision $Rev$
+ * @requires   jQuery, Con
  * @author     Unknown
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -19,7 +16,7 @@
 
 
 (function(Con, $) {
-    'use strict';
+//    'use strict';
 
     var NAME = 'folding-row';
 

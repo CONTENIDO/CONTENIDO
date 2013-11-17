@@ -7,7 +7,7 @@
  * Moving article related logic to the front_end
  *
  * @package    CONTENIDO Backend Scripts
- * @version    1.0.4
+ * @version    SVN Revision $Rev$
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -77,29 +77,25 @@ $aCustomTabs['bar'] = array(
 
 
 ?>
-
 /**
  * Article related logic module
  *
  * @module     article-object
- * @package    TODO
- * @subpackage TODO
- * @version    SVN Revision $Rev:$
- * @requires   jQuery
- *
+ * @version    SVN Revision $Rev$
+ * @requires   jQuery, Con
  * @author     Unknown
  * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
  * @author     Timo Trautmann <timo.trautmann@4fb.de>
  * @author     Murat Purc <murat@purc.de>
+ * @version    SVN Revision $Rev$
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  */
 
-
 (function(Con, $) {
-    'use strict';
+//    'use strict';
 
     var NAME = 'article-object';
 

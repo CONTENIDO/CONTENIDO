@@ -1,21 +1,17 @@
 /* global Con: true, jQuery: true */
 
 /**
- * FrameResize Class $Id$
+ * FrameResize class, controls the CONTENIDO frame toggling and resizing
  *
- * Controls the CONTENIDO frame toggling and resizing
- *
- * @module frame-resize
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>, Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @version 1.0
- *
- * $Author: timo.hummel $ $Date: 2005/08/22 12:21:18 $
- * $RCSfile: conFrameResize.js,v $
+ * @module     frame-resize
+ * @version    SVN Revision $Rev$
+ * @requires   jQuery, Con
+ * @author     Jan Lengowski <Jan.Lengowski@4fb.de>, Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
  */
 
 (function(Con, $) {
-    'use strict';
+//    'use strict';
 
     var NAME = 'frame-resize';
 

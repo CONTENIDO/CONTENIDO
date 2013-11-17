@@ -1,11 +1,10 @@
 /**
  * browserCheck class
- *
  * Check if Browser is compatible with CONTENIDO.
  *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- * @version 0.9
+ * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @version    SVN Revision $Rev$
  * @deprecated [2013-10-16] Logic moved to contenido.js
  */
 function browserCheck()

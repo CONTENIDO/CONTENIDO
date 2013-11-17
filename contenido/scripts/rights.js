@@ -1,24 +1,15 @@
 /**
- * Project:
- * CONTENIDO Content Management System
+ * CONTENIDO JavaScript rights module
  *
- * Description:
- * JavaScript rights related functions
- *
- *
- * @package    CONTENIDO Content Types
- * @version    1.0.0
+ * @version    SVN Revision $Rev$
  * @author     ???
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
- * {@internal
- *   created xxxx-xx-xx
- *   $Id$
- * }}
+ * @todo       Rework this, make a CONTENIDO module
  */
+
 
 function submitrightsform(act, actarea) {
     actarea = actarea || 0;

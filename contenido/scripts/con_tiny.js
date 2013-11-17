@@ -1,15 +1,12 @@
 /* global Con: true, tinymce: true */
 
 /**
- * Project:
- * CONTENIDO Content Management System
+ * Integration of TinyMCE to handle it as an insight-editor
  *
- * Description:
- * File contains functions for tinymce to handle it as an insight-editor
- *
- * @module tiny
+ * @module     tiny
+ * @version    SVN Revision $Rev$
+ * @requires   jQuery, Con
  * @package    CONTENIDO Backend includes
- * @version    1.0
  * @author     Timo Trautmann
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -17,19 +14,10 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.9
- *
- * {@internal
- *   created 2008-09-05
- *   modified 2009-01-23, Ortwin Pinke, BUG-Fix in setFocus first parameter for execInstanceCommand has to be the Id of Tinyobject, not the object itself
- *
- *   $Id$:
- * }}
- *
  */
 
-
 (function(Con, $) {
-    'use strict';
+//    'use strict';
 
     var NAME = 'tiny';
 

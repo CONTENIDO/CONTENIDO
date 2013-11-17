@@ -1,16 +1,14 @@
 /**
  * File contains functions for handling Content->Category forms and layers
  *
- * @package Core
- * @subpackage Category
- * @version SVN Revision $Rev:$
- * @id SVN Id $Id$
- *
- * @author Timo Trautmann
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @requires   jQuery, Con
+ * @version    SVN Revision $Rev$
+ * @id         SVN Id $Id$
+ * @author     Timo Trautmann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 //Defining vars for translations and CONTENIDO imagepath

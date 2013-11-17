@@ -1,29 +1,17 @@
 <?php
 
-/*
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
+/**
  * iZoom JavaScript "pipe"
  *
- * Requirements:
- * @con_php_req 5.0
- *
- *
  * @package    CONTENIDO Backend scripts
- * @version    1.0.4
+ * @version    SVN Revision $Rev$
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- *
- * {@internal
- *   created  unknown
- *   $Id$:
- * }}
+ * @todo       Find a JS solution to load required translation string
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -42,14 +30,23 @@ cRegistry::bootstrap(array('sess' => 'cSession',
 i18nInit($cfg['path']['contenido_locale'], $belang);
 // do not call cRegistry::shutdown(); here because
 // it will print <script> tags which result in errors
+
 ?>
+/**
+ * CONTENIDO iZoom JavaScript module.
+ *
+ * @version    SVN Revision $Rev$
+ * @author Jan Lengowski <Jan.Lengowski@4fb.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ */
 
 /**
  * Display an image in a pop-up window
  *
- * @param string image path
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG
+ * @param {String}  path  image path
  */
 function iZoom(path) {
     var defaultWidth = 640;

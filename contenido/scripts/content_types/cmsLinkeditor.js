@@ -7,7 +7,7 @@
  * @submodule  content-type-cms-linkeditor
  * @package Core
  * @subpackage Content Type
- * @version SVN Revision $Rev:$
+ * @version SVN Revision $Rev$
  *
  * @author Fulai Zhang, Simon Sprankel, Murat Purc <murat@purc.de>
  * @copyright four for business AG <www.4fb.de>

@@ -1,31 +1,19 @@
 /**
- * Project:
- * CONTENIDO Content Management System
- *
- * Description:
  * Upload files dropped on a div to the CONTENIDO backend
  *
- *
  * @module     upl-files-upload
- * @package    CONTENIDO Backend Scripts
- * @version    1.0.0
+ * @requires   jQuery, Con
+ * @version    SVN Revision $Rev$
  * @author     Mischa Holz, Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.9
- *
- * {@internal
- *   created 2012-01-13
- *   modified 2013-10-17  Murat Purc - Refactored code, made a module
- *   $Id$:
- * }}
- *
  */
 
 (function(Con, $) {
-    'use strict';
+//    'use strict';
 
     // #########################################################################
     // Some constants

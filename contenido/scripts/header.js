@@ -6,10 +6,8 @@
  * Header frame related JavaScript
  *
  * @module     header
- * @version    SVN Revision $Rev:$
+ * @version    SVN Revision $Rev$
  * @requires   jQuery
- * @package    CONTENIDO Header menu
- * @version    1.1.0
  * @author     Timo Hummel, Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -19,7 +17,7 @@
  */
 
 (function(Con, $) {
-    'use strict';
+//    'use strict';
 
     var NAME = 'header';
 

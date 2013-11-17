@@ -1,4 +1,17 @@
 /**
+ * CONTENIDO JavaScript rowMark module
+ *
+ * @version    SVN Revision $Rev$
+ * @author     Jan Lengowski <Jan.Lengowski@4fb.de>, Timo Trautmann <timo.trautmann@4fb.de>
+ * @copyright  Jan Lengowski 2002
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @todo       Rework this, make a CONTENIDO module
+ */
+
+/**
  * Table rowMark
  *
  * myRow = new rowMark(1,2,3,4)
@@ -13,15 +26,11 @@
  *       <td><img src="einbild.gif"></td>
  *   </tr>
  *
- * @param String sOverColor     Over-Color
- * @param String sMarkedColor   Marked-Color
- * @param String sOverMarked    Over-Marked-Color
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @modified Timo Trautmann <timo.trautmann@4fb.de> added support for second marked Color used as active sync color, defined by class
-                                                    variable markedSyncColor Each table row containing class name con_sync gets this marked color
- * @version 1.2
- * @copyright Jan Lengowski 2002
+ * @param String overColor     Over-Color
+ * @param String markedColor   Marked-Color
+ * @param String overMarked    Over-Marked-Color
+ * @param String onClick  Function to evaluate on oncilck event
+ * @param String instanceName    Instance name in global scope
  */
 function rowMark(overColor, markedColor, overMarked, onClick, instanceName) {
 
@@ -170,8 +179,8 @@ function rowMark_click(oRow)
  * myRow = new imgMark(1, 2, 3, 4, 5, 6);
  *
  *  1:  Farbe des Over Effekts z.B. "#ff0000" - string
- *  2:    Farbe des Mark Effeks - string
- *  3:    Farbe des Over Effeks bei der Marked Row - string
+ *  2:  Farbe des Mark Effeks - string
+ *  3:  Farbe des Over Effeks bei der Marked Row - string
  *  4:  Pfad des Bildes das bei .over() gewechselt wird - string
  *  5:  Pfad des Bildes das bei .out() gewechselt wird - string
  *  6:  Function die bei onClick aufgerufen wird - string
@@ -180,10 +189,6 @@ function rowMark_click(oRow)
  *       <td>eine Zeile</td>
  *       <td><img src="einbild.gif"></td>
  *   </tr>
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @version 1.2
- * @copyright Jan Lengowski 2002
  */
 function imgMark(overColor, markedColor, overMarked, imgOutSrc, imgOverSrc, onClick) {
 
@@ -244,9 +249,6 @@ function setPath(obj) {
  * Function for showing and hiding synchronsation options
  *
  * @param boolean permSyncCat true shows options / flase hides options
- *
- * @author Timo Trautmann <timo.trautmann@4fb.de>
- * @copyright four for business AG <www.4fb.de>
  */
 function rowMarkRefreshSyncScreen(permSyncCat) {
     //curLanguageSync = syncFrom;
@@ -266,15 +268,10 @@ function rowMarkRefreshSyncScreen(permSyncCat) {
 }
 
 /**
- * Interface function for transfering
- * data from left-bottom frame to the
- * configuration object in the left-top
- * frame.
+ * Interface function for transfering data from left-bottom frame to the
+ * configuration object in the left-top frame.
  *
  * @param object HTML Table Row Object
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
  */
 function rowMarkConClick(obj) {
     var frame = Con.getFrame('left_top');
@@ -375,9 +372,9 @@ function rowMarkLayReMark(sObjId) {
 }
 
 /**
- * Function gets currently selected categroy row an set it as default in select box for base category
- * (selectbox in category new layer) Function is also called by row instance 'str', when selected row
- * changes
+ * Function gets currently selected categroy row an set it as default in select
+ * box for base category (selectbox in category new layer) Function is also
+ * called by row instance 'str', when selected row changes
  */
 function rowMarkStrClick(elemId) {
     var select = document.getElementById(elemId),
