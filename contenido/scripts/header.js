@@ -556,19 +556,19 @@
 
     // @deprecated [2013-11-13] Assign to windows scope (downwards compatibility)
     window.conMultiLink = Con.multiLink;
-    window.active_main = Header._activeMain;
-    window.active_sub = Header._activeSub;
-    window.active_link = Header._activeLink;
-    window.active_sub_link = Header._activeSubLink;
-    window.show = Header.show;
-    window.hide = Header.hide;
-    window.changeContenidoLanguage = Header.changeContenidoLanguage;
-    window.changeContenidoClient = Header.changeContenidoClient;
-    window.resetHeaderMenu = Header.resetHeaderMenu;
-    window.HeaderTimer = HeaderTimer;
-    window.HeaderMenu = HeaderMenu;
-    window.HeaderClickMenu = HeaderClickMenu;
-    window.HeaderDelayMenu = HeaderDelayMenu;
+    window.active_main = Con.Header._activeMain;
+    window.active_sub = Con.Header._activeSub;
+    window.active_link = Con.Header._activeLink;
+    window.active_sub_link = Con.Header._activeSubLink;
+    window.show = Con.Header.show;
+    window.hide = Con.Header.hide;
+    window.changeContenidoLanguage = Con.Header.changeContenidoLanguage;
+    window.changeContenidoClient = Con.Header.changeContenidoClient;
+    window.resetHeaderMenu = Con.Header.resetHeaderMenu;
+    window.HeaderTimer = Con.HeaderTimer;
+    window.HeaderMenu = Con.HeaderMenu;
+    window.HeaderClickMenu = Con.HeaderClickMenu;
+    window.HeaderDelayMenu = Con.HeaderDelayMenu;
 
 })(Con, Con.$);
 
