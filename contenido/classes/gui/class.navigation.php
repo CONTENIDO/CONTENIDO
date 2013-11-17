@@ -366,7 +366,7 @@ class cGuiNavigation {
         $tpl->set('s', 'NAME', 'changelang');
         $tpl->set('s', 'CLASS', 'vAlignMiddle text_medium');
         $tpl->set('s', 'ID', 'cLanguageSelect');
-        $tpl->set('s', 'OPTIONS', 'onchange="changeContenidoLanguage(this.value)"');
+        $tpl->set('s', 'OPTIONS', 'onchange="Con.Header.changeContenidoLanguage(this.value)"');
 
         $availableLanguages = new cApiLanguageCollection();
 

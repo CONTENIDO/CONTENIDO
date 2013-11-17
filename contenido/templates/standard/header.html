@@ -103,7 +103,7 @@
         var oldLang = $("#cLanguageSelect").val();
         $("#cLanguageSelect").find("option[value='" + idlang + "']").remove();
         if (oldLang == idlang && $("#cLanguageSelect").val() != null) {
-            changeContenidoLanguage($("#cLanguageSelect").val());
+            Con.Header.changeContenidoLanguage($("#cLanguageSelect").val());
         }
     }
 
@@ -119,7 +119,7 @@
             Con.Registry.set("headerMenu", {HEADER_MENU_OBJ});
 
             $('#head_logo, #imgMyContenido, #imgInfo').click(function() {
-                resetHeaderMenu();
+                Con.Header.resetHeaderMenu();
             });
         });
 
