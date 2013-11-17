@@ -4,8 +4,9 @@
 
 <script type="text/javascript">
 //<![CDATA[
-conLoadFile(Con.cfg.urlBackend + 'scripts/content_types/cmsAbstractTabbed.js', function() {
-    conLoadFile('{JS_CLASS_SCRIPT}', function() {
+Con.Loader.get(
+    [Con.cfg.urlBackend + 'scripts/content_types/cmsAbstractTabbed.js', '{JS_CLASS_SCRIPT}'],
+    function() {
         var contentTypeInstance = new {JS_CLASS_NAME}(
             '#cms_{PREFIX}_{ID}_settings',
             '#cms_{PREFIX}_{ID}',
@@ -19,8 +20,8 @@ conLoadFile(Con.cfg.urlBackend + 'scripts/content_types/cmsAbstractTabbed.js', f
             {SETTINGS}
         );
         contentTypeInstance.initialise();
-    });
-});
+    }
+);
 //]]>
 </script>
 <!-- /template.cms_abstract_tabbed_edit_bottom.html -->

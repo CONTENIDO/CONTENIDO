@@ -106,13 +106,19 @@
      * really needed.
      */
     cContentTypeDate.prototype.loadExternalFiles = function(calendarPic) {
-        if ($('#cms_date_styles').length === 0) {
-            $('head').append('<link rel="stylesheet" id="cms_date_styles" href="' + this.pathBackend + 'styles/content_types/cms_date.css" type="text/css" media="all" />');
+        // Dependencies to load
+        var files = [
+            this.pathBackend + 'styles/content_types/cms_date.css', this.pathBackend + 'styles/jquery/jquery-ui.css',
+            this.pathBackend + 'scripts/jquery/jquery-ui.js', this.pathBackend + 'scripts/jquery/plugins/timepicker.js'
+        ];
+
+        // only load the localisation file if the language is not english
+        if (this.lang !== 'en') {
+            files.push(this.pathBackend + 'scripts/jquery/plugins/datepicker-' + this.lang + '.js');
+            files.push(this.pathBackend + 'scripts/jquery/plugins/timepicker-' + this.lang + '.js');
         }
-        if ($('#jquery_ui_styles').length === 0) {
-            $('head').append('<link rel="stylesheet" id="jquery_ui_styles" href="' + this.pathBackend + 'styles/jquery/jquery-ui.css" type="text/css" media="all" />');
-        }
-        conLoadFile(this.pathBackend + 'scripts/jquery/jquery-ui.js', cContentTypeDate.prototype.jQueryUiCallback, this, new Array(calendarPic));
+
+        Con.Loader.get(files, cContentTypeDate.prototype.jQueryUiCallback, this, calendarPic]);
     };
 
     /**
@@ -120,7 +126,7 @@
      * loaded. Loads the appropriate language.
      */
     cContentTypeDate.prototype.jQueryUiCallback = function(calendarPic) {
-        conLoadFile(this.pathBackend + 'scripts/jquery/plugins/timepicker.js', cContentTypeDate.prototype.jQueryUiTimepickerCallback, this, new Array(calendarPic));
+        this.jQueryUiTimepickerCallback(calendarPic);
     };
 
     /**

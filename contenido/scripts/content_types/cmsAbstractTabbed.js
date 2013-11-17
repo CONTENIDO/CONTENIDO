@@ -129,10 +129,11 @@
      * really needed.
      */
     cContentTypeAbstractTabbed.prototype.loadExternalFiles = function() {
-        if ($('#cms_abstract_tabbed_styles').length === 0) {
-            $('head').append('<link rel="stylesheet" id="cms_abstract_tabbed_styles" href="' + this.pathBackend + 'styles/content_types/cms_abstract_tabbed.css" type="text/css" media="all" />');
-        }
-        conLoadFile(this.pathBackend + 'scripts/jquery/jquery-ui.js', cContentTypeAbstractTabbed.prototype.jQueryUiCallback, this);
+        Con.Loader.get(
+            [this.pathBackend + 'styles/content_types/cms_abstract_tabbed.css', this.pathBackend + 'scripts/jquery/jquery-ui.js'],
+            cContentTypeAbstractTabbed.prototype.jQueryUiCallback,
+            this
+        );
     };
 
     /**
