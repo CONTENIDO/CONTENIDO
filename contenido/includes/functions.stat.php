@@ -802,7 +802,7 @@ function statsOverviewTop($yearmonth, $top) {
 
     if (strcmp($yearmonth, "current") == 0) {
         $sql = "SELECT
-                    C.title, A.visited
+                    C.title, A.visited, C.idart
                 FROM " . $cfg["tab"]["stat"] . " AS A,
                      " . $cfg["tab"]["cat_art"] . " AS B,
                      " . $cfg["tab"]["art_lang"] . " AS C
@@ -823,7 +823,7 @@ function statsOverviewTop($yearmonth, $top) {
                     " . Contenido_Security::escapeDB($top, $db);
     } else {
         $sql = "SELECT
-                    C.title, A.visited, B.idcat
+                    C.title, A.visited, B.idcat, C.idart
                 FROM " . $cfg["tab"]["stat_archive"] . " AS A,
                      " . $cfg["tab"]["cat_art"] . " AS B,
                      " . $cfg["tab"]["art_lang"] . " AS C
@@ -938,7 +938,7 @@ function statsOverviewTopYear($year, $top) {
     global $cfg, $db, $tpl, $client, $lang;
 
     $sql = "SELECT
-                C.title, SUM(A.visited) as visited
+                C.title, SUM(A.visited) as visited, C.idart
             FROM " . $cfg["tab"]["stat_archive"] . " AS A,
                  " . $cfg["tab"]["cat_art"] . " AS B,
                  " . $cfg["tab"]["art_lang"] . " AS C
