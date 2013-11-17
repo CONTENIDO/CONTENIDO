@@ -348,7 +348,7 @@ class cGuiTree extends cTree {
         if ($object->getCollapsed() == true) {
             $link->setCustom($treename . "expand", $object->getId());
         } else {
-            $link->setCustom($treename . "collapse", $object->getId);
+            $link->setCustom($treename . "collapse", $object->getId());
         }
 
         return ($link);
