@@ -432,7 +432,7 @@ function strNextBackwards($idcat) {
 function strNextDeeperAll($idcat, $ignoreLang = false) {
     global $lang;
 
-    $languageId = (true == $ignoreLang)? $lang : NULL;
+	$languageId = (true == $ignoreLang) ? NULL : $lang;
     $oCatColl = new cApiCategoryCollection();
     return $oCatColl->getAllChildCategoryIds($idcat, $languageId);
 }
