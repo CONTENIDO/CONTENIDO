@@ -514,27 +514,29 @@ class cRegistry {
             'auth',
             'perm'
         );
+
         foreach ($bootstrapFeatures as $feature) {
             $varFeatureClass = $feature . 'Class';
-            if (isset($features[$feature])) {
-                $$varFeatureClass = $features[$feature];
-            } else {
+            if (isset($cfg['bootstrap'][$feature]) && class_exists($cfg['bootstrap'][$feature])) {
                 $$varFeatureClass = $cfg['bootstrap'][$feature];
+            } elseif (isset($features[$feature]) && class_exists($features[$feature])) {
+                $$varFeatureClass = $features[$feature];
             }
         }
 
-        if (isset($sessClass) && class_exists($sessClass)) {
+        if (isset($sessClass)) {
             global $sess;
+
             $sess = new $sessClass();
             $sess->start();
-            if (isset($authClass) && class_exists($authClass)) {
+            if (isset($authClass)) {
                 global $auth;
                 if (!isset($auth)) {
                     $auth = new $authClass();
                 }
                 $auth->start();
 
-                if (isset($permClass) && class_exists($permClass)) {
+                if (isset($permClass)) {
                     global $perm;
                     if (!isset($perm)) {
                         $perm = new $permClass();
@@ -563,7 +565,7 @@ class cRegistry {
     /**
      * Stores an information massage in the cRegistry.
      *
-     * @param string message
+     * @param string $message
      */
     public static function addInfoMessage($message) {
         array_push(self::$_infoMessages, $message);
@@ -572,7 +574,7 @@ class cRegistry {
     /**
      * Stores an error massage in the cRegistry.
      *
-     * @param string message
+     * @param string $message
      */
     public static function addErrorMessage($message) {
         array_push(self::$_errMessages, $message);
@@ -581,7 +583,7 @@ class cRegistry {
     /**
      * Stores an warning massage in the cRegistry.
      *
-     * @param string message
+     * @param string $message
      */
     public static function addWarningMessage($message) {
         array_push(self::$_warnMessages, $message);
