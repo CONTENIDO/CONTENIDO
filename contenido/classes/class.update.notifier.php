@@ -436,7 +436,6 @@ class cUpdateNotifier {
 
             $this->oXML = simplexml_load_string($this->sXMLContent);
             if (!is_object($this->oXML)) {
-                die('test:<pre>' . htmlentities($this->sXMLContent));
                 $sErrorMessage = i18n('Unable to check for new updates!') . " " . i18n('Could not handle server response!');
                 $this->sErrorOutput = $this->renderOutput($sErrorMessage);
             } else {
