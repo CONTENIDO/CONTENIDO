@@ -299,7 +299,6 @@ function getLastWorkflowStatus($idartlang) {
             return (i18n("None", "workflow"));
             break;
     }
-    return "";
 }
 
 function doWorkflowAction($idartlang, $action) {
