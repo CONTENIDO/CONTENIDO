@@ -83,7 +83,7 @@ class cVersionLayout extends cVersion {
         $this->setData("name", $this->sName);
         $this->setData("description", $this->sDescripion);
         $this->setData("code", $this->sCode);
-        $this->setData("deletable", $this->bDeletabel);
+        $this->setData("deletable", $this->sDeletabel);
     }
 
     /**
