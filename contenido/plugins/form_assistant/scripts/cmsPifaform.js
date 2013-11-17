@@ -40,11 +40,11 @@
     function cContentTypePifaForm(frameId, imageId, pathBackend, pathFrontend,
             idArtLang, id, fields, prefix, session, settings) {
         // call the constructor of the parent class with the same arguments
-        cContentTypeAbstractTabbed.apply(this, arguments);
+        Con.cContentTypeAbstractTabbed.apply(this, arguments);
     }
 
     // inherit from cContentTypeAbstractTabbed
-    cContentTypePifaForm.prototype = new cContentTypeAbstractTabbed();
+    cContentTypePifaForm.prototype = new Con.cContentTypeAbstractTabbed();
 
     // correct the constructor function (it points to the cContentTypeAbstractTabbed
     // constructor)

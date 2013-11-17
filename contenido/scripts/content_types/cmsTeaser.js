@@ -70,9 +70,7 @@
     cContentTypeTeaser.prototype.loadExternalFiles = function() {
         // call the function of the parent so that all general files are included
         Con.cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
-        if ($('#cms_teaser_styles').length === 0) {
-            $('head').append('<link rel="stylesheet" id="cms_teaser_styles" href="' + this.pathBackend + 'styles/content_types/cms_teaser.css" type="text/css" media="all" />');
-        }
+        Con.Loader.get(this.pathBackend + 'styles/content_types/cms_teaser.css');
     };
 
     /**

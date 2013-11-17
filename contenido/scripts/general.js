@@ -119,6 +119,7 @@
         var cb = function() {
             numFiles--;
             if (0 === numFiles) {
+                //##console.log('Con.Loader.get() loaded files', files);
                 callback();
             }
         };
@@ -690,7 +691,7 @@
             }
 
             // Define the options and extend them with the given ones
-            var contentWindow = getContentWindow(),
+            var contentWindow = Con.getContentWindow(),
                 buttons = {};
 
             buttons[translations.OK] = function() {
@@ -763,7 +764,7 @@
             };
             options = $.extend(options, additionalOptions);
             // show the dialog in the content window
-            var contentWindow = getContentWindow();
+            var contentWindow = Con.getContentWindow();
 
             contentWindow.$('html').find('div.ui-dialog').remove();
             contentWindow.$('html').find('div.ui-widget-overlay').remove();

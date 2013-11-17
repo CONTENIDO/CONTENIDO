@@ -273,7 +273,7 @@ class cGuiNavigation {
             $link->setID('help');
             $link->setClass('main');
             $link->setLink('javascript://');
-            $link->setEvent('click', 'callHelp($(\'#help\').attr(\'data\'));');
+            $link->setEvent('click', 'Con.Help.show($(\'#help\').attr(\'data\'));');
             $link->setContent('<img class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'but_help.gif" border="0" alt="Hilfe" title="Hilfe">');
             $main->set('s', 'HELP', $link->render());
         } else {

@@ -79,7 +79,7 @@
 
         Con.Loader.get(
             [this.pathBackend + 'styles/content_types/cms_linkeditor.css', this.pathBackend + 'scripts/jquery/ajaxupload.js'],
-            cContentTypeImgeditor.prototype.linkEditorFileUpload,
+            cContentTypeLinkeditor.prototype.linkEditorFileUpload,
             this
         );
     };

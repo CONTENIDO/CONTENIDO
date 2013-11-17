@@ -40,10 +40,10 @@
     function cContentTypeUserForum(frameId, imageId, pathBackend, pathFrontend,
             idArtLang, id, fields, prefix, session, settings) {
         // call the constructor of the parent class with the same arguments
-        cContentTypeAbstractTabbed.apply(this, arguments);
+        Con.cContentTypeAbstractTabbed.apply(this, arguments);
     }
 
-    cContentTypeUserForum.prototype = new cContentTypeAbstractTabbed();
+    cContentTypeUserForum.prototype = new Con.cContentTypeAbstractTabbed();
     cContentTypeUserForum.prototype.constructor = cContentTypeUserForum;
 
     Con.cContentTypeUserForum = cContentTypeUserForum;
