@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * the "setNamedAction" operation in their constructors;
  * on-the-fly-implementations should call it directly after creating an object
  * instance.
- *
+ * @deprecated 2013-11-17 This class is not longer supported.
  * @package Core
  * @subpackage GUI
  */
@@ -80,6 +80,8 @@ class cApiClickableAction extends cApiAction {
         $this->_parameters = array();
 
         $this->setEnabled();
+
+        cDeprecated("This class is not longer supported.");
     }
 
     /**
@@ -245,7 +247,7 @@ class cApiClickableAction extends cApiAction {
 
 /**
  * Clickable question action class.
- *
+ * @deprecated 2013-11-17 This class is not longer supported.
  * @package Core
  * @subpackage GUI
  */
