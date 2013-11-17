@@ -71,21 +71,21 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
     $areasNavSubs = $navSubColl->getSubnavigationsByAreaName($area);
 
     foreach ($areasNavSubs as $areasNavSub) {
-    	/*
-    	 * Tab display "logic"
-    	 * Show all tabs
-     	 * - if category ID is empty (lost and found)
-    	 * - if category has articles
-    	 *
-    	 * Show first tab
-    	 * - if category has no articles
-    	 *
-    	 * Show first tab only
-    	 * - if article was deleted
-    	 * 
-    	 * Show second tab
-    	 * - if article is created or saved
-    	 */
+        /*
+         * Tab display "logic"
+         * Show all tabs
+         * - if category ID is empty (lost and found)
+         * - if category has articles
+         *
+         * Show first tab
+         * - if category has no articles
+         *
+         * Show first tab only
+         * - if article was deleted
+         *
+         * Show second tab
+         * - if article is created or saved
+         */
         if (cSecurity::toInteger($idcat) == 0 || $iArticleCount > 0 || ($iArticleCount <= 0 && $tpl->dyn_cnt == 0) ||
                 ($iArticleCount <= 0 && $tpl->dyn_cnt == 1 && $bNoArticle == 'true') ||
                 ($bNoArticle == 'true' && $action == 'saveart') ||

@@ -440,15 +440,15 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         // If file is an image (extensions gif, jpg, jpeg, png) scale it
         // otherwise use default png image
         switch ($fileData['extension']) {
-        	case 'gif':
-        	case 'jpg':
-        	case 'jpeg':
-        	case 'png':
-        	    $imgSrc = cApiImgScale($filePath, 148, 74);
-        	    break;
-        	default:
-        	    $imgSrc = $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'images/misc/download_misc.png';
-        	    break;
+            case 'gif':
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+                $imgSrc = cApiImgScale($filePath, 148, 74);
+                break;
+            default:
+                $imgSrc = $this->_cfgClient[$this->_client]['path']['htmlpath'] . 'images/misc/download_misc.png';
+                break;
         }
 
         $filesize = $fileData['filesize'];

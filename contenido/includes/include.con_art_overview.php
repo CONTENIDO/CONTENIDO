@@ -300,17 +300,17 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             if ($idlang != $lang) {
                 $articlesToSync++;
             } else {
-            	if ($online == 1) {
-            		$articlesOnline++;
-            	} else {
-            		$articlesOffline++;
-            	}
-            	if ($locked == 1) {
-            		$articlesLocked++;
-            	} else {
-            		$articlesUnlocked++;
-            	}
-            	$articlesToRemove++;
+                if ($online == 1) {
+                    $articlesOnline++;
+                } else {
+                    $articlesOffline++;
+                }
+                if ($locked == 1) {
+                    $articlesLocked++;
+                } else {
+                    $articlesUnlocked++;
+                }
+                $articlesToRemove++;
             }
 
             if ((($obj = $col->checkMark("article", $idartlang)) === false) || $obj->get("userid") == $auth->auth['uid']) {
@@ -517,15 +517,15 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $duplicatelink = $tmp_link;
             }
 
-            
+
             $todolink =  '';
             if ($tmp_sync != '') {
-	            $subject = urlencode(sprintf(i18n("Reminder for article '%s'"), $title));
-	            $mycatname = '';
-	            conCreateLocationString($idcat, "&nbsp;/&nbsp;", $mycatname);
-	            $message = urlencode(sprintf(i18n("Reminder for article '%s'\nCategory: %s"), $title, $mycatname));
-	
-	            $todolink = new TODOLink("idart", $idart, $subject, $message);
+                $subject = urlencode(sprintf(i18n("Reminder for article '%s'"), $title));
+                $mycatname = '';
+                conCreateLocationString($idcat, "&nbsp;/&nbsp;", $mycatname);
+                $message = urlencode(sprintf(i18n("Reminder for article '%s'\nCategory: %s"), $title, $mycatname));
+
+                $todolink = new TODOLink("idart", $idart, $subject, $message);
             }
 
             // Make On-/Offline button
@@ -645,9 +645,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
                         // add properties button
                         if ($tmp_sync != '') {
-	                        $actions[] = '<a id="properties" href="main.php?area=con_editart&action=con_edit&frame=4&idcat=' . $idcat . '&idart=' . $idart . '&contenido=' . $contenido . '">
-	                            <img class="vAlignMiddle tableElement" onmouseover="this.style.cursor=\'pointer\'" src="images/but_art_conf2.gif" title="' . i18n("Display properties") . '" alt="' . i18n("Display properties") . '" style="cursor: pointer;">
-	                        </a>';
+                            $actions[] = '<a id="properties" href="main.php?area=con_editart&action=con_edit&frame=4&idcat=' . $idcat . '&idart=' . $idart . '&contenido=' . $contenido . '">
+                                <img class="vAlignMiddle tableElement" onmouseover="this.style.cursor=\'pointer\'" src="images/but_art_conf2.gif" title="' . i18n("Display properties") . '" alt="' . i18n("Display properties") . '" style="cursor: pointer;">
+                            </a>';
                         }
 
                         $value = implode("\n", $actions);
@@ -748,7 +748,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         if ($articlesToRemove > 0 && ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat))) {
             $bulkEditingFunctions .= createBulkEditingFunction('con_deleteart', 'images/delete.gif', i18n('Delete articles'), 'Con.showConfirmation("' . i18n('Are you sure to delete the selected articles') . '", deleteArticles)');
         }
-        
+
         if ($bulkEditingFunctions == "") {
             $bulkEditingFunctions = i18n("Your permissions do not allow any actions here");
         }
@@ -900,11 +900,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // SELF_URL (Variable f�r das javascript);
         $tpl->set('s', 'SELF_URL', $sess->url("main.php?area=con&frame=4&idcat=$idcat"));
-        
+
         // Categories without start article
         $warningBox = '';
         if (strHasStartArticle($idcat, $lang) === false) {
-        	$warningBox = $notification->returnNotification('warning', i18n('This category does not have a configured start article.'));
+            $warningBox = $notification->returnNotification('warning', i18n('This category does not have a configured start article.'));
         }
 
         // New Article link
@@ -919,7 +919,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
                 $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
             }
-        } else {        	
+        } else {
             $tpl->set('s', 'NEWARTICLE_TEXT', '&nbsp;');
             $tpl->set('s', 'NEWARTICLE_IMG', '&nbsp;');
             $tpl->set('s', 'CATTEMPLATE', $warningBox);

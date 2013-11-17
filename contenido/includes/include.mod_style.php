@@ -209,7 +209,7 @@ if (isset($actionRequest)) {
         $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(), $sCode);
     } else {
         // stripslashes is required here in case of creating a new file
-        $sCode = stripslashes($_REQUEST['code']); 
+        $sCode = stripslashes($_REQUEST['code']);
     }
     $fileInfoCollection = new cApiFileInformationCollection();
     $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, 'css');

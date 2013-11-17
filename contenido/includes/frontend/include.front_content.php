@@ -168,7 +168,7 @@ if (isset($username)) {
 
 // check if category ID is empty (like in lost and found)
 if (!$idcat) {
-	$idcat = 0;
+    $idcat = 0;
 }
 
 // Send HTTP header with encoding

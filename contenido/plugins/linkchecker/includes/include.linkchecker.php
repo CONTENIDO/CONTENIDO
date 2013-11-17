@@ -165,7 +165,7 @@ if (!empty($_GET['idartlang']) && !empty($_GET['oldlink']) && !empty($_GET['repa
         $db->query($sql);
     }
 
-	// Reset cache
+    // Reset cache
     $oCache->remove($aCacheName['errors'], cSecurity::toInteger($_GET['mode']));
 }
 

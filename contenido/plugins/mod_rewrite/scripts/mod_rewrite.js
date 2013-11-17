@@ -25,7 +25,7 @@
      * @param {String}  page
      * @param {Object}  options  Options as follows:
      * <pre>
-     * options.lng  (Object)  Translation strings 
+     * options.lng  (Object)  Translation strings
      * </pre>
      */
     var ModRewrite = function(page, options) {

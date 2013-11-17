@@ -103,8 +103,8 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         // The following "base URL" is the URL used to reference JS script files
         // - it is not the base href value
         //$this->setBaseURL(preg_replace('/^https?:\/\/[^\/]+(.*)$/', '$1', $this->_getEditorPath()));
-		$this->setBaseURL($this->_getEditorPath());
-		
+        $this->setBaseURL($this->_getEditorPath());
+
         // XHTML
         if (getEffectiveSetting("generator", "xhtml", false) == "true") {
             $this->setXHTMLMode(true);

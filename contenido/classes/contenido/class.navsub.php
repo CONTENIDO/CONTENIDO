@@ -81,7 +81,7 @@ class cApiNavSubCollection extends ItemCollection {
      * <pre>
      *  $arr[] = array(
      *      'location' => location xml path
-     *      'caption' => The tanslation of location from XML file 
+     *      'caption' => The tanslation of location from XML file
      *      'name' => area name for sub navigation item
      *      'menulesss' => Menuless state
      *  );

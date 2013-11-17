@@ -742,9 +742,9 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             }
 
             $strTitle = cSecurity::unFilter($db->f("title"));
-            
+
             if ($idcat == '') {
-            	$idcat = 0;
+                $idcat = 0;
             }
 
             if ($perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat)) {

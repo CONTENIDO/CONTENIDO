@@ -16,13 +16,13 @@
 
 
 .defaultSkin table.mceLayout {
-	position: absolute;
-	z-index: 10000;
+    position: absolute;
+    z-index: 10000;
 }
 .defaultSkin #mce_fullscreen_tbl {
-	z-index: 20000;
+    z-index: 20000;
 }
 .defaultSkin .mcePlaceHolder {
-	position: absolute;
-	z-index: 10000;
+    position: absolute;
+    z-index: 10000;
 }

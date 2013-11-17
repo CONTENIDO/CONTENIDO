@@ -269,7 +269,7 @@
         initialize: function(options) {
             throw("Abstract function: must be overwritten by child");
         },
- 
+
         /**
          * Resets the stored menu ids (main menu and sub menu)
          * @method reset

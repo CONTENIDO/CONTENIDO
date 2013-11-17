@@ -31,8 +31,8 @@ class cUpgradeJob_0015 extends cUpgradeJobAbstract {
 
         if($_SESSION['setuptype'] == 'upgrade') {
             $db->query('UPDATE `' . $cfg['tab']['nav_sub'] . '` SET idnavs=9999 WHERE location=\'navigation/content/article/content\';');
-			$db->query('UPDATE `' . $cfg['tab']['nav_sub'] . '` SET idnavs=20 WHERE location=\'navigation/content/article/editor\';');
-			$db->query('UPDATE `' . $cfg['tab']['nav_sub'] . '` SET idnavs=19 WHERE location=\'navigation/content/article/content\';');
+            $db->query('UPDATE `' . $cfg['tab']['nav_sub'] . '` SET idnavs=20 WHERE location=\'navigation/content/article/editor\';');
+            $db->query('UPDATE `' . $cfg['tab']['nav_sub'] . '` SET idnavs=19 WHERE location=\'navigation/content/article/content\';');
         }
     }
 

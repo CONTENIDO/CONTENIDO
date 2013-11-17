@@ -73,7 +73,7 @@ class PifaImporter {
         $this->_tableName = $_tableName;
     }
 
-	/**
+    /**
      * Import the given XML.
      *
      * @param string $xml to import

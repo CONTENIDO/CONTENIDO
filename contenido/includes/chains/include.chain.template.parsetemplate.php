@@ -38,7 +38,7 @@ function cecParseTemplate($template, cTemplate $templateObj) {
 
     global $frame;
 
-    // Autofill special placeholders like 
+    // Autofill special placeholders like
     // - Session id
     // - Initial CONTENIDO scripts
 

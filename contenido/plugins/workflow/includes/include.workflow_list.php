@@ -28,7 +28,7 @@ if ($action == 'workflow_delete') {
     $workflows->delete($idworkflow);
     $urlRightTop = $sess->url('main.php?area=workflow&frame=3');
     $urlRightBottom = $sess->url('main.php?area=workflow_common&frame=4&action=workflow_delete');
-    
+
     $sScript = <<<JS
 <script type="text/javascript">
 (function(Con, $) {
