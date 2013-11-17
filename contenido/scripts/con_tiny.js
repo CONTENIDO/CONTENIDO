@@ -371,8 +371,8 @@
             // Set the string
             $_dataField.val(str + $_dataField.val());
 
-            // Set the action
-            if (action !== 0 && action !== '') {
+            // Set the action, but check for invalid values
+            if (action !== 0 && action !== '' && action !== '0') {
                 $_form.attr('action', action);
             }
 
