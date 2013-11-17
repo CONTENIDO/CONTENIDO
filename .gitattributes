@@ -1547,8 +1547,6 @@ contenido/plugins/form_assistant/templates/template.right_bottom_import.tpl -tex
 contenido/plugins/form_assistant/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/form_assistant/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/frontendlogic/category/category.php -text
-contenido/plugins/frontendlogic/category/docs/conlogo.gif -text
-contenido/plugins/frontendlogic/category/docs/frontend.protectedcategories.html -text
 contenido/plugins/frontendlogic/category/locale/de_DE/LC_MESSAGES/frontendlogic_category.mo -text
 contenido/plugins/frontendlogic/category/locale/de_DE/LC_MESSAGES/frontendlogic_category.po -text
 contenido/plugins/frontendusers/groupselect/groupselect.php -text
