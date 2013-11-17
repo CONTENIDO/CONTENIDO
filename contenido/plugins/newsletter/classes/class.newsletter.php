@@ -47,7 +47,7 @@ class NewsletterCollection extends ItemCollection
         $lang   = cSecurity::toInteger($lang);
 
         // Check if the newsletter name already exists
-        $this->resetQuery;
+        $this->resetQuery();
         $this->setWhere("idclient", $client);
         $this->setWhere("idlang", $lang);
         $this->setWhere("name", $sName);
