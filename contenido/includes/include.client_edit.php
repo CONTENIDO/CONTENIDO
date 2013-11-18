@@ -32,7 +32,9 @@ if (!empty($idclient) && is_numeric($idclient)) {
     $oClient = new cApiClient(cSecurity::toInteger($idclient));
 }
 
-$valid = ($clientname != "" && $frontendpath != "" && preg_match("^(http:\/\/www.|https:\/\/www.|www.|http:\/\/|https:\/\/){1}(([0-9A-Za-z]+\.))|(localhost)^", $htmlpath));
+$urlscheme = parse_url($htmlpath, PHP_URL_SCHEME);
+$valid = ($clientname != "" && $frontendpath != "" && ($urlscheme == 'http' || $urlscheme == 'https'));
+
 if ((!strstr($_SERVER["HTTP_REFERER"], "frame=2")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=1")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=3")) && (!$valid)) {
     $notif = new cGuiNotification();
     if ($clientname == "") {

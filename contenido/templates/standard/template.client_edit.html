@@ -39,10 +39,6 @@
 
     $(function() {
         $("#submit_button").mousedown(function() {
-            if (!Con.UtilUrl.validate($("#htmlpath").val())) {
-                Con.showNotification("Error", "i18n("Please enter a valid URL. It has to start with http://... or https://...")");
-                return;
-            }
             if ($("#clientname").val() == "") {
                 Con.showNotification("Error", "i18n("The client must have a name!")");
                 return;
