@@ -26,60 +26,66 @@ global $tplinputchanged, $idcatnew, $newart, $syncoptions, $tmp_notification, $b
 
 // build log view
 // ------------------
+if ($action == "con_newart" && $newart == true) {
+    // New article, no action log available
+    $query = array();
+} else {
+    // receive data
+    $conCatColl = new cApiCategoryArticleCollection();
+    $catArt = $conCatColl->getFieldsByWhereClause(array(
+        'idcatart'
+    ), 'idart=' . $idart);
 
-// receive data
-$conCatColl = new cApiCategoryArticleCollection();
-$catArt = $conCatColl->getFieldsByWhereClause(array(
-    'idcatart'
-), 'idart=' . $idart);
+    $permClause = '';
+    if ($perm->isClientAdmin($client, false) === false && $perm->isSysadmin(false) === false) {
+        $permClause = " AND user_id = '" . $auth->auth['uid'] . "'";
+    }
 
-$permClause = '';
-if ($perm->isClientAdmin($client, false) === false && $perm->isSysadmin(false) === false) {
-    $permClause = " AND user_id = '" . $auth->auth['uid'] . "'";
-}
+    $actionCollection = new cApiActionlogCollection();
+    $query = $actionCollection->getFieldsByWhereClause(array(
+        'idaction',
+        'idlang',
+        'idclient',
+        'logtimestamp',
+        'user_id'
+    ), 'idcatart=' . $catArt[0]['idcatart'] . $permClause);
 
-$actionCollection = new cApiActionlogCollection();
-$query = $actionCollection->getFieldsByWhereClause(array(
-    'idaction',
-    'idlang',
-    'idclient',
-    'logtimestamp',
-    'user_id'
-), 'idcatart=' . $catArt[0]['idcatart'] . $permClause);
+    $actionsCollection = new cApiActionCollection();
+    $actionsCollection->query();
 
-$actionsCollection = new cApiActionCollection();
-$actionsCollection->query();
+    $actions = $areas = array();
+    while (($actionItem = $actionsCollection->next()) !== false) {
+        $actions[$actionItem->get('idaction')] = $actionItem->get('name');
+        $areas[$actionItem->get('idaction')] = $classarea->getAreaName($actionItem->get('idarea'));
+    }
 
-$actions = $areas = array();
-while (($actionItem = $actionsCollection->next()) !== false) {
-    $actions[$actionItem->get('idaction')] = $actionItem->get('name');
-    $areas[$actionItem->get('idaction')] = $classarea->getAreaName($actionItem->get('idarea'));
-}
+    // get language id
+    $langId = cRegistry::getLanguageId();
+    $langItem = new cApiLanguage($langId);
+    $language = $langItem->get('name');
 
-// get language id
-$langId = cRegistry::getLanguageId();
-$langItem = new cApiLanguage($langId);
-$language = $langItem->get('name');
+    $query = array_reverse($query);
+    $query = array_slice($query, 0, 100);
 
-$query = array_reverse($query);
-$query = array_slice($query, 0, 100);
+    // set extended values
+    foreach ($query as $key => $val) {
 
-// set extended values
-foreach ($query as $key => $val) {
+        $actionName = $actions[$val['idaction']];
+        $areaName = $areas[$val['idaction']];
+        $query[$key]['action'] = $lngAct[$areaName][$actionName];
+        $user = new cApiUser($val['user_id']);
+        $query[$key]['user'] = $user->get('username');
 
-    $actionName = $actions[$val['idaction']];
-    $areaName = $areas[$val['idaction']];
-    $query[$key]['action'] = $lngAct[$areaName][$actionName];
-    $user = new cApiUser($val['user_id']);
-    $query[$key]['user'] = $user->get('username');
-
-    // if backend language id and log language id are the same set the backend
-    // id. Else get the language name from the language id set in action log.
-    if ($langId === (int) $val['idlang']) {
-        $query[$key]['language'] = $language;
-    } else {
-        $languageItem = new cApiLanguage($val['idlang']);
-        $query[$key]['language'] = $languageItem->get('name');
+        // if backend language id and log language id are the same set the
+        // backend
+        // id. Else get the language name from the language id set in action
+        // log.
+        if ($langId === (int) $val['idlang']) {
+            $query[$key]['language'] = $language;
+        } else {
+            $languageItem = new cApiLanguage($val['idlang']);
+            $query[$key]['language'] = $languageItem->get('name');
+        }
     }
 }
 
@@ -462,7 +468,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $tpl->set('s', 'LABEL_REDIRECT_CODE', i18n("Status code"));
 
-    $tpl->set('s', 'LOGTABLE', $div->render());
+    if ($catArt[0]['idcatart'] > 0) {
+        $tpl->set('s', 'LOGTABLE_HEADLINE', '<h3 style="margin-top:20px;margin-bottom:10px;">' . i18n('Article') . 'log</h3>');
+        $tpl->set('s', 'LOGTABLE', $div->render());
+    } else {
+        $tpl->set('s', 'LOGTABLE_HEADLINE', '');
+        $tpl->set('s', 'LOGTABLE', '');
+    }
 
     $tpl->set('s', 'DISABLE_SELECT', $forceDisable);
 

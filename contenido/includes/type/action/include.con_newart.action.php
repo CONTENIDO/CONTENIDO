@@ -15,8 +15,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-
-if ($perm->have_perm_area_action("con", "con_newart") || $perm->have_perm_area_action_item("con", "con_newart", $idcat)) {
+if ($perm->have_perm_area_action($area, "con_newart") || $perm->have_perm_area_action_item($area, "con_newart", $idcat)) {
     /* Code for action
        'con_newart' */
     $sql = "SELECT
