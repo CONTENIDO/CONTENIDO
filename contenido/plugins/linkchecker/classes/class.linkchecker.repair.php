@@ -60,14 +60,15 @@ class LinkcheckerRepair {
      * Checks link and generate a repaired version
      *
      * @access public
+     * @return $repaired_link or false
      */
     public function checkLink($link) {
 
         foreach ($this->errorTypes as $errorTypeKey => $errorType) {
             if (substr($link, 0, strlen($errorType)) == $errorType) {
-                $repairedlink = str_replace($errorType, $this->correctTypes[$errorTypeKey], $link);
-                if ($this->pingRepairedLink($repairedlink) == true) {
-                    return $repairedlink;
+                $repaired_link = str_replace($errorType, $this->correctTypes[$errorTypeKey], $link);
+                if ($this->pingRepairedLink($repaired_link) == true) {
+                    return $repaired_link;
                 } else {
                     return false;
                 }
@@ -80,10 +81,11 @@ class LinkcheckerRepair {
      * Test repaired link
      *
      * @access private
-     * @param string $repairedlink
+     * @param string $repaired_link
+     * @return true or false
      */
-    private function pingRepairedLink($repairedlink) {
-        return @fopen($repairedlink, 'r');
+    private function pingRepairedLink($repaired_link) {
+        return @fopen($repaired_link, 'r');
     }
 
 }
