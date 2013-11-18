@@ -334,7 +334,6 @@ if (empty($aErrors) && $cronjob != true) {
             $tpl2->set('s', 'ERRORS_LINK_SHORT', substr($aRow[$i]['url'], 0, 45) . ((strlen($aRow[$i]['url']) > 45)? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_CATNAME', $aRow[$i]['namecat']);
             $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20)? ' ...' : ''));
-            $tpl2->set('s', 'ERRORS_REDIRECT', $aRow[$i]['redirect']);
             $tpl2->set('s', 'MODE', $_GET['mode']);
             $tpl2->set('s', 'URL_FRONTEND', $aUrl['cms']);
 
@@ -355,24 +354,22 @@ if (empty($aErrors) && $cronjob != true) {
                 $tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Invalid url, i. e. syntax error.", $plugin_name));
 
                 // Try to repair this link misstage
-                $repairedlink = $repair->checkLink($aRow[$i]['url']);
+                $repaired_link = $repair->checkLink($aRow[$i]['url']);
             }
-
-            // Repaire question
-            $tpl2->set('s', 'ERRORS_REPAIRED_QUESTION', i18n("Linkchecker has found a way to repair your wrong link. Do you want to automatically repair the link to the URL below?", $plugin_name));
 
             // Generate repaired link variables
             if ($aRow[$i]['error_type'] != "invalidurl") { // No invalid url
                                                            // case
                 $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '-');
-                $tpl2->set('s', 'ERRORS_REPAIRED_LINK_ENCODE', '');
-            } elseif ($repairedlink == false) { // Linkchecker can not repaire
+            } elseif ($repaired_link == false) { // Linkchecker can not repaire
                                                 // this link
                 $tpl2->set('s', 'ERRORS_REPAIRED_LINK', i18n("No repaired link", $plugin_name));
-                $tpl2->set('s', 'ERRORS_REPAIRED_LINK_ENCODE', '');
             } else { // Yeah, we have an repaired link!
-                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', $repairedlink);
-                $tpl2->set('s', 'ERRORS_REPAIRED_LINK_ENCODE', base64_encode($repairedlink));
+
+                // Repaired question
+                $repaired_question = i18n("Linkchecker has found a way to repair your wrong link. Do you want to automatically repair the link to the URL below?", $plugin_name);
+
+                $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '<a href="javascript:void(0)" onclick="javascript:Con.showConfirmation(\'' . $repaired_question . '<br /><br /><strong>' . $repaired_link . '</strong>\', function() { window.location.href=\'' . $aUrl['contenido'] . 'main.php?area=linkchecker&frame=4&contenido=' . $sess->id . '&action=linkchecker&mode=' . $_GET['mode'] . '&idartlang=' . $aRow[$i]['idartlang'] . '&oldlink=' . base64_encode($aRow[$i]['url']) . '&repairedlink=' . base64_encode($repaired_link) . '&redirect=' . $aRow[$i]['redirect'] . '\';})"><img src="' . $aUrl['contenido'] . 'images/but_editlink.gif" alt="" border="0"></a>');
             }
 
             if ($sKey != "cat") {
