@@ -14,8 +14,8 @@ INSERT INTO !PREFIX!_nav_sub VALUES('15', '0', '1', '1', 'navigation/content/art
 INSERT INTO !PREFIX!_nav_sub VALUES('16', '0', '3', '1', 'navigation/content/article/properties', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('17', '0', '100', '1', 'navigation/content/article/meta', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('18', '0', '5', '1', 'navigation/content/article/configuration', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('20', '0', '105', '1', 'navigation/content/article/content', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('19', '0', '2', '1', 'navigation/content/article/editor', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('19', '0', '2', '1', 'navigation/content/article/content', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('20', '0', '105', '1', 'navigation/content/article/editor', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('23', '0', '13', '1', 'navigation/style/templates/edit', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('24', '0', '33', '1', 'navigation/style/templates/conf', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('25', '0', '40', '1', 'navigation/administration/users/userproperties', '1');
