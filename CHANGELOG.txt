@@ -6,6 +6,66 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id: CHANGELOG.txt 1230 2010-10-13 12:14:37Z timo.trautmann $:
 
+Release 4.8.19
+----------------------------------------------------------------------	
+
+** Bug
+    * [CON-812] - Typo in include.newsletter_edit_message.php
+    * [CON-896] - Problems with database names containing hyphen
+    * [CON-898] - Content allocation and user rights
+    * [CON-921] - CMS_TEASER: Encoding issue with umlauts in title
+    * [CON-926] - Embedding SWF files via DBFS
+    * [CON-937] - i18n: Remove the backslash from double quotes in translation strings
+    * [CON-939] - Error in search class if db search option is set to 'like' or 'exact'
+    * [CON-942] - Language update fails for languages not assigned to the current client
+    * [CON-950] - Misssing "Use WYSIWYG Editor" setting in MyContenido area
+    * [CON-1006] - Locking Tables
+    * [CON-1039] - Multiple primary key warnings in setup
+    * [CON-1041] - Different field lengths in tables.txt
+    * [CON-1097] - Usage of MySQL/MySQLi extensions in setup
+    * [CON-1101] - Url to clients directory won't be detected as frontend urls
+    * [CON-1167] - Article search in backend is broken
+    * [CON-1178] - AMR should use REDIRECT_URL and REDIRECT_QUERY_STRING instead of REQUEST_URI if set
+    * [CON-1220] - Missing host causes problems getting update notifier files
+    * [CON-1225] - Article ID in AMR plugin is searched for all languages in some cases
+    * [CON-1332] - When database connection encoding is empty, an other value is displayed in disabled select box
+    * [CON-1381] - Setup: Remove usage of cHTMLAlphaImage (IE alpha filter)
+    * [CON-1442] - Rework category renaming logic (action str_renamecat)
+    * [CON-1457] - Convert letters with accents & umlauts to ascii equivalents
+    * [CON-1462] - Fix magic_quotes_gpc handling in globals_off.inc.php
+    * [CON-1466] - Change Password Function deactives non-shown Checkbox Use WYSIWYG Editor
+    * [CON-1499] - Tricky problem with wrong php syntax at module input / output
+    * [CON-1525] - Fix retrieving of value for settings having value '0' or empty string ''
+    * [CON-1537] - Replace deprecated ereg_replace, eregi_replace, split and spliti
+    * [CON-1558] - Layout problems in setupscreen at step additional plugins
+    * [CON-1565] - ActiveUsers: Syntax error in sql statement
+    * [CON-1570] - Two wrong links at German example client
+    * [CON-1571] - Setup does not find MySQL table con_mod_history
+    * [CON-1573] - User can change articletemplate for frozen article if no template is selected
+    * [CON-1574] - Fixed wrong translations with single i18n quotes at templates
+    * [CON-1627] - Missing idart in stats leads to wrong URLs
+
+** Improvement
+    * [CON-899] - Add support for configurable document extensions in CMS_LINKEDIT
+    * [CON-938] - Make usage of Search class in module Search_Output configurable
+    * [CON-1266] - AMR: URLs to lowercase
+    * [CON-1459] - Setting for ImageMagic usage
+    * [CON-1482] - Make session lifetime configurable
+    * [CON-1498] - Setup: Add support for typing host + socket for DB connection
+    * [CON-1621] - Simplify code to get subnavigations in all subnav includes
+
+** New Feature
+    * [CON-813] - Add support to set default charset for PHP and Database
+    * [CON-1184] - AMR Plugin in Content Area
+
+** Task
+    * [CON-914] - Set mysqli as default database extension
+    * [CON-915] - Add more configurable filetypes to CMS_LINKEDIT
+    * [CON-1197] - AMR Plugin empty aliases check
+    * [CON-1389] - Remove usage of deprecated preg_replace modifier /e
+    * [CON-1447] - Replace usage of escapeshellcmd() against escapeshellarg()
+
+
 Release 4.8.18
 ----------------------------------------------------------------------	
 ** Bug
