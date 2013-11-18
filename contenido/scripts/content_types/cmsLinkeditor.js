@@ -390,6 +390,6 @@
     Con.cContentTypeLinkeditor = cContentTypeLinkeditor;
 
     // @deprecated [2013-10-21] Assign to windows scope (downwards compatibility)
-    windows.cContentTypeLinkeditor = cContentTypeLinkeditor;
+    window.cContentTypeLinkeditor = cContentTypeLinkeditor;
 
 })(Con, Con.$);
