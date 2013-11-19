@@ -159,8 +159,15 @@
 
     // Loads JavaScript file
     var _loadJs = function(file, callback) {
-        $.getScript(file, function() {
+        $.getScript(file)
+        .done(function(script, textStatus) {
             callback();
+        })
+        .fail(function(jqxhr, settings, exception) {
+            Con.log('fail ' + file, NAME);
+            Con.log(jqxhr, NAME);
+            Con.log(settings, NAME);
+            Con.log(exception, NAME);
         });
     };
 
