@@ -70,7 +70,12 @@
     cContentTypeTeaser.prototype.loadExternalFiles = function() {
         // call the function of the parent so that all general files are included
         Con.cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
-        Con.Loader.get(this.pathBackend + 'styles/content_types/cms_teaser.css');
+
+        // Dependencies to load
+        var files = [];
+        files.push(this.pathBackend + 'styles/content_types/cms_teaser.css');
+
+        Con.Loader.get(files);
     };
 
     /**

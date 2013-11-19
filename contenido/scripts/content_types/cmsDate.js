@@ -107,11 +107,13 @@
      */
     cContentTypeDate.prototype.loadExternalFiles = function(calendarPic) {
         // Dependencies to load
-        var files = [
-            this.pathBackend + 'styles/content_types/cms_date.css', this.pathBackend + 'styles/jquery/jquery-ui.css',
-            this.pathBackend + 'scripts/jquery/jquery-ui.js', this.pathBackend + 'scripts/jquery/plugins/timepicker.js'
-        ];
-
+        var files = [];
+        files.push(this.pathBackend + 'styles/content_types/cms_date.css');
+        files.push(this.pathBackend + 'styles/jquery/jquery-ui.css');
+        // jquery-ui.js is already added via $cfg['backend_template']['js_files']
+        //files.push(this.pathBackend + 'scripts/jquery/jquery-ui.js');
+        files.push(this.pathBackend + 'scripts/jquery/plugins/timepicker.js');
+            
         // only load the localisation file if the language is not english
         if (this.lang !== 'en') {
             files.push(this.pathBackend + 'scripts/jquery/plugins/datepicker-' + this.lang + '.js');

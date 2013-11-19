@@ -104,7 +104,7 @@
         var self = this;
         self.imageFileUpload();
         self.scriptLoaded = 1;
-    }
+    };
 
     /**
      * Adds tabbing events to menubar of content type edit form. Lets the user

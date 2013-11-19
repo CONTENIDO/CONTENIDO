@@ -70,6 +70,7 @@
         // call the function of the parent so that all general files are included
         Con.cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
         if ($('#cms_filelist_styles').length === 0) {
+            // TODO load via Con.Loader.get()
             $('head').append('<link rel="stylesheet" id="cms_filelist_styles" href="' + this.pathBackend + 'styles/content_types/cms_filelist.css" type="text/css" media="all" />');
         }
     };

@@ -77,11 +77,12 @@
         // call the function of the parent so that all general files are included
         Con.cContentTypeAbstractTabbed.prototype.loadExternalFiles.call(this);
 
-        Con.Loader.get(
-            [this.pathBackend + 'styles/content_types/cms_linkeditor.css', this.pathBackend + 'scripts/jquery/ajaxupload.js'],
-            cContentTypeLinkeditor.prototype.linkEditorFileUpload,
-            this
-        );
+        // Dependencies to load
+        var files = [];
+        files.push(this.pathBackend + 'styles/content_types/cms_linkeditor.css');
+        files.push(this.pathBackend + 'scripts/jquery/ajaxupload.js');
+        
+        Con.Loader.get(files, cContentTypeLinkeditor.prototype.linkEditorFileUpload, this);
     };
 
     /**
