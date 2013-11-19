@@ -118,7 +118,7 @@
             files.push(this.pathBackend + 'scripts/jquery/plugins/timepicker-' + this.lang + '.js');
         }
 
-        Con.Loader.get(files, cContentTypeDate.prototype.jQueryUiCallback, this, calendarPic]);
+        Con.Loader.get(files, cContentTypeDate.prototype.jQueryUiCallback, this, calendarPic);
     };
 
     /**
