@@ -1,4 +1,4 @@
-/* German translation for the jQuery Timepicker Addon */
+﻿/* German translation for the jQuery Timepicker Addon */
 /* Written by Marvin */
 
 (function($, jQuery) {
