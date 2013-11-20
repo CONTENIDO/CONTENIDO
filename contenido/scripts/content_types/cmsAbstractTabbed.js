@@ -3,17 +3,16 @@
 /**
  * This file contains the cContentTypeAbstractTabbed JS class.
  *
- * @module  content-type
+ * @module     content-type
  * @submodule  content-type-cms-abstract-tabbed
- * @package Core
+ * @package    Core
  * @subpackage Content Type
- * @version SVN Revision $Rev$
- *
- * @author Simon Sprankel, Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @version    SVN Revision $Rev$
+ * @author     Simon Sprankel, Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 (function(Con, $) {
@@ -41,71 +40,71 @@
 
         /**
          * ID of the frame in which all settings are made.
-         *
-         * @type String
+         * @property frameId
+         * @type {String}
          */
         this.frameId = frameId;
 
         /**
          * ID of the edit image.
-         *
-         * @type String
+         * @property imageId
+         * @type {String}
          */
         this.imageId = imageId;
 
         /**
          * The HTTP path to the CONTENIDO backend.
-         *
-         * @type String
+         * @property pathBackend
+         * @type {String}
          */
         this.pathBackend = pathBackend;
 
         /**
          * The HTTP path to the CONTENIDO frontend.
-         *
-         * @type String
+         * @property pathFrontend
+         * @type {String}
          */
         this.pathFrontend = pathFrontend;
 
         /**
          * IdArtLang of the article which is currently in edit- or viewmode.
-         *
-         * @type Number
+         * @property idArtLang
+         * @type {Number}
          */
         this.idArtLang = idArtLang;
 
         /**
          * ID of the content type, e.g. 3 if CMS_TEASER[3] is used.
-         *
-         * @type Number
+         * @property id
+         * @type {Number}
          */
         this.id = id;
 
         /**
          * Array of form field names which are used by this content type.
-         *
+         * @property fields
          * @type Array
          */
         this.fields = fields;
 
         /**
          * The prefix of this content type.
-         *
-         * @type String
+         * @property prefix
+         * @type {String}
          */
         this.prefix = prefix;
 
         /**
          * The CONTENIDO session.
-         *
-         * @type String
+         * @property session
+         * @type {String}
          */
         this.session = session;
 
         /**
          * The old settings.
-         *
-         * @type Object|String
+         * @property settings
+         * @type {Object|String}
          */
         this.settings = settings;
 
@@ -113,6 +112,7 @@
 
     /**
      * Initialises the content type by adding event handlers etc.
+     * @method initialise
      */
     cContentTypeAbstractTabbed.prototype.initialise = function() {
         // append the whole frame to the end of the body for better positioning
@@ -127,6 +127,7 @@
     /**
      * Loads external styles and scripts so that they are only loaded when they are
      * really needed.
+     * @method loadExternalFiles
      */
     cContentTypeAbstractTabbed.prototype.loadExternalFiles = function() {
         // Dependencies to load
@@ -141,6 +142,7 @@
     /**
      * Callback function which is executed when jQuery UI has successfully been
      * loaded. Makes the frames draggable.
+     * @method jQueryUiCallback
      */
     cContentTypeAbstractTabbed.prototype.jQueryUiCallback = function() {
         $(this.frameId).draggable({handle: '.head'});
@@ -152,6 +154,7 @@
      * is submitted to CONTENIDO. If a hidden field with the given name already
      * exists, the value is overriden.
      *
+     * @method appendFormField
      * @param {String} name The name of the form field which should be added.
      * @param {String} value The value of the form field which should be added.
      */
@@ -167,6 +170,7 @@
 
     /**
      * Adds event which fades in the edit form when editbutton is clicked.
+     * @method addFrameShowEvent
      */
     cContentTypeAbstractTabbed.prototype.addFrameShowEvent = function() {
         var self = this;
@@ -183,6 +187,7 @@
     /**
      * Adds tabbing events to menubar of content type edit form. Lets the user
      * switch between the different tabs.
+     * @method addTabbingEvents
      */
     cContentTypeAbstractTabbed.prototype.addTabbingEvents = function() {
         var self = this;
@@ -201,6 +206,7 @@
 
     /**
      * Adds save event to the save button of content type edit form.
+     * @method addSaveEvent
      */
     cContentTypeAbstractTabbed.prototype.addSaveEvent = function() {
         var self = this;
@@ -240,6 +246,7 @@
 
     /**
      * Adds event for closing content type edit window.
+     * @method addFrameCloseEvents
      */
     cContentTypeAbstractTabbed.prototype.addFrameCloseEvents = function() {
         var self = this;

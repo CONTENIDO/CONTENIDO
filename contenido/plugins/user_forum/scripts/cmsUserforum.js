@@ -1,14 +1,14 @@
 /**
- * @module  content-type
+ * @module     content-type
  * @submodule  content-type-user-forum
- * @package Core
+ * @package    Core
  * @subpackage Content Type
- * @version SVN Revision $Rev:$
- * @author Fulai Zhang, Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @version    SVN Revision $Rev:$
+ * @author     Fulai Zhang, Simon Sprankel, Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 (function(Con, $) {

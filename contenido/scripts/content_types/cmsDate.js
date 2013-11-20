@@ -3,17 +3,16 @@
 /**
  * This file contains the cContentTypeDate JS class.
  *
- * @module  content-type
+ * @module     content-type
  * @submodule  content-type-cms-date
- * @package Core
+ * @package    Core
  * @subpackage Content Type
- * @version SVN Revision $Rev$
- *
- * @author Simon Sprankel, Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @version    SVN Revision $Rev$
+ * @author     Simon Sprankel, Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 (function(Con, $) {
@@ -37,57 +36,57 @@
 
         /**
          * ID of the frame in which all settings are made.
-         *
-         * @type String
+         * @property frameId
+         * @type {String}
          */
         this.frameId = frameId;
 
         /**
          * The prefix of this content type.
-         *
-         * @type String
+         * @property prefix
+         * @type {String}
          */
         this.prefix = prefix;
 
         /**
          * ID of the content type, e.g. 3 if CMS_TEASER[3] is used.
-         *
-         * @type Number
+         * @property id
+         * @type {Number}
          */
         this.id = id;
 
         /**
          * IdArtLang of the article which is currently in edit- or viewmode.
-         *
-         * @type Number
+         * @property idArtLang
+         * @type {Number}
          */
         this.idArtLang = idArtLang;
 
         /**
          * The HTTP path to the CONTENIDO backend.
-         *
-         * @type String
+         * @property pathBackend
+         * @type {String}
          */
         this.pathBackend = pathBackend;
 
         /**
          * The language which should be used.
-         *
-         * @type String
+         * @property lang
+         * @type {String}
          */
         this.lang = lang;
 
         /**
          * The old settings.
-         *
-         * @type Object|String
+         * @property settings
+         * @type {Object|String}
          */
         this.settings = settings;
 
         /**
          * The backend language.
-         *
-         * @type String
+         * @property belang
+         * @type {String}
          */
         this.belang = belang;
 
@@ -95,6 +94,8 @@
 
     /**
      * Initialises the content type by adding event handlers etc.
+     * @method initialise
+     * @param {String} calendarPic
      */
     cContentTypeDate.prototype.initialise = function(calendarPic) {
         this.loadExternalFiles(calendarPic);
@@ -104,6 +105,8 @@
     /**
      * Loads external styles and scripts so that they are only loaded when they are
      * really needed.
+     * @method loadExternalFiles
+     * @param {String} calendarPic
      */
     cContentTypeDate.prototype.loadExternalFiles = function(calendarPic) {
         // Dependencies to load
@@ -126,6 +129,8 @@
     /**
      * Callback function which is executed when jQuery UI has successfully been
      * loaded. Loads the appropriate language.
+     * @method jQueryUiCallback
+     * @param {String} calendarPic
      */
     cContentTypeDate.prototype.jQueryUiCallback = function(calendarPic) {
         this.jQueryUiTimepickerCallback(calendarPic);
@@ -134,6 +139,8 @@
     /**
      * Callback function which is executed when jQuery UI has successfully been
      * loaded. Loads the appropriate language.
+     * @method jQueryUiTimepickerCallback
+     * @param {String} calendarPic
      */
     cContentTypeDate.prototype.jQueryUiTimepickerCallback = function(calendarPic) {
         var self = this;
@@ -170,6 +177,7 @@
 
     /**
      * Adds save event to the save button of content type edit form.
+     * @method addSaveEvent
      */
     cContentTypeDate.prototype.addSaveEvent = function() {
         var self = this;
@@ -192,6 +200,7 @@
      * is submitted to CONTENIDO. If a hidden field with the given name already
      * exists, the value is overriden.
      *
+     * @method appendFormField
      * @param {String} name The name of the form field which should be added.
      * @param {String} value The value of the form field which should be added.
      */

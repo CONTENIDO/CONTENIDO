@@ -3,17 +3,16 @@
 /**
  * This file contains the cContentTypeFilelist JS class.
  *
- * @module  content-type
+ * @module     content-type
  * @submodule  content-type-cms-filelist
- * @package Core
+ * @package    Core
  * @subpackage Content Type
- * @version SVN Revision $Rev$
- *
- * @author Dominik Ziegler, Simon Sprankel, Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @version    SVN Revision $Rev$
+ * @author     Dominik Ziegler, Simon Sprankel, Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 (function(Con, $) {
@@ -25,6 +24,7 @@
      * Creates a new cContentTypeFilelist with the given properties.
      * You most probably want to call initialise() after creating a new object of this class.
      * @class cContentTypeFilelist
+     * @extends cContentTypeAbstractTabbed
      * @constructor
      * @property {String} frameId The ID of the frame in which the content type can be set up.
      * @property {String} imageId The ID of the button on which one clicks in order to edit the content type.
@@ -49,7 +49,7 @@
 
     /**
      * Initialises the content type by adding event handlers etc.
-     *
+     * @method initialise
      * @override
      */
     cContentTypeFilelist.prototype.initialise = function() {
@@ -63,7 +63,7 @@
     /**
      * Loads external styles and scripts so that they are only loaded when they are
      * really needed.
-     *
+     * @method loadExternalFiles
      * @override
      */
     cContentTypeFilelist.prototype.loadExternalFiles = function() {
@@ -78,6 +78,7 @@
     /**
      * Function adds event to add new article to multiple select box for articles
      * Function also checks if article is already in that list
+     * @method addManualFileListEvent
      */
     cContentTypeFilelist.prototype.addManualFileListEvent = function() {
         var self = this;
@@ -89,6 +90,7 @@
     /**
      * Function adds new article to multiple select box for articles
      * Function also checks if article is already in that list
+     * @method addManualFileListEntry
      */
     cContentTypeFilelist.prototype.addManualFileListEntry = function() {
         var filename = $(this.frameId + ' #filelist_filename_' + this.id).val();
@@ -116,7 +118,8 @@
 
     /**
      * Function adds double click events to all current listed articles for manual FileList
-     * in case of a double click this selected article is removed from list
+     * in case of a double click this selected article is removed from list.
+     * @method addClickEvent
      */
     cContentTypeFilelist.prototype.addClickEvent = function() {
         var self = this;
@@ -158,6 +161,7 @@
     /**
      * Adds possibility to select all file extensions at once and
      * disables file extension select if file extensions should be ignored.
+     * @method addExtensionActions
      */
     cContentTypeFilelist.prototype.addExtensionActions = function() {
         var self = this;
@@ -200,6 +204,7 @@
      * Adds possibility to navigate through the upload folder by:
      * - adding possibility to expand and close directories
      * - updating the file list each time a new directory is selected
+     * @method addNaviActions
      */
     cContentTypeFilelist.prototype.addNaviActions = function() {
         var self = this;
@@ -262,7 +267,7 @@
 
     /**
      * Adds save event to the save button of content type edit form.
-     *
+     * @method addSaveEvent
      * @override
      */
     cContentTypeFilelist.prototype.addSaveEvent = function() {

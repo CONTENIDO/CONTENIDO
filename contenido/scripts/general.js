@@ -38,6 +38,10 @@
          */
         _instances: {},
         /**
+         * Usage:
+         * <pre>
+         * Con.Registry.set('my_key', 'my_value');
+         * </pre>
          * @method set
          * @param {String}  key
          * @param {Mixed}  value
@@ -46,9 +50,13 @@
             this._instances[key] = value;
         },
         /**
+         * Usage:
+         * <pre>
+         * var data = Con.Registry.get('my_key');
+         * </pre>
          * @method get
          * @param {String}  key
-         * @return {Mixed}
+         * @return {Mixed} The value or NULL
          */
         get: function(key) {
             if ('undefined' === $.type(this._instances[key])) {
@@ -58,6 +66,12 @@
             return this._instances[key];
         },
         /**
+         * Usage:
+         * <pre>
+         * if (Con.Registry.isRegistered('my_key')) {
+         *     // do something here...
+         * }
+         * </pre>
          * @method isRegistered
          * @param {String}  key
          * @return {Boolean}
@@ -66,6 +80,10 @@
             return ('undefined' === $.type(this._instances[key]));
         },
         /**
+         * Usage:
+         * <pre>
+         * Con.Registry.remove('my_key');
+         * </pre>
          * @method remove
          * @param {String}  key
          */
@@ -98,6 +116,7 @@
 
 
     /**
+     * Map of loaded files, keeps the state of all files and their loaded state.
      * @property _loaded
      * @type {Object}
      * @private
@@ -105,15 +124,28 @@
     var _loaded = {};
 
     /**
+     * Stack to process fo each Loader.get() call.
      * @property _stack
      * @type {Object}
      * @private
      */
     var _stack = {};
 
+    /**
+     * Reference to head HTML element
+     * @property _head
+     * @type {HTMLElement}
+     * @private
+     */
     var _head = $('head')[0];
 
-    // Loads on or more files
+    /**
+     * Loads on or more files
+     * @method _load
+     * @param {String[]} files
+     * @param {Function} callback
+     * @private
+     */
     var _load = function(files, callback) {
         var numFiles = files.length;
         var cb = function() {
@@ -133,7 +165,13 @@
         });
     };
 
-    // Checks if a file exists or not
+    /**
+     * Checks if a file exists in the DOM or not
+     * @method _fileExists
+     * @param {String} file
+     * @return {Boolean}
+     * @private
+     */
     var _fileExists = function(file) {
         if (file.search(/\.css\b/) > 0) {
             if ($('link[href="' + file + '"]')[0]) {
@@ -147,7 +185,13 @@
         return false;
     };
 
-    // Loads CSS file
+    /**
+     * Loads CSS file by appending a link node to the head
+     * @method _loadCss
+     * @param {String} file
+     * @param {Function} callback
+     * @private
+     */
     var _loadCss = function(file, callback) {
         var link = document.createElement('link');
         link.href = file;
@@ -157,7 +201,13 @@
         callback();
     };
 
-    // Loads JavaScript file
+    /**
+     * Loads JavaScript file by using $.getScript
+     * @method _loadJs
+     * @param {String} file
+     * @param {Function} callback
+     * @private
+     */
     var _loadJs = function(file, callback) {
         $.getScript(file)
         .done(function(script, textStatus) {
@@ -171,7 +221,13 @@
         });
     };
 
-    // Loads desired files, if nor done before
+    /**
+     * Loads desired files, if not done before
+     * @method _get
+     * @param {String[]} files
+     * @param {String} key
+     * @private
+     */
     var _get = function(files, key) {
         var key = files.join('$$$');
         var _toLoad = [];
@@ -198,7 +254,16 @@
         }
     };
 
-    // Adds a entry to the stack
+    /**
+     * Adds an entry to the stack
+     * @method _addToStack
+     * @param {String[]} files
+     * @param {Function} callback
+     * @param {Object} scope
+     * @param {Array} params
+     * @return {String} Entry key
+     * @private
+     */
     var _addToStack = function(files, callback, scope, params) {
         var key = files.join('$$$');
         // Check if callback has to be called on the scope object
@@ -223,7 +288,12 @@
         return key;
     };
 
-    // Removes entry from stack and processes related callback
+    /**
+     * Removes entry from stack and processes related callback
+     * @method _removeFromStack
+     * @param {String} key
+     * @private
+     */
     var _removeFromStack = function(key) {
         if ('undefined' === $.type(_stack[key])) {
             return;
@@ -247,10 +317,9 @@
 
     Con.Loader = {
         /**
-         * Loads the given script and evaluates the given callback function
-         * when the script has been loaded successfully. The callback can be
-         * a simple string which is evaluated or a function which is called with
-         * the given scope and params.
+         * Loads one or more JS- and or CSS files and invokes the given callback function
+         * when the files have been loaded successfully. The callback should be a function
+         * which is called with in the given scope and params.
          *
          * Example:
          * <pre>
@@ -267,8 +336,8 @@
          * @param {String|String[]}  file  One or more files (JS or CSS) to load
          * @param {Function}  [callback=function(){}]  Callback to call after the files where loaded
          *             which is called with the given params and the given scope
-         * @param {Object}  [scope=this]  The scope with which the callback function should be called
-         * @param {Array}  [params=[]]  Array of params which should be passed to the callback function
+         * @param {Object}  [scope=this]  The scope in which the callback function should be called
+         * @param {Array}  [params=[]]  Array of params to pass to the callback function
          * @return {Boolean}
          * @static
          */
@@ -325,6 +394,12 @@
          * Following attributes are supported:
          * - data-resizegap: (Number)  The amount of exta pixels to add to the detected content height of top left frame
          * - data-resizeinitcb: (String) Optional a callback to call which does the initial frame resizing
+         *
+         * Example:
+         * <pre>
+         * // Resize left top fame, add additional height of 10 pixel
+         * Con.FrameLeftTop.resize({resizegap: 10});
+         * </pre>
          *
          * @method resize
          * @param  {Object}  [options={}]  Additional options for resizing as follows.
@@ -432,6 +507,12 @@
 
         /**
          * Returns protocol + hostname + path (without filename & query string) from a given url.
+         * Example:
+         * <pre>
+         * var url = 'http://hostname/some/path/page.html?foobar=1&user=JaneDoe';
+         * // result: 'http://hostname/some/path/'
+         * var newUrl = Con.UtilUrl.getUrlWithPath(url);
+         * </pre>
          * @method getUrlWithPath
          * @param  {String}  [url]  Url to determine params from, uses window.location.href by default
          * @return {String}  The folder starting like 'http://hostname/some/path/'
@@ -447,7 +528,7 @@
          * Example:
          * <pre>
          * // result: {foobar: '1', user: 'JaneDoe'}
-         * var params = Con.UtilUrl.getParams("/page.html?foobar=1&user=JaneDoe");
+         * var params = Con.UtilUrl.getParams('/page.html?foobar=1&user=JaneDoe');
          * </pre>
          * @method getParams
          * @param  {String} [url]  Url to determine params from, uses window.location.href by default
@@ -476,6 +557,18 @@
 
         /**
          * Adds parameters to the url, overwrites existing parameters or removes them from the url.
+         *
+         * Examples:
+         * <pre>
+         * var url = 'page.html?foobar=1';
+         * // Add parameter 'user', result: 'page.html?foobar=1&user=JaneDoe'
+         * var newUrl = Con.UtilUrl.getUrlWithPath(url, {user: 'JaneDoe'});
+         *
+         * var url = 'page.html?foobar=1&user=JaneDoe';
+         * // Remove parameter 'user', result: 'page.html?foobar=1'
+         * var newUrl = Con.UtilUrl.getUrlWithPath(url, {user: null});
+         * </pre>
+         *
          * @method replaceParams
          * @param   {String}  url  The url to change the query parameters
          * @param   {Object}  params  Key value pairs of params to update or remove.
@@ -514,7 +607,16 @@
         },
 
         /**
-         * Returns true if the parameter is a valid URL
+         * Returns true if the parameter seems to be a valid URL.
+         *
+         * Example:
+         * <pre>
+         * var url = 'http://hostname/some/path/page.html?foobar=1&user=JaneDoe';
+         * if (Con.UtilUrl.validate(url)) {
+         *     // do something here...
+         * }
+         * </pre>
+         *
          * @method validate
          * @param {String}  value  The string which will be checked
          * @return {Boolean} True if value is a URL
@@ -604,7 +706,13 @@
     };
 
     /**
-     * Returns the registry object, from top.header or top frame
+     * Returns the registry object, from top.header or top frame.
+     *
+     * Example:
+     * <pre>
+     * var registry = Con.getRegistry();
+     * </pre>
+     *
      * @method getRegistry
      * @return {Registry|NULL}
      */
@@ -624,6 +732,12 @@
 
     /**
      * Determines the window in which all the content is being displayed and returns it.
+     *
+     * Example:
+     * <pre>
+     * var win = Con.getContentWindow();
+     * </pre>
+     *
      * @method getContentWindow
      * @return {Window} The window object in which all content is being displayed
      */
@@ -639,6 +753,14 @@
     /**
      * Loads the translations from the server once and just returns them if they
      * have already been loaded.
+     *
+     * Example:
+     * <pre>
+     * Con.getTranslations(function() {
+     *     // translations a loaded, continue with your task here...
+     * });
+     * </pre>
+     *
      * @method getTranslations
      * @param {Function}  [callback]  The callback function to call after retrieving translations
      * @param {Object}  [context]
@@ -683,6 +805,14 @@
 
     /**
      * Shows a confirmation box with the help of jQuery UI Dialog.
+     *
+     * Example:
+     * <pre>
+     * Con.showConfirmation('The description', function() {
+     *     // user clicked on 'ok', do the action here ...
+     * });
+     * </pre>
+     *
      * @method showConfirmation
      * @param  {String}  description  The text which is displayed in the dialog
      * @param  {Function}  callback  A callback function which is called if the user confirmed
@@ -737,11 +867,17 @@
 
     /**
      * Shows a notification box with the help of jQuery UI Dialog.
+     *
+     * Example:
+     * <pre>
+     * Con.showNotification('The title', 'Some description');
+     * </pre>
+     *
      * @method showNotification
      * @param  {String}  title The title of the box
      * @param  {String}  description  The text which is displayed in the box
      * @param  {Object}  additionalOptions  Options which can be used to customise the
-     *           behaviour of the dialog box
+     *           behaviour of the dialog box, see http://api.jqueryui.com/dialog/
      * @param  {Boolean} hideButtons
      */
     Con.showNotification = function(title, description, additionalOptions, hideButtons) {
@@ -782,7 +918,18 @@
     };
 
     /**
-     * Marks submenu item in header, handles also context of different frames
+     * Marks submenu item in header, handles also context of different frames.
+     * It supports to mark a submenu (aka subnav) item by it's position and also by it's
+     * data-name attribute value.
+     *
+     * Examples:
+     * <pre>
+     * // Mark second submenu item (index starts at 0)
+     * Con.markSubmenuItem('c_1');
+     *
+     * // Mark submenu item by it's data-name attribute, e. g. data-name="con_editart"
+     * Con.markSubmenuItem('con_editart');
+     * </pre>
      * @method markSubmenuItem
      * @param {String} subMenu  The position of submenu or data-name value
      * @return  {Boolean}

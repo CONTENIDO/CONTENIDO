@@ -3,17 +3,16 @@
 /**
  * This file contains the cContentTypeLinkeditor JS class.
  *
- * @module  content-type
+ * @module     content-type
  * @submodule  content-type-cms-linkeditor
- * @package Core
+ * @package    Core
  * @subpackage Content Type
- * @version SVN Revision $Rev$
- *
- * @author Fulai Zhang, Simon Sprankel, Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @version    SVN Revision $Rev$
+ * @author     Fulai Zhang, Simon Sprankel, Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 (function(Con, $) {
@@ -25,6 +24,7 @@
      * Creates a new cContentTypeLinkeditor with the given properties.
      * You most probably want to call initialise() after creating a new object of this class.
      * @class cContentTypeLinkeditor
+     * @extends cContentTypeAbstractTabbed
      * @constructor
      * @property {String} frameId The ID of the frame in which the content type can be set up.
      * @property {String} imageId The ID of the button on which one clicks in order to edit the content type.
@@ -43,8 +43,8 @@
 
         /**
          * The path which has been selected by the user.
-         *
-         * @type String
+         * @property selectedPath
+         * @type {String}
          */
         this.selectedPath = '';
     }
@@ -56,7 +56,7 @@
 
     /**
      * Initialises the content type by adding event handlers etc.
-     *
+     * @method initialise
      * @override
      */
     cContentTypeLinkeditor.prototype.initialise = function() {
@@ -70,7 +70,7 @@
     /**
      * Loads external styles and scripts so that they are only loaded when they are
      * really needed.
-     *
+     * @method loadExternalFiles
      * @override
      */
     cContentTypeLinkeditor.prototype.loadExternalFiles = function() {
@@ -88,7 +88,7 @@
     /**
      * Adds tabbing events to menubar of content type edit form. Lets the user
      * switch between the different tabs.
-     *
+     * @method addTabbingEvents
      * @override
      */
     cContentTypeLinkeditor.prototype.addTabbingEvents = function() {
@@ -118,6 +118,7 @@
      * Adds possibility to navigate through the upload folder by:
      * - adding possibility to expand and close directories
      * - updating the file list each time a new directory is selected
+     * @method addNaviActions
      */
     cContentTypeLinkeditor.prototype.addNaviActions = function() {
         var self = this;
@@ -225,6 +226,7 @@
     /**
      * Updates the divs in which the selected folder is displayed
      * every time a new folder is selected.
+     * @method showFolderPath
      */
     cContentTypeLinkeditor.prototype.showFolderPath = function() {
         var self = this;
@@ -257,6 +259,7 @@
 
     /**
      * Uploads an image.
+     * @method linkEditorFileUpload
      */
     cContentTypeLinkeditor.prototype.linkEditorFileUpload = function() {
 
@@ -298,6 +301,7 @@
 
     /**
      * Creates a new directory and updates the directory list accordingly.
+     * @method createMKDir
      */
     cContentTypeLinkeditor.prototype.createMKDir = function() {
         var self = this;
@@ -361,7 +365,7 @@
 
     /**
      * Adds save event to the save button of content type edit form.
-     *
+     * @method addSaveEvent
      * @override
      */
     cContentTypeLinkeditor.prototype.addSaveEvent = function() {

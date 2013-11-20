@@ -1,14 +1,14 @@
 /**
- * @module  content-type
+ * @module     content-type
  * @submodule  content-type-pifa-form
- * @package Core
+ * @package    Core
  * @subpackage Content Type
- * @version SVN Revision $Rev:$
- * @author Fulai Zhang, Simon Sprankel
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @version    SVN Revision $Rev:$
+ * @author     Fulai Zhang, Simon Sprankel, Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 (function(Con, $) {
@@ -20,6 +20,7 @@
      * probably want to call initialise() after creating a new object of this class.
      *
      * @class cContentTypePifaForm
+     * @extends cContentTypeAbstractTabbed
      * @constructor
      * @param {String} frameId The ID of the frame in which the content type can
      *           be set up.

@@ -3,17 +3,16 @@
 /**
  * This file contains the ContentTypeTeaser JS class.
  *
- * @module  content-type
+ * @module     content-type
  * @submodule  content-type-cms-teaser
- * @package Core
+ * @package    Core
  * @subpackage Content Type
- * @version SVN Revision $Rev$
- *
- * @author Timo Trautmann, Simon Sprankel, Murat Purc <murat@purc.de>
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @version    SVN Revision $Rev$
+ * @author     Timo Trautmann, Simon Sprankel, Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 
 (function(Con, $) {
@@ -25,6 +24,7 @@
      * Creates a new cContentTypeTeaser with the given properties.
      * You most probably want to call initialise() after creating a new object of this class.
      * @class cContentTypeTeaser
+     * @extends cContentTypeAbstractTabbed
      * @constructor
      * @property {String} frameId The ID of the frame in which the content type can be set up.
      * @property {String} imageId The ID of the button on which one clicks in order to edit the content type.
@@ -49,7 +49,7 @@
 
     /**
      * Initialises the content type by adding event handlers etc.
-     *
+     * @method initialise
      * @override
      */
     cContentTypeTeaser.prototype.initialise = function() {
@@ -64,7 +64,7 @@
     /**
      * Loads external styles and scripts so that they are only loaded when they are
      * really needed.
-     *
+     * @method loadExternalFiles
      * @override
      */
     cContentTypeTeaser.prototype.loadExternalFiles = function() {
@@ -82,6 +82,7 @@
      * Function gets new list of articles from CONTENIDO via ajax.
      * Is used in manual teaser when base category for article select
      * is changed.
+     * @method getArticleList
      */
     cContentTypeTeaser.prototype.getArticleList = function() {
         var self = this;
@@ -99,8 +100,9 @@
     };
 
     /**
-     * Function adds event to add new article to multiple select box for articles
-     * Function also checks if article is already in that list
+     * Function adds event to add new article to multiple select box for articles.
+     * Function also checks if article is already in that list.
+     * @method addManualTeaser
      */
     cContentTypeTeaser.prototype.addManualTeaser = function() {
         var self = this;
@@ -114,6 +116,7 @@
     /**
      * Function adds new article to multiple select box for articles
      * Function also checks if article is already in that list
+     * @method addManualTeaserEntry
      */
     cContentTypeTeaser.prototype.addManualTeaserEntry = function() {
         var idArt = $(this.frameId + ' #teaser_art_' + this.id).val();
@@ -145,7 +148,8 @@
 
     /**
      * Function adds double click events to all current listed articles for manual teaser
-     * in case of a double click this selected article is removed from list
+     * in case of a double click this selected article is removed from list.
+     * @method removeManualTeaser
      */
     cContentTypeTeaser.prototype.removeManualTeaser = function() {
         var self = this;
