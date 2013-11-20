@@ -106,7 +106,7 @@
     var NAME = 'loader';
 
     /**
-     * Asset (script) loader class.
+     * Asset (script and style) loader class.
      * Supports loading of one or multiple assets (css and/or js files at once).
      *
      * @submodule  base-loader
@@ -124,7 +124,7 @@
     var _loaded = {};
 
     /**
-     * Stack to process fo each Loader.get() call.
+     * Stack to process for each Loader.get() calls.
      * @property _stack
      * @type {Object}
      * @private
@@ -372,18 +372,19 @@
     var NAME = 'frame-left-top';
 
     /**
+     * FrameLeftTop class
+     * @submodule  base-frame-left-top
+     * @class  FrameLeftTop
+     * @static
+     */
+
+    /**
      * @property $_container
      * @type {HTMLElement[]}
      * @private
      */
     var $_container = null;
 
-    /**
-     * FrameLeftTop class
-     * @submodule  base-frame-left-top
-     * @class  FrameLeftTop
-     * @static
-     */
     Con.FrameLeftTop = {
 
         /**
