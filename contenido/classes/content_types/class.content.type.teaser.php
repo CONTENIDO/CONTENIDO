@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the cContentTypeLinkeditor class.
+ * This file contains the cContentTypeTeaser class.
  *
  * @package Core
  * @subpackage ContentType
