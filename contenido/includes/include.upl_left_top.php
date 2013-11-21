@@ -27,7 +27,7 @@ if (isset($_REQUEST['path'])) {
     $sDisplayPath = $sCurrentPathInfo;
 }
 
-echo "<pre>$sDisplayPath</pre>";
+//##echo "<pre>$sDisplayPath</pre>";
 $sDisplayPath = generateDisplayFilePath($sDisplayPath, 35);
 $tpl->set('s', 'CAPTION2', $sDisplayPath);
 
