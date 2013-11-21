@@ -46,6 +46,10 @@
     float: left;
 }
 
+.cms_filelist #metaDataList {
+    clear: both;
+}
+
 .cms_filelist #metaDataList  ul li {
     list-style: none;
 }
