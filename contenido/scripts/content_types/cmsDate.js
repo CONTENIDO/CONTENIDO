@@ -90,6 +90,13 @@
          */
         this.belang = belang;
 
+        /**
+         * Reference to the current content type element
+         * @property $element
+         * @type {HTMLElement[]}
+         */
+        this.$element = $('#date_timestamp_' + this.id);
+
     }
 
     /**
@@ -153,7 +160,7 @@
     cContentTypeDate.prototype.jQueryUiTimepickerCallback = function(calendarPic) {
         var self = this;
         // initialise the datepicker
-        $('#date_timestamp_' + self.id).datetimepicker({
+        this.$element.datetimepicker({
             buttonImage: calendarPic,
             buttonImageOnly: true,
             changeYear: true,
@@ -165,7 +172,7 @@
             if (!isNaN(self.settings.date_timestamp)) {
                 date = new Date(self.settings.date_timestamp * 1000);
             }
-            $('#date_timestamp_' + self.id).datetimepicker('setDate', date);
+            self.$element.datetimepicker('setDate', date);
             // set the format
             var dateFormat = 'yy-mm-dd';
             var timeFormat = 'hh:mm:ssTT';
@@ -173,8 +180,8 @@
                 dateFormat = 'dd.mm.yy';
                 timeFormat = 'hh:mm:ss';
             }
-            $('#date_timestamp_' + self.id).datetimepicker('option', 'dateFormat', dateFormat);
-            $('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', timeFormat);
+            self.$element.datetimepicker('option', 'dateFormat', dateFormat);
+            self.$element.datetimepicker('option', 'timeFormat', timeFormat);
         });
     };
 
@@ -183,10 +190,11 @@
      * @method addSaveEvent
      */
     cContentTypeDate.prototype.addSaveEvent = function() {
-        var self = this;
-        $(self.frameId + ' .save_settings').css('cursor', 'pointer');
-        $(self.frameId + ' .save_settings').click(function() {
-            var date = $('#date_timestamp_' + self.id).datetimepicker('getDate') || $('#date_timestamp_' + self.id).datepicker('getDate') || $('#date_timestamp_' + self.id).timepicker('getDate');
+        var self = this,
+            $elem = $(this.frameId + ' .save_settings');
+        $elem.css('cursor', 'pointer');
+        $elem.click(function() {
+            var date = self.$element.datetimepicker('getDate') || self.$element.datepicker('getDate') || self.$element.timepicker('getDate');
             var timestamp = Math.floor(date.getTime() / 1000);
             var format = $(self.frameId + ' #date_format_select_' + self.id).val();
             format = Base64.encode(format);
@@ -209,8 +217,9 @@
      */
     cContentTypeDate.prototype.appendFormField = function(name, value) {
         // if a hidden input field with the given name already exists, just set the value
-        if ($('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').length > 0) {
-            $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
+        var $elem = $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]');
+        if ($elem.length > 0) {
+            $elem.val(value);
         } else {
             // otherwise append a new field to the form
             $('form[name="editcontent"]').append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
