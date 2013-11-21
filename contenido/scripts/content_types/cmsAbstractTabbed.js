@@ -108,6 +108,12 @@
          */
         this.settings = settings;
 
+        /**
+         * Reference to tabbed frame node
+         * @property $frame
+         * @type {HTMLElement[]}
+         */
+        this.$frame = $(this.frameId);
     }
 
     /**
@@ -116,7 +122,7 @@
      */
     cContentTypeAbstractTabbed.prototype.initialise = function() {
         // append the whole frame to the end of the body for better positioning
-        $(this.frameId).appendTo($('body'));
+        this.$frame.appendTo($('body'));
         this.loadExternalFiles();
         this.addFrameShowEvent();
         this.addTabbingEvents();
@@ -145,8 +151,8 @@
      * @method jQueryUiCallback
      */
     cContentTypeAbstractTabbed.prototype.jQueryUiCallback = function() {
-        $(this.frameId).draggable({handle: '.head'});
-        $(this.frameId + ' .head').css('cursor', 'move');
+        this.$frame.draggable({handle: '.head'});
+        this.$frame.find('.head').css('cursor', 'move');
     };
 
     /**
@@ -174,13 +180,15 @@
      */
     cContentTypeAbstractTabbed.prototype.addFrameShowEvent = function() {
         var self = this;
-        $(self.imageId).css('cursor', 'pointer');
-        $(self.imageId).click(function() {
-             var top = $(document).scrollTop()+($(window).height()/2);
-            $(self.frameId).fadeIn('normal');
-            $(self.frameId).css('position', 'absolute');
-            $(self.frameId).css('top', top);
-            $(self.frameId).css('left', '50%');
+        $(this.imageId).css('cursor', 'pointer');
+        $(this.imageId).click(function() {
+            var top = $(document).scrollTop()+($(window).height()/2);
+            self.$frame.fadeIn('normal');
+            self.$frame.css({
+                position: 'absolute',
+                top: top,
+                left: '50%'
+            });
         });
     };
 
@@ -190,18 +198,19 @@
      * @method addTabbingEvents
      */
     cContentTypeAbstractTabbed.prototype.addTabbingEvents = function() {
-        var self = this;
+        var self = this,
+            $items = this.$frame.find('.menu li');
         // add layer click events
-        $(self.frameId + ' .menu li').click(function() {
-            $(self.frameId + ' .menu li').removeClass('active');
+        $items.click(function() {
+            $items.removeClass('active');
             // hide all tabs but the active one
-            $(self.frameId + ' .tabs > div:not(#' + $(this).attr('class') + ')').hide();
+            self.$frame.find('.tabs > div:not(#' + $(this).attr('class') + ')').hide();
             // add smooth animation
-            $(self.frameId + ' #' + $(this).attr('class')).fadeIn('normal');
+            self.$frame.find('#' + $(this).attr('class')).fadeIn('normal');
             $(this).addClass('active');
         });
         // trigger the click event on the first tab so that the others are hidden etc.
-        $(self.frameId + ' .menu li:first').click();
+        self.$frame.find('.menu li:first').click();
     };
 
     /**
@@ -209,18 +218,20 @@
      * @method addSaveEvent
      */
     cContentTypeAbstractTabbed.prototype.addSaveEvent = function() {
-        var self = this;
-        $(self.frameId + ' .save_settings').css('cursor', 'pointer');
-        $(self.frameId + ' .save_settings').click(function() {
+        var self = this,
+            $elem = this.$frame.find('.save_settings');
+        $elem.css('cursor', 'pointer');
+        $elem.click(function() {
             for (var i = 0; i < self.fields.length; i++) {
-                var value = '';
-                var name = self.fields[i] + '_' + self.id;
-                if ($(self.frameId + ' #' + name).is('input[type="checkbox"]')) {
+                var value = '',
+                    name = self.fields[i] + '_' + self.id,
+                    $item = self.$frame.find('#' + name);
+                if ($item.is('input[type="checkbox"]')) {
                     // special behaviour for checkboxes
-                    value = $(self.frameId + ' #' + name).prop('checked');
-                } else if ($(self.frameId + ' #' + name).is('select')) {
+                    value = $item.prop('checked');
+                } else if ($item.is('select')) {
                     // in case of select field implode the options, use ',' as separator
-                    $(self.frameId + ' #' + name + ' option:selected').each(function() {
+                    $item.find('option:selected').each(function() {
                         if (value === '') {
                             value = $(this).val();
                         } else {
@@ -233,7 +244,7 @@
                     }
                 } else {
                     // default value for select boxes and text boxes
-                    value = $(self.frameId + ' #' + name).val();
+                    value = $item.val();
                 }
                 name = name.replace('_' + self.id, '');
                 self.appendFormField(name, value);
@@ -249,17 +260,18 @@
      * @method addFrameCloseEvents
      */
     cContentTypeAbstractTabbed.prototype.addFrameCloseEvents = function() {
-        var self = this;
+        var self = this,
+            $close = this.$frame.find('.close'),
+            $cancel = this.$frame.find('.cancel_settings');
+
         // add cancel image event
-        $(self.frameId + ' .close').css('cursor', 'pointer');
-        $(self.frameId + ' .close').click(function() {
-            $(self.frameId).fadeOut('normal');
+        $close.css('cursor', 'pointer').click(function() {
+            self.$frame.fadeOut('normal');
         });
 
         // add cancel button event
-        $(self.frameId + ' .cancel_settings').css('cursor', 'pointer');
-        $(self.frameId + ' .cancel_settings').click(function() {
-            $(self.frameId).fadeOut('normal');
+        $cancel.css('cursor', 'pointer').click(function() {
+            self.$frame.fadeOut('normal');
         });
     };
 
