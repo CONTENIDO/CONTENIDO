@@ -110,20 +110,28 @@
      */
     cContentTypeDate.prototype.loadExternalFiles = function(calendarPic) {
         // Dependencies to load
-        var files = [];
-        files.push(this.pathBackend + 'styles/content_types/cms_date.css');
-        files.push(this.pathBackend + 'styles/jquery/jquery-ui.css');
-        // jquery-ui.js is already added via $cfg['backend_template']['js_files']
-        //files.push(this.pathBackend + 'scripts/jquery/jquery-ui.js');
-        files.push(this.pathBackend + 'scripts/jquery/plugins/timepicker.js');
-            
-        // only load the localisation file if the language is not english
-        if (this.lang !== 'en') {
-            files.push(this.pathBackend + 'scripts/jquery/plugins/datepicker-' + this.lang + '.js');
-            files.push(this.pathBackend + 'scripts/jquery/plugins/timepicker-' + this.lang + '.js');
-        }
+        var files = [
+            this.pathBackend + 'styles/content_types/cms_date.css',
+            this.pathBackend + 'styles/jquery/jquery-ui.css',
+            this.pathBackend + 'scripts/jquery/plugins/timepicker.js'
+        ];
 
-        Con.Loader.get(files, cContentTypeDate.prototype.jQueryUiCallback, this, [calendarPic]);
+        // Callback to call after the main dependencies have been loaded, loads additional
+        // language files if needed
+        var _loadCallback = function() {
+            if (this.lang !== 'en') {
+                var files = [
+                    this.pathBackend + 'scripts/jquery/plugins/datepicker-' + this.lang + '.js',
+                    this.pathBackend + 'scripts/jquery/plugins/timepicker-' + this.lang + '.js'
+                ];
+                Con.Loader.get(files, this.jQueryUiCallback, this, [calendarPic]);
+            } else {
+                this.jQueryUiCallback(calendarPic);
+            }
+        };
+
+        // Fist load main dependencies
+        Con.Loader.get(files, _loadCallback, this, [calendarPic]);
     };
 
     /**
@@ -168,11 +176,6 @@
             $('#date_timestamp_' + self.id).datetimepicker('option', 'dateFormat', dateFormat);
             $('#date_timestamp_' + self.id).datetimepicker('option', 'timeFormat', timeFormat);
         });
-        // only load the localisation file if the language is not english
-        if (self.lang !== 'en') {
-            conLoadFile(self.pathBackend + 'scripts/jquery/plugins/datepicker-' + self.lang + '.js');
-            conLoadFile(self.pathBackend + 'scripts/jquery/plugins/timepicker-' + self.lang + '.js');
-        }
     };
 
     /**
