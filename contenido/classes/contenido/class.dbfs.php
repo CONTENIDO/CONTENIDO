@@ -300,13 +300,13 @@ class cApiDbfsCollection extends ItemCollection {
             $parent = $this->parentDir($dir);
 
             if ($parent != '.') {
-                if (!$this->dir_exists($parent)) {
+                if (!$this->dirExists($parent)) {
                     $this->create($parent . '/.');
                 }
             }
         }
 
-        if ($dir && !$this->dir_exists($dir) || $file != '.') {
+        if ($dir && !$this->dirExists($dir) || $file != '.') {
             $item = parent::createNewItem();
             $item->set('idclient', $client);
             $item->set('dirname', $dir);
