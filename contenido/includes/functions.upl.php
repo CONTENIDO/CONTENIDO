@@ -245,7 +245,7 @@ function uplSyncDirectoryDBFS($sPath) {
     $oPropertiesColl = new cApiPropertyCollection();
     $oDBFSColl = new cApiDbfsCollection();
 
-    if ($oDBFSColl->dir_exists($sPath)) {
+    if ($oDBFSColl->dirExists($sPath)) {
         $sStripPath = cApiDbfs::stripPath($sPath);
         $oDBFSColl->select("dirname = '$sStripPath'");
         while (($oFile = $oDBFSColl->next()) !== false) {
@@ -257,14 +257,14 @@ function uplSyncDirectoryDBFS($sPath) {
 
     $oUploadsColl->select("dirname='$sPath/' AND idclient='$client'");
     while (($oUpload = $oUploadsColl->next()) !== false) {
-        if (!$oDBFSColl->file_exists($oUpload->get('dirname') . $oUpload->get('filename'))) {
+        if (!$oDBFSColl->fileExists($oUpload->get('dirname') . $oUpload->get('filename'))) {
             $oUploadsColl->delete($oUpload->get("idupl"));
         }
     }
 
     $oPropertiesColl->select("idclient='$client' AND itemtype='upload' AND type='file' AND itemid LIKE '" . $sPath . "%'");
     while (($oProperty = $oPropertiesColl->next()) !== false) {
-        if (!$oDBFSColl->file_exists($oProperty->get('itemid'))) {
+        if (!$oDBFSColl->fileExists($oProperty->get('itemid'))) {
             $oPropertiesColl->delete($oProperty->get('idproperty'));
         }
     }

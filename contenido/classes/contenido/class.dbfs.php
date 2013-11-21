@@ -128,7 +128,7 @@ class cApiDbfsCollection extends ItemCollection {
     public function write($file, $content = '', $mimetype = '') {
         $file = cApiDbfs::stripPath($file);
 
-        if (!$this->file_exists($file)) {
+        if (!$this->fileExists($file)) {
             $this->create($file, $mimetype);
         }
         $this->setContent($file, $content);
