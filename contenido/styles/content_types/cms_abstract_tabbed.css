@@ -40,7 +40,7 @@
 .cms_abstract .head_sub {
     clear: both;
     font-style: italic;
-    margin: 10px 0 5px;
+    padding: 10px 0 5px;
     font-weight: bold;
 }
 .cms_abstract div + .head_sub {

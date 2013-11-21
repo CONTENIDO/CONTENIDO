@@ -1,5 +1,9 @@
 @import url("cms_dirlist.css");
 
+.cms_filelist {
+    width: 432px;
+}
+
 .cms_filelist .directoryList {
     height: 205px;
     width: 410px;
@@ -9,15 +13,15 @@
     height: 135px;
 }
 
+.cms_filelist #manual_filelist_setting {
+    clear: both;
+}
+
 .cms_filelist #manual .directoryList ul li div.active,
 .cms_filelist #manual .directoryList ul li#root li div.active a,
 .cms_filelist #manual .directoryList ul li#root li div.active em a,
 .cms_filelist #manual .directoryList ul li#root li div.active em span {
     background-color: #FFF !important;
-}
-
-.cms_filelist {
-    width: 432px;
 }
 
 .cms_filelist label {
@@ -35,7 +39,8 @@
     margin: 2px 0 0 5px;
 }
 
-.cms_filelist input,.cms_filelist select {
+.cms_filelist input,
+.cms_filelist select {
     border: 1px solid #CCC;
     display: block;
     float: left;
@@ -49,7 +54,9 @@
     width: 30px;
 }
 
-#filter span,#metaDataList span,#manual span {
+#filter span,
+#metaDataList span,
+#manual span {
     float: left;
     padding-top: 3px;
 }
