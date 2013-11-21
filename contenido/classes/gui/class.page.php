@@ -228,6 +228,7 @@ class cGuiPage {
         $cfg = cRegistry::getConfig();
         $backendUrl = cRegistry::getBackendUrl();
         $backendPath = cRegistry::getBackendPath();
+        $filePathName = $this->_getRealFilePathName($script);
 
         if (strpos(trim($script), 'http') === 0 || strpos(trim($script), '<script') === 0 || strpos(trim($script), '//') === 0) {
             if (strpos(trim($script), '<script') === 0) {
@@ -235,11 +236,11 @@ class cGuiPage {
             }
             // the given script path is absolute
             $this->_scripts[] = $script;
-        } else if (!empty($this->_pluginname) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['scripts'] . $script)) {
+        } else if (!empty($this->_pluginname) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['scripts'] . $filePathName)) {
             // the given script path is relative to the plugin scripts folder
             $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['scripts'] . $script;
             $this->_scripts[] = $fullpath;
-        } else if (cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $script)) {
+        } else if (cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)) {
             // the given script path is relative to the CONTENIDO scripts folder
             $fullpath = $backendUrl . $cfg['path']['scripts'] . $script;
             $this->_scripts[] = $fullpath;
@@ -258,16 +259,17 @@ class cGuiPage {
         $cfg = cRegistry::getConfig();
         $backendUrl = cRegistry::getBackendUrl();
         $backendPath = cRegistry::getBackendPath();
+        $filePathName = $this->_getRealFilePathName($stylesheet);
 
         if (strpos($stylesheet, 'http') === 0 || strpos($stylesheet, '//') === 0) {
             // the given stylesheet path is absolute
             $this->_styles[] = $stylesheet;
-        } else if (!empty($this->_pluginname) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['styles'] . $stylesheet)) {
+        } else if (!empty($this->_pluginname) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['styles'] . $filePathName)) {
             // the given stylesheet path is relative to the plugin stylesheets
             // folder
             $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginname . '/' . $cfg['path']['styles'] . $stylesheet;
             $this->_styles[] = $fullpath;
-        } else if (cFileHandler::exists($backendPath . $cfg['path']['styles'] . $stylesheet)) {
+        } else if (cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName)) {
             // the given stylesheet path is relative to the CONTENIDO
             // stylesheets folder
             $fullpath = $backendUrl . $cfg['path']['styles'] . $stylesheet;
@@ -625,6 +627,18 @@ class cGuiPage {
         }
 
         return $this->_pagetemplate->generate($cfg['path']['templates'] . $cfg['templates']['generic_page'], $return);
+    }
+
+    /**
+     * Returns only the path and name of the given file.
+     * Some JS or CSS file URLs may contain a query part, like "/path/to/file.js.php?contenido=12234"
+     * and this function returns only the path part "/path/to/file.js.php" of it.
+     * @param string $file
+     * @return string
+     */
+    protected function _getRealFilePathName($file) {
+        $tmp = explode('?', $file);
+        return $tmp[0];
     }
 
 }
