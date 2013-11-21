@@ -319,7 +319,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         if (is_array($files) && count($files) > 0) {
             foreach ($files as $filenameData) {
-                $this->fillFileListTemplateEntry($filenameData, $template);
+                $this->_fillFileListTemplateEntry($filenameData, $template);
             }
 
             // generate template
@@ -429,9 +429,15 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * @param cTemplate $template reference to the used template object
      * @return void
      */
-    private function fillFileListTemplateEntry(array $fileData, cTemplate &$template) {
+    private function _fillFileListTemplateEntry(array $fileData, cTemplate &$template) {
         $filename = $fileData['filename'];
         $directoryName = $fileData['path'];
+
+        if (empty($filename) || empty($directoryName)) {
+            cWarning(__FILE__, __LINE__, "Empty directory '$directoryName' and or filename '$filename'");
+            return;
+        }
+
         $fileLink = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $directoryName . '/' . $filename;
         $filePath = $this->_cfgClient[$this->_client]['upl']['path'] . $directoryName . '/' . $filename;
 
