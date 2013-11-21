@@ -21,8 +21,10 @@
 
     var NAME = 'header';
 
-    var MENU_ID = 'main_0';
-    var SUBMENU_ID = 'sub_0';
+    var MENU_ID = 'main_0',
+        SUBMENU_ID = 'sub_0',
+        SELECTOR_MENUES = '#head_nav1 span a';
+
 
     /**
      * Header class
@@ -79,7 +81,7 @@
             }
 
             $("#" + id).css("display", "block");
-            $(this.SELECTOR_MENUES).css("color", "#000000");
+            $(SELECTOR_MENUES).css("color", "#000000");
             if (slink) {
                 if (typeof slink == "object") {
                     $(slink).css("color", "#0060B1");
@@ -255,7 +257,6 @@
         _currentActiveMenuId: null,
         _currentActiveSubmenusId: null,
 
-        SELECTOR_MENUES: '#head_nav1 span a',
         SELECTOR_SUBMENUES: '#submenus a',
 
         /**
@@ -389,7 +390,7 @@
      * @extends  HeaderMenu
      * @static
      */
-    var HeaderClickMenu = $.extend(true, HeaderMenu, {
+    var HeaderClickMenu = $.extend({}, HeaderMenu, {
 
         /**
          * @method initialize
@@ -409,7 +410,7 @@
             this.setActiveMenu(options.menuId);
             this.setActiveSubMenu(options.subMenuId);
 
-            $(this.SELECTOR_MENUES).click(function() {
+            $(SELECTOR_MENUES).click(function() {
                 HeaderClickMenu.activate(this);
             });
             $(this.SELECTOR_SUBMENUES).click(function() {
@@ -453,7 +454,7 @@
      * @extends  HeaderMenu
      * @static
      */
-    var HeaderDelayMenu = $.extend(true, HeaderMenu, {
+    var HeaderDelayMenu = $.extend({}, HeaderMenu, {
 
         DEFAULT_MOUSEOVER_DELAY: 300,
         DEFAULT_MOUSEOUT_DELAY: 1000,
@@ -488,7 +489,7 @@
             this.setActiveMenu(options.menuId);
             this.setActiveSubMenu(options.subMenuId);
 
-            $(this.SELECTOR_MENUES).mouseover(function() {
+            $(SELECTOR_MENUES).mouseover(function() {
                 HeaderDelayMenu.activate(this);
             }).mouseout(function() {
                 HeaderDelayMenu.deactivate(this);
