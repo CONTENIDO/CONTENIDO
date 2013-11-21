@@ -1,3 +1,15 @@
+/**
+ * Content Type Filelist styles
+ *
+ * @package    CONTENIDO Content Type Filelist styles
+ * @version    SVN Revision $Rev: 5958 $
+ * @author     ???
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http: //www.contenido.org/license/LIZENZ.txt
+ * @link       http: //www.4fb.de
+ * @link       http: //www.contenido.org
+ */
+
 @import url("cms_dirlist.css");
 
 .cms_filelist {
@@ -15,13 +27,6 @@
 
 .cms_filelist #manual_filelist_setting {
     clear: both;
-}
-
-.cms_filelist #manual .directoryList ul li div.active,
-.cms_filelist #manual .directoryList ul li#root li div.active a,
-.cms_filelist #manual .directoryList ul li#root li div.active em a,
-.cms_filelist #manual .directoryList ul li#root li div.active em span {
-    background-color: #FFF !important;
 }
 
 .cms_filelist label {
