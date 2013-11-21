@@ -297,7 +297,7 @@ class cApiDbfsCollection extends ItemCollection {
                 }
             }
         } else {
-            $parent = $this->parent_dir($dir);
+            $parent = $this->parentDir($dir);
 
             if ($parent != '.') {
                 if (!$this->dir_exists($parent)) {
