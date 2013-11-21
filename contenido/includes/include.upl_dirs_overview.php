@@ -326,7 +326,7 @@ if (is_array($objects)) {
 
         $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->custom['parent']);
 
-        $idAttrPath = str_replace('/', '_', trim($pathstring, '/'));
+        $idAttrPath = str_replace(array('/', ':'), array('_', ''), trim($pathstring, '/'));
         $tpl->set('d', 'ID_PATH', $idFsPathPrefix . $idAttrPath);
         $tpl->set('d', 'DATA_PATH', $pathstring);
         $tpl->set('d', 'INDENT', 0);
@@ -460,7 +460,7 @@ if (is_array($objects)) {
 
         $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->custom['parent']);
 
-        $idAttrPath = str_replace('/', '_', trim($pathstring, '/'));
+        $idAttrPath = str_replace(array('/', ':'), array('_', ''), trim($pathstring, '/'));
         $tpl->set('d', 'ID_PATH', $idDbfsPathPrefix . $idAttrPath);
         $tpl->set('d', 'DATA_PATH', $pathstring);
         $tpl->set('d', 'INDENT', 0);
@@ -474,7 +474,7 @@ if (is_array($objects)) {
 
 
 $pathPrefix = (cApiDbfs::isDbfs($path)) ? $idDbfsPathPrefix : $idFsPathPrefix;
-$idAttrPath = str_replace('/', '_', trim($path, '/'));
+$idAttrPath = str_replace(array('/', ':'), array('_', ''), trim($path, '/'));
 $tpl->set('s', 'ID_PATH', $pathPrefix . $idAttrPath);
 $tpl->set('s', 'DELETE_MSG', i18n("Do you really want to delete the following directory:") . '<b>{path}</b>');
 
