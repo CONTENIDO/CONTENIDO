@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-22 16:34+0100\n"
-"PO-Revision-Date: 2013-11-22 16:40+0100\n"
+"POT-Creation-Date: 2013-11-22 16:58+0100\n"
+"PO-Revision-Date: 2013-11-22 16:59+0100\n"
 "Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -5181,11 +5181,11 @@ msgstr "Such Statistiken sind in den Mandanten Einstellungen deaktiviert."
 msgid "Number of Results"
 msgstr "Anzahl der Ergebnisse"
 
-#: includes/include.stat_search_overview.php:64
+#: includes/include.stat_search_overview.php:68
 msgid "Count"
 msgstr "Anzahl"
 
-#: includes/include.stat_search_overview.php:65
+#: includes/include.stat_search_overview.php:69
 msgid "Average Number of Results"
 msgstr "Durchschnittliche Anzahl der Ergebnisse"
 
@@ -6382,15 +6382,15 @@ msgstr "Art der Rechte"
 msgid "Search Terms: "
 msgstr "Suchbegriffe:"
 
-#: templates/standard/template.stat_search_menu.html:13
+#: templates/standard/template.stat_search_menu.html:16
 msgid "Show all Search Terms"
 msgstr "Zeige alle Suchbegriffe"
 
-#: templates/standard/template.stat_search_overview.html:4
+#: templates/standard/template.stat_search_overview.html:3
 msgid "No."
 msgstr "Nr."
 
-#: templates/standard/template.stat_search_overview.html:7
+#: templates/standard/template.stat_search_overview.html:4
 msgid "Search Term"
 msgstr "Suchbegriff"
 
@@ -7041,6 +7041,10 @@ msgstr "Systemintegrität"
 #: xml/navigation.xml:97
 msgid "Translations"
 msgstr "Übersetzungen"
+
+#: xml/navigation.xml:99
+msgid "Search Terms"
+msgstr "Suchbegriffe"
 
 #: xml/system.xml:9
 msgid "Versioning activated"

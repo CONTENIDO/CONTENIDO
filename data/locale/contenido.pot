@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-22 16:34+0100\n"
+"POT-Creation-Date: 2013-11-22 16:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4872,11 +4872,11 @@ msgstr ""
 msgid "Number of Results"
 msgstr ""
 
-#: includes/include.stat_search_overview.php:64
+#: includes/include.stat_search_overview.php:68
 msgid "Count"
 msgstr ""
 
-#: includes/include.stat_search_overview.php:65
+#: includes/include.stat_search_overview.php:69
 msgid "Average Number of Results"
 msgstr ""
 
@@ -6043,15 +6043,15 @@ msgstr ""
 msgid "Search Terms: "
 msgstr ""
 
-#: templates/standard/template.stat_search_menu.html:13
+#: templates/standard/template.stat_search_menu.html:16
 msgid "Show all Search Terms"
 msgstr ""
 
-#: templates/standard/template.stat_search_overview.html:4
+#: templates/standard/template.stat_search_overview.html:3
 msgid "No."
 msgstr ""
 
-#: templates/standard/template.stat_search_overview.html:7
+#: templates/standard/template.stat_search_overview.html:4
 msgid "Search Term"
 msgstr ""
 
@@ -6700,6 +6700,10 @@ msgstr ""
 
 #: xml/navigation.xml:97
 msgid "Translations"
+msgstr ""
+
+#: xml/navigation.xml:99
+msgid "Search Terms"
 msgstr ""
 
 #: xml/system.xml:9

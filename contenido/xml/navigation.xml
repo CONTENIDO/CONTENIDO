@@ -96,6 +96,7 @@ i18n("Login")
 i18n("System integrity")
 i18n("Translations")
 i18n("HTML")
+i18n("Search Terms")
 -->
 <language>
     <navigation>
@@ -168,7 +169,8 @@ i18n("HTML")
         <statistic>
             <main>Statistics</main>
             <hits>Hits</hits>
-            <searches>Search Terms</searches></statistic>
+            <searches>Search Terms</searches>
+        </statistic>
         <administration>
             <main>Administration</main>
             <users>
