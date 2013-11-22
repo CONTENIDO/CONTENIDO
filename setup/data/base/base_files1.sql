@@ -151,6 +151,9 @@ INSERT INTO !PREFIX!_files VALUES('207', '93', 'include.mod_template.php', 'main
 INSERT INTO !PREFIX!_files VALUES('208', '94', 'include.mod_style.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('209', '95', 'include.mod_script.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('210', '96', 'include.mod_import_export.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('300', '200', 'include.stat_search_menu.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('301', '200', 'include.stat_left_top.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('302', '200', 'include.stat_search_overview.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('503', '52', 'include.subnav_blank.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('550', '550', 'include.mail_log.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('555', '551', 'include.mail_log.php', 'main');

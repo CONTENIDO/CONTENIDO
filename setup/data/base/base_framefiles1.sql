@@ -152,6 +152,8 @@ INSERT INTO !PREFIX!_frame_files VALUES('192', '83', '4', '185');
 INSERT INTO !PREFIX!_frame_files VALUES('193', '84', '4', '186');
 INSERT INTO !PREFIX!_frame_files VALUES('199', '7', '5', '192');
 INSERT INTO !PREFIX!_frame_files VALUES('207', '88', '4', '199');
-INSERT INTO !PREFIX!_frame_files VALUES('208', '89', '4', '200');
+INSERT INTO !PREFIX!_frame_files VALUES('300', '200', '2', '300');
+INSERT INTO !PREFIX!_frame_files VALUES('301', '200', '1', '301');
+INSERT INTO !PREFIX!_frame_files VALUES('302', '200', '4', '302');
 INSERT INTO !PREFIX!_frame_files VALUES('500', '97', '4', '500');
 

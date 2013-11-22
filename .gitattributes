@@ -122,6 +122,7 @@ contenido/classes/contenido/class.navmain.php -text
 contenido/classes/contenido/class.navsub.php -text
 contenido/classes/contenido/class.property.php -text
 contenido/classes/contenido/class.right.php -text
+contenido/classes/contenido/class.searchtracking.php -text
 contenido/classes/contenido/class.stat.php -text
 contenido/classes/contenido/class.system.property.php -text
 contenido/classes/contenido/class.template.php -text
@@ -1268,6 +1269,8 @@ contenido/includes/include.rights_tpl.php -text
 contenido/includes/include.stat_left_top.php -text
 contenido/includes/include.stat_menu.php -text
 contenido/includes/include.stat_overview.php -text
+contenido/includes/include.stat_search_menu.php -text
+contenido/includes/include.stat_search_overview.php -text
 contenido/includes/include.str_overview.php -text
 contenido/includes/include.str_subnav.php -text
 contenido/includes/include.style_edit_form.php -text
@@ -2116,6 +2119,8 @@ contenido/templates/standard/template.select.html -text
 contenido/templates/standard/template.stat_left_top.html -text
 contenido/templates/standard/template.stat_menu.html -text
 contenido/templates/standard/template.stat_overview.html -text
+contenido/templates/standard/template.stat_search_menu.html -text svneol=unset#text/plain
+contenido/templates/standard/template.stat_search_overview.html -text svneol=unset#text/plain
 contenido/templates/standard/template.stat_subnav.html -text
 contenido/templates/standard/template.stat_top.html -text
 contenido/templates/standard/template.str_overview.html -text
@@ -2622,6 +2627,7 @@ setup/upgrade_jobs/class.upgrade.job.0012.php -text
 setup/upgrade_jobs/class.upgrade.job.0013.php -text
 setup/upgrade_jobs/class.upgrade.job.0014.php -text
 setup/upgrade_jobs/class.upgrade.job.0015.php -text
+setup/upgrade_jobs/class.upgrade.job.0016.php -text
 test/class.all.test.case.php -text
 test/class.contenido.test.case.php -text
 test/contenido/class.classes.test.case.php -text

@@ -1048,6 +1048,9 @@ class cSearch extends cSearchBaseAbstract {
         $this->_debug('$this->search_result', $this->_searchResult);
         $this->_debug('$this->searchable_arts', $this->_searchableArts);
 
+        $searchTracking = new cApiSearchTrackingCollection();
+        $searchTracking->trackSearch($searchwords, count($this->_searchResult));
+        
         return $this->_searchResult;
     }
 

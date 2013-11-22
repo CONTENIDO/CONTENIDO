@@ -84,5 +84,7 @@ $cfg['tab']['user_prop'] = $cfg['sql']['sqlprefix'] . '_user_prop';
 $cfg['tab']['iso_639_2'] = $cfg['sql']['sqlprefix'] . '_iso_639_2';
 $cfg['tab']['iso_3166'] = $cfg['sql']['sqlprefix'] . '_iso_3166';
 
+$cfg['tab']['search_tracking'] = $cfg['sql']['sqlprefix'] . '_search_tracking';
+
 $cfg['tab']['phplib_auth_user_md5'] = $cfg['tab']['user'];
 ?>

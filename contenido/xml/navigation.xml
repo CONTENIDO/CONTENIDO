@@ -168,7 +168,7 @@ i18n("HTML")
         <statistic>
             <main>Statistics</main>
             <hits>Hits</hits>
-        </statistic>
+            <searches>Search Terms</searches></statistic>
         <administration>
             <main>Administration</main>
             <users>

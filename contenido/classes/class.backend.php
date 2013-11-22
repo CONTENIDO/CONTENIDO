@@ -194,6 +194,7 @@ class cBackend {
         }
 
         $debug = "Files:\n" . print_r($this->_files, true) . "\n" . "Actions:\n" . print_r($this->_actions[$this->_area], true) . "\n" . "Information:\n" . "Area: $area\n" . "Action: $action\n" . "Client: $client\n" . "Lang: $lang\n";
+        $debug = $sql;
         cDebug::out($debug);
     }
 

@@ -71,6 +71,7 @@ INSERT INTO !PREFIX!_area VALUES('93', 'mod', 'mod_template', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('94', 'mod', 'mod_style', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('95', 'mod', 'mod_javascript', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('96', 'mod', 'mod_import_export', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES('200', '0', 'stat_search', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('400', 'lay', 'lay_history', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('402', 'js', 'js_history', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('401', 'style', 'style_history', '1', '1', '0');

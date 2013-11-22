@@ -183,6 +183,8 @@ return array(
     'cApiProperty' => 'contenido/classes/contenido/class.property.php',
     'cApiRightCollection' => 'contenido/classes/contenido/class.right.php',
     'cApiRight' => 'contenido/classes/contenido/class.right.php',
+    'cApiSearchTrackingCollection' => 'contenido/classes/contenido/class.searchtracking.php',
+    'cApiSearchTracking' => 'contenido/classes/contenido/class.searchtracking.php',
     'cApiStatCollection' => 'contenido/classes/contenido/class.stat.php',
     'cApiStat' => 'contenido/classes/contenido/class.stat.php',
     'cApiSystemPropertyCollection' => 'contenido/classes/contenido/class.system.property.php',
