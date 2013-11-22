@@ -297,10 +297,10 @@ class cGuiNavigation {
 
         $main->set('s', 'ACTION', $sess->url('index.php'));
 
-        if($this->hasErrors()) {
+        if ($this->hasErrors()) {
             $errors = $this->getErrors();
             $errorString = '';
-            foreach($errors as $error) {
+            foreach ($errors as $error) {
                 $errorString .= $error.'<br>';
             }
             $errorString .= '<br>' . i18n('Some plugin menus can not be shown because of these errors.');

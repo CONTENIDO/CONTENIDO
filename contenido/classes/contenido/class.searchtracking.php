@@ -46,9 +46,9 @@ class cApiSearchTrackingCollection extends ItemCollection {
         $item = parent::createNewItem();
         $item->set("searchterm", $searchTerm);
         $item->set("results", $searchResults);
-        $item->set("datesearched", ($timestamp == "")? date('Y-m-d H:i:s') : $timestamp);
-        $item->set("idclient", ($idclient == 0)? cRegistry::getClientId() : $idclient);
-        $item->set("idlang", ($idlang == 0)? cRegistry::getLanguageId() : $idlang);
+        $item->set("datesearched", ($timestamp == "") ? date('Y-m-d H:i:s') : $timestamp);
+        $item->set("idclient", ($idclient == 0) ? cRegistry::getClientId() : $idclient);
+        $item->set("idlang", ($idlang == 0) ? cRegistry::getLanguageId() : $idlang);
         
         return $item->store();
     }
@@ -79,7 +79,7 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * @return boolean
      */
     public function selectPopularSearchTerms($idclient = 0, $idlang = 0) {
-        return $this->select('idclient=' . (($idclient == 0)? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0)? cRegistry::getLanguageId() : $idlang), 'searchterm', 'COUNT(searchterm) DESC');
+        return $this->select('idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), 'searchterm', 'COUNT(searchterm) DESC');
     }
 
     /**
@@ -94,7 +94,7 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * @return boolean
      */
     public function selectSearchTerm($term, $idclient = 0, $idlang = 0) {
-        return $this->select('searchterm=\'' . $term . '\' AND idclient=' . (($idclient == 0)? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0)? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
+        return $this->select('searchterm=\'' . $term . '\' AND idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
     }
 
 }

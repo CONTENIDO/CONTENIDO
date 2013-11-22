@@ -1,5 +1,5 @@
 <div id="navi" class="clearfix">
-	<ul>
+    <ul>
 {foreach from=$tree item=wrapper name=navi}
     {assign var="idcat" value=$wrapper.idcat}
     {assign var="url" value=$wrapper.item->getLink()}

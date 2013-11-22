@@ -641,8 +641,8 @@ function cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand) {
         $targetY = $y;
     }
 
-    $targetX = ($targetX != 0)? $targetX : 1;
-    $targetY = ($targetY != 0)? $targetY : 1;
+    $targetX = ($targetX != 0) ? $targetX : 1;
+    $targetY = ($targetY != 0) ? $targetY : 1;
 
     return array(
         $targetX,

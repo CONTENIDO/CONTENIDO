@@ -29,7 +29,7 @@ class cUpgradeJob_0015 extends cUpgradeJobAbstract {
     public function _execute() {
         global $db, $cfg;
 
-        if($_SESSION['setuptype'] == 'upgrade') {
+        if ($_SESSION['setuptype'] == 'upgrade') {
             $db->query('UPDATE `' . $cfg['tab']['nav_sub'] . '` SET idnavs=19, idarea=105 WHERE location=\'navigation/content/article/content\';');
             $db->query('UPDATE `' . $cfg['tab']['nav_sub'] . '` SET idnavs=20, idarea=2 WHERE location=\'navigation/content/article/editor\';');
         }

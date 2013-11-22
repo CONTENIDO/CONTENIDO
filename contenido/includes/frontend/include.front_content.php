@@ -554,7 +554,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Check if an article is start article of the category
     $oCatLang = new cApiCategoryLanguage();
     $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
-    $isstart = ($oCatLang->get('idartlang') == $idartlang)? 1 : 0;
+    $isstart = ($oCatLang->get('idartlang') == $idartlang) ? 1 : 0;
 
     // Time management, redirect
     $oArtLang = new cApiArticleLanguage();
@@ -621,7 +621,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             // default redirection is temporary
             // with status code 302 or 307 (since HTTP/1.1)
             $protocol = $_SERVER['SERVER_PROTOCOL'];
-            $redirect_code = ($protocol === 'HTTP/1.1')? 307 : 302;
+            $redirect_code = ($protocol === 'HTTP/1.1') ? 307 : 302;
             if ($redirect_mode === 'permanently') {
                 $redirect_code = 301;
             }

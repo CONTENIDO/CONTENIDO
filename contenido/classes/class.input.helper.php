@@ -471,7 +471,7 @@ try {
         var oStorage   = document.getElementsByName(sStorage)[0];
         if (oSelectBox && oStorage) {
             for (i = 0; i < oSelectBox.length; i++) {
-                if (oSelectBox.options[i].selected == true){
+                if (oSelectBox.options[i].selected == true) {
                     if (sSelection != "") {
                         sSelection = sSelection + ",";
                     }

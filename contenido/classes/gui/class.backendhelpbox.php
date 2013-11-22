@@ -75,7 +75,7 @@ class cGuiBackendHelpbox {
         $id = md5(rand()) . "-Info";
 
         $style = '';
-        if($this->imageURL != '') {
+        if ($this->imageURL != '') {
             $style = 'style="background: transparent url(' . $this->imageURL . ') no-repeat;"';
         }
 

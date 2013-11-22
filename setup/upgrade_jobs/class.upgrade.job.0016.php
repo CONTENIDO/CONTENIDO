@@ -29,7 +29,7 @@ class cUpgradeJob_0016 extends cUpgradeJobAbstract {
     public function _execute() {
         global $db, $cfg;
 
-        if($_SESSION['setuptype'] == 'upgrade') {
+        if ($_SESSION['setuptype'] == 'upgrade') {
             // new area stat_search
             $db->query("INSERT INTO " . $cfg['tab']['area'] . " VALUES('200', '0', 'stat_search', '1', '1', '0');");
             

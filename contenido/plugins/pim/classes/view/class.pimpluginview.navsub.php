@@ -302,7 +302,7 @@ class PimPluginViewNavSub {
                         continue;
                     }
 
-                    $founded[] = i18n('You find this plugin at navigation section', 'pim') . " &quot;{$contenidoNav}&quot; " . i18n('as', 'pim') . (($menuName != "")? ' &quot;' . $menuName . '&quot; ->' : '') . " &quot;{$entry->nodeValue}&quot;<br />";
+                    $founded[] = i18n('You find this plugin at navigation section', 'pim') . " &quot;{$contenidoNav}&quot; " . i18n('as', 'pim') . (($menuName != "") ? ' &quot;' . $menuName . '&quot; ->' : '') . " &quot;{$entry->nodeValue}&quot;<br />";
                 }
             }
 

@@ -308,12 +308,12 @@ class PifaRightBottomFormPage extends cGuiPage {
             $idform = NULL;
 
             // read item data from form
-            $nameValue = empty($_POST['name'])? '' : $_POST['name'];
+            $nameValue = empty($_POST['name']) ? '' : $_POST['name'];
             $nameValue = cSecurity::unescapeDB($nameValue);
             $nameValue = cSecurity::toString($nameValue);
             $nameValue = trim($nameValue);
 
-            $dataTableValue = empty($_POST['data_table'])? '' : $_POST['data_table'];
+            $dataTableValue = empty($_POST['data_table']) ? '' : $_POST['data_table'];
             $dataTableValue = trim($dataTableValue);
             $dataTableValue = strtolower($dataTableValue);
             $dataTableValue = preg_replace('/[^a-z0-9_]/', '_', $dataTableValue);
@@ -1139,7 +1139,7 @@ class PifaRightBottomFormImportPage extends cGuiPage {
 
         // read XML from file
         $xml = file_get_contents($_FILES['xml']['tmp_name']);
-        $tableName = isset($_POST['table_name'])? $_POST['table_name'] : NULL;
+        $tableName = isset($_POST['table_name']) ? $_POST['table_name'] : NULL;
 
         // check read operation
         if (false === $xml) {

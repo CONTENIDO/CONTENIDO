@@ -303,9 +303,9 @@ class ArticleForumCollection extends ItemCollection {
 
         // check for negative inputs
         // does not work with php 5.2
-        // (!preg_match('/\D/', $like))? : $like =
+        // (!preg_match('/\D/', $like)) ? : $like =
         // $this->item->getField('like');
-        // (!preg_match('/\D/', $dislike))? : $dislike =
+        // (!preg_match('/\D/', $dislike)) ? : $dislike =
         // $this->item->getField('dislike');
 
         $fields = array(
