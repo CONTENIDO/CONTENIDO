@@ -299,24 +299,31 @@ abstract class Item extends cItemBaseAbstract {
      * Gets the value of a specific field.
      *
      * @param string $sField Specifies the field to retrieve
+     * @param bool $bSafe Flag to run defined outFilter on passed value
      * @return mixed Value of the field
      */
-    public function getField($sField) {
+    public function getField($sField, $bSafe = true) {
         if ($this->virgin == true) {
             $this->lasterror = 'No item loaded';
             return false;
         }
-        return $this->_outFilter($this->values[$sField]);
+
+        if (true == $bSafe) {
+            return $this->_outFilter($this->values[$sField]);
+        } else {
+            return $this->values[$sField];
+        }
     }
 
     /**
      * Wrapper for getField (less to type).
      *
      * @param string $sField Specifies the field to retrieve
+     * @param bool $bSafe Flag to run defined outFilter on passed value
      * @return mixed Value of the field
      */
-    public function get($sField) {
-        return $this->getField($sField);
+    public function get($sField, $bSafe = true) {
+        return $this->getField($sField, $bSafe);
     }
 
     /**

@@ -498,6 +498,41 @@ class cApiDbfs extends Item {
     }
 
     /**
+     * Sets the value of a specific field.
+     * Ensures to bypass any set inFilter for 'content' field which is a blob.
+     *
+     * @param string $sField Field name
+     * @param string $mValue Value to set
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @return bool
+     */
+    public function setField($sField, $mValue, $bSafe = true) {
+        if ('content' === $sField) {
+            // Disable always filter for field 'content'
+            return parent::setField($sField, $mValue, false);
+        } else {
+            return parent::setField($sField, $mValue, $bSafe);
+        }
+    }
+
+    /**
+     * User defined value getter for cApiDbfs.
+     * Ensures to bypass any set outFilter for 'content' field which is a blob.
+     *
+     * @param string $sField Specifies the field to retrieve
+     * @param bool $bSafe Flag to run defined outFilter on passed value
+     * @return mixed Value of the field
+     */
+    public function getField($sField, $bSafe = true) {
+        if ('content' === $sField) {
+            // Disable always filter for field 'content'
+            return parent::getField($sField, false);
+        } else {
+            return parent::getField($sField, $bSafe);
+        }
+    }
+
+    /**
      * Removes the DBFS protocol and leading '/' from received path.
      *
      * @param string $path
