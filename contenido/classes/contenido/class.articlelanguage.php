@@ -389,9 +389,11 @@ class cApiArticleLanguage extends Item {
      * sitemapprio - The priority for the sitemap
      *
      * @param string $name
+     * @param bool $bSafe Flag to run defined outFilter on passed value
+     *                    NOTE: It's not used ATM!
      * @return string Value of property
      */
-    public function getField($name) {
+    public function getField($name, $bSafe = true) {
         return $this->values[$name];
     }
 

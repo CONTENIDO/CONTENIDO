@@ -528,8 +528,8 @@ class cApiModule extends Item {
      *
      * @see Item::getField()
      */
-    public function getField($field) {
-        $value = parent::getField($field);
+    public function getField($field, $bSafe = true) {
+        $value = parent::getField($field, $bSafe);
 
         switch ($field) {
             case 'name':
