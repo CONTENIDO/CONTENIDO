@@ -7,15 +7,15 @@
  * 2.) The function is documented
  * 3.) The function makes sense and is generically usable
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -25,7 +25,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * are preserved, without exceeding $maxlen.
  *
  * Warning: Currently, this function uses a regular ASCII-Whitespace to do the
- * seperation test. If you are using '&nbsp' to create spaces, this function will fail.
+ * seperation test. If you are using '&nbsp' to create spaces, this function
+ * will fail.
  *
  * Example:
  * $string = "This is a simple test";
@@ -34,9 +35,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This would output "This is a", since this function respects word boundaries
  * and doesn't operate beyond the limit given by $maxlen.
  *
- * @param   string  $string  The string to operate on
- * @param   int     $maxlen  The maximum number of characters
- * @return  string  The resulting string
+ * @param string $string The string to operate on
+ * @param int $maxlen The maximum number of characters
+ * @return string The resulting string
  */
 function cApiStrTrimAfterWord($string, $maxlen) {
     // If the string is smaller than the maximum lenght, it makes no sense to
@@ -61,7 +62,8 @@ function cApiStrTrimAfterWord($string, $maxlen) {
 }
 
 /**
- * Trims a string to a specific length. If the string is longer than $maxlen,
+ * Trims a string to a specific length.
+ * If the string is longer than $maxlen,
  * dots are inserted ("...") right before $maxlen.
  *
  * Example:
@@ -71,9 +73,9 @@ function cApiStrTrimAfterWord($string, $maxlen) {
  * This would output "This is a si...", since the string is longer than $maxlen
  * and the resulting string matches 15 characters including the dots.
  *
- * @param   string  $string  The string to operate on
- * @param   int     $maxlen  The maximum number of characters
- * @return  string  The resulting string
+ * @param string $string The string to operate on
+ * @param int $maxlen The maximum number of characters
+ * @return string The resulting string
  */
 function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
     // If the string is smaller than the maximum lenght, it makes no sense to
@@ -85,13 +87,17 @@ function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
     // Calculate the maximum text length
     $maximum_text_length = $maxlen - strlen($fillup);
 
-    // Cut it
-    if (preg_match('/(*UTF8)^.{0,' . $maximum_text_length . '}/', $string ,$result_array)) {
-        $cutted_string = $result_array[0];
-    } else if (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string ,$result_array)) {
-        $cutted_string = $result_array[0];
+    // If text length is over zero cut it
+    if ($maximum_text_length > 0) {
+        if (preg_match('/(*UTF8)^.{0,' . $maximum_text_length . '}/', $string, $result_array)) {
+            $cutted_string = $result_array[0];
+        } else if (preg_match('/^.{0,' . $maximum_text_length . '}/u', $string, $result_array)) {
+            $cutted_string = $result_array[0];
+        } else {
+            $cutted_string = substr($string, 0, $maximum_text_length);
+        }
     } else {
-         $cutted_string = substr($string, 0, $maximum_text_length);
+        $cutted_string = $string;
     }
 
     // Append the fillup string
@@ -101,42 +107,50 @@ function cApiStrTrimHard($string, $maxlen, $fillup = '...') {
 }
 
 /**
- * Trims a string to a approximate length. Sentence boundaries are preserved.
+ * Trims a string to a approximate length.
+ * Sentence boundaries are preserved.
  *
  * The algorythm inside calculates the sentence length to the previous and next
- * sentences. The distance to the next sentence which is smaller will be taken to
+ * sentences. The distance to the next sentence which is smaller will be taken
+ * to
  * trim the string to match the approximate length parameter.
  *
  * Example:
  *
- * $string  = "This contains two sentences. ";
+ * $string = "This contains two sentences. ";
  * $string .= "Lets play around with them. ";
  *
  * echo cApiStrTrimSentence($string, 40);
  * echo cApiStrTrimSentence($string, 50);
  *
- * The first example would only output the first sentence, the second example both
+ * The first example would only output the first sentence, the second example
+ * both
  * sentences.
  *
  * Explanation:
  *
- * To match the given max length closely, the function calculates the distance to
+ * To match the given max length closely, the function calculates the distance
+ * to
  * the next and previous sentences. Using the maxlength of 40 characters, the
- * distance to the previous sentence would be 8 characters, and to the next sentence
- * it would be 19 characters. Therefore, only the previous sentence is displayed.
+ * distance to the previous sentence would be 8 characters, and to the next
+ * sentence
+ * it would be 19 characters. Therefore, only the previous sentence is
+ * displayed.
  *
- * The second example displays the second sentence also, since the distance to the
+ * The second example displays the second sentence also, since the distance to
+ * the
  * next sentence is only 9 characters, but to the previous it is 18 characters.
  *
- * If you specify the boolean flag "$hard", the limit parameter creates a hard limit
+ * If you specify the boolean flag "$hard", the limit parameter creates a hard
+ * limit
  * instead of calculating the distance.
  *
  * This function ensures that at least one sentence is returned.
  *
- * @param  string  $string     The string to operate on
- * @param  int     $approxlen  The approximate number of characters
- * @param  bool    $hard       If true, use a hard limit for the number of characters
- * @return string  The resulting string
+ * @param string $string The string to operate on
+ * @param int $approxlen The approximate number of characters
+ * @param bool $hard If true, use a hard limit for the number of characters
+ * @return string The resulting string
  */
 function cApiStrTrimSentence($string, $approxlen, $hard = false) {
     // If the string is smaller than the maximum lenght, it makes no sense to
@@ -165,7 +179,8 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
         $previous_sentence_start = 0;
     }
 
-    // If we have a hard limit, we only want to process everything before $approxlen
+    // If we have a hard limit, we only want to process everything before
+    // $approxlen
     if (($hard == true) && ($next_sentence_start > $approxlen)) {
         return (substr($string, 0, $previous_sentence_start + 1));
     }
@@ -190,7 +205,8 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
 }
 
 /**
- * cApiStrReplaceDiacritics: Converts diactritics to english characters whenever possible.
+ * cApiStrReplaceDiacritics: Converts diactritics to english characters whenever
+ * possible.
  *
  * For german umlauts, this function converts the umlauts to their ASCII
  * equalients (e.g. ä => ae).
@@ -200,21 +216,98 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false) {
  *
  * For other languages, the diacritic marks are removed, if possible.
  *
- * @param  string  $sString         The string to operate on
- * @param  string  $sourceEncoding  The source encoding (default: UTF-8)
- * @param  string  $targetEncoding  The target encoding (default: UTF-8)
- * @return string  The resulting string
+ * @param string $sString The string to operate on
+ * @param string $sourceEncoding The source encoding (default: UTF-8)
+ * @param string $targetEncoding The target encoding (default: UTF-8)
+ * @return string The resulting string
  */
 function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEncoding = 'UTF-8') {
     if ($sourceEncoding != 'UTF-8') {
         $sString = cApiStrRecodeString($sString, $sourceEncoding, "UTF-8");
     }
 
-    // replace regular german umlauts and other common characters with diacritics
+    // replace regular german umlauts and other common characters with
+    // diacritics
     static $aSearch, $aReplace;
     if (!isset($aSearch)) {
-        $aSearch = array('Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü', 'ß', 'Á', 'À', 'Â', 'á', 'à', 'â', 'É', 'È', 'Ê', 'é', 'è', 'ê', 'Í', 'Ì', 'Î', 'í', 'ì', 'î', 'Ó', 'Ò', 'Ô', 'ó', 'ò', 'ô', 'Ú', 'Ù', 'Û', 'ú', 'ù', 'û');
-        $aReplace = array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ue', 'ss', 'A', 'A', 'A', 'a', 'a', 'a', 'E', 'E', 'E', 'e', 'e', 'e', 'I', 'I', 'I', 'i', 'i', 'i', 'O', 'O', 'O', 'o', 'o', 'o', 'U', 'U', 'U', 'u', 'u', 'u');
+        $aSearch = array(
+            'Ä',
+            'Ö',
+            'Ü',
+            'ä',
+            'ö',
+            'ü',
+            'ß',
+            'Á',
+            'À',
+            'Â',
+            'á',
+            'à',
+            'â',
+            'É',
+            'È',
+            'Ê',
+            'é',
+            'è',
+            'ê',
+            'Í',
+            'Ì',
+            'Î',
+            'í',
+            'ì',
+            'î',
+            'Ó',
+            'Ò',
+            'Ô',
+            'ó',
+            'ò',
+            'ô',
+            'Ú',
+            'Ù',
+            'Û',
+            'ú',
+            'ù',
+            'û'
+        );
+        $aReplace = array(
+            'Ae',
+            'Oe',
+            'Ue',
+            'ae',
+            'oe',
+            'ue',
+            'ss',
+            'A',
+            'A',
+            'A',
+            'a',
+            'a',
+            'a',
+            'E',
+            'E',
+            'E',
+            'e',
+            'e',
+            'e',
+            'I',
+            'I',
+            'I',
+            'i',
+            'i',
+            'i',
+            'O',
+            'O',
+            'O',
+            'o',
+            'o',
+            'o',
+            'U',
+            'U',
+            'U',
+            'u',
+            'u',
+            'u'
+        );
     }
     $sString = str_replace($aSearch, $aReplace, $sString);
 
@@ -224,10 +317,12 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEn
 }
 
 /**
- * Converts a string to another encoding. This function tries to detect which function
+ * Converts a string to another encoding.
+ * This function tries to detect which function
  * to use (either recode or iconv).
  *
- * If $sourceEncoding and $targetEncoding are the same, this function returns immediately.
+ * If $sourceEncoding and $targetEncoding are the same, this function returns
+ * immediately.
  *
  * For more information about encodings, refer to
  * http://en.wikipedia.org/wiki/Character_encoding
@@ -246,10 +341,11 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = 'UTF-8', $targetEn
  * @todo Check if the charset names are the same for both converters
  * @todo Implement a converter and charset checker to ensure compilance.
  *
- * @param   string  $sString         The string to operate on
- * @param   string  $sourceEncoding  The source encoding (default: ISO-8859-1)
- * @param   string  $targetEncoding  The target encoding (if false, use source encoding)
- * @return  string  The resulting string
+ * @param string $sString The string to operate on
+ * @param string $sourceEncoding The source encoding (default: ISO-8859-1)
+ * @param string $targetEncoding The target encoding (if false, use source
+ *            encoding)
+ * @return string The resulting string
  */
 function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
     // If sourceEncoding and targetEncoding are the same, return
@@ -275,16 +371,17 @@ function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding) {
 }
 
 /**
- * Removes or converts all "evil" URL characters. This function removes or converts
+ * Removes or converts all "evil" URL characters.
+ * This function removes or converts
  * all characters which can make an URL invalid.
  *
  * Clean characters include:
  * - All characters between 32 and 126 which are not alphanumeric and
- *   aren't one of the following: _-.
+ * aren't one of the following: _-.
  *
- * @param   string  $sString   The string to operate on
- * @param   bool    $bReplace  If true, all "unclean" characters are replaced
- * @return  string  The resulting string
+ * @param string $sString The string to operate on
+ * @param bool $bReplace If true, all "unclean" characters are replaced
+ * @return string The resulting string
  */
 function cApiStrCleanURLCharacters($sString, $bReplace = false) {
     $sString = cApiStrReplaceDiacritics($sString);
@@ -314,8 +411,9 @@ function cApiStrCleanURLCharacters($sString, $bReplace = false) {
 
 /**
  * Normalizes line endings in passed string.
- * @param  string  $sString
- * @param  string  $sLineEnding  Feasible values are "\n", "\r" or "\r\n"
+ *
+ * @param string $sString
+ * @param string $sLineEnding Feasible values are "\n", "\r" or "\r\n"
  * @return string
  */
 function cApiStrNormalizeLineEndings($sString, $sLineEnding = "\n") {

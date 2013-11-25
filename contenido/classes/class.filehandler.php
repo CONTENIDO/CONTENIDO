@@ -349,7 +349,7 @@ class cFileHandler {
             $ret['extension'] = '';
         }
 
-        if (version_compare(PHP_VERSION, '5.3', '<')) {
+        if (version_compare(PHP_VERSION, '5.3', '<') && function_exists('mime_content_type')) {
             // function is deprecated in PHP 5.3
             $ret['mime'] = @mime_content_type($filename);
         } else if (function_exists('finfo_open')) {
