@@ -117,6 +117,8 @@ INSERT INTO !PREFIX!_actions VALUES ('811', '811', 'do_purge', 'do_purge', '', '
 INSERT INTO !PREFIX!_actions VALUES('812', '11', '', 'mod_sync', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('813', '9','','lay_sync','','','1');
 INSERT INTO !PREFIX!_actions VALUES('850', '100','','con_meta_saveart','','','0');
+INSERT INTO !PREFIX!_actions VALUES('851', '100','','con_meta_edit','','','0');
+INSERT INTO !PREFIX!_actions VALUES('852', '100','','con_meta_deletetype','','','0');
 INSERT INTO !PREFIX!_actions VALUES('855', '105','','con_content','','','1');
 INSERT INTO !PREFIX!_actions VALUES('856', '105','','savecontype','','','1');
 INSERT INTO !PREFIX!_actions VALUES('857', '105','','deletecontype','','','1');

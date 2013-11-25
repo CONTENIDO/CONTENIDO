@@ -43,6 +43,9 @@ $lngAct['con_tplcfg']['con_edddittemplate']         = i18n('Help');
 $lngAct['con_content_list']['con_content']          = i18n('List content entries');
 $lngAct['con_content_list']['savecontype']          = i18n('Edit content list entry');
 $lngAct['con_content_list']['deletecontype']        = i18n('Delete content list entry');
+$lngAct['con_meta']['con_meta_saveart']				= i18n('Save SEO options');
+$lngAct['con_meta']['con_meta_edit']				= i18n('Edit SEO options');
+$lngAct['con_meta']['con_meta_deletetype']			= i18n('Delete meta tag value');
 $lngAct['con_translate']['con_translate_view']      = i18n('View translations');
 $lngAct['con_translate']['con_translate_edit']      = i18n('Edit translations');
 
