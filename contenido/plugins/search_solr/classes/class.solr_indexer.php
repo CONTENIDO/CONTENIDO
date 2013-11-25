@@ -19,9 +19,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * exception is thrown. This class allows handling of more than one article at
  * once.
  *
- * http://client-uat70.4fb.net:8080/solr/admin/cores?action=STATUS
- * http://client-uat70.4fb.net:8080/solr/admin/cores?action=RENAME&core=collection1&other=contenido
- * http://client-uat70.4fb.net:8080/solr/admin/cores?action=RELOAD&core=contenido
+ * <server>:8080/solr/admin/cores?action=STATUS
+ * <server>:8080/solr/admin/cores?action=RENAME&core=collection1&other=contenido
+ * <server>:8080/solr/admin/cores?action=RELOAD&core=contenido
  *
  * @author marcus.gnass
  */
