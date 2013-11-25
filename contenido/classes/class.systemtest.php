@@ -469,12 +469,12 @@ class cSystemtest {
         $aFileinfo = array();
         $aFileinfo["info"] = $info;
         $aFileinfo["type"] = $type;
-        $aFileinfo["owner"]["read"] = ($oiFilePermissions & 0x0100) ? true : false;
-        $aFileinfo["owner"]["write"] = ($oiFilePermissions & 0x0080) ? true : false;
-        $aFileinfo["group"]["read"] = ($oiFilePermissions & 0x0020) ? true : false;
-        $aFileinfo["group"]["write"] = ($oiFilePermissions & 0x0010) ? true : false;
-        $aFileinfo["others"]["read"] = ($oiFilePermissions & 0x0004) ? true : false;
-        $aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002) ? true : false;
+        $aFileinfo["owner"]["read"] = ($oiFilePermissions & 0x0100)? true : false;
+        $aFileinfo["owner"]["write"] = ($oiFilePermissions & 0x0080)? true : false;
+        $aFileinfo["group"]["read"] = ($oiFilePermissions & 0x0020)? true : false;
+        $aFileinfo["group"]["write"] = ($oiFilePermissions & 0x0010)? true : false;
+        $aFileinfo["others"]["read"] = ($oiFilePermissions & 0x0004)? true : false;
+        $aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002)? true : false;
         $aFileinfo["owner"]["id"] = fileowner($sFilename);
         $aFileinfo["group"]["id"] = filegroup($sFilename);
         return ($aFileinfo);
@@ -1142,7 +1142,15 @@ class cSystemtest {
                     continue;
                 }
                 foreach ($frontendFiles as $file) {
-                    $ret = $this->testSingleFile($oneClient["path"]["frontend"] . $file, self::C_SEVERITY_WARNING, true);
+
+                    // If data/layouts or data/modules not exist, do not display an error message
+                    // Cause: At CONTENIDO 4.8 both folders do not exist
+                    if (($file == "data/layouts" || $file == "data/modules") && !is_dir($oneClient["path"]["frontend"] . $file)) {
+						continue;
+                    } else {
+                        $ret = $this->testSingleFile($oneClient["path"]["frontend"] . $file, self::C_SEVERITY_WARNING, true);
+                    }
+
                     if ($ret == false) {
                         $status = false;
                     }
@@ -1444,4 +1452,5 @@ class cSystemtest {
                 break;
         }
     }
+
 }
