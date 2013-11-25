@@ -469,7 +469,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tpl->set('s', 'LABEL_REDIRECT_CODE', i18n("Status code"));
 
     if ($catArt[0]['idcatart'] > 0) {
-        $tpl->set('s', 'LOGTABLE_HEADLINE', '<h3 style="margin-top:20px;margin-bottom:10px;">' . i18n('Article') . 'log</h3>');
+        $tpl->set('s', 'LOGTABLE_HEADLINE', '<h3 style="margin-top:20px;margin-bottom:10px;">' . i18n('Articlelog') . '</h3>');
         $tpl->set('s', 'LOGTABLE', $div->render());
     } else {
         $tpl->set('s', 'LOGTABLE_HEADLINE', '');
