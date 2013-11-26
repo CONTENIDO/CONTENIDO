@@ -35,20 +35,12 @@ $oSelRange = new cHTMLSelectElement('idclientslang');
 $oOption = new cHTMLOptionElement(i18n("Language independent"), 0);
 $oSelRange->addOptionElement(0, $oOption);
 
-$sSQL = "SELECT A.name AS name, A.idlang AS idlang, B.idclientslang AS idclientslang
-        FROM
-        " . $cfg["tab"]["lang"] . " AS A,
-        " . $cfg["tab"]["clients_lang"] . " AS B
-        WHERE
-        A.idlang=B.idlang AND
-        B.idclient='" . cSecurity::toInteger($idclient) . "'
-        ORDER BY A.idlang";
-
-$db->query($sSQL);
-
-while ($db->nextRecord()) {
-    $iID = $db->f("idclientslang");
-    $oOption = new cHTMLOptionElement($db->f("name") . " (" . $db->f("idlang") . ")", $iID);
+// Get all client languages and fill the language dependent settings select box
+$oClientLangColl = new cApiClientLanguageCollection();
+$aLanguages = $oClientLangColl->getAllLanguagesByClient($idclient);
+foreach ($aLanguages as $curIdLang => $aItem) {
+    $iID = $aItem['idclientslang'];
+    $oOption = new cHTMLOptionElement("{$aItem['name']} ({$aItem['idlang']})", $iID);
     $oSelRange->addOptionElement($iID, $oOption);
 }
 

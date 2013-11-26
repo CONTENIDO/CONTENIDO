@@ -106,6 +106,31 @@ class cApiClientLanguageCollection extends ItemCollection {
     }
 
     /**
+     * Returns all languages of an client. Merges the values from language and client language
+     * table and returns them back.
+     *
+     * @param int $client
+     * @return array List of languages where the key is the language id and
+     *         value an assoziative array merged by fields from language and client language table
+     */
+    public function getAllLanguagesByClient($client) {
+        global $cfg;
+
+        $list = array();
+        $sql = "SELECT *
+                FROM `%s` AS cl, `%s` AS l
+                WHERE cl.idclient=%d AND cl.idlang = l.idlang
+                ORDER BY l.idlang ASC";
+
+        $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
+        while ($this->db->nextRecord()) {
+            $list[$this->db->f('idlang')] = $this->db->toArray();
+        }
+
+        return $list;
+    }
+
+    /**
      * Returns the id of first language for a specific client.
      *
      * @param int $client
