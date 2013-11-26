@@ -32,9 +32,10 @@
 
 <script type="text/javascript">
 (function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {idclient: {IDCLIENT}});
+    var frame = Con.getFrame('left_bottom'),
+        idclient = '{IDCLIENT}';
+    if (frame && idclient) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {idclient: idclient});
     }
 
     $(function() {
