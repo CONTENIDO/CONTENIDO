@@ -7,16 +7,16 @@
     <style type="text/css">
     #contenido_notification {margin-bottom:5px;}
     table.content { border:0px; border-left:1px; border-bottom:1px; border-style:solid; }
-    table.content td { border:0px; border-top:1px; border-right:1px; border-style:solid; border-color:{BORDERCOLOR}; }
+    table.content td { border:0px; border-top:1px; border-right:1px; border-style:solid; }
     </style>
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript">
     (function(Con, $) {
-        var frame = Con.getFrame('left_bottom').location.href;
+        var frame = Con.getFrame('left_bottom');
         if (frame) {
-            frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {groupid: {GET_GROUPID}, action: null});;
+            frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {groupid: '{GET_GROUPID}', action: null});;
         }
     })(Con, Con.$);
     </script>
