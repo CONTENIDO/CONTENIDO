@@ -34,13 +34,9 @@ foreach ($translationArray as $key => $value) {
     $link->setCustom("idmod", cSecurity::toInteger($idmod));
     $link->setCustom("row", $rowCount);
 
-    if ($rowCount == $current) {
-        $style = "active";
-    } else {
-        $style = "";
-    }
+    $style = ($rowCount == $current) ? 'active' : '';
 
-    $href = $link->getHREF();
+    $href = $link->getHref();
     $mylink->setLink(conHtmlSpecialChars('javascript:parent.location="' . $href . '"'));
     $mylink->setContent($key);
 

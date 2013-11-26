@@ -159,7 +159,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $link = new cHTMLLink();
     $link->setCLink("mod_translate", 4, "");
     $link->setCustom("idmod", $idmod);
-    header("Location: " . $link->getHREF());
+    header("Location: " . $link->getHref());
 } else {
     $oInUse = new cApiInUseCollection();
     list($bInUse, $message) = $oInUse->checkAndMark("idmod", $idmod, true, i18n("Module is in use by %s (%s)"), true, "main.php?area=$area&frame=$frame&idmod=$idmod");
