@@ -32,6 +32,17 @@ if (!empty($idclient) && is_numeric($idclient)) {
     $oClient = new cApiClient(cSecurity::toInteger($idclient));
 }
 
+// @TODO Find a general solution for this!
+if (defined('CON_STRIPSLASHES')) {
+    $request = cString::stripSlashes($_REQUEST);
+} else {
+    $request = $_REQUEST;
+}
+
+$clientname = $request['clientname'];
+$htmlpath = $request['htmlpath'];
+$frontendpath = $request['frontendpath'];
+
 $urlscheme = parse_url($htmlpath, PHP_URL_SCHEME);
 $valid = ($clientname != "" && $frontendpath != "" && ($urlscheme == 'http' || $urlscheme == 'https'));
 
