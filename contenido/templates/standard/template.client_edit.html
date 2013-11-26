@@ -12,19 +12,19 @@
 <body style="margin:10px">
 
 {FORM}
-<table class="generic" id="stats" cellspacing="0" cellpadding="2" border="0">
+<table class="generic" cellspacing="0" cellpadding="2" border="0">
     <tr>
-        <th valign="top" style="padding-left:{PADDING_LEFT}px">{PROPERTY}</th>
+        <th valign="top">{PROPERTY}</th>
         <th valign="top" align="left">{VALUE}</th>
     </tr>
     <!-- BEGIN:BLOCK -->
-    <tr id="{ROWNAME}" >
-        <td valign="top" style="padding-left:{PADDING_LEFT}px">{CATNAME}</td>
+    <tr>
+        <td valign="top">{CATNAME}</td>
         <td valign="top" align="left">{CATFIELD}</td>
     </tr>
     <!-- END:BLOCK -->
-    <tr id="{ROWNAME}" >
-        <td valign="top" style="border-right-width: 0px; padding-left:{PADDING_LEFT}px">&nbsp;</td>
+    <tr>
+        <td valign="top" style="border-right-width:0px;">&nbsp;</td>
         <td valign="top" align="right"><a accesskey="c" href="{CANCELLINK}"><img border="0" src="images/but_cancel.gif" alt="{CANCELTEXT}" title="{CANCELTEXT}"></a><img src="images/spacer.gif" width="20"><input id="submit_button" accesskey="s" type="image" src="images/but_ok.gif" alt="{SUBMITTEXT}" title="{SUBMITTEXT}" border="0"></td>
     </tr>
 </table>
