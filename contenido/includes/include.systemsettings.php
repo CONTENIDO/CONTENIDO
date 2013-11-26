@@ -32,8 +32,11 @@ if (defined('CON_STRIPSLASHES')) {
     $request = $_REQUEST;
 }
 
+// @TODO: Check possibility to use $perm->isSysadmin()
+$isSysadmin = (false !== strpos($auth->auth["perm"], "sysadmin"));
+
 if ($action == "systemsettings_save_item") {
-    if (strpos($auth->auth["perm"], "sysadmin") === false) {
+    if (false === $isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."), 1);
     } else {
         if (!in_array($request['systype'] . '_' . $request['sysname'], $aManagedValues)) {
@@ -50,7 +53,7 @@ if ($action == "systemsettings_save_item") {
 }
 
 if ($action == "systemsettings_delete_item") {
-    if (strpos($auth->auth["perm"], "sysadmin") === false) {
+    if (false === $isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."), 1);
     } else {
         deleteSystemProperty($request['systype'], $request['sysname']);
@@ -65,22 +68,20 @@ $list->setCell(1, 1, i18n("Type"));
 $list->setCell(1, 2, i18n("Name"));
 $list->setCell(1, 3, i18n("Value"));
 
-if (!(strpos($auth->auth["perm"], "sysadmin") === false)) {
-    $list->setCell(1, 4, "&nbsp;");
+if (true === $isSysadmin) {
+    $list->setCell(1, 4, i18n("Action"));
 }
 
 $backendUrl = cRegistry::getBackendUrl();
 
 $count = 2;
 
-$oLinkEdit = new cHTMLLink();
-$oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
-$oLinkDelete = new cHTMLLink();
-$oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
-if (strpos($auth->auth["perm"], "sysadmin") === false) {
-    $oLinkEdit->setContent('<img src="' .$backendUrl . $cfg['path']['images'] . 'editieren_off.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
-    $oLinkDelete->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete_inact.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
-} else {
+if (true === $isSysadmin) {
+    // Edit/delete links only for sysadmin
+    $oLinkEdit = new cHTMLLink();
+    $oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
+    $oLinkDelete = new cHTMLLink();
+    $oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
     $oLinkEdit->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
     $oLinkDelete->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
 }
@@ -88,21 +89,12 @@ if (strpos($auth->auth["perm"], "sysadmin") === false) {
 $spacer = new cHTMLImage();
 $spacer->setWidth(5);
 
-if (is_array($settings)) {
-    foreach ($settings as $key => $types) {
-        foreach ($types as $type => $value) {
-            $oLinkEdit->setCustom("sysname", urlencode($type));
-            $oLinkEdit->setCustom("systype", urlencode($key));
+foreach ($settings as $key => $types) {
+    foreach ($types as $type => $value) {
+        // Process only entries which are not flagged as managed system settings
+        if (!in_array($key . '_' . $type, $aManagedValues)) {
 
-            $oLinkDelete->setCustom("sysname", urlencode($type));
-            $oLinkDelete->setCustom("systype", urlencode($key));
-
-            $link = $oLinkEdit;
-            $dlink = $oLinkDelete->render();
-
-            if (in_array($key . '_' . $type, $aManagedValues)) {
-                #ignore record
-            } else if (($action == "systemsettings_edit_item") && ($request['systype'] == $key) && ($request['sysname'] == $type) && (strpos($auth->auth["perm"], "sysadmin") !== false)) {
+            if (($action == "systemsettings_edit_item") && ($request['systype'] == $key) && ($request['sysname'] == $type) && $isSysadmin) {
                 $oInputboxValue = new cHTMLTextbox("sysvalue", conHtmlSpecialChars($value['value']));
                 $oInputboxValue->setWidth(30);
                 $oInputboxName = new cHTMLTextbox("sysname", conHtmlSpecialChars($type));
@@ -133,19 +125,26 @@ if (is_array($settings)) {
                     $sShort = conHtmlSpecialChars(cApiStrTrimHard($key, 35));
                     $key = sprintf($sMouseoverTemplate, conHtmlSpecialChars(addslashes($key), ENT_QUOTES), $sShort);
                 }
-                !strlen(trim($value['value'])) ? $sValue = '&nbsp;' : $sValue = $value['value'];
+                $sValue = !strlen(trim($value['value'])) ? '&nbsp;' : $value['value'];
 
                 $list->setCell($count, 1, $key);
                 $list->setCell($count, 2, $type);
                 $list->setCell($count, 3, $sValue);
             }
 
-            if (!in_array($key . '_' . $type, $aManagedValues)) {
-                if (!(strpos($auth->auth["perm"], "sysadmin") === false)) {
-                    $list->setCell($count, 4, $spacer->render() . $link->render() . $spacer->render() . $dlink . $spacer->render());
-                }
-                $count++;
+            if ($isSysadmin) {
+                $oLinkEdit->setCustom("sysname", urlencode($type));
+                $oLinkEdit->setCustom("systype", urlencode($key));
+
+                $oLinkDelete->setCustom("sysname", urlencode($type));
+                $oLinkDelete->setCustom("systype", urlencode($key));
+
+                $link = $oLinkEdit;
+                $dlink = $oLinkDelete->render();
+            
+                $list->setCell($count, 4, $spacer->render() . $link->render() . $spacer->render() . $dlink . $spacer->render());
             }
+            $count++;
         }
     }
 }
@@ -181,7 +180,7 @@ $spacer->setContent("<br>");
 $renderobj = array();
 
 if ($action == "systemsettings_edit_item") {
-    if (strpos($auth->auth["perm"], "sysadmin") === false) {
+    if (false === $isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
         $renderobj[] = $list;
     } else {
@@ -196,7 +195,7 @@ if ($action == "systemsettings_edit_item") {
     $renderobj[] = $list;
 }
 
-if (strpos($auth->auth["perm"], "sysadmin") !== false) {
+if (true === $isSysadmin) {
     $renderobj[] = $spacer;
     $renderobj[] = $form;
 }
