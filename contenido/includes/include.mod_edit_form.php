@@ -424,7 +424,10 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $oCodeMirrorInput = new CodeMirror('input', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
         $oCodeMirrorOutput = new CodeMirror('output', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
 
-        $page->addScript($oCodeMirrorInput->renderScript() . $oCodeMirrorOutput->renderScript());
+        $codeMirrorScripts = trim($oCodeMirrorInput->renderScript() . $oCodeMirrorOutput->renderScript());
+        if (!empty($codeMirrorScripts)) {
+            $page->addScript($codeMirrorScripts);
+        }
 
         // dont print menu
         if ($action == "mod_sync") {
