@@ -328,8 +328,8 @@ function conInjectData(obj) {
         if (!parent.parent.frames["left"].frames['left_top'].cfg.scrollX) parent.parent.frames["left"].frames['left_top'].cfg.scrollX = 0;
         if (!parent.parent.frames["left"].frames['left_top'].cfg.scrollY) parent.parent.frames["left"].frames['left_top'].cfg.scrollY = 0;
 
-        parent.parent.frames["left"].frames['left_top'].cfg.scrollX = scrollX;
-        parent.parent.frames["left"].frames['left_top'].cfg.scrollY = scrollY;
+        parent.parent.frames["left"].frames['left_top'].cfg.scrollX = window.scrollX;
+        parent.parent.frames["left"].frames['left_top'].cfg.scrollY = window.scrollY;
     }
 }
 
