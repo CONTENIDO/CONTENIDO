@@ -15,21 +15,20 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$properties = new cApiPropertyCollection();
-$oClient = new cApiClient();
-
-if ($action == 'client_new') {
-    $new = true;
-}
-
-
 if (!$perm->have_perm_area_action($area)) {
     $notification->displayNotification('error', i18n('Permission denied'));
     return;
 }
 
+$cApiPropertyColl = new cApiPropertyCollection();
+$cApiClient = new cApiClient();
+
+if ($action == 'client_new') {
+    $new = true;
+}
+
 if (!empty($idclient) && is_numeric($idclient)) {
-    $oClient = new cApiClient(cSecurity::toInteger($idclient));
+    $cApiClient->loadByPrimaryKey((int) $idclient);
 }
 
 // @TODO Find a general solution for this!
@@ -42,6 +41,7 @@ if (defined('CON_STRIPSLASHES')) {
 $clientname = $request['clientname'];
 $htmlpath = $request['htmlpath'];
 $frontendpath = $request['frontendpath'];
+$clientlogo = $request['clientlogo'];
 
 $urlscheme = parse_url($htmlpath, PHP_URL_SCHEME);
 $valid = ($clientname != "" && $frontendpath != "" && ($urlscheme == 'http' || $urlscheme == 'https'));
@@ -79,14 +79,14 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         }
 
         // Create new client entry in clients table
-        $oClientColl = new cApiClientCollection();
-        $oClient = $oClientColl->create($clientname, $errsite_cat, $errsite_art);
+        $cApiClientColl = new cApiClientCollection();
+        $cApiClient = $cApiClientColl->create($clientname, $errsite_cat, $errsite_art);
 
-        $idclient = $oClient->get('idclient');
+        $idclient = $cApiClient->get('idclient');
         $cfgClient[$idclient]["name"] = $clientname;
         updateClientCache();
 
-        $properties->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
+        $cApiPropertyColl->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
         $backendPath = cRegistry::getBackendPath();
 
@@ -126,11 +126,11 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
             $notification->displayNotification('warning', i18n("You changed the client path. You might need to copy the frontend to the new location"));
         }
 
-        if ($oClient->isLoaded()) {
-            $oClient->set('name', $clientname);
-            $oClient->set('errsite_cat', $errsite_cat);
-            $oClient->set('errsite_art', $errsite_art);
-            $oClient->store();
+        if ($cApiClient->isLoaded()) {
+            $cApiClient->set('name', $clientname);
+            $cApiClient->set('errsite_cat', $errsite_cat);
+            $cApiClient->set('errsite_art', $errsite_art);
+            $cApiClient->store();
         }
     }
 
@@ -138,7 +138,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
 
     $cfgClient = updateClientCache($idclient, $htmlpath, $frontendpath);
 
-    $properties->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
+    $cApiPropertyColl->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
 
     // Clear the code cache
     if (cFileHandler::exists($cfgClient[$idclient]['code']['path']) === true) {
@@ -159,17 +159,16 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
 
     $notification->displayNotification('info', i18n("Changes saved") . $sNewNotification);
 
-    $cApiClient = new cApiClient;
     $cApiClient->loadByPrimaryKey($idclient);
 
-    if ($_REQUEST['generate_xhtml'] == 'no') {
+    if ($request['generate_xhtml'] == 'no') {
         $cApiClient->setProperty('generator', 'xhtml', 'false');
     } else {
         $cApiClient->setProperty('generator', 'xhtml', 'true');
     }
 
     //Is statistc on/off
-    if ($_REQUEST['statistic'] == 'on') {
+    if ($request['statistic'] == 'on') {
         $cApiClient->setProperty('stats', 'tracking', 'on');
     } else {
         $cApiClient->setProperty('stats', 'tracking', 'off');
@@ -203,7 +202,7 @@ $tpl->set('d', 'BRDRT', 1);
 $tpl->set('d', 'BRDRB', 0);
 
 $tpl->set('d', 'CATNAME', i18n("Client name"));
-$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace(array('*/', '/*', '//', '\\', '"'), '', ($oClient->isLoaded()) ? $oClient->get("name") : $clientname)), 75, 255, "clientname");
+$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace(array('*/', '/*', '//', '\\', '"'), '', ($cApiClient->isLoaded()) ? $cApiClient->get("name") : $clientname)), 75, 255, "clientname");
 $tpl->set('d', 'CATFIELD', $oTxtClient->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
@@ -232,20 +231,20 @@ $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Error page category"));
-$oTxtErrorCat = new cHTMLTextbox("errsite_cat", $oClient->get("errsite_cat"), 10, 10);
+$oTxtErrorCat = new cHTMLTextbox("errsite_cat", $cApiClient->get("errsite_cat"), 10, 10);
 $tpl->set('d', 'CATFIELD', $oTxtErrorCat->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Error page article"));
-$oTxtErrorArt = new cHTMLTextbox("errsite_art", $oClient->get("errsite_art"), 10, 10);
+$oTxtErrorArt = new cHTMLTextbox("errsite_art", $cApiClient->get("errsite_art"), 10, 10);
 $tpl->set('d', 'CATFIELD', $oTxtErrorArt->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
-$clientLogo = $properties->getValue("idclient", $idclient, "backend", "clientimage");
+$clientLogo = $cApiPropertyColl->getValue('idclient', $idclient, 'backend', 'clientimage');
 $tpl->set('d', 'CATNAME', i18n("Client logo"));
 $oTxtLogo = new cHTMLTextbox("clientlogo", $clientLogo, 75, 255);
 $tpl->set('d', 'CATFIELD', $oTxtLogo->render());
@@ -253,13 +252,12 @@ $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
+// Flag to generate XHTML
 $aChoices = array('no' => i18n('No'), 'yes' => i18n('Yes'));
 
 $oXHTMLSelect = new cHTMLSelectElement('generate_xhtml');
 $oXHTMLSelect->autoFill($aChoices);
 
-$cApiClient = new cApiClient;
-$cApiClient->loadByPrimaryKey($idclient);
 if ($cApiClient->getProperty('generator', 'xhtml') == 'true') {
     $oXHTMLSelect->setDefault('yes');
 } else {
@@ -270,29 +268,27 @@ $tpl->set('d', 'CATNAME', i18n('Generate XHTML'));
 $tpl->set('d', 'CATFIELD', $oXHTMLSelect->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
-
 $tpl->next();
 
+// Flag to enable tracking
 $aChoices = array('on' => i18n('On'), 'off' => i18n('Off'));
 
 $oXHTMLSelect = new cHTMLSelectElement('statistic');
 $oXHTMLSelect->autoFill($aChoices);
 
-$cApiClient->loadByPrimaryKey($idclient);
 if ($cApiClient->getProperty('stats', 'tracking') == 'off') {
     $oXHTMLSelect->setDefault('off');
 } else {
     $oXHTMLSelect->setDefault('on');
 }
 
-
 $tpl->set('d', 'CATNAME', i18n('Statistic'));
 $tpl->set('d', 'CATFIELD', $oXHTMLSelect->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
-
 $tpl->next();
 
+// Show checkbox to copy frontend templates for new clients
 if ($new == true) {
     $tpl->set('d', 'CATNAME', i18n('Copy frontend template'));
     $defaultform = new cHTMLCheckbox('copytemplate', 'checked', 'copytemplatechecked', true);
