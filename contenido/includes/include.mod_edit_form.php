@@ -173,7 +173,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     }
 
     $page = new cGuiPage("mod_edit_form");
-    $form = new cGuiTableForm("mod_edit");
+    $form = new cGuiTableForm("frm_mod_edit");
     $form->setTableid('mod_edit');
     $form->setVar("area", "mod_edit");
     $form->setVar("frame", $frame);
@@ -324,7 +324,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         ));
     }
 
-    $typeselect->setEvent("change", "if (document.forms['mod_edit'].elements['type'].value == 0) { document.forms['mod_edit'].elements['customtype'].disabled=0;} else {document.forms['mod_edit'].elements['customtype'].disabled=1;}");
+    $typeselect->setEvent("change", "if (document.forms['frm_mod_edit'].elements['type'].value == 0) { document.forms['frm_mod_edit'].elements['customtype'].disabled=0;} else {document.forms['frm_mod_edit'].elements['customtype'].disabled=1;}");
     $typeselect->setDisabled($disabled);
 
     $custom = new cHTMLTextbox("customtype", "");
