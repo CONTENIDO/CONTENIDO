@@ -23,18 +23,25 @@ if (!$perm->have_perm_area_action($area, $action)) {
     return;
 }
 
-if (!isset($groupid)) {
+// @TODO Find a general solution for this!
+if (defined('CON_STRIPSLASHES')) {
+    $request = cString::stripSlashes($_REQUEST);
+} else {
+    $request = $_REQUEST;
+}
+
+if (!isset($request['groupid'])) {
     // no group id, get out here
     return;
 }
 
 // create group instance
-$oGroup = new cApiGroup($groupid);
+$oGroup = new cApiGroup($request['groupid']);
 $bError = false;
 $sNotification = '';
 $aPerms = array();
 
-// edit group
+// Action edit group
 if (($action == 'group_edit')) {
     $bError = false;
 
@@ -55,7 +62,7 @@ if (($action == 'group_edit')) {
 
     if (!$bError) {
         $aPerms = buildUserOrGroupPermsFromRequest();
-        $oGroup->setField('description', $description);
+        $oGroup->setField('description', $request['description']);
         $oGroup->setField('perms', implode(',', $aPerms));
 
         if ($oGroup->store()) {
@@ -67,14 +74,14 @@ if (($action == 'group_edit')) {
     }
 }
 
-// delete group property
-if (is_string($del_groupprop_type) && is_string($del_groupprop_name)) {
-    $oGroup->deleteGroupProperty($del_groupprop_type, $del_groupprop_name);
+// Action delete group property
+if (!empty($request['del_groupprop_type']) && !empty($request['del_groupprop_name'])) {
+    $oGroup->deleteGroupProperty($request['del_groupprop_type'], $request['del_groupprop_name']);
 }
 
-// add group property
-if (is_string($groupprop_type) && is_string($groupprop_name) && is_string($groupprop_value) && !empty($groupprop_type) && !empty($groupprop_name)) {
-    $oGroup->setGroupProperty($groupprop_type, $groupprop_name, $groupprop_value);
+// Action add group property
+if (!empty($request['groupprop_type']) && !empty($request['groupprop_name'])) {
+    $oGroup->setGroupProperty($request['groupprop_type'], $request['groupprop_name'], $request['groupprop_value']);
 }
 
 $aPerms = explode(',', $oGroup->getField('perms'));
@@ -86,16 +93,14 @@ $form = '<form name="group_properties" method="post" action="' . $sess->url("mai
              <input type="hidden" name="area" value="' . $area . '">
              <input type="hidden" name="action" value="group_edit">
              <input type="hidden" name="frame" value="' . $frame . '">
-             <input type="hidden" name="groupid" value="' . $groupid . '">
+             <input type="hidden" name="groupid" value="' . $request['groupid'] . '">
              <input type="hidden" name="idlang" value="' . $lang . '">';
 
 $tpl->set('s', 'FORM', $form);
-$tpl->set('s', 'GET_GROUPID', $groupid);
-
+$tpl->set('s', 'GET_GROUPID', $request['groupid']);
 $tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
 $tpl->set('s', 'CANCELTEXT', i18n("Discard changes"));
-$tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&groupid=$groupid"));
-
+$tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&groupid={$request['groupid']}"));
 $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 
@@ -104,7 +109,7 @@ $tpl->set('d', 'CATFIELD', stripslashes($oGroup->getGroupName(true)));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Description"));
-$oTxtDesc = new cHTMLTextbox('description', conHtmlentities(stripslashes($oGroup->getField('description')), ENT_QUOTES), 40, 255);
+$oTxtDesc = new cHTMLTextbox('description', conHtmlSpecialChars($oGroup->getField('description')), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtDesc->render());
 $tpl->next();
 
@@ -183,7 +188,7 @@ foreach ($aProperties as $propertyId => $prop) {
         <td>' . $name . '</td>
         <td>' . $value . '</td>
         <td>
-            <a href="' . $sess->url("main.php?area=$area&frame=4&groupid=$groupid&del_groupprop_type=$type&del_groupprop_name=$name") . '"><img src="images/delete.gif" border="0" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '"></a>
+            <a href="' . $sess->url("main.php?area=$area&frame=4&groupid={$request['groupid']}&del_groupprop_type=$type&del_groupprop_name=$name") . '"><img src="images/delete.gif" border="0" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '"></a>
         </td>
     </tr>';
 }

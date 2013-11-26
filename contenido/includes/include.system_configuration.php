@@ -88,7 +88,7 @@ function renderLabel($text, $name, $width = 250, $seperator = ':') {
 function renderTextProperty($name, $value, $label) {
     global $auth;
 
-    $textbox = new cHTMLTextbox($name, $value, '50', '96');
+    $textbox = new cHTMLTextbox($name, conHtmlSpecialChars($value), '50', '96');
     // disable the textbox if user is not a sysadmin
     if (strpos($auth->auth['perm'], 'sysadmin') === false) {
         $textbox->updateAttribute('disabled', 'true');
@@ -115,13 +115,19 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
     if (strpos($auth->auth['perm'], 'sysadmin') === false) {
         $page->displayError(i18n('You don\'t have the permission to make changes here.'));
     } else {
+        // @TODO Find a general solution for this!
+        if (defined('CON_STRIPSLASHES')) {
+            $post = cString::stripSlashes($_POST);
+        } else {
+            $post = $_POST;
+        }
         $stored = false;
         foreach ($propertyTypes as $type => $properties) {
             foreach ($properties as $name => $infos) {
                 // get the posted value
                 $fieldName = $type . '{_}' . $name;
-                if (isset($_POST[$fieldName])) {
-                    $value = $_POST[$fieldName];
+                if (isset($post[$fieldName])) {
+                    $value = $post[$fieldName];
                 } else {
                     $value = (isset($infos['values'][1])) ? $infos['values'][1] : 'false';
                 }

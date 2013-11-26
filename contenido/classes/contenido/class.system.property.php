@@ -85,9 +85,9 @@ class cApiSystemPropertyCollection extends ItemCollection {
             return NULL;
         }
 
-        $item->set('type', $this->escape($type));
-        $item->set('name', $this->escape($name));
-        $item->set('value', $this->escape($value));
+        $item->set('type', $type);
+        $item->set('name', $name);
+        $item->set('value', $value);
         $item->store();
 
         if (self::$_enableCache) {
@@ -108,7 +108,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
     public function setValueByTypeName($type, $name, $value) {
         $item = $this->fetchByTypeName($type, $name);
         if ($item) {
-            $item->set('value', $this->escape($value));
+            $item->set('value', $value);
             $item->store();
         } else {
             $item = $this->create($type, $name, $value);
@@ -132,9 +132,9 @@ class cApiSystemPropertyCollection extends ItemCollection {
     public function create($type, $name, $value) {
         $item = parent::createNewItem();
 
-        $item->set('type', $this->escape($type));
-        $item->set('name', $this->escape($name));
-        $item->set('value', $this->escape($value));
+        $item->set('type', $type);
+        $item->set('name', $name);
+        $item->set('value', $value);
         $item->store();
 
         if (self::$_enableCache) {
@@ -191,7 +191,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
             return $this->_fetchByTypeNameFromCache($type, $name);
         }
 
-        $this->select("type = '" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
+        $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
+        $this->select($sql);
         if (($property = $this->next()) !== false) {
             return $property;
         }
@@ -209,7 +210,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
             return $this->_fetchByTypeFromCache($type);
         }
 
-        $this->select("type = '" . $this->escape($type) . "'");
+        $sql = $this->db->prepare("type = '%s'", $type);
+        $this->select($sql);
         $props = array();
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
@@ -225,7 +227,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @return bool
      */
     public function deleteByTypeName($type, $name) {
-        $this->select("type = '" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
+        $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
+        $this->select($sql);
         return $this->_deleteSelected();
     }
 
@@ -236,7 +239,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @return bool
      */
     public function deleteByType($type) {
-        $this->select("type = '" . $this->escape($type) . "'");
+        $sql = $this->db->prepare("type = '%s'", $type);
+        $this->select($sql);
         return $this->_deleteSelected();
     }
 
@@ -401,7 +405,7 @@ class cApiSystemProperty extends Item {
      * @return bool
      */
     public function updateValue($value) {
-        $this->set('value', $this->escape($value));
+        $this->set('value', $value);
         return $this->store();
     }
 

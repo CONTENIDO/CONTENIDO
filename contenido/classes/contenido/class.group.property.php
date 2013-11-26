@@ -123,7 +123,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
     public function setValueByTypeName($type, $name, $value, $idcatlang = 0) {
         $item = $this->fetchByGroupIdTypeName($type, $name);
         if ($item) {
-            $item->set('value', $this->escape($value));
+            $item->set('value', $value);
             $item->store();
         } else {
             $item = $this->create($type, $name, $value, $idcatlang);
@@ -148,10 +148,10 @@ class cApiGroupPropertyCollection extends ItemCollection {
     public function create($type, $name, $value, $idcatlang = 0) {
         $item = parent::createNewItem();
 
-        $item->set('group_id', $this->escape($this->_groupId));
-        $item->set('type', $this->escape($type));
-        $item->set('name', $this->escape($name));
-        $item->set('value', $this->escape($value));
+        $item->set('group_id', $this->_groupId);
+        $item->set('type', $type);
+        $item->set('name', $name);
+        $item->set('value', $value);
         $item->set('idcatlang', (int) $idcatlang);
         $item->store();
 
@@ -174,7 +174,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
             return $this->_fetchByGroupIdTypeNameFromCache($type, $name);
         }
 
-        $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        $sql = $this->db->prepare("group_id = '%s' AND type = '%s' AND name = '%s'", $this->_groupId, $type, $name);
+        $this->select($sql);
         if (($property = $this->next()) !== false) {
             return $property;
         }
@@ -192,7 +193,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
             return $this->_fetchByGroupIdTypeFromCache($type);
         }
 
-        $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type='" . $this->escape($type) . "'");
+        $sql = $this->db->prepare("group_id = '%s' AND type = '%s'", $this->_groupId, $type);
+        $this->select($sql);
         $props = array();
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
@@ -210,7 +212,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
             return $this->_fetchByGroupIdFromCache();
         }
 
-        $this->select("group_id='" . $this->escape($this->_groupId) . "'");
+        $sql = $this->db->prepare("group_id = '%s'", $this->_groupId);
+        $this->select($sql);
         $props = array();
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
@@ -226,7 +229,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @return bool
      */
     public function deleteByGroupIdTypeName($type, $name) {
-        $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        $sql = $this->db->prepare("group_id = '%s' AND type = '%s' AND name = '%s'", $this->_groupId, $type, $name);
+        $this->select($sql);
         return $this->_deleteSelected();
     }
 
@@ -237,7 +241,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @return bool
      */
     public function deleteByGroupIdType($type) {
-        $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type='" . $this->escape($type) . "'");
+        $sql = $this->db->prepare("group_id = '%s' AND type = '%s'", $this->_groupId, $type);
+        $this->select($sql);
         return $this->_deleteSelected();
     }
 
@@ -247,7 +252,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @return bool
      */
     public function deleteByGroupId() {
-        $this->select("group_id='" . $this->escape($this->_groupId) . "'");
+        $sql = $this->db->prepare("group_id = '%s'", $this->_groupId);
+        $this->select($sql);
         return $this->_deleteSelected();
     }
 
@@ -289,7 +295,8 @@ class cApiGroupPropertyCollection extends ItemCollection {
             array_shift(self::$_entries);
         }
 
-        $this->select("group_id='" . $this->escape($this->_groupId) . "'");
+        $sql = $this->db->prepare("group_id = '%s'", $this->_groupId);
+        $this->select($sql);
         while (($property = $this->next()) !== false) {
             $data = $property->toArray();
             self::$_entries[$this->_groupId][$data['idgroupprop']] = $data;
@@ -314,7 +321,6 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @return cApiGroupProperty NULL
      */
     protected function _fetchByGroupIdTypeNameFromCache($type, $name) {
-        $props = array();
         $obj = new cApiGroupProperty();
         foreach (self::$_entries[$this->_groupId] as $entry) {
             if ($entry['type'] == $type && $entry['name'] == $name) {
@@ -414,7 +420,7 @@ class cApiGroupProperty extends Item {
      * @return bool
      */
     public function updateValue($value) {
-        $this->set('value', $this->escape($value));
+        $this->set('value', $value);
         return $this->store();
     }
 

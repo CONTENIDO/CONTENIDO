@@ -25,7 +25,14 @@ if (!($perm->have_perm_area_action($area, $action) || $perm->have_perm_area_acti
     return;
 }
 
-if (!isset($userid)) {
+// @TODO Find a general solution for this!
+if (defined('CON_STRIPSLASHES')) {
+    $request = cString::stripSlashes($_REQUEST);
+} else {
+    $request = $_REQUEST;
+}
+
+if (!isset($request['userid'])) {
     // no user id, get out here
     return;
 }
@@ -34,7 +41,7 @@ $aPerms = array();
 $bError = false;
 $sNotification = '';
 
-// delete user
+// Action delete user
 if ($action == 'user_delete') {
     $oUserColl = new cApiUserCollection();
 
@@ -48,13 +55,13 @@ if ($action == 'user_delete') {
         exit();
     }
 
-    $oUserColl->delete($userid);
+    $oUserColl->delete($request['userid']);
 
     $oGroupMemberColl = new cApiGroupMemberCollection();
-    $oGroupMemberColl->deleteByUserId($userid);
+    $oGroupMemberColl->deleteByUserId($request['userid']);
 
     $oRightColl = new cApiRightCollection();
-    $oRightColl->deleteByUserId($userid);
+    $oRightColl->deleteByUserId($request['userid']);
 
     $page->displayInfo(i18n("User deleted"));
     $page->setReload();
@@ -65,25 +72,26 @@ if ($action == 'user_delete') {
     return;
 }
 
-// edit user
+// Action edit user
 if ($action == 'user_edit') {
     $aPerms = buildUserOrGroupPermsFromRequest();
 
     // update user values
     // New Class User, update password and other values
-    $realname = stripslashes($realname);
 
-    $ocApiUser = new cApiUser($userid);
-    $ocApiUser->setRealName($realname);
-    $ocApiUser->setMail($email);
-    $ocApiUser->setTelNumber($telephone);
-    $ocApiUser->setAddressData($address_street, $address_city, $address_zip, $address_country);
-    $ocApiUser->setUseWysi($wysi);
-    $ocApiUser->setValidDateFrom($valid_from);
-    $ocApiUser->setValidDateTo($valid_to);
+    $ocApiUser = new cApiUser($request['userid']);
+    $ocApiUser->setRealName($request['realname']);
+    $ocApiUser->setMail($request['email']);
+    $ocApiUser->setTelNumber($request['telephone']);
+    $ocApiUser->setAddressData($request['address_street'], $request['address_city'], $request['address_zip'], $request['address_country']);
+    $ocApiUser->setUseWysi($request['wysi']);
+    $ocApiUser->setValidDateFrom($request['valid_from']);
+    $ocApiUser->setValidDateTo($request['valid_to']);
     $ocApiUser->setPerms($aPerms);
 
     // is a password set?
+    $password = $request['password'];
+    $passwordagain = $request['passwordagain'];
     $bPassOk = false;
     if (strlen($password) > 0) {
         // yes --> check it...
@@ -110,8 +118,8 @@ if ($action == 'user_edit') {
         $bPassOk = true;
     }
 
-    $cleanRealname = preg_replace('/["\'\/\§$%&]/i', '', $realname);
-    if ($realname !== $cleanRealname) {
+    $cleanRealname = preg_replace('/["\'\/\§$%&]/i', '', $request['realname']);
+    if ($request['realname'] !== $cleanRealname) {
         $sNotification = $notification->returnNotification("warning", i18n("Special characters in username and name are not allowed."));
         $bError = true;
     }
@@ -127,16 +135,17 @@ if ($action == 'user_edit') {
     }
 }
 
-$oUser = new cApiUser($userid);
+$oUser = new cApiUser($request['userid']);
 
-// delete user property
-if (is_string($del_userprop_type) && is_string($del_userprop_name)) {
-    $oUser->deleteUserProperty($del_userprop_type, $del_userprop_name);
+// Action delete user property
+if (!empty($request['del_userprop_type']) && !empty($request['del_userprop_name'])) {
+    $oUser->deleteUserProperty($request['del_userprop_type'], $request['del_userprop_name']);
 }
 
-// edit user property
-if (is_string($userprop_type) && is_string($userprop_name) && is_string($userprop_value) && !empty($userprop_type) && !empty($userprop_name)) {
-    $oUser->setUserProperty($userprop_type, $userprop_name, $userprop_value);
+// Action edit user property
+// @TODO  Add full support for editing values or remove the lines below
+if (!empty($request['userprop_type']) && !empty($request['userprop_name'])) {
+    $oUser->setUserProperty($request['userprop_type'], $request['userprop_name'], $request['userprop_value']);
 }
 
 if (count($aPerms) == 0 || $action == '' || !isset($action)) {
@@ -145,15 +154,14 @@ if (count($aPerms) == 0 || $action == '' || !isset($action)) {
 
 $tpl->reset();
 $tpl->set('s', 'NOTIFICATION', $sNotification);
-
-$tpl->set("s", "AREA", $area);
-$tpl->set("s", "FRAME", $frame);
-$tpl->set("s", "LANG", $lang);
-$tpl->set("s", "USERID", $userid);
-$tpl->set('s', 'GET_USERID', $userid);
+$tpl->set('s', 'AREA', $area);
+$tpl->set('s', 'FRAME', $frame);
+$tpl->set('s', 'LANG', $lang);
+$tpl->set('s', 'USERID', $request['userid']);
+$tpl->set('s', 'GET_USERID', $request['userid']);
 $tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
 $tpl->set('s', 'CANCELTEXT', i18n("Discard changes"));
-$tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&userid=$userid"));
+$tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&userid={$request['userid']}"));
 $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 
@@ -164,7 +172,7 @@ $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "name");
 $tpl->set('d', 'CATNAME', i18n("Name"));
-$oTxtName = new cHTMLTextbox("realname", htmlspecialchars($oUser->getField('realname')), 40, 255);
+$oTxtName = new cHTMLTextbox("realname", conHtmlSpecialChars($oUser->getField('realname')), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtName->render());
 $tpl->next();
 
@@ -186,37 +194,37 @@ if ($msysadmin || $oUser->getField('password') != 'active_directory_auth') {
 
 $tpl->set('d', 'ROW_ID', "email");
 $tpl->set('d', 'CATNAME', i18n("E-Mail"));
-$oTxtEmail = new cHTMLTextbox('email', $oUser->getField('email'), 40, 255);
+$oTxtEmail = new cHTMLTextbox('email', conHtmlSpecialChars($oUser->getField('email')), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtEmail->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "phone_number");
 $tpl->set('d', 'CATNAME', i18n("Phone number"));
-$oTxtTel = new cHTMLTextbox('telephone', $oUser->getField('telephone'), 40, 255);
+$oTxtTel = new cHTMLTextbox('telephone', conHtmlSpecialChars($oUser->getField('telephone')), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtTel->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "street");
 $tpl->set('d', 'CATNAME', i18n("Street"));
-$oTxtStreet = new cHTMLTextbox('address_street', $oUser->getField('address_street'), 40, 255);
+$oTxtStreet = new cHTMLTextbox('address_street', conHtmlSpecialChars($oUser->getField('address_street')), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtStreet->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "zip_code");
 $tpl->set('d', 'CATNAME', i18n("ZIP code"));
-$oTxtZip = new cHTMLTextbox('address_zip', $oUser->getField('address_zip'), 10, 10);
+$oTxtZip = new cHTMLTextbox('address_zip', conHtmlSpecialChars($oUser->getField('address_zip')), 10, 10);
 $tpl->set('d', 'CATFIELD', $oTxtZip->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "city");
 $tpl->set('d', 'CATNAME', i18n("City"));
-$oTxtCity = new cHTMLTextbox('address_city', $oUser->getField('address_city'), 40, 255);
+$oTxtCity = new cHTMLTextbox('address_city', conHtmlSpecialChars($oUser->getField('address_city')), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtCity->render());
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "country");
 $tpl->set('d', 'CATNAME', i18n("Country"));
-$oTxtLand = new cHTMLTextbox('address_country', $oUser->getField('address_country'), 40, 255);
+$oTxtLand = new cHTMLTextbox('address_country', conHtmlSpecialChars($oUser->getField('address_country')), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtLand->render());
 $tpl->next();
 
@@ -307,7 +315,7 @@ foreach ($aProperties as $entry) {
     $type = $entry['type'];
     $name = $entry['name'];
     $value = $entry['value'];
-    $href = $sess->url("main.php?area=$area&frame=4&userid=$userid&del_userprop_type=$type&del_userprop_name=$name");
+    $href = $sess->url("main.php?area=$area&frame=4&userid={$request['userid']}&del_userprop_type={$type}&del_userprop_name={$name}");
     $sPropRows .= '
         <tr>
             <td>' . $type . '</td>
@@ -392,7 +400,7 @@ $tpl->next();
 
 // Show backend user's group memberships
 $oUser2 = new cApiUser();
-$aGroups = $oUser2->getGroupNamesByUserID($userid);
+$aGroups = $oUser2->getGroupNamesByUserID($request['userid']);
 if (count($aGroups) > 0) {
     asort($aGroups);
     $sGroups = implode("<br>", $aGroups);

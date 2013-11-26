@@ -152,7 +152,8 @@ class cApiUserPropertyCollection extends ItemCollection {
             return $this->_fetchByUserIdFromCache();
         }
 
-        $this->select("user_id = '" . $this->escape($this->_userId) . "'");
+        $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
+        $this->select($sql);
         $props = array();
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
@@ -161,15 +162,17 @@ class cApiUserPropertyCollection extends ItemCollection {
     }
 
     /**
-     * Returns all user properties of all users by type and name. NOTE: Enabled
-     * caching will be skipped in this case!
+     * Returns all user properties of all users by type and name.
+     * NOTE: Enabled caching will be skipped in this case, since it will return
+     * settings for all usery!
      *
      * @param string $type
      * @param string $name
      * @return cApiUserProperty[]
      */
     public function fetchByTypeName($type, $name) {
-        $this->select("type ='" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
+        $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
+        $this->select($sql);
         $props = array();
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
@@ -189,7 +192,8 @@ class cApiUserPropertyCollection extends ItemCollection {
             return $this->_fetchByUserIdTypeNameFromCache($type, $name);
         }
 
-        $this->select("user_id = '" . $this->escape($this->_userId) . "' AND type = '" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
+        $sql = $this->db->prepare("user_id = '%s' AND type = '%s' AND name = '%s'", $this->_userId, $type, $name);
+        $this->select($sql);
         if (($property = $this->next()) !== false) {
             return $property;
         }
@@ -207,7 +211,8 @@ class cApiUserPropertyCollection extends ItemCollection {
             return $this->_fetchByUserIdTypeFromCache($type);
         }
 
-        $this->select("user_id = '" . $this->escape($this->_userId) . "' AND type = '" . $this->escape($type) . "'");
+        $sql = $this->db->prepare("user_id = '%s' AND type = '%s'", $this->_userId, $type);
+        $this->select($sql);
         $props = array();
         while (($property = $this->next()) !== false) {
             $props[] = clone $property;
@@ -223,7 +228,8 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @return bool
      */
     public function deleteByUserIdTypeName($type, $name) {
-        $this->select("user_id = '" . $this->escape($this->_userId) . "' AND type = '" . $this->escape($type) . "' AND name = '" . $this->escape($name) . "'");
+        $sql = $this->db->prepare("user_id = '%s' AND type = '%s' AND name = '%s'", $this->_userId, $type, $name);
+        $this->select($sql);
         return $this->_deleteSelected();
     }
 
@@ -234,7 +240,8 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @return bool
      */
     public function deleteByUserIdType($type) {
-        $this->select("user_id = '" . $this->escape($this->_userId) . "' AND type = '" . $this->escape($type) . "'");
+        $sql = $this->db->prepare("user_id = '%s' AND type = '%s'", $this->_userId, $type);
+        $this->select($sql);
         return $this->_deleteSelected();
     }
 
@@ -244,7 +251,8 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @return bool
      */
     public function deleteByUserId() {
-        $this->select("user_id = '" . $this->escape($this->_userId) . "'");
+        $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
+        $this->select($sql);
         return $this->_deleteSelected();
     }
 
@@ -270,7 +278,8 @@ class cApiUserPropertyCollection extends ItemCollection {
      */
     protected function _loadFromCache() {
         self::$_entries = array();
-        $this->select("user_id='" . $this->escape($this->_userId) . "'");
+        $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
+        $this->select($sql);
         while (($property = $this->next()) !== false) {
             $data = $property->toArray();
             self::$_entries[$data['iduserprop']] = $data;
@@ -381,7 +390,7 @@ class cApiUserProperty extends Item {
      * @return bool
      */
     public function updateValue($value) {
-        $this->set('value', $this->escape($value));
+        $this->set('value', $value);
         return $this->store();
     }
 

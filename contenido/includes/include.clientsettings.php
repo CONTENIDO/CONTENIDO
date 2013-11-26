@@ -25,6 +25,13 @@ if (strlen($idclient) == 0) {
     $idclient = $_POST['idclient'];
 }
 
+// @TODO Find a general solution for this!
+if (defined('CON_STRIPSLASHES')) {
+    $request = cString::stripSlashes($_REQUEST);
+} else {
+    $request = $_REQUEST;
+}
+
 $oFrmRange = new cGuiTableForm('range');
 $oFrmRange->setVar('area', $area);
 $oFrmRange->setVar('frame', $frame);
@@ -44,22 +51,22 @@ foreach ($aLanguages as $curIdLang => $aItem) {
     $oSelRange->addOptionElement($iID, $oOption);
 }
 
-if (is_numeric($_REQUEST["idclientslang"])) {
-    $oSelRange->setDefault($_REQUEST["idclientslang"]);
+if (is_numeric($request["idclientslang"])) {
+    $oSelRange->setDefault($request["idclientslang"]);
 }
 
 $oSelRange->setEvent("onchange", "document.forms.range.submit();");
 $oFrmRange->add(i18n('Range'), $oSelRange->render());
 
-if (!is_numeric($_REQUEST["idclientslang"]) || $_REQUEST["idclientslang"] == 0) {
+if (!is_numeric($request["idclientslang"]) || $request["idclientslang"] == 0) {
     $oClient = new cApiClient($idclient);
 } else {
     $oClient = new cApiClientLanguage();
-    $oClient->loadByPrimaryKey($_REQUEST["idclientslang"]);
+    $oClient->loadByPrimaryKey($request["idclientslang"]);
 }
 
 if ($_POST['action'] == 'clientsettings_save_item') {
-    $oClient->setProperty($_POST['cstype'], $_POST['csname'], $_POST['csvalue'], $_POST['csidproperty']);
+    $oClient->setProperty($request['cstype'], $request['csname'], $request['csvalue'], $request['csidproperty']);
     $oPage->displayInfo(i18n("Save changes successfully!"));
 }
 
@@ -83,13 +90,13 @@ if ($aItems !== false) {
     $oLnkDelete->setCLink($area, $frame, "clientsettings_delete_item");
     $oLnkDelete->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'delete.gif" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '">');
     $oLnkDelete->setCustom("idclient", $idclient);
-    $oLnkDelete->setCustom("idclientslang", $_REQUEST["idclientslang"]);
+    $oLnkDelete->setCustom("idclientslang", $request["idclientslang"]);
 
     $oLnkEdit = new cHTMLLink();
     $oLnkEdit->setCLink($area, $frame, "clientsettings_edit_item");
     $oLnkEdit->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'editieren.gif" alt="' . i18n("Edit") . '" title="' . i18n("Edit") . '">');
     $oLnkEdit->setCustom("idclient", $idclient);
-    $oLnkEdit->setCustom("idclientslang", $_REQUEST["idclientslang"]);
+    $oLnkEdit->setCustom("idclientslang", $request["idclientslang"]);
 
     $iCounter = 0;
     foreach ($aItems as $iKey => $aValue) {
@@ -142,7 +149,7 @@ $oForm->setVar('area', $area);
 $oForm->setVar('frame', $frame);
 $oForm->setVar('action', 'clientsettings_save_item');
 $oForm->setVar('idclient', $idclient);
-$oForm->setVar('idclientslang', $_REQUEST["idclientslang"]);
+$oForm->setVar('idclientslang', $request["idclientslang"]);
 $oForm->addHeader(i18n('Add new variable'));
 
 $oInputbox = new cHTMLTextbox('cstype');
@@ -166,7 +173,7 @@ if (($_GET['action'] == "clientsettings_edit_item")) {
     $oForm2->setVar("frame", $frame);
     $oForm2->setVar("action", "clientsettings_save_item");
     $oForm2->setVar("idclient", $idclient);
-    $oForm2->setVar("idclientslang", $_REQUEST["idclientslang"]);
+    $oForm2->setVar("idclientslang", $request["idclientslang"]);
 
     $oForm2->appendContent($oList->render());
     $oPage->setContent(array(

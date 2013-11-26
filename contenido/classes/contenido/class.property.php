@@ -167,21 +167,13 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $value Value
      * @param bool $bDontEscape Optionally default false (on internal call do
      *        not escape parameters again
+     *        NOTE: This parameter is deprecated since 2013-11-26
      * @return cApiProperty
      */
     public function create($itemtype, $itemid, $type, $name, $value, $bDontEscape = false) {
         global $auth;
 
         $item = parent::createNewItem();
-
-        // @TODO: $item->store() escapes allways all string values!
-        if (!$bDontEscape) {
-            $itemtype = $this->db->escape($itemtype);
-            $itemid = $this->db->escape($itemid);
-            $value = $this->db->escape($value);
-            $type = $this->db->escape($type);
-            $name = $this->db->escape($name);
-        }
 
         $item->set('idclient', $this->client);
         $item->set('itemtype', $itemtype, false);
@@ -191,7 +183,7 @@ class cApiPropertyCollection extends ItemCollection {
         $item->set('value', $value);
 
         $item->set('created', date('Y-m-d H:i:s'), false);
-        $item->set('author', $this->db->escape($auth->auth['uid']));
+        $item->set('author', $auth->auth['uid']);
         $item->store();
 
         if ($this->_useCache($itemtype, $itemid)) {
@@ -222,17 +214,13 @@ class cApiPropertyCollection extends ItemCollection {
             return $this->_getValueFromCache($itemtype, $itemid, $type, $name, $default);
         }
 
-        $itemtype = $this->db->escape($itemtype);
-        $itemid = $this->db->escape($itemid);
-        $type = $this->db->escape($type);
-        $name = $this->db->escape($name);
-
         if (isset($this->client)) {
-            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'");
+            $sql = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $this->client, $itemtype, $itemid, $type, $name);
         } else {
             // @todo We never get here, since this class will always have a set client property!
-            $this->select("itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'");
+            $sql = $this->db->prepare("itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $itemtype, $itemid, $type, $name);
         }
+        $this->select($sql);
 
         if (false !== $item = $this->next()) {
             return cSecurity::unescapeDB($item->get('value'));
@@ -262,16 +250,14 @@ class cApiPropertyCollection extends ItemCollection {
         }
 
         $aResult = array();
-        $itemtype = $this->db->escape($itemtype);
-        $itemid = $this->db->escape($itemid);
-        $type = $this->db->escape($type);
 
         if (isset($this->client)) {
-            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "'");
+            $sql = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s' AND type = '%s'", $this->client, $itemtype, $itemid, $type);
         } else {
             // @fixme We never get here, since this class will always have a set client property!
-            $this->select("itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "'");
+            $sql = $this->db->prepare("itemtype = '%s' AND itemid = '%s' AND type = '%s'", $itemtype, $itemid, $type);
         }
+        $this->select($sql);
 
         while (($item = $this->next()) !== false) {
             $aResult[$item->get('name')] = cSecurity::unescapeDB($item->get('value'));
@@ -296,10 +282,8 @@ class cApiPropertyCollection extends ItemCollection {
      */
     public function getValuesOnlyByTypeName($type, $name) {
         $aResult = array();
-        $type = $this->db->escape($type);
-        $name = $this->db->escape($name);
 
-        $this->select("type = '" . $type . "' AND name = '" . $name . "");
+        $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
 
         while (($item = $this->next()) !== false) {
             $aResult[] = cSecurity::unescapeDB($item->get('value'));
@@ -328,18 +312,14 @@ class cApiPropertyCollection extends ItemCollection {
      *        (possiblity to update name value and type))
      */
     public function setValue($itemtype, $itemid, $type, $name, $value, $idProp = 0) {
-        $itemtype = $this->db->escape($itemtype);
-        $itemid = $this->db->escape($itemid);
-        $type = $this->db->escape($type);
-        $name = $this->db->escape($name);
-        $value = $this->db->escape($value);
         $idProp = (int) $idProp;
 
         if ($idProp == 0) {
-            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'");
+            $sql = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $this->client, $itemtype, $itemid, $type, $name);
         } else {
-            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND idproperty = " . $idProp);
+            $sql = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s' AND idproperty = %d", $this->client, $itemtype, $itemid, $idProp);
         }
+        $this->select($sql);
 
         if (($item = $this->next()) !== false) {
             $item->set('value', $value);
@@ -370,16 +350,11 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $name Entry name
      */
     public function deleteValue($itemtype, $itemid, $type, $name) {
-        $itemtype = $this->db->escape($itemtype);
-        $itemid = $this->db->escape($itemid);
-        $type = $this->db->escape($type);
-        $name = $this->db->escape($name);
-
         if (isset($this->client)) {
-            $where = "idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'";
+            $where = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $this->client, $itemtype, $itemid, $type, $name);
         } else {
             // @fixme We never get here, since this class will always have a set client property!
-            $where = "itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "' AND type = '" . $type . "' AND name = '" . $name . "'";
+            $where = $this->db->prepare("itemtype = '%s' AND itemid = '%s' AND type = '%s' AND name = '%s'", $itemtype, $itemid, $type, $name);
         }
 
         $idproperties = $this->getIdsByWhereClause($where);
@@ -402,15 +377,13 @@ class cApiPropertyCollection extends ItemCollection {
             return $this->_getPropertiesFromCache($itemtype, $itemid);
         }
 
-        $itemtype = $this->db->escape($itemtype);
-        $itemid = $this->db->escape($itemid);
-
         if (isset($this->client)) {
-            $this->select("idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "'");
+            $sql = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s'", $this->client, $itemtype, $itemid);
         } else {
             // @fixme We never get here, since this class will always have a set client property!
-            $this->select("itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "'");
+            $sql = $this->db->prepare("itemtype = '%s' AND itemid = '%s'", $itemtype, $itemid);
         }
+        $this->select($sql);
 
         $result[$itemid] = false;
 
@@ -439,8 +412,11 @@ class cApiPropertyCollection extends ItemCollection {
     public function getAllValues($field, $fieldValue, $auth = NULL) {
         $authString = '';
         if (!is_null($auth) && sizeof($auth) > 0) {
-            $authString .= " AND author = '" . $auth->auth["uid"] . "'";
+            $authString .= " AND author = '" . $this->db->escape($auth->auth["uid"]) . "'";
         }
+
+        $field = $this->db->escape($field);
+        $fieldValue = $this->db->escape($fieldValue);
 
         if (isset($this->client)) {
             $this->select("idclient = " . (int) $this->client . " AND " . $field . " = '" . $fieldValue . "'" . $authString, '', 'itemid');
@@ -476,14 +452,11 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $itemid ID of the item (example: 31)
      */
     public function deleteProperties($itemtype, $itemid) {
-        $itemtype = $this->db->escape($itemtype);
-        $itemid = $this->db->escape($itemid);
-
         if (isset($this->client)) {
-            $where = "idclient = " . (int) $this->client . " AND itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "'";
+            $where = $this->db->prepare("idclient = %d AND itemtype = '%s' AND itemid = '%s'", $this->client, $itemtype, $itemid);
         } else {
             // @fixme We never get here, since this class will always have a set client property!
-            $where = "itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "'";
+            $where = $this->db->prepare("itemtype = '%s' AND itemid = '%s'", $itemtype, $itemid);
         }
 
         $idproperties = $this->getIdsByWhereClause($where);
@@ -499,11 +472,7 @@ class cApiPropertyCollection extends ItemCollection {
      */
     public function deletePropertiesMultiple($itemtype, array $itemids) {
         $itemtype = $this->db->escape($itemtype);
-        $itemids = array_map(array(
-            $this,
-            'escape'
-        ), $itemids);
-
+        $itemids = array_map(array($this, 'escape'), $itemids);
         $in = "'" . implode("', '", $itemids) . "'";
 
         if (isset($this->client)) {
@@ -528,7 +497,9 @@ class cApiPropertyCollection extends ItemCollection {
     }
 
     /**
-     * Loads/Caches configured properties.
+     * Loads/Caches configured properties, but only for current client!
+     * NOTE: It loads properties for global set client, not for the client set
+     * in this instance!
      */
     protected function _loadFromCache() {
         global $client;
@@ -599,7 +570,6 @@ class cApiPropertyCollection extends ItemCollection {
      * @param cApiUserProperty $entry
      */
     protected function _addToCache($entry) {
-        global $client;
         $data = $entry->toArray();
         self::$_entries[$data['idproperty']] = $data;
     }
@@ -724,11 +694,12 @@ class cApiProperty extends Item {
         parent::__construct($cfg['tab']['properties'], 'idproperty');
 
         // Initialize maximum lengths for each column
-        $this->maximumLength = array();
-        $this->maximumLength['itemtype'] = 64;
-        $this->maximumLength['itemid'] = 255;
-        $this->maximumLength['type'] = 96;
-        $this->maximumLength['name'] = 96;
+        $this->maximumLength = array(
+            'itemtype' => 64,
+            'itemid' => 255,
+            'type' => 96,
+            'name' => 96
+        );
 
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

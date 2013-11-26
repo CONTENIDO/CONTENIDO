@@ -25,12 +25,19 @@ $aManagedValues = array(
     'system_insite_editing_activated', 'backend_backend_label'
 );
 
+// @TODO Find a general solution for this!
+if (defined('CON_STRIPSLASHES')) {
+    $request = cString::stripSlashes($_REQUEST);
+} else {
+    $request = $_REQUEST;
+}
+
 if ($action == "systemsettings_save_item") {
     if (strpos($auth->auth["perm"], "sysadmin") === false) {
         $page->displayError(i18n("You don't have the permission to make changes here."), 1);
     } else {
-        if (!in_array($systype . '_' . $sysname, $aManagedValues)) {
-            setSystemProperty($systype, $sysname, $sysvalue, $csidsystemprop);
+        if (!in_array($request['systype'] . '_' . $request['sysname'], $aManagedValues)) {
+            setSystemProperty($request['systype'], $request['sysname'], $request['sysvalue'], (int) $request['csidsystemprop']);
             if (isset($x)) {
                 $page->displayInfo(i18n('Saved changes successfully!'), 1);
             } else {
@@ -46,7 +53,7 @@ if ($action == "systemsettings_delete_item") {
     if (strpos($auth->auth["perm"], "sysadmin") === false) {
         $page->displayError(i18n("You don't have the permission to make changes here."), 1);
     } else {
-        deleteSystemProperty($systype, $sysname);
+        deleteSystemProperty($request['systype'], $request['sysname']);
         $page->displayInfo(i18n('Deleted item successfully!'), 1);
     }
 }
@@ -95,12 +102,12 @@ if (is_array($settings)) {
 
             if (in_array($key . '_' . $type, $aManagedValues)) {
                 #ignore record
-            } else if (($action == "systemsettings_edit_item") && (stripslashes($systype) == $key) && (stripslashes($sysname) == $type) && (strpos($auth->auth["perm"], "sysadmin") !== false)) {
-                $oInputboxValue = new cHTMLTextbox("sysvalue", $value['value']);
+            } else if (($action == "systemsettings_edit_item") && ($request['systype'] == $key) && ($request['sysname'] == $type) && (strpos($auth->auth["perm"], "sysadmin") !== false)) {
+                $oInputboxValue = new cHTMLTextbox("sysvalue", conHtmlSpecialChars($value['value']));
                 $oInputboxValue->setWidth(30);
-                $oInputboxName = new cHTMLTextbox("sysname", $type);
+                $oInputboxName = new cHTMLTextbox("sysname", conHtmlSpecialChars($type));
                 $oInputboxName->setWidth(30);
-                $oInputboxType = new cHTMLTextbox("systype", $key);
+                $oInputboxType = new cHTMLTextbox("systype", conHtmlSpecialChars($key));
                 $oInputboxType->setWidth(10);
 
                 $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
