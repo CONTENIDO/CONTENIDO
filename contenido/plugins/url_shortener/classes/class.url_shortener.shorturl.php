@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the Plugin Manager API classes.
  *
@@ -13,34 +14,70 @@
  * @link http://www.contenido.org
  */
 
+// assert CONTENIDO framework
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Plugin Manager API classes.
  *
+ * @author Ingo van Peeren
  * @package Plugin
  * @subpackage UrlShortener
  */
 class cApiShortUrlCollection extends ItemCollection {
 
+    /**
+     *
+     * @var int
+     */
     const ERR_IS_CLIENT_FOLDER = 1;
 
+    /**
+     *
+     * @var int
+     */
     const ERR_TOO_SHORT = 2;
 
+    /**
+     *
+     * @var int
+     */
     const ERR_INVALID_CHARS = 3;
 
+    /**
+     *
+     * @var int
+     */
     const ERR_IS_ARTICLE_ALIAS = 4;
 
+    /**
+     *
+     * @var int
+     */
     const ERR_IS_CATEGORY_ALIAS = 5;
 
+    /**
+     *
+     * @var int
+     */
     const ERR_ALREADY_EXISTS = 6;
 
+    /**
+     */
     public function __construct() {
         $cfg = cRegistry::getConfig();
         parent::__construct($cfg['tab']['url_shortener']['shorturl'], 'idshorturl');
         $this->_setItemClass('cApiShortUrl');
     }
 
+    /**
+     *
+     * @param string $shorturl
+     * @param int $idart
+     * @param int $idlang
+     * @param int $idclient
+     * @return Ambigous <Item, object>
+     */
     public function create($shorturl, $idart = NULL, $idlang = NULL, $idclient = NULL) {
         if (is_null($idart)) {
             $idart = cRegistry::getArticleId();
@@ -116,8 +153,14 @@ class cApiShortUrlCollection extends ItemCollection {
 
         return true;
     }
-
 }
+
+/**
+ *
+ * @author Ingo van Peeren
+ * @package Plugin
+ * @subpackage UrlShortener
+ */
 class cApiShortUrl extends Item {
 
     /**
@@ -132,5 +175,4 @@ class cApiShortUrl extends Item {
             $this->loadByPrimaryKey($id);
         }
     }
-
 }
