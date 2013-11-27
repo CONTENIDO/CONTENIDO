@@ -222,6 +222,13 @@ class PifaField extends Item {
     const FIELDSET_END = 20;
 
     /**
+     * Button of type image (which is in fact a submit button).
+     *
+     * @var int
+     */
+    const BUTTONIMAGE = 21;
+
+    /**
      * The form fields value.
      *
      * @var mixed
@@ -464,7 +471,8 @@ class PifaField extends Item {
         if (in_array($fieldType, array(
             self::BUTTONSUBMIT,
             self::BUTTONRESET,
-            self::BUTTON
+            self::BUTTON,
+            self::BUTTONIMAGE
         ))) {
             return NULL;
         }
@@ -510,6 +518,8 @@ class PifaField extends Item {
         $columnName = $this->get('column_name');
 
         $label = $this->get('label');
+
+        $uri = $this->get('uri');
 
         // get option labels & values
         // either from field or from external data source class
@@ -714,25 +724,23 @@ class PifaField extends Item {
             case self::BUTTONSUBMIT:
             case self::BUTTONRESET:
             case self::BUTTON:
-
+            case self::BUTTONIMAGE:
                 $modes = array(
                     self::BUTTONSUBMIT => 'submit',
                     self::BUTTONRESET => 'reset',
-                    self::BUTTON => 'button'
+                    self::BUTTON => 'button',
+                    self::BUTTONIMAGE => 'image'
                 );
-
                 $mode = $modes[$fieldType];
-
                 $elemField = new cHTMLButton($columnName);
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);
-                if ('submit' === $mode && filter_var($label, FILTER_VALIDATE_URL)) {
-                    // an URL was set as label, so this is an image button
-                    $elemField->setMode('image');
-                    $elemField->setAttribute('src', $label);
+                $elemField->setMode($mode);
+                if ('image' === $mode) {
+                    $elemField->setAttribute('src', $uri);
+                    $elemField->removeAttribute('value');
                 } else {
-                    // this is a common submit button
-                    $elemField->setMode($mode);
+                    // set label or mode as value
                     $elemField->setTitle($label? $label : $mode);
                 }
                 break;
@@ -873,7 +881,8 @@ class PifaField extends Item {
             self::FIELDSET_END => Pifa::i18n('FIELDSET_END'),
             self::BUTTONSUBMIT => Pifa::i18n('BUTTONSUBMIT'),
             self::BUTTONRESET => Pifa::i18n('BUTTONRESET'),
-            self::BUTTON => Pifa::i18n('BUTTON')
+            self::BUTTON => Pifa::i18n('BUTTON'),
+            self::BUTTONIMAGE => Pifa::i18n('BUTTONIMAGE')
         );
     }
 
@@ -978,6 +987,7 @@ class PifaField extends Item {
             case self::BUTTONSUBMIT:
             case self::BUTTONRESET:
             case self::BUTTON:
+            case self::BUTTONIMAGE:
 
                 return NULL;
 
@@ -1096,6 +1106,7 @@ class PifaField extends Item {
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
+                    // self::BUTTONIMAGE,
                     self::MATRIX,
                     self::INPUTHIDDEN
                     /*
@@ -1122,6 +1133,7 @@ class PifaField extends Item {
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
+                    // self::BUTTONIMAGE,
                     self::MATRIX,
                     self::PARA,
                     // self::INPUTHIDDEN,
@@ -1148,6 +1160,7 @@ class PifaField extends Item {
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
+                    // self::BUTTONIMAGE,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1179,6 +1192,7 @@ class PifaField extends Item {
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
+                    self::BUTTONIMAGE,
                     self::MATRIX,
                     self::PARA,
                     self::FIELDSET_BEGIN
@@ -1201,6 +1215,7 @@ class PifaField extends Item {
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
+                    // self::BUTTONIMAGE,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1222,6 +1237,7 @@ class PifaField extends Item {
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
+                    // self::BUTTONIMAGE,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1243,6 +1259,7 @@ class PifaField extends Item {
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
                     // self::BUTTON,
+                    // self::BUTTONIMAGE,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1264,10 +1281,39 @@ class PifaField extends Item {
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
                     self::BUTTON,
+                    self::BUTTONIMAGE,
                     self::MATRIX,
                     self::PARA,
                     self::FIELDSET_BEGIN
                     /*
+                    self::INPUTHIDDEN
+                    */
+                ));
+
+            case 'uri':
+                return in_array($fieldType, array(
+                    /*
+                    self::INPUTTEXT,
+                    self::TEXTAREA,
+                    self::INPUTPASSWORD,
+                    self::INPUTRADIO,
+                    self::INPUTCHECKBOX,
+                    self::SELECT,
+                    self::SELECTMULTI,
+                    self::DATEPICKER,
+                    self::INPUTFILE,
+                    self::PROCESSBAR,
+                    self::SLIDER,
+                    // self::CAPTCHA,
+                    self::BUTTONSUBMIT,
+                    self::BUTTONRESET,
+                    self::BUTTON,
+                    */
+                    self::BUTTONIMAGE,
+                    /*
+                    self::MATRIX,
+                    self::PARA,
+                    self::FIELDSET_BEGIN
                     self::INPUTHIDDEN
                     */
                 ));

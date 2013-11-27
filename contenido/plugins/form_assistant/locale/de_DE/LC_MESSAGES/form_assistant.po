@@ -338,6 +338,9 @@ msgstr "Formatierung"
 msgid "CSS_CLASS"
 msgstr "CSS-Klasse"
 
+msgid "URI"
+msgstr "URI"
+
 msgid "EXTERNAL_OPTIONS_DATASOURCE"
 msgstr "externe Datenquelle für Optionen"
 
@@ -412,6 +415,9 @@ msgstr "Anfang einer Formularfeldgruppe"
 
 msgid "FIELDSET_END"
 msgstr "Ende einer Formularfeldgruppe"
+
+msgid "BUTTONIMAGE"
+msgstr "Bild-Button"
 
 msgid "UNKNOWN"
 msgstr "unbekannt"

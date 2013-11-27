@@ -212,6 +212,7 @@ class PifaAjaxHandler {
             'submitValue' => Pifa::i18n('SAVE'),
             'styling' => Pifa::i18n('STYLING'),
             'cssClass' => Pifa::i18n('CSS_CLASS'),
+            'uri' => Pifa::i18n('URI'),
             'externalOptionsDatasource' => Pifa::i18n('EXTERNAL_OPTIONS_DATASOURCE')
         ));
 
@@ -345,6 +346,17 @@ class PifaAjaxHandler {
             $displayLabel = 'on' === $displayLabel? 1 : 0;
             if ($displayLabel !== $pifaField->get('display_label')) {
                 $pifaField->set('display_label', $displayLabel);
+            }
+        }
+
+        if ($pifaField->showField('uri')) {
+            $uri = $_POST['uri'];
+            $uri = cSecurity::unescapeDB($uri);
+            $uri = cSecurity::toString($uri);
+            $uri = trim($uri);
+            $uri = substr($uri, 0, 1023);
+            if ($uri !== $pifaField->get('uri')) {
+                $pifaField->set('uri', $uri);
             }
         }
 

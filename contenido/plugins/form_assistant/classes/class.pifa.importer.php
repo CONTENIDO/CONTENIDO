@@ -266,7 +266,8 @@ class PifaImporter {
             'PARAGRAPH' => PifaField::PARA,
             'INPUTHIDDEN' => PifaField::INPUTHIDDEN,
             'FIELDSET_BEGIN' => PifaField::FIELDSET_BEGIN,
-            'FIELDSET_END' => PifaField::FIELDSET_END
+            'FIELDSET_END' => PifaField::FIELDSET_END,
+            'BUTTONIMAGE' => PifaField::BUTTONIMAGE
         );
         $fieldTypeId = $fieldTypeIds[$fieldTypeName];
         return $fieldTypeId;

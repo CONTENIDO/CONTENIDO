@@ -67,6 +67,10 @@ is set to all form fields where <n> is its type id. */
 /* INPUTHIDDEN */
 .pifa-field-18 {}
 
+/* BUTTONIMAGE */
+.pifa-field-21 {}
+
+
 /* == Styling obligatory fields  ==
 The class pifa-obligatory is set to all divisions containing an obligatory field.
 In this case ' *' is appended to any label describing an obligatory field.

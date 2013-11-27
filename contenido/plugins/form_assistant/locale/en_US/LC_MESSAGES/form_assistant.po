@@ -338,6 +338,9 @@ msgstr "styling"
 msgid "CSS_CLASS"
 msgstr "CSS class"
 
+msgid "URI"
+msgstr "URI"
+
 msgid "EXTERNAL_OPTIONS_DATASOURCE"
 msgstr "external options datasource"
 
@@ -412,6 +415,9 @@ msgstr "fieldset begin"
 
 msgid "FIELDSET_END"
 msgstr "fieldset end"
+
+msgid "BUTTONIMAGE"
+msgstr "image button"
 
 msgid "UNKNOWN"
 msgstr "unknown"

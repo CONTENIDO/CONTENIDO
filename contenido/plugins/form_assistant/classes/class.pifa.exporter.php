@@ -397,7 +397,8 @@ class PifaExporter {
             PifaField::PARA => 'PARAGRAPH',
             PifaField::INPUTHIDDEN => 'INPUTHIDDEN',
             PifaField::FIELDSET_BEGIN => 'FIELDSET_BEGIN',
-            PifaField::FIELDSET_END => 'FIELDSET_END'
+            PifaField::FIELDSET_END => 'FIELDSET_END',
+            PifaField::BUTTONIMAGE => 'BUTTONIMAGE'
         );
         $fieldTypeName = $fieldTypeNames[$fieldTypeId];
         $fieldTypeName = strtolower($fieldTypeName);

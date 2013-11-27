@@ -46,6 +46,13 @@ GENERAL SETTINGS
     </div>
     {/if}
 
+    {if $field->showField('uri')}
+    <div class="uri">
+        <label for="uri">{$trans.uri}</label>
+        <input type="text" id="uri" name="uri" value="{$field->get('uri')|escape}" maxlength="1023" />
+    </div>
+    {/if}
+
     {if $field->showField('obligatory')}
     <div class="req-input">
         <label for="obligatory">{$trans.obligatory}</label>
