@@ -418,7 +418,7 @@ function mi18n($key) {
     // get all translations of current module
     $cCurrentModule = cRegistry::getCurrentModuleId();
     $contenidoTranslateFromFile = new cModuleFileTranslation($cCurrentModule, true);
-    $translations = $contenidoTranslateFromFile->getLangarray();
+    $translations = $contenidoTranslateFromFile->getLangArray();
 
     $translation = $translations[$key];
 
