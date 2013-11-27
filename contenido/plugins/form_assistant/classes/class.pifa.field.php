@@ -847,6 +847,9 @@ class PifaField extends Item {
     /**
      * Returns an array containing all field type ids mapped to their names.
      *
+     * The order of field types in this array influences the order of icons
+     * displayed in the backend for selection!
+     *
      * @return array
      */
     public static function getFieldTypeNames() {
@@ -863,14 +866,14 @@ class PifaField extends Item {
             self::PROCESSBAR => Pifa::i18n('PROCESSBAR'),
             self::SLIDER => Pifa::i18n('SLIDER'),
             // self::CAPTCHA => Pifa::i18n('CAPTCHA'),
-            self::BUTTONSUBMIT => Pifa::i18n('BUTTONSUBMIT'),
-            self::BUTTONRESET => Pifa::i18n('BUTTONRESET'),
-            self::BUTTON => Pifa::i18n('BUTTON'),
             // self::MATRIX => Pifa::i18n('MATRIX'),
             self::PARA => Pifa::i18n('PARAGRAPH'),
             self::INPUTHIDDEN => Pifa::i18n('INPUTHIDDEN'),
             self::FIELDSET_BEGIN => Pifa::i18n('FIELDSET_BEGIN'),
-            self::FIELDSET_END => Pifa::i18n('FIELDSET_END')
+            self::FIELDSET_END => Pifa::i18n('FIELDSET_END'),
+            self::BUTTONSUBMIT => Pifa::i18n('BUTTONSUBMIT'),
+            self::BUTTONRESET => Pifa::i18n('BUTTONRESET'),
+            self::BUTTON => Pifa::i18n('BUTTON')
         );
     }
 
