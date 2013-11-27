@@ -244,8 +244,8 @@ class PifaForm extends Item {
     }
 
     /**
-     * Returns an array containing values of all fields of this form where the
-     * fields column name is used as key.
+     * Returns an array containing current values of all fields of this form
+     * where the fields column name is used as key.
      *
      * @return array
      */
@@ -593,6 +593,7 @@ class PifaForm extends Item {
     }
 
     /**
+     * Returns an array containing this forms stored data.
      *
      * @throws PifaException if form is not loaded
      * @throws PifaException if table does not exist
@@ -625,7 +626,7 @@ class PifaForm extends Item {
             return array();
         }
 
-        if (0 === $db->num_rows()) {
+        if (0 === $db->numRows()) {
             return array();
         }
 
@@ -786,9 +787,13 @@ class PifaForm extends Item {
      * If $oneRowPerField is set to true the CSV-file is mirrored so that each
      * line contains the fields header and then its value.
      * An assoc array of $additionalFields can be given which will be appended
-     * th the current values of this form.
+     * to the current values of this form.
+     * (CON-1648)The CSV is created using a temporary file in the systems (not
+     * CONTENIDOs) TEMP folder.
      *
      * @param bool $oneRowPerField
+     * @param array $additionalFields
+     * @return string
      */
     public function getCsv($oneRowPerField = false, array $additionalFields = NULL) {
 
@@ -800,39 +805,38 @@ class PifaForm extends Item {
             $data = array_merge($data, $additionalFields);
         }
 
-        $out = '';
-        if (true === $oneRowPerField) {
+        // convert array values to CSV values
+        $implode = 'return implode(\',\', $in);';
+        $implode = create_function('$in', $toCsv);
+        $data = array_map($implode, $data);
 
-            // one line for each field containing its header and value
-            foreach ($data as $key => $value) {
-                if (0 < strlen($out)) {
-                    $out .= "\n";
-                }
-                $key = "\"$key\"";
-                $value = str_replace("\n", '\n', $value);
-                $value = str_replace("\r", '\r', $value);
-                $value = "\"$value\"";
-                $out .= "$key;$value";
-            }
-        } else {
-
-            // one line for headers and another for values
-            $header = $values = '';
-            foreach ($data as $key => $value) {
-                if (0 < strlen($header)) {
-                    $header .= ';';
-                    $values .= ';';
-                }
-                $header .= "\"$key\"";
-                $value = str_replace("\n", '\n', $value);
-                $value = str_replace("\r", '\r', $value);
-                $value = "\"$value\"";
-                $values .= $value;
-            }
-            $out = "$header\n$values";
+        // optionally rearrange/mirror array
+        if (!$oneRowPerField) {
+            $data = array(
+                array_keys($data),
+                array_values($data)
+            );
         }
 
-        return $out;
+        // == create CSV (CON-1648)
+        $csv = '';
+        // write all lines of data as CSV into tmp file
+        $total = 0;
+        if (false !== $tmpfile = tmpfile()) {
+            foreach ($data as $line) {
+                $length = fputcsv($tmpfile, $data, ';', '"');
+                if (false !== $length) {
+                    $total += $length;
+                }
+            }
+        }
+        // read CSV from tmp file and delete it
+        if (0 < $total) {
+            $csv = fread($tmpfile, $length);
+            fclose($tmpfile);
+        }
+
+        return $csv;
     }
 
     /**
@@ -872,7 +876,7 @@ class PifaForm extends Item {
             throw new PifaException($msg);
         }
 
-        return (bool) (0 !== $db->num_rows());
+        return (bool) (0 !== $db->numRows());
     }
 
     /**
