@@ -392,7 +392,7 @@ class PifaExporter {
             // PifaField::CAPTCHA => 'CAPTCHA',
             PifaField::BUTTONSUBMIT => 'BUTTONSUBMIT',
             PifaField::BUTTONRESET => 'BUTTONRESET',
-            PifaField::BUTTONBACK => 'BUTTONBACK',
+            PifaField::BUTTON => 'BUTTON',
             PifaField::MATRIX => 'MATRIX',
             PifaField::PARA => 'PARAGRAPH',
             PifaField::INPUTHIDDEN => 'INPUTHIDDEN',

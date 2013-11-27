@@ -158,25 +158,33 @@ class PifaField extends Item {
     // const CAPTCHA = 12;
 
     /**
-     * Button to submit a form.
+     * Button of type submit.
      *
      * @var int
      */
     const BUTTONSUBMIT = 13;
 
     /**
-     * Button to reset a form.
+     * Button of type reset.
      *
      * @var int
      */
     const BUTTONRESET = 14;
 
     /**
-     * Button to navigate back.
+     * General button.
      *
+     * @deprecated use PifaField::BUTTON instead
      * @var int
      */
     const BUTTONBACK = 15;
+
+    /**
+     * General button.
+     *
+     * @var int
+     */
+    const BUTTON = 15;
 
     /**
      *
@@ -456,7 +464,7 @@ class PifaField extends Item {
         if (in_array($fieldType, array(
             self::BUTTONSUBMIT,
             self::BUTTONRESET,
-            self::BUTTONBACK
+            self::BUTTON
         ))) {
             return NULL;
         }
@@ -705,22 +713,28 @@ class PifaField extends Item {
 
             case self::BUTTONSUBMIT:
             case self::BUTTONRESET:
-            case self::BUTTONBACK:
+            case self::BUTTON:
 
                 $modes = array(
                     self::BUTTONSUBMIT => 'submit',
                     self::BUTTONRESET => 'reset',
-                    self::BUTTONBACK => 'button'
+                    self::BUTTON => 'button'
                 );
+
+                $mode = $modes[$fieldType];
+
                 $elemField = new cHTMLButton($columnName);
                 // set ID (workaround: remove ID first!)
                 $elemField->removeAttribute('id')->setID($id);
-                if (NULL !== $label) {
-                    $elemField->setTitle($label);
+                if ('submit' === $mode && filter_var($label, FILTER_VALIDATE_URL)) {
+                    // an URL was set as label, so this is an image button
+                    $elemField->setMode('image');
+                    $elemField->setAttribute('src', $label);
                 } else {
-                    $elemField->setTitle($modes[$fieldType]);
+                    // this is a common submit button
+                    $elemField->setMode($mode);
+                    $elemField->setTitle($label? $label : $mode);
                 }
-                $elemField->setMode($modes[$fieldType]);
                 break;
 
             case self::MATRIX:
@@ -851,7 +865,7 @@ class PifaField extends Item {
             // self::CAPTCHA => Pifa::i18n('CAPTCHA'),
             self::BUTTONSUBMIT => Pifa::i18n('BUTTONSUBMIT'),
             self::BUTTONRESET => Pifa::i18n('BUTTONRESET'),
-            self::BUTTONBACK => Pifa::i18n('BUTTONBACK'),
+            self::BUTTON => Pifa::i18n('BUTTON'),
             // self::MATRIX => Pifa::i18n('MATRIX'),
             self::PARA => Pifa::i18n('PARAGRAPH'),
             self::INPUTHIDDEN => Pifa::i18n('INPUTHIDDEN'),
@@ -960,7 +974,7 @@ class PifaField extends Item {
             // Buttons don't have any values that should be stored.
             case self::BUTTONSUBMIT:
             case self::BUTTONRESET:
-            case self::BUTTONBACK:
+            case self::BUTTON:
 
                 return NULL;
 
@@ -1078,7 +1092,7 @@ class PifaField extends Item {
                     // self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
-                    // self::BUTTONBACK,
+                    // self::BUTTON,
                     self::MATRIX,
                     self::INPUTHIDDEN
                     /*
@@ -1104,7 +1118,7 @@ class PifaField extends Item {
                     // self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
-                    self::BUTTONBACK,
+                    self::BUTTON,
                     self::MATRIX,
                     self::PARA,
                     // self::INPUTHIDDEN,
@@ -1130,7 +1144,7 @@ class PifaField extends Item {
                     // self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
-                    self::BUTTONBACK,
+                    self::BUTTON,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1161,7 +1175,7 @@ class PifaField extends Item {
                     // self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
-                    self::BUTTONBACK,
+                    self::BUTTON,
                     self::MATRIX,
                     self::PARA,
                     self::FIELDSET_BEGIN
@@ -1183,7 +1197,7 @@ class PifaField extends Item {
                     // self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
-                    // self::BUTTONBACK,
+                    // self::BUTTON,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1204,7 +1218,7 @@ class PifaField extends Item {
                     // self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
-                    // self::BUTTONBACK,
+                    // self::BUTTON,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1225,7 +1239,7 @@ class PifaField extends Item {
                     // self::CAPTCHA,
                     // self::BUTTONSUBMIT,
                     // self::BUTTONRESET,
-                    // self::BUTTONBACK,
+                    // self::BUTTON,
                     self::MATRIX,
                     self::INPUTHIDDEN
                 ));
@@ -1246,7 +1260,7 @@ class PifaField extends Item {
                     // self::CAPTCHA,
                     self::BUTTONSUBMIT,
                     self::BUTTONRESET,
-                    self::BUTTONBACK,
+                    self::BUTTON,
                     self::MATRIX,
                     self::PARA,
                     self::FIELDSET_BEGIN

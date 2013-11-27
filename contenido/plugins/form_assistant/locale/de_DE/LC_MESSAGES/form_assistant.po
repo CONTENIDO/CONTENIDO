@@ -391,8 +391,12 @@ msgstr "Absenden-Button"
 msgid "BUTTONRESET"
 msgstr "Abbrechen-Button"
 
+; @deprecated use BUTTON instead
 msgid "BUTTONBACK"
 msgstr "Zurück-Button"
+
+msgid "BUTTON"
+msgstr "Button"
 
 msgid "MATRIX"
 msgstr "Matrix"

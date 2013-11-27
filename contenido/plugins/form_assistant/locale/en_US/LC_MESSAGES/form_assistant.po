@@ -391,8 +391,12 @@ msgstr "send button"
 msgid "BUTTONRESET"
 msgstr "reset button"
 
+; @deprecated use BUTTON instead
 msgid "BUTTONBACK"
 msgstr "back button"
+
+msgid "BUTTON"
+msgstr "button"
 
 msgid "MATRIX"
 msgstr "matrix"

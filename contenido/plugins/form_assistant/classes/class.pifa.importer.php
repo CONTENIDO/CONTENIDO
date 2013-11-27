@@ -259,7 +259,9 @@ class PifaImporter {
             // 'CAPTCHA' => PifaField::CAPTCHA,
             'BUTTONSUBMIT' => PifaField::BUTTONSUBMIT,
             'BUTTONRESET' => PifaField::BUTTONRESET,
+            // @deprecated use PifaField::BUTTON instead
             'BUTTONBACK' => PifaField::BUTTONBACK,
+            'BUTTON' => PifaField::BUTTON,
             'MATRIX' => PifaField::MATRIX,
             'PARAGRAPH' => PifaField::PARA,
             'INPUTHIDDEN' => PifaField::INPUTHIDDEN,
