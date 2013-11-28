@@ -546,20 +546,8 @@ class cModuleHandler {
      * @return array
      */
     public function getAllFilesFromDirectory($moduleDirectory) {
-        $retArray = array();
         $dir = $this->_modulePath . $this->_directories[$moduleDirectory];
-
-        if (is_dir($dir)) {
-            if ($dh = opendir($dir)) {
-                while (($file = readdir($dh)) !== false) {
-                    // is file a dir or not
-                    if ($file != '..' && $file != '.' && !is_dir($dir . $file . '/')) {
-                        $retArray[] = $file;
-                    }
-                }
-            }
-        }
-        return $retArray;
+        return cDirHandler::read($dir);
     }
 
     /**
