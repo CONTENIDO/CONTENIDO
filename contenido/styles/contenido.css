@@ -822,8 +822,12 @@ div#navcontainer ul#navlist li a:visited.current {
     color: #0060B1;
     outline: none;
     cursor: pointer;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
     -moz-border-radius-topleft: 5px;
     -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 * html div#navcontainer ul#navlist li a.current {
     position: relative;
