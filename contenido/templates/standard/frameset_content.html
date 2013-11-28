@@ -39,9 +39,9 @@ if (m && m[1]) {
     leftBorder = 0;
 }
 
-document.writeln('<frameset id="contentFrame" cols="{WIDTH},*" bordercolor="white" border="5" frameborder="' + contentFrameBorder + '" framespacing="5">');
-document.writeln('    <frame name="left" id="left" bordercolor="#FFF" scrolling="no" src="{LEFT}" bordercolor="white" frameborder="' + leftBorder + '">');
-document.writeln('    <frame name="right" id="right" bordercolor="#FFF" scrolling="no" src="{RIGHT}" bordercolor="white" frameborder="0">');
+document.writeln('<frameset id="contentFrame" cols="{WIDTH},*" border="5" frameborder="' + contentFrameBorder + '" framespacing="5">');
+document.writeln('    <frame name="left" id="left" scrolling="no" src="{LEFT}" frameborder="' + leftBorder + '">');
+document.writeln('    <frame name="right" id="right" scrolling="no" src="{RIGHT}" frameborder="0">');
 document.writeln('</frameset>');
 </script>
 

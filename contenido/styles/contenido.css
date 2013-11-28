@@ -541,12 +541,10 @@ body {
     color: #000;
 }
 
-frameset {
-    background-color: #fff;
-}
-
+frameset,
 frame {
     background-color: #fff;
+    border-color: #fff;
 }
 
 p, table, tr, td, th {
