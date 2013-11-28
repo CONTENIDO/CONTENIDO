@@ -225,7 +225,8 @@ class cGuiPage {
      *        /scripts/ in order to be found.
      */
     public function addScript($script) {
-        if (empty(trim($script))) {
+        $script = trim($script);
+        if (empty($script)) {
             return;
         }
 
@@ -260,7 +261,8 @@ class cGuiPage {
      *        reside in /styles/ in order to be found.
      */
     public function addStyle($stylesheet) {
-        if (empty(trim($stylesheet))) {
+        $stylesheet = trim($stylesheet);
+        if (empty($stylesheet)) {
             return;
         }
 
