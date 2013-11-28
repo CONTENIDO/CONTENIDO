@@ -1,4 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
     <title>:: :: :: :: Contenido {VERSION} {LOCATION}</title>
@@ -9,11 +10,8 @@
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <script type="text/javascript" src="scripts/browserCheck.js"></script>
     <script type="text/javascript" src="scripts/conFrameResize.js"></script>
-
     <script type="text/javascript">
-
-        frameResize = new conFrameResize();
-
+    frameResize = new conFrameResize();
     </script>
 </head>
 
@@ -47,19 +45,19 @@ var m = false;
 m = ua.match(/MSIE\s([^;]*)/);
 s = ua.match(/safari/gi); /*If there is no frameborder, safari does not allow to resize frame*/
 if (m && m[1]) {
-	document.writeln("<frameset id=\"contentFrame\" cols=\"{WIDTH},*\" bordercolor=\"white\" border=\"5\" frameborder=\"0\" framespacing=\"5\">");
-	document.writeln("<frame name=\"left\" id=\"left\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{LEFT}\" bordercolor=\"white\" frameborder=\"0\">");
-	document.writeln("<frame name=\"right\" id=\"right\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{RIGHT}\" bordercolor=\"white\" frameborder=\"0\">");		
+	document.writeln('<frameset id="contentFrame" cols="{WIDTH},*" border="5" frameborder="0" framespacing="5">');
+	document.writeln('<frame name="left" id="left" scrolling="no" src="{LEFT}" frameborder="0">');
+	document.writeln('<frame name="right" id="right" scrolling="no" src="{RIGHT}" frameborder="0">');		
 } else if (s) {
-	document.writeln("<frameset id=\"contentFrame\" cols=\"{WIDTH},*\" bordercolor=\"white\" border=\"5\" frameborder=\"1\" framespacing=\"5\">");
-	document.writeln("<frame name=\"left\" id=\"left\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{LEFT}\" bordercolor=\"white\" frameborder=\"1\">");
-	document.writeln("<frame name=\"right\" id=\"right\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{RIGHT}\" bordercolor=\"white\" frameborder=\"0\">");
+	document.writeln('<frameset id="contentFrame" cols="{WIDTH},*" border="5" frameborder="1" framespacing="5">');
+	document.writeln('<frame name="left" id="left" scrolling="no" src="{LEFT}" frameborder="1">');
+	document.writeln('<frame name="right" id="right" scrolling="no" src="{RIGHT}" frameborder="0">');
 } else {
-	document.writeln("<frameset id=\"contentFrame\" cols=\"{WIDTH},*\" bordercolor=\"white\" border=\"5\" frameborder=\"1\" framespacing=\"5\">");
-	document.writeln("<frame name=\"left\" id=\"left\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{LEFT}\" bordercolor=\"white\" frameborder=\"0\">");
-	document.writeln("<frame name=\"right\" id=\"right\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{RIGHT}\" bordercolor=\"white\" frameborder=\"0\">");		
+	document.writeln('<frameset id="contentFrame" cols="{WIDTH},*" border="5" frameborder="1" framespacing="5">');
+	document.writeln('<frame name="left" id="left" scrolling="no" src="{LEFT}" frameborder="0">');
+	document.writeln('<frame name="right" id="right" scrolling="no" src="{RIGHT}" frameborder="0">');		
 }
-document.writeln("<\/frameset>");
+document.writeln('</frameset>');
 
 /* modified 2009-07-10 Ortwin Pinke, using try & catch now for better crossbrowser compability */     
 function initFrame() {    
@@ -72,9 +70,7 @@ function initFrame() {
 }
 
 initFrame();
-    
-</script>
-<body bgcolor="#FFFFFF">
 
-</body>
+</script>
+
 </html>

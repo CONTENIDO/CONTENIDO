@@ -642,12 +642,10 @@ body            {
                     color: #000000;
                 }
 
-frameset        {
-                    background-color: #ffffff;
-                }
-
+frameset,
 frame           {
-                    background-color: #ffffff;
+                    background-color: #fff;
+                    border-color: #fff;
                 }
                 
 p				{
