@@ -608,6 +608,7 @@ contenido/external/codemirror/theme/night.css -text
 contenido/external/codemirror/theme/rubyblue.css -text
 contenido/external/codemirror/theme/vibrant-ink.css -text svneol=unset#text/plain
 contenido/external/codemirror/theme/xq-dark.css -text svneol=unset#text/plain
+contenido/external/frontend/cache/code/index.php -text
 contenido/external/frontend/cache/index.php -text
 contenido/external/frontend/css/index.php -text
 contenido/external/frontend/css/style_tiny.css -text
