@@ -1985,6 +1985,7 @@ contenido/styles/content_types/cms_imgeditor.css -text
 contenido/styles/content_types/cms_linkeditor.css -text
 contenido/styles/content_types/cms_teaser.css -text svneol=unset#text/plain
 contenido/styles/includes/con_content_list.css -text svneol=unset#text/plain
+contenido/styles/includes/dragdrop.upl_files_upload.css -text svneol=unset#text/plain
 contenido/styles/includes/system_integrity.css -text svneol=unset#text/plain
 contenido/styles/index.php -text
 contenido/styles/inuse.css -text

@@ -1,0 +1,56 @@
+
+/**
+ * #############################################################################
+ * @section File_Upload
+ */
+
+#dropbox {
+    width: 498px;
+    height: 100px;
+    line-height: 99px;
+    background-color: #fff;
+    border: 1px solid #D0D0D0;
+    text-align: center;
+    padding: 0;
+}
+
+#shelf {
+    width: 498px;
+
+    margin-bottom: 5px;
+    border-left: 1px solid #D0D0D0;
+    border-right: 1px solid #D0D0D0;
+
+    display: none;
+}
+
+div.shelf_elem {
+    padding: 5px;
+    
+    border-bottom: 1px solid #D0D0D0;
+}
+
+div.shelf_elem_titlelabel {
+    width: 100%;
+}
+
+div.shelf_elem_progressbar_background {
+    margin-top: 2px;
+    height: 10px;
+    background-color: black;
+}
+
+div.shelf_elem_progressbar_bar {
+    width: 0%;
+    height: 100%;
+    background-color: green;
+}
+
+input.shelf_elem_cancelbutton {
+    float: left;
+    font-size: 80%;
+}
+
+div.shelf_elem_statuslabel {
+    text-align: right;
+}

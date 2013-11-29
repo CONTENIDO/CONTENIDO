@@ -1345,55 +1345,6 @@ p.column_header {
 
 /**
  * #############################################################################
- * @section File_Upload
- */
-
-#dropbox {
-    width: 500px;
-    height: 100px;
-    line-height: 99px;
-    background-color: #fff;
-    border: 1px solid #D0D0D0;
-    text-align: center;
-    padding: 0;
-}
-
-#shelf {
-    width: 500px;
-}
-
-div.shelf_elem {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 5px 0;
-}
-
-div.shelf_elem_titlelabel {
-    width: 100%;
-}
-
-div.shelf_elem_progressbar_background {
-    margin-top: 5px;
-    height: 20px;
-    background-color: black;
-}
-
-div.shelf_elem_progressbar_bar {
-    width: 0%;
-    height: 100%;
-    background-color: green;
-}
-
-input.shelf_elem_cancelbutton {
-    float: left;
-}
-
-div.shelf_elem_statuslabel {
-    float: right;
-}
-
-/**
- * #############################################################################
  * @section Datetime_Picker
  */
 

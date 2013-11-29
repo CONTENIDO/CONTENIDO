@@ -27,7 +27,7 @@
                     "    </div>" +
                     "    <input class='shelf_elem_cancelbutton' type='button' value='{textcancel}'>" +
                     "    <div class='shelf_elem_statuslabel'>{textwaiting}</div>" +
-                    "</div><br>",
+                    "</div>",
         SELECTOR_SHELF_STATUS = '#d_bar_{id} .shelf_elem_statuslabel',
         SELECTOR_SHELF_CANCEL = '#d_bar_{id} .shelf_elem_cancelbutton',
         SELECTOR_SHELF_BAR = '#d_bar_{id} .shelf_elem_progressbar_bar';
@@ -154,10 +154,12 @@
         var _onXHRLoad = function(e) {
             var statusDiv = $(SELECTOR_SHELF_STATUS.replace('{id}', this.upload.uploadId));
             var cancelButton = $(SELECTOR_SHELF_CANCEL.replace('{id}', this.upload.uploadId));
+            var progressDiv = $(SELECTOR_SHELF_BAR.replace('{id}', this.upload.uploadId));
 
             // change the labels
             statusDiv.html(_options.text_finished);
             cancelButton.css('display', 'none');
+            progressDiv.css('width', '100%');
 
             _runningUpload = null;
 
@@ -271,6 +273,8 @@
                 alert(file.name + ': ' + $('<div />').html(_options.text_fileIsTooBig).text());
                 return;
             }
+            
+            $(_options.selectorShelf).css("display", "block");
 
             var xhr = new XMLHttpRequest();
 

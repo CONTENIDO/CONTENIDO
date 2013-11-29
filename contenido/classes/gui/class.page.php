@@ -194,7 +194,7 @@ class cGuiPage {
         $this->addBodyClassName('page_generic');
         $this->addBodyClassName('page_' . $pageid);
 
-        if (cFileHandler::exists($cfg['path']['scripts_includes'] . $pageName . '.css')) {
+        if (cFileHandler::exists($cfg['path']['styles_includes'] . $pageName . '.css')) {
             $this->addStyle(cGuiPage::filesDirectory . $pageName . '.css');
         }
 
@@ -202,7 +202,7 @@ class cGuiPage {
          *
          * @var $stylefile SplFileInfo
          */
-        foreach (new DirectoryIterator($cfg['path']['scripts_includes']) as $stylefile) {
+        foreach (new DirectoryIterator($cfg['path']['styles_includes']) as $stylefile) {
             if (cString::endsWith($stylefile->getFilename(), '.' . $pageName . '.css')) {
                 $this->addStyle(cGuiPage::filesDirectory . $stylefile->getFilename());
             }

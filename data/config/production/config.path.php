@@ -32,6 +32,7 @@ $cfg['path']['cronjobs']            = 'cronjobs/';
 $cfg['path']['scripts']             = 'scripts/';
 $cfg['path']['scripts_includes']    = $cfg['path']['scripts'] . 'includes/';
 $cfg['path']['styles']              = 'styles/';
+$cfg['path']['styles_includes']     = $cfg['path']['styles'] . 'includes/';
 $cfg['path']['plugins']             = 'plugins/';
 
 $cfg['path']['locale']              = 'locale/';
