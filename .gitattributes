@@ -1942,6 +1942,11 @@ contenido/scripts/help.js -text
 contenido/scripts/help.js.php -text
 contenido/scripts/iZoom.js.php -text
 contenido/scripts/include.upl_edit.js -text
+contenido/scripts/includes/dragdrop.upl_files_upload.js -text svneol=unset#text/plain
+contenido/scripts/includes/mail_log_overview.js -text svneol=unset#text/plain
+contenido/scripts/includes/mod_template.js -text svneol=unset#text/plain
+contenido/scripts/includes/system_log_sysvalues.js -text svneol=unset#text/plain
+contenido/scripts/includes/upl_files_overview.js -text svneol=unset#text/plain
 contenido/scripts/index.php -text
 contenido/scripts/infoBox.js -text
 contenido/scripts/jquery/ajaxupload.js -text
@@ -1955,7 +1960,7 @@ contenido/scripts/jquery/plugins/timepicker-de.js -text svneol=unset#text/plain
 contenido/scripts/jquery/plugins/timepicker.js -text svneol=unset#text/plain
 contenido/scripts/jquery/plugins/tipsy.js -text
 contenido/scripts/langref.php -text
-contenido/scripts/mail_log.js -text svneol=unset#text/plain
+contenido/scripts/mail_log_overview.js -text svneol=unset#text/plain
 contenido/scripts/md5.js -text
 contenido/scripts/mod_template.js -text svneol=unset#text/plain
 contenido/scripts/parameterCollector.js -text
@@ -1979,6 +1984,8 @@ contenido/styles/content_types/cms_filelist.css -text
 contenido/styles/content_types/cms_imgeditor.css -text
 contenido/styles/content_types/cms_linkeditor.css -text
 contenido/styles/content_types/cms_teaser.css -text svneol=unset#text/plain
+contenido/styles/includes/con_content_list.css -text svneol=unset#text/plain
+contenido/styles/includes/system_integrity.css -text svneol=unset#text/plain
 contenido/styles/index.php -text
 contenido/styles/inuse.css -text
 contenido/styles/jquery/fileuploader.css -text svneol=unset#text/plain
