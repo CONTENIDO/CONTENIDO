@@ -53,7 +53,7 @@
 
             $textArea.next().resizable({
                 resize: function() {
-                    _cmEditor[textAreaId].setSize(codeWidth, $(this).height());
+                    _cmEditor[textAreaId].setSize($(this).width(), $(this).height());
                     _cmEditor[textAreaId].refresh();
                 }
             });
@@ -69,17 +69,37 @@
                 return;
             }
 
+            var editorElement = $(_cmEditor[editorId].getWrapperElement());
             // @TODO: Display the editor in real full screen mode!
             if (!_cmDiv[editorId].hasClass('con-CodeMirror-fullscreen')) {
                 _cmDiv[editorId].addClass('con-CodeMirror-fullscreen');
-                _cmDiv[editorId].height('100%');
-                _cmDiv[editorId].width('100%');
+                editorElement.css("position", "absolute");
+                editorElement.css("top", "0");
+                editorElement.css("left", "0");
+                editorElement.css("width", "100%");
+                editorElement.css("height", window.innerHeight + "px");
+                editorElement.css("background-color", "white");
+                editorElement.css("z-index", "3000");
+                editorElement.resizable('destroy');
+                
             } else {
                 _cmDiv[editorId].removeClass('con-CodeMirror-fullscreen');
-                _cmDiv[editorId].height(_cmFullscreen[editorId].height + 'px');
-                _cmDiv[editorId].width(_cmFullscreen[editorId].width + 'px');
+                editorElement.css("position", "");
+                editorElement.css("top", "0");
+                editorElement.css("left", "0");
+                editorElement.css("width", _cmFullscreen[editorId].width + 'px');
+                editorElement.css("height", _cmFullscreen[editorId].height + 'px');
+                editorElement.css("background-color", "");
+                editorElement.css("z-index", "0");
+                editorElement.resizable({
+                    resize: function() {
+                        _cmEditor[editorId].setSize($(this).width(), $(this).height());
+                        _cmEditor[editorId].refresh();
+                    }
+                });
             }
 
+            _cmEditor[editorId].setSize(editorElement.width(), editorElement.height());
             _cmEditor[editorId].refresh();
         }
 
