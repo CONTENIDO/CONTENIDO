@@ -194,7 +194,7 @@ class cGuiPage {
         $this->addBodyClassName('page_generic');
         $this->addBodyClassName('page_' . $pageid);
 
-        if (cFileHandler::exists($cfg['path']['scripts_include'] . $pageName . '.css')) {
+        if (cFileHandler::exists($cfg['path']['scripts_includes'] . $pageName . '.css')) {
             $this->addStyle(cGuiPage::filesDirectory . $pageName . '.css');
         }
 
@@ -202,13 +202,13 @@ class cGuiPage {
          *
          * @var $stylefile SplFileInfo
          */
-        foreach (new DirectoryIterator($cfg['path']['scripts_include']) as $stylefile) {
+        foreach (new DirectoryIterator($cfg['path']['scripts_includes']) as $stylefile) {
             if (cString::endsWith($stylefile->getFilename(), '.' . $pageName . '.css')) {
                 $this->addStyle(cGuiPage::filesDirectory . $stylefile->getFilename());
             }
         }
 
-        if (cFileHandler::exists($cfg['path']['scripts_include'] . $pageName . '.js')) {
+        if (cFileHandler::exists($cfg['path']['scripts_includes'] . $pageName . '.js')) {
             $this->addScript(cGuiPage::filesDirectory . $pageName . '.js');
         }
 
@@ -216,7 +216,7 @@ class cGuiPage {
          *
          * @var $scriptfile SplFileInfo
          */
-        foreach (new DirectoryIterator($cfg['path']['scripts_include']) as $scriptfile) {
+        foreach (new DirectoryIterator($cfg['path']['scripts_includes']) as $scriptfile) {
             if (cString::endsWith($scriptfile->getFilename(), '.' . $pageName . '.js')) {
                 $this->addScript(cGuiPage::filesDirectory . $scriptfile->getFilename());
             }
