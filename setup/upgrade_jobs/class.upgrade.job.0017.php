@@ -33,7 +33,7 @@ class cUpgradeJob_0017 extends cUpgradeJobAbstract {
     public function _execute() {
         global $db, $cfg;
 
-        if ($_SESSION['setuptype'] == 'upgrade') {
+        if ($_SESSION['setuptype'] == 'upgrade' && $cfg['tab']['pifa_form'] != "") {
             $db->query('
                 ALTER TABLE
                     `' . $cfg['tab']['pifa_form'] . '`
