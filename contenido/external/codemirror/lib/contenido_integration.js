@@ -46,14 +46,16 @@
             _cmEditor[textAreaId] = CodeMirror.fromTextArea($textArea[0], properties);
             _cmDiv[textAreaId] = $('div.cm-s-' + textAreaId + '.CodeMirror-scroll');
             _cmFullscreen[textAreaId] = {
-                height: _cmDiv[textAreaId].height(),
-                width: _cmDiv[textAreaId].width()
+                height: $(_cmEditor[textAreaId].getWrapperElement()).height(),
+                width: $(_cmEditor[textAreaId].getWrapperElement()).width()
             };
             var codeWidth = $(_cmEditor[textAreaId].getWrapperElement()).width();
 
             $textArea.next().resizable({
                 resize: function() {
-                    _cmEditor[textAreaId].setSize($(this).width(), $(this).height());
+                    var minWidth = _cmFullscreen[textAreaId].width;
+                    var newWidth = ($(this).width() < minWidth) ? minWidth : $(this).width();
+                    _cmEditor[textAreaId].setSize(newWidth, $(this).height());
                     _cmEditor[textAreaId].refresh();
                 }
             });
@@ -93,7 +95,9 @@
                 editorElement.css("z-index", "0");
                 editorElement.resizable({
                     resize: function() {
-                        _cmEditor[editorId].setSize($(this).width(), $(this).height());
+                        var minWidth = _cmFullscreen[editorId].width;
+                        var newWidth = ($(this).width() < minWidth) ? minWidth : $(this).width();
+                        _cmEditor[editorId].setSize(newWidth, $(this).height());
                         _cmEditor[editorId].refresh();
                     }
                 });
