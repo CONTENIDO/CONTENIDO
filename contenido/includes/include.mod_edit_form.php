@@ -172,13 +172,13 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $disabled = "";
     }
 
-    $page = new cGuiPage("mod_edit_form");
+    $page = new cGuiPage("mod_edit_form", "", "0");
     $form = new cGuiTableForm("frm_mod_edit");
     $form->setTableid('mod_edit');
     $form->setVar("area", "mod_edit");
     $form->setVar("frame", $frame);
     $form->setVar("idmod", $idmod);
-    $page->setSubnav('action=' . $action);
+    //$page->setSubnav('action=' . $action);
     if (!$bInUse) {
         $form->setVar("action", "mod_edit");
     }
@@ -340,8 +340,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $modulecheck = getSystemProperty("system", "modulecheck");
     $isCodeError = $module->get('error');
     if ($modulecheck !== "false") {
-        $outled = '<img align="right" src="images/ajax-loader_16x16.gif" class="outputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '">';
-        $inled  = '<img align="right" src="images/ajax-loader_16x16.gif" class="inputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '">';
+        $outled = '<img style="float: right;" src="images/ajax-loader_16x16.gif" class="outputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '">';
+        $inled  = '<img style="float: right;" src="images/ajax-loader_16x16.gif" class="inputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '">';
     }
 
     $form->add(i18n("Name"), $name->render());
@@ -352,8 +352,8 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         $form->add(i18n("Input") . $inled . $oInputRows->render(), $input->render());
         $form->add(i18n("Output") . $outled . $oOutputRows->render(), $output->render());
     } else {
-        $form->add(i18n("Input") . $inled, $input->render());
-        $form->add(i18n("Output") . $outled, $output->render());
+        $form->add('<div style="float: left;">' . i18n("Input") . '</div>' . $inled, $input->render());
+        $form->add('<div style="float: left;">' . i18n("Output") . '</div>' . $outled, $output->render());
     }
 
     if ($module->isOldModule()) {
@@ -432,9 +432,9 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         // dont print menu
         if ($action == "mod_sync") {
             $page->set("s", "FORM", "");
-            $page->setSubnav("idmod=" . $idmod . "&dont_print_subnav=1");
+            //$page->setSubnav("idmod=" . $idmod . "&dont_print_subnav=1");
         } else {
-            $page->setSubnav("idmod=" . $idmod, "mod");
+            //$page->setSubnav("idmod=" . $idmod, "mod");
         }
         $page->render();
     }
