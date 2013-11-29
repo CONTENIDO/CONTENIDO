@@ -2,24 +2,23 @@
 /**
  * This file contains the generic page GUI class.
  *
- * @package          Core
- * @subpackage       GUI
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage GUI
+ * @version SVN Revision $Rev:$
  *
- * @author           Mischa Holz
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Mischa Holz
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Generic page GUI class.
  * Manages HTML pages and provides functions for rendering them.
  *
- * @package    Core
+ * @package Core
  * @subpackage GUI
  */
 class cGuiPage {
@@ -153,6 +152,13 @@ class cGuiPage {
      * @param string $subMenu The number of the submenu which should be
      *        highlighted when this page is shown.
      */
+    /**
+     * Scripts and styles subfolder for cGuiPage objects
+     *
+     * @var string
+     */
+    const filesDirectory = 'includes/';
+
     public function __construct($pageName, $pluginName = '', $subMenu = '') {
         global $lang, $cfg, $sess;
 
@@ -188,25 +194,31 @@ class cGuiPage {
         $this->addBodyClassName('page_generic');
         $this->addBodyClassName('page_' . $pageid);
 
-        if (cFileHandler::exists($cfg['path']['styles'] . $pageName . '.css')) {
-            $this->addStyle($pageName . '.css');
+        if (cFileHandler::exists($cfg['path']['scripts_include'] . $pageName . '.css')) {
+            $this->addStyle(cGuiPage::filesDirectory . $pageName . '.css');
         }
 
-        /** @var $stylefile SplFileInfo */
-        foreach (new DirectoryIterator($cfg['path']['styles']) as $stylefile) {
+        /**
+         *
+         * @var $stylefile SplFileInfo
+         */
+        foreach (new DirectoryIterator($cfg['path']['scripts_include']) as $stylefile) {
             if (cString::endsWith($stylefile->getFilename(), '.' . $pageName . '.css')) {
-                $this->addStyle($stylefile->getFilename());
+                $this->addStyle(cGuiPage::filesDirectory . $stylefile->getFilename());
             }
         }
 
-        if (cFileHandler::exists($cfg['path']['scripts'] . $pageName . '.js')) {
-            $this->addScript($pageName . '.js');
+        if (cFileHandler::exists($cfg['path']['scripts_include'] . $pageName . '.js')) {
+            $this->addScript(cGuiPage::filesDirectory . $pageName . '.js');
         }
 
-        /** @var $scriptfile SplFileInfo */
-        foreach (new DirectoryIterator($cfg['path']['scripts']) as $scriptfile) {
+        /**
+         *
+         * @var $scriptfile SplFileInfo
+         */
+        foreach (new DirectoryIterator($cfg['path']['scripts_include']) as $scriptfile) {
             if (cString::endsWith($scriptfile->getFilename(), '.' . $pageName . '.js')) {
-                $this->addScript($scriptfile->getFilename());
+                $this->addScript(cGuiPage::filesDirectory . $scriptfile->getFilename());
             }
         }
     }
@@ -218,7 +230,8 @@ class cGuiPage {
      * "<script...". However this shouldn't be used.
      *
      * If the page was constructed in a plugin and the plugin name was given
-     * in the constructor it will find the JS script in plugins/PLUGINNAME/scripts/
+     * in the constructor it will find the JS script in
+     * plugins/PLUGINNAME/scripts/
      * too.
      *
      * @param string $script The filename of the script. It has to reside in
@@ -248,6 +261,7 @@ class cGuiPage {
         } else if (cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)) {
             // the given script path is relative to the CONTENIDO scripts folder
             $fullpath = $backendUrl . $cfg['path']['scripts'] . $script;
+
             $this->_scripts[] = $fullpath;
         }
     }
@@ -314,7 +328,7 @@ class cGuiPage {
     /**
      * Adds class attribute value to the body tag.
      *
-     * @param  string  $className
+     * @param string $className
      */
     public function addBodyClassName($className) {
         if (!in_array($className, $this->_bodyClassNames)) {
@@ -553,7 +567,7 @@ class cGuiPage {
     protected function _renderMetaTags() {
         // render the meta tags
         // NB! We don't produce xhtml in the backend
-#        $produceXhtml = getEffectiveSetting('generator', 'xhtml', 'false');
+        // $produceXhtml = getEffectiveSetting('generator', 'xhtml', 'false');
         $produceXhtml = false;
         $meta = '';
         foreach ($this->_metaTags as $metaTag) {
@@ -607,13 +621,15 @@ class cGuiPage {
     }
 
     /**
-     * Renders text for all available content messages and returns the assembled message
+     * Renders text for all available content messages and returns the assembled
+     * message
      * string.
+     *
      * @return string
      */
     protected function _renderContentMessages() {
         global $notification;
-        
+
         // Get messages from cRegistry
         $infoMessages = cRegistry::getInfoMessages();
         foreach ($infoMessages as $message) {
@@ -663,8 +679,8 @@ class cGuiPage {
             // code if the parameter is false.
             $oldOutput = $output;
             ob_start(); // We don't want any code outside the body
-            // (in case the object outputs directly we
-            // will catch this output)
+                        // (in case the object outputs directly we
+                        // will catch this output)
             $output .= $obj->render(false);
             // We get the code either directly or via the output
             $output .= ob_get_contents();
@@ -704,8 +720,11 @@ class cGuiPage {
 
     /**
      * Returns only the path and name of the given file.
-     * Some JS or CSS file URLs may contain a query part, like "/path/to/file.js.php?contenido=12234"
-     * and this function returns only the path part "/path/to/file.js.php" of it.
+     * Some JS or CSS file URLs may contain a query part, like
+     * "/path/to/file.js.php?contenido=12234"
+     * and this function returns only the path part "/path/to/file.js.php" of
+     * it.
+     *
      * @param string $file
      * @return string
      */
