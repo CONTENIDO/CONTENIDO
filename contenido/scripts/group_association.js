@@ -202,7 +202,7 @@
         window.setAction = _setAction;
         window.filter = _filter
         window.keyHandler = _keyHandler;
-        window._setKeyCode = _setKeyCode;
+        window.setKeyCode = _setKeyCode;
 
         // #####################################################################
         // Public interface
