@@ -45,7 +45,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // Clients local configuration
 if (file_exists($cfgClient[$client]['config']['path'] . '/config.local.php')) {
-    @include ($cfgClient[$client]['config']['path'] . '/config.local.php');
+    @include($cfgClient[$client]['config']['path'] . '/config.local.php');
 }
 
 cInclude('includes', 'functions.con.php');
@@ -86,7 +86,7 @@ if ($contenido) {
 }
 
 // Include plugins
-require_once ($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
 // Call hook after plugins are loaded
 cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');

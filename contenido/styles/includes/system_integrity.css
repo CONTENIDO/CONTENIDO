@@ -1,23 +1,23 @@
 @CHARSET "UTF-8";
 
 table.systemcheck {
-	width: 70%;
+    width: 70%;
 }
 
 table.systemcheck td.right {
-	width: 0px;
+    width: 0px;
 }
 
 table.systemcheck td.left {
-	width: 100%;
-	padding: 5px;
+    width: 100%;
+    padding: 5px;
 }
 
 span.headline {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 span.message {
-	font-style: italic;
-	font-size: 87%;
+    font-style: italic;
+    font-size: 87%;
 }

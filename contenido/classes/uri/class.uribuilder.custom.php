@@ -76,7 +76,7 @@ class cUriBuilderCustom extends cUriBuilder {
         // if no config passed or not all parameters available, use default
         // config
         if (sizeof($aConfig) == 0 || !isset($aConfig['prefix']) || !isset($aConfig['suffix']) || !isset($aConfig['separator'])) {
-            include_once ('class.uribuilder.config.php');
+            include_once('class.uribuilder.config.php');
             $aConfig = cUriBuilderConfig::getConfig();
         }
         $this->aConfig = $aConfig;

@@ -102,10 +102,10 @@ foreach ($clientList as $key => $value) {
             if ($rights_clientslang == $idClientsLang) {
 
                 $availableClients[] = array(
-                        'idClientsLang' => $idClientsLang,
-                        'value_name' => $value['name'],
-                        'lang_name' => $db->f('name'),
-                        'selected' => 1
+                    'idClientsLang' => $idClientsLang,
+                    'value_name' => $value['name'],
+                    'lang_name' => $db->f('name'),
+                    'selected' => 1
                 );
 
                 if (!isset($rights_client)) {
@@ -113,10 +113,10 @@ foreach ($clientList as $key => $value) {
                 }
             } else {
                 $availableClients[] = array(
-                        'idClientsLang' => $idClientsLang,
-                        'value_name' => $value['name'],
-                        'lang_name' => $db->f('name'),
-                        'selected' => 0
+                    'idClientsLang' => $idClientsLang,
+                    'value_name' => $value['name'],
+                    'lang_name' => $db->f('name'),
+                    'selected' => 0
                 );
             }
         }
@@ -162,26 +162,26 @@ if ($area != 'user_content') {
 
     // Set global array which defines rights to display
     $aArticleRights = array(
-            'con_syncarticle',
-            'con_lock',
-            'con_deleteart',
-            'con_makeonline',
-            'con_makestart',
-            'con_duplicate',
-            'con_editart',
-            'con_newart',
-            'con_edit',
-        	'con_meta_edit',
-        	'con_meta_deletetype'
+        'con_syncarticle',
+        'con_lock',
+        'con_deleteart',
+        'con_makeonline',
+        'con_makestart',
+        'con_duplicate',
+        'con_editart',
+        'con_newart',
+        'con_edit',
+        'con_meta_edit',
+        'con_meta_deletetype'
     );
     $aCategoryRights = array(
-            'con_synccat',
-            'con_makecatonline',
-            'con_makepublic'
+        'con_synccat',
+        'con_makecatonline',
+        'con_makepublic'
     );
     $aTempalteRights = array(
-            'con_changetemplate',
-            'con_tplcfg_edit'
+        'con_changetemplate',
+        'con_tplcfg_edit'
     );
 
     $aViewRights = array();

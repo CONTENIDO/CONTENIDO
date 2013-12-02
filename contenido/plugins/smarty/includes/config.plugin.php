@@ -21,7 +21,7 @@ if (!defined('SMARTY_DIR')) {
     define('SMARTY_DIR', $cfg['path']['contenido'] . 'plugins/smarty/smarty_source/');
 }
 
-require_once (SMARTY_DIR . 'Smarty.class.php');
+require_once(SMARTY_DIR . 'Smarty.class.php');
 
 plugin_include('smarty', 'classes/class.smarty.wrapper.php');
 plugin_include('smarty', 'classes/class.smarty.frontend.php');

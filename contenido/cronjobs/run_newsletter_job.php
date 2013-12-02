@@ -20,7 +20,7 @@ if (!defined('CON_FRAMEWORK')) {
 $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
 
 // CONTENIDO startup process
-include_once ($contenidoPath . 'includes/startup.php');
+include_once($contenidoPath . 'includes/startup.php');
 
 global $cfg;
 

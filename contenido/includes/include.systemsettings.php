@@ -141,7 +141,7 @@ foreach ($settings as $key => $types) {
 
                 $link = $oLinkEdit;
                 $dlink = $oLinkDelete->render();
-            
+
                 $list->setCell($count, 4, $spacer->render() . $link->render() . $spacer->render() . $dlink . $spacer->render());
             }
             $count++;

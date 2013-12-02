@@ -38,7 +38,7 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
     }
 
     public function displayLoginForm() {
-        include (cRegistry::getFrontendPath() . 'front_crcloginform.inc.php');
+        include(cRegistry::getFrontendPath() . 'front_crcloginform.inc.php');
     }
 
     public function validateCredentials() {

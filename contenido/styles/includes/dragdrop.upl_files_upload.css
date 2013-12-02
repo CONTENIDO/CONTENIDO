@@ -16,17 +16,14 @@
 
 #shelf {
     width: 498px;
-
     margin-bottom: 5px;
     border-left: 1px solid #D0D0D0;
     border-right: 1px solid #D0D0D0;
-
     display: none;
 }
 
 div.shelf_elem {
     padding: 5px;
-    
     border-bottom: 1px solid #D0D0D0;
 }
 

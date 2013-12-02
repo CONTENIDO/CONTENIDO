@@ -73,6 +73,8 @@
 
             var editorElement = $(_cmEditor[editorId].getWrapperElement());
             // @TODO: Display the editor in real full screen mode!
+            // @TODO 1: Remove the line above
+            // @TODO 2: Move styles to CSS, it's enough to set a CSS class attribute
             if (!_cmDiv[editorId].hasClass('con-CodeMirror-fullscreen')) {
                 _cmDiv[editorId].addClass('con-CodeMirror-fullscreen');
                 editorElement.css("position", "absolute");
@@ -83,7 +85,7 @@
                 editorElement.css("background-color", "white");
                 editorElement.css("z-index", "3000");
                 editorElement.resizable('destroy');
-                
+
             } else {
                 _cmDiv[editorId].removeClass('con-CodeMirror-fullscreen');
                 editorElement.css("position", "");

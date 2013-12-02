@@ -325,9 +325,9 @@ class cAutoload {
      */
     private static function _loadFile($filePathName, $beQuiet = false) {
         if ($beQuiet) {
-            @require_once ($filePathName);
+            @require_once($filePathName);
         } else {
-            require_once ($filePathName);
+            require_once($filePathName);
         }
     }
 }

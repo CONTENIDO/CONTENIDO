@@ -19,7 +19,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // CONTENIDO startup process
-include_once ('./includes/startup.php');
+include_once('./includes/startup.php');
 
 // ugly globals that are used in this script
 // global $sess, $perm, $area;
@@ -33,9 +33,9 @@ cRegistry::bootstrap(array(
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
-require_once (cRegistry::getBackendPath() . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+require_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
-require_once ($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
+require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 $sess->register('belang');
 

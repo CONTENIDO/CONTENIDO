@@ -31,7 +31,7 @@ $tpl2->set('s', 'OPTIONS', '');
 $iClientcount = count($clients);
 
 foreach ($clients as $key => $value) {
-    $selected = ($client == $key)? 'selected' : '';
+    $selected = ($client == $key) ? 'selected' : '';
 
     if (strlen($value['name']) > 15) {
         $value['name'] = substr($value['name'], 0, 12) . '...';

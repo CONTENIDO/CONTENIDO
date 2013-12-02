@@ -35,9 +35,9 @@ cRegistry::bootstrap(array(
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
-require_once ($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
-require_once ($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
+require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 if ($cfg['use_pseudocron'] == true) {
     // Include cronjob-Emulator, but only for frame 1
@@ -172,7 +172,7 @@ if (isset($action)) {
     $actionCodeFile = $backendPath . 'includes/type/action/include.' . $action . '.action.php';
     if (cFileHandler::exists($actionCodeFile)) {
         cDebug::out('Including action file for ' . $action);
-        include_once $actionCodeFile;
+        include_once($actionCodeFile);
     } else {
         cDebug::out('No action file found for ' . $action);
     }

@@ -273,7 +273,7 @@
                 alert(file.name + ': ' + $('<div />').html(_options.text_fileIsTooBig).text());
                 return;
             }
-            
+
             $(_options.selectorShelf).css("display", "block");
 
             var xhr = new XMLHttpRequest();

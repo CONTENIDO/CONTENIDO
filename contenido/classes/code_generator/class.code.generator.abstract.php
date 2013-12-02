@@ -359,7 +359,7 @@ abstract class cCodeGeneratorAbstract {
                     }
                 } else if (cFileHandler::exists($typeCodeFile)) {
                     // Include CMS type code file
-                    include ($typeCodeFile);
+                    include($typeCodeFile);
                 }
 
                 $search[$val] = sprintf('%s[%s]', $type, $val);
