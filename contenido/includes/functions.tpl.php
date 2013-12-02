@@ -345,6 +345,7 @@ function tplDuplicateTemplate($idtpl) {
         'author' => (string) $auth->auth['uname'],
         'created' => date('Y-m-d H:i:s'),
         'lastmodified' => date('Y-m-d H:i:s'),
+        'defaulttemplate' => 0
     ));
     $newidtpl = (int) $newTemplate->get('idtpl');
 
