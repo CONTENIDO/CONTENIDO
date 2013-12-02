@@ -196,7 +196,11 @@ class cModuleFileTranslation extends cModuleHandler {
             if (isset($oriTrans[1])) {
                 $retArray[iconv($this->_fileEncoding, $this->_encoding, $oriTrans[0])] = iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[1]));
             } else {
-                $retArray[end(array_keys($retArray))] .= PHP_EOL . iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[0]));
+                // CON-1671 never use end(array_keys(...))
+                $keys = array_keys($retArray);
+                $lastKey = end($keys);
+                $newValue = PHP_EOL . iconv($this->_fileEncoding, $this->_encoding, str_replace("\=", "=", $oriTrans[0]));
+                $retArray[$lastKey] .= $newValue;
             }
         }
 
