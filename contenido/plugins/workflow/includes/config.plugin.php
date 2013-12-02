@@ -28,7 +28,6 @@ $lngAct['workflow_common']['workflow_save'] = i18n('Edit workflow', 'workflow');
 $lngAct['con']['workflow_do_action'] = i18n('Process workflow step', 'workflow');
 $lngAct['con_workflow']['workflow_do_action'] = i18n('Process workflow step', 'workflow');
 $lngAct['str']['workflow_inherit_down'] = i18n('Inherit workflow down', 'workflow');
-$lngAct['str']['workflow_inherit_down'] = i18n('Inherit workflow down', 'workflow');
 $lngAct['workflow_steps']['workflow_step_edit'] = i18n('Edit workflow step', 'workflow');
 $lngAct['workflow_steps']['workflow_step_up'] = i18n('Move workflowstep up', 'workflow');
 $lngAct['workflow_steps']['workflow_step_down'] = i18n('Move workflowstep down', 'workflow');
