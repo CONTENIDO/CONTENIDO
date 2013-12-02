@@ -76,23 +76,23 @@
 
         /**
          * Function submits form when users were added to group or removed from group
-         * @method setAction
-         * @param  {String}  isAdded - CONTENIDO action string
+         * @method _setAction
+         * @param  {String}  actionType - CONTENIDO action string
          * @private
          */
-        function setAction(isAdded) {
+        function _setAction(actionType) {
             var selectId = null;
-            //case of adding new members
-            if (isAdded == addAction) {
+            if (actionType == addAction) {
+                // Case of adding new members
                 selectId = '#newmember';
                 $form.find(SELECTOR_ACTION).val(addAction);
-            //case of removing existing members
             } else {
+                // Case of removing existing members
                 selectId = '#user_in_group';
                 $form.find(SELECTOR_ACTION).val(deleteAction);
             }
 
-            //only submit form, if a user is selected
+            // Only submit form, if a user is selected
             if ($(selectId).prop('selectedIndex') != -1) {
                 $form.submit();
             }
@@ -167,11 +167,11 @@
 
         /**
          * Function is callend when user presses a key
-         * @method setKeyCode
+         * @method _setKeyCode
          * @param  {Event}  event  - event object
          * @private
          */
-        function setKeyCode(event) {
+        function _setKeyCode(event) {
             if (!event) {
                 event = window.event;
             }
@@ -187,14 +187,35 @@
         // #####################################################################
         // Initialize module and bind ui
 
-        // Activate listener, which calls function setKeyCode when user presses a key on keyboard
-        document.onkeydown = setKeyCode;
+        // Activate listener, which calls function _setKeyCode when user presses a key on keyboard
+        document.onkeydown = _setKeyCode;
+
+        // #####################################################################
+        // @deprecated [2013-12-02] Assign to windows scope (downwards compatibility)
+        window.keycode = keycode;
+        window.addAction = addAction;
+        window.deleteAction = deleteAction;
+        window.init = function(add, del) {
+            window.addAction = add;
+            window.deleteAction = del;
+        };
+        window.setAction = _setAction;
+        window.filter = _filter
+        window.keyHandler = _keyHandler;
+        window._setKeyCode = _setKeyCode;
 
         // #####################################################################
         // Public interface
 
         return {
 
+            /**
+             * @method setAction
+             * @param {String}  action
+             */
+            setAction: function(action) {
+                return _setAction(action);
+            },
             /**
              * @method filter
              * @param {String}  id

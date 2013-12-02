@@ -47,8 +47,8 @@
                     </select>
                  </div>
                  <div class="memberselect_button">
-                     <input type="button" name="toggle" id="newmember_button" value="<=" onclick="setAction('{ADD_ACTION}')" alt="i18n('Add to group')" title="i18n('Add to group')" disabled>
-                     <input type="button" name="toggle" id="user_in_group_button" value="=>" onclick="setAction('{DELETE_ACTION}')" alt="i18n('Remove from group')" title="i18n('Remove from group')" disabled>
+                     <input type="button" name="toggle" id="newmember_button" value="<=" alt="i18n('Add to group')" title="i18n('Add to group')" disabled>
+                     <input type="button" name="toggle" id="user_in_group_button" value="=>" alt="i18n('Remove from group')" title="i18n('Remove from group')" disabled>
                  </div>
                  <div class="memberselect">
                      <p class="column_header">i18n('Non groupmembers')</p>
@@ -84,27 +84,34 @@
 
         var $form = $('#group_properties');
 
-        var obj = new Con.GoupAssociation({
-            selectorForm: 'group_properties',
+        var goupAssociation = new Con.GoupAssociation({
+            selectorForm: '#group_properties',
             add: '{ADD_ACTION}',
             del: '{DELETE_ACTION}',
         });
 
-        obj.filter('user_in_group_filter_value');
-        obj.filter('newmember_filter_value');
+        goupAssociation.filter('user_in_group_filter_value');
+        goupAssociation.filter('newmember_filter_value');
+
+        $('#newmember_button').click(function() {
+            goupAssociation.setAction('{ADD_ACTION}');
+        });
+        $('#user_in_group_button').click(function() {
+            goupAssociation.setAction('{DELETE_ACTION}');
+        });
 
         $('#user_in_group_filter_value').keyup(function() {
-            obj.keyHandler('user_in_group_filter_value');
+            goupAssociation.keyHandler('user_in_group_filter_value');
         });
         $('#user_in_group_filter_value').next('.submit_image').click(function() {
-            obj.filter('user_in_group_filter_value');
+            goupAssociation.filter('user_in_group_filter_value');
         });
 
         $('#newmember_filter_value').keyup(function() {
-            obj.keyHandler('newmember_filter_value');
+            goupAssociation.keyHandler('newmember_filter_value');
         });
         $('#newmember_filter_value').next('.submit_image').click(function() {
-            obj.filter('newmember_filter_value');
+            goupAssociation.filter('newmember_filter_value');
         });
 
         $('#btn_save_changes').click(function() {
