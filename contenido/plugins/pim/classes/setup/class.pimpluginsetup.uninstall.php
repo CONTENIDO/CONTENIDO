@@ -218,10 +218,10 @@ class PimPluginSetupUninstall extends PimPluginSetup {
 
         // Delete entries with relations to *_area
         if (!empty($relations['area'])) {
-            $this->_ApiActionCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
+            $this->_ApiActionCollection->deleteByWhereClause("idaction IN('" . join("', '", $relations['action']) . "')");
             $this->_ApiFileCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
             $this->_ApiFrameFileCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
-            $this->_ApiNavSubCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
+            $this->_ApiNavSubCollection->deleteByWhereClause("idnavs IN('" . join("', '", $relations['navs']) . "')");
             $this->_ApiAreaCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
         }
 

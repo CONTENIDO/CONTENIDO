@@ -429,10 +429,15 @@ class PimPluginSetupInstall extends PimPluginSetup {
      * @return void
      */
     private function _installAddActions() {
+
+        // Initializing attribute array
+        $attributes = array();
+
+        // Get Id of plugin
+        $pluginId = parent::_getPluginId();
+
         $actionCount = count(parent::$XmlActions->action);
         for ($i = 0; $i < $actionCount; $i++) {
-
-            $attributes = array();
 
             // Build attributes
             foreach (parent::$XmlActions->action[$i]->attributes() as $key => $value) {
@@ -459,7 +464,10 @@ class PimPluginSetupInstall extends PimPluginSetup {
             }
 
             // Create a new entry
-            $this->_ApiActionCollection->create($attributes['area'], $action, '', '', '', $attributes['relevant']);
+            $item = $this->_ApiActionCollection->create($attributes['area'], $action, '', '', '', $attributes['relevant']);
+
+            // Set a relation
+            $this->_PimPluginRelationsCollection->create($item->get('idaction'), $pluginId, 'action');
         }
     }
 
