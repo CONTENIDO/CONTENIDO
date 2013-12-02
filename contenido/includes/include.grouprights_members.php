@@ -42,7 +42,7 @@ if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $a
 
     $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Removed member from group successfully!"));
 }
-
+var_dump($area);var_dump($action);
 if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $action))) {
     if (is_array($newmember)) {
         foreach ($newmember as $key => $value) {

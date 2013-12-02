@@ -32,10 +32,10 @@ while ($db->nextRecord()) { // set a new rights list fore this user
     $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
 }
 
-if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit")) {
+if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "user_edit")) {
     saveRights();
 } else {
-    if (!$perm->have_perm_area_action($area, $action)) {
+    if (!$perm->have_perm_area_action("user_overview", $action)) {
         $notification->displayNotification("error", i18n("Permission denied"));
     }
 }

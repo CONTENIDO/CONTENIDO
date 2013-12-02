@@ -80,7 +80,6 @@ INSERT INTO !PREFIX!_actions VALUES('393', '71', '', 'htmltpl_delete', '', '', '
 INSERT INTO !PREFIX!_actions VALUES('394', '71', '', 'htmltpl_edit', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('395', '72', '', 'tpl_visedit', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('396', '68', '', 'client_artspec_default', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES('397', '7', '', 'upl_renamedir', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('398', '7', '', 'upl_modify_file', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('400', '7', '', 'upl_renamefile', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('401', '76', '', 'frontend_save_user', '', '', '1');
@@ -116,9 +115,8 @@ INSERT INTO !PREFIX!_actions VALUES ('806', '415', 'edit_sysconf', 'edit_sysconf
 INSERT INTO !PREFIX!_actions VALUES ('811', '811', 'do_purge', 'do_purge', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('812', '11', '', 'mod_sync', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('813', '9','','lay_sync','','','1');
-INSERT INTO !PREFIX!_actions VALUES('850', '100','','con_meta_saveart','','','0');
-INSERT INTO !PREFIX!_actions VALUES('851', '100','','con_meta_edit','','','0');
-INSERT INTO !PREFIX!_actions VALUES('852', '100','','con_meta_deletetype','','','0');
+INSERT INTO !PREFIX!_actions VALUES('850', '100','','con_meta_edit','','','1');
+INSERT INTO !PREFIX!_actions VALUES('851', '100','','con_meta_deletetype','','','1');
 INSERT INTO !PREFIX!_actions VALUES('855', '105','','con_content','','','1');
 INSERT INTO !PREFIX!_actions VALUES('856', '105','','savecontype','','','1');
 INSERT INTO !PREFIX!_actions VALUES('857', '105','','deletecontype','','','1');

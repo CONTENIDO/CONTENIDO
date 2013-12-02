@@ -57,7 +57,7 @@ if ($action == "lay_new") {
     }
     $bReloadSyncSrcipt = true;
 } elseif ($action == "lay_delete") {
-    if (!$perm->have_perm_area_action_anyitem($area, $action)) {
+    if (!$perm->have_perm_area_action_anyitem("lay", $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
         $layout->virgin = true;

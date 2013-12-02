@@ -52,8 +52,8 @@ while (($layout = $oLayouts->next()) !== false) {
     $oLay = new cApiLayout($idlay);
     $inUse = $oLay->isInUse($idlay);
 
-    if ((!$perm->have_perm_area_action_item('lay', 'lay_delete', $idlay)) &&
-        (!$perm->have_perm_area_action('lay', 'lay_delete'))) {
+    if (!$perm->have_perm_area_action_item('lay', 'lay_delete', $idlay) ||
+        !$perm->have_perm_area_action('lay', 'lay_delete')) {
         $delDescr = i18n("No permission");
     }
 

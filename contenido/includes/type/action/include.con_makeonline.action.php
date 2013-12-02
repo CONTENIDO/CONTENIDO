@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.con.php');
 
-if ($perm->have_perm_area_action("con", "con_changetemplate") || $perm->have_perm_area_action_item("con", "con_changetemplate", $idcat)) {
+if ($perm->have_perm_area_action("con", "con_makeonline") || $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) {
     if (isset($_POST['idarts'])) {
         $idarts = json_decode($_POST['idarts'], true);
         $online = $_POST['invert'] == 1 ? 0 : 1;

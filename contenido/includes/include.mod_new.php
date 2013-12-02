@@ -25,12 +25,12 @@ $tpl->reset();
 // New module link
 $str = '';
 if ((int) $client > 0) {
-    if ($perm->have_perm_area_action($area, "mod_new")) {
+    if ($perm->have_perm_area_action("mod_edit", "mod_new")) {
         $str = '<div class="leftTopAction"><a class="addfunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_new") . '">' . i18n("New module") . '</a> </div>';
     } else {
         $str = '<div class="leftTopAction"><a class="addfunction_disabled" href="#">' . i18n("No permission to create modules") . '</a> </div>';
     }
-    if ($perm->have_perm_area_action($area, "mod_sync")) {
+    if ($perm->have_perm_area_action("mod_edit", "mod_sync")) {
         $strSync = '<div class="leftTopAction leftTopActionNext"><a class="syncronizefunction" target="right_bottom" href="' . $sess->url("main.php?area=mod_edit&frame=4&action=mod_sync") . '">' . i18n("Synchronize modules") . '</a></div>';
     } else {
         $strSync = '<div class="leftTopAction leftTopActionNext"><a class="syncronizefunction_disabled" href="#">' . i18n("No permission to synchronize modules") . '</a> </div>';

@@ -77,16 +77,6 @@ if (!is_array($upldbfsexpandedList)) {
     $upldbfsexpandedList = array();
 }
 
-if ($action == 'upl_renamedir') {
-    if ($perm->have_perm_area_action('upl', 'upl_renamedir')) {
-        uplRenameDirectory($oldname, $newname, $parent);
-        $path = $cfgClient[$client]['upl']['path'] . $parent . $newname . '/';
-        if (in_array($cfgClient[$client]['upl']['path'] . $parent . $oldname . '/', $uplexpandedList)) {
-            $uplexpandedList[] = $cfgClient[$client]['upl']['path'] . $parent . $newname . '/';
-        }
-    }
-}
-
 $dbfs = new cApiDbfsCollection();
 
 if ($action == 'upl_delete') {

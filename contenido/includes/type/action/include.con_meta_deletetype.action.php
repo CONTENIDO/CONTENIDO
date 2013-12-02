@@ -15,7 +15,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if ($perm->have_perm_area_action("con", "con_meta_deletetype") || $perm->have_perm_area_action_item("con", "con_meta_deletetype", $idcat)) {
+if ($perm->have_perm_area_action($area, "con_meta_deletetype") || $perm->have_perm_area_action_item($area, "con_meta_deletetype", $idcat)) {
 
     // Get metavalue for selected metatype
     $metaTagColl = new cApiMetaTagCollection();

@@ -67,7 +67,7 @@ switch ($area) {
             }
 
             // Set template data
-            if (cRegistry::getPerm()->have_perm_area_action('form_export', PifaRightBottomFormExportPage::EXPORT_FORM)) {
+            if (cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaRightBottomFormExportPage::EXPORT_FORM)) {
                 $tpl->set('d', 'ID', 'c_' . $tpl->dyn_cnt);
                 $tpl->set('d', 'DATA_NAME', 'form_export');
                 $tpl->set('d', 'CLASS', '');

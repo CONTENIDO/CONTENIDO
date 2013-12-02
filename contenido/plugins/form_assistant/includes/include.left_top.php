@@ -17,7 +17,7 @@ $notification = new cGuiNotification();
 $actions = array();
 
 // ACTION: SHOW_FORM (in order to create new form)
-if (cRegistry::getPerm()->have_perm_area_action('form_fields', PifaRightBottomFormPage::STORE_FORM)) {
+if (cRegistry::getPerm()->have_perm_area_action('form', PifaRightBottomFormPage::STORE_FORM)) {
     global $area;
 
     $link = new cHTMLLink();

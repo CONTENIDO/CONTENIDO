@@ -15,7 +15,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if ($perm->have_perm_area_action("tpl", "tpl_duplicate") || $perm->have_perm_area_action_item("tpl", "tpl_duplicate", $idtpl)) {
+if ($perm->have_perm_area_action($area, "tpl_duplicate") || $perm->have_perm_area_action_item($area, "tpl_duplicate", $idtpl)) {
     cInclude('includes', 'functions.tpl.php');
     $idtpl = tplDuplicateTemplate($idtpl);
 } else {

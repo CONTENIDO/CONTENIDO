@@ -43,7 +43,6 @@ $lngAct['con_tplcfg']['con_edddittemplate']         = i18n('Help');
 $lngAct['con_content_list']['con_content']          = i18n('List content entries');
 $lngAct['con_content_list']['savecontype']          = i18n('Edit content list entry');
 $lngAct['con_content_list']['deletecontype']        = i18n('Delete content list entry');
-$lngAct['con_meta']['con_meta_saveart']				= i18n('Save SEO options');
 $lngAct['con_meta']['con_meta_edit']				= i18n('Edit SEO options');
 $lngAct['con_meta']['con_meta_deletetype']			= i18n('Delete meta tag value');
 $lngAct['con_translate']['con_translate_view']      = i18n('View translations');
@@ -68,7 +67,6 @@ $lngAct['upl']['upl_mkdir']                         = i18n('Create directory');
 $lngAct['upl']['upl_upload']                        = i18n('Upload files');
 $lngAct['upl']['upl_delete']                        = i18n('Delete files');
 $lngAct['upl']['upl_rmdir']                         = i18n('Remove directory');
-$lngAct['upl']['upl_renamedir']                     = i18n('Rename directory');
 $lngAct['upl']['upl_modify_file']                   = i18n('Modify file');
 $lngAct['upl']['upl_renamefile']                    = i18n('Rename file');
 $lngAct['upl']['upl_multidelete']                   = i18n('Multidelete files');
@@ -82,7 +80,6 @@ $lngAct['lay_edit']['lay_new']                      = i18n('Create layout');
 $lngAct['lay_edit']['lay_sync']                     = i18n('Synchronize layouts');
 $lngAct['lay_history']['lay_history_manage']        = i18n('Manage history');
 $lngAct['lay_history']['history_truncate']          = i18n('Truncate history');
-
 
 $lngAct['mod']['mod_delete']                        = i18n('Delete module');
 $lngAct['mod_history']['mod_history_manage']        = i18n('Manage history');

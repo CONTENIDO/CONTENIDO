@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.con2.php');
 
-if ($perm->have_perm_area_action("con", "con_meta_saveart") || $perm->have_perm_area_action_item("con", "con_meta_saveart", $idcat)) {
+if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_area_action_item($area, "con_meta_edit", $idcat)) {
     $oldData = array();
 
     $availableTags = conGetAvailableMetaTagTypes();

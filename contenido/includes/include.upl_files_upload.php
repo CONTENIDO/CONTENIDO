@@ -19,7 +19,7 @@ cInclude("includes", "functions.upl.php");
 
 $page = new cGuiPage("upl_files_upload");
 
-if (!$perm->have_perm_area_action($area, "upl_upload")) {
+if (!$perm->have_perm_area_action("upl", "upl_upload")) {
     $page->displayCriticalError(i18n("Permission denied"));
     $page->render();
     die();

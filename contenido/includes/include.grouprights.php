@@ -137,7 +137,9 @@ if ($area != 'groups_content') {
         'con_duplicate',
         'con_editart',
         'con_newart',
-        'con_edit'
+        'con_edit',
+        'con_meta_edit',
+        'con_meta_deletetype'
     );
     $aCategoryRights = array(
         'con_synccat',

@@ -67,7 +67,7 @@ while ($db->nextRecord()) {
 
     $tpl->set('d', 'LANGUAGE', '<a target="right_bottom" href="' . $sess->url("main.php?area=lang_edit&idlang=$idlang&targetclient=$targetclient&frame=4") . '">' . $db->f("name") . '&nbsp;<span>(' . $idlang . ')</span></a>');
     $tpl->set('d', 'ACTIVATEBUTTON', $active);
-    if ($perm->have_perm_area_action($area, "lang_deletelanguage")) {
+    if ($perm->have_perm_area_action("lang_edit", "lang_deletelanguage")) {
         $tpl->set('d', 'DELETEBUTTON', $deletebutton);
     } else {
         $tpl->set("d", "DELETEBUTTON", "");

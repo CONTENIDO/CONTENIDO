@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.lang.php');
 
-if ($perm->have_perm_area_action("lang", "lang_deletelanguage")) {
+if ($perm->have_perm_area_action("lang_edit", "lang_deletelanguage")) {
     if (!is_numeric($targetclient)) {
         $targetclient = $client;
     }

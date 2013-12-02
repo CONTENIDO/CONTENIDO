@@ -937,18 +937,18 @@ class PifaRightBottomFormExportPage extends cGuiPage {
      * @throws PifaIllegalStateException if permissions are missing
      */
     protected function _dispatch($action, $notification = '') {
-        global $area;
-
-        // check for permission
-        if (!cRegistry::getPerm()->have_perm_area_action($area, $action)) {
-            $msg = Pifa::i18n('NO_PERMISSIONS');
-            throw new PifaIllegalStateException($msg);
-        }
 
         // dispatch actions
         switch ($action) {
 
             case self::EXPORT_FORM:
+
+                // check for permission
+                if (!cRegistry::getPerm()->have_perm_area_action('form_ajax', $action)) {
+                    $msg = Pifa::i18n('NO_PERMISSIONS');
+                    throw new PifaIllegalStateException($msg);
+                }
+
                 $this->set('s', 'notification', $notification);
                 try {
                     $this->set('s', 'content', $this->_exportForm());

@@ -56,6 +56,7 @@ function deleteDirectory(path) {
     window.location.href = url;
 }
 
+/** @deprecated 2013-12-02 This function is not longer supported. **/
 function renameDir(oldname, parent) {
     var newname = prompt("{RENAME}", oldname);
     if (newname) {
@@ -84,7 +85,7 @@ function renameDir(oldname, parent) {
         $('.jsDelete').click(function(e) {
             e.stopPropagation();
             var deleteMsg = "{DELETE_MSG}";
-            var path = $(this).parent('[data-path]').data('path');
+            var path = $(this).closest('[data-path]').data('path');
             Con.showConfirmation(deleteMsg.replace('{path}', path), function() {
                 deleteDirectory(path);
             });

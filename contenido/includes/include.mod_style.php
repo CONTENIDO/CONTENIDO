@@ -33,7 +33,8 @@ if (empty($action)) {
 } else {
     $actionRequest = $action;
 }
-
+echo $actionRequest . "<br />";
+echo $sActionCreate;
 $page = new cGuiPage('mod_style');
 
 $tpl->reset();

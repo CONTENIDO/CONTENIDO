@@ -2,15 +2,15 @@
 /**
  * This file contains the left top frame backend page for language management.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,7 +22,6 @@ $tpl->set('s', 'ACTION', '');
 
 $clients = $classclient->getAccessibleClients();
 
-
 $tpl2 = new cTemplate();
 $tpl2->set('s', 'ID', 'editclient');
 $tpl2->set('s', 'NAME', 'editclient');
@@ -32,7 +31,7 @@ $tpl2->set('s', 'OPTIONS', '');
 $iClientcount = count($clients);
 
 foreach ($clients as $key => $value) {
-    $selected = ($client == $key) ? 'selected' : '';
+    $selected = ($client == $key)? 'selected' : '';
 
     if (strlen($value['name']) > 15) {
         $value['name'] = substr($value['name'], 0, 12) . '...';
@@ -48,7 +47,7 @@ $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic
 
 $tpl->set('s', 'CLIENTSELECT', $select);
 
-if ($perm->have_perm_area_action($area, "lang_newlanguage") && $iClientcount > 0) {
+if ($perm->have_perm_area_action("lang_edit", "lang_newlanguage") && $iClientcount > 0) {
     $tpl->set('s', 'NEWLANG', '<a class="addfunction" href="javascript:void(0)">' . i18n("Create language for") . '</a>');
 } else if ($iClientcount == 0) {
     $tpl->set('s', 'NEWLANG', i18n('No Client selected'));

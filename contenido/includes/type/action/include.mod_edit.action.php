@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.mod.php');
 
-if ($perm->have_perm_area_action("mod", "mod_edit")) {
+if ($perm->have_perm_area_action($area, "mod_edit")) {
     if (empty($type)) {
         $type = $customtype;
     }
