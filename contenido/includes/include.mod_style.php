@@ -2,17 +2,16 @@
 /**
  * This file contains the backend page for managing module style files.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Olaf Niemann, Willi Man
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Olaf Niemann, Willi Man
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('external', 'codemirror/class.codemirror.php');
@@ -33,8 +32,6 @@ if (empty($action)) {
 } else {
     $actionRequest = $action;
 }
-echo $actionRequest . "<br />";
-echo $sActionCreate;
 $page = new cGuiPage('mod_style');
 
 $tpl->reset();
@@ -67,7 +64,8 @@ if (!$contenidoModulHandler->moduleWriteable('css')) {
     exit();
 }
 
-$contenidoModulHandler->createModuleFile('css'); // Make automatic a new css file
+$contenidoModulHandler->createModuleFile('css'); // Make automatic a new css
+                                                 // file
 
 if (stripslashes($file)) {
     $sReloadScript = <<<JS
@@ -198,7 +196,7 @@ JS;
 // Generate edit form
 if (isset($actionRequest)) {
 
-    $sAction = ($bEdit) ? $sActionEdit : $actionRequest;
+    $sAction = ($bEdit)? $sActionEdit : $actionRequest;
 
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 
