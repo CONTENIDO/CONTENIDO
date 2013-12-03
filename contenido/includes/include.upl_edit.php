@@ -44,9 +44,6 @@ $form->setVar('thumbnailmode', $_REQUEST['thumbnailmode']);
 // $form->setVar('zip', (isArchive( $_REQUEST['file'])) ? '1' : '0');
 $form->addHeader(i18n('Edit'));
 
-if (isset($_REQUEST['zip'])) {
-    var_dump('zip');
-}
 $properties = new cApiPropertyCollection();
 $uploads = new cApiUploadCollection();
 

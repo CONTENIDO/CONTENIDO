@@ -655,8 +655,6 @@ class cArticleCollectorTest extends cTestingTestCase {
             'start' => true
         ));
         $this->assertSame(1, $this->_aColl->count());
-
-        var_dump($this->_aColl->seek(3));
     }
 
     /**

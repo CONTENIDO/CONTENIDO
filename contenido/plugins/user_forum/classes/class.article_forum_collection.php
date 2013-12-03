@@ -555,7 +555,6 @@ class ArticleForumCollection extends ItemCollection {
      * @param articleId $idart
      */
     public function deleteAllCommentsById($idart) {
-        // var_dump($idart);
         $this->deleteBy('idart', (int) $idart);
     }
 
@@ -678,7 +677,7 @@ class ArticleForumCollection extends ItemCollection {
                 $array[$i]['idart'] = $data[$i]['idart'];
             }
         } catch (Exception $e) {
-            // var_dump(e);
+
         }
 
         return $array;

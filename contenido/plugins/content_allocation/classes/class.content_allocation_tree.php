@@ -201,8 +201,6 @@ class pApiTree {
 
             $item = $this->_fetchItemNameLang($this->db->f('idpica_alloc'));
 
-            //if ($this->bDebug) {print "<!-- "; print_r($item); print " -->";}
-
             if ($showOffline OR $item['online'] == 1)
             {
                 $rs = array(

@@ -105,7 +105,6 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
         }
 
         // Removing users from group (if specified)
-        // print_r ($_REQUEST["deluser"]);
         if ($perm->have_perm_area_action($area, "recipientgroup_recipient_delete") && is_array($_REQUEST["deluser"])) {
             foreach ($_REQUEST["deluser"] as $iRcpID) {
                 if (is_numeric($iRcpID)) {

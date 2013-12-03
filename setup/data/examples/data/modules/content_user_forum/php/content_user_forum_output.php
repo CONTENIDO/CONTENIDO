@@ -291,7 +291,6 @@ class UserForumArticle {
                     'ARTICLE' => mi18n("INARTICLE")
                 );
                 $this->_collection->languageSync($ar);
-                // var_dump($this->_collection->getlanguageSync());
                 // persist comment
                 $this->_collection->insertValues($parent, $this->_idart, $this->_idcat, $this->_idlang, $this->_userid, $email, $realname, $forum, $forum_quote);
 

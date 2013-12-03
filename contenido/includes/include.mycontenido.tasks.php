@@ -127,7 +127,6 @@ class TODOBackendList extends cGuiScrollList {
             }
 
             $amount = round($amount);
-            //    var_dump($amount);
 
             if ($amount != 0) {
                 $image = new cHTMLImage($backendUrl . $cfg["path"]["images"] . "reminder/progress.gif");

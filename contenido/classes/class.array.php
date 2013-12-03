@@ -93,8 +93,6 @@ class cArray {
                     $found = $value == $search;
                 }
                 if ($found) {
-                    // echo "\nfound key $key:\nvalue "; var_dump($value);
-                    // echo "search "; var_dump($search); echo "\n";
                     return $key;
                 }
             }

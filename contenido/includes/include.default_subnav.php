@@ -84,7 +84,6 @@ $areasNavSubs = $navSubColl->getSubnavigationsByAreaName($area);
 foreach ($areasNavSubs as $areasNavSub) {
     // Name
     $areaName = $areasNavSub['name'];
-//##echo "<pre>" . print_r($areasNavSub, true) . "</pre>\n";
 
     // for Main-Area
     if ($areaName == $area) {

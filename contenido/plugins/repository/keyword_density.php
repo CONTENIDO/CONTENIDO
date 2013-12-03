@@ -371,7 +371,6 @@ function keywordDensity($headline, $text) {
     // calc for text
     $singlewordcounter = calcDensity($singlewordcounter, $text);
 
-    // var_dump($text);
     // calc for headline
     $singlewordcounter = calcDensity($singlewordcounter, $headline, 2);
 
@@ -380,7 +379,6 @@ function keywordDensity($headline, $text) {
 
     arsort($singlewordcounter, SORT_NUMERIC);
     $singlewordcounter = stripCount($singlewordcounter);
-    // var_dump($singlewordcounter);
 
     if (!is_array($singlewordcounter)) {
         return false;

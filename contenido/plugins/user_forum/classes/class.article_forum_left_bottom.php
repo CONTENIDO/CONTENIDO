@@ -84,16 +84,12 @@ class ArticleForumLeftBottom extends cGuiPage {
             $link->setAlt($message);
             $menu->setActions($i, 'delete', $link);
         }
-        //if (count($forms) > 0) {
-        //    return $menu;
-        //} else {
-            return $menu;
-      //  }
+
+        return $menu;
     }
 
     public function receiveData(&$get) {
         if ($_GET['action'] === 'delete_form') {
-            // print_r($_GET['idart']);
             $this->_collection->deleteAllCommentsById($get['idart']);
         }
 

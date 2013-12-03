@@ -285,8 +285,8 @@ class Newsletter extends Item
     {
         //$sRegExp = "/<newsletter[^>](.*?)>.*?<\/newsletter>/i";
         //$sRegExp = "/\[mail[^\]](.*?)>.*?\[\/mail\]/i";
-        #\[mail[^\]]((name="(?P<name>.*?)")|(type="(?P<type>.*?)"))\](?P<content>.*?)\[\/mail\]
-        #\[mail[^\]]((name=(?P<name>[^"]*.*?[^"]*))|(type="(?P<type>.*?)"))\](?P<content>.*?)\[\/mail\]
+        //\[mail[^\]]((name="(?P<name>.*?)")|(type="(?P<type>.*?)"))\](?P<content>.*?)\[\/mail\]
+        //\[mail[^\]]((name=(?P<name>[^"]*.*?[^"]*))|(type="(?P<type>.*?)"))\](?P<content>.*?)\[\/mail\]
 
         /* RegExp explanation:
          * Match the character "[" literally �\[�
@@ -322,10 +322,10 @@ class Newsletter extends Item
         print_r ($aMatch); */
 
         // Parameter auseinandernehmen (ohne PREG_SET_ORDER)
-        #$sRegExp = '/\s*(.*?)\s*=\s*"(.*?)"\s*/i';
-        #$aMatch = array();
-        #preg_match_all($sRegExp, $sHTML, $aMatch);
-        #print_r ($aMatch);
+        //$sRegExp = '/\s*(.*?)\s*=\s*"(.*?)"\s*/i';
+        //$aMatch = array();
+        //preg_match_all($sRegExp, $sHTML, $aMatch);
+        //print_r ($aMatch);
     }
 
     protected function _deChunkHTTPBody($sHeader, $sBody, $sEOL = "\r\n")
