@@ -30,7 +30,7 @@
  *      If 'symbols_mandatory' set to a value greater than 0, at least so many symbols has to appear in
  *      given password. What symbols are regcognized can be administrated via 'symbols_regex'. This has
  *      to be a regular expression which is used to "find" the symbols in $sNewPassword. If not set, following
- *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^ï¿½\\\]/"
+ *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
  *  $cfg['password']['mixed_case_mandatory'], int
  *      If set to a value greater than 0 so many lower and upper case character must appear in the password.
  *      (e.g.: if set to 2, 2 upper and 2 lower case characters must appear)
@@ -682,7 +682,7 @@ class ConUser extends ConUser_Abstract {
      *      If 'symbols_mandatory' set to a value greater than 0, at least so many symbols has to appear in
      *      given password. What symbols are regcognized can be administrated via 'symbols_regex'. This has
      *      to be a regular expression which is used to "find" the symbols in $sNewPassword. If not set, following
-     *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^ï¿½\\\]/"
+     *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
      * $this->aCfg['password']['mixed_case_mandatory'], int
      *      If set to a value greater than 0 so many lower and upper case character must appear in the password.
      *      (e.g.: if set to 2, 2 upper and 2 lower case characters must appear)
@@ -726,7 +726,7 @@ class ConUser extends ConUser_Abstract {
             (int) $this->aCfg['password']['symbols_mandatory'] > 0) {
 
                 $aSymbols = array();
-                $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^ï¿½\\\]/";
+                $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/";
                 if (isset($this->aCfg['password']['symbols_regex']) && !empty($this->aCfg['password']['symbols_regex'])) {
                     $sSymbolsDefault = $this->aCfg['password']['symbols_regex'];
                 }
