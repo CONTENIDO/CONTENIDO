@@ -32,24 +32,23 @@ class frontendlogic_category extends FrontendLogic {
     /**
      * @see FrontendLogic::getFriendlyName()
      */
-    function getFriendlyName() {
+    public function getFriendlyName() {
         return i18n("Category", "frontendlogic_category");
     }
 
     /**
      * @see FrontendLogic::listActions()
      */
-    function listActions() {
-        $actions = array();
-        $actions["access"] = i18n("Access category", "frontendlogic_category");
-
-        return ($actions);
+    public function listActions() {
+        return array(
+            "access" => i18n("Access category", "frontendlogic_category";
+        );
     }
 
     /**
      * @see FrontendLogic::listItems()
      */
-    function listItems() {
+    public function listItems() {
         global $lang, $db, $cfg;
 
         if (!is_object($db)) {
@@ -76,7 +75,8 @@ class frontendlogic_category extends FrontendLogic {
             $items[$db->f("idcatlang")] = '<span style="padding-left: ' . ($db->f("level") * 10) . 'px;">' . htmldecode($db->f("name")) . '</span>';
         }
 
-        return ($items);
+        return $items;
     }
 }
+
 ?>
