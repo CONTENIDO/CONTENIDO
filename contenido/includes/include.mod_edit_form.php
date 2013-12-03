@@ -26,7 +26,6 @@ if (!isset($idmod)) {
 }
 
 $contenidoModuleHandler = new cModuleHandler($idmod);
-var_dump($area);
 if (($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem("mod", $action))) {
     cRegistry::addErrorMessage(i18n("No permissions"));
     $page = new cGuiPage('generic_page');
