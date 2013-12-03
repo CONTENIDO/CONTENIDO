@@ -50,7 +50,7 @@ if ($action == 'style_delete') {
 
         if (cFileHandler::exists($path . $filename) && cSecurity::isInteger($fileId)) {
             if (is_dir($cfgClient[$client]['version']['path'] . "css/" . $fileId)) {
-                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "css/" . $fileId);
+                cDirHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "css/" . $fileId);
             }
 
             unlink($path . cSecurity::toString($filename));

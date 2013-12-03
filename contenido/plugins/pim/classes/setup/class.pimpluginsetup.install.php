@@ -663,7 +663,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             }
         }
 
-        cFileHandler::recursiveRmdir($modulesPath);
+        cDirHandler::recursiveRmdir($modulesPath);
     }
 
     /**

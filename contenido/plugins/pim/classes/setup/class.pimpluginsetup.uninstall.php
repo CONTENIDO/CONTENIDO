@@ -304,7 +304,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
 
         // delete folders
         $folderpath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername();
-        cFileHandler::recursiveRmdir($folderpath);
+        cDirHandler::recursiveRmdir($folderpath);
 
         if (parent::$_GuiPage instanceof cGuiPage) {
 

@@ -52,7 +52,7 @@ if ($action == $sActionDelete) {
             $fileIds = $fileInfoCollection->getIdsByWhereClause("`filename`='" . cSecurity::toString($_REQUEST["delfile"]) . "'");
 
             if (cSecurity::isInteger($fileIds[0]) && is_dir($cfgClient[$client]['version']['path'] . "templates/" . $fileIds[0])) {
-                cFileHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "templates/" . $fileIds[0]);
+                cDirHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "templates/" . $fileIds[0]);
 
                 $fileInfoCollection->removeFileInformation(array(
                     'idclient' => cSecurity::toInteger($client),
