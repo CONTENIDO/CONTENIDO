@@ -64,8 +64,8 @@ if (!$contenidoModulHandler->moduleWriteable('css')) {
     exit();
 }
 
-$contenidoModulHandler->createModuleFile('css'); // Make automatic a new css
-                                                 // file
+// Make automatic a new css file
+$contenidoModulHandler->createModuleFile('css');
 
 if (stripslashes($file)) {
     $sReloadScript = <<<JS
@@ -196,7 +196,7 @@ JS;
 // Generate edit form
 if (isset($actionRequest)) {
 
-    $sAction = ($bEdit)? $sActionEdit : $actionRequest;
+    $sAction = ($bEdit) ? $sActionEdit : $actionRequest;
 
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 

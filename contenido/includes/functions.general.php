@@ -523,7 +523,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
             '*/',
             '/*',
             '//'
-                        ), '', $db->f('name')));
+        ), '', $db->f('name')));
 
         $errsite_idcat[$iClient] = $db->f('errsite_cat');
         $errsite_idart[$iClient] = $db->f('errsite_art');
