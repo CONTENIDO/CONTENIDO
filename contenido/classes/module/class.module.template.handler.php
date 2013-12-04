@@ -32,7 +32,7 @@ class cModuleTemplateHandler extends cModuleHandler {
 
     private $_file;
 
-    private $_tmp_file;
+    private $_tmpFile;
 
     private $_area;
 
@@ -141,7 +141,7 @@ class cModuleTemplateHandler extends cModuleHandler {
      */
     public function setFiles($file, $tmpFile) {
         $this->_file = $file;
-        $this->_tmp_file = $tmpFile;
+        $this->_tmpFile = $tmpFile;
     }
 
     /**
@@ -209,8 +209,8 @@ class cModuleTemplateHandler extends cModuleHandler {
                 return 'delete';
             }
 
-            if (isset($this->_file) && isset($this->_tmp_file)) {
-                if ($this->_file == $this->_tmp_file) {
+            if (isset($this->_file) && isset($this->_tmpFile)) {
+                if ($this->_file == $this->_tmpFile) {
                     // file ist empty also no file in template
                     // directory
                     if (empty($this->_file)) {
@@ -220,7 +220,7 @@ class cModuleTemplateHandler extends cModuleHandler {
                     }
                 }
 
-                if ($this->_file != $this->_tmp_file) {
+                if ($this->_file != $this->_tmpFile) {
                     return 'rename';
                 }
             } else {
@@ -258,7 +258,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         // if user selected other file display it
         if ($this->_hasSelectedFileChanged()) {
             $this->_file = $this->_selectedFile;
-            $this->_tmp_file = $this->_selectedFile;
+            $this->_tmpFile = $this->_selectedFile;
         }
     }
 
@@ -268,12 +268,12 @@ class cModuleTemplateHandler extends cModuleHandler {
      * @throws cException if rename was not successfull
      */
     private function _rename() {
-        if ($this->renameModuleFile('template', $this->_tmp_file, $this->_file) == false) {
+        if ($this->renameModuleFile('template', $this->_tmpFile, $this->_file) == false) {
             throw new cException(i18n('Rename of the file failed!'));
         } else {
             $this->createModuleFile('template', $this->_file, $this->_code);
             $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Renamed the template file successfully!'));
-            $this->_tmp_file = $this->_file;
+            $this->_tmpFile = $this->_file;
         }
     }
 
@@ -293,14 +293,14 @@ class cModuleTemplateHandler extends cModuleHandler {
         }
         // set to new fileName
         $this->_file = $fileName;
-        $this->_tmp_file = $fileName;
+        $this->_tmpFile = $fileName;
     }
 
     /**
      * Delete a file
      */
     private function _delete() {
-        $ret = $this->deleteFile('template', $this->_tmp_file);
+        $ret = $this->deleteFile('template', $this->_tmpFile);
         if ($ret == true) {
             $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Deleted the template file successfully!'));
         }
@@ -309,10 +309,10 @@ class cModuleTemplateHandler extends cModuleHandler {
         if (is_array($files)) {
             if (!array_key_exists('0', $files)) {
                 $this->_file = '';
-                $this->_tmp_file = '';
+                $this->_tmpFile = '';
             } else {
                 $this->_file = $files[0];
-                $this->_tmp_file = $files[0];
+                $this->_tmpFile = $files[0];
             }
         }
     }
@@ -325,12 +325,12 @@ class cModuleTemplateHandler extends cModuleHandler {
 
         // one or more templates files are in template direcotry
         if (count($files) > 0) {
-            $this->_tmp_file = $files[0];
+            $this->_tmpFile = $files[0];
             $this->_file = $files[0];
         } else {
             // template directory is empty
             $this->_file = '';
-            $this->_tmp_file = '';
+            $this->_tmpFile = '';
         }
     }
 
@@ -373,16 +373,17 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * This method test the code if the client setting htmlvalidator
      * is not set to false.
+     * @param {cGuiNotification} $notification
      */
     private function _validateHTML($notification) {
-        /* Try to validate html */
+        // Try to validate html
         if (getEffectiveSetting('layout', 'htmlvalidator', 'true') == 'true' && $this->_code !== '') {
             $v = new cHTMLValidator();
             $v->validate($this->_code);
             $msg = '';
 
             foreach ($v->missingNodes as $value) {
-                $idqualifier = '';
+                $idQualifier = '';
 
                 $attr = array();
 
@@ -394,12 +395,12 @@ class cModuleTemplateHandler extends cModuleHandler {
                     $attr['id'] = "id '" . $value['id'] . "'";
                 }
 
-                $idqualifier = implode(', ', $attr);
+                $idQualifier = implode(', ', $attr);
 
-                if ($idqualifier != '') {
-                    $idqualifier = "($idqualifier)";
+                if ($idQualifier != '') {
+                    $idQualifier = "($idQualifier)";
                 }
-                $msg .= sprintf(i18n("Tag '%s' %s has no end tag (start tag is on line %s char %s)"), $value['tag'], $idqualifier, $value['line'], $value['char']) . '<br>';
+                $msg .= sprintf(i18n("Tag '%s' %s has no end tag (start tag is on line %s char %s)"), $value['tag'], $idQualifier, $value['line'], $value['char']) . '<br>';
             }
 
             if ($msg != '') {
@@ -416,7 +417,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $fileForm->setVar('action', $this->_action);
         $fileForm->setVar('frame', $this->_frame);
         $fileForm->setVar('status', 'send');
-        $fileForm->setVar('tmp_file', $this->_tmp_file);
+        $fileForm->setVar('tmp_file', $this->_tmpFile);
         $fileForm->setVar('idmod', $this->_idmod);
         $fileForm->setVar('file', $this->_file);
 
@@ -427,7 +428,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $form->setVar('action', $this->_action);
         $form->setVar('frame', $this->_frame);
         $form->setVar('status', 'send');
-        $form->setVar('tmp_file', $this->_tmp_file);
+        $form->setVar('tmp_file', $this->_tmpFile);
         $form->setVar('idmod', $this->_idmod);
         $form->setVar('file', $this->_file);
         $form->setVar('selectedFile', $this->_file);
@@ -466,7 +467,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aDelete->setCustom('status', 'send');
         $aDelete->setCustom('idmod', $this->_idmod);
         $aDelete->setCustom('file', $this->_file);
-        $aDelete->setCustom('tmp_file', $this->_tmp_file);
+        $aDelete->setCustom('tmp_file', $this->_tmpFile);
 
         $aAdd = new cHTMLLink('main.php');
         $aAdd->setContent(i18n('New template'));
@@ -476,18 +477,18 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aAdd->setCustom('action', $this->_action);
         $aAdd->setCustom('frame', $this->_frame);
         $aAdd->setCustom('status', 'send');
-        $aAdd->setCustom('tmp_file', $this->_tmp_file);
+        $aAdd->setCustom('tmp_file', $this->_tmpFile);
         $aAdd->setCustom('idmod', $this->_idmod);
         $aAdd->setCustom('file', $this->_file);
 
-        // $tb_name = new cHTMLLabel($sFilename, '');
-        $tb_name = new cHTMLTextbox('file', $this->_file, 60);
+        // $oName = new cHTMLLabel($sFilename, '');
+        $oName = new cHTMLTextbox('file', $this->_file, 60);
 
-        $ta_code = new cHTMLTextarea('code', conHtmlSpecialChars($this->_code), 100, 35, 'code');
+        $oCode = new cHTMLTextarea('code', conHtmlSpecialChars($this->_code), 100, 35, 'code');
 
-        $ta_code->setStyle('font-family: monospace;width: 100%;');
+        $oCode->setStyle('font-family: monospace;width: 100%;');
 
-        $ta_code->updateAttributes(array(
+        $oCode->updateAttributes(array(
             'wrap' => getEffectiveSetting('html_editor', 'wrap', 'off')
         ));
 
@@ -500,8 +501,8 @@ class cModuleTemplateHandler extends cModuleHandler {
 
         // add fields only if template file exists
         if ($this->_file) {
-            $form->add(i18n('Name'), $tb_name);
-            $form->add(i18n('Code'), $ta_code);
+            $form->add(i18n('Name'), $oName);
+            $form->add(i18n('Code'), $oCode);
         }
         $this->_page->setContent(array(
             $fileForm
