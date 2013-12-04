@@ -51,7 +51,7 @@ class cUpgradeJob_0018 extends cUpgradeJobAbstract {
             // Get informations for action pifa_export_form
             $action->loadBy('name', 'pifa_export_form');
 
-            // If action pifa_export_frm not exist, return false
+            // If action pifa_export_form not exist, return false
             if ($action === null) {
                 return false;
             }
