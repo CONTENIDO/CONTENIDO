@@ -62,12 +62,17 @@ class cUpgradeJob_0017 extends cUpgradeJobAbstract {
 
                 for ($i = 0; $i < $actionCount; $i++) {
 
+                    // Build and execute sql query for selected action
+                    $actionColl->setWhere('name', cSecurity::escapeString($xml->contenido->actions->action[$i]));
+                    $actionColl->query();
+
                     // Get id of selected action
-                    $actionColl->select("name = '" . cSecurity::escapeString($xml->contenido->actions->action[$i]) . "'");
                     $actionId = $actionColl->next();
 
                     // Set a relation
-                    $pluginRelColl->create($actionId->get("idaction"), $plugin->get('idplugin'), 'action');
+                    if ($actionId != null) {
+                        $pluginRelColl->create($actionId->get("idaction"), $plugin->get('idplugin'), 'action');
+                    }
                 }
             }
         }
