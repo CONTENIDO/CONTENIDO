@@ -3,15 +3,15 @@
  * This file contains the module template handler class.
  * TODO: Rework comments of this class.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
- * @version    SVN Revision $Rev:$
+ * @version SVN Revision $Rev:$
  *
- * @author     Rusmir Jusufovic
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
+ * @author Rusmir Jusufovic
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -22,24 +22,36 @@ cInclude('includes', 'functions.file.php');
 /**
  * Class handels the view, creation, edit, delete of modul templates.
  *
- * @package    Core
+ * @package Core
  * @subpackage Backend
  */
 class cModuleTemplateHandler extends cModuleHandler {
 
     // Form fields
     private $_code;
+
     private $_file;
+
     private $_tmp_file;
+
     private $_area;
+
     private $_frame;
+
     private $_status;
+
     private $_action;
+
     private $_new;
+
     private $_delete;
+
     private $_selectedFile;
+
     private $_reloadScript;
+
     private $_page = NULL;
+
     private $_notification = NULL;
 
     /**
@@ -427,6 +439,12 @@ class cModuleTemplateHandler extends cModuleHandler {
 
         // make options fields
         foreach ($filesArray as $key => $file) {
+
+            // ignore dirs
+            if (is_dir($file)) {
+                continue;
+            }
+
             $optionField = new cHTMLOptionElement($file, $file);
 
             // select the current file

@@ -252,12 +252,12 @@ class cDirHandler {
                 $dirContent = array();
                 while (false !== ($file = readdir($dirHandle))) {
                     if (!cFileHandler::fileNameIsDot($file)) {
-                        // get only directories
-                        if ($dirOnly == true) {
+
+                        if ($dirOnly == true) { // get only directories
                             if (is_dir($dirName . $file)) {
                                 $dirContent[] = $file;
                             }
-                        } else {
+                        } elseif (!is_dir($file)) { // get only files
                             $dirContent[] = $file;
                         }
                     }
