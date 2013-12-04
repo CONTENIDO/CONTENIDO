@@ -30,6 +30,8 @@ INSERT INTO `!PREFIX!_area` (`idarea`, `parent_id`, `name`, `relevant`, `online`
 INSERT INTO `!PREFIX!_area` (`idarea`, `parent_id`, `name`, `relevant`, `online`, `menuless`) VALUES (10062, 'form', 'form_fields', 1, 1, 0);
 INSERT INTO `!PREFIX!_area` (`idarea`, `parent_id`, `name`, `relevant`, `online`, `menuless`) VALUES (10063, 'form', 'form_data', 1, 1, 0);
 INSERT INTO `!PREFIX!_area` (`idarea`, `parent_id`, `name`, `relevant`, `online`, `menuless`) VALUES (10064, 'form', 'form_ajax', 1, 1, 0);
+INSERT INTO `!PREFIX!_area` (`idarea`, `parent_id`, `name`, `relevant`, `online`, `menuless`) VALUES (10065, 'form', 'form_export', 1, 1, 0);
+INSERT INTO `!PREFIX!_area` (`idarea`, `parent_id`, `name`, `relevant`, `online`, `menuless`) VALUES (10066, 'form', 'form_import', 1, 1, 0);
 
 -- INSERT INTO `!PREFIX!_nav_sub` (idnavs, idnavm, idarea, level, location, online) VALUES (100001, 3, 100001, 0, 'form_assistant/xml/lang_de_DE.xml;plugins/form_assistant/label', 1);
 INSERT INTO `!PREFIX!_nav_sub` (`idnavs`, `idnavm`, `idarea`, `level`, `location`, `online`) VALUES (10045, 3, 10061, 0, 'form_assistant/xml/lang_de_DE.xml;plugins/form_assistant/label', 1);
@@ -74,6 +76,8 @@ INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`
 INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10112, 10064, '', 'pifa_get_file', '', '', 1);
 INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10113, 10064, '', 'pifa_delete_field', '', '', 1);
 INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10114, 10064, '', 'pifa_get_option_row', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10115, 10066, '', 'pifa_import_form', '', '', 1);
+INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10116, 10064, '', 'pifa_export_form', '', '', 1);
 
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(1, 10061, 2, 'area');
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(2, 10062, 2, 'area');
@@ -81,6 +85,21 @@ INSERT INTO `!PREFIX!_plugins_rel` VALUES(3, 10063, 2, 'area');
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(4, 10064, 2, 'area');
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(5, 10045, 2, 'navs');
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(6, 100001, 2, 'ctype');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(7, 10103, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(8, 10104, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(9, 10105, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(10, 10106, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(11, 10107, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(12, 10108, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(13, 10109, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(14, 10110, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(15, 10111, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(16, 10112, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(17, 10113, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(18, 10114, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(19, 10115, 2, 'action');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(20, 10116, 2, 'action');
+
 
 -- user forum
 INSERT INTO `!PREFIX!_area` (idarea, parent_id, name, relevant, online, menuless) VALUES (100003, '0', 'user_forum', 1, 1, 0);
