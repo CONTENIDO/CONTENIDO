@@ -70,7 +70,7 @@ class cUpgradeJob_0017 extends cUpgradeJobAbstract {
                     $actionId = $actionColl->next();
 
                     // Set a relation
-                    if ($actionId != null) {
+                    if ($actionId !== null) {
                         $pluginRelColl->create($actionId->get("idaction"), $plugin->get('idplugin'), 'action');
                     }
                 }
