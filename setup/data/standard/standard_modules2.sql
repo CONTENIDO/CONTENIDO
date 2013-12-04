@@ -48,6 +48,9 @@ INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES
 INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10098, 10062, 'form_assistant/includes/include.right_bottom.form_fields.php', 'main');
 INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10099, 10063, 'form_assistant/includes/include.right_bottom.form_data.php', 'main');
 INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10100, 10064, 'form_assistant/includes/include.right_bottom.form_ajax.php', 'main');
+INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10101, 10065, 'form_assistant/includes/include.right_bottom.form_export.php', 'main');
+INSERT INTO `!PREFIX!_files` (`idfile`, `idarea`, `filename`, `filetype`) VALUES (10102, 10066, 'form_assistant/includes/include.right_bottom.form_import.php', 'main');
+
 
 -- INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100001, 100001, 1, 100001);
 -- INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100002, 100001, 2, 100002);
@@ -61,6 +64,8 @@ INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`
 INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10098, 10062, 4, 10098);
 INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10099, 10063, 4, 10099);
 INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10100, 10064, 4, 10100);
+INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10101, 10065, 4, 10101);
+INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10102, 10066, 4, 10102);
 
 INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100001', 'CMS_PIFAFORM', '', 'PIFA form', '0', '', NOW(), NOW());
 
@@ -111,9 +116,9 @@ INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES
 INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100007, 100003, 4, 100007);
 INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100008, 100003, 1, 100008);
 INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100002', 'CMS_USERFORUM', '', 'User forum', '0', '', NOW(), NOW());
-INSERT INTO `!PREFIX!_plugins_rel` VALUES(7, 100003, 3, 'area');
-INSERT INTO `!PREFIX!_plugins_rel` VALUES(8, 100002, 3, 'navs');
-INSERT INTO `!PREFIX!_plugins_rel` VALUES(9, 100002, 3, 'ctype');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(21, 100003, 3, 'area');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(22, 100002, 3, 'navs');
+INSERT INTO `!PREFIX!_plugins_rel` VALUES(23, 100002, 3, 'ctype');
 
 -- Facebook SDK
 INSERT INTO `!PREFIX!_system_prop` (`idsystemprop`, `type`, `name`, `value`) VALUES(24, 'fb-sdk', 'app-id', NULL);
