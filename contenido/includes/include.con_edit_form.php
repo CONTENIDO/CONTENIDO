@@ -98,23 +98,28 @@ $div->setStyle("height:200px;width:700px;");
 $table = new cHTMLTable();
 $table->setWidth('680px');
 $table->setClass('generic');
+$table->setId('main-table');
 
 $thead = new cHTMLTableHeader();
-
+$thead->setClass('main-head');
 // $tr = new cHTMLTableRow();
 
 // build table header
 $th = new cHTMLTableHead();
+$th->setClass('first-row');
 $th->setContent(i18n('Language'));
 
 $th2 = new cHTMLTableHead();
 $th2->setContent(i18n('User'));
+$th2->setClass('second-row');
 
 $th3 = new cHTMLTableHead();
 $th3->setContent(i18n('Date'));
+$th3->setClass('third-row');
 
 $th4 = new cHTMLTableHead();
 $th4->setContent(i18n('Action'));
+$th4->setClass('fourth-row');
 
 $thead->appendContent($th);
 $thead->appendContent($th2);
@@ -126,20 +131,25 @@ $table->appendContent($thead);
 
 // assign values to table
 foreach ($query as $key => $val) {
+
     $tr = new cHTMLTableRow();
     $data = new cHTMLTableData();
+	$data->setClass('first-row');
     $data->setContent($val['language']);
     $tr->appendContent($data);
 
     $data = new cHTMLTableData();
-    $data->setContent($val['user']);
+    $data->setClass('second-row');
+	$data->setContent($val['user']);
     $tr->appendContent($data);
 
     $data = new cHTMLTableData();
+	$data->setClass('third-row');
     $data->setContent($val['logtimestamp']);
     $tr->appendContent($data);
 
     $data = new cHTMLTableData();
+	$data->setClass('fourth-row');
     $data->setContent($val['action']);
     $tr->appendContent($data);
 
