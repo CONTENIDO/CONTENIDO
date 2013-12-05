@@ -85,7 +85,7 @@ if ($cfg["use_pseudocron"] == true)
 
 /* Remove all own marks, only for frame 1 and 4  if $_REQUEST['appendparameters'] == 'filebrowser'
    filebrowser is used in tiny in this case also do not remove session marks*/
-if (($frame == 1 || $frame == 4) && isset($_REQUEST['appendparameters']) && $_REQUEST['appendparameters'] != 'filebrowser')
+if (($frame == 1 || $frame == 4) && $_REQUEST['appendparameters'] != 'filebrowser')
 {
 	$col = new InUseCollection;
 	$col->removeSessionMarks($sess->id);
