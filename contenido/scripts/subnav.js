@@ -26,12 +26,11 @@
     var Subnav = {
 
         /**
-         * Highlights the first tab by default (#navlist li#c_0) by
-         * setting the class to 'current'. Is called in subnavigation template.
+         * Highlights the first tab by default by setting the class to 'current'.
+         * Is called in subnavigation template.
          * @method init
          */
         init: function() {
-            $('#navlist li:first').attr('class', 'current');
             $('#navlist li:first a').attr('class', 'current');
         },
 
