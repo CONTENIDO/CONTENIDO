@@ -331,6 +331,10 @@
                             url: self.pathBackend + 'ajaxmain.php',
                             data: 'ajax=dirlist&idartlang=' + self.idArtLang + '&id=' + self.id + '&dir=' + dirname + '&contenido=' + self.session,
                             success: function(msg) {
+                                if($('div.cms_linkeditor .con_str_tree div.active').length == 0) {
+                                    // to make sure that some element is selected. Otherwise the list wouldn't get updated
+                                    $('div.cms_linkeditor div.file .con_str_tree .last div').first().click();
+                                }
                                 var title;
                                 if (self.selectedPath === 'upload') {
                                     title = folderName;

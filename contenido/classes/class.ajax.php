@@ -247,6 +247,8 @@ class cAjaxRequest {
 
                 $string = $image->uplmkdir($path, $name);
                 switch ($string) {
+                	case 1:
+                	    break;
                     case '0702':
                         $string = i18n('Directory already exist.');
                         break;

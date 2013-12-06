@@ -304,13 +304,13 @@ function uplmkdir($sPath, $sName) {
 
     //Check dir or create new
     $dPath = $cfgClient[$client]['upl']['path'] . $sPath . $dName;
-    if (cDirHandler::read($dPath) !== false) {
+    if (cDirHandler::read($dPath) === false) {
+        //Create new dir
+        return cDirHandler::create($dPath);
+    } else {
         //Directory already exist
         $action = 'upl_mkdir';
         return '0702';
-    } else {
-        //Create new dir
-        return cDirHandler::create($dPath);
     }
 }
 
