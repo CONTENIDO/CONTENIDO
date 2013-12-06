@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $tpl2 = new cTemplate();
 
-$page = new cGuiPage("tpl_edit_form");
+$page = new cGuiPage("tpl_edit_form", '', '0');
 
 if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $action)) {
     $page->displayInfo(i18n("Deleted Template succcessfully!"));
@@ -204,7 +204,7 @@ if ($idlay) {
 $href = $sess->url("main.php?area=tpl&frame=2&idtpl=" . $idtpl);
 
 $page->setReload();
-$page->setSubnav("idtpl=$idtpl", "tpl");
+//$page->setSubnav("idtpl=$idtpl", "tpl");
 
 $page->setContent(array($form));
 

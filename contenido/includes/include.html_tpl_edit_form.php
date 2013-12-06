@@ -25,7 +25,7 @@ $sActionEdit = 'htmltpl_edit';
 $sActionDelete = 'htmltpl_delete';
 $sFilename = '';
 
-$page = new cGuiPage('html_tpl_edit_form');
+$page = new cGuiPage('html_tpl_edit_form', '', '0');
 
 $tpl->reset();
 

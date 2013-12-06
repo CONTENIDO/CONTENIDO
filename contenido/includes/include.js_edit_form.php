@@ -22,7 +22,7 @@ cInclude('external', 'codemirror/class.codemirror.php');
 $sFileType = 'js';
 
 $sFilename = '';
-$page = new cGuiPage('js_edit_form');
+$page = new cGuiPage('js_edit_form', '', '0');
 
 $tpl->reset();
 

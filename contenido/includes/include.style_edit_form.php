@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('external', 'codemirror/class.codemirror.php');
 $sFileType = 'css';
 $sFilename = '';
-$page = new cGuiPage('style_edit_form');
+$page = new cGuiPage('style_edit_form', '', '0');
 $page->setEncoding('utf-8');
 
 $tpl->reset();

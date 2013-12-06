@@ -22,7 +22,7 @@ if (!isset($idlay)) {
     $idlay = 0;
 }
 
-$page = new cGuiPage('lay_edit_form');
+$page = new cGuiPage('lay_edit_form', '', '0');
 $layout = new cApiLayout();
 $bReloadSyncSrcipt = false;
 if ($idlay != 0) {
@@ -223,9 +223,9 @@ if (stripslashes($_REQUEST['idlay']) || $bReloadSyncSrcipt) {
 }
 
 if ($action == "lay_sync") {
-    $page->setSubnav("idlay={$idlay}&dont_print_subnav=1", "lay");
+    //$page->setSubnav("idlay={$idlay}&dont_print_subnav=1", "lay");
 } else {
-    $page->setSubnav("idlay={$idlay}", "lay");
+    //$page->setSubnav("idlay={$idlay}", "lay");
 }
 
 $page->render();
