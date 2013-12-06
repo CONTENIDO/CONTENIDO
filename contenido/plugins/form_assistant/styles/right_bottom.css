@@ -331,8 +331,13 @@ input[type="image"],
     margin-left: 0;
 }
 
-.pseudo-fieldset div {
+.pseudo-fieldset>div {
 	margin: 5px;
+}
+
+.pseudo-fieldset #options-list .option-outer {
+	margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 #error_message,
