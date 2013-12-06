@@ -41,7 +41,7 @@ class frontendlogic_category extends FrontendLogic {
      */
     public function listActions() {
         return array(
-            "access" => i18n("Access category", "frontendlogic_category";
+            "access" => i18n("Access category", "frontendlogic_category")
         );
     }
 
