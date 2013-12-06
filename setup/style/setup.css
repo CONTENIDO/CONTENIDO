@@ -89,8 +89,7 @@ h1 {
     font-size: 12px;
     font-weight: bold;
     color: #0060B1;
-    margin: 0;
-    margin-bottom: 8px;
+    margin: 0 0 8px;
 }
 
 div.description {
@@ -145,16 +144,14 @@ div.entry_open a {
 td.entry {
     color: black;
     font-size: 10px;
-    padding: 3px;
-    padding-top: 5px;
+    padding: 5px 3px 3px;
     border-bottom: 1px solid white;
 }
 
 td.entry_nowrap {
     color: black;
     font-size: 10px;
-    padding: 3px;
-    padding-top: 5px;
+    padding: 5px 3px 3px;
     border-bottom: 1px solid white;
     white-space: nowrap;
 }
@@ -169,8 +166,7 @@ img.button {
 
 td.icon {
     width: 14px;
-    padding: 4px;
-    padding-left: 7px;
+    padding: 4px 4px 4px 7px;
     border-bottom: 1px solid white;
 }
 

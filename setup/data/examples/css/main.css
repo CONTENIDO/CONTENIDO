@@ -308,10 +308,9 @@ div.button_red input
     background: #e50051;
     height: 25px;
     border-radius: 9px;
-    border-bottom: 1px solid #c31250;
-    border-right: 1px solid #c31250;
-    border-top: 1px solid #d687a4;
-    border-left: 1px solid #d687a4;
+    border: 1px solid #d687a4;
+    border-right-color: #c31250;
+    border-bottom-color: #c31250;
     font-size: 12px;
 }
 
@@ -333,10 +332,9 @@ div.button_grey input {
     background: #ccc;
     height: 25px;
     border-radius: 9px;
-    border-bottom: 1px solid #bbb;
-    border-right: 1px solid #bbb;
-    border-top: 1px solid #efefef;
-    border-left: 1px solid #efefef;
+    border: 1px solid #efefef;
+    border-right-color: #bbb;
+    border-bottom-color: #bbb;
     font-size: 12px;
 }
 
@@ -347,7 +345,7 @@ div.button_grey input {
 }
 
 #contact_form_submit_right .button.red {
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 p+.button.red {
@@ -494,8 +492,8 @@ p+.button.red {
     line-height: 17px;
     margin-top: 5px;
     position: absolute;
-    bottom: 0px;
-    right: 0px;
+    bottom: 0;
+    right: 0;
 }
 
 .column_quarter .col a.more:hover {
@@ -663,7 +661,7 @@ div.link_list {
 }
 
 div.link_list h2 {
-    margin: 0px;
+    margin: 0;
 }
 
 ul.link_list {
@@ -672,8 +670,7 @@ ul.link_list {
 
 ul.link_list li {
     list-style: none;
-    margin: 18px 0;
-    margin-top: 0px;
+    margin: 0px 0 18px;
 }
 
 ul.link_list li a:link,ul.link_list li a:active,ul.link_list li a:visited {
@@ -874,7 +871,7 @@ button.ui-button::-moz-focus-inner {
     left: 0;
     width: 100%;
     height: 100%;
-    background: #66;
+    background: #666;
     opacity: .5;
     filter: Alpha(Opacity = 50);
 }

@@ -53,7 +53,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" style=" background-image: url(upload/zimages/pix_common.gif);background-position: bottom;background-repeat: repeat-x;padding-top: 5px;padding-bottom: 5px;"></td>
+            <td colspan="2" style=" background: url(upload/zimages/pix_common.gif) repeat-x bottom;padding-top: 5px;padding-bottom: 5px;"></td>
         </tr>
 
     {/foreach}

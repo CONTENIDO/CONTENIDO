@@ -58,14 +58,14 @@ table#calendarTable {
     float: right;
     padding-left: 23px;
     height: 17px;
-    line-height: 17px background-size:    18px;
+    line-height: 17px;
+    background-size:    18px;
     margin-bottom: 10px;
     cursor: pointer;
 }
 
 a.submit,
 a.cancel {
-    background: url("../images/nav_bg.jpg") repeat-x 0 -10px transparent;
     display: inline-block;
     color: #fff;
     text-decoration: none;
@@ -74,7 +74,7 @@ a.cancel {
     padding: 0 5px;
     margin-bottom: 5px;
     margin-left: 6px;
-    background-color: #444;
+    background: #444 url("../images/nav_bg.jpg") repeat-x 0 -10px;
 }
 
 .user_forum div.like {
