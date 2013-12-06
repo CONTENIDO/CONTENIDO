@@ -215,8 +215,28 @@ JS;
 
         // Show message
         if ($sFilename != $sTempFilename) {
+            $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$reloadFile}'});
+    }
+})(Con, Con.$);
+</script>
+JS;
             $page->displayInfo(i18n('Renamed template file successfully!'));
         } else {
+            $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$reloadFile}'});
+    }
+})(Con, Con.$);
+</script>
+JS;
             $page->displayInfo(i18n('Saved changes successfully!'));
         }
 
@@ -229,7 +249,7 @@ JS;
     }
     // Generate edit form
     if (isset($_REQUEST['action'])) {
-        $sAction = ($_REQUEST['file']) ? 'style_edit' : $_REQUEST['action'];
+        $sAction = ($_REQUEST['file'])? 'style_edit' : $_REQUEST['action'];
 
         if ($_REQUEST['action'] == 'style_edit') {
             $sCode = cFileHandler::read($path . $sFilename);

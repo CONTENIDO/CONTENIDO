@@ -34,7 +34,7 @@ $sReload = <<<JS
 (function(Con, $) {
     var frame = Con.getFrame('left_bottom');
     if (frame) {
-        var href = Con.UtilUrl.replaceParams(left_bottom.location.href, {idlang: {$idlang}});
+        var href = Con.UtilUrl.replaceParams(frame.location.href, {idlang: {$idlang}});
         frame.location.href = href;
     }
 })(Con, Con.$);
