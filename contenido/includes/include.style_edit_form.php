@@ -249,7 +249,7 @@ JS;
     }
     // Generate edit form
     if (isset($_REQUEST['action'])) {
-        $sAction = ($_REQUEST['file'])? 'style_edit' : $_REQUEST['action'];
+        $sAction = ($_REQUEST['file']) ? 'style_edit' : $_REQUEST['action'];
 
         if ($_REQUEST['action'] == 'style_edit') {
             $sCode = cFileHandler::read($path . $sFilename);

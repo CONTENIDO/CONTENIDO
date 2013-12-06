@@ -842,7 +842,7 @@ class cApiModule extends Item {
      * Tries to find the proper container tag and replaces its value against
      * container configuration.
      * @param  int  $containerNr  The container number to process
-     * @param  string  $containerCfg  Container configuration string containing key/values paird for all containers
+     * @param  string  $containerCfg  Container configuration string containing key/values pairs for all containers
      * @param  string  $moduleInputCode
      * @return  string
      */
