@@ -32,6 +32,7 @@
          */
         init: function() {
             $('#navlist li:first').attr('class', 'current');
+            $('#navlist li:first a').attr('class', 'current');
         },
 
         /**
