@@ -91,7 +91,7 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
      * @param   array  $data   Assoziative list which contains class type tokens and
      *                         the related path to the class file.
      * @param   string  $file  Destination class map file
-     * @return  void
+     * @return  bool
      */
     public function create(array $data, $file)
     {
