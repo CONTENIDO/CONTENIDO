@@ -310,9 +310,9 @@ input[type="image"],
 }
 
 .pseudo-fieldset label {
-    display: block;
-    float: left;
+    display: inline-block;
     width: 13em;
+    vertical-align: middle;
 }
 
 .pseudo-fieldset input,
@@ -323,6 +323,7 @@ input[type="image"],
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
+    vertical-align: middle;
 }
 
 .pseudo-fieldset input[type=checkbox] {
@@ -330,16 +331,8 @@ input[type="image"],
     margin-left: 0;
 }
 
-.default_value,
-.help_text,
-.obligatory,
-.rule,
-.error_message,
-.option-labels,
-.option-values,
-.field-type-dialog,
-.req-input {
-    margin-bottom: 5px;
+.pseudo-fieldset div {
+	margin: 5px;
 }
 
 #error_message,
