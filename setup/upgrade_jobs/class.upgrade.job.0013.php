@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the upgrade job 13.
  *
@@ -6,45 +7,59 @@
  * @subpackage UpgradeJob
  * @version SVN Revision $Rev:$
  *
- * @author Mischa Holz
+ * @author frederic.schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
 
+// assert CONTENIDO framework
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Upgrade job 13.
- * Adds the missing login action so that it can be logged again and adds front_allow action
+ *
+ * Change of area for action pifa_export_form
  *
  * @package Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0013 extends cUpgradeJobAbstract {
 
-    public $maxVersion = "4.9.0";
+    public $maxVersion = "4.9.3";
 
     public function _execute() {
-        global $db, $cfg;
+        global $cfg;
 
-        $needsUpdate = true;
+        if ($_SESSION['setuptype'] == 'upgrade') {
 
-        $actionColl = new cApiActionCollection();
-        $actionArray = $actionColl->getAvailableActions();
+            // Initializing cApiArea
+            $area = new cApiArea();
 
-        $needsUpdate = !isset($actionArray[330]);
+            // Get informations for area form_ajax
+            $area->loadBy('name', 'form_ajax');
 
-        foreach ($actionArray as $action) {
-            if ($action["name"] == "login") {
-                $needsUpdate = false;
+            // If area form_ajax not exist, return false
+            if ($area === null) {
+                return false;
             }
-        }
 
-        if ($needsUpdate) {
-            $db->query("INSERT INTO " . $cfg['tab']['actions'] . " VALUES('330', '0', '0', 'login', '', '', '1');");
-            $db->query("INSERT INTO " . $cfg['tab']['actions'] . " VALUES('359', '6', '', 'front_allow', '', '', '1');");
+            // Initializing cApiAction
+            $action = new cApiAction();
+
+            // Get informations for action pifa_export_form
+            $action->loadBy('name', 'pifa_export_form');
+
+            // If action pifa_export_form not exist, return false
+            if ($action === null) {
+                return false;
+            }
+
+            // Change area for action pifa_export_form to form_ajax
+            $action->set('idarea', $area->get('idarea'));
+            $action->store();
+
         }
     }
 

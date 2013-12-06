@@ -17,26 +17,28 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Upgrade job 10.
- * Removes deleted files from con_files.
+ * Add the execution order column to the plugin table
  *
  * @package Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0010 extends cUpgradeJobAbstract {
 
-    public $maxVersion = "4.9.0-rc1";
-
-    protected $filesToRemove = array(
-        "functions.forms.php"
-    );
+    public $maxVersion = "4.9.1";
 
     public function _execute() {
         global $db, $cfg;
 
-        if ($this->_setupType == 'upgrade') {
-            foreach ($this->filesToRemove as $file) {
-                $db->query("DELETE FROM " . $cfg['tab']['files'] . " WHERE filename = '" . $file . "'");
-            }
+        plugin_include('pim', 'classes/class.pim.plugin.collection.php');
+
+        $pluginColl = new PimPluginCollection();
+        $pluginColl->select();
+        $i = 1;
+        while ($plugin = $pluginColl->next()) {
+            $plugin->set('executionorder', $i);
+            $plugin->store();
+
+            $i++;
         }
     }
 

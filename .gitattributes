@@ -2635,11 +2635,6 @@ setup/upgrade_jobs/class.upgrade.job.0010.php -text
 setup/upgrade_jobs/class.upgrade.job.0011.php -text
 setup/upgrade_jobs/class.upgrade.job.0012.php -text
 setup/upgrade_jobs/class.upgrade.job.0013.php -text
-setup/upgrade_jobs/class.upgrade.job.0014.php -text
-setup/upgrade_jobs/class.upgrade.job.0015.php -text
-setup/upgrade_jobs/class.upgrade.job.0016.php -text
-setup/upgrade_jobs/class.upgrade.job.0017.php -text
-setup/upgrade_jobs/class.upgrade.job.0018.php -text
 test/class.all.test.case.php -text
 test/class.contenido.test.case.php -text
 test/contenido/class.classes.test.case.php -text

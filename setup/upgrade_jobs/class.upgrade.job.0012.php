@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the upgrade job 12.
  *
@@ -6,79 +7,75 @@
  * @subpackage UpgradeJob
  * @version SVN Revision $Rev:$
  *
- * @author Mischa Holz
+ * @author frederic.schneider
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
+// assert CONTENIDO framework
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
  * Upgrade job 12.
- * Copy the example client to cms folder if needed
+ *
+ * Generates plugin relations for plugin specific action entries
  *
  * @package Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0012 extends cUpgradeJobAbstract {
 
-    public $maxVersion = "4.9.0";
+    public $maxVersion = "4.9.3";
 
     public function _execute() {
-        if ($this->_setupType !== 'setup') {
-            return;
-        }
+        global $cfg;
 
-        switch ($_SESSION["clientmode"]) {
-            case "NOCLIENT":
-                break;
-            case "CLIENTEXAMPLES":
-                // copy the styles folder to the cms folder for the example client
-                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "css")) {
-                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "css");
-                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "css");
-                }
-                cDirHandler::recursiveCopy("data/examples/css", $this->_aCfgClient[1]["path"]["frontend"] . "css");
+        if ($_SESSION['setuptype'] == 'upgrade') {
 
-                // copy the scripts folder to the cms folder for the example client
-                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "js")) {
-                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "js");
-                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "js");
-                }
+            // Initializing cApiActionCollection
+            $actionColl = new cApiActionCollection();
 
-                cDirHandler::recursiveCopy("data/examples/js", $this->_aCfgClient[1]["path"]["frontend"] . "js");
+            // Include PIM collections
+            plugin_include('pim', 'classes/class.pim.plugin.collection.php');
+            plugin_include('pim', 'classes/class.pim.plugin.relations.collection.php');
 
-                // copy the template folder to the cms folder for the example client
-                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "templates")) {
-                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "templates");
-                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "templates");
-                }
-                cDirHandler::recursiveCopy("data/examples/templates", $this->_aCfgClient[1]["path"]["frontend"] . "templates");
+            // Initializing PimPluginRelationsCollection
+            $pluginRelColl = new PimPluginRelationsCollection();
 
-                // copy the upload folder to the cms folder for the example client
-                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "upload")) {
-                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "upload");
-                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "upload");
-                }
-                cDirHandler::recursiveCopy("data/examples/upload", $this->_aCfgClient[1]["path"]["frontend"] . "upload");
+            // Initializing PimPluginCollection
+            $pluginColl = new PimPluginCollection();
 
-                // copy the layout folder to the cms folder for the example client
-                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts")) {
-                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
-                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
+            // Get all installed plugins
+            $pluginColl->select();
+            while ($plugin = $pluginColl->next()) {
+
+                // Get path to plugin.xml
+                $pluginXmlPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($plugin->get('folder')) . DIRECTORY_SEPARATOR . "plugin.xml";
+
+                // Load plugin.xml and get xml strings
+                $xml = simplexml_load_string(file_get_contents($pluginXmlPath));
+
+                // Count all actions at plugin.xml for this plugin
+                $actionCount = count($xml->contenido->actions->action);
+
+                for ($i = 0; $i < $actionCount; $i++) {
+
+                    // Build and execute sql query for selected action
+                    $actionColl->setWhere('name', cSecurity::escapeString($xml->contenido->actions->action[$i]));
+                    $actionColl->query();
+
+                    // Get id of selected action
+                    $actionId = $actionColl->next();
+
+                    // Set a relation
+                    if ($actionId !== false) {
+                        $pluginRelColl->create($actionId->get("idaction"), $plugin->get('idplugin'), 'action');
+                    }
                 }
-                cDirHandler::recursiveCopy("data/examples/data/layouts", $this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
-            case "CLIENTMODULES":
-                // copy the module folder to the cms folder for the example client
-                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "data/modules")) {
-                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
-                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
-                }
-                cDirHandler::recursiveCopy("data/examples/data/modules", $this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
+            }
         }
     }
 
 }
-
-?>

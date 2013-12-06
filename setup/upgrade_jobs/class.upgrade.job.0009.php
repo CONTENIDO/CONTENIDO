@@ -6,7 +6,7 @@
  * @subpackage UpgradeJob
  * @version SVN Revision $Rev:$
  *
- * @author Timo Trautmann
+ * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
  * @link http://www.4fb.de
@@ -16,41 +16,66 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Upgrade job 9.
- * Convert newsletter plugin tables
+ * Copy the example client to cms folder if needed
  *
  * @package Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0009 extends cUpgradeJobAbstract {
 
-    private $_tableMapping = array('%s_news' => '%s_pi_news',
-                                   '%s_news_groupmembers' => '%s_pi_news_groupmembers',
-                                   '%s_news_groups' => '%s_pi_news_groups',
-                                   '%s_news_jobs' => '%s_pi_news_jobs',
-                                   '%s_news_log' => '%s_pi_news_log',
-                                   '%s_news_rcp' => '%s_pi_news_rcp');
+    public $maxVersion = "4.9.0";
 
     public function _execute() {
-        global $cfg;
-
-        if ($this->_setupType != 'upgrade') {
+        if ($this->_setupType !== 'setup') {
             return;
         }
 
-        $updateDB = getSetupMySQLDBConnection(false);
-        foreach ($this->_tableMapping as $oldName => $newName) {
-             $this->_oDb->query('SHOW TABLES LIKE "%s"', sprintf($oldName, $cfg['sql']['sqlprefix']));
-             $oldTable = $this->_oDb->nextRecord();
+        switch ($_SESSION["clientmode"]) {
+            case "NOCLIENT":
+                break;
+            case "CLIENTEXAMPLES":
+                // copy the styles folder to the cms folder for the example client
+                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "css")) {
+                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "css");
+                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "css");
+                }
+                cDirHandler::recursiveCopy("data/examples/css", $this->_aCfgClient[1]["path"]["frontend"] . "css");
 
-             $this->_oDb->query('SHOW TABLES LIKE "%s"', sprintf($newName, $cfg['sql']['sqlprefix']));
-             $newTable = $this->_oDb->nextRecord();
+                // copy the scripts folder to the cms folder for the example client
+                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "js")) {
+                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "js");
+                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "js");
+                }
 
-             if ($newTable === false && $oldTable === true) {
-                $this->_oDb->query('RENAME TABLE ' . sprintf($oldName, $cfg['sql']['sqlprefix']) . ' TO ' . sprintf($newName, $cfg['sql']['sqlprefix']));
+                cDirHandler::recursiveCopy("data/examples/js", $this->_aCfgClient[1]["path"]["frontend"] . "js");
 
-                alterTableHandling(sprintf($newName, $cfg['sql']['sqlprefix']));
-                urlDecodeTable($updateDB, sprintf($newName, $cfg['sql']['sqlprefix']));
-             }
+                // copy the template folder to the cms folder for the example client
+                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "templates")) {
+                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "templates");
+                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "templates");
+                }
+                cDirHandler::recursiveCopy("data/examples/templates", $this->_aCfgClient[1]["path"]["frontend"] . "templates");
+
+                // copy the upload folder to the cms folder for the example client
+                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "upload")) {
+                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "upload");
+                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "upload");
+                }
+                cDirHandler::recursiveCopy("data/examples/upload", $this->_aCfgClient[1]["path"]["frontend"] . "upload");
+
+                // copy the layout folder to the cms folder for the example client
+                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts")) {
+                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
+                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
+                }
+                cDirHandler::recursiveCopy("data/examples/data/layouts", $this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
+            case "CLIENTMODULES":
+                // copy the module folder to the cms folder for the example client
+                if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "data/modules")) {
+                    cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
+                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
+                }
+                cDirHandler::recursiveCopy("data/examples/data/modules", $this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
         }
     }
 

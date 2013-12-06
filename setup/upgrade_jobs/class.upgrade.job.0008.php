@@ -6,7 +6,7 @@
  * @subpackage UpgradeJob
  * @version    SVN Revision $Rev:$
  *
- * @author     Simon Sprankel
+ * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -17,35 +17,23 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Upgrade job 8.
- * Copies the content of the con_plugins."path" column to the "folder" column
- * and deletes the "path" column afterwards.
+ * Update the old system property for insite editing
  *
  * @package Setup
  * @subpackage UpgradeJob
  */
 class cUpgradeJob_0008 extends cUpgradeJobAbstract {
 
-    public $maxVersion = "4.9.0-beta1";
+    public $maxVersion = "4.9.0";
 
     public function _execute() {
         global $cfg, $db;
 
         if ($this->_setupType == 'upgrade') {
-            // check if the column "path" still exists
-            $db->query('SHOW COLUMNS FROM `%s`;', $cfg['tab']['plugins']);
+            $sql = "UPDATE `" . $cfg['tab']['system_prop'] . "` SET `name` = 'insite_editing_activated' WHERE `name` = 'insight_editing_activated'";
+            $db->query($sql);
 
-            $columns = array();
-            while ($db->nextRecord()) {
-                $columns[] = $db->f('Field');
-            }
-
-            if (in_array('path', $columns)) {
-                // copy path to folder
-                $db->query('UPDATE `%s` SET folder = path;', $cfg['tab']['plugins']);
-                // drop column "path"
-                $db->query('ALTER TABLE `%s` DROP path;', $cfg['tab']['plugins']);
-            }
+            $db->query("DELETE FROM " . $cfg["tab"]["system_prop"] . " WHERE `name` = 'available' AND `type`='imagemagick'");
         }
     }
-
 }
