@@ -154,11 +154,7 @@
                     bSelClient = true;
                 } else if (iSelClient == 'list') {
                     var countClient = $('#client_select option:selected', '#frmSystemPurge').length;
-                    if (countClient > 0) {
-                        bSelClient = true;
-                    } else {
-                        bSelClient = false;
-                    }
+                    bSelClient = countClient > 0;
                 }
             } else {
                 bSelClient = false;

@@ -3,7 +3,7 @@
     <div class="dropbox" id="dropbox">i18n("Drop your files here")</div>
     <div class="shelf" id="shelf"></div>
 
-    <form enctype="multipart/form-data" style="margin: 0px" name="properties" method="post" action="main.php">
+    <form enctype="multipart/form-data" style="margin: 0" name="properties" method="post" action="main.php">
         <input type="hidden" name="frame" value="4">
         <input type="hidden" name="area" value="upl">
         <input type="hidden" name="path" value="{PATH}">
@@ -20,11 +20,11 @@
             </tr>
             <tr id="1">
                 <td nowrap="nowrap" valign="top"
-                    style="padding-left: 0px; white-space: nowrap;" width="1"><nobr>i18n("Path"):</nobr></td>
+                    style="padding-left: 0; white-space: nowrap;" width="1"><nobr>i18n("Path"):</nobr></td>
                 <td nowrap="nowrap" valign="top" align="left">{DISPLAY_PATH}</td>
             </tr>
             <tr id="2">
-                <td nowrap="nowrap" valign="top" style="padding-left: 0px; white-space: nowrap;" width="1"><nobr>i18n("Upload files")</nobr></td>
+                <td nowrap="nowrap" valign="top" style="padding-left: 0; white-space: nowrap;" width="1"><nobr>i18n("Upload files")</nobr></td>
                 <td nowrap="nowrap" valign="top" align="left">
                     <input id="m1" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
                     <input id="m2" name="file[]" class="text_medium file_upload" size="40" type="file"><br>
@@ -39,7 +39,7 @@
                 </td>
             </tr>
             <tr id="3">
-                <td nowrap="nowrap" valign="top" style="padding-left: 0px;">&nbsp;</td>
+                <td nowrap="nowrap" valign="top" style="padding-left: 0;">&nbsp;</td>
                 <td nowrap="nowrap" valign="top" style="white-space: nowrap;" align="right">
                     <input style="margin-left: 5px;" title="i18n("Save changes")" alt="i18n("Save changes")" type="image"
                         src="images/but_ok.gif" name="submit" onclick="" accesskey="s">

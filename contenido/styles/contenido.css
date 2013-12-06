@@ -172,25 +172,25 @@ table.generic th.center {
 }
 
 table.generic table.genericEscape th {
-    padding: 0px;
-    border: 0px;
+    padding: 0;
+    border: 0;
 }
 
 table.generic table.genericEscape td {
-    padding: 0px;
-    border: 0px;
+    padding: 0;
+    border: 0;
 }
 
 table.generic table.genericEscape tr {
-    padding: 0px;
-    border: 0px;
+    padding: 0;
+    border: 0;
 }
 
 table.borderless {
-    border: 0px;
+    border: 0;
     border-color: #b3b3b3;
     border-style: solid;
-    border-bottom: 0px;
+    border-bottom: 0;
     border-right: 1px;
 }
 
@@ -203,7 +203,7 @@ table.borderless tr {
 }
 
 table.borderless tr td {
-    border: 0px;
+    border: 0;
 }
 
 /**
@@ -343,7 +343,7 @@ li#kontakt.welcome {
  */
 .alertbox {
     border: 1px solid;
-    border-top: 0px;
+    border-top: 0;
     margin-left: 260px;
     width: 275px;
 }
@@ -1127,7 +1127,7 @@ div#navcontainer ul#navlist li a:visited {
 
 .td_stats1 {
     border: 0;
-    border-left: 0px;
+    border-left: 0;
     border-bottom: 1px;
     border-right: 1px;
     border-color: #b3b3b3;
@@ -1735,7 +1735,7 @@ p.column_header {
  */
 
 .noborder {
-    border: 0px;
+    border: 0;
 }
 .borderB5 {
     border: 1px solid #b5b5b5;
@@ -1764,19 +1764,19 @@ p.column_header {
 .border169 {
     border-style: solid;
     border-color: rgb(169, 174, 194);
-    border-width: 1px 0px 0px;
+    border-width: 1px 0 0;
 }
 .nobordert {
-    border-top: 0px;
+    border-top: 0;
 }
 .noborderr {
-    border-right: 0px;
+    border-right: 0;
 }
 .noborderb {
-    border-bottom: 0px;
+    border-bottom: 0;
 }
 .noborderl {
-    border-left: 0px;
+    border-left: 0;
 }
 
 /**
@@ -1895,7 +1895,7 @@ div#top_left_container.client_left_top {
 }
 div#top_left_container.rights_left_top {
     border: 1px solid rgb(179, 179, 179);
-    margin: 1px 0pt 0pt;
+    margin: 1px 0 0;
     padding-top: 7px;
 }
 div#top_left_container.style_left_top {
@@ -2329,7 +2329,7 @@ table.inuse_tpl {
 }
 
 a.infoButton,
-infoButton:hover {
+.infoButton:hover {
     display: inline-block;
     width: 16px;
     height: 16px;

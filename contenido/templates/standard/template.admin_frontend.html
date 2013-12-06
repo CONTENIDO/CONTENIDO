@@ -38,7 +38,7 @@ var pagingURL = '';
 // Buttons and their images
 var butUser     = {imgId:'{IUSER}', containerId:'{ID_USERS}', imgOff:'images/users_o.gif', imgOn:'images/users.gif'};
 var butGroups   = {imgId:'{IGROUP}', containerId:'{ID_GROUPS}', imgOff:'images/groups_o.gif', imgOn:'images/groups.gif'};
-var buttonArray = new Array(butUser, butGroups);
+var buttonArray = [butUser, butGroups];
 
 function resizeFrame(arg, bIgnore) {
     if (arg == '') {

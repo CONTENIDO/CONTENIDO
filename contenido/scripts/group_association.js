@@ -145,11 +145,7 @@
             }
 
             //if there are no options, deactivate corresponding move button
-            if (count == 0) {
-                document.getElementById(sSelectId+'_button').disabled = true;
-            } else {
-                document.getElementById(sSelectId+'_button').disabled = false;
-            }
+            document.getElementById(sSelectId + '_button').disabled = count == 0;
         }
 
         /**

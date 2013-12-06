@@ -625,10 +625,8 @@
          */
         validate: function(value) {
             var urlregex = /(http:\/\/www.|https:\/\/www.|www.|http:\/\/|https:\/\/){1}(([0-9A-Za-z]+\.))|(localhost)/;
-            if (urlregex.test(value)) {
-                return true;
-            }
-            return false;
+            return urlregex.test(value);
+            
         }
     };
 

@@ -1,5 +1,5 @@
 .domenabled #finderparent {
-    border: 0px solid #000;
+    border: 0 solid #000;
     position: relative;
     /*min-height: 250px;*/
     height: 360px;
@@ -25,7 +25,7 @@
 }
 
 .domenabled ul#finder ul.hidden {
-    top: 0px;
+    top: 0;
     left: -1px;
     position: absolute;
     /*display: none;*/
@@ -34,7 +34,7 @@
 }
 
 .domenabled ul#finder ul.shown {
-    top: 0px;
+    top: 0;
     left: 185px;
     position: absolute;
     float: left;
@@ -46,7 +46,7 @@
 .domenabled #finder a.open {
     background: url(../images/arrow.gif) no-repeat #CCCCCC 140px 50%;
     padding-right: 16px;
-    padding-left: 0px;
+    padding-left: 0;
     display: block;
 }
 
@@ -56,7 +56,7 @@
     /*adding-left: 16px;*/
     text-decoration: none;
     padding-right: 16px;
-    padding-left: 0px;
+    padding-left: 0;
     display: block;
 }
 
@@ -82,7 +82,7 @@
 .domenabled ul#finder ul.hidden li,
 .domenabled ul#finder ul.shown li {
     border: 1px #B3B3B3 solid;
-    border-bottom: 0px;
+    border-bottom: 0;
 }
 
 .domenabled ul#finder li.lastElem {

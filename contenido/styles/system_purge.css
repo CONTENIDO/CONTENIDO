@@ -91,7 +91,7 @@
     content: ".";
     display: block;
     clear: both;
-    height: 0px;
+    height: 0;
     visibility: hidden;
     line-height: 0;
 }

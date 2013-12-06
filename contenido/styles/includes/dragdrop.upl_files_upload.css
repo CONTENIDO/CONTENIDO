@@ -38,7 +38,7 @@ div.shelf_elem_progressbar_background {
 }
 
 div.shelf_elem_progressbar_bar {
-    width: 0%;
+    width: 0;
     height: 100%;
     background-color: green;
 }

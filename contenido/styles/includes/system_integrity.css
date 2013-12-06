@@ -5,7 +5,7 @@ table.systemcheck {
 }
 
 table.systemcheck td.right {
-    width: 0px;
+    width: 0;
 }
 
 table.systemcheck td.left {

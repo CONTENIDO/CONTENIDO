@@ -178,7 +178,7 @@ if (is_array($isCurrent)) {
 
                 $todoListeSubject = i18n("Reminder");
                 $sReminder = i18n("Set reminder / add to todo list");
-                $sReminderHtml = "<a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=550');\" alt=\"$sReminder\" title=\"$sReminder\" href=\"#\"><img id=\"m2\" alt=\"$sReminder\" src=\"images/but_setreminder.gif\" border=\"0\"></a>";
+                $sReminderHtml = "<a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=550');\" href=\"#\"><img alt=\"$sReminder\" title=\"$sReminder\" id=\"m2\" src=\"images/but_setreminder.gif\" border=\"0\"></a>";
 
                 $templatename = $db->f('tpl_name');
                 if (!empty($templatename)) {

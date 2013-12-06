@@ -10,7 +10,7 @@
  * @todo       Rework this, make a CONTENIDO module
  */
 
-var m_documentParameters = new Array();
+var m_documentParameters = [];
 
 function register_parameter (name, value)
 {

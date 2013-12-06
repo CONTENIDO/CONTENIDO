@@ -37,7 +37,7 @@ img.spaced {
     border-color:#B3B3B3;
     border-style:solid;
     white-space:nowrap;
-    padding: 0px 2px;
+    padding: 0 2px;
 }
 
 #category_list .str-style-b, #category_list  tr td {
@@ -46,7 +46,7 @@ img.spaced {
     border-color:#B3B3B3;
     border-style:solid;
     white-space:nowrap;
-    padding: 0px 2px;
+    padding: 0 2px;
 }
 
 #category_list .str-style-c, #category_list .str-style-d , #category_list .str-style-f {
@@ -56,20 +56,20 @@ img.spaced {
     border-color:#B3B3B3;
     border-style:solid;
     white-space:nowrap;
-    padding: 0px 2px;
+    padding: 0 2px;
 }
 
 #category_list .str-style-f  {
-border-width: 1px 1px 0px 0px;
+border-width: 1px 1px 0 0;
 }
 
 #category_list .str-style-d {
-    border-width: 0px 0px 1px 1px;
+    border-width: 0 0 1px 1px;
 }
 
 
 #category_list {
-    border:0px;
+    border:0;
     border-color: #B3B3B3;
     border-style: solid;
 }
@@ -194,7 +194,7 @@ border-width: 1px 1px 0px 0px;
     white-space:nowrap;
 }
 
-.cat_new_layer input, cat_set_template input  {
+.cat_new_layer input, .cat_set_template input  {
     vertical-align:middle;
     height:17px;
     line-height:17px;
