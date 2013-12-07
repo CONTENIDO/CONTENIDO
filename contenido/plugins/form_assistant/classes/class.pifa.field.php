@@ -1006,7 +1006,7 @@ class PifaField extends Item {
             default:
                 $msg = Pifa::i18n('NOT_IMPLEMENTED_FIELDTYPE');
                 $msg = sprintf($msg, $fieldType);
-                Util::logDump($this->values);
+                // Util::logDump($this->values);
                 throw new PifaException($msg);
         }
     }

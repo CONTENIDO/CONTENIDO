@@ -41,7 +41,7 @@ class cTree extends cTreeItem {
     /**
      * sets a new name for the tree.
      *
-     * @param string name Name of the tree
+     * @param string $name Name of the tree
      */
     public function setTreeName($name) {
         $this->setName($name);

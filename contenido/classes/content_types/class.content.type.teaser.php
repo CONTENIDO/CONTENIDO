@@ -464,7 +464,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Teaser image on that basis
      *
      * @param string $content - HTML string to search image in
-     * @return img tag containing scaled image
+     * @return string img tag containing scaled image
      */
     private function _extractImage($content) {
         $image = array();
@@ -688,7 +688,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * displayed in teaser as a maximum.
      * Only important in editmode.
      *
-     * @return html string of select box
+     * @return string html string of select box
      */
     private function _generateCountSelect() {
         $htmlSelect = new cHTMLSelectElement('teaser_count_' . $this->_id, '', 'teaser_count_' . $this->_id);
@@ -761,7 +761,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @param string $selectName - name of input elements
      * @param string $selected - value of select box which is selected
      * @param string $value - current value of text box
-     * @return html string of select box
+     * @return string html string of select box
      */
     private function _generateTypeSelect($selectName, $selected, $value) {
         // make sure that the ID is at the end of the form field name
@@ -855,7 +855,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Function which generated a select box for setting teaser
      * sort argument
      *
-     * @return html string of select box
+     * @return string html string of select box
      */
     private function _generateSortSelect() {
         $htmlSelect = new cHTMLSelectElement('teaser_sort_' . $this->_id, '', 'teaser_sort_' . $this->_id);
@@ -887,7 +887,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Function which generated a select box for setting teaser
      * sort order argument
      *
-     * @return html string of select box
+     * @return string html string of select box
      */
     private function _generateSortOrderSelect() {
         $htmlSelect = new cHTMLSelectElement('teaser_sort_order_' . $this->_id, '', 'teaser_sort_order_' . $this->_id);
@@ -912,7 +912,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     /**
      * Function which provides select option for cropping teaser images
      *
-     * @return html string of select box
+     * @return string html string of select box
      */
     private function _generateCropSelect() {
         $htmlSelect = new cHTMLSelectElement('teaser_image_crop_' . $this->_id, '', 'teaser_image_crop_' . $this->_id);

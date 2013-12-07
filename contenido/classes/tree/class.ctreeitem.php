@@ -129,7 +129,7 @@ class cTreeItem {
      *
      * The entries "collapsed" and "attributes" are optional!
      *
-     * @param array flat_array See above
+     * @param array $flat_array See above
      * @return void
      * @access public
      */
@@ -242,8 +242,8 @@ class cTreeItem {
     /**
      * adds an item to a specific ID
      *
-     * @param string id ID to add the item to
-     * @param cTreeItem item Item to add
+     * @param string $id ID to add the item to
+     * @param cTreeItem $item Item to add
      * @return void
      * @access public
      */

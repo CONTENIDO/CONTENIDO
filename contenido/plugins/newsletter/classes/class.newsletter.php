@@ -201,10 +201,10 @@ class Newsletter extends Item
     /**
      * Replaces newsletter tag (e.g. MAIL_NAME) with data.
      * If code is just text using str_replace; if it is HTML by using regular expressions
-     * @param string    sCode    Code, where the tags will be replaced (by reference)
-     * @param bool        bIsHTML    Is code HTML?
-     * @param string    sField    Field name, without MAIL_ (e.g. just "name")
-     * @param string    sData    Data
+     * @param string    $sCode    Code, where the tags will be replaced (by reference)
+     * @param bool        $bIsHTML    Is code HTML?
+     * @param string    $sField    Field name, without MAIL_ (e.g. just "name")
+     * @param string    $sData    Data
      * @access private
      */
     public function _replaceTag(&$sCode, $bIsHTML, $sField, $sData)
@@ -790,8 +790,8 @@ class Newsletter extends Item
 
         $aRecipients = array();
         if ($iIDNewsGroup !== false) {
-            $oGroupMembers = new RecipientGroupMemberCollection;
-            $aRecipients = $oGroupMembers->getRecipientsInGroup ($iIDNewsGroup, false);
+            $oGroupMembers = new NewsletterRecipientGroupMemberCollection;
+            $aRecipients = $oGroupMembers->getRecipientsInGroup($iIDNewsGroup, false);
         } else if ($iIDNewsRcp !== false) {
             $aRecipients[] = $iIDNewsRcp;
         }
@@ -810,7 +810,7 @@ class Newsletter extends Item
                 $sRcpMsgHTML = $sMessageHTML;
 
                 // Don't change name of $recipient variable as it is used in plugins!
-                $recipient   = new Recipient;
+                $recipient   = new NewsletterRecipient;
                 $recipient->loadByPrimaryKey($iID);
 
                 $sEMail  = $recipient->get("email");

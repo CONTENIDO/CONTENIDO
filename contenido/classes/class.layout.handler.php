@@ -395,7 +395,7 @@ class cLayoutHandler {
     /**
      * Get the contents of the file
      *
-     * @return content or false
+     * @return string|bool content or false
      */
     public function getLayoutCode() {
         // cant read it dont exist file
@@ -417,8 +417,8 @@ class cLayoutHandler {
      * Save all layout in file system.
      * Use it for upgrade.
      *
-     * @param cDb database object
-     * @param array CONTENIDO config array
+     * @param cDb $adb database object
+     * @param array $cfg CONTENIDO config array
      * @param int $clientId
      * @throws cException if the layout could not be saved
      */

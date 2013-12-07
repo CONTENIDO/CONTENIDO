@@ -494,6 +494,8 @@ function statsOverviewYear($year) {
     $tpl->set('s', 'IMG_EXPAND', $backendUrl . $cfg['path']['images'] . 'open_all.gif');
     $tpl->set('s', 'IMG_COLLAPSE', $backendUrl . $cfg['path']['images'] . 'close_all.gif');
 
+    $sumNumberOfArticles = 0;
+
     while ($db->nextRecord()) {
         if ($db->f("level") == 0 && $db->f("preid") != 0) {
             $tpl->set('d', 'PADDING_LEFT', '10');
@@ -812,9 +814,9 @@ function statCreateLocationString($idcat, $seperator, &$cat_str) {
 /**
  * Generates a top<n> statistics page
  *
- * @param $year       Specifies the year from which to retrieve the
+ * @param $year       int Specifies the year from which to retrieve the
  *                    statistics
- * @param $top        Specifies the amount of pages to display
+ * @param $top        int Specifies the amount of pages to display
  * @return void
  */
 function statsOverviewTopYear($year, $top) {

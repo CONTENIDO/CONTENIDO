@@ -292,7 +292,7 @@ class UI_Config_Table {
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     var $_sWidth;
 
@@ -304,13 +304,13 @@ class UI_Config_Table {
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     var $_sBorderColor;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     var $_bSolidBorder;
 

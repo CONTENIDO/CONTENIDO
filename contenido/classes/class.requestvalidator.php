@@ -243,9 +243,9 @@ class cRequestValidator {
      *
      * @see cRequestValidator::checkParams()
      *
-     * @param string GET or POST
-     * @param string the key of the parameter
-     * @param mixed the value of the parameter
+     * @param string $type GET or POST
+     * @param string $key the key of the parameter
+     * @param mixed $value the value of the parameter
      * @return bool True if the parameter is fine
      */
     public function checkParameter($type, $key, $value) {

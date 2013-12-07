@@ -282,7 +282,7 @@ class ModRewriteTest {
     /**
      * Creates a readable string from passed resolved data array.
      *
-     * @param   array   Assoziative array with resolved data
+     * @param   array   $data Assoziative array with resolved data
      * @return  string  Readable resolved data
      */
     public function getReadableResolvedData(array $data) {

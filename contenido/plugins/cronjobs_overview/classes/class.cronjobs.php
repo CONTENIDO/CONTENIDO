@@ -111,7 +111,7 @@ class Cronjobs {
     /**
      *
      * Get date of last execution of cronjob
-     * @return date
+     * @return string date
      */
     public function getDateLastExecute() {
         $timestamp = '';

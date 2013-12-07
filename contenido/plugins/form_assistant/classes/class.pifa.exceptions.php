@@ -66,7 +66,7 @@ class PifaValidationException extends PifaException {
      *
      * @var array
      */
-    private $_errors = NULL;
+    private $_errors = array();
 
     /**
      *
@@ -79,7 +79,7 @@ class PifaValidationException extends PifaException {
 
     /**
      *
-     * @return multitype:
+     * @return array
      */
     public function getErrors() {
         return $this->_errors;

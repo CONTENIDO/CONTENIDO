@@ -120,7 +120,7 @@ class cGuiTree extends cTree {
     }
 
     /**
-     * @param int mode Sets the gridline mode to one of the following values:
+     * @param int $mode Sets the gridline mode to one of the following values:
      * cGuiTree::TREEVIEW_GRIDLINE_SOLID
      * cGuiTree::TREEVIEW_GRIDLINE_DASHED
      * cGuiTree::TREEVIEW_GRIDLINE_DOTTED

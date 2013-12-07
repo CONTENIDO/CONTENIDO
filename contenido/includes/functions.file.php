@@ -180,8 +180,8 @@ function getFileType($filename) {
  * Note that this function uses filesize(). There could be problems with files
  * that are larger than 2GiB
  *
- * @param string The directory
- * @param bool true if all the subdirectories should be included in the
+ * @param string $sDirectory The directory
+ * @param bool $bRecursive true if all the subdirectories should be included in the
  *            calculation
  * @return bool int false in case of an error or the size
  */

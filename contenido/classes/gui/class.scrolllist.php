@@ -197,7 +197,7 @@ class cGuiScrollList {
      * setData calls in a single object. Also make sure that your index
      * starts from 0 and ends with the actual number - 1.
      *
-     * @param $index Numeric index
+     * @param $index int Numeric index
      * @param ... Additional parameters (data)
      */
     public function setData($index) {
@@ -220,7 +220,7 @@ class cGuiScrollList {
      * setData calls in a single object. Also make sure that your index
      * starts from 0 and ends with the actual number - 1.
      *
-     * @param $index Numeric index
+     * @param $index int Numeric index
      * @param ... Additional parameters (data)
      */
     public function setHiddenData($index) {
@@ -234,7 +234,7 @@ class cGuiScrollList {
     /**
      * Sets the number of records per page.
      *
-     * @param $numresults Amount of records per page
+     * @param $numresults int Amount of records per page
      */
     public function setResultsPerPage($numresults) {
         $this->resultsPerPage = $numresults;
@@ -243,7 +243,7 @@ class cGuiScrollList {
     /**
      * Sets the starting page number.
      *
-     * @param $startpage Page number on which the list display starts
+     * @param $startpage int Page number on which the list display starts
      */
     public function setListStart($startpage) {
         $this->listStart = $startpage;
@@ -276,8 +276,8 @@ class cGuiScrollList {
     /**
      * Sorts the list by a given field and a given order.
      *
-     * @param $field Field index
-     * @param $order Sort order (see php's sort documentation)
+     * @param $field int Field index
+     * @param $order string|int Sort order (see php's sort documentation)
      */
     public function sort($field, $order) {
         if ($order == "") {

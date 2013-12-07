@@ -57,7 +57,7 @@ class cRegistry {
      * Function wich returns path after the last possible place changing via
      * configuration file.
      *
-     * @return path
+     * @return string path
      */
     public static function getBackendPath() {
         $cfg = self::getConfig();
@@ -68,7 +68,7 @@ class cRegistry {
      * Function wich returns the backend URL after the last possible place
      * changing via configuration file.
      *
-     * @return URL
+     * @return string URL
      */
     public static function getBackendUrl() {
         $cfg = self::getConfig();
@@ -80,7 +80,7 @@ class cRegistry {
      * configuration file.
      * The path point to the current client
      *
-     * @return path
+     * @return string path
      */
     public static function getFrontendPath() {
         $cfgClient = self::getClientConfig();
@@ -93,7 +93,7 @@ class cRegistry {
      * configuration file.
      * The path point to the current client
      *
-     * @return URL
+     * @return string URL
      */
     public static function getFrontendUrl() {
         $cfgClient = self::getClientConfig();

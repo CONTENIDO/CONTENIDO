@@ -63,8 +63,8 @@ class PimPluginArchiveExtractor {
      * Constructor of ArchiveExtractor, load the file list
      *
      * @access public
-     * @param $source path to the temp directory
-     * @param $filename name of zip archive
+     * @param $source string path to the temp directory
+     * @param $filename string name of zip archive
      * @throws cException if the source file does not exists
      * @return void
      */

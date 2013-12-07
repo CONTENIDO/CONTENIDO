@@ -26,32 +26,32 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @var unknown_type
+     * @var array
      */
     protected $cfg = 0;
 
     /**
      *
-     * @var unknown_type
+     * @var cDb
      */
     protected $db = 0;
 
     /**
      *
-     * @var unknown_type
+     * @var ArticleForumItem
      */
     protected $item = 0;
 
     // contents array of translations from frontend module
     /**
      *
-     * @var unknown_type
+     * @var array
      */
     protected $languageSync = 0;
 
     /**
      *
-     * @var unknown_type
+     * @var int
      */
     protected $idContentType = 0;
 
@@ -71,7 +71,7 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @return multitype:
+     * @return array
      */
     public function getAllCommentedArticles() {
 
@@ -150,10 +150,10 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $id_cat
-     * @param unknown_type $id_art
-     * @param unknown_type $id_lang
-     * @return multitype:
+     * @param int $id_cat
+     * @param int $id_art
+     * @param int $id_lang
+     * @return array
      */
     protected function _getCommentHierachrie($id_cat, $id_art, $id_lang) {
         $this->query();
@@ -171,9 +171,9 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $arrforum
-     * @param unknown_type $result
-     * @param unknown_type $level
+     * @param array $arrforum
+     * @param array $result
+     * @param int $level
      */
     public function normalizeArray($arrforum, &$result, $level = 0) {
         if (is_array($arrforum)) {
@@ -188,13 +188,13 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $id_cat
-     * @param unknown_type $id_art
-     * @param unknown_type $id_lang
-     * @param unknown_type $arrUsers
-     * @param unknown_type $arrforum
-     * @param unknown_type $parent
-     * @param unknown_type $frontend
+     * @param int $id_cat
+     * @param int $id_art
+     * @param int $id_lang
+     * @param array $arrUsers
+     * @param array $arrforum
+     * @param int $parent
+     * @param bool $frontend
      */
     public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0, $frontend = false) {
         $db = cRegistry::getDb();
@@ -383,16 +383,16 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @param unknown_type $idart
-     * @param unknown_type $idlang
-     * @return multitype:
+     * @param int $idart
+     * @param int $idlang
+     * @return array
      */
     public function getArticleTitle($idart, $idlang) {
         $this->db->query("-- ArticleForumCollection->getArticleTitle()
             SELECT DISTINCT
                 title
             FROM
-                `{$this->cfg[tab][art_lang]}` AS art_lang
+                `{$this->cfg['tab']['art_lang']}` AS art_lang
             WHERE
                 idart = $idart
                 AND idlang = $idlang

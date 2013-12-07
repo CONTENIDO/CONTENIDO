@@ -229,7 +229,7 @@ class cPasswordRequest {
      * Function checks password request for errors an delegate request to
      * setNewPassword() if there is no error
      *
-     * @return Ambigous <string, string>
+     * @return string
      */
     protected function _handleNewPassword() {
         // notification message, which is returned to caller

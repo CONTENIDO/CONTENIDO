@@ -105,7 +105,7 @@ class cGuiPage {
      * An info which will be used to display an error with the help of
      * cGuiNotification
      *
-     * @var unknown_type
+     * @var string
      */
     protected $_info;
 

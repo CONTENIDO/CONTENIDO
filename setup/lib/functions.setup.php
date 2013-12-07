@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Generates the step display.
  *
- * @param   int  iCurrentStep  The current step to display active.
+ * @param   int  $iCurrentStep  The current step to display active.
  * @return  string
  */
 function cGenerateSetupStepsDisplay($iCurrentStep) {

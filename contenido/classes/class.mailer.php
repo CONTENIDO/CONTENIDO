@@ -340,7 +340,7 @@ class cMailer extends Swift_Mailer {
      * @param Swift_Message $message the message which has been send
      * @param array $failedRecipients [optional] the recipient addresses that
      *        did not get the mail
-     * @return the idmail of the inserted table row in con_mail_log
+     * @return string the idmail of the inserted table row in con_mail_log
      */
     private function _logMail(Swift_Mime_Message $message, array $failedRecipients = array()) {
         $mailLogCollection = new cApiMailLogCollection();

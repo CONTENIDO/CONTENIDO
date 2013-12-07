@@ -26,7 +26,7 @@ class cHttpRequestCurl extends cHttpRequest {
     /**
      * the curl instance
      *
-     * @var curl ressource
+     * @var $curl ressource
      */
     protected $curl;
 

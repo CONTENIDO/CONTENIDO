@@ -924,10 +924,10 @@ function buildArticleSelect($sName, $iIdCat, $sValue) {
 /**
  * Build a Category / Article select Box
  *
- * @param string Name of the SelectBox
- * @param string Value of the SelectBox
- * @param int Value of highest level that should be shown
- * @param string Optional css class for select
+ * @param string $sName Name of the SelectBox
+ * @param string $sValue Value of the SelectBox
+ * @param int $Level Value of highest level that should be shown
+ * @param string $sClass Optional css class for select
  * @return string HTML
  */
 function buildCategorySelect($sName, $sValue, $sLevel = 0, $sClass = '') {

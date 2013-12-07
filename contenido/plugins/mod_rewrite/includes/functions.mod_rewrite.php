@@ -862,7 +862,7 @@ function mr_getRequest($key, $default = NULL) {
  * Replaces calling of header method for redirects in front_content.php,
  * used during development.
  *
- * @param  $header  Header value for redirect
+ * @param  $header  string Header value for redirect
  */
 function mr_header($header) {
     header($header);

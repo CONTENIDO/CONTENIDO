@@ -28,19 +28,19 @@ class UserForumArticle {
 
     /**
      *
-     * @var unknown_type
+     * @var bool
      */
     protected $_qoute = true;
 
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     protected $_messageText = '';
 
     /**
      *
-     * @var unknown_type
+     * @var bool
      */
     protected $_generate = true;
 
@@ -194,7 +194,7 @@ class UserForumArticle {
 
     /**
      *
-     * @param unknown_type $userid
+     * @param string $userid
      */
     private function _getUser($userid) {
         if (($userid != '') && ($userid != 'nobody')) {
@@ -561,13 +561,12 @@ class UserForumArticle {
     /**
      * this function sets a cookie when receiving a click on like/dislike -
      * buttons.
-     * After the first click the user can´t add likes/dislikes for the same
+     * After the first click the user canï¿½t add likes/dislikes for the same
      * comment for a fixed time intervall (value in cookie).
      * @TODO: Use $_REQUEST passed to receiveData()
      */
     private function _checkCookie() {
-        // global $REMOTE_ADDR;
-        $ip = $REMOTE_ADDR ? $REMOTE_ADDR : $_SERVER['REMOTE_ADDR'];
+        $ip = $_SERVER['REMOTE_ADDR'];
         $time = time();
 
         if ($_REQUEST['user_forum_action'] == 'dislike_forum' && isset($_COOKIE['cookie'][$ip][$_REQUEST['user_forum_id']][$_REQUEST['user_forum_action']])) {

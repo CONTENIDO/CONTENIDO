@@ -112,7 +112,7 @@ class cApiActionCollection extends ItemCollection {
     /**
      * Return name of passed action.
      *
-     * @param int Id of action
+     * @param int $action Id of action
      *
      * @return string NULL
      */

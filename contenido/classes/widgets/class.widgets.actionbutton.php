@@ -87,7 +87,7 @@ class cApiClickableAction extends cApiAction {
     /**
      * Sets the action icon for this action.
      *
-     * @param string icon Path to the icon. Relative to the backend, if not
+     * @param string $icon Path to the icon. Relative to the backend, if not
      *        passed as absolute path.
      * @return void
      */

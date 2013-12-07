@@ -347,7 +347,7 @@ class ArticleForumRightBottom extends cGuiPage {
     /**
      * generate dialog for editmode
      *
-     * @param unknown $post
+     * @param array $post
      * @return ArticleForumRightBottom
      */
     protected function getEditModeMenu($post) {

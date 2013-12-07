@@ -125,7 +125,7 @@ class ModRewriteUrlStack {
     /**
      * Adds an url to the stack
      *
-     * @param  string  Url, like front_content.php?idcat=123...
+     * @param  string $url Url, like front_content.php?idcat=123...
      */
     public function add($url) {
         $url = ModRewrite::urlPreClean($url);

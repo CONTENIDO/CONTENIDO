@@ -170,7 +170,7 @@ abstract class ModRewrite_ControllerAbstract {
 
     /**
      * Renders template by replacing all view variables in template.
-     * @param   string  Either full path and name of template file or a template string.
+     * @param   string  $template Either full path and name of template file or a template string.
      *                  If not passed, previous set template will be used.
      * @throws cException if no template is set
      * @return  string

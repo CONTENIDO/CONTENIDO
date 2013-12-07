@@ -165,7 +165,7 @@ class cUri {
     /**
      * Composes a url using passed components array
      *
-     * @param   array   Assoziative array created by parse_url()
+     * @param   array   %aComponents Assoziative array created by parse_url()
      * @return  string  $sUrl  The composed Url
      */
     public function composeByComponents(array $aComponents) {

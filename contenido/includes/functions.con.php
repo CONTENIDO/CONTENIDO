@@ -189,12 +189,12 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
  * @param int $idcat
  * @param int $idcatnew
  * @param int $idart
- * @param unknown_type $isstart
+ * @param int $isstart
  * @param int $idtpl
  * @param int $idartlang
  * @param int $idlang
- * @param unknown_type $title
- * @param unknown_type $summary
+ * @param string $title
+ * @param string $summary
  * @param unknown_type $artspec
  * @param unknown_type $created
  * @param unknown_type $lastmodified

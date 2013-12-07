@@ -132,7 +132,7 @@ class cSmartyFrontend {
     /**
      * static function to provide the smart object
      *
-     * @param boolean bResetTemplate true if the template values shall all be
+     * @param boolean $bResetTemplate true if the template values shall all be
      *        resetted
      * @throws cException if singleton has not been instantiated yet
      * @return cSmartyWrapper

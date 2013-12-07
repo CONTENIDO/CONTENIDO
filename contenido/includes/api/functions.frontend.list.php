@@ -99,7 +99,7 @@ class FrontendList {
      * Make sure that the amount of parameters stays the same for all
      * setData calls in a single object.
      *
-     * @param $index Numeric index
+     * @param $index int Numeric index
      * @param ... Additional parameters (data)
      */
     function setData($index) {
@@ -113,7 +113,7 @@ class FrontendList {
     /**
      * Sets the number of records per page.
      *
-     * @param $numresults Amount of records per page
+     * @param $numresults int Amount of records per page
      */
     function setResultsPerPage($numresults) {
         $this->resultsPerPage = $numresults;
@@ -122,7 +122,7 @@ class FrontendList {
     /**
      * Sets the starting page number.
      *
-     * @param $startpage Page number on which the list display starts
+     * @param $startpage int Page number on which the list display starts
      */
     function setListStart($startpage) {
         $this->listStart = $startpage;
@@ -131,8 +131,7 @@ class FrontendList {
     /**
      * Returns the current page.
      *
-     * @param $none
-     * @return s Current page number
+     * @return int Current page number
      */
     function getCurrentPage() {
         if ($this->resultsPerPage == 0) {
@@ -145,8 +144,7 @@ class FrontendList {
     /**
      * Returns the amount of pages.
      *
-     * @param $none
-     * @return s Amount of pages
+     * @return int Amount of pages
      */
     function getNumPages() {
         return (ceil(count($this->data) / $this->resultsPerPage));

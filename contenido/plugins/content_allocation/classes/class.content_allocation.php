@@ -83,8 +83,8 @@ class pApiContentAllocation {
     /**
      * load all tagging keys
      *
-     * @param unknown_type $idartlang
-     * @return multitype:Ambigous <mixed, unknown>
+     * @param int $idartlang
+     * @return array
      */
     function loadAllocations($idartlang) {
         $this->db->query("-- pApiContentAllocation->loadAllocations()

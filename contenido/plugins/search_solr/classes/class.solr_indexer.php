@@ -133,7 +133,7 @@ class SolrIndexer {
     /**
      * Create client instance (connect to Apache Solr) and aggregate it.
      *
-     * @param array IDs of articles to be handled
+     * @param array $articleIds IDs of articles to be handled
      */
     public function __construct(array $articleIds) {
         $this->_articleIds = $articleIds;
