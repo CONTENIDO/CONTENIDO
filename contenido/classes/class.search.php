@@ -531,11 +531,11 @@ class cSearchIndex extends cSearchBaseAbstract {
     public function addSpecialUmlauts($key) {
         $key = conHtmlentities($key, NULL, getEncodingByLanguage($this->db, $this->lang));
         $aUmlautMap = array(
-            'ue' => '&Uuml;',
+            'Ue' => '&Uuml;',
             'ue' => '&uuml;',
-            'ae' => '&Auml;',
+            'Ae' => '&Auml;',
             'ae' => '&auml;',
-            'oe' => '&Ouml;',
+            'Oe' => '&Ouml;',
             'oe' => '&ouml;',
             'ss' => '&szlig;'
         );
