@@ -51,30 +51,22 @@ class cSession {
      * This variable isn't needed to make sessions work any longer
      * but some CONTENIDO functions/classes rely on it
      *
-     * @var unknown_type
+     * @var string
      */
     public $name;
 
     /**
      * Starts the session
      *
-     * @param string The prefix for the session variables
+     * @param string $prefix The prefix for the session variables
      */
     public function __construct($prefix = 'backend') {
-        $cfg = cRegistry::getConfig();
-
         $this->_pt = array();
         $this->_prefix = $prefix;
 
         $this->name = 'contenido';
 
         if (!isset($_SESSION)) {
-            if ($prefix === 'backend') {
-                $url = cRegistry::getBackendUrl();
-            } else {
-                $url = cRegistry::getFrontendUrl();
-            }
-            $url = parse_url($url);
             session_set_cookie_params(0, "/");
             session_name($this->_prefix);
             session_start();
