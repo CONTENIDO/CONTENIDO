@@ -1146,7 +1146,7 @@ function scanPlugins($entity) {
 /**
  * Includes plugins for a given entity.
  *
- * @param $entity Name of the directory to scan
+ * @param $entity string Name of the directory to scan
  */
 function includePlugins($entity) {
     global $cfg;

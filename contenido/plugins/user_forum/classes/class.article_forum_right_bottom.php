@@ -176,7 +176,7 @@ class ArticleForumRightBottom extends cGuiPage {
             "cellpadding" => "2"
         ));
 
-        if (count($result > 0)) {
+        if (count($result) > 0) {
             $tr = new cHTMLTableRow();
             $th = new cHTMLTableHead();
             $th->setContent(i18n("FORUM_POST", "user_forum"));

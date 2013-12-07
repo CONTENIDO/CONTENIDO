@@ -131,8 +131,8 @@ class cGuiTableForm {
 
     /**
      *
-     * @param unknown_type $name
-     * @param unknown_type $value
+     * @param string $name
+     * @param mixed $value
      */
     public function setVar($name, $value) {
         $this->formvars[$name] = $value;
@@ -261,7 +261,7 @@ class cGuiTableForm {
 
     /**
      *
-     * @param unknown_type $tableid
+     * @param string $tableid
      */
     public function setTableID($tableid) {
         $this->tableid = $tableid;

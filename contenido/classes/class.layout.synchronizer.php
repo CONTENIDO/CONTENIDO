@@ -48,7 +48,7 @@ class cLayoutSynchronizer {
 
     /**
      *
-     * @var unknown_type
+     * @var array
      */
     private $_outputMessage = array();
 

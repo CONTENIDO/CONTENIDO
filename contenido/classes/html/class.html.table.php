@@ -90,7 +90,7 @@ class cHTMLTable extends cHTMLContentElement {
     /**
      * setWidth: Sets the table width
      *
-     * @param $width Width
+     * @param string $width Width
      * @return cHTMLTable $this
      */
     public function setWidth($width) {

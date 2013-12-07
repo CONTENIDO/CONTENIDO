@@ -86,7 +86,7 @@ class cLog {
      * percentage sign (%) and contain one or more characters. Each placeholder is handled by an own function which
      * decides what to do.
      *
-     * @param  mixed  writer   Writer object (any subclass of cLogWriter), or false if cLog should handle the writer creation
+     * @param  mixed  $writer   Writer object (any subclass of cLogWriter), or false if cLog should handle the writer creation
      */
     public function __construct($writer = false) {
         global $cfg;

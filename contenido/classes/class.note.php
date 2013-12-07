@@ -98,8 +98,8 @@ class NoteView extends cHTMLIFrame {
 
     /**
      *
-     * @param unknown_type $sItemType
-     * @param unknown_type $sItemId
+     * @param string $sItemType
+     * @param string $sItemId
      */
     public function NoteView($sItemType, $sItemId) {
         global $sess, $cfg;
@@ -116,11 +116,12 @@ class NoteView extends cHTMLIFrame {
  * @subpackage GUI
  */
 class NoteList extends cHTMLDiv {
+    protected $_bDeleteable;
 
     /**
      *
-     * @param unknown_type $sItemType
-     * @param unknown_type $sItemId
+     * @param string $sItemType
+     * @param string $sItemId
      */
     public function __construct($sItemType, $sItemId) {
         parent::__construct();
@@ -133,7 +134,7 @@ class NoteList extends cHTMLDiv {
 
     /**
      *
-     * @param unknown_type $bDeleteable
+     * @param bool $bDeleteable
      */
     public function setDeleteable($bDeleteable) {
         $this->_bDeleteable = $bDeleteable;
@@ -211,7 +212,7 @@ class NoteListItem extends cHTMLDiv {
 
     /**
      *
-     * @param unknown_type $bDeleteable
+     * @param bool $bDeleteable
      */
     public function setDeleteable($bDeleteable) {
         $this->_bDeleteable = $bDeleteable;
@@ -219,14 +220,14 @@ class NoteListItem extends cHTMLDiv {
 
     /**
      *
-     * @param unknown_type $dark
+     * @param string $dark
      */
     public function setBackground($dark = false) {
     }
 
     /**
      *
-     * @param unknown_type $sAuthor
+     * @param string $sAuthor
      */
     public function setAuthor($sAuthor) {
         if (strlen($sAuthor) == 32) {
@@ -242,7 +243,7 @@ class NoteListItem extends cHTMLDiv {
 
     /**
      *
-     * @param unknown_type $iDate
+     * @param string|int $iDate
      */
     public function setDate($iDate) {
         $dateformat = getEffectiveSetting('dateformat', 'full', 'Y-m-d H:i:s');
@@ -255,7 +256,7 @@ class NoteListItem extends cHTMLDiv {
 
     /**
      *
-     * @param unknown_type $sMessage
+     * @param string $sMessage
      */
     public function setMessage($sMessage) {
         $this->_sMessage = $sMessage;
