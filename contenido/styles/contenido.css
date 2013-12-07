@@ -187,11 +187,8 @@ table.generic table.genericEscape tr {
 }
 
 table.borderless {
-    border: 0;
-    border-color: #b3b3b3;
-    border-style: solid;
-    border-bottom: 0;
-    border-right: 1px;
+    border: 0 solid #b3b3b3;
+    border-right-width: 1px;
 }
 
 table.borderless tr.active {
@@ -394,8 +391,7 @@ li#kontakt.welcome {
 .notify_general {
     border: 1px solid;
     padding: 4px 4px 4px 22px;
-    background-repeat: no-repeat;
-    background-position: 2px 2px;
+    background: no-repeat 2px 2px;
 }
 
 .notify_default {
@@ -989,10 +985,8 @@ div#navcontainer ul#navlist li a.current,
 div#navcontainer ul#navlist li a:link.current,
 div#navcontainer ul#navlist li a:visited.current {
     background-color: white;
-    border-left: 1px solid #b3b3b3;
-    border-right: 1px solid #b3b3b3;
-    border-top: 1px solid #b3b3b3;
-    border-bottom: 1px solid white;
+    border: 1px solid #b3b3b3;
+    border-bottom-color: white;
     color: #0060b1;
     outline: none;
     cursor: pointer;
@@ -1084,73 +1078,58 @@ div#navcontainer ul#navlist li a:visited {
 
 .td_rights0 {
     vertical-align: top;
-    border: 0;
-    border-bottom: 1px;
-    border-right: 1px;
-    border-color: #b3b3b3;
-    border-style: solid;
+    border: 0 solid #b3b3b3;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
     text-align: left;
     white-space: nowrap;
 }
 
 .td_rights1 {
     vertical-align: middle;
-    border: 0;
-    border-bottom: 1px;
-    border-right: 1px;
-    border-color: #b3b3b3;
-    border-style: solid;
+    border: 0 solid #b3b3b3;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
     text-align: left;
     white-space: nowrap;
 }
 
 .td_rights2 {
-    border: 0;
-    border-bottom: 1px;
-    border-right: 1px;
-    border-color: #b3b3b3;
-    border-style: solid;
+    border: 0 solid #b3b3b3;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
     text-align: center;
     white-space: nowrap;
 }
 
 .td_rights3 {
     vertical-align: top;
-    border: 0;
-    border-bottom: 1px;
-    border-right: 1px;
-    border-color: #b3b3b3;
-    border-style: solid;
+    border: 0 solid #b3b3b3;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
     text-align: center;
     white-space: nowrap;
 }
 
 .td_stats1 {
-    border: 0;
-    border-left: 0;
-    border-bottom: 1px;
-    border-right: 1px;
-    border-color: #b3b3b3;
-    border-style: solid;
+    border: 0 solid #b3b3b3;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
     vertical-align: middle;
     line-height: 17px;
 }
 
 .td_stats2 {
-    border: 0;
-    border-bottom: 1px;
-    border-right: 1px;
-    border-color: #b3b3b3;
-    border-style: solid;
+    border: 0 solid #b3b3b3;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
     text-align: center;
 }
 
 .td_stats3 {
-    border: 0;
-    border-bottom: 1px;
-    border-right: 1px;
-    border-color: #b3b3b3;
-    border-style: solid;
+    border: 0 solid #b3b3b3;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
     text-align: right;
 }
 
@@ -1762,9 +1741,8 @@ p.column_header {
     border-top: 1px solid #0060b1;
 }
 .border169 {
-    border-style: solid;
-    border-color: rgb(169, 174, 194);
-    border-width: 1px 0 0;
+    border: 0 solid rgb(169, 174, 194);
+    border-top-width: 1px;
 }
 .nobordert {
     border-top: 0;
@@ -2235,10 +2213,8 @@ input[type=image].vAlignMiddle {
 
 #con_translate div.atfilter div.right input  {
     height: 15px;
-    margin: 0;
     padding: 0;
-    margin-top: 1px;
-    margin-right: 0;
+    margin: 1px 0 0;
 }
 
 #con_translate div.atfilter div.right input.vAlignTop {
@@ -2302,8 +2278,7 @@ input[type=image].vAlignMiddle {
 
 
 .ui-widget-overlay {
-    background: none;
-    background-color: #333;
+    background: #333 none;
 }
 
 .ui-dialog {

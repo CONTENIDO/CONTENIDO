@@ -670,7 +670,7 @@ ul.link_list {
 
 ul.link_list li {
     list-style: none;
-    margin: 0px 0 18px;
+    margin: 0 0 18px;
 }
 
 ul.link_list li a:link,ul.link_list li a:active,ul.link_list li a:visited {

@@ -350,14 +350,11 @@ input[type="image"],
 }
 
 .option-inner-label {
-    padding: 1px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding: 3px 1px;
 }
 
 .option-inner-value {
-    padding: 1px;
-    padding-bottom: 3px;
+    padding: 1px 1px 3px;
 
 }
 .option-outer {
@@ -461,9 +458,8 @@ input[type="image"],
 .ui-dialog-titlebar-close .ui-icon {
      height: 17px;
      width: 17px;
-     background-image: url("../images/button_close.png");
-     background-position: 0;
-     margin-bottom: 4px;
+    background: url("../images/button_close.png") 0;
+    margin-bottom: 4px;
 }
 
 .ui-dialog-titlebar-close:hover {

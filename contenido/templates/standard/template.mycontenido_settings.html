@@ -7,8 +7,16 @@
 {_JS_HEAD_CONTENIDO_}
     <style type="text/css">
     table#settings {border: 0; border-left:1px; border-bottom: 1px; border-color: {BORDERCOLOR}; border-style: solid;}
-    table#settings td.col-first {border: 0; border-top: 1px; border-right: 1px; border-style: solid;}
-    table#settings td.col-last {border: 0; border-top: 1px; border-right: 1px; border-style: solid;}
+    table#settings td.col-first {
+        border: 1px solid;
+        border-bottom-width: 0;
+        border-left-width: 0;
+    }
+    table#settings td.col-last {
+        border: 1px solid;
+        border-bottom-width: 0;
+        border-left-width: 0;
+    }
     table#settings tr.row-last {background-color: #fff;}
     table#settings tr.row-last td.col-first {border: 0; border-top: 1px; border-right: 0; border-color: {BORDERCOLOR}; border-style: solid; padding-left:{PADDING_LEFT}px;}
     table#settings tr.row-last td.col-last {border: 0; border-top: 1px; border-right: 1px; border-color: {BORDERCOLOR}; border-style: solid;}

@@ -6,8 +6,17 @@
 {_CSS_HEAD_CONTENIDO_}
     <style type="text/css">
     #contenido_notification {margin-bottom:5px;}
-    table.content { border:0; border-left:1px; border-bottom:1px; border-style:solid; }
-    table.content td { border:0; border-top:1px; border-right:1px; border-style:solid; border-color:{BORDERCOLOR}; }
+    table.content {
+        border: 0 solid;
+        border-bottom-width: 1px;
+        border-left-width: 1px;
+    }
+    table.content td {
+        border: 1px solid;
+        border-bottom-width: 0;
+        border-left-width: 0;
+
+    border-color:{BORDERCOLOR}; }
     </style>
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>

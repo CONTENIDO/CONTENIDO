@@ -217,7 +217,7 @@
      */
     cContentTypeFilelist.prototype.addNaviActions = function() {
         var self = this,
-            $dirListManual, $dirList, delegateSelector;
+            $dirListManual, delegateSelector;
 
         // Click handler for directories, the regular one and the manual one...
         // Loads any available sub directories and toggles the collapsed state
@@ -274,7 +274,6 @@
         });
 
         // Directory list
-        $dirList = $(this.SELECTOR_DIRLIST);
         delegateSelector = this.SELECTOR_DIRLIST.replace(this.frameId + ' ', '');
         $(this.frameId).delegate(delegateSelector, 'click', function() {
             _onDirectoryClick($(this));

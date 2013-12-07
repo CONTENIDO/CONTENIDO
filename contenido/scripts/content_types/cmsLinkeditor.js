@@ -231,7 +231,7 @@
     cContentTypeLinkeditor.prototype.showFolderPath = function() {
         var self = this;
         // if there are no directories, set the active class for the root upload folder
-        titles = Array();
+        titles = new Array();
         $(self.frameId + ' div[class="active"] a[class="on"]').each(function() {
             titles.push($(this).attr('title'));
         });

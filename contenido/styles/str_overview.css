@@ -31,30 +31,24 @@ img.spaced {
 
 /*Formating for category table cells */
 #category_list .str-style-a {
-    border:0;
-    border-bottom:1px;
-    border-left:1px;
-    border-color:#B3B3B3;
-    border-style:solid;
+    border: 0 solid #B3B3B3;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
     white-space:nowrap;
     padding: 0 2px;
 }
 
 #category_list .str-style-b, #category_list  tr td {
-    border:0;
-    border-bottom:1px;
-    border-color:#B3B3B3;
-    border-style:solid;
+    border: 0 solid #B3B3B3;
+    border-bottom-width: 1px;
     white-space:nowrap;
     padding: 0 2px;
 }
 
 #category_list .str-style-c, #category_list .str-style-d , #category_list .str-style-f {
-    border:0;
-    border-bottom:1px;
-    border-right:1px;
-    border-color:#B3B3B3;
-    border-style:solid;
+    border: 0 solid #B3B3B3;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
     white-space:nowrap;
     padding: 0 2px;
 }
@@ -69,9 +63,7 @@ border-width: 1px 1px 0 0;
 
 
 #category_list {
-    border:0;
-    border-color: #B3B3B3;
-    border-style: solid;
+    border: 0 solid #B3B3B3;
 }
 
 /*Formating for category table header */
@@ -88,12 +80,10 @@ border-width: 1px 1px 0 0;
 }
 
 #category_list #cat_navbar {
-    border:1px;
-    border-color: #B3B3B3;
     height:25px;
     line-height:25px;
     vertical-align:middle;
-    border-style: solid;
+    border: 1px solid #B3B3B3;
     background-color: #E2E2E2;
     padding-left:5px;
 }
@@ -153,9 +143,7 @@ border-width: 1px 1px 0 0;
     position:absolute;
     width:475px;
     display:none;
-    border:1px;
-    border-color: #B3B3B3;
-    border-style: solid;
+    border: 1px solid #B3B3B3;
     background-color:#F1F1F1;
     text-align:right;
     z-index: 10;
@@ -165,9 +153,7 @@ border-width: 1px 1px 0 0;
     position:absolute;
     width:250px;
     display:none;
-    border:1px;
-    border-color: #B3B3B3;
-    border-style: solid;
+    border: 1px solid #B3B3B3;
     background-color:#F1F1F1;
     text-align:right;
     z-index: 1000;

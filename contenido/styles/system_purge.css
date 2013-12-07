@@ -12,8 +12,7 @@
 }
 
 .system_clear_form_row {
-    padding: 2px;
-    padding-left: 5px;
+    padding: 2px 2px 2px 5px;
     clear: left;
     width: 300px;
 }
