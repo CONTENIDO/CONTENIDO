@@ -18,7 +18,7 @@ function ul2finder()
     if(!finder){return;}
 
     // add the class domenabled to the body
-    cssjs('add',document.body,'domenabled')
+    cssjs('add',document.body,'domenabled');
 
     // loop through all lists inside finder, position and hide them
     // by applying the class hidden

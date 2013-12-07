@@ -196,7 +196,7 @@
             window.deleteAction = del;
         };
         window.setAction = _setAction;
-        window.filter = _filter
+        window.filter = _filter;
         window.keyHandler = _keyHandler;
         window.setKeyCode = _setKeyCode;
 

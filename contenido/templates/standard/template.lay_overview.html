@@ -62,13 +62,13 @@ function deleteLayout(idlay) {
 
         // Register some events for rows
         // ## @todo move this to rowMark.js
-        $("tr.layout_row").mouseover(function() {
+        $("tr.layout_row").mouseover(function () {
             row.over(this);
-        }).mouseout(function() {
-            row.out(this);
-        }).click(function() {
-            row.click(this);
-        })
+        }).mouseout(function () {
+                    row.out(this);
+                }).click(function () {
+                    row.click(this);
+                });
 
         if ($('#marked')) {
             lay.click($('#marked')[0]);

@@ -64,7 +64,7 @@
                         return;
                     }
                     pluginRow.attr("data-plugin-execorder", newOrder);
-                    pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
+                    pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
 
                     $.ajax({
                         url: "ajaxmain.php",
@@ -95,7 +95,7 @@
                         return;
                     }
                     pluginRow.attr("data-plugin-execorder", newOrder);
-                    pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder)
+                    pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
 
                     $.ajax({
                         url: "ajaxmain.php",

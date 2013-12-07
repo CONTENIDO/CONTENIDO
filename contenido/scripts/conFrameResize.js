@@ -168,11 +168,11 @@
                     (function(pos, context) {
                         context.frames[i].document.onmouseover = function() {
                             //context.frameResize._stopDrag();
-                        }
+                        };
 
                         context.frames[i].document.onclick = function() {
                             //context.frameResize._stopDrag();
-                        }
+                        };
                     })(i, this);
                 }
 
@@ -227,7 +227,7 @@
                 }
 
                 return true;
-            }
+            };
 
             // Leave drag mode
             context.document.onmouseup = function() {

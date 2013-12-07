@@ -22,7 +22,7 @@ function groupChangeRestriction() {
     url  = "";
     url += "main.php?area=groups";
     url += "&frame=2";
-    url += "&restriction=" + element[0].value
+    url += "&restriction=" + element[0].value;
     url += "&contenido=" + Con.sid;
     Con.getFrame('left_bottom').location.href = url;
 }

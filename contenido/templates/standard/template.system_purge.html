@@ -122,13 +122,13 @@
             if ($('#select_list_clients').css('display') != 'block') {
                 $('#select_list_clients').fadeIn('middle');
             }
-        })
+        });
 
         $('#select_all_clients').click(function() {
             if ($('#select_list_clients').css('display') != 'none') {
                 $('#select_list_clients').fadeOut('middle');
             }
-        })
+        });
 
         $('input[name="clientHistory"]').change(function() {
             if ($(this).attr('checked')) {
@@ -139,9 +139,9 @@
         });
 
         $('#imgFormSubmit').click(function() {
-            var iSelClient = $('input[name="selectClient"]:checked', '#frmSystemPurge').val()
+            var iSelClient = $('input[name="selectClient"]:checked', '#frmSystemPurge').val();
             var bSelClient = false;
-            var iActionSel = $('input[type="checkbox"]:checked').length
+            var iActionSel = $('input[type="checkbox"]:checked').length;
             var sErrMsg = '';
             var bErr = false;
 

@@ -246,7 +246,7 @@
      * @return bool has template changed?
      */
     Config.prototype.templateChanged = function() {
-        return (this.nTplId != null) ? true : false;
+        return (this.nTplId != null);
     };
 
     /**

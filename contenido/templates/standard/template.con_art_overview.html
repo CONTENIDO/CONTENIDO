@@ -253,7 +253,7 @@ function doAction(thisObject) {
         selectedIdArts += $(this).val() + ',';
     });
     selectedIdArts = selectedIdArts.substring(0, selectedIdArts.length - 1);
-    selectedIdArts += ']'
+    selectedIdArts += ']';
 
     //set all selected idarts
     $('form.bulk_editing_form input[name="idarts"]').val(selectedIdArts);

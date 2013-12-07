@@ -1592,7 +1592,7 @@ $.timepicker.timeZoneOffsetString = function(date) {
  */
 $.timepicker.timeRange = function( startTime, endTime, options ) {
     return $.timepicker.handleRange('timepicker', startTime, endTime, options);
-}
+};
 
 /**
  * Calls `datetimepicker` on the `startTime` and `endTime` elements, and configures them to
@@ -1606,7 +1606,7 @@ $.timepicker.timeRange = function( startTime, endTime, options ) {
  */
 $.timepicker.dateTimeRange = function( startTime, endTime, options ) {
     $.timepicker.dateRange(startTime, endTime, options, 'datetimepicker');
-}
+};
 
 /**
  * Calls `method` on the `startTime` and `endTime` elements, and configures them to
@@ -1621,7 +1621,7 @@ $.timepicker.dateTimeRange = function( startTime, endTime, options ) {
 $.timepicker.dateRange = function( startTime, endTime, options, method ) {
     method = method || 'datepicker';
     $.timepicker.handleRange(method, startTime, endTime, options);
-}
+};
 
 /**
  * Calls `method` on the `startTime` and `endTime` elements, and configures them to

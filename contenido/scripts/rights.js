@@ -124,7 +124,7 @@ function rightsInheritanceUp(allparentid, allcount) {
             break;
         }
         //search for the new parentid
-        var wholeid = document.forms["rightsform"].elements["rights_list["+act_area[1]+"|"+act_area[0]+"|"+parentid+"]"].id
+        var wholeid = document.forms["rightsform"].elements["rights_list["+act_area[1]+"|"+act_area[0]+"|"+parentid+"]"].id;
         //wholeid   consits    str_parentid_counter_area_action
         var ids = wholeid.split("_");
         //set the new parentid
@@ -148,10 +148,10 @@ function helpinheritance(act_area, parentid) {
     //if there is any element with ist the child of my id
     while (document.getElementById("str_"+parentid+"_"+counter+"_"+act_area[1]+"_"+act_area[0])) {
         //if there is one set the check
-        document.getElementById("str_"+parentid+"_"+counter+"_"+act_area[1]+"_"+act_area[0]).checked=document.forms["rightsform"].elements["rights_list["+act_area[1]+"|"+act_area[0]+"|"+parentid+"]"].checked
+        document.getElementById("str_"+parentid+"_"+counter+"_"+act_area[1]+"_"+act_area[0]).checked=document.forms["rightsform"].elements["rights_list["+act_area[1]+"|"+act_area[0]+"|"+parentid+"]"].checked;
 
         //find out the name of this field
-        var wholeid = document.getElementById("str_"+parentid+"_"+counter+"_"+act_area[1]+"_"+act_area[0]).name
+        var wholeid = document.getElementById("str_"+parentid+"_"+counter+"_"+act_area[1]+"_"+act_area[0]).name;
         //match the datas [area|action|itemid]
         var ids = wholeid.match(/\[+\S+\]/);
         //make string

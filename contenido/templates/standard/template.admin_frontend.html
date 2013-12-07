@@ -112,7 +112,7 @@ function hoverEffect(actButton, stat) {
 
 function refresh() {
     var sFilterParam = execFilter(1),
-        sActionsRowState = document.getElementById('m9').value
+        sActionsRowState = document.getElementById('m9').value;
         sFilterRowState = document.getElementById('m17').value;
     sFilterParam += '&frame=1&view='+selectedButton+'&actionrow='+sActionsRowState+'&filterrow='+sFilterRowState+'&page='+iPage;
     window.location.href = sFilterParam;

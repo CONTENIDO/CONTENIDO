@@ -9,6 +9,6 @@ function infoBox(objId) {
     this.oldText = this.obj.innerHTML;
 }
 
-infoBox.prototype.show = function(text) {
+infoBox.prototype.show = function (text) {
     this.obj.innerHTML = text || this.oldText;
-}
+};

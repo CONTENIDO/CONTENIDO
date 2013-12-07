@@ -58,13 +58,13 @@ function deleteLang(idlang) {
 
         // Register some events for rows
         // ## @todo move this to rowMark.js
-        $("table tr").mouseover(function() {
+        $("table tr").mouseover(function () {
             row.over(this);
-        }).mouseout(function() {
-            row.out(this);
-        }).click(function() {
-            row.click(this);
-        })
+        }).mouseout(function () {
+                    row.out(this);
+                }).click(function () {
+                    row.click(this);
+                });
 
         // Mark element having the marked id value
         if ($("#marked")) {
