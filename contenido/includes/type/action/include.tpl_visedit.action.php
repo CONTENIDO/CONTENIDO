@@ -15,7 +15,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if ($perm->have_perm_area_action("tpl", "tpl_visedit") || $perm->have_perm_area_action_item("tpl", "tpl_visedit", $idtpl)) {
+if ($perm->have_perm_area_action($area, "tpl_visedit") || $perm->have_perm_area_action_item($area, "tpl_visedit", $idtpl)) {
     cInclude('includes', 'functions.tpl.php');
     $idtpl = tplEditTemplate($changelayout, $idtpl, $tplname, $description, $idlay, $c, $tplisdefault);
 } else {
