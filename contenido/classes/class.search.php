@@ -1050,7 +1050,7 @@ class cSearch extends cSearchBaseAbstract {
 
         $searchTracking = new cApiSearchTrackingCollection();
         $searchTracking->trackSearch($searchwords, count($this->_searchResult));
-        
+
         return $this->_searchResult;
     }
 

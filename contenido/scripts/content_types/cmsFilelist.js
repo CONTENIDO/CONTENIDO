@@ -286,7 +286,7 @@
     /**
      * Adds save event to the save button of content type edit form.
      * Collects the selected directories in "directories" tab,
-     * and then it calls parents 
+     * and then it calls parents
      * @method addSaveEvent
      * @override
      */
