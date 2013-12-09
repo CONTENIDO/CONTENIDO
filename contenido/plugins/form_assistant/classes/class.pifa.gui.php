@@ -1144,8 +1144,7 @@ class PifaRightBottomFormImportPage extends cGuiPage {
         // check read operation
         if (false === $xml) {
             $note = Pifa::i18n('READ_XML_ERROR');
-            $out = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $note);
-            break;
+            return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $note);
         }
 
         try {
