@@ -83,7 +83,6 @@ class pApiContentAllocationTreeView extends pApiTree {
                     }
                     </script>';
             } else {
-               echo '<pre>';
                 if ($item_tmp['children'] || $item_tmp['status'] == 'collapsed') {
                     $expandCollapseImg = 'images/close_all.gif';
                     if ($item_tmp['status'] == 'collapsed') {
@@ -101,7 +100,6 @@ class pApiContentAllocationTreeView extends pApiTree {
                 }
                 $item['ITEMNAME'] = $expandCollapse . ' ' . $item_tmp['name'];
             }
-            echo '</pre>';
             $item['ITEMINDENT'] = $item_tmp['level'] * 15 + 3;
             $item['ACTION_CREATE'] = '<a href="main.php?contenido=' . $sess->id . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=add&parentid=' . $item_tmp['idpica_alloc'] . '"><img src="images/folder_new.gif" border="0" title="' . i18n("New category", 'content_allocation') . '" alt="' . i18n("New category", 'content_allocation') . '"></a>';
 
