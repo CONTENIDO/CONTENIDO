@@ -19,7 +19,13 @@ $plugin_name = "linkchecker";
 $cfg = cRegistry::getConfig();
 
 if (!$cronjob) {
-    if (!$perm->have_perm_area_action($plugin_name, $plugin_name) && $cronjob != true) {
+
+    // Check permissions for linkchecker action
+    if (!$perm->have_perm_area_action($plugin_name, "linkchecker") && $cronjob != true) {
+        cRegistry::addErrorMessage(i18n("No permissions"));
+        $page = new cGuiPage('generic_page');
+        $page->abortRendering();
+        $page->render();
         exit();
     }
 
@@ -326,14 +332,14 @@ if (empty($aErrors) && $cronjob != true) {
             // set template variables
             $tpl2->set('s', 'ERRORS_ARTID', $aRow[$i]['idart']);
             $tpl2->set('s', 'ERRORS_ARTICLE', $aRow[$i]['nameart']);
-            $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', substr($aRow[$i]['nameart'], 0, 20) . ((strlen($aRow[$i]['nameart']) > 20) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', substr($aRow[$i]['nameart'], 0, 20) . ((strlen($aRow[$i]['nameart']) > 20)? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_CATID', $aRow[$i]['idcat']);
             $tpl2->set('s', 'ERRORS_LANGARTID', $aRow[$i]['idartlang']);
             $tpl2->set('s', 'ERRORS_LINK', $aRow[$i]['url']);
             $tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($aRow[$i]['url']));
-            $tpl2->set('s', 'ERRORS_LINK_SHORT', substr($aRow[$i]['url'], 0, 45) . ((strlen($aRow[$i]['url']) > 45) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_LINK_SHORT', substr($aRow[$i]['url'], 0, 45) . ((strlen($aRow[$i]['url']) > 45)? ' ...' : ''));
             $tpl2->set('s', 'ERRORS_CATNAME', $aRow[$i]['namecat']);
-            $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20) ? ' ...' : ''));
+            $tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20)? ' ...' : ''));
             $tpl2->set('s', 'MODE', $_GET['mode']);
             $tpl2->set('s', 'URL_FRONTEND', $aUrl['cms']);
 
@@ -362,7 +368,7 @@ if (empty($aErrors) && $cronjob != true) {
                                                            // case
                 $tpl2->set('s', 'ERRORS_REPAIRED_LINK', '-');
             } elseif ($repaired_link == false) { // Linkchecker can not repaire
-                                                // this link
+                                                 // this link
                 $tpl2->set('s', 'ERRORS_REPAIRED_LINK', i18n("No repaired link", $plugin_name));
             } else { // Yeah, we have an repaired link!
 

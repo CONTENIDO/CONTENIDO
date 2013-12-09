@@ -16,16 +16,20 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $plugin_name = "linkchecker";
-global $perm;
+global $perm, $notification;
 
-if (!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
+// Check permissions for whitelist_view action
+if (!$perm->have_perm_area_action($plugin_name, "whitelist_view")) {
+    cRegistry::addErrorMessage(i18n("No permissions"));
+    $page = new cGuiPage('generic_page');
+    $page->abortRendering();
+    $page->render();
     exit();
 }
 
 $backendUrl = cRegistry::getBackendUrl();
 
 // Template-definition
-
 /* Whitelist: Delete */
 if (!empty($_GET['url_to_delete'])) {
     $sql = "DELETE FROM " . $cfg['tab']['whitelist'] . " WHERE url = '" . $db->escape(base64_decode($_GET['url_to_delete'])) . "'";
