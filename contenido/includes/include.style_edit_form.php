@@ -133,12 +133,26 @@ JS;
         $fileInfoCollection = new cApiFileInformationCollection();
         $fileInfoCollection->create('css', $sFilename, $_REQUEST['description']);
         $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
+
+        // Reload right_top frame
         $sReloadScript = <<<JS
 <script type="text/javascript">
 (function(Con, $) {
     var frame = Con.getFrame('right_top');
     if (frame) {
         frame.location.href = '{$urlReload}';
+    }
+})(Con, Con.$);
+</script>
+JS;
+
+	// Reload left_bottom frame
+	$sReloadScript .= <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$reloadFile}'});
     }
 })(Con, Con.$);
 </script>

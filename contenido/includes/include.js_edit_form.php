@@ -137,7 +137,16 @@ JS;
         $fileInfoCollection = new cApiFileInformationCollection();
         $fileInfoCollection->create('js', $sFilename, $_REQUEST['description']);
         $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-        $sReloadScript = '';
+        $sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
+    }
+})(Con, Con.$);
+</script>
+JS;
         // if ($bEdit) {
         $page->displayInfo(i18n('Created new JS-File successfully!'));
         // }
