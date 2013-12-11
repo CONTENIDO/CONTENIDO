@@ -28,7 +28,7 @@ class cSystemtest {
      *
      * @var string
      */
-    const CON_SETUP_MIN_PHP_VERSION = '5.2.0';
+    const CON_SETUP_MIN_PHP_VERSION = '5.2.3';
 
     /**
      * Messages have no influence on the result of the system integrity
