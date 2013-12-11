@@ -109,9 +109,9 @@ class pApiContentAllocationTreeView extends pApiTree {
             $item['ACTION_MOVE_DOWN'] = '';
 
             if ($item_tmp['online'] == 1) { // set offline
-                $item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido=' . $sess->id . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=offline&idpica_alloc=' . $item_tmp['idpica_alloc'] . '""><img src="images/online.gif" alt="' . i18n("Set category offline", 'content_allocation') . '" title="' . i18n("Set category offline", 'content_allocation') . '"></a>';
+                $item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido=' . $sess->id . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=offline&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/online.gif" alt="' . i18n("Set category offline", 'content_allocation') . '" title="' . i18n("Set category offline", 'content_allocation') . '"></a>';
             } else {
-                $item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido=' . $sess->id . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=online&idpica_alloc=' . $item_tmp['idpica_alloc'] . '""><img src="images/offline.gif" alt="' . i18n("Set category online", 'content_allocation') . '" title="' . i18n("Set category online", 'content_allocation') . '"></a>';
+                $item['ACTION_ONOFFLINE'] = '<a href="main.php?contenido=' . $sess->id . '&action=' . $action . '&frame=' . $frame . '&area=' . $area . '&step=online&idpica_alloc=' . $item_tmp['idpica_alloc'] . '"><img src="images/offline.gif" alt="' . i18n("Set category online", 'content_allocation') . '" title="' . i18n("Set category online", 'content_allocation') . '"></a>';
             }
 
             if ($item_tmp['children']) {
