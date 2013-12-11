@@ -538,8 +538,8 @@ class UserForumArticle {
                 $this->_tpl->assign('MODEMODETEXT', mi18n('MODEMODETEXT'));
             }
 
-            $this->_tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"\" />");
-            $this->_tpl->assign('INPUT_REALNAME', "<input type=\"text\" name=\"realname\" value=\"\" />");
+            $this->_tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"\" tabindex=\"2\" />");
+            $this->_tpl->assign('INPUT_REALNAME', "<input type=\"text\" name=\"realname\" value=\"\" tabindex=\"1\" />");
             $this->_tpl->assign('INPUT_FORUM', '');
             $this->_tpl->assign('REALNAME', mi18n("yourName"));
             $this->_tpl->assign('EMAIL', mi18n("yourMailAddress"));
