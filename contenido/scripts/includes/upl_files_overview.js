@@ -46,24 +46,24 @@
         }
     }
 
-    // @todo Use $(element).offset();
-    function getY(e) {
-        var y = 0;
-        while (e) {
-            y += e.offsetTop;
-            e = e.offsetParent;
-        }
-        return y;
+    /**
+     * Returns top positition relative to document
+     * @param {HTMLElement} e
+     * @return {Number}
+     */
+    function _getY(e) {
+        var offset = $(e).offset();
+        return offset ? offset.top : 0;
     }
 
-    // @todo Use $(element).offset();
-    function getX(e) {
-        var x = 0;
-        while (e) {
-            x += e.offsetLeft;
-            e = e.offsetParent;
-        }
-        return x;
+    /**
+     * Returns left positition relative to document
+     * @param {HTMLElement} e
+     * @return {Number}
+     */
+    function _getX(e) {
+        var offset = $(e).offset();
+        return offset ? offset.left : 0;
     }
 
     function findPreviewImage(smallImg) {
@@ -85,13 +85,13 @@
         }
         previewImage.style.width = iWidth;
         previewImage.style.height = iHeight;
-        previewImage.style.marginTop = getY(theImage);
-        previewImage.style.marginLeft = getX(theImage) + 100;
+        previewImage.style.marginTop = _getY(theImage);
+        previewImage.style.marginLeft = _getX(theImage) + 100;
     }
 
     window.invertSelection = invertSelection;
-    window.getY = getY;
-    window.getX = getX;
+    window.getY = _getY;
+    window.getX = _getX;
     window.findPreviewImage = findPreviewImage;
     window.correctPosition = correctPosition;
 
