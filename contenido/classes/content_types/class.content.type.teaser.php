@@ -779,9 +779,6 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         // use $this->_cmsTypes as basis for this select box which contains all
         // avariable content types in system
         foreach ($this->_cmsTypes as $key => $value) {
-            if ($this->_forwardTypes[$value] != "") {
-                continue;
-            }
             $htmlSelectOption = new cHTMLOptionElement($value, $value, false);
             $htmlSelect->addOptionElement($key, $htmlSelectOption);
         }
