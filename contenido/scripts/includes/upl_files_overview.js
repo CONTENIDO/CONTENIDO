@@ -13,7 +13,7 @@
 
     // to reload the left frame after delete/insert new files
     var frame = Con.getFrame('left_bottom');
-    if (frame.location !== 'about:blank') {
+    if (frame && frame.location.href !== 'about:blank') {
         frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {action: null});
     }
 
