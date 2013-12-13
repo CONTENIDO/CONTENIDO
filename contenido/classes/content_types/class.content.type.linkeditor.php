@@ -69,6 +69,42 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     }
 
     /**
+     * Returns the link type ('external', 'internal' or 'file')
+     *
+     * @return string
+     */
+    public function getLinkType() {
+        return $this->_settings['linkeditor_type'];
+    }
+
+    /**
+     * Returns the link title
+     *
+     * @return string
+     */
+    public function getTitle() {
+        return $this->_settings['linkeditor_title'];
+    }
+
+    /**
+     * Returns the link target (e.g. "_blank")
+     *
+     * @return string
+     */
+    public function getTarget() {
+		return ($this->_settings['linkeditor_newwindow'] === 'true') ? '_blank' : '';
+    }
+
+    /**
+     * Returns the href of the link
+     *
+     * @return string
+     */
+    public function getLink() {
+		return $this->_generateHref();
+    }
+
+    /**
      * Returns array with configured data (keys: type, externallink, title,
      * newwindow, idart, filename).
      * Additionally the key href contains the actual hyperreference.

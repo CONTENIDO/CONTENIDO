@@ -136,11 +136,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             'idupl' => $this->_rawSettings,
             'idlang' => $this->_lang
         ));
-        $this->_medianame = ($uploadMeta->get('medianame') !== false) ? $uploadMeta->get('medianame') : '';
-        $this->_description = ($uploadMeta->get('description') !== false) ? $uploadMeta->get('description') : '';
-        $this->_keywords = ($uploadMeta->get('keywords') !== false) ? $uploadMeta->get('keywords') : '';
-        $this->_internalNotice = ($uploadMeta->get('internal_notice') !== false) ? $uploadMeta->get('internal_notice') : '';
-        $this->_copyright = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
+        $this->_medianame = ($uploadMeta->get('medianame') !== false)? $uploadMeta->get('medianame') : '';
+        $this->_description = ($uploadMeta->get('description') !== false)? $uploadMeta->get('description') : '';
+        $this->_keywords = ($uploadMeta->get('keywords') !== false)? $uploadMeta->get('keywords') : '';
+        $this->_internalNotice = ($uploadMeta->get('internal_notice') !== false)? $uploadMeta->get('internal_notice') : '';
+        $this->_copyright = ($uploadMeta->get('copyright') !== false)? $uploadMeta->get('copyright') : '';
 
         // if form is submitted, store the current teaser settings
         // notice: also check the ID of the content type (there could be more
@@ -150,6 +150,72 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             $path = $this->_cfg['path']['contenido_fullhtml'] . "external/backendedit/front_content.php?area=con_editcontent&idart=$this->_idArt&idcat=$this->_idCat&changeview=edit&client=$this->_client";
             header('location:' . $this->_session->url($path));
         }
+    }
+
+    /**
+     * Return the absolute path of the image
+     *
+     * @return string
+     */
+    public function getAbsolutePath() {
+        return $this->_cfgClient[$this->_client]['upl']['path'] . $this->_dirname . $this->_filename;
+    }
+
+    /**
+     * Return the path of the image relative to the upload directory of the client
+     *
+     * @return string
+     */
+    public function getRelativePath() {
+        return $this->_dirname . $this->_filename;
+    }
+
+    /**
+     * Returns the absolute URL of the image
+     *
+     * @return string
+     */
+    public function getAbsoluteURL() {
+        return $this->_generateImagePath();
+    }
+
+    /**
+     * Returns the URL of the image relative to the client base URL
+     *
+     * @return string
+     */
+    public function getRelativeURL() {
+        if (!empty($this->_filename)) {
+            if (cApiDbfs::isDbfs($this->_dirname)) {
+                return 'dbfs.php?file=' . urlencode($this->_dirname . $this->_filename);
+            } else {
+                return $this->_cfgClient[$this->_client]['upload'] . $this->_dirname . $this->_filename;
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * Returns an associative array containing the meta information of the image
+     *
+     * The array contains the following keys:
+     * 'medianame'
+     * 'description'
+     * 'keywords'
+     * 'internalnotice'
+     * 'copyright'
+     *
+     * @return array
+     */
+    public function getMetaData() {
+        return array(
+            'medianame' => $this->_medianame,
+            'description' => $this->_description,
+            'keywords' => $this->_keywords,
+            'internalnotice' => $this->_internalNotice,
+            'copyright' => $this->_copyright
+        );
     }
 
     /**
@@ -579,11 +645,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         ));
 
         $imageMeta = array();
-        $imageMeta['medianame'] = ($uploadMeta->get('medianame') !== false) ? $uploadMeta->get('medianame') : '';
-        $imageMeta['description'] = ($uploadMeta->get('description') !== false) ? $uploadMeta->get('description') : '';
-        $imageMeta['keywords'] = ($uploadMeta->get('keywords') !== false) ? $uploadMeta->get('keywords') : '';
-        $imageMeta['internal_notice'] = ($uploadMeta->get('internal_notice') !== false) ? $uploadMeta->get('internal_notice') : '';
-        $imageMeta['copyright'] = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
+        $imageMeta['medianame'] = ($uploadMeta->get('medianame') !== false)? $uploadMeta->get('medianame') : '';
+        $imageMeta['description'] = ($uploadMeta->get('description') !== false)? $uploadMeta->get('description') : '';
+        $imageMeta['keywords'] = ($uploadMeta->get('keywords') !== false)? $uploadMeta->get('keywords') : '';
+        $imageMeta['internal_notice'] = ($uploadMeta->get('internal_notice') !== false)? $uploadMeta->get('internal_notice') : '';
+        $imageMeta['copyright'] = ($uploadMeta->get('copyright') !== false)? $uploadMeta->get('copyright') : '';
 
         return json_encode($imageMeta);
     }
@@ -596,7 +662,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *        upload
      *        directory or a dbfs path
      * @param string $name Name of directory to create
-     * @return string|void Octal value of filemode as string ('0702') or nothing
+     * @return string void value of filemode as string ('0702') or nothing
      */
     public function uplmkdir($path, $name) {
         return uplmkdir($path, $name);

@@ -16,7 +16,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Content type CMS_DATE which allows the editor to select a date from a
- * calendar and a date format. The selected date is then shown in the selected
+ * calendar and a date format.
+ * The selected date is then shown in the selected
  * format.
  *
  * @package Core
@@ -36,10 +37,10 @@ class cContentTypeDate extends cContentTypeAbstract {
      * Initialises class attributes and handles store events.
      *
      * @param string $rawSettings the raw settings in an XML structure or as
-     *            plaintext
+     *        plaintext
      * @param integer $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
      * @param array $contentTypes array containing the values of all content
-     *            types
+     *        types
      * @return void
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
@@ -49,8 +50,8 @@ class cContentTypeDate extends cContentTypeAbstract {
         $this->_prefix = 'date';
         $this->_settingsType = 'xml';
         $this->_formFields = array(
-                'date_timestamp',
-                'date_format'
+            'date_timestamp',
+            'date_format'
         );
         parent::__construct($rawSettings, $id, $contentTypes);
 
@@ -114,12 +115,44 @@ class cContentTypeDate extends cContentTypeAbstract {
     }
 
     /**
-     * Formats the given timestamp according to the given format. Localises the
+     * Returns the displayed timestamp
+     *
+     * @return string
+     */
+    public function getDateTimestamp() {
+        return $this->_settings['date_timestamp'];
+    }
+
+    /**
+     * Returns the PHP style format string
+     *
+     * @return string
+     */
+    public function getDateFormat() {
+        $format = $this->_settings['date_format'];
+
+        if (empty($format)) {
+            $format = '';
+        } else {
+            $decoded_array = json_decode($format, true);
+            if (is_array($decoded_array)) {
+                $format = implode(' ', $decoded_array);
+            } else {
+                $format = '';
+            }
+        }
+
+        return $format;
+    }
+
+    /**
+     * Formats the given timestamp according to the given format.
+     * Localises the
      * output.
      *
      * @param string $format the format string in the PHP date format
      * @param int $timestamp the timestamp representing the date which should be
-     *            formatted
+     *        formatted
      * @return string the formatted, localised date
      */
     private function _formatDate($format, $timestamp = NULL) {
@@ -128,43 +161,43 @@ class cContentTypeDate extends cContentTypeAbstract {
             $timestamp = time();
         }
         $replacements = array(
-                'd',
-                'D',
-                'j',
-                'l',
-                'N',
-                'S',
-                'w',
-                'z',
-                'W',
-                'F',
-                'm',
-                'M',
-                'n',
-                't',
-                'L',
-                'o',
-                'Y',
-                'y',
-                'a',
-                'A',
-                'B',
-                'g',
-                'G',
-                'h',
-                'H',
-                'i',
-                's',
-                'u',
-                'e',
-                'I',
-                'O',
-                'P',
-                'T',
-                'Z',
-                'c',
-                'r',
-                'U'
+            'd',
+            'D',
+            'j',
+            'l',
+            'N',
+            'S',
+            'w',
+            'z',
+            'W',
+            'F',
+            'm',
+            'M',
+            'n',
+            't',
+            'L',
+            'o',
+            'Y',
+            'y',
+            'a',
+            'A',
+            'B',
+            'g',
+            'G',
+            'h',
+            'H',
+            'i',
+            's',
+            'u',
+            'e',
+            'I',
+            'O',
+            'P',
+            'T',
+            'Z',
+            'c',
+            'r',
+            'U'
         );
         foreach (str_split($format) as $char) {
             if (in_array($char, $replacements)) {
@@ -291,8 +324,8 @@ class cContentTypeDate extends cContentTypeAbstract {
     private function _generateFormatSelect() {
         $formatSelect = new cHTMLSelectElement($this->_prefix . '_format_select_' . $this->_id, '', $this->_prefix . '_format_select_' . $this->_id);
         $formatSelect->appendStyleDefinitions(array(
-                'border' => '1px solid #ccc',
-                'margin' => '2px 5px 5px'
+            'border' => '1px solid #ccc',
+            'margin' => '2px 5px 5px'
         ));
         $formatSelect->autoFill($this->_dateFormatsPhp);
         $phpDateFormat = conHtmlSpecialChars($this->_settings[$this->_prefix . '_format']);
