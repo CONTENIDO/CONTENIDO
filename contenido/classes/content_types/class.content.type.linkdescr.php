@@ -40,24 +40,7 @@ class cContentTypeLinkdescr extends cContentTypeLinkeditor {
         // so compute the appropriate raw settings and call the parent
         // constructor with them
 
-        if (!isset($contentTypes['CMS_LINKEDITOR'][$id])) {
-            $idArtLang = cRegistry::getArticleLanguageId();
-            // get the idtype of the CMS_LINKEDITOR content type
-            $typeItem = new cApiType();
-            $typeItem->loadByType('CMS_LINKEDITOR');
-            $idtype = $typeItem->get('idtype');
-            // first load the appropriate content entry in order to get the
-            // idupl
-            $content = new cApiContent();
-            $content->loadByMany(array(
-                'idartlang' => $idArtLang,
-                'idtype' => $idtype,
-                'typeid' => $id
-            ));
-            $rawSettings = $content->get('value');
-        } else {
-            $rawSettings = $contentTypes['CMS_LINKEDITOR'][$id];
-        }
+        $rawSettings = $this->_getRawSettings("CMS_LINKEDITOR", $id, $contentTypes);
 
         parent::__construct($rawSettings, $id, $contentTypes);
     }

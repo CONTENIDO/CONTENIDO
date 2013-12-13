@@ -44,6 +44,35 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
     }
 
     /**
+     * Return the raw settings of a content type
+     *
+     * @param string $contentTypeName Content type name
+     * @param int $id ID of the content type
+     * @param array $contentTypes Content type array
+     * @return mixed
+     */
+    protected function _getRawSettings($contentTypeName, $id, array $contentTypes) {
+        if (!isset($contentTypes[$contentTypeName][$id])) {
+            $idArtLang = cRegistry::getArticleLanguageId();
+            // get the idtype of the content type
+            $typeItem = new cApiType();
+            $typeItem->loadByType($contentTypeName);
+            $idtype = $typeItem->get('idtype');
+            // first load the appropriate content entry in order to get the
+            // settings
+            $content = new cApiContent();
+            $content->loadByMany(array(
+                'idartlang' => $idArtLang,
+                'idtype' => $idtype,
+                'typeid' => $id
+            ));
+            return $content->get('value');
+        } else {
+            return $contentTypes[$contentTypeName][$id];
+        }
+    }
+
+    /**
      * Generates the code for the action buttons (save and cancel).
      *
      * @return string - the encoded code for the action buttons

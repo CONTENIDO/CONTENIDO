@@ -41,25 +41,7 @@ class cContentTypeImgdescr extends cContentTypeImgeditor {
         // so compute the appropriate raw settings and call the parent
         // constructor with them
 
-        // if the content type value is not passed, get it from the DB
-        if (!isset($contentTypes['CMS_IMGEDITOR'][$id])) {
-            $idArtLang = cRegistry::getArticleLanguageId();
-            // get the idtype of the CMS_IMGEDITOR content type
-            $typeItem = new cApiType();
-            $typeItem->loadByType('CMS_IMGEDITOR');
-            $idtype = $typeItem->get('idtype');
-            // first load the appropriate content entry in order to get the
-            // idupl
-            $content = new cApiContent();
-            $content->loadByMany(array(
-                'idartlang' => $idArtLang,
-                'idtype' => $idtype,
-                'typeid' => $id
-            ));
-            $rawSettings = $content->get('value');
-        } else {
-            $rawSettings = $contentTypes['CMS_IMGEDITOR'][$id];
-        }
+        $rawSettings = $this->_getRawSettings("CMS_IMGEDITOR", $id, $contentTypes);
 
         parent::__construct($rawSettings, $id, $contentTypes);
     }
