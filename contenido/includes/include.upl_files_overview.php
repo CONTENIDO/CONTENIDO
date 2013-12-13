@@ -528,6 +528,9 @@ $uploads = new cApiUploadCollection();
 if (substr($path, strlen($path) - 1, 1) != "/") {
     if ($path != "") {
         $qpath = $path . "/";
+    } else {
+        // view the root folder
+    	$qpath = "/";
     }
 } else {
     $qpath = $path;

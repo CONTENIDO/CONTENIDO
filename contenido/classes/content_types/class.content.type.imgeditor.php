@@ -180,7 +180,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $filename = basename($_POST['image_filename']);
         $dirname = dirname($_POST['image_filename']);
         if ($dirname === '\\' || $dirname === '/') {
-            $dirname = '';
+            $dirname = '/';
         } else {
             $dirname .= '/';
         }
