@@ -27,7 +27,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
      * Create a new collection of items.
      *
      * @param string $select where clause to use for selection (see
-     *            ItemCollection::select())
+     *        ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -95,7 +95,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $urlname = (trim($urlname) == '') ? trim($title) : trim($urlname);
+        $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
 
         $item = parent::createNewItem();
 
@@ -147,8 +147,9 @@ class cApiArticleLanguageCollection extends ItemCollection {
     public function getIdByArticleIdAndLanguageId($idart, $idlang) {
         $sql = "SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d";
         $this->db->query($sql, $this->table, $idart, $idlang);
-        return ($this->db->nextRecord()) ? $this->db->f('idartlang') : 0;
+        return ($this->db->nextRecord())? $this->db->f('idartlang') : 0;
     }
+
 }
 
 /**
@@ -343,8 +344,7 @@ class cApiArticleLanguage extends Item {
             return;
         }
 
-        $sql = 'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b '
-             . 'WHERE a.idartlang = %d AND b.idtype = a.idtype ORDER BY a.idtype, a.typeid';
+        $sql = 'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b ' . 'WHERE a.idartlang = %d AND b.idtype = a.idtype ORDER BY a.idtype, a.typeid';
 
         $this->db->query($sql, $cfg['tab']['content'], $cfg['tab']['type'], $this->get('idartlang'));
 
@@ -390,7 +390,7 @@ class cApiArticleLanguage extends Item {
      *
      * @param string $name
      * @param bool $bSafe Flag to run defined outFilter on passed value
-     *                    NOTE: It's not used ATM!
+     *        NOTE: It's not used ATM!
      * @return string Value of property
      */
     public function getField($name, $bSafe = true) {
@@ -416,7 +416,7 @@ class cApiArticleLanguage extends Item {
             case 'redirect':
             case 'external_redirect':
             case 'locked':
-                $value = ($value == 1) ? 1 : 0;
+                $value = ($value == 1)? 1 : 0;
                 break;
             case 'idart':
             case 'idlang':
@@ -428,7 +428,7 @@ class cApiArticleLanguage extends Item {
                 $value = (int) $value;
                 break;
             case 'redirect_url':
-                $value = ($value == 'http://' || $value == '') ? '0' : $value;
+                $value = ($value == 'http://' || $value == '')? '0' : $value;
                 break;
         }
 
@@ -489,7 +489,39 @@ class cApiArticleLanguage extends Item {
         }
 
         // return String
-        return (isset($this->content[$type][$id])) ? $this->content[$type][$id] : '';
+        return (isset($this->content[$type][$id]))? $this->content[$type][$id] : '';
+    }
+
+    /**
+     * Similar to getContent this function returns the cContentType object
+     *
+     * @param string $type Name of the content type
+     * @param int $id Id of the content type in this article
+     * @return boolean|cContenType Returns false if the name was invalid
+     */
+    public function getContentObject($type, $id) {
+        $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
+
+        if(!class_exists($typeClassName)) {
+            return false;
+        }
+
+        return new $typeClassName($this->getContent($type, $id), $id, $this->content);
+    }
+
+    /**
+     * Similar to getContent this function returns the view voce of the cContentType object
+     * @param string $type Name of the content type
+     * @param int  $id Id of the content type in this article
+     * @return string
+     */
+    public function getContentViewCode($type, $id) {
+        $object = $this->getContentObject($type, $id);
+        if ($object === false) {
+            return "";
+        }
+
+        return $object->generateViewCode();
     }
 
     /**
@@ -518,11 +550,12 @@ class cApiArticleLanguage extends Item {
 
         $options = array();
         $options['idart'] = $this->get('idart');
-        $options['lang'] = ($changeLangId == 0) ? $this->get('idlang') : $changeLangId;
+        $options['lang'] = ($changeLangId == 0)? $this->get('idlang') : $changeLangId;
         if ($changeLangId > 0) {
             $options['changelang'] = $changeLangId;
         }
 
         return cUri::getInstance()->build($options);
     }
+
 }
