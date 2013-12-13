@@ -262,6 +262,24 @@ abstract class cXmlBase {
     }
 
     /**
+     * Checks if a string is valid XML
+     *
+     * @param string $xmlString
+     * @return boolean True if the XML is valid
+     */
+    public static function isValidXML($xmlString) {
+        $testArray = null;
+
+        try {
+            $testArray = @cXmlBase::xmlStringToArray($xmlString);
+        } catch(Exception $e) {
+            return false;
+        }
+
+        return is_array($testArray);
+    }
+
+    /**
      * Converts the given SimpleXMLElement object to an array.
      * Example:
      * <?xml version="1.0" encoding="utf-8"?>

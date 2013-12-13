@@ -40,9 +40,7 @@ class cContentTypeImg extends cContentTypeImgeditor {
         // so compute the appropriate raw settings and call the parent
         // constructor with them
 
-        try {
-            $testArray = cXmlBase::xmlStringToArray($rawSettings);
-        } catch(Exception $e) {
+        if(!cXmlBase::isValidXML($rawSettings)) {
             $rawSettings = $this->_getRawSettings("CMS_IMGEDITOR", $id, $contentTypes);
         }
 
