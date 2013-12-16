@@ -208,10 +208,12 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $relations = array();
 
         while (($relation = $this->_PimPluginRelationsCollection->next()) !== false) {
-            // Relation to tables *_area, *_nav_main and *_type
+            // Relation to tables *_action_, *_area, *_nav_main, *_nav_sub and
+            // *_type
             $index = $relation->get('type');
 
-            // Is equivalent to idarea, idnavm or idtype column
+            // Is equivalent to idaction, idarea, idnavm, idnavs or idtype
+            // column
             $value = $relation->get('iditem');
             $relations[$index][] = $value;
         }
