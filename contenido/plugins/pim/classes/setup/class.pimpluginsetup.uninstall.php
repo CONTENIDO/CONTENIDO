@@ -230,7 +230,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
             $this->_ApiAreaCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
         }
 
-        // Delete entries from *_nav_main
+        // Delete entries with relations to *_nav_main
         if (!empty($relations['navm'])) {
             $this->_ApiNavMainCollection->deleteByWhereClause("idnavm IN('" . join("', '", $relations['navm']) . "')");
         }
