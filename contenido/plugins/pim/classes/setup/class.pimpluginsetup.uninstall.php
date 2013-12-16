@@ -216,18 +216,26 @@ class PimPluginSetupUninstall extends PimPluginSetup {
             $relations[$index][] = $value;
         }
 
+        // Delete entries with relations to *_actions
+        if (!empty($relations['action'])) {
+            $this->_ApiActionCollection->deleteByWhereClause("idaction IN('" . join("', '", $relations['action']) . "')");
+        }
+
         // Delete entries with relations to *_area
         if (!empty($relations['area'])) {
-            $this->_ApiActionCollection->deleteByWhereClause("idaction IN('" . join("', '", $relations['action']) . "')");
             $this->_ApiFileCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
             $this->_ApiFrameFileCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
-            $this->_ApiNavSubCollection->deleteByWhereClause("idnavs IN('" . join("', '", $relations['navs']) . "')");
             $this->_ApiAreaCollection->deleteByWhereClause("idarea IN('" . join("', '", $relations['area']) . "')");
         }
 
         // Delete entries from *_nav_main
         if (!empty($relations['navm'])) {
             $this->_ApiNavMainCollection->deleteByWhereClause("idnavm IN('" . join("', '", $relations['navm']) . "')");
+        }
+
+        // Delete entries with relations to *_nav_sub
+        if (!empty($relations['navs'])) {
+            $this->_ApiNavSubCollection->deleteByWhereClause("idnavs IN('" . join("', '", $relations['navs']) . "')");
         }
 
         // Delete content types
