@@ -363,7 +363,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             // checking the extension stuff
             $extensionName = uplGetFileExtension($filename);
 
-            if ($this->_settings['filelist_ignore_extensions'] === 'true' || count($this->_settings['filelist_extensions']) == 0 || ($this->_settings['filelist_ignore_extensions'] === 'false' && in_array($extensionName, $this->_settings['filelist_extensions']))) {
+            if ($this->_settings['filelist_ignore_extensions'] === 'true' || count($this->_settings['filelist_extensions']) == 0 || ($this->_settings['filelist_ignore_extensions'] === 'false' && in_array($extensionName, $this->_settings['filelist_extensions'])) || ($this->_settings['filelist_ignore_extensions'] === 'false' && $extensionName == $this->_settings['filelist_extensions'])) {
                 // checking filesize filter
                 $fileStats = stat($this->_uploadPath . $directoryName . '/' . $filename);
                 $filesize = $fileStats['size'];
@@ -797,7 +797,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
 
         // set default values
-        $extensions = (is_array($this->_settings['filelist_extensions'])) ? $this->_settings['filelist_extensions'] : array();
+        $extensions = (is_array($this->_settings['filelist_extensions'])) ? $this->_settings['filelist_extensions'] : array($this->_settings['filelist_extensions']);
         $htmlSelect->setSelected($extensions);
         $htmlSelect->setMultiselect();
         $htmlSelect->setSize(5);
