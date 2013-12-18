@@ -281,8 +281,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                         foreach ($this->_metaDataIdents as $identName => $translation) {
                             $string = $uploadMeta->get($identName);
 
-                            // Cut string only if limit for identName is active
-                            // and the string length is less than the setting
+                            // Cut the string only, when the limit for identName
+                            // is active and the string length is more than the
+                            // setting
                             if ($this->_settings['filelist_md_' . $identName . '_limit'] > 0 && strlen($string) > $this->_settings['filelist_md_' . $identName . '_limit']) {
                                 $metaData[$identName] = cApiStrTrimAfterWord(cSecurity::unFilter($string), $this->_settings['filelist_md_' . $identName . '_limit']) . '...';
                             } else {
