@@ -279,10 +279,14 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                         ));
 
                         foreach ($this->_metaDataIdents as $identName => $translation) {
-                            if ($this->_settings['filelist_md_' . $identName . '_limit'] > 0) {
-                                $metaData[$identName] = cApiStrTrimAfterWord(cSecurity::unFilter($uploadMeta->get($identName)), $this->_settings['filelist_md_' . $identName . '_limit']) . '...';
+                            $string = $uploadMeta->get($identName);
+
+                            // Cut string only if limit for identName is active
+                            // and the string length is less than the setting
+                            if ($this->_settings['filelist_md_' . $identName . '_limit'] > 0 && strlen($string) > $this->_settings['filelist_md_' . $identName . '_limit']) {
+                                $metaData[$identName] = cApiStrTrimAfterWord(cSecurity::unFilter($string), $this->_settings['filelist_md_' . $identName . '_limit']) . '...';
                             } else {
-                                $metaData[$identName] = cSecurity::unFilter($uploadMeta->get($identName));
+                                $metaData[$identName] = cSecurity::unFilter($string);
                             }
                         }
 
@@ -903,7 +907,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $selectedFiles = $this->_settings['filelist_manual_files'];
         $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, '', '', 'manual');
 
-        if (is_array($selectedFiles)) { // More then one entry
+        if (is_array($selectedFiles)) { // More than one entry
             foreach ($selectedFiles as $selectedFile) {
                 $splits = explode('/', $selectedFile);
                 $splitCount = count($splits);
