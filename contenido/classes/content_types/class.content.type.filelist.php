@@ -903,7 +903,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $selectedFiles = $this->_settings['filelist_manual_files'];
         $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, '', '', 'manual');
 
-        if (is_array($selectedFiles)) {
+        if (is_array($selectedFiles)) { // More then one entry
             foreach ($selectedFiles as $selectedFile) {
                 $splits = explode('/', $selectedFile);
                 $splitCount = count($splits);
@@ -912,6 +912,13 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 $htmlSelectOption->setAlt($fileName);
                 $htmlSelect->appendOptionElement($htmlSelectOption);
             }
+        } elseif (!empty($selectedFiles)) { // Only one entry
+            $splits = explode('/', $selectedFiles);
+            $splitCount = count($splits);
+            $fileName = $splits[$splitCount - 1];
+            $htmlSelectOption = new cHTMLOptionElement($fileName, $selectedFiles, true);
+            $htmlSelectOption->setAlt($fileName);
+            $htmlSelect->appendOptionElement($htmlSelectOption);
         }
 
         // set default values
