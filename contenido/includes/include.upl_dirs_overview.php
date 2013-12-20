@@ -232,10 +232,10 @@ if ($appendparameters == 'filebrowser') {
     $mtree->getCollapsedList($collapsed);
 
     $tpl->set('s', 'CATBROWSER', $mtree->render());
-    $tpl->set('s', 'APPENDPARAMETERS', 'url += \'&appendparameters=' . $appendparameters . '\'');
+    $tpl->set('s', 'APPENDPARAMETERS', '\'&appendparameters=' . $appendparameters . '\'');
 } else {
     $tpl->set('s', 'CATBROWSER', '');
-    $tpl->set('s', 'APPENDPARAMETERS', 'url += \'&appendparameters=' . $appendparameters . '\'');
+    $tpl->set('s', 'APPENDPARAMETERS', '\'&appendparameters=' . $appendparameters . '\'');
 }
 
 chdir(cRegistry::getBackendPath());
@@ -244,12 +244,7 @@ $idFsPathPrefix = 'fs_';
 
 // create javascript multilink
 $tmp_mstr = '<a id="root" href="javascript:Con.multiLink(\'%s\', \'%s\',\'%s\', \'%s\')">%s</a>';
-$mstr = sprintf(
-    $tmp_mstr,
-    'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"),
-    'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"),
-    '<img class="vAlignMiddle" src="images/ordner_oben.gif" align="middle" alt="" border="0"><img src="images/spacer.gif" width="5" border="0">' . $file
-);
+$mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img class="vAlignMiddle" src="images/ordner_oben.gif" align="middle" alt="" border="0"><img src="images/spacer.gif" width="5" border="0">' . $file);
 
 $tpl->set('d', 'ID_PATH', $idFsPathPrefix . 'root');
 $tpl->set('d', 'DATA_PATH', $pathstring);
@@ -277,21 +272,23 @@ if (is_array($objects)) {
 
         // create javascript multilink # -> better create meaningful comments
         $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-        $mstr = sprintf(
-            $tmp_mstr,
-            'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"),
-            'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"),
-            '<img class="vAlignMiddle" src="images/grid_folder.gif" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">' . $file
-        );
+        $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img class="vAlignMiddle" src="images/grid_folder.gif" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">' . $file);
 
         $hasFiles = uplHasFiles($pathstring);
         $hasSubdirs = uplHasSubdirs($pathstring);
 
         if ((!$hasSubdirs) && (!$hasFiles) && $perm->have_perm_area_action($tmp_area, "upl_rmdir")) {
-#            $deletebutton = '
-#    <a title="' . i18n("Delete directory") . '" href="javascript:void(0)" onclick="event.cancelBubble=true;Con.showConfirmation(&quot;' . i18n("Do you really want to delete the following directory:") . '<b>' . $file . '</b>&quot;, function() { deleteDirectory(&quot;' . $pathstring . '&quot;); });return false;">
-#        aa<img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . i18n("Delete directory") . '" alt="' . i18n("Delete directory") . '">
-#    </a>';
+            // $deletebutton = '
+            // <a title="' . i18n("Delete directory") . '"
+            // href="javascript:void(0)"
+            // onclick="event.cancelBubble=true;Con.showConfirmation(&quot;' .
+            // i18n("Do you really want to delete the following directory:") .
+            // '<b>' . $file . '</b>&quot;, function() { deleteDirectory(&quot;'
+            // . $pathstring . '&quot;); });return false;">
+            // aa<img src="' . $cfg['path']['images'] . 'delete.gif" border="0"
+            // title="' . i18n("Delete directory") . '" alt="' . i18n("Delete
+            // directory") . '">
+            // </a>';
             $deletebutton = '
     <a class="jsDelete" title="' . i18n("Delete directory") . '" href="javascript:void(0)">
         <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . i18n("Delete directory") . '" alt="' . i18n("Delete directory") . '">
@@ -316,7 +313,13 @@ if (is_array($objects)) {
 
         $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->custom['parent']);
 
-        $idAttrPath = str_replace(array('/', ':'), array('_', ''), trim($pathstring, '/'));
+        $idAttrPath = str_replace(array(
+            '/',
+            ':'
+        ), array(
+            '_',
+            ''
+        ), trim($pathstring, '/'));
         $tpl->set('d', 'ID_PATH', $idFsPathPrefix . $idAttrPath);
         $tpl->set('d', 'DATA_PATH', $pathstring);
         $tpl->set('d', 'INDENT', 0);
@@ -333,7 +336,6 @@ $tpl->set('d', 'DIRNAME', '');
 $tpl->set('d', 'EDITBUTTON', '');
 $tpl->set('d', 'COLLAPSE', "");
 $tpl->next();
-
 
 // #############################################################################
 // Database-based filesystem (DBFS)
@@ -371,12 +373,7 @@ $rootTreeItem->traverse($objects);
 unset($objects[0]);
 
 $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-$mstr = sprintf(
-    $tmp_mstr,
-    'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"),
-    'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"),
-    '<img class="vAlignMiddle" src="images/ordner_oben.gif" alt="" border="0"><img src="images/spacer.gif" width="5" border="0">' . $file
-);
+$mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img class="vAlignMiddle" src="images/ordner_oben.gif" alt="" border="0"><img src="images/spacer.gif" width="5" border="0">' . $file);
 
 $tpl->set('d', 'ID_PATH', $idDbfsPathPrefix . 'root');
 $tpl->set('d', 'DATA_PATH', $pathstring);
@@ -412,20 +409,23 @@ if (is_array($objects)) {
 
         // create javascript multilink
         $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-        $mstr = sprintf(
-            $tmp_mstr,
-            'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"),
-            'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"),
-            '<img class="vAlignMiddle" src="images/grid_folder.gif" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">' . $file
-        );
+        $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), '<img class="vAlignMiddle" src="images/grid_folder.gif" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">' . $file);
 
         $hasFiles = $dbfsc->hasFiles($pathstring);
 
         if (!$hasFiles && $perm->have_perm_area_action($tmp_area, 'upl_rmdir')) {
-#            $deletebutton = '
-#    <a title="' . i18n("Delete directory") . '" href="javascript:void(0)" onclick="event.cancelBubble=true;Con.showConfirmation(&quot;' . i18n("Do you really want to delete the following directory:") . '<b>' . $file . '</b>' . '&quot;, function() { deleteDirectory(&quot;' . $pathstring . '&quot;); });return false;">
-#       <img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . i18n("Delete directory") . '" alt="' . i18n("Delete directory") . '">
-#    </a>';
+            // $deletebutton = '
+            // <a title="' . i18n("Delete directory") . '"
+            // href="javascript:void(0)"
+            // onclick="event.cancelBubble=true;Con.showConfirmation(&quot;' .
+            // i18n("Do you really want to delete the following directory:") .
+            // '<b>' . $file . '</b>' . '&quot;, function() {
+            // deleteDirectory(&quot;' . $pathstring . '&quot;); });return
+            // false;">
+            // <img class="vAlignMiddle" src="' . $cfg['path']['images'] .
+            // 'delete.gif" border="0" title="' . i18n("Delete directory") . '"
+            // alt="' . i18n("Delete directory") . '">
+            // </a>';
             $deletebutton = '
     <a class="jsDelete" title="' . i18n("Delete directory") . '" href="javascript:void(0)">
        <img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . i18n("Delete directory") . '" alt="' . i18n("Delete directory") . '">
@@ -450,7 +450,13 @@ if (is_array($objects)) {
 
         $parent = str_replace($cfgClient[$client]['upl']['path'], '', $a_file->custom['parent']);
 
-        $idAttrPath = str_replace(array('/', ':'), array('_', ''), trim($pathstring, '/'));
+        $idAttrPath = str_replace(array(
+            '/',
+            ':'
+        ), array(
+            '_',
+            ''
+        ), trim($pathstring, '/'));
         $tpl->set('d', 'ID_PATH', $idDbfsPathPrefix . $idAttrPath);
         $tpl->set('d', 'DATA_PATH', $pathstring);
         $tpl->set('d', 'INDENT', 0);
@@ -462,12 +468,16 @@ if (is_array($objects)) {
     }
 }
 
-
 $pathPrefix = (cApiDbfs::isDbfs($path)) ? $idDbfsPathPrefix : $idFsPathPrefix;
-$idAttrPath = str_replace(array('/', ':'), array('_', ''), trim($path, '/'));
+$idAttrPath = str_replace(array(
+    '/',
+    ':'
+), array(
+    '_',
+    ''
+), trim($path, '/'));
 $tpl->set('s', 'ID_PATH', $pathPrefix . $idAttrPath);
 $tpl->set('s', 'DELETE_MSG', i18n("Do you really want to delete the following directory:") . '<b>{path}</b>');
-
 
 chdir(cRegistry::getBackendPath());
 
