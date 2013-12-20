@@ -412,7 +412,7 @@ $menu->setRowmark(false);
 // #####################
 $containerUsersId = 'cont_users';
 $containerUsers = '<div id="' . $containerUsersId . '">';
-$containerUsers .= '<table class="borderless strong_headline" border="0" cellspacing="0" cellpadding="0" width="100%">';
+$containerUsers .= '<table class="foldingrow">';
 $containerUsers .= $oActionRow->render();
 $containerUsers .= $oListOptionRow->render();
 $containerUsers .= $oPager->render();

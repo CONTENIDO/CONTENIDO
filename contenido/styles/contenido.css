@@ -204,6 +204,7 @@ table.borderless tr td {
 
 table.foldingrow {
 	border: 0;
+	border-bottom: 1px solid #b3b3b3;
 	margin: 0;
 	padding: 0;
 	
