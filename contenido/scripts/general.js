@@ -450,7 +450,7 @@
          */
         _getContainer: function() {
             if (null === $_container) {
-                $_container = $('#top_left_container');
+                $_container = $('#top_left_container', Con.getFrame('left_top').document);
             }
             return $_container;
         }

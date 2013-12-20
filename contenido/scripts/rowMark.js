@@ -248,13 +248,13 @@ function setPath(obj) {
 /**
  * Function for showing and hiding synchronsation options
  *
- * @param boolean permSyncCat true shows options / flase hides options
+ * @param boolean permSyncCat true shows options / false hides options
  */
 function rowMarkRefreshSyncScreen(permSyncCat) {
     //curLanguageSync = syncFrom;
     var frame = Con.getFrame('left_top'),
-        $syncElem = Con.$('#sync_cat_single', frame),
-        $syncElemMultiple = Con.$('#sync_cat_multiple', frame);
+        $syncElem = Con.$('#sync_cat_single', frame.document),
+        $syncElemMultiple = Con.$('#sync_cat_multiple', frame.document);
     if ($syncElem[0] && $syncElemMultiple[0]) {
         if (permSyncCat == 0) {
             $syncElem.css('display', 'none');
