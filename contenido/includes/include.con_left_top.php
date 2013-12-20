@@ -345,7 +345,7 @@ $tpl->set('s', 'AJAXURL', cRegistry::getBackendUrl() . 'ajaxmain.php');
 $legendlink = 'legend';
 $editCategory = new cGuiFoldingRow("31f52be2-7499-4d21-8175-3917129e6014", i18n("Legend"), $legendlink);
 
-$divLegend = new cHTMLDiv("", "", "legend-content");
+$divLegend = new cHTMLDiv("", "articleLegend", "legend-content");
 
 $aInformation = array('imgsrc', 'description');
 $aData = xmlFileToArray($cfg['path']['xml'] . "legend.xml", $aData, $aInformation);

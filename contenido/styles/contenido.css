@@ -187,8 +187,7 @@ table.generic table.genericEscape tr {
 }
 
 table.borderless {
-    border: 0 solid #b3b3b3;
-    border-right-width: 1px;
+    border: 0;
 }
 
 table.borderless tr.active {
@@ -201,6 +200,31 @@ table.borderless tr {
 
 table.borderless tr td {
     border: 0;
+}
+
+table.foldingrow {
+	border: 0;
+	margin: 0;
+	padding: 0;
+	
+	width: 100%;
+	
+	border-spacing: 0;
+}
+
+table.foldingrow td {
+	margin: 0;
+	padding: 0;
+}
+
+table.foldingrow th {
+    border-top: 1px solid #b3b3b3;
+    border-right: 1px solid #b3b3b3;
+    background-color: #e2e2e2;
+    text-align: left;
+    padding: 4px;
+    font-weight: normal;
+    color: #666;	
 }
 
 /**
