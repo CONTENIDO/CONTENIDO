@@ -307,7 +307,6 @@ class cGuiPage {
      * @param array $meta Associative array with the meta tag attributes
      * @throws cInvalidArgumentException if an invalid attribute for the meta
      *         tag has been given
-     * @return void
      */
     public function addMeta(array $meta) {
         $allowedAttributes = array(

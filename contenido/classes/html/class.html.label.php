@@ -42,7 +42,6 @@ class cHTMLLabel extends cHTMLContentElement {
      * @param string $text Name of the element
      * @param string $for ID of the form element to link to.
      * @param string $class the class of this element
-     * @return void
      */
     public function __construct($text, $for, $class = '') {
         parent::__construct('', $class);

@@ -289,8 +289,6 @@ abstract class Item extends cItemBaseAbstract {
     /**
      * Function which is called whenever an item is loaded.
      * Inherited classes should override this function if desired.
-     *
-     * @return void
      */
     protected function _onLoad() {
     }
@@ -536,11 +534,9 @@ abstract class Item extends cItemBaseAbstract {
         return $oProperties->delete($idprop);
     }
 
-    /**
-     * Deletes the current item
-     *
-     * @return void
-     */
+    ///**
+    // * Deletes the current item
+    // */
     // Method doesn't work, remove in future versions
     // function delete()
     // {

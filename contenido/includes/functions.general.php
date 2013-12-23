@@ -813,7 +813,6 @@ function getArtspec() {
  *
  * @param string $artspectext specification text
  * @param int $online Online status (1 or 0)
- * @return void
  */
 function addArtspec($artspectext, $online) {
     global $db, $cfg, $lang, $client;
@@ -1079,7 +1078,6 @@ function isRunningFromWeb() {
  * won't find them!
  *
  * @param string $entity Name of the directory to scan
- * @return void
  */
 function scanPlugins($entity) {
     global $cfg;

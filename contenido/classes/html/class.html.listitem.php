@@ -28,7 +28,6 @@ class cHTMLListItem extends cHTMLContentElement {
      *
      * @param string $id the ID of this list item
      * @param string $class the class of this list item
-     * @return void
      */
     public function __construct($id = '', $class = '') {
         parent::__construct('', $class, $id);

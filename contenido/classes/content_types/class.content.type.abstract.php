@@ -169,11 +169,10 @@ abstract class cContentTypeAbstract {
      *
      * @param string $rawSettings the raw settings in an XML structure or as
      *        plaintext
-     * @param integer $id ID of the content type, e.g. 3 if CMS_TEASER[3] is
+     * @param int $id ID of the content type, e.g. 3 if CMS_TEASER[3] is
      *        used
      * @param array $contentTypes array containing the values of all content
      *        types
-     * @return void
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
         $this->_rawSettings = $rawSettings;
@@ -231,8 +230,6 @@ abstract class cContentTypeAbstract {
     /**
      * Stores all values from the $_POST array in the $_settings attribute
      * (associative array) and saves them in the database (XML).
-     *
-     * @return void
      */
     protected function _storeSettings() {
         $settingsToStore = '';

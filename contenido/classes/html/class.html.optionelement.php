@@ -39,7 +39,6 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @param bool $selected If true, element is selected
      * @param bool $disabled If true, element is disabled
      * @param string $class the class of this element
-     * @return void
      */
     public function __construct($title, $value, $selected = false, $disabled = false, $class = '') {
         cHTML::__construct();

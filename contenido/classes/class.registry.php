@@ -134,7 +134,7 @@ class cRegistry {
     /**
      * Returns the current language ID stored in the global variable "lang".
      *
-     * @return integer
+     * @return int
      */
     public static function getLanguageId() {
         return self::_fetchGlobalVariable('lang', self::_fetchGlobalVariable('load_lang', 0));
@@ -152,7 +152,7 @@ class cRegistry {
     /**
      * Returns the current client ID stored in the global variable "client".
      *
-     * @return integer
+     * @return int
      */
     public static function getClientId() {
         return self::_fetchGlobalVariable('client', self::_fetchGlobalVariable('load_client', 0));
@@ -170,9 +170,9 @@ class cRegistry {
     /**
      * Returns the article id stored in the global variable "idart".
      *
-     * @param boolean $autoDetect If true, the value is tried to detected
+     * @param bool $autoDetect If true, the value is tried to detected
      *        automatically. (default: false)
-     * @return integer
+     * @return int
      */
     public static function getArticleId($autoDetect = false) {
         // TODO: autoDetect from front_content.php
@@ -192,9 +192,9 @@ class cRegistry {
      * Returns the article language id stored in the global variable
      * "idartlang".
      *
-     * @param boolean $autoDetect If true, the value is tried to detected
+     * @param bool $autoDetect If true, the value is tried to detected
      *        automatically. (default: false)
-     * @return integer
+     * @return int
      */
     public static function getArticleLanguageId($autoDetect = false) {
         // TODO: autoDetect from front_content.php
@@ -213,9 +213,9 @@ class cRegistry {
     /**
      * Returns the category id stored in the global variable "idcat".
      *
-     * @param boolean $autoDetect If true, the value is tried to detected
+     * @param bool $autoDetect If true, the value is tried to detected
      *        automatically. (default: false)
-     * @return integer
+     * @return int
      */
     public static function getCategoryId($autoDetect = false) {
         // TODO: autoDetect from front_content.php
@@ -235,9 +235,9 @@ class cRegistry {
      * Returns the category language id stored in the global variable
      * "idcatlang".
      *
-     * @param boolean $autoDetect If true, the value is tried to detected
+     * @param bool $autoDetect If true, the value is tried to detected
      *        automatically. (default: false)
-     * @return integer
+     * @return int
      */
     public static function getCategoryLanguageId($autoDetect = false) {
         // TODO: autoDetect from front_content.php
@@ -257,9 +257,9 @@ class cRegistry {
      * Returns the category/article relation id stored in the global variable
      * "idcatart".
      *
-     * @param boolean $autoDetect If true, the value is tried to detected
+     * @param bool $autoDetect If true, the value is tried to detected
      *        automatically. (default: false)
-     * @return integer
+     * @return int
      */
     public static function getCategoryArticleId($autoDetect = false) {
         // TODO: autoDetect from front_content.php
@@ -280,7 +280,7 @@ class cRegistry {
      * Returns the current module ID.
      * Note: This function will work only within module code.
      *
-     * @return integer
+     * @return int
      */
     public static function getCurrentModuleId() {
         return self::_fetchGlobalVariable('cCurrentModule', 0);
@@ -290,7 +290,7 @@ class cRegistry {
      * Returns the current container ID.
      * Note: This function will work only within module code.
      *
-     * @return integer
+     * @return int
      */
     public static function getCurrentContainerId() {
         return self::_fetchGlobalVariable('cCurrentContainer', 0);
@@ -372,7 +372,7 @@ class cRegistry {
      * "cfgClient".
      * If no client ID is specified or is 0 the complete array is returned.
      *
-     * @param integer $clientId Client ID (optional)
+     * @param int $clientId Client ID (optional)
      * @return array
      */
     public static function getClientConfig($clientId = 0) {
@@ -481,7 +481,7 @@ class cRegistry {
      * primary key value.
      *
      * @param string $apiClassName name of the api class
-     * @param integer $objectId primary key value
+     * @param int $objectId primary key value
      * @throws cInvalidArgumentException if the given objectId is not greater
      *         than 0 or the given class does not exist
      * @return Item

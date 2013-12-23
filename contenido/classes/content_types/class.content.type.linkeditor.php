@@ -30,11 +30,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @param string $rawSettings the raw settings in an XML structure or as
      *        plaintext
-     * @param integer $id ID of the content type, e.g. 3 if CMS_DATE[3] is
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
      *        used
      * @param array $contentTypes array containing the values of all content
      *        types
-     * @return void
      */
     function __construct($rawSettings, $id, array $contentTypes) {
         // set attributes of the parent class and call the parent constructor
@@ -472,7 +471,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Computes all parent idcats of the given idcat and returns them.
      *
-     * @param integer $idcat the current idcat
+     * @param int $idcat the current idcat
      * @param array $idcats the array of idcats to which all idcats should be
      *        added
      * @return array the given idcats array with the given idcat and all parent
@@ -495,7 +494,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Generate a select box for all articles of the given idcat.
      *
-     * @param integer $idCat idcat of the category from which all articles
+     * @param int $idCat idcat of the category from which all articles
      *        should be shown
      * @return string rendered cHTMLSelectElement
      */

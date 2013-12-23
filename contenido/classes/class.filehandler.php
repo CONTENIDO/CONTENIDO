@@ -436,9 +436,9 @@ class cFileHandler {
      * Validates the given filename.
      *
      * @param string $filename the filename to validate
-     * @param boolean $notifyAndExitOnFailure if set, function will show a
+     * @param bool $notifyAndExitOnFailure if set, function will show a
      *        notification and will exit the script
-     * @return boolean true if the given filename is valid, false otherwise
+     * @return bool true if the given filename is valid, false otherwise
      */
     public static function validateFilename($filename, $notifyAndExitOnFailure = true) {
         // check if filename only contains valid characters

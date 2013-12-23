@@ -82,11 +82,11 @@ class CodeMirror {
      *        CONTENIDO language id
      *        ex: de, en ... To get it from CONTENIDO language use:
      *        substr(strtolower($belang), 0, 2) in backend
-     * @param boolean $addScript - defines if CodeMirror script is included or
+     * @param bool $addScript - defines if CodeMirror script is included or
      *        not
      *        interesting when there is more than only one editor on page
      * @param array $cfg - The CONTENIDO configuration array
-     * @param boolean $editable - Optional defines if content is editable or not
+     * @param bool $editable - Optional defines if content is editable or not
      */
     public function __construct($id, $syntax, $lang, $addScript, $cfg, $editable = true) {
         // init class variables
@@ -150,7 +150,7 @@ class CodeMirror {
      *
      * @param string $name - Name of CodeMirror property
      * @param string $value - Value of CodeMirror property
-     * @param boolean $isNumeric - Defines if value is numeric or not
+     * @param bool $isNumeric - Defines if value is numeric or not
      *        in case of a numeric value, there is no need to use
      *        quotes
      */

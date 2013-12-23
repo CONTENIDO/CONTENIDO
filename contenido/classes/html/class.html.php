@@ -118,7 +118,6 @@ class cHTML {
      * Constructor Function.
      *
      * @param array $attributes Associative array of table tag attributes
-     * @return void
      */
     public function __construct(array $attributes = NULL) {
         if (!is_null($attributes)) {

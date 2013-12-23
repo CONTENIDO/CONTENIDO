@@ -64,7 +64,7 @@ class cDebugVisible implements cDebugInterface {
      *
      * @param mixed $mVariable The variable to be displayed
      * @param string $sVariableDescription The variable's name or description
-     * @param boolean $bExit If set to true, your app will die() after output of
+     * @param bool $bExit If set to true, your app will die() after output of
      *        current var
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {

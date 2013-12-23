@@ -77,11 +77,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param string $rawSettings the raw settings in an XML structure or as
      *        plaintext
-     * @param integer $id ID of the content type, e.g. 3 if CMS_DATE[3] is
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
      *        used
      * @param array $contentTypes array containing the values of all content
      *        types
-     * @return void
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
         // change attributes from the parent class and call the parent
@@ -143,8 +142,6 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     /**
      * Sets some default values for teaser in case that there is no value
      * defined.
-     *
-     * @return void
      */
     private function _setDefaultValues() {
         // character limit is 120 by default
@@ -242,7 +239,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Function is called in edit- and viewmode in order to generate teasercode
      * for output
      *
-     * @param boolean $returnAsArray modeswitch betwwen template generation and
+     * @param bool $returnAsArray modeswitch betwwen template generation and
      *        and returning result as array
      * @return mixed string of select box or array of articles
      */
@@ -499,10 +496,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * It is also possible to give path to image directly,
      * in this case set fourth parameter to true
      *
-     * @param integer $image - idupl of image to use for teaser
-     * @param integer $maxX - maximum image width
-     * @param integer $maxY - maximum image height
-     * @param boolean $isFile - in case of a direct file path retrival from
+     * @param int $image - idupl of image to use for teaser
+     * @param int $maxX - maximum image width
+     * @param int $maxY - maximum image height
+     * @param bool $isFile - in case of a direct file path retrival from
      *        database is not needed
      * @return string - <img> tag contains scaled image
      */
@@ -630,8 +627,6 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * from database and store it into class variable aCMSTypes.
      * Because this information is used multiple times, this causes a better
      * performance than gettting it seperately
-     *
-     * @return void
      */
     private function _initCmsTypes() {
         if (!empty($this->_cmsTypes)) {
@@ -975,7 +970,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     /**
      * Function retrives name of an article by its id from database
      *
-     * @param integer $idArt - CONTENIDO article id
+     * @param int $idArt - CONTENIDO article id
      * @return string - name of article
      */
     private function _getArtName($idArt) {

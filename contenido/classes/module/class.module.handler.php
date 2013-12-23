@@ -376,7 +376,7 @@ class cModuleHandler {
     /**
      * Returns random characters
      *
-     * @param integer $count amount of characters
+     * @param int $count amount of characters
      * @return string
      */
     protected function getRandomCharacters($count) {

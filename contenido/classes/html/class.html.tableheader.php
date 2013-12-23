@@ -25,8 +25,6 @@ class cHTMLTableHeader extends cHTMLContentElement {
 
     /**
      * Creates an HTML thead element.
-     *
-     * @return void
      */
     public function __construct() {
         parent::__construct();

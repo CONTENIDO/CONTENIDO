@@ -91,7 +91,7 @@ class cXmlReader extends cXmlBase {
      * Returns the element of an DOMNodeList read out by a xpath string.
      *
      * @param string $path xpath string
-     * @param integer $nodeKey node key (optional, default: 0)
+     * @param int $nodeKey node key (optional, default: 0)
      * @return DOMNode
      */
     public function getXpathNode($path, $nodeKey = 0) {
@@ -105,7 +105,7 @@ class cXmlReader extends cXmlBase {
      * Returns the value of an DOMNode read out by a xpath string.
      *
      * @param string $path xpath string
-     * @param integer $nodeKey node key (optional, default: 0)
+     * @param int $nodeKey node key (optional, default: 0)
      * @return string value of DOMNode
      */
     public function getXpathValue($path, $nodeKey = 0) {
@@ -118,7 +118,7 @@ class cXmlReader extends cXmlBase {
      * Returns the amount of nodes in a given XPath string.
      *
      * @param string $path XPath string
-     * @return integer amount of nodes in node list
+     * @return int amount of nodes in node list
      */
     public function countXpathNodes($path) {
         $domNodeList = $this->getXpathNodeList($path);

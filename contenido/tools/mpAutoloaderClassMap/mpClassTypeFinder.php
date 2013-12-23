@@ -112,7 +112,6 @@ class mpClassTypeFinder
      *                                - temp.php (single file name)
      *                                - ~*.php (with * wildcard)
      *                                  Will be replaced against regex '/^~.*\.php$/'
-     * @return  void
      */
     public function setExcludeFiles(array $excludeFiles)
     {
@@ -141,7 +140,6 @@ class mpClassTypeFinder
      * Sets file extensions to parse
      *
      * @param   array  $extensionsToParse
-     * @return  void
      */
     public function setExtensionsToParse(array $extensionsToParse)
     {
@@ -269,7 +267,6 @@ class mpClassTypeFinder
      * Adds passed message to debug list, if debugging is enabled
      *
      * @param   string  $msg
-     * @return  void
      */
     protected function _debug($msg)
     {

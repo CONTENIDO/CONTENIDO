@@ -25,8 +25,6 @@ class cVersionModule extends cVersion {
 
     /**
      * Type of modul
-     *
-     * @access public
      */
     public $sModType;
 
@@ -36,8 +34,8 @@ class cVersionModule extends cVersion {
      * @param string $iIdMod The name of style file
      * @param array $aCfg
      * @param array $aCfgClient
-     * @param object $oDB
-     * @param integer $iClient
+     * @param cDB $oDB
+     * @param int $iClient
      * @param object $sArea
      * @param object $iFrame
      */
@@ -112,10 +110,10 @@ class cVersionModule extends cVersion {
      * This is neccessary, if filenames where changed, when a history entry is
      * restored
      *
-     * @param integer $iIdClient id of client which contains this file
+     * @param int $iIdClient id of client which contains this file
      * @param string $sArea name of CONTENIDO area in which this procedure
      *        should be done
-     * @param integer $iIdLayout Id of layout to highlight
+     * @param int $iIdLayout Id of layout to highlight
      * @param object $sess CONTENIDO session object
      *
      * @return string - Javascript for refrehing frames

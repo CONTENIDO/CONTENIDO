@@ -169,7 +169,7 @@ class cVersion {
      * @param array $aCfg
      * @param array $aCfgClient
      * @param object $oDB
-     * @param integer $iClient
+     * @param int $iClient
      * @param object $sArea
      * @param object $iFrame
      */
@@ -434,7 +434,7 @@ class cVersion {
     /**
      * Makes new and init Revision Name
      *
-     * @return integer returns number of Revison File
+     * @return int returns number of Revison File
      */
     private function getRevision() {
         $this->iVersion = ($this->iRevisionNumber + 1) . '_' . $this->dActualTimestamp;

@@ -271,7 +271,6 @@ class cArticleCollector implements SeekableIterator, Countable {
      * A page can be selected with $collection->setPage(int page)
      *
      * @param int $resPerPage
-     * @return void
      */
     public function setResultPerPage($resPerPage) {
         if ($resPerPage > 0) {

@@ -71,7 +71,7 @@ class NewsletterCollection extends ItemCollection
 
     /**
      * Duplicates the newsletter specified by $itemID
-     * @param $itemID integer specifies the newsletter id
+     * @param  int $itemID specifies the newsletter id
      */
     public function duplicate($iItemID)
     {
@@ -147,7 +147,6 @@ class Newsletter extends Item
 {
     /**
      * @var string Error storage
-     * @access private
      */
     public $_sError;
 
@@ -205,7 +204,6 @@ class Newsletter extends Item
      * @param bool        $bIsHTML    Is code HTML?
      * @param string    $sField    Field name, without MAIL_ (e.g. just "name")
      * @param string    $sData    Data
-     * @access private
      */
     public function _replaceTag(&$sCode, $bIsHTML, $sField, $sData)
     {
@@ -539,7 +537,7 @@ class Newsletter extends Item
 
     /**
      * Sends test newsletter directly to specified email address
-     * @param integer  $iIDCatArt        idcatart of newsletter handler article
+     * @param int  $iIDCatArt        idcatart of newsletter handler article
      * @param string   $sEMail           Recipient email address
      * @param string   $sName            Optional: Recipient name
      * @param bool     $bSimulatePlugin  If recipient plugin activated, include plugins
@@ -700,9 +698,9 @@ class Newsletter extends Item
      * Note: Sending in chunks not supported! Only usable for tests and only a few
      * recipients.
      *
-     * @param integer  $iIDCatArt     idcatart of newsletter handler article
-     * @param integer  $iIDNewsRcp    If specified, newsletter recipient id, ignored, if group specified
-     * @param integer  $iIDNewsGroup  If specified, newsletter recipient group id
+     * @param int  $iIDCatArt     idcatart of newsletter handler article
+     * @param int  $iIDNewsRcp    If specified, newsletter recipient id, ignored, if group specified
+     * @param int  $iIDNewsGroup  If specified, newsletter recipient group id
      * @param array    $aSendRcps     As reference: Filled with a list of succesfull recipients
      * @param string   $sEncoding     Message (and header) encoding, e.g. iso-8859-1
      */

@@ -257,7 +257,6 @@ class cApiClient extends Item {
      * @param string $p2 Not used, is here to prevent PHP Strict warnings
      * @param int $client Client id (not used, it's declared because of PHP
      *            strict warnings)
-     * @return void
      */
     public function deleteProperty($idProp, $p2 = "", $client = 0) {
         $propertyColl = $this->_getPropertiesCollectionInstance();

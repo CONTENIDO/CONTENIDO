@@ -164,7 +164,6 @@ class WorkflowUserSequence extends Item {
      * @param bool $safe
      * @throws cInvalidArgumentException if the field is idworkflowitem,
      *         idusersequence or position
-     * @return void
      */
     public function setField($field, $value, $safe = true) {
         global $cfg;

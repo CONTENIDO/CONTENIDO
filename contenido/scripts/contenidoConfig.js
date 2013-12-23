@@ -156,7 +156,6 @@
     /**
      * Updates the screen with the
      * given class cfg information
-     * @return void
      */
     Config.prototype.updateScreen = function() {
         if (this.status) {
@@ -216,7 +215,6 @@
     /**
      * Change template for a marked category
      * @FIXME: Where does the variable cfg comes from???
-     * @return void
      * @author Jan Lengowski <jan.lengowski@4fb.de>
      * @copyright four for business AG <www.4fb.de>
      */

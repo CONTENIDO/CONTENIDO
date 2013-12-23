@@ -39,8 +39,6 @@ class cUriBuilderFrontcontent extends cUriBuilder {
 
     /**
      * Constructor
-     *
-     * @return void
      */
     private function __construct() {
         $this->sHttpBasePath = '';

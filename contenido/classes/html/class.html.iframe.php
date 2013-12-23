@@ -25,8 +25,6 @@ class cHTMLIFrame extends cHTML {
 
     /**
      * Creates an HTML iframe element.
-     *
-     * @return void
      */
     public function __construct() {
         parent::__construct();

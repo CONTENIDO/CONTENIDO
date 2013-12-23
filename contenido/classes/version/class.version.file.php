@@ -26,30 +26,22 @@ class cVersionFile extends cVersion {
 
     /**
      * Content code of current file.
-     *
-     * @access public
      */
     public $sCode;
 
     /**
      * Description folder of history sub nav.
      * Its not required to use it.
-     *
-     * @access protected
      */
     public $sDescripion;
 
     /**
      * The path of style file.
-     *
-     * @access public
      */
     public $sPath;
 
     /**
      * The id of Type.
-     *
-     * @access public
      */
     public $sFileName;
 
@@ -162,7 +154,7 @@ class cVersionFile extends cVersion {
      * This is neccessary, if filenames where changed, when a history entry is
      * restored
      *
-     * @param integer $iIdClient - id of client which contains this file
+     * @param int $iIdClient - id of client which contains this file
      * @param string $sArea - name of CONTENIDO area in which this procedure
      *            should be done
      * @param string $sFilename - new filename of file which should be updated

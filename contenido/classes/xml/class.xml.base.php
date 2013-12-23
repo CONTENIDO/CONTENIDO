@@ -30,8 +30,6 @@ abstract class cXmlBase {
     /**
      * Creates a new XML document using DOMDocument.
      *
-     * @access protected
-     *
      * @param string $version version of DOMDocument (optional, default: 1.0)
      * @param string $encoding encoding of DOMDocumen (optional, default: UTF-8)
      */
@@ -134,7 +132,7 @@ abstract class cXmlBase {
      * Returns given XPath with integrad level definition.
      *
      * @param string $path XPath to extend
-     * @param integer $level level
+     * @param int $level level
      *
      * @return string extended XPath
      */

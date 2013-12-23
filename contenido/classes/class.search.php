@@ -229,7 +229,6 @@ class cSearchIndex extends cSearchBaseAbstract {
      * Constructor, set object properties
      *
      * @param cDb $db CONTENIDO Database object
-     * @return void
      */
     public function __construct($db = NULL) {
         parent::__construct($db);
@@ -1621,7 +1620,6 @@ class cSearchResult extends cSearchBaseAbstract {
      * @param string $rep1 The opening html-tag to emphasize the searchword e.g.
      *        '<b>'
      * @param string $rep2 The closing html-tag e.g. '</b>'
-     * @return void
      */
     public function setReplacement($rep1, $rep2) {
         if (strlen(trim($rep1)) > 0 && strlen(trim($rep2)) > 0) {

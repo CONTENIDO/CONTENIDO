@@ -55,7 +55,6 @@ class PimPluginViewNavSub {
     /**
      * Initializing and set variable for DOMDocument
      *
-     * @access private
      * @return DOMDocument
      */
     private function _setDOMDocument() {
@@ -65,7 +64,6 @@ class PimPluginViewNavSub {
     /**
      * Initializing and set variable for cApiNavMainCollection
      *
-     * @access private
      * @return cApiNavMainCollection
      */
     private function _setApiNavMainCollection() {
@@ -75,7 +73,6 @@ class PimPluginViewNavSub {
     /**
      * Initializing and set variable for cApiNavSubCollection
      *
-     * @access private
      * @return cApiNavSubCollection
      */
     private function _setApiNavSubCollection() {
@@ -84,9 +81,6 @@ class PimPluginViewNavSub {
 
     /**
      * Construct function
-     *
-     * @access public
-     * @return void
      */
     public function __construct() {
 
@@ -102,7 +96,6 @@ class PimPluginViewNavSub {
     /**
      * Set variable for plugin foldername
      *
-     * @access public
      * @param string $foldername
      * @return string
      */
@@ -114,7 +107,6 @@ class PimPluginViewNavSub {
     /**
      * Get nav_sub entries
      *
-     * @access public
      * @return Ambigous <string, string>|Ambigous <string, boolean>
      */
     public function getNavSubentries() {
@@ -160,8 +152,7 @@ class PimPluginViewNavSub {
     /**
      * Get founded CONTENIDO navigation entries
      *
-     * @access private
-     * @return boolean
+     * @return bool
      */
     private function _getCONTENIDONavigation() {
         $cfg = cRegistry::getConfig();
@@ -208,7 +199,7 @@ class PimPluginViewNavSub {
      * Checks for plugin navigation entry and get navigation entries from
      * CONTENIDO navigation xml file
      *
-     * @return boolean
+     * @return bool
      */
     private function _checkAndGetPluginNavigation() {
         $cfg = cRegistry::getConfig();

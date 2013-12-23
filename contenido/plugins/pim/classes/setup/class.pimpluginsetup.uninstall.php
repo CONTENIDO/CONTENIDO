@@ -61,7 +61,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Set variable for plugin foldername
      *
-     * @access public
      * @param string $foldername
      * @return string
      */
@@ -72,7 +71,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Initializing and set variable for PimPluginCollection class
      *
-     * @access private
      * @return PimPluginCollection
      */
     private function _setPimPluginCollection() {
@@ -82,7 +80,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Initializing and set variable for PimPluginRelationsCollection class
      *
-     * @access private
      * @return PimPluginRelationsCollection
      */
     private function _setPimPluginRelationsCollection() {
@@ -92,7 +89,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiAreaCollection
      *
-     * @access private
      * @return cApiAreaCollection
      */
     private function _setApiAreaCollection() {
@@ -102,7 +98,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiActionCollection
      *
-     * @access private
      * @return cApiActionCollection
      */
     private function _setApiActionCollection() {
@@ -112,7 +107,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiAFileCollection
      *
-     * @access private
      * @return cApiFileCollection
      */
     private function _setApiFileCollection() {
@@ -122,7 +116,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiFrameFileCollection
      *
-     * @access private
      * @return cApiFrameFileCollection
      */
     private function _setApiFrameFileCollection() {
@@ -132,7 +125,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiNavMainFileCollection
      *
-     * @access private
      * @return cApiNavMainCollection
      */
     private function _setApiNavMainCollection() {
@@ -142,7 +134,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiNavSubCollection
      *
-     * @access private
      * @return cApiNavSubCollection
      */
     private function _setApiNavSubCollection() {
@@ -152,7 +143,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiTypeCollection
      *
-     * @access private
      * @return cApiNavSubCollection
      */
     private function _setApiTypeCollection() {
@@ -171,8 +161,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     // Begin of uninstallation routine
     /**
      * Construct function
-     *
-     * @access public
      */
     public function __construct() {
 
@@ -194,8 +182,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Uninstall function
      *
-     * @access public
-     * @param boolean $sql Optional parameter to set sql true (standard) or
+     * @param bool $sql Optional parameter to set sql true (standard) or
      *        false
      */
     public function uninstall($sql = true) {
@@ -274,8 +261,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
 
     /**
      * Delete specific sql entries or tables, full uninstall mode
-     *
-     * @access protected
      */
     protected function _uninstallDeleteSpecificSql() {
         $cfg = cRegistry::getConfig();
@@ -305,7 +290,6 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Delete a installed plugin directory
      *
-     * @access public
      * @param $foldername name of extracted plugin
      * @param $page page class for success or error message
      */

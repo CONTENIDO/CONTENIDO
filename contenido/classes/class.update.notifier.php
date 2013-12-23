@@ -145,29 +145,28 @@ class cUpdateNotifier {
     /**
      * Timeout for the fsockopen connection
      *
-     * @access protected
-     * @var integer
+     * @var int
      */
     protected $iConnectTimeout = 3;
 
     /**
      * Cache duration in minutes
      *
-     * @var integer
+     * @var int
      */
     protected $iCacheDuration = 60;
 
     /**
      * Check for system setting
      *
-     * @var boolean
+     * @var bool
      */
     protected $bEnableCheck = false;
 
     /**
      * Check for system setting Rss
      *
-     * @var boolean
+     * @var bool
      */
     protected $bEnableCheckRss = false;
 
@@ -175,28 +174,28 @@ class cUpdateNotifier {
      * If true CONTENIDO displays a special error message due to missing write
      * permissions.
      *
-     * @var boolean
+     * @var bool
      */
     protected $bNoWritePermissions = false;
 
     /**
      * Display update notification based on user rights (sysadmin only)
      *
-     * @var boolean
+     * @var bool
      */
     protected $bEnableView = false;
 
     /**
      * Update necessity
      *
-     * @var boolean
+     * @var bool
      */
     protected $bUpdateNecessity = false;
 
     /**
      * Vendor host reachability.
      *
-     * @var boolean
+     * @var bool
      */
     private $bVendorHostReachable = true;
 

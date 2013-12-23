@@ -441,7 +441,7 @@ class cPermission {
     /**
      * Checks if the given user has an admin permission
      *
-     * @param integer $iClient idclient to check
+     * @param int $iClient idclient to check
      * @param object $oUser User object to check against
      * @return bool
      */

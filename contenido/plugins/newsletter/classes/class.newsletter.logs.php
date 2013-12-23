@@ -94,9 +94,9 @@ class NewsletterLogCollection extends ItemCollection {
      * Gets all active recipients as specified for the newsletter and adds for
      * every recipient a log item
      *
-     * @param integer $idnewsjob ID of corresponding newsletter dispatch job
-     * @param integer $idnews ID of newsletter
-     * @return integer Recipient count
+     * @param  int  $idnewsjob ID of corresponding newsletter dispatch job
+     * @param  int  $idnews ID of newsletter
+     * @return  int  Recipient count
      */
     public function initializeJob($idnewsjob, $idnews) {
         global $cfg;
@@ -172,7 +172,7 @@ class NewsletterLogCollection extends ItemCollection {
      * Overriden delete function to update recipient count if removing recipient
      * from the list
      *
-     * @param integer $idnewslog ID
+     * @param int $idnewslog ID
      */
     public function delete($idnewslog) {
         $idnewslog = cSecurity::toInteger($idnewslog);

@@ -29,7 +29,6 @@ class cHTMLImage extends cHTML {
      *
      * @param mixed $content String or object with the contents
      * @param string $class the class of this element
-     * @return void
      */
     public function __construct($src = NULL, $class = '') {
         parent::__construct();

@@ -30,22 +30,16 @@ class cApiClickableAction extends cApiAction {
 
     /**
      * Help text
-     *
-     * @access private
      */
     private $_helpText;
 
     /**
      * cHTMLLink for rendering the icon
-     *
-     * @access private
      */
     protected $_link;
 
     /**
      * cHTMLImage for rendering the icon
-     *
-     * @access private
      */
     private $_img;
 
@@ -89,7 +83,6 @@ class cApiClickableAction extends cApiAction {
      *
      * @param string $icon Path to the icon. Relative to the backend, if not
      *        passed as absolute path.
-     * @return void
      */
     public function setIcon($icon) {
         $this->_img->setSrc($icon);
@@ -109,7 +102,6 @@ class cApiClickableAction extends cApiAction {
      * @param string actionName Name of the action to use. This action must
      *        exist in the actions table before
      *        using it, otherwise, this method will fail.
-     * @return void
      */
     public function setNamedAction($actionName) {
         if ($this->loadBy("name", $actionName) !== false) {
@@ -169,7 +161,6 @@ class cApiClickableAction extends cApiAction {
      * sets the help text for this action.
      *
      * @param string helptext The helptext to apply
-     * @return void
      */
     public function setHelpText($helptext) {
         $this->_helpText = $helptext;

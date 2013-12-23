@@ -38,7 +38,6 @@ class cHTMLButton extends cHTMLFormElement {
      * @param string $accesskey Key to access the field
      * @param string $mode Mode of button
      * @param string $class the class of this element
-     * @return void
      */
     public function __construct($name, $title = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $mode = 'submit', $class = '') {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);

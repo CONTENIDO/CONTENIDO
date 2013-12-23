@@ -39,8 +39,6 @@ class cUriBuilderCustom extends cUriBuilder {
 
     /**
      * Constructor
-     *
-     * @return void
      */
     private function __construct() {
         $this->sHttpBasePath = '';
@@ -66,7 +64,6 @@ class cUriBuilderCustom extends cUriBuilder {
      * @param array $aParams
      * @param bool $bUseAbsolutePath
      * @param array $aConfig If not set, will use cUriBuilderConfig::getConfig()
-     * @return void
      * @throws cInvalidArgumentException
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {

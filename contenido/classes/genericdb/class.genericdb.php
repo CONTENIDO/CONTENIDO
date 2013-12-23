@@ -121,7 +121,6 @@ class cGenericDb {
      *        array with names of the concrete Item classes)
      * @throws cInvalidArgumentException if event or class are not set or the
      *         callback is not callable
-     * @return void
      */
     public static function register($event, $callback, $class) {
         if (isset($event) === false) {
@@ -156,7 +155,6 @@ class cGenericDb {
      * @param mixed $class Class name for unregistering callback (can be string
      *        of array with names of the concrete Item classes)
      * @throws cInvalidArgumentException if the event or the class are not set
-     * @return void
      */
     public static function unregister($event, $class) {
         if (isset($event) === false) {
@@ -184,7 +182,6 @@ class cGenericDb {
      * @param string $class Class name for executing callback
      * @param array $arguments Arguments to pass to the callback function
      * @throws cInvalidArgumentException if the event or class is not set
-     * @return void
      */
     protected final function _executeCallbacks($event, $class, $arguments = array()) {
         if (isset($event) === false) {

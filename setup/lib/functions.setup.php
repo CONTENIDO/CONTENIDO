@@ -40,7 +40,6 @@ function cGenerateSetupStepsDisplay($iCurrentStep) {
  * Logs general setup failures into setuplog.txt in logs directory.
  *
  * @param   string  $sErrorMessage  Message to log in file
- * @return  void
  */
 function logSetupFailure($sErrorMessage) {
     global $cfg;

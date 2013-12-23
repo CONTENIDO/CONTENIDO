@@ -214,7 +214,6 @@ class WorkflowItem extends Item {
      *            function
      * @throws cInvalidArgumentException if the field is idsequence, idworkflow
      *         or position
-     * @return void
      */
     public function setField($field, $value, $safe = true) {
         if ($this->virgin == true) {

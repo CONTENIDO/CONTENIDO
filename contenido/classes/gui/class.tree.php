@@ -26,37 +26,31 @@ class cGuiTree extends cTree {
 
     /**
      *
-     * @access private
      */
     private $_globalActions;
 
     /**
      *
-     * @access private
      */
     private $_setItemActions;
 
     /**
      *
-     * @access private
      */
     private $_unsetItemActions;
 
     /**
      *
-     * @access private
      */
     private $_setAttributeActions;
 
     /**
      *
-     * @access private
      */
     private $_unsetAttributeActions;
 
     /**
      *
-     * @access private
      */
     private $_baseLink;
 
@@ -125,9 +119,6 @@ class cGuiTree extends cTree {
      * cGuiTree::TREEVIEW_GRIDLINE_DASHED
      * cGuiTree::TREEVIEW_GRIDLINE_DOTTED
      * cGuiTree::TREEVIEW_GRIDLINE_NONE
-     *
-     * @return void
-     * @access public
      */
     public function setGridlineMode($mode) {
         $this->_gridlineMode = $mode;
@@ -147,7 +138,6 @@ class cGuiTree extends cTree {
 
     /**
      * @return string
-     * @access public
      */
     public function render($with_root = true) {
         /** @var cTreeItem[] $objects */

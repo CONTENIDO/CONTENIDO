@@ -27,7 +27,7 @@ class PimPluginArchiveExtractor {
     /**
      * The extractor initializer
      *
-     * @var integer
+     * @var int
      */
     protected $_extractor = 0;
 
@@ -62,11 +62,9 @@ class PimPluginArchiveExtractor {
     /**
      * Constructor of ArchiveExtractor, load the file list
      *
-     * @access public
      * @param $source string path to the temp directory
      * @param $filename string name of zip archive
      * @throws cException if the source file does not exists
-     * @return void
      */
     public function __construct($source, $filename) {
         $cfg = cRegistry::getConfig();
@@ -98,12 +96,10 @@ class PimPluginArchiveExtractor {
     /**
      * Sets the path where the extractor extracts the archive files
      *
-     * @access public
      * @param $destination string
      * @throws cException if the destination path can not set (directory is not
      *         writable)
      * @throws cException if the defined destination already exists
-     * @return void
      */
     public function setDestinationPath($destination) {
         if (!is_dir($destination)) {
@@ -120,9 +116,7 @@ class PimPluginArchiveExtractor {
     /**
      * Extracts the whole archive
      *
-     * @access public
      * @throws cException if the extraction failed
-     * @return void
      */
     public function extractArchive() {
         if ($this->_destination != '') {
@@ -136,7 +130,6 @@ class PimPluginArchiveExtractor {
      * Extracts a specific file from archive and return its content to use it in
      * a variable
      *
-     * @access public
      * @param $filename string
      * @param $content bool [optional] whether to return the content or just the
      *            dir and filename of the extracted file
@@ -157,9 +150,6 @@ class PimPluginArchiveExtractor {
     /**
      * Destory temporary plugin files (plugin.xml, plugin_install.sql and files
      * at CONTENIDO temp dir)
-     *
-     * @access public
-     * @return void
      */
     public function destroyTempFiles() {
 

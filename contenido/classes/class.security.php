@@ -64,7 +64,7 @@ class cSecurity {
      * Check: Has the variable an boolean value?
      *
      * @param   string   $sVar  Input string
-     * @return  boolean  Check state
+     * @return  bool  Check state
      */
     public static function isBoolean($sVar) {
         $sTempVar = $sVar;
@@ -76,7 +76,7 @@ class cSecurity {
      * Check: Is the variable an integer?
      *
      * @param   string   $sVar  Input string
-     * @return  boolean  Check state
+     * @return  bool  Check state
      */
     public static function isInteger($sVar) {
         return (preg_match('/^[0-9]+$/', $sVar));
@@ -86,7 +86,7 @@ class cSecurity {
      * Check: Is the variable an string?
      *
      * @param   string   $sVar  Input string
-     * @return  boolean  Check state
+     * @return  bool  Check state
      */
     public static function isString($sVar) {
         return (is_string($sVar));
@@ -96,7 +96,7 @@ class cSecurity {
      * Convert an string to an boolean
      *
      * @param   string   $sString   Input string
-     * @return  boolean  Type casted input string
+     * @return  bool  Type casted input string
      */
     public static function toBoolean($sString) {
         return (bool) $sString;
@@ -106,7 +106,7 @@ class cSecurity {
      * Convert an string to an integer
      *
      * @param   string   $sString   Input string
-     * @return  integer  Type casted input string
+     * @return  int  Type casted input string
      */
     public static function toInteger($sString) {
         return (int) $sString;
@@ -116,7 +116,7 @@ class cSecurity {
      * Convert an string
      *
      * @param   string   $sString         Input string
-     * @param   boolean  $bHTML           If true check with strip_tags and stripslashes
+     * @param   bool  $bHTML           If true check with strip_tags and stripslashes
      * @param   string   $sAllowableTags  Allowable tags if $bHTML is true
      * @return  string  Converted string
      */
@@ -133,7 +133,7 @@ class cSecurity {
      *
      * @param   string        $sString          Input string
      * @param   cDb  $oDB              CONTENIDO database object
-     * @param   boolean       $bUndoAddSlashes  Flag for undo addslashes (optional, default: true)
+     * @param   bool       $bUndoAddSlashes  Flag for undo addslashes (optional, default: true)
      * @return  string  Converted string
      */
     public static function escapeDB($sString, $oDB, $bUndoAddSlashes = true) {

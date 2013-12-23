@@ -37,7 +37,6 @@ class PimPluginSetupStatus extends PimPluginSetup {
     /**
      * Initializing and set variable for PimPluginCollection class
      *
-     * @access private
      * @return PimPluginCollection
      */
     private function _setPimPluginCollection() {
@@ -47,7 +46,6 @@ class PimPluginSetupStatus extends PimPluginSetup {
     /**
      * Initializing and set variable for PimPluginRelationsCollection class
      *
-     * @access private
      * @return PimPluginRelationsCollection
      */
     private function _setPimPluginRelationsCollection() {
@@ -57,7 +55,6 @@ class PimPluginSetupStatus extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiNavSubCollection
      *
-     * @access private
      * @return cApiNavSubCollection
      */
     private function _setApiNavSubCollection() {
@@ -67,9 +64,6 @@ class PimPluginSetupStatus extends PimPluginSetup {
     // Begin of installation routine
     /**
      * Construct function
-     *
-     * @access public
-     * @return void
      */
     public function __construct() {
 
@@ -85,9 +79,7 @@ class PimPluginSetupStatus extends PimPluginSetup {
     /**
      * Change plugin active status
      *
-     * @access public
-     * @param integer $pluginId
-     * @return void
+     * @param int $pluginId
      */
     public function changeActiveStatus($pluginId) {
 
@@ -136,10 +128,9 @@ class PimPluginSetupStatus extends PimPluginSetup {
     /**
      * Change *_nav_sub online status
      *
-     * @access private
-     * @param integer $idnavs (equivalent to column name)
-     * @param boolean $online (equivalent to column name)
-     * @return true
+     * @param int $idnavs (equivalent to column name)
+     * @param bool $online (equivalent to column name)
+     * @return  bool true
      */
     private function changeNavSubStatus($idnavs, $online) {
         $this->_ApiNavSubCollection->setWhere('idnavs', cSecurity::toInteger($idnavs));

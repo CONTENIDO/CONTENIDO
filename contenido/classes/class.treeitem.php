@@ -123,7 +123,7 @@ class TreeItem {
      *
      * @param string $name The name of that item
      * @param string $id The unique ID of that item
-     * @param boolean $collapsed Is this item collapsed by default
+     * @param bool $collapsed Is this item collapsed by default
      */
     public function __construct($name = "", $id = "", $collapsed = false) {
         $this->name = $name;
@@ -302,7 +302,7 @@ class TreeItem {
      * all objects as $objects.
      *
      * @param object $objects all found objects
-     * @param integer $level Level to start on
+     * @param int $level Level to start on
      */
     function traverse(&$objects, $level = 0) {
         $objects[count($objects)] = &$this;

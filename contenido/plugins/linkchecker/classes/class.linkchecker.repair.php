@@ -26,7 +26,6 @@ class LinkcheckerRepair {
     /**
      * Typical link misstakes
      *
-     * @access private
      * @var string
      */
     private $errorTypes = array(
@@ -43,7 +42,6 @@ class LinkcheckerRepair {
      * Fixed link misstakes
      * Keys are equivalent to $errorTypes
      *
-     * @access private
      * @var string
      */
     private $correctTypes = array(
@@ -59,8 +57,7 @@ class LinkcheckerRepair {
     /**
      * Checks link and generate a repaired version
      *
-     * @access public
-     * @return $repaired_link or false
+     * @return string|bool
      */
     public function checkLink($link) {
 
@@ -80,9 +77,8 @@ class LinkcheckerRepair {
     /**
      * Test repaired link
      *
-     * @access private
      * @param string $repaired_link
-     * @return true or false
+     * @return  bool  true or false
      */
     private function pingRepairedLink($repaired_link) {
         return @fopen($repaired_link, 'r');

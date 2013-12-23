@@ -962,7 +962,7 @@ class idna_convert
      * overloading is turned on
      *
      * @param string $string the string for which to get the length.
-     * @return integer the length of the string in bytes.
+     * @return  int  the length of the string in bytes.
      */
     protected static function byteLength($string)
     {
@@ -977,7 +977,6 @@ class idna_convert
      *
      * @param array $params Set of paramaters
      * @return idna_convert
-     * @access public
      */
     public function getInstance($params = array())
     {
@@ -990,9 +989,7 @@ class idna_convert
      * parameters currently exists.
      *
      * @param array $params Set of paramaters
-     *
      * @return object idna_convert
-     * @access public
      */
     public function singleton($params = array())
     {

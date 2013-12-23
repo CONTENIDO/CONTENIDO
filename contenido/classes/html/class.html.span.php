@@ -28,7 +28,6 @@ class cHTMLSpan extends cHTMLContentElement {
      * Creates an HTML Span element.
      *
      * @param mixed $content String or object with the contents
-     * @return void
      */
     public function __construct($content = '', $class = "") {
         parent::__construct();

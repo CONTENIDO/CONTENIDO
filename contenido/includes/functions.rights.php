@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Function checks if a language is associated with a given list of clients
  *
  * @param array $aClients - array of clients to check
- * @param integer $iLang - language id which should be checked
+ * @param int $iLang - language id which should be checked
  * @param array $aCfg - CONTENIDO configruation array (no more needed)
  * @param object $oDb - CONTENIDO database object (no more needed)
  *

@@ -71,7 +71,7 @@ class FrontendNavigation {
         $navigation = array();
         while ($this->db->nextRecord()) {
             $navigation[] = $this->db->f("idcat");
-        }# end while
+        }
 
         return $navigation;
     }
@@ -468,13 +468,11 @@ class FrontendNavigation {
     /**
      * Get URL by given category in front_content.php style
      *
-     * @param integer $iIdcat
-     * @param integer $iIdart
-     * @param boolean $bAbsolute return absolute path or not
-     *
+     * @param int $iIdcat
+     * @param int $iIdart
+     * @param bool $bAbsolute return absolute path or not
      * @return string URL
      * @author Willi Man
-     * @access public
      */
     function getFrontContentUrl($iIdcat, $iIdart, $bAbsolute = true) {
         if (!is_int((int) $iIdcat) AND $iIdcat < 0) {
@@ -504,14 +502,12 @@ class FrontendNavigation {
      * The urlpath looks like /Home/Product/Support/ where the directory-like string equals a category path.
      *
      * @requires functions.pathresolver.php
-     * @param integer $iIdcat
-     * @param integer $iIdart
-     * @param boolean $bAbsolute return absolute path or not
-     *
+     * @param int $iIdcat
+     * @param int $iIdart
+     * @param bool $bAbsolute return absolute path or not
      * @return string path information or empty string
      * @author Marco Jahn (Project www.usa.de)
      * @modified by Willi Man
-     * @access public
      */
     function getUrlPath($iIdcat, $iIdart, $bAbsolute = true, $iLevel = 0, $sURL_SUFFIX = 'index.html') {
         if (!is_int((int) $iIdcat) AND $iIdcat < 0) {
@@ -546,14 +542,11 @@ class FrontendNavigation {
      * Get urlpath by given category and/or selected param and level.
      *
      * @requires functions.pathresolver.php
-     * @param integer $iIdcat
-     * @param integer $iSelectedNumber
-     * @param boolean $bAbsolute return absolute path or not
-     *
+     * @param int $iIdcat
+     * @param int $iSelectedNumber
+     * @param bool $bAbsolute return absolute path or not
      * @return string path information or empty string
      * @author Willi Man
-     *
-     * @access public
      */
     function getUrlPathGenParam($iIdcat, $iSelectedNumber, $bAbsolute = true, $iLevel = 0) {
         if (!is_int((int) $iIdcat) AND $iIdcat < 0) {
@@ -583,13 +576,11 @@ class FrontendNavigation {
     /**
      * Get URL by given categoryid and/or articleid
      *
-     * @param integer $iIdcat url name to create for
-     * @param integer $iIdart
-     * @param boolean $bAbsolute return absolute path or not
-     *
+     * @param int $iIdcat url name to create for
+     * @param int $iIdart
+     * @param bool $bAbsolute return absolute path or not
      * @return string URL
      * @author Willi Man
-     * @access public
      */
     function getURL($iIdcat, $iIdart, $sType = '', $bAbsolute = true, $iLevel = 0) {
         if (!is_int((int) $iIdcat) AND $iIdcat < 0) {

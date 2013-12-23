@@ -41,7 +41,6 @@ class cUriBuilderCustomPath extends cUriBuilder {
 
     /**
      * Constructor
-     * @return void
      */
     private function __construct() {
         $this->sHttpBasePath = '';
@@ -67,7 +66,6 @@ class cUriBuilderCustomPath extends cUriBuilder {
      * @param  array  $aParams  Required keys are: idcat, level, lang and at least one custom key.
      * @param  bool  $bUseAbsolutePath
      * @param  array  $aConfig  If not set, will use UriBuilderConfig::getConfig()
-     * @return void
      * @throws cInvalidArgumentException
      * @todo Somehow get around using prCreateURLNameLocationString()
      */

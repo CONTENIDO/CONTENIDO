@@ -112,7 +112,7 @@ class cUriBuilderMR extends cUriBuilder {
      *        <code>
      *        $params[0] = 'front_content.php?idart=123...'
      *        </code>
-     * @param boolean $bUseAbsolutePath Flag to use absolute path (not used at
+     * @param bool $bUseAbsolutePath Flag to use absolute path (not used at
      *        the moment)
      * @return string New build url
      */

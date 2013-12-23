@@ -30,7 +30,6 @@ class cHTMLLegend extends cHTMLContentElement {
      * @param mixed $content String or object with the contents
      * @param string $class the class of this element
      * @param string $id the ID of this element
-     * @return void
      */
     public function __construct($content = '', $class = '', $id = '') {
         parent::__construct($content, $class, $id);

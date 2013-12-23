@@ -50,7 +50,6 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
  * Archives the current statistics
  *
  * @param $yearmonth String with the desired archive date (YYYYMM)
- * @return void
  */
 function statsArchive($yearmonth) {
     global $cfg;
@@ -113,7 +112,6 @@ function statsArchive($yearmonth) {
  * @param $yearmonth  Specifies the year and month from which to retrieve the
  *                    statistics, specify "current" to retrieve the current
  *                    entries
- * @return void
  */
 function statsOverviewAll($yearmonth) {
     global $cfg, $db, $tpl, $client, $lang, $cfgClient;
@@ -458,9 +456,7 @@ function statsOverviewAll($yearmonth) {
 /**
  * Generates a statistics page for a given year
  *
- * @param $year       Specifies the year to retrieve the
- *                    statistics for
- * @return void
+ * @param $year Specifies the year to retrieve the statistics for
  */
 function statsOverviewYear($year) {
     global $cfg, $db, $tpl, $client, $lang;
@@ -736,7 +732,6 @@ function statsOverviewYear($year) {
  *                    statistics, specify "current" to retrieve the current
  *                    entries
  * @param $top        Specifies the amount of pages to display
- * @return void
  */
 function statsOverviewTop($yearmonth, $top) {
     global $cfg, $db, $tpl, $client, $cfgClient, $lang;
@@ -797,7 +792,6 @@ function statsOverviewTop($yearmonth, $top) {
  * @param   int  $idcat  The category id
  * @param   string  $seperator  Separator for location string
  * @param   string  $cat_str    The location string variable (reference)
- * @return  void
  */
 function statCreateLocationString($idcat, $seperator, &$cat_str) {
     $cats = array();
@@ -814,10 +808,8 @@ function statCreateLocationString($idcat, $seperator, &$cat_str) {
 /**
  * Generates a top<n> statistics page
  *
- * @param $year       int Specifies the year from which to retrieve the
- *                    statistics
- * @param $top        int Specifies the amount of pages to display
- * @return void
+ * @param  int  $year  Specifies the year from which to retrieve the statistics
+ * @param  int  $top  Specifies the amount of pages to display
  */
 function statsOverviewTopYear($year, $top) {
     global $cfg, $db, $tpl, $client, $lang, $cfgClient;
@@ -979,7 +971,6 @@ function statGetAvailableMonths($year, $client, $lang) {
  * Resets the statistic for passed client
  *
  * @param   int  $client  Id of client
- * @return  void
  */
 function statResetStatistic($client) {
     global $db, $cfg;
@@ -990,9 +981,8 @@ function statResetStatistic($client) {
 /**
  * Deletes existing heap table (table in memory) and creates it.
  *
- * @param   string        $sHeapTable  Table name
- * @param   cDb  $db          Database object
- * @return  void
+ * @param   string  $sHeapTable  Table name
+ * @param   cDb  $db  Database object
  */
 function buildHeapTable($sHeapTable, $db) {
     global $cfg;

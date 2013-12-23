@@ -46,7 +46,6 @@ class PimPluginSetup {
      * If this variable is true PIM does not run uninstall and install
      * sql file. Standard value: false (update sql file does not exist)
      *
-     * @access private
      * @var boolean
      */
     private static $_updateSqlFileExist = false;
@@ -85,7 +84,6 @@ class PimPluginSetup {
      * Mode 1: Plugin is already extracted
      * Mode 2: Plugin is uploaded
      *
-     * @access public
      * @param string $mode
      */
     public static function setMode($mode) {
@@ -108,7 +106,6 @@ class PimPluginSetup {
     /**
      * Set method for cGuiPage class
      *
-     * @access public
      * @param cGuiPage $page
      */
     public function setPageClass($page) {
@@ -118,8 +115,7 @@ class PimPluginSetup {
     /**
      * Set method to change updateSqlFileExist variable
      *
-     * @access protected
-     * @param boolean $value
+     * @param bool $value
      */
     protected function _setUpdateSqlFileExist($value) {
         self::$_updateSqlFileExist = cSecurity::toBoolean($value);
@@ -128,7 +124,6 @@ class PimPluginSetup {
     /**
      * Initialzing and set variable for PimPluginArchiveExtractor class
      *
-     * @access private
      * @param string $tempArchiveNewPath Path to Zip archive
      * @param string $tempArchiveName Name of Zip archive
      * @return PimPluginArchiveExtractor
@@ -140,7 +135,6 @@ class PimPluginSetup {
     /**
      * Set temporary xml content to static variables
      *
-     * @access private
      * @param string $xml
      */
     private function _setXml($xml) {
@@ -173,9 +167,8 @@ class PimPluginSetup {
     /**
      * Set method for PluginId
      *
-     * @access public
-     * @param integer $pluginId
-     * @return integer
+     * @param int $pluginId
+     * @return int
      */
     public function setPluginId($pluginId = 0) {
         return self::$_pluginId = $pluginId;
@@ -184,7 +177,7 @@ class PimPluginSetup {
     /**
      * Get method for installation / update mode
      *
-     * @return integer
+     * @return int
      */
     public static function getMode() {
         return self::$mode;
@@ -193,8 +186,7 @@ class PimPluginSetup {
     /**
      * Get method for PluginId
      *
-     * @access protected
-     * @return integer
+     * @return int
      */
     protected static function _getPluginId() {
         return self::$_pluginId;
@@ -203,7 +195,7 @@ class PimPluginSetup {
     /**
      * Set method for updateSqlFileExist variable
      *
-     * @return boolean
+     * @return bool
      */
     protected function _getUpdateSqlFileExist() {
         return self::$_updateSqlFileExist;
@@ -213,8 +205,6 @@ class PimPluginSetup {
     /**
      * checkXml
      * Load plugin datas and run Xml checks
-     *
-     * @access public
      */
     public function checkXml() {
         $cfg = cRegistry::getConfig();
@@ -258,8 +248,6 @@ class PimPluginSetup {
 
     /**
      * Check file type, Plugin Manager accepts only Zip archives
-     *
-     * @access private
      */
     private function checkZip() {
         if (substr($_FILES['package']['name'], -4) != ".zip") {
@@ -269,10 +257,8 @@ class PimPluginSetup {
 
     /**
      * Validate Xml source
-     *
-     * @access private
      * @param string $xml
-     * @return boolean
+     * @return bool
      */
     private function validXml($xml) {
         // Initializing PHP DomDocument class
@@ -289,8 +275,6 @@ class PimPluginSetup {
 
     /**
      * Error function with pim_error-Template
-     *
-     * @access protected
      * @param string $message
      */
     protected static function error($message = '') {
@@ -314,8 +298,6 @@ class PimPluginSetup {
 
     /**
      * Info function
-     *
-     * @access protected
      * @param string $message
      */
     protected static function info($message = '') {
@@ -323,4 +305,5 @@ class PimPluginSetup {
     }
 
 }
+
 ?>

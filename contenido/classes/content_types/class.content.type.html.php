@@ -29,11 +29,10 @@ class cContentTypeHtml extends cContentTypeAbstract {
      *
      * @param string $rawSettings the raw settings in an XML structure or as
      *        plaintext
-     * @param integer $id ID of the content type, e.g. 3 if CMS_DATE[3] is
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
      *        used
      * @param array $contentTypes array containing the values of all content
      *        types
-     * @return void
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
         // change attributes from the parent class and call the parent

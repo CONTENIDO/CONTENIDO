@@ -25,8 +25,6 @@ class cHTMLTableBody extends cHTMLContentElement {
 
     /**
      * Creates an HTML tbody element.
-     *
-     * @return void
      */
     public function __construct() {
         parent::__construct();

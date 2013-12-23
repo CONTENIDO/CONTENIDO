@@ -44,8 +44,6 @@ class mpClassMapFileCreator {
 
     /**
      * Sets template and template replacements
-     *
-     * @return void
      */
     public function __construct() {
         $this->_template = trim('
@@ -101,7 +99,6 @@ class mpClassMapFileCreator {
      * Fills template replacement variable with generated assoziative PHP array
      *
      * @var array $data Assoziative list with class type tokens and files
-     * @return void
      */
     protected function _createClassMap(array $data) {
         $classMapTpl = "\r\nreturn array(\r\n%s\r\n);\r\n";

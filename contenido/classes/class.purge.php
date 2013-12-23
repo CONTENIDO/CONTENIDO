@@ -307,7 +307,6 @@ class cSystemPurge {
      * parameters.
      *
      * @param int $idartlang the idartlang of the article
-     * @return void
      */
     public function clearArticleCache($idartlang) {
         $cfgClient = cRegistry::getClientConfig();

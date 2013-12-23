@@ -116,7 +116,6 @@ HTMLObj.prototype.setMethods = function(type) {
             /**
              * Select an entry
              * @param string value of the entry
-             * @return void
              */
             this.select = function(selectedValue) {
 
@@ -158,7 +157,6 @@ HTMLObj.prototype.setMethods = function(type) {
  * the actions depending on
  * the cfg properties
  *
- * @return void
  * @author Jan Lengowski <jan.lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */

@@ -369,8 +369,6 @@ class NoteLink extends cHTMLLink {
 
     /**
      * Disables the display of all note items
-     *
-     * @return void
      */
     public function disableHistory() {
         $this->_bShowHistory = false;

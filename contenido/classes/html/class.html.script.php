@@ -27,8 +27,6 @@ class cHTMLScript extends cHTMLContentElement {
 
     /**
      * Creates an HTML script element.
-     *
-     * @return void
      */
     public function __construct() {
         parent::__construct();

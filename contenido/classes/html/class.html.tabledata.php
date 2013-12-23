@@ -25,8 +25,6 @@ class cHTMLTableData extends cHTMLContentElement {
 
     /**
      * Creates an HTML td element.
-     *
-     * @return void
      */
     public function __construct($content = NULL) {
         parent::__construct($content);

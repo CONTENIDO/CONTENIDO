@@ -39,7 +39,6 @@ class cHTMLUpload extends cHTMLFormElement {
      * @param string $tabindex Tab index for form elements
      * @param string $accesskey Key to access the field
      * @param string $class the class of this element
-     * @return void
      */
     public function __construct($name, $width = '', $maxlength = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);

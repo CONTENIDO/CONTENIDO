@@ -39,7 +39,6 @@ class cHTMLTextbox extends cHTMLFormElement {
      * @param string $tabindex Tab index for form elements
      * @param string $accesskey Key to access the field
      * @param string $class the class of this element
-     * @return void
      */
     public function __construct($name,
                                 $initvalue = '',

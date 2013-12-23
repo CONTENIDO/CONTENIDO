@@ -64,7 +64,7 @@ class Workflows extends ItemCollection {
      * Deletes all corresponding informations to this workflow and delegate call
      * to parent
      *
-     * @param integer $idWorkflow - id of workflow to delete
+     * @param int $idWorkflow - id of workflow to delete
      */
     public function delete($idWorkflow) {
         global $cfg;

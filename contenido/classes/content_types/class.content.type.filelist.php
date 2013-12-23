@@ -83,11 +83,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @param string $rawSettings the raw settings in an XML structure or as
      *        plaintext
-     * @param integer $id ID of the content type, e.g. 3 if CMS_TEASER[3] is
+     * @param int $id ID of the content type, e.g. 3 if CMS_TEASER[3] is
      *        used
      * @param array $contentTypes array containing the values of all content
      *        types
-     * @return void
      */
     function __construct($rawSettings, $id, array $contentTypes) {
         // set attributes of the parent class and call the parent constructor
@@ -435,7 +434,6 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *
      * @param array $fileData information about the file
      * @param cTemplate $template reference to the used template object
-     * @return void
      */
     private function _fillFileListTemplateEntry(array $fileData, cTemplate &$template) {
         $filename = $fileData['filename'];

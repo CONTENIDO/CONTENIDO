@@ -1497,7 +1497,6 @@ function conGetTopmostCat($idcat, $minLevel = 0) {
  * @param int $idart Article id
  * @param int $srclang Source language id
  * @param int $dstlang Destination language id
- * @return void
  */
 function conSyncArticle($idart, $srclang, $dstlang) {
     $auth = cRegistry::getAuth();

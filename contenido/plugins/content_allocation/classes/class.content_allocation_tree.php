@@ -101,7 +101,7 @@ class pApiTree {
      *
      * @param mixed $parentId
      * @param int $level
-     * @param boolean $bUseTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
+     * @param bool $bUseTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
      * @modified 27.10.2005 Willi Man
      */
     function fetchTree ($parentId = false, $level = 0, $bUseTreeStatus = true) {

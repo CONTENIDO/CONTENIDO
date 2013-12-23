@@ -45,7 +45,7 @@ class cXmlWriter extends cXmlBase {
      * @param DOMElement $rootElement root element (optional)
      * @param array $attributes array of attributes added to this element
      *        (optional)
-     * @param boolean $cdata whether the value is surround by CDATA blocks (optional)
+     * @param bool $cdata whether the value is surround by CDATA blocks (optional)
      *
      * @return DOMElement created DOM element
      */
@@ -73,11 +73,8 @@ class cXmlWriter extends cXmlBase {
     /**
      * Adds an array of attributes to a specific DOM element.
      *
-     * @access protected
-     *
      * @param DOMElement $element DOM element to add attributes
      * @param array $attributes array of attributes
-     *
      * @return DOMElement DOM element with assigned attributes
      */
     protected function _addElementAttributes(DOMElement $element, array $attributes = array()) {

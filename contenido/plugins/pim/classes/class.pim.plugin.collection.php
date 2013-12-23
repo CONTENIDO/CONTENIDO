@@ -88,7 +88,6 @@ class PimPluginCollection extends ItemCollection {
     /**
      * Get the next id in table *_plugins
      *
-     * @access protected
      * @return int
      */
     protected function _getNextId() {
@@ -125,16 +124,14 @@ class PimPluginCollection extends ItemCollection {
 class PimPlugin extends Item {
 
     /**
-     *
      * @var string Error storage
-     * @access private
      */
     protected $_error;
 
     /**
      * Constructor Function
      *
-     * @param $id mixed Specifies the id of item to load
+     * @param  mixed  $id  Specifies the id of item to load
      */
     public function __construct($id = false) {
         global $cfg;

@@ -211,7 +211,7 @@ VALID UNTIL: %s
      *
      * @param bool $htmlcomment True debugging or false.
      *
-     * @return void Htmlcomment flag or void
+     * @return void|string Htmlcomment flag or void
      */
     public function htmlComment($htmlcomment) {
         if (!is_null($htmlcomment) && is_bool($htmlcomment)) {
@@ -241,8 +241,6 @@ VALID UNTIL: %s
      *
      * @param string $template Template string including the '%s' format
      *            definition.
-     *
-     * @return void
      */
     public function infoTemplate($template) {
         $this->_sDebugTpl = $template;

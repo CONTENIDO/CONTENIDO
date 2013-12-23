@@ -45,8 +45,6 @@ class cFrontendHelper {
 
     /**
      * Constructor of the class.
-     *
-     * @return void
      */
     protected function __construct() {
     }
@@ -121,7 +119,6 @@ class cFrontendHelper {
      * @param int $baseCategoryId root category ID
      * @param int $depth maximum depth
      * @param cTemplate $tpl template reference
-     * @return void
      */
     public function renderSitemap($baseCategoryId, $depth, cTemplate &$tpl) {
         $tree = $this->_fetchCategoryTree($baseCategoryId, $depth, 0);

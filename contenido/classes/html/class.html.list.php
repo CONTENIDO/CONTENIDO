@@ -30,7 +30,6 @@ class cHTMLList extends cHTMLContentElement {
      * @param string $id the ID of the list element
      * @param string $class the class of the list element
      * @param array|string|object $elements the elements of this list
-     * @return void
      */
     public function __construct($type = 'ul', $id = '', $class = '', $elements = array()) {
         parent::__construct($elements, $class, $id);

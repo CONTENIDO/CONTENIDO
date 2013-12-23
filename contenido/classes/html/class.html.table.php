@@ -25,8 +25,6 @@ class cHTMLTable extends cHTMLContentElement {
 
     /**
      * Creates an HTML table element.
-     *
-     * @return void
      */
     public function __construct() {
         parent::__construct();

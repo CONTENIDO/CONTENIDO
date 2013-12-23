@@ -28,7 +28,6 @@ class PimPluginSetupUpdate extends PimPluginSetup {
     /**
      * Variable for PIM class PimPluginCollection
      *
-     * @access protected
      * @var PimPluginCollection
      */
     protected $_PimPluginCollection;
@@ -36,7 +35,6 @@ class PimPluginSetupUpdate extends PimPluginSetup {
     /**
      * Initializing and set variable for PimPluginCollection class
      *
-     * @access private
      * @return PimPluginCollection
      */
     private function _setPimPluginCollection() {
@@ -46,9 +44,6 @@ class PimPluginSetupUpdate extends PimPluginSetup {
     // Begin of update routine
     /**
      * Construct function
-     *
-     * @access public
-     * @return void
      */
     public function __construct() {
 
@@ -76,9 +71,6 @@ class PimPluginSetupUpdate extends PimPluginSetup {
 
     /**
      * Check uuId: You can update only the same plugin
-     *
-     * @access private
-     * @return void
      */
     private function _checkSamePlugin() {
         $this->_PimPluginCollection->setWhere('idplugin', parent::_getPluginId());
@@ -95,8 +87,6 @@ class PimPluginSetupUpdate extends PimPluginSetup {
      * Check for update specific sql files.
      * If some valid sql file available, PIM does not run uninstall and install
      * sql files.
-     *
-     * @access private
      */
     private function _updateSql() {
         $cfg = cRegistry::getConfig();
@@ -135,8 +125,6 @@ class PimPluginSetupUpdate extends PimPluginSetup {
 
     /**
      * Get installed plugin version
-     *
-     * @access private
      */
     private function _getInstalledPluginVersion() {
         $this->_PimPluginCollection->setWhere('idplugin', parent::_getPluginId());

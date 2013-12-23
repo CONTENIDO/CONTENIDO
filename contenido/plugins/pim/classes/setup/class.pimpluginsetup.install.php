@@ -64,7 +64,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Set variable for plugin foldername
      *
-     * @access private
      * @param string $foldername
      * @return string
      */
@@ -75,7 +74,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Initializing and set variable for PimPluginCollection class
      *
-     * @access private
      * @return PimPluginCollection
      */
     private function _setPimPluginCollection() {
@@ -85,7 +83,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Initializing and set variable for PimPluginRelationsCollection class
      *
-     * @access private
      * @return PimPluginRelationsCollection
      */
     private function _setPimPluginRelationsCollection() {
@@ -95,7 +92,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiAreaCollection
      *
-     * @access private
      * @return cApiAreaCollection
      */
     private function _setApiAreaCollection() {
@@ -105,7 +101,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiActionCollection
      *
-     * @access private
      * @return cApiActionCollection
      */
     private function _setApiActionCollection() {
@@ -115,7 +110,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiAFileCollection
      *
-     * @access private
      * @return cApiFileCollection
      */
     private function _setApiFileCollection() {
@@ -125,7 +119,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiFrameFileCollection
      *
-     * @access private
      * @return cApiFrameFileCollection
      */
     private function _setApiFrameFileCollection() {
@@ -135,7 +128,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiNavMainFileCollection
      *
-     * @access private
      * @return cApiNavMainCollection
      */
     private function _setApiNavMainCollection() {
@@ -145,7 +137,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiNavSubCollection
      *
-     * @access private
      * @return cApiNavSubCollection
      */
     private function _setApiNavSubCollection() {
@@ -155,7 +146,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     /**
      * Initializing and set variable for cApiTypeCollection
      *
-     * @access private
      * @return cApiNavSubCollection
      */
     private function _setApiTypeCollection() {
@@ -183,9 +173,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     // Begin of installation routine
     /**
      * Construct function
-     *
-     * @access public
-     * @return void
      */
     public function __construct() {
 
@@ -206,9 +193,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Installation method
-     *
-     * @access public
-     * @return void
      */
     public function install() {
 
@@ -264,9 +248,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Check uuId: You can install a plugin only for one time
-     *
-     * @access private
-     * @return void
      */
     private function _installCheckUuid() {
         $this->_PimPluginCollection->setWhere('uuid', parent::$XmlGeneral->uuid);
@@ -278,9 +259,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * This function checks requirements for one plugin
-     *
-     * @access private
-     * @return void
      */
     private function _installCheckRequirements() {
 
@@ -341,9 +319,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_plugins
-     *
-     * @access private
-     * @return void
      */
     private function _installAddPlugin() {
         // Add entry at *_plugins
@@ -361,9 +336,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Get all area names from database
-     *
-     * @access private
-     * @return void
      */
     private function _installFillAreas() {
         $oItem = $this->_ApiAreaCollection;
@@ -375,9 +347,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_area
-     *
-     * @access private
-     * @return void
      */
     private function _installAddAreas() {
 
@@ -424,9 +393,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_actions
-     *
-     * @access private
-     * @return void
      */
     private function _installAddActions() {
 
@@ -473,9 +439,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_frame_files and *_files
-     *
-     * @access private
-     * @return void
      */
     private function _installAddFrames() {
 
@@ -507,9 +470,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_nav_main
-     *
-     * @access private
-     * @return void
      */
     private function _installAddNavMain() {
 
@@ -531,9 +491,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add entries at *_nav_sub
-     *
-     * @access private
-     * @return void
      */
     private function _installAddNavSub() {
 
@@ -569,9 +526,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add specific sql queries
-     *
-     * @access private
-     * @return void
      */
     private function _installAddSpecificSql() {
         $cfg = cRegistry::getConfig();
@@ -610,9 +564,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add content types (*_type)
-     *
-     * @access private
-     * @return void
      */
     private function _installAddContentTypes() {
 
@@ -639,9 +590,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add modules
-     *
-     * @access private
-     * @return void
      */
     private function _installAddModules() {
         $cfg = cRegistry::getConfig();
@@ -668,9 +616,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
     /**
      * Add plugin dir
-     *
-     * @access private
-     * @return void
      */
     private function _installAddDir() {
         $cfg = cRegistry::getConfig();

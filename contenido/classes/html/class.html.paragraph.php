@@ -29,7 +29,6 @@ class cHTMLParagraph extends cHTMLContentElement {
      *
      * @param mixed $content String or object with the contents
      * @param string $class class of this element
-     * @return void
      */
     public function __construct($content = '', $class = '') {
         parent::__construct($content, $class);

@@ -68,16 +68,14 @@ class PimPluginRelationsCollection extends ItemCollection {
 class PimPluginRelations extends Item {
 
     /**
-     *
      * @var string Error storage
-     * @access private
      */
     protected $_sError;
 
     /**
      * Constructor Function
      *
-     * @param $id mixed Specifies the id of item to load
+     * @param  mixed  $id  Specifies the id of item to load
      */
     public function __construct($id = false) {
         global $cfg;

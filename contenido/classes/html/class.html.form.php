@@ -37,7 +37,6 @@ class cHTMLForm extends cHTMLContentElement {
      *        is submitted
      * @param string $method the method to use - post or get
      * @param string $class the class of this element
-     * @return void
      */
     public function __construct($name = '', $action = 'main.php', $method = 'post', $class = '') {
         parent::__construct('', $class);

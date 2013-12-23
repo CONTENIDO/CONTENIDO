@@ -101,7 +101,7 @@ class cApiArticle extends Item {
     /**
      * Returns the link to the current object.
      *
-     * @param integer $changeLangId change language id for URL (optional)
+     * @param int $changeLangId change language id for URL (optional)
      * @return string link
      */
     public function getLink($changeLangId = 0) {
