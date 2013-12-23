@@ -26,7 +26,7 @@ class cTree extends cTreeItem {
     /**
      * Tree icon
      *
-     * @var string @protected
+     * @var string
      */
     protected $_treeIcon;
 

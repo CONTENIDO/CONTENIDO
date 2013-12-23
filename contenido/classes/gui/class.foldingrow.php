@@ -55,7 +55,7 @@ class cGuiFoldingRow extends cHTML {
 
     /**
      * Table content data
-     * @private cHTMLTableData
+     * @var cHTMLTableData
      */
     protected $_contentData;
 
