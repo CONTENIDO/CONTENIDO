@@ -91,7 +91,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      */
     public function getTarget() {
-		return ($this->_settings['linkeditor_newwindow'] === 'true') ? '_blank' : '';
+        return ($this->_settings['linkeditor_newwindow'] === 'true') ? '_blank' : '';
     }
 
     /**
@@ -100,7 +100,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * @return string
      */
     public function getLink() {
-		return $this->_generateHref();
+        return $this->_generateHref();
     }
 
     /**

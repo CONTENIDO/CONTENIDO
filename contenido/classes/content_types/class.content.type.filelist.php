@@ -751,28 +751,28 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLCheckbox('filelist_ignore_extensions_' . $this->_id, '', 'filelist_ignore_extensions_' . $this->_id, ($this->_settings['filelist_ignore_extensions'] !== 'false'));
 
         $wrapperContent[] = new cHTMLLabel(i18n('File size limit'), 'filelist_filesizefilter_from_' . $this->_id);
-        $default = (!empty($this->_settings['filelist_filesizefilter_from']))? $this->_settings['filelist_filesizefilter_from'] : '0';
+        $default = (!empty($this->_settings['filelist_filesizefilter_from'])) ? $this->_settings['filelist_filesizefilter_from'] : '0';
         $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_from_' . $this->_id, $default, '', '', 'filelist_filesizefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
-        $default = (!empty($this->_settings['filelist_filesizefilter_to']))? $this->_settings['filelist_filesizefilter_to'] : '0';
+        $default = (!empty($this->_settings['filelist_filesizefilter_to'])) ? $this->_settings['filelist_filesizefilter_to'] : '0';
         $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_to_' . $this->_id, $default, '', '', 'filelist_filesizefilter_to_' . $this->_id);
 
         $wrapperContent[] = new cHTMLLabel(i18n('Creation date limit'), 'filelist_creationdatefilter_from_' . $this->_id);
-        $default = (!empty($this->_settings['filelist_creationdatefilter_from']))? $this->_settings['filelist_creationdatefilter_from'] : 'DD.MM.YYYY';
+        $default = (!empty($this->_settings['filelist_creationdatefilter_from'])) ? $this->_settings['filelist_creationdatefilter_from'] : 'DD.MM.YYYY';
         $wrapperContent[] = new cHTMLTextbox('filelist_creationdatefilter_from_' . $this->_id, $default, '', '', 'filelist_creationdatefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
-        $default = (!empty($this->_settings['filelist_creationdatefilter_to']))? $this->_settings['filelist_creationdatefilter_to'] : 'DD.MM.YYYY';
+        $default = (!empty($this->_settings['filelist_creationdatefilter_to'])) ? $this->_settings['filelist_creationdatefilter_to'] : 'DD.MM.YYYY';
         $wrapperContent[] = new cHTMLTextbox('filelist_creationdatefilter_to_' . $this->_id, $default, '', '', 'filelist_creationdatefilter_to_' . $this->_id);
 
         $wrapperContent[] = new cHTMLLabel(i18n('Modify date limit'), 'filelist_modifydatefilter_from_' . $this->_id);
-        $default = (!empty($this->_settings['filelist_modifydatefilter_from']))? $this->_settings['filelist_modifydatefilter_from'] : 'DD.MM.YYYY';
+        $default = (!empty($this->_settings['filelist_modifydatefilter_from'])) ? $this->_settings['filelist_modifydatefilter_from'] : 'DD.MM.YYYY';
         $wrapperContent[] = new cHTMLTextbox('filelist_modifydatefilter_from_' . $this->_id, $default, '', '', 'filelist_modifydatefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
-        $default = (!empty($this->_settings['filelist_modifydatefilter_to']))? $this->_settings['filelist_modifydatefilter_to'] : 'DD.MM.YYYY';
+        $default = (!empty($this->_settings['filelist_modifydatefilter_to'])) ? $this->_settings['filelist_modifydatefilter_to'] : 'DD.MM.YYYY';
         $wrapperContent[] = new cHTMLTextbox('filelist_modifydatefilter_to_' . $this->_id, $default, '', '', 'filelist_modifydatefilter_to_' . $this->_id);
 
         $wrapperContent[] = new cHTMLLabel(i18n('File count'), 'filelist_filecount_' . $this->_id);
-        $default = (!empty($this->_settings['filelist_filecount']))? $this->_settings['filelist_filecount'] : '0';
+        $default = (!empty($this->_settings['filelist_filecount'])) ? $this->_settings['filelist_filecount'] : '0';
         $wrapperContent[] = new cHTMLTextbox('filelist_filecount_' . $this->_id, $default, '', '', 'filelist_filecount_' . $this->_id);
 
         $wrapper->setContent($wrapperContent);
@@ -803,7 +803,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
 
         // set default values
-        $extensions = (is_array($this->_settings['filelist_extensions']))? $this->_settings['filelist_extensions'] : array(
+        $extensions = (is_array($this->_settings['filelist_extensions'])) ? $this->_settings['filelist_extensions'] : array(
             $this->_settings['filelist_extensions']
         );
         $htmlSelect->setSelected($extensions);

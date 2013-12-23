@@ -74,7 +74,7 @@
      * Registers namespace in global scope (window), if not exists.
      * @method namespace
      * @param  {String}  namespace  The full path to the desired namespace, like "Con.MyNamespace"
-     * @return {Object}  The existing of new created namespace
+     * @return {Object}  The existing or new created namespace
      */
     Con.namespace = function(namespace) {
         var ns = namespace.split('.'),

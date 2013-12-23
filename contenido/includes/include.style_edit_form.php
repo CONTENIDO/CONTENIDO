@@ -146,8 +146,8 @@ JS;
 </script>
 JS;
 
-	// Reload left_bottom frame
-	$sReloadScript .= <<<JS
+    // Reload left_bottom frame
+    $sReloadScript .= <<<JS
 <script type="text/javascript">
 (function(Con, $) {
     var frame = Con.getFrame('left_bottom');

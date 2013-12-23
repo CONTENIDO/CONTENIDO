@@ -530,7 +530,7 @@ if (substr($path, strlen($path) - 1, 1) != "/") {
         $qpath = $path . "/";
     } else {
         // view the root folder
-    	$qpath = "/";
+        $qpath = "/";
     }
 } else {
     $qpath = $path;

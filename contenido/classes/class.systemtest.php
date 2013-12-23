@@ -1146,7 +1146,7 @@ class cSystemtest {
                     // If data/layouts or data/modules not exist, do not display an error message
                     // Cause: At CONTENIDO 4.8 both folders do not exist
                     if (($file == "data/layouts" || $file == "data/modules") && !is_dir($oneClient["path"]["frontend"] . $file)) {
-						continue;
+                        continue;
                     } else {
                         $ret = $this->testSingleFile($oneClient["path"]["frontend"] . $file, self::C_SEVERITY_WARNING, true);
                     }

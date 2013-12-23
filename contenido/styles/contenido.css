@@ -203,19 +203,17 @@ table.borderless tr td {
 }
 
 table.foldingrow {
-	border: 0;
-	border-bottom: 1px solid #b3b3b3;
-	margin: 0;
-	padding: 0;
-	
-	width: 100%;
-	
-	border-spacing: 0;
+    border: 0;
+    border-bottom: 1px solid #b3b3b3;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border-spacing: 0;
 }
 
 table.foldingrow td {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 table.foldingrow th {
@@ -225,7 +223,7 @@ table.foldingrow th {
     text-align: left;
     padding: 4px;
     font-weight: normal;
-    color: #666;	
+    color: #666;
 }
 
 /**
