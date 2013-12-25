@@ -360,7 +360,7 @@ qq.FileUploaderBasic.prototype = {
         var self = this,
             handlerClass;
 
-        if(qq.UploadHandlerXhr.isSupported()){
+        if (qq.UploadHandlerXhr.isSupported()){
             handlerClass = 'UploadHandlerXhr';
         } else {
             handlerClass = 'UploadHandlerForm';

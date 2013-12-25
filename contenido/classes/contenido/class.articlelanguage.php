@@ -502,7 +502,7 @@ class cApiArticleLanguage extends Item {
     public function getContentObject($type, $id) {
         $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
 
-        if(!class_exists($typeClassName)) {
+        if (!class_exists($typeClassName)) {
             return false;
         }
 

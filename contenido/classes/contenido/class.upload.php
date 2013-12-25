@@ -54,7 +54,7 @@ class cApiUploadCollection extends ItemCollection {
             global $client;
         }
 
-        if(!cString::endsWith($sDirname, '/')) {
+        if (!cString::endsWith($sDirname, '/')) {
             $sDirname .= '/';
         }
 
