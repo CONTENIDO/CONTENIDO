@@ -847,7 +847,7 @@ $oCatName = new cHTMLTextbox('categoryname', '', '', '', 'cat_categoryname');
 $oCatName->setStyle('width:150px; vertical-align:middle;');
 $tpl->set('s', 'INPUT_CATNAME_NEW', $oCatName->render());
 
-$oAlias = new cHTMLTextbox('categoryalias');
+$oAlias = new cHTMLTextbox('categoryalias', '', '', '', 'cat_categoryalias');
 $oAlias->setStyle('width:150px; vertical-align:middle;');
 $tpl->set('s', 'INPUT_ALIAS_NEW', $oAlias->render());
 
