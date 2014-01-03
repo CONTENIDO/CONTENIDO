@@ -1,74 +1,115 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>template.tpl_overview.html</title>
-{_META_HEAD_CONTENIDO_}
+<title>template.tpl_overview.html</title> {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
-    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
+<link rel="stylesheet" type="text/css"
+	href="styles/jquery/plugins/tipsy.css">
 {_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
-    <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
-    <script type="text/javascript" src="scripts/registerTipsy.js"></script>
+<script type="text/javascript" src="scripts/rowMark.js"></script>
+<script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
+<script type="text/javascript" src="scripts/registerTipsy.js"></script>
 </head>
 <body>
 
-<table width="100%" cellspacing="0" cellpadding="2" border="0">
-    <!-- BEGIN:BLOCK -->
-    <tr class="tooltip-north" original-title="{DESCRIPTION}" id="{ID}" onmouseover="lay.over(this)" onmouseout="lay.out(this)" onclick="lay.click(this)">
-        <td><img alt="" width="5" height="1" src="images/spacer.gif"></td>
-        <td class="textw_small">{NAME}</td>
-        <td align="right" class="nowrap">{INUSE}&nbsp;{COPY}&nbsp;{DELETE}&nbsp;</td>
-    </tr>
-    <!-- END:BLOCK -->
-</table>
+	<table width="100%" cellspacing="0" cellpadding="2" border="0">
+		<!-- BEGIN:BLOCK -->
+		<tr class="tooltip-north" original-title="{DESCRIPTION}" id="{ID}"
+			onmouseover="lay.over(this)" onmouseout="lay.out(this)"
+			onclick="lay.click(this)">
+			<td><img alt="" width="5" height="1" src="images/spacer.gif"></td>
+			<td class="textw_small">{NAME}</td>
+			<td align="right" class="nowrap">{INUSE}&nbsp;{COPY}&nbsp;{DELETE}&nbsp;</td>
+		</tr>
+		<!-- END:BLOCK -->
+	</table>
 
-<script type="text/javascript">
-// Function for deleting templates
-function deleteTemplate(idtpl) {
-    var url = Con.UtilUrl.build("main.php", {
-        area: 'tpl',
-        action: 'tpl_delete',
-        frame: 2,
-        idtpl: idtpl
-    });
-    window.location.href = url;
+	<script type="text/javascript">
+        // Function for deleting templates
+        function deleteTemplate(idtpl) {
+            var url = Con.UtilUrl.build("main.php", {
+                area : 'tpl',
+                action : 'tpl_delete',
+                frame : 2,
+                idtpl : idtpl
+            });
 
-    var frame = Con.getFrame('right_bottom');
-    if (frame) {
-        var url = Con.UtilUrl.build("main.php", {
-            area: 'tpl_edit',
-            action: 'tpl_delete',
-            frame: 4,
-            blubi: 'blubi', //???
-            idtpl: idtpl
-        });
-        frame.location.href = url;
-    }
-}
-
-rowMarkLayReMark(Con.getFrame('left_top').obj);
-
-(function(Con, $) {
-    $(function() {
-        // select a frame with jquery
-        //$(Con.getFrame('right_bottom').document).find('body').html();
-        $('.in_used_tpl').live('click', function() {
-            var iId = $(this).attr('rel');
-            if (iId) {
-                sTemplateName = $(this).parents().filter('td:first').prev().text();
-                $.post(
-                   "{AJAXURL}",
-                     { area: "{AREA}", ajax: "inused_template", id: iId, contenido: Con.sid },
-                     function(data) {
-                        var inUseTitle = "{BOX_TITLE}";
-                        inUseTitle = inUseTitle.replace('%s', sTemplateName);
-                        Con.showNotification(inUseTitle, data, null, true);
-                     }
-                );
+            // workaround to fix being able to delete templates from the "Visual Editing" tab
+            var frame = Con.getFrame('right_bottom');
+            var baseTag = null;
+            // find the base tag
+            if (frame) {
+                baseTag = $("base", frame.document)[0];
+            } else {
+                baseTag = $("base")[0];
             }
-        });
-    });
-})(Con, Con.$);
-</script>
+            // if there is one, delete it
+            if (baseTag != undefined) {
+                var existingBaseHref = baseTag.href;
+                baseTag.href = "";
+                // delete the template in left bottom
+                // this would fail with a base tag
+                window.location.href = url;
+                // restore old base tag
+                baseTag.href = existingBaseHref;
+            } else {
+                // if there is no base tag, just reload the frame with the right URL
+                window.location.href = url;
+            }
+
+            if (frame) {
+                var url = Con.UtilUrl.build("main.php", {
+                    area : 'tpl_edit',
+                    action : 'tpl_delete',
+                    frame : 4,
+                    blubi : 'blubi', //???
+                    idtpl : idtpl
+                });
+                // do the same for the right bottom frame
+                // if there is a base tag, delete it
+                if (baseTag != undefined) {
+                    var existingBaseHref = baseTag.href;
+                    baseTag.href = "";
+                    // delete template in right bottom (This is necessary to display the "Temlate deleted!" message)
+                    frame.location.href = url;
+                    // restore old base tag
+                    baseTag.href = existingBaseHref;
+                } else {
+                    // if there is no base tag there, we just continue normally
+                    frame.location.href = url;
+                }
+            }
+        }
+
+        rowMarkLayReMark(Con.getFrame('left_top').obj);
+
+        (function(Con, $) {
+            $(function() {
+                // select a frame with jquery
+                //$(Con.getFrame('right_bottom').document).find('body').html();
+                $('.in_used_tpl').live(
+                        'click',
+                        function() {
+                            var iId = $(this).attr('rel');
+                            if (iId) {
+                                sTemplateName = $(this).parents().filter(
+                                        'td:first').prev().text();
+                                $.post("{AJAXURL}", {
+                                    area : "{AREA}",
+                                    ajax : "inused_template",
+                                    id : iId,
+                                    contenido : Con.sid
+                                }, function(data) {
+                                    var inUseTitle = "{BOX_TITLE}";
+                                    inUseTitle = inUseTitle.replace('%s',
+                                            sTemplateName);
+                                    Con.showNotification(inUseTitle, data,
+                                            null, true);
+                                });
+                            }
+                        });
+            });
+        })(Con, Con.$);
+    </script>
 
 </body>

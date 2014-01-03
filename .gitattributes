@@ -3,7 +3,6 @@
 /LICENSE.txt -text
 /README.txt -text
 cms/cache/code/.htaccess -text
-cms/cache/index.php -text
 cms/data/.htaccess -text
 cms/data/config/production/config.php -text
 cms/data/logs/index.php -text
