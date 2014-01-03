@@ -1,15 +1,22 @@
 <script type='text/javascript'>
 (function(Con, $) {
-    var aheader = null;
-    if (parent.parent.header) {
-        aheader = parent.parent.header;
-    } else if (parent.parent.parent.header) {
-        aheader = parent.parent.parent.header;
+    if(console.debug) {
+        console.debug("{DBG_MESSAGE_CONTENT}");
+    } else if(console.log) {
+        console.log("{DBG_MESSAGE_CONTENT}");
     } else {
-        return;
+        var aheader = null;
+        if (parent.parent.header) {
+            aheader = parent.parent.header;
+        } else if (parent.parent.parent.header) {
+            aheader = parent.parent.parent.header;
+        } else {
+            return;
+        }
+        var dbg = aheader.document.getElementById('debug_msg');
+        dbg.innerHTML += "<pre>{DBG_MESSAGE_CONTENT}</pre><input type='button' onclick='selectText()' value='Select all'>";
+        dbg.scrollTop = dbg.scrollHeight;
     }
-    var dbg = aheader.document.getElementById('debug_msg');
-    dbg.innerHTML += "<pre>{DBG_MESSAGE_CONTENT}</pre><input type='button' onclick='selectText()' value='Select all'>";
-    dbg.scrollTop = dbg.scrollHeight;
+
 })(Con, Con.$);
 </script>

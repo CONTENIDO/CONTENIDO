@@ -41,7 +41,7 @@
             {INPUT_ACTION_NEW}
             {INPUT_SESSION}
 
-            <div class="cat_label">i18n("Category")</div>
+            <label for="cat_categoryname" class="cat_label">i18n("Category")</label>
             <div class="cat_input">{INPUT_CATNAME_NEW}</div>
             <div class="cat_icon">
                 {MAKEVISIBLE_BUTTON_NEW}
@@ -50,7 +50,7 @@
             <div class="cat_icon_text" id="visible_label">i18n('Make online')</div>
             <div class="cat_end_row"></div>
 
-            <div class="cat_label">i18n("Alias")</div>
+            <label for="cat_categoryalias" class="cat_label">i18n("Alias")</label>
             <div class="cat_input">{INPUT_ALIAS_NEW}</div>
             <div class="cat_icon">
                 {MAKEPUBLIC_BUTTON_NEW}
@@ -74,7 +74,7 @@
                 <div class="cat_icon">
                     <input type="checkbox" name="is_tree" value="0" id="is_tree" onclick="refreshStatus();" {PERMISSION_NEWTREE}>
                 </div>
-                <div class="cat_icon_text" id="public_label">i18n("Category is a tree")</div>
+                <label for="is_tree" class="cat_icon_text" id="public_label">i18n("Category is a tree")</label>
                 <div class="cat_end_row"></div>
             </div>
 

@@ -112,7 +112,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
 
             $i = 1;
             foreach ($this->_aItems as $oItem) {
-                $sItemName = strlen($oItem->getDescription()) > 0? $oItem->getDescription() : ('debug item #' . $i);
+                $sItemName = strlen($oItem->getDescription()) > 0 ? $oItem->getDescription() : ('debug item #' . $i);
                 $sItemValue = $this->_prepareValue($oItem->getValue());
 
                 $tpl->set("d", "DBG_ITEM_COUNT", $i);
@@ -130,9 +130,16 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
         $buffer = str_replace("\n", '\n', $buffer);
         $buffer = str_replace(chr(13), "", $buffer);
 
+        // making sure that the working directory is right
+        $dir = getcwd();
+        chdir($cfg['path']['contenido']);
+
         $tpl = new cTemplate();
         $tpl->set("s", "DBG_MESSAGE_CONTENT", $buffer);
         $sHtml .= $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["debug_header"], true);
+
+        // switching back to the old directory if needed
+        chdir($dir);
 
         echo $sHtml;
     }
@@ -225,6 +232,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
         }
         $oDbgVisible->show($mVariable, $sVariableDescription, $bExit);
     }
+
 }
 
 /**
@@ -282,4 +290,5 @@ class cDebugVisibleAdvItem {
     public function setDescription($sDescription) {
         $this->_sDescription = $sDescription;
     }
+
 }
