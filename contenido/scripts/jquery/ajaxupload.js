@@ -353,15 +353,20 @@ $.Widget.prototype = {
 
         return this;
     },
-    _setOption: function( key, value ) {
+    _setOption: function( key, value ) {        
         this.options[ key ] = value;
 
-        if ( key === "disabled" ) {
+        if ( key === "disabled" ) {            
             this.widget()
                 .toggleClass( this.widgetFullName + "-disabled ui-state-disabled", !!value )
-                .attr( "aria-disabled", value );
-            this.hoverable.removeClass( "ui-state-hover" );
-            this.focusable.removeClass( "ui-state-focus" );
+                .attr( "aria-disabled", value );            
+            
+            if (typeof this.hoverable !== 'undefined') {
+                 this.hoverable.removeClass( "ui-state-hover" );
+            }
+            if (typeof this.focusable !== 'undefined') {
+                this.focusable.removeClass( "ui-state-focus" );
+            }
         }
 
         return this;
@@ -432,7 +437,7 @@ $.Widget.prototype = {
         return setTimeout( handlerProxy, delay || 0 );
     },
 
-    _hoverable: function( element ) {
+    _hoverable: function( element ) {        
         this.hoverable = this.hoverable.add( element );
         this._on( element, {
             mouseenter: function( event ) {
