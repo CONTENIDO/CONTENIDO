@@ -376,9 +376,9 @@ function getAnchorListHTML(id, target) {
 	var ed = tinyMCEPopup.editor, nodes = ed.dom.select('a'), name, i, len, html = "";
 
 	for (i=0, len=nodes.length; i<len; i++) {
-		// CONTENIDO MODIFICATION 24.10.2006 Willi Man
-		if ((name = ed.dom.getAttrib(nodes[i], "name")) != "")
-			html += '<option value="' + tinyMCE.settings['article_url_suffix'] + '#' + name + '">' + name + '</option>';
+	 // CONTENIDO MODIFICATION 24.10.2006 Willi Man
+	    if ((name = ed.dom.getAttrib(nodes[i], "name")) != "")
+            html += '<option value="' + tinyMCE.settings['article_url_suffix'] + '#' + name + '">' + name + '</option>';
 	}
 
 	if (html == "")
@@ -393,6 +393,12 @@ function getAnchorListHTML(id, target) {
 
 	return html;
 }
+
+
+
+
+
+
 
 function insertAction() {
 	var inst = tinyMCEPopup.editor;
