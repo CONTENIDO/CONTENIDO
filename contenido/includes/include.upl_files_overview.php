@@ -348,10 +348,13 @@ class UploadList extends FrontendList {
 
         if ($field == 3) {
             if ($appendparameters == 'imagebrowser' || $appendparameters == 'filebrowser') {
+                // fix for IE11 popup:
+                // selecting link with tiny out of popup does not work with Con.getFrame in IE11
+                // reverting to the old call solves this problem
                 if (cApiDbfs::isDbfs($path . '/' . $data)) {
-                    $mstr = '<a href="javascript://" onclick="javascript:Con.getFrame(\'left_top\').document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.close();"><img src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
+                    $mstr = '<a href="javascript://" onclick="parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.close();"><img src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
                 } else {
-                    $mstr = '<a href="javascript://" onclick="javascript:Con.getFrame(\'left_top\').document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . $path . $data . '\'; window.close();"><img src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
+                    $mstr = '<a href="javascript://" onclick="parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . $path . $data . '\'; window.close();"><img src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
                 }
             } else {
                 $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
