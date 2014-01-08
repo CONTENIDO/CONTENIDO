@@ -57,7 +57,13 @@
     $(function() {
         // On "Use this category" click
         $("#use_category a").click(function() {
-            Con.getFrame('left_top').$('selectedfile').val('{CATLINK}');
+            // fix for IE11 popup:
+            // selecting link with tiny out of popup does not work with Con.getFrame in IE11
+            // reverting to the old call solves this problem
+            
+            
+            //Con.getFrame('left_top').document.getElementById('selectedfile').value='{CATLINK}';
+            parent.parent.frames['left'].frames['left_top'].document.getElementById('selectedfile').value='{CATLINK}';
             window.returnValue = '{CATLINK}';
             window.close();
         });
@@ -65,8 +71,12 @@
         // On article list table row click
         $("#article_list").delegate(".article", "click", function() {
             var artLink = $(this).data("articlelink");
-            Con.getFrame('left_top').$('selectedfile').val(artLink);
-            window.returnValue = artLink;
+            // fix for IE11 popup:
+            // selecting link with tiny out of popup does not work with Con.getFrame in IE11
+            // reverting to the old call solves this problem
+           //Con.getFrame('left_top').document.getElementById('selectedfile').value=artLink;
+           parent.parent.frames['left'].frames['left_top'].document.getElementById('selectedfile').value=artLink;
+           window.returnValue = artLink;
             window.close();
         });
     });
