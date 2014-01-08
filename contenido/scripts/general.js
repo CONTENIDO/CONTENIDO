@@ -676,6 +676,7 @@
      *            (!) be 'simpleFrame' if used to specify that the complete frame
      *            structure is not available.
      */
+    
     Con.multiLink = function() {
         // get last argument
         var tmp = arguments[arguments.length - 1];
@@ -696,7 +697,12 @@
                 parent.frames[f].location.href = l;
             } else {
                 // use classic multilink structure
-                frame = Con.getFrame(f);
+                // fix for IE11 popup:
+                // selecting link with tiny out of popup does not work with Con.getFrame in IE11
+                // reverting to the old call solves this problem
+               // Con.getFrame(f);
+                frame = parent.parent.frames["right"].frames[f];
+                
                 if (frame) {
                     frame.location.href = l;
                 }
