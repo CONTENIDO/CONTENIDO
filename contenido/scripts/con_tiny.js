@@ -300,7 +300,6 @@
 
                 Con.Tiny.fbPopupWindow.close();
                 window.clearInterval(Con.Tiny.fbIntervalHandle);
-
                 // Set this selected image in tiny
                 if (Con.Tiny.fbWindow.ImageDialog && "function" === $.type(Con.Tiny.fbWindow.ImageDialog.showPreviewImage)) {
                     Con.Tiny.fbWindow.ImageDialog.showPreviewImage(Con.Tiny.fbWindow.document.forms[0].elements[Con.Tiny.fbFieldName].value);
