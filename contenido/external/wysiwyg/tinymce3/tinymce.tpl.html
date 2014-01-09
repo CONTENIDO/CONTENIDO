@@ -1,11 +1,15 @@
-
 <!-- contenido/external/wysiwyg/tinymce3/tinymce.tpl.html -->
 <script src="{_PATH_CONTENIDO_FULLHTML_}scripts/con_tiny.js" type="text/javascript"></script>
 <script src="{_PATH_CONTENIDO_FULLHTML_}external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>
 
 <script language="javascript" type="text/javascript">
 Con.Tiny.init({
-    frontendPath: '{FRONTEND}'
+    frontendPath: '{FRONTEND_PATH}',
+	fileUrl: '{IMAGEBROWSER}',
+	imageUrl: '{FILEBROWSER}',
+    flashUrl: '{FLASHBROWSER}',
+    mediaUrl: '{MEDIABROWSER}',
+    txtQuestion: '{QUESTION}'
 });
 </script>
 {COMPRESSOR}
