@@ -200,6 +200,7 @@
                 }
             });
             self.showFolderPath();
+            
             return false;
         });
         // add possibility to expand and close directories for the file view
@@ -253,7 +254,6 @@
         $(self.frameId + ' form[name="newdir"] input[name="path"]').val(selectedPath);
         $(self.frameId + ' form[name="properties"] input[name="path"]').val(selectedPath);
 
-
         self.linkEditorFileUpload();
     };
 
@@ -292,7 +292,7 @@
                     success: function(msg) {
                         $(self.frameId + ' img.loading').hide();
                         $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
-                        $(self.frameId + ' #directoryFile_' + self.id).html(msg);
+                        $(self.frameId + ' #file #directoryFile_' + self.id).html(msg);
                     }
                 });
             }
