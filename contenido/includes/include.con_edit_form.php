@@ -258,7 +258,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
             $inUse = false;
             $disabled = '';
-            $tpl->set("s", "REASON", "");
+            $tpl->set("s", "REASON", i18n('Save article'));
         } else if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked == 1) {
             $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
             $inUse = true;
