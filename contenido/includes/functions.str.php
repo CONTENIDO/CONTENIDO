@@ -941,9 +941,11 @@ function strMoveSubtree($idcat, $newParentId, $newPreId = NULL, $newPostId = NUL
             $categoryCollection = new cApiCategoryCollection();
             $categoryCollection->select("parentid = " . $newParentId . " AND postid = 0");
             $newPreCategory = $categoryCollection->next();
-            $newPreId = $newPreCategory->get('idcat');
-            $newPreCategory->set('postid', $idcat);
-            $updateCats[$newPreId] = $newPreCategory;
+            if($newPreCategory != null) {
+                $newPreId = $newPreCategory->get('idcat');
+                $newPreCategory->set('postid', $idcat);
+                $updateCats[$newPreId] = $newPreCategory;
+            }
         } else {
             if (isset($updateCats[$newPreId])) {
                 $updateCats[$newPreId]->set('postid', $idcat);
