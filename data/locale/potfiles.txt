@@ -17,6 +17,7 @@
 ./external/wysiwyg/tinymce3/editorclass.php
 ./external/frontend/js/index.php
 ./external/frontend/images/index.php
+./external/frontend/cache/code/index.php
 ./external/frontend/cache/index.php
 ./external/frontend/templates/error_page.html
 ./external/frontend/templates/index.php
