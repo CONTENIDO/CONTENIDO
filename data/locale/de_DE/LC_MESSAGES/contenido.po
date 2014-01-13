@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-13 13:12+0100\n"
-"PO-Revision-Date: 2014-01-13 13:17+0100\n"
+"PO-Revision-Date: 2014-01-13 13:28+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -42,7 +42,7 @@ msgstr "Schützen"
 
 #: scripts/langref.php:11
 msgid "Remove protection"
-msgstr "Schutz entfernen"
+msgstr "Schutz löschen"
 
 #: scripts/langref.php:12
 #: includes/include.con_left_top.php:255
@@ -684,7 +684,7 @@ msgstr "MySQL Test Tabelle existiert bereits in dieser Datenbank"
 #: classes/class.systemtest.php:1393
 #, php-format
 msgid "Setup checked the database %s and found the test table %s. Please remove it before continuing."
-msgstr "Setup hat die Datenbank %s überprüft und die Tabelle %s gefunden. Bitte entfernen Sie sie."
+msgstr "Setup hat die Datenbank %s überprüft und die Tabelle %s gefunden. Bitte löschen Sie sie."
 
 #: classes/class.systemtest.php:1400
 #: classes/class.systemtest.php:1421
@@ -700,13 +700,13 @@ msgstr "Das Setup hat versucht eine Tabelle in der Datenbank %s zu erstellen und
 #: classes/class.systemtest.php:1407
 #: classes/class.systemtest.php:1428
 msgid "Unable to remove the test table"
-msgstr "Konnte die Test Tabelle nicht entfernen"
+msgstr "Konnte die Test Tabelle nicht löschen"
 
 #: classes/class.systemtest.php:1407
 #: classes/class.systemtest.php:1428
 #, php-format
 msgid "Setup tried to remove the test table %s in the database %s and failed due to insufficient permissions. Please remove the table %s manually."
-msgstr "Das Setup konnte die Test Tabelle %s nicht aus der Datenbank %s entfernen. Bitte entfernen Sie '%s' manuell."
+msgstr "Das Setup konnte die Test Tabelle %s nicht aus der Datenbank %s löschen. Bitte löschen Sie '%s' manuell."
 
 #: classes/class.systemtest.php:1414
 msgid "Unable to create the database in the MySQL server"
@@ -1847,7 +1847,7 @@ msgstr "Modul erfolgreich kompiliert"
 #: classes/class.note.php:352
 #: classes/class.note.php:355
 msgid "View notes / add note"
-msgstr "Notizen anzeigen / hinzufügen"
+msgstr "Notizen anzeigen / erstellen"
 
 #: classes/version/class.version.php:219
 #, php-format
@@ -2719,7 +2719,7 @@ msgstr "Empfänger erstellen"
 #: templates/standard/template.symbolhelp.html:466
 #: templates/standard/template.symbolhelp.html:715
 msgid "Remove recipient"
-msgstr "Empfänger entfernen"
+msgstr "Empfänger löschen"
 
 #: templates/standard/template.symbolhelp.html:470
 #: templates/standard/template.symbolhelp.html:716
@@ -3100,7 +3100,7 @@ msgstr "Der Gruppe hinzufügen"
 
 #: templates/standard/template.grouprights_memberselect.html:132
 msgid "Remove from group"
-msgstr "Von der Gruppe entfernen"
+msgstr "Aus der Gruppe löschen"
 
 #: templates/standard/template.grouprights_memberselect.html:133
 msgid "Non groupmembers"
@@ -3112,7 +3112,7 @@ msgstr "Hinzufügen von ausgewählten Benutzern (rechte Seite) zu der Gruppe"
 
 #: templates/standard/template.grouprights_memberselect.html:137
 msgid "Remove left side selected users from group"
-msgstr "Entfernen von ausgewählten Benutzern (linke Seite) aus der Gruppe"
+msgstr "Löschen von ausgewählten Benutzern (linke Seite) aus der Gruppe"
 
 #: templates/standard/template.str_overview.html:59
 #: templates/standard/template.str_overview.html:658
@@ -3561,7 +3561,7 @@ msgstr "Keine definierten Eigenschaften"
 #: includes/include.clientsettings.php:153
 #: includes/include.systemsettings.php:164
 msgid "Add new variable"
-msgstr "Neue Variable hinzufügen"
+msgstr "Neue Variable erstellen"
 
 #: includes/include.mod_history.php:30
 #: includes/include.mod_overview.php:158
@@ -4094,15 +4094,15 @@ msgstr "Dieser Artikel wurde synchronisiert und kann nicht in eine andere Katego
 #: includes/include.con_edit_form.php:574
 #: ../data/config/production/cfg_actions.inc.php:38
 msgid "Remove assignments"
-msgstr "Zuweisungen entfernen"
+msgstr "Zuweisungen löschen"
 
 #: includes/include.con_edit_form.php:576
 msgid "Remove multiple category assignments"
-msgstr "Mehrfachzuordnung entfernen"
+msgstr "Mehrfachzuordnung löschen"
 
 #: includes/include.con_edit_form.php:577
 msgid "Do you really want to remove the assignments to all categories except the current one?"
-msgstr "Möchten Sie wirklich alle Zuweisungen zu allen Kategorien entfernen - außer zu der aktuellen?"
+msgstr "Möchten Sie wirklich alle Zuweisungen zu allen Kategorien löschen - außer zu der aktuellen?"
 
 #: includes/include.con_edit_form.php:591
 msgid "Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first."
@@ -4358,7 +4358,7 @@ msgstr "Das Verzeichnis ist nicht beschreibbar"
 
 #: includes/include.note.popup.php:42
 msgid "Add note"
-msgstr "Notiz hinzufügen"
+msgstr "Notiz erstellen"
 
 #: includes/include.note.popup.php:55
 msgid "No category"
@@ -5715,7 +5715,7 @@ msgstr "Eigenschaften anzeigen"
 
 #: includes/include.todo.popup.php:38
 msgid "Add TODO item"
-msgstr "ToDo Eintrag hinzufügen"
+msgstr "ToDo-Eintrag erstellen"
 
 #: includes/include.todo.popup.php:58
 msgid "E-mail notification"
@@ -7191,7 +7191,7 @@ msgstr "Bearbeite die eigenen MyContenido-Einstellungen"
 
 #: ../data/config/production/cfg_actions.inc.php:171
 msgid "Delete reminder item"
-msgstr "Erinnerungseintrag entfernen"
+msgstr "Erinnerungseintrag löschen"
 
 #: ../data/config/production/cfg_actions.inc.php:172
 msgid "Save todo item"
@@ -7260,7 +7260,7 @@ msgstr "Frontend-Gruppe erstellen"
 
 #: ../data/config/production/cfg_actions.inc.php:193
 msgid "Add frontend user assignment"
-msgstr "Frontend-Benutzer Zuordnung hinzufügen"
+msgstr "Frontend-Benutzer Zuordnung erstellen"
 
 #: ../data/config/production/cfg_actions.inc.php:194
 msgid "Delete frontend user assignment"
@@ -7304,7 +7304,7 @@ msgstr "Neues Passwort?"
 
 #: ../data/config/production/cfg_actions.inc.php:210
 msgid "Delete note"
-msgstr "Notiz entfernen"
+msgstr "Notiz löschen"
 
 #: ../data/config/production/cfg_actions.inc.php:211
 msgid "Save note"
