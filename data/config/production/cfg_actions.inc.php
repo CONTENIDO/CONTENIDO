@@ -190,8 +190,8 @@ $lngAct['frontendgroups']['frontendgroup_delete']              = i18n('Delete fr
 $lngAct['frontendgroups']['frontendgroup_save_group']          = i18n('Save frontend group');
 $lngAct['frontendgroups']['frontendgroup_create']              = i18n('Create frontend group');
 $lngAct['frontendgroups']['frontendgroup_create']              = i18n('Create frontend group');
-$lngAct['frontendgroups']['frontendgroup_user_add']            = i18n('Add frontend users');
-$lngAct['frontendgroups']['frontendgroups_user_delete']        = i18n('Delete frontend user');
+$lngAct['frontendgroups']['frontendgroup_user_add']            = i18n('Add frontend user assignment');
+$lngAct['frontendgroups']['frontendgroups_user_delete']        = i18n('Delete frontend user assignment');
 $lngAct['frontendgroups_rights']['fegroups_save_perm']         = i18n('Save frontend group permissions');
 
 $lngAct['system_settings']['systemsettings_delete_item']       = i18n('Delete system property');
