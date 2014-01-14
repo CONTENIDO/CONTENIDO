@@ -39,13 +39,45 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Log
  */
 class cLog {
+
+    /**
+     * @var int logging level
+     */
     const EMERG   = 0;
+
+    /**
+     * @var int logging level
+     */
     const ALERT   = 1;
+
+    /**
+     * @var int logging level
+     */
     const CRIT    = 2;
+
+    /**
+     * @var int logging level
+     */
     const ERR     = 3;
+
+    /**
+     * @var int logging level
+     */
     const WARN    = 4;
+
+    /**
+     * @var int logging level
+     */
     const NOTICE  = 5;
+
+    /**
+     * @var int logging level
+     */
     const INFO    = 6;
+
+    /**
+     * @var int logging level
+     */
     const DEBUG   = 7;
 
     /**
