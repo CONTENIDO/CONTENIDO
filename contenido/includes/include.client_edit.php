@@ -2,17 +2,16 @@
 /**
  * This file contains the backend page for client management.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (!$perm->have_perm_area_action($area)) {
@@ -47,13 +46,12 @@ $urlscheme = parse_url($htmlpath, PHP_URL_SCHEME);
 $valid = ($clientname != "" && $frontendpath != "" && ($urlscheme == 'http' || $urlscheme == 'https'));
 
 if ((!strstr($_SERVER["HTTP_REFERER"], "frame=2")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=1")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=3")) && (!$valid)) {
-    $notif = new cGuiNotification();
     if ($clientname == "") {
-        $notif->displayNotification(cGuiNotification::LEVEL_ERROR, i18n("The client must have a name!"));
+        cRegistry::addErrorMessage(i18n("The client must have a name!"));
     } else if ($frontendpath == "") {
-        $notif->displayNotification(cGuiNotification::LEVEL_ERROR, i18n("The client must have a frontend path. This is where the client's files will be stored."));
+        cRegistry::addErrorMessage(i18n("The client must have a frontend path. This is where the client's files will be stored."));
     } else {
-        $notif->displayNotification(cGuiNotification::LEVEL_ERROR, i18n("Please enter a valid URL. It has to start with http://... or https://..."));
+        cRegistry::addErrorMessage(i18n("Please enter a valid URL. It has to start with http://... or https://..."));
     }
 }
 
@@ -102,14 +100,14 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
                 $outbuf = str_replace('!CLIENT!', $idclient, $buffer);
                 $outbuf = str_replace('!PATH!', $backendPath, $outbuf);
                 if (!cFileHandler::write($destPath . $dataPath . 'config.php.new', $outbuf)) {
-                    $notification->displayNotification('error', i18n("Couldn't write the file config.php."));
+                    cRegistry::addWarningMessage(i18n("Couldn't write the file config.php."));
                 }
 
                 cFileHandler::remove($destPath . $dataPath . 'config.php');
                 cFileHandler::rename($destPath . $dataPath . 'config.php.new', 'config.php');
             } else {
                 $message = sprintf(i18n("The directory %s already exists. The client was created, but you have to copy the frontend-template yourself"), $destPath);
-                $notification->displayNotification('warning', $message);
+                cRegistry::addWarningMessage(i18n($message));
             }
         }
     } else {
@@ -123,7 +121,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         }
 
         if (($oldpath != $frontendpath) && ($oldpath != $pathwithoutslash)) {
-            $notification->displayNotification('warning', i18n("You changed the client path. You might need to copy the frontend to the new location"));
+            cRegistry::addWarningMessage(i18n("You changed the client path. You might need to copy the frontend to the new location"));
         }
 
         if ($cApiClient->isLoaded()) {
@@ -142,7 +140,10 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
 
     // Clear the code cache
     if (cFileHandler::exists($cfgClient[$idclient]['code']['path']) === true) {
-        /** @var $file SplFileInfo */
+        /**
+         *
+         * @var $file SplFileInfo
+         */
         foreach (new DirectoryIterator($cfgClient[$idclient]['code']['path']) as $file) {
             if ($file->isFile() === false) {
                 continue;
@@ -157,7 +158,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         }
     }
 
-    $notification->displayNotification('info', i18n("Changes saved") . $sNewNotification);
+    cRegistry::addInfoMessage(i18n("Changes saved") . $sNewNotification);
 
     $cApiClient->loadByPrimaryKey($idclient);
 
@@ -167,7 +168,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         $cApiClient->setProperty('generator', 'xhtml', 'true');
     }
 
-    //Is statistc on/off
+    // Is statistc on/off
     if ($request['statistic'] == 'on') {
         $cApiClient->setProperty('stats', 'tracking', 'on');
     } else {
@@ -175,9 +176,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
     }
 }
 
-
 $tpl->reset();
-
 
 if (isset($idclient)) {
     $htmlpath = $cfgClient[$idclient]['path']['htmlpath'];
@@ -202,7 +201,13 @@ $tpl->set('d', 'BRDRT', 1);
 $tpl->set('d', 'BRDRB', 0);
 
 $tpl->set('d', 'CATNAME', i18n("Client name"));
-$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace(array('*/', '/*', '//', '\\', '"'), '', ($cApiClient->isLoaded()) ? $cApiClient->get("name") : $clientname)), 75, 255, "clientname");
+$oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace(array(
+    '*/',
+    '/*',
+    '//',
+    '\\',
+    '"'
+), '', ($cApiClient->isLoaded())? $cApiClient->get("name") : $clientname)), 75, 255, "clientname");
 $tpl->set('d', 'CATFIELD', $oTxtClient->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
@@ -253,7 +258,10 @@ $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
 // Flag to generate XHTML
-$aChoices = array('no' => i18n('No'), 'yes' => i18n('Yes'));
+$aChoices = array(
+    'no' => i18n('No'),
+    'yes' => i18n('Yes')
+);
 
 $oXHTMLSelect = new cHTMLSelectElement('generate_xhtml');
 $oXHTMLSelect->autoFill($aChoices);
@@ -271,7 +279,10 @@ $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
 // Flag to enable tracking
-$aChoices = array('on' => i18n('On'), 'off' => i18n('Off'));
+$aChoices = array(
+    'on' => i18n('On'),
+    'off' => i18n('Off')
+);
 
 $oXHTMLSelect = new cHTMLSelectElement('statistic');
 $oXHTMLSelect->autoFill($aChoices);
