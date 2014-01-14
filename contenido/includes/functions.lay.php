@@ -37,7 +37,6 @@ function layEditLayout($idlay, $name, $description, $code) {
     $date = date('Y-m-d H:i:s');
     $author = (string) $auth->auth['uname'];
     $description = (string) stripslashes($description);
-    $notification = new cGuiNotification();
     set_magic_quotes_gpc($name);
     set_magic_quotes_gpc($description);
 
@@ -66,9 +65,9 @@ function layEditLayout($idlay, $name, $description, $code) {
         $idlay = $layout->get('idlay');
 
         if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
-            $notification->displayNotification("error", i18n("Can't save layout in file"));
+            cRegistry::addErrorMessage(i18n("Can't save layout in file"));
         } else {
-            $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
+            cRegistry::addInfoMessage(i18n("Saved layout succsessfully!"));
         }
 
         // Set correct rights for element
@@ -85,20 +84,20 @@ function layEditLayout($idlay, $name, $description, $code) {
             if (cLayoutHandler::existLayout($layoutAlias, $cfgClient, $client) == true) {
                 // Save in old directory
                 if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
-                    $notification->displayNotification("error", i18n("Can't save layout in file!"));
+                    cRegistry::addErrorMessage(i18n("Can't save layout in file!"));
                 }
 
                 // Display error
-                $notification->displayNotification("error", i18n("Can't rename the layout!"));
+                cRegistry::addErrorMessage(i18n("Can't rename the layout!"));
                 die();
             }
 
             // Rename the directory
             if ($layoutInFile->rename($layoutInFile->getLayoutName(), $layoutAlias)) {
                 if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
-                    $notification->displayNotification("warning", sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
+                    cRegistry::addWarningMessage(sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
                 } else {
-                    $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
+                    cRegistry::addInfoMessage(i18n("Renamed layout succsessfully!"));
                 }
                 $layout = new cApiLayout(cSecurity::toInteger($idlay));
                 $layout->set('name', $name);
@@ -111,15 +110,15 @@ function layEditLayout($idlay, $name, $description, $code) {
                 // Rename not successfully
                 // Save layout
                 if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
-                    $notification->displayNotification("error", i18n("Can't save layout file!"));
+                    cRegistry::addErrorMessage(i18n("Can't save layout file!"));
                 }
             }
         } else {
             // Name dont changed
             if ($layoutInFile->saveLayout(stripslashes($code)) == false) {
-                $notification->displayNotification("warning", sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
+                cRegistry::addWarningMessage(sprintf(i18n("The file %s has no write permissions. Saving only database changes!"), $layoutInFile->_getFileName()));
             } else {
-                $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
+                cRegistry::addInfoMessage(i18n("Saved layout succsessfully!"));
             }
             $layout = new cApiLayout(cSecurity::toInteger($idlay));
             $layout->set('name', $name);
@@ -164,8 +163,7 @@ function layDeleteLayout($idlay) {
             $layoutCollection = new cApiLayoutCollection();
             $layoutCollection->delete($idlay);
         } else {
-            $notification = new cGuiNotification();
-            $notification->displayNotification('error', i18n("Can't delete layout!"));
+            cRegistry::addErrorMessage(i18n("Can't delete layout!"));
         }
     }
 
