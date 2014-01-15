@@ -299,8 +299,6 @@ if (0 != $idart && 0 != $idcat) {
     }
 }
 
-
-
 $idartlang = getArtLang($idart, $lang);
 if ($idartlang === false) {
     if ($_GET['display_errorpage']) {
@@ -431,6 +429,17 @@ if ($data[0]['idtplcfg'] === '0') {
     $tpl->generate($errtpl);
     exit();
 }
+
+// handling offline language
+$language = cRegistry::getLanguage();
+if ($language->get('active') != 1 && (!$contenido || $view != 'edit')) {
+    $tpl = new cTemplate();
+    $tpl->set("s", "ERROR_TITLE", "Current language is not online");
+    $tpl->set("s", "ERROR_TEXT", "You try to view a page of a language, which is not online.");
+    $tpl->generate($errtpl);
+    exit();
+}
+
 // If mode is 'edit' and user has permission to edit articles in the current
 // category
 if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat))) {

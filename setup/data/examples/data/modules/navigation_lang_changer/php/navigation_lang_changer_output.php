@@ -49,11 +49,7 @@ foreach ($resultClientLangs as $clientLang) {
 }
 
 if (empty($allLanguages)) {
-
-    // if no languages present do nothing
-    echo "No languages present";
-    exit();
-
+    // no active languages. handling was moved to include.front_content.php (lines 433 - 439).
 } else if (count($allLanguages) != 1) {
 
     // else check if there more as one language
