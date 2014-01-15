@@ -42,6 +42,7 @@ function frontendusers_valid_to_display ()
     $sValidFrom = '<input type="text" id="valid_to" name="valid_to" value="'.$currentValue.'">';
     $sValidFrom .= '<script type="text/javascript">
 (function(Con, $) {
+        $(function() {
     $("#valid_to").datetimepicker({
         buttonImage: "'. $path_to_calender_pic .'",
         buttonImageOnly: true,
@@ -64,6 +65,7 @@ function frontendusers_valid_to_display ()
             $("#valid_from").datetimepicker("option", "maxDate", new Date(end.getTime()));
         }
     });
+            });
 })(Con, Con.$);
 </script>';
 
