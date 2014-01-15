@@ -11,8 +11,10 @@
     var artObj = null;
     function refreshArticleProp() {
         artObj = Con.getFrame('left_top').artObj;
-        artObj.setGlobalVars(Con.sid, {CLIENT}, {LANG});
-        artObj.idcat = {IDCAT};
+        if(artObj) {
+        	artObj.setGlobalVars(Con.sid, {CLIENT}, {LANG});
+        	artObj.idcat = {IDCAT};
+        }
     }
     refreshArticleProp();
     </script>

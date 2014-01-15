@@ -402,7 +402,9 @@ function rowMarkStrClick(elemId) {
 
 function rowMarkArtRowClick(oRow) {
     if (conArtOverviewExtractData(oRow) == false) {
-        window.setTimeout(conArtOverviewExtractData(oRow), 250);
+            window.setTimeout(function() {
+                conArtOverviewExtractData(oRow);
+            }, 250);
     }
 }
 
