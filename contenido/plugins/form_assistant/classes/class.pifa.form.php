@@ -136,6 +136,7 @@ class PifaFormCollection extends ItemCollection {
 
         return self::_getBy($client, $lang);
     }
+
 }
 
 /**
@@ -971,6 +972,7 @@ class PifaForm extends Item {
                 $msg = Pifa::i18n('TABLE_EXISTS_ERROR');
                 $msg = sprintf($msg, $tableName);
                 throw new PifaException($msg);
+                $this->set('data_table', $oldTableName);
             }
 
             $sql = "-- PifaForm->alterTable()
@@ -1229,4 +1231,5 @@ class PifaForm extends Item {
     public function getTableName() {
         return $this->get('data_table');
     }
+
 }

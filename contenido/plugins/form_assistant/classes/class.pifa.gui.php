@@ -104,6 +104,7 @@ class PifaLeftBottomPage extends cGuiPage {
 
         return $menu->render(false);
     }
+
 }
 
 /**
@@ -308,12 +309,12 @@ class PifaRightBottomFormPage extends cGuiPage {
             $idform = NULL;
 
             // read item data from form
-            $nameValue = empty($_POST['name']) ? '' : $_POST['name'];
+            $nameValue = empty($_POST['name'])? '' : $_POST['name'];
             $nameValue = cSecurity::unescapeDB($nameValue);
             $nameValue = cSecurity::toString($nameValue);
             $nameValue = trim($nameValue);
 
-            $dataTableValue = empty($_POST['data_table']) ? '' : $_POST['data_table'];
+            $dataTableValue = empty($_POST['data_table'])? '' : $_POST['data_table'];
             $dataTableValue = trim($dataTableValue);
             $dataTableValue = strtolower($dataTableValue);
             $dataTableValue = preg_replace('/[^a-z0-9_]/', '_', $dataTableValue);
@@ -430,13 +431,6 @@ class PifaRightBottomFormPage extends cGuiPage {
             $this->_pifaForm->set('with_timestamp', $withTimestamp);
         }
 
-        // store item
-        if (false === $this->_pifaForm->store()) {
-            $msg = Pifa::i18n('FORM_STORE_ERROR');
-            $msg = sprintf($msg, $this->_pifaForm->getLastError());
-            throw new PifaException($msg);
-        }
-
         if ($isLoaded) {
             // optionally alter data table
             // HINT: passing the old values is correct!
@@ -447,6 +441,13 @@ class PifaRightBottomFormPage extends cGuiPage {
             // create table
             $this->_pifaForm->createTable($withTimestamp);
         }
+
+        // store item
+        if (false === $this->_pifaForm->store()) {
+            $msg = Pifa::i18n('FORM_STORE_ERROR');
+            $msg = sprintf($msg, $this->_pifaForm->getLastError());
+            throw new PifaException($msg);
+        }
     }
 
     /**
@@ -455,6 +456,7 @@ class PifaRightBottomFormPage extends cGuiPage {
         $this->_pifaForm->delete();
         $this->_pifaForm = NULL;
     }
+
 }
 
 /**
@@ -673,6 +675,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
 
         return $out;
     }
+
 }
 
 /**
@@ -835,7 +838,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
         try {
             $data = $this->_pifaForm->getData();
             $tpl->assign('data', $data);
-            if (!empty($data)&&cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::EXPORT_DATA)) {
+            if (!empty($data) && cRegistry::getPerm()->have_perm_area_action('form_ajax', PifaAjaxHandler::EXPORT_DATA)) {
                 $tpl->assign('exportUrl', 'main.php?' . implode('&', array(
                     'area=form_ajax',
                     'frame=4',
@@ -852,6 +855,7 @@ class PifaRightBottomFormDataPage extends cGuiPage {
 
         return $out;
     }
+
 }
 
 /**
@@ -991,6 +995,7 @@ class PifaRightBottomFormExportPage extends cGuiPage {
 
         return $out;
     }
+
 }
 
 /**
@@ -1095,7 +1100,6 @@ class PifaRightBottomFormImportPage extends cGuiPage {
      * @return string
      */
     private function _importFormGet($showTableNameField = false) {
-
         $cfg = cRegistry::getConfig();
 
         $tpl = cSmartyBackend::getInstance(true);
@@ -1134,12 +1138,11 @@ class PifaRightBottomFormImportPage extends cGuiPage {
      * @return string
      */
     private function _importFormPost() {
-
         $cGuiNotification = new cGuiNotification();
 
         // read XML from file
         $xml = file_get_contents($_FILES['xml']['tmp_name']);
-        $tableName = isset($_POST['table_name']) ? $_POST['table_name'] : NULL;
+        $tableName = isset($_POST['table_name'])? $_POST['table_name'] : NULL;
 
         // check read operation
         if (false === $xml) {
@@ -1163,4 +1166,5 @@ class PifaRightBottomFormImportPage extends cGuiPage {
 
         return $out;
     }
+
 }
