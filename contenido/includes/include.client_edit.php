@@ -19,6 +19,11 @@ if (!$perm->have_perm_area_action($area)) {
     return;
 }
 
+
+$page = new cGuiPage('client_edit', '', '0');
+
+
+
 $cApiPropertyColl = new cApiPropertyCollection();
 $cApiClient = new cApiClient();
 
@@ -191,16 +196,16 @@ $form = '<form name="client_properties" method="post" action="' . $sess->url("ma
              <input type="hidden" name="oldpath" value="' . $serverpath . '">
              <input type="hidden" name="idclient" value="' . $idclient . '">';
 
-$tpl->set('s', 'FORM', $form);
-$tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
-$tpl->set('s', 'CANCELTEXT', i18n("Discard changes"));
-$tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&idclient=$idclient"));
-$tpl->set('s', 'PROPERTY', i18n("Property"));
-$tpl->set('s', 'VALUE', i18n("Value"));
-$tpl->set('d', 'BRDRT', 1);
-$tpl->set('d', 'BRDRB', 0);
+$page->set('s', 'FORM', $form);
+$page->set('s', 'SUBMITTEXT', i18n("Save changes"));
+$page->set('s', 'CANCELTEXT', i18n("Discard changes"));
+$page->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&idclient=$idclient"));
+$page->set('s', 'PROPERTY', i18n("Property"));
+$page->set('s', 'VALUE', i18n("Value"));
+$page->set('d', 'BRDRT', 1);
+$page->set('d', 'BRDRB', 0);
 
-$tpl->set('d', 'CATNAME', i18n("Client name"));
+$page->set('d', 'CATNAME', i18n("Client name"));
 $oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace(array(
     '*/',
     '/*',
@@ -208,54 +213,54 @@ $oTxtClient = new cHTMLTextbox("clientname", conHtmlSpecialChars(str_replace(arr
     '\\',
     '"'
 ), '', ($cApiClient->isLoaded())? $cApiClient->get("name") : $clientname)), 75, 255, "clientname");
-$tpl->set('d', 'CATFIELD', $oTxtClient->render());
-$tpl->set('d', 'BRDRT', 0);
-$tpl->set('d', 'BRDRB', 1);
-$tpl->next();
+$page->set('d', 'CATFIELD', $oTxtClient->render());
+$page->set('d', 'BRDRT', 0);
+$page->set('d', 'BRDRB', 1);
+$page->next();
 
 if ($serverpath == '') {
     $serverpath = $cfg['path']['frontend'];
 }
 
-$tpl->set('d', 'CATNAME', i18n("Server path"));
+$page->set('d', 'CATNAME', i18n("Server path"));
 $oTxtServer = new cHTMLTextbox("frontendpath", conHtmlSpecialChars($serverpath), 75, 255, "frontendpath");
-$tpl->set('d', 'CATFIELD', $oTxtServer->render());
-$tpl->set('d', 'BRDRT', 0);
-$tpl->set('d', 'BRDRB', 1);
-$tpl->next();
+$page->set('d', 'CATFIELD', $oTxtServer->render());
+$page->set('d', 'BRDRT', 0);
+$page->set('d', 'BRDRB', 1);
+$page->next();
 
 if ($htmlpath == '') {
     $htmlpath = 'http://';
 }
 
-$tpl->set('d', 'CATNAME', i18n("Web address"));
+$page->set('d', 'CATNAME', i18n("Web address"));
 $oTxtWeb = new cHTMLTextbox("htmlpath", conHtmlSpecialChars($htmlpath), 75, 255, "htmlpath");
-$tpl->set('d', 'CATFIELD', $oTxtWeb->render());
-$tpl->set('d', 'BRDRT', 0);
-$tpl->set('d', 'BRDRB', 1);
-$tpl->next();
+$page->set('d', 'CATFIELD', $oTxtWeb->render());
+$page->set('d', 'BRDRT', 0);
+$page->set('d', 'BRDRB', 1);
+$page->next();
 
-$tpl->set('d', 'CATNAME', i18n("Error page category"));
+$page->set('d', 'CATNAME', i18n("Error page category"));
 $oTxtErrorCat = new cHTMLTextbox("errsite_cat", $cApiClient->get("errsite_cat"), 10, 10);
-$tpl->set('d', 'CATFIELD', $oTxtErrorCat->render());
-$tpl->set('d', 'BRDRT', 0);
-$tpl->set('d', 'BRDRB', 1);
-$tpl->next();
+$page->set('d', 'CATFIELD', $oTxtErrorCat->render());
+$page->set('d', 'BRDRT', 0);
+$page->set('d', 'BRDRB', 1);
+$page->next();
 
-$tpl->set('d', 'CATNAME', i18n("Error page article"));
+$page->set('d', 'CATNAME', i18n("Error page article"));
 $oTxtErrorArt = new cHTMLTextbox("errsite_art", $cApiClient->get("errsite_art"), 10, 10);
-$tpl->set('d', 'CATFIELD', $oTxtErrorArt->render());
-$tpl->set('d', 'BRDRT', 0);
-$tpl->set('d', 'BRDRB', 1);
-$tpl->next();
+$page->set('d', 'CATFIELD', $oTxtErrorArt->render());
+$page->set('d', 'BRDRT', 0);
+$page->set('d', 'BRDRB', 1);
+$page->next();
 
 $clientLogo = $cApiPropertyColl->getValue('idclient', $idclient, 'backend', 'clientimage');
-$tpl->set('d', 'CATNAME', i18n("Client logo"));
+$page->set('d', 'CATNAME', i18n("Client logo"));
 $oTxtLogo = new cHTMLTextbox("clientlogo", $clientLogo, 75, 255);
-$tpl->set('d', 'CATFIELD', $oTxtLogo->render());
-$tpl->set('d', 'BRDRT', 0);
-$tpl->set('d', 'BRDRB', 1);
-$tpl->next();
+$page->set('d', 'CATFIELD', $oTxtLogo->render());
+$page->set('d', 'BRDRT', 0);
+$page->set('d', 'BRDRB', 1);
+$page->next();
 
 // Flag to generate XHTML
 $aChoices = array(
@@ -272,11 +277,11 @@ if ($cApiClient->getProperty('generator', 'xhtml') == 'true') {
     $oXHTMLSelect->setDefault('no');
 }
 
-$tpl->set('d', 'CATNAME', i18n('Generate XHTML'));
-$tpl->set('d', 'CATFIELD', $oXHTMLSelect->render());
-$tpl->set('d', 'BRDRT', 0);
-$tpl->set('d', 'BRDRB', 1);
-$tpl->next();
+$page->set('d', 'CATNAME', i18n('Generate XHTML'));
+$page->set('d', 'CATFIELD', $oXHTMLSelect->render());
+$page->set('d', 'BRDRT', 0);
+$page->set('d', 'BRDRB', 1);
+$page->next();
 
 // Flag to enable tracking
 $aChoices = array(
@@ -293,20 +298,21 @@ if ($cApiClient->getProperty('stats', 'tracking') == 'off') {
     $oXHTMLSelect->setDefault('on');
 }
 
-$tpl->set('d', 'CATNAME', i18n('Statistic'));
-$tpl->set('d', 'CATFIELD', $oXHTMLSelect->render());
-$tpl->set('d', 'BRDRT', 0);
-$tpl->set('d', 'BRDRB', 1);
-$tpl->next();
+$page->set('d', 'CATNAME', i18n('Statistic'));
+$page->set('d', 'CATFIELD', $oXHTMLSelect->render());
+$page->set('d', 'BRDRT', 0);
+$page->set('d', 'BRDRB', 1);
+$page->next();
 
 // Show checkbox to copy frontend templates for new clients
 if ($new == true) {
-    $tpl->set('d', 'CATNAME', i18n('Copy frontend template'));
+    $page->set('d', 'CATNAME', i18n('Copy frontend template'));
     $defaultform = new cHTMLCheckbox('copytemplate', 'checked', 'copytemplatechecked', true);
-    $tpl->set('d', 'CATFIELD', $defaultform->toHTML(false));
-    $tpl->next();
+    $page->set('d', 'CATFIELD', $defaultform->toHTML(false));
+    $page->next();
 }
-$tpl->set('s', 'IDCLIENT', $idclient);
+$page->set('s', 'IDCLIENT', $idclient);
 
 // Generate template
-$tpl->generate($cfg['path']['templates'] . $cfg['templates']['client_edit']);
+//$tpl->generate($cfg['path']['templates'] . $cfg['templates']['client_edit']);
+$page->render();
