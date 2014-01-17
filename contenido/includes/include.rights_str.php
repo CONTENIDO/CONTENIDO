@@ -33,10 +33,13 @@ while ($db->nextRecord()) { // set a new rights list fore this user
 }
 
 if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "user_edit")) {
-    saveRights();
+    $ret = saveRights();
+    if($ret === true) {
+        $sMessage = $notification->returnNotification('info', i18n('Changes saved'));
+    }
 } else {
     if (!$perm->have_perm_area_action("user_overview", $action)) {
-        $notification->displayNotification("error", i18n("Permission denied"));
+        $sMessage = $notification->returnNotification("error", i18n("Permission denied"));
     }
 }
 $sJsBefore = '';
@@ -295,6 +298,7 @@ $sTable = stripslashes($oTable->render());
 
 $sJsAfter .= "init('" . i18n("Open category") . "', '" . i18n("Close category") . "');\n";
 
+$oTpl->set('s', 'NOTIFICATION_SAVE_RIGHTS', $sMessage);
 $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
 $oTpl->set('s', 'RIGHTS_CONTENT', $sTable);

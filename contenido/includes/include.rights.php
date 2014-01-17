@@ -242,6 +242,7 @@ if ($bEndScript != true) {
 }
 
 if ($bEndScript == true) {
+    $oTpl->set('s', 'NOTIFICATION_SAVE_RIGHTS', '');
     $oTpl->set('s', 'RIGHTS_CONTENT', '');
     $oTpl->set('s', 'JS_SCRIPT_BEFORE', '');
     $oTpl->set('s', 'JS_SCRIPT_AFTER', '');
