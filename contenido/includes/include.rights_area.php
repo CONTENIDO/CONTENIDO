@@ -25,7 +25,7 @@ $debug = (cDebug::getDefaultDebuggerName() != cDebug::DEBUGGER_DEVNULL);
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
         FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
         WHERE user_id = '" . $db->escape($userid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
-            AND idlang = " . cSecurity::toInteger($rights_lang) . " AND idcat = 0 AND A.idaction = C.idaction AND A.idarea = B.idarea";
+        AND idlang = " . cSecurity::toInteger($rights_lang) . " AND idcat = 0 AND A.idaction = C.idaction AND A.idarea = B.idarea";
 $db->query($sql);
 
 $rights_list_old = array();
@@ -35,7 +35,7 @@ while ($db->nextRecord()) { // set a new rights list for this user
 
 if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "user_edit")) {
     $ret = saveRights();
-    if($ret === true) {
+    if ($ret === true) {
         $sMessage = $notification->returnNotification('info', i18n('Changes saved'));
     }
 } else {
@@ -86,9 +86,10 @@ $aTh = array(
     array(
         "&nbsp;",
         "&nbsp;",
-        "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAllAreas()\">"
+        '<input type="checkbox" name="checkall" value="" onclick="setRightsForAllAreas()">'
     )
 );
+
 foreach ($aTh as $i => $tr) {
     $items = "";
     foreach ($tr as $td) {
@@ -128,7 +129,7 @@ foreach ($right_list as $key => $value) {
         if ($key == $key2) {
             // does the user have the right
             if (in_array($value2["perm"] . "|fake_permission_action|0", array_keys($rights_list_old))) {
-                $checked = "checked=\"checked\"";
+                $checked = 'checked="checked';
             } else {
                 $checked = "";
             }
@@ -178,7 +179,7 @@ foreach ($right_list as $key => $value) {
                 $idaction = $value3;
                 // does the user have the right
                 if (in_array($value2["perm"] . "|$idaction|0", array_keys($rights_list_old))) {
-                    $checked = "checked=\"checked\"";
+                    $checked = 'checked="checked';
                 } else {
                     $checked = "";
                 }
