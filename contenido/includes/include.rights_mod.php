@@ -106,7 +106,7 @@ foreach ($right_list["mod"] as $value2) {
 $objHeaderItem->setContent(i18n("Check all"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
-$aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">";
+$aSecondHeaderRow[] = '<input type="checkbox" name="checkall" value="" onclick="setRightsForAll()">';
 
 $objHeaderRow->updateAttributes(array(
     "class" => "textw_medium"

@@ -12,6 +12,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // notice $oTpl is filled and generated in file include.rights.php this file
@@ -24,8 +25,8 @@ $possible_area = "'" . implode("','", $area_tree[$perm->showareas("tpl")]) . "'"
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
         FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
         WHERE user_id = '" . $db->escape($groupid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
-            AND A.type = 1 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
-            AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+        AND A.type = 1 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
+        AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 
 $rights_list_old = array();
@@ -47,8 +48,8 @@ $sJsBefore = '';
 $sJsAfter = '';
 $sTable = '';
 
-$sJsBefore .= "var itemids = new Array();\n
-               var actareaids = new Array();\n";
+$sJsBefore .= "var itemids = [];
+               var actareaids = [];\n";
 
 // Init Table
 $oTable = new cHTMLTable();
@@ -88,7 +89,7 @@ foreach ($right_list["tpl"] as $value2) {
     // if there are some actions
     if (is_array($value2["action"])) {
         foreach ($value2["action"] as $key3 => $value3) { // set the areas that
-                                                          // are in use
+            // are in use
             $possible_areas[$value2["perm"]] = "";
 
             // set the possible areas and actions for this areas
@@ -100,7 +101,7 @@ foreach ($right_list["tpl"] as $value2) {
                 "valign" => "top",
                 "align" => "center"
             ));
-            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3]? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
+            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
             $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "', '$value3', '')\">";
@@ -112,7 +113,7 @@ foreach ($right_list["tpl"] as $value2) {
 $objHeaderItem->setContent(i18n("Check all"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
-$aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">";
+$aSecondHeaderRow[] = '<input type="checkbox" name="checkall" value="" onclick="setRightsForAll()">';
 
 $objHeaderRow->updateAttributes(array(
     "class" => "textw_medium"
@@ -168,7 +169,7 @@ while ($db->nextRecord()) {
     $objItem->updateAttributes(array(
         "class" => "td_rights1"
     ));
-    $objItem->setContent($description? $description : "&nbsp;");
+    $objItem->setContent($description ? $description : "&nbsp;");
     $items .= $objItem->render();
     $objItem->advanceID();
 

@@ -12,6 +12,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // notice $oTpl is filled and generated in file include.rights.php this file
@@ -26,8 +27,8 @@ $possible_area = "'" . implode("','", $area_tree[$perm->showareas("mod")]) . "'"
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
         FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
         WHERE user_id = '" . $db->escape($groupid) . "'
-            AND idclient = " . cSecurity::toInteger($rights_client) . " AND A.type = 1 AND idlang = " . cSecurity::toInteger($rights_lang) . "
-            AND B.idarea IN ($possible_area) AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+        AND idclient = " . cSecurity::toInteger($rights_client) . " AND A.type = 1 AND idlang = " . cSecurity::toInteger($rights_lang) . "
+        AND B.idarea IN ($possible_area) AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 
 $rights_list_old = array();
@@ -51,8 +52,8 @@ $sJsExternal = '';
 $sTable = '';
 
 // declare new javascript variables;
-$sJsBefore .= "var itemids = new Array();
-               var actareaids = new Array();";
+$sJsBefore .= "var itemids = [];
+               var actareaids = [];\n";
 
 // Init Table
 $oTable = new cHTMLTable();

@@ -12,19 +12,22 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // notice $oTpl is filled and generated in file include.rights.php this file
 // renders $oTpl to browser
 include_once (cRegistry::getBackendPath() . 'includes/include.grouprights.php');
+
 $page = new cGuiPage('rights', '', 4);
+
 // set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("con")]) . "'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
         FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
         WHERE user_id = '" . $db->escape($groupid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
-            AND A.type = 1 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
-            AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+        AND A.type = 1 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
+        AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 $rights_list_old = array();
 while ($db->nextRecord()) { // set a new rights list fore this user
@@ -48,8 +51,8 @@ $sTable = '';
 
 $sJsExternal .= '<script type="text/javascript" src="scripts/expandCollapse.js"></script>';
 // declare new javascript variables;
-$sJsBefore .= "var itemids = new Array();\n
-               var actareaids = new Array();\n";
+$sJsBefore .= "var itemids = [];
+               var actareaids = [];\n";
 
 // Init Table
 $oTable = new cHTMLTable();
@@ -100,7 +103,7 @@ foreach ($right_list["con"] as $value2) {
                     "valign" => "top",
                     "align" => "center"
                 ));
-                $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3]? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
+                $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
                 $items .= $objHeaderItem->render();
                 $objHeaderItem->advanceID();
                 $sJsBefore .= "actareaids[\"$value3|" . $value2["perm"] . "\"]=\"x\";\n";
@@ -114,7 +117,7 @@ foreach ($right_list["con"] as $value2) {
 $objHeaderItem->setContent(i18n("Check all"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
-$aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">";
+$aSecondHeaderRow[] = '<input type="checkbox" name="checkall" value="" onclick="setRightsForAll()">';
 
 $objHeaderRow->updateAttributes(array(
     "class" => "textw_medium"
@@ -193,12 +196,12 @@ while ($db->nextRecord()) {
         // find out parentid for inheritance
         // if parentid is the same increase the counter
         if ($parentid == $db->f("parentid")) {
-            $counter[$parentid]++;
+            $counter[$parentid] ++;
         } else {
             $parentid = $db->f("parentid");
             // if these parentid is in use increase the counter
             if (isset($counter[$parentid])) {
-                $counter[$parentid]++;
+                $counter[$parentid] ++;
             } else {
                 $counter[$parentid] = 0;
             }
