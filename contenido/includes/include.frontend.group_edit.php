@@ -16,6 +16,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $fegroups = new cApiFrontendGroupCollection();
+$page = new cGuiPage("grouprights_memberselect", "", 0);
 
 if (is_array($cfg['plugins']['frontendgroups'])) {
     foreach ($cfg['plugins']['frontendgroups'] as $plugin) {
@@ -65,7 +66,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
    $idfrontendgroup= 0;
    $fegroup = new cApiFrontendGroup();
 
-  $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Deleted group successfully!"));
+  cRegistry::addInfoMessage(i18n("Deleted group successfully!"));
 }
 
 if ($action != '') {
@@ -139,13 +140,12 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
         $notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
     } else {
         if (strlen($successMessage) > 0) {
-            $notification->displayNotification(cGuiNotification::LEVEL_INFO,$successMessage);
+            cRegistry::addInfoMessage($successMessage);
         } elseif (strlen($action) > 0) {
-            $notification->displayNotification(cGuiNotification::LEVEL_INFO,i18n("Saved changes successfully!"));
+            cRegistry::addInfoMessage(i18n("Saved changes successfully!"));
         }
     }
 
-    $tpl->reset();
 
     $feusers = new cApiFrontendUserCollection();
     $feusers->select("idclient='$client'");
@@ -166,7 +166,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
     foreach ($cells as $idfrontenduser => $name) {
         $sInGroupOptions .= '<option value="'.$idfrontenduser.'">'.$name.'</option>'."\n";
     }
-    $tpl->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
+    $page->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
 
     $items = array();
     while ($feuser = $feusers->next()) {
@@ -186,20 +186,20 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
     foreach ($items as $idfrontenduser => $name) {
         $sNonGroupOptions .= '<option value="'.$idfrontenduser.'">'.$name.'</option>'."\n";
     }
-    $tpl->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
+    $page->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
 
     $groupname = new cHTMLTextbox("groupname", $fegroup->get("groupname"),40);
 
     $defaultgroup = new cHTMLCheckbox("defaultgroup", "1");
     $defaultgroup->setChecked($fegroup->get("defaultgroup"));
 
-    $tpl->set('d', 'LABEL', i18n("Group name"));
-    $tpl->set('d', 'INPUT', $groupname->render());
-    $tpl->next();
+    $page->set('d', 'LABEL', i18n("Group name"));
+    $page->set('d', 'INPUT', $groupname->render());
+    $page->next();
 
-    $tpl->set('d', 'LABEL', i18n("Default group"));
-    $tpl->set('d', 'INPUT', $defaultgroup->toHTML(false));
-    $tpl->next();
+    $page->set('d', 'LABEL', i18n("Default group"));
+    $page->set('d', 'INPUT', $defaultgroup->toHTML(false));
+    $page->next();
 
     $pluginOrder = cArray::trim(explode(',', getSystemProperty('plugin', 'frontendgroups-pluginorder')));
 
@@ -215,42 +215,42 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
 
                 if (is_array($plugTitle) && is_array($display)) {
                     foreach ($plugTitle as $key => $value) {
-                        $tpl->set('d', 'LABEL', $value);
-                        $tpl->set('d', 'INPUT', $display[$key]);
-                        $tpl->next();
+                        $page->set('d', 'LABEL', $value);
+                        $page->set('d', 'INPUT', $display[$key]);
+                        $page->next();
                     }
                 } else {
                     if (is_array($plugTitle) || is_array($display)) {
-                        $tpl->set('d', 'LABEL', "WARNING");
-                        $tpl->set('d', 'INPUT', "The plugin $plugin delivered an array for the displayed titles, but did not return an array for the contents.");
-                        $tpl->next();
+                        $page->set('d', 'LABEL', "WARNING");
+                        $page->set('d', 'INPUT', "The plugin $plugin delivered an array for the displayed titles, but did not return an array for the contents.");
+                        $page->next();
                     } else {
-                        $tpl->set('d', 'LABEL', $plugTitle);
-                        $tpl->set('d', 'INPUT', $display);
-                        $tpl->next();
+                        $page->set('d', 'LABEL', $plugTitle);
+                        $page->set('d', 'INPUT', $display);
+                        $page->next();
                     }
                 }
             }
         }
     }
 
-    $tpl->set('s', 'CATNAME', i18n("Edit group"));
-    $tpl->set('s', 'CATFIELD', "&nbsp;");
-    $tpl->set('s', 'FORM_ACTION', $sess->url('main.php'));
-    $tpl->set('s', 'AREA', $area);
-    $tpl->set('s', 'GROUPID', $idfrontendgroup);
-    $tpl->set('s', 'FRAME', $frame);
-    $tpl->set('s', 'IDLANG', $lang);
-    $tpl->set('s', 'STANDARD_ACTION', 'frontendgroup_save_group');
-    $tpl->set('s', 'ADD_ACTION', 'frontendgroup_user_add');
-    $tpl->set('s', 'DELETE_ACTION', 'frontendgroups_user_delete');
-    $tpl->set('s', 'DISPLAY_OK', 'block');
-    $tpl->set('s', 'IN_GROUP_VALUE', $_POST['filter_in']);
-    $tpl->set('s', 'NON_GROUP_VALUE', $_POST['filter_non']);
-    $tpl->set('s', 'RECORD_ID_NAME', 'idfrontendgroup');
-    $tpl->set('s', 'RELOADSCRIPT', $sReloadScript.$sRefreshRightTopLinkJs);
+    $page->set('s', 'CATNAME', i18n("Edit group"));
+    $page->set('s', 'CATFIELD', "&nbsp;");
+    $page->set('s', 'FORM_ACTION', $sess->url('main.php'));
+    $page->set('s', 'AREA', $area);
+    $page->set('s', 'GROUPID', $idfrontendgroup);
+    $page->set('s', 'FRAME', $frame);
+    $page->set('s', 'IDLANG', $lang);
+    $page->set('s', 'STANDARD_ACTION', 'frontendgroup_save_group');
+    $page->set('s', 'ADD_ACTION', 'frontendgroup_user_add');
+    $page->set('s', 'DELETE_ACTION', 'frontendgroups_user_delete');
+    $page->set('s', 'DISPLAY_OK', 'block');
+    $page->set('s', 'IN_GROUP_VALUE', $_POST['filter_in']);
+    $page->set('s', 'NON_GROUP_VALUE', $_POST['filter_non']);
+    $page->set('s', 'RECORD_ID_NAME', 'idfrontendgroup');
+    $page->set('s', 'RELOADSCRIPT', $sReloadScript.$sRefreshRightTopLinkJs);
 
-    $tpl = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_memberselect']);
+    $page->render();
 } else {
     $page = new cGuiPage("frontend.group_edit");
     if (!empty($sReloadScript)) {
