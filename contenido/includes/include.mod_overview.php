@@ -107,14 +107,10 @@ foreach ($allModules as $idmod => $module) {
         $link = new cHTMLLink;
         $link->setMultiLink("mod", "", "mod_edit", "");
         $link->setCustom("idmod", $idmod);
-        $link->updateAttributes(array(
-            "alt" => htmlentities($module['description']),
-            "title" => htmlentities($module['description'])
-        ));
 
         $moduleName = (strlen(trim($module['name'])) > 0) ? $module['name'] : i18n("- Unnamed module -");
         $sName = cString::stripSlashes(conHtmlSpecialChars($moduleName)); //$cApiModule->get("name");
-        $descr = cString::stripSlashes(conHtmlSpecialChars($module ['description']));
+        $descr = cString::stripSlashes(str_replace("'", "&#39;", conHtmlSpecialChars(nl2br($module ['description']))));
 
         // Do not check modules (or don't force it) - so, let's take a look into the database
         $sModuleError = $module['error']; //$cApiModule->get("error");
