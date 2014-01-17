@@ -20,8 +20,8 @@ cInclude('includes', 'functions.pathresolver.php');
 
 $db2 = cRegistry::getDb();
 
-$idcat = (isset($_REQUEST['idcat']) && is_numeric($_REQUEST['idcat'])) ? $_REQUEST['idcat'] : -1;
-$next = (isset($_REQUEST['next']) && is_numeric($_REQUEST['next']) && $_REQUEST['next'] > 0) ? $_REQUEST['next'] : 0;
+$idcat = (isset($_REQUEST['idcat']) && is_numeric($_REQUEST['idcat']))? $_REQUEST['idcat'] : -1;
+$next = (isset($_REQUEST['next']) && is_numeric($_REQUEST['next']) && $_REQUEST['next'] > 0)? $_REQUEST['next'] : 0;
 
 $dateformat = getEffectiveSetting('dateformat', 'date', 'Y-m-d');
 $templateDescription = '';
@@ -32,8 +32,27 @@ if (!isset($syncfrom)) {
 
 $syncoptions = $syncfrom;
 
+// init duplicate counter in session
+if (!isset($_SESSION['count_duplicate'])) {
+    $_SESSION = array(
+        'count_duplicate' => 0
+    );
+}
+
 if ($action == 'con_duplicate' && ($perm->have_perm_area_action("con", "con_duplicate") || $perm->have_perm_area_action_item("con", "con_duplicate", $idcat))) {
-    $newidartlang = conCopyArticle($duplicate, $idcat);
+
+    $count = (int) $_SESSION['count_duplicate'];
+
+    // check if duplicate action was called from click or from back button
+    if ($_GET['count_duplicate'] < $count) {
+    } else {
+        // perfom action only when duplicate action is called from link
+        $newidartlang = conCopyArticle($duplicate, $idcat);
+        $count++;
+        $_SESSION = array(
+            'count_duplicate' => $count
+        );
+    }
 }
 
 if ($action == 'con_syncarticle' && ($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", $idcat))) {
@@ -293,7 +312,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $locked = $sart["locked"];
             $redirect = $sart["redirect"];
 
-            $published = ($published != '0000-00-00 00:00:00') ? date($dateformat, strtotime($published)) : i18n("not yet published");
+            $published = ($published != '0000-00-00 00:00:00')? date($dateformat, strtotime($published)) : i18n("not yet published");
             $created = date($dateformat, strtotime($created));
             $alttitle = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
 
@@ -463,7 +482,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     c.idclient  = " . cSecurity::toInteger($client);
                 $db2->query($sql2);
                 $db2->nextRecord();
-                $a_tplname = $db2->f("name") ? '<i>' . $db2->f("name") . '</i>' : "--- " . i18n("None") . " ---";
+                $a_tplname = $db2->f("name")? '<i>' . $db2->f("name") . '</i>' : "--- " . i18n("None") . " ---";
             }
 
             // Make Startarticle button
@@ -506,7 +525,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             // Make copy button
             if (($perm->have_perm_area_action('con', 'con_duplicate') || $perm->have_perm_area_action_item('con', 'con_duplicate', $idcat)) && $idcat != 0) {
                 $imgsrc = "but_copy.gif";
-                $tmp_link = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&next=$next") . '" title="' . i18n("Duplicate article") . '"><img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" border="0" title="' . i18n("Duplicate article") . '" alt="' . i18n("Duplicate article") . '"></a>';
+                // add count_duplicate param to identify if the duplicate action is called from click or back button.
+                $tmp_link = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&next=$next") . "&count_duplicate=" . $_SESSION['count_duplicate'] . '" title="' . i18n("Duplicate article") . '"><img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" border="0" title="' . i18n("Duplicate article") . '" alt="' . i18n("Duplicate article") . '"></a>';
             } else {
                 $tmp_link = '';
             }
@@ -517,8 +537,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $duplicatelink = $tmp_link;
             }
 
-
-            $todolink =  '';
+            $todolink = '';
             if ($tmp_sync != '') {
                 $subject = urlencode(sprintf(i18n("Reminder for article '%s'"), $title));
                 $mycatname = '';
@@ -680,7 +699,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         );
         foreach ($listColumns as $key => $listColumn) {
             // Dirty hack to force column widths
-            $width = ($key == 'title' || $listColumn == i18n('Title')) ? '100%' : '1%';
+            $width = ($key == 'title' || $listColumn == i18n('Title'))? '100%' : '1%';
             // if it should be possible to sort by this column, add a link
             if (in_array($key, array_keys($sortColumns))) {
                 $newSortmode = 'asc';
@@ -691,7 +710,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
                 // add the appropriate sorting image if necessary
                 if ($sortby == $sortColumns[$key]) {
-                    $imageSrc = ($sortmode == 'asc') ? 'images/sort_up.gif' : 'images/sort_down.gif';
+                    $imageSrc = ($sortmode == 'asc')? 'images/sort_up.gif' : 'images/sort_down.gif';
                     $sortImage = '<img src="' . $imageSrc . '">';
                 } else {
                     $sortImage = '';
@@ -809,15 +828,15 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $tpl2->set('s', 'OPTIONS', 'onchange="changeElemPerPage(this)"');
 
         foreach ($aElemPerPage as $key => $value) {
-            $selected = ($elemperpage == $key) ? 'selected="selected"' : '';
+            $selected = ($elemperpage == $key)? 'selected="selected"' : '';
             $tpl2->set('d', 'VALUE', $key);
             $tpl2->set('d', 'CAPTION', $value);
             $tpl2->set('d', 'SELECTED', $selected);
             $tpl2->next();
         }
 
-        $select = (!$no_article) ? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '&nbsp;';
-        $caption = (!$no_article) ? i18n("Items per page:") : '&nbsp;';
+        $select = (!$no_article)? $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true) : '&nbsp;';
+        $caption = (!$no_article)? i18n("Items per page:") : '&nbsp;';
 
         $tpl->set('s', 'ELEMPERPAGECAPTION', $caption);
         $tpl->set('s', 'ELEMPERPAGE', $select);
@@ -879,7 +898,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         /*
          * JL 23.06.03 Check right from "Content" instead of "Category" if
          * ($perm->have_perm_area_action("str_tplcfg", "str_tplcfg") ||
-         * $perm->have_perm_area_action_item("str_tplcfg", "str_tplcfg", $lidcat))
+         * $perm->have_perm_area_action_item("str_tplcfg", "str_tplcfg",
+         * $lidcat))
          */
 
         if (($perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat) || $perm->have_perm_area_action('con', 'con_tplcfg_edit')) && $foreignlang == false) {
@@ -939,7 +959,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
 
         // breadcrumb onclick
-        $tpl->set('s', 'IDTPL', $idtpl ? $idtpl : $cat_idtpl);
+        $tpl->set('s', 'IDTPL', $idtpl? $idtpl : $cat_idtpl);
         $tpl->set('s', 'SYNCOPTIONS', $syncoptions);
         $tpl->set('s', 'DISPLAY_MENU', 1);
 
