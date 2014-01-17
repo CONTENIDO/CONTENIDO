@@ -2,21 +2,22 @@
 /**
  * This file contains the backend page for user to group assigment.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Timo Hummel
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Timo Hummel
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $db2 = cRegistry::getDb();
-$tpl3 = new cTemplate();
+// $page = new cTemplate();
+
+$page = new cGuiPage('grouprights_memberselect', '', '1');
 
 if (!$perm->have_perm_area_action($area, $action)) {
     $notification->displayNotification("error", i18n("Permission denied"));
@@ -81,7 +82,6 @@ if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $acti
     }
 }
 
-
 $tab1 = $cfg["tab"]["groupmembers"];
 $tab2 = $cfg['tab']['user'];
 
@@ -92,7 +92,7 @@ if ($sortby != '') {
             INNER JOIN " . $tab2 . " ON " . $tab1 . ".user_id = " . $tab2 . ".user_id WHERE
             group_id = '" . $db->escape($groupid) . "' ORDER BY " . $tab2 . "." . $sortby;
 } else {
-    #Show previous behaviour by default
+    // how previous behaviour by default
     $sql = "SELECT " . $tab1 . ".idgroupuser, " . $tab1 . ".user_id FROM " . $tab1 . "
             INNER JOIN " . $tab2 . " ON " . $tab1 . ".user_id = " . $tab2 . ".user_id WHERE
             group_id = '" . $db->escape($groupid) . "' ORDER BY " . $tab2 . ".realname, " . $tab2 . ".username";
@@ -115,9 +115,9 @@ while ($db->nextRecord()) {
     }
 }
 
-$tpl3->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
+$page->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
 
-//Sort user list by given criteria
+// Sort user list by given criteria
 $orderBy = getEffectiveSetting('backend', 'sort_backend_users_by', '');
 
 $userColl = new cApiUserCollection();
@@ -138,25 +138,24 @@ if (is_array($users)) {
     }
 }
 
-$tpl3->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
+$page->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
 
-$tpl3->set('s', 'CATNAME', i18n("Manage group members"));
-$tpl3->set('s', 'CATFIELD', "&nbsp;");
-$tpl3->set('s', 'FORM_ACTION', $sess->url('main.php'));
-$tpl3->set('s', 'AREA', $area);
-$tpl3->set('s', 'GROUPID', $groupid);
-$tpl3->set('s', 'FRAME', $frame);
-$tpl3->set('s', 'IDLANG', $lang);
-$tpl3->set('s', 'RECORD_ID_NAME', 'groupid');
-$tpl3->set('s', 'ADD_ACTION', 'group_addmember');
-$tpl3->set('s', 'DELETE_ACTION', 'group_deletemember');
-$tpl3->set('s', 'STANDARD_ACTION', 'group_addmember');
-$tpl3->set('s', 'IN_GROUP_VALUE', $_POST['filter_in']);
-$tpl3->set('s', 'NON_GROUP_VALUE', $_POST['filter_non']);
-$tpl3->set('s', 'DISPLAY_OK', 'none');
-$tpl3->set('s', 'RELOADSCRIPT', '');
+$page->set('s', 'CATNAME', i18n("Manage group members"));
+$page->set('s', 'CATFIELD', "&nbsp;");
+$page->set('s', 'FORM_ACTION', $sess->url('main.php'));
+$page->set('s', 'AREA', $area);
+$page->set('s', 'GROUPID', $groupid);
+$page->set('s', 'FRAME', $frame);
+$page->set('s', 'IDLANG', $lang);
+$page->set('s', 'RECORD_ID_NAME', 'groupid');
+$page->set('s', 'ADD_ACTION', 'group_addmember');
+$page->set('s', 'DELETE_ACTION', 'group_deletemember');
+$page->set('s', 'STANDARD_ACTION', 'group_addmember');
+$page->set('s', 'IN_GROUP_VALUE', $_POST['filter_in']);
+$page->set('s', 'NON_GROUP_VALUE', $_POST['filter_non']);
+$page->set('s', 'DISPLAY_OK', 'none');
+$page->set('s', 'RELOADSCRIPT', '');
 
 // Generate template
-$tpl3gen = $tpl3->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_memberselect'], true);
+$page->render();
 
-echo $tpl3gen;

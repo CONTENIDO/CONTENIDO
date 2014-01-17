@@ -12,10 +12,10 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.rights.php');
+$page = new cGuiPage('grouprights_overview', '', '0');
 
 if (!$perm->have_perm_area_action($area, $action)) {
     // access denied
@@ -86,8 +86,8 @@ if (!empty($request['groupprop_type']) && !empty($request['groupprop_name'])) {
 
 $aPerms = explode(',', $oGroup->getField('perms'));
 
-$tpl->reset();
-$tpl->set('s', 'NOTIFICATION', $sNotification);
+// $page->reset();
+$page->set('s', 'NOTIFICATION', $sNotification);
 
 $form = '<form name="group_properties" method="post" action="' . $sess->url("main.php?") . '">
              <input type="hidden" name="area" value="' . $area . '">
@@ -96,32 +96,32 @@ $form = '<form name="group_properties" method="post" action="' . $sess->url("mai
              <input type="hidden" name="groupid" value="' . $request['groupid'] . '">
              <input type="hidden" name="idlang" value="' . $lang . '">';
 
-$tpl->set('s', 'FORM', $form);
-$tpl->set('s', 'GET_GROUPID', $request['groupid']);
-$tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
-$tpl->set('s', 'CANCELTEXT', i18n("Discard changes"));
-$tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&groupid={$request['groupid']}"));
-$tpl->set('s', 'PROPERTY', i18n("Property"));
-$tpl->set('s', 'VALUE', i18n("Value"));
+$page->set('s', 'FORM', $form);
+$page->set('s', 'GET_GROUPID', $request['groupid']);
+$page->set('s', 'SUBMITTEXT', i18n("Save changes"));
+$page->set('s', 'CANCELTEXT', i18n("Discard changes"));
+$page->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&groupid={$request['groupid']}"));
+$page->set('s', 'PROPERTY', i18n("Property"));
+$page->set('s', 'VALUE', i18n("Value"));
 
-$tpl->set('d', 'CATNAME', i18n("Groupname"));
-$tpl->set('d', 'CATFIELD', stripslashes($oGroup->getGroupName(true)));
-$tpl->next();
+$page->set('d', 'CATNAME', i18n("Groupname"));
+$page->set('d', 'CATFIELD', stripslashes($oGroup->getGroupName(true)));
+$page->next();
 
-$tpl->set('d', 'CATNAME', i18n("Description"));
+$page->set('d', 'CATNAME', i18n("Description"));
 $oTxtDesc = new cHTMLTextbox('description', conHtmlSpecialChars($oGroup->getField('description')), 40, 255);
-$tpl->set('d', 'CATFIELD', $oTxtDesc->render());
-$tpl->next();
+$page->set('d', 'CATFIELD', $oTxtDesc->render());
+$page->next();
 
 // permissions of current logged in user
 $aAuthPerms = explode(',', $auth->auth['perm']);
 
 // sysadmin perm
 if (in_array('sysadmin', $aAuthPerms)) {
-    $tpl->set('d', 'CATNAME', i18n("System administrator"));
+    $page->set('d', 'CATNAME', i18n("System administrator"));
     $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', in_array('sysadmin', $aPerms));
-    $tpl->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
-    $tpl->next();
+    $page->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
+    $page->next();
 }
 
 // clients admin perms
@@ -137,9 +137,9 @@ foreach ($aClients as $idclient => $item) {
 }
 
 if ($sClientCheckboxes !== '' && !in_array('sysadmin', $aPerms)) {
-    $tpl->set('d', 'CATNAME', i18n("Administrator"));
-    $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
-    $tpl->next();
+    $page->set('d', 'CATNAME', i18n("Administrator"));
+    $page->set('d', 'CATFIELD', $sClientCheckboxes);
+    $page->next();
 }
 
 // clients perms
@@ -153,9 +153,9 @@ foreach ($aClients as $idclient => $item) {
 }
 
 if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
-    $tpl->set('d', 'CATNAME', i18n("Access clients"));
-    $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
-    $tpl->next();
+    $page->set('d', 'CATNAME', i18n("Access clients"));
+    $page->set('d', 'CATFIELD', $sClientCheckboxes);
+    $page->next();
 }
 
 // languages perms
@@ -170,9 +170,9 @@ foreach ($aClientsLanguages as $item) {
 }
 
 if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
-    $tpl->set('d', 'CATNAME', i18n("Access languages"));
-    $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
-    $tpl->next();
+    $page->set('d', 'CATNAME', i18n("Access languages"));
+    $page->set('d', 'CATFIELD', $sClientCheckboxes);
+    $page->next();
 }
 
 // group properties
@@ -208,9 +208,9 @@ $table = '
     </tr>
     </table>';
 
-$tpl->set('d', 'CATNAME', i18n("User-defined properties"));
-$tpl->set('d', 'CATFIELD', $table);
-$tpl->next();
+$page->set('d', 'CATNAME', i18n("User-defined properties"));
+$page->set('d', 'CATFIELD', $table);
+$page->next();
 
 // Generate template
-$tpl->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_overview']);
+$page->render();

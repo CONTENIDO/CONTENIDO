@@ -2,20 +2,22 @@
 /**
  * This file contains the backend page for group rights management.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.rights.php');
+
+global $dataSync;
+$dataSync = array();
 
 if (!isset($actionarea)) {
     $actionarea = 'area';
@@ -26,9 +28,9 @@ if (!is_object($db2)) {
 }
 
 if (!is_object($oTpl)) {
-    $oTpl = new cTemplate();
+    // $oTpl = new cTemplate();
 }
-$oTpl->reset();
+// $oTpl->reset();
 
 // Set new right_list (=all possible rights)
 if (!is_array($right_list)) {
@@ -57,16 +59,26 @@ if (!is_array($right_list)) {
     }
 }
 
-$oTpl->set('s', 'SESS_ID', $sess->id);
-$oTpl->set('s', 'ACTION_URL', $sess->url('main.php'));
-$oTpl->set('s', 'TYPE_ID', 'groupid');
-$oTpl->set('s', 'USER_ID', $groupid);
-$oTpl->set('s', 'AREA', $area);
+$dataSync['SESS_ID'] = $sess->id;
+$dataSync['ACTION_URL'] = array(
+    '',
+    $sess->url('main.php')
+);
+$dataSync['TYPE_ID'] = 'groupid';
+$dataSync['USER_ID'] = $groupid;
+$dataSync['AREA'] = $area;
+
+// $oTpl->set('s', 'SESS_ID', $sess->id);
+// $oTpl->set('s', 'ACTION_URL', $sess->url('main.php'));
+// $oTpl->set('s', 'TYPE_ID', 'groupid');
+// $oTpl->set('s', 'USER_ID', $groupid);
+// $oTpl->set('s', 'AREA', $area);
 
 $oGroup = new cApiGroup($groupid);
 $userPerms = $oGroup->getField('perms');
 
-$oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
+$dataSync['RIGHTS_PERMS'] = $rights_perms;
+// $oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
 
 // Selectbox for clients
 $oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang');
@@ -106,11 +118,15 @@ if (!isset($rights_clientslang)) {
 }
 
 // Render Select Box
-$oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
+$dataSync['INPUT_SELECT_CLIENT'] = $oHtmlSelect->render();
+// $oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
 
 if ($area != 'groups_content') {
-    $oTpl->set('s', 'INPUT_SELECT_RIGHTS', '');
-    $oTpl->set('s', 'DISPLAY_RIGHTS', 'none');
+    $dataSync['INPUT_SELECT_RIGHTS'] = '';
+    $dataSync['DISPLAY_RIGHTS'] = 'none';
+
+    // $oTpl->set('s', 'INPUT_SELECT_RIGHTS', '');
+    // $oTpl->set('s', 'DISPLAY_RIGHTS', 'none');
 } else {
     // Filter for displaying rights
     $oHtmlSelect = new cHTMLSelectElement('filter_rights', '', 'filter_rights');
@@ -172,8 +188,11 @@ if ($area != 'groups_content') {
                 break;
         }
     }
-    $oTpl->set('s', 'INPUT_SELECT_RIGHTS', $oHtmlSelect->render());
-    $oTpl->set('s', 'DISPLAY_RIGHTS', 'block');
+
+    $dataSync['INPUT_SELECT_RIGHTS'] = $oHtmlSelect->render();
+    $dataSync['DISPLAY_RIGHTS'] = 'block';
+    // $oTpl->set('s', 'INPUT_SELECT_RIGHTS', $oHtmlSelect->render());
+    // $oTpl->set('s', 'DISPLAY_RIGHTS', 'block');
 }
 
 $oClientLang = new cApiClientLanguage((int) $rights_clientslang);
@@ -189,6 +208,10 @@ if ($oClientLang->isLoaded()) {
 }
 
 // current set it on NULL
-$oTpl->set('s', 'NOTIFICATION', '');
 
-$oTpl->set('s', 'OB_CONTENT', '');
+$dataSync['NOTIFICATION'] = '';
+$dataSync['OB_CONTENT'] = '';
+//$oTpl->set('s', 'NOTIFICATION', '');
+//$oTpl->set('s', 'OB_CONTENT', '');
+
+

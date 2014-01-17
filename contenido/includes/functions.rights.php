@@ -380,5 +380,5 @@ function saveGroupRights() {
     }
 
     $rights_list_old = $rights_list;
-    $notification->displayNotification('info', i18n('Changes saved'));
+    return true;
 }

@@ -12,12 +12,12 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// notice $oTpl is filled and generated in file include.rights.php this file
-// renders $oTpl to browser
-include_once(cRegistry::getBackendPath() . 'includes/include.grouprights.php');
+// notice $page is filled and generated in file include.rights.php this file
+// renders $page to browser
+$page = new cGuiPage('rights', '', '4');
+include_once (cRegistry::getBackendPath() . 'includes/include.grouprights.php');
 
 // set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("lay")]) . "'";
@@ -33,7 +33,9 @@ while ($db->nextRecord()) { // set a new rights list fore this user
 }
 
 if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == 'group_edit')) {
-    saveGroupRights();
+    if (saveGroupRights() === true) {
+        cRegistry::addInfoMessage(i18n('Changes saved'));
+    }
 } else {
     if (!$perm->have_perm_area_action("groups_overview", $action)) {
         $notification->displayNotification('error', i18n('Permission denied'));
@@ -225,9 +227,32 @@ $oTable->setContent($headeroutput . $output . $footeroutput);
 $sTable = stripslashes($oTable->render());
 // Table end
 
-$oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
-$oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
-$oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
-$oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
+global $dataSync;
+// $oTpl = new cTemplate();
 
-$oTpl->generate('templates/standard/' . $cfg['templates']['rights']);
+$page->set('s', 'INPUT_SELECT_CLIENT', $dataSync['INPUT_SELECT_CLIENT']);
+$page->set('s', 'INPUT_SELECT_RIGHTS', $dataSync['INPUT_SELECT_RIGHTS']);
+
+$page->set('s', 'SESS_ID', $dataSync['SESS_ID']);
+$page->set('s', 'ACTION_URL', $dataSync['ACTION_URL'][1]);
+
+$page->set('s', 'TYPE_ID', $dataSync['TYPE_ID']);
+$page->set('s', 'USER_ID', $dataSync['USER_ID']);
+
+$page->set('s', 'AREA', $dataSync['AREA']);
+$page->set('s', 'RIGHTS_PERMS', $dataSync['RIGHTS_PERMS']);
+
+$page->set('s', 'AREA', $dataSync['AREA']);
+$page->set('s', 'RIGHTS_PERMS', $dataSync['RIGHTS_PERMS']);
+
+$page->set('s', 'DISPLAY_RIGHTS', $dataSync['DISPLAY_RIGHTS']);
+$page->set('s', 'NOTIFICATION', $dataSync['NOTIFICATION']);
+
+$page->set('s', 'OB_CONTENT', $dataSync['OB_CONTENT']);
+
+$page->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
+$page->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
+$page->set('s', 'RIGHTS_CONTENT', $sTable);
+$page->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
+
+$page->render();
