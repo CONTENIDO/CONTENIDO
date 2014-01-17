@@ -64,7 +64,7 @@ if ($action == 'fegroups_save_perm') {
             }
         }
     }
-    $notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n("Saved changes successfully!"));
+    cRegistry::addInfoMessage(i18n("Saved changes successfully!"));
 }
 
 $rights->addHeader(sprintf(i18n("Permissions for plugin '%s'"), $class->getFriendlyName()));
