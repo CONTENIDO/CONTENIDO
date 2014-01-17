@@ -8,12 +8,13 @@
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/subnav.js"></script>
     <script type="text/javascript">
+    // @FIXME: No JavaScript in global scope!
     var artObj = null;
     function refreshArticleProp() {
         artObj = Con.getFrame('left_top').artObj;
-        if(artObj) {
-        	artObj.setGlobalVars(Con.sid, {CLIENT}, {LANG});
-        	artObj.idcat = {IDCAT};
+        if (artObj) {
+            artObj.setGlobalVars(Con.sid, {CLIENT}, {LANG});
+            artObj.idcat = {IDCAT};
         }
     }
     refreshArticleProp();

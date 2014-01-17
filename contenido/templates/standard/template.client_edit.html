@@ -54,8 +54,8 @@
             }
             if (!($("#htmlpath").val().indexOf("http://") == 0 || $("#htmlpath").val().indexOf("https://") == 0)) {
                 Con.showNotification("Error", "i18n("Please enter a valid URL. It has to start with http://... or https://...")");
-	            return;
-	        }
+                return;
+            }
             if ($("#htmlpath").val().length < "https://".length) {
                 Con.showNotification("Error", "i18n("Please enter a valid URL. It has to start with http://... or https://...")");
                 return;

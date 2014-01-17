@@ -3,8 +3,7 @@
 <head>
 <title>template.tpl_overview.html</title> {_META_HEAD_CONTENIDO_}
 {_CSS_HEAD_CONTENIDO_}
-<link rel="stylesheet" type="text/css"
-	href="styles/jquery/plugins/tipsy.css">
+<link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
 {_JS_HEAD_CONTENIDO_}
 <script type="text/javascript" src="scripts/rowMark.js"></script>
 <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
@@ -12,19 +11,19 @@
 </head>
 <body>
 
-	<table width="100%" cellspacing="0" cellpadding="2" border="0">
-		<!-- BEGIN:BLOCK -->
-		<tr class="tooltip-north" original-title="{DESCRIPTION}" id="{ID}"
-			onmouseover="lay.over(this)" onmouseout="lay.out(this)"
-			onclick="lay.click(this)">
-			<td><img alt="" width="5" height="1" src="images/spacer.gif"></td>
-			<td class="textw_small">{NAME}</td>
-			<td align="right" class="nowrap">{INUSE}&nbsp;{COPY}&nbsp;{DELETE}&nbsp;</td>
-		</tr>
-		<!-- END:BLOCK -->
-	</table>
+    <table width="100%" cellspacing="0" cellpadding="2" border="0">
+        <!-- BEGIN:BLOCK -->
+        <tr class="tooltip-north" original-title="{DESCRIPTION}" id="{ID}"
+            onmouseover="lay.over(this)" onmouseout="lay.out(this)"
+            onclick="lay.click(this)">
+            <td><img alt="" width="5" height="1" src="images/spacer.gif"></td>
+            <td class="textw_small">{NAME}</td>
+            <td align="right" class="nowrap">{INUSE}&nbsp;{COPY}&nbsp;{DELETE}&nbsp;</td>
+        </tr>
+        <!-- END:BLOCK -->
+    </table>
 
-	<script type="text/javascript">
+    <script type="text/javascript">
         // Function for deleting templates
         function deleteTemplate(idtpl) {
             var url = Con.UtilUrl.build("main.php", {

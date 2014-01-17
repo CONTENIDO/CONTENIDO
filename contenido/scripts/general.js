@@ -5,7 +5,7 @@
  * backend page. The file should therefore be included in every backend page.
  * Following modules are implemented here: - Registry - Loader - UtilUrl -
  * FrameLeftTop
- * 
+ *
  * @module contenido
  * @version SVN Revision $Rev$
  * @requires jQuery, Con
@@ -22,7 +22,7 @@
 
     /**
      * Registry class
-     * 
+     *
      * @submodule registry
      * @class Registry
      * @static
@@ -33,36 +33,33 @@
          * @type {Object}
          * @private
          */
-        _instances : {},
+        _instances: {},
+
         /**
          * Usage:
-         * 
          * <pre>
          * Con.Registry.set('my_key', 'my_value');
          * </pre>
-         * 
+         *
          * @method set
-         * @param {String}
-         *            key
-         * @param {Mixed}
-         *            value
+         * @param {String} key
+         * @param {Mixed} value
          */
-        set : function(key, value) {
+        set: function(key, value) {
             this._instances[key] = value;
         },
+
         /**
          * Usage:
-         * 
          * <pre>
          * var data = Con.Registry.get('my_key');
          * </pre>
-         * 
+         *
          * @method get
-         * @param {String}
-         *            key
+         * @param {String} key
          * @return {Mixed} The value or NULL
          */
-        get : function(key) {
+        get: function(key) {
             if ('undefined' === $.type(this._instances[key])) {
                 // Con.log('Registry.get: No entry is registered for key ' +
                 // key, NAME, 'warn');
@@ -70,35 +67,33 @@
             }
             return this._instances[key];
         },
+
         /**
          * Usage:
-         * 
          * <pre>
          * if (Con.Registry.isRegistered('my_key')) {
          *     // do something here...
          * }
          * </pre>
-         * 
+         *
          * @method isRegistered
-         * @param {String}
-         *            key
+         * @param {String} key
          * @return {Boolean}
          */
-        isRegistered : function(key) {
+        isRegistered: function(key) {
             return ('undefined' === $.type(this._instances[key]));
         },
+
         /**
          * Usage:
-         * 
          * <pre>
          * Con.Registry.remove('my_key');
          * </pre>
-         * 
+         *
          * @method remove
-         * @param {String}
-         *            key
+         * @param {String} key
          */
-        remove : function(key) {
+        remove: function(key) {
             delete this._instances[key];
         }
     };
@@ -118,7 +113,7 @@
     /**
      * Asset (script and style) loader class. Supports loading of one or
      * multiple assets (css and/or js files at once).
-     * 
+     *
      * @submodule base-loader
      * @class Loader
      * @static
@@ -126,7 +121,7 @@
 
     /**
      * Map of loaded files, keeps the state of all files and their loaded state.
-     * 
+     *
      * @property _loaded
      * @type {Object}
      * @private
@@ -135,7 +130,7 @@
 
     /**
      * Stack to process for each Loader.get() calls.
-     * 
+     *
      * @property _stack
      * @type {Object}
      * @private
@@ -144,7 +139,7 @@
 
     /**
      * Reference to head HTML element
-     * 
+     *
      * @property _head
      * @type {HTMLElement}
      * @private
@@ -153,12 +148,10 @@
 
     /**
      * Loads on or more files
-     * 
+     *
      * @method _load
-     * @param {String[]}
-     *            files
-     * @param {Function}
-     *            callback
+     * @param {String[]} files
+     * @param {Function} callback
      * @private
      */
     var _load = function(files, callback) {
@@ -182,10 +175,9 @@
 
     /**
      * Checks if a file exists in the DOM or not
-     * 
+     *
      * @method _fileExists
-     * @param {String}
-     *            file
+     * @param {String} file
      * @return {Boolean}
      * @private
      */
@@ -204,12 +196,10 @@
 
     /**
      * Loads CSS file by appending a link node to the head
-     * 
+     *
      * @method _loadCss
-     * @param {String}
-     *            file
-     * @param {Function}
-     *            callback
+     * @param {String} file
+     * @param {Function} callback
      * @private
      */
     var _loadCss = function(file, callback) {
@@ -223,12 +213,10 @@
 
     /**
      * Loads JavaScript file by using $.getScript
-     * 
+     *
      * @method _loadJs
-     * @param {String}
-     *            file
-     * @param {Function}
-     *            callback
+     * @param {String} file
+     * @param {Function} callback
      * @private
      */
     var _loadJs = function(file, callback) {
@@ -244,12 +232,10 @@
 
     /**
      * Loads desired files, if not done before
-     * 
+     *
      * @method _get
-     * @param {String[]}
-     *            files
-     * @param {String}
-     *            key
+     * @param {String[]} files
+     * @param {String} key
      * @private
      */
     var _get = function(files, key) {
@@ -280,16 +266,12 @@
 
     /**
      * Adds an entry to the stack
-     * 
+     *
      * @method _addToStack
-     * @param {String[]}
-     *            files
-     * @param {Function}
-     *            callback
-     * @param {Object}
-     *            scope
-     * @param {Array}
-     *            params
+     * @param {String[]} files
+     * @param {Function} callback
+     * @param {Object} scope
+     * @param {Array} params
      * @return {String} Entry key
      * @private
      */
@@ -306,9 +288,9 @@
         // Push new entry onto the callback stack depending on the callback type
         if (isObjectCallback) {
             _stack[key].push({
-                callback : callback,
-                scope : scope,
-                params : params
+                callback: callback,
+                scope: scope,
+                params: params
             });
         } else {
             _stack[key].push(callback);
@@ -319,10 +301,9 @@
 
     /**
      * Removes entry from stack and processes related callback
-     * 
+     *
      * @method _removeFromStack
-     * @param {String}
-     *            key
+     * @param {String} key
      * @private
      */
     var _removeFromStack = function(key) {
@@ -353,7 +334,7 @@
          * function when the files have been loaded successfully. The callback
          * should be a function which is called with in the given scope and
          * params. Example:
-         * 
+         *
          * <pre>
          * // Loading of 4 files at once
          * Con.Loader.get(['path/to/file.js', 'path/to/file2.js', 'path/to/file.css',
@@ -361,24 +342,20 @@
          *     // To do when everything was loaded...
          *     });
          * </pre>
-         * 
+         *
          * @method get
-         * @param {String|String[]}
-         *            file One or more files (JS or CSS) to load
-         * @param {Function}
-         *            [callback=function(){}] Callback to call after the files
+         * @param {String|String[]}  file  One or more files (JS or CSS) to load
+         * @param {Function} [callback=function(){}]  Callback to call after the files
          *            where loaded which is called with the given params and the
          *            given scope
-         * @param {Object}
-         *            [scope=this] The scope in which the callback function
+         * @param {Object} [scope=this]  The scope in which the callback function
          *            should be called
-         * @param {Array}
-         *            [params=[]] Array of params to pass to the callback
+         * @param {Array} [params=[]]  Array of params to pass to the callback
          *            function
          * @return {Boolean}
          * @static
          */
-        get : function(file, callback, scope, params) {
+        get: function(file, callback, scope, params) {
             callback = ('undefined' === $.type(callback)) ? function() {
             } : callback;
             scope = ('undefined' === $.type(scope)) ? this : scope;
@@ -410,7 +387,7 @@
 
     /**
      * FrameLeftTop class
-     * 
+     *
      * @submodule base-frame-left-top
      * @class FrameLeftTop
      * @static
@@ -424,7 +401,6 @@
     var $_container = null;
 
     Con.FrameLeftTop = {
-
         /**
          * Resize top left frame. Retrieves the container element
          * top_left_container and it's data attributes to handle the resize.
@@ -432,31 +408,28 @@
          * amount of exta pixels to add to the detected content height of top
          * left frame - data-resizeinitcb: (String) Optional a callback to call
          * which does the initial frame resizing Example:
-         * 
+         *
          * <pre>
          * // Resize left top fame, add additional height of 10 pixel
          * Con.FrameLeftTop.resize({
          *     resizegap : 10
          * });
          * </pre>
-         * 
+         *
          * @method resize
-         * @param {Object}
-         *            [options={}] Additional options for resizing as follows.
-         * 
+         * @param {Object} [options={}] Additional options for resizing as follows.
          * <pre>
-         *     options.initial  (Boolean)  Flag for initial call of resize, e. on document ready
-         *     options.resizegap  (Number)  The resize gab passed manually.
+         * options.initial  (Boolean)  Flag for initial call of resize, e. on document ready
+         * options.resizegap  (Number)  The resize gab passed manually.
          * </pre>
-         * 
-         * @param {Boolean}
-         *            [initial=false] Flag to initial call of resize, e. on
+         *
+         * @param {Boolean} [initial=false] Flag to initial call of resize, e. on
          *            document ready
          */
-        resize : function(options) {
+        resize: function(options) {
             var opt = $.extend({
-                initial : false,
-                resizegap : null
+                initial: false,
+                resizegap: null
             }, options || {});
 
             var $container = Con.FrameLeftTop._getContainer(), callback, gap;
@@ -495,7 +468,7 @@
          * @return {HTMLElement[]}
          * @private
          */
-        _getContainer : function() {
+        _getContainer: function() {
             if (null === $_container) {
                 $_container = $('#top_left_container',
                         Con.getFrame('left_top').document);
@@ -514,17 +487,16 @@
 
     /**
      * URL utily class
-     * 
+     *
      * @submodule base-util-url
      * @class UtilUrl
      * @static
      */
     Con.UtilUrl = {
-
         /**
          * Builds a CONTENIDO backend url, adds also the contenido parameter to
          * it, if it's not passed with params. Example:
-         * 
+         *
          * <pre>
          * // result: main.php?area=con&amp;action=new&amp;frame=4&amp;contenido=123434
          * var url = Con.UtilUrl.build(&quot;main.php&quot;, {
@@ -533,16 +505,14 @@
          *     frame : 4
          * });
          * </pre>
-         * 
+         *
          * @method build
-         * @param {String}
-         *            page
-         * @param {Object}
-         *            [params={}]
+         * @param {String} page
+         * @param {Object} [params={}]
          * @return {String}
          * @static
          */
-        build : function(page, params) {
+        build: function(page, params) {
             params = params || {};
 
             var query = [];
@@ -561,22 +531,20 @@
         /**
          * Returns protocol + hostname + path (without filename & query string)
          * from a given url. Example:
-         * 
+         *
          * <pre>
          * var url = 'http://hostname/some/path/page.html?foobar=1&amp;user=JaneDoe';
          * // result: 'http://hostname/some/path/'
          * var newUrl = Con.UtilUrl.getUrlWithPath(url);
          * </pre>
-         * 
+         *
          * @method getUrlWithPath
-         * @param {String}
-         *            [url] Url to determine params from, uses
+         * @param {String} [url] Url to determine params from, uses
          *            window.location.href by default
-         * @return {String} The folder starting like
-         *         'http://hostname/some/path/'
+         * @return {String} The folder starting like 'http://hostname/some/path/'
          * @static
          */
-        getUrlWithPath : function(url) {
+        getUrlWithPath: function(url) {
             url = url || scope.location.href;
             return decodeURI(url.substring(0, (url.lastIndexOf('/', url
                     .indexOf('?')) + 1)));
@@ -585,20 +553,19 @@
         /**
          * Extracs all query parameters from a given url and returns them back.
          * Example:
-         * 
+         *
          * <pre>
          * // result: {foobar: '1', user: 'JaneDoe'}
          * var params = Con.UtilUrl.getParams('/page.html?foobar=1&amp;user=JaneDoe');
          * </pre>
-         * 
+         *
          * @method getParams
-         * @param {String}
-         *            [url] Url to determine params from, uses
+         * @param {String} [url] Url to determine params from, uses
          *            window.location.href by default
          * @return {Object}
          * @static
          */
-        getParams : function(url) {
+        getParams: function(url) {
             url = url || scope.location.href;
 
             var params = {}, parts = url.split('?');
@@ -620,32 +587,30 @@
         /**
          * Adds parameters to the url, overwrites existing parameters or removes
          * them from the url. Examples:
-         * 
+         *
          * <pre>
          * var url = 'page.html?foobar=1';
          * // Add parameter 'user', result: 'page.html?foobar=1&amp;user=JaneDoe'
          * var newUrl = Con.UtilUrl.getUrlWithPath(url, {
          *     user : 'JaneDoe'
          * });
-         * 
+         *
          * var url = 'page.html?foobar=1&amp;user=JaneDoe';
          * // Remove parameter 'user', result: 'page.html?foobar=1'
          * var newUrl = Con.UtilUrl.getUrlWithPath(url, {
          *     user : null
          * });
          * </pre>
-         * 
+         *
          * @method replaceParams
-         * @param {String}
-         *            url The url to change the query parameters
-         * @param {Object}
-         *            params Key value pairs of params to update or remove. NB:
+         * @param {String} url  The url to change the query parameters
+         * @param {Object} params  Key value pairs of params to update or remove. NB:
          *            A null value will remove the parameter! e. g. {action:
          *            null} will remove existing action parameter.
          * @return {String}
          * @static
          */
-        replaceParams : function(url, params) {
+        replaceParams: function(url, params) {
             var parts = url.split('?'), paramsOrg = Con.UtilUrl.getParams(url), query = '';
 
             if (2 === parts.length) {
@@ -674,21 +639,20 @@
 
         /**
          * Returns true if the parameter seems to be a valid URL. Example:
-         * 
+         *
          * <pre>
          * var url = 'http://hostname/some/path/page.html?foobar=1&amp;user=JaneDoe';
          * if (Con.UtilUrl.validate(url)) {
          *     // do something here...
          * }
          * </pre>
-         * 
+         *
          * @method validate
-         * @param {String}
-         *            value The string which will be checked
+         * @param {String} value  The string which will be checked
          * @return {Boolean} True if value is a URL
          * @static
          */
-        validate : function(value) {
+        validate: function(value) {
             var urlregex = /(http:\/\/www.|https:\/\/www.|www.|http:\/\/|https:\/\/){1}(([0-9A-Za-z]+\.))|(localhost)/;
             return urlregex.test(value);
 
@@ -708,7 +672,7 @@
 
     /**
      * Miscellaneous/common functions, extends Con.
-     * 
+     *
      * @class Common
      * @extends Contenido
      * @module contenido
@@ -718,14 +682,14 @@
 
     // Fallback for not being able to load translations
     var TRANSLATIONS = {
-        OK : 'OK',
-        Cancel : 'Cancel',
-        'Confirmation Required' : 'Confirmation Required'
+        OK: 'OK',
+        Cancel: 'Cancel',
+        'Confirmation Required': 'Confirmation Required'
     };
 
     /**
      * Javascript Multilink Example:
-     * 
+     *
      * <pre>
      * Con.multiLink (
      *     'frame1', 'link',
@@ -734,7 +698,7 @@
      *     'simpleFrame'
      * );
      * </pre>
-     * 
+     *
      * @method multiLink
      * @param [arguments*]
      *            optional amount of arguments used pairwise for assigning URLs
@@ -783,11 +747,11 @@
 
     /**
      * Returns the registry object, from top.header or top frame. Example:
-     * 
+     *
      * <pre>
      * var registry = Con.getRegistry();
      * </pre>
-     * 
+     *
      * @method getRegistry
      * @return {Registry|NULL}
      */
@@ -808,11 +772,11 @@
     /**
      * Determines the window in which all the content is being displayed and
      * returns it. Example:
-     * 
+     *
      * <pre>
      * var win = Con.getContentWindow();
      * </pre>
-     * 
+     *
      * @method getContentWindow
      * @return {Window} The window object in which all content is being
      *         displayed
@@ -829,19 +793,17 @@
     /**
      * Loads the translations from the server once and just returns them if they
      * have already been loaded. Example:
-     * 
+     *
      * <pre>
      * Con.getTranslations(function() {
      *     // translations a loaded, continue with your task here...
      *     });
      * </pre>
-     * 
+     *
      * @method getTranslations
-     * @param {Function}
-     *            [callback] The callback function to call after retrieving
+     * @param {Function} [callback] The callback function to call after retrieving
      *            translations
-     * @param {Object}
-     *            [context]
+     * @param {Object} [context]
      */
     Con.getTranslations = function(callback, context) {
         callback = callback || function() {
@@ -863,15 +825,15 @@
                 registry.set('translations', {});
             } else {
                 $.ajax({
-                    async : false,
-                    url : 'ajaxmain.php',
-                    data : 'ajax=generaljstranslations&contenido=' + Con.sid,
-                    dataType : 'json',
-                    success : function(data) {
+                    async: false,
+                    url: 'ajaxmain.php',
+                    data: 'ajax=generaljstranslations&contenido=' + Con.sid,
+                    dataType: 'json',
+                    success: function(data) {
                         registry.set('translations', data);
                         callback.call(context, data);
                     },
-                    error : function(data) {
+                    error: function(data) {
                         callback.call(context, null);
                         Con.log('getTranslations: Could not get translations',
                                 'general.js', 'error');
@@ -885,21 +847,18 @@
 
     /**
      * Shows a confirmation box with the help of jQuery UI Dialog. Example:
-     * 
+     *
      * <pre>
      * Con.showConfirmation('The description', function() {
      *     // user clicked on 'ok', do the action here ...
      *     });
      * </pre>
-     * 
+     *
      * @method showConfirmation
-     * @param {String}
-     *            description The text which is displayed in the dialog
-     * @param {Function}
-     *            callback A callback function which is called if the user
+     * @param {String} description  The text which is displayed in the dialog
+     * @param {Function} callback  A callback function which is called if the user
      *            confirmed
-     * @param {Object}
-     *            additionalOptions Options which can be used to customise the
+     * @param {Object} additionalOptions  Options which can be used to customise the
      *            behaviour of the dialog box
      */
     Con.showConfirmation = function(description, callback, additionalOptions) {
@@ -924,14 +883,14 @@
             };
 
             var options = {
-                modal : true,
-                buttons : buttons,
-                position : ['center', 50],
-                resizable : false,
-                close : function(event, ui) {
+                modal: true,
+                buttons: buttons,
+                position: ['center', 50],
+                resizable: false,
+                close: function(event, ui) {
                     contentWindow.$('html').find('#single_dialog').remove();
                 },
-                title : translations['Confirmation Required']
+                title: translations['Confirmation Required']
             };
             options = $.extend(options, additionalOptions);
 
@@ -941,8 +900,7 @@
                 contentWindow.$('html').find('div.ui-widget-overlay').remove();
                 contentWindow.$('html').find('#single_dialog').remove();
 
-                contentWindow.$(
-                        '<div id="single_dialog">' + description + '</div>')
+                contentWindow.$('<div id="single_dialog">' + description + '</div>')
                         .dialog(options);
             }
 
@@ -951,22 +909,18 @@
 
     /**
      * Shows a notification box with the help of jQuery UI Dialog. Example:
-     * 
+     *
      * <pre>
      * Con.showNotification('The title', 'Some description');
      * </pre>
-     * 
+     *
      * @method showNotification
-     * @param {String}
-     *            title The title of the box
-     * @param {String}
-     *            description The text which is displayed in the box
-     * @param {Object}
-     *            additionalOptions Options which can be used to customise the
+     * @param {String} title  The title of the box
+     * @param {String} description  The text which is displayed in the box
+     * @param {Object} additionalOptions  Options which can be used to customise the
      *            behaviour of the dialog box, see
      *            http://api.jqueryui.com/dialog/
-     * @param {Boolean}
-     *            hideButtons
+     * @param {Boolean} hideButtons
      */
     Con.showNotification = function(title, description, additionalOptions,
             hideButtons) {
@@ -990,10 +944,10 @@
                 };
             }
             var options = {
-                buttons : buttons,
-                position : ['center', 50],
-                title : title,
-                modal : true
+                buttons: buttons,
+                position: ['center', 50],
+                title: title,
+                modal: true
             };
             options = $.extend(options, additionalOptions);
             // show the dialog in the content window
@@ -1011,18 +965,17 @@
      * Marks submenu item in header, handles also context of different frames.
      * It supports to mark a submenu (aka subnav) item by it's position and also
      * by it's data-name attribute value. Examples:
-     * 
+     *
      * <pre>
      * // Mark second submenu item (index starts at 0)
      * Con.markSubmenuItem('c_1');
-     * 
+     *
      * // Mark submenu item by it's data-name attribute, e. g. data-name=&quot;con_editart&quot;
      * Con.markSubmenuItem('con_editart');
      * </pre>
-     * 
+     *
      * @method markSubmenuItem
-     * @param {String}
-     *            subMenu The position of submenu or data-name value
+     * @param {String} subMenu  The position of submenu or data-name value
      * @return {Boolean}
      */
     Con.markSubmenuItem = function(subMenu) {

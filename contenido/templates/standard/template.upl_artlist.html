@@ -60,8 +60,8 @@
             // fix for IE11 popup:
             // selecting link with tiny out of popup does not work with Con.getFrame in IE11
             // reverting to the old call solves this problem
-            
-            
+
+
             //Con.getFrame('left_top').document.getElementById('selectedfile').value='{CATLINK}';
             parent.parent.frames['left'].frames['left_top'].document.getElementById('selectedfile').value='{CATLINK}';
             window.returnValue = '{CATLINK}';

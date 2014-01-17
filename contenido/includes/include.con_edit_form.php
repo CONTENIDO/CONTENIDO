@@ -134,22 +134,22 @@ foreach ($query as $key => $val) {
 
     $tr = new cHTMLTableRow();
     $data = new cHTMLTableData();
-	$data->setClass('first-row');
+    $data->setClass('first-row');
     $data->setContent($val['language']);
     $tr->appendContent($data);
 
     $data = new cHTMLTableData();
     $data->setClass('second-row');
-	$data->setContent($val['user']);
+    $data->setContent($val['user']);
     $tr->appendContent($data);
 
     $data = new cHTMLTableData();
-	$data->setClass('third-row');
+    $data->setClass('third-row');
     $data->setContent($val['logtimestamp']);
     $tr->appendContent($data);
 
     $data = new cHTMLTableData();
-	$data->setClass('fourth-row');
+    $data->setClass('fourth-row');
     $data->setContent($val['action']);
     $tr->appendContent($data);
 

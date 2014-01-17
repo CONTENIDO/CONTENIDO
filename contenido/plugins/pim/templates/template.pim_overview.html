@@ -8,12 +8,12 @@
 <!--[if lte IE 7]><script>
     var ie = 7;
 </script><![endif]-->
-         
-                
-               
-                
+
+
+
+
         <script type="text/javascript">
-        
+
             function toggleTableBody(tableId) {
                 var collapseButton = 'images/close_all.gif';
                 var expandButton = 'images/open_all.gif';
@@ -24,16 +24,16 @@
                     curTable.style.display = "none";
                     curButton.src = expandButton;
                 } else if (curTable.style.display == "none") {
-                    if(ie == 7){
+                    if (ie == 7) {
                         $('#' + tableId).css('display','block');
-                    }else{
-                        curTable.style.display = "table-row";    
+                    } else {
+                        curTable.style.display = "table-row";
                     }
-                    
+
                     curButton.src = collapseButton;
                 }
             }
-            
+
 
         function toggleTableBodyWithoutButton(tableId) {
             var curTable = document.getElementById(tableId);

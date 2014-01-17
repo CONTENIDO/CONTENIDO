@@ -200,7 +200,7 @@
                 }
             });
             self.showFolderPath();
-            
+
             return false;
         });
         // add possibility to expand and close directories for the file view
