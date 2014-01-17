@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 // notice $page is filled and generated in file include.rights.php this file
 // renders $page to browser
-$page = new cGuiPage('rights', '', '4');
+$page = new cGuiPage('rights', '', 3);
 include_once (cRegistry::getBackendPath() . 'includes/include.grouprights.php');
 
 // set the areas which are in use fore selecting these

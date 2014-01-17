@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // notice $oTpl is filled and generated in file include.rights.php this file
 // renders $oTpl to browser
 include_once (cRegistry::getBackendPath() . 'includes/include.grouprights.php');
-
+$page = new cGuiPage('rights', '', 4);
 // set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("con")]) . "'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
@@ -290,9 +290,29 @@ $sTable = stripslashes($oTable->render());
 
 $sJsAfter .= "init('" . i18n("Open category") . "', '" . i18n("Close category") . "');\n";
 
-$oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
-$oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
-$oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
-$oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
+$page->set('s', 'INPUT_SELECT_CLIENT', $dataSync['INPUT_SELECT_CLIENT']);
+$page->set('s', 'INPUT_SELECT_RIGHTS', $dataSync['INPUT_SELECT_RIGHTS']);
 
-$oTpl->generate('templates/standard/' . $cfg['templates']['rights']);
+$page->set('s', 'SESS_ID', $dataSync['SESS_ID']);
+$page->set('s', 'ACTION_URL', $dataSync['ACTION_URL'][1]);
+
+$page->set('s', 'TYPE_ID', $dataSync['TYPE_ID']);
+$page->set('s', 'USER_ID', $dataSync['USER_ID']);
+
+$page->set('s', 'AREA', $dataSync['AREA']);
+$page->set('s', 'RIGHTS_PERMS', $dataSync['RIGHTS_PERMS']);
+
+$page->set('s', 'AREA', $dataSync['AREA']);
+$page->set('s', 'RIGHTS_PERMS', $dataSync['RIGHTS_PERMS']);
+
+$page->set('s', 'DISPLAY_RIGHTS', $dataSync['DISPLAY_RIGHTS']);
+$page->set('s', 'NOTIFICATION', $dataSync['NOTIFICATION']);
+
+$page->set('s', 'OB_CONTENT', $dataSync['OB_CONTENT']);
+
+$page->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
+$page->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
+$page->set('s', 'RIGHTS_CONTENT', $sTable);
+$page->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
+
+$page->render();
