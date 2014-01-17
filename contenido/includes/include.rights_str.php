@@ -34,7 +34,7 @@ while ($db->nextRecord()) { // set a new rights list fore this user
 
 if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "user_edit")) {
     $ret = saveRights();
-    if($ret === true) {
+    if ($ret === true) {
         $sMessage = $notification->returnNotification('info', i18n('Changes saved'));
     }
 } else {
@@ -50,8 +50,8 @@ $sTable = '';
 $sJsExternal .= '<script type="text/javascript" src="scripts/expandCollapse.js"></script>' . "\n";
 
 // declare new javascript variables;
-$sJsBefore .= "var itemids = new Array();\n
-               var actareaids = new Array();\n";
+$sJsBefore .= "var itemids = [];
+               var actareaids = [];\n";
 
 // Init Table
 $oTable = new cHTMLTable();
@@ -103,7 +103,7 @@ foreach ($right_list["str"] as $value2) {
                     "valign" => "top",
                     "align" => "center"
                 ));
-                $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3]? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
+                $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
                 $items .= $objHeaderItem->render();
                 $objHeaderItem->advanceID();
 
@@ -117,7 +117,7 @@ foreach ($right_list["str"] as $value2) {
 $objHeaderItem->setContent(i18n("Check all"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
-$aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">";
+$aSecondHeaderRow[] = '<input type="checkbox" name="checkall" value="" onclick="setRightsForAll()">';
 
 $objHeaderRow->updateAttributes(array(
     "class" => "textw_medium"
@@ -200,12 +200,12 @@ while ($db->nextRecord()) {
         // find out parentid for inheritance
         // if parentid is the same increase the counter
         if ($parentid == $db->f("parentid")) {
-            $counter[$parentid]++;
+            $counter[$parentid] ++;
         } else {
             $parentid = $db->f("parentid");
             // if these parentid is in use increase the counter
             if (isset($counter[$parentid])) {
-                $counter[$parentid]++;
+                $counter[$parentid] ++;
             } else {
                 $counter[$parentid] = 0;
             }
