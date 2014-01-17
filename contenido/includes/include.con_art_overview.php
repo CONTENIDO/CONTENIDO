@@ -31,7 +31,7 @@ if (!isset($syncfrom)) {
 }
 
 $syncoptions = $syncfrom;
-
+// CON-1752
 // init duplicate counter in session
 if (!isset($_SESSION['count_duplicate'])) {
     $_SESSION = array(
