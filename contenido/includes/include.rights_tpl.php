@@ -23,8 +23,8 @@ $possible_area = "'" . implode("','", $area_tree[$perm->showareas("tpl")]) . "'"
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
         FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
         WHERE user_id = '" . $db->escape($userid) . "'
-            AND idclient = " . cSecurity::toInteger($rights_client) . " AND A.type = 0 AND idlang = " . cSecurity::toInteger($rights_lang) . "
-            AND B.idarea IN ($possible_area) AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+        AND idclient = " . cSecurity::toInteger($rights_client) . " AND A.type = 0 AND idlang = " . cSecurity::toInteger($rights_lang) . "
+        AND B.idarea IN ($possible_area) AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 
 $rights_list_old = array();
@@ -34,7 +34,7 @@ while ($db->nextRecord()) { // set a new rights list fore this user
 
 if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "user_edit")) {
     $ret = saveRights();
-    if($ret === true) {
+    if ($ret === true) {
         $sMessage = $notification->returnNotification('info', i18n('Changes saved'));
     }
 } else {
@@ -47,8 +47,8 @@ $sJsBefore = '';
 $sJsAfter = '';
 $sTable = '';
 
-$sJsBefore .= "var itemids = new Array();\n
-               var actareaids = new Array();\n";
+$sJsBefore .= "var itemids = [];
+               var actareaids = [];\n";
 
 // Init Table
 $oTable = new cHTMLTable();
@@ -97,7 +97,7 @@ foreach ($right_list["tpl"] as $value2) {
                 "valign" => "top",
                 "align" => "center"
             ));
-            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3]? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
+            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
             $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "', '$value3', '')\">";
@@ -109,7 +109,7 @@ foreach ($right_list["tpl"] as $value2) {
 $objHeaderItem->setContent(i18n("Check all"));
 $items .= $objHeaderItem->render();
 $objHeaderItem->advanceID();
-$aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">";
+$aSecondHeaderRow[] = '<input type="checkbox" name="checkall" value="" onclick="setRightsForAll()">';
 
 $objHeaderRow->updateAttributes(array(
     "class" => "textw_medium"
