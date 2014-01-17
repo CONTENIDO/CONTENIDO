@@ -48,6 +48,18 @@
                 Con.showNotification("Error", "i18n("The client must have a frontend path. This is where the client's files will be stored.")");
                 return;
             }
+            if ($("#htmlpath").val() == "") {
+                Con.showNotification("Error", "i18n("Please enter a valid URL. It has to start with http://... or https://...")");
+                return;
+            }
+            if (!($("#htmlpath").val().indexOf("http://") == 0 || $("#htmlpath").val().indexOf("https://") == 0)) {
+                Con.showNotification("Error", "i18n("Please enter a valid URL. It has to start with http://... or https://...")");
+	            return;
+	        }
+            if ($("#htmlpath").val().length < "https://".length) {
+                Con.showNotification("Error", "i18n("Please enter a valid URL. It has to start with http://... or https://...")");
+                return;
+            }
         });
     });
 })(Con, Con.$);

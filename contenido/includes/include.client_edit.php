@@ -22,8 +22,6 @@ if (!$perm->have_perm_area_action($area)) {
 
 $page = new cGuiPage('client_edit', '', '0');
 
-
-
 $cApiPropertyColl = new cApiPropertyCollection();
 $cApiClient = new cApiClient();
 
@@ -49,16 +47,6 @@ $clientlogo = $request['clientlogo'];
 
 $urlscheme = parse_url($htmlpath, PHP_URL_SCHEME);
 $valid = ($clientname != "" && $frontendpath != "" && ($urlscheme == 'http' || $urlscheme == 'https'));
-
-if ((!strstr($_SERVER["HTTP_REFERER"], "frame=2")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=1")) && (!strstr($_SERVER["HTTP_REFERER"], "frame=3")) && (!$valid)) {
-    if ($clientname == "") {
-        cRegistry::addErrorMessage(i18n("The client must have a name!"));
-    } else if ($frontendpath == "") {
-        cRegistry::addErrorMessage(i18n("The client must have a frontend path. This is where the client's files will be stored."));
-    } else {
-        cRegistry::addErrorMessage(i18n("Please enter a valid URL. It has to start with http://... or https://..."));
-    }
-}
 
 if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action)) && $valid) {
     $sNewNotification = '';
@@ -180,8 +168,6 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         $cApiClient->setProperty('stats', 'tracking', 'off');
     }
 }
-
-$tpl->reset();
 
 if (isset($idclient)) {
     $htmlpath = $cfgClient[$idclient]['path']['htmlpath'];
