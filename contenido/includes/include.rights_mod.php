@@ -23,8 +23,8 @@ $possible_area = "'" . implode("','", $area_tree[$perm->showareas("mod")]) . "'"
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
         FROM " . $cfg["tab"]["rights"] . " AS A, " . $cfg["tab"]["area"] . " AS B, " . $cfg["tab"]["actions"] . " AS C
         WHERE user_id = '" . $db->escape($userid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
-            AND A.type = 0 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
-            AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+        AND A.type = 0 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
+        AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 
 $rights_list_old = array();
@@ -34,7 +34,7 @@ while ($db->nextRecord()) { // set a new rights list fore this user
 
 if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "user_edit")) {
     $ret = saveRights();
-    if($ret === true) {
+    if ($ret === true) {
         $sMessage = $notification->returnNotification('info', i18n('Changes saved'));
     }
 } else {
@@ -49,8 +49,8 @@ $sJsExternal = '';
 $sTable = '';
 
 // declare new javascript variables;
-$sJsBefore .= "var itemids = new Array();
-              var actareaids = new Array();";
+$sJsBefore .= "var itemids = [];
+              var actareaids = [];";
 
 // Init Table
 $oTable = new cHTMLTable();
@@ -87,14 +87,14 @@ foreach ($right_list["mod"] as $value2) {
     // if there are some actions
     if (is_array($value2["action"])) {
         foreach ($value2["action"] as $key3 => $value3) { // set the areas that
-                                                          // are in use
+            // are in use
             $possible_areas[$value2["perm"]] = "";
 
             // set the possible areas and actions for this areas
             $sJsBefore .= "actareaids[\"$value3|" . $value2["perm"] . "\"]=\"x\";\n";
 
             // checkbox for the whole action
-            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3]? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
+            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
             $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "', '$value3', '')\">";
