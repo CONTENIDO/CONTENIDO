@@ -969,19 +969,16 @@ class PifaForm extends Item {
         // rename data table if name has changed
         if ($oldTableName !== $tableName) {
             if ($this->existsTable($tableName)) {
-                $msg = Pifa::i18n('TABLE_EXISTS_ERROR');
-                $msg = sprintf($msg, $tableName);
-                throw new PifaException($msg);
                 $this->set('data_table', $oldTableName);
+            } else {
+                $sql = "-- PifaForm->alterTable()
+                    RENAME TABLE
+                        `$oldTableName`
+                    TO
+                        `$tableName`
+                    ;";
+                cRegistry::getDb()->query($sql);
             }
-
-            $sql = "-- PifaForm->alterTable()
-                RENAME TABLE
-                    `$oldTableName`
-                TO
-                    `$tableName`
-                ;";
-            cRegistry::getDb()->query($sql);
         }
 
         // adds or drop column for timestamp if setting has changed.
