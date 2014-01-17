@@ -7,16 +7,17 @@
     <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
+    <script type="text/javascript" src="scripts/registerTipsy.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
 </head>
-<body>
+<body style="padding-top: 5px;">
 
-<table class="borderless" style="margin: 5px 0 0 0;" width="100%" cellspacing="0" cellpadding="2" border="0">
+<table class="borderless" width="100%" cellspacing="0" cellpadding="2" border="0">
 
     <!-- BEGIN:BLOCK -->
-    <tr id="{ID}" class="layout_row" original-title="{DESCRIPTION}">
-         <td></td>
-        <td class="textw_small">{NAME}</td>
+    <tr id="{ID}" class="layout_row tooltip-north" original-title="{DESCRIPTION}">
+        <td></td>
+        <td>{NAME}</td>
         <td align="right" class="nowrap">{INUSE}&nbsp;{TODO}&nbsp;{DELETE}&nbsp;</td>
     </tr>
     <!-- END:BLOCK -->
@@ -57,8 +58,6 @@ function deleteLayout(idlay) {
                 );
             }
         });
-
-        $(".layout_row").tipsy();
 
         // Register some events for rows
         // ## @todo move this to rowMark.js

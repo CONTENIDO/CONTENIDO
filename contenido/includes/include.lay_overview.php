@@ -30,20 +30,20 @@ while (($layout = $oLayouts->next()) !== false) {
     }
 
     $name  = cString::stripSlashes($layout->get('name'));
-    $descr = conHtmlSpecialChars($layout->get('description'));
+    $descr = conHtmlSpecialChars(nl2br($layout->get('description')));
     $idlay = $layout->get('idlay');
 
     if (strlen($descr) > 64) {
         $descr = substr($descr, 0, 64) . ' ..';
     }
 
-    $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')" title="%s" alt="%s">%s</a>';
+    $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
     $area = 'lay';
     $mstr = sprintf(
         $tmp_mstr,
         'right_top', $sess->url("main.php?area=$area&frame=3&idlay=$idlay"),
         'right_bottom', $sess->url("main.php?area=lay_edit&frame=4&idlay=$idlay"),
-        $descr, $descr, $name
+        $name
     );
 
     $tpl->set("d", "DESCRIPTION", ($descr == "") ? '' : $descr);
