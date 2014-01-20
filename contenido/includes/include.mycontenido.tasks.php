@@ -211,9 +211,7 @@ if ($action == "todo_save_item") {
         $todoitem->setProperty("todo", "backendnoti", $notibackend);
     }
 
-    if (isset($notiemail)) {
-        $todoitem->setProperty("todo", "emailnoti", $notiemail);
-    }
+    $todoitem->setProperty("todo", "emailnoti", $notiemail);
 
     $todoitem->setProperty("todo", "status", $status);
 

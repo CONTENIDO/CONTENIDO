@@ -2,15 +2,15 @@
 /**
  * This file contains the backend page for editing tasks.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Unknown
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Unknown
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
@@ -34,7 +34,7 @@ $userselect = new cHTMLSelectElement("userassignment");
 
 $userColl = new cApiUserCollection();
 foreach ($userColl->getAccessibleUsers(explode(',', $auth->auth['perm'])) as $key => $value) {
-    $acusers[$key] = $value["username"] . " (".$value["realname"] . ")";
+    $acusers[$key] = $value["username"] . " (" . $value["realname"] . ")";
 }
 asort($acusers);
 
@@ -53,7 +53,8 @@ $reminderdue = new cHTMLTextbox("enddate", $todoitem->getProperty("todo", "endda
 
 $ui->add(i18n("End date"), $reminderdue->render());
 
-$notiemail = new cHTMLCheckbox("notiemail", i18n("E-Mail notification"));
+$notiemail = new cHTMLCheckbox("notiemail", 1);
+$notiemail->setLabelText(i18n("E-Mail notification"));
 $notiemail->setChecked($todoitem->getProperty("todo", "emailnoti"));
 $notiemail->setEvent("click", "if (this.checked) { document.forms['reminder'].reminderdate.disabled = false; } else { document.forms['reminder'].reminderdate.disabled = true; }");
 
@@ -67,8 +68,7 @@ if ($remindertimestamp != 0) {
     $mydate = "";
 }
 
-$path_to_calender_pic =   cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
-
+$path_to_calender_pic = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
 
 $reminderdate = new cHTMLTextbox("reminderdate", $mydate, '', '', "reminderdate");
 
@@ -90,37 +90,37 @@ $statusselect->autoFill($todos->getStatusTypes());
 $statusselect->setDefault($todoitem->getProperty("todo", "status"));
 $ui->add(i18n("Status"), $statusselect->render());
 
-$progress = new cHTMLTextbox("progress", (int)$todoitem->getProperty("todo", "progress"), 5);
-$ui->add(i18n("Progress"), $progress->render()."%");
+$progress = new cHTMLTextbox("progress", (int) $todoitem->getProperty("todo", "progress"), 5);
+$ui->add(i18n("Progress"), $progress->render() . "%");
 
 $calscript = '
 <script type="text/javascript">
 (function(Con, $) {
     $(function() {
         $("#reminderdate").datetimepicker({
-            buttonImage:"'. $path_to_calender_pic.'",
-            buttonImageOnly: true,
-            showOn: "both",
-            dateFormat: "yy-mm-dd",
-            onClose: function(dateText, inst) {
-                var endDateTextBox = $("#enddate");
-                if (endDateTextBox.val() != "") {
-                    var testStartDate = new Date(dateText);
-                    var testEndDate = new Date(endDateTextBox.val());
-                    if (testStartDate > testEndDate) {
+            buttonImage:"' . $path_to_calender_pic . '",
+                buttonImageOnly: true,
+                showOn: "both",
+                dateFormat: "yy-mm-dd",
+                onClose: function(dateText, inst) {
+                    var endDateTextBox = $("#enddate");
+                    if (endDateTextBox.val() != "") {
+                        var testStartDate = new Date(dateText);
+                        var testEndDate = new Date(endDateTextBox.val());
+                        if (testStartDate > testEndDate) {
+                            endDateTextBox.val(dateText);
+                        }
+                    } else {
                         endDateTextBox.val(dateText);
                     }
-                } else {
-                    endDateTextBox.val(dateText);
+                },
+                onSelect: function(selectedDateTime) {
+                    var start = $(this).datetimepicker("getDate");
+                    $("#enddate").datetimepicker("option", "minDate", new Date(start.getTime()));
                 }
-            },
-            onSelect: function(selectedDateTime) {
-                var start = $(this).datetimepicker("getDate");
-                $("#enddate").datetimepicker("option", "minDate", new Date(start.getTime()));
-            }
         });
         $("#enddate").datetimepicker({
-            buttonImage: "'. $path_to_calender_pic .'",
+            buttonImage: "' . $path_to_calender_pic . '",
             buttonImageOnly: true,
             showOn: "both",
             dateFormat: "yy-mm-dd",
@@ -146,16 +146,18 @@ $calscript = '
 </script>';
 
 $cpage->addScript($calscript);
-$cpage->setContent(array($ui));
+$cpage->setContent(array(
+    $ui
+));
 $cpage->addStyle("jquery/plugins/timepicker.css");
-//$cpage->addStyle("jquery/jquery-ui.css");
+// $cpage->addStyle("jquery/jquery-ui.css");
 
 $cpage->addScript("jquery/plugins/timepicker.js");
-//$cpage->addScript("jquery/jquery-ui.js");
+// $cpage->addScript("jquery/jquery-ui.js");
 
 if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-    $cpage->addScript("jquery/plugins/timepicker-".$lang_short.".js");
-    $cpage->addScript("jquery/plugins/datepicker-".$lang_short.".js");
+    $cpage->addScript("jquery/plugins/timepicker-" . $lang_short . ".js");
+    $cpage->addScript("jquery/plugins/datepicker-" . $lang_short . ".js");
 }
 
 $cpage->render();
