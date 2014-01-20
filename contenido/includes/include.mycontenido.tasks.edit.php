@@ -93,6 +93,59 @@ $ui->add(i18n("Status"), $statusselect->render());
 $progress = new cHTMLTextbox("progress", (int)$todoitem->getProperty("todo", "progress"), 5);
 $ui->add(i18n("Progress"), $progress->render()."%");
 
+$calscript = '
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        $("#reminderdate").datetimepicker({
+            buttonImage:"'. $path_to_calender_pic.'",
+            buttonImageOnly: true,
+            showOn: "both",
+            dateFormat: "yy-mm-dd",
+            onClose: function(dateText, inst) {
+                var endDateTextBox = $("#enddate");
+                if (endDateTextBox.val() != "") {
+                    var testStartDate = new Date(dateText);
+                    var testEndDate = new Date(endDateTextBox.val());
+                    if (testStartDate > testEndDate) {
+                        endDateTextBox.val(dateText);
+                    }
+                } else {
+                    endDateTextBox.val(dateText);
+                }
+            },
+            onSelect: function(selectedDateTime) {
+                var start = $(this).datetimepicker("getDate");
+                $("#enddate").datetimepicker("option", "minDate", new Date(start.getTime()));
+            }
+        });
+        $("#enddate").datetimepicker({
+            buttonImage: "'. $path_to_calender_pic .'",
+            buttonImageOnly: true,
+            showOn: "both",
+            dateFormat: "yy-mm-dd",
+            onClose: function(dateText, inst) {
+                var startDateTextBox = $("#reminderdate");
+                if (startDateTextBox.val() != "") {
+                    var testStartDate = new Date(startDateTextBox.val());
+                    var testEndDate = new Date(dateText);
+                    if (testStartDate > testEndDate) {
+                        startDateTextBox.val(dateText);
+                    }
+                } else {
+                    startDateTextBox.val(dateText);
+                }
+            },
+            onSelect: function(selectedDateTime) {
+                var end = $(this).datetimepicker("getDate");
+                $("#reminderdate").datetimepicker("option", "maxDate", new Date(end.getTime()));
+            }
+        });
+    });
+})(Con, Con.$);
+</script>';
+
+$cpage->addScript($calscript);
 $cpage->setContent(array($ui));
 $cpage->addStyle("jquery/plugins/timepicker.css");
 //$cpage->addStyle("jquery/jquery-ui.css");
