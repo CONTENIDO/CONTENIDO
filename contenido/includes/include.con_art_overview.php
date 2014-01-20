@@ -44,7 +44,6 @@ if ($action == 'con_duplicate' && ($perm->have_perm_area_action("con", "con_dupl
 
     // check if duplicate action was called from click or from back button
     if ($_GET['count_duplicate'] < $count) {
-
     } else {
         // perfom action only when duplicate action is called from link
         $newidartlang = conCopyArticle($duplicate, $idcat);
@@ -524,7 +523,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             // Make copy button
             if (($perm->have_perm_area_action('con', 'con_duplicate') || $perm->have_perm_area_action_item('con', 'con_duplicate', $idcat)) && $idcat != 0) {
                 $imgsrc = "but_copy.gif";
-                // add count_duplicate param to identify if the duplicate action is called from click or back button.
+                // add count_duplicate param to identify if the duplicate action
+                // is called from click or back button.
                 $tmp_link = '<a href="' . $sess->url("main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&next=$next") . "&count_duplicate=" . $_SESSION['count_duplicate'] . '" title="' . i18n("Duplicate article") . '"><img class="vAlignMiddle tableElement" src="images/' . $imgsrc . '" border="0" title="' . i18n("Duplicate article") . '" alt="' . i18n("Duplicate article") . '"></a>';
             } else {
                 $tmp_link = '';
@@ -536,15 +536,15 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $duplicatelink = $tmp_link;
             }
 
+            // Make todo link
             $todolink = '';
-            if ($tmp_sync == '') {
-                $subject = urlencode(sprintf(i18n("Reminder for article '%s'"), $title));
-                $mycatname = '';
-                conCreateLocationString($idcat, "&nbsp;/&nbsp;", $mycatname);
-                $message = urlencode(sprintf(i18n("Reminder for article '%s'\nCategory: %s"), $title, $mycatname));
 
-                $todolink = new TODOLink("idart", $idart, $subject, $message);
-            }
+            $subject = urlencode(sprintf(i18n("Reminder for article '%s'"), $title));
+            $mycatname = '';
+            conCreateLocationString($idcat, "&nbsp;/&nbsp;", $mycatname);
+            $message = urlencode(sprintf(i18n("Reminder for article '%s'\nCategory: %s"), $title, $mycatname));
+
+            $todolink = new TODOLink("idart", $idart, $subject, $message);
 
             // Make On-/Offline button
             if ($online) {
@@ -654,9 +654,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                                     break;
                             }
 
-
                             $actions[] = $actionValue;
-
                         }
 
                         if ($tmp_sync != '') {
@@ -734,7 +732,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 }
                 if ($next == $iNext) {
                     $sBrowseLinks .= $i . "\n"; // I'm on the current page, no
-                    // link
+                                                    // link
                 } else {
                     $tmp_alink = $sess->url("main.php?area=con&frame=$frame&idcat=$idcat&next=$iNext");
                     $sBrowseLinks .= '<a href="' . $tmp_alink . '">' . $i . '</a>' . "\n";
