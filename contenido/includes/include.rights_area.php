@@ -179,7 +179,7 @@ foreach ($right_list as $key => $value) {
                 $idaction = $value3;
                 // does the user have the right
                 if (in_array($value2["perm"] . "|$idaction|0", array_keys($rights_list_old))) {
-                    $checked = 'checked="checked';
+                    $checked = 'checked="checked"';
                 } else {
                     $checked = "";
                 }
