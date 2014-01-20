@@ -281,4 +281,6 @@ $page->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
 $page->set('s', 'RIGHTS_CONTENT', $sTable);
 $page->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
 
+$page->set('s', 'NOTIFICATION_SAVE_RIGHTS', '');
+
 $page->render();

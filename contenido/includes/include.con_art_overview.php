@@ -44,7 +44,7 @@ if ($action == 'con_duplicate' && ($perm->have_perm_area_action("con", "con_dupl
 
     // check if duplicate action was called from click or from back button
     if ($_GET['count_duplicate'] < $count) {
-        
+
     } else {
         // perfom action only when duplicate action is called from link
         $newidartlang = conCopyArticle($duplicate, $idcat);
@@ -429,6 +429,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             if ($idlang != $lang) {
                 $sql = "SELECT idcatlang FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat='" . cSecurity::toInteger($idcat) . "' AND idlang='" . cSecurity::toInteger($lang) . "'";
                 $db->query($sql);
+
                 if ($db->nextRecord()) {
                     $tmp_sync = '<a href="' . $sess->url("main.php?area=con&action=con_syncarticle&idart=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next") . '" title="' . i18n("Copy article to the current language") . '"><img class="vAlignMiddle tableElement" src="' . $cfg["path"]["images"] . 'but_sync_art.gif" alt="' . i18n("Copy article to the current language") . '" title="' . i18n("Copy article to the current language") . '" border="0"></a>';
                 } else {
@@ -536,7 +537,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             }
 
             $todolink = '';
-            if ($tmp_sync != '') {
+            if ($tmp_sync == '') {
                 $subject = urlencode(sprintf(i18n("Reminder for article '%s'"), $title));
                 $mycatname = '';
                 conCreateLocationString($idcat, "&nbsp;/&nbsp;", $mycatname);
@@ -653,7 +654,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                                     break;
                             }
 
+
                             $actions[] = $actionValue;
+
                         }
 
                         if ($tmp_sync != '') {

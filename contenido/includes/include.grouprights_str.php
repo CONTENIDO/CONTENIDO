@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // notice $oTpl is filled and generated in file include.rights.php this file
 // renders $oTpl to browser
 include_once (cRegistry::getBackendPath() . 'includes/include.grouprights.php');
-$page = new cGuiPage('rights', '', 6);
+$page = new cGuiPage('rights', '', 7);
 // set the areas which are in use fore selecting these
 $possible_area = "'" . implode("','", $area_tree[$perm->showareas("str")]) . "'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
@@ -325,6 +325,7 @@ $page->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $page->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
 $page->set('s', 'RIGHTS_CONTENT', $sTable);
 $page->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
+$page->set('s', 'NOTIFICATION_SAVE_RIGHTS', '');
 
 $page->render();
 
