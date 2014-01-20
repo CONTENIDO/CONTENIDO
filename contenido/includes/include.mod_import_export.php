@@ -2,17 +2,16 @@
 /**
  * This file contains the backend page for importing and exporting modules.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Olaf Niemann, Jan Lengowski
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Olaf Niemann, Jan Lengowski
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $page = new cGuiPage("mod_import_export");
@@ -59,10 +58,11 @@ JS;
             $modules = new cApiModuleCollection();
 
             if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
+
                 $modulName = substr($_FILES['upload']['name'], 0, -4);
 
                 $module = $modules->create($modulName);
-                if (!$module->importModuleFromXML($_FILES["upload"]["tmp_name"])) {
+                if (!$module->importModuleFromXML($_FILES["upload"]["name"])) {
                     $notification->displayNotification('error', i18n("Could not import module!"));
                     $modules->delete($module->get('idmod'));
                 } else {
@@ -85,7 +85,6 @@ JS;
             break;
     }
 }
-
 
 $import = new cHTMLRadiobutton("mode", "import");
 $importXML = new cHTMLRadiobutton('mode', 'import_xml');
@@ -113,15 +112,19 @@ $form2 = new cGuiTableForm("export");
 $form2->setVar("action", "mod_importexport_module");
 $form2->setVar("use_encoding", "false");
 $form2->addHeader("Import/Export");
-$form2->add(i18n("Mode"), array($export, "<br>", $import, '<br>', $importXML));
-
+$form2->add(i18n("Mode"), array(
+    $export,
+    "<br>",
+    $import,
+    '<br>',
+    $importXML
+));
 
 if ($inputChecked != "" && $outputChecked != "") {
     $form2->add(i18n("File"), $upload, "vupload", "display: none;");
 } else {
     $form2->add(i18n("File"), $upload, "vupload");
 }
-
 
 $form2->setVar("area", $area);
 $form2->setVar("frame", $frame);
@@ -131,7 +134,9 @@ $form2->custom["submit"]["accesskey"] = '';
 if (!empty($sScript)) {
     $page->addScript($sScript);
 }
-$page->setContent(array($form2));
+$page->setContent(array(
+    $form2
+));
 
 $page->render();
 
