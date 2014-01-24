@@ -609,7 +609,6 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Handle online (offline) articles
     if ($online) {
         if ($redirect == '1' && $redirect_url != '') {
-            cRegistry::shutdown();
             // Redirect to the URL defined in article properties
             $oUrl = cUri::getInstance();
             if ($oUrl->isIdentifiableFrontContentUrl($redirect_url)) {
@@ -636,6 +635,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             }
 
             header('Location: ' . $redirect_url, TRUE, $redirect_code);
+            cRegistry::shutdown();
             exit();
         } else {
             if ($cfg['debug']['codeoutput']) {
