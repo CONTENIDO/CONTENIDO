@@ -261,8 +261,8 @@ class PifaField extends Item {
      *
      * @see Item::getField()
      */
-    function getField($field) {
-        $value = parent::getField($field);
+    function getField($field, $bSafe = true) {
+        $value = parent::getField($field, $bSafe);
         if ('rule' === $field) {
             $value = stripslashes($value);
         }
