@@ -60,6 +60,13 @@ class PifaAjaxHandler {
      *
      * @var string
      */
+    const IMPORT_FORM = 'pifa_import_form';
+
+    /**
+     * Action constant.
+     *
+     * @var string
+     */
     const GET_FILE = 'pifa_get_file';
 
     /**
