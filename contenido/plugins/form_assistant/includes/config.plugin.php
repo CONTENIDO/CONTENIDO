@@ -195,7 +195,7 @@ class Pifa {
 
             // skip files that don't match regex
             $matches = array();
-            $matchCount = preg_match('/class\.pifa\.([^\.]+)\.php/', $file, $matches);
+            $matchCount = preg_match('/^class\.pifa\.([^\.]+)\.php$/', $file, $matches);
 
             // REGEX failure ... just call Mr. T!
             if (false === $matchCount) {
