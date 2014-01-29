@@ -93,7 +93,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
                 $outbuf = str_replace('!CLIENT!', $idclient, $buffer);
                 $outbuf = str_replace('!PATH!', $backendPath, $outbuf);
                 if (!cFileHandler::write($destPath . $dataPath . 'config.php.new', $outbuf)) {
-                    cRegistry::addWarningMessage(i18n("Couldn't write the file config.php."));
+                    cRegistry::addErrorMessage(i18n("Couldn't write the file config.php."));
                 }
 
                 cFileHandler::remove($destPath . $dataPath . 'config.php');
