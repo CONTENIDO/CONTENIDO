@@ -58,11 +58,10 @@ JS;
             $modules = new cApiModuleCollection();
 
             if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
-
                 $modulName = substr($_FILES['upload']['name'], 0, -4);
 
                 $module = $modules->create($modulName);
-                if (!$module->importModuleFromXML($_FILES["upload"]["name"])) {
+                if (!$module->importModuleFromXML($_FILES["upload"]["tmp_name"])) {
                     $notification->displayNotification('error', i18n("Could not import module!"));
                     $modules->delete($module->get('idmod'));
                 } else {
