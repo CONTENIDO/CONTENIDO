@@ -1,6 +1,160 @@
 ﻿---------------------------------------------------------------------
 ------------------------ CONTENIDO CHANGELOG ------------------------
 ---------------------------------------------------------------------
+Release 4.9.3
+----------------------------------------------------------------------
+** Bug
+    * [CON-808] - JavaScript namespacing in backend
+    * [CON-1511] - Method advanceID in cHTML replaces possible set ID attribute from cHTML constructor
+    * [CON-1520] - Equal signs (=) in stored CMS_VALUE's aren't escaped
+    * [CON-1528] - Keywords of an article are not deleted when article is removed
+    * [CON-1530] - Lost and found entries breaks editor due to missing category id
+    * [CON-1534] - Filemanager: Can not change into dbfs after delete a directory
+    * [CON-1548] - Manual teaser entries can not be removed via delete button
+    * [CON-1550] - Content: Articles: Editor does not save CMS_DATE changes with time
+    * [CON-1551] - setAlt overwrites previously set title attribute value
+    * [CON-1557] - Expand state for categories is not saved correctly
+    * [CON-1561] - Fix doctype declarations in backend
+    * [CON-1564] - Module test control images are not aligned with text
+    * [CON-1566] - PIFA does not dynamically create upload folder for files
+    * [CON-1567] - Synchronized categories can not be deleted unless they are empty in all languages
+    * [CON-1569] - Issue with used path in module import/export
+    * [CON-1572] - Fix translation identifier TEASER_START_ARTICLE in CMS_TEASER
+    * [CON-1577] - PIM: Can not create new content types
+    * [CON-1579] - Delete articles without a start article is not possible in IE8
+    * [CON-1581] - Invalid ternary operator expression for PHP lower than version 5.3
+    * [CON-1582] - Invalid retrieving of system property in cAjaxRequest
+    * [CON-1592] - Double quotes (") in stored CMS_VALUE's aren't escaped
+    * [CON-1593] - Empty page on failed FE login
+    * [CON-1595] - Reloading of module detail on hovering navigation
+    * [CON-1596] - Local configuration files for clients are not loaded
+    * [CON-1597] - JavaScript error in empty upload directories
+    * [CON-1598] - Fallback for not found validator class names rely on wrong filenames
+    * [CON-1599] - JavaScript error while initializing CodeMirror in empty histories
+    * [CON-1600] - Don't return login page for unauthorized AJAX calls
+    * [CON-1605] - Plugin workflow: Render menu in left_bottom frame within body tag
+    * [CON-1622] - Issue with loading multiple jQuery versions in Backend edit view
+    * [CON-1624] - SEO administration does not log proper idaction
+    * [CON-1628] - Directory permission check on upgrade for data/layouts although not existing
+    * [CON-1640] - Can not delete content types at rawdata
+    * [CON-1641] - Can not add a new article as user without adminrights
+    * [CON-1642] - SEO: Can not delete meta tag types
+    * [CON-1643] - System configuration "Clickable menu in backend" does not work
+    * [CON-1644] - Parseerror when loading timepicker-de.js via Ajax
+    * [CON-1646] - PHP Warning open_basedir in cModuleHandler
+    * [CON-1648] - FormAssistant: Error in CSV building function
+    * [CON-1650] - Upload in DBFS
+    * [CON-1651] - cGuiPage can't handle JS or CSS files with query path
+    * [CON-1652] - Some jQuery selectors do not work in special IE configurations
+    * [CON-1653] - Disabling usage of CodeMirror doesn't work
+    * [CON-1654] - CodeMirror: Finalize full screen support
+    * [CON-1657] - Client settings: Escaping values
+    * [CON-1658] - Multiple issues with scroll properties in IE 11
+    * [CON-1660] - Missing cache folder in new created clients
+    * [CON-1661] - Editor and raw data tab have confusing behaviour
+    * [CON-1664] - Example client contains lost and found articles
+    * [CON-1667] - Simple user without sysadmin- and adminrights can not enter some areas
+    * [CON-1668] - Remove function to rename dirs at filemanager
+    * [CON-1669] - Reload left frame after execute actions
+    * [CON-1670] - Duplicated template can not set automatically as default template
+    * [CON-1671] - Strict warning in class.module.filetranslation.php
+    * [CON-1672] - Form Assistant import does not work after new installation
+    * [CON-1673] - CMS_LINKEDITOR: Creating new upload folder in popup dialog
+    * [CON-1700] - Forwarded content types are not displayed in select list for CMS_TEASER
+    * [CON-1701] - Files do not have "/" in column dirname when uploaded or synchronized
+    * [CON-1702] - File manager - Can' delete folder
+    * [CON-1705] - Incorrect content type recognition
+    * [CON-1712] - CMS_FILELIST: Can not define only one fileextension
+    * [CON-1713] - CMS_FILELIST: Script ignore filelimit
+    * [CON-1714] - CMS_FILELIST: Manual selected file missing at filelist
+    * [CON-1717] - Problem with moving categories
+    * [CON-1718] - Deleting a directory in the file management does not work properly
+    * [CON-1719] - Synchronizing categories does not work
+    * [CON-1721] - Visual Editing of templates prevents deleting
+    * [CON-1722] - Deletion of content at article list (rawdata) does not work.
+    * [CON-1724] - Error handling offline/not present language in the frontend
+    * [CON-1725] - It is not possible to remove a new created folder at the file management page with IE7
+    * [CON-1726] - Button to create new Templates is missing with IE7
+    * [CON-1727] - Deinstallation of plugins using PIM is not possible with IE7
+    * [CON-1728] - Users are not shown at the group membership management page using IE7
+    * [CON-1729] - Creating a new language does not work using IE7
+    * [CON-1730] - Tinymce does not work in IE 11
+    * [CON-1732] - Can't change sometimes picture in CMS_IMGEDITOR
+    * [CON-1733] - Can't set link on the uploaded picture first time(CMS_LINKEDITOR).
+    * [CON-1734] - CMS_TEASER CSS-problem in IE 7
+    * [CON-1735] - IE7 does not load sometimes the content frame
+    * [CON-1736] - CMS_LINKEDITOR checkbox label placed in a wrong line
+    * [CON-1737] - Selection of one file extension in CMS_FILELIST causes PHP-warning in errorlog.txt
+    * [CON-1738] - PIFA: rename to existing table
+    * [CON-1739] - Can't edit frontendusers in IE 7
+    * [CON-1740] - Can't delete client in IE 7 if edit frame is loaded
+    * [CON-1741] - Can't delete layout after edit in IE 7
+    * [CON-1742] - Can't change category template in article area twice
+    * [CON-1745] - Article synchronisation does not work in any browsers.
+    * [CON-1746] - Can't remove folder in IE 7
+    * [CON-1747] - Javascript errors while changing language in article area
+    * [CON-1749] - Display locked categories at article overview list
+    * [CON-1750] - Layout navigation flickers on hover
+    * [CON-1751] - Switching to cGuiPage for page rendering to provide full IE7 support.
+    * [CON-1752] - Double duplication of Article
+    * [CON-1753] - Enabling the backend debuging has no effect
+    * [CON-1754] - IE7: Strange visual glitch after upgrade from 4.8.19
+    * [CON-1755] - IE7 always displays an error when editing client settings
+    * [CON-1756] - Inconsistent behavoir: toggle categories online/offline at article overview and categorie overview page
+    * [CON-1757] - Edit todo-entries: Missing datetimepicker
+    * [CON-1758] - Module importer should show a notification for invalid XML-files
+
+** Improvement
+    * [CON-1408] - PIFA: Add functions to import and export forms
+    * [CON-1412] - One right for edit/save translations
+    * [CON-1439] - Make quality of image scaling configurable
+    * [CON-1493] - Add switch for HTTP status code on article redirect
+    * [CON-1538] - Fix smarty classes used in CONTENIDO
+    * [CON-1554] - Minimize options for not-synchronized articles
+    * [CON-1563] - Specify "other configuration files" in upgrade process
+    * [CON-1568] - Move directory related methods from cFileHandler to cDirHandler
+    * [CON-1580] - Do not break the header navigation on missing plugin navigation entries
+    * [CON-1608] - Linkchecker: Translate and specificate error types at error overview page
+    * [CON-1609] - Simplify resizing top left frame in backend
+    * [CON-1610] - Simplify accessing frames via JS in backend
+    * [CON-1611] - JavaScript: Application properties/configuration for the backend pages.
+    * [CON-1612] - Standardise toggling left frame
+    * [CON-1613] - Standardise markup/css in frame "left_top".
+    * [CON-1614] - Move JavaScript code in templates to the bottom of the pages.
+    * [CON-1615] - JavaScript: Move common startup related logic to a separate module
+    * [CON-1616] - Extend CONTENIDO backend templates handling.
+    * [CON-1617] - New feature to cGuiPage to to add body class attribute values.
+    * [CON-1618] - JavaScript: Port some backend scripts to modules
+    * [CON-1619] - Rework include.CMS_*.php files
+    * [CON-1620] - Fix URL detection in client web address
+    * [CON-1621] - Simplify code to get subnavigations in all subnav includes
+    * [CON-1636] - JavaScript: Rework dependency loader
+    * [CON-1637] - Move includes (pages) related assets (css, js) to a separate folder
+    * [CON-1655] - Form assistant should support the type button as form element
+    * [CON-1665] - PIM: Save plugin-specific actions at relations database table
+    * [CON-1699] - Add tabindexes for new usercomment
+    * [CON-1703] - Improve content type handling in article language objects
+    * [CON-1704] - Add convenience methods for some content types
+    * [CON-1743] - Performe German translations for action-userrights
+    * [CON-1744] - Change German "Hinzufügen" and "Entfernen"
+
+** New feature
+    * [CON-684] - Implement search term tracking
+    * [CON-1163] - Article related log entries should be displayed in a table on properties page
+    * [CON-1170] - Content - Article: Position of the tabs
+    * [CON-1184] - AMR Plugin in Content Area
+    * [CON-1199] - Linkchecker: Repair common mistakes in links
+
+** Task
+    * [CON-1224] - Write unit tests for all Generic DB classes and methods
+    * [CON-1383] - Remove redundant code in cContentType classes
+    * [CON-1456] - PIM: Show plugin specific navigation entries at PIM overview page
+    * [CON-1507] - Write unit tests for all cHTML classes
+    * [CON-1508] - Write unit tests for cArticleCollector
+    * [CON-1584] - Replace usage of exif_imagetype in CMS_FILELIST
+    * [CON-1681] - Check necessity of various upgrade jobs
+
+---------------------------------------------------------------------
 Release 4.9.2
 ----------------------------------------------------------------------
 ** Bug
