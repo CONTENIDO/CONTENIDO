@@ -2178,6 +2178,7 @@ data/locale/potfiles.txt -text
 docs/coding_convention_zend_10_1_php.xml -text svneol=unset#text/plain
 docs/coding_convention_zend_js.xml -text svneol=unset#text/plain
 docs/coding_convention_zend_php.xml -text svneol=unset#text/plain
+docs/de01-systemvoraussetzungen.pdf -text
 docs/de02-installationsanleitung.pdf -text
 docs/de03-aktualiserungsanleitung.pdf -text
 docs/de03-aktualisierungsanleitung.pdf -text
