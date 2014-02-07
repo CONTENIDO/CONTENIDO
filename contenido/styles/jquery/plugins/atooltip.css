@@ -40,3 +40,12 @@ a.aToolTipCloseBtn {
     margin:1px 2px 2px 1px;
     padding:0;
 }
+
+a.infoButton,
+.infoButton:hover {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: transparent url(../../../images/info.gif) no-repeat;
+    margin-bottom: -3px;
+}

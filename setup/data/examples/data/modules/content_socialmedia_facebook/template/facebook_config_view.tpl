@@ -1,24 +1,24 @@
 <label class="content_type_label">{$label_overview}</label>
 <form action="" method="POST">
-<table>
+<table class="moduleTable">
     <tr>
         <td>{$urlLabel}*</td>
-        <td><input type="text" name="url" value="{$url}"></td>
+        <td><input style="margin-left: 4px;" type="text" name="url" value="{$url}"></td>
     </tr>
     <tr>
         <td>{$automaticURLLabel}</td>
-        <td><input type="checkbox" name="automaticURL" value="1" {if $useAutomaticURL == "1" } checked="1" {/if}></td>
+        <td><input type="checkbox" name="automaticURL" value="1" {if $useAutomaticURL == "1" } checked="1" {/if}>&nbsp;{$autoUrlHelp->render()}</td>
     </tr>
     <tr>
         <td>
             {$pluginLabel}
         </td>
         <td>
-            <input type="radio" name="plugin" value="like_button" {if $pluginvalue == "like_button" } checked="checked" {/if}>
-            {$likeButtonLabel}
+            <input style="margin-left: 4px;" type="radio" name="plugin" value="like_button" {if $pluginvalue == "like_button" } checked="checked" {/if}>
+            {$likeButtonLabel}&nbsp;&nbsp;{$likeButtonHelp->render()}
             <br/>
-            <input type="radio" name="plugin" value="like_box" {if $pluginvalue == "like_box"} checked="checked"  {/if}">
-            {$likeBoxLabel}
+            <input style="margin-left: 4px;" type="radio" name="plugin" value="like_box" {if $pluginvalue == "like_box"} checked="checked"  {/if}">
+            {$likeBoxLabel}&nbsp;&nbsp;{$likeBoxHelp->render()}
         </td>
     </tr>
     <tr>
@@ -26,32 +26,37 @@
             {$layoutLabel}
         </td>
         <td>
-            <input type="radio" name="layout" value="standard" {if $layoutvalue == "standard" || $value !="button_count" && $value !="box_count" } checked="checked" {/if}>
-            {$standardLabel}
+            <input style="margin-left: 4px;" type="radio" name="layout" value="standard" {if $layoutvalue == "standard" || $value !="button_count" && $value !="box_count" } checked="checked" {/if}>
+            {$standardLabel}&nbsp;&nbsp;{$standardHelp->render()}
             <br/>
-            <input type="radio" name="layout" value="button_count" {if $layoutvalue =="button_count"} checked="checked" {/if}>
-            {$buttonCountLabel}
+            <input style="margin-left: 4px;" type="radio" name="layout" value="button_count" {if $layoutvalue =="button_count"} checked="checked" {/if}>
+            {$buttonCountLabel}&nbsp;&nbsp;{$buttonCountHelp->render()}
             <br/>
-            <input type="radio" name="layout" value="box_count" {if $layoutvalue == "box_count"} checked="checked" {/if}>
-            {$boxCountLabel}
+            <input style="margin-left: 4px;" type="radio" name="layout" value="box_count" {if $layoutvalue == "box_count"} checked="checked" {/if}>
+            {$boxCountLabel}&nbsp;&nbsp;{$boxCountHelp->render()}
         </td>
     </tr>
     <tr>
         <td>{$showFacesLabel}</td>
         <td>
-            <input type="checkbox" name="faces" value="true" {if $facesvalue} checked="checked" {/if}>
+            <input type="checkbox" name="faces" value="true" {if $facesvalue} checked="checked" {/if}>&nbsp;{$showFacesHelp->render()}
         </td>
     </tr>
     <tr>
         <td>{$widthLabel}</td>
-        <td><input type="text" name="width" value="{$width}"></td>
+        <td><input style="margin-left: 4px;" type="text" name="width" value="{$width}"></td>
     </tr>
     <tr>
         <td>{$heightLabel}</td>
-        <td><input type="text" name="height" value="{$height}"></td>
+        <td><input style="margin-left: 4px;" type="text" name="height" value="{$height}"></td>
     </tr>
+    <tr>
+        <td></td>
+        <td>
+            <input type="hidden" name="plugin_type" value="facebook" />
+            <input type="submit" value="{$save}" />
+        </td>
+    </td>
  </table>
- <input type="hidden" name="plugin_type" value="facebook" />
- <input type="submit" value="{$save}" />
 </form>
 
