@@ -331,6 +331,8 @@ JS;
         $oCodeMirror = new CodeMirror('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
         if($readOnly) {
             $oCodeMirror->setProperty("readOnly", "true");
+
+            $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
         }
         $page->addScript($oCodeMirror->renderScript());
 

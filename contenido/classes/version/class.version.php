@@ -501,10 +501,11 @@ class cVersion {
      * @param string $sAddHeader The Header Label of SelectBox Widget
      * @param string $sLabelOfSelectBox The Label of SelectBox Widget
      * @param string $sIdOfSelectBox Id of Select Box
+     * @param bool $disabled If true, show disabled buttons for deleting
      *        return string if is exists Revision, then returns HTML Code of
      *            full SelectBox else returns empty string
      */
-    public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox) {
+    public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox, $disabled = false) {
         $oForm = new cGuiTableForm($sTableForm);
 
         // if exists xml files
@@ -516,8 +517,10 @@ class cVersion {
             $aMessage = $this->getMessages();
             $oForm->addHeader(i18n($sAddHeader));
             $oForm->add(i18n($sLabelOfSelectBox), $this->getSelectBox($this->getFormatTimestamp(), $sIdOfSelectBox));
-            $oForm->setActionButton('clearhistory', 'images/but_delete.gif', $aMessage['alt'], 'c', 'history_truncate');
-            $oForm->setConfirm('clearhistory', $aMessage['alt'], $aMessage['popup']);
+            $oForm->setActionButton('clearhistory', 'images/delete' . (($disabled) ? '_inact' : '') . '.gif', $aMessage['alt'], 'c', 'history_truncate');
+            if(!$disabled) {
+            	$oForm->setConfirm('clearhistory', $aMessage['alt'], $aMessage['popup']);
+            }
             $oForm->setActionButton('submit', 'images/but_refresh.gif', i18n('Refresh'), 's');
             $oForm->setTableid("version_selector");
 

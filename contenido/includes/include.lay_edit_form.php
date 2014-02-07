@@ -227,6 +227,8 @@ if (!$layout->virgin) {
     // disable codemirror editing if readonly is on
     if($readOnly) {
         $oCodeMirror->setProperty("readOnly", "true");
+        
+        $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
     }
     $page->addScript($oCodeMirror->renderScript());
 

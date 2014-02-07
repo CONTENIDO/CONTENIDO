@@ -46,7 +46,7 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage')) {
     return;
 }
 
-if ($_POST["mod_send"] == true && ($_POST["CodeOut"] != "" || $_POST["CodeIn"] != "")) { // save button
+if ((!$readOnly) && $_POST["mod_send"] == true && ($_POST["CodeOut"] != "" || $_POST["CodeIn"] != "")) { // save button
     $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
     $sName = $_POST["modname"];
     $sCodeInput = $_POST["CodeIn"];
@@ -77,7 +77,7 @@ $oVersion->setVarForm("idmod", $idmod);
 $oVersion->setVarForm("action", '');
 
 // create and output the select box, for params please look class.version.php
-$sSelectBox = $oVersion->buildSelectBox("mod_history", i18n("Module History"), i18n("Show history entry"), "idmodhistory");
+$sSelectBox = $oVersion->buildSelectBox("mod_history", i18n("Module History"), i18n("Show history entry"), "idmodhistory", $readOnly);
 
 // Generate Form
 $oForm = new cGuiTableForm("mod_display");
@@ -121,7 +121,7 @@ if ($sSelectBox != "") {
     $oForm->add(i18n("Description"), $description);
     $oForm->add(i18n("Code input"), $sCodeInput);
     $oForm->add(i18n("Code output"), $sCodeOutput);
-    $oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c"/* , "mod_history_takeover" */); //modified it
+    $oForm->setActionButton("apply", "images/but_ok" .(($readOnly) ? '_off' : '') . ".gif", i18n("Copy to current"), "c"/* , "mod_history_takeover" */); //modified it
     $oForm->unsetActionButton("submit");
 
     // Render and handle History Area

@@ -94,7 +94,12 @@ if (($handle = opendir($path)) !== false && is_dir($path)) {
             $delDescr = sprintf(i18n("Do you really want to delete the following file:<br><br>%s<br>"), $filename);
 
             if ($perm->have_perm_area_action('htmltpl', $sActionDelete)) {
-                $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(&quot;' . $filename . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');
+            	$imageSource = (getEffectiveSetting('client', 'readonly', 'false') == 'true') ? $cfg['path']['images'].'delete_inact.gif' : $cfg['path']['images'].'delete.gif';
+            	if(getEffectiveSetting('client', 'readonly', 'false') == 'true') {
+            		$tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript://"><img src="'. $imageSource . '" border="0" title="'.$delTitle.'"></a>');
+            	} else {
+            		$tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(&quot;' . $filename . '&quot;); });return false;"><img src="'. $imageSource . '" border="0" title="' . $delTitle . '"></a>');
+            	}
             } else {
                 $tpl->set('d', 'DELETE', '');
             }

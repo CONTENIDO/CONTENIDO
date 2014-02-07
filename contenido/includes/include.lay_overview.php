@@ -70,8 +70,12 @@ while (($layout = $oLayouts->next()) !== false) {
     if ($perm->have_perm_area_action_item('lay', 'lay_delete', $idlay) && !$inUse) {
         $delTitle = i18n("Delete layout");
         $delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"), conHtmlentities(conHtmlSpecialChars($name)));
-        $delLink  = '<a title="'.$delTitle.'" href="javascript://" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteLayout(' . $idlay . '); });return false;">'
-                  . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
+        if(getEffectiveSetting('client', 'readonly', 'false') == 'true') {
+        	$delLink  = '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.i18n('The administrator disabled editing of these files').'" alt="'.i18n('The administrator disabled editing of these files').'">';
+        } else {
+        	$delLink  = '<a title="'.$delTitle.'" href="javascript://" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteLayout(' . $idlay . '); });return false;">'
+                      . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
+        }
         $tpl->set('d', 'DELETE', $delLink);
     } else {
         $tpl->set('d', 'DELETE', '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescr.'" alt="'.$delDescr.'">');

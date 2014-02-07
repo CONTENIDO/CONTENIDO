@@ -119,7 +119,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
 
         // create and output the select box, for params please look
         // class.version.php
-        $sSelectBox = $oVersionJScript->buildSelectBox('jscript_history', 'JScript History', i18n('Show history entry'), 'idjscripthistory');
+        $sSelectBox = $oVersionJScript->buildSelectBox('jscript_history', 'JScript History', i18n('Show history entry'), 'idjscripthistory', $readOnly);
 
         // Generate Form
         $oForm = new cGuiTableForm('jscript_display');
@@ -154,7 +154,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
         $oForm->add(i18n('Name'), $sName);
         $oForm->add(i18n('Description'), $description);
         $oForm->add(i18n('Code'), $sCode);
-        $oForm->setActionButton('apply', 'images/but_ok.gif', i18n('Copy to current'), 'c'/*, 'mod_history_takeover'*/); // modified
+        $oForm->setActionButton('apply', 'images/but_ok' . (($readOnly) ? '_off' : '') . '.gif', i18n('Copy to current'), 'c'/*, 'mod_history_takeover'*/); // modified
                                                                                                                          // it
         $oForm->unsetActionButton('submit');
 

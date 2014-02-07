@@ -371,73 +371,20 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
         cRegistry::addWarningMessage(i18n("This module uses variables and/or functions which are probably not available in this CONTENIDO version. Please make sure that you use up-to-date modules."));
     }
 
-    if ($idmod != 0) {
-        $import = new cHTMLRadiobutton("mode", "import");
-        $export = new cHTMLRadiobutton("mode", "export");
-
-        $import->setLabelText(i18n("Import from file"));
-        $export->setLabelText(i18n("Export to file"));
-
-        $import->setEvent("click", "document.getElementById('vupload').style.display = '';");
-        $export->setEvent("click", "document.getElementById('vupload').style.display = 'none';");
-
-        $upload = new cHTMLUpload("upload");
-
-        $inputChecked = "";
-        $outputChecked = "";
-
-        if ($contenidoModuleHandler->modulePathExists() == true) {
-            $inputChecked = $contenidoModuleHandler->readInput();
-            $outputChecked = $contenidoModuleHandler->readOutput();
-        }
-
-        if ($inputChecked != "" && $outputChecked != "") {
-            $export->setChecked("checked");
-        } else {
-            $import->setChecked("checked");
-        }
-        $form2 = new cGuiTableForm("export");
-
-        $form2->setVar("action", "mod_importexport_module");
-        $form2->setVar("use_encoding", "false");
-        $form2->addHeader("Import/Export");
-        $form2->add(i18n("Mode"), array(
-            $export,
-            "<br>",
-            $import
-        ));
-
-        if ($inputChecked != "" && $outputChecked != "") {
-            $form2->add(i18n("File"), $upload, "vupload", "display: none;");
-        } else {
-            $form2->add(i18n("File"), $upload, "vupload");
-        }
-
-        $form2->setVar("area", $area);
-        $form2->setVar("frame", $frame);
-        $form2->setVar("idmod", $idmod);
-        $form2->custom["submit"]["accesskey"] = '';
-
-        // Dont show form if we delete or synchronize a module
-        if ($action == "mod_sync" || $action == "mod_delete") {
-            $page->abortRendering();
-        } else {
-            $page->set("s", "FORM", $message . $form->render() . "<br>");
-        }
-    }
-
     if ($action) {
-        if (stripslashes($idmod > 0) || $action == "mod_sync") {
+        if ($moduleNameChanged || $action == "mod_sync") {
             $page->setReload();
         }
     }
-    if (!($action == "mod_importexport_module" && $mode == "export")) {
+    if ($idmod != 0) {
         $oCodeMirrorInput = new CodeMirror('input', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
         $oCodeMirrorOutput = new CodeMirror('output', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
 
         if($readOnly || $bInUse) {
             $oCodeMirrorInput->setProperty("readOnly", "true");
             $oCodeMirrorOutput->setProperty("readOnly", "true");
+
+            $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
         }
 
         $codeMirrorScripts = trim($oCodeMirrorInput->renderScript() . $oCodeMirrorOutput->renderScript());
@@ -451,6 +398,12 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
             //$page->setSubnav("idmod=" . $idmod . "&dont_print_subnav=1");
         } else {
             //$page->setSubnav("idmod=" . $idmod, "mod");
+        }
+        // Dont show form if we delete or synchronize a module
+        if ($action == "mod_sync" || $action == "mod_delete") {
+            $page->abortRendering();
+        } else {
+            $page->set("s", "FORM", $message . $form->render() . "<br>");
         }
         $page->render();
     }

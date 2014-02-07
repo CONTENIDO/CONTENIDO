@@ -76,7 +76,7 @@ $oVersion->setVarForm("action", '');
 
 // create and output the select box, for params please look
 // class.version.php
-$sSelectBox = $oVersion->buildSelectBox("mod_history", "Layout History", i18n("Show history entry"), "idlayhistory");
+$sSelectBox = $oVersion->buildSelectBox("mod_history", "Layout History", i18n("Show history entry"), "idlayhistory", $readOnly);
 
 // Generate Form
 $oForm = new cGuiTableForm("lay_display");
@@ -114,7 +114,7 @@ if ($sRevision != '' && ($_POST["action"] != "history_truncate" || $readOnly)) {
 $oForm->add(i18n("Name"), $sName);
 $oForm->add(i18n("Description"), $description);
 $oForm->add(i18n("Code"), $sCode);
-$oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c"/*, "mod_history_takeover"*/); // modified
+$oForm->setActionButton("apply", "images/but_ok" . (($readOnly) ? '_off' : '') . ".gif", i18n("Copy to current"), "c"/*, "mod_history_takeover"*/); // modified
                                                                                                                  // it
 $oForm->unsetActionButton("submit");
 

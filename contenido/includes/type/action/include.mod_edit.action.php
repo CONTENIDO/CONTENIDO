@@ -26,6 +26,10 @@ if ($perm->have_perm_area_action($area, "mod_edit")) {
     if($readOonly) {
         cRegistry::addWarningMessage(i18n("The administrator disabled editing these files!"));
     } else {
+    	// this is used to determine if the left bottom frame has to be reloaded
+        $cApiModule = new cApiModule($idmod);
+        $moduleNameChanged = $cApiModule->get('name') != stripslashes($name);
+        
         $idmod = modEditModule($idmod, $name, $descr, $input, $output, $template, $type);
     }
 

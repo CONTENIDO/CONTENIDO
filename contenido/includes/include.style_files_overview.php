@@ -89,7 +89,10 @@ if (($handle = opendir($path)) !== false && is_dir($path)) {
                 if ($db->nextRecord()) {
                     $idsfi = $db->f('idsfi');
                 }
-                if (cSecurity::isInteger($idsfi)) {
+                
+                if (getEffectiveSetting('client', 'readonly', 'false') == 'true') {
+                	$tpl->set('d', 'DELETE', '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n('The administrator disabled editing of these files') . '">');
+                } else if (cSecurity::isInteger($idsfi)) {
                     $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(' . cSecurity::toInteger($idsfi) . '); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');
                 } else {
                     $tpl->set('d', 'DELETE', '<a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteFile(&quot;' . cSecurity::toString($filename) . '&quot;); });return false;"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '"></a>');

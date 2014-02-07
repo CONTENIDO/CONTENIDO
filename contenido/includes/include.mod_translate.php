@@ -118,8 +118,10 @@ $page->set("s", "LAST_TRANSLATION", conHtmlSpecialChars($lastTranslation));
 
 if($readOnly) {
     $page->set("s", "DISABLED", "disabled='disabled'");
+    $page->set("s", "READONLY", "_off");
 } else {
     $page->set("s", "DISABLED", "");
+    $page->set("s", "READONLY", "");
 }
 
 $page->setMarkScript(2);

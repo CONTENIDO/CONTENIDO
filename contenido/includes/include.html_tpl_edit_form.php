@@ -317,12 +317,14 @@ JS;
         $form->add(i18n('Description'), $descr->render());
         $form->add(i18n('Code'), $ta_code);
 
-        $page->setContent($form);
-
         $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
         if($readOnly) {
         	$oCodeMirror->setProperty("readOnly", "true");
+
+        	$form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
         }
+
+        $page->setContent($form);
         $page->addScript($oCodeMirror->renderScript());
 
         if (!empty($sReloadScript)) {

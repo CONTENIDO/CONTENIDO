@@ -518,6 +518,8 @@ class cModuleTemplateHandler extends cModuleHandler {
         $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $this->_cfg);
         if($readOnly) {
             $oCodeMirror->setProperty("readOnly", "true");
+
+            $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
         }
         $this->_page->addScript($oCodeMirror->renderScript());
 

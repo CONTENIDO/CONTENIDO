@@ -80,6 +80,13 @@ JS;
     $page->addScript($sReloadScript);
     $page->render();
 } else {
+	// clicking on 'Save Changes' or 'Delete file' doesn't set the right request variables in read only mode
+    if($readOnly && !isset($_REQUEST['file']) && isset($_REQUEST['delfile'])) {
+        $_REQUEST['file'] = $_REQUEST['delfile'];
+    } else if($readOnly && !isset($_REQUEST['file']) && isset($_REQUEST['tmp_file'])) {
+    	$_REQUEST['file'] = $_REQUEST['tmp_file'];
+    }
+    
     $path = $cfgClient[$client]['js']['path'];
     $sTempFilename = stripslashes($_REQUEST['tmp_file']);
     $sOrigFileName = $sTempFilename;
@@ -258,12 +265,13 @@ JS;
         $form->add(i18n('Description'), $descr->render());
         $form->add(i18n('Code'), $ta_code);
 
-        $page->setContent($form);
-
         $oCodeMirror = new CodeMirror('code', 'js', substr(strtolower($belang), 0, 2), true, $cfg);
         if($readOnly) {
         	$oCodeMirror->setProperty("readOnly", "true");
+        	
+        	$form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
         }
+        $page->setContent($form);
         $page->addScript($oCodeMirror->renderScript());
 
         if (!empty($sReloadScript)) {
