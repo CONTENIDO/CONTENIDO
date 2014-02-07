@@ -18,6 +18,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('classes', 'class.layout.synchronizer.php');
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+if($readOnly) {
+    cRegistry::addWarningMessage(i18n('The administrator disabled editing these files!'));
+}
+
 $oPage = new cGuiPage("lay_history");
 
 $bDeleteFile = false;
@@ -39,7 +44,7 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
 }
 
 // save button
-if ($_POST["lay_send"] == true && $_POST["layname"] != "" && $_POST["laycode"] != "" && (int) $idlay > 0) {
+if ((!$readOnly) && $_POST["lay_send"] == true && $_POST["layname"] != "" && $_POST["laycode"] != "" && (int) $idlay > 0) {
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
     $sLayoutName = $_POST["layname"];
     $sLayoutCode = $_POST["laycode"];
@@ -52,7 +57,7 @@ if ($_POST["lay_send"] == true && $_POST["layname"] != "" && $_POST["laycode"] !
 }
 
 // [action] => history_truncate delete all current modul history
-if ($_POST["action"] == "history_truncate") {
+if ((!$readOnly) && $_POST["action"] == "history_truncate") {
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
     $bDeleteFile = $oVersion->deleteFile();
     unset($oVersion);
@@ -88,7 +93,7 @@ if ($_POST["idlayhistory"] != "") {
     $sRevision = $oVersion->getLastRevision();
 }
 
-if ($sRevision != '' && $_POST["action"] != "history_truncate") {
+if ($sRevision != '' && ($_POST["action"] != "history_truncate" || $readOnly)) {
     // File Path
     $sPath = $oVersion->getFilePath() . $sRevision;
 
@@ -99,8 +104,8 @@ if ($sRevision != '' && $_POST["action"] != "history_truncate") {
     // Create Textarea and fill it with xml nodes
     if (count($aNodes) > 1) {
         // if choose xml file read value an set it
-        $sName = $oVersion->getTextBox("layname", cString::stripSlashes(conHtmlentities(conHtmlSpecialChars($aNodes["name"]))), 60);
-        $description = $oVersion->getTextarea("laydesc", cString::stripSlashes(conHtmlSpecialChars($aNodes["desc"])), 100, 10);
+        $sName = $oVersion->getTextBox("layname", cString::stripSlashes(conHtmlentities(conHtmlSpecialChars($aNodes["name"]))), 60, $readOnly);
+        $description = $oVersion->getTextarea("laydesc", cString::stripSlashes(conHtmlSpecialChars($aNodes["desc"])), 100, 10, '', $readOnly);
         $sCode = $oVersion->getTextarea("laycode", conHtmlSpecialChars($aNodes["code"]), 100, 30, "IdLaycode");
     }
 }
@@ -115,6 +120,9 @@ $oForm->unsetActionButton("submit");
 
 // Render and handle History Area
 $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+    if($readOnly) {
+        $oCodeMirrorOutput->setProperty("readOnly", "true");
+    }
 $oPage->addScript($oCodeMirrorOutput->renderScript());
 
 if ($sSelectBox != "") {

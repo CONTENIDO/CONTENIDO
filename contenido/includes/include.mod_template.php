@@ -19,6 +19,12 @@ cInclude("external", "codemirror/class.codemirror.php");
 cInclude("includes", "functions.file.php");
 $sFileType = "html";
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+
+if($readOnly) {
+    cRegistry::addWarningMessage(i18n('The administrator disabled editing of these files!'));
+}
+
 $sActionCreate = 'htmltpl_create';
 $sActionEdit = 'htmltpl_edit';
 
@@ -48,7 +54,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
     $contenidoModulTemplateHandler->setNewDelete($_REQUEST['new'], $_REQUEST['delete']);
     $contenidoModulTemplateHandler->setSelectedFile($_REQUEST['selectedFile']);
     $contenidoModulTemplateHandler->setStatus($_REQUEST['status']);
-    $contenidoModulTemplateHandler->display($perm, $notification, $belang);
+    $contenidoModulTemplateHandler->display($perm, $notification, $belang, $readOnly);
 }
 
 $page->render();

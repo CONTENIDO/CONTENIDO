@@ -22,7 +22,13 @@ if ($perm->have_perm_area_action($area, "mod_edit")) {
         $type = $customtype;
     }
 
-    $idmod = modEditModule($idmod, $name, $descr, $input, $output, $template, $type);
+    $readOonly = (getEffectiveSetting("client", "readonly", "false") == "true");
+    if($readOonly) {
+        cRegistry::addWarningMessage(i18n("The administrator disabled editing these files!"));
+    } else {
+        $idmod = modEditModule($idmod, $name, $descr, $input, $output, $template, $type);
+    }
+
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }

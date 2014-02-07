@@ -17,6 +17,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+
+if($readOnly) {
+    cRegistry::addWarningMessage(i18n('The administrator disabled editing of these files!'));
+}
+
 $contenidoModulHandler = new cModuleHandler($idmod);
 $sFileType = 'css';
 
@@ -116,7 +122,7 @@ if (!cFileHandler::writeable($path . $sFilename)) {
 }
 
 // Create new file
-if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
+if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
     $sTempFilename = $sFilename;
     $ret = cFileHandler::create($path . $sFilename);
 
@@ -150,7 +156,7 @@ JS;
 }
 
 // Edit selected file
-if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
+if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
     if ($sFilename != $sTempFilename) {
         cFileHandler::validateFilename($sFilename);
         if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
@@ -236,6 +242,9 @@ if (isset($actionRequest)) {
     $page->setContent($form);
 
     $oCodeMirror = new CodeMirror('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
+    if($readOnly) {
+        $oCodeMirror->setProperty("readOnly", "true");
+    }
     $page->addScript($oCodeMirror->renderScript());
 
     // $page->addScript('reload', $sReloadScript);

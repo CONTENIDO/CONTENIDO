@@ -22,6 +22,11 @@ if (!isset($idlay)) {
     $idlay = 0;
 }
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+if($readOnly) {
+    cRegistry::addWarningMessage(i18n('The administrator disabled editing these files!'));
+}
+
 $page = new cGuiPage('lay_edit_form', '', '0');
 $layout = new cApiLayout();
 $bReloadSyncSrcipt = false;
@@ -29,7 +34,7 @@ if ($idlay != 0) {
     $layout->loadByPrimaryKey($idlay);
 }
 
-if ($action == "lay_new") {
+if ((!$readOnly) && $action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
@@ -56,7 +61,7 @@ if ($action == "lay_new") {
         }
     }
     $bReloadSyncSrcipt = true;
-} elseif ($action == "lay_delete") {
+} elseif ((!$readOnly) && $action == "lay_delete") {
     if (!$perm->have_perm_area_action_anyitem("lay", $action)) {
         $page->displayError(i18n("Permission denied"));
     } else {
@@ -205,12 +210,20 @@ if (!$layout->virgin) {
 
     $cb_refresh = new cHTMLCheckbox("refreshtemplates", i18n("On save, apply default modules to new containers"));
 
+    if($readOnly) {
+        $tb_name->setDisabled('disabled');
+        $ta_description->setDisabled('disabled');
+    }
+
     $form->add(i18n("Name"), $tb_name);
     $form->add(i18n("Description"), $ta_description);
     $form->add(i18n("Code"), $ta_code);
     $form->add(i18n("Options"), $cb_refresh);
 
     $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
+    if($readOnly) {
+        $oCodeMirror->setProperty("readOnly", "true");
+    }
     $page->addScript($oCodeMirror->renderScript());
 
     $page->set('s', 'FORM', $form->render());

@@ -19,6 +19,12 @@ $langobj = new cApiLanguage($lang);
 
 $langstring = $langobj->get('name') . ' (' . $lang . ')';
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+
+if($readOnly) {
+    cRegistry::addWarningMessage(i18n('The administrator disabled editing of these files!'));
+}
+
 $page = new cGuiPage("mod_translate");
 
 $module = new cApiModule($idmod);
@@ -27,7 +33,7 @@ $originalString = '';
 $translationString = '';
 $moduleTranslation = new cModuleFileTranslation($idmod);
 
-if ($action == 'mod_translation_save') {
+if ((!$readOnly) && $action == 'mod_translation_save') {
     $originalString = $t_orig;
     $translationString = $t_trans;
 
@@ -109,6 +115,12 @@ $page->set("s", "HEADER", sprintf(i18n("Translate module '%s'"), $module->get('n
 $page->set("s", "TRANSLATION_FOR", sprintf(i18n("Translation for %s"), $langstring));
 $page->set("s", "LAST_STRING", conHtmlSpecialChars($lastString));
 $page->set("s", "LAST_TRANSLATION", conHtmlSpecialChars($lastTranslation));
+
+if($readOnly) {
+    $page->set("s", "DISABLED", "disabled='disabled'");
+} else {
+    $page->set("s", "DISABLED", "");
+}
 
 $page->setMarkScript(2);
 $page->setEncoding($langobj->get('encoding'));

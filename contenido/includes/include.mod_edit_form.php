@@ -25,8 +25,14 @@ if (!isset($idmod)) {
     $idmod = 0;
 }
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+
+if($readOnly && $action != "mod_edit" && $action != "mod_sync") {
+    cRegistry::addWarningMessage(i18n("The administrator disabled editing these files!"));
+}
+
 $contenidoModuleHandler = new cModuleHandler($idmod);
-if (($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem("mod", $action))) {
+if ((!$readOnly) && ($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem("mod", $action))) {
     cRegistry::addErrorMessage(i18n("No permissions"));
     $page = new cGuiPage('generic_page');
     $page->abortRendering();
@@ -34,7 +40,7 @@ if (($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem("mod", $
     die();
 }
 
-if ($action == "mod_delete") {
+if ((!$readOnly) && $action == "mod_delete") {
     $modules = new cApiModuleCollection();
     $modules->delete($idmod);
 
@@ -87,7 +93,7 @@ if ($action == "mod_sync") {
     $contenidoModuleHandler = new cModuleHandler($idmod);
 }
 
-if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
+if ((!$readOnly) && ($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
     cRegistry::addErrorMessage(i18n("No permissions"));
     $page = new cGuiPage('generic_page');
     $page->abortRendering();
@@ -95,7 +101,7 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
     die();
 }
 
-if ($action == "mod_new") {
+if ((!$readOnly) && $action == "mod_new") {
     $modules = new cApiModuleCollection();
 
     $alias = cApiStrCleanURLCharacters(i18n("- Unnamed module -"));
@@ -128,7 +134,7 @@ if ($action == "mod_new") {
     $module = new cApiModule($idmod);
 }
 
-if ($action == "mod_importexport_module") {
+if ((!$readOnly) && $action == "mod_importexport_module") {
     if ($mode == "export") {
         $module->export();
     }
@@ -278,8 +284,6 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     $name->setDisabled($disabled);
     $descr->setDisabled($disabled);
-    $input->setDisabled($disabled);
-    $output->setDisabled($disabled);
 
     $descr->setStyle("width: 100%; font-family: monospace;");
     $input->setStyle("width: 100%; font-family: monospace;");
@@ -342,6 +346,13 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     if ($modulecheck !== "false") {
         $outled = '<img style="float: right;" src="images/ajax-loader_16x16.gif" class="outputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '">';
         $inled  = '<img style="float: right;" src="images/ajax-loader_16x16.gif" class="inputok" alt="" title="" data-state="' . htmlentities($isCodeError) . '">';
+    }
+
+    if($readOnly) {
+        $name->setDisabled('disabled');
+        $descr->setDisabled('disabled');
+        $typeselect->setDisabled('disabled');
+        $custom->setDisabled('disabled');
     }
 
     $form->add(i18n("Name"), $name->render());
@@ -423,6 +434,11 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     if (!($action == "mod_importexport_module" && $mode == "export")) {
         $oCodeMirrorInput = new CodeMirror('input', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
         $oCodeMirrorOutput = new CodeMirror('output', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
+
+        if($readOnly || $bInUse) {
+            $oCodeMirrorInput->setProperty("readOnly", "true");
+            $oCodeMirrorOutput->setProperty("readOnly", "true");
+        }
 
         $codeMirrorScripts = trim($oCodeMirrorInput->renderScript() . $oCodeMirrorOutput->renderScript());
         if (!empty($codeMirrorScripts)) {

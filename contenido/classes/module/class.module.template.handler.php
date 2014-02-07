@@ -409,7 +409,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         }
     }
 
-    private function _makeFormular($belang) {
+    private function _makeFormular($belang, $readOnly) {
         $fileForm = new cGuiTableForm("file_editor");
         $fileForm->addHeader(i18n('Choose file'));
         $fileForm->setTableid('choose_mod_template_file');
@@ -499,6 +499,10 @@ class cModuleTemplateHandler extends cModuleHandler {
             $fileForm->add(i18n('File'), $selectFile);
         }
 
+        if($readOnly) {
+            $oName->setDisabled('disabled');
+        }
+
         // add fields only if template file exists
         if ($this->_file) {
             $form->add(i18n('Name'), $oName);
@@ -512,6 +516,9 @@ class cModuleTemplateHandler extends cModuleHandler {
         }
 
         $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $this->_cfg);
+        if($readOnly) {
+            $oCodeMirror->setProperty("readOnly", "true");
+        }
         $this->_page->addScript($oCodeMirror->renderScript());
 
         // $this->_page->addScript('reload', $this->_reloadScript);
@@ -522,8 +529,10 @@ class cModuleTemplateHandler extends cModuleHandler {
      *
      * @param cPermission $perm
      * @param cGuiNotification $notification
+     * @param string Backend language (not sure about this...)
+     * @param bool render in read only mode
      */
-    public function display($perm, $notification, $belang) {
+    public function display($perm, $notification, $belang, $readOnly) {
         $myAction = $this->_getAction();
 
         // if the user doesn't have premissions
@@ -534,16 +543,24 @@ class cModuleTemplateHandler extends cModuleHandler {
         try {
             switch ($myAction) {
                 case 'save':
-                    $this->_save();
+                    if(!$readOnly) {
+                        $this->_save();
+                    }
                     break;
                 case 'rename':
-                    $this->_rename();
+                    if(!$readOnly) {
+                        $this->_rename();
+                    }
                     break;
                 case 'new':
-                    $this->_new();
+                    if(!$readOnly) {
+                        $this->_new();
+                    }
                     break;
                 case 'delete':
-                    $this->_delete();
+                    if(!$readOnly) {
+                        $this->_delete();
+                    }
                     break;
                 default:
                     $this->_default();
@@ -552,7 +569,7 @@ class cModuleTemplateHandler extends cModuleHandler {
 
             $this->_code = $this->getFilesContent('template', '', $this->_file);
             $this->_validateHTML($notification);
-            $this->_makeFormular($belang);
+            $this->_makeFormular($belang, $readOnly);
         } catch (Exception $e) {
             $this->_page->displayError(i18n($e->getMessage()));
         }

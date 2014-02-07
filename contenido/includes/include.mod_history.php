@@ -18,6 +18,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.mod.php');
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+if($readOnly) {
+    cRegistry::addWarningMessage(i18n("The administrator disbaled editing these files!"));
+}
 
 if ($idmod == '') {
     $idmod = $_REQUEST['idmod'];
@@ -56,7 +60,7 @@ if ($_POST["mod_send"] == true && ($_POST["CodeOut"] != "" || $_POST["CodeIn"] !
 }
 
 // [action] => history_truncate delete all current history
-if ($_POST["action"] == "history_truncate") {
+if ((!$readOnly) && $_POST["action"] == "history_truncate") {
     $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
     $bDeleteFile = $oVersion->deleteFile();
     unset($oVersion);
@@ -93,7 +97,7 @@ if ($_POST["idmodhistory"] != "") {
     $sRevision = $oVersion->getLastRevision();
 }
 
-if ($sRevision != '' && $_POST["action"] != "history_truncate") {
+if ($sRevision != '' && ($_POST["action"] != "history_truncate" || $readOnly)) {
     // File Path
     $sPath = $oVersion->getFilePath() . $sRevision;
 
@@ -104,8 +108,8 @@ if ($sRevision != '' && $_POST["action"] != "history_truncate") {
     if (count($aNodes) > 1) {
 
         //    if choose xml file read value an set it
-        $sName = $oVersion->getTextBox("modname", cString::stripSlashes(conHtmlentities(conHtmlSpecialChars($aNodes["name"]))), 60);
-        $description = $oVersion->getTextarea("moddesc", cString::stripSlashes(conHtmlSpecialChars($aNodes["desc"])), 100, 10);
+        $sName = $oVersion->getTextBox("modname", cString::stripSlashes(conHtmlentities(conHtmlSpecialChars($aNodes["name"]))), 60, $readOnly);
+        $description = $oVersion->getTextarea("moddesc", cString::stripSlashes(conHtmlSpecialChars($aNodes["desc"])), 100, 10, '', $readOnly);
         $sCodeInput = $oVersion->getTextarea("CodeIn", $aNodes["code_input"], 100, 30, "IdCodeIn");
         $sCodeOutput = $oVersion->getTextarea("CodeOut", $aNodes["code_output"], 100, 30, "IdCodeOut");
     }
@@ -123,6 +127,11 @@ if ($sSelectBox != "") {
     // Render and handle History Area
     $oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
     $oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
+    if($readOnly) {
+        $oCodeMirrorIn->setProperty("readOnly", "true");
+        $oCodeMirrorOutput->setProperty("readOnly", "true");
+    }
+
     $oPage->addScript($oCodeMirrorIn->renderScript());
     $oPage->addScript($oCodeMirrorOutput->renderScript());
 

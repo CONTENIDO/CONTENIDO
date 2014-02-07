@@ -21,6 +21,12 @@ $module->loadByPrimaryKey($idmod);
 $notification = new cGuiNotification();
 $sScript = '';
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+
+if($readOnly) {
+    cRegistry::addWarningMessage(i18n('The administrator disabled editing these files!'));
+}
+
 if ($action == "mod_importexport_module") {
 
     switch ($mode) {
@@ -32,6 +38,10 @@ if ($action == "mod_importexport_module") {
             }
             break;
         case 'import':
+            if($readOnly) {
+                cRegistry::addWarningMessage(i18n("The administrator disabled editing of these files!"));
+                break;
+            }
             if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
                 if (!$module->import($_FILES['upload']['name'], $_FILES["upload"]["tmp_name"])) {
                     $notification->displayNotification('error', i18n("Could not import module!"));
@@ -54,6 +64,10 @@ JS;
             }
             break;
         case 'import_xml':
+            if($readOnly) {
+                cRegistry::addWarningMessage(i18n("The administrator disabled editing of these files!"));
+                break;
+            }
             // Make new module
             $modules = new cApiModuleCollection();
 
@@ -107,6 +121,15 @@ if ($inputChecked != "" && $outputChecked != "") {
 } else {
     $import->setChecked("checked");
 }
+
+if($readOnly) {
+    $import->setDisabled('disabled');
+    $importXML->setDisabled('disabled');
+    $export->setChecked('checked');
+    $import->setChecked('');
+    $importXML->setChecked('');
+}
+
 $form2 = new cGuiTableForm("export");
 $form2->setVar("action", "mod_importexport_module");
 $form2->setVar("use_encoding", "false");

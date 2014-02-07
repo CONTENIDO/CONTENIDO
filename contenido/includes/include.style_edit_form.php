@@ -23,6 +23,11 @@ $sFilename = '';
 $page = new cGuiPage('style_edit_form', '', '0');
 $page->setEncoding('utf-8');
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+if($readOnly) {
+    cRegistry::addWarningMessage(i18n("The administrator disbaled editing these files!"));
+}
+
 $tpl->reset();
 
 // Some checks
@@ -36,7 +41,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
     exit();
 }
 
-if ($action == 'style_delete') {
+if ((!$readOnly) && $action == 'style_delete') {
     $path = $cfgClient[$client]['css']['path'];
     // Delete file
     $file = new cApiFileInformation();
@@ -71,6 +76,9 @@ if ($action == 'style_delete') {
     $page->setReload();
     $page->render();
 } else {
+    if($readOnly && !isset($_REQUEST['file']) && isset($_REQUEST['delfile'])) {
+        $_REQUEST['file'] = $_REQUEST['delfile'];
+    }
     $path = $cfgClient[$client]['css']['path'];
     if (stripslashes($_REQUEST['file'])) {
         $reloadFile = stripslashes($_REQUEST['file']);
@@ -108,6 +116,10 @@ JS;
 
     // Create new file
     if ($_REQUEST['action'] == 'style_create' && $_REQUEST['status'] == 'send') {
+        if($readOnly) {
+            $page->render();
+            exit();
+        }
         $sTempFilename = $sFilename;
         // check filename and create new file
         cFileHandler::validateFilename($sFilename);
@@ -163,7 +175,7 @@ JS;
     }
 
     // Edit selected file
-    if ($_REQUEST['action'] == 'style_edit' && $_REQUEST['status'] == 'send') {
+    if ((!$readOnly) && $_REQUEST['action'] == 'style_edit' && $_REQUEST['status'] == 'send') {
         $tempTemplate = $sTempFilename;
         if ($sFilename != $sTempFilename) {
             cFileHandler::validateFilename($sFilename);
@@ -265,11 +277,16 @@ JS;
     if (isset($_REQUEST['action'])) {
         $sAction = ($_REQUEST['file']) ? 'style_edit' : $_REQUEST['action'];
 
-        if ($_REQUEST['action'] == 'style_edit') {
+        if ($sAction == 'style_edit') {
             $sCode = cFileHandler::read($path . $sFilename);
         } else {
             // stripslashes is required here in case of creating a new file
             $sCode = stripslashes($_REQUEST['code']);
+        }
+
+        if($sAction == 'style_create') {
+            $page->render();
+            die();
         }
 
         $fileInfoCollection = new cApiFileInformationCollection();
@@ -293,6 +310,11 @@ JS;
             'wrap' => getEffectiveSetting('style_editor', 'wrap', 'off')
         ));
 
+        if($readOnly) {
+            $tb_name->setDisabled('disabled');
+            $descr->setDisabled('disabled');
+        }
+
         $form->add(i18n('Name'), $tb_name);
         $form->add(i18n('Description'), $descr->render());
         $form->add(i18n('Code'), $ta_code);
@@ -302,6 +324,9 @@ JS;
         ));
 
         $oCodeMirror = new CodeMirror('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
+        if($readOnly) {
+            $oCodeMirror->setProperty("readOnly", "true");
+        }
         $page->addScript($oCodeMirror->renderScript());
 
         if (!empty($sReloadScript)) {

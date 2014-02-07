@@ -19,6 +19,11 @@ cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
 $contenidoModulHandler = new cModuleHandler($idmod);
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+
+if($readOnly) {
+    cRegistry::addWarningMessage(i18n('The administrator disabled editing of these files!'));
+}
 
 $sFileType = 'js';
 
@@ -100,7 +105,7 @@ if (!cFileHandler::writeable($path . $sFilename)) {
 $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 
 // Create new file
-if ($actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
+if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
     $sTempFilename = $sFilename;
     $ret = cFileHandler::create($path . $sFilename);
     $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
@@ -129,7 +134,7 @@ JS;
 }
 
 // Edit selected file
-if ($actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
+if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
 
     if ($sFilename != $sTempFilename) {
         cFileHandler::validateFilename($sFilename);
@@ -207,6 +212,9 @@ if (isset($actionRequest)) {
     $page->setContent(array($form));
 
     $oCodeMirror = new CodeMirror('code', 'js', substr(strtolower($belang), 0, 2), true, $cfg);
+    if($readOnly) {
+        $oCodeMirror->setProperty("readOnly", "true");
+    }
     $page->addScript($oCodeMirror->renderScript());
 
     //$page->addScript('reload', $sReloadScript);

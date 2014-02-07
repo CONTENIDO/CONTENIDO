@@ -589,13 +589,18 @@ class cVersion {
      * @param string $sValue The value of Input Textarea
      * @param int $iWidth width of Textarea
      * @param int $iHeight height of Textarea
+     * @param bool $disabled Disabled Textarea
      * @return string HTML Code of Textarea
      */
-    public function getTextarea($sName, $sInitValue, $iWidth, $iHeight, $sId = '') {
+    public function getTextarea($sName, $sInitValue, $iWidth, $iHeight, $sId = '', $disabled = false) {
         if ($sId != '') {
             $oHTMLTextarea = new cHTMLTextarea($sName, $sInitValue, $iWidth, $iHeight, $sId);
         } else {
             $oHTMLTextarea = new cHTMLTextarea($sName, $sInitValue, $iWidth, $iHeight);
+        }
+
+        if($disabled) {
+            $oHTMLTextarea->setDisabled('disabled');
         }
 
         $oHTMLTextarea->setStyle('font-family: monospace; width: 100%;');
