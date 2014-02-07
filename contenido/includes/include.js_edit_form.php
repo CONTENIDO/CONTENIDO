@@ -21,6 +21,11 @@ cInclude('external', 'codemirror/class.codemirror.php');
 
 $sFileType = 'js';
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+if($readOnly) {
+	cRegistry::addWarningMessage(i18n("The administrator disbaled editing these files!"));
+}
+
 $sFilename = '';
 $page = new cGuiPage('js_edit_form', '', '0');
 
@@ -38,7 +43,7 @@ if (!(int) $client > 0) {
     return;
 }
 
-if ($action == 'js_delete') {
+if ((!$readOnly) && $action == 'js_delete') {
     $path = $cfgClient[$client]['js']['path'];
 
     if (!strrchr($_REQUEST['delfile'], '/')) {
@@ -108,7 +113,7 @@ JS;
     $sTypeContent = 'js';
 
     // Create new file
-    if ($_REQUEST['action'] == 'js_create' && $_REQUEST['status'] == 'send') {
+    if ((!$readOnly) && $_REQUEST['action'] == 'js_create' && $_REQUEST['status'] == 'send') {
 
         $sTempFilename = $sFilename;
         // check filename and create new file
@@ -153,7 +158,7 @@ JS;
     }
 
     // Edit selected file
-    if ($_REQUEST['action'] == 'js_edit' && $_REQUEST['status'] == 'send') {
+    if ((!$readOnly) && $_REQUEST['action'] == 'js_edit' && $_REQUEST['status'] == 'send') {
         $sTempTempFilename = $sTempFilename;
 
         if ($sFilename != $sTempFilename) {
@@ -221,7 +226,7 @@ JS;
 
         $sAction = ($bEdit) ? 'js_edit' : $_REQUEST['action'];
 
-        if ($_REQUEST['action'] == 'js_edit') {
+        if ($_REQUEST['action'] == 'js_edit' || $readOnly) {
             $sCode = cFileHandler::read($path . $sFilename);
             if ($sCode === false) {
                 exit();
@@ -239,9 +244,9 @@ JS;
         $form->setVar('status', 'send');
         $form->setVar('tmp_file', $sTempFilename);
 
-        $tb_name = new cHTMLTextbox('file', $sFilename, 60);
+        $tb_name = new cHTMLTextbox('file', $sFilename, 60, '', '', $readOnly);
         $ta_code = new cHTMLTextarea('code', conHtmlSpecialChars($sCode), 100, 35, 'code');
-        $descr = new cHTMLTextarea('description', conHtmlSpecialChars($aFileInfo['description']), 100, 5);
+        $descr = new cHTMLTextarea('description', conHtmlSpecialChars($aFileInfo['description']), 100, 5, '', $readOnly);
 
         $ta_code->setStyle('font-family: monospace;width: 100%;');
         $descr->setStyle('font-family: monospace;width: 100%;');
@@ -256,6 +261,9 @@ JS;
         $page->setContent($form);
 
         $oCodeMirror = new CodeMirror('code', 'js', substr(strtolower($belang), 0, 2), true, $cfg);
+        if($readOnly) {
+        	$oCodeMirror->setProperty("readOnly", "true");
+        }
         $page->addScript($oCodeMirror->renderScript());
 
         if (!empty($sReloadScript)) {

@@ -29,6 +29,11 @@ if ($sFileName == '') {
     $sFileName = $_REQUEST['idhtml_tpl'];
 }
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+if($readOnly) {
+	cRegistry::addWarningMessage(i18n("The administrator disbaled editing these files!"));
+}
+
 $sType = 'templates';
 $sTypeContent = 'templates';
 
@@ -54,12 +59,12 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
     $aFileInfo = $fileInfoCollection->getFileInformation($sFileName, $sTypeContent);
 
     // [action] => history_truncate delete all current history
-    if ($_POST['action'] == 'history_truncate') {
+    if ((!$readOnly) && $_POST['action'] == 'history_truncate') {
         $oVersionHtmlTemp = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
         $bDeleteFile = $oVersionHtmlTemp->deleteFile();
         unset($oVersionHtmlTemp);
     }
-    if ($_POST['html_tpl_send'] == true && $_POST['html_tpl_code'] != '' && $sFileName != '' && $aFileInfo['idsfi'] != '') { // save
+    if ((!$readOnly) && $_POST['html_tpl_send'] == true && $_POST['html_tpl_code'] != '' && $sFileName != '' && $aFileInfo['idsfi'] != '') { // save
                                                                                                                              // button
         $oVersionHtmlTemp = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
@@ -101,7 +106,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
         unset($oVersionHtmlTemp);
     }
 
-    if ($sFileName != '' && $aFileInfo['idsfi'] != '' && $_POST['action'] != 'history_truncate') {
+    if ($sFileName != '' && $aFileInfo['idsfi'] != '' && ($_POST['action'] != 'history_truncate' || $readOnly)) {
 
         $oVersionHtmlTemp = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
@@ -142,8 +147,8 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
             // Create Textarea and fill it with xml nodes
             if (count($aNodes) > 1) {
                 // if choose xml file read value an set it
-                $sName = $oVersionHtmlTemp->getTextBox('html_tpl_name', $aNodes['name'], 60);
-                $description = $oVersionHtmlTemp->getTextarea('html_tpl_desc', (string) $aNodes['desc'], 100, 10);
+                $sName = $oVersionHtmlTemp->getTextBox('html_tpl_name', $aNodes['name'], 60, $readOnly);
+                $description = $oVersionHtmlTemp->getTextarea('html_tpl_desc', (string) $aNodes['desc'], 100, 10, '', $readOnly);
                 $sCode = $oVersionHtmlTemp->getTextarea('html_tpl_code', (string) $aNodes['code'], 100, 30, 'IdLaycode');
             }
         }
@@ -160,6 +165,9 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage')) {
         $oPage->setEncoding('utf-8');
 
         $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+        if($readOnly) {
+            $oCodeMirrorOutput->setProperty("readOnly", "true");
+        }
         $oPage->addScript($oCodeMirrorOutput->renderScript());
 
         if ($sSelectBox != '') {

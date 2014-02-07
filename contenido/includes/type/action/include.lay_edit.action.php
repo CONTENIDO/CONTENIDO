@@ -18,7 +18,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.lay.php');
 
 if ($perm->have_perm_area_action($area, "lay_edit")) {
-    $idlay = layEditLayout($idlay, $layname, $description, $code);
+
+	// check the read only setting and only apply changes if it's off
+	$readOonly = (getEffectiveSetting("client", "readonly", "false") == "true");
+	if(!$readOonly) {
+    	$idlay = layEditLayout($idlay, $layname, $description, $code);
+	}
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }

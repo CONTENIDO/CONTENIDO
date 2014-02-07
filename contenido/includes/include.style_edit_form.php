@@ -76,11 +76,16 @@ if ((!$readOnly) && $action == 'style_delete') {
     $page->setReload();
     $page->render();
 } else {
+	// clicking on 'Save Changes' or 'Delete file' doesn't set the right request variables in read only mode
     if($readOnly && !isset($_REQUEST['file']) && isset($_REQUEST['delfile'])) {
         $_REQUEST['file'] = $_REQUEST['delfile'];
+    } else if($readOnly && !isset($_REQUEST['file']) && isset($_REQUEST['tmp_file'])) {
+    	$_REQUEST['file'] = $_REQUEST['tmp_file'];
     }
+    
     $path = $cfgClient[$client]['css']['path'];
     if (stripslashes($_REQUEST['file'])) {
+    	
         $reloadFile = stripslashes($_REQUEST['file']);
         $sReloadScript = <<<JS
 <script type="text/javascript">

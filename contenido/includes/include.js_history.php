@@ -24,6 +24,11 @@ cInclude('external', 'codemirror/class.codemirror.php');
 $sFileName = '';
 $sFileName = $_REQUEST['file'];
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+if($readOnly) {
+	cRegistry::addWarningMessage(i18n("The administrator disbaled editing these files!"));
+}
+
 $sType = 'js';
 
 if ($sFileName == '') {
@@ -52,13 +57,13 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
     $aFileInfo = $fileInfoCollection->getFileInformation($sFileName, $sTypeContent);
 
     // [action] => history_truncate delete all current history
-    if ($_POST['action'] == 'history_truncate') {
+    if ((!$readOnly) && $_POST['action'] == 'history_truncate') {
         $oVersionJScript = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
         $bDeleteFile = $oVersionJScript->deleteFile();
         unset($oVersionJScript);
     }
 
-    if ($_POST['jscript_send'] == true && $_POST['jscriptcode'] != '' && $sFileName != '' && $aFileInfo['idsfi'] != '') { // save
+    if ((!$readOnly) && $_POST['jscript_send'] == true && $_POST['jscriptcode'] != '' && $sFileName != '' && $aFileInfo['idsfi'] != '') { // save
                                                                                                                        // button
         $oVersionJScript = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
@@ -100,7 +105,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
         unset($oVersionJScript);
     }
 
-    if ($sFileName != '' && $aFileInfo['idsfi'] != '' && $_POST['action'] != 'history_truncate') {
+    if ($sFileName != '' && $aFileInfo['idsfi'] != '' && ($_POST['action'] != 'history_truncate' || $readOnly)) {
         $oVersionJScript = new cVersionFile($aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
         // Init Form variables of SelectBox
@@ -139,8 +144,8 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
             $aNodes = $oVersionJScript->initXmlReader($sPath);
 
             if (count($aNodes) > 1) {
-                $sName = $oVersionJScript->getTextBox('jscriptname', $aNodes['name'], 60);
-                $description = $oVersionJScript->getTextarea('jscriptdesc', (string) $aNodes['desc'], 100, 10);
+                $sName = $oVersionJScript->getTextBox('jscriptname', $aNodes['name'], 60, $readOnly);
+                $description = $oVersionJScript->getTextarea('jscriptdesc', (string) $aNodes['desc'], 100, 10, '', $readOnly);
                 $sCode = $oVersionJScript->getTextarea('jscriptcode', (string) $aNodes['code'], 100, 30, 'IdLaycode');
             }
         }
@@ -157,6 +162,9 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
         $oPage->setEncoding('utf-8');
 
         $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'js', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+        if($readOnly) {
+            $oCodeMirrorOutput->setProperty("readOnly", "true");
+        }
         $oPage->addScript($oCodeMirrorOutput->renderScript());
 
         if ($sSelectBox != '') {

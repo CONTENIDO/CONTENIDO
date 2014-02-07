@@ -22,6 +22,7 @@ if (!isset($idlay)) {
     $idlay = 0;
 }
 
+// check the read only setting and display a warning if it's active
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 if($readOnly) {
     cRegistry::addWarningMessage(i18n('The administrator disabled editing these files!'));
@@ -34,6 +35,7 @@ if ($idlay != 0) {
     $layout->loadByPrimaryKey($idlay);
 }
 
+// check the readOnly boolean to see if changes should be made
 if ((!$readOnly) && $action == "lay_new") {
     if (!$perm->have_perm_area_action_anyitem($area, $action)) {
         $page->displayError(i18n("Permission denied"));
@@ -210,6 +212,7 @@ if (!$layout->virgin) {
 
     $cb_refresh = new cHTMLCheckbox("refreshtemplates", i18n("On save, apply default modules to new containers"));
 
+    // disable the name textbox and the description textbox if readonly is on
     if($readOnly) {
         $tb_name->setDisabled('disabled');
         $ta_description->setDisabled('disabled');
@@ -221,6 +224,7 @@ if (!$layout->virgin) {
     $form->add(i18n("Options"), $cb_refresh);
 
     $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
+    // disable codemirror editing if readonly is on
     if($readOnly) {
         $oCodeMirror->setProperty("readOnly", "true");
     }

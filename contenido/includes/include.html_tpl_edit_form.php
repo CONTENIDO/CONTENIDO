@@ -20,6 +20,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
 
+$readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
+if($readOnly) {
+	cRegistry::addWarningMessage(i18n("The administrator disbaled editing these files!"));
+}
+
 $sActionCreate = 'htmltpl_create';
 $sActionEdit = 'htmltpl_edit';
 $sActionDelete = 'htmltpl_delete';
@@ -40,7 +45,7 @@ if (!(int) $client > 0) {
     return;
 }
 
-if ($action == $sActionDelete) {
+if ((!$readOnly) && $action == $sActionDelete) {
 
     $path = $cfgClient[$client]['tpl']['path'];
     // delete file
@@ -82,6 +87,13 @@ JS;
 
 } else {
 
+	// clicking on 'Save Changes' or 'Delete file' doesn't set the right request variables in read only mode
+	if($readOnly && !isset($_REQUEST['file']) && isset($_REQUEST['delfile'])) {
+		$_REQUEST['file'] = $_REQUEST['delfile'];
+	} else if($readOnly && !isset($_REQUEST['file']) && isset($_REQUEST['tmp_file'])) {
+		$_REQUEST['file'] = $_REQUEST['tmp_file'];
+	}
+	
     $path = $cfgClient[$client]['tpl']['path'];
 
     $sTempFilename = stripslashes($_REQUEST['tmp_file']);
@@ -124,7 +136,7 @@ JS;
     }
 
     // Create new file
-    if ($_REQUEST['action'] == $sActionCreate && $_REQUEST['status'] == 'send') {
+    if ((!$readOnly) && $_REQUEST['action'] == $sActionCreate && $_REQUEST['status'] == 'send') {
         $sTempFilename = $sFilename;
         // check filename and create new file
         cFileHandler::validateFilename($sFilename);
@@ -167,7 +179,7 @@ JS;
     }
 
     // Edit selected file
-    if ($_REQUEST['action'] == $sActionEdit && $_REQUEST['status'] == 'send') {
+    if ((!$readOnly) && $_REQUEST['action'] == $sActionEdit && $_REQUEST['status'] == 'send') {
         $sTempTempFilename = $sTempFilename;
         if ($sFilename != $sTempFilename) {
             cFileHandler::validateFilename($sFilename);
@@ -232,7 +244,8 @@ JS;
     if (isset($_REQUEST['action'])) {
         $sAction = ($bEdit) ? $sActionEdit : $_REQUEST['action'];
 
-        if ($_REQUEST['action'] == $sActionEdit) {
+        // if the system is read only the code should always be read from the file system
+        if ($readOnly || $_REQUEST['action'] == $sActionEdit) {
             $sCode = cFileHandler::read($path . $sFilename);
             if ($sCode === false) {
                 exit();
@@ -275,7 +288,12 @@ JS;
         }
 
         $fileInfoCollection = new cApiFileInformationCollection();
-        $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
+        // if the readonly mode is on, tempFilename isn't set
+        if($readOnly) {
+       	 	$aFileInfo = $fileInfoCollection->getFileInformation($sFilename, $sTypeContent);
+        } else {
+        	$aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
+        }
 
         $form = new cGuiTableForm('file_editor');
         $form->addHeader(i18n('Edit file'));
@@ -285,9 +303,9 @@ JS;
         $form->setVar('status', 'send');
         $form->setVar('tmp_file', $sTempFilename);
 
-        $tb_name = new cHTMLTextbox('file', $sFilename, 60);
+        $tb_name = new cHTMLTextbox('file', $sFilename, 60, '', '', $readOnly);
         $ta_code = new cHTMLTextarea('code', conHtmlSpecialChars($sCode), 100, 35, 'code');
-        $descr = new cHTMLTextarea('description', conHtmlSpecialChars($aFileInfo['description']), 100, 5);
+        $descr = new cHTMLTextarea('description', conHtmlSpecialChars($aFileInfo['description']), 100, 5, '', $readOnly);
 
         $ta_code->setStyle('font-family: monospace;width: 100%;');
         $descr->setStyle('font-family: monospace;width: 100%;');
@@ -302,6 +320,9 @@ JS;
         $page->setContent($form);
 
         $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
+        if($readOnly) {
+        	$oCodeMirror->setProperty("readOnly", "true");
+        }
         $page->addScript($oCodeMirror->renderScript());
 
         if (!empty($sReloadScript)) {
