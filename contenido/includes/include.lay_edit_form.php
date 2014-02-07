@@ -25,7 +25,7 @@ if (!isset($idlay)) {
 // check the read only setting and display a warning if it's active
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 if($readOnly) {
-    cRegistry::addWarningMessage(i18n('The administrator disabled editing these files!'));
+    cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
 $page = new cGuiPage('lay_edit_form', '', '0');

@@ -28,7 +28,7 @@ if (!isset($idmod)) {
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 
 if($readOnly && $action != "mod_edit" && $action != "mod_sync") {
-    cRegistry::addWarningMessage(i18n("The administrator disabled editing these files!"));
+    cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
 }
 
 $contenidoModuleHandler = new cModuleHandler($idmod);

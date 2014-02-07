@@ -24,7 +24,7 @@ $sScript = '';
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 
 if($readOnly) {
-    cRegistry::addWarningMessage(i18n('The administrator disabled editing these files!'));
+    cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
 if ($action == "mod_importexport_module") {
@@ -39,7 +39,7 @@ if ($action == "mod_importexport_module") {
             break;
         case 'import':
             if($readOnly) {
-                cRegistry::addWarningMessage(i18n("The administrator disabled editing of these files!"));
+                cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
                 break;
             }
             if (cFileHandler::exists($_FILES["upload"]["tmp_name"])) {
@@ -65,7 +65,7 @@ JS;
             break;
         case 'import_xml':
             if($readOnly) {
-                cRegistry::addWarningMessage(i18n("The administrator disabled editing of these files!"));
+                cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
                 break;
             }
             // Make new module

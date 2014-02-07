@@ -147,7 +147,7 @@ foreach ($allModules as $idmod => $module) {
                 $delTitle = i18n("Delete module");
                 $delDescr = sprintf(i18n("Do you really want to delete the following module:<br /><br />%s<br />"), $sName);
                 if(getEffectiveSetting('client', 'readonly', 'false') == 'true') {
-                	$deletebutton = '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n('The administrator disabled editing of these files') . '" alt="' . i18n('The administrator disabled editing of these files') . '">';
+                	$deletebutton = '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n('This area is read only! The administrator disabled edits!') . '" alt="' . i18n('This area is read only! The administrator disabled edits!') . '">';
                 } else {
 	                $deletebutton = '
 	                    <a title="' . $delTitle . '" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteModule(' . $idmod . '); });return false;" >

@@ -71,7 +71,7 @@ while (($layout = $oLayouts->next()) !== false) {
         $delTitle = i18n("Delete layout");
         $delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"), conHtmlentities(conHtmlSpecialChars($name)));
         if(getEffectiveSetting('client', 'readonly', 'false') == 'true') {
-        	$delLink  = '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.i18n('The administrator disabled editing of these files').'" alt="'.i18n('The administrator disabled editing of these files').'">';
+        	$delLink  = '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.i18n('This area is read only! The administrator disabled edits!').'" alt="'.i18n('This area is read only! The administrator disabled edits!').'">';
         } else {
         	$delLink  = '<a title="'.$delTitle.'" href="javascript://" onclick="Con.showConfirmation(&quot;' . $delDescr . '&quot;, function() { deleteLayout(' . $idlay . '); });return false;">'
                       . '<img class="vAlignMiddle" src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';

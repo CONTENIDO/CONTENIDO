@@ -20,7 +20,7 @@ cInclude('includes', 'functions.mod.php');
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 if($readOnly) {
-    cRegistry::addWarningMessage(i18n("The administrator disbaled editing these files!"));
+    cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
 }
 
 if ($idmod == '') {
