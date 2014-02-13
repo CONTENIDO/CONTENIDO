@@ -17,10 +17,10 @@ $tpl = cSmartyFrontend::getInstance();
 $urlLabel = mi18n("URL");
 $automaticURLLabel = mi18n("AUTOMATIC_URL_LABEL");
 $lookLabel = mi18n("LOOK");
-$normalLabel = mi18n("NORMAL") . '(24px)';
-$smallLabel = mi18n("NORMAL") . '(15px)';
-$mediumLabel = mi18n("MEDIUM") . '(20px)';
-$tallLabel = mi18n("TALL") . '(60px)';
+$normalLabel = mi18n("NORMAL") . ' (24px)';
+$smallLabel = mi18n("SMALL") . ' (15px)';
+$mediumLabel = mi18n("MEDIUM") . ' (20px)';
+$tallLabel = mi18n("TALL") . ' (60px)';
 $displayCounterLabel = mi18n("DISPLAY_COUNTER");
 $label_overview = mi18n("OVERVIEW");
 $saveLabel = mi18n("SAVE");
@@ -67,6 +67,13 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign("automaticURLLabel", $automaticURLLabel);
     $tpl->assign("currentArticleUrl", $currentArticleUrl);
 
+    $tpl->assign("urlHelp", new cGuiBackendHelpbox(mi18n("URL_HELP")));
+    $tpl->assign("normalHelp", new cGuiBackendHelpbox(mi18n("NORMAL_HELP")));
+    $tpl->assign("smallHelp", new cGuiBackendHelpbox(mi18n("SMALL_HELP")));
+    $tpl->assign("mediumHelp", new cGuiBackendHelpbox(mi18n("MEDIUM_HELP")));
+    $tpl->assign("tallHelp", new cGuiBackendHelpbox(mi18n("TALL_HELP")));
+	$tpl->assign("counterHelp", new cGuiBackendHelpbox(mi18n("COUNTER_HELP")));
+    
     $tpl->display('google_plus_config_view.tpl');
 } else {
 

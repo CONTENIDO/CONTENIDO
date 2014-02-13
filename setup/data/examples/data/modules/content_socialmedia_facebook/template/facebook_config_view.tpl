@@ -1,6 +1,6 @@
 <label class="content_type_label">{$label_overview}</label>
 <form action="" method="POST">
-<table class="moduleTable">
+	<table class="moduleTable" style="width: 100%;">
     <tr>
         <td>{$urlLabel}*</td>
         <td><input style="margin-left: 4px;" type="text" name="url" value="{$url}"></td>
@@ -10,10 +10,10 @@
         <td><input type="checkbox" name="automaticURL" value="1" {if $useAutomaticURL == "1" } checked="1" {/if}>&nbsp;{$autoUrlHelp->render()}</td>
     </tr>
     <tr>
-        <td>
+        <td style="width: 30%;">
             {$pluginLabel}
         </td>
-        <td>
+        <td style="width: 70%;">
             <input style="margin-left: 4px;" type="radio" name="plugin" value="like_button" {if $pluginvalue == "like_button" } checked="checked" {/if}>
             {$likeButtonLabel}&nbsp;&nbsp;{$likeButtonHelp->render()}
             <br/>

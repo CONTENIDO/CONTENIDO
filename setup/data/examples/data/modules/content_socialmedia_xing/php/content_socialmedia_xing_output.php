@@ -18,6 +18,8 @@ $label_overview = mi18n("OVERVIEW");
 $idartlang = cRegistry::getArticleLanguageId();
 $idlang = cRegistry::getLanguageId();
 $idclient = cRegistry::getClientId();
+$label_optionIcon = mi18n("OPTIONICON");
+$label_optionButton = mi18n("OPTIONBUTTON");
 
 //create article object
 $art = new cApiArticleLanguage($idartlang);
@@ -42,6 +44,9 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign('save', $save);
     $tpl->assign('label_overview', $label_overview);
 
+	$tpl->assign('label_optionIcon', $label_optionIcon);
+	$tpl->assign('label_optionButton', $label_optionButton);
+	
     $tpl->assign('profile', $profile);
     $tpl->assign('look', $look);
     $tpl->assign('name', $name);

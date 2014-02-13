@@ -1,5 +1,7 @@
-URL_PROFILE=URL zum Profil
-LOOK=Aussehen
-NAME=Name
+LOOK=Darstellungsart
+NAME=Benutzername
+OPTIONBUTTON=2. Option: Button
+OPTIONICON=1. Option: Icon
+OVERVIEW=Xing-Social-Media-Integration
 SAVE=Speichern
-OVERVIEW=Xing Plugin
+URL_PROFILE=URL zum Dienst
