@@ -307,19 +307,26 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
             $artCollector = new cArticleCollector($options);
 
-            foreach ($artCollector as $article) {
-                if ($returnAsArray == true) {
-                    array_push($articles, $article);
-                } else {
-                    $this->_fillTeaserTemplateEntry($article, $template);
-                }
-            }
+			foreach ($artCollector as $article) {
+
+				$title =  trim($this->_getArtContent($article, $this->_settings['teaser_source_head'], $this->_settings['teaser_source_head_count']));
+				$text =  trim($this->_getArtContent($article, $this->_settings['teaser_source_text'], $this->_settings['teaser_source_text_count']));
+				$imageId = trim($this->_getArtContent($article, $this->_settings['teaser_source_image'], $this->_settings['teaser_source_image_count']));
+
+    			if (!empty($title) || !empty($text) || !empty($imageId)) {
+  					if ($returnAsArray == true) {
+             			array_push($articles, $article);
+        			} else {
+             			$this->_fillTeaserTemplateEntry($article, $template);
+        			}
+   				}
+			}
         }
 
         $code = '';
 
         // generate teasertemplate
-        if ($returnAsArray == false && file_exists($this->_cfgClient[$this->_client]['path']['frontend'] . 'templates/' . $this->_settings['teaser_style'])) {
+        if ($returnAsArray == false && file_exists($this->_cfgClient[$this->_client]['path']['frontend'] . 'templates/' . $this->_settings['teaser_style']) && count($template->Dyn_replacements) > 0) {
             $code = $template->generate($this->_cfgClient[$this->_client]['path']['frontend'] . 'templates/' . $this->_settings['teaser_style'], true);
             return $code;
         } else if ($returnAsArray == true) {
