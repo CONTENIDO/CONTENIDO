@@ -564,7 +564,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $htmlSelectOption = new cHTMLOptionElement('Kein', '', false);
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
-        $i = 1;
+        $filenameEntries = array();
         if (is_dir($this->_uploadPath . $directoryPath)) {
             if ($handle = opendir($this->_uploadPath . $directoryPath)) {
                 while (($entry = readdir($handle)) != false) {
@@ -576,6 +576,15 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
                 }
                 closedir($handle);
             }
+        }
+        
+        sort($filenameEntries, SORT_STRING);
+
+        $i = 1;
+        foreach($filenameEntries as $filename) {
+        	$htmlSelectOption = new cHTMLOptionElement($filename, $directoryPath . $filename);
+        	$htmlSelect->addOptionElement($i, $htmlSelectOption);
+        	$i++;
         }
 
         if ($i === 0) {
