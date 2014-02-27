@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-27 11:25+0100\n"
-"PO-Revision-Date: 2014-02-27 11:27+0100\n"
+"POT-Creation-Date: 2014-02-27 12:16+0100\n"
+"PO-Revision-Date: 2014-02-27 12:16+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -198,7 +198,7 @@ msgstr "Keine Daten gefunden!"
 
 #: classes/class.ajax.php:140
 #: classes/content_types/class.content.type.teaser.php:812
-#: includes/include.con_edit_form.php:685
+#: includes/include.con_edit_form.php:696
 #: includes/include.grouprights_con.php:80
 #: includes/include.grouprights_str.php:80 includes/include.logs.php:267
 #: includes/include.note.popup.php:72 includes/include.rights_con.php:79
@@ -2051,7 +2051,7 @@ msgstr "Die Vorlage wurde erfolgreich gelöscht!"
 #: includes/include.con_art_overview.php:968
 #: includes/include.con_content_list.php:67
 #: includes/include.con_content_list.php:93
-#: includes/include.con_edit_form.php:906
+#: includes/include.con_edit_form.php:917
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
 #: includes/include.grouprights_area.php:50
@@ -3387,11 +3387,19 @@ msgstr ""
 "sind online. Um die Kategoriezuweisung zu verändern, setzen Sie bitte zuerst "
 "die anderen sprachabhängigen Teile offline."
 
-#: includes/include.con_edit_form.php:780
+#: includes/include.con_edit_form.php:667
+msgid ""
+"You can not move an article into a category, which does not have an assigned "
+"template!"
+msgstr ""
+"Sie können einen Artikel nicht in eine Kategorie verschieben, die keine "
+"zugewiesene Vorlage besitzt!"
+
+#: includes/include.con_edit_form.php:791
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: includes/include.con_edit_form.php:886
+#: includes/include.con_edit_form.php:897
 msgid "Please fill in the start date and/or the end date!"
 msgstr "Bitte geben Sie Startzeitpunkt und / oder Endzeitpunkt ein!"
 

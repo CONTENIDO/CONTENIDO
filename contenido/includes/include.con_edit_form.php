@@ -639,7 +639,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $sql = "SELECT
                 A.idcat,
                 A.level,
-                C.name
+                C.name,
+    			C.idtplcfg
             FROM
                 " . $cfg["tab"]["cat_tree"] . " AS A,
                 " . $cfg["tab"]["cat"] . " AS B,
@@ -661,6 +662,15 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             $spaces .= "&nbsp;&nbsp;&nbsp;&nbsp;";
         }
 
+        // Prevent moving articles into categories which have no assigned template
+        if($db->f("idtplcfg") == 0) {
+        	$tpl2->set('d', 'TITLETAG', ' title="' . i18n("You can not move an article into a category, which does not have an assigned template!") . '"');
+        	$tpl2->set('d', 'DISABLED', ' disabled');
+        } else {
+        	$tpl2->set('d', 'TITLETAG', '');
+        	$tpl2->set('d', 'DISABLED', '');
+        }
+        
         if (!in_array($db->f("idcat"), $tmp_idcat_in_art)) {
             $tpl2->set('d', 'VALUE', $db->f("idcat"));
             $tpl2->set('d', 'SELECTED', '');
@@ -669,7 +679,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             $tpl2->next();
         } else {
             $tpl2->set('d', 'VALUE', $db->f("idcat"));
-            $tpl2->set('d', 'SELECTED', 'selected="selected"');
+            $tpl2->set('d', 'SELECTED', ' selected="selected"');
             $tpl2->set('d', 'CAPTION', $spaces . cSecurity::unFilter($db->f("name")));
             $tpl2->next();
 
@@ -677,9 +687,10 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 $button .= '<input type="hidden" name="idcatnew[]" value="' . $db->f("idcat") . '">';
             }
         }
+
     }
 
-    $select = $tpl2->generate($cfg["path"]["templates"] . $cfg["templates"]["generic_select"], true);
+    $select = $tpl2->generate($cfg["path"]["templates"] . $cfg["templates"]["con_edit_form_cat"], true);
 
     // Struktur
     $tpl->set('s', 'STRUKTUR', i18n("Category"));

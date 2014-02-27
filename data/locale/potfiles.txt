@@ -706,6 +706,7 @@
 ./templates/standard/template.con_content_list.html
 ./templates/standard/template.con_editcontent.html
 ./templates/standard/template.con_edit_form.html
+./templates/standard/template.con_edit_form_categories.html
 ./templates/standard/template.con_left_top.html
 ./templates/standard/template.con_left_top_art_search.html
 ./templates/standard/template.con_left_top_cat_edit.html
