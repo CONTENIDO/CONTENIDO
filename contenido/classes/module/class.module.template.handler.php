@@ -458,7 +458,7 @@ class cModuleTemplateHandler extends cModuleHandler {
 
         $aDelete = new cHTMLLink('main.php');
         $aDelete->setId("deleteLink");
-        $aDelete->setContent(i18n("Delete template"));
+        $aDelete->setContent(i18n("Delete HTML-template"));
         $aDelete->setClass('deletefunction');
         $aDelete->setCustom("deleteModTpl", "1");
         $aDelete->setCustom('area', $this->_area);
@@ -470,7 +470,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aDelete->setCustom('tmp_file', $this->_tmpFile);
 
         $aAdd = new cHTMLLink('main.php');
-        $aAdd->setContent(i18n('New template'));
+        $aAdd->setContent(i18n('New HTML-template'));
         $aAdd->setClass('addfunction');
         $aAdd->setCustom("newModTpl", "1");
         $aAdd->setCustom('area', $this->_area);
