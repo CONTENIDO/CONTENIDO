@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-27 13:20+0100\n"
-"PO-Revision-Date: 2014-02-27 13:21+0100\n"
+"POT-Creation-Date: 2014-02-27 15:24+0100\n"
+"PO-Revision-Date: 2014-02-27 15:25+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -1958,6 +1958,16 @@ msgstr "Nächste Seite"
 #: classes/gui/class.objectpager.php:114
 msgid "Last page"
 msgstr "Letzte Seite"
+
+#: classes/gui/class.page.php:257 classes/gui/class.page.php:302
+#: classes/gui/class.page.php:726
+msgid "The requested resource"
+msgstr "Die gesuchte Quelle"
+
+#: classes/gui/class.page.php:257 classes/gui/class.page.php:302
+#: classes/gui/class.page.php:726
+msgid "was not found"
+msgstr "wurde nicht gefunden"
 
 #: classes/gui/class.tableform.php:129 includes/include.client_edit.php:186
 #: includes/include.grouprights_create.php:71
