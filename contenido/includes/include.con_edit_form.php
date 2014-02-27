@@ -555,45 +555,35 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $db->query($sql);
 
         if ($db->numRows() > 0) {
-            $tpl->set('s', 'NOTIFICATION_SYNCHRON', '<tr><td colspan="4">' . $notification->returnNotification('warning', i18n("This article was synchronized before and can not moved to another category!")) . '</td></tr>');
-            $moveOK = false;
+            $tpl->set('s', 'NOTIFICATION_SYNCHRON', '<tr><td colspan="4">' . $notification->returnNotification('warning', i18n("The called article is synchronized. If you want to move it please make sure that the target category of this article exist in all languages.")) . '</td></tr>');
         } else {
             $tpl->set('s', 'NOTIFICATION_SYNCHRON', '');
-            $moveOK = true;
         }
+		if (count(conGetCategoryAssignments($idart)) > 1) {
+			// Old behaviour
+			$tpl2 = new cTemplate();
+			$tpl2->set('s', 'ID', 'catsel');
+			$tpl2->set('s', 'NAME', 'fake[]');
+			$tpl2->set('s', 'CLASS', 'text_medium');
+			$tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" disabled="disabled"');
 
-        if ($moveOK == true) {
-            if (count(conGetCategoryAssignments($idart)) > 1) {
-                // Old behaviour
-                $tpl2 = new cTemplate();
-                $tpl2->set('s', 'ID', 'catsel');
-                $tpl2->set('s', 'NAME', 'fake[]');
-                $tpl2->set('s', 'CLASS', 'text_medium');
-                $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" disabled="disabled"');
+  			$rbutton = new cHTMLButton("removeassignment", i18n("Remove assignments"));
 
-                $rbutton = new cHTMLButton("removeassignment", i18n("Remove assignments"));
+			$boxTitle = i18n("Remove multiple category assignments");
+			$boxDescr = i18n("Do you really want to remove the assignments to all categories except the current one?");
 
-                $boxTitle = i18n("Remove multiple category assignments");
-                $boxDescr = i18n("Do you really want to remove the assignments to all categories except the current one?");
+			$rbutton->setEvent("click", 'Con.showConfirmation("' . $boxDescr . '", function() { removeAssignments(' . $idart . ',' . $idcat . '); });return false;');
+			$button = "<br>" . $rbutton->render();
 
-                $rbutton->setEvent("click", 'Con.showConfirmation("' . $boxDescr . '", function() { removeAssignments(' . $idart . ',' . $idcat . '); });return false;');
-                $button = "<br>" . $rbutton->render();
-
-                $moveOK = false;
-            } else {
-                $tpl2 = new cTemplate();
-                $tpl2->set('s', 'ID', 'catsel');
-                $tpl2->set('s', 'NAME', 'idcatnew[]');
-                $tpl2->set('s', 'CLASS', 'text_medium');
-                $tpl2->set('s', 'OPTIONS', 'size="14" ' . $disabled);
+			$moveOK = false;
+		} else {
+			$tpl2 = new cTemplate();
+			$tpl2->set('s', 'ID', 'catsel');
+			$tpl2->set('s', 'NAME', 'idcatnew[]');
+			$tpl2->set('s', 'CLASS', 'text_medium');
+			$tpl2->set('s', 'OPTIONS', 'size="14" ' . $disabled);
             }
-        } else {
-            $note = i18n("Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first.");
-            $tpl2->set('s', 'ID', 'catsel');
-            $tpl2->set('s', 'NAME', 'fake[]');
-            $tpl2->set('s', 'CLASS', 'text_medium');
-            $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" disabled="disabled"');
-        }
+
     } else {
         // Old behaviour
         $tpl2->set('s', 'ID', 'catsel');

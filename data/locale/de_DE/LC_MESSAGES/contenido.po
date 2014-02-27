@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-27 12:16+0100\n"
-"PO-Revision-Date: 2014-02-27 12:16+0100\n"
+"POT-Creation-Date: 2014-02-27 13:20+0100\n"
+"PO-Revision-Date: 2014-02-27 13:21+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -198,7 +198,7 @@ msgstr "Keine Daten gefunden!"
 
 #: classes/class.ajax.php:140
 #: classes/content_types/class.content.type.teaser.php:812
-#: includes/include.con_edit_form.php:696
+#: includes/include.con_edit_form.php:686
 #: includes/include.grouprights_con.php:80
 #: includes/include.grouprights_str.php:80 includes/include.logs.php:267
 #: includes/include.note.popup.php:72 includes/include.rights_con.php:79
@@ -2051,7 +2051,7 @@ msgstr "Die Vorlage wurde erfolgreich gelöscht!"
 #: includes/include.con_art_overview.php:968
 #: includes/include.con_content_list.php:67
 #: includes/include.con_content_list.php:93
-#: includes/include.con_edit_form.php:917
+#: includes/include.con_edit_form.php:907
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
 #: includes/include.grouprights_area.php:50
@@ -3355,21 +3355,23 @@ msgstr "Sortierschlüssel"
 
 #: includes/include.con_edit_form.php:558
 msgid ""
-"This article was synchronized before and can not moved to another category!"
+"The called article is synchronized. If you want to move it please make sure "
+"that the target category of this article exist in all languages."
 msgstr ""
-"Dieser Artikel wurde synchronisiert und kann nicht in eine andere Kategorie "
-"verschoben werden."
+"Der aufgerufene Artikel ist synchronisiert. Wenn Sie den Artikel verschieben "
+"möchten, stellen Sie bitte sicher, dass die Zielkategorie in allen "
+"verfügbaren Sprachen existiert."
 
-#: includes/include.con_edit_form.php:574
+#: includes/include.con_edit_form.php:570
 #: ../data/config/production/cfg_actions.inc.php:38
 msgid "Remove assignments"
 msgstr "Zuweisungen löschen"
 
-#: includes/include.con_edit_form.php:576
+#: includes/include.con_edit_form.php:572
 msgid "Remove multiple category assignments"
 msgstr "Mehrfachzuordnung löschen"
 
-#: includes/include.con_edit_form.php:577
+#: includes/include.con_edit_form.php:573
 msgid ""
 "Do you really want to remove the assignments to all categories except the "
 "current one?"
@@ -3377,17 +3379,7 @@ msgstr ""
 "Möchten Sie wirklich alle Zuweisungen zu allen Kategorien löschen - außer zu "
 "der aktuellen?"
 
-#: includes/include.con_edit_form.php:591
-msgid ""
-"Language parts of the articles are existing in other languages and are "
-"online. To change the category assignment, please set the other articles "
-"offline first."
-msgstr ""
-"Sprachabhängige Teile dieses Artikels existieren in anderen Sprachen und "
-"sind online. Um die Kategoriezuweisung zu verändern, setzen Sie bitte zuerst "
-"die anderen sprachabhängigen Teile offline."
-
-#: includes/include.con_edit_form.php:667
+#: includes/include.con_edit_form.php:657
 msgid ""
 "You can not move an article into a category, which does not have an assigned "
 "template!"
@@ -3395,11 +3387,11 @@ msgstr ""
 "Sie können einen Artikel nicht in eine Kategorie verschieben, die keine "
 "zugewiesene Vorlage besitzt!"
 
-#: includes/include.con_edit_form.php:791
+#: includes/include.con_edit_form.php:781
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: includes/include.con_edit_form.php:897
+#: includes/include.con_edit_form.php:887
 msgid "Please fill in the start date and/or the end date!"
 msgstr "Bitte geben Sie Startzeitpunkt und / oder Endzeitpunkt ein!"
 
@@ -7657,6 +7649,22 @@ msgstr "Falsche Zugriffsrechte"
 #: ../data/config/production/cfg_actions.inc.php:216
 msgid "User login"
 msgstr "Benutzer login"
+
+#~ msgid ""
+#~ "This article was synchronized before and can not moved to another "
+#~ "category!"
+#~ msgstr ""
+#~ "Dieser Artikel wurde synchronisiert und kann nicht in eine andere "
+#~ "Kategorie verschoben werden."
+
+#~ msgid ""
+#~ "Language parts of the articles are existing in other languages and are "
+#~ "online. To change the category assignment, please set the other articles "
+#~ "offline first."
+#~ msgstr ""
+#~ "Sprachabhängige Teile dieses Artikels existieren in anderen Sprachen und "
+#~ "sind online. Um die Kategoriezuweisung zu verändern, setzen Sie bitte "
+#~ "zuerst die anderen sprachabhängigen Teile offline."
 
 #~ msgid "Import from file"
 #~ msgstr "Aus Datei importieren"
