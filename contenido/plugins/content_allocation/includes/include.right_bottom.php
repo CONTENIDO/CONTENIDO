@@ -73,6 +73,10 @@ if ($_GET['step'] == 'online') {
 if ($_GET['step'] == 'offline') {
     $oTree->setOffline($_GET['idpica_alloc']);
 }
+if ($_GET['step'] == 'expanded') {
+	$oTree->setTreeStatus($_GET['idpica_alloc']);
+}
+
 
 $oDiv = new cHTMLDiv;
 $sTemp = '';

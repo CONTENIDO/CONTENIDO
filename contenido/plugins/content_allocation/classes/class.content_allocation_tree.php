@@ -228,6 +228,7 @@ class pApiTree {
     }
 
     function setTreeStatus($idpica_alloc) {
+    	$idpica_alloc = cSecurity::toInteger($idpica_alloc);
         if (is_array($this->treeStatus) && array_key_exists($idpica_alloc, $this->treeStatus)) { // expand
             unset($this->treeStatus[$idpica_alloc]);
         } else { // collapse
