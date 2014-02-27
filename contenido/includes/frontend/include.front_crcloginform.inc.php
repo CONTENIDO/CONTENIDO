@@ -52,7 +52,7 @@ if ($err_catart != '') {
 if ($bRedirect) {
     $aUrl = $oUrl->parse($sess->url($sErrorUrl));
     $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
-    header('Location: ' . $sErrorUrl);
+    header('Location: ' . $sErrorUrl . '&wrongpass=1');
     exit();
 }
 
