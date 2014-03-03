@@ -5,7 +5,11 @@
         <plugin_name>Form Assistant</plugin_name>
         <plugin_foldername>form_assistant</plugin_foldername>
         <uuid>34E59F15-606A-81F4-1520-59E86230BE37</uuid>
-        <description>Generating forms in backend, includes data storage and mailing</description>
+        <description>
+            Generating forms in backend, includes data storage and mailing.
+            Please see our documentation (german only):
+            https://docs.contenido.org/pages/viewpage.action?pageId=4456708
+        </description>
         <author>Marcus Gnaß (4fb)</author>
         <copyright>four for business AG</copyright>
         <mail>marcus.gnass@4fb.de</mail>
