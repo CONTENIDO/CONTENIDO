@@ -84,18 +84,9 @@ if (getFileType($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
 }
 
 if (stripslashes($file)) {
-    $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
-} else {
-    $sReloadScript = '';
+    $page->reloadFrame('left_bottom', array(
+    	"file" => $sFilename
+    ));
 }
 
 if (!cFileHandler::writeable($path . $sFilename)) {
@@ -114,16 +105,7 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
     $bEdit = cFileHandler::read($path . $sFilename);
 
     $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-    $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('right_top');
-    if (frame) {
-        frame.location.href = '{$urlReload}';
-    }
-})(Con, Con.$);
-</script>
-JS;
+    $page->reloadFrame('right_top', $urlReload);
 
     // Show message for user
     if ($ret == true) {
@@ -146,16 +128,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
         }
 
         $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-        $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('right_top');
-    if (frame) {
-        frame.location.href = '{$urlReload}';
-    }
-})(Con, Con.$);
-</script>
-JS;
+        $page->reloadFrame('right_top', $urlReload);
     } else {
         $sTempFilename = $sFilename;
     }

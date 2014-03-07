@@ -272,24 +272,7 @@ if ($bUsePlugins == false) {
 $oPage->addScript('parameterCollector.js');
 
 $message = i18n("Do you really want to delete the user %s?");
-$sPageContent = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    $(function() {
-        var msg = "{$message}";
-        $('a.jsDelete').click(function() {
-            var username = $(this).data('username'),
-                idfrontenduser = $(this).data('idfrontenduser');
-            Con.showConfirmation(msg.replace('%s', username), function() {
-                deleteFrontenduser(idfrontenduser);
-            });
-            return false;
-        });
-    });
-})(Con, Con.$);
-</script>
-JS;
-$oPage->addScript($sPageContent);
+$oPage->set("s", "DELETE_MESSAGE", $message);
 
 // generate current content for Object Pager
 $oPagerLink = new cHTMLLink();

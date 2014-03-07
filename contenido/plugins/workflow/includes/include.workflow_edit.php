@@ -49,7 +49,7 @@ if ((int) $idworkflow == 0) {
 }
 
 if ($idworkflow) {
-    $sReloadScript = <<<JS
+    $reloadLeftBottom = <<<JS
 <script type="text/javascript">
 (function(Con, $) {
     var left_bottom = Con.getFrame('left_bottom');
@@ -67,7 +67,7 @@ if ($idworkflow) {
 JS;
 
 } else {
-    $sReloadScript = '';
+    $reloadLeftBottom = '';
 }
 
 $form->setVar("area", $area);
@@ -100,8 +100,8 @@ if (!empty($created)) {
 }
 
 $page->setContent($form);
-if (!empty($sReloadScript)) {
-    $page->addScript($sReloadScript);
+if (!empty($reloadLeftBottom)) {
+    $page->addScript($reloadLeftBottom);
 }
 
 $page->render();

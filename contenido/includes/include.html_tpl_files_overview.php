@@ -35,21 +35,8 @@ $sArea = 'htmltpl';
 $sActionDelete = 'htmltpl_delete';
 $sActionEdit = 'htmltpl_edit';
 
-$sScriptTemplate = <<<JS
-<script type="text/javascript">
-function deleteFile(file) {
-    var url = Con.UtilUrl.build("main.php", {
-        area: "{$sArea}",
-        action: "{$sActionDelete}",
-        frame: 4,
-        delfile: file
-    });
-    Con.getFrame('right_bottom').location.href = url;
-}
-</script>
-JS;
-
-$tpl->set('s', 'JAVASCRIPT', $sScriptTemplate);
+$tpl->set('s', 'JS_AREA', $sArea);
+$tpl->set('s', 'JS_ACTION_DELETE', $sActionDelete);
 
 if (($handle = opendir($path)) !== false && is_dir($path)) {
     // determine allowed extensions for template files in client template folder

@@ -29,18 +29,6 @@ $newOption = '';
 
 $db2 = cRegistry::getDb();
 
-$sReload = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        var href = Con.UtilUrl.replaceParams(frame.location.href, {idlang: {$idlang}});
-        frame.location.href = href;
-    }
-})(Con, Con.$);
-</script>
-JS;
-
 if ($action == "lang_newlanguage") {
 
     $page->displayInfo(i18n("Created new language successfully!"));
@@ -48,19 +36,20 @@ if ($action == "lang_newlanguage") {
     // update language dropdown in header, but only for current client
     if ($targetclient == $client) {
         $msgNewLanguage = i18n("New language");
-        $jsCode = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    Con.getFrame('header').languageSelectAdd("{$msgNewLanguage}", {$idlang});
-})(Con, Con.$);
-</script>
-JS;
-        $page->addScript($jsCode);
+
+        $page->set("s", "NEW_LANG", $msgNewLanguage);
+        $page->set("s", "ADD_LANG", "true");
+    } else {
+        $page->set("s", "ADD_LANG", "false");
     }
 
-    if (!empty($sReload)) {
-        $page->addScript($sReload);
-    }
+    $page->set("s", "RELOAD_LEFT_BOTTOM", "true");
+    $page->set("s", "IDLANG", $idlang);
+    $page->set("s", "REMOVE_LANG", "false");
+    $page->set("s", "UPDATE_LANG", "false");
+    $page->set("s", "FORM", "");
+    $page->set("s", "NEW_LANG", "");
+    $page->set("s", "NEW_LANG_NAME", "");
     $page->render();
 } elseif ($action == "lang_deletelanguage") {
 
@@ -68,19 +57,18 @@ JS;
 
     // finally delete from dropdown in header, but only for current client
     if ($targetclient == $client) {
-        $jsCode = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    Con.getFrame('header').languageSelectRemove({$idlang});
-})(Con, Con.$);
-</script>
-JS;
-        $page->addScript($jsCode);
+        $page->set("s", "REMOVE_LANG", "true");
+    } else {
+        $page->set("s", "REMOVE_LANG", "false");
     }
 
-    if (!empty($sReload)) {
-        $page->addScript($sReload);
-    }
+    $page->set("s", "RELOAD_LEFT_BOTTOM", "true");
+    $page->set("s", "IDLANG", $idlang);
+    $page->set("s", "ADD_LANG", "false");
+    $page->set("s", "UPDATE_LANG", "false");
+    $page->set("s", "FORM", "");
+    $page->set("s", "NEW_LANG", "");
+    $page->set("s", "NEW_LANG_NAME", "");
     $page->render();
 } else {
 
@@ -201,28 +189,31 @@ JS;
             $infoButton->setHelpText(i18n("LANUAGE_DATE_TIME"));
             $form->add(i18n("Date/Time locale"), $dateLocale->render() . ' ' . $infoButton->render());
 
-            $page->setContent($form);
-
             // update language dropdown in header, but only for current client
             if ($targetclient == $client) {
                 // update dropdown in header
                 $languageName = $db->f("name");
-                $jsCode = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    Con.getFrame('header').languageSelectUpdate("{$languageName}", {$idlang});
-})(Con, Con.$);
-</script>
-JS;
-                $page->addScript($jsCode);
+
+                $page->set("s", "UPDATE_LANG", "true");
+                $page->set("s", "NEW_LANG_NAME", $languageName);
+
+            } else {
+                $page->set("s", "UPDATE_LANG", "false");
+                $page->set("s", "NEW_LANG_NAME", "");
             }
 
             if ($_REQUEST['action'] != '') {
-                if (!empty($sReload)) {
-                    $page->addScript($sReload);
-                }
+                $page->set("s", "RELOAD_LEFT_BOTTOM", "true");
+            } else {
+                $page->set("s", "RELOAD_LEFT_BOTTOM", "false");
             }
 
+            $page->set("s", "IDLANG", $idlang);
+            $page->set("s", "ADD_LANG", "false");
+            $page->set("s", "REMOVE_LANG", "false");
+            $page->set("s", "NEW_LANG", "");
+
+            $page->set("s", "FORM", $form->render());
             $page->render();
         }
     }

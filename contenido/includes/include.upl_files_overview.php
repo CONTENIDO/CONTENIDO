@@ -64,25 +64,6 @@ if (cApiDbfs::isDbfs($path)) {
     $qpath = $path;
 }
 
-if ($path && $action != '') {
-    $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {path: '{$path}'});
-        var frame2 = Con.getFrame('left_top');
-        if (frame2 && 'function' === $.type(frame2.refresh)) {
-            frame2.refresh();
-        }
-    }
-})(Con, Con.$);
-</script>
-JS;
-} else {
-    $sReloadScript = '';
-}
-
 if ((is_writable($cfgClient[$client]['upl']['path'] . $path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
     $bDirectoryIsWritable = true;
 } else {

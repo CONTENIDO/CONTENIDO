@@ -270,27 +270,11 @@ if ($upload = $uploads->next()) {
         $form->add($sTitle, $sCell);
     }
 
-    $sScript = '';
-    if (cApiDbfs::isDbfs($_REQUEST['path'])) {
-        $sScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var startcal = new calendar1(document.properties.elements["datestart"]);
-    startcal.year_scroll = true;
-    startcal.time_comp = true;
-    var endcal = new calendar1(document.properties.elements["dateend"]);
-    endcal.year_scroll = true;
-    endcal.time_comp = true;
-})(Con, Con.$);
-</script>
-JS;
-    }
-
     if ($bDirectoryIsWritable == false) {
         $pager->displayError(i18n('Directory not writable') . ' (' . $cfgClient[$client]['upl']['path'] . $path . ')');
     }
 
-    $page->set('s', 'FORM', $form->render() . $sScript);
+    $page->set('s', 'FORM', $form->render());
 } else {
     $page->displayCriticalError(sprintf(i18n('Could not load file %s'), $_REQUEST['file']));
 }

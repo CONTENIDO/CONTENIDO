@@ -1,0 +1,32 @@
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame && {RELOAD_LEFT_BOTTOM}) {
+        var href = Con.UtilUrl.replaceParams(frame.location.href, {idlang: {IDLANG}});
+        frame.location.href = href;
+    }
+})(Con, Con.$);
+</script>
+<script type="text/javascript">
+(function(Con, $) {
+    if({ADD_LANG}) {
+    	Con.getFrame('header').languageSelectAdd("{NEW_LANG}", {IDLANG});
+    }
+})(Con, Con.$);
+</script>
+<script type="text/javascript">
+(function(Con, $) {
+    if({REMOVE_LANG}) {
+    	Con.getFrame('header').languageSelectRemove({IDLANG});
+    }
+})(Con, Con.$);
+</script>
+<script type="text/javascript">
+(function(Con, $) {
+    if({UPDATE_LANG}) {
+    	Con.getFrame('header').languageSelectUpdate("{NEW_LANG_NAME}", {IDLANG});
+    }
+})(Con, Con.$);
+</script>
+
+{FORM}

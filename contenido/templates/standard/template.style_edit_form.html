@@ -1,0 +1,18 @@
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('right_top');
+    if (frame && {RELOAD_RIGHT}) {
+        frame.location.href = '{RELOAD_RIGHT_URL}';
+    }
+})(Con, Con.$);
+</script>
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame && {RELOAD}) {
+        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{RELOAD_FILE}'});
+    }
+})(Con, Con.$);
+</script>
+
+{FORM}

@@ -239,7 +239,7 @@ class cGuiPage {
      */
     public function addScript($script) {
     	global $perm, $currentuser;
-    	
+
         $script = trim($script);
         if (empty($script)) {
             return;
@@ -256,11 +256,11 @@ class cGuiPage {
            (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)))) {
 			$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
-        
+
         if (strpos(trim($script), 'http') === 0 || strpos(trim($script), '<script') === 0 || strpos(trim($script), '//') === 0) {
-            if (strpos(trim($script), '<script') === 0) {
-                cDeprecated("You shouldn't use inline JS for backend pages");
-            }
+            // if (strpos(trim($script), '<script') === 0) {
+            //     cDeprecated("You shouldn't use inline JS for backend pages");
+            // }
             // the given script path is absolute
             $this->_scripts[] = $script;
         } else if (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $filePathName)) {
@@ -285,7 +285,7 @@ class cGuiPage {
      */
     public function addStyle($stylesheet) {
     	global $perm, $currentuser;
-    	
+
         $stylesheet = trim($stylesheet);
         if (empty($stylesheet)) {
             return;
@@ -301,7 +301,7 @@ class cGuiPage {
            (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName)))) {
         	$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
-        
+
         if (strpos($stylesheet, 'http') === 0 || strpos($stylesheet, '//') === 0) {
             // the given stylesheet path is absolute
             $this->_styles[] = $stylesheet;
@@ -379,6 +379,38 @@ class cGuiPage {
      */
     public function setReload() {
         $this->_scripts[] = 'reload.js';
+    }
+
+    /**
+     * Adds JavaScript to the page to reload a certain frame.
+     *
+     * @param string $frameName Name of the frame
+     * @param string|array $updatedParameters Either an array with keys that will be passed to Con.UtilUrl.replaceParams OR a string containing the new href of the frame
+     */
+    public function reloadFrame($frameName, $updatedParameters = null) {
+        if(is_array($updatedParameters)) {
+            $updateString = '';
+            foreach($updatedParameters as $key => $value) {
+                $updateString .= $key . ': "' . $value . '"';
+            }
+            $this->_scripts[] = '<script type="text/javascript">
+                                    (function(Con, $) {
+                                        var frame = Con.getFrame(\'' . $frameName . '\');
+                                        if (frame) {
+                                            frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {' . $updateString . '});
+                                        }
+                                    })(Con, Con.$);
+                                </script>';
+        } else {
+            $this->_scripts[] = '<script type="text/javascript">
+            (function(Con, $) {
+            	var frame = Con.getFrame("' . $frameName . '");
+            	if (frame) {
+            		frame.location.href = "' . $updatedParameters .'";
+            	}
+            })(Con, Con.$);
+            </script>';
+        }
     }
 
     /**
@@ -717,16 +749,16 @@ class cGuiPage {
      */
     protected function _renderTemplate($template) {
     	global $perm, $currentuser;
-    	
+
         $cfg = cRegistry::getConfig();
 
         // Warning message for not existing resources
         if($perm->isSysadmin($currentuser) && (($this->_pluginName == '' && !cFileHandler::exists($cfg['path']['templates'] . 'template.' . $this->_pageName . '.html')) ||
-           ($this->_pluginName != '' && !cFileHandler::exists($cfg['path']['plugins'] . $this->_pluginName . '/templates/template.' . $this->_pageName . '.html')))) {        	
+           ($this->_pluginName != '' && !cFileHandler::exists($cfg['path']['plugins'] . $this->_pluginName . '/templates/template.' . $this->_pageName . '.html')))) {
         	$this->displayWarning(i18n("The requested resource") . " <strong>" . $this->_pageName . "</strong> " . i18n("was not found"));
         	$output .= $this->_renderContentMessages();
         }
-        
+
         $file = '';
         if ($this->_pluginName == '') {
             $file = $cfg['path']['templates'] . 'template.' . $this->_pageName . '.html';

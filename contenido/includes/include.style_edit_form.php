@@ -33,10 +33,15 @@ $tpl->reset();
 // Some checks
 if (!$perm->have_perm_area_action($area, $action)) {
     $page->displayCriticalError(i18n('Permission denied'));
+    $page->set("s", "RELOAD", "false");
+    $page->set("s", "RELOAD_RIGHT", "false");
     $page->render();
     exit();
 } elseif (!(int) $client > 0) {
     // If there is no client selected, display empty page
+    $page->set("s", "FORM", "");
+    $page->set("s", "RELOAD", "false");
+    $page->set("s", "RELOAD_RIGHT", "false");
     $page->render();
     exit();
 }
@@ -74,6 +79,9 @@ if ((!$readOnly) && $action == 'style_delete') {
     }
 
     $page->setReload();
+    $page->set("s", "FORM", "");
+    $page->set("s", "RELOAD", "false");
+    $page->set("s", "RELOAD_RIGHT", "false");
     $page->render();
 } else {
 	// clicking on 'Save Changes' or 'Delete file' doesn't set the right request variables in read only mode
@@ -82,23 +90,15 @@ if ((!$readOnly) && $action == 'style_delete') {
     } else if($readOnly && !isset($_REQUEST['file']) && isset($_REQUEST['tmp_file'])) {
     	$_REQUEST['file'] = $_REQUEST['tmp_file'];
     }
-    
+
     $path = $cfgClient[$client]['css']['path'];
     if (stripslashes($_REQUEST['file'])) {
-    	
+
         $reloadFile = stripslashes($_REQUEST['file']);
-        $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$reloadFile}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
+        $page->set("s", "RELOAD", "true");
+        $page->set("s", "RELOAD_FILE", $reloadFile);
     } else {
-        $sReloadScript = '';
+        $page->set("s", "RELOAD", "false");
     }
 
     $sTempFilename = stripslashes($_REQUEST['tmp_file']);
@@ -122,6 +122,9 @@ JS;
     // Create new file
     if ($_REQUEST['action'] == 'style_create' && $_REQUEST['status'] == 'send') {
         if($readOnly) {
+            $page->set("s", "FORM", "");
+            $page->set("s", "RELOAD", "false");
+            $page->set("s", "RELOAD_RIGHT", "false");
             $page->render();
             exit();
         }
@@ -132,6 +135,9 @@ JS;
         // CON-1284 check if file already exists in FS
         if (cFileHandler::exists($path . $sFilename)) {
             $notification->displayNotification('error', sprintf(i18n('Can not create file %s'), $sFilename));
+            $page->set("s", "FORM", "");
+            $page->set("s", "RELOAD", "false");
+            $page->set("s", "RELOAD_RIGHT", "false");
             $page->render();
             exit();
         }
@@ -141,6 +147,9 @@ JS;
         $aFileInfo = $fileInfoCollection->getFileInformation($sFilename, $sTypeContent);
         if (0 < count($aFileInfo)) {
             $notification->displayNotification('error', sprintf(i18n('Can not create file %s'), $sFilename));
+            $page->set("s", "FORM", "");
+            $page->set("s", "RELOAD", "false");
+            $page->set("s", "RELOAD_RIGHT", "false");
             $page->render();
             exit();
         }
@@ -152,28 +161,12 @@ JS;
         $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
 
         // Reload right_top frame
-        $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('right_top');
-    if (frame) {
-        frame.location.href = '{$urlReload}';
-    }
-})(Con, Con.$);
-</script>
-JS;
+        $page->set("s", "RELOAD_RIGHT", "true");
+        $page->set("s", "RELOAD_RIGHT_URL", $urlReload);
 
-    // Reload left_bottom frame
-    $sReloadScript .= <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$reloadFile}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
+        // Reload left_bottom frame
+        $page->set("s", "RELOAD", "true");
+        $page->set("s", "RELOAD_FILE", $reloadFile);
         // if ($bEdit) {
         $page->displayInfo(i18n('Created new CSS file successfully!'));
         // }
@@ -188,6 +181,9 @@ JS;
             // CON-1284 check if file already exists in FS
             if (cFileHandler::exists($path . $sFilename)) {
                 $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $sTempFilename));
+                $page->set("s", "FORM", "");
+                $page->set("s", "RELOAD", "false");
+                $page->set("s", "RELOAD_RIGHT", "false");
                 $page->render();
                 exit();
             }
@@ -197,6 +193,9 @@ JS;
             $aFileInfo = $fileInfoCollection->getFileInformation($sFilename, $sTypeContent);
             if (0 < count($aFileInfo)) {
                 $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $sTempFilename));
+                $page->set("s", "FORM", "");
+                $page->set("s", "RELOAD", "false");
+                $page->set("s", "RELOAD_RIGHT", "false");
                 $page->render();
                 exit();
             }
@@ -205,20 +204,15 @@ JS;
                 $sTempFilename = $sFilename;
             } else {
                 $notification->displayNotification('error', sprintf(i18n('Can not rename file %s'), $path . $sTempFilename));
+                $page->set("s", "FORM", "");
+                $page->set("s", "RELOAD", "false");
+                $page->set("s", "RELOAD_RIGHT", "false");
                 $page->render();
                 exit();
             }
             $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-            $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('right_top');
-    if (frame) {
-        frame.location.href = '{$urlReload}';
-    }
-})(Con, Con.$);
-</script>
-JS;
+            $page->set("s", "RELOAD_RIGHT", "true");
+            $page->set("s", "RELOAD_RIGHT_URL", $urlReload);
         } else {
             $sTempFilename = $sFilename;
         }
@@ -246,28 +240,12 @@ JS;
 
         // Show message
         if ($sFilename != $sTempFilename) {
-            $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$reloadFile}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
+            $page->set("s", "RELOAD", "true");
+            $page->set("s", "RELOAD_FILE", $reloadFile);
             $page->displayInfo(i18n('Renamed template file successfully!'));
         } else {
-            $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$reloadFile}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
+            $page->set("s", "RELOAD", "true");
+            $page->set("s", "RELOAD_FILE", $reloadFile);
             $page->displayInfo(i18n('Saved changes successfully!'));
         }
 
@@ -287,11 +265,6 @@ JS;
         } else {
             // stripslashes is required here in case of creating a new file
             $sCode = stripslashes($_REQUEST['code']);
-        }
-
-        if($sAction == 'style_create') {
-            $page->render();
-            die();
         }
 
         $fileInfoCollection = new cApiFileInformationCollection();
@@ -324,9 +297,7 @@ JS;
         $form->add(i18n('Description'), $descr->render());
         $form->add(i18n('Code'), $ta_code);
 
-        $page->setContent(array(
-            $form
-        ));
+        $page->set("s", "FORM", $form->render(true));
 
         $oCodeMirror = new CodeMirror('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
         if($readOnly) {
@@ -336,10 +307,16 @@ JS;
         }
         $page->addScript($oCodeMirror->renderScript());
 
-        if (!empty($sReloadScript)) {
-            $page->addScript($sReloadScript);
-        }
+        // set all values to prevent invalid javascript. Values that are already set won't be overwritten
+        $page->set("s", "RELOAD", "false");
+        $page->set("s", "RELOAD_RIGHT", "false");
+        $page->set("s", "RELOAD_RIGHT_URL", "");
+        $page->set("s", "RELOAD_FILE", "");
     }
 
+    $page->set("s", "RELOAD_RIGHT", "false");
+    $page->set("s", "RELOAD", "false");
+    $page->set("s", "RELOAD_FILE", "");
+    $page->set("s", "FORM", "");
     $page->render();
 }

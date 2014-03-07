@@ -30,6 +30,20 @@ function deleteFrontenduser(idfrontenduser) {
         }
     }
 })(Con, Con.$);
+
+(function(Con, $) {
+    $(function() {
+        var msg = "{DELETE_MESSAGE}";
+        $('a.jsDelete').click(function() {
+            var username = $(this).data('username'),
+                idfrontenduser = $(this).data('idfrontenduser');
+            Con.showConfirmation(msg.replace('%s', username), function() {
+                deleteFrontenduser(idfrontenduser);
+            });
+            return false;
+        });
+    });
+})(Con, Con.$);
 </script>
 
 {FORM}

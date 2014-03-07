@@ -20,6 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('external', 'codemirror/class.codemirror.php');
 
 $sFileType = 'js';
+$reloadLeftBottom = false;
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 if($readOnly) {
@@ -67,17 +68,9 @@ if ((!$readOnly) && $action == 'js_delete') {
         }
     }
 
-    $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
-    $page->addScript($sReloadScript);
+    $page->reloadFrame('left_bottom', array(
+    		"file" => $sFilename
+    ));
     $page->render();
 } else {
 	// clicking on 'Save Changes' or 'Delete file' doesn't set the right request variables in read only mode
@@ -86,7 +79,7 @@ JS;
     } else if($readOnly && !isset($_REQUEST['file']) && isset($_REQUEST['tmp_file'])) {
     	$_REQUEST['file'] = $_REQUEST['tmp_file'];
     }
-    
+
     $path = $cfgClient[$client]['js']['path'];
     $sTempFilename = stripslashes($_REQUEST['tmp_file']);
     $sOrigFileName = $sTempFilename;
@@ -98,18 +91,9 @@ JS;
     }
 
     if (stripslashes($_REQUEST['file'])) {
-        $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
+        $reloadLeftBottom = true;
     } else {
-        $sReloadScript = '';
+        $reloadLeftBottom = false;
     }
 
     if (!cFileHandler::writeable($path . $sFilename) && !cFileHandler::writeable($path . $sOrigFileName)) {
@@ -149,16 +133,7 @@ JS;
         $fileInfoCollection = new cApiFileInformationCollection();
         $fileInfoCollection->create('js', $sFilename, $_REQUEST['description']);
         $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-        $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
+        $reloadLeftBottom = true;
         // if ($bEdit) {
         $page->displayInfo(i18n('Created new JS-File successfully!'));
         // }
@@ -178,7 +153,7 @@ JS;
             }
 
             $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-            $sReloadScript = '';
+            $reloadLeftBottom = false;
         } else {
             $sTempFilename = $sFilename;
         }
@@ -210,16 +185,7 @@ JS;
         $bEdit = cFileHandler::read($path . $sFilename);
 
         if ($sFilename != $sTempTempFilename) {
-            $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
+            $reloadLeftBottom = true;
             $page->displayInfo(i18n('Renamed the JS-File successfully!'));
         } else {
             $page->displayInfo(i18n('Saved changes successfully!'));
@@ -268,14 +234,16 @@ JS;
         $oCodeMirror = new CodeMirror('code', 'js', substr(strtolower($belang), 0, 2), true, $cfg);
         if($readOnly) {
         	$oCodeMirror->setProperty("readOnly", "true");
-        	
+
         	$form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
         }
         $page->setContent($form);
         $page->addScript($oCodeMirror->renderScript());
 
-        if (!empty($sReloadScript)) {
-            $page->addScript($sReloadScript);
+        if ($reloadLeftBottom) {
+            $page->reloadFrame('left_bottom', array(
+            		"file" => $sFilename
+            ));
         }
         $page->render();
     } else {

@@ -129,45 +129,11 @@ while ($cApiUser = $cApiUserCollection->next()) {
     }
 }
 
-$deleteScript = <<<JS
-<script type="text/javascript">
-// Function for deleting backend user
-function deleteBackenduser(userid) {
-    var form = Con.getFrame("left_top").document.filter;
-    var url = 'main.php?area=user_overview';
-    url += '&action=user_delete';
-    url += '&frame=4';
-    url += '&userid=' + userid;
-    url += '&contenido=' + Con.sid;
-    url += get_registered_parameters();
-    url += '&sortby=' + form.sortby.value;
-    url += '&sortorder=' + form.sortorder.value;
-    url += '&filter=' + form.filter.value;
-    url += '&elemperpage=' + form.elemperpage.value;
-    url += '&page={$mPage}';
-    Con.getFrame("right_bottom").location.href = url;
-    Con.getFrame("right_top").location.href = 'main.php?area=user&frame=3&contenido=' + Con.sid;
-}
-</script>
-JS;
+$oPage->set("s", "MPAGE", $mPage);
 
-$markActiveScript = '
-<script type="text/javascript">
-(function(Con, $) {
-    if ($("#marked")) {
-        row.markedRow = $("#marked")[0];
-    }
-})(Con, Con.$);
-</script>';
 // <script type="text/javascript" src="scripts/rowMark.js"></script>
 $oPage->addScript('parameterCollector.js');
-$oPage->addScript($deleteScript);
-$oDiv = new cHTMLDiv();
-$oDiv->setContent($markActiveScript);
-$oPage->setContent(array(
-    $mlist,
-    $oDiv
-));
+$oPage->set("s", "FORM", $mlist->render(false));
 
 // generate current content for Object Pager
 $oPagerLink = new cHTMLLink();
@@ -191,22 +157,6 @@ $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
 // send new object pager to left_top
-$sRefreshPager = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var sNavigation = '{$sPagerContent}';
-    var left_top = Con.getFrame("left_top");
-    if (left_top.document) {
-        var oPager = left_top.document.getElementById("44b41691-0dd4-443c-a594-66a8164e25fd");
-        if (oPager) {
-            var oInsert = oPager.firstChild;
-            oInsert.innerHTML = sNavigation;
-            left_top.toggle_pager("44b41691-0dd4-443c-a594-66a8164e25fd");
-        }
-    }
-})(Con, Con.$);
-</script>
-JS;
-$oPage->addScript($sRefreshPager);
+$oPage->set("s", "PAGER_CONTENT", $sPagerContent);
 
 $oPage->render();

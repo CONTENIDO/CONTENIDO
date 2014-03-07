@@ -37,17 +37,7 @@ class ArticleForumRightBottom extends cGuiPage {
         $this->addStyle('right_bottom.css');
         $this->addScript('location.js');
         // Reload left bottom in this code because of irregular update problems in the location file
-        $this->addScript("
-<script type='text/javascript'>
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.build('main.php', {area: 'user_forum', frame: 2});
-    }
-})(Con, Con.$);
-</script>
-");
-
+        $this->setReload();
     }
 
     protected function formatTimeString($timeStamp) {

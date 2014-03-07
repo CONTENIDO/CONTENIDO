@@ -9,7 +9,17 @@
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
     <script type="text/javascript" src="scripts/registerTipsy.js"></script>
-    {JAVASCRIPT}
+    <script type="text/javascript">
+	function deleteFile(file) {
+	    var url = Con.UtilUrl.build("main.php", {
+	        area: "{JS_AREA}",
+	        action: "{JS_ACTION_DELETE}",
+	        frame: 4,
+	        delfile: file
+	    });
+	    Con.getFrame('right_bottom').location.href = url;
+	}
+</script>
 </head>
 <body>
 

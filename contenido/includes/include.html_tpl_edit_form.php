@@ -20,6 +20,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
 
+$reloadLeftBottom = false;
+
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 if($readOnly) {
 	cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
@@ -71,18 +73,10 @@ if ((!$readOnly) && $action == $sActionDelete) {
             $page->displayInfo(i18n('Deleted template file successfully!'));
         }
     }
-    $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
 
-    $page->addScript($sReloadScript);
+    $page->reloadFrame('left_bottom', array(
+    		"file" => $sFilename
+    ));
     $page->render();
 
 } else {
@@ -93,7 +87,7 @@ JS;
 	} else if($readOnly && !isset($_REQUEST['file']) && isset($_REQUEST['tmp_file'])) {
 		$_REQUEST['file'] = $_REQUEST['tmp_file'];
 	}
-	
+
     $path = $cfgClient[$client]['tpl']['path'];
 
     $sTempFilename = stripslashes($_REQUEST['tmp_file']);
@@ -114,18 +108,11 @@ JS;
     }
 
     if (stripslashes($_REQUEST['file'])) {
-        $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
+        $page->reloadFrame('left_bottom', array(
+        		"file" => $sFilename
+        ));
     } else {
-        $sReloadScript = '';
+        $reloadLeftBottom = '';
     }
 
     // Content Type is template
@@ -162,16 +149,8 @@ JS;
         cFileHandler::create($path . $sFilename, $_REQUEST['code']);
         $bEdit = cFileHandler::read($path . $sFilename);
         $reloadScriptUrl = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-        $sReloadScript .= <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-     var frame = Con.getFrame('right_top');
-     if (frame) {
-         frame.location.href = '{$reloadScriptUrl}';
-     }
-})(Con, Con.$);
-</script>
-JS;
+        $page->reloadFrame("right_top", $reloadScriptUrl);
+
         $fileInfoCollection = new cApiFileInformationCollection();
         $fileInfoCollection->create('templates', $sFilename, $_REQUEST['description']);
 
@@ -190,16 +169,7 @@ JS;
                 exit();
             }
             $reloadScriptUrl = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-            $sReloadScript .= <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-     var frame = Con.getFrame('right_top');
-     if (frame) {
-         frame.location.href = '{$reloadScriptUrl}';
-     }
-})(Con, Con.$);
-</script>
-JS;
+            $page->reloadFrame("right_top", $reloadScriptUrl);
         } else {
             $sTempFilename = $sFilename;
         }
@@ -327,9 +297,6 @@ JS;
         $page->setContent($form);
         $page->addScript($oCodeMirror->renderScript());
 
-        if (!empty($sReloadScript)) {
-            $page->addScript($sReloadScript);
-        }
         $page->render();
 
     } else {

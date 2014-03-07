@@ -201,25 +201,6 @@ $oPager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCoun
 $sPagerContent = $oPager->render(true);
 $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
-
-//send new object pager to left_top
-$sRefreshPager = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var sNavigation = '{$sPagerContent}',
-        left_top = Con.getFrame('left_top'), oPager, oInsert;
-    if (left_top) {
-        oPager = left_top.document.getElementById('02420d6b-a77e-4a97-9395-7f6be480f497');
-        if (oPager) {
-            oInsert = oPager.firstChild;
-            oInsert.innerHTML = sNavigation;
-            left_top.toggle_pager('02420d6b-a77e-4a97-9395-7f6be480f497');
-        }
-    }
-})(Con, Con.$);
-</script>
-JS;
-
-$oPage->addScript($sRefreshPager);
+$oPage->set('s', 'PAGER_CONTENT', $sPagerContent);
 
 $oPage->render();

@@ -35,21 +35,8 @@ $sArea = 'style';
 $sActionEdit = 'style_edit';
 $sActionDelete = 'style_delete';
 
-$sScriptTemplate = '
-<script type="text/javascript">
-    function deleteFile(file) {
-        //Con.getFrame("right_bottom").location.href = "main.php?area=' . $sArea . '&frame=4&action=' . $sActionDelete . '&delfile="+file+"&contenido=' . $sSession . '";
-        var url = "main.php?area=' . $sArea . '";
-        url += "&action=' . $sActionDelete . '";
-        url += "&frame=2";
-        //url += "&idsfi=" + idsfi;
-        url += "&contenido=' . $sSession . '";
-        //window.location.href = url;
-        Con.getFrame("right_bottom").location.href = "main.php?area=' . $sArea . '&frame=4&action=' . $sActionDelete . '&delfile="+file+"&contenido=' . $sSession . '";
-    }
-</script>';
-
-$tpl->set('s', 'JAVASCRIPT', $sScriptTemplate);
+$tpl->set('s', 'JS_AREA', $sArea);
+$tpl->set('s', 'JS_ACTION_DELETE', $sActionDelete);
 
 if (($handle = opendir($path)) !== false && is_dir($path)) {
     $aFiles = array();
@@ -89,7 +76,7 @@ if (($handle = opendir($path)) !== false && is_dir($path)) {
                 if ($db->nextRecord()) {
                     $idsfi = $db->f('idsfi');
                 }
-                
+
                 if (getEffectiveSetting('client', 'readonly', 'false') == 'true') {
                 	$tpl->set('d', 'DELETE', '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n('This area is read only! The administrator disabled edits!') . '">');
                 } else if (cSecurity::isInteger($idsfi)) {
