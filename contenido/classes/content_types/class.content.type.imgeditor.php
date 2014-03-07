@@ -244,7 +244,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $filename = basename($_POST['image_filename']);
         $dirname = dirname($_POST['image_filename']);
         if ($dirname === '\\' || $dirname === '/') {
-            $dirname = '/';
+            $dirname = '';
         } else {
             $dirname .= '/';
         }
@@ -688,6 +688,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
                     $friendlyName = uplCreateFriendlyName($_FILES['file']['name'][$key]);
                     move_uploaded_file($_FILES['file']['tmp_name'][$key], $this->_cfgClient[$this->_client]['upl']['path'] . $path . $friendlyName);
 
+                    cDebug::out(":::" . $path);
                     uplSyncDirectory($path);
 
                     $upload = new cApiUpload();

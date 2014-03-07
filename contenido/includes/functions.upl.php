@@ -224,6 +224,7 @@ function uplSyncDirectory($sPath) {
                 //foreach (cDirHandler::read($sDirectory,false,true) as $key => $file) {
                 if (!in_array(strtolower($file), $aDirsToExclude)) {
                     if (is_file($sFullPath . $file)) {
+                    	cDebug::out($sPath . "::" . $file);
                         $oUploadsColl->sync($sPath, $file);
                     }
                 }

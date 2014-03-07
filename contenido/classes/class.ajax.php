@@ -262,6 +262,9 @@ class cAjaxRequest {
                 $imageId = (int) $_REQUEST['id'];
                 $idArtLang = (int) $_REQUEST['idartlang'];
                 $path = (string) $_REQUEST['path'];
+                if ($path == '/') {
+                	$path = '';
+                }
 
                 $art = new cApiArticleLanguage($idArtLang, true);
                 $artReturn = $art->getContent('CMS_IMGEDITOR', $imageId);
