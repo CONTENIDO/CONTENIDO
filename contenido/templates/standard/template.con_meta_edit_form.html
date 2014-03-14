@@ -105,16 +105,9 @@
             </tr>
 
             <tr>
-                <td class="leftData">i18n("Date")</td>
-                <td>
-                    <input class="textField metaTag" type="text" name="METAdate" id="METAdate" value="{DATE}" {DISABLED}>
-                </td>
-            </tr>
-
-            <tr>
                 <td class="leftData">i18n("Expires")</td>
                 <td>
-                    <input class="textField metaTag" type="text" name="METAexpires" id="METAexpires" value="{EXPIRES}" {DISABLED}>
+                    <input class="datepickerTextbox textField metaTag" type="text" name="METAexpires" id="METAexpires" value="{EXPIRES}" {DISABLED}>
                  </td>
             </tr>
 
@@ -281,36 +274,22 @@ function deleteMetaTag(idMetaType, articleId, catId, idartlang) {
             return false;
         });
 
-        $('#METAdate').datetimepicker({
-            buttonImage: '{PATH_TO_CALENDER_PIC}',
-            buttonImageOnly: true,
-            showOn: 'both',
-            dateFormat: 'yy-mm-dd',
-            separator: 'T',
-            timeFormat: 'hh:mm:ss tt',
-            onClose: function(text, inst) {
-                var id = $(this).attr("id").substr(4);
-                text = formatDates(new Date(text.replace(/\s/g, "")));
-                $("#metaContent_" + id).text(text);
-                $(this).attr("value", text);
-            },
-            disabled: {IS_DATETIMEPICKER_DISABLED}
-        });
-
-        $('#METAexpires').datetimepicker({
-            buttonImage: '{PATH_TO_CALENDER_PIC}',
-            buttonImageOnly: true,
-            showOn: 'both',
-            dateFormat: 'yy-mm-dd',
-            separator: 'T',
-            timeFormat: 'hh:mm:ss tt',
-            onClose: function(text, inst) {
-                var id = $(this).attr("id").substr(4);
-                text = formatDates(new Date(text.replace(/\s/g, "")));
-                $("#metaContent_" + id).text(text);
-                $(this).attr("value", text);
-            },
-            disabled: {IS_DATETIMEPICKER_DISABLED}
+        $('.datepickerTextbox').each(function() {
+        	$(this).datetimepicker({
+                buttonImage: '{PATH_TO_CALENDER_PIC}',
+                buttonImageOnly: true,
+                showOn: 'both',
+                dateFormat: 'yy-mm-dd',
+                separator: 'T',
+                timeFormat: 'hh:mm:ss tt',
+                onClose: function(text, inst) {
+                    var id = $(this).attr("id").substr(4);
+                    text = formatDates(new Date(text.replace(/\s/g, "")));
+                    $("#metaContent_" + id).text(text);
+                    $(this).attr("value", text);
+                },
+                disabled: {IS_DATETIMEPICKER_DISABLED}
+            });
         });
 
         $('.metaTag').live("input", function() {

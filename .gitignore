@@ -36,5 +36,6 @@ data/logs/errorlog.txt
 data/logs/exception.txt
 data/logs/security.txt
 data/logs/setuplog.txt
+data/logs/debug.log
 /desktop.ini
 /nbproject
