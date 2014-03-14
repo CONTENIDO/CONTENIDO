@@ -269,9 +269,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // Add or replace title
         if ($this->_pageTitle != '') {
-            $this->_layoutCode = preg_replace('/<title>.*?<\/title>/is', '{TITLE}', $this->_layoutCode, 1);
-            if (strstr($this->_layoutCode, '{TITLE}')) {
-                $this->_layoutCode = str_ireplace('{TITLE}', '<title>' . $this->_pageTitle . '</title>', $this->_layoutCode);
+            $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
+            $this->_layoutCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $this->_layoutCode, 1);
+            if (strstr($this->_layoutCode, $replaceTag)) {
+                $this->_layoutCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $this->_layoutCode);
             } else {
                 $this->_layoutCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $this->_layoutCode);
             }
