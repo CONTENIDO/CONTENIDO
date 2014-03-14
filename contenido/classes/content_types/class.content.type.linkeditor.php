@@ -529,7 +529,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
                     c.idclient = ' . cSecurity::toInteger($this->_client) . ' AND
                     e.idlang = ' . cSecurity::toInteger($this->_lang) . '
                 ORDER BY
-                    a.idtree';
+                    e.title';
         $db = cRegistry::getDb();
         $db->query($sql);
         while ($db->nextRecord()) {

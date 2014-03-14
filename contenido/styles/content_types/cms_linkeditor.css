@@ -13,7 +13,7 @@
 .cms_linkeditor .directoryFile {
     border: 1px solid #CCC;
     height: 170px;
-    overflow: auto;
+    overflow: visible;
 }
 
 .cms_linkeditor select {
