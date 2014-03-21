@@ -1,0 +1,41 @@
+
+<script type="text/javascript">
+	function deleteFile(file) {
+	    var url = Con.UtilUrl.build("main.php", {
+	        area: "{JS_AREA}",
+	        action: "{JS_ACTION_DELETE}",
+	        frame: 4,
+	        delfile: file
+	    });
+	    Con.getFrame('right_bottom').location.href = url;
+	}
+</script>
+
+<table class="borderless" width="100%" cellspacing="0" cellpadding="0" border="0">
+    
+    <!-- BEGIN:BLOCK -->
+    <tr class="tooltip-north" original-title="{DESCRIPTION}" id="{MARKED}" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+        <td><img alt="" width="10" src="images/spacer.gif"></td>
+        <td>
+            <table width="100%" cellspacing="0" cellpadding="3" border="0">
+                <tr>
+                <td width="100%"><a class=\"action\" href="javascript:Con.multiLink('right_top', 'main.php?area={AREA}&frame=3&file={FILENAME}]&contenido=1', 'right_bottom', 'main.php?area={AREA}&frame=4&action={ACTION}&file={FILENAME}&tmp_file={FILENAME}&contenido=1')" alt="{FILENAME}">{FILENAME}</a></td>
+                <td align="right"><a title="i18n("Delete file")" href="javascript:void(0)" onclick="Con.showConfirmation(&quot;i18n("Do you really want to delete the following file?")<br /><br /><b>{FILENAME}</b>&quot;, function() { deleteFile(&quot;{FILENAME}&quot;); });return false;"><img src="{DELETE_IMAGE}" border="0" title="i18n("Delete file")"></a></td>
+                </tr>
+            </table>
+        </td>
+        <td><img alt="" width="5" src="images/spacer.gif"></td>
+    </tr>
+    <!-- END:BLOCK -->
+    
+</table>
+
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        if ($("#marked")) {
+            row.click($("#marked")[0]);
+        }
+    });
+})(Con, Con.$);
+</script>
