@@ -54,10 +54,6 @@ class cApiUploadCollection extends ItemCollection {
             global $client;
         }
 
-        if (!cString::endsWith($sDirname, '/')) {
-            $sDirname .= '/';
-        }
-
         $sDirname = $this->escape($sDirname);
         $sFilename = $this->escape($sFilename);
         if (strstr(strtolower($_ENV['OS']), 'windows') === false) {

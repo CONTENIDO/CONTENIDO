@@ -1,3 +1,18 @@
+<script type="text/javascript">
+(function(Con, $) {
+    var sNavigation = '{PAGER_CONTENT}',
+        left_top = Con.getFrame('left_top'), oPager, oInsert;
+    if (left_top) {
+        oPager = left_top.document.getElementById('02420d6b-a77e-4a97-9395-7f6be480f497');
+        if (oPager) {
+            oInsert = oPager.firstChild;
+            oInsert.innerHTML = sNavigation;
+            left_top.toggle_pager('02420d6b-a77e-4a97-9395-7f6be480f497');
+        }
+    }
+})(Con, Con.$);
+</script>
+
 {FORM}
 
 <script type="text/javascript">

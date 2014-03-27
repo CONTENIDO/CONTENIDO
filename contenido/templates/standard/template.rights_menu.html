@@ -1,39 +1,43 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <title>template.rights_menu.html</title>
-{_META_HEAD_CONTENIDO_}
-{_CSS_HEAD_CONTENIDO_}
-{_JS_HEAD_CONTENIDO_}
-    <script type="text/javascript" src="scripts/rowMark.js"></script>
-    <script type="text/javascript" src="scripts/infoBox.js"></script>
-</head>
-<body>
-
-<table width="100%" cellspacing="0" cellpadding="2" border="0">
-
-    <!-- BEGIN:BLOCK -->
-    <tr class="text_medium" style="background-color: {BGCOLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
-        <td>{ICON}</td>
-        <td width="100%">{TEXT}</td>
-        <td align="right">{DELETE}</td>
-    </tr>
-    <!-- END:BLOCK -->
-
-</table>
-
 <script type="text/javascript">
-// Function for deleting user
-// @TODO: Deleting user here in rights menu???
-function deleteUser(iduser) {
-    var url = 'main.php?area=user';
+// Function for deleting backend user
+function deleteBackenduser(userid) {
+    var form = Con.getFrame("left_top").document.filter;
+    var url = 'main.php?area=user_overview';
     url += '&action=user_delete';
-    url += '&frame=2';
-    url += '&userid=' + iduser;
+    url += '&frame=4';
+    url += '&userid=' + userid;
     url += '&contenido=' + Con.sid;
-    window.location.href = url;
+    url += get_registered_parameters();
+    url += '&sortby=' + form.sortby.value;
+    url += '&sortorder=' + form.sortorder.value;
+    url += '&filter=' + form.filter.value;
+    url += '&elemperpage=' + form.elemperpage.value;
+    url += '&page={MPAGE}';
+    Con.getFrame("right_bottom").location.href = url;
+    Con.getFrame("right_top").location.href = 'main.php?area=user&frame=3&contenido=' + Con.sid;
 }
 </script>
+<script type="text/javascript">
+(function(Con, $) {
+    var sNavigation = '{PAGER_CONTENT}';
+    var left_top = Con.getFrame("left_top");
+    if (left_top.document) {
+        var oPager = left_top.document.getElementById("44b41691-0dd4-443c-a594-66a8164e25fd");
+        if (oPager) {
+            var oInsert = oPager.firstChild;
+            oInsert.innerHTML = sNavigation;
+            left_top.toggle_pager("44b41691-0dd4-443c-a594-66a8164e25fd");
+        }
+    }
+})(Con, Con.$);
+</script>
 
-</body>
-</html>
+{FORM}
+
+<script type="text/javascript">
+(function(Con, $) {
+    if ($("#marked")) {
+        row.markedRow = $("#marked")[0];
+    }
+})(Con, Con.$);
+</script>

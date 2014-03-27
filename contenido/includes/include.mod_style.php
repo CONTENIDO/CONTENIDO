@@ -73,21 +73,6 @@ if (!$contenidoModulHandler->moduleWriteable('css')) {
 // Make automatic a new css file
 $contenidoModulHandler->createModuleFile('css');
 
-if (stripslashes($file)) {
-    $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$file}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
-} else {
-    $sReloadScript = '';
-}
-
 $sTempFilename = stripslashes($tmp_file);
 $sOrigFileName = $sTempFilename;
 
@@ -98,18 +83,9 @@ if (getFileType($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
 }
 
 if (stripslashes($file)) {
-    $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {file: '{$sFilename}'});
-    }
-})(Con, Con.$);
-</script>
-JS;
-} else {
-    $sReloadScript = '';
+    $page->reloadFrame('left_bottom', array(
+    	"file" => $sFilename
+    ));
 }
 
 // Content Type is css
@@ -137,16 +113,7 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
     $fileInfoCollection->updateFile($sFilename, 'css', $_REQUEST['description'], $auth->auth['uid']);
 
     $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-    $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('right_top');
-    if (frame) {
-        frame.location.href = '{$urlReload}';
-    }
-})(Con, Con.$);
-</script>
-JS;
+    $page->reloadFrame('right_top', $urlReload);
 
     if ($ret && $bEdit) {
         $page->displayInfo(i18n('Created new css file successfully'));
@@ -167,16 +134,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
         }
 
         $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
-        $sReloadScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('right_top');
-    if (frame) {
-        frame.location.href = '{$urlReload}';
-    }
-})(Con, Con.$);
-</script>
-JS;
+        $page->reloadFrame('right_top', $urlReload);
     } else {
         $sTempFilename = $sFilename;
     }
@@ -249,6 +207,5 @@ if (isset($actionRequest)) {
     $page->setContent($form);
     $page->addScript($oCodeMirror->renderScript());
 
-    // $page->addScript('reload', $sReloadScript);
     $page->render();
 }

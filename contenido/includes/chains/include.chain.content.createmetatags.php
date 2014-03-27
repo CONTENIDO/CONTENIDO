@@ -163,17 +163,6 @@ function cecCreateMetatags($metatags) {
                     $metatags[$iCheck]['content'] = $lastmodifier_real;
 
                     break;
-                case 'date':
-                    // Build date metatag from date of last modification
-                    $oArt = new cApiArticleLanguage();
-                    $oArt->loadByArticleAndLanguageId($idart, $lang);
-                    $lastmodified = $oArt->getField('lastmodified');
-
-                    $iCheck = CheckIfMetaTagExists($metatags, 'date');
-                    $metatags[$iCheck]['name'] = 'date';
-                    $metatags[$iCheck]['content'] = $lastmodified;
-
-                    break;
                 case 'description':
                     // Build description metatag from first headline on page
                     $iCheck = CheckIfMetaTagExists($metatags, 'description');
@@ -193,8 +182,10 @@ function cecCreateMetatags($metatags) {
                     // Build these 3 metatags from entries in homepage
                     $sCurrentTag = strtolower($value['name']);
                     $iCheck = CheckIfMetaTagExists($metatags, $sCurrentTag);
-                    $metatags[$iCheck]['name'] = $sCurrentTag;
-                    $metatags[$iCheck]['content'] = $arrHomepageMetaTags[$sCurrentTag];
+                    if($sCurrentTag != '') {
+                        $metatags[$iCheck]['name'] = $sCurrentTag;
+                        $metatags[$iCheck]['content'] = $arrHomepageMetaTags[$sCurrentTag];
+                    }
 
                     break;
             }
@@ -220,7 +211,7 @@ function CheckIfMetaTagExists($arrMetatags, $sCheckForMetaTag) {
 
     // loop thru existing metatags and check against the listitem name
     foreach ($arrMetatags as $pos => $item) {
-        if ($item['name'] == $sCheckForMetaTag) {
+        if ($item['name'] == $sCheckForMetaTag && $item['name'] != '') {
             // metatag found -> return the position
             return $pos;
         }

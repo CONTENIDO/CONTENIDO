@@ -46,10 +46,7 @@ if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == "g
 
 $sJsBefore = '';
 $sJsAfter = '';
-$sJsExternal = '';
 $sTable = '';
-
-$sJsExternal .= '<script type="text/javascript" src="scripts/expandCollapse.js"></script>';
 // declare new javascript variables;
 $sJsBefore .= "var itemids = [];
                var actareaids = [];\n";
@@ -316,7 +313,7 @@ $page->set('s', 'OB_CONTENT', $dataSync['OB_CONTENT']);
 $page->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $page->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
 $page->set('s', 'RIGHTS_CONTENT', $sTable);
-$page->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
+$page->addScript("expandCollapse.js");
 $page->set('s', 'NOTIFICATION_SAVE_RIGHTS', '');
 
 $page->render();

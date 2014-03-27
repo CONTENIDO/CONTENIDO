@@ -295,7 +295,7 @@ foreach ($containerModules as $containerNumber => $containerModuleId) {
     // Read the input for the editing in Backend from file
     $contenidoModuleHandler = new cModuleHandler($containerModuleId);
     if ($contenidoModuleHandler->modulePathExists() == true) {
-        $input = stripslashes($contenidoModuleHandler->readInput()) . "\n";
+        $input = $contenidoModuleHandler->readInput() . "\n";
     }
 
     $modulecode = cApiModule::processContainerInputCode($containerNumber, $containerConfigurations[$containerNumber], $input);

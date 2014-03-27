@@ -1,0 +1,16 @@
+
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('left_bottom');
+    if (frame && {RELOAD_LEFT_BOTTOM}) {
+        var href = Con.UtilUrl.replaceParams(frame.location.href, {frontenduser: {IDFRONTENDUSER}});
+        frame.location.href = href;
+        var frame2 = Con.getFrame('left_top');
+        if (frame2 && 'function' === $.type(frame2.refresh)) {
+            frame2.refresh();
+        }
+    }
+})(Con, Con.$);
+</script>
+
+{FORM}

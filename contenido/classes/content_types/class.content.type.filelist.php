@@ -374,6 +374,12 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 $extensions = array($extensions);
             }
             if ($this->_settings['filelist_ignore_extensions'] === 'true' || count($extensions) == 0 || ($this->_settings['filelist_ignore_extensions'] === 'false' && in_array($extensionName, $extensions)) || ($this->_settings['filelist_ignore_extensions'] === 'false' && $extensionName == $extensions)) {
+
+            	// Prevent errors with not existing files
+            	if (!cFileHandler::exists($this->_uploadPath . $directoryName . '/' . $filename)) {
+            		return;
+            	}
+
                 // checking filesize filter
                 $fileStats = stat($this->_uploadPath . $directoryName . '/' . $filename);
                 $filesize = $fileStats['size'];

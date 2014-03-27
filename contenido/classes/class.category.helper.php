@@ -332,8 +332,8 @@ class cCategoryHelper {
             $catId = (int) $db->f('idcat');
             $catLevel = (int) $db->f('level');
 
-            if ($depth > 0 && $catLevel > $depth) {
-                break;
+            if ($depth > 0 && ($depth < ($catLevel - $depth))) {
+               break;
             }
 
             $subCategories = $this->getSubCategories($catId, $depth);

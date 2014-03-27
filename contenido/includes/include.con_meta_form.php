@@ -132,7 +132,6 @@ $tpl->set('s', 'ALIAS', cSecurity::unFilter(stripslashes($art->getField('urlname
 $availableTags = conGetAvailableMetaTagTypes();
 $managedTypes = array(
     'author',
-    'date',
     'description',
     'expires',
     'keywords',
@@ -204,6 +203,17 @@ foreach ($availableTags as $key => $value) {
                             rows="3"
                         >' . $textValue . '</textarea>';
             break;
+        case 'date':
+            $element = '<input ' . $disabled . '
+                            class="metaTag datepickerTextbox"
+                            type="text"
+                            name="META' . $value['metatype'] . '"
+                            id="META' . $value['metatype'] . '"
+                            size="24"
+                            maxlength=' . $value['maxlength'] . '
+                            value="' . conHtmlSpecialChars(conGetMetaValue($art->getField('idartlang'), $key)) . '">';
+
+            break;
     }
 
     $tpl->set('d', 'ARTICLE_LANGUAGE_ID', $art->getField('idartlang'));
@@ -269,7 +279,8 @@ $result = array(
     'metatype' => '',
     'fieldtype' => array(
         'text',
-        'textarea'
+        'textarea',
+        'date'
     ),
     'maxlength' => '255',
     'fieldname' => 'name'

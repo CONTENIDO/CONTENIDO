@@ -138,6 +138,14 @@ class cGuiPage {
      */
     protected $_bodyClassNames;
 
+
+    /**
+     * Scripts and styles subfolder for cGuiPage objects
+     *
+     * @var string
+     */
+    protected $_filesDirectory;
+
     /**
      * The constructor initializes the class and tries to get the encoding from
      * the currently selected language.
@@ -152,13 +160,6 @@ class cGuiPage {
      * @param string $subMenu The number of the submenu which should be
      *        highlighted when this page is shown.
      */
-    /**
-     * Scripts and styles subfolder for cGuiPage objects
-     *
-     * @var string
-     */
-    const filesDirectory = 'includes/';
-
     public function __construct($pageName, $pluginName = '', $subMenu = '') {
         global $lang, $cfg, $sess;
 
@@ -194,31 +195,47 @@ class cGuiPage {
         $this->addBodyClassName('page_generic');
         $this->addBodyClassName('page_' . $pageid);
 
-        if (cFileHandler::exists($cfg['path']['styles_includes'] . $pageName . '.css')) {
-            $this->addStyle(cGuiPage::filesDirectory . $pageName . '.css');
+        $scriptDir = '';
+        $styleDir = '';
+        if($pluginName != '') {
+            $this->_filesDirectory = '';
+            $scriptDir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $pluginName . '/' . $cfg['path']['scripts'];
+            $styleDir = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $pluginName . '/' . $cfg['path']['styles'];
+        } else {
+            $this->_filesDirectory = 'includes/';
+            $scriptDir = $cfg['path']['scripts_includes'];
+            $styleDir = $cfg['path']['styles_includes'];
+        }
+
+        if (cFileHandler::exists($styleDir . $pageName . '.css')) {
+            $this->addStyle($this->_filesDirectory . $pageName . '.css');
         }
 
         /**
          *
          * @var $stylefile SplFileInfo
          */
-        foreach (new DirectoryIterator($cfg['path']['styles_includes']) as $stylefile) {
-            if (cString::endsWith($stylefile->getFilename(), '.' . $pageName . '.css')) {
-                $this->addStyle(cGuiPage::filesDirectory . $stylefile->getFilename());
+        if(cFileHandler::exists($styleDir)) {
+            foreach (new DirectoryIterator($styleDir) as $stylefile) {
+                if (cString::endsWith($stylefile->getFilename(), '.' . $pageName . '.css')) {
+                    $this->addStyle($this->_filesDirectory . $stylefile->getFilename());
+                }
             }
         }
 
-        if (cFileHandler::exists($cfg['path']['scripts_includes'] . $pageName . '.js')) {
-            $this->addScript(cGuiPage::filesDirectory . $pageName . '.js');
+        if (cFileHandler::exists($scriptDir . $pageName . '.js')) {
+            $this->addScript($this->_filesDirectory . $pageName . '.js');
         }
 
         /**
          *
          * @var $scriptfile SplFileInfo
          */
-        foreach (new DirectoryIterator($cfg['path']['scripts_includes']) as $scriptfile) {
-            if (cString::endsWith($scriptfile->getFilename(), '.' . $pageName . '.js')) {
-                $this->addScript(cGuiPage::filesDirectory . $scriptfile->getFilename());
+        if(cFileHandler::exists($scriptDir)) {
+            foreach (new DirectoryIterator($scriptDir) as $scriptfile) {
+                if (cString::endsWith($scriptfile->getFilename(), '.' . $pageName . '.js')) {
+                    $this->addScript($this->_filesDirectory . $scriptfile->getFilename());
+                }
             }
         }
     }
@@ -239,7 +256,7 @@ class cGuiPage {
      */
     public function addScript($script) {
     	global $perm, $currentuser;
-    	
+
         $script = trim($script);
         if (empty($script)) {
             return;
@@ -256,22 +273,28 @@ class cGuiPage {
            (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)))) {
 			$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
-        
+
         if (strpos(trim($script), 'http') === 0 || strpos(trim($script), '<script') === 0 || strpos(trim($script), '//') === 0) {
-            if (strpos(trim($script), '<script') === 0) {
-                cDeprecated("You shouldn't use inline JS for backend pages");
-            }
+            // if (strpos(trim($script), '<script') === 0) {
+            //     cDeprecated("You shouldn't use inline JS for backend pages");
+            // }
             // the given script path is absolute
-            $this->_scripts[] = $script;
+            if(!in_array($script, $this->_scripts)) {
+                $this->_scripts[] = $script;
+            }
         } else if (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $filePathName)) {
             // the given script path is relative to the plugin scripts folder
             $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $script;
-            $this->_scripts[] = $fullpath;
+            if(!in_array($fullpath, $this->_scripts)) {
+                $this->_scripts[] = $fullpath;
+            }
         } else if (cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)) {
             // the given script path is relative to the CONTENIDO scripts folder
             $fullpath = $backendUrl . $cfg['path']['scripts'] . $script;
 
-            $this->_scripts[] = $fullpath;
+            if(!in_array($fullpath, $this->_scripts)) {
+                $this->_scripts[] = $fullpath;
+            }
         }
     }
 
@@ -285,7 +308,7 @@ class cGuiPage {
      */
     public function addStyle($stylesheet) {
     	global $perm, $currentuser;
-    	
+
         $stylesheet = trim($stylesheet);
         if (empty($stylesheet)) {
             return;
@@ -301,20 +324,26 @@ class cGuiPage {
            (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName)))) {
         	$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
-        
+
         if (strpos($stylesheet, 'http') === 0 || strpos($stylesheet, '//') === 0) {
             // the given stylesheet path is absolute
-            $this->_styles[] = $stylesheet;
+            if(!in_array($stylesheet, $this->_styles)) {
+                $this->_styles[] = $stylesheet;
+            }
         } else if (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $filePathName)) {
             // the given stylesheet path is relative to the plugin stylesheets
             // folder
             $fullpath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet;
-            $this->_styles[] = $fullpath;
+            if(!in_array($fullpath, $this->_styles)) {
+                $this->_styles[] = $fullpath;
+            }
         } else if (cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName)) {
             // the given stylesheet path is relative to the CONTENIDO
             // stylesheets folder
             $fullpath = $backendUrl . $cfg['path']['styles'] . $stylesheet;
-            $this->_styles[] = $fullpath;
+            if(!in_array($fullpath, $this->_styles)) {
+                $this->_styles[] = $fullpath;
+            }
         }
     }
 
@@ -379,6 +408,38 @@ class cGuiPage {
      */
     public function setReload() {
         $this->_scripts[] = 'reload.js';
+    }
+
+    /**
+     * Adds JavaScript to the page to reload a certain frame.
+     *
+     * @param string $frameName Name of the frame
+     * @param string|array $updatedParameters Either an array with keys that will be passed to Con.UtilUrl.replaceParams OR a string containing the new href of the frame
+     */
+    public function reloadFrame($frameName, $updatedParameters = null) {
+        if(is_array($updatedParameters)) {
+            $updateString = '';
+            foreach($updatedParameters as $key => $value) {
+                $updateString .= $key . ': "' . $value . '"';
+            }
+            $this->_scripts[] = '<script type="text/javascript">
+                                    (function(Con, $) {
+                                        var frame = Con.getFrame(\'' . $frameName . '\');
+                                        if (frame) {
+                                            frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {' . $updateString . '});
+                                        }
+                                    })(Con, Con.$);
+                                </script>';
+        } else {
+            $this->_scripts[] = '<script type="text/javascript">
+            (function(Con, $) {
+            	var frame = Con.getFrame("' . $frameName . '");
+            	if (frame) {
+            		frame.location.href = "' . $updatedParameters .'";
+            	}
+            })(Con, Con.$);
+            </script>';
+        }
     }
 
     /**
@@ -507,34 +568,6 @@ class cGuiPage {
         } else {
             $this->_objects = array_merge($this->_objects, $objects);
         }
-    }
-
-    /**
-     * Example:
-     * setPluginScript('content_allocation', 'complexlist.js');
-     * $this->_scripts[] =
-     * 'http://contenido.local/contenido/plugins/content_allocation/scripts/complexlist.js';
-     *
-     * @param unknown_type $plugin
-     * @param unknown_type $filename
-     * @return Ambigous <string, mixed>
-     */
-    public function setPluginScript($plugin, $filename) {
-        global $cfg;
-        $path = $cfg['pica']['script_complexlist'];
-    }
-
-    public function setStyleDirect($filepath) {
-        global $cfg;
-        $path = $cfg['pica']['style_complexlist'];
-        $this->_pageTemplate->set('s', 'SCRIPTS', $path);
-
-        $strstyle = '';
-
-        $strstyle .= "<link href='styles/" . $path . "' type='text/css' rel='stylesheet'>\n";
-
-        $this->_pageTemplate->set('s', 'STYLES', $strstyle);
-        return $this->_pageTemplate->generate($cfg['path']['templates'] . $cfg['templates']['generic_page'], false);
     }
 
     /**
@@ -717,16 +750,16 @@ class cGuiPage {
      */
     protected function _renderTemplate($template) {
     	global $perm, $currentuser;
-    	
+
         $cfg = cRegistry::getConfig();
 
         // Warning message for not existing resources
         if($perm->isSysadmin($currentuser) && (($this->_pluginName == '' && !cFileHandler::exists($cfg['path']['templates'] . 'template.' . $this->_pageName . '.html')) ||
-           ($this->_pluginName != '' && !cFileHandler::exists($cfg['path']['plugins'] . $this->_pluginName . '/templates/template.' . $this->_pageName . '.html')))) {        	
+           ($this->_pluginName != '' && !cFileHandler::exists($cfg['path']['plugins'] . $this->_pluginName . '/templates/template.' . $this->_pageName . '.html')))) {
         	$this->displayWarning(i18n("The requested resource") . " <strong>" . $this->_pageName . "</strong> " . i18n("was not found"));
         	$output .= $this->_renderContentMessages();
         }
-        
+
         $file = '';
         if ($this->_pluginName == '') {
             $file = $cfg['path']['templates'] . 'template.' . $this->_pageName . '.html';

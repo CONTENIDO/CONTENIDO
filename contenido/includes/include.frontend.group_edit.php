@@ -70,7 +70,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
 }
 
 if ($action != '') {
-    $sReloadScript = <<<JS
+    $reloadLeftBottom = <<<JS
 <script type="text/javascript">
 (function(Con, $) {
     var frame = Con.getFrame('left_bottom');
@@ -86,7 +86,7 @@ if ($action != '') {
 </script>
 JS;
 } else {
-    $sReloadScript = '';
+    $reloadLeftBottom = '';
 }
 
 if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
@@ -248,13 +248,13 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
     $page->set('s', 'IN_GROUP_VALUE', $_POST['filter_in']);
     $page->set('s', 'NON_GROUP_VALUE', $_POST['filter_non']);
     $page->set('s', 'RECORD_ID_NAME', 'idfrontendgroup');
-    $page->set('s', 'RELOADSCRIPT', $sReloadScript.$sRefreshRightTopLinkJs);
+    $page->set('s', 'RELOADSCRIPT', $reloadLeftBottom.$sRefreshRightTopLinkJs);
 
     $page->render();
 } else {
     $page = new cGuiPage("frontend.group_edit");
-    if (!empty($sReloadScript)) {
-        $page->addScript($sReloadScript);
+    if (!empty($reloadLeftBottom)) {
+        $page->addScript($reloadLeftBottom);
     }
 
     $page->render();

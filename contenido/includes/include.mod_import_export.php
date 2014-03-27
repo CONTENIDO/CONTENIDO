@@ -19,7 +19,7 @@ $page = new cGuiPage("mod_import_export");
 $module = new cApiModule();
 $module->loadByPrimaryKey($idmod);
 $notification = new cGuiNotification();
-$sScript = '';
+$reloadLeftBottom = false;
 
 $readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
 
@@ -48,16 +48,7 @@ if ($action == "mod_importexport_module") {
                 } else {
                     $notification->displayNotification('info', i18n("Module import successfully!"));
                     $idmod = $module->get('idmod');
-                    $sScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {idmod: {$idmod}});
-    }
-})(Con, Con.$);
-</script>
-JS;
+                    $reloadLeftBottom = true;
                 }
             } else {
                 $notification->displayNotification('error', i18n("No file uploaded!"));
@@ -81,16 +72,7 @@ JS;
                 } else {
                     $notification->displayNotification('info', i18n("Module import successfully!"));
                     $idmod = $module->get('idmod');
-                    $sScript = <<<JS
-<script type="text/javascript">
-(function(Con, $) {
-    var frame = Con.getFrame('left_bottom');
-    if (frame) {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {idmod: {$idmod}});
-    }
-})(Con, Con.$);
-</script>
-JS;
+                    $reloadLeftBottom = true;
                 }
             } else {
                 $notification->displayNotification('error', i18n("No file uploaded!"));
@@ -153,8 +135,10 @@ $form2->setVar("frame", $frame);
 $form2->setVar("idmod", $idmod);
 $form2->custom["submit"]["accesskey"] = '';
 
-if (!empty($sScript)) {
-    $page->addScript($sScript);
+if ($reloadLeftBottom) {
+    $page->reloadFrame('left_bottom', array(
+        "idmod" => $idmod
+    ));
 }
 $page->setContent(array(
     $form2

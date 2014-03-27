@@ -13,7 +13,6 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -147,7 +146,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $cssFile = '';
         if (strlen($this->_cssData) > 0) {
             if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData)) !== false) {
-                $oHTML = new cHTML(array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => $myFileCss));
+                $oHTML = new cHTML(array(
+                    'rel' => 'stylesheet',
+                    'type' => 'text/css',
+                    'href' => $myFileCss
+                ));
                 $oHTML->setTag('link');
                 $cssFile = $oHTML->render();
             }
@@ -222,7 +225,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $articleName = $article->get('title');
             $debugPrefix .= "\techo(\"Article: " . $articleName . " (catart = " . $catart->get('idcatart') . ", artlang = " . $this->_idartlang . ", art = " . $article->get('idart') . ")\\n\");\n";
 
-
             $debugPrefix .= "\techo(\"\\n--> \\n\");\n";
             $debugPrefix .= "}\n?>";
 
@@ -267,9 +269,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // Add or replace title
         if ($this->_pageTitle != '') {
-            $this->_layoutCode = preg_replace('/<title>.*?<\/title>/is', '{TITLE}', $this->_layoutCode, 1);
-            if (strstr($this->_layoutCode, '{TITLE}')) {
-                $this->_layoutCode = str_ireplace('{TITLE}', '<title>' . $this->_pageTitle . '</title>', $this->_layoutCode);
+            $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
+            $this->_layoutCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $this->_layoutCode, 1);
+            if (strstr($this->_layoutCode, $replaceTag)) {
+                $this->_layoutCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $this->_layoutCode);
             } else {
                 $this->_layoutCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $this->_layoutCode);
             }
@@ -332,7 +335,18 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             // check if metatag already exists
             $sPattern = '/(<meta(?:\s+)' . $nameKey . '(?:\s*)=(?:\s*)(?:\\"|\\\')(?:\s*)' . $value[$nameKey] . '(?:\s*)(?:\\"|\\\')(?:[^>]+)>\n?)/i';
             if (preg_match($sPattern, $this->_layoutCode, $aMatch)) {
-                $this->_layoutCode = str_replace($aMatch[1], $oMetaTagGen->render() . "\n", $this->_layoutCode);
+                // the meta tag is already specified in the layout
+                // replace it only if its attributes are not empty
+                $replace = true;
+                foreach ($value as $test) {
+                    if ($test == '') {
+                        $replace = false;
+                        break;
+                    }
+                }
+                if ($replace) {
+                    $this->_layoutCode = str_replace($aMatch[1], $oMetaTagGen->render() . "\n", $this->_layoutCode);
+                }
             } else {
                 $sMetatags .= $oMetaTagGen->render() . "\n";
             }
@@ -364,7 +378,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 cFileHandler::write($cfgClient[$this->_client]['code']['path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
 
-            $fileCode = ($code == '') ? $this->_layoutCode : $code;
+            $fileCode = ($code == '')? $this->_layoutCode : $code;
 
             $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
             cFileHandler::write($cfgClient[$this->_client]['code']['path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
@@ -549,4 +563,5 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // what do you expect?
         return $result;
     }
+
 }

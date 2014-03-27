@@ -702,7 +702,7 @@ function conDeleteart($idart) {
     $catLangColl = new cApiCategoryLanguageCollection();
     $catLangColl->select('`idlang`=' . cSecurity::toInteger($lang));
     $idcats = $catLangColl->getAllIds();
-    $idcatsString = "('" . implode(',', $idcats) . "')";
+    $idcatsString = "('" . implode('\',\'', $idcats) . "')";
     $catArtColl->resetQuery();
     $catArtColl->deleteByWhereClause('`idart`=' . $idart . ' AND `idcat` IN ' . $idcatsString);
 
