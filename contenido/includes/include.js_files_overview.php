@@ -16,4 +16,5 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $files = new cGuiFileOverview($cfgClient[$client]['js']['path'], stripslashes($_REQUEST['file']), 'js');
+$files->setFileExtension('js');
 $files->render();

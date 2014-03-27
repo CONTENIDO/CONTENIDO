@@ -40,6 +40,12 @@ class cGuiFileOverview extends cGuiPage {
     protected $fileInfoType;
 
     /**
+     * Selected file extension
+     * @var string
+     */
+    protected $fileExtension;
+
+    /**
      * Default constructor. Initializes the class for the directory
      * @param string $dir
      * @param string $markedFile
@@ -55,6 +61,18 @@ class cGuiFileOverview extends cGuiPage {
     }
 
     /**
+     * Display only special file extensions
+     *
+     * @param array | string $extension Name of extensions
+     */
+    public function setFileExtension($extension) {
+    	if (cSecurity::isString($extension)) {
+    		$extension = array($extension);
+    	}
+    	$this->fileExtension = $extension;
+    }
+
+    /**
      * Renders the page
      * @see cGuiPage::render()
      */
@@ -63,9 +81,12 @@ class cGuiFileOverview extends cGuiPage {
 
         // create an array of all files in the directory
         $files = array();
-        foreach(new DirectoryIterator($this->directory) as $file) {
-            if($file->isDir()) {
+        foreach (new DirectoryIterator($this->directory) as $file) {
+            if ($file->isDir()) {
                 continue;
+            }
+            if (!empty($this->fileExtension) && !in_array($file->getExtension(), $this->fileExtension)) {
+            	continue;
             }
             $files[] = $file->getBasename();
         }
