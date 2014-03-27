@@ -163,6 +163,7 @@
 ./classes/genericdb/class.item.collection.php
 ./classes/genericdb/class.item.php
 ./classes/gui/class.backendhelpbox.php
+./classes/gui/class.fileoverview.php
 ./classes/gui/class.foldingrow.php
 ./classes/gui/class.list.php
 ./classes/gui/class.menu.php
@@ -171,6 +172,7 @@
 ./classes/gui/class.objectpager.php
 ./classes/gui/class.page.php
 ./classes/gui/class.scrolllist.php
+./classes/gui/class.sourceeditor.php
 ./classes/gui/class.tableform.php
 ./classes/gui/class.tree.php
 ./classes/html/class.html.alignmenttable.php
@@ -728,9 +730,11 @@
 ./templates/standard/template.file_subnav.html
 ./templates/standard/template.front.loginform.html
 ./templates/standard/template.frontend.group_menu.html
+./templates/standard/template.frontend.user_edit.html
 ./templates/standard/template.frontend.user_menu.html
 ./templates/standard/template.frontend_left_top.html
 ./templates/standard/template.frontend_left_top_filter.html
+./templates/standard/template.generic_file_overview.html
 ./templates/standard/template.generic_form.html
 ./templates/standard/template.generic_left_top.html
 ./templates/standard/template.generic_list.html
@@ -738,6 +742,7 @@
 ./templates/standard/template.generic_list_row.html
 ./templates/standard/template.generic_menu.html
 ./templates/standard/template.generic_page.html
+./templates/standard/template.generic_source_editor.html
 ./templates/standard/template.generic_table_form.html
 ./templates/standard/template.grouprights_create.html
 ./templates/standard/template.grouprights_details.html
@@ -755,6 +760,7 @@
 ./templates/standard/template.inuse_tpl.html
 ./templates/standard/template.js_history.html
 ./templates/standard/template.js_left_top.html
+./templates/standard/template.lang_edit.html
 ./templates/standard/template.lang_left_top.html
 ./templates/standard/template.lang_overview.html
 ./templates/standard/template.lay_edit_form.html
@@ -792,6 +798,7 @@
 ./templates/standard/template.stat_subnav.html
 ./templates/standard/template.stat_top.html
 ./templates/standard/template.str_overview.html
+./templates/standard/template.style_edit_form.html
 ./templates/standard/template.style_history.html
 ./templates/standard/template.style_left_top.html
 ./templates/standard/template.subnav.html

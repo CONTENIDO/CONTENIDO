@@ -74,11 +74,46 @@ if ($action == 'user_delete') {
 
 // Action edit user
 if ($action == 'user_edit') {
+
+	if (count($mclient) > 0) {
+
+		// Prevent setting the permissions for a client without a language of that client
+		foreach ($mclient as $selectedclient) {
+
+			// Get all available languages for selected client
+			$clientLanguageCollection = new cApiClientLanguageCollection();
+			$availablelanguages = $clientLanguageCollection->getLanguagesByClient($selectedclient);
+
+			if (count($mlang) == 0) {
+				// User has no selected language
+				$sNotification = $notification->returnNotification("warning", i18n("Please select a language for your selected client."));
+				$bError = true;
+			} else if ($availablelanguages == false) {
+				// Client has no assigned language(s)
+				$sNotification = $notification->returnNotification("warning", i18n("You can only assign users to a client with languages."));
+				$bError = true;
+			} else {
+
+				// Client has one or more assigned language(s)
+				foreach ($mlang as $selectedlanguage) {
+
+					if (!in_array($selectedlanguage, $availablelanguages)) {
+						// Selected language are not assigned to selected client
+						$sNotification = $notification->returnNotification("warning", i18n("You have to select a client with a language of that client."));
+						$bError = true;
+					}
+				}
+
+			}
+
+		}
+
+	}
+
     $aPerms = buildUserOrGroupPermsFromRequest();
 
     // update user values
     // New Class User, update password and other values
-
     $ocApiUser = new cApiUser($request['userid']);
     $ocApiUser->setRealName($request['realname']);
     $ocApiUser->setMail($request['email']);
