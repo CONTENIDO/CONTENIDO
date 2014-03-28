@@ -249,6 +249,6 @@ $page->set('s', 'NUMBER', $iNumberOfUsers);
 // check for new updates
 $oUpdateNotifier = new cUpdateNotifier($cfg, $vuser, $perm, $sess, $belang);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
-$page->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
+$page->set('s', 'UPDATENOTIFICATION', mb_convert_encoding($sUpdateNotifierOutput, cRegistry::getLanguage()->get('encoding')));
 
 $page->render();

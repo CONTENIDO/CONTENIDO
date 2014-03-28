@@ -109,8 +109,8 @@ foreach ($allModules as $idmod => $module) {
         $link->setCustom("idmod", $idmod);
 
         $moduleName = (strlen(trim($module['name'])) > 0) ? $module['name'] : i18n("- Unnamed module -");
-        $sName = cString::stripSlashes(conHtmlSpecialChars($moduleName)); //$cApiModule->get("name");
-        $descr = cString::stripSlashes(str_replace("'", "&#39;", conHtmlSpecialChars(nl2br($module ['description']))));
+        $sName = mb_convert_encoding(cString::stripSlashes(conHtmlSpecialChars($moduleName)), cRegistry::getLanguage()->get('encoding')); //$cApiModule->get("name");
+        $descr = mb_convert_encoding(cString::stripSlashes(str_replace("'", "&#39;", conHtmlSpecialChars(nl2br($module ['description'])))), cRegistry::getLanguage()->get('encoding'));
 
         // Do not check modules (or don't force it) - so, let's take a look into the database
         $sModuleError = $module['error']; //$cApiModule->get("error");
