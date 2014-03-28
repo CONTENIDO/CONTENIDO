@@ -433,6 +433,12 @@ msgstr "Formular anzeigen"
 msgid "DELETE_FORM"
 msgstr "Formular löschen"
 
+msgid "FOLLOWING_LIST_USES_FORM"
+msgstr "Die folgenden Artikel benutzen dieses Formular:"
+
+msgid "INUSE_DIALOG_TITLE"
+msgstr "Formular ist in Benutzung"
+
 ; class.pifa.gui.php TODO check if neccessary
 
 msgid "please select a form"
