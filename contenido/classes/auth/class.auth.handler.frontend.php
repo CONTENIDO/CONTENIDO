@@ -24,6 +24,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cAuthHandlerFrontend extends cAuthHandlerAbstract {
     protected $_defaultNobody = true;
 
+    public function __construct() {
+    	$cfg = cRegistry::getConfig();
+    	$this->_lifetime = (int)$cfg['frontend']['timeout'];
+
+    	if ($this->_lifetime == 0) {
+    		$this->_lifetime = 15;
+    	}
+    }
+
     public function preAuthorize() {
         $password = $_POST['password'];
 

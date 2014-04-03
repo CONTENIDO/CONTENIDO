@@ -32,6 +32,9 @@ $cfg['version'] = CON_VERSION;
 // (int) Backend timeout
 $cfg['backend']['timeout'] = 60;
 
+// (int) Frontend timeout
+$cfg['frontend']['timeout'] = 15;
+
 // (bool) Use Pseudo-Cron?
 $cfg['use_pseudocron'] = true;
 
