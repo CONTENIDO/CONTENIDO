@@ -389,7 +389,7 @@ $oPager->setExpanded(true);
 $link = new cHTMLLink();
 $menu = new cGuiMenu();
 if ((int) $client > 0) {
-    if ($perm->have_perm_area_action($area, "frontendgroup_create")) {
+    if ($perm->have_perm_area_action("frontendgroups", "frontendgroup_create")) {
         $link->setLink('javascript:Con.multiLink(\'right_bottom\', \'' . $sess->url("main.php?area=frontendgroups&frame=4&action=frontendgroup_create") . '\');');
         $menu->setTitle("-2", i18n("Create group"));
     } else {
