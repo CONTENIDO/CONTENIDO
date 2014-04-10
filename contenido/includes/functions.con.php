@@ -1602,7 +1602,7 @@ function isStartArticle($idartlang, $idcat, $idlang, $db = NULL) {
  * @param cDb|NULL $db If specified, uses the given db object (NOT used)
  * @return array Flat array which contains all category id's
  */
-function conGetCategoryAssignments($idart, $db = NULL) {echo "Test";
+function conGetCategoryAssignments($idart, $db = NULL) {
 
 	// Return empty array if idart is null (or empty)
 	if (empty($idart)) {
