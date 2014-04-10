@@ -635,17 +635,18 @@ function conDeleteart($idart) {
     $idartlang = $artLang->get('idartlang');
     $idtplcfg = $artLang->get('idtplcfg');
 
-    // Fetch idcat
-    $catArt = new cApiCategoryArticle();
-    $catArt->loadBy('idart', (int) $idart);
-    $idcat = $catArt->get('idcat');
+    $catArtColl = new cApiCategoryArticleCollection();
+    $cats = $catArtColl->getIdsByWhereClause("idart = " . (int) $idart);
 
-    // Reset startidartlang
-    if (isStartArticle($idartlang, $idcat, $lang)) {
-        $catLang = new cApiCategoryLanguage();
-        $catLang->loadByCategoryIdAndLanguageId($idcat, $lang);
-        $catLang->set('startidartlang', 0);
-        $catLang->store();
+    // Fetch idcat
+    foreach ($cats as $idcat) {
+	    // Reset startidartlang
+	    if (isStartArticle($idartlang, $idcat, $lang)) {
+	        $catLang = new cApiCategoryLanguage();
+	        $catLang->loadByCategoryIdAndLanguageId($idcat, $lang);
+	        $catLang->set('startidartlang', 0);
+	        $catLang->store();
+	    }
     }
 
     $contentColl = new cApiContentCollection();
