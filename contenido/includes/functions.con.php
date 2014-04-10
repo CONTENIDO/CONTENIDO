@@ -1602,7 +1602,13 @@ function isStartArticle($idartlang, $idcat, $idlang, $db = NULL) {
  * @param cDb|NULL $db If specified, uses the given db object (NOT used)
  * @return array Flat array which contains all category id's
  */
-function conGetCategoryAssignments($idart, $db = NULL) {
+function conGetCategoryAssignments($idart, $db = NULL) {echo "Test";
+
+	// Return empty array if idart is null (or empty)
+	if (empty($idart)) {
+		return array();
+	}
+
     $categories = array();
     $oCatArtColl = new cApiCategoryArticleCollection();
     $entries = $oCatArtColl->getFieldsByWhereClause(array(
