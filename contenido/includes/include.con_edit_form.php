@@ -543,7 +543,15 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $button = '';
     $moveOK = true;
 
-    if ($cValue == false || $sValue == false) {
+    if ($cValue == true || $sValue == true) {
+    	// Multi assign
+    	$tpl->set('s', 'NOTIFICATION_SYNCHRON', '');
+
+    	$tpl2->set('s', 'ID', 'catsel');
+    	$tpl2->set('s', 'NAME', 'idcatnew[]');
+    	$tpl2->set('s', 'CLASS', 'text_medium');
+    	$tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14"' . $disabled);
+    } else {
         $sql = "SELECT
                     idartlang, online
                 FROM
@@ -559,6 +567,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         } else {
             $tpl->set('s', 'NOTIFICATION_SYNCHRON', '');
         }
+
 		if (count(conGetCategoryAssignments($idart)) > 1) {
 			// Old behaviour
 			$tpl2 = new cTemplate();
@@ -573,7 +582,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 			$boxDescr = i18n("Do you really want to remove the assignments to all categories except the current one?");
 
 			$rbutton->setEvent("click", 'Con.showConfirmation("' . $boxDescr . '", function() { removeAssignments(' . $idart . ',' . $idcat . '); });return false;');
-			$button = "<br>" . $rbutton->render();
+			$button = "<br />" . $rbutton->render();
 
 			$moveOK = false;
 		} else {
@@ -582,14 +591,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 			$tpl2->set('s', 'NAME', 'idcatnew[]');
 			$tpl2->set('s', 'CLASS', 'text_medium');
 			$tpl2->set('s', 'OPTIONS', 'size="14" ' . $disabled);
-            }
+        }
 
-    } else {
-        // Old behaviour
-        $tpl2->set('s', 'ID', 'catsel');
-        $tpl2->set('s', 'NAME', 'idcatnew[]');
-        $tpl2->set('s', 'CLASS', 'text_medium');
-        $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14"' . $disabled);
     }
 
     if (isset($tplinputchanged) && $tplinputchanged == 1) {
@@ -660,7 +663,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         	$tpl2->set('d', 'TITLETAG', '');
         	$tpl2->set('d', 'DISABLED', '');
         }
-        
+
         if (!in_array($db->f("idcat"), $tmp_idcat_in_art)) {
             $tpl2->set('d', 'VALUE', $db->f("idcat"));
             $tpl2->set('d', 'SELECTED', '');

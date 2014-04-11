@@ -23,6 +23,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class PifaLeftBottomPage extends cGuiPage {
 
     /**
+     * id of the PIFA content type
+     *
+     * @var int
+     */
+    protected $typeId;
+
+    /**
      * Create an instance.
      */
     public function __construct() {
@@ -41,9 +48,16 @@ class PifaLeftBottomPage extends cGuiPage {
 
         parent::__construct('left_bottom', Pifa::getName());
 
+        // get the id of the content type
+        $typeCollection = new cApiTypeCollection();
+        $typeCollection->select('type = "CMS_PIFAFORM"');
+        $type = $typeCollection->next();
+        $this->typeId = $type->get('idtype');
+
         $this->addScript('form_assistant.js');
         $this->addScript('left_bottom.js');
 
+        $this->set('s', 'dialog_title', Pifa::i18n('INUSE_DIALOG_TITLE'));
         $this->set('s', 'menu', $this->_getMenu());
 
         // add translations to template
@@ -70,6 +84,32 @@ class PifaLeftBottomPage extends cGuiPage {
 
         // $formIcon = Pifa::getUrl() . 'images/icon_form.png';
 
+        // collect usage information from the content table
+        $contentCollection = new cApiContentCollection();
+        // select all entries about the pifa content type
+        $formContent = $contentCollection->getFieldsByWhereClause(array(
+            'idartlang',
+            'value'
+        ), 'idtype = "' . $this->typeId . '"');
+        // get the idform and the related cApiArticleLanguage object and save them in an array
+        $assignedForms = array();
+        foreach ($formContent as $formRow) {
+            // read settings
+            $formRow['value'] = conHtmlEntityDecode($formRow['value']);
+            $formRow['value'] = utf8_encode($formRow['value']);
+            $settings = cXmlBase::xmlStringToArray($formRow['value']);
+            // if it was successful append the array of articles using this form
+            if ($settings['idform'] != '') {
+                if (is_array($assignedForms[$settings['idform']])) {
+                    $assignedForms[$settings['idform']][] = new cApiArticleLanguage($formRow['idartlang']);
+                } else {
+                    $assignedForms[$settings['idform']] = array(
+                        new cApiArticleLanguage($formRow['idartlang'])
+                    );
+                }
+            }
+        }
+
         // create menu
         $menu = new cGuiMenu();
         while (false !== $form = $forms->next()) {
@@ -85,6 +125,26 @@ class PifaLeftBottomPage extends cGuiPage {
             $link->setCustom('idform', $idform);
             $link->setAttribute('title', 'idform: ' . $idform);
             $menu->setLink($idform, $link);
+
+            // if this is true, then the form is in use
+            if (isset($assignedForms[$idform])) {
+                // create a link for the action
+                $link = new cHTMLLink();
+                // set the class and the dialog text
+                $link->setClass('in_use_link');
+                $dialogText = Pifa::i18n("FOLLOWING_LIST_USES_FORM") . "<br><br>";
+                foreach($assignedForms[$idform] as $article) {
+                    $dialogText .= '<b>' . $article->get('title') . '</b> - (' . $article->get('idart') . ')<br>';
+                }
+                $link->setAttribute("data-dialog-text", $dialogText);
+                $link->setLink('javascript://');
+
+                $image = new cHTMLImage();
+                $image->setSrc($cfg['path']['images'] . 'exclamation.gif');
+                $link->setContent($image->render());
+
+                $menu->setActions($idform, 'inuse', $link);
+            }
 
             // create link to delete the form
             if (cRegistry::getPerm()->have_perm_area_action('form', PifaRightBottomFormPage::DELETE_FORM)) {

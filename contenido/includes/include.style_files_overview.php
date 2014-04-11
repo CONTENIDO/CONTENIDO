@@ -16,4 +16,5 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $files = new cGuiFileOverview($cfgClient[$client]['css']['path'], stripslashes($_REQUEST['file']), 'css');
+$files->setFileExtension('css');
 $files->render();
