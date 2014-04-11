@@ -42,7 +42,7 @@ $areasNavSubs = getSubnavigationsByAreaName($area);
 
 foreach ($areasNavSubs as $areasNavSub) {
     $areaName = $areasNavSub['name'];
-    $caption = $areasNavSub['caption'];
+    $caption = htmlentities($areasNavSub['caption']);
 
     if ($perm->have_perm_area_action($areaName)) {
     	if ($areaName != "upl_edit") {

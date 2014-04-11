@@ -49,7 +49,7 @@ if (isset($_GET['idcat']) && $_GET['idcat'] != 0) {
 
     foreach ($areasNavSubs as $areasNavSub) {
         $areaName = $areasNavSub['name'];
-        $caption = $areasNavSub['caption'];
+        $caption = htmlentities($areasNavSub['caption']);
 
         # Set template data
         $tpl->set("d", "ID", 'c_'.$tpl->dyn_cnt);
