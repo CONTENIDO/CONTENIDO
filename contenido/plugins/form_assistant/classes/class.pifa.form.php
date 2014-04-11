@@ -382,8 +382,13 @@ class PifaForm extends Item {
 
         // build form
         $htmlForm = new cHTMLForm($opt['name'], $opt['action'], $opt['method'], $opt['class']);
+
         // set ID (workaround: remove ID first!)
         $htmlForm->removeAttribute('id')->setID('pifa-form-' . $idform);
+
+        // add hidden input field with idform in order to be able to distinguish
+        // several forms on a single page when one of them is submitted
+        $htmlForm->appendContent("<input type=\"hidden\" name=\"idform\" value=\"$idform\">");
 
         // add fields
         foreach ($this->getFields() as $pifaField) {

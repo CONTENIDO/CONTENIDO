@@ -171,22 +171,32 @@ abstract class PifaAbstractFormModule {
      */
     public function render($return = false) {
 
-        // determine request method
-        $requestMethod = $this->_getRequestMethod();
-
-        // always handle POST method in backend edit mode as GET action
-        if (cRegistry::isBackendEditMode()) {
-            $requestMethod = self::GET;
-        }
-
         // dispatch request method
-        switch ($requestMethod) {
+        switch ($this->_getRequestMethod()) {
             case self::GET:
+
                 $this->doGet();
                 break;
+
             case self::POST:
+
+                // always handle POST method in backend edit mode as GET action
+                if (cRegistry::isBackendEditMode()) {
+                    $this->doGet();
+                    break;
+                }
+
+                // execute POST only if current form has been submitted
+                // and just GET form if POST has another reason (other form etc.)
+                if (isset($_POST['idform']) && $_POST['idform'] != $this->getSetting('pifaform_idform')) {
+                    $this->doGet();
+                    break;
+                }
+
+                // handle form as if it were posted
                 $this->doPost();
                 break;
+
             default:
                 $msg = Pifa::i18n('UNKNOWN_REQUEST_METHOD');
                 throw new PifaException($msg);

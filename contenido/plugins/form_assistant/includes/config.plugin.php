@@ -287,10 +287,10 @@ class Pifa {
     // $e = error_get_last();
 
     // $img = new Securimage(array(
-    // 'image_height' => 45,
-    // 'image_width' => 45 * M_E,
-    // 'perturbation' => 0,
-    // 'num_lines' => 3,
+    // 'image_height' => (int) getEffectiveSetting('pifa', 'captcha-image-height', 80),
+    // 'image_width' => (int) getEffectiveSetting('pifa', 'captcha-image-width', 215),
+    // 'perturbation' => (int) getEffectiveSetting('pifa', 'captcha-perturbation', 0),
+    // 'num_lines' => (int) getEffectiveSetting('pifa', 'captcha-num-lines', 3),
     // 'session_name' => cRegistry::getClientId() . 'frontend'
     // ));
 

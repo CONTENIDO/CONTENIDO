@@ -407,10 +407,12 @@ class PifaField extends Item {
                     $content[] = $this->_getElemField();
                     $content[] = $this->_getElemHelp();
                     $content[] = $this->_getElemScript();
-                    // / add this fields error message
-                    if (array_key_exists($this->get('idfield'), $errors)) {
+                    // add this fields error message
+                    if (isset($errors[$this->get('idfield')])) {
                         $error = $errors[$this->get('idfield')];
-                        $content[] = new cHTMLParagraph($error, 'pifa-error-message');
+                        if (0 < strlen($error)) {
+                            $content[] = new cHTMLParagraph($error, 'pifa-error-message');
+                        }
                     }
                 } catch (PifaNotImplementedException $e) {
                     return NULL; // PASS // warning?
