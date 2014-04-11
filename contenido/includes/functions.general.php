@@ -1541,7 +1541,7 @@ function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html') {
             $aLanguageEncodings[$oItem->get('idlang')] = $oItem->get('encoding');
         }
 
-        $charset = 'ISO-8859-1';
+        $charset = 'utf-8';
         if (isset($aLanguageEncodings[$lang])) {
             if (in_array($aLanguageEncodings[$lang], $cfg['AvailableCharsets'])) {
                 $charset = $aLanguageEncodings[$lang];
