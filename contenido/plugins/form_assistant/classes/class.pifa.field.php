@@ -491,6 +491,9 @@ class PifaField extends Item {
         // }
 
         $elemLabel = new cHTMLLabel($label, 'pifa-field-elm-' . $idfield, 'pifa-field-lbl');
+        if (self::INPUTRADIO === $fieldType) {
+            $elemLabel->removeAttribute('for');
+        }
         // set ID (workaround: remove ID first!)
         $elemLabel->removeAttribute('id');
 
@@ -705,23 +708,22 @@ class PifaField extends Item {
 
             // case self::CAPTCHA:
 
-            // // input
-            // $elemField = new cHTMLTextbox($columnName);
-            // // set ID (workaround: remove ID first!)
-            // $elemField->removeAttribute('id')->setID($id);
-            // if (NULL !== $value) {
-            // $elemField->setValue($value);
-            // }
+                // // input
+                // $elemField = new cHTMLTextbox($columnName);
+                // // set ID (workaround: remove ID first!)
+                // $elemField->removeAttribute('id')->setID($id);
+                // if (NULL !== $value) {
+                // $elemField->setValue($value);
+                // }
 
-            // // surrounding div
-            // // img src (front_content.php?securimage) will be caught by
-            // // Pifa::afterLoadPlugins
-            // $elemField = new cHTMLDiv(array(
-            // new cHTMLImage('front_content.php?securimage'),
-            // $elemField
-            // ));
+                // // surrounding div
+                // // img src (front_content.php?securimage)
+                // // will be caught by Pifa::afterLoadPlugins
+                // $img = new cHTMLImage('front_content.php?securimage');
+                // $img->setAttribute('alt', 'captcha');
+                // $elemField = new cHTMLDiv(array($img, $elemField));
 
-            // break;
+                // break;
 
             case self::BUTTONSUBMIT:
             case self::BUTTONRESET:
