@@ -30,7 +30,6 @@
 if(!defined('CON_FRAMEWORK'))
 	die('Illegal call');
 
-
 $aExectime = array();
 $aExectime["fullstart"] = getmicrotime();
 
@@ -108,7 +107,7 @@ $areasNavSubs = getSubnavigationsByAreaName($area);
 
 foreach ($areasNavSubs as $areasNavSub) {
     $areaName = $areasNavSub['name'];
-    $caption = $areasNavSub['caption'];
+    $caption = htmlentities($areasNavSub['caption']);
 
 	/* for Main-Area*/
 	if ($areaName == $area) {
