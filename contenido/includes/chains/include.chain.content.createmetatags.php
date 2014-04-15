@@ -182,7 +182,7 @@ function cecCreateMetatags($metatags) {
                     // Build these 3 metatags from entries in homepage
                     $sCurrentTag = strtolower($value['name']);
                     $iCheck = CheckIfMetaTagExists($metatags, $sCurrentTag);
-                    if($sCurrentTag != '') {
+                    if($sCurrentTag != '' && $arrHomepageMetaTags[$sCurrentTag] != "") {
                         $metatags[$iCheck]['name'] = $sCurrentTag;
                         $metatags[$iCheck]['content'] = $arrHomepageMetaTags[$sCurrentTag];
                     }
