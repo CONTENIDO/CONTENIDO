@@ -6,6 +6,18 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id: CHANGELOG.txt 1230 2010-10-13 12:14:37Z timo.trautmann $:
 
+Release 4.8.20
+----------------------------------------------------------------------	
+
+** Bug
+    * [CON-1658] - Multiple issues with scroll properties in IE 11
+    * [CON-1679] - Inuse entries are not proper removed
+    * [CON-1707] - Article in use issue
+    * [CON-1730] - Tinymce does not work in IE 11
+    * [CON-1762] - Update copyright year
+    * [CON-1807] - Encoding problems in the subnav of 4.8
+
+
 Release 4.8.19
 ----------------------------------------------------------------------	
 
