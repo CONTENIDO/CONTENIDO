@@ -265,7 +265,7 @@ NO WARRANTY
 END OF TERMS AND CONDITIONS
 
 Contenido is a Content Management System based on PHP.
-Copyright (C) 2000-2013 four for business AG. 
+Copyright (C) 2000-2014 four for business AG. 
 
 This program is free software; you can redistribute it and/or modify it under 
 the terms of the GNU General Public License as published by the Free Software 
@@ -281,7 +281,7 @@ this program; if not, write to the
 Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 Contenido, versions 0.9-4.8 and higher, 
-Copyright (C) 2000-2013 by four for business AG. 
+Copyright (C) 2000-2014 by four for business AG. 
 
 Contenido comes with ABSOLUTELY NO WARRANTY.
 
