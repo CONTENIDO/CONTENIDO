@@ -269,8 +269,8 @@ class cGuiPage {
 
         // Warning message for not existing resources
         if($perm->isSysadmin($currentuser) && strpos(trim($script), '<script') === false &&
-           ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $filePathName)) ||
-           (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)))) {
+           ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $filePathName)) &&
+           (!cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)))) {
 			$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
 
