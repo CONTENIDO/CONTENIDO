@@ -14,7 +14,7 @@
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
-
+cInclude("includes", "functions.con.php");
 // Initialization
 $oPage = new cGuiPage("newsletter_edit", "newsletter");
 $oRcpGroups = new NewsletterRecipientGroupCollection();
@@ -494,6 +494,8 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
     $oPage->addScript($sExecScript);
 
     $oPage->setContent($oForm);
+} else {
+    $oPage->setContent("");
 }
 
 $oPage->render();

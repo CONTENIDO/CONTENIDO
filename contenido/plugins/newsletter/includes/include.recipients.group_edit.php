@@ -108,7 +108,6 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
         if ($perm->have_perm_area_action($area, "recipientgroup_recipient_delete") && is_array($_REQUEST["deluser"])) {
             foreach ($_REQUEST["deluser"] as $iRcpID) {
                 if (is_numeric($iRcpID)) {
-                    echo "yo: " . $iRcpID;
                     $oRGroupMembers->remove($_REQUEST["idrecipientgroup"], $iRcpID);
                 }
             }
@@ -184,7 +183,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oForm->add(i18n("Default group", 'newsletter'), $oCkbDefault->toHTML(false));
 
     // Member list options folding row
-    $oMemberListOptionRow = new cGuiFoldingRow("a91f5540-52db-11db-b0de-0800200c9a66", i18n("Member list options", 'newsletter'));
+    $oMemberListOptionRow = new cGuiFoldingRow("a91f5540-52db-11db-b0de-0800200c9a66", i18n("Member list options", "newsletter"), "member");
 
     $oSelItemsPerPage = new cHTMLSelectElement("member_elemperpage");
     $oSelItemsPerPage->autoFill(array(
@@ -394,7 +393,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
     // Outsiders
     // Outsider list options folding row
-    $oOutsiderListOptionRow = new cGuiFoldingRow("ca633b00-52e9-11db-b0de-0800200c9a66", i18n("Outsider list options", 'newsletter'));
+    $oOutsiderListOptionRow = new cGuiFoldingRow("ca633b00-52e9-11db-b0de-0800200c9a66", i18n("Outsider list options", 'newsletter'), "outsider");
 
     $oSelItemsPerPage = new cHTMLSelectElement("outsider_elemperpage");
     $oSelItemsPerPage->autoFill(array(

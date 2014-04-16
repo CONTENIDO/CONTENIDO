@@ -187,7 +187,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             0,
             i18n("-- none --", 'newsletter')
         );
-        while ($oArticle = $oTemplateArticles->next()) {
+        while ($oArticle = $oTemplateArticles->nextArticle()) {
             $aItems[] = array(
                 $oArticle->get("idart"),
                 $oArticle->get("title")
