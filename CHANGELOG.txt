@@ -14,6 +14,7 @@ Release 4.8.20
     * [CON-1679] - Inuse entries are not proper removed
     * [CON-1730] - Tinymce does not work in IE 11
     * [CON-1807] - Encoding problems in the subnav of 4.8
+    * [CON-1811] - Auto generated Metatags are not valid
 
 ** Task
     * [CON-1762] - Update copyright year
@@ -223,7 +224,7 @@ Release 4.8.13
 ** Bug
     * [CON-249] - Bug in Contenido_FrontendNavigation::isActiveChild
     * [CON-250] - Changing template to none not working right under Artikel->Kategorie bearbeiten
-    * [CON-252] - Missing german umlaut ü in function capiStrReplaceDiacritics
+    * [CON-252] - Missing german umlaut ï¿½ in function capiStrReplaceDiacritics
     * [CON-254] - Tinymce does not support ancor links
     * [CON-255] - Tiny does not store content, which cointains plain "|" character
     * [CON-256] - The usage of CEC_Hook::execute brings more problems as advantages
@@ -295,7 +296,7 @@ Release 4.8.12
 ----------------------------------------------------------------------	
 ** Bug
 
-    * [CON-240] - Rightsmanagement: Dateiverwaltung is called Übersicht instead of Dateiverwaltung
+    * [CON-240] - Rightsmanagement: Dateiverwaltung is called ï¿½bersicht instead of Dateiverwaltung
     * [CON-245] - Height of categories in "Content -> Articles" in Internet Explorer 8
     * [CON-247] - parse error bug in demomodule gallery
 
@@ -359,7 +360,7 @@ Release 4.8.9
 ----------------------------------------------------------------------	
 ** Bug
 
-    * [CON-102] - XHTML Bug im Backend <cx /> / werden bei der Speicherung gelöscht
+    * [CON-102] - XHTML Bug im Backend <cx /> / werden bei der Speicherung gelï¿½scht
     * [CON-204] - Can't insert Layouts from Modul-Package
     * [CON-205] - Articel-left-top does not change the Cache on Category-Template change
     * [CON-206] - Preview at protected areas don't work
@@ -400,7 +401,7 @@ Release 4.8.8
 
 ** Improvement
 
-    * [CON-15] - Newsletter Empfänger-Icon und Empfänger-Gruppen-Icon ändern
+    * [CON-15] - Newsletter Empfï¿½nger-Icon und Empfï¿½nger-Gruppen-Icon ï¿½ndern
     * [CON-67] - contenido mandant auf mehreren domains
     * [CON-193] - class.update.notifier.php tries to generate cache folder in contenido folder and may fail on certain server configurations
     * [CON-197] - Usability Client Settings
@@ -413,13 +414,13 @@ Release 4.8.8
 ** Task
 
     * [CON-171] - documentation of new security functions for plugin-developer
-    * [CON-185] - New CEC für Upl-Detail
+    * [CON-185] - New CEC fï¿½r Upl-Detail
 
 
 Release 4.8.7
 ----------------------------------------------------------------------	
 ** Bug
-    * [CON-139] - Link für Handbuch im cfg-array
+    * [CON-139] - Link fï¿½r Handbuch im cfg-array
     * [CON-144] - plugin createmetatags entfernt akzentuierte Zeichen
                   aus den keywords
     * [CON-154] - Creating inactive user by using a date in history
@@ -444,18 +445,18 @@ Release 4.8.7
     * [CON-169] - Missing descriptions for some log actions
     * [CON-170] - Missing username in backenduser delete-confirm-box
     * [CON-172] - Setup hangs between step 7 and 8
-    * [CON-173] - Im Firefox 3: Artikelübersicht/Kategorie lässt sich
-                  nicht schützen
+    * [CON-173] - Im Firefox 3: Artikelï¿½bersicht/Kategorie lï¿½sst sich
+                  nicht schï¿½tzen
     * [CON-174] - Fehlender Eintrag in der config.misc.php
 
 ** Improvement
     * [CON-XXX] - Added new Debug object Debug_VisibleAdv.class.php
-    * [CON-60] - Umlaute im Backend defekt -> Problem gelöst->bitte integrieren!
+    * [CON-60] - Umlaute im Backend defekt -> Problem gelï¿½st->bitte integrieren!
     * [CON-70] - feature request: meta tags vordefinition
-    * [CON-99] - Backend Hauptmenü Javascriptsteuerung
+    * [CON-99] - Backend Hauptmenï¿½ Javascriptsteuerung
     * [CON-115] - Move con_cache activation to config file
     * [CON-119] - Caching
-    * [CON-142] - Linkchecker hängt nach Migration eines großen Portals
+    * [CON-142] - Linkchecker hï¿½ngt nach Migration eines groï¿½en Portals
     * [CON-143] - php-Funktion mail() vermeiden, class.phpmailer.php verwenden
 	* [CON-176] - Contenido Security Class
 	* [CON-XXX] - Some XSS/RFI Bugfixes
@@ -463,7 +464,7 @@ Release 4.8.7
 ** Task
     * [CON-6] - Lock/ Unlock (neues Icon finden und umbenennen)
     * [CON-140] - class.ui.php Funktion setCellExtra
-    * [CON-146] - neue Adresse von 4fb im Impressum ändern
+    * [CON-146] - neue Adresse von 4fb im Impressum ï¿½ndern
     * [CON-148] - "docs\techref\backend\backend.customizing.html" auf den aktuellen Stand bringen
 	* [CON-XXX] - Removed Java Applets
 	* [CON-XXX] - Removed SPAW editor
@@ -491,9 +492,9 @@ Release 4.8.4
 ----------------------------------------------------------------------
 ** Bug
     * [CON-127] - release.php/release.xml aktualisieren - manuelle
-                  Änderungen in setup/data/base ungünstig -
+                  ï¿½nderungen in setup/data/base ungï¿½nstig -
                   conAlloc-Primary Key-Definition - Plugins
-                  berücksichtigen
+                  berï¿½cksichtigen
     * [CON-128] - Idlang for new languages skips ids example: 4 6 8 10
                   for new language ids
     * [CON-129] - todo mails were not send to user
@@ -502,7 +503,7 @@ Release 4.8.4
     * [CON-133] - Logo for clients crashes back end
     * [CON-135] - Dateiverwaltung: It is not possible to come back to
                   root directory
-    * [CON-136] - Eingabe von Templatenamen länger 30 Zeichen unmöglich
+    * [CON-136] - Eingabe von Templatenamen lï¿½nger 30 Zeichen unmï¿½glich
     * [CON-137] - Klasse UI_Table_Form setzt Template-Variablen nicht.
     * [CON-138] - Artikelsperrung wird aufgehoben durch Linkwahldialog
 
@@ -511,7 +512,7 @@ Release 4.8.4
                   already defined in layout
     * [CON-134] - Unterschiedliches Verhalten von "Administration ->
                   Benutzer -> Bereiche" und "Administration ->
-                  Gruppen -> Bereiche", wenn keine Übersetzungen der
+                  Gruppen -> Bereiche", wenn keine ï¿½bersetzungen der
                   Actions vorhanden sind
 
 ** New feature
@@ -538,7 +539,7 @@ Release 4.8.3
     * [CON-110] - Content Allocation: Translation logic changed/Bugfix
     * [CON-111] - Artikel wird bei setzen eines Endzeitpunkts und ohne
                   Angabe des Startzeitpunkts immer offline gesetzt wird
-    * [CON-112] - sicherheitslücken
+    * [CON-112] - sicherheitslï¿½cken
     * [CON-116] - File functions.general.php has UTF-8 Encoding
     * [CON-118] - Many modules / plugins working with PEAR::CACHE
                   references the wrong location
@@ -549,7 +550,7 @@ Release 4.8.3
     * [CON-122] - Fehlende globale Variablen in strRenameCategory()
                   (functions.str.php) $cfgClient und $client nicht
                   global definiert
-    * [CON-123] - Fehlende Überprüfung ob $tpl instanziiert ist in
+    * [CON-123] - Fehlende ï¿½berprï¿½fung ob $tpl instanziiert ist in
                   Modulen
     * [CON-124] - Contenido adds double slashes to client paths when
                   a new client is created
@@ -570,14 +571,14 @@ Release 4.8.2
 ** Bug
     * [CON-64]  - conMakeStart bei start_compatible = true fehlerhaft
     * [CON-80]  - Bugs in Content Allocation und conlib/mysql.inc
-    * [CON-82]  - demo mandant unschönheiten
+    * [CON-82]  - demo mandant unschï¿½nheiten
     * [CON-90]  - Update auf leere DB
     * [CON-91]  - Fehler im Dateimanager bei Install ohne Mandant
     * [CON-93]  - Frontenduser im Mustermandanten fehlt
     * [CON-96]  - Installation Error: MySQL-Error 1292 - Fehlende
-                  Standardwerte in INSERT STATEMENTS fŸr sysadmin und
+                  Standardwerte in INSERT STATEMENTS fï¿½r sysadmin und
                   admin
-    * [CON-97]  - Markieren des Modulcodes nicht mšglich in IE7
+    * [CON-97]  - Markieren des Modulcodes nicht mï¿½glich in IE7
     * [CON-98]  - short_open_tag direktive
     * [CON-101] - Beispielmandant login
 
@@ -593,7 +594,7 @@ Release 4.8.1
 ----------------------------------------------------------------------
 ** Bug
     * [CON-77] - Reiter in der Dateiverwaltung wechselt nach Upload
-                 nicht in Übersichtsseite
+                 nicht in ï¿½bersichtsseite
     * [CON-78] - strip_tags() im Modul "Suchausgabe"
 
 ** Improvement
@@ -602,29 +603,29 @@ Release 4.8.1
 
 4.8
 ----------------------------------------------------------------------
-- Bug in Backendsearch bei eingeschränkten Berechtigungen entfernt
-- Bug in functions con - Überflüssiges SQL Statement entfernt und
+- Bug in Backendsearch bei eingeschrï¿½nkten Berechtigungen entfernt
+- Bug in functions con - ï¿½berflï¿½ssiges SQL Statement entfernt und
   Kommentierung angepasst
-- Vereinheitlichung der Contenidohinweisboxen und Einführung dreier
-  globaler Farben für Hinweis, Error und Information/Erfolg
+- Vereinheitlichung der Contenidohinweisboxen und Einfï¿½hrung dreier
+  globaler Farben fï¿½r Hinweis, Error und Information/Erfolg
 - Fehler in perm.inc behoben:
   Siehe http://contenido.org/forum/viewtopic.php?t=16227
-- Platzhalter für Templateselectboxen damit diese in CSS-Layouts
-  weniger überlagert sind. Kürzung von langen Templatenamen
-- Contenido FrontendNavigation-Klassen überarbeitet
+- Platzhalter fï¿½r Templateselectboxen damit diese in CSS-Layouts
+  weniger ï¿½berlagert sind. Kï¿½rzung von langen Templatenamen
+- Contenido FrontendNavigation-Klassen ï¿½berarbeitet
 - Diverse Fixes an der Seitennavigation des Backends in allen
   Seitennavigationen. Refresh mit JavaScript
 - "Warning: Call-time pass-by-reference has been deprecated;" in
   Modul Suchausgabe fixxed
-- Setup: Integration eines Layers der Details über optional zu
+- Setup: Integration eines Layers der Details ï¿½ber optional zu
   installierende Plugins beinhaltet.
 - Modulfilter, Angabe von Bereich in dem Gesucht werden soll
   (Kommentar, Input, Output, Name)
-- Sprachenname im Header wird gekürzt damit Header bei langen
+- Sprachenname im Header wird gekï¿½rzt damit Header bei langen
   Bezeichnungen nicht umbricht.
-- Löschenicons in Administration->System, Bugentfernung in den neuen
-  Debugklassen unter contenido/classes/debug, Einfügen fehlender
-  Übersetzungen in die deutsche Sprache.
+- Lï¿½schenicons in Administration->System, Bugentfernung in den neuen
+  Debugklassen unter contenido/classes/debug, Einfï¿½gen fehlender
+  ï¿½bersetzungen in die deutsche Sprache.
 - Newsletterbugfix des left_top Frames, kleinere weitere Fixes
 - Kleinere Bugfixxes bei Passwort vergessen, Administration->Frontend,
   Erkennung von Installierten Plugins bei Update
@@ -632,23 +633,23 @@ Release 4.8.1
   hinterlegt hat (kann unter Administration->System->
   Systemeinstellungen konfiguriert und auch abgeschaltet werden).
 - Rechtezuweisung in Content nun durch Typisierung und Auswahl
-  übersichtlicher, Rechteübersetzungen, Anpassungen, Fixing,
+  ï¿½bersichtlicher, Rechteï¿½bersetzungen, Anpassungen, Fixing,
   Darstellungsbugs
-- Administration -> Frontend: Überarbeitetes Interface zur Zuweisung
+- Administration -> Frontend: ï¿½berarbeitetes Interface zur Zuweisung
   von Benutzern zu Gruppen
-- Tabellenpraefixe wurden den Plugintabellen hinzugefügt. Bitte bei
+- Tabellenpraefixe wurden den Plugintabellen hinzugefï¿½gt. Bitte bei
   einer Aktualisierung diese Praefixe manuell nachtragen oder neu
   installieren. Das Setup wurde angepasst, Update an dieser Stelle
-  nicht möglich.
-- Auf der Login Seite können sich Benutzer des Systems ihr Passwort
+  nicht mï¿½glich.
+- Auf der Login Seite kï¿½nnen sich Benutzer des Systems ihr Passwort
   zusenden lassen.
-- Bei der Sprachsynchronisation ist es jetzt möglich, neben einzelnen
+- Bei der Sprachsynchronisation ist es jetzt mï¿½glich, neben einzelnen
   Kategorien, auch alle Unterkateggorien mit zu kopieren.
 
 4.6.23
 ----------------------------------------------------------------------
-- Bugfix fŸr Session Container 'file'
-- Bugfix fŸr Sprachrechte
+- Bugfix fï¿½r Session Container 'file'
+- Bugfix fï¿½r Sprachrechte
 
 4.6.19 - 4.6.22
 ----------------------------------------------------------------------
@@ -662,88 +663,88 @@ Release 4.8.1
   - Tests mit Nicht-iso-9958-1-Sprachen
   - Tests unter base_dir-Restriktionen
   - Konzept: Restart: Sind 5 Minuten zuviel und/oder sollte die
-    Zeit über Systemeinstellungen festgelegt werden können?
-  - Konzept: Senden: Sollte man einen Abbruch erzwingen können
+    Zeit ï¿½ber Systemeinstellungen festgelegt werden kï¿½nnen?
+  - Konzept: Senden: Sollte man einen Abbruch erzwingen kï¿½nnen
     (nach dem aktuellen Block)?
-  - Konzept für Restart: Soll man manuell einen Neustart auch
-    unabhängig der 5 Minuten anstoßen können?
+  - Konzept fï¿½r Restart: Soll man manuell einen Neustart auch
+    unabhï¿½ngig der 5 Minuten anstoï¿½en kï¿½nnen?
 
 - Newsletter: Zur Verwendung von Ankern kann das base-Tag beim
   Senden aus dem Newsletter-Artikel entfernt werden (siehe techref)
 - Newsletter: Ausgabe der Newsletter und Jobs optimiert (kein Array)
-- Newsletter: Empfänger-Gruppen-Bereich überarbeitet
-- Newsletter: Suche und Blättern für Empfänger in Gruppen
-- Newsletter: Wird ein Newsletter gelöscht, wird auch der HTML-
-  Nachrichten-Artikel gelöscht (jedoch aus Performance-Gründen nicht
-  über die Klasse, sondern in includes.newsletter_edit.php)
-- Newsletter: Wurde der HTML-Nachricht-Artikel gelöscht (ups),
+- Newsletter: Empfï¿½nger-Gruppen-Bereich ï¿½berarbeitet
+- Newsletter: Suche und Blï¿½ttern fï¿½r Empfï¿½nger in Gruppen
+- Newsletter: Wird ein Newsletter gelï¿½scht, wird auch der HTML-
+  Nachrichten-Artikel gelï¿½scht (jedoch aus Performance-Grï¿½nden nicht
+  ï¿½ber die Klasse, sondern in includes.newsletter_edit.php)
+- Newsletter: Wurde der HTML-Nachricht-Artikel gelï¿½scht (ups),
   erscheint ein entsprechender Hinweis und die Artikel-ID im
   Newsletter-Objekt auf 0 gesetzt.
-- Newsletter: Wurde der Template-Artikel gelöscht (ups) und der HTML-
+- Newsletter: Wurde der Template-Artikel gelï¿½scht (ups) und der HTML-
   Nachricht-Artikel existiert noch, wird aus diesem wieder ein Template
   erzeugt.
-- Übersetzung aktualisiert
-- Newsletter-Empfänger: Import möglich
-- Newsletter: "Hängende" Jobs (d.h. Jobs, die seit 10 Minuten
+- ï¿½bersetzung aktualisiert
+- Newsletter-Empfï¿½nger: Import mï¿½glich
+- Newsletter: "Hï¿½ngende" Jobs (d.h. Jobs, die seit 10 Minuten
   "gesendet" werden), werden automatisch neu gestartet (cronjob) oder
-  können manuell wieder angestoßen werden (ohne cronjob).
-- Newsletter: Einstellungen werden sprachabhängig gespeichert
+  kï¿½nnen manuell wieder angestoï¿½en werden (ohne cronjob).
+- Newsletter: Einstellungen werden sprachabhï¿½ngig gespeichert
   (HTML-Templates, -Artikel, Gruppen sowie weitere Einstellungen
-  können sich damit von Sprache zu Sprache unterscheiden)
-- Newsletter: Globale Auswahl von Empfängern ist entfallen.
-- Newsletter: Tags werden auch in HTML-Nachricht unterstützt
+  kï¿½nnen sich damit von Sprache zu Sprache unterscheiden)
+- Newsletter: Globale Auswahl von Empfï¿½ngern ist entfallen.
+- Newsletter: Tags werden auch in HTML-Nachricht unterstï¿½tzt
   (besondere Nomenklatur beachten, kein [ oder ] innerhalb der Tags
-  möglich).
+  mï¿½glich).
 - Newsletter: Test-Newsletter kann an Nutzer oder Test-Gruppe gesendet
   werden.
-- Newsletter: Empfänger-Auswahl wird nun pro Newsletter gespeichert.
-- Newsletter: Versand grundlegend überarbeitet, Sende-Jobs, -Logs
-  und Versand über cronjob eingeführt
-  (cronjob nur für Blocksendung und kleine Blöcke geeignet)
-- Newsletter: HTML-Newsletter ergänzt
+- Newsletter: Empfï¿½nger-Auswahl wird nun pro Newsletter gespeichert.
+- Newsletter: Versand grundlegend ï¿½berarbeitet, Sende-Jobs, -Logs
+  und Versand ï¿½ber cronjob eingefï¿½hrt
+  (cronjob nur fï¿½r Blocksendung und kleine Blï¿½cke geeignet)
+- Newsletter: HTML-Newsletter ergï¿½nzt
 - Bei Administration -> Mandanten -> Mandanteneinstellungen den
-  Zugriff auf sprachabhängige Einstellungen ergänzt
+  Zugriff auf sprachabhï¿½ngige Einstellungen ergï¿½nzt
 
 - Bugfix: War ein Modul durch parallele Nutzung gesperrt und
   das Modul wurde trotzdem gespeichert, wurden alle Inhalte des
-  Moduls gelöscht
+  Moduls gelï¿½scht
 - Modul-Packages: Import und Export kompletter Module mit
-  JS- und CSS-Dateien, Modul-Templates und Übersetzungen
-  für mehrere Sprachen
+  JS- und CSS-Dateien, Modul-Templates und ï¿½bersetzungen
+  fï¿½r mehrere Sprachen
 - Beispielmandant: Komplett auf div umgestellt (i-fekt)
 - tinyMCE: Von Flash-Plugin auf Media-Plugin umgestellt, zus.
-  Eintrag für contenido_lists ergänzt
-- tinyMCE: Standardmäßig verwendet der tinyMCE nun Inline-PopUps,
+  Eintrag fï¿½r contenido_lists ergï¿½nzt
+- tinyMCE: Standardmï¿½ï¿½ig verwendet der tinyMCE nun Inline-PopUps,
   die nicht mehr von PopUp-Blockern behindert werden (Ausnahme:
   Dateiauswahl)
-- tinyMCE: Standardmäßig wird HTML-Code nun formatiert und mit
-  Zeilenumbrüchen ausgegeben (apply_source_formatting,
+- tinyMCE: Standardmï¿½ï¿½ig wird HTML-Code nun formatiert und mit
+  Zeilenumbrï¿½chen ausgegeben (apply_source_formatting,
   remove_linebreaks)
-- tinyMCE/Backend-Customizing: Die Einstellungen für den tinyMCE
-  wurden vom Typ wysiwyg/* in tinymce/* geändert. Außerdem werden die
-  Parameter gemäß Schreibweise der tinyMCE-Dokumentation verwendet.
-  Damit können nun fast alle möglichen Parameter über System-,
+- tinyMCE/Backend-Customizing: Die Einstellungen fï¿½r den tinyMCE
+  wurden vom Typ wysiwyg/* in tinymce/* geï¿½ndert. Auï¿½erdem werden die
+  Parameter gemï¿½ï¿½ Schreibweise der tinyMCE-Dokumentation verwendet.
+  Damit kï¿½nnen nun fast alle mï¿½glichen Parameter ï¿½ber System-,
   Mandanten-, Gruppen- oder Nutzereinstellungen festgelegt werden
-- Dateiverwaltung speichert für die Dauer einer Session das
+- Dateiverwaltung speichert fï¿½r die Dauer einer Session das
   zuletzt besuchte Verzeichnis und verwendet dieses bei erneutem
   Aufruf als Startverzeichnis (yeah!)
-- Hinweis bei Login ergänzt, wenn sysadmin- bzw. admin-Accounts
-  noch über Standard-Passwörter verfügen
-- Einem Mandanten-Admin ist es nicht mehr möglich, Benutzer
-  zu erzeugen, die nicht für "seinen" Mandanten berechtigt sind
+- Hinweis bei Login ergï¿½nzt, wenn sysadmin- bzw. admin-Accounts
+  noch ï¿½ber Standard-Passwï¿½rter verfï¿½gen
+- Einem Mandanten-Admin ist es nicht mehr mï¿½glich, Benutzer
+  zu erzeugen, die nicht fï¿½r "seinen" Mandanten berechtigt sind
   (-> auf die er nach der Erzeugung keinen Zugriff mehr hatte)
 - Aktualisierung class.phpmailer.php/class.smtp.php auf V1.73
 - Diverse i18n-Bugs, insbesonder im Zusammenhang mit SAFE MODE
   gefixt
-- Dialogfenstergrößenfestlegung bei JS-MessageBox verbessert
-- getPropertiesByType-Methoden für alle Bereiche eingeführt
+- Dialogfenstergrï¿½ï¿½enfestlegung bei JS-MessageBox verbessert
+- getPropertiesByType-Methoden fï¿½r alle Bereiche eingefï¿½hrt
 - Fehler in genericdb bei deleteWhere und deleteWhereGroup gefixt
 - i18nEmulateGetText optimiert
-- Hinweis auf Upgrade-Verfahren in ReadMe ergänzt
+- Hinweis auf Upgrade-Verfahren in ReadMe ergï¿½nzt
 
 4.6.17
 ----------------------------------------------------------------------
-- Sicherheitslücke für Remove Code Injections unter bestimmten
+- Sicherheitslï¿½cke fï¿½r Remove Code Injections unter bestimmten
   PHP-Konfigurationen geschlossen (aktualisiert)
 
 4.6.16
@@ -754,163 +755,163 @@ Release 4.8.1
 4.6.15
 ----------------------------------------------------------------------
 - Probleme bei Eingabe von besonderen Zeichen behoben (u.a. ', ", $)
-- Kategorie-Übersicht: Template auf CSS-Klassen umgestellt
+- Kategorie-ï¿½bersicht: Template auf CSS-Klassen umgestellt
   (Performance)
 - Bei allen Abfragen mit getEffectiveSetting Abfrage auf Boolean
-  geprüft und ggf. durch Prüfung auf String ersetzt (true vs. "true")
-- Dateiverwaltung: Sicherheitsabfrage vor dem Löschen einer Datei
-  ergänzt (Löschen einer einzelnen Datei)
-- Fehlerkorrektur in Dateiverwaltung: Ordner mit Dateien können nicht
-  mehr gelöscht werden
-- Fehlerkorrektur bei XHTML-Prüfung in front_content.php
-- Einbindung der italienischen Übersetzung von mvf
-- Für die Einbindung neuer Sprachen genügt nun die Erstellung der
+  geprï¿½ft und ggf. durch Prï¿½fung auf String ersetzt (true vs. "true")
+- Dateiverwaltung: Sicherheitsabfrage vor dem Lï¿½schen einer Datei
+  ergï¿½nzt (Lï¿½schen einer einzelnen Datei)
+- Fehlerkorrektur in Dateiverwaltung: Ordner mit Dateien kï¿½nnen nicht
+  mehr gelï¿½scht werden
+- Fehlerkorrektur bei XHTML-Prï¿½fung in front_content.php
+- Einbindung der italienischen ï¿½bersetzung von mvf
+- Fï¿½r die Einbindung neuer Sprachen genï¿½gt nun die Erstellung der
   Sprach-XML-Datei (contenido/xml) und der contenido.po und
   contenido.mo im Unterverzeichnis unter contenido/locale
 - Endlich dieses <br /> aus den Modul-Fehlermeldungen entfernt
-- Für Ein- und Ausgabebereiche von Modulen können immer, nur bei
+- Fï¿½r Ein- und Ausgabebereiche von Modulen kï¿½nnen immer, nur bei
   Fehler oder nie (Default) Zeilennummern eingeblendet werden
 - Module werden nur noch beim Speichern evaluiert, nicht mehr bei
-  jedem Aufruf von Style -> Module (jedoch erzwingbar über Backend-
+  jedem Aufruf von Style -> Module (jedoch erzwingbar ï¿½ber Backend-
   Einstellung)
 - Tabulator kann in Eingabe- und Ausgabefeldern von Modulen verwendet
-  werden (d.h. es wird nicht zum nächsten Feld gewechselt, optionale
+  werden (d.h. es wird nicht zum nï¿½chsten Feld gewechselt, optionale
   Backend-Einstellung)
 - Korrektur in prCreateURLNameLocationString ($cfgClient undefiniert)
-- Korrektur in render-Methode der Link-Klasse in class.ui.php (für
-  den Fall, dass für einen Link ein Bild spezifiert wird - Bildpfad
+- Korrektur in render-Methode der Link-Klasse in class.ui.php (fï¿½r
+  den Fall, dass fï¿½r einen Link ein Bild spezifiert wird - Bildpfad
   muss relativ zu Contenido-Pfad sein)
 - Korrektur in layoutInUse-Methode in classes/class.layout.php
-  (bei Übergabe eines Namens statt einer ID)
+  (bei ï¿½bergabe eines Namens statt einer ID)
 - exportTree-Methode in classes/tree/class.ctreeitem.php deaktiviert
   (ohne Funktion)
 - Fehlerkorrektur in der deleteGroupByGroupName der
   classes/class.group
-- Der create-Methode der dbfs-Klasse kann nun direkt Inhalt übergeben
-  werden ($content wird nun optional als Parameter übergeben)
-- Übersetzung und Einbindung Frontend-Kategorie-Berechtigung
+- Der create-Methode der dbfs-Klasse kann nun direkt Inhalt ï¿½bergeben
+  werden ($content wird nun optional als Parameter ï¿½bergeben)
+- ï¿½bersetzung und Einbindung Frontend-Kategorie-Berechtigung
   korrigiert
-- Ergänzung einer Systemeinstellung zur Festlegung des bevorzugten
+- Ergï¿½nzung einer Systemeinstellung zur Festlegung des bevorzugten
   Mandanten (System-, Mandant- oder Nutzereinstellung)
-- Überarbeitung der have_perm_client_lang, da fehlerhaft bei
-  Prüfung auf admin-Eigenschaft, wenn zu überprüfende idclient nicht
+- ï¿½berarbeitung der have_perm_client_lang, da fehlerhaft bei
+  Prï¿½fung auf admin-Eigenschaft, wenn zu ï¿½berprï¿½fende idclient nicht
   identisch mit aktueller idclient
 - Umgehung der Funktion ini_restore in functions.mod.php (Umgehung
-  der Deaktivierung bei einigen Providern wegen Sicherheitslücke
+  der Deaktivierung bei einigen Providern wegen Sicherheitslï¿½cke
   in PHP) - ini_restore wird aber weiterhin in functions.general.php
-  bei restore_include_path()-Emulation (nur für PHP < 4.3.0)
+  bei restore_include_path()-Emulation (nur fï¿½r PHP < 4.3.0)
   verwendet!
-- Setup setzt createcode-Flag für alle vorhandenen Artikel, um
+- Setup setzt createcode-Flag fï¿½r alle vorhandenen Artikel, um
   Neuerzeugung des jeweiligen Artikels zu erzwingen
 - Fehler-Korrektur in contenido/class.module.php, u.U. wurde Text
-  auch ohne mi18n zur Übersetzung ausgewählt
+  auch ohne mi18n zur ï¿½bersetzung ausgewï¿½hlt
 - Fehler-Korrektur in class.user.php, deleteUserByUsername
   (Verwendung undefinierter Variable)
-- Ergänzung einer Blätter-Funktion für die Artikel-Übersicht
+- Ergï¿½nzung einer Blï¿½tter-Funktion fï¿½r die Artikel-ï¿½bersicht
   (basierend auf einem Vorschlag von i-fekt)
 - Fehlerhafte Mozile Edit Bar deaktiviert.
 - Fehlerkorrektur bei Verwendung von $ bzw. \ in HTML-Feldern.
 - Location wird im Titel angezeigt.
-- Menüpunkt "HTML Editor" in "Modul-Templates" geändert.
+- Menï¿½punkt "HTML Editor" in "Modul-Templates" geï¿½ndert.
 - Mozile 0.52d integriert (bessere Zusammenarbeit mit Mozile
   Extension).
-- Auswahl der Elemente pro Seite wird nun für Frontend User, Module,
-  Newsletter und Newsletter-Empfänger gespeichert.
-- -- Alle -- -Option für Module und Newsletter-Empfänger ergänzt.
+- Auswahl der Elemente pro Seite wird nun fï¿½r Frontend User, Module,
+  Newsletter und Newsletter-Empfï¿½nger gespeichert.
+- -- Alle -- -Option fï¿½r Module und Newsletter-Empfï¿½nger ergï¿½nzt.
 - Wird die Systemeinstellung Typ: phpmailer, Name: mail_set_f_option
-  mit dem Wert true gesetzt, wird beim Senden über
+  mit dem Wert true gesetzt, wird beim Senden ï¿½ber
   class.phpmailer.php, Typ "mail" automatisch der Wert aus ->From
   als ->Sender gesetzt, sofern kein anderer Sender gesetzt wurde.
-- Löschen einer Sprache "anderer" Mandanten korrigiert. Die Funktion
-  berücksichtigt nun den gewählten Mandanten bei Administration ->
-  Sprachen und der Mandant kann gelöscht werden ("Papierkorb"
-  verfügbar).
+- Lï¿½schen einer Sprache "anderer" Mandanten korrigiert. Die Funktion
+  berï¿½cksichtigt nun den gewï¿½hlten Mandanten bei Administration ->
+  Sprachen und der Mandant kann gelï¿½scht werden ("Papierkorb"
+  verfï¿½gbar).
 - Frontend-Vorlage-Verzeichnis aktualisiert und an Beispiel-Mandanten
   angeglichen.
-- Javascript-Fehler bei Kategorie-Konfiguration über Artikel-
-  Übersicht korrigiert.
+- Javascript-Fehler bei Kategorie-Konfiguration ï¿½ber Artikel-
+  ï¿½bersicht korrigiert.
 - class.client.php-Einbindung in functions.api.php korrigiert
-  (fehlerhafte Einbindung führte erneut zu cAPIClient-Meldungen)
-- Modul-Anzahl-Einstellung in Style -> Module werden nutzerabhängig
+  (fehlerhafte Einbindung fï¿½hrte erneut zu cAPIClient-Meldungen)
+- Modul-Anzahl-Einstellung in Style -> Module werden nutzerabhï¿½ngig
   gespeichert.
-- Artikel-Index-Erzeugung (Keywords) überarbeitet, so dass pro
+- Artikel-Index-Erzeugung (Keywords) ï¿½berarbeitet, so dass pro
   Artikel-Speicherung nur einmal der Index aktualisiert wird
-- Plugins für Frontend User Groups ergänzt.
-- Erweiterte Einstellungen für die Weiterleitung im Fehlerfall
+- Plugins fï¿½r Frontend User Groups ergï¿½nzt.
+- Erweiterte Einstellungen fï¿½r die Weiterleitung im Fehlerfall
   (Frontend, login_error_page mit neuen Parametern idcat und idart),
   Signalisierung bei falschem Passwort.
-- Funktion replacei18n in class.template.php überarbeitet, so dass
+- Funktion replacei18n in class.template.php ï¿½berarbeitet, so dass
   PHP-Code unangetastet bleibt.
 
 4.6.14
 ----------------------------------------------------------------------
-- Verfügt der Nutzer nicht über die Einstellung "WYSIWYG-Editor" wird
+- Verfï¿½gt der Nutzer nicht ï¿½ber die Einstellung "WYSIWYG-Editor" wird
   nun - wenn tinyMCE des Systemeditor ist - ein Textfeld statt des
   Editors angezeigt.
 - Probleme mit DBFS korrigiert (Anzeige von Bildern und Thumbnails in
   der Dateiverwaltung)
 - Verschiedene Korrekturen im Dateibrowser (tinyMCE)
-- Recht zum Löschen eines Verzeichnisses wird nun berücksichtigt.
+- Recht zum Lï¿½schen eines Verzeichnisses wird nun berï¿½cksichtigt.
 - Bei einem Artikel, der nicht in der ersten Sprache angelegt wird,
   wird nun bereits bei der ersten Speicherung die Online-Eigenschaft
-  (und das Änderungsdatum) berücksichtigt.
-- Änderung in con_type für CMS_HTMLHEAD und CMS_HTML: \ wird
-  durch Entity ersetzt - löst Probleme mit bestimmten Satzkonstrukten
-- Es wurde eine neue Chain eingeführt, der nach dem Löschen eines
-  Artikels ausgeführt wird (Contenido.Content.DeleteArticle).
-- &nbsp; bei CMS_HTMLHEAD und Problem beim Eingeben von $ gelöst.
+  (und das ï¿½nderungsdatum) berï¿½cksichtigt.
+- ï¿½nderung in con_type fï¿½r CMS_HTMLHEAD und CMS_HTML: \ wird
+  durch Entity ersetzt - lï¿½st Probleme mit bestimmten Satzkonstrukten
+- Es wurde eine neue Chain eingefï¿½hrt, der nach dem Lï¿½schen eines
+  Artikels ausgefï¿½hrt wird (Contenido.Content.DeleteArticle).
+- &nbsp; bei CMS_HTMLHEAD und Problem beim Eingeben von $ gelï¿½st.
 - Fehlermeldungen beim Kopieren des Frontend-Templates korrigiert.
 - Update testet nun gegen _actions und nicht mehr _actionlog (->
-  Update von V4.4.0 möglich).
-- Plugin-Übersetzungen werden nun korrekt eingelesen.
+  Update von V4.4.0 mï¿½glich).
+- Plugin-ï¿½bersetzungen werden nun korrekt eingelesen.
 - Module werden nun bei Import gleich korrekt gespeichert.
-- tinyMCE berücksichtigt nun auch die Schreibrichtung des Textes
+- tinyMCE berï¿½cksichtigt nun auch die Schreibrichtung des Textes
   (rechts nach links bzw. links nach rechts)
 - Einbindung von Flashfilmen im tinyMCE integriert.
-- Einführung der Methoden deleteValue, getProperties, deleteProperties
-  für class.properties.php.
-- Werden Objekte über die genericdb/ItemCollection-Objekte gelöscht,
-  werden nun auch die dazugehörigen Properties gelöscht.
-- Die Meldung beim Versuch der Rechte-Konfiguration für System
-  Administratoren und Administratoren wurde verständlicher gestaltet.
+- Einfï¿½hrung der Methoden deleteValue, getProperties, deleteProperties
+  fï¿½r class.properties.php.
+- Werden Objekte ï¿½ber die genericdb/ItemCollection-Objekte gelï¿½scht,
+  werden nun auch die dazugehï¿½rigen Properties gelï¿½scht.
+- Die Meldung beim Versuch der Rechte-Konfiguration fï¿½r System
+  Administratoren und Administratoren wurde verstï¿½ndlicher gestaltet.
 - Magic_Quotes-Behandlung korrigiert.
 - Public/Private-Schaltung einer Kategorie unter Content -> Artikel
-  korrigiert; es werden nun auch die Unterkategorien geschützt
+  korrigiert; es werden nun auch die Unterkategorien geschï¿½tzt
   (analog Content -> Kategorien)
 - Neue tinyMCE-Option tinymce-lists zur Anzeige von DropDown-Listen
   in Insert Link, Insert Image bzw. Insert Flash Popup-Fenstern.
-- Einbinden von Styles in tinyMCE DropDown-Menü über wysiwyg,
+- Einbinden von Styles in tinyMCE DropDown-Menï¿½ ï¿½ber wysiwyg,
   tinymce-styles-Einstellung korrigiert.
-- Anzeige der Links im tinyMCE Link-Einfügen-Dialog funktioniert nun
-- Berechtigung zum Löschen und Mehrfachlöschung in der
+- Anzeige der Links im tinyMCE Link-Einfï¿½gen-Dialog funktioniert nun
+- Berechtigung zum Lï¿½schen und Mehrfachlï¿½schung in der
   Dateiverwaltung wird nun beachtet.
-- Übernahme des Start-Parameters bei cHTMLDiv und cHTMLSpan
-- Änderung class.ui.php, so dass diese auch im Frontend genutzt
+- ï¿½bernahme des Start-Parameters bei cHTMLDiv und cHTMLSpan
+- ï¿½nderung class.ui.php, so dass diese auch im Frontend genutzt
   werden kann.
-- Modul-Historie wird nun komplett übernommen und Modul aus der
-  Historie übernommen werden  (inkl. Beschrteibung und Typ). Der Typ
-  für Module wurde bis vor 4.6.13 nicht in die Historie übernommen.
+- Modul-Historie wird nun komplett ï¿½bernommen und Modul aus der
+  Historie ï¿½bernommen werden  (inkl. Beschrteibung und Typ). Der Typ
+  fï¿½r Module wurde bis vor 4.6.13 nicht in die Historie ï¿½bernommen.
 - Basis-Variablen werden in front_content.php auf numerischen Wert
-  geprüft.
-- delete()-Methode für Item aus genericdb deaktiviert, ohne Funktion.
-- Artikelspezifikation lässt sich nun über deleteArtSpec löschen
+  geprï¿½ft.
+- delete()-Methode fï¿½r Item aus genericdb deaktiviert, ohne Funktion.
+- Artikelspezifikation lï¿½sst sich nun ï¿½ber deleteArtSpec lï¿½schen
 - Es wird bei Verwendung des CMS_IMGEDIT-Typs keine Zahl mehr im
   Frontend angezeigt.
 - Das Wiedervorlage-PopUp zeigt nur noch die Nutzer des aktuellen
   Mandanten, nicht aller Mandanten.
-- Administration -> System berücksichtigt nun auch https
+- Administration -> System berï¿½cksichtigt nun auch https
 - CANCELLINK-Platzhalter in generic_table_form-Template integriert,
-  Korrektur für addCancel in class.ui.php.
+  Korrektur fï¿½r addCancel in class.ui.php.
 - Korrektur in systemdata.php, so dass es zu keiner Fehlermeldung
   bzgl. prepend3.php bei Updates von Contenido-Versionen vor V4.6
   kommt.
 - Stilistische Korrektur in front_crcloginform.inc.php
 - cAPIClient-Klasse in functions.api.php aufgenommen - steht
-  damit wieder global zur Verfügung.
-- Aktuelle Version der class.newsletter.php integriert (Versand für
-  mehr Nutzer, Integration von Empfänger-Plugins)
+  damit wieder global zur Verfï¿½gung.
+- Aktuelle Version der class.newsletter.php integriert (Versand fï¿½r
+  mehr Nutzer, Integration von Empfï¿½nger-Plugins)
 - Diverse Korrekturen im Beispiel-Mandanten (IMG-Platzhalter, Komma
-  in SQL-Abfrage des Hauptnavigations-Moduls, html_entity_code-Fix für
+  in SQL-Abfrage des Hauptnavigations-Moduls, html_entity_code-Fix fï¿½r
   Such-Modul bei PHP < 4.3, url_file_access-Fix bei Illustrations-
   Modul, Beachtung der Startartikel-Option beim News-Modul, aktuelle
   Version der Newsletter-Module/Template).
@@ -919,97 +920,97 @@ Release 4.8.1
 ----------------------------------------------------------------------
 - bei dem CMS-Typ "CMS_HTMLHEAD" wurde &nbsp; in ASCII-Zeichen
   umgewandelt, was wiederum beim Internet Explorer in einigen
-  Encodings zu Anzeigeproblemen führt. Dies wurde behoben.
-- Eine fehlende Parameterübergabe beim Scrolling/Sortieren im
-  Filebrowser/Imagebrowser wurde nachgerüstet. Wenn sich der Benutzer
+  Encodings zu Anzeigeproblemen fï¿½hrt. Dies wurde behoben.
+- Eine fehlende Parameterï¿½bergabe beim Scrolling/Sortieren im
+  Filebrowser/Imagebrowser wurde nachgerï¿½stet. Wenn sich der Benutzer
   im Filebrowser/Imagebrowser befindet, sollte es jetzt nicht mehr
-  vorkommen, daß sich der Fokus auf die normale Dateiverwaltung
+  vorkommen, daï¿½ sich der Fokus auf die normale Dateiverwaltung
   verstellt.
 - cHTMLCheckbox verwendet nun die parent-Klasse, um die Ausgabe zu
   rendern und erbt damit auch alle von der Basisklasse cHTML zur
-  Verfügung gestellten Funktionalitäten.
+  Verfï¿½gung gestellten Funktionalitï¿½ten.
 - Der MySQL-GenericDB-Treiber erzeugt keine Fehlermeldung mehr, wenn
-  ein leeres Array übergeben wird.
+  ein leeres Array ï¿½bergeben wird.
 - cSwitchableDateChooser blendet jetzt den Inhalt des Datumsfeldes aus,
-  wenn die Checkbox deaktiviert ist (bessere Benutzerführung).
-- Die Farbgebung sämtlicher Textboxen im Backend sind ab sofort über
-  CSS definiert, sodaß sie in jeder Umgebung gleich aussehen.
+  wenn die Checkbox deaktiviert ist (bessere Benutzerfï¿½hrung).
+- Die Farbgebung sï¿½mtlicher Textboxen im Backend sind ab sofort ï¿½ber
+  CSS definiert, sodaï¿½ sie in jeder Umgebung gleich aussehen.
 - In der Template-Klasse werden bei Aufruf der Methode 'generate'
-  standardmäßig keine HTML-Kommentare mehr generiert.
-- Es wurde eine neue Chain eingeführt, um neue Dateien nach dem Upload
+  standardmï¿½ï¿½ig keine HTML-Kommentare mehr generiert.
+- Es wurde eine neue Chain eingefï¿½hrt, um neue Dateien nach dem Upload
   zu verarbeiten.
-- Es wurde eine neue Chain eingeführt, die nach dem Löschen eines
+- Es wurde eine neue Chain eingefï¿½hrt, die nach dem Lï¿½schen eines
   Frontendusers aufgerufen wird.
 - cSwitchableDateChooser verwendet jetzt eine neue CSS-Klasse, um die
-  Farbgebung zu ändern.
-- Es wurde eine neue Chain eingeführt, mit der das BASE HREF-Tag
+  Farbgebung zu ï¿½ndern.
+- Es wurde eine neue Chain eingefï¿½hrt, mit der das BASE HREF-Tag
   manipuliert werden kann
-- Metaobjekte können ab sofort auch als "Invalid" markiert werden,
-  um eine weitere Bearbeitung zu verhindern (z.b. für Löschaktionen)
+- Metaobjekte kï¿½nnen ab sofort auch als "Invalid" markiert werden,
+  um eine weitere Bearbeitung zu verhindern (z.b. fï¿½r Lï¿½schaktionen)
 - Die Benutzerabfrage bei Metaobjekt-Aktionen funktioniert ab sofort
   wieder.
 
 4.6.12
 ----------------------------------------------------------------------
-- cDateChooser unterstützt jetzt das programmatische Ausblenden von
-  Selectboxen (Workaround für IE-Bug)
+- cDateChooser unterstï¿½tzt jetzt das programmatische Ausblenden von
+  Selectboxen (Workaround fï¿½r IE-Bug)
 - Kopien von Artikeln, Kategorien und Templates werden nicht mehr als
   "Copy of name" bzw "Kopie von name" gekennzeichnet, sondern mit
   "name (Copy)" bzw "name (Kopie)", um die Sortierreihenfolge
   einzuhalten.
-- Es wurde eine neue Chain eingeführt, um weitere Subnavigationspunkte
-  in der Subnavigation bei Content -> Articles zu ermöglichen.
+- Es wurde eine neue Chain eingefï¿½hrt, um weitere Subnavigationspunkte
+  in der Subnavigation bei Content -> Articles zu ermï¿½glichen.
 
 4.6.11
 ----------------------------------------------------------------------
 - Aktualisierung der Lokale-Dateien
-- Bugfix im Insite-Editing (es wird nun geprüft, ob die Subnavigation
+- Bugfix im Insite-Editing (es wird nun geprï¿½ft, ob die Subnavigation
   vorhanden ist)
 
 4.6.10
 ----------------------------------------------------------------------
 - Die Sortierreihenfolge bei dem Sprachendropdown ist ab sofort
-  auf "Name" festgelegt, kann aber über Systemeinstellungen
+  auf "Name" festgelegt, kann aber ï¿½ber Systemeinstellungen
   modifiziert werden.
 - Es wurde ein neues Kalender-Widget entwickelt (cCalendarControl),
-  welches zusammen mit einem Kalender-Textfeld (cDateChooser) für
+  welches zusammen mit einem Kalender-Textfeld (cDateChooser) fï¿½r
   Datumsauswahlen verwendet werden kann.
 
 4.6.9
 ----------------------------------------------------------------------
-- "sysadmin" ist ab sofort wieder das Standardpasswort, die Möglichkeit
+- "sysadmin" ist ab sofort wieder das Standardpasswort, die Mï¿½glichkeit
   zum Setzen eines Passwortes bei der Installation besteht nicht mehr.
 - Eventuelle Fehler beim Erzeugen der Datenbankindizes werden ab sofort
   ignoriert.
 - Im Notiz-Popup werden die Kategorienamen jetzt korrekt ausgelesen.
-- In der Rechteverwaltung können ab sofort eigene Bereiche definiert
-  werden, um die Rechteverwaltung für Plugins zu ermöglichen.
+- In der Rechteverwaltung kï¿½nnen ab sofort eigene Bereiche definiert
+  werden, um die Rechteverwaltung fï¿½r Plugins zu ermï¿½glichen.
 - Einbau von TinyMCE 2.0.5.1
 
-- Module können jetzt als Dateien gespeichert werden, um einen
+- Module kï¿½nnen jetzt als Dateien gespeichert werden, um einen
   einfacheren Abgleich mit anderen Systemen vorzunehmen. DIESE FUNKTION
-  IST ALS HÖCHST EXPERIMENTELL EINGESTUFT - BENUTZUNG AUF EIGENE GEFAHR.
+  IST ALS Hï¿½CHST EXPERIMENTELL EINGESTUFT - BENUTZUNG AUF EIGENE GEFAHR.
 
 
 4.6.8
 ----------------------------------------------------------------------
-- Einbau von TinyMCE 2.0.1. Die neue Version des TinyMCE unterstützt
+- Einbau von TinyMCE 2.0.1. Die neue Version des TinyMCE unterstï¿½tzt
   nun auch Safari und Firefox 1.5.
 - capiImgScale funktioniert jetzt auch richtig, wenn ein Verzeichnis
   angegeben wird.
 - capiImgScale verwendet jetzt md5_file (sofern die Funktion in PHP
   vorhanden ist), um eine Datei nur dann erneut zu verkleinern, wenn
-  sie wirklich geändert wurde. Löst Performanceprobleme bei großen
+  sie wirklich geï¿½ndert wurde. Lï¿½st Performanceprobleme bei groï¿½en
   Webauftritten mit vielen skalierten Bildern.
-- Das Einfügen von Bilder im WYSIWYG-Editor ist jetzt auch dann
-  möglich, wenn im Dateibrowser eine andere Thumbnailgröße ausgewählt
+- Das Einfï¿½gen von Bilder im WYSIWYG-Editor ist jetzt auch dann
+  mï¿½glich, wenn im Dateibrowser eine andere Thumbnailgrï¿½ï¿½e ausgewï¿½hlt
   wurde
-- Contenido ist jetzt mit den Änderungen von MySQL 5.0.12 voll
+- Contenido ist jetzt mit den ï¿½nderungen von MySQL 5.0.12 voll
   kompatibel
-- Die valueOf-Methode der XML_doc-Klasse gibt nun den Pfad zurück, wenn
+- Die valueOf-Methode der XML_doc-Klasse gibt nun den Pfad zurï¿½ck, wenn
   der Pfad nicht gefunden wurde.
 - Wird eine Beschreibung bei der Rechtevergabe nicht gefunden, wird der
-  Schlüssel ausgegeben, was das Debuggen vereinfacht.
+  Schlï¿½ssel ausgegeben, was das Debuggen vereinfacht.
 - Diverse kleinere Bugfixes
 
 
@@ -1021,7 +1022,7 @@ Release 4.8.1
 
 4.6.6
 ----------------------------------------------------------------------
-- Die Chain Contenido.Frontend.AllowEdit wurde eingeführt, um trotz
+- Die Chain Contenido.Frontend.AllowEdit wurde eingefï¿½hrt, um trotz
   bestehender Editierungs-Rechte dem Benutzer das Editieren des
   Artikels zu verbieten (z.b. mittels eines Workflows)
 
@@ -1029,14 +1030,14 @@ Release 4.8.1
 4.6.5
 ----------------------------------------------------------------------
 - Der Operator "DIACRITICS" der GenericDB setzt Escapes jetzt richtig,
-  wenn der Suchbegriff Metazeichen enthält. Weiterhin wird der
+  wenn der Suchbegriff Metazeichen enthï¿½lt. Weiterhin wird der
   _inFilter auf den Suchbegriff angewendet, damit die Suchergebnisse
-  mit den GenericDB-Filtern gefunden werden können.
+  mit den GenericDB-Filtern gefunden werden kï¿½nnen.
 
 
 4.6.4
 ----------------------------------------------------------------------
-- Sicherheitslücke für Remove Code Injections unter bestimmten
+- Sicherheitslï¿½cke fï¿½r Remove Code Injections unter bestimmten
   PHP-Konfigurationen geschlossen
 - Der Pathresolve-Cache wird bei Verwendung richtig aktualisiert,
   wenn Kategorien on- bzw offline gesetzt werden.
@@ -1045,14 +1046,14 @@ Release 4.8.1
 
 4.6.3
 ----------------------------------------------------------------------
-- Performanceprobleme mit dem PathResolver bei sehr großen
+- Performanceprobleme mit dem PathResolver bei sehr groï¿½en
   Webauftritten wurden behoben.
 - Der SPAW-Editor kann jetzt auch als nicht-Standardeditor (z.b. in
   Plugins) verwendet werden.
 - Die GenericDB-Klassen funktionieren jetzt richtig mit Joins, die von
   abgeleiteten Klassen verwendet werden.
 - PHP-Workaround in der MySQL-Treiberklasse, bei der PHP Resourcen
-  ungültigerweise schließt
+  ungï¿½ltigerweise schlieï¿½t
 
 
 4.6.2
@@ -1063,69 +1064,69 @@ Release 4.8.1
 
 4.6.1
 ----------------------------------------------------------------------
-- Bugfix für die korrekte ImageMagick-Erkennung auf Windows-Servern
-- Übersetzungskorrektur im Setup
+- Bugfix fï¿½r die korrekte ImageMagick-Erkennung auf Windows-Servern
+- ï¿½bersetzungskorrektur im Setup
 - Newsletter-Bugfix
-- kleinere Usabilityänderungen im Setup
-- Prüfung, ob MySQL- oder MySQLi geladen ist
+- kleinere Usabilityï¿½nderungen im Setup
+- Prï¿½fung, ob MySQL- oder MySQLi geladen ist
 - Setup funktioniert jetzt mit PHP5.0.4
-- Bugfix in der GenericDB (Kompatibilität mit PHP5)
+- Bugfix in der GenericDB (Kompatibilitï¿½t mit PHP5)
 - Diverse kleinere Bugfixes
 
 4.6.0
 ----------------------------------------------------------------------
-- Diverse Bugfixes im MySQLi-Interface für Contenido
+- Diverse Bugfixes im MySQLi-Interface fï¿½r Contenido
 - Newsletter-Bugfixes
 
 4.5.6 beta
 ----------------------------------------------------------------------
 - Neues Setup
 - Ein in tinyMCE integrierter Datei- und Linkbrowser
-- MySQLi- und PHP5-Unterstützung
-- Plugin für Kategorieberechtigungsprüfung im Frontend
+- MySQLi- und PHP5-Unterstï¿½tzung
+- Plugin fï¿½r Kategorieberechtigungsprï¿½fung im Frontend
 - Neuer Newsletter (dank HerrB ;))
 
 4.5.4 beta
 ----------------------------------------------------------------------
 - tinyMCE 2 als neuer Standard-WYSIWYG-Editor
-- XHTML-Unterstützung
+- XHTML-Unterstï¿½tzung
 - Neuer Beispielmandant
 
 
 4.5.3 alpha
 ----------------------------------------------------------------------
-- Filterung und Sortierung für Backend-Benutzer, Frontend-Benutzer sowie Module
-- Unterstützung für andere Enkodierungen
+- Filterung und Sortierung fï¿½r Backend-Benutzer, Frontend-Benutzer sowie Module
+- Unterstï¿½tzung fï¿½r andere Enkodierungen
 - Zahlreiche Bugfixes und neue Features (Rechtevererbung) im Rechtemanagement,
   dank emergence
 - Datum, Uhrzeit und kombiniertes Datums- und Uhrzeitformat sind jetzt als
-  Spracheigenschaft verfügbar
+  Spracheigenschaft verfï¿½gbar
 - Anzeige der Fehlerseite, wenn ein bestimmter Artikel nicht existiert
-- Die Anzeige, daß ein Artikel gesperrt ist, wird jetzt über absoluten
+- Die Anzeige, daï¿½ ein Artikel gesperrt ist, wird jetzt ï¿½ber absoluten
   DIV-Elementen positioniert
 - Beim Setup wird der MySQL-Fehler angezeigt, wenn das Setup nicht zur
   Datenbank verbinden konnte
-- Die benötigten Endslashes werden bei der Mandantenkonfiguration
-  automatisch hinzugefügt
+- Die benï¿½tigten Endslashes werden bei der Mandantenkonfiguration
+  automatisch hinzugefï¿½gt
 - Contenido Extension Chainer
 - Integration des Newsletters von HerrB
 - Optionale Benachrichtigung eines Administrators, falls die MySQL-Datenbank
   nicht erreichbar ist
 - Konfiguration der Sprachrichtung (LTR, RTL)
-- Installation auf einem anderen Port als 80 möglich
+- Installation auf einem anderen Port als 80 mï¿½glich
 - Neue CMS-Typen: CMS_HTMLTEXT, CMS_SIMPLELINK
 
 
 4.5.1 alpha
 ----------------------------------------------------------------------
-- Kopieren von Kategorien und Kategoriebäumen
-- Löschen der Modul-Historie möglich
-- Prüfung auf LOCK TABLE-Recht und optionales Arbeiten ohne dieses Recht
-- Warnmeldungen für Module < Contenido 4.3
+- Kopieren von Kategorien und Kategoriebï¿½umen
+- Lï¿½schen der Modul-Historie mï¿½glich
+- Prï¿½fung auf LOCK TABLE-Recht und optionales Arbeiten ohne dieses Recht
+- Warnmeldungen fï¿½r Module < Contenido 4.3
 - $CMS_VALUE-Patch
 - Definition eines Standard-Templates (wird bei neuen Kategorien automatisch zugewiesen)
-- Löschen eines kompletten Ordners in der Dateiverwaltung
-- Erledigte TODO-Einträge können nun ausgeblendet werden
+- Lï¿½schen eines kompletten Ordners in der Dateiverwaltung
+- Erledigte TODO-Eintrï¿½ge kï¿½nnen nun ausgeblendet werden
 - Neue Content-Typen (CMS_SIMPLELINKEDIT, CMS_HTMLTEXT, CMS_EASYIMGEDIT)
 - Import / Export von Modulen
 - Neue Newsletter-Module / Newsletter-Changes (Thanks an HerrB)
@@ -1133,21 +1134,21 @@ Release 4.8.1
 
 4.5.0 alpha
 ----------------------------------------------------------------------
-- Artikel- und Kategorieübernahme zwischen verschiedenen Sprachen
+- Artikel- und Kategorieï¿½bernahme zwischen verschiedenen Sprachen
 - Systemweites Customizing
-- Veränderbare Framegröße im Backend
-- Das Startartikel-Flag ist nun sprachunabhängig
+- Verï¿½nderbare Framegrï¿½ï¿½e im Backend
+- Das Startartikel-Flag ist nun sprachunabhï¿½ngig
 - Vorschau von Layouts
 - Modul-Historie
-- Typ-Zuweisung für Module
+- Typ-Zuweisung fï¿½r Module
 - Insite-Modulzuweisung bei den Templates (visual edit)
 - Container nun definierbar mit Name, erlaubten Modultypen, Defaultmodulen usw.
-- Aufklappzustand bei Artikeln und Kategorien werden userabhängig gespeichert
+- Aufklappzustand bei Artikeln und Kategorien werden userabhï¿½ngig gespeichert
 - Neuer Upload-Manager
-- InUse-Anzeige für Module
-- Objekte, die in Benutzung sind, können vom aktuellen Bearbeiter
-  nach Bestätigung trotzdem bearbeitet werden
-- Modulübersetzungen sind nun möglich
+- InUse-Anzeige fï¿½r Module
+- Objekte, die in Benutzung sind, kï¿½nnen vom aktuellen Bearbeiter
+  nach Bestï¿½tigung trotzdem bearbeitet werden
+- Modulï¿½bersetzungen sind nun mï¿½glich
 - optionale Java-basierte Modulein- und Ausgabefelder mit Zeilennummern
 - Reminder-Funktionen
 - Frontend-Benutzer und Gruppen
@@ -1156,7 +1157,7 @@ Release 4.8.1
 4.4.1 - 4.4.5
 ----------------------------------------------------------------------
 
-ÄNDERUNGEN:
+ï¿½NDERUNGEN:
 - Bugfixes only
 
 
@@ -1165,10 +1166,10 @@ Release 4.8.1
 ----------------------------------------------------------------------
 
 NEU:
-- Automatischer Session-Cleanup (über cronjob)
-- Optimierung der Datenbank (einmal täglich über cronjob)
+- Automatischer Session-Cleanup (ï¿½ber cronjob)
+- Optimierung der Datenbank (einmal tï¿½glich ï¿½ber cronjob)
 - Sperren von Artikeln
-- Artikel können nur von einem Benutzer gleichzeitig bearbeitet werden
+- Artikel kï¿½nnen nur von einem Benutzer gleichzeitig bearbeitet werden
   (In-Use Anzeige)
 - Zahlreiche Bugfixes
 
@@ -1177,42 +1178,42 @@ NEU:
 
 NEU
 - Sprachauswahl im Backend (deutsch und englisch). Default-Auswahl
-  erfolgt über die Spracheinstellungen des Browsers
+  erfolgt ï¿½ber die Spracheinstellungen des Browsers
 - Mozilla Insite-Editing (ab Version 1.3)
 
 
-ÄNDERUNGEN
-- Template Problem (Kategorie / Artikel) gelöst (27)
+ï¿½NDERUNGEN
+- Template Problem (Kategorie / Artikel) gelï¿½st (27)
 - Frontend Loging gefixt (21)
-- Mandantenfunktionen überarbeitet und geändert (29)
+- Mandantenfunktionen ï¿½berarbeitet und geï¿½ndert (29)
 - WYSIWYG verschiedene Bugfixes (22,24)
-- Newsletter für vierstellige Adressen geändert (niB)
+- Newsletter fï¿½r vierstellige Adressen geï¿½ndert (niB)
 - Verschiedene Security Probleme im Rechtemanagement behoben (4,5,6,26)
-- Modul-Aktualisierungen überarbeitet (19)
-- Aktualisierung der con_code überarbeitet (18,19)
-- Design: Aktive Menüpunkte blau hinterlegt (14)
-- Funktion für geschützte Bereiche im Frontend implementiert (17)
+- Modul-Aktualisierungen ï¿½berarbeitet (19)
+- Aktualisierung der con_code ï¿½berarbeitet (18,19)
+- Design: Aktive Menï¿½punkte blau hinterlegt (14)
+- Funktion fï¿½r geschï¿½tzte Bereiche im Frontend implementiert (17)
 - Template Problematik gefixt (9)
-- Shorttags <? in allen Dateien in <?php geändert (niB)
+- Shorttags <? in allen Dateien in <?php geï¿½ndert (niB)
 - Kopieren von Sprache - Verlust der Templatekonfiguration behoben (niB)
-- Kleine Änderung bei der Anzeige von Rechten (15)
-- Anzeige der Login-Zeit bei Sonderfällen geändert (niB)
+- Kleine ï¿½nderung bei der Anzeige von Rechten (15)
+- Anzeige der Login-Zeit bei Sonderfï¿½llen geï¿½ndert (niB)
 - Contenido Pop-ups einheitlich gestaltet (2)
-- LostAndFound Anzeige und Funktion überarbeitet (niB)
+- LostAndFound Anzeige und Funktion ï¿½berarbeitet (niB)
 - Newsletter Funktionen debuggt und erneuert (niB)
 - include.CMS_HEAD.php Codefehler behoben (niB)
-- Änderung der Inputbox von Modulen - vorherige Bearbeitung mit
+- ï¿½nderung der Inputbox von Modulen - vorherige Bearbeitung mit
   htmlspecialchars (niB)
-- Rechteabhängiges Menü - Menüpunkte werden nur mit den entsprechenden
+- Rechteabhï¿½ngiges Menï¿½ - Menï¿½punkte werden nur mit den entsprechenden
   Rechten angezeigt (niB)
-- Kleine Änderung in der Tabelle con_keywords (23)
-- Speicherung des +-Zeichens im Onsite-Editing ermöglicht (25)
+- Kleine ï¿½nderung in der Tabelle con_keywords (23)
+- Speicherung des +-Zeichens im Onsite-Editing ermï¿½glicht (25)
 - Leerer Artikelname wird durch Default-Titel ersetzt (niB)
-- Sonderzeichen im Artikelnamen ermöglicht - Nutzung von addslahes(niB)
+- Sonderzeichen im Artikelnamen ermï¿½glicht - Nutzung von addslahes(niB)
 - Verbesserung der Upgrade-Engine (niB)
 - Diverse Tests und Debugs mit verschiedenen Einstellungen in der
   php.ini (1,13)
-- Anzeige Empfänger ohne Namen gefixt (7)
+- Anzeige Empfï¿½nger ohne Namen gefixt (7)
 
 
 
@@ -1224,11 +1225,11 @@ NEU
 - Pseudo-Cron-Daemon
 - Spaw als Default-Editor implementiert
 - Zeitsteuerung von Artikeln
-- Möglichkeit zur Pflege von Meta-Tags
+- Mï¿½glichkeit zur Pflege von Meta-Tags
 - Gruppen
 
-ÄNDERUNGEN
-- Modifiziert für SAFE_MODE ON
+ï¿½NDERUNGEN
+- Modifiziert fï¿½r SAFE_MODE ON
 - Mandantenzugriff auf das richtige Upload-Verzeichnis
 - Verschiedene kleinere Bugs in der Rechteverwaltung behoben
 - Diverse Bugfixes in verschiedenen Bereichen
@@ -1242,11 +1243,11 @@ NEU
 ----------------------------------------------------------------------
 
 NEU
-- Neues Layout für das Contenido-Backend (Template basiert)
+- Neues Layout fï¿½r das Contenido-Backend (Template basiert)
 - Implementierung des PlugIn-Mechanismus (ab 4.4.1)
 - Vorkonfiguration der Templates
 
-ÄNDERUNGEN
+ï¿½NDERUNGEN
 - Neue Sicht auf die Artikelbearbeitung
 - Ausbau des WYSIWYG-Editors
 - Neues Mediamanagement (Upload)
@@ -1254,7 +1255,7 @@ NEU
 - Erweiterungen der Sprachen um eine individuelle Sprachcodierung
 - Neues Beispiel Frontend (cms)
 - Anlegen eines Mandanten im Backend
-- Datenbankstruktur überarbeitet
+- Datenbankstruktur ï¿½berarbeitet
 - Weitere Schritte in Richtung OOP (Objektorientierte Programmierung)
 - Ausbau der Kommentierung im Source Code
 - Bugfixes, Bugfixes und noch einmal Bugfixes
