@@ -624,7 +624,7 @@ class PifaAjaxHandler {
         header('Cache-Control: private');
         header('Content-Type: text/xml');
         // header('Content-Type: application/xml');
-        header('Content-Length: ' . strlen($data));
+        header('Content-Length: ' . strlen($xml));
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Transfer-Encoding: binary');
 
