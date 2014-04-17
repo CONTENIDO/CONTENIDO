@@ -85,6 +85,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oPage->setReload();
     $oPage->setContent($notis);
 } elseif ($action == "news_job_details" || $action == "news_job_detail_delete") {
+
     // Show job details (recipients)
 
     $oLogs = new NewsletterLogCollection();
@@ -215,6 +216,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $aNewsType[0] = i18n("Text only", 'newsletter');
     $aNewsType[1] = i18n("HTML/Text", 'newsletter');
     while ($oLog = $oLogs->next()) {
+
         $sName = $oLog->get("rcpname");
         $sEMail = $oLog->get("rcpemail");
 
@@ -270,7 +272,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     </tr>
 </table>';
 
-    $oPage->setContent($oFrmOptions->render() . "<br>" . $oList->render() . $sBrowseHTML);
+    $oPage->setContent($oFrmOptions->render(false) . "<br>" . $oList->render(false) . $sBrowseHTML);
 } else {
     // Just show the job data
     $oJob = new NewsletterJob($_REQUEST["idnewsjob"]);
@@ -363,7 +365,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     // the image completely in ui_table_form)
     $oForm->setActionButton("submit", $backendUrl . "images/but_ok.gif", "", "s");
 
-    $oPage->setContent($oForm->render(true));
+    $oPage->setContent($oForm->render(false));
 }
 
 $oPage->render();

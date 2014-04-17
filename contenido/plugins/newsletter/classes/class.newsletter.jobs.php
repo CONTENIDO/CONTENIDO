@@ -401,9 +401,7 @@ class NewsletterJob extends Item {
 
                     $mailer = new cMailer();
                     $mailer->setCharset($sEncoding);
-                    $from = array(
-                        $sFromName => $sFrom
-                    );
+
                     $to = $sEMail;
                     if ($bIsHTML && $bSendHTML) {
                         $body = $sRcpMsgHTML;
@@ -414,7 +412,11 @@ class NewsletterJob extends Item {
                     if ($bIsHTML && $bSendHTML) {
                         $contentType = 'text/html';
                     }
-                    $result = $mailer->sendMail($from, $to, $sSubject, $body, '', '', '', false, $contentType);
+
+                    $message = Swift_Message::newInstance($sSubject, $body, $contentType, $sEncoding);
+                    $message->setFrom($sFrom, $sFromName);
+                    $message->setTo($to);
+                    $result = $mailer->send($message);
 
                     if ($result) {
                         $oLog->set("status", "successful");
