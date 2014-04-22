@@ -1,7 +1,7 @@
 Contenido 4.8.20
 Lizenz:        GNU General Public Licence (GPL)
 Copyright:     (c) 2003-2014, four for business AG
-Informationen: http://www.contenido.org
+Informationen: http://www.contenido.org 
 
 <take care>
 WARNUNG: Versionen, die mit alpha oder beta markiert sind,
