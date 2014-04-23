@@ -147,4 +147,6 @@ $cfg['templates']['front_loginform']      = 'template.front.loginform.html';
 
 $cfg['templates']['breadcrumb']           = 'template.breadcrumb.html';
 
+$cfg['templates']['con_edit_form_synclang'] = 'template.con_edit_form_synclang.html';
+
 ?>

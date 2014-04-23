@@ -52,6 +52,28 @@
         overflow-y: auto;
         width: 680px;
     }
+
+	div.syncList {
+		height: 210px;
+		width: 200px;
+		border: 1px solid #b3b3b3;
+		overflow: auto;
+	}
+
+	div.syncList div.syncLanguage {
+		padding: 5px;
+	}
+
+	div.syncList input.button {
+		height: 16px;
+		width: 16px;
+		border: 0px;
+	    background-color: none;
+	    cursor: pointer;
+	    outline: 0;
+		font-size: 0;
+		margin: 2px;
+	}
     </style>
 
 </head>
@@ -194,6 +216,24 @@
             <tr valign="top">
                 <td class="text_medium">{SORTIERUNG}</td>
                 <td colspan="3" class="text_medium">{SORTIERUNG-FIELD}</td>
+            </tr>
+
+            <tr valign="top" style="display: {SYNC_MENU_DISPLAY};">
+            	<td class="text_medium">i18n("Synchronize")</td>
+            	<td colspan="3" class="text_medium">
+					<div class="syncList">
+						{SYNCLANGLIST}
+
+						<div class="buttonRow">
+							<fieldset style="border: 1px solid #b3b3b3;">
+								<legend>i18n("For selected:")</legend>
+								<input title="i18n("Synchronize this article to all selected languages")" alt="i18n("Synchronize this article to all selected languages")" class="vAlignMiddle button" style="background-image: url(images/but_sync_art.gif);" type="submit" name="syncAll">
+								<input title="i18n("Bring the articles in the selected languages online")" alt="i18n("Bring the articles in the selected languages online")" class="vAlignMiddle button" style="background-image: url(images/online.gif);" type="submit" name="onlineAll">
+								<input title="i18n("Take the articles in the selected languages offline")" alt="i18n("Take the articles in the selected languages offline")" class="vAlignMiddle button" style="background-image: url(images/offline.gif);" type="submit" name="offlineAll">
+							</fieldset>
+						</div>
+					</div>
+				</td>
             </tr>
 
             {NOTIFICATION_SYNCHRON}

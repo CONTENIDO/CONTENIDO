@@ -209,6 +209,14 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $tmp_is_start = isStartArticle($db->f("idartlang"), $idcat, $lang);
 
+
+    if(isset($_POST['onlineOne'])) {
+        $db->query("UPDATE %s SET online=1 WHERE idart = '%s' AND idlang ='%s'", $cfg["tab"]["art_lang"], cRegistry::getArticleId(), cSecurity::toInteger($_POST['onlineOne']));
+    } else if(isset($_POST['offlineOne'])) {
+        $db->query("UPDATE %s SET online=0 WHERE idart = '%s' AND idlang = '%s'", $cfg["tab"]["art_lang"], cRegistry::getArticleId(), cSecurity::toInteger($_POST['offlineOne']));
+    }
+
+
     if ($db->f("created")) {
 
         // ****************** this art was edited before ********************
@@ -239,9 +247,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tmp_onlineaftermove = $db->f("time_online_move");
         $tmp_usetimemgmt = $db->f("timemgmt");
         $tmp_locked = $db->f("locked");
-        $tmp_redirect_checked = ($db->f("redirect") == '1') ? 'checked' : '';
-        $tmp_redirect_url = ($db->f("redirect_url") != '0') ? $db->f("redirect_url") : "http://";
-        $tmp_external_redirect_checked = ($db->f("external_redirect") == '1') ? 'checked' : '';
+        $tmp_redirect_checked = ($db->f("redirect") == '1')? 'checked' : '';
+        $tmp_redirect_url = ($db->f("redirect_url") != '0')? $db->f("redirect_url") : "http://";
+        $tmp_external_redirect_checked = ($db->f("external_redirect") == '1')? 'checked' : '';
         $tmp_redirect_mode = $db->f('redirect_mode');
         $idtplinput = $db->f("idtplinput");
 
@@ -436,7 +444,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tpl->set('s', 'AUTOR-AENDERUNG-NAME', $modifiedByRealname);
 
     // Created
-    $tmp_erstellt = ($tmp_firstedit == 1) ? '<input type="hidden" name="created" value="' . date("Y-m-d H:i:s") . '">' : '<input type="hidden" name="created" value="' . $tmp_created . '">';
+    $tmp_erstellt = ($tmp_firstedit == 1)? '<input type="hidden" name="created" value="' . date("Y-m-d H:i:s") . '">' : '<input type="hidden" name="created" value="' . $tmp_created . '">';
     $tpl->set('s', 'ERSTELLT', i18n("Created"));
     $tpl->set('s', 'ERSTELLUNGS-DATUM', $tmp2_created . $tmp_erstellt);
 
@@ -544,13 +552,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $moveOK = true;
 
     if ($cValue == true || $sValue == true) {
-    	// Multi assign
-    	$tpl->set('s', 'NOTIFICATION_SYNCHRON', '');
+        // Multi assign
+        $tpl->set('s', 'NOTIFICATION_SYNCHRON', '');
 
-    	$tpl2->set('s', 'ID', 'catsel');
-    	$tpl2->set('s', 'NAME', 'idcatnew[]');
-    	$tpl2->set('s', 'CLASS', 'text_medium');
-    	$tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14"' . $disabled);
+        $tpl2->set('s', 'ID', 'catsel');
+        $tpl2->set('s', 'NAME', 'idcatnew[]');
+        $tpl2->set('s', 'CLASS', 'text_medium');
+        $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14"' . $disabled);
     } else {
         $sql = "SELECT
                     idartlang, online
@@ -568,31 +576,30 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             $tpl->set('s', 'NOTIFICATION_SYNCHRON', '');
         }
 
-		if (count(conGetCategoryAssignments($idart)) > 1) {
-			// Old behaviour
-			$tpl2 = new cTemplate();
-			$tpl2->set('s', 'ID', 'catsel');
-			$tpl2->set('s', 'NAME', 'fake[]');
-			$tpl2->set('s', 'CLASS', 'text_medium');
-			$tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" disabled="disabled"');
+        if (count(conGetCategoryAssignments($idart)) > 1) {
+            // Old behaviour
+            $tpl2 = new cTemplate();
+            $tpl2->set('s', 'ID', 'catsel');
+            $tpl2->set('s', 'NAME', 'fake[]');
+            $tpl2->set('s', 'CLASS', 'text_medium');
+            $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14" disabled="disabled"');
 
-  			$rbutton = new cHTMLButton("removeassignment", i18n("Remove assignments"));
+            $rbutton = new cHTMLButton("removeassignment", i18n("Remove assignments"));
 
-			$boxTitle = i18n("Remove multiple category assignments");
-			$boxDescr = i18n("Do you really want to remove the assignments to all categories except the current one?");
+            $boxTitle = i18n("Remove multiple category assignments");
+            $boxDescr = i18n("Do you really want to remove the assignments to all categories except the current one?");
 
-			$rbutton->setEvent("click", 'Con.showConfirmation("' . $boxDescr . '", function() { removeAssignments(' . $idart . ',' . $idcat . '); });return false;');
-			$button = "<br />" . $rbutton->render();
+            $rbutton->setEvent("click", 'Con.showConfirmation("' . $boxDescr . '", function() { removeAssignments(' . $idart . ',' . $idcat . '); });return false;');
+            $button = "<br />" . $rbutton->render();
 
-			$moveOK = false;
-		} else {
-			$tpl2 = new cTemplate();
-			$tpl2->set('s', 'ID', 'catsel');
-			$tpl2->set('s', 'NAME', 'idcatnew[]');
-			$tpl2->set('s', 'CLASS', 'text_medium');
-			$tpl2->set('s', 'OPTIONS', 'size="14" ' . $disabled);
+            $moveOK = false;
+        } else {
+            $tpl2 = new cTemplate();
+            $tpl2->set('s', 'ID', 'catsel');
+            $tpl2->set('s', 'NAME', 'idcatnew[]');
+            $tpl2->set('s', 'CLASS', 'text_medium');
+            $tpl2->set('s', 'OPTIONS', 'size="14" ' . $disabled);
         }
-
     }
 
     if (isset($tplinputchanged) && $tplinputchanged == 1) {
@@ -629,6 +636,52 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tpl->set('s', 'ENDDATE', $tmp_dateend);
     }
 
+    $languages = new cApiLanguageCollection();
+    $languages->select();
+    $langHTML = "";
+    while (($someLang = $languages->nextAccessible()) != false) {
+        if ($someLang->get("idlang") == cRegistry::getLanguageId()) {
+            continue;
+        }
+        $tpl3 = new cTemplate();
+        $tpl3->set("s", "LANG_ID", $someLang->get("idlang"));
+        $tpl3->set("s", "LANG_NAME", $someLang->get("name"));
+
+        $sql = "SELECT
+                    idartlang, online
+                FROM
+                    " . $cfg["tab"]["art_lang"] . "
+                WHERE
+                    idart = " . cSecurity::toInteger($idart) . "
+                    AND idlang = " . cSecurity::toInteger($someLang->get("idlang"));
+        $db->query($sql);
+        $db->next_record();
+        $isOnline = $db->f("online");
+        $idOfSyncedArticle = $db->f("idartlang");
+        $onlineImage = "";
+        $onlineText = "";
+        $buttonName = "";
+        if($idOfSyncedArticle > 0) {
+            $onlineImage = $isOnline ? $cfg['path']['images'] . "online.gif" : $cfg['path']['images'] . "offline.gif";
+            $onlineText = $isOnline ? i18n("Take the article in this language offline") : i18n("Make the article in this language online");
+            $buttonName = $isOnline ? "offlineOne" : "onlineOne";
+        } else {
+            $onlineImage = $cfg['path']['images'] . "offline_off.gif";
+            $onlineText = sprintf(i18n("There is no synchronized article in the language '%s' to take offline/bring online"), $someLang->get('name'));
+            $buttonName = "";
+        }
+        $synced = $db->numRows() > 0;
+        $tpl3->set("s", "SYNC_TEXT", $synced ? sprintf(i18n("This article is synchronized to '%s'"), $someLang->get("name")) : sprintf(i18n("Synchronize this article to '%s'"), $someLang->get('name')));
+        $tpl3->set("s", "ONLINE_TEXT", $onlineText);
+        $tpl3->set("s", "SYNC_IMAGE", $synced ? $cfg['path']['images'] . "but_sync_art.gif" : $cfg['path']['images'] . "but_sync_art_off.gif");
+        $tpl3->set("s", "ONLINE_IMAGE", $onlineImage);
+        $tpl3->set("s", "BUTTON_NAME", $buttonName);
+
+        $langHTML .= $tpl3->generate($cfg['path']['templates'] . $cfg['templates']['con_edit_form_synclang'], true);
+    }
+    $tpl->set("s", "SYNCLANGLIST", $langHTML);
+    $tpl->set("s", "SYNC_MENU_DISPLAY", $langHTML != "" ? "table-row" : "none");
+
     $sql = "SELECT
                 A.idcat,
                 A.level,
@@ -655,13 +708,14 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             $spaces .= "&nbsp;&nbsp;&nbsp;&nbsp;";
         }
 
-        // Prevent moving articles into categories which have no assigned template
-        if($db->f("idtplcfg") == 0) {
-        	$tpl2->set('d', 'TITLETAG', ' title="' . i18n("You can not move an article into a category, which does not have an assigned template!") . '"');
-        	$tpl2->set('d', 'DISABLED', ' disabled');
+        // Prevent moving articles into categories which have no assigned
+        // template
+        if ($db->f("idtplcfg") == 0) {
+            $tpl2->set('d', 'TITLETAG', ' title="' . i18n("You can not move an article into a category, which does not have an assigned template!") . '"');
+            $tpl2->set('d', 'DISABLED', ' disabled');
         } else {
-        	$tpl2->set('d', 'TITLETAG', '');
-        	$tpl2->set('d', 'DISABLED', '');
+            $tpl2->set('d', 'TITLETAG', '');
+            $tpl2->set('d', 'DISABLED', '');
         }
 
         if (!in_array($db->f("idcat"), $tmp_idcat_in_art)) {
@@ -680,7 +734,6 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 $button .= '<input type="hidden" name="idcatnew[]" value="' . $db->f("idcat") . '">';
             }
         }
-
     }
 
     $select = $tpl2->generate($cfg["path"]["templates"] . $cfg["templates"]["con_edit_form_cat"], true);
