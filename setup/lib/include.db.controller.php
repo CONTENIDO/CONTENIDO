@@ -22,7 +22,7 @@ checkAndInclude($cfg['path']['contenido'] . 'includes/functions.database.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
 
 $db = getSetupMySQLDBConnection(false);
-if (checkMySQLDatabaseCreation($db, $_SESSION['dbname'])) {
+if (checkMySQLDatabaseCreation($db, $_SESSION['dbname'], $_SESSION['dbcharset'], $_SESSION['dbcollation'])) {
     $db = getSetupMySQLDBConnection();
 }
 

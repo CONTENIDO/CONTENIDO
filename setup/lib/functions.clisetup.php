@@ -146,6 +146,10 @@ function checkInstallationSettings() {
         prntln(i18n('You did not specify a database charset!', 'setup'));
         $fine = false;
     }
+    if ($_SESSION['dbcollation'] == '') {
+        prntln(i18n('You did not specify a database collation!', 'setup'));
+        $fine = false;
+    }
     if ($cfg['db']['connection']['database'] == '') {
         prntln(i18n('You did not specify a database name!', 'setup'));
         $fine = false;

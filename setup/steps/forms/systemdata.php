@@ -34,6 +34,7 @@ class cSetupSystemData extends cSetupMask {
         cArray::initializeKey($_SESSION, 'dbname', '');
         cArray::initializeKey($_SESSION, 'dbpass', '');
         cArray::initializeKey($_SESSION, 'dbcharset', '');
+        cArray::initializeKey($_SESSION, 'dbcollation', '');
 
         if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
             $cfgBackup = $cfg;
@@ -103,6 +104,8 @@ class cSetupSystemData extends cSetupMask {
 
         $dbprefix = new cHTMLTextbox('dbprefix', $_SESSION['dbprefix'], 10, 30);
         $dbcharset = new cHTMLSelectElement('dbcharset');
+        $dbcollation = new cHTMLSelectElement('collationSelect', '1', 'collationSelect');
+        $dbcollation->setAttribute("onchange", "comboBox('collationSelect', 'collationText')");
 
         // Compose charset select box
         $pos = 0;
@@ -115,6 +118,20 @@ class cSetupSystemData extends cSetupMask {
             $option = new cHTMLOptionElement($charset, $charset, $selected);
             $dbcharset->addOptionElement(++$pos, $option);
         }
+
+        // Compose collation select box
+        $pos = 0;
+        $noOp = new cHTMLOptionElement('-- ' . i18n("Other", "setup") . ' --', '');
+        $dbcollation->addOptionElement(++$pos, $noOp);
+        $selectedCollation = (!empty($_SESSION['dbcollation'])) ? $_SESSION['dbcollation'] : 'utf8_general_ci';
+        $collations = fetchMySQLCollations();
+        foreach ($collations as $p => $collation) {
+            $selected = ($selectedCollation == $collation);
+            $option = new cHTMLOptionElement($collation, $collation, $selected);
+            $dbcollation->addOptionElement(++$pos, $option);
+        }
+        $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText');
+
 
         $this->_oStepTemplate->set('s', 'LABEL_DBHOST', i18n("Database Server (IP or name)", "setup"));
 
@@ -129,6 +146,7 @@ class cSetupSystemData extends cSetupMask {
         $this->_oStepTemplate->set('s', 'LABEL_DBPASSWORD', i18n("Database Password", "setup"));
         $this->_oStepTemplate->set('s', 'LABEL_DBPREFIX', i18n("Table Prefix", "setup"));
         $this->_oStepTemplate->set('s', 'LABEL_DBCHARSET', i18n("Database character set", "setup"));
+        $this->_oStepTemplate->set('s', 'LABEL_DBCOLLATION', i18n("Database collation", "setup"));
 
         $this->_oStepTemplate->set('s', 'INPUT_DBHOST', $dbhost->render());
         $this->_oStepTemplate->set('s', 'INPUT_DBNAME', $dbname->render());
@@ -136,6 +154,7 @@ class cSetupSystemData extends cSetupMask {
         $this->_oStepTemplate->set('s', 'INPUT_DBPASSWORD', $dbpass->render() . $dbpass_hidden->render());
         $this->_oStepTemplate->set('s', 'INPUT_DBPREFIX', $dbprefix->render());
         $this->_oStepTemplate->set('s', 'INPUT_DBCHARSET', $dbcharset->render());
+        $this->_oStepTemplate->set('s', 'INPUT_DBCOLLATION', $dbCollationTextbox . $dbcollation->render());
 
         $this->setNavigation($previous, $next);
     }

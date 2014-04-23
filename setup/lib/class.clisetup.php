@@ -52,6 +52,7 @@ class cCLISetup {
         $this->settings['db']['user'] = 'root';
         $this->settings['db']['password'] = '';
         $this->settings['db']['charset'] = 'utf8';
+        $this->settings['db']['collation'] = 'utf8_general_ci';
         $this->settings['db']['database'] = 'contenido';
         $this->settings['db']['prefix'] = 'con';
 
@@ -165,6 +166,7 @@ class cCLISetup {
         $this->settings['db']['user'] = ($this->args['dbuser'] == '') ? $this->settings['db']['user'] : $this->args['dbuser'];
         $this->settings['db']['password'] = ($this->args['dbpassword'] == '') ? $this->settings['db']['password'] : $this->args['dbpassword'];
         $this->settings['db']['charset'] = ($this->args['dbcharset'] == '') ? $this->settings['db']['charset'] : $this->args['dbcharset'];
+        $this->settings['db']['collation'] = ($this->args['dbcollation'] == '') ? $this->settings['db']['collation'] : $this->args['dbcollation'];
         $this->settings['db']['database'] = ($this->args['dbdatabase'] == '') ? $this->settings['db']['database'] : $this->args['dbdatabase'];
         $this->settings['db']['prefix'] = ($this->args['dbprefix'] == '') ? $this->settings['db']['prefix'] : $this->args['dbprefix'];
 
@@ -211,6 +213,11 @@ class cCLISetup {
         prnt(i18n('Charset', 'setup') . ' [' . $this->settings['db']['charset'] . ']: ', 1);
         $line = trim(fgets(STDIN));
         $this->settings['db']['charset'] = ($line == "") ? $this->settings['db']['charset'] : $line;
+
+        // database collation
+        prnt(i18n('Collation', 'setup') . ' [' . $this->settings['db']['collation'] . ']: ', 1);
+        $line = trim(fgets(STDIN));
+        $this->settings['db']['collation'] = ($line == "") ? $this->settings['db']['collation'] : $line;
 
         // database prefix
         prnt(i18n('Prefix', 'setup') . ' [' . $this->settings['db']['prefix'] . ']: ', 1);
@@ -304,6 +311,7 @@ class cCLISetup {
                 $this->settings['db']['charset'] = trim($xml->db->charset);
                 $this->settings['db']['database'] = trim($xml->db->database);
                 $this->settings['db']['prefix'] = trim($xml->db->prefix);
+                $this->settings['db']['collation'] = trim($xml->db->collation);
 
                 $this->settings['paths']['http_root_path'] = trim($xml->path->http_root_path);
 
@@ -362,7 +370,7 @@ class cCLISetup {
         $test->runTests(false); // general php tests
         $test->testFilesystem(true, false); // file system permission tests
         $test->testFrontendFolderCreation(); // more file system permission tests
-        $test->checkSetupMysql('setup', $cfg['db']['connection']['database'], $_SESSION['dbprefix']); // test the SQL connection and database creation
+        $test->checkSetupMysql('setup', $cfg['db']['connection']['database'], $_SESSION['dbprefix'], $_SESSION['dbcharset'], $_SESSION['dbcollation']); // test the SQL connection and database creation
 
         $testResults = $test->getResults();
 
@@ -438,6 +446,8 @@ class cCLISetup {
         $_SESSION['adminpass'] = $this->settings['admin_user']['password'];
         $_SESSION['adminmail'] = $this->settings['admin_user']['email'];
         $_SESSION['dbprefix'] = $this->settings['db']['prefix'];
+        $_SESSION['dbcollation'] = $this->settings['db']['collation'];
+        $_SESSION['dbcharset'] = $this->settings['db']['charset'];
         $cfg['sql']['sqlprefix'] = $this->settings['db']['prefix'];
     }
 }

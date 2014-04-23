@@ -1366,7 +1366,7 @@ class cSystemtest {
      * @param string $databaseName
      * @param string $databasePrefix
      */
-    public function checkSetupMysql($setupType, $databaseName, $databasePrefix) {
+    public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '') {
         switch ($setupType) {
             case "setup":
 
@@ -1410,7 +1410,7 @@ class cSystemtest {
                 } else {
                     $db->connect();
                     // Check if database can be created
-                    $status = checkMySQLDatabaseCreation($db, $databaseName);
+                    $status = checkMySQLDatabaseCreation($db, $databaseName, $charset, $collation);
                     if (!$status) {
                         $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Unable to create the database in the MySQL server", "setup"), sprintf(i18n("Setup tried to create a test database and failed. Please assign database creation permissions to the database user you entered, ask an administrator to do so, or create the database manually.", "setup")));
                         return;

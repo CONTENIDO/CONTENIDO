@@ -34,12 +34,12 @@ body {
 
 #setupPageWrap {
     width: 752px;
-    height: 480px;
+    height: 550px;
     position: absolute;
     top: 50%;
     left: 50%;
     margin-left: -376px;
-    margin-top: -240px;
+    margin-top: -275px;
 }
 
 #setupPage {
@@ -181,7 +181,7 @@ p {
 
 table.setupBodyOuterTable {
     width: 730px;
-    height: 300px;
+    height: 360px;
 }
 
 
@@ -389,6 +389,11 @@ table.setupBodyOuterTableSystemData td.column-1 select {
     margin-left: 0;
 }
 
+table.setupBodyOuterTableSystemData td.column-1 input#collationText {
+    width: 125px;
+	margin-right: 5px;
+}
+
 
 /**
  * @section Installer
@@ -437,6 +442,7 @@ table.setupBodyOuterTable .progressOutput {
     color: black;
     text-align: left;
     border: 1px solid #b3b3b8;
+	height: 520px;
 }
 
 #setupHead {
@@ -469,7 +475,7 @@ table.setupBodyOuterTable .progressOutput {
 #setupBody {
     background-color: #f1f1f1;
     padding: 20px 10px 10px 10px;
-    height: 320px;
+    height: 360px;
 }
 
 #setupFootnote {
@@ -488,3 +494,4 @@ table.setupBodyOuterTable .progressOutput {
     font-size: 80%;
     color: #b5b5b5;
 }
+

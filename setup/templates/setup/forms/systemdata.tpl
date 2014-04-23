@@ -29,8 +29,19 @@
                     <td class="last">{INPUT_DBPREFIX}</td>
                 </tr>
                 <tr>
+                	<td><a href="javascript://" onclick="toggleSettings()">
+                		<img class="advancedSettingsImage" style="margin-bottom: -.25em;" src="images/controls/arrow_closed.png">
+                		Advanced Settings
+                	</td>
+                	<td>&nbsp;</td>
+                </tr>
+                <tr class="advancedSetting" style="visibility: hidden;">
                     <td class="first"><div class="description">{LABEL_DBCHARSET}</div></td>
                     <td class="last">{INPUT_DBCHARSET}</td>
+                </tr>
+                <tr class="advancedSetting" style="visibility: hidden;">
+                    <td class="first"><div class="description">{LABEL_DBCOLLATION}</div></td>
+                    <td class="last">{INPUT_DBCOLLATION}</td>
                 </tr>
             </table>
         </td>
