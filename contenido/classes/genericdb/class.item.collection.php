@@ -1272,6 +1272,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         // delete db entry
         $sql = "DELETE FROM `%s` WHERE %s = '%s'";
         $oDb->query($sql, $this->table, $this->primaryKey, $mId);
+        $success = $oDb->affectedRows();
 
         // delete cache entry
         $this->_oCache->removeItem($mId);
@@ -1280,7 +1281,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $oProperties = $this->_getPropertiesCollectionInstance();
         $oProperties->deleteProperties($this->primaryKey, $mId);
 
-        if ($oDb->affectedRows() == 0) {
+        if ($success == 0) {
             $this->_executeCallbacks(self::DELETE_FAILURE, $this->_itemClass, array(
                 $mId
             ));
