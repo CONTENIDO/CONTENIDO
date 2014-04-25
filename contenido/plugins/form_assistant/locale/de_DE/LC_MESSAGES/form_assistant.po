@@ -399,7 +399,10 @@ msgid "BUTTONBACK"
 msgstr "Zurück-Button"
 
 msgid "BUTTON"
-msgstr "Button"
+msgstr "generischer Button"
+
+msgid "BUTTONIMAGE"
+msgstr "Bild-Button"
 
 msgid "MATRIX"
 msgstr "Matrix"
@@ -415,9 +418,6 @@ msgstr "Anfang einer Formularfeldgruppe"
 
 msgid "FIELDSET_END"
 msgstr "Ende einer Formularfeldgruppe"
-
-msgid "BUTTONIMAGE"
-msgstr "Bild-Button"
 
 msgid "UNKNOWN"
 msgstr "unbekannt"

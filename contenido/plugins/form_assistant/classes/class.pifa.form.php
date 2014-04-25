@@ -316,6 +316,8 @@ class PifaForm extends Item {
 
     /**
      * Sets uploaded file(s) for appropriate form fields.
+     *
+     * @param array $files super global files array
      */
     public function setFiles(array $files = NULL) {
         if (NULL === $files) {

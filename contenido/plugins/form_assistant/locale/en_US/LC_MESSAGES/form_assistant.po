@@ -399,7 +399,10 @@ msgid "BUTTONBACK"
 msgstr "back button"
 
 msgid "BUTTON"
-msgstr "button"
+msgstr "generic button"
+
+msgid "BUTTONIMAGE"
+msgstr "image button"
 
 msgid "MATRIX"
 msgstr "matrix"
@@ -415,9 +418,6 @@ msgstr "fieldset begin"
 
 msgid "FIELDSET_END"
 msgstr "fieldset end"
-
-msgid "BUTTONIMAGE"
-msgstr "image button"
 
 msgid "UNKNOWN"
 msgstr "unknown"
