@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-28 10:58+0100\n"
+"POT-Creation-Date: 2014-04-30 13:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr ""
 #: classes/content_types/class.content.type.linkeditor.php:306
 #: includes/include.con_art_overview.php:78
 #: includes/include.con_art_overview.php:701
-#: includes/include.con_edit_form.php:346
+#: includes/include.con_edit_form.php:385
 #: includes/include.stat_overview.php:87
 #: templates/standard/template.mycontenido_lastarticles.html:73
 #: templates/standard/template.mycontenido_lastarticles.html:113
@@ -199,7 +199,7 @@ msgstr ""
 
 #: classes/class.ajax.php:140
 #: classes/content_types/class.content.type.teaser.php:812
-#: includes/include.con_edit_form.php:686
+#: includes/include.con_edit_form.php:811
 #: includes/include.grouprights_con.php:77
 #: includes/include.grouprights_str.php:78 includes/include.logs.php:267
 #: includes/include.note.popup.php:72 includes/include.rights_con.php:79
@@ -1824,7 +1824,7 @@ msgstr ""
 #: includes/include.con_art_overview.php:968
 #: includes/include.con_content_list.php:67
 #: includes/include.con_content_list.php:93
-#: includes/include.con_edit_form.php:907
+#: includes/include.con_edit_form.php:1032
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
 #: includes/include.grouprights_area.php:50
@@ -2173,8 +2173,8 @@ msgid "Error article/category not found!"
 msgstr ""
 
 #: includes/frontend/include.front_content.php:360
-#: includes/include.con_edit_form.php:273
-#: includes/include.con_edit_form.php:277
+#: includes/include.con_edit_form.php:312
+#: includes/include.con_edit_form.php:316
 #: includes/include.con_meta_form.php:61 includes/include.con_meta_form.php:63
 #: includes/include.tplcfg_edit_form.php:41
 #, php-format
@@ -2195,12 +2195,12 @@ msgstr ""
 msgid "Default title"
 msgstr ""
 
-#: includes/functions.con.php:848 includes/functions.pathresolver.php:251
+#: includes/functions.con.php:849 includes/functions.pathresolver.php:251
 #: templates/standard/template.con_left_top_art_search.html:72
 msgid "Lost and found"
 msgstr ""
 
-#: includes/functions.con.php:1360 includes/functions.str.php:1110
+#: includes/functions.con.php:1361 includes/functions.str.php:1110
 #: includes/functions.tpl.php:344
 #, php-format
 msgid "%s (Copy)"
@@ -2705,7 +2705,7 @@ msgid "Add new variable"
 msgstr ""
 
 #: includes/include.client_artspec.php:60
-#: includes/include.con_edit_form.php:378
+#: includes/include.con_edit_form.php:417
 msgid "Article specification"
 msgstr ""
 
@@ -2729,7 +2729,7 @@ msgid "This is the default article specification"
 msgstr ""
 
 #: includes/include.client_artspec.php:141
-#: includes/include.con_edit_form.php:372
+#: includes/include.con_edit_form.php:411
 msgid "No article specifications found!"
 msgstr ""
 
@@ -2895,7 +2895,7 @@ msgid "not modified yet"
 msgstr ""
 
 #: includes/include.con_art_overview.php:312
-#: includes/include.con_edit_form.php:453
+#: includes/include.con_edit_form.php:492
 msgid "not yet published"
 msgstr ""
 
@@ -2931,7 +2931,7 @@ msgid "Copy article to the current language"
 msgstr ""
 
 #: includes/include.con_art_overview.php:511
-#: includes/include.con_edit_form.php:523
+#: includes/include.con_edit_form.php:562
 msgid "Start article"
 msgstr ""
 
@@ -3050,8 +3050,8 @@ msgid "Article has no raw data"
 msgstr ""
 
 #: includes/include.con_content_list.php:277
-#: includes/include.con_edit_form.php:266
-#: includes/include.con_edit_form.php:267
+#: includes/include.con_edit_form.php:305
+#: includes/include.con_edit_form.php:306
 #: includes/include.con_meta_form.php:69 includes/include.con_meta_form.php:70
 #: includes/include.tplcfg_edit_form.php:112
 msgid "This article is currently frozen and can not be edited!"
@@ -3077,12 +3077,12 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: includes/include.con_edit_form.php:261
+#: includes/include.con_edit_form.php:300
 #: ../data/config/production/cfg_actions.inc.php:37
 msgid "Save article"
 msgstr ""
 
-#: includes/include.con_edit_form.php:349
+#: includes/include.con_edit_form.php:388
 #: includes/include.str_overview.php:495
 #: templates/standard/template.con_meta_edit_form.html:71
 #: templates/standard/template.str_overview.html:53
@@ -3091,39 +3091,39 @@ msgstr ""
 msgid "Alias"
 msgstr ""
 
-#: includes/include.con_edit_form.php:390
+#: includes/include.con_edit_form.php:429
 msgid "Article link"
 msgstr ""
 
-#: includes/include.con_edit_form.php:400
+#: includes/include.con_edit_form.php:439
 msgid "Select an entry to display link"
 msgstr ""
 
-#: includes/include.con_edit_form.php:401
+#: includes/include.con_edit_form.php:440
 msgid "Article only"
 msgstr ""
 
-#: includes/include.con_edit_form.php:402
+#: includes/include.con_edit_form.php:441
 msgid "Article with category"
 msgstr ""
 
-#: includes/include.con_edit_form.php:403
+#: includes/include.con_edit_form.php:442
 msgid "Article with category and language"
 msgstr ""
 
-#: includes/include.con_edit_form.php:404
+#: includes/include.con_edit_form.php:443
 msgid "Article with language"
 msgstr ""
 
-#: includes/include.con_edit_form.php:412
+#: includes/include.con_edit_form.php:451
 msgid "open"
 msgstr ""
 
-#: includes/include.con_edit_form.php:418
+#: includes/include.con_edit_form.php:457
 msgid "Author (Creator)"
 msgstr ""
 
-#: includes/include.con_edit_form.php:440
+#: includes/include.con_edit_form.php:479
 #: includes/include.frontend.left_top.php:43
 #: includes/include.frontend.user_menu.php:44
 #: includes/include.mycontenido.tasks.php:249
@@ -3134,86 +3134,126 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
-#: includes/include.con_edit_form.php:444
+#: includes/include.con_edit_form.php:483
 msgid "Author (Modifier)"
 msgstr ""
 
-#: includes/include.con_edit_form.php:445
+#: includes/include.con_edit_form.php:484
 msgid "Last modified"
 msgstr ""
 
-#: includes/include.con_edit_form.php:449
+#: includes/include.con_edit_form.php:488
 msgid "Publishing date"
 msgstr ""
 
-#: includes/include.con_edit_form.php:457
+#: includes/include.con_edit_form.php:496
 msgid "Publisher"
 msgstr ""
 
-#: includes/include.con_edit_form.php:468
+#: includes/include.con_edit_form.php:507
 msgid "Redirect"
 msgstr ""
 
-#: includes/include.con_edit_form.php:479
+#: includes/include.con_edit_form.php:518
 msgid "Status code"
 msgstr ""
 
-#: includes/include.con_edit_form.php:482
+#: includes/include.con_edit_form.php:521
 msgid "Articlelog"
 msgstr ""
 
-#: includes/include.con_edit_form.php:491
+#: includes/include.con_edit_form.php:530
 msgid "Temporary"
 msgstr ""
 
-#: includes/include.con_edit_form.php:492
+#: includes/include.con_edit_form.php:531
 msgid "Permanently"
 msgstr ""
 
-#: includes/include.con_edit_form.php:501
+#: includes/include.con_edit_form.php:540
 msgid "New window"
 msgstr ""
 
-#: includes/include.con_edit_form.php:529
+#: includes/include.con_edit_form.php:568
 msgid "Searchable"
 msgstr ""
 
-#: includes/include.con_edit_form.php:533
+#: includes/include.con_edit_form.php:572
 msgid "Sort key"
 msgstr ""
 
-#: includes/include.con_edit_form.php:558
+#: includes/include.con_edit_form.php:605
 msgid ""
 "The called article is synchronized. If you want to move it please make sure "
 "that the target category of this article exist in all languages."
 msgstr ""
 
-#: includes/include.con_edit_form.php:570
+#: includes/include.con_edit_form.php:618
 #: ../data/config/production/cfg_actions.inc.php:38
 msgid "Remove assignments"
 msgstr ""
 
-#: includes/include.con_edit_form.php:572
+#: includes/include.con_edit_form.php:620
 msgid "Remove multiple category assignments"
 msgstr ""
 
-#: includes/include.con_edit_form.php:573
+#: includes/include.con_edit_form.php:621
 msgid ""
 "Do you really want to remove the assignments to all categories except the "
 "current one?"
 msgstr ""
 
-#: includes/include.con_edit_form.php:657
+#: includes/include.con_edit_form.php:725
+msgid "Take the article in this language offline"
+msgstr ""
+
+#: includes/include.con_edit_form.php:725
+msgid "Make the article in this language online"
+msgstr ""
+
+#: includes/include.con_edit_form.php:729
+#, php-format
+msgid ""
+"There is no synchronized article in the language '%s' to take offline/bring "
+"online"
+msgstr ""
+
+#: includes/include.con_edit_form.php:734
+#, php-format
+msgid "This article is synchronized to '%s'"
+msgstr ""
+
+#: includes/include.con_edit_form.php:734
+#, php-format
+msgid "Synchronize this article to '%s'"
+msgstr ""
+
+#: includes/include.con_edit_form.php:738
+#, php-format
+msgid ""
+"This article can't be synchronized to '%s' since the category '%s' does not "
+"exist in that language."
+msgstr ""
+
+#: includes/include.con_edit_form.php:751
+msgid ""
+"In this menu you can change the synchronization settings of this article. "
+"You will find a list of all available languages and can copy this article to "
+"languages that have the category of this article. You can also take already "
+"synchronized languages online or offline."
+msgstr ""
+
+#: includes/include.con_edit_form.php:783
 msgid ""
 "You can not move an article into a category, which does not have an assigned "
 "template!"
 msgstr ""
 
-#: includes/include.con_edit_form.php:781
+#: includes/include.con_edit_form.php:906
 msgid "Summary"
 msgstr ""
 
-#: includes/include.con_edit_form.php:887
+#: includes/include.con_edit_form.php:1012
 msgid "Please fill in the start date and/or the end date!"
 msgstr ""
 
@@ -4518,8 +4558,8 @@ msgstr ""
 
 #: includes/include.mycontenido.tasks.edit.php:54
 #: includes/include.todo.popup.php:57 includes/include.upl_edit.php:232
-#: templates/standard/template.con_edit_form.html:156
-#: templates/standard/template.con_edit_form.html:376
+#: templates/standard/template.con_edit_form.html:178
+#: templates/standard/template.con_edit_form.html:417
 #: templates/standard/template.log_main.html:46
 #: templates/standard/template.log_main.html:99
 msgid "End date"
@@ -5506,8 +5546,8 @@ msgid "Protection"
 msgstr ""
 
 #: includes/include.upl_edit.php:77
-#: templates/standard/template.con_edit_form.html:135
-#: templates/standard/template.con_edit_form.html:373
+#: templates/standard/template.con_edit_form.html:157
+#: templates/standard/template.con_edit_form.html:414
 msgid "Time control"
 msgstr ""
 
@@ -5535,14 +5575,14 @@ msgid "Protected for non-logged in users"
 msgstr ""
 
 #: includes/include.upl_edit.php:224
-#: templates/standard/template.con_edit_form.html:143
-#: templates/standard/template.con_edit_form.html:374
+#: templates/standard/template.con_edit_form.html:165
+#: templates/standard/template.con_edit_form.html:415
 msgid "Use time control"
 msgstr ""
 
 #: includes/include.upl_edit.php:229
-#: templates/standard/template.con_edit_form.html:149
-#: templates/standard/template.con_edit_form.html:375
+#: templates/standard/template.con_edit_form.html:171
+#: templates/standard/template.con_edit_form.html:416
 #: templates/standard/template.log_main.html:38
 #: templates/standard/template.log_main.html:98
 msgid "Start date"
@@ -5797,14 +5837,22 @@ msgstr ""
 msgid "Content administration"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:166
-#: templates/standard/template.con_edit_form.html:377
+#: templates/standard/template.con_edit_form.html:188
+#: templates/standard/template.con_edit_form.html:418
 msgid "When expired, move to category"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:175
-#: templates/standard/template.con_edit_form.html:378
+#: templates/standard/template.con_edit_form.html:197
+#: templates/standard/template.con_edit_form.html:419
 msgid "Make online after move"
+msgstr ""
+
+#: templates/standard/template.con_edit_form.html:222
+msgid "Synchronize"
+msgstr ""
+
+#: templates/standard/template.con_edit_form.html:229
+msgid "For selected:"
 msgstr ""
 
 #: templates/standard/template.con_left_top.html:57
