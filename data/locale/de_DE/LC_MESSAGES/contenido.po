@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-30 13:43+0200\n"
-"PO-Revision-Date: 2014-04-30 13:47+0100\n"
+"POT-Creation-Date: 2014-04-30 14:26+0200\n"
+"PO-Revision-Date: 2014-04-30 14:28+0100\n"
 "Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -6206,6 +6206,18 @@ msgstr "Synchronisierung"
 #: templates/standard/template.con_edit_form.html:229
 msgid "For selected:"
 msgstr "Für Ausgewählte:"
+
+#: templates/standard/template.con_edit_form.html:420
+msgid "Synchronize this article to all selected languages"
+msgstr "Synchronisiere diesen Artikel in alle ausgewählten Sprachen"
+
+#: templates/standard/template.con_edit_form.html:421
+msgid "Bring this article in the selected languages online"
+msgstr "Bringe die Artikel in ausgewählten Sprachen online"
+
+#: templates/standard/template.con_edit_form.html:422
+msgid "Take this article in the selected languages offline"
+msgstr "Nimm die Aritkel in den ausgewählten Sprachen offline"
 
 #: templates/standard/template.con_left_top.html:57
 #: templates/standard/template.con_left_top.html:336

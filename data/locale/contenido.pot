@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-30 13:43+0200\n"
+"POT-Creation-Date: 2014-04-30 14:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5853,6 +5853,18 @@ msgstr ""
 
 #: templates/standard/template.con_edit_form.html:229
 msgid "For selected:"
+msgstr ""
+
+#: templates/standard/template.con_edit_form.html:420
+msgid "Synchronize this article to all selected languages"
+msgstr ""
+
+#: templates/standard/template.con_edit_form.html:421
+msgid "Bring this article in the selected languages online"
+msgstr ""
+
+#: templates/standard/template.con_edit_form.html:422
+msgid "Take this article in the selected languages offline"
 msgstr ""
 
 #: templates/standard/template.con_left_top.html:57
