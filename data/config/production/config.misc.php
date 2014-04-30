@@ -371,6 +371,7 @@ $cfg['inuse']['lifetime'] = 3600;
 $cfg['backend_template']['css_files'] = array(
     '{basePath}styles/jquery/jquery-ui.css',
     '{basePath}styles/contenido.css',
+    '{basePath}styles\jquery\plugins\atooltip.css'
 );
 
 // (array)  List of default script tags for JS files to render in backend pages
@@ -383,6 +384,7 @@ $cfg['backend_template']['js_files'] = array(
     '{basePath}scripts/general.js',
     '_CONFIG_',
     '{basePath}scripts/startup.js',
+    '{basePath}scripts/jquery/plugins/atooltip.jquery.js'
 );
 
 
