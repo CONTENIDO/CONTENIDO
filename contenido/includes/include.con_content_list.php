@@ -92,6 +92,73 @@ if (($action == 'savecontype' || $action == 10)) {
     } else {
         $page->displayError(i18n("Permission denied"));
     }
+} else if ($action == 'exportrawcontent') {
+
+    class SimpleXMLExtended extends SimpleXMLElement{
+        public function addCData($cdata_text){
+            $node= dom_import_simplexml($this);
+            $no = $node->ownerDocument;
+            $node->appendChild($no->createCDATASection($cdata_text));
+        }
+    }
+
+    // load article language object
+    $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
+    // create xml element articles
+    $articleElement = new SimpleXMLExtended('<?xml version="1.0" encoding="UTF-8"?><articles></articles>');
+
+    // add child element article
+    $articleNode = $articleElement->addChild("article");
+    $articleNode->addAttribute("id", $cApiArticleLanguage->get('idart'));
+
+    // add seo infos to xml
+    $titleNode = $articleNode->addChild("title");
+    $titleNode->addCData($cApiArticleLanguage->get('title'));
+
+    $summaryNode = $articleNode->addChild("shortdesc");
+    $summaryNode->addCData($cApiArticleLanguage->get('summary'));
+
+    $pageTitleNode = $articleNode->addChild("seo_title");
+    $pageTitleNode->addCData($cApiArticleLanguage->get('pagetitle'));
+
+    $seoDescrNode = $articleNode->addChild("seo_description");
+    $seoDescrNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 3));
+
+    $keywordsNode = $articleNode->addChild("seo_keywords");
+    $keywordsNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 5));
+
+    $copyrightNode = $articleNode->addChild("seo_copyright");
+    $copyrightNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 8));
+
+    $seoauthorNode = $articleNode->addChild("seo_author");
+    $seoauthorNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 1));
+
+    // load content id's for article
+    $conColl = new cApiContentCollection();
+    $contentIds = $conColl->getIdsByWhereClause('idartlang="'. $cApiArticleLanguage->get("idartlang") .'"');
+
+    // iterate through content and add get data
+    foreach ($contentIds as $contentId) {
+        //load content object
+        $content = new cApiContent($contentId);
+        //create content element
+        $contentNode = $articleNode->addChild("content");
+        $contentNode->addCData($content->get("value"));
+        // if loaded get data and add to xml
+        if($content->isLoaded()) {
+            $type = new cApiType($content->get("idtype"));
+            if($type->isLoaded()) {
+                $contentNode->addAttribute("type", $type->get("type"));
+            }
+            $contentNode->addAttribute("id", $content->get("typeid"));
+        }
+    }
+    // output data as xml
+    header('Content-Type: application/xml;');
+    header('Content-Disposition: attachment; filename='.$cApiArticleLanguage->get('title').';');
+    ob_clean();
+    echo $articleElement->asXML();
+    exit;
 }
 
 // get active value
