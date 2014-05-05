@@ -86,8 +86,14 @@
     <input type="hidden" name="changeview" value="edit">
     <input type="hidden" name="data" value="">
 </form>
+<label class="rawdata">{EXPORT_LABEL}</label>
 <form name="exportrawdata" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=exportrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
-	<input type="submit" name="export" value="Exportieren">
+	<input type="submit" name="export" value="{EXPORT_RAWDATA}">
+</form>
+<label class="rawdata">{IMPORT_LABEL}</label>
+<form name="importrawdata" method="post" enctype="multipart/form-data" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=importrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
+	<input type="file" name="rawfile" value="" size="40">
+	<input type="submit" name="import" value="{IMPORT_RAWDATA}">
 </form>
 <!--
 template.con_content_list

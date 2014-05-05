@@ -2326,6 +2326,12 @@ table.inuse_tpl {
     margin-top: 5px;
 }
 
+#con_content_list .rawdata {
+	display: block;
+	margin: 15px 0px 15px 0px;
+	font-weight: bold;
+}
+
 a.infoButton,
 .infoButton:hover {
     display: inline-block;

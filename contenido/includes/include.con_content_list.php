@@ -159,6 +159,112 @@ if (($action == 'savecontype' || $action == 10)) {
     ob_clean();
     echo $articleElement->asXML();
     exit;
+} else if ($action == "importrawcontent") {
+    // import raw data into article
+
+    // init vars
+    $error = false;
+
+    //get file from request
+    $rawDataFile = $_FILES['rawfile']['tmp_name'];
+
+    // check file exist
+    if(strlen($rawDataFile) > 0 && isset($_FILES['rawfile'])) {
+
+        // read file from tmp upload folder
+        $rawData = file_get_contents($rawDataFile);
+
+        // try init xml and import data
+        try {
+            $xmlDocument = new SimpleXMLElement($rawData);
+
+            foreach ($xmlDocument->children() as $articleNode) {
+                $articleId = $articleNode->attributes()->id;
+
+                // check article id exists in xml
+                if($articleId > 0) {
+
+                    // load article by artice id and language
+                    $articleLanguage = new cApiArticleLanguage();
+                    $articleLanguage->loadByMany(array("idart" => $articleId, "idlang" => cRegistry::getLanguageId()));
+
+                    // check is article loaded
+                    if($articleLanguage->isLoaded()) {
+
+                        // read xml childrens
+                        foreach ($articleNode->children() as $key => $child) {
+
+                            // switch xml tag and exec business logic
+                            switch ($key) {
+                                case 'title':
+                                    $articleLanguage->set("title", $child);
+                                    $articleLanguage->store();
+
+                                    break;
+                                case 'shortdesc':
+                                    $articleLanguage->set("summary", $child);
+                                    $articleLanguage->store();
+
+                                    break;
+                                case 'seo_title':
+                                    $articleLanguage->set("pagetitle", $child);
+                                    $articleLanguage->store();
+
+                                    break;
+                                case 'seo_description':
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 3, $child);
+
+                                    break;
+                                case 'seo_keywords':
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 5, $child);
+
+                                    break;
+                                case 'seo_copyright':
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 8, $child);
+
+                                    break;
+                                case 'seo_author':
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 1, $child);
+
+                                    break;
+                                case 'content':
+                                    $type = $child->attributes()->type;
+                                    $typeid  = $child->attributes()->id;
+
+                                    if(strlen($type) > 0 && $typeid > 0) {
+                                        conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
+                                    } else {
+                                        $page->displayError(i18n("Can not save rawcontent type or id not present"));
+                                    }
+
+                                    break;
+                                case 'default':
+                                    break;
+                            }
+
+                        }
+
+                    } else {
+                        $page->displayError(i18n("Can not load raw article"));
+                        $error = true;
+                    }
+                } else {
+                    $page->displayError(i18n("Can not find raw article"));
+                    $error = true;
+
+                }
+            }
+            if($error === false) {
+                $page->displayInfo(i18n("Article successfully imported"));
+            }
+
+        } catch (Exception $e) {
+            $page->displayError(i18n("Not valid xml-file"));
+        }
+    } else {
+        $page->displayWarning(i18n("Please choose a file"));
+    }
+
 }
 
 // get active value
@@ -240,6 +346,12 @@ $page->set('s', 'IDARTLANG', $idartlang);
 $page->set('s', 'CLOSE', i18n('Close editor'));
 $page->set('s', 'SAVE', i18n('Close editor and save changes'));
 $page->set('s', 'QUESTION', i18n('Do you want to save changes?'));
+
+// Add export and import tarnslations
+$page->set('s', 'EXPORT_RAWDATA', i18n("Export rawdata"));
+$page->set('s', 'IMPORT_RAWDATA', i18n("Import rawdata"));
+$page->set('s', 'EXPORT_LABEL', i18n("Rawdata export"));
+$page->set('s', 'IMPORT_LABEL', i18n("Rawdata import"));
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $page->set('s', 'USE_TINY', '');
