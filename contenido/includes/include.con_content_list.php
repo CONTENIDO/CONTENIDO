@@ -28,6 +28,17 @@ if (!isset($idcat)) {
 
 $edit = 'true';
 $scripts = '';
+// export only this content types
+$allowedContentTypes = array(
+    "CMS_HTMLHEAD",
+    "CMS_HTML",
+    "CMS_TEXT",
+    "CMS_LINK",
+    "CMS_LINKTARGET",
+    "CMS_LINKDESCR",
+    "CMS_HEAD",
+    "CMS_DATE"
+);
 
 $page = new cGuiPage("con_content_list");
 
@@ -94,6 +105,7 @@ if (($action == 'savecontype' || $action == 10)) {
     }
 } else if ($action == 'exportrawcontent') {
 
+    // extended class to add CDATA to content
     class SimpleXMLExtended extends SimpleXMLElement{
         public function addCData($cdata_text){
             $node= dom_import_simplexml($this);
@@ -141,16 +153,22 @@ if (($action == 'savecontype' || $action == 10)) {
     foreach ($contentIds as $contentId) {
         //load content object
         $content = new cApiContent($contentId);
-        //create content element
-        $contentNode = $articleNode->addChild("content");
-        $contentNode->addCData($content->get("value"));
         // if loaded get data and add to xml
         if($content->isLoaded()) {
             $type = new cApiType($content->get("idtype"));
-            if($type->isLoaded()) {
-                $contentNode->addAttribute("type", $type->get("type"));
+
+            if($type->isLoaded() && in_array($type->get("type"), $allowedContentTypes)) {
+                foreach ($_POST as $key => $contentType) {
+                    if($key == $type->get("type") && $contentType == $content->get("typeid")) {
+                        //create content element
+                        $contentNode = $articleNode->addChild("content");
+                        $contentNode->addCData($content->get("value"));
+                        $contentNode->addAttribute("type", $type->get("type"));
+                        $contentNode->addAttribute("id", $content->get("typeid"));
+                    }
+                }
             }
-            $contentNode->addAttribute("id", $content->get("typeid"));
+
         }
     }
     // output data as xml
@@ -231,10 +249,23 @@ if (($action == 'savecontype' || $action == 10)) {
                                     $type = $child->attributes()->type;
                                     $typeid  = $child->attributes()->id;
 
-                                    if(strlen($type) > 0 && $typeid > 0) {
-                                        conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
+                                    $typeEntry = new cApiType();
+                                    $typeEntry->loadBy("type", $type);
+
+                                    if(strlen($type) > 0 && $typeid > 0 && in_array($typeEntry->get("type"), $allowedContentTypes)) {
+                                        if(isset($_POST['overwritecontent']) && $_POST['overwritecontent'] == 1) {
+                                            conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
+                                        } else {
+
+                                            $contentEntry = new cApiContent();
+
+                                            $contentEntry->loadByMany(array("idtype" => $typeEntry->get("idtype"), "typeid" => $typeid, "idartlang" => $articleLanguage->get('idartlang')));
+                                            if(!$contentEntry->isLoaded()) {
+                                                conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
+                                            }
+                                        }
                                     } else {
-                                        $page->displayError(i18n("Can not save rawcontent type or id not present"));
+
                                     }
 
                                     break;
@@ -352,6 +383,8 @@ $page->set('s', 'EXPORT_RAWDATA', i18n("Export rawdata"));
 $page->set('s', 'IMPORT_RAWDATA', i18n("Import rawdata"));
 $page->set('s', 'EXPORT_LABEL', i18n("Rawdata export"));
 $page->set('s', 'IMPORT_LABEL', i18n("Rawdata import"));
+$page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
+
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $page->set('s', 'USE_TINY', '');
@@ -379,6 +412,13 @@ if (count($result) <= 0) {
                 $page->set("d", "EXTRA_CLASS", $class);
                 $page->set("d", "NAME", $name);
                 $page->set("d", "ID_TYPE", $idtype);
+                if(in_array($name, $allowedContentTypes)) {
+                    $page->set("d", "EXPORT_CONTENT",  '<input type="checkbox" class="rawtypes" name="' . $name .'" value="' .$idtype .'" checked="checked">');
+                    $page->set('d', 'EXPORT_CONTENT_LABEL', i18n("Export"));
+                } else {
+                    $page->set("d", "EXPORT_CONTENT", '');
+                    $page->set('d', 'EXPORT_CONTENT_LABEL', '');
+                }
                 $page->next();
             }
         }

@@ -59,7 +59,7 @@
 <p style="display:block;font-weight:bold;">i18n("Content administration")</p>
 <!-- BEGIN:BLOCK -->
 <div class="contypeList {EXTRA_CLASS}">
-    <div class="headline">{NAME}<<{ID_TYPE}>>:</div>
+   	<div class="headline"><label>{EXPORT_CONTENT_LABEL}</label>{EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>:</div>
     {NAME}[{ID_TYPE}]
 </div>
 <!-- END:BLOCK -->
@@ -78,6 +78,12 @@
             );
             return false;
         });
+        $('form[name="exportrawdata"]').submit(function() {
+            $('.rawtypes:checked').each(function (index, value) {
+                $('form[name="exportrawdata"] div.rawtypes').append($(this));
+            });
+            
+        });
     });
 })(Con, Con.$);
 </script>
@@ -87,14 +93,25 @@
     <input type="hidden" name="data" value="">
 </form>
 <label class="rawdata">{EXPORT_LABEL}</label>
+<div class="contypeList">
 <form name="exportrawdata" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=exportrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
+	<div class="rawtypes">
+	
+	</div>
 	<input type="submit" name="export" value="{EXPORT_RAWDATA}">
 </form>
+</div>
 <label class="rawdata">{IMPORT_LABEL}</label>
-<form name="importrawdata" method="post" enctype="multipart/form-data" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=importrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
+<div class="contypeList">
+<form name="importrawdata" id="importrawdata" method="post" enctype="multipart/form-data" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=importrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
 	<input type="file" name="rawfile" value="" size="40">
+	<br />
+	<label class="rawdatalabel">{OVERWRITE_DATA_LABEL}</label>
+	<input type="checkbox" name="overwritecontent" value="1">
+	<br />
 	<input type="submit" name="import" value="{IMPORT_RAWDATA}">
 </form>
+</div>
 <!--
 template.con_content_list
 
