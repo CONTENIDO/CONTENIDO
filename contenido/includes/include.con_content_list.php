@@ -276,21 +276,21 @@ if (($action == 'savecontype' || $action == 10)) {
                         }
 
                     } else {
-                        $page->displayError(i18n("Can not load raw article"));
+                        $page->displayError(i18n("Can not load article"));
                         $error = true;
                     }
                 } else {
-                    $page->displayError(i18n("Can not find raw article"));
+                    $page->displayError(i18n("Can not find article"));
                     $error = true;
 
                 }
             }
             if($error === false) {
-                $page->displayInfo(i18n("Article successfully imported"));
+                $page->displayInfo(i18n("Raw data was imported successfully"));
             }
 
         } catch (Exception $e) {
-            $page->displayError(i18n("Not valid xml-file"));
+            $page->displayError(i18n("Error: The XML file is not valid"));
         }
     } else {
         $page->displayWarning(i18n("Please choose a file"));
@@ -379,10 +379,10 @@ $page->set('s', 'SAVE', i18n('Close editor and save changes'));
 $page->set('s', 'QUESTION', i18n('Do you want to save changes?'));
 
 // Add export and import tarnslations
-$page->set('s', 'EXPORT_RAWDATA', i18n("Export rawdata"));
-$page->set('s', 'IMPORT_RAWDATA', i18n("Import rawdata"));
-$page->set('s', 'EXPORT_LABEL', i18n("Rawdata export"));
-$page->set('s', 'IMPORT_LABEL', i18n("Rawdata import"));
+$page->set('s', 'EXPORT_RAWDATA', i18n("Export raw data"));
+$page->set('s', 'IMPORT_RAWDATA', i18n("Import raw data"));
+$page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
+$page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
 
 
