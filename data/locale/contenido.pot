@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-30 14:26+0200\n"
+"POT-Creation-Date: 2014-05-06 10:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1822,8 +1822,8 @@ msgstr ""
 #: includes/include.client_artspec.php:38
 #: includes/include.client_artspec.php:46 includes/include.client_edit.php:18
 #: includes/include.con_art_overview.php:968
-#: includes/include.con_content_list.php:67
-#: includes/include.con_content_list.php:93
+#: includes/include.con_content_list.php:78
+#: includes/include.con_content_list.php:104
 #: includes/include.con_edit_form.php:1032
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
@@ -2207,7 +2207,7 @@ msgid "%s (Copy)"
 msgstr ""
 
 #: includes/functions.general.php:1625
-#: templates/standard/template.con_content_list.html:92
+#: templates/standard/template.con_content_list.html:118
 msgid "You are here"
 msgstr ""
 
@@ -2769,8 +2769,8 @@ msgid ""
 msgstr ""
 
 #: includes/include.client_edit.php:154
-#: includes/include.con_content_list.php:62
-#: includes/include.con_content_list.php:88
+#: includes/include.con_content_list.php:73
+#: includes/include.con_content_list.php:99
 #: includes/include.grouprights_area.php:42
 #: includes/include.grouprights_con.php:39
 #: includes/include.grouprights_lay.php:38
@@ -3030,26 +3030,70 @@ msgid ""
 "template."
 msgstr ""
 
-#: includes/include.con_content_list.php:173
+#: includes/include.con_content_list.php:279
+msgid "Can not load article"
+msgstr ""
+
+#: includes/include.con_content_list.php:283
+msgid "Can not find article"
+msgstr ""
+
+#: includes/include.con_content_list.php:289
+msgid "Raw data was imported successfully"
+msgstr ""
+
+#: includes/include.con_content_list.php:293
+msgid "Error: The XML file is not valid"
+msgstr ""
+
+#: includes/include.con_content_list.php:296
+msgid "Please choose a file"
+msgstr ""
+
+#: includes/include.con_content_list.php:377
 #: includes/include.con_editcontent.php:99
 msgid "Close editor"
 msgstr ""
 
-#: includes/include.con_content_list.php:174
+#: includes/include.con_content_list.php:378
 #: includes/include.con_editcontent.php:100
 msgid "Close editor and save changes"
 msgstr ""
 
-#: includes/include.con_content_list.php:175
+#: includes/include.con_content_list.php:379
 #: includes/include.con_editcontent.php:101
 msgid "Do you want to save changes?"
 msgstr ""
 
-#: includes/include.con_content_list.php:188
+#: includes/include.con_content_list.php:382
+msgid "Export raw data"
+msgstr ""
+
+#: includes/include.con_content_list.php:383
+msgid "Import raw data"
+msgstr ""
+
+#: includes/include.con_content_list.php:384
+msgid "Raw data export"
+msgstr ""
+
+#: includes/include.con_content_list.php:385
+msgid "Raw data import"
+msgstr ""
+
+#: includes/include.con_content_list.php:386
+msgid "Overwrite data"
+msgstr ""
+
+#: includes/include.con_content_list.php:400
 msgid "Article has no raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:277
+#: includes/include.con_content_list.php:417
+msgid "Export"
+msgstr ""
+
+#: includes/include.con_content_list.php:496
 #: includes/include.con_edit_form.php:305
 #: includes/include.con_edit_form.php:306
 #: includes/include.con_meta_form.php:69 includes/include.con_meta_form.php:70
@@ -3057,8 +3101,8 @@ msgstr ""
 msgid "This article is currently frozen and can not be edited!"
 msgstr ""
 
-#: includes/include.con_content_list.php:361
-#: includes/include.con_content_list.php:364
+#: includes/include.con_content_list.php:580
+#: includes/include.con_content_list.php:583
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 
@@ -5833,7 +5877,7 @@ msgid "Apply to all selected articles"
 msgstr ""
 
 #: templates/standard/template.con_content_list.html:59
-#: templates/standard/template.con_content_list.html:93
+#: templates/standard/template.con_content_list.html:119
 msgid "Content administration"
 msgstr ""
 
