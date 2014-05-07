@@ -14,6 +14,7 @@
  * @link http://www.contenido.org
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+cInclude("includes", "functions.tpl.php");
 cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.pathresolver.php");
 
