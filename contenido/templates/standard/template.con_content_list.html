@@ -79,10 +79,11 @@
             return false;
         });
         $('form[name="exportrawdata"]').submit(function() {
+        	$('form[name="exportrawdata"] div.rawtypes').html("");
             $('.rawtypes:checked').each(function (index, value) {
-                $('form[name="exportrawdata"] div.rawtypes').append($(this));
+                $('form[name="exportrawdata"] div.rawtypes').append($(this).clone());
             });
-            
+
         });
     });
 })(Con, Con.$);
@@ -96,7 +97,7 @@
 <div class="contypeList">
 <form name="exportrawdata" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=exportrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
 	<div class="rawtypes">
-	
+
 	</div>
 	<input type="submit" name="export" value="{EXPORT_RAWDATA}">
 </form>

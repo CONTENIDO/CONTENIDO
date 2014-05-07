@@ -28,7 +28,7 @@ if (!isset($idcat)) {
 
 $edit = 'true';
 $scripts = '';
-// export only this content types
+// export only these content types
 $allowedContentTypes = array(
     "CMS_HTMLHEAD",
     "CMS_HTML",
