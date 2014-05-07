@@ -212,6 +212,40 @@
     };
 
     /**
+     * Tries to evaluate JavaScript with a timeout so that
+     * dependencies can be loaded correctly.
+     * This function will try 3 times with 250ms inbetween
+     * before it gives up
+     *
+     * @method _lateEval
+     * @param {String} fileContent JS to be evaluted
+     * @param {Function} callback Callback after successful eval
+     * @param {Integer} tries Noumber of times the eval has failed already
+     * @param {String} fileName Name of the file (for debugging)
+     * @param {Object} jqxhr XHR Object of the request (for debugging)
+     * @param {Object} settings Settings Object (for debugging)
+     * @private
+     */
+    var _lateEval = function(fileContent, callback, tries, fileName, jqxhr, settings) {
+        try {
+            eval(fileContent);
+        } catch(err) {
+            if (tries >=3) {
+                Con.log("failed 3 times for " + fileName, NAME);
+                Con.log(jqxhr, NAME);
+                Con.log(settings, NAME);
+                Con.log(err, NAME);
+            } else {
+                setTimeout(function() {
+                    _lateEval(fileContent, callback, tries + 1, fileName, jqxhr, settings);
+                }, 250);
+            }
+            return;
+        }
+        callback();
+    }
+
+    /**
      * Loads JavaScript file by using $.getScript
      *
      * @method _loadJs
@@ -221,12 +255,21 @@
      */
     var _loadJs = function(file, callback) {
         $.getScript(file).done(function(script, textStatus) {
+        	//console.log("callback new for " + file);
             callback();
         }).fail(function(jqxhr, settings, exception) {
-            Con.log('fail ' + file, NAME);
-            Con.log(jqxhr, NAME);
-            Con.log(settings, NAME);
-            Con.log(exception, NAME);
+            if (jqxhr.status == "200" && jqxhr.responseText != "") {
+                // Give other files a little bit of time to load in case there are dependencies
+                // Try to evaluate the file after 250ms
+                setTimeout(function() {
+                    _lateEval(jqxhr.responseText, callback, 1, file, jqxhr, settings);
+                }, 250);
+            } else {
+                Con.log('fail ' + file, NAME);
+                Con.log(jqxhr, NAME);
+                Con.log(settings, NAME);
+                Con.log(exception, NAME);
+            }
         });
     };
 
