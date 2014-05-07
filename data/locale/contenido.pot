@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-06 10:18+0200\n"
+"POT-Creation-Date: 2014-05-07 11:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -675,24 +675,38 @@ msgid "xml_parser_create is available"
 msgstr ""
 
 #: classes/class.systemtest.php:317
-msgid "PHP mbstring extension is not loaded"
+msgid "The class SimpleXML is missing"
 msgstr ""
 
 #: classes/class.systemtest.php:317
+msgid ""
+"The SimpleXML class is missing. Make sure that the extension is installed "
+"and activated"
+msgstr ""
+
+#: classes/class.systemtest.php:317
+msgid "SimpleXML is available"
+msgstr ""
+
+#: classes/class.systemtest.php:318
+msgid "PHP mbstring extension is not loaded"
+msgstr ""
+
+#: classes/class.systemtest.php:318
 msgid ""
 "Since version 4.9.4 CONTENIDO requires the mbstring extension to be loaded "
 "and activated! Without it CONTENIDO won't work!"
 msgstr ""
 
-#: classes/class.systemtest.php:317
+#: classes/class.systemtest.php:318
 msgid "mbstring extension is loaded"
 msgstr ""
 
-#: classes/class.systemtest.php:322
+#: classes/class.systemtest.php:323
 msgid "Unable to check for a suitable image resizer"
 msgstr ""
 
-#: classes/class.systemtest.php:322
+#: classes/class.systemtest.php:323
 msgid ""
 "Setup has tried to check for a suitable image resizer (which is, for exampl, "
 "required for thumbnail creation), but was not able to clearly identify one. "
@@ -700,58 +714,58 @@ msgid ""
 "ImageMagick available."
 msgstr ""
 
-#: classes/class.systemtest.php:325
+#: classes/class.systemtest.php:326
 msgid "No suitable image resizer available"
 msgstr ""
 
-#: classes/class.systemtest.php:325
+#: classes/class.systemtest.php:326
 msgid ""
 "Setup checked your image resizing support, however, it was unable to find a "
 "suitable image resizer. Thumbnails won't work correctly or won't be looking "
 "good. Install the GD-Extension or ImageMagick"
 msgstr ""
 
-#: classes/class.systemtest.php:328
+#: classes/class.systemtest.php:329
 msgid "GD extension is available and usable to handle images"
 msgstr ""
 
-#: classes/class.systemtest.php:331
+#: classes/class.systemtest.php:332
 msgid "ImageMagick extension is available and usable to handle images"
 msgstr ""
 
-#: classes/class.systemtest.php:335
+#: classes/class.systemtest.php:336
 msgid "PHP iconv functions are not available."
 msgstr ""
 
-#: classes/class.systemtest.php:335
+#: classes/class.systemtest.php:336
 msgid ""
 "PHP has been compiled with the --without-iconv directive. CONTENIDO won't "
 "work without the iconv functions."
 msgstr ""
 
-#: classes/class.systemtest.php:335
+#: classes/class.systemtest.php:336
 msgid "iconv is available"
 msgstr ""
 
-#: classes/class.systemtest.php:340
+#: classes/class.systemtest.php:341
 msgid "Database connection works"
 msgstr ""
 
-#: classes/class.systemtest.php:343
+#: classes/class.systemtest.php:344
 msgid "MySQL is running in strict mode"
 msgstr ""
 
-#: classes/class.systemtest.php:343
+#: classes/class.systemtest.php:344
 msgid ""
 "MySQL is running in strict mode, CONTENIDO will not work with this mode. "
 "Please change your sql_mode!"
 msgstr ""
 
-#: classes/class.systemtest.php:346
+#: classes/class.systemtest.php:347
 msgid "MySQL database connect failed"
 msgstr ""
 
-#: classes/class.systemtest.php:346
+#: classes/class.systemtest.php:347
 #, php-format
 msgid ""
 "Setup was unable to connect to the MySQL Server (Server %s, Username %s). "
@@ -759,43 +773,43 @@ msgid ""
 "was: %s"
 msgstr ""
 
-#: classes/class.systemtest.php:350
+#: classes/class.systemtest.php:351
 msgid "Permission error"
 msgstr ""
 
-#: classes/class.systemtest.php:350
+#: classes/class.systemtest.php:351
 msgid ""
 "CONTENIDO doesn't have the necessary permissions to write all the files it "
 "needs. Please check your filesystem permissions."
 msgstr ""
 
-#: classes/class.systemtest.php:350
+#: classes/class.systemtest.php:351
 msgid "Filesystem checks"
 msgstr ""
 
-#: classes/class.systemtest.php:350
+#: classes/class.systemtest.php:351
 msgid "CONTENIDO has all the necessary permissions to read and write files"
 msgstr ""
 
-#: classes/class.systemtest.php:1190
+#: classes/class.systemtest.php:1191
 #, php-format
 msgid "Can't write %s"
 msgstr ""
 
-#: classes/class.systemtest.php:1191
+#: classes/class.systemtest.php:1192
 #, php-format
 msgid ""
 "Setup or CONTENIDO can't write to the file %s. Please change the file "
 "permissions to correct this problem."
 msgstr ""
 
-#: classes/class.systemtest.php:1199
+#: classes/class.systemtest.php:1200
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any file "
 "permissions."
 msgstr ""
 
-#: classes/class.systemtest.php:1202
+#: classes/class.systemtest.php:1203
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -803,7 +817,7 @@ msgid ""
 "environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: classes/class.systemtest.php:1207
+#: classes/class.systemtest.php:1208
 #, php-format
 msgid ""
 "Your web server and the owner of your files are identical. You need to "
@@ -811,7 +825,7 @@ msgid ""
 "file mask to %s or set the owner to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1212
+#: classes/class.systemtest.php:1213
 #, php-format
 msgid ""
 "Your web server's group and the group of your files are identical. You need "
@@ -819,7 +833,7 @@ msgid ""
 "file mask to %s or set the group to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1217
+#: classes/class.systemtest.php:1218
 #, php-format
 msgid ""
 "Your web server is not equal to the file owner, and is not in the "
@@ -829,13 +843,13 @@ msgid ""
 "others to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1227
+#: classes/class.systemtest.php:1228
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any directory "
 "permissions."
 msgstr ""
 
-#: classes/class.systemtest.php:1230
+#: classes/class.systemtest.php:1231
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -843,7 +857,7 @@ msgid ""
 "especially in environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: classes/class.systemtest.php:1235
+#: classes/class.systemtest.php:1236
 #, php-format
 msgid ""
 "Your web server and the owner of your directory are identical. You need to "
@@ -851,7 +865,7 @@ msgid ""
 "directory mask to %s or set the owner to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1240
+#: classes/class.systemtest.php:1241
 #, php-format
 msgid ""
 "Your web server's group and the group of your directory are identical. You "
@@ -859,7 +873,7 @@ msgid ""
 "the directory mask to %s or set the group to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1245
+#: classes/class.systemtest.php:1246
 #, php-format
 msgid ""
 "Your web server is not equal to the directory owner, and is not in the "
@@ -869,22 +883,22 @@ msgid ""
 "the others to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1288 classes/class.systemtest.php:1292
+#: classes/class.systemtest.php:1289 classes/class.systemtest.php:1293
 #, php-format
 msgid "Could not find or create directory %s"
 msgstr ""
 
-#: classes/class.systemtest.php:1288 classes/class.systemtest.php:1292
+#: classes/class.systemtest.php:1289 classes/class.systemtest.php:1293
 msgid ""
 "The frontend expects certain directories to exist and it needs to be able to "
 "write to these directories."
 msgstr ""
 
-#: classes/class.systemtest.php:1387
+#: classes/class.systemtest.php:1388
 msgid "MySQL database already exists and seems to be filled"
 msgstr ""
 
-#: classes/class.systemtest.php:1387
+#: classes/class.systemtest.php:1388
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -893,22 +907,22 @@ msgid ""
 "previous version, choose 'upgrade' as setup type."
 msgstr ""
 
-#: classes/class.systemtest.php:1394
+#: classes/class.systemtest.php:1395
 msgid "MySQL test table already exists in the database"
 msgstr ""
 
-#: classes/class.systemtest.php:1394
+#: classes/class.systemtest.php:1395
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
 "before continuing."
 msgstr ""
 
-#: classes/class.systemtest.php:1401 classes/class.systemtest.php:1422
+#: classes/class.systemtest.php:1402 classes/class.systemtest.php:1423
 msgid "Unable to create tables in the selected MySQL database"
 msgstr ""
 
-#: classes/class.systemtest.php:1401 classes/class.systemtest.php:1422
+#: classes/class.systemtest.php:1402 classes/class.systemtest.php:1423
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -916,40 +930,40 @@ msgid ""
 "an administrator to do so."
 msgstr ""
 
-#: classes/class.systemtest.php:1408 classes/class.systemtest.php:1429
+#: classes/class.systemtest.php:1409 classes/class.systemtest.php:1430
 msgid "Unable to remove the test table"
 msgstr ""
 
-#: classes/class.systemtest.php:1408 classes/class.systemtest.php:1429
+#: classes/class.systemtest.php:1409 classes/class.systemtest.php:1430
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
 "insufficient permissions. Please remove the table %s manually."
 msgstr ""
 
-#: classes/class.systemtest.php:1415
+#: classes/class.systemtest.php:1416
 msgid "Unable to create the database in the MySQL server"
 msgstr ""
 
-#: classes/class.systemtest.php:1415
+#: classes/class.systemtest.php:1416
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
 "to do so, or create the database manually."
 msgstr ""
 
-#: classes/class.systemtest.php:1439 classes/class.systemtest.php:1449
+#: classes/class.systemtest.php:1440 classes/class.systemtest.php:1450
 msgid "No data found for the upgrade"
 msgstr ""
 
-#: classes/class.systemtest.php:1439
+#: classes/class.systemtest.php:1440
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
 "doesn't exist. You need to copy your database first before running setup."
 msgstr ""
 
-#: classes/class.systemtest.php:1449
+#: classes/class.systemtest.php:1450
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -2207,7 +2221,7 @@ msgid "%s (Copy)"
 msgstr ""
 
 #: includes/functions.general.php:1625
-#: templates/standard/template.con_content_list.html:118
+#: templates/standard/template.con_content_list.html:119
 msgid "You are here"
 msgstr ""
 
@@ -5877,7 +5891,7 @@ msgid "Apply to all selected articles"
 msgstr ""
 
 #: templates/standard/template.con_content_list.html:59
-#: templates/standard/template.con_content_list.html:119
+#: templates/standard/template.con_content_list.html:120
 msgid "Content administration"
 msgstr ""
 
