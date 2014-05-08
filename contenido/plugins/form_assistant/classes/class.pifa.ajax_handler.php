@@ -576,7 +576,7 @@ class PifaAjaxHandler {
 
         // read and echo data
         $pifaForm = new PifaForm($idform);
-        $filename = $pifaForm->get('data_table') . date('_Y_m_t_H_i_s') . '.csv';
+        $filename = $pifaForm->get('data_table') . date('_Y_m_d_H_i_s') . '.csv';
         $data = $pifaForm->getDataAsCsv();
 
         // prevent caching
@@ -608,7 +608,7 @@ class PifaAjaxHandler {
 
         // read and echo data
         $pifaForm = new PifaForm($idform);
-        $filename = $pifaForm->get('data_table') . date('_Y_m_t_H_i_s') . '.xml';
+        $filename = $pifaForm->get('data_table') . date('_Y_m_d_H_i_s') . '.xml';
 
         $pifaExporter = new PifaExporter($pifaForm);
         $xml = $pifaExporter->export($withData);
