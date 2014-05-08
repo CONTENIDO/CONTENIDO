@@ -129,7 +129,7 @@ class NewsletterLogCollection extends ItemCollection {
 
                         $sDistinct = "distinct";
                         $sFrom = $cfg["tab"]["news_groupmembers"] . " AS groupmembers ";
-                        $sSQL = $cfg['tab']['news_rcp'] . ".idclient = '" . $iIDClient . "' AND " . $cfg['tab']['news_rcp'] . ".idlang = '" . $iIDLang . "' AND " . $cfg['tab']['news_rcp'] . ".deactivated = '0' AND " . $cfg['tab']['news_rcp'] . ".confirmed = '1' AND " . $cfg['tab']['news_rcp'] . ".idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup IN (" . $sGroups . ")";
+                        $sSQL = "newsletterrecipientcollection.idclient = '" . $iIDClient . "' AND newsletterrecipientcollection.idlang = '" . $iIDLang . "' AND newsletterrecipientcollection.deactivated = '0' AND newsletterrecipientcollection.confirmed = '1' AND newsletterrecipientcollection.idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup IN (" . $sGroups . ")";
                     } else {
                         $sDestination = "unknown";
                     }
