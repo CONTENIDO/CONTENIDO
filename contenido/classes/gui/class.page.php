@@ -266,10 +266,11 @@ class cGuiPage {
         $backendUrl = cRegistry::getBackendUrl();
         $backendPath = cRegistry::getBackendPath();
         $filePathName = $this->_getRealFilePathName($script);
+        $fileName = basename($filePathName);
 
         // Warning message for not existing resources
         if($perm->isSysadmin($currentuser) && strpos(trim($script), '<script') === false &&
-           ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $filePathName)) &&
+           ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $fileName)) &&
            (!cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)))) {
 			$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
@@ -318,10 +319,11 @@ class cGuiPage {
         $backendUrl = cRegistry::getBackendUrl();
         $backendPath = cRegistry::getBackendPath();
         $filePathName = $this->_getRealFilePathName($stylesheet);
+        $fileName = basename($filePathName);
 
         // Warning message for not existing resources
-        if($perm->isSysadmin($currentuser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $filePathName)) ||
-           (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName)))) {
+        if($perm->isSysadmin($currentuser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $fileName))) ||
+           (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName))) {
         	$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
 
