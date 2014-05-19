@@ -5,7 +5,6 @@
 cms/cache/*
 cms/cache/code/*
 cms/cache/templates_c/*
-cms/css
 cms/data/layouts
 cms/data/logs/*
 cms/data/modules
@@ -15,9 +14,6 @@ cms/data/version/js/*
 cms/data/version/layout/*
 cms/data/version/module/*
 cms/data/version/templates/*
-cms/js
-cms/templates
-cms/upload
 cms/xml/*
 contenido/cronjobs/*.job
 contenido/external/frontend/.htaccess_recommended
