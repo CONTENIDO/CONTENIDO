@@ -674,7 +674,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // build the synchronization menu
     // select all languages
     $languages = new cApiLanguageCollection();
-    $languages->select();
+    $languages->select("idclient = " . cSecurity::toInteger($client));
     $langHTML = "";
     while (($someLang = $languages->nextAccessible()) != false) {
         // skip the current language
