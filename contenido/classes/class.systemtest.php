@@ -1349,7 +1349,11 @@ class cSystemtest {
             return self::CON_IMAGERESIZE_GD;
         }
 
-        checkAndInclude($this->_config['path']['contenido'] . 'includes/functions.api.images.php');
+        if(function_exists(checkAndInclude)) {
+            checkAndInclude($this->_config['path']['contenido'] . 'includes/functions.api.images.php');
+        } else {
+            cInclude('includes', 'functions.api.images.php');
+        }
         if (capiIsImageMagickAvailable()) {
             return self::CON_IMAGERESIZE_IMAGEMAGICK;
         }
