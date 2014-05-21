@@ -64,12 +64,14 @@ if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_
 
 //check for data in the old data folders
 $foldersToCheck = array($cfg["path"]["frontend"]."/contenido/logs", $cfg["path"]["frontend"]."/contenido/temp");
-foreach ($cfgClient as $iclient => $aclient) {
-    if (!is_numeric($iclient)) {
-        continue;
+if(is_array($cfgClient)) {
+    foreach ($cfgClient as $iclient => $aclient) {
+        if (!is_numeric($iclient)) {
+            continue;
+        }
+        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."layouts";
+        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."logs";
     }
-    $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."layouts";
-    $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend']."logs";
 }
 $faultyFolders = array();
 foreach ($foldersToCheck as $folder) {
