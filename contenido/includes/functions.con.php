@@ -1246,8 +1246,11 @@ function conMoveArticles() {
         $sql[] = 'UPDATE ' . $cfg['tab']['cat_art'] . ' SET idcat = ' . (int) $rs['time_target_cat'] . ', createcode = 1 WHERE idart = ' . (int) $rs['idart'] . ';';
         $sql[] = 'UPDATE ' . $cfg['tab']['art_lang'] . ' SET online = ' . (int) $online . ' WHERE idart = ' . (int) $rs['idart'] . ';';
 
-        $sql = implode("\n", $sql);
-        $db->query($sql);
+        // $sql = implode("\n", $sql);
+        // cDebug::out($sql);
+        $db->query($sql[0]);
+        $db->query($sql[1]);
+        $db->query($sql[2]);
 
         // Execute CEC hook
         cApiCecHook::execute('Contenido.Article.conMoveArticles_Loop', $rs);
