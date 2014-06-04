@@ -218,30 +218,34 @@
                 <td colspan="3" class="text_medium">{SORTIERUNG-FIELD}</td>
             </tr>
 
-            <tr valign="top" style="display: {SYNC_MENU_DISPLAY};">
-            	<td class="text_medium">i18n("Synchronize")</td>
-            	<td colspan="3" class="text_medium">
-					<div style="float: left;" class="syncList">
-						{SYNCLANGLIST}
-
-						<div class="buttonRow">
-							<fieldset style="border: 1px solid #b3b3b3;">
-								<legend>i18n("For selected:")</legend>
-								<input title="i18n("Synchronize this article to all selected languages")" alt="i18n("Synchronize this article to all selected languages")" class="vAlignMiddle button" style="background-image: url(images/but_sync_art.gif);" type="submit" name="syncAll">
-								<input title="i18n("Bring this article in the selected languages online")" alt="i18n("Bring this article in the selected languages online")" class="vAlignMiddle button" style="background-image: url(images/online.gif);" type="submit" name="onlineAll">
-								<input title="i18n("Take this article in the selected languages offline")" alt="i18n("Take this article in the selected languages offline")" class="vAlignMiddle button" style="background-image: url(images/offline.gif);" type="submit" name="offlineAll">
-							</fieldset>
-						</div>
-					</div>
-					<div style="margin-left: 5px; float: left;">{SYNCLISTINFO}</div>
-				</td>
-            </tr>
-
             {NOTIFICATION_SYNCHRON}
 
             <tr valign="top">
                 <td class="text_medium">{STRUKTUR}</td>
-                <td colspan="3" class="text_medium">{STRUKTUR-FIELD}</td>
+                <td colspan="3" class="text_medium">
+                	<table class="borderless" style="width: 100%; height: 100%; margin: 0;">
+                		<tr>
+                			<td style="padding: 0;">
+                				{STRUKTUR-FIELD}
+                			</td>
+                			<td style="padding: 0;">
+								<div style="float: left;" class="syncList">
+									{SYNCLANGLIST}
+
+									<div class="buttonRow">
+										<fieldset style="border: 1px solid #b3b3b3;">
+											<legend>i18n("For selected:")</legend>
+											<input title="i18n("Synchronize this article to all selected languages")" alt="i18n("Synchronize this article to all selected languages")" class="vAlignMiddle button" style="background-image: url(images/but_sync_art.gif);" type="submit" name="syncAll">
+											<input title="i18n("Bring this article in the selected languages online")" alt="i18n("Bring this article in the selected languages online")" class="vAlignMiddle button" style="background-image: url(images/online.gif);" type="submit" name="onlineAll">
+											<input title="i18n("Take this article in the selected languages offline")" alt="i18n("Take this article in the selected languages offline")" class="vAlignMiddle button" style="background-image: url(images/offline.gif);" type="submit" name="offlineAll">
+										</fieldset>
+									</div>
+								</div>
+								<div style="margin-left: 5px; float: left;">{SYNCLISTINFO}</div>
+							</td>
+						</tr>
+                	</table>
+                </td>
             </tr>
 
             <tr valign="top">

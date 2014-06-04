@@ -212,6 +212,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     // apply settings from the synchronization menu
     // take single articles online or offline
+
     if (isset($_POST['onlineOne'])) {
         $db->query("UPDATE %s SET online=1 WHERE idart = '%s' AND idlang ='%s'", $cfg["tab"]["art_lang"], cRegistry::getArticleId(), cSecurity::toInteger($_POST['onlineOne']));
     } else if (isset($_POST['offlineOne'])) {
@@ -220,7 +221,18 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     // synchronize a single article after checking permissions
     if (isset($_POST['syncOne'])) {
-        if (($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", cRegistry::getCategoryId())) && ($perm->have_perm_client('lang[' . cSecurity::toInteger($_POST['syncOne']) . ']') || $perm->have_perm_client('admin[' . cRegistry::getClientId() . ']') || $perm->have_perm_client())) {
+        $sql = "SELECT
+        			idcatlang
+        		FROM
+        			" . $cfg["tab"]["cat_lang"] . "
+			    WHERE
+    			    idcat = " . cRegistry::getCategoryId() . "
+		            AND idlang = " . cSecurity::toInteger($_POST['syncOne']);
+        $db->query($sql);
+        $db->next_record();
+        $isSyncable = (bool) $db->f("idcatlang");
+
+        if ($isSyncable && (($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", cRegistry::getCategoryId())) && ($perm->have_perm_client('lang[' . cSecurity::toInteger($_POST['syncOne']) . ']') || $perm->have_perm_client('admin[' . cRegistry::getClientId() . ']') || $perm->have_perm_client()))) {
             conSyncArticle(cRegistry::getArticleId(), cRegistry::getLanguageId(), cSecurity::toInteger($_POST['syncOne']));
         }
     }
@@ -242,7 +254,18 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     if (isset($_POST['syncAll'])) {
         if (is_array($_POST['syncingLanguage'])) {
             foreach ($_POST['syncingLanguage'] as $langId) {
-                if (($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", cRegistry::getCategoryId())) && ($perm->have_perm_client('lang[' . cSecurity::toInteger($langId) . ']') || $perm->have_perm_client('admin[' . cRegistry::getClientId() . ']') || $perm->have_perm_client())) {
+                $sql = "SELECT
+                			idcatlang
+                		FROM
+                			" . $cfg["tab"]["cat_lang"] . "
+        			    WHERE
+            			    idcat = " . cRegistry::getCategoryId() . "
+        		            AND idlang = " . cSecurity::toInteger($langId);
+                $db->query($sql);
+                $db->next_record();
+                $isSyncable = (bool) $db->f("idcatlang");
+
+                if ($isSyncable && (($perm->have_perm_area_action("con", "con_syncarticle") || $perm->have_perm_area_action_item("con", "con_syncarticle", cRegistry::getCategoryId())) && ($perm->have_perm_client('lang[' . cSecurity::toInteger($langId) . ']') || $perm->have_perm_client('admin[' . cRegistry::getClientId() . ']') || $perm->have_perm_client()))) {
                     conSyncArticle(cRegistry::getArticleId(), cRegistry::getLanguageId(), cSecurity::toInteger($langId));
                 }
             }
@@ -593,12 +616,11 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         $tpl2->set('s', 'OPTIONS', 'multiple="multiple" size="14"' . $disabled);
     } else {
         $sql = "SELECT
-                    idartlang, online
+                    idartlang
                 FROM
                     " . $cfg["tab"]["art_lang"] . "
                 WHERE
                     idart = " . cSecurity::toInteger($idart) . "
-                    AND online = 1
                     AND idlang != " . cSecurity::toInteger($lang);
         $db->query($sql);
 
