@@ -63,8 +63,10 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
                     $client = $todoitem->get('idclient');
                     if (!isset($clientNames[$client])) {
-                        $oClientColl = new cApiClientCollection();
-                        $clientNames[$client] = $oClientColl->getClientname($idclient);
+                        $clientNames[$client] = cRegistry::getClient()->get("name");
+                        if($clientNames[$client] == "") {
+                            $clientNames[$client] = i18n("No client");
+                        }
                     }
                     $clientname = $clientNames[$client];
 
@@ -76,7 +78,7 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
                     $message = sprintf($message, $realname, $clientname, $path, $todoitem->get('message'));
 
                     $mailer = new cMailer();
-                    $mailer->sendMail('noreply@contenido.org', $user->get('email'), $todoitem->get('subject'), $message);
+                    $mailer->sendMail(getEffectiveSetting("system", "mail_sender", "info@contenido.org"), $user->get('email'), $todoitem->get('subject'), $message);
                 }
 
                 $todoitem->setProperty('todo', 'reminderdate', '0');
