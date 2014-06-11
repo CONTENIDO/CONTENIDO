@@ -37,3 +37,9 @@ data/logs/debug.log
 /nbproject
 cms/css/*
 !cms/css/.gitignore
+cms/js/*
+!cms/js/.gitignore
+cms/templates/*
+!cms/templates/.gitignore
+cms/upload/*
+!cms/upload/.gitignore
