@@ -568,6 +568,10 @@ $properties = new cApiPropertyCollection();
 while ($item = $uploads->next()) {
     $filename = $item->get('filename');
 
+    if (strpos($filename, ".") === 0) {
+        continue;
+    }
+
     $bAddFile = true;
 
     if ($appendparameters == 'imagebrowser') {
