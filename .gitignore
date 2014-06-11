@@ -35,3 +35,5 @@ data/logs/setuplog.txt
 data/logs/debug.log
 /desktop.ini
 /nbproject
+cms/css/*
+!cms/css/.gitignore
