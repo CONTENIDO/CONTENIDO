@@ -92,6 +92,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
         $editAnchor = new cHTMLLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "','" . $editLink . "');");
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithtml.gif');
         $editButton->appendStyleDefinition('margin-right', '2px');
+		$editButton->setClass('content_type_zindex');
         $editAnchor->setContent($editButton);
 
         // construct save button
