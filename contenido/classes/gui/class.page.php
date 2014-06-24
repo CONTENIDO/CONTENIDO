@@ -319,10 +319,9 @@ class cGuiPage {
         $backendUrl = cRegistry::getBackendUrl();
         $backendPath = cRegistry::getBackendPath();
         $filePathName = $this->_getRealFilePathName($stylesheet);
-        $fileName = basename($filePathName);
 
         // Warning message for not existing resources
-        if($perm->isSysadmin($currentuser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $fileName))) ||
+        if($perm->isSysadmin($currentuser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet))) ||
            (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName))) {
         	$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
