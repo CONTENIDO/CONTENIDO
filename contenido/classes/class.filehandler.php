@@ -141,8 +141,12 @@ class cFileHandler {
         if ((int) $success != 0) {
             self::setDefaultFilePerms($filename);
         }
-
-        return $success;
+		
+		if (self::exists($filename)) {
+        	return true;
+        } else {
+        	return false;
+        }
     }
 
     /**
