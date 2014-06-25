@@ -749,15 +749,15 @@ class cGuiPage {
      * @return string
      */
     protected function _renderTemplate($template) {
-    	global $perm, $currentuser;
+    	global $perm, $currentuser, $notification;
 
         $cfg = cRegistry::getConfig();
 
+        $output = '';
         // Warning message for not existing resources
         if($perm->isSysadmin($currentuser) && (($this->_pluginName == '' && !cFileHandler::exists($cfg['path']['templates'] . 'template.' . $this->_pageName . '.html')) ||
            ($this->_pluginName != '' && !cFileHandler::exists($cfg['path']['plugins'] . $this->_pluginName . '/templates/template.' . $this->_pageName . '.html')))) {
-        	$this->displayWarning(i18n("The requested resource") . " <strong>" . $this->_pageName . "</strong> " . i18n("was not found"));
-        	$output .= $this->_renderContentMessages();
+            $output .= $notification->returnNotification('warning', i18n("The requested resource") . " <strong>" . $this->_pageName . "</strong> " . i18n("was not found")) . '<br>';
         }
 
         $file = '';

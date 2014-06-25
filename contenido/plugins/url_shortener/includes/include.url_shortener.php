@@ -106,6 +106,7 @@ $shortUrlColl = new cApiShortUrlCollection();
 $shortUrlColl->query();
 if ($shortUrlColl->count() === 0) {
     $page->displayInfo(i18n('No short URLs have been defined yet!', 'url_shortener'));
+    $page->abortRendering();
     $page->render();
     exit();
 }
