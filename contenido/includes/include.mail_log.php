@@ -17,11 +17,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $area, $action, $perm;
 
 $page = new cGuiPage('mail_log_overview');
-// $page->addScript('mail_log.js');
 
 if (!$perm->have_perm_area_action($area)) {
-    $notification = new cGuiNotification();
     $page->displayError(i18n('Permission denied'));
+    $page->abortRendering();
     $page->render();
     exit();
 }
@@ -55,6 +54,7 @@ $mailLogCollection->query();
 // show notification if there no mails have been logged yet
 if ($mailLogCollection->count() === 0) {
     $page->displayInfo(i18n('No mails have been logged yet.'));
+    $page->abortRendering();
     $page->render();
     exit();
 }
