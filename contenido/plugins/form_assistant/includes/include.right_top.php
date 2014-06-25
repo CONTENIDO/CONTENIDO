@@ -30,7 +30,7 @@ switch ($area) {
 
         // show blank menu when form was just deleted
         if (PifaRightBottomFormPage::DELETE_FORM === $action) {
-            cInclude('templates', $cfg['templates']['right_top_blank']);
+        	$tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
             break;
         }
 
