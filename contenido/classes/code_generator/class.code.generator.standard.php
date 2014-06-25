@@ -183,7 +183,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
         } else if (!empty($cssFile)) {
             if (strpos($this->_layoutCode, '</title>') !== false) {
-                $this->_layoutCode = cString::iReplaceOnce('</title>', '</title>' . $cssFile, $this->_layoutCode);
+                $matches = array();
+                preg_match_all("#(<head>.*?</title>)(.*?</head>)#si", $this->_layoutCode, $matches);
+                $this->_layoutCode = cString::iReplaceOnce($matches[1][0], $matches[1][0] . $cssFile . $matches[1][1], $this->_layoutCode);
             } else {
                 $this->_layoutCode = cString::iReplaceOnce('<head>', '<head>' . $cssFile, $this->_layoutCode);
             }
