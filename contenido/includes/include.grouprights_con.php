@@ -44,6 +44,7 @@ if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == "g
     }
 }
 
+$sJsExternal = '';
 $sJsBefore = '';
 $sJsAfter = '';
 $sTable = '';
@@ -310,6 +311,7 @@ $page->set('s', 'NOTIFICATION', $dataSync['NOTIFICATION']);
 
 $page->set('s', 'OB_CONTENT', $dataSync['OB_CONTENT']);
 
+$page->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
 $page->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $page->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
 $page->set('s', 'RIGHTS_CONTENT', $sTable);
