@@ -10,13 +10,6 @@
  * @todo       Rework this, make a CONTENIDO module
  */
 (function(Con, $) {
-
-    // to reload the left frame after delete/insert new files
-    var frame = Con.getFrame('left_bottom');
-    if (frame && frame.location.href !== 'about:blank') {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {action: null});
-    }
-
     $(function() {
         var $body = $("body");
 
