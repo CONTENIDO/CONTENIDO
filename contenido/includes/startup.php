@@ -67,7 +67,7 @@ if (!defined('CON_ENVIRONMENT')) {
         $sEnvironment = getenv('CON_ENVIRONMENT');
     } else {
         // @TODO: provide a possibility to set the environment value via file
-        $sEnvironment = 'productiona';
+        $sEnvironment = 'production';
     }
 
     define('CON_ENVIRONMENT', $sEnvironment);
@@ -82,10 +82,14 @@ if (!defined('CON_VERSION')) {
 
 }
 
+// Temporary backend path, will be re-set again later...
+$backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
+require_once($backendPath . '/classes/class.filehandler.php');
+
 // (string) Path to folder containing all contenido configuration files
 //          Use environment setting!
 $cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CON_ENVIRONMENT . '/';
-if((!is_dir($cfg['path']['contenido_config'])) || (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php'))) {
+if((!cFileHandler::exists($cfg['path']['contenido_config'])) || (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php'))) {
     $msg = "<h1>Fatal Error</h1><br>"
         . "Could not open the configuration file <b>config.php</b>.<br><br>"
         . "Please make sure that you saved the file in the setup program and that your CON_ENVIRONMENT is valid."
@@ -93,8 +97,6 @@ if((!is_dir($cfg['path']['contenido_config'])) || (!cFileHandler::exists($cfg['p
     die($msg);
 }
 
-// Temporary backend path, will be re-set again later...
-$backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
 
 include_once($backendPath . '/includes/functions.php54.php');
 
@@ -102,7 +104,6 @@ include_once($backendPath . '/includes/functions.php54.php');
 require_once($backendPath . '/classes/class.registry.php');
 require_once($backendPath . '/classes/class.security.php');
 require_once($backendPath . '/classes/class.requestvalidator.php');
-require_once($backendPath . '/classes/class.filehandler.php');
 try {
     $requestValidator = cRequestValidator::getInstance();
     $requestValidator->checkParams();
