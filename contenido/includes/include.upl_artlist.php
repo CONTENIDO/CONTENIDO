@@ -61,6 +61,9 @@ while ($cApiCategoryArticle = $cApiCategoryArticleCollection->next()) {
 
     $martlink = '';
     $idart = $obj->get('idart');
+    if($idart == null) {
+        continue;
+    }
 
     $_cecIterator = $_cecRegistry->getIterator('Contenido.Content.CreateArticleLink');
     if ($_cecIterator->count() > 0) {
