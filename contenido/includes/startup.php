@@ -67,7 +67,7 @@ if (!defined('CON_ENVIRONMENT')) {
         $sEnvironment = getenv('CON_ENVIRONMENT');
     } else {
         // @TODO: provide a possibility to set the environment value via file
-        $sEnvironment = 'production';
+        $sEnvironment = 'productiona';
     }
 
     define('CON_ENVIRONMENT', $sEnvironment);
@@ -85,6 +85,13 @@ if (!defined('CON_VERSION')) {
 // (string) Path to folder containing all contenido configuration files
 //          Use environment setting!
 $cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CON_ENVIRONMENT . '/';
+if((!is_dir($cfg['path']['contenido_config'])) || (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php'))) {
+    $msg = "<h1>Fatal Error</h1><br>"
+        . "Could not open the configuration file <b>config.php</b>.<br><br>"
+        . "Please make sure that you saved the file in the setup program and that your CON_ENVIRONMENT is valid."
+        . "If you had to place the file manually on your webserver, make sure that it is placed in your contenido/data/config/{environment}/ directory.";
+    die($msg);
+}
 
 // Temporary backend path, will be re-set again later...
 $backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
@@ -105,15 +112,6 @@ try {
 
 // "Workaround" for register_globals=off settings.
 require_once($backendPath . '/includes/globals_off.inc.php');
-
-// Check if configuration file exists, this is a basic indicator to find out, if CONTENIDO is installed
-if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
-    $msg = "<h1>Fatal Error</h1><br>"
-         . "Could not open the configuration file <b>config.php</b>.<br><br>"
-         . "Please make sure that you saved the file in the setup program."
-         . "If you had to place the file manually on your webserver, make sure that it is placed in your contenido/data/config/{environment}/ directory.";
-    die($msg);
-}
 
 // Include some basic configuration files
 require_once($cfg['path']['contenido_config'] . 'config.php');
