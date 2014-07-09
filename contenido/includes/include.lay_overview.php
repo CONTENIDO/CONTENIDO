@@ -29,7 +29,7 @@ while (($layout = $oLayouts->next()) !== false) {
         continue;
     }
 
-    $name  = cString::stripSlashes($layout->get('name'));
+    $name  = conHtmlSpecialChars(cString::stripSlashes($layout->get('name')));
     $descr = conHtmlSpecialChars(nl2br($layout->get('description')));
     $idlay = $layout->get('idlay');
 

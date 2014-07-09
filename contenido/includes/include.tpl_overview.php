@@ -31,6 +31,7 @@ while ($db->nextRecord()) {
             $perm->have_perm_area_action("tpl_visual", "tpl_visedit")
     ) {
         $name = (strlen(trim($db->f('name'))) > 0) ? $db->f('name') : i18n("-- New template --");
+        $name = conHtmlSpecialChars(stripslashes($name));
         $descr = $db->f('description');
         $idtpl = $db->f("idtpl");
 

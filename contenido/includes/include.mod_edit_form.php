@@ -191,7 +191,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
 
     $form->addHeader(i18n("Edit module"));
 
-    $name = new cHTMLTextbox("name", cString::stripSlashes(conHtmlEntityDecode($module->get("name"))), 60);
+    $name = new cHTMLTextbox("name", conHtmlSpecialChars(stripslashes($module->get("name"))), 60);
     $descr = new cHTMLTextarea("descr", str_replace(array(
         '\r\n'
     ), "\r\n", conHtmlEntityDecode($module->get("description"))), 100, 5);
