@@ -308,6 +308,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         $sMetatags = '';
+
         foreach ($metaTags as $value) {
 
             // get meta tag keys
@@ -322,8 +323,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             // decode entities and htmlspecialchars, content will be converted
             // later using conHtmlSpecialChars() by render() function
             if (isset($value['content'])) {
-                $value['content'] = conHtmlEntityDecode($value['content'], ENT_QUOTES, strtoupper($encoding[$this->_lang]));
-                $value['content'] = htmlspecialchars_decode($value['content'], ENT_QUOTES);
+                $value['content'] = addslashes(htmlentities(stripslashes($value['content'])));
             }
 
             // build up metatag string
