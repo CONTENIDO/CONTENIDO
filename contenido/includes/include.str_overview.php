@@ -776,7 +776,7 @@ foreach ($objects as $key => $value) {
         }
 
         if ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $value->id)) {
-            $duplicate = '<a href="javascript://" onclick="confDupl(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . conHtmlSpecialChars($value->name) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "folder_duplicate.gif\" alt=\"" . i18n("Duplicate category") . "\" title=\"" . i18n("Duplicate category") . "\"></a>";
+            $duplicate = '<a href="javascript://" onclick="confDupl(' . $value->id . ',' . $value->custom['parentid'] . ', \'' . addslashes(conHtmlSpecialChars($value->name)) . '\')">' . "<img src=\"" . $cfg["path"]["images"] . "folder_duplicate.gif\" alt=\"" . i18n("Duplicate category") . "\" title=\"" . i18n("Duplicate category") . "\"></a>";
             $tpl->set('d', 'DUPLICATEBUTTON', $duplicate);
         } else {
             $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');
