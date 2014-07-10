@@ -595,7 +595,7 @@ class PifaForm extends Item {
 
         // send mail
         if (!$mailer->send($message)) {
-            $msg = Pifa::i18n('EMAIL_SEND_ERROR');
+			$msg = mi18n("PIFA_MAIL_ERROR_SUFFIX");
             throw new PifaMailException($msg);
         }
     }

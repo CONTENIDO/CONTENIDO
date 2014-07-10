@@ -64,8 +64,8 @@ class MailedFormProcessor extends DefaultFormProcessor {
                 'charSet' => 'UTF-8'
             ));
         } catch (PifaMailException $e) {
-            $errors[] = 'client mail could not be sent: ' . $e->getMessage();
-        }
+            $errors[] = mi18n("PIFA_CLIENT_MAIL") . ": " . $e->getMessage();
+        }	
 
         // system mail
         try {
@@ -89,7 +89,7 @@ class MailedFormProcessor extends DefaultFormProcessor {
                 'charSet' => 'UTF-8'
             ));
         } catch (PifaMailException $e) {
-            $errors[] = 'system mail could not be sent: ' . $e->getMessage();
+            $errors[] = mi18n("PIFA_SYSTEM_MAIL") . ": " . $e->getMessage(); 
         }
 
         // throw errors
