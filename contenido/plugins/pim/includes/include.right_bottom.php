@@ -152,10 +152,10 @@ while (($plugin = $oItem->next()) !== false) {
 if (is_dir($cfg['path']['plugins'])) {
     if ($handle = opendir($cfg['path']['plugins'])) {
         while ($pluginFoldername = readdir($handle)) {
+            $pluginPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername;
+            $tempPath = $pluginPath . '/plugin.xml';
 
-            $tempPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername . '/plugin.xml';
-
-            if (cFileHandler::exists($tempPath) && !in_array($pluginFoldername, $installedPluginFoldernames)) {
+            if (is_dir($pluginPath) && cFileHandler::exists($tempPath) && !in_array($pluginFoldername, $installedPluginFoldernames)) {
                 // initalization new template class
                 $pagePlugins = new cTemplate();
 
