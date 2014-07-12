@@ -145,6 +145,7 @@ class cSetupSystemData extends cSetupMask {
         $this->_oStepTemplate->set('s', 'LABEL_DBUSERNAME', i18n("Database Username", "setup"));
         $this->_oStepTemplate->set('s', 'LABEL_DBPASSWORD', i18n("Database Password", "setup"));
         $this->_oStepTemplate->set('s', 'LABEL_DBPREFIX', i18n("Table Prefix", "setup"));
+		$this->_oStepTemplate->set('s', 'LABEL_DBADVANCED', i18n("Advanced Settings", "setup"));
         $this->_oStepTemplate->set('s', 'LABEL_DBCHARSET', i18n("Database character set", "setup"));
         $this->_oStepTemplate->set('s', 'LABEL_DBCOLLATION', i18n("Database collation", "setup"));
 
