@@ -147,6 +147,13 @@ class cGuiPage {
     protected $_filesDirectory;
 
     /**
+     * Whether the template exist check should be skipped or not.
+     *
+     * @var bool
+     */
+    protected $_skipTemplateCheck = false;
+
+    /**
      * The constructor initializes the class and tries to get the encoding from
      * the currently selected language.
      * It will also add every script in the form of /scripts/*.PAGENAME.js and
@@ -595,6 +602,9 @@ class cGuiPage {
 
         // Get all messages for the content
         $text = $this->_renderContentMessages();
+        if (strlen(trim($text)) > 0) {
+            $this->_skipTemplateCheck = true;
+        }
 
         if (!$this->_abort) {
             if (count($this->_objects) == 0) {
@@ -753,18 +763,17 @@ class cGuiPage {
 
         $cfg = cRegistry::getConfig();
 
-        $output = '';
-        // Warning message for not existing resources
-        if($perm->isSysadmin($currentuser) && (($this->_pluginName == '' && !cFileHandler::exists($cfg['path']['templates'] . 'template.' . $this->_pageName . '.html')) ||
-           ($this->_pluginName != '' && !cFileHandler::exists($cfg['path']['plugins'] . $this->_pluginName . '/templates/template.' . $this->_pageName . '.html')))) {
-            $output .= $notification->returnNotification('warning', i18n("The requested resource") . " <strong>" . $this->_pageName . "</strong> " . i18n("was not found")) . '<br>';
-        }
-
         $file = '';
         if ($this->_pluginName == '') {
             $file = $cfg['path']['templates'] . 'template.' . $this->_pageName . '.html';
         } else {
             $file = $cfg['path']['plugins'] . $this->_pluginName . '/templates/template.' . $this->_pageName . '.html';
+        }
+
+        $output = '';
+        // Warning message for not existing resources
+        if (!$this->_skipTemplateCheck && $perm->isSysadmin($currentuser) && !cFileHandler::exists($file)) {
+            $output .= $notification->returnNotification('warning', i18n("The requested resource") . " <strong>template." . $this->_pageName . ".html</strong> " . i18n("was not found")) . '<br>';
         }
 
         if (cFileHandler::exists($file)) {
