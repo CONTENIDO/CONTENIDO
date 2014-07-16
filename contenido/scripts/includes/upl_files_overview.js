@@ -78,8 +78,8 @@
         }
         previewImage.style.width = iWidth;
         previewImage.style.height = iHeight;
-        previewImage.style.marginTop = _getY(theImage);
-        previewImage.style.marginLeft = _getX(theImage) + 100;
+        previewImage.style.marginTop = _getY(theImage) + "px";
+        previewImage.style.marginLeft = (_getX(theImage) + 100) + "px";
     }
 
     window.invertSelection = invertSelection;
