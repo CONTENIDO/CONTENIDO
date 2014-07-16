@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO FormAsistant\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-16 10:18+0200\n"
-"PO-Revision-Date: 2014-07-16 10:19+0100\n"
+"PO-Revision-Date: 2014-07-16 11:07+0100\n"
 "Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
 "Language-Team: Marcus GnaÃ <marcus.gnass@4fb.de>\n"
 "MIME-Version: 1.0\n"
@@ -207,7 +207,7 @@ msgstr "Wert"
 
 #: classes/class.pifa.ajax_handler.php:218
 msgid "ADD_OPTION"
-msgstr "Option hinzufÃ¼gen"
+msgstr "Option hinzufügen"
 
 #: classes/class.pifa.ajax_handler.php:219
 #: classes/class.pifa.gui.php:256
@@ -230,7 +230,7 @@ msgstr "URI"
 
 #: classes/class.pifa.ajax_handler.php:223
 msgid "EXTERNAL_OPTIONS_DATASOURCE"
-msgstr "externe Datenquelle fÃ¼r Optionen"
+msgstr "externe Datenquelle für Optionen"
 
 #: classes/class.pifa.ajax_handler.php:283
 #: classes/class.pifa.field.php:931
@@ -251,7 +251,7 @@ msgstr "Bearbeiten"
 #: classes/class.pifa.ajax_handler.php:533
 #: classes/class.pifa.gui.php:692
 msgid "DELETE"
-msgstr "LÃ¶schen"
+msgstr "Löschen"
 
 #: classes/class.pifa.ajax_handler.php:553
 msgid "MISSING_IDFIELD"
@@ -259,11 +259,11 @@ msgstr "Angabe zum Feld fehlt"
 
 #: classes/class.pifa.field.php:545
 msgid "MISSING_EOD_FILE"
-msgstr "Datei fÃ¼r externe Options-Datenquelle '%s' fehlt"
+msgstr "Datei für externe Options-Datenquelle '%s' fehlt"
 
 #: classes/class.pifa.field.php:551
 msgid "MISSING_EOD_CLASS"
-msgstr "Klasse fÃ¼r externe Options-Datenquelle '%s' fehlt"
+msgstr "Klasse für externe Options-Datenquelle '%s' fehlt"
 
 #: classes/class.pifa.field.php:775
 #: classes/class.pifa.field.php:1011
@@ -352,12 +352,12 @@ msgstr "unbekannt"
 
 #: classes/class.pifa.field.php:1054
 msgid "FIELD_DELETE_ERROR"
-msgstr "Feld konnte nicht gelÃ¶scht werden"
+msgstr "Feld konnte nicht gelöscht werden"
 
 #: classes/class.pifa.field.php:1070
 #: classes/class.pifa.form.php:1114
 msgid "COLUMN_DROP_ERROR"
-msgstr "Spalte konnte nicht gelÃ¶scht werden"
+msgstr "Spalte konnte nicht gelöscht werden"
 
 #: classes/class.pifa.field.php:1326
 msgid "NOT_IMPLEMENTED_FIELDPROP"
@@ -403,7 +403,7 @@ msgstr "Absender-Name fehlt"
 
 #: classes/class.pifa.form.php:545
 msgid "MISSING_RECIPIENT_ADDRESS"
-msgstr "EmpfÃ¤nger-Adresse fehlt"
+msgstr "Empfänger-Adresse fehlt"
 
 #: classes/class.pifa.form.php:549
 msgid "MISSING_SUBJECT"
@@ -420,7 +420,7 @@ msgstr "Datentabelle existiert nicht"
 
 #: classes/class.pifa.form.php:882
 msgid "TABLE_CHECK_ERROR"
-msgstr "Existenz der Datentabelle konnte nicht geprÃ¼ft werden: '%s'"
+msgstr "Existenz der Datentabelle konnte nicht geprüft werden: '%s'"
 
 #: classes/class.pifa.form.php:911
 msgid "TABLE_EXISTS_ERROR"
@@ -438,7 +438,7 @@ msgstr "Die Spalte '%s' existiert bereits."
 
 #: classes/class.pifa.form.php:1086
 msgid "COLUMN_ALTER_ERROR"
-msgstr "Spalte konnte nicht geÃ¤ndert werden"
+msgstr "Spalte konnte nicht geändert werden"
 
 #: classes/class.pifa.form.php:1146
 msgid "COLUMN_ADD_ERROR"
@@ -450,15 +450,15 @@ msgstr "Spalte konnte nicht gelesen werden"
 
 #: classes/class.pifa.form.php:1202
 msgid "FORM_DELETE_ERROR"
-msgstr "Formular konnte nicht gelÃ¶scht werden"
+msgstr "Formular konnte nicht gelöscht werden"
 
 #: classes/class.pifa.form.php:1214
 msgid "FIELDS_DELETE_ERROR"
-msgstr "Felder konnten nicht gelÃ¶scht werden"
+msgstr "Felder konnten nicht gelöscht werden"
 
 #: classes/class.pifa.form.php:1225
 msgid "TABLE_DROP_ERROR"
-msgstr "Datentabelle konnte nicht gelÃ¶scht werden"
+msgstr "Datentabelle konnte nicht gelöscht werden"
 
 #: classes/class.pifa.gui.php:60
 msgid "INUSE_DIALOG_TITLE"
@@ -466,7 +466,7 @@ msgstr "Formular ist in Benutzung"
 
 #: classes/class.pifa.gui.php:65
 msgid "CONFIRM_DELETE_FORM"
-msgstr "Wollen Sie dieses Formular wirklich lÃ¶schen?"
+msgstr "Wollen Sie dieses Formular wirklich löschen?"
 
 #: classes/class.pifa.gui.php:135
 msgid "FOLLOWING_LIST_USES_FORM"
@@ -474,7 +474,7 @@ msgstr "Die folgenden Artikel benutzen dieses Formular:"
 
 #: classes/class.pifa.gui.php:155
 msgid "DELETE_FORM"
-msgstr "Formular lÃ¶schen"
+msgstr "Formular löschen"
 
 #: classes/class.pifa.gui.php:255
 #: classes/class.pifa.gui.php:594
@@ -486,11 +486,11 @@ msgstr "Abbrechen"
 #: classes/class.pifa.gui.php:628
 #: classes/class.pifa.gui.php:845
 msgid "please select a form"
-msgstr "Bitte wÃ¤hlen Sie ein Formular aus."
+msgstr "Bitte wählen Sie ein Formular aus."
 
 #: classes/class.pifa.gui.php:329
 msgid "FORM_DELETED"
-msgstr "Das Formular wurde erfolgreich gelÃ¶scht."
+msgstr "Das Formular wurde erfolgreich gelöscht."
 
 #: classes/class.pifa.gui.php:396
 msgid "form name"
@@ -511,7 +511,7 @@ msgstr "mit Zeitstempel"
 
 #: classes/class.pifa.gui.php:400
 msgid "please choose"
-msgstr "bitte auswÃ¤hlen"
+msgstr "bitte auswählen"
 
 #: classes/class.pifa.gui.php:401
 msgid "save form"
@@ -527,7 +527,7 @@ msgstr "Datentabellenname darf nicht leer sein"
 
 #: classes/class.pifa.gui.php:459
 msgid "FORM_METHOD_ERROR"
-msgstr "Anfragemethode muÃ entweder GET oder POST sein"
+msgstr "Anfragemethode muss entweder GET oder POST sein"
 
 #: classes/class.pifa.gui.php:507
 msgid "FORM_STORE_ERROR"
@@ -535,7 +535,7 @@ msgstr "Formular konnte nicht gespeichert werden: '%s'"
 
 #: classes/class.pifa.gui.php:596
 msgid "CONFIRM_DELETE_FIELD"
-msgstr "Wollen Sie dieses Feld wirklich lÃ¶schen?"
+msgstr "Wollen Sie dieses Feld wirklich löschen?"
 
 #: classes/class.pifa.gui.php:688
 #: includes/include.right_top.php:55
@@ -631,7 +631,7 @@ msgstr "Formular speichern"
 
 #: includes/config.plugin.php:393
 msgid "pifa_delete_form"
-msgstr "Formular lÃ¶schen"
+msgstr "Formular löschen"
 
 #: includes/config.plugin.php:394
 msgid "pifa_show_fields"
@@ -663,11 +663,11 @@ msgstr "Datei aus Formulardaten herunterladen"
 
 #: includes/config.plugin.php:403
 msgid "pifa_delete_field"
-msgstr "Formularfeld lÃ¶schen"
+msgstr "Formularfeld löschen"
 
 #: includes/config.plugin.php:404
 msgid "pifa_get_option_row"
-msgstr "Formularfeldoption hinzufÃ¼gen"
+msgstr "Formularfeldoption hinzufügen"
 
 #: includes/include.left_top.php:25
 msgid "CREATE_FORM"
