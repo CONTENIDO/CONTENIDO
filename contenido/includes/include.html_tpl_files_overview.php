@@ -16,6 +16,6 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $files = new cGuiFileOverview($cfgClient[$client]['tpl']['path'], stripslashes($_REQUEST['file']), 'html');
-$files->setFileExtension('html');
+$files->setFileExtension(array('html', 'tpl'));
 $files->render();
 
