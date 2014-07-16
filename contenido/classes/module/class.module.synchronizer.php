@@ -121,6 +121,8 @@ class cModuleSynchronizer extends cModuleHandler {
         $retIdMod = 0;
 
         while ($db->nextRecord()) {
+            $showMessage = false;
+
             $modulePath = $cfgClient[$db->f('idclient')]['module']['path'] . $db->f('alias') . '/';
             $modulePHP = $modulePath . $this->_directories['php'] . $db->f('alias');
 
@@ -161,7 +163,7 @@ class cModuleSynchronizer extends cModuleHandler {
                     }
                     $mod->store();
                     $synchLock = 1;
-                    cRegistry::appendLastInfoMessage(sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
+                    $showMessage = true;
                 }
             }
 
@@ -171,11 +173,15 @@ class cModuleSynchronizer extends cModuleHandler {
                 $synchLock = 1;
                 $this->setLastModified($lastmodabsolute, $db->f('idmod'));
                 conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
-                cRegistry::appendLastInfoMessage(sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
+                $showMessage = true;
             }
 
             if (($idmod = $this->_synchronizeFilesystemAndDb($db)) != 0) {
                 $retIdMod = $idmod;
+            }
+
+            if ($showMessage) {
+                cRegistry::appendLastInfoMessage(sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
             }
         }
 
