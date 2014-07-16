@@ -191,6 +191,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             }
         }
 
+        if (strpos($this->_layoutCode, '{REV}') !== false) {
+            $this->_layoutCode = cString::iReplaceOnce('{REV}', ((int) getEffectiveSetting("ressource", "revision", 0)), $this->_layoutCode);
+        }
+
         // add module JS at {JS} position or before closing body tag if there is
         // no {JS}
         if (strpos($this->_layoutCode, '{JS}') !== false) {
