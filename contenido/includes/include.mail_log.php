@@ -300,6 +300,9 @@ $page->render();
 function mailLogDecodeAddresses($addresses) {
     $result = '';
     $addresses = json_decode($addresses, true);
+    if(!is_array($addresses)) {
+        return "";
+    }
     foreach ($addresses as $mail => $name) {
         $result .= $name . ' &lt;' . $mail . '&gt;<br>';
     }
