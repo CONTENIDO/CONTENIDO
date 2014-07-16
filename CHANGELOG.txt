@@ -1,6 +1,100 @@
 ﻿---------------------------------------------------------------------
 ------------------------ CONTENIDO CHANGELOG ------------------------
 ---------------------------------------------------------------------
+Release 4.9.4
+----------------------------------------------------------------------
+** Bug
+    * [CON-1555] - Umlauts: Multiple encoding problem with iso language
+    * [CON-1626] - Missing wrongpass=1 parameter in login error page redirection
+    * [CON-1666] - PIFA generates empty export file if no data content exists
+    * [CON-1676] - Implement validation for assigned languages for a user
+    * [CON-1678] - Setting title in CodeGenerator
+    * [CON-1698] - Remove deprecated inline JS for backend pages
+    * [CON-1706] - Prevent unnecessary reload of left_bottom frame in file manager
+    * [CON-1720] - Setup fails because of missing write permissions
+    * [CON-1732] - Can't change sometimes picture in CMS_IMGEDITOR and same JS error with PIFA
+    * [CON-1748] - Article duplication causes PHP-warning in error log
+    * [CON-1759] - Removal of the deprecated warning for inline JS
+    * [CON-1763] - Uploads to upload root folder
+    * [CON-1766] - Revision of the social media modules / Bugfixing
+    * [CON-1767] - Implement check for valid environment variable
+    * [CON-1769] - Link selection shows empty lines for articles in category
+    * [CON-1770] - Newsletter - mail job details are not displayed
+    * [CON-1771] - PIM: Can not install plugins via Zip archives
+    * [CON-1772] - Wrong generated meta tags
+    * [CON-1773] - Misleading translation in german
+    * [CON-1774] - Menu icons are not aligned properly
+    * [CON-1777] - cCategoryHelper: Depth for subcategories is not based on requested category
+    * [CON-1778] - Code generator standard replaced title-tag in not only in head area of layout
+    * [CON-1779] - Add upgrade job to switch AMR and url_shortener plugin from "Content" to "Extras" navigation
+    * [CON-1780] - Blank page at PHP version 5.4 or higher with Smarty plugin
+    * [CON-1781] - Perform display of CMS_TEASER
+    * [CON-1784] - Improper check of modified values in Generic DB
+    * [CON-1785] - Many bugs with (HTML) newsletter plugin
+    * [CON-1786] - Tagging plugin: Can not open tree after closing
+    * [CON-1789] - Fatal error in CMS_FILELIST for configured but not existing files
+    * [CON-1791] - Small issues with the CMS_LINKEDITOR
+    * [CON-1792] - Escaped seqeuences in module input lead to errors
+    * [CON-1794] - Upload articelist: Backend displayed not existing articles
+    * [CON-1796] - Password reset message could be slightly improved :-)
+    * [CON-1797] - Problems with magic_quotes in some file editors
+    * [CON-1798] - Frontend user: Empty FORM template variable at right_bottom frame
+    * [CON-1802] - No permission for simple user with frontend group create right
+    * [CON-1806] - Multiselect deletion for multi assigned articles failes
+    * [CON-1808] - PIFA: overfluous "for"-attribute for main label of radio buttons
+    * [CON-1809] - PIFA: missing "alt"-attribute of captcha image
+    * [CON-1810] - CONTENIDO displays an Internal Server Error after installing without client
+    * [CON-1811] - Auto generated Metatags are not valid
+    * [CON-1817] - Generic DB class ItemCollection may return wrong value on a delete actions
+    * [CON-1822] - PIFA: Failed translation at contact formular
+    * [CON-1823] - PIFA: Empty header template variables after delete an formular
+    * [CON-1825] - PIFA: Encoding problems with umlauts at CSV export
+    * [CON-1827] - PIFA: Load Xml failes after define new form table name
+    * [CON-1828] - Userforum: Can not find right_bottom template
+    * [CON-1829] - Sometimes backend displayed it can not find css and js files
+    * [CON-1831] - Newsletter: No log entries via jobs
+    * [CON-1834] - Directory contenido/cache is missing
+    * [CON-1835] - Encoding problems with client settings
+    * [CON-1840] - Timed moving of articles does not work
+    * [CON-1844] - Reminder emails are always being sent from "info@contenido.org"
+    * [CON-1852] - Create new CSS/JS/HTML: CONTENIDO displayed error message, but it works
+    * [CON-1853] - CSS and JS edit: Switch from history to file-edit produces error
+    * [CON-1858] - Formular assistant: Backend does not find jquery file
+    * [CON-1859] - AMR-Plugin: Wrong icon is displayed in info message when a copy action fails
+    * [CON-1860] - Empty template var at editing article and category options for groups
+    * [CON-1862] - CONTENIDO shows error messages sometimes more than one time
+    * [CON-1864] - Content - Article - Tagging: Prevent warning messages for css- and js-files
+    * [CON-1868] - Mail log: Prevent warning message for not founded template
+    * [CON-1870] - Articles don't get properly deleted
+    * [CON-1871] - Filtering of logs by action does not work
+
+** Improvement
+    * [CON-1625] - Add high z-index to all content type icons
+    * [CON-1683] - CMS_IMGEDITOR: Sort files in select field
+    * [CON-1689] - Implement article import and export on rawdata tab
+    * [CON-1691] - Do not longer lock move function for articles when they are synchronized
+    * [CON-1710] - Prevent moving articles into categories which have no assigned template
+    * [CON-1775] - cGuiPage: extend searching for CSS and JS for plugins
+    * [CON-1799] - cGuiFileOverview: Add file extension filter
+    * [CON-1800] - Add session timeout for frontend login
+    * [CON-1805] - Improve multi assignments for (new) articles
+    * [CON-1819] - Display synchronization of module only for changed modules
+    * [CON-1826] - PIFA: Change filename for CSV and Xml export
+
+** New feature
+    * [CON-1603] - PIFA: Add inuse functionality
+    * [CON-1656] - Implement readonly mode for data in filesystem
+    * [CON-1692] - Implement synchronization status for article
+    * [CON-1776] - cGuiPage: Implement warning message for not existing resources
+    * [CON-1801] - Add option to define collations for database
+
+** Task
+    * [CON-1638] - Search keywords generation: Check problems with multi-encoding keywords
+    * [CON-1762] - Update copyright year
+    * [CON-1765] - Review guides and split upgrade guide in two articles
+
+
+---------------------------------------------------------------------
 Release 4.9.3
 ----------------------------------------------------------------------
 ** Bug
