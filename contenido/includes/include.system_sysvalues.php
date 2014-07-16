@@ -174,7 +174,7 @@ while ($oItem = $oClientColl->next()) {
         $frontendpath = $cfgClient[$iIdClient]['path']['frontend'];
 
         $oTpl2 = new cTemplate();
-        $oTpl2->set('s', 'HEADLINE', i18n('Client') . ' ' . $oItem->get('name'));
+        $oTpl2->set('s', 'HEADLINE', i18n('Client') . ' ' . $oItem->get('name') . ' (' . $oItem->get('idclient') . ')');
         $oTpl2->set('s', 'ADDITIONAL', '');
 
         $oTpl2->set('d', 'NAME', i18n("HTML path"));
@@ -196,7 +196,7 @@ while ($oItem = $oClientColl->next()) {
                 $iIdLang = $oClientLang->get('idlang');
 
                 $oLang = new cApiLanguage($iIdLang);
-                $aLanguages[$iIdLang] = $oLang->get('name') . ' (' . $iIdLang . ')';
+                $aLanguages[$iIdLang] = $oLang->get('name') . ' (' . $iIdLang . ', ' . $oLang->get('encoding') . ')';
             }
 
             $sLanguages = implode(', ', $aLanguages);
@@ -213,6 +213,31 @@ while ($oItem = $oClientColl->next()) {
 }
 
 $tpl->set('s', 'CLIENTS', $sClients);
+
+
+$oTpl2 = new cTemplate();
+$oTpl2->set('s', 'HEADLINE', i18n('Database configuration'));
+$oTpl2->set("s", "ADDITIONAL", "");
+
+$readableName = array(
+    "host" => i18n("Host"),
+    "database" => i18n("Database"),
+    "user" => i18n("User"),
+    "password" => i18n("Password"),
+    "charset" => i18n("Charset")
+);
+
+foreach($cfg['db']['connection'] as $key => $value) {
+    if($key == "password") {
+        $value = "*********";
+    }
+    $oTpl2->set("d", "NAME", $readableName[$key]);
+    $oTpl2->set("d", "VALUE", $value);
+    $oTpl2->next();
+}
+
+$tpl->set('s', 'DATABASE_CONFIGURATION', $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['system_variables_block'], true));
+
 
 // parse out template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['system_variables']);

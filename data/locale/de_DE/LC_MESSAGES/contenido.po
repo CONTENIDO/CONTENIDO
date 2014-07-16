@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-11 11:41+0200\n"
-"PO-Revision-Date: 2014-06-25 13:24+0100\n"
-"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
+"POT-Creation-Date: 2014-07-16 14:32+0200\n"
+"PO-Revision-Date: 2014-07-16 14:33+0100\n"
+"Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -223,8 +223,8 @@ msgstr "Keine Daten gefunden!"
 #: classes/class.ajax.php:140
 #: classes/content_types/class.content.type.teaser.php:812
 #: includes/include.con_edit_form.php:834
-#: includes/include.grouprights_con.php:77
-#: includes/include.grouprights_str.php:78
+#: includes/include.grouprights_con.php:78
+#: includes/include.grouprights_str.php:79
 #: includes/include.logs.php:267
 #: includes/include.note.popup.php:72
 #: includes/include.rights_con.php:79
@@ -1695,6 +1695,7 @@ msgstr "Mandant"
 #: classes/gui/class.navigation.php:343
 #: includes/include.con_edit_form.php:114
 #: includes/include.logs.php:265
+#: includes/include.system_sysvalues.php:225
 #: templates/standard/template.log_main.html:30
 #: templates/standard/template.symbolhelp.html:610
 #: xml/system.xml:23
@@ -1753,15 +1754,15 @@ msgstr "Nächste Seite"
 msgid "Last page"
 msgstr "Letzte Seite"
 
-#: classes/gui/class.page.php:275
-#: classes/gui/class.page.php:327
-#: classes/gui/class.page.php:761
+#: classes/gui/class.page.php:281
+#: classes/gui/class.page.php:332
+#: classes/gui/class.page.php:776
 msgid "The requested resource"
 msgstr "Die gesuchte Quelle"
 
-#: classes/gui/class.page.php:275
-#: classes/gui/class.page.php:327
-#: classes/gui/class.page.php:761
+#: classes/gui/class.page.php:281
+#: classes/gui/class.page.php:332
+#: classes/gui/class.page.php:776
 msgid "was not found"
 msgstr "wurde nicht gefunden"
 
@@ -1798,7 +1799,7 @@ msgstr "wurde nicht gefunden"
 #: includes/include.lay_edit_form.php:76
 #: includes/include.lay_history.php:31
 #: includes/include.logs.php:19
-#: includes/include.mail_log.php:24
+#: includes/include.mail_log.php:22
 #: includes/include.mod_script.php:56
 #: includes/include.mod_style.php:53
 #: includes/include.mod_template.php:44
@@ -1930,19 +1931,17 @@ msgstr "Fehler im Modul. Fehlerquelle: %s"
 msgid "Please do not use short open tags. (Use <?php instead of <?)."
 msgstr "Bitte benutzen Sie keine Short Open Tags. (Nutzen Sie <?php anstelle von <?)"
 
-#: classes/module/class.module.synchronizer.php:54
-#: classes/module/class.module.synchronizer.php:165
-#: classes/module/class.module.synchronizer.php:176
-#: classes/module/class.module.synchronizer.php:185
+#: classes/module/class.module.synchronizer.php:53
+#: classes/module/class.module.synchronizer.php:184
 #, php-format
 msgid "Module %s successfully synchronized"
 msgstr "Das Modul %s wurde erfolgreich synchronisiert"
 
-#: classes/module/class.module.synchronizer.php:195
+#: classes/module/class.module.synchronizer.php:189
 msgid "All modules are already synchronized"
 msgstr "Alle Module sind bereits synchronisiert"
 
-#: classes/module/class.module.synchronizer.php:222
+#: classes/module/class.module.synchronizer.php:217
 msgid "Can not create module"
 msgstr "Konnte das Modul nicht erstellen"
 
@@ -2303,8 +2302,8 @@ msgstr "Die Kategorie ist offline"
 #: includes/functions.stat.php:286
 #: includes/functions.stat.php:598
 #: includes/functions.stat.php:599
-#: includes/include.grouprights_con.php:291
-#: includes/include.grouprights_str.php:297
+#: includes/include.grouprights_con.php:292
+#: includes/include.grouprights_str.php:298
 #: includes/include.rights_con.php:292
 #: includes/include.rights_str.php:299
 #: includes/include.str_overview.php:136
@@ -2427,198 +2426,198 @@ msgstr "Das Fehlerlog wurde erfolgreich gelöscht!"
 msgid "Template name already exists"
 msgstr "Vorlagenname existiert bereits"
 
-#: includes/functions.upl.php:673
+#: includes/functions.upl.php:676
 msgid "OpenOffice.org Presentation"
 msgstr "OpenOffice.org-Präsentation"
 
-#: includes/functions.upl.php:675
+#: includes/functions.upl.php:678
 msgid "OpenOffice.org Presentation Template"
 msgstr "OpenOffice.org-Präsentationsvorlage"
 
-#: includes/functions.upl.php:677
+#: includes/functions.upl.php:680
 msgid "Microsoft PowerPoint Screen Presentation"
 msgstr "Microsoft PowerPoint-Bildschirmpräsentation"
 
-#: includes/functions.upl.php:679
-#: includes/functions.upl.php:683
+#: includes/functions.upl.php:682
+#: includes/functions.upl.php:686
 msgid "Microsoft PowerPoint Presentation Template"
 msgstr "Microsoft PowerPoint-Präsentationsvorlage"
 
-#: includes/functions.upl.php:681
+#: includes/functions.upl.php:684
 msgid "KDE KPresenter Document"
 msgstr "KDE KPresenter-Dokument"
 
-#: includes/functions.upl.php:687
+#: includes/functions.upl.php:690
 msgid "Microsoft Word Document or regular text file"
 msgstr "Microsoft Word-Dokument oder reguläre Textdatei"
 
-#: includes/functions.upl.php:689
+#: includes/functions.upl.php:692
 msgid "Microsoft Word Template"
 msgstr "Microsoft Word-Vorlage"
 
-#: includes/functions.upl.php:691
+#: includes/functions.upl.php:694
 msgid "OpenOffice.org Text Document"
 msgstr "OpenOffice.org-Textdokument"
 
-#: includes/functions.upl.php:693
+#: includes/functions.upl.php:696
 msgid "OpenOffice.org Text Document Template"
 msgstr "OpenOffice.org-Dokumentenvorlage"
 
-#: includes/functions.upl.php:695
+#: includes/functions.upl.php:698
 msgid "StarOffice 5.0 Text Document"
 msgstr "StarOffice 5.0-Textdokument"
 
-#: includes/functions.upl.php:697
+#: includes/functions.upl.php:700
 msgid "KDE KWord Document"
 msgstr "KDE KWord-Dokument"
 
-#: includes/functions.upl.php:701
+#: includes/functions.upl.php:704
 msgid "Microsoft Excel Worksheet"
 msgstr "Microsoft Excel-Arbeitsblatt"
 
-#: includes/functions.upl.php:703
+#: includes/functions.upl.php:706
 msgid "OpenOffice.org Table"
 msgstr "OpenOffice.org-Tabelle"
 
-#: includes/functions.upl.php:705
+#: includes/functions.upl.php:708
 msgid "OpenOffice.org Table Template"
 msgstr "OpenOffice.org-Tabellenvorlage"
 
-#: includes/functions.upl.php:707
+#: includes/functions.upl.php:710
 msgid "Microsoft Excel File"
 msgstr "Microsoft Excel-Datei"
 
-#: includes/functions.upl.php:709
+#: includes/functions.upl.php:712
 msgid "Microsoft Excel Template"
 msgstr "Microsoft Excel-Vorlage"
 
-#: includes/functions.upl.php:711
+#: includes/functions.upl.php:714
 msgid "Comma Seperated Value File"
 msgstr "Komma-separierte Datei"
 
-#: includes/functions.upl.php:713
+#: includes/functions.upl.php:716
 msgid "KDE KSpread Document"
 msgstr "KDE KSpread-Dokument"
 
-#: includes/functions.upl.php:715
+#: includes/functions.upl.php:718
 msgid "StarOffice 5.0 Table"
 msgstr "StarOffice 5.0-Tabelle"
 
-#: includes/functions.upl.php:719
+#: includes/functions.upl.php:722
 msgid "Plain Text"
 msgstr "Einfache Textdatei"
 
-#: includes/functions.upl.php:721
+#: includes/functions.upl.php:724
 msgid "Rich Text Format"
 msgstr "Rich Text Format-Datei"
 
-#: includes/functions.upl.php:725
+#: includes/functions.upl.php:728
 msgid "GIF Image"
 msgstr "GIF-Bild"
 
-#: includes/functions.upl.php:727
+#: includes/functions.upl.php:730
 msgid "PNG Image"
 msgstr "PNG-Bild"
 
-#: includes/functions.upl.php:729
-#: includes/functions.upl.php:731
+#: includes/functions.upl.php:732
+#: includes/functions.upl.php:734
 msgid "JPEG Image"
 msgstr "JPEG-Bild"
 
-#: includes/functions.upl.php:733
+#: includes/functions.upl.php:736
 msgid "TIFF Image"
 msgstr "TIFF-Bild"
 
-#: includes/functions.upl.php:735
+#: includes/functions.upl.php:738
 msgid "Adobe Photoshop Image"
 msgstr "Adobe Photoshop-Bild"
 
-#: includes/functions.upl.php:739
-#: includes/functions.upl.php:741
+#: includes/functions.upl.php:742
+#: includes/functions.upl.php:744
 msgid "Hypertext Markup Language Document"
 msgstr "Hypertext Markup Language-Dokument"
 
-#: includes/functions.upl.php:743
+#: includes/functions.upl.php:746
 msgid "Cascading Style Sheets"
 msgstr "Cascading Style Sheets"
 
-#: includes/functions.upl.php:747
+#: includes/functions.upl.php:750
 msgid "LHA Archive"
 msgstr "LHA-Archiv"
 
-#: includes/functions.upl.php:749
+#: includes/functions.upl.php:752
 msgid "RAR Archive"
 msgstr "RAR-Archiv"
 
-#: includes/functions.upl.php:751
+#: includes/functions.upl.php:754
 msgid "ARJ Archive"
 msgstr "ARJ-Archiv"
 
-#: includes/functions.upl.php:753
+#: includes/functions.upl.php:756
 msgid "bz2-compressed File"
 msgstr "bz2-komprimierte Datei"
 
-#: includes/functions.upl.php:755
+#: includes/functions.upl.php:758
 msgid "bzip-compressed File"
 msgstr "bzip-komprimierte Datei"
 
-#: includes/functions.upl.php:757
+#: includes/functions.upl.php:760
 msgid "ZIP Archive"
 msgstr "Zip-Archiv"
 
-#: includes/functions.upl.php:759
+#: includes/functions.upl.php:762
 msgid "TAR Archive"
 msgstr "TAR-Archiv"
 
-#: includes/functions.upl.php:761
+#: includes/functions.upl.php:764
 msgid "GZ Compressed File"
 msgstr "GZ-komprimierte Datei"
 
-#: includes/functions.upl.php:765
+#: includes/functions.upl.php:768
 msgid "C Program Code"
 msgstr "C-Programmcode"
 
-#: includes/functions.upl.php:769
+#: includes/functions.upl.php:772
 msgid "C++ Program Code"
 msgstr "C++-Programmcode"
 
-#: includes/functions.upl.php:772
+#: includes/functions.upl.php:775
 msgid "C or C++ Program Header"
 msgstr "C- oder C++-Programmheader"
 
-#: includes/functions.upl.php:776
+#: includes/functions.upl.php:779
 msgid "PHP Program Code"
 msgstr "PHP-Programmcode"
 
-#: includes/functions.upl.php:778
+#: includes/functions.upl.php:781
 msgid "PHP Source File"
 msgstr "PHP-Quelltext"
 
-#: includes/functions.upl.php:781
+#: includes/functions.upl.php:784
 msgid "Adobe Acrobat Portable Document"
 msgstr "Adobe Acrobat Portable-Dokument"
 
-#: includes/functions.upl.php:785
+#: includes/functions.upl.php:788
 msgid "QuickTime Movie"
 msgstr "QuickTime-Film"
 
-#: includes/functions.upl.php:787
+#: includes/functions.upl.php:790
 msgid "avi Movie"
 msgstr "avi-Film"
 
-#: includes/functions.upl.php:790
+#: includes/functions.upl.php:793
 msgid "MPEG Movie"
 msgstr "MPEG-Film"
 
-#: includes/functions.upl.php:792
+#: includes/functions.upl.php:795
 msgid "Windows Media Video"
 msgstr "Windows Media-Video"
 
-#: includes/functions.upl.php:794
+#: includes/functions.upl.php:797
 msgid "MPEG-4 Movie"
 msgstr "MPEG-Film"
 
-#: includes/functions.upl.php:797
+#: includes/functions.upl.php:800
 msgid "-File"
 msgstr "-Datei"
 
@@ -2957,7 +2956,7 @@ msgid "Are you sure to delete the following article:<br><br><b>%s</b>"
 msgstr "Möchten Sie den folgenden Artikel wirklich löschen:<br /><br /><b>%s</b>"
 
 #: includes/include.con_art_overview.php:667
-#: includes/include.upl_files_overview.php:602
+#: includes/include.upl_files_overview.php:606
 msgid "Display properties"
 msgstr "Eigenschaften anzeigen"
 
@@ -3476,7 +3475,7 @@ msgstr "Keine Vorlage"
 
 #: includes/include.con_translate.php:579
 #: includes/include.lay_overview.php:62
-#: includes/include.tpl_overview.php:67
+#: includes/include.tpl_overview.php:68
 msgid "Click for more information about usage"
 msgstr "Klicken Sie für mehr Information über die Verwendung"
 
@@ -3772,10 +3771,10 @@ msgid "Current group doesn't have any rights to any client/language."
 msgstr "Die aktuelle Gruppe hat keine Zugriffsrechte auf irgendeine Sprache bzw. irgendeinen Mandanten."
 
 #: includes/include.grouprights_area.php:91
-#: includes/include.grouprights_con.php:114
+#: includes/include.grouprights_con.php:115
 #: includes/include.grouprights_lay.php:110
 #: includes/include.grouprights_mod.php:112
-#: includes/include.grouprights_str.php:116
+#: includes/include.grouprights_str.php:117
 #: includes/include.grouprights_tpl.php:113
 #: includes/include.rights_area.php:84
 #: includes/include.rights_con.php:117
@@ -3786,22 +3785,22 @@ msgstr "Die aktuelle Gruppe hat keine Zugriffsrechte auf irgendeine Sprache bzw.
 msgid "Check all"
 msgstr "Alle markieren"
 
-#: includes/include.grouprights_con.php:219
-#: includes/include.grouprights_str.php:227
+#: includes/include.grouprights_con.php:220
+#: includes/include.grouprights_str.php:228
 #: includes/include.rights_con.php:220
 #: includes/include.rights_str.php:229
 msgid "Apply rights for this category to all categories on the same level or above"
 msgstr "Rechte dieser Kategorie allen Kategorien auf derselben Ebene oder darüber zuweisen"
 
-#: includes/include.grouprights_con.php:219
-#: includes/include.grouprights_str.php:227
+#: includes/include.grouprights_con.php:220
+#: includes/include.grouprights_str.php:228
 #: includes/include.rights_con.php:220
 #: includes/include.rights_str.php:229
 msgid "Apply rights for this category to all categories below the current category"
 msgstr "Rechte dieser Kategorie allen Kategorien unter dieser Kategorie zuweisen"
 
-#: includes/include.grouprights_con.php:291
-#: includes/include.grouprights_str.php:297
+#: includes/include.grouprights_con.php:292
+#: includes/include.grouprights_str.php:298
 #: includes/include.rights_con.php:292
 #: includes/include.rights_str.php:299
 #: includes/include.str_overview.php:141
@@ -4251,11 +4250,11 @@ msgstr "Einträge"
 msgid "No results"
 msgstr "Keine Resultate"
 
-#: includes/include.mail_log.php:31
+#: includes/include.mail_log.php:30
 msgid "Mail logging is disabled!"
 msgstr "Das Mail-Logging wurde abgeschaltet!"
 
-#: includes/include.mail_log.php:57
+#: includes/include.mail_log.php:56
 msgid "No mails have been logged yet."
 msgstr "Es wurden noch keine E-Mails geloggt."
 
@@ -4298,7 +4297,7 @@ msgid "Body"
 msgstr "Body"
 
 #: includes/include.mail_log.php:225
-#: includes/include.mail_log.php:333
+#: includes/include.mail_log.php:336
 msgid "Delete emails"
 msgstr "E-Mails löschen"
 
@@ -4328,17 +4327,17 @@ msgstr "E-Mail erneut senden"
 msgid "No item selected!"
 msgstr "Kein Element ausgewählt!"
 
-#: includes/include.mail_log.php:323
-#: includes/include.mail_log.php:325
+#: includes/include.mail_log.php:326
+#: includes/include.mail_log.php:328
 #: includes/include.upl_files_overview.php:462
 msgid "Flip Selection"
 msgstr "Markierung umkehren"
 
-#: includes/include.mail_log.php:331
+#: includes/include.mail_log.php:334
 msgid "Do you really want to delete the selected emails?"
 msgstr "Möchten Sie wirklich die ausgewählten E-Mails löschen?"
 
-#: includes/include.mail_log.php:335
+#: includes/include.mail_log.php:338
 msgid "Apply to all selected emails:"
 msgstr "Anwenden für ausgewählte E-Mails:"
 
@@ -5440,6 +5439,29 @@ msgstr "Es wurden keine Sprachen zu diesem Mandanten gefunden"
 msgid "language(s)"
 msgstr "Sprache(n)"
 
+#: includes/include.system_sysvalues.php:219
+msgid "Database configuration"
+msgstr "Datenbank Konfiguration"
+
+#: includes/include.system_sysvalues.php:223
+#: xml/system.xml:22
+msgid "Host"
+msgstr "Host-Name"
+
+#: includes/include.system_sysvalues.php:224
+msgid "Database"
+msgstr "Datenbank"
+
+#: includes/include.system_sysvalues.php:226
+#: main.loginform.php:93
+#: xml/system.xml:24
+msgid "Password"
+msgstr "Passwort"
+
+#: includes/include.system_sysvalues.php:227
+msgid "Charset"
+msgstr "Zeichensatz"
+
 #: includes/include.todo.popup.php:38
 msgid "Add TODO item"
 msgstr "ToDo-Eintrag erstellen"
@@ -5515,22 +5537,22 @@ msgstr "Neue Vorlage"
 msgid "No permission to create templates"
 msgstr "Keine Berechtigung"
 
-#: includes/include.tpl_overview.php:70
+#: includes/include.tpl_overview.php:71
 #: ../data/config/production/cfg_actions.inc.php:95
 msgid "Delete template"
 msgstr "Vorlage löschen"
 
-#: includes/include.tpl_overview.php:72
+#: includes/include.tpl_overview.php:73
 #, php-format
 msgid "Do you really want to delete the following template:<br><br>%s<br>"
 msgstr "Möchten Sie die folgende Vorlage wirklich löschen:<br /><br /><b>%s</b>"
 
-#: includes/include.tpl_overview.php:82
+#: includes/include.tpl_overview.php:83
 msgid "Template in use, cannot delete"
 msgstr "Die Vorlage wird verwendet, löschen nicht möglich"
 
-#: includes/include.tpl_overview.php:93
 #: includes/include.tpl_overview.php:94
+#: includes/include.tpl_overview.php:95
 #: templates/standard/template.symbolhelp.html:344
 #: templates/standard/template.symbolhelp.html:710
 #: ../data/config/production/cfg_actions.inc.php:98
@@ -5538,7 +5560,7 @@ msgstr "Die Vorlage wird verwendet, löschen nicht möglich"
 msgid "Duplicate template"
 msgstr "Vorlage duplizieren"
 
-#: includes/include.tpl_overview.php:110
+#: includes/include.tpl_overview.php:111
 #, php-format
 msgid "The template '%s' is used for following categories and articles"
 msgstr "Die Vorlage '%s' wird bei folgenden Kategorien und Artikeln verwendet"
@@ -5648,7 +5670,7 @@ msgid "Start date"
 msgstr "Startdatum"
 
 #: includes/include.upl_edit.php:274
-#: includes/include.upl_files_overview.php:729
+#: includes/include.upl_files_overview.php:733
 #: includes/include.upl_files_upload.php:64
 msgid "Directory not writable"
 msgstr "Das Verzeichnis ist nicht beschreibbar"
@@ -5698,17 +5720,17 @@ msgstr "Pfad:"
 msgid "Files per Page"
 msgstr "Dateien pro Seite"
 
-#: includes/include.upl_files_overview.php:649
+#: includes/include.upl_files_overview.php:653
 #: includes/include.upl_search_results.php:329
 msgid "Previous Page"
 msgstr "Vorherige Seite"
 
-#: includes/include.upl_files_overview.php:655
+#: includes/include.upl_files_overview.php:659
 #: includes/include.upl_search_results.php:335
 msgid "Next Page"
 msgstr "Nächste Seite"
 
-#: includes/include.upl_files_overview.php:692
+#: includes/include.upl_files_overview.php:696
 #: includes/include.upl_search_results.php:373
 msgid "Page"
 msgstr "Seite"
@@ -5762,11 +5784,6 @@ msgstr "Login"
 #: main.loginform.php:90
 msgid "Invalid login or password!"
 msgstr "Ungültiger Login oder Passwort!"
-
-#: main.loginform.php:93
-#: xml/system.xml:24
-msgid "Password"
-msgstr "Passwort"
 
 #: scripts/articleObject.js.php:247
 #: scripts/langref.php:13
@@ -6569,7 +6586,7 @@ msgid "Create user group"
 msgstr "Benutzergruppe erstellen"
 
 #: templates/standard/template.system_variables.html:15
-#: templates/standard/template.system_variables.html:52
+#: templates/standard/template.system_variables.html:53
 msgid "CONTENIDO error log"
 msgstr "CONTENIDO-Fehlerlog"
 
@@ -6577,7 +6594,7 @@ msgstr "CONTENIDO-Fehlerlog"
 msgid "clear error log"
 msgstr "Fehlerlog leeren"
 
-#: templates/standard/template.system_variables.html:53
+#: templates/standard/template.system_variables.html:54
 msgid "Clear error log"
 msgstr "Fehlerlog leeren"
 
@@ -6924,10 +6941,6 @@ msgstr "Mails loggen"
 #: xml/system.xml:21
 msgid "Mailserver"
 msgstr "Mailserver"
-
-#: xml/system.xml:22
-msgid "Host"
-msgstr "Host-Name"
 
 #: xml/system.xml:25
 msgid "Encryption (empty, ssl or tls)"
@@ -7439,6 +7452,10 @@ msgstr "Falsche Zugriffsrechte"
 #: ../data/config/production/cfg_actions.inc.php:216
 msgid "User login"
 msgstr "Benutzer login"
+
+#, fuzzy
+#~ msgid "Datenbank"
+#~ msgstr "Datum"
 
 #~ msgid "Meta Type"
 #~ msgstr "Meta Typ"
