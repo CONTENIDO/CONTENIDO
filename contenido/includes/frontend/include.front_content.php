@@ -43,11 +43,6 @@
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// Clients local configuration
-if (file_exists($cfgClient[$client]['config']['path'] . '/config.local.php')) {
-    @include($cfgClient[$client]['config']['path'] . '/config.local.php');
-}
-
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.con2.php');
 cInclude('includes', 'functions.api.php');
