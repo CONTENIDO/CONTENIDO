@@ -697,82 +697,95 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // select all languages
     $languages = new cApiLanguageCollection();
     $languages->select();
-    $langHTML = "";
-    while (($someLang = $languages->nextAccessible()) != false) {
-        // skip the current language
-        if ($someLang->get("idlang") == cRegistry::getLanguageId()) {
-            continue;
-        }
-        // assign the template rows
-        $tpl3 = new cTemplate();
-        $tpl3->set("s", "LANG_ID", $someLang->get("idlang"));
-        $tpl3->set("s", "LANG_NAME", $someLang->get("name"));
 
-        // find this article in other languages
-        $sql = "SELECT
-                    idartlang, online
-                FROM
-                    " . $cfg["tab"]["art_lang"] . "
-                WHERE
-                    idart = " . cSecurity::toInteger($idart) . "
-                    AND idlang = " . cSecurity::toInteger($someLang->get("idlang"));
-        $db->query($sql);
-        $db->next_record();
-        $isOnline = $db->f("online");
-        $idOfSyncedArticle = $db->f("idartlang");
-        $synced = $db->numRows() > 0;
+    // Show synchronisation options only for three or more client languages
+    if ($languages->count() >= 3) {
 
-        // find this category in other languages
-        $sql = "SELECT
-        			idcatlang
-        		FROM
-        			" . $cfg["tab"]["cat_lang"] . "
-			    WHERE
-    			    idcat = " . cRegistry::getCategoryId() . "
-		            AND idlang = " . cSecurity::toInteger($someLang->get("idlang"));
-        $db->query($sql);
-        $db->next_record();
-        $isSyncable = (bool) $db->f("idcatlang");
+	    $langHTML = "";
+	    while (($someLang = $languages->nextAccessible()) != false) {
+	        // skip the current language
+	        if ($someLang->get("idlang") == cRegistry::getLanguageId()) {
+	            continue;
+	        }
+	        // assign the template rows
+	        $tpl3 = new cTemplate();
+	        $tpl3->set("s", "LANG_ID", $someLang->get("idlang"));
+	        $tpl3->set("s", "LANG_NAME", $someLang->get("name"));
 
-        // assign all texts depending on the situation
-        // if the article is not synced but the category exists in the target
-        // language, display the sync option and grey out the online/offline
-        // option
-        // if the article is already synced don't display the sync button, but
-        // the online/offline button
-        $onlineImage = "";
-        $onlineText = "";
-        $buttonName = "";
-        if ($idOfSyncedArticle > 0) {
-            $onlineImage = $isOnline? $cfg['path']['images'] . "online.gif" : $cfg['path']['images'] . "offline.gif";
-            $onlineText = $isOnline? i18n("Take the article in this language offline") : i18n("Make the article in this language online");
-            $buttonName = $isOnline? "offlineOne" : "onlineOne";
-        } else {
-            $onlineImage = $cfg['path']['images'] . "offline_off.gif";
-            $onlineText = sprintf(i18n("There is no synchronized article in the language '%s' to take offline/bring online"), $someLang->get('name'));
-            $buttonName = "";
-        }
+	        // find this article in other languages
+	        $sql = "SELECT
+	                    idartlang, online
+	                FROM
+	                    " . $cfg["tab"]["art_lang"] . "
+	                WHERE
+	                    idart = " . cSecurity::toInteger($idart) . "
+	                    AND idlang = " . cSecurity::toInteger($someLang->get("idlang"));
+	        $db->query($sql);
+	        $db->next_record();
+	        $isOnline = $db->f("online");
+	        $idOfSyncedArticle = $db->f("idartlang");
+	        $synced = $db->numRows() > 0;
 
-        if ($isSyncable) {
-            $tpl3->set("s", "SYNC_TEXT", $synced? sprintf(i18n("This article is synchronized to '%s'"), $someLang->get("name")) : sprintf(i18n("Synchronize this article to '%s'"), $someLang->get('name')));
-            $tpl3->set("s", "SYNC_IMAGE", $cfg['path']['images'] . "but_sync_art.gif");
-            $tpl3->set("s", "SYNC_IMAGE_VISIBLE", $synced? "hidden" : "visible");
-        } else {
-            $tpl3->set("s", "SYNC_TEXT", sprintf(i18n("This article can't be synchronized to '%s' since the category '%s' does not exist in that language."), $someLang->get("name"), $catlang->get("name")));
-            $tpl3->set("s", "SYNC_IMAGE", $cfg['path']['images'] . "but_sync_art_off.gif");
-        }
-        $tpl3->set("s", "ONLINE_TEXT", $onlineText);
-        $tpl3->set("s", "ONLINE_IMAGE", $onlineImage);
-        $tpl3->set("s", "BUTTON_NAME", $buttonName);
+	        // find this category in other languages
+	        $sql = "SELECT
+	        			idcatlang
+	        		FROM
+	        			" . $cfg["tab"]["cat_lang"] . "
+				    WHERE
+	    			    idcat = " . cRegistry::getCategoryId() . "
+			            AND idlang = " . cSecurity::toInteger($someLang->get("idlang"));
+	        $db->query($sql);
+	        $db->next_record();
+	        $isSyncable = (bool) $db->f("idcatlang");
 
-        $langHTML .= $tpl3->generate($cfg['path']['templates'] . $cfg['templates']['con_edit_form_synclang'], true);
+	        // assign all texts depending on the situation
+	        // if the article is not synced but the category exists in the target
+	        // language, display the sync option and grey out the online/offline
+	        // option
+	        // if the article is already synced don't display the sync button, but
+	        // the online/offline button
+	        $onlineImage = "";
+	        $onlineText = "";
+	        $buttonName = "";
+	        if ($idOfSyncedArticle > 0) {
+	            $onlineImage = $isOnline? $cfg['path']['images'] . "online.gif" : $cfg['path']['images'] . "offline.gif";
+	            $onlineText = $isOnline? i18n("Take the article in this language offline") : i18n("Make the article in this language online");
+	            $buttonName = $isOnline? "offlineOne" : "onlineOne";
+	        } else {
+	            $onlineImage = $cfg['path']['images'] . "offline_off.gif";
+	            $onlineText = sprintf(i18n("There is no synchronized article in the language '%s' to take offline/bring online"), $someLang->get('name'));
+	            $buttonName = "";
+	        }
+
+	        if ($isSyncable) {
+	            $tpl3->set("s", "SYNC_TEXT", $synced? sprintf(i18n("This article is synchronized to '%s'"), $someLang->get("name")) : sprintf(i18n("Synchronize this article to '%s'"), $someLang->get('name')));
+	            $tpl3->set("s", "SYNC_IMAGE", $cfg['path']['images'] . "but_sync_art.gif");
+	            $tpl3->set("s", "SYNC_IMAGE_VISIBLE", $synced? "hidden" : "visible");
+	        } else {
+	            $tpl3->set("s", "SYNC_TEXT", sprintf(i18n("This article can't be synchronized to '%s' since the category '%s' does not exist in that language."), $someLang->get("name"), $catlang->get("name")));
+	            $tpl3->set("s", "SYNC_IMAGE", $cfg['path']['images'] . "but_sync_art_off.gif");
+	        }
+	        $tpl3->set("s", "ONLINE_TEXT", $onlineText);
+	        $tpl3->set("s", "ONLINE_IMAGE", $onlineImage);
+	        $tpl3->set("s", "BUTTON_NAME", $buttonName);
+
+	        $langHTML .= $tpl3->generate($cfg['path']['templates'] . $cfg['templates']['con_edit_form_synclang'], true);
+	    }
+
+	    $tpl4 = new cTemplate();
+
+	    // if there aren't any rows of languages, hide the whole menu
+	    $tpl4->set("s", "SYNCLANGLIST", $langHTML);
+	    $tpl4->set("s", "SYNC_MENU_DISPLAY", $langHTML != ""? "table-row" : "none");
+
+	    $infoButton = new cGuiBackendHelpbox(i18n("In this menu you can change the synchronization settings of this article. You will find a list of all available languages and can copy this article to languages that have the category of this article. You can also take already synchronized languages online or offline."));
+	    $tpl4->set("s", "SYNCLISTINFO", $infoButton->render(true));
+
+	    $tpl->set("s", "SYNC", $tpl4->generate($cfg['path']['templates'] . $cfg['templates']['con_edit_form_sync'], true));
+
+    } else { // Define empty template variable SYNC
+    	$tpl->set("s", "SYNC", "");
     }
-    // if there aren't any rows of languages, hide the whole menu
-    $tpl->set("s", "SYNCLANGLIST", $langHTML);
-    $tpl->set("s", "SYNC_MENU_DISPLAY", $langHTML != ""? "table-row" : "none");
-
-    $infoButton = new cGuiBackendHelpbox(i18n("In this menu you can change the synchronization settings of this article. You will find a list of all available languages and can copy this article to languages that have the category of this article. You can also take already synchronized languages online or offline."));
-    $tpl->set("s", "SYNCLISTINFO", $infoButton->render(true));
 
     $sql = "SELECT
                 A.idcat,
