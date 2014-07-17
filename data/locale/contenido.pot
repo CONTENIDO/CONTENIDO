@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-17 10:36+0200\n"
+"POT-Creation-Date: 2014-07-17 13:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3935,10 +3935,13 @@ msgid "Template name"
 msgstr ""
 
 #: includes/include.html_tpl_edit_form.php:30
+#: includes/include.js_edit_form.php:30
+#: includes/include.style_edit_form.php:30
+#, php-format
 msgid ""
-"Currently only files with the extension html are displayed in the menu. If "
-"you create files with a different extension, they will not be shown on the "
-"left side!"
+"Currently only files with the extension %s are displayed in the menu. If you "
+"create files with a different extension, they will not be shown on the left "
+"side!"
 msgstr ""
 
 #: includes/include.html_tpl_history.php:50 includes/include.js_history.php:48
@@ -3994,13 +3997,6 @@ msgstr ""
 msgid ""
 "You can find many information and a community forum on the <a href=\"http://"
 "forum.contenido.org\" target=\"_blank\">CONTENIDO Portal</a>"
-msgstr ""
-
-#: includes/include.js_edit_form.php:30
-msgid ""
-"Currently only files with the extension js are displayed in the menu. If you "
-"create files with a different extension, they will not be shown on the left "
-"side!"
 msgstr ""
 
 #: includes/include.js_history.php:173 includes/include.js_history.php:181
@@ -5102,13 +5098,6 @@ msgstr ""
 #: includes/include.str_overview.php:939
 #, php-format
 msgid "Cancel moving %s"
-msgstr ""
-
-#: includes/include.style_edit_form.php:30
-msgid ""
-"Currently only files with the extension css are displayed in the menu. If "
-"you create files with a different extension, they will not be shown on the "
-"left side!"
 msgstr ""
 
 #: includes/include.style_history.php:124

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-17 10:36+0200\n"
-"PO-Revision-Date: 2014-07-17 10:39+0100\n"
+"POT-Creation-Date: 2014-07-17 13:15+0200\n"
+"PO-Revision-Date: 2014-07-17 13:15+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -4218,14 +4218,17 @@ msgid "Template name"
 msgstr "Vorlagenname"
 
 #: includes/include.html_tpl_edit_form.php:30
+#: includes/include.js_edit_form.php:30
+#: includes/include.style_edit_form.php:30
+#, php-format
 msgid ""
-"Currently only files with the extension html are displayed in the menu. If "
-"you create files with a different extension, they will not be shown on the "
-"left side!"
+"Currently only files with the extension %s are displayed in the menu. If you "
+"create files with a different extension, they will not be shown on the left "
+"side!"
 msgstr ""
-"Derzeit werden lediglich Dateien mit der Endung html im linken Menü "
-"angezeigt. Wenn Sie eine neue Datei mit einer anderen Dateiendung erstellen, "
-"wird sie nicht auf der linken Seite angezeigt!"
+"Derzeit werden lediglich Dateien mit der Endung %s im linken Menü angezeigt. "
+"Wenn Sie eine neue Datei mit einer anderen Dateiendung erstellen, wird sie "
+"nicht auf der linken Seite angezeigt!"
 
 #: includes/include.html_tpl_history.php:50 includes/include.js_history.php:48
 #: includes/include.lay_history.php:40 includes/include.mod_history.php:43
@@ -4284,16 +4287,6 @@ msgstr ""
 "Alle Informationen zu CONTENIDO und das CONTENIDO-Community-Forum finden Sie "
 "auf dem <a href=\"http://www.contenido.org\" target=\"_blank\">CONTENIDO "
 "Portal</a>"
-
-#: includes/include.js_edit_form.php:30
-msgid ""
-"Currently only files with the extension js are displayed in the menu. If you "
-"create files with a different extension, they will not be shown on the left "
-"side!"
-msgstr ""
-"Derzeit werden lediglich Dateien mit der Endung js im linken Menü angezeigt. "
-"Wenn Sie eine neue Datei mit einer anderen Dateiendung erstellen, wird sie "
-"nicht auf der linken Seite angezeigt!"
 
 #: includes/include.js_history.php:173 includes/include.js_history.php:181
 msgid "No jscript history available"
@@ -5443,16 +5436,6 @@ msgstr "Kategorie konfigurieren"
 #, php-format
 msgid "Cancel moving %s"
 msgstr "Verschieben von %s abbrechen"
-
-#: includes/include.style_edit_form.php:30
-msgid ""
-"Currently only files with the extension css are displayed in the menu. If "
-"you create files with a different extension, they will not be shown on the "
-"left side!"
-msgstr ""
-"Derzeit werden lediglich Dateien mit der Endung css im linken Menü "
-"angezeigt. Wenn Sie eine neue Datei mit einer anderen Dateiendung erstellen, "
-"wird sie nicht auf der linken Seite angezeigt!"
 
 #: includes/include.style_history.php:124
 msgid "Edit style"
@@ -7804,6 +7787,24 @@ msgstr "Falsche Zugriffsrechte"
 #: ../data/config/production/cfg_actions.inc.php:216
 msgid "User login"
 msgstr "Benutzer login"
+
+#~ msgid ""
+#~ "Currently only files with the extension html are displayed in the menu. "
+#~ "If you create files with a different extension, they will not be shown on "
+#~ "the left side!"
+#~ msgstr ""
+#~ "Derzeit werden lediglich Dateien mit der Endung html im linken Menü "
+#~ "angezeigt. Wenn Sie eine neue Datei mit einer anderen Dateiendung "
+#~ "erstellen, wird sie nicht auf der linken Seite angezeigt!"
+
+#~ msgid ""
+#~ "Currently only files with the extension css are displayed in the menu. If "
+#~ "you create files with a different extension, they will not be shown on "
+#~ "the left side!"
+#~ msgstr ""
+#~ "Derzeit werden lediglich Dateien mit der Endung css im linken Menü "
+#~ "angezeigt. Wenn Sie eine neue Datei mit einer anderen Dateiendung "
+#~ "erstellen, wird sie nicht auf der linken Seite angezeigt!"
 
 #, fuzzy
 #~ msgid "Datenbank"

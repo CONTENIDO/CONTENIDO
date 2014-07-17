@@ -27,7 +27,7 @@ if (empty($_REQUEST['tmp_file'])) {
 	$backend_file_extensions = getSystemProperty('backend', 'backend_file_extensions');
 
 	if($backend_file_extensions == "enabled") {
-		$editor->displayInfo(i18n("Currently only files with the extension html are displayed in the menu. If you create files with a different extension, they will not be shown on the left side!"));
+		$editor->displayInfo(sprintf(i18n("Currently only files with the extension %s are displayed in the menu. If you create files with a different extension, they will not be shown on the left side!"), "html/tpl"));
 	}
 
 }
