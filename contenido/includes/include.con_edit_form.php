@@ -658,23 +658,26 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     if (isset($tplinputchanged) && $tplinputchanged == 1) {
         $tmp_idcat_in_art = $idcatnew;
-    } else {
-        // get all idcats that contain art
-        $sql = "SELECT
-                    idcat
-                FROM
-                    " . $cfg["tab"]["cat_art"] . "
-                WHERE
-                    idart = " . cSecurity::toInteger($idart);
-        $db->query($sql);
-        while ($db->nextRecord()) {
-            $tmp_idcat_in_art[] = $db->f("idcat");
-        }
+    } elseif ($idart != 0) {
+		// get all idcats that contain art
+		$sql = "SELECT
+	    			idcat
+				FROM
+					" . $cfg["tab"]["cat_art"] . "
+				WHERE
+					idart = " . cSecurity::toInteger($idart);
+		$db->query($sql);
+		while ($db->nextRecord()) {
+			$tmp_idcat_in_art[] = $db->f("idcat");
+		}
 
-        if (!is_array($tmp_idcat_in_art)) {
-            $tmp_idcat_in_art[0] = $idcat;
-        }
-    }
+		if (!is_array($tmp_idcat_in_art)) {
+			$tmp_idcat_in_art[0] = $idcat;
+		}
+
+	} else {
+		$tmp_idcat_in_art[0] = $idcat;
+	}
 
     // Start date
     if ($tmp_datestart == "0000-00-00 00:00:00") {
