@@ -51,7 +51,7 @@ class cApiArticleCollection extends ItemCollection {
      * @return cApiArticle
      */
     public function create($idclient) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('idclient', (int) $idclient);
         $item->store();

@@ -53,7 +53,7 @@ class cApiRightCollection extends ItemCollection {
      * @return cApiRight
      */
     public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type) {
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
         $oItem->set('user_id', $this->escape($userId));
         $oItem->set('idarea', (int) $idarea);

@@ -42,7 +42,7 @@ class cApiKeywordCollection extends ItemCollection {
      * @return cApiKeyword
      */
     public function create($keyword, $exp = '', $auto, $self = '', $idlang) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $keyword = cSecurity::escapeString($keyword);
         $exp = cSecurity::escapeString($exp);

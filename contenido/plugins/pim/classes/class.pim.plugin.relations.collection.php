@@ -50,7 +50,7 @@ class PimPluginRelationsCollection extends ItemCollection {
         $type = cSecurity::escapeString($type);
 
         // create a new entry
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
         $item->set('iditem', $idItem);
         $item->set('idplugin', $idPlugin);
         $item->set('type', $type);

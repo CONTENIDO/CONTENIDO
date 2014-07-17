@@ -57,7 +57,7 @@ class NewsletterCollection extends ItemCollection
             return $this->create($sName . "_" . substr(md5(rand()), 0, 10));
         }
 
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
         $oItem->set("idclient", $client);
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);
@@ -85,7 +85,7 @@ class NewsletterCollection extends ItemCollection
         $oBaseItem = new Newsletter();
         $oBaseItem->loadByPrimaryKey($iItemID);
 
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
         $oItem->set("name", $oBaseItem->get("name") . "_" . substr(md5(rand()), 0, 10));
 
         $iIDArt = 0;

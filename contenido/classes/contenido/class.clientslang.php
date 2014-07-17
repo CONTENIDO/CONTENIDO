@@ -44,7 +44,7 @@ class cApiClientLanguageCollection extends ItemCollection {
      * @return cApiClientLanguage
      */
     public function create($iClient, $iLang) {
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
         $oItem->set('idclient', (int) $iClient, false);
         $oItem->set('idlang', (int) $iLang, false);
         $oItem->store();

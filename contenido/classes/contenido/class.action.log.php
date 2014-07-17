@@ -52,7 +52,7 @@ class cApiActionlogCollection extends ItemCollection {
      * @return cApiActionlog
      */
     public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '') {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         if (empty($logtimestamp)) {
             $logtimestamp = date('Y-m-d H:i:s');

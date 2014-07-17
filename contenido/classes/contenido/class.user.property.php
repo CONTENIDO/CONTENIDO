@@ -126,7 +126,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @return cApiUserProperty
      */
     public function create($type, $name, $value, $idcatlang = 0) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('user_id', $this->_userId);
         $item->set('type', $type);

@@ -146,7 +146,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * @return cApiGroupProperty
      */
     public function create($type, $name, $value, $idcatlang = 0) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('group_id', $this->_groupId);
         $item->set('type', $type);

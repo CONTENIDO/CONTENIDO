@@ -74,7 +74,7 @@ class cApiOnlineUserCollection extends ItemCollection {
      * @return bool Returns true if successful else false
      */
     public function insertOnlineUser($userId) {
-        $oItem = parent::createNewItem((string) $userId);
+        $oItem = $this->createNewItem((string) $userId);
         if ($oItem) {
             $created = date('Y-m-d H:i:s');
             $oItem->set('lastaccessed', $created);

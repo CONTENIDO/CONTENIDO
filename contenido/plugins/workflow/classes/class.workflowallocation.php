@@ -93,7 +93,7 @@ class WorkflowAllocations extends ItemCollection {
             $this->lasterror = i18n("Workflow doesn't exist", "workflow");
             return false;
         }
-        $newitem = parent::createNewItem();
+        $newitem = $this->createNewItem();
         if (!$newitem->setWorkflow($idworkflow)) {
             $this->lasterror = $newitem->lasterror;
             $workflows->delete($newitem->getField("idallocation"));
@@ -166,7 +166,7 @@ class WorkflowAllocation extends Item {
         }
 
         parent::setField("idworkflow", $idworkflow);
-        parent::store();
+        $this->store();
         return true;
     }
 
@@ -199,7 +199,7 @@ class WorkflowAllocation extends Item {
         }
 
         parent::setField("idcatlang", $idcatlang);
-        parent::store();
+        $this->store();
         return true;
     }
 

@@ -45,7 +45,7 @@ class cApiAreaCollection extends ItemCollection {
     public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0) {
         $parentid = (is_string($parentid)) ? $this->escape($parentid) : (int) $parentid;
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('parent_id', $parentid);
         $item->set('name', $this->escape($name));

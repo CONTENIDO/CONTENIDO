@@ -59,7 +59,7 @@ class PimPluginCollection extends ItemCollection {
         $active = cSecurity::toInteger($active);
 
         // create a new entry
-        $item = parent::createNewItem($nextId);
+        $item = $this->createNewItem($nextId);
         $item->set('idclient', $client);
         $item->set('name', $name);
         $item->set('description', $description);

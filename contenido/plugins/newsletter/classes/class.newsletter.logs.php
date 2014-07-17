@@ -63,7 +63,7 @@ class NewsletterLogCollection extends ItemCollection {
 
         $oRecipient = new NewsletterRecipient();
         if ($oRecipient->loadByPrimaryKey($idnewsrcp)) {
-            $oItem = parent::createNewItem();
+            $oItem = $this->createNewItem();
 
             $oItem->set("idnewsjob", $idnewsjob);
             $oItem->set("idnewsrcp", $idnewsrcp);

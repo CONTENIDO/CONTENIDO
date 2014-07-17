@@ -43,7 +43,7 @@ class cApiGroupCollection extends ItemCollection {
     public function create($groupname, $perms, $description) {
         $primaryKeyValue = md5($groupname);
 
-        $item = parent::createNewItem($primaryKeyValue);
+        $item = $this->createNewItem($primaryKeyValue);
         if (!is_object($item)) {
             return NULL;
         }

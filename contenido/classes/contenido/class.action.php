@@ -48,7 +48,7 @@ class cApiActionCollection extends ItemCollection {
      * @return cApiAction
      */
     public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         if (is_string($area)) {
             $c = new cApiArea();

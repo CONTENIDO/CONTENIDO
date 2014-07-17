@@ -59,7 +59,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
 
         $perm = NULL;
         if (!$this->checkPerm($group, $plugin, $action, $item)) {
-            $perm = parent::createNewItem();
+            $perm = $this->createNewItem();
             $perm->set('idlang', $lang);
             $perm->set('idfrontendgroup', $group);
             $perm->set('plugin', $plugin);

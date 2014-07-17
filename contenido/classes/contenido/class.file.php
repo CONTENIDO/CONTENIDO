@@ -43,7 +43,7 @@ class cApiFileCollection extends ItemCollection {
      * @return cApiFile
      */
     public function create($area, $filename, $filetype = 'main') {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         if (is_string($area)) {
             $c = new cApiArea();

@@ -48,7 +48,7 @@ class cApiMailLogCollection extends ItemCollection {
      * @return int the idmail of the newly created mail
      */
     public function create($from, $to, $replyTo, $cc, $bcc, $subject, $body, $created, $charset, $contentType) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('from', json_encode($from));
         $item->set('to', json_encode($to));

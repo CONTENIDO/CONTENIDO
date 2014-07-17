@@ -68,7 +68,7 @@ class cApiCategoryCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
         $oItem->set('idclient', $idclient);
         $oItem->set('parentid', $parentid);

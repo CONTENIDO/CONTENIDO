@@ -42,7 +42,7 @@ class cApiCommunicationCollection extends ItemCollection {
      */
     public function create() {
         global $auth, $client;
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('idclient', (int) $client);
         $item->set('author', $auth->auth['uid']);

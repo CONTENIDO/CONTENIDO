@@ -307,7 +307,7 @@ class cApiDbfsCollection extends ItemCollection {
         }
 
         if ($dir && !$this->dirExists($dir) || $file != '.') {
-            $item = parent::createNewItem();
+            $item = $this->createNewItem();
             $item->set('idclient', $client);
             $item->set('dirname', $dir);
             $item->set('filename', $file);

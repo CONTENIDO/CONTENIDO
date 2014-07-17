@@ -50,7 +50,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
             return false;
         }
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('idfrontenduser', $idfrontenduser);
         $item->set('idfrontendgroup', $idfrontendgroup);

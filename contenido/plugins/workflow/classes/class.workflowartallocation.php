@@ -52,7 +52,7 @@ class WorkflowArtAllocations extends ItemCollection {
             return false;
         }
 
-        $newitem = parent::createNewItem();
+        $newitem = $this->createNewItem();
         $newitem->setField("idartlang", $idartlang);
         $newitem->store();
 

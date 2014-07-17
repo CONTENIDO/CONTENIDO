@@ -65,7 +65,7 @@ class NewsletterRecipientCollection extends ItemCollection {
                                                                                                             // Deactivate
                                                                                                             // 'confirmed'
         }
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
         $oItem->set("idclient", $client);
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);

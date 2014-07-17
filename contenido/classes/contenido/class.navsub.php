@@ -47,7 +47,7 @@ class cApiNavSubCollection extends ItemCollection {
      * @return cApiNavSub
      */
     public function create($navm, $area, $level, $location, $online = 1) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         if (is_string($area)) {
             $c = new cApiArea();

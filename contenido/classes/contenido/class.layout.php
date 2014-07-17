@@ -69,7 +69,7 @@ class cApiLayoutCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
         $item->set('idclient', $idclient);
         $item->set('name', $name);
         $item->set('alias', $alias);

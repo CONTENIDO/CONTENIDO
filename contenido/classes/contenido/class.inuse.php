@@ -55,7 +55,7 @@ class cApiInUseCollection extends ItemCollection {
 
         $newitem = NULL;
         if (!$this->next()) {
-            $newitem = parent::createNewItem();
+            $newitem = $this->createNewItem();
             $newitem->set('type', $type);
             $newitem->set('objectid', $objectid);
             $newitem->set('session', $session);

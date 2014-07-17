@@ -57,7 +57,7 @@ class cApiClientCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
         $item->set('name', $name);
         $item->set('errsite_cat', $errsite_cat);
         $item->set('errsite_art', $errsite_art);

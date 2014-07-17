@@ -45,7 +45,7 @@ class cApiMetaTagCollection extends ItemCollection {
      * @return cApiMetaTag
      */
     public function create($iIdArtLang, $iIdMetaType, $sMetaValue) {
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
         $oItem->set('idartlang', (int) $iIdArtLang, false);
         $oItem->set('idmetatype', (int) $iIdMetaType, false);

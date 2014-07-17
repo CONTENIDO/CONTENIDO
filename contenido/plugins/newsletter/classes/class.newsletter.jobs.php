@@ -52,7 +52,7 @@ class NewsletterJobCollection extends ItemCollection {
             $client = cSecurity::toInteger($client);
             $sName = $this->escape($sName);
 
-            $oItem = parent::createNewItem();
+            $oItem = $this->createNewItem();
 
             $oItem->set("idnews", $iIDNews);
             $oItem->set("idclient", $client);

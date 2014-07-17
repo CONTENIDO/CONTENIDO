@@ -75,7 +75,7 @@ class cApiCategoryLanguageCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
         $oItem->set('idcat', $idcat);
         $oItem->set('idlang', $idlang);

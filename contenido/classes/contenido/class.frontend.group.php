@@ -55,7 +55,7 @@ class cApiFrontendGroupCollection extends ItemCollection {
             $groupname = $groupname . md5(rand());
         }
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
         $item->set('idclient', $client);
         $item->set('groupname', $groupname);
         $item->store();

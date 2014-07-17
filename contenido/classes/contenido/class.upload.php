@@ -94,7 +94,7 @@ class cApiUploadCollection extends ItemCollection {
     public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0, $sDescription = '', $iStatus = 0) {
         global $client, $cfg, $auth;
 
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
         $oItem->set('idclient', $client);
         $oItem->set('filename', $sFilename, false);

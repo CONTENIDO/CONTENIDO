@@ -62,7 +62,7 @@ class cApiContentCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
         $oItem->set('idartlang', $idArtLang);
         $oItem->set('idtype', $idType);

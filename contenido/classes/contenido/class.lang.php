@@ -44,7 +44,7 @@ class cApiLanguageCollection extends ItemCollection {
     public function create($name, $active, $encoding, $direction) {
         global $auth;
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('name', $this->escape($name), false);
         $item->set('active', (int) $active, false);
@@ -72,7 +72,7 @@ class cApiLanguageCollection extends ItemCollection {
     public function nextAccessible() {
         global $perm, $client, $lang;
 
-        $item = parent::next();
+        $item = $this->next();
 
         $lang = (int) $lang;
         $client = (int) $client;

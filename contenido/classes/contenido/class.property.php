@@ -173,7 +173,7 @@ class cApiPropertyCollection extends ItemCollection {
     public function create($itemtype, $itemid, $type, $name, $value, $bDontEscape = false) {
         global $auth;
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('idclient', $this->client);
         $item->set('itemtype', $itemtype, false);

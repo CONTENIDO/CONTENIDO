@@ -68,7 +68,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('idcat', (int) $idcat);
         $item->set('idart', (int) $idart);

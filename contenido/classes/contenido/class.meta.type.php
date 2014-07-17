@@ -42,7 +42,7 @@ class cApiMetaTypeCollection extends ItemCollection {
      * @return cApiMetaType
      */
     public function create($metatype, $fieldtype, $maxlength, $fieldname) {
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
         $oItem->set('metatype', $metatype);
         $oItem->set('fieldtype', $fieldtype);

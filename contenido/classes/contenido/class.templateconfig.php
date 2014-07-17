@@ -82,7 +82,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
             $lastmodified = '0000-00-00 00:00:00';
         }
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
         $item->set('idtpl', $idtpl);
         $item->set('author', $author);
         $item->set('status', $status);
