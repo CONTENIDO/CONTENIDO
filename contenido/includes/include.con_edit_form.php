@@ -388,7 +388,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $tmp2_lastmodified = date($dateformat, strtotime($tmp_lastmodified));
     $tmp2_published = date($dateformat, strtotime($tmp_published));
 
-    $tpl->set('s', 'ACTION', $sess->url("main.php?area=$area&frame=$frame&action=con_saveart"));
+    $tpl->set('s', 'ACTION', $sess->url("main.php?area=$area&frame=$frame&action=con_saveart&idart=$idart"));
     $tpl->set('s', 'TMP_FIRSTEDIT', $tmp_firstedit);
     $tpl->set('s', 'IDART', $idart);
     $tpl->set('s', 'IDCAT', $idcat);
