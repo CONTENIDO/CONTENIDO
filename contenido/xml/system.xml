@@ -38,6 +38,7 @@ i18n("Debug to file")
 i18n("Visible debug")
 i18n("Allow all HTML tags and attributes in TinyMCE")
 i18n("Optional backend label")
+i18n("Show only CSS/JS/HTML files at areas CSS/JS/HTML")
 
 -->
 
@@ -203,6 +204,14 @@ i18n("Optional backend label")
                 <label>Optional backend label</label>
                 <group>Backend</group>
             </backend_label>
+            <backend_file_extensions>
+            	<values>
+                    <array_value>enabled</array_value>
+                    <array_value>disabled</array_value>
+                </values>
+            	<label>Show only CSS/JS/HTML files at areas CSS/JS/HTML</label>
+            	<group>Backend</group>
+            </backend_file_extensions>
         </backend>
         <generator>
             <xhtml>

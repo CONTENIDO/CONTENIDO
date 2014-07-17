@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-16 14:32+0200\n"
+"POT-Creation-Date: 2014-07-17 10:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -199,7 +199,7 @@ msgstr ""
 
 #: classes/class.ajax.php:140
 #: classes/content_types/class.content.type.teaser.php:812
-#: includes/include.con_edit_form.php:834
+#: includes/include.con_edit_form.php:847
 #: includes/include.grouprights_con.php:78
 #: includes/include.grouprights_str.php:79 includes/include.logs.php:267
 #: includes/include.note.popup.php:72 includes/include.rights_con.php:79
@@ -1839,7 +1839,7 @@ msgstr ""
 #: includes/include.con_art_overview.php:968
 #: includes/include.con_content_list.php:78
 #: includes/include.con_content_list.php:104
-#: includes/include.con_edit_form.php:1055
+#: includes/include.con_edit_form.php:1068
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
 #: includes/include.grouprights_area.php:50
@@ -2172,20 +2172,20 @@ msgstr ""
 msgid "The given client's frontend directory (%s) is not a directory."
 msgstr ""
 
-#: includes/frontend/include.front_content.php:252
-#: includes/frontend/include.front_content.php:280
+#: includes/frontend/include.front_content.php:247
+#: includes/frontend/include.front_content.php:275
 msgid "No start article for this category"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:309
+#: includes/frontend/include.front_content.php:304
 msgid "Error page"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:310
+#: includes/frontend/include.front_content.php:305
 msgid "Error article/category not found!"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:360
+#: includes/frontend/include.front_content.php:355
 #: includes/include.con_edit_form.php:336
 #: includes/include.con_edit_form.php:340
 #: includes/include.con_meta_form.php:61 includes/include.con_meta_form.php:63
@@ -2194,13 +2194,13 @@ msgstr ""
 msgid "Article is in use by %s (%s)"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:397
+#: includes/frontend/include.front_content.php:392
 msgid ""
 "Editing is not possible because there is no template assigned to this "
 "category."
 msgstr ""
 
-#: includes/frontend/include.front_content.php:398
+#: includes/frontend/include.front_content.php:393
 msgid "FATAL ERROR"
 msgstr ""
 
@@ -3260,39 +3260,39 @@ msgid ""
 "current one?"
 msgstr ""
 
-#: includes/include.con_edit_form.php:748
+#: includes/include.con_edit_form.php:752
 msgid "Take the article in this language offline"
 msgstr ""
 
-#: includes/include.con_edit_form.php:748
+#: includes/include.con_edit_form.php:752
 msgid "Make the article in this language online"
 msgstr ""
 
-#: includes/include.con_edit_form.php:752
+#: includes/include.con_edit_form.php:756
 #, php-format
 msgid ""
 "There is no synchronized article in the language '%s' to take offline/bring "
 "online"
 msgstr ""
 
-#: includes/include.con_edit_form.php:757
+#: includes/include.con_edit_form.php:761
 #, php-format
 msgid "This article is synchronized to '%s'"
 msgstr ""
 
-#: includes/include.con_edit_form.php:757
+#: includes/include.con_edit_form.php:761
 #, php-format
 msgid "Synchronize this article to '%s'"
 msgstr ""
 
-#: includes/include.con_edit_form.php:761
+#: includes/include.con_edit_form.php:765
 #, php-format
 msgid ""
 "This article can't be synchronized to '%s' since the category '%s' does not "
 "exist in that language."
 msgstr ""
 
-#: includes/include.con_edit_form.php:774
+#: includes/include.con_edit_form.php:781
 msgid ""
 "In this menu you can change the synchronization settings of this article. "
 "You will find a list of all available languages and can copy this article to "
@@ -3300,17 +3300,17 @@ msgid ""
 "synchronized languages online or offline."
 msgstr ""
 
-#: includes/include.con_edit_form.php:806
+#: includes/include.con_edit_form.php:819
 msgid ""
 "You can not move an article into a category, which does not have an assigned "
 "template!"
 msgstr ""
 
-#: includes/include.con_edit_form.php:929
+#: includes/include.con_edit_form.php:942
 msgid "Summary"
 msgstr ""
 
-#: includes/include.con_edit_form.php:1035
+#: includes/include.con_edit_form.php:1048
 msgid "Please fill in the start date and/or the end date!"
 msgstr ""
 
@@ -3934,6 +3934,13 @@ msgstr ""
 msgid "Template name"
 msgstr ""
 
+#: includes/include.html_tpl_edit_form.php:30
+msgid ""
+"Currently only files with the extension html are displayed in the menu. If "
+"you create files with a different extension, they will not be shown on the "
+"left side!"
+msgstr ""
+
 #: includes/include.html_tpl_history.php:50 includes/include.js_history.php:48
 #: includes/include.lay_history.php:40 includes/include.mod_history.php:43
 #: includes/include.style_history.php:46
@@ -3987,6 +3994,13 @@ msgstr ""
 msgid ""
 "You can find many information and a community forum on the <a href=\"http://"
 "forum.contenido.org\" target=\"_blank\">CONTENIDO Portal</a>"
+msgstr ""
+
+#: includes/include.js_edit_form.php:30
+msgid ""
+"Currently only files with the extension js are displayed in the menu. If you "
+"create files with a different extension, they will not be shown on the left "
+"side!"
 msgstr ""
 
 #: includes/include.js_history.php:173 includes/include.js_history.php:181
@@ -4616,7 +4630,7 @@ msgstr ""
 #: includes/include.mycontenido.tasks.edit.php:54
 #: includes/include.todo.popup.php:57 includes/include.upl_edit.php:232
 #: templates/standard/template.con_edit_form.html:178
-#: templates/standard/template.con_edit_form.html:421
+#: templates/standard/template.con_edit_form.html:407
 #: templates/standard/template.log_main.html:46
 #: templates/standard/template.log_main.html:99
 msgid "End date"
@@ -5088,6 +5102,13 @@ msgstr ""
 #: includes/include.str_overview.php:939
 #, php-format
 msgid "Cancel moving %s"
+msgstr ""
+
+#: includes/include.style_edit_form.php:30
+msgid ""
+"Currently only files with the extension css are displayed in the menu. If "
+"you create files with a different extension, they will not be shown on the "
+"left side!"
 msgstr ""
 
 #: includes/include.style_history.php:124
@@ -5625,7 +5646,7 @@ msgstr ""
 
 #: includes/include.upl_edit.php:77
 #: templates/standard/template.con_edit_form.html:157
-#: templates/standard/template.con_edit_form.html:418
+#: templates/standard/template.con_edit_form.html:404
 msgid "Time control"
 msgstr ""
 
@@ -5654,13 +5675,13 @@ msgstr ""
 
 #: includes/include.upl_edit.php:224
 #: templates/standard/template.con_edit_form.html:165
-#: templates/standard/template.con_edit_form.html:419
+#: templates/standard/template.con_edit_form.html:405
 msgid "Use time control"
 msgstr ""
 
 #: includes/include.upl_edit.php:229
 #: templates/standard/template.con_edit_form.html:171
-#: templates/standard/template.con_edit_form.html:420
+#: templates/standard/template.con_edit_form.html:406
 #: templates/standard/template.log_main.html:38
 #: templates/standard/template.log_main.html:98
 msgid "Start date"
@@ -5912,29 +5933,29 @@ msgid "Content administration"
 msgstr ""
 
 #: templates/standard/template.con_edit_form.html:188
-#: templates/standard/template.con_edit_form.html:422
+#: templates/standard/template.con_edit_form.html:408
 msgid "When expired, move to category"
 msgstr ""
 
 #: templates/standard/template.con_edit_form.html:197
-#: templates/standard/template.con_edit_form.html:423
+#: templates/standard/template.con_edit_form.html:409
 msgid "Make online after move"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:237
-msgid "For selected:"
-msgstr ""
-
-#: templates/standard/template.con_edit_form.html:424
+#: templates/standard/template.con_edit_form.html:410
 msgid "Synchronize this article to all selected languages"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:425
+#: templates/standard/template.con_edit_form.html:411
 msgid "Bring this article in the selected languages online"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:426
+#: templates/standard/template.con_edit_form.html:412
 msgid "Take this article in the selected languages offline"
+msgstr ""
+
+#: templates/standard/template.con_edit_form_sync.html:7
+msgid "For selected:"
 msgstr ""
 
 #: templates/standard/template.con_left_top.html:57
@@ -6961,6 +6982,10 @@ msgstr ""
 
 #: xml/system.xml:40
 msgid "Optional backend label"
+msgstr ""
+
+#: xml/system.xml:41
+msgid "Show only CSS/JS/HTML files at areas CSS/JS/HTML"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:23

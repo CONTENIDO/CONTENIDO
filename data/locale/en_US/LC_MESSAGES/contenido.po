@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-06 10:18+0200\n"
-"PO-Revision-Date: 2014-05-06 10:24+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2014-07-17 10:36+0200\n"
+"PO-Revision-Date: 2014-07-17 10:39+0100\n"
+"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n;trans;gettext\n"
 "X-Poedit-Basepath: ../../../../contenido\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.6.4\n"
 
 #: backend_search.php:321
 msgid "Thank you for saving this search from extinction!"
@@ -24,7 +24,7 @@ msgstr ""
 #: classes/content_types/class.content.type.linkeditor.php:306
 #: includes/include.con_art_overview.php:78
 #: includes/include.con_art_overview.php:701
-#: includes/include.con_edit_form.php:385
+#: includes/include.con_edit_form.php:409
 #: includes/include.stat_overview.php:87
 #: templates/standard/template.mycontenido_lastarticles.html:73
 #: templates/standard/template.mycontenido_lastarticles.html:113
@@ -197,9 +197,9 @@ msgstr ""
 
 #: classes/class.ajax.php:140
 #: classes/content_types/class.content.type.teaser.php:812
-#: includes/include.con_edit_form.php:811
-#: includes/include.grouprights_con.php:77
-#: includes/include.grouprights_str.php:78 includes/include.logs.php:267
+#: includes/include.con_edit_form.php:847
+#: includes/include.grouprights_con.php:78
+#: includes/include.grouprights_str.php:79 includes/include.logs.php:267
 #: includes/include.note.popup.php:72 includes/include.rights_con.php:79
 #: includes/include.rights_str.php:79
 #: templates/standard/template.mycontenido_lastarticles.html:74
@@ -673,24 +673,38 @@ msgid "xml_parser_create is available"
 msgstr ""
 
 #: classes/class.systemtest.php:317
-msgid "PHP mbstring extension is not loaded"
+msgid "The class SimpleXML is missing"
 msgstr ""
 
 #: classes/class.systemtest.php:317
+msgid ""
+"The SimpleXML class is missing. Make sure that the extension is installed "
+"and activated"
+msgstr ""
+
+#: classes/class.systemtest.php:317
+msgid "SimpleXML is available"
+msgstr ""
+
+#: classes/class.systemtest.php:318
+msgid "PHP mbstring extension is not loaded"
+msgstr ""
+
+#: classes/class.systemtest.php:318
 msgid ""
 "Since version 4.9.4 CONTENIDO requires the mbstring extension to be loaded "
 "and activated! Without it CONTENIDO won't work!"
 msgstr ""
 
-#: classes/class.systemtest.php:317
+#: classes/class.systemtest.php:318
 msgid "mbstring extension is loaded"
 msgstr ""
 
-#: classes/class.systemtest.php:322
+#: classes/class.systemtest.php:323
 msgid "Unable to check for a suitable image resizer"
 msgstr ""
 
-#: classes/class.systemtest.php:322
+#: classes/class.systemtest.php:323
 msgid ""
 "Setup has tried to check for a suitable image resizer (which is, for exampl, "
 "required for thumbnail creation), but was not able to clearly identify one. "
@@ -698,58 +712,58 @@ msgid ""
 "ImageMagick available."
 msgstr ""
 
-#: classes/class.systemtest.php:325
+#: classes/class.systemtest.php:326
 msgid "No suitable image resizer available"
 msgstr ""
 
-#: classes/class.systemtest.php:325
+#: classes/class.systemtest.php:326
 msgid ""
 "Setup checked your image resizing support, however, it was unable to find a "
 "suitable image resizer. Thumbnails won't work correctly or won't be looking "
 "good. Install the GD-Extension or ImageMagick"
 msgstr ""
 
-#: classes/class.systemtest.php:328
+#: classes/class.systemtest.php:329
 msgid "GD extension is available and usable to handle images"
 msgstr ""
 
-#: classes/class.systemtest.php:331
+#: classes/class.systemtest.php:332
 msgid "ImageMagick extension is available and usable to handle images"
 msgstr ""
 
-#: classes/class.systemtest.php:335
+#: classes/class.systemtest.php:336
 msgid "PHP iconv functions are not available."
 msgstr ""
 
-#: classes/class.systemtest.php:335
+#: classes/class.systemtest.php:336
 msgid ""
 "PHP has been compiled with the --without-iconv directive. CONTENIDO won't "
 "work without the iconv functions."
 msgstr ""
 
-#: classes/class.systemtest.php:335
+#: classes/class.systemtest.php:336
 msgid "iconv is available"
 msgstr ""
 
-#: classes/class.systemtest.php:340
+#: classes/class.systemtest.php:341
 msgid "Database connection works"
 msgstr ""
 
-#: classes/class.systemtest.php:343
+#: classes/class.systemtest.php:344
 msgid "MySQL is running in strict mode"
 msgstr ""
 
-#: classes/class.systemtest.php:343
+#: classes/class.systemtest.php:344
 msgid ""
 "MySQL is running in strict mode, CONTENIDO will not work with this mode. "
 "Please change your sql_mode!"
 msgstr ""
 
-#: classes/class.systemtest.php:346
+#: classes/class.systemtest.php:347
 msgid "MySQL database connect failed"
 msgstr ""
 
-#: classes/class.systemtest.php:346
+#: classes/class.systemtest.php:347
 #, php-format
 msgid ""
 "Setup was unable to connect to the MySQL Server (Server %s, Username %s). "
@@ -757,43 +771,43 @@ msgid ""
 "was: %s"
 msgstr ""
 
-#: classes/class.systemtest.php:350
+#: classes/class.systemtest.php:351
 msgid "Permission error"
 msgstr ""
 
-#: classes/class.systemtest.php:350
+#: classes/class.systemtest.php:351
 msgid ""
 "CONTENIDO doesn't have the necessary permissions to write all the files it "
 "needs. Please check your filesystem permissions."
 msgstr ""
 
-#: classes/class.systemtest.php:350
+#: classes/class.systemtest.php:351
 msgid "Filesystem checks"
 msgstr ""
 
-#: classes/class.systemtest.php:350
+#: classes/class.systemtest.php:351
 msgid "CONTENIDO has all the necessary permissions to read and write files"
 msgstr ""
 
-#: classes/class.systemtest.php:1190
+#: classes/class.systemtest.php:1191
 #, php-format
 msgid "Can't write %s"
 msgstr ""
 
-#: classes/class.systemtest.php:1191
+#: classes/class.systemtest.php:1192
 #, php-format
 msgid ""
 "Setup or CONTENIDO can't write to the file %s. Please change the file "
 "permissions to correct this problem."
 msgstr ""
 
-#: classes/class.systemtest.php:1199
+#: classes/class.systemtest.php:1200
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any file "
 "permissions."
 msgstr ""
 
-#: classes/class.systemtest.php:1202
+#: classes/class.systemtest.php:1203
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -801,7 +815,7 @@ msgid ""
 "environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: classes/class.systemtest.php:1207
+#: classes/class.systemtest.php:1208
 #, php-format
 msgid ""
 "Your web server and the owner of your files are identical. You need to "
@@ -809,7 +823,7 @@ msgid ""
 "file mask to %s or set the owner to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1212
+#: classes/class.systemtest.php:1213
 #, php-format
 msgid ""
 "Your web server's group and the group of your files are identical. You need "
@@ -817,7 +831,7 @@ msgid ""
 "file mask to %s or set the group to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1217
+#: classes/class.systemtest.php:1218
 #, php-format
 msgid ""
 "Your web server is not equal to the file owner, and is not in the "
@@ -827,13 +841,13 @@ msgid ""
 "others to allow writing the file."
 msgstr ""
 
-#: classes/class.systemtest.php:1227
+#: classes/class.systemtest.php:1228
 msgid ""
 "Your Server runs Windows. Due to that, Setup can't recommend any directory "
 "permissions."
 msgstr ""
 
-#: classes/class.systemtest.php:1230
+#: classes/class.systemtest.php:1231
 #, php-format
 msgid ""
 "Due to a very restrictive environment, an advise is not possible. Ask your "
@@ -841,7 +855,7 @@ msgid ""
 "especially in environments where ACL (Access Control Lists) are used."
 msgstr ""
 
-#: classes/class.systemtest.php:1235
+#: classes/class.systemtest.php:1236
 #, php-format
 msgid ""
 "Your web server and the owner of your directory are identical. You need to "
@@ -849,7 +863,7 @@ msgid ""
 "directory mask to %s or set the owner to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1240
+#: classes/class.systemtest.php:1241
 #, php-format
 msgid ""
 "Your web server's group and the group of your directory are identical. You "
@@ -857,7 +871,7 @@ msgid ""
 "the directory mask to %s or set the group to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1245
+#: classes/class.systemtest.php:1246
 #, php-format
 msgid ""
 "Your web server is not equal to the directory owner, and is not in the "
@@ -867,22 +881,22 @@ msgid ""
 "the others to allow writing the directory."
 msgstr ""
 
-#: classes/class.systemtest.php:1288 classes/class.systemtest.php:1292
+#: classes/class.systemtest.php:1289 classes/class.systemtest.php:1293
 #, php-format
 msgid "Could not find or create directory %s"
 msgstr ""
 
-#: classes/class.systemtest.php:1288 classes/class.systemtest.php:1292
+#: classes/class.systemtest.php:1289 classes/class.systemtest.php:1293
 msgid ""
 "The frontend expects certain directories to exist and it needs to be able to "
 "write to these directories."
 msgstr ""
 
-#: classes/class.systemtest.php:1387
+#: classes/class.systemtest.php:1392
 msgid "MySQL database already exists and seems to be filled"
 msgstr ""
 
-#: classes/class.systemtest.php:1387
+#: classes/class.systemtest.php:1392
 #, php-format
 msgid ""
 "Setup checked the database %s and found the table %s. It seems that you "
@@ -891,22 +905,22 @@ msgid ""
 "previous version, choose 'upgrade' as setup type."
 msgstr ""
 
-#: classes/class.systemtest.php:1394
+#: classes/class.systemtest.php:1399
 msgid "MySQL test table already exists in the database"
 msgstr ""
 
-#: classes/class.systemtest.php:1394
+#: classes/class.systemtest.php:1399
 #, php-format
 msgid ""
 "Setup checked the database %s and found the test table %s. Please remove it "
 "before continuing."
 msgstr ""
 
-#: classes/class.systemtest.php:1401 classes/class.systemtest.php:1422
+#: classes/class.systemtest.php:1406 classes/class.systemtest.php:1427
 msgid "Unable to create tables in the selected MySQL database"
 msgstr ""
 
-#: classes/class.systemtest.php:1401 classes/class.systemtest.php:1422
+#: classes/class.systemtest.php:1406 classes/class.systemtest.php:1427
 #, php-format
 msgid ""
 "Setup tried to create a test table in the database %s and failed. Please "
@@ -914,40 +928,40 @@ msgid ""
 "an administrator to do so."
 msgstr ""
 
-#: classes/class.systemtest.php:1408 classes/class.systemtest.php:1429
+#: classes/class.systemtest.php:1413 classes/class.systemtest.php:1434
 msgid "Unable to remove the test table"
 msgstr ""
 
-#: classes/class.systemtest.php:1408 classes/class.systemtest.php:1429
+#: classes/class.systemtest.php:1413 classes/class.systemtest.php:1434
 #, php-format
 msgid ""
 "Setup tried to remove the test table %s in the database %s and failed due to "
 "insufficient permissions. Please remove the table %s manually."
 msgstr ""
 
-#: classes/class.systemtest.php:1415
+#: classes/class.systemtest.php:1420
 msgid "Unable to create the database in the MySQL server"
 msgstr ""
 
-#: classes/class.systemtest.php:1415
+#: classes/class.systemtest.php:1420
 msgid ""
 "Setup tried to create a test database and failed. Please assign database "
 "creation permissions to the database user you entered, ask an administrator "
 "to do so, or create the database manually."
 msgstr ""
 
-#: classes/class.systemtest.php:1439 classes/class.systemtest.php:1449
+#: classes/class.systemtest.php:1444 classes/class.systemtest.php:1454
 msgid "No data found for the upgrade"
 msgstr ""
 
-#: classes/class.systemtest.php:1439
+#: classes/class.systemtest.php:1444
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
 "doesn't exist. You need to copy your database first before running setup."
 msgstr ""
 
-#: classes/class.systemtest.php:1449
+#: classes/class.systemtest.php:1454
 #, php-format
 msgid ""
 "Setup tried to locate the data for the upgrade, however, the database %s "
@@ -1086,7 +1100,7 @@ msgstr ""
 msgid "Your version of CONTENIDO is up to date!"
 msgstr ""
 
-#: classes/contenido/class.client.php:137
+#: classes/contenido/class.client.php:137 cronjobs/send_reminder.php:68
 msgid "No client"
 msgstr ""
 
@@ -1465,7 +1479,7 @@ msgid "Automatic"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:606
-#: includes/include.mycontenido.php:180 xml/navigation.xml:91
+#: includes/include.mycontenido.php:182 xml/navigation.xml:91
 msgid "Settings"
 msgstr ""
 
@@ -1745,8 +1759,9 @@ msgstr ""
 msgid "Client"
 msgstr ""
 
-#: classes/gui/class.navigation.php:343 includes/include.con_edit_form.php:113
-#: includes/include.logs.php:265 templates/standard/template.log_main.html:30
+#: classes/gui/class.navigation.php:343 includes/include.con_edit_form.php:114
+#: includes/include.logs.php:265 includes/include.system_sysvalues.php:225
+#: templates/standard/template.log_main.html:30
 #: templates/standard/template.symbolhelp.html:610 xml/system.xml:23
 msgid "User"
 msgstr ""
@@ -1800,13 +1815,13 @@ msgstr ""
 msgid "Last page"
 msgstr ""
 
-#: classes/gui/class.page.php:274 classes/gui/class.page.php:325
-#: classes/gui/class.page.php:759
+#: classes/gui/class.page.php:281 classes/gui/class.page.php:332
+#: classes/gui/class.page.php:776
 msgid "The requested resource"
 msgstr ""
 
-#: classes/gui/class.page.php:274 classes/gui/class.page.php:325
-#: classes/gui/class.page.php:759
+#: classes/gui/class.page.php:281 classes/gui/class.page.php:332
+#: classes/gui/class.page.php:776
 msgid "was not found"
 msgstr ""
 
@@ -1822,7 +1837,7 @@ msgstr ""
 #: includes/include.con_art_overview.php:968
 #: includes/include.con_content_list.php:78
 #: includes/include.con_content_list.php:104
-#: includes/include.con_edit_form.php:1032
+#: includes/include.con_edit_form.php:1068
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
 #: includes/include.grouprights_area.php:50
@@ -1838,7 +1853,7 @@ msgstr ""
 #: includes/include.lang_edit.php:88 includes/include.lay_edit_form.php:41
 #: includes/include.lay_edit_form.php:68 includes/include.lay_edit_form.php:76
 #: includes/include.lay_history.php:31 includes/include.logs.php:19
-#: includes/include.mail_log.php:24 includes/include.mod_script.php:56
+#: includes/include.mail_log.php:22 includes/include.mod_script.php:56
 #: includes/include.mod_style.php:53 includes/include.mod_template.php:44
 #: includes/include.rights_area.php:43 includes/include.rights_con.php:42
 #: includes/include.rights_create.php:21 includes/include.rights_lay.php:43
@@ -1956,19 +1971,17 @@ msgstr ""
 msgid "Please do not use short open tags. (Use <?php instead of <?)."
 msgstr ""
 
-#: classes/module/class.module.synchronizer.php:54
-#: classes/module/class.module.synchronizer.php:165
-#: classes/module/class.module.synchronizer.php:176
-#: classes/module/class.module.synchronizer.php:185
+#: classes/module/class.module.synchronizer.php:53
+#: classes/module/class.module.synchronizer.php:184
 #, php-format
 msgid "Module %s successfully synchronized"
 msgstr ""
 
-#: classes/module/class.module.synchronizer.php:195
+#: classes/module/class.module.synchronizer.php:189
 msgid "All modules are already synchronized"
 msgstr ""
 
-#: classes/module/class.module.synchronizer.php:222
+#: classes/module/class.module.synchronizer.php:217
 msgid "Can not create module"
 msgstr ""
 
@@ -2036,7 +2049,7 @@ msgstr ""
 
 #: classes/module/class.module.template.handler.php:495
 #: classes/module/class.module.template.handler.php:498
-#: includes/include.con_edit_form.php:121 includes/include.logs.php:266
+#: includes/include.con_edit_form.php:122 includes/include.logs.php:266
 #: includes/include.mail_log.php:88 includes/include.mail_log.php:218
 #: includes/include.systemsettings.php:72
 #: templates/standard/template.log_main.html:34
@@ -2141,7 +2154,7 @@ msgstr ""
 msgid "Note: This only affects the current history."
 msgstr ""
 
-#: cronjobs/send_reminder.php:74
+#: cronjobs/send_reminder.php:76
 #, php-format
 msgid ""
 "Hello %s,\n"
@@ -2157,35 +2170,35 @@ msgstr ""
 msgid "The given client's frontend directory (%s) is not a directory."
 msgstr ""
 
-#: includes/frontend/include.front_content.php:252
-#: includes/frontend/include.front_content.php:280
+#: includes/frontend/include.front_content.php:247
+#: includes/frontend/include.front_content.php:275
 msgid "No start article for this category"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:309
+#: includes/frontend/include.front_content.php:304
 msgid "Error page"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:310
+#: includes/frontend/include.front_content.php:305
 msgid "Error article/category not found!"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:360
-#: includes/include.con_edit_form.php:312
-#: includes/include.con_edit_form.php:316
+#: includes/frontend/include.front_content.php:355
+#: includes/include.con_edit_form.php:336
+#: includes/include.con_edit_form.php:340
 #: includes/include.con_meta_form.php:61 includes/include.con_meta_form.php:63
 #: includes/include.tplcfg_edit_form.php:41
 #, php-format
 msgid "Article is in use by %s (%s)"
 msgstr ""
 
-#: includes/frontend/include.front_content.php:397
+#: includes/frontend/include.front_content.php:392
 msgid ""
 "Editing is not possible because there is no template assigned to this "
 "category."
 msgstr ""
 
-#: includes/frontend/include.front_content.php:398
+#: includes/frontend/include.front_content.php:393
 msgid "FATAL ERROR"
 msgstr ""
 
@@ -2198,14 +2211,14 @@ msgstr ""
 msgid "Lost and found"
 msgstr ""
 
-#: includes/functions.con.php:1361 includes/functions.str.php:1110
+#: includes/functions.con.php:1364 includes/functions.str.php:1110
 #: includes/functions.tpl.php:344
 #, php-format
 msgid "%s (Copy)"
 msgstr ""
 
 #: includes/functions.general.php:1625
-#: templates/standard/template.con_content_list.html:118
+#: templates/standard/template.con_content_list.html:119
 msgid "You are here"
 msgstr ""
 
@@ -2306,8 +2319,8 @@ msgstr ""
 
 #: includes/functions.stat.php:285 includes/functions.stat.php:286
 #: includes/functions.stat.php:598 includes/functions.stat.php:599
-#: includes/include.grouprights_con.php:291
-#: includes/include.grouprights_str.php:297
+#: includes/include.grouprights_con.php:292
+#: includes/include.grouprights_str.php:298
 #: includes/include.rights_con.php:292 includes/include.rights_str.php:299
 #: includes/include.str_overview.php:136
 #: includes/include.upl_dirs_overview.php:36
@@ -2438,195 +2451,195 @@ msgstr ""
 msgid "Template name already exists"
 msgstr ""
 
-#: includes/functions.upl.php:673
+#: includes/functions.upl.php:676
 msgid "OpenOffice.org Presentation"
 msgstr ""
 
-#: includes/functions.upl.php:675
+#: includes/functions.upl.php:678
 msgid "OpenOffice.org Presentation Template"
 msgstr ""
 
-#: includes/functions.upl.php:677
+#: includes/functions.upl.php:680
 msgid "Microsoft PowerPoint Screen Presentation"
 msgstr ""
 
-#: includes/functions.upl.php:679 includes/functions.upl.php:683
+#: includes/functions.upl.php:682 includes/functions.upl.php:686
 msgid "Microsoft PowerPoint Presentation Template"
 msgstr ""
 
-#: includes/functions.upl.php:681
+#: includes/functions.upl.php:684
 msgid "KDE KPresenter Document"
 msgstr ""
 
-#: includes/functions.upl.php:687
+#: includes/functions.upl.php:690
 msgid "Microsoft Word Document or regular text file"
 msgstr ""
 
-#: includes/functions.upl.php:689
+#: includes/functions.upl.php:692
 msgid "Microsoft Word Template"
 msgstr ""
 
-#: includes/functions.upl.php:691
+#: includes/functions.upl.php:694
 msgid "OpenOffice.org Text Document"
 msgstr ""
 
-#: includes/functions.upl.php:693
+#: includes/functions.upl.php:696
 msgid "OpenOffice.org Text Document Template"
 msgstr ""
 
-#: includes/functions.upl.php:695
+#: includes/functions.upl.php:698
 msgid "StarOffice 5.0 Text Document"
 msgstr ""
 
-#: includes/functions.upl.php:697
+#: includes/functions.upl.php:700
 msgid "KDE KWord Document"
 msgstr ""
 
-#: includes/functions.upl.php:701
+#: includes/functions.upl.php:704
 msgid "Microsoft Excel Worksheet"
 msgstr ""
 
-#: includes/functions.upl.php:703
+#: includes/functions.upl.php:706
 msgid "OpenOffice.org Table"
 msgstr ""
 
-#: includes/functions.upl.php:705
+#: includes/functions.upl.php:708
 msgid "OpenOffice.org Table Template"
 msgstr ""
 
-#: includes/functions.upl.php:707
+#: includes/functions.upl.php:710
 msgid "Microsoft Excel File"
 msgstr ""
 
-#: includes/functions.upl.php:709
+#: includes/functions.upl.php:712
 msgid "Microsoft Excel Template"
 msgstr ""
 
-#: includes/functions.upl.php:711
+#: includes/functions.upl.php:714
 msgid "Comma Seperated Value File"
 msgstr ""
 
-#: includes/functions.upl.php:713
+#: includes/functions.upl.php:716
 msgid "KDE KSpread Document"
 msgstr ""
 
-#: includes/functions.upl.php:715
+#: includes/functions.upl.php:718
 msgid "StarOffice 5.0 Table"
 msgstr ""
 
-#: includes/functions.upl.php:719
+#: includes/functions.upl.php:722
 msgid "Plain Text"
 msgstr ""
 
-#: includes/functions.upl.php:721
+#: includes/functions.upl.php:724
 msgid "Rich Text Format"
 msgstr ""
 
-#: includes/functions.upl.php:725
+#: includes/functions.upl.php:728
 msgid "GIF Image"
 msgstr ""
 
-#: includes/functions.upl.php:727
+#: includes/functions.upl.php:730
 msgid "PNG Image"
 msgstr ""
 
-#: includes/functions.upl.php:729 includes/functions.upl.php:731
+#: includes/functions.upl.php:732 includes/functions.upl.php:734
 msgid "JPEG Image"
 msgstr ""
 
-#: includes/functions.upl.php:733
+#: includes/functions.upl.php:736
 msgid "TIFF Image"
 msgstr ""
 
-#: includes/functions.upl.php:735
+#: includes/functions.upl.php:738
 msgid "Adobe Photoshop Image"
 msgstr ""
 
-#: includes/functions.upl.php:739 includes/functions.upl.php:741
+#: includes/functions.upl.php:742 includes/functions.upl.php:744
 msgid "Hypertext Markup Language Document"
 msgstr ""
 
-#: includes/functions.upl.php:743
+#: includes/functions.upl.php:746
 msgid "Cascading Style Sheets"
 msgstr ""
 
-#: includes/functions.upl.php:747
+#: includes/functions.upl.php:750
 msgid "LHA Archive"
 msgstr ""
 
-#: includes/functions.upl.php:749
+#: includes/functions.upl.php:752
 msgid "RAR Archive"
 msgstr ""
 
-#: includes/functions.upl.php:751
+#: includes/functions.upl.php:754
 msgid "ARJ Archive"
 msgstr ""
 
-#: includes/functions.upl.php:753
+#: includes/functions.upl.php:756
 msgid "bz2-compressed File"
 msgstr ""
 
-#: includes/functions.upl.php:755
+#: includes/functions.upl.php:758
 msgid "bzip-compressed File"
 msgstr ""
 
-#: includes/functions.upl.php:757
+#: includes/functions.upl.php:760
 msgid "ZIP Archive"
 msgstr ""
 
-#: includes/functions.upl.php:759
+#: includes/functions.upl.php:762
 msgid "TAR Archive"
 msgstr ""
 
-#: includes/functions.upl.php:761
+#: includes/functions.upl.php:764
 msgid "GZ Compressed File"
 msgstr ""
 
-#: includes/functions.upl.php:765
+#: includes/functions.upl.php:768
 msgid "C Program Code"
 msgstr ""
 
-#: includes/functions.upl.php:769
+#: includes/functions.upl.php:772
 msgid "C++ Program Code"
 msgstr ""
 
-#: includes/functions.upl.php:772
+#: includes/functions.upl.php:775
 msgid "C or C++ Program Header"
 msgstr ""
 
-#: includes/functions.upl.php:776
+#: includes/functions.upl.php:779
 msgid "PHP Program Code"
 msgstr ""
 
-#: includes/functions.upl.php:778
+#: includes/functions.upl.php:781
 msgid "PHP Source File"
 msgstr ""
 
-#: includes/functions.upl.php:781
+#: includes/functions.upl.php:784
 msgid "Adobe Acrobat Portable Document"
 msgstr ""
 
-#: includes/functions.upl.php:785
+#: includes/functions.upl.php:788
 msgid "QuickTime Movie"
 msgstr ""
 
-#: includes/functions.upl.php:787
+#: includes/functions.upl.php:790
 msgid "avi Movie"
 msgstr ""
 
-#: includes/functions.upl.php:790
+#: includes/functions.upl.php:793
 msgid "MPEG Movie"
 msgstr ""
 
-#: includes/functions.upl.php:792
+#: includes/functions.upl.php:795
 msgid "Windows Media Video"
 msgstr ""
 
-#: includes/functions.upl.php:794
+#: includes/functions.upl.php:797
 msgid "MPEG-4 Movie"
 msgstr ""
 
-#: includes/functions.upl.php:797
+#: includes/functions.upl.php:800
 msgid "-File"
 msgstr ""
 
@@ -2703,7 +2716,7 @@ msgid "Add new variable"
 msgstr ""
 
 #: includes/include.client_artspec.php:60
-#: includes/include.con_edit_form.php:417
+#: includes/include.con_edit_form.php:441
 msgid "Article specification"
 msgstr ""
 
@@ -2727,7 +2740,7 @@ msgid "This is the default article specification"
 msgstr ""
 
 #: includes/include.client_artspec.php:141
-#: includes/include.con_edit_form.php:411
+#: includes/include.con_edit_form.php:435
 msgid "No article specifications found!"
 msgstr ""
 
@@ -2893,7 +2906,7 @@ msgid "not modified yet"
 msgstr ""
 
 #: includes/include.con_art_overview.php:312
-#: includes/include.con_edit_form.php:492
+#: includes/include.con_edit_form.php:516
 msgid "not yet published"
 msgstr ""
 
@@ -2929,7 +2942,7 @@ msgid "Copy article to the current language"
 msgstr ""
 
 #: includes/include.con_art_overview.php:511
-#: includes/include.con_edit_form.php:562
+#: includes/include.con_edit_form.php:586
 msgid "Start article"
 msgstr ""
 
@@ -2955,7 +2968,7 @@ msgid "Are you sure to delete the following article:<br><br><b>%s</b>"
 msgstr ""
 
 #: includes/include.con_art_overview.php:667
-#: includes/include.upl_files_overview.php:602
+#: includes/include.upl_files_overview.php:606
 msgid "Display properties"
 msgstr ""
 
@@ -3092,8 +3105,8 @@ msgid "Export"
 msgstr ""
 
 #: includes/include.con_content_list.php:496
-#: includes/include.con_edit_form.php:305
-#: includes/include.con_edit_form.php:306
+#: includes/include.con_edit_form.php:329
+#: includes/include.con_edit_form.php:330
 #: includes/include.con_meta_form.php:69 includes/include.con_meta_form.php:70
 #: includes/include.tplcfg_edit_form.php:112
 msgid "This article is currently frozen and can not be edited!"
@@ -3104,7 +3117,7 @@ msgstr ""
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 
-#: includes/include.con_edit_form.php:110
+#: includes/include.con_edit_form.php:111
 #: includes/include.con_translate.php:509 includes/include.lang_edit.php:175
 #: includes/include.lang_edit.php:177 includes/include.logs.php:263
 #: main.loginform.php:84 templates/standard/template.log_main.html:26
@@ -3112,19 +3125,19 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: includes/include.con_edit_form.php:117 includes/include.logs.php:264
+#: includes/include.con_edit_form.php:118 includes/include.logs.php:264
 #: includes/include.mail_log.php:86 includes/include.mail_log.php:181
 #: includes/include.stat_search_overview.php:35
 #: templates/standard/template.con_left_top_art_search.html:26
 msgid "Date"
 msgstr ""
 
-#: includes/include.con_edit_form.php:300
+#: includes/include.con_edit_form.php:324
 #: ../data/config/production/cfg_actions.inc.php:37
 msgid "Save article"
 msgstr ""
 
-#: includes/include.con_edit_form.php:388
+#: includes/include.con_edit_form.php:412
 #: includes/include.str_overview.php:495
 #: templates/standard/template.con_meta_edit_form.html:71
 #: templates/standard/template.str_overview.html:53
@@ -3133,39 +3146,39 @@ msgstr ""
 msgid "Alias"
 msgstr ""
 
-#: includes/include.con_edit_form.php:429
+#: includes/include.con_edit_form.php:453
 msgid "Article link"
 msgstr ""
 
-#: includes/include.con_edit_form.php:439
+#: includes/include.con_edit_form.php:463
 msgid "Select an entry to display link"
 msgstr ""
 
-#: includes/include.con_edit_form.php:440
+#: includes/include.con_edit_form.php:464
 msgid "Article only"
 msgstr ""
 
-#: includes/include.con_edit_form.php:441
+#: includes/include.con_edit_form.php:465
 msgid "Article with category"
 msgstr ""
 
-#: includes/include.con_edit_form.php:442
+#: includes/include.con_edit_form.php:466
 msgid "Article with category and language"
 msgstr ""
 
-#: includes/include.con_edit_form.php:443
+#: includes/include.con_edit_form.php:467
 msgid "Article with language"
 msgstr ""
 
-#: includes/include.con_edit_form.php:451
+#: includes/include.con_edit_form.php:475
 msgid "open"
 msgstr ""
 
-#: includes/include.con_edit_form.php:457
+#: includes/include.con_edit_form.php:481
 msgid "Author (Creator)"
 msgstr ""
 
-#: includes/include.con_edit_form.php:479
+#: includes/include.con_edit_form.php:503
 #: includes/include.frontend.left_top.php:43
 #: includes/include.frontend.user_menu.php:44
 #: includes/include.mycontenido.tasks.php:249
@@ -3176,108 +3189,108 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
-#: includes/include.con_edit_form.php:483
+#: includes/include.con_edit_form.php:507
 msgid "Author (Modifier)"
 msgstr ""
 
-#: includes/include.con_edit_form.php:484
+#: includes/include.con_edit_form.php:508
 msgid "Last modified"
 msgstr ""
 
-#: includes/include.con_edit_form.php:488
+#: includes/include.con_edit_form.php:512
 msgid "Publishing date"
 msgstr ""
 
-#: includes/include.con_edit_form.php:496
+#: includes/include.con_edit_form.php:520
 msgid "Publisher"
 msgstr ""
 
-#: includes/include.con_edit_form.php:507
+#: includes/include.con_edit_form.php:531
 msgid "Redirect"
 msgstr ""
 
-#: includes/include.con_edit_form.php:518
+#: includes/include.con_edit_form.php:542
 msgid "Status code"
 msgstr ""
 
-#: includes/include.con_edit_form.php:521
+#: includes/include.con_edit_form.php:545
 msgid "Articlelog"
 msgstr ""
 
-#: includes/include.con_edit_form.php:530
+#: includes/include.con_edit_form.php:554
 msgid "Temporary"
 msgstr ""
 
-#: includes/include.con_edit_form.php:531
+#: includes/include.con_edit_form.php:555
 msgid "Permanently"
 msgstr ""
 
-#: includes/include.con_edit_form.php:540
+#: includes/include.con_edit_form.php:564
 msgid "New window"
 msgstr ""
 
-#: includes/include.con_edit_form.php:568
+#: includes/include.con_edit_form.php:592
 msgid "Searchable"
 msgstr ""
 
-#: includes/include.con_edit_form.php:572
+#: includes/include.con_edit_form.php:596
 msgid "Sort key"
 msgstr ""
 
-#: includes/include.con_edit_form.php:605
+#: includes/include.con_edit_form.php:628
 msgid ""
 "The called article is synchronized. If you want to move it please make sure "
 "that the target category of this article exist in all languages."
 msgstr ""
 
-#: includes/include.con_edit_form.php:618
+#: includes/include.con_edit_form.php:641
 #: ../data/config/production/cfg_actions.inc.php:38
 msgid "Remove assignments"
 msgstr ""
 
-#: includes/include.con_edit_form.php:620
+#: includes/include.con_edit_form.php:643
 msgid "Remove multiple category assignments"
 msgstr ""
 
-#: includes/include.con_edit_form.php:621
+#: includes/include.con_edit_form.php:644
 msgid ""
 "Do you really want to remove the assignments to all categories except the "
 "current one?"
 msgstr ""
 
-#: includes/include.con_edit_form.php:725
+#: includes/include.con_edit_form.php:752
 msgid "Take the article in this language offline"
 msgstr ""
 
-#: includes/include.con_edit_form.php:725
+#: includes/include.con_edit_form.php:752
 msgid "Make the article in this language online"
 msgstr ""
 
-#: includes/include.con_edit_form.php:729
+#: includes/include.con_edit_form.php:756
 #, php-format
 msgid ""
 "There is no synchronized article in the language '%s' to take offline/bring "
 "online"
 msgstr ""
 
-#: includes/include.con_edit_form.php:734
+#: includes/include.con_edit_form.php:761
 #, php-format
 msgid "This article is synchronized to '%s'"
 msgstr ""
 
-#: includes/include.con_edit_form.php:734
+#: includes/include.con_edit_form.php:761
 #, php-format
 msgid "Synchronize this article to '%s'"
 msgstr ""
 
-#: includes/include.con_edit_form.php:738
+#: includes/include.con_edit_form.php:765
 #, php-format
 msgid ""
 "This article can't be synchronized to '%s' since the category '%s' does not "
 "exist in that language."
 msgstr ""
 
-#: includes/include.con_edit_form.php:751
+#: includes/include.con_edit_form.php:781
 msgid ""
 "In this menu you can change the synchronization settings of this article. "
 "You will find a list of all available languages and can copy this article to "
@@ -3285,17 +3298,17 @@ msgid ""
 "synchronized languages online or offline."
 msgstr ""
 
-#: includes/include.con_edit_form.php:783
+#: includes/include.con_edit_form.php:819
 msgid ""
 "You can not move an article into a category, which does not have an assigned "
 "template!"
 msgstr ""
 
-#: includes/include.con_edit_form.php:906
+#: includes/include.con_edit_form.php:942
 msgid "Summary"
 msgstr ""
 
-#: includes/include.con_edit_form.php:1012
+#: includes/include.con_edit_form.php:1048
 msgid "Please fill in the start date and/or the end date!"
 msgstr ""
 
@@ -3401,11 +3414,11 @@ msgid "New meta tag"
 msgstr ""
 
 #: includes/include.con_meta_form.php:303
-msgid "Meta Type"
+msgid "Field Type"
 msgstr ""
 
 #: includes/include.con_meta_form.php:307
-msgid "Field Type"
+msgid "Attribute content"
 msgstr ""
 
 #: includes/include.con_meta_form.php:311
@@ -3413,7 +3426,7 @@ msgid "Max Length"
 msgstr ""
 
 #: includes/include.con_meta_form.php:315
-msgid "Field Name"
+msgid "Meta Attribute"
 msgstr ""
 
 #: includes/include.con_str_overview.php:513
@@ -3488,7 +3501,7 @@ msgid "No template"
 msgstr ""
 
 #: includes/include.con_translate.php:579 includes/include.lay_overview.php:62
-#: includes/include.tpl_overview.php:67
+#: includes/include.tpl_overview.php:68
 msgid "Click for more information about usage"
 msgstr ""
 
@@ -3511,7 +3524,7 @@ msgid ""
 msgstr ""
 
 #: includes/include.frontend.group.subnav.php:24
-#: includes/include.mycontenido.php:177 xml/navigation.xml:11
+#: includes/include.mycontenido.php:179 xml/navigation.xml:11
 #: xml/navigation.xml:20 xml/navigation.xml:22 xml/navigation.xml:88
 msgid "Overview"
 msgstr ""
@@ -3774,10 +3787,10 @@ msgid "Current group doesn't have any rights to any client/language."
 msgstr ""
 
 #: includes/include.grouprights_area.php:91
-#: includes/include.grouprights_con.php:114
+#: includes/include.grouprights_con.php:115
 #: includes/include.grouprights_lay.php:110
 #: includes/include.grouprights_mod.php:112
-#: includes/include.grouprights_str.php:116
+#: includes/include.grouprights_str.php:117
 #: includes/include.grouprights_tpl.php:113
 #: includes/include.rights_area.php:84 includes/include.rights_con.php:117
 #: includes/include.rights_lay.php:107 includes/include.rights_mod.php:106
@@ -3785,22 +3798,22 @@ msgstr ""
 msgid "Check all"
 msgstr ""
 
-#: includes/include.grouprights_con.php:219
-#: includes/include.grouprights_str.php:227
+#: includes/include.grouprights_con.php:220
+#: includes/include.grouprights_str.php:228
 #: includes/include.rights_con.php:220 includes/include.rights_str.php:229
 msgid ""
 "Apply rights for this category to all categories on the same level or above"
 msgstr ""
 
-#: includes/include.grouprights_con.php:219
-#: includes/include.grouprights_str.php:227
+#: includes/include.grouprights_con.php:220
+#: includes/include.grouprights_str.php:228
 #: includes/include.rights_con.php:220 includes/include.rights_str.php:229
 msgid ""
 "Apply rights for this category to all categories below the current category"
 msgstr ""
 
-#: includes/include.grouprights_con.php:291
-#: includes/include.grouprights_str.php:297
+#: includes/include.grouprights_con.php:292
+#: includes/include.grouprights_str.php:298
 #: includes/include.rights_con.php:292 includes/include.rights_str.php:299
 #: includes/include.str_overview.php:141
 #: includes/include.upl_dirs_overview.php:39
@@ -3919,6 +3932,13 @@ msgstr ""
 msgid "Template name"
 msgstr ""
 
+#: includes/include.html_tpl_edit_form.php:30
+msgid ""
+"Currently only files with the extension html are displayed in the menu. If "
+"you create files with a different extension, they will not be shown on the "
+"left side!"
+msgstr ""
+
 #: includes/include.html_tpl_history.php:50 includes/include.js_history.php:48
 #: includes/include.lay_history.php:40 includes/include.mod_history.php:43
 #: includes/include.style_history.php:46
@@ -3972,6 +3992,13 @@ msgstr ""
 msgid ""
 "You can find many information and a community forum on the <a href=\"http://"
 "forum.contenido.org\" target=\"_blank\">CONTENIDO Portal</a>"
+msgstr ""
+
+#: includes/include.js_edit_form.php:30
+msgid ""
+"Currently only files with the extension js are displayed in the menu. If you "
+"create files with a different extension, they will not be shown on the left "
+"side!"
 msgstr ""
 
 #: includes/include.js_history.php:173 includes/include.js_history.php:181
@@ -4236,11 +4263,11 @@ msgstr ""
 msgid "No results"
 msgstr ""
 
-#: includes/include.mail_log.php:31
+#: includes/include.mail_log.php:30
 msgid "Mail logging is disabled!"
 msgstr ""
 
-#: includes/include.mail_log.php:57
+#: includes/include.mail_log.php:56
 msgid "No mails have been logged yet."
 msgstr ""
 
@@ -4279,7 +4306,7 @@ msgstr ""
 msgid "Body"
 msgstr ""
 
-#: includes/include.mail_log.php:225 includes/include.mail_log.php:333
+#: includes/include.mail_log.php:225 includes/include.mail_log.php:336
 msgid "Delete emails"
 msgstr ""
 
@@ -4309,16 +4336,16 @@ msgstr ""
 msgid "No item selected!"
 msgstr ""
 
-#: includes/include.mail_log.php:323 includes/include.mail_log.php:325
+#: includes/include.mail_log.php:326 includes/include.mail_log.php:328
 #: includes/include.upl_files_overview.php:462
 msgid "Flip Selection"
 msgstr ""
 
-#: includes/include.mail_log.php:331
+#: includes/include.mail_log.php:334
 msgid "Do you really want to delete the selected emails?"
 msgstr ""
 
-#: includes/include.mail_log.php:335
+#: includes/include.mail_log.php:338
 msgid "Apply to all selected emails:"
 msgstr ""
 
@@ -4544,45 +4571,45 @@ msgstr ""
 msgid "Current size"
 msgstr ""
 
-#: includes/include.mycontenido.php:83
+#: includes/include.mycontenido.php:85
 #, php-format
 msgid ""
 "The folder located at %s contains data but it's no longer needed. You can "
 "delete it."
 msgstr ""
 
-#: includes/include.mycontenido.php:89
+#: includes/include.mycontenido.php:91
 msgid "Welcome"
 msgstr ""
 
-#: includes/include.mycontenido.php:90
+#: includes/include.mycontenido.php:92
 msgid "Last login"
 msgstr ""
 
-#: includes/include.mycontenido.php:120
+#: includes/include.mycontenido.php:122
 msgid "Change client"
 msgstr ""
 
-#: includes/include.mycontenido.php:125
+#: includes/include.mycontenido.php:127
 msgid "No clients available!"
 msgstr ""
 
-#: includes/include.mycontenido.php:134
+#: includes/include.mycontenido.php:136
 #, php-format
 msgid "Client %s (%s) has no languages"
 msgstr ""
 
-#: includes/include.mycontenido.php:172
+#: includes/include.mycontenido.php:174
 #, php-format
 msgid "Reminder list: %d Task open"
 msgstr ""
 
-#: includes/include.mycontenido.php:174
+#: includes/include.mycontenido.php:176
 #, php-format
 msgid "Reminder list: %d Tasks open"
 msgstr ""
 
-#: includes/include.mycontenido.php:178
+#: includes/include.mycontenido.php:180
 #: includes/include.mycontenido_lastarticles.php:75
 #: templates/standard/template.con_left_top_art_search.html:66
 #: xml/navigation.xml:89
@@ -4601,7 +4628,7 @@ msgstr ""
 #: includes/include.mycontenido.tasks.edit.php:54
 #: includes/include.todo.popup.php:57 includes/include.upl_edit.php:232
 #: templates/standard/template.con_edit_form.html:178
-#: templates/standard/template.con_edit_form.html:417
+#: templates/standard/template.con_edit_form.html:407
 #: templates/standard/template.log_main.html:46
 #: templates/standard/template.log_main.html:99
 msgid "End date"
@@ -5075,6 +5102,13 @@ msgstr ""
 msgid "Cancel moving %s"
 msgstr ""
 
+#: includes/include.style_edit_form.php:30
+msgid ""
+"Currently only files with the extension css are displayed in the menu. If "
+"you create files with a different extension, they will not be shown on the "
+"left side!"
+msgstr ""
+
 #: includes/include.style_history.php:124
 msgid "Edit style"
 msgstr ""
@@ -5423,6 +5457,27 @@ msgstr ""
 msgid "language(s)"
 msgstr ""
 
+#: includes/include.system_sysvalues.php:219
+msgid "Database configuration"
+msgstr ""
+
+#: includes/include.system_sysvalues.php:223 xml/system.xml:22
+msgid "Host"
+msgstr ""
+
+#: includes/include.system_sysvalues.php:224
+msgid "Database"
+msgstr ""
+
+#: includes/include.system_sysvalues.php:226 main.loginform.php:93
+#: xml/system.xml:24
+msgid "Password"
+msgstr ""
+
+#: includes/include.system_sysvalues.php:227
+msgid "Charset"
+msgstr ""
+
 #: includes/include.todo.popup.php:38
 msgid "Add TODO item"
 msgstr ""
@@ -5501,21 +5556,21 @@ msgstr ""
 msgid "No permission to create templates"
 msgstr ""
 
-#: includes/include.tpl_overview.php:70
+#: includes/include.tpl_overview.php:71
 #: ../data/config/production/cfg_actions.inc.php:95
 msgid "Delete template"
 msgstr ""
 
-#: includes/include.tpl_overview.php:72
+#: includes/include.tpl_overview.php:73
 #, php-format
 msgid "Do you really want to delete the following template:<br><br>%s<br>"
 msgstr ""
 
-#: includes/include.tpl_overview.php:82
+#: includes/include.tpl_overview.php:83
 msgid "Template in use, cannot delete"
 msgstr ""
 
-#: includes/include.tpl_overview.php:93 includes/include.tpl_overview.php:94
+#: includes/include.tpl_overview.php:94 includes/include.tpl_overview.php:95
 #: templates/standard/template.symbolhelp.html:344
 #: templates/standard/template.symbolhelp.html:710
 #: ../data/config/production/cfg_actions.inc.php:98
@@ -5523,7 +5578,7 @@ msgstr ""
 msgid "Duplicate template"
 msgstr ""
 
-#: includes/include.tpl_overview.php:110
+#: includes/include.tpl_overview.php:111
 #, php-format
 msgid "The template '%s' is used for following categories and articles"
 msgstr ""
@@ -5589,7 +5644,7 @@ msgstr ""
 
 #: includes/include.upl_edit.php:77
 #: templates/standard/template.con_edit_form.html:157
-#: templates/standard/template.con_edit_form.html:414
+#: templates/standard/template.con_edit_form.html:404
 msgid "Time control"
 msgstr ""
 
@@ -5618,20 +5673,20 @@ msgstr ""
 
 #: includes/include.upl_edit.php:224
 #: templates/standard/template.con_edit_form.html:165
-#: templates/standard/template.con_edit_form.html:415
+#: templates/standard/template.con_edit_form.html:405
 msgid "Use time control"
 msgstr ""
 
 #: includes/include.upl_edit.php:229
 #: templates/standard/template.con_edit_form.html:171
-#: templates/standard/template.con_edit_form.html:416
+#: templates/standard/template.con_edit_form.html:406
 #: templates/standard/template.log_main.html:38
 #: templates/standard/template.log_main.html:98
 msgid "Start date"
 msgstr ""
 
 #: includes/include.upl_edit.php:274
-#: includes/include.upl_files_overview.php:729
+#: includes/include.upl_files_overview.php:733
 #: includes/include.upl_files_upload.php:64
 msgid "Directory not writable"
 msgstr ""
@@ -5681,17 +5736,17 @@ msgstr ""
 msgid "Files per Page"
 msgstr ""
 
-#: includes/include.upl_files_overview.php:649
+#: includes/include.upl_files_overview.php:653
 #: includes/include.upl_search_results.php:329
 msgid "Previous Page"
 msgstr ""
 
-#: includes/include.upl_files_overview.php:655
+#: includes/include.upl_files_overview.php:659
 #: includes/include.upl_search_results.php:335
 msgid "Next Page"
 msgstr ""
 
-#: includes/include.upl_files_overview.php:692
+#: includes/include.upl_files_overview.php:696
 #: includes/include.upl_search_results.php:373
 msgid "Page"
 msgstr ""
@@ -5745,10 +5800,6 @@ msgstr ""
 
 #: main.loginform.php:90
 msgid "Invalid login or password!"
-msgstr ""
-
-#: main.loginform.php:93 xml/system.xml:24
-msgid "Password"
 msgstr ""
 
 #: scripts/articleObject.js.php:247 scripts/langref.php:13
@@ -5875,38 +5926,34 @@ msgid "Apply to all selected articles"
 msgstr ""
 
 #: templates/standard/template.con_content_list.html:59
-#: templates/standard/template.con_content_list.html:119
+#: templates/standard/template.con_content_list.html:120
 msgid "Content administration"
 msgstr ""
 
 #: templates/standard/template.con_edit_form.html:188
-#: templates/standard/template.con_edit_form.html:418
+#: templates/standard/template.con_edit_form.html:408
 msgid "When expired, move to category"
 msgstr ""
 
 #: templates/standard/template.con_edit_form.html:197
-#: templates/standard/template.con_edit_form.html:419
+#: templates/standard/template.con_edit_form.html:409
 msgid "Make online after move"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:222
-msgid "Synchronize"
-msgstr ""
-
-#: templates/standard/template.con_edit_form.html:229
-msgid "For selected:"
-msgstr ""
-
-#: templates/standard/template.con_edit_form.html:420
+#: templates/standard/template.con_edit_form.html:410
 msgid "Synchronize this article to all selected languages"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:421
+#: templates/standard/template.con_edit_form.html:411
 msgid "Bring this article in the selected languages online"
 msgstr ""
 
-#: templates/standard/template.con_edit_form.html:422
+#: templates/standard/template.con_edit_form.html:412
 msgid "Take this article in the selected languages offline"
+msgstr ""
+
+#: templates/standard/template.con_edit_form_sync.html:7
+msgid "For selected:"
 msgstr ""
 
 #: templates/standard/template.con_left_top.html:57
@@ -6530,7 +6577,7 @@ msgid "Create user group"
 msgstr ""
 
 #: templates/standard/template.system_variables.html:15
-#: templates/standard/template.system_variables.html:52
+#: templates/standard/template.system_variables.html:53
 msgid "CONTENIDO error log"
 msgstr ""
 
@@ -6538,7 +6585,7 @@ msgstr ""
 msgid "clear error log"
 msgstr ""
 
-#: templates/standard/template.system_variables.html:53
+#: templates/standard/template.system_variables.html:54
 msgid "Clear error log"
 msgstr ""
 
@@ -6875,10 +6922,6 @@ msgstr ""
 msgid "Mailserver"
 msgstr ""
 
-#: xml/system.xml:22
-msgid "Host"
-msgstr ""
-
 #: xml/system.xml:25
 msgid "Encryption (empty, ssl or tls)"
 msgstr ""
@@ -6937,6 +6980,10 @@ msgstr ""
 
 #: xml/system.xml:40
 msgid "Optional backend label"
+msgstr ""
+
+#: xml/system.xml:41
+msgid "Show only CSS/JS/HTML files at areas CSS/JS/HTML"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:23
