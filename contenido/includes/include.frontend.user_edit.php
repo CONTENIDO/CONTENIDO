@@ -243,7 +243,9 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
     }
 }
 
-if (isset($form)) {
-	$page->render();
+if (!isset($form)) {
+	$page->abortRendering();
 }
+
+$page->render();
 ?>
