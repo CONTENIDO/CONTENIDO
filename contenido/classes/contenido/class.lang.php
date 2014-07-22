@@ -77,8 +77,12 @@ class cApiLanguageCollection extends ItemCollection {
         $lang = (int) $lang;
         $client = (int) $client;
 
+        if ($item === false) {
+            return false;
+        }
+
         $clientsLanguageColl = new cApiClientLanguageCollection();
-        $clientsLanguageColl->select('idlang = ' . $lang);
+        $clientsLanguageColl->select('idlang = ' . $item->get("idlang"));
         if (($clientsLang = $clientsLanguageColl->next()) !== false) {
             if ($client != $clientsLang->get('idclient')) {
                 $item = $this->nextAccessible();
