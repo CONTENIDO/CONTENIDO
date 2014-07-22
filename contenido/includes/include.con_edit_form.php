@@ -186,29 +186,6 @@ if ($action == "con_newart" && $newart != true) {
 $disabled = '';
 
 if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat)) {
-    $sql = "SELECT
-                *
-            FROM
-                " . $cfg["tab"]["cat_art"] . "
-            WHERE
-                idart = " . cSecurity::toInteger($idart) . "
-                AND idcat = " . cSecurity::toInteger($idcat);
-    $db->query($sql);
-    $db->nextRecord();
-
-    $tmp_cat_art = $db->f("idcatart");
-
-    $sql = "SELECT
-                *
-            FROM
-                " . $cfg["tab"]["art_lang"] . "
-            WHERE
-                idart = " . cSecurity::toInteger($idart) . "
-                AND idlang = " . cSecurity::toInteger($lang);
-    $db->query($sql);
-    $db->nextRecord();
-
-    $tmp_is_start = isStartArticle($db->f("idartlang"), $idcat, $lang);
 
     // apply settings from the synchronization menu
     // take single articles online or offline
@@ -271,6 +248,31 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             }
         }
     }
+
+
+    $sql = "SELECT
+                *
+            FROM
+                " . $cfg["tab"]["cat_art"] . "
+            WHERE
+                idart = " . cSecurity::toInteger($idart) . "
+                AND idcat = " . cSecurity::toInteger($idcat);
+    $db->query($sql);
+    $db->nextRecord();
+
+    $tmp_cat_art = $db->f("idcatart");
+
+    $sql = "SELECT
+                *
+            FROM
+                " . $cfg["tab"]["art_lang"] . "
+            WHERE
+                idart = " . cSecurity::toInteger($idart) . "
+                AND idlang = " . cSecurity::toInteger($lang);
+    $db->query($sql);
+    $db->nextRecord();
+
+    $tmp_is_start = isStartArticle($db->f("idartlang"), $idcat, $lang);
 
     if ($db->f("created")) {
 
