@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-23 13:29+0200\n"
+"POT-Creation-Date: 2014-07-23 15:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,7 +62,7 @@ msgstr ""
 #: backend_search.php:513 classes/class.ajax.php:156
 #: classes/content_types/class.content.type.teaser.php:814
 #: includes/include.con_art_overview.php:77
-#: includes/include.con_subnav.php:113 includes/include.logs.php:268
+#: includes/include.con_subnav.php:120 includes/include.logs.php:268
 #: templates/standard/template.symbolhelp.html:18
 #: templates/standard/template.symbolhelp.html:100
 #: templates/standard/template.symbolhelp.html:653
@@ -7031,15 +7031,15 @@ msgid "Help"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:43
-msgid "List content entries"
+msgid "List raw data entries"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:44
-msgid "Edit content list entry"
+msgid "Edit raw data entry"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:45
-msgid "Delete content list entry"
+msgid "Delete raw data entry"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:46

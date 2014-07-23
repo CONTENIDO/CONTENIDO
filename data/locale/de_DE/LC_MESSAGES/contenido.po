@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-23 13:29+0200\n"
-"PO-Revision-Date: 2014-07-23 13:30+0100\n"
+"POT-Creation-Date: 2014-07-23 15:17+0200\n"
+"PO-Revision-Date: 2014-07-23 15:18+0100\n"
 "Last-Translator: Mischa Holz <mischa.holz@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -61,7 +61,7 @@ msgstr "Suchergebnisse"
 #: backend_search.php:513 classes/class.ajax.php:156
 #: classes/content_types/class.content.type.teaser.php:814
 #: includes/include.con_art_overview.php:77
-#: includes/include.con_subnav.php:113 includes/include.logs.php:268
+#: includes/include.con_subnav.php:120 includes/include.logs.php:268
 #: templates/standard/template.symbolhelp.html:18
 #: templates/standard/template.symbolhelp.html:100
 #: templates/standard/template.symbolhelp.html:653
@@ -7391,16 +7391,16 @@ msgid "Help"
 msgstr "Hilfe"
 
 #: ../data/config/production/cfg_actions.inc.php:43
-msgid "List content entries"
-msgstr "Inhaltsliste anzeigen"
+msgid "List raw data entries"
+msgstr "Rohdaten Einträge anzeigen"
 
 #: ../data/config/production/cfg_actions.inc.php:44
-msgid "Edit content list entry"
-msgstr "Eintrag aus Inhaltsliste bearbeiten"
+msgid "Edit raw data entry"
+msgstr "Rohdaten Eintrag bearbeiten"
 
 #: ../data/config/production/cfg_actions.inc.php:45
-msgid "Delete content list entry"
-msgstr "Eintrag aus Inhaltsliste löschen"
+msgid "Delete raw data entry"
+msgstr "Rohdaten Eintrag löschen"
 
 #: ../data/config/production/cfg_actions.inc.php:46
 msgid "Edit SEO options"
@@ -7791,6 +7791,12 @@ msgstr "Falsche Zugriffsrechte"
 #: ../data/config/production/cfg_actions.inc.php:216
 msgid "User login"
 msgstr "Benutzer login"
+
+#~ msgid "Edit content list entry"
+#~ msgstr "Eintrag aus Inhaltsliste bearbeiten"
+
+#~ msgid "Delete content list entry"
+#~ msgstr "Eintrag aus Inhaltsliste löschen"
 
 #~ msgid ""
 #~ "Currently only files with the extension html are displayed in the menu. "
