@@ -52,7 +52,8 @@
         this.SELECTOR_FILELIST_EXTENSIONS = this.frameId + ' #filelist_extensions_' + this.id;
         this.SELECTOR_FILELIST_IGNORE_EXTENSIONS = this.frameId + ' #filelist_ignore_extensions_' + this.id;
         this.SELECTOR_SAVE_SETTINGS = this.frameId + ' .save_settings';
-        this.SELECTOR_DIRLIST = this.frameId + ' #directories #directoryList_' + this.id + ' li li div';
+        this.SELECTOR_DIRLIST = this.frameId + ' #directories #directoryList_' + this.id + ' li li div em a';
+        this.SELECTOR_DIRLIST_LINK = this.frameId + ' #directories #directoryList_' + this.id + ' li li div a';
         this.SELECTOR_DIRLIST_ACTIVE = this.frameId + ' #directories #directoryList_' + this.id + ' div[class="active"]';
         this.SELECTOR_DIRLIST_MANUAL = this.frameId + ' #manual #directoryList_' + this.id + '_manual li li div';
     }
@@ -251,7 +252,7 @@
         };
 
         // Manual directory list
-        $dirListManual = $(this.SELECTOR_DIRLIST_MANUAL),
+        $dirListManual = $(this.SELECTOR_DIRLIST_MANUAL);
         delegateSelector = this.SELECTOR_DIRLIST_MANUAL.replace(this.frameId + ' ', '');
         $dirListManual.removeClass('active');
         $(this.frameId).delegate(delegateSelector, 'click', function() {
@@ -274,11 +275,15 @@
         });
 
         // Directory list
+        delegateSelector = this.SELECTOR_DIRLIST_LINK.replace(this.frameId + ' ', '');
+        $(this.frameId).delegate(delegateSelector, 'click', function() {
+            $(this).parent().toggleClass('active');
+            return false;
+        });
+
         delegateSelector = this.SELECTOR_DIRLIST.replace(this.frameId + ' ', '');
         $(this.frameId).delegate(delegateSelector, 'click', function() {
-            _onDirectoryClick($(this));
-
-            $(this).toggleClass('active');
+            _onDirectoryClick($(this).parent().parent());
             return false;
         });
     };
