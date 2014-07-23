@@ -949,17 +949,35 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     public function generateFileSelect($directoryPath = '') {
         $htmlSelect = new cHTMLSelectElement('filelist_filename_' . $this->_id, '', 'filelist_filename_' . $this->_id, false, '', '', 'filelist_filename');
 
-        $i = 0;
+        $files = array();
         if ($directoryPath != '') {
             $handle = opendir($this->_uploadPath . $directoryPath);
             while (($entry = readdir($handle)) !== false) {
                 if (is_file($this->_uploadPath . $directoryPath . '/' . $entry)) {
-                    $htmlSelectOption = new cHTMLOptionElement($entry, $directoryPath . '/' . $entry);
-                    $htmlSelect->addOptionElement($i, $htmlSelectOption);
-                    $i++;
+                    $file = array();
+                    $file["name"] = $entry;
+                    $file["path"] = $directoryPath . "/" . $entry;
+                    $files[] = $file;
                 }
             }
             closedir($handle);
+        }
+
+        usort($files, function($a, $b) {
+            if($a["name"] < $b["name"]) {
+                return -1;
+            } else if($a["name"] > $b["name"]) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        $i = 0;
+        foreach($files as $file) {
+            $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
+            $htmlSelect->addOptionElement($i, $htmlSelectOption);
+            $i++;
         }
 
         if ($i === 0) {
