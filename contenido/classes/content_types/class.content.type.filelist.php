@@ -759,7 +759,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLLabel(i18n('Ignore selection (use all)'), 'filelist_ignore_extensions_' . $this->_id, 'filelist_ignore_extensions');
         $wrapperContent[] = new cHTMLCheckbox('filelist_ignore_extensions_' . $this->_id, '', 'filelist_ignore_extensions_' . $this->_id, ($this->_settings['filelist_ignore_extensions'] !== 'false'));
 
-        $wrapperContent[] = new cHTMLLabel(i18n('File size limit'), 'filelist_filesizefilter_from_' . $this->_id);
+        $wrapperContent[] = new cHTMLLabel(i18n('File size limit (in MiB)'), 'filelist_filesizefilter_from_' . $this->_id);
         $default = (!empty($this->_settings['filelist_filesizefilter_from'])) ? $this->_settings['filelist_filesizefilter_from'] : '0';
         $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_from_' . $this->_id, $default, '', '', 'filelist_filesizefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
