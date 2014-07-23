@@ -308,9 +308,11 @@ abstract class cContentTypeAbstract {
         }
 
         usort($directories, function($a, $b) {
-            if($a["name"] < $b["name"]) {
+            $a = mb_strtolower($a["name"]);
+            $b = mb_strtolower($b["name"]);
+            if($a < $b) {
                 return -1;
-            } else if($a["name"] > $b["name"]) {
+            } else if($a > $b) {
                 return 1;
             } else {
                 return 0;
