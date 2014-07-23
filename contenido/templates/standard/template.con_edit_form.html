@@ -56,7 +56,6 @@
 	div.syncList {
 		height: 210px;
 		width: 200px;
-		border: 1px solid #b3b3b3;
 		overflow: auto;
 	}
 
@@ -222,16 +221,10 @@
 
             <tr valign="top">
                 <td class="text_medium">{STRUKTUR}</td>
-                <td colspan="3" class="text_medium">
-                	<table class="borderless" style="width: 100%; height: 100%; margin: 0;">
-                		<tr>
-                			<td style="padding: 0;">
-                				{STRUKTUR-FIELD}
-                			</td>
-                			{SYNC}
-						</tr>
-                	</table>
+                <td class="text_medium" style="padding: 0;" colspan="{STRUCTURE_COLSPAN}">
+                    {STRUKTUR-FIELD}
                 </td>
+                {SYNC}
             </tr>
 
             <tr valign="top">

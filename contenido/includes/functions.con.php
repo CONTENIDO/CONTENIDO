@@ -458,8 +458,9 @@ function conMakeArticleIndex($idartlang, $idart) {
  *
  * @param int $idart Article Id
  * @param int $lang Language Id
+ * @param int $online optional, if 0 the article will be offline, if 1 article will be online
  */
-function conMakeOnline($idart, $lang) {
+function conMakeOnline($idart, $lang, $online = -1) {
     $auth = cRegistry::getAuth();
 
     $artLang = new cApiArticleLanguage();
@@ -468,7 +469,9 @@ function conMakeOnline($idart, $lang) {
     }
 
     // Reverse current value
-    $online = ($artLang->get('online') == 0)? 1 : 0;
+    if($online === -1) {
+        $online = ($artLang->get('online') == 0)? 1 : 0;
+    }
 
     $artLang->set('online', $online);
 
