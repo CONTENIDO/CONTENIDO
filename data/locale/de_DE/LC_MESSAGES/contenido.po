@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-23 15:17+0200\n"
-"PO-Revision-Date: 2014-07-24 15:19+0100\n"
+"PO-Revision-Date: 2014-07-24 15:37+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -5788,7 +5788,7 @@ msgstr "Sprache(n)"
 
 #: includes/include.system_sysvalues.php:219
 msgid "Database configuration"
-msgstr "Datenbank Konfiguration"
+msgstr "Datenbank-Konfiguration"
 
 #: includes/include.system_sysvalues.php:223 xml/system.xml:22
 msgid "Host"

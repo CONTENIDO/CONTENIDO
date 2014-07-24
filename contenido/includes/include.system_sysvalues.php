@@ -223,13 +223,12 @@ $readableName = array(
     "host" => i18n("Host"),
     "database" => i18n("Database"),
     "user" => i18n("User"),
-    "password" => i18n("Password"),
     "charset" => i18n("Charset")
 );
 
 foreach($cfg['db']['connection'] as $key => $value) {
-    if($key == "password") {
-        $value = "*********";
+    if($key == "password") { // Skip password
+        continue;
     }
     $oTpl2->set("d", "NAME", $readableName[$key]);
     $oTpl2->set("d", "VALUE", $value);
