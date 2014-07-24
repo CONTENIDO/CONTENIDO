@@ -36,7 +36,7 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h) {
     }
 
     $div = new cHTMLDiv($text, "text_medium", "idElement14");
-    $div->appenStyleDefinition("border", "1px solid #e8e8ee");
+    $div->appendStyleDefinition("border", "1px solid #e8e8ee");
     $div->appendStyleDefinition("position", "absolute");
     $div->appendStyleDefinition("top", $x . "px");
     $div->appendStyleDefinition("left", $y . "px");
