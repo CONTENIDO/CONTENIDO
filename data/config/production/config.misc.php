@@ -410,3 +410,19 @@ $cfg['system_log']['number_of_lines'] = 100;
 
 // Searched file extensions
 $cfg['system_log']['file_extensions'] = array('txt', 'log');
+
+/* Search index settings
+ * -----------------------------------------------------------------------------
+ */
+
+// Excluded content types
+$cfg['search_index']['excluded_content_types'] = array(
+	'linktarget',
+	'link',
+	'img',
+	'date',
+	'teaser',
+	'filelist',
+	'imgeditor',
+	'linkeditor'
+);

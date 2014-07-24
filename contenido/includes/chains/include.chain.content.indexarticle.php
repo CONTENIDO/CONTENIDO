@@ -25,7 +25,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *            idart, idartlang
  */
 function cecIndexArticle(array $articleIds) {
-    global $db;
+
+    $cfg = cRegistry::getConfig();
+    $db = cRegistry::getDb();
 
     // Indexing an article depends on the complete content with all content
     // types, i.e it can not by differentiated by specific content types.
@@ -33,13 +35,7 @@ function cecIndexArticle(array $articleIds) {
     $aContent = conGetContentFromArticle($articleIds['idartlang']);
 
     // cms types to be excluded from indexing
-    // @todo Make this configurable!
-    $aOptions = array(
-        'img',
-        'link',
-        'linktarget',
-        'swf'
-    );
+    $aOptions = $cfg['search_index']['excluded_content_types'];
 
     // start indexing
     $index = new cSearchIndex($db);

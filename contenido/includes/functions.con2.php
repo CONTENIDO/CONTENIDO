@@ -140,16 +140,18 @@ function conSetMetaValue($idartlang, $idmetatype, $value) {
  * (re)generate keywords for all articles of a given client (with specified language)
  * @param int $client Client
  * @param int $lang Language of a client
+ * @deprecated 2014-07-24 - Not used anymore
  */
 function conGenerateKeywords($client, $lang) {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     static $oDB = NULL;
     if (!isset($oDB)) {
         $oDB = cRegistry::getDb();
     }
 
-    $options = array('img', 'link', 'linktarget', 'swf'); // cms types to be excluded from indexing
+    // cms types to be excluded from indexing
+    $options = $cfg['search_index']['excluded_content_types'];
 
     $sql = 'SELECT a.idart, b.idartlang FROM ' . $cfg['tab']['art'] . ' AS a, ' . $cfg['tab']['art_lang'] . ' AS b
             WHERE a.idart=b.idart AND a.idclient=' . (int) $client . ' AND b.idlang=' . (int) $lang;
