@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-23 15:17+0200\n"
+"POT-Creation-Date: 2014-07-30 12:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,7 +62,7 @@ msgstr ""
 #: backend_search.php:513 classes/class.ajax.php:156
 #: classes/content_types/class.content.type.teaser.php:814
 #: includes/include.con_art_overview.php:77
-#: includes/include.con_subnav.php:120 includes/include.logs.php:268
+#: includes/include.con_subnav.php:113 includes/include.logs.php:268
 #: templates/standard/template.symbolhelp.html:18
 #: templates/standard/template.symbolhelp.html:100
 #: templates/standard/template.symbolhelp.html:653
@@ -1361,12 +1361,10 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: classes/content_types/class.content.type.filelist.php:966
-#: classes/content_types/class.content.type.filelist.php:967
-#: classes/content_types/class.content.type.imgeditor.php:591
-#: classes/content_types/class.content.type.imgeditor.php:592
-#: classes/content_types/class.content.type.linkeditor.php:698
-#: classes/content_types/class.content.type.linkeditor.php:699
+#: classes/content_types/class.content.type.filelist.php:986
+#: classes/content_types/class.content.type.filelist.php:987
+#: classes/content_types/class.content.type.imgeditor.php:602
+#: classes/content_types/class.content.type.imgeditor.php:603
 #: includes/include.upl_search_results.php:305
 msgid "No files found"
 msgstr ""
@@ -2224,6 +2222,11 @@ msgstr ""
 msgid "You are here"
 msgstr ""
 
+#: includes/functions.general.php:1655
+#, php-format
+msgid "Unsynchronized category (%s)"
+msgstr ""
+
 #: includes/functions.lang.php:73
 msgid ""
 "Could not set the language-ID in the file 'config.php'. Please set the "
@@ -2939,7 +2942,7 @@ msgstr ""
 
 #: includes/include.con_art_overview.php:433
 #: includes/include.con_art_overview.php:764
-#: templates/standard/template.con_art_overview.html:359
+#: templates/standard/template.con_art_overview.html:363
 msgid "Copy article to the current language"
 msgstr ""
 
@@ -2984,27 +2987,27 @@ msgid "Click on a row to select an article for editing"
 msgstr ""
 
 #: includes/include.con_art_overview.php:752
-#: templates/standard/template.con_art_overview.html:355
+#: templates/standard/template.con_art_overview.html:359
 msgid "Set articles online"
 msgstr ""
 
 #: includes/include.con_art_overview.php:755
-#: templates/standard/template.con_art_overview.html:356
+#: templates/standard/template.con_art_overview.html:360
 msgid "Set articles offline"
 msgstr ""
 
 #: includes/include.con_art_overview.php:758
-#: templates/standard/template.con_art_overview.html:357
+#: templates/standard/template.con_art_overview.html:361
 msgid "Freeze articles"
 msgstr ""
 
 #: includes/include.con_art_overview.php:761
-#: templates/standard/template.con_art_overview.html:358
+#: templates/standard/template.con_art_overview.html:362
 msgid "Unfreeze articles"
 msgstr ""
 
 #: includes/include.con_art_overview.php:767
-#: templates/standard/template.con_art_overview.html:360
+#: templates/standard/template.con_art_overview.html:364
 msgid "Delete articles"
 msgstr ""
 
@@ -5460,12 +5463,7 @@ msgstr ""
 msgid "Database"
 msgstr ""
 
-#: includes/include.system_sysvalues.php:226 main.loginform.php:93
-#: xml/system.xml:24
-msgid "Password"
-msgstr ""
-
-#: includes/include.system_sysvalues.php:227
+#: includes/include.system_sysvalues.php:226
 msgid "Charset"
 msgstr ""
 
@@ -5793,6 +5791,10 @@ msgstr ""
 msgid "Invalid login or password!"
 msgstr ""
 
+#: main.loginform.php:93 xml/system.xml:24
+msgid "Password"
+msgstr ""
+
 #: scripts/articleObject.js.php:247 scripts/langref.php:13
 msgid "Overview cannot be displayed"
 msgstr ""
@@ -5906,13 +5908,13 @@ msgstr ""
 
 #: templates/standard/template.con_art_overview.html:71
 #: templates/standard/template.con_art_overview.html:107
-#: templates/standard/template.con_art_overview.html:353
+#: templates/standard/template.con_art_overview.html:357
 msgid "Flip selection"
 msgstr ""
 
 #: templates/standard/template.con_art_overview.html:73
 #: templates/standard/template.con_art_overview.html:109
-#: templates/standard/template.con_art_overview.html:354
+#: templates/standard/template.con_art_overview.html:358
 msgid "Apply to all selected articles"
 msgstr ""
 
@@ -6572,7 +6574,7 @@ msgid "Create user group"
 msgstr ""
 
 #: templates/standard/template.system_variables.html:15
-#: templates/standard/template.system_variables.html:53
+#: templates/standard/template.system_variables.html:54
 msgid "CONTENIDO error log"
 msgstr ""
 
@@ -6580,7 +6582,7 @@ msgstr ""
 msgid "clear error log"
 msgstr ""
 
-#: templates/standard/template.system_variables.html:54
+#: templates/standard/template.system_variables.html:55
 msgid "Clear error log"
 msgstr ""
 

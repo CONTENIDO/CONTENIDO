@@ -1627,13 +1627,14 @@ function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = fa
 
     $helper = cCategoryHelper::getInstance();
     $categories = $helper->getCategoryPath(cRegistry::getCategoryId(), 1);
+    $catIds = array_reverse($helper->getParentCategoryIds(cRegistry::getCategoryId()));
+    $catIds[] = cRegistry::getCategoryId();
     $catCount = count($categories);
     $tplCfg = new cApiTemplateConfiguration();
     $sess = cRegistry::getSession();
     $cfg = cRegistry::getConfig();
     $lang = cRegistry::getLanguageId();
     $idart = cRegistry::getArticleId();
-
 
     for ($i = 0; $i < $catCount; $i++) {
         $idcat_tpl = 0;
@@ -1648,8 +1649,16 @@ function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = fa
         }
 
         $linkUrl = $sess->url(cRegistry::getBackendUrl() . "main.php?area=con&frame=4&idcat=$idcat_bread&idtpl=$idcat_tpl&syncoptions=$syncoptions&contenido=1");
+
+        $disabled = false;
+        if(!$categories[$i]->isLoaded() && $syncoptions > 0) {
+            $idcat_name = sprintf(i18n("Unsynchronized category (%s)"), $catIds[$i]);
+            $linkUrl = "#";
+            $disabled = true;
+        }
         $tplBread->set('d', 'LINK', $linkUrl);
         $tplBread->set('d', 'NAME', $idcat_name);
+        $tplBread->set('d', 'DISABLED', $disabled ? 'disabled' : '');
 
         $sepArrow = '';
         if ($i < $catCount - 1) {

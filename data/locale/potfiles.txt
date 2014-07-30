@@ -233,6 +233,10 @@
 ./classes/module/class.module.search.php
 ./classes/module/class.module.synchronizer.php
 ./classes/module/class.module.template.handler.php
+./classes/search/class.search.base.abstract.php
+./classes/search/class.search.index.php
+./classes/search/class.search.php
+./classes/search/class.search.result.php
 ./classes/swiftmailer/lib/classes/Swift/Attachment.php
 ./classes/swiftmailer/lib/classes/Swift/ByteStream/AbstractFilterableInputStream.php
 ./classes/swiftmailer/lib/classes/Swift/ByteStream/ArrayByteStream.php
