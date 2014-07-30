@@ -203,6 +203,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
         }
 
+        if (strpos($this->_layoutCode, '{META}') !== false) {
+            $this->_layoutCode = cString::iReplaceOnce('{META}', $this->_processCodeMetaTags(), $this->_layoutCode);
+        } else {
+            $this->_layoutCode = cString::iReplaceOnce('</head>', $this->_processCodeMetaTags() . '</head>', $this->_layoutCode);
+        }
+
         if ($this->_feDebugOptions['general_information']) {
             $debugPrefix = '';
 
@@ -358,8 +364,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             }
         }
 
-        // add meta tags
-        $this->_layoutCode = cString::iReplaceOnce('</head>', $sMetatags . '</head>', $this->_layoutCode);
+        return $sMetatags;
     }
 
     /**
