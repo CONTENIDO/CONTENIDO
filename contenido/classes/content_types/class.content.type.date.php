@@ -123,7 +123,7 @@ class cContentTypeDate extends cContentTypeAbstract {
     }
 
     /**
-     * Returns the PHP style format string
+     * Returns the full PHP style format string
      *
      * @return string
      */
@@ -138,6 +138,28 @@ class cContentTypeDate extends cContentTypeAbstract {
                 $format = implode(' ', $decoded_array);
             } else {
                 $format = '';
+            }
+        }
+
+        return $format;
+    }
+
+    /**
+     * Returns only the time portion of the PHP style format string
+     *
+     * @return string
+     */
+    public function getTimeFormat() {
+        $format = $this->_settings['date_format'];
+
+        if (empty($format)) {
+            $format = '';
+        } else {
+            $decoded_array = json_decode($format, true);
+            if (is_array($decoded_array)) {
+                return $decoded_array['timeFormat'];
+            } else {
+                return '';
             }
         }
 
