@@ -134,4 +134,17 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         return;
     }
 
+
+    public function isLoggedIn() {
+        $authInfo = $this->getAuthInfo();
+
+        if(isset($authInfo['uid'])) {
+            $user = new cApiUser($authInfo['uid']);
+            $frontendUser = new cApiFrontendUser($authInfo['uid']);
+
+            return $user->get('user_id') != '' || $frontendUser->get('idfrontenduser') != '';
+        } else {
+            return false;
+        }
+    }
 }

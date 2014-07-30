@@ -168,4 +168,17 @@ class cAuthHandlerBackend extends cAuthHandlerAbstract {
         $saveLoginTime = true;
     }
 
+
+    public function isLoggedIn() {
+        $authInfo = $this->getAuthInfo();
+
+        if(isset($authInfo['uid'])) {
+            $user = new cApiUser($authInfo['uid']);
+
+            return $user->get('user_id') != '';
+        } else {
+            return false;
+        }
+    }
+
 }
