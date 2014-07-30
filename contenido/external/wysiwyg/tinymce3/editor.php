@@ -27,6 +27,10 @@ if (isset($type)) {
     $editor_name = 'content';
 }
 
+// we are in backendedit mode at this point, so set some variables to reflect that
+$edit = true;
+$contenido = 1;
+
 // if editor is called from any include.CMS_*.html file use available content from $a_content
 if ($a_content[$type][$typenr]) {
     $editor_content = $a_content[$type][$typenr];
