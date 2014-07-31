@@ -673,4 +673,20 @@ class cRegistry {
     public static function isTrackingAllowed() {
         return (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] != 1) || !isset($_SERVER['HTTP_DNT']);
     }
+	
+	/**
+	* Returns the actual encoding (standard: utf-8)
+	*
+	* @return string name of encoding
+	* @return boolean false if no language founded
+	 */
+	public static function getEncoding() {
+	
+		$apiLanguage = new cApiLanguage(self::getLanguageId());
+		if ($apiLanguage->isLoaded()) {
+			return trim($apiLanguage->get('encoding'));
+		}
+
+		return false;
+	}
 }

@@ -93,4 +93,12 @@ $cfg['db'] = array(
     'enableProfiling' => false,    // (bool) Flag to enable profiling
 );
 
+/* Section 3: UTF-8 flag
+ * ----------------------------
+ *
+ * Setting for UTF-8 flag
+ *
+ * @since	CONTENIDO version 4.9.5
+ */
+{CON_UTF8}
 ?>

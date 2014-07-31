@@ -32,6 +32,10 @@ if (function_exists('conHtmlSpecialChars') == false) {
     function conHtmlSpecialChars($value, $flags = '', $encoding = '') {
         $isPhp54 = conPhp54Check();
 
+		if ($encoding == '') {
+			$encoding = cRegistry::getEncoding();
+		}
+		
         if ($isPhp54 == 1) {
             $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
             $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
@@ -48,6 +52,10 @@ if (function_exists('conHtmlEntityDecode') == false) {
 
     function conHtmlEntityDecode($value, $flags = '', $encoding = '') {
         $isPhp54 = conPhp54Check();
+
+		if ($encoding == '') {
+			$encoding = cRegistry::getEncoding();
+		}
 
         if ($isPhp54 == 1) {
             $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
@@ -66,6 +74,10 @@ if (function_exists('conHtmlentities') == false) {
     function conHtmlentities($value, $flags = '', $encoding = '') {
         $isPhp54 = conPhp54Check();
 
+		if ($encoding == '') {
+			$encoding = cRegistry::getEncoding();
+		}
+		
         if ($isPhp54 == 1) {
             $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
             $encoding = ($encoding == '') ? 'UTF-8' : $encoding;
@@ -82,7 +94,7 @@ if (function_exists('conGetHtmlTranslationTable') == false) {
 
     function conGetHtmlTranslationTable($table = '', $flags = '') {
         $isPhp54 = conPhp54Check();
-
+		
         if ($isPhp54 == 1) {
             $table = ($table == '') ? HTML_SPECIALCHARS : $table;
             $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;

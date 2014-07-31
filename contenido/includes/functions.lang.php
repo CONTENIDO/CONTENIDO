@@ -52,7 +52,7 @@ function langNewLanguage($name, $client) {
 
     // Add new language to database
     $oLangCol = new cApiLanguageCollection();
-    $oLangItem = $oLangCol->create($name, 0, 'iso-8859-1', 'ltr');
+    $oLangItem = $oLangCol->create($name, 0, 'utf-8', 'ltr');
     // Add new client language to database
     $oClientLangCol = new cApiClientLanguageCollection();
     $oClientLangItem = $oClientLangCol->create($client, $oLangItem->get('idlang'));
