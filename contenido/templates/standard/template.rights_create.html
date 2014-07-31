@@ -71,11 +71,12 @@
             buttonImageOnly: true,
             showOn: 'both',
             dateFormat: 'yy-mm-dd',
+			timeFormat: 'hh:mm:00',
             onClose: function(dateText, inst) {
                 var endDateTextBox = $('#valid_to');
                 if (endDateTextBox.val() != '') {
-                    var testStartDate = new Date(dateText),
-                        testEndDate = new Date(endDateTextBox.val());
+                    var testStartDate = new DateTime(dateText),
+                        testEndDate = new DateTime(endDateTextBox.val());
                     if (testStartDate > testEndDate) {
                         endDateTextBox.val(dateText);
                     }
@@ -91,18 +92,19 @@
             buttonImageOnly: true,
             showOn: 'both',
             dateFormat: 'yy-mm-dd',
+			timeFormat: 'hh:mm:00',
             onClose: function(dateText, inst) {
                 var startDateTextBox = $('#valid_from');
                 if (startDateTextBox.val() != '') {
-                    var testStartDate = new Date(startDateTextBox.val()),
-                        testEndDate = new Date(dateText);
+                    var testStartDate = new DateTime(startDateTextBox.val()),
+                        testEndDate = new DateTime(dateText);
                     if (testStartDate > testEndDate) {
                         startDateTextBox.val(dateText);
                     }
                 }
             },
             onSelect: function (selectedDateTime) {
-                var end = $(this).datetimepicker('getDate');
+                var end = $(this).datetimepicker('getDateTime');
             }
         });
     });

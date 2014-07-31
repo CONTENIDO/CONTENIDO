@@ -107,11 +107,12 @@ function deleteUser(iduser) {
             buttonImageOnly: true,
             showOn: 'both',
             dateFormat: 'yy-mm-dd',
+			timeFormat: 'hh:mm:00',
             onClose: function(dateText, inst) {
                 var endDateTextBox = $('#valid_to');
                 if (endDateTextBox.val() != '') {
-                    var testStartDate = new Date(dateText);
-                    var testEndDate = new Date(endDateTextBox.val());
+                    var testStartDate = new DateTime(dateText);
+                    var testEndDate = new DateTime(endDateTextBox.val());
                     if (testStartDate > testEndDate) {
                         endDateTextBox.val(dateText);
                     }
@@ -120,7 +121,7 @@ function deleteUser(iduser) {
                 }
             },
             onSelect: function(selectedDateTime) {
-                var start = $(this).datetimepicker('getDate');
+                var start = $(this).datetimepicker('getDateTime');
                 $('#valid_to').datetimepicker('option', 'minDate', new Date(start.getTime()));
             }
         });
@@ -130,11 +131,12 @@ function deleteUser(iduser) {
             buttonImageOnly: true,
             showOn: 'both',
             dateFormat: 'yy-mm-dd',
+			timeFormat: 'hh:mm:00',
             onClose: function(dateText, inst) {
                 var startDateTextBox = $('#valid_from');
                 if (startDateTextBox.val() != '') {
-                    var testStartDate = new Date(startDateTextBox.val());
-                    var testEndDate = new Date(dateText);
+                    var testStartDate = new DateTime(startDateTextBox.val());
+                    var testEndDate = new DateTime(dateText);
                     if (testStartDate > testEndDate) {
                         startDateTextBox.val(dateText);
                     }
@@ -143,8 +145,8 @@ function deleteUser(iduser) {
                 }
             },
             onSelect: function(selectedDateTime) {
-                var end = $(this).datetimepicker('getDate');
-                $('#valid_from').datetimepicker('option', 'maxDate', new Date(end.getTime()));
+                var end = $(this).datetimepicker('getDateTime');
+                $('#valid_from').datetimepicker('option', 'maxDate', new DateTime(end.getTime()));
             }
         });
     });
