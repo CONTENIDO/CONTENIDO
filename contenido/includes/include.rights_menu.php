@@ -59,7 +59,7 @@ if ($elemperpage == 0) {
 }
 
 $mlist = new cGuiMenu();
-$sToday = date('Y-m-d');
+$sToday = date('Y-m-d H:i:s');
 
 if (($elemperpage * $mPage) >= $iSumUsers + $elemperpage && $mPage != 1) {
     $_REQUEST["page"]--;

@@ -411,14 +411,14 @@ $tpl->next();
 
 // account active or not
 if ($sCurrentValueFrom == '') {
-    $sCurrentValueFrom = '0000-00-00';
+    $sCurrentValueFrom = '0000-00-00 00:00:00';
 }
 
-if (($sCurrentValueTo == '') || ($sCurrentValueTo == '0000-00-00')) {
-    $sCurrentValueTo = '9999-99-99';
+if (($sCurrentValueTo == '') || ($sCurrentValueTo == '0000-00-00 00:00:00')) {
+    $sCurrentValueTo = '9999-99-99 99:99:99';
 }
 
-$sCurrentDate = date('Y-m-d');
+$sCurrentDate = date('Y-m-d H:i:s');
 
 if (($sCurrentValueFrom > $sCurrentDate) || ($sCurrentValueTo < $sCurrentDate)) {
     $sAccountState = i18n("This account is currently inactive.");
