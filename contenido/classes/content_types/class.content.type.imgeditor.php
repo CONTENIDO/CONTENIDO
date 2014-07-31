@@ -107,6 +107,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
+		global $area;
+	
         // change attributes from the parent class and call the parent
         // constructor
         $this->_type = 'CMS_IMGEDITOR';
@@ -146,8 +148,12 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         // than one content type of the same type on the same page!)
         if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
             $this->_storeSettings();
-            $path = $this->_cfg['path']['contenido_fullhtml'] . "external/backendedit/front_content.php?area=con_editcontent&idart=$this->_idArt&idcat=$this->_idCat&changeview=edit&client=$this->_client";
-            header('location:' . $this->_session->url($path));
+			
+			// Redirector for area con_editcontent
+			if($area == "con_editcontent") {
+				$path = $this->_cfg['path']['contenido_fullhtml'] . "external/backendedit/front_content.php?area=con_editcontent&idart=$this->_idArt&idcat=$this->_idCat&changeview=edit&client=$this->_client";
+				header('location:' . $this->_session->url($path));
+			}
         }
     }
 
