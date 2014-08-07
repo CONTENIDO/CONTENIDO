@@ -131,7 +131,7 @@ class cApiStat extends Item {
     }
 	
 	/**
-     * Userdefined setter for action log fields.
+     * Userdefined setter for stat fields.
      *
      * @param string $name
      * @param mixed $value

@@ -151,7 +151,7 @@ class cApiLanguage extends Item {
     }
 
 	/**
-     * Userdefined setter for action log fields.
+     * Userdefined setter for lang fields.
      *
      * @param string $name
      * @param mixed $value

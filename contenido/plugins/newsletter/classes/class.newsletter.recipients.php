@@ -260,7 +260,7 @@ class NewsletterRecipient extends Item {
     }
 
 	/**
-     * Userdefined setter for action log fields.
+     * Userdefined setter for newsletter recipients fields.
      *
      * @param string $name
      * @param mixed $value

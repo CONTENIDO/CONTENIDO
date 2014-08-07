@@ -44,7 +44,7 @@ class cApiMailLogCollection extends ItemCollection {
      * @param string $created timestamp!
      * @param string $charset
      * @param string $contentType
-     * @return cApiMailLogCollection
+     * @return cApiMailLog
      */
     public function create($from, $to, $replyTo, $cc, $bcc, $subject, $body, $created, $charset, $contentType) {
         $item = $this->createNewItem();

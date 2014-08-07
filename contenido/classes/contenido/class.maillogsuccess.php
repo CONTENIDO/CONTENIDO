@@ -41,7 +41,7 @@ class cApiMailLogSuccessCollection extends ItemCollection {
      * @param array $recipient
      * @param bool $success
      * @param string $exception
-     * @return cApiMailLogSuccessCollection
+     * @return cApiMailLogSuccess
      */
     public function create($idmail, $recipient, $success, $exception) {
         $item = $this->createNewItem();

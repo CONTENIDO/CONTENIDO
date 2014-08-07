@@ -271,7 +271,7 @@ class cApiDbfsCollection extends ItemCollection {
         global $client, $auth;
 
         $client = (int) $client;
-        $item = null;
+        $item = false;
 
         if (substr($path, 0, 1) == '/') {
             $path = substr($path, 1);
@@ -285,7 +285,7 @@ class cApiDbfsCollection extends ItemCollection {
         }
 
         if ($file == '') {
-            return false;
+            return $item;
         }
 
         if ($file != '.') {
