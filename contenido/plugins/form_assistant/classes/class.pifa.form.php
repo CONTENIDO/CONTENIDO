@@ -789,7 +789,14 @@ class PifaForm extends Item {
             // append value
             foreach ($columns as $index => $columnName) {
                 $out .= 0 === $index? "\n" : ';';
-                $out .= utf8_decode($row[$columnName]);
+
+				// Fix for rows with leading zero
+				if (strpos($row[$columnName], '0') == 1) {
+					$out .= '=' . $row[$columnName];
+				} else {
+					$out .= $row[$columnName];
+				}
+
             }
         }
 
