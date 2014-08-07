@@ -679,10 +679,17 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
                 $deleteField = $deleteField->getHref();
             }
         }
-
+		
         // get and fill template
         $tpl = cSmartyBackend::getInstance(true);
 
+		// check for required email column at this form
+		if (!in_array('email', $this->_pifaForm->columnNames)) {
+			$cGuiNotification = new cGuiNotification();
+			$email_notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_WARNING, Pifa::i18n('Currently there is no field called "email" in this form!'));
+	        $tpl->assign('email_notification', $email_notification);
+		}
+		
         // translations
         $tpl->assign('trans', array(
             'legend' => Pifa::i18n('fields'),

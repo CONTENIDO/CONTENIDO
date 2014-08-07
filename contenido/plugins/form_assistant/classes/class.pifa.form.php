@@ -147,6 +147,12 @@ class PifaFormCollection extends ItemCollection {
  */
 class PifaForm extends Item {
 
+	/**
+	*
+	* @var array
+	*/
+	public $columnNames = array();
+
     /**
      * aggregated collection of this form fields
      *
@@ -209,6 +215,7 @@ class PifaForm extends Item {
         $col->query();
         $this->_fields = array();
         while (false !== $pifaField = $col->next()) {
+			$this->columnNames[] = $pifaField->get('column_name');
             $this->_fields[] = clone $pifaField;
         }
     }
