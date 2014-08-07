@@ -265,7 +265,7 @@ class cApiDbfsCollection extends ItemCollection {
      * @param string $path
      * @param string $mimetype
      * @param string $content
-     * @return  cApiDbfs|null
+     * @return  cApiDbfs|false
      */
     public function create($path, $mimetype = '', $content = '') {
         global $client, $auth;
@@ -285,7 +285,7 @@ class cApiDbfsCollection extends ItemCollection {
         }
 
         if ($file == '') {
-            return $item;
+            return false;
         }
 
         if ($file != '.') {

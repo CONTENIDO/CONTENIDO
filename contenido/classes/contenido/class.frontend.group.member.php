@@ -41,7 +41,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection {
      * @TODO Should return null in case of failure
      * @param int $idfrontendgroup specifies the frontend group
      * @param int $idfrontenduser specifies the frontend user
-     * @return cApiFrontendGroupMember|bool
+     * @return cApiFrontendGroupMember|false
      */
     public function create($idfrontendgroup, $idfrontenduser) {
         $this->select('idfrontendgroup = ' . (int) $idfrontendgroup . ' AND idfrontenduser = ' . (int) $idfrontenduser);

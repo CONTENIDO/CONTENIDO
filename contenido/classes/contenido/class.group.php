@@ -38,14 +38,14 @@ class cApiGroupCollection extends ItemCollection {
      * @param string $groupname
      * @param string $perms
      * @param string $description
-     * @return cApiGroup|NULL
+     * @return cApiGroup|false
      */
     public function create($groupname, $perms, $description) {
         $primaryKeyValue = md5($groupname);
 
         $item = $this->createNewItem($primaryKeyValue);
         if (!is_object($item)) {
-            return NULL;
+            return false;
         }
 
         $groupname = cApiGroup::prefixedGroupName($groupname);

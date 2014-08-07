@@ -52,7 +52,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * @param string $plugin Specifies the plugin
      * @param string $action Specifies the action
      * @param string $item Specifies the item
-     * @return cApiFrontendPermission NULL
+     * @return cApiFrontendPermission|false
      */
     public function create($group, $plugin, $action, $item) {
         global $lang;
@@ -67,9 +67,12 @@ class cApiFrontendPermissionCollection extends ItemCollection {
             $perm->set('item', $item);
 
             $perm->store();
-        }
 
-        return $perm;
+			return $perm;
+        } else {
+			return false;
+		}
+
     }
 
     /**

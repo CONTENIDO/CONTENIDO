@@ -37,12 +37,11 @@ class cApiMailLogSuccessCollection extends ItemCollection {
 
     /**
      * Creates a new mail log success entry with the given data.
-     * @FIXME  Should return the cApiMailLogSuccess item. All create() methods should return the created item, no special treatments!
      * @param int $idmail
      * @param array $recipient
      * @param bool $success
      * @param string $exception
-     * @return bool
+     * @return cApiMailLogSuccessCollection
      */
     public function create($idmail, $recipient, $success, $exception) {
         $item = $this->createNewItem();
@@ -54,7 +53,7 @@ class cApiMailLogSuccessCollection extends ItemCollection {
 
         $item->store();
 
-        return true;
+        return $item;
     }
 }
 

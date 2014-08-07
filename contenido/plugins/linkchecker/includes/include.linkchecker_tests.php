@@ -69,7 +69,7 @@ function checkLinks() {
             }
         }
 
-        // Check categorys
+        // Check categories
         $aFind = array();
         $sql = "SELECT idcat, startidartlang, visible FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat IN (" . $sSearch . ") AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
