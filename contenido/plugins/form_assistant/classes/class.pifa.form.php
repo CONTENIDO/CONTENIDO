@@ -147,12 +147,6 @@ class PifaFormCollection extends ItemCollection {
  */
 class PifaForm extends Item {
 
-	/**
-	*
-	* @var array
-	*/
-	public $columnNames = array();
-
     /**
      * aggregated collection of this form fields
      *
@@ -789,14 +783,7 @@ class PifaForm extends Item {
             // append value
             foreach ($columns as $index => $columnName) {
                 $out .= 0 === $index? "\n" : ';';
-
-				// Fix for rows with leading zero
-				if (strpos($row[$columnName], '0') == 1) {
-					$out .= '=' . $row[$columnName];
-				} else {
-					$out .= $row[$columnName];
-				}
-
+				$out .= $row[$columnName];
             }
         }
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO FormAsistant\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-07 12:39+0200\n"
-"PO-Revision-Date: 2014-08-07 12:40+0100\n"
+"POT-Creation-Date: 2014-08-07 15:23+0200\n"
+"PO-Revision-Date: 2014-08-07 15:30+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Marcus GnaÃ <marcus.gnass@4fb.de>\n"
 "Language: de_DE\n"
@@ -104,8 +104,8 @@ msgstr "Angabe zum Formular fehlt"
 
 #: classes/class.pifa.abstract_form_processor.php:76
 #: classes/class.pifa.form.php:619 classes/class.pifa.form.php:697
-#: classes/class.pifa.form.php:911 classes/class.pifa.form.php:976
-#: classes/class.pifa.form.php:1034 classes/class.pifa.form.php:1197
+#: classes/class.pifa.form.php:918 classes/class.pifa.form.php:983
+#: classes/class.pifa.form.php:1041 classes/class.pifa.form.php:1204
 #: classes/class.pifa.gui.php:248 classes/class.pifa.gui.php:587
 #: classes/class.pifa.gui.php:812 classes/class.pifa.gui.php:986
 #: extensions/class.pifa.default_form_module.php:42
@@ -217,7 +217,7 @@ msgid "EXTERNAL_OPTIONS_DATASOURCE"
 msgstr "externe Datenquelle für Optionen"
 
 #: classes/class.pifa.ajax_handler.php:283 classes/class.pifa.field.php:931
-#: classes/class.pifa.field.php:1027 classes/class.pifa.form.php:1038
+#: classes/class.pifa.field.php:1027 classes/class.pifa.form.php:1045
 msgid "FIELD_LOAD_ERROR"
 msgstr "Feld konnte nicht gelesen werden"
 
@@ -333,7 +333,7 @@ msgstr "unbekannt"
 msgid "FIELD_DELETE_ERROR"
 msgstr "Feld konnte nicht gelöscht werden"
 
-#: classes/class.pifa.field.php:1070 classes/class.pifa.form.php:1121
+#: classes/class.pifa.field.php:1070 classes/class.pifa.form.php:1128
 msgid "COLUMN_DROP_ERROR"
 msgstr "Spalte konnte nicht gelöscht werden"
 
@@ -393,44 +393,44 @@ msgstr "Nachricht fehlt"
 msgid "MISSING_TABLE_ERROR"
 msgstr "Datentabelle existiert nicht"
 
-#: classes/class.pifa.form.php:889
+#: classes/class.pifa.form.php:896
 msgid "TABLE_CHECK_ERROR"
 msgstr "Existenz der Datentabelle konnte nicht geprüft werden: '%s'"
 
-#: classes/class.pifa.form.php:918
+#: classes/class.pifa.form.php:925
 msgid "TABLE_EXISTS_ERROR"
 msgstr "Datentabelle '%s' existiert bereits"
 
-#: classes/class.pifa.form.php:957
+#: classes/class.pifa.form.php:964
 msgid "TABLE_CREATE_ERROR"
 msgstr "Datentabelle konnte nicht erstellt werden"
 
-#: classes/class.pifa.form.php:1075 classes/class.pifa.form.php:1107
-#: classes/class.pifa.form.php:1136
+#: classes/class.pifa.form.php:1082 classes/class.pifa.form.php:1114
+#: classes/class.pifa.form.php:1143
 msgid "COLUMN_EXISTS_ERROR"
 msgstr "Die Spalte '%s' existiert bereits."
 
-#: classes/class.pifa.form.php:1093
+#: classes/class.pifa.form.php:1100
 msgid "COLUMN_ALTER_ERROR"
 msgstr "Spalte konnte nicht geändert werden"
 
-#: classes/class.pifa.form.php:1153
+#: classes/class.pifa.form.php:1160
 msgid "COLUMN_ADD_ERROR"
 msgstr "Spalte konnte nicht erzeugt werden"
 
-#: classes/class.pifa.form.php:1173
+#: classes/class.pifa.form.php:1180
 msgid "COLUMNS_LOAD_ERROR"
 msgstr "Spalte konnte nicht gelesen werden"
 
-#: classes/class.pifa.form.php:1209
+#: classes/class.pifa.form.php:1216
 msgid "FORM_DELETE_ERROR"
 msgstr "Formular konnte nicht gelöscht werden"
 
-#: classes/class.pifa.form.php:1221
+#: classes/class.pifa.form.php:1228
 msgid "FIELDS_DELETE_ERROR"
 msgstr "Felder konnten nicht gelöscht werden"
 
-#: classes/class.pifa.form.php:1232
+#: classes/class.pifa.form.php:1239
 msgid "TABLE_DROP_ERROR"
 msgstr "Datentabelle konnte nicht gelöscht werden"
 
@@ -509,8 +509,13 @@ msgid "CONFIRM_DELETE_FIELD"
 msgstr "Wollen Sie dieses Feld wirklich löschen?"
 
 #: classes/class.pifa.gui.php:689
-msgid "Currently there is no field called \"email\" in this form!"
-msgstr "Derzeit ist kein Feld namens \"email\" in diesem Formular vorhanden!"
+msgid ""
+"Currently there is no field called \"email\" in this form. Sending mails - "
+"if configured - to the user which entered the form data may not work!"
+msgstr ""
+"Derzeit ist kein Feld namens \"email\" in diesem Formular vorhanden.<br /"
+">Sofern konfiguriert, wird der E-Mail-Versand durch Nutzer, die das Formular "
+"ausfüllen, eventuell nicht funktionieren!"
 
 #: classes/class.pifa.gui.php:695 includes/include.right_top.php:55
 msgid "fields"
@@ -658,6 +663,10 @@ msgstr "Formular importieren"
 #: includes/include.left_top.php:44
 msgid "IMPORT_FORM_NO_PERMISSIONS"
 msgstr "Formular importieren: keine Berechtigung"
+
+#~ msgid "Currently there is no field called \"email\" in this form!"
+#~ msgstr ""
+#~ "Derzeit ist kein Feld namens \"email\" in diesem Formular vorhanden!"
 
 #~ msgid "EMAIL_SEND_ERROR"
 #~ msgstr "Email konnte nicht versendet werden"
