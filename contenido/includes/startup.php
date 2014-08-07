@@ -198,7 +198,6 @@ cInclude('includes', 'functions.i18n.php');
 // Initialization of CEC
 $_cecRegistry = cApiCecRegistry::getInstance();
 $_cecRegistry->flushAddedChains();
-//require_once($cfg['path']['contenido_config'] . 'config.chains.php');
 
 // load all system chain inclusions if there are any
 if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.chains.load.php')) {
