@@ -70,13 +70,13 @@ class cApiCategoryArticleCollection extends ItemCollection {
 
         $item = $this->createNewItem();
 
-        $item->set('idcat', (int) $idcat);
-        $item->set('idart', (int) $idart);
-        $item->set('status', (int) $status);
-        $item->set('author', $this->escape($author));
-        $item->set('created', $this->escape($created));
-        $item->set('lastmodified', $this->escape($lastmodified));
-        $item->set('createcode', ($createcode == 1) ? 1 : 0);
+        $item->set('idcat', $idcat);
+        $item->set('idart', $idart);
+        $item->set('status', $status);
+        $item->set('author', $author);
+        $item->set('created', $created);
+        $item->set('lastmodified', $lastmodified);
+        $item->set('createcode', $createcode);
 
         $item->store();
         return $item;
@@ -273,4 +273,31 @@ class cApiCategoryArticle extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
+
+	/**
+     * Userdefined setter for category article fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idcat':
+                $value = (int) $value;
+                break;
+			case 'idart':
+                $value = (int) $value;
+                break;
+			case 'status':
+                $value = (int) $value;
+                break;
+			case 'createcode':
+                $value = ($value == 1) ? 1 : 0;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+
 }

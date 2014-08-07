@@ -44,9 +44,6 @@ class NewsletterRecipientGroupCollection extends ItemCollection {
     public function create($groupname, $defaultgroup = 0) {
         global $client, $lang;
 
-        $client = cSecurity::toInteger($client);
-        $lang = cSecurity::toInteger($lang);
-
         $group = new NewsletterRecipientGroup();
 
         // _arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
@@ -133,6 +130,26 @@ class NewsletterRecipientGroup extends Item {
         }
         return parent::store();
     }
+	
+	/**
+     * Userdefined setter for newsletter recipient group fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idclient':
+                $value = (int) $value;
+                break;
+			case 'idlang':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
 
 }
 
@@ -161,8 +178,6 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection {
      * @param $idrecipient int specifies the newsletter user
      */
     public function create($idrecipientgroup, $idrecipient) {
-        $idrecipientgroup = cSecurity::toInteger($idrecipientgroup);
-        $idrecipient = cSecurity::toInteger($idrecipient);
 
         $this->setWhere("idnewsgroup", $idrecipientgroup);
         $this->setWhere("idnewsrcp", $idrecipient);
@@ -281,5 +296,25 @@ class NewsletterRecipientGroupMember extends Item {
         }
     }
 
+	/**
+     * Userdefined setter for newsletter recipient group member fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idnewsgroup':
+                $value = (int) $value;
+                break;
+			case 'idnewsrcp':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+	
 }
 ?>

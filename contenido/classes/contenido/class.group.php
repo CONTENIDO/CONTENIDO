@@ -50,9 +50,9 @@ class cApiGroupCollection extends ItemCollection {
 
         $groupname = cApiGroup::prefixedGroupName($groupname);
 
-        $item->set('groupname', $this->escape($groupname));
-        $item->set('perms', $this->escape($perms));
-        $item->set('description', $this->escape($description));
+        $item->set('groupname', $groupname);
+        $item->set('perms', $perms);
+        $item->set('description', $description);
         $item->store();
 
         return $item;

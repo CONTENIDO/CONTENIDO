@@ -728,7 +728,6 @@ class cApiProperty extends Item {
      * @param bool $safe Flag to run filter on passed value
      * @throws cInvalidArgumentException if the field is too small for the given
      *         value
-     * @todo should return return value of overloaded method
      */
     public function setField($field, $value, $safe = true) {
         if (array_key_exists($field, $this->maximumLength)) {
@@ -737,7 +736,7 @@ class cApiProperty extends Item {
             }
         }
 
-        parent::setField($field, $value, $safe);
+        return parent::setField($field, $value, $safe);
     }
 
 }

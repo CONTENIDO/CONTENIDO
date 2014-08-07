@@ -45,8 +45,8 @@ class cApiClientLanguageCollection extends ItemCollection {
      */
     public function create($iClient, $iLang) {
         $oItem = $this->createNewItem();
-        $oItem->set('idclient', (int) $iClient, false);
-        $oItem->set('idlang', (int) $iLang, false);
+        $oItem->set('idclient', $iClient, false);
+        $oItem->set('idlang', $iLang, false);
         $oItem->store();
         return $oItem;
     }
@@ -318,4 +318,25 @@ class cApiClientLanguage extends Item {
         }
         return $this->_oPropertyCollection;
     }
+
+	/**
+     * Userdefined setter for clients lang fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idclient':
+                $value = (int) $value;
+                break;
+			case 'idlang':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+
 }

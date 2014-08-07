@@ -44,12 +44,6 @@ class cApiKeywordCollection extends ItemCollection {
     public function create($keyword, $exp = '', $auto, $self = '', $idlang) {
         $item = $this->createNewItem();
 
-        $keyword = cSecurity::escapeString($keyword);
-        $exp = cSecurity::escapeString($exp);
-        $auto = cSecurity::escapeString($auto);
-        $self = cSecurity::escapeString($self);
-        $idlang = cSecurity::toInteger($idlang);
-
         $item->set('keyword', $keyword);
         $item->set('exp', $exp);
         $item->set('auto', $auto);
@@ -87,6 +81,23 @@ class cApiKeyword extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
+    }
+
+	/**
+     * Userdefined setter for keyword fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+			case 'idlang':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
     }
 
 }

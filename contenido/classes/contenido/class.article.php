@@ -53,7 +53,7 @@ class cApiArticleCollection extends ItemCollection {
     public function create($idclient) {
         $item = $this->createNewItem();
 
-        $item->set('idclient', (int) $idclient);
+        $item->set('idclient', $idclient);
         $item->store();
 
         return $item;
@@ -118,4 +118,22 @@ class cApiArticle extends Item {
 
         return cUri::getInstance()->build($options);
     }
+
+	/**
+     * Userdefined setter for article fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idclient':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+
 }

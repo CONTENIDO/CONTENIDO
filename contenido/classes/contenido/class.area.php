@@ -48,10 +48,10 @@ class cApiAreaCollection extends ItemCollection {
         $item = $this->createNewItem();
 
         $item->set('parent_id', $parentid);
-        $item->set('name', $this->escape($name));
-        $item->set('relevant', (1 == $relevant) ? 1 : 0);
-        $item->set('online', (1 == $online) ? 1 : 0);
-        $item->set('menuless', (1 == $menuless) ? 1 : 0);
+        $item->set('name', $name);
+        $item->set('relevant', $relevant);
+        $item->set('online', $online);
+        $item->set('menuless', $menuless);
 
         $item->store();
 
@@ -157,4 +157,28 @@ class cApiArea extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
+
+	/**
+     * Userdefined setter for area fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'relevant':
+                $value = ($value == 1) ? 1 : 0;
+                break;
+			case 'online':
+                $value = ($value == 1) ? 1 : 0;
+                break;
+			case 'menuless':
+                $value = ($value == 1) ? 1 : 0;
+                break;			
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+
 }

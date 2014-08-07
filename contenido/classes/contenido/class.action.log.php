@@ -58,12 +58,12 @@ class cApiActionlogCollection extends ItemCollection {
             $logtimestamp = date('Y-m-d H:i:s');
         }
 
-        $item->set('user_id', $this->escape($userId));
-        $item->set('idclient', (int)$idclient);
-        $item->set('idlang', (int)$idlang);
-        $item->set('idaction', (int)$idaction);
-        $item->set('idcatart', (int)$idcatart);
-        $item->set('logtimestamp', $this->escape($logtimestamp));
+        $item->set('user_id', $userId);
+        $item->set('idclient', $idclient);
+        $item->set('idlang', $idlang);
+        $item->set('idaction', $idaction);
+        $item->set('idcatart', $idcatart);
+        $item->set('logtimestamp', $logtimestamp);
 
         $item->store();
 
@@ -93,4 +93,31 @@ class cApiActionlog extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
+
+	/**
+     * Userdefined setter for action log fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idclient':
+                $value = (int) $value;
+                break;
+			case 'idlang':
+                $value = (int) $value;
+                break;
+			case 'idaction':
+                $value = (int) $value;
+                break;
+			case 'idcatart':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+
 }

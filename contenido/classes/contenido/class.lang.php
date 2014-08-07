@@ -46,11 +46,11 @@ class cApiLanguageCollection extends ItemCollection {
 
         $item = $this->createNewItem();
 
-        $item->set('name', $this->escape($name), false);
-        $item->set('active', (int) $active, false);
-        $item->set('encoding', $this->escape($encoding), false);
-        $item->set('direction', $this->escape($direction), false);
-        $item->set('author', $this->escape($auth->auth['uid']), false);
+        $item->set('name', $name, false);
+        $item->set('active', $active, false);
+        $item->set('encoding', $encoding, false);
+        $item->set('direction', $direction, false);
+        $item->set('author', $auth->auth['uid'], false);
         $item->set('created', date('Y-m-d H:i:s'), false);
         $item->set('lastmodified', '0000-00-00 00:00:00', false);
         $item->store();
@@ -150,4 +150,21 @@ class cApiLanguage extends Item {
         return parent::store();
     }
 
+	/**
+     * Userdefined setter for action log fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'active':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+	
 }
