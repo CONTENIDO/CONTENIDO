@@ -56,13 +56,14 @@ class ExampleContenidoChainExecuteStaticMethodTest extends PHPUnit_Framework_Tes
     {
         $this->_obj = new stdClass();
         $this->_obj->counter = 0;
-        cApiCecRegistry::getInstance()->registerChain($this->_chain, 'object');
     }
 
 
-    protected function tearDown()
-    {
-        cApiCecRegistry::getInstance()->unregisterChain($this->_chain);
+    /**
+	* @deprecated 2014-08-07 - This method is deprecated and is not needed any longer
+	 */
+    public function tearDown() {
+        cDeprecated('This method is deprecated and is not needed any longer');
     }
 
 

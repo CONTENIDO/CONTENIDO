@@ -23,7 +23,7 @@ global $_cecRegistry, $cfg, $contenido, $area, $client, $load_client;
 ####################################################################################################
 /**
  * Chain Contenido.Frontend.CreateURL
- * This chain is called inside some scripts (front_content.php) to create urls.
+ * is called inside some scripts (front_content.php) to create urls.
  *
  * @todo: Is added to provide downwards compatibility for the amr plugin.
  *        There is no need for this chain since CONTENIDO 4.8.9 contains its own Url building feature.
@@ -35,7 +35,7 @@ global $_cecRegistry, $cfg, $contenido, $area, $client, $load_client;
  * Returns:
  * string     Returns modified URL
  */
-$_cecRegistry->registerChain("Contenido.Frontend.CreateURL", "string");
+
 ####################################################################################################
 // initialize client id
 if (isset($client) && (int) $client > 0) {
