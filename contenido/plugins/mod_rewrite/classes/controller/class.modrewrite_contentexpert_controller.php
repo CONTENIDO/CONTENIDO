@@ -71,7 +71,7 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
         $aInfo = $this->getProperty('htaccessInfo');
 
         if ($aInfo['has_htaccess']) {
-            $this->_oView->content_before = $this->_notifyBox('warning', 'Die .htaccess existiert bereits im Contenido-/ oder Mandantenverzeichnis, daher wird es nicht kopiert');
+            $this->_oView->content_before = $this->_notifyBox('warning', 'Die .htaccess existiert bereits im CONTENIDO-/oder Mandantenverzeichnis, daher wird es nicht kopiert');
             return;
         }
 
@@ -88,7 +88,7 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
         }
 
         if (!$result = @copy($source, $dest)) {
-            $this->_oView->content_before = $this->_notifyBox('warning', 'Die .htaccess konnte nicht von ' . $source . ' nach ' . $dest . ' kopiert werden!');
+            $this->_oView->content_before = $this->_notifyBox('warning', 'Die .htaccess-Datei konnte nicht von <strong>' . $source . '</strong> nach <strong>' . $dest . '</strong> kopiert werden!');
             return;
         }
 
