@@ -54,8 +54,6 @@ class cApiUploadCollection extends ItemCollection {
             global $client;
         }
 
-        $sDirname = $this->escape($sDirname);
-        $sFilename = $this->escape($sFilename);
         if (strstr(strtolower($_ENV['OS']), 'windows') === false) {
             // Unix style OS distinguish between lower and uppercase file names,
             // i.e. test.gif is not the same as Test.gif
@@ -63,7 +61,7 @@ class cApiUploadCollection extends ItemCollection {
         } else {
             // Windows OS doesn't distinguish between lower and uppercase file
             // names, i.e. test.gif is the same as Test.gif in file system
-            $this->select("dirname = '$sDirname' AND filename = '$sFilename' AND idclient = " . (int) $client);
+            $this->select("dirname = '" . $this->escape($sDirname) . "' AND filename = '" . $this->escape($sFilename) . "' AND idclient = " . cSecurity::toInteger($client));
         }
 
         if (($oItem = $this->next()) !== false) {

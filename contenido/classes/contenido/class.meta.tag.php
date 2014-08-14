@@ -98,7 +98,7 @@ class cApiMetaTag extends Item {
      * @return bool
      */
     public function updateMetaValue($sMetaValue) {
-        $this->set('metavalue', $this->escape($sMetaValue), false);
+        $this->set('metavalue', $sMetaValue, false);
         return $this->store();
     }
 

@@ -55,7 +55,7 @@ class cApiRightCollection extends ItemCollection {
     public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type) {
         $oItem = $this->createNewItem();
 
-        $oItem->set('user_id', $this->escape($userId));
+        $oItem->set('user_id', $userId);
         $oItem->set('idarea', $idarea);
         $oItem->set('idaction', $idaction);
         $oItem->set('idcat', $idcat);

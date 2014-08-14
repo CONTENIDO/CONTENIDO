@@ -46,12 +46,12 @@ class cApiInUseCollection extends ItemCollection {
      * @return cApiInUse|NULL
      */
     public function markInUse($type, $objectid, $session, $user) {
-        $type = $this->escape($type);
-        $objectid = $this->escape($objectid);
-        $session = $this->escape($session);
-        $user = $this->escape($user);
+        $type = $type;
+        $objectid = $objectid;
+        $session = $session;
+        $user = $user;
 
-        $this->select("type='" . $type . "' AND objectid='" . $objectid . "'");
+        $this->select("type='" . $this->escape($type) . "' AND objectid='" . $this->escape($objectid) . "'");
 
         $newitem = NULL;
         if (!$this->next()) {

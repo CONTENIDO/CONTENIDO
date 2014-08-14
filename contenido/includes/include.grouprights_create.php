@@ -34,7 +34,9 @@ if ($action == 'group_create') {
     if ($groupname == '') {
         $groupname = cApiGroup::PREFIX . i18n("New Group");
     }
+
     $groupname = stripcslashes(preg_replace("/\"/", "", ($groupname)));
+	$description = stripcslashes(preg_replace("/\"/", "", ($description)));
 
     $oGroup = new cApiGroup();
     $oGroup->loadGroupByGroupname($groupname);
@@ -69,13 +71,13 @@ $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Group name"));
-$oTxtName = new cHTMLTextbox('groupname', $groupname);
+$oTxtName = new cHTMLTextbox('groupname', $groupname, 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtName->render());
 
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Description"));
-$oTxtDesc = new cHTMLTextbox('description', stripcslashes(preg_replace("/\"/", "", ($description))), 40, 255);
+$oTxtDesc = new cHTMLTextbox('description', $description, 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtDesc->render());
 $tpl->next();
 

@@ -343,7 +343,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
         $sDirName = $oUpload->get('dirname');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
-        $oUpload->set('dirname', $oUpload->escape($sNewName2), false);
+        $oUpload->set('dirname', $sNewName2, false);
         $oUpload->store();
     }
 
@@ -355,7 +355,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
         $sDirName = $oProperty->get('itemid');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
-        $oProperty->set('itemid', $oProperty->escape($sNewName2), false);
+        $oProperty->set('itemid', $sNewName2, false);
         $oProperty->store();
     }
 }
