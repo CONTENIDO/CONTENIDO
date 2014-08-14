@@ -529,7 +529,12 @@ class cSearchIndex extends cSearchBaseAbstract {
      */
     public function checkCmsType($idtype) {
         $idtype = strtoupper($idtype);
-		($idtype == "CMS_RAW") ? return false : '');
+		
+		// Do not index CMS_RAW
+		if ($idtype == "CMS_RAW") {
+			return false;
+		}
+
         return (in_array($idtype, $this->_cmsOptions)) ? false : true;
     }
 
