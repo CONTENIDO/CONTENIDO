@@ -609,7 +609,7 @@ p, table, tr, td, th {
 
 .deletefunction {
     display: block;
-    background: transparent url(../images/users.gif) no-repeat scroll 0 2px;
+    background: transparent url(../images/delete.gif) no-repeat scroll 0 2px;
     height: 2em;
     line-height: 2em;
     padding-left: 20px;
