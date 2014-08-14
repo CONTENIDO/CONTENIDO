@@ -88,7 +88,7 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract {
         }
 
         if (!$result = @copy($source, $dest)) {
-            $this->_oView->content_before = $this->_notifyBox('warning', 'Die .htaccess-Datei konnte nicht von <strong>' . $source . '</strong> nach <strong>' . $dest . '</strong> kopiert werden!');
+            $this->_oView->content_before = $this->_notifyBox('warning', 'Die .htaccess-Datei konnte nicht von <strong>' . $source . '</strong> nach <strong>' . $dest . '</strong> kopiert werden! Ggfls. hat der Ziel-Ordner nicht die notwendigen Schreibrechte auf dem Webserver.');
             return;
         }
 
