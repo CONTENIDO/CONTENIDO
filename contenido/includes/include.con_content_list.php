@@ -37,7 +37,8 @@ $allowedContentTypes = array(
     "CMS_LINKTARGET",
     "CMS_LINKDESCR",
     "CMS_HEAD",
-    "CMS_DATE"
+    "CMS_DATE",
+	"CMS_RAW"
 );
 
 $page = new cGuiPage("con_content_list");
@@ -317,7 +318,8 @@ $sortID = array(
     "CMS_LINKEDITOR",
     "CMS_DATE",
     "CMS_TEASER",
-    "CMS_FILELIST"
+    "CMS_FILELIST",
+	"CMS_RAW"
 );
 
 $aIdtype = array();

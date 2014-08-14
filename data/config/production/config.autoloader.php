@@ -213,6 +213,7 @@ return array(
     'cContentTypeLinkdescr' => 'contenido/classes/content_types/class.content.type.linkdescr.php',
     'cContentTypeLinkeditor' => 'contenido/classes/content_types/class.content.type.linkeditor.php',
     'cContentTypeLinktarget' => 'contenido/classes/content_types/class.content.type.linktarget.php',
+	'cContentTypeRaw' => 'contenido/classes/content_types/class.content.type.raw.php',
     'cContentTypeTeaser' => 'contenido/classes/content_types/class.content.type.teaser.php',
     'cContentTypeText' => 'contenido/classes/content_types/class.content.type.text.php',
     'cDatatypeCurrency' => 'contenido/classes/datatypes/class.datatype.currency.php',
