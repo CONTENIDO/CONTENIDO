@@ -39,20 +39,15 @@ if ($action == 'group_create') {
     $oGroup = new cApiGroup();
     $oGroup->loadGroupByGroupname($groupname);
     if ($oGroup->isLoaded()) {
-        $sNotification = $notification->returnNotification("info", i18n("Groupname already exists"));
+        $sNotification = $notification->returnNotification("warning", sprintf(i18n("Group name <strong>%s</strong> already exists"), $groupname));
         $bError = true;
     } else {
         $oGroupColl = new cApiGroupCollection();
-        //$description = stripcslashes(preg_replace("/\"/", "", ($description)));
         $oGroup = $oGroupColl->create($groupname, implode(',', $aPerms), $description);
         if (is_object($oGroup)) {
-            // clean "old" values...
-            $sNotification = $notification->returnNotification("info", i18n("group created"));
-            $groupname   = '';
-            $aPerms      = array();
-            $description = '';
+            $sNotification = $notification->returnNotification("info", sprintf(i18n("Group <strong>%s</strong> created. To edit it, please choose group name at left frame!"), $groupname));
         } else {
-            $sNotification = $notification->returnNotification("info", i18n("Group couldn't created"));
+            $sNotification = $notification->returnNotification("error", i18n("Group couldn't created"));
             $bError = true;
         }
     }
@@ -74,12 +69,9 @@ $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Group name"));
-if ($action == 'group_create' && !$bError) {
-    $tpl->set('d', 'CATFIELD', cApiGroup::getUnprefixedGroupName($groupname));
-} else {
-    $oTxtName = new cHTMLTextbox('groupname', stripcslashes(preg_replace("/\"/", "", (cApiGroup::getUnprefixedGroupName($groupname)))), 40, 32);
-    $tpl->set('d', 'CATFIELD', $oTxtName->render());
-}
+$oTxtName = new cHTMLTextbox('groupname', $groupname);
+$tpl->set('d', 'CATFIELD', $oTxtName->render());
+
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Description"));
