@@ -311,18 +311,18 @@ class cSearch extends cSearchBaseAbstract {
 
         $tmp_searchwords = array();
         foreach ($this->_searchWords as $word) {
-            $wordEscaped = $this->db->escape($word);
+            $wordEscaped = cSecurity::escapeDB($word, $this->db);
             if ($this->_searchOption == 'like') {
                 $wordEscaped = "'%" . $wordEscaped . "%'";
             } elseif ($this->_searchOption == 'exact') {
                 $wordEscaped = "'" . $wordEscaped . "'";
             }
-            $tmp_searchwords[] = $word;
+            $tmp_searchwords[] = $wordEscaped;
         }
 
         if (count($this->_searchWordsExclude) > 0) {
             foreach ($this->_searchWordsExclude as $word) {
-                $wordEscaped = $this->db->escape($word);
+                $wordEscaped = cSecurity::escapeDB($word, $this->db);
                 if ($this->_searchOption == 'like') {
                     $wordEscaped = "'%" . $wordEscaped . "%'";
                 } elseif ($this->_searchOption == 'exact') {
