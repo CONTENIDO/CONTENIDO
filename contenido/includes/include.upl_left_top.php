@@ -100,7 +100,6 @@ if ($searchfor != '') {
         'right_bottom', $sess->url("main.php?area=upl_search_results&frame=4&searchfor=$searchfor&appendparameters=$appendparameters"),
         'right_top', $sess->url("main.php?area=$area&frame=3&appendparameters=$appendparameters")
     );
-	$refreshMenu = "\n" . 'if (Con.getFrame(\'left_bottom\')) { Con.getFrame(\'left_bottom\').refreshMenu(); }';
     $tpl->set('s', 'RESULT', $mstr);
 } else {
     $tpl->set('s', 'RESULT', '');
