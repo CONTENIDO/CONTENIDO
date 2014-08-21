@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 11:03+0200\n"
-"PO-Revision-Date: 2014-08-14 11:05+0100\n"
+"POT-Creation-Date: 2014-08-21 10:06+0200\n"
+"PO-Revision-Date: 2014-08-21 10:07+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -1558,10 +1558,10 @@ msgid "Selected file"
 msgstr "Gewählte Datei"
 
 #: classes/content_types/class.content.type.imgeditor.php:456
-#: includes/include.grouprights_create.php:77
+#: includes/include.grouprights_create.php:81
 #: includes/include.grouprights_lay.php:84
 #: includes/include.grouprights_mod.php:84
-#: includes/include.grouprights_overview.php:112
+#: includes/include.grouprights_overview.php:117
 #: includes/include.grouprights_tpl.php:80
 #: includes/include.html_tpl_history.php:158
 #: includes/include.js_history.php:155 includes/include.lay_edit_form.php:222
@@ -1726,7 +1726,7 @@ msgstr "Unbekannter Artikel"
 #: includes/include.clientsettings.php:91
 #: includes/include.client_artspec.php:71
 #: includes/include.con_translate.php:719
-#: includes/include.grouprights_overview.php:192
+#: includes/include.grouprights_overview.php:197
 #: includes/include.rights_overview.php:359
 #: includes/include.rights_overview.php:368
 #: includes/include.systemsettings.php:86
@@ -2007,8 +2007,8 @@ msgstr "wurde nicht gefunden"
 #: includes/include.client_artspec.php:38
 #: includes/include.client_artspec.php:46 includes/include.client_edit.php:18
 #: includes/include.con_art_overview.php:968
-#: includes/include.con_content_list.php:78
-#: includes/include.con_content_list.php:104
+#: includes/include.con_content_list.php:79
+#: includes/include.con_content_list.php:105
 #: includes/include.con_edit_form.php:1087
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
@@ -2122,8 +2122,8 @@ msgstr "Der Administrator hat das Editieren deaktiviert"
 
 #: classes/gui/class.sourceeditor.php:322 classes/gui/class.tableform.php:129
 #: includes/include.client_edit.php:186
-#: includes/include.grouprights_create.php:66
-#: includes/include.grouprights_overview.php:102
+#: includes/include.grouprights_create.php:70
+#: includes/include.grouprights_overview.php:107
 #: includes/include.rights_create.php:157
 #: includes/include.rights_overview.php:197
 #: templates/standard/template.grouprights_memberselect.html:136
@@ -2905,9 +2905,9 @@ msgstr "Typ"
 #: includes/include.clientsettings.php:78
 #: includes/include.clientsettings.php:165
 #: includes/include.client_edit.php:190
-#: includes/include.grouprights_create.php:69
-#: includes/include.grouprights_overview.php:106
-#: includes/include.grouprights_overview.php:202
+#: includes/include.grouprights_create.php:73
+#: includes/include.grouprights_overview.php:111
+#: includes/include.grouprights_overview.php:207
 #: includes/include.rights_create.php:159
 #: includes/include.rights_overview.php:201
 #: includes/include.rights_overview.php:367
@@ -3010,13 +3010,13 @@ msgstr ""
 "Ort kopiert werden."
 
 #: includes/include.client_edit.php:154
-#: includes/include.con_content_list.php:73
-#: includes/include.con_content_list.php:99
+#: includes/include.con_content_list.php:74
+#: includes/include.con_content_list.php:100
 #: includes/include.grouprights_area.php:42
 #: includes/include.grouprights_con.php:39
 #: includes/include.grouprights_lay.php:38
 #: includes/include.grouprights_mod.php:41
-#: includes/include.grouprights_overview.php:70
+#: includes/include.grouprights_overview.php:75
 #: includes/include.grouprights_str.php:38
 #: includes/include.grouprights_tpl.php:39 includes/include.lang_edit.php:101
 #: includes/include.mycontenido_settings.php:51
@@ -3033,15 +3033,15 @@ msgid "Changes saved"
 msgstr "Änderungen gespeichert"
 
 #: includes/include.client_edit.php:187
-#: includes/include.grouprights_overview.php:103
+#: includes/include.grouprights_overview.php:108
 #: includes/include.rights_overview.php:198
 msgid "Discard changes"
 msgstr "Änderungen verwerfen"
 
 #: includes/include.client_edit.php:189
-#: includes/include.grouprights_create.php:68
-#: includes/include.grouprights_overview.php:105
-#: includes/include.grouprights_overview.php:201
+#: includes/include.grouprights_create.php:72
+#: includes/include.grouprights_overview.php:110
+#: includes/include.grouprights_overview.php:206
 #: includes/include.rights_create.php:158
 #: includes/include.rights_overview.php:200
 #: includes/include.rights_overview.php:366
@@ -3277,70 +3277,70 @@ msgstr ""
 "Kann keine Artikel erstellen, solange die Kategorie noch keine zugewiesene "
 "Vorlage hat."
 
-#: includes/include.con_content_list.php:279
+#: includes/include.con_content_list.php:280
 msgid "Can not load article"
 msgstr "Artikel konnte nicht geladen werden"
 
-#: includes/include.con_content_list.php:283
+#: includes/include.con_content_list.php:284
 msgid "Can not find article"
 msgstr "Artikel wurde nicht gefunden"
 
-#: includes/include.con_content_list.php:289
+#: includes/include.con_content_list.php:290
 msgid "Raw data was imported successfully"
 msgstr "Rohdaten wurden erfolgreich importiert"
 
-#: includes/include.con_content_list.php:293
+#: includes/include.con_content_list.php:294
 msgid "Error: The XML file is not valid"
 msgstr "Fehler: Die XML-Datei ist ungültig"
 
-#: includes/include.con_content_list.php:296
+#: includes/include.con_content_list.php:297
 msgid "Please choose a file"
 msgstr "Bitte wählen Sie eine Datei"
 
-#: includes/include.con_content_list.php:377
+#: includes/include.con_content_list.php:379
 #: includes/include.con_editcontent.php:99
 msgid "Close editor"
 msgstr "Editor schließen"
 
-#: includes/include.con_content_list.php:378
+#: includes/include.con_content_list.php:380
 #: includes/include.con_editcontent.php:100
 msgid "Close editor and save changes"
 msgstr "Editor schließen und Änderungen speichern"
 
-#: includes/include.con_content_list.php:379
+#: includes/include.con_content_list.php:381
 #: includes/include.con_editcontent.php:101
 msgid "Do you want to save changes?"
 msgstr "Möchten Sie die Änderungen speichern?"
 
-#: includes/include.con_content_list.php:382
+#: includes/include.con_content_list.php:384
 msgid "Export raw data"
 msgstr "Rohdaten exportieren"
 
-#: includes/include.con_content_list.php:383
+#: includes/include.con_content_list.php:385
 msgid "Import raw data"
 msgstr "Rohdaten importieren"
 
-#: includes/include.con_content_list.php:384
+#: includes/include.con_content_list.php:386
 msgid "Raw data export"
 msgstr "Rohdaten-Export"
 
-#: includes/include.con_content_list.php:385
+#: includes/include.con_content_list.php:387
 msgid "Raw data import"
 msgstr "Rohdaten-Import"
 
-#: includes/include.con_content_list.php:386
+#: includes/include.con_content_list.php:388
 msgid "Overwrite data"
 msgstr "Inhalt überschreiben"
 
-#: includes/include.con_content_list.php:400
+#: includes/include.con_content_list.php:402
 msgid "Article has no raw data"
 msgstr "Artikel hat keine Rohdaten"
 
-#: includes/include.con_content_list.php:417
+#: includes/include.con_content_list.php:419
 msgid "Export"
 msgstr "Import / Export"
 
-#: includes/include.con_content_list.php:496
+#: includes/include.con_content_list.php:498
 #: includes/include.con_edit_form.php:332
 #: includes/include.con_edit_form.php:333
 #: includes/include.con_meta_form.php:69 includes/include.con_meta_form.php:70
@@ -3348,8 +3348,8 @@ msgstr "Import / Export"
 msgid "This article is currently frozen and can not be edited!"
 msgstr "Dieser Artikel ist eingefroren und kann nicht editiert werden."
 
-#: includes/include.con_content_list.php:580
-#: includes/include.con_content_list.php:583
+#: includes/include.con_content_list.php:582
+#: includes/include.con_content_list.php:585
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 "Sind Sie sich sicher, dass Sie den gewählten Content Typen wirklich löschen "
@@ -3828,7 +3828,7 @@ msgid "Could not set new group name: Group already exists"
 msgstr "Konnte den Gruppennamen nicht setzen: Die Gruppe existiert bereits"
 
 #: includes/include.frontend.group_edit.php:196
-#: includes/include.grouprights_create.php:71
+#: includes/include.grouprights_create.php:75
 msgid "Group name"
 msgstr "Gruppenname"
 
@@ -4107,51 +4107,42 @@ msgstr ""
 msgid "Close category"
 msgstr "Kategorie schliessen"
 
-#: includes/include.grouprights_create.php:35
+#: includes/include.grouprights_create.php:36
 msgid "New Group"
 msgstr "Neue Gruppe"
 
-#: includes/include.grouprights_create.php:42
+#: includes/include.grouprights_create.php:45
 #, php-format
 msgid "Group name <strong>%s</strong> already exists"
 msgstr "Die Gruppe <strong>%s</strong> existiert bereits"
 
-#: includes/include.grouprights_create.php:48
-#, php-format
-msgid ""
-"Group <strong>%s</strong> created. To edit it, please choose group name at "
-"left frame!"
-msgstr ""
-"Die Gruppe <strong>%s</strong> wurde erstellt. Um sie zu bearbeiten, wählen "
-"Sie bitte auf der linken Seite den Gruppennamen aus!"
-
-#: includes/include.grouprights_create.php:50
+#: includes/include.grouprights_create.php:53
 msgid "Group couldn't created"
 msgstr "Die Gruppe konnte nicht erstellt werden"
 
-#: includes/include.grouprights_create.php:87
-#: includes/include.grouprights_overview.php:122
+#: includes/include.grouprights_create.php:91
+#: includes/include.grouprights_overview.php:127
 #: includes/include.rights_create.php:231
 #: includes/include.rights_overview.php:282
 msgid "System administrator"
 msgstr "Systemadministrator"
 
-#: includes/include.grouprights_create.php:106
-#: includes/include.grouprights_overview.php:141
+#: includes/include.grouprights_create.php:110
+#: includes/include.grouprights_overview.php:146
 #: includes/include.rights_create.php:250
 #: includes/include.rights_overview.php:302
 msgid "Administrator"
 msgstr "Administrator"
 
-#: includes/include.grouprights_create.php:121
-#: includes/include.grouprights_overview.php:157
+#: includes/include.grouprights_create.php:125
+#: includes/include.grouprights_overview.php:162
 #: includes/include.rights_create.php:265
 #: includes/include.rights_overview.php:319
 msgid "Access clients"
 msgstr "Zugriff auf Mandanten"
 
-#: includes/include.grouprights_create.php:136
-#: includes/include.grouprights_overview.php:174
+#: includes/include.grouprights_create.php:140
+#: includes/include.grouprights_overview.php:179
 #: includes/include.rights_create.php:280
 #: includes/include.rights_overview.php:337
 msgid "Access languages"
@@ -4195,8 +4186,14 @@ msgstr "Gruppe löschen"
 msgid "Do you really want to delete the following group:<br><br>%s<br>"
 msgstr "Möchten Sie die folgende Gruppe wirklich löschen:<br /><br /><b>%s</b>"
 
-#: includes/include.grouprights_overview.php:51
+#: includes/include.grouprights_overview.php:47
+msgid "New group created. Now you can edit and configure your new group."
+msgstr ""
+"Die neue Gruppe wurde erstellt. Nun können Sie die neue Gruppe bearbeiten "
+"und konfigurieren."
+
 #: includes/include.grouprights_overview.php:56
+#: includes/include.grouprights_overview.php:61
 msgid ""
 "If you want to assign a language to a group you need to give it access to "
 "the client too."
@@ -4204,20 +4201,20 @@ msgstr ""
 "Wenn Sie einer Gruppen eine Sprache zuweisen möchten, müssen Sie "
 "sicherstellen, dass dieser auch der entsprechende Mandant zugewiesen wird."
 
-#: includes/include.grouprights_overview.php:72
+#: includes/include.grouprights_overview.php:77
 msgid "Changes couldn't be saved"
 msgstr "Änderungen nicht gespeichert"
 
-#: includes/include.grouprights_overview.php:108
+#: includes/include.grouprights_overview.php:113
 msgid "Groupname"
 msgstr "Gruppenname"
 
-#: includes/include.grouprights_overview.php:200
+#: includes/include.grouprights_overview.php:205
 #: includes/include.rights_overview.php:365
 msgid "Area/Type"
 msgstr "Bereich / Typ"
 
-#: includes/include.grouprights_overview.php:212
+#: includes/include.grouprights_overview.php:217
 #: includes/include.rights_overview.php:380
 msgid "User-defined properties"
 msgstr "Benutzerdefinierte Eigenschaften"
@@ -7799,6 +7796,13 @@ msgstr "Falsche Zugriffsrechte"
 #: ../data/config/production/cfg_actions.inc.php:216
 msgid "User login"
 msgstr "Benutzer login"
+
+#~ msgid ""
+#~ "Group <strong>%s</strong> created. To edit it, please choose group name "
+#~ "at left frame!"
+#~ msgstr ""
+#~ "Die Gruppe <strong>%s</strong> wurde erstellt. Um sie zu bearbeiten, "
+#~ "wählen Sie bitte auf der linken Seite den Gruppennamen aus!"
 
 #~ msgid "group created"
 #~ msgstr "Gruppe erstellt"

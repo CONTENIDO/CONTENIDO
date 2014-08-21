@@ -118,6 +118,7 @@
 ./classes/content_types/class.content.type.linkdescr.php
 ./classes/content_types/class.content.type.linkeditor.php
 ./classes/content_types/class.content.type.linktarget.php
+./classes/content_types/class.content.type.raw.php
 ./classes/content_types/class.content.type.teaser.php
 ./classes/content_types/class.content.type.text.php
 ./classes/datatypes/class.datatype.currency.php

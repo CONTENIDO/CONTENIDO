@@ -244,6 +244,15 @@ class cApiGroup extends Item {
         return explode(',', $this->get('perms'));
     }
 
+	/**
+     * Returns group id, currently set.
+     *
+     * @return string
+     */
+    public function getGroupId() {
+        return $this->get('group_id');
+    }
+
     /**
      * Returns name of group.
      *

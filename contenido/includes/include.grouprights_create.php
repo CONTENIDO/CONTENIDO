@@ -27,6 +27,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
 $bError        = false;
 $sNotification = '';
 $aPerms        = array();
+$groupId       = NULL;
 
 if ($action == 'group_create') {
     $aPerms = buildUserOrGroupPermsFromRequest();
@@ -47,7 +48,7 @@ if ($action == 'group_create') {
         $oGroupColl = new cApiGroupCollection();
         $oGroup = $oGroupColl->create($groupname, implode(',', $aPerms), $description);
         if (is_object($oGroup)) {
-            $sNotification = $notification->returnNotification("info", sprintf(i18n("Group <strong>%s</strong> created. To edit it, please choose group name at left frame!"), $groupname));
+			$groupId = $oGroup->getGroupId();
         } else {
             $sNotification = $notification->returnNotification("error", i18n("Group couldn't created"));
             $bError = true;
@@ -57,6 +58,7 @@ if ($action == 'group_create') {
 
 $tpl->reset();
 $tpl->set('s', 'NOTIFICATION', $sNotification);
+$tpl->set('s', 'GROUPID', $groupId);
 
 $form = '<form name="group_properties" method="post" action="'.$sess->url("main.php?").'">
              <input type="hidden" name="area" value="'.$area.'">
