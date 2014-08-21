@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Advanced Mod Rewrite\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-01 10:27+0200\n"
-"PO-Revision-Date: 2014-08-21 08:48+0100\n"
+"POT-Creation-Date: 2014-08-21 10:55+0200\n"
+"PO-Revision-Date: 2014-08-21 10:57+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Murat Purc <murat@purc.de>\n"
 "Language: de_DE\n"
@@ -14,6 +14,38 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Generator: Poedit 1.6.7\n"
 "X-Poedit-SearchPath-0: mod_rewrite\n"
+
+#: classes/controller/class.modrewrite_contentexpert_controller.php:74
+msgid ""
+".htaccess already exists at CONTENIDO-/or client directory, so it is not "
+"copied."
+msgstr ""
+"Die .htaccess-Datei existiert bereits im CONTENIDO-/oder "
+"Mandantenverzeichnis, daher wird sie nicht kopiert."
+
+#: classes/controller/class.modrewrite_contentexpert_controller.php:91
+#, php-format
+msgid ""
+".htaccess could not copy from <strong>%s</strong> to <strong>%s</strong>! "
+"Perhaps the target directory has not the required rights to write files at "
+"your webserver."
+msgstr ""
+"Die .htaccess-Datei konnte nicht von <strong>%s</strong> nach <strong>%s</"
+"strong> kopiert werden! Ggfls. hat der Ziel-Ordner nicht die notwendigen "
+"Schreibrechte auf dem Webserver."
+
+#: classes/controller/class.modrewrite_contentexpert_controller.php:95
+#, php-format
+msgid ".htaccess are successfully copied to %s"
+msgstr "Die .htaccess-Datei wurde erfolgreich nach %s kopiert"
+
+#: classes/controller/class.modrewrite_contentexpert_controller.php:129
+msgid "All aliases have been reset."
+msgstr "Alle Aliase wurden zur&uuml;ckgesetzt"
+
+#: classes/controller/class.modrewrite_contentexpert_controller.php:138
+msgid "Only empty aliases have been reset."
+msgstr "Nur leere Aliase wurden zur&uuml;ckgesetzt"
 
 #: classes/controller/class.modrewrite_content_controller.php:62
 msgid ""
