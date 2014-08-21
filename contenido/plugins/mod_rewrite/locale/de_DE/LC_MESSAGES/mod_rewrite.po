@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Advanced Mod Rewrite\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-06-01 10:27+0200\n"
-"PO-Revision-Date: 2014-08-21 08:36+0100\n"
+"PO-Revision-Date: 2014-08-21 08:48+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Murat Purc <murat@purc.de>\n"
 "Language: de_DE\n"
@@ -156,7 +156,7 @@ msgstr "Advanced Mod Rewrite-Funktionen"
 
 #: includes/config.plugin.php:74
 msgid "Advanced Mod Rewrite test"
-msgstr "Advanced Mod Rewrite Test"
+msgstr "Advanced Mod Rewrite-Test"
 
 #: includes/include.mod_rewrite_content.php:26
 #: includes/include.mod_rewrite_contentexpert.php:26
