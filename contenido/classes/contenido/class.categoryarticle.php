@@ -284,13 +284,13 @@ class cApiCategoryArticle extends Item {
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'idcat':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
 			case 'idart':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
 			case 'status':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
 			case 'createcode':
                 $value = ($value == 1) ? 1 : 0;
