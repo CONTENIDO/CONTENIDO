@@ -128,8 +128,12 @@ if (ModRewrite::isEnabled()) {
 
     if (!isset($contenido)) {
         // we are not in backend, add cec functions for rewriting
-        // Add mr related function for hook "after plugins loaded" to CONTENIDO Extension Chainer
-        $_cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'mr_runFrontendController');
+        
+        if ((int)$_GET['idart'] == 0 && (int)$_GET['idcat'] == 0 && (int)$_POST['idart'] == 0 && (int)$_POST['idcat'] == 0) {
+            // submitted idart and idcat vars has a higher priority than submitted seo url
+            // Add mr related function for hook "after plugins loaded" to CONTENIDO Extension Chainer
+            $_cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'mr_runFrontendController');
+        }
 
         // Add url rewriting function to CONTENIDO Extension Chainer
         // @todo: no more need since CONTENIDO 4.8.9 provides central Url building,

@@ -623,10 +623,20 @@ function mr_loadConfiguration($clientId, $forceReload = false) {
  */
 function mr_getConfiguration($clientId) {
     global $cfg;
+    
+    $clientId = (int) $clientId;
 
     $backendPath = cRegistry::getBackendPath();
+    
+    $clientConfig = cRegistry::getClientConfig($clientId);
+    $fePath = $clientConfig['path']['frontend'];
+    
+    $file = $fePath . 'data/config/' . CON_ENVIRONMENT . '/config.mod_rewrite.php';
 
-    $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
+    if (!is_file($file) || !is_readable($file)) {
+        $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
+    }
+    
     if (!is_file($file) || !is_readable($file)) {
         return NULL;
     }
@@ -649,11 +659,20 @@ function mr_getConfiguration($clientId) {
  */
 function mr_setConfiguration($clientId, array $config) {
     global $cfg;
+    
+    $clientId = (int) $clientId;
 
-    $backendPath = cRegistry::getBackendPath();
+    $clientConfig = cRegistry::getClientConfig($clientId);
+    $fePath = $clientConfig['path']['frontend'];
+    
+    $file = $fePath . 'data/config/' . CON_ENVIRONMENT . '/config.mod_rewrite.php';
+    $result = cFileHandler::write($file, serialize($config));
 
     $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
-    $result = cFileHandler::write($file, serialize($config));
+    if (is_file($file) && is_writeable($file)) {
+        cFileHandler::remove($file, serialize($config));
+    }
+    
     return ($result) ? true : false;
 }
 
