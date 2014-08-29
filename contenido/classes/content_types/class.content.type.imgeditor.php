@@ -123,6 +123,13 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         );
         parent::__construct($rawSettings, $id, $contentTypes);
 
+		// if form is submitted, store the current teaser settings
+        // notice: also check the ID of the content type (there could be more
+        // than one content type of the same type on the same page!)
+        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
+            $this->_storeSettings();
+        }
+		
         // get image information from con_upl from the database
         $upload = new cApiUpload($this->_rawSettings);
         $this->_filename = $upload->get('filename');
@@ -143,18 +150,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $this->_internalNotice = ($uploadMeta->get('internal_notice') !== false) ? $uploadMeta->get('internal_notice') : '';
         $this->_copyright = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
 
-        // if form is submitted, store the current teaser settings
-        // notice: also check the ID of the content type (there could be more
-        // than one content type of the same type on the same page!)
-        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
-            $this->_storeSettings();
-			
-			// Redirector for area con_editcontent
-			if($area == "con_editcontent") {
-				$path = $this->_cfg['path']['contenido_fullhtml'] . "external/backendedit/front_content.php?area=con_editcontent&idart=$this->_idArt&idcat=$this->_idCat&changeview=edit&client=$this->_client";
-				header('location:' . $this->_session->url($path));
-			}
-        }
     }
 
     /**

@@ -30,7 +30,31 @@ class UploadSearchResultList extends FrontendList {
 
     function convert($field, $data) {
         global $cfg, $sess, $client, $cfgClient, $appendparameters;
+		
+		if ($field == 7) { // OK Button
+		
+			$icon = "<img src=\"images/but_ok.gif\" alt=\"\" />";
+		
+			$vpath = str_replace($cfgClient[$client]["upl"]["path"], "", $this->pathdata);
+            $slashpos = strrpos($vpath, "/");
+            if ($slashpos === false) {
+                $file = $vpath;
+            } else {
+                $path = substr($vpath, 0, $slashpos + 1);
+                $file = substr($vpath, $slashpos + 1);
+            }
 
+            if ($appendparameters == "imagebrowser" || $appendparameters == "filebrowser") {
+                $mstr = '<a href="javascript://" onclick="javascript:Con.getFrame(\'left_top\').document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.close();">' . $icon . '</a>';
+            } else {
+                $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
+
+                $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
+                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$file"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"), $icon);
+            }
+            return $mstr;
+		}
+		
         if ($field == 5) {
             if ($data == "") {
                 return i18n("None");
@@ -70,7 +94,7 @@ class UploadSearchResultList extends FrontendList {
         }
 
         if ($field == 1) {
-            $this->pathdata = $data;
+            $this->path = $data;
 
             // If this file is an image, try to open
             $fileType = strtolower(getFileType($data));
@@ -188,7 +212,7 @@ if ($sortby == 6 && $sortmode == "DESC") {
 }
 
 $sToolsRow = '<tr class="textg_medium">
-                  <th colspan="6" id="cat_navbar">
+                  <th colspan="7" id="cat_navbar">
                       <div class="toolsRight">' . i18n("Searched for:") . " " . $searchfor . '</div>
                   </th>
               </tr>';
@@ -196,11 +220,11 @@ $sToolsRow = '<tr class="textg_medium">
 // List wraps
 
 $sSpacedRow = '<tr height="10">
-                    <td colspan="6" class="emptyCell"></td>
+                    <td colspan="7" class="emptyCell"></td>
                </tr>';
 
 $pagerwrap = '<tr>
-                <th colspan="6" id="cat_navbar" class="vAlignMiddle">
+                <th colspan="7" id="cat_navbar" class="vAlignMiddle">
                     <div class="toolsRight">
                         <div class="vAlignMiddle">-C-SCROLLLEFT-</div>
                         <div class="vAlignMiddle">-C-PAGE-</div>
@@ -219,6 +243,7 @@ $startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" bo
                     <th>' . $sizesort . '</th>
                     <th>' . $typesort . '</th>
                     <th>' . $srelevance . '</th>
+					<th>' . i18n("Action") . '</th>
                 </tr>';
 $itemwrap = '<tr>
                     <td align="center">%s</td>
@@ -227,6 +252,7 @@ $itemwrap = '<tr>
                     <td class="vAlignTop nowrap">%s</td>
                     <td class="vAlignTop nowrap">%s</td>
                     <td class="vAlignTop nowrap">%s</td>
+					<td class="vAlignTop nowrap">%s</td>
                 </tr>';
 $endwrap = $sSpacedRow . $sToolsRow . $sSpacedRow . $pagerwrap . '</table>';
 
@@ -286,7 +312,7 @@ foreach ($files as $idupl => $rating) {
     $filename = $upl->get('filename');
     $dirname = $upl->get('dirname');
     $fullDirname = $cfgClient[$client]["upl"]["path"] . $upl->get('dirname');
-
+	
     $filesize = $upl->get('size');
     if ($filesize == 0 && cFileHandler::exists($fullDirname . $filename)) {
         $filesize = filesize($fullDirname . $filename);
@@ -296,7 +322,7 @@ foreach ($files as $idupl => $rating) {
     $description = $upl->get('description');
 
     $fileType = strtolower(getFileType($filename));
-    $list2->setData($rownum, $dirname . $filename, $filename, $dirname, $filesize, $fileType, $rating / 10);
+    $list2->setData($rownum, $dirname . $filename, $filename, $dirname, $filesize, $fileType, $rating / 10, $dirname . $filename);
 
     $rownum++;
 }
