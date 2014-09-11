@@ -664,10 +664,10 @@ function cApiImageGetCacheFileName($md5, $filetype, $keepType) {
         // Should we keep the file type?
         // Just using switch if someone likes to add other types
         switch (strtolower($filetype)) {
-            case '.png':
+            case 'png':
                 $fileName = $md5 . '.png';
                 break;
-            case '.gif':
+            case 'gif':
                 $fileName = $md5 . '.gif';
                 break;
             default:
