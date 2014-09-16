@@ -18,6 +18,147 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // Compatibility: Include new functions.con2.php
 cInclude('includes', 'functions.con2.php');
 
+
+//New ArticleLanguageVersion
+function conCreateArticleLanguageVersion($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
+    global $client, $lang, $auth, $urlname, $page_title;
+    // Some stuff for the redirect
+    global $redirect, $redirect_url, $external_redirect;
+    global $time_move_cat; // Used to indicate "move to cat"
+    global $time_target_cat; // Used to indicate the target category
+    global $time_online_move; // Used to indicate if the moved article should be
+                              // online
+    global $timemgmt;
+
+    $page_title = addslashes($page_title);
+    $title = stripslashes($title);
+    $redirect_url = stripslashes($redirect_url);
+    $urlname = (trim($urlname) == '')? trim($title) : trim($urlname);
+
+    if ($isstart == 1) {
+        $timemgmt = 0;
+    }
+
+    if (!is_array($idcatnew)) {
+        $idcatnew[0] = 0;
+    }
+	
+	
+	/*
+   // Create article entry
+    $oArtColl = new cApiArticleCollection();
+    $oArt = $oArtColl->create($client);
+    $idart = $oArt->get('idart');
+
+    $status = 0;
+
+    // Create an category article entry
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $oCatArt = $oCatArtColl->create($idcat, $idart, $status);
+    $idcatart = $oCatArt->get('idcatart');
+*/
+    $aLanguages = array(
+        $lang
+    );
+
+    // Table 'con_art_lang', one entry for every language
+    foreach ($aLanguages as $curLang) {
+      /*  $lastmodified = ($lang == $curLang)? $lastmodified : '';
+        $modifiedby = '';
+
+        if ($online == 1) {
+            $published_value = date('Y-m-d H:i:s');
+            $publishedby_value = $auth->auth['uname'];
+        } else {
+            $published_value = '';
+            $publishedby_value = '';
+        }
+
+        // Create an stat entry
+        $oStatColl = new cApiStatCollection();
+        $oStat = $oStatColl->create($idcatart, $curLang, $client, 0);
+*/
+        // Create an article language version entry
+        $oArtLangVersionColl = new cApiArticleLanguageVersionCollection();
+        $oArtLangVersion = $oArtLangVersionColl->create($idartlang, $idart, $curLang, $title, $urlname, $page_title, $summary, $artspec, $created, $is_current_version, $auth->auth['uname'], $lastmodified, $modifiedby, $published_value, $publishedby_value, $online, $redirect, $redirect_url, $external_redirect, $artsort, $timemgmt, $datestart, $dateend, $status, $time_move_cat, $time_target_cat, $time_online_move, 0, '', '', '', $searchable, $sitemapprio, $changefreq);
+/*
+        $lastId = $oArtLangVersion->get('idartlang');
+        $availableTags = conGetAvailableMetaTagTypes();
+        foreach ($availableTags as $key => $value) {
+            conSetMetaValue($lastId, $key, $_POST['META' . $value['name']]);
+        }*/
+    }
+
+    // Get all idcats that contain art
+    /*$oCatArtColl = new cApiCategoryArticleCollection();
+    $aCatsForArt = $oCatArtColl->getCategoryIdsByArticleId($idart);
+    if (count($aCatsForArt) == 0) {
+        $aCatsForArt[0] = 0;
+    }
+
+    $aLanguages = getLanguagesByClient($client);
+
+    foreach ($idcatnew as $value) {
+        if (!in_array($value, $aCatsForArt)) {
+            // New category article entry
+            $oCatArtColl = new cApiCategoryArticleCollection();
+            $oCatArt = $oCatArtColl->create($value, $idart);
+            $curIdcatart = $oCatArt->get('idcatart');
+
+            // New statistics entry for each language
+            foreach ($aLanguages as $curLang) {
+                $oStatColl = new cApiStatCollection();
+                $oStatColl->create($curIdcatart, $curLang, $client, 0);
+            }
+        }
+    }
+
+    foreach ($aCatsForArt as $value) {
+        if (!in_array($value, $idcatnew)) {
+            // Delete category article and other related entries that will no
+            // longer exist
+            conRemoveOldCategoryArticle($value, $idart, $idartlang, $client, $lang);
+        }
+    }
+
+    if (!$title) {
+        $title = '--- ' . i18n("Default title") . ' ---';
+    }
+*/
+    // Update article language for all languages
+  /*  foreach ($aLanguages as $curLang) {
+        $curOnline = ($lang == $curLang)? $online : 0;
+        $curLastmodified = ($lang == $curLang)? $lastmodified : '';
+
+        $oArtLangVersion = new cApiArticleLanguage();
+        $oArtLangVersion->loadByArticleAndLanguageId($idart, $curLang);
+        if (!$oArtLangVersion->isLoaded()) {
+            continue;
+        }
+
+        $oArtLangVersion->set('title', $title);
+        $oArtLangVersion->set('urlname', $urlname);
+        $oArtLangVersion->set('pagetitle', $page_title);
+        $oArtLangVersion->set('summary', $summary);
+        $oArtLangVersion->set('artspec', $artspec);
+        $oArtLangVersion->set('created', $created);
+        $oArtLangVersion->set('lastmodified', $curLastmodified);
+        $oArtLangVersion->set('modifiedby', $author);
+        $oArtLangVersion->set('online', $curOnline);
+        $oArtLangVersion->set('searchable', $searchable);
+        $oArtLangVersion->set('sitemapprio', $sitemapprio);
+        $oArtLangVersion->set('changefreq', $changefreq);
+        $oArtLangVersion->set('redirect', $redirect);
+        $oArtLangVersion->set('redirect_url', $redirect_url);
+        $oArtLangVersion->set('external_redirect', $external_redirect);
+        $oArtLangVersion->set('artsort', $artsort);
+        $oArtLangVersion->set('datestart', $datestart);
+        $oArtLangVersion->set('dateend', $dateend);
+        $oArtLangVersion->store();
+    }*/
+    return $idart;
+}
+
 /**
  * Create a new article
  *
@@ -178,8 +319,12 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
         $oArtLang->set('dateend', $dateend);
         $oArtLang->store();
     }
-
-    return $idart;
+	
+	//Create new Article Language Version Entry
+	$is_current_version = 1;
+	conCreateArticleLanguageVersion($idcat, $idcatnew, $idart, $isstart, $idtpl, $lastId, $idlang, $title, $summary, $artspec, $created, $is_current_version, $lastmodified, $author, $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = 0.5, $changefreq = '');
+    
+	return $idart;
 }
 
 /**
@@ -235,6 +380,8 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
         $idcatnew[0] = 0;
     }
 
+	//TODOJ: Wenn Artikel der aktuelle ist, mache neue Version zur aktuellen. Ansonsten lege nur eine neue Version an.
+	
     $oArtLang = new cApiArticleLanguage((int) $idartlang);
     if (!$oArtLang->isLoaded()) {
         return;
@@ -328,9 +475,14 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     // Update idtplcfg
     if (!empty($newIdTplCfg) && $idTplCfg != $newIdTplCfg) {
         $oArtLang->set('idtplcfg', $newIdTplCfg);
-    }
-
-    $oArtLang->store();
+    }	
+	
+	$oArtLang->store();	
+	
+	// Create new Article Language Version Entry
+	$is_current_version = 1;
+    $oArtLangVersionColl = new cApiArticleLanguageVersionCollection();
+    $oArtLangVersion = $oArtLangVersionColl->create($idartlang, $idart, $lang, $title, $urlname, $page_title, $summary, $artspec, $created, $is_current_version, $auth->auth['uname'], $lastmodified, $modifiedby, $published_value, $publishedby_value, $online, $redirect, $redirect_url, $external_redirect, $artsort, $timemgmt, $datestart, $dateend, $status, $time_move_cat, $time_target_cat, $time_online_move, 0, '', '', '', $searchable, $sitemapprio, $changefreq);
 
     // article has been saved, so clear the article cache
     $purge = new cSystemPurge();
@@ -348,8 +500,68 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
  *        global scope
  */
 function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false) {
+    global $auth, $cfgClient, $client, $_cecRegistry, $lang;
+
+	//Create new Article Language Version and get the version number
+	$is_current_version = 1;
+	$currentArticle = cRegistry::getArticleLanguage();
+	$oArtLangVersionColl = new cApiArticleLanguageVersionCollection();
+	$oArtLangVersion = $oArtLangVersionColl->create($idartlang, $currentArticle->getField('idart'), $lang, $currentArticle->getField('title'), $currentArticle->getField('urlname'), $currentArticle->getField('pagetitle'), $currentArticle->getField('summary'), $currentArticle->getField('artspec'), $currentArticle->getField('created'), 
+	    $is_current_version, $currentArticle->getField('author'), date('Y-m-d H:i:s'), $auth->auth['uname'], $currentArticle->getField('published'), $currentArticle->getField('publishedby'), $currentArticle->getField('online'), $currentArticle->getField('redirect'), $currentArticle->getField('redirect_url'), 
+	    $currentArticle->getField('external_redirect'), $currentArticle->getField('artsort'), $currentArticle->getField('timemgmt'), $currentArticle->getField('datestart'), $currentArticle->getField('dateend'), $currentArticle->getField('status'), $currentArticle->getField('time_move_cat'), $currentArticle->getField('time_target_cat'), 
+	    $currentArticle->getField('time_online_move'), 0, '', '', '', $currentArticle->getField('searchable'), $currentArticle->getField('sitemapprio'), '');
+	
+	//Get the version number of the new Article Language Version that belongs to the Content
+	$version = $oArtLangVersion->getField('version');
+	
+	//Create the Content
+	
+    $oType = new cApiType();
+    if (!$oType->loadByType($type)) {
+        // Couldn't load type...
+        return;
+    }
+
+    $date = date('Y-m-d H:i:s');
+    $author = $auth->auth['uname'];
+    $value = str_replace(cRegistry::getFrontendUrl(), '', $value);
+    $value = stripslashes($value);
+
+    $iterator = $_cecRegistry->getIterator('Contenido.Content.SaveContentEntry');
+    while (($chainEntry = $iterator->next()) !== false) {
+        $value = $chainEntry->execute($idartlang, $type, $typeid, $value);
+    }
+
+    $idtype = $oType->get('idtype');
+    
+    // Create new entry
+    $oContentColl = new cApiContentCollection();
+    $oContent = $oContentColl->create($idartlang, $idtype, $typeid, $value, 0, $author, $date, $date);		
+	$oContent->set('version', $version);
+    $oContent->store();
+    
+	//TODOJ: Wenn es der aktuelle Artikel war, muss die neue Version als aktuelle Version markiert werden
+	
+	
+    // Touch the article to update last modified date
+  /*  $lastmodified = date('Y-m-d H:i:s');
+    $oArtLang = new cApiArticleLanguage($idartlang);
+    $oArtLang->set('lastmodified', $lastmodified);
+    $oArtLang->set('modifiedby', $author);
+    $oArtLang->store();*/
+
+    // content entry has been saved, so clear the article cache
+    $purge = new cSystemPurge();
+    $purge->clearArticleCache($idartlang);
+}
+
+//Old conSaveContentEntry version
+/*function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false) {
     global $auth, $cfgClient, $client, $_cecRegistry;
 
+	//Create new Article Language Version and get the version number
+	
+	
     $oType = new cApiType();
     if (!$oType->loadByType($type)) {
         // Couldn't load type...
@@ -392,7 +604,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     // content entry has been saved, so clear the article cache
     $purge = new cSystemPurge();
     $purge->clearArticleCache($idartlang);
-}
+}*/
 
 /**
  * Generate index of article content.

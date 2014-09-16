@@ -48,6 +48,7 @@ if ($action == 20 || $action == 10) {
             conSaveContentEntry($value[0], 'CMS_' . $value[1], $value[2], $value[3]);
         }
 
+		//TODOJ: Only, if it is the current content
         conMakeArticleIndex($idartlang, $idart);
 
         // restore orginal values

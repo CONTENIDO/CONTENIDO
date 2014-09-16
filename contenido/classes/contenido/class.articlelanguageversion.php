@@ -70,7 +70,7 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
      * @param string $changefreq
      * @return cApiArticleLanguage
      */
-    public function create($idartlang, $idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0, $created = '', $author = '', $lastmodified = '', $modifiedby = '', $published = '', $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0, $locked = 0, $free_use_01 = '', $free_use_02 = '', $free_use_03 = '', $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
+    public function create($idartlang, $idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0, $created = '', $is_current_version, $author = '', $lastmodified = '', $modifiedby = '', $published = '', $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0, $locked = 0, $free_use_01 = '', $free_use_02 = '', $free_use_03 = '', $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
         global $auth;
 
         if (empty($author)) {
@@ -85,26 +85,22 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
 
         $urlname = (trim($urlname) == '') ? trim($title) : trim($urlname);
 		
-		//set version and is_current_version
+		//set version
 		$version = 1;
-		$sql = "START TRANSACTION;" . "SELECT MAX(version) AS maxversion FROM %s WHERE idartlang = '%d'";
-		$sql = $this->db->prepare($sql, $this->table, $idartlang);
+		$sql = "LOCK TABLE con_art_lang_version READ;" .
+		$this->db->query($sql);	
+		
+		$sql = "SELECT MAX(version) AS maxversion FROM con_art_lang_version WHERE idartlang = '%d'";
+		$sql = $this->db->prepare($sql, $idartlang);
 		$this->db->query($sql);		
 		if($this->db->nextRecord()){
-			$version += $this->db->f('maxversion');
-		}
+			$version = $this->db->f('maxversion');
+			++$version;
+		}		
+				
+        $item = $this->createNewItem();		
 		
-		$sql = "SELECT * FROM %s WHERE idartlang = '%d'";
-		$sql = $this->db->prepare($sql, $cfg['tab']['art_lang'], $idartlang);
-		$this->db->query($sql);
-		if($this->db->nextRecord()){
-		    $is_current_version = 1;
-		}else {
-			$is_current_version = 0;
-		}
-		
-        $item = $this->createNewItem();
-
+		$item->setAsCurrent($idartlang, $is_current_version);
 		$item->set('idartlang', $idartlang);
         $item->set('idart', $idart);
         $item->set('idlang', $idlang);
@@ -115,7 +111,6 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
         $item->set('artspec', $artspec);
         $item->set('created', $created);
 		$item->set('version', $version);
-		$item->set('is_current_version', $is_current_version);
         $item->set('author', $author);
         $item->set('lastmodified', $lastmodified);
         $item->set('modifiedby', $modifiedby);
@@ -143,7 +138,7 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
 
         $item->store();
 		
-		$sql = "COMMIT";
+		$sql = "UNLOCK TABLE;";
 		$this->db->query($sql);	
 
         return $item;
@@ -284,6 +279,27 @@ class cApiArticleLanguageVersion extends Item {
         }
     }
 
+	/**
+	 * Set is_current_version = 0 in the current version and set is_current_version = 1 in this version	 
+	 * TODO: Copy the data from this ArticleLanguageVersion in ArticleLanguage
+	 */
+	public function setAsCurrent($idartlang, $is_current_version){
+		$aAttributes = array(
+				'idartlang' => $idartlang, 
+				'is_current_version' => 1
+		);
+		if($is_current_version == 1){
+			$oArtLangVersion = new cApiArticleLanguageVersion();
+			if($oArtLangVersion->loadByMany($aAttributes)){
+				$oArtLangVersion->set('is_current_version', 0);
+				$oArtLangVersion->store();
+			}
+			$this->set('is_current_version', 1);
+		}else{
+	        $this->set('is_current_version', 0);
+		}
+	}
+		
     /**
      * Load data by article and language id
      *
@@ -292,7 +308,7 @@ class cApiArticleLanguageVersion extends Item {
      * @param bool $fetchContent Flag to fetch content
      * @return bool true on success, otherwhise false
      */
-/*    public function loadByArticleAndLanguageId($idart, $idlang, $fetchContent = false) {
+    public function loadByArticleAndLanguageId($idart, $idlang, $fetchContent = false) {
         $result = true;
         if (!$this->isLoaded()) {
             $aProps = array(
@@ -315,7 +331,7 @@ class cApiArticleLanguageVersion extends Item {
 
         return $result;
     }
-*/
+
     /**
      * Extract 'idartlang' for a specified 'idart' and 'idlang'
      *
@@ -339,17 +355,17 @@ class cApiArticleLanguageVersion extends Item {
      *
      * $article->content[type][number] = value;
      */
-/*    public function loadArticleContent() {
+    public function loadArticleContent() {
         $this->_getArticleContent();
     }
-*/
+
     /**
      * Load the articles content and stores it in the 'content' property of the
      * article object.
      *
      * $article->content[type][number] = value;
      */
-/*    protected function _getArticleContent() {
+    protected function _getArticleContent() {
         global $cfg;
 
         if (NULL !== $this->content) {
@@ -365,7 +381,7 @@ class cApiArticleLanguageVersion extends Item {
             $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
     }
-*/
+
     /**
      * Get the value of an article property
      *
@@ -476,7 +492,7 @@ class cApiArticleLanguageVersion extends Item {
      * @param int|NULL $id Id of the content
      * @return string array data
      */
-/*    public function getContent($type, $id = NULL) {
+    public function getContent($type, $id = NULL) {
         if (NULL === $this->content) {
             $this->_getArticleContent();
         }
@@ -503,7 +519,7 @@ class cApiArticleLanguageVersion extends Item {
         // return String
         return (isset($this->content[$type][$id])) ? $this->content[$type][$id] : '';
     }
-*/
+
     /**
      * Similar to getContent this function returns the cContentType object
      *
@@ -511,7 +527,7 @@ class cApiArticleLanguageVersion extends Item {
      * @param int $id Id of the content type in this article
      * @return boolean|cContenType Returns false if the name was invalid
      */
-/*    public function getContentObject($type, $id) {
+    public function getContentObject($type, $id) {
         $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
 
         if (!class_exists($typeClassName)) {
@@ -520,14 +536,14 @@ class cApiArticleLanguageVersion extends Item {
 
         return new $typeClassName($this->getContent($type, $id), $id, $this->content);
     }
-*/
+
     /**
      * Similar to getContent this function returns the view voce of the cContentType object
      * @param string $type Name of the content type
      * @param int  $id Id of the content type in this article
      * @return string
      */
-/*    public function getContentViewCode($type, $id) {
+    public function getContentViewCode($type, $id) {
         $object = $this->getContentObject($type, $id);
         if ($object === false) {
             return "";
@@ -535,27 +551,27 @@ class cApiArticleLanguageVersion extends Item {
 
         return $object->generateViewCode();
     }
-*/
+
     /**
      * Returns all available content types
      *
      * @throws cException if no content has been loaded
      * @return array
      */
-/*    public function getContentTypes() {
+    public function getContentTypes() {
         if (empty($this->content)) {
             throw new cException('getContentTypes() No content loaded');
         }
         return array_keys($this->content);
     }
-*/
+
     /**
      * Returns the link to the current object.
      *
      * @param int $changeLangId change language id for URL (optional)
      * @return string link
      */
-/*    public function getLink($changeLangId = 0) {
+    public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {
             return '';
         }
@@ -569,5 +585,5 @@ class cApiArticleLanguageVersion extends Item {
 
         return cUri::getInstance()->build($options);
     }
-*/
+
 }
