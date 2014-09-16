@@ -102,6 +102,8 @@ return array(
     'cApiArticleSpecification' => 'contenido/classes/contenido/class.article.specification.php',
     'cApiArticleLanguageCollection' => 'contenido/classes/contenido/class.articlelanguage.php',
     'cApiArticleLanguage' => 'contenido/classes/contenido/class.articlelanguage.php',
+    'cApiArticleLanguageVersionCollection' => 'contenido/classes/contenido/class.articlelanguageversion.php',
+    'cApiArticleLanguageVersion' => 'contenido/classes/contenido/class.articlelanguageversion.php',	
     'cApiCategoryCollection' => 'contenido/classes/contenido/class.category.php',
     'cApiCategory' => 'contenido/classes/contenido/class.category.php',
     'cApiCategoryArticleCollection' => 'contenido/classes/contenido/class.categoryarticle.php',
