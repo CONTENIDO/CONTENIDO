@@ -19,7 +19,7 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
      */
     public function __construct($select = false) {
         global $cfg;
-        parent::__construct('con_art_lang_version', 'idartlangversion'); //$cfg['tab']['art_lang_version'] not set yet
+        parent::__construct($cfg['tab']['art_lang_version'], 'idartlangversion'); 
         $this->_setItemClass('cApiArticleLanguageVersion');
 
         // set the join partners so that joins can be used via link() method
@@ -70,28 +70,28 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
      * @param string $changefreq
      * @return cApiArticleLanguage
      */
-    public function create($idartlang, $idart, $idlang, $title, $urlname, $pagetitle, $summary, $artspec = 0, $created = '', $is_current_version, $author = '', $lastmodified = '', $modifiedby = '', $published = '', $publishedby = '', $online = 0, $redirect = 0, $redirect_url = '', $external_redirect = 0, $artsort = 0, $timemgmt = 0, $datestart = '', $dateend = '', $status = 0, $time_move_cat = 0, $time_target_cat = 0, $time_online_move = 0, $locked = 0, $free_use_01 = '', $free_use_02 = '', $free_use_03 = '', $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
+    public function create($aParameter) {
         global $auth;
 
-        if (empty($author)) {
-            $author = $auth->auth['uname'];
+        if (empty($aParameter['author'])) {
+            $aParameter['author'] = $auth->auth['uname'];
         }
-        if (empty($created)) {
-            $created = date('Y-m-d H:i:s');
+        if (empty($aParameter['created'])) {
+            $aParameter['created'] = date('Y-m-d H:i:s');
         }
-        if (empty($lastmodified)) {
-            $lastmodified = date('Y-m-d H:i:s');
+        if (empty($aParameter['lastmodified'])) {
+            $aParameter['lastmodified'] = date('Y-m-d H:i:s');
         }
 
-        $urlname = (trim($urlname) == '') ? trim($title) : trim($urlname);
+        $aParameter['urlname'] = (trim($aParameter['urlname']) == '') ? trim($aParameter['title']) : trim($aParameter['urlname']);
 		
 		//set version
 		$version = 1;
-		$sql = "LOCK TABLE con_art_lang_version READ;" .
+		$sql = "LOCK TABLE " . $cfg['tab']['art_lang_version'] . " READ;";
 		$this->db->query($sql);	
 		
-		$sql = "SELECT MAX(version) AS maxversion FROM con_art_lang_version WHERE idartlang = '%d'";
-		$sql = $this->db->prepare($sql, $idartlang);
+		$sql = "SELECT MAX(version) AS maxversion FROM con_art_lang_version WHERE idartlang = '%d';"; // geht mit cfg nicht?!
+		$sql = $this->db->prepare($sql, $aParameter['idartlang']);
 		$this->db->query($sql);		
 		if($this->db->nextRecord()){
 			$version = $this->db->f('maxversion');
@@ -100,43 +100,43 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
 				
         $item = $this->createNewItem();		
 		
-		$item->setAsCurrent($idartlang, $is_current_version);
-		$item->set('idartlang', $idartlang);
-        $item->set('idart', $idart);
-        $item->set('idlang', $idlang);
-        $item->set('title', $title);
-        $item->set('urlname', $urlname);
-        $item->set('pagetitle', $pagetitle);
-        $item->set('summary', $summary);
-        $item->set('artspec', $artspec);
-        $item->set('created', $created);
+		$item->set('idartlang', $aParameter['idartlang']);
+        $item->set('idart', $aParameter['idart']);
+        $item->set('idlang', $aParameter['idlang']);
+        $item->set('title', $aParameter['title']);
+        $item->set('urlname', $aParameter['urlname']);
+        $item->set('pagetitle', $aParameter['pagetitle']);
+        $item->set('summary', $aParameter['summary']);
+        $item->set('artspec', $aParameter['artspec']);
+        $item->set('created', $aParameter['created']);
 		$item->set('version', $version);
-        $item->set('author', $author);
-        $item->set('lastmodified', $lastmodified);
-        $item->set('modifiedby', $modifiedby);
-        $item->set('published', $published);
-        $item->set('publishedby', $publishedby);
-        $item->set('online', $online);
-        $item->set('redirect', $redirect);
-        $item->set('redirect_url', $redirect_url);
-        $item->set('external_redirect', $external_redirect);
-        $item->set('artsort', $artsort);
-        $item->set('timemgmt', $timemgmt);
-        $item->set('datestart', $datestart);
-        $item->set('dateend', $dateend);
-        $item->set('status', $status);
-        $item->set('time_move_cat', $time_move_cat);
-        $item->set('time_target_cat', $time_target_cat);
-        $item->set('time_online_move', $time_online_move);
-        $item->set('locked', $locked);
-        $item->set('free_use_01', $free_use_01);
-        $item->set('free_use_02', $free_use_02);
-        $item->set('free_use_03', $free_use_03);
-        $item->set('searchable', $searchable);
-        $item->set('sitemapprio', $sitemapprio);
-        $item->set('changefreq', $changefreq);
-
+        $item->set('author', $aParameter['author']);
+        $item->set('lastmodified', $aParameter['lastmodified']);
+        $item->set('modifiedby', $aParameter['modifiedby']);
+        $item->set('published', $aParameter['published']);
+        $item->set('publishedby', $aParameter['publishedby']);
+        $item->set('online', $aParameter['online']);
+        $item->set('redirect', $aParameter['redirect']);
+        $item->set('redirect_url', $aParameter['redirect_url']);
+        $item->set('external_redirect', $aParameter['external_redirect']);
+        $item->set('artsort', $aParameter['artsort']);
+        $item->set('timemgmt', $aParameter['timemgmt']);
+        $item->set('datestart', $aParameter['datestart']);
+        $item->set('dateend', $aParameter['dateend']);
+        $item->set('status', $aParameter['status']);
+        $item->set('time_move_cat', $aParameter['time_move_cat']);
+        $item->set('time_target_cat', $aParameter['time_target_cat']);
+        $item->set('time_online_move', $aParameter['time_online_move']);
+        $item->set('locked', $aParameter['locked']);
+        $item->set('free_use_01', $aParameter['free_use_01']);
+        $item->set('free_use_02', $aParameter['free_use_02']);
+        $item->set('free_use_03', $aParameter['free_use_03']);
+        $item->set('searchable', $aParameter['searchable']);
+        $item->set('sitemapprio', $aParameter['sitemapprio']);
+        $item->set('changefreq', $aParameter['changefreq']);		
+		$item->setIsCurrentVersion($aParameter['idartlang'], $aParameter['iscurrentversion']);
         $item->store();
+		
 		
 		$sql = "UNLOCK TABLE;";
 		$this->db->query($sql);	
@@ -269,7 +269,7 @@ class cApiArticleLanguageVersion extends Item {
      */
     public function __construct($mId = false, $fetchContent = false) {
         global $cfg;
-        parent::__construct('con_art_lang_version', 'idartlangversion');
+        parent::__construct($cfg['tab']['art_lang_version'], 'idartlangversion');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
@@ -280,24 +280,39 @@ class cApiArticleLanguageVersion extends Item {
     }
 
 	/**
-	 * Set is_current_version = 0 in the current version and set is_current_version = 1 in this version	 
-	 * TODO: Copy the data from this ArticleLanguageVersion in ArticleLanguage
+	 * Set iscurrentversion = 0 in the current version and set iscurrentversion = 1 in this version	 
+	 * 
 	 */
-	public function setAsCurrent($idartlang, $is_current_version){
+	public function setIsCurrentVersion($idartlang, $iscurrentversion){
 		$aAttributes = array(
 				'idartlang' => $idartlang, 
-				'is_current_version' => 1
+				'iscurrentversion' => $iscurrentversion
 		);
-		if($is_current_version == 1){
+		if($iscurrentversion == 1){
 			$oArtLangVersion = new cApiArticleLanguageVersion();
 			if($oArtLangVersion->loadByMany($aAttributes)){
-				$oArtLangVersion->set('is_current_version', 0);
+				$oArtLangVersion->set('iscurrentversion', 0);
 				$oArtLangVersion->store();
 			}
-			$this->set('is_current_version', 1);
+			$this->set('iscurrentversion', 1);
 		}else{
-	        $this->set('is_current_version', 0);
+	        $this->set('iscurrentversion', 0);
 		}
+	}
+	
+	/**
+	 * Copy the data from this ArticleLanguageVersion in ArticleLanguage	 
+	 * TODO: ArticleLanguageVersion->getContentVersions->foreach{setAsCurrent}
+	 */
+	public function setAsCurrent($aParameter){ 
+			$oArtLang = new cApiArticleLanguage($aParameter['idartlang']);
+			unset($aParameter['idartlang']);
+			unset($aParameter['iscurrentversion']);
+			unset($aParameter['version']);
+			foreach($aParameter as $key => $value){
+				$oArtLang->set($key, $value);
+			}
+			$oArtLang->store();
 	}
 		
     /**

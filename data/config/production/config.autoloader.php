@@ -124,6 +124,8 @@ return array(
     'cApiContainerConfiguration' => 'contenido/classes/contenido/class.containerconfig.php',
     'cApiContentCollection' => 'contenido/classes/contenido/class.content.php',
     'cApiContent' => 'contenido/classes/contenido/class.content.php',
+	'cApiContentVersionCollection' => 'contenido/classes/contenido/class.contentversion.php',
+	'cApiContentVersion' => 'contenido/classes/contenido/class.contentversion.php',
     'cApiDbfsCollection' => 'contenido/classes/contenido/class.dbfs.php',
     'cApiDbfs' => 'contenido/classes/contenido/class.dbfs.php',
     'cApiFileCollection' => 'contenido/classes/contenido/class.file.php',
