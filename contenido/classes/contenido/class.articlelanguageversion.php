@@ -134,9 +134,8 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
         $item->set('searchable', $aParameter['searchable']);
         $item->set('sitemapprio', $aParameter['sitemapprio']);
         $item->set('changefreq', $aParameter['changefreq']);		
-		$item->setIsCurrentVersion($aParameter['idartlang'], $aParameter['iscurrentversion']);
-        $item->store();
-		
+		$item->setIsCurrentVersion($aParameter['iscurrentversion']);
+        $item->store();		
 		
 		$sql = "UNLOCK TABLE;";
 		$this->db->query($sql);	
@@ -156,7 +155,6 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
         $this->db->query($sql, $this->table, $idart, $idlang);
         return ($this->db->nextRecord()) ? $this->db->f('idartlang') : 0;
     }
-
 }
 
 /**
@@ -283,9 +281,9 @@ class cApiArticleLanguageVersion extends Item {
 	 * Set iscurrentversion = 0 in the current version and set iscurrentversion = 1 in this version	 
 	 * 
 	 */
-	public function setIsCurrentVersion($idartlang, $iscurrentversion){
+	public function setIsCurrentVersion($iscurrentversion){
 		$aAttributes = array(
-				'idartlang' => $idartlang, 
+				'idartlang' => $this->get('idartlang'), 
 				'iscurrentversion' => $iscurrentversion
 		);
 		if($iscurrentversion == 1){
@@ -298,21 +296,38 @@ class cApiArticleLanguageVersion extends Item {
 		}else{
 	        $this->set('iscurrentversion', 0);
 		}
-	}
+	}	
 	
 	/**
 	 * Copy the data from this ArticleLanguageVersion in ArticleLanguage	 
 	 * TODO: ArticleLanguageVersion->getContentVersions->foreach{setAsCurrent}
 	 */
-	public function setAsCurrent($aParameter){ 
-			$oArtLang = new cApiArticleLanguage($aParameter['idartlang']);
-			unset($aParameter['idartlang']);
-			unset($aParameter['iscurrentversion']);
-			unset($aParameter['version']);
-			foreach($aParameter as $key => $value){
-				$oArtLang->set($key, $value);
+	public function setAsCurrent(){ 
+		$aParameter = $this->values;
+		$oArtLang = new cApiArticleLanguage($aParameter['idartlang']);
+		unset($aParameter['idartlang']);
+		unset($aParameter['iscurrentversion']);
+		unset($aParameter['version']);
+		foreach($aParameter as $key => $value){
+			$oArtLang->set($key, $value);
+		}
+		$oArtLang->store();
+		$oContentVersion = new cApiContentVersion();
+		$oType = new cApiType();	
+		$this->loadArticleContent();
+		foreach($this->content AS $idtype => $ids){
+			foreach($ids AS $typeid => $value){
+				$oType->loadByType($idtype);
+				$contentParameters = array(
+					'idartlang' => $this->get('idartlang'),
+					'idtype' => $oType->get('idtype'),
+					'typeid' => $typeid,
+					'version' => $this->get('version')
+				);
+				$oContentVersion->loadByArticleLanguageIdTypeAndTypeId($contentParameters);
+				$oContentVersion->setAsCurrent();
 			}
-			$oArtLang->store();
+		}
 	}
 		
     /**
@@ -387,10 +402,20 @@ class cApiArticleLanguageVersion extends Item {
             return;
         }
 
-        $sql = 'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b ' . 'WHERE a.idartlang = %d AND b.idtype = a.idtype ORDER BY a.idtype, a.typeid';
+		$sql = 'SELECT b.type, a.typeid, a.value
+				FROM `%s` AS a
+				INNER JOIN `%s` as b 
+					ON b.idtype = a.idtype
+				WHERE (a.idtype, a.typeid, a.version) IN
+					(SELECT idtype, typeid, max(version)
+					FROM %s
+					WHERE idartlang = %d AND version <= %d
+					GROUP BY idtype, typeid)
+				AND a.idartlang = %d 
+				ORDER BY a.idtype, a.typeid;';
 
-        $this->db->query($sql, $cfg['tab']['content'], $cfg['tab']['type'], $this->get('idartlang'));
-
+		$this->db->query($sql, $cfg['tab']['content_version'], $cfg['tab']['type'], $cfg['tab']['content_version'], $this->get('idartlang'), $this->get('version'), $this->get('idartlang'));
+		
         $this->content = array();
         while ($this->db->nextRecord()) {
             $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');

@@ -125,15 +125,15 @@ class cApiContentVersion extends Item {
 
 	
 	/**
-	 * Set the current Content to this Content Version	 
+	 * Set current Content to this Content Version	 
 	 * 
 	 */	
 	function setAsCurrent(){
 		$oContent = new cApiContent($this->get('idcontent'));
-		$oContent->set('value', $this->get(''));
-		$oContent->set('author', $this->get(''));
-		$oContent->set('created', $this->get(''));
-		$oContent->set('lastmodified', $this->get(''));
+		$oContent->set('value', $this->get('value'));
+		$oContent->set('author', $this->get('author'));
+		$oContent->set('created', $this->get('created'));
+		$oContent->set('lastmodified', $this->get('lastmodified'));
 		$oContent->store();
 	}
 	
@@ -145,11 +145,12 @@ class cApiContentVersion extends Item {
      * @param int $typeid
      * @return bool
      */
-    public function loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid) {
+    public function loadByArticleLanguageIdTypeAndTypeId($contentParameters) {
         $aProps = array(
-            'idartlang' => $idartlang,
-            'idtype' => $idtype,
-            'typeid' => $typeid
+            'idartlang' => $contentParameters['idartlang'],
+            'idtype' => $contentParameters['idtype'],
+            'typeid' => $contentParameters['typeid'],
+			'version' => $contentParameters['version']
         );
         $aRecordSet = $this->_oCache->getItemByProperties($aProps);
         if ($aRecordSet) {
@@ -157,7 +158,7 @@ class cApiContentVersion extends Item {
             $this->loadByRecordSet($aRecordSet);
             return true;
         } else {
-            $where = $this->db->prepare("idartlang = %d AND idtype = %d AND typeid = %d", $idartlang, $idtype, $typeid);
+            $where = $this->db->prepare("idartlang = %d AND idtype = %d AND typeid = %d AND version = %d", $contentParameters['idartlang'], $contentParameters['idtype'], $contentParameters['typeid'], $contentParameters['version']);
             return $this->_loadByWhereClause($where);
         }
     }
