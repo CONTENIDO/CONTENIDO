@@ -303,6 +303,7 @@ class cApiArticleLanguageVersion extends Item {
 	 * TODO: ArticleLanguageVersion->getContentVersions->foreach{setAsCurrent}
 	 */
 	public function setAsCurrent(){ 
+		//Prepare the data and update ArticleLanguage
 		$aParameter = $this->values;
 		$oArtLang = new cApiArticleLanguage($aParameter['idartlang']);
 		unset($aParameter['idartlang']);
@@ -312,12 +313,14 @@ class cApiArticleLanguageVersion extends Item {
 			$oArtLang->set($key, $value);
 		}
 		$oArtLang->store();
+		
+		//Update Contents
 		$oContentVersion = new cApiContentVersion();
 		$oType = new cApiType();	
 		$this->loadArticleContent();
-		foreach($this->content AS $idtype => $ids){
-			foreach($ids AS $typeid => $value){
-				$oType->loadByType($idtype);
+		foreach($this->content AS $type => $typeids){
+			foreach($typeids AS $typeid => $value){
+				$oType->loadByType($type);
 				$contentParameters = array(
 					'idartlang' => $this->get('idartlang'),
 					'idtype' => $oType->get('idtype'),
