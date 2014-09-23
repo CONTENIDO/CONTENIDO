@@ -65,6 +65,7 @@ if (($action == 'savecontype' || $action == 10)) {
                 conSaveContentEntry($value[0], 'CMS_' . $value[1], $value[2], $value[3]);
             }
 
+			//TODOJ: Only, if it is the current content
             conMakeArticleIndex($idartlang, $idart);
 
             // restore orginal values
@@ -322,24 +323,53 @@ $sortID = array(
 	"CMS_RAW"
 );
 
+$result = array();
+$aList = array();
+$currentTypes = array();
 $aIdtype = array();
-$sql = "SELECT DISTINCT typeid FROM %s WHERE idartlang = %d ORDER BY typeid";
-$db->query($sql, $cfg["tab"]["content"], $_REQUEST["idartlang"]);
+$versions = array();
+
+//Get all Content and Content Version typeIds
+$sql = "(SELECT typeid 
+		FROM %s
+		WHERE idartlang = %d)
+		UNION
+		(SELECT typeid
+		FROM %s
+		WHERE idartlang = %d)
+		ORDER BY typeid;";
+$db->query($sql, $cfg["tab"]["content_version"], $_REQUEST["idartlang"], $cfg["tab"]["content"], $_REQUEST["idartlang"]);
 while ($db->nextRecord()) {
     $aIdtype[] = $db->f("typeid");
 }
 
+//Get all Content and Content Version numbers
+$sql = "(SELECT a.version
+		FROM %s AS a
+		WHERE a.idartlang = %d)
+		UNION
+		(SELECT b.version
+		FROM %s AS b
+		WHERE b.idartlang = %d)
+		ORDER BY version;";
+$db->query($sql, $cfg["tab"]["content_version"], $_REQUEST["idartlang"], $cfg["tab"]["content"], $_REQUEST["idartlang"]);
+while ($db->nextRecord()) {
+    $versions[] = $db->f("version");
+} 
+
 foreach ($sortID as $name) {
-    // $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id,
-    // a.value as value FROM " . $cfg["tab"]["content"] . " as a, " .
-    // $cfg["tab"]["type"] . " as b WHERE a.idartlang = " .
-    // cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype = b.idtype
-    // AND b.type = '" . cSecurity::toString($name) . "' ORDER BY idtype,
-    // typeid, idcontent";
-    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b " . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
-    $db->query($sql, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
+	//Get Content and Content Version from database
+	$sql = "(SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value, a.version as version 
+			FROM %s AS a, %s AS b
+			WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s')
+			UNION
+			(SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value, a.version as version 
+			FROM %s AS a, %s AS b
+			WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s')
+			ORDER BY version, idtype, id;";
+	$db->query($sql, $cfg["tab"]["content_version"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
     while ($db->nextRecord() && $db->f("value") != '') {
-        $result[$db->f("name")][$db->f("id")] = $db->f("value");
+        $result[$db->f("name")][$db->f("id")][$db->f("version")] = $db->f("value");		
         if (!in_array($db->f("name"), $aList)) {
             $aList[$db->f("idtype")] = $db->f("name");
         }
@@ -398,6 +428,7 @@ if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false'
 $breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
 $page->set('s', 'CATEGORY', $breadcrumb);
 
+//testcontentversionanfang
 if (count($result) <= 0) {
     $page->displayInfo(i18n("Article has no raw data"));
     $page->abortRendering();
@@ -405,24 +436,30 @@ if (count($result) <= 0) {
 } else {
     foreach ($aIdtype as $idtype) {
         foreach ($sortID as $name) {
-            if (in_array($name, array_keys($result)) && $result[$name][$idtype] != '') {
-                if (in_array($name . "[" . $idtype . "]", $currentTypes)) {
-                    $class = '';
-                } else {
-                    $class = ' noactive';
-                }
-                $page->set("d", "EXTRA_CLASS", $class);
-                $page->set("d", "NAME", $name);
-                $page->set("d", "ID_TYPE", $idtype);
-                if(in_array($name, $allowedContentTypes)) {
-                    $page->set("d", "EXPORT_CONTENT",  '<input type="checkbox" class="rawtypes" name="' . $name .'" value="' .$idtype .'" checked="checked">');
-                    $page->set('d', 'EXPORT_CONTENT_LABEL', i18n("Export"));
-                } else {
-                    $page->set("d", "EXPORT_CONTENT", '');
-                    $page->set('d', 'EXPORT_CONTENT_LABEL', '');
-                }
-                $page->next();
-            }
+			foreach($versions as $version){
+				if (in_array($name, array_keys($result)) && $result[$name][$idtype][$version] != '') {
+					if (in_array($name . "[" . $idtype . "]", $currentTypes) AND $version == 0) {
+						$class = '';
+						$formattedVersion = 'aktuelle';
+					} else {
+						$class = ' noactive';
+						$formattedVersion = $version . '.';
+					}
+					$page->set("d", "EXTRA_CLASS", $class);
+					$page->set("d", "NAME", $name);
+					$page->set("d", "ID_TYPE", $idtype);
+					$page->set("d", "VERSION", $version);
+					$page->set("d", "FORMATTED_VERSION", $formattedVersion);
+					if(in_array($name, $allowedContentTypes)) {
+						$page->set("d", "EXPORT_CONTENT",  '<input type="checkbox" class="rawtypes" name="' . $name .'" value="' . $idtype .'" checked="checked">');
+						$page->set('d', 'EXPORT_CONTENT_LABEL', i18n("Export"));
+					} else {
+						$page->set("d", "EXPORT_CONTENT", '');
+						$page->set('d', 'EXPORT_CONTENT_LABEL', '');
+					}
+					$page->next();
+				}
+			}
         }
     }
 }
@@ -440,7 +477,6 @@ $page->set("s", "IDLANG", $lang);
 $page->set("s", "IDARTLANG", $idartlang);
 $page->set("s", "IDCLIENT", $client);
 
-// generate code
 $code = _processCmsTags($aList, $result, true, $page->render(NULL, true));
 
 if ($code == "0601") {
@@ -526,11 +562,13 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
             // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
             // $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i',
             // $this->_layoutCode, $match);
-            $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $layoutCode, $match);
+            $tmp = preg_match_all('/(' . $type . '\[+(\d)+\]' . '\[+(\d)+\])/i', $layoutCode, $match);
 
-            $a_[$key] = $match[0];
-
-            $success = array_walk($a_[$key], 'extractNumber');
+            $a_[$key] = $match[2]; //all typeids
+			$b_[$key] = $match[3]; //version numbers
+			//$c = array_combine($a_[$key],$b_[$key]); //liefert nur die neuesten Versionen zurück?!
+			//$a_[$key] = $match[0];	
+            //$success = array_walk($a_[$key], 'extractNumber');
 
             $search = array();
             $replacements = array();
@@ -543,52 +581,54 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
             $className = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
 
             foreach ($a_[$key] as $val) {
-                if (cFileHandler::exists($cTypeClassFile)) {
-                    $tmp = $a_content[$_typeItem->type][$val];
-                    $cTypeObject = new $className($tmp, $val, $a_content);
-                    if (cRegistry::isBackendEditMode() && $locked == 0) {
-                        $tmp = $cTypeObject->generateEditCode();
-                    } else {
-                        $tmp = $cTypeObject->generateViewCode();
-                    }
-                } else if (cFileHandler::exists($typeCodeFile)) {
-                    // include CMS type code
-                    include($typeCodeFile);
-                } elseif (!empty($_typeItem->code)) {
-                    // old version, evaluate CMS type code
-                    cDeprecated("Move code for $type from table into file system (contenido/includes/type/code/)");
-                    eval($_typeItem->code);
-                }
-                $sql = "SELECT a.idcontent
-                    FROM " . $cfg["tab"]["content"] . " as a, " . $cfg["tab"]["type"] . " as b
-                    WHERE a.idartlang=" . cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype=b.idtype AND a.typeid = " . cSecurity::toInteger($val) . " AND b.type = '" . cSecurity::toString($type) . "'
-                    ORDER BY a.idartlang, a.idtype, a.typeid";
-                $db->query($sql);
-                while ($db->nextRecord()) {
-                    $idcontent = $db->f("idcontent");
-                }
-                $backendUrl = cRegistry::getBackendUrl();
+				foreach($a_content[$_typeItem->type][$val] AS $version => $value){
+					if (cFileHandler::exists($cTypeClassFile)) {				
+						$tmp = $a_content[$_typeItem->type][$val][$version];
+						$cTypeObject = new $className($tmp, $val, $a_content);
+						if (cRegistry::isBackendEditMode() && $locked == 0) {
+							$tmp = $cTypeObject->generateEditCode();
+						} else {
+							$tmp = $cTypeObject->generateViewCode();
+						}
+					} else if (cFileHandler::exists($typeCodeFile)) {
+						// include CMS type code
+						include($typeCodeFile);
+					} elseif (!empty($_typeItem->code)) {
+						// old version, evaluate CMS type code
+						cDeprecated("Move code for $type from table into file system (contenido/includes/type/code/)");
+						eval($_typeItem->code);
+					}
+					$sql = "SELECT a.idcontentversion
+						FROM " . $cfg["tab"]["content_version"] . " as a, " . $cfg["tab"]["type"] . " as b
+						WHERE a.idartlang=" . cSecurity::toInteger($_REQUEST["idartlang"]) . " AND a.idtype=b.idtype AND a.typeid = " . cSecurity::toInteger($val) . " AND b.type = '" . cSecurity::toString($type) . "'
+						ORDER BY a.idartlang, a.idtype, a.typeid";
+					$db->query($sql);
+					while ($db->nextRecord()) {
+						$idcontent = $db->f("idcontentversion");
+					}
+					$backendUrl = cRegistry::getBackendUrl();
+					$num = $val+$version;
+					$search[$num] = sprintf('%s[%s][%s]', $type, $val, $version);
+					$path = $backendUrl . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=' . $idcontent;
+					if ($_typeItem->idtype == 20 || $_typeItem->idtype == 21) {
+						$tmp = str_replace('";?>', '', $tmp);
+						$tmp = str_replace('<?php echo "', '', $tmp);
+						// echo
+						// "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
+					}
 
-                $search[$val] = sprintf('%s[%s]', $type, $val);
-                $path = $backendUrl . 'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart=' . $idart . '&idartlang=' . $idartlang . '&idcat=' . $idcat . '&client=' . $client . '&lang=' . $lang . '&frame=4&contenido=' . $contenido . '&idcontent=' . $idcontent;
-                if ($_typeItem->idtype == 20 || $_typeItem->idtype == 21) {
-                    $tmp = str_replace('";?>', '', $tmp);
-                    $tmp = str_replace('<?php echo "', '', $tmp);
-                    // echo
-                    // "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
-                }
-
-                if ($locked == 0) { // No freeze
-                    $replacements[$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); });">
-                <img border="0" src="' . $backendUrl . 'images/delete.gif">
-                </a>';
-                    $keycode[$type][$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); });">
-                <img border="0" src="' . $backendUrl . 'images/delete.gif">
-                </a>';
-                } else { // Freeze status
-                    $replacements[$val] = $tmp;
-                    $keycode[$type][$val] = $tmp;
-                }
+					if ($locked == 0) { // No freeze
+						$replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); });">
+					<img border="0" src="' . $backendUrl . 'images/delete.gif">
+					</a>';
+						$keycode[$type][$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); });">
+					<img border="0" src="' . $backendUrl . 'images/delete.gif">
+					</a>';
+					} else { // Freeze status
+						$replacements[$num] = $tmp;
+						$keycode[$type][$num] = $tmp;
+					}
+				}
             }
 
             $code = str_ireplace($search, $replacements, $layoutCode);

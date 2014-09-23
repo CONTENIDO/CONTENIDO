@@ -18,16 +18,72 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // Compatibility: Include new functions.con2.php
 cInclude('includes', 'functions.con2.php');
 
-//Create new Content Version
-function conCreateContentVersion($aParameter, $idcontent){
-	$oContentVersionColl = new cApiContentVersionCollection();
-	$oContentVersion = $oContentVersionColl->create($aParameter);
+/**
+ * Create new Content Version
+ *
+ * @param mixed[] $parameters{
+ *	@type int $idContent
+ *  @type int $idArtLang
+ *	@type int $idType
+ *  @type int $typeId
+ *	@type string $value
+ *  @type int $version
+ *  @type string $author
+ *  @type string $created
+ *  @type string $lastModified
+ * }
+ */
+function conCreateContentVersion(array $parameters){
+	$contentVersionColl = new cApiContentVersionCollection();
+	//$contentVersion = $contentVersionColl->create($parameters);
+	$contentVersionColl->create($parameters);
 }
 
-//Create new Article Language Version
-//function conCreateArticleLanguageVersion($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $idlang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort, $keyart = 0, $searchable = 1, $sitemapprio = 0.5, $changefreq = '') {
-function conCreateArticleLanguageVersion($aParameter) {
-    global $client, $lang, $auth, $urlname, $page_title;
+/**
+ * Create new Article Language Version
+ *
+ * @global int $lang
+ * @global object $auth
+ * @global string $urlname
+ * @global string $page_title
+ * @param mixed[] $parameters{
+ *	@type int $idart
+ *  @type int $idlang
+ *	@type string $title
+ *  @type string $urlname
+ *	@type string $pagetitle
+ *  @type string $summary
+ *  @type int $artspec
+ *  @type string $created
+ *  @type int $iscurrentverseion
+ *  @type string $author
+ *	@type string $lastmodified
+ *  @type string $modifiedby
+ *  @type string $published
+ *  @type string $publishedby
+ *  @type int $online
+ *  @type int $redirect
+ *	@type string $redirect_url
+ *  @type int $external_redirect
+ *  @type int $artsort
+ *  @type int $timemgmt
+ *  @type string $datestart
+ *  @type string $dateend
+ *	@type int $status
+ *  @type int $time_move_cat
+ *  @type int $time_target_cat
+ *  @type int $time_online_move
+ *  @type int $locked
+ *	@type mixed $free_use_01
+ *  @type mixed $free_use_02
+ *  @type mixed $free_use_03
+ *  @type int $searchable
+ *  @type float $sitemapprio
+ *  @type string $changefreq
+ * }
+ */
+function conCreateArticleLanguageVersion(array $parameters) {
+    global $lang, $auth, $urlname, $page_title;
     // Some stuff for the redirect
     global $redirect, $redirect_url, $external_redirect;
     global $time_move_cat; // Used to indicate "move to cat"
@@ -37,171 +93,60 @@ function conCreateArticleLanguageVersion($aParameter) {
     global $timemgmt;
 
     $page_title = addslashes($page_title);
-    $aParameter['title'] = stripslashes($aParameter['title']);
+    $parameters['title'] = stripslashes($parameters['title']);
     $redirect_url = stripslashes($redirect_url);
-    $urlname = (trim($urlname) == '')? trim($aParameter['title']) : trim($urlname);
+    $urlname = (trim($urlname) == '')? trim($parameters['title']) : trim($urlname);
 
-    if ($aParameter['isstart'] == 1) {
+    if ($parameters['isstart'] == 1) {
         $timemgmt = 0;
     }
 
-    if (!is_array($aParameter['idcatnew'])) {
-        $aParameter['idcatnew'][0] = 0;
-    }
-	
-	
-	/*
-   // Create article entry
-    $oArtColl = new cApiArticleCollection();
-    $oArt = $oArtColl->create($client);
-    $idart = $oArt->get('idart');
+    if (!is_array($parameters['idcatnew'])) {
+        $parameters['idcatnew'][0] = 0;
+    }	
 
-    $status = 0;
+	//Set parameters for article language version
+	$artLangVersionParameters = array(
+		'idartlang' => $parameters['idartlang'],
+		'idart' => $parameters['idart'],
+		'idlang' => $lang,
+		'title' => $parameters['title'],
+		'urlname' => $urlname,
+		'pagetitle' => $page_title,
+		'summary' => $parameters['summary'],
+		'artspec' => $parameters['artspec'],
+		'created' => $parameters['created'],
+		'iscurrentversion' => $parameters['iscurrentversion'],
+		'author' => $parameters['author'],
+		'lastmodified' => date('Y-m-d H:i:s'),
+		'modifiedby' => $auth->auth['uname'],
+		'published' => $parameters['published'],
+		'publishedby' => $parameters['publishedby'],
+		'online' => $parameters['online'],
+		'redirect' => $redirect,
+		'redirect_url' => $redirect_url,
+		'external_redirect' => $external_redirect,
+		'artsort' => $parameters['artsort'],
+		'timemgmt' => $timemgmt,
+		'datestart' => $parameters['datestart'],
+		'dateend' => $parameters['dateend'],
+		'status' => 0,
+		'time_move_cat' => $time_move_cat,
+		'time_target_cat' => $time_target_cat,
+		'time_online_move' => $time_online_move,
+		'locked' => 0,
+		'free_use_01' => '',
+		'free_use_02' => '',
+		'free_use_03' => '',
+		'searchable' => $parameters['searchable'],
+		'sitemapprio' => $parameters['sitemapprio'],
+		'changefreq' => $parameters['changefreq']
+	);
 
-    // Create an category article entry
-    $oCatArtColl = new cApiCategoryArticleCollection();
-    $oCatArt = $oCatArtColl->create($idcat, $idart, $status);
-    $idcatart = $oCatArt->get('idcatart');
-*/
-    $aLanguages = array(
-        $lang
-    );
-
-    // Table 'con_art_lang', one entry for every language
-    foreach ($aLanguages as $curLang) {
-      /*  $lastmodified = ($lang == $curLang)? $lastmodified : '';
-        $modifiedby = '';
-
-        if ($online == 1) {
-            $published_value = date('Y-m-d H:i:s');
-            $publishedby_value = $auth->auth['uname'];
-        } else {
-            $published_value = '';
-            $publishedby_value = '';
-        }
-
-        // Create an stat entry
-        $oStatColl = new cApiStatCollection();
-        $oStat = $oStatColl->create($idcatart, $curLang, $client, 0);
-*/
-
-		//Set parameters for article language version
-		$aArtLangVerParameter = array(
-			'idartlang' => $aParameter['idartlang'],
-			'idart' => $aParameter['idart'],
-			'idlang' => $lang,
-			'title' => $aParameter['title'],
-			'urlname' => $urlname,
-			'page_title' => $page_title, //TODOJ: page_title oder pagetitle?
-			'summary' => $aParameter['summary'],
-			'artspec' => $aParameter['artspec'],
-			'created' => $aParameter['created'],
-			'iscurrentversion' => $aParameter['iscurrentversion'],
-			'author' => $aParameter['author'],
-			'lastmodified' => date('Y-m-d H:i:s'),
-			'modifiedby' => $auth->auth['uname'],
-			'published' => $aParameter['published'],
-			'publishedby' => $aParameter['publishedby'],
-			'online' => $aParameter['online'],
-			'redirect' => $redirect,
-			'redirect_url' => $redirect_url,
-			'external_redirect' => $external_redirect,
-			'artsort' => $aParameter['artsort'],
-			'timemgmt' => $timemgmt,
-			'datestart' => $aParameter['datestart'],
-			'dateend' => $aParameter['dateend'],
-			'status' => 0,
-			'time_move_cat' => $time_move_cat,
-			'time_target_cat' => $time_target_cat,
-			'time_online_move' => $time_online_move,
-			'locked' => 0,
-			'free_use_01' => '',
-			'free_use_02' => '',
-			'free_use_03' => '',
-			'searchable' => $aParameter['searchable'],
-			'sitemapprio' => $aParameter['sitemapprio'],
-			'changefreq' => $aParameter['changefreq']
-		);
-
-        // Create article language version entry
-        $oArtLangVersionColl = new cApiArticleLanguageVersionCollection();
-        $oArtLangVersion = $oArtLangVersionColl->create($aArtLangVerParameter);
-/*
-        $lastId = $oArtLangVersion->get('idartlang');
-        $availableTags = conGetAvailableMetaTagTypes();
-        foreach ($availableTags as $key => $value) {
-            conSetMetaValue($lastId, $key, $_POST['META' . $value['name']]);
-        }*/
-    }
-
-    // Get all idcats that contain art
-    /*$oCatArtColl = new cApiCategoryArticleCollection();
-    $aCatsForArt = $oCatArtColl->getCategoryIdsByArticleId($idart);
-    if (count($aCatsForArt) == 0) {
-        $aCatsForArt[0] = 0;
-    }
-
-    $aLanguages = getLanguagesByClient($client);
-
-    foreach ($idcatnew as $value) {
-        if (!in_array($value, $aCatsForArt)) {
-            // New category article entry
-            $oCatArtColl = new cApiCategoryArticleCollection();
-            $oCatArt = $oCatArtColl->create($value, $idart);
-            $curIdcatart = $oCatArt->get('idcatart');
-
-            // New statistics entry for each language
-            foreach ($aLanguages as $curLang) {
-                $oStatColl = new cApiStatCollection();
-                $oStatColl->create($curIdcatart, $curLang, $client, 0);
-            }
-        }
-    }
-
-    foreach ($aCatsForArt as $value) {
-        if (!in_array($value, $idcatnew)) {
-            // Delete category article and other related entries that will no
-            // longer exist
-            conRemoveOldCategoryArticle($value, $idart, $idartlang, $client, $lang);
-        }
-    }
-
-    if (!$title) {
-        $title = '--- ' . i18n("Default title") . ' ---';
-    }
-*/
-    // Update article language for all languages
-  /*  foreach ($aLanguages as $curLang) {
-        $curOnline = ($lang == $curLang)? $online : 0;
-        $curLastmodified = ($lang == $curLang)? $lastmodified : '';
-
-        $oArtLangVersion = new cApiArticleLanguage();
-        $oArtLangVersion->loadByArticleAndLanguageId($idart, $curLang);
-        if (!$oArtLangVersion->isLoaded()) {
-            continue;
-        }
-
-        $oArtLangVersion->set('title', $title);
-        $oArtLangVersion->set('urlname', $urlname);
-        $oArtLangVersion->set('pagetitle', $page_title);
-        $oArtLangVersion->set('summary', $summary);
-        $oArtLangVersion->set('artspec', $artspec);
-        $oArtLangVersion->set('created', $created);
-        $oArtLangVersion->set('lastmodified', $curLastmodified);
-        $oArtLangVersion->set('modifiedby', $author);
-        $oArtLangVersion->set('online', $curOnline);
-        $oArtLangVersion->set('searchable', $searchable);
-        $oArtLangVersion->set('sitemapprio', $sitemapprio);
-        $oArtLangVersion->set('changefreq', $changefreq);
-        $oArtLangVersion->set('redirect', $redirect);
-        $oArtLangVersion->set('redirect_url', $redirect_url);
-        $oArtLangVersion->set('external_redirect', $external_redirect);
-        $oArtLangVersion->set('artsort', $artsort);
-        $oArtLangVersion->set('datestart', $datestart);
-        $oArtLangVersion->set('dateend', $dateend);
-        $oArtLangVersion->store();
-    }*/
-    return $idart;
+    // Create article language version entry
+    $artLangVersionColl = new cApiArticleLanguageVersionCollection();
+    //$oArtLangVersion = $oArtLangVersionColl->create($artLangVersionParameters);
+	$artLangVersionColl->create($artLangVersionParameters);
 }
 
 /**
@@ -366,13 +311,13 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     }
 	
 	//Create new Article Language Version Entry
-	$aParameter = array(
+	$parameters = array(
 		'idcat' => $idcat,
 		'idcatnew' => $idcatnew,
 		'idart' => $idart,
 		'isstart' => $isstart,
 		'idtpl' => $idtpl,
-		'idartlang' => $lastId, //TODOJ ??...
+		'idartlang' => $lastId,
 		'idlang' => $idlang,
 		'title' => $title,
 		'summary' => $summary,
@@ -390,7 +335,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
 		'sitemapprio' => $sitemapprio,
 		'changefreq' => $changefreq
 	);
-	conCreateArticleLanguageVersion($aParameter);
+	conCreateArticleLanguageVersion($parameters);
     
 	return $idart;
 }
@@ -448,9 +393,6 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
         $idcatnew[0] = 0;
     }
 
-	//TODOJ: Wenn Artikel der aktuelle ist, editiere ihn und lege eine neue Version an. Ansonsten lege nur eine neue Version an.
-	
-	
     $oArtLang = new cApiArticleLanguage((int) $idartlang);
     if (!$oArtLang->isLoaded()) {
         return;
@@ -549,10 +491,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
 	$oArtLang->store();	
 	
 	// Create new Article Language Version Entry
-	//$iscurrentversion = 1;
-    //$oArtLangVersionColl = new cApiArticleLanguageVersionCollection();
-    //$oArtLangVersion = $oArtLangVersionColl->create($idartlang, $idart, $lang, $title, $urlname, $page_title, $summary, $artspec, $created, $iscurrentversion, $auth->auth['uname'], $lastmodified, $modifiedby, $published_value, $publishedby_value, $online, $redirect, $redirect_url, $external_redirect, $artsort, $timemgmt, $datestart, $dateend, $status, $time_move_cat, $time_target_cat, $time_online_move, 0, '', '', '', $searchable, $sitemapprio, $changefreq);
-	$aParameter = array(
+	$parameters = array(
 		'idcat' => $idcat,
 		'idcatnew' => $idcatnew,
 		'idart' => $idart,
@@ -576,7 +515,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
 		'sitemapprio' => $sitemapprio,
 		'changefreq' => $changefreq
 	);
-	conCreateArticleLanguageVersion($aParameter);	
+	conCreateArticleLanguageVersion($parameters);	
 	
     // article has been saved, so clear the article cache
     $purge = new cSystemPurge();
@@ -634,11 +573,11 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
 		'sitemapprio' => $currentArticle->getField('sitemapprio'),
 		'changefreq' => $currentArticle->getField('changefreq')
 	);
-	$oArtLangVersionColl = new cApiArticleLanguageVersionCollection();
-	$oArtLangVersion = $oArtLangVersionColl->create($aParameter);
+	$artLangVersionColl = new cApiArticleLanguageVersionCollection();
+	$artLangVersion = $artLangVersionColl->create($aParameter);
 	
 	//Get the version number of the new Article Language Version that belongs to the Content
-	$version = $oArtLangVersion->getField('version');
+	$version = $artLangVersion->getField('version');
 	
 	//Create the Content
 	
@@ -676,74 +615,21 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     }
 	
 	//Create Content Version	
-	$idcontent = $oContent->getField('idcontent');
-	$aParameter = array(
-		'idcontent' => $idcontent,
-		'idartlang' => $idartlang,
-		'idtype' => $idtype,
-		'typeid' => $typeid,
+	$idContent = $oContent->getField('idcontent');
+	$parameters = array(
+		'idContent' => $idContent,
+		'idArtLang' => $idartlang,
+		'idType' => $idtype,
+		'typeId' => $typeid,
 		'value' => $value,
 		'version' => $version,
 		'author' => $author,
 		'created' => $date,
-		'lastmodified' => $date
+		'lastModified' => $date
 	);
-	conCreateContentVersion($aParameter);
+	conCreateContentVersion($parameters);
     
-	//TODOJ: Wenn es der aktuelle Artikel war, muss die neue Version als aktuelle Version markiert werden
 	
-	
-    // Touch the article to update last modified date
-  /*  $lastmodified = date('Y-m-d H:i:s');
-    $oArtLang = new cApiArticleLanguage($idartlang);
-    $oArtLang->set('lastmodified', $lastmodified);
-    $oArtLang->set('modifiedby', $author);
-    $oArtLang->store();*/
-
-    // content entry has been saved, so clear the article cache
-    $purge = new cSystemPurge();
-    $purge->clearArticleCache($idartlang);
-}
-
-//Old conSaveContentEntry version
-/*function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false) {
-    global $auth, $cfgClient, $client, $_cecRegistry;
-
-	//Create new Article Language Version and get the version number
-	
-	
-    $oType = new cApiType();
-    if (!$oType->loadByType($type)) {
-        // Couldn't load type...
-        return;
-    }
-
-    $date = date('Y-m-d H:i:s');
-    $author = $auth->auth['uname'];
-    $value = str_replace(cRegistry::getFrontendUrl(), '', $value);
-    $value = stripslashes($value);
-
-    $iterator = $_cecRegistry->getIterator('Contenido.Content.SaveContentEntry');
-    while (($chainEntry = $iterator->next()) !== false) {
-        $value = $chainEntry->execute($idartlang, $type, $typeid, $value);
-    }
-
-    $idtype = $oType->get('idtype');
-
-    $oContent = new cApiContent();
-    $oContent->loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid);
-    if ($oContent->isLoaded()) {
-        // Update existing entry
-        $oContent->set('value', $value);
-        $oContent->set('author', $author);
-        $oContent->set('lastmodified', date('Y-m-d H:i:s'));
-        $oContent->store();
-    } else {
-        // Create new entry
-        $oContentColl = new cApiContentCollection();
-        $oContent = $oContentColl->create($idartlang, $idtype, $typeid, $value, 0, $author, $date, $date);
-    }
-
     // Touch the article to update last modified date
     $lastmodified = date('Y-m-d H:i:s');
     $oArtLang = new cApiArticleLanguage($idartlang);
@@ -754,7 +640,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     // content entry has been saved, so clear the article cache
     $purge = new cSystemPurge();
     $purge->clearArticleCache($idartlang);
-}*/
+}
 
 /**
  * Generate index of article content.

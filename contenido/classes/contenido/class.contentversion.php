@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the content collection and item class.
+ * This file contains the content version collection and item class.
  *
  * @package          Core
  * @subpackage       GenericDB_Model
@@ -16,7 +16,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Content collection
+ * Content Version collection
  *
  * @package Core
  * @subpackage GenericDB_Model
@@ -37,19 +37,22 @@ class cApiContentVersionCollection extends ItemCollection {
     }
 
     /**
-     * Creates a content entry.
+     * Creates a content version entry.
      *
-     * @param int $idArtLang
-     * @param int $idType
-     * @param int $typeId
-     * @param string $value
-     * @param int $version
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
+	 * @param mixed[] $parameters{
+	 * 	@type int $idContent
+	 * 	@type int $idArtLang
+	 * 	@type int $idType
+	 * 	@type int $typeId
+	 * 	@type string $value
+	 * 	@type int $version
+	 * 	@type string $author
+	 * 	@type string $created
+	 * 	@type string $lastModified
+	 * }
      * @return cApiContent
      */
-    public function create($aParameter) {
+    public function create(array $parameters) {
         global $auth;
 
         if (empty($author)) {
@@ -62,26 +65,25 @@ class cApiContentVersionCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 		
-        $oItem = $this->createNewItem();
+        $item = $this->createNewItem();
 
-		$oItem->set('idcontent', $aParameter['idcontent']);
-        $oItem->set('idartlang', $aParameter['idartlang']);
-        $oItem->set('idtype', $aParameter['idtype']);
-        $oItem->set('typeid', $aParameter['typeid']);
-        $oItem->set('value', $aParameter['value']);
-        $oItem->set('version', $aParameter['version']);
-        $oItem->set('author', $aParameter['author']);
-        $oItem->set('created', $aParameter['created']);
-        $oItem->set('lastmodified', $aParameter['lastmodified']);
-        $oItem->store();
+		$item->set('idcontent', $parameters['idContent']);
+        $item->set('idartlang', $parameters['idArtLang']);
+        $item->set('idtype', $parameters['idType']);
+        $item->set('typeid', $parameters['typeId']);
+        $item->set('value', $parameters['value']);
+        $item->set('version', $parameters['version']);
+        $item->set('author', $parameters['author']);
+        $item->set('created', $parameters['created']);
+        $item->set('lastmodified', $parameters['lastModified']);
+        $item->store();
 
-        return $oItem;
+        return $item;
     }
-
 }
 
 /**
- * Content item
+ * Content Version item
  *
  * @package Core
  * @subpackage GenericDB_Model
@@ -111,15 +113,6 @@ class cApiContentVersion extends Item {
      * @todo should return return value of overloaded method
      */
     public function setField($name, $value, $bSafe = true) {
-        switch ($name) {
-            case 'idartlang':
-            case 'idtype':
-            case 'typeid':
-            case 'version':
-                $value = (int) $value;
-                break;
-        }
-
         parent::setField($name, $value, $bSafe);
     }
 
@@ -128,34 +121,37 @@ class cApiContentVersion extends Item {
 	 * Set current Content to this Content Version	 
 	 * 
 	 */	
-	function setAsCurrent(){
-		$oContent = new cApiContent($this->get('idcontent'));
-		$oContent->set('value', $this->get('value'));
-		$oContent->set('author', $this->get('author'));
-		$oContent->set('created', $this->get('created'));
-		$oContent->set('lastmodified', $this->get('lastmodified'));
-		$oContent->store();
+	function setAsCurrent(){		
+		$content = new cApiContent($this->get('idcontent'));
+		$content->set('value', $this->get('value'));
+		$content->set('author', $this->get('author'));
+		$content->set('created', $this->get('created'));
+		$content->set('lastmodified', $this->get('lastmodified'));
+		$content->store();
 	}
 	
     /**
-     * Loads an content entry by its article language id, idtype and type id.
+     * Loads an content entry by its article language id, idtype, type id and version.
      *
-     * @param int $idartlang
-     * @param int $idtype
-     * @param int $typeid
+     * @param mixed[] $contentParameters{
+	 *	@type int $idArtLang
+	 *	@type int $idType
+	 *	@type int $typeId
+	 *	@type int $version
+	 * }
      * @return bool
      */
-    public function loadByArticleLanguageIdTypeAndTypeId($contentParameters) {
-        $aProps = array(
-            'idartlang' => $contentParameters['idartlang'],
-            'idtype' => $contentParameters['idtype'],
-            'typeid' => $contentParameters['typeid'],
+    public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters) {
+        $props = array(
+            'idartlang' => $contentParameters['idArtLang'],
+            'idtype' => $contentParameters['idType'],
+            'typeid' => $contentParameters['typeId'],
 			'version' => $contentParameters['version']
         );
-        $aRecordSet = $this->_oCache->getItemByProperties($aProps);
-        if ($aRecordSet) {
+        $recordSet = $this->_oCache->getItemByProperties($props);
+        if ($recordSet) {
             // entry in cache found, load entry from cache
-            $this->loadByRecordSet($aRecordSet);
+            $this->loadByRecordSet($recordSet);
             return true;
         } else {
             $where = $this->db->prepare("idartlang = %d AND idtype = %d AND typeid = %d AND version = %d", $contentParameters['idartlang'], $contentParameters['idtype'], $contentParameters['typeid'], $contentParameters['version']);

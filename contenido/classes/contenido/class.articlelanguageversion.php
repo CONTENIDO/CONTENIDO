@@ -1,10 +1,22 @@
 <?php
-
+/**
+ * This file contains the article language version collection and item class.
+ *
+ * @package Core
+ * @subpackage GenericDB_Model
+ * @version SVN Revision $Rev:$
+ *
+ * @author Bjoern Behrens
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Article Version language collection
+ * Article language version collection
  *
  * @package Core
  * @subpackage GenericDB_Model
@@ -36,54 +48,57 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
      * Creates an article language item entry.
      *
      * @global object $auth
-     * @param int $idart
-     * @param int $idlang
-     * @param string $title
-     * @param string $urlname
-     * @param string $pagetitle
-     * @param string $summary
-     * @param int $artspec
-     * @param string $created
-     * @param string $author
-     * @param string $lastmodified
-     * @param string $modifiedby
-     * @param string $published
-     * @param string $publishedby
-     * @param int $online
-     * @param int $redirect
-     * @param string $redirect_url
-     * @param int $external_redirect
-     * @param int $artsort
-     * @param int $timemgmt
-     * @param string $datestart
-     * @param string $dateend
-     * @param int $status
-     * @param int $time_move_cat
-     * @param int $time_target_cat
-     * @param int $time_online_move
-     * @param int $locked
-     * @param mixed $free_use_01
-     * @param mixed $free_use_02
-     * @param mixed $free_use_03
-     * @param int $searchable
-     * @param float $sitemapprio
-     * @param string $changefreq
-     * @return cApiArticleLanguage
+	 * @param mixed[] $parameters{
+	 *	@type int $idart
+	 *  @type int $idlang
+	 *	@type string $title
+	 *  @type string $urlname
+	 *	@type string $pagetitle
+	 *  @type string $summary
+	 *  @type int $artspec
+	 *  @type string $created
+	 *  @type int $iscurrentverseion
+	 *  @type string $author
+	 *	@type string $lastmodified
+	 *  @type string $modifiedby
+	 *  @type string $published
+	 *  @type string $publishedby
+	 *  @type int $online
+	 *  @type int $redirect
+	 *	@type string $redirect_url
+	 *  @type int $external_redirect
+	 *  @type int $artsort
+	 *  @type int $timemgmt
+	 *  @type string $datestart
+	 *  @type string $dateend
+	 *	@type int $status
+	 *  @type int $time_move_cat
+	 *  @type int $time_target_cat
+	 *  @type int $time_online_move
+	 *  @type int $locked
+	 *	@type mixed $free_use_01
+	 *  @type mixed $free_use_02
+	 *  @type mixed $free_use_03
+	 *  @type int $searchable
+	 *  @type float $sitemapprio
+	 *  @type string $changefreq
+	 * }
+     * @return cApiArticleLanguageVersion
      */
-    public function create($aParameter) {
+    public function create(array $parameters) {
         global $auth;
 
-        if (empty($aParameter['author'])) {
-            $aParameter['author'] = $auth->auth['uname'];
+        if (empty($parameters['author'])) {
+            $parameters['author'] = $auth->auth['uname'];
         }
-        if (empty($aParameter['created'])) {
-            $aParameter['created'] = date('Y-m-d H:i:s');
+        if (empty($parameters['created'])) {
+            $parameters['created'] = date('Y-m-d H:i:s');
         }
-        if (empty($aParameter['lastmodified'])) {
-            $aParameter['lastmodified'] = date('Y-m-d H:i:s');
+        if (empty($parameters['lastmodified'])) {
+            $parameters['lastmodified'] = date('Y-m-d H:i:s');
         }
 
-        $aParameter['urlname'] = (trim($aParameter['urlname']) == '') ? trim($aParameter['title']) : trim($aParameter['urlname']);
+        $parameters['urlname'] = (trim($parameters['urlname']) == '') ? trim($parameters['title']) : trim($parameters['urlname']);
 		
 		//set version
 		$version = 1;
@@ -91,7 +106,7 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
 		$this->db->query($sql);	
 		
 		$sql = "SELECT MAX(version) AS maxversion FROM con_art_lang_version WHERE idartlang = '%d';"; // geht mit cfg nicht?!
-		$sql = $this->db->prepare($sql, $aParameter['idartlang']);
+		$sql = $this->db->prepare($sql, $parameters['idartlang']);
 		$this->db->query($sql);		
 		if($this->db->nextRecord()){
 			$version = $this->db->f('maxversion');
@@ -100,41 +115,41 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
 				
         $item = $this->createNewItem();		
 		
-		$item->set('idartlang', $aParameter['idartlang']);
-        $item->set('idart', $aParameter['idart']);
-        $item->set('idlang', $aParameter['idlang']);
-        $item->set('title', $aParameter['title']);
-        $item->set('urlname', $aParameter['urlname']);
-        $item->set('pagetitle', $aParameter['pagetitle']);
-        $item->set('summary', $aParameter['summary']);
-        $item->set('artspec', $aParameter['artspec']);
-        $item->set('created', $aParameter['created']);
+		$item->set('idartlang', $parameters['idartlang']);
+        $item->set('idart', $parameters['idart']);
+        $item->set('idlang', $parameters['idlang']);
+        $item->set('title', $parameters['title']);
+        $item->set('urlname', $parameters['urlname']);
+        $item->set('pagetitle', $parameters['pagetitle']);
+        $item->set('summary', $parameters['summary']);
+        $item->set('artspec', $parameters['artspec']);
+        $item->set('created', $parameters['created']);
 		$item->set('version', $version);
-        $item->set('author', $aParameter['author']);
-        $item->set('lastmodified', $aParameter['lastmodified']);
-        $item->set('modifiedby', $aParameter['modifiedby']);
-        $item->set('published', $aParameter['published']);
-        $item->set('publishedby', $aParameter['publishedby']);
-        $item->set('online', $aParameter['online']);
-        $item->set('redirect', $aParameter['redirect']);
-        $item->set('redirect_url', $aParameter['redirect_url']);
-        $item->set('external_redirect', $aParameter['external_redirect']);
-        $item->set('artsort', $aParameter['artsort']);
-        $item->set('timemgmt', $aParameter['timemgmt']);
-        $item->set('datestart', $aParameter['datestart']);
-        $item->set('dateend', $aParameter['dateend']);
-        $item->set('status', $aParameter['status']);
-        $item->set('time_move_cat', $aParameter['time_move_cat']);
-        $item->set('time_target_cat', $aParameter['time_target_cat']);
-        $item->set('time_online_move', $aParameter['time_online_move']);
-        $item->set('locked', $aParameter['locked']);
-        $item->set('free_use_01', $aParameter['free_use_01']);
-        $item->set('free_use_02', $aParameter['free_use_02']);
-        $item->set('free_use_03', $aParameter['free_use_03']);
-        $item->set('searchable', $aParameter['searchable']);
-        $item->set('sitemapprio', $aParameter['sitemapprio']);
-        $item->set('changefreq', $aParameter['changefreq']);		
-		$item->setIsCurrentVersion($aParameter['iscurrentversion']);
+        $item->set('author', $parameters['author']);
+        $item->set('lastmodified', $parameters['lastmodified']);
+        $item->set('modifiedby', $parameters['modifiedby']);
+        $item->set('published', $parameters['published']);
+        $item->set('publishedby', $parameters['publishedby']);
+        $item->set('online', $parameters['online']);
+        $item->set('redirect', $parameters['redirect']);
+        $item->set('redirect_url', $parameters['redirect_url']);
+        $item->set('external_redirect', $parameters['external_redirect']);
+        $item->set('artsort', $parameters['artsort']);
+        $item->set('timemgmt', $parameters['timemgmt']);
+        $item->set('datestart', $parameters['datestart']);
+        $item->set('dateend', $parameters['dateend']);
+        $item->set('status', $parameters['status']);
+        $item->set('time_move_cat', $parameters['time_move_cat']);
+        $item->set('time_target_cat', $parameters['time_target_cat']);
+        $item->set('time_online_move', $parameters['time_online_move']);
+        $item->set('locked', $parameters['locked']);
+        $item->set('free_use_01', $parameters['free_use_01']);
+        $item->set('free_use_02', $parameters['free_use_02']);
+        $item->set('free_use_03', $parameters['free_use_03']);
+        $item->set('searchable', $parameters['searchable']);
+        $item->set('sitemapprio', $parameters['sitemapprio']);
+        $item->set('changefreq', $parameters['changefreq']);		
+		$item->setIsCurrentVersion($parameters['iscurrentversion']);
         $item->store();		
 		
 		$sql = "UNLOCK TABLE;";
@@ -144,34 +159,35 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
     }
 	
     /**
-     * Returns id (idartlang) of articlelanguage by article id and language id
+     * Returns id (idartlangversion) of articlelanguageversion by article 
+	 * language id and version
      *
-     * @param int $idcat
-     * @param int $idlang
+     * @param int $idartlang
+     * @param int $version
      * @return int
      */
-    public function getIdByArticleIdAndLanguageId($idart, $idlang) {
-        $sql = "SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d";
-        $this->db->query($sql, $this->table, $idart, $idlang);
-        return ($this->db->nextRecord()) ? $this->db->f('idartlang') : 0;
+    public function getIdByArticleIdAndLanguageId($idartlang, $version) {
+        $sql = "SELECT idartlangversion FROM `%s` WHERE idartlang = %d AND version = %d";
+        $this->db->query($sql, $this->table, $idartlang, $version);
+        return ($this->db->nextRecord()) ? $this->db->f('idartlangversion') : 0;
     }
 }
 
 /**
- * CONTENIDO API - Article Object
+ * CONTENIDO API - Article Version Object
  *
- * This object represents a CONTENIDO article
+ * This object represents a CONTENIDO article version
  *
  * Create object with
- * $obj = new cApiArticleLanguage(idartlang);
+ * $obj = new cApiArticleLanguageVersion(idartlangversion);
  * or with
- * $obj = new cApiArticleLanguage();
- * $obj->loadByArticleAndLanguageId(idart, lang);
+ * $obj = new cApiArticleLanguageVersion();
+ * $obj->loadByArticleLanguageIdAndVersion(idartlang, version);
  *
- * You can now read the article properties with
+ * You can now read the article version properties with
  * $obj->getField(property);
  *
- * List of article properties:
+ * List of article version properties:
  *
  * idartlang - Language dependant article id
  * idart - Language indepenant article id
@@ -181,6 +197,8 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
  * pagetitle - HTML Title
  * summary - Article summary
  * created - Date created
+ * version - Version number
+ * iscurrentversion - 0 = false, 1 = true
  * lastmodified - Date lastmodiefied
  * author - Article author (username)
  * online - On-/offline
@@ -202,7 +220,7 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
  * searchable - Whether article should be found via search
  * sitemapprio - The priority for the sitemap
  *
- * You can extract article content with the
+ * You can extract article version content with the
  * $obj->getContent(contype [, number]) method.
  *
  * To extract the first headline you can use:
@@ -253,7 +271,7 @@ class cApiArticleLanguageVersion extends Item {
     public $tab;
 
     /**
-     * Article content
+     * Article Version content
      *
      * @var array
      */
@@ -272,25 +290,26 @@ class cApiArticleLanguageVersion extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
             if (true === $fetchContent) {
-                $this->_getArticleContent();
+                $this->_getArticleVersionContent();
             }
         }
     }
 
 	/**
-	 * Set iscurrentversion = 0 in the current version and set iscurrentversion = 1 in this version	 
-	 * 
+	 * Set isCurrentVersion = 0 in the current version and set isCurrentVersion = 1 in this version	 
+	 *
+	 * @param int $isCurrentVersion 0 = false, 1 = true
 	 */
-	public function setIsCurrentVersion($iscurrentversion){
-		$aAttributes = array(
+	public function setIsCurrentVersion($isCurrentVersion){
+		$attributes = array(
 				'idartlang' => $this->get('idartlang'), 
-				'iscurrentversion' => $iscurrentversion
+				'iscurrentversion' => $isCurrentVersion
 		);
-		if($iscurrentversion == 1){
-			$oArtLangVersion = new cApiArticleLanguageVersion();
-			if($oArtLangVersion->loadByMany($aAttributes)){
-				$oArtLangVersion->set('iscurrentversion', 0);
-				$oArtLangVersion->store();
+		if($isCurrentVersion == 1){
+			$artLangVersion = new cApiArticleLanguageVersion();
+			if($artLangVersion->loadByMany($attributes)){
+				$artLangVersion->set('iscurrentversion', 0);
+				$artLangVersion->store();
 			}
 			$this->set('iscurrentversion', 1);
 		}else{
@@ -299,27 +318,30 @@ class cApiArticleLanguageVersion extends Item {
 	}	
 	
 	/**
-	 * Copy the data from this ArticleLanguageVersion in ArticleLanguage	 
-	 * TODO: ArticleLanguageVersion->getContentVersions->foreach{setAsCurrent}
+	 * Set this ArticleVersion with its ContentVersions as current:
+	 * Copy data from this ArticleLanguageVersion to ArticleLanguage	 
+	 * Update Contents in ArticleLanguage
+	 * Set property iscurrentversion = 1 in this ArticleLanguageVersion
+	 * and 0 in the current ArticleLanguageVersions
 	 */
 	public function setAsCurrent(){ 
 		//Prepare the data and update ArticleLanguage
-		$aParameter = $this->values;
-		$oArtLang = new cApiArticleLanguage($aParameter['idartlang']);
-		unset($aParameter['idartlang']);
-		unset($aParameter['iscurrentversion']);
-		unset($aParameter['version']);
-		foreach($aParameter as $key => $value){
-			$oArtLang->set($key, $value);
+		$parameters = $this->values;
+		$artLang = new cApiArticleLanguage($parameters['idartlang']);
+		unset($parameters['idartlang']);
+		unset($parameters['iscurrentversion']);
+		unset($parameters['version']);
+		foreach($parameters as $key => $value){
+			$artLang->set($key, $value);
 		}
-		$oArtLang->store();
+		$artLang->store();
 		
 		//Update Contents
-		$oContentVersion = new cApiContentVersion();
+		$contentVersion = new cApiContentVersion();
 		$oType = new cApiType();	
-		$this->loadArticleContent();
+		$this->loadArticleVersionContent();
 		foreach($this->content AS $type => $typeids){
-			foreach($typeids AS $typeid => $value){
+			foreach($typeids AS $typeid => $value){	//TODOJ: foreach($typeids AS typeid) besser
 				$oType->loadByType($type);
 				$contentParameters = array(
 					'idartlang' => $this->get('idartlang'),
@@ -327,78 +349,80 @@ class cApiArticleLanguageVersion extends Item {
 					'typeid' => $typeid,
 					'version' => $this->get('version')
 				);
-				$oContentVersion->loadByArticleLanguageIdTypeAndTypeId($contentParameters);
-				$oContentVersion->setAsCurrent();
+				$contentVersion->loadByArticleLanguageIdTypeTypeIdVersion($contentParameters);
+				$contentVersion->setAsCurrent();
 			}
 		}
+		//Set this ArticleVersion as current
+		$this->setIsCurrentVersion(1);
 	}
 		
     /**
-     * Load data by article and language id
+     * Load data by article language id and version
      *
-     * @param int $idart Article id
-     * @param int $idlang Language id
+     * @param int $idArtLang Article language id
+     * @param int $idlang version number
      * @param bool $fetchContent Flag to fetch content
      * @return bool true on success, otherwhise false
      */
-    public function loadByArticleAndLanguageId($idart, $idlang, $fetchContent = false) {
+    public function loadByArticleLanguageIdAndVersion($idArtLang, $version, $fetchContent = false) {
         $result = true;
         if (!$this->isLoaded()) {
-            $aProps = array(
-                'idart' => $idart,
-                'idlang' => $idlang
+            $props = array(
+                'idartlang' => $idArtLang,
+                'version' => $version
             );
-            $aRecordSet = $this->_oCache->getItemByProperties($aProps);
-            if ($aRecordSet) {
+            $recordSet = $this->_oCache->getItemByProperties($props);
+            if ($recordSet) {
                 // entry in cache found, load entry from cache
-                $this->loadByRecordSet($aRecordSet);
+                $this->loadByRecordSet($recordSet);
             } else {
-                $idartlang = $this->_getIdArtLang($idart, $idlang);
-                $result = $this->loadByPrimaryKey($idartlang);
+                $idArtLangVersion = $this->_getIdArtLangVersion($idArtLang, $version);
+                $result = $this->loadByPrimaryKey($idArtLangVersion);
             }
         }
 
         if (true === $fetchContent) {
-            $this->_getArticleContent();
+            $this->_getArticleVersionContent();
         }
 
         return $result;
     }
 
     /**
-     * Extract 'idartlang' for a specified 'idart' and 'idlang'
+     * Extract 'idartlangversion' for a specified 'idartlang' and 'version'
      *
-     * @param int $idart Article id
-     * @param int $idlang Language id
-     * @return int Language dependant article id
+     * @param int $idArtLang Article language id
+     * @param int $version version number
+     * @return int Article language version id
      */
-    protected function _getIdArtLang($idart, $idlang) {
+    protected function _getIdArtLangVersion($idArtLang, $version) {
         global $cfg;
 
-        $sql = 'SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d';
-        $this->db->query($sql, $cfg['tab']['art_lang'], $idart, $idlang);
+        $sql = 'SELECT idartlangversion FROM `%s` WHERE idartlang = %d AND version = %d';
+        $this->db->query($sql, $cfg['tab']['art_lang_version'], $idArtLang, $version);
         $this->db->nextRecord();
 
-        return $this->db->f('idartlang');
+        return $this->db->f('idartlangversion');
     }
 
     /**
-     * Load the articles content and stores it in the 'content' property of the
+     * Load the articles version content and stores it in the 'content' property of the
      * article object.
      *
      * $article->content[type][number] = value;
      */
-    public function loadArticleContent() {
-        $this->_getArticleContent();
+    public function loadArticleVersionContent() {
+        $this->_getArticleVersionContent();
     }
 
     /**
-     * Load the articles content and stores it in the 'content' property of the
-     * article object.
+     * Load the articles version content and stores it in the 'content' property of the
+     * article version object.
      *
      * $article->content[type][number] = value;
      */
-    protected function _getArticleContent() {
+    protected function _getArticleVersionContent() {
         global $cfg;
 
         if (NULL !== $this->content) {
@@ -426,9 +450,9 @@ class cApiArticleLanguageVersion extends Item {
     }
 
     /**
-     * Get the value of an article property
+     * Get the value of an article version property
      *
-     * List of article properties:
+     * List of article version properties:
      *
      * idartlang - Language dependant article id
      * idart - Language indepenant article id
@@ -438,6 +462,8 @@ class cApiArticleLanguageVersion extends Item {
      * pagetitle - HTML Title
      * summary - Article summary
      * created - Date created
+	 * version - Version number
+	 * iscurrentversion - (bool) if the Article Version is the current version
      * lastmodified - Date lastmodiefied
      * author - Article author (username)
      * online - On-/offline
@@ -469,7 +495,7 @@ class cApiArticleLanguageVersion extends Item {
     }
 
     /**
-     * Userdefined setter for article language fields.
+     * Userdefined setter for article language version fields.
      *
      * @param string $name
      * @param mixed $value
@@ -507,7 +533,7 @@ class cApiArticleLanguageVersion extends Item {
     }
 
     /**
-     * Get content(s) from an article.
+     * Get content(s) from an article version.
      *
      * Returns the specified content element or an array("id"=>"value") if the
      * second parameter is omitted.
@@ -537,7 +563,7 @@ class cApiArticleLanguageVersion extends Item {
      */
     public function getContent($type, $id = NULL) {
         if (NULL === $this->content) {
-            $this->_getArticleContent();
+            $this->_getArticleVersionContent();
         }
 
         if (empty($this->content)) {
