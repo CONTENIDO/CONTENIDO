@@ -102,10 +102,10 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
 		
 		//set version
 		$version = 1;
-		$sql = "LOCK TABLE " . $cfg['tab']['art_lang_version'] . " READ;";
+		$sql = 'LOCK TABLE ' . $cfg['tab']['art_lang_version'] . ' READ;';
 		$this->db->query($sql);	
 		
-		$sql = "SELECT MAX(version) AS maxversion FROM con_art_lang_version WHERE idartlang = '%d';"; // geht mit cfg nicht?!
+		$sql = 'SELECT MAX(version) AS maxversion FROM con_art_lang_version WHERE idartlang = %d;'; // geht mit cfg nicht?!
 		$sql = $this->db->prepare($sql, $parameters['idartlang']);
 		$this->db->query($sql);		
 		if($this->db->nextRecord()){
@@ -152,7 +152,7 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
 		$item->setIsCurrentVersion($parameters['iscurrentversion']);
         $item->store();		
 		
-		$sql = "UNLOCK TABLE;";
+		$sql = 'UNLOCK TABLE;';
 		$this->db->query($sql);	
 
         return $item;
@@ -167,7 +167,7 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
      * @return int
      */
     public function getIdByArticleIdAndLanguageId($idartlang, $version) {
-        $sql = "SELECT idartlangversion FROM `%s` WHERE idartlang = %d AND version = %d";
+        $sql = 'SELECT idartlangversion FROM `%s` WHERE idartlang = %d AND version = %d';
         $this->db->query($sql, $this->table, $idartlang, $version);
         return ($this->db->nextRecord()) ? $this->db->f('idartlangversion') : 0;
     }
@@ -324,7 +324,8 @@ class cApiArticleLanguageVersion extends Item {
 	 * Set property iscurrentversion = 1 in this ArticleLanguageVersion
 	 * and 0 in the current ArticleLanguageVersions
 	 */
-	public function setAsCurrent(){ 
+	public function setAsCurrent(){
+		global $cfg;
 		//Prepare the data and update ArticleLanguage
 		$parameters = $this->values;
 		$artLang = new cApiArticleLanguage($parameters['idartlang']);
@@ -337,19 +338,30 @@ class cApiArticleLanguageVersion extends Item {
 		$artLang->store();
 		
 		//Update Contents
+		$sql = 'SELECT idcontent FROM `%s`
+				WHERE idartlang = %d AND idcontent NOT IN
+					(SELECT idcontent
+					FROM `%s` AS a
+					WHERE idartlang = %d AND a.version <= %s)';					
+		$this->db->query($sql, $cfg['tab']['content'], $this->values['idartlang'], $cfg['tab']['content_version'], $this->values['idartlang'], $this->values['version']);
+		$contentColl = new cApiContentCollection();
+		while($this->db->nextRecord()){
+			 $contentColl->delete($this->db->f('idcontent'));
+		}		
+		
 		$contentVersion = new cApiContentVersion();
 		$oType = new cApiType();	
 		$this->loadArticleVersionContent();
 		foreach($this->content AS $type => $typeids){
-			foreach($typeids AS $typeid => $value){	//TODOJ: foreach($typeids AS typeid) besser
+			foreach($typeids AS $typeid => $value){
 				$oType->loadByType($type);
 				$contentParameters = array(
-					'idartlang' => $this->get('idartlang'),
-					'idtype' => $oType->get('idtype'),
-					'typeid' => $typeid,
+					'idArtLang' => $this->get('idartlang'),
+					'idType' => $oType->get('idtype'),
+					'typeId' => $typeid,
 					'version' => $this->get('version')
 				);
-				$contentVersion->loadByArticleLanguageIdTypeTypeIdVersion($contentParameters);
+				$contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
 				$contentVersion->setAsCurrent();
 			}
 		}
@@ -429,7 +441,7 @@ class cApiArticleLanguageVersion extends Item {
             return;
         }
 
-		$sql = 'SELECT b.type, a.typeid, a.value
+		$sql = 'SELECT b.type as type, a.typeid as typeid, a.value as value, a.version as version
 				FROM `%s` AS a
 				INNER JOIN `%s` as b 
 					ON b.idtype = a.idtype
@@ -445,7 +457,7 @@ class cApiArticleLanguageVersion extends Item {
 		
         $this->content = array();
         while ($this->db->nextRecord()) {
-            $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
+            $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')][$this->db->f('version')] = $this->db->f('value');
         }
     }
 
@@ -561,7 +573,7 @@ class cApiArticleLanguageVersion extends Item {
      * @param int|NULL $id Id of the content
      * @return string array data
      */
-    public function getContent($type, $id = NULL) {
+    public function getContent($type = '', $id = NULL) {
         if (NULL === $this->content) {
             $this->_getArticleVersionContent();
         }

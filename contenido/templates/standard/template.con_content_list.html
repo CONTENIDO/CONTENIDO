@@ -55,16 +55,28 @@
 </script>
 
 {CATEGORY}
-
+<p style="display:block;font-weight:bold;">Auswahl der Artikelversion</p>
+{ARTICLE_VERSION_SELECTION}
 <p style="display:block;font-weight:bold;">i18n("Content administration")</p>
 <!-- BEGIN:BLOCK -->
 <div class="contypeList {EXTRA_CLASS}">
-   	<div class="headline"><label>{EXPORT_CONTENT_LABEL}</label>{EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>:</div>
-    {NAME}[{ID_TYPE}]
+   	<div class="headline"><label>{EXPORT_CONTENT_LABEL}</label>{EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>, {FORMATTED_VERSION} Artikelversion:</div>
+    {NAME}[{ID_TYPE}][{VERSION}]
 </div>
 <!-- END:BLOCK -->
+{SET_AS_CURRENT_VERSION}
 
 <script type='text/javascript'>
+function loadVersion(){
+	var getUrl = window.location.href+'&idArtLangVersion='+$('#selectVersionElement option:selected').val()+'&text='+$('#selectVersionElement option:selected').text()+'&setAsCurrent='+1;
+	window.location.href = getUrl;
+}
+
+function setAsCurrent(){
+	var getUrl = window.location.href+'&idartlangversionSetAs='+$('#selectVersionElement option:selected').val()+'&setAsCurrent='+1+'&idArtLangVersion='+'version'+'&text='+'Revision: Aktuelle';
+	window.location.href = getUrl;
+}
+
 (function(Con, $) {
     $(function() {
         $('div#categorypath > a').click(function() {

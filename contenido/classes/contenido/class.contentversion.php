@@ -121,13 +121,23 @@ class cApiContentVersion extends Item {
 	 * Set current Content to this Content Version	 
 	 * 
 	 */	
-	function setAsCurrent(){		
-		$content = new cApiContent($this->get('idcontent'));
-		$content->set('value', $this->get('value'));
-		$content->set('author', $this->get('author'));
-		$content->set('created', $this->get('created'));
-		$content->set('lastmodified', $this->get('lastmodified'));
-		$content->store();
+	function setAsCurrent() {	
+		$content = new cApiContent();
+		if($content->loadByArticleLanguageIdTypeAndTypeId($this->get('idartlang'), $this->get('idtype'), $this->get('typeid'))) {
+			$content->set('idartlang', $this->get('idartlang'));
+			$content->set('idtype', $this->get('idtype'));
+			$content->set('typeid', $this->get('typeid'));
+			$content->set('value', $this->get('value'));
+			$content->set('author', $this->get('author'));
+			$content->set('created', $this->get('created'));
+			$content->set('lastmodified', $this->get('lastmodified'));
+			$content->store();
+		}else {
+			$contentColl = new cApiContentCollection();
+			$content = $contentColl->create($this->get('idartlang'), $this->get('idtype'), $this->get('typeid'), $this->get('value'), 0, $this->get('author'), $this->get('created'), $this->get('lastmodified'));
+			$content->set('idcontent', $this->get('idcontent'));
+			$content->store();
+		}
 	}
 	
     /**
@@ -142,6 +152,7 @@ class cApiContentVersion extends Item {
      * @return bool
      */
     public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters) {
+	$db = cRegistry::getDb();
         $props = array(
             'idartlang' => $contentParameters['idArtLang'],
             'idtype' => $contentParameters['idType'],
@@ -153,8 +164,8 @@ class cApiContentVersion extends Item {
             // entry in cache found, load entry from cache
             $this->loadByRecordSet($recordSet);
             return true;
-        } else {
-            $where = $this->db->prepare("idartlang = %d AND idtype = %d AND typeid = %d AND version = %d", $contentParameters['idartlang'], $contentParameters['idtype'], $contentParameters['typeid'], $contentParameters['version']);
+        } else {		
+		    $where = $this->db->prepare('idartlang = %d AND idtype = %d AND typeid = %d AND version <= %d GROUP BY pk desc LIMIT 1', $contentParameters['idArtLang'], $contentParameters['idType'], $contentParameters['typeId'], $contentParameters['version']);
             return $this->_loadByWhereClause($where);
         }
     }
