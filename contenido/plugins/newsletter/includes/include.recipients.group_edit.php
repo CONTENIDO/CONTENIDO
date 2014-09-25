@@ -70,7 +70,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
         $sGroupName = $_REQUEST["groupname"];
         if ($oRGroup->get("groupname") != $sGroupName) {
             $oRGroups->resetQuery();
-            $oRGroups->setWhere("groupname", $sGroupName);
+            $oRGroups->setWhere("groupname", stripslashes($sGroupName));
             $oRGroups->setWhere("idclient", $client);
             $oRGroups->setWhere("idlang", $lang);
             $oRGroups->setWhere($oRGroup->primaryKey, $oRGroup->get($oRGroup->primaryKey), "!=");
@@ -175,7 +175,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
     $oForm->addHeader(i18n("Edit group", 'newsletter'));
 
-    $oTxtGroupName = new cHTMLTextbox("groupname", conHtmlentities($oRGroup->get("groupname")), 40);
+    $oTxtGroupName = new cHTMLTextbox("groupname", conHtmlentities(stripslashes($oRGroup->get("groupname"))), 40);
     $oForm->add(i18n("Group name", 'newsletter'), $oTxtGroupName->render());
 
     $oCkbDefault = new cHTMLCheckbox("defaultgroup", "1");

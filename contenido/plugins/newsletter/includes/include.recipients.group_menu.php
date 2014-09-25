@@ -136,7 +136,7 @@ while ($oRcpGroup = $oRcpGroups->next()) {
     $oLnk->setCustom("idrecipientgroup", $iIDGroup);
 
     // oMenu->setImage($iMenu, $cfg["path"]["images"] . "groups.gif");
-    $oMenu->setTitle($iMenu, $sName);
+    $oMenu->setTitle($iMenu, stripslashes($sName));
     $oMenu->setLink($iMenu, $oLnk);
 
     if ($perm->have_perm_area_action($area, 'recipientgroup_delete')) {
