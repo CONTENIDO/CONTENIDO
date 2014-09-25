@@ -461,8 +461,8 @@ abstract class cDbDriverHandler {
                     $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toInteger($value) . '\'', $statement);
                 } else {
                     $param = cSecurity::toString($param);
-                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::escapeDB($value) . '\'', $statement);
-                    $statement = preg_replace('/`' . $param . '`/', '`' . cSecurity::escapeDB($value) . '`', $statement);
+                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::escapeString($value) . '\'', $statement);
+                    $statement = preg_replace('/`' . $param . '`/', '`' . cSecurity::escapeString($value) . '`', $statement);
                 }
             }
         }
