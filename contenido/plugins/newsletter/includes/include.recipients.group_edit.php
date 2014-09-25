@@ -67,7 +67,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
         $aMessages = array();
         $bReload = false;
 
-        $sGroupName = stripslashes($_REQUEST["groupname"]);
+        $sGroupName = $_REQUEST["groupname"];
         if ($oRGroup->get("groupname") != $sGroupName) {
             $oRGroups->resetQuery();
             $oRGroups->setWhere("groupname", $sGroupName);
@@ -175,7 +175,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 
     $oForm->addHeader(i18n("Edit group", 'newsletter'));
 
-    $oTxtGroupName = new cHTMLTextbox("groupname", $oRGroup->get("groupname"), 40);
+    $oTxtGroupName = new cHTMLTextbox("groupname", conHtmlentities($oRGroup->get("groupname")), 40);
     $oForm->add(i18n("Group name", 'newsletter'), $oTxtGroupName->render());
 
     $oCkbDefault = new cHTMLCheckbox("defaultgroup", "1");
