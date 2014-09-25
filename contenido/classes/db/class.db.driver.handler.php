@@ -456,12 +456,13 @@ abstract class cDbDriverHandler {
     protected function _prepareStatementA($statement, array $arguments) {
         if (count($arguments) > 0) {
             foreach ($arguments as $key => $value) {
-                $param = ':' . $key;
-                if (is_int($value)) {
-                    $statement = str_replace($param, $value, $statement);
+
+                if (cSecurity::isInteger($value)) {
+                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toInteger($value) . '\'', $statement);
                 } else {
-                    $param = (string)$param;
-                    $statement = str_replace($param, $this->escape($value), $statement);
+                    $param = cSecurity::toString($param);
+                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::escapeDB($value) . '\'', $statement);
+                    $statement = preg_replace('/`' . $param . '`/', '`' . cSecurity::escapeDB($value) . '`', $statement);
                 }
             }
         }
