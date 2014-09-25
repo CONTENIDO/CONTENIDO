@@ -458,9 +458,11 @@ abstract class cDbDriverHandler {
             foreach ($arguments as $key => $value) {
 				$param = ':' . $key;
                 if (cSecurity::isInteger($value)) {
+                	$statement = preg_replace('/' . $param . '/', cSecurity::toInteger($value), $statement);
                     $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toInteger($value) . '\'', $statement);
                 } else {
                     $param = cSecurity::toString($param);
+                    $statement = preg_replace('/' . $param . '/', cSecurity::escapeString($value), $statement);
                     $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::escapeString($value) . '\'', $statement);
                     $statement = preg_replace('/`' . $param . '`/', '`' . cSecurity::escapeString($value) . '`', $statement);
                 }
