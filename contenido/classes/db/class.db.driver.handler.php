@@ -456,7 +456,7 @@ abstract class cDbDriverHandler {
     protected function _prepareStatementA($statement, array $arguments) {
         if (count($arguments) > 0) {
             foreach ($arguments as $key => $value) {
-
+				$param = ':' . $key;
                 if (cSecurity::isInteger($value)) {
                     $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toInteger($value) . '\'', $statement);
                 } else {
