@@ -42,7 +42,7 @@ if (function_exists('conHtmlSpecialChars') == false) {
         } else {
             $flags = ($flags == '') ? ENT_COMPAT : $flags;
         }
-//echo "Value: " . $value . " | Flags: " . $flags . " Encoding: " . $encoding . "<br />";
+
         return htmlspecialchars($value, $flags, $encoding);
     }
 
