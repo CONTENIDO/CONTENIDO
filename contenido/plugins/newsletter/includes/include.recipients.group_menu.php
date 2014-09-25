@@ -140,7 +140,7 @@ while ($oRcpGroup = $oRcpGroups->next()) {
     $oMenu->setLink($iMenu, $oLnk);
 
     if ($perm->have_perm_area_action($area, 'recipientgroup_delete')) {
-        $oMenu->setActions($iMenu, 'delete', '<a title="' . $aMsg["DelTitle"] . '" href="javascript://" onclick="showDelMsg(' . $iIDGroup . ',\'' . addslashes($sName) . '\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '"></a>');
+        $oMenu->setActions($iMenu, 'delete', '<a title="' . $aMsg["DelTitle"] . '" href="javascript://" onclick="showDelMsg(' . $iIDGroup . ',\'' . conHtmlentities(stripslashes($sName)) . '\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '"></a>');
     }
 }
 
