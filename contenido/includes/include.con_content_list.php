@@ -78,33 +78,6 @@ if (($action == 'savecontype' || $action == 10)) {
     } else {
         $page->displayError(i18n("Permission denied"));
     }
-} else if($action == 'savecontypeversion'){ //TODOJ: wenn aktuelle version nicht ausgewählt ist: content version speichern, nicht content
-    if ($perm->have_perm_area_action($area, "savecontype") || $perm->have_perm_area_action_item($area, "savecontype", $idcat)) {
-        if ($data != '') {
-            $data = explode('||', substr($data, 0, -2));
-            foreach ($data as $value) {
-                $value = explode('|', $value);
-                if ($value[3] == '%$%EMPTY%$%') {
-                    $value[3] = '';
-                } else {
-                    $value[3] = str_replace('%$%SEPERATOR%$%', '|', $value[3]);
-                }
-                conSaveContentEntry($value[0], 'CMS_' . $value[1], $value[2], $value[3]);
-            }
-
-            conMakeArticleIndex($idartlang, $idart);
-
-            // restore orginal values
-            $data = $_REQUEST['data'];
-            $value = $_REQUEST['value'];
-
-            $notification->displayNotification("info", i18n("Changes saved"));
-        }
-
-        conGenerateCodeForArtInAllCategories($idart);
-    } else {
-        $page->displayError(i18n("Permission denied"));
-    }
 } else if ($action == 'deletecontype') {
     if ($perm->have_perm_area_action($Area, "deletecontype") || $perm->have_perm_area_action_item($area, "deletecontype", $idcat)) {
        if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
@@ -172,15 +145,29 @@ if (($action == 'savecontype' || $action == 10)) {
 
     $seoauthorNode = $articleNode->addChild("seo_author");
     $seoauthorNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 1));
-
-    // load content id's for article
-    $conColl = new cApiContentCollection();
-    $contentIds = $conColl->getIdsByWhereClause('idartlang="'. $cApiArticleLanguage->get("idartlang") .'"');
-
+    
+	// load content id's for article
+	if($_POST['versionnumber'] == 'current'){
+		$conColl = new cApiContentCollection();
+		$contentIds = $conColl->getIdsByWhereClause('idartlang="'. $cApiArticleLanguage->get("idartlang") .'"');
+	} else {
+		$conVersionColl = new cApiContentVersionCollection();
+		$where = "version IN
+				(SELECT max(version)
+				FROM " . $cfg['tab']['content_version'] .
+				" WHERE idartlang = " . $cApiArticleLanguage->get("idartlang") . " AND version <= " . $_POST['versionnumber'] .
+				" GROUP BY idtype, typeid)";
+		$contentIds = $conVersionColl->getIdsByWhereClause($where);
+	}
+	
     // iterate through content and add get data
     foreach ($contentIds as $contentId) {
         //load content object
-        $content = new cApiContent($contentId);
+	if($_POST['versionnumber'] == 'current'){
+			$content = new cApiContent($contentId);
+		} else {
+			$content = new cApiContentVersion($contentId);
+		}
         // if loaded get data and add to xml
         if($content->isLoaded()) {
             $type = new cApiType($content->get("idtype"));
@@ -391,7 +378,7 @@ while ($db->nextRecord()) {
 }
 //Create Content Option Element
 $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
-$optionElement = new cHTMLOptionElement('Revision: Aktuelle', 'version', true);
+$optionElement = new cHTMLOptionElement('Revision: Aktuelle', 'current', true);
 $selectElement->appendOptionElement($optionElement);
 //Create Content Version Option Elements
 foreach($versionWithIdArtLangVersion AS $key => $value) {
@@ -467,31 +454,37 @@ $page->set('s', 'CLOSE', i18n('Close editor'));
 $page->set('s', 'SAVE', i18n('Close editor and save changes'));
 $page->set('s', 'QUESTION', i18n('Do you want to save changes?'));
 
-// Add export and import tarnslations
-$page->set('s', 'EXPORT_RAWDATA', i18n("Export raw data"));
-$page->set('s', 'IMPORT_RAWDATA', i18n("Import raw data"));
-$page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
-$page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
-$page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
+// Add export and import translations
+$page->set('s', 'EXPORT_RAWDATA', i18n('Export raw data'));
+$page->set('s', 'IMPORT_RAWDATA', i18n('Import raw data'));
+$page->set('s', 'EXPORT_LABEL', i18n('Raw data export'));
+$page->set('s', 'IMPORT_LABEL', i18n('Raw data import'));
+$page->set('s', 'OVERWRITE_DATA_LABEL', i18n('Overwrite data'));
+//Set import labels
+if($_GET['idArtLangVersion'] == 'current' && $_GET['text'] == 'Revision: Aktuelle'
+   || $_GET['idArtLangVersion'] == false && $_GET['text'] == false){
+	$page->set('s', 'DISABLED', '');
+} else {
+	$page->set('s', 'DISABLED', 'DISABLED');
+}
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $page->set('s', 'USE_TINY', '');
 } else {
     $page->set('s', 'USE_TINY', '1');
 }
-
 // Show path of selected category to user
 $breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
 $page->set('s', 'CATEGORY', $breadcrumb);
-
 if (count($result) <= 0) {
     $page->displayInfo(i18n('Article has no raw data'));
-} else {
+} else { 
     foreach ($aIdtype as $idtype) {
         foreach ($sortID as $name) {
 			foreach($versions as $version){
-				if (in_array($name, array_keys($result)) && $result[$name][$idtype][$version] != '') {
-					if (in_array($name . '[' . $idtype . ']', $currentTypes) AND $version == 0) {
+			
+				if ( in_array($name, array_keys($result)) && $result[$name][$idtype][$version] != '') {				
+					if (in_array($name . '[' . $idtype . ']', $currentTypes) && $version == 0) {							
 						$class = '';
 						$formattedVersion = 'aktuelle';
 					} else {
@@ -520,7 +513,7 @@ if (count($result) <= 0) {
 //Create setAsCurrent Button
 $setAsCurrentButton = new cHTMLButton('setAsCurrentButton', 'Aktuelle Revision durch diese ersetzen');
 $setAsCurrentButton->setAttribute('onclick', 'setAsCurrent()');
-if(($_GET['idArtLangVersion'] == 'version' && $_GET['text'] == 'Revision: Aktuelle') 
+if(($_GET['idArtLangVersion'] == 'current' && $_GET['text'] == 'Revision: Aktuelle') 
 	|| ($_GET['idArtLangVersion'] == false && $_GET['text'] == false)) {
 	$setAsCurrentButton->setDisabled('disabled');
 }
@@ -629,7 +622,7 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
             $a_[$key] = $match[2]; //all typeids
 			//$tmp = preg_match_all('/(' . $type . '\[+(\d)+\]' . '\[+(\d)+\])/i', $layoutCode, $match);
 			//$b_[$key] = $match[3]; //version numbers
-			//$c = array_combine($a_[$key],$b_[$key]); //liefert nur die neuesten Versionen zurück?!
+			//$c = array_combine($a_[$key],$b_[$key]); //key=unique=nur neueste version
 			//$a_[$key] = $match[0];	
             //$success = array_walk($a_[$key], 'extractNumber');
 
@@ -649,7 +642,7 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
 						$tmp = $a_content[$_typeItem->type][$val][$version];
 						$cTypeObject = new $className($tmp, $val, $a_content);
 						if (cRegistry::isBackendEditMode() && $locked == 0 
-							&& $_GET['idArtLangVersion'] == 'version' && $_GET['text'] == 'Revision: Aktuelle'
+							&& $_GET['idArtLangVersion'] == 'current' && $_GET['text'] == 'Revision: Aktuelle'
 							|| $_GET['idArtLangVersion'] == false && $_GET['text'] == false) {
 							$tmp = $cTypeObject->generateEditCode();
 						} else {
@@ -684,7 +677,7 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
 					}
 
 					if ($locked == 0
-						&& $_GET['idArtLangVersion'] == 'version' && $_GET['text'] == 'Revision: Aktuelle'
+						&& $_GET['idArtLangVersion'] == 'current' && $_GET['text'] == 'Revision: Aktuelle'
 						|| $_GET['idArtLangVersion'] == false && $_GET['text'] == false) { // No freeze
 						$replacements[$num] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); });">
 					<img border="0" src="' . $backendUrl . 'images/delete.gif">

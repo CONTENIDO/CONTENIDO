@@ -67,14 +67,23 @@
 {SET_AS_CURRENT_VERSION}
 
 <script type='text/javascript'>
-function loadVersion(){
+function loadVersion(){	
 	var getUrl = window.location.href+'&idArtLangVersion='+$('#selectVersionElement option:selected').val()+'&text='+$('#selectVersionElement option:selected').text()+'&setAsCurrent='+1;
 	window.location.href = getUrl;
 }
 
 function setAsCurrent(){
-	var getUrl = window.location.href+'&idartlangversionSetAs='+$('#selectVersionElement option:selected').val()+'&setAsCurrent='+1+'&idArtLangVersion='+'version'+'&text='+'Revision: Aktuelle';
+	var getUrl = window.location.href+'&idartlangversionSetAs='+$('#selectVersionElement option:selected').val()+'&setAsCurrent='+1+'&idArtLangVersion='+'current'+'&text='+'Revision: Aktuelle';
 	window.location.href = getUrl;
+}
+
+/** 
+ * Set version number as post-parameter for rawdata export
+ * $_POST['iscurrentversion] = 'true' if version is current, 
+ * else $_POST['iscurrentversion] = version number
+ */
+function getVersionNumber(){
+		document.getElementById("versionnumber").value = $('#selectVersionElement option:selected').val();
 }
 
 (function(Con, $) {
@@ -109,20 +118,20 @@ function setAsCurrent(){
 <div class="contypeList">
 <form name="exportrawdata" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=exportrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
 	<div class="rawtypes">
-
-	</div>
-	<input type="submit" name="export" value="{EXPORT_RAWDATA}">
+	</div>	
+	<input type="hidden" id="versionnumber" name="versionnumber" value="">
+	<input type="submit" name="export" value="{EXPORT_RAWDATA}" onclick="getVersionNumber()">
 </form>
 </div>
 <label class="rawdata">{IMPORT_LABEL}</label>
 <div class="contypeList">
 <form name="importrawdata" id="importrawdata" method="post" enctype="multipart/form-data" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=importrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
-	<input type="file" name="rawfile" value="" size="40">
+	<input type="file" name="rawfile" value="" size="40" {DISABLED}>
 	<br />
 	<label class="rawdatalabel">{OVERWRITE_DATA_LABEL}</label>
-	<input type="checkbox" name="overwritecontent" value="1">
+	<input type="checkbox" name="overwritecontent" value="1" {DISABLED}>
 	<br />
-	<input type="submit" name="import" value="{IMPORT_RAWDATA}">
+	<input type="submit" name="import" value="{IMPORT_RAWDATA}" {DISABLED}>
 </form>
 </div>
 <!--
