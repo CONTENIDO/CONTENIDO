@@ -64,11 +64,14 @@
     {NAME}[{ID_TYPE}][{VERSION}]
 </div>
 <!-- END:BLOCK -->
-{SET_AS_CURRENT_VERSION}
+<label class="rawdata">{RESTORE_LABEL}</label> <!--TODOJ: change class -->
+<div class="contypeList">
+	{SET_AS_CURRENT_VERSION}
+</div>
 
 <script type='text/javascript'>
 function loadVersion(){	
-	var getUrl = window.location.href+'&idArtLangVersion='+$('#selectVersionElement option:selected').val()+'&text='+$('#selectVersionElement option:selected').text()+'&setAsCurrent='+1;
+	var getUrl = window.location.href+'&idArtLangVersion='+$('#selectVersionElement option:selected').val()+'&text='+$('#selectVersionElement option:selected').text()+'&setAsCurrent='+0;
 	window.location.href = getUrl;
 }
 
@@ -79,8 +82,8 @@ function setAsCurrent(){
 
 /** 
  * Set version number as post-parameter for rawdata export
- * $_POST['iscurrentversion] = 'true' if version is current, 
- * else $_POST['iscurrentversion] = version number
+ * $_POST['versionnumber] = 'current' if version is current, 
+ * else $_POST['versionnumber] = version number
  */
 function getVersionNumber(){
 		document.getElementById("versionnumber").value = $('#selectVersionElement option:selected').val();
