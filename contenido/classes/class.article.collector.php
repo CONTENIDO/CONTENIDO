@@ -87,10 +87,8 @@ class cArticleCollector implements SeekableIterator, Countable {
      *            default: empty array)
      */
     public function __construct($options = array()) {
-        if (count($options) > 0) {
-            $this->setOptions($options);
-            $this->loadArticles();
-        }
+        $this->setOptions($options);
+        $this->loadArticles();
     }
 
     /**

@@ -210,6 +210,39 @@ class cAuth {
     }
 
     /**
+     * Returns the user id of the currently authenticated user
+     *
+     * @return string
+     */
+    public function getUserId() {
+        $authInfo = $this->getAuthInfo();
+
+        return $authInfo['uid'];
+    }
+
+    /**
+     * Returns the user name of the currently authenticated user
+     *
+     * @return string
+     */
+    public function getUsername() {
+        $authInfo = $this->getAuthInfo();
+
+        return $authInfo['uname'];
+    }
+
+    /**
+     * Returns the permission string of the currently authenticated user
+     *
+     * @return string
+     */
+    public function getPerms() {
+        $authInfo = $this->getAuthInfo();
+
+        return $authInfo['perm'];
+    }
+
+    /**
      * Sets or refreshs the expiration of the authentication.
      *
      * @param int $expiration new expiration (optional, default: NULL = current

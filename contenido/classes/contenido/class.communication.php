@@ -42,9 +42,9 @@ class cApiCommunicationCollection extends ItemCollection {
      */
     public function create() {
         global $auth, $client;
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
-        $item->set('idclient', (int) $client);
+        $item->set('idclient', $client);
         $item->set('author', $auth->auth['uid']);
         $item->set('created', date('Y-m-d H:i:s'), false);
 
@@ -83,6 +83,23 @@ class cApiCommunication extends Item {
         $this->set('modified', date('Y-m-d H:i:s'), false);
 
         return parent::store();
+    }
+
+	/**
+     * Userdefined setter for communcation fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idclient':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
     }
 
 }

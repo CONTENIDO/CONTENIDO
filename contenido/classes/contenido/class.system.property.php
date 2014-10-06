@@ -130,7 +130,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * @return cApiSystemProperty
      */
     public function create($type, $name, $value) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('type', $type);
         $item->set('name', $name);

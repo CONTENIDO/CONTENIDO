@@ -56,7 +56,6 @@ class cModuleFileTranslation extends cModuleHandler {
 
     /**
      *
-     * @param array $cfg
      * @param int $idmodul
      * @param bool $static if true it will load once the translation from file
      * @param int $overrideIdlang use different language if not NULL
@@ -143,9 +142,23 @@ class cModuleFileTranslation extends cModuleHandler {
 
             $translations = array();
             while ($db->nextRecord()) {
-                $original = urldecode(cSecurity::unfilter($db->f('original')));
-                $translation = urldecode(cSecurity::unfilter($db->f('translation')));
+                $original = mb_convert_encoding(urldecode(cSecurity::unfilter($db->f('original'))), "UTF-8");
+                $translation = mb_convert_encoding(urldecode(cSecurity::unfilter($db->f('translation'))), "UTF-8");
                 $translations[$original] = $translation;
+            }
+
+            $text = $this->readInput();
+            if (!$text) {
+                $text = "";
+            }
+            $text .= $this->readOutput();
+
+            mb_ereg_search_init($text, 'mi18n\(["|\'](.*?)["|\']\)');
+            while(mb_ereg_search()) {
+                $translation = mb_ereg_search_getregs();
+                if(!isset($translations[$translation[1]])) {
+                    $translations[$translation[1]] = $translation[1];
+                }
             }
 
             if (count($translations) != 0) {
@@ -166,8 +179,6 @@ class cModuleFileTranslation extends cModuleHandler {
     private function _serializeArray($wordListArray) {
         $retString = '';
         foreach ($wordListArray as $key => $value) {
-            $value = iconv($this->_encoding, $this->_fileEncoding, $value);
-            $key = iconv($this->_encoding, $this->_fileEncoding, $key);
             // Originall String [Divider] Translation String
             $retString .= $key . self::$originalTranslationDivider . $value . "\r\n";
         }
@@ -222,8 +233,8 @@ class cModuleFileTranslation extends cModuleHandler {
 
         $escapedArray = array();
         foreach ($wordListArray as $key => $value) {
-            $newKey = str_replace("=", "\=", $key);
-            $newValue = str_replace("=", "\=", $value);
+            $newKey = mb_ereg_replace("=", "\\=", $key);
+            $newValue = mb_ereg_replace("=", "\\=", $value);
             $escapedArray[$newKey] = $newValue;
         }
 

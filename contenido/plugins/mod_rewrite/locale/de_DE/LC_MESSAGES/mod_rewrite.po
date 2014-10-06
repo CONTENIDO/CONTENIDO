@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Advanced Mod Rewrite\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-01 10:27+0200\n"
-"PO-Revision-Date: 2013-06-01 10:28+0100\n"
-"Last-Translator: Murat Purc <murat@purc.de>\n"
+"POT-Creation-Date: 2014-08-21 10:55+0200\n"
+"PO-Revision-Date: 2014-08-21 10:57+0100\n"
+"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Murat Purc <murat@purc.de>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -12,8 +12,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../../\n"
 "X-Poedit-KeywordsList: i18n\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.6.7\n"
 "X-Poedit-SearchPath-0: mod_rewrite\n"
+
+#: classes/controller/class.modrewrite_contentexpert_controller.php:74
+msgid ""
+".htaccess already exists at CONTENIDO-/or client directory, so it is not "
+"copied."
+msgstr ""
+"Die .htaccess-Datei existiert bereits im CONTENIDO-/oder "
+"Mandantenverzeichnis, daher wird sie nicht kopiert."
+
+#: classes/controller/class.modrewrite_contentexpert_controller.php:91
+#, php-format
+msgid ""
+".htaccess could not copy from <strong>%s</strong> to <strong>%s</strong>! "
+"Perhaps the target directory has not the required rights to write files at "
+"your webserver."
+msgstr ""
+"Die .htaccess-Datei konnte nicht von <strong>%s</strong> nach <strong>%s</"
+"strong> kopiert werden! Ggfls. hat der Ziel-Ordner nicht die notwendigen "
+"Schreibrechte auf dem Webserver."
+
+#: classes/controller/class.modrewrite_contentexpert_controller.php:95
+#, php-format
+msgid ".htaccess are successfully copied to %s"
+msgstr "Die .htaccess-Datei wurde erfolgreich nach %s kopiert"
+
+#: classes/controller/class.modrewrite_contentexpert_controller.php:129
+msgid "All aliases have been reset."
+msgstr "Alle Aliase wurden zur&uuml;ckgesetzt"
+
+#: classes/controller/class.modrewrite_contentexpert_controller.php:138
+msgid "Only empty aliases have been reset."
+msgstr "Nur leere Aliase wurden zur&uuml;ckgesetzt"
 
 #: classes/controller/class.modrewrite_content_controller.php:62
 msgid ""
@@ -91,7 +123,7 @@ msgstr "Trenner für Kategorie und Kategoriewörter dürfen nicht identisch sein
 
 #: classes/controller/class.modrewrite_content_controller.php:232
 msgid "Separator for category and article words must not be identical"
-msgstr "Separator for category and article words must not be identical"
+msgstr "Der Trenner für Kategorien und Artikelwörter darf nicht gleichlauten"
 
 #: classes/controller/class.modrewrite_content_controller.php:237
 msgid "Separator for category-article and article words must not be identical"
@@ -124,11 +156,12 @@ msgstr ""
 
 #: classes/controller/class.modrewrite_content_controller.php:352
 msgid "Please check your input"
-msgstr "Bitte überprüfen Sie ihre Eingaben"
+msgstr "Bitte überprüfen Sie Ihre Eingaben"
 
 #: classes/controller/class.modrewrite_content_controller.php:362
 msgid "Configuration has <b>not</b> been saved, because of enabled debugging"
-msgstr "Konfiguration wurde <b>nicht</b> gespeichert, weil debugging aktiv ist"
+msgstr ""
+"Konfiguration wurde <b>nicht</b> gespeichert, weil das Debugging aktiv ist"
 
 #: classes/controller/class.modrewrite_content_controller.php:370
 msgid "Configuration has been saved"
@@ -151,11 +184,11 @@ msgstr "Advanced Mod Rewrite"
 
 #: includes/config.plugin.php:73
 msgid "Advanced Mod Rewrite functions"
-msgstr "Advanced Mod Rewrite Funktionen"
+msgstr "Advanced Mod Rewrite-Funktionen"
 
 #: includes/config.plugin.php:74
 msgid "Advanced Mod Rewrite test"
-msgstr "Advanced Mod Rewrite Test"
+msgstr "Advanced Mod Rewrite-Test"
 
 #: includes/include.mod_rewrite_content.php:26
 #: includes/include.mod_rewrite_contentexpert.php:26
@@ -177,11 +210,11 @@ msgstr "E-Mail an Autor"
 
 #: includes/include.mod_rewrite_content.php:178
 msgid "Plugin page"
-msgstr "Pluginseite"
+msgstr "Plugin-Seite"
 
 #: includes/include.mod_rewrite_content.php:179
 msgid "Visit plugin page"
-msgstr "Pluginseite besuchen"
+msgstr "Plugin-Seite besuchen"
 
 #: includes/include.mod_rewrite_content.php:180
 msgid "opens page in new window"
@@ -189,15 +222,15 @@ msgstr "öffnet Seite in einem neuen Fenster"
 
 #: includes/include.mod_rewrite_content.php:181
 msgid "CONTENIDO forum"
-msgstr "CONTENIDO Forum"
+msgstr "CONTENIDO-Forum"
 
 #: includes/include.mod_rewrite_content.php:182
 msgid "Plugin thread in CONTENIDO forum"
-msgstr "Pluginbeitrag im CONTENIDO Forum"
+msgstr "Plugin-Beitrag im CONTENIDO-Forum"
 
 #: includes/include.mod_rewrite_content.php:183
 msgid "Plugin settings"
-msgstr "Plugineinstellungen"
+msgstr "Plugin-Einstellungen"
 
 #: includes/include.mod_rewrite_content.php:184
 #: includes/include.mod_rewrite_contentexpert.php:87
@@ -211,8 +244,8 @@ msgid ""
 "directory nor in client directory.<br>It should set up in %sFunctions%s "
 "area, if needed."
 msgstr ""
-"Es wurde weder im CONTENIDO Installationsverzeichnis noch im "
-"Mandantenverzeichnis eine .htaccess Datei gefunden.<br>Die .htaccess Datei "
+"Es wurde weder im CONTENIDO-Installationsverzeichnis noch im "
+"Mandantenverzeichnis eine .htaccess-Datei gefunden.<br>Die .htaccess-Datei "
 "sollte gegebenenfalls im Bereich %sFunktionen%s eingerichtet werden."
 
 #: includes/include.mod_rewrite_content.php:189
@@ -265,7 +298,7 @@ msgstr ""
 
 #: includes/include.mod_rewrite_content.php:200
 msgid "Path to .htaccess from DocumentRoot"
-msgstr "Pfad zur .htaccess Datei vom DocumentRoot ausgehend"
+msgstr "Pfad zur .htaccess-Datei vom DocumentRoot ausgehend"
 
 #: includes/include.mod_rewrite_content.php:201
 msgid ""
@@ -281,7 +314,7 @@ msgstr ""
 
 #: includes/include.mod_rewrite_content.php:203
 msgid "Check path to .htaccess"
-msgstr "Pfad zur .htaccess Datei überprüfen"
+msgstr "Pfad zur .htaccess-Datei überprüfen"
 
 #: includes/include.mod_rewrite_content.php:204
 msgid ""
@@ -592,12 +625,12 @@ msgid ""
 "All URLs will usually be collected and converted to Clean-URLs at once."
 "<br>Doing it this way reduces the amount of executed database significantly."
 msgstr ""
-"Weiterhin Kompatibel zu älteren Modulen/Plugins, da keine Änderungen am Code "
+"Weiterhin kompatibel zu älteren Modulen/Plugins, da keine Änderungen am Code "
 "nötig sind\n"
 "Sämtliche im HTML-Code vorkommende URLs, auch über wysiwyg gesetzte URLs, "
 "<br>werden auf Clean-URLs umgestellt\n"
 "Alle umzuschreibenden URLs werden in der Regel \"gesammelt\" und auf eimmal "
-"umgeschreiben, <br>dadurch wird die Anzahl der DB-Abfragen sehr stark "
+"umgeschreiben, <br>dadurch wird die Anzahl der Datenbank-Abfragen sehr stark "
 "minimiert"
 
 #: includes/include.mod_rewrite_content.php:269

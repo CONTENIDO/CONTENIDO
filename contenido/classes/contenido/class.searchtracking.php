@@ -5,7 +5,7 @@
  * @package Core
  * @subpackage GenericDB_Model
  * @version SVN Revision $Rev:$
- *         
+ *
  * @author Mischa Holz
  * @copyright four for business AG <www.4fb.de>
  * @license http://www.contenido.org/license/LIZENZ.txt
@@ -28,7 +28,7 @@ class cApiSearchTrackingCollection extends ItemCollection {
     public function __construct() {
         global $cfg;
         parent::__construct($cfg['tab']['search_tracking'], 'idsearchtracking');
-        
+
         $this->_setItemClass('cApiSearchTracking');
     }
 
@@ -43,13 +43,13 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * @return boolean
      */
     public function create($searchTerm, $searchResults, $timestamp = "", $idclient = 0, $idlang = 0) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
         $item->set("searchterm", $searchTerm);
         $item->set("results", $searchResults);
         $item->set("datesearched", ($timestamp == "") ? date('Y-m-d H:i:s') : $timestamp);
         $item->set("idclient", ($idclient == 0) ? cRegistry::getClientId() : $idclient);
         $item->set("idlang", ($idlang == 0) ? cRegistry::getLanguageId() : $idlang);
-        
+
         return $item->store();
     }
 
@@ -64,7 +64,7 @@ class cApiSearchTrackingCollection extends ItemCollection {
         if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
             return false;
         }
-        
+
         return $this->create($searchTerm, $resultCount);
     }
 
@@ -114,14 +114,14 @@ class cApiSearchTracking extends Item {
      */
     public function __construct($mId = false) {
         global $cfg;
-        
+
         parent::__construct($cfg['tab']['search_tracking'], 'idsearchtracking');
         $this->setFilters(array(
             'addslashes'
         ), array(
             'stripslashes'
         ));
-        
+
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

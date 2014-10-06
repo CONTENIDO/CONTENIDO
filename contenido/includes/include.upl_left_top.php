@@ -40,7 +40,7 @@ if ((int) $client == 0) {
 }
 
 // Form for 'Search'
-if ($appendparameters != 'filebrowser' && (int) $client > 0) {
+if ((int) $client > 0) {
     $search = new cHTMLTextbox('searchfor', $_REQUEST['searchfor'], 26);
     $search->setClass('text_small vAlignMiddle');
     $sSearch = $search->render();
@@ -91,6 +91,7 @@ if ($perm->have_perm_area_action('upl', 'upl_mkdir') && (int) $client > 0) {
 
 // Searching
 if ($searchfor != '') {
+
     $items = uplSearch($searchfor);
 
     $tmp_mstr = 'Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')';
@@ -99,8 +100,7 @@ if ($searchfor != '') {
         'right_bottom', $sess->url("main.php?area=upl_search_results&frame=4&searchfor=$searchfor&appendparameters=$appendparameters"),
         'right_top', $sess->url("main.php?area=$area&frame=3&appendparameters=$appendparameters")
     );
-    $refreshMenu = "\n" . 'if (Con.getFrame(\'left_bottom\')) { Con.getFrame(\'left_bottom\').refreshMenu(); }';
-    $tpl->set('s', 'RESULT', $mstr . $refreshMenu);
+    $tpl->set('s', 'RESULT', $mstr);
 } else {
     $tpl->set('s', 'RESULT', '');
 }

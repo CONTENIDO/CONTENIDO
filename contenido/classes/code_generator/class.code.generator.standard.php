@@ -183,10 +183,16 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
         } else if (!empty($cssFile)) {
             if (strpos($this->_layoutCode, '</title>') !== false) {
-                $this->_layoutCode = cString::iReplaceOnce('</title>', '</title>' . $cssFile, $this->_layoutCode);
+                $matches = array();
+                preg_match_all("#(<head>.*?</title>)(.*?</head>)#si", $this->_layoutCode, $matches);
+                $this->_layoutCode = cString::iReplaceOnce($matches[1][0], $matches[1][0] . $cssFile . $matches[1][1], $this->_layoutCode);
             } else {
                 $this->_layoutCode = cString::iReplaceOnce('<head>', '<head>' . $cssFile, $this->_layoutCode);
             }
+        }
+
+        if (strpos($this->_layoutCode, '{REV}') !== false) {
+            $this->_layoutCode = cString::iReplaceOnce('{REV}', ((int) getEffectiveSetting("ressource", "revision", 0)), $this->_layoutCode);
         }
 
         // add module JS at {JS} position or before closing body tag if there is
@@ -195,6 +201,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = cString::iReplaceOnce('{JS}', $jsFile, $this->_layoutCode);
         } else if (!empty($jsFile)) {
             $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
+        }
+
+        if (strpos($this->_layoutCode, '{META}') !== false) {
+            $this->_layoutCode = cString::iReplaceOnce('{META}', $this->_processCodeMetaTags(), $this->_layoutCode);
+        } else {
+            $this->_layoutCode = cString::iReplaceOnce('</head>', $this->_processCodeMetaTags() . '</head>', $this->_layoutCode);
         }
 
         if ($this->_feDebugOptions['general_information']) {
@@ -306,6 +318,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         $sMetatags = '';
+
         foreach ($metaTags as $value) {
 
             // get meta tag keys
@@ -320,8 +333,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             // decode entities and htmlspecialchars, content will be converted
             // later using conHtmlSpecialChars() by render() function
             if (isset($value['content'])) {
-                $value['content'] = conHtmlEntityDecode($value['content'], ENT_QUOTES, strtoupper($encoding[$this->_lang]));
-                $value['content'] = htmlspecialchars_decode($value['content'], ENT_QUOTES);
+                $value['content'] = str_replace('"', '\"', (conHtmlEntityDecode(stripslashes($value['content']))));
             }
 
             // build up metatag string
@@ -352,8 +364,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             }
         }
 
-        // add meta tags
-        $this->_layoutCode = cString::iReplaceOnce('</head>', $sMetatags . '</head>', $this->_layoutCode);
+        return $sMetatags;
     }
 
     /**

@@ -147,6 +147,13 @@ class cGuiPage {
     protected $_filesDirectory;
 
     /**
+     * Whether the template exist check should be skipped or not.
+     *
+     * @var bool
+     */
+    protected $_skipTemplateCheck = false;
+
+    /**
      * The constructor initializes the class and tries to get the encoding from
      * the currently selected language.
      * It will also add every script in the form of /scripts/*.PAGENAME.js and
@@ -269,7 +276,7 @@ class cGuiPage {
 
         // Warning message for not existing resources
         if($perm->isSysadmin($currentuser) && strpos(trim($script), '<script') === false &&
-           ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $filePathName)) &&
+           ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $script)) &&
            (!cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)))) {
 			$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
@@ -320,8 +327,8 @@ class cGuiPage {
         $filePathName = $this->_getRealFilePathName($stylesheet);
 
         // Warning message for not existing resources
-        if($perm->isSysadmin($currentuser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $filePathName)) ||
-           (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName)))) {
+        if($perm->isSysadmin($currentuser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet))) ||
+           (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName))) {
         	$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
 
@@ -595,6 +602,9 @@ class cGuiPage {
 
         // Get all messages for the content
         $text = $this->_renderContentMessages();
+        if (strlen(trim($text)) > 0) {
+            $this->_skipTemplateCheck = true;
+        }
 
         if (!$this->_abort) {
             if (count($this->_objects) == 0) {
@@ -749,22 +759,21 @@ class cGuiPage {
      * @return string
      */
     protected function _renderTemplate($template) {
-    	global $perm, $currentuser;
+    	global $perm, $currentuser, $notification;
 
         $cfg = cRegistry::getConfig();
-
-        // Warning message for not existing resources
-        if($perm->isSysadmin($currentuser) && (($this->_pluginName == '' && !cFileHandler::exists($cfg['path']['templates'] . 'template.' . $this->_pageName . '.html')) ||
-           ($this->_pluginName != '' && !cFileHandler::exists($cfg['path']['plugins'] . $this->_pluginName . '/templates/template.' . $this->_pageName . '.html')))) {
-        	$this->displayWarning(i18n("The requested resource") . " <strong>" . $this->_pageName . "</strong> " . i18n("was not found"));
-        	$output .= $this->_renderContentMessages();
-        }
 
         $file = '';
         if ($this->_pluginName == '') {
             $file = $cfg['path']['templates'] . 'template.' . $this->_pageName . '.html';
         } else {
             $file = $cfg['path']['plugins'] . $this->_pluginName . '/templates/template.' . $this->_pageName . '.html';
+        }
+
+        $output = '';
+        // Warning message for not existing resources
+        if (!$this->_skipTemplateCheck && $perm->isSysadmin($currentuser) && !cFileHandler::exists($file)) {
+            $output .= $notification->returnNotification('warning', i18n("The requested resource") . " <strong>template." . $this->_pageName . ".html</strong> " . i18n("was not found")) . '<br>';
         }
 
         if (cFileHandler::exists($file)) {

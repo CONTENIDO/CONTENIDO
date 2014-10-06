@@ -45,12 +45,6 @@ class NewsletterLogCollection extends ItemCollection {
      *        deleted)
      */
     public function create($idnewsjob, $idnewsrcp) {
-        global $client, $lang, $auth;
-
-        $idnewsjob = cSecurity::toInteger($idnewsjob);
-        $idnewsrcp = cSecurity::toInteger($idnewsrcp);
-        $client = cSecurity::toInteger($client);
-        $lang = cSecurity::toInteger($lang);
 
         $this->resetQuery();
         $this->setWhere("idnewsjob", $idnewsjob);
@@ -63,7 +57,7 @@ class NewsletterLogCollection extends ItemCollection {
 
         $oRecipient = new NewsletterRecipient();
         if ($oRecipient->loadByPrimaryKey($idnewsrcp)) {
-            $oItem = parent::createNewItem();
+            $oItem = $this->createNewItem();
 
             $oItem->set("idnewsjob", $idnewsjob);
             $oItem->set("idnewsrcp", $idnewsrcp);
@@ -129,7 +123,7 @@ class NewsletterLogCollection extends ItemCollection {
 
                         $sDistinct = "distinct";
                         $sFrom = $cfg["tab"]["news_groupmembers"] . " AS groupmembers ";
-                        $sSQL = $cfg['tab']['news_rcp'] . ".idclient = '" . $iIDClient . "' AND " . $cfg['tab']['news_rcp'] . ".idlang = '" . $iIDLang . "' AND " . $cfg['tab']['news_rcp'] . ".deactivated = '0' AND " . $cfg['tab']['news_rcp'] . ".confirmed = '1' AND " . $cfg['tab']['news_rcp'] . ".idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup IN (" . $sGroups . ")";
+                        $sSQL = "newsletterrecipientcollection.idclient = '" . $iIDClient . "' AND newsletterrecipientcollection.idlang = '" . $iIDLang . "' AND newsletterrecipientcollection.deactivated = '0' AND newsletterrecipientcollection.confirmed = '1' AND newsletterrecipientcollection.idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup IN (" . $sGroups . ")";
                     } else {
                         $sDestination = "unknown";
                     }
@@ -219,6 +213,26 @@ class NewsletterLog extends Item {
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
+    }
+
+	/**
+     * Userdefined setter for newsletter logs fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idnewsjob':
+                $value = (int) $value;
+                break;
+			case 'idnewsrcp':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
     }
 
 }

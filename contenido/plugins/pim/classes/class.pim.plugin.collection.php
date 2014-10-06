@@ -45,21 +45,8 @@ class PimPluginCollection extends ItemCollection {
 
         $nextId = $this->_getNextId();
 
-        // security checks
-        $client = cSecurity::toInteger($client);
-        $name = cSecurity::escapeString($name);
-        $description = cSecurity::escapeString($description);
-        $author = cSecurity::escapeString($author);
-        $copyright = cSecurity::escapeString($copyright);
-        $mail = cSecurity::escapeString($mail);
-        $website = cSecurity::escapeString($website);
-        $version = cSecurity::escapeString($version);
-        $foldername = cSecurity::escapeString($foldername);
-        $uuId = cSecurity::escapeString($uuId);
-        $active = cSecurity::toInteger($active);
-
         // create a new entry
-        $item = parent::createNewItem($nextId);
+        $item = $this->createNewItem($nextId);
         $item->set('idclient', $client);
         $item->set('name', $name);
         $item->set('description', $description);
@@ -140,6 +127,26 @@ class PimPlugin extends Item {
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
+    }
+
+	/**
+     * Userdefined setter for pim fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idclient':
+                $value = (int) $value;
+                break;
+			case 'active':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
     }
 
     /**

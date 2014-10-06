@@ -107,31 +107,39 @@ class cSetupSystemData extends cSetupMask {
         $dbcollation = new cHTMLSelectElement('collationSelect', '1', 'collationSelect');
         $dbcollation->setAttribute("onchange", "comboBox('collationSelect', 'collationText')");
 
-        // Compose charset select box
-        $pos = 0;
-        $option = new cHTMLOptionElement('-- ' . i18n("No character set", "setup") . ' --', '');
-        $dbcharset->addOptionElement(++$pos, $option);
-        $selectedCharset = (!empty($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '';
-        $aCharsets = fetchMySQLCharsets();
-        foreach ($aCharsets as $p => $charset) {
-            $selected = ($selectedCharset == $charset);
-            $option = new cHTMLOptionElement($charset, $charset, $selected);
-            $dbcharset->addOptionElement(++$pos, $option);
-        }
+        // Compose charset select box, only if CONUTF8 flag is not set
+        if (!defined('CON_UTF8')) {
+			$pos = 0;
+			$option = new cHTMLOptionElement('-- ' . i18n("No character set", "setup") . ' --', '');
+			$dbcharset->addOptionElement(++$pos, $option);
+			$selectedCharset = (!empty($_SESSION['dbcharset'])) ? $_SESSION['dbcharset'] : '';
+			$aCharsets = fetchMySQLCharsets();
+			foreach ($aCharsets as $p => $charset) {
+				$selected = ($selectedCharset == $charset);
+				$option = new cHTMLOptionElement($charset, $charset, $selected);
+				$dbcharset->addOptionElement(++$pos, $option);
+			}
+			$dbcharsetTextbox = $dbcharset->render();
+		} else {
+			$dbcharsetTextbox = 'utf-8';
+		}
 
-        // Compose collation select box
-        $pos = 0;
-        $noOp = new cHTMLOptionElement('-- ' . i18n("Other", "setup") . ' --', '');
-        $dbcollation->addOptionElement(++$pos, $noOp);
-        $selectedCollation = (!empty($_SESSION['dbcollation'])) ? $_SESSION['dbcollation'] : 'utf8_general_ci';
-        $collations = fetchMySQLCollations();
-        foreach ($collations as $p => $collation) {
-            $selected = ($selectedCollation == $collation);
-            $option = new cHTMLOptionElement($collation, $collation, $selected);
-            $dbcollation->addOptionElement(++$pos, $option);
-        }
-        $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText');
-
+        // Compose collation select box, only if CONUTF8 flag is not set
+		if (!defined('CON_UTF8')) {
+			$pos = 0;
+			$noOp = new cHTMLOptionElement('-- ' . i18n("Other", "setup") . ' --', '');
+			$dbcollation->addOptionElement(++$pos, $noOp);
+			$selectedCollation = (!empty($_SESSION['dbcollation'])) ? $_SESSION['dbcollation'] : 'utf8_general_ci';
+			$collations = fetchMySQLCollations();
+			foreach ($collations as $p => $collation) {
+				$selected = ($selectedCollation == $collation);
+				$option = new cHTMLOptionElement($collation, $collation, $selected);
+				$dbcollation->addOptionElement(++$pos, $option);
+			}
+			$dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText'). $dbcollation->render();
+		} else {
+			$dbCollationTextbox = 'utf8_general_ci';
+		}
 
         $this->_oStepTemplate->set('s', 'LABEL_DBHOST', i18n("Database Server (IP or name)", "setup"));
 
@@ -145,6 +153,7 @@ class cSetupSystemData extends cSetupMask {
         $this->_oStepTemplate->set('s', 'LABEL_DBUSERNAME', i18n("Database Username", "setup"));
         $this->_oStepTemplate->set('s', 'LABEL_DBPASSWORD', i18n("Database Password", "setup"));
         $this->_oStepTemplate->set('s', 'LABEL_DBPREFIX', i18n("Table Prefix", "setup"));
+		$this->_oStepTemplate->set('s', 'LABEL_DBADVANCED', i18n("Advanced Settings", "setup"));
         $this->_oStepTemplate->set('s', 'LABEL_DBCHARSET', i18n("Database character set", "setup"));
         $this->_oStepTemplate->set('s', 'LABEL_DBCOLLATION', i18n("Database collation", "setup"));
 
@@ -153,8 +162,8 @@ class cSetupSystemData extends cSetupMask {
         $this->_oStepTemplate->set('s', 'INPUT_DBUSERNAME', $dbuser->render());
         $this->_oStepTemplate->set('s', 'INPUT_DBPASSWORD', $dbpass->render() . $dbpass_hidden->render());
         $this->_oStepTemplate->set('s', 'INPUT_DBPREFIX', $dbprefix->render());
-        $this->_oStepTemplate->set('s', 'INPUT_DBCHARSET', $dbcharset->render());
-        $this->_oStepTemplate->set('s', 'INPUT_DBCOLLATION', $dbCollationTextbox . $dbcollation->render());
+        $this->_oStepTemplate->set('s', 'INPUT_DBCHARSET', $dbcharsetTextbox);
+        $this->_oStepTemplate->set('s', 'INPUT_DBCOLLATION', $dbCollationTextbox);
 
         $this->setNavigation($previous, $next);
     }

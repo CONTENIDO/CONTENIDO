@@ -126,13 +126,13 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @return cApiUserProperty
      */
     public function create($type, $name, $value, $idcatlang = 0) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('user_id', $this->_userId);
         $item->set('type', $type);
         $item->set('name', $name);
         $item->set('value', $value);
-        $item->set('idcatlang', (int) $idcatlang);
+        $item->set('idcatlang', $idcatlang);
         $item->store();
 
         if (self::$_enableCache) {
@@ -394,4 +394,21 @@ class cApiUserProperty extends Item {
         return $this->store();
     }
 
+	/**
+     * Userdefined setter for user property fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idcatlang':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+	
 }

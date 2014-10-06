@@ -142,7 +142,7 @@ class cFileHandler {
             self::setDefaultFilePerms($filename);
         }
 
-        return $success;
+        return !($success === false);
     }
 
     /**

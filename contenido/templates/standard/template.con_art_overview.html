@@ -315,6 +315,10 @@ function doAction(thisObject) {
 
         // On category path link click
         $("div#categorypath > a").click(function() {
+            if($(this).attr("disabled") !== undefined) {
+                return false;
+            }
+
             var url = $(this).attr('href'),
                 params = Con.UtilUrl.getParams(url);
             Con.multiLink(

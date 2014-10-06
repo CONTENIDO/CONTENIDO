@@ -65,7 +65,7 @@ class cApiUploadMetaCollection extends ItemCollection {
             $modified = date('Y-m-d H:i:s');
         }
 
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
         $oItem->set('idupl', $idupl);
         $oItem->set('idlang', $idlang);

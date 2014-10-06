@@ -62,23 +62,12 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase
      * - cApiCecRegistry->registerChain()
      * - cApiCecRegistry->isChainRegistered()
      * - cApiCecRegistry->unregisterChain()
+	 *
+	 * @deprecated 2014-08-07 - This method is deprecated and is not needed any longer
      */
-    public function testChains()
-    {
-        // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
-
-        // register chain
-        $cecReg->registerChain('TestChain.Example');
-        $isRegistered = $cecReg->isChainRegistered('TestChain.Example');
-        $this->assertEquals(true, $isRegistered);
-
-        // unregister chain
-        $cecReg->unregisterChain('TestChain.Example');
-        $isRegistered = $cecReg->isChainRegistered('TestChain.Example');
-        $this->assertEquals(false, $isRegistered);
+    public function testChains() {
+        cDeprecated('This method is deprecated and is not needed any longer');
     }
-
 
     /**
      * Test
@@ -90,9 +79,6 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase
     {
         // get cec registry instance
         $cecReg = cApiCecRegistry::getInstance();
-
-        // register chain
-        $cecReg->registerChain('TestChain.Example');
 
         // add chain function
         $cecReg->addChainFunction('TestChain.Example', 'chain_cApiCecRegistry_Test');
@@ -124,8 +110,6 @@ class cApiCecRegistryTest extends PHPUnit_Framework_TestCase
         $exists = $cecReg->chainFunctionExists('TestChain.Example', 'chain_cApiCecRegistryClassStatic_Test::callMe');
         $this->assertEquals(false, $exists);
 
-        // unregister chain
-        $cecReg->unregisterChain('TestChain.Example');
     }
 
 }

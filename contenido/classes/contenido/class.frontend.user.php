@@ -69,7 +69,7 @@ class cApiFrontendUserCollection extends ItemCollection {
             return $this->create($username . '_' . substr(md5(rand()), 0, 10), $password);
         }
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
         $item->set('idclient', $client);
         $item->set('username', $username);
         $item->set('salt', md5($username . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999)));
@@ -162,7 +162,7 @@ class cApiFrontendUser extends Item {
      * @return bool
      */
     public function setRawPassword($password) {
-        return parent::setField('password', $password);
+        return $this->setField('password', $password);
     }
 
     /**

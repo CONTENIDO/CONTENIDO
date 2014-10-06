@@ -49,7 +49,7 @@ class cApiUserCollection extends ItemCollection {
     public function create($username) {
         $primaryKeyValue = md5($username);
 
-        $item = parent::createNewItem($primaryKeyValue);
+        $item = $this->createNewItem($primaryKeyValue);
         if ($item->usernameExists($username)) {
             return false;
         }
@@ -177,7 +177,7 @@ class cApiUserCollection extends ItemCollection {
 
         $where = 'perms LIKE "%sysadmin%"';
         if ($forceActive === true) {
-            $where .= " AND (valid_from <= NOW() OR valid_from = '0000-00-00')" . " AND (valid_to >= NOW() OR valid_to = '0000-00-00')";
+            $where .= " AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00')" . " AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00')";
         }
 
         $this->select($where);

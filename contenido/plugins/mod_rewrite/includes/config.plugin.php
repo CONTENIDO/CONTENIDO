@@ -23,7 +23,7 @@ global $_cecRegistry, $cfg, $contenido, $area, $client, $load_client;
 ####################################################################################################
 /**
  * Chain Contenido.Frontend.CreateURL
- * This chain is called inside some scripts (front_content.php) to create urls.
+ * is called inside some scripts (front_content.php) to create urls.
  *
  * @todo: Is added to provide downwards compatibility for the amr plugin.
  *        There is no need for this chain since CONTENIDO 4.8.9 contains its own Url building feature.
@@ -35,7 +35,7 @@ global $_cecRegistry, $cfg, $contenido, $area, $client, $load_client;
  * Returns:
  * string     Returns modified URL
  */
-$_cecRegistry->registerChain("Contenido.Frontend.CreateURL", "string");
+
 ####################################################################################################
 // initialize client id
 if (isset($client) && (int) $client > 0) {
@@ -128,8 +128,12 @@ if (ModRewrite::isEnabled()) {
 
     if (!isset($contenido)) {
         // we are not in backend, add cec functions for rewriting
-        // Add mr related function for hook "after plugins loaded" to CONTENIDO Extension Chainer
-        $_cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'mr_runFrontendController');
+        
+        if ((int)$_GET['idart'] == 0 && (int)$_GET['idcat'] == 0 && (int)$_POST['idart'] == 0 && (int)$_POST['idcat'] == 0) {
+            // submitted idart and idcat vars has a higher priority than submitted seo url
+            // Add mr related function for hook "after plugins loaded" to CONTENIDO Extension Chainer
+            $_cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'mr_runFrontendController');
+        }
 
         // Add url rewriting function to CONTENIDO Extension Chainer
         // @todo: no more need since CONTENIDO 4.8.9 provides central Url building,

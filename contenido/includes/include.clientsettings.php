@@ -104,7 +104,7 @@ if ($aItems !== false) {
         $oLnkEdit->setCustom("idprop", $iKey);
 
         if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey)) {
-            $oInputboxValue = new cHTMLTextbox("csvalue", conHtmlSpecialChars($aValue['value']));
+            $oInputboxValue = new cHTMLTextbox("csvalue", utf8_decode(conHtmlSpecialChars($aValue['value'])));
             $oInputboxValue->setWidth(30);
             $oInputboxName = new cHTMLTextbox("csname", conHtmlSpecialChars($aValue['name']));
             $oInputboxName->setWidth(15);
@@ -129,11 +129,11 @@ if ($aItems !== false) {
             }
 
             if (strlen($aValue['name']) > 35) {
-                $sShort = conHtmlSpecialChars(cApiStrTrimHard($aValue['name'], 35));
+                $sShort = utf8_decode(conHtmlSpecialChars(cApiStrTrimHard($aValue['name'], 35)));
                 $aValue['name'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars($aValue['name'], ENT_QUOTES), $sShort);
             }
 
-            $oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
+            $oList->setData($iCounter, $aValue['type'], $aValue['name'], utf8_decode($aValue['value']), $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
         }
         $iCounter++;
     }

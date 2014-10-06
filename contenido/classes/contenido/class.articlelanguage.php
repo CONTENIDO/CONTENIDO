@@ -97,7 +97,7 @@ class cApiArticleLanguageCollection extends ItemCollection {
 
         $urlname = (trim($urlname) == '') ? trim($title) : trim($urlname);
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('idart', $idart);
         $item->set('idlang', $idlang);

@@ -50,9 +50,6 @@ class NewsletterRecipientCollection extends ItemCollection {
     public function create($sEMail, $sName = "", $iConfirmed = 0, $sJoinID = "", $iMessageType = 0) {
         global $client, $lang, $auth;
 
-        $iConfirmed = (int) $iConfirmed;
-        $iMessageType = (int) $iMessageType;
-
         /* Check if the e-mail adress already exists */
         $email = strtolower($email); // e-mail always lower case
         $this->setWhere("idclient", $client);
@@ -65,7 +62,7 @@ class NewsletterRecipientCollection extends ItemCollection {
                                                                                                             // Deactivate
                                                                                                             // 'confirmed'
         }
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
         $oItem->set("idclient", $client);
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);
@@ -262,6 +259,26 @@ class NewsletterRecipient extends Item {
         return $success;
     }
 
+	/**
+     * Userdefined setter for newsletter recipients fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'confirmed':
+                $value = (int) $value;
+                break;
+			case 'news_type':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+	
 }
 
 ?>

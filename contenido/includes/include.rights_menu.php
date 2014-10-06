@@ -59,7 +59,7 @@ if ($elemperpage == 0) {
 }
 
 $mlist = new cGuiMenu();
-$sToday = date('Y-m-d');
+$sToday = date('Y-m-d H:i:s');
 
 if (($elemperpage * $mPage) >= $iSumUsers + $elemperpage && $mPage != 1) {
     $_REQUEST["page"]--;
@@ -113,7 +113,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
 
             $iMenu++;
 
-            if (($sToday < $cApiUser->get("valid_from") && ($cApiUser->get("valid_from") != '0000-00-00' && $cApiUser->get("valid_from") != '')) || ($sToday > $cApiUser->get("valid_to") && ($cApiUser->get("valid_to") != '0000-00-00') && $cApiUser->get("valid_from") != '')) {
+            if (($sToday < $cApiUser->get("valid_from") && ($cApiUser->get("valid_from") != '0000-00-00 00:00:00' && $cApiUser->get("valid_from") != '')) || ($sToday > $cApiUser->get("valid_to") && ($cApiUser->get("valid_to") != '0000-00-00 00:00:00') && $cApiUser->get("valid_from") != '')) {
                 $mlist->setTitle($iMenu, '<span class="inactiveUser">' . $cApiUser->get("username") . "<br>" . $cApiUser->get("realname") . '</span>');
             } else {
                 $mlist->setTitle($iMenu, $cApiUser->get("username") . "<br>" . $cApiUser->get("realname"));

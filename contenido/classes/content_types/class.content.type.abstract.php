@@ -295,7 +295,7 @@ abstract class cContentTypeAbstract {
             if ($handle = opendir($uploadPath)) {
                 while (($entry = readdir($handle)) !== false) {
                     // ignore .svn directories as well as links to upper dirs
-                    if ($entry != '.svn' && $entry != '.' && $entry != '..' && is_dir($uploadPath . $entry)) {
+                    if ((! (strpos($entry, ".") === 0)) && is_dir($uploadPath . $entry)) {
                         $directory = array();
                         $directory['name'] = $entry;
                         $directory['path'] = str_replace($this->_uploadPath, '', $uploadPath);
@@ -306,6 +306,19 @@ abstract class cContentTypeAbstract {
             }
             closedir($handle);
         }
+
+        usort($directories, function($a, $b) {
+            $a = mb_strtolower($a["name"]);
+            $b = mb_strtolower($b["name"]);
+            if($a < $b) {
+                return -1;
+            } else if($a > $b) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
         return $directories;
     }
 

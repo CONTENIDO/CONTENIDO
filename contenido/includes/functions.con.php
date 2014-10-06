@@ -304,7 +304,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     if ($changefreq != "nothing") {
         $oArtLang->set('changefreq', $changefreq);
     }
-    $oArtLang->set('published', $published);
+    $oArtLang->set('published', date("Y-m-d H:i:s", strtotime($published)));
 
     // If the user has right for makeonline, update some properties.
     if ($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) {
@@ -458,8 +458,9 @@ function conMakeArticleIndex($idartlang, $idart) {
  *
  * @param int $idart Article Id
  * @param int $lang Language Id
+ * @param int $online optional, if 0 the article will be offline, if 1 article will be online
  */
-function conMakeOnline($idart, $lang) {
+function conMakeOnline($idart, $lang, $online = -1) {
     $auth = cRegistry::getAuth();
 
     $artLang = new cApiArticleLanguage();
@@ -468,7 +469,9 @@ function conMakeOnline($idart, $lang) {
     }
 
     // Reverse current value
-    $online = ($artLang->get('online') == 0)? 1 : 0;
+    if($online === -1) {
+        $online = ($artLang->get('online') == 0)? 1 : 0;
+    }
 
     $artLang->set('online', $online);
 
@@ -1246,8 +1249,11 @@ function conMoveArticles() {
         $sql[] = 'UPDATE ' . $cfg['tab']['cat_art'] . ' SET idcat = ' . (int) $rs['time_target_cat'] . ', createcode = 1 WHERE idart = ' . (int) $rs['idart'] . ';';
         $sql[] = 'UPDATE ' . $cfg['tab']['art_lang'] . ' SET online = ' . (int) $online . ' WHERE idart = ' . (int) $rs['idart'] . ';';
 
-        $sql = implode("\n", $sql);
-        $db->query($sql);
+        // $sql = implode("\n", $sql);
+        // cDebug::out($sql);
+        $db->query($sql[0]);
+        $db->query($sql[1]);
+        $db->query($sql[2]);
 
         // Execute CEC hook
         cApiCecHook::execute('Contenido.Article.conMoveArticles_Loop', $rs);

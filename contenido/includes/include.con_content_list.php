@@ -28,6 +28,18 @@ if (!isset($idcat)) {
 
 $edit = 'true';
 $scripts = '';
+// export only these content types
+$allowedContentTypes = array(
+    "CMS_HTMLHEAD",
+    "CMS_HTML",
+    "CMS_TEXT",
+    "CMS_LINK",
+    "CMS_LINKTARGET",
+    "CMS_LINKDESCR",
+    "CMS_HEAD",
+    "CMS_DATE",
+	"CMS_RAW"
+);
 
 $page = new cGuiPage("con_content_list");
 
@@ -92,6 +104,199 @@ if (($action == 'savecontype' || $action == 10)) {
     } else {
         $page->displayError(i18n("Permission denied"));
     }
+} else if ($action == 'exportrawcontent') {
+
+    // extended class to add CDATA to content
+    class SimpleXMLExtended extends SimpleXMLElement{
+        public function addCData($cdata_text){
+            $node= dom_import_simplexml($this);
+            $no = $node->ownerDocument;
+            $node->appendChild($no->createCDATASection($cdata_text));
+        }
+    }
+
+    // load article language object
+    $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
+    // create xml element articles
+    $articleElement = new SimpleXMLExtended('<?xml version="1.0" encoding="UTF-8"?><articles></articles>');
+
+    // add child element article
+    $articleNode = $articleElement->addChild("article");
+    $articleNode->addAttribute("id", $cApiArticleLanguage->get('idart'));
+
+    // add seo infos to xml
+    $titleNode = $articleNode->addChild("title");
+    $titleNode->addCData($cApiArticleLanguage->get('title'));
+
+    $summaryNode = $articleNode->addChild("shortdesc");
+    $summaryNode->addCData($cApiArticleLanguage->get('summary'));
+
+    $pageTitleNode = $articleNode->addChild("seo_title");
+    $pageTitleNode->addCData($cApiArticleLanguage->get('pagetitle'));
+
+    $seoDescrNode = $articleNode->addChild("seo_description");
+    $seoDescrNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 3));
+
+    $keywordsNode = $articleNode->addChild("seo_keywords");
+    $keywordsNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 5));
+
+    $copyrightNode = $articleNode->addChild("seo_copyright");
+    $copyrightNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 8));
+
+    $seoauthorNode = $articleNode->addChild("seo_author");
+    $seoauthorNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 1));
+
+    // load content id's for article
+    $conColl = new cApiContentCollection();
+    $contentIds = $conColl->getIdsByWhereClause('idartlang="'. $cApiArticleLanguage->get("idartlang") .'"');
+
+    // iterate through content and add get data
+    foreach ($contentIds as $contentId) {
+        //load content object
+        $content = new cApiContent($contentId);
+        // if loaded get data and add to xml
+        if($content->isLoaded()) {
+            $type = new cApiType($content->get("idtype"));
+
+            if($type->isLoaded() && in_array($type->get("type"), $allowedContentTypes)) {
+                foreach ($_POST as $key => $contentType) {
+                    if($key == $type->get("type") && $contentType == $content->get("typeid")) {
+                        //create content element
+                        $contentNode = $articleNode->addChild("content");
+                        $contentNode->addCData($content->get("value"));
+                        $contentNode->addAttribute("type", $type->get("type"));
+                        $contentNode->addAttribute("id", $content->get("typeid"));
+                    }
+                }
+            }
+
+        }
+    }
+    // output data as xml
+    header('Content-Type: application/xml;');
+    header('Content-Disposition: attachment; filename='.$cApiArticleLanguage->get('title').';');
+    ob_clean();
+    echo $articleElement->asXML();
+    exit;
+} else if ($action == "importrawcontent") {
+    // import raw data into article
+
+    // init vars
+    $error = false;
+
+    //get file from request
+    $rawDataFile = $_FILES['rawfile']['tmp_name'];
+
+    // check file exist
+    if(strlen($rawDataFile) > 0 && isset($_FILES['rawfile'])) {
+
+        // read file from tmp upload folder
+        $rawData = file_get_contents($rawDataFile);
+
+        // try init xml and import data
+        try {
+            $xmlDocument = new SimpleXMLElement($rawData);
+
+            foreach ($xmlDocument->children() as $articleNode) {
+                $articleId = $articleNode->attributes()->id;
+
+                // check article id exists in xml
+                if($articleId > 0) {
+
+                    // load article by artice id and language
+                    $articleLanguage = new cApiArticleLanguage();
+                    $articleLanguage->loadByMany(array("idart" => $articleId, "idlang" => cRegistry::getLanguageId()));
+
+                    // check is article loaded
+                    if($articleLanguage->isLoaded()) {
+
+                        // read xml childrens
+                        foreach ($articleNode->children() as $key => $child) {
+
+                            // switch xml tag and exec business logic
+                            switch ($key) {
+                                case 'title':
+                                    $articleLanguage->set("title", $child);
+                                    $articleLanguage->store();
+
+                                    break;
+                                case 'shortdesc':
+                                    $articleLanguage->set("summary", $child);
+                                    $articleLanguage->store();
+
+                                    break;
+                                case 'seo_title':
+                                    $articleLanguage->set("pagetitle", $child);
+                                    $articleLanguage->store();
+
+                                    break;
+                                case 'seo_description':
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 3, $child);
+
+                                    break;
+                                case 'seo_keywords':
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 5, $child);
+
+                                    break;
+                                case 'seo_copyright':
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 8, $child);
+
+                                    break;
+                                case 'seo_author':
+                                    conSetMetaValue($articleLanguage->get('idartlang'), 1, $child);
+
+                                    break;
+                                case 'content':
+                                    $type = $child->attributes()->type;
+                                    $typeid  = $child->attributes()->id;
+
+                                    $typeEntry = new cApiType();
+                                    $typeEntry->loadBy("type", $type);
+
+                                    if(strlen($type) > 0 && $typeid > 0 && in_array($typeEntry->get("type"), $allowedContentTypes)) {
+                                        if(isset($_POST['overwritecontent']) && $_POST['overwritecontent'] == 1) {
+                                            conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
+                                        } else {
+
+                                            $contentEntry = new cApiContent();
+
+                                            $contentEntry->loadByMany(array("idtype" => $typeEntry->get("idtype"), "typeid" => $typeid, "idartlang" => $articleLanguage->get('idartlang')));
+                                            if(!$contentEntry->isLoaded()) {
+                                                conSaveContentEntry($articleLanguage->get('idartlang'), $type, $typeid, $child);
+                                            }
+                                        }
+                                    } else {
+
+                                    }
+
+                                    break;
+                                case 'default':
+                                    break;
+                            }
+
+                        }
+
+                    } else {
+                        $page->displayError(i18n("Can not load article"));
+                        $error = true;
+                    }
+                } else {
+                    $page->displayError(i18n("Can not find article"));
+                    $error = true;
+
+                }
+            }
+            if($error === false) {
+                $page->displayInfo(i18n("Raw data was imported successfully"));
+            }
+
+        } catch (Exception $e) {
+            $page->displayError(i18n("Error: The XML file is not valid"));
+        }
+    } else {
+        $page->displayWarning(i18n("Please choose a file"));
+    }
+
 }
 
 // get active value
@@ -113,7 +318,8 @@ $sortID = array(
     "CMS_LINKEDITOR",
     "CMS_DATE",
     "CMS_TEASER",
-    "CMS_FILELIST"
+    "CMS_FILELIST",
+	"CMS_RAW"
 );
 
 $aIdtype = array();
@@ -174,6 +380,14 @@ $page->set('s', 'CLOSE', i18n('Close editor'));
 $page->set('s', 'SAVE', i18n('Close editor and save changes'));
 $page->set('s', 'QUESTION', i18n('Do you want to save changes?'));
 
+// Add export and import tarnslations
+$page->set('s', 'EXPORT_RAWDATA', i18n("Export raw data"));
+$page->set('s', 'IMPORT_RAWDATA', i18n("Import raw data"));
+$page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
+$page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
+$page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
+
+
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $page->set('s', 'USE_TINY', '');
 } else {
@@ -200,6 +414,13 @@ if (count($result) <= 0) {
                 $page->set("d", "EXTRA_CLASS", $class);
                 $page->set("d", "NAME", $name);
                 $page->set("d", "ID_TYPE", $idtype);
+                if(in_array($name, $allowedContentTypes)) {
+                    $page->set("d", "EXPORT_CONTENT",  '<input type="checkbox" class="rawtypes" name="' . $name .'" value="' .$idtype .'" checked="checked">');
+                    $page->set('d', 'EXPORT_CONTENT_LABEL', i18n("Export"));
+                } else {
+                    $page->set("d", "EXPORT_CONTENT", '');
+                    $page->set('d', 'EXPORT_CONTENT_LABEL', '');
+                }
                 $page->next();
             }
         }

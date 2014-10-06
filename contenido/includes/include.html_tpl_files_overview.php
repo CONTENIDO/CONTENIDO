@@ -16,6 +16,14 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $files = new cGuiFileOverview($cfgClient[$client]['tpl']['path'], stripslashes($_REQUEST['file']), 'html');
-$files->setFileExtension('html');
+
+// Get system properties for extension filter
+$backend_file_extensions = getSystemProperty('backend', 'backend_file_extensions');
+
+if ($backend_file_extensions == "enabled") {
+	$files->setFileExtension(array('html', 'tpl'));
+}
+
+// Render file overview
 $files->render();
 

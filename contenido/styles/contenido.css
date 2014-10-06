@@ -609,7 +609,7 @@ p, table, tr, td, th {
 
 .deletefunction {
     display: block;
-    background: transparent url(../images/users.gif) no-repeat scroll 0 2px;
+    background: transparent url(../images/delete.gif) no-repeat scroll 0 2px;
     height: 2em;
     line-height: 2em;
     padding-left: 20px;
@@ -2324,6 +2324,25 @@ table.inuse_lay_mod td.grey {
 table.inuse_tpl {
     margin-bottom: 10px;
     margin-top: 5px;
+}
+
+#con_content_list .rawdata {
+	display: block;
+	margin: 15px 0px 15px 0px;
+	font-weight: bold;
+}
+#con_content_list div.rawtypes {
+	display: none;
+}
+
+#con_content_list #importrawdata input[type=file] {
+	display: block;
+	margin: 0px;
+}
+
+#con_content_list #importrawdata input[type=submit] {
+	display: block;
+	margin: 10px 0px 5px 0px;
 }
 
 a.infoButton,

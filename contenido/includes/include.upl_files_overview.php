@@ -568,6 +568,10 @@ $properties = new cApiPropertyCollection();
 while ($item = $uploads->next()) {
     $filename = $item->get('filename');
 
+    if (strpos($filename, ".") === 0) {
+        continue;
+    }
+
     $bAddFile = true;
 
     if ($appendparameters == 'imagebrowser') {
@@ -728,34 +732,6 @@ $page->addScript($sess->url('iZoom.js.php'));
 if ($bDirectoryIsWritable == false) {
     $page->displayError(i18n("Directory not writable") . ' (' . $cfgClient[$client]['upl']['path'] . $path . ')');
 }
-
-$jsScript = new cHTMLScript();
-$jsScript->setAttribute('type', 'text/javascript');
-
-$jsCode = '
-(function(Con, $) {
-   $(function() {
-       var $body = $("body");
-
-       // Handler for clicked image anchors
-       $body.delegate("a.jsZoom", "click", function() {
-           iZoom($(this).attr("href"));
-           return false;
-       });
-
-       // Handler for mouseover/mouseout on images
-       $body.delegate("a.jsZoom img.hover", "mouseover", function() {
-           correctPosition(this, $(this).attr("data-width"), $(this).attr("data-height"));
-       });
-       $body.delegate("a.jsZoom img.hover", "mouseout", function() {
-           if (typeof(previewHideIe6) == "function") {
-               previewHideIe6(this);
-           };
-       });
-   });
-})(Con, Con.$);
-';
-$jsScript->setContent($jsCode);
 
 $page->setContent(array(
     $delform,

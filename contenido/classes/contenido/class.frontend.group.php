@@ -49,13 +49,13 @@ class cApiFrontendGroupCollection extends ItemCollection {
         // _arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
 
         $mangledGroupName = $group->_inFilter($groupname);
-        $this->select("idclient = " . (int) $client . " AND groupname = '" . $mangledGroupName . "'");
+        $this->select("idclient = " . cSecurity::toInteger($client) . " AND groupname = '" . $mangledGroupName . "'");
 
         if (($obj = $this->next()) !== false) {
             $groupname = $groupname . md5(rand());
         }
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
         $item->set('idclient', $client);
         $item->set('groupname', $groupname);
         $item->store();

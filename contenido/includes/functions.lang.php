@@ -31,10 +31,10 @@ cInclude('includes', 'functions.str.php');
 function langEditLanguage($idlang, $langname, $encoding, $active, $direction = 'ltr') {
     $oLang = new cApiLanguage();
     if ($oLang->loadByPrimaryKey((int) $idlang)) {
-        $oLang->set('name', $oLang->escape($langname), false);
-        $oLang->set('encoding', $oLang->escape($encoding), false);
-        $oLang->set('active', (int) $active, false);
-        $oLang->set('direction', $oLang->escape($direction), false);
+        $oLang->set('name', $langname, false);
+        $oLang->set('encoding', $encoding, false);
+        $oLang->set('active', $active, false);
+        $oLang->set('direction', $direction, false);
         return $oLang->store();
     }
     return false;
@@ -52,7 +52,7 @@ function langNewLanguage($name, $client) {
 
     // Add new language to database
     $oLangCol = new cApiLanguageCollection();
-    $oLangItem = $oLangCol->create($name, 0, 'iso-8859-1', 'ltr');
+    $oLangItem = $oLangCol->create($name, 0, 'utf-8', 'ltr');
     // Add new client language to database
     $oClientLangCol = new cApiClientLanguageCollection();
     $oClientLangItem = $oClientLangCol->create($client, $oLangItem->get('idlang'));
@@ -85,8 +85,8 @@ function langNewLanguage($name, $client) {
  */
 function langRenameLanguage($idlang, $name) {
     $oLang = new cApiLanguage();
-    if ($oLang->loadByPrimaryKey((int) $idlang)) {
-        $oLang->set('name', $oLang->escape($name), false);
+    if ($oLang->loadByPrimaryKey(cSecurity::toInteger($idlang))) {
+        $oLang->set('name', $name, false);
         return $oLang->store();
     }
     return false;

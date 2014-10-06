@@ -44,13 +44,8 @@ class PimPluginRelationsCollection extends ItemCollection {
      */
     public function create($idItem, $idPlugin, $type) {
 
-        // security checks
-        $idItem = cSecurity::toInteger($idItem);
-        $idPlugin = cSecurity::toInteger($idPlugin);
-        $type = cSecurity::escapeString($type);
-
         // create a new entry
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
         $item->set('iditem', $idItem);
         $item->set('idplugin', $idPlugin);
         $item->set('type', $type);
@@ -84,6 +79,26 @@ class PimPluginRelations extends Item {
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
+    }
+	
+	/**
+     * Userdefined setter for pim relations fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'iditem':
+                $value = (int) $value;
+                break;
+			case 'idplugin':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
     }
 
 }

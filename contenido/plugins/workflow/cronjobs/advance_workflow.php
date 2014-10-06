@@ -46,8 +46,8 @@ while (($obj = $workflowartallocations->next()) !== false) {
             $timelimit = $wfobj->get("timelimit");
         }
 
-        // WTF ist this???
-        $starttime = strtotime(substr_replace(substr(substr($starttime, 0, 2) . chunk_split(substr($starttime, 2, 6), 2, "-") . chunk_split(substr($starttime, 8), 2, ":"), 0, 19), " ", 10, 1));
+        $starttime = strtotime($starttime);
+        cWarning($starttime);
         switch ($timeunit) {
             case "Seconds":
                 $maxtime = $starttime + $timelimit;

@@ -43,9 +43,12 @@
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-// Clients local configuration
-if (file_exists($cfgClient[$client]['config']['path'] . '/config.local.php')) {
-    @include($cfgClient[$client]['config']['path'] . '/config.local.php');
+// if we are in the frontend and no clients are configured, display an error
+if(!isset($contenido)) {
+    if(!isset($cfgClient["set"])) {
+        echo("CONTENIDO is not configured properly. More details can be found in the error log");
+        cError("Could not include config.clients.php. Make sure it exists and has a valid configuration!");
+    }
 }
 
 cInclude('includes', 'functions.con.php');

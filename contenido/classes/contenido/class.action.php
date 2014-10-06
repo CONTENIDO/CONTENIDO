@@ -48,7 +48,7 @@ class cApiActionCollection extends ItemCollection {
      * @return cApiAction
      */
     public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         if (is_string($area)) {
             $c = new cApiArea();
@@ -76,7 +76,7 @@ class cApiActionCollection extends ItemCollection {
         $item->set('alt_name', $alt_name);
         $item->set('code', $code);
         $item->set('location', $location);
-        $item->set('relevant', (int) $relevant);
+        $item->set('relevant', $relevant);
 
         $item->store();
 
@@ -177,4 +177,22 @@ class cApiAction extends Item {
         // @todo Where is this used???
         $this->_wantParameters = array();
     }
+
+	/**
+     * Userdefined setter for action fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+             case 'relevant':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+
 }

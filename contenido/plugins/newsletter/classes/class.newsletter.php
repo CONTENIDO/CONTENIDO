@@ -42,10 +42,6 @@ class NewsletterCollection extends ItemCollection
     {
         global $client, $lang, $auth;
 
-        $sName  = $this->escape($sName);
-        $client = cSecurity::toInteger($client);
-        $lang   = cSecurity::toInteger($lang);
-
         // Check if the newsletter name already exists
         $this->resetQuery();
         $this->setWhere("idclient", $client);
@@ -57,7 +53,7 @@ class NewsletterCollection extends ItemCollection
             return $this->create($sName . "_" . substr(md5(rand()), 0, 10));
         }
 
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
         $oItem->set("idclient", $client);
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);
@@ -85,7 +81,7 @@ class NewsletterCollection extends ItemCollection
         $oBaseItem = new Newsletter();
         $oBaseItem->loadByPrimaryKey($iItemID);
 
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
         $oItem->set("name", $oBaseItem->get("name") . "_" . substr(md5(rand()), 0, 10));
 
         $iIDArt = 0;
@@ -197,6 +193,26 @@ class Newsletter extends Item
         return parent::store();
     }
 
+	/**
+     * Userdefined setter for newsletter fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idclient':
+                $value = (int) $value;
+                break;
+			case 'idlang':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+	
     /**
      * Replaces newsletter tag (e.g. MAIL_NAME) with data.
      * If code is just text using str_replace; if it is HTML by using regular expressions

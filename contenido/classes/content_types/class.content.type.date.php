@@ -47,7 +47,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         // constructor
         $this->_type = 'CMS_DATE';
         $this->_prefix = 'date';
-        $this->_settingsType = 'xml';
+        $this->_settingsType = self::SETTINGS_TYPE_XML;
         $this->_formFields = array(
             'date_timestamp',
             'date_format'
@@ -103,14 +103,18 @@ class cContentTypeDate extends cContentTypeAbstract {
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
         if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
-            // convert the given date string into a valid timestamp, so that a
-            // timestamp is stored
-            $_POST['date_format'] = stripslashes(base64_decode($_POST['date_format']));
-            if (empty($_POST['date_format'])) {
-                $_POST['date_format'] = '{"dateFormat":"","timeFormat":""}';
-            }
-            $this->_storeSettings();
+        	// convert the given date string into a valid timestamp, so that a
+        	// timestamp is stored
+        	if (!empty($_POST['date_format'])) {
+        		$_POST['date_format'] = stripslashes(base64_decode($_POST['date_format']));
+        	} else { // if no date_format is given, set standard value
+        		$_POST['date_format'] = '{"dateFormat":"","timeFormat":""}';
+        	}
+        	$this->_storeSettings();
         }
+
+        // reset $_POST variable
+        unset($_POST);
     }
 
     /**
@@ -123,7 +127,7 @@ class cContentTypeDate extends cContentTypeAbstract {
     }
 
     /**
-     * Returns the PHP style format string
+     * Returns the full PHP style format string
      *
      * @return string
      */
@@ -138,6 +142,28 @@ class cContentTypeDate extends cContentTypeAbstract {
                 $format = implode(' ', $decoded_array);
             } else {
                 $format = '';
+            }
+        }
+
+        return $format;
+    }
+
+    /**
+     * Returns only the time portion of the PHP style format string
+     *
+     * @return string
+     */
+    public function getTimeFormat() {
+        $format = $this->_settings['date_format'];
+
+        if (empty($format)) {
+            $format = '';
+        } else {
+            $decoded_array = json_decode($format, true);
+            if (is_array($decoded_array)) {
+                return $decoded_array['timeFormat'];
+            } else {
+                return '';
             }
         }
 

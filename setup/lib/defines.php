@@ -35,10 +35,10 @@ define('CON_SETUP_DEBUG', false);
 
 define('CON_SETUP_MAX_CHUNKS_PER_STEP', 50);
 
-define('CON_SETUP_MIN_PHP_VERSION', '5.2.3');
+define('CON_SETUP_MIN_PHP_VERSION', '5.3.0');
 
 define('CON_SETUP_DBCHARSET', 'utf8');
 
-define('CON_SETUP_VERSION', '4.9.3');
+define('CON_SETUP_VERSION', '4.9.4');
 
 ?>

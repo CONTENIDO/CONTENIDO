@@ -44,7 +44,7 @@ class cApiFrameFileCollection extends ItemCollection {
      * @return cApiFrameFile
      */
     public function create($area, $idframe, $idfile) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         if (is_string($area)) {
             $c = new cApiArea();
@@ -58,9 +58,9 @@ class cApiFrameFileCollection extends ItemCollection {
             }
         }
 
-        $item->set('idarea', (int) $area);
-        $item->set('idfile', (int) $idfile);
-        $item->set('idframe', (int) $idframe);
+        $item->set('idarea', $area);
+        $item->set('idfile', $idfile);
+        $item->set('idframe', $idframe);
 
         $item->store();
 
@@ -93,4 +93,28 @@ class cApiFrameFile extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
+
+	/**
+     * Userdefined setter for framefile fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idarea':
+                $value = (int) $value;
+                break;
+			case 'idfile':
+                $value = (int) $value;
+                break;
+			case 'idframe':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+
 }

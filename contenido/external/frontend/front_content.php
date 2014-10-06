@@ -47,6 +47,11 @@ if (!defined('CON_ENVIRONMENT')) {
 // Include the config file of the frontend to initialize client and language id
 include_once($frontend_path . 'data/config/' . CON_ENVIRONMENT . '/config.php');
 
+// Clients local configuration
+if (file_exists($frontend_path . 'data/config/' . CON_ENVIRONMENT . '/config.local.php')) {
+    @include($frontend_path . 'data/config/' . CON_ENVIRONMENT . '/config.local.php');
+}
+
 // CONTENIDO startup process
 if (!is_file($contenido_path . 'includes/startup.php')) {
     die("<h1>Fatal Error</h1><br>Couldn't include CONTENIDO startup.");

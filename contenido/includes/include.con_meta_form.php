@@ -299,12 +299,12 @@ while ($db->nextRecord()) {
 
     switch ($db->f('Field')) {
 
-        case 'metatype':
-            $tpl2->set('d', 'METATITLE', i18n('Meta Type'));
-            break;
-
         case 'fieldtype':
             $tpl2->set('d', 'METATITLE', i18n('Field Type'));
+            break;
+
+        case 'metatype':
+            $tpl2->set('d', 'METATITLE', i18n('Attribute content'));
             break;
 
         case 'maxlength':
@@ -312,7 +312,7 @@ while ($db->nextRecord()) {
             break;
 
         case 'fieldname':
-            $tpl2->set('d', 'METATITLE', i18n('Field Name'));
+            $tpl2->set('d', 'METATITLE', i18n('Meta Attribute'));
             break;
 
         default:

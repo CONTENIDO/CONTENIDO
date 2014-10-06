@@ -44,13 +44,13 @@ class cApiLanguageCollection extends ItemCollection {
     public function create($name, $active, $encoding, $direction) {
         global $auth;
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
-        $item->set('name', $this->escape($name), false);
-        $item->set('active', (int) $active, false);
-        $item->set('encoding', $this->escape($encoding), false);
-        $item->set('direction', $this->escape($direction), false);
-        $item->set('author', $this->escape($auth->auth['uid']), false);
+        $item->set('name', $name, false);
+        $item->set('active', $active, false);
+        $item->set('encoding', $encoding, false);
+        $item->set('direction', $direction, false);
+        $item->set('author', $auth->auth['uid'], false);
         $item->set('created', date('Y-m-d H:i:s'), false);
         $item->set('lastmodified', '0000-00-00 00:00:00', false);
         $item->store();
@@ -72,13 +72,17 @@ class cApiLanguageCollection extends ItemCollection {
     public function nextAccessible() {
         global $perm, $client, $lang;
 
-        $item = parent::next();
+        $item = $this->next();
 
         $lang = (int) $lang;
         $client = (int) $client;
 
+        if ($item === false) {
+            return false;
+        }
+
         $clientsLanguageColl = new cApiClientLanguageCollection();
-        $clientsLanguageColl->select('idlang = ' . $lang);
+        $clientsLanguageColl->select('idlang = ' . $item->get("idlang"));
         if (($clientsLang = $clientsLanguageColl->next()) !== false) {
             if ($client != $clientsLang->get('idclient')) {
                 $item = $this->nextAccessible();
@@ -146,4 +150,21 @@ class cApiLanguage extends Item {
         return parent::store();
     }
 
+	/**
+     * Userdefined setter for lang fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'active':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+	
 }

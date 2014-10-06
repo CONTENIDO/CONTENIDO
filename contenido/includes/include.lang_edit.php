@@ -91,6 +91,12 @@ if ($action == "lang_newlanguage") {
             $page->displayCriticalError("no language id given. Usually, this shouldn't happen, except if you played around with your system. if you didn't play around, please report a bug.");
         } else {
             if (($action == "lang_edit") && ($perm->have_perm_area_action($area, $action))) {
+			
+				// Set utf-8 as encoding if CON_UTF8 constant is defined
+				if (defined('CON_UTF8')) {
+					$sencoding = 'utf-8';
+				}
+			
                 langEditLanguage($idlang, $langname, $sencoding, $active, $direction);
                 $page->displayInfo(i18n("Changes saved"));
             }
@@ -135,10 +141,15 @@ if ($action == "lang_newlanguage") {
             $iso_3166_result = $iso3166Collection->fetchArray('iso', 'en');
             array_multisort($iso_3166_result);
 
-            $eselect = new cHTMLSelectElement("sencoding");
-            $eselect->setStyle('width:255px');
-            $eselect->autoFill($charsets);
-            $eselect->setDefault($db->f("encoding"));
+			// Display encoding options only if CON_UTF8 constant is not set
+			if (!defined('CON_UTF8')) {
+				$eselect = new cHTMLSelectElement("sencoding");
+				$eselect->setStyle('width:255px');
+				$eselect->autoFill($charsets);
+				$eselect->setDefault((($db->f("encoding") != "") ? $db->f("encoding") : 'utf-8'));
+			} else {
+				$eselect = 'utf-8';
+			}
 
             $languagecode = new cHTMLSelectElement("languagecode");
             $languagecode->setStyle('width:255px');
@@ -173,7 +184,9 @@ if ($action == "lang_newlanguage") {
             $form->add(i18n("Active"), $oCheckbox->toHTML(false));
 
             $form->addSubHeader(i18n("Language"));
-            $form->add(i18n("Encoding"), $eselect);
+
+			$form->add(i18n("Encoding"), $eselect);
+
             $form->add(i18n("Language"), $languagecode->render());
             $form->add(i18n("Country"), $countrycode->render());
             $form->add(i18n("Text direction"), $directionSelect);

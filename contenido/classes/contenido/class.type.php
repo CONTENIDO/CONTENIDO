@@ -57,7 +57,7 @@ class cApiTypeCollection extends ItemCollection {
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('type', $type);
         $item->set('description', $description);

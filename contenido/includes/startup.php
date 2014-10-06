@@ -78,16 +78,25 @@ if (!defined('CON_ENVIRONMENT')) {
  */
 if (!defined('CON_VERSION')) {
 
-    define('CON_VERSION', '4.9.3');
+    define('CON_VERSION', '4.9.4');
 
 }
+
+// Temporary backend path, will be re-set again later...
+$backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
+require_once($backendPath . '/classes/class.filehandler.php');
 
 // (string) Path to folder containing all contenido configuration files
 //          Use environment setting!
 $cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CON_ENVIRONMENT . '/';
+if((!cFileHandler::exists($cfg['path']['contenido_config'])) || (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php'))) {
+    $msg = "<h1>Fatal Error</h1><br>"
+        . "Could not open the configuration file <b>config.php</b>.<br><br>"
+        . "Please make sure that you saved the file in the setup program and that your CON_ENVIRONMENT is valid."
+        . "If you had to place the file manually on your webserver, make sure that it is placed in your contenido/data/config/{environment}/ directory.";
+    die($msg);
+}
 
-// Temporary backend path, will be re-set again later...
-$backendPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/..'));
 
 include_once($backendPath . '/includes/functions.php54.php');
 
@@ -95,7 +104,6 @@ include_once($backendPath . '/includes/functions.php54.php');
 require_once($backendPath . '/classes/class.registry.php');
 require_once($backendPath . '/classes/class.security.php');
 require_once($backendPath . '/classes/class.requestvalidator.php');
-require_once($backendPath . '/classes/class.filehandler.php');
 try {
     $requestValidator = cRequestValidator::getInstance();
     $requestValidator->checkParams();
@@ -105,15 +113,6 @@ try {
 
 // "Workaround" for register_globals=off settings.
 require_once($backendPath . '/includes/globals_off.inc.php');
-
-// Check if configuration file exists, this is a basic indicator to find out, if CONTENIDO is installed
-if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')) {
-    $msg = "<h1>Fatal Error</h1><br>"
-         . "Could not open the configuration file <b>config.php</b>.<br><br>"
-         . "Please make sure that you saved the file in the setup program."
-         . "If you had to place the file manually on your webserver, make sure that it is placed in your contenido/data/config/{environment}/ directory.";
-    die($msg);
-}
 
 // Include some basic configuration files
 require_once($cfg['path']['contenido_config'] . 'config.php');
@@ -198,7 +197,7 @@ cInclude('includes', 'functions.i18n.php');
 
 // Initialization of CEC
 $_cecRegistry = cApiCecRegistry::getInstance();
-require_once($cfg['path']['contenido_config'] . 'config.chains.php');
+$_cecRegistry->flushAddedChains();
 
 // load all system chain inclusions if there are any
 if (cFileHandler::exists($cfg['path']['contenido_config'] . 'config.chains.load.php')) {

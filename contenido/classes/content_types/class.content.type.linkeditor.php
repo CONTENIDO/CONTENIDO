@@ -679,28 +679,40 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $htmlSelectOption = new cHTMLOptionElement('Kein', '', false);
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
-        $i = 1;
-
+        $files = array();
         if (is_dir($this->_uploadPath . $directoryPath)) {
             if ($handle = opendir($this->_uploadPath . $directoryPath)) {
                 while (($entry = readdir($handle)) !== false) {
-                    if (is_file($this->_uploadPath . $directoryPath . $entry)) {
-                        $htmlSelectOption = new cHTMLOptionElement($entry, $directoryPath . $entry);
-                        $htmlSelect->addOptionElement($i, $htmlSelectOption);
-                        $i++;
+                    if (is_file($this->_uploadPath . $directoryPath . $entry) && !(strpos($entry, ".") === 0)) {
+                        $file = array();
+                        $file["name"] = $entry;
+                        $file["path"] = $directoryPath . $entry;
+                        $files[] = $file;
                     }
                 }
                 closedir($handle);
             }
         }
 
-        if ($i === 0) {
-            $htmlSelectOption = new cHTMLOptionElement(i18n('No files found'), '', false);
-            $htmlSelectOption->setAlt(i18n('No files found'));
-            $htmlSelectOption->setDisabled(true);
+        usort($files, function($a, $b) {
+            $a = mb_strtolower($a["name"]);
+            $b = mb_strtolower($b["name"]);
+            if($a < $b) {
+                return -1;
+            } else if($a > $b) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        $i = 1;
+        foreach($files as $file) {
+            $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
             $htmlSelect->addOptionElement($i, $htmlSelectOption);
-            $htmlSelect->setDisabled(true);
+            $i++;
         }
+
 
         // set default value
         if ($this->_settings['linkeditor_type'] === 'file') {

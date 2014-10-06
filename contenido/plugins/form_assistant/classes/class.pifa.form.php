@@ -209,6 +209,7 @@ class PifaForm extends Item {
         $col->query();
         $this->_fields = array();
         while (false !== $pifaField = $col->next()) {
+			$this->columnNames[] = $pifaField->get('column_name');
             $this->_fields[] = clone $pifaField;
         }
     }
@@ -595,7 +596,7 @@ class PifaForm extends Item {
 
         // send mail
         if (!$mailer->send($message)) {
-            $msg = Pifa::i18n('EMAIL_SEND_ERROR');
+			$msg = mi18n("PIFA_MAIL_ERROR_SUFFIX");
             throw new PifaMailException($msg);
         }
     }
@@ -782,7 +783,7 @@ class PifaForm extends Item {
             // append value
             foreach ($columns as $index => $columnName) {
                 $out .= 0 === $index? "\n" : ';';
-                $out .= $row[$columnName];
+				$out .= $row[$columnName];
             }
         }
 

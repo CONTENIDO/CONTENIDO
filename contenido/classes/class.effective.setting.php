@@ -153,7 +153,7 @@ class cEffectiveSetting {
         $settings = getSystemPropertiesByType($type);
         $settings = array_merge($settings, self::_getClientInstance()->getPropertiesByType($type));
         $settings = array_merge($settings, self::_getClientLanguageInstance()->getPropertiesByType($type));
-        if (self::_isAuthenticated() && isset($contenido)) {
+        if (self::_isAuthenticated() && cRegistry::isBackendEditMode()) {
             $settings = array_merge($settings, self::_getUserInstance()->getUserPropertiesByType($type, true));
         }
 

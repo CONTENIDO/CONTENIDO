@@ -54,4 +54,12 @@ abstract class cAuthHandlerAbstract extends cAuth {
      */
     abstract public function logSuccessfulAuth();
 
+
+    /**
+     * Returns true if a user is logged in
+     *
+     * @return bool
+     */
+    abstract public function isLoggedIn();
+
 }

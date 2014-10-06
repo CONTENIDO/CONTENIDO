@@ -49,6 +49,10 @@ class UploadSearchResultList extends FrontendList {
         }
 
         if ($field == 2) {
+
+        	// OK icon
+        	$icon = "<img src=\"images/but_ok.gif\" alt=\"\" />&nbsp;";
+
             $vpath = str_replace($cfgClient[$client]["upl"]["path"], "", $this->pathdata);
             $slashpos = strrpos($vpath, "/");
             if ($slashpos === false) {
@@ -59,7 +63,7 @@ class UploadSearchResultList extends FrontendList {
             }
 
             if ($appendparameters == "imagebrowser" || $appendparameters == "filebrowser") {
-                $mstr = '<a href="javascript://" onclick="javascript:Con.getFrame(\'left_top\').document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.close();">' . $data . '</a>';
+                $mstr = '<a href="javascript://" onclick="javascript:Con.getFrame(\'left_top\').document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]["upl"]["frontendpath"] . $path . $data . '\'; window.close();">' . $icon . $data . '</a>';
             } else {
                 $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
 
@@ -70,7 +74,7 @@ class UploadSearchResultList extends FrontendList {
         }
 
         if ($field == 1) {
-            $this->pathdata = $data;
+            $this->path = $data;
 
             // If this file is an image, try to open
             $fileType = strtolower(getFileType($data));
@@ -296,7 +300,7 @@ foreach ($files as $idupl => $rating) {
     $description = $upl->get('description');
 
     $fileType = strtolower(getFileType($filename));
-    $list2->setData($rownum, $dirname . $filename, $filename, $dirname, $filesize, $fileType, $rating / 10);
+    $list2->setData($rownum, $dirname . $filename, $filename, $dirname, $filesize, $fileType, $rating / 10, $dirname . $filename);
 
     $rownum++;
 }

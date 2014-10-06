@@ -367,6 +367,8 @@ $tpl->set('s', 'LEGENDLINK', $legendlink);
 
 // Help
 $tpl->set('s', 'HELPSCRIPT', getJsHelpContext("con"));
+// CON-1907 show workflow icon only when plugin is installed
+$tpl->set('s', 'DISPLAY', class_exists('Workflows')?'' : 'display:none;');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_left_top']);
 
 function xmlFileToArray($filename, $aData = array(), $aInformation) {

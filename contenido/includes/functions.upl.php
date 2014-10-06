@@ -2,17 +2,16 @@
 /**
  * This file contains the CONTENIDO upload functions.
  *
- * @package          Core
- * @subpackage       Backend
- * @version          SVN Revision $Rev:$
+ * @package Core
+ * @subpackage Backend
+ * @version SVN Revision $Rev:$
  *
- * @author           Jan Lengowski, Timo Trautmann
- * @copyright        four for business AG <www.4fb.de>
- * @license          http://www.contenido.org/license/LIZENZ.txt
- * @link             http://www.4fb.de
- * @link             http://www.contenido.org
+ * @author Jan Lengowski, Timo Trautmann
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
  */
-
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.file.php');
@@ -90,7 +89,7 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
     // list the files in the dir
     $aCurrentFiles = array();
     while (false !== ($file = readdir($hDir))) {
-        //foreach (cDirHandler::read('.',false,true) as $key => $file) {
+        // foreach (cDirHandler::read('.',false,true) as $key => $file) {
         if (is_dir($file) && !in_array(strtolower($file), $aDirsToExclude)) {
             $aCurrentFiles[] = $file;
         }
@@ -221,10 +220,11 @@ function uplSyncDirectory($sPath) {
         $aDirsToExclude = uplGetDirectoriesToExclude();
         if (($hDir = opendir($sFullPath)) !== false) {
             while (false !== ($file = readdir($hDir))) {
-                //foreach (cDirHandler::read($sDirectory,false,true) as $key => $file) {
+                // foreach (cDirHandler::read($sDirectory,false,true) as $key =>
+                // $file) {
                 if (!in_array(strtolower($file), $aDirsToExclude)) {
                     if (is_file($sFullPath . $file)) {
-                    	cDebug::out($sPath . "::" . $file);
+                        cDebug::out($sPath . "::" . $file);
                         $oUploadsColl->sync($sPath, $file);
                     }
                 }
@@ -280,12 +280,12 @@ function uplSyncDirectoryDBFS($sPath) {
  *        upload
  *        directory or a dbfs path
  * @param string $sName Name of directory to create
- * @return string|void Octal value of filemode as string ('0702') or nothing
+ * @return string void value of filemode as string ('0702') or nothing
  */
 function uplmkdir($sPath, $sName) {
     global $cfgClient, $client, $action;
 
-    //Check DB filesystem
+    // Check DB filesystem
     if (cApiDbfs::isDbfs($sPath)) {
         $sPath = cApiDbfs::stripPath($sPath);
         $sFullPath = $sPath . '/' . $sName . '/.';
@@ -295,7 +295,7 @@ function uplmkdir($sPath, $sName) {
         return;
     }
 
-    //Check directory name
+    // Check directory name
     $dName = uplCreateFriendlyName($sName);
     $dName = strtr($dName, "'", '.');
     if ($dName != $sName) {
@@ -303,13 +303,13 @@ function uplmkdir($sPath, $sName) {
         return '0703';
     }
 
-    //Check dir or create new
+    // Check dir or create new
     $dPath = $cfgClient[$client]['upl']['path'] . $sPath . $dName;
     if (cDirHandler::read($dPath) === false) {
-        //Create new dir
+        // Create new dir
         return cDirHandler::create($dPath);
     } else {
-        //Directory already exist
+        // Directory already exist
         $action = 'upl_mkdir';
         return '0702';
     }
@@ -343,7 +343,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
         $sDirName = $oUpload->get('dirname');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
-        $oUpload->set('dirname', $oUpload->escape($sNewName2), false);
+        $oUpload->set('dirname', $sNewName2, false);
         $oUpload->store();
     }
 
@@ -355,7 +355,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
         $sDirName = $oProperty->get('itemid');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
-        $oProperty->set('itemid', $oProperty->escape($sNewName2), false);
+        $oProperty->set('itemid', $sNewName2, false);
         $oProperty->store();
     }
 }
@@ -382,8 +382,11 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
 
         // list the files in the dir
         foreach (cDirHandler::read($sDirectory, false, true) as $key => $file) {
-            //while (false !== ($file = readdir($hDir))) {
+            // while (false !== ($file = readdir($hDir))) {
             if (!in_array(strtolower($file), $aDirsToExclude)) {
+                if (strpos($file, ".") === 0) {
+                    continue;
+                }
                 if (@chdir($sDirectory . $file . '/')) {
                     if (uplCreateFriendlyName($file) == $file) {
                         $aFiles[] = $file;
@@ -823,7 +826,7 @@ function uplCreateFriendlyName($filename) {
             '-',
             '[',
             ']'
-                ), '', $chars);
+        ), '', $chars);
     }
 
     $filename = cApiStrReplaceDiacritics($filename, strtoupper($oLang->getField('encoding')));

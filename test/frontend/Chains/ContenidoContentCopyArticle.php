@@ -47,13 +47,13 @@ class ContenidoContentCopyArticleTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         self::$invokeCounter = 0;
-        cApiCecRegistry::getInstance()->registerChain($this->_chain);
     }
 
-
-    public function tearDown()
-    {
-        cApiCecRegistry::getInstance()->unregisterChain($this->_chain);
+	/**
+	* @deprecated 2014-08-07 - This method is deprecated and is not needed any longer
+	 */
+    public function tearDown() {
+        cDeprecated('This method is deprecated and is not needed any longer');
     }
 
 

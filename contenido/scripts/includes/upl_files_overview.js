@@ -10,13 +10,6 @@
  * @todo       Rework this, make a CONTENIDO module
  */
 (function(Con, $) {
-
-    // to reload the left frame after delete/insert new files
-    var frame = Con.getFrame('left_bottom');
-    if (frame && frame.location.href !== 'about:blank') {
-        frame.location.href = Con.UtilUrl.replaceParams(frame.location.href, {action: null});
-    }
-
     $(function() {
         var $body = $("body");
 
@@ -85,8 +78,8 @@
         }
         previewImage.style.width = iWidth;
         previewImage.style.height = iHeight;
-        previewImage.style.marginTop = _getY(theImage);
-        previewImage.style.marginLeft = _getX(theImage) + 100;
+        previewImage.style.marginTop = _getY(theImage) + "px";
+        previewImage.style.marginLeft = (_getX(theImage) + 100) + "px";
     }
 
     window.invertSelection = invertSelection;

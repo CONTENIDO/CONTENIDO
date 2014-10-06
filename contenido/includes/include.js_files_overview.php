@@ -16,5 +16,13 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 $files = new cGuiFileOverview($cfgClient[$client]['js']['path'], stripslashes($_REQUEST['file']), 'js');
-$files->setFileExtension('js');
+
+// Get system properties for extension filter
+$backend_file_extensions = getSystemProperty('backend', 'backend_file_extensions');
+
+if ($backend_file_extensions == "enabled") {
+	$files->setFileExtension('js');
+}
+
+// Render file overview
 $files->render();

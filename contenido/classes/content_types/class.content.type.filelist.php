@@ -759,7 +759,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLLabel(i18n('Ignore selection (use all)'), 'filelist_ignore_extensions_' . $this->_id, 'filelist_ignore_extensions');
         $wrapperContent[] = new cHTMLCheckbox('filelist_ignore_extensions_' . $this->_id, '', 'filelist_ignore_extensions_' . $this->_id, ($this->_settings['filelist_ignore_extensions'] !== 'false'));
 
-        $wrapperContent[] = new cHTMLLabel(i18n('File size limit'), 'filelist_filesizefilter_from_' . $this->_id);
+        $wrapperContent[] = new cHTMLLabel(i18n('File size limit (in MiB)'), 'filelist_filesizefilter_from_' . $this->_id);
         $default = (!empty($this->_settings['filelist_filesizefilter_from'])) ? $this->_settings['filelist_filesizefilter_from'] : '0';
         $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_from_' . $this->_id, $default, '', '', 'filelist_filesizefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
@@ -949,17 +949,37 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     public function generateFileSelect($directoryPath = '') {
         $htmlSelect = new cHTMLSelectElement('filelist_filename_' . $this->_id, '', 'filelist_filename_' . $this->_id, false, '', '', 'filelist_filename');
 
-        $i = 0;
+        $files = array();
         if ($directoryPath != '') {
             $handle = opendir($this->_uploadPath . $directoryPath);
             while (($entry = readdir($handle)) !== false) {
                 if (is_file($this->_uploadPath . $directoryPath . '/' . $entry)) {
-                    $htmlSelectOption = new cHTMLOptionElement($entry, $directoryPath . '/' . $entry);
-                    $htmlSelect->addOptionElement($i, $htmlSelectOption);
-                    $i++;
+                    $file = array();
+                    $file["name"] = $entry;
+                    $file["path"] = $directoryPath . "/" . $entry;
+                    $files[] = $file;
                 }
             }
             closedir($handle);
+        }
+
+        usort($files, function($a, $b) {
+            $a = mb_strtolower($a["name"]);
+            $b = mb_strtolower($b["name"]);
+            if($a < $b) {
+                return -1;
+            } else if($a > $b) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        $i = 0;
+        foreach($files as $file) {
+            $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
+            $htmlSelect->addOptionElement($i, $htmlSelectOption);
+            $i++;
         }
 
         if ($i === 0) {

@@ -50,8 +50,7 @@ class cModuleSynchronizer extends cModuleHandler {
         if ($this->_isExistInTable($oldModulName, $client) == false) {
             // add new Module in db-tablle
             $this->_addModul($newModulName, $client);
-            $notification = new cGuiNotification();
-            $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $newModulName));
+            cRegistry::appendLastInfoMessage(sprintf(i18n('Module %s successfully synchronized'), $newModulName));
         } else {
             // update the name of the module
             if ($oldModulName != $newModulName) {
@@ -122,6 +121,8 @@ class cModuleSynchronizer extends cModuleHandler {
         $retIdMod = 0;
 
         while ($db->nextRecord()) {
+            $showMessage = false;
+
             $modulePath = $cfgClient[$db->f('idclient')]['module']['path'] . $db->f('alias') . '/';
             $modulePHP = $modulePath . $this->_directories['php'] . $db->f('alias');
 
@@ -162,37 +163,30 @@ class cModuleSynchronizer extends cModuleHandler {
                     }
                     $mod->store();
                     $synchLock = 1;
-                    $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
+                    $showMessage = true;
                 }
             }
 
-            if ($lastmodInput < $lastmodOutput) {
-                // use output
-                if ($lastmodified < $lastmodOutput) {
-                    // update
-                    $synchLock = 1;
-                    $this->setLastModified($lastmodOutput, $db->f('idmod'));
-                    conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
-                    $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
-                }
-            } else {
-                // use input
-                if ($lastmodified < $lastmodInput) {
-                    // update
-                    $synchLock = 1;
-                    $this->setLastModified($lastmodInput, $db->f('idmod'));
-                    conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
-                    $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
-                }
+            $lastmodabsolute = max($lastmodInput, $lastmodOutput);
+            if ($lastmodified < $lastmodabsolute) {
+                // update
+                $synchLock = 1;
+                $this->setLastModified($lastmodabsolute, $db->f('idmod'));
+                conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
+                $showMessage = true;
             }
 
             if (($idmod = $this->_synchronizeFilesystemAndDb($db)) != 0) {
                 $retIdMod = $idmod;
             }
+
+            if ($showMessage) {
+                cRegistry::appendLastInfoMessage(sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
+            }
         }
 
         if ($synchLock == 0) {
-            $notification->displayNotification('info', i18n('All modules are already synchronized'));
+            cRegistry::addInfoMessage(i18n('All modules are already synchronized'));
         }
 
         // we need it for the update of moduls on the left site (module/backend)
@@ -206,6 +200,7 @@ class cModuleSynchronizer extends cModuleHandler {
      * fileystem but if not
      * clear it from filesystem.
      *
+     * @param $db
      * @return int id of last update module
      */
     private function _synchronizeFilesystemAndDb($db) {
@@ -302,8 +297,9 @@ class cModuleSynchronizer extends cModuleHandler {
      * name.
      * If the modul name exist it will return true
      *
-     * @param string $name name ot the modul
+     * @param $alias
      * @param int $idclient idclient
+     * @internal param string $name name ot the modul
      * @return bool if a modul with the $name exist in the $cfg['tab']['mod'] table
      *         return true else false
      */
