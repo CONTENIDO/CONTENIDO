@@ -1,0 +1,420 @@
+/* desktop */
+@media (min-width: 769px) {
+
+.hide_desktop {
+	display: none !important;
+}
+
+}
+
+/* tablet */
+@media (max-width: 768px) {
+
+.hide_mobile {
+	display: none !important;
+}
+
+body.menu_open {
+	overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	line-height: 1;
+}
+
+#page {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+#breadcrumb {
+	padding: 0;
+}
+
+#menu+#content {
+	margin-left: 0;
+	width: 100%;
+}
+
+/* basic widths */
+#page,
+#header,
+#content,
+#footer,
+#copyright,
+.slider,
+.column_quarter,
+.slider .images li,
+#content .slider .images li img,
+#googleMap,
+div.button_red input,
+.button.grey,
+div.button_grey input {
+	width: 100%;
+}
+
+#header,
+#footer,
+#copyright,
+#content {
+	margin: 0;
+	padding: 0;
+}
+
+.slider .images li {
+	left: 0;
+}
+
+.slider .images li a {
+	margin: 0;
+}
+
+.slider .images li h2,
+.slider .images li h3 {
+	left: 0;
+	width: 100%;
+}
+
+#header #navigation_header {
+	display: none;
+}
+
+#header {
+	height: auto;
+	padding: 0 0 10px 0;
+	position: relative;
+}
+#header > a {
+	position: relative;
+	z-index: 2;
+}
+#header > a.burger_menu {
+	position: absolute;
+}
+#header #logo {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	height: auto;
+	margin: 0;
+	max-width: 329px;
+	padding-right: 50px;
+	position: relative;
+	width: 100%;
+}
+
+#footer {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	overflow: hidden;
+	padding: 10px;
+}
+
+#footer .navigation {
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
+#footer .navigation li,
+#footer .navigation li+li {
+	margin: 0 10px 0 0;
+}
+#footer .navigation li a {
+	line-height: 15px;
+}
+
+ul.social_media {
+	width: 100%;
+}
+ul.social_media li {
+	margin: 0 10px 0 0;
+}
+
+#footer,
+#copyright {
+	bottom: auto;
+	position: relative;
+}
+
+#copyright {
+	height: auto;
+	margin: 12px 0 0 0;
+}
+
+#copyright > p {
+	white-space: nowrap;
+}
+#copyright > p+p {
+	display: none;
+}
+
+#menu {
+	background: rgba(0,0,0,0.8);
+	bottom: 0;
+	right: -240px;
+	margin: 0;
+	overflow-y: auto;
+	padding: 10px;
+	position: fixed;
+	z-index: 2000;
+}
+#menu ul {
+	list-style: none;
+}
+#menu > ul > li > ul {
+	margin: 0 0 5px 0;
+}
+#menu #navigation_header_mobile {
+	border-top: 1px solid #474747;
+	margin: 5px 0 0 0;
+	padding: 5px 0 0 0;
+}
+#menu .navigation li a,
+#menu #navigation_header_mobile li a {
+	color: #797979;
+	display: block;
+	font-size: 12px;
+	line-height: 24px;
+	text-decoration: none;
+}
+#menu .navigation li a:hover,
+#menu .navigation li a.active,
+#menu #navigation_header_mobile li a:hover,
+#menu #navigation_header_mobile li a.active {
+	color: #0083cb;
+}
+#menu #navigation_header_mobile form {
+	display: none;
+}
+
+a.burger_menu {
+	cursor: pointer;
+    display: block;
+    font-size: 24px;
+    height: 30px;
+    margin: 0 0 -10px 0;
+    padding-left: 30px;
+    position: absolute;
+    right: 0;
+    bottom: 50%;
+    z-index: 980;
+    zoom: 1;
+}
+a.burger_menu:before,
+a.burger_menu:after {
+    border-bottom: 3px solid black;
+    content: "";
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+a.burger_menu:before {
+    border-top: 3px solid black;
+    height: 6px;
+    top: 0;
+}
+a.burger_menu:after {
+    height: 12px;
+    position: absolute;
+    top: 6px;
+}
+
+#content {
+	margin: 0 0 10px 0;
+}
+#content ul, #content ol {
+	margin: 0;
+}
+
+#content ul.pagination {
+	display: table;
+	padding: 10px 0 15px 0;
+	width: 100%;
+}
+#content ul.pagination > li {
+	display: table-cell;
+	float: none;
+}
+#content ul.pagination > li:first-child > a {
+	text-align: left;
+}
+#content ul.pagination > li > a {
+	text-align: center;
+	margin: 0;
+}
+#content ul.pagination > li > a#forward {
+	text-align: right;
+}
+#content > img {
+	height: auto;
+	max-width: 100%;
+}
+
+.column_quarter .col,
+.column_quarter .col+.col {
+	margin: 0 2% 2% 0;
+}
+
+ul.download_list {
+	display: table;
+}
+ul.download_list > li {
+	display: table-row;
+	padding: 0;
+}
+ul.download_list > li > img {
+	display: table-cell;
+	float: none;
+	margin: 0 20px 20px 0;
+	max-width: none;
+}
+ul.download_list > li > img+.content {
+	display: table-cell;
+	float: none;
+	padding: 0 0 20px 0;
+	vertical-align: top;
+	width: auto;
+}
+
+#breadcrumb {
+	height: auto;
+	margin: 10px 0;
+}
+#breadcrumb ul {
+	display: inline-block;
+}
+#breadcrumb ul li,
+#breadcrumb ul li+li {
+	margin: 0 5px 0 0;
+	padding: 0;
+}
+#breadcrumb ul li:last-child {
+	margin: 0;
+}
+
+.fb_iframe_widget {
+	margin: 10px 0 0 0;
+}
+.fb_iframe_widget iframe {
+	width: 100% !important;
+}
+.fb_iframe_widget_fluid span {
+	width: 100% !important;
+}
+
+.galery {
+	width: 100%;
+}
+.galery .slider {
+	margin: 0;
+}
+.galery .slider li {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	height: auto;
+	line-height: 0;
+	margin: 0 0 2% 0;
+	width: 49%;
+}
+.galery .slider li.odd {
+	margin: 0 0 2% 2%;
+}
+.galery .slider li img {
+	width: 100%;
+}
+
+.ui-dialog {
+	border-radius: 0;
+	padding: 0 !important;
+	width: 100% !important;
+}
+.ui-dialog img {
+	display: block;
+	width: 100%;
+}
+.ui-dialog .ui-dialog-titlebar {
+	display: none;
+}
+.ui-dialog .ui-resizable-se {
+	display: none !important;
+}
+.ui-widget-content {
+	border: 0;
+}
+
+.login input[type="submit"],
+.button.red,
+div.button_red input,
+.button.grey,
+div.button_grey input {
+	margin-top: 10px;
+	outline: 0 none;
+	width: 100%;
+}
+
+div.button_red,
+div.button_grey {
+	overflow: hidden;
+	width: 100%;
+}
+
+.pifa-form select,
+.pifa-form textarea,
+.pifa-form input[type="text"],
+.pifa-form input[type="password"],
+.pifa-form .pifa-error select,
+.pifa-form .pifa-error textarea,
+.pifa-form .pifa-error input[type="text"],
+.pifa-form .pifa-error input[type="password"],
+select,
+textarea,
+input[type="text"],
+input[type="password"] {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	outline: 0 none;
+	width: 100%;
+}
+
+.pifa-form .pifa-error .pifa-error-message {
+	display: block;
+	float: left;
+	margin: 10px 0 0 0;
+	width: 100%;
+}
+
+.login {
+	padding: 10px 0;
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* phone */
+@media (max-width: 320px) {
+
+
+}
