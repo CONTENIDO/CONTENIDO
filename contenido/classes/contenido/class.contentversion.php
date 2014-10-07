@@ -67,19 +67,35 @@ class cApiContentVersionCollection extends ItemCollection {
 		
         $item = $this->createNewItem();
 
-		$item->set('idcontent', $parameters['idContent']);
-        $item->set('idartlang', $parameters['idArtLang']);
-        $item->set('idtype', $parameters['idType']);
-        $item->set('typeid', $parameters['typeId']);
+		$item->set('idcontent', $parameters['idcontent']);
+        $item->set('idartlang', $parameters['idartlang']);
+        $item->set('idtype', $parameters['idtype']);
+        $item->set('typeid', $parameters['typeid']);
         $item->set('value', $parameters['value']);
         $item->set('version', $parameters['version']);
         $item->set('author', $parameters['author']);
         $item->set('created', $parameters['created']);
-        $item->set('lastmodified', $parameters['lastModified']);
-        $item->store();
+        $item->set('lastmodified', $parameters['lastmodified']);
+        $item->set('deleted', $parameters['deleted']);
+		$item->store();
 
         return $item;
     }
+	
+	public function getIdsByWhereClause($sWhere){
+		//$db = $parent::_getSecondDBInstance();
+		
+		$ids = array();
+		
+		//Get all ids
+		$sql = 'SELECT a.' . $this->primaryKey . ' AS pk FROM `' . $this->table . '` AS a WHERE ' . $sWhere;
+		$this->db->query($sql);
+		while($this->db->nextRecord()){
+			$ids[] = $this->db->f('pk');
+		}
+		
+		return $ids;
+	}
 }
 
 /**
@@ -121,7 +137,7 @@ class cApiContentVersion extends Item {
 	 * Set current Content to this Content Version	 
 	 * 
 	 */	
-	function setAsCurrent() {	
+	public function setAsCurrent() {	
 		$content = new cApiContent();
 		if($content->loadByArticleLanguageIdTypeAndTypeId($this->get('idartlang'), $this->get('idtype'), $this->get('typeid'))) {
 			$content->set('idartlang', $this->get('idartlang'));
@@ -138,6 +154,19 @@ class cApiContentVersion extends Item {
 			$content->set('idcontent', $this->get('idcontent'));
 			$content->store();
 		}
+	}
+	
+	public function setAsTemporary($version, $deleted) {
+		$parameters = $this->values;
+		unset($parameters['idcontentversion']);
+		$parameters['version'] = $version;
+		$contentVersionColl = new cApiContentVersionCollection();
+		$contentVersion = $contentVersionColl->create($parameters);
+		if($deleted == 1){
+			//$this->set('deleted', $deleted);
+			$contentVersion->set('deleted', $deleted);
+		}
+		$contentVersion->store();
 	}
 	
     /**

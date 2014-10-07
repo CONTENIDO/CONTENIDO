@@ -101,7 +101,7 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
         $parameters['urlname'] = (trim($parameters['urlname']) == '') ? trim($parameters['title']) : trim($parameters['urlname']);
 		
 		//set version
-		$version = 1;
+		$parameters['version'] = 1;
 		$sql = 'LOCK TABLE ' . $cfg['tab']['art_lang_version'] . ' READ;';
 		$this->db->query($sql);	
 		
@@ -109,10 +109,10 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
 		$sql = $this->db->prepare($sql, $parameters['idartlang']);
 		$this->db->query($sql);		
 		if($this->db->nextRecord()){
-			$version = $this->db->f('maxversion');
-			++$version;
+			$parameters['version'] = $this->db->f('maxversion');
+			++$parameters['version'];
 		}		
-				
+	
         $item = $this->createNewItem();		
 		
 		$item->set('idartlang', $parameters['idartlang']);
@@ -124,7 +124,7 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
         $item->set('summary', $parameters['summary']);
         $item->set('artspec', $parameters['artspec']);
         $item->set('created', $parameters['created']);
-		$item->set('version', $version);
+		$item->set('version', $parameters['version']);
         $item->set('author', $parameters['author']);
         $item->set('lastmodified', $parameters['lastmodified']);
         $item->set('modifiedby', $parameters['modifiedby']);
@@ -338,12 +338,18 @@ class cApiArticleLanguageVersion extends Item {
 		$artLang->store();
 		
 		//Update Contents
-		$sql = 'SELECT idcontent FROM `%s`
-				WHERE idartlang = %d AND idcontent NOT IN
-					(SELECT idcontent
-					FROM `%s` AS a
-					WHERE idartlang = %d AND a.version <= %s)';					
-		$this->db->query($sql, $cfg['tab']['content'], $this->values['idartlang'], $cfg['tab']['content_version'], $this->values['idartlang'], $this->values['version']);
+		$sql = 'SELECT a.idcontent 
+				FROM `%s` AS a
+				WHERE a.idartlang = %d AND a.idcontent NOT IN
+					(SELECT DISTINCT b.idcontent
+					FROM `%s` AS b
+					WHERE (b.deleted < 1 OR b.deleted IS NULL)
+					AND (b.idtype, b.typeid, b.version) IN
+										(SELECT idtype, typeid, max(version)
+										FROM `%s`
+										WHERE idartlang = %d AND version <= %d
+										GROUP BY idtype, typeid))';							
+		$this->db->query($sql, $cfg['tab']['content'], $this->values['idartlang'], $cfg['tab']['content_version'], $cfg['tab']['content_version'], $this->values['idartlang'], $this->values['version']);
 		$contentColl = new cApiContentCollection();
 		while($this->db->nextRecord()){
 			 $contentColl->delete($this->db->f('idcontent'));
@@ -368,7 +374,70 @@ class cApiArticleLanguageVersion extends Item {
 		//Set this ArticleVersion as current
 		$this->setIsCurrentVersion(1);
 	}
+	
+	public function setAsTemporary() {
+		global $cfg;
 		
+		//create new temporary version
+		$sql = 'SELECT max(version) AS max FROM %s WHERE idartlang = %s;';
+		$this->db->query($sql, $cfg['tab']['art_lang_version'], $this->get('idartlang'));
+		while ($this->db->nextRecord()) {
+			$maxVersion = $this->db->f('max');
+		}
+		
+		$parameters = $this->values;
+		$parameters['version'] = $maxVersion + 1;
+		unset($parameters['idartlangversion']);
+		$artLangVersionColl = new cApiArticleLanguageVersionCollection();
+		$artLangVersion = $artLangVersionColl->create($parameters);
+		$artLangVersion->loadArticleVersionContent();
+		
+		$contentVersion = new cApiContentVersion();
+		$oType = new cApiType();	
+		$this->loadArticleVersionContent();
+		
+		$mergedContent = array_merge($this->content, $artLangVersion->content);
+		
+		foreach($mergedContent AS $type => $typeids) {
+			foreach($typeids AS $typeid => $value) {
+				$oType->loadByType($type);
+				if(isset($this->content[$type][$typeid])) {
+					//this->content->setastemporary
+					$contentParameters = array(
+						'idArtLang' => $this->get('idartlang'),
+						'idType' => $oType->get('idtype'),
+						'typeId' => $typeid,
+						'version' => $this->get('version')
+					);
+					$contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
+					if(isset($contentVersion)){
+						$contentVersion->setAsTemporary($artLangVersion->get('version'), 0);
+					} /*else { //else notwendig?...
+						$content = new cApiContent();
+						$content->loadByArticleLanguageIdTypeAndTypeId($artLangVersion->get('idartlang'),  $oType->get('idtype'), $typeid);
+						
+						$contentParameters = $content->values;
+						$contentParameters['version'] = $artLangVersion->get('version');
+						
+						$contentVersionColl = new cApiContentVersionCollection();					
+						$contentVersion = $contentVersionColl->create($contentParameters);
+					}*/
+				} else {
+					//artlangvers->content->deleted		//TODOJ: evtl idcontent notwendig
+					$contentParameters = array(
+						'idartlang' => $artLangVersion->get('idartlang'),
+						'idtype' => $oType->get('idtype'),
+						'typeid' => $typeid,
+						'version' => $artLangVersion->get('version'),
+						'deleted' => 1
+					);
+					$contentVersionColl = new cApiContentVersionCollection();					
+					$contentVersion = $contentVersionColl->create($contentParameters);
+				}
+			}
+		}
+	}
+			
     /**
      * Load data by article language id and version
      *
@@ -451,6 +520,7 @@ class cApiArticleLanguageVersion extends Item {
 					WHERE idartlang = %d AND version <= %d
 					GROUP BY idtype, typeid)
 				AND a.idartlang = %d 
+				AND (a.deleted < 1 OR a.deleted IS NULL)
 				ORDER BY a.idtype, a.typeid;';
 
 		$this->db->query($sql, $cfg['tab']['content_version'], $cfg['tab']['type'], $cfg['tab']['content_version'], $this->get('idartlang'), $this->get('version'), $this->get('idartlang'));
