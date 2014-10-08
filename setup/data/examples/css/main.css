@@ -12,6 +12,13 @@ body {
     height: 100%;
 }
 
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+    cursor: pointer;
+}
+
 #page {
     width: 960px;
     min-height: 100%;

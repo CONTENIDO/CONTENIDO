@@ -154,10 +154,29 @@ $(function() {
                 width: "auto",
                 height: "auto",
                 closeText: "X",
+                dialogClass: 'dialog-gallery',
                 position: {
                     my: "center",
                     at: "center",
                     of: window
+                },
+                open: function() {
+                    $('.ui-widget-overlay').on('click', function() {
+                        $(".ui-dialog-content").dialog("destroy");
+                    });
+
+                    $(".ui-dialog img").swipe( {
+                        //Generic swipe handler for all directions
+                        swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+
+                            if (direction == 'right') {
+                                $(this).parent().find('.next_image').click();
+                            } else if (direction == 'left') {
+                                $(this).parent().find('.prev_image').click();
+                            }
+                        },
+                        threshold: 75
+                    });
                 },
                 close: function() {
                     $(".galery").prepend('<div class="lightbox"></div>');
@@ -168,7 +187,7 @@ $(function() {
         $("body").delegate(".lightbox a", "click", function(e) {
             e.preventDefault();
             var index = parseInt($(this).attr("href"));
-            $(".lightbox").dialog("close");
+            $(".lightbox").dialog("destroy");
             $('.galery .source li:eq(' + index + ') a').click();
 
             // switch pages when image is on other page.
@@ -188,6 +207,10 @@ $(function() {
     $(".slider .images li").not(".active").css({"opacity": "0"});
 
     var slider = window.setInterval(function() {
+        if ($(window).width() < 769) {
+            return false;
+        }
+
         var index = $(".slider .images li.active").index();
         $(".slider .pagination li a").removeClass("active");
         $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function() {
@@ -205,6 +228,43 @@ $(function() {
             });
         }
     }, 7000);
+
+    $(".slider").on('slider.next', function() {
+        var index = $(".slider .images li.active").index();
+        $(".slider .pagination li a").removeClass("active");
+        $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function() {
+            $(this).removeClass("active");
+        });
+        if ((index + 1) == $(".slider .images li").length) {
+            $(".slider .images li:eq(0)").animate({"opacity": "1"}, 900, function() {
+                $(this).addClass("active");
+                $(".slider .pagination li:eq(0) a").addClass("active");
+            });
+        } else {
+            $(".slider .images li:eq(" + (index + 1) + ")").animate({"opacity": "1"}, 900, function() {
+                $(this).addClass("active");
+                $(".slider .pagination li:eq(" + (index + 1) + ") a").addClass("active");
+            });
+        }
+    });
+
+    $(".slider").on('slider.prev', function() {
+        var index = $(".slider .images li.active").index();
+        $(".slider .pagination li a").removeClass("active");
+        $(".slider .images li:eq(" + index + ")").animate({"opacity": "0"}, 500, function() {
+            $(this).removeClass("active");
+        });
+        if ((index - 1) == $(".slider .images li").length) {
+            $(".slider .images li:last").animate({"opacity": "1"}, 900, function() {
+                $(this).addClass("active");
+                $(".slider .pagination li:last a").addClass("active");
+            });
+        } else {
+            $(".slider .images li:eq(" + (index - 1) + ")").animate({"opacity": "1"}, 900, function() {
+                $(this).addClass("active");
+                $(".slider .pagination li:eq(" + (index - 1) + ") a").addClass("active");
+            });
+        }    });
 
     $(".slider").mouseenter(function() {
         clearTimeout(slider);
