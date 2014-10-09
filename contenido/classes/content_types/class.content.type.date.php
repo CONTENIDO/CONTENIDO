@@ -113,8 +113,9 @@ class cContentTypeDate extends cContentTypeAbstract {
         	$this->_storeSettings();
         }
 
-        // reset $_POST variable
-        unset($_POST);
+        // reset specific date variable
+        $_POST[$this->_prefix . '_action'] = '';
+        $_POST['date_format'] = '';
     }
 
     /**
