@@ -57,6 +57,9 @@ class PimPluginSetup {
     // Plugin requirements
     public static $XmlRequirements;
 
+    // Plugin dependencies
+    public static $XmlDependencies;
+
     // CONTENIDO areas: *_area
     public static $XmlArea;
 
@@ -144,6 +147,9 @@ class PimPluginSetup {
 
         // Plugin requirements
         self::$XmlRequirements = $xml->requirements;
+
+        // Plugin dependencies
+		self::$XmlDependencies = $xml->dependencies;
 
         // CONTENIDO areas: *_area
         self::$XmlArea = $xml->contenido->areas;

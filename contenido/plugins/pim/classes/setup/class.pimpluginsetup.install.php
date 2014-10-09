@@ -202,6 +202,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Requirement checks
         $this->_installCheckRequirements();
 
+        // Dependencies checks
+        $this->_installCheckDependencies();
+
         // Add new plugin: *_plugins
         $this->_installAddPlugin();
 
@@ -315,6 +318,65 @@ class PimPluginSetupInstall extends PimPluginSetup {
                 }
             }
         }
+    }
+
+    /**
+     * Check dependencies to other plugins (dependencies-Tag at plugin.xml)
+     */
+    private function _installCheckDependencies() {
+
+    	$dependenciesCount = count(parent::$XmlDependencies);
+    	for ($i = 0; $i < $dependenciesCount; $i++) {
+
+    		$attributes = array();
+
+    		// Build attributes
+    		foreach (parent::$XmlDependencies->depend[$i]->attributes() as $key => $value) {
+    			$attributes[$key] = $value;
+    		}
+
+    		// Security check
+    		$depend = cSecurity::escapeString(parent::$XmlDependencies->depend[$i]);
+
+    		if ($depend == "") {
+    			return true;
+    		}
+
+    		// Add attributes "min_version" and "max_version" to an array
+    		$attributes = array(
+    				'uuid' => cSecurity::escapeString($attributes['uuid']),
+    				'minversion' => cSecurity::escapeString($attributes['min_version']),
+    				'maxversion' => cSecurity::escapeSTring($attributes['max_version'])
+    		);
+
+
+    		$this->_PimPluginCollection->setWhere('uuid', $attributes['uuid']);
+    		$this->_PimPluginCollection->setWhere('active', '1');
+    		$this->_PimPluginCollection->query();
+    		if ($this->_PimPluginCollection->count() == 0) {
+    			parent::error(i18n('This plugin required the plugin', 'pim') . ' <strong>' . $depend . '</strong>.');
+    		}
+
+    		$plugin = $this->_PimPluginCollection->next();
+
+    		// Check min plugin version
+    		if (parent::$XmlDependencies->depend[$i]->attributes()->minversion) {
+
+	    		if (version_compare($plugin->get("version"), parent::$XmlDependencies->depend[$i]->attributes()->minversion, '<')) {
+	    			parent::error(i18n('You have to install', 'pim') . ' <strong>' . $depend . ' '. parent::$XmlDependencies->depend[$i]->attributes()->minversion . i18n('</strong> or higher to install this plugin!', 'pim'));
+	    		}
+    		}
+
+    		// Check max plugin version
+    		if (parent::$XmlDependencies->depend[$i]->attributes()->maxversion) {
+
+    			if (version_compare($plugin->get("version"),  parent::$XmlDependencies->depend[$i]->attributes()->maxversion, '>')) {
+	    			parent::error(i18n('You have to install', 'pim') . ' <strong>' . $depend . ' '. parent::$XmlDependencies->depend[$i]->attributes()->maxversion . i18n('</strong> or lower to install this plugin!', 'pim'));
+    			}
+    		}
+
+    	}
+
     }
 
     /**
