@@ -223,6 +223,12 @@ class cArticleCollector implements SeekableIterator, Countable {
             $artLangId = $db->f('idartlang');
             $this->_articles[] = new cApiArticleLanguage($artLangId);
         }
+
+        // Execute cec hook
+        cApiCecHook::execute('Contenido.ArticleCollector.Articles', array(
+            'idart' => cRegistry::getArticleId(),
+            'articles' => $this->_articles
+        ));
     }
 
     /**
