@@ -610,9 +610,7 @@ foreach ($allTranslations as $hash => $translationArray) {
                 $linkEdit->setCustom("sortmode", $_REQUEST["sortmode"]);
                 $linkEdit->setCustom("search", $search);
                 $linkEdit->setCustom("filter", $filter);
-                foreach ($extraLanguages as $idExtraLang) {
-                    $linkEdit->setCustom("extralang[]", $idExtraLang);
-                }
+                $linkEdit->setCustom("extralang[]", $idExtraLang);
                 $sLinkEdit = ' ' . $linkEdit->render();
             } else {
                 $sLinkEdit = '';
@@ -635,9 +633,13 @@ foreach ($allTranslations as $hash => $translationArray) {
             $linkEditRow->setCustom("sortmode", $_REQUEST["sortmode"]);
             $linkEditRow->setCustom("search", $search);
             $linkEditRow->setCustom("filter", $filter);
+
+            $idExtraLangCount = 0;
             foreach ($extraLanguages as $idExtraLang) {
-                $linkEditRow->setCustom("extralang[]", $idExtraLang);
+                $linkEditRow->setCustom("extralang[$idExtraLangCount]", $idExtraLang);
+                $idExtraLangCount++;
             }
+
             $sLinkEditRow = ' ' . $linkEditRow->render();
         } else {
             $sLinkEditRow = '&nbsp;';
@@ -668,9 +670,13 @@ $form->setVar("sortby", $_REQUEST["sortby"]);
 $form->setVar("sortmode", $_REQUEST["sortmode"]);
 $form->setVar("search", $search);
 $form->setVar("filter", $filter);
+
+$idExtraLangCount = 0;
 foreach ($extraLanguages as $idExtraLang) {
-    $form->setVar("extralang[]", $idExtraLang);
+	$form->setVar("extralang[$idExtraLangCount]", $idExtraLang);
+	$idExtraLangCount++;
 }
+
 $form->setVar('contenido', $contenido);
 $form->setContent($list->render());
 
@@ -687,9 +693,13 @@ $pagerLink->setCustom("frame", $frame);
 $pagerLink->setCustom("area", $area);
 $pagerLink->setCustom("search", $search);
 $pagerLink->setCustom("filter", $filter);
+
+$idExtraLangCount = 0;
 foreach ($extraLanguages as $idExtraLang) {
-    $pagerLink->setCustom("extralang[]", $idExtraLang);
+	$pagerLink->setCustom("extralang[$idExtraLangCount]", $idExtraLang);
+	$idExtraLangCount++;
 }
+
 $pagerLink->setCustom("contenido", $sess->id);
 $pager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f471", $counter, $_REQUEST["elemperpage"], $_REQUEST["page"], $pagerLink, "page", $pagerl);
 
@@ -704,9 +714,13 @@ $delLangLink->setCustom("filter", $filter);
 $delLangLink->setCustom("frame", $frame);
 $delLangLink->setCustom("area", $area);
 $delLangLink->setCustom("contenido", $sess->id);
+
+$idExtraLangCount = 0;
 foreach ($extraLanguages as $idExtraLang) {
-    $delLangLink->setCustom("extralang[]", $idExtraLang);
+	$delLangLink->setCustom("extralang[$idExtraLangCount]", $idExtraLang);
+	$idExtraLangCount++;
 }
+
 $delLangLink->setCustom("dellang", '');
 $delLangHref = $delLangLink->getHref();
 
