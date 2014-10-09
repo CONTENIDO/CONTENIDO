@@ -1,8 +1,16 @@
 (function(){
 
-    if (jQuery.browser.msie && (jQuery.browser.version.substring(0, 2) === "8." || jQuery.browser.version.substring(0, 2) === "7.") ) {
-        $('body').addClass('no-media');
+    $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
+
+    //detect chrome
+    if($.browser.chrome){
+    	//chrome reports as safari too
+        $.browser.safari = false;
     }
+
+    /*if (jQuery.browser.msie && (jQuery.browser.version.substring(0, 2) === "8." || jQuery.browser.version.substring(0, 2) === "7.") ) {
+        $('body').addClass('no-media');
+    }*/
 
 	//if is mobile breakpoint
 	function isMobile() {
@@ -12,10 +20,13 @@
 	var header = $('#header');
 
 	//append extra nav to mobile nav
-	var headerNav = $('#navigation_header').clone();
-	headerNav.appendTo('#menu')
-			 .addClass('hide_desktop')
-			 .attr('id', headerNav.attr('id')+"_mobile");
+	var navigationHeader = $('#navigation_header');
+	if (navigationHeader.length) {
+		var headerNav = navigationHeader.clone();
+		headerNav.appendTo('#menu')
+				 .addClass('hide_desktop')
+				 .attr('id', navigationHeader.attr('id')+"_mobile");
+	}
 
 	//create burger-menu
 	$('<a />').addClass('burger_menu hide_desktop').appendTo($('<div />').addClass('burger_menu_wrapper')).appendTo(header);
@@ -134,9 +145,15 @@
 	//close mobile menu
 	function closeMenu() {
 
+		//ie fix
+		var posRight = $('#menu').data('oPosRight');
+		if (posRight > 0) {
+			posRight = -posRight;
+		}
+
 		$('.burger_menu').removeClass('open');
 		$('body').removeClass('menu_open');
-		$('#menu').stop().animate({'right': $('#menu').data('oPosRight')});
+		$('#menu').stop().animate({'right': posRight});
 
 		//bind click with namespace
 		$(document).off('click.mobileMenu');
@@ -163,11 +180,12 @@
 		var header = $('#header'),
 			m = $('#menu');
 
-		var d = m.data('oPosRight');
+		var d = m.data('oPosRight'),
+			w = m.outerWidth();
 
-		//fallback if init failed
-		if (!d || d == 'auto' || d == 'undefined') {
-			m.data('oPosRight', m.width());
+		//fallback if init failed and fix IE
+		if (!d || d == 'auto' || d == 'undefined' || d < w) {
+			m.data('oPosRight', w);
 		}
 
 		m.css('top', header.position().top + header.outerHeight() - 1);
@@ -179,6 +197,15 @@
 		if (isMobile()) {
 			updateSlider();
 			updateMenu();
+		} else {
+			$('.slider .images').removeAttr('style');
+
+		}
+
+		var u = $('.ui-dialog-content');
+
+		if (u.length) {
+			u.dialog("option", "position", {my: "center", at: "center", of: window});
 		}
 	});
 
@@ -190,7 +217,13 @@
 	});
 
 	//window live
-	$(window).live(function() {
+	$(window).load(function() {
+
+		//detect safari
+		if($.browser.safari){
+		
+			$('ul.download_list').find('img').addClass('safari');
+		}
 
 		updateSlider();
 		updateMenu();

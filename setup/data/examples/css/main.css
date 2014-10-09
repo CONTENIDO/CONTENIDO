@@ -254,10 +254,11 @@ p a:hover {
 }
 
 .slider .images li {
-    position: absolute;
-    opacity: 0;
+    filter: alpha(opacity=0);
     list-style: none;
     left: 20px;
+    opacity: 0;
+    position: absolute;
 }
 
 

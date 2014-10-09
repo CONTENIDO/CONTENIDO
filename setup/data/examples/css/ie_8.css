@@ -7,3 +7,14 @@
 .galery .slider li + li {
     margin-top: 0;
 }
+
+input {
+	font-family: inherit;
+}
+
+.slider .images li {
+	display: none;
+}
+.slider .images li.active {
+	display: block;
+}
