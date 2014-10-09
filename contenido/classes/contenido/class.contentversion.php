@@ -139,7 +139,7 @@ class cApiContentVersion extends Item {
 	 */	
 	public function setAsCurrent() {	
 		$content = new cApiContent();
-		if($content->loadByArticleLanguageIdTypeAndTypeId($this->get('idartlang'), $this->get('idtype'), $this->get('typeid'))) {
+		if ($content->loadByArticleLanguageIdTypeAndTypeId($this->get('idartlang'), $this->get('idtype'), $this->get('typeid'))) {
 			$content->set('idartlang', $this->get('idartlang'));
 			$content->set('idtype', $this->get('idtype'));
 			$content->set('typeid', $this->get('typeid'));
@@ -148,7 +148,7 @@ class cApiContentVersion extends Item {
 			$content->set('created', $this->get('created'));
 			$content->set('lastmodified', $this->get('lastmodified'));
 			$content->store();
-		}else {
+		} else {
 			$contentColl = new cApiContentCollection();
 			$content = $contentColl->create($this->get('idartlang'), $this->get('idtype'), $this->get('typeid'), $this->get('value'), 0, $this->get('author'), $this->get('created'), $this->get('lastmodified'));
 			$content->set('idcontent', $this->get('idcontent'));
@@ -162,8 +162,7 @@ class cApiContentVersion extends Item {
 		$parameters['version'] = $version;
 		$contentVersionColl = new cApiContentVersionCollection();
 		$contentVersion = $contentVersionColl->create($parameters);
-		if($deleted == 1){
-			//$this->set('deleted', $deleted);
+		if ($deleted == 1) {
 			$contentVersion->set('deleted', $deleted);
 		}
 		$contentVersion->store();
@@ -181,7 +180,7 @@ class cApiContentVersion extends Item {
      * @return bool
      */
     public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters) {
-	$db = cRegistry::getDb();
+		$db = cRegistry::getDb();
         $props = array(
             'idartlang' => $contentParameters['idArtLang'],
             'idtype' => $contentParameters['idType'],

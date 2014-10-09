@@ -102,13 +102,13 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
 		
 		//set version
 		$parameters['version'] = 1;
-		$sql = 'LOCK TABLE ' . $cfg['tab']['art_lang_version'] . ' READ;';
-		$this->db->query($sql);	
+		$sql = 'LOCK TABLE %s READ';
+		$this->db->query($sql, $cfg['tab']['art_lang_version']);	
 		
 		$sql = 'SELECT MAX(version) AS maxversion FROM con_art_lang_version WHERE idartlang = %d;'; // geht mit cfg nicht?!
 		$sql = $this->db->prepare($sql, $parameters['idartlang']);
 		$this->db->query($sql);		
-		if($this->db->nextRecord()){
+		if ($this->db->nextRecord()) {
 			$parameters['version'] = $this->db->f('maxversion');
 			++$parameters['version'];
 		}		
@@ -305,14 +305,14 @@ class cApiArticleLanguageVersion extends Item {
 				'idartlang' => $this->get('idartlang'), 
 				'iscurrentversion' => $isCurrentVersion
 		);
-		if($isCurrentVersion == 1){
+		if ($isCurrentVersion == 1) {
 			$artLangVersion = new cApiArticleLanguageVersion();
-			if($artLangVersion->loadByMany($attributes)){
+			if ($artLangVersion->loadByMany($attributes)) {
 				$artLangVersion->set('iscurrentversion', 0);
 				$artLangVersion->store();
 			}
 			$this->set('iscurrentversion', 1);
-		}else{
+		} else {
 	        $this->set('iscurrentversion', 0);
 		}
 	}	
@@ -332,7 +332,7 @@ class cApiArticleLanguageVersion extends Item {
 		unset($parameters['idartlang']);
 		unset($parameters['iscurrentversion']);
 		unset($parameters['version']);
-		foreach($parameters as $key => $value){
+		foreach ($parameters as $key => $value) {
 			$artLang->set($key, $value);
 		}
 		$artLang->store();
@@ -351,15 +351,15 @@ class cApiArticleLanguageVersion extends Item {
 										GROUP BY idtype, typeid))';							
 		$this->db->query($sql, $cfg['tab']['content'], $this->values['idartlang'], $cfg['tab']['content_version'], $cfg['tab']['content_version'], $this->values['idartlang'], $this->values['version']);
 		$contentColl = new cApiContentCollection();
-		while($this->db->nextRecord()){
+		while ($this->db->nextRecord()) {
 			 $contentColl->delete($this->db->f('idcontent'));
 		}		
 		
 		$contentVersion = new cApiContentVersion();
 		$oType = new cApiType();	
 		$this->loadArticleVersionContent();
-		foreach($this->content AS $type => $typeids){
-			foreach($typeids AS $typeid => $value){
+		foreach ($this->content AS $type => $typeids) {
+			foreach ($typeids AS $typeid => $value) {
 				$oType->loadByType($type);
 				$contentParameters = array(
 					'idArtLang' => $this->get('idartlang'),
@@ -379,7 +379,7 @@ class cApiArticleLanguageVersion extends Item {
 		global $cfg;
 		
 		//create new temporary version
-		$sql = 'SELECT max(version) AS max FROM %s WHERE idartlang = %s;';
+		$sql = 'SELECT max(version) AS max FROM %s WHERE idartlang = %d';
 		$this->db->query($sql, $cfg['tab']['art_lang_version'], $this->get('idartlang'));
 		while ($this->db->nextRecord()) {
 			$maxVersion = $this->db->f('max');
@@ -396,13 +396,24 @@ class cApiArticleLanguageVersion extends Item {
 		$oType = new cApiType();	
 		$this->loadArticleVersionContent();
 		
-		$mergedContent = array_merge($this->content, $artLangVersion->content);
+		//get all Content Versions
+		$mergedContent = array();
+		foreach ($this->content AS $type => $typeids) {
+			foreach ($typeids AS $typeid => $value) {
+				$mergedContent[$type][$typeid] = '';
+			}
+		}
+		foreach ($artLangVersion->content AS $type => $typeids) {
+			foreach ($typeids AS $typeid => $value) {
+				$mergedContent[$type][$typeid] = '';
+			}
+		}
 		
-		foreach($mergedContent AS $type => $typeids) {
-			foreach($typeids AS $typeid => $value) {
+		//set new Content Versions
+		foreach ($mergedContent AS $type => $typeids) {
+			foreach ($typeids AS $typeid => $value) {
 				$oType->loadByType($type);
-				if(isset($this->content[$type][$typeid])) {
-					//this->content->setastemporary
+				if (isset($this->content[$type][$typeid])) {
 					$contentParameters = array(
 						'idArtLang' => $this->get('idartlang'),
 						'idType' => $oType->get('idtype'),
@@ -410,30 +421,21 @@ class cApiArticleLanguageVersion extends Item {
 						'version' => $this->get('version')
 					);
 					$contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
-					if(isset($contentVersion)){
+					if (isset($contentVersion)) {
 						$contentVersion->setAsTemporary($artLangVersion->get('version'), 0);
-					} /*else { //else notwendig?...
-						$content = new cApiContent();
-						$content->loadByArticleLanguageIdTypeAndTypeId($artLangVersion->get('idartlang'),  $oType->get('idtype'), $typeid);
-						
-						$contentParameters = $content->values;
-						$contentParameters['version'] = $artLangVersion->get('version');
-						
-						$contentVersionColl = new cApiContentVersionCollection();					
-						$contentVersion = $contentVersionColl->create($contentParameters);
-					}*/
+					} 
 				} else {
-					//artlangvers->content->deleted		//TODOJ: evtl idcontent notwendig
 					$contentParameters = array(
 						'idartlang' => $artLangVersion->get('idartlang'),
 						'idtype' => $oType->get('idtype'),
 						'typeid' => $typeid,
 						'version' => $artLangVersion->get('version'),
+						'author' => $this->get('author'),
 						'deleted' => 1
 					);
 					$contentVersionColl = new cApiContentVersionCollection();					
-					$contentVersion = $contentVersionColl->create($contentParameters);
-				}
+					$contentVersionColl->create($contentParameters);
+				}				
 			}
 		}
 	}

@@ -32,7 +32,7 @@ cInclude('includes', 'functions.con2.php');
  *  @type string $lastModified
  * }
  */
-function conCreateContentVersion(array $parameters){
+function conCreateContentVersion(array $parameters) {
 	//Create new Article Language Version and get the version number
 	$currentArticle = cRegistry::getArticleLanguage();
 	
@@ -621,14 +621,14 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
 	//Create Content Version	
 	$idContent = $oContent->getField('idcontent');
 	$parameters = array(
-		'idContent' => $idContent,
-		'idArtLang' => $idartlang,
-		'idType' => $idtype,
-		'typeId' => $typeid,
+		'idcontent' => $idContent,
+		'idartlang' => $idartlang,
+		'idtype' => $idtype,
+		'typeid' => $typeid,
 		'value' => $value,
 		'author' => $author,
 		'created' => $date,
-		'lastModified' => $date
+		'lastmodified' => $date
 	);
 	conCreateContentVersion($parameters);
 

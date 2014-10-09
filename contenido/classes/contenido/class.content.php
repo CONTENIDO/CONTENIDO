@@ -123,6 +123,17 @@ class cApiContent extends Item {
         parent::setField($name, $value, $bSafe);
     }
 
+	public function setAsTemporary($version, $deleted) {
+		$parameters = $this->values;
+		$parameters['version'] = $version;
+		$contentVersionColl = new cApiContentVersionCollection();
+		$contentVersion = $contentVersionColl->create($parameters);
+		if ($deleted == 1) {
+			$contentVersion->set('deleted', $deleted);
+		}
+		$contentVersion->store();
+	}
+	
     /**
      * Loads an content entry by its article language id, idtype and type id.
      *

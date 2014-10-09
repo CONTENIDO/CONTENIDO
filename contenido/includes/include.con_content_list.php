@@ -147,7 +147,7 @@ if (($action == 'savecontype' || $action == 10)) {
     $seoauthorNode->addCData(conGetMetaValue($cApiArticleLanguage->get('idartlang'), 1));
     
 	// load content id's for article
-	if($_POST['versionnumber'] == 'current'){
+	if ($_POST['versionnumber'] == 'current') {
 		$conColl = new cApiContentCollection();
 		$contentIds = $conColl->getIdsByWhereClause('idartlang="'. $cApiArticleLanguage->get("idartlang") .'"');
 	} else {
@@ -163,19 +163,19 @@ if (($action == 'savecontype' || $action == 10)) {
     // iterate through content and add get data	
     foreach ($contentIds as $contentId) {
         //load content object
-	if($_POST['versionnumber'] == 'current'){
-			$content = new cApiContent($contentId);
-		} else {
-			$content = new cApiContentVersion($contentId);
-		}
+	if ($_POST['versionnumber'] == 'current') {
+		$content = new cApiContent($contentId);
+	} else {
+		$content = new cApiContentVersion($contentId);
+	}
         // if loaded get data and add to xml
-        if($content->isLoaded()) {
+        if ($content->isLoaded()) {
             $type = new cApiType($content->get("idtype"));
 
-            if($type->isLoaded() && in_array($type->get("type"), $allowedContentTypes)) {
+            if ($type->isLoaded() && in_array($type->get("type"), $allowedContentTypes)) {
                 foreach ($_POST as $key => $contentType) {
 					$key = str_replace($contentType, '', $key);
-                    if($key == $type->get("type") && $contentType == $content->get("typeid")) {
+                    if ($key == $type->get("type") && $contentType == $content->get("typeid")) {
                         //create content element
                         $contentNode = $articleNode->addChild("content");
                         $contentNode->addCData($content->get("value"));
@@ -322,14 +322,18 @@ while ($db->nextRecord()) {
 }
 
 //Set as current/temporary
-if($_GET['copyTo'] == 1) {
+if ($_GET['copyTo'] == 1) {
 	$artLangVersion = new cApiArticleLanguageVersion((int) $_GET['idArtLangVersion']);
-	if($_GET['idArtLangVersion'] == $maxIdArtLangVersion) {
+	if ($_GET['idArtLangVersion'] == $maxIdArtLangVersion) {
 		$artLangVersion->setAsCurrent();
+	} else if ($_GET['idArtLangVersion'] == 'current') {
+		$artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
+		$artLang->setAsTemporary();
 	} else {
 		$artLangVersion->setAsTemporary();
 	}
 	$artLangVersion = NULL;
+	++$maxIdArtLangVersion;
 }
 
 $aIdtype = array();
@@ -356,19 +360,19 @@ $sortID = array(
 );
 
 //Get Content Version
-if($_GET['copyTo'] == 1 && $_GET['idArtLangVersion'] != $maxIdArtLangVersion) {
+if ($_GET['copyTo'] == 1 && $_GET['idArtLangVersion'] != $maxIdArtLangVersion) {
 	$artLangVersion = new cApiArticleLanguageVersion($maxIdArtLangVersion);
-}else if($_GET['idArtLangVersion'] != 'current' && $_GET['idArtLangVersion'] != NULL && $_GET['copyTo'] == 0) {
+} else if ($_GET['idArtLangVersion'] != 'current' && $_GET['idArtLangVersion'] != NULL && $_GET['copyTo'] == 0) {
 	$artLangVersion = new cApiArticleLanguageVersion((int) $_GET['idArtLangVersion']);
 }
 
-if(isset($artLangVersion)){
+if (isset($artLangVersion)) {
 	$artLangVersion->loadArticleVersionContent();
 	$result = array_change_key_case($artLangVersion->content, CASE_UPPER);
 }
 
 //Get Content and set $aList
-if(isset($artLangVersion) == false) {
+if (isset($artLangVersion) == false) {
 	foreach ($sortID as $name) {
 		$sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value, a.version as version 
 				FROM %s AS a, %s AS b
@@ -392,28 +396,27 @@ $db->query($sql, $cfg['tab']['art_lang_version'], (int) $_REQUEST['idartlang']);
 while ($db->nextRecord()) {
 	$optionElementParameters[$db->f('version')][$db->f('idartlangversion')] = $db->f('lastmodified');
 }
-//$maxIdArtLangVersion = key($optionElementParameters[max(array_keys($optionElementParameters))]);
 //Create Current and Temporary Content Option Element
 $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
 $optionElement = new cHTMLOptionElement('Aktuelle Version', 'current');
-if(isset($artLangVersion) == false) {
+if (isset($artLangVersion) == false) {
 	$optionElement->setSelected(true);
 }
 $selectElement->appendOptionElement($optionElement);
-$optionElement = new cHTMLOptionElement('Tempor&auml;re Version', $maxIdArtLangVersion);
-if(isset($artLangVersion) &&  $_GET['idArtLangVersion'] == $maxIdArtLangVersion
-   || isset($artLangVersion) && $_GET['idArtLangVersion'] != $maxIdArtLangVersion && $_GET['copyTo'] == 1){
+$optionElement = new cHTMLOptionElement('Editierbare Version', $maxIdArtLangVersion);
+if (isset($artLangVersion) &&  $_GET['idArtLangVersion'] == $maxIdArtLangVersion
+   || isset($artLangVersion) && $_GET['idArtLangVersion'] != $maxIdArtLangVersion && $_GET['copyTo'] == 1) {
 	$optionElement->setSelected(true);
 }
 $selectElement->appendOptionElement($optionElement);
 unset($optionElementParameters[max(array_keys($optionElementParameters))]);
 //Create Content Version Option Elements
-foreach($optionElementParameters AS $key => $value) {
+foreach ($optionElementParameters AS $key => $value) {
 	$lastModified = date('d.m.Y, H:i\h', strtotime($value[key($value)]));
 	$optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
-	if(isset($artLangVersion) && $_GET['idArtLangVersion'] != 'current' 
-	   && $_GET['idArtLangVersion'] != $maxIdArtLangVersion && $_GET['copyTo'] != 1){
-		if($artLangVersion->get('version') == $key) {
+	if (isset($artLangVersion) && $_GET['idArtLangVersion'] != 'current' 
+	   && $_GET['idArtLangVersion'] != $maxIdArtLangVersion && $_GET['copyTo'] != 1) {
+		if ($artLangVersion->get('version') == $key) {
 			$optionElement->setSelected(true);
 		}
 	}
@@ -429,9 +432,9 @@ $sql = 'SELECT DISTINCT typeid
 		FROM %s
 		WHERE idartlang = %d
 		ORDER BY typeid;';
-if(isset($artLangVersion) == false) {
+if (isset($artLangVersion) == false) {
 	$db->query($sql, $cfg['tab']['content'], (int) $_REQUEST['idartlang']);
-}else {
+} else {
 	$db->query($sql, $cfg['tab']['content_version'], (int) $_REQUEST['idartlang']);
 }
 while ($db->nextRecord()) {
@@ -439,7 +442,7 @@ while ($db->nextRecord()) {
 }
 
 //Get all Content and Content Version numbers
-if(isset($artLangVersion)) {
+if (isset($artLangVersion)) {
 	$sql = 'SELECT DISTINCT a.version
 			FROM %s AS a
 			WHERE a.idartlang = %d
@@ -448,7 +451,7 @@ if(isset($artLangVersion)) {
 	while ($db->nextRecord()) {
 		$versions[] = $db->f('version');
 	} 
-}else {
+} else {
 	$versions[] = 0;
 }
 
@@ -492,16 +495,16 @@ $page->set('s', 'IMPORT_RAWDATA', i18n('Import raw data'));
 $page->set('s', 'EXPORT_LABEL', i18n('Raw data export'));
 $page->set('s', 'IMPORT_LABEL', i18n('Raw data import'));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n('Overwrite data'));
-//if($_GET['idArtLangVersion'] == 'current' && $_GET['copyTo'] == 0 || $_GET['idArtLangVersion'] == NULL
- //|| ($_GET['copyTo'] == 1 && $_GET['idArtLangVersion'] == $maxIdArtLangVersion)){ //TODOJ: maxidartlangversion-1 wenn setastemp/current aktiv
-if(isset($artLangVersion) == false) {	
+
+if (isset($artLangVersion) == false) {	
 	$labelTitle = 'Version kopieren';
-}else {
+} else {
 	$labelTitle = 'Revision kopieren';
 }
 $page->set('s', 'COPY_LABEL', $labelTitle);
 //Set import labels
-if($_GET['idArtLangVersion'] == $maxIdArtLangVersion){
+if ($_GET['idArtLangVersion'] == $maxIdArtLangVersion && $_GET['copyTo'] == 0
+	|| $_GET['idArtLangVersion'] != $maxIdArtLangVersion && $_GET['copyTo'] == 1) {
 	$page->set('s', 'DISABLED', '');
 } else {
 	$page->set('s', 'DISABLED', 'DISABLED');
@@ -520,8 +523,8 @@ if (count($result) <= 0) {
 } else { 
     foreach ($aIdtype as $idtype) {
         foreach ($sortID as $name) {
-			foreach($versions as $version){				
-				if ( in_array($name, array_keys($result)) && $result[$name][$idtype][$version] != '') {						
+			foreach ($versions as $version){				
+				if (in_array($name, array_keys($result)) && $result[$name][$idtype][$version] != '') {						
 					if (in_array($name . '[' . $idtype . ']', $currentTypes) 
 					    && ($_GET['idArtLangVersion'] == $maxIdArtLangVersion && $_GET['copyTo'] == 0
 						|| $_GET['idArtLangVersion'] != $maxIdArtLangVersion && $_GET['copyTo'] == 1)) {							
@@ -536,7 +539,7 @@ if (count($result) <= 0) {
 					$page->set('d', 'ID_TYPE', $idtype);
 					$page->set('d', 'VERSION', $version);
 					$page->set('d', 'FORMATTED_VERSION', $formattedVersion);
-					if(in_array($name, $allowedContentTypes)) {
+					if (in_array($name, $allowedContentTypes)) {
 						$page->set('d', 'EXPORT_CONTENT',  '<input type="checkbox" class="rawtypes" name="' . $name . $idtype . '" value="' . $idtype .'" checked="checked">');
 						$page->set('d', 'EXPORT_CONTENT_LABEL', i18n("Export"));
 					} else {
@@ -551,10 +554,11 @@ if (count($result) <= 0) {
 }
 
 //Create setAsCurrent Button
-if($maxIdArtLangVersion && $_GET['copyTo'] == 0 && ($_GET['idArtLangVersion'] == 'current' || $_GET['idArtLangVersion'] != $maxIdArtLangVersion)
-   || $_GET['idArtLangVersion'] == NULL || ($_GET['copyTo'] == 1 && $_GET['idArtLangVersion'] == $maxIdArtLangVersion)){ //TODOJ: maxidartlangversion-1 wenn setastemp/current aktiv
-	$buttonTitle = 'In tempor&auml;re Version kopieren';
-}else {
+if ($maxIdArtLangVersion && $_GET['copyTo'] == 0 && ($_GET['idArtLangVersion'] == 'current' 
+    || $_GET['idArtLangVersion'] != $maxIdArtLangVersion) || $_GET['idArtLangVersion'] == NULL
+	|| ($_GET['copyTo'] == 1 && $_GET['idArtLangVersion'] == $maxIdArtLangVersion)) {
+	$buttonTitle = 'In editierbare Version kopieren';
+} else {
 	$buttonTitle = 'In aktuelle Version kopieren';
 }
 $setAsCurrentButton = new cHTMLButton('setAsCurrentButton', $buttonTitle);
