@@ -23,6 +23,21 @@
 	var navigationHeader = $('#navigation_header');
 	if (navigationHeader.length) {
 		var headerNav = navigationHeader.clone();
+
+		var searchLi = headerNav.find('#navigation_searchform_top').parent().clone();
+
+		var searchIcon = $('<span />').addClass('search-icon');
+		searchIcon.on('click', function() {
+			$(this).closest('form').submit();
+		});
+
+		searchLi
+			.addClass('hide_desktop')
+			.find('form')
+			.append(searchIcon);
+
+		$('#menu > ul.navigation').prepend(searchLi);
+
 		headerNav.appendTo('#menu')
 				 .addClass('hide_desktop')
 				 .attr('id', navigationHeader.attr('id')+"_mobile");
@@ -101,8 +116,8 @@
 
 			$('<img />')
 				.attr('src', bgUrl)
-				.addClass('hide_desktop')
-				.prependTo($(this));
+				.addClass('teaser_img_mobile hide_desktop')
+				.prependTo($(this).parent());
 			$(this).addClass('initialized');
 		}
     });
