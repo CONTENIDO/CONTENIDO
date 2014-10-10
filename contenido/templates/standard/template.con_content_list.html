@@ -60,7 +60,7 @@
 <p style="display:block;font-weight:bold;">i18n("Content administration")</p>
 <!-- BEGIN:BLOCK -->
 <div class="contypeList {EXTRA_CLASS}">
-   	<div class="headline"><label>{EXPORT_CONTENT_LABEL}</label>{EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>, {FORMATTED_VERSION} Artikelversion:</div>
+   	<div class="headline"><label>{EXPORT_CONTENT_LABEL}</label>{EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>, {FORMATTED_VERSION}:</div>
     {NAME}[{ID_TYPE}][{VERSION}]
 </div>
 <!-- END:BLOCK -->
@@ -71,7 +71,7 @@
 
 <script type='text/javascript'>
 function loadVersion(){	
-	var getUrl = window.location.href+'&idArtLangVersion='+$('#selectVersionElement option:selected').val()+'&text='+$('#selectVersionElement option:selected').text()+'&copyTo='+0;
+	var getUrl = window.location.href+'&idArtLangVersion='+$('#selectVersionElement option:selected').val()+'&text='+$('#selectVersionElement option:selected').text()+'&copyTo='+0+'&action='+'con_content';
 	window.location.href = getUrl;
 }
 

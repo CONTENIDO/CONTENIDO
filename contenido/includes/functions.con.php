@@ -599,7 +599,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     // Create new entry
     $oContent = new cApiContent();
     $oContent->loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid);
-    if ($oContent->isLoaded()) {
+   /* if ($oContent->isLoaded()) {
         // Update existing entry
         $oContent->set('value', $value);
         $oContent->set('author', $author);
@@ -616,7 +616,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     $oArtLang = new cApiArticleLanguage($idartlang);
     $oArtLang->set('lastmodified', $lastmodified);
     $oArtLang->set('modifiedby', $author);
-    $oArtLang->store();
+    $oArtLang->store(); */
 	
 	//Create Content Version	
 	$idContent = $oContent->getField('idcontent');

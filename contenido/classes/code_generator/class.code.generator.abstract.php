@@ -79,6 +79,13 @@ abstract class cCodeGeneratorAbstract {
      * @var int
      */
     protected $_lang;
+	
+	/**
+     * Version number
+     *
+     * @var int
+     */
+    protected $_version;
 
     /**
      * Client id
@@ -512,7 +519,23 @@ abstract class cCodeGeneratorAbstract {
         // Find out what kind of CMS_... Vars are in use
         $sql = "SELECT * FROM `%s` AS A, `%s` AS B, `%s` AS C
                 WHERE A.idtype = C.idtype AND A.idartlang = B.idartlang AND B.idart = %d AND B.idlang = %d";
-        $sql = $this->_db->prepare($sql, $cfg['tab']['content'], $cfg['tab']['art_lang'], $cfg['tab']['type'], $this->_idart, $this->_lang);
+		$sql = 'SELECT b.type as type, a.typeid as typeid, a.value as value
+				FROM `%s` AS a
+				INNER JOIN `%s` as b 
+					ON b.idtype = a.idtype
+				WHERE (a.idtype, a.typeid, a.version) IN
+					(SELECT idtype, typeid, max(version)
+					FROM %s
+					WHERE idartlang = %d AND version <= 
+						(SELECT max(version)
+						FROM `%s`)
+					GROUP BY idtype, typeid)
+				AND a.idartlang = %d 
+				AND (a.deleted < 1 OR a.deleted IS NULL)
+				ORDER BY a.idtype, a.typeid;';
+		$sql = $this->_db->prepare($sql, $cfg['tab']['content_version'], $cfg['tab']['type'], $cfg['tab']['content_version'], $this->_idartlang, $cfg['tab']['art_lang_version'], $this->_idartlang);
+				
+        //$sql = $this->_db->prepare($sql, $cfg['tab']['content'], $cfg['tab']['art_lang'], $cfg['tab']['type'], $this->_idart, $this->_lang);
         $this->_db->query($sql);
         while ($this->_db->nextRecord()) {
             $return[$this->_db->f('type')][$this->_db->f('typeid')] = $this->_db->f('value');
