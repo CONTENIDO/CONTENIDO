@@ -8,10 +8,6 @@
         $.browser.safari = false;
     }
 
-    /*if (jQuery.browser.msie && (jQuery.browser.version.substring(0, 2) === "8." || jQuery.browser.version.substring(0, 2) === "7.") ) {
-        $('body').addClass('no-media');
-    }*/
-
 	//if is mobile breakpoint
 	function isMobile() {
 		return ($(window).width() < 769) ? true : false;
@@ -22,22 +18,30 @@
 	//append extra nav to mobile nav
 	var navigationHeader = $('#navigation_header');
 	if (navigationHeader.length) {
+		//clone nav
 		var headerNav = navigationHeader.clone();
 
+		//find and clone search form
 		var searchLi = headerNav.find('#navigation_searchform_top').parent().clone();
 
+		//create search icon
 		var searchIcon = $('<span />').addClass('search-icon');
+
+		//form submit on click
 		searchIcon.on('click', function() {
 			$(this).closest('form').submit();
 		});
 
+		//append search icon
 		searchLi
 			.addClass('hide_desktop')
 			.find('form')
 			.append(searchIcon);
 
+		//prepend search form
 		$('#menu > ul.navigation').prepend(searchLi);
 
+		//append extra nav
 		headerNav.appendTo('#menu')
 				 .addClass('hide_desktop')
 				 .attr('id', navigationHeader.attr('id')+"_mobile");
@@ -70,27 +74,26 @@
     //slider button next
     $('<a />')
     	.attr('href', 'next')
-    	.addClass('next hide_desktop')
-    	.appendTo('.slider')
-    	.on('click', function(e) {
-    		e.preventDefault();
-    		$(this).closest('.slider').trigger('slider.next');
-    	});
+    	.addClass('action next hide_desktop')
+    	.appendTo('.slider');
+
     //slider button prev
     $('<a />')
     	.attr('href', 'prev')
-    	.addClass('prev hide_desktop')
-    	.appendTo('.slider')
-    	.on('click', function(e) {
-    		e.preventDefault();
-    		$(this).closest('.slider').trigger('slider.prev');
-    	});
+    	.addClass('action prev hide_desktop')
+    	.appendTo('.slider');
+
+    $('.slider').find('a.action').on('click', function(e) {
+    	e.preventDefault();
+    	$(this).closest('.slider').trigger('slider.'+$(this).attr('href'));
+    });
 
    	//bind click on headline
     $('.slider .images h2').on('click', function() {
 
     	if (isMobile()) {
 
+    		//click on 'more'
     		var a = $(this).parent().find('a');
     		if (a.length) {
 

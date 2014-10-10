@@ -201,6 +201,7 @@ div.button_red input,
 }
 .column_quarter.text .col {
 	height: auto !important;
+	margin: 0 2% 25px 0;
 	width: 100%;
 }
 
@@ -575,8 +576,10 @@ button[type="button"] {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	font-size: 26px;
 	height: auto;
 	left: 0;
+	margin: 0;
 	padding: 0 50px;
 	top: 10%;
 	width: 100%;
