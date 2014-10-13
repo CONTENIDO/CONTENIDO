@@ -179,6 +179,7 @@ $(function() {
                     });
                 },
                 close: function() {
+                    $(this).dialog('destroy').remove()
                     $(".galery").prepend('<div class="lightbox"></div>');
                 }
             });
