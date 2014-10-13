@@ -313,6 +313,31 @@ $(function() {
 
     $(".column_quarter.text div.col").css('height', maxHeight + 20 + 'px');
 
+    window.prevMaxColHeight = maxHeight - 20;
+
+    $(window).on('resize', function() {
+        if ($(window).width() > 768 && !$('body').hasClass('init-col-d')) {
+
+            var maxHeight = 0;
+
+            $(".column_quarter.text div.col").each(function() {
+                var h = $(this).height();
+                $(this).css('height', 'auto');
+
+                if (maxHeight < $(this).height()) {
+                    maxHeight = $(this).height();
+                } else {
+                    $(this).css('height', 'h');
+                }
+            });
+
+            if (maxHeight > window.prevMaxColHeight) {
+                $(".column_quarter.text div.col").css('height', maxHeight + 20 + 'px');
+                $('body').addClass('init-col-d');
+            }
+        }
+    });
+
     //make teaser image clickable
     $('.teaser_img').click(function() {
         var link = $(this).children("p").children("a").attr('href');
