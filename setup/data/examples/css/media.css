@@ -510,6 +510,19 @@ button[type="button"] {
 	margin: 10px 0 0 0;
 	width: 100%;
 }
+.pifa-form .checkbox_wrapper {
+	float: left;
+	margin: 10px 0 0 0;
+	width: 100%;
+}
+.pifa-form .checkbox_wrapper input {
+	min-height: 25px !important;
+	float: left;
+}
+.pifa-form .checkbox_wrapper label {
+	float: left;
+	margin: 0 0 0 20px;
+}
 
 /* #search_term */
 #search_term.full {
