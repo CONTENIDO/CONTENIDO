@@ -169,6 +169,9 @@
 			posRight = -posRight;
 		}
 
+		//shadow fix
+		posRight -= 50;
+
 		$('.burger_menu').removeClass('open');
 		$('body').removeClass('menu_open');
 		$('#menu').stop().animate({'right': posRight});
