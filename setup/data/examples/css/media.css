@@ -555,7 +555,7 @@ button[type="button"] {
 	text-decoration: none;
 	top: 50%;
 	width: 40px;
-	z-index: 1004;
+	z-index: 1000;
 }
 .slider a.next {
 	left: 5px;
