@@ -30,6 +30,7 @@
 
 
 return array(
+	'cVersioning' => 'contenido/classes/versioning/class.versioning.php',
     'cAuthHandlerAbstract' => 'contenido/classes/auth/class.auth.handler.abstract.php',
     'cAuthHandlerBackend' => 'contenido/classes/auth/class.auth.handler.backend.php',
     'cAuthHandlerFrontend' => 'contenido/classes/auth/class.auth.handler.frontend.php',

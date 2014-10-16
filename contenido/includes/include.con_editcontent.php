@@ -115,7 +115,23 @@ $contentform = '
 ';
 
 // generate code
-$code = conGenerateCode($idcat, $idart, $lang, $client, false, false);
+$versioning = new cVersioning();
+$versioningEnabled = $versioning->getEnabled();
+
+switch ($versioningEnabled) {
+	case 'simple':
+		$code = conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false);
+		break;
+	case 'advanced':
+		$code = conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true);			
+		break;
+	case 'false':
+		$code = conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false); 
+	default:
+		// todo
+		break;
+}
+
 if ($code == "0601") {
     markSubMenuItem("1");
     $code = "<script type='text/javascript'>location.href = '" . $backendUrl . "main.php?frame=4&area=con_editart&action=con_edit&idart=" . $idart . "&idcat=" . $idcat . "&contenido=" . $contenido . "'; /*console.log(location.href);*/</script>";

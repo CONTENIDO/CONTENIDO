@@ -352,33 +352,71 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
         $oArtLang->store();
     }
 	
-	//Create new Article Language Version Entry
-	$parameters = array(
-		'idcat' => $idcat,
-		'idcatnew' => $idcatnew,
-		'idart' => $idart,
-		'isstart' => $isstart,
-		'idtpl' => $idtpl,
-		'idartlang' => $lastId,
-		'idlang' => $idlang,
-		'title' => $title,
-		'summary' => $summary,
-		'artspec' => $artspec,
-		'created' => $created,
-		'iscurrentversion' => 1,
-		'lastmodified' => $lastmodified,
-		'author' => $author,
-		'online' => $online,
-		'artsort' => $artsort,
-		'datestart' => $datestart,
-		'dateend' => $dateend,
-		'keyart' => $keyart,
-		'searchable' => $searchable,
-		'sitemapprio' => $sitemapprio,
-		'changefreq' => $changefreq
-	);
-	conCreateArticleLanguageVersion($parameters);
-    
+	$versioning = new cVersioning();
+	$versioningEnabled = $versioning->getEnabled();
+	
+	switch ($versioningEnabled) {
+		case 'simple':
+			//Create new Article Language Version Entry
+			$parameters = array(
+				'idcat' => $idcat,
+				'idcatnew' => $idcatnew,
+				'idart' => $idart,
+				'isstart' => $isstart,
+				'idtpl' => $idtpl,
+				'idartlang' => $lastId,
+				'idlang' => $idlang,
+				'title' => $title,
+				'summary' => $summary,
+				'artspec' => $artspec,
+				'created' => $created,
+				'iscurrentversion' => 1,
+				'lastmodified' => $lastmodified,
+				'author' => $author,
+				'online' => $online,
+				'artsort' => $artsort,
+				'datestart' => $datestart,
+				'dateend' => $dateend,
+				'keyart' => $keyart,
+				'searchable' => $searchable,
+				'sitemapprio' => $sitemapprio,
+				'changefreq' => $changefreq
+			);
+			conCreateArticleLanguageVersion($parameters);	
+			break;
+		case 'advanced':
+			//Create new Article Language Version Entry
+			$parameters = array(
+				'idcat' => $idcat,
+				'idcatnew' => $idcatnew,
+				'idart' => $idart,
+				'isstart' => $isstart,
+				'idtpl' => $idtpl,
+				'idartlang' => $lastId,
+				'idlang' => $idlang,
+				'title' => $title,
+				'summary' => $summary,
+				'artspec' => $artspec,
+				'created' => $created,
+				'iscurrentversion' => 1,
+				'lastmodified' => $lastmodified,
+				'author' => $author,
+				'online' => $online,
+				'artsort' => $artsort,
+				'datestart' => $datestart,
+				'dateend' => $dateend,
+				'keyart' => $keyart,
+				'searchable' => $searchable,
+				'sitemapprio' => $sitemapprio,
+				'changefreq' => $changefreq
+			);
+			conCreateArticleLanguageVersion($parameters);			
+			break;
+		case 'false': 
+		default:
+			break;
+	}
+	   
 	return $idart;
 }
 
@@ -439,18 +477,18 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     if (!$oArtLang->isLoaded()) {
         return;
     }
+	
+	// Get idtplcfg
+    $idTplCfg = $oArtLang->get('idtplcfg'); 
 
-    // Get all idcats that contain art
+    // Get all idcats that contain art     //TODOJ: ???
     $oCatArtColl = new cApiCategoryArticleCollection();
     $aCatsForArt = $oCatArtColl->getCategoryIdsByArticleId($idart);
     if (count($aCatsForArt) == 0) {
         $aCatsForArt[0] = 0;
     }
 
-    // Get idtplcfg
-    $idTplCfg = $oArtLang->get('idtplcfg');
-
-    foreach ($idcatnew as $value) {
+    foreach ($idcatnew as $value) { //TODOJ: ???
         if (!in_array($value, $aCatsForArt)) {
             // New category article entry
             $oCatArtColl = new cApiCategoryArticleCollection();
@@ -473,7 +511,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
         }
     }
 
-    foreach ($aCatsForArt as $value) {
+    foreach ($aCatsForArt as $value) { //TODOJ: ???
         if (!in_array($value, $idcatnew)) {
             // Delete category article and other related entries that will no
             // longer exist
@@ -484,80 +522,165 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     if ($title == '') {
         $title = '--- ' . i18n('Default title') . ' ---';
     }
-
-    $oArtLang->set('title', $title);
-    $oArtLang->set('urlname', $urlname);
-    $oArtLang->set('summary', $summary);
-    $oArtLang->set('artspec', $artspec);
-    $oArtLang->set('created', $created);
-    $oArtLang->set('lastmodified', $lastmodified);
-    $oArtLang->set('modifiedby', $author);
-    $oArtLang->set('timemgmt', $usetimemgmt);
-    $oArtLang->set('redirect', $redirect);
-    $oArtLang->set('external_redirect', $external_redirect);
-    $oArtLang->set('redirect_url', $redirect_url);
-    $oArtLang->set('artsort', $artsort);
-    $oArtLang->set('searchable', $searchable);
-    if ($sitemapprio != -1) {
-        $oArtLang->set('sitemapprio', $sitemapprio);
-    }
-    if ($changefreq != "nothing") {
-        $oArtLang->set('changefreq', $changefreq);
-    }
-    $oArtLang->set('published', date("Y-m-d H:i:s", strtotime($published)));
-
-    // If the user has right for makeonline, update some properties.
-    if ($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) {
-        $oldOnline = $oArtLang->get('online');
-        $oArtLang->set('online', $online);
-
-        // Check if old online value was 0, update published data if value
-        // changed from 0 to 1
-        if ((int) $online == 1 && $oldOnline == 0) {
-            $oArtLang->set('published', date('Y-m-d H:i:s'));
-            $oArtLang->set('publishedby', $author);
-        }
-
-        $oArtLang->set('datestart', $datestart);
-        $oArtLang->set('dateend', $dateend);
-        $oArtLang->set('time_move_cat', $time_move_cat);
-        $oArtLang->set('time_target_cat', $time_target_cat);
-        $oArtLang->set('time_online_move', $time_online_move);
-    }
-
-    // Update idtplcfg
-    if (!empty($newIdTplCfg) && $idTplCfg != $newIdTplCfg) {
-        $oArtLang->set('idtplcfg', $newIdTplCfg);
-    }	
+			
+	$versioning = new cVersioning();
+	$versioningEnabled = $versioning->getEnabled();
 	
-	$oArtLang->store();	
-	
-	// Create new Article Language Version Entry
-	$parameters = array(
-		'idcat' => $idcat,
-		'idcatnew' => $idcatnew,
-		'idart' => $idart,
-		'isstart' => $isstart,
-		'idtpl' => $idtpl,
-		'idartlang' => $idartlang,
-		'idlang' => $idlang,
-		'title' => $title,
-		'summary' => $summary,
-		'artspec' => $artspec,
-		'created' => $created,
-		'iscurrentversion' => 1,
-		'lastmodified' => $lastmodified,
-		'author' => $author,
-		'online' => $online,
-		'artsort' => $artsort,
-		'datestart' => $datestart,
-		'dateend' => $dateend,
-		'keyart' => $keyart,
-		'searchable' => $searchable,
-		'sitemapprio' => $sitemapprio,
-		'changefreq' => $changefreq
-	);
-	conCreateArticleLanguageVersion($parameters);	
+	switch ($versioningEnabled) {
+		case 'simple':
+			//Create new Article Language Entry
+			$oArtLang->set('title', $title);
+			$oArtLang->set('urlname', $urlname);
+			$oArtLang->set('summary', $summary);
+			$oArtLang->set('artspec', $artspec);
+			$oArtLang->set('created', $created);
+			$oArtLang->set('lastmodified', $lastmodified);
+			$oArtLang->set('modifiedby', $author);
+			$oArtLang->set('timemgmt', $usetimemgmt);
+			$oArtLang->set('redirect', $redirect);
+			$oArtLang->set('external_redirect', $external_redirect);
+			$oArtLang->set('redirect_url', $redirect_url);
+			$oArtLang->set('artsort', $artsort);
+			$oArtLang->set('searchable', $searchable);
+			if ($sitemapprio != -1) {
+				$oArtLang->set('sitemapprio', $sitemapprio);
+			}
+			if ($changefreq != "nothing") {
+				$oArtLang->set('changefreq', $changefreq);
+			}
+			$oArtLang->set('published', date("Y-m-d H:i:s", strtotime($published)));
+
+			// If the user has right for makeonline, update some properties.
+			if ($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) {
+				$oldOnline = $oArtLang->get('online');
+				$oArtLang->set('online', $online);
+
+				// Check if old online value was 0, update published data if value
+				// changed from 0 to 1
+				if ((int) $online == 1 && $oldOnline == 0) {
+					$oArtLang->set('published', date('Y-m-d H:i:s'));
+					$oArtLang->set('publishedby', $author);
+				}
+
+				$oArtLang->set('datestart', $datestart);
+				$oArtLang->set('dateend', $dateend);
+				$oArtLang->set('time_move_cat', $time_move_cat);
+				$oArtLang->set('time_target_cat', $time_target_cat);
+				$oArtLang->set('time_online_move', $time_online_move);
+			}
+
+			// Update idtplcfg
+			if (!empty($newIdTplCfg) && $idTplCfg != $newIdTplCfg) {
+				$oArtLang->set('idtplcfg', $newIdTplCfg);
+			}	
+			
+			$oArtLang->store(); 
+			
+			// Create new Article Language Version Entry
+			$parameters = array(
+				'idcat' => $idcat,
+				'idcatnew' => $idcatnew,
+				'idart' => $idart,
+				'isstart' => $isstart,
+				'idtpl' => $idtpl,
+				'idartlang' => $idartlang,
+				'idlang' => $idlang,
+				'title' => $title,
+				'summary' => $summary,
+				'artspec' => $artspec,
+				'created' => $created,
+				'iscurrentversion' => 1,
+				'lastmodified' => $lastmodified,
+				'author' => $author,
+				'online' => $online,
+				'artsort' => $artsort,
+				'datestart' => $datestart,
+				'dateend' => $dateend,
+				'keyart' => $keyart,
+				'searchable' => $searchable,
+				'sitemapprio' => $sitemapprio,
+				'changefreq' => $changefreq
+			);
+			conCreateArticleLanguageVersion($parameters);
+			break;
+		case 'advanced':
+			// Create new Article Language Version Entry
+			$parameters = array(
+				'idcat' => $idcat,
+				'idcatnew' => $idcatnew,
+				'idart' => $idart,
+				'isstart' => $isstart,
+				'idtpl' => $idtpl,
+				'idartlang' => $idartlang,
+				'idlang' => $idlang,
+				'title' => $title,
+				'summary' => $summary,
+				'artspec' => $artspec,
+				'created' => $created,
+				'iscurrentversion' => 1,
+				'lastmodified' => $lastmodified,
+				'author' => $author,
+				'online' => $online,
+				'artsort' => $artsort,
+				'datestart' => $datestart,
+				'dateend' => $dateend,
+				'keyart' => $keyart,
+				'searchable' => $searchable,
+				'sitemapprio' => $sitemapprio,
+				'changefreq' => $changefreq
+			);
+			conCreateArticleLanguageVersion($parameters);				
+			break;
+		case 'false':
+			$oArtLang->set('title', $title);
+			$oArtLang->set('urlname', $urlname);
+			$oArtLang->set('summary', $summary);
+			$oArtLang->set('artspec', $artspec);
+			$oArtLang->set('created', $created);
+			$oArtLang->set('lastmodified', $lastmodified);
+			$oArtLang->set('modifiedby', $author);
+			$oArtLang->set('timemgmt', $usetimemgmt);
+			$oArtLang->set('redirect', $redirect);
+			$oArtLang->set('external_redirect', $external_redirect);
+			$oArtLang->set('redirect_url', $redirect_url);
+			$oArtLang->set('artsort', $artsort);
+			$oArtLang->set('searchable', $searchable);
+			if ($sitemapprio != -1) {
+				$oArtLang->set('sitemapprio', $sitemapprio);
+			}
+			if ($changefreq != "nothing") {
+				$oArtLang->set('changefreq', $changefreq);
+			}
+			$oArtLang->set('published', date("Y-m-d H:i:s", strtotime($published)));
+
+			// If the user has right for makeonline, update some properties.
+			if ($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) {
+				$oldOnline = $oArtLang->get('online');
+				$oArtLang->set('online', $online);
+
+				// Check if old online value was 0, update published data if value
+				// changed from 0 to 1
+				if ((int) $online == 1 && $oldOnline == 0) {
+					$oArtLang->set('published', date('Y-m-d H:i:s'));
+					$oArtLang->set('publishedby', $author);
+				}
+
+				$oArtLang->set('datestart', $datestart);
+				$oArtLang->set('dateend', $dateend);
+				$oArtLang->set('time_move_cat', $time_move_cat);
+				$oArtLang->set('time_target_cat', $time_target_cat);
+				$oArtLang->set('time_online_move', $time_online_move);
+			}
+
+			// Update idtplcfg
+			if (!empty($newIdTplCfg) && $idTplCfg != $newIdTplCfg) {
+				$oArtLang->set('idtplcfg', $newIdTplCfg);
+			}	
+			
+			$oArtLang->store(); 
+		default:
+			break;
+	}
 	
     // article has been saved, so clear the article cache
     $purge = new cSystemPurge();
@@ -576,8 +699,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
  */
 function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false) {
     global $auth, $cfgClient, $client, $_cecRegistry, $lang;
-
-	//Create the Content	
+	
     $oType = new cApiType();
     if (!$oType->loadByType($type)) {
         // Couldn't load type...
@@ -598,40 +720,96 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     
     // Create new entry
     $oContent = new cApiContent();
-    $oContent->loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid);
-   /* if ($oContent->isLoaded()) {
-        // Update existing entry
-        $oContent->set('value', $value);
-        $oContent->set('author', $author);
-        $oContent->set('lastmodified', date('Y-m-d H:i:s'));
-        $oContent->store();
-    } else {
-        // Create new entry
-        $oContentColl = new cApiContentCollection();
-        $oContent = $oContentColl->create($idartlang, $idtype, $typeid, $value, 0, $author, $date, $date);
-    }    
+    $oContent->loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid);	
 	
-    // Touch the article to update last modified date
-    $lastmodified = date('Y-m-d H:i:s');
-    $oArtLang = new cApiArticleLanguage($idartlang);
-    $oArtLang->set('lastmodified', $lastmodified);
-    $oArtLang->set('modifiedby', $author);
-    $oArtLang->store(); */
+	$versioning = new cVersioning();
+	$versioningEnabled = $versioning->getEnabled();
 	
-	//Create Content Version	
-	$idContent = $oContent->getField('idcontent');
-	$parameters = array(
-		'idcontent' => $idContent,
-		'idartlang' => $idartlang,
-		'idtype' => $idtype,
-		'typeid' => $typeid,
-		'value' => $value,
-		'author' => $author,
-		'created' => $date,
-		'lastmodified' => $date
-	);
-	conCreateContentVersion($parameters);
-
+	switch ($versioningEnabled) {
+		case 'simple':			
+			if ($oContent->isLoaded()) {
+			// Update existing entry
+			$oContent->set('value', $value);
+			$oContent->set('author', $author);
+			$oContent->set('lastmodified', date('Y-m-d H:i:s'));
+			$oContent->store();
+			} else {
+				// Create new entry
+				$oContentColl = new cApiContentCollection();
+				$oContent = $oContentColl->create($idartlang, $idtype, $typeid, $value, 0, $author, $date, $date);
+			}    
+			
+			// Touch the article to update last modified date
+			$lastmodified = date('Y-m-d H:i:s');
+			$oArtLang = new cApiArticleLanguage($idartlang);
+			$oArtLang->set('lastmodified', $lastmodified);
+			$oArtLang->set('modifiedby', $author);
+			$oArtLang->store();
+			
+			//Create Content Version
+			$idContent = NULL;
+			if ($oContent->isLoaded()) {
+				$idContent = $oContent->getField('idcontent');
+			}
+			
+			$parameters = array(
+				'idcontent' => $idContent,
+				'idartlang' => $idartlang,
+				'idtype' => $idtype,
+				'typeid' => $typeid,
+				'value' => $value,
+				'author' => $author,
+				'created' => $date,
+				'lastmodified' => $date
+			);
+			
+			conCreateContentVersion($parameters);
+			break;
+		case 'advanced':
+		
+			//Create Content Version	
+			$idContent = NULL;
+			if ($oContent->isLoaded()) {
+				$idContent = $oContent->getField('idcontent');
+			}
+			
+			$parameters = array(
+				'idcontent' => $idContent,
+				'idartlang' => $idartlang,
+				'idtype' => $idtype,
+				'typeid' => $typeid,
+				'value' => $value,
+				'author' => $author,
+				'created' => $date,
+				'lastmodified' => $date
+			);
+			
+			conCreateContentVersion($parameters);
+			break;
+		case 'false':
+			if ($oContent->isLoaded()) {
+			// Update existing entry
+			$oContent->set('value', $value);
+			$oContent->set('author', $author);
+			$oContent->set('lastmodified', date('Y-m-d H:i:s'));
+			$oContent->store();
+			} else {
+				// Create new entry
+				$oContentColl = new cApiContentCollection();
+				$oContent = $oContentColl->create($idartlang, $idtype, $typeid, $value, 0, $author, $date, $date);
+			}    
+			
+			// Touch the article to update last modified date
+			$lastmodified = date('Y-m-d H:i:s');
+			$oArtLang = new cApiArticleLanguage($idartlang);
+			$oArtLang->set('lastmodified', $lastmodified);
+			$oArtLang->set('modifiedby', $author);
+			$oArtLang->store();
+		default:
+			// todo
+			break;
+	}
+		
     // content entry has been saved, so clear the article cache
     $purge = new cSystemPurge();
     $purge->clearArticleCache($idartlang);

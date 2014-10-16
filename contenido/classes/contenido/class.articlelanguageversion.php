@@ -375,10 +375,10 @@ class cApiArticleLanguageVersion extends Item {
 		$this->setIsCurrentVersion(1);
 	}
 	
-	public function setAsTemporary() {
+	public function setAsEditable() {
 		global $cfg;
 		
-		//create new temporary version
+		//create new editable Version
 		$sql = 'SELECT max(version) AS max FROM %s WHERE idartlang = %d';
 		$this->db->query($sql, $cfg['tab']['art_lang_version'], $this->get('idartlang'));
 		while ($this->db->nextRecord()) {
@@ -422,7 +422,7 @@ class cApiArticleLanguageVersion extends Item {
 					);
 					$contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
 					if (isset($contentVersion)) {
-						$contentVersion->setAsTemporary($artLangVersion->get('version'), 0);
+						$contentVersion->setAsEditable($artLangVersion->get('version'), 0);
 					} 
 				} else {
 					$contentParameters = array(
@@ -529,7 +529,7 @@ class cApiArticleLanguageVersion extends Item {
 		
         $this->content = array();
         while ($this->db->nextRecord()) {
-            $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')][$this->db->f('version')] = $this->db->f('value');
+            $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
     }
 
