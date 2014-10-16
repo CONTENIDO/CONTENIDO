@@ -382,10 +382,10 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     // oPagerLink->enableAutomaticParameterAppend();
     $oPagerLink->setCustom("contenido", $sess->id);
 
-    $oMemberPager = new cGuiObjectPager("d82a3ff0-52d9-11db-b0de-0800200c9a66", $iMembers, $_REQUEST["member_elemperpage"], $_REQUEST["member_page"], $oPagerLink, "member_page");
+    $oMemberPager = new cGuiObjectPager("d82a3ff0-52d9-11db-b0de-0800200c9a66", $iMembers, $_REQUEST["member_elemperpage"], $_REQUEST["member_page"], $oPagerLink, "member_page", "inside");
     $oMemberPager->setCaption(i18n("Member navigation", 'newsletter'));
 
-    $oForm->add(i18n("Recipients in group", 'newsletter'), '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . $oMemberListOptionRow->render() . $oMemberPager->render() . '<tr><td>' . $oAddedRecipientList->render() . '</td></tr></table>');
+    $oForm->add(i18n("Recipients in group", 'newsletter'), '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . $oMemberListOptionRow->render() . $oMemberPager->render() . '<tr><td>' . $oAddedRecipientList->render() . i18n("Note: To delete recipients from this list, please mark<br>the checkboxes and click at save button.", 'newsletter') . '</td></tr></table>');
     unset($oInsiders);
     unset($oMemberListOptionRow);
     unset($oMemberPager);
@@ -570,7 +570,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     // oPagerLink->enableAutomaticParameterAppend();
     $oPagerLink->setCustom("contenido", $sess->id);
 
-    $oOutsiderPager = new cGuiObjectPager("4d3a7330-52eb-11db-b0de-0800200c9a66", $iOutsiders, $_REQUEST["outsider_elemperpage"], $_REQUEST["outsider_page"], $oPagerLink, "outsider_page");
+    $oOutsiderPager = new cGuiObjectPager("4d3a7330-52eb-11db-b0de-0800200c9a66", $iOutsiders, $_REQUEST["outsider_elemperpage"], $_REQUEST["outsider_page"], $oPagerLink, "outsider_page", "outside");
     $oOutsiderPager->setCaption(i18n("Outsider navigation", 'newsletter'));
 
     $oForm->add(i18n("Add recipients", 'newsletter'), '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . $oOutsiderListOptionRow->render() . $oOutsiderPager->render() . '<tr><td>' . $oSelUser->render() . '<br>' . i18n("Note: Hold &lt;Ctrl&gt; to<br>select multiple items.", 'newsletter') . '</td></tr></table>');
