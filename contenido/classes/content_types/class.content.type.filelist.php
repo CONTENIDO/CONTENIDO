@@ -210,7 +210,16 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $files = array();
 
         if ($this->_settings['filelist_manual'] === 'true' && count($this->_settings['filelist_manual_files']) > 0) {
-            $fileList = $this->_settings['filelist_manual_files'];
+            $tempFileList = $this->_settings['filelist_manual_files'];
+
+            // Check if manual selected file exists, otherwise ignore them
+            // Write only existing files into fileList array
+            foreach ($tempFileList as $filename) {
+            	if (cFileHandler::exists($this->_uploadPath . $filename)) {
+            		$fileList[] = $filename;
+            	}
+            }
+
         } else if (count($this->_settings['filelist_directories']) > 0) {
             $directories = $this->_settings['filelist_directories'];
 
