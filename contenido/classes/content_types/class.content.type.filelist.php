@@ -921,7 +921,22 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * @return string rendered cHTMLSelectElement
      */
     private function _generateExistingFileSelect() {
-        $selectedFiles = $this->_settings['filelist_manual_files'];
+        $tempSelectedFiles = $this->_settings['filelist_manual_files'];
+
+        // Check if manual selected file exists, otherwise ignore them
+        // Write only existing files into selectedFiles array
+        foreach ($tempSelectedFiles as $filename) {
+        	if (cFileHandler::exists($this->_uploadPath . $filename)) {
+        		$selectedFiles[] = $filename;
+        	}
+        }
+
+        // If we have wasted selected files, update settings
+        if (count($tempSelectedFiles) != count($selectedFiles)) {
+        	$this->_settings['filelist_manual_files'] = $selectedFiles;
+        	$this->_storeSettings();
+        }
+
         $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, '', '', 'manual');
 
         if (is_array($selectedFiles)) { // More than one entry
