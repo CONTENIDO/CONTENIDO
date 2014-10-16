@@ -939,8 +939,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, '', '', 'manual');
 
-        if (is_array($selectedFiles)) { // More than one entry
-            foreach ($selectedFiles as $selectedFile) {
+        if (is_array($this->_settings['filelist_manual_files'])) { // More than one entry
+            foreach ($this->_settings['filelist_manual_files'] as $selectedFile) {
                 $splits = explode('/', $selectedFile);
                 $splitCount = count($splits);
                 $fileName = $splits[$splitCount - 1];
@@ -948,11 +948,11 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 $htmlSelectOption->setAlt($fileName);
                 $htmlSelect->appendOptionElement($htmlSelectOption);
             }
-        } elseif (!empty($selectedFiles)) { // Only one entry
-            $splits = explode('/', $selectedFiles);
+        } elseif (!empty($this->_settings['filelist_manual_files'])) { // Only one entry
+            $splits = explode('/', $this->_settings['filelist_manual_files']);
             $splitCount = count($splits);
             $fileName = $splits[$splitCount - 1];
-            $htmlSelectOption = new cHTMLOptionElement($fileName, $selectedFiles, true);
+            $htmlSelectOption = new cHTMLOptionElement($fileName, $this->_settings['filelist_manual_files'], true);
             $htmlSelectOption->setAlt($fileName);
             $htmlSelect->appendOptionElement($htmlSelectOption);
         }
