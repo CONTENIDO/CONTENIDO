@@ -102,7 +102,7 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
 		
 		//set version
 		$parameters['version'] = 1;
-		$sql = 'LOCK TABLE %s READ';
+		//$sql = 'LOCK TABLE %s READ'; wirft error
 		$this->db->query($sql, $cfg['tab']['art_lang_version']);	
 		
 		$sql = 'SELECT MAX(version) AS maxversion FROM con_art_lang_version WHERE idartlang = %d;'; // geht mit cfg nicht?!
@@ -162,14 +162,25 @@ class cApiArticleLanguageVersionCollection extends ItemCollection {
      * Returns id (idartlangversion) of articlelanguageversion by article 
 	 * language id and version
      *
-     * @param int $idartlang
+     * @param int $idArtLang
      * @param int $version
      * @return int
      */
-    public function getIdByArticleIdAndLanguageId($idartlang, $version) {
-        $sql = 'SELECT idartlangversion FROM `%s` WHERE idartlang = %d AND version = %d';
-        $this->db->query($sql, $this->table, $idartlang, $version);
-        return ($this->db->nextRecord()) ? $this->db->f('idartlangversion') : 0;
+    public function getIdByArticleIdAndLanguageId($idArtLang, $version) {
+	
+		$id = NULL;
+		
+		$where = 'idartlang = ' . $idArtLang . ' AND version = ' . $version;
+		
+		$artLangVersionColl = new cApiArticleLanguageVersionCollection();
+		$artLangVersionColl->select($where);
+		
+		while($item = $artLangVersionColl->next()){
+			$id = $item->get('idartlangversion');
+		}
+		
+		return isset($id) ? $id : 0;
+		
     }
 }
 
@@ -301,6 +312,7 @@ class cApiArticleLanguageVersion extends Item {
 	 * @param int $isCurrentVersion 0 = false, 1 = true
 	 */
 	public function setIsCurrentVersion($isCurrentVersion){
+	
 		$attributes = array(
 				'idartlang' => $this->get('idartlang'), 
 				'iscurrentversion' => $isCurrentVersion
@@ -315,6 +327,7 @@ class cApiArticleLanguageVersion extends Item {
 		} else {
 	        $this->set('iscurrentversion', 0);
 		}
+		
 	}	
 	
 	/**
@@ -330,6 +343,7 @@ class cApiArticleLanguageVersion extends Item {
 		$parameters = $this->values;
 		$artLang = new cApiArticleLanguage($parameters['idartlang']);
 		unset($parameters['idartlang']);
+		unset($parameters['idartlangversion']);
 		unset($parameters['iscurrentversion']);
 		unset($parameters['version']);
 		foreach ($parameters as $key => $value) {
@@ -375,6 +389,11 @@ class cApiArticleLanguageVersion extends Item {
 		$this->setIsCurrentVersion(1);
 	}
 	
+	/**
+	 * Create a copy of this article language version with its contents,
+	 * the copy is the new editable articlel language version
+	 *
+	 */	
 	public function setAsEditable() {
 		global $cfg;
 		
@@ -438,6 +457,7 @@ class cApiArticleLanguageVersion extends Item {
 				}				
 			}
 		}
+		
 	}
 			
     /**
@@ -480,13 +500,20 @@ class cApiArticleLanguageVersion extends Item {
      * @return int Article language version id
      */
     protected function _getIdArtLangVersion($idArtLang, $version) {
-        global $cfg;
-
-        $sql = 'SELECT idartlangversion FROM `%s` WHERE idartlang = %d AND version = %d';
-        $this->db->query($sql, $cfg['tab']['art_lang_version'], $idArtLang, $version);
-        $this->db->nextRecord();
-
-        return $this->db->f('idartlangversion');
+	
+		$id = NULL;
+		
+		$where = 'idartlang = ' . $idArtLang . ' AND version = ' . $version;
+		
+		$artLangVersionColl = new cApiArticleLanguageVersionCollection();
+		$artLangVersionColl->select($where);
+		
+		while($item = $artLangVersionColl->next()){
+			$id = $item->get('idartlangversion');
+		}
+		
+		return isset($id) ? $id : 0;
+		
     }
 
     /**
@@ -501,9 +528,8 @@ class cApiArticleLanguageVersion extends Item {
 
     /**
      * Load the articles version content and stores it in the 'content' property of the
-     * article version object.
+     * article version object: $article->content[type][number] = value;
      *
-     * $article->content[type][number] = value;
      */
     protected function _getArticleVersionContent() {
         global $cfg;
@@ -531,6 +557,7 @@ class cApiArticleLanguageVersion extends Item {
         while ($this->db->nextRecord()) {
             $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
         }
+		
     }
 
     /**

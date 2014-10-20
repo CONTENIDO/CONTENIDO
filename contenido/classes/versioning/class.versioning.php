@@ -52,11 +52,18 @@ class cVersioning {
 		$this->db = cRegistry::getDb();
 	}	
 	
+	/**
+	 * cms type sort function for article output
+	 *
+	 * @param array $result[cms type][typeId] = value
+	 * @return array $result[cms type][typeId] = value
+	 */
 	public function sortResults($result) {
 	
 		uksort($result, function($a, $b) {
 
-			$cmsct = array(
+			//cms type sort sequence
+			$cmsType = array(
 				"CMS_HTMLHEAD",
 				"CMS_HEAD",
 				"CMS_HTML",
@@ -74,7 +81,7 @@ class cVersioning {
 				"CMS_RAW"
 			);
 
-			return array_search(ab, $cmsct) - array_search($b, $cmsct);
+			return array_search($a, $cmsType) - array_search($b, $cmsType);
 			
 		});
 		
@@ -85,67 +92,72 @@ class cVersioning {
 	/**
 	 * Returns the current versioning state (false (default), simple, advanced)
 	 *
-	 * @return $versioningEnabled
+	 * @return string $versioningState
 	 */
-	public static function getEnabled() {
+	public static function getState() {
 	
-		static $versioningEnabled;
+		static $versioningState;
 		
-		if (!isset($versioningEnabled)) {
+		if (!isset($versioningState)) {
 	
 			// versioning enabled is a tri-state => false (default), simple, advanced
 			$systemPropColl = new cApiSystemPropertyCollection();
 			$prop = $systemPropColl->fetchByTypeName('versioning', 'enabled');
-			$versioningEnabled = $prop ? $prop->get('value') : false;
+			$versioningState = $prop ? $prop->get('value') : false;
 			
-			if (false === $versioningEnabled || NULL === $versioningEnabled) {
-				$versioningEnabled = 'false';
-			} else if ('' === $versioningEnabled) {
+			if (false === $versioningState || NULL === $versioningState) {
+				$versioningState = 'false';
+			} else if ('' === $versioningState) {
 				// NOTE: An non empty default value overrides an empty value
-				$versioningEnabled = 'false';
+				$versioningState = 'false';
 			}
 
 		}
 		
-		return $versioningEnabled;
+		return $versioningState;
 	
 	}
 	
 	/**
 	 * Returns selected article
 	 *
-	 * @param $idArtLangVersion
-	 * @param $idArtLang
-	 * @param $articleType
-	 * @return $this->selectedArticle
+	 * @param int $idArtLangVersion
+	 * @param int $idArtLang
+	 * @param string $articleType
+	 * @return cApiArticleLanguage/cApiArticleLanguageVersion $this->selectedArticle
 	 */	
 	public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType) {
 		
 		$editableArticleId = $this->getEditableArticleId($idArtLang);
+		$versioningState = $this->getState();
 		
-		if ($articleType == 'version' || $articleType == 'editable') {
+		if ( ($articleType == 'version' || $articleType == 'editable') 
+			  && ($versioningState == 'advanced') || ($articleType == 'version' && $versioningState == 'simple') ) {
 			if (is_numeric($idArtLangVersion)) {
 				$this->selectedArticle = new cApiArticleLanguageVersion($idArtLangVersion);
 			} else {
 				$this->selectedArticle = new cApiArticleLanguageVersion($editableArticleId);
 			}
-		} else if ($articleType == 'current') {
+		} else if ($articleType == 'current' || $articleType == 'editable') {
 			$this->selectedArticle = new cApiArticleLanguage($idArtLang);
 		}
 
 		return $this->selectedArticle;
+		
 	}
 	
 	/**
      * Returns $list[1] = CMS_HTMLHEAD for every content
      * existing in article/version with $idArtLang 
 	 *
-	 * @param $idArtLang
-	 * @param $articleType
-	 * @return $list
+	 * @param int $idArtLang
+	 * @param string $articleType
+	 * @return array $list
      */		
 	public function getList($idArtLang, $articleType) {
 		global $cfg;
+		
+		$list = array();
 		
 		$sql = 'SELECT DISTINCT b.idtype as idtype, b.type as name
 				FROM %s AS a, %s AS b
@@ -168,11 +180,11 @@ class cVersioning {
 	/**
 	 * Returns type of article (current, version or editable)
 	 *
-	 * @param $copyTo
-	 * @param $idArtLangVersion
-	 * @param $idArtLang
-	 * @param $action
-	 * @return $this->articleType
+	 * @param int $copyTo
+	 * @param int $idArtLangVersion
+	 * @param int $idArtLang
+	 * @param string $action
+	 * @return string $this->articleType
 	 */
 	public function getArticleType($copyTo, $idArtLangVersion, $idArtLang, $action) {
 	
@@ -183,7 +195,7 @@ class cVersioning {
 			$this->articleType = 'current';
 		} else if ($copyTo == 0 && $idArtLangVersion == $editableArticleId 
 			|| $copyTo == 1 && $idArtLangVersion != $editableArticleId
-			|| $action == 'savecontype' || $action == 10) {
+			|| $action == 'savecontype' || $action == 10 || $action == 'deletecontype' || $action == 'importrawcontent') {
 			$this->articleType = 'editable';
 		} else {
 			$this->articleType = 'version';
@@ -196,13 +208,13 @@ class cVersioning {
 	/**
 	 * Returns idartlangversion of editable article
 	 *
-	 * @param $idArtLang
-	 * @return $editableArticleId
+	 * @param int $idArtLang
+	 * @return int $editableArticleId
 	 */
 	public function getEditableArticleId($idArtLang) {
 		global $cfg;
 		
-		if ($this->getEnabled() == 'advanced') {
+		if ($this->getState() == 'advanced') {
 			$sql = 'SELECT max(idartlangversion) AS max FROM %s WHERE idartlang = %d';
 			$this->db->query($sql, $cfg['tab']['art_lang_version'], $idArtLang);
 			while ($this->db->nextRecord()) {
@@ -210,11 +222,51 @@ class cVersioning {
 			}
 			
 			
-		} else if ($this->getEnabled() == 'simple' || $this->getEnabled() == 'false') {
+		} else if ($this->getState() == 'simple' || $this->getState() == 'false') {
 			return $idArtLang;
 		}		
 		
 		return $editableArticleId;
+		
+	}
+	
+	/**
+     * Returns idcontent or idcontentversion
+	 *
+	 * @param int $idArtLang
+	 * @param int $typeId
+	 * @param int $type
+	 * @param int $versioningState
+	 * @param int $articleType
+	 * @param int $version
+	 * @return array $idContent
+     */	
+	public function getContentId($idArtLang, $typeId, $type, $versioningState, $articleType, $version) {
+		global $cfg;
+		
+		if ($versioningState == 'simple' && $articleType != 'version'
+			|| $versioningState == 'advanced' && $articleType == 'current'
+			|| $versioningState == 'false') {
+			$sql = "SELECT a.idcontent
+			FROM " . $cfg["tab"]["content"] . " as a, " . $cfg["tab"]["type"] . " as b
+			WHERE a.idartlang=" . $idArtLang . " AND a.idtype=b.idtype AND a.typeid = " . $typeId . " AND b.type = '" . $type . "'
+			ORDER BY a.idartlang, a.idtype, a.typeid";
+			$this->db->query($sql);
+			while ($this->db->nextRecord()) {
+				$idContent = $this->db->f('idcontent');
+			}
+		} else {
+			$sql = "SELECT a.idcontentversion
+			FROM " . $cfg["tab"]["content_version"] . " as a, " . $cfg["tab"]["type"] . " as b
+			WHERE a.version <= " . $version . " AND a.idartlang = " . $idArtLang . " AND a.idtype = b.idtype AND a.typeid = " . $typeId . " AND b.type = '" . $type . "'
+			ORDER BY a.version DESC, a.idartlang, a.idtype, a.typeid LIMIT 1";
+			$this->db->query($sql);
+			while ($this->db->nextRecord()) {
+				$idContent = $this->db->f('idcontentversion');
+			}			
+		}
+				
+		return $idContent;
 		
 	}
 		
@@ -222,7 +274,8 @@ class cVersioning {
      * Returns $artLangVersionMap[version][idartlangversion] = lastmodified
      * from every Version
 	 *
-	 * @return $artLangVersionMap
+	 * @param int $idArtLang
+	 * @return array $artLangVersionMap
      */	
 	public function getAllVersionIdArtLangVersionAndLastModified($idArtLang) {
 		global $cfg;

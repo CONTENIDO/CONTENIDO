@@ -116,9 +116,9 @@ $contentform = '
 
 // generate code
 $versioning = new cVersioning();
-$versioningEnabled = $versioning->getEnabled();
+$versioningState = $versioning->getState();
 
-switch ($versioningEnabled) {
+switch ($versioningState) {
 	case 'simple':
 		$code = conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false);
 		break;

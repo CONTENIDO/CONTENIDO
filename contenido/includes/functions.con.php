@@ -353,9 +353,9 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     }
 	
 	$versioning = new cVersioning();
-	$versioningEnabled = $versioning->getEnabled();
+	$versioningState = $versioning->getState();
 	
-	switch ($versioningEnabled) {
+	switch ($versioningState) {
 		case 'simple':
 			//Create new Article Language Version Entry
 			$parameters = array(
@@ -524,9 +524,9 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     }
 			
 	$versioning = new cVersioning();
-	$versioningEnabled = $versioning->getEnabled();
+	$versioningState = $versioning->getState();
 	
-	switch ($versioningEnabled) {
+	switch ($versioningState) {
 		case 'simple':
 			//Create new Article Language Entry
 			$oArtLang->set('title', $title);
@@ -723,9 +723,9 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     $oContent->loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid);	
 	
 	$versioning = new cVersioning();
-	$versioningEnabled = $versioning->getEnabled();
+	$versioningState = $versioning->getState();
 	
-	switch ($versioningEnabled) {
+	switch ($versioningState) {
 		case 'simple':			
 			if ($oContent->isLoaded()) {
 			// Update existing entry

@@ -40,7 +40,7 @@ class cContentTypeImg extends cContentTypeImgeditor {
         // constructor with them
 
         if (!cXmlBase::isValidXML($rawSettings)) {
-            $rawSettings = $this->_getRawSettings("CMS_IMGEDITOR", $id, $contentTypes);
+            $rawSettings = $this->_getRawSettings("CMS_IMGEDITOR", $id, $contentTypes, $editable = false);
         }
 
         parent::__construct($rawSettings, $id, $contentTypes);

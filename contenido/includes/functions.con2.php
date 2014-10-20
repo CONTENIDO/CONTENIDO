@@ -31,7 +31,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @return string The generated code or "0601" if neither article nor category configuration
  *                was found
  */
-function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true) {
+function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true, $editable = false) {
     global $cfg, $frontend_debug;
 
     // @todo make generator configurable
@@ -40,7 +40,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save 
         $codeGen->setFrontendDebugOptions($frontend_debug);
     }
 
-    $code = $codeGen->generate($idcat, $idart, $lang, $client, $layout, $save, $contype);
+    $code = $codeGen->generate($idcat, $idart, $lang, $client, $layout, $save, $contype, $editable);
 
     // execute CEC hook
     $code = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);

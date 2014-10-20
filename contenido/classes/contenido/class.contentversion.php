@@ -50,7 +50,7 @@ class cApiContentVersionCollection extends ItemCollection {
 	 * 	@type string $created
 	 * 	@type string $lastModified
 	 * }
-     * @return cApiContent
+     * @return cApiContentVersion
      */
     public function create(array $parameters) {
         global $auth;
@@ -82,19 +82,23 @@ class cApiContentVersionCollection extends ItemCollection {
         return $item;
     }
 	
-	public function getIdsByWhereClause($sWhere){
-		//$db = $parent::_getSecondDBInstance();
+	/**
+	 * Gets idcontentversions by where clause
+	 *
+	 * @param string $where
+	 * @return array $ids
+	 */
+	public function getIdsByWhereClause($where){
 		
-		$ids = array();
+		$conVersionColl = new cApiContentVersionCollection();
+		$conVersionColl->select($where);
 		
-		//Get all ids
-		$sql = 'SELECT a.' . $this->primaryKey . ' AS pk FROM `' . $this->table . '` AS a WHERE ' . $sWhere;
-		$this->db->query($sql);
-		while($this->db->nextRecord()){
-			$ids[] = $this->db->f('pk');
+		while($item = $conVersionColl->next()){
+			$ids[] = $item->get('idcontentversion');
 		}
 		
 		return $ids;
+		
 	}
 }
 
@@ -137,8 +141,10 @@ class cApiContentVersion extends Item {
 	 * Set current Content to this Content Version	 
 	 * 
 	 */	
-	public function setAsCurrent() {	
+	public function setAsCurrent() {
+	
 		$content = new cApiContent();
+		
 		if ($content->loadByArticleLanguageIdTypeAndTypeId($this->get('idartlang'), $this->get('idtype'), $this->get('typeid'))) {
 			$content->set('idartlang', $this->get('idartlang'));
 			$content->set('idtype', $this->get('idtype'));
@@ -154,22 +160,33 @@ class cApiContentVersion extends Item {
 			$content->set('idcontent', $this->get('idcontent'));
 			$content->store();
 		}
+		
 	}
 	
-	public function setAsTemporary($version, $deleted) {
+    /**
+     * Creates a new, editable Version with same properties as this Content Version
+     *
+     * @param string $version
+     * @param mixed $deleted
+     */		
+	public function setAsEditable($version, $deleted) {
+	
 		$parameters = $this->values;
 		unset($parameters['idcontentversion']);
 		$parameters['version'] = $version;
+		
 		$contentVersionColl = new cApiContentVersionCollection();
 		$contentVersion = $contentVersionColl->create($parameters);
 		if ($deleted == 1) {
 			$contentVersion->set('deleted', $deleted);
 		}
+		
 		$contentVersion->store();
+		
 	}
 	
     /**
-     * Loads an content entry by its article language id, idtype, type id and version.
+     * Loads a content entry by its article language id, idtype, type id and version.
      *
      * @param mixed[] $contentParameters{
 	 *	@type int $idArtLang
@@ -196,6 +213,7 @@ class cApiContentVersion extends Item {
 		    $where = $this->db->prepare('idartlang = %d AND idtype = %d AND typeid = %d AND version <= %d GROUP BY pk desc LIMIT 1', $contentParameters['idArtLang'], $contentParameters['idType'], $contentParameters['typeId'], $contentParameters['version']);
             return $this->_loadByWhereClause($where);
         }
+		
     }
 
 }
