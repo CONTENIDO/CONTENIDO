@@ -1,9 +1,9 @@
-NOT_NUMERIC_VALUE=Bitte geben Sie die nummerischen Werte ein.
+NOT_NUMERIC_VALUE=Bitte geben Sie die numerischen Werte ein.
 NOT_ZERO_OR_ONE=Bitte geben Sie eine 1 oder 0 ein.
-HEADLINE=HTML Sitemap
-CATEGORY_LABEL=Kategorieeingabe(idcat Nummerisch):
-LEVEL_LABEL=Tiefe(Nummerisch):
-ARTICLE_LABEL=Artikeln anzeigen(0/1):
-ARTICLE_HINT_LABEL=Hinweis: 1 Artikeln anzeigen; 0 Artikeln nicht anzeigen
+HEADLINE=HTML-Sitemap
+CATEGORY_LABEL=Kategorie-Eingabe (idcat numerisch):
+LEVEL_LABEL=Tiefe (numerisch):
+ARTICLE_LABEL=Artikel anzeigen:
+ARTICLE_HINT_LABEL=Hinweis: 1 \= Artikel anzeigen; 0 \= Artikel nicht anzeigen
 GATEGORY_HINT_LABEL=Hinweis: Die Sitemap wird ab der angegebenen Kategorie rekursiv aufgebaut.
-LEVEL_HINT_LABEL=Hinweis: Die Tiefe gibt an wie viele Ebenen bei der generierung berücksichtigt werden.
+LEVEL_HINT_LABEL=Hinweis: Die Tiefe gibt an, wie viele Ebenen bei der Generierung berücksichtigt werden.

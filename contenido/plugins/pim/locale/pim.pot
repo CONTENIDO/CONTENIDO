@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-11 17:18+0100\n"
+"POT-Creation-Date: 2014-10-09 10:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,135 +17,149 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: classes/setup/class.pimpluginsetup.install.php:261
+#: classes/setup/class.pimpluginsetup.install.php:248
 msgid ""
 "The plugin has been successfully installed. To apply the changes please "
 "login into backend again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:275
+#: classes/setup/class.pimpluginsetup.install.php:259
 msgid "You can install this plugin only for one time."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:292
+#: classes/setup/class.pimpluginsetup.install.php:273
 msgid "You have to install CONTENIDO <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:292
-#: classes/setup/class.pimpluginsetup.install.php:305
+#: classes/setup/class.pimpluginsetup.install.php:273
+#: classes/setup/class.pimpluginsetup.install.php:286
+#: classes/setup/class.pimpluginsetup.install.php:365
 msgid "</strong> or higher to install this plugin!"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:299
+#: classes/setup/class.pimpluginsetup.install.php:280
 msgid "Your current CONTENIDO version is to new - max CONTENIDO version: "
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:305
+#: classes/setup/class.pimpluginsetup.install.php:286
 msgid "You have to install PHP <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:314
+#: classes/setup/class.pimpluginsetup.install.php:295
 msgid "The plugin could not find the PHP extension <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:314
-#: classes/setup/class.pimpluginsetup.install.php:325
-#: classes/setup/class.pimpluginsetup.install.php:336
+#: classes/setup/class.pimpluginsetup.install.php:295
+#: classes/setup/class.pimpluginsetup.install.php:306
+#: classes/setup/class.pimpluginsetup.install.php:317
 msgid ""
 "</strong>. Because this is required by the plugin, it can not be installed."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:325
+#: classes/setup/class.pimpluginsetup.install.php:306
 msgid "The plugin could not find the class <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:336
+#: classes/setup/class.pimpluginsetup.install.php:317
 msgid "The plugin could not find the function <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:458
-#: classes/setup/class.pimpluginsetup.install.php:487
-#: classes/setup/class.pimpluginsetup.install.php:551
+#: classes/setup/class.pimpluginsetup.install.php:356
+msgid "This plugin required the plugin"
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.install.php:365
+#: classes/setup/class.pimpluginsetup.install.php:373
+msgid "You have to install"
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.install.php:373
+msgid "</strong> or lower to install this plugin!"
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.install.php:490
+#: classes/setup/class.pimpluginsetup.install.php:519
+#: classes/setup/class.pimpluginsetup.install.php:577
 msgid "Defined area"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:458
-#: classes/setup/class.pimpluginsetup.install.php:487
-#: classes/setup/class.pimpluginsetup.install.php:551
+#: classes/setup/class.pimpluginsetup.install.php:490
+#: classes/setup/class.pimpluginsetup.install.php:519
+#: classes/setup/class.pimpluginsetup.install.php:577
 msgid ""
 "are not found on your CONTENIDO installation. Please contact your plugin "
 "author."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:255
+#: classes/setup/class.pimpluginsetup.php:251
 msgid "Invalid Xml document. Please contact the plugin author."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:266
+#: classes/setup/class.pimpluginsetup.php:260
 msgid "Plugin Manager accepts only Zip archives"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.php:309
+#: classes/setup/class.pimpluginsetup.php:299
 msgid "Back to Plugin Manager"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.status.php:120
-#: classes/setup/class.pimpluginsetup.status.php:132
-#: classes/setup/class.pimpluginsetup.uninstall.php:261
+#: classes/setup/class.pimpluginsetup.status.php:112
+#: classes/setup/class.pimpluginsetup.status.php:124
+#: classes/setup/class.pimpluginsetup.uninstall.php:258
 msgid "The plugin"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.status.php:120
+#: classes/setup/class.pimpluginsetup.status.php:112
 msgid ""
 "has been sucessfully disabled. To apply the changes please login into "
 "backend again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.status.php:132
+#: classes/setup/class.pimpluginsetup.status.php:124
 msgid ""
 "has been sucessfully enabled. To apply the changes please login into backend "
 "again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:261
+#: classes/setup/class.pimpluginsetup.uninstall.php:258
 msgid ""
 "has been successfully uninstalled. To apply the changes please login into "
 "backend again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:313
-#: classes/setup/class.pimpluginsetup.uninstall.php:315
+#: classes/setup/class.pimpluginsetup.uninstall.php:307
+#: classes/setup/class.pimpluginsetup.uninstall.php:309
 msgid "The pluginfolder"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:313
+#: classes/setup/class.pimpluginsetup.uninstall.php:307
 msgid "has been successfully uninstalled."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:315
+#: classes/setup/class.pimpluginsetup.uninstall.php:309
 msgid "could not be uninstalled."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.update.php:74
+#: classes/setup/class.pimpluginsetup.update.php:69
 msgid ""
 "The plugin has been successfully updated. To apply the changes please login "
 "into backend again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.update.php:89
+#: classes/setup/class.pimpluginsetup.update.php:81
 msgid "You have to update the same plugin"
 msgstr ""
 
-#: classes/view/class.pimpluginview.navsub.php:136
-#: classes/view/class.pimpluginview.navsub.php:155
+#: classes/view/class.pimpluginview.navsub.php:128
+#: classes/view/class.pimpluginview.navsub.php:147
 msgid "No navigation configuration founded"
 msgstr ""
 
-#: classes/view/class.pimpluginview.navsub.php:305
+#: classes/view/class.pimpluginview.navsub.php:296
 msgid "You find this plugin at navigation section"
 msgstr ""
 
-#: classes/view/class.pimpluginview.navsub.php:305
+#: classes/view/class.pimpluginview.navsub.php:296
 msgid "as"
 msgstr ""
 
@@ -246,14 +260,14 @@ msgstr ""
 msgid "Not installed Plugins"
 msgstr ""
 
-#: templates/template.pim_overview.html:3
+#: templates/template.pim_overview.html:2
 msgid "This plugin is already at the top!"
 msgstr ""
 
-#: templates/template.pim_overview.html:4
+#: templates/template.pim_overview.html:3
 msgid "This plugin is already at the bottom!"
 msgstr ""
 
-#: templates/template.pim_overview.html:5
+#: templates/template.pim_overview.html:4
 msgid "Error"
 msgstr ""

@@ -309,7 +309,7 @@ class cGuiSourceEditor extends cGuiPage {
         $this->set('s', 'ACTION', $action);
         $this->set('s', 'FILENAME', $this->filename);
         if(cFileHandler::readable($this->filepath) && $this->filename != '') {
-            $this->set('s', 'SOURCE', cFileHandler::read($this->filepath));
+            $this->set('s', 'SOURCE', conHtmlentities(cFileHandler::read($this->filepath)));
         } else {
             $this->set('s', 'SOURCE', '');
         }
