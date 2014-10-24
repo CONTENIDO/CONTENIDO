@@ -123,6 +123,17 @@ div.button_red input,
 	padding: 0;
 }
 
+/* .blog */
+.blog .date {
+    display: block;
+    float: none;
+    margin: 0 0 8px 0;
+}
+.blog span+a {
+    display: block;
+    float: none;
+}
+
 /* #breadcrumb */
 #breadcrumb {
 	height: auto;
@@ -240,6 +251,10 @@ div.button_red input,
 #content ul > li > p.FreieForm strong,
 #content ul > li > strong {
 	display: block;
+}
+#content div.pagination > ul {
+    line-height: 1;
+    margin: 0;
 }
 #content ul.pagination {
 	display: table;
@@ -530,6 +545,17 @@ button[type="button"] {
 	width: 100%;
 }
 
+/* #search_result */
+#search_result li {
+    padding: 0 0 0 20px;
+    position: relative;
+}
+#search_result li > span {
+    left: 0;
+    margin: 0;
+    width: 16px;
+}
+
 /* .sitemap */
 .sitemap > li {
 	padding: 10px 0 11px 0;
@@ -713,7 +739,7 @@ ul.social_media li {
 .user_forum .submitbuttons {
 	padding: 0;
 }
-.user_form label {
+.user_forum strong {
 	line-height: 20px;
 }
 .user_forum .blog-data {
