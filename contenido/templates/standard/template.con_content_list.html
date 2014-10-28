@@ -55,7 +55,7 @@
 </script>
 
 {CATEGORY}
-<p style="display:{DISPLAYED};font-weight:bold;">Auswahl der Artikelversion</p>
+<p style="display:{DISPLAYED};font-weight:bold;">i18n("Select Article Version")</p>
 <p style="display:{DISPLAYED}">{ARTICLE_VERSION_SELECTION}</p>
 <p style="display:block;font-weight:bold;">i18n("Content administration")</p>
 <!-- BEGIN:BLOCK -->
@@ -70,12 +70,12 @@
 </div>
 
 <script type='text/javascript'>
-function loadVersion(){	
+function loadVersion() {	
 	var getUrl = window.location.href+'&idArtLangVersion='+$('#selectVersionElement option:selected').val()+'&text='+$('#selectVersionElement option:selected').text()+'&copyTo='+0+'&action='+'con_content';
 	window.location.href = getUrl;
 }
 
-function copyTo(){
+function copyTo() {
 	var getUrl = window.location.href+'&copyTo='+1+'&idArtLangVersion='+$('#selectVersionElement option:selected').val();
 	window.location.href = getUrl;
 }
@@ -85,7 +85,7 @@ function copyTo(){
  * $_POST['versionnumber] = 'current' if version is current, 
  * else $_POST['versionnumber] = version number
  */
-function getVersionNumber(){
+function getVersionNumber() {
 		document.getElementById("versionnumber").value = $('#selectVersionElement option:selected').val();
 }
 

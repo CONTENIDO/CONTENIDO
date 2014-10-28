@@ -69,7 +69,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label) {
  *            label
  * @return string the rendered cHTMLLabel element
  */
-function renderLabel($text, $name, $width = 250, $seperator = ':') {
+function renderLabel($text, $name, $width = 280, $seperator = ':') {
     $label = new cHTMLLabel($text . $seperator, $name);
     $label->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');
 

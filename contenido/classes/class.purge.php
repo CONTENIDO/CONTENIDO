@@ -220,6 +220,31 @@ class cSystemPurge {
             return false;
         }
     }
+    
+        /**
+     * Clear the client content versioning
+     *
+     * @param int $clientId
+     * @param bool $keep
+     * @param int $fileNumber
+     * @return bool
+     */
+    public function clearClientContentVersioning($clientId) {
+        global $perm, $currentuser;
+        
+        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            
+            $artLangVersionColl = new cApiArticleLanguageVersionCollection();
+            $artLangVersionColl->deleteByWhereClause('idartlangversion', 'NULL', 'NOT');
+            
+            $contentVersionColl = new cApiContentVersionCollection();
+            $contentVersionColl->deleteByWhereClause('idcontentversion', 'NULL', 'NOT');
+            
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Clear client log file

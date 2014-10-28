@@ -56,6 +56,7 @@
 ./classes/contenido/class.article.php
 ./classes/contenido/class.article.specification.php
 ./classes/contenido/class.articlelanguage.php
+./classes/contenido/class.articlelanguageversion.php
 ./classes/contenido/class.category.php
 ./classes/contenido/class.categoryarticle.php
 ./classes/contenido/class.categorylanguage.php
@@ -66,6 +67,7 @@
 ./classes/contenido/class.container.php
 ./classes/contenido/class.containerconfig.php
 ./classes/contenido/class.content.php
+./classes/contenido/class.contentversion.php
 ./classes/contenido/class.dbfs.php
 ./classes/contenido/class.file.php
 ./classes/contenido/class.fileinformation.php
@@ -414,6 +416,7 @@
 ./classes/version/class.version.layout.php
 ./classes/version/class.version.module.php
 ./classes/version/class.version.php
+./classes/versioning/class.contentversioning.php
 ./classes/widgets/class.widgets.actionbutton.php
 ./classes/xml/class.xml.base.php
 ./classes/xml/class.xml.reader.php
