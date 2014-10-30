@@ -49,7 +49,7 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
 
                 cDirHandler::recursiveCopy("data/examples/js", $this->_aCfgClient[1]["path"]["frontend"] . "images");
 
-                // copy the includes folder to the includes folder for the example client
+                // copy the includes folder to the cms folder for the example client
                 if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "includes")) {
                 	cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "includes");
                 	mkdir($this->_aCfgClient[1]["path"]["frontend"] . "includes");
