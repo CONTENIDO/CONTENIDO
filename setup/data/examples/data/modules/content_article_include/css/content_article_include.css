@@ -1,0 +1,24 @@
+.content_article_include_holder {
+	height: 110px;
+}
+.content_article_include_holder .config_container {
+	height: 34px;
+	margin: 15px 0px;
+}
+.content_article_include_holder .head {
+    font-weight: 700;
+    margin: 5px 0;
+	color: #797979;
+	font-family: Verdana, sans-serif;
+	line-height: 12px;
+}
+.content_article_include_holder .config_container label {
+	color: #797979;
+	font-size: 12px;
+	line-height: 12px;
+	font-family: Verdana, sans-serif;
+	
+}
+.content_article_include_holder .content_article_include_close.close {
+	margin-top: 0px;
+}
