@@ -46,7 +46,6 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
                 	cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "images");
                 	mkdir($this->_aCfgClient[1]["path"]["frontend"] . "images");
                 }
-
                 cDirHandler::recursiveCopy("data/examples/js", $this->_aCfgClient[1]["path"]["frontend"] . "images");
 
                 // copy the includes folder to the cms folder for the example client
@@ -61,7 +60,6 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
                     cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "js");
                     mkdir($this->_aCfgClient[1]["path"]["frontend"] . "js");
                 }
-
                 cDirHandler::recursiveCopy("data/examples/js", $this->_aCfgClient[1]["path"]["frontend"] . "js");
 
                 // copy the template folder to the cms folder for the example client
