@@ -1222,13 +1222,19 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Deletes also cached e entries and any existing properties.
      *
      * @param string $sWhere The where clause of the SQL statement
-     * @return int Number of deleted entries
+     * @return int Number of deleted entries or false if the id list is empty
      */
     public function deleteByWhereClause($sWhere) {
         // Get all ids and delete related entries
         $aIds = $this->getIdsByWhereClause($sWhere);
-        $numDeleted = $this->_deleteMultiple($aIds);
-        return $numDeleted;
+
+        if (count($aIds) != 0) {
+        	$numDeleted = $this->_deleteMultiple($aIds);
+        	return $numDeleted;
+        } else {
+        	return false;
+        }
+
     }
 
     /**
