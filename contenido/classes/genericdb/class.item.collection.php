@@ -886,40 +886,44 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $row = 1;
         $aTable = array();
 
-        $this->db->seek(0);
+        if ($this->count() > 0) {
 
-        while ($this->db->nextRecord()) {
-            foreach ($aFields as $alias => $field) {
-                if ($alias != '') {
-                    $aTable[$row][$alias] = $this->db->f($field);
-                } else {
-                    $aTable[$row][$field] = $this->db->f($field);
-                }
-            }
+	        $this->db->seek(0);
 
-            // Fetch objects
-            foreach ($aObjects as $alias => $object) {
-                if ($alias != '') {
-                    if (isset($aTable[$row][$alias])) {
-                        // Is set, check for array. If no array, create one
-                        if (is_array($aTable[$row][$alias])) {
-                            $aTable[$row][$alias][] = $this->fetchObject($object);
-                        } else {
-                            // $tmpObj = $aTable[$row][$alias];
-                            $aTable[$row][$alias] = array();
-                            $aTable[$row][$alias][] = $this->fetchObject($object);
-                        }
-                    } else {
-                        $aTable[$row][$alias] = $this->fetchObject($object);
-                    }
-                } else {
-                    $aTable[$row][$object] = $this->fetchObject($object);
-                }
-            }
-            $row++;
+	        while ($this->db->nextRecord()) {
+	            foreach ($aFields as $alias => $field) {
+	                if ($alias != '') {
+	                    $aTable[$row][$alias] = $this->db->f($field);
+	                } else {
+	                    $aTable[$row][$field] = $this->db->f($field);
+	                }
+	            }
+
+	            // Fetch objects
+	            foreach ($aObjects as $alias => $object) {
+	                if ($alias != '') {
+	                    if (isset($aTable[$row][$alias])) {
+	                        // Is set, check for array. If no array, create one
+	                        if (is_array($aTable[$row][$alias])) {
+	                            $aTable[$row][$alias][] = $this->fetchObject($object);
+	                        } else {
+	                            // $tmpObj = $aTable[$row][$alias];
+	                            $aTable[$row][$alias] = array();
+	                            $aTable[$row][$alias][] = $this->fetchObject($object);
+	                        }
+	                    } else {
+	                        $aTable[$row][$alias] = $this->fetchObject($object);
+	                    }
+	                } else {
+	                    $aTable[$row][$object] = $this->fetchObject($object);
+	                }
+	            }
+	            $row++;
+	        }
+
+	        $this->db->seek(0);
+
         }
-
-        $this->db->seek(0);
 
         return $aTable;
     }
