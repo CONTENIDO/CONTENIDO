@@ -70,7 +70,7 @@ INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(71, 8, NULL, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(72, 1, NULL, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(73, 8, NULL, NULL, NOW(), NOW());
-INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(74, 9, NULL, NULL, NOW(), NOW());
+INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(74, 23, NULL, NULL, NOW(), NOW());
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(75, 9, 0, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(76, 10, NULL, 'sysadmin', NOW(), NOW());
 INSERT INTO `!PREFIX!_template_conf` (`idtplcfg`, `idtpl`, `status`, `author`, `created`, `lastmodified`) VALUES(77, 1, NULL, 'sysadmin', NOW(), NOW());
