@@ -63,15 +63,15 @@ if (!(int) $client > 0) {
 
 $path = $contenidoModulHandler->getCssPath(); // $cfgClient[$client]['css']['path'];
 
-// ERROR MESSAGE
-if (!$contenidoModulHandler->moduleWriteable('css')) {
-    $page->displayCriticalError(i18n('No write permissions in folder css for this module!'));
-    $page->render();
-    exit();
-}
-
 // Make automatic a new css file
 $contenidoModulHandler->createModuleFile('css');
+
+// ERROR MESSAGE
+if (!$contenidoModulHandler->moduleWriteable('css')) {
+	$page->displayCriticalError(i18n('No write permissions in folder css for this module!'));
+	$page->render();
+	exit();
+}
 
 $sTempFilename = stripslashes($tmp_file);
 $sOrigFileName = $sTempFilename;

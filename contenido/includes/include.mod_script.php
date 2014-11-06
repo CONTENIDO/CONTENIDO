@@ -63,16 +63,17 @@ if (!(int) $client > 0) {
     return;
 }
 
-// ERROR MESSAGE
-if (!$contenidoModulHandler->moduleWriteable('js')) {
-    $page->displayCriticalError(i18n('No write permissions in folder js for this module!'));
-    $page->render();
-    exit();
-}
 
 $path = $contenidoModulHandler->getJsPath(); // $cfgClient[$client]['js']['path'];
 // Make automatic a new js file
 $contenidoModulHandler->createModuleFile('js');
+
+// ERROR MESSAGE
+if (!$contenidoModulHandler->moduleWriteable('js')) {
+	$page->displayCriticalError(i18n('No write permissions in folder js for this module!'));
+	$page->render();
+	exit();
+}
 
 $sTempFilename = stripslashes($tmpFile);
 $sOrigFileName = $sTempFilename;

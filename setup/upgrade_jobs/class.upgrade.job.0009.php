@@ -37,7 +37,7 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
                 // copy the styles folder to the cms folder for the example client
                 if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "css")) {
                     cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "css");
-                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "css");
+                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "css", 0777);
                 }
                 cDirHandler::recursiveCopy("data/examples/css", $this->_aCfgClient[1]["path"]["frontend"] . "css");
 
@@ -58,7 +58,7 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
                 // copy the scripts folder to the cms folder for the example client
                 if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "js")) {
                     cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "js");
-                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "js");
+                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "js", 0777);
                 }
                 cDirHandler::recursiveCopy("data/examples/js", $this->_aCfgClient[1]["path"]["frontend"] . "js");
 
@@ -79,14 +79,14 @@ class cUpgradeJob_0009 extends cUpgradeJobAbstract {
                 // copy the layout folder to the cms folder for the example client
                 if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts")) {
                     cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
-                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
+                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "data/layouts", 0777);
                 }
                 cDirHandler::recursiveCopy("data/examples/data/layouts", $this->_aCfgClient[1]["path"]["frontend"] . "data/layouts");
             case "CLIENTMODULES":
                 // copy the module folder to the cms folder for the example client
                 if (cFileHandler::exists($this->_aCfgClient[1]["path"]["frontend"] . "data/modules")) {
                     cDirHandler::recursiveRmdir($this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
-                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
+                    mkdir($this->_aCfgClient[1]["path"]["frontend"] . "data/modules", 0777);
                 }
                 cDirHandler::recursiveCopy("data/examples/data/modules", $this->_aCfgClient[1]["path"]["frontend"] . "data/modules");
         }
