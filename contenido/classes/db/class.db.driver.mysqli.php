@@ -74,7 +74,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      */
     public function connect() {
         $dbHandler = @mysqli_init();
-        if (!$dbHandler) {
+        if (!$dbHandler || $dbHandler->connect_error != "" || $dbHandler->error != "") {
             $this->_handler->halt('Can not initialize database connection.');
             return NULL;
         }
