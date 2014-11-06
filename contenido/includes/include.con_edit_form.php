@@ -416,7 +416,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $arrArtSpecs = getArtSpec();
 
-    $inputArtSortSelect = new cHTMLSelectELement("artspec", "400ox");
+    $inputArtSortSelect = new cHTMLSelectELement("artspec", "400px");
     $inputArtSortSelect->setClass("text_medium");
     $iAvariableSpec = 0;
     foreach ($arrArtSpecs as $id => $value) {

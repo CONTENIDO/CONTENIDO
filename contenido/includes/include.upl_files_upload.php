@@ -28,13 +28,20 @@ if (!$perm->have_perm_area_action("upl", "upl_upload")) {
 $maxUploadSize = 0;
 $maxPostSize = 0;
 
+// max upload size
 if (ini_get("max_upload_size") == "") {
     $maxUploadSize = (double) 99999999999999;
+} elseif (cSecurity::isInteger(ini_get("max_upload_size"))) {
+    $maxUploadSize = ini_get("max_upload_size");
 } else {
-    $maxUploadSize = machineReadableSize(ini_get("max_upload_size"));
+	$maxUploadSize = machineReadableSize(ini_get("max_upload_size"));
 }
+
+// max post size
 if (ini_get("post_max_size") == "") {
     $maxPostSize = (double) 99999999999999;
+} elseif (cSecurity::isInteger(ini_get("post_max_size"))) {
+	$maxPostSize = ini_get("post_max_size");
 } else {
     $maxPostSize = machineReadableSize(ini_get("post_max_size"));
 }
