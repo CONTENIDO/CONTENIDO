@@ -7,6 +7,7 @@ WARNUNG: Versionen, die mit Alpha, Beta oder RC markiert sind,
 sind definitiv nicht für den produktiven Einsatz gedacht!
 </take care>
 
+
 Keine Haftung und Gewährleistung für mittelbare und unmittelbare
 Schäden. Weitere Infos finden Sie in der GPL-Lizenz.
 
