@@ -791,7 +791,6 @@ abstract class cDbDriverHandler {
     public function getLastInsertedId() {
         $lastId = NULL;
 
-
         $this->query('SELECT LAST_INSERT_ID() as last_id');
         if ($this->nextRecord()) {
             $lastId = $this->f('last_id');
