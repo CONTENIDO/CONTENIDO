@@ -451,5 +451,6 @@ INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VAL
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(2043, 23, 100, 8);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(2044, 23, 90, 14);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(2045, 23, 10, 10);
+INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(2046, 3, 900, 8);
 INSERT INTO `!PREFIX!_container_conf` (`idcontainerc`, `idtplcfg`, `number`, `container`) VALUES(1, 166, 10, '1=1&2=&');
 INSERT INTO `!PREFIX!_container_conf` (`idcontainerc`, `idtplcfg`, `number`, `container`) VALUES(2, 74, 180, '1=13&2=95&');
