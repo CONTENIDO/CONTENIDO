@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-09 10:28+0200\n"
+"POT-Creation-Date: 2014-11-13 11:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr ""
 
 #: classes/setup/class.pimpluginsetup.install.php:273
 #: classes/setup/class.pimpluginsetup.install.php:286
-#: classes/setup/class.pimpluginsetup.install.php:365
+#: classes/setup/class.pimpluginsetup.install.php:366
 msgid "</strong> or higher to install this plugin!"
 msgstr ""
 
@@ -64,28 +64,28 @@ msgstr ""
 msgid "The plugin could not find the function <strong>"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:356
+#: classes/setup/class.pimpluginsetup.install.php:357
 msgid "This plugin required the plugin"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:365
-#: classes/setup/class.pimpluginsetup.install.php:373
+#: classes/setup/class.pimpluginsetup.install.php:366
+#: classes/setup/class.pimpluginsetup.install.php:374
 msgid "You have to install"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:373
+#: classes/setup/class.pimpluginsetup.install.php:374
 msgid "</strong> or lower to install this plugin!"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:490
-#: classes/setup/class.pimpluginsetup.install.php:519
-#: classes/setup/class.pimpluginsetup.install.php:577
+#: classes/setup/class.pimpluginsetup.install.php:491
+#: classes/setup/class.pimpluginsetup.install.php:520
+#: classes/setup/class.pimpluginsetup.install.php:578
 msgid "Defined area"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.install.php:490
-#: classes/setup/class.pimpluginsetup.install.php:519
-#: classes/setup/class.pimpluginsetup.install.php:577
+#: classes/setup/class.pimpluginsetup.install.php:491
+#: classes/setup/class.pimpluginsetup.install.php:520
+#: classes/setup/class.pimpluginsetup.install.php:578
 msgid ""
 "are not found on your CONTENIDO installation. Please contact your plugin "
 "author."
@@ -105,7 +105,7 @@ msgstr ""
 
 #: classes/setup/class.pimpluginsetup.status.php:112
 #: classes/setup/class.pimpluginsetup.status.php:124
-#: classes/setup/class.pimpluginsetup.uninstall.php:258
+#: classes/setup/class.pimpluginsetup.uninstall.php:261
 msgid "The plugin"
 msgstr ""
 
@@ -121,22 +121,29 @@ msgid ""
 "again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:258
+#: classes/setup/class.pimpluginsetup.uninstall.php:261
 msgid ""
 "has been successfully uninstalled. To apply the changes please login into "
 "backend again."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:307
-#: classes/setup/class.pimpluginsetup.uninstall.php:309
+#: classes/setup/class.pimpluginsetup.uninstall.php:326
+#, php-format
+msgid ""
+"This plugin are required by the plugin <strong>%s</strong>, so you can not "
+"uninstall it"
+msgstr ""
+
+#: classes/setup/class.pimpluginsetup.uninstall.php:378
+#: classes/setup/class.pimpluginsetup.uninstall.php:380
 msgid "The pluginfolder"
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:307
+#: classes/setup/class.pimpluginsetup.uninstall.php:378
 msgid "has been successfully uninstalled."
 msgstr ""
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:309
+#: classes/setup/class.pimpluginsetup.uninstall.php:380
 msgid "could not be uninstalled."
 msgstr ""
 
