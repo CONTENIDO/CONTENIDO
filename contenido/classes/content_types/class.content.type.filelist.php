@@ -465,8 +465,6 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $fileLink = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $directoryName . '/' . $filename;
         $filePath = $this->_cfgClient[$this->_client]['upl']['path'] . $directoryName . '/' . $filename;
 
-        $info = exif_imagetype($filePath);
-
         // If file is an image (extensions gif, jpg, jpeg, png) scale it
         // otherwise use default png image
         switch ($fileData['extension']) {
