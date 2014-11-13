@@ -786,18 +786,13 @@ abstract class cDbDriverHandler {
     /**
      * Get last inserted id of given table name
      *
-     * @param string $tableName
-     *
      * @return int NULL id of table
      */
-    public function getLastInsertedId($tableName = '') {
+    public function getLastInsertedId() {
         $lastId = NULL;
 
-        if (strlen($tableName) == 0) {
-            return $lastId;
-        }
 
-        $this->query('SELECT LAST_INSERT_ID() as last_id FROM ' . $tableName);
+        $this->query('SELECT LAST_INSERT_ID() as last_id');
         if ($this->nextRecord()) {
             $lastId = $this->f('last_id');
         }

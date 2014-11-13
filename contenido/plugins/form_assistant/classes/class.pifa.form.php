@@ -499,7 +499,7 @@ class PifaForm extends Item {
         }
 
         // get last insert id
-        $lastInsertedId = $db->getLastInsertedId($this->get('data_table'));
+        $lastInsertedId = $db->getLastInsertedId();
 
         $this->setLastInsertedId($lastInsertedId);
 

@@ -1065,7 +1065,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $db->query($sql);
 
         if ($primaryKeyValue === NULL) {
-            $primaryKeyValue = $db->getLastInsertedId($this->table);
+            $primaryKeyValue = $db->getLastInsertedId();
         }
 
         if ($db->affectedRows() == 0) {
