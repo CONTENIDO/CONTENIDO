@@ -27,17 +27,20 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param string $label the label text which should be rendered
  * @return array associative array with the label and the input field
  */
-function renderSelectProperty($name, $possibleValues, $value, $label) {
+function renderSelectProperty($name, $possibleValues, $value, $label, $width = 322) {
     global $auth;
 
+    $return = array();
+    
     if (count($possibleValues) === 2 && (in_array('true', $possibleValues) && in_array('false', $possibleValues) || in_array('enabled', $possibleValues) && in_array('disabled', $possibleValues) || in_array('0', $possibleValues) && in_array('1', $possibleValues))) {
         // render a checkbox if there are only the values true and false
         $checked = $value == 'true' || $value == '1' || $value == 'enabled';
         $html = new cHTMLCheckbox($name, $possibleValues[0], $name, $checked);
         $html->setLabelText($label);
+        $return['label'] = '';
     } else {
         // otherwise render a select box with the possible values
-        $html = new cHTMLSelectElement('');
+        $html = new cHTMLSelectElement($name);
         foreach ($possibleValues as $possibleValue) {
             $element = new cHTMLOptionElement($possibleValue, $possibleValue);
             if ($possibleValue == $value) {
@@ -45,17 +48,46 @@ function renderSelectProperty($name, $possibleValues, $value, $label) {
             }
             $html->appendOptionElement($element);
         }
+        
+        if (in_array($value, array('disabled', 'simple', 'advanced'))) {
+            $html->setStyle('padding:3px;width:' . $width . 'px;');            
+            $return['label'] = 
+                ' <div>
+                    <span style="width: 280px; display: inline-block; padding: 0px 0px 0px 2px;">
+                        <span style="margin: 0px 10px 0px 0px;">Artikel-Versionierung</span>
+                        <a 
+                            href="#" 
+                            id="pluginInfoDetails-link" 
+                            class="main i-link infoButton" 
+                            title=""></a>
+                    </span>
+                    ' . $html->render() . '                    
+                  </div>
+                  <div id="pluginInfoDetails" class="nodisplay">
+                  <p><strong>Änderungen: </strong>Im Editor wird immer die Version angezeigt, die editiert werden kann. Versionen können verschoben werden</p>
+                  <p><strong>Konfigurationsstufen:</strong></p>    
+                      <ul class="list">
+                          <li class="first"><strong>disabled: </strong>Schaltet die Versionierung aus</li>
+                          <li><strong>simple: </strong>Alles wie gewohnt, zusätzlich werden Versionen angelegt und können angeschaut werden</li>
+                          <li><strong>advanced: </strong>Wie \'simple\', allerdings mit zusätzlichem Entwurf der editiert werden kann</li>
+                      </ul>
+                  </div>';
+        } else {
+            $html->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');   
+            $return['label'] = renderLabel($label, $name);
+        }
+        
     }
 
     // disable the HTML element if user is not a sysadmin
     if (strpos($auth->auth['perm'], 'sysadmin') === false) {
         $html->updateAttribute('disabled', 'true');
     }
-
-    $return = array();
-    $return['input'] = $html->render();
-    $return['label'] = '';
-
+    
+    if (!in_array($value, array('disabled', 'simple', 'advanced'))) {
+        $return['input'] = $html->render();
+    }
+    
     return $return;
 }
 
@@ -89,6 +121,7 @@ function renderTextProperty($name, $value, $label) {
     global $auth;
 
     $textbox = new cHTMLTextbox($name, conHtmlSpecialChars($value), '50', '96');
+    $textbox->updateAttribute('style', 'width:322px');
     // disable the textbox if user is not a sysadmin
     if (strpos($auth->auth['perm'], 'sysadmin') === false) {
         $textbox->updateAttribute('disabled', 'true');
@@ -188,12 +221,12 @@ foreach ($propertyTypes as $type => $properties) {
         } else {
             $value = '';
         }
-
+        
         // render the HTML and add it to the groups array
         $fieldName = $type . '{_}' . $name;
         if (is_array($infos['values'])) {
             $htmlElement = renderSelectProperty($fieldName, $infos['values'], $value, i18n($infos['label']));
-        } else {
+        } else {        
             $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']));
         }
 

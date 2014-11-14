@@ -123,7 +123,13 @@ class cApiContent extends Item {
         parent::setField($name, $value, $bSafe);
     }
 
-	public function setAsTemporary($version, $deleted) {
+    /**
+     * Creates a new, editable Version with same properties as this Content
+     *
+     * @param string $version
+     * @param mixed $deleted
+     */	
+	public function markAsEditable($version, $deleted) {
 		$parameters = $this->values;
 		$parameters['version'] = $version;
 		$contentVersionColl = new cApiContentVersionCollection();

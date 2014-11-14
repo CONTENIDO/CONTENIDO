@@ -272,64 +272,63 @@ class cApiArticleLanguage extends Item {
         }
     }
 	
-	public function setAsTemporary() {
-		global $cfg;
-		
-		//create new temporary version
-		$sql = 'SELECT max(version) AS max FROM %s WHERE idartlang = %d';
-		$this->db->query($sql, $cfg['tab']['art_lang_version'], $this->get('idartlang'));
-		while ($this->db->nextRecord()) {
-			$maxVersion = $this->db->f('max');
-		}
-		
-		$parameters = $this->values;
-		$parameters['version'] = $maxVersion + 1;
-		$parameters['iscurrentversion'] = 0;
-		$artLangVersionColl = new cApiArticleLanguageVersionCollection();
-		$artLangVersion = $artLangVersionColl->create($parameters);
-		$artLangVersion->loadArticleVersionContent();
-		
-		$contentVersion = new cApiContent();
-		$oType = new cApiType();	
-		$this->loadArticleContent();
-		
-		//get all Contents/Versions
-		$mergedContent = array();
-		foreach ($this->content AS $type => $typeids) {
-			foreach ($typeids AS $typeid => $value) {
-				$mergedContent[$type][$typeid] = '';
-			}
-		}
-		foreach ($artLangVersion->content AS $type => $typeids) {
-			foreach ($typeids AS $typeid => $value) {
-				$mergedContent[$type][$typeid] = '';
-			}
-		}
-		
-		//set new Content Versions
-		foreach ($mergedContent AS $type => $typeids) {
-			foreach ($typeids AS $typeid => $value) {
-				$oType->loadByType($type);
-				if (isset($this->content[$type][$typeid])) {
-					$contentVersion->loadByArticleLanguageIdTypeAndTypeId($this->get('idartlang'), $oType->get('idtype'), $typeid);
-					if (isset($contentVersion)) {
-						$contentVersion->setAsTemporary($artLangVersion->get('version'), 0);
-					} 
-				} else {
-					$contentParameters = array(
-						'idartlang' => $artLangVersion->get('idartlang'),
-						'idtype' => $oType->get('idtype'),
-						'typeid' => $typeid,
-						'version' => $artLangVersion->get('version'),
-						'author' => $this->get('author'),
-						'deleted' => 1
-					);
-					$contentVersionColl = new cApiContentVersionCollection();					
-					$contentVersionColl->create($contentParameters);				
-				}
-			}
-		}
-	}
+    public function markAsEditable() {
+        global $cfg;
+
+        // create new editable version
+        $sql = 'SELECT max(version) AS max FROM %s WHERE idartlang = %d';
+        $this->db->query($sql, $cfg['tab']['art_lang_version'], $this->get('idartlang'));
+        while ($this->db->nextRecord()) {
+                $maxVersion = $this->db->f('max');
+        }
+
+        $parameters = $this->values;
+        $parameters['version'] = $maxVersion + 1;
+        $artLangVersionColl = new cApiArticleLanguageVersionCollection();
+        $artLangVersion = $artLangVersionColl->create($parameters);
+        $artLangVersion->loadArticleVersionContent();
+
+        $contentVersion = new cApiContent();
+        $oType = new cApiType();	
+        $this->loadArticleContent();
+
+        // get all Contents/Versions
+        $mergedContent = array();
+        foreach ($this->content AS $type => $typeids) {
+            foreach ($typeids AS $typeid => $value) {
+                    $mergedContent[$type][$typeid] = '';
+            }
+        }
+        foreach ($artLangVersion->content AS $type => $typeids) {
+            foreach ($typeids AS $typeid => $value) {
+                    $mergedContent[$type][$typeid] = '';
+            }
+        }
+
+        // set new Content Versions
+        foreach ($mergedContent AS $type => $typeids) {
+            foreach ($typeids AS $typeid => $value) {
+                $oType->loadByType($type);
+                if (isset($this->content[$type][$typeid])) {
+                    $contentVersion->loadByArticleLanguageIdTypeAndTypeId($this->get('idartlang'), $oType->get('idtype'), $typeid);
+                    if (isset($contentVersion)) {
+                            $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
+                    } 
+                } else {
+                    $contentParameters = array(
+                            'idartlang' => $artLangVersion->get('idartlang'),
+                            'idtype' => $oType->get('idtype'),
+                            'typeid' => $typeid,
+                            'version' => $artLangVersion->get('version'),
+                            'author' => $this->get('author'),
+                            'deleted' => 1
+                    );
+                    $contentVersionColl = new cApiContentVersionCollection();					
+                    $contentVersionColl->create($contentParameters);				
+                }
+            }
+        }
+    }
 
     /**
      * Load data by article and language id

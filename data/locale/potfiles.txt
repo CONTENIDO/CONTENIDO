@@ -89,6 +89,7 @@
 ./classes/contenido/class.maillogsuccess.php
 ./classes/contenido/class.meta.tag.php
 ./classes/contenido/class.meta.type.php
+./classes/contenido/class.metatagversion.php
 ./classes/contenido/class.module.php
 ./classes/contenido/class.navmain.php
 ./classes/contenido/class.navsub.php

@@ -314,7 +314,7 @@ abstract class cCodeGeneratorAbstract {
 
         $match = array();
         $keycode = array();
-
+		
         // NOTE: $a_content is used by included/evaluated content type codes
         // below
         $a_content = $contentList;
@@ -536,7 +536,7 @@ abstract class cCodeGeneratorAbstract {
         while ($this->_db->nextRecord()) {
             $return[$this->_db->f('type')][$this->_db->f('typeid')] = $this->_db->f('value');
         }
-				
+		
         return $return;
     }
 

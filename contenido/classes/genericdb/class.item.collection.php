@@ -1038,9 +1038,9 @@ abstract class ItemCollection extends cItemBaseAbstract {
      */
     public function createNewItem($data = NULL) {
         $this->_executeCallbacks(self::CREATE_BEFORE, get_class($this), array());
-
+        
         $db = $this->_getSecondDBInstance();
-
+        
         $primaryKeyValue = NULL;
         // prepare the primary key value and the data depending on the type of
         // $data
@@ -1058,6 +1058,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         // build the insert statement and execute it
         $sql = $db->buildInsert($this->table, $data);
+        
         $db->query($sql);
 
         if ($primaryKeyValue === NULL) {

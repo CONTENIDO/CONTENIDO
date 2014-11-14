@@ -95,6 +95,28 @@ class cContentVersioning {
         return $result;
 		
     }	
+    
+    /**
+     * Return date for select box 
+     * if current time - lastModified < 1 hour return "%d minutes ago"
+     * else return "Y-M-D H:I:S"
+     * 
+     * @param $lastModified 
+     * @return string
+     */
+    public function getTimeDiff($lastModified) {
+        $currentTime = new DateTime(date('Y-m-d H:i:s'));        
+        $modifiedTime = new DateTime($lastModified);
+        $diff = $currentTime->diff($modifiedTime);
+        $diff2 = (int) $diff->format('%Y%M%D%H');
+        
+        if ($diff2 === 0) {
+            return sprintf(i18n("%d minutes ago"), $diff->format('%i'));
+        } else {       
+            return date('d.m.Y, H:i\h', strtotime($lastModified)); 
+        }
+        
+    }
 
     /**
      * Returns the current versioning state (false (default), simple, advanced)
@@ -207,14 +229,16 @@ class cContentVersioning {
 
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
 
-        if ((($copyTo == 1) && (($idArtLangVersion != NULL) && ($idArtLangVersion == $this->editableArticleId))) 
+        if ((($copyTo == 1) && (($idArtLangVersion != NULL) 
+            && ($idArtLangVersion == $this->editableArticleId))) 
             || (($idArtLangVersion == 'current') && ($copyTo == 0))
             || ($this->editableArticleId == NULL && ($copyTo == 0))) {
             $this->articleType = 'current';
         } else if ($copyTo == 0 && $idArtLangVersion == $this->editableArticleId 
                     || $copyTo == 1 && $idArtLangVersion != $this->editableArticleId
-                    || $action == 'savecontype' || $action == 10 || $action == 'deletecontype' || $action == 'importrawcontent'
-                    ||  ($idArtLangVersion == NULL && $action == 'con_content')) {
+                    || $action == 'savecontype' || $action == 10 || $action == 'deletecontype' 
+                    || $action == 'importrawcontent' ||  ($idArtLangVersion == NULL 
+                    && $action == 'con_content')) {
             $this->articleType = 'editable';
         } else {
             $this->articleType = 'version';
@@ -234,7 +258,11 @@ class cContentVersioning {
 
         if ($this->getState() == 'advanced') {
             $sql = 'SELECT max(idartlangversion) AS max FROM %s WHERE idartlang = %d';
-            $this->db->query($sql, cRegistry::getDbTableName('art_lang_version'), $idArtLang);
+            $this->db->query(
+                $sql,
+                cRegistry::getDbTableName('art_lang_version'),
+                $idArtLang
+            );
             while ($this->db->nextRecord()) {
                 $this->editableArticleId = $this->db->f('max');
             }
@@ -260,6 +288,7 @@ class cContentVersioning {
      */	
     public function getContentId($idArtLang, $typeId, $type, $versioningState, $articleType, $version) {
 
+        $idContent = array();
         $type = addslashes($type);
         if ($versioningState == 'simple' && $articleType != 'version'
             || $versioningState == 'advanced' && $articleType == 'current'
@@ -300,6 +329,7 @@ class cContentVersioning {
         $artLangVersionColl->addResultField('version');
         $artLangVersionColl->addResultField('lastmodified');
         $artLangVersionColl->setWhere('idartlang', $idArtLang);
+        $artLangVersionColl->setOrder('version desc');
         $artLangVersionColl->query();
 
         $fields['idartlangversion'] = 'idartlangversion';
@@ -350,7 +380,7 @@ class cContentVersioning {
             'summary' => $currentArticle->getField('summary'),
             'artspec' => $currentArticle->getField('artspec'),
             'created' => $currentArticle->getField('created'),
-            'isCurrentVersion' => 1,
+            'iscurrentversion' => 1,
             'author' => $currentArticle->getField('author'),
             'lastmodified' => date('Y-m-d H:i:s'),
             'modifiedby' => $currentArticle->getField('author'),
@@ -376,8 +406,8 @@ class cContentVersioning {
             'sitemapprio' => $currentArticle->getField('sitemapprio'),
             'changefreq' => $currentArticle->getField('changefreq')
 	);
-	$artLangVersionColl = new cApiArticleLanguageVersionCollection();
-	$artLangVersion = $artLangVersionColl->create($parametersArticleVersion);
+        
+	$artLangVersion = $this->createArticleLanguageVersion($parametersArticleVersion);
 	
 	// Get the version number of the new Article Language Version that belongs to the Content
 	$parameters['version'] = $artLangVersion->getField('version');
@@ -438,7 +468,7 @@ class cContentVersioning {
         global $time_online_move; // Used to indicate if the moved article should be
                                   // online
         global $timemgmt;
-
+        
         $page_title = addslashes($page_title);
         $parameters['title'] = stripslashes($parameters['title']);
         $redirect_url = stripslashes($redirect_url);
@@ -463,7 +493,7 @@ class cContentVersioning {
             'summary' => $parameters['summary'],
             'artspec' => $parameters['artspec'],
             'created' => $parameters['created'],
-            'isCurrentVersion' => $parameters['isCurrentVersion'],
+            'iscurrentversion' => $parameters['iscurrentversion'],
             'author' => $parameters['author'],
             'lastmodified' => date('Y-m-d H:i:s'),
             'modifiedby' => $auth->auth['uname'],
@@ -492,7 +522,31 @@ class cContentVersioning {
 
         // Create article language version entry
         $artLangVersionColl = new cApiArticleLanguageVersionCollection();
-        return $artLangVersionColl->create($artLangVersionParameters);
+        $artLangVersion = $artLangVersionColl->create($artLangVersionParameters);
+        
+        // version Contents if contents are not versioned yet
+        $where = 'idartlang = ' . $parameters['idartlang'];
+        $contentVersionColl = new cApiContentVersionCollection();
+        $contentVersions = $contentVersionColl->getIdsByWhereClause($where);
+        if (empty($contentVersions)) {
+            $artLang = new cApiArticleLanguage($parameters['idartlang']);
+            $artLang->loadArticleContent();
+            $conType = new cApiType();
+            $content = new cApiContent();
+            foreach ($artLang->content AS $type => $typeids) {
+                foreach ($typeids AS $typeid => $value) {
+                    $conType->loadByType($type);
+                    $content->loadByArticleLanguageIdTypeAndTypeId(
+                        $parameters['idartlang'],
+                        $conType->get('idtype'),
+                        $typeid
+                    );
+                    $content->markAsEditable($artLangVersion->get('version'), 0);
+                }
+            }
+        }
+        
+        return $artLangVersion;
     }
 
 }

@@ -235,10 +235,13 @@ class cSystemPurge {
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             
             $artLangVersionColl = new cApiArticleLanguageVersionCollection();
-            $artLangVersionColl->deleteByWhereClause('idartlangversion', 'NULL', 'NOT');
+            $artLangVersionColl->deleteByWhereClause('idartlangversion != 0');
             
             $contentVersionColl = new cApiContentVersionCollection();
-            $contentVersionColl->deleteByWhereClause('idcontentversion', 'NULL', 'NOT');
+            $contentVersionColl->deleteByWhereClause('idcontentversion != 0');
+            
+            $metaTagVersionColl = new cApiMetaTagVersionCollection();
+            $metaTagVersionColl->deleteByWhereClause('idmetatagversion != 0');
             
             return true;
         } else {

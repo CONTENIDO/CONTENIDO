@@ -311,7 +311,10 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         // save the content types
         conSaveContentEntry($this->_idArtLang, 'CMS_IMGEDITOR', $this->_id, $this->_rawSettings);
-        conMakeArticleIndex($this->_idArtLang, $this->_idArt);
+        $versioning = new cContentVersioning();
+        if ($versioning->getState() != 'advanced') {
+            conMakeArticleIndex($this->_idartlang, $this->_idart);
+        }
         conGenerateCodeForArtInAllCategories($this->_idArt);
 
         // insert / update meta data
