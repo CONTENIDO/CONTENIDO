@@ -280,17 +280,25 @@ class PimPluginSetupUninstall extends PimPluginSetup {
 		// Reset query so we can use PimPluginCollection later again...
 		$this->_PimPluginCollection->resetQuery();
 
-		// Read all dirs
-    	$dirs = cDirHandler::read($pluginsDir);
-    	foreach ($dirs as $dirname) {
+		// Load all active plugins
+		$pluginColl = new PimPluginCollection();
+		$pluginColl->setWhere('active', 1);
+		$pluginColl->query();
+
+		while (($plugin = $pluginColl->next()) !== false) {
+			$pluginName = $plugin->get('folder');
+
+			if (is_dir($pluginFolder . $pluginName . '/')) {
+				$plugins[] = $pluginName;
+			}
 
     		// Skip plugin if it has no plugin.xml file
-    		if (!cFileHandler::exists($pluginsDir . $dirname . DIRECTORY_SEPARATOR . parent::PLUGIN_XML_FILENAME)) {
+    		if (!cFileHandler::exists($pluginsDir . $pluginName . DIRECTORY_SEPARATOR . parent::PLUGIN_XML_FILENAME)) {
     			continue;
     		}
 
     		// Read plugin.xml files from existing plugins at contenido/plugins dir
-    		$tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . parent::PLUGIN_XML_FILENAME);
+    		$tempXmlContent = cFileHandler::read($pluginsDir . $pluginName . DIRECTORY_SEPARATOR . parent::PLUGIN_XML_FILENAME);
 
     		// Write plugin.xnl content into temporary variable
     		$tempXml = simplexml_load_string($tempXmlContent);
