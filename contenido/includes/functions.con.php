@@ -810,7 +810,7 @@ function conMakePublic($idcat, $lang, $public) {
  */
 function conDeleteart($idart) {
     global $lang, $_cecRegistry, $cfgClient, $client;
-
+    
     // Get article language
     $artLang = new cApiArticleLanguage();
     if (!$artLang->loadByArticleAndLanguageId($idart, $lang)) {
@@ -906,6 +906,12 @@ function conDeleteart($idart) {
     while (($chainEntry = $iterator->next()) !== false) {
         $chainEntry->execute($idart);
     }
+    
+    // delete article and content versions
+    $contentVersionColl = new cApiContentVersionCollection();
+    $contentVersionColl->deleteBy('idartlang', (int) $idartlang);
+    $artLangVersionColl = new cApiArticleLanguageVersionCollection();
+    $artLangVersionColl->deleteBy('idartlang', (int) $idartlang);
 }
 
 /**
