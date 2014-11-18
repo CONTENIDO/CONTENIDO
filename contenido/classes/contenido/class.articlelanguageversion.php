@@ -313,6 +313,8 @@ class cApiArticleLanguageVersion extends Item {
         unset($parameters['idartlangversion']);
         unset($parameters['iscurrentversion']);
         unset($parameters['version']);
+        unset($parameters['lastmodified']);
+        unset($parameters['published']);
         foreach ($parameters as $key => $value) {
             $artLang->set($key, $value);
         }
@@ -354,9 +356,9 @@ class cApiArticleLanguageVersion extends Item {
                 foreach ($typeids AS $typeid => $value) {
                     $type->loadByType($typeName);
                     $contentParameters = array(
-                        'idArtLang' => $this->get('idartlang'),
-                        'idType' => $type->get('idtype'),
-                        'typeId' => $typeid,
+                        'idartlang' => $this->get('idartlang'),
+                        'idtype' => $type->get('idtype'),
+                        'typeid' => $typeid,
                         'version' => $this->get('version')
                     );
                     $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
@@ -372,7 +374,7 @@ class cApiArticleLanguageVersion extends Item {
                 WHERE idartlang = %d AND version IN (
                     SELECT max(version)
                     FROM `%s` 
-                    WHERE idartlang = %d AND version <= %d);';
+                    WHERE idartlang = %d AND version <= %d)';
         $this->db->query(
             $sql,
             cRegistry::getDbTableName('meta_tag_version'),
@@ -406,6 +408,7 @@ class cApiArticleLanguageVersion extends Item {
     public function markAsEditable() {		
         // create new editable Version
         $parameters = $this->toArray();
+        $parameters['lastmodified'] = date('Y-m-d H:i:s');
         unset($parameters['idartlangversion']);
         $artLangVersionColl = new cApiArticleLanguageVersionCollection();
         $artLangVersion = $artLangVersionColl->create($parameters);
@@ -427,19 +430,19 @@ class cApiArticleLanguageVersion extends Item {
                 $mergedContent[$typeName][$typeid] = '';
             }
         }
-
         // set new Content Versions
         foreach ($mergedContent AS $typeName => $typeids) {
             foreach ($typeids AS $typeid => $value) {
                 $type->loadByType($typeName);
                 if (isset($this->content[$typeName][$typeid])) {
                     $contentParameters = array(
-                        'idArtLang' => $this->get('idartlang'),
-                        'idType' => $type->get('idtype'),
-                        'typeId' => $typeid,
+                        'idartlang' => $this->get('idartlang'),
+                        'idtype' => $type->get('idtype'),
+                        'typeid' => $typeid,
                         'version' => $this->get('version')
                     );
                     $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
+                 
                     if (isset($contentVersion)) {
                         $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
                     } 

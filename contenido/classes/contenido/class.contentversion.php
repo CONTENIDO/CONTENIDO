@@ -186,10 +186,10 @@ class cApiContentVersion extends Item {
     /**
      * Loads a content entry by its article language id, idtype, type id and version.
      *
-     * @param mixed[] $contentParameters{
-     *	@type int $idArtLang
-     *	@type int $idType
-     *	@type int $typeId
+     * @param mixed $contentParameters[]{
+     *	@type int idartlang
+     *	@type int idtype
+     *	@type int typeid
      *	@type int $version
      * }
      * @return bool
@@ -197,9 +197,9 @@ class cApiContentVersion extends Item {
     public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters) {
         $db = cRegistry::getDb();
         $props = array(
-            'idartlang' => $contentParameters['idArtLang'],
-            'idtype' => $contentParameters['idType'],
-            'typeid' => $contentParameters['typeId'],
+            'idartlang' => $contentParameters['idartlang'],
+            'idtype' => $contentParameters['idtype'],
+            'typeid' => $contentParameters['typeid'],
             'version' => $contentParameters['version']
         );
         $recordSet = $this->_oCache->getItemByProperties($props);
@@ -208,7 +208,7 @@ class cApiContentVersion extends Item {
             $this->loadByRecordSet($recordSet);
             return true;
         } else {		
-            $where = $this->db->prepare('idartlang = %d AND idtype = %d AND typeid = %d AND version <= %d GROUP BY pk desc LIMIT 1', $contentParameters['idArtLang'], $contentParameters['idType'], $contentParameters['typeId'], $contentParameters['version']);
+            $where = $this->db->prepare('idartlang = %d AND idtype = %d AND typeid = %d AND version <= %d GROUP BY pk desc LIMIT 1', $contentParameters['idartlang'], $contentParameters['idtype'], $contentParameters['typeid'], $contentParameters['version']);
             return $this->_loadByWhereClause($where);
         }
 		

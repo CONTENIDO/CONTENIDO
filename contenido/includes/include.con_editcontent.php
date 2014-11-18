@@ -47,7 +47,10 @@ if ($action == 20 || $action == 10) {
             conSaveContentEntry($value[0], 'CMS_' . $value[1], $value[2], $value[3]);
         }
 
-        conMakeArticleIndex($idartlang, $idart);
+        $versioning = new cContentVersioning();
+        if ($versioning->getState() != 'advanced') {
+            conMakeArticleIndex($idartlang, $idart);
+        }
 
         // restore orginal values
         $data = $_REQUEST['data'];
@@ -115,21 +118,18 @@ $contentform = '
 ';
 
 // generate code
-$versioning = new cVersioning();
+$versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
 
 switch ($versioningState) {
+        case 'advanced':
+            $code = conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true);			
+            break;
 	case 'simple':
-		$code = conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false);
-		break;
-	case 'advanced':
-		$code = conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true);			
-		break;
-	case 'false':
-		$code = conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false); 
+	case 'disabled':		
 	default:
-		// todo
-		break;
+            $code = conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false); 
+            break;
 }
 
 if ($code == "0601") {

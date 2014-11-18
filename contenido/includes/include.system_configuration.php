@@ -59,17 +59,29 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
                             href="#" 
                             id="pluginInfoDetails-link" 
                             class="main i-link infoButton" 
-                            title=""></a>
+                            title="">
+                        </a>
                     </span>
                     ' . $html->render() . '                    
                   </div>
                   <div id="pluginInfoDetails" class="nodisplay">
-                  <p><strong>Änderungen: </strong>Im Editor wird immer die Version angezeigt, die editiert werden kann. Versionen können verschoben werden</p>
+                  <p><strong>Artikel-Versionierung:</strong></p>
+                    <ul style="list-style:none;">
+                        <li>
+                            Es kann auf frühere 
+                            Artikelversionen zurückgegriffen werden (simple). 
+                            Es können äußerdem unveröffentlichte Entwürfe erstellt werden (advanced). 
+                            Artikelversionen werden automatisch generiert, sobald der User 
+                            eine Änderung im Editor speichert. 
+                            Standardmäßig ist die Artikelversionierung deaktiviert.
+                        </li>
+                    </ul>
                   <p><strong>Konfigurationsstufen:</strong></p>    
                       <ul class="list">
-                          <li class="first"><strong>disabled: </strong>Schaltet die Versionierung aus</li>
-                          <li><strong>simple: </strong>Alles wie gewohnt, zusätzlich werden Versionen angelegt und können angeschaut werden</li>
-                          <li><strong>advanced: </strong>Wie \'simple\', allerdings mit zusätzlichem Entwurf der editiert werden kann</li>
+                          <li class="first"><strong>disabled: </strong> Auf frühere Artikelversionen kann nicht zugegriffen werden.</li>
+                          <li><strong>simple: </strong> Ältere Artikelversionen lassen sich wiederherstellen. Gehe im Artikel zum Reiter „Rohdaten“.</li>
+                          <li><strong>advanced: </strong> Ein Artikelentwurf kann erstellt werden. Und zeitunabhängig veröffentlicht werden. 
+                                Vergangene Versionen lassen sich wiederherstellen bzw. nutzen.</li>
                       </ul>
                   </div>';
         } else {

@@ -119,7 +119,7 @@ class cContentVersioning {
     }
 
     /**
-     * Returns the current versioning state (false (default), simple, advanced)
+     * Returns the current versioning state (disabled (default), simple, advanced)
      *
      * @return string $versioningState
      */
@@ -129,16 +129,16 @@ class cContentVersioning {
 
         if (!isset($versioningState)) {
 
-            // versioning enabled is a tri-state => false (default), simple, advanced
+            // versioning enabled is a tri-state => disabled (default), simple, advanced
             $systemPropColl = new cApiSystemPropertyCollection();
             $prop = $systemPropColl->fetchByTypeName('versioning', 'enabled');
             $versioningState = $prop ? $prop->get('value') : false;
 
             if (false === $versioningState || NULL === $versioningState) {
-                $versioningState = 'false';
+                $versioningState = 'disabled';
             } else if ('' === $versioningState) {
                 // NOTE: An non empty default value overrides an empty value
-                $versioningState = 'false';
+                $versioningState = 'disabled';
             }
 
         }
@@ -206,7 +206,12 @@ class cContentVersioning {
         return $list;
 
     }    
-    
+
+    /**
+     * Return max idcontent
+     *
+     * @return int
+     */    
     public function getMaxIdContent() {
         $sql = 'SELECT max(idcontent) AS max FROM %s';
         $this->db->query($sql, cRegistry::getDbTableName('content'));
@@ -267,7 +272,7 @@ class cContentVersioning {
                 $this->editableArticleId = $this->db->f('max');
             }
 
-        } else if ($this->getState() == 'simple' || $this->getState() == 'false') {
+        } else if ($this->getState() == 'simple' || $this->getState() == 'disabled') {
             return $idArtLang;
         }		
 
@@ -292,7 +297,7 @@ class cContentVersioning {
         $type = addslashes($type);
         if ($versioningState == 'simple' && $articleType != 'version'
             || $versioningState == 'advanced' && $articleType == 'current'
-            || $versioningState == 'false') {
+            || $versioningState == 'disabled') {
             $sql = "SELECT a.idcontent
             FROM " . cRegistry::getDbTableName('content') . " as a, " . cRegistry::getDbTableName('type') . " as b
             WHERE a.idartlang=" . $idArtLang . " AND a.idtype=b.idtype AND a.typeid = " . $typeId . " AND b.type = '" . $type . "'
@@ -411,8 +416,20 @@ class cContentVersioning {
 	
 	// Get the version number of the new Article Language Version that belongs to the Content
 	$parameters['version'] = $artLangVersion->getField('version');
-	$contentVersionColl = new cApiContentVersionCollection();
-	$contentVersionColl->create($parameters);
+        
+        // if there already is a content type like this in this version, make an update
+        $contentVersion = new cApiContentVersion();
+        $contentVersion->loadByMany($parameters);
+        if ($contentVersion->isLoaded()) {
+            foreach ($parameters AS $key => $value) {
+                $contentVersion->set($key, $value);
+            }
+            $contentVersion->store();     
+        } else {
+            // if there is no content type like this in this version, create one
+            $contentVersionColl = new cApiContentVersionCollection();
+            $contentVersionColl->create($parameters);
+        }
     }
     
     /**
@@ -457,7 +474,7 @@ class cContentVersioning {
      *  @type float $sitemapprio
      *  @type string $changefreq
      * }
-     *  @return cApiArticleLanguageVersion
+     * @return cApiArticleLanguageVersion
     */
     function createArticleLanguageVersion(array $parameters) {
         global $lang, $auth, $urlname, $page_title;

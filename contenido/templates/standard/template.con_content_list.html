@@ -55,16 +55,37 @@
 </script>
 
 {CATEGORY}
-<p style="display:{DISPLAYED};font-weight:bold;">i18n("Select Article Version")</p>
-<!--<label class="rawdata" style="display:{DISPLAYED}">{COPY_LABEL}</label>  
+<!--<p style="display:{DISPLAYED};font-weight:bold;">i18n("Select Article Version")</p>
+<label class="rawdata" style="display:{DISPLAYED}">{COPY_LABEL}</label>  
 <p style="display:{DISPLAYED}"></p>-->
-<div class="contypeList" style="display:{DISPLAYED}">
-    {ARTICLE_VERSION_SELECTION} {SET_AS_CURRENT_VERSION}
+<p style="display:block;font-weight:bold;">i18n("Select Article Version")</p>
+ <!--<div class="contypeList" style="display:{DISPLAYED}">
+   {ARTICLE_VERSION_SELECTION} {SET_AS_CURRENT_VERSION}-->
+ <div class="contypeList">
+    <div>
+        <span style="width: 280px; display: inline; padding: 0px 0px 0px 2px;">
+            <span style="margin: 0px 0px 0px 0px;">
+                {ARTICLE_VERSION_SELECTION} {SET_AS_CURRENT_VERSION}
+            </span>
+            <a 
+                href="#" 
+                id="pluginInfoDetails-link" 
+                class="main i-link infoButton" 
+                title="">                    
+            </a>
+        </span>                  
+        </div>
+        <div id="pluginInfoDetails" class="nodisplay">
+           {VERSIONING_INFO_TEXT}
+      </div>
 </div>
 <p style="display:block;font-weight:bold;">i18n("Content administration")</p>
 <!-- BEGIN:BLOCK -->
 <div class="contypeList {EXTRA_CLASS}">
-   	<div class="headline"><label>{EXPORT_CONTENT_LABEL}</label>{EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>{FORMATTED_VERSION}</div>
+   	<div class="headline">
+            <label>{EXPORT_CONTENT_LABEL}</label>
+            {EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>{FORMATTED_VERSION}
+        </div>
     {NAME}[{ID_TYPE}]
 </div>
 <!-- END:BLOCK -->
