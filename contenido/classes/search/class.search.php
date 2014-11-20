@@ -465,7 +465,7 @@ class cSearch extends cSearchBaseAbstract {
         $searchwords = trim(strip_tags(stripslashes($searchwords)));
 
         // split the phrase by any number of commas or space characters
-        $tmp_words = preg_split('/[\s,]+/', $searchwords);
+        $tmp_words = mb_split('[\s,]+', $searchwords);
 
         $tmp_searchwords = array();
 

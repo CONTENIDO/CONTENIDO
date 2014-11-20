@@ -1032,6 +1032,12 @@ function humanReadableSize($number) {
  * @return number
  */
 function machineReadableSize($sizeString) {
+
+	// If sizeString is a integer value (i. e. 64242880), return it
+	if (cSecurity::isInteger($sizeString)) {
+		return $sizeString;
+	}
+
     $val = trim($sizeString);
     $last = strtolower($val[strlen($val) - 1]);
     $val = (float) substr($val, 0, strlen($val) - 1);
