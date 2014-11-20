@@ -1,0 +1,16 @@
+@CHARSET "ISO-8859-1";
+
+.editcontentList {
+    border: 1px solid #B3B3B3;
+    padding: 10px;
+    margin: 10px 0;
+}
+.noactive {
+    border: 1px solid red;
+}
+.editcontentList div {
+    min-height: 13px;
+}
+.editcontentList span.mceEditor div {
+    min-height: 0;
+}
