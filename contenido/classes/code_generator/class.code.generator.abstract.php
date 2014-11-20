@@ -186,7 +186,7 @@ abstract class cCodeGeneratorAbstract {
      * @return string Generated code or error code '0601' if no template
      *         configuration was found for category or article.
      */
-    public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true, $editable = false) {
+    public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true, $editable = true, $version = NULL) {
         $this->_idcat = (int) $idcat;
         $this->_idart = (int) $idart;
         $this->_lang = (int) $lang;
@@ -203,7 +203,7 @@ abstract class cCodeGeneratorAbstract {
         $this->_idartlang = $this->_oArtLang->get('idartlang');
         $this->_pageTitle = stripslashes($this->_oArtLang->get('pagetitle'));
 
-        return $this->_generate($contype, $editable);
+        return $this->_generate($contype, $editable, $version);
     }
 
     /**
@@ -213,7 +213,7 @@ abstract class cCodeGeneratorAbstract {
      * @param bool $contype Flag to enable/disable replacement of CMS_TAGS[]
      * @return string The generated code
      */
-    abstract function _generate($contype = true, $editable = false);
+    abstract function _generate($contype = true, $editable = true, $version = NULL);
 
     /**
      * Returns the template configuration id, either by configured article or by
@@ -290,7 +290,7 @@ abstract class cCodeGeneratorAbstract {
      * @param bool $saveKeywords Flag to save collected keywords during
      *        replacement process.
      */
-    protected function _processCmsTags($contentList, $saveKeywords = true) {
+    protected function _processCmsTags($contentList, $saveKeywords = true, $editable = true) {
         // #####################################################################
         // NOTE: Variables below are required in included/evaluated content type
         // codes!
@@ -352,7 +352,7 @@ abstract class cCodeGeneratorAbstract {
                     // We have a class for the content type, use it
                     $tmp = $a_content[$_typeItem->type][$val];
                     $cTypeObject = new $typeClassName($tmp, $val, $a_content);
-                    if (cRegistry::isBackendEditMode()) {
+                    if (cRegistry::isBackendEditMode() && $editable) {
                         $tmp = $cTypeObject->generateEditCode();
                     } else {
                         $tmp = $cTypeObject->generateViewCode();
@@ -504,39 +504,52 @@ abstract class cCodeGeneratorAbstract {
      *
      * @return array like $arr[type][typeid] = value;
      */
-    protected function _getUsedCmsTypesData($editable = false) {
+    protected function _getUsedCmsTypesData($editable = true, $version = NULL) {
         global $cfg;
 
         $return = array();
-
-        // Find out what kind of CMS_... Vars are in use
-		if ($editable == false) {
-			$sql = "SELECT * FROM `%s` AS A, `%s` AS B, `%s` AS C
-					WHERE A.idtype = C.idtype AND A.idartlang = B.idartlang AND B.idart = %d AND B.idlang = %d";
-			$sql = $this->_db->prepare($sql, $cfg['tab']['content'], $cfg['tab']['art_lang'], $cfg['tab']['type'], $this->_idart, $this->_lang);
-		} else if ($editable == true) {
-			$sql = 'SELECT b.type as type, a.typeid as typeid, a.value as value
-					FROM `%s` AS a
-					INNER JOIN `%s` as b 
-						ON b.idtype = a.idtype
-					WHERE (a.idtype, a.typeid, a.version) IN
-						(SELECT idtype, typeid, max(version)
-						FROM %s
-						WHERE idartlang = %d AND version <= 
-							(SELECT max(version)
-							FROM `%s`)
-						GROUP BY idtype, typeid)
-					AND a.idartlang = %d 
-					AND (a.deleted < 1 OR a.deleted IS NULL)
-					ORDER BY a.idtype, a.typeid;';
-			$sql = $this->_db->prepare($sql, $cfg['tab']['content_version'], $cfg['tab']['type'], $cfg['tab']['content_version'], $this->_idartlang, $cfg['tab']['art_lang_version'], $this->_idartlang);
-		}        
+        
+        // Find out what kind of CMS_... Vars are in use        
+        if ($version == NULL) {
+            $sql = "SELECT * FROM `%s` AS A, `%s` AS B, `%s` AS C
+                    WHERE A.idtype = C.idtype AND A.idartlang = B.idartlang AND B.idart = %d AND B.idlang = %d";
+            $sql = $this->_db->prepare(
+                    $sql,
+                    $cfg['tab']['content'],
+                    $cfg['tab']['art_lang'],
+                    $cfg['tab']['type'],
+                    $this->_idart,
+                    $this->_lang
+            );
+        } else if (is_numeric($version)) {
+            $sql = 'SELECT b.type as type, a.typeid as typeid, a.value as value
+                    FROM `%s` AS a
+                    INNER JOIN `%s` as b 
+                            ON b.idtype = a.idtype
+                    WHERE (a.idtype, a.typeid, a.version) IN
+                            (SELECT idtype, typeid, max(version)
+                            FROM %s
+                            WHERE idartlang = %d AND version <= %d
+                            GROUP BY idtype, typeid)
+                    AND a.idartlang = %d 
+                    AND (a.deleted < 1 OR a.deleted IS NULL)
+                    ORDER BY a.idtype, a.typeid;';
+            $sql = $this->_db->prepare(
+                    $sql,
+                    $cfg['tab']['content_version'],
+                    $cfg['tab']['type'],
+                    $cfg['tab']['content_version'],
+                    $this->_idartlang,
+                    $version,
+                    $this->_idartlang
+            );
+        }        
 
         $this->_db->query($sql);
         while ($this->_db->nextRecord()) {
             $return[$this->_db->f('type')][$this->_db->f('typeid')] = $this->_db->f('value');
         }
-		
+        
         return $return;
     }
 

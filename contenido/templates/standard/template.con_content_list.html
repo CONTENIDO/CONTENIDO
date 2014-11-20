@@ -55,12 +55,7 @@
 </script>
 
 {CATEGORY}
-<!--<p style="display:{DISPLAYED};font-weight:bold;">i18n("Select Article Version")</p>
-<label class="rawdata" style="display:{DISPLAYED}">{COPY_LABEL}</label>  
-<p style="display:{DISPLAYED}"></p>-->
 <p style="display:block;font-weight:bold;">i18n("Select Article Version")</p>
- <!--<div class="contypeList" style="display:{DISPLAYED}">
-   {ARTICLE_VERSION_SELECTION} {SET_AS_CURRENT_VERSION}-->
  <div class="contypeList">
     <div>
         <span style="width: 280px; display: inline; padding: 0px 0px 0px 2px;">
@@ -92,23 +87,13 @@
 
 
 <script type='text/javascript'>
-function loadVersion() {	
-	var getUrl = window.location.href+'&idArtLangVersion='+$('#selectVersionElement option:selected').val()+'&text='+$('#selectVersionElement option:selected').text()+'&copyTo='+0+'&action='+'con_content';
-	window.location.href = getUrl;
-}
-
-function copyTo() {
-	var getUrl = window.location.href+'&copyTo='+1+'&idArtLangVersion='+$('#selectVersionElement option:selected').val();
-	window.location.href = getUrl;
-}
-
 /** 
  * Set version number as post-parameter for rawdata export
  * $_POST['versionnumber] = 'current' if version is current, 
  * else $_POST['versionnumber] = version number
  */
 function getVersionNumber() {
-		document.getElementById("versionnumber").value = $('#selectVersionElement option:selected').val();
+    document.getElementById("versionnumber").value = $('#selectVersionElement option:selected').val();
 }
 
 (function(Con, $) {
@@ -135,6 +120,14 @@ function getVersionNumber() {
 })(Con, Con.$);
 </script>
 
+<form name="copyto" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=copyto&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
+    <input type="hidden" name="copyTo" value="">
+    <input type="hidden" name="idArtLangVersion" value="">
+</form>
+<form name="versionselected" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=versionselected&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
+    <input type="hidden" name="idArtLangVersion" value="">
+    <input type="hidden" name="copyTo" value="">
+</form>
 <form name="editcontent" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=savecontype&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
     <input type="hidden" name="changeview" value="edit">
     <input type="hidden" name="data" value="">

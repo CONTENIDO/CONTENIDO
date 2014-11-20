@@ -80,11 +80,23 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
                 conSetCodeFlag($db->f("idcatart"));
             }
         }
-
+        
         $availableTags = conGetAvailableMetaTagTypes();
+        
+        $versioning = new cContentVersioning();
+        $version = NULL;
+        if ($versioning->getState() != 'false') {
+            // get parameters for article version
+            $artLang = new cApiArticleLanguage($idartlang);
+            // create article version
+            $artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
+            $artLangVersion->markAsCurrentVersion(1);
+            $version = $artLangVersion->get('version');
+        }
+                
         foreach ($availableTags as $key => $value) {
             if ($value["metatype"] == "robots") {
-                conSetMetaValue($idartlang, $key, "index, follow");
+                conSetMetaValue($idartlang, $key, "index, follow", $version);
                 break;
             }
         }

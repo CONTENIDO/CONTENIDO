@@ -26,7 +26,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
     /**
      * {@inheritdoc}
      */
-    public function _generate($contype = true, $editable = false) {
+    public function _generate($contype = true, $editable = true, $version = NULL) {
         global $cfg, $code;
 
         $this->_cssData = '';
@@ -128,11 +128,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         // Find out what kind of CMS_... Vars are in use
-        $a_content = $this->_getUsedCmsTypesData($editable);
+        $a_content = $this->_getUsedCmsTypesData($editable, $version);
 
         // Replace all CMS_TAGS[]
         if ($contype) {
-            $this->_processCmsTags($a_content, true);
+            $this->_processCmsTags($a_content, true, $editable);
         }
 
         // Add/replace title tag

@@ -389,19 +389,18 @@ $selectedArticle = NULL;
 $editableArticleId = NULL;
 $result = array();
 $list = array();
-$articleType = $versioning->getArticleType($_GET['copyTo'], $_GET['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
+$articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
 
 switch ($versioningState) {
     case 'simple':
-        //$page->set('s', 'DISPLAYED', 'block');
 
         // get selected article
-        $selectedArticle = $versioning->getSelectedArticle($_GET['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
+        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
 
         // Set as current/editable
-        if ($_GET['copyTo'] == 1) {
-            if (is_numeric($_GET['idArtLangVersion']) && $articleType == 'editable') {
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_GET['idArtLangVersion']);
+        if ($action == 'copyto') {
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsCurrent();
             }
         }
@@ -440,8 +439,7 @@ switch ($versioningState) {
             }
             $selectElement->appendOptionElement($optionElement);            
         }
-        $selectElement->setAttribute('onchange', 'loadVersion()');
-        //$selectElement->setAttribute('style', 'margin:0 20px 0 0'); Abstand nach artikelauswahl vergrößern
+        $selectElement->setEvent("onchange", "versionselected.idArtLangVersion.value=$('#selectVersionElement option:selected').val();versionselected.submit()");
 
         // Create code/output
         $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
@@ -454,7 +452,7 @@ switch ($versioningState) {
         // Create markAsCurrent Button/Label
         $page->set('s', 'COPY_LABEL', i18n('Copy Version'));
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Current Version'));
-        $markAsCurrentButton->setAttribute('onclick', 'copyTo()');
+        $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
@@ -466,26 +464,25 @@ switch ($versioningState) {
         break;
     case 'advanced':
 
-        //$page->set('s', 'DISPLAYED', 'block');
         // Set as current/editable
-        if ($_GET['copyTo'] == 1) {
-            if (is_numeric($_GET['idArtLangVersion']) && $articleType == 'current') {
+        if ($action == 'copyto') {
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
                 $artLangVersion = NULL;                
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_GET['idArtLangVersion']);
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 if (isset($artLangVersion)) {
                     $artLangVersion->markAsCurrent();
                 }
-            } else if (is_numeric($_GET['idArtLangVersion']) && $articleType == 'editable') {
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_GET['idArtLangVersion']);
+            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsEditable();
-            } else if ($_GET['idArtLangVersion'] == 'current') {
+            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
                 $artLang->markAsEditable();
             }
         }
 
         // get selected article
-        $selectedArticle = $versioning->getSelectedArticle($_GET['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
+        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
 
         // Get Content or Content Version and make sort
         if ($articleType == 'current') {
@@ -532,7 +529,8 @@ switch ($versioningState) {
             }
             $selectElement->appendOptionElement($optionElement);
         }
-        $selectElement->setAttribute('onchange', 'loadVersion()');
+        $selectElement->setEvent("onchange", "versionselected.idArtLangVersion.value=$('#selectVersionElement option:selected').val();versionselected.submit()");
+
 
         // Create code/output
         $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
@@ -552,7 +550,7 @@ switch ($versioningState) {
             $buttonTitle = i18n('Publish Draft');
         }
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
-        $markAsCurrentButton->setAttribute('onclick', 'copyTo()');
+        $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
         $versioning_info_text = i18n(
@@ -563,7 +561,6 @@ switch ($versioningState) {
 
         break;
     case 'disabled':
-        //$page->set('s', 'DISPLAYED', 'none');
         
         $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
         $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16');
@@ -580,7 +577,7 @@ switch ($versioningState) {
         $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);  
 
         // get selected article
-        $selectedArticle = $versioning->getSelectedArticle($_GET['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
+        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
 
         // Get Content/set $result
         $selectedArticle->loadArticleContent();

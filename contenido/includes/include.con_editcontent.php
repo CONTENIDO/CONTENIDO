@@ -113,23 +113,209 @@ $scripts = $oScriptTpl->generate($backendPath . $cfg['path']['templates'] . $cfg
 $contentform = '
 <form name="editcontent" method="post" action="' . $sess->url($backendUrl . "external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&lang=$lang&action=20&client=$client") . '">
 <input type="hidden" name="changeview" value="edit">
+<input type="hidden" name="idArtLangVersion" value="">
+<input type="hidden" name="copyTo" value="">
 <input type="hidden" name="data" value="">
 </form>
 ';
+$contentform .= '
+<form name="copyto" method="post" action="' . $sess->url($backendUrl . "external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&lang=$lang&action=copyto&client=$client") . '">
+<input type="hidden" name="changeview" value="edit">
+<input type="hidden" name="idArtLangVersion" value="">
+<input type="hidden" name="data" value="">
+</form>        
+';
 
-// generate code
 $versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
+$articleType = $versioning->getArticleType(
+                    $_REQUEST['idArtLangVersion'], 
+                    (int) $idartlang, 
+                    $action
+                );
+$code = '';
+$selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
 
 switch ($versioningState) {
-        case 'advanced':
-            $code = conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true);			
-            break;
-	case 'simple':
-	case 'disabled':		
-	default:
-            $code = conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false); 
-            break;
+    case 'simple' :
+        
+        // Set as current
+        if ($action == 'copyto') {
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsCurrent();
+            }
+        }
+        $selectedArticle = $versioning->getSelectedArticle((int) $_REQUEST['idArtLangVersion'], $idartlang, $articleType);
+
+        // Get version numbers for Select Element
+        $optionElementParameters = $versioning->getAllVersionIdArtLangVersionAndLastModified((int) $idartlang);
+
+        // Create Current and Editable Content Option Element
+        $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+        if ($articleType == 'current') {
+            $optionElement->setSelected(true);
+        }
+        $selectElement->appendOptionElement($optionElement);
+
+        // Create Content Version Option Elements
+        foreach ($optionElementParameters AS $key => $value) {
+            $lastModified = $versioning->getTimeDiff($value[key($value)]);
+            $optionElement = new cHTMLOptionElement('Version ' . $key . ': ' . $lastModified, key($value));
+            if ($_REQUEST['idArtLangVersion'] == key($value)) { 
+                $optionElement->setSelected(true);
+            }
+            $selectElement->appendOptionElement($optionElement);            
+        } 
+        $selectElement->setEvent("onchange", "editcontent.idArtLangVersion.value=$('#selectVersionElement option:selected').val();editcontent.submit()");
+        
+        // Create markAsCurrent Button/Label
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Current Version'));
+        $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
+        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
+            $markAsCurrentButton->setAttribute('DISABLED');
+        }
+        
+        $versioning_info_text = i18n('<strong>Konfigurationsstufe \'simple\':</strong> Ältere Artikelversionen lassen sich wiederherstellen (Einstellungen sind in Administration/System/System-Konfiguration möglich).');
+        
+        // add code
+        $code .=    $versioning->getVersionSelectionField(
+                        'editcontentList',
+                        $selectElement->toHtml(),
+                        $markAsCurrentButton,
+                        $versioning_info_text
+                    );
+        
+        break;
+    case 'advanced' :
+        
+        // Set as current/editable
+        if ($action == 'copyto') {
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+                $artLangVersion = NULL;                
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                if (isset($artLangVersion)) {
+                    $artLangVersion->markAsCurrent();
+                }
+            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsEditable();
+            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+                $artLang = new cApiArticleLanguage($idartlang);
+                $artLang->markAsEditable();
+            }     
+        }
+        
+        // load selected article
+        $selectedArticle = $versioning->getSelectedArticle((int) $_REQUEST['idArtLangVersion'], $idartlang, $articleType);
+
+         // Get version numbers for Select Element
+        $optionElementParameters = $versioning->getAllVersionIdArtLangVersionAndLastModified((int) $idartlang);
+       
+        // set elements/buttons
+        $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId((int) $idartlang));
+        if ($articleType == 'editable') {
+            $optionElement->setSelected(true);
+        }
+        $selectElement->appendOptionElement($optionElement);
+        unset($optionElementParameters[max(array_keys($optionElementParameters))]);
+
+        $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+        if ($articleType == 'current') {
+            $optionElement->setSelected(true);
+        }
+        $selectElement->appendOptionElement($optionElement);
+
+        // Create Content Version Option Elements
+        foreach ($optionElementParameters AS $key => $value) {
+            $lastModified = $versioning->getTimeDiff($value[key($value)]);
+            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
+            if ($articleType == 'version') {
+                if ($_REQUEST['idArtLangVersion'] == key($value)) {
+                    $optionElement->setSelected(true);
+                }
+            }
+            $selectElement->appendOptionElement($optionElement);
+        }
+        
+        $selectElement->setEvent("onchange", "editcontent.idArtLangVersion.value=$('#selectVersionElement option:selected').val();editcontent.submit()");
+        
+        // Create markAsCurrent Button
+        if ($articleType == 'current' || $articleType == 'version') {
+            $buttonTitle = i18n('Copy to Editable Version');
+        } else if ($articleType == 'editable') {
+            $buttonTitle = i18n('Publish Draft');
+        }
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
+        $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
+
+        // set info text
+        $versioning_info_text = i18n(
+                '<strong>Konfigurationsstufe \'advanced\':</strong>  '
+                . 'Es kann auf frühere Artikelversionen zurückgegriffen werden. '
+                . 'Es können äußerdem Entwürfe erstellt und zeitunabhängig veröffentlicht werden (Einstellungen sind in Administration/System/System-Konfiguration möglich).');
+        
+        // add code
+        $code .=    $versioning->getVersionSelectionField(
+                        'editcontentList',
+                        $selectElement->toHtml(),
+                        $markAsCurrentButton,
+                        $versioning_info_text
+                    );
+
+        break;
+    case 'disabled' :
+        
+        // set elements/buttons
+        $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16');
+        $selectElement->appendOptionElement($optionElement);
+        $selectElement->setAttribute('disabled', 'disabled');
+        
+        $buttonTitle = i18n('Copy to Current Version');
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
+        $markAsCurrentButton->setAttribute('disabled', 'disabled');
+        
+        // set info text
+        $versioning_info_text = i18n('Aktiviere die Artikel-Versionierung in den Administration/System/System-Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen eines Artikels zurückgegriffen werden kann.');
+ 
+        // add code
+        $code .=    $versioning->getVersionSelectionField(
+                        'editcontentList',
+                        $selectElement->toHtml(),
+                        $markAsCurrentButton,
+                        $versioning_info_text
+                    );
+        
+        // load selected article
+        $selectedArticle = $versioning->getSelectedArticle((int) $_REQUEST['idArtLangVersion'], $idartlang, $articleType);
+
+    default :
+        break;
+        
+}
+
+// generate article code
+switch ($versioningState) {
+    case 'advanced':
+        if ($articleType == 'editable') {
+            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, (int) $selectedArticle->get('version'));	
+        } else if ($articleType == 'current') {
+            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, NULL); 
+        } else if ($articleType == 'version') {
+            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, (int) $selectedArticle->get('version'));           
+        }
+        break;
+    case 'simple':
+         if ($articleType == 'editable' || $articleType == 'current') {
+            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, NULL);	
+        } else if ($articleType == 'version') {
+            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, (int )$selectedArticle->get('version'));           
+        }
+        break;
+    case 'disabled':
+        $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, NULL); 
+    default:
+        break;
 }
 
 if ($code == "0601") {

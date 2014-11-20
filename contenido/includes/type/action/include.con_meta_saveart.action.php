@@ -56,11 +56,17 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
 
     $newData = array();
 
-    foreach ($availableTags as $key => $value) {
-
+    $versioning = new cContentVersioning();  
+    $version = NULL;
+    if ($versioning->getState() != 'false') {
+        // create article version
+        $artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
+        $artLangVersion->markAsCurrentVersion(1);
+        $version = $artLangVersion->get('version');
+    }
+    foreach ($availableTags as $key => $value) {    
         if ($value['metatype'] == 'robots') {
-
-            conSetMetaValue($idartlang, $key, $robots);
+            conSetMetaValue($idartlang, $key, $robots, $version);
             $newData[$value['metatype']] = $robots;
         } elseif ($value["metatype"] == "date" || $value["metatype"] == "expires") {
 
@@ -71,11 +77,10 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
                 // $atime = date('c', strtotime($dateValue));
                 // }
             $atime = $dateValue;
-            conSetMetaValue($idartlang, $key, $atime);
+            conSetMetaValue($idartlang, $key, $atime, $version);
             $newData[$value['metatype']] = $atime;
         } else {
-
-            conSetMetaValue($idartlang, $key, $_POST['META' . $value['metatype']]);
+            conSetMetaValue($idartlang, $key, $_POST['META' . $value['metatype']], $version);
             $newData[$value['metatype']] = $_POST['META' . $value['metatype']];
         }
     }

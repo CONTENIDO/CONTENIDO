@@ -484,9 +484,9 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         cInclude('includes', 'functions.mod.php');
         conGenerateCode($idcat, $idart, $lang, $client);
     }
-
+	
     $code = cFileHandler::read($cfgClient[$client]['code']['path'] . $client . "." . $lang . "." . $idcatart . ".php");
-
+	
     // Add mark Script to code if user is in the backend
     $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
 

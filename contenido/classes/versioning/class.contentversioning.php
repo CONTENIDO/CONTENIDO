@@ -224,26 +224,29 @@ class cContentVersioning {
     /**
      * Returns type of article (current, version or editable)
      *
-     * @param int $copyTo
      * @param int $idArtLangVersion
      * @param int $idArtLang
      * @param string $action
      * @return string $this->articleType
      */
-    public function getArticleType($copyTo, $idArtLangVersion, $idArtLang, $action) {
-
+    public function getArticleType($idArtLangVersion, $idArtLang, $action) {
+        
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
 
-        if ((($copyTo == 1) && (($idArtLangVersion != NULL) 
-            && ($idArtLangVersion == $this->editableArticleId))) 
-            || (($idArtLangVersion == 'current') && ($copyTo == 0))
-            || ($this->editableArticleId == NULL && ($copyTo == 0))) {
+        if ($this->getState() == 'disabled' // disabled
+            || $this->getState() == 'simple' && $action == 'con_content'
+            || $this->getState() == 'simple' && $action == 'copyto'
+            || $this->getState() == 'simple' && $idArtLangVersion == NULL // simple
+            || $idArtLangVersion == 'current' && $action != 'copyto'
+            || $action == 'copyto' && $idArtLangVersion == $this->editableArticleId) { // advanced
             $this->articleType = 'current';
-        } else if ($copyTo == 0 && $idArtLangVersion == $this->editableArticleId 
-                    || $copyTo == 1 && $idArtLangVersion != $this->editableArticleId
-                    || $action == 'savecontype' || $action == 10 || $action == 'deletecontype' 
-                    || $action == 'importrawcontent' ||  ($idArtLangVersion == NULL 
-                    && $action == 'con_content')) {
+        } else if ($this->getState() == 'advanced' && $action == 'con_content'
+            || $action == 'copyto' || $idArtLangVersion == 'current'
+            || $idArtLangVersion == $this->editableArticleId
+            || $action == 'importrawcontent'
+            || $action == 'savecontype'
+            || $action == 'con_editart' && $this->getState() == 'advanced'
+            || $action == '20' && $idArtLangVersion == NULL) {
             $this->articleType = 'editable';
         } else {
             $this->articleType = 'version';
@@ -251,6 +254,36 @@ class cContentVersioning {
 
         return $this->articleType;
 
+    }
+    
+    public function getVersionSelectionField($class, $selectElement, $copyToButton, $infoText) {
+        $versionselection = '
+            <div class="%s">
+                <div>
+                    <span style="width: 280px; display: inline; padding: 0px 0px 0px 2px;">
+                        <span style="font-weight:bold;color:black;">' . i18n('Select Article Version') . '</span>
+                        <span style="margin: 0px 0px 0px 0px;"> %s %s
+                        </span>
+                        <a 
+                            href="#" 
+                            id="pluginInfoDetails-link" 
+                            class="main i-link infoButton" 
+                            title="">                    
+                        </a>
+                    </span>                  
+                </div>
+                <div id="pluginInfoDetails" style="display:none;" class="nodisplay">
+                       %s
+                </div>
+            </div>
+            ';
+        return sprintf(
+                    $versionselection,
+                    $class,
+                    $selectElement,
+                    $copyToButton,
+                    $infoText
+                );
     }
 
     /**

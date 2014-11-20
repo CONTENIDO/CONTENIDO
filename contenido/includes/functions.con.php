@@ -472,7 +472,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
  */
 function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false) {
     global $auth, $cfgClient, $client, $_cecRegistry, $lang;
-	
+	echo "save";
     $oType = new cApiType();
     if (!$oType->loadByType($type)) {
         // Couldn't load type...
@@ -554,16 +554,18 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
             if ($idContent == NULL) {
                 $idContent = $versioning->getMaxIdContent() + 1;
             }
-                $parameters = array(
-                    'idcontent' => $idContent,
-                    'idartlang' => $idartlang,
-                    'idtype' => $idtype,
-                    'typeid' => $typeid,
-                    'value' => $value,
-                    'author' => $author,
-                    'created' => $date,
-                    'lastmodified' => $date
-                );
+            
+            $parameters = array(
+                'idcontent' => $idContent,
+                'idartlang' => $idartlang,
+                'idtype' => $idtype,
+                'typeid' => $typeid,
+                'value' => $value,
+                'author' => $author,
+                'created' => $date,
+                'lastmodified' => $date
+            );
+            
             $versioning = new cContentVersioning();
             $versioning->createContentVersion($parameters);
         default:
