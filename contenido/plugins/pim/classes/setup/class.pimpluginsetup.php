@@ -276,6 +276,8 @@ class PimPluginSetup {
 
     /**
      * Check dependencies to other plugins (dependencies-Tag at plugin.xml)
+     * Global function for uninstall and status mode
+     * Install mode uses an own dependencies function
      *
      * @return boolean
      */
