@@ -95,7 +95,7 @@ class PimPluginSetupStatus extends PimPluginSetup {
         $pluginName = $plugin->get('name');
         $pluginActiveStatus = $plugin->get('active');
 
-        // Set relations
+        // Get relations
         $this->_PimPluginRelationsCollection->setWhere('idplugin', cSecurity::toInteger($pluginId));
         $this->_PimPluginRelationsCollection->setWhere('type', 'navs');
         $this->_PimPluginRelationsCollection->query();
