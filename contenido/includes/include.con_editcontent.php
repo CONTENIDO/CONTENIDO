@@ -200,9 +200,19 @@ switch ($versioningState) {
             } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsEditable();
+                $articleType = $versioning->getArticleType(
+                    $_REQUEST['idArtLangVersion'], 
+                    (int) $idartlang, 
+                    $action
+                );
             } else if ($_REQUEST['idArtLangVersion'] == 'current') {
                 $artLang = new cApiArticleLanguage($idartlang);
                 $artLang->markAsEditable();
+                $articleType = $versioning->getArticleType(
+                    $_REQUEST['idArtLangVersion'], 
+                    (int) $idartlang, 
+                    $action
+                );
             }     
         }
         
@@ -213,13 +223,15 @@ switch ($versioningState) {
         $optionElementParameters = $versioning->getAllVersionIdArtLangVersionAndLastModified((int) $idartlang);
        
         // set elements/buttons
-        $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId((int) $idartlang));
-        if ($articleType == 'editable') {
-            $optionElement->setSelected(true);
+        if (isset($versioning->editableArticleId)) {
+            $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId((int) $idartlang));
+            if ($articleType == 'editable') {
+                $optionElement->setSelected(true);
+            }
+            $selectElement->appendOptionElement($optionElement);
+            unset($optionElementParameters[max(array_keys($optionElementParameters))]);
         }
-        $selectElement->appendOptionElement($optionElement);
-        unset($optionElementParameters[max(array_keys($optionElementParameters))]);
-
+        
         $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
         if ($articleType == 'current') {
             $optionElement->setSelected(true);
@@ -295,28 +307,33 @@ switch ($versioningState) {
 }
 
 // generate article code
-switch ($versioningState) {
-    case 'advanced':
-        if ($articleType == 'editable') {
-            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, (int) $selectedArticle->get('version'));	
-        } else if ($articleType == 'current') {
-            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, NULL); 
-        } else if ($articleType == 'version') {
-            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, (int) $selectedArticle->get('version'));           
-        }
-        break;
-    case 'simple':
-         if ($articleType == 'editable' || $articleType == 'current') {
-            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, NULL);	
-        } else if ($articleType == 'version') {
-            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, (int )$selectedArticle->get('version'));           
-        }
-        break;
-    case 'disabled':
-        $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, NULL); 
-    default:
-        break;
+if ($selectedArticle != NULL) {
+    
+    switch ($versioningState) {
+        case 'advanced':
+            if ($articleType == 'editable') {
+                $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, (int) $selectedArticle->get('version'));	
+            } else if ($articleType == 'current') {
+                $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, NULL); 
+            } else if ($articleType == 'version') {
+                $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, (int) $selectedArticle->get('version'));           
+            }
+            break;
+        case 'simple':
+             if ($articleType == 'editable' || $articleType == 'current') {
+                $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, NULL);	
+            } else if ($articleType == 'version') {
+                $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, (int )$selectedArticle->get('version'));           
+            }
+            break;
+        case 'disabled':
+            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, NULL); 
+        default:
+            break;
+    }    
+    
 }
+
 
 if ($code == "0601") {
     markSubMenuItem("1");

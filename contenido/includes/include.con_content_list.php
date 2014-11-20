@@ -475,12 +475,16 @@ switch ($versioningState) {
             } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsEditable();
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
+
             } else if ($_REQUEST['idArtLangVersion'] == 'current') {
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
                 $artLang->markAsEditable();
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
+
             }
         }
-
+    
         // get selected article
         $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
 

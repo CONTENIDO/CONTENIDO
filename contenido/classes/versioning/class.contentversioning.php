@@ -160,18 +160,17 @@ class cContentVersioning {
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
         $versioningState = $this->getState();
         $this->selectedArticle = NULL;
-
+        
         if (($articleType == 'version' || $articleType == 'editable') 
              && ($versioningState == 'advanced') || ($articleType == 'version' && $versioningState == 'simple')) {
             if (is_numeric($idArtLangVersion) && $articleType == 'version') {
                 $this->selectedArticle = new cApiArticleLanguageVersion($idArtLangVersion);
             } else if (isset($this->editableArticleId)) {
-                $this->selectedArticle = new cApiArticleLanguageVersion($this->editableArticleId);
-            } 
+                $this->selectedArticle = new cApiArticleLanguageVersion($this->editableArticleId);            
+             }             
         } else if ($articleType == 'current' || $articleType == 'editable') {
-            $this->selectedArticle = new cApiArticleLanguage($idArtLang);
+            $this->selectedArticle = new cApiArticleLanguage($idArtLang);            
         }
-
         return $this->selectedArticle;
 
     }
@@ -232,13 +231,14 @@ class cContentVersioning {
     public function getArticleType($idArtLangVersion, $idArtLang, $action) {
         
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
-
+        
         if ($this->getState() == 'disabled' // disabled
             || $this->getState() == 'simple' && $action == 'con_content'
             || $this->getState() == 'simple' && $action == 'copyto'
             || $this->getState() == 'simple' && $idArtLangVersion == NULL // simple
             || $idArtLangVersion == 'current' && $action != 'copyto'
-            || $action == 'copyto' && $idArtLangVersion == $this->editableArticleId) { // advanced
+            || $action == 'copyto' && $idArtLangVersion == $this->editableArticleId
+            || $this->editableArticleId == NULL) { // advanced
             $this->articleType = 'current';
         } else if ($this->getState() == 'advanced' && $action == 'con_content'
             || $action == 'copyto' || $idArtLangVersion == 'current'
@@ -251,7 +251,7 @@ class cContentVersioning {
         } else {
             $this->articleType = 'version';
         }
-
+        
         return $this->articleType;
 
     }
