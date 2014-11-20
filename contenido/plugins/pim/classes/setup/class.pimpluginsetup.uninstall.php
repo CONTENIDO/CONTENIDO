@@ -189,7 +189,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $cfg = cRegistry::getConfig();
 
         // Dependencies checks
-        $this->_installCheckDependencies();
+        $this->_uninstallCheckDependencies();
 
         // get relations
         $this->_PimPluginRelationsCollection->setWhere('idplugin', parent::_getPluginId());
@@ -265,68 +265,15 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     /**
      * Check dependencies to other plugins (dependencies-Tag at plugin.xml)
      */
-    private function _installCheckDependencies() {
+    private function _uninstallCheckDependencies() {
 
-    	// Initializings
-    	$cfg = cRegistry::getConfig();
-		$pluginsDir = $cfg['path']['contenido'] . $cfg['path']['plugins'];
+    	// Call checkDepenendencies function at PimPlugin class
+    	// Function returns true or false
+    	$result = $this->checkDependencies();
 
-		// Get uuid from plugin to uninstall
-		$this->_PimPluginCollection->setWhere('idplugin', parent::_getPluginId());
-		$this->_PimPluginCollection->query();
-		$pimPluginSql = $this->_PimPluginCollection->next();
-		$uuidUninstall = $pimPluginSql->get('uuid');
-
-		// Reset query so we can use PimPluginCollection later again...
-		$this->_PimPluginCollection->resetQuery();
-
-		// Read all dirs
-    	$dirs = cDirHandler::read($pluginsDir);
-    	foreach ($dirs as $dirname) {
-
-    		// Skip plugin if it has no plugin.xml file
-    		if (!cFileHandler::exists($pluginsDir . $dirname . DIRECTORY_SEPARATOR . parent::PLUGIN_XML_FILENAME)) {
-    			continue;
-    		}
-
-    		// Read plugin.xml files from existing plugins at contenido/plugins dir
-    		$tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . parent::PLUGIN_XML_FILENAME);
-
-    		// Write plugin.xnl content into temporary variable
-    		$tempXml = simplexml_load_string($tempXmlContent);
-
-	    	$dependenciesCount = count($tempXml->dependencies);
-    		for ($i = 0; $i < $dependenciesCount; $i++) {
-
-    			// Security check
-    			$depend = cSecurity::escapeString($tempXml->dependencies->depend[$i]);
-
-    			// If is no dependencie name defined please go to next dependencie
-    			if ($depend == "") {
-    				continue;
-    			}
-
-    			// Build uuid variable from attributes
-    			foreach ($tempXml->dependencies->depend[$i]->attributes() as $key => $value) {
-
-    				// We use only uuid attribute and can ignore other attributes
-    				if ($key  == "uuid") {
-		    			$uuidTemp = cSecurity::escapeString($value);
-    				}
-    			}
-
-    			// Throw an error if uuid from plugin to uninstall and depended plugin is the same
-    			// AND depended plugin is active
-    			if ($uuidTemp === $uuidUninstall) {
-
-	    			$this->_PimPluginCollection->setWhere('uuid', $tempXml->general->uuid);
-	    			$this->_PimPluginCollection->setWhere('active', '1');
-	    			$this->_PimPluginCollection->query();
-	    			if ($this->_PimPluginCollection->count() != 0) {
-	    				parent::error(sprintf(i18n('This plugin are required by the plugin <strong>%s</strong>, so you can not uninstall it', 'pim'), $tempXml->general->plugin_name));
-	    			}
-    			}
-    		}
+    	// Show an error message when dependencies could be found
+    	if ($result === false) {
+    		parent::error(sprintf(i18n('This plugin are required by the plugin <strong>%s</strong>, so you can not uninstall it.', 'pim'), parent::_getPluginName()));
     	}
     }
 
