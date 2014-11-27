@@ -58,7 +58,8 @@ if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['article
 
     // If no specific category is for this article selected, use standard category layout
     if (!$tplCfgId) {
-    	$catLang = new cApiCategoryLanguage($catId);
+    	$catLang = new cApiCategoryLanguage();
+		$catLang->loadByCategoryIdAndLanguageId(cRegistry::getCategoryId(), cRegistry::getLanguageId());
     	$tplCfgId = $catLang->get("idtplcfg");
     }
 
