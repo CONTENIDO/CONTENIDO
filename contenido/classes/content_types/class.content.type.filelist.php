@@ -141,6 +141,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 }
                 $_POST[$dateFormField] = $timestamp;
             }
+
+            $this->getConfiguredFiles();
             $this->_storeSettings();
         }
     }
@@ -214,10 +216,16 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
             // Check if manual selected file exists, otherwise ignore them
             // Write only existing files into fileList array
-            foreach ($tempFileList as $filename) {
-            	if (cFileHandler::exists($this->_uploadPath . $filename)) {
-            		$fileList[] = $filename;
-            	}
+            if (is_array($tempFileList)) {
+                foreach ($tempFileList as $filename) {
+                    if (cFileHandler::exists($this->_uploadPath . $filename)) {
+                        $fileList[] = $filename;
+                    }
+                }
+            } else {
+                if (cFileHandler::exists($this->_uploadPath . $tempFileList)) {
+                    $fileList[] = $tempFileList;
+                }
             }
 
         } else if (count($this->_settings['filelist_directories']) > 0) {
@@ -923,17 +931,21 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         // Check if manual selected file exists, otherwise ignore them
         // Write only existing files into selectedFiles array
-        foreach ($tempSelectedFiles as $filename) {
-        	if (cFileHandler::exists($this->_uploadPath . $filename)) {
-        		$selectedFiles[] = $filename;
-        	}
-        }
+//        if (is_array($tempSelectedFiles)) {
+//            foreach ($tempSelectedFiles as $filename) {
+//                if (cFileHandler::exists($this->_uploadPath . $filename)) {
+//                    $selectedFiles[] = $filename;
+//                }
+//            }
+//        }
+
 
         // If we have wasted selected files, update settings
-        if (count($tempSelectedFiles) != count($selectedFiles)) {
-        	$this->_settings['filelist_manual_files'] = $selectedFiles;
-        	$this->_storeSettings();
-        }
+//        if (count($tempSelectedFiles) != count($selectedFiles)) {
+//        	$this->_settings['filelist_manual_files'] = $selectedFiles;
+//
+//        	$this->_storeSettings();
+//        }
 
         $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, '', '', 'manual');
 
