@@ -55,6 +55,7 @@ $cfg['tab']['lay'] = $cfg['sql']['sqlprefix'] . '_lay';
 $cfg['tab']['mail_log'] = $cfg['sql']['sqlprefix'] . '_mail_log';
 $cfg['tab']['mail_log_success'] = $cfg['sql']['sqlprefix'] . '_mail_log_success';
 $cfg['tab']['meta_tag'] = $cfg['sql']['sqlprefix'] . '_meta_tag';
+$cfg['tab']['meta_tag_version'] = $cfg['sql']['sqlprefix'] . '_meta_tag_version';
 $cfg['tab']['meta_type'] = $cfg['sql']['sqlprefix'] . '_meta_type';
 $cfg['tab']['mod_translations'] = $cfg['sql']['sqlprefix'] . '_mod_translations';
 $cfg['tab']['mod'] = $cfg['sql']['sqlprefix'] . '_mod';

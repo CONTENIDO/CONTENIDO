@@ -501,7 +501,7 @@ switch ($versioningState) {
         $list = $versioning->getList((int) $_REQUEST['idartlang'], $articleType);
         
         // Get version numbers for Select Element
-        $optionElementParameters = $versioning->getAllVersionIdArtLangVersionAndLastModified((int) $_REQUEST['idartlang']);
+        $optionElementParameters = $versioning->getDataForSelectElement((int) $_REQUEST['idartlang'], 'content');
 
         // Create Current and Editable Content Option Element and Select Element
         $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');

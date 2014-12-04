@@ -268,7 +268,7 @@ abstract class cContentTypeAbstract {
         $code = addslashes($code);
         $code = str_replace("\\'", "'", $code);
         $code = str_replace('\$', '\\$', $code);
-
+        
         return $code;
     }
 

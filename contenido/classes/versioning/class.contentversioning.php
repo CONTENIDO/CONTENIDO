@@ -389,6 +389,75 @@ class cContentVersioning {
     }
     
     /**
+     * Returns $artLangVersionMap[version][idartlangversion] = lastmodified
+     * either from each article-/content- or metatag-version 
+     *
+     * @param int $idArtLang
+     * @param string $selectElementType either 'content', 'seo' or 'config'
+     * @return array $artLangVersionMap
+     */	
+    public function getDataForSelectElement($idArtLang, $selectElementType = 'config') {
+        
+        $artLangVersionMap = array();
+        
+        $artLangVersionColl = new cApiArticleLanguageVersionCollection();
+        $artLangVersionColl->addResultField('version');
+        $artLangVersionColl->addResultField('lastmodified');
+        $artLangVersionColl->setWhere('idartlang', $idArtLang);
+        $artLangVersionColl->setOrder('version desc');
+
+        try {
+            if ($selectElementType == 'content') { 
+                // select only versions with different content versions
+                $contentVersionColl = new cApiContentVersionCollection();
+                $contentVersionColl->addResultField('version');
+                $contentVersionColl->setWhere('idartlang', $idArtLang);
+                $contentVersionColl->query();
+                $contentFields['version'] = 'version';
+
+                // check ...
+                if (0 >= $contentVersionColl->count()) {
+                    throw new cException('no content versions');
+                }   
+
+                $table = $contentVersionColl->fetchTable($contentFields);
+
+                // add ...
+                $contentVersionMap = array();
+                foreach ($table AS $key => $item) {
+                    $contentVersionMap[] = $item['version'];
+                }
+                $contentVersionMap = array_unique($contentVersionMap);
+                $artLangVersionColl->setWhere('version', $contentVersionMap, 'IN');
+
+            } else if ($selectElementType == 'seo') {
+                // select only versions with different seo versions
+            } else if ($selectElementType == 'config') {
+                // select all versions
+            }
+        } catch (cException $e) {
+            return $artLangVersionMap;
+        }
+        
+        $artLangVersionColl->query();
+
+        $fields['idartlangversion'] = 'idartlangversion';
+        $fields['version'] = 'version';
+        $fields['lastmodified'] = 'lastmodified';        
+
+        if (0 < $artLangVersionColl->count()) {
+            $table = $artLangVersionColl->fetchTable($fields);
+
+            foreach ($table AS $key => $item) {
+                $artLangVersionMap[$item['version']][$item['idartlangversion']] = $item['lastmodified'];
+            }
+        }        
+        
+        return $artLangVersionMap;
+
+    }
+    
+    /**
      * Create new Content Version
      *
      * @param mixed[] $parameters {

@@ -329,7 +329,6 @@ abstract class cCodeGeneratorAbstract {
         // Replace all CMS_TAGS[]
         foreach ($_typeList as $_typeItem) {
             $key = strtolower($_typeItem->type);
-			 //error_log($key);
 
             $type = $_typeItem->type;
             // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
@@ -346,14 +345,20 @@ abstract class cCodeGeneratorAbstract {
 
             $typeClassName = $this->_getContentTypeClassName($type);
             $typeCodeFile = $this->_getContentTypeCodeFilePathName($type);
-
-            foreach ($a_[$key] as $val) {			
+            
+            foreach ($a_[$key] as $val) {
                 if (class_exists($typeClassName)) {
                     // We have a class for the content type, use it
                     $tmp = $a_content[$_typeItem->type][$val];
                     $cTypeObject = new $typeClassName($tmp, $val, $a_content);
-                    if (cRegistry::isBackendEditMode() && $editable) {
-                        $tmp = $cTypeObject->generateEditCode();
+                    global $edit;
+                    error_log($edit);
+                    if (cRegistry::isBackendEditMode()) {
+                        //if ($editable) {
+                            $tmp = $cTypeObject->generateEditCode();
+                        //} else if ($typeClassName !== 'cContentTypeImgeditor') {
+                        //    $tmp = $cTypeObject->generateViewCode();
+                        //}
                     } else {
                         $tmp = $cTypeObject->generateViewCode();
                     }
@@ -506,7 +511,7 @@ abstract class cCodeGeneratorAbstract {
      */
     protected function _getUsedCmsTypesData($editable = true, $version = NULL) {
         global $cfg;
-
+        
         $return = array();
         
         // Find out what kind of CMS_... Vars are in use        

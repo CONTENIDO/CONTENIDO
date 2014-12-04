@@ -146,7 +146,7 @@ switch ($versioningState) {
                 $artLangVersion->markAsCurrent();
             }
         }
-        $selectedArticle = $versioning->getSelectedArticle((int) $_REQUEST['idArtLangVersion'], $idartlang, $articleType);
+        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], $idartlang, $articleType);
 
         // Get version numbers for Select Element
         $optionElementParameters = $versioning->getAllVersionIdArtLangVersionAndLastModified((int) $idartlang);
@@ -162,7 +162,7 @@ switch ($versioningState) {
         foreach ($optionElementParameters AS $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Version ' . $key . ': ' . $lastModified, key($value));
-            if ($_REQUEST['idArtLangVersion'] == key($value)) { 
+            if ($_REQUEST['idArtLangVersion'] == key($value) && $articleType != 'current') { 
                 $optionElement->setSelected(true);
             }
             $selectElement->appendOptionElement($optionElement);            
@@ -303,7 +303,6 @@ switch ($versioningState) {
 
     default :
         break;
-        
 }
 
 // generate article code
@@ -312,26 +311,41 @@ if ($selectedArticle != NULL) {
     switch ($versioningState) {
         case 'advanced':
             if ($articleType == 'editable') {
-                $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, (int) $selectedArticle->get('version'));	
+                $editable = true;
+                $version = $selectedArticle->get('version');
             } else if ($articleType == 'current') {
-                $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, NULL); 
+                $editable = false;
+                $version = NULL;
             } else if ($articleType == 'version') {
-                $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, (int) $selectedArticle->get('version'));           
+                $editable = false;
+                $version = $selectedArticle->get('version');
             }
             break;
         case 'simple':
              if ($articleType == 'editable' || $articleType == 'current') {
-                $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, NULL);	
+                $editable = true;
+                $version = NULL;
             } else if ($articleType == 'version') {
-                $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, false, (int )$selectedArticle->get('version'));           
+                $editable = false;
+                $version = $selectedArticle->get('version');
             }
             break;
         case 'disabled':
-            $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, true, NULL); 
+            $editable = true;
+            $version = NULL;
         default:
+            throw new cException('unknown');
             break;
     }    
-    
+
+    // sets global $edit = false; needed for edit/view output in editor
+    if (!$editable) {
+        global $edit;
+        $edit = false;
+    }
+
+    $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, $editable, $version); 
+
 }
 
 
