@@ -104,10 +104,6 @@ function verifyModuleRequest(img, modId, type) {
             if (state == 'ok' && img.attr('data-state') != 'none') {
                 Con.getFrame('left_bottom').location.reload();
             }
-            if (state == 'error' && img.attr('data-state') == 'none') {
-                Con.getFrame('left_bottom').location.reload();
-            }
-
         }
     });
 
@@ -119,4 +115,6 @@ var inpIdmod  = $('#mod_edit_form input[name="idmod"]');
 
 verifyModuleRequest(imgInput, inpIdmod.val(), 'input');
 verifyModuleRequest(imgOutput, inpIdmod.val(), 'output');
+
+Con.getFrame('left_bottom').location.reload();
 </script>
