@@ -110,7 +110,7 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     }
 
     $frontendURL = cRegistry::getFrontendUrl();
-    $filetype = substr($filename, strlen($filename) - 4, 4);
+    $filetype = cFileHandler::getExtension($filename);
     $md5 = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
@@ -122,13 +122,13 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
 
     // Get out which file we have
     switch (strtolower($filetype)) {
-        case '.gif':
+        case 'gif':
             $function = 'imagecreatefromgif';
             break;
-        case '.png':
+        case 'png':
             $function = 'imagecreatefrompng';
             break;
-        case '.jpg':
+        case 'jpg':
             $function = 'imagecreatefromjpeg';
             break;
         case 'jpeg':
@@ -166,11 +166,11 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     // Output the file
     if ($keepType) {
         switch (strtolower($filetype)) {
-            case '.png':
+            case 'png':
                 imagepng($targetImage, $cacheFile); // no quality option
                                                     // available
                 break;
-            case '.gif':
+            case 'gif':
                 imagegif($targetImage, $cacheFile); // no quality option
                                                     // available
                 break;
@@ -293,7 +293,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
         $targetImage = imagecreatetruecolor($targetX, $targetY);
 
         // Preserve transparency
-        if (strtolower($filetype) == '.gif' or strtolower($filetype) == '.png') {
+        if (strtolower($filetype) == 'gif' or strtolower($filetype) == 'png') {
             imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
             imagealphablending($targetImage, false);
             imagesavealpha($targetImage, true);
@@ -305,11 +305,11 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     // Output the file
     if ($keepType) {
         switch (strtolower($filetype)) {
-            case '.png':
+            case 'png':
                 imagepng($targetImage, $cacheFile); // no quality option
                                                     // available
                 break;
-            case '.gif':
+            case 'gif':
                 imagegif($targetImage, $cacheFile);
                 break;
             default:
