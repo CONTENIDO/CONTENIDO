@@ -522,7 +522,7 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * check if the current cms type is in the cms_options array
+     * Check if the requested content type should be indexed (false) or not (true)
      *
      * @param string $idtype
      * @return boolean
@@ -532,10 +532,10 @@ class cSearchIndex extends cSearchBaseAbstract {
 		
 		// Do not index CMS_RAW
 		if ($idtype == "CMS_RAW") {
-			return false;
+			return true;
 		}
 
-        return (in_array($idtype, $this->_cmsOptions)) ? false : true;
+        return (count($this->_cmsOptions) === 0 || in_array($idtype, $this->_cmsOptions)) ? false : true;
     }
 
     /**

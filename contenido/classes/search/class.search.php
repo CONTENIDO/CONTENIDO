@@ -147,20 +147,6 @@ class cSearch extends cSearchBaseAbstract {
     protected $_index;
 
     /**
-     * array of available cms types
-     *
-     * @var array
-     */
-    protected $_cmsType = array();
-
-    /**
-     * suffix of available cms types
-     *
-     * @var array
-     */
-    protected $_cmsTypeSuffix = array();
-
-    /**
      * the search words
      *
      * @var array
@@ -269,16 +255,12 @@ class cSearch extends cSearchBaseAbstract {
 
         $this->_index = new cSearchIndex($db);
 
-        $this->_cmsType = $this->_index->cms_type;
-        $this->_cmsTypeSuffix = $this->_index->cms_type_suffix;
-
         $this->_searchOption = (array_key_exists('db', $options)) ? strtolower($options['db']) : 'regexp';
         $this->_searchCombination = (array_key_exists('combine', $options)) ? strtolower($options['combine']) : 'or';
         $this->_protected = (array_key_exists('protected', $options)) ? $options['protected'] : true;
         $this->_dontshowofflinearticles = (array_key_exists('dontshowofflinearticles', $options)) ? $options['dontshowofflinearticles'] : true;
         $this->_exclude = (array_key_exists('exclude', $options)) ? $options['exclude'] : true;
         $this->_articleSpecs = (array_key_exists('artspecs', $options) && is_array($options['artspecs'])) ? $options['artspecs'] : array();
-        $this->_index->setCmsOptions($this->_cmsTypeSuffix);
 
         if (array_key_exists('searchable_articles', $options) && is_array($options['searchable_articles'])) {
             $this->_searchableArts = $options['searchable_articles'];
@@ -339,7 +321,7 @@ class cSearch extends cSearchBaseAbstract {
         } elseif ($this->_searchOption == 'like') {
             // like search
             $search_like = implode(" OR keyword LIKE ", $tmp_searchwords);
-            $kwSql = "keyword LIKE '" . $search_like;
+            $kwSql = "keyword LIKE " . $search_like;
         } elseif ($this->_searchOption == 'exact') {
             // exact match
             $search_exact = implode(" OR keyword = ", $tmp_searchwords);
