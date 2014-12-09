@@ -571,11 +571,27 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Time management, redirect
     $oArtLang = new cApiArticleLanguage();
     $oArtLang->loadByArticleAndLanguageId($idart, $lang);
-
+    
     $online = $oArtLang->get('online');
     $redirect = $oArtLang->get('redirect');
     $redirect_url = $oArtLang->get('redirect_url');
-
+    
+    // BUGFIX: append GET parameters to redirect url
+    foreach($_GET as $getKey => $getValue) {
+        // do not add already added GET parameters to redirect url
+        if (strpos($redirect_url, '?' . $getKey . '=') !== false
+            || strpos($redirect_url, '&' . $getKey . '=') !== false
+            || strpos($redirect_url, '&amp;' . $getKey . '=') !== false) {
+            continue;
+        }
+        if (strpos($redirect_url, '?') === false) {
+            $redirect_url .= '?';
+        } else {
+            $redirect_url .= '&amp;';
+        }
+        $redirect_url .= htmlentities($getKey) . '=' . htmlentities($getValue);
+    }
+    
     if ($oArtLang->get('timemgmt') == '1' && $isstart != 1) {
         $online = 0;
         $dateStart = $oArtLang->get('datestart');
