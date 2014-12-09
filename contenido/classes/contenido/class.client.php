@@ -159,12 +159,12 @@ class cApiClientCollection extends ItemCollection {
  * @author Marco Jahn
  */
 class cApiClient extends Item {
-
     /**
-     *
+     * Setting of client ID (deprecated)
+     * @deprecated [2014-12-03] Class variable idclient is deprecated
      * @var int
      */
-    public $idclient;
+     private $idclient;
 
     /**
      * Property collection instance
@@ -186,6 +186,24 @@ class cApiClient extends Item {
         }
     }
 
+    /**
+     * Magic getter method for deprecated idclient variable
+     */
+    public function __get($name) {
+        if ($name === 'idclient') {
+            return $this->get('idclient');
+        }
+    }
+    
+    /**
+     * Magic setter method for deprecated idclient variable
+     */
+    public function __set($name, $value) {
+        if ($name === 'idclient') {
+            $this->set('idclient', cSecurity::toInteger($value));
+        }
+    }
+    
     /**
      * Static accessor to the singleton instance.
      *
@@ -216,7 +234,7 @@ class cApiClient extends Item {
      */
     public function loadByPrimaryKey($idKey) {
         if (parent::loadByPrimaryKey($idKey) == true) {
-            $this->idclient = $idKey;
+            $this->set('idclient', $idKey);
             return true;
         }
         return false;
@@ -233,7 +251,7 @@ class cApiClient extends Item {
      */
     public function setProperty($type, $name, $value, $idproperty = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
-        $oPropertyColl->setValue('clientsetting', $this->idclient, $type, $name, $value, $idproperty);
+        $oPropertyColl->setValue('clientsetting', $this->get('idclient'), $type, $name, $value, $idproperty);
     }
 
     /**
@@ -247,7 +265,7 @@ class cApiClient extends Item {
      */
     public function getProperty($type, $name, $client = 0) {
         $propertyColl = $this->_getPropertiesCollectionInstance();
-        return $propertyColl->getValue('clientsetting', $this->idclient, $type, $name);
+        return $propertyColl->getValue('clientsetting', $this->get('idclient'), $type, $name);
     }
 
     /**
@@ -271,7 +289,7 @@ class cApiClient extends Item {
      */
     public function getPropertiesByType($type) {
         $propertyColl = $this->_getPropertiesCollectionInstance();
-        return $propertyColl->getValuesByType('clientsetting', $this->idclient, $type);
+        return $propertyColl->getValuesByType('clientsetting', $this->get('idclient'), $type);
     }
 
     /**
@@ -283,7 +301,8 @@ class cApiClient extends Item {
      */
     public function getProperties() {
         $propertyColl = $this->_getPropertiesCollectionInstance();
-        $propertyColl->select("itemid='" . $this->idclient . "' AND itemtype='clientsetting'", "", "type, name, value ASC");
+        $whereString = "itemid='" . $this->get('idclient') . "' AND itemtype='clientsetting'";
+        $propertyColl->select($whereString, "", "type, name, value ASC");
 
         if ($propertyColl->count() > 0) {
             $array = array();
@@ -348,7 +367,7 @@ class cApiClient extends Item {
         // Runtime on-demand allocation of the properties object
         if (!is_object($this->_oPropertyCollection)) {
             $this->_oPropertyCollection = new cApiPropertyCollection();
-            $this->_oPropertyCollection->changeClient($this->idclient);
+            $this->_oPropertyCollection->changeClient($this->get('idclient'));
         }
         return $this->_oPropertyCollection;
     }
