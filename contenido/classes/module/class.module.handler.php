@@ -993,11 +993,18 @@ class cModuleHandler {
      * @return array (bool state, string errorMessage)
      */
     protected function _verifyCode($code, $id, $output = false) {
-
+        $isError = false;
         $result = array(
             'state' => false,
             'errorMessage' => NULL
         );
+
+        if ($code !== '') {
+            if (strpos($code, '<?php') === false || strpos($code, '?>') === false) {
+                $isError = true;
+                $modErrorMessage = 'No php tags used.';
+            }
+        }
 
         // Put a $ in front of all CMS variables to prevent PHP error messages
         $sql = 'SELECT type FROM ' . $this->_cfg['tab']['type'];
@@ -1050,17 +1057,20 @@ class cModuleHandler {
         @ini_set('error_append_string', $sEas); // Restoring settings (see above)
 
         // Strip out the error message
-        $isError = strpos($output, '<phperror>');
+        if ($isError === false) {
+            $isError = strpos($output, '<phperror>');
+        }
 
         // More stripping: Users shouldnt see where the file is located, but they
         // should see the error line
         if ($isError !== false) {
-
-            $pattern         = '/(<phperror>|<\/phperror>|<b>|<\/b>|<br>|<br \/>)/im';
-            $modErrorMessage = trim(preg_replace($pattern, '', $output));
-            $errorPart1      = substr($modErrorMessage, 0, strpos($modErrorMessage, ' in '));
-            $errorPart2      = substr($modErrorMessage, strpos($modErrorMessage, ' on line '));
-            $modErrorMessage = $errorPart1 . $errorPart2;
+            if (isset($modErrorMessage) === false) {
+                $pattern         = '/(<phperror>|<\/phperror>|<b>|<\/b>|<br>|<br \/>)/im';
+                $modErrorMessage = trim(preg_replace($pattern, '', $output));
+                $errorPart1      = substr($modErrorMessage, 0, strpos($modErrorMessage, ' in '));
+                $errorPart2      = substr($modErrorMessage, strpos($modErrorMessage, ' on line '));
+                $modErrorMessage = $errorPart1 . $errorPart2;
+            }
             $result['errorMessage'] = sprintf(i18n("Error in module. Error location: %s"), $modErrorMessage);
 
         }
