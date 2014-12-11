@@ -1,0 +1,86 @@
+/**
+ * #############################################################################
+ * @section Notification
+ */
+.alertbox {
+    border: 1px solid;
+    border-top: 0;
+    margin-left: 260px;
+    width: 275px;
+}
+.alertbox_line {
+    border: 1px solid;
+    width: 275px;
+}
+.alertbox_head {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    line-height: 30px;
+    font-weight: bold;
+    border-bottom: 1px solid;
+    padding-left: 40px;
+}
+
+.alertbox_error_color {
+    border-color: #d73211;
+    color: #d73211;
+}
+
+.alertbox_error {
+    background: #fff url(../images/icon_fatalerror.gif) no-repeat 10px 7px;
+}
+
+.alertbox_warning_color {
+    border-color: #fea513;
+    color: #fea513;
+}
+
+.alertbox_warning {
+    background: #fff url(../images/icon_warning.gif) no-repeat 10px 7px;
+}
+
+.alertbox_info_color {
+    border-color: #bfcf00;
+    color: #bfcf00;
+}
+
+.alertbox_info {
+    background: #fff url(../images/info.gif) no-repeat 10px 7px;
+}
+.alertbox_message {
+    padding: 5px 20px 10px 10px;
+    line-height: 1.9em;
+}
+
+.notify_general {
+    border: 1px solid;
+    padding: 4px 4px 4px 22px;
+    background: no-repeat 2px 2px;
+}
+
+.notify_default {
+    border-color: #060;
+    background-image: url(../images/but_ok.gif);
+    color: #435d06;
+}
+
+.notify_info {
+    border-color: #bfcf00;
+    background-image: url(../images/but_ok.gif);
+    color: #435d06;
+    display: inline-block;
+}
+
+.notify_warning {
+    border-color: #fea513;
+    background-image: url(../images/icon_warning.gif);
+    color: #fea513;
+    display: inline-block;
+}
+
+.notify_error {
+    border-color: #d73211;
+    background-image: url(../images/icon_fatalerror.gif);
+    color: #d73211;
+    display: inline-block;
+}
