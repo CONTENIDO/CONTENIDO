@@ -163,9 +163,12 @@
 	//close mobile menu
 	function closeMenu() {
 
-		//ie fix
 		var posRight = $('#menu').data('oPosRight');
-		posRight = posRight.replace('px', '');
+
+		if (typeof posRight === 'string') {
+			posRight = posRight.replace('px', '');
+		}
+		
 		if (posRight > 0) {
 			posRight = -posRight;
 		}
