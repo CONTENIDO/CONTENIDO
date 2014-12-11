@@ -13,11 +13,6 @@
         $(document).on('click', '#{PREFIX}_savebutton_{ID}', function() {
             cContentType{PREFIX}Save{ID}();
         });
-        $(document).keypress(function(e) {
-            if (e.which == 13 && $('#{PREFIX}_text_{ID}').is(':focus')) {
-                cContentType{PREFIX}Save{ID}();
-            }
-        });
 
         /**
          * Adds the given name/value pair as a hidden field to the editform so that it
