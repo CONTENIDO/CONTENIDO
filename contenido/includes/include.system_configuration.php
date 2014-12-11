@@ -83,9 +83,10 @@ function renderLabel($text, $name, $width = 250, $seperator = ':') {
  * @param string $name the name of the form element
  * @param string $value the value of the text field
  * @param string $label the label text
+ * @param bool $password if the input is a password
  * @return array associative array with the label and the input field
  */
-function renderTextProperty($name, $value, $label) {
+function renderTextProperty($name, $value, $label, $password = false) {
     global $auth;
 
     $textbox = new cHTMLTextbox($name, conHtmlSpecialChars($value), '50', '96');
@@ -93,6 +94,10 @@ function renderTextProperty($name, $value, $label) {
     if (strpos($auth->auth['perm'], 'sysadmin') === false) {
         $textbox->updateAttribute('disabled', 'true');
     }
+    if ($password === true) {
+        $textbox->updateAttribute('type', 'password');
+    }
+
     $return = array();
     $return['input'] = $textbox->render();
     $return['label'] = renderLabel($label, $name);
@@ -194,7 +199,11 @@ foreach ($propertyTypes as $type => $properties) {
         if (is_array($infos['values'])) {
             $htmlElement = renderSelectProperty($fieldName, $infos['values'], $value, i18n($infos['label']));
         } else {
-            $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']));
+            if (strlen($name) > 5 && substr($name, -5) === '_pass') {
+                $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']), true);
+            } else {
+                $htmlElement = renderTextProperty($fieldName, $value, i18n($infos['label']));
+            }
         }
 
         $groups[$infos['group']] .= new cHTMLDiv($htmlElement['label'] . $htmlElement['input'], 'systemSetting');
