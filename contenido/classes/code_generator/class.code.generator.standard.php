@@ -92,11 +92,20 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
                 $moduleHandler = new cModuleHandler($containerModuleId);
                 $input = '';
+                $this->_moduleCode = '';
 
                 // Get the contents of input and output from files and not from
                 // db-table
                 if ($moduleHandler->modulePathExists() == true) {
-                    $this->_moduleCode = $moduleHandler->readOutput();
+                    // do not execute faulty modules
+                    // caution: if no module is bound to a container then idmod of $oModule is false
+                    // caution: and as result error field is also empty
+                    if ($oModule->get('error') === 'none' || $oModule->get('idmod') === false) {
+                        $this->_moduleCode = $moduleHandler->readOutput();
+                    } else {
+                        continue;
+                    }
+
                     // Load css and js content of the js/css files
                     if ($moduleHandler->getFilesContent('css', 'css') !== false) {
                         $this->_cssData .= $moduleHandler->getFilesContent('css', 'css');
@@ -243,8 +252,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = $debugPrefix . $this->_layoutCode;
         }
 
-        // Save the generated code
+        // Save the generated code even if there are faulty modules
+        // if one does not do so a non existing cache file will be tried to be loaded in frontend
         $this->_saveGeneratedCode($idcatart);
+
 
         return $this->_layoutCode;
     }

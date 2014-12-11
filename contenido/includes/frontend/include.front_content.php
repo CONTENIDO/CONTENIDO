@@ -363,6 +363,7 @@ if ($contenido) {
     list($inUse, $message) = $col->checkAndMark('article', $idartlang, true, i18n('Article is in use by %s (%s)'), true, $inUseUrl);
     $sHtmlInUse = '';
     $sHtmlInUseMessage = '';
+
     if ($inUse == true) {
         $disabled = 'disabled="disabled"';
         $sHtmlInUseCss = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/inuse.css">';
@@ -376,6 +377,38 @@ if ($contenido) {
     if ($locked == 1) {
         $inUse = true;
         $disabled = 'disabled="disabled"';
+    }
+
+    // do not load erroneous modules
+    if ($oArtLang->get('idartlang')) {
+        // get id of current container
+        $tpl = new cApiTemplate();
+        $tpl->loadByArticleOrCategory($idart, $idcat, $lang, $client);
+        $idtpl = $tpl->get('idtpl');
+        unset($tpl);
+
+        // get ids of modules inside container
+        $containerModules = conGetUsedModules($idtpl);
+        $erroneousModules = array();
+        foreach ($containerModules as $containerModule) {
+            $oModule = new cApiModule($containerModule);
+            if ($oModule->get('idmod') !== false
+                && ($oModule->get('error') !== 'none'
+                || $oModule->get('error') === 'both')) {
+                $erroneousModules[] = $oModule->get('name');
+           }
+        }
+
+        if (isset($view) && $view === 'edit' && count($erroneousModules) > 0) {
+            $notification = new cGuiNotification();
+            $modErrorMessage = "The following modules are erroneus and are therefore not executed:<br>\n";
+            foreach ($erroneousModules as $erroneousModule) {
+                $modErrorMessage .= "- " . $erroneousModule . "<br />\n";
+            }
+            $inUse = true;
+            $sHtmlInUseCss = '<link rel="stylesheet" type="text/css" href="' . $backendUrl . 'styles/inuse.css">';
+            $sHtmlInUseMessage = $notification->returnMessageBox('error', $modErrorMessage, 0);
+        }
     }
 
     // CEC to check if the user has permission to edit articles in this category
@@ -571,11 +604,11 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Time management, redirect
     $oArtLang = new cApiArticleLanguage();
     $oArtLang->loadByArticleAndLanguageId($idart, $lang);
-    
+
     $online = $oArtLang->get('online');
     $redirect = $oArtLang->get('redirect');
     $redirect_url = $oArtLang->get('redirect_url');
-    
+
     // BUGFIX: append GET parameters to redirect url
     foreach($_GET as $getKey => $getValue) {
         // do not add already added GET parameters to redirect url
@@ -591,7 +624,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         }
         $redirect_url .= htmlentities($getKey) . '=' . htmlentities($getValue);
     }
-    
+
     if ($oArtLang->get('timemgmt') == '1' && $isstart != 1) {
         $online = 0;
         $dateStart = $oArtLang->get('datestart');
