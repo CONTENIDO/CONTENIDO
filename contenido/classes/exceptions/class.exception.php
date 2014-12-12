@@ -33,11 +33,16 @@ class cException extends Exception {
     protected $_logger = NULL;
 
     /**
-     * Saves whether the exception should be logged - defaults to true.
-     *
-     * @var boolean whether the exception should be logged
+     * Options for exception handling
+     * 
+     * By default cExceptions are not logged but cErrorExceptions are
+     * 
+     *  @var array Options for exception handling
      */
-    protected $_log = true;
+    protected $_options = array(
+        'log_exceptions' => false,
+        'log_error_exceptions' => true
+    );
 
     /**
      * Constructs the Exception.
@@ -58,8 +63,24 @@ class cException extends Exception {
         $this->_logger = new cLog($writer);
 
         // log the exception if it should be logged
-        if ($this->_log) {
+        if (isset($this->_options['log_exceptions'])
+           && $this->_options['log_exceptions'] === true) {
             $this->log();
+        }
+    }
+
+    /**
+     * Setter function for exception options
+     * Adds options based on a hardcoded whitelist
+     * 
+     * @param array $options Array containing options to set
+     */
+    public function setOptions(array $options) {
+        if (isset($options['log_exceptions'])) {
+            $this->_options['log_exceptions'] = $options['log_exceptions'];
+        }
+        if (isset($options['log_error_exceptions'])) {
+            $this->_options['log_error_exceptions'] = true;
         }
     }
 
