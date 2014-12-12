@@ -140,34 +140,68 @@ function conGetMetaValue($idartlang, $idmetatype, $version  = NULL) {
  * @param  string  $value Value of the meta tag
  * @return bool whether the meta value has been saved successfully
  */
-function conSetMetaValue($idartlang, $idmetatype, $value, $version = 1) {
+function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
+    
     static $metaTagColl = NULL;
+    $versioning = new cContentVersioning();
+    
     if (!isset($metaTagColl)) {
         $metaTagColl = new cApiMetaTagCollection();
     }
 
     $metaTag = $metaTagColl->fetchByArtLangAndMetaType($idartlang, $idmetatype);
-    $metaTagVersionColl = new cApiMetaTagVersionCollection(); 
-    $versioniong = new cContentVersioning();
-    
-    // update article
-    $artLang = new cApiArticleLanguage($idartlang);
-    $artLang->set('lastmodified', date('Y-m-d H:i:s'));
-    $artLang->store();
-    //update meta tag and create meta tag version
-    if (is_object($metaTag)) {
-        $return = $metaTag->updateMetaValue($value);
-        if ($versioniong->getState() != 'false') {
-           $metaTagVersionColl->create($metaTag->get('idmetatag'), $idartlang, $idmetatype, $value, $version);
-        }
-        return $return;
-    } else {
-        $metaTag = $metaTagColl->create($idartlang, $idmetatype, $value);
-        if ($versioniong->getState() != 'false') {
-            $metaTagVersionColl->create($metaTag->get('idmetatag'), $idartlang, $idmetatype, $value, 1);
-        }
-        return true;
+        
+    switch ($versioning->getState()) {
+        
+        case 'simple':
+            
+            $metaTagVersionParameters = array(
+                'idmetatag' => $metaTag->get('idmetatag'),
+                'idartlang' => $idartlang,
+                'idmetatype' => $idmetatype,
+                'value' => $value,
+                'version' => $version
+            );  
+            $versioning->createMetaTagVersion($metaTagVersionParameters);            
+             
+        case 'disabled':
+            
+            // update article
+            $artLang = new cApiArticleLanguage($idartlang);
+            $artLang->set('lastmodified', date('Y-m-d H:i:s'));
+            $artLang->store();
+            //update meta tag and create meta tag version
+            
+            if (is_object($metaTag)) {
+                
+                $return = $metaTag->updateMetaValue($value);                 
+                return $return;
+                
+            } else {
+                
+                $metaTag = $metaTagColl->create($idartlang, $idmetatype, $value);                
+                return true;
+                
+            }
+            
+            break;
+        case 'advanced':
+            
+            $metaTagVersionParameters = array(
+                'idmetatag' => $metaTag->get('idmetatag'),
+                'idartlang' => $idartlang,
+                'idmetatype' => $idmetatype,
+                'value' => $value,
+                'version' => $version
+            );  
+            $versioning->createMetaTagVersion($metaTagVersionParameters);   
+            
+            break;
+        default:
+            break;  
+        
     }
+    
 }
 
 /**

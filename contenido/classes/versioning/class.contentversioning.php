@@ -229,7 +229,7 @@ class cContentVersioning {
      * @return string $this->articleType
      */
     public function getArticleType($idArtLangVersion, $idArtLang, $action) {
-        
+        echo 'idartlangversion'.$idArtLangVersion.'idartlang'.$idArtLang.'action'.$action.'<hr>';
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
         
         if ($this->getState() == 'disabled' // disabled
@@ -238,7 +238,9 @@ class cContentVersioning {
             || $this->getState() == 'simple' && $idArtLangVersion == NULL // simple
             || $idArtLangVersion == 'current' && $action != 'copyto'
             || $action == 'copyto' && $idArtLangVersion == $this->editableArticleId
-            || $this->editableArticleId == NULL) { // advanced
+            || $action == 'con_meta_change_version' && $idArtLang == 'current'
+            || $this->editableArticleId == NULL
+            && $action != 'con_meta_saveart') { // advanced
             $this->articleType = 'current';
         } else if ($this->getState() == 'advanced' && $action == 'con_content'
             || $action == 'copyto' || $idArtLangVersion == 'current'
@@ -246,7 +248,9 @@ class cContentVersioning {
             || $action == 'importrawcontent'
             || $action == 'savecontype'
             || $action == 'con_editart' && $this->getState() == 'advanced'
-            || $action == '20' && $idArtLangVersion == NULL) {
+            || $action == '20' && $idArtLangVersion == NULL
+            || $this->getState() == 'advanced' && $action == 'con_meta_edit'
+            || $action == 'con_meta_saveart') {
             $this->articleType = 'editable';
         } else {
             $this->articleType = 'version';
@@ -432,6 +436,27 @@ class cContentVersioning {
 
             } else if ($selectElementType == 'seo') {
                 // select only versions with different seo versions
+                $metaVersionColl = new cApiMetaTagVersionCollection();
+                $metaVersionColl->addResultField('version');
+                $metaVersionColl->setWhere('idartlang', $idArtLang);
+                $metaVersionColl->query();
+                $metaFields['version'] = 'version';
+                
+                // check...
+                if (0 >= $metaVersionColl->count()) {
+                    throw new cException('no content versions');
+                }   
+
+                $table = $metaVersionColl->fetchTable($metaFields);
+                
+                // add ...
+                $metaVersionMap = array();
+                foreach ($table AS $key => $item) {
+                    $metaVersionMap[] = $item['version'];
+                }
+                $metaVersionMap = array_unique($metaVersionMap);
+                $artLangVersionColl->setWhere('version', $metaVersionMap, 'IN');
+                
             } else if ($selectElementType == 'config') {
                 // select all versions
             }
@@ -471,7 +496,7 @@ class cContentVersioning {
      *  @type string $lastModified
      * }
     */
-    function createContentVersion(array $parameters) {
+    public function createContentVersion(array $parameters) {
 	// Create new Article Language Version and get the version number
 		
 	// set parameters for Article Language Version
@@ -578,7 +603,7 @@ class cContentVersioning {
      * }
      * @return cApiArticleLanguageVersion
     */
-    function createArticleLanguageVersion(array $parameters) {
+    public function createArticleLanguageVersion(array $parameters) {
         global $lang, $auth, $urlname, $page_title;
         // Some stuff for the redirect
         global $redirect, $redirect_url, $external_redirect;
@@ -668,4 +693,17 @@ class cContentVersioning {
         return $artLangVersion;
     }
 
+    public function createMetaTagVersion(array $parameters) {
+        
+        $metaTagVersionColl = new cApiMetaTagVersionCollection();
+        
+        $metaTagVersionColl->create(
+            $parameters['idmetatag'],
+            $parameters['idartlang'],
+            $parameters['idmetatype'],
+            $parameters['value'],
+            $parameters['version']
+        ); 
+        
+    }
 }
