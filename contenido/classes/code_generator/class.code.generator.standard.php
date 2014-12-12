@@ -118,7 +118,11 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                     $input = $moduleHandler->readInput();
                 }
 
-                $this->_moduleCode = $this->_moduleCode . "\n";
+                // strip comments from module code, see CON-1536
+                // delete comment blocks
+                $this->_moduleCode = preg_replace('/(\s*)(\/\*)(\*(?!\/)|[^*])*(\*\/)/', '', $this->_moduleCode);
+                // delete comment lines
+                $this->_moduleCode = preg_replace('/\s(\/\/.*)/', '', $this->_moduleCode);
 
                 // Process CMS value tags
                 $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNr]);
@@ -255,7 +259,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // Save the generated code even if there are faulty modules
         // if one does not do so a non existing cache file will be tried to be loaded in frontend
         $this->_saveGeneratedCode($idcatart);
-
 
         return $this->_layoutCode;
     }
