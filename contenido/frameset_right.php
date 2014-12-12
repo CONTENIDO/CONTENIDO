@@ -18,6 +18,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // CONTENIDO startup process
+// CONTENIDO startup process
 include_once('./includes/startup.php');
 
 cRegistry::bootstrap(array(
