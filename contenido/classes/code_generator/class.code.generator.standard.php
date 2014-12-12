@@ -123,14 +123,14 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 // use php_strip_whitespace instead of writing own parser
                 // downside: php_strip_whitespace requires a file as parameter
                 $tmpFile = dirname(cRegistry::getBackendPath()) . '/' . $cfg['path']['temp'] . uniqid('code_gen_') . '.php';
-                if (file_exists(dirname($tmpFile))
-                    && is_readable(dirname($tmpFile))
-                    && is_writable(dirname($tmpFile))) {
-                    if (false !== file_put_contents($tmpFile, $this->_moduleCode)) {
+                if (cFileHandler::exists(dirname($tmpFile))
+                    && cFileHandler::readable(dirname($tmpFile))
+                    && cFileHandler::writeable(dirname($tmpFile))) {
+                    if (false !== cFileHandler::write($tmpFile, $this->_moduleCode)) {
                         $this->_moduleCode = php_strip_whitespace($tmpFile);
                     }
                     // delete file
-                    @unlink($tmpFile);
+                    cFileHandler::remove($tmpFile);
                 }
 
                 // Process CMS value tags
