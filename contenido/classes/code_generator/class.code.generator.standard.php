@@ -119,10 +119,19 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 }
 
                 // strip comments from module code, see CON-1536
-                // delete comment blocks
-                $this->_moduleCode = preg_replace('/(\s*)(\/\*)(\*(?!\/)|[^*])*(\*\/)/', '', $this->_moduleCode);
-                // delete comment lines
-                $this->_moduleCode = preg_replace('/\s(\/\/.*)/', '', $this->_moduleCode);
+                // regex is not enough to correctly remove comments
+                // use php_strip_whitespace instead of writing own parser
+                // downside: php_strip_whitespace requires a file as parameter
+                $tmpFile = dirname(cRegistry::getBackendPath()) . '/' . $cfg['path']['temp'] . uniqid('code_gen_') . '.php';
+                if (file_exists(dirname($tmpFile))
+                    && is_readable(dirname($tmpFile))
+                    && is_writable(dirname($tmpFile))) {
+                    if (false !== file_put_contents($tmpFile, $this->_moduleCode)) {
+                        $this->_moduleCode = php_strip_whitespace($tmpFile);
+                    }
+                    // delete file
+                    @unlink($tmpFile);
+                }
 
                 // Process CMS value tags
                 $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNr]);
