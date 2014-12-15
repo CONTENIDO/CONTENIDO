@@ -998,14 +998,15 @@ class cModuleHandler {
             'state' => false,
             'errorMessage' => NULL
         );
-
+/*
         if ($code !== '') {
+            preg_match($code, '\<\?php(\s+)');
             if (strpos($code, '<?php') === false || strpos($code, '?>') === false) {
-                $isError = true;
-                $modErrorMessage = 'No php tags used.';
+                      $isError = true;
+                     $modErrorMessage = 'No php tags used.';
             }
         }
-
+*/
         // Put a $ in front of all CMS variables to prevent PHP error messages
         $sql = 'SELECT type FROM ' . $this->_cfg['tab']['type'];
         $this->_db->query($sql);
