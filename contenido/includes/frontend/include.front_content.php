@@ -609,7 +609,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     $redirect = $oArtLang->get('redirect');
     $redirect_url = $oArtLang->get('redirect_url');
 
-    // BUGFIX: append GET parameters to redirect url
+    // CON-1990: append GET parameters to redirect url
     foreach($_GET as $getKey => $getValue) {
         // do not add already added GET parameters to redirect url
         if (strpos($redirect_url, '?' . $getKey . '=') !== false
