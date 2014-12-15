@@ -61,6 +61,10 @@ class cException extends Exception {
             'destination' => $cfg['path']['contenido_logs'] . 'exception.txt'
         ));
         $this->_logger = new cLog($writer);
+        
+        if (isset($cfg['debug']['log_exceptions'])) {
+            $this->_options['log_exceptions'] = $cfg['debug']['log_exceptions'];
+        }
 
         // log the exception if it should be logged
         if (isset($this->_options['log_exceptions'])
