@@ -75,7 +75,7 @@ if(is_array($cfgClient)) {
 }
 $faultyFolders = array();
 foreach ($foldersToCheck as $folder) {
-    if (false === is_dir($folder) || false === cFileHandler::readable($folder)) {
+    if (true === @file_exists($folder)) {
         $faultyFolders[] = $folder;
     }
 }
