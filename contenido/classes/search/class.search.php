@@ -339,7 +339,7 @@ class cSearch extends cSearchBaseAbstract {
         } elseif ($this->_searchOption == 'like') {
             // like search
             $search_like = implode(" OR keyword LIKE ", $tmp_searchwords);
-            $kwSql = "keyword LIKE '" . $search_like;
+            $kwSql = "keyword LIKE " . $search_like;
         } elseif ($this->_searchOption == 'exact') {
             // exact match
             $search_exact = implode(" OR keyword = ", $tmp_searchwords);
