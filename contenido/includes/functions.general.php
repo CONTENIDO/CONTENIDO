@@ -1110,9 +1110,9 @@ function scanPlugins($entity) {
     if ($lastscantime + 300 < time()) {
         setSystemProperty('plugin', $entity . '-lastscantime', time());
         if (is_dir($basedir)) {
-            if (false !== $dh = opendir($basedir)) {
-                while (($file = readdir($dh)) !== false) {
-                    if (is_dir($basedir . $file) && $file != 'includes' && $file != '.' && $file != '..') {
+            if (false !== ($handle = cDirHandler::read($basedir))) {
+                foreach ($handle as $file) {
+                    if (is_dir($basedir . $file) && $file != 'includes' && cFileHandler::fileNameIsDot($file) === false) {
                         if (!in_array($file, $plugins)) {
                             if (cFileHandler::exists($basedir . $file . '/' . $file . '.php')) {
                                 $plugins[] = $file;
@@ -1120,7 +1120,6 @@ function scanPlugins($entity) {
                         }
                     }
                 }
-                closedir($dh);
             }
         }
 

@@ -756,18 +756,16 @@ class cApiModule extends Item {
      */
     private function _addFolderToZip($dir, $zipArchive, $zipdir = '') {
         if (is_dir($dir)) {
-            if ($dh = opendir($dir)) {
-                // Add the directory
+            if (false !== $handle = cDirHandler::read($dir)) {
                 if (!empty($zipdir)) {
                     $zipArchive->addEmptyDir($zipdir);
                 }
-
-                // Loop through all the files
-                while (($file = readdir($dh)) !== false) {
+                
+                foreach ($handle as $file) {
                     // If it's a folder, run the function again!
                     if (!is_file($dir . $file)) {
                         // Skip parent and root directories
-                        if (($file !== '.') && ($file !== '..')) {
+                        if (false === cFileHandler::fileNameIsDot($file)) {
                             $this->_addFolderToZip($dir . $file . '/', $zipArchive, $zipdir . $file . '/');
                         }
                     } else {

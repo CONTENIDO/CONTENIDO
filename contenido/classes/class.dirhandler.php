@@ -240,51 +240,52 @@ class cDirHandler {
      * @param string $dirName directory
      * @param bool $recursive flag to read recursive
      * @param bool $dirOnly flag to list only directories
-     * @return boolean Ambigous multitype:unknown string mixed >
+     * @param bool $fileOnly flag to list only files if $dirOnly is set to false
+     * @return mixed Ambigous multitype: array containing file names as string, false on error
      */
-    public static function read($dirName, $recursive = false, $dirOnly = false) {
+    public static function read($dirName, $recursive = false, $dirOnly = false, $fileOnly = false) {
         if (!is_dir($dirName)) {
             return false;
-        } else {
-            $dirContent = array();
-            if ($recursive == false) {
-                $dirHandle = opendir($dirName);
-                $dirContent = array();
-                while (false !== ($file = readdir($dirHandle))) {
-                    if (!cFileHandler::fileNameIsDot($file)) {
+        }
 
-                        if ($dirOnly == true) { // get only directories
-                            if (is_dir($dirName . $file)) {
-                                $dirContent[] = $file;
-                            }
-                        } elseif (!is_dir($file)) { // get only files
-                            $dirContent[] = $file;
-                        }
+        $dirContent = array();
+        if ($recursive == false) {
+            $dirHandle = opendir($dirName);
+            $dirContent = array();
+            while (false !== ($file = readdir($dirHandle))) {
+                if (!cFileHandler::fileNameIsDot($file)) {
+
+                    if ($dirOnly == true && is_dir($dirName . $file)) { // get only directories
+                        $dirContent[] = $file;
+                    // bugfix: is_dir only checked file name without path, thus returning everything most of the time
+                    } else if ($fileOnly === true && is_file($dirName . $file)) { // get only files
+                        $dirContent[] = $file;
+                    } else { // get everything
+                        $dirContent[] = $file;
                     }
                 }
-                closedir($dirHandle);
             }
+            closedir($dirHandle);
+        } else {
+            $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dirName), RecursiveIteratorIterator::SELF_FIRST);
+            foreach ($objects as $name => $file) {
 
-            else {
-                $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dirName), RecursiveIteratorIterator::SELF_FIRST);
-                foreach ($objects as $name => $file) {
+                if (!cFileHandler::fileNameIsDot($file)) {
+                    $fileName = str_replace("\\", "/", $file->getPathName());
 
-                    if (!cFileHandler::fileNameIsDot($file)) {
-                        $fileName = str_replace("\\", "/", $file->getPathName());
-
-                        // get only directories
-                        if ($dirOnly == true) {
-
-                            if (is_dir($fileName)) {
-                                $dirContent[] = $fileName;
-                            }
-                        } else {
-                            $dirContent[] = $fileName;
-                        }
+                    // get only directories
+                    if ($dirOnly === true && is_dir($fileName)) {
+                        $dirContent[] = $fileName;
+                    // get only files
+                    } else if ($fileOnly === true && is_file($fileName)) {
+                        $dirContent[] = $fileName;
+                    } else {
+                        $dirContent[] = $fileName;
                     }
                 }
             }
         }
+
         return $dirContent;
     }
 

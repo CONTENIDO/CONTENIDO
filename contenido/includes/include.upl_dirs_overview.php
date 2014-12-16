@@ -87,12 +87,10 @@ if ($action == 'upl_delete') {
         if (uplHasFiles($path)) {
             $failedFiles = array();
             if (is_dir($cfgClient[$client]['upl']['path'] . $path)) {
-
-                $directory = @opendir($cfgClient[$client]['upl']['path'] . $path);
-                if (false !== $directory) {
-                    while (false !== ($dir_entry = readdir($directory))) {
-                        if ($dir_entry != '.' && $dir_entry != '..') {
-                            $res = @ unlink($cfgClient[$client]['upl']['path'] . $path . $dir_entry);
+                if (false !== ($directory = cDirHandler::read($uploadPath))) {
+                    foreach ($directory as $dir_entry) {
+                        if (cFileHandler::fileNameIsDot($dir_entry) === false) {
+                            $res = cFileHandler::remove($cfgClient[$client]['upl']['path'] . $path . $dir_entry);
 
                             if ($res == false) {
                                 $failedFiles[] = $dir_entry;
@@ -100,7 +98,6 @@ if ($action == 'upl_delete') {
                         }
                     }
                 }
-                closedir($directory);
             }
         }
 

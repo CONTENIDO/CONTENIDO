@@ -177,17 +177,17 @@ cAutoload::initialize($cfg);
 // Author: Martin Horwath
 $localePath = $cfg['path']['contenido_locale'];
 if (is_dir($localePath)) {
-    if ($handle = opendir($localePath)) {
-        while (($locale = readdir($handle)) !== false) {
-            if (is_dir($localePath . $locale) && $locale != '..' && $locale != '.') {
+    if (false !== ($handle = cDirHandler::read($localePath, false, true))) {
+        foreach ($handle as $locale) {
+            if (cFileHandler::fileNameIsDot($locale) === false
+                && is_dir($localePath . $locale)) {
                 if (cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.po') &&
-                        cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
+                cFileHandler::exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
                     $cfg['login_languages'][] = $locale;
                     $cfg['lang'][$locale] = 'lang_' . $locale . '.xml';
                 }
             }
         }
-        closedir($handle);
     }
 }
 

@@ -150,8 +150,8 @@ while (($plugin = $oItem->next()) !== false) {
 
 // get extracted plugins
 if (is_dir($cfg['path']['plugins'])) {
-    if ($handle = opendir($cfg['path']['plugins'])) {
-        while ($pluginFoldername = readdir($handle)) {
+    if (false !== ($handle = cDirHandler::read($cfg['path']['plugins']))) {
+        foreach ($handle as $pluginFoldername) {
             $pluginPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername;
             $tempPath = $pluginPath . '/plugin.xml';
 
@@ -177,7 +177,6 @@ if (is_dir($cfg['path']['plugins'])) {
                 $pluginsExtracted .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_extracted.html', true, false);
             }
         }
-        closedir($handle);
     }
 }
 

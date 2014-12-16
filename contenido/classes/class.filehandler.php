@@ -477,11 +477,21 @@ class cFileHandler {
      * @return boolean
      */
     public static function fileNameIsDot($fileName) {
-        if ($fileName != '.' && $fileName != '..') {
+        // bugfix: function must work with full paths of files
+        $name = end(explode('/', $fileName));
+        if ($name != '.' && $name != '..') {
             return false;
         } else {
             return true;
         }
     }
 
+    /**
+     * Check if file name begins with a period
+     *  @param string $fileName
+     *  @return bool
+     */
+    public static function fileNameBeginsWithDot($fileName) {
+        return (strpos(end(explode('/', $fileName)), ".") === 0);
+    }
 }

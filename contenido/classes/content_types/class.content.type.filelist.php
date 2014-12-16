@@ -246,15 +246,11 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
             foreach ($directories as $directoryName) {
                 if (is_dir($this->_uploadPath . $directoryName)) {
-                    if (false !== $handle = opendir($this->_uploadPath . $directoryName)) {
-                        while (($entry = readdir($handle)) !== false) {
-                            // checking if entry is file and is not a directory
-                            if (is_file($this->_uploadPath . $directoryName . '/' . $entry)) {
-                                $fileList[] = $directoryName . '/' . $entry;
-                            }
+                    if (false !== $handle = cDirHandler::read($this->_uploadPath . $directoryName . '/', false, false, true)) {
+                        foreach ($handle as $entry) {
+                            $fileList[] = $directoryName . '/' . $entry;
                         }
                     }
-                    closedir($handle);
                 }
             }
         } else {
@@ -361,14 +357,16 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * @return array containing all subdirectories and the initial directories
      */
     private function _getAllSubdirectories($directoryPath, array $directories) {
-        $handle = opendir($this->_uploadPath . $directoryPath);
-        while (($entry = readdir($handle)) !== false) {
-            if ($entry !== '.svn' && $entry !== '.' && $entry !== '..' && is_dir($this->_uploadPath . $directoryPath . '/' . $entry)) {
-                $directories[] = $directoryPath . '/' . $entry;
-                $directories = $this->_getAllSubdirectories($directoryPath . '/' . $entry, $directories);
+        $handle = cDirHandler::read($this->_uploadPath . $directoryPath . '/', false, true);
+
+        if (false !== $handle) {
+            foreach ($handle as $entry) {
+                if (cFileHandler::fileNameBeginsWithDot($entry) === false) {
+                    $directories[] = $directoryPath . '/' . $entry;
+                    $directories = $this->_getAllSubdirectories($directoryPath . '/' . $entry, $directories);
+                }
             }
         }
-        closedir($handle);
 
         return $directories;
     }
@@ -985,16 +983,17 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         $files = array();
         if ($directoryPath != '') {
-            $handle = opendir($this->_uploadPath . $directoryPath);
-            while (($entry = readdir($handle)) !== false) {
-                if (is_file($this->_uploadPath . $directoryPath . '/' . $entry)) {
-                    $file = array();
-                    $file["name"] = $entry;
-                    $file["path"] = $directoryPath . "/" . $entry;
-                    $files[] = $file;
+            $handle = cDirHandler::read($this->_uploadPath . $directoryPath);
+            if (false !== $handle) {
+                foreach ($handle as $entry) {
+                    if (is_file($this->_uploadPath . $directoryPath . '/' . $entry)) {
+                        $file = array();
+                        $file["name"] = $entry;
+                        $file["path"] = $directoryPath . "/" . $entry;
+                        $files[] = $file;
+                    }
                 }
             }
-            closedir($handle);
         }
 
         usort($files, function($a, $b) {

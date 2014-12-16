@@ -227,20 +227,6 @@ class cModuleSynchronizer extends cModuleHandler {
     }
 
     /**
-     * If the first char a '.' return false else true
-     *
-     * @param string $file
-     * @return boolean true if the first char !='.' else false
-     */
-    private function _isValidFirstChar($file) {
-        if (substr($file, 0, 1) == '.') {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
      * Depending on the client, this method
      * will check the modul dir of the client and if found
      * a Modul(Dir) that not exist in Db-table this method will
@@ -255,26 +241,25 @@ class cModuleSynchronizer extends cModuleHandler {
         $dir = $cfgClient[$this->_client]['module']['path'];
 
         if (is_dir($dir)) {
-            if ($dh = opendir($dir)) {
-                while (($file = readdir($dh)) !== false) {
-                    // is file a dir or not
-                    if ($this->_isValidFirstChar($file) && is_dir($dir . $file . '/')) {
+            if (false !== ($handle = cDirHandler::read($dir))) {
+                foreach ($handle as $file) {
+                    if (false === cFileHandler::fileNameBeginsWithDot($file) && is_dir($dir . $file . '/')) {
                         $newFile = cApiStrCleanURLCharacters($file);
                         // dir is ok
                         if ($newFile == $file) {
                             $this->_syncModule($dir, $file, $newFile);
                         } else { // dir not ok (with not allowed characters)
                             if (is_dir($dir . $newFile)) { // exist the new dir
-                                                           // name?
-                                                           // make new dirname
+                                // name?
+                                // make new dirname
                                 $newDirName = $newFile . substr(md5(time() . rand(0, time())), 0, 4);
-
+                        
                                 // rename
                                 if ($this->_renameFileAndDir($dir, $file, $newDirName, $this->_client) != false) {
                                     $this->_syncModule($dir, $file, $newDirName);
                                 }
                             } else { // $newFile (dir) not exist
-                                     // rename dir old
+                                // rename dir old
                                 if ($this->_renameFileAndDir($dir, $file, $newFile, $this->_client) != false) {
                                     $this->_syncModule($dir, $file, $newFile);
                                 }
@@ -283,9 +268,6 @@ class cModuleSynchronizer extends cModuleHandler {
                     }
                 }
             }
-
-            // close dir
-            closedir($dh);
         }
 
         // last Modul Id that will refresh the windows /modul overview

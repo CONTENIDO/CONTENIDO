@@ -292,10 +292,9 @@ abstract class cContentTypeAbstract {
         $directories = array();
 
         if (is_dir($uploadPath)) {
-            if ($handle = opendir($uploadPath)) {
-                while (($entry = readdir($handle)) !== false) {
-                    // ignore .svn directories as well as links to upper dirs
-                    if ((! (strpos($entry, ".") === 0)) && is_dir($uploadPath . $entry)) {
+            if (false !== ($handle = cDirHandler::read($uploadPath, false, true))) {
+                foreach ($handle as $entry) {
+                    if (cFileHandler::fileNameBeginsWithDot($entry) === false && is_dir($uploadPath . $entry)) {
                         $directory = array();
                         $directory['name'] = $entry;
                         $directory['path'] = str_replace($this->_uploadPath, '', $uploadPath);
@@ -304,7 +303,6 @@ abstract class cContentTypeAbstract {
                     }
                 }
             }
-            closedir($handle);
         }
 
         usort($directories, function($a, $b) {

@@ -151,15 +151,14 @@ class cUpgradeJobMain extends cUpgradeJobAbstract {
         $files = array();
         $dir = CON_SETUP_PATH . '/upgrade_jobs/';
         if (is_dir($dir)) {
-            if (($hDir = opendir($dir)) !== false) {
-                while (false !== ($file = readdir($hDir))) {
-                    if ($file != '.' && $file != '..' && is_file($dir . $file)) {
+            if (false !== ($handle = cDirHandler::read($sDir))) {
+                foreach ($handle as $file) {
+                    if (false === cFileHandler::fileNameIsDot($file) && is_file(dir . $file)) {
                         if (preg_match('/^class\.upgrade\.job\.(\d{4})\.php$/', $file, $match)) {
                             $files[$match[1]] = $file;
                         }
                     }
                 }
-                closedir($hDir);
             }
             ksort($files, SORT_NUMERIC);
         }

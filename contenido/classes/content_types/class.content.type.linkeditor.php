@@ -681,16 +681,16 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
 
         $files = array();
         if (is_dir($this->_uploadPath . $directoryPath)) {
-            if ($handle = opendir($this->_uploadPath . $directoryPath)) {
-                while (($entry = readdir($handle)) !== false) {
-                    if (is_file($this->_uploadPath . $directoryPath . $entry) && !(strpos($entry, ".") === 0)) {
+            // get only files
+            if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
+                foreach ($handle as $entry) {
+                    if (cFileHandler::fileNameBeginsWithDot($entry) === false) {
                         $file = array();
                         $file["name"] = $entry;
                         $file["path"] = $directoryPath . $entry;
                         $files[] = $file;
                     }
                 }
-                closedir($handle);
             }
         }
 

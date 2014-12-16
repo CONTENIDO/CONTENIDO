@@ -338,12 +338,12 @@ class cSystemPurge {
      * @return bool
      */
     public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = array()) {
-        if (is_dir($dirPath) && ($handle = opendir($dirPath))) {
+        if (is_dir($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
             $tmp = str_replace(array(
                 '/',
                 '..'
             ), '', $dirPath);
-            while (false !== ($file = readdir($handle))) {
+            foreach ($handle as $file) {
                 if (!in_array($file, $this->_dirsExcludedWithFiles)) {
                     $filePath = $dirPath . '/' . $file;
                     $filePath = str_replace('//', '/', $filePath);
@@ -351,7 +351,7 @@ class cSystemPurge {
                         $this->clearDir($filePath, $tmpDirPath, $keep, $tmpFileList);
                     } else {
                         if ($keep === false) {
-                            unlink($filePath);
+                            cFileHandler::remove($filePath);
                         } else {
                             $tmpFileList[$tmp][] = $filePath;
                         }
@@ -372,10 +372,8 @@ class cSystemPurge {
                 '/',
                 '..'
             ), '', $tmpDirPath) && $keep === false && !in_array($dirName, $this->_dirsExcludedWithFiles) && !in_array($dirName, $this->_dirsExcluded)) {
-                rmdir($dirPath);
+                cDirHandler::remove($dirPath);
             }
-
-            closedir($handle);
 
             return true;
         } else {
@@ -393,16 +391,17 @@ class cSystemPurge {
     public function emptyFile($dirPath, $types) {
         $count = 0;
         $countCleared = 0;
-        if (is_dir($dirPath) && ($handle = opendir($dirPath))) {
-            while (false !== ($file = readdir($handle))) {
+        
+        if (is_dir($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
+            foreach ($handle as $file) {
                 $fileExt = trim(end(explode('.', $file)));
-
+                
                 if ($file != '.' && $file != '..' && in_array($fileExt, $types)) {
                     $filePath = $dirPath . '/' . $file;
-
-                    if (cFileHandler::exists($filePath) && is_writable($filePath)) {
+                
+                    if (cFileHandler::exists($filePath) && cFileHandler::writeable($filePath)) {
                         $count++;
-
+                
                         if (cFileHandler::truncate($filePath)) {
                             $countCleared++;
                         }
