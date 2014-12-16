@@ -129,6 +129,11 @@ $(function() {
     });
     /* ----- GALERY LIGHTBOX ----- */
     jQuery(window).load(function() {
+        dialogPosition = {
+            my: "center",
+            at: "center",
+            of: window
+        };
         $(".galery .slider, .galery .source").delegate("a", "click", function(e) {
             e.preventDefault();
             var left = "", right = "";
@@ -179,6 +184,11 @@ $(function() {
                     });
                 },
                 close: function() {
+                    dialogPosition = {
+                        my: "center",
+                        at: "center",
+                        of: window
+                    };
                     $(this).dialog('destroy').remove()
                     $(".galery").prepend('<div class="lightbox"></div>');
                 }
@@ -187,6 +197,7 @@ $(function() {
 
         $("body").delegate(".lightbox a", "click", function(e) {
             e.preventDefault();
+            dialogPosition = $( ".lightbox" ).dialog( "option", "position" );
             var index = parseInt($(this).attr("href"));
             $(".lightbox").dialog("destroy");
             $('.galery .source li:eq(' + index + ') a').click();
