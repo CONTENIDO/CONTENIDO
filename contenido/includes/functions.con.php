@@ -482,6 +482,13 @@ function conMakeOnline($idart, $lang, $online = -1) {
     }
 
     $artLang->store();
+
+    // Execute cec hook
+    cApiCecHook::execute('Contenido.Article.ConMakeOnline', array(
+    'idart' => $idart,
+    'idlang' => $lang,
+    'state' => $online
+    ));
 }
 
 /**
@@ -589,6 +596,12 @@ function conMakeCatOnline($idcat, $lang, $status) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
         $oPathresolveCacheColl->deleteByCategoryAndLanguage($idcat, $lang);
     }
+
+    // Execute cec hook
+    cApiCecHook::execute('Contenido.Article.ConMakeCatOnline', array(
+    'idcat' => $idcat,
+    'idlang' => $lang,
+    ));
 }
 
 /**
@@ -969,6 +982,12 @@ function conMakeStart($idcatart, $isstart) {
         $oArtLang->set('timemgmt', 0);
         $oArtLang->store();
     }
+
+    // Execute cec hook
+    cApiCecHook::execute('Contenido.Article.ConMakeStart', array(
+    'idart' => $oCatArt->get("idart"),
+    'idlang' => $lang,
+    ));
 }
 
 /**
