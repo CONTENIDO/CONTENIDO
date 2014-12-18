@@ -137,6 +137,10 @@ class cArticleCollector implements SeekableIterator, Countable {
                 $options['order'] = 'artsort';
                 break;
 
+            case 'title':
+                $options['order'] = 'title';
+                break;
+
             case 'modificationdate':
                 $options['order'] = 'lastmodified';
                 break;
