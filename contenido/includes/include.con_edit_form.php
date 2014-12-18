@@ -416,7 +416,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $arrArtSpecs = getArtSpec();
 
-    $inputArtSortSelect = new cHTMLSelectELement("artspec", "400ox");
+    $inputArtSortSelect = new cHTMLSelectELement("artspec", "400px");
     $inputArtSortSelect->setClass("text_medium");
     $iAvariableSpec = 0;
     foreach ($arrArtSpecs as $id => $value) {
@@ -699,9 +699,13 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $catlang = new cApiCategoryLanguage();
     $catlang->loadByCategoryIdAndLanguageId(cRegistry::getCategoryId(), cRegistry::getLanguageId());
     // build the synchronization menu
-    // select all languages
+    // select all languages for selected client
+    $clientLang = new cApiClientLanguageCollection();
+    $clientLang->select("idclient = '" . cRegistry::getClientId() . "'");
+	$available_client_ids = $clientLang->getAllIds();
+
     $languages = new cApiLanguageCollection();
-    $languages->select();
+    $languages->select("idlang IN(" . join(', ', $available_client_ids) . ")");
 
     $langArray = array();
     while (($someLang = $languages->nextAccessible()) != false) {

@@ -2006,13 +2006,25 @@ div.errorlist {
 }
 
 .alltranslations th img {
-    float: right;
     padding: 4px 1px;
 }
 
 .alltranslations td img,
 .alltranslations td input {
     float: right;
+}
+
+.alltranslations td input.vAlignTop {
+	float: none;
+	display: block;
+}
+
+.alltranslations td.actions {
+	text-align: right;
+}
+
+.alltranslations td.actions input {
+	display: inline;
 }
 
 .alltranslations td.inuse {

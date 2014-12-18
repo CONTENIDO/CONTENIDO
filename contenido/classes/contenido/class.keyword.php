@@ -28,7 +28,7 @@ class cApiKeywordCollection extends ItemCollection {
      */
     public function __construct() {
         global $cfg;
-        parent::__construct($cfg['tab']['keyword'], 'idkeyword');
+        parent::__construct($cfg['tab']['keywords'], 'idkeyword');
         $this->_setItemClass('cApiKeyword');
     }
 
@@ -72,7 +72,7 @@ class cApiKeyword extends Item {
      */
     public function __construct($mId = false) {
         global $cfg;
-        parent::__construct($cfg['tab']['keyword'], 'idkeyword');
+        parent::__construct($cfg['tab']['keywords'], 'idkeyword');
         $this->setFilters(array(
             'addslashes'
         ), array(

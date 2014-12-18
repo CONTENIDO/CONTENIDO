@@ -188,6 +188,9 @@ class PimPluginSetupUninstall extends PimPluginSetup {
     public function uninstall($sql = true) {
         $cfg = cRegistry::getConfig();
 
+        // Dependencies checks
+        $this->_uninstallCheckDependencies();
+
         // get relations
         $this->_PimPluginRelationsCollection->setWhere('idplugin', parent::_getPluginId());
         $this->_PimPluginRelationsCollection->query();
@@ -257,6 +260,21 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         if (parent::$_GuiPage instanceof cGuiPage && parent::getMode() == 3) {
             parent::info(i18n('The plugin', 'pim') . ' <strong>' . $pluginname . '</strong> ' . i18n('has been successfully uninstalled. To apply the changes please login into backend again.', 'pim'));
         }
+    }
+
+    /**
+     * Check dependencies to other plugins (dependencies-Tag at plugin.xml)
+     */
+    private function _uninstallCheckDependencies() {
+
+    	// Call checkDepenendencies function at PimPlugin class
+    	// Function returns true or false
+    	$result = $this->checkDependencies();
+
+    	// Show an error message when dependencies could be found
+    	if ($result === false) {
+    		parent::error(sprintf(i18n('This plugin are required by the plugin <strong>%s</strong>, so you can not uninstall it.', 'pim'), parent::_getPluginName()));
+    	}
     }
 
     /**

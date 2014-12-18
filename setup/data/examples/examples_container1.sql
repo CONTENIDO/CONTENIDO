@@ -4,7 +4,7 @@ INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VAL
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1433, 3, 120, 22);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1434, 3, 205, 33);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1435, 3, 210, 7);
-INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1436, 3, 211, 24);
+INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1423, 3, 211, 24);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1437, 3, 212, 26);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1438, 3, 213, 25);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1439, 3, 220, 9);
@@ -45,7 +45,7 @@ INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VAL
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1474, 9, 150, 6);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1475, 9, 160, 23);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1476, 9, 170, 0);
-INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1477, 9, 180, 0);
+INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1477, 9, 180, 47);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1478, 9, 190, 0);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1479, 9, 200, 0);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1480, 9, 205, 33);
@@ -393,7 +393,7 @@ INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VAL
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1939, 19, 200, 0);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1938, 19, 190, 0);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1937, 19, 180, 0);
-INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1936, 19, 170, 0);
+INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1923, 19, 170, 0);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1935, 19, 160, 23);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1934, 19, 150, 6);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1933, 19, 140, 41);
@@ -428,4 +428,6 @@ INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VAL
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1973, 20, 10, 10);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(1996, 21, 10, 15);
 INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(2022, 22, 10, 44);
+INSERT INTO `!PREFIX!_container` (`idcontainer`, `idtpl`, `number`, `idmod`) VALUES(2023, 3, 900, 8);
 INSERT INTO `!PREFIX!_container_conf` (`idcontainerc`, `idtplcfg`, `number`, `container`) VALUES(1, 166, 10, '1=1&2=&');
+INSERT INTO `!PREFIX!_container_conf` (`idcontainerc`, `idtplcfg`, `number`, `container`) VALUES(2, 74, 180, '1=13&2=95&');

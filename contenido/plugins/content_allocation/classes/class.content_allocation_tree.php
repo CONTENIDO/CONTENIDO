@@ -322,7 +322,7 @@ class pApiTree {
                     VALUES
                     (" . cSecurity::toInteger($treeItem['parentid']) . ", " . cSecurity::toInteger($treeItem['sortorder']) . ")";
             $this->db->query($sql);
-            $treeItem['idpica_alloc'] = $this->db->getLastInsertedId($this->table['pica_alloc']);
+            $treeItem['idpica_alloc'] = $this->db->getLastInsertedId();
             $sql = "INSERT INTO " . $this->table['pica_lang'] . "
                     (idpica_alloc, idlang, name)
                     VALUES

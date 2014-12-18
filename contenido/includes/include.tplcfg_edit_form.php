@@ -118,7 +118,7 @@ if ($idart) {
 
                 $sql = "INSERT INTO " . $cfg['tab']['tpl_conf'] . " (idtpl) VALUES (" . cSecurity::toInteger($idtpl) . ")";
                 $db->query($sql);
-                $idtplcfg = $db->getLastInsertedId($cfg['tab']['tpl_conf']);
+                $idtplcfg = $db->getLastInsertedId();
 
                 // update art_lang
                 $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET idtplcfg=" . cSecurity::toInteger($idtplcfg) . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
@@ -160,7 +160,7 @@ if ($idart) {
 
             $sql = "INSERT INTO " . $cfg['tab']['tpl_conf'] . " (idtpl) VALUES (" . cSecurity::toInteger($idtpl) . ")";
             $db->query($sql);
-            $idtplcfg = $db->getLastInsertedId($cfg['tab']['tpl_conf']);
+            $idtplcfg = $db->getLastInsertedId();
 
             // update cat_lang
             $sql = "UPDATE " . $cfg['tab']['cat_lang'] . " SET idtplcfg=" . cSecurity::toInteger($idtplcfg) . " WHERE idcat=" . cSecurity::toInteger($idcat) . " AND idlang=" . cSecurity::toInteger($lang);

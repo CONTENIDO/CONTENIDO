@@ -210,7 +210,16 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $files = array();
 
         if ($this->_settings['filelist_manual'] === 'true' && count($this->_settings['filelist_manual_files']) > 0) {
-            $fileList = $this->_settings['filelist_manual_files'];
+            $tempFileList = $this->_settings['filelist_manual_files'];
+
+            // Check if manual selected file exists, otherwise ignore them
+            // Write only existing files into fileList array
+            foreach ($tempFileList as $filename) {
+            	if (cFileHandler::exists($this->_uploadPath . $filename)) {
+            		$fileList[] = $filename;
+            	}
+            }
+
         } else if (count($this->_settings['filelist_directories']) > 0) {
             $directories = $this->_settings['filelist_directories'];
 
@@ -455,8 +464,6 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         $fileLink = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $directoryName . '/' . $filename;
         $filePath = $this->_cfgClient[$this->_client]['upl']['path'] . $directoryName . '/' . $filename;
-
-        $info = exif_imagetype($filePath);
 
         // If file is an image (extensions gif, jpg, jpeg, png) scale it
         // otherwise use default png image
@@ -912,11 +919,26 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * @return string rendered cHTMLSelectElement
      */
     private function _generateExistingFileSelect() {
-        $selectedFiles = $this->_settings['filelist_manual_files'];
+        $tempSelectedFiles = $this->_settings['filelist_manual_files'];
+
+        // Check if manual selected file exists, otherwise ignore them
+        // Write only existing files into selectedFiles array
+        foreach ($tempSelectedFiles as $filename) {
+        	if (cFileHandler::exists($this->_uploadPath . $filename)) {
+        		$selectedFiles[] = $filename;
+        	}
+        }
+
+        // If we have wasted selected files, update settings
+        if (count($tempSelectedFiles) != count($selectedFiles)) {
+        	$this->_settings['filelist_manual_files'] = $selectedFiles;
+        	$this->_storeSettings();
+        }
+
         $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, '', '', 'manual');
 
-        if (is_array($selectedFiles)) { // More than one entry
-            foreach ($selectedFiles as $selectedFile) {
+        if (is_array($this->_settings['filelist_manual_files'])) { // More than one entry
+            foreach ($this->_settings['filelist_manual_files'] as $selectedFile) {
                 $splits = explode('/', $selectedFile);
                 $splitCount = count($splits);
                 $fileName = $splits[$splitCount - 1];
@@ -924,11 +946,11 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 $htmlSelectOption->setAlt($fileName);
                 $htmlSelect->appendOptionElement($htmlSelectOption);
             }
-        } elseif (!empty($selectedFiles)) { // Only one entry
-            $splits = explode('/', $selectedFiles);
+        } elseif (!empty($this->_settings['filelist_manual_files'])) { // Only one entry
+            $splits = explode('/', $this->_settings['filelist_manual_files']);
             $splitCount = count($splits);
             $fileName = $splits[$splitCount - 1];
-            $htmlSelectOption = new cHTMLOptionElement($fileName, $selectedFiles, true);
+            $htmlSelectOption = new cHTMLOptionElement($fileName, $this->_settings['filelist_manual_files'], true);
             $htmlSelectOption->setAlt($fileName);
             $htmlSelect->appendOptionElement($htmlSelectOption);
         }

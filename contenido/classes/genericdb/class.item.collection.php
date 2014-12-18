@@ -886,40 +886,44 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $row = 1;
         $aTable = array();
 
-        $this->db->seek(0);
+        if ($this->count() > 0) {
 
-        while ($this->db->nextRecord()) {
-            foreach ($aFields as $alias => $field) {
-                if ($alias != '') {
-                    $aTable[$row][$alias] = $this->db->f($field);
-                } else {
-                    $aTable[$row][$field] = $this->db->f($field);
-                }
-            }
+	        $this->db->seek(0);
 
-            // Fetch objects
-            foreach ($aObjects as $alias => $object) {
-                if ($alias != '') {
-                    if (isset($aTable[$row][$alias])) {
-                        // Is set, check for array. If no array, create one
-                        if (is_array($aTable[$row][$alias])) {
-                            $aTable[$row][$alias][] = $this->fetchObject($object);
-                        } else {
-                            // $tmpObj = $aTable[$row][$alias];
-                            $aTable[$row][$alias] = array();
-                            $aTable[$row][$alias][] = $this->fetchObject($object);
-                        }
-                    } else {
-                        $aTable[$row][$alias] = $this->fetchObject($object);
-                    }
-                } else {
-                    $aTable[$row][$object] = $this->fetchObject($object);
-                }
-            }
-            $row++;
+	        while ($this->db->nextRecord()) {
+	            foreach ($aFields as $alias => $field) {
+	                if ($alias != '') {
+	                    $aTable[$row][$alias] = $this->db->f($field);
+	                } else {
+	                    $aTable[$row][$field] = $this->db->f($field);
+	                }
+	            }
+
+	            // Fetch objects
+	            foreach ($aObjects as $alias => $object) {
+	                if ($alias != '') {
+	                    if (isset($aTable[$row][$alias])) {
+	                        // Is set, check for array. If no array, create one
+	                        if (is_array($aTable[$row][$alias])) {
+	                            $aTable[$row][$alias][] = $this->fetchObject($object);
+	                        } else {
+	                            // $tmpObj = $aTable[$row][$alias];
+	                            $aTable[$row][$alias] = array();
+	                            $aTable[$row][$alias][] = $this->fetchObject($object);
+	                        }
+	                    } else {
+	                        $aTable[$row][$alias] = $this->fetchObject($object);
+	                    }
+	                } else {
+	                    $aTable[$row][$object] = $this->fetchObject($object);
+	                }
+	            }
+	            $row++;
+	        }
+
+	        $this->db->seek(0);
+
         }
-
-        $this->db->seek(0);
 
         return $aTable;
     }
@@ -1061,7 +1065,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $db->query($sql);
 
         if ($primaryKeyValue === NULL) {
-            $primaryKeyValue = $db->getLastInsertedId($this->table);
+            $primaryKeyValue = $db->getLastInsertedId();
         }
 
         if ($db->affectedRows() == 0) {
@@ -1223,7 +1227,12 @@ abstract class ItemCollection extends cItemBaseAbstract {
     public function deleteByWhereClause($sWhere) {
         // Get all ids and delete related entries
         $aIds = $this->getIdsByWhereClause($sWhere);
-        $numDeleted = $this->_deleteMultiple($aIds);
+
+        if (!is_array($aIds) || 0 >= count($aIds)) {
+        	return 0;
+        }
+
+		$numDeleted = $this->_deleteMultiple($aIds);
         return $numDeleted;
     }
 
@@ -1298,7 +1307,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
      * Deletes all items in the table, deletes also existing cache entries and
      * properties of the item.
      *
-     * @param array $aIds Id of entries to delete
+     * @param array $aIds Id of entries to delete (has to be called w/ an array!)
      * @return int Number of affected records
      */
     protected function _deleteMultiple(array $aIds) {

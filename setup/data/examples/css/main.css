@@ -12,6 +12,13 @@ body {
     height: 100%;
 }
 
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+    cursor: pointer;
+}
+
 #page {
     width: 960px;
     min-height: 100%;
@@ -247,10 +254,11 @@ p a:hover {
 }
 
 .slider .images li {
-    position: absolute;
-    opacity: 0;
+    filter: alpha(opacity=0);
     list-style: none;
     left: 20px;
+    opacity: 0;
+    position: absolute;
 }
 
 
