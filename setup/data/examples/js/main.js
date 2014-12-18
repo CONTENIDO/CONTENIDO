@@ -115,6 +115,7 @@ $(function() {
 
     $(".galery .pagination li a").not(".disabled").click(function(e) {
         e.preventDefault();
+
         var page;
         if ($(this).parent().index() == 0) {
             page = activePage - 1;
@@ -129,19 +130,25 @@ $(function() {
     });
     /* ----- GALERY LIGHTBOX ----- */
     jQuery(window).load(function() {
-        dialogPosition = {
+        var dialogPosition = {
             my: "center",
             at: "center",
             of: window
         };
-        $(".galery .slider, .galery .source").delegate("a", "click", function(e) {
+
+        $(".galery .slider").delegate("a", "click", function(e) {
             e.preventDefault();
             var left = "", right = "";
-                count = $(this).parent().parent().find("li").length;
-
+            // number of pictures on all pages in total
+            var count = $(".source li").length;
+            // currently shown page in gallery, first page is 1
+            var curPage = parseInt($(".pagination .active").text());
 
             if (count > 1) {
+                // index of picture, starts with 0
                 var index = $(this).parent().index();
+                // add current page offset to index
+                index += (curPage -1) * imgPerPage;
                 if (index > 0) {
                     left = '<a href="' + (index - 1) + '" class="prev_image">&laquo;</a>';
                 }
@@ -160,11 +167,7 @@ $(function() {
                 height: "auto",
                 closeText: "X",
                 dialogClass: 'dialog-gallery',
-                position: {
-                    my: "center",
-                    at: "center",
-                    of: window
-                },
+                position: dialogPosition,
                 open: function() {
                     $('.ui-widget-overlay').on('click', function() {
                         $(".ui-dialog-content").dialog("destroy");
@@ -200,15 +203,16 @@ $(function() {
             dialogPosition = $( ".lightbox" ).dialog( "option", "position" );
             var index = parseInt($(this).attr("href"));
             $(".lightbox").dialog("destroy");
-            $('.galery .source li:eq(' + index + ') a').click();
 
             // switch pages when image is on other page.
-            if (index % 6 == 0 && e.currentTarget.className == 'next_image') {
-                    $('#forward').click();
-            } else if (index % 6 == 5 && e.currentTarget.className == 'prev_image') {
+            if (index % imgPerPage == 0 && e.currentTarget.className == 'next_image') {
+                $('#forward').click();
+            } else if (index % imgPerPage == (imgPerPage -1) && e.currentTarget.className == 'prev_image') {
                 $('#back').click();
             }
 
+            // click on link of displayed imagage at newly loaded page
+            $('.galery .slider li:eq(' + index % imgPerPage + ') a').click();
         });
 
     });
