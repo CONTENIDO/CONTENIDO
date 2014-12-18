@@ -311,7 +311,7 @@ class cModuleSynchronizer extends cModuleHandler {
     private function _updateModulnameInDb($oldName, $newName, $idclient) {
         $db = cRegistry::getDb();
 
-        // Select depending from idclient all moduls wiht the name $name
+        // Select depending from idclient all modules wiht the name $name
         $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s", $this->_cfg['tab']['mod'], $oldName, $idclient);
 
         $db->query($sql);
