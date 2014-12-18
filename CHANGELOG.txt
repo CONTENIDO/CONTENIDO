@@ -1,5 +1,12 @@
 ﻿---------------------------------------------------------------------
 ------------------------ CONTENIDO CHANGELOG ------------------------
+
+---------------------------------------------------------------------
+Release 4.9.5
+---------------------------------------------------------------------
+** Bug
+    * [CON-1996] - XSS-vulnerability in request validation
+
 ---------------------------------------------------------------------
 Release 4.9.5
 ---------------------------------------------------------------------
@@ -11,7 +18,7 @@ Release 4.9.5
     * [CON-1659] - Generic DB: Don't escape strings in cApi* classes
     * [CON-1663] - Usage of parent:: instead of $this-> in Item and ItemCollections
     * [CON-1677] - Usertable: Change valid_from and valid_to columns to datetime
-	* [CON-1693] - PIFA: Dragging form field icons style issues
+    * [CON-1693] - PIFA: Dragging form field icons style issues
     * [CON-1768] - Path to CONTENIDO backend is not custom configurable for clients
     * [CON-1795] - Wrong publish date after delete article-redirection
     * [CON-1836] - TinyMCE forgets settings after saving and staying in editor
@@ -43,7 +50,7 @@ Release 4.9.5
     * [CON-1916] - Usage of multiple CMS_DATE content types with same index will crash page
     * [CON-1923] - filelist: selction of a file / file doesn't exist
     * [CON-1925] - Prepared statements get wrong colum values
-	* [CON-1926] - Newsletter groups: Wrong umlauts
+    * [CON-1926] - Newsletter groups: Wrong umlauts
     * [CON-1927] - Style -> HTML: Closing textarea tag breakes text field
     * [CON-1928] - Mass translation: Several bugs with more than two languages
     * [CON-1930] - Can not close (open) "Navigation (Members)" box
@@ -1405,4 +1412,3 @@ Release 4.9.0 Alpha 1
     * [CON-524] - Port HTML_Common to cHTML
     * [CON-545] - Various tasks on localization
     * [CON-551] - Update system requirement checks
-    
