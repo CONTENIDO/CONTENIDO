@@ -54,7 +54,7 @@ if (isset($changeclient) && is_numeric($changeclient)) {
     unset($lang);
 }
 
-// preselect client, if definied
+// preselect client and language, if defined
 // only check at first login into backend
 if (!$sess->isRegistered('client')) {
     $iTmpClient = getEffectiveSetting('backend', 'preferred_idclient', false);
@@ -64,6 +64,13 @@ if (!$sess->isRegistered('client')) {
         unset($lang);
     }
     unset($iTmpClient);
+
+    $iTmpLang = getEffectiveSetting('backend', 'preferred_idlang', false);
+
+    if ($iTmpLang && ($perm->have_perm_client_lang($client, $iTmpLang))) {
+        $lang = $iTmpLang;
+    }
+    unset($iTmpLang);
 }
 
 if (!is_numeric($client) || $client == '') {
