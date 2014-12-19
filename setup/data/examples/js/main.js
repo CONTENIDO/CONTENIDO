@@ -133,14 +133,15 @@ $(function() {
         var dialogPosition = {
             my: "center",
             at: "center",
-            of: window
+            of: window,
+            collision: "fit"
         };
 
         $(".galery .slider").delegate("a", "click", function(e) {
             e.preventDefault();
             var left = "", right = "";
             // number of pictures on all pages in total
-            var count = $(".source li").length;
+            var count = $(".galery .source li").length;
             // currently shown page in gallery, first page is 1
             var curPage = parseInt($(".pagination .active").text());
 
@@ -161,14 +162,15 @@ $(function() {
             if ($(this).attr("rel") != '' && $(this).attr("title") != '') {
                 colon = ':';
             }
-            $(".galery .lightbox").html(left + right + '<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + colon + $(this).attr("title") + '</p>').dialog({
+
+            var lb = $(".galery .lightbox").html(left + right + '<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + colon + $(this).attr("title") + '</p>').dialog({
                 modal: true,
                 width: "auto",
                 height: "auto",
                 closeText: "X",
-                dialogClass: 'dialog-gallery',
+                dialogClass: 'dialog-gallery invisible',
                 position: dialogPosition,
-                open: function() {
+                open: function(event) {
                     $('.ui-widget-overlay').on('click', function() {
                         $(".ui-dialog-content").dialog("destroy");
                     });
@@ -196,11 +198,21 @@ $(function() {
                     $(".galery").prepend('<div class="lightbox"></div>');
                 }
             });
+
+            setTimeout(function() {
+                dialogPosition = lb.dialog( "option", "position" );
+                lb.dialog( "option", "position", dialogPosition);
+                $('.dialog-gallery.invisible').removeClass('invisible');
+            }, 0);
         });
 
         $("body").delegate(".lightbox a", "click", function(e) {
             e.preventDefault();
+
+            // get position
             dialogPosition = $( ".lightbox" ).dialog( "option", "position" );
+
+            // get next image and close dialog
             var index = parseInt($(this).attr("href"));
             $(".lightbox").dialog("destroy");
 
@@ -211,8 +223,22 @@ $(function() {
                 $('#back').click();
             }
 
-            // click on link of displayed imagage at newly loaded page
-            $('.galery .slider li:eq(' + index % imgPerPage + ') a').click();
+            // make sure all images are loaded before comming up with next dialog
+            // if we omit the check then the dialog will be misplaced after the images are loaded
+            var numImgOnPage = $(".galery .slider li").length;
+            var numLoadedImg = 0;
+            $(".galery .slider img").one("load", function() {
+                numLoadedImg++;
+                // are all images are loaded yet?
+                if (numLoadedImg >= numImgOnPage) {
+                    // click on link of displayed imagage at newly loaded page
+                    $('.galery .slider li:eq(' + index % imgPerPage + ') a').click();
+                }
+            }).each(function() {
+                // fallback if images are loaded from cache
+                if (this.complete) $(this).load();
+            });
+
         });
 
     });
