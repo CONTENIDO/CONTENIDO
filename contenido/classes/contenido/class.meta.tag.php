@@ -121,5 +121,25 @@ class cApiMetaTag extends Item {
 
         return parent::setField($name, $value, $bSafe);
     }
+    
+    /**
+     * Creates a new, editable Version with same properties 
+     *
+     * @param string $version
+     */	
+    public function markAsEditable($version) {
+        
+        $parameters = $this->values;
+        $parameters['version'] = $version;
+        $metaTagVersionColl = new cApiMetaTagVersionCollection();
+        $metaTagVersionColl->create(
+            $this->getField('idmetatag'),
+            $this->getField('idartlang'),
+            $this->getField('idmetatype'),
+            $this->getField('metavalue'),
+            $version
+        );
+        
+    }
 
 }

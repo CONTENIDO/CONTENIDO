@@ -229,7 +229,7 @@ class cContentVersioning {
      * @return string $this->articleType
      */
     public function getArticleType($idArtLangVersion, $idArtLang, $action) {
-        echo 'idartlangversion'.$idArtLangVersion.'idartlang'.$idArtLang.'action'.$action.'<hr>';
+        
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
         
         if ($this->getState() == 'disabled' // disabled

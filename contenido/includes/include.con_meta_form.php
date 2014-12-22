@@ -40,25 +40,26 @@ $versioning = new cContentVersioning();
 // Get article (version) data
 $art = new cApiArticleLanguage();
 $art->loadByArticleAndLanguageId(cSecurity::toInteger($idart), cSecurity::toInteger($lang));
+
 if ($_REQUEST['idArtLangVersion'] == NULL && $versioning->getState() == 'advanced') {
     
     $art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($art->getField('idartlang')));
+    //$art = new cApiArticleLanguageVersion($versioning->getEditableArticleId($idArtLang));
     
 } else if ($versioning->getState() == 'advanced' && $_REQUEST['idArtLangVersion'] != 'current'
     || $versioning->getState() == 'simple' && ($_REQUEST['idArtLangVersion'] != NULL 
-    || is_numeric ($_REQUEST['idArtLangVersion']))) {
+    && is_numeric ($_REQUEST['idArtLangVersion']) || is_numeric ($_REQUEST['idArtLangVersion']))) {
     
     $art = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
     
 }
 
-$versioning = new cContentVersioning();
 $articleType = $versioning->getArticleType(
         $_REQUEST['idArtLangVersion'],
         $art->getField('idartlang'),
         $action
 );
-echo $articleType;
+
 // Check is form edit available
 $disabled = '';
 if ($art->getField('created')) {
@@ -169,7 +170,8 @@ $managedTypes = array(
 $metaPreview = array();
 
 // Set meta tags values
-foreach ($availableTags as $key => $value) {
+foreach ($availableTags as $key => $value) {   
+    
     $metaPreview[] = array(
         'fieldname' => $value['fieldname'],
         'name' => $value['metatype'],
@@ -202,10 +204,10 @@ foreach ($availableTags as $key => $value) {
             $metaType = conHtmlSpecialChars(cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version')))));
             $tpl->set('s', strtoupper($value['metatype']), str_replace('\\', '', $metaType));
         }
-
-        continue;
+        
+        continue;        
     }
-
+    
     // Create add and edit MetaTag form BLOCK
     $tpl->set('d', 'METAINPUT', 'META' . $value);
     switch ($value['fieldtype']) {
@@ -249,115 +251,171 @@ foreach ($availableTags as $key => $value) {
     $tpl->set('d', 'IDMETATYPE', $value['idmetatype']);
     $tpl->set('d', 'METATITLE', $value['metatype'] . ':');
     $tpl->set('d', 'DELETE_META_CONFIRM', i18n('Are you sure to delete this Meta tag?'));
-
+    
+    /*$tpl->set('d', 'METAFIELDTYPE', $element);
+    $tpl->set('d', 'METATITLE', $value['metatype'] . ':');
+    if ($versioning->getState() == 'simple' && $articleType == 'current'
+            || $versioning->getState() == 'advanced' && $articleType == 'editable') {
+        
+        $tpl->set('d', 'DELETE_META', 
+            "Con.showConfirmation('" .
+                    i18n('Are you sure to delete this Meta tag?') . "' ,
+                    function() { 
+                        deleteMetaTag(" . $value['idmetatype'] . "," . $idart . "," . $idcat . "," . $art->getField('idartlang') . ");                 
+                    }
+            ); "
+        );
+        echo "if...";
+    } else {
+        
+        $tpl->set('d', 'DELETE_META', '');
+                echo "else...";
+    }*/
     $tpl->next();
 }
 
 $tpl->set('s', 'SITEMAP_PRIO', $art->getField('sitemapprio'));
 
-// testanfang
+switch ($versioning->getState()) {
+    
+    case 'advanced':
+        
+        // Set as current/editable
+        if ($action == 'copyto') {
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+                // editable->current
+                $artLangVersion = NULL;                
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                if (isset($artLangVersion)) {
+                    $artLangVersion->markAsCurrent('meta');
+                }
+                
+            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+                // version->editable
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsEditable('meta');
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
 
-if ($versioning->getState() == 'advanced') {
+            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+                // current->editable
+                $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
+                $artLang->markAsEditable('meta');
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
+
+            }
+        }
     
-    $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
-    
-    // set editable element 
-    $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
-    if (isset($versioning->editableArticleId)) {
-        $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId($art->getField('idartlang')));
-        if ($articleType == 'editable') {
+        $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
+
+        // set editable element 
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        if (isset($versioning->editableArticleId)) {
+            $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId($art->getField('idartlang')));
+            if ($articleType == 'editable') {
+                $optionElement->setSelected(true);
+            }
+            $selectElement->appendOptionElement($optionElement);
+            unset($optionElementParameters[max(array_keys($optionElementParameters))]);
+        }
+
+        // Create Metatag Version Option Elements
+        $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+        if ($articleType == 'current') {
             $optionElement->setSelected(true);
         }
         $selectElement->appendOptionElement($optionElement);
-        unset($optionElementParameters[max(array_keys($optionElementParameters))]);
-    }
-        
-    // Create Metatag Version Option Elements
-    $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
-            if ($articleType == 'current') {
-                $optionElement->setSelected(true);
-            }
-    $selectElement->appendOptionElement($optionElement);
 
-    foreach ($optionElementParameters AS $key => $value) {
-        $lastModified = $versioning->getTimeDiff($value[key($value)]);
-        $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
-        if ($articleType == 'version') {
-            if ($_REQUEST['idArtLangVersion'] == key($value)) {
-                $optionElement->setSelected(true);
+        foreach ($optionElementParameters AS $key => $value) {
+            $lastModified = $versioning->getTimeDiff($value[key($value)]);
+            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
+            if ($articleType == 'version') {
+                if ($_REQUEST['idArtLangVersion'] == key($value)) {
+                    $optionElement->setSelected(true);
+                }
             }
+            $selectElement->appendOptionElement($optionElement);
+        }
+         $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
+
+        $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
+        $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
+        $tpl->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
+
+        // Create markAsCurrent Button
+        if ($articleType == 'current' || $articleType == 'version') {
+            $buttonTitle = i18n('Copy to Editable Version');
+        } else if ($articleType == 'editable') {
+            $buttonTitle = i18n('Publish Draft');
+        }
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
+        $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+        
+        break;
+    case 'simple' :
+        
+        if ($action == 'copyto') {            
+            if (is_numeric($_REQUEST['idArtLangVersion'])) {                
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsCurrent('meta');                
+            }            
+        }
+    
+        $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
+
+        // Create Metatag Version Option Elements
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+        if ($articleType == 'current') {
+            $optionElement->setSelected(true);
         }
         $selectElement->appendOptionElement($optionElement);
-    }
-     $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
 
-    $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
-    $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
-    $tpl->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
-
-    // Create markAsCurrent Button
-    if ($articleType == 'current' || $articleType == 'version') {
-        $buttonTitle = i18n('Copy to Editable Version');
-    } else if ($articleType == 'editable') {
-        $buttonTitle = i18n('Publish Draft');
-    }
-    $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
-    $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
-    
-} else if ($versioning->getState() == 'simple') {
-    
-    $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
-        
-    // Create Metatag Version Option Elements
-    $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
-    $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
-            if ($articleType == 'current') {
-                $optionElement->setSelected(true);
+        foreach ($optionElementParameters AS $key => $value) {
+            $lastModified = $versioning->getTimeDiff($value[key($value)]);
+            $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
+            if ($articleType == 'version') {
+                if ($_REQUEST['idArtLangVersion'] == key($value)) {
+                    $optionElement->setSelected(true);
+                }
             }
-    $selectElement->appendOptionElement($optionElement);
-
-    foreach ($optionElementParameters AS $key => $value) {
-        $lastModified = $versioning->getTimeDiff($value[key($value)]);
-        $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
-        if ($articleType == 'version') {
-            if ($_REQUEST['idArtLangVersion'] == key($value)) {
-                $optionElement->setSelected(true);
-            }
+            $selectElement->appendOptionElement($optionElement);
         }
+         $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
+
+        $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
+        $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
+        $tpl->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
+
+
+        // Create markAsCurrent Button
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Current Version'), 'copytobutton');
+        if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
+            $markAsCurrentButton->setAttribute('DISABLED');
+        }
+        $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+    
+        break;        
+    case 'disabled' :
+
+        // Create Sample Metatag Version Option Element
+        $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+        $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
         $selectElement->appendOptionElement($optionElement);
-    }
-     $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
+        $selectElement->setAttribute('disabled', 'disabled');
+        $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
 
-    $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
-    $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
-    $tpl->set("s", "ACTION3", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=copyto'));
+        $buttonTitle = i18n('Copy to Current Version');
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
+        $markAsCurrentButton->setAttribute('disabled', 'disabled');
+        $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
+        $versioning_info_text = i18n('Aktiviere die Artikel-Versionierung in den Administration/System/System-Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen eines Artikels zurückgegriffen werden kann.');
+        $tpl->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);  
+        
+    default :
+        break;
     
-    // Create markAsCurrent Button
-    $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Current Version'));
-    if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
-        $markAsCurrentButton->setAttribute('DISABLED');
-    }
-    $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
-    
-} else if ($versioning->getState() == 'disabled') {
-    // Create Sample Metatag Version Option Element
-    $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
-    $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
-    $selectElement->appendOptionElement($optionElement);
-    $selectElement->setAttribute('disabled', 'disabled');
-    $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
-    
-    $buttonTitle = i18n('Copy to Current Version');
-    $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
-    $markAsCurrentButton->setAttribute('disabled', 'disabled');
-    $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
-
-    $versioning_info_text = i18n('Aktiviere die Artikel-Versionierung in den Administration/System/System-Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen eines Artikels zurückgegriffen werden kann.');
-    $tpl->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);  
-
 }
-// testende
 
 $infoButton = new cGuiBackendHelpbox(i18n('The title-tag is one of the most important on-page factors for SEO and is not longer than 60 characters. It includes top keywords and the branding.'));
 $tpl->set("s", "INFO_BUTTON_PAGE_TITLE", $infoButton->render());

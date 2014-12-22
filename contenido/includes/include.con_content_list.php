@@ -401,7 +401,7 @@ switch ($versioningState) {
         if ($action == 'copyto') {
             if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
-                $artLangVersion->markAsCurrent();
+                $artLangVersion->markAsCurrent('content');
             }
         }
 
@@ -470,16 +470,16 @@ switch ($versioningState) {
                 $artLangVersion = NULL;                
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 if (isset($artLangVersion)) {
-                    $artLangVersion->markAsCurrent();
+                    $artLangVersion->markAsCurrent('content');
                 }
             } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
-                $artLangVersion->markAsEditable();
+                $artLangVersion->markAsEditable('content');
                 $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
 
             } else if ($_REQUEST['idArtLangVersion'] == 'current') {
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
-                $artLang->markAsEditable();
+                $artLang->markAsEditable('content');
                 $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
 
             }

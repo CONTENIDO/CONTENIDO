@@ -304,9 +304,12 @@ class cApiArticleLanguageVersion extends Item {
      * Update Contents in ArticleLanguage
      * Set property iscurrentversion = 1 in this ArticleLanguageVersion
      * and 0 in the current ArticleLanguageVersions
+     * 
+     * @param String $type meta, content or complete
      */
-    public function markAsCurrent(){
-        // Prepare the data and update ArticleLanguage
+    public function markAsCurrent($type = ''){
+        
+        // Prepare data and update ArticleLanguage
         $parameters = $this->toArray();
         $artLang = new cApiArticleLanguage($parameters['idartlang']);
         unset($parameters['idartlang']);
@@ -320,77 +323,83 @@ class cApiArticleLanguageVersion extends Item {
         }
         $artLang->store();
         
-        $where = 'idartlang = ' . $this->get('idartlang');
-        $contentVersionColl = new cApiContentVersionCollection();
-        
-        // Update Contents if contents are versioned
-        $contents = $contentVersionColl->getIdsByWhereClause($where);
-        if (isset($contents)) {        
-            $sql = 'SELECT a.idcontent 
-                    FROM `%s` AS a
-                    WHERE a.idartlang = %d AND a.idcontent NOT IN
-                        (SELECT DISTINCT b.idcontent
-                        FROM `%s` AS b
-                        WHERE (b.deleted < 1 OR b.deleted IS NULL)
-                        AND (b.idtype, b.typeid, b.version) IN
-                            (SELECT idtype, typeid, max(version)
-                            FROM `%s`
-                            WHERE idartlang = %d AND version <= %d
-                            GROUP BY idtype, typeid))';							
-            $this->db->query(
-                $sql,
-                cRegistry::getDbTableName('content'),
-                $this->get('idartlang'),
-                cRegistry::getDbTableName('content_version'),
-                cRegistry::getDbTableName('content_version'),
-                $this->get('idartlang'), $this->get('version')
-            );
-            $contentColl = new cApiContentCollection();
-            while ($this->db->nextRecord()) {
-                $contentColl->delete($this->db->f('idcontent'));
-            }		
-            $contentVersion = new cApiContentVersion();
-            $type = new cApiType();	
-            $this->loadArticleVersionContent();
-            foreach ($this->content AS $typeName => $typeids) {
-                foreach ($typeids AS $typeid => $value) {
-                    $type->loadByType($typeName);
-                    $contentParameters = array(
-                        'idartlang' => $this->get('idartlang'),
-                        'idtype' => $type->get('idtype'),
-                        'typeid' => $typeid,
-                        'version' => $this->get('version')
-                    );
-                    $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
-                    $contentVersion->markAsCurrent();
+        if ($type == 'content' || $type == 'complete') {
+            
+            $where = 'idartlang = ' . $this->get('idartlang');        
+            $contentVersionColl = new cApiContentVersionCollection();
+
+            // Update Contents if contents are versioned
+            $contents = $contentVersionColl->getIdsByWhereClause($where);
+            if (isset($contents)) {        
+                $sql = 'SELECT a.idcontent 
+                        FROM `%s` AS a
+                        WHERE a.idartlang = %d AND a.idcontent NOT IN
+                            (SELECT DISTINCT b.idcontent
+                            FROM `%s` AS b
+                            WHERE (b.deleted < 1 OR b.deleted IS NULL)
+                            AND (b.idtype, b.typeid, b.version) IN
+                                (SELECT idtype, typeid, max(version)
+                                FROM `%s`
+                                WHERE idartlang = %d AND version <= %d
+                                GROUP BY idtype, typeid))';							
+                $this->db->query(
+                    $sql,
+                    cRegistry::getDbTableName('content'),
+                    $this->get('idartlang'),
+                    cRegistry::getDbTableName('content_version'),
+                    cRegistry::getDbTableName('content_version'),
+                    $this->get('idartlang'), $this->get('version')
+                );
+                $contentColl = new cApiContentCollection();
+                while ($this->db->nextRecord()) {
+                    $contentColl->delete($this->db->f('idcontent'));
+                }		
+                $contentVersion = new cApiContentVersion();
+                $type = new cApiType();	
+                $this->loadArticleVersionContent();
+                foreach ($this->content AS $typeName => $typeids) {
+                    foreach ($typeids AS $typeid => $value) {
+                        $type->loadByType($typeName);
+                        $contentParameters = array(
+                            'idartlang' => $this->get('idartlang'),
+                            'idtype' => $type->get('idtype'),
+                            'typeid' => $typeid,
+                            'version' => $this->get('version')
+                        );
+                        $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
+                        $contentVersion->markAsCurrent();
+                    }
                 }
             }
         }
         
-        // mark meta tags versions as current
-        $metaTagVersion = new cApiMetaTagVersion();
-        $sql = 'SELECT idmetatagversion AS id
-                FROM `%s`
-                WHERE idartlang = %d AND version IN (
-                    SELECT max(version)
-                    FROM `%s` 
-                    WHERE idartlang = %d AND version <= %d)';
-        $this->db->query(
-            $sql,
-            cRegistry::getDbTableName('meta_tag_version'),
-            $this->get('idartlang'),
-            cRegistry::getDbTableName('meta_tag_version'),
-            $this->get('idartlang'), 
-            $this->get('version')
-        );
-        while ($this->db->nextRecord()) {
-                $metaTagVersionIds[] = $this->db->f('id');
-        }
-        if (isset($metaTagVersionIds)) {
-            foreach ($metaTagVersionIds AS $id) {
-                $metaTagVersion->loadBy('idmetatagversion', $id);
-                $metaTagVersion->markAsCurrent();
-            }  
+        if ($type == 'meta' || $type == 'complete') {
+            
+            // mark meta tags versions as current
+            $metaTagVersion = new cApiMetaTagVersion();
+            $sql = 'SELECT idmetatagversion AS id
+                    FROM `%s`
+                    WHERE idartlang = %d AND version IN (
+                        SELECT max(version)
+                        FROM `%s` 
+                        WHERE idartlang = %d AND version <= %d)';
+            $this->db->query(
+                $sql,
+                cRegistry::getDbTableName('meta_tag_version'),
+                $this->get('idartlang'),
+                cRegistry::getDbTableName('meta_tag_version'),
+                $this->get('idartlang'), 
+                $this->get('version')
+            );
+            while ($this->db->nextRecord()) {
+                    $metaTagVersionIds[] = $this->db->f('id');
+            }
+            if (isset($metaTagVersionIds)) {
+                foreach ($metaTagVersionIds AS $id) {
+                    $metaTagVersion->loadBy('idmetatagversion', $id);
+                    $metaTagVersion->markAsCurrent();
+                }  
+            }
         }
               
         // Set this ArticleVersion as current and make article index
@@ -403,87 +412,95 @@ class cApiArticleLanguageVersion extends Item {
     /**
      * Create a copy of this article language version with its contents,
      * the copy is the new editable articlel language version
+     * 
+     * @param String $type meta, content or complete
      *
      */	
-    public function markAsEditable() {		
+    public function markAsEditable($type = '') {	
+        
         // create new editable Version
         $parameters = $this->toArray();
         $parameters['lastmodified'] = date('Y-m-d H:i:s');
         unset($parameters['idartlangversion']);
         $artLangVersionColl = new cApiArticleLanguageVersionCollection();
         $artLangVersion = $artLangVersionColl->create($parameters);
-        $artLangVersion->loadArticleVersionContent();
+        
+        if ($type == 'content' || $type == 'complete') {
+            $artLangVersion->loadArticleVersionContent();        
+            $contentVersion = new cApiContentVersion();
+            $type = new cApiType();	
+            $this->loadArticleVersionContent();
 
-        $contentVersion = new cApiContentVersion();
-        $type = new cApiType();	
-        $this->loadArticleVersionContent();
+            // get all Content Versions
+            $mergedContent = array();
+            foreach ($this->content AS $typeName => $typeids) {
+                foreach ($typeids AS $typeid => $value) {
+                    $mergedContent[$typeName][$typeid] = '';
+                }
+            }
+            foreach ($artLangVersion->content AS $typeName => $typeids) {
+                foreach ($typeids AS $typeid => $value) {
+                    $mergedContent[$typeName][$typeid] = '';
+                }
+            }
+            // set new Content Versions
+            foreach ($mergedContent AS $typeName => $typeids) {
+                foreach ($typeids AS $typeid => $value) {
+                    $type->loadByType($typeName);
+                    if (isset($this->content[$typeName][$typeid])) {
+                        $contentParameters = array(
+                            'idartlang' => $this->get('idartlang'),
+                            'idtype' => $type->get('idtype'),
+                            'typeid' => $typeid,
+                            'version' => $this->get('version')
+                        );
+                        $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
 
-        // get all Content Versions
-        $mergedContent = array();
-        foreach ($this->content AS $typeName => $typeids) {
-            foreach ($typeids AS $typeid => $value) {
-                $mergedContent[$typeName][$typeid] = '';
-            }
-        }
-        foreach ($artLangVersion->content AS $typeName => $typeids) {
-            foreach ($typeids AS $typeid => $value) {
-                $mergedContent[$typeName][$typeid] = '';
-            }
-        }
-        // set new Content Versions
-        foreach ($mergedContent AS $typeName => $typeids) {
-            foreach ($typeids AS $typeid => $value) {
-                $type->loadByType($typeName);
-                if (isset($this->content[$typeName][$typeid])) {
-                    $contentParameters = array(
-                        'idartlang' => $this->get('idartlang'),
-                        'idtype' => $type->get('idtype'),
-                        'typeid' => $typeid,
-                        'version' => $this->get('version')
-                    );
-                    $contentVersion->loadByArticleLanguageIdTypeTypeIdAndVersion($contentParameters);
-                 
-                    if (isset($contentVersion)) {
-                        $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
-                    } 
-                } else {
-                    $contentParameters = array(
-                        'idartlang' => $artLangVersion->get('idartlang'),
-                        'idtype' => $type->get('idtype'),
-                        'typeid' => $typeid,
-                        'version' => $artLangVersion->get('version'),
-                        'author' => $this->get('author'),
-                        'deleted' => 1
-                    );
-                    $contentVersionColl = new cApiContentVersionCollection();					
-                    $contentVersionColl->create($contentParameters);
-                }				
+                        if (isset($contentVersion)) {
+                            $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
+                        } 
+                    } else {
+                        $contentParameters = array(
+                            'idartlang' => $artLangVersion->get('idartlang'),
+                            'idtype' => $type->get('idtype'),
+                            'typeid' => $typeid,
+                            'version' => $artLangVersion->get('version'),
+                            'author' => $this->get('author'),
+                            'deleted' => 1
+                        );
+                        $contentVersionColl = new cApiContentVersionCollection();					
+                        $contentVersionColl->create($contentParameters);
+                    }				
+                }
             }
         }
         
-        // set new meta tag versions
-        $metaTagVersion = new cApiMetaTagVersion();
-        $sql = 'SELECT idmetatagversion AS id
-                FROM `%s`
-                WHERE idartlang = %d AND version IN (
-                    SELECT max(version)
-                    FROM `%s` 
-                    WHERE idartlang = %d AND version <= %d);';
-        $this->db->query(
-            $sql,
-            cRegistry::getDbTableName('meta_tag_version'),
-            $this->get('idartlang'),
-            cRegistry::getDbTableName('meta_tag_version'),
-            $this->get('idartlang'),
-            $this->get('version')
-        );
-        while ($this->db->nextRecord()) {
-                $metaTagVersionIds[] = $this->db->f('id');
-        }
-        if(isset($metaTagVersionIds)) {
-            foreach ($metaTagVersionIds AS $id) {
-                $metaTagVersion->loadBy('idmetatagversion', $id);
-                $metaTagVersion->markAsEditable($artLangVersion->get('version'));
+        if ($type == 'meta' || $type == 'complete') {
+            
+            // set new meta tag versions
+            $metaTagVersion = new cApiMetaTagVersion();
+            $sql = 'SELECT idmetatagversion AS id
+                    FROM `%s`
+                    WHERE idartlang = %d AND version IN (
+                        SELECT max(version)
+                        FROM `%s` 
+                        WHERE idartlang = %d AND version <= %d);';
+            $this->db->query(
+                $sql,
+                cRegistry::getDbTableName('meta_tag_version'),
+                $this->get('idartlang'),
+                cRegistry::getDbTableName('meta_tag_version'),
+                $this->get('idartlang'),
+                $this->get('version')
+            );
+            while ($this->db->nextRecord()) {
+                    $metaTagVersionIds[] = $this->db->f('id');
+            }
+            if(isset($metaTagVersionIds)) {
+                foreach ($metaTagVersionIds AS $id) {
+                    $metaTagVersion->loadBy('idmetatagversion', $id);
+                    $metaTagVersion->markAsEditable($artLangVersion->get('version'));
+                }
             }
         }
         
