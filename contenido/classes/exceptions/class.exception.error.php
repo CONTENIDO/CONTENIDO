@@ -20,18 +20,18 @@
  * This exception type is logged to data/logs/exception.txt.
  */
 class cErrorException extends cException {
+
     public function __construct($message, $code = 0, Exception $previous = NULL) {
+        
         $cfg = cRegistry::getConfig();
-        if (isset($cfg['debug']['log_error_exceptions'])) {
-            $this->_options['log_error_exceptions'] = $cfg['debug']['log_error_exceptions'];
+
+        // determine if exception should be logged
+        if (false === $this->_log_exception) {
+            $this->_log_exception = $cfg['debug']['log_error_exceptions'];
         }
+
         parent::__construct($message, $code, $previous);
 
-        // log the exception if it should be logged
-        if (isset($this->_options['log_error_exceptions'])
-            && $this->_options['log_error_exceptions'] === true
-            && $this->_options['log_error_exceptions'] === false) {
-            $this->log();
-        }
     }
+
 }

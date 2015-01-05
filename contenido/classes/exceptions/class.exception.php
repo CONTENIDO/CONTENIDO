@@ -25,6 +25,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cException extends Exception {
 
     /**
+     * Defines if an exception if this type should be logged.
+     * May be defined by any exception individually.
+     * 
+     * @see CON-1690
+     * @var bool
+     */
+    protected $_log_exception = false;
+    
+    /**
      * Saves an instance of the logger class for logging exceptions in the
      * corresponding log.
      *
@@ -33,24 +42,14 @@ class cException extends Exception {
     protected $_logger = NULL;
 
     /**
-     * Options for exception handling
-     * 
-     * By default cExceptions are not logged but cErrorExceptions are
-     * 
-     *  @var array Options for exception handling
-     */
-    protected $_options = array(
-        'log_exceptions' => false,
-        'log_error_exceptions' => true
-    );
-
-    /**
      * Constructs the Exception.
      *
      * @param string $message The Exception message to throw.
      * @param int $code The Exception code.
      * @param Exception $previous The previous exception used for the exception
      *            chaining.
+     * @param array $options exception logging options. By default cExceptions
+     *            are not logged but cErrorExceptions are
      */
     public function __construct($message, $code = 0, Exception $previous = NULL) {
         parent::__construct($message, $code, $previous);
@@ -61,30 +60,16 @@ class cException extends Exception {
             'destination' => $cfg['path']['contenido_logs'] . 'exception.txt'
         ));
         $this->_logger = new cLog($writer);
-        
-        if (isset($cfg['debug']['log_exceptions'])) {
-            $this->_options['log_exceptions'] = $cfg['debug']['log_exceptions'];
+
+        // determine if exception should be logged
+        if (false === $this->_log_exception
+        && isset($cfg['debug']['log_exceptions'])) {
+            $this->_log_exception = $cfg['debug']['log_exceptions'];
         }
 
         // log the exception if it should be logged
-        if (isset($this->_options['log_exceptions'])
-           && $this->_options['log_exceptions'] === true) {
+        if (true === $this->_log_exception) {
             $this->log();
-        }
-    }
-
-    /**
-     * Setter function for exception options
-     * Adds options based on a hardcoded whitelist
-     * 
-     * @param array $options Array containing options to set
-     */
-    public function setOptions(array $options) {
-        if (isset($options['log_exceptions'])) {
-            $this->_options['log_exceptions'] = $options['log_exceptions'];
-        }
-        if (isset($options['log_error_exceptions'])) {
-            $this->_options['log_error_exceptions'] = true;
         }
     }
 
