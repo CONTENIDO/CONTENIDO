@@ -99,8 +99,7 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
 
     foreach ($aCurrentFiles as $file) {
         $sFilePathName = getcwd() . '/' . $file;
-        if ((filetype($sFilePathName) == 'dir')
-            && false !== cFileHandler::readable($sFilePathName)) {
+        if ((filetype($sFilePathName) == 'dir') && (opendir($sFilePathName) !== false)) {
             $_aFile = array(
                     'name' => $file,
                     'depth' => $iDepth,
@@ -127,12 +126,12 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
 function uplHasFiles($sDir) {
     global $client, $cfgClient;
 
-    if (false === is_dir($cfgClient[$client]['upl']['path'] . $sDir)
-        || false === cFileHandler::readable($cfgClient[$client]['upl']['path'] . $sDir)
-        || false !== ($handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir))) {
+    $handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir);
+    
+    if (!$handle) {
         return false;
     }
-
+    
     $bHasContent = false;
     if (is_dir($cfgClient[$client]['upl']['path'] . $sDir)) {
         foreach ($handle as $sDirEntry) {
@@ -153,19 +152,18 @@ function uplHasFiles($sDir) {
  */
 function uplHasSubdirs($sDir) {
     global $client, $cfgClient;
-
-    if (false === is_dir($cfgClient[$client]['upl']['path'] . $sDir)
-        || false === cFileHandler::readable($cfgClient[$client]['upl']['path'] . $sDir)
-        || false !== ($handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir, false, true))) {
-        return true;
+    
+    $handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir); 
+    if (!$handle) {
+        return false;
     }
-
+    
     $bHasSubdir = false;
     if (is_dir($cfgClient[$client]['upl']['path'] . $sDir)) {
         foreach ($handle as $sDirEntry) {
             if (cFileHandler::fileNameIsDot($sDirEntry) === false) {
-                    $bHasSubdir = true;
-                    break;
+                $bHasSubdir = true;
+                break;
             }
         }
     }
@@ -369,7 +367,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
 function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $sParent = '', $iRenameLevel = 0) {
     $aInvalidDirectories = array();
 
-    if (true === is_dir($sDirectory) || cFileHandler::readable($sDirectory)) {
+    if (true === is_dir($sDirectory)) {
         $aDirsToExclude = uplGetDirectoriesToExclude();
 
         $aFiles = array();
