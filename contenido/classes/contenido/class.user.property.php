@@ -92,7 +92,7 @@ class cApiUserPropertyCollection extends ItemCollection {
     }
 
     /**
-     * Updatess a existing user property entry or creates it.
+     * Updates an existing user property entry or creates it.
      *
      * @param string $type
      * @param string $name

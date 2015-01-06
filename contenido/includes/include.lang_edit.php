@@ -71,14 +71,35 @@ if ($action == "lang_newlanguage") {
     $page->set("s", "NEW_LANG_NAME", "");
     $page->render();
 } else {
-
+    // whether all data is ok
+    $invalidData = false;
     if ($action == "lang_edit") {
         callPluginStore('languages');
 
-        $oLanguage->setProperty("dateformat", "full", stripslashes($datetimeformat), $targetclient);
-        $oLanguage->setProperty("dateformat", "date", stripslashes($dateformat), $targetclient);
-        $oLanguage->setProperty("dateformat", "time", stripslashes($timeformat), $targetclient);
-        $oLanguage->setProperty("dateformat", "locale", stripslashes($datetimelocale), $targetclient);
+        if (true === cString::validateDateFormat(stripslashes($datetimeformat))) {
+            $oLanguage->setProperty("dateformat", "full", stripslashes($datetimeformat), $targetclient);
+        } else {
+            $invalidData = true;
+            $page->displayInfo(i18n("Incorrect date/time format"));
+        }
+        if (true === cString::validateDateFormat(stripslashes($dateformat))) {
+            $oLanguage->setProperty("dateformat", "date", stripslashes($dateformat), $targetclient);
+        } else {
+            $invalidData = true;
+            $page->displayInfo(i18n("Incorrect date format"));
+        }
+        if (true === cString::validateDateFormat(stripslashes($timeformat))) {
+            $oLanguage->setProperty("dateformat", "time", stripslashes($timeformat), $targetclient);
+        } else {
+            $invalidData = true;
+            $page->displayInfo(i18n("Incorrect time format"));
+        }
+        if (true === cString::validateDateFormat(stripslashes($datetimelocale))) {
+            $oLanguage->setProperty("dateformat", "locale", stripslashes($datetimelocale), $targetclient);
+        } else {
+            $invalidData = true;
+            $page->displayInfo(i18n("Incorrect date/time locale"));
+        }
 
         $oLanguage->setProperty("language", "code", stripslashes($languagecode), $targetclient);
         $oLanguage->setProperty("country", "code", stripslashes($countrycode), $targetclient);
@@ -97,8 +118,13 @@ if ($action == "lang_newlanguage") {
 					$sencoding = 'utf-8';
 				}
 			
-                langEditLanguage($idlang, $langname, $sencoding, $active, $direction);
-                $page->displayInfo(i18n("Changes saved"));
+                if (false === $invalidData) {
+                    if (false === langEditLanguage($idlang, $langname, $sencoding, $active, $direction)) {
+                        $page->displayInfo(i18n("An error occurred during saving the changes"));
+                    } else {
+                        $page->displayInfo(i18n("Changes saved"));
+                    }
+                }
             }
 
             $tpl->reset();
