@@ -258,13 +258,13 @@ class cDirHandler {
                     if ($dirOnly == true && is_dir($dirName . $file)) { // get only directories
                         $dirContent[] = $file;
                     // bugfix: is_dir only checked file name without path, thus returning everything most of the time
-                    } else if ($fileOnly === true && is_file($dirName . $file)) { // get only files                        
-						$dirContent[] = $file;
-                    } else { // get everything, but file can not be a directory
-
-						if (!is_dir($dirName . $file)) {
+                    } else if ($fileOnly === true) { // get only files    
+                    
+						if (is_file($dirName . $file)) {
 							$dirContent[] = $file;
 						}
+                    } else { // get everything
+						$dirContent[] = $file;
                     }
                 }
             }
