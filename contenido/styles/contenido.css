@@ -14,14 +14,14 @@
  * @link       http: //www.contenido.org
  */
 
+@import "notifications.css"; /* @see CON-1992 */
+
 
 /* some reset */
 form, h1, h2, h3, h4 {
     margin: 0;
     padding: 0;
 }
-
-@import "notifications.css"; /* @see CON-1992 */
 
 #head {
     background-color: #f1f1f1;
@@ -357,6 +357,18 @@ li#kontakt.welcome {
     vertical-align: middle;
     margin-left: 10px;
     padding-top: 4px;
+}
+
+/**
+ * #############################################################################
+ * @section system_configuration
+ * @extends generic_table_form
+ */
+label.sys_config_txt_lbl {
+	padding:3px;
+	display:inline-block;
+	white-space:normal;
+	vertical-align:middle;
 }
 
 /**
