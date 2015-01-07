@@ -418,7 +418,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                                 break;
                             case 'filename':
                             default:
-                                $indexName = strtolower($filename);
+                                $indexName = strtolower($directoryName . $filename);
                         }
 
                         $files[$indexName] = array();
