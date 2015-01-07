@@ -255,8 +255,11 @@ class cDirHandler {
             while (false !== ($file = readdir($dirHandle))) {
                 if (!cFileHandler::fileNameIsDot($file)) {
 
-                    if ($dirOnly == true && is_dir($dirName . $file)) { // get only directories
-                        $dirContent[] = $file;
+                    if ($dirOnly == true) { // get only directories
+						
+						if (is_dir($dirName . $file)) {
+							$dirContent[] = $file;
+						}
                     // bugfix: is_dir only checked file name without path, thus returning everything most of the time
                     } else if ($fileOnly === true) { // get only files    
                     
