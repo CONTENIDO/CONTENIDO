@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>content_search_results</name><description></description><type>content</type><alias>content_search_results</alias></module>
+<module><name>content_search_results</name><description>Implementation of the CONTENIDO search with output of the search results</description><type>content</type><alias>content_search_results</alias></module>

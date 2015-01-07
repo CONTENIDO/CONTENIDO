@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
     <name>content_text</name>
-    <description></description>
+    <description>Standard text element in an article</description>
     <type>content</type>
     <alias>content_text</alias>
 </module>
