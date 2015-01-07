@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>content_teaser_config</name><description></description><type></type><alias>content_teaser_config</alias></module>
+<module><name>content_teaser_config</name><description>Configuration for content_teaser_image module</description><type></type><alias>content_teaser_config</alias></module>

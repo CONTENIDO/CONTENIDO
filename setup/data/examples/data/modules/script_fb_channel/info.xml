@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>script_fb_channel</name><description>Adding a Channel File greatly improves the performance of the JS SDK by addressing issues with cross-domain communication in certain browsers.&#13;
+<module><name>script_fb_channel</name><description>Improvements of the JS SDK.&#13;
+Adding a Channel File greatly improves the performance of the JS SDK by addressing issues with cross-domain communication in certain browsers.&#13;
 &#13;
 The channel file should be set to be cached for as long as possible. When serving this file, you should send valid Expires headers with a long expiration period. This will ensure the channel file is cached by the browser and not reloaded with each page refresh. Without proper caching, users will suffer a severely degraded experience.&#13;
 &#13;
