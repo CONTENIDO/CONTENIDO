@@ -258,7 +258,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
 
         // Success message for uninstall mode
         if (parent::$_GuiPage instanceof cGuiPage && parent::getMode() == 3) {
-            parent::info(i18n('The plugin', 'pim') . ' <strong>' . $pluginname . '</strong> ' . i18n('has been successfully uninstalled. To apply the changes please login into backend again.', 'pim'));
+            parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been successfully removed. To apply the changes please login into backend again.', 'pim'), $pluginname));
         }
     }
 
@@ -273,7 +273,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
 
     	// Show an error message when dependencies could be found
     	if ($result === false) {
-    		parent::error(sprintf(i18n('This plugin are required by the plugin <strong>%s</strong>, so you can not uninstall it.', 'pim'), parent::_getPluginName()));
+    		parent::error(sprintf(i18n('This plugin are required by the plugin <strong>%s</strong>, so you can not remove it.', 'pim'), parent::_getPluginName()));
     	}
     }
 
@@ -322,9 +322,9 @@ class PimPluginSetupUninstall extends PimPluginSetup {
 
             // success message
             if (!cFileHandler::exists($folderpath)) {
-                parent::info(i18n('The pluginfolder', 'pim') . ' <strong>' . $this->_getPluginFoldername() . '</strong> ' . i18n('has been successfully uninstalled.', 'pim'));
+                parent::info(sprintf(i18n('The pluginfolder <strong>%s</strong> has been successfully uninstalled.', 'pim'), $this->_getPluginFoldername()));
             } else if (cFileHandler::exists($folderpath)) {
-                parent::error(i18n('The pluginfolder', 'pim') . ' <strong>' . $this->_getPluginFoldername() . '</strong> ' . i18n('could not be uninstalled.', 'pim'));
+                parent::error(sprintf(i18n('The pluginfolder <strong>%s</strong> could not be uninstalled.', 'pim'), $this->_getPluginFoldername()));
             }
         }
     }

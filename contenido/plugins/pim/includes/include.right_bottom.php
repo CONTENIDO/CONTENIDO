@@ -119,6 +119,9 @@ while (($plugin = $oItem->next()) !== false) {
     $pagePlugins->set('s', 'COPYRIGHT', $plugin->get('copyright'));
     $pagePlugins->set('s', 'INSTALLED', $date);
     $pagePlugins->set('s', 'EXECUTIONORDER', $plugin->get("executionorder"));
+	
+	$pagePlugins->set('s', 'LANG_SORT_DOWN', i18n('Set execution order down', 'pim'));
+	$pagePlugins->set('s', 'LANG_SORT_UP', i18n('Set execution order up', 'pim'));	
 
     $pagePlugins->set('s', 'LANG_INSTALLED', i18n('Installed since', 'pim'));
     $pagePlugins->set('s', 'LANG_AUTHOR', i18n('Author', 'pim'));
@@ -133,9 +136,9 @@ while (($plugin = $oItem->next()) !== false) {
     $activeStatus = $plugin->get('active');
     $tempActiveStatusLink = $sess->url('main.php?area=pim&frame=4&pim_view=activestatus&pluginId=' . $plugin->get('idplugin'));
     if ($activeStatus == 1) {
-        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/online.gif" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Disable plugin', 'pim') . '</a>');
+        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/online.gif" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Disable', 'pim') . '</a>');
     } else {
-        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/offline.gif" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Enable plugin', 'pim') . '</a>');
+        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/offline.gif" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Enable', 'pim') . '</a>');
     }
 
     // uninstall link
@@ -151,6 +154,8 @@ while (($plugin = $oItem->next()) !== false) {
 // get extracted plugins
 if (is_dir($cfg['path']['plugins'])) {
     if (false !== ($handle = cDirHandler::read($cfg['path']['plugins']))) {
+	
+		$i = 0;
         foreach ($handle as $pluginFoldername) {
             $pluginPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername;
             $tempPath = $pluginPath . '/plugin.xml';
@@ -161,19 +166,23 @@ if (is_dir($cfg['path']['plugins'])) {
 
                 $pagePlugins->set('s', 'LANG_FOLDERNAME', i18n('Foldername', 'pim'));
                 $pagePlugins->set('s', 'LANG_TOOLTIP_INSTALL', i18n('Install extracted plugin', 'pim'));
-                $pagePlugins->set('s', 'LANG_TOOLTIP_UNINSTALL', i18n('Uninstall extracted plugin (deleted plugin files from filesystem)', 'pim'));
+				$pagePlugins->set('s', 'LANG_INSTALL', i18n('Install', 'pim'));
+                $pagePlugins->set('s', 'LANG_TOOLTIP_REMOVE', i18n('Uninstall extracted plugin (deleted plugin files from filesystem)', 'pim'));
+				$pagePlugins->set('s', 'LANG_REMOVE', i18n('Remove from filesystem', 'pim'));
+				$pagePlugins->set('s', 'LANG_WRITABLE', i18n('Writeable', 'pim'));
                 $pagePlugins->set('s', 'FOLDERNAME', $pluginFoldername);
                 $pagePlugins->set('s', 'INSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=install-extracted&pluginFoldername=' . $pluginFoldername));
 
                 // uninstall link
                 if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername)) {
-                    $pagePlugins->set('s', 'UNINSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));
-                    $pagePlugins->set('s', 'LANG_WRITABLE', '');
+                    $pagePlugins->set('s', 'REMOVE_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));
+                    $pagePlugins->set('s', 'LANG_WRITABLE_TEXT', i18n('Everything looks fine', 'pim'));
                 } else {
-                    $pagePlugins->set('s', 'UNINSTALL_LINK', 'javascript://');
-                    $pagePlugins->set('s', 'LANG_WRITABLE', '(<span class="settingWrong">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>)');
+                    $pagePlugins->set('s', 'REMOVE_LINK', 'javascript://');
+                    $pagePlugins->set('s', 'LANG_WRITABLE_TEXT', '(<span class="settingWrong">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>)');
                 }
 
+				$pagePlugins->set('s', 'IDPLUGIN', $i++);
                 $pluginsExtracted .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_extracted.html', true, false);
             }
         }
@@ -191,6 +200,8 @@ $page->set('s', 'LANG_UPLOAD_CHOOSE', i18n('Please choose a plugin package', 'pi
 $page->set('s', 'LANG_UPLOAD_BUTTON', i18n('Upload plugin package', 'pim'));
 $page->set('s', 'LANG_INSTALLED', i18n('Installed Plugins', 'pim'));
 $page->set('s', 'LANG_EXTRACTED', i18n('Not installed Plugins', 'pim'));
+$page->set('s', 'LANG_EXECUTIONORDERINFO_TITLE', i18n('Execution order', 'pim'));
+$page->set('s', 'LANG_EXECUTIONORDERINFO_TEXT', i18n('If you click on following arrows you can manage the execution order of plugins. The first plugin (at first position) will be executed first from CONTENIDO, the last plugin (at last position) will be executed at the end. This can be important if CONTENIDO backend has to load a plugin to activate other functions/plugins. Normally the execution order has no impact.', 'pim'));
 
 // added installed plugins to pim_overview
 $page->set('s', 'INSTALLED_PLUGINS', $oItem->count());

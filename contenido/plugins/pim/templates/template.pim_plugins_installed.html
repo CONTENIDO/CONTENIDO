@@ -2,7 +2,7 @@
             <tr id="plugin-row-{IDPLUGIN}" data-plugin-execorder="{EXECUTIONORDER}">
                 <td style="width: 3%;"><a href="#" onclick="javascript:toggleTableBody('plugin-{IDPLUGIN}')" style="margin-left: 5px;"><img src="images/open_all.gif" id="plugin-{IDPLUGIN}_img"></a></td>
                 <td style="width: 90%;"><strong>{NAME}</strong> <em>{VERSION}</em></td>
-                <td style="width: 7%; text-align: right;"><a href="javascript://" class="sortPluginUp" data-plugin-id="{IDPLUGIN}"><img src="images/sort_up.gif" style="padding: 5px;"></a><a href="javascript://" class="sortPluginDown" data-plugin-id="{IDPLUGIN}"><img src="images/sort_down.gif" style="padding: 5px;"></a></td>
+                <td style="width: 7%; text-align: right;"><a href="javascript://" class="sortPluginUp" data-plugin-id="{IDPLUGIN}"><img src="images/sort_up.gif" class="tooltip" style="padding: 5px;" title="{LANG_SORT_UP}"></a><a href="javascript://" class="sortPluginDown" data-plugin-id="{IDPLUGIN}"><img src="images/sort_down.gif" class="tooltip" style="padding: 5px;" title="{LANG_SORT_DOWN}"></a></td>
             </tr>
             <tr id="plugin-{IDPLUGIN}" style="display: none;">
                 <td style="width: 3%;">&#160;</td>
@@ -31,7 +31,7 @@
                         <tr><td colspan="2">&#160;</td></tr>
                         <tr>
                             <td colspan="2">{LANG_ACTIVESTATUS}&nbsp;&nbsp;&nbsp;<img style="border: 0;vertical-align: middle;" src="images/but_refresh.gif"> <a href="#" onclick="toggleTableBodyWithoutButton('updateplugin-{IDPLUGIN}');">{LANG_UPDATE}</a>
-                            &nbsp;&nbsp;<img style="border: 0; vertical-align: middle;" src="images/but_delete.gif"> {UNINSTALL_LINK} (<input id="unistallSQLCheckbox-{IDPLUGIN}" class="uninstallSQL" data-idplugin="{IDPLUGIN}" type="checkbox" checked><label for="unistallSQLCheckbox-{IDPLUGIN}">{LANG_REMOVE_SQL}</label>)</td>
+                            &nbsp;&nbsp;<img style="border: 0; vertical-align: middle;" src="images/but_cancel.gif"> {UNINSTALL_LINK} (<input id="unistallSQLCheckbox-{IDPLUGIN}" class="uninstallSQL" data-idplugin="{IDPLUGIN}" type="checkbox" checked><label for="unistallSQLCheckbox-{IDPLUGIN}">{LANG_REMOVE_SQL}</label>)</td>
                         </tr>
                         <tr id="updateplugin-{IDPLUGIN}" style="display: none;">
                             <td colspan="2">

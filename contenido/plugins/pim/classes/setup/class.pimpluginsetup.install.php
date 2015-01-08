@@ -270,20 +270,20 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Check min CONTENIDO version
         if (version_compare(CON_VERSION, parent::$XmlRequirements->contenido->attributes()->minversion, '<')) {
-            parent::error(i18n('You have to install CONTENIDO <strong>', 'pim') . parent::$XmlRequirements->contenido->attributes()->minversion . i18n('</strong> or higher to install this plugin!', 'pim'));
+            parent::error(sprintf(i18n('You have to install CONTENIDO <strong>%s</strong> or higher to install this plugin!', 'pim'), parent::$XmlRequirements->contenido->attributes()->minversion));
         }
 
         // Check max CONTENIDO version
         if (parent::$XmlRequirements->contenido->attributes()->maxversion) {
 
             if (version_compare(CON_VERSION, parent::$XmlRequirements->contenido->attributes()->maxversion, '>')) {
-                parent::error(i18n('Your current CONTENIDO version is to new - max CONTENIDO version: ' . parent::$XmlRequirements->contenido->attributes()->maxversion . '', 'pim'));
+                parent::error(sprintf(i18n('Your current CONTENIDO version is to new - max CONTENIDO version: %s', 'pim'), parent::$XmlRequirements->contenido->attributes()->maxversion));
             }
         }
 
         // Check PHP version
         if (version_compare(phpversion(), parent::$XmlRequirements->attributes()->php, '<')) {
-            parent::error(i18n('You have to install PHP <strong>', 'pim') . parent::$XmlRequirements->attributes()->php . i18n('</strong> or higher to install this plugin!', 'pim'));
+            parent::error(sprintf(i18n('You have to install PHP <strong>%s</strong> or higher to install this plugin!', 'pim'), parent::$XmlRequirements->attributes()->php));
         }
 
         // Check extensions
@@ -292,7 +292,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             for ($i = 0; $i < count(parent::$XmlRequirements->extension); $i++) {
 
                 if (!extension_loaded(parent::$XmlRequirements->extension[$i]->attributes()->name)) {
-                    parent::error(i18n('The plugin could not find the PHP extension <strong>', 'pim') . parent::$XmlRequirements->extension[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
+                    parent::error(sprintf(i18n('The plugin could not find the PHP extension <strong>%s</strong>. Because this is required by the plugin, it can not be installed.', 'pim'), parent::$XmlRequirements->extension[$i]->attributes()->name));
                 }
             }
         }
@@ -303,7 +303,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             for ($i = 0; $i < count(parent::$XmlRequirements->class); $i++) {
 
                 if (!class_exists(parent::$XmlRequirements->class[$i]->attributes()->name)) {
-                    parent::error(i18n('The plugin could not find the class <strong>', 'pim') . parent::$XmlRequirements->class[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
+                    parent::error(sprintf(i18n('The plugin could not find the class <strong>%s</strong>. Because this is required by the plugin, it can not be installed.', 'pim'), parent::$XmlRequirements->class[$i]->attributes()->name));
                 }
             }
         }
@@ -314,7 +314,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             for ($i = 0; $i < count(parent::$XmlRequirements->function); $i++) {
 
                 if (!function_exists(parent::$XmlRequirements->function[$i]->attributes()->name)) {
-                    parent::error(i18n('The plugin could not find the function <strong>', 'pim') . parent::$XmlRequirements->function[$i]->attributes()->name . i18n('</strong>. Because this is required by the plugin, it can not be installed.', 'pim'));
+                    parent::error(sprintf(i18n('The plugin could not find the function <strong>%s</strong>. Because this is required by the plugin, it can not be installed.', 'pim'), parent::$XmlRequirements->function[$i]->attributes()->name));
                 }
             }
         }
@@ -354,7 +354,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
     		$this->_PimPluginCollection->setWhere('active', '1');
     		$this->_PimPluginCollection->query();
     		if ($this->_PimPluginCollection->count() == 0) {
-    			parent::error(i18n('This plugin required the plugin', 'pim') . ' <strong>' . $depend . '</strong>.');
+    			parent::error(sprintf(i18n('This plugin required the plugin <strong>%s</strong>.'), $depend));
     		}
 
     		$plugin = $this->_PimPluginCollection->next();
@@ -363,7 +363,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
     		if (parent::$XmlDependencies->depend[$i]->attributes()->minversion) {
 
 	    		if (version_compare($plugin->get("version"), parent::$XmlDependencies->depend[$i]->attributes()->minversion, '<')) {
-	    			parent::error(i18n('You have to install', 'pim') . ' <strong>' . $depend . ' '. parent::$XmlDependencies->depend[$i]->attributes()->minversion . i18n('</strong> or higher to install this plugin!', 'pim'));
+	    			parent::error(sprintf(i18n('You have to install<strong>%s %</strong> or higher to install this plugin!', 'pim'), $depend, parent::$XmlDependencies->depend[$i]->attributes()->minversion));
 	    		}
     		}
 
@@ -371,7 +371,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
     		if (parent::$XmlDependencies->depend[$i]->attributes()->maxversion) {
 
     			if (version_compare($plugin->get("version"),  parent::$XmlDependencies->depend[$i]->attributes()->maxversion, '>')) {
-	    			parent::error(i18n('You have to install', 'pim') . ' <strong>' . $depend . ' '. parent::$XmlDependencies->depend[$i]->attributes()->maxversion . i18n('</strong> or lower to install this plugin!', 'pim'));
+	    			parent::error(sprintf(i18n('You have to install <strong>%s %s</strong> or lower to install this plugin!', 'pim'), $depend, parent::$XmlDependencies->depend[$i]->attributes()->maxversion));
     			}
     		}
 
@@ -488,7 +488,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
             // Check for valid area
             if (!in_array($attributes['area'], $this->_getInstalledAreas())) {
-                parent::error(i18n('Defined area', 'pim') . ' <strong>' . $attributes['area'] . '</strong> ' . i18n('are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'));
+                parent::error(sprintf(i18n('Defined area <strong>%s</strong> are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'), $attributes['area']));
             }
 
             // Create a new entry
@@ -517,7 +517,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
             // Check for valid area
             if (!in_array($attributes['area'], $this->_getInstalledAreas())) {
-                parent::error(i18n('Defined area', 'pim') . ' <strong>' . $attributes['area'] . '</strong> ' . i18n('are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'));
+                parent::error(sprintf(i18n('Defined area <strong>%s</strong> are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'), $attributes['area']));
             }
 
             // Create a new entry at *_files
@@ -575,7 +575,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
             // Check for valid area
             if (!in_array($attributes['area'], $this->_getInstalledAreas())) {
-                parent::error(i18n('Defined area', 'pim') . ' <strong>' . $attributes['area'] . '</strong> ' . i18n('are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'));
+                parent::error(sprintf(i18n('Defined area <strong>%s</strong> are not found on your CONTENIDO installation. Please contact your plugin author.', 'pim'), $attributes['area']));
             }
 
             // Create a new entry at *_nav_sub
