@@ -156,7 +156,8 @@ class cPasswordRequest {
         // if feature is not enabled, do nothing
         if (true === $this->_isEnabled) {
             // check if confirmation link from mail used
-            if (isset($_GET['pw_reset'])) {
+            if (isset($_GET['pw_reset'])
+            && '' !== $_GET['pw_reset']) {
                 // check if requests found
                 $aRequests = $this->_getCurrentRequests();
                 if (count($aRequests) > 0) {
