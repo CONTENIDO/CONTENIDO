@@ -360,7 +360,7 @@ class cPasswordRequest {
                 $requests = $oApiPasswordRequestCol->fetchAvailableRequests($uid);
 
                 // get amount of max password reset requests
-                if (false === $resetThreshold = getEffectiveSetting('pw_request', 'reset_threshold', false)
+                if (false === ($resetThreshold = getEffectiveSetting('pw_request', 'reset_threshold', false))
                 || '' === $resetThreshold) {
                     // use 4 as default value
                     $resetThreshold = 4;
