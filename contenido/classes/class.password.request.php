@@ -280,7 +280,7 @@ class cPasswordRequest {
     }
 
     /**
-     * Getter function to obtain an array of all 
+     * Getter function to obtain an array of all current user password reset requests
      */
     protected function _getCurrentRequests() {
         $oApiUserPasswordRequest = new cApiUserPasswordRequestCollection();
@@ -338,7 +338,7 @@ class cPasswordRequest {
 
                     // check if password request is too old and considered outdated
                     // by default 1 day old requests are outdated
-                    if (false === $outdatedStr = getEffectiveSetting('pw_request', 'outdated_threshold', false)
+                    if (false === ($outdatedStr = getEffectiveSetting('pw_request', 'outdated_threshold', false))
                     || '' === $outdatedStr) {
                         $outdatedStr = '-1 day';
                     }
@@ -473,6 +473,41 @@ class cPasswordRequest {
             return;
         }
 
+        $oPasswordRequest = new cApiUserPasswordRequestCollection();
+        // check if username matches validation token
+        // user alice must not be able to set password for a different user bob
+
+        // get available requests for all users
+        if (null === ($requests = $this->_getCurrentRequests())) {
+            // no password requests found but do not tell user
+            $this->_tpl->set('s', 'RESET_MESSAGE', i18n('New password has been set.'));
+            $this->_tpl->set('s', 'RESET_LABEL', '');
+            $this->_tpl->set('s', 'RESET_FORM', '');
+            return;
+        }
+
+        // check if passed get parameter matches request for one user
+        $validUser = false;
+        foreach ($requests as $request) {
+            // match validation token against database password reset entry
+            if ($request->get('validation_token') === $_GET['pw_reset'])
+            {
+                // we found the used token
+                if ($oApiUser->get($oApiUser->primaryKey) === $request->get($oApiUser->primaryKey)) {
+                    // user entered in form matches user related to validation token
+                    $validUser = true;
+                }
+            }
+        }
+        if (false === $validUser) {
+            // no password requests found for this user
+            // but let the user think it could set password for different user
+            $this->_tpl->set('s', 'RESET_MESSAGE', i18n('New password has been set.'));
+            $this->_tpl->set('s', 'RESET_LABEL', '');
+            $this->_tpl->set('s', 'RESET_FORM', '');
+            return;
+        }
+
         // try to set password
         $res = $oApiUser->setPassword($pw);
         
@@ -491,7 +526,6 @@ class cPasswordRequest {
             $this->_tpl->set('s', 'RESET_LABEL', '');
             $this->_tpl->set('s', 'RESET_FORM', '');
             // remove all password requests for this user from database
-            $oPasswordRequest = new cApiUserPasswordRequestCollection();
             $oPasswordRequest->deleteByUserId($oApiUser->get($oApiUser->primaryKey));
             $msg = i18n('New password has been set.');
         } else {
