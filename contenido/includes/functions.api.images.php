@@ -376,7 +376,7 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
     }
 
     $frontendURL = cRegistry::getFrontendUrl();
-    $filetype = substr($filename, strlen($filename) - 4, 4);
+    $filetype = cFileHandler::getExtension($filename);
     $md5 = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
@@ -394,7 +394,7 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
     list($targetX, $targetY) = cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand);
 
     // If is animated gif resize first frame
-    if ($filetype == '.gif') {
+    if ($filetype == 'gif') {
         if (cApiImageIsAnimGif($filename)) {
             $filename .= '[0]';
         }

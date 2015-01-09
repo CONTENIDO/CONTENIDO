@@ -351,7 +351,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $text = $this->_getArtContent($article, $this->_settings['teaser_source_text'], $this->_settings['teaser_source_text_count']);
         $imageId = $this->_getArtContent($article, $this->_settings['teaser_source_image'], $this->_settings['teaser_source_image_count']);
         $date = $this->_getArtContent($article, $this->_settings['teaser_source_date'], $this->_settings['teaser_source_date_count']);
-		
+
 		// trim whitespace in front
 		$date = trim($date);
         $date = new cContentTypeDate($date, 1, array('CMS_DATE'));
