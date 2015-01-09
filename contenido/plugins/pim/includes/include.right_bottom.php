@@ -119,9 +119,9 @@ while (($plugin = $oItem->next()) !== false) {
     $pagePlugins->set('s', 'COPYRIGHT', $plugin->get('copyright'));
     $pagePlugins->set('s', 'INSTALLED', $date);
     $pagePlugins->set('s', 'EXECUTIONORDER', $plugin->get("executionorder"));
-	
-	$pagePlugins->set('s', 'LANG_SORT_DOWN', i18n('Set execution order down', 'pim'));
-	$pagePlugins->set('s', 'LANG_SORT_UP', i18n('Set execution order up', 'pim'));	
+
+    $pagePlugins->set('s', 'LANG_SORT_DOWN', i18n('Set execution order down', 'pim'));
+    $pagePlugins->set('s', 'LANG_SORT_UP', i18n('Set execution order up', 'pim'));	
 
     $pagePlugins->set('s', 'LANG_INSTALLED', i18n('Installed since', 'pim'));
     $pagePlugins->set('s', 'LANG_AUTHOR', i18n('Author', 'pim'));
@@ -154,8 +154,8 @@ while (($plugin = $oItem->next()) !== false) {
 // get extracted plugins
 if (is_dir($cfg['path']['plugins'])) {
     if (false !== ($handle = cDirHandler::read($cfg['path']['plugins']))) {
-	
-		$i = 0;
+
+        $i = 0;
         foreach ($handle as $pluginFoldername) {
             $pluginPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername;
             $tempPath = $pluginPath . '/plugin.xml';
@@ -166,7 +166,7 @@ if (is_dir($cfg['path']['plugins'])) {
 
                 $pagePlugins->set('s', 'LANG_FOLDERNAME', i18n('Foldername', 'pim'));
                 $pagePlugins->set('s', 'LANG_TOOLTIP_INSTALL', i18n('Install extracted plugin', 'pim'));
-				$pagePlugins->set('s', 'LANG_INSTALL', i18n('Install', 'pim'));
+                $pagePlugins->set('s', 'LANG_INSTALL', i18n('Install', 'pim'));
                 $pagePlugins->set('s', 'LANG_TOOLTIP_REMOVE', i18n('Uninstall extracted plugin (deleted plugin files from filesystem)', 'pim'));
 				$pagePlugins->set('s', 'LANG_REMOVE', i18n('Remove from filesystem', 'pim'));
 				$pagePlugins->set('s', 'LANG_WRITABLE', i18n('Writeable', 'pim'));
@@ -182,7 +182,7 @@ if (is_dir($cfg['path']['plugins'])) {
                     $pagePlugins->set('s', 'LANG_WRITABLE_TEXT', '(<span class="settingWrong">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>)');
                 }
 
-				$pagePlugins->set('s', 'IDPLUGIN', $i++);
+                $pagePlugins->set('s', 'IDPLUGIN', $i++);
                 $pluginsExtracted .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_extracted.html', true, false);
             }
         }
