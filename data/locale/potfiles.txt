@@ -102,6 +102,7 @@
 ./classes/contenido/class.type.php
 ./classes/contenido/class.upload.meta.php
 ./classes/contenido/class.upload.php
+./classes/contenido/class.user.passwordrequest.php
 ./classes/contenido/class.user.php
 ./classes/contenido/class.user.property.php
 ./classes/content_types/class.content.type.abstract.php
@@ -418,9 +419,14 @@
 ./classes/xml/class.xml.base.php
 ./classes/xml/class.xml.reader.php
 ./classes/xml/class.xml.writer.php
+./CON-1690testcase.php
+./CON-1890testcase.php
+./CON-1967testcase.php
+./CON-1974testcase.php
 ./cronjobs/advance_workflow.php
 ./cronjobs/index.php
 ./cronjobs/linkchecker.php
+./cronjobs/maintain_passwort_reset_requests.php
 ./cronjobs/move_articles.php
 ./cronjobs/move_old_stats.php
 ./cronjobs/optimize_database.php
@@ -835,6 +841,7 @@
 ./tools/mpAutoloaderClassMap/mpClassMapFileCreatorContenido.php
 ./tools/mpAutoloaderClassMap/mpClassTypeFinder.php
 ./tools/phpcompatinfo.php
+./upl/testäüöu!.html
 ./xml/index.php
 ./xml/legend.xml
 ./xml/navigation.xml
@@ -846,6 +853,7 @@
 ../data/config/production/config.chains.php
 ../data/config/production/config.clients.php
 ../data/config/production/config.http_check.php
+../data/config/production/config.local.php
 ../data/config/production/config.misc.php
 ../data/config/production/config.path.php
 ../data/config/production/config.php

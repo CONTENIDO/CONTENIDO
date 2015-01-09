@@ -27,6 +27,8 @@ i18n("Port")
 i18n("Sender mail")
 i18n("Sender name")
 i18n("Use passwordrequest in Backend")
+i18n("User password reset threshold")
+i18n("When to consider a password reset request to be outdated")
 i18n("Activate maintenance mode")
 i18n("Use CodeMirror for code highlighting")
 i18n("Default client (ID)")
@@ -167,6 +169,16 @@ i18n("Show only CSS/JS/HTML files at areas CSS/JS/HTML")
                 <label>Use passwordrequest in Backend</label>
                 <group>Backend</group>
             </enable>
+            <reset_threshold>
+                <values>integer</values>
+                <label>User password reset threshold</label>
+                <group>Backend</group>
+            </reset_threshold>
+            <outdated_threshold>
+                <values>label</values>
+                <label>When to consider a password reset request to be outdated</label>
+                <group>Backend</group>
+            </outdated_threshold>
         </pw_request>
         <maintenance>
             <mode>

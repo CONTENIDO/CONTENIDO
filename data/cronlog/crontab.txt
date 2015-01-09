@@ -4,3 +4,4 @@
 0 0 * * * optimize_database.php
 */5 * * * * setfrontenduserstate.php
 #02 1 * * * linkchecker.php
+0 0 * * * maintain_password_reset_requests.php
