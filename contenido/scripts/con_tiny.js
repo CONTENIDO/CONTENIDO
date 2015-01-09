@@ -472,7 +472,7 @@
             Con.Tiny.activeId = obj.id;
             Con.Tiny.activeObject = obj;
 
-            // Show thiny and focus it
+            // Show tiny and focus it
             if (Con.Tiny.activeId) {
                 tinymce.execCommand('mceAddControl', false, Con.Tiny.activeId);
                 Con.Tiny.setFocus();
