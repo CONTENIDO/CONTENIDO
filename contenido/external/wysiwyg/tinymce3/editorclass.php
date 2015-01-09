@@ -20,7 +20,7 @@ cInclude('includes', 'functions.lang.php');
 /**
  * The object cTinyMCEEditor is a wrapper class to the TinyMCE WYSIWYG Editor.
  * Attributes can be defined to generate JavaScript options and functions to initialise the global
- * tinyMCE object in file ./contenido/external/wysiwyg/tinymce2/tinymce.tpl.html.
+ * tinyMCE object in file ./contenido/external/wysiwyg/tinymce3/tinymce.tpl.html.
  *
  * All settings accepted by tinyMCE and its plugins may be specified using system, client
  * group or user property/setting.
