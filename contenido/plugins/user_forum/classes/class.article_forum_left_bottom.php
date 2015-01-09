@@ -40,13 +40,7 @@ class ArticleForumLeftBottom extends cGuiPage {
             echo UserForum::i18n("NOENTRY");
         }
 
-        // $this->addScript('location.js');
-        $list = new cHTMLList();
-        global $area;
-        $ar = array();
         $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
 
         // get all forms of current client in current language
         $forms = $arts->getAllCommentedArticles();

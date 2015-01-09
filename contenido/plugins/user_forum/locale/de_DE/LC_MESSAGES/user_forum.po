@@ -83,6 +83,9 @@ msgstr "Parameter"
 msgid "CONTENT"
 msgstr "Inhalt"
 
+msgid "MODMODE"
+msgstr "Mit aktiviertem Moderatormodus können hier die neusten Beiträge moderiert werden."
+
 ; class.article_forum_left_bottom.php
 
 msgid "NOENTRY"
