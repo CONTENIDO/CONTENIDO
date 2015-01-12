@@ -145,7 +145,7 @@ class UserForumArticle {
         $this->_idlang = cRegistry::getLanguageId();
         $this->_collection = new ArticleForumCollection();
         $this->_qoute = ($this->_collection->getQuoteState($this->_idart));
-        $this->_modMode = ($this->_collection->getModeModeActive($this->_idart));
+        $this->_modMode = ($this->_collection->getModModeActive($this->_idart));
     }
 
     /**
