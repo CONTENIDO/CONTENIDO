@@ -89,7 +89,7 @@ class UserForumArticle {
      */
     protected $_currentRealname;
 
-    /**
+    /**e
      *
      * @access protected
      * @var bool counter
