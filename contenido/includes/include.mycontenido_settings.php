@@ -85,19 +85,19 @@ if ($action == "mycontenido_editself") {
         $user->setUserProperty("dateformat", "full", $format);
     } else {
         $notidisplayed = true;
-        $cpage->displayError(i18n("Date/Time format not correct."));
+        $cpage->displayError(i18n("Date/Time format is not correct."));
     }
     if (true === cString::validateDateFormat($formatdate)) {
         $user->setUserProperty("dateformat", "date", $formatdate);
     } else {
         $notidisplayed = true;
-        $cpage->displayError(i18n("Date format format not correct."));
+        $cpage->displayError(i18n("Date format is not correct."));
     }
     if (true === cString::validateDateFormat($formattime)) {
         $user->setUserProperty("dateformat", "time", $formattime);
     } else {
         $notidisplayed = true;
-        $cpage->displayError(i18n("Time format not correct."));
+        $cpage->displayError(i18n("Time format is not correct."));
     }
 
     if ($user->store() && !$notidisplayed) {

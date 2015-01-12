@@ -199,6 +199,8 @@ return array(
     'cApiUser' => 'contenido/classes/contenido/class.user.php',
     'cApiUserPropertyCollection' => 'contenido/classes/contenido/class.user.property.php',
     'cApiUserProperty' => 'contenido/classes/contenido/class.user.property.php',
+    'cApiUserPasswordRequestCollection' => 'contenido/classes/contenido/class.user.passwordrequest.php',
+    'cApiUserPasswordRequest' => 'contenido/classes/contenido/class.user.passwordrequest.php',
     'cContentTypeAbstract' => 'contenido/classes/content_types/class.content.type.abstract.php',
     'cContentTypeAbstractTabbed' => 'contenido/classes/content_types/class.content.type.abstract.tabbed.php',
     'cContentTypeDate' => 'contenido/classes/content_types/class.content.type.date.php',
