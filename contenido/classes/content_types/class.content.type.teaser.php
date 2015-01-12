@@ -352,10 +352,14 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $imageId = $this->_getArtContent($article, $this->_settings['teaser_source_image'], $this->_settings['teaser_source_image_count']);
         $date = $this->_getArtContent($article, $this->_settings['teaser_source_date'], $this->_settings['teaser_source_date_count']);
 
-		// trim whitespace in front
-		$date = trim($date);
-        $date = new cContentTypeDate($date, 1, array('CMS_DATE'));
-        $date = $date->generateViewCode();
+        // check if CMS type is date before trying to parse it as date
+        if ('CMS_DATE' === $this->_settings['teaser_source_date']) {
+            $date = trim($date);
+            $date = new cContentTypeDate($date, 1, array('CMS_DATE'));
+            $date = $date->generateViewCode();
+        } else {
+            $date = trim(strip_tags($date));
+        }
 
         $idArt = $article->getField('idart');
         $published = $article->getField('published');
