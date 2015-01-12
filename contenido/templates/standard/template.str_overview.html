@@ -555,7 +555,7 @@ function confDel(idcat, idparent, sName) {
                 var postid = attr['data-postid'];
                 var idcat = attr['data-idcat'];
 
-                // get posistion of selected element
+                // get position of selected element
                 if (idcat_elem == idcat) {
                     var j = i + 1;
 
@@ -602,6 +602,7 @@ function confDel(idcat, idparent, sName) {
 
             var idParts = item.id.split('_');
             var parentId = item.getAttribute('data-parentid');
+            // category trees must not be moved
             if (parentId == 0) {
                 item.removeAttribute('class');
             }
