@@ -22,6 +22,9 @@ $Id$
 
 - Copy the language packs into directory /contenido/external/wysiwyg/tinymce3/jscripts/
 
+- Download the compressor files from http://www.tinymce.com/download/compressors.php
+  and put them into /contenido/external/wysiwyg/tinymce3/jscripts/tinymce/
+
 - Inherit the changes in file ./contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advlink/js/advlink.js (see below)
 
 ----------------------------------------------------------------------
