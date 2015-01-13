@@ -81,11 +81,10 @@ if ($currentuser->getField('wysi') == 1) {
     $oTextarea = new cHTMLTextarea($editor_name, $editor_content);
     $oTextarea->setId($editor_name);
 
-    $bgColor       = getEffectiveSetting('wysiwyg', 'tinymce-backgroundcolor', 'white');
     $editor_width  = getEffectiveSetting('wysiwyg', 'tinymce-width',  '600');
     $editor_height = getEffectiveSetting('wysiwyg', 'tinymce-height', '480');
 
-    $oTextarea->setStyle('width: '.$editor_width.'px; height: '.$editor_height.'px; background-color: '.$bgColor.';');
+    $oTextarea->setStyle('width: '.$editor_width.'px; height: '.$editor_height.'px;');
 
     echo $oTextarea->render();
 }
