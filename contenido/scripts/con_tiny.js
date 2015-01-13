@@ -117,12 +117,6 @@
          */
         imageUrl: '',
         /**
-         * Url to CONTENIDO flash browser
-         * @property flashUrl
-         * @type {String}
-         */
-        flashUrl: '',
-        /**
          * Url to CONTENIDO media browser
          * @property mediaUrl
          * @type {String}
@@ -221,14 +215,6 @@
                     break;
                 case 'file':
                     Con.Tiny.fbPopupWindow = window.open(Con.Tiny.fileUrl, 'filebrowser', 'dialog=yes,resizable=yes');
-                    Con.Tiny.fbFieldName = fieldName;
-                    Con.Tiny.fbWindow = win;
-                    Con.Tiny.fbIntervalHandle = window.setInterval(function() {
-                        Con.Tiny.updateImageFilebrowser();
-                    }, 250);
-                    break;
-                case 'flash':
-                    Con.Tiny.fbPopupWindow = window.open(Con.Tiny.flashUrl, 'filebrowser', 'dialog=yes,resizable=yes');
                     Con.Tiny.fbFieldName = fieldName;
                     Con.Tiny.fbWindow = win;
                     Con.Tiny.fbIntervalHandle = window.setInterval(function() {
@@ -653,7 +639,6 @@
     window.fb_win = Con.Tiny.fbWindow;
     window.file_url = Con.Tiny.fileUrl;
     window.image_url = Con.Tiny.imageUrl;
-    window.flash_url = Con.Tiny.flashUrl;
     window.media_url = Con.Tiny.mediaUrl;
     window.frontend_path = Con.Tiny.frontendPath;
     window.iIdartlang = Con.Tiny.idartlang;

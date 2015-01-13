@@ -32,11 +32,10 @@ cInclude('includes', 'functions.lang.php');
  * file_browser_callback
  * external_link_list_url
  * external_image_list_url
- * flash_external_list_url
  *
  * The following settings are only used in CONTENIDO:
  * contenido_toolbar_mode: full, simple, mini, custom
- * contenido_lists: link,image,flash
+ * contenido_lists: link,image
  * contenido_height_html
  * contenido_height_head
  * See backend.customizing.html for details
@@ -124,7 +123,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
             $this->_setSetting("content_css", $this->_aSettings["tinymce-stylesheet-file"], true);
         }
 
-        // Set lists (for links, images and flash elements)
+        // Set lists (for links and image elements)
         $this->setLists();
 
         // Set user defined styles (be sure, that previous and SPAW syntax works)
@@ -244,9 +243,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         }
         if (in_array("image", $aLists)) {
             $this->_setSetting("external_image_list_url", $this->_sBaseURL . "list.php?mode=image&lang=" . $lang . "&client=" . $client . "#", true);
-        }
-        if (in_array("flash", $aLists)) {
-            $this->_setSetting("flash_external_list_url", $this->_sBaseURL . "list.php?mode=flash&lang=" . $lang . "&client=" . $client . "#", true);
         }
         if (in_array("media", $aLists)) {
             $this->_setSetting("media_external_list_url", $this->_sBaseURL . "list.php?mode=media&lang=" . $lang . "&client=" . $client . "#", true);
@@ -477,7 +473,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         $oTemplate = new cTemplate();
         $oTemplate->set('s', 'IMAGEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
         $oTemplate->set('s', 'FILEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
-        $oTemplate->set('s', 'FLASHBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
         $oTemplate->set('s', 'MEDIABROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
         $oTemplate->set('s', 'FRONTEND_PATH', $cfgClient[$client]["path"]["htmlpath"]);
 
