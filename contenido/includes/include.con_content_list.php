@@ -43,6 +43,14 @@ $allowedContentTypes = array(
 
 $page = new cGuiPage("con_content_list");
 
+$jslibs = '';
+foreach ($cfg['path']['wysiwyg_js_html'] as $onejs) {
+    $jslibs .= '<script src="' . $onejs . '" type="text/javascript"></script>';
+}
+unset($onejs);
+$page->set('s', '_WYSIWYG_JS_TAGS_', $jslibs);
+unset($jslibs);
+
 if (!($perm->have_perm_area_action($area, "savecontype") || $perm->have_perm_area_action_item($area, "savecontype", $idcat) || $perm->have_perm_area_action("con", "deletecontype") || $perm->have_perm_area_action_item("con", "deletecontype", $idcat))) {
     // $page->displayCriticalError(i18n("Permission denied")); (Apparently one of the action files already displays this error message)
     $page->abortRendering();
@@ -354,8 +362,8 @@ $currentTypes = _getCurrentTypes($currentTypes, $aList);
 // Contenido --> Articles --> Editor)
 $markSubItem = markSubMenuItem(4, true);
 
-// Include tiny class
-include($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
+// Include wysiwyg editor class
+include($cfg['path']['wysiwyg_editorclass']);
 $oEditor = new cTinyMCEEditor('', '');
 $oEditor->setToolbar('inline_edit');
 

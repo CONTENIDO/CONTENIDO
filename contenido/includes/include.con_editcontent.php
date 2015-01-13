@@ -72,7 +72,7 @@ if ($action == 10) {
 $markSubItem = markSubMenuItem(5, true);
 
 // Include tiny class
-include($backendPath . 'external/wysiwyg/tinymce3/editorclass.php');
+include($cfg['path']['wysiwyg_editorclass']);
 $oEditor = new cTinyMCEEditor('', '');
 $oEditor->setToolbar('inline_edit');
 
@@ -82,6 +82,14 @@ $sConfigFullscreen = $oEditor->getConfigFullscreen();
 
 // Replace vars in Script
 $oScriptTpl = new cTemplate();
+
+$jslibs = '';
+foreach ($cfg['path']['wysiwyg_js_html'] as $onejs) {
+    $jslibs .= '<script src="' . $onejs . '" type="text/javascript"></script>';
+}
+unset($onejs);
+$oScriptTpl->set('s', '_WYSIWYG_JS_TAGS_', $jslibs);
+unset($jslibs);
 
 $oScriptTpl->set('s', 'JS_EDITCONTENT', $markSubItem);
 

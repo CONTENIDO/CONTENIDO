@@ -52,6 +52,9 @@ $cfg['path']['all_wysiwyg']             = $cfg['path']['contenido']  . 'external
 /* The server path to the desired WYSIWYG-Editor */
 $cfg['path']['wysiwyg']                 = $cfg['path']['all_wysiwyg'] . 'tinymce3/';
 
+/* The server path to the desired WYSIWYG-Editor class */
+$cfg['path']['wysiwyg_editorclass']     = $cfg['path']['wysiwyg'] . 'editorclass.php';
+
 /* The web server path to the CONTENIDO backend */
 $cfg['path']['contenido_fullhtml']      = '{CONTENIDO_WEB}/contenido/';
 
@@ -61,6 +64,9 @@ $cfg['path']['all_wysiwyg_html']        = $cfg['path']['contenido_fullhtml'] . '
 /* The web path to the desired WYSIWYG-Editor */
 $cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . 'tinymce3/';
 
+/* The web path to the desired WYSIWYG-Editor js libraries*/
+$cfg['path']['wysiwyg_js_html']            = array($cfg['path']['contenido_fullhtml'] . 'scripts/con_tiny.js',
+        $cfg['path']['wysiwyg_html'] . 'jscripts/tiny_mce/tiny_mce.js');
 
 
 /* Section 2: Database settings
