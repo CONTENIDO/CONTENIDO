@@ -479,6 +479,8 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         // GZIP support options
         $sGZIPScript = '';
         if ($this->_bUseGZIP) {
+            // tinyMCE_GZ.init call must be placed in its own script tag
+            // User defined plugins and themes should be identical in both "inits"
             $sGZIPScript = <<<JS
 <script type="text/javascript">
 tinyMCE_GZ.init({

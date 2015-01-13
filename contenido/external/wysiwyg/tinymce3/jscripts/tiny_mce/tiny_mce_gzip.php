@@ -15,7 +15,30 @@
  * @link       http://www.contenido.org
  */
 
-defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
+}
+
+// CONTENIDO startup process
+include_once('../../../../../includes/startup.php');
+
+$backendPath = cRegistry::getBackendPath();
+
+$cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
+
+cInclude('includes', 'functions.api.php');
+
+cRegistry::bootstrap(array(
+'sess' => 'cSession',
+'auth' => 'cAuthHandlerBackend',
+'perm' => 'cPermission'
+));
+
+i18nInit($cfg['path']['contenido_locale'], $belang);
+
+require_once($backendPath . $cfg['path']['includes'] . 'functions.includePluginConf.php');
+
+require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
     // Set the error reporting to minimal.
     @error_reporting(E_ERROR | E_WARNING | E_PARSE);
