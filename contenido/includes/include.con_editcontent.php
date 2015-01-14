@@ -71,20 +71,39 @@ if ($action == 10) {
 // Contenido --> Articles --> Editor)
 $markSubItem = markSubMenuItem(5, true);
 
-// Include tiny class
+// Include wysiwyg editor class
+if (false === ($wysiwygeditor = getEffectiveSetting('wysiwyg', 'editor', false))) {
+    $wysiwygeditor = $cfg['wysiwyg']['editor'];
+}
+// tinymce 3 not autoloaded, tinymce 4 and all custom editors must be
+if ('tinymce3' !== $wysiwygeditor) {
+    include($cfg['path'][$wysiwygeditor . '_editorclass']);
+}
 include($cfg['path']['wysiwyg_editorclass']);
-$oEditor = new cTinyMCEEditor('', '');
-$oEditor->setToolbar('inline_edit');
+switch ($wysiwygeditor) {
+    case 'tinymce4':
+        $oEditor = new cTinyMCE4Editor('', '');
+        $oEditor->setToolbar('inline_edit');
 
-// Get configuration for popup und inline tiny
-$sConfigInlineEdit = $oEditor->getConfigInlineEdit();
-$sConfigFullscreen = $oEditor->getConfigFullscreen();
+        // Get configuration for popup and inline tiny
+        $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
+        $sConfigFullscreen = $oEditor->getConfigFullscreen();
+
+        break;
+    default:
+        $oEditor = new cTinyMCEEditor('', '');
+        $oEditor->setToolbar('inline_edit');
+
+        // Get configuration for popup and inline tiny
+        $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
+        $sConfigFullscreen = $oEditor->getConfigFullscreen();
+}
 
 // Replace vars in Script
 $oScriptTpl = new cTemplate();
 
 $jslibs = '';
-foreach ($cfg['path']['wysiwyg_js_html'] as $onejs) {
+foreach ($cfg['path'][$wysiwygeditor . '_scripts'] as $onejs) {
     $jslibs .= '<script src="' . $onejs . '" type="text/javascript"></script>';
 }
 unset($onejs);

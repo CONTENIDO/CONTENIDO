@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the configuration variables for pathes to important directories.
+ * This file contains the configuration variables for paths to important directories.
  *
  * @package          Core
  * @subpackage       Backend_ConfigFile
@@ -66,5 +66,16 @@ $cfg['path']['locale']              = 'data/locale/';
 $cfg['path']['contenido_locale']    = $cfg['path']['frontend'] . '/' . $cfg['path']['locale'];
 
 $cfg['path']['contenido_temp']      = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
+
+$cfg['path']['tinymce3_scripts']    = array($cfg['path']['contenido_fullhtml'] . 'scripts/con_tiny.js',
+                                       $cfg['path']['all_wysiwyg'] . 'tinymce3/jscripts/tiny_mce/tiny_mce.js');
+
+$cfg['path']['tinymce3_editor'] = $cfg['path']['all_wysiwyg'] . 'tinymce3/editor.php';
+$cfg['path']['tinymce3_editorclass'] = $cfg['path']['all_wysiwyg'] . 'tinymce3/editorclass.php';
+
+$cfg['path']['tinymce4_editor'] = $cfg['path']['all_wysiwyg'] . 'tinymce4/contenido/editor.php';
+$cfg['path']['tinymce4_scripts']    = array($cfg['path']['all_wysiwyg_html'] . 'tinymce4/contenido/js/con_tiny.js',
+        $cfg['path']['all_wysiwyg_html'] . 'tinymce4/tinymce/js/tinymce/tinymce.min.js');
+$cfg['path']['tinymce4_editorclass'] = $cfg['path']['all_wysiwyg'] . 'tinymce4/contenido/classes/editorclass.php';
 
 ?>

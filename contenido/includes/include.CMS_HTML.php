@@ -89,7 +89,14 @@ ob_start();
 
             <div class="cms_edit_row">
 
-<?php include($cfg['path']['wysiwyg'] . 'editor.php'); ?>
+<?php
+// either load default editor or a user selected one
+if (false === ($editor = getEffectiveSetting('wysiwyg', 'editor', false))) {
+    include($cfg['path'][$cfg['wysiwyg']['editor'] . '_editor']);
+} else {
+    include($cfg['path'][$editor . '_editor']);
+}
+?>
 
             </div>
 
