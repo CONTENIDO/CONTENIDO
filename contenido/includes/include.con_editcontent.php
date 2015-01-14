@@ -76,10 +76,9 @@ if (false === ($wysiwygeditor = getEffectiveSetting('wysiwyg', 'editor', false))
     $wysiwygeditor = $cfg['wysiwyg']['editor'];
 }
 // tinymce 3 not autoloaded, tinymce 4 and all custom editors must be
-if ('tinymce3' !== $wysiwygeditor) {
+if ('tinymce3' === $wysiwygeditor) {
     include($cfg['path'][$wysiwygeditor . '_editorclass']);
 }
-include($cfg['path']['wysiwyg_editorclass']);
 switch ($wysiwygeditor) {
     case 'tinymce4':
         $oEditor = new cTinyMCE4Editor('', '');

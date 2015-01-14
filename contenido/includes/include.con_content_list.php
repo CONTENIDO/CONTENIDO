@@ -371,7 +371,7 @@ if (false === ($wysiwygeditor = getEffectiveSetting('wysiwyg', 'editor', false))
 }
 // tinymce 3 not autoloaded, tinymce 4 is
 // use blacklist in case customer has own editor that is not autoloaded
-if ('tinymce4' !== $wysiwygeditor) {
+if ('tinymce3' === $wysiwygeditor) {
     include($cfg['path'][$wysiwygeditor . '_editorclass']);
 }
 switch ($wysiwygeditor) {
