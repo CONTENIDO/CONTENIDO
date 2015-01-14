@@ -166,7 +166,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         }
 
         // _setSetting checks, if value is empty
-
         if ($autoFullElements === 'true') {
             $this->_setSetting('valid_elements', '*[*]');
             $this->_setSetting('extended_valid_elements', '*[*]');

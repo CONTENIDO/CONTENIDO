@@ -301,7 +301,7 @@
          */
         storeCurrentTinyContent: function() {
             // Store last tiny changes if tiny is still open
-            var editor = tinymce.getInstanceById(Con.Tiny.activeId);
+            var editor = tinymce.get(Con.Tiny.activeId);
 
             if (editor) {
                 var content = editor.getContent();
@@ -416,7 +416,7 @@
          */
         closeTiny: function() {
             //check if tiny is currently open
-            if (Con.Tiny.activeId && tinymce.getInstanceById(Con.Tiny.activeId)) {
+            if (Con.Tiny.activeId && tinymce.get(Con.Tiny.activeId)) {
                 //save current tiny content to js var
                 Con.Tiny.storeCurrentTinyContent();
 
@@ -474,7 +474,7 @@
          * @static
          */
         setFocus: function() {
-            var activeTinyId = tinymce.getInstanceById(Con.Tiny.activeId);
+            var activeTinyId = tinymce.get(Con.Tiny.activeId);
 
             if (!activeTinyId) {
                 window.setTimeout(function () {
