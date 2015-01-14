@@ -43,16 +43,16 @@ cInclude('includes', 'functions.lang.php');
  * @package    Core
  * @subpackage Backend
  */
-public class cTinyMCE4Editor extends cWYSIWYGEditor {
+class cTinyMCE4Editor extends cWYSIWYGEditor {
     /**
      * Stores base url of page
      */
-    var $_sBaseURL;
+    private $_sBaseURL;
 
     /**
      * Stores, if GZIP compression will be used
      */
-    bool $_bUseGZIP = false;
+    private $_bUseGZIP = false;
 
     public function __construct($sEditorName, $sEditorContent) {
         global $belang, $cfg, $cfgClient, $client, $lang, $idart;
@@ -61,10 +61,10 @@ public class cTinyMCE4Editor extends cWYSIWYGEditor {
         $this->_setEditor("tinymce4");
 
         // Retrieve all settings for tinymce
-        $this->_aSettings = getEffectiveSettingsByType("tinymce");
+        $this->_aSettings = getEffectiveSettingsByType("tinymce4");
 
-        // For compatibility, read settings in previous syntax also (< V4.7, type "wysiwyg" vs. "tinymce")
-        $this->_aSettings = array_merge(getEffectiveSettingsByType("wysiwyg"), $this->_aSettings);
+//         // For compatibility, read settings in previous syntax also (< V4.7, type "wysiwyg" vs. "tinymce")
+//         $this->_aSettings = array_merge(getEffectiveSettingsByType("wysiwyg"), $this->_aSettings);
 
         $this->_setSetting("article_url_suffix", 'front_content.php?idart=' . $idart, true); # modified 23.10.2006
 
@@ -73,9 +73,9 @@ public class cTinyMCE4Editor extends cWYSIWYGEditor {
         $aPathFragments = explode('/', $cfgClient[$client]["path"]["htmlpath"]);
         $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css");
 
-        $this->_setSetting("theme", "advanced");
-        $this->_setSetting("theme_advanced_toolbar_location", "top");
-        $this->_setSetting("theme_advanced_path_location", "bottom");
+        $this->_setSetting("theme", "modern");
+//         $this->_setSetting("theme_advanced_toolbar_location", "top");
+//         $this->_setSetting("theme_advanced_path_location", "bottom");
         $this->_setSetting("remove_script_host", false);
         $this->_setSetting("file_browser_callback", "Con.Tiny.customFileBrowserCallback", true);
         //$this->_setSetting("urlconverter_callback", "Con.Tiny.customURLConverterCallback");
@@ -276,10 +276,10 @@ public class cTinyMCE4Editor extends cWYSIWYGEditor {
         switch ($sMode) {
             case "full": // Show all options
                 $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
-                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,advhr,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
+                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
                 $this->_setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
-                //table,save,advhr,advimage,advlink,pagebreak,style,layer,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template
-                $this->_setSetting("plugins", "table,save,advhr,advimage,advlink,pagebreak,style,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups", true);
+                //table,save,pagebreak,layer,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template
+                $this->_setSetting("plugins", "table,save,pagebreak,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,template", true);
                 $this->_setSetting("theme_advanced_toolbar_align", "left", true);
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce");
@@ -291,10 +291,10 @@ public class cTinyMCE4Editor extends cWYSIWYGEditor {
 
             case "fullscreen": // Show all options
                 $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
-                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,advhr,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
+                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
                 $this->_setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
-                //table,save,advhr,advimage,advlink,pagebreak,style,layer,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template
-                $this->_setSetting("plugins", "table,save,advhr,advimage,advlink,pagebreak,style,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups", true);
+                //table,save,pagebreak,layer,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template
+                $this->_setSetting("plugins", "table,save,pagebreak,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,template", true);
                 $this->_setSetting("theme_advanced_toolbar_align", "left", true);
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_fullscreen");
@@ -306,9 +306,9 @@ public class cTinyMCE4Editor extends cWYSIWYGEditor {
 
             case "simple": // Does not show font and table options
                 $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect", true);
-                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,advhr,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
+                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
                 $this->_setSetting("theme_advanced_buttons3", "", true);
-                $this->_setSetting("plugins", "advhr,advimage,advlink,insertdatetime,preview,searchreplace,print,contextmenu,paste,directionality", true);
+                $this->_setSetting("plugins", "insertdatetime,preview,searchreplace,print,contextmenu,paste,directionality", true);
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_simple");
                 foreach ($aCustSettings as $sKey => $sValue) {
@@ -358,7 +358,7 @@ public class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting("theme_advanced_toolbar_location", "external");
                 $this->_setSetting("height", "210px", true);
                 // close plugin not in plugins directory but still working if listed
-                $this->_setSetting("plugins", "table,inlinepopups,fullscreen,close", true);
+                $this->_setSetting("plugins", "table,fullscreen,close", true);
                 $this->_setSetting("mode", "exact", true);
                 $this->_setSetting("elements", "*", true);
                 $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);
@@ -387,10 +387,10 @@ public class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             default: // Default options
-                $this->_setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link,unlink,anchor,image,advhr,|,tablecontrols", true);
+                $this->_setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link,unlink,anchor,image,|,tablecontrols", true);
                 $this->_setSetting("theme_advanced_buttons2", "styleselect,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,sub,sup,|,code", true);
                 $this->_setSetting("theme_advanced_buttons3", "", true);
-                $this->_setSetting("plugins", "table,advhr,advimage,advlink,searchreplace,contextmenu,paste", true);
+                $this->_setSetting("plugins", "table,searchreplace,contextmenu,paste", true);
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_default");
                 foreach ($aCustSettings as $sKey => $sValue) {
@@ -449,17 +449,17 @@ public class cTinyMCE4Editor extends cWYSIWYGEditor {
         $this->_sBaseURL = $sBaseUrl;
     }
 
-    function _getScripts() {
+    public function _getScripts() {
         if ($this->_bUseGZIP) {
-            $sReturn = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_sBaseURL . 'jscripts/tiny_mce/tiny_mce_gzip.js"></script>';
+            $sReturn = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_sBaseURL . 'tinymce/js/tinymce/tinymce.gzip.js"></script>';
         } else {
-            $sReturn = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_sBaseURL . 'jscripts/tiny_mce/tiny_mce.js"></script>';
+            $sReturn = "\n<!-- tinyMCE -->\n" . '<script language="javascript" type="text/javascript" src="' . $this->_sBaseURL . 'tinymce/js/tinymce/tinymce.min.js"></script>';
         }
 
         return $sReturn;
     }
 
-    function _getEditor() {
+    public function _getEditor() {
         global $sess, $cfg, $lang, $client, $idart, $cfgClient;
 
         // TODO: Check functionality - doesn't seem to have any effect...
@@ -525,7 +525,7 @@ JS;
 
         $oTxtEditor->setStyle("width: " . $this->_aSettings["width"] . "; height: " . $this->_aSettings["height"] . ";");
 
-        $sReturn = $oTemplate->generate($cfg['path']['all_wysiwyg'] . $this->_sEditor . "/tinymce.tpl.html", true);
+        $sReturn = $oTemplate->generate($cfg['path']['all_wysiwyg'] . $this->_sEditor . "contenido/templates/template.tinymce_tpl.html", true);
         $sReturn .= $oTxtEditor->render();
 
         return $sReturn;
