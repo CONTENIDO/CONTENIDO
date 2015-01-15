@@ -66,11 +66,11 @@
                 updateSortButtons();
 
                 $(".sortPluginDown").click(function() {
-                    var pluginId = $(this).attr("data-plugin-id");
+                    var pluginId = parseInt($(this).attr("data-plugin-id"));
                     var pluginRow = $("#plugin-row-" + pluginId);
                     var pluginTable = pluginRow.parent().parent();
 
-                    var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
+                    var oldOrder = parseInt(pluginRow.attr("data-plugin-execorder"));
                     var newOrder = oldOrder + 1;
                     if (newOrder > {INSTALLED_PLUGINS}) {
                         Con.showNotification("i18n('Error')", "i18n('This plugin is already at the bottom!')");

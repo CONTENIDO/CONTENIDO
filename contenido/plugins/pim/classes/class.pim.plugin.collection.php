@@ -156,7 +156,7 @@ class PimPlugin extends Item {
      * @param integer $newOrder New executionorder value
      * @return boolean
      */
-    public function checkDependenciesToOtherPlugins($newOrder) {
+    public function checkDependedFromOtherPlugins($newOrder) {
     	$cfg = cRegistry::getConfig();
     	$pluginsDir = $cfg['path']['contenido'] . $cfg['path']['plugins'];
 
@@ -182,7 +182,7 @@ class PimPlugin extends Item {
     		// Read plugin.xml files from existing plugins at contenido/plugins dir
     		$tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . "plugin.xml");
 
-    		// Write plugin.xnl content into temporary variable
+    		// Write plugin.xml content into temporary variable
     		$tempXml = simplexml_load_string($tempXmlContent);
 
     		$dependenciesCount = count($tempXml->dependencies);
@@ -201,25 +201,26 @@ class PimPlugin extends Item {
 
     				// We use only uuid attribute and can ignore other attributes
     				if ($key == "uuid") {
+
     					$uuidTemp = cSecurity::escapeString($value);
-    				}
-    			}
 
-    			// Prüfe, ob das Kindplugin aktiv ist
-    			$pimPluginColl->setWhere('uuid', $tempXml->general->uuid);
-    			$pimPluginColl->setWhere('active', '1');
-    			$pimPluginColl->query();
+    					if ($uuidBase === $uuidTemp) {
 
-    			if ($pimPluginColl->count() == 0) {
-    				continue;
-    			}
+    						// Prüfe, ob das Kindplugin aktiv ist
+    						$pimPluginColl->setWhere('uuid', $tempXml->general->uuid);
+    						$pimPluginColl->setWhere('active', '1');
+    						$pimPluginColl->query();
 
-    			if ($uuidBase === $uuidTemp) {
+    						if ($pimPluginColl->count() == 0) {
+    							continue;
+    						}
 
-    				$result = $pimPluginColl->next();
+    						$result = $pimPluginColl->next();
 
-    				if ($newOrder == $result->get('executionorder')) {
-    					return false;
+    						if ($newOrder == $result->get('executionorder')) {
+    							return false;
+    						}
+    					}
     				}
     			}
     		}
@@ -235,7 +236,7 @@ class PimPlugin extends Item {
      * @param integer $newOrder New executionorder value
      * @return boolean
      */
-    public function checkDependenciesFromOtherPlugins($newOrder) {
+    public function checkDependenciesToOtherPlugins($newOrder) {
     	$cfg = cRegistry::getConfig();
     	$pluginsDir = $cfg['path']['contenido'] . $cfg['path']['plugins'];
 
@@ -244,10 +245,34 @@ class PimPlugin extends Item {
     	$pimPluginColl->setWhere('idplugin', $this->get("idplugin"));
     	$pimPluginColl->query();
     	$pimPluginSql = $pimPluginColl->next();
+    	$folderBase = $pimPluginSql->get('folder');
     	$uuidBase = $pimPluginSql->get('uuid');
 
     	// Reset query so we can use PimPluginCollection later again...
     	$pimPluginColl->resetQuery();
+
+    	// Skip plugin if it has no plugin.xml file
+    	if (!cFileHandler::exists($pluginsDir . $folderBase . DIRECTORY_SEPARATOR . "plugin.xml")) {
+    		return true;
+    	}
+
+    	// Read plugin.xml files from existing plugins at contenido/plugins dir
+    	$tempXmlContent = cFileHandler::read($pluginsDir . $folderBase . DIRECTORY_SEPARATOR . "plugin.xml");
+
+    	// Write plugin.xml content into temporary variable
+    	$tempXml = simplexml_load_string($tempXmlContent);
+
+    	// Initializing dependencies array
+    	$dependenciesBase = array();
+
+    	$dependenciesCount = count($tempXml->dependencies);
+    	for ($i = 0; $i < $dependenciesCount; $i++) {
+
+    		foreach ($tempXml->dependencies->depend[$i]->attributes() as $key => $value) {
+    			$dependenciesBase[] = cSecurity::escapeString($value);
+    		}
+
+    	}
 
     	// Read all dirs
     	$dirs = cDirHandler::read($pluginsDir);
@@ -261,50 +286,17 @@ class PimPlugin extends Item {
     		// Read plugin.xml files from existing plugins at contenido/plugins dir
     		$tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . "plugin.xml");
 
-    		// Write plugin.xnl content into temporary variable
+    		// Write plugin.xml content into temporary variable
     		$tempXml = simplexml_load_string($tempXmlContent);
 
-    		// Prüfe, ob das aktuelle Plugin aktiv ist
-    		$pimPluginColl->setWhere('uuid', $tempXml->general->uuid);
-    		$pimPluginColl->setWhere('active', '1');
-    		$pimPluginColl->query();
+    		if (in_array($tempXml->general->uuid, $dependenciesBase) === true) {
 
-    		if ($pimPluginColl->count() == 0) {
-    			continue;
-    		}
+    			$pimPluginColl->setWhere('uuid', $tempXml->general->uuid);
+    			$pimPluginColl->query();
+    			$result = $pimPluginColl->next();
 
-    		$dependenciesCount = count($tempXml->dependencies);
-
-    		for ($i = 0; $i < $dependenciesCount; $i++) {
-
-    			// Security check
-    			$depend = cSecurity::escapeString($tempXml->dependencies->depend[$i]);
-
-    			// If is no dependencie name defined please go to next dependencie
-    			if ($depend == "") {
-    				continue;
-    			}
-
-
-    			// Build uuid variable from attributes
-    			foreach ($tempXml->dependencies->depend[$i]->attributes() as $key => $value) {
-
-    				// We use only uuid attribute and can ignore other attributes
-    				if ($key == "uuid") {
-
-
-						if ($uuidBase !== cSecurity::toString($value)) {
-
-							$pimPluginColl->setWhere('uuid', cSecurity::toString($value));
-							$pimPluginColl->setWhere('active', '1');
-							$pimPluginColl->query();
-							$result = $pimPluginColl->next();
-
- 							if ($newOrder == $result->get('executionorder')) {
- 								return false;
- 							}
-						}
-    				}
+    			if ($newOrder == $result->get('executionorder')) {
+    				return false;
     			}
     		}
     	}
@@ -316,13 +308,14 @@ class PimPlugin extends Item {
      * Change the execution order of this plugin and update the order for every other plugin
      *
      * @param int $newOrder New execution order for this plugin
+     * @return boolean
      */
     public function updateExecOrder($newOrder) {
 
-    	$dependenciesToOtherPlugins = $this->checkDependenciesToOtherPlugins($newOrder);
-		$dependenciesFromOtherPlugins = $this->checkDependenciesFromOtherPlugins($newOrder);
+    	$dependendFromOtherPlugins = $this->checkDependedFromOtherPlugins($newOrder);
+		$dependenciesToOtherPlugins = $this->checkDependenciesToOtherPlugins($newOrder);
 
-    	if ($dependenciesToOtherPlugins == false || $dependenciesFromOtherPlugins == false) {
+    	if ($dependendFromOtherPlugins == false || $dependenciesToOtherPlugins == false) {
     		return false;
     	}
 
