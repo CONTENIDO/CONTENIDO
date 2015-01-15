@@ -263,6 +263,10 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
             $this->_bUseGZIP = false;
         }
     }
+    
+    function getGZIPMode() {
+        return (bool) $this->_bUseGZIP;
+    }
 
     /**
      * For compatibility also accepts "tinymce-toolbar-mode", "tinymce-toolbar1-3" and "tinymce-plugins"
@@ -565,6 +569,13 @@ JS;
         $sConfig .= "'plugins': '" . $this->_aSettings['plugins'] . "'\n";
 
         return $sConfig;
+    }
+    
+    function getPlugins() {
+        return $this->_aSettings['plugins'];
+    }
+    function getThemes() {
+        return $this->_aSettings['theme'];
     }
 }
 

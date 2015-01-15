@@ -43,14 +43,58 @@ $allowedContentTypes = array(
 
 $page = new cGuiPage("con_content_list");
 
+
 $jslibs = '';
+// Include wysiwyg editor class
 if (false === ($wysiwygeditor = getEffectiveSetting('wysiwyg', 'editor', false))) {
     $wysiwygeditor = $cfg['wysiwyg']['editor'];
+}
+// tinymce 3 not autoloaded, tinymce 4 is
+// use blacklist in case customer has own editor that is not autoloaded
+if ('tinymce3' === $wysiwygeditor) {
+    include($cfg['path'][$wysiwygeditor . '_editorclass']);
+}
+switch ($wysiwygeditor) {
+    case 'tinymce4':
+        $oEditor = new cTinyMCE4Editor('', '');
+        $oEditor->setToolbar('inline_edit');
+
+        // Get configuration for popup and inline tiny
+        $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
+        $sConfigFullscreen = $oEditor->getConfigFullscreen();
+
+        break;
+    default:
+        $oEditor = new cTinyMCEEditor('', '');
+        $oEditor->setToolbar('inline_edit');
+
+        // Get configuration for popup and inline tiny
+        $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
+        $sConfigFullscreen = $oEditor->getConfigFullscreen();
+}
+
+// get scripts from editor class
+$jslibs .= $oEditor->_getScripts();
+// tinyMCE_GZ.init call must be placed in its own script tag
+// User defined plugins and themes should be identical in both "inits"
+if ('tinymce' === substr($wysiwygeditor, 0, 7)
+&& true === $oEditor->getGZIPMode()) {
+    $jslibs .= <<<JS
+<script type="text/javascript">
+tinyMCE_GZ.init({
+    plugins: '{$oEditor->getPlugins()}',
+    themes: '{$oEditor->getThemes()}',
+    disk_cache: true,
+    debug: false
+});
+</script>
+JS;
 }
 foreach ($cfg['path'][$wysiwygeditor . '_scripts'] as $onejs) {
     $jslibs .= '<script src="' . $onejs . '" type="text/javascript"></script>';
 }
 unset($onejs);
+
 $page->set('s', '_WYSIWYG_JS_TAGS_', $jslibs);
 unset($jslibs);
 
@@ -365,33 +409,7 @@ $currentTypes = _getCurrentTypes($currentTypes, $aList);
 // Contenido --> Articles --> Editor)
 $markSubItem = markSubMenuItem(4, true);
 
-// Include wysiwyg editor class
-if (false === ($wysiwygeditor = getEffectiveSetting('wysiwyg', 'editor', false))) {
-    $wysiwygeditor = $cfg['wysiwyg']['editor'];
-}
-// tinymce 3 not autoloaded, tinymce 4 is
-// use blacklist in case customer has own editor that is not autoloaded
-if ('tinymce3' === $wysiwygeditor) {
-    include($cfg['path'][$wysiwygeditor . '_editorclass']);
-}
-switch ($wysiwygeditor) {
-    case 'tinymce4':
-        $oEditor = new cTinyMCE4Editor('', '');
-        $oEditor->setToolbar('inline_edit');
 
-        // Get configuration for popup and inline tiny
-        $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
-        $sConfigFullscreen = $oEditor->getConfigFullscreen();
-
-        break;
-    default:
-        $oEditor = new cTinyMCEEditor('', '');
-        $oEditor->setToolbar('inline_edit');
-
-        // Get configuration for popup and inline tiny
-        $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
-        $sConfigFullscreen = $oEditor->getConfigFullscreen();
-}
 
 // Replace vars in Script
 
