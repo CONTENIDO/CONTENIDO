@@ -75,10 +75,10 @@ switch ($wysiwygeditor) {
 
 // get scripts from editor class
 $jslibs .= $oEditor->_getScripts();
-// tinyMCE_GZ.init call must be placed in its own script tag
-// User defined plugins and themes should be identical in both "inits"
-if ('tinymce' === substr($wysiwygeditor, 0, 7)
+if ('tinymce3' === substr($wysiwygeditor, 0, 8)
 && true === $oEditor->getGZIPMode()) {
+    // tinyMCE_GZ.init call must be placed in its own script tag
+    // User defined plugins and themes should be identical in both "inits"
     $jslibs .= <<<JS
 <script type="text/javascript">
 tinyMCE_GZ.init({

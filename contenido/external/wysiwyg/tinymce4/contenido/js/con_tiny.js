@@ -429,7 +429,7 @@
                 var tmpId = Con.Tiny.activeId;
                 setTimeout(function() {
                     if (tmpId) {
-                        tinymce.execCommand('mceRemoveControl', false, tmpId);
+                        tinymce.execCommand('mceRemoveEditor', false, tmpId);
                     }
                 }, 0);
 
@@ -460,7 +460,7 @@
 
             // Show tiny and focus it
             if (Con.Tiny.activeId) {
-                tinymce.execCommand('mceAddControl', false, Con.Tiny.activeId);
+                tinymce.execCommand('mceAddEditor', false, Con.Tiny.activeId);
                 Con.Tiny.setFocus();
 
                 // Remove height information of clicked div
@@ -593,7 +593,7 @@
             // Add tiny to elements which contains classname contentEditable
             // tiny toggles on click
             $('div[contenteditable=true]').each(function() {
-                $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
+//                $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
                 $(this).bind('click', function() {
                     if (options.useTiny) {
                         Con.Tiny.swapTiny(this);
