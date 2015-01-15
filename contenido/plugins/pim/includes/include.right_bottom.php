@@ -121,7 +121,7 @@ while (($plugin = $oItem->next()) !== false) {
     $pagePlugins->set('s', 'EXECUTIONORDER', $plugin->get("executionorder"));
 
     $pagePlugins->set('s', 'LANG_SORT_DOWN', i18n('Set execution order down', 'pim'));
-    $pagePlugins->set('s', 'LANG_SORT_UP', i18n('Set execution order up', 'pim'));	
+    $pagePlugins->set('s', 'LANG_SORT_UP', i18n('Set execution order up', 'pim'));
 
     $pagePlugins->set('s', 'LANG_INSTALLED', i18n('Installed since', 'pim'));
     $pagePlugins->set('s', 'LANG_AUTHOR', i18n('Author', 'pim'));
@@ -164,22 +164,38 @@ if (is_dir($cfg['path']['plugins'])) {
                 // initalization new template class
                 $pagePlugins = new cTemplate();
 
+                // Read plugin.xml
+                $tempXmlContent = cFileHandler::read($tempPath);
+
+                // Write plugin.xml content into temporary variable
+                $tempXml = simplexml_load_string($tempXmlContent);
+
                 $pagePlugins->set('s', 'LANG_FOLDERNAME', i18n('Foldername', 'pim'));
+                $pagePlugins->set('s', 'LANG_AUTHOR', i18n('Author', 'pim'));
+                $pagePlugins->set('s', 'LANG_CONTACT', i18n('Contact', 'pim'));
                 $pagePlugins->set('s', 'LANG_TOOLTIP_INSTALL', i18n('Install extracted plugin', 'pim'));
                 $pagePlugins->set('s', 'LANG_INSTALL', i18n('Install', 'pim'));
                 $pagePlugins->set('s', 'LANG_TOOLTIP_REMOVE', i18n('Uninstall extracted plugin (deleted plugin files from filesystem)', 'pim'));
 				$pagePlugins->set('s', 'LANG_REMOVE', i18n('Remove from filesystem', 'pim'));
-				$pagePlugins->set('s', 'LANG_WRITABLE', i18n('Writeable', 'pim'));
+				$pagePlugins->set('s', 'LANG_WRITEABLE', i18n('Writeable', 'pim'));
                 $pagePlugins->set('s', 'FOLDERNAME', $pluginFoldername);
                 $pagePlugins->set('s', 'INSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=install-extracted&pluginFoldername=' . $pluginFoldername));
+
+                // Values from plugin.xml
+                $pagePlugins->set('s', 'PLUGIN_NAME', $tempXml->general->plugin_name);
+                $pagePlugins->set('s', 'VERSION', $tempXml->general->version);
+                $pagePlugins->set('s', 'DESCRIPTION', $tempXml->general->description);
+                $pagePlugins->set('s', 'AUTHOR', $tempXml->general->author);
+                $pagePlugins->set('s', 'COPYRIGHT', $tempXml->general->copyright);
+                $pagePlugins->set('s', 'MAIL', $tempXml->general->mail);
 
                 // uninstall link
                 if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername)) {
                     $pagePlugins->set('s', 'REMOVE_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));
-                    $pagePlugins->set('s', 'LANG_WRITABLE_TEXT', i18n('Everything looks fine', 'pim'));
+                    $pagePlugins->set('s', 'WRITEABLE', i18n('Everything looks fine', 'pim'));
                 } else {
                     $pagePlugins->set('s', 'REMOVE_LINK', 'javascript://');
-                    $pagePlugins->set('s', 'LANG_WRITABLE_TEXT', '(<span class="settingWrong">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>)');
+                    $pagePlugins->set('s', 'WRITEABLE', '(<span class="settingWrong">' . i18n('This plugin is not writeable, please set the rights manually', 'pim') . '</span>)');
                 }
 
                 $pagePlugins->set('s', 'IDPLUGIN', $i++);

@@ -182,7 +182,7 @@ class PimPlugin extends Item {
     		// Read plugin.xml files from existing plugins at contenido/plugins dir
     		$tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . "plugin.xml");
 
-    		// Write plugin.xnl content into temporary variable
+    		// Write plugin.xml content into temporary variable
     		$tempXml = simplexml_load_string($tempXmlContent);
 
     		$dependenciesCount = count($tempXml->dependencies);
@@ -261,7 +261,7 @@ class PimPlugin extends Item {
     		// Read plugin.xml files from existing plugins at contenido/plugins dir
     		$tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . "plugin.xml");
 
-    		// Write plugin.xnl content into temporary variable
+    		// Write plugin.xml content into temporary variable
     		$tempXml = simplexml_load_string($tempXmlContent);
 
     		// Prüfe, ob das aktuelle Plugin aktiv ist

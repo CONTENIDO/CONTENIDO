@@ -1,20 +1,32 @@
 		<table style="width: 800px; margin-bottom: 3px;" class="pluginoverview">
 			<tr id="plugin-row-{IDPLUGIN}">
                 <td style="width: 3%;"><a href="#" onclick="javascript:toggleTableBody('plugin-extracted-{IDPLUGIN}')" style="margin-left: 5px;"><img src="images/open_all.gif" id="plugin-extracted-{IDPLUGIN}_img"></a></td>
-                <td style="width: 97%;"><strong>{FOLDERNAME}</strong></td>
+                <td style="width: 97%;"><strong>{PLUGIN_NAME}</strong> <em>{VERSION}</em></td>
             </tr>
             <tr id="plugin-extracted-{IDPLUGIN}" style="display: none;">
                 <td style="width: 3%;">&#160;</td>
                 <td style="width: 90%;">
                     <table class="plugininfo">
+                        <tr>
+                            <td colspan="2" style="width: 100%;"><span class="textg_medium">{DESCRIPTION}</span></td>
+                        </tr>
                         <tr><td colspan="2">&nbsp;</td></tr>
                         <tr>
                             <td style="width: 15%;">{LANG_FOLDERNAME}:</td>
                             <td style="width: 85%;">{FOLDERNAME}</td>
                         </tr>
-						<tr>
-							<td style="width: 15%;">{LANG_WRITABLE}:</td>
-                            <td style="width: 85%;">{LANG_WRITABLE_TEXT}</td>
+                        <tr>
+                            <td style="width: 15%;">{LANG_AUTHOR}:</td>
+                            <td style="width: 85%;"><a href="{WEBSITE}" target="_blank">{AUTHOR}</a> <span class="textg_medium">&copy; {COPYRIGHT}</span></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%;">{LANG_CONTACT}:</td>
+                            <td style="width: 85%;"><a href="mailto:{MAIL}">{MAIL}</a></td>
+                        </tr>
+                        <tr><td colspan="2">&#160;</td></tr>
+                        <tr>
+                            <td style="width: 15%;">{LANG_WRITEABLE}:</td>
+                            <td style="width: 85%;">{WRITEABLE}</a></td>
                         </tr>
                         <tr><td colspan="2">&#160;</td></tr>
                         <tr>
