@@ -114,10 +114,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         }
 
         // GZIP
-        if ($this->_aSettings["contenido_gzip"] == "true") {
-            $this->setGZIPMode(true);
-        } else {
+        if (false === isset($this->_aSettings["contenido_gzip"])
+        || "true" !== $this->_aSettings["contenido_gzip"]) {
             $this->setGZIPMode(false);
+        } else {
+            $this->setGZIPMode(true);
         }
 
         // Stylesheet file, for compatibility
@@ -259,12 +260,24 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         }
     }
 
-    function setGZIPMode($bEnabled = true) {
+    /**
+     * Set if editor should be loaded using tinymce4's gzip compression
+     * @param string $bEnabled
+     */
+    private function setGZIPMode($bEnabled = true) {
         if ($bEnabled) {
             $this->_bUseGZIP = true;
         } else {
             $this->_bUseGZIP = false;
         }
+    }
+
+    /**
+     * 
+     * @return boolean if editor is loaded using gzip compression
+     */
+    public function getGZIPMode() {
+        return (bool) $this->_bUseGZIP;
     }
 
     /**
@@ -359,8 +372,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting("height", "210px", true);
                 // close plugin not in plugins directory but still working if listed
                 $this->_setSetting("plugins", "table,fullscreen,close", true);
-                $this->_setSetting("mode", "exact", true);
-                $this->_setSetting("elements", "*", true);
+//                 $this->_setSetting("mode", "exact", true);
+//                 $this->_setSetting("elements", "*", true);
+                $this->_setSetting('selector', '*', true);
                 $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);
 
                 if (!array_key_exists("auto_resize", $this->_aSettings)) {
@@ -478,25 +492,25 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $oTemplate->set('s', 'MEDIABROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
         $oTemplate->set('s', 'FRONTEND_PATH', $cfgClient[$client]["path"]["htmlpath"]);
 
-        // GZIP support options
-        $sGZIPScript = '';
-        if ($this->_bUseGZIP) {
-            // tinyMCE_GZ.init call must be placed in its own script tag
-            // User defined plugins and themes should be identical in both "inits"
-            $sGZIPScript = <<<JS
-<script type="text/javascript">
-tinyMCE_GZ.init({
-    plugins: '{$this->_aSettings["plugins"]}',
-    themes: '{$this->_aSettings["theme"]}',
-    languages: '{$this->_aSettings["language"]}',
-    disk_cache: true,
-    debug: false
-});
-</script>
-JS;
-        }
-        $oTemplate->set('s', 'COMPRESSOR', $sGZIPScript);
-
+//         // GZIP support options
+//         $sGZIPScript = '';
+//         if ($this->_bUseGZIP) {
+//             // tinyMCE_GZ.init call must be placed in its own script tag
+//             // User defined plugins and themes should be identical in both "inits"
+//             $sGZIPScript = <<<JS
+// <script type="text/javascript">
+// tinyMCE_GZ.init({
+//     plugins: '{$this->_aSettings["plugins"]}',
+//     themes: '{$this->_aSettings["theme"]}',
+//     languages: '{$this->_aSettings["language"]}',
+//     disk_cache: true,
+//     debug: false
+// });
+// </script>
+// JS;
+//         }
+//         $oTemplate->set('s', 'COMPRESSOR', $sGZIPScript);
+        
         // Calculate the configuration
         $sConfig = '';
 
@@ -531,7 +545,7 @@ JS;
         return $sReturn;
     }
 
-    function getConfigInlineEdit() {
+    public function getConfigInlineEdit() {
         $sConfig = '';
         $this->setToolbar('inline_edit');
 
@@ -557,7 +571,7 @@ JS;
         return $sConfig;
     }
 
-    function getConfigFullscreen() {
+    public function getConfigFullscreen() {
         $sConfig = '';
         $this->setToolbar('fullscreen');
 
@@ -568,6 +582,23 @@ JS;
         $sConfig .= "'plugins': '" . $this->_aSettings['plugins'] . "'\n";
 
         return $sConfig;
+    }
+    
+
+    /**
+     * function to obtain a comma separated list of plugins that are tried to be loaded 
+     * @return string plugins the plugins
+     */
+    public function getPlugins() {
+        return (string) $this->_aSettings['plugins'];
+    }
+    
+    /**
+     * function to obtain a comma separated list of themes that are tried to be loaded
+     * @return string themes the themes
+     */
+    function getThemes() {
+        return (string) $this->_aSettings['theme'];
     }
 }
 

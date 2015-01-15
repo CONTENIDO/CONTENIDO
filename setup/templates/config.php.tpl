@@ -53,7 +53,7 @@ $cfg['path']['all_wysiwyg']             = $cfg['path']['contenido']  . 'external
 $cfg['wysiwyg']['editor']               = 'tinymce3';
 
 /* The server path to the desired WYSIWYG-Editor */
-$cfg['path']['wysiwyg']                 = $cfg['path']['all_wysiwyg'] . 'tinymce3/';
+$cfg['path']['wysiwyg']                 = $cfg['path']['all_wysiwyg'] . $cfg['wysiwyg']['editor'] . '/';
 
 /* The server path to the desired WYSIWYG-Editor class */
 $cfg['path']['wysiwyg_editorclass']     = $cfg['path']['wysiwyg'] . 'editorclass.php';
@@ -65,7 +65,7 @@ $cfg['path']['contenido_fullhtml']      = '{CONTENIDO_WEB}/contenido/';
 $cfg['path']['all_wysiwyg_html']        = $cfg['path']['contenido_fullhtml'] . 'external/wysiwyg/';
 
 /* The web path to the desired WYSIWYG-Editor */
-$cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . 'tinymce3/';
+$cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . $cfg['wysiwyg']['editor'] . '/';
 
 
 

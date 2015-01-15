@@ -102,6 +102,23 @@ switch ($wysiwygeditor) {
 $oScriptTpl = new cTemplate();
 
 $jslibs = '';
+// get scripts from editor class
+$jslibs .= $oEditor->_getScripts();
+if ('tinymce3' === substr($wysiwygeditor, 0, 8)
+&& true === $oEditor->getGZIPMode()) {
+    // tinyMCE_GZ.init call must be placed in its own script tag
+    // User defined plugins and themes should be identical in both "inits"
+    $jslibs .= <<<JS
+<script type="text/javascript">
+tinyMCE_GZ.init({
+    plugins: '{$oEditor->getPlugins()}',
+    themes: '{$oEditor->getThemes()}',
+    disk_cache: true,
+    debug: false
+});
+</script>
+JS;
+}
 foreach ($cfg['path'][$wysiwygeditor . '_scripts'] as $onejs) {
     $jslibs .= '<script src="' . $onejs . '" type="text/javascript"></script>';
 }
