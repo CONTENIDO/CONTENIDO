@@ -270,7 +270,6 @@ class PimPlugin extends Item {
 
     		foreach ($tempXml->dependencies->depend[$i]->attributes() as $key => $value) {
     			$dependenciesBase[] = cSecurity::escapeString($value);
-    			error_log($value);
     		}
 
     	}
