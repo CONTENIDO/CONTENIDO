@@ -83,6 +83,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
                           <li><strong>advanced: </strong> Ein Artikelentwurf kann erstellt werden. Und zeitunabhängig veröffentlicht werden. 
                                 Vergangene Versionen lassen sich wiederherstellen bzw. nutzen.</li>
                       </ul>
+                  <p><strong>Weitere Informationen</strong> sind in den entsprechenden Reitern zu finden.</p>                
                   </div>';
         } else {
             $html->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');   

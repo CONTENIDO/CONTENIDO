@@ -352,7 +352,7 @@ abstract class cCodeGeneratorAbstract {
                     $tmp = $a_content[$_typeItem->type][$val];
                     $cTypeObject = new $typeClassName($tmp, $val, $a_content);
                     global $edit;
-                    error_log($edit);
+                    
                     if (cRegistry::isBackendEditMode()) {
                         //if ($editable) {
                             $tmp = $cTypeObject->generateEditCode();

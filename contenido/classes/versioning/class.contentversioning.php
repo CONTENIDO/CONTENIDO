@@ -235,12 +235,13 @@ class cContentVersioning {
         if ($this->getState() == 'disabled' // disabled
             || $this->getState() == 'simple' && $action == 'con_content'
             || $this->getState() == 'simple' && $action == 'copyto'
-            || $this->getState() == 'simple' && $idArtLangVersion == NULL // simple
+            || $this->getState() == 'simple' && $idArtLangVersion == NULL
+            || $this->getState() == 'simple' && $action == 'con_saveart' // simple
             || $idArtLangVersion == 'current' && $action != 'copyto'
             || $action == 'copyto' && $idArtLangVersion == $this->editableArticleId
             || $action == 'con_meta_change_version' && $idArtLang == 'current'
             || $this->editableArticleId == NULL
-            && $action != 'con_meta_saveart') { // advanced
+            && $action != 'con_meta_saveart' && $action != 'con_newart') { // advanced
             $this->articleType = 'current';
         } else if ($this->getState() == 'advanced' && $action == 'con_content'
             || $action == 'copyto' || $idArtLangVersion == 'current'
@@ -249,8 +250,11 @@ class cContentVersioning {
             || $action == 'savecontype'
             || $action == 'con_editart' && $this->getState() == 'advanced'
             || $action == '20' && $idArtLangVersion == NULL
-            || $this->getState() == 'advanced' && $action == 'con_meta_edit'
-            || $action == 'con_meta_saveart') {
+            || $this->getState() == 'advanced' && ($action == 'con_meta_edit'
+                || $action == 'con_edit')
+            || $action == 'con_meta_saveart'
+            || $action == 'con_saveart' || $action == 'con_newart'
+            || $action == 'con_meta_change_version' && $idArtLangVersion == $this->editableArticleId) {
             $this->articleType = 'editable';
         } else {
             $this->articleType = 'version';
@@ -357,41 +361,7 @@ class cContentVersioning {
         return $idContent;
 		
     }
-		
-    /**
-     * Returns $artLangVersionMap[version][idartlangversion] = lastmodified
-     * from every Version
-     *
-     * @param int $idArtLang
-     * @return array $artLangVersionMap
-     */	
-    public function getAllVersionIdArtLangVersionAndLastModified($idArtLang) {
-
-        $artLangVersionColl = new cApiArticleLanguageVersionCollection();
-        $artLangVersionColl->addResultField('version');
-        $artLangVersionColl->addResultField('lastmodified');
-        $artLangVersionColl->setWhere('idartlang', $idArtLang);
-        $artLangVersionColl->setOrder('version desc');
-        $artLangVersionColl->query();
-
-        $fields['idartlangversion'] = 'idartlangversion';
-        $fields['version'] = 'version';
-        $fields['lastmodified'] = 'lastmodified';
-        
-        $artLangVersionMap = array();
-        
-        if (0 < $artLangVersionColl->count()) {
-            $table = $artLangVersionColl->fetchTable($fields);
-            
-            foreach ($table AS $key => $item) {
-                $artLangVersionMap[$item['version']][$item['idartlangversion']] = $item['lastmodified'];
-            }
-        }
-                
-        return $artLangVersionMap;
-
-    }
-    
+	    
     /**
      * Returns $artLangVersionMap[version][idartlangversion] = lastmodified
      * either from each article-/content- or metatag-version 
@@ -400,7 +370,7 @@ class cContentVersioning {
      * @param string $selectElementType either 'content', 'seo' or 'config'
      * @return array $artLangVersionMap
      */	
-    public function getDataForSelectElement($idArtLang, $selectElementType = 'config') {
+    public function getDataForSelectElement($idArtLang, $selectElementType = '') {
         
         $artLangVersionMap = array();
         
@@ -409,9 +379,9 @@ class cContentVersioning {
         $artLangVersionColl->addResultField('lastmodified');
         $artLangVersionColl->setWhere('idartlang', $idArtLang);
         $artLangVersionColl->setOrder('version desc');
-
+        
         try {
-            if ($selectElementType == 'content') { 
+            if ($selectElementType == 'content') {
                 // select only versions with different content versions
                 $contentVersionColl = new cApiContentVersionCollection();
                 $contentVersionColl->addResultField('version');
@@ -444,7 +414,7 @@ class cContentVersioning {
                 
                 // check...
                 if (0 >= $metaVersionColl->count()) {
-                    throw new cException('no content versions');
+                    throw new cException('no meta versions');
                 }   
 
                 $table = $metaVersionColl->fetchTable($metaFields);
@@ -458,7 +428,7 @@ class cContentVersioning {
                 $artLangVersionColl->setWhere('version', $metaVersionMap, 'IN');
                 
             } else if ($selectElementType == 'config') {
-                // select all versions
+//                // select all versions
             }
         } catch (cException $e) {
             return $artLangVersionMap;
@@ -669,9 +639,12 @@ class cContentVersioning {
         $artLangVersion = $artLangVersionColl->create($artLangVersionParameters);
         
         // version Contents if contents are not versioned yet
-        $where = 'idartlang = ' . $parameters['idartlang'];
-        $contentVersionColl = new cApiContentVersionCollection();
-        $contentVersions = $contentVersionColl->getIdsByWhereClause($where);
+        if (isset($parameters['idartlang'])) {
+            $where = 'idartlang = ' . $parameters['idartlang'];
+            $contentVersionColl = new cApiContentVersionCollection();        
+            $contentVersions = $contentVersionColl->getIdsByWhereClause($where);
+        }
+        
         if (empty($contentVersions)) {
             $artLang = new cApiArticleLanguage($parameters['idartlang']);
             $artLang->loadArticleContent();

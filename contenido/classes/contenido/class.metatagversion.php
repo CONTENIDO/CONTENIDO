@@ -70,9 +70,26 @@ class cApiMetaTagVersionCollection extends ItemCollection {
      * @return cApiMetaTagVersion|NULL
      */
     public function fetchByArtLangMetaTypeAndVersion($idArtLang, $idMetaType, $version) {
-        $this->select('idartlang=' . (int) $idArtLang . ' AND idmetatype=' . (int) $idMetaType . ' AND version=' . (int) $version);
-        return $this->next();
+        $sql = 'SELECT idmetatagversion FROM %s
+                WHERE (idmetatype, version) 
+                    IN (SELECT idmetatype, max(version) 
+                    FROM %s
+                    WHERE idartlang = %d AND version <= %d AND idmetatype = %d group by idmetatype)';
+                
+        $this->db->query(
+            $sql,
+            cRegistry::getDbTableName('meta_tag_version'),
+            cRegistry::getDbTableName('meta_tag_version'),
+            (int) $idArtLang,
+            (int) $version,
+            (int) $idMetaType
+        );
+       
+        $this->db->nextRecord();  
+                
+         return new cApiMetaTagVersion($this->db->f('idmetatagversion'));
     }
+    
     
     /**
      * Returns idmetatagversions by where-clause
@@ -134,8 +151,13 @@ class cApiMetaTagVersion extends Item {
     public function markAsCurrent() {
         $metaTagColl = new cApiMetaTagCollection();
         $metaTag = $metaTagColl->fetchByArtLangAndMetaType($this->get('idartlang'), $this->get('idmetatype'));
-        $metaTag->set('metavalue', $this->get('metavalue'), false);
-        return $metaTag->store();
+        if ($metaTag != NULL) {
+            $metaTag->set('metavalue', $this->get('metavalue'), false);
+            return $metaTag->store();
+        } else {
+            $metaTag = new cApiMetaTagCollection(); 
+            $metaTag->create($this->get('idartlang'), $this->get('idmetatype'), $this->get('metavalue'));            
+        }
     }
     
     /**

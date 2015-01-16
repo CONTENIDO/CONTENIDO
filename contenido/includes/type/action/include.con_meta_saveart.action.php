@@ -58,13 +58,13 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
 
     $versioning = new cContentVersioning();  
     $version = NULL;
-    if ($versioning->getState() != 'false') {
+    if ($versioning->getState() != 'disabled') {
         // create article version
         $artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
         $artLangVersion->markAsCurrentVersion(1);
         $version = $artLangVersion->get('version');
-    }
-    foreach ($availableTags as $key => $value) {    
+    }                                                  
+    foreach ($availableTags as $key => $value) {
         if ($value['metatype'] == 'robots') {
             conSetMetaValue($idartlang, $key, $robots, $version);
             $newData[$value['metatype']] = $robots;

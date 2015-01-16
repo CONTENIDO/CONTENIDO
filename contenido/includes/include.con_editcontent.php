@@ -149,7 +149,7 @@ switch ($versioningState) {
         $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], $idartlang, $articleType);
 
         // Get version numbers for Select Element
-        $optionElementParameters = $versioning->getAllVersionIdArtLangVersionAndLastModified((int) $idartlang);
+        $optionElementParameters = $versioning->getDataForSelectElement((int) $idartlang, 'content');
 
         // Create Current and Editable Content Option Element
         $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
@@ -176,7 +176,8 @@ switch ($versioningState) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
         
-        $versioning_info_text = i18n('<strong>Konfigurationsstufe \'simple\':</strong> Ältere Artikelversionen lassen sich wiederherstellen (Einstellungen sind in Administration/System/System-Konfiguration möglich).');
+        $versioning_info_text = i18n('<strong>Konfigurationsstufe \'simple\':</strong> Ältere Contentversionen lassen sich wiederherstellen (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
+                . 'Hier durchgeführte Aktionen beziehen sich nur auf Contents!');
         
         // add code
         $code .=    $versioning->getVersionSelectionField(
@@ -220,8 +221,8 @@ switch ($versioningState) {
         $selectedArticle = $versioning->getSelectedArticle((int) $_REQUEST['idArtLangVersion'], $idartlang, $articleType);
 
          // Get version numbers for Select Element
-        $optionElementParameters = $versioning->getAllVersionIdArtLangVersionAndLastModified((int) $idartlang);
-       
+        $optionElementParameters = $versioning->getDataForSelectElement((int) $idartlang, 'content');
+                
         // set elements/buttons
         if (isset($versioning->editableArticleId)) {
             $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId((int) $idartlang));
@@ -264,8 +265,9 @@ switch ($versioningState) {
         // set info text
         $versioning_info_text = i18n(
                 '<strong>Konfigurationsstufe \'advanced\':</strong>  '
-                . 'Es kann auf frühere Artikelversionen zurückgegriffen werden. '
-                . 'Es können äußerdem Entwürfe erstellt und zeitunabhängig veröffentlicht werden (Einstellungen sind in Administration/System/System-Konfiguration möglich).');
+                . 'Es kann auf frühere Contentversionen zurückgegriffen werden. '
+                . 'Es können äußerdem Entwürfe erstellt und zeitunabhängig veröffentlicht werden (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
+                . 'Hier durchgeführte Aktionen beziehen sich nur auf Contents!');
         
         // add code
         $code .=    $versioning->getVersionSelectionField(
@@ -279,7 +281,7 @@ switch ($versioningState) {
     case 'disabled' :
         
         // set elements/buttons
-        $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16');
+        $optionElement = new cHTMLOptionElement('Version 10: 11.12.13 14:15:16', '');
         $selectElement->appendOptionElement($optionElement);
         $selectElement->setAttribute('disabled', 'disabled');
         
@@ -333,6 +335,7 @@ if ($selectedArticle != NULL) {
         case 'disabled':
             $editable = true;
             $version = NULL;
+            break;
         default:
             throw new cException('unknown');
             break;

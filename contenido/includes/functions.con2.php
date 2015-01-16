@@ -141,22 +141,24 @@ function conGetMetaValue($idartlang, $idmetatype, $version  = NULL) {
  * @return bool whether the meta value has been saved successfully
  */
 function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
-    
+    //echo $idmetatype."|".$value."|".$version."<hr>";
     static $metaTagColl = NULL;
     $versioning = new cContentVersioning();
     
     if (!isset($metaTagColl)) {
         $metaTagColl = new cApiMetaTagCollection();
     }
-
+//echo $idartlang . "|" . $idmetatype . "<hr>";
     $metaTag = $metaTagColl->fetchByArtLangAndMetaType($idartlang, $idmetatype);
-        
+    
     switch ($versioning->getState()) {
         
         case 'simple':
-            
-            $metaTagVersionParameters = array(
-                'idmetatag' => $metaTag->get('idmetatag'),
+            if (is_object($metaTag)) {
+                $idmetatag = $metaTag->get('idmetatag');
+            }
+            $metaTagVersionParameters = array(                
+                'idmetatag' => $idmetatag,
                 'idartlang' => $idartlang,
                 'idmetatype' => $idmetatype,
                 'value' => $value,
@@ -173,12 +175,10 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
             //update meta tag and create meta tag version
             
             if (is_object($metaTag)) {
-                
-                $return = $metaTag->updateMetaValue($value);                 
+                $return = $metaTag->updateMetaValue($value);            
                 return $return;
                 
             } else {
-                
                 $metaTag = $metaTagColl->create($idartlang, $idmetatype, $value);                
                 return true;
                 
@@ -187,14 +187,19 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
             break;
         case 'advanced':
             
-            $metaTagVersionParameters = array(
-                'idmetatag' => $metaTag->get('idmetatag'),
+            if (is_object($metaTag)) {
+                $idmetatag = $metaTag->get('idmetatag');
+            }
+            $metaTagVersionParameters = array(                
+                'idmetatag' => $idmetatag,
                 'idartlang' => $idartlang,
                 'idmetatype' => $idmetatype,
                 'value' => $value,
                 'version' => $version
             );  
-            $versioning->createMetaTagVersion($metaTagVersionParameters);   
+            $versioning->createMetaTagVersion($metaTagVersionParameters);
+                
+                        
             
             break;
         default:

@@ -85,20 +85,20 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
         
         $versioning = new cContentVersioning();
         $version = NULL;
-        if ($versioning->getState() != 'false') {
+        if ($versioning->getState() != 'disabled') {
             // get parameters for article version
             $artLang = new cApiArticleLanguage($idartlang);
             // create article version
             $artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
             $artLangVersion->markAsCurrentVersion(1);
             $version = $artLangVersion->get('version');
-        }
-                
-        foreach ($availableTags as $key => $value) {
-            if ($value["metatype"] == "robots") {
-                conSetMetaValue($idartlang, $key, "index, follow", $version);
-                break;
-            }
+            
+            foreach ($availableTags as $key => $value) {
+                if ($value["metatype"] == "robots") {
+                    conSetMetaValue($idartlang, $key, "index, follow", $version);
+                    break;
+                }            
+            } 
         }
     } else {
 
@@ -106,7 +106,7 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
         // Contenido.Action.con_saveart.AfterCall chain handler
         $oArtLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
         if ($oArtLang->isLoaded()) {
-
+            
             // get array of idcats this article was related to
             $oCatArtColl = new cApiCategoryArticleCollection();
             $idcatold = $oCatArtColl->getCategoryIdsByArticleId($oArtLang->get('idart'));

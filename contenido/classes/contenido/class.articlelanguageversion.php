@@ -309,19 +309,19 @@ class cApiArticleLanguageVersion extends Item {
      */
     public function markAsCurrent($type = ''){
         
-        // Prepare data and update ArticleLanguage
-        $parameters = $this->toArray();
-        $artLang = new cApiArticleLanguage($parameters['idartlang']);
-        unset($parameters['idartlang']);
-        unset($parameters['idartlangversion']);
-        unset($parameters['iscurrentversion']);
-        unset($parameters['version']);
-        unset($parameters['lastmodified']);
-        unset($parameters['published']);
-        foreach ($parameters as $key => $value) {
-            $artLang->set($key, $value);
-        }
-        $artLang->store();
+        if ($type == 'complete') {
+           // Prepare data and update ArticleLanguage
+            $parameters = $this->toArray();
+            $artLang = new cApiArticleLanguage($parameters['idartlang']);
+            unset($parameters['idartlang']);
+            unset($parameters['idartlangversion']);
+            unset($parameters['iscurrentversion']);
+            unset($parameters['version']);
+            foreach ($parameters as $key => $value) {
+                $artLang->set($key, $value);
+            }
+            $artLang->store(); 
+        } 
         
         if ($type == 'content' || $type == 'complete') {
             
@@ -355,14 +355,14 @@ class cApiArticleLanguageVersion extends Item {
                     $contentColl->delete($this->db->f('idcontent'));
                 }		
                 $contentVersion = new cApiContentVersion();
-                $type = new cApiType();	
+                $ctype = new cApiType();	
                 $this->loadArticleVersionContent();
                 foreach ($this->content AS $typeName => $typeids) {
                     foreach ($typeids AS $typeid => $value) {
-                        $type->loadByType($typeName);
+                        $ctype->loadByType($typeName);
                         $contentParameters = array(
                             'idartlang' => $this->get('idartlang'),
-                            'idtype' => $type->get('idtype'),
+                            'idtype' => $ctype->get('idtype'),
                             'typeid' => $typeid,
                             'version' => $this->get('version')
                         );
@@ -428,7 +428,7 @@ class cApiArticleLanguageVersion extends Item {
         if ($type == 'content' || $type == 'complete') {
             $artLangVersion->loadArticleVersionContent();        
             $contentVersion = new cApiContentVersion();
-            $type = new cApiType();	
+            $apiType = new cApiType();	
             $this->loadArticleVersionContent();
 
             // get all Content Versions
@@ -446,11 +446,11 @@ class cApiArticleLanguageVersion extends Item {
             // set new Content Versions
             foreach ($mergedContent AS $typeName => $typeids) {
                 foreach ($typeids AS $typeid => $value) {
-                    $type->loadByType($typeName);
+                    $apiType->loadByType($typeName);
                     if (isset($this->content[$typeName][$typeid])) {
                         $contentParameters = array(
                             'idartlang' => $this->get('idartlang'),
-                            'idtype' => $type->get('idtype'),
+                            'idtype' => $apiType->get('idtype'),
                             'typeid' => $typeid,
                             'version' => $this->get('version')
                         );
@@ -462,7 +462,7 @@ class cApiArticleLanguageVersion extends Item {
                     } else {
                         $contentParameters = array(
                             'idartlang' => $artLangVersion->get('idartlang'),
-                            'idtype' => $type->get('idtype'),
+                            'idtype' => $apiType->get('idtype'),
                             'typeid' => $typeid,
                             'version' => $artLangVersion->get('version'),
                             'author' => $this->get('author'),

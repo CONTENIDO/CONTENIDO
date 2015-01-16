@@ -17,9 +17,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 if ($perm->have_perm_area_action($area, "con_meta_deletetype") || $perm->have_perm_area_action_item($area, "con_meta_deletetype", $idcat)) {
 
-    $versioning = new cContentVersioning();
-    if ($versioning->getState() != 'advanced') {
-        // Get metavalue for selected metatype
         $metaTagColl = new cApiMetaTagCollection();
         $metaTagColl->select('idmetatype=' . cSecurity::toInteger($idmetatype));
 
@@ -32,9 +29,7 @@ if ($perm->have_perm_area_action($area, "con_meta_deletetype") || $perm->have_pe
         // Delete metatype
         $metaTypeColl = new cApiMetaTypeCollection();
         $metaTypeColl->delete(cSecurity::toInteger($idmetatype));
-    } else if ($versioning->getState() != 'advanced') {
-        //TODOJ: delete version
-    }
+        
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }

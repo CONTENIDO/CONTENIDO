@@ -203,7 +203,7 @@
                 <td>{METATITLE}</td>
                 <td class="text_medium">
                     {METAFIELDTYPE}
-                    <a href="javascript://" onclick="Con.showConfirmation('{DELETE_META_CONFIRM}', function() { deleteMetaTag({IDMETATYPE}, {ARTICLE_ID}, {CAT_ID}, {ARTICLE_LANGUAGE_ID}); }); return false;" title="Delete Meta tag">
+                    <a href="javascript://" onclick="{DELETE_META}return false;" title="Delete Meta tag">
                         <img class="vAlignMiddle" style="float: right" src="images/delete.gif">
                     </a>
                 </td>
@@ -212,9 +212,9 @@
 
             <!--
             <a href="javascript://" onclick="{DELETE_META}return false;" title="Delete Meta tag">
-            Con.showConfirmation('{DELETE_META_CONFIRM}', function() { deleteMetaTag({IDMETATYPE}, {ARTICLE_ID}, {CAT_ID}, {ARTICLE_LANGUAGE_ID}); }); 
+            <a href="javascript://" onclick="Con.showConfirmation('{DELETE_META_CONFIRM}', function() { deleteMetaTag({IDMETATYPE}, {ARTICLE_ID}, {CAT_ID}, {ARTICLE_LANGUAGE_ID}); });  return false;" title="Delete Meta tag">
             -->
-
+            
             {ADDNEWMETA}
 
             <tr>

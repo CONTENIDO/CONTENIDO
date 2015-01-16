@@ -177,7 +177,7 @@ foreach ($availableTags as $key => $value) {
         'name' => $value['metatype'],
         'content' => cSecurity::unFilter(stripslashes(conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'))))
     );
-
+    
     // Set meta values to inputs
     if (in_array($value['metatype'], $managedTypes)) {
         if ($value['metatype'] == 'robots') {
@@ -247,12 +247,12 @@ foreach ($availableTags as $key => $value) {
     $tpl->set('d', 'ARTICLE_LANGUAGE_ID', $art->getField('idartlang'));
     $tpl->set('d', 'ARTICLE_ID', $idart);
     $tpl->set('d', 'CAT_ID', $idcat);
-    $tpl->set('d', 'METAFIELDTYPE', $element);
+  /*  $tpl->set('d', 'METAFIELDTYPE', $element);
     $tpl->set('d', 'IDMETATYPE', $value['idmetatype']);
     $tpl->set('d', 'METATITLE', $value['metatype'] . ':');
     $tpl->set('d', 'DELETE_META_CONFIRM', i18n('Are you sure to delete this Meta tag?'));
-    
-    /*$tpl->set('d', 'METAFIELDTYPE', $element);
+    */
+    $tpl->set('d', 'METAFIELDTYPE', $element);
     $tpl->set('d', 'METATITLE', $value['metatype'] . ':');
     if ($versioning->getState() == 'simple' && $articleType == 'current'
             || $versioning->getState() == 'advanced' && $articleType == 'editable') {
@@ -265,12 +265,12 @@ foreach ($availableTags as $key => $value) {
                     }
             ); "
         );
-        echo "if...";
+        
     } else {
         
         $tpl->set('d', 'DELETE_META', '');
-                echo "else...";
-    }*/
+        
+    }
     $tpl->next();
 }
 
@@ -310,12 +310,15 @@ switch ($versioning->getState()) {
         // set editable element 
         $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
         if (isset($versioning->editableArticleId)) {
-            $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId($art->getField('idartlang')));
+            $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId($art->getField('idartlang'))); //key($optionElementParameters[max(array_keys($optionElementParameters))]));
             if ($articleType == 'editable') {
                 $optionElement->setSelected(true);
             }
             $selectElement->appendOptionElement($optionElement);
-            unset($optionElementParameters[max(array_keys($optionElementParameters))]);
+            if (count($optionElementParameters) > 0) {
+                unset($optionElementParameters[max(array_keys($optionElementParameters))]);
+            }
+            
         }
 
         // Create Metatag Version Option Elements
@@ -335,7 +338,7 @@ switch ($versioning->getState()) {
             }
             $selectElement->appendOptionElement($optionElement);
         }
-         $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
+        $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
 
         $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
         $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
@@ -350,6 +353,10 @@ switch ($versioning->getState()) {
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
         $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
         
+        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Konfigurationsstufe \'simple\':</strong> Ältere Metadatenversionen lassen sich wiederherstellen (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
+                . 'Hier durchgeführte Aktionen beziehen sich nur auf Metadaten!'));
+        $tpl->set("s", "INFO_BUTTON_VERSION_SELECTION", $infoButton->render());
+        
         break;
     case 'simple' :
         
@@ -361,7 +368,7 @@ switch ($versioning->getState()) {
         }
     
         $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
-
+        
         // Create Metatag Version Option Elements
         $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
         $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
@@ -380,7 +387,7 @@ switch ($versioning->getState()) {
             }
             $selectElement->appendOptionElement($optionElement);
         }
-         $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
+        $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
 
         $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
         $tpl->set("s", "ACTION2", $sess->url('main.php?area=' . $area . '&frame=' . $frame . '&action=con_meta_change_version'));
@@ -393,6 +400,10 @@ switch ($versioning->getState()) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
         $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
+        
+        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Konfigurationsstufe \'simple\':</strong> Ältere Metadatenversionen lassen sich wiederherstellen (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
+                . 'Hier durchgeführte Aktionen beziehen sich nur auf Metadaten!'));
+        $tpl->set("s", "INFO_BUTTON_VERSION_SELECTION", $infoButton->render());
     
         break;        
     case 'disabled' :
@@ -409,8 +420,8 @@ switch ($versioning->getState()) {
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
         $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $versioning_info_text = i18n('Aktiviere die Artikel-Versionierung in den Administration/System/System-Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen eines Artikels zurückgegriffen werden kann.');
-        $tpl->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);  
+        $infoButton = new cGuiBackendHelpbox(i18n('Aktiviere die Artikel-Versionierung in den Administration/System/System-Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen eines Artikels zurückgegriffen werden kann.'));
+        $tpl->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());  
         
     default :
         break;
@@ -419,9 +430,6 @@ switch ($versioning->getState()) {
 
 $infoButton = new cGuiBackendHelpbox(i18n('The title-tag is one of the most important on-page factors for SEO and is not longer than 60 characters. It includes top keywords and the branding.'));
 $tpl->set("s", "INFO_BUTTON_PAGE_TITLE", $infoButton->render());
-
-$infoButton->setHelpText(i18n('Infos, was bei Auswahl/Button passiert...'));
-$tpl->set("s", "INFO_BUTTON_VERSION_SELECTION", $infoButton->render());
 
 $infoButton->setHelpText(i18n('The description-tag describes the article in a short way (not more than 150 characters). The content should be related to the title-tag and the H1-tag.'));
 $tpl->set("s", "INFO_BUTTON_DESCRIPTION", $infoButton->render());
