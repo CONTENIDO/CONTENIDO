@@ -142,6 +142,21 @@ $oScriptTpl->set('s', 'CLOSE', utf8_encode(html_entity_decode(i18n('Close editor
 $oScriptTpl->set('s', 'SAVE', utf8_encode(html_entity_decode(i18n('Close editor and save changes'))));
 $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
 
+// Add tiny setup
+$tinysetup = '            ed.onSetContent.add(function(ed, o) {
+                Con.Tiny.updateContent(ed.getContent());
+            });
+';
+if ('tinymce3' === $wysiwygeditor) {
+    $oScriptTpl->set('s', 'TINYMCE_SETUP', $tinysetup);
+} else {
+    $tinysetup = '            	ed.on(\'LoadContent\', function(e) {
+            		Con.Tiny.updateContent(ed.getContent());
+            	});
+';
+    $oScriptTpl->set('s', 'TINYMCE_SETUP', $tinysetup);
+}
+
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $oScriptTpl->set('s', 'USE_TINY', '');
 } else {

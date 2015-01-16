@@ -991,7 +991,7 @@ function conMakeStart($idcatart, $isstart) {
 }
 
 /**
- * Create code for one article in all categorys
+ * Create code for one article in all categories
  *
  * @param int $idart Article ID
  */

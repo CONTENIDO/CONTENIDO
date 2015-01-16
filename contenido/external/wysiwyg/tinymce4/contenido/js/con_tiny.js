@@ -140,6 +140,10 @@
          * @type {Number}
          */
         idartlang: 0,
+        /**
+         * is editor currently changing fullscreen
+         */
+        changingFullscreen: false,
 
         /**
          * Initializer
@@ -460,28 +464,27 @@
 
             // Show tiny and focus it
             if (Con.Tiny.activeId) {
-                tinymce.execCommand('mceAddEditor', false, Con.Tiny.activeId);
-                Con.Tiny.setFocus();
 
-                // Remove height information of clicked div
-                $('#' + Con.Tiny.activeId).css('height', '');
-            }
-        },
+            	// check if tinymce editor instance for current id already exists
+            	if (!tinymce.get(Con.Tiny.activeId)) {
+            		// build a new instance because there is no editor instance
+	            	var ed = new tinymce.Editor(Con.Tiny.activeId, tinymce.settings, tinymce.EditorManager);
 
-        /**
-         * Function sets focus on toggled editor if its loading proccess was completed
-         * @method setFocus
-         * @static
-         */
-        setFocus: function() {
-            var activeTinyId = tinymce.get(Con.Tiny.activeId);
-
-            if (!activeTinyId) {
-                window.setTimeout(function () {
-                    Con.Tiny.setFocus();
-                }, 50);
-            } else {
-                tinymce.execInstanceCommand(activeTinyId, 'mceFocus', false);
+	            	// bind init event to a function
+	            	ed.on('init', function(e) {
+	            		// make sure dom has been built
+	                    window.setTimeout(function () {
+	                    	// fire focus event
+	                    	// ed.focus() does not work because there's an internal tinymce problem
+	                    	ed.fire('focus');
+	                    }, 0);
+	            	});
+	            	// inject newly built editor into page
+	            	ed.render();
+	
+	                // Remove height information of clicked div
+	                $('#' + Con.Tiny.activeId).css('height', '');
+            	}
             }
         },
 
@@ -562,21 +565,82 @@
                         }
                     });
 
-                    ed.addButton('close', {
-                        title: options.closeTitle,
-                        image: options.closeImage,
-                        icons: false,
-                        onclick: function(ed) {
-                            Con.Tiny.closeTiny();
-                        }
-                    });
+                    if (true != wysiwygSettings['inline']) {
+	                    ed.addButton('close', {
+	                        title: options.closeTitle,
+	                        image: options.closeImage,
+	                        icons: false,
+	                        onclick: function(ed) {
+	                            Con.Tiny.closeTiny();
+	                        }
+	                    });
+                    }
+                    settings : wysiwygSettings
                 }
             });
 
             // Register plugin with a short name
             tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
+            
+            tinymce.create('tinymce.plugins.ConFullscreenPlugin', {
+            	init: function(ed) {
+            		ed.addButton('fullscreen', {
+            			tooltip: 'Fullscreen',
+            			shortcut: 'Ctrl+Alt+F',
+            			onclick: function() {
+            				Con.Tiny.handleFullscreen(ed);
+            			}
+            		});
+            	}
+            });
+            // Register plugin with a short name
+            tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
 
             tinymce.settings = wysiwygSettings;
+            
+            // init set of editors
+            tinymce.init(tinymce.settings);
+        },
+        
+        handleFullscreen: function(ed) {console.log(ed);
+			// fullscreen in inline mode not supported
+			// we can not change inline mode of existing editor
+			// so remove old editor instance and create a new one
+			var id = ed.id;
+			ed.remove();
+			
+			// build a new editor instance with inline turned off
+			var set = tinymce.settings;
+//			set['inline'] = false;
+			ed = new tinymce.Editor(id, set.fullscreen_settings, tinymce.EditorManager);
+			ed.on('init', function () {
+				// put new editor into focus
+				ed.fire('focus');
+				changingFullscreen = true;
+				ed.execCommand('mceFullScreen');
+			});
+			ed.on('FullscreenStateChanged', function () {
+				console.log('FullscreenStateChanged');
+				if (changingFullscreen) {
+					changingFullscreen = false;
+					return;
+				}
+				isFullscreen = false;
+				var id = ed.id;
+				ed.remove();
+				
+				// build a new editor instance with inline turned off
+				ed = new tinymce.Editor(id, set, tinymce.EditorManager);
+				ed.on('init', function () {
+					// put new editor into focus
+					ed.fire('focus');
+				});
+				// add new editor to page
+				ed.render();
+			});
+			
+			// add new editor to page
+			ed.render();
         },
 
         /**
@@ -593,11 +657,11 @@
             // Add tiny to elements which contains classname contentEditable
             // tiny toggles on click
             $('div[contenteditable=true]').each(function() {
-//                $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
-                $(this).bind('click', function() {
-                    if (options.useTiny) {
-                        Con.Tiny.swapTiny(this);
-                    }
+                $(this).attr('contentEditable', 'false'); //remove contentEditable tags in order to disable special firefox behaviour
+                $(this).on('click', function() {
+//                    if (options.useTiny) {
+//                        Con.Tiny.swapTiny(this);
+//                    }
                 });
             });
 
@@ -607,41 +671,4 @@
             });
         }
     };
-
-
-    // @deprecated [2013-10-25] Assign to windows scope (downwards compatibility)
-    window.myCustomSetupContent = Con.Tiny.customCleanupCallback;
-    window.myCustomFileBrowser = Con.Tiny.customFileBrowserCallback;
-    window.updateImageFilebrowser = Con.Tiny.updateImageFilebrowser;
-    window.CustomCleanupContent = Con.Tiny.customCleanupCallback;
-    window.cutFullpath = Con.Tiny.customSaveCallback;
-    window.storeCurrentTinyContent = Con.Tiny.storeCurrentTinyContent;
-    window.setcontent = Con.Tiny.setContent;
-    window.prepareString = Con.Tiny.prepareString;
-    window.buildDataEntry = Con.Tiny.buildDataEntry;
-    window.addDataEntry = Con.Tiny.addDataEntry;
-    window.closeTiny = Con.Tiny.closeTiny;
-    window.swapTiny = Con.Tiny.swapTiny;
-    window.setFocus = Con.Tiny.setFocus;
-    window.updateContent = Con.Tiny.updateContent;
-    // @deprecated  Use leaveCheck()
-    window.leave_check = Con.Tiny.leaveCheck;
-    window.leaveCheck = Con.Tiny.leaveCheck;
-    window.active_id = Con.Tiny.activeId;
-    window.active_object = Con.Tiny.activeObject;
-    window.aEditdata = Con.Tiny.editData;
-    window.aEditdataOrig = Con.Tiny.editDataOrg;
-    window.bCheckLeave = Con.Tiny.checkOnLeave;
-    window.tinymceConfigs = Con.Tiny.settings;
-    window.fb_fieldname = Con.Tiny.fbFieldName;
-    window.fb_handle = Con.Tiny.fbPopupWindow;
-    window.fb_intervalhandle = Con.Tiny.fbIntervalHandle;
-    window.fb_win = Con.Tiny.fbWindow;
-    window.file_url = Con.Tiny.fileUrl;
-    window.image_url = Con.Tiny.imageUrl;
-    window.media_url = Con.Tiny.mediaUrl;
-    window.frontend_path = Con.Tiny.frontendPath;
-    window.iIdartlang = Con.Tiny.idartlang;
-    window.sQuestion = Con.Tiny.txtQuestion;
-
 })(Con, Con.$);

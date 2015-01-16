@@ -75,7 +75,9 @@ if ($currentuser->getField('wysi') == 1) {
     echo $cTinyMCEEditor->_getEditor();
 } else {
     $oTextarea = new cHTMLTextarea($editor_name, $editor_content);
+//    $oTextarea->set('id', $editor_name);
     $oTextarea->setId($editor_name);
+    $oTextarea->setClass(htmlentities($type));
 
     $editor_width  = getEffectiveSetting('tinymce4', 'width',  '600');
     $editor_height = getEffectiveSetting('tinymce4', 'height', '480');

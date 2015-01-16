@@ -427,7 +427,22 @@ $page->set('s', 'CLOSE', i18n('Close editor'));
 $page->set('s', 'SAVE', i18n('Close editor and save changes'));
 $page->set('s', 'QUESTION', i18n('Do you want to save changes?'));
 
-// Add export and import tarnslations
+// Add tiny setup
+$tinysetup = '            ed.onSetContent.add(function(ed, o) {
+                Con.Tiny.updateContent(ed.getContent());
+            });
+';
+if ('tinymce3' === $wysiwygeditor) {
+    $page->set('s', 'TINYMCE_SETUP', $tinysetup);
+} else {
+    $tinysetup = '                ed.on(\'LoadContent\', function(e) {
+                    Con.Tiny.updateContent(ed.getContent());
+                });
+';
+    $page->set('s', 'TINYMCE_SETUP', $tinysetup);
+}
+
+// Add export and import translations
 $page->set('s', 'EXPORT_RAWDATA', i18n("Export raw data"));
 $page->set('s', 'IMPORT_RAWDATA', i18n("Import raw data"));
 $page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));

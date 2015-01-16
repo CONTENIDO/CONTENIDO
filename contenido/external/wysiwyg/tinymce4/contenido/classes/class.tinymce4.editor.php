@@ -69,7 +69,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $this->_setSetting("article_url_suffix", 'front_content.php?idart=' . $idart, true); # modified 23.10.2006
 
         // Default values
-        $this->_setSetting("mode", "exact");
+//         $this->_setSetting("mode", "exact");
         $aPathFragments = explode('/', $cfgClient[$client]["path"]["htmlpath"]);
         $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css");
 
@@ -90,8 +90,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $this->_setSetting("convert_urls", false);
         $this->_setSetting("relative_urls", false);
 
-        // Editor name (a comma separated list of instances)
-        $this->_setSetting("elements", $sEditorName);
+//         // Editor name (a comma separated list of instances)
+//         $this->_setSetting("elements", $sEditorName);
 
         // Editor language
         $aLangs = i18nGetAvailableLanguages();
@@ -288,21 +288,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         switch ($sMode) {
             case "full": // Show all options
-                $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
-                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
-                $this->_setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
-                //table,save,pagebreak,layer,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template
-                $this->_setSetting("plugins", "table,save,pagebreak,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,template", true);
-                $this->_setSetting("theme_advanced_toolbar_align", "left", true);
-
-                $aCustSettings = getEffectiveSettingsByType("tinymce");
-                foreach ($aCustSettings as $sKey => $sValue) {
-                    $this->_setSetting($sKey, $sValue, true);
-                }
-
-                break;
-
             case "fullscreen": // Show all options
+                // apply editor to any element with class CMS_HTML or CMS_HTMLHEAD
+                $this->_setSetting('selector', '*.CMS_HTML, *.CMS_HTMLHEAD', true);
+
                 $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
                 $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
                 $this->_setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
@@ -360,9 +349,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "inline_edit":
-                $this->_setSetting("theme_advanced_buttons1", "bold,italic,underline,strikethrough,separator,undo,separator,bullist,numlist,separator,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright,separator,fullscreen,separator,save,close", true);
-                $this->_setSetting("theme_advanced_buttons2", "", true);
-                $this->_setSetting("theme_advanced_buttons3", "", true);
+//                 $this->_setSetting("theme_advanced_buttons1", "bold,italic,underline,strikethrough,separator,undo,separator,bullist,numlist,separator,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright,separator,fullscreen,separator,save,close", true);
+//                 $this->_setSetting("theme_advanced_buttons2", "", true);
+//                 $this->_setSetting("theme_advanced_buttons3", "", true);
+                $this->_setSetting('toolbar1', 'bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | justifyleft justifycenter justifyright | fullscreen | save close', true);
 
                 $this->_setSetting("setupcontent_callback", "Con.Tiny.customSetupContentCallback", true);
 
@@ -371,10 +361,13 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting("theme_advanced_toolbar_location", "external");
                 $this->_setSetting("height", "210px", true);
                 // close plugin not in plugins directory but still working if listed
-                $this->_setSetting("plugins", "table,fullscreen,close", true);
-//                 $this->_setSetting("mode", "exact", true);
-//                 $this->_setSetting("elements", "*", true);
-                $this->_setSetting('selector', '*', true);
+                $this->_setSetting("plugins", "table fullscreen close confullscreen", true);
+
+                // apply editor to any element with class CMS_HTML or CMS_HTMLHEAD
+                $this->_setSetting('selector', '*.CMS_HTML, *.CMS_HTMLHEAD', true);
+                // do not set inline mode to true because fullscreen plugin won't work then
+                $this->_setSetting('inline', 'true');
+                $this->_setSetting('menubar', 'false');
                 $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);
 
                 if (!array_key_exists("auto_resize", $this->_aSettings)) {
@@ -536,6 +529,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         $oTxtEditor = new cHTMLTextarea($this->_sEditorName, $this->_sEditorContent);
         $oTxtEditor->setId($this->_sEditorName);
+        $oTxtEditor->setClass(htmlentities($this->_sEditorName));
 
         $oTxtEditor->setStyle("width: " . $this->_aSettings["width"] . "; height: " . $this->_aSettings["height"] . ";");
 
