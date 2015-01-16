@@ -18,9 +18,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.lang.php');
 
 /**
- * The object cTinyMCEEditor is a wrapper class to the TinyMCE WYSIWYG Editor.
+ * The object cTinyMCE4Editor is a wrapper class to the TinyMCE WYSIWYG Editor.
  * Attributes can be defined to generate JavaScript options and functions to initialise the global
- * tinyMCE object in file ./contenido/external/wysiwyg/tinymce3/tinymce.tpl.html.
+ * tinymce object in file ./contenido/external/wysiwyg/tinymce4/contenido/templates/template.tinymce_tpl.html.
  *
  * All settings accepted by tinyMCE and its plugins may be specified using system, client
  * group or user property/setting.
@@ -60,30 +60,27 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         parent::__construct($sEditorName, $sEditorContent);
         $this->_setEditor("tinymce4");
 
-        // Retrieve all settings for tinymce
+        // Retrieve all settings for tinymce 4
         $this->_aSettings = getEffectiveSettingsByType("tinymce4");
-
-//         // For compatibility, read settings in previous syntax also (< V4.7, type "wysiwyg" vs. "tinymce")
-//         $this->_aSettings = array_merge(getEffectiveSettingsByType("wysiwyg"), $this->_aSettings);
 
         $this->_setSetting("article_url_suffix", 'front_content.php?idart=' . $idart, true); # modified 23.10.2006
 
         // Default values
-//         $this->_setSetting("mode", "exact");
+
+        // apply editor to any element with class CMS_HTML or CMS_HTMLHEAD
+        $this->_setSetting('selector', '*.CMS_HTML, *.CMS_HTMLHEAD', true);
+
         $aPathFragments = explode('/', $cfgClient[$client]["path"]["htmlpath"]);
         $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css");
 
         $this->_setSetting("theme", "modern");
-//         $this->_setSetting("theme_advanced_toolbar_location", "top");
-//         $this->_setSetting("theme_advanced_path_location", "bottom");
         $this->_setSetting("remove_script_host", false);
-        $this->_setSetting("file_browser_callback", "Con.Tiny.customFileBrowserCallback", true);
-        //$this->_setSetting("urlconverter_callback", "Con.Tiny.customURLConverterCallback");
+//         $this->_setSetting("file_browser_callback", 'function(field_name, url, type, win) {Con.Tiny.customFileBrowserCallback(field_name, url, type, win);}', true);
+        //$this->_setSetting("file_browser_callback", "Con.Tiny.customFileBrowserCallback");
+        $this->_setSetting("urlconverter_callback", "Con.Tiny.customURLConverterCallback");
         // New in V3.x
-        $this->_setSetting("theme_advanced_resizing", true);
         $this->_setSetting("pagebreak_separator", "<!-- my page break -->"); // needs pagebreak plugin
         // Source formatting (ugh!)
-        $this->_setSetting("apply_source_formatting", true);
         $this->_setSetting("remove_linebreaks", false); // Remove linebreaks - GREAT idea...
 
         // Convert URLs and Relative URLs default
@@ -288,18 +285,32 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         switch ($sMode) {
             case "full": // Show all options
-            case "fullscreen": // Show all options
-                // apply editor to any element with class CMS_HTML or CMS_HTMLHEAD
-                $this->_setSetting('selector', '*.CMS_HTML, *.CMS_HTMLHEAD', true);
+                $this->_setSetting("toolbar1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
+                $this->_setSetting("toolbar2", "link,unlink,anchor,image,media,advhr,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
+                $this->_setSetting("toolbar3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
+                $this->_setSetting('plugins', 'table save hr image link pagebreak layer insertdatetime preview media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template',  true);
+                $aCustSettings = getEffectiveSettingsByType('tinymce4');
+                foreach ($aCustSettings as $sKey => $sValue) {
+                    $this->_setSetting($sKey, $sValue, true);
+                }
+                break;
 
-                $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
-                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
-                $this->_setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
+            case "fullscreen": // Show all options
+
+//                 $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
+//                 $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
+//                 $this->_setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
                 //table,save,pagebreak,layer,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template
-                $this->_setSetting("plugins", "table,save,pagebreak,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,template", true);
+//                 $this->_setSetting("plugins", "table,save,pagebreak,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,template", true);
+
+                $this->_setSetting('toolbar1', 'cut copy paste pastetext pasteword | search replace | undo redo | bold italic underline strikethrough sub sup | insertdate inserttime preview | styleselect | visualchars nonbreaking template pagebreak | help | fullscreen', true);
+                $this->_setSetting('toolbar2', 'link unlink anchor image media | bullist numlist | outdent indent blockquote | justifyleft justifycenter justifyright justifyfull removeformat | forecolor backcolor | ltr rtl | visualaid charmap cleanup | code', true);
+                $this->_setSetting('toolbar3', 'tablecontrols | formatselect fontselect fontsizeselect | styleprops | cite abbr acronym del ins attribs', true);
+                // load some plugins
+                $this->_setSetting('plugins', 'table save hr image link pagebreak layer insertdatetime preview media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template', true);
                 $this->_setSetting("theme_advanced_toolbar_align", "left", true);
 
-                $aCustSettings = getEffectiveSettingsByType("tinymce_fullscreen");
+                $aCustSettings = getEffectiveSettingsByType("tinymce4_fullscreen");
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -339,7 +350,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting("theme_advanced_buttons2", $this->_aSettings["tinymce-toolbar2"]);
                 $this->_setSetting("theme_advanced_buttons3", $this->_aSettings["tinymce-toolbar3"]);
                 $this->_setSetting("plugins", $this->_aSettings["tinymce-plugins"]);
-                $this->_setSetting("theme_advanced_toolbar_location", "bottom");
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_custom");
                 foreach ($aCustSettings as $sKey => $sValue) {
@@ -353,18 +363,16 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 //                 $this->_setSetting("theme_advanced_buttons2", "", true);
 //                 $this->_setSetting("theme_advanced_buttons3", "", true);
                 $this->_setSetting('toolbar1', 'bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | justifyleft justifycenter justifyright | fullscreen | save close', true);
+                $this->_setSetting('toolbar2', '', true);
+                $this->_setSetting('toolbar3', '', true);
 
                 $this->_setSetting("setupcontent_callback", "Con.Tiny.customSetupContentCallback", true);
 
                 $this->_unsetSetting("width");
-                $this->_unsetSetting("theme_advanced_toolbar_location");
-                $this->_setSetting("theme_advanced_toolbar_location", "external");
                 $this->_setSetting("height", "210px", true);
                 // close plugin not in plugins directory but still working if listed
                 $this->_setSetting("plugins", "table fullscreen close confullscreen", true);
 
-                // apply editor to any element with class CMS_HTML or CMS_HTMLHEAD
-                $this->_setSetting('selector', '*.CMS_HTML, *.CMS_HTMLHEAD', true);
                 // do not set inline mode to true because fullscreen plugin won't work then
                 $this->_setSetting('inline', 'true');
                 $this->_setSetting('menubar', 'false');
@@ -372,14 +380,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
                 if (!array_key_exists("auto_resize", $this->_aSettings)) {
                     $this->_setSetting("auto_resize", "false", true);
-                }
-
-                if (!array_key_exists("theme_advanced_toolbar_location", $this->_aSettings)) {
-                    $this->_setSetting("theme_advanced_toolbar_location", "top", true);
-                }
-
-                if (!array_key_exists("theme_advanced_resizing_use_cookie", $this->_aSettings)) {
-                    $this->_setSetting("theme_advanced_resizing_use_cookie", "false", true);
                 }
 
                 if (!array_key_exists("theme_advanced_toolbar_align", $this->_aSettings)) {
@@ -526,6 +526,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         $sConfig = substr($sConfig, 0, -3);
         $oTemplate->set('s', 'CONFIG', $sConfig);
+//         $oTemplate->set('s', 'CONFIGSETTINGS', )
 
         $oTxtEditor = new cHTMLTextarea($this->_sEditorName, $this->_sEditorContent);
         $oTxtEditor->setId($this->_sEditorName);
@@ -569,10 +570,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $sConfig = '';
         $this->setToolbar('fullscreen');
 
-        $sConfig .= "'theme_advanced_buttons1': '" . $this->_aSettings['theme_advanced_buttons1'] . "',\n";
-        $sConfig .= "'theme_advanced_buttons2': '" . $this->_aSettings['theme_advanced_buttons2'] . "',\n";
-        $sConfig .= "'theme_advanced_buttons3': '" . $this->_aSettings['theme_advanced_buttons3'] . "',\n";
-        $sConfig .= "'theme_advanced_toolbar_align': '" . $this->_aSettings['theme_advanced_toolbar_align'] . "',\n";
+        $sConfig .= "'toolbar1': '" . $this->_aSettings['toolbar1'] . "',\n";
+        $sConfig .= "'toolbar2': '" . $this->_aSettings['toolbar2'] . "',\n";
+        $sConfig .= "'toolbar2': '" . $this->_aSettings['toolbar3'] . "',\n";
+        
         $sConfig .= "'plugins': '" . $this->_aSettings['plugins'] . "'\n";
 
         return $sConfig;

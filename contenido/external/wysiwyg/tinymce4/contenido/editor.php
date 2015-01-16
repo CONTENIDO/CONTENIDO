@@ -60,13 +60,6 @@ if (false !== $editor_height) {
     $cTinyMCEEditor->_setSetting('height', $editor_height, true);
 }
 
-/*
-TODO:
-
--> see editor_template.js
--> create own theme template engine
--> maybe change the way icons are displayed
-*/
 
 $currentuser = new cApiUser($auth->auth['uid']);
 

@@ -2,6 +2,8 @@
 <script src="{_PATH_CONTENIDO_FULLHTML_}/external/wysiwyg/tinymce4/contenido/js/con_tiny.js" type="text/javascript"></script>
 
 <script language="javascript" type="text/javascript">
+Con.Tiny.tinymceInit(tinymce, {{CONFIG}['settings']}, {});
+
 Con.Tiny.init({
     frontendPath: '{FRONTEND_PATH}',
     fileUrl: '{FILEBROWSER}',
@@ -11,10 +13,4 @@ Con.Tiny.init({
 });
 </script>
 
-<!-- Needs to be separate script tags! -->
-<script language="JavaScript" type="text/javascript">
-tinymce.init({
-    {CONFIG}
-});
-</script>
 <!-- /tinyMCE -->

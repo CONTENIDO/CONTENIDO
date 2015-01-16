@@ -575,6 +575,13 @@
 
             // Register plugin with a short name
             tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
+            
+            // inject setup into settings
+            tinymce.settings.setup = function(ed) {
+                ed.onSetContent.add(function(ed, o) {
+                    Con.Tiny.updateContent(ed.getContent());
+                });
+            }
 
             tinymce.settings = wysiwygSettings;
         },

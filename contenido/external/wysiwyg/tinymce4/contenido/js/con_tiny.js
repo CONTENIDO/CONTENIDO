@@ -163,13 +163,12 @@
         /**
          * Custom content setup callback function for TinyMCE, see TinyMCE setting
          * 'setupcontent_callback'.
+         * setup content is fired after the editor initialised
          * @method customSetupContentCallback
          * @param  {String}  editorId
-         * @param  {HTMLElement}  body
-         * @param  {HTMLElement}  doc
          * @static
          */
-        customSetupContentCallback: function(editorId, body, doc) {
+        customSetupContentCallback: function(editorId) {
             tinymce.get(editorId).setContent(tinymce.get(editorId).getContent());
         },
 
@@ -243,13 +242,11 @@
          * Custom save callback function for TinyMCE, see TinyMCE setting
          * 'save_callback'.
          * @method customSaveCallback
-         * @param  {String}  elementId
          * @param  {String}  html
-         * @param  {HTMLElement}  body
          * @return {String}
          * @static
          */
-        customSaveCallback: function(elementId, html, body) {
+        customSaveCallback: function(html) {
             return html.replace(Con.Tiny.frontendPath, '');
         },
 
@@ -286,7 +283,7 @@
 
             if (leftTopFrame.document.getElementById('selectedfile').value !== '') {
                 // Get selected image from popup and close it
-                Con.Tiny.fbWindow.document.forms[0].elements[Con.Tiny.fbFieldName].value = leftTopFrame.document.getElementById('selectedfile').value;
+            	Con.Tiny.fbWindow.document.getElementById(Con.Tiny.fbFieldName).value = leftTopFrame.document.getElementById('selectedfile').value;
 
                 Con.Tiny.fbPopupWindow.close();
                 window.clearInterval(Con.Tiny.fbIntervalHandle);
@@ -414,7 +411,7 @@
         },
 
         /**
-         * Function closses currently opened tiny
+         * Function closes currently opened tiny
          * @method closeTiny
          * @static
          */
@@ -433,7 +430,8 @@
                 var tmpId = Con.Tiny.activeId;
                 setTimeout(function() {
                     if (tmpId) {
-                        tinymce.execCommand('mceRemoveEditor', false, tmpId);
+                        // use jQuery to deselect any element with the id (thus also deselecting the editor)
+                        jQuery('#' + tmpId).blur();
                     }
                 }, 0);
 
@@ -452,40 +450,42 @@
          * @static
          */
         swapTiny: function(obj) {
-            // Check if tiny is currently open
-            Con.Tiny.closeTiny();
-
-            // Set tinymce configs
-            tinymce.settings = Con.Tiny.settings;
-
-            // Set clicked object as active object
+            // adjust currently active id
             Con.Tiny.activeId = obj.id;
-            Con.Tiny.activeObject = obj;
-
-            // Show tiny and focus it
-            if (Con.Tiny.activeId) {
-
-            	// check if tinymce editor instance for current id already exists
-            	if (!tinymce.get(Con.Tiny.activeId)) {
-            		// build a new instance because there is no editor instance
-	            	var ed = new tinymce.Editor(Con.Tiny.activeId, tinymce.settings, tinymce.EditorManager);
-
-	            	// bind init event to a function
-	            	ed.on('init', function(e) {
-	            		// make sure dom has been built
-	                    window.setTimeout(function () {
-	                    	// fire focus event
-	                    	// ed.focus() does not work because there's an internal tinymce problem
-	                    	ed.fire('focus');
-	                    }, 0);
-	            	});
-	            	// inject newly built editor into page
-	            	ed.render();
-	
-	                // Remove height information of clicked div
-	                $('#' + Con.Tiny.activeId).css('height', '');
-            	}
-            }
+//            // Check if tiny is currently open
+//            Con.Tiny.closeTiny();
+//
+//            // Set tinymce configs
+//            tinymce.settings = Con.Tiny.settings;
+//
+//            // Set clicked object as active object
+//            Con.Tiny.activeId = obj.id;
+//            Con.Tiny.activeObject = obj;
+//
+//            // Show tiny and focus it
+//            if (Con.Tiny.activeId) {
+//
+//            	// check if tinymce editor instance for current id already exists
+//            	if (!tinymce.get(Con.Tiny.activeId)) {
+//            		// build a new instance because there is no editor instance
+//	            	var ed = new tinymce.Editor(Con.Tiny.activeId, tinymce.settings, tinymce.EditorManager);
+//
+//	            	// bind init event to a function
+//	            	ed.on('init', function(e) {
+//	            		// make sure dom has been built
+//	                    window.setTimeout(function () {
+//	                    	// fire focus event
+//	                    	// ed.focus() does not work because there's an internal tinymce problem
+//	                    	ed.fire('focus');
+//	                    }, 0);
+//	            	});
+//	            	// inject newly built editor into page
+//	            	ed.render();
+//	
+//	                // Remove height information of clicked div
+//	                $('#' + Con.Tiny.activeId).css('height', '');
+//            	}
+//            }
         },
 
         /**
@@ -553,65 +553,85 @@
          * @static
          */
         tinymceInit: function(tinymce, wysiwygSettings, options) {
-            // Create ClosePlugin
-            tinymce.create('tinymce.plugins.ClosePlugin', {
-                init: function(ed, url) {
-                    ed.addButton('save', {
-                        title: options.saveTitle,
-                        image: options.saveImage,
-                        icons: false,
-                        onclick: function(ed) {
-                            Con.Tiny.setContent(Con.Tiny.idartlang);
-                        }
-                    });
-
-                    if (true != wysiwygSettings['inline']) {
-	                    ed.addButton('close', {
-	                        title: options.closeTitle,
-	                        image: options.closeImage,
-	                        icons: false,
-	                        onclick: function(ed) {
-	                            Con.Tiny.closeTiny();
-	                        }
-	                    });
-                    }
-                    settings : wysiwygSettings
+            if ('undefined' === typeof(wysiwygSettings['file_browser_callback'])) {        		
+                wysiwygSettings['file_browser_callback'] = 
+                    function(field_name, url, type, win) {
+                        Con.Tiny.customFileBrowserCallback(field_name, url, type, win);
                 }
-            });
+            }
 
-            // Register plugin with a short name
-            tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
-            
-            tinymce.create('tinymce.plugins.ConFullscreenPlugin', {
-            	init: function(ed) {
-            		ed.addButton('fullscreen', {
-            			tooltip: 'Fullscreen',
-            			shortcut: 'Ctrl+Alt+F',
-            			onclick: function() {
-            				Con.Tiny.handleFullscreen(ed);
-            			}
-            		});
-            	}
-            });
-            // Register plugin with a short name
-            tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
+            if ('undefined' != options) {
+                // Create ClosePlugin
+                tinymce.create('tinymce.plugins.ClosePlugin', {
+                    init: function(ed, url) {
+                        ed.addButton('save', {
+                            title: options.saveTitle,
+                            image: options.saveImage,
+                            icons: false,
+                            onclick: function(ed) {
+                                Con.Tiny.setContent(Con.Tiny.idartlang);
+                            }
+                        });
 
+                        ed.addButton('close', {
+                            title: options.closeTitle,
+                            image: options.closeImage,
+                            icons: false,
+                            onclick: function(ed) {
+                                Con.Tiny.closeTiny();
+                            }
+                        });
+                    }
+                });
+
+                // Register plugin with a short name
+                tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
+
+                tinymce.create('tinymce.plugins.ConFullscreenPlugin', {
+                	init: function(ed) {
+                		ed.addButton('fullscreen', {
+                			tooltip: 'Fullscreen',
+	            			shortcut: 'Ctrl+Alt+F',
+	            			onclick: function() {
+	            				Con.Tiny.handleFullscreen(ed);
+	            			}
+	            		});
+	            	}
+	            });
+	            
+	            // Register plugin with a short name
+	            tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
+        	}
             tinymce.settings = wysiwygSettings;
             
+            // inject setup into settings
+            tinymce.settings.setup = function(ed) {
+            	
+            	ed.on('LoadContent', function(e) {
+            		Con.Tiny.customSetupContentCallback(ed.id);
+            		Con.Tiny.updateContent(ed.getContent());
+                });
+            	ed.on('SaveContent', function (e) {
+            		Con.Tiny.customSaveCallback(ed.getContent());
+            	});
+            }
+            if ('undefined' !== typeof(tinymce.settings.fullscreen_settings)) {
+            	tinymce.settings.fullscreen_settings['file_browser_callback'] = tinymce.settings['file_browser_callback'];
+            }
+            
             // init set of editors
-            tinymce.init(tinymce.settings);
+            tinymce.init(tinymce.settings);            
         },
         
-        handleFullscreen: function(ed) {console.log(ed);
+        handleFullscreen: function(ed) {
 			// fullscreen in inline mode not supported
 			// we can not change inline mode of existing editor
-			// so remove old editor instance and create a new one
+			// remove old editor instance and create a new one
 			var id = ed.id;
 			ed.remove();
 			
-			// build a new editor instance with inline turned off
+			// build a new editor instance with fullscreen_settings
 			var set = tinymce.settings;
-//			set['inline'] = false;
 			ed = new tinymce.Editor(id, set.fullscreen_settings, tinymce.EditorManager);
 			ed.on('init', function () {
 				// put new editor into focus
@@ -620,16 +640,14 @@
 				ed.execCommand('mceFullScreen');
 			});
 			ed.on('FullscreenStateChanged', function () {
-				console.log('FullscreenStateChanged');
 				if (changingFullscreen) {
 					changingFullscreen = false;
 					return;
 				}
-				isFullscreen = false;
 				var id = ed.id;
 				ed.remove();
 				
-				// build a new editor instance with inline turned off
+				// build a new editor instance with original settings
 				ed = new tinymce.Editor(id, set, tinymce.EditorManager);
 				ed.on('init', function () {
 					// put new editor into focus
@@ -659,9 +677,9 @@
             $('div[contenteditable=true]').each(function() {
                 $(this).attr('contentEditable', 'false'); //remove contentEditable tags in order to disable special firefox behaviour
                 $(this).on('click', function() {
-//                    if (options.useTiny) {
-//                        Con.Tiny.swapTiny(this);
-//                    }
+                    if (options.useTiny) {
+                        Con.Tiny.swapTiny(this);
+                    }
                 });
             });
 
