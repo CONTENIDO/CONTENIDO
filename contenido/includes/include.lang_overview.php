@@ -107,5 +107,23 @@ if ($tmp_notification) {
 
 $tpl->set('s', 'LANG_COUNT', $iLangCount);
 
+if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') {
+	$sReloadScript = <<<JS
+<script type="text/javascript">
+(function(Con, $) {
+    var frame = Con.getFrame('right_bottom');
+    if (frame) {
+         var href = Con.UtilUrl.replaceParams(frame.location.href, {idlang: $iGetIdlang});
+        frame.location.href = href;
+    }
+})(Con, Con.$);
+</script>
+JS;
+} else {
+	$sReloadScript = "";
+}
+
+$tpl->set('s', 'RELOAD_SCRIPT', $sReloadScript);
+
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lang_overview']);
