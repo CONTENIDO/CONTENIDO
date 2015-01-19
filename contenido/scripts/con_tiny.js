@@ -577,7 +577,7 @@
             tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
             
             // inject setup into settings
-            tinymce.settings.setup = function(ed) {
+            wysiwygSettings.setup = function(ed) {
                 ed.onSetContent.add(function(ed, o) {
                     Con.Tiny.updateContent(ed.getContent());
                 });
