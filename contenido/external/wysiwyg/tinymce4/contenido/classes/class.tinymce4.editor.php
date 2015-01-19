@@ -220,40 +220,37 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     }
 
     /**
-     * The special name "contenido_lists", for compatibility also accepts "tinymce-lists"
+     * The special name "contenido_lists"
      *
      * @param string    sLists    Deprecated, for compatibility, only
      */
-    function setLists($sLists = "") {
+    function setLists() {
         global $lang, $client;
 
-        if ($sLists == "") {
-            if (array_key_exists("contenido_lists", $this->_aSettings)) {
-                $sLists = $this->_aSettings["contenido_lists"];
-            } else if (array_key_exists("tinymce-lists", $this->_aSettings)) {
-                $sLists = $this->_aSettings["tinymce-lists"];
-            }
+        $sLists = '';
+        if (array_key_exists("contenido_lists", $this->_aSettings)) {
+            $sLists = $this->_aSettings["contenido_lists"];
         }
 
         $aLists = array();
-        $aLists = explode(",", strtolower(str_replace(" ", "", $sLists)));
+        $aLists = explode(',', strtolower(str_replace(' ', '', $sLists)));
 
-        if (in_array("link", $aLists)) {
-            $this->_setSetting("external_link_list_url", $this->_sBaseURL . "list.php?mode=link&lang=" . $lang . "&client=" . $client . "#", true);
+        if (in_array('link', $aLists)) {
+            $this->_setSetting('external_link_list_url', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=link&lang=' . $lang . '&client=' . $client . '#', true);
         }
-        if (in_array("image", $aLists)) {
-            $this->_setSetting("external_image_list_url", $this->_sBaseURL . "list.php?mode=image&lang=" . $lang . "&client=" . $client . "#", true);
+        if (in_array('image', $aLists)) {
+            $this->_setSetting('external_image_list_url', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=image&lang=' . $lang . '&client=' . $client . '#', true);
         }
-        if (in_array("media", $aLists)) {
-            $this->_setSetting("media_external_list_url", $this->_sBaseURL . "list.php?mode=media&lang=" . $lang . "&client=" . $client . "#", true);
+        if (in_array('media', $aLists)) {
+            $this->_setSetting('media_external_list_url', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=media&lang=' . $lang . '&client=' . $client . '#', true);
         }
     }
 
     function setXHTMLMode($bEnabled = true) {
         if ($bEnabled) {
-            $this->_setSetting("cleanup_callback", "", true);
+            $this->_setSetting('cleanup_callback', '', true);
         } else {
-            $this->_setSetting("cleanup_callback", "Con.Tiny.customCleanupCallback", true);
+            $this->_setSetting('cleanup_callback', 'Con.Tiny.customCleanupCallback', true);
         }
     }
 
