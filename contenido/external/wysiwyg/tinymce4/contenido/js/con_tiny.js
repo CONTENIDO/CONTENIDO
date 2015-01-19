@@ -553,14 +553,21 @@
          * @static
          */
         tinymceInit: function(tinymce, wysiwygSettings, options) {
-            if ('undefined' === typeof(wysiwygSettings['file_browser_callback'])) {        		
+        	// abort tinymce init if tiny should not be used
+            if ('undefined' === typeof(options)
+            || ('undefined' !== typeof(options.useTiny)
+            && '' === options.useTiny)) {
+                return;
+            }
+
+            if ('undefined' === typeof(wysiwygSettings['file_browser_callback'])) {
                 wysiwygSettings['file_browser_callback'] = 
                     function(field_name, url, type, win) {
                         Con.Tiny.customFileBrowserCallback(field_name, url, type, win);
                 }
             }
 
-            if ('undefined' != options) {
+            if ('undefined' !== typeof(options)) {
                 // Create ClosePlugin
                 tinymce.create('tinymce.plugins.ClosePlugin', {
                     init: function(ed, url) {
@@ -676,7 +683,7 @@
             // tiny toggles on click
             $('div[contenteditable=true]').each(function() {
                 $(this).attr('contentEditable', 'false'); //remove contentEditable tags in order to disable special firefox behaviour
-                $(this).on('click', function() {
+                $(this).on('click', function(e) {
                     if (options.useTiny) {
                         Con.Tiny.swapTiny(this);
                     }
