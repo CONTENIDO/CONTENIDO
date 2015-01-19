@@ -236,14 +236,15 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $aLists = explode(',', strtolower(str_replace(' ', '', $sLists)));
 
         if (in_array('link', $aLists)) {
-            $this->_setSetting('external_link_list_url', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=link&lang=' . $lang . '&client=' . $client . '#', true);
+            $this->_setSetting('link_list', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=link&lang=' . $lang . '&client=' . $client . '#', true);
         }
         if (in_array('image', $aLists)) {
-            $this->_setSetting('external_image_list_url', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=image&lang=' . $lang . '&client=' . $client . '#', true);
+            $this->_setSetting('image_list', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=image&lang=' . $lang . '&client=' . $client . '#', true);
         }
-        if (in_array('media', $aLists)) {
-            $this->_setSetting('media_external_list_url', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=media&lang=' . $lang . '&client=' . $client . '#', true);
-        }
+        // media list does not exist, media plugin still available though
+//         if (in_array('media', $aLists)) {
+//             $this->_setSetting('media_external_list_url', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=media&lang=' . $lang . '&client=' . $client . '#', true);
+//         }
     }
 
     function setXHTMLMode($bEnabled = true) {

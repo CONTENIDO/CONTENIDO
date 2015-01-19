@@ -59,8 +59,11 @@ class cTinyMCE4List {
         $list = array();
         // process defined list modes
         switch ($mode) {
+            case 'image':
+                $list = $this->_buildImageList();
+                break;
             case 'link':
-                $list = $this->buildLinkList();
+                $list = $this->_buildLinkList();
                 break;
             default:
                 // just output an empty list for unknown mode
@@ -69,7 +72,38 @@ class cTinyMCE4List {
         $this->printList($list);
     }
     
-    private function buildLinkList() {
+    
+    /**
+     * get a list of images that is accessible for tinymce
+     * @return array The array of images filled with upload objects
+     */
+    protected function _buildImageList() {
+        global $client, $cfgClient;
+    
+        $imageList = array();
+    
+        // get needed data using cApiUploadCollection class
+        $oApiUploadCol = new cApiUploadCollection();
+        // get uploads for current client
+        // filetype can be either gif, jpg, jpeg or png
+        $selectClause = "idclient='" . cSecurity::toInteger($client) . "' AND filetype IN ('gif', 'jpg', 'jpeg', 'png')";
+        $oApiUploadCol->select($selectClause, '', 'dirname, filename ASC');
+        $aUplList = $oApiUploadCol->fetchArray($oApiUploadCol->primaryKey, array('idclient', 'filetype', 'filename'));
+        foreach ($aUplList as $uplItem) {
+            $imageItem = new stdClass();
+            $imageItem->title = $uplItem['dirname'] . $uplItem['filename'];
+            $imageItem->value = $cfgClient[$client]['upload'].$uplItem['dirname'] . $uplItem['filename'];
+            $imageList[] = $imageItem;
+        }
+    
+        return $imageList;
+    }
+    
+    /**
+     * get a list of links to articles for current client and language
+     * @return array The array of articles filled with link objects
+     */
+    protected function _buildLinkList() {
         global $client, $lang;
         
         $linkList = array();
@@ -82,12 +116,6 @@ class cTinyMCE4List {
 
             $spaces = str_repeat("&nbsp;&nbsp;", $catEntry['level']);
 
-            if ($loop) {
-                $output .= ",";
-            } else {
-                $loop = true;
-            }
-
             if ($catEntry['visible'] == 0) {
                 $tmp_catname = "[" . $tmp_catname . "]";
             }
@@ -96,188 +124,48 @@ class cTinyMCE4List {
             $listEntry->value = 'front_content.php?idcat=' . $catEntry['idcat'];
 
             $linkList[] = $listEntry;
-            var_dump($linkList);
-            $output .= "\n\t".'["'.$spaces.$tmp_catname.'", "'."front_content.php?idcat=".$catEntry['idcat'].'"]';
 
-            $artList = new cApiCategoryArticleCollection();
-// return $linkList;
-            $sql2 = "SELECT
-                         *
-                     FROM
-                         ".$cfg["tab"]["cat_art"]." AS a,
-                        ".$cfg["tab"]["art"]." AS b,
-                        ".$cfg["tab"]["art_lang"]." AS c
-                     WHERE
-                        a.idcat = '".$$catEntry['idcat']."' AND
-                        b.idart = a.idart AND
-                        c.idart = a.idart AND
-                        c.idlang = '".cSecurity::toInteger($lang)."' AND
-                        b.idclient = '".cSecurity::toInteger($client)."'
-                     ORDER BY
-                        c.title ASC";
-die($sql2);
-            global $db;
-            $db->query($sql2);
+            $options = array();
+            $options['idcat'] = $catEntry['idcat'];
+            // order by title
+            $options['order'] = 'title';
+            // order ascending
+            $options['direction'] = 'asc';
+            // include start articles
+            $options['start'] = true;
+            // show offline articles
+            $options['offline'] = true;
 
-            while ($db->nextRecord()) {
 
-                $tmp_title = $db->f("title");
+            // create cArticleCollector instance with specified options
+            $articleCollector = new cArticleCollector($options);
+            foreach ($articleCollector as $articleLanguage) {
+                $tmp_title = $articleLanguage->get("title");
 
                 if (strlen($tmp_title) > 32) {
                     $tmp_title = substr($tmp_title, 0, 32);
                 }
 
-                $is_start = isStartArticle($db->f("idartlang"), $db->f("idcat"), $lang);
+                $is_start = isStartArticle($articleLanguage->get('idartlang'), $catEntry['idcat'], $lang);
 
                 if ($is_start) {
                     $tmp_title .= "*";
                 }
-                if ($db->f("online") == 0) {
+                if ($articleLanguage->get("online") == 0) {
                     $tmp_title = "[" . $tmp_title . "]";
                 }
-                $output .= ",\n\t".'["&nbsp;&nbsp;'.$spaces.'|&nbsp;&nbsp;'.$tmp_title.'", "'."front_content.php?idart=".$db->f("idart").'"]';
+                $listEntry = new stdClass();
+                $listEntry->title = '&nbsp;&nbsp;' . $spaces . '|&nbsp;&nbsp;' . $tmp_title;
+                $listEntry->value = 'front_content.php?idart='.$articleLanguage->get('idart');
+                $linkList[] = $listEntry;
             }
         }
-        var_dump($output);
-        $linkList[] = new stdClass("tut");
-        
         return $linkList;
     }
-    
+
+    // output the created list as JSON
     private function printList($list) {
         echo json_encode($list);
     }
 }
-
-echo "\n\n";
-// return;
-
-switch ($_REQUEST['mode']) {
-    case 'link':
-        $sql = "SELECT
-                    *
-                FROM
-                    ".$cfg["tab"]["cat_tree"]." AS a,
-                    ".$cfg["tab"]["cat_lang"]." AS b,
-                    ".$cfg["tab"]["cat"]." AS c
-                WHERE
-                    a.idcat = b.idcat AND
-                    c.idcat = a.idcat AND
-                    c.idclient = '".cSecurity::toInteger($client)."' AND
-                    b.idlang = '".cSecurity::toInteger($lang)."'
-                ORDER BY
-                    a.idtree";
-
-        $db->query($sql);
-
-        $output .= "var tinyMCELinkList = new Array(";
-
-        $loop = false;
-
-        while ($db->nextRecord()) {
-            $tmp_catname = $db->f("name");
-            $spaces = "";
-
-            $spaces = str_repeat("&nbsp;&nbsp;", $db->f("level"));
-
-            if ($loop) {
-                $output .= ",";
-            } else {
-                $loop = true;
-            }
-
-            if ($db->f("visible") == 0) {
-                $tmp_catname = "[" . $tmp_catname . "]";
-            }
-
-            $output .= "\n\t".'["'.$spaces.$tmp_catname.'", "'."front_content.php?idcat=".$db->f("idcat").'"]';
-
-            $sql2 = "SELECT
-                         *
-                     FROM
-                         ".$cfg["tab"]["cat_art"]." AS a,
-                        ".$cfg["tab"]["art"]." AS b,
-                        ".$cfg["tab"]["art_lang"]." AS c
-                     WHERE
-                        a.idcat = '".$db->f("idcat")."' AND
-                        b.idart = a.idart AND
-                        c.idart = a.idart AND
-                        c.idlang = '".cSecurity::toInteger($lang)."' AND
-                        b.idclient = '".cSecurity::toInteger($client)."'
-                     ORDER BY
-                        c.title ASC";
-
-            $db->query($sql2);
-
-            while ($db->nextRecord()) {
-
-                $tmp_title = $db->f("title");
-
-                if (strlen($tmp_title) > 32) {
-                    $tmp_title = substr($tmp_title, 0, 32);
-                }
-
-                $is_start = isStartArticle($db->f("idartlang"), $db->f("idcat"), $lang);
-
-                if ($is_start) {
-                    $tmp_title .= "*";
-                }
-                if ($db->f("online") == 0) {
-                    $tmp_title = "[" . $tmp_title . "]";
-                }
-                $output .= ",\n\t".'["&nbsp;&nbsp;'.$spaces.'|&nbsp;&nbsp;'.$tmp_title.'", "'."front_content.php?idart=".$db->f("idart").'"]';
-            }
-        }
-
-        $output .= "\n);";
-
-        break;
-
-    case 'image':
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('gif', 'jpg', 'jpeg', 'png') ORDER BY dirname, filename ASC";
-        $db->query($sql);
-
-        $output .= "var tinyMCEImageList = new Array(";
-
-        $loop = false;
-
-        while ($db->nextRecord()) {
-            if ($loop) {
-                $output .= ",";
-            } else {
-                $loop = true;
-            }
-
-            $output .= "\n\t".'["'.$db->f("dirname").$db->f("filename").'", "'.$cfgClient[$client]["upload"].$db->f("dirname").$db->f("filename").'"]';
-        }
-
-        $output .= "\n);";
-        break;
-
-    case 'media':
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('swf','dcr','mov','qt','mpg','mpg3','mpg4','mpeg','avi','wmv','wm','asf','asx','wmx','wvx','rm','ra','ram') ORDER BY dirname, filename ASC";
-        $db->query($sql);
-
-        $output .= "var tinyMCEMediaList = new Array(";
-
-        $loop = false;
-
-        while ($db->nextRecord()) {
-            if ($loop) {
-                $output .= ",";
-            } else {
-                $loop = true;
-            }
-
-            $output .= "\n\t".'["'.$db->f("dirname").$db->f("filename").'", "'.$cfgClient[$client]["upload"].$db->f("dirname").$db->f("filename").'"]';
-        }
-
-        $output .= "\n);";
-        break;
-
-    default:
-}
-
-echo $output;
-
 ?>
