@@ -27,10 +27,10 @@ $pictures = array();
 
 if (count($files) > 0) {
     foreach ($files as $file) {
-		$pathThumb = $file['path'] . '/' . $file['filename'];
+        $pathThumb = $file['path'] . '/' . $file['filename'];
 
         $record = array();
-        $record['thumb'] = cApiImgScale(pathThumb, 319, 199);
+        $record['thumb'] = cApiImgScale($pathThumb, 319, 199);
         $record['lightbox'] = $cfgClient[$client]['upload'] . $pathThumb;
         $record['description'] = $file['metadata']['description'];
         $record['copyright'] = $file['metadata']['copyright'];
