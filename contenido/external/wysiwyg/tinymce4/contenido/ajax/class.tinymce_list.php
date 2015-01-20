@@ -88,11 +88,12 @@ class cTinyMCE4List {
         // filetype can be either gif, jpg, jpeg or png
         $selectClause = "idclient='" . cSecurity::toInteger($client) . "' AND filetype IN ('gif', 'jpg', 'jpeg', 'png')";
         $oApiUploadCol->select($selectClause, '', 'dirname, filename ASC');
-        $aUplList = $oApiUploadCol->fetchArray($oApiUploadCol->primaryKey, array('idclient', 'filetype', 'filename'));
+        $aUplList = $oApiUploadCol->fetchArray($oApiUploadCol->primaryKey, array('idclient', 'dirname', 'filetype', 'filename'));
         foreach ($aUplList as $uplItem) {
             $imageItem = new stdClass();
             $imageItem->title = $uplItem['dirname'] . $uplItem['filename'];
-            $imageItem->value = $cfgClient[$client]['upload'].$uplItem['dirname'] . $uplItem['filename'];
+            $imageItem->value = $cfgClient[$client]['upload'] . $uplItem['dirname'] . $uplItem['filename'];
+            
             $imageList[] = $imageItem;
         }
     
@@ -156,7 +157,7 @@ class cTinyMCE4List {
                 }
                 $listEntry = new stdClass();
                 $listEntry->title = '&nbsp;&nbsp;' . $spaces . '|&nbsp;&nbsp;' . $tmp_title;
-                $listEntry->value = 'front_content.php?idart='.$articleLanguage->get('idart');
+                $listEntry->value = 'front_content.php?idart=' . $articleLanguage->get('idart');
                 $linkList[] = $listEntry;
             }
         }
