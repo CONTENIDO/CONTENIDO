@@ -239,8 +239,8 @@
         },
 
         /**
-         * Custom save callback function for TinyMCE, see TinyMCE setting
-         * 'save_callback'.
+         * Custom save callback function for TinyMCE, see TinyMCE event
+         * 'SaveContent'.
          * @method customSaveCallback
          * @param  {String}  html
          * @return {String}
@@ -331,7 +331,7 @@
 
             var str = '';
 
-            // Forach content in js object editData
+            // Foreach content in js object editData
             $.each(Con.Tiny.editData, function(id, val) {
                 // Check if content has changed, if it has serialize it to string
                 if (Con.Tiny.editDataOrg[id] != val) {
@@ -497,6 +497,10 @@
          * @static
          */
         updateContent: function(sContent) {
+            // do nothing if tinymce instance gets rebuilt because of fullscreen change
+            if (Con.Tiny.changingFullscreen) {
+                return;
+            }
             // If original content was already set do not overwrite
             // this happens if tiny is reopened on same content
             if ('undefined' === $.type(Con.Tiny.editDataOrg[Con.Tiny.activeId])) {
@@ -575,7 +579,8 @@
                             title: options.saveTitle,
                             image: options.saveImage,
                             icons: false,
-                            onclick: function(ed) {
+                            onclick: function() {
+                                ed.fire('SaveContent');
                                 Con.Tiny.setContent(Con.Tiny.idartlang);
                             }
                         });
@@ -595,77 +600,77 @@
                 tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
 
                 tinymce.create('tinymce.plugins.ConFullscreenPlugin', {
-                	init: function(ed) {
-                		ed.addButton('fullscreen', {
-                			tooltip: 'Fullscreen',
-	            			shortcut: 'Ctrl+Alt+F',
-	            			onclick: function() {
-	            				Con.Tiny.handleFullscreen(ed);
-	            			}
-	            		});
-	            	}
-	            });
-	            
-	            // Register plugin with a short name
-	            tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
-        	}
+                    init: function(ed) {
+                        ed.addButton('fullscreen', {
+                            tooltip: 'Fullscreen',
+                            shortcut: 'Ctrl+Alt+F',
+                            onclick: function() {
+                                Con.Tiny.handleFullscreen(ed);
+                            }
+                        });
+                    }
+                });
+
+                // Register plugin with a short name
+                tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
+            }
             tinymce.settings = wysiwygSettings;
-            
+
             // inject setup into settings
             tinymce.settings.setup = function(ed) {
-            	
-            	ed.on('LoadContent', function(e) {
-            		Con.Tiny.customSetupContentCallback(ed.id);
-            		Con.Tiny.updateContent(ed.getContent());
+                
+                ed.on('LoadContent', function(e) {
+                    Con.Tiny.customSetupContentCallback(ed.id);
+                    Con.Tiny.updateContent(ed.getContent());
                 });
-            	ed.on('SaveContent', function (e) {
-            		Con.Tiny.customSaveCallback(ed.getContent());
-            	});
+                ed.on('SaveContent', function (e) {
+                    Con.Tiny.customSaveCallback(ed.getContent());
+                });
             }
             if ('undefined' !== typeof(tinymce.settings.fullscreen_settings)) {
-            	tinymce.settings.fullscreen_settings['file_browser_callback'] = tinymce.settings['file_browser_callback'];
+                tinymce.settings.fullscreen_settings['file_browser_callback'] = tinymce.settings['file_browser_callback'];
             }
-            
+
             // init set of editors
-            tinymce.init(tinymce.settings);            
+            tinymce.init(tinymce.settings);
         },
         
         handleFullscreen: function(ed) {
-			// fullscreen in inline mode not supported
-			// we can not change inline mode of existing editor
-			// remove old editor instance and create a new one
-			var id = ed.id;
-			ed.remove();
-			
-			// build a new editor instance with fullscreen_settings
-			var set = tinymce.settings;
-			ed = new tinymce.Editor(id, set.fullscreen_settings, tinymce.EditorManager);
-			ed.on('init', function () {
-				// put new editor into focus
-				ed.fire('focus');
-				changingFullscreen = true;
-				ed.execCommand('mceFullScreen');
-			});
-			ed.on('FullscreenStateChanged', function () {
-				if (changingFullscreen) {
-					changingFullscreen = false;
-					return;
-				}
-				var id = ed.id;
-				ed.remove();
-				
-				// build a new editor instance with original settings
-				ed = new tinymce.Editor(id, set, tinymce.EditorManager);
-				ed.on('init', function () {
-					// put new editor into focus
-					ed.fire('focus');
-				});
-				// add new editor to page
-				ed.render();
-			});
-			
-			// add new editor to page
-			ed.render();
+            // fullscreen in inline mode not supported
+            // we can not change inline mode of existing editor
+            // remove old editor instance and create a new one
+            var id = ed.id;
+            ed.remove();
+            
+            // build a new editor instance with fullscreen_settings
+            var set = tinymce.settings;
+            ed = new tinymce.Editor(id, set.fullscreen_settings, tinymce.EditorManager);
+            ed.on('init', function () {
+                // put new editor into focus
+                ed.fire('focus');
+                Con.Tiny.changingFullscreen = true;
+                ed.execCommand('mceFullScreen');
+            });
+            ed.on('FullscreenStateChanged', function () {
+                if (Con.Tiny.changingFullscreen) {
+                    Con.Tiny.changingFullscreen = false;
+                    return;
+                }
+                var id = ed.id;
+                ed.remove();
+
+                // build a new editor instance with original settings
+                ed = new tinymce.Editor(id, set, tinymce.EditorManager);
+                ed.on('init', function () {
+                 new editor into focus
+                    ed.fire('focus');
+                });
+                // add new editor to page
+                ed.render();
+            });
+
+            // add new editor to page
+            ed.render();
         },
 
         /**

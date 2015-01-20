@@ -281,12 +281,18 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     function setToolbar($sMode = "") {
         global $cfg, $cfgClient, $client;
 
+        // hide visualaid button because it has no icon
+        // http://www.tinymce.com/develop/bugtracker_view.php?id=6003
+
+        // Overview of available controls and their required plugins:
+        // http://www.tinymce.com/wiki.php/Controls
+
         switch ($sMode) {
             case "full": // Show all options
-                $this->_setSetting("toolbar1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
-                $this->_setSetting("toolbar2", "link,unlink,anchor,image,media,advhr,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
-                $this->_setSetting("toolbar3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
-                $this->_setSetting('plugins', 'table save hr image link pagebreak layer insertdatetime preview media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template',  true);
+                $this->_setSetting('toolbar1', 'cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', true);
+                $this->_setSetting('toolbar2', 'link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', true);
+                $this->_setSetting('toolbar3', 'table | formatselect fontselect fontsizeselect', true);
+                $this->_setSetting('plugins',  'charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor',  true);
                 $aCustSettings = getEffectiveSettingsByType('tinymce4');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
@@ -294,19 +300,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "fullscreen": // Show all options
-
-//                 $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
-//                 $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
-//                 $this->_setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
-                //table,save,pagebreak,layer,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template
-//                 $this->_setSetting("plugins", "table,save,pagebreak,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,template", true);
-
-                $this->_setSetting('toolbar1', 'cut copy paste pastetext pasteword | search replace | undo redo | bold italic underline strikethrough sub sup | insertdate inserttime preview | styleselect | visualchars nonbreaking template pagebreak | help | fullscreen', true);
-                $this->_setSetting('toolbar2', 'link unlink anchor image media | bullist numlist | outdent indent blockquote | justifyleft justifycenter justifyright justifyfull removeformat | forecolor backcolor | ltr rtl | visualaid charmap cleanup | code', true);
-                $this->_setSetting('toolbar3', 'tablecontrols | formatselect fontselect fontsizeselect | styleprops | cite abbr acronym del ins attribs', true);
+                $this->_setSetting('toolbar1', 'cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', true);
+                $this->_setSetting('toolbar2', 'link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', true);
+                $this->_setSetting('toolbar3', 'table | formatselect fontselect fontsizeselect', true);
                 // load some plugins
-                $this->_setSetting('plugins', 'table save hr image link pagebreak layer insertdatetime preview media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template', true);
-                $this->_setSetting("theme_advanced_toolbar_align", "left", true);
+                $this->_setSetting('plugins', 'charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', true);
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce4_fullscreen");
                 foreach ($aCustSettings as $sKey => $sValue) {
@@ -316,12 +314,16 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "simple": // Does not show font and table options
-                $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect", true);
-                $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
-                $this->_setSetting("theme_advanced_buttons3", "", true);
-                $this->_setSetting("plugins", "insertdatetime,preview,searchreplace,print,contextmenu,paste,directionality", true);
+//                 $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,|,searchreplace,|,undo,redo,|,bold,italic,underline,strikethrough,subscript,superscript,|,insertdatetime,preview", true);
+//                 $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,|,bullist,numlist,|,outdent,indent,|,alignleft,aligncenter,alignright,alignfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,charmap,|,code", true);
+//                 $this->_setSetting("theme_advanced_buttons3", "", true);
+                $this->_setSetting("toolbar1", "cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview", true);
+                $this->_setSetting("toolbar2", "link unlink anchor image | bullist numlist | outdent indent | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code", true);
+                $this->_setSetting("toolbar3", "", true);
 
-                $aCustSettings = getEffectiveSettingsByType("tinymce_simple");
+                $this->_setSetting("plugins", "anchor charmap code insertdatetime preview searchreplace print contextmenu paste directionality textcolor", true);
+
+                $aCustSettings = getEffectiveSettingsByType("tinymce4_simple");
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -329,11 +331,14 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "mini": // Minimal toolbar
-                $this->_setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link", true);
-                $this->_setSetting("theme_advanced_buttons2", "", true);
-                $this->_setSetting("theme_advanced_buttons3", "", true);
+                $this->_setSetting("toolbar1", "undo redo | bold italic underline strikethrough | link", true);
+                $this->_setSetting("toolbar2", "", true);
+                $this->_setSetting("toolbar3", "", true);
 
-                $aCustSettings = getEffectiveSettingsByType("tinymce_mini");
+                $this->_setSetting("plugins", "contextmenu", true);
+                
+
+                $aCustSettings = getEffectiveSettingsByType("tinymce4_mini");
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -341,15 +346,15 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "custom": // Custom toolbar
-                // tinymce-toolbar1/2/3 and tinymce-plugins are only mentioned for compatibility
-                // They are ignored, if theme_advanced_buttons1/2/3 and plugins have been already
+                // tinymce4-toolbar1/2/3 and tinymce4-plugins are only mentioned for compatibility
+                // They are ignored, if toolbar1/2/3 and plugins have been already
                 // specified
-                $this->_setSetting("theme_advanced_buttons1", $this->_aSettings["tinymce-toolbar1"]);
-                $this->_setSetting("theme_advanced_buttons2", $this->_aSettings["tinymce-toolbar2"]);
-                $this->_setSetting("theme_advanced_buttons3", $this->_aSettings["tinymce-toolbar3"]);
-                $this->_setSetting("plugins", $this->_aSettings["tinymce-plugins"]);
+                $this->_setSetting("toolbar1", $this->_aSettings["tinymce4-toolbar1"]);
+                $this->_setSetting("toolbar2", $this->_aSettings["tinymce4-toolbar2"]);
+                $this->_setSetting("toolbar3", $this->_aSettings["tinymce4-toolbar3"]);
+                $this->_setSetting("plugins", $this->_aSettings["tinymce4-plugins"]);
 
-                $aCustSettings = getEffectiveSettingsByType("tinymce_custom");
+                $aCustSettings = getEffectiveSettingsByType("tinymce4_custom");
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -357,10 +362,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "inline_edit":
-//                 $this->_setSetting("theme_advanced_buttons1", "bold,italic,underline,strikethrough,separator,undo,separator,bullist,numlist,separator,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright,separator,fullscreen,separator,save,close", true);
-//                 $this->_setSetting("theme_advanced_buttons2", "", true);
-//                 $this->_setSetting("theme_advanced_buttons3", "", true);
-                $this->_setSetting('toolbar1', 'bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | justifyleft justifycenter justifyright | fullscreen | save close', true);
+                $this->_setSetting('toolbar1', 'bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | fullscreen | save close', true);
                 $this->_setSetting('toolbar2', '', true);
                 $this->_setSetting('toolbar3', '', true);
 
@@ -368,23 +370,25 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
                 $this->_unsetSetting("width");
                 $this->_setSetting("height", "210px", true);
-                // close plugin not in plugins directory but still working if listed
-                $this->_setSetting("plugins", "table fullscreen close confullscreen", true);
+                
+                // use custom plugins
+                // they are specified in con_tiny.js
+                // close plugin: save and close button
+                // confullscreen plugin: switches inline mode to off and adjusts toolbar in fullscreen mode
+                $this->_setSetting("plugins", "table close confullscreen textcolor", true);
 
-                // do not set inline mode to true because fullscreen plugin won't work then
+                // fullscreen plugin does not work with inline turned on, custom plugin confullscreen required for this
                 $this->_setSetting('inline', 'true');
                 $this->_setSetting('menubar', 'false');
                 $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);
 
-                if (!array_key_exists("auto_resize", $this->_aSettings)) {
-                    $this->_setSetting("auto_resize", "false", true);
-                }
+                // auto-resize needs autoresize plugin
+                // http://www.tinymce.com/wiki.php/Plugin:autoresize
+//                 if (!array_key_exists("auto_resize", $this->_aSettings)) {
+//                     $this->_setSetting("auto_resize", "false", true);
+//                 }
 
-                if (!array_key_exists("theme_advanced_toolbar_align", $this->_aSettings)) {
-                    $this->_setSetting("theme_advanced_toolbar_align", "center", true);
-                }
-
-                $aCustSettings = getEffectiveSettingsByType("tinymce_inline");
+                $aCustSettings = getEffectiveSettingsByType("tinymce4_inline");
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -392,10 +396,10 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             default: // Default options
-                $this->_setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link,unlink,anchor,image,|,tablecontrols", true);
-                $this->_setSetting("theme_advanced_buttons2", "styleselect,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,sub,sup,|,code", true);
-                $this->_setSetting("theme_advanced_buttons3", "", true);
-                $this->_setSetting("plugins", "table,searchreplace,contextmenu,paste", true);
+                $this->_setSetting('toolbar1', 'undo redo | bold italic underline strikethrough | link unlink anchor image | table', true);
+                $this->_setSetting('toolbar2', 'styleselect,|,bullist,numlist,|,outdent,indent,|,alignleft,aligncenter,alignright,alignfull,removeformat,|,forecolor,backcolor,|,subscript,superscript,|,code', true);
+                $this->_setSetting('toolbar3', "", true);
+                $this->_setSetting('plugins', "anchor code table,searchreplace,contextmenu,paste textcolor", true);
 
                 $aCustSettings = getEffectiveSettingsByType("tinymce_default");
                 foreach ($aCustSettings as $sKey => $sValue) {
@@ -570,13 +574,12 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         $sConfig .= "'toolbar1': '" . $this->_aSettings['toolbar1'] . "',\n";
         $sConfig .= "'toolbar2': '" . $this->_aSettings['toolbar2'] . "',\n";
-        $sConfig .= "'toolbar2': '" . $this->_aSettings['toolbar3'] . "',\n";
-        
+        $sConfig .= "'toolbar3': '" . $this->_aSettings['toolbar3'] . "',\n";
+
         $sConfig .= "'plugins': '" . $this->_aSettings['plugins'] . "'\n";
 
         return $sConfig;
     }
-    
 
     /**
      * function to obtain a comma separated list of plugins that are tried to be loaded 
