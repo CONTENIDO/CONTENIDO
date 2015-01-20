@@ -401,7 +401,7 @@ if ($contenido) {
 
         if (isset($view) && $view === 'edit' && count($erroneousModules) > 0) {
             $notification = new cGuiNotification();
-            $modErrorMessage = "The following modules are erroneus and are therefore not executed:<br>\n";
+            $modErrorMessage = i18n("The following modules are erroneus and are therefore not executed:<br>\n");
             foreach ($erroneousModules as $erroneousModule) {
                 $modErrorMessage .= "- " . $erroneousModule . "<br />\n";
             }

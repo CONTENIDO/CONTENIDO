@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-20 10:21+0100\n"
-"PO-Revision-Date: 2015-01-20 10:22+0100\n"
+"POT-Creation-Date: 2015-01-20 10:30+0100\n"
+"PO-Revision-Date: 2015-01-20 10:31+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
@@ -2264,6 +2264,11 @@ msgstr ""
 #: includes/include.tplcfg_edit_form.php:41
 #, php-format
 msgid "Article is in use by %s (%s)"
+msgstr ""
+
+#: includes/frontend/include.front_content.php:404
+msgid ""
+"The following modules are erroneus and are therefore not executed:<br>\n"
 msgstr ""
 
 #: includes/frontend/include.front_content.php:433
