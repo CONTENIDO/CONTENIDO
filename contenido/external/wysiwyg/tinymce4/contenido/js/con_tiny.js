@@ -662,7 +662,7 @@
                 // build a new editor instance with original settings
                 ed = new tinymce.Editor(id, set, tinymce.EditorManager);
                 ed.on('init', function () {
-                 new editor into focus
+                 // put new editor into focus
                     ed.fire('focus');
                 });
                 // add new editor to page

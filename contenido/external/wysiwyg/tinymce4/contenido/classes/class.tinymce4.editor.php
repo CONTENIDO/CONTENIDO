@@ -160,13 +160,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $autoFullElements = $this->_aSettings['auto_full_elements'];
         unset($this->_aSettings['auto_full_elements']);
 
-        // Valid elements, for compatibility also accepts "tinymce-valid-elements"
-        if (!array_key_exists("valid_elements", $this->_aSettings) && array_key_exists("tinymce-valid-elements", $this->_aSettings)) {
-            $this->_setSetting("valid_elements", $this->_aSettings["tinymce-valid-elements"], true);
-        }
+        // Specify valid elements that tinymce 4 is allowed to write
 
-        // _setSetting checks, if value is empty
-
+        // allow any element
         if ($autoFullElements === 'true') {
             $this->_setSetting('valid_elements', '*[*]');
             $this->_setSetting('extended_valid_elements', '*[*]');
