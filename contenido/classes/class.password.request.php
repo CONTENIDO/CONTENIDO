@@ -243,8 +243,8 @@ class cPasswordRequest {
             $this->_tpl->set('s', 'JS_CALL', 'showResetLayer();');
         }
 
-        $msg = 'You may now set a new password';
-        $this->_tpl->set('s', 'RESET_LABEL', sprintf(i18n($msg), htmlentities($this->_username)));
+        $msg = i18n('You may now set a new password');
+        $this->_tpl->set('s', 'RESET_LABEL', $msg);
 
         // insert form with username, password and password repeat fields
         $form = new cHTMLForm('reset_form', htmlentities(cRegistry::getBackendUrl()) . '?pw_reset=' . $_GET['pw_reset']);
@@ -573,12 +573,11 @@ class cPasswordRequest {
         $token = (string) $token;
 
         // get translation for mailbody and insert username and new password
-        $msg = "Dear CONTENIDO-User %s,\n\nA request to change your password ";
-        $msg .= 'for Content Management System CONTENIDO was made. Use the following ';
-        $msg .= "URL to confirm the password change\n\n";
+        $msg = i18n("Dear CONTENIDO-User %s,\n\nA request to change your password for Content Management System CONTENIDO was made.");
+        $msg .= i18n("Use the following URL to confirm the password change\n\n");
         $msg .= cRegistry::getBackendUrl() . '?pw_reset=';
-        $msg .= "%s\n\nBest regards\n\nYour CONTENIDO sysadmin";
-        $mailBody = sprintf(i18n($msg), $this->_username, $token);
+        $msg .= i18n("%s\n\nBest regards\n\nYour CONTENIDO sysadmin");
+        $mailBody = sprintf($msg, $this->_username, $token);
 
         $mailer = new cMailer();
         $from = array(

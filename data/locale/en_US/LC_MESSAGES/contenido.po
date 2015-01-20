@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-09 13:49+0100\n"
-"PO-Revision-Date: 2015-01-09 14:02+0100\n"
+"POT-Creation-Date: 2015-01-20 10:21+0100\n"
+"PO-Revision-Date: 2015-01-20 10:22+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n;trans;gettext\n"
 "X-Poedit-Basepath: ../../../../contenido\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.7.3\n"
 
 #: backend_search.php:321
 msgid "Thank you for saving this search from extinction!"
@@ -43,7 +43,7 @@ msgstr ""
 
 #: backend_search.php:494
 #: classes/content_types/class.content.type.filelist.php:648
-#: classes/content_types/class.content.type.teaser.php:687
+#: classes/content_types/class.content.type.teaser.php:691
 #: includes/include.con_art_overview.php:81
 #: templates/standard/template.frontend_left_top_filter.html:16
 #: templates/standard/template.frontend_left_top_filter.html:43
@@ -58,7 +58,7 @@ msgid "Search results"
 msgstr ""
 
 #: backend_search.php:513 classes/class.ajax.php:156
-#: classes/content_types/class.content.type.teaser.php:820
+#: classes/content_types/class.content.type.teaser.php:824
 #: includes/include.con_art_overview.php:77
 #: includes/include.con_subnav.php:113 includes/include.logs.php:268
 #: templates/standard/template.symbolhelp.html:18
@@ -77,7 +77,7 @@ msgstr ""
 #: templates/standard/template.mycontenido_lastarticles.html:77
 #: templates/standard/template.mycontenido_lastarticles.html:117
 #: templates/standard/template.str_overview.html:151
-#: templates/standard/template.str_overview.html:659 xml/navigation.xml:34
+#: templates/standard/template.str_overview.html:660 xml/navigation.xml:34
 msgid "Template"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 #: includes/include.mycontenido.tasks.php:250
 #: includes/include.upl_files_overview.php:494
 #: templates/standard/template.str_overview.html:154
-#: templates/standard/template.str_overview.html:637
+#: templates/standard/template.str_overview.html:638
 msgid "Actions"
 msgstr ""
 
@@ -109,7 +109,7 @@ msgstr ""
 #: backend_search.php:678 includes/include.client_artspec.php:124
 #: includes/include.con_art_overview.php:552
 #: includes/include.str_overview.php:682 scripts/langref.php:8
-#: templates/standard/template.str_overview.html:647
+#: templates/standard/template.str_overview.html:648
 msgid "Make offline"
 msgstr ""
 
@@ -117,7 +117,7 @@ msgstr ""
 #: includes/include.con_art_overview.php:558
 #: includes/include.str_overview.php:684 includes/include.str_overview.php:903
 #: includes/include.str_overview.php:905 scripts/langref.php:9
-#: templates/standard/template.str_overview.html:648
+#: templates/standard/template.str_overview.html:649
 msgid "Make online"
 msgstr ""
 
@@ -196,7 +196,7 @@ msgid "No data found!"
 msgstr ""
 
 #: classes/class.ajax.php:140
-#: classes/content_types/class.content.type.teaser.php:818
+#: classes/content_types/class.content.type.teaser.php:822
 #: includes/include.con_edit_form.php:870
 #: includes/include.grouprights_con.php:78
 #: includes/include.grouprights_str.php:79 includes/include.logs.php:267
@@ -206,7 +206,7 @@ msgstr ""
 #: templates/standard/template.mycontenido_lastarticles.html:114
 #: templates/standard/template.str_overview.html:44
 #: templates/standard/template.str_overview.html:145
-#: templates/standard/template.str_overview.html:640
+#: templates/standard/template.str_overview.html:641
 #: templates/standard/template.symbolhelp.html:19
 #: templates/standard/template.symbolhelp.html:164
 #: templates/standard/template.symbolhelp.html:654 xml/navigation.xml:19
@@ -264,8 +264,8 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: classes/class.ajax.php:317 includes/include.CMS_HTML.php:97
-#: includes/include.CMS_HTMLHEAD.php:97 includes/include.str_overview.php:501
+#: classes/class.ajax.php:317 includes/include.CMS_HTML.php:104
+#: includes/include.CMS_HTMLHEAD.php:104 includes/include.str_overview.php:501
 #: scripts/langref.php:21 templates/standard/template.symbolhelp.html:66
 #: templates/standard/template.symbolhelp.html:674
 #: templates/standard/template.upl_files_upload.html:57
@@ -313,26 +313,30 @@ msgstr ""
 msgid "View notes / add note"
 msgstr ""
 
-#: classes/class.password.request.php:221
-#: classes/class.password.request.php:271
+#: classes/class.password.request.php:222
 #: classes/class.password.request.php:272
+#: classes/class.password.request.php:273
 #: includes/include.con_translate.php:451
 #: templates/standard/template.symbolhelp.html:71
 #: templates/standard/template.symbolhelp.html:675
 msgid "Submit"
 msgstr ""
 
-#: classes/class.password.request.php:224
+#: classes/class.password.request.php:225
 msgid "Please enter your login"
 msgstr ""
 
-#: classes/class.password.request.php:252
+#: classes/class.password.request.php:246
+msgid "You may now set a new password"
+msgstr ""
+
+#: classes/class.password.request.php:253
 #: includes/include.frontend.user_edit.php:179
 #: includes/include.rights_left_top.php:84
 msgid "User name"
 msgstr ""
 
-#: classes/class.password.request.php:257
+#: classes/class.password.request.php:258
 #: includes/include.frontend.user_edit.php:180
 #: includes/include.mycontenido_settings.php:137
 #: includes/include.rights_create.php:173
@@ -340,63 +344,90 @@ msgstr ""
 msgid "New password"
 msgstr ""
 
-#: classes/class.password.request.php:263
+#: classes/class.password.request.php:264
 #: includes/include.mycontenido_settings.php:138
 #: includes/include.rights_create.php:179
 #: includes/include.rights_overview.php:224
 msgid "Confirm new password"
 msgstr ""
 
-#: classes/class.password.request.php:323
-#: classes/class.password.request.php:419
+#: classes/class.password.request.php:324
+#: classes/class.password.request.php:420
 msgid "New password was submitted to your e-mail address."
 msgstr ""
 
-#: classes/class.password.request.php:372
+#: classes/class.password.request.php:373
 msgid ""
 "Too many password reset requests. You may wait before requesting a new "
 "password."
 msgstr ""
 
-#: classes/class.password.request.php:388
+#: classes/class.password.request.php:389
 #, php-format
 msgid "Password requests are allowed every %s minutes."
 msgstr ""
 
-#: classes/class.password.request.php:403
-#: classes/class.password.request.php:429
+#: classes/class.password.request.php:404
+#: classes/class.password.request.php:430
 msgid "No matching data found. Please contact your system administrator."
 msgstr ""
 
-#: classes/class.password.request.php:421
-#: classes/class.password.request.php:499
+#: classes/class.password.request.php:422
+#: classes/class.password.request.php:534
 msgid "An unknown problem occurred. Please contact your system administrator."
 msgstr ""
 
-#: classes/class.password.request.php:445
+#: classes/class.password.request.php:446
 #: includes/include.frontend.user_edit.php:94
 #: includes/include.rights_create.php:42
 msgid "Username can't be empty"
 msgstr ""
 
-#: classes/class.password.request.php:451
+#: classes/class.password.request.php:452
 #: includes/include.mycontenido_settings.php:37
 #: includes/include.rights_create.php:139
 #: includes/include.rights_overview.php:147
 msgid "Passwords don't match"
 msgstr ""
 
-#: classes/class.password.request.php:457
+#: classes/class.password.request.php:458
 msgid "You may not use the confirmation token as password"
 msgstr ""
 
-#: classes/class.password.request.php:470
-#: classes/class.password.request.php:496
+#: classes/class.password.request.php:471
+#: classes/class.password.request.php:484
+#: classes/class.password.request.php:506
+#: classes/class.password.request.php:531
 msgid "New password has been set."
 msgstr ""
 
-#: classes/class.password.request.php:555
-#: classes/class.password.request.php:558
+#: classes/class.password.request.php:576
+#, php-format
+msgid ""
+"Dear CONTENIDO-User %s,\n"
+"\n"
+"A request to change your password for Content Management System CONTENIDO "
+"was made."
+msgstr ""
+
+#: classes/class.password.request.php:577
+msgid ""
+"Use the following URL to confirm the password change\n"
+"\n"
+msgstr ""
+
+#: classes/class.password.request.php:579
+#, php-format
+msgid ""
+"%s\n"
+"\n"
+"Best regards\n"
+"\n"
+"Your CONTENIDO sysadmin"
+msgstr ""
+
+#: classes/class.password.request.php:589
+#: classes/class.password.request.php:592
 msgid "Your new password for CONTENIDO Backend"
 msgstr ""
 
@@ -1267,7 +1298,7 @@ msgid "Filter"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:575
-#: classes/content_types/class.content.type.teaser.php:611
+#: classes/content_types/class.content.type.teaser.php:615
 msgid "Manual"
 msgstr ""
 
@@ -1325,7 +1356,7 @@ msgid "Date modified"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:716
-#: classes/content_types/class.content.type.teaser.php:905
+#: classes/content_types/class.content.type.teaser.php:909
 #: includes/include.frontend.left_top.php:97
 #: includes/include.frontend.user_menu.php:62 includes/include.mod_new.php:46
 #: includes/include.rights_left_top.php:86
@@ -1333,7 +1364,7 @@ msgid "Ascending"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:719
-#: classes/content_types/class.content.type.teaser.php:908
+#: classes/content_types/class.content.type.teaser.php:912
 #: includes/include.frontend.left_top.php:98
 #: includes/include.frontend.user_menu.php:63 includes/include.mod_new.php:46
 #: includes/include.rights_left_top.php:86
@@ -1513,87 +1544,87 @@ msgstr ""
 msgid "Open in a new window"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:605
+#: classes/content_types/class.content.type.teaser.php:609
 msgid "Teaser settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:610
+#: classes/content_types/class.content.type.teaser.php:614
 msgid "Automatic"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:612
+#: classes/content_types/class.content.type.teaser.php:616
 #: includes/include.mycontenido.php:181 xml/navigation.xml:91
 msgid "Settings"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:675
+#: classes/content_types/class.content.type.teaser.php:679
 msgid "Teaser title"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:677
+#: classes/content_types/class.content.type.teaser.php:681
 msgid "Source category"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:679
+#: classes/content_types/class.content.type.teaser.php:683
 #: includes/include.stat_overview.php:89
 #: includes/include.system_sysvalues.php:78
 msgid "Number of articles"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:682
+#: classes/content_types/class.content.type.teaser.php:686
 msgid "Include start article"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:685
+#: classes/content_types/class.content.type.teaser.php:689
 msgid "Teaser sort"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:705
-#: classes/content_types/class.content.type.teaser.php:731
-#: classes/content_types/class.content.type.teaser.php:784
-#: classes/content_types/class.content.type.teaser.php:869
-#: classes/content_types/class.content.type.teaser.php:901
-#: classes/content_types/class.content.type.teaser.php:926
+#: classes/content_types/class.content.type.teaser.php:709
+#: classes/content_types/class.content.type.teaser.php:735
+#: classes/content_types/class.content.type.teaser.php:788
+#: classes/content_types/class.content.type.teaser.php:873
+#: classes/content_types/class.content.type.teaser.php:905
+#: classes/content_types/class.content.type.teaser.php:930
 #: includes/functions.general.php:902 includes/functions.general.php:940
 #: includes/include.str_overview.php:56
 msgid "Please choose"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:735
+#: classes/content_types/class.content.type.teaser.php:739
 msgid "Slider style"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:738
+#: classes/content_types/class.content.type.teaser.php:742
 msgid "Image style"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:741
+#: classes/content_types/class.content.type.teaser.php:745
 msgid "Text style"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:744
+#: classes/content_types/class.content.type.teaser.php:748
 msgid "Blog style"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:813
+#: classes/content_types/class.content.type.teaser.php:817
 msgid "Manual teaser"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:823
+#: classes/content_types/class.content.type.teaser.php:827
 #: includes/include.con_translate.php:419
 msgid "Add"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:829
+#: classes/content_types/class.content.type.teaser.php:833
 msgid "Included articles"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:842
-#: classes/content_types/class.content.type.teaser.php:997
+#: classes/content_types/class.content.type.teaser.php:846
+#: classes/content_types/class.content.type.teaser.php:1001
 msgid "Unknown article"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:849
+#: classes/content_types/class.content.type.teaser.php:853
 #: includes/include.clientsettings.php:91
 #: includes/include.client_artspec.php:71
 #: includes/include.con_translate.php:745
@@ -1604,80 +1635,80 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:873
+#: classes/content_types/class.content.type.teaser.php:877
 msgid "Sort sequence"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:876
+#: classes/content_types/class.content.type.teaser.php:880
 #: includes/include.mycontenido_lastarticles.php:161
 msgid "Creation date"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:879
+#: classes/content_types/class.content.type.teaser.php:883
 msgid "Published date"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:882
+#: classes/content_types/class.content.type.teaser.php:886
 msgid "Modification date"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:930
+#: classes/content_types/class.content.type.teaser.php:934
 msgid "Scaled"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:933
+#: classes/content_types/class.content.type.teaser.php:937
 msgid "Cropped"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:953
+#: classes/content_types/class.content.type.teaser.php:957
 msgid "Content visualisation"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:954
+#: classes/content_types/class.content.type.teaser.php:958
 msgid "Teaser visualisation"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:956
+#: classes/content_types/class.content.type.teaser.php:960
 msgid "Teaser filter"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:958
+#: classes/content_types/class.content.type.teaser.php:962
 msgid "Character length"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:961
+#: classes/content_types/class.content.type.teaser.php:965
 msgid "Pictures"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:962
+#: classes/content_types/class.content.type.teaser.php:966
 msgid "Image width"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:964
+#: classes/content_types/class.content.type.teaser.php:968
 msgid "Image height"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:966
+#: classes/content_types/class.content.type.teaser.php:970
 msgid "Image scale"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:969
+#: classes/content_types/class.content.type.teaser.php:973
 msgid "Content types"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:970
+#: classes/content_types/class.content.type.teaser.php:974
 msgid "Headline source"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:972
+#: classes/content_types/class.content.type.teaser.php:976
 msgid "Text source"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:974
+#: classes/content_types/class.content.type.teaser.php:978
 msgid "Image source"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:976
+#: classes/content_types/class.content.type.teaser.php:980
 msgid "Date source"
 msgstr ""
 
@@ -1878,8 +1909,8 @@ msgstr ""
 #: includes/include.client_artspec.php:38
 #: includes/include.client_artspec.php:46 includes/include.client_edit.php:18
 #: includes/include.con_art_overview.php:968
-#: includes/include.con_content_list.php:79
-#: includes/include.con_content_list.php:105
+#: includes/include.con_content_list.php:134
+#: includes/include.con_content_list.php:160
 #: includes/include.con_edit_form.php:1091
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
@@ -2261,7 +2292,7 @@ msgid "%s (Copy)"
 msgstr ""
 
 #: includes/functions.general.php:1630
-#: templates/standard/template.con_content_list.html:119
+#: templates/standard/template.con_content_list.html:113
 msgid "You are here"
 msgstr ""
 
@@ -2828,8 +2859,8 @@ msgid ""
 msgstr ""
 
 #: includes/include.client_edit.php:154
-#: includes/include.con_content_list.php:74
-#: includes/include.con_content_list.php:100
+#: includes/include.con_content_list.php:129
+#: includes/include.con_content_list.php:155
 #: includes/include.grouprights_area.php:42
 #: includes/include.grouprights_con.php:39
 #: includes/include.grouprights_lay.php:38
@@ -2936,11 +2967,11 @@ msgstr ""
 msgid "Do you really want to delete the following client:<br><br>%s<br>"
 msgstr ""
 
-#: includes/include.CMS_HTML.php:98 includes/include.CMS_HTMLHEAD.php:98
+#: includes/include.CMS_HTML.php:105 includes/include.CMS_HTMLHEAD.php:105
 msgid "Save without leaving the editor"
 msgstr ""
 
-#: includes/include.CMS_HTML.php:99 includes/include.CMS_HTMLHEAD.php:99
+#: includes/include.CMS_HTML.php:106 includes/include.CMS_HTMLHEAD.php:106
 msgid "Save and close editor"
 msgstr ""
 
@@ -3089,70 +3120,70 @@ msgid ""
 "template."
 msgstr ""
 
-#: includes/include.con_content_list.php:280
+#: includes/include.con_content_list.php:335
 msgid "Can not load article"
 msgstr ""
 
-#: includes/include.con_content_list.php:284
+#: includes/include.con_content_list.php:339
 msgid "Can not find article"
 msgstr ""
 
-#: includes/include.con_content_list.php:290
+#: includes/include.con_content_list.php:345
 msgid "Raw data was imported successfully"
 msgstr ""
 
-#: includes/include.con_content_list.php:294
+#: includes/include.con_content_list.php:349
 msgid "Error: The XML file is not valid"
 msgstr ""
 
-#: includes/include.con_content_list.php:297
+#: includes/include.con_content_list.php:352
 msgid "Please choose a file"
 msgstr ""
 
-#: includes/include.con_content_list.php:379
-#: includes/include.con_editcontent.php:99
+#: includes/include.con_content_list.php:426
+#: includes/include.con_editcontent.php:141
 msgid "Close editor"
 msgstr ""
 
-#: includes/include.con_content_list.php:380
-#: includes/include.con_editcontent.php:100
+#: includes/include.con_content_list.php:427
+#: includes/include.con_editcontent.php:142
 msgid "Close editor and save changes"
 msgstr ""
 
-#: includes/include.con_content_list.php:381
-#: includes/include.con_editcontent.php:101
+#: includes/include.con_content_list.php:428
+#: includes/include.con_editcontent.php:143
 msgid "Do you want to save changes?"
 msgstr ""
 
-#: includes/include.con_content_list.php:384
+#: includes/include.con_content_list.php:431
 msgid "Export raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:385
+#: includes/include.con_content_list.php:432
 msgid "Import raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:386
+#: includes/include.con_content_list.php:433
 msgid "Raw data export"
 msgstr ""
 
-#: includes/include.con_content_list.php:387
+#: includes/include.con_content_list.php:434
 msgid "Raw data import"
 msgstr ""
 
-#: includes/include.con_content_list.php:388
+#: includes/include.con_content_list.php:435
 msgid "Overwrite data"
 msgstr ""
 
-#: includes/include.con_content_list.php:402
+#: includes/include.con_content_list.php:449
 msgid "Article has no raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:419
+#: includes/include.con_content_list.php:466
 msgid "Export"
 msgstr ""
 
-#: includes/include.con_content_list.php:498
+#: includes/include.con_content_list.php:545
 #: includes/include.con_edit_form.php:332
 #: includes/include.con_edit_form.php:333
 #: includes/include.con_meta_form.php:69 includes/include.con_meta_form.php:70
@@ -3160,8 +3191,8 @@ msgstr ""
 msgid "This article is currently frozen and can not be edited!"
 msgstr ""
 
-#: includes/include.con_content_list.php:582
-#: includes/include.con_content_list.php:585
+#: includes/include.con_content_list.php:629
+#: includes/include.con_content_list.php:632
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 
@@ -3190,7 +3221,7 @@ msgstr ""
 #: templates/standard/template.con_meta_edit_form.html:71
 #: templates/standard/template.str_overview.html:53
 #: templates/standard/template.str_overview.html:148
-#: templates/standard/template.str_overview.html:638
+#: templates/standard/template.str_overview.html:639
 msgid "Alias"
 msgstr ""
 
@@ -3396,7 +3427,7 @@ msgid "none"
 msgstr ""
 
 #: includes/include.con_left_top.php:265 includes/include.str_overview.php:658
-#: templates/standard/template.str_overview.html:636
+#: templates/standard/template.str_overview.html:637
 #: ../data/config/production/cfg_actions.inc.php:64
 msgid "Edit category"
 msgstr ""
@@ -5059,31 +5090,31 @@ msgstr ""
 #: includes/include.str_overview.php:692 includes/include.str_overview.php:909
 #: includes/include.str_overview.php:911
 #: templates/standard/template.str_overview.html:59
-#: templates/standard/template.str_overview.html:658
+#: templates/standard/template.str_overview.html:659
 #: ../data/config/production/cfg_actions.inc.php:29
 #: ../data/config/production/cfg_actions.inc.php:55
 msgid "Protect category"
 msgstr ""
 
 #: includes/include.str_overview.php:694
-#: templates/standard/template.str_overview.html:660
+#: templates/standard/template.str_overview.html:661
 msgid "Unprotect category"
 msgstr ""
 
 #: includes/include.str_overview.php:703
-#: templates/standard/template.str_overview.html:643
+#: templates/standard/template.str_overview.html:644
 #: ../data/config/production/cfg_actions.inc.php:57
 msgid "Delete category"
 msgstr ""
 
 #: includes/include.str_overview.php:710
-#: templates/standard/template.str_overview.html:653
+#: templates/standard/template.str_overview.html:654
 msgid ""
 "One or more subtrees and one or more articles are existing, unable to delete."
 msgstr ""
 
 #: includes/include.str_overview.php:715 includes/include.str_overview.php:719
-#: templates/standard/template.str_overview.html:652
+#: templates/standard/template.str_overview.html:653
 msgid "One or more articles are existing, unable to delete."
 msgstr ""
 
@@ -5092,7 +5123,7 @@ msgid "This category is already at the top"
 msgstr ""
 
 #: includes/include.str_overview.php:731
-#: templates/standard/template.str_overview.html:650
+#: templates/standard/template.str_overview.html:651
 #: ../data/config/production/cfg_actions.inc.php:58
 msgid "Move category up"
 msgstr ""
@@ -5102,18 +5133,18 @@ msgid "This category is already at the bottom"
 msgstr ""
 
 #: includes/include.str_overview.php:745
-#: templates/standard/template.str_overview.html:649
+#: templates/standard/template.str_overview.html:650
 #: ../data/config/production/cfg_actions.inc.php:59
 msgid "Move category down"
 msgstr ""
 
 #: includes/include.str_overview.php:754 includes/include.str_overview.php:769
-#: templates/standard/template.str_overview.html:651
+#: templates/standard/template.str_overview.html:652
 msgid "Move tree"
 msgstr ""
 
 #: includes/include.str_overview.php:758
-#: templates/standard/template.str_overview.html:655
+#: templates/standard/template.str_overview.html:656
 msgid "Place tree here"
 msgstr ""
 
@@ -5122,7 +5153,7 @@ msgid "This category can't be moved since it is already a root category"
 msgstr ""
 
 #: includes/include.str_overview.php:779
-#: templates/standard/template.str_overview.html:644
+#: templates/standard/template.str_overview.html:645
 #: templates/standard/template.symbolhelp.html:240
 #: templates/standard/template.symbolhelp.html:700
 #: ../data/config/production/cfg_actions.inc.php:62
@@ -5137,7 +5168,7 @@ msgstr ""
 #: templates/standard/template.con_left_top_cat_edit.html:12
 #: templates/standard/template.con_left_top_cat_edit.html:34
 #: templates/standard/template.str_overview.html:68
-#: templates/standard/template.str_overview.html:642
+#: templates/standard/template.str_overview.html:643
 #: templates/standard/template.symbolhelp.html:110
 #: templates/standard/template.symbolhelp.html:175
 #: templates/standard/template.symbolhelp.html:679
@@ -5965,8 +5996,8 @@ msgstr ""
 msgid "Apply to all selected articles"
 msgstr ""
 
-#: templates/standard/template.con_content_list.html:59
-#: templates/standard/template.con_content_list.html:120
+#: templates/standard/template.con_content_list.html:53
+#: templates/standard/template.con_content_list.html:114
 msgid "Content administration"
 msgstr ""
 
@@ -6264,36 +6295,36 @@ msgid "Search Term"
 msgstr ""
 
 #: templates/standard/template.str_overview.html:77
-#: templates/standard/template.str_overview.html:639
+#: templates/standard/template.str_overview.html:640
 msgid "Category is a tree"
 msgstr ""
 
 #: templates/standard/template.str_overview.html:84
-#: templates/standard/template.str_overview.html:657
+#: templates/standard/template.str_overview.html:658
 msgid "Position of category"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:641
+#: templates/standard/template.str_overview.html:642
 msgid "Categoryname"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:645
+#: templates/standard/template.str_overview.html:646
 msgid "Field category name is empty"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:646
+#: templates/standard/template.str_overview.html:647
 msgid "Form error"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:654
+#: templates/standard/template.str_overview.html:655
 msgid "One or more subtrees are existing, unable to delete."
 msgstr ""
 
-#: templates/standard/template.str_overview.html:656
+#: templates/standard/template.str_overview.html:657
 msgid "Please select a new position for new category"
 msgstr ""
 
-#: templates/standard/template.str_overview.html:661
+#: templates/standard/template.str_overview.html:662
 msgid "Please select a new Position for new category"
 msgstr ""
 
