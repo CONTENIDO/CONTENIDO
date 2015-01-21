@@ -137,11 +137,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $sDirection = langGetTextDirection($lang);
         $this->_setSetting("directionality", $sDirection);
 
-        if ($sDirection == "rtl") {
-            $this->_setSetting("theme_advanced_toolbar_align", "right", true);
-        } else {
-            $this->_setSetting("theme_advanced_toolbar_align", "left", true);
-        }
+//         if ($sDirection == "rtl") {
+//             $this->_setSetting("theme_advanced_toolbar_align", "right", true);
+//         } else {
+//             $this->_setSetting("theme_advanced_toolbar_align", "left", true);
+//         }
 
         // Date and time formats
         $this->_setSetting("plugin_insertdate_dateFormat", $this->convertFormat(getEffectiveSetting("dateformat", "date", "Y-m-d")));
@@ -362,7 +362,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting('toolbar2', '', true);
                 $this->_setSetting('toolbar3', '', true);
 
-                $this->_setSetting("setupcontent_callback", "Con.Tiny.customSetupContentCallback", true);
+//                 $this->_setSetting("setupcontent_callback", "Con.Tiny.customSetupContentCallback", true);
 
                 $this->_unsetSetting("width");
                 $this->_setSetting("height", "210px", true);
@@ -471,9 +471,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $browserparameters = array("restrict_imagebrowser" => array("jpg", "gif", "jpeg", "png"));
         $sess->register("browserparameters");
 
-        // Contenido-specific: Set article_url_suffix setting as it is used in plugins/advlink/jscripts/functions.js on anchor tags
-        $this->_setSetting("setupcontent_callback", 'Con.Tiny.customSetupContentCallback', true);
-        $this->_setSetting("save_callback", 'Con.Tiny.customSaveCallback', true);
+//         // Contenido-specific: Set article_url_suffix setting as it is used in plugins/advlink/jscripts/functions.js on anchor tags
+//         $this->_setSetting("setupcontent_callback", 'Con.Tiny.customSetupContentCallback', true);
+//         $this->_setSetting("save_callback", 'Con.Tiny.customSaveCallback', true);
 
         // Set browser windows
         // Difference between file and image browser is with (file) or without categories/articles (image)

@@ -253,14 +253,15 @@
         /**
          * Custom url converter callback function for TinyMCE, see TinyMCE setting
          * 'urlconverter_callback'.
-         * NOTE: This is not used at the moment.
+         * NOTE: This function does nothing but return the input url back at the moment.
          * @method customURLConverterCallback
          *
          * @param unknown ...
          * @static
          */
-        customURLConverterCallback: function() {
+        customURLConverterCallback: function(url) {
             // could be implemented if needed
+        	return url;
         },
 
         /**
@@ -678,8 +679,9 @@
             }
             if ('undefined' !== typeof(tinymce.settings.fullscreen_settings)) {
                 tinymce.settings.fullscreen_settings['file_browser_callback'] = tinymce.settings['file_browser_callback'];
+                tinymce.settings.fullscreen_settings['valid_elements'] = tinymce.settings['valid_elements'];
             }
-
+console.log(tinymce.settings);
             // init set of editors
             tinymce.init(tinymce.settings);
         },
