@@ -4,13 +4,13 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * TINYMCE 1.45rc1 PHP WYSIWYG interface
+ * TINYMCE 4 PHP WYSIWYG interface
  * Generates file/link list for editor
  *
  * Requirements:
- * @con_php_req 5
+ * @con_php_req 5.3
  * @con_notice
- * TINYMCE 1.45rc1 Fileversion
+ * TINYMCE 4 Fileversion
  *
  * @package    CONTENIDO Backend Editor
  * @version    0.0.1

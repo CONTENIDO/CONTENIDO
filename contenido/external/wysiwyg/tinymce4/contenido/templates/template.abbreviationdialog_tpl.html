@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Abbreviation Element</title>
+    <style type="text/css">
+label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 200px;
+    text-align: left;
+    margin-bottom: 0.5em;
+}
+input, select {
+    display: inline-block;
+    float: left;
+    margin-bottom: 0.5em;
+    box-sizing: border-box;
+    width: 13em;
+}
+    </style>
+    <script type="text/javascript" src="http://workspace.local/con_git/contenido/scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="http://workspace.local/con_git/contenido/scripts/jquery/jquery-ui.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+<!--
+
+jQuery(document).ready(function() {
+    function registerChangeEventHandler(el) {
+        jQuery(el).on("change", function(ev) {
+            //option[data-select-value*='value']
+            if ("value" === jQuery(":nth-child(" + (this.selectedIndex+1) + ")", this).attr("data-select-value")) {
+                // replace select tag with input type text field
+                // that way the user can enter their own value
+                var elName = this.name;
+                var inputTag = '<input name="' + elName + '" data-select-idx="' + (jQuery(this).parent().index() -1) + '" type="text" />';
+                jQuery(this).replaceWith(inputTag);
+                // wait until dom is built before we can set focus reliably
+                window.setTimeout(function() {
+                    // get newly inserted element
+                    var el = jQuery("[name*=" + elName + "]");
+                    el.on('blur', function() {
+                        // replace text input field with old select if no text entered
+                        if ("" !== el.val()) {
+                            return;
+                        }
+                        var replacementSelect = aSelectElems[el.attr("data-select-idx")];
+                        el.replaceWith(replacementSelect);
+                        
+                        // set first option in select tag to be selected ({NOT_SET}) 
+                        replacementSelect.selectedIndex = 0;
+                        
+                        // new element has no event handlers, register them
+                        registerChangeEventHandler(replacementSelect);
+                    });
+                    el.focus();
+                }, 0);
+                focus();
+            }
+        });
+    }
+    
+    // set form values based on selection
+    var origSelection = "{SELECTION_VALUE}";
+    window.selectionTag = origSelection;
+    if ("<abbr " === origSelection.substring(0, 6)) {
+        // selection includes an abbr tag
+        
+        // tag must be built based on origSelection
+        selectionTag = selectionTag.replace(origSelection, "</abbr>")
+        
+        // check if abbr tag is not closed
+        if (selectionTag.length === origSelection.length) {
+            // abbr tag not closed
+            // close tag first
+            selectionTag = selectionTag.concat("</abbr>");
+            
+            // build new tag based on values of old tag
+            selectiontTag.concat("<abbr ".concat(origSelection.substr(0, origSelection.indexOf("/>"))));
+        } else {
+            selectionTag = selectionTag.concat("</abbr>");
+        }
+        
+        // remove other starting abbr tags inside selection
+        // use jQuery for node based operations?
+        //selectionTag = selectionTag.substr(1).replace("<abbr")
+        
+        console.log(selectionTag);
+        
+        // fill form values with values in abbr tag
+    }
+    
+    
+    // set form values based on tag value computation
+    jQuery("select, input").each(function(idx, el) {
+        console.log(el);
+    });
+    
+    // close window when form is sent
+    jQuery("form").on("submit", function(ev) {
+        console.log(ev);
+        // do not send form
+        ev.preventDefault();
+        
+        // get submit button value
+        var action = jQuery("form").context.activeElement.name;
+        
+        // write variables into this window
+        // other window checks this window
+        // rather than cluttering main window with variables
+        // values must be checked before onload then
+        window.formAction = action;
+
+        switch(action) {
+          case 'insert':
+              // build new abbr tag
+              var abbrTagOpening = "<abbr";
+              jQuery("form").serializeArray().forEach(function(el) {
+                  if ("" !== el.value) {
+                      // add space for next attribute
+                      abbrTagOpening = abbrTagOpening.concat(" ");
+                      abbrTagOpening = abbrTagOpening.concat(el.name + '="' + el.value + '"');
+                  }
+              });
+              abbrTagOpening = abbrTagOpening.concat(">");
+              selectionTag = abbrTagOpening.concat(selectionTag).concat("</abbr>");
+              
+              break;
+          case 'update':
+              break;
+          case 'remove':
+              // use dummy div container to apply tag removal using jquery
+              var div = jQuery('<div />').html(selectionTag).not("abbr");
+              // get content with the stripped abbr tags from dummy div container
+              selectionTag = div.html();
+              break;
+          case 'cancel':
+              // placeholder, just do nothing when canceling
+              window.close();
+              break;
+        }
+        
+        window.abbrReturn = selectionTag;
+        window.close();
+    });
+    
+    // build copy of original select elements
+    // this way we can change back selections to original
+    var aSelectElems = [];
+    jQuery("select").each(function(idx, el) {
+        aSelectElems[idx] = el;
+        registerChangeEventHandler(el);
+    });
+});
+-->
+    </script>
+    <form>
+    <label for="title">{TITLE:}</label>
+    <input name="title" type="text" />
+    
+    <label for="id">{ID:}</label>
+    <input name="id" type="text" />
+    
+    <label for="class">{CLASS:}</label>
+    <select name="class">
+        <option value="">{NOT_SET}</option>
+        <option data-select-value="value">{(VALUE)}</option>
+    </select>
+    
+    <label for="style">{STYLE:}</label>
+    <input name="style" type="text" />
+    
+    <label for="textdirection">{TEXT_DIRECTION:}</label>
+    <select name="textdirection">
+        <option value="">{NOT_SET}</option>
+        <option value="lefttoright">{LEFT_TO_RIGHT}</option>
+        <option value="righttoleft">{RIGHT_TO_LEFT}</option>
+    </select>
+    
+    <label for="language">{LANGUAGE:}</label>
+    <input name="language" type="text" />
+    
+    <div id="buttons">
+        <input type="submit" name="insert" value="{INSERT}" />
+        <input type="submit" name="update" value="{UPDATE}" />
+        <input type="submit" name="remove" value="{REMOVE}" />
+        <input type="submit" name="cancel" value="{CANCEL}" />
+    </div>
+    </form>
+</body>
+</html>

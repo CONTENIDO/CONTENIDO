@@ -283,7 +283,7 @@
 
             if (leftTopFrame.document.getElementById('selectedfile').value !== '') {
                 // Get selected image from popup and close it
-            	Con.Tiny.fbWindow.document.getElementById(Con.Tiny.fbFieldName).value = leftTopFrame.document.getElementById('selectedfile').value;
+                Con.Tiny.fbWindow.document.getElementById(Con.Tiny.fbFieldName).value = leftTopFrame.document.getElementById('selectedfile').value;
 
                 Con.Tiny.fbPopupWindow.close();
                 window.clearInterval(Con.Tiny.fbIntervalHandle);
@@ -465,26 +465,26 @@
 //            // Show tiny and focus it
 //            if (Con.Tiny.activeId) {
 //
-//            	// check if tinymce editor instance for current id already exists
-//            	if (!tinymce.get(Con.Tiny.activeId)) {
-//            		// build a new instance because there is no editor instance
-//	            	var ed = new tinymce.Editor(Con.Tiny.activeId, tinymce.settings, tinymce.EditorManager);
+//                // check if tinymce editor instance for current id already exists
+//                if (!tinymce.get(Con.Tiny.activeId)) {
+//                    // build a new instance because there is no editor instance
+//                    var ed = new tinymce.Editor(Con.Tiny.activeId, tinymce.settings, tinymce.EditorManager);
 //
-//	            	// bind init event to a function
-//	            	ed.on('init', function(e) {
-//	            		// make sure dom has been built
-//	                    window.setTimeout(function () {
-//	                    	// fire focus event
-//	                    	// ed.focus() does not work because there's an internal tinymce problem
-//	                    	ed.fire('focus');
-//	                    }, 0);
-//	            	});
-//	            	// inject newly built editor into page
-//	            	ed.render();
-//	
-//	                // Remove height information of clicked div
-//	                $('#' + Con.Tiny.activeId).css('height', '');
-//            	}
+//                    // bind init event to a function
+//                    ed.on('init', function(e) {
+//                        // make sure dom has been built
+//                        window.setTimeout(function () {
+//                            // fire focus event
+//                            // ed.focus() does not work because there's an internal tinymce problem
+//                            ed.fire('focus');
+//                        }, 0);
+//                    });
+//                    // inject newly built editor into page
+//                    ed.render();
+//    
+//                    // Remove height information of clicked div
+//                    $('#' + Con.Tiny.activeId).css('height', '');
+//                }
 //            }
         },
 
@@ -557,7 +557,7 @@
          * @static
          */
         tinymceInit: function(tinymce, wysiwygSettings, options) {
-        	// abort tinymce init if tiny should not be used
+            // abort tinymce init if tiny should not be used
             if ('undefined' === typeof(options)
             || ('undefined' !== typeof(options.useTiny)
             && '' === options.useTiny)) {
@@ -610,9 +610,58 @@
                         });
                     }
                 });
-
                 // Register plugin with a short name
                 tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
+
+                // implement abbreviation plugin
+                tinymce.create('tinymce.plugins.AbbreviationPlugin', {
+                    init: function(ed) {
+                        // button image missing
+                        // FIXME: make sure button is not enabled if block level element is selected
+                        // FIXME: because block level elements are not allowed within abbr elements
+                        ed.addButton('abbreviation', {
+                            title: "Abbreviation",
+//                            image: options.saveImage,
+                            onclick: function (ev) {
+                                // open new window to let user enter input
+                                var caller = window;
+                                
+                                // compute position of new window based on window size
+                                var newWidth = 400;
+                                var newHeight = 450;
+                                var xPos = (caller.parent.parent.parent.innerWidth/2) - (newWidth/2);
+                                var yPos = (caller.parent.parent.parent.innerHeight/2) - (newHeight/2);
+                                var xyPos = 'screenX='+xPos+',screenY='+yPos;
+                                
+                                // set template to use for plugin
+                                var tpl = "template.abbreviationdialog_tpl.html";
+                                var localiser = "../contenido/external/wysiwyg/tinymce4/contenido/ajax/";
+                                localiser += "class.tinymce_templatelocaliser.php";
+                                
+                                // get selection from tinymce
+                                var node = tinymce.activeEditor.selection;
+                                // open plugin window
+                                var diag = caller.open(localiser+'?localise='+tpl+'&node='+node.getContent(), 'abbrwin', 'dependent=yes,height='+newHeight+'px,width='+newWidth+'px,'+xyPos);
+                                
+                                // onunload event is not called in all browsers
+                                jQuery(diag).on('beforeunload', function() {
+                                    // process data from closing dialog
+                                    if ('cancel' === diag.formAction) {
+                                        return;
+                                    }
+                                    
+                                    if ('insert' === diag.formAction) {
+                                        console.log(diag.abbrReturn);
+                                        node.setContent(diag.abbrReturn);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+                tinymce.PluginManager.add('conabbreviation', tinymce.plugins.AbbreviationPlugin);
+
+
             }
             tinymce.settings = wysiwygSettings;
 
@@ -662,7 +711,7 @@
                 // build a new editor instance with original settings
                 ed = new tinymce.Editor(id, set, tinymce.EditorManager);
                 ed.on('init', function () {
-                 // put new editor into focus
+                    // put new editor into focus
                     ed.fire('focus');
                 });
                 // add new editor to page

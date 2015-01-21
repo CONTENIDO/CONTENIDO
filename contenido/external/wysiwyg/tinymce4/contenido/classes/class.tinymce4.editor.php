@@ -366,7 +366,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
                 $this->_unsetSetting("width");
                 $this->_setSetting("height", "210px", true);
-                
+
                 // use custom plugins
                 // they are specified in con_tiny.js
                 // close plugin: save and close button

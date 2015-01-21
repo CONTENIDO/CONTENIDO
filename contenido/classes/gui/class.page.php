@@ -162,7 +162,7 @@ class cGuiPage {
      * /styles/PAGENAME.css.
      *
      * @param string $pageName The name of the page which will be used to load
-     *        corresponding stylehseets, templates and scripts.
+     *        corresponding stylesheets, templates and scripts.
      * @param string $pluginName The name of the plugin in which the site is run
      * @param string $subMenu The number of the submenu which should be
      *        highlighted when this page is shown.
