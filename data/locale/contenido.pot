@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-20 10:30+0100\n"
+"POT-Creation-Date: 2015-01-22 09:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -266,9 +266,11 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: classes/class.ajax.php:317 includes/include.CMS_HTML.php:104
-#: includes/include.CMS_HTMLHEAD.php:104 includes/include.str_overview.php:501
-#: scripts/langref.php:21 templates/standard/template.symbolhelp.html:66
+#: classes/class.ajax.php:317
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:94
+#: includes/include.CMS_HTML.php:104 includes/include.CMS_HTMLHEAD.php:104
+#: includes/include.str_overview.php:501 scripts/langref.php:21
+#: templates/standard/template.symbolhelp.html:66
 #: templates/standard/template.symbolhelp.html:674
 #: templates/standard/template.upl_files_upload.html:57
 msgid "Cancel"
@@ -1835,14 +1837,14 @@ msgstr ""
 msgid "Client"
 msgstr ""
 
-#: classes/gui/class.navigation.php:343 includes/include.con_edit_form.php:117
+#: classes/gui/class.navigation.php:345 includes/include.con_edit_form.php:117
 #: includes/include.logs.php:265 includes/include.system_sysvalues.php:225
 #: templates/standard/template.log_main.html:30
 #: templates/standard/template.symbolhelp.html:610 xml/system.xml:23
 msgid "User"
 msgstr ""
 
-#: classes/gui/class.navigation.php:406
+#: classes/gui/class.navigation.php:408
 msgid "-- No Language available --"
 msgstr ""
 
@@ -2244,6 +2246,60 @@ msgstr ""
 #: external/backendedit/front_content.php:27
 #, php-format
 msgid "The given client's frontend directory (%s) is not a directory."
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:79
+msgid "Title:"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:80
+msgid "ID:"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:81
+msgid "Class:"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:82
+msgid "Style:"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:83
+msgid "Text Direction:"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:84
+msgid "Language:"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:86
+msgid "-- Not set --"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:87
+msgid "(value)"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:88
+#: includes/include.lang_edit.php:193
+msgid "Left to right"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:89
+#: includes/include.lang_edit.php:194
+msgid "Right to left"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:91
+msgid "Insert"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:92
+msgid "Update"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:93
+msgid "Remove"
 msgstr ""
 
 #: includes/frontend/include.front_content.php:255
@@ -4111,14 +4167,6 @@ msgstr ""
 
 #: includes/include.lang_edit.php:123
 msgid "An error occurred during saving the changes"
-msgstr ""
-
-#: includes/include.lang_edit.php:193
-msgid "Left to right"
-msgstr ""
-
-#: includes/include.lang_edit.php:194
-msgid "Right to left"
 msgstr ""
 
 #: includes/include.lang_edit.php:206
@@ -7074,6 +7122,10 @@ msgstr ""
 
 #: xml/system.xml:43
 msgid "Show only CSS/JS/HTML files at areas CSS/JS/HTML"
+msgstr ""
+
+#: xml/system.xml:44
+msgid "Show message for not founded module translations"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:23

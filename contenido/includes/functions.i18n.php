@@ -422,9 +422,13 @@ function mi18n($key) {
 
     $translation = $translations[$key];
 
+    // Get module_translation_message setting value
+    $moduleTranslationMessage = getEffectiveSetting('debug', 'module_translation_message');
+
     // consider key as untranslated if translation has length 0
     // Don't trim translation, so that a string can be translated as ' '!
-    if (0 === strlen($translation)) {
+    // Show message only if module_translation_message mode is turn on
+    if (0 === strlen($translation) && $moduleTranslationMessage == true) {
         $translation = 'Module translation not found: ' . $key;
     }
 

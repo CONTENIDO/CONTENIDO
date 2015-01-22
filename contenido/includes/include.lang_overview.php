@@ -113,7 +113,7 @@ if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') 
 (function(Con, $) {
     var frame = Con.getFrame('right_bottom');
     if (frame) {
-         var href = Con.UtilUrl.replaceParams(frame.location.href, {idlang: $iGetIdlang});
+        var href = Con.UtilUrl.replaceParams(frame.location.href, {idlang: $iGetIdlang});alert(href);
         frame.location.href = href;
     }
 })(Con, Con.$);
