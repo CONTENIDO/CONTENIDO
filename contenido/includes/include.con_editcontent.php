@@ -148,6 +148,20 @@ if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false'
     $oScriptTpl->set('s', 'USE_TINY', '1');
 }
 
+// check if file with list of client plugins is supplied
+if ('true' === getEffectiveSetting('tinymce4', 'contenido_load_client_plugins', false)) {
+    // disallow any file not pointing into tinymce 4 config folder of client
+    // to do that use a fixed path
+    $tiny4ClientPlugins = cRegistry::getFrontendPath() . 'data/tinymce4config/clientplugins.json';
+    if (cFileHandler::exists($tiny4ClientPlugins)
+    && cFileHandler::readable($tiny4ClientPlugins)) {
+        $oScriptTpl->set('s', 'CLIENT_PLUGINS', cFileHandler::read($tiny4ClientPlugins));
+    }
+} else {
+    // no client plugins to load
+    $oScriptTpl->set('s', 'CLIENT_PLUGINS', '[]');
+}
+
 $scripts = $oScriptTpl->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['con_editcontent'], 1);
 
 $contentform = '

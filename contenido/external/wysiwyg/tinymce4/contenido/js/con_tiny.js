@@ -141,7 +141,8 @@
          */
         idartlang: 0,
         /**
-         * is editor currently changing fullscreen
+         * @property is editor currently changing fullscreen
+         * @type {Boolean}
          */
         changingFullscreen: false,
 
@@ -253,6 +254,7 @@
         /**
          * Custom url converter callback function for TinyMCE, see TinyMCE setting
          * 'urlconverter_callback'.
+         * http://www.tinymce.com/wiki.php/Configuration3x:urlconverter_callback
          * NOTE: This function does nothing but return the input url back at the moment.
          * @method customURLConverterCallback
          *
@@ -261,7 +263,7 @@
          */
         customURLConverterCallback: function(url) {
             // could be implemented if needed
-        	return url;
+            return url;
         },
 
         /**
@@ -573,6 +575,29 @@
             }
 
             if ('undefined' !== typeof(options)) {
+                // check if custom client plugins should be loaded
+                if ('object' === typeof(options.clientPlugins)) {
+                    // if no list of plugin available add empty key
+                    if ('undefined' === typeof(wysiwygSettings.plugins)) {
+                        wysiwygSettings.plugins = '';
+                    }
+                    if ('undefined' === typeof(wysiwygSettings.fullscreen_settings)) {
+                        wysiwygSettings.fullscreen_settings = {};
+                    }
+                    if ('undefined' === typeof(wysiwygSettings.fullscreen_settings.plugins)) {
+                        wysiwygSettings.fullscreen_settings.plugins = '';
+                    }
+                    // tell tinymce to load each add-on individually
+                    options.clientPlugins.forEach(function(plugin) {
+                        // load current add-on
+                        // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
+                        tinymce.PluginManager.load(plugin.name, plugin.path);
+                        // exclude plugin from later loading
+                        wysiwygSettings.plugins += (' -' + plugin.name);
+                        wysiwygSettings.fullscreen_settings.plugins += (' -' + plugin.name);
+                    });
+                }
+                
                 // Create ClosePlugin
                 tinymce.create('tinymce.plugins.ClosePlugin', {
                     init: function(ed, url) {
@@ -681,7 +706,7 @@
                 tinymce.settings.fullscreen_settings['file_browser_callback'] = tinymce.settings['file_browser_callback'];
                 tinymce.settings.fullscreen_settings['valid_elements'] = tinymce.settings['valid_elements'];
             }
-console.log(tinymce.settings);
+
             // init set of editors
             tinymce.init(tinymce.settings);
         },

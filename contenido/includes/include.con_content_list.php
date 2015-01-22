@@ -441,6 +441,20 @@ if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false'
     $page->set('s', 'USE_TINY', '1');
 }
 
+// check if file with list of client plugins is supplied
+if ('true' === getEffectiveSetting('tinymce4', 'contenido_load_client_plugins', false)) {
+    // disallow any file not pointing into tinymce 4 config folder of client
+    // to do that use a fixed path
+    $tiny4ClientPlugins = cRegistry::getFrontendPath() . 'data/tinymce4config/clientplugins.json';
+    if (cFileHandler::exists($tiny4ClientPlugins)
+    && cFileHandler::readable($tiny4ClientPlugins)) {
+        $page->set('s', 'CLIENT_PLUGINS', cFileHandler::read($tiny4ClientPlugins));
+    }
+} else {
+    // no client plugins to load
+    $page->set('s', 'CLIENT_PLUGINS', '[]');
+}
+
 // Show path of selected category to user
 $breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
 $page->set('s', 'CATEGORY', $breadcrumb);

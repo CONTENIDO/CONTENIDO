@@ -26,7 +26,8 @@
         saveImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_save_tiny.gif',
         closeTitle: '{CLOSE}',
         closeImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_close_tiny.gif',
-        useTiny: '{USE_TINY}'
+        useTiny: '{USE_TINY}',
+        clientPlugins: {CLIENT_PLUGINS}
     });
 
     $(function() {
@@ -53,7 +54,7 @@
 <p style="display:block;font-weight:bold;">i18n("Content administration")</p>
 <!-- BEGIN:BLOCK -->
 <div class="contypeList {EXTRA_CLASS}">
-   	<div class="headline"><label>{EXPORT_CONTENT_LABEL}</label>{EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>:</div>
+       <div class="headline"><label>{EXPORT_CONTENT_LABEL}</label>{EXPORT_CONTENT} {NAME}<<{ID_TYPE}>>:</div>
     {NAME}[{ID_TYPE}]
 </div>
 <!-- END:BLOCK -->
@@ -73,7 +74,7 @@
             return false;
         });
         $('form[name="exportrawdata"]').submit(function() {
-        	$('form[name="exportrawdata"] div.rawtypes').html("");
+            $('form[name="exportrawdata"] div.rawtypes').html("");
             $('.rawtypes:checked').each(function (index, value) {
                 $('form[name="exportrawdata"] div.rawtypes').append($(this).clone());
             });
@@ -90,21 +91,21 @@
 <label class="rawdata">{EXPORT_LABEL}</label>
 <div class="contypeList">
 <form name="exportrawdata" method="post" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=exportrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
-	<div class="rawtypes">
+    <div class="rawtypes">
 
-	</div>
-	<input type="submit" name="export" value="{EXPORT_RAWDATA}">
+    </div>
+    <input type="submit" name="export" value="{EXPORT_RAWDATA}">
 </form>
 </div>
 <label class="rawdata">{IMPORT_LABEL}</label>
 <div class="contypeList">
 <form name="importrawdata" id="importrawdata" method="post" enctype="multipart/form-data" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=importrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
-	<input type="file" name="rawfile" value="" size="40">
-	<br />
-	<label class="rawdatalabel">{OVERWRITE_DATA_LABEL}</label>
-	<input type="checkbox" name="overwritecontent" value="1">
-	<br />
-	<input type="submit" name="import" value="{IMPORT_RAWDATA}">
+    <input type="file" name="rawfile" value="" size="40">
+    <br />
+    <label class="rawdatalabel">{OVERWRITE_DATA_LABEL}</label>
+    <input type="checkbox" name="overwritecontent" value="1">
+    <br />
+    <input type="submit" name="import" value="{IMPORT_RAWDATA}">
 </form>
 </div>
 <!--

@@ -186,7 +186,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         // Remove CONTENIDO specific settings
         unset($this->_aSettings["contenido_toolbar_mode"], $this->_aSettings["contenido_lists"]);
         // Remove obsolete, deprecated values
-        unset($this->_aSettings["tinymce-stylesheet-file"], $this->_aSettings["tinymce-valid-elements"], $this->_aSettings["tinymce-extended-valid-elements"], $this->_aSettings["tinymce-lists"], $this->_aSettings["tinymce-styles"], $this->_aSettings["tinymce-toolbar-mode"], $this->_aSettings["tinymce-toolbar1"], $this->_aSettings["tinymce-toolbar2"], $this->_aSettings["tinymce-toolbar3"], $this->_aSettings["tinymce-plugins"]);
+        unset($this->_aSettings["tinymce-stylesheet-file"], $this->_aSettings["tinymce-valid-elements"], $this->_aSettings["tinymce-extended-valid-elements"], $this->_aSettings["tinymce-lists"], $this->_aSettings["tinymce-styles"], $this->_aSettings["tinymce-toolbar-mode"], $this->_aSettings["tinymce-toolbar1"], $this->_aSettings["tinymce-toolbar2"], $this->_aSettings["tinymce-toolbar3"], $this->_aSettings["tinymce4-plugins"]);
     }
 
     function convertFormat($sInput) {
@@ -272,7 +272,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     }
 
     /**
-     * For compatibility also accepts "tinymce-toolbar-mode", "tinymce-toolbar1-3" and "tinymce-plugins"
+     * For compatibility also accepts "tinymce-toolbar-mode", "tinymce-toolbar1-3" and "tinymce4-plugins"
      */
     function setToolbar($sMode = "") {
         global $cfg, $cfgClient, $client;
@@ -296,6 +296,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "fullscreen": // Show all options
+                // fullscreen of inline-editor
                 $this->_setSetting('toolbar1', 'cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', true);
                 $this->_setSetting('toolbar2', 'link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', true);
                 $this->_setSetting('toolbar3', 'table | formatselect fontselect fontsizeselect', true);
@@ -524,7 +525,19 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         $sConfig = substr($sConfig, 0, -3);
         $oTemplate->set('s', 'CONFIG', $sConfig);
-//         $oTemplate->set('s', 'CONFIGSETTINGS', )
+        // check if file with list of client plugins is supplied
+        if ('true' === getEffectiveSetting('tinymce4', 'contenido_load_client_plugins', false)) {
+            // disallow any file not pointing into tinymce 4 config folder of client
+            // to do that use a fixed path
+            $tiny4ClientPlugins = cRegistry::getFrontendPath() . 'data/tinymce4config/clientplugins.json';
+            if (cFileHandler::exists($tiny4ClientPlugins)
+            && cFileHandler::readable($tiny4ClientPlugins)) {
+                $oTemplate->set('s', 'CLIENT_PLUGINS', cFileHandler::read($tiny4ClientPlugins));
+            }
+        } else {
+            // no client plugins to load
+            $oTemplate->set('s', 'CLIENT_PLUGINS', '[]');
+        }
 
         $oTxtEditor = new cHTMLTextarea($this->_sEditorName, $this->_sEditorContent);
         $oTxtEditor->setId($this->_sEditorName);
