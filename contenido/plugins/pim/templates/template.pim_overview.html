@@ -101,7 +101,7 @@
                     var pluginRow = $("#plugin-row-" + pluginId);
                     var pluginTable = pluginRow.parent().parent();
 
-                    var oldOrder = Number(pluginRow.attr("data-plugin-execorder"));
+                    var oldOrder = parseInt(pluginRow.attr("data-plugin-execorder"));
                     var newOrder = oldOrder - 1;
                     if (newOrder == 0) {
                         Con.showNotification("i18n('Error')", "i18n('This plugin is already at the top!')");

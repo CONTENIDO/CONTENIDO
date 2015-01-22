@@ -322,7 +322,9 @@ class cGuiNavigation {
         } else {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
 
-            $sClientName = '<span id="chosenclient">' . $clientCollection->getClientName($client) . ' (' . $client . ')</span>';
+            $sClientName = $clientCollection->getClientName($client) . ' (' . $client . ')';
+            $sClientNameWithHtml = '<span id="chosenclient">' .$sClientName . '</span>';
+
             $sClientUrl = cRegistry::getFrontendUrl();
             $frontendPath = cRegistry::getFrontendPath();
 
@@ -334,7 +336,7 @@ class cGuiNavigation {
 
                 $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientImageTag));
             } else {
-                $html = sprintf($sClientNameTemplate, $sClientUrl, $sClientName);
+                $html = sprintf($sClientNameTemplate, $sClientUrl, $sClientNameWithHtml);
                 $html .= $this->_renderClientSelect();
                 $main->set('s', 'CHOSENCLIENT', $html);
             }

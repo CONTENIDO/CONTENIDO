@@ -112,12 +112,12 @@ if ($action == "lang_newlanguage") {
             $page->displayCriticalError("no language id given. Usually, this shouldn't happen, except if you played around with your system. if you didn't play around, please report a bug.");
         } else {
             if (($action == "lang_edit") && ($perm->have_perm_area_action($area, $action))) {
-			
+
 				// Set utf-8 as encoding if CON_UTF8 constant is defined
 				if (defined('CON_UTF8')) {
 					$sencoding = 'utf-8';
 				}
-			
+
                 if (false === $invalidData) {
                     if (false === langEditLanguage($idlang, $langname, $sencoding, $active, $direction)) {
                         $page->displayInfo(i18n("An error occurred during saving the changes"));
@@ -242,6 +242,7 @@ if ($action == "lang_newlanguage") {
             }
 
             if ($_REQUEST['action'] != '') {
+            	$page->set('s', 'CONTENIDO', $contenido);
                 $page->set("s", "RELOAD_LEFT_BOTTOM", "true");
             } else {
                 $page->set("s", "RELOAD_LEFT_BOTTOM", "false");

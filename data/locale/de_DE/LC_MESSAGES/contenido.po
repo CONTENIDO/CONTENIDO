@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-20 10:30+0100\n"
-"PO-Revision-Date: 2015-01-20 10:31+0100\n"
-"Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
+"POT-Creation-Date: 2015-01-22 11:49+0100\n"
+"PO-Revision-Date: 2015-01-22 11:49+0100\n"
+"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Keywords: i18n,trans\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: ../../../\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.6.4\n"
 
 #: backend_search.php:321
 msgid "Thank you for saving this search from extinction!"
@@ -265,9 +265,11 @@ msgstr "Bestätigung erforderlich"
 msgid "OK"
 msgstr "O. K."
 
-#: classes/class.ajax.php:317 includes/include.CMS_HTML.php:104
-#: includes/include.CMS_HTMLHEAD.php:104 includes/include.str_overview.php:501
-#: scripts/langref.php:21 templates/standard/template.symbolhelp.html:66
+#: classes/class.ajax.php:317
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:94
+#: includes/include.CMS_HTML.php:104 includes/include.CMS_HTMLHEAD.php:104
+#: includes/include.str_overview.php:501 scripts/langref.php:21
+#: templates/standard/template.symbolhelp.html:66
 #: templates/standard/template.symbolhelp.html:674
 #: templates/standard/template.upl_files_upload.html:57
 msgid "Cancel"
@@ -2015,14 +2017,14 @@ msgstr "Einige Plugin Menüs können nicht angezeigt werden."
 msgid "Client"
 msgstr "Mandant"
 
-#: classes/gui/class.navigation.php:343 includes/include.con_edit_form.php:117
+#: classes/gui/class.navigation.php:345 includes/include.con_edit_form.php:117
 #: includes/include.logs.php:265 includes/include.system_sysvalues.php:225
 #: templates/standard/template.log_main.html:30
 #: templates/standard/template.symbolhelp.html:610 xml/system.xml:23
 msgid "User"
 msgstr "Benutzer"
 
-#: classes/gui/class.navigation.php:406
+#: classes/gui/class.navigation.php:408
 msgid "-- No Language available --"
 msgstr "-- Keine Sprache verfügbar --"
 
@@ -2262,7 +2264,7 @@ msgstr "Das Feld für den Dateinamen ist leer!"
 #: includes/include.mod_script.php:147 includes/include.mod_style.php:156
 #: includes/include.pretplcfg_edit.php:39
 #: includes/include.systemsettings.php:45
-#: includes/include.tpl_edit_form.php:214
+#: includes/include.tpl_edit_form.php:217
 msgid "Saved changes successfully!"
 msgstr "Die Änderungen wurden erfolgreich gespeichert!"
 
@@ -2440,6 +2442,60 @@ msgstr ""
 msgid "The given client's frontend directory (%s) is not a directory."
 msgstr ""
 "Das eingegebene Frontend Verzeichnis des Mandanten (%s) ist kein Verzeichnis."
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:79
+msgid "Title:"
+msgstr "Titel:"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:80
+msgid "ID:"
+msgstr "ID:"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:81
+msgid "Class:"
+msgstr "CSS-Klasse:"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:82
+msgid "Style:"
+msgstr "Style:"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:83
+msgid "Text Direction:"
+msgstr "Laufrichtung des Textes:"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:84
+msgid "Language:"
+msgstr "Sprache:"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:86
+msgid "-- Not set --"
+msgstr "-- Nicht gesetzt --"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:87
+msgid "(value)"
+msgstr "(Inhalt)"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:88
+#: includes/include.lang_edit.php:193
+msgid "Left to right"
+msgstr "Links nach rechts"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:89
+#: includes/include.lang_edit.php:194
+msgid "Right to left"
+msgstr "Rechts nach Links"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:91
+msgid "Insert"
+msgstr "Einfügen"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:92
+msgid "Update"
+msgstr "Aktualisieren"
+
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:93
+msgid "Remove"
+msgstr "Entfernen"
 
 #: includes/frontend/include.front_content.php:255
 #: includes/frontend/include.front_content.php:283
@@ -3686,8 +3742,10 @@ msgstr "Vorlage wählen"
 #: includes/include.str_overview.php:154 includes/include.str_overview.php:614
 #: includes/include.tplcfg_edit_form.php:254
 #: includes/include.tpl_edit_form.php:67 includes/include.tpl_edit_form.php:72
-#: includes/include.tpl_edit_form.php:166
-#: includes/include.tpl_visualedit.php:107
+#: includes/include.tpl_edit_form.php:152
+#: includes/include.tpl_edit_form.php:169
+#: includes/include.tpl_visualedit.php:84
+#: includes/include.tpl_visualedit.php:110
 msgid "none"
 msgstr "kein"
 
@@ -4413,14 +4471,6 @@ msgstr "Ungültiges lokales Datums- / Uhrzeitformat"
 #: includes/include.lang_edit.php:123
 msgid "An error occurred during saving the changes"
 msgstr "Während dem Speichern der  Änderungen ist ein Fehler aufgetreten"
-
-#: includes/include.lang_edit.php:193
-msgid "Left to right"
-msgstr "Links nach rechts"
-
-#: includes/include.lang_edit.php:194
-msgid "Right to left"
-msgstr "Rechts nach Links"
 
 #: includes/include.lang_edit.php:206
 #: ../data/config/production/cfg_actions.inc.php:122
@@ -5963,7 +6013,7 @@ msgid "Edit template"
 msgstr "Vorlage bearbeiten"
 
 #: includes/include.tpl_edit_form.php:121
-#: includes/include.tpl_edit_form.php:196
+#: includes/include.tpl_edit_form.php:199
 msgid "Default"
 msgstr "Standard"
 
@@ -5973,7 +6023,7 @@ msgstr "Standard"
 msgid "Layout description"
 msgstr "Layoutbeschreibung"
 
-#: includes/include.tpl_edit_form.php:212
+#: includes/include.tpl_edit_form.php:215
 msgid "Created new Template successfully!"
 msgstr "Neue Vorlage erfolgreich angelegt!"
 
@@ -7449,6 +7499,10 @@ msgstr "Optionale Backend-Bezeichnung"
 #: xml/system.xml:43
 msgid "Show only CSS/JS/HTML files at areas CSS/JS/HTML"
 msgstr "Zeige lediglich CSS/JS/HTML-Dateien in den Bereichen CSS/JS/HTML"
+
+#: xml/system.xml:44
+msgid "Show message for unknown module translations"
+msgstr "Zeige Meldungen für nicht gefundene Modul-Übersetzungen an"
 
 #: ../data/config/production/cfg_actions.inc.php:23
 msgid "Make category online"
