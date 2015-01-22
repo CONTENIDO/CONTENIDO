@@ -311,7 +311,7 @@ class cPasswordRequest {
         if ($this->_db->nextRecord() && md5($this->_username) == md5($this->_db->f('username'))) {
             // by default user is allowed to request new password
             $isAllowed = true;
-            
+
             // we need latest password request for timelimit comparison
             $lastPwRequest = '0000-00-00 00:00:00';
 
@@ -325,7 +325,7 @@ class cPasswordRequest {
             } else {
                 $oApiPasswordRequestCol = new cApiUserPasswordRequestCollection();
                 $requests = $oApiPasswordRequestCol->fetchAvailableRequests();
-            
+
                 // do maintainance for all user password requests
                 foreach ($requests as $oApiUserPasswordRequest) {
                     // get time of password reset request
@@ -409,11 +409,11 @@ class cPasswordRequest {
             if ($isAllowed) {
                 // generate a new token
                 $token = $this->_generateToken();
-                
+
                 // how long should the password reset request be valid?
                 // use 4 hours as expiration time
                 $expiration = new DateTime('+4 hour', new DateTimeZone('UTC'));
-                
+
                 if (false !== $token
                 && false !== $this->_safePwResetRequest($token, $expiration)) {
                     $this->_submitMail($token);
@@ -460,7 +460,7 @@ class cPasswordRequest {
             $this->renderNewPwForm();
             return;
         }
-        
+
         // pass data to cApiUser class
         $oApiUser = new cApiUser();
         $oApiUser->loadUserByUsername($username);
@@ -511,7 +511,7 @@ class cPasswordRequest {
 
         // try to set password
         $res = $oApiUser->setPassword($pw);
-        
+
         $msg = '';
         // check if password was accepted by cApiUser class
         if (cApiUser::PASS_OK !== $res) {
@@ -533,7 +533,7 @@ class cPasswordRequest {
             // password could not be saved
             $msg = i18n('An unknown problem occurred. Please contact your system administrator.');
         }
-        
+
         // display message in form
         $this->_tpl->set('s', 'RESET_MESSAGE', $msg);
     }
