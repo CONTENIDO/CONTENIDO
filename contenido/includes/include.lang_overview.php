@@ -26,6 +26,7 @@ if (!is_numeric($targetclient)) {
 }
 
 $iGetIdlang = $idlang;
+$clientId = cRegistry::getClientId();
 
 $sql = "SELECT *
         FROM " . $cfg["tab"]["lang"] . " AS A, " . $cfg["tab"]["clients_lang"] . " AS B
@@ -112,8 +113,11 @@ if ($action == 'lang_deactivatelanguage' || $action == 'lang_activatelanguage') 
 <script type="text/javascript">
 (function(Con, $) {
     var frame = Con.getFrame('right_bottom');
-    if (frame) {
+    if (frame.location.href.substr(-8) != 'main.php') {
         var href = Con.UtilUrl.replaceParams(frame.location.href, {idlang: $iGetIdlang});
+        frame.location.href = href;
+    } else {
+        var href = 'main.php?area=lang_edit&idlang=$iGetIdlang&targetclient=$clientId&frame=4&contenido=$contenido';
         frame.location.href = href;
     }
 })(Con, Con.$);

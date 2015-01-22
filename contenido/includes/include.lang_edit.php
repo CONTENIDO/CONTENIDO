@@ -242,6 +242,7 @@ if ($action == "lang_newlanguage") {
             }
 
             if ($_REQUEST['action'] != '') {
+            	$page->set('s', 'CONTENIDO', $contenido);
                 $page->set("s", "RELOAD_LEFT_BOTTOM", "true");
             } else {
                 $page->set("s", "RELOAD_LEFT_BOTTOM", "false");
