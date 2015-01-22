@@ -41,7 +41,7 @@ i18n("Visible debug")
 i18n("Allow all HTML tags and attributes in TinyMCE")
 i18n("Optional backend label")
 i18n("Show only CSS/JS/HTML files at areas CSS/JS/HTML")
-i18n("Show message for not founded module translations");
+i18n("Show message for unknown module translations");
 
 -->
 
@@ -266,7 +266,7 @@ i18n("Show message for not founded module translations");
                     <array_value>true</array_value>
                     <array_value>false</array_value>
                 </values>
-                <label>Show message for not founded module translations</label>
+                <label>Show message for unknown module translations</label>
                 <group>Development</group>
             </module_translation_message>
         </debug>

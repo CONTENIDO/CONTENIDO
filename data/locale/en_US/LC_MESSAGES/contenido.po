@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 09:52+0100\n"
-"PO-Revision-Date: 2015-01-22 09:55+0100\n"
+"POT-Creation-Date: 2015-01-22 11:49+0100\n"
+"PO-Revision-Date: 2015-01-22 11:49+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
@@ -2078,7 +2078,7 @@ msgstr ""
 #: includes/include.mod_script.php:147 includes/include.mod_style.php:156
 #: includes/include.pretplcfg_edit.php:39
 #: includes/include.systemsettings.php:45
-#: includes/include.tpl_edit_form.php:214
+#: includes/include.tpl_edit_form.php:217
 msgid "Saved changes successfully!"
 msgstr ""
 
@@ -3482,8 +3482,10 @@ msgstr ""
 #: includes/include.str_overview.php:154 includes/include.str_overview.php:614
 #: includes/include.tplcfg_edit_form.php:254
 #: includes/include.tpl_edit_form.php:67 includes/include.tpl_edit_form.php:72
-#: includes/include.tpl_edit_form.php:166
-#: includes/include.tpl_visualedit.php:107
+#: includes/include.tpl_edit_form.php:152
+#: includes/include.tpl_edit_form.php:169
+#: includes/include.tpl_visualedit.php:84
+#: includes/include.tpl_visualedit.php:110
 msgid "none"
 msgstr ""
 
@@ -5654,7 +5656,7 @@ msgid "Edit template"
 msgstr ""
 
 #: includes/include.tpl_edit_form.php:121
-#: includes/include.tpl_edit_form.php:196
+#: includes/include.tpl_edit_form.php:199
 msgid "Default"
 msgstr ""
 
@@ -5664,7 +5666,7 @@ msgstr ""
 msgid "Layout description"
 msgstr ""
 
-#: includes/include.tpl_edit_form.php:212
+#: includes/include.tpl_edit_form.php:215
 msgid "Created new Template successfully!"
 msgstr ""
 
@@ -7123,7 +7125,7 @@ msgid "Show only CSS/JS/HTML files at areas CSS/JS/HTML"
 msgstr ""
 
 #: xml/system.xml:44
-msgid "Show message for not founded module translations"
+msgid "Show message for unknown module translations"
 msgstr ""
 
 #: ../data/config/production/cfg_actions.inc.php:23
