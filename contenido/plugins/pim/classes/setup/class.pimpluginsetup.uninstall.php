@@ -257,7 +257,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $this->_PimPluginCollection->deleteByWhereClause('idplugin = ' . parent::_getPluginId());
 
         // Write new execution order
-        $this->_WriteNewExecutionOrder();
+        $this->_writeNewExecutionOrder();
 
         // Success message for uninstall mode
         if (parent::$_GuiPage instanceof cGuiPage && parent::getMode() == 3) {
