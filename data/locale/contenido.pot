@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 11:49+0100\n"
+"POT-Creation-Date: 2015-01-22 16:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -199,6 +199,7 @@ msgstr ""
 
 #: classes/class.ajax.php:140
 #: classes/content_types/class.content.type.teaser.php:822
+#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_list.php:218
 #: includes/include.con_edit_form.php:870
 #: includes/include.grouprights_con.php:78
 #: includes/include.grouprights_str.php:79 includes/include.logs.php:267
@@ -411,12 +412,12 @@ msgid ""
 "Dear CONTENIDO-User %s,\n"
 "\n"
 "A request to change your password for Content Management System CONTENIDO "
-"was made."
+"was made. "
 msgstr ""
 
 #: classes/class.password.request.php:577
 msgid ""
-"Use the following URL to confirm the password change\n"
+"Use the following URL to confirm the password change:\n"
 "\n"
 msgstr ""
 
@@ -2355,7 +2356,7 @@ msgid "%s (Copy)"
 msgstr ""
 
 #: includes/functions.general.php:1630
-#: templates/standard/template.con_content_list.html:113
+#: templates/standard/template.con_content_list.html:114
 msgid "You are here"
 msgstr ""
 
@@ -3238,15 +3239,15 @@ msgstr ""
 msgid "Overwrite data"
 msgstr ""
 
-#: includes/include.con_content_list.php:449
+#: includes/include.con_content_list.php:463
 msgid "Article has no raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:466
+#: includes/include.con_content_list.php:480
 msgid "Export"
 msgstr ""
 
-#: includes/include.con_content_list.php:545
+#: includes/include.con_content_list.php:559
 #: includes/include.con_edit_form.php:332
 #: includes/include.con_edit_form.php:333
 #: includes/include.con_meta_form.php:69 includes/include.con_meta_form.php:70
@@ -3254,8 +3255,8 @@ msgstr ""
 msgid "This article is currently frozen and can not be edited!"
 msgstr ""
 
-#: includes/include.con_content_list.php:629
-#: includes/include.con_content_list.php:632
+#: includes/include.con_content_list.php:643
+#: includes/include.con_content_list.php:646
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 
@@ -4142,7 +4143,7 @@ msgstr ""
 msgid "Created new language successfully!"
 msgstr ""
 
-#: includes/include.lang_edit.php:38 includes/include.lang_overview.php:89
+#: includes/include.lang_edit.php:38 includes/include.lang_overview.php:90
 #: includes/type/action/include.lang_newlanguage.action.php:25
 msgid "New language"
 msgstr ""
@@ -4237,35 +4238,35 @@ msgstr ""
 msgid "Create language for"
 msgstr ""
 
-#: includes/include.lang_overview.php:47
+#: includes/include.lang_overview.php:48
 #: ../data/config/production/cfg_actions.inc.php:117
 msgid "Activate language"
 msgstr ""
 
-#: includes/include.lang_overview.php:51
+#: includes/include.lang_overview.php:52
 msgid "Language offline"
 msgstr ""
 
-#: includes/include.lang_overview.php:55
+#: includes/include.lang_overview.php:56
 #: ../data/config/production/cfg_actions.inc.php:118
 msgid "Deactivate language"
 msgstr ""
 
-#: includes/include.lang_overview.php:59
+#: includes/include.lang_overview.php:60
 msgid "Language online"
 msgstr ""
 
-#: includes/include.lang_overview.php:64
+#: includes/include.lang_overview.php:65
 #, php-format
 msgid "Do you really want to delete the language %s?"
 msgstr ""
 
-#: includes/include.lang_overview.php:65
+#: includes/include.lang_overview.php:66
 #: ../data/config/production/cfg_actions.inc.php:121
 msgid "Delete language"
 msgstr ""
 
-#: includes/include.lang_overview.php:103
+#: includes/include.lang_overview.php:104
 msgid "Language deleted"
 msgstr ""
 
@@ -6053,8 +6054,8 @@ msgstr ""
 msgid "Apply to all selected articles"
 msgstr ""
 
-#: templates/standard/template.con_content_list.html:53
-#: templates/standard/template.con_content_list.html:114
+#: templates/standard/template.con_content_list.html:54
+#: templates/standard/template.con_content_list.html:115
 msgid "Content administration"
 msgstr ""
 

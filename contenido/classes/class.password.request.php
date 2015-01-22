@@ -573,8 +573,8 @@ class cPasswordRequest {
         $token = (string) $token;
 
         // get translation for mailbody and insert username and new password
-        $msg = i18n("Dear CONTENIDO-User %s,\n\nA request to change your password for Content Management System CONTENIDO was made.");
-        $msg .= i18n("Use the following URL to confirm the password change\n\n");
+        $msg = i18n("Dear CONTENIDO-User %s,\n\nA request to change your password for Content Management System CONTENIDO was made. ");
+        $msg .= i18n("Use the following URL to confirm the password change:\n\n");
         $msg .= cRegistry::getBackendUrl() . '?pw_reset=';
         $msg .= i18n("%s\n\nBest regards\n\nYour CONTENIDO sysadmin");
         $mailBody = sprintf($msg, $this->_username, $token);

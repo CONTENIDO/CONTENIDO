@@ -99,33 +99,101 @@ class cTinyMCE4List {
     
         return $imageList;
     }
+
+    private function _gotoCatLvl($cat, $lvl = false) {
+        if (isset($cat->menu)) {
+            $this->_lastMenu($cat->menu);
+        } else {
+            return $cat;
+        }
+        //$lastCat->menu = array();
+    }
     
     /**
      * get a list of links to articles for current client and language
      * @return array The array of articles filled with link objects
      */
-    protected function _buildLinkList() {
+    protected function _buildLinkList(&$subMenuItem = null, &$lastCat = null, $idx = -1, $lastLevel = 0) {
         global $client, $lang;
         
         $linkList = array();
         
         $catTree = new cApiCategoryTreeCollection();
         $catList = $catTree->getCategoryTreeStructureByClientIdAndLanguageId($client, $lang);
+//         $lastLevel = 0;
+        if (false === isset($lastCat)) {
+            $lastCat = null;
+        }
+        
+        $curIdx = 0;
         foreach ($catList as $catEntry) {
+            $curIdx++;
+            if ($idx >= 0) {
+                if ($idx !== $curIdx) {
+                    continue;
+                }
+
+            }
+            
+            if (isset($lastCat)) {
+                $subItem = (object) array('title' => $catEntry['name'],
+                                           'value' => 'front_content.php?idcat=' . $catEntry['idcat']);
+
+                if ($lastLevel < intval($catEntry['level'])) {
+                    // we are processing a subcat of lastCat
+                    
+                    // create new submenu if none exists yet
+                    if (isset($subMenuItem)) {
+var_dump($subMenuItem);
+//                         if (intval($catEntry['level'] ))
+                        $subMenuItem->menu = array();
+                        $subMenuItem->menu[] = $subItem;
+                    } else {
+// var_dump($lastCat);
+                        $lastCat->menu = $this->_gotoCatLvl($lastCat);
+                        $lastCat->menu = array();
+                        $lastCat->menu[] = $subItem;
+                    }
+
+
+                    $this->_buildLinkList($subItem, $lastCat, $curIdx, (int) $catEntry['level']);
+                } else {
+                    
+                    // we are processing a category in same or higher level as last cat was
+                    if (0 === $lastLevel) {
+                        $linkList[] = $lastCat;
+                    } else {//var_dump($linkList);
+//                         var_dump($catEntry['level'] . ' - ' . $lastLevel . ' ' . $catEntry['name']);
+                        if ($lastLevel > $catEntry['level']) {
+                            $linkList[] = $lastCat;
+                            
+//                             $curLvl = $this->_gotoCatLvl($linkList, intval($catEntry['level']));
+//                             $curLvl->menu[] = $subItem;
+                        } else {
+                            $linkList[] = $lastCat;
+                        }
+                    }
+                }
+            }
+
             $tmp_catname = $catEntry['name'];
-            $spaces = "";
-
-            $spaces = str_repeat("&nbsp;&nbsp;", $catEntry['level']);
-
             if ($catEntry['visible'] == 0) {
                 $tmp_catname = "[" . $tmp_catname . "]";
             }
+            
             $listEntry = new stdClass();
-            $listEntry->title = $spaces . $tmp_catname;
+            $listEntry->title = $tmp_catname;
             $listEntry->value = 'front_content.php?idcat=' . $catEntry['idcat'];
+            
+            if (!isset($lastCat)) {
+                $linkList[] = $listEntry;
+            }
 
-            $linkList[] = $listEntry;
+            $lastCat = $listEntry;
 
+
+            $lastLevel = (int) $catEntry['level'];
+continue;
             $options = array();
             $options['idcat'] = $catEntry['idcat'];
             // order by title
@@ -140,25 +208,37 @@ class cTinyMCE4List {
 
             // create cArticleCollector instance with specified options
             $articleCollector = new cArticleCollector($options);
+            
+            // add subcategories to communicate category structure
+            if (0 === count($articleCollector)) {
+                continue;
+            }
+            
+            $listEntry->menu = array();
+            $listEntry->menu[] = (object) array('title' => $tmp_catname . ' ' . i18n('Category'),
+                                                'value' => 'front_content.php?idcat=' . $catEntry['idcat']
+            );
+            
             foreach ($articleCollector as $articleLanguage) {
                 $tmp_title = $articleLanguage->get("title");
-
+            
                 if (strlen($tmp_title) > 32) {
                     $tmp_title = substr($tmp_title, 0, 32);
                 }
-
+            
                 $is_start = isStartArticle($articleLanguage->get('idartlang'), $catEntry['idcat'], $lang);
-
+            
                 if ($is_start) {
                     $tmp_title .= "*";
                 }
-                if ($articleLanguage->get("online") == 0) {
+            
+                if ('0' === $articleLanguage->get("online")) {
                     $tmp_title = "[" . $tmp_title . "]";
                 }
-                $listEntry = new stdClass();
-                $listEntry->title = '&nbsp;&nbsp;' . $spaces . '|&nbsp;&nbsp;' . $tmp_title;
-                $listEntry->value = 'front_content.php?idart=' . $articleLanguage->get('idart');
-                $linkList[] = $listEntry;
+                $articleEntry = new stdClass();
+                $articleEntry->title = $tmp_title;
+                $articleEntry->value = 'front_content.php?idart=' . $articleLanguage->get('idart');
+                $listEntry->menu[] = $articleEntry;
             }
         }
         return $linkList;
