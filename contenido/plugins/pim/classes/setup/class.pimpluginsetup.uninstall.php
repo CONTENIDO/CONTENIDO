@@ -256,6 +256,9 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         $this->_PimPluginRelationsCollection->deleteByWhereClause('idplugin = ' . parent::_getPluginId());
         $this->_PimPluginCollection->deleteByWhereClause('idplugin = ' . parent::_getPluginId());
 
+        // Write new execution order
+        $this->_WriteNewExecutionOrder();
+
         // Success message for uninstall mode
         if (parent::$_GuiPage instanceof cGuiPage && parent::getMode() == 3) {
             parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been successfully removed. To apply the changes please login into backend again.', 'pim'), $pluginname));
@@ -327,6 +330,29 @@ class PimPluginSetupUninstall extends PimPluginSetup {
                 parent::error(sprintf(i18n('The pluginfolder <strong>%s</strong> could not be uninstalled.', 'pim'), $this->_getPluginFoldername()));
             }
         }
+    }
+
+    /**
+     * Generate (write) new execution order
+     *
+     * @return boolean
+     */
+    protected function _writeNewExecutionOrder() {
+
+    	// Lowest executionorder is one
+    	$i = 1;
+
+    	$pimPluginColl = new PimPluginCollection();
+    	$pimPluginColl->setOrder('executionorder ASC');
+    	$pimPluginColl->query();
+    	while ($pimPluginSql = $pimPluginColl->next()) {
+			$pimPluginSql->set('executionorder', $i);
+			$pimPluginSql->store();
+
+			$i++;
+    	}
+
+    	return true;
     }
 
 }
