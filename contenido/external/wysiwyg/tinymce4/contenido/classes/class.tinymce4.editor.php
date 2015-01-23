@@ -289,7 +289,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting('toolbar2', 'link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', true);
                 $this->_setSetting('toolbar3', 'table | formatselect fontselect fontsizeselect', true);
                 $this->_setSetting('plugins',  'charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor',  true);
-                $aCustSettings = getEffectiveSettingsByType('tinymce4');
+                $aCustSettings = getEffectiveSettingsByType('tinymce4_full');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
