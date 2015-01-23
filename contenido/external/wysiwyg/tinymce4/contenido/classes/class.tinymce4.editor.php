@@ -95,8 +95,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $this->_setSetting("language", $aLangs[$belang][4]);
         unset($aLangs);
 
-        // Set document base URL
-        //$this->setSetting("document_base_url", $cfgClient[$client]["path"]["htmlpath"], true);
+        // Set document base URL for all relative URLs
+        // http://www.tinymce.com/wiki.php/Configuration:document_base_url
+         $this->_setSetting('document_base_url', cRegistry::getFrontendUrl(), true);
 
         // The following "base URL" is the URL used to reference JS script files
         // - it is not the base href value
@@ -289,6 +290,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting('toolbar2', 'link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', true);
                 $this->_setSetting('toolbar3', 'table | formatselect fontselect fontsizeselect', true);
                 $this->_setSetting('plugins',  'charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor',  true);
+
                 $aCustSettings = getEffectiveSettingsByType('tinymce4_full');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
@@ -375,8 +377,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting("plugins", "table close confullscreen textcolor", true);
 
                 // fullscreen plugin does not work with inline turned on, custom plugin confullscreen required for this
-                $this->_setSetting('inline', 'true');
-                $this->_setSetting('menubar', 'false');
+                $this->_setSetting('inline', true);
+                $this->_setSetting('menubar', false);
                 $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);
 
                 // auto-resize needs autoresize plugin
@@ -584,9 +586,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         foreach ($this->_aSettings as $sKey => $sValue) {
             if (is_bool($sValue)) {
                 if ($sValue === true) {
-                    $sValue = "true";
+                    $sValue = 'true';
                 } else {
-                    $sValue = "false";
+                    $sValue = 'false';
                 }
             }
 
@@ -607,6 +609,14 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $sConfig = '';
         $this->setToolbar('fullscreen');
 
+//         foreach ($this->_aSettings as $key => $val) {
+//             if (is_bool($val)) {
+//                 $sConfig .= "'$key' : " . var_export($val, true) . ",\n";
+//             } else {
+//                 $sConfig .= "'$key' : '" . $val . "',\n";
+//             }
+//         }
+
         $sConfig .= "'toolbar1': '" . $this->_aSettings['toolbar1'] . "',\n";
         $sConfig .= "'toolbar2': '" . $this->_aSettings['toolbar2'] . "',\n";
         $sConfig .= "'toolbar3': '" . $this->_aSettings['toolbar3'] . "',\n";
@@ -623,7 +633,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     public function getPlugins() {
         return (string) $this->_aSettings['plugins'];
     }
-    
+
     /**
      * function to obtain a comma separated list of themes that are tried to be loaded
      * @return string themes the themes

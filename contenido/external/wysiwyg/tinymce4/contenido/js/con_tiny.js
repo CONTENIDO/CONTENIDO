@@ -162,8 +162,9 @@
         },
 
         /**
-         * Custom content setup callback function for TinyMCE, see TinyMCE setting
-         * 'setupcontent_callback'.
+         * Custom content setup callback function for TinyMCE, see TinyMCE event
+         * 'LoadContent'.
+         * http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
          * setup content is fired after the editor initialised
          * @method customSetupContentCallback
          * @param  {String}  editorId
@@ -174,23 +175,16 @@
         },
 
         /**
-         * Custom cleanup callback function for TinyMCE, see TinyMCE setting
-         * 'cleanup_callback'.
-         * Converts a given content string (callback of tiny)
+         * Custom cleanup callback function for TinyMCE
+         * Converts a given content string (callbacks registered in tinymceInit)
          * @method customCleanupCallback
-         * @param  {String}  type  Type of content
          * @param  {String}  value  String of content
          * @return  {String}  Converted content
          * @static
          */
-        customCleanupCallback: function(type, value) {
-            switch (type) {
-                case 'get_from_editor':
-                case 'insert_to_editor':
-                    // Remove xhtml styled tags
-                    value = value.replace(/[\s]*\/>/g,'>');
-                    break;
-            }
+        customCleanupCallback: function(value) {
+            // Remove xhtml styled tags
+            value = value.replace(/[\s]*\/>/g,'>');
 
             return value;
         },
@@ -693,13 +687,42 @@
 
             // inject setup into settings
             tinymce.settings.setup = function(ed) {
-                
+            	// Fires before the contents is processed.
+            	// http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PreProcess
+                ed.on('PreProcess', function(ev) {
+                	// ignore dirty state fullscreen state
+                	if (false === Con.Tiny.changingFullscreen) {
+                		// pre-process content before it gets inserted into editor
+                		ev.node.innerHTML = Con.Tiny.customCleanupCallback(ev.node.innerHTML);
+                	}
+                });
+                // Fires after the contents has been processed.
+                // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PostProcess
+                ed.on('PostProcess', function(ev) {
+                	// ignore dirty state fullscreen state
+                	if (false === Con.Tiny.changingFullscreen) {
+                		// post-process content before it gets saved
+                		ev.content = Con.Tiny.customCleanupCallback(ev.content);
+                	}
+                });
+                // Fires after contents has been loaded into the editor.
+                // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
                 ed.on('LoadContent', function(e) {
+                	// dirty state fullscreen state is over when content is loaded
+                	if (Con.Tiny.changingFullscreen) {
+                		Con.Tiny.changingFullscreen = false;
+                		return;
+                	}
                     Con.Tiny.customSetupContentCallback(ed.id);
                     Con.Tiny.updateContent(ed.getContent());
                 });
+                // Fires after contents has been saved/extracted from the editor.
+                // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.SaveContent
                 ed.on('SaveContent', function (e) {
-                    Con.Tiny.customSaveCallback(ed.getContent());
+                	// ignore dirty state fullscreen state
+                	if (false === Con.Tiny.changingFullscreen) {
+                		Con.Tiny.customSaveCallback(ed.getContent());
+                	}
                 });
             }
             if ('undefined' !== typeof(tinymce.settings.fullscreen_settings)) {
@@ -716,6 +739,8 @@
             // we can not change inline mode of existing editor
             // remove old editor instance and create a new one
             var id = ed.id;
+            Con.Tiny.changingFullscreen = true;
+            Con.Tiny.replacingEditor = true;
             ed.remove();
             
             // build a new editor instance with fullscreen_settings
@@ -724,12 +749,12 @@
             ed.on('init', function () {
                 // put new editor into focus
                 ed.fire('focus');
-                Con.Tiny.changingFullscreen = true;
+                // set new editor to fullscreen mode
                 ed.execCommand('mceFullScreen');
             });
             ed.on('FullscreenStateChanged', function () {
-                if (Con.Tiny.changingFullscreen) {
-                    Con.Tiny.changingFullscreen = false;
+                if (Con.Tiny.replacingEditor) {
+                	Con.Tiny.replacingEditor = false;
                     return;
                 }
                 var id = ed.id;
