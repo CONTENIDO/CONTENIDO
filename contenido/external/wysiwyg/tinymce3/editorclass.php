@@ -97,7 +97,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor {
         unset($aLangs);
 
         // Set document base URL
-        //$this->setSetting("document_base_url", $cfgClient[$client]["path"]["htmlpath"], true);
+        $this->_setSetting('document_base_url', cRegistry::getFrontendUrl(), true);
 
         // The following "base URL" is the URL used to reference JS script files
         // - it is not the base href value
