@@ -48,7 +48,12 @@ cInclude('includes', 'functions.lang.php');
 
 $mediaList = new cTinyMCE4List($_GET['mode']);
 
+/**
+ */
 class cTinyMCE4List {
+
+    /**
+     */
     public function __construct($mode = null) {
         // output an empty list for no specified mode
         if (false === isset($mode)) {
@@ -69,34 +74,39 @@ class cTinyMCE4List {
                 // just output an empty list for unknown mode
         }
         
-        $this->printList($list);
+        $this->_printList($list);
     }
-    
     
     /**
      * get a list of images that is accessible for tinymce
      * @return array The array of images filled with upload objects
      */
-    protected function _buildImageList() {
-        global $client, $cfgClient;
-    
-        $imageList = array();
-    
+    private function _buildImageList() {
+        $client = cRegistry::getClientId();
+        $clientConfig = cRegistry::getClientConfig($client);
+
         // get needed data using cApiUploadCollection class
         $oApiUploadCol = new cApiUploadCollection();
         // get uploads for current client
         // filetype can be either gif, jpg, jpeg or png
+
         $selectClause = "idclient='" . cSecurity::toInteger($client) . "' AND filetype IN ('gif', 'jpg', 'jpeg', 'png')";
         $oApiUploadCol->select($selectClause, '', 'dirname, filename ASC');
+        // $oApiUploadCol->setWhere('idclient', cSecurity::toInteger($client));
+        // $oApiUploadCol->setWhere('filetype', array('gif', 'jpg', 'jpeg', 'png'), 'IN');
+        // $oApiUploadCol->setOrder('dirname, filename ASC');
+        // $oApiUploadCol->query();
         $aUplList = $oApiUploadCol->fetchArray($oApiUploadCol->primaryKey, array('idclient', 'dirname', 'filetype', 'filename'));
+
+        $imageList = array();
         foreach ($aUplList as $uplItem) {
             $imageItem = new stdClass();
             $imageItem->title = $uplItem['dirname'] . $uplItem['filename'];
-            $imageItem->value = $cfgClient[$client]['upload'] . $uplItem['dirname'] . $uplItem['filename'];
+            $imageItem->value = $clientConfig['upload'] . $uplItem['dirname'] . $uplItem['filename'];
             
             $imageList[] = $imageItem;
         }
-    
+
         return $imageList;
     }
 
@@ -145,7 +155,7 @@ class cTinyMCE4List {
      * get a list of links to articles for current client and language
      * @return array The array of articles filled with link objects
      */
-    protected function _buildLinkList() {
+    private function _buildLinkList() {
         global $client, $lang;
 
         $linkList = array();
@@ -213,8 +223,10 @@ class cTinyMCE4List {
         return $linkList;
     }
 
-    // output the created list as JSON
-    private function printList($list) {
+    /**
+     * Output the created list as JSON.
+     */
+    private function _printList($list) {
         echo json_encode($list);
     }
 }
