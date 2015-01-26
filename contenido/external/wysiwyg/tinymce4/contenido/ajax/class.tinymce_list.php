@@ -100,100 +100,69 @@ class cTinyMCE4List {
         return $imageList;
     }
 
-    private function _gotoCatLvl($cat, $lvl = false) {
-        if (isset($cat->menu)) {
-            $this->_lastMenu($cat->menu);
-        } else {
-            return $cat;
+    /**
+     * This function helps adding the category entries to the wood according to their deepness level
+     * @param array $woodTree
+     * @param int $lvl The level where entry should be inserted into wood. Level 0 means we enter a tree to the wood.
+     * @param stdClass $entry The entry to add into the wood.
+     * @return array The altered woodTree with newly inserted entry at the correct level.
+     */
+    private function _addToWoodTree($woodTree, $lvl, $entry) {
+        // add to wood if its a tree root
+        if ($lvl === 0) {
+            $woodTree[] = $entry;
+            return $woodTree;
         }
-        //$lastCat->menu = array();
+
+        // get copy of catTree
+        $res = unserialize(serialize($woodTree));
+
+        // use pseudo-reference to manipulate result in-place
+        $scope = &$res;
+        for ($i = $lvl; $i > 0; $i--) {
+            // set pointer to last element of array
+            end($scope);
+            // get reference to last element of array
+            $scope = &$scope[key($scope)];
+            // add menu property to object if it does not exist
+            if (false === isset($scope->menu)) {
+                $scope->menu = array();
+            }
+            // get reference to menu
+            $scope = &$scope->menu;
+        }
+
+        // add entry to scope
+        // because scope is a reference the res variable is altered at the correct place, too
+        $scope[] = $entry;
+
+        // we're done
+        return $res;
+
     }
-    
+
     /**
      * get a list of links to articles for current client and language
      * @return array The array of articles filled with link objects
      */
-    protected function _buildLinkList(&$subMenuItem = null, &$lastCat = null, $idx = -1, $lastLevel = 0) {
+    protected function _buildLinkList() {
         global $client, $lang;
-        
+
         $linkList = array();
-        
+
         $catTree = new cApiCategoryTreeCollection();
         $catList = $catTree->getCategoryTreeStructureByClientIdAndLanguageId($client, $lang);
-//         $lastLevel = 0;
-        if (false === isset($lastCat)) {
-            $lastCat = null;
-        }
-        
-        $curIdx = 0;
+
         foreach ($catList as $catEntry) {
-            $curIdx++;
-            if ($idx >= 0) {
-                if ($idx !== $curIdx) {
-                    continue;
-                }
-
-            }
-            
-            if (isset($lastCat)) {
-                $subItem = (object) array('title' => $catEntry['name'],
-                                           'value' => 'front_content.php?idcat=' . $catEntry['idcat']);
-
-                if ($lastLevel < intval($catEntry['level'])) {
-                    // we are processing a subcat of lastCat
-                    
-                    // create new submenu if none exists yet
-                    if (isset($subMenuItem)) {
-var_dump($subMenuItem);
-//                         if (intval($catEntry['level'] ))
-                        $subMenuItem->menu = array();
-                        $subMenuItem->menu[] = $subItem;
-                    } else {
-// var_dump($lastCat);
-                        $lastCat->menu = $this->_gotoCatLvl($lastCat);
-                        $lastCat->menu = array();
-                        $lastCat->menu[] = $subItem;
-                    }
-
-
-                    $this->_buildLinkList($subItem, $lastCat, $curIdx, (int) $catEntry['level']);
-                } else {
-                    
-                    // we are processing a category in same or higher level as last cat was
-                    if (0 === $lastLevel) {
-                        $linkList[] = $lastCat;
-                    } else {//var_dump($linkList);
-//                         var_dump($catEntry['level'] . ' - ' . $lastLevel . ' ' . $catEntry['name']);
-                        if ($lastLevel > $catEntry['level']) {
-                            $linkList[] = $lastCat;
-                            
-//                             $curLvl = $this->_gotoCatLvl($linkList, intval($catEntry['level']));
-//                             $curLvl->menu[] = $subItem;
-                        } else {
-                            $linkList[] = $lastCat;
-                        }
-                    }
-                }
-            }
-
             $tmp_catname = $catEntry['name'];
             if ($catEntry['visible'] == 0) {
                 $tmp_catname = "[" . $tmp_catname . "]";
             }
-            
-            $listEntry = new stdClass();
-            $listEntry->title = $tmp_catname;
-            $listEntry->value = 'front_content.php?idcat=' . $catEntry['idcat'];
-            
-            if (!isset($lastCat)) {
-                $linkList[] = $listEntry;
-            }
+            $listEntry = (object) array('title' => $tmp_catname,
+                                        'value' => 'front_content.php?idcat=' . $catEntry['idcat']);
 
-            $lastCat = $listEntry;
+            $linkList = $this->_addToWoodTree($linkList, (int) $catEntry['level'], $listEntry);
 
-
-            $lastLevel = (int) $catEntry['level'];
-continue;
             $options = array();
             $options['idcat'] = $catEntry['idcat'];
             // order by title
@@ -208,30 +177,30 @@ continue;
 
             // create cArticleCollector instance with specified options
             $articleCollector = new cArticleCollector($options);
-            
+
             // add subcategories to communicate category structure
             if (0 === count($articleCollector)) {
                 continue;
             }
-            
+
             $listEntry->menu = array();
             $listEntry->menu[] = (object) array('title' => $tmp_catname . ' ' . i18n('Category'),
                                                 'value' => 'front_content.php?idcat=' . $catEntry['idcat']
             );
-            
+
             foreach ($articleCollector as $articleLanguage) {
                 $tmp_title = $articleLanguage->get("title");
-            
+
                 if (strlen($tmp_title) > 32) {
                     $tmp_title = substr($tmp_title, 0, 32);
                 }
-            
+
                 $is_start = isStartArticle($articleLanguage->get('idartlang'), $catEntry['idcat'], $lang);
             
                 if ($is_start) {
                     $tmp_title .= "*";
                 }
-            
+
                 if ('0' === $articleLanguage->get("online")) {
                     $tmp_title = "[" . $tmp_title . "]";
                 }
