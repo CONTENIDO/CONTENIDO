@@ -87,15 +87,15 @@ if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->
         $version = NULL;
         if ($versioning->getState() != 'disabled') {
             // get parameters for article version
-            $artLang = new cApiArticleLanguage($idartlang);
-            // create article version
-            $artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
-            $artLangVersion->markAsCurrentVersion(1);
-            $version = $artLangVersion->get('version');
+            //$artLang = new cApiArticleLanguage($idartlang);
+            
+            // create article version            
+            //$artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
+            //$artLangVersion->markAsCurrentVersion(1);
             
             foreach ($availableTags as $key => $value) {
                 if ($value["metatype"] == "robots") {
-                    conSetMetaValue($idartlang, $key, "index, follow", $version);
+                    conSetMetaValue($idartlang, $key, "index, follow"); 
                     break;
                 }            
             } 

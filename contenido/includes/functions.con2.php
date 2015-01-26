@@ -123,7 +123,7 @@ function conGetMetaValue($idartlang, $idmetatype, $version  = NULL) {
         }
 
         $metaTagVersion = $metaTagVersionColl->fetchByArtLangMetaTypeAndVersion($idartlang, $idmetatype, $version);
-        if (is_object($metaTagVersion)) {
+        if (is_object($metaTagVersion)) {            
             return stripslashes($metaTagVersion->get('metavalue'));
         } else {
             return '';
@@ -141,7 +141,7 @@ function conGetMetaValue($idartlang, $idmetatype, $version  = NULL) {
  * @return bool whether the meta value has been saved successfully
  */
 function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
-    //echo $idmetatype."|".$value."|".$version."<hr>";
+    
     static $metaTagColl = NULL;
     $versioning = new cContentVersioning();
     
@@ -186,6 +186,14 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
             
             break;
         case 'advanced':
+            if ($version == NULL) {
+                if (is_object($metaTag)) {
+                    $return = $metaTag->updateMetaValue($value); 
+                } else {
+                    $metaTag = $metaTagColl->create($idartlang, $idmetatype, $value); 
+                }                
+                $version = 1;                
+            }
             
             if (is_object($metaTag)) {
                 $idmetatag = $metaTag->get('idmetatag');
@@ -196,10 +204,8 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
                 'idmetatype' => $idmetatype,
                 'value' => $value,
                 'version' => $version
-            );  
+            );
             $versioning->createMetaTagVersion($metaTagVersionParameters);
-                
-                        
             
             break;
         default:

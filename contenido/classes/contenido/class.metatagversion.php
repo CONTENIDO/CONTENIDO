@@ -74,7 +74,8 @@ class cApiMetaTagVersionCollection extends ItemCollection {
                 WHERE (idmetatype, version) 
                     IN (SELECT idmetatype, max(version) 
                     FROM %s
-                    WHERE idartlang = %d AND version <= %d AND idmetatype = %d group by idmetatype)';
+                    WHERE idartlang = %d AND version <= %d AND idmetatype = %d group by idmetatype)
+                AND idartlang = %d';
                 
         $this->db->query(
             $sql,
@@ -82,12 +83,13 @@ class cApiMetaTagVersionCollection extends ItemCollection {
             cRegistry::getDbTableName('meta_tag_version'),
             (int) $idArtLang,
             (int) $version,
-            (int) $idMetaType
+            (int) $idMetaType,
+            (int) $idArtLang    
         );
        
         $this->db->nextRecord();  
-                
-         return new cApiMetaTagVersion($this->db->f('idmetatagversion'));
+        
+        return new cApiMetaTagVersion($this->db->f('idmetatagversion'));
     }
     
     

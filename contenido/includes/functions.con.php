@@ -68,7 +68,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
     }
 
     $versioning = new cContentVersioning();
-    //if ($versioning->getState() != 'advanced') {
+   // if ($versioning->getState() != 'advanced' || $online == 1) {
         // Create article entry
         $oArtColl = new cApiArticleCollection();
         $oArt = $oArtColl->create($client);

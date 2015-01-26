@@ -170,8 +170,7 @@ $managedTypes = array(
 $metaPreview = array();
 
 // Set meta tags values
-foreach ($availableTags as $key => $value) {   
-    
+foreach ($availableTags as $key => $value) {  
     $metaPreview[] = array(
         'fieldname' => $value['fieldname'],
         'name' => $value['metatype'],
@@ -211,7 +210,7 @@ foreach ($availableTags as $key => $value) {
     // Create add and edit MetaTag form BLOCK
     $tpl->set('d', 'METAINPUT', 'META' . $value);
     switch ($value['fieldtype']) {
-        case 'text':
+        case 'text': 
             $element = '<input ' . $disabled . '
                             class="metaTag"
                             type="text"
