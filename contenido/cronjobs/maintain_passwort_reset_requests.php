@@ -37,7 +37,7 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
         // check if password request is too old and considered outdated
         // by default 1 day old requests are outdated
-        if (false === $outdatedStr = getEffectiveSetting('pw_reset', 'outdated_threshold', false)
+        if (false === $outdatedStr = getEffectiveSetting('pw_request', 'outdated_threshold', false)
         || '' === $outdatedStr) {
             $outdatedStr = '-1 day';
         }
