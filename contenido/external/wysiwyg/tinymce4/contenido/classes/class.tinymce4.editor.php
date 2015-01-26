@@ -299,6 +299,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
             case "fullscreen": // Show all options
                 // fullscreen of inline-editor
+                $this->_setSetting('inline', false, true);
+                $this->_setSetting('menubar', true, true);
                 $this->_setSetting('toolbar1', 'cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', true);
                 $this->_setSetting('toolbar2', 'link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', true);
                 $this->_setSetting('toolbar3', 'table | formatselect fontselect fontsizeselect', true);
@@ -345,14 +347,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "custom": // Custom toolbar
-                // tinymce4-toolbar1/2/3 and tinymce4-plugins are only mentioned for compatibility
-                // They are ignored, if toolbar1/2/3 and plugins have been already
-                // specified
-                $this->_setSetting("toolbar1", $this->_aSettings["tinymce4-toolbar1"]);
-                $this->_setSetting("toolbar2", $this->_aSettings["tinymce4-toolbar2"]);
-                $this->_setSetting("toolbar3", $this->_aSettings["tinymce4-toolbar3"]);
-                $this->_setSetting("plugins", $this->_aSettings["tinymce4-plugins"]);
-
                 $aCustSettings = getEffectiveSettingsByType("tinymce4_custom");
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
@@ -361,6 +355,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "inline_edit":
+                $this->_setSetting('inline', true, true);
+                $this->_setSetting('menubar', false, true);
                 $this->_setSetting('toolbar1', 'bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | fullscreen | save close', true);
                 $this->_setSetting('toolbar2', '', true);
                 $this->_setSetting('toolbar3', '', true);
@@ -609,13 +605,13 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $sConfig = '';
         $this->setToolbar('fullscreen');
 
-//         foreach ($this->_aSettings as $key => $val) {
-//             if (is_bool($val)) {
-//                 $sConfig .= "'$key' : " . var_export($val, true) . ",\n";
-//             } else {
-//                 $sConfig .= "'$key' : '" . $val . "',\n";
-//             }
-//         }
+        foreach ($this->_aSettings as $key => $val) {
+            if (is_bool($val)) {
+                $sConfig .= "'$key' : " . var_export($val, true) . ",\n";
+            } else {
+                $sConfig .= "'$key' : '" . $val . "',\n";
+            }
+        }
 
         $sConfig .= "'toolbar1': '" . $this->_aSettings['toolbar1'] . "',\n";
         $sConfig .= "'toolbar2': '" . $this->_aSettings['toolbar2'] . "',\n";
