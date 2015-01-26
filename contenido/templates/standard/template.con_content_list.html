@@ -7,6 +7,10 @@
 {_WYSIWYG_JS_TAGS_}
 
 <script type="text/javascript">
+// write <base href="{FRONTEND}"> into head tag
+baseHref=document.createElement('base');
+baseHref.href='{FRONTEND}';
+document.getElementsByTagName('head')[0].appendChild(baseHref);
 
 (function(Con, $) {
 
