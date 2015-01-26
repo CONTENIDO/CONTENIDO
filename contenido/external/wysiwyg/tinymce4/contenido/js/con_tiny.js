@@ -163,15 +163,18 @@
 
         /**
          * Custom content setup callback function for TinyMCE, see TinyMCE event
-         * 'LoadContent'.
-         * http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
-         * setup content is fired after the editor initialised
+         * 'LoadContent'. It is called after the editor initialised.
+         * When retrieving the content w/ getContent(), cleaned up content will be returned
+         * that eventually will be reinserted into the editor.
+         * 
+         * @see http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
          * @method customSetupContentCallback
          * @param  {String}  editorId
          * @static
          */
         customSetupContentCallback: function(editorId) {
-            tinymce.get(editorId).setContent(tinymce.get(editorId).getContent());
+            var cleanContent = tinymce.get(editorId).getContent();
+            tinymce.get(editorId).setContent(cleanContent);
         },
 
         /**
@@ -449,40 +452,6 @@
         swapTiny: function(obj) {
             // adjust currently active id
             Con.Tiny.activeId = obj.id;
-//            // Check if tiny is currently open
-//            Con.Tiny.closeTiny();
-//
-//            // Set tinymce configs
-//            tinymce.settings = Con.Tiny.settings;
-//
-//            // Set clicked object as active object
-//            Con.Tiny.activeId = obj.id;
-//            Con.Tiny.activeObject = obj;
-//
-//            // Show tiny and focus it
-//            if (Con.Tiny.activeId) {
-//
-//                // check if tinymce editor instance for current id already exists
-//                if (!tinymce.get(Con.Tiny.activeId)) {
-//                    // build a new instance because there is no editor instance
-//                    var ed = new tinymce.Editor(Con.Tiny.activeId, tinymce.settings, tinymce.EditorManager);
-//
-//                    // bind init event to a function
-//                    ed.on('init', function(e) {
-//                        // make sure dom has been built
-//                        window.setTimeout(function () {
-//                            // fire focus event
-//                            // ed.focus() does not work because there's an internal tinymce problem
-//                            ed.fire('focus');
-//                        }, 0);
-//                    });
-//                    // inject newly built editor into page
-//                    ed.render();
-//    
-//                    // Remove height information of clicked div
-//                    $('#' + Con.Tiny.activeId).css('height', '');
-//                }
-//            }
         },
 
         /**
@@ -645,35 +614,34 @@
                             onclick: function (ev) {
                                 // open new window to let user enter input
                                 var caller = window;
-                                
+
                                 // compute position of new window based on window size
                                 var newWidth = 400;
                                 var newHeight = 450;
                                 var xPos = (caller.parent.parent.parent.innerWidth/2) - (newWidth/2);
                                 var yPos = (caller.parent.parent.parent.innerHeight/2) - (newHeight/2);
                                 var xyPos = 'screenX='+xPos+',screenY='+yPos;
-                                
+
                                 // set template to use for plugin
                                 var tpl = "template.abbreviationdialog_tpl.html";
                                 var localiser = "../contenido/external/wysiwyg/tinymce4/contenido/ajax/";
                                 localiser += "class.tinymce_templatelocaliser.php";
-                                
+
                                 // get selection from tinymce
                                 var node = tinymce.activeEditor.selection;
                                 // open plugin window
-                                var diag = caller.open(localiser+'?localise='+tpl+'&node='+node.getContent(), 'abbrwin', 'dependent=yes,height='+newHeight+'px,width='+newWidth+'px,'+xyPos);
-                                
-                                // onunload event is not called in all browsers
-                                jQuery(diag).on('beforeunload', function() {
-                                    // process data from closing dialog
-                                    if ('cancel' === diag.formAction) {
-                                        return;
-                                    }
-                                    
-                                    if ('insert' === diag.formAction) {
-                                        console.log(diag.abbrReturn);
-                                        node.setContent(diag.abbrReturn);
-                                    }
+                                var diag = ed.windowManager.open({
+                                    title: 'Abbr',
+                                    url: localiser+'?localise='+tpl+'&node='+node.getContent(),
+                                    height: newHeight,
+                                    width: newWidth
+                                }, {
+                                    abbrReturn: false
+                                });
+//                                var diag = caller.open(localiser+'?localise='+tpl+'&node='+node.getContent(), 'abbrwin', 'dependent=yes,height='+newHeight+'px,width='+newWidth+'px,'+xyPos);
+                                diag.on('close', function() {
+                                    var args = ed.windowManager.getParams();
+                                    console.log(args.abbrReturn);
                                 });
                             }
                         });
@@ -687,42 +655,42 @@
 
             // inject setup into settings
             tinymce.settings.setup = function(ed) {
-            	// Fires before the contents is processed.
-            	// http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PreProcess
+                // Fires before the contents is processed.
+                // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PreProcess
                 ed.on('PreProcess', function(ev) {
-                	// ignore dirty state fullscreen state
-                	if (false === Con.Tiny.changingFullscreen) {
-                		// pre-process content before it gets inserted into editor
-                		ev.node.innerHTML = Con.Tiny.customCleanupCallback(ev.node.innerHTML);
-                	}
+                    // ignore dirty state fullscreen state
+                    if (false === Con.Tiny.changingFullscreen) {
+                        // pre-process content before it gets inserted into editor
+                        ev.node.innerHTML = Con.Tiny.customCleanupCallback(ev.node.innerHTML);
+                    }
                 });
                 // Fires after the contents has been processed.
                 // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PostProcess
                 ed.on('PostProcess', function(ev) {
-                	// ignore dirty state fullscreen state
-                	if (false === Con.Tiny.changingFullscreen) {
-                		// post-process content before it gets saved
-                		ev.content = Con.Tiny.customCleanupCallback(ev.content);
-                	}
+                    // ignore dirty state fullscreen state
+                    if (false === Con.Tiny.changingFullscreen) {
+                        // post-process content before it gets saved
+                        ev.content = Con.Tiny.customCleanupCallback(ev.content);
+                    }
                 });
                 // Fires after contents has been loaded into the editor.
                 // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
                 ed.on('LoadContent', function(e) {
-                	// dirty state fullscreen state is over when content is loaded
-                	if (Con.Tiny.changingFullscreen) {
-                		Con.Tiny.changingFullscreen = false;
-                		return;
-                	}
+                    // dirty state fullscreen state is over when content is loaded
+                    if (Con.Tiny.changingFullscreen) {
+                        Con.Tiny.changingFullscreen = false;
+                        return;
+                    }
                     Con.Tiny.customSetupContentCallback(ed.id);
                     Con.Tiny.updateContent(ed.getContent());
                 });
                 // Fires after contents has been saved/extracted from the editor.
                 // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.SaveContent
                 ed.on('SaveContent', function (e) {
-                	// ignore dirty state fullscreen state
-                	if (false === Con.Tiny.changingFullscreen) {
-                		Con.Tiny.customSaveCallback(ed.getContent());
-                	}
+                    // ignore dirty state fullscreen state
+                    if (false === Con.Tiny.changingFullscreen) {
+                        Con.Tiny.customSaveCallback(ed.getContent());
+                    }
                 });
             }
             if ('undefined' !== typeof(tinymce.settings.fullscreen_settings)) {
@@ -733,7 +701,7 @@
             // init set of editors
             tinymce.init(tinymce.settings);
         },
-        
+
         handleFullscreen: function(ed) {
             // fullscreen in inline mode not supported
             // we can not change inline mode of existing editor
@@ -742,7 +710,7 @@
             Con.Tiny.changingFullscreen = true;
             Con.Tiny.replacingEditor = true;
             ed.remove();
-            
+
             // build a new editor instance with fullscreen_settings
             var set = tinymce.settings;
             ed = new tinymce.Editor(id, set.fullscreen_settings, tinymce.EditorManager);
@@ -754,7 +722,7 @@
             });
             ed.on('FullscreenStateChanged', function () {
                 if (Con.Tiny.replacingEditor) {
-                	Con.Tiny.replacingEditor = false;
+                    Con.Tiny.replacingEditor = false;
                     return;
                 }
                 var id = ed.id;
