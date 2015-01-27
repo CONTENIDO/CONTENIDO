@@ -207,6 +207,9 @@ tinymce.create('tinymce.plugins.ConAbbreviationPlugin', {
                                 // Sets the current selection to the specified DOM element.
                                 ed.selection.setNode(el);
 
+                                //Adds a new undo level/snapshot to the undo list.
+                                ed.undoManager.add();
+
                                 // Dispatches out a onNodeChange event to all observers.
                                 // This method should be called when you need to update the UI states or element path etc.
                                 ed.nodeChanged();
