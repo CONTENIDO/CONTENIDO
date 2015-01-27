@@ -608,9 +608,39 @@
                         // button image missing
                         // FIXME: make sure button is not enabled if block level element is selected
                         // FIXME: because block level elements are not allowed within abbr elements
-                        ed.addButton('abbreviation', {
+                        ed.addButton('abbr', {
                             title: "Abbreviation",
-//                            image: options.saveImage,
+                            image: options.saveImage,
+                            onPostRender: function() {
+                                // after button is rendered
+
+                                // get handle of this button
+                                var ctrl = this;
+                                // if selection html node changes
+                                ed.on('NodeChange', function(ev) {
+
+                                    // Returns true/false if the selection range is collapsed or not.
+                                    // Collapsed means if it's a caret or a larger selection.
+                                    var collapsed = ed.selection.isCollapsed()
+                                    console.log('nodechange');
+                                    console.log(ctrl);
+                                    console.log(ev);
+                                    // search for abbr node
+                                    var node = ed.dom.getParent(ed.selection.getNode(), 'abbr');
+
+                                    ctrl.disabled(collapsed);
+                                    ctrl.active(false);
+                                    
+                                    // if abbr node selected
+                                    if (node) {
+                                        do {
+                                            ctrl.disabled(false);
+                                            ctrl.active(true);
+                                        } while (node = node.parentNode)
+                                            
+                                    }
+                                });
+                            },
                             onclick: function (ev) {
                                 // open new window to let user enter input
                                 var caller = window;
@@ -640,8 +670,8 @@
                                 });
 //                                var diag = caller.open(localiser+'?localise='+tpl+'&node='+node.getContent(), 'abbrwin', 'dependent=yes,height='+newHeight+'px,width='+newWidth+'px,'+xyPos);
                                 diag.on('close', function() {
-                                    var args = ed.windowManager.getParams();
-                                    console.log(args.abbrReturn);
+                                    var args = diag.params;
+                                    console.log(args);
                                 });
                             }
                         });
