@@ -530,6 +530,21 @@
                 return;
             }
 
+            if ('undefined' === typeof(wysiwygSettings.fullscreen_settings)) {
+                wysiwygSettings.fullscreen_settings = {};
+            }
+            // load contenido plugins
+            var contenidoPluginFolderUrl = options.backendUrl + 'external/wysiwyg/tinymce4/contenido/plugins/';
+            var contenidoPlugins = [{'name': 'conabbr', 'path': contenidoPluginFolderUrl + 'con_abbr/plugin.js'}];
+            contenidoPlugins.forEach(function(plugin) {
+                // load current add-on
+                // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
+                tinymce.PluginManager.load(plugin.name, plugin.path);
+                // exclude plugin from later loading
+                wysiwygSettings.plugins += (' -' + plugin.name);
+                wysiwygSettings.fullscreen_settings.plugins += (' -' + plugin.name);
+            });
+
             if ('undefined' === typeof(wysiwygSettings['file_browser_callback'])) {
                 wysiwygSettings['file_browser_callback'] = 
                     function(field_name, url, type, win) {
@@ -544,12 +559,10 @@
                     if ('undefined' === typeof(wysiwygSettings.plugins)) {
                         wysiwygSettings.plugins = '';
                     }
-                    if ('undefined' === typeof(wysiwygSettings.fullscreen_settings)) {
-                        wysiwygSettings.fullscreen_settings = {};
-                    }
                     if ('undefined' === typeof(wysiwygSettings.fullscreen_settings.plugins)) {
                         wysiwygSettings.fullscreen_settings.plugins = '';
                     }
+
                     // tell tinymce to load each add-on individually
                     options.clientPlugins.forEach(function(plugin) {
                         // load current add-on
@@ -560,7 +573,7 @@
                         wysiwygSettings.fullscreen_settings.plugins += (' -' + plugin.name);
                     });
                 }
-                
+
                 // Create ClosePlugin
                 tinymce.create('tinymce.plugins.ClosePlugin', {
                     init: function(ed, url) {
@@ -601,85 +614,6 @@
                 });
                 // Register plugin with a short name
                 tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
-
-                // implement abbreviation plugin
-                tinymce.create('tinymce.plugins.AbbreviationPlugin', {
-                    init: function(ed) {
-                        // button image missing
-                        // FIXME: make sure button is not enabled if block level element is selected
-                        // FIXME: because block level elements are not allowed within abbr elements
-                        ed.addButton('abbr', {
-                            title: "Abbreviation",
-                            image: options.saveImage,
-                            onPostRender: function() {
-                                // after button is rendered
-
-                                // get handle of this button
-                                var ctrl = this;
-                                // if selection html node changes
-                                ed.on('NodeChange', function(ev) {
-
-                                    // Returns true/false if the selection range is collapsed or not.
-                                    // Collapsed means if it's a caret or a larger selection.
-                                    var collapsed = ed.selection.isCollapsed()
-                                    console.log('nodechange');
-                                    console.log(ctrl);
-                                    console.log(ev);
-                                    // search for abbr node
-                                    var node = ed.dom.getParent(ed.selection.getNode(), 'abbr');
-
-                                    ctrl.disabled(collapsed);
-                                    ctrl.active(false);
-                                    
-                                    // if abbr node selected
-                                    if (node) {
-                                        do {
-                                            ctrl.disabled(false);
-                                            ctrl.active(true);
-                                        } while (node = node.parentNode)
-                                            
-                                    }
-                                });
-                            },
-                            onclick: function (ev) {
-                                // open new window to let user enter input
-                                var caller = window;
-
-                                // compute position of new window based on window size
-                                var newWidth = 400;
-                                var newHeight = 450;
-                                var xPos = (caller.parent.parent.parent.innerWidth/2) - (newWidth/2);
-                                var yPos = (caller.parent.parent.parent.innerHeight/2) - (newHeight/2);
-                                var xyPos = 'screenX='+xPos+',screenY='+yPos;
-
-                                // set template to use for plugin
-                                var tpl = "template.abbreviationdialog_tpl.html";
-                                var localiser = "../contenido/external/wysiwyg/tinymce4/contenido/ajax/";
-                                localiser += "class.tinymce_templatelocaliser.php";
-
-                                // get selection from tinymce
-                                var node = tinymce.activeEditor.selection;
-                                // open plugin window
-                                var diag = ed.windowManager.open({
-                                    title: 'Abbr',
-                                    url: localiser + '?localise=' + tpl + '&node=' + node.getContent(),
-                                    height: newHeight,
-                                    width: newWidth
-                                }, {
-                                    abbrReturn: false
-                                });
-//                                var diag = caller.open(localiser+'?localise='+tpl+'&node='+node.getContent(), 'abbrwin', 'dependent=yes,height='+newHeight+'px,width='+newWidth+'px,'+xyPos);
-                                diag.on('close', function() {
-                                    var args = diag.params;
-                                    console.log(args);
-                                });
-                            }
-                        });
-                    }
-                });
-                tinymce.PluginManager.add('conabbreviation', tinymce.plugins.AbbreviationPlugin);
-
-
             }
             tinymce.settings = wysiwygSettings;
 

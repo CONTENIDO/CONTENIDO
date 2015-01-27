@@ -426,6 +426,7 @@ $page->set('s', 'IDARTLANG', $idartlang);
 $page->set('s', 'CLOSE', i18n('Close editor'));
 $page->set('s', 'SAVE', i18n('Close editor and save changes'));
 $page->set('s', 'QUESTION', i18n('Do you want to save changes?'));
+$page->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
 
 // Add export and import translations
 $page->set('s', 'EXPORT_RAWDATA', i18n("Export raw data"));

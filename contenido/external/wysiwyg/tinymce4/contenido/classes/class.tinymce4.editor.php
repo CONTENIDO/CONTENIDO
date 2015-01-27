@@ -357,7 +357,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             case "inline_edit":
                 $this->_setSetting('inline', true, true);
                 $this->_setSetting('menubar', false, true);
-                $this->_setSetting('toolbar1', 'bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | fullscreen | save close', true);
+                $this->_setSetting('toolbar1', 'conabbr bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | fullscreen | save close', true);
                 $this->_setSetting('toolbar2', '', true);
                 $this->_setSetting('toolbar3', '', true);
 
@@ -523,6 +523,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         $sConfig = substr($sConfig, 0, -3);
         $oTemplate->set('s', 'CONFIG', $sConfig);
+        $oTemplate->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
+
         // check if file with list of client plugins is supplied
         if ('true' === getEffectiveSetting('tinymce4', 'contenido_load_client_plugins', false)) {
             // disallow any file not pointing into tinymce 4 config folder of client
