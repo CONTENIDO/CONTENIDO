@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-07 14:47+0100\n"
-"PO-Revision-Date: 2015-01-07 14:48+0100\n"
+"PO-Revision-Date: 2015-01-27 10:23+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language: de_DE\n"
@@ -267,7 +267,7 @@ msgstr ""
 
 #: includes/include.right_bottom.php:146
 msgid "Uninstall"
-msgstr "Entfernen"
+msgstr "Deinstallieren"
 
 #: includes/include.right_bottom.php:167
 msgid "Foldername"
