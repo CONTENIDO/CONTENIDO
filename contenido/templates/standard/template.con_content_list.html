@@ -6,8 +6,14 @@
 <!-- tinyMCE -->
 {_WYSIWYG_JS_TAGS_}
 
+<base href="{FRONTEND}" />
 <script type="text/javascript">
-// write <base href="{FRONTEND}"> into head tag
+// base tag is not correct outside head tag but it suppresses initial loading of wrong paths during page rendering
+// remove all base tags from document
+var elements = document.getElementsByTagName('base');
+while (elements[0]) elements[0].parentNode.removeChild(elements[0]);
+
+//write <base href="{FRONTEND}"> into head tag
 baseHref=document.createElement('base');
 baseHref.href='{FRONTEND}';
 document.getElementsByTagName('head')[0].appendChild(baseHref);
