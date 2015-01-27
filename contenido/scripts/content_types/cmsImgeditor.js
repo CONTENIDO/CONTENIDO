@@ -157,6 +157,10 @@
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=imagelist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                 success: function(msg) {
+					if (Con.checkAjaxResponse(msg) === false)  {
+						return false;
+					}
+
                     $(self.frameId + ' #directoryFile_' + self.id).html(msg);
                     // the items of the file select element have been changed, so add the event handlers again
                     self.addSelectAction();
@@ -184,6 +188,10 @@
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=dirlist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                     success: function(msg) {
+						if (Con.checkAjaxResponse(msg) === false)  {
+							return false;
+						}
+
                         divContainer.after(msg);
                         divContainer.parent('li').removeClass('collapsed');
                         self.addNaviActions();
@@ -266,6 +274,10 @@
                         url: self.pathBackend + 'ajaxmain.php',
                         data: 'ajax=loadImageMeta&filename=' + filename + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                         success: function(msg) {
+							if (Con.checkAjaxResponse(msg) === false)  {
+								return false;
+							}
+
                             var imageMeta = $.parseJSON(msg);
                             $('#image_medianame_' + self.id).val(imageMeta.medianame);
                             $('#image_description_' + self.id).val(imageMeta.description);
@@ -303,6 +315,10 @@
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=upl_mkdir&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&foldername=' + folderName + '&contenido=' + self.session,
                 success: function(msg) {
+					if (Con.checkAjaxResponse(msg) === false)  {
+						return false;
+					}
+
                     if (msg === '1') {
                         // reset input field
                         $('input[name="foldername"]').val('');
@@ -312,6 +328,10 @@
                             url: self.pathBackend + 'ajaxmain.php',
                             data: 'ajax=dirlist&idartlang=' + self.idArtLang + '&id=' + self.id + '&dir=' + dirname + '&contenido=' + self.session,
                             success: function(msg) {
+								if (Con.checkAjaxResponse(msg) === false)  {
+									return false;
+								}
+
                                 var title;
                                 if (self.selectedPath === 'upload') {
                                     title = folderName;
@@ -380,6 +400,10 @@
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=imagelist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                     success: function(msg) {
+						if (Con.checkAjaxResponse(msg) === false)  {
+							return false;
+						}
+
                         $(self.frameId + ' img.loading').hide();
                         $(self.frameId + ' input.jqueryAjaxUpload').css('visibility', 'visible');
                         $(self.frameId + ' #directoryFile_' + self.id).html(msg);

@@ -21,6 +21,10 @@
                 url : 'ajaxmain.php',
                 data : 'ajax=logfilecontent&logfile=' + $(this).val() + '&numberOfLines=' + numberOfLines,
                 success : function(msg) {
+					if (Con.checkAjaxResponse(msg) === false)  {
+						return false;
+					}
+					
                     $('textarea[name="logfile-content"]').val(msg);
                 }
             });

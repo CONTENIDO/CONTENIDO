@@ -873,6 +873,10 @@
                     data: 'ajax=generaljstranslations&contenido=' + Con.sid,
                     dataType: 'json',
                     success: function(data) {
+						if (Con.checkAjaxResponse(data) === false)  {
+							return false;
+						}
+
                         registry.set('translations', data);
                         callback.call(context, data);
                     },
@@ -1004,6 +1008,29 @@
         }, this);
     };
 
+	/**
+	* Check Ajax response and located user to login page
+	* if authentication failed (e. g. user timeout)
+	*
+	* @method checkAjaxResponde
+	* @param {String|Object} response
+	* @return {Boolean}
+	*/
+	Con.checkAjaxResponse = function(response) {
+
+		if (typeof response == 'string' && response.indexOf('authentication_failure') > -1) {
+		
+			json = $.parseJSON(response);
+
+			if (json !== null && json.state == "error" && json.code == 401) {
+				window.location.href = 'index.php';
+				return false;
+			}
+		} else {	
+			return true;	
+		}
+	};
+	
     /**
      * Marks submenu item in header, handles also context of different frames.
      * It supports to mark a submenu (aka subnav) item by it's position and also

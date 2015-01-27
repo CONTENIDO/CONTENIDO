@@ -394,6 +394,7 @@ class cAjaxRequest {
                     'state' => 'error',
                     'code' => 401,
                     'message' => 'Unauthorized',
+					'type' => 'authentication_failure'
                 );
                 $string = json_encode($result);
                 break;

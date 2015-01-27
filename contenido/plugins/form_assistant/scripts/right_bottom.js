@@ -33,6 +33,7 @@
                 type: 'GET',
                 url: href,
                 success: function(data, textStatus, jqXHR) {
+					Con.checkAjaxResponse(data);
                     $pifaFormFieldForm.html(data);
                     pifaShowFormFieldDialog($pifaFormFieldForm, null);
                 },
@@ -73,6 +74,7 @@
                 type: 'GET',
                 url: href,
                 success: function(data, textStatus, jqXHR) {
+					Con.checkAjaxResponse(data);
                     $li.hide('slide', function() {
                         $(this).remove();
                     }, 'fast');
@@ -147,6 +149,7 @@
                 url: 'main.php',
                 data: href,
                 success: function(data, textStatus, jqXHR) {
+					Con.checkAjaxResponse(data);
                     $pifaFormFieldForm.html(data);
                     $("#field_rank", $pifaFormFieldForm).val($pifaFormFieldList.find('li').length + 1);
                     pifaShowFormFieldDialog($pifaFormFieldForm, null);
@@ -266,6 +269,7 @@
                 url: href,
                 data: 'index=' + ($optionsList.children().length + 1),
                 success: function(data, textStatus, jqXHR) {
+					Con.checkAjaxResponse(data);
                     $optionsList.append(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -305,6 +309,7 @@
                 url: 'main.php',
                 data: $(this).serialize(),
                 success: function(data, textStatus, jqXHR) {
+					Con.checkAjaxResponse(data);
                     // get idfield & field_rank of current item and list of existing items
                     var idfield = parseInt($('#idfield').val(), 10);
                     var fieldRank = parseInt($('#field_rank').val(), 10);

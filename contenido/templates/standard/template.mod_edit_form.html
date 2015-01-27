@@ -68,7 +68,11 @@ function verifyModuleRequest(img, modId, type) {
             type: type
         },
         success: function(data, status, jqxhr) {
-
+			
+			if (Con.checkAjaxResponse(data) === false)  {
+				return false;
+			}
+			
             try {
                 var result = $.parseJSON(data);
             } catch(e) {
