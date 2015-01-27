@@ -61,7 +61,8 @@ tinymce.create('tinymce.plugins.ConAbbreviationPlugin', {
                         type: 'textbox',
                         label: 'Class:',
                         onchange: function() {
-                            diag.params.form.class = this.value();
+                            // use array notation because class is a reserved value in IE 8
+                            diag.params.form['class'] = this.value();
                         }
                     },
                     {

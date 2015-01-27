@@ -20,6 +20,65 @@
 
     var NAME = 'registry';
 
+    // define forEach loops on arrays for browsers who do not understand this (e.g. IE 8)
+    // use definition from Mozilla
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+    if ('function' !== typeof Array.prototype.forEach) {
+        Array.prototype.forEach = function(callback, thisArg) {
+
+            var T, k;
+
+            if (this == null) {
+                throw new TypeError(' this is null or not defined');
+            }
+
+            // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
+            var O = Object(this);
+
+            // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
+            // 3. Let len be ToUint32(lenValue).
+            var len = O.length >>> 0;
+
+            // 4. If IsCallable(callback) is false, throw a TypeError exception.
+            // See: http://es5.github.com/#x9.11
+            if (typeof callback !== "function") {
+                throw new TypeError(callback + ' is not a function');
+            }
+
+            // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.
+            if (arguments.length > 1) {
+                T = thisArg;
+            }
+
+            // 6. Let k be 0
+            k = 0;
+
+            // 7. Repeat, while k < len
+            while (k < len) {
+
+                var kValue;
+
+                // a. Let Pk be ToString(k).
+                //   This is implicit for LHS operands of the in operator
+                // b. Let kPresent be the result of calling the HasProperty internal method of O with argument Pk.
+                //   This step can be combined with c
+                // c. If kPresent is true, then
+                if (k in O) {
+
+                    // i. Let kValue be the result of calling the Get internal method of O with argument Pk.
+                    kValue = O[k];
+
+                    // ii. Call the Call internal method of callback with T as the this value and
+                    // argument list containing kValue, k, and O.
+                    callback.call(T, kValue, k, O);
+                }
+                // d. Increase k by 1.
+                k++;
+            }
+        // 8. return undefined
+        };
+    }
+
     /**
      * Registry class
      *
@@ -255,7 +314,7 @@
      */
     var _loadJs = function(file, callback) {
         $.getScript(file).done(function(script, textStatus) {
-        	//console.log("callback new for " + file);
+            //console.log("callback new for " + file);
             callback();
         }).fail(function(jqxhr, settings, exception) {
             if (jqxhr.status == "200" && jqxhr.responseText != "") {
@@ -873,9 +932,9 @@
                     data: 'ajax=generaljstranslations&contenido=' + Con.sid,
                     dataType: 'json',
                     success: function(data) {
-						if (Con.checkAjaxResponse(data) === false)  {
-							return false;
-						}
+                        if (Con.checkAjaxResponse(data) === false) {
+                            return false;
+                        }
 
                         registry.set('translations', data);
                         callback.call(context, data);
@@ -1008,29 +1067,29 @@
         }, this);
     };
 
-	/**
-	* Check Ajax response and located user to login page
-	* if authentication failed (e. g. user timeout)
-	*
-	* @method checkAjaxResponde
-	* @param {String|Object} response
-	* @return {Boolean}
-	*/
-	Con.checkAjaxResponse = function(response) {
+    /**
+    * Check Ajax response and located user to login page
+    * if authentication failed (e. g. user timeout)
+    *
+    * @method checkAjaxResponde
+    * @param {String|Object} response
+    * @return {Boolean}
+    */
+    Con.checkAjaxResponse = function(response) {
 
-		if (typeof response == 'string' && response.indexOf('authentication_failure') > -1) {
-		
-			json = $.parseJSON(response);
+        if (typeof response == 'string' && response.indexOf('authentication_failure') > -1) {
+        
+            json = $.parseJSON(response);
 
-			if (json !== null && json.state == "error" && json.code == 401) {
-				window.location.href = 'index.php';
-				return false;
-			}
-		} else {	
-			return true;	
-		}
-	};
-	
+            if (json !== null && json.state == "error" && json.code == 401) {
+                window.location.href = 'index.php';
+                return false;
+            }
+        } else {
+            return true;
+        }
+    };
+
     /**
      * Marks submenu item in header, handles also context of different frames.
      * It supports to mark a submenu (aka subnav) item by it's position and also
