@@ -632,7 +632,7 @@
                                 // open plugin window
                                 var diag = ed.windowManager.open({
                                     title: 'Abbr',
-                                    url: localiser+'?localise='+tpl+'&node='+node.getContent(),
+                                    url: localiser + '?localise=' + tpl + '&node=' + node.getContent(),
                                     height: newHeight,
                                     width: newWidth
                                 }, {
