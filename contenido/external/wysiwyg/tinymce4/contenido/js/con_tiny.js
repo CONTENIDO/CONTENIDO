@@ -729,8 +729,8 @@
             });
 
             // Activate save confirmation on page leave
-            $(window).unload(function() {
-                Con.Tiny.leaveCheck();
+            jQuery(window).on("unload", function() {
+            	Con.Tiny.leaveCheck();
             });
         }
     };

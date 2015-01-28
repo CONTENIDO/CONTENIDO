@@ -87,9 +87,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $this->_setSetting("convert_urls", false);
         $this->_setSetting("relative_urls", false);
 
-//         // Editor name (a comma separated list of instances)
-//         $this->_setSetting("elements", $sEditorName);
-
         // Editor language
         $aLangs = i18nGetAvailableLanguages();
         $this->_setSetting("language", $aLangs[$belang][4]);
@@ -205,14 +202,16 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     function setUserDefinedStyles() {
         $sStyles = "";
 
-        if (array_key_exists("theme_advanced_styles", $this->_aSettings)) {
-            $sStyles = $this->_aSettings["theme_advanced_styles"];
-        } else if (array_key_exists("tinymce-styles", $this->_aSettings)) {
-            $sStyles = $this->_aSettings["tinymce-styles"];
-        }
-
-        if ($sStyles) {
-            $this->_setSetting("theme_advanced_styles", preg_replace('/;$/i', '', str_replace("|", "=", trim($sStyles))), true);
+        // convert tinymce's style formats from string to required JSON value
+        // http://www.tinymce.com/wiki.php/Configuration:style_formats
+        if (array_key_exists('style_formats', $this->_aSettings)) {
+            $sStyles = $this->_aSettings["style_formats"];
+            if (strlen($sStyles) > 0) {
+                // if json can be decoded
+                if (null !== json_decode($sStyles)) {
+                    $this->_setSetting('style_formats', json_decode($sStyles), true);
+                }
+            }
         }
     }
 
