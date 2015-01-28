@@ -513,7 +513,7 @@ msgstr "Systeminstallation"
 
 #: steps/forms/installer.php:36
 msgid ""
-"CONTENIDO will be installed, please wait. This porcess may take several "
+"CONTENIDO will be installed, please wait. This process may take several "
 "moments!"
 msgstr ""
 "CONTENIDO wird installiert, bitte warten. Dieser Vorgang kann einige Zeit in "
@@ -535,7 +535,7 @@ msgstr "Upgrade"
 
 #: steps/forms/installer.php:45
 msgid ""
-"CONTENIDO will be upgraded, please wait. This porcess may take several "
+"CONTENIDO will be upgraded, please wait. This process may take several "
 "moments!"
 msgstr ""
 "CONTENIDO wird aktualisiert, bitte warten. Dieser Vorgang kann einige Zeit "
