@@ -19,16 +19,12 @@ class cTinymce4Configuration {
     function __construct() {
         $curWysiwygEditor = getEffectiveSetting('wysiwyg', 'editor', 'tinymce3');
         $tmpl = new cTemplate();
-        
-        echo '<pre>';
-        var_dump($_POST);
-        echo '</pre>';
-        
+
         // set general form values
         $tmpl->set('s', 'WYSIWYG_EDITOR_PATH', cRegistry::getBackendUrl() . '/external/wysiwyg/tinymce4/');
         $tmpl->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
         $tmpl->set('s', 'SAVE_CHANGES', i18n('Save changes'));
-        
+
         // fill out form values with localised strings
         $tmpl->set('s', 'WYSIWYG_CONFIG_TITLE', i18n('Tinymce 4 configuration'));
         $tmpl->set('s', 'TINYMCE_INLINE_FULLSCREEN_DESCRIPTION', i18n('Settings of inline editor in fullscreen mode'));
@@ -44,8 +40,8 @@ class cTinymce4Configuration {
         $tmpl->set('s', 'CONTENIDO_LISTS_LINK_DESCRIPTION', i18n('Provide jump lists in link insertion dialog'));
         $tmpl->set('s', 'TINYMCE4CONFIG_JSON_FIELD_EXPLANATION', i18n('Additional parameters (JSON passed to tinymce constructor)'));
         $tmpl->set('s', 'TINY4CONFIG_JSON_REQUIRED_WARNING', i18n('Make sure your input is valid JSON, otherwise input will not be accepted!'));
-        
-        
+
+
         // prepare to output template
         $pathToWysiwygFolder = cRegistry::getBackendPath() . 'external/wysiwyg/';
         $pathToTemplateInsideEditorFolder = '/contenido/templates/template.configuration.html';

@@ -145,4 +145,43 @@ abstract class cWYSIWYGEditor {
     protected function _getEditor() {
         throw new cBadMethodCallException('You need to override the method _getEditor');
     }
+
+    /**
+     * Find out which WYSIWYG editor is currently chosen
+     * @return string The name of current WYSIWYG editor
+     */
+    public static function getCurrentWysiwygEditorName() {
+        // define fallback WYSIWYG editor
+        define('DEFAULT_WYSIWYG_EDITOR', 'tinymce3');
+
+        $curWysiwygEditor = getEffectiveSetting('wysiwyg', 'editor', constant('DEFAULT_WYSIWYG_EDITOR'));
+
+        // no paths are allowed in WYSIWYG editor
+        // fall back to defaults if any path info is found
+        if (0 === strlen($curWysiwygEditor)
+        || false !== strpos($curWysiwygEditor, '.')
+        || false !== strpos($curWysiwygEditor, '/')
+        || false !== strpos($curWysiwygEditor, '\\')) {
+            $curWysiwygEditor = constant('DEFAULT_WYSIWYG_EDITOR');
+        }
+
+        return $curWysiwygEditor;
+    }
+
+    /**
+     * Saves configuration of WYSIWYG editor into a file
+     * @return array Array with values that were not accepted
+     */
+    public static function safeConfig($config) {
+        $erroneousSettings = array();
+        
+        $configFile = '';
+
+        echo '<pre>';
+        var_dump($config);
+        echo '</pre>';
+        
+        
+        return $erroneousSettings;
+    }
 }
