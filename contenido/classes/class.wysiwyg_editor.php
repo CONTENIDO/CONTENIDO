@@ -159,6 +159,7 @@ abstract class cWYSIWYGEditor {
         // no paths are allowed in WYSIWYG editor
         // fall back to defaults if any path info is found
         if (0 === strlen($curWysiwygEditor)
+        || false === cFileHandler::exists(cRegistry::getConfigValue('path', 'all_wysiwyg'))
         || false !== strpos($curWysiwygEditor, '.')
         || false !== strpos($curWysiwygEditor, '/')
         || false !== strpos($curWysiwygEditor, '\\')) {
@@ -173,15 +174,39 @@ abstract class cWYSIWYGEditor {
      * @return array Array with values that were not accepted
      */
     public static function safeConfig($config) {
-        $erroneousSettings = array();
-        
-        $configFile = '';
+            $erroneousSettings = array();
 
+        // specify filename scheme
+        // for tinymce 4 this will be config.wysiwyg_tinymce4.php
+        $configFile = 'config.wysiwyg_' . static::getCurrentWysiwygEditorName() . '.php';
+
+        // get path to current config folder
+        $configPath = cRegistry::getConfigValue('path', 'contenido_config');
+
+var_dump(cRegistry::getConfigValue('path', 'contenido_config'));
+        $validInput = true;
         echo '<pre>';
         var_dump($config);
         echo '</pre>';
-        
-        
+
+        // the content to write to file
+        $content = '<?php function getSettings() { return json_decode(';
+        $content .= json_encode($config);
+        $content .= ');}';
+        if (false === $validInput) {
+            $erroneousSettings['saving'] = array('input' => 'invalid input');
+            return $erroneousSettings;
+        }
+
+        // first try to write then check what went wrong in case of error
+        if (true !== cFileHandler::write($configPath . $configFile, $content)) {
+            // just pass back that the file could not be written
+            $erroneusSettings['saving'] = array('config_file' => 'wysiwyg config file could not be written');
+            // write more detailed information with sensitive information such as full path into error log
+            log_error('Error writing ' . $configPath . $configFile);
+            return $erroneusSettings;
+        }
+
         return $erroneousSettings;
     }
 }

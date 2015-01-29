@@ -52,6 +52,10 @@ $cfg['path']['all_wysiwyg']             = $cfg['path']['contenido']  . 'external
 /* The selected wysiwyg editor*/
 $cfg['wysiwyg']['editor']               = 'tinymce3';
 
+/* The name of WYSIWYG editor classes */
+$cfg['wysiwyg']['tinymce3_editorclass'] = 'cTinyMCEEditor';
+$cfg['wysiwyg']['tinymce4_editorclass'] = 'cTinyMCE4Editor';
+
 /* The server path to the desired WYSIWYG-Editor */
 $cfg['path']['wysiwyg']                 = $cfg['path']['all_wysiwyg'] . $cfg['wysiwyg']['editor'] . '/';
 
