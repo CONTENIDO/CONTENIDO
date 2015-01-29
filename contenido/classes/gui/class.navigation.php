@@ -329,7 +329,7 @@ class cGuiNavigation {
             $frontendPath = cRegistry::getFrontendPath();
 
             if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($frontendPath . $clientImage)) {
-                $sClientImageTemplate = '<img src="%s" alt="%s" title="%s">';
+                $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" style="height: 15px;">';
 
                 $sThumbnailPath = cApiImgScale($frontendPath . $clientImage, 80, 25, 0, 1);
                 $sClientImageTag = sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);

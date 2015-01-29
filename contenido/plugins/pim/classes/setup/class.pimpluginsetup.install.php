@@ -354,7 +354,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
     		$this->_PimPluginCollection->setWhere('active', '1');
     		$this->_PimPluginCollection->query();
     		if ($this->_PimPluginCollection->count() == 0) {
-    			parent::error(sprintf(i18n('This plugin required the plugin <strong>%s</strong>.'), $depend));
+    			parent::error(sprintf(i18n('This plugin required the plugin <strong>%s</strong>.', 'pim'), $depend));
     		}
 
     		$plugin = $this->_PimPluginCollection->next();
