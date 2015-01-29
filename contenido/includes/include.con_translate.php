@@ -539,6 +539,8 @@ $list->objRow->updateAttributes(array(
 
 $submit = ' <input type="image" class="vAlignTop" value="submit" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg['path']['images'] . 'but_ok.gif">';
 
+$counter = 0;
+
 foreach ($allTranslations as $hash => $translationArray) {
 
     if (!$inUse && $perm->have_perm_area_action($area, 'con_translate_edit') && $action == 'con_translate_edit' && ($editstring == 'all' || $editstring == $hash) && ($editlang == 'all' || $editlang == $lang)) {
