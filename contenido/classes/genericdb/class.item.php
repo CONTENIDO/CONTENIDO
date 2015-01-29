@@ -307,7 +307,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         if (true == $bSafe) {
-            return $this->_outFilter($this->values[$sField]);
+            return $this->outFilter($this->values[$sField]);
         } else {
             return $this->values[$sField];
         }
@@ -595,7 +595,7 @@ abstract class Item extends cItemBaseAbstract {
      * @return mixed Filtered data
      * @see setFilters()
      */
-    protected function _outFilter($mData) {
+    public function outFilter($mData) {
         foreach ($this->_arrOutFilters as $_function) {
             if (function_exists($_function)) {
                 if (is_array($mData)) {

@@ -1086,4 +1086,14 @@ class cModuleHandler {
 
     }
 
+    /**
+     * Get method for module path value
+     * Path to a module dir
+     *
+     * @return $modulePath string
+     */
+    protected static function _getModulePath() {
+    	 return $this->_modulePath;
+    }
+
 }

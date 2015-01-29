@@ -56,6 +56,9 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         createRightsForElement('tpl', $idtpl);
     } else {
 
+    	// Define lastmodified variable with actual date
+    	$lastmodified = date('Y-m-d H:i:s');
+
         // Update existing entry in the Template table
         $template = new cApiTemplate($idtpl);
         $template->set('name', $name);
@@ -498,7 +501,9 @@ function tplGetInUsedData($idtpl) {
  * @return int new template configuration ID
  */
 function tplcfgDuplicate($idtplcfg) {
-    $templateConfig = new cApiTemplateConfiguration((int) $idtplcfg);
+	global $auth;
+
+    $templateConfig = new cApiTemplateConfiguration(cSecurity::toInteger($idtplcfg));
     if (!$templateConfig->isLoaded()) {
         return 0;
     }

@@ -550,6 +550,8 @@ class cSearch extends cSearchBaseAbstract {
      * @return array Articles in specified search range
      */
     public function getSearchableArticles($search_range) {
+	    global $auth;
+
         $aCatRange = array();
         if (array_key_exists('cat_tree', $search_range) && is_array($search_range['cat_tree'])) {
             if (count($search_range['cat_tree']) > 0) {

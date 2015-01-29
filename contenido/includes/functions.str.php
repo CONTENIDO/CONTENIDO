@@ -708,8 +708,8 @@ function strDeleteCategory($idcat) {
  * @param int $idcat Id of category to upwards
  */
 function strMoveUpCategory($idcat) {
-    // Flag to rebuild the category table
-    global $remakeCatTable, $remakeStrTable;
+    // Flag to rebuild the category table and initializing notification variable
+    global $remakeCatTable, $remakeStrTable, $notification;
 
     // Load current category
     $oCat = new cApiCategory();
@@ -786,8 +786,8 @@ function strMoveUpCategory($idcat) {
  * @param int $idcat Id of category to move downwards
  */
 function strMoveDownCategory($idcat) {
-    // Flag to rebuild the category table
-    global $remakeCatTable, $remakeStrTable;
+    // Flag to rebuild the category table and initializing notification variable
+    global $remakeCatTable, $remakeStrTable, $notification;
 
     // Load current category
     $oCat = new cApiCategory();

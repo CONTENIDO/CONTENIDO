@@ -357,6 +357,9 @@ class cMailer extends Swift_Mailer {
         $contentType = $message->getContentType();
         $mailItem = $mailLogCollection->create($from, $to, $replyTo, $cc, $bcc, $subject, $body, time(), $charset, $contentType);
 
+        // get idmail variable
+        $idmail = $mailItem->get('idmail');
+
         // do not use array_merge here since the mail addresses are array keys
         // array_merge will make problems if one recipient is e.g. in cc and bcc
         $recipientArrays = array(
@@ -381,7 +384,7 @@ class cMailer extends Swift_Mailer {
                 if (in_array($key, $failedRecipients)) {
                     $success = false;
                 }
-                $mailLogSuccessCollection->create($mailItem->get('idmail'), $recipient, $success, $exception);
+                $mailLogSuccessCollection->create($idmail, $recipient, $success, $exception);
             }
         }
 

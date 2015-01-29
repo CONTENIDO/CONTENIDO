@@ -69,6 +69,7 @@ class SolrIndexer {
             // get idclient by idart
             $article = new cApiArticle($idart);
             if ($article->isLoaded()) {
+            	$idart = $article->get('idart');
                 $idclient = $article->get('idclient');
             }
             // get idlang by idartlang
@@ -85,6 +86,8 @@ class SolrIndexer {
             if ($categoryLanguage->isLoaded()) {
                 $idcatlang = $articleLanguage->get('idlang');
             }
+            // get idartlang
+            $idartlang = $newData['idartlang'];
         }
 
         $articleIds = array(

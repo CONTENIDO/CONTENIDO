@@ -814,6 +814,9 @@ class PifaForm extends Item {
             $data = array_merge($data, $additionalFields);
         }
 
+        // initializing toCsv variable (CON-2051)
+        $toCsv = '';
+
         // convert array values to CSV values
         $implode = 'return implode(\',\', $in);';
         $implode = create_function('$in', $toCsv);
