@@ -236,6 +236,7 @@ class PimPluginSetupUninstall extends PimPluginSetup {
         }
 
         // Get plugininformations
+        $this->_PimPluginCollection->resetQuery();
         $this->_PimPluginCollection->setWhere('idplugin', parent::_getPluginId());
         $this->_PimPluginCollection->query();
         $pimPluginSql = $this->_PimPluginCollection->next();
