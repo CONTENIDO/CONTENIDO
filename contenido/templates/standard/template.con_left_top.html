@@ -252,6 +252,10 @@ initData();
                 cfg.tplId = templateid;
                 left_bottom.$("#con_str_tree li#root ul li#"+oldid).attr("id", newid);
 
+                var frame = Con.getFrame('right_bottom');
+          		var href = 'main.php?area={AREA}&frame=4&idcat='+ cfg.catId + '&idtpl=' + templateid + '&contenido=n' + Con.sid + '';
+                frame.location.href = href;
+                
                 return false;
             }
         });
