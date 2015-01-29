@@ -88,7 +88,9 @@
                             idplugin: pluginId
                         },
                         success: function(data, status, jqxhr) {
-							Con.checkAjaxResponse(data);
+                            if (Con.checkAjaxResponse(data) === false)  {
+    							return false;
+    						}
                             if (data == "ok") {
                                 pluginTable.next().after(pluginTable);
                                 updateSortButtons();
@@ -120,7 +122,9 @@
                             idplugin: pluginId
                         },
                         success: function(data, status, jqxhr) {
-							Con.checkAjaxResponse(data);
+                            if (Con.checkAjaxResponse(data) === false)  {
+    							return false;
+    						}
                             if (data == "ok") {
                                 pluginTable.prev().before(pluginTable);
                                 updateSortButtons();
