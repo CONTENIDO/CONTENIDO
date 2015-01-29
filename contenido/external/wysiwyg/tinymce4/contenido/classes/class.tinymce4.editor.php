@@ -147,9 +147,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         // Setting the toolbar (toolbar_mode and tinymce-toolbar-mode accepted)
         $sMode = "full";
-        if (array_key_exists("tinymce-toolbar-mode", $this->_aSettings)) {
-            $sMode = $this->_aSettings["tinymce-toolbar-mode"];
-        }
         if (array_key_exists("contenido_toolbar_mode", $this->_aSettings)) {
             $sMode = $this->_aSettings["contenido_toolbar_mode"];
         }
