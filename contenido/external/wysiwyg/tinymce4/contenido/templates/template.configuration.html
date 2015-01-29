@@ -1,6 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <title>Tinymce 3 configuration</title>
+        <link rel="stylesheet" type="text/css" href="{WYSIWYG_EDITOR_PATH}contenido/css/configuration.css">
+        <script src="{WYSIWYG_EDITOR_PATH}contenido/js/configuration.js" defer="defer"></script>
+        <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    </head>
+    <body>
 <!-- contenido/external/wysiwyg/tinymce4/contenido/templates/template.configuration.html -->
-<script src="{_PATH_CONTENIDO_FULLHTML_}/external/wysiwyg/tinymce4/contenido/js/con_tiny.js" type="text/javascript"></script>
 
-<p>hello world</p>
+<p>Tinymce 4 configuration</p>
 
+<form id="tinymcefourconfiguration" method="post" accept-charset="UTF-8">
+<p>Toolbars:</p>
+    <fieldset>
+        <legend>Full (fullscreen of inline editor)</legend>
+        <label for="full_toolbar1">Toolbar1</label>
+        <input id="full_toolbar1" name="tinymce4_full[toolbar1]" type="text"><br>
+        <label for="full_toolbar2">Toolbar2</label>
+        <input id="full_toolbar2" name="tinymce4_full[toolbar2]" type="text"><br>
+        <label for="full_toolbar3">Toolbar3</label>
+        <input id="full_toolbar3" name="tinymce4_full[toolbar3]" type="text"><br>
+        <label for="full_plugins">Plugins</label>
+        <input id="full_plugins" name="tinymce4_full[plugins]" type="text"><br>
+    </fieldset>
+    <fieldset>
+        <legend>Fullscreen (toolbar on separate editor page)</legend>
+        <label for="toolbar1">Toolbar1</label>
+        <input id="toolbar1" name="tinymce4_fullscreen[toolbar1]" type="text"><br>
+        <label for="toolbar2">Toolbar2</label>
+        <input id="toolbar2" name="tinymce4_fullscreen[toolbar2]" type="text"><br>
+        <label for="toolbar3">Toolbar3</label>
+        <input id="toolbar3" name="tinymce4_fullscreen[toolbar3]" type="text"><br>
+        <label for="fullscreen_plugins">Plugins</label>
+        <input id="fullscreen_plugins" name="tinymce4_fullscreen[plugins]" type="text"><br>
+    </fieldset>
+    <fieldset>
+        <legend>contenido_gzip</legend>
+        <label class="checkbox">
+            <input type="checkbox" name="contenido_gzip" value="contenido_gzip">Gzip Tinymce (only check if server does not compress content already)
+        </label>
+    </fieldset>
+    <fieldset>
+        <legend>contenido_lists</legend>
+        <label class="checkbox">
+            <input type="checkbox" name="contenido_lists" value="image">Provide jump lists in image insertion dialog
+        </label>
+        <br />
+        <label class="checkbox">
+            <input type="checkbox" name="contenido_lists" value="link">Provide jump lists in link insertion dialog
+        </label>
+    </fieldset>
+    <fieldset>
+        <legend>{TINYMCE4CONFIG_JSON_FIELD_EXPLANATION}</legend>
+        <p>{TINY4CONFIG_JSON_REQUIRED_WARNING}</p>
+        <textarea id="custom_config" name="tinymce4" style="box-sizing: border-box; height: 5cm; width: 90%;"></textarea>
+    </fieldset>
+    <p>
+    <input type="image" alt ="{SAVE_CHANGES}" title="{SAVE_CHANGES}" src="{BACKEND_URL}images/but_ok.gif" />
+</form>
 <!-- /configuration -->
+    </body>
+</html>
