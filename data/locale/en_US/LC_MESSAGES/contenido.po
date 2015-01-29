@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-29 11:20+0100\n"
-"PO-Revision-Date: 2015-01-29 11:21+0100\n"
+"POT-Creation-Date: 2015-01-29 11:37+0100\n"
+"PO-Revision-Date: 2015-01-29 11:38+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
@@ -71,7 +71,7 @@ msgstr ""
 
 #: backend_search.php:518 includes/include.con_art_overview.php:82
 #: includes/include.con_translate.php:481
-#: includes/include.con_translate.php:585
+#: includes/include.con_translate.php:587
 #: includes/include.pretplcfg_edit_form.php:37
 #: includes/include.tplcfg_edit_form.php:238
 #: templates/standard/template.mycontenido_lastarticles.html:77
@@ -1628,7 +1628,7 @@ msgstr ""
 #: classes/content_types/class.content.type.teaser.php:853
 #: includes/include.clientsettings.php:91
 #: includes/include.client_artspec.php:71
-#: includes/include.con_translate.php:745
+#: includes/include.con_translate.php:747
 #: includes/include.grouprights_overview.php:197
 #: includes/include.rights_overview.php:359
 #: includes/include.rights_overview.php:368
@@ -2335,7 +2335,7 @@ msgid "Lost and found"
 msgstr ""
 
 #: includes/functions.con.php:1386 includes/functions.str.php:1110
-#: includes/functions.tpl.php:345
+#: includes/functions.tpl.php:348
 #, php-format
 msgid "%s (Copy)"
 msgstr ""
@@ -2824,9 +2824,9 @@ msgstr ""
 
 #: includes/include.clientsettings.php:97
 #: includes/include.client_artspec.php:67
-#: includes/include.con_translate.php:555
-#: includes/include.con_translate.php:610
-#: includes/include.con_translate.php:639
+#: includes/include.con_translate.php:557
+#: includes/include.con_translate.php:612
+#: includes/include.con_translate.php:641
 #: includes/include.systemsettings.php:85 includes/include.upl_edit.php:45
 #: xml/navigation.xml:23 xml/navigation.xml:27 xml/navigation.xml:31
 #: xml/navigation.xml:39
@@ -3626,16 +3626,16 @@ msgstr ""
 msgid "Edit row"
 msgstr ""
 
-#: includes/include.con_translate.php:581
+#: includes/include.con_translate.php:583
 msgid "No template"
 msgstr ""
 
-#: includes/include.con_translate.php:584 includes/include.lay_overview.php:62
+#: includes/include.con_translate.php:586 includes/include.lay_overview.php:62
 #: includes/include.tpl_overview.php:68
 msgid "Click for more information about usage"
 msgstr ""
 
-#: includes/include.con_translate.php:585
+#: includes/include.con_translate.php:587
 #: templates/standard/template.symbolhelp.html:25
 #: templates/standard/template.symbolhelp.html:334
 #: templates/standard/template.symbolhelp.html:659 xml/navigation.xml:38
@@ -3643,12 +3643,12 @@ msgstr ""
 msgid "Templates"
 msgstr ""
 
-#: includes/include.con_translate.php:747
+#: includes/include.con_translate.php:749
 #, php-format
 msgid "The module &quot;%s&quot; is used for following templates"
 msgstr ""
 
-#: includes/include.con_translate.php:748
+#: includes/include.con_translate.php:750
 msgid ""
 "WARNING: Translations have effects on every article that uses the module!"
 msgstr ""
@@ -5594,6 +5594,11 @@ msgstr ""
 
 #: includes/include.system_sysvalues.php:226
 msgid "Charset"
+msgstr ""
+
+#: includes/include.system_wysiwyg.php:47
+msgid ""
+"Configuration of the current WYSIWYG editor using this page is not supported"
 msgstr ""
 
 #: includes/include.todo.popup.php:38

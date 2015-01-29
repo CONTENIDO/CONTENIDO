@@ -43,4 +43,6 @@ if (cFileHandler::exists($classFile)) {
         return;
     }
 }
-echo '<!DOCTYPE html><html><head></head><body>Configuration of the current WYSIWYG editor using this page is not supported</body></html>';
+
+$notSupportedMsg = i18n('Configuration of the current WYSIWYG editor using this page is not supported');
+echo '<!DOCTYPE html><html><head></head><body>' . $notSupportedMsg . '</body></html>';
