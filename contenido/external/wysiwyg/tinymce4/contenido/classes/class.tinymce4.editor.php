@@ -63,7 +63,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         // Retrieve all settings for tinymce 4
         $this->_aSettings = getEffectiveSettingsByType("tinymce4");
 
-        $this->_setSetting("article_url_suffix", 'front_content.php?idart=' . $idart, true); # modified 23.10.2006
+        $this->_setSetting("article_url_suffix", 'front_content.php?idart=' . $idart, true);
 
         // Default values
 
@@ -114,11 +114,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             $this->setGZIPMode(false);
         } else {
             $this->setGZIPMode(true);
-        }
-
-        // Stylesheet file, for compatibility
-        if (!array_key_exists("content_css", $this->_aSettings) && array_key_exists("tinymce-stylesheet-file", $this->_aSettings)) {
-            $this->_setSetting("content_css", $this->_aSettings["tinymce-stylesheet-file"], true);
         }
 
         // Set lists (for links and image elements)
@@ -279,6 +274,14 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         // Overview of available controls and their required plugins:
         // http://www.tinymce.com/wiki.php/Controls
+
+        // TODO:
+        // Consider using
+        // http://www.tinymce.com/wiki.php/Configuration:toolbar
+        // instead of
+        // http://www.tinymce.com/wiki.php/Configuration:toolbar%3CN%3E
+        // 
+        // This would allow users to specify more than just 3 toolbars in total
 
         switch ($sMode) {
             case "full": // Show all options

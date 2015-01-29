@@ -10,46 +10,49 @@
     <body>
 <!-- contenido/external/wysiwyg/tinymce4/contenido/templates/template.configuration.html -->
 
-<p>Tinymce 4 configuration</p>
+<p>{WYSIWYG_CONFIG_TITLE}</p>
 
 <form id="tinymcefourconfiguration" method="post" accept-charset="UTF-8">
-<p>Toolbars:</p>
+<fieldset>
+<legend>{TOOLBARS_AND_PLUGINS}</legend>
+    <p>{SPACE_SEPARATED_LIST_VALUES}</p>
     <fieldset>
-        <legend>Full (fullscreen of inline editor)</legend>
-        <label for="full_toolbar1">Toolbar1</label>
+        <legend>{TINYMCE_INLINE_FULLSCREEN_DESCRIPTION}</legend>
+        <label for="full_toolbar1">{TOOLBAR_1}</label>
         <input id="full_toolbar1" name="tinymce4_full[toolbar1]" type="text"><br>
-        <label for="full_toolbar2">Toolbar2</label>
+        <label for="full_toolbar2">{TOOLBAR_2}</label>
         <input id="full_toolbar2" name="tinymce4_full[toolbar2]" type="text"><br>
-        <label for="full_toolbar3">Toolbar3</label>
+        <label for="full_toolbar3">{TOOLBAR_3}</label>
         <input id="full_toolbar3" name="tinymce4_full[toolbar3]" type="text"><br>
-        <label for="full_plugins">Plugins</label>
+        <label for="full_plugins">{PLUGINS}</label>
         <input id="full_plugins" name="tinymce4_full[plugins]" type="text"><br>
     </fieldset>
     <fieldset>
-        <legend>Fullscreen (toolbar on separate editor page)</legend>
-        <label for="toolbar1">Toolbar1</label>
+        <legend>{TINYMCE_EDITORPAGE_DESCRIPTION}</legend>
+        <label for="toolbar1">{TOOLBAR_1}</label>
         <input id="toolbar1" name="tinymce4_fullscreen[toolbar1]" type="text"><br>
-        <label for="toolbar2">Toolbar2</label>
+        <label for="toolbar2">{TOOLBAR_2}</label>
         <input id="toolbar2" name="tinymce4_fullscreen[toolbar2]" type="text"><br>
-        <label for="toolbar3">Toolbar3</label>
+        <label for="toolbar3">{TOOLBAR_3}</label>
         <input id="toolbar3" name="tinymce4_fullscreen[toolbar3]" type="text"><br>
-        <label for="fullscreen_plugins">Plugins</label>
+        <label for="fullscreen_plugins">{PLUGINS}</label>
         <input id="fullscreen_plugins" name="tinymce4_fullscreen[plugins]" type="text"><br>
     </fieldset>
+</fieldset>
     <fieldset>
         <legend>contenido_gzip</legend>
         <label class="checkbox">
-            <input type="checkbox" name="contenido_gzip" value="contenido_gzip">Gzip Tinymce (only check if server does not compress content already)
+            <input type="checkbox" name="contenido_gzip" value="contenido_gzip">{CONTENIDO_GZIP_DESCRIPTION}
         </label>
     </fieldset>
     <fieldset>
         <legend>contenido_lists</legend>
         <label class="checkbox">
-            <input type="checkbox" name="contenido_lists" value="image">Provide jump lists in image insertion dialog
+            <input type="checkbox" name="contenido_lists[]" value="image">{CONTENIDO_LISTS_IMAGE_DESCRIPTION}
         </label>
         <br />
         <label class="checkbox">
-            <input type="checkbox" name="contenido_lists" value="link">Provide jump lists in link insertion dialog
+            <input type="checkbox" name="contenido_lists[]" value="link">{CONTENIDO_LISTS_LINK_DESCRIPTION}
         </label>
     </fieldset>
     <fieldset>

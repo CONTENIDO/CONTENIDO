@@ -7,3 +7,6 @@ var url = window.location.href;
 jQuery("#tinymcefourconfiguration").on("submit", function (ev) {
 	//alert(url);
 });
+
+// hack not selector for ie8
+jQuery('label').not(".checkbox").css({"float": "left", "width": "5em"});

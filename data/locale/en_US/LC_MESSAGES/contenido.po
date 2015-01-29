@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-28 13:36+0100\n"
-"PO-Revision-Date: 2015-01-28 13:37+0100\n"
+"POT-Creation-Date: 2015-01-29 11:20+0100\n"
+"PO-Revision-Date: 2015-01-29 11:21+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
@@ -265,11 +265,9 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: classes/class.ajax.php:317
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:94
-#: includes/include.CMS_HTML.php:104 includes/include.CMS_HTMLHEAD.php:104
-#: includes/include.str_overview.php:501 scripts/langref.php:21
-#: templates/standard/template.symbolhelp.html:66
+#: classes/class.ajax.php:317 includes/include.CMS_HTML.php:104
+#: includes/include.CMS_HTMLHEAD.php:104 includes/include.str_overview.php:501
+#: scripts/langref.php:21 templates/standard/template.symbolhelp.html:66
 #: templates/standard/template.symbolhelp.html:674
 #: templates/standard/template.upl_files_upload.html:57
 msgid "Cancel"
@@ -2023,6 +2021,7 @@ msgid "The administratos has disabled edits"
 msgstr ""
 
 #: classes/gui/class.sourceeditor.php:322 classes/gui/class.tableform.php:129
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:30
 #: includes/include.client_edit.php:186
 #: includes/include.grouprights_create.php:70
 #: includes/include.grouprights_overview.php:107
@@ -2247,58 +2246,46 @@ msgstr ""
 msgid "The given client's frontend directory (%s) is not a directory."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:79
-msgid "Title:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:33
+msgid "Tinymce 4 configuration"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:80
-msgid "ID:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:34
+msgid "Settings of inline editor in fullscreen mode"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:81
-msgid "Class:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:35
+msgid "Settings of editor in separate editor page"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:82
-msgid "Style:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:36
+msgid "Toolbars and plugins"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:83
-msgid "Text Direction:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:37
+msgid "Enter lists of values, separate entries by space charactes."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:84
-msgid "Language:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:42
+msgid ""
+"Gzip Tinymce (only activate if server does not compress content already)"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:86
-msgid "-- Not set --"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:43
+msgid "Provide jump lists in image insertion dialog"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:87
-msgid "(value)"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:44
+msgid "Provide jump lists in link insertion dialog"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:88
-#: includes/include.lang_edit.php:193
-msgid "Left to right"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:45
+msgid "Additional parameters (JSON passed to tinymce constructor)"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:89
-#: includes/include.lang_edit.php:194
-msgid "Right to left"
-msgstr ""
-
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:91
-msgid "Insert"
-msgstr ""
-
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:92
-msgid "Update"
-msgstr ""
-
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:93
-msgid "Remove"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:46
+msgid ""
+"Make sure your input is valid JSON, otherwise input will not be accepted!"
 msgstr ""
 
 #: includes/frontend/include.front_content.php:255
@@ -4168,6 +4155,14 @@ msgstr ""
 
 #: includes/include.lang_edit.php:123
 msgid "An error occurred during saving the changes"
+msgstr ""
+
+#: includes/include.lang_edit.php:193
+msgid "Left to right"
+msgstr ""
+
+#: includes/include.lang_edit.php:194
+msgid "Right to left"
 msgstr ""
 
 #: includes/include.lang_edit.php:206

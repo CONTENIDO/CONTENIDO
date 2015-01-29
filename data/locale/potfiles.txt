@@ -457,11 +457,11 @@
 ./external/wysiwyg/tinymce3/list.php
 ./external/wysiwyg/tinymce3/tinymce.tpl.html
 ./external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_list.php
-./external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php
+./external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php
 ./external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php
 ./external/wysiwyg/tinymce4/contenido/config.php
 ./external/wysiwyg/tinymce4/contenido/editor.php
-./external/wysiwyg/tinymce4/contenido/templates/template.abbreviationdialog_tpl.html
+./external/wysiwyg/tinymce4/contenido/templates/template.configuration.html
 ./external/wysiwyg/tinymce4/contenido/templates/template.tinymce_tpl.html
 ./external/wysiwyg/tinymce4/tinymce/js/tinymce/plugins/example/dialog.html
 ./external/wysiwyg/tinymce4/tinymce/js/tinymce/tinymce.gzip.php
@@ -621,6 +621,7 @@
 ./includes/include.system_log_sysvalues.php
 ./includes/include.system_purge.php
 ./includes/include.system_sysvalues.php
+./includes/include.system_wysiwyg.php
 ./includes/include.todo.popup.php
 ./includes/include.tplcfg_edit.php
 ./includes/include.tplcfg_edit_form.php
