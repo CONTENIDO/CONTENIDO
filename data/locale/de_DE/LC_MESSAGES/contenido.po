@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-28 13:36+0100\n"
-"PO-Revision-Date: 2015-01-28 13:37+0100\n"
+"POT-Creation-Date: 2015-01-29 11:37+0100\n"
+"PO-Revision-Date: 2015-01-29 11:38+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -72,7 +72,7 @@ msgstr "Artikel"
 
 #: backend_search.php:518 includes/include.con_art_overview.php:82
 #: includes/include.con_translate.php:481
-#: includes/include.con_translate.php:585
+#: includes/include.con_translate.php:587
 #: includes/include.pretplcfg_edit_form.php:37
 #: includes/include.tplcfg_edit_form.php:238
 #: templates/standard/template.mycontenido_lastarticles.html:77
@@ -266,11 +266,9 @@ msgstr "Bestätigung erforderlich"
 msgid "OK"
 msgstr "O. K."
 
-#: classes/class.ajax.php:317
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:94
-#: includes/include.CMS_HTML.php:104 includes/include.CMS_HTMLHEAD.php:104
-#: includes/include.str_overview.php:501 scripts/langref.php:21
-#: templates/standard/template.symbolhelp.html:66
+#: classes/class.ajax.php:317 includes/include.CMS_HTML.php:104
+#: includes/include.CMS_HTMLHEAD.php:104 includes/include.str_overview.php:501
+#: scripts/langref.php:21 templates/standard/template.symbolhelp.html:66
 #: templates/standard/template.symbolhelp.html:674
 #: templates/standard/template.upl_files_upload.html:57
 msgid "Cancel"
@@ -1813,7 +1811,7 @@ msgstr "Unbekannter Artikel"
 #: classes/content_types/class.content.type.teaser.php:853
 #: includes/include.clientsettings.php:91
 #: includes/include.client_artspec.php:71
-#: includes/include.con_translate.php:745
+#: includes/include.con_translate.php:747
 #: includes/include.grouprights_overview.php:197
 #: includes/include.rights_overview.php:359
 #: includes/include.rights_overview.php:368
@@ -2209,6 +2207,7 @@ msgid "The administratos has disabled edits"
 msgstr "Der Administrator hat das Editieren deaktiviert"
 
 #: classes/gui/class.sourceeditor.php:322 classes/gui/class.tableform.php:129
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:30
 #: includes/include.client_edit.php:186
 #: includes/include.grouprights_create.php:70
 #: includes/include.grouprights_overview.php:107
@@ -2445,59 +2444,55 @@ msgid "The given client's frontend directory (%s) is not a directory."
 msgstr ""
 "Das eingegebene Frontend Verzeichnis des Mandanten (%s) ist kein Verzeichnis."
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:79
-msgid "Title:"
-msgstr "Titel:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:33
+msgid "Tinymce 4 configuration"
+msgstr "Tinymce 4-Konfiguration"
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:80
-msgid "ID:"
-msgstr "ID:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:34
+msgid "Settings of inline editor in fullscreen mode"
+msgstr "Einstellungen des Inline-Editors im Vollbildmodus"
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:81
-msgid "Class:"
-msgstr "CSS-Klasse:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:35
+msgid "Settings of editor in separate editor page"
+msgstr "Einstellungen des Editors auf separater Bearbeiten-Seite"
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:82
-msgid "Style:"
-msgstr "Style:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:36
+msgid "Toolbars and plugins"
+msgstr "Werkzeugleisten und Plugins"
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:83
-msgid "Text Direction:"
-msgstr "Laufrichtung des Textes:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:37
+msgid "Enter lists of values, separate entries by space charactes."
+msgstr ""
+"Geben Sie eine Liste mit Werten ein, wobei die Werte durch Leerzeichen "
+"separiert werden."
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:84
-msgid "Language:"
-msgstr "Sprache:"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:42
+msgid ""
+"Gzip Tinymce (only activate if server does not compress content already)"
+msgstr ""
+"Gzip-Kompression für Tinymce (nur aktivieren, wenn der Server den Inhalt "
+"nicht schon komprimiert ausliefert)"
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:86
-msgid "-- Not set --"
-msgstr "-- Nicht gesetzt --"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:43
+msgid "Provide jump lists in image insertion dialog"
+msgstr "Sprunglisten im Einfügen-Dialog für Bilder bereitstellen"
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:87
-msgid "(value)"
-msgstr "(Inhalt)"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:44
+msgid "Provide jump lists in link insertion dialog"
+msgstr "Sprunglisten im Einfügen-Dialog für Verknüpfungen bereitstellen"
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:88
-#: includes/include.lang_edit.php:193
-msgid "Left to right"
-msgstr "Links nach rechts"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:45
+msgid "Additional parameters (JSON passed to tinymce constructor)"
+msgstr ""
+"Zusätzliche Parameter (JSON, das an Tinymce bei der Initalisierung übergeben "
+"wird)"
 
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:89
-#: includes/include.lang_edit.php:194
-msgid "Right to left"
-msgstr "Rechts nach Links"
-
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:91
-msgid "Insert"
-msgstr "Einfügen"
-
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:92
-msgid "Update"
-msgstr "Aktualisieren"
-
-#: external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_templatelocaliser.php:93
-msgid "Remove"
-msgstr "Entfernen"
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:46
+msgid ""
+"Make sure your input is valid JSON, otherwise input will not be accepted!"
+msgstr ""
+"Stellen Sie sicher, dass ihre Eingabe gültiges JSON ist, andernfalls wird "
+"die Eingabe nicht akzeptiert!"
 
 #: includes/frontend/include.front_content.php:255
 #: includes/frontend/include.front_content.php:283
@@ -2548,7 +2543,7 @@ msgid "Lost and found"
 msgstr "Lost and found"
 
 #: includes/functions.con.php:1386 includes/functions.str.php:1110
-#: includes/functions.tpl.php:345
+#: includes/functions.tpl.php:348
 #, php-format
 msgid "%s (Copy)"
 msgstr "%s (Kopie)"
@@ -3069,9 +3064,9 @@ msgstr "Wert"
 
 #: includes/include.clientsettings.php:97
 #: includes/include.client_artspec.php:67
-#: includes/include.con_translate.php:555
-#: includes/include.con_translate.php:610
-#: includes/include.con_translate.php:639
+#: includes/include.con_translate.php:557
+#: includes/include.con_translate.php:612
+#: includes/include.con_translate.php:641
 #: includes/include.systemsettings.php:85 includes/include.upl_edit.php:45
 #: xml/navigation.xml:23 xml/navigation.xml:27 xml/navigation.xml:31
 #: xml/navigation.xml:39
@@ -3918,16 +3913,16 @@ msgstr "Aktuelle Sprache"
 msgid "Edit row"
 msgstr "Zeile bearbeiten"
 
-#: includes/include.con_translate.php:581
+#: includes/include.con_translate.php:583
 msgid "No template"
 msgstr "Keine Vorlage"
 
-#: includes/include.con_translate.php:584 includes/include.lay_overview.php:62
+#: includes/include.con_translate.php:586 includes/include.lay_overview.php:62
 #: includes/include.tpl_overview.php:68
 msgid "Click for more information about usage"
 msgstr "Klicken Sie für mehr Information über die Verwendung"
 
-#: includes/include.con_translate.php:585
+#: includes/include.con_translate.php:587
 #: templates/standard/template.symbolhelp.html:25
 #: templates/standard/template.symbolhelp.html:334
 #: templates/standard/template.symbolhelp.html:659 xml/navigation.xml:38
@@ -3935,12 +3930,12 @@ msgstr "Klicken Sie für mehr Information über die Verwendung"
 msgid "Templates"
 msgstr "Vorlagen"
 
-#: includes/include.con_translate.php:747
+#: includes/include.con_translate.php:749
 #, php-format
 msgid "The module &quot;%s&quot; is used for following templates"
 msgstr "Das Modul  '%s' wird in folgenden Vorlagen benutzt"
 
-#: includes/include.con_translate.php:748
+#: includes/include.con_translate.php:750
 msgid ""
 "WARNING: Translations have effects on every article that uses the module!"
 msgstr ""
@@ -4473,6 +4468,14 @@ msgstr "Ungültiges lokales Datums- / Uhrzeitformat"
 #: includes/include.lang_edit.php:123
 msgid "An error occurred during saving the changes"
 msgstr "Während dem Speichern der  Änderungen ist ein Fehler aufgetreten"
+
+#: includes/include.lang_edit.php:193
+msgid "Left to right"
+msgstr "Links nach rechts"
+
+#: includes/include.lang_edit.php:194
+msgid "Right to left"
+msgstr "Rechts nach Links"
 
 #: includes/include.lang_edit.php:206
 #: ../data/config/production/cfg_actions.inc.php:122
@@ -5953,6 +5956,13 @@ msgstr "Datenbank"
 #: includes/include.system_sysvalues.php:226
 msgid "Charset"
 msgstr "Zeichensatz"
+
+#: includes/include.system_wysiwyg.php:47
+msgid ""
+"Configuration of the current WYSIWYG editor using this page is not supported"
+msgstr ""
+"Die Konfiguration des derzeitigen WYSIWYG-Editors über diese Seite wird "
+"nicht unterstützt"
 
 #: includes/include.todo.popup.php:38
 msgid "Add TODO item"
