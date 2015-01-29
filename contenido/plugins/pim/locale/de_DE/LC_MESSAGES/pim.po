@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-07 14:47+0100\n"
-"PO-Revision-Date: 2015-01-27 10:23+0100\n"
+"POT-Creation-Date: 2015-01-29 12:12+0100\n"
+"PO-Revision-Date: 2015-01-29 12:13+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language: de_DE\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.6.4\n"
 "X-Poedit-SearchPath-0: C:\\projects\\workspace\\contenido\\contenido\\plugins"
 "\\pim\n"
 
@@ -149,7 +149,7 @@ msgstr ""
 "Dieses Plugin wird vom Plugin <strong>%s</strong> vorausgesetzt, sodass Sie "
 "es nicht deaktivieren k&ouml;nnen."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:261
+#: classes/setup/class.pimpluginsetup.uninstall.php:264
 #, php-format
 msgid ""
 "The plugin <strong>%s</strong> has been successfully removed. To apply the "
@@ -158,7 +158,7 @@ msgstr ""
 "Das Plugin <strong>%s</strong> wurde erfolgreich entfernt. Damit die &Auml;"
 "nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:276
+#: classes/setup/class.pimpluginsetup.uninstall.php:279
 #, php-format
 msgid ""
 "This plugin are required by the plugin <strong>%s</strong>, so you can not "
@@ -167,12 +167,12 @@ msgstr ""
 "Dieses Plugin wird vom Plugin <strong>%s</strong> vorausgesetzt, sodass Sie "
 "es nicht entfernen k&ouml;nnen."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:325
+#: classes/setup/class.pimpluginsetup.uninstall.php:328
 #, php-format
 msgid "The pluginfolder <strong>%s</strong> has been successfully uninstalled."
 msgstr "Der Plugin-Ordner <strong>%s</strong> wurde erfolgreich entfernt."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:327
+#: classes/setup/class.pimpluginsetup.uninstall.php:330
 #, php-format
 msgid "The pluginfolder <strong>%s</strong> could not be uninstalled."
 msgstr "Der Plugin-Ordner <strong>%s</strong> konnte nicht entfernt werden."
@@ -188,6 +188,16 @@ msgstr ""
 #: classes/setup/class.pimpluginsetup.update.php:81
 msgid "You have to update the same plugin"
 msgstr "Sie m&uuml;ssen das gleiche Plugin aktualisieren"
+
+#: classes/view/class.pimpluginview.dependencies.php:76
+#, php-format
+msgid "This plugin has a dependency to plugin &quot;%s&quot;<br />"
+msgstr ""
+"Dieses Plugin hat eine Abh&auml;ngigkeit zum Plugin &quot;%s&quot;<br />"
+
+#: classes/view/class.pimpluginview.dependencies.php:80
+msgid "This plugin has no dependencies to other plugins"
+msgstr "Dieses Plugin hat keine Abh&auml;ngigkeit zu anderen Plugins"
 
 #: classes/view/class.pimpluginview.navsub.php:128
 #: classes/view/class.pimpluginview.navsub.php:147
@@ -214,126 +224,130 @@ msgstr "Zugriff verweigert"
 msgid "Currently the plugin system is disabled via configuration"
 msgstr "Momentan ist das Plugin-System via der Konfiguration deaktiviert"
 
-#: includes/include.right_bottom.php:109
+#: includes/include.right_bottom.php:118
 msgid "Y-m-d"
 msgstr "d.m.Y"
 
-#: includes/include.right_bottom.php:123
+#: includes/include.right_bottom.php:132
 msgid "Set execution order down"
 msgstr "Ausf&uuml;hrungsreihenfolge nach unten setzen"
 
-#: includes/include.right_bottom.php:124
+#: includes/include.right_bottom.php:133
 msgid "Set execution order up"
 msgstr "Ausf&uuml;hrungsreihenfolge nach oben setzen"
 
-#: includes/include.right_bottom.php:126
+#: includes/include.right_bottom.php:135
 msgid "Installed since"
 msgstr "Installiert seit"
 
-#: includes/include.right_bottom.php:127
+#: includes/include.right_bottom.php:136 includes/include.right_bottom.php:185
 msgid "Author"
 msgstr "Autor"
 
-#: includes/include.right_bottom.php:128
+#: includes/include.right_bottom.php:137 includes/include.right_bottom.php:186
 msgid "Contact"
 msgstr "Kontakt"
 
-#: includes/include.right_bottom.php:130 includes/include.right_bottom.php:132
+#: includes/include.right_bottom.php:139 includes/include.right_bottom.php:141
 msgid "Update"
 msgstr "Aktualisieren"
 
-#: includes/include.right_bottom.php:131
+#: includes/include.right_bottom.php:140
 msgid "Please choose your new file"
 msgstr "Plugin-Paket auswählen"
 
-#: includes/include.right_bottom.php:133
+#: includes/include.right_bottom.php:142
 msgid "Execute uninstall.sql"
 msgstr "uninstall.sql ausführen"
 
-#: includes/include.right_bottom.php:139
+#: includes/include.right_bottom.php:144 includes/include.right_bottom.php:191
+msgid "Dependencies"
+msgstr "Abh&auml;ngigkeiten"
+
+#: includes/include.right_bottom.php:150
 msgid "Disable"
 msgstr "Deaktivieren"
 
-#: includes/include.right_bottom.php:141
+#: includes/include.right_bottom.php:152
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: includes/include.right_bottom.php:146
+#: includes/include.right_bottom.php:157
 msgid ""
 "Are you sure to delete this plugin? Files are not deleted in filesystem."
 msgstr ""
 "Sind Sie sicher, dass Sie dieses Plugin entfernen m&ouml;chten? Die Dateien "
 "werden nicht aus dem Dateisystem entfernt."
 
-#: includes/include.right_bottom.php:146
+#: includes/include.right_bottom.php:157
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
-#: includes/include.right_bottom.php:167
+#: includes/include.right_bottom.php:184
 msgid "Foldername"
 msgstr "Ordnername"
 
-#: includes/include.right_bottom.php:168
+#: includes/include.right_bottom.php:187
 msgid "Install extracted plugin"
 msgstr "Installiere das extrahierte Plugin"
 
-#: includes/include.right_bottom.php:169
+#: includes/include.right_bottom.php:188
 msgid "Install"
 msgstr "Installieren"
 
-#: includes/include.right_bottom.php:170
+#: includes/include.right_bottom.php:189
 msgid "Uninstall extracted plugin (deleted plugin files from filesystem)"
 msgstr ""
 "Entferne das extrahierte Plugin (das entfernte Plugin wird aus dem "
 "Dateisystem gel&ouml;scht)"
 
-#: includes/include.right_bottom.php:171
+#: includes/include.right_bottom.php:190
 msgid "Remove from filesystem"
 msgstr "Vom Dateisystem entfernen"
 
-#: includes/include.right_bottom.php:172
+#: includes/include.right_bottom.php:192
 msgid "Writeable"
 msgstr "Schreibbar"
 
-#: includes/include.right_bottom.php:179
+#: includes/include.right_bottom.php:208
 msgid "Everything looks fine"
 msgstr "Keine Fehler"
 
-#: includes/include.right_bottom.php:182
+#: includes/include.right_bottom.php:211
 msgid "This plugin is not writeable, please set the rights manually"
 msgstr ""
 "Dieses Plugin ist nicht beschreibbar, bitte setzen Sie die Dateirechte "
 "manuell"
 
-#: includes/include.right_bottom.php:194
+#: includes/include.right_bottom.php:223
 msgid "No entries"
 msgstr "Keine Eintr&auml;ge"
 
-#: includes/include.right_bottom.php:198
+#: includes/include.right_bottom.php:227
 msgid "Upload a new plugin"
 msgstr "Neues Plugin hochladen"
 
-#: includes/include.right_bottom.php:199
+#: includes/include.right_bottom.php:228
 msgid "Please choose a plugin package"
 msgstr "Plugin-Paket auswählen"
 
-#: includes/include.right_bottom.php:200
+#: includes/include.right_bottom.php:229
 msgid "Upload plugin package"
 msgstr "Plugin-Paket hochladen"
 
-#: includes/include.right_bottom.php:201
+#: includes/include.right_bottom.php:230
 msgid "Installed Plugins"
 msgstr "Installierte Plugins"
 
-#: includes/include.right_bottom.php:202
+#: includes/include.right_bottom.php:231
 msgid "Not installed Plugins"
 msgstr "Noch nicht installierte Plugins"
 
-#: includes/include.right_bottom.php:203
+#: includes/include.right_bottom.php:232
 msgid "Execution order"
 msgstr "Ausf&uuml;hrungsreihenfolge"
 
-#: includes/include.right_bottom.php:204
+#: includes/include.right_bottom.php:233
 msgid ""
 "If you click on following arrows you can manage the execution order of "
 "plugins. The first plugin (at first position) will be executed first from "

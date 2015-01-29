@@ -34,6 +34,9 @@ if ($cfg['debug']['disable_plugins'] === true) {
 $setup = new PimPluginSetup();
 $setup->setPageClass($page);
 
+// initializing PimPluginViewDependencies class
+$pluginDependenciesView = new PimPluginViewDependencies();
+
 // initializing PimPluginViewNavSub class
 $navSubView = new PimPluginViewNavSub();
 
@@ -99,8 +102,14 @@ while (($plugin = $oItem->next()) !== false) {
     // initialization new template class
     $pagePlugins = new cTemplate();
 
+    // id of plugin
+    $idplugin = $plugin->get('idplugin');
+
     // changed foldername for nav_sub view class
     $navSubView->setPluginFoldername($plugin->get('folder'));
+
+    // display plugin dependencies
+    $pagePlugins->set('s', 'DEPENDENCIES', $pluginDependenciesView->getPluginDependenciesInstalled($idplugin));
 
     // display navigation entries
     $pagePlugins->set('s', 'NAVSUB', $navSubView->getNavSubentries());
@@ -108,7 +117,7 @@ while (($plugin = $oItem->next()) !== false) {
     // date
     $date = date_format(date_create($plugin->get('installed')), i18n('Y-m-d', 'pim'));
 
-    $pagePlugins->set('s', 'IDPLUGIN', $plugin->get('idplugin'));
+    $pagePlugins->set('s', 'IDPLUGIN', $idplugin);
     $pagePlugins->set('s', 'FOLDERNAME', $plugin->get('folder'));
     $pagePlugins->set('s', 'NAME', $plugin->get('name'));
     $pagePlugins->set('s', 'VERSION', $plugin->get('version'));
@@ -132,9 +141,11 @@ while (($plugin = $oItem->next()) !== false) {
     $pagePlugins->set('s', 'LANG_UPDATE_UPLOAD', i18n('Update', 'pim'));
     $pagePlugins->set('s', 'LANG_REMOVE_SQL', i18n('Execute uninstall.sql', 'pim'));
 
+    $pagePlugins->set('s', 'LANG_DEPENDENCIES', i18n('Dependencies', 'pim'));
+
     // enable / disable functionality
     $activeStatus = $plugin->get('active');
-    $tempActiveStatusLink = $sess->url('main.php?area=pim&frame=4&pim_view=activestatus&pluginId=' . $plugin->get('idplugin'));
+    $tempActiveStatusLink = $sess->url('main.php?area=pim&frame=4&pim_view=activestatus&pluginId=' . $idplugin);
     if ($activeStatus == 1) {
         $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/online.gif" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Disable', 'pim') . '</a>');
     } else {
@@ -142,7 +153,7 @@ while (($plugin = $oItem->next()) !== false) {
     }
 
     // uninstall link
-    $tempUninstallLink = $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&uninstallsql=1&pluginId=' . $plugin->get('idplugin'));
+    $tempUninstallLink = $sess->url('main.php?area=pim&frame=4&pim_view=uninstall&uninstallsql=1&pluginId=' . $idplugin);
     $pagePlugins->set('s', 'UNINSTALL_LINK', '<a id="removalLink-' . $plugin->get('idplugin') . '" href="javascript:void(0)" onclick="javascript:Con.showConfirmation(\'' . i18n('Are you sure to delete this plugin? Files are not deleted in filesystem.', 'pim') . '\', function() { window.location.href=\'' . $tempUninstallLink . '\';})">' . i18n('Uninstall', 'pim') . '</a>');
 
     // put foldername into array installedPluginFoldernames
@@ -177,6 +188,7 @@ if (is_dir($cfg['path']['plugins'])) {
                 $pagePlugins->set('s', 'LANG_INSTALL', i18n('Install', 'pim'));
                 $pagePlugins->set('s', 'LANG_TOOLTIP_REMOVE', i18n('Uninstall extracted plugin (deleted plugin files from filesystem)', 'pim'));
 				$pagePlugins->set('s', 'LANG_REMOVE', i18n('Remove from filesystem', 'pim'));
+				$pagePlugins->set('s', 'LANG_DEPENDENCIES', i18n('Dependencies', 'pim'));
 				$pagePlugins->set('s', 'LANG_WRITEABLE', i18n('Writeable', 'pim'));
                 $pagePlugins->set('s', 'FOLDERNAME', $pluginFoldername);
                 $pagePlugins->set('s', 'INSTALL_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=install-extracted&pluginFoldername=' . $pluginFoldername));
@@ -188,6 +200,7 @@ if (is_dir($cfg['path']['plugins'])) {
                 $pagePlugins->set('s', 'AUTHOR', $tempXml->general->author);
                 $pagePlugins->set('s', 'COPYRIGHT', $tempXml->general->copyright);
                 $pagePlugins->set('s', 'MAIL', $tempXml->general->mail);
+                $pagePlugins->set('s', 'DEPENDENCIES', $pluginDependenciesView->getPluginDependenciesExtracted($tempXml));
 
                 // uninstall link
                 if (is_writable($cfg['path']['contenido'] . $cfg['path']['plugins'] . $pluginFoldername)) {

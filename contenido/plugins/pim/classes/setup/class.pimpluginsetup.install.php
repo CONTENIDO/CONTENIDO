@@ -205,9 +205,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Dependencies checks
         $this->_installCheckDependencies();
 
-        // Add new plugin: *_plugins
-        $this->_installAddPlugin();
-
         // Get all area names from database
         $this->_installFillAreas();
 
@@ -241,6 +238,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
         if (parent::getMode() == 2) {
             $this->_installAddDir();
         }
+
+        // Add new plugin: *_plugins
+        $this->_installAddPlugin();
 
         // Success message for new plugins
         // Get only for extracted (1) and installed mode (2)
