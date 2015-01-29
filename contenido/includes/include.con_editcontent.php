@@ -72,9 +72,8 @@ if ($action == 10) {
 $markSubItem = markSubMenuItem(5, true);
 
 // Include wysiwyg editor class
-if (false === ($wysiwygeditor = getEffectiveSetting('wysiwyg', 'editor', false))) {
-    $wysiwygeditor = $cfg['wysiwyg']['editor'];
-}
+$wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
+
 // tinymce 3 not autoloaded, tinymce 4 and all custom editors must be
 if ('tinymce3' === $wysiwygeditor) {
     include($cfg['path'][$wysiwygeditor . '_editorclass']);

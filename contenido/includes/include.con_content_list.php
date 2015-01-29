@@ -46,9 +46,8 @@ $page = new cGuiPage("con_content_list");
 
 $jslibs = '';
 // Include wysiwyg editor class
-if (false === ($wysiwygeditor = getEffectiveSetting('wysiwyg', 'editor', false))) {
-    $wysiwygeditor = $cfg['wysiwyg']['editor'];
-}
+$wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
+
 // tinymce 3 not autoloaded, tinymce 4 is
 // use blacklist in case customer has own editor that is not autoloaded
 if ('tinymce3' === $wysiwygeditor) {
