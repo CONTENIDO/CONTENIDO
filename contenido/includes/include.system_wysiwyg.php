@@ -27,36 +27,36 @@ if ('tinymce3' === $curWysiwygEditor) {
     return;
 }
 
-$pathToWysiwygFolder = cRegistry::getBackendPath() . 'external/wysiwyg/';
-
-// check if form has been sent
-if (isset($_POST['form_sent'])
-&& 'true' === $_POST['form_sent']) {
-    // we got form data
-
-    // input is processed inside WYSIWYG editor class
-    // call used implementation to save input
-    $wysiwygEditorClass = cRegistry::getConfigValue('wysiwyg', $curWysiwygEditor . '_editorclass');
-
-    // clean form from form_sent marker
-    $formData = $_POST;
-    unset($formData['form_sent']);
-    $wysiwygEditorClass::safeConfig($formData);
-}
-
 // prepare to output template
-$pathToConfigClass = '/contenido/classes/class.' . $curWysiwygEditor . '.configuration.php';
+$configClass = 'c' . strtoupper($curWysiwygEditor[0]) . substr($curWysiwygEditor, 1) . 'Configuration';
 
-$classFile = $pathToWysiwygFolder . $curWysiwygEditor . $pathToConfigClass;
-
-if (cFileHandler::exists($classFile)) {
-    require($classFile);
+if (class_exists($configClass)) {
 
     // call WYSIWYG editor configuration code
-    $configClass = 'c' . strtoupper($curWysiwygEditor[0]) . substr($curWysiwygEditor, 1) . 'Configuration';
     if (class_exists($configClass)) {
-        // create class based on variable value
-        new $configClass();
+        // create class instance based on variable value
+        $configClassInstance = new $configClass();
+
+        // check if form has been sent
+        if (isset($_POST['form_sent'])
+        && 'true' === $_POST['form_sent']) {
+            // we got form data
+            
+            // clean form from form_sent marker
+            $formData = $_POST;
+            unset($formData['form_sent']);
+
+            // if form data is correct
+            if (false !== ($formData = $configClassInstance->validateForm($formData))) {
+                // input is processed inside WYSIWYG editor class
+                // call used implementation to save input
+                $wysiwygEditorClass = cRegistry::getConfigValue('wysiwyg', $curWysiwygEditor . '_editorclass');
+
+                $wysiwygEditorClass::safeConfig($formData);
+            }
+        }
+
+        $configClassInstance->showConfigurationForm();
         return;
     }
 }

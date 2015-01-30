@@ -157,9 +157,9 @@ abstract class cWYSIWYGEditor {
         $curWysiwygEditor = getEffectiveSetting('wysiwyg', 'editor', constant('DEFAULT_WYSIWYG_EDITOR'));
 
         // no paths are allowed in WYSIWYG editor
-        // fall back to defaults if any path info is found
+        // fall back to defaults if editor folder does not exist
         if (0 === strlen($curWysiwygEditor)
-        || false === cFileHandler::exists(cRegistry::getConfigValue('path', 'all_wysiwyg'))
+        || false === cFileHandler::exists(cRegistry::getConfigValue('path', 'all_wysiwyg') . $curWysiwygEditor)
         || false !== strpos($curWysiwygEditor, '.')
         || false !== strpos($curWysiwygEditor, '/')
         || false !== strpos($curWysiwygEditor, '\\')) {
@@ -171,10 +171,13 @@ abstract class cWYSIWYGEditor {
 
     /**
      * Saves configuration of WYSIWYG editor into a file
+     * This function does not validate input! This has to be done by classes that extend cWYSIWYGEditor
+     * because this class does not know what each WYSIWYG editor expects.
+     * @param array Array with configuration values for the current WYSIWYG editor to save
      * @return array Array with values that were not accepted
      */
     public static function safeConfig($config) {
-            $erroneousSettings = array();
+        $erroneousSettings = array();
 
         // specify filename scheme
         // for tinymce 4 this will be config.wysiwyg_tinymce4.php
@@ -183,20 +186,12 @@ abstract class cWYSIWYGEditor {
         // get path to current config folder
         $configPath = cRegistry::getConfigValue('path', 'contenido_config');
 
-var_dump(cRegistry::getConfigValue('path', 'contenido_config'));
-        $validInput = true;
-        echo '<pre>';
-        var_dump($config);
-        echo '</pre>';
+        // write content to file as array in $cfg['tinymce4']
+        $filePrefix = '<?php ' . PHP_EOL;
+        $filePrefix .= "defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');\n";
+        $filePrefix .= 'global $cfg;' . PHP_EOL . PHP_EOL;
 
-        // the content to write to file
-        $content = '<?php function getSettings() { return json_decode(';
-        $content .= json_encode($config);
-        $content .= ');}';
-        if (false === $validInput) {
-            $erroneousSettings['saving'] = array('input' => 'invalid input');
-            return $erroneousSettings;
-        }
+        $content = $filePrefix . '$cfg[\'tinymce4\'] = ' . var_export($config, true) . ';' . PHP_EOL;
 
         // first try to write then check what went wrong in case of error
         if (true !== cFileHandler::write($configPath . $configFile, $content)) {

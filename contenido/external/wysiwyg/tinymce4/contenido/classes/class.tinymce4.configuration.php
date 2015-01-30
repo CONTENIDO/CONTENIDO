@@ -16,7 +16,105 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 class cTinymce4Configuration {
-    function __construct() {
+    public function __construct() {
+        
+    }
+    
+    private function _checkType($type, $value) {
+        if (true === empty($value)) {
+            return true;
+        }
+        if (true === isset($value)) {
+            // parameter is k   nown, check it using type expression
+            return preg_match($type, $value);
+        }
+        
+        return false;
+    }
+
+    private function _checkIsset(array $haystack, array $needles) {
+        if (count($haystack) !== count($needles)) {
+            return false;
+        }
+        foreach ($needles as $needle) {
+            if (false === isset($haystack[$needle])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function _validateToolbarN($toolbarData) {
+        // do not use cRequestValidator instance because it does not support multi-dimensional arrays
+        if (false === $this->_checkType('/^[a-zA-Z0-9 \-\|_]*$/', $toolbarData)
+                || false !== strpos($toolbarData, '||')) {
+                    return false;
+                }
+    
+                return true;
+    }
+    
+    /**
+     * 
+     * @param unknown $config
+     * @return multitype:string |boolean
+     */
+    public function validateForm($config) {
+        // Checks for cross site requests and cross site scripting are omitted due to time constraints
+
+        // remove x and y values from image submit button in in form
+        unset($config['x']);
+        unset($config['y']);
+
+        // check if all array entries actually exist
+        // abort if too many values are encountered
+        $shouldArrayStructure =  array (
+            'tinymce4_full' =>
+            array (
+                    'toolbar1',
+                    'toolbar2',
+                    'toolbar3',
+                    'plugins'
+            ),
+            'tinymce4_fullscreen' =>
+            array (
+                    'toolbar1',
+                    'toolbar2',
+                    'toolbar3',
+                    'plugins'
+            ),
+            'tinymce4',
+            'externalplugin'
+        );
+        if (false === $this->_checkIsset($config['tinymce4_full'], $shouldArrayStructure['tinymce4_full'])) {
+            return false;
+        }
+        if (false === $this->_checkIsset($config['tinymce4_fullscreen'], $shouldArrayStructure['tinymce4_fullscreen'])) {
+            return false;
+        }
+        if (false === isset($config['tinymce4'])) {
+            return false;
+        }
+        if (count($shouldArrayStructure) !== count($config)) {
+            return false;
+        }
+
+        // do not use cRequestValidator instance because it does not support multi-dimensional arrays
+        if (false === $this->_validateToolbarN($config['tinymce4_full']['toolbar1'])
+        || false === $this->_validateToolbarN($config['tinymce4_full']['toolbar2'])
+        || false === $this->_validateToolbarN($config['tinymce4_full']['toolbar3'])
+        || false === $this->_validateToolbarN($config['tinymce4_fullscreen']['toolbar1'])
+        || false === $this->_validateToolbarN($config['tinymce4_fullscreen']['toolbar2'])
+        || false === $this->_validateToolbarN($config['tinymce4_fullscreen']['toolbar3'])) {
+            return false;
+        }
+
+        // $config contains only valid content
+        return $config;
+    }
+
+    public function showConfigurationForm() {
         $curWysiwygEditor = getEffectiveSetting('wysiwyg', 'editor', 'tinymce3');
         $tmpl = new cTemplate();
 
@@ -40,7 +138,9 @@ class cTinymce4Configuration {
         $tmpl->set('s', 'CONTENIDO_LISTS_LINK_DESCRIPTION', i18n('Provide jump lists in link insertion dialog'));
         $tmpl->set('s', 'TINYMCE4CONFIG_JSON_FIELD_EXPLANATION', i18n('Additional parameters (JSON passed to tinymce constructor)'));
         $tmpl->set('s', 'TINY4CONFIG_JSON_REQUIRED_WARNING', i18n('Make sure your input is valid JSON, otherwise input will not be accepted!'));
-
+        $tmpl->set('s', 'PLUGINS_TO_LOAD', i18n('Plugins to load'));
+        $tmpl->set('s', 'PLUGIN_NAME', i18n('Plugin name'));
+        $tmpl->set('s', 'PLUGIN_URL', i18n('Plugin URL'));
 
         // prepare to output template
         $pathToWysiwygFolder = cRegistry::getBackendPath() . 'external/wysiwyg/';
@@ -48,4 +148,3 @@ class cTinymce4Configuration {
         $tmpl->generate($pathToWysiwygFolder . $curWysiwygEditor . $pathToTemplateInsideEditorFolder);
     }
 }
-

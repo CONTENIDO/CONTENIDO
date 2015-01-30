@@ -266,7 +266,7 @@ class cRequestValidator {
                 // parameter is known, check it...
                 $result = preg_match($this->_check[$type][$key], $value);
             } else {
-                // unknown parameter. Will return tru
+                // unknown parameter. Will return true
                 $result = true;
             }
         }

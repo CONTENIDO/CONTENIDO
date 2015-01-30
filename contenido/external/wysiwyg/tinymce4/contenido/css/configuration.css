@@ -1,0 +1,29 @@
+#tinymcefourconfiguration #externalplugins label {
+    width: 7em;
+}
+
+#tinymcefourconfiguration label:not(.checkbox) {
+    float: left;
+    width: 5em;
+}
+
+#tinymcefourconfiguration input[type=text] {
+    box-sizing: border-box;
+    width: 90%;
+    margin-bottom: 0.5em;
+}
+
+#tinymcefourconfiguration textarea {
+    box-sizing: border-box;
+    height: 5cm;
+    width: 90%;
+}
+
+#tinymcefourconfiguration .save {
+    cursor: pointer;
+}
+
+fieldset + fieldset {
+    margin-top: 1em;
+}
+

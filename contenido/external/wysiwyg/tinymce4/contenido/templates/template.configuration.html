@@ -61,8 +61,19 @@
         <p>{TINY4CONFIG_JSON_REQUIRED_WARNING}</p>
         <textarea id="custom_config" name="tinymce4" style="box-sizing: border-box; height: 5cm; width: 90%;"></textarea>
     </fieldset>
+    <fieldset id="externalplugins">
+        <legend>{PLUGINS_TO_LOAD}</legend>
+        <div class="externalplugin"></div>
+        <label for="2">{PLUGIN_NAME}</label>
+        <input id="2" name="externalplugin[1][name]" type="text"><br>
+        <label>{PLUGIN_URL}</label>
+        <input name="externalplugin[1][path]" type="text">
+        </div>
+    </fieldset>
+    
     <p>
-    <input type="image" alt ="{SAVE_CHANGES}" title="{SAVE_CHANGES}" src="{BACKEND_URL}images/but_ok.gif" />
+        <input type="image" alt ="{SAVE_CHANGES}" title="{SAVE_CHANGES}" src="{BACKEND_URL}images/but_ok.gif" />
+    </p>
 </form>
 <!-- /configuration -->
     </body>

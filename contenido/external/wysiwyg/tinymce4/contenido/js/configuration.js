@@ -9,4 +9,7 @@ jQuery("#tinymcefourconfiguration").on("submit", function (ev) {
 });
 
 // hack not selector for ie8
-jQuery('label').not(".checkbox").css({"float": "left", "width": "5em"});
+jQuery('fieldset').not('#externalplugins').find('label').not(".checkbox").css({"float": "left", "width": "5em"});
+
+// add plus buttons to specify multiple external plugins
+jQuery('#externalplugins').find('#externalplugin').append(jQuery('<input type="button" />'));

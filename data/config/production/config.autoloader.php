@@ -506,5 +506,6 @@ return array(
     'cXmlBase' => 'contenido/classes/xml/class.xml.base.php',
     'cXmlReader' => 'contenido/classes/xml/class.xml.reader.php',
     'cXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
+    'cTinymce4Configuration' => 'contenido/external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php',
     'cTinyMCE4Editor' => 'contenido/external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php'
 );
