@@ -20,8 +20,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $curWysiwygEditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
 
 if ('tinymce3' === $curWysiwygEditor) {
-    $notSupportedMsg = i18n('Configuration of the current WYSIWYG editor using this page is not supported');
-    echo '<!DOCTYPE html><html><head></head><body>' . $notSupportedMsg . '</body></html>';
+    $page = new cGuiPage('system_wysiwyg', '', '5');
+    $page->displayError(i18n('Configuration of the current WYSIWYG editor using this page is not supported'));
+    $page->render();
 
     // do not process any further input values
     return;

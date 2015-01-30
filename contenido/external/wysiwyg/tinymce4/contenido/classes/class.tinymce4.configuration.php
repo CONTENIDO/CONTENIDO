@@ -114,10 +114,45 @@ class cTinymce4Configuration {
         return $config;
     }
 
+    private function _addLabelWithTextbox($description, $name) {
+        $label = new cHTMLLabel($description, $name);
+        $label->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');
+        
+        $div = new cHTMLDiv($label .  new cHTMLTextbox($name));
+        return $div;
+    }
+    
     public function showConfigurationForm() {
         $curWysiwygEditor = getEffectiveSetting('wysiwyg', 'editor', 'tinymce3');
         $tmpl = new cTemplate();
+        
+        $page = new cGuiPage('system_wysiwyg_tinymce4', '', '5');
+        $auth = cRegistry::getAuth();
+        //if (false === cRegistry::getPerm())
+        
+        $page->displayInfo(i18n('Currently active WYSIWYG editor: ' . cWYSIWYGEditor::getCurrentWysiwygEditorName()));
+        $form = new cGuiTableForm('system_wysiwyg_tinymce4');
+        $form->addHeader(i18n('Tinymce 4 configuration'));
 
+        $frame = cRegistry::getFrame();
+        $area = cRegistry::getArea();
+        $form->setVar('area', $area);
+        $form->setVar('frame', $frame);
+        $form->setVar('action', 'edit_tinymce4');
+
+        $toolbar1 = $this->_addLabelWithTextbox('Toolbar 1:', 'full_toolbar1');
+        $form->add(i18n('Settings of inline editor in fullscreen mode'), $toolbar1->render());
+//         $form->appendContent($content)
+
+        // only system administrators can save system wysiwyg editor settings
+        if ('sysadmin' !== cRegistry::getAuth()->getPerms()) {
+            $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's');
+        }
+
+        $page->set('s', 'FORM', $form->render());
+        $page->set('s', 'RELOAD_HEADER', (false) ? 'true' : 'false');
+        $page->render();
+//return;
         // set general form values
         $tmpl->set('s', 'WYSIWYG_EDITOR_PATH', cRegistry::getBackendUrl() . '/external/wysiwyg/tinymce4/');
         $tmpl->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
