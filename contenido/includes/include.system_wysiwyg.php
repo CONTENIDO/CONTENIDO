@@ -39,13 +39,13 @@ if (class_exists($configClass)) {
         $configClassInstance = new $configClass();
 
         // check if form has been sent
-        if (isset($_POST['form_sent'])
-        && 'true' === $_POST['form_sent']) {
+        if (isset($_POST['action'])
+        && 'edit_tinymce4' === $_POST['action']) {
             // we got form data
             
             // clean form from form_sent marker
             $formData = $_POST;
-            unset($formData['form_sent']);
+            unset($formData['action']);
 
             // if form data is correct
             if (false !== ($formData = $configClassInstance->validateForm($formData))) {

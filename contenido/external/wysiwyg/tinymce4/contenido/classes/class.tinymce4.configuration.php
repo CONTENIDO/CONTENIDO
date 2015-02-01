@@ -17,7 +17,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 class cTinymce4Configuration {
     public function __construct() {
-        
+        // decide whether user is allowed to change values
+        $this->_perm = ('sysadmin' === cRegistry::getAuth()->getPerms());
     }
     
     private function _checkType($type, $value) {
@@ -48,11 +49,11 @@ class cTinymce4Configuration {
     private function _validateToolbarN($toolbarData) {
         // do not use cRequestValidator instance because it does not support multi-dimensional arrays
         if (false === $this->_checkType('/^[a-zA-Z0-9 \-\|_]*$/', $toolbarData)
-                || false !== strpos($toolbarData, '||')) {
-                    return false;
-                }
-    
-                return true;
+        || false !== strpos($toolbarData, '||')) {
+            return false;
+        }
+
+        return true;
     }
     
     /**
@@ -62,10 +63,23 @@ class cTinymce4Configuration {
      */
     public function validateForm($config) {
         // Checks for cross site requests and cross site scripting are omitted due to time constraints
+        
+        // User must be system administrator to change the settings
+        if ('sysadmin' !== cRegistry::getAuth()->getPerms()) {
+            return false;
+        }
 
+        // remove not used area field
+        unset($config['area']);
+        // remove not used frame field
+        unset($config['frame']);
+        // remove not used contenido field
+        unset($config['contenido']);
+        
         // remove x and y values from image submit button in in form
-        unset($config['x']);
-        unset($config['y']);
+        unset($config['submit_x']);
+        unset($config['submit_y']);
+
 
         // check if all array entries actually exist
         // abort if too many values are encountered
@@ -84,9 +98,12 @@ class cTinymce4Configuration {
                     'toolbar3',
                     'plugins'
             ),
-            'tinymce4',
+            'tinymce4'/*
+,
             'externalplugin'
+*/
         );
+
         if (false === $this->_checkIsset($config['tinymce4_full'], $shouldArrayStructure['tinymce4_full'])) {
             return false;
         }
@@ -114,38 +131,89 @@ class cTinymce4Configuration {
         return $config;
     }
 
-    private function _addLabelWithTextbox($description, $name) {
+    private function _addLabelWithTextbox($description, $name, $width = 150) {
         $label = new cHTMLLabel($description, $name);
-        $label->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');
+        $label->setClass("sys_config_txt_lbl");
+        $label->setStyle('width:' . $width . 'px;');
         
-        $div = new cHTMLDiv($label .  new cHTMLTextbox($name));
+        $textbox = new cHTMLTextbox($name);
+        if (false === $this->_perm) {
+            $textbox->updateAttribute('disabled', 'disabled');
+        }
+        $div = new cHTMLDiv($label .  $textbox, 'systemSetting');
+
         return $div;
     }
     
+    private function _addLabelWithCheckbox($description, $name, $value, $checked) {
+        $checkBox = new cHTMLCheckbox($name, $value, str_replace('[]', '_', $name . $value), (true === $checked));
+        $checkBox->setLabelText($description);
+        
+        if (false === $this->_perm) {
+            $checkBox->updateAttribute('disabled', 'disabled');
+        }
+        
+        return $checkBox;
+    }
+    
     public function showConfigurationForm() {
+        $page = new cGuiPage('system_wysiwyg_tinymce4', '', '5');
+        $auth = cRegistry::getAuth();
+        $frame = cRegistry::getFrame();
+        $area = cRegistry::getArea();
+
+        // validate if user has permission to edit this area
+        if (false === cRegistry::getPerm()->have_perm_area_action($area, 'edit_system_wysiwyg_tinymce4')) {
+            $page->displayCriticalError(i18n('Access denied'));
+            $page->render();
+            return;
+        }
+        
         $curWysiwygEditor = getEffectiveSetting('wysiwyg', 'editor', 'tinymce3');
         $tmpl = new cTemplate();
         
-        $page = new cGuiPage('system_wysiwyg_tinymce4', '', '5');
-        $auth = cRegistry::getAuth();
         //if (false === cRegistry::getPerm())
         
         $page->displayInfo(i18n('Currently active WYSIWYG editor: ' . cWYSIWYGEditor::getCurrentWysiwygEditorName()));
         $form = new cGuiTableForm('system_wysiwyg_tinymce4');
         $form->addHeader(i18n('Tinymce 4 configuration'));
 
-        $frame = cRegistry::getFrame();
-        $area = cRegistry::getArea();
         $form->setVar('area', $area);
         $form->setVar('frame', $frame);
         $form->setVar('action', 'edit_tinymce4');
 
-        $toolbar1 = $this->_addLabelWithTextbox('Toolbar 1:', 'full_toolbar1');
-        $form->add(i18n('Settings of inline editor in fullscreen mode'), $toolbar1->render());
-//         $form->appendContent($content)
 
-        // only system administrators can save system wysiwyg editor settings
-        if ('sysadmin' !== cRegistry::getAuth()->getPerms()) {
+        $containerDiv = new cHTMLDiv();
+        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 1:', 'tinymce4_full[toolbar1]'));
+        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 2:', 'tinymce4_full[toolbar2]'));
+        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 3:', 'tinymce4_full[toolbar3]'));
+        $containerDiv->appendContent($this->_addLabelWithTextbox('Plugins:', 'tinymce4_full[plugins]'));
+        $form->add(i18n('Settings of inline editor in fullscreen mode'), $containerDiv->render());
+        
+        $containerDiv = new cHTMLDiv();
+        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 1:', 'tinymce4_fullscreen[toolbar1]'));
+        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 2:', 'tinymce4_fullscreen[toolbar2]'));
+        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 3:', 'tinymce4_fullscreen[toolbar3]'));
+        $containerDiv->appendContent($this->_addLabelWithTextbox('Plugins:', 'tinymce4_fullscreen[plugins]'));
+        $form->add(i18n('Settings of editor in separate editor page'), $containerDiv->render());
+        
+        // GZIP editor over HTTP using tinymce's library
+        $containerDiv = new cHTMLDiv();
+        $containerDiv->appendContent($this->_addLabelWithCheckbox('Gzip Tinymce (only activate if server does not compress content already)', 'contenido_gzip', 'contenido_gzip', false));
+        $form->add(i18n('contenido_gzip'), $containerDiv->render());
+        
+        // Add jump lists to tinymce's dialogs
+        $containerDiv = new cHTMLDiv();
+        $containerDiv->appendContent($this->_addLabelWithCheckbox('Provide jump lists in image insertion dialog', 'contenido_lists[]', 'image'));
+        $containerDiv->appendContent($this->_addLabelWithCheckbox('Provide jump lists in link insertion dialog', 'contenido_lists[]', 'link'));
+        $form->add(i18n('contenido_lists'), $containerDiv->render());
+        
+        //add textarea for custom tinymce 4 settings
+        $textarea = new cHTMLTextarea('tinymce4');
+        $form->add(i18n('Additional parameters (JSON passed to tinymce constructor)'), $textarea->render());
+        
+        // check permission to save system wysiwyg editor settings
+        if (false === $this->_perm) {
             $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's');
         }
 
