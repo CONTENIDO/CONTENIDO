@@ -290,7 +290,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting('toolbar3', 'table | formatselect fontselect fontsizeselect', true);
                 $this->_setSetting('plugins',  'charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor',  true);
 
-                $aCustSettings = getEffectiveSettingsByType('tinymce4_full');
+//                 $aCustSettings = getEffectiveSettingsByType('tinymce4_full');
+                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', 'tinymce4_full');
+                var_dump($aCustSettings);
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -306,7 +308,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 // load some plugins
                 $this->_setSetting('plugins', 'charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', true);
 
-                $aCustSettings = getEffectiveSettingsByType("tinymce4_fullscreen");
+//                 $aCustSettings = getEffectiveSettingsByType("tinymce4_fullscreen");
+                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', 'tinymce4_fullscreen');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }

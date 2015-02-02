@@ -37,7 +37,7 @@ if (class_exists($configClass)) {
     if (class_exists($configClass)) {
         // create class instance based on variable value
         $configClassInstance = new $configClass();
-var_dump($_GET);
+
         // check if form has been sent
         $formMainSubmitBtn = isset($_POST['action']) && 'edit_tinymce4' === $_POST['action'];
         $deleteExternalPluginBtn = isset($_GET['action']) && 'system_wysiwyg_tinymce4_delete_item' === $_GET['action'];

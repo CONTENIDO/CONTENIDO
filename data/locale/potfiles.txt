@@ -461,7 +461,6 @@
 ./external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php
 ./external/wysiwyg/tinymce4/contenido/config.php
 ./external/wysiwyg/tinymce4/contenido/editor.php
-./external/wysiwyg/tinymce4/contenido/templates/template.configuration.html
 ./external/wysiwyg/tinymce4/contenido/templates/template.tinymce_tpl.html
 ./external/wysiwyg/tinymce4/tinymce/js/tinymce/plugins/example/dialog.html
 ./external/wysiwyg/tinymce4/tinymce/js/tinymce/tinymce.gzip.php
@@ -830,6 +829,7 @@
 ./templates/standard/template.system_purge.html
 ./templates/standard/template.system_variables.html
 ./templates/standard/template.system_variables_block.html
+./templates/standard/template.system_wysiwyg_tinymce4.html
 ./templates/standard/template.tplcfg_edit_form.html
 ./templates/standard/template.tpl_edit_form.html
 ./templates/standard/template.tpl_overview.html
@@ -865,3 +865,4 @@
 ../data/config/production/config.path.php
 ../data/config/production/config.php
 ../data/config/production/config.templates.php
+../data/config/production/config.wysiwyg_tinymce4.php
