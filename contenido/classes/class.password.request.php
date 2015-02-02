@@ -267,7 +267,7 @@ class cPasswordRequest {
         $userPwRepeatBox->removeAttribute('size');
 
         $sendBtn = new cHTMLButton('submit');
-        $sendBtn->setAttribute(type, 'image');
+        $sendBtn->setAttribute('type', 'image');
         $sendBtn->setAttribute('src', 'images/submit.gif');
         $sendBtn->setAttribute('alt', i18n('Submit'));
         $sendBtn->setAttribute('title', i18n('Submit'));
