@@ -37,23 +37,29 @@ if (class_exists($configClass)) {
     if (class_exists($configClass)) {
         // create class instance based on variable value
         $configClassInstance = new $configClass();
-
+var_dump($_GET);
         // check if form has been sent
-        if (isset($_POST['action'])
-        && 'edit_tinymce4' === $_POST['action']) {
+        $formMainSubmitBtn = isset($_POST['action']) && 'edit_tinymce4' === $_POST['action'];
+        $deleteExternalPluginBtn = isset($_GET['action']) && 'system_wysiwyg_tinymce4_delete_item' === $_GET['action'];
+        if ($formMainSubmitBtn || $deleteExternalPluginBtn) {
             // we got form data
             
             // clean form from form_sent marker
             $formData = $_POST;
             unset($formData['action']);
 
-            // if form data is correct
-            if (false !== ($formData = $configClassInstance->validateForm($formData))) {
-                // input is processed inside WYSIWYG editor class
-                // call used implementation to save input
-                $wysiwygEditorClass = cRegistry::getConfigValue('wysiwyg', $curWysiwygEditor . '_editorclass');
-
-                $wysiwygEditorClass::safeConfig($formData);
+            if ($formMainSubmitBtn) {
+                // check form data is correct
+                if (false !== ($formData = $configClassInstance->validateForm($formData))) {
+                    // input is processed inside WYSIWYG editor class
+                    // call used implementation to save input
+                    $wysiwygEditorClass = cRegistry::getConfigValue('wysiwyg', $curWysiwygEditor . '_editorclass');
+    
+                    $wysiwygEditorClass::safeConfig($formData);
+                }
+            } else {
+                // delete external plugin button
+                $configClassInstance->removeExternalPluginLoad($_GET);
             }
         }
 

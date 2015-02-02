@@ -57,13 +57,13 @@ class cTinymce4Configuration {
     }
     
     /**
-     * 
-     * @param unknown $config
+     * Function to validate form from showConfigurationForm() 
+     * @param array $config The post parameters of submitted form
      * @return multitype:string |boolean
      */
     public function validateForm($config) {
         // Checks for cross site requests and cross site scripting are omitted due to time constraints
-        
+        echo "validate";
         // User must be system administrator to change the settings
         if ('sysadmin' !== cRegistry::getAuth()->getPerms()) {
             return false;
@@ -98,10 +98,8 @@ class cTinymce4Configuration {
                     'toolbar3',
                     'plugins'
             ),
-            'tinymce4'/*
-,
-            'externalplugin'
-*/
+            'tinymce4',
+            'externalplugins'
         );
 
         if (false === $this->_checkIsset($config['tinymce4_full'], $shouldArrayStructure['tinymce4_full'])) {
@@ -128,7 +126,20 @@ class cTinymce4Configuration {
         }
 
         // $config contains only valid content
+        var_dump($config);
         return $config;
+    }
+    
+    /**
+     * Do not load external plugin if user has permission to request that 
+     * @param array $form get parameters from deletion link
+     */
+    public function removeExternalPluginLoad($form) {
+        if (false === $this->_perm) {
+            return;
+        }
+        echo "requested external plugin removal from loading list";
+        // TODO: remove the external plugin from the list of plugins to load
     }
 
     private function _addLabelWithTextbox($description, $name, $width = 150) {
@@ -145,6 +156,14 @@ class cTinymce4Configuration {
         return $div;
     }
     
+    /**
+     * Generates a cHTMLCheckbox based on function arguments and sets its disabled state based on permission check
+     * @param string $description Description that will be displayed in checkbox label
+     * @param string $name Name of checkbox, this is important for fetching values from sent form
+     * @param string $value The value that will be sent as content in the name key
+     * @param bool $checked Whether this checkbox is setup as checked
+     * @return cHTMLCheckbox Checkbox with label
+     */
     private function _addLabelWithCheckbox($description, $name, $value, $checked) {
         $checkBox = new cHTMLCheckbox($name, $value, str_replace('[]', '_', $name . $value), (true === $checked));
         $checkBox->setLabelText($description);
@@ -154,6 +173,125 @@ class cTinymce4Configuration {
         }
         
         return $checkBox;
+    }
+    
+    /**
+     * This function lists all external plugins that should be loaded in a table
+     * @return string
+     */
+    private function _listExternalPlugins() {
+        /// TODO: use a preference loading function for plugins to list
+        $externalPlugins = array(array('name' => 'test', 'url' => 'path/to/test/plugin/plugins.js'));
+        
+        // build a table
+        $table = new cHTMLTable();
+        $table->setClass('generic');
+        
+        // table row
+        $headrow = new cHTMLTableRow();
+        
+        // table column 1 (plugin name)
+        $col = new cHTMLTableHead();
+        $col->appendContent(i18n('name'));
+        $headrow->appendContent($col);
+        
+        // table column 2 (plugin url)
+        $col = new cHTMLTableHead();
+        $col->appendContent(i18n('url'));
+        $headrow->appendContent($col);
+        
+        // table column 3 (user actions)
+        $col = new cHTMLTableHead();
+        $col->appendContent(i18n('Action'));
+        $headrow->appendContent($col);
+        
+        // add columns to table
+        $table->appendContent($headrow);
+        
+        // build table body
+        $tbody = new cHTMLTableBody();
+        $i = 0;
+        $n = count($externalPlugins);
+        for ($i; $i < $n; $i++) {
+            // new tr
+            $row = new cHTMLTableRow();
+            
+            // create new td
+            $td = new cHTMLTableData();
+            $td->appendContent($externalPlugins[$i]['name']);
+            
+            // insert hidden input field
+            $input = new cHTMLFormElement();
+            $input->setAttribute('type', 'hidden');
+            $input->setAttribute('name', 'externalplugins[' . $i . '][name]');
+            $input->setAttribute('value', $externalPlugins[$i]['name']);
+            $td->appendContent($input);
+            
+            // add td to tr
+            $row->appendContent($td);
+
+            // create new td
+            $td = new cHTMLTableData();
+            $td->appendContent($externalPlugins[$i]['url']);
+            
+            // insert hidden input field
+            $input = new cHTMLFormElement();
+            $input->setAttribute('type', 'hidden');
+            $input->setAttribute('name', 'externalplugins[' . $i . '][url]');
+            $input->setAttribute('value', $externalPlugins[$i]['url']);
+            $td->appendContent($input);
+            
+            // add td to tr
+            $row->appendContent($td);
+            
+            // create new td
+            $td = new cHTMLTableData();
+            if (true === $this->_perm) {
+                // Edit/delete links only for sysadmin
+                $oLinkDelete = new cHTMLLink();
+                $oLinkDelete->setCLink(cRegistry::getArea(), cRegistry::getFrame(), "system_wysiwyg_tinymce4_delete_item");
+                $oLinkDelete->setCustom("external_plugin_idx", urlencode($i));
+                $img = new cHTMLImage(cRegistry::getBackendUrl() . cRegistry::getConfigValue('path', 'images') . 'delete.gif');
+                $img->setAttribute('alt', i18n("Delete"));
+                $img->setAttribute('title', i18n("Delete"));
+                $oLinkDelete->appendContent($img);
+                $td->appendContent($oLinkDelete);
+            }
+            
+            // add td to tr
+            $row->appendContent($td);
+            
+            // insert row into table body
+            $tbody->appendContent($row);
+        }
+        // append empty row to let user enter new plugins
+        $row = new cHTMLTableRow();
+        
+        // create new td for plugin name
+        $td = new cHTMLTableData();
+        $input = new cHTMLFormElement('externalplugins[' . $i . '][name]');
+        $td->appendContent($input);
+        $row->appendContent($td);
+        
+        // create new td for plugin url
+        $td = new cHTMLTableData();
+        $input = new cHTMLFormElement('externalplugins[' . $i . '][url]');
+        $td->appendContent($input);
+        $row->appendContent($td);
+        
+        // empty action column
+        $td = new cHTMLTableData();
+        $row->appendContent($td);
+        
+        // append row to table body
+        $tbody->appendContent($row);
+
+
+        // insert table body into table
+        $table->appendContent($tbody);
+
+        // return table as string
+        return $table->render();
     }
     
     public function showConfigurationForm() {
@@ -199,17 +337,23 @@ class cTinymce4Configuration {
         
         // GZIP editor over HTTP using tinymce's library
         $containerDiv = new cHTMLDiv();
-        $containerDiv->appendContent($this->_addLabelWithCheckbox('Gzip Tinymce (only activate if server does not compress content already)', 'contenido_gzip', 'contenido_gzip', false));
+        $containerDiv->appendContent($this->_addLabelWithCheckbox('GZIP Tinymce (only activate if server does not compress content already)', 'contenido_gzip', 'contenido_gzip', false, false));
         $form->add(i18n('contenido_gzip'), $containerDiv->render());
         
         // Add jump lists to tinymce's dialogs
         $containerDiv = new cHTMLDiv();
-        $containerDiv->appendContent($this->_addLabelWithCheckbox('Provide jump lists in image insertion dialog', 'contenido_lists[]', 'image'));
-        $containerDiv->appendContent($this->_addLabelWithCheckbox('Provide jump lists in link insertion dialog', 'contenido_lists[]', 'link'));
+        $containerDiv->appendContent($this->_addLabelWithCheckbox('Provide jump lists in image insertion dialog', 'contenido_lists[]', 'image', true));
+        $containerDiv->appendContent($this->_addLabelWithCheckbox('Provide jump lists in link insertion dialog', 'contenido_lists[]', 'link', true));
         $form->add(i18n('contenido_lists'), $containerDiv->render());
+        
+        // external plugins
+        $containerDiv = new cHTMLDiv();
+        $containerDiv->appendContent($this->_listExternalPlugins());
+        $form->add(i18n('External plugins to load'), $containerDiv);
         
         //add textarea for custom tinymce 4 settings
         $textarea = new cHTMLTextarea('tinymce4');
+        $textarea->setAttribute('style', 'width: 99%;');
         $form->add(i18n('Additional parameters (JSON passed to tinymce constructor)'), $textarea->render());
         
         // check permission to save system wysiwyg editor settings
@@ -220,34 +364,5 @@ class cTinymce4Configuration {
         $page->set('s', 'FORM', $form->render());
         $page->set('s', 'RELOAD_HEADER', (false) ? 'true' : 'false');
         $page->render();
-//return;
-        // set general form values
-        $tmpl->set('s', 'WYSIWYG_EDITOR_PATH', cRegistry::getBackendUrl() . '/external/wysiwyg/tinymce4/');
-        $tmpl->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
-        $tmpl->set('s', 'SAVE_CHANGES', i18n('Save changes'));
-
-        // fill out form values with localised strings
-        $tmpl->set('s', 'WYSIWYG_CONFIG_TITLE', i18n('Tinymce 4 configuration'));
-        $tmpl->set('s', 'TINYMCE_INLINE_FULLSCREEN_DESCRIPTION', i18n('Settings of inline editor in fullscreen mode'));
-        $tmpl->set('s', 'TINYMCE_EDITORPAGE_DESCRIPTION', i18n('Settings of editor in separate editor page'));
-        $tmpl->set('s', 'TOOLBARS_AND_PLUGINS', i18n('Toolbars and plugins'));
-        $tmpl->set('s', 'SPACE_SEPARATED_LIST_VALUES', i18n('Enter lists of values, separate entries by space charactes.'));
-        $tmpl->set('s', 'TOOLBAR_1', 'Toolbar 1');
-        $tmpl->set('s', 'TOOLBAR_2', 'Toolbar 2');
-        $tmpl->set('s', 'TOOLBAR_3', 'Toolbar 3');
-        $tmpl->set('s', 'PLUGINS', 'Plugins');
-        $tmpl->set('s', 'CONTENIDO_GZIP_DESCRIPTION', i18n('Gzip Tinymce (only activate if server does not compress content already)'));
-        $tmpl->set('s', 'CONTENIDO_LISTS_IMAGE_DESCRIPTION', i18n('Provide jump lists in image insertion dialog'));
-        $tmpl->set('s', 'CONTENIDO_LISTS_LINK_DESCRIPTION', i18n('Provide jump lists in link insertion dialog'));
-        $tmpl->set('s', 'TINYMCE4CONFIG_JSON_FIELD_EXPLANATION', i18n('Additional parameters (JSON passed to tinymce constructor)'));
-        $tmpl->set('s', 'TINY4CONFIG_JSON_REQUIRED_WARNING', i18n('Make sure your input is valid JSON, otherwise input will not be accepted!'));
-        $tmpl->set('s', 'PLUGINS_TO_LOAD', i18n('Plugins to load'));
-        $tmpl->set('s', 'PLUGIN_NAME', i18n('Plugin name'));
-        $tmpl->set('s', 'PLUGIN_URL', i18n('Plugin URL'));
-
-        // prepare to output template
-        $pathToWysiwygFolder = cRegistry::getBackendPath() . 'external/wysiwyg/';
-        $pathToTemplateInsideEditorFolder = '/contenido/templates/template.configuration.html';
-        $tmpl->generate($pathToWysiwygFolder . $curWysiwygEditor . $pathToTemplateInsideEditorFolder);
     }
 }
