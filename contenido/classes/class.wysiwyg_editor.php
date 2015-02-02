@@ -22,6 +22,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Backend
  */
 abstract class cWYSIWYGEditor {
+    /**
+     * 
+     * @var string
+     */
+    protected static $_sConfigPrefix = '[\'wysiwyg\']';
 
     /**
      *
@@ -191,7 +196,7 @@ abstract class cWYSIWYGEditor {
         $filePrefix .= "defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');\n";
         $filePrefix .= 'global $cfg;' . PHP_EOL . PHP_EOL;
 
-        $content = $filePrefix . '$cfg[\'tinymce4\'] = ' . var_export($config, true) . ';' . PHP_EOL;
+        $content = $filePrefix . '$cfg' . static::$_sConfigPrefix . ' = ' . var_export($config, true) . ';' . PHP_EOL;
 
         // first try to write then check what went wrong in case of error
         if (true !== cFileHandler::write($configPath . $configFile, $content)) {

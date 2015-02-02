@@ -45,6 +45,11 @@ cInclude('includes', 'functions.lang.php');
  */
 class cTinyMCE4Editor extends cWYSIWYGEditor {
     /**
+     * Sets prefix of config key for saving
+     */
+    protected static $_sConfigPrefix = '[\'wysiwyg\'][\'tinymce4\']';
+
+    /**
      * Stores base url of page
      */
     private $_sBaseURL;
@@ -55,14 +60,24 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     private $_bUseGZIP = false;
 
     public function __construct($sEditorName, $sEditorContent) {
-        global $belang, $cfg, $cfgClient, $client, $lang, $idart;
+        global $idart;
+        
+        $belang = cRegistry::getBackendLanguage();
+        $cfg = cRegistry::getConfig();
+        $client = cRegistry::getClientId();
+        $cfgClient = cRegistry::getClientConfig();
+        $lang = cRegistry::getLanguageId();
 
         parent::__construct($sEditorName, $sEditorContent);
         $this->_setEditor("tinymce4");
 
         // Retrieve all settings for tinymce 4
-        $this->_aSettings = getEffectiveSettingsByType("tinymce4");
+        $this->_aSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4');
 
+        // CEC for template pre processing
+        //var_dump($this->_aSettings);die();
+        $this->_aSettings = cApiCecHook::executeAndReturn('Contenido.WYSIWYG.LoadConfiguration', $this->_aSettings, $this->_sEditor);
+        
         $this->_setSetting("article_url_suffix", 'front_content.php?idart=' . $idart, true);
 
         // Default values
@@ -70,7 +85,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         // apply editor to any element with class CMS_HTML or CMS_HTMLHEAD
         $this->_setSetting('selector', '*.CMS_HTML, *.CMS_HTMLHEAD', true);
 
-        $aPathFragments = explode('/', $cfgClient[$client]["path"]["htmlpath"]);
         $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css");
 
         $this->_setSetting("theme", "modern");
@@ -148,7 +162,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $this->setToolbar(trim(strtolower($sMode)));
 
         $autoFullElements = $this->_aSettings['auto_full_elements'];
-        unset($this->_aSettings['auto_full_elements']);
+        if (true === isset($this->_aSettings['auto_full_elements'])) {
+            unset($this->_aSettings['auto_full_elements']);
+        }
 
         // Specify valid elements that tinymce 4 is allowed to write
 
@@ -213,26 +229,22 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * @param string    sLists    Deprecated, for compatibility, only
      */
     function setLists() {
-        global $lang, $client;
-
-        $sLists = '';
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
+        $aLists = array();
         if (array_key_exists("contenido_lists", $this->_aSettings)) {
-            $sLists = $this->_aSettings["contenido_lists"];
+            $aLists = $this->_aSettings["contenido_lists"];
         }
 
-        $aLists = array();
-        $aLists = explode(',', strtolower(str_replace(' ', '', $sLists)));
-
+        // check if link list is activated
         if (in_array('link', $aLists)) {
             $this->_setSetting('link_list', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=link&lang=' . $lang . '&client=' . $client . '#', true);
         }
+        // check if image list is activated
         if (in_array('image', $aLists)) {
             $this->_setSetting('image_list', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=image&lang=' . $lang . '&client=' . $client . '#', true);
         }
-        // media list does not exist, media plugin still available though
-//         if (in_array('media', $aLists)) {
-//             $this->_setSetting('media_external_list_url', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=media&lang=' . $lang . '&client=' . $client . '#', true);
-//         }
+        // media list does not exist in tinymce 4, media plugin still available though
     }
 
     function setXHTMLMode($bEnabled = true) {
@@ -290,8 +302,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting('toolbar3', 'table | formatselect fontselect fontsizeselect', true);
                 $this->_setSetting('plugins',  'charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor',  true);
 
-//                 $aCustSettings = getEffectiveSettingsByType('tinymce4_full');
-                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', 'tinymce4_full');
+                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_full');
                 var_dump($aCustSettings);
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
@@ -308,8 +319,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 // load some plugins
                 $this->_setSetting('plugins', 'charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', true);
 
-//                 $aCustSettings = getEffectiveSettingsByType("tinymce4_fullscreen");
-                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', 'tinymce4_fullscreen');
+                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_fullscreen');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -326,7 +336,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
                 $this->_setSetting("plugins", "anchor charmap code insertdatetime preview searchreplace print contextmenu paste directionality textcolor", true);
 
-                $aCustSettings = getEffectiveSettingsByType("tinymce4_simple");
+                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_simple');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -341,7 +351,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting("plugins", "contextmenu", true);
                 
 
-                $aCustSettings = getEffectiveSettingsByType("tinymce4_mini");
+                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_mini');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -349,7 +359,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "custom": // Custom toolbar
-                $aCustSettings = getEffectiveSettingsByType("tinymce4_custom");
+                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_custom');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -379,13 +389,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting('menubar', false);
                 $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);
 
-                // auto-resize needs autoresize plugin
-                // http://www.tinymce.com/wiki.php/Plugin:autoresize
-//                 if (!array_key_exists("auto_resize", $this->_aSettings)) {
-//                     $this->_setSetting("auto_resize", "false", true);
-//                 }
-
-                $aCustSettings = getEffectiveSettingsByType("tinymce4_inline");
+                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_inline');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -398,7 +402,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting('toolbar3', "", true);
                 $this->_setSetting('plugins', "anchor code table,searchreplace,contextmenu,paste textcolor", true);
 
-                $aCustSettings = getEffectiveSettingsByType("tinymce_default");
+                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce_default');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }

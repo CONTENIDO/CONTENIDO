@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cTinymce4Configuration {
     private $_perm = false;
     private $_configErrors = array();
-    
+
     /**
      * Constructor function
      * Inits permission
@@ -109,7 +109,7 @@ class cTinymce4Configuration {
      */
     private function _listExternalPlugins() {
         /// TODO: use a preference loading function for plugins to list
-        $externalPlugins = static::get(array(), 'tinymce4','externalplugins');
+        $externalPlugins = static::get(array(), 'wysiwyg','tinymce4','externalplugins');
     
         // build a table
         $table = new cHTMLTable();
@@ -369,7 +369,7 @@ class cTinymce4Configuration {
         $pluginToRemoveIdx = (int) $form['external_plugin_idx'];
 
         // load config through usage of get function
-        $settings = static::get(false, 'tinymce4');
+        $settings = static::get(false, 'wysiwyg', 'tinymce4');
 
         // no config or no external plugins or no plugin with that index means nothing to remove
         if (false === $settings
@@ -425,10 +425,10 @@ class cTinymce4Configuration {
 
 
         $containerDiv = new cHTMLDiv();
-        $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'tinymce4','tinymce4_full', 'toolbar1');
-        $defaultToolbar2 = static::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'tinymce4','tinymce4_full', 'toolbar2');
-        $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect', 'tinymce4','tinymce4_full', 'toolbar3');
-        $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4','tinymce4_full', 'plugins');
+        $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'wysiwyg', 'tinymce4','tinymce4_full', 'toolbar1');
+        $defaultToolbar2 = static::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'wysiwyg', 'tinymce4','tinymce4_full', 'toolbar2');
+        $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect', 'wysiwyg', 'tinymce4','tinymce4_full', 'toolbar3');
+        $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'wysiwyg', 'tinymce4','tinymce4_full', 'plugins');
         $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', 'tinymce4_full[toolbar1]', $defaultToolbar1));
         $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', 'tinymce4_full[toolbar2]', $defaultToolbar2));
         $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 3:', 'tinymce4_full[toolbar3]', $defaultToolbar3));
@@ -436,10 +436,10 @@ class cTinymce4Configuration {
         $form->add(i18n('Settings of editor in separate editor page'), $containerDiv->render());
 
         $containerDiv = new cHTMLDiv();
-        $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'tinymce4','tinymce4_fullscreen', 'toolbar1');
-        $defaultToolbar2 = static::get('link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'tinymce4','tinymce4_fullscreen', 'toolbar2');
-        $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect', 'tinymce4','tinymce4_fullscreen', 'toolbar3');
-        $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4','tinymce4_fullscreen', 'plugins');
+        $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'wysiwyg', 'tinymce4','tinymce4_fullscreen', 'toolbar1');
+        $defaultToolbar2 = static::get('link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'wysiwyg', 'tinymce4','tinymce4_fullscreen', 'toolbar2');
+        $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect', 'wysiwyg', 'tinymce4','tinymce4_fullscreen', 'toolbar3');
+        $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'wysiwyg', 'tinymce4','tinymce4_fullscreen', 'plugins');
         $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', 'tinymce4_fullscreen[toolbar1]', $defaultToolbar1));
         $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', 'tinymce4_fullscreen[toolbar2]', $defaultToolbar2));
         $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 3:', 'tinymce4_fullscreen[toolbar3]', $defaultToolbar3));
@@ -448,15 +448,15 @@ class cTinymce4Configuration {
 
         // GZIP editor over HTTP using tinymce's library
         $containerDiv = new cHTMLDiv();
-        $checked = 'contenido_gzip' === static::get(false, 'tinymce4','contenido_gzip');
+        $checked = 'contenido_gzip' === static::get(false, 'wysiwyg', 'tinymce4','contenido_gzip');
         $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('GZIP TinyMCE (only activate if server does not compress content already)'), 'contenido_gzip', 'contenido_gzip', $checked));
         $form->add(i18n('contenido_gzip'), $containerDiv->render());
 
         // Add jump lists to tinymce's dialogs
         $containerDiv = new cHTMLDiv();
-        $checked = true === ('image' === static::get(false, 'tinymce4','contenido_lists', 'image'));
+        $checked = true === ('image' === static::get(false, 'wysiwyg', 'tinymce4','contenido_lists', 'image'));
         $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in image insertion dialog'), 'contenido_lists[image]', 'image', $checked));
-        $checked = true === ('link' === static::get(false, 'tinymce4','contenido_lists', 'link'));
+        $checked = true === ('link' === static::get(false, 'wysiwyg', 'tinymce4','contenido_lists', 'link'));
         $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in link insertion dialog'), 'contenido_lists[link]', 'link', $checked));
         $form->add(i18n('contenido_lists'), $containerDiv->render());
 

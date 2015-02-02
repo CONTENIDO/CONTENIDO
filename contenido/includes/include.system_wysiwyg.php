@@ -54,7 +54,7 @@ if (class_exists($configClass)) {
                     // input is processed inside WYSIWYG editor class
                     // call used implementation to save input
                     $wysiwygEditorClass = cRegistry::getConfigValue('wysiwyg', $curWysiwygEditor . '_editorclass');
-    
+
                     $wysiwygEditorClass::safeConfig($formData);
                 }
             } else {
