@@ -36,17 +36,18 @@ class cTinymce4Configuration {
      * @param number $width Width of label in px
      * @return cHTMLDiv The div element containing label and textbox
      */
-    private function _addLabelWithTextbox($description, $name, $value = '', $width = 150) {
+    private function _addLabelWithTextarea($description, $name, $value = '', $width = 75) {
         $label = new cHTMLLabel($description, $name);
         $label->setClass("sys_config_txt_lbl");
-        $label->setStyle('width:' . $width . 'px;');
+        $label->setStyle('width:' . $width . 'px; vertical-align: top;');
     
-        $textbox = new cHTMLTextbox($name);
-        $textbox->setAttribute('value', $value);
+        $textarea = new cHTMLTextarea($name);
+        $textarea->setValue($value);
+        $textarea->setAttribute('style', 'box-sizing: border-box; width: 600px;');
         if (false === $this->_perm) {
-            $textbox->updateAttribute('disabled', 'disabled');
+            $textarea->updateAttribute('disabled', 'disabled');
         }
-        $div = new cHTMLDiv($label .  $textbox, 'systemSetting');
+        $div = new cHTMLDiv($label .  $textarea, 'systemSetting');
     
         return $div;
     }
@@ -329,7 +330,7 @@ class cTinymce4Configuration {
             return false;
         }
         if (false === isset($config['tinymce4'])) {
-            $this->_configErrors[] = i18n('Custom configuration of tinymce 4 is not set.');
+            $this->_configErrors[] = i18n('Custom configuration of tinyMCE 4 is not set.');
             return false;
         }
 
@@ -416,7 +417,7 @@ class cTinymce4Configuration {
 
         $page->displayInfo(i18n('Currently active WYSIWYG editor: ' . cWYSIWYGEditor::getCurrentWysiwygEditorName()));
         $form = new cGuiTableForm('system_wysiwyg_tinymce4');
-        $form->addHeader(i18n('Tinymce 4 configuration'));
+        $form->addHeader(i18n('TinyMCE 4 configuration'));
 
         $form->setVar('area', $area);
         $form->setVar('frame', $frame);
@@ -428,10 +429,10 @@ class cTinymce4Configuration {
         $defaultToolbar2 = static::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'tinymce4','tinymce4_full', 'toolbar2');
         $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect', 'tinymce4','tinymce4_full', 'toolbar3');
         $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4','tinymce4_full', 'plugins');
-        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 1:', 'tinymce4_full[toolbar1]', $defaultToolbar1));
-        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 2:', 'tinymce4_full[toolbar2]', $defaultToolbar2));
-        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 3:', 'tinymce4_full[toolbar3]', $defaultToolbar3));
-        $containerDiv->appendContent($this->_addLabelWithTextbox('Plugins:', 'tinymce4_full[plugins]', $defaultPlugins));
+        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', 'tinymce4_full[toolbar1]', $defaultToolbar1));
+        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', 'tinymce4_full[toolbar2]', $defaultToolbar2));
+        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 3:', 'tinymce4_full[toolbar3]', $defaultToolbar3));
+        $containerDiv->appendContent($this->_addLabelWithTextarea('Plugins:', 'tinymce4_full[plugins]', $defaultPlugins));
         $form->add(i18n('Settings of editor in separate editor page'), $containerDiv->render());
 
         $containerDiv = new cHTMLDiv();
@@ -439,24 +440,24 @@ class cTinymce4Configuration {
         $defaultToolbar2 = static::get('link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'tinymce4','tinymce4_fullscreen', 'toolbar2');
         $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect', 'tinymce4','tinymce4_fullscreen', 'toolbar3');
         $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4','tinymce4_fullscreen', 'plugins');
-        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 1:', 'tinymce4_fullscreen[toolbar1]', $defaultToolbar1));
-        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 2:', 'tinymce4_fullscreen[toolbar2]', $defaultToolbar2));
-        $containerDiv->appendContent($this->_addLabelWithTextbox('Toolbar 3:', 'tinymce4_fullscreen[toolbar3]', $defaultToolbar3));
-        $containerDiv->appendContent($this->_addLabelWithTextbox('Plugins:', 'tinymce4_fullscreen[plugins]', $defaultPlugins));
+        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', 'tinymce4_fullscreen[toolbar1]', $defaultToolbar1));
+        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', 'tinymce4_fullscreen[toolbar2]', $defaultToolbar2));
+        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 3:', 'tinymce4_fullscreen[toolbar3]', $defaultToolbar3));
+        $containerDiv->appendContent($this->_addLabelWithTextarea('Plugins:', 'tinymce4_fullscreen[plugins]', $defaultPlugins));
         $form->add(i18n('Settings of inline editor in fullscreen mode'), $containerDiv->render());
 
         // GZIP editor over HTTP using tinymce's library
         $containerDiv = new cHTMLDiv();
         $checked = 'contenido_gzip' === static::get(false, 'tinymce4','contenido_gzip');
-        $containerDiv->appendContent($this->_addLabelWithCheckbox('GZIP Tinymce (only activate if server does not compress content already)', 'contenido_gzip', 'contenido_gzip', $checked));
+        $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('GZIP TinyMCE (only activate if server does not compress content already)'), 'contenido_gzip', 'contenido_gzip', $checked));
         $form->add(i18n('contenido_gzip'), $containerDiv->render());
 
         // Add jump lists to tinymce's dialogs
         $containerDiv = new cHTMLDiv();
         $checked = true === ('image' === static::get(false, 'tinymce4','contenido_lists', 'image'));
-        $containerDiv->appendContent($this->_addLabelWithCheckbox('Provide jump lists in image insertion dialog', 'contenido_lists[image]', 'image', $checked));
+        $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in image insertion dialog'), 'contenido_lists[image]', 'image', $checked));
         $checked = true === ('link' === static::get(false, 'tinymce4','contenido_lists', 'link'));
-        $containerDiv->appendContent($this->_addLabelWithCheckbox('Provide jump lists in link insertion dialog', 'contenido_lists[link]', 'link', $checked));
+        $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in link insertion dialog'), 'contenido_lists[link]', 'link', $checked));
         $form->add(i18n('contenido_lists'), $containerDiv->render());
 
         // external plugins

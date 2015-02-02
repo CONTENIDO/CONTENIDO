@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-02 15:29+0100\n"
+"POT-Creation-Date: 2015-02-02 15:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2264,7 +2264,7 @@ msgid "Config of editor on separate editor page is erroneous."
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:332
-msgid "Custom configuration of tinymce 4 is not set."
+msgid "Custom configuration of tinyMCE 4 is not set."
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:343
@@ -2285,7 +2285,7 @@ msgid "Currently active WYSIWYG editor: "
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:419
-msgid "Tinymce 4 configuration"
+msgid "TinyMCE 4 configuration"
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:435
@@ -2296,8 +2296,21 @@ msgstr ""
 msgid "Settings of inline editor in fullscreen mode"
 msgstr ""
 
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:451
+msgid ""
+"GZIP TinyMCE (only activate if server does not compress content already)"
+msgstr ""
+
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:452
 msgid "contenido_gzip"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:457
+msgid "Provide jump lists in image insertion dialog"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:459
+msgid "Provide jump lists in link insertion dialog"
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:460

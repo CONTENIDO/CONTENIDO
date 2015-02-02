@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-02 15:29+0100\n"
-"PO-Revision-Date: 2015-02-02 15:30+0100\n"
+"POT-Creation-Date: 2015-02-02 15:45+0100\n"
+"PO-Revision-Date: 2015-02-02 15:49+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -2461,8 +2461,8 @@ msgstr ""
 "Die Einstellungen für Editor auf separater Bearbeiten-Seite sind fehlerhaft"
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:332
-msgid "Custom configuration of tinymce 4 is not set."
-msgstr "Es wurde keine zusätzlichen Parameter für Tinymce 4 konfiguriert."
+msgid "Custom configuration of tinyMCE 4 is not set."
+msgstr "Es wurde keine zusätzlichen Parameter für TinyMCE 4 konfiguriert."
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:343
 msgid "Toolbar(s) of editor contain erroneous data."
@@ -2484,8 +2484,8 @@ msgid "Currently active WYSIWYG editor: "
 msgstr "Derzeitig aktiver WYSIWYG-Editor:"
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:419
-msgid "Tinymce 4 configuration"
-msgstr "Tinymce 4-Konfiguration"
+msgid "TinyMCE 4 configuration"
+msgstr "TinyMCE 4-Konfiguration"
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:435
 msgid "Settings of editor in separate editor page"
@@ -2495,9 +2495,24 @@ msgstr "Einstellungen des Editors auf separater Bearbeiten-Seite"
 msgid "Settings of inline editor in fullscreen mode"
 msgstr "Einstellungen des Inline-Editors im Vollbildmodus"
 
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:451
+msgid ""
+"GZIP TinyMCE (only activate if server does not compress content already)"
+msgstr ""
+"Gzip-Kompression für TinyMCE (nur aktivieren, wenn der Server den Inhalt "
+"nicht schon komprimiert ausliefert)"
+
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:452
 msgid "contenido_gzip"
 msgstr "contenido_gzip"
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:457
+msgid "Provide jump lists in image insertion dialog"
+msgstr "Sprunglisten im Einfügen-Dialog für Bilder bereitstellen"
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:459
+msgid "Provide jump lists in link insertion dialog"
+msgstr "Sprunglisten im Einfügen-Dialog für Verknüpfungen bereitstellen"
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:460
 msgid "contenido_lists"
