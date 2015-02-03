@@ -452,6 +452,7 @@
         swapTiny: function(obj) {
             // adjust currently active id
             Con.Tiny.activeId = obj.id;
+            Con.Tiny.activeObject = obj;
         },
 
         /**
@@ -462,16 +463,16 @@
          * @param {String} sContent - original content string
          * @static
          */
-        updateContent: function(sContent) {
+        updateContent: function(sContent, iEditorId) {
             // do nothing if tinymce instance gets rebuilt because of fullscreen change
             if (Con.Tiny.changingFullscreen) {
                 return;
             }
             // If original content was already set do not overwrite
             // this happens if tiny is reopened on same content
-            if ('undefined' === $.type(Con.Tiny.editDataOrg[Con.Tiny.activeId])) {
+            if ('undefined' === typeof(Con.Tiny.editDataOrg[iEditorId])) {
                 sContent = sContent.replace(Con.Tiny.frontendPath, '');
-                Con.Tiny.editDataOrg[Con.Tiny.activeId] = sContent;
+                Con.Tiny.editDataOrg[iEditorId] = sContent;
             }
         },
 
@@ -486,7 +487,7 @@
             // If tiny is still open store its content
             Con.Tiny.storeCurrentTinyContent();
 
-            // The proerty checkOnLeave is false when user clicks save button.
+            // The property checkOnLeave is false when user clicks save button.
             // This is also a case in which he leaves this page but by pressing
             // save button he also saves all changes
             if (false === Con.Tiny.checkOnLeave) {
@@ -496,7 +497,7 @@
 
             // Check if any content in editData was changed
             var hasChanges = false;
-            $.each(Con.Tiny.editData, function(id, val) {
+            jQuery.each(Con.Tiny.editData, function(id, val) {
                 if (Con.Tiny.editDataOrg[id] !== val) {
                     hasChanges = true;
                     return false; // break the loop by return false
@@ -522,23 +523,23 @@
         convertToJson: function(obj) {
             // convert wysiwygSetting's properties into json
             for (prop in obj) {
-            	// check if property is not a prototype of object
-            	if (false === obj.hasOwnProperty(prop)) {
-            		// no property of object
-            		continue;
-            	}
-            	// iterate through sub-object
-            	if ('object' === typeof(obj[prop]) && null !== obj[prop]) {
-            		Con.Tiny.convertToJson(obj[prop]);
-            		continue;
-            	}
+                // check if property is not a prototype of object
+                if (false === obj.hasOwnProperty(prop)) {
+                    // no property of object
+                    continue;
+                }
+                // iterate through sub-object
+                if ('object' === typeof(obj[prop]) && null !== obj[prop]) {
+                    Con.Tiny.convertToJson(obj[prop]);
+                    continue;
+                }
 
-            	try {
-            		obj[prop] = JSON.parse(obj[prop]);
-            	} catch (e) {
-            		// prop is not valid json
-            		continue;
-            	}
+                try {
+                    obj[prop] = JSON.parse(obj[prop]);
+                } catch (e) {
+                    // prop is not valid json
+                    continue;
+                }
             }
         },
 
@@ -559,6 +560,7 @@
                 return;
             }
 
+            // convert all passed data to json format for configuration of tinymce 4
             Con.Tiny.convertToJson(wysiwygSettings);
 
             if ('undefined' === typeof(wysiwygSettings.fullscreen_settings)) {
@@ -583,21 +585,21 @@
                 }
             }
 
-        	// check which plugins should be loaded
-        	if ('undefined' !== typeof(wysiwygSettings.externalplugins)) {
-        		// check if setting is an array
-        		// Array.isArray() can not be used because IE 8 does not implement it
-        		if ('[object Array]' === Object.prototype.toString.call(wysiwygSettings.externalplugins)) {
-        			wysiwygSettings.externalplugins.forEach(function (plugin) {
+            // check which plugins should be loaded
+            if ('undefined' !== typeof(wysiwygSettings.externalplugins)) {
+                // check if setting is an array
+                // Array.isArray() can not be used because IE 8 does not implement it
+                if ('[object Array]' === Object.prototype.toString.call(wysiwygSettings.externalplugins)) {
+                    wysiwygSettings.externalplugins.forEach(function (plugin) {
                         // load current add-on
                         // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
                         tinymce.PluginManager.load(plugin.name, plugin.url);
                         // exclude plugin from later loading
                         wysiwygSettings.plugins += (' -' + plugin.name);
                         wysiwygSettings.fullscreen_settings.plugins += (' -' + plugin.name);
-        			});
-        		}
-        	}
+                    });
+                }
+            }
 
             // Create ClosePlugin
             tinymce.create('tinymce.plugins.ClosePlugin', {
@@ -671,7 +673,9 @@
                         return;
                     }
                     Con.Tiny.customSetupContentCallback(ed.id);
-                    Con.Tiny.updateContent(ed.getContent());
+                    // set variable with original content of editor for later comparision
+                    // e.g. to check if content changed
+                    Con.Tiny.updateContent(ed.getContent(), ed.id);
                 });
                 // Fires after contents has been saved/extracted from the editor.
                 // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.SaveContent
@@ -680,6 +684,9 @@
                     if (false === Con.Tiny.changingFullscreen) {
                         Con.Tiny.customSaveCallback(ed.getContent());
                     }
+                });
+                ed.on('blur', function (e) {
+                    Con.Tiny.storeCurrentTinyContent();
                 });
             }
             if ('undefined' !== typeof(tinymce.settings.fullscreen_settings)) {
@@ -703,6 +710,11 @@
             // build a new editor instance with fullscreen_settings
             var set = tinymce.settings;
             ed = new tinymce.Editor(id, set.fullscreen_settings, tinymce.EditorManager);
+            // editor is removed when switching back to inline mode
+            ed.on('remove', function () {
+                // save current content to variable to be able to decide if its contents changed
+                Con.Tiny.storeCurrentTinyContent();
+            });
             ed.on('init', function () {
                 // put new editor into focus
                 ed.fire('focus');
@@ -755,7 +767,7 @@
 
             // Activate save confirmation on page leave
             jQuery(window).on("unload", function() {
-            	Con.Tiny.leaveCheck();
+                Con.Tiny.leaveCheck();
             });
         }
     };
