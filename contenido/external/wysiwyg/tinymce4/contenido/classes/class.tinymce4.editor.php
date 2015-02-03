@@ -45,11 +45,6 @@ cInclude('includes', 'functions.lang.php');
  */
 class cTinyMCE4Editor extends cWYSIWYGEditor {
     /**
-     * Sets prefix of config key for saving
-     */
-    protected static $_sConfigPrefix = '[\'wysiwyg\'][\'tinymce4\']';
-
-    /**
      * Stores base url of page
      */
     private $_sBaseURL;
@@ -72,12 +67,17 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $this->_setEditor("tinymce4");
 
         // Retrieve all settings for tinymce 4
-        $this->_aSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4');
+        $this->_aSettings = cTinymce4Configuration::get(array(), 'tinymce4');
 
         // CEC for template pre processing
-        //var_dump($this->_aSettings);die();
         $this->_aSettings = cApiCecHook::executeAndReturn('Contenido.WYSIWYG.LoadConfiguration', $this->_aSettings, $this->_sEditor);
-        
+
+        // change datastructure to be json for tinymce 4
+        reset($this->_aSettings);
+        foreach ($this->_aSettings as &$setting) {
+            $setting = json_encode($setting);
+        }        
+
         $this->_setSetting("article_url_suffix", 'front_content.php?idart=' . $idart, true);
 
         // Default values
@@ -89,8 +89,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         $this->_setSetting("theme", "modern");
         $this->_setSetting("remove_script_host", false);
-//         $this->_setSetting("file_browser_callback", 'function(field_name, url, type, win) {Con.Tiny.customFileBrowserCallback(field_name, url, type, win);}', true);
-        //$this->_setSetting("file_browser_callback", "Con.Tiny.customFileBrowserCallback");
+
         $this->_setSetting("urlconverter_callback", "Con.Tiny.customURLConverterCallback");
         // New in V3.x
         $this->_setSetting("pagebreak_separator", "<!-- my page break -->"); // needs pagebreak plugin
@@ -302,8 +301,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting('toolbar3', 'table | formatselect fontselect fontsizeselect', true);
                 $this->_setSetting('plugins',  'charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor',  true);
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_full');
-                var_dump($aCustSettings);
+                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', 'tinymce4_full');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -319,7 +317,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 // load some plugins
                 $this->_setSetting('plugins', 'charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', true);
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_fullscreen');
+                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', 'tinymce4_fullscreen');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -327,16 +325,13 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "simple": // Does not show font and table options
-//                 $this->_setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,|,searchreplace,|,undo,redo,|,bold,italic,underline,strikethrough,subscript,superscript,|,insertdatetime,preview", true);
-//                 $this->_setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,|,bullist,numlist,|,outdent,indent,|,alignleft,aligncenter,alignright,alignfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,charmap,|,code", true);
-//                 $this->_setSetting("theme_advanced_buttons3", "", true);
                 $this->_setSetting("toolbar1", "cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview", true);
                 $this->_setSetting("toolbar2", "link unlink anchor image | bullist numlist | outdent indent | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code", true);
                 $this->_setSetting("toolbar3", "", true);
 
                 $this->_setSetting("plugins", "anchor charmap code insertdatetime preview searchreplace print contextmenu paste directionality textcolor", true);
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_simple');
+                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', 'tinymce4_simple');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -351,7 +346,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting("plugins", "contextmenu", true);
                 
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_mini');
+                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', 'tinymce4_mini');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -359,7 +354,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 break;
 
             case "custom": // Custom toolbar
-                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_custom');
+                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', 'tinymce4_custom');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -389,7 +384,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting('menubar', false);
                 $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css", true);
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce4_inline');
+                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', 'tinymce4_inline');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }
@@ -402,7 +397,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting('toolbar3', "", true);
                 $this->_setSetting('plugins', "anchor code table,searchreplace,contextmenu,paste textcolor", true);
 
-                $aCustSettings = cTinymce4Configuration::get(array(), 'wysiwyg', 'tinymce4', 'tinymce_default');
+                $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', 'tinymce_default');
                 foreach ($aCustSettings as $sKey => $sValue) {
                     $this->_setSetting($sKey, $sValue, true);
                 }

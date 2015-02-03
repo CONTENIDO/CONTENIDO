@@ -514,6 +514,35 @@
         },
 
         /**
+         * Converts contents of objects recursively to json, if possible
+         * @method convertToJson
+         * @param {Object} obj  The object that contains content to be changed to JSON
+         * @static
+         */
+        convertToJson: function(obj) {
+            // convert wysiwygSetting's properties into json
+            for (prop in obj) {
+            	// check if property is not a prototype of object
+            	if (false === obj.hasOwnProperty(prop)) {
+            		// no property of object
+            		continue;
+            	}
+            	// iterate through sub-object
+            	if ('object' === typeof(obj[prop]) && null !== obj[prop]) {
+            		Con.Tiny.convertToJson(obj[prop]);
+            		continue;
+            	}
+
+            	try {
+            		obj[prop] = JSON.parse(obj[prop]);
+            	} catch (e) {
+            		// prop is not valid json
+            		continue;
+            	}
+            }
+        },
+
+        /**
          * Initializes the TinyMCE instance, creates/registers addititional plugins and assigns
          * given wysiwygSettings to the TinyMCE instance.
          * @method tinymceInit
@@ -529,6 +558,8 @@
             && '' === options.useTiny)) {
                 return;
             }
+
+            Con.Tiny.convertToJson(wysiwygSettings);
 
             if ('undefined' === typeof(wysiwygSettings.fullscreen_settings)) {
                 wysiwygSettings.fullscreen_settings = {};
@@ -552,69 +583,63 @@
                 }
             }
 
-            if ('undefined' !== typeof(options)) {
-                // check if custom client plugins should be loaded
-                if ('object' === typeof(options.clientPlugins)) {
-                    // if no list of plugin available add empty key
-                    if ('undefined' === typeof(wysiwygSettings.plugins)) {
-                        wysiwygSettings.plugins = '';
-                    }
-                    if ('undefined' === typeof(wysiwygSettings.fullscreen_settings.plugins)) {
-                        wysiwygSettings.fullscreen_settings.plugins = '';
-                    }
-
-                    // tell tinymce to load each add-on individually
-                    options.clientPlugins.forEach(function(plugin) {
+        	// check which plugins should be loaded
+        	if ('undefined' !== typeof(wysiwygSettings.externalplugins)) {
+        		// check if setting is an array
+        		// Array.isArray() can not be used because IE 8 does not implement it
+        		if ('[object Array]' === Object.prototype.toString.call(wysiwygSettings.externalplugins)) {
+        			wysiwygSettings.externalplugins.forEach(function (plugin) {
                         // load current add-on
                         // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
-                        tinymce.PluginManager.load(plugin.name, plugin.path);
+                        tinymce.PluginManager.load(plugin.name, plugin.url);
                         // exclude plugin from later loading
                         wysiwygSettings.plugins += (' -' + plugin.name);
                         wysiwygSettings.fullscreen_settings.plugins += (' -' + plugin.name);
+        			});
+        		}
+        	}
+
+            // Create ClosePlugin
+            tinymce.create('tinymce.plugins.ClosePlugin', {
+                init: function(ed, url) {
+                    ed.addButton('save', {
+                        title: options.saveTitle,
+                        image: options.saveImage,
+                        icons: false,
+                        onclick: function() {
+                            ed.fire('SaveContent');
+                            Con.Tiny.setContent(Con.Tiny.idartlang);
+                        }
+                    });
+
+                    ed.addButton('close', {
+                        title: options.closeTitle,
+                        image: options.closeImage,
+                        icons: false,
+                        onclick: function(ed) {
+                            Con.Tiny.closeTiny();
+                        }
                     });
                 }
+            });
 
-                // Create ClosePlugin
-                tinymce.create('tinymce.plugins.ClosePlugin', {
-                    init: function(ed, url) {
-                        ed.addButton('save', {
-                            title: options.saveTitle,
-                            image: options.saveImage,
-                            icons: false,
-                            onclick: function() {
-                                ed.fire('SaveContent');
-                                Con.Tiny.setContent(Con.Tiny.idartlang);
-                            }
-                        });
+            // Register plugin with a short name
+            tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
 
-                        ed.addButton('close', {
-                            title: options.closeTitle,
-                            image: options.closeImage,
-                            icons: false,
-                            onclick: function(ed) {
-                                Con.Tiny.closeTiny();
-                            }
-                        });
-                    }
-                });
+            tinymce.create('tinymce.plugins.ConFullscreenPlugin', {
+                init: function(ed) {
+                    ed.addButton('fullscreen', {
+                        tooltip: 'Fullscreen',
+                        shortcut: 'Ctrl+Alt+F',
+                        onclick: function() {
+                            Con.Tiny.handleFullscreen(ed);
+                        }
+                    });
+                }
+            });
+            // Register plugin with a short name
+            tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
 
-                // Register plugin with a short name
-                tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
-
-                tinymce.create('tinymce.plugins.ConFullscreenPlugin', {
-                    init: function(ed) {
-                        ed.addButton('fullscreen', {
-                            tooltip: 'Fullscreen',
-                            shortcut: 'Ctrl+Alt+F',
-                            onclick: function() {
-                                Con.Tiny.handleFullscreen(ed);
-                            }
-                        });
-                    }
-                });
-                // Register plugin with a short name
-                tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
-            }
             tinymce.settings = wysiwygSettings;
 
             // inject setup into settings

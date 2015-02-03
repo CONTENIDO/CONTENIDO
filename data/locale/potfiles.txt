@@ -848,7 +848,6 @@
 ./tools/mpAutoloaderClassMap/mpClassMapFileCreatorContenido.php
 ./tools/mpAutoloaderClassMap/mpClassTypeFinder.php
 ./tools/phpcompatinfo.php
-./upl/testäüöu!.html
 ./xml/index.php
 ./xml/legend.xml
 ./xml/navigation.xml

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-02 15:45+0100\n"
-"PO-Revision-Date: 2015-02-02 15:49+0100\n"
+"POT-Creation-Date: 2015-02-03 14:47+0100\n"
+"PO-Revision-Date: 2015-02-03 14:49+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
@@ -224,7 +224,7 @@ msgstr ""
 
 #: classes/class.ajax.php:149 classes/class.ajax.php:165
 #: classes/module/class.module.template.handler.php:508
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:122
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:123
 #: includes/include.clientsettings.php:78
 #: includes/include.clientsettings.php:161
 #: includes/include.html_tpl_history.php:157
@@ -1627,8 +1627,8 @@ msgid "Unknown article"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:853
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:182
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:183
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:184
 #: includes/include.clientsettings.php:91
 #: includes/include.client_artspec.php:71
 #: includes/include.con_translate.php:747
@@ -2023,7 +2023,7 @@ msgstr ""
 msgid "The administratos has disabled edits"
 msgstr ""
 
-#: classes/gui/class.sourceeditor.php:322 classes/gui/class.tableform.php:129
+#: classes/gui/class.sourceeditor.php:322 classes/gui/class.tableform.php:135
 #: includes/include.client_edit.php:186
 #: includes/include.grouprights_create.php:70
 #: includes/include.grouprights_overview.php:107
@@ -2127,7 +2127,7 @@ msgstr ""
 
 #: classes/module/class.module.template.handler.php:495
 #: classes/module/class.module.template.handler.php:498
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:132
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:133
 #: includes/include.con_edit_form.php:125 includes/include.logs.php:266
 #: includes/include.mail_log.php:88 includes/include.mail_log.php:218
 #: includes/include.systemsettings.php:72
@@ -2249,81 +2249,97 @@ msgstr ""
 msgid "The given client's frontend directory (%s) is not a directory."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:127
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:128
 msgid "URL"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:324
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:336
 msgid "Fullscreen config of inline editor is erroneous."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:328
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:340
 msgid "Config of editor on separate editor page is erroneous."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:332
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:344
 msgid "Custom configuration of tinyMCE 4 is not set."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:343
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:355
 msgid "Toolbar(s) of editor contain erroneous data."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:400
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:375
+msgid "Maximum stack depth exceeded while decoding json"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:378
+msgid "Unexpected control character found"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:381
+msgid "Syntax error, malformed JSON"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:445
 #: includes/include.system_configuration.php:225
 msgid "Access denied"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:406
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:451
 msgid "The following errors occurred when trying to verify configuration:"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:417
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:459
 msgid "Currently active WYSIWYG editor: "
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:419
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:462
 msgid "TinyMCE 4 configuration"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:435
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:478
 msgid "Settings of editor in separate editor page"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:446
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:489
+msgid "Settings of inline editor in inline mode"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:500
 msgid "Settings of inline editor in fullscreen mode"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:451
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:505
 msgid ""
 "GZIP TinyMCE (only activate if server does not compress content already)"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:452
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:506
 msgid "contenido_gzip"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:457
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:511
 msgid "Provide jump lists in image insertion dialog"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:459
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:513
 msgid "Provide jump lists in link insertion dialog"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:460
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:514
 msgid "contenido_lists"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:465
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:519
 msgid "External plugins to load"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:470
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:525
 msgid "Additional parameters (JSON passed to tinymce constructor)"
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:474
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:529
 #: includes/include.system_configuration.php:176
 msgid "You are not sysadmin. You can't change these settings."
 msgstr ""
@@ -2381,7 +2397,7 @@ msgid "%s (Copy)"
 msgstr ""
 
 #: includes/functions.general.php:1630
-#: templates/standard/template.con_content_list.html:125
+#: templates/standard/template.con_content_list.html:124
 msgid "You are here"
 msgstr ""
 
@@ -3264,15 +3280,15 @@ msgstr ""
 msgid "Overwrite data"
 msgstr ""
 
-#: includes/include.con_content_list.php:489
+#: includes/include.con_content_list.php:449
 msgid "Article has no raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:506
+#: includes/include.con_content_list.php:466
 msgid "Export"
 msgstr ""
 
-#: includes/include.con_content_list.php:585
+#: includes/include.con_content_list.php:545
 #: includes/include.con_edit_form.php:332
 #: includes/include.con_edit_form.php:333
 #: includes/include.con_meta_form.php:69 includes/include.con_meta_form.php:70
@@ -3280,8 +3296,8 @@ msgstr ""
 msgid "This article is currently frozen and can not be edited!"
 msgstr ""
 
-#: includes/include.con_content_list.php:669
-#: includes/include.con_content_list.php:672
+#: includes/include.con_content_list.php:629
+#: includes/include.con_content_list.php:632
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 
@@ -6084,8 +6100,8 @@ msgstr ""
 msgid "Apply to all selected articles"
 msgstr ""
 
-#: templates/standard/template.con_content_list.html:65
-#: templates/standard/template.con_content_list.html:126
+#: templates/standard/template.con_content_list.html:64
+#: templates/standard/template.con_content_list.html:125
 msgid "Content administration"
 msgstr ""
 

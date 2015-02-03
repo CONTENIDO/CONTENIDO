@@ -441,46 +441,6 @@ if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false'
     $page->set('s', 'USE_TINY', '1');
 }
 
-// check if file with list of client plugins is supplied
-if ('true' === getEffectiveSetting('tinymce4', 'contenido_load_client_plugins', false)) {
-        // disallow any file not pointing into tinymce 4 config folder of client
-        // to do that use fixed paths
-        if ('true' === getEffectiveSetting('tinymce4', 'contenido_load_all_client_plugins')) {
-            // fixed path for plugins to load
-            $pluginFolderPath = cRegistry::getFrontendPath() . 'external/wysiwyg/tinymce4/contenido/client_plugins/plugins/';
-            // look for all plugins (they are folders) in plugin folder
-            $pluginFolderList = cDirHandler::read($pluginFolderPath, false, true);
-            $tiny4ClientPlugins = array();
-            foreach ($pluginFolderList as $pluginFolderName) {
-                $pluginPath = $pluginFolderPath . $pluginFolderName . '/';
-                // replace lagging frontend path with frontend url
-                $pluginUrl = substr_replace($pluginPath, cRegistry::getFrontendUrl(), 0, strlen(cRegistry::getFrontendPath()));
-                // check if minified version of plugin exists
-                if (true === cFileHandler::exists($pluginPath . 'plugin.min.js')) {
-                    $tiny4ClientPlugins[] = (object) array('name' => $pluginFolderName,
-                                                           'path' => $pluginUrl . 'plugin.min.js');
-                }  else {
-                    // check if non-minified version of plugin exists
-                    if (true === cFileHandler::exists($pluginPath . 'plugin.js')) {
-                        $tiny4ClientPlugins[] = (object) array('name' => $pluginFolderName,
-                                                               'path' => $pluginUrl . 'plugin.js');
-                    }
-                }
-            }
-            $page->set('s', 'CLIENT_PLUGINS', json_encode($tiny4ClientPlugins));
-        } else {
-            // load only specific plugins from config file
-            $tiny4ClientPlugins = cRegistry::getFrontendPath() . 'data/tinymce4config/clientplugins.json';
-            if (cFileHandler::exists($tiny4ClientPlugins)
-            && cFileHandler::readable($tiny4ClientPlugins)) {
-                $page->set('s', 'CLIENT_PLUGINS', cFileHandler::read($tiny4ClientPlugins));
-            }
-        }
-} else {
-    // no client plugins to load
-    $page->set('s', 'CLIENT_PLUGINS', '[]');
-}
-
 // Show path of selected category to user
 $breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
 $page->set('s', 'CATEGORY', $breadcrumb);
