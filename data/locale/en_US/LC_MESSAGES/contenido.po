@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-03 15:35+0100\n"
-"PO-Revision-Date: 2015-02-03 15:37+0100\n"
+"POT-Creation-Date: 2015-02-03 17:42+0100\n"
+"PO-Revision-Date: 2015-02-03 17:43+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
@@ -2344,6 +2344,12 @@ msgstr ""
 msgid "You are not sysadmin. You can't change these settings."
 msgstr ""
 
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:482
+#: includes/include.con_content_list.php:427
+#: includes/include.con_editcontent.php:142
+msgid "You have unsaved changes."
+msgstr ""
+
 #: includes/frontend/include.front_content.php:255
 #: includes/frontend/include.front_content.php:283
 msgid "No start article for this category"
@@ -3253,11 +3259,6 @@ msgstr ""
 #: includes/include.con_content_list.php:426
 #: includes/include.con_editcontent.php:141
 msgid "Close editor and save changes"
-msgstr ""
-
-#: includes/include.con_content_list.php:427
-#: includes/include.con_editcontent.php:142
-msgid "Do you want to save changes?"
 msgstr ""
 
 #: includes/include.con_content_list.php:431

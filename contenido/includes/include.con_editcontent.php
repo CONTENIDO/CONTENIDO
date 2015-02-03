@@ -139,7 +139,7 @@ $oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
 $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
 $oScriptTpl->set('s', 'CLOSE', utf8_encode(html_entity_decode(i18n('Close editor'))));
 $oScriptTpl->set('s', 'SAVE', utf8_encode(html_entity_decode(i18n('Close editor and save changes'))));
-$oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
+$oScriptTpl->set('s', 'QUESTION', html_entity_decode(i18n('You have unsaved changes.'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
 $oScriptTpl->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {

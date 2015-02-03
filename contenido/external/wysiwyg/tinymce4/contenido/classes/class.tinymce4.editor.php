@@ -472,10 +472,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $browserparameters = array("restrict_imagebrowser" => array("jpg", "gif", "jpeg", "png"));
         $sess->register("browserparameters");
 
-//         // Contenido-specific: Set article_url_suffix setting as it is used in plugins/advlink/jscripts/functions.js on anchor tags
-//         $this->_setSetting("setupcontent_callback", 'Con.Tiny.customSetupContentCallback', true);
-//         $this->_setSetting("save_callback", 'Con.Tiny.customSaveCallback', true);
-
         // Set browser windows
         // Difference between file and image browser is with (file) or without categories/articles (image)
         $oTemplate = new cTemplate();
@@ -483,26 +479,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $oTemplate->set('s', 'FILEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
         $oTemplate->set('s', 'MEDIABROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
         $oTemplate->set('s', 'FRONTEND_PATH', $cfgClient[$client]["path"]["htmlpath"]);
+        $oTemplate->set('s', 'QUESTION', html_entity_decode(i18n('You have unsaved changes.'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
 
-//         // GZIP support options
-//         $sGZIPScript = '';
-//         if ($this->_bUseGZIP) {
-//             // tinyMCE_GZ.init call must be placed in its own script tag
-//             // User defined plugins and themes should be identical in both "inits"
-//             $sGZIPScript = <<<JS
-// <script type="text/javascript">
-// tinyMCE_GZ.init({
-//     plugins: '{$this->_aSettings["plugins"]}',
-//     themes: '{$this->_aSettings["theme"]}',
-//     languages: '{$this->_aSettings["language"]}',
-//     disk_cache: true,
-//     debug: false
-// });
-// </script>
-// JS;
-//         }
-//         $oTemplate->set('s', 'COMPRESSOR', $sGZIPScript);
-        
         // Calculate the configuration
         $sConfig = '';
 

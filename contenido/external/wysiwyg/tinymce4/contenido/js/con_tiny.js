@@ -504,13 +504,9 @@
                 }
             });
 
-            // If content was changed ask user if he wants to save content.
+            // return true if changes are found
             if (hasChanges) {
-                var check = confirm(Con.Tiny.txtQuestion);
-                // If he wants to save content call function setContent();
-                if (true === check) {
-                    Con.Tiny.setContent(Con.Tiny.idartlang);
-                }
+                return true;
             }
         },
 
@@ -766,8 +762,16 @@
             });
 
             // Activate save confirmation on page leave
-            jQuery(window).on("unload", function() {
-                Con.Tiny.leaveCheck();
+//            jQuery(window).on("unload", function() {
+//                if (true === Con.Tiny.leaveCheck()) {
+//                	window.onbeforeunload = "Unsaved changes";
+//                }
+//            });
+            jQuery(window).on('beforeunload ',function() {
+//            window.onbeforeunload = function() {
+            	if (true === Con.Tiny.leaveCheck()) {
+            		return Con.Tiny.txtQuestion;
+            	}
             });
         }
     };
