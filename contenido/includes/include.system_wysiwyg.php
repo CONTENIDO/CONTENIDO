@@ -21,7 +21,8 @@ $curWysiwygEditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
 
 if ('tinymce3' === $curWysiwygEditor) {
     $page = new cGuiPage('system_wysiwyg', '', '5');
-    $page->displayError(i18n('Configuration of the current WYSIWYG editor using this page is not supported'));
+    $page->displayError(i18n('Configuration of the current WYSIWYG editor using this page is not supported.'));
+    $page->displayInfo(i18n('Configuration values can be set through system expert settings, client and user settings.'));
     $page->render();
 
     // do not process any further input values
