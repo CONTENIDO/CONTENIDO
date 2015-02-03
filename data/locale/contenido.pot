@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-03 14:47+0100\n"
+"POT-Creation-Date: 2015-02-03 15:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5648,7 +5648,13 @@ msgstr ""
 
 #: includes/include.system_wysiwyg.php:24
 msgid ""
-"Configuration of the current WYSIWYG editor using this page is not supported"
+"Configuration of the current WYSIWYG editor using this page is not supported."
+msgstr ""
+
+#: includes/include.system_wysiwyg.php:25
+msgid ""
+"Configuration values can be set through system expert settings, client and "
+"user settings."
 msgstr ""
 
 #: includes/include.todo.popup.php:38

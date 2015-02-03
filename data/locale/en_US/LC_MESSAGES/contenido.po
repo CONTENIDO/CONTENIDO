@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-03 14:47+0100\n"
-"PO-Revision-Date: 2015-02-03 14:49+0100\n"
+"POT-Creation-Date: 2015-02-03 15:35+0100\n"
+"PO-Revision-Date: 2015-02-03 15:37+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
@@ -5646,7 +5646,13 @@ msgstr ""
 
 #: includes/include.system_wysiwyg.php:24
 msgid ""
-"Configuration of the current WYSIWYG editor using this page is not supported"
+"Configuration of the current WYSIWYG editor using this page is not supported."
+msgstr ""
+
+#: includes/include.system_wysiwyg.php:25
+msgid ""
+"Configuration values can be set through system expert settings, client and "
+"user settings."
 msgstr ""
 
 #: includes/include.todo.popup.php:38
