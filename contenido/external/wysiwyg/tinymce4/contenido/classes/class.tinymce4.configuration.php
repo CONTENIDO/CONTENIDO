@@ -263,7 +263,7 @@ class cTinymce4Configuration {
 
         // walk through config
         $result = cRegistry::getConfig();
-        
+
         // select ['wysiwyg']['tinymce4'] by default
         if (false === isset($result['wysiwyg'])) {
             return $default;
@@ -283,7 +283,7 @@ class cTinymce4Configuration {
 
         return $result;
     }
-    
+
     /**
      * Function to validate form from showConfigurationForm() 
      * @param array $config The post parameters of submitted form

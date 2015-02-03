@@ -76,7 +76,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         reset($this->_aSettings);
         foreach ($this->_aSettings as &$setting) {
             $setting = json_encode($setting);
-        }        
+        }
 
         $this->_setSetting("article_url_suffix", 'front_content.php?idart=' . $idart, true);
 
@@ -230,17 +230,18 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
     function setLists() {
         $client = cRegistry::getClientId();
         $lang = cRegistry::getLanguageId();
+
         $aLists = array();
         if (array_key_exists("contenido_lists", $this->_aSettings)) {
-            $aLists = $this->_aSettings["contenido_lists"];
+            $aLists = json_decode($this->_aSettings["contenido_lists"], true);
         }
 
         // check if link list is activated
-        if (in_array('link', $aLists)) {
+        if (true === isset($aLists['link'])) {
             $this->_setSetting('link_list', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=link&lang=' . $lang . '&client=' . $client . '#', true);
         }
         // check if image list is activated
-        if (in_array('image', $aLists)) {
+        if (true === isset($aLists['image'])) {
             $this->_setSetting('image_list', $this->_sBaseURL . 'contenido/ajax/class.tinymce_list.php?mode=image&lang=' . $lang . '&client=' . $client . '#', true);
         }
         // media list does not exist in tinymce 4, media plugin still available though
