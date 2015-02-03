@@ -428,7 +428,7 @@ class cTinymce4Configuration {
 
         // apply changes to current config
         global $cfg;
-        $cfg['tinymce4'] = $settings;
+        $cfg['wysiwyg']['tinymce4'] = $settings;
 
         // save altered config
         cTinyMCE4Editor::safeConfig($settings);
