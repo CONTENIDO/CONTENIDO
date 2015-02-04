@@ -478,7 +478,7 @@ class cTinymce4Configuration {
         $form->add(i18n('Settings of editor in separate editor page'), $containerDiv->render());
 
         $containerDiv = new cHTMLDiv();
-        $defaultToolbar1 = static::get('conabbr bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | fullscreen | save close', 'raw', 'tinymce4_inline', 'toolbar1');
+        $defaultToolbar1 = static::get('bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | fullscreen | save close', 'raw', 'tinymce4_inline', 'toolbar1');
         $defaultToolbar2 = static::get('', 'raw', 'tinymce4_inline', 'toolbar2');
         $defaultToolbar3 = static::get('', 'raw', 'tinymce4_inline', 'toolbar3');
         $defaultPlugins = static::get('table close confullscreen textcolor', 'raw', 'tinymce4_inline', 'plugins');
