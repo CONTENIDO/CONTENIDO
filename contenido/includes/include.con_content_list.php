@@ -424,8 +424,8 @@ $page->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 $page->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
 $page->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
 $page->set('s', 'IDARTLANG', $idartlang);
-$page->set('s', 'CLOSE', i18n('Close editor'));
-$page->set('s', 'SAVE', i18n('Close editor and save changes'));
+$page->set('s', 'CLOSE', html_entity_decode(i18n('Close editor'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
+$page->set('s', 'SAVE', html_entity_decode(i18n('Close editor and save changes'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
 $page->set('s', 'QUESTION', html_entity_decode(i18n('You have unsaved changes.'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
 $page->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
 
