@@ -52,7 +52,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 ob_start();
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE html>
 <html>
 <head>
     <base href="<?php echo $frontendUrl; ?>">

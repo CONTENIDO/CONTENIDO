@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!-- template.generic_page.html -->
+<html>
+<head>
+    <title>{PAGENAME}</title>
+{_META_HEAD_CONTENIDO_}
+    {META}
+
+{_CSS_HEAD_CONTENIDO_}
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/tipsy.css">
+    <link rel="stylesheet" type="text/css" href="styles/jquery/plugins/atooltip.css">
+    {STYLES}
+
+{_JS_HEAD_CONTENIDO_}
+    <script type="text/javascript" src="scripts/jquery/plugins/atooltip.jquery.js"></script>
+    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/infoBox.js"></script>
+    <script type="text/javascript" src="scripts/jquery/plugins/tipsy.js"></script>
+    <script type="text/javascript" src="scripts/registerTipsy.js"></script>
+    {SCRIPTS}
+</head>
+
+<body class="{PAGECLASS}" id="{PAGEID}">
+
+{CONTENT}
+
+<script type="text/javascript">
+(function(Con, $) {
+    $(function() {
+        var subMenu = '{SUBMENU}';
+        if (false === isNaN(subMenu)) {
+            // Old style, menu position as number
+            Con.markSubmenuItem('c_' + subMenu);
+        } else if ('string' === $.type(subMenu) && subMenu.length > 0) {
+            // Old style, area name
+            Con.markSubmenuItem(subMenu);
+        }
+    });
+})(Con, Con.$);
+</script>
+</body>
+</html>

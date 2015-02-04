@@ -43,6 +43,8 @@ $allowedContentTypes = array(
 
 $page = new cGuiPage("con_content_list");
 
+$templateFile = cRegistry::getConfigValue('path', 'templates', '') . cRegistry::getConfigValue('templates', 'generic_page_html5');
+$page->setPageBase($templateFile);
 
 $jslibs = '';
 // Include wysiwyg editor class
