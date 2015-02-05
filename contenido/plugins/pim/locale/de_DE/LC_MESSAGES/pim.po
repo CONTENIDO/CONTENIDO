@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Plugin Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-29 12:12+0100\n"
-"PO-Revision-Date: 2015-01-29 13:48+0100\n"
+"POT-Creation-Date: 2015-02-05 10:16+0100\n"
+"PO-Revision-Date: 2015-02-05 10:16+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language: de_DE\n"
@@ -109,16 +109,27 @@ msgstr ""
 "Die definierte Area <strong>%s</strong> konnte nicht in Ihrer CONTENIDO-"
 "Installation gefunden werden. Bitte kontaktieren Sie den Plugin-Entwickler."
 
-#: classes/setup/class.pimpluginsetup.php:273
+#: classes/setup/class.pimpluginsetup.php:255
+#, php-format
+msgid ""
+"Plugin Manager can not found a temporary CONTENIDO directory. Also it is not "
+"possible to create a temporary directory at <em>%s</em>. You have to create "
+"it manualy."
+msgstr ""
+"Der Plugin Manager kann keinen tempor&auml;ren CONTENIDO-Ordner finden. Auch "
+"war es leider nicht m&ouml;glich einen tempor&auml;ren Ordner unter <em>%s</"
+"em> zu erstellen. Bitte erstellen Sie den Ordner manuell."
+
+#: classes/setup/class.pimpluginsetup.php:282
 msgid "Invalid Xml document. Please contact the plugin author."
 msgstr ""
 "Ung&uuml;ltiges Xml-Dokument. Bitte kontaktieren Sie den Plugin-Entwickler."
 
-#: classes/setup/class.pimpluginsetup.php:358
+#: classes/setup/class.pimpluginsetup.php:367
 msgid "Plugin Manager accepts only Zip archives"
 msgstr "Der Plugin Manager akzeptiert lediglich Zip-Archive"
 
-#: classes/setup/class.pimpluginsetup.php:397
+#: classes/setup/class.pimpluginsetup.php:406
 msgid "Back to Plugin Manager"
 msgstr "Zur&uuml;ck zum Plugin Manager"
 
@@ -149,7 +160,7 @@ msgstr ""
 "Dieses Plugin wird vom Plugin <strong>%s</strong> vorausgesetzt, sodass Sie "
 "es nicht deaktivieren k&ouml;nnen."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:264
+#: classes/setup/class.pimpluginsetup.uninstall.php:265
 #, php-format
 msgid ""
 "The plugin <strong>%s</strong> has been successfully removed. To apply the "
@@ -158,7 +169,7 @@ msgstr ""
 "Das Plugin <strong>%s</strong> wurde erfolgreich entfernt. Damit die &Auml;"
 "nderungen wirksam werden, melden Sie sich bitte neu im Backend an."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:279
+#: classes/setup/class.pimpluginsetup.uninstall.php:280
 #, php-format
 msgid ""
 "This plugin are required by the plugin <strong>%s</strong>, so you can not "
@@ -167,12 +178,12 @@ msgstr ""
 "Dieses Plugin wird vom Plugin <strong>%s</strong> vorausgesetzt, sodass Sie "
 "es nicht entfernen k&ouml;nnen."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:328
+#: classes/setup/class.pimpluginsetup.uninstall.php:329
 #, php-format
 msgid "The pluginfolder <strong>%s</strong> has been successfully uninstalled."
 msgstr "Der Plugin-Ordner <strong>%s</strong> wurde erfolgreich entfernt."
 
-#: classes/setup/class.pimpluginsetup.uninstall.php:330
+#: classes/setup/class.pimpluginsetup.uninstall.php:331
 #, php-format
 msgid "The pluginfolder <strong>%s</strong> could not be uninstalled."
 msgstr "Der Plugin-Ordner <strong>%s</strong> konnte nicht entfernt werden."
