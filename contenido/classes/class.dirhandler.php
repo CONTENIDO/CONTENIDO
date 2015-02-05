@@ -106,7 +106,7 @@ class cDirHandler {
      * @return bool Returns true on success or false on failure.
      */
     public static function chmod($dirname, $mode) {
-        if (!self::exists($dirname)) {
+        if (!cFileHandler::exists($dirname)) {
             throw new cInvalidArgumentException('The directory ' . $dirname . ' could not be accessed because it does not exist.');
         }
         // chmod needs octal value for correct execution.
