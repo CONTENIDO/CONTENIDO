@@ -85,7 +85,8 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     $purge->clearArticleCache($idartlang);
 
     //Add a new Me'a Tag in DB
-    if ($METAmetatype) {
+    $validMeta = true;
+    if ($METAmetatype && preg_match('/^([a-zA-Z])([a-zA-Z0-9\.\:\-\_]*$)/', $METAmetatype)) {
         $sql = "INSERT INTO `" . $cfg['tab']['meta_type'] . "` (
                     `metatype` ,
                     `fieldtype` ,
@@ -96,11 +97,17 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
                     '" . $METAmetatype . "', '" . $METAfieldtype . "', '" . $METAmaxlength . "', '" . $METAfieldname . "'
                 );";
         $db->query($sql);
+    } else {
+        $validMeta = false;
     }
 
     cApiCecHook::execute('Contenido.Action.con_meta_saveart.AfterCall', $idart, $newData, $oldData);
 
-    $notification->displayNotification('info', i18n('Changes saved'));
+    if ($validMeta) {
+        $notification->displayNotification('info', i18n('Changes saved'));
+    } else {
+        $notification->displayNotification("error", i18n("Attribute content not valid; attend information button"));
+    }
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
 }
