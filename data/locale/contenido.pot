@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-03 17:42+0100\n"
+"POT-Creation-Date: 2015-02-06 14:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -228,7 +228,7 @@ msgstr ""
 #: classes/module/class.module.template.handler.php:508
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:123
 #: includes/include.clientsettings.php:78
-#: includes/include.clientsettings.php:161
+#: includes/include.clientsettings.php:162
 #: includes/include.html_tpl_history.php:157
 #: includes/include.js_history.php:154 includes/include.lay_edit_form.php:221
 #: includes/include.lay_history.php:114 includes/include.mod_edit_form.php:358
@@ -1895,13 +1895,13 @@ msgstr ""
 msgid "Last page"
 msgstr ""
 
-#: classes/gui/class.page.php:281 classes/gui/class.page.php:332
-#: classes/gui/class.page.php:776
+#: classes/gui/class.page.php:289 classes/gui/class.page.php:340
+#: classes/gui/class.page.php:797
 msgid "The requested resource"
 msgstr ""
 
-#: classes/gui/class.page.php:281 classes/gui/class.page.php:332
-#: classes/gui/class.page.php:776
+#: classes/gui/class.page.php:289 classes/gui/class.page.php:340
+#: classes/gui/class.page.php:797
 msgid "was not found"
 msgstr ""
 
@@ -1915,8 +1915,8 @@ msgstr ""
 #: includes/include.client_artspec.php:38
 #: includes/include.client_artspec.php:46 includes/include.client_edit.php:18
 #: includes/include.con_art_overview.php:968
-#: includes/include.con_content_list.php:133
-#: includes/include.con_content_list.php:159
+#: includes/include.con_content_list.php:135
+#: includes/include.con_content_list.php:161
 #: includes/include.con_edit_form.php:1091
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
@@ -1955,7 +1955,7 @@ msgstr ""
 #: includes/type/action/include.con_makepublic.action.php:23
 #: includes/type/action/include.con_makestart.action.php:23
 #: includes/type/action/include.con_meta_deletetype.action.php:34
-#: includes/type/action/include.con_meta_saveart.action.php:105
+#: includes/type/action/include.con_meta_saveart.action.php:112
 #: includes/type/action/include.con_newart.action.php:44
 #: includes/type/action/include.lang_activatelanguage.action.php:22
 #: includes/type/action/include.lang_deactivatelanguage.action.php:22
@@ -2032,7 +2032,7 @@ msgstr ""
 #: includes/include.rights_create.php:157
 #: includes/include.rights_overview.php:197
 #: templates/standard/template.grouprights_memberselect.html:136
-#: templates/standard/template.mod_translate.html:69
+#: templates/standard/template.mod_translate.html:71
 #: templates/standard/template.upl_files_upload.html:62
 msgid "Save changes"
 msgstr ""
@@ -2347,7 +2347,7 @@ msgid "You are not sysadmin. You can't change these settings."
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:482
-#: includes/include.con_content_list.php:427
+#: includes/include.con_content_list.php:429
 #: includes/include.con_editcontent.php:142
 msgid "You have unsaved changes."
 msgstr ""
@@ -2857,7 +2857,7 @@ msgid "Deleted item successfully!"
 msgstr ""
 
 #: includes/include.clientsettings.php:78
-#: includes/include.clientsettings.php:157
+#: includes/include.clientsettings.php:158
 #: includes/include.mod_edit_form.php:359 includes/include.mod_new.php:45
 #: includes/include.mod_new.php:65 includes/include.systemsettings.php:67
 #: includes/include.systemsettings.php:167
@@ -2871,7 +2871,7 @@ msgid "Type"
 msgstr ""
 
 #: includes/include.clientsettings.php:78
-#: includes/include.clientsettings.php:165
+#: includes/include.clientsettings.php:166
 #: includes/include.client_edit.php:190
 #: includes/include.grouprights_create.php:73
 #: includes/include.grouprights_overview.php:111
@@ -2897,12 +2897,12 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: includes/include.clientsettings.php:144
+#: includes/include.clientsettings.php:145
 #: includes/include.systemsettings.php:154
 msgid "No defined properties"
 msgstr ""
 
-#: includes/include.clientsettings.php:153
+#: includes/include.clientsettings.php:154
 #: includes/include.systemsettings.php:164
 msgid "Add new variable"
 msgstr ""
@@ -2972,8 +2972,8 @@ msgid ""
 msgstr ""
 
 #: includes/include.client_edit.php:154
-#: includes/include.con_content_list.php:128
-#: includes/include.con_content_list.php:154
+#: includes/include.con_content_list.php:130
+#: includes/include.con_content_list.php:156
 #: includes/include.grouprights_area.php:42
 #: includes/include.grouprights_con.php:39
 #: includes/include.grouprights_lay.php:38
@@ -2988,7 +2988,7 @@ msgstr ""
 #: includes/include.rights_overview.php:164 includes/include.rights_str.php:38
 #: includes/include.rights_tpl.php:38
 #: includes/include.system_configuration.php:162
-#: includes/type/action/include.con_meta_saveart.action.php:103
+#: includes/type/action/include.con_meta_saveart.action.php:107
 #: includes/type/action/include.con_saveart.action.php:38
 #: includes/type/action/include.con_saveart.action.php:145
 msgid "Changes saved"
@@ -3233,65 +3233,65 @@ msgid ""
 "template."
 msgstr ""
 
-#: includes/include.con_content_list.php:334
+#: includes/include.con_content_list.php:336
 msgid "Can not load article"
 msgstr ""
 
-#: includes/include.con_content_list.php:338
+#: includes/include.con_content_list.php:340
 msgid "Can not find article"
 msgstr ""
 
-#: includes/include.con_content_list.php:344
+#: includes/include.con_content_list.php:346
 msgid "Raw data was imported successfully"
 msgstr ""
 
-#: includes/include.con_content_list.php:348
+#: includes/include.con_content_list.php:350
 msgid "Error: The XML file is not valid"
 msgstr ""
 
-#: includes/include.con_content_list.php:351
+#: includes/include.con_content_list.php:353
 msgid "Please choose a file"
 msgstr ""
 
-#: includes/include.con_content_list.php:425
+#: includes/include.con_content_list.php:427
 #: includes/include.con_editcontent.php:140
 msgid "Close editor"
 msgstr ""
 
-#: includes/include.con_content_list.php:426
+#: includes/include.con_content_list.php:428
 #: includes/include.con_editcontent.php:141
 msgid "Close editor and save changes"
 msgstr ""
 
-#: includes/include.con_content_list.php:431
+#: includes/include.con_content_list.php:433
 msgid "Export raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:432
+#: includes/include.con_content_list.php:434
 msgid "Import raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:433
+#: includes/include.con_content_list.php:435
 msgid "Raw data export"
 msgstr ""
 
-#: includes/include.con_content_list.php:434
+#: includes/include.con_content_list.php:436
 msgid "Raw data import"
 msgstr ""
 
-#: includes/include.con_content_list.php:435
+#: includes/include.con_content_list.php:437
 msgid "Overwrite data"
 msgstr ""
 
-#: includes/include.con_content_list.php:449
+#: includes/include.con_content_list.php:451
 msgid "Article has no raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:466
+#: includes/include.con_content_list.php:468
 msgid "Export"
 msgstr ""
 
-#: includes/include.con_content_list.php:545
+#: includes/include.con_content_list.php:547
 #: includes/include.con_edit_form.php:332
 #: includes/include.con_edit_form.php:333
 #: includes/include.con_meta_form.php:69 includes/include.con_meta_form.php:70
@@ -3299,8 +3299,8 @@ msgstr ""
 msgid "This article is currently frozen and can not be edited!"
 msgstr ""
 
-#: includes/include.con_content_list.php:629
-#: includes/include.con_content_list.php:632
+#: includes/include.con_content_list.php:631
+#: includes/include.con_content_list.php:634
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 
@@ -3599,6 +3599,12 @@ msgid "The refresh rate is focused on the content."
 msgstr ""
 
 #: includes/include.con_meta_form.php:289
+msgid ""
+"Attribute content has to begin with a letter and can be followed by letters, "
+"digits or the following chars: . : _ - "
+msgstr ""
+
+#: includes/include.con_meta_form.php:290
 msgid "New meta tag"
 msgstr ""
 
@@ -5959,6 +5965,10 @@ msgstr ""
 msgid "Article deleted"
 msgstr ""
 
+#: includes/type/action/include.con_meta_saveart.action.php:109
+msgid "Attribute content not valid; attend information button"
+msgstr ""
+
 #: includes/type/action/include.con_newart.action.php:40
 msgid "This category has no templates assigned."
 msgstr ""
@@ -6335,17 +6345,17 @@ msgid "The module '%s' is used for following templates"
 msgstr ""
 
 #: templates/standard/template.mod_translate.html:18
-#: templates/standard/template.mod_translate.html:66
+#: templates/standard/template.mod_translate.html:68
 msgid "String list"
 msgstr ""
 
 #: templates/standard/template.mod_translate.html:24
-#: templates/standard/template.mod_translate.html:67
+#: templates/standard/template.mod_translate.html:69
 msgid "Original module string"
 msgstr ""
 
-#: templates/standard/template.mod_translate.html:50
-#: templates/standard/template.mod_translate.html:68
+#: templates/standard/template.mod_translate.html:51
+#: templates/standard/template.mod_translate.html:70
 msgid ""
 "Hint: Hit ALT+SHIFT+S to save the translated entry and advance to the next "
 "string."
