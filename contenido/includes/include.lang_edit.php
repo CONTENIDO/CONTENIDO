@@ -113,10 +113,10 @@ if ($action == "lang_newlanguage") {
         } else {
             if (($action == "lang_edit") && ($perm->have_perm_area_action($area, $action))) {
 
-				// Set utf-8 as encoding if CON_UTF8 constant is defined
-				if (defined('CON_UTF8')) {
-					$sencoding = 'utf-8';
-				}
+                // Set utf-8 as encoding if CON_UTF8 constant is defined
+                if (defined('CON_UTF8') && CON_UTF8 !== false) {
+                        $sencoding = 'utf-8';
+                }
 
                 if (false === $invalidData) {
                     if (false === langEditLanguage($idlang, $langname, $sencoding, $active, $direction)) {
@@ -167,15 +167,15 @@ if ($action == "lang_newlanguage") {
             $iso_3166_result = $iso3166Collection->fetchArray('iso', 'en');
             array_multisort($iso_3166_result);
 
-			// Display encoding options only if CON_UTF8 constant is not set
-			if (!defined('CON_UTF8')) {
-				$eselect = new cHTMLSelectElement("sencoding");
-				$eselect->setStyle('width:255px');
-				$eselect->autoFill($charsets);
-				$eselect->setDefault((($db->f("encoding") != "") ? $db->f("encoding") : 'utf-8'));
-			} else {
-				$eselect = 'utf-8';
-			}
+            // Display encoding options only if CON_UTF8 constant is not set
+            if (!defined('CON_UTF8') || (defined('CON_UTF8') && CON_UTF8 === false)) {
+                $eselect = new cHTMLSelectElement("sencoding");
+                $eselect->setStyle('width:255px');
+                $eselect->autoFill($charsets);
+                $eselect->setDefault((($db->f("encoding") != "") ? $db->f("encoding") : 'utf-8'));
+            } else {
+                $eselect = 'utf-8';
+            }
 
             $languagecode = new cHTMLSelectElement("languagecode");
             $languagecode->setStyle('width:255px');
