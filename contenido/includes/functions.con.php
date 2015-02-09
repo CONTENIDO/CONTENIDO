@@ -19,7 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.con2.php');
 
 /**
- * Create a new article
+ * Create a new article; create the article version, if versioning state
+ * is simple or advanced
  *
  * @param int $idcat
  * @param int $idcatnew
@@ -226,7 +227,8 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlan
 }
 
 /**
- * Edit an existing article
+ * Edit an existing article; create a version if versioning state 
+ * is simple or advanced
  *
  * @param int $idcat
  * @param int $idcatnew
@@ -466,7 +468,8 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
 }
 
 /**
- * Save a content element and generate index
+ * Save a content element and generate index; create content version if 
+ * versioning state is simple or advanced
  *
  * @param int $idartlang idartlang of the article
  * @param string $type Type of content element
@@ -914,11 +917,17 @@ function conDeleteart($idart) {
         $chainEntry->execute($idart);
     }
     
-    // delete article and content versions
+    // delete meta tags 
+    $metaTagColl = new cApiMetaTagCollection();
+    $metaTagColl->deleteBy('idartlang', (int) $idartlang);
+    
+    // delete article, content and meta tag versions
     $contentVersionColl = new cApiContentVersionCollection();
     $contentVersionColl->deleteBy('idartlang', (int) $idartlang);
     $artLangVersionColl = new cApiArticleLanguageVersionCollection();
     $artLangVersionColl->deleteBy('idartlang', (int) $idartlang);
+    $metaTagVersionColl = new cApiMetaTagVersionCollection();
+    $metaTagVersionColl->deleteBy('idartlang', (int) $idartlang);
 }
 
 /**

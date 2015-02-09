@@ -88,10 +88,11 @@ function conGetAvailableMetaTagTypes() {
 }
 
 /**
- * Get the meta tag value for a specific article
+ * Get the meta tag value or its version for a specific article
  *
  * @param int $idartlang ID of the article
  * @param int $idmetatype Metatype-ID
+ * @param int $version version number
  * @return  string
  */
 function conGetMetaValue($idartlang, $idmetatype, $version  = NULL) {
@@ -133,11 +134,12 @@ function conGetMetaValue($idartlang, $idmetatype, $version  = NULL) {
 }
 
 /**
- * Set the meta tag value for a specific article.
+ * Set the meta tag value or its version for a specific article.
  *
  * @param  int  $idartlang ID of the article
  * @param  int  $idmetatype Metatype-ID
  * @param  string  $value Value of the meta tag
+ * @param  int $version version number
  * @return bool whether the meta value has been saved successfully
  */
 function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
@@ -148,7 +150,7 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
     if (!isset($metaTagColl)) {
         $metaTagColl = new cApiMetaTagCollection();
     }
-//echo $idartlang . "|" . $idmetatype . "<hr>";
+    
     $metaTag = $metaTagColl->fetchByArtLangAndMetaType($idartlang, $idmetatype);
     
     switch ($versioning->getState()) {
@@ -167,13 +169,11 @@ function conSetMetaValue($idartlang, $idmetatype, $value, $version = NULL) {
             $versioning->createMetaTagVersion($metaTagVersionParameters);            
              
         case 'disabled':
-            
             // update article
             $artLang = new cApiArticleLanguage($idartlang);
             $artLang->set('lastmodified', date('Y-m-d H:i:s'));
             $artLang->store();
             //update meta tag and create meta tag version
-            
             if (is_object($metaTag)) {
                 $return = $metaTag->updateMetaValue($value);            
                 return $return;

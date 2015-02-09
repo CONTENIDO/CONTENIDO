@@ -51,7 +51,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $this->_formFields = array(
             'date_timestamp',
             'date_format'
-        );
+        ); 
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // set the locale
@@ -102,7 +102,9 @@ class cContentTypeDate extends cContentTypeAbstract {
         // if form is submitted, store the current date settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
-        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
+                
+        if ($_POST[$this->_prefix . '_action'] === 'store' 
+                && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
         	// convert the given date string into a valid timestamp, so that a
         	// timestamp is stored
         	if (!empty($_POST['date_format'])) {
@@ -112,10 +114,10 @@ class cContentTypeDate extends cContentTypeAbstract {
         	}
         	$this->_storeSettings();
         }
-
-        // reset specific date variable
-        $_POST[$this->_prefix . '_action'] = '';
-        $_POST['date_format'] = '';
+       
+        // reset specific date variable 
+        //$_POST[$this->_prefix . '_action'] = '';
+        //$_POST['date_format'] = '';
     }
 
     /**

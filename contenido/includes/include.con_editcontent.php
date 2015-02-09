@@ -33,6 +33,7 @@ $cssData = '';
 $jsData = '';
 		
 $data = cSecurity::toString($_REQUEST['data']);
+
 if ($action == 20 || $action == 10) {
     if ($data != '') {
         $data = explode('||', substr($data, 0, -2));		
@@ -43,10 +44,10 @@ if ($action == 20 || $action == 10) {
             } else {
                 $value[3] = str_replace('%$%SEPERATOR%$%', '|', $value[3]);
             }
-
+            
             conSaveContentEntry($value[0], 'CMS_' . $value[1], $value[2], $value[3]);
         }
-
+       
         $versioning = new cContentVersioning();
         if ($versioning->getState() != 'advanced') {
             conMakeArticleIndex($idartlang, $idart);
@@ -230,7 +231,9 @@ switch ($versioningState) {
                 $optionElement->setSelected(true);
             }
             $selectElement->appendOptionElement($optionElement);
-            unset($optionElementParameters[max(array_keys($optionElementParameters))]);
+            if (count($optionElementParameters) > 0 ) {
+                unset($optionElementParameters[max(array_keys($optionElementParameters))]);
+            }
         }
         
         $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');

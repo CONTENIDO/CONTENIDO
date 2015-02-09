@@ -305,7 +305,7 @@ abstract class cCodeGeneratorAbstract {
         $lang = $this->_lang;
         $client = $this->_client;
         $idartlang = $this->_idartlang;
-
+        
         if (!is_object($db2)) {
             $db2 = cRegistry::getDb();
         }
@@ -349,7 +349,7 @@ abstract class cCodeGeneratorAbstract {
             foreach ($a_[$key] as $val) {
                 if (class_exists($typeClassName)) {
                     // We have a class for the content type, use it
-                    $tmp = $a_content[$_typeItem->type][$val];
+                    $tmp = $a_content[$_typeItem->type][$val];                   
                     $cTypeObject = new $typeClassName($tmp, $val, $a_content);
                     global $edit;
                     

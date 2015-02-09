@@ -189,7 +189,7 @@ abstract class cContentTypeAbstract {
         $this->_session = cRegistry::getSession();
         $this->_useXHTML = cSecurity::toBoolean(getEffectiveSetting('generator', 'xhtml', 'false'));
         $this->_uploadPath = $this->_cfgClient[$this->_client]['upl']['path'];
-
+        
         $this->_readSettings();
     }
 
@@ -206,6 +206,7 @@ abstract class cContentTypeAbstract {
         if ($this->_settingsType === self::SETTINGS_TYPE_XML) {
             // if the settings should be interpreted as XML, process them
             // accordingly
+            
             $this->_settings = cXmlBase::xmlStringToArray($this->_rawSettings);
             // add the prefix to the settings array keys
             foreach ($this->_settings as $key => $value) {

@@ -96,7 +96,7 @@ class cApiMetaTagVersionCollection extends ItemCollection {
     /**
      * Returns idmetatagversions by where-clause
      *
-     * @param int $where
+     * @param string $where
      * @return int[]
      */
     public function fetchByArtLangAndMetaType($where) {
@@ -106,7 +106,6 @@ class cApiMetaTagVersionCollection extends ItemCollection {
         while($item = $metaTagVersionColl->next()){
             $ids[] = $item->get('idmetatagversion');
         }
-
         return $ids;
 
     }

@@ -161,8 +161,8 @@ class cContentVersioning {
         $versioningState = $this->getState();
         $this->selectedArticle = NULL;
         
-        if (($articleType == 'version' || $articleType == 'editable') 
-             && ($versioningState == 'advanced') || ($articleType == 'version' && $versioningState == 'simple')) {
+        if (($articleType == 'version' || $articleType == 'editable')  && ($versioningState == 'advanced') 
+            || ($articleType == 'version' && $versioningState == 'simple')) {
             if (is_numeric($idArtLangVersion) && $articleType == 'version') {
                 $this->selectedArticle = new cApiArticleLanguageVersion($idArtLangVersion);
             } else if (isset($this->editableArticleId)) {
@@ -231,30 +231,29 @@ class cContentVersioning {
     public function getArticleType($idArtLangVersion, $idArtLang, $action) {
         
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
-        
-        if ($this->getState() == 'disabled' // disabled
-            || $this->getState() == 'simple' && $action == 'con_content'
-            || $this->getState() == 'simple' && $action == 'copyto'
-            || $this->getState() == 'simple' && $idArtLangVersion == NULL
-            || $this->getState() == 'simple' && $action == 'con_saveart' // simple
+                
+        if ($this->getState() == 'disabled' // disabled               
+            || $this->getState() == 'simple' && (
+                    $action == 'con_meta_deletetype' || $action == 'copyto'
+                 || $action == 'con_content' || $idArtLangVersion == NULL
+                 || $action == 'con_saveart') 
             || $idArtLangVersion == 'current' && $action != 'copyto'
             || $action == 'copyto' && $idArtLangVersion == $this->editableArticleId
             || $action == 'con_meta_change_version' && $idArtLang == 'current'
             || $this->editableArticleId == NULL
-            && $action != 'con_meta_saveart' && $action != 'con_newart') { // advanced
+            && $action != 'con_meta_saveart' && $action != 'con_newart' ) { // advanced
             $this->articleType = 'current';
-        } else if ($this->getState() == 'advanced' && $action == 'con_content'
+        } else if ($this->getState() == 'advanced' && 
+                ($action == 'con_content' || $action == 'con_meta_deletetype'
+                || $action == 'con_meta_edit' || $action == 'con_edit')
             || $action == 'copyto' || $idArtLangVersion == 'current'
             || $idArtLangVersion == $this->editableArticleId
-            || $action == 'importrawcontent'
-            || $action == 'savecontype'
+            || $action == 'importrawcontent' || $action == 'savecontype'
             || $action == 'con_editart' && $this->getState() == 'advanced'
             || $action == '20' && $idArtLangVersion == NULL
-            || $this->getState() == 'advanced' && ($action == 'con_meta_edit'
-                || $action == 'con_edit')
-            || $action == 'con_meta_saveart'
-            || $action == 'con_saveart' || $action == 'con_newart'
-            || $action == 'con_meta_change_version' && $idArtLangVersion == $this->editableArticleId) {
+            || $action == 'con_meta_saveart' || $action == 'con_saveart' 
+            || $action == 'con_newart' || $action == 'con_meta_change_version' 
+            && $idArtLangVersion == $this->editableArticleId) {
             $this->articleType = 'editable';
         } else {
             $this->articleType = 'version';
@@ -309,15 +308,13 @@ class cContentVersioning {
                 cRegistry::getDbTableName('art_lang_version'),
                 $idArtLang
             );
-            while ($this->db->nextRecord()) {
-                $this->editableArticleId = $this->db->f('max');
-            }
-
+            $this->db->nextRecord();
+            $this->editableArticleId = $this->db->f('max');
+            return $this->editableArticleId;
+            
         } else if ($this->getState() == 'simple' || $this->getState() == 'disabled') {
             return $idArtLang;
-        }		
-
-        return $this->editableArticleId;
+        }	
 
     }
 	
@@ -639,7 +636,7 @@ class cContentVersioning {
         $artLangVersion = $artLangVersionColl->create($artLangVersionParameters);
         
         // version Contents if contents are not versioned yet
-        if (isset($parameters['idartlang'])) {
+        if (isset($parameters['idartlang'])){
             $where = 'idartlang = ' . $parameters['idartlang'];
             $contentVersionColl = new cApiContentVersionCollection();        
             $contentVersions = $contentVersionColl->getIdsByWhereClause($where);
@@ -663,20 +660,50 @@ class cContentVersioning {
             }
         }
         
+        // version meta tags if they are not versioned yet
+        if (isset($parameters['idartlang'])) {
+            $where = 'idartlang = ' . $parameters['idartlang'];
+            $metaTagVersionColl = new cApiMetaTagVersionCollection();        
+            $metaTagVersions = $metaTagVersionColl->getIdsByWhereClause($where);  
+        }
+        
+        if (empty($metaTagVersions)) {            
+            $where = 'idartlang = ' . $parameters['idartlang'];
+            $metaTagColl = new cApiMetaTagCollection();       
+            $metaTags = $metaTagColl->getIdsByWhereClause($where);
+            $metaTag = new cApiMetaTag();
+            foreach ($metaTags AS $id) {
+                $metaTag->loadBy('idmetatag', $id);
+                $metaTag->markAsEditable($artLangVersion->get('version'));
+            }
+        }
+        
         return $artLangVersion;
     }
 
+    /**
+     * Create new Meta Tag Version
+     *
+     * @param mixed[] $parameters {
+     *  @type int $idmetatag
+     *  @type int $idartlang
+     *  @type string $idmetatype
+     *  @type string $value
+     *  @type int version
+     * }
+     * @return cApiMetaTagVersion
+    */
     public function createMetaTagVersion(array $parameters) {
         
         $metaTagVersionColl = new cApiMetaTagVersionCollection();
         
-        $metaTagVersionColl->create(
-            $parameters['idmetatag'],
-            $parameters['idartlang'],
-            $parameters['idmetatype'],
-            $parameters['value'],
-            $parameters['version']
-        ); 
+        return $metaTagVersionColl->create(
+                    $parameters['idmetatag'],
+                    $parameters['idartlang'],
+                    $parameters['idmetatype'],
+                    $parameters['value'],
+                    $parameters['version']
+                ); 
         
     }
 }

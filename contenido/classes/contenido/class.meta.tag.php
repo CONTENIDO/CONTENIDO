@@ -128,7 +128,7 @@ class cApiMetaTag extends Item {
      * @param string $version
      */	
     public function markAsEditable($version) {
-        
+        //var_export($this->values);
         $parameters = $this->values;
         $parameters['version'] = $version;
         $metaTagVersionColl = new cApiMetaTagVersionCollection();

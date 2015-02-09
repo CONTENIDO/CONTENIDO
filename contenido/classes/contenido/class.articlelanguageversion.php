@@ -411,7 +411,7 @@ class cApiArticleLanguageVersion extends Item {
 
     /**
      * Create a copy of this article language version with its contents,
-     * the copy is the new editable articlel language version
+     * the copy is the new editable article language version
      * 
      * @param String $type meta, content or complete
      *
@@ -459,7 +459,8 @@ class cApiArticleLanguageVersion extends Item {
                         if (isset($contentVersion)) {
                             $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
                         } 
-                    } else {
+                    } else { // muss bleiben, um contents zu löschen; 
+                    //      vorsicht bei "als entwurf nutzen" wenn artikelversion jünger als contentversion
                         $contentParameters = array(
                             'idartlang' => $artLangVersion->get('idartlang'),
                             'idtype' => $apiType->get('idtype'),
@@ -496,12 +497,20 @@ class cApiArticleLanguageVersion extends Item {
             while ($this->db->nextRecord()) {
                     $metaTagVersionIds[] = $this->db->f('id');
             }
-            if(isset($metaTagVersionIds)) {
+            if (!empty($metaTagVersionIds)) {
                 foreach ($metaTagVersionIds AS $id) {
                     $metaTagVersion->loadBy('idmetatagversion', $id);
                     $metaTagVersion->markAsEditable($artLangVersion->get('version'));
                 }
-            }
+            } else  { // use published meta tags
+                $metaTagColl = new cApiMetaTagCollection();
+                $metaTag = new cApiMetaTag();
+                $ids = $metaTagColl->getIdsByWhereClause('idartlang = ' . $this->get('idartlang'));
+                foreach ($ids AS $id) {
+                    $metaTag->loadByPrimaryKey($id);
+                    $metaTag->markAsEditable($artLangVersion->get('version'));                    
+                }                
+            } 
         }
         
     }

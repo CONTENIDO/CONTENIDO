@@ -54,11 +54,57 @@ if ($_REQUEST['idArtLangVersion'] == NULL && $versioning->getState() == 'advance
     
 }
 
+// if there is no (editable) version yet, output the published version
+if (!$art->isLoaded()) {
+    $art = new cApiArticleLanguage();
+    $art->loadByArticleAndLanguageId(cSecurity::toInteger($idart), cSecurity::toInteger($lang));
+}
+
 $articleType = $versioning->getArticleType(
-        $_REQUEST['idArtLangVersion'],
-        $art->getField('idartlang'),
-        $action
+    $_REQUEST['idArtLangVersion'],
+    $art->getField('idartlang'),
+    $action
 );
+
+// Set as current/editable
+switch ($versioning->getState()) {
+    case 'advanced' :
+        if ($action == 'copyto') {
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+                // editable->current
+                $artLangVersion = NULL;                
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                if (isset($artLangVersion)) {
+                    $artLangVersion->markAsCurrent('meta');
+                }
+
+            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
+                // version->editable
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsEditable('meta');
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
+
+            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
+                // current->editable
+                $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
+                $artLang->markAsEditable('meta');
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
+
+            }
+        }
+        
+        break;
+    case 'simple' :
+        if ($action == 'copyto') {            
+            if (is_numeric($_REQUEST['idArtLangVersion'])) {                
+                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
+                $artLangVersion->markAsCurrent('meta');                
+            }            
+        }
+        
+    default:
+        break;
+}
 
 // Check is form edit available
 $disabled = '';
@@ -246,15 +292,11 @@ foreach ($availableTags as $key => $value) {
     $tpl->set('d', 'ARTICLE_LANGUAGE_ID', $art->getField('idartlang'));
     $tpl->set('d', 'ARTICLE_ID', $idart);
     $tpl->set('d', 'CAT_ID', $idcat);
-  /*  $tpl->set('d', 'METAFIELDTYPE', $element);
-    $tpl->set('d', 'IDMETATYPE', $value['idmetatype']);
-    $tpl->set('d', 'METATITLE', $value['metatype'] . ':');
-    $tpl->set('d', 'DELETE_META_CONFIRM', i18n('Are you sure to delete this Meta tag?'));
-    */
     $tpl->set('d', 'METAFIELDTYPE', $element);
     $tpl->set('d', 'METATITLE', $value['metatype'] . ':');
     if ($versioning->getState() == 'simple' && $articleType == 'current'
-            || $versioning->getState() == 'advanced' && $articleType == 'editable') {
+            || $versioning->getState() == 'advanced' && $articleType == 'editable'
+            || $versioning->getState() == 'disabled') {
         
         $tpl->set('d', 'DELETE_META', 
             "Con.showConfirmation('" .
@@ -278,31 +320,6 @@ $tpl->set('s', 'SITEMAP_PRIO', $art->getField('sitemapprio'));
 switch ($versioning->getState()) {
     
     case 'advanced':
-        
-        // Set as current/editable
-        if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
-                // editable->current
-                $artLangVersion = NULL;                
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
-                if (isset($artLangVersion)) {
-                    $artLangVersion->markAsCurrent('meta');
-                }
-                
-            } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
-                // version->editable
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
-                $artLangVersion->markAsEditable('meta');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
-
-            } else if ($_REQUEST['idArtLangVersion'] == 'current') {
-                // current->editable
-                $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
-                $artLang->markAsEditable('meta');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
-
-            }
-        }
     
         $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
 
@@ -359,13 +376,6 @@ switch ($versioning->getState()) {
         break;
     case 'simple' :
         
-        if ($action == 'copyto') {            
-            if (is_numeric($_REQUEST['idArtLangVersion'])) {                
-                $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
-                $artLangVersion->markAsCurrent('meta');                
-            }            
-        }
-    
         $optionElementParameters = $versioning->getDataForSelectElement($art->getField('idartlang'), 'seo');
         
         // Create Metatag Version Option Elements
@@ -484,7 +494,10 @@ $result = array(
     'fieldname' => 'name'
 );
 $tpl2 = new cTemplate();
-$tpl2->set('s', 'METATITLE', i18n('New meta tag'));
+$infoButton->setHelpText(i18n('Der Attribut Inhalt muss mit einem Buchstaben beginnen. Folgen können Buchstaben, Ziffern und folgende Zeichen: . : _ - '));
+$tpl2->set('s', 'METATITLE', i18n('New meta tag') . ' ' . $infoButton->render());
+
+
 
 $sql = "SHOW FIELDS
         FROM `" . $cfg['tab']['meta_type'] . "`";

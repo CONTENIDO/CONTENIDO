@@ -89,7 +89,6 @@ class cApiContentVersionCollection extends ItemCollection {
         while($item = $this->next()){
             $ids[] = $item->get('idcontentversion');
         }
-
         return $ids;
 
     }
@@ -148,6 +147,7 @@ class cApiContentVersion extends Item {
             $content = $coll->createNewItem();
         }
 
+        // update/set attributes
         $content->set('idartlang', $this->get('idartlang'));
         $content->set('idtype', $this->get('idtype'));
         $content->set('typeid', $this->get('typeid'));
@@ -169,10 +169,12 @@ class cApiContentVersion extends Item {
      */		
     public function markAsEditable($version, $deleted) {
 
+        // get parameters for editable version
         $parameters = $this->toArray();
         unset($parameters['idcontentversion']);
         $parameters['version'] = $version;
 
+        // create editable version
         $contentVersionColl = new cApiContentVersionCollection();
         $contentVersion = $contentVersionColl->create($parameters);
         if ($deleted == 1) {
@@ -195,7 +197,7 @@ class cApiContentVersion extends Item {
      * @return bool
      */
     public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters) {
-        $db = cRegistry::getDb();
+        //$db = cRegistry::getDb();
         $props = array(
             'idartlang' => $contentParameters['idartlang'],
             'idtype' => $contentParameters['idtype'],
