@@ -93,7 +93,6 @@ function frontendusers_groupselect_store ($variables) {
 }
 
 function frontendusers_groupselect_canonicalVariables () {
-    ///////// ASK CHECK !!!!!
     //FFBCON-812
     return array();
 }
