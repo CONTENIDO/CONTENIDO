@@ -84,9 +84,9 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     $purge = new cSystemPurge();
     $purge->clearArticleCache($idartlang);
 
-    //Add a new Me'a Tag in DB
+    //Add a new Meta Tag in DB
     $validMeta = true;
-    if ($METAmetatype && preg_match('/^([a-zA-Z])([a-zA-Z0-9\.\:\-\_]*$)/', $METAmetatype)) {
+    if (!empty($METAmetatype) && preg_match('/^([a-zA-Z])([a-zA-Z0-9\.\:\-\_]*$)/', $METAmetatype)) {        
         $sql = "INSERT INTO `" . $cfg['tab']['meta_type'] . "` (
                     `metatype` ,
                     `fieldtype` ,
@@ -97,7 +97,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
                     '" . $METAmetatype . "', '" . $METAfieldtype . "', '" . $METAmaxlength . "', '" . $METAfieldname . "'
                 );";
         $db->query($sql);
-    } else {
+    } else if (!empty($METAmetatype)) {
         $validMeta = false;
     }
 
