@@ -893,14 +893,14 @@ td#m197 {
  * #############################################################################
  * @section Subnavigation
  */
-div#navcontainer {
+div.navcontainer {
     height: 28px;
     background-color: #e2e2e2;
     border-bottom: 1px solid #b3b3b3;
     text-align: left;
 }
 
-div#navcontainer ul#navlist {
+div.navcontainer ul#navlist {
     background-color: #e2e2e2;
     padding: 12px 0 3px 0;
     margin-left: 0;
@@ -908,7 +908,7 @@ div#navcontainer ul#navlist {
     margin-bottom: 0;
 }
 
-div#navcontainer ul#navlist li {
+div.navcontainer ul#navlist li {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -916,7 +916,7 @@ div#navcontainer ul#navlist li {
     border: none;
 }
 
-div#navcontainer ul#navlist li a {
+div.navcontainer ul#navlist li a {
     padding: 2px .6em 3px .5em;
     margin-left: 3px;
     text-decoration: none;
@@ -927,13 +927,13 @@ div#navcontainer ul#navlist li a {
     cursor: pointer;
 }
 
-div#navcontainer ul#navlist li a:hover {
+div.navcontainer ul#navlist li a:hover {
     color: #0060b1;
 }
 
-div#navcontainer ul#navlist li a.current,
-div#navcontainer ul#navlist li a:link.current,
-div#navcontainer ul#navlist li a:visited.current {
+div.navcontainer ul#navlist li a.current,
+div.navcontainer ul#navlist li a:link.current,
+div.navcontainer ul#navlist li a:visited.current {
     background-color: white;
     border: 1px solid #b3b3b3;
     border-bottom-color: white;
@@ -947,14 +947,15 @@ div#navcontainer ul#navlist li a:visited.current {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
-* html div#navcontainer ul#navlist li a.current {
+* html div.navcontainer ul#navlist li a.current {
     position: relative;
 }
 
-div#navcontainer ul#navlist li a:link,
-div#navcontainer ul#navlist li a:visited {
+div.navcontainer ul#navlist li a:link,
+div.navcontainer ul#navlist li a:visited {
     color: black;
 }
+
 .categorypath {
     font-family: verdana;
     font-size: 10px;

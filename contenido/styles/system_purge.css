@@ -20,7 +20,7 @@
 #select_list_clients select {
     width: 150px;
     margin-top: 5px;
-    border: 1;
+    /*border: 1px;*/
 }
 
 .system_clear_form_row .label {

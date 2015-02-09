@@ -249,7 +249,7 @@
             titles.push($(this).attr('title'));
         });
         if (titles.length < 1) {
-            $(self.frameId + ' li#root>div').addClass('active');
+            $(self.frameId + ' li.root>div').addClass('active');
         }
 
         // get the selected directory and save it

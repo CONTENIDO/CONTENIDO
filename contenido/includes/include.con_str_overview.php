@@ -473,13 +473,13 @@ if ($_cecIterator->count() > 0) {
 
         if (is_array($listItem)) {
             if (!array_key_exists("expandcollapseimage", $listItem) || $listItem["expandcollapseimage"] == "") {
-                $collapseImage = '<img src="images/spacer.gif" width="11" height="11">';
+                $collapseImage = '<img src="images/spacer.gif" width="11" alt="" height="11">';
             } else {
                 $collapseImage = $listItem["expandcollapseimage"];
             }
 
             if (!array_key_exists("image", $listItem) || $listItem["image"] == "") {
-                $image = '<img src="images/spacer.gif">';
+                $image = '<img src="images/spacer.gif" alt="">';
             } else {
                 $image = $listItem["image"];
             }
@@ -512,7 +512,7 @@ $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&expand=all&syncop
 $collapselink = $sess->url($selflink . "?area=$area&frame=$frame&collapse=all&syncoptions=$syncoptions");
 $collapseimg = '<a href="' . $collapselink . '" alt="' . i18n("Close all categories") . '" title="' . i18n("Close all categories") . '"><img src="images/but_minus.gif" border="0"></a>';
 $expandimg = '<a href="' . $expandlink . '" alt="' . i18n("Open all categories") . '" title="' . i18n("Open all categories") . '"><img src="images/but_plus.gif" border="0"></a>';
-$allLinks = $expandimg . '<img src="images/spacer.gif" width="3">' . $collapseimg;
+$allLinks = $expandimg . '<img src="images/spacer.gif" width="3" alt="">' . $collapseimg;
 $text_direction = langGetTextDirection($lang);
 
 // Check global rights

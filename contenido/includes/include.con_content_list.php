@@ -629,10 +629,10 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
 
                 if ($locked == 0) { // No freeze
                     $replacements[$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); });">
-                <img border="0" src="' . $backendUrl . 'images/delete.gif">
+                <img alt="" border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
                     $keycode[$type][$val] = $tmp . '<a href="#" onclick="Con.showConfirmation(\'' . i18n("Are you sure you want to delete this content type from this article?") . '\', function() { Con.Tiny.setContent(\'1\',\'' . $path . '\'); });">
-                <img border="0" src="' . $backendUrl . 'images/delete.gif">
+                <img alt="" border="0" src="' . $backendUrl . 'images/delete.gif">
                 </a>';
                 } else { // Freeze status
                     $replacements[$val] = $tmp;

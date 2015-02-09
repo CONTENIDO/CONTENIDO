@@ -6,7 +6,7 @@
     {$editor}
 
     {if 0 lt $image|trim|strlen}
-    <br /><img src="{$image}"/>
+    <br /><img src="{$image}" alt=""/>
     {/if}
 
 <!-- /content_teaser_config -->

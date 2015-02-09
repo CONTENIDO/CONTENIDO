@@ -147,9 +147,9 @@ while (($plugin = $oItem->next()) !== false) {
     $activeStatus = $plugin->get('active');
     $tempActiveStatusLink = $sess->url('main.php?area=pim&frame=4&pim_view=activestatus&pluginId=' . $idplugin);
     if ($activeStatus == 1) {
-        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/online.gif" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Disable', 'pim') . '</a>');
+        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/online.gif" alt="" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Disable', 'pim') . '</a>');
     } else {
-        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/offline.gif" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Enable', 'pim') . '</a>');
+        $pagePlugins->set('s', 'LANG_ACTIVESTATUS', '<img src="images/offline.gif" alt="" class="vAlignMiddle" /> <a href="' . $tempActiveStatusLink . '">' . i18n('Enable', 'pim') . '</a>');
     }
 
     // uninstall link

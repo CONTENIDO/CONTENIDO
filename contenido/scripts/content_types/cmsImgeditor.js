@@ -140,8 +140,8 @@
             }
         });
 
-        $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
-        $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
+        $(self.frameId + ' .directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
+        $(self.frameId + ' .directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
             // update the "active" class
             $.each($(self.frameId + ' div'), function() {
                 $(this).removeClass('active');
@@ -170,8 +170,8 @@
             return false;
         });
         // add possibility to expand and close directories
-        $(self.frameId + ' #directoryList_' + self.id + ' em a').unbind('click');
-        $(self.frameId + ' #directoryList_' + self.id + ' em a').click(function() {
+        $(self.frameId + ' .directoryList_' + self.id + ' em a').unbind('click');
+        $(self.frameId + ' .directoryList_' + self.id + ' em a').click(function() {
             var divContainer = $(this).parent().parent();
             var dirname = $(this).parent('em').parent().find('a[class="on"]').attr('title');
             if (divContainer.next('ul').length > 0) {
@@ -214,7 +214,7 @@
             directories.push($(this).attr('title'));
         });
         if (directories.length < 1) {
-            $(self.frameId + ' li#root>div').addClass('active');
+            $(self.frameId + ' li.root>div').addClass('active');
         }
 
         // get the selected directory and save it
@@ -257,7 +257,7 @@
                         url: self.pathBackend + 'ajaxmain.php',
                         data: 'ajax=scaleImage&url=' + url + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                         success: function(msg) {
-                            $('#directoryShow_' + self.id).html('<div><img src="' + msg + '"/></div>');
+                            $('#directoryShow_' + self.id).html('<div><img src="' + msg + '" alt=""/></div>');
                         }
                     });
                 }

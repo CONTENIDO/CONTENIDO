@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-06 14:47+0100\n"
+"POT-Creation-Date: 2015-02-06 15:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,7 +84,7 @@ msgid "Template"
 msgstr ""
 
 #: backend_search.php:519 includes/include.con_art_overview.php:83
-#: includes/include.frontend.left_top.php:145
+#: includes/include.frontend.left_top.php:144
 #: includes/include.mycontenido.tasks.php:250
 #: includes/include.upl_files_overview.php:494
 #: templates/standard/template.str_overview.html:154
@@ -1361,16 +1361,16 @@ msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:716
 #: classes/content_types/class.content.type.teaser.php:909
-#: includes/include.frontend.left_top.php:97
-#: includes/include.frontend.user_menu.php:62 includes/include.mod_new.php:46
+#: includes/include.frontend.left_top.php:96
+#: includes/include.frontend.user_menu.php:61 includes/include.mod_new.php:46
 #: includes/include.rights_left_top.php:86
 msgid "Ascending"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:719
 #: classes/content_types/class.content.type.teaser.php:912
-#: includes/include.frontend.left_top.php:98
-#: includes/include.frontend.user_menu.php:63 includes/include.mod_new.php:46
+#: includes/include.frontend.left_top.php:97
+#: includes/include.frontend.user_menu.php:62 includes/include.mod_new.php:46
 #: includes/include.rights_left_top.php:86
 msgid "Descending"
 msgstr ""
@@ -2075,8 +2075,8 @@ msgid "Field of the file name is empty!"
 msgstr ""
 
 #: classes/module/class.module.template.handler.php:256
-#: includes/include.frontend.group_edit.php:104
-#: includes/include.frontend.group_edit.php:145
+#: includes/include.frontend.group_edit.php:103
+#: includes/include.frontend.group_edit.php:144
 #: includes/include.frontend.group_rights.php:67
 #: includes/include.frontend.user_edit.php:157
 #: includes/include.mod_script.php:147 includes/include.mod_style.php:156
@@ -3367,7 +3367,7 @@ msgstr ""
 
 #: includes/include.con_edit_form.php:505
 #: includes/include.frontend.left_top.php:43
-#: includes/include.frontend.user_menu.php:44
+#: includes/include.frontend.user_menu.php:43
 #: includes/include.mycontenido.tasks.php:249
 #: templates/standard/template.mycontenido_lastarticles.html:75
 #: templates/standard/template.mycontenido_lastarticles.html:115
@@ -3718,47 +3718,47 @@ msgid ""
 "WARNING: Translations have effects on every article that uses the module!"
 msgstr ""
 
-#: includes/include.frontend.group.subnav.php:24
+#: includes/include.frontend.group.subnav.php:23
 #: includes/include.mycontenido.php:178 xml/navigation.xml:11
 #: xml/navigation.xml:20 xml/navigation.xml:22 xml/navigation.xml:88
 msgid "Overview"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:33
+#: includes/include.frontend.group_edit.php:32
 msgid "-- New group --"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:38
+#: includes/include.frontend.group_edit.php:37
 msgid "Created new frontend-group successfully"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:52
+#: includes/include.frontend.group_edit.php:51
 msgid "Removed user from group successfully!"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:61
+#: includes/include.frontend.group_edit.php:60
 #: includes/include.grouprights_members.php:82
 msgid "Added user to group successfully!"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:69
+#: includes/include.frontend.group_edit.php:68
 msgid "Deleted group successfully!"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:99
+#: includes/include.frontend.group_edit.php:98
 msgid "Could not set new group name: Group already exists"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:196
+#: includes/include.frontend.group_edit.php:195
 #: includes/include.grouprights_create.php:75
 msgid "Group name"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:200
+#: includes/include.frontend.group_edit.php:199
 msgid "Default group"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:237
+#: includes/include.frontend.group_edit.php:236
 #: ../data/config/production/cfg_actions.inc.php:111
 msgid "Edit group"
 msgstr ""
@@ -3795,21 +3795,21 @@ msgid "No items found"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:38
-#: includes/include.frontend.user_menu.php:39
+#: includes/include.frontend.user_menu.php:38
 msgid "-- All fields --"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:39
 #: includes/include.frontend.left_top.php:42
-#: includes/include.frontend.user_menu.php:40
-#: includes/include.frontend.user_menu.php:43
+#: includes/include.frontend.user_menu.php:39
+#: includes/include.frontend.user_menu.php:42
 #: includes/include.rights_create.php:161
 #: includes/include.rights_overview.php:204
 msgid "Username"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:44
-#: includes/include.frontend.user_menu.php:45
+#: includes/include.frontend.user_menu.php:44
 #: templates/standard/template.mycontenido_lastarticles.html:76
 #: templates/standard/template.mycontenido_lastarticles.html:116
 #: templates/standard/template.upl_artlist.html:31
@@ -3817,15 +3817,15 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:119
+#: includes/include.frontend.left_top.php:118
 msgid "Frontend users"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:127
+#: includes/include.frontend.left_top.php:126
 msgid "Frontend groups"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:159
+#: includes/include.frontend.left_top.php:158
 #: includes/include.rights_left_top.php:72
 #: templates/standard/template.symbolhelp.html:614
 #: templates/standard/template.symbolhelp.html:721
@@ -3834,12 +3834,12 @@ msgstr ""
 msgid "Create user"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:162
+#: includes/include.frontend.left_top.php:161
 msgid "No permission to create users"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:166
-#: includes/include.frontend.left_top.php:401
+#: includes/include.frontend.left_top.php:165
+#: includes/include.frontend.left_top.php:399
 #: includes/include.html_tpl_left_top.php:39
 #: includes/include.js_left_top.php:39 includes/include.lang_left_top.php:53
 #: includes/include.lay_new.php:36 includes/include.style_left_top.php:39
@@ -3847,37 +3847,37 @@ msgstr ""
 msgid "No Client selected"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:178 includes/include.mod_new.php:48
+#: includes/include.frontend.left_top.php:177 includes/include.mod_new.php:48
 #: includes/include.rights_left_top.php:90
 msgid "List options"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:219
-#: includes/include.frontend.user_menu.php:134
+#: includes/include.frontend.left_top.php:217
+#: includes/include.frontend.user_menu.php:133
 msgid "-- All Groups --"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:347
-#: includes/include.frontend.user_menu.php:274
+#: includes/include.frontend.left_top.php:345
+#: includes/include.frontend.user_menu.php:273
 #: includes/include.rights_menu.php:102
 #, php-format
 msgid "Do you really want to delete the user %s?"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:349
-#: includes/include.frontend.user_menu.php:252
+#: includes/include.frontend.left_top.php:347
+#: includes/include.frontend.user_menu.php:251
 #: includes/include.rights_menu.php:106
 #: ../data/config/production/cfg_actions.inc.php:103
 msgid "Delete user"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:394
+#: includes/include.frontend.left_top.php:392
 #: includes/include.grouprights_left_top.php:58
 #: ../data/config/production/cfg_actions.inc.php:112
 msgid "Create group"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:397
+#: includes/include.frontend.left_top.php:395
 #: includes/include.grouprights_left_top.php:62
 msgid "No permission to create groups"
 msgstr ""
