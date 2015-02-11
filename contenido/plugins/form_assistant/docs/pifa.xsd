@@ -1,86 +1,82 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="pifa">
-    <xs:complexType>
+ <xs:element name="pifa">
+  <xs:complexType>
+   <xs:sequence>
+    <xs:element name="form">
+     <xs:complexType>
       <xs:sequence>
-        <xs:element name="form">
-          <xs:complexType>
+       <xs:element name="field" maxOccurs="unbounded" minOccurs="0">
+        <xs:complexType>
+         <xs:sequence>
+          <xs:element name="label">
+           <xs:complexType>
+            <xs:simpleContent>
+             <xs:extension base="xs:string">
+              <xs:attribute type="xs:string" name="display" use="optional" />
+             </xs:extension>
+            </xs:simpleContent>
+           </xs:complexType>
+          </xs:element>
+          <xs:element type="xs:string" name="error" minOccurs="0" />
+          <xs:element name="classes" minOccurs="0">
+           <xs:complexType>
             <xs:sequence>
-              <xs:element name="field" maxOccurs="unbounded" minOccurs="0">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="label">
-                      <xs:complexType>
-                        <xs:simpleContent>
-                          <xs:extension base="xs:string">
-                            <xs:attribute type="xs:string" name="display" use="optional"/>
-                          </xs:extension>
-                        </xs:simpleContent>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element type="xs:string" name="error" minOccurs="0"/>
-                    <xs:element name="classes" minOccurs="0">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element type="xs:string" name="class"/>
-                        </xs:sequence>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element name="options" minOccurs="0">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="option" maxOccurs="unbounded" minOccurs="0">
-                            <xs:complexType>
-                              <xs:simpleContent>
-                                <xs:extension base="xs:string">
-                                  <xs:attribute type="xs:string" name="value" use="optional"/>
-                                </xs:extension>
-                              </xs:simpleContent>
-                            </xs:complexType>
-                          </xs:element>
-                        </xs:sequence>
-                      </xs:complexType>
-                    </xs:element>
-                  </xs:sequence>
-                  <xs:attribute type="xs:byte" name="rank" use="optional"/>
-                  <xs:attribute type="xs:string" name="type" use="optional"/>
-                  <xs:attribute type="xs:string" name="column" use="optional"/>
-                  <xs:attribute type="xs:string" name="obligatory" use="optional"/>
-                </xs:complexType>
-              </xs:element>
+             <xs:element type="xs:string" name="class"/>
             </xs:sequence>
-            <xs:attribute type="xs:string" name="name"/>
-            <xs:attribute type="xs:string" name="table"/>
-            <xs:attribute type="xs:string" name="method"/>
-            <xs:attribute type="xs:string" name="timestamp"/>
-          </xs:complexType>
-        </xs:element>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-        <xs:element name="data">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="row" maxOccurs="unbounded" minOccurs="0">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="col">
-                      <xs:complexType>
-                        <xs:simpleContent>
-                          <xs:extension base="xs:string">
-                            <xs:attribute type="xs:string" name="name" use="optional"/>
-                          </xs:extension>
-                        </xs:simpleContent>
-                      </xs:complexType>
-                    </xs:element>
-                  </xs:sequence>
-                  <xs:attribute type="xs:string" name="timestamp" use="optional"/>
-                </xs:complexType>
+           </xs:complexType>
+          </xs:element>
+          <xs:element name="options" minOccurs="0">
+            <xs:complexType>
+             <xs:sequence>
+              <xs:element name="option" maxOccurs="unbounded" minOccurs="0">
+               <xs:complexType>
+                <xs:simpleContent>
+                 <xs:extension base="xs:string">
+                  <xs:attribute type="xs:string" name="value" use="optional" />
+                 </xs:extension>
+                </xs:simpleContent>
+               </xs:complexType>
               </xs:element>
-            </xs:sequence>
-          </xs:complexType>
+             </xs:sequence>
+            </xs:complexType>
+           </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:byte" name="rank" use="optional" />
+          <xs:attribute type="xs:string" name="type" use="optional" />
+          <xs:attribute type="xs:string" name="column" use="optional" />
+          <xs:attribute type="xs:string" name="obligatory" use="optional" />
+         </xs:complexType>
         </xs:element>
+       </xs:sequence>
+       <xs:attribute type="xs:string" name="name" />
+       <xs:attribute type="xs:string" name="table" />
+       <xs:attribute type="xs:string" name="method" />
+       <xs:attribute type="xs:string" name="timestamp" />
+      </xs:complexType>
+     </xs:element>
+    </xs:sequence>
+   </xs:complexType>
+ </xs:element>
+ <xs:element name="data">
+  <xs:complexType>
+   <xs:sequence>
+    <xs:element name="row" maxOccurs="unbounded" minOccurs="0">
+     <xs:complexType>
+      <xs:sequence>
+       <xs:element name="col">
+        <xs:complexType>
+         <xs:simpleContent>
+          <xs:extension base="xs:string">
+           <xs:attribute type="xs:string" name="name" use="optional" />
+          </xs:extension>
+         </xs:simpleContent>
+        </xs:complexType>
+       </xs:element>
       </xs:sequence>
-    </xs:complexType>
-  </xs:element>
+      <xs:attribute type="xs:string" name="timestamp" use="optional" />
+     </xs:complexType>
+    </xs:element>
+   </xs:sequence>
+  </xs:complexType>
+ </xs:element>
 </xs:schema>
-

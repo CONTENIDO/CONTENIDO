@@ -612,7 +612,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLParagraph(i18n('Source directory'), 'head_sub');
 
         $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
-        $liRoot = new cHTMLListItem('root', 'last');
+        $liRoot = new cHTMLListItem('root', 'root last');
         $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
         $liRoot->setContent(array(
             '<em>Uploads</em>',

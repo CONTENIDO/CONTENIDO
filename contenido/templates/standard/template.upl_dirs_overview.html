@@ -96,7 +96,7 @@ function renameDir(oldname, parent) {
         if (myLoc.indexOf('action=upl_delete') != -1) {
             $('body', Con.getFrame('right_bottom').document).html('');
             $('#navlist', Con.getFrame('right_top').document).remove();
-            $('#root').click();
+            $('.root').click();
         }
     });
 })(Con, Con.$);

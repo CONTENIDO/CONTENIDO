@@ -142,7 +142,7 @@ foreach ($allModules as $idmod => $module) {
                 <a href="javascript:;" rel="' . $idmod . '" class="in_used_mod"><img src="' . $cfg['path']['images'] . 'exclamation.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '"></a>');
             $delDescription = i18n("Module can not be deleted, because it is already in use!");
         } else {
-            $mlist->setActions($iMenu, 'inuse', '<img src="./images/spacer.gif" border="0" width="16">');
+            $mlist->setActions($iMenu, 'inuse', '<img src="./images/spacer.gif" alt="" border="0" width="16">');
             if ($perm->have_perm_area_action_item("mod", "mod_delete", $idmod)) {
                 $delTitle = i18n("Delete module");
                 $delDescr = sprintf(i18n("Do you really want to delete the following module:<br /><br />%s<br />"), $sName);

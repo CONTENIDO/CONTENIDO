@@ -3,7 +3,7 @@
     <div class="content_article_include_holder cms_abstract ui-draggable" id="article_include_container_{$id}" style="position: absolute; display: none;">
         <form name="content_article_include_form_{$id}" id="content_article_include_form_{$id}" action="" method="POST">
             <div class="content_article_include_close close" style="cursor: pointer;">
-                <img id="article_include_close_{$id}" src="{$backendUrl}/images/but_cancel.gif">
+                <img id="article_include_close_{$id}" alt="" src="{$backendUrl}/images/but_cancel.gif">
             </div>
             <p class="head" style="cursor: move;">{$articleIncludeSettingsLabel}</p>
             <div class="clearfix"></div>
@@ -13,13 +13,13 @@
                 <label>{$articleIncludeChooseArticleLabel}</label>{$articleSelect}
             </div>
             <div class="toolbar">
-                <img src="{$backendUrl}images/but_ok.gif" class="save_settings" id="article_include_save_settings_{$id}" style="cursor: pointer;">
-                <img src="{$backendUrl}images/but_cancel.gif" class="cancel_settings" id="article_include_cancel_{$id}" style="cursor: pointer;">
+                <img src="{$backendUrl}images/but_ok.gif" class="save_settings" alt="" id="article_include_save_settings_{$id}" style="cursor: pointer;">
+                <img src="{$backendUrl}images/but_cancel.gif" class="cancel_settings" alt="" id="article_include_cancel_{$id}" style="cursor: pointer;">
             </div>
         </form>
     </div>
     <div class="popup_opener">
-        <img src="{$backendUrl}images/article_include.png" class="cms_abstract_img cms_teaser_img" id="article_include_{$id}" style="cursor: pointer;" />
+        <img src="{$backendUrl}images/article_include.png" alt="" class="cms_abstract_img cms_teaser_img" id="article_include_{$id}" style="cursor: pointer;" />
     </div>
 </div>
 <script type="text/javascript">

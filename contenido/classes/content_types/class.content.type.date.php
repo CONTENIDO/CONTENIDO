@@ -43,6 +43,8 @@ class cContentTypeDate extends cContentTypeAbstract {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
+
+
         // change attributes from the parent class and call the parent
         // constructor
         $this->_type = 'CMS_DATE';
@@ -105,17 +107,20 @@ class cContentTypeDate extends cContentTypeAbstract {
         if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
         	// convert the given date string into a valid timestamp, so that a
         	// timestamp is stored
-        	if (!empty($_POST['date_format'])) {
+            //CON-2049 additional check for base64 strings
+        	if (!empty($_POST['date_format']) && base64_encode(base64_decode($_POST['date_format'])) === $_POST['date_format']) {
         		$_POST['date_format'] = stripslashes(base64_decode($_POST['date_format']));
         	} else { // if no date_format is given, set standard value
         		$_POST['date_format'] = '{"dateFormat":"","timeFormat":""}';
         	}
+
         	$this->_storeSettings();
         }
 
+        // CON-2049
         // reset specific date variable
-        $_POST[$this->_prefix . '_action'] = '';
-        $_POST['date_format'] = '';
+        // $_POST[$this->_prefix . '_action'] = '';
+        // $_POST['date_format'] = '';
     }
 
     /**

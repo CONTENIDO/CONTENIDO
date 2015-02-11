@@ -246,6 +246,15 @@ class PimPluginSetup {
             // Path to CONTENIDO temp dir
             $tempArchiveNewPath = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['temp'];
 
+            // Check if temp directory exists, otherwise try to create it
+            if (!cDirHandler::exists($tempArchiveNewPath)) {
+				$success = cDirHandler::create($tempArchiveNewPath);
+
+				// If PIM can not create a temporary directory (if it does not exists), throw an error message
+				if (!$success) {
+					return self::error(sprintf(i18n('Plugin Manager can not found a temporary CONTENIDO directory. Also it is not possible to create a temporary directory at <em>%s</em>. You have to create it manualy.', 'pim'), $tempArchiveNewPath));				}
+            }
+
             // Name of uploaded Zip archive
             $tempArchiveName = cSecurity::escapeString($_FILES['package']['name']);
 

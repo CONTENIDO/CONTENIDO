@@ -286,8 +286,8 @@ $result = array(
     'fieldname' => 'name'
 );
 $tpl2 = new cTemplate();
-$tpl2->set('s', 'METATITLE', i18n('New meta tag'));
-
+$infoButton->setHelpText(i18n('Attribute content has to begin with a letter and can be followed by letters, digits or the following chars: . : _ - '));
+$tpl2->set('s', 'METATITLE', i18n('New meta tag') . ' ' . $infoButton->render());
 $sql = "SHOW FIELDS
         FROM `" . $cfg['tab']['meta_type'] . "`";
 $db->query($sql);
@@ -348,7 +348,7 @@ while ($db->nextRecord()) {
 $aUserPerm = explode(',', $auth->auth['perm']);
 
 if (in_array('sysadmin', $aUserPerm)) {
-    $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta">');
+    $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" alt="" id="addMeta">');
     $tpl->set('s', 'ADDNEWMETA', $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['con_meta_addnew'], true));
 } else {
     $tpl->set('s', 'ADDMETABTN', '&nbsp;');

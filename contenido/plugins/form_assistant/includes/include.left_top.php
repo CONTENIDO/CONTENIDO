@@ -37,7 +37,7 @@ if (cRegistry::getPerm()->have_perm_area_action('form_import', PifaRightBottomFo
     $link = new cHTMLLink();
     $link->setMultiLink('form_import', PifaRightBottomFormImportPage::IMPORT_FORM, 'form_import', PifaRightBottomFormImportPage::IMPORT_FORM);
     $link->setContent(Pifa::i18n('IMPORT_FORM'));
-    $link->setContent('<img src="images/folder_new.gif">&nbsp;' . Pifa::i18n('pifa_import_form'));
+    $link->setContent('<img src="images/folder_new.gif" alt="">&nbsp;' . Pifa::i18n('pifa_import_form'));
     $link->setTargetFrame('right_bottom');
     $actions[] = $link->render();
 } else {

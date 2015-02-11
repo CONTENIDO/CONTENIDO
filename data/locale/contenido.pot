@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-03 17:42+0100\n"
+"POT-Creation-Date: 2015-02-06 15:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,7 +84,7 @@ msgid "Template"
 msgstr ""
 
 #: backend_search.php:519 includes/include.con_art_overview.php:83
-#: includes/include.frontend.left_top.php:145
+#: includes/include.frontend.left_top.php:144
 #: includes/include.mycontenido.tasks.php:250
 #: includes/include.upl_files_overview.php:494
 #: templates/standard/template.str_overview.html:154
@@ -228,7 +228,7 @@ msgstr ""
 #: classes/module/class.module.template.handler.php:508
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:123
 #: includes/include.clientsettings.php:78
-#: includes/include.clientsettings.php:161
+#: includes/include.clientsettings.php:162
 #: includes/include.html_tpl_history.php:157
 #: includes/include.js_history.php:154 includes/include.lay_edit_form.php:221
 #: includes/include.lay_history.php:114 includes/include.mod_edit_form.php:358
@@ -1361,16 +1361,16 @@ msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:716
 #: classes/content_types/class.content.type.teaser.php:909
-#: includes/include.frontend.left_top.php:97
-#: includes/include.frontend.user_menu.php:62 includes/include.mod_new.php:46
+#: includes/include.frontend.left_top.php:96
+#: includes/include.frontend.user_menu.php:61 includes/include.mod_new.php:46
 #: includes/include.rights_left_top.php:86
 msgid "Ascending"
 msgstr ""
 
 #: classes/content_types/class.content.type.filelist.php:719
 #: classes/content_types/class.content.type.teaser.php:912
-#: includes/include.frontend.left_top.php:98
-#: includes/include.frontend.user_menu.php:63 includes/include.mod_new.php:46
+#: includes/include.frontend.left_top.php:97
+#: includes/include.frontend.user_menu.php:62 includes/include.mod_new.php:46
 #: includes/include.rights_left_top.php:86
 msgid "Descending"
 msgstr ""
@@ -1895,13 +1895,13 @@ msgstr ""
 msgid "Last page"
 msgstr ""
 
-#: classes/gui/class.page.php:281 classes/gui/class.page.php:332
-#: classes/gui/class.page.php:776
+#: classes/gui/class.page.php:289 classes/gui/class.page.php:340
+#: classes/gui/class.page.php:797
 msgid "The requested resource"
 msgstr ""
 
-#: classes/gui/class.page.php:281 classes/gui/class.page.php:332
-#: classes/gui/class.page.php:776
+#: classes/gui/class.page.php:289 classes/gui/class.page.php:340
+#: classes/gui/class.page.php:797
 msgid "was not found"
 msgstr ""
 
@@ -1915,8 +1915,8 @@ msgstr ""
 #: includes/include.client_artspec.php:38
 #: includes/include.client_artspec.php:46 includes/include.client_edit.php:18
 #: includes/include.con_art_overview.php:968
-#: includes/include.con_content_list.php:133
-#: includes/include.con_content_list.php:159
+#: includes/include.con_content_list.php:135
+#: includes/include.con_content_list.php:161
 #: includes/include.con_edit_form.php:1091
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
@@ -1955,7 +1955,7 @@ msgstr ""
 #: includes/type/action/include.con_makepublic.action.php:23
 #: includes/type/action/include.con_makestart.action.php:23
 #: includes/type/action/include.con_meta_deletetype.action.php:34
-#: includes/type/action/include.con_meta_saveart.action.php:105
+#: includes/type/action/include.con_meta_saveart.action.php:112
 #: includes/type/action/include.con_newart.action.php:44
 #: includes/type/action/include.lang_activatelanguage.action.php:22
 #: includes/type/action/include.lang_deactivatelanguage.action.php:22
@@ -2032,7 +2032,7 @@ msgstr ""
 #: includes/include.rights_create.php:157
 #: includes/include.rights_overview.php:197
 #: templates/standard/template.grouprights_memberselect.html:136
-#: templates/standard/template.mod_translate.html:69
+#: templates/standard/template.mod_translate.html:71
 #: templates/standard/template.upl_files_upload.html:62
 msgid "Save changes"
 msgstr ""
@@ -2075,8 +2075,8 @@ msgid "Field of the file name is empty!"
 msgstr ""
 
 #: classes/module/class.module.template.handler.php:256
-#: includes/include.frontend.group_edit.php:104
-#: includes/include.frontend.group_edit.php:145
+#: includes/include.frontend.group_edit.php:103
+#: includes/include.frontend.group_edit.php:144
 #: includes/include.frontend.group_rights.php:67
 #: includes/include.frontend.user_edit.php:157
 #: includes/include.mod_script.php:147 includes/include.mod_style.php:156
@@ -2347,7 +2347,7 @@ msgid "You are not sysadmin. You can't change these settings."
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:482
-#: includes/include.con_content_list.php:427
+#: includes/include.con_content_list.php:429
 #: includes/include.con_editcontent.php:142
 msgid "You have unsaved changes."
 msgstr ""
@@ -2857,7 +2857,7 @@ msgid "Deleted item successfully!"
 msgstr ""
 
 #: includes/include.clientsettings.php:78
-#: includes/include.clientsettings.php:157
+#: includes/include.clientsettings.php:158
 #: includes/include.mod_edit_form.php:359 includes/include.mod_new.php:45
 #: includes/include.mod_new.php:65 includes/include.systemsettings.php:67
 #: includes/include.systemsettings.php:167
@@ -2871,7 +2871,7 @@ msgid "Type"
 msgstr ""
 
 #: includes/include.clientsettings.php:78
-#: includes/include.clientsettings.php:165
+#: includes/include.clientsettings.php:166
 #: includes/include.client_edit.php:190
 #: includes/include.grouprights_create.php:73
 #: includes/include.grouprights_overview.php:111
@@ -2897,12 +2897,12 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: includes/include.clientsettings.php:144
+#: includes/include.clientsettings.php:145
 #: includes/include.systemsettings.php:154
 msgid "No defined properties"
 msgstr ""
 
-#: includes/include.clientsettings.php:153
+#: includes/include.clientsettings.php:154
 #: includes/include.systemsettings.php:164
 msgid "Add new variable"
 msgstr ""
@@ -2972,8 +2972,8 @@ msgid ""
 msgstr ""
 
 #: includes/include.client_edit.php:154
-#: includes/include.con_content_list.php:128
-#: includes/include.con_content_list.php:154
+#: includes/include.con_content_list.php:130
+#: includes/include.con_content_list.php:156
 #: includes/include.grouprights_area.php:42
 #: includes/include.grouprights_con.php:39
 #: includes/include.grouprights_lay.php:38
@@ -2988,7 +2988,7 @@ msgstr ""
 #: includes/include.rights_overview.php:164 includes/include.rights_str.php:38
 #: includes/include.rights_tpl.php:38
 #: includes/include.system_configuration.php:162
-#: includes/type/action/include.con_meta_saveart.action.php:103
+#: includes/type/action/include.con_meta_saveart.action.php:107
 #: includes/type/action/include.con_saveart.action.php:38
 #: includes/type/action/include.con_saveart.action.php:145
 msgid "Changes saved"
@@ -3233,65 +3233,65 @@ msgid ""
 "template."
 msgstr ""
 
-#: includes/include.con_content_list.php:334
+#: includes/include.con_content_list.php:336
 msgid "Can not load article"
 msgstr ""
 
-#: includes/include.con_content_list.php:338
+#: includes/include.con_content_list.php:340
 msgid "Can not find article"
 msgstr ""
 
-#: includes/include.con_content_list.php:344
+#: includes/include.con_content_list.php:346
 msgid "Raw data was imported successfully"
 msgstr ""
 
-#: includes/include.con_content_list.php:348
+#: includes/include.con_content_list.php:350
 msgid "Error: The XML file is not valid"
 msgstr ""
 
-#: includes/include.con_content_list.php:351
+#: includes/include.con_content_list.php:353
 msgid "Please choose a file"
 msgstr ""
 
-#: includes/include.con_content_list.php:425
+#: includes/include.con_content_list.php:427
 #: includes/include.con_editcontent.php:140
 msgid "Close editor"
 msgstr ""
 
-#: includes/include.con_content_list.php:426
+#: includes/include.con_content_list.php:428
 #: includes/include.con_editcontent.php:141
 msgid "Close editor and save changes"
 msgstr ""
 
-#: includes/include.con_content_list.php:431
+#: includes/include.con_content_list.php:433
 msgid "Export raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:432
+#: includes/include.con_content_list.php:434
 msgid "Import raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:433
+#: includes/include.con_content_list.php:435
 msgid "Raw data export"
 msgstr ""
 
-#: includes/include.con_content_list.php:434
+#: includes/include.con_content_list.php:436
 msgid "Raw data import"
 msgstr ""
 
-#: includes/include.con_content_list.php:435
+#: includes/include.con_content_list.php:437
 msgid "Overwrite data"
 msgstr ""
 
-#: includes/include.con_content_list.php:449
+#: includes/include.con_content_list.php:451
 msgid "Article has no raw data"
 msgstr ""
 
-#: includes/include.con_content_list.php:466
+#: includes/include.con_content_list.php:468
 msgid "Export"
 msgstr ""
 
-#: includes/include.con_content_list.php:545
+#: includes/include.con_content_list.php:547
 #: includes/include.con_edit_form.php:332
 #: includes/include.con_edit_form.php:333
 #: includes/include.con_meta_form.php:69 includes/include.con_meta_form.php:70
@@ -3299,8 +3299,8 @@ msgstr ""
 msgid "This article is currently frozen and can not be edited!"
 msgstr ""
 
-#: includes/include.con_content_list.php:629
-#: includes/include.con_content_list.php:632
+#: includes/include.con_content_list.php:631
+#: includes/include.con_content_list.php:634
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 
@@ -3367,7 +3367,7 @@ msgstr ""
 
 #: includes/include.con_edit_form.php:505
 #: includes/include.frontend.left_top.php:43
-#: includes/include.frontend.user_menu.php:44
+#: includes/include.frontend.user_menu.php:43
 #: includes/include.mycontenido.tasks.php:249
 #: templates/standard/template.mycontenido_lastarticles.html:75
 #: templates/standard/template.mycontenido_lastarticles.html:115
@@ -3599,6 +3599,12 @@ msgid "The refresh rate is focused on the content."
 msgstr ""
 
 #: includes/include.con_meta_form.php:289
+msgid ""
+"Attribute content has to begin with a letter and can be followed by letters, "
+"digits or the following chars: . : _ - "
+msgstr ""
+
+#: includes/include.con_meta_form.php:290
 msgid "New meta tag"
 msgstr ""
 
@@ -3712,47 +3718,47 @@ msgid ""
 "WARNING: Translations have effects on every article that uses the module!"
 msgstr ""
 
-#: includes/include.frontend.group.subnav.php:24
+#: includes/include.frontend.group.subnav.php:23
 #: includes/include.mycontenido.php:178 xml/navigation.xml:11
 #: xml/navigation.xml:20 xml/navigation.xml:22 xml/navigation.xml:88
 msgid "Overview"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:33
+#: includes/include.frontend.group_edit.php:32
 msgid "-- New group --"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:38
+#: includes/include.frontend.group_edit.php:37
 msgid "Created new frontend-group successfully"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:52
+#: includes/include.frontend.group_edit.php:51
 msgid "Removed user from group successfully!"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:61
+#: includes/include.frontend.group_edit.php:60
 #: includes/include.grouprights_members.php:82
 msgid "Added user to group successfully!"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:69
+#: includes/include.frontend.group_edit.php:68
 msgid "Deleted group successfully!"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:99
+#: includes/include.frontend.group_edit.php:98
 msgid "Could not set new group name: Group already exists"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:196
+#: includes/include.frontend.group_edit.php:195
 #: includes/include.grouprights_create.php:75
 msgid "Group name"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:200
+#: includes/include.frontend.group_edit.php:199
 msgid "Default group"
 msgstr ""
 
-#: includes/include.frontend.group_edit.php:237
+#: includes/include.frontend.group_edit.php:236
 #: ../data/config/production/cfg_actions.inc.php:111
 msgid "Edit group"
 msgstr ""
@@ -3789,21 +3795,21 @@ msgid "No items found"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:38
-#: includes/include.frontend.user_menu.php:39
+#: includes/include.frontend.user_menu.php:38
 msgid "-- All fields --"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:39
 #: includes/include.frontend.left_top.php:42
-#: includes/include.frontend.user_menu.php:40
-#: includes/include.frontend.user_menu.php:43
+#: includes/include.frontend.user_menu.php:39
+#: includes/include.frontend.user_menu.php:42
 #: includes/include.rights_create.php:161
 #: includes/include.rights_overview.php:204
 msgid "Username"
 msgstr ""
 
 #: includes/include.frontend.left_top.php:44
-#: includes/include.frontend.user_menu.php:45
+#: includes/include.frontend.user_menu.php:44
 #: templates/standard/template.mycontenido_lastarticles.html:76
 #: templates/standard/template.mycontenido_lastarticles.html:116
 #: templates/standard/template.upl_artlist.html:31
@@ -3811,15 +3817,15 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:119
+#: includes/include.frontend.left_top.php:118
 msgid "Frontend users"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:127
+#: includes/include.frontend.left_top.php:126
 msgid "Frontend groups"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:159
+#: includes/include.frontend.left_top.php:158
 #: includes/include.rights_left_top.php:72
 #: templates/standard/template.symbolhelp.html:614
 #: templates/standard/template.symbolhelp.html:721
@@ -3828,12 +3834,12 @@ msgstr ""
 msgid "Create user"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:162
+#: includes/include.frontend.left_top.php:161
 msgid "No permission to create users"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:166
-#: includes/include.frontend.left_top.php:401
+#: includes/include.frontend.left_top.php:165
+#: includes/include.frontend.left_top.php:399
 #: includes/include.html_tpl_left_top.php:39
 #: includes/include.js_left_top.php:39 includes/include.lang_left_top.php:53
 #: includes/include.lay_new.php:36 includes/include.style_left_top.php:39
@@ -3841,37 +3847,37 @@ msgstr ""
 msgid "No Client selected"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:178 includes/include.mod_new.php:48
+#: includes/include.frontend.left_top.php:177 includes/include.mod_new.php:48
 #: includes/include.rights_left_top.php:90
 msgid "List options"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:219
-#: includes/include.frontend.user_menu.php:134
+#: includes/include.frontend.left_top.php:217
+#: includes/include.frontend.user_menu.php:133
 msgid "-- All Groups --"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:347
-#: includes/include.frontend.user_menu.php:274
+#: includes/include.frontend.left_top.php:345
+#: includes/include.frontend.user_menu.php:273
 #: includes/include.rights_menu.php:102
 #, php-format
 msgid "Do you really want to delete the user %s?"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:349
-#: includes/include.frontend.user_menu.php:252
+#: includes/include.frontend.left_top.php:347
+#: includes/include.frontend.user_menu.php:251
 #: includes/include.rights_menu.php:106
 #: ../data/config/production/cfg_actions.inc.php:103
 msgid "Delete user"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:394
+#: includes/include.frontend.left_top.php:392
 #: includes/include.grouprights_left_top.php:58
 #: ../data/config/production/cfg_actions.inc.php:112
 msgid "Create group"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:397
+#: includes/include.frontend.left_top.php:395
 #: includes/include.grouprights_left_top.php:62
 msgid "No permission to create groups"
 msgstr ""
@@ -5959,6 +5965,10 @@ msgstr ""
 msgid "Article deleted"
 msgstr ""
 
+#: includes/type/action/include.con_meta_saveart.action.php:109
+msgid "Attribute content not valid; attend information button"
+msgstr ""
+
 #: includes/type/action/include.con_newart.action.php:40
 msgid "This category has no templates assigned."
 msgstr ""
@@ -6335,17 +6345,17 @@ msgid "The module '%s' is used for following templates"
 msgstr ""
 
 #: templates/standard/template.mod_translate.html:18
-#: templates/standard/template.mod_translate.html:66
+#: templates/standard/template.mod_translate.html:68
 msgid "String list"
 msgstr ""
 
 #: templates/standard/template.mod_translate.html:24
-#: templates/standard/template.mod_translate.html:67
+#: templates/standard/template.mod_translate.html:69
 msgid "Original module string"
 msgstr ""
 
-#: templates/standard/template.mod_translate.html:50
-#: templates/standard/template.mod_translate.html:68
+#: templates/standard/template.mod_translate.html:51
+#: templates/standard/template.mod_translate.html:70
 msgid ""
 "Hint: Hit ALT+SHIFT+S to save the translated entry and advance to the next "
 "string."

@@ -79,8 +79,8 @@ class cGuiObjectPager extends cGuiFoldingRow {
             $output .= $link->render();
             $output .= " ";
         } else {
-            $output .= '<img src="images/spacer.gif" width="8"> ';
-            $output .= '<img src="images/spacer.gif" width="8">';
+            $output .= '<img src="images/spacer.gif" alt="" width="8"> ';
+            $output .= '<img src="images/spacer.gif" alt="" width="8">';
         }
 
         foreach ($items as $key => $item) {
@@ -117,8 +117,8 @@ class cGuiObjectPager extends cGuiFoldingRow {
             $output .= $link->render();
             $output .= " ";
         } else {
-            $output .= '<img src="images/spacer.gif" width="8"> ';
-            $output .= '<img src="images/spacer.gif" width="8">';
+            $output .= '<img src="images/spacer.gif" alt="" width="8"> ';
+            $output .= '<img src="images/spacer.gif" alt="" width="8">';
         }
 
         $this->_contentData->setAlignment("center");

@@ -83,10 +83,10 @@ class cGuiMenu {
             foreach ($this->link as $key => $value) {
                 if ($value != NULL) {
                     if ($this->imagewidth[$key] != 0) {
-                        $value->setContent('<img border="0" src="' . $this->image[$key] . '" width="' . $this->imagewidth[$key] . '">');
+                        $value->setContent('<img border="0" alt="" src="' . $this->image[$key] . '" width="' . $this->imagewidth[$key] . '">');
                         $img = $value->render();
                     } else {
-                        $value->setContent('<img border="0" src="' . $this->image[$key] . '">');
+                        $value->setContent('<img border="0" alt="" src="' . $this->image[$key] . '">');
                         $img = $value->render();
                     }
                     $value->setContent($this->title[$key]);
@@ -96,9 +96,9 @@ class cGuiMenu {
 
                     if ($this->image[$key] != "") {
                         if ($this->imagewidth[$key] != 0) {
-                            $img = '<img border="0" src="' . $this->image[$key] . '" width="' . $this->imagewidth[$key] . '">';
+                            $img = '<img border="0" alt="" src="' . $this->image[$key] . '" width="' . $this->imagewidth[$key] . '">';
                         } else {
-                            $img = '<img border="0" src="' . $this->image[$key] . '">';
+                            $img = '<img border="0" alt="" src="' . $this->image[$key] . '">';
                         }
                     } else {
                         $img = "&nbsp;";

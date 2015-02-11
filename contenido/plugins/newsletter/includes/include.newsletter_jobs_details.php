@@ -265,7 +265,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     // HerrB: Hardcore UI for browsing elements ... sorry
     $sBrowseHTML = '<table class="generic" width="100%" cellspacing="0" cellpadding="2" border="0">
     <tr>
-        <td><img src="images/spacer.gif" width="1" height="10"></td>
+        <td><img src="images/spacer.gif" alt="" width="1" height="10"></td>
     </tr>
     <tr class="text_medium">
         <td> ' . sprintf(i18n("Go to page: %s", 'newsletter'), $sBrowseLinks) . '</td>

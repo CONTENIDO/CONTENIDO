@@ -262,7 +262,7 @@ class cGuiNavigation {
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url('frameset.php?area=info&frame=4'));
-        $link->setContent('<img class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
+        $link->setContent('<img alt="" class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
         $main->set('s', 'INFO', $link->render());
 
         $main->set('s', 'LOGOUT', $sess->url('logout.php'));

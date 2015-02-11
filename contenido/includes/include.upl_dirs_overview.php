@@ -33,16 +33,16 @@ function getUplExpandCollapseButton($item) {
     if (count($item->subitems) > 0) {
         if ($item->collapsed == true) {
             $expandlink = $sess->url($selflink . "?area=$area&frame=$frame&appendparameters=$appendparameters&expand=" . $item->id);
-            return ('<a href="' . $expandlink . '" alt="' . i18n('Open category') . '" title="' . i18n('Open category') . '"><img src="' . $item->collapsed_icon . '" border="0" align="middle" width="18"></a>');
+            return ('<a href="' . $expandlink . '" alt="' . i18n('Open category') . '" title="' . i18n('Open category') . '"><img src="' . $item->collapsed_icon . '" alt="" border="0" align="middle" width="18"></a>');
         } else {
             $collapselink = $sess->url($selflink . "?area=$area&appendparameters=$appendparameters&frame=$frame&collapse=" . $item->id);
-            return ('<a href="' . $collapselink . '" alt="' . i18n('Close category') . '" title="' . i18n('Close category') . '"><img src="' . $item->expanded_icon . '" border="0" align="middle" width="18"></a>');
+            return ('<a href="' . $collapselink . '" alt="' . i18n('Close category') . '" title="' . i18n('Close category') . '"><img src="' . $item->expanded_icon . '" alt="" border="0" align="middle" width="18"></a>');
         }
     } else {
         if ($item->custom['lastitem']) {
-            return '<img class="vAlignMiddle" src="images/but_lastnode.gif" width="18" height="18">';
+            return '<img class="vAlignMiddle" alt="" src="images/but_lastnode.gif" width="18" height="18">';
         } else {
-            return '<img class="vAlignMiddle" src="images/grid_collapse.gif" width="18" height="18">';
+            return '<img class="vAlignMiddle" alt="" src="images/grid_collapse.gif" width="18" height="18">';
         }
     }
 }
@@ -302,9 +302,9 @@ if (is_array($objects)) {
         $gline = '';
         for ($i = 1; $i < $depth; $i++) {
             if ($dlevels[$i] == false && $i != 0) {
-                $gline .= '<img class="vAlignMiddle" src="images/grid_linedown.gif" width="18">';
+                $gline .= '<img class="vAlignMiddle" alt="" src="images/grid_linedown.gif" width="18">';
             } else {
-                $gline .= '<img class="vAlignMiddle" src="images/spacer.gif" width="18" height="18">';
+                $gline .= '<img class="vAlignMiddle" alt="" src="images/spacer.gif" width="18" height="18">';
             }
         }
 
@@ -433,15 +433,15 @@ if (is_array($objects)) {
             } else {
                 $message = i18n("Permission denied");
             }
-            $deletebutton = '<img class="vAlignMiddle" src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" alt="' . $message . '" title="' . $message . '">';
+            $deletebutton = '<img class="vAlignMiddle" alt="" src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" alt="' . $message . '" title="' . $message . '">';
         }
 
         $gline = '';
         for ($i = 1; $i < $depth; $i++) {
             if ($dlevels[$i] == false && $i != 0) {
-                $gline .= '<img class="vAlignMiddle" src="images/grid_linedown.gif" align="middle">';
+                $gline .= '<img class="vAlignMiddle" src="images/grid_linedown.gif" alt="" align="middle">';
             } else {
-                $gline .= '<img class="vAlignMiddle" src="images/spacer.gif" width="18" height="18" align="middle">';
+                $gline .= '<img class="vAlignMiddle" src="images/spacer.gif" width="18" height="18" alt="" align="middle">';
             }
         }
 
