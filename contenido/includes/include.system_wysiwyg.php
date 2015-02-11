@@ -44,7 +44,7 @@ if (class_exists($configClass)) {
         $deleteExternalPluginBtn = isset($_GET['action']) && 'system_wysiwyg_tinymce4_delete_item' === $_GET['action'];
         if ($formMainSubmitBtn || $deleteExternalPluginBtn) {
             // we got form data
-            
+
             // clean form from form_sent marker
             $formData = $_POST;
             unset($formData['action']);

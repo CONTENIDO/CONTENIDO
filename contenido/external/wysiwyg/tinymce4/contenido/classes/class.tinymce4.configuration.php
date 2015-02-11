@@ -423,6 +423,9 @@ class cTinymce4Configuration {
 
         // remove value from raw settings
         unset($settings['raw']['externalplugins'][$pluginToRemoveIdx]);
+        // re-index array
+        $settings['raw']['externalplugins'] = array_values($settings['raw']['externalplugins']);
+
         // apply raw settings to computed settings
         $settings['tinymce4']['externalplugins'] = $settings['raw']['externalplugins'];
 
@@ -430,8 +433,8 @@ class cTinymce4Configuration {
         global $cfg;
         $cfg['wysiwyg']['tinymce4'] = $settings;
 
-        // save altered config
-        cTinyMCE4Editor::safeConfig($settings);
+        // save altered config under tinymce4 key
+        cTinyMCE4Editor::safeConfig(array('tinymce4' => $settings));
     }
 
     public function showConfigurationForm() {
