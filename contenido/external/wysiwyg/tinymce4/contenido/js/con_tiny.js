@@ -637,11 +637,50 @@
             });
             // Register plugin with a short name
             tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
-
+Con.Tiny.undoLvl = [];
             tinymce.settings = wysiwygSettings;
-
             // inject setup into settings
             tinymce.settings.setup = function(ed) {
+//                Con.Tiny.UndoLevels[ed.id] = 0;
+//                 Fires after an undo level has been added to the editor.
+//                 http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.AddUndo
+//                ed.on('AddUndo', function (e) {
+//                    console.log(e);
+//                    Con.Tiny.UndoLevels[ed.id] += 1;
+//                });
+ed.on('change', function(e) {
+    console.log("change event");
+});
+                ed.on('undo', function(lvl) {
+                    if ('undefined' === typeof(Con.Tiny.undoLvl[ed.id])) {
+                        Con.Tiny.undoLvl[ed.id] = ed.undoManager.data.length -2;
+                        return;
+                    }
+                    Con.Tiny.undoLvl[ed.id] -= 1;
+                    console.log('undo level is ' + Con.Tiny.undoLvl[ed.id]);
+                });
+                ed.on('redo', function (e) {
+                    if ('undefined' === typeof(Con.Tiny.undoLvl[ed.id])) {
+                        Con.Tiny.undoLvl[ed.id] = 0;
+                        return;
+                    }
+                    Con.Tiny.undoLvl[ed.id] += 1;
+                    console.log('undo level after redo is ' + Con.Tiny.undoLvl[ed.id]);
+                });
+
+                // Fires after an undo level has been added to the editor.
+                // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.AddUndo
+                ed.on('AddUndo', function (e) {
+                    console.log('addundo');
+                    if ('undefined' === typeof(Con.Tiny.undoLvl[ed.id])) {
+                        Con.Tiny.undoLvl[ed.id] = ed.undoManager.data.length -1;
+                        return;
+                    }
+                    Con.Tiny.undoLvl[ed.id] += 1;
+                
+                    console.log(e);
+                    console.log('undo level through addundo now ' + Con.Tiny.undoLvl[ed.id]);
+                });
                 // Fires before the contents is processed.
                 // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PreProcess
                 ed.on('PreProcess', function(ev) {
@@ -702,20 +741,44 @@
             Con.Tiny.changingFullscreen = true;
             Con.Tiny.replacingEditor = true;
             ed.remove();
+            var undoData = new Array();
+            undoData['undoManager'] = ed.undoManager.data;
+            undoData['hasUndo'] = ed.undoManager.hasUndo();
+            undoData['hasRedo'] = ed.undoManager.hasRedo();
 
             // build a new editor instance with fullscreen_settings
             var set = tinymce.settings;
+            
             ed = new tinymce.Editor(id, set.fullscreen_settings, tinymce.EditorManager);
             // editor is removed when switching back to inline mode
             ed.on('remove', function () {
                 // save current content to variable to be able to decide if its contents changed
                 Con.Tiny.storeCurrentTinyContent();
+                console.log(ed.undoManager);
+                undoData = ed.undoManager.data;
+//                alert(Con.Tiny.undoLvl[ed.id]);
+                console.log(ed.undoManager.data);
+            });
+            ed.on('PreInit', function () {
+                //ed.undoManager.data = undoData;
             });
             ed.on('init', function () {
                 // put new editor into focus
                 ed.fire('focus');
                 // set new editor to fullscreen mode
                 ed.execCommand('mceFullScreen');
+
+                
+                // clear undo history of current editor
+                ed.undoManager.data = [];
+                ed.undoManager.clear();
+                // replay undo history from old editor instance
+                undoData['undoManager'].forEach( function (val, idx) {
+                    ed.setContent(val.content);
+                    ed.undoManager.add();
+                });
+                
+//                alert('Undo level:' + Con.Tiny.undoLvl[ed.id]);
             });
             ed.on('FullscreenStateChanged', function () {
                 if (Con.Tiny.replacingEditor) {
@@ -762,16 +825,10 @@
             });
 
             // Activate save confirmation on page leave
-//            jQuery(window).on("unload", function() {
-//                if (true === Con.Tiny.leaveCheck()) {
-//                	window.onbeforeunload = "Unsaved changes";
-//                }
-//            });
             jQuery(window).on('beforeunload ',function() {
-//            window.onbeforeunload = function() {
-            	if (true === Con.Tiny.leaveCheck()) {
-            		return Con.Tiny.txtQuestion;
-            	}
+                if (true === Con.Tiny.leaveCheck()) {
+                    return Con.Tiny.txtQuestion;
+                }
             });
         }
     };
