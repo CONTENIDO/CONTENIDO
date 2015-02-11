@@ -47,12 +47,29 @@
                 return;
             }
 
-            var anchors = this._getAnchors(), i;
-            for (i = 0; i < anchors.length; i++) {
-                if (anchors[i] === elem) {
-                    anchors[i].className = 'current';
-                } else {
-                    anchors[i].className = '';
+            var subnav = this;
+            if ('undefined' !== typeof(window.parent)
+            && 'undefined' !== typeof(window.parent.frames["right_bottom"])) {
+                window.parent.frames["right_bottom"].onload = function() {
+                    // change selected tab when new tab loads
+                    var anchors = subnav._getAnchors(), i;
+                    for (i = 0; i < anchors.length; i++) {
+                        if (anchors[i] === elem) {
+                            anchors[i].className = 'current';
+                        } else {
+                            anchors[i].className = '';
+                        }
+                    }
+                };
+            } else {
+                // fallback if right bottom frame does not exist
+                var anchors = this._getAnchors(), i;
+                for (i = 0; i < anchors.length; i++) {
+                    if (anchors[i] === elem) {
+                        anchors[i].className = 'current';
+                    } else {
+                        anchors[i].className = '';
+                    }
                 }
             }
         },
