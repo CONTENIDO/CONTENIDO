@@ -50,7 +50,7 @@
             var subnav = this;
             if ('undefined' !== typeof(window.parent)
             && 'undefined' !== typeof(window.parent.frames["right_bottom"])) {
-                window.parent.frames["right_bottom"].onload = function() {
+                window.parent.frames["right_bottom"].onunload = function() {
                     // change selected tab when new tab loads
                     var anchors = subnav._getAnchors(), i;
                     for (i = 0; i < anchors.length; i++) {
