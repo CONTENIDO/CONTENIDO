@@ -60,12 +60,20 @@
             $(".sortPluginDown").css("visibility", "visible");
             $(".sortPluginDown").last().css('visibility', 'hidden');
         }
-
+        
         (function(Con, $) {
+            
+            var ajax = false;
+            
             $(function() {
                 updateSortButtons();
 
                 $(".sortPluginDown").click(function() {
+
+                    if (ajax) {
+                        ajax.abort();
+                    }
+                    
                     var pluginId = parseInt($(this).attr("data-plugin-id"));
                     var pluginRow = $("#plugin-row-" + pluginId);
                     var pluginTable = pluginRow.parent().parent();
@@ -77,7 +85,7 @@
                         return;
                     }
                     
-                    $.ajax({
+                    ajax = $.ajax({
                         url: "ajaxmain.php",
                         type: "POST",
                         data: {
@@ -87,7 +95,7 @@
                         },
                         success: function(data, status, jqxhr) {
                             if (data.length === 0)  {
-    							return false;
+                                return false;
     						} else if (data === 'ok') {
     						    pluginRow.attr("data-plugin-execorder", newOrder);
     		                    pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
@@ -99,8 +107,12 @@
                     });
                 });
 
-                $(".sortPluginUp").click(function() {
-                    
+             $(".sortPluginUp").click(function() {
+                
+	             	if (ajax) {
+	                	ajax.abort();
+	                }
+                 
                     var pluginId = $(this).attr("data-plugin-id");
                     var pluginRow = $("#plugin-row-" + pluginId);
                     var pluginTable = pluginRow.parent().parent();
@@ -112,7 +124,7 @@
                         return;
                     }
                     
-                    $.ajax({
+                    ajax = $.ajax({
                         url: "ajaxmain.php",
                         type: "POST",
                         data: {
@@ -122,7 +134,7 @@
                         },
                         success: function(data, status, jqxhr) {
                             if (data.length === 0)  {  
-    							return false;
+                                return false;
     						} else if (data === 'ok') {
     						    pluginRow.attr("data-plugin-execorder", newOrder);
     		                    pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
