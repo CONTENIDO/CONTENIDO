@@ -652,6 +652,10 @@
             tinymce.settings = wysiwygSettings;
             // inject setup into settings
             tinymce.settings.setup = function(ed) {
+                ed.on('init', function() {
+                    ed.undoManager.data = [];
+                    ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
+                });
                 ed.on('undo', function(lvl) {
                     // make sure not to change undo history while fullscreen switching is in progress
                     if (false !== Con.Tiny.changingFullscreen) {
@@ -683,12 +687,26 @@
                         return;
                     }
                     Con.Tiny.undoLvl[ed.id] += 1;
+                    ed.undoManager.data.push(e.level);
                 });
-                // Fires when content is changed in editor through typing but AddUndo might not be fired yet
+                // Fires when content is changed in editor through typing but AddUndo has not been fired yet
                 ed.on('TypingUndo', function(e) {
                     if (false !== Con.Tiny.changingFullscreen) {
                         return;
                     }
+                    // if we are not at latest undo level remove any further undo level later than at current position
+
+                    // build a new data array to avoid side effects
+                    var tmp = [];
+                    jQuery.each(ed.undoManager.data, function(idx, k) {
+                        if (idx < parseInt(Con.Tiny.undoLvl[ed.id]) + 1) {
+                            tmp.push(k);
+                            console.log(k);
+                        }
+                    });
+                    
+                    ed.undoManager.data = tmp;
+                    console.log('b', ed.undoManager.data.length, tmp.length);
                     Con.Tiny.typingUndo[ed.id] = true;
                 });
                 // Fires before the contents is processed.
@@ -751,12 +769,14 @@
             var id = ed.id;
             Con.Tiny.changingFullscreen = true;
             Con.Tiny.replacingEditor = true;
-            ed.remove();
-            
+
+            // add undo step if user typed and no AddUndo event fired
             if (true === Con.Tiny.typingUndo[ed.id]) {
                 Con.Tiny.typingUndo[ed.id] = false;
                 Con.Tiny.undoLvl[ed.id]++;
+                ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
             }
+            ed.remove();
 
             var undoData = ed.undoManager.data;
 
@@ -779,6 +799,7 @@
 
                 // clear undo history of current editor
                 ed.undoManager.data = [];
+                while (ed.undoManager.data.length) { ed.undoManager.data.pop(); }
                 // Removes all undo levels
                 ed.undoManager.clear();
                 // replay undo history from old editor instance
@@ -811,9 +832,16 @@
                 }
                 Con.Tiny.changingFullscreen = true;
                 var id = ed.id;
+
+                // add undo step if user typed and no AddUndo event fired
+                if (true === Con.Tiny.typingUndo[ed.id]) {
+                    Con.Tiny.typingUndo[ed.id] = false;
+                    Con.Tiny.undoLvl[ed.id]++;
+                    ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
+                }
                 ed.remove();
 
-                undoData = ed.undoManager.data;
+                var undoData = ed.undoManager.data;
 
                 // build a new editor instance with original settings
                 ed = new tinymce.Editor(id, set, tinymce.EditorManager);
@@ -825,7 +853,6 @@
                     ed.undoManager.data = [];
                     ed.undoManager.clear();
                     // replay undo history from old editor instance
-                    var undoHistoryReplayed = false;
                     undoData.forEach( function (val, idx) {
                         // set the editor content to the content of editor during this undo history entry
                         ed.setContent(val.content);
@@ -846,7 +873,7 @@
 
                     // we are done changing fullscreen mode
                     Con.Tiny.changingFullscreen = false;
-                    
+
                 });
                 // add new editor to page
                 ed.render();
