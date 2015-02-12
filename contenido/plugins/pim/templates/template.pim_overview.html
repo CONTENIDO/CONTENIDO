@@ -76,9 +76,7 @@
                         Con.showNotification("i18n('Error')", "i18n('This plugin is already at the bottom!')");
                         return;
                     }
-                    pluginRow.attr("data-plugin-execorder", newOrder);
-                    pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
-
+                    
                     $.ajax({
                         url: "ajaxmain.php",
                         type: "POST",
@@ -88,10 +86,12 @@
                             idplugin: pluginId
                         },
                         success: function(data, status, jqxhr) {
-                            if (Con.checkAjaxResponse(data) === false)  {
+                            if (data.length === 0)  {
     							return false;
-    						}
-                            if (data == "ok") {
+    						} else if (data === 'ok') {
+    						    pluginRow.attr("data-plugin-execorder", newOrder);
+    		                    pluginTable.next().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
+    						    
                                 pluginTable.next().after(pluginTable);
                                 updateSortButtons();
                             }
@@ -100,6 +100,7 @@
                 });
 
                 $(".sortPluginUp").click(function() {
+                    
                     var pluginId = $(this).attr("data-plugin-id");
                     var pluginRow = $("#plugin-row-" + pluginId);
                     var pluginTable = pluginRow.parent().parent();
@@ -110,9 +111,7 @@
                         Con.showNotification("i18n('Error')", "i18n('This plugin is already at the top!')");
                         return;
                     }
-                    pluginRow.attr("data-plugin-execorder", newOrder);
-                    pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
-
+                    
                     $.ajax({
                         url: "ajaxmain.php",
                         type: "POST",
@@ -122,10 +121,12 @@
                             idplugin: pluginId
                         },
                         success: function(data, status, jqxhr) {
-                            if (Con.checkAjaxResponse(data) === false)  {
+                            if (data.length === 0)  {  
     							return false;
-    						}
-                            if (data == "ok") {
+    						} else if (data === 'ok') {
+    						    pluginRow.attr("data-plugin-execorder", newOrder);
+    		                    pluginTable.prev().children().children("tr").first().attr("data-plugin-execorder", oldOrder);
+    						    
                                 pluginTable.prev().before(pluginTable);
                                 updateSortButtons();
                             }
