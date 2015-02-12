@@ -342,7 +342,7 @@ class cAjaxRequest {
                     $pluginId = cSecurity::toInteger($_POST['idplugin']);
                     $plugin = new PimPlugin($pluginId);
                     $result = $plugin->updateExecOrder($newOrder);
-                    if ($result == true) {
+                    if ($result === true) {
                     	$string = 'ok';
                     }
                 } else {

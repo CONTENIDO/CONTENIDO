@@ -247,6 +247,7 @@ $sql = "SELECT idtpl, name FROM " . $cfg['tab']['tpl'] . " WHERE idclient = '" .
 $db->query($sql);
 
 $tpl->set('s', 'ID', 'oTplSel');
+$tpl->set('s', 'NAME', 'oTplSel');
 $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'BELANG', $belang);

@@ -105,9 +105,9 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
             }
         }
 
-        //Reset all default groups
+        //Reset all other default groups
         if ($defaultgroup == 1) {
-            $sSql = 'UPDATE '.$cfg["tab"]["frontendgroups"].' SET defaultgroup = 0 WHERE idclient='.$client.';';
+            $sSql = 'UPDATE '.$cfg["tab"]["frontendgroups"].' SET defaultgroup = 0 WHERE idfrontendgroup != ' . cSecurity::toInteger($idfrontendgroup) . ' AND idclient=' . cSecurity::toInteger($client) . ';';
             $db->query($sSql);
         }
         $fegroup->set("defaultgroup", $defaultgroup);

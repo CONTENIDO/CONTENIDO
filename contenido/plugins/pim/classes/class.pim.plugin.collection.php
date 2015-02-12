@@ -315,7 +315,7 @@ class PimPlugin extends Item {
     	$dependendFromOtherPlugins = $this->checkDependedFromOtherPlugins($newOrder);
 		$dependenciesToOtherPlugins = $this->checkDependenciesToOtherPlugins($newOrder);
 
-    	if ($dependendFromOtherPlugins == false || $dependenciesToOtherPlugins == false) {
+    	if ($dependendFromOtherPlugins === false || $dependenciesToOtherPlugins === false) {
     		return false;
     	}
 
