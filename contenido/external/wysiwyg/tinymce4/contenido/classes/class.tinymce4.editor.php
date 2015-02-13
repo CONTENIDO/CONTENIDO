@@ -565,6 +565,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $sConfig .= "'$key' : '" . $val . "',\n";
             }
         }
+        // remove newline and comma (no comma at the end of array is valid)
+        $sConfig = substr($sConfig, 0, -2);
 
         return $sConfig;
     }
