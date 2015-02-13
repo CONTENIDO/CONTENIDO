@@ -34,13 +34,13 @@ if (isset($area) && $area == 'con_content_list') {
     $inputHTML = "";
 }
 
-if ($doedit == "1" || $doedit == "2") {
+if (isset($_POST['doedit']) && ($_POST['doedit'] == "1" || $_POST['doedit'] == "2")) {
     //1: save; 2: refresh;
-    conSaveContentEntry($idartlang, "CMS_HTMLHEAD", $typenr, $CMS_HTML);
+    conSaveContentEntry($idartlang, "CMS_HTMLHEAD", $typenr, $_POST['CMS_HTMLHEAD']);
     conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
 }
-if ($doedit == "1") {
+if (isset($_POST['doedit']) && $_POST['doedit'] == "1") {
     // redirect
     header("Location:" . $sess->url($path1));
 }

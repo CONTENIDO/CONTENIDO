@@ -83,7 +83,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         // Default values
 
         // apply editor to any element with class CMS_HTML or CMS_HTMLHEAD
-        $this->_setSetting('selector', '*.CMS_HTML, *.CMS_HTMLHEAD', true);
+        $this->_setSetting('selector', '*.CMS_HTML', true);
 
         $this->_setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"] . "css/style_tiny.css");
 
@@ -279,7 +279,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
      * For compatibility also accepts "tinymce-toolbar-mode", "tinymce-toolbar1-3" and "tinymce4-plugins"
      */
     function setToolbar($sMode = "") {
-        global $cfg, $cfgClient, $client;
+        $cfg = cRegistry::getConfig();
+        $cfgClient = cRegistry::getClientConfig();
+        $client = cRegistry::getClientId();
 
         // hide visualaid button because it has no icon
         // http://www.tinymce.com/develop/bugtracker_view.php?id=6003
@@ -502,7 +504,16 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         }
 
         $sConfig = substr($sConfig, 0, -3);
-        $oTemplate->set('s', 'CONFIG', $sConfig);
+//         var_dump($sConfig);
+        
+        // add settings regarding CMS_HTMLHEAD to editor
+        $sCmsHtmlHeadConfig = 'selector: "*.CMS_HTMLHEAD",' . PHP_EOL;
+        $sCmsHtmlHeadConfig .= 'inline: false,' . PHP_EOL;
+        $sCmsHtmlHeadConfig .= 'menubar: false,' . PHP_EOL;
+        $sCmsHtmlHeadConfig .= 'toolbar: "undo redo",' . PHP_EOL;
+        $sCmsHtmlHeadConfig .= 'document_base_url: "' . cRegistry::getFrontendUrl() . '",' . PHP_EOL;
+        $oTemplate->set('s', 'CONFIG', '[{' . $sConfig . '},{' . $sCmsHtmlHeadConfig . '}]');
+
         $oTemplate->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
 
         $oTxtEditor = new cHTMLTextarea($this->_sEditorName, $this->_sEditorContent);

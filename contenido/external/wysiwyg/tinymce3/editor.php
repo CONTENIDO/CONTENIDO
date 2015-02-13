@@ -22,7 +22,7 @@ cInclude('external', 'wysiwyg/tinymce3/editorclass.php');
 
 // name of textarea element
 if (isset($type)) {
-    $editor_name = 'CMS_HTML'; // this should be $type (might be a CONTENIDO bug)
+    $editor_name = $type;
 } else {
     $editor_name = 'content';
 }

@@ -23,8 +23,8 @@ include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php');
 // name of textarea element
 if (isset($type)) {
     // this should be depending on the CMS type (available in $type)
-    // but it is always CMS_HTML (likely be a CONTENIDO bug)
-    $editor_name = 'CMS_HTML';
+    // possible values are 'CMS_HTML' or 'CMS_HTMLHEAD'
+    $editor_name = $type;
 } else {
     $editor_name = 'content';
 }

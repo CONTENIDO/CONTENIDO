@@ -134,8 +134,17 @@ $oScriptTpl->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' 
 $oScriptTpl->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
 // Add tiny options
-$oScriptTpl->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
-$oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
+$sTinyOptions= $sConfigInlineEdit . ",\nfullscreen_settings: {\n" . $sConfigFullscreen . "\n}";
+if ('tinymce4' === $wysiwygeditor) {
+    $sCmsHtmlHeadConfig = 'selector: "*.CMS_HTMLHEAD",' . PHP_EOL;
+    $sCmsHtmlHeadConfig .= 'inline: true,' . PHP_EOL;
+    $sCmsHtmlHeadConfig .= 'menubar: false,' . PHP_EOL;
+    $sCmsHtmlHeadConfig .= 'toolbar: "undo redo",' . PHP_EOL;
+    $sCmsHtmlHeadConfig .= 'document_base_url: "' . cRegistry::getFrontendUrl() . '"' . PHP_EOL;
+    $oScriptTpl->set('s', 'TINY_OPTIONS', '[{' . $sTinyOptions . '},{' . $sCmsHtmlHeadConfig . '}]');
+} else {
+    $oScriptTpl->set('s', 'TINY_OPTIONS', '{' . $sTinyOptions . '}');
+}
 $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
 $oScriptTpl->set('s', 'CLOSE', html_entity_decode(i18n('Close editor'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
 $oScriptTpl->set('s', 'SAVE', html_entity_decode(i18n('Close editor and save changes'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));

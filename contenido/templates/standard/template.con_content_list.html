@@ -22,13 +22,7 @@ document.getElementsByTagName('head')[0].appendChild(baseHref);
 
     // Configuration of tiny, when tiny is opened set event which stores original
     // content to Con.Tiny.editDataOrg
-    var wysiwygSettings = {
-        document_base_url: '{FRONTEND}',
-        {TINY_OPTIONS},
-        fullscreen_settings: {
-            {TINY_FULLSCREEN}
-        }
-    };
+    var wysiwygSettings = {TINY_OPTIONS};
 
     // Initialize/setup TinyMCE editor
     Con.Tiny.tinymceInit(tinymce, wysiwygSettings, {

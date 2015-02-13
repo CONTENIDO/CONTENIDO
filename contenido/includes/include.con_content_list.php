@@ -421,6 +421,17 @@ $page->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' . $ses
 $page->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
 // Add tiny options
+$sTinyOptions= $sConfigInlineEdit . ",\nfullscreen_settings: {\n" . $sConfigFullscreen . "\n}";
+if ('tinymce4' === $wysiwygeditor) {
+    $sCmsHtmlHeadConfig = 'selector: "*.CMS_HTMLHEAD",' . PHP_EOL;
+    $sCmsHtmlHeadConfig .= 'inline: true,' . PHP_EOL;
+    $sCmsHtmlHeadConfig .= 'menubar: false,' . PHP_EOL;
+    $sCmsHtmlHeadConfig .= 'toolbar: "undo redo",' . PHP_EOL;
+    $sCmsHtmlHeadConfig .= 'document_base_url: "' . cRegistry::getFrontendUrl() . '"' . PHP_EOL;
+    $page->set('s', 'TINY_OPTIONS', '[{' . $sTinyOptions . '},{' . $sCmsHtmlHeadConfig . '}]');
+} else {
+    $page->set('s', 'TINY_OPTIONS', '{' . $sTinyOptions . '}');
+}
 $page->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
 $page->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
 $page->set('s', 'IDARTLANG', $idartlang);

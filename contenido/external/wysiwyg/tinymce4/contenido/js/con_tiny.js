@@ -568,11 +568,11 @@
                 return;
             }
 
+            wysiwygSettingsOne = wysiwygSettings.slice(0, 1)[0];
             // convert all passed data to json format for configuration of tinymce 4
-            Con.Tiny.convertToJson(wysiwygSettings);
-
-            if ('undefined' === typeof(wysiwygSettings.fullscreen_settings)) {
-                wysiwygSettings.fullscreen_settings = {};
+            Con.Tiny.convertToJson(wysiwygSettingsOne);
+            if ('undefined' === typeof(wysiwygSettingsOne.fullscreen_settings)) {
+                wysiwygSettingsOne.fullscreen_settings = {};
             }
             // load contenido plugins
             var contenidoPluginFolderUrl = options.backendUrl + 'external/wysiwyg/tinymce4/contenido/plugins/';
@@ -582,29 +582,32 @@
                 // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
                 tinymce.PluginManager.load(plugin.name, plugin.path);
                 // exclude plugin from later loading
-                wysiwygSettings.plugins += (' -' + plugin.name);
-                wysiwygSettings.fullscreen_settings.plugins += (' -' + plugin.name);
+                if ('undefined' === typeof(wysiwygSettingsOne.plugins)) {
+                    wysiwygSettingsOne.plugins = "";
+                }
+                wysiwygSettingsOne.plugins += (' -' + plugin.name);
+                wysiwygSettingsOne.fullscreen_settings.plugins += (' -' + plugin.name);
             });
 
-            if ('undefined' === typeof(wysiwygSettings['file_browser_callback'])) {
-                wysiwygSettings['file_browser_callback'] = 
+            if ('undefined' === typeof(wysiwygSettingsOne['file_browser_callback'])) {
+                wysiwygSettingsOne['file_browser_callback'] = 
                     function(field_name, url, type, win) {
                         Con.Tiny.customFileBrowserCallback(field_name, url, type, win);
                 }
             }
 
             // check which plugins should be loaded
-            if ('undefined' !== typeof(wysiwygSettings.externalplugins)) {
+            if ('undefined' !== typeof(wysiwygSettingsOne.externalplugins)) {
                 // check if setting is an array
                 // Array.isArray() can not be used because IE 8 does not implement it
-                if ('[object Array]' === Object.prototype.toString.call(wysiwygSettings.externalplugins)) {
-                    wysiwygSettings.externalplugins.forEach(function (plugin) {
+                if ('[object Array]' === Object.prototype.toString.call(wysiwygSettingsOne.externalplugins)) {
+                    wysiwygSettingsOne.externalplugins.forEach(function (plugin) {
                         // load current add-on
                         // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
                         tinymce.PluginManager.load(plugin.name, plugin.url);
                         // exclude plugin from later loading
-                        wysiwygSettings.plugins += (' -' + plugin.name);
-                        wysiwygSettings.fullscreen_settings.plugins += (' -' + plugin.name);
+                        wysiwygSettingsOne.plugins += (' -' + plugin.name);
+                        wysiwygSettingsOne.fullscreen_settings.plugins += (' -' + plugin.name);
                     });
                 }
             }
@@ -649,7 +652,8 @@
             });
             // Register plugin with a short name
             tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
-            tinymce.settings = wysiwygSettings;
+
+            tinymce.settings = wysiwygSettingsOne;
             // inject setup into settings
             tinymce.settings.setup = function(ed) {
                 ed.on('init', function() {
@@ -701,12 +705,10 @@
                     jQuery.each(ed.undoManager.data, function(idx, k) {
                         if (idx < parseInt(Con.Tiny.undoLvl[ed.id]) + 1) {
                             tmp.push(k);
-                            console.log(k);
                         }
                     });
                     
                     ed.undoManager.data = tmp;
-                    console.log('b', ed.undoManager.data.length, tmp.length);
                     Con.Tiny.typingUndo[ed.id] = true;
                 });
                 // Fires before the contents is processed.
@@ -757,8 +759,14 @@
                 tinymce.settings.fullscreen_settings['file_browser_callback'] = tinymce.settings['file_browser_callback'];
                 tinymce.settings.fullscreen_settings['valid_elements'] = tinymce.settings['valid_elements'];
             }
+            var tinyCmsHtmlHead = wysiwygSettings.slice(1, 2)[0];
+            tinyCmsHtmlHead.setup = tinymce.settings.setup;
 
-            // init set of editors
+            // do not loose reference to tinymce settings
+            var set = tinymce.settings
+            tinymce.init(tinyCmsHtmlHead);
+            tinymce.settings = set;
+
             tinymce.init(tinymce.settings);
         },
 

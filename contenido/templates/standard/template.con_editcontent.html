@@ -18,15 +18,9 @@
 
     // Configuration of tiny, when tiny is opened set event which stores original
     // content to Con.Tiny.editDataOrg
-    var wysiwygSettings = {
-        document_base_url: '{FRONTEND}',
-        {TINY_OPTIONS},
-        fullscreen_settings: {
-            {TINY_FULLSCREEN}
-        }
-    };
+    var wysiwygSettings = {TINY_OPTIONS};
 
-    // Initilalize/setup TinyMCE editor
+    // Initialize/setup TinyMCE editor
     Con.Tiny.tinymceInit(tinymce, wysiwygSettings, {
         saveTitle: '{SAVE}',
         saveImage: '{_PATH_CONTENIDO_FULLHTML_}images/but_save_tiny.gif',
