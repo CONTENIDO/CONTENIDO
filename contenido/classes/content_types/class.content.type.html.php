@@ -98,7 +98,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
 
         // construct save button
         $saveAnchor = new cHTMLLink();
-        $saveAnchor->setLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0')");
+        $saveAnchor->setLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0');");
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif');
         $saveAnchor->setContent($saveButton);
 
