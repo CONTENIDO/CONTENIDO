@@ -135,7 +135,7 @@ if (($action == 'savecontype' || $action == 10)) {
         $page->displayError(i18n("Permission denied"));
     }
 } else if ($action == 'deletecontype') {
-    if ($perm->have_perm_area_action($Area, "deletecontype") || $perm->have_perm_area_action_item($area, "deletecontype", $idcat)) {
+    if ($perm->have_perm_area_action($area, "deletecontype") || $perm->have_perm_area_action_item($area, "deletecontype", $idcat)) {
        if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
             $oContentColl = new cApiContentCollection();
 
@@ -394,7 +394,10 @@ foreach ($sortID as $name) {
     // typeid, idcontent";
     $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b " . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
     $db->query($sql, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
-    while ($db->nextRecord() && $db->f("value") != '') {
+    while ($db->nextRecord()) {
+        if ($db->f("value") == '') {
+            continue;
+        }
         $result[$db->f("name")][$db->f("id")] = $db->f("value");
         if (!in_array($db->f("name"), $aList)) {
             $aList[$db->f("idtype")] = $db->f("name");
