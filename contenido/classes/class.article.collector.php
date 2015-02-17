@@ -190,24 +190,30 @@ class cArticleCollector implements SeekableIterator, Countable {
             $startId = $db->f('startidartlang');
             if ($startId > 0) {
                 $this->_startArticles[$db->f('idcat')] = $startId;
-                if ($this->_options['startonly'] == true) {
-                    $this->_articles[] = new cApiArticleLanguage($startId);
-                }
             }
-        }
-
-        if (count($this->_articles) > 0) {
-            return;
         }
 
         $sqlCat = (count($this->_options['categories']) > 0) ? " c.idcat IN ('" . implode("','", $this->_options['categories']) . "') AND b.idart = c.idart AND " : '';
         $sqlArtSpecs = (count($this->_options['artspecs']) > 0) ? " a.artspec IN ('" . implode("','", $this->_options['artspecs']) . "') AND " : '';
 
-        if ($this->_options['start'] == false && count($this->_startArticles) > 0) {
-            $sqlStartArticles = "a.idartlang NOT IN ('" . implode("','", $this->_startArticles) . "') AND ";
+        if (count($this->_startArticles) > 0) {
+            if ($this->_options['start'] == false) {
+                $sqlStartArticles = "a.idartlang NOT IN ('" . implode("','", $this->_startArticles) . "') AND ";
+            } 
+            
+            if ($this->_options['startonly'] == true) {
+                $sqlStartArticles = "a.idartlang IN ('" . implode("','", $this->_startArticles) . "') AND ";
+            }
+        }
+        
+        if ($this->_options['startonly'] == true && count($this->_startArticles) == 0) {
+            return;
         }
 
-        $sql = "SELECT DISTINCT a.idartlang FROM " . $cfg['tab']['art_lang'] . " AS a, " . $cfg['tab']['art'] . " AS b, " . $cfg['tab']['cat_art'] . " AS c " . " WHERE " . $sqlCat . $sqlStartArticles . $sqlArtSpecs . "b.idclient = '" . $this->_options['client'] . "' AND " . "a.idlang = '" . $this->_options['lang'] . "' AND " . "a.idart = b.idart";
+        $sql = "SELECT DISTINCT a.idartlang FROM " . $cfg['tab']['art_lang'] . " AS a, ";
+        $sql .= $cfg['tab']['art'] . " AS b, " . $cfg['tab']['cat_art'] . " AS c " . " WHERE ";
+        $sql .= $sqlCat . $sqlStartArticles . $sqlArtSpecs . "b.idclient = '" . $this->_options['client'] . "' AND ";
+        $sql .= "a.idlang = '" . $this->_options['lang'] . "' AND " . "a.idart = b.idart";
 
         if ($this->_options['offlineonly'] == true) {
             $sql .= " AND a.online = 0";
