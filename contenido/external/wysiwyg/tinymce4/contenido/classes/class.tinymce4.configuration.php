@@ -494,7 +494,7 @@ class cTinymce4Configuration {
         $containerDiv = new cHTMLDiv();
         $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw', 'tinymce4_fullscreen', 'toolbar1');
         $defaultToolbar2 = static::get('link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw', 'tinymce4_fullscreen', 'toolbar2');
-        $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect', 'raw','tinymce4_fullscreen', 'toolbar3');
+        $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect | save', 'raw','tinymce4_fullscreen', 'toolbar3');
         $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw', 'tinymce4_fullscreen', 'plugins');
         $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', 'tinymce4_fullscreen[toolbar1]', $defaultToolbar1));
         $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', 'tinymce4_fullscreen[toolbar2]', $defaultToolbar2));

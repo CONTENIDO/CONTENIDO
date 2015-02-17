@@ -316,7 +316,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting('menubar', true, true);
                 $this->_setSetting('toolbar1', 'cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', true);
                 $this->_setSetting('toolbar2', 'link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', true);
-                $this->_setSetting('toolbar3', 'table | formatselect fontselect fontsizeselect', true);
+                $this->_setSetting('toolbar3', 'table | formatselect fontselect fontsizeselect | save', true);
                 // load some plugins
                 $this->_setSetting('plugins', 'charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', true);
 

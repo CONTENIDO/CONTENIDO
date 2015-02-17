@@ -759,6 +759,25 @@
                 tinymce.settings.fullscreen_settings['file_browser_callback'] = tinymce.settings['file_browser_callback'];
                 tinymce.settings.fullscreen_settings['valid_elements'] = tinymce.settings['valid_elements'];
             }
+
+            // register custom save command for save plugin
+            // check if used in non-fullscreen mode
+            if (tinymce.settings.plugins.split(" ").indexOf("save") > -1) {
+                // use callback documented in
+                // http://www.tinymce.com/wiki.php/Plugin:save
+                tinymce.settings.save_onsavecallback = function() {
+                    Con.Tiny.setContent(Con.Tiny.idartlang);
+                };
+            }
+            // check if used in fullscreen mode
+            if (tinymce.settings.fullscreen_settings.plugins.split(" ").indexOf("save") > -1) {
+                // use callback documented in
+                // http://www.tinymce.com/wiki.php/Plugin:save
+                tinymce.settings.fullscreen_settings.save_onsavecallback = function() {
+                    Con.Tiny.setContent(Con.Tiny.idartlang);
+                };
+            }
+
             var tinyCmsHtmlHead = wysiwygSettings.slice(1, 2)[0];
             tinyCmsHtmlHead.setup = tinymce.settings.setup;
 
