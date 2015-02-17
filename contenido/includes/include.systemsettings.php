@@ -163,7 +163,7 @@ $form->setVar("frame", $frame);
 $form->setVar("action", "systemsettings_save_item");
 $form->addHeader(i18n("Add new variable"));
 $inputbox = new cHTMLTextbox("systype");
-$inputbox->setWidth(10);
+$inputbox->setWidth(30);
 $form->add(i18n("Type"), $inputbox->render());
 
 $inputbox = new cHTMLTextbox("sysname");
