@@ -465,7 +465,7 @@ if (count($result) <= 0) {
 } else {
     foreach ($aIdtype as $idtype) {
         foreach ($sortID as $name) {
-            if (in_array($name, array_keys($result)) && $result[$name][$idtype] != '') {
+            if (in_array($name, array_keys($result))) {
                 if (in_array($name . "[" . $idtype . "]", $currentTypes)) {
                     $class = '';
                 } else {
