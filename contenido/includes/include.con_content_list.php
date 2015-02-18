@@ -395,9 +395,6 @@ foreach ($sortID as $name) {
     $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM %s AS a, %s AS b " . "WHERE a.idartlang = %d AND a.idtype = b.idtype AND b.type = '%s' ORDER BY idtype, typeid, idcontent";
     $db->query($sql, $cfg["tab"]["content"], $cfg["tab"]["type"], $_REQUEST["idartlang"], $name);
     while ($db->nextRecord()) {
-        if ($db->f("value") == '') {
-            continue;
-        }
         $result[$db->f("name")][$db->f("id")] = $db->f("value");
         if (!in_array($db->f("name"), $aList)) {
             $aList[$db->f("idtype")] = $db->f("name");
