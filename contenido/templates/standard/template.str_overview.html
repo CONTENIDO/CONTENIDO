@@ -322,6 +322,9 @@ function confDel(idcat, idparent, sName) {
          * @param {Object} ui
          */
         function _onSortableStart(event, ui) {
+            // make all items sortable
+            $categoryList.sortable({items: allSort}).sortable('refresh');
+
             // save the old index/idcat of the dragged element
             var start_pos = ui.item.index();
             ui.item.data('start_pos', start_pos);
@@ -415,6 +418,9 @@ function confDel(idcat, idparent, sName) {
          * @private  Not intended to call from public context
          */
         function _onSortableStop(event, ui) {
+            // reset sortable item list
+            $categoryList.sortable({items: toSort}).sortable('refresh');
+
             // fix: fold categories after drag event with no change of position
             var start_pos = ui.item.data('start_pos');
             var end_pos = ui.item.index();
@@ -588,6 +594,7 @@ function confDel(idcat, idparent, sName) {
         // allow to drag and drop the table rows
         var sortItems = $categoryList.find('> tr:not(.fixed)');
         var toSort = [];
+        var allSort = [];
         var exludedElements = [];
         sortItems.each(function(i, item) {
             var idcat = sortItems[i].getAttribute('data-idcat');
@@ -600,6 +607,8 @@ function confDel(idcat, idparent, sName) {
                 }
             }
 
+            allSort.push(item);
+
             var idParts = item.id.split('_');
             var parentId = item.getAttribute('data-parentid');
             if (parentId == 0) {
@@ -609,7 +618,6 @@ function confDel(idcat, idparent, sName) {
                 toSort.push(item);
             }
         });
-
 
         $categoryList.sortable({
             // only allow to drag&drop rows that do not have the 'fixed' class
