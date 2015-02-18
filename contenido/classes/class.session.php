@@ -67,7 +67,11 @@ class cSession {
         $this->name = 'contenido';
 
         if (!isset($_SESSION)) {
-            $url = cRegistry::getBackendUrl();
+            if ('backend' === $prefix) {
+                $url = cRegistry::getBackendUrl();
+            } else {
+                $url = cRegistry::getFrontendUrl();
+            }
 
             // remove protocol from contenido URL
             $start = strpos($url, '://');
