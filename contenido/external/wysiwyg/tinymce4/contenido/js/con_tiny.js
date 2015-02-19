@@ -613,13 +613,13 @@
 
             // iterate through wysiwygSettings array and process its content
             Object.keys(wysiwygSettings).forEach(function(val, idx) {
-            	// create copy of object to avoid side effects
-            	var settings = [wysiwygSettings[val]].slice(0,1)[0];
+                // create copy of object to avoid side effects
+                var settings = [wysiwygSettings[val]].slice(0,1)[0];
 
                 // convert all passed data to json format for configuration of tinymce 4
                 Con.Tiny.convertToJson(settings);
                 if ('undefined' === typeof(settings.fullscreen_settings)) {
-                	settings.fullscreen_settings = {};
+                    settings.fullscreen_settings = {};
                 }
                 // load contenido plugins
                 var contenidoPluginFolderUrl = options.backendUrl + 'external/wysiwyg/tinymce4/contenido/plugins/';
@@ -630,10 +630,10 @@
                     tinymce.PluginManager.load(plugin.name, plugin.path);
                     
                     if ('undefined' === typeof(settings.plugins)) {
-                    	settings.plugins = "";
+                        settings.plugins = "";
                     }
                     if ('undefined' === typeof(settings.fullscreen_settings.plugins)) {
-                    	settings.fullscreen_settings.plugins = "";
+                        settings.fullscreen_settings.plugins = "";
                     }
                     // exclude plugin from later loading
                     settings.plugins += (' -' + plugin.name);
@@ -641,7 +641,7 @@
                 });
 
                 if ('undefined' === typeof(settings['file_browser_callback'])) {
-                	settings['file_browser_callback'] = 
+                    settings['file_browser_callback'] = 
                         function(field_name, url, type, win) {
                             Con.Tiny.customFileBrowserCallback(field_name, url, type, win);
                     }
@@ -652,7 +652,7 @@
                     // check if setting is an array
                     // Array.isArray() can not be used because IE 8 does not implement it
                     if ('[object Array]' === Object.prototype.toString.call(settings.externalplugins)) {
-                    	settings.externalplugins.forEach(function (plugin) {
+                        settings.externalplugins.forEach(function (plugin) {
                             // load current add-on
                             // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
                             tinymce.PluginManager.load(plugin.name, plugin.url);
@@ -667,7 +667,7 @@
                 // inject setup into settings
                 settings.setup = function(ed) {
                     ed.on('init', function() {
-                    	// init into manager
+                        // init into manager
                         ed.undoManager.data = [];
                         ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
                     });
@@ -766,9 +766,9 @@
                     });
                 }
                 if ('undefined' !== typeof(settings.fullscreen_settings)) {
-                	settings.fullscreen_settings.setup = settings.setup;
-                	settings.fullscreen_settings['file_browser_callback'] = settings['file_browser_callback'];
-                	settings.fullscreen_settings['valid_elements'] = settings['valid_elements'];
+                    settings.fullscreen_settings.setup = settings.setup;
+                    settings.fullscreen_settings['file_browser_callback'] = settings['file_browser_callback'];
+                    settings.fullscreen_settings['valid_elements'] = settings['valid_elements'];
                 }
 
                 // register custom save command for save plugin
@@ -776,7 +776,7 @@
                 if (settings.plugins.split(" ").indexOf("save") > -1) {
                     // use callback documented in
                     // http://www.tinymce.com/wiki.php/Plugin:save
-                	settings.save_onsavecallback = function() {
+                    settings.save_onsavecallback = function() {
                         Con.Tiny.setContent(Con.Tiny.idartlang);
                     };
                 }
@@ -784,7 +784,7 @@
                 if (settings.fullscreen_settings.plugins.split(" ").indexOf("save") > -1) {
                     // use callback documented in
                     // http://www.tinymce.com/wiki.php/Plugin:save
-                	settings.fullscreen_settings.save_onsavecallback = function() {
+                    settings.fullscreen_settings.save_onsavecallback = function() {
                         Con.Tiny.setContent(Con.Tiny.idartlang);
                     };
                 }
@@ -795,17 +795,6 @@
                 Con.Tiny.tinySettings[jQuery(settings.selector).attr("id")] = settings;
                 });
             });
-            
-
-//            var tinyCmsHtmlHead = wysiwygSettings.slice(1, 2)[0];
-//            tinyCmsHtmlHead.setup = tinymce.settings.setup;
-//
-//            // do not loose reference to tinymce settings
-//            var set = tinymce.settings
-//            tinymce.init(tinyCmsHtmlHead);
-//            tinymce.settings = set;
-//
-//            tinymce.init(tinymce.settings);
         },
 
         handleFullscreen: function(ed) {
@@ -954,6 +943,7 @@
             // Activate save confirmation on page leave
             jQuery(window).on('beforeunload ',function() {
                 if (true === Con.Tiny.leaveCheck()) {
+                    window.stoppedUnload = true;
                     return Con.Tiny.txtQuestion;
                 }
             });
