@@ -27,10 +27,8 @@
     # Enable rewrite engine
     RewriteEngine on
 
-
     # Specify a base URL-path for the rules
     RewriteBase /cms
-
 
     # Catch some common exploits in query string to get rid of them.
     # NOTE: Conditions to prevent protocols (ftp, http[s]) in query string could
@@ -43,7 +41,6 @@
     RewriteCond %{QUERY_STRING} http[s]*://.*$ [NC]
     RewriteRule ^.* - [F,L]  # all matching conditions from above will end in nirvana
 
-
     # Exclude some files and directories from rewriting
     RewriteRule ^usage/.*$ - [L]
     RewriteRule ^contenido/.*$ - [L]
@@ -51,14 +48,13 @@
     RewriteRule ^cms/upload/.*$ - [L]
     RewriteRule ^cms/test/.*$ - [L]
     RewriteRule ^cms/front_content.php.*$ - [L]
-
+    RewriteRule ^cms/dbfs.php.*$ - [L]
 
     # Exclude common extensions from rewriting and pass remaining requests to
     # front_content.php.
     RewriteRule !\.(avi|css|doc|flv|gif|gzip|ico|jpeg|jpg|js|mov|mp3|pdf|png|ppt|rar|swf|txt|wav|wmv|xml|zip)$ front_content.php [NC,QSA,L]
 
 </IfModule>
-
 
 # Some rules to compress files.
 # NOTE: Following settings are not mod rewrite specific, but enabling mod_deflate
