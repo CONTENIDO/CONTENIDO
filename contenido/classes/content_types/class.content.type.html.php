@@ -105,4 +105,12 @@ class cContentTypeHtml extends cContentTypeAbstract {
         return $this->_encodeForOutput($wysiwygDiv->render() . $editAnchor->render() . $saveAnchor->render());
     }
 
+    /**
+     * This content type and its derived types can be edited by a WYSIWYG editor
+     * @return boolean
+     */
+    public function isWysiwygCompatible() {
+        return true;
+    }
+
 }

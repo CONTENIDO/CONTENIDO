@@ -219,7 +219,7 @@ abstract class cContentTypeAbstract {
     }
 
     /**
-     * Function returns curren content type configuration as array
+     * Function returns current content type configuration as array
      *
      * @return array
      */
@@ -426,4 +426,11 @@ abstract class cContentTypeAbstract {
      */
     public abstract function generateEditCode();
 
+    /**
+     * Checks if this content type can be edited by a WYSIWYG editor
+     * @return boolean
+     */
+    public function isWysiwygCompatible() {
+        return false;
+    }
 }

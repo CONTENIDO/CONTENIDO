@@ -105,11 +105,12 @@ class cTinymce4Configuration {
 
     /**
      * This function lists all external plugins that should be loaded in a table
+     * @param string $cmsType The CMS type (e.g. 'CMS_HTML') used to access the variable
      * @return string
      */
-    private function _listExternalPlugins() {
+    private function _listExternalPlugins($cmsType) {
         /// TODO: use a preference loading function for plugins to list
-        $externalPlugins = static::get(array(), 'raw','externalplugins');
+        $externalPlugins = static::get(array(), 'raw', $cmsType, 'externalplugins');
 
         // build a table
         $table = new cHTMLTable();
@@ -151,7 +152,7 @@ class cTinymce4Configuration {
             // insert hidden input field
             $input = new cHTMLFormElement();
             $input->setAttribute('type', 'hidden');
-            $input->setAttribute('name', 'externalplugins[' . $i . '][name]');
+            $input->setAttribute('name', $cmsType . '[externalplugins][' . $i . '][name]');
             $input->setAttribute('value', $externalPlugins[$i]['name']);
             $td->appendContent($input);
 
@@ -165,7 +166,7 @@ class cTinymce4Configuration {
             // insert hidden input field
             $input = new cHTMLFormElement();
             $input->setAttribute('type', 'hidden');
-            $input->setAttribute('name', 'externalplugins[' . $i . '][url]');
+            $input->setAttribute('name', $cmsType . '[externalplugins][' . $i . '][url]');
             $input->setAttribute('value', $externalPlugins[$i]['url']);
             $td->appendContent($input);
 
@@ -179,6 +180,7 @@ class cTinymce4Configuration {
                 $oLinkDelete = new cHTMLLink();
                 $oLinkDelete->setCLink(cRegistry::getArea(), cRegistry::getFrame(), "system_wysiwyg_tinymce4_delete_item");
                 $oLinkDelete->setCustom("external_plugin_idx", urlencode($i));
+                $oLinkDelete->setCustom('cmstype', $cmsType);
                 $img = new cHTMLImage(cRegistry::getBackendUrl() . cRegistry::getConfigValue('path', 'images') . 'delete.gif');
                 $img->setAttribute('alt', i18n("Delete"));
                 $img->setAttribute('title', i18n("Delete"));
@@ -197,13 +199,13 @@ class cTinymce4Configuration {
 
         // create new td for plugin name
         $td = new cHTMLTableData();
-        $input = new cHTMLFormElement('externalplugins[' . $i . '][name]');
+        $input = new cHTMLFormElement($cmsType . '[externalplugins][' . $i . '][name]');
         $td->appendContent($input);
         $row->appendContent($td);
 
         // create new td for plugin url
         $td = new cHTMLTableData();
-        $input = new cHTMLFormElement('externalplugins[' . $i . '][url]');
+        $input = new cHTMLFormElement($cmsType . '[externalplugins][' . $i . '][url]');
         $td->appendContent($input);
         $row->appendContent($td);
 
@@ -331,45 +333,48 @@ class cTinymce4Configuration {
             'custom',
             'externalplugins'
         );
+        // get name of first key
+        reset($config);
+        $key = key($config);
 
-        if (false === $this->_checkIsset($config['tinymce4_full'], $shouldArrayStructure['tinymce4_full'])) {
+        if (false === $this->_checkIsset($config[$key]['tinymce4_full'], $shouldArrayStructure['tinymce4_full'])) {
             $this->_configErrors[] = i18n('Fullscreen config of inline editor is erroneous.');
             return false;
         }
-        if (false === $this->_checkIsset($config['tinymce4_fullscreen'], $shouldArrayStructure['tinymce4_fullscreen'])) {
+        if (false === $this->_checkIsset($config[$key]['tinymce4_fullscreen'], $shouldArrayStructure['tinymce4_fullscreen'])) {
             $this->_configErrors[] = i18n('Config of editor on separate editor page is erroneous.');
             return false;
         }
-        if (false === isset($config['custom'])) {
+        if (false === isset($config[$key]['custom'])) {
             $this->_configErrors[] = i18n('Custom configuration of tinyMCE 4 is not set.');
             return false;
         }
 
         // do not use cRequestValidator instance because it does not support multi-dimensional arrays
-        if (false === $this->_validateToolbarN($config['tinymce4_full']['toolbar1'])
-        || false === $this->_validateToolbarN($config['tinymce4_full']['toolbar2'])
-        || false === $this->_validateToolbarN($config['tinymce4_full']['toolbar3'])
-        || false === $this->_validateToolbarN($config['tinymce4_fullscreen']['toolbar1'])
-        || false === $this->_validateToolbarN($config['tinymce4_fullscreen']['toolbar2'])
-        || false === $this->_validateToolbarN($config['tinymce4_fullscreen']['toolbar3'])) {
+        if (false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar1'])
+        || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar2'])
+        || false === $this->_validateToolbarN($config[$key]['tinymce4_full']['toolbar3'])
+        || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar1'])
+        || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar2'])
+        || false === $this->_validateToolbarN($config[$key]['tinymce4_fullscreen']['toolbar3'])) {
             $this->_configErrors[] = i18n('Toolbar(s) of editor contain erroneous data.');
             return false;
         }
 
         // remove last entry of external plugins if it is empty
-        $lastExternalPlugin = $config['externalplugins'][count($config['externalplugins']) -1];
+        $lastExternalPlugin = $config[$key]['externalplugins'][count($config[$key]['externalplugins']) -1];
         if ('' === $lastExternalPlugin['name']
         && '' === $lastExternalPlugin['url']) {
-            unset($config['externalplugins'][count($config['externalplugins']) -1]);
+            unset($config[$key]['externalplugins'][count($config[$key]['externalplugins']) -1]);
         }
 
         // custom tinymce 4 settings overwrite other fields
         if (cRegistry::getConfigValue('simulate_magic_quotes') === true) {
-            $config['custom'] = stripslashes($config['custom']);
+            $config[$key]['custom'] = stripslashes($config[$key]['custom']);
         }
 
         // unescape strings then build
-        $customConfig = (array) json_decode($config['custom'], true);
+        $customConfig = (array) json_decode($config[$key]['custom'], true);
         switch(json_last_error()) {
             case JSON_ERROR_DEPTH:
                 $this->_configErrors[] = i18n('Maximum stack depth exceeded while decoding json');
@@ -381,23 +386,31 @@ class cTinymce4Configuration {
                 $this->_configErrors[] = i18n('Syntax error, malformed JSON');
             return false;
         }
-        $config['raw'] = $config;
+
+        // append new config to old config
+        $origConfig = static::get(array(), 'raw', 'cms_types');
+        $config['raw']['cms_types'] = array_merge($origConfig, $config);
+        //$config['raw'] = $config;
+
         // use custom parameters if they are correct JSON
         if (JSON_ERROR_NONE === json_last_error()) {
-            $config = array_merge($config, $customConfig);
+            $config[$key] = array_merge($config[$key], $customConfig);
         }
+        unset($config[$key]['custom']);
 
         // put all config values into ['tinymce4']['tinymce4']
         // put the raw settings of config page into ['tinymce4']['raw']
+        $origConfig = static::get(array(), 'tinymce4');
+        $config = array_merge($origConfig, $config);
         $res = array('tinymce4' => array('tinymce4' =>$config));
-        unset($res['tinymce4']['tinymce4']['custom']);
+        //unset($res['tinymce4']['tinymce4']['custom']);
         $res['tinymce4']['raw'] = $res['tinymce4']['tinymce4']['raw'];
         unset($res['tinymce4']['tinymce4']['raw']);
 
         // $config contains only valid content, returned processed config
         return $res;
     }
-    
+
     /**
      * Do not load external plugin if user has permission to request that 
      * @param array $form get parameters from deletion link
@@ -449,7 +462,7 @@ class cTinymce4Configuration {
             $page->render();
             return;
         }
-        
+
         if (count($this->_configErrors) > 0) {
             $errorMessage = i18n('The following errors occurred when trying to verify configuration:') . '<ul>';
             foreach ($this->_configErrors as $error) {
@@ -460,79 +473,124 @@ class cTinymce4Configuration {
         }
 
         $page->displayInfo(i18n('Currently active WYSIWYG editor: ' . cWYSIWYGEditor::getCurrentWysiwygEditorName()));
-        $form = new cGuiTableForm('system_wysiwyg_tinymce4');
-        $form->setAcceptCharset('UTF-8');
-        $form->addHeader(i18n('TinyMCE 4 configuration'));
-
-        $form->setVar('area', $area);
-        $form->setVar('frame', $frame);
-        $form->setVar('action', 'edit_tinymce4');
 
 
-        $containerDiv = new cHTMLDiv();
-        $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw','tinymce4_full', 'toolbar1');
-        $defaultToolbar2 = static::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw','tinymce4_full', 'toolbar2');
-        $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect', 'raw','tinymce4_full', 'toolbar3');
-        $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw','tinymce4_full', 'plugins');
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', 'tinymce4_full[toolbar1]', $defaultToolbar1));
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', 'tinymce4_full[toolbar2]', $defaultToolbar2));
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 3:', 'tinymce4_full[toolbar3]', $defaultToolbar3));
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Plugins:', 'tinymce4_full[plugins]', $defaultPlugins));
-        $form->add(i18n('Settings of editor in separate editor page'), $containerDiv->render());
+        $oTypeColl = new cApiTypeCollection();
+        $oTypeColl->select();
+        $result = '';
+        while (false !== ($typeEntry = $oTypeColl->next())) {
+            // specify a shortcut for type field
+            $curType = $typeEntry->get('type');
 
-        $containerDiv = new cHTMLDiv();
-        $defaultToolbar1 = static::get('bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | fullscreen | save close', 'raw', 'tinymce4_inline', 'toolbar1');
-        $defaultToolbar2 = static::get('', 'raw', 'tinymce4_inline', 'toolbar2');
-        $defaultToolbar3 = static::get('', 'raw', 'tinymce4_inline', 'toolbar3');
-        $defaultPlugins = static::get('table close confullscreen textcolor', 'raw', 'tinymce4_inline', 'plugins');
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', 'tinymce4_inline[toolbar1]', $defaultToolbar1));
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', 'tinymce4_inline[toolbar2]', $defaultToolbar2));
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 3:', 'tinymce4_inline[toolbar3]', $defaultToolbar3));
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Plugins:', 'tinymce4_inline[plugins]', $defaultPlugins));
-        $form->add(i18n('Settings of inline editor in inline mode'), $containerDiv->render());
+            $contentTypeClassName = cTypeGenerator::getContentTypeClassName($curType);
+            $cContentType = new $contentTypeClassName(null, 0, array());
+            if (false === $cContentType->isWysiwygCompatible()) {
+                continue;
+            }
 
-        $containerDiv = new cHTMLDiv();
-        $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw', 'tinymce4_fullscreen', 'toolbar1');
-        $defaultToolbar2 = static::get('link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw', 'tinymce4_fullscreen', 'toolbar2');
-        $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect | save', 'raw','tinymce4_fullscreen', 'toolbar3');
-        $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw', 'tinymce4_fullscreen', 'plugins');
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', 'tinymce4_fullscreen[toolbar1]', $defaultToolbar1));
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', 'tinymce4_fullscreen[toolbar2]', $defaultToolbar2));
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 3:', 'tinymce4_fullscreen[toolbar3]', $defaultToolbar3));
-        $containerDiv->appendContent($this->_addLabelWithTextarea('Plugins:', 'tinymce4_fullscreen[plugins]', $defaultPlugins));
-        $form->add(i18n('Settings of inline editor in fullscreen mode'), $containerDiv->render());
 
-        // GZIP editor over HTTP using tinymce's library
-        $containerDiv = new cHTMLDiv();
-        $checked = 'contenido_gzip' === static::get(false, 'raw','contenido_gzip');
-        $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('GZIP TinyMCE (only activate if server does not compress content already)'), 'contenido_gzip', 'contenido_gzip', $checked));
-        $form->add(i18n('contenido_gzip'), $containerDiv->render());
+            $form = new cGuiTableForm('system_wysiwyg_tinymce4_' . strtolower($curType));
+            $form->setAcceptCharset('UTF-8');
 
-        // Add jump lists to tinymce's dialogs
-        $containerDiv = new cHTMLDiv();
-        $checked = true === ('image' === static::get(false, 'raw','contenido_lists', 'image'));
-        $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in image insertion dialog'), 'contenido_lists[image]', 'image', $checked));
-        $checked = true === ('link' === static::get(false, 'raw','contenido_lists', 'link'));
-        $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in link insertion dialog'), 'contenido_lists[link]', 'link', $checked));
-        $form->add(i18n('contenido_lists'), $containerDiv->render());
+                $form->addHeader(i18n('TinyMCE 4 configuration for ') . $curType);
 
-        // external plugins
-        $containerDiv = new cHTMLDiv();
-        $containerDiv->appendContent($this->_listExternalPlugins());
-        $form->add(i18n('External plugins to load'), $containerDiv);
+            $form->setVar('area', $area);
+            $form->setVar('frame', $frame);
+            $form->setVar('action', 'edit_tinymce4');
 
-        //add textarea for custom tinymce 4 settings
-        $textarea = new cHTMLTextarea('custom');
-        $textarea->setAttribute('style', 'width: 99%;');
-        $textarea->setValue(static::get('', 'raw', 'custom'));
-        $form->add(i18n('Additional parameters (JSON passed to tinymce constructor)'), $textarea->render());
 
-        // check permission to save system wysiwyg editor settings
-        if (false === $this->_perm) {
-            $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's');
+            $containerDiv = new cHTMLDiv();
+            if ('CMS_HTMLHEAD' === $curType) {
+                $defaultToolbar1 = static::get('undo redo', 'raw','tinymce4_full', 'toolbar1');
+                $defaultToolbar2 = static::get('', 'raw','tinymce4_full', 'toolbar2');
+                $defaultToolbar3 = static::get('', 'raw','tinymce4_full', 'toolbar3');
+                $defaultPlugins = static::get('', 'raw','tinymce4_full', 'plugins');
+            } else {
+                $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw','tinymce4_full', 'toolbar1');
+                $defaultToolbar2 = static::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw','tinymce4_full', 'toolbar2');
+                $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect', 'raw','tinymce4_full', 'toolbar3');
+                $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw','tinymce4_full', 'plugins');
+            }
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', $curType . '[tinymce4_full][toolbar1]', $defaultToolbar1));
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', $curType . '[tinymce4_full][toolbar2]', $defaultToolbar2));
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 3:', $curType . '[tinymce4_full][toolbar3]', $defaultToolbar3));
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Plugins:', $curType . '[tinymce4_full][plugins]', $defaultPlugins));
+            $form->add(i18n('Settings of editor in separate editor page'), $containerDiv->render());
+
+            $containerDiv = new cHTMLDiv();
+            if ('CMS_HTMLHEAD' === $curType) {
+                $defaultToolbar1 = static::get('undo redo', 'raw','tinymce4_full', 'toolbar1');
+                $defaultToolbar2 = static::get('', 'raw','tinymce4_full', 'toolbar2');
+                $defaultToolbar3 = static::get('', 'raw','tinymce4_full', 'toolbar3');
+                $defaultPlugins = static::get('', 'raw','tinymce4_full', 'plugins');
+            } else {
+                $defaultToolbar1 = static::get('bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | fullscreen | save close', 'raw', 'tinymce4_inline', 'toolbar1');
+                $defaultToolbar2 = static::get('', 'raw', 'tinymce4_inline', 'toolbar2');
+                $defaultToolbar3 = static::get('', 'raw', 'tinymce4_inline', 'toolbar3');
+                $defaultPlugins = static::get('table close confullscreen textcolor', 'raw', 'tinymce4_inline', 'plugins');
+            }
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', $curType . '[tinymce4_inline][toolbar1]', $defaultToolbar1));
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', $curType . '[tinymce4_inline][toolbar2]', $defaultToolbar2));
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 3:', $curType . '[tinymce4_inline][toolbar3]', $defaultToolbar3));
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Plugins:', $curType . '[tinymce4_inline][plugins]', $defaultPlugins));
+            $form->add(i18n('Settings of inline editor in inline mode'), $containerDiv->render());
+
+            $containerDiv = new cHTMLDiv();
+            if ('CMS_HTMLHEAD' === $curType) {
+                $defaultToolbar1 = static::get('undo redo', 'raw','tinymce4_full', 'toolbar1');
+                $defaultToolbar2 = static::get('', 'raw','tinymce4_full', 'toolbar2');
+                $defaultToolbar3 = static::get('', 'raw','tinymce4_full', 'toolbar3');
+                $defaultPlugins = static::get('', 'raw','tinymce4_full', 'plugins');
+            } else {
+                $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw', 'tinymce4_fullscreen', 'toolbar1');
+                $defaultToolbar2 = static::get('link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw', 'tinymce4_fullscreen', 'toolbar2');
+                $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect | save', 'raw','tinymce4_fullscreen', 'toolbar3');
+                $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw', 'tinymce4_fullscreen', 'plugins');
+            }
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', $curType . '[tinymce4_fullscreen][toolbar1]', $defaultToolbar1));
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', $curType . '[tinymce4_fullscreen][toolbar2]', $defaultToolbar2));
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 3:', $curType . '[tinymce4_fullscreen][toolbar3]', $defaultToolbar3));
+            $containerDiv->appendContent($this->_addLabelWithTextarea('Plugins:', $curType . '[tinymce4_fullscreen][plugins]', $defaultPlugins));
+            $form->add(i18n('Settings of inline editor in fullscreen mode'), $containerDiv->render());
+
+            // GZIP editor over HTTP using tinymce's library
+            $containerDiv = new cHTMLDiv();
+            $checked = 'contenido_gzip' === static::get(false, 'raw','contenido_gzip');
+            $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('GZIP TinyMCE (only activate if server does not compress content already)'), $curType . '[contenido_gzip]', 'contenido_gzip', $checked));
+            $form->add(i18n('contenido_gzip'), $containerDiv->render());
+
+            // Add jump lists to tinymce's dialogs
+            $containerDiv = new cHTMLDiv();
+            $checked = true === ('image' === static::get(false, 'raw','contenido_lists', 'image'));
+            $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in image insertion dialog'), $curType . '[contenido_lists][image]', 'image', $checked));
+            $checked = true === ('link' === static::get(false, 'raw','contenido_lists', 'link'));
+            $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in link insertion dialog'), $curType . '[contenido_lists][link]', 'link', $checked));
+            $form->add(i18n('contenido_lists'), $containerDiv->render());
+
+            // external plugins
+            $containerDiv = new cHTMLDiv();
+            $containerDiv->appendContent($this->_listExternalPlugins($curType));
+            $form->add(i18n('External plugins to load'), $containerDiv);
+
+            //add textarea for custom tinymce 4 settings
+            $textarea = new cHTMLTextarea($curType . '[custom]');
+            $textarea->setAttribute('style', 'width: 99%;');
+            $defaultParams = '';
+            if ('CMS_HTMLHEAD' === $curType) {
+                $defaultParams = '{' . PHP_EOL . '"inline": true,' . PHP_EOL . '"menubar": false' . PHP_EOL . '}';
+            }
+            $textarea->setValue(static::get($defaultParams, 'raw', 'custom'));
+            $form->add(i18n('Additional parameters (JSON passed to tinymce constructor)'), $textarea->render());
+
+            // check permission to save system wysiwyg editor settings
+            if (false === $this->_perm) {
+                $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's');
+            }
+            $result .= $form->render();
+            $result .= '<br />';
         }
 
-        $page->set('s', 'FORM', $form->render());
+        $page->set('s', 'FORM', $result);
         $page->set('s', 'RELOAD_HEADER', (false) ? 'true' : 'false');
         $page->render();
     }

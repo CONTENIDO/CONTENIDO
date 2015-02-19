@@ -81,12 +81,6 @@ if ('tinymce3' === $wysiwygeditor) {
 switch ($wysiwygeditor) {
     case 'tinymce4':
         $oEditor = new cTinyMCE4Editor('', '');
-        $oEditor->setToolbar('inline_edit');
-
-        // Get configuration for popup and inline tiny
-        $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
-        $sConfigFullscreen = $oEditor->getConfigFullscreen();
-
         break;
     default:
         $oEditor = new cTinyMCEEditor('', '');
@@ -134,15 +128,40 @@ $oScriptTpl->set('s', 'MEDIA', $backendUrl . 'frameset.php?area=upl&contenido=' 
 $oScriptTpl->set('s', 'FRONTEND', cRegistry::getFrontendUrl());
 
 // Add tiny options
-$sTinyOptions= $sConfigInlineEdit . ",\nfullscreen_settings: {\n" . $sConfigFullscreen . "\n}";
+//var_dump(json_encode($sConfigInlineEdit));
+
 if ('tinymce4' === $wysiwygeditor) {
-    $sCmsHtmlHeadConfig = 'selector: "*.CMS_HTMLHEAD",' . PHP_EOL;
-    $sCmsHtmlHeadConfig .= 'inline: true,' . PHP_EOL;
-    $sCmsHtmlHeadConfig .= 'menubar: false,' . PHP_EOL;
-    $sCmsHtmlHeadConfig .= 'toolbar: "undo redo",' . PHP_EOL;
-    $sCmsHtmlHeadConfig .= 'document_base_url: "' . cRegistry::getFrontendUrl() . '"' . PHP_EOL;
-    $oScriptTpl->set('s', 'TINY_OPTIONS', '[{' . $sTinyOptions . '},{' . $sCmsHtmlHeadConfig . '}]');
+    // set toolbar options for each CMS type that can be edited using a WYSIWYG editor
+    $aTinyOptions = array();
+    $oTypeColl = new cApiTypeCollection();
+    $oTypeColl->select();
+    while (false !== ($typeEntry = $oTypeColl->next())) {
+        // specify a shortcut for type field
+        $curType = $typeEntry->get('type');
+
+        $contentTypeClassName = cTypeGenerator::getContentTypeClassName($curType);
+        $cContentType = new $contentTypeClassName(null, 0, array());
+        if (false === $cContentType->isWysiwygCompatible()) {
+            continue;
+        }
+        $oEditor->setToolbar($curType, 'inline_edit');
+    }
+
+    // get configuration for inline editor
+    $aConfigInlineEdit = $oEditor->getConfigInlineEdit();
+    // Get configuration for fullscreen editor
+    $aConfigFullscreen = $oEditor->getConfigFullscreen();
+
+    foreach($aConfigInlineEdit as $sCmsType => $setting) {
+        // Get configuration for popup and inline tiny
+        $aTinyOptions[$sCmsType] = $aConfigInlineEdit[$sCmsType];
+        $aTinyOptions[$sCmsType]['fullscreen_settings'] = $aConfigFullscreen[$sCmsType];
+    }
+
+    $oScriptTpl->set('s', 'TINY_OPTIONS', json_encode($aTinyOptions));
+//     $oScriptTpl->set('s', 'TINY_OPTIONS', '[{' . $sTinyOptions . '},{' . $sCmsHtmlHeadConfig . '}]');
 } else {
+    $sTinyOptions= $sConfigInlineEdit . ",\nfullscreen_settings: {\n" . $sConfigFullscreen . "\n}";
     $oScriptTpl->set('s', 'TINY_OPTIONS', '{' . $sTinyOptions . '}');
 }
 $oScriptTpl->set('s', 'IDARTLANG', $idartlang);

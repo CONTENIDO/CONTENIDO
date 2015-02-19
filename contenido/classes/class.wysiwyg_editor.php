@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 abstract class cWYSIWYGEditor {
     /**
-     * 
+     * Access key under which the wysiwyg editor settings will be stored
      * @var string
      */
     protected static $_sConfigPrefix = '[\'wysiwyg\']';

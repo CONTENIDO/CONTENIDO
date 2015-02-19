@@ -79,7 +79,7 @@
          * @property settings
          * @type {Object}
          */
-        settings: {},
+        tinySettings: {},
         /**
          * Filebrowser popup field name
          * @property fbFieldName
@@ -568,49 +568,7 @@
                 return;
             }
 
-            wysiwygSettingsOne = wysiwygSettings.slice(0, 1)[0];
-            // convert all passed data to json format for configuration of tinymce 4
-            Con.Tiny.convertToJson(wysiwygSettingsOne);
-            if ('undefined' === typeof(wysiwygSettingsOne.fullscreen_settings)) {
-                wysiwygSettingsOne.fullscreen_settings = {};
-            }
-            // load contenido plugins
-            var contenidoPluginFolderUrl = options.backendUrl + 'external/wysiwyg/tinymce4/contenido/plugins/';
-            var contenidoPlugins = [{'name': 'conabbr', 'path': contenidoPluginFolderUrl + 'con_abbr/plugin.js'}];
-            contenidoPlugins.forEach(function(plugin) {
-                // load current add-on
-                // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
-                tinymce.PluginManager.load(plugin.name, plugin.path);
-                // exclude plugin from later loading
-                if ('undefined' === typeof(wysiwygSettingsOne.plugins)) {
-                    wysiwygSettingsOne.plugins = "";
-                }
-                wysiwygSettingsOne.plugins += (' -' + plugin.name);
-                wysiwygSettingsOne.fullscreen_settings.plugins += (' -' + plugin.name);
-            });
-
-            if ('undefined' === typeof(wysiwygSettingsOne['file_browser_callback'])) {
-                wysiwygSettingsOne['file_browser_callback'] = 
-                    function(field_name, url, type, win) {
-                        Con.Tiny.customFileBrowserCallback(field_name, url, type, win);
-                }
-            }
-
-            // check which plugins should be loaded
-            if ('undefined' !== typeof(wysiwygSettingsOne.externalplugins)) {
-                // check if setting is an array
-                // Array.isArray() can not be used because IE 8 does not implement it
-                if ('[object Array]' === Object.prototype.toString.call(wysiwygSettingsOne.externalplugins)) {
-                    wysiwygSettingsOne.externalplugins.forEach(function (plugin) {
-                        // load current add-on
-                        // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
-                        tinymce.PluginManager.load(plugin.name, plugin.url);
-                        // exclude plugin from later loading
-                        wysiwygSettingsOne.plugins += (' -' + plugin.name);
-                        wysiwygSettingsOne.fullscreen_settings.plugins += (' -' + plugin.name);
-                    });
-                }
-            }
+            // create plugins for tinymce first as they do not relate to wysiwygSettings
 
             // Create ClosePlugin
             tinymce.create('tinymce.plugins.ClosePlugin', {
@@ -653,140 +611,201 @@
             // Register plugin with a short name
             tinymce.PluginManager.add('confullscreen', tinymce.plugins.ConFullscreenPlugin);
 
-            tinymce.settings = wysiwygSettingsOne;
-            // inject setup into settings
-            tinymce.settings.setup = function(ed) {
-                ed.on('init', function() {
-                    ed.undoManager.data = [];
-                    ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
-                });
-                ed.on('undo', function(lvl) {
-                    // make sure not to change undo history while fullscreen switching is in progress
-                    if (false !== Con.Tiny.changingFullscreen) {
-                        return;
+            // iterate through wysiwygSettings array and process its content
+            Object.keys(wysiwygSettings).forEach(function(val, idx) {
+            	// create copy of object to avoid side effects
+            	var settings = [wysiwygSettings[val]].slice(0,1)[0];
+
+                // convert all passed data to json format for configuration of tinymce 4
+                Con.Tiny.convertToJson(settings);
+                if ('undefined' === typeof(settings.fullscreen_settings)) {
+                	settings.fullscreen_settings = {};
+                }
+                // load contenido plugins
+                var contenidoPluginFolderUrl = options.backendUrl + 'external/wysiwyg/tinymce4/contenido/plugins/';
+                var contenidoPlugins = [{'name': 'conabbr', 'path': contenidoPluginFolderUrl + 'con_abbr/plugin.js'}];
+                contenidoPlugins.forEach(function(plugin) {
+                    // load current add-on
+                    // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
+                    tinymce.PluginManager.load(plugin.name, plugin.path);
+                    
+                    if ('undefined' === typeof(settings.plugins)) {
+                    	settings.plugins = "";
                     }
-                    if ('undefined' === typeof(Con.Tiny.undoLvl[ed.id])) {
-                        Con.Tiny.undoLvl[ed.id] = ed.undoManager.data.length -2;
-                        return;
+                    if ('undefined' === typeof(settings.fullscreen_settings.plugins)) {
+                    	settings.fullscreen_settings.plugins = "";
                     }
-                    Con.Tiny.undoLvl[ed.id] -= 1;
-                });
-                ed.on('redo', function(e) {
-                    if ('undefined' === typeof(Con.Tiny.undoLvl[ed.id])) {
-                        Con.Tiny.undoLvl[ed.id] = 0;
-                        return;
-                    }
-                    Con.Tiny.undoLvl[ed.id] += 1;
+                    // exclude plugin from later loading
+                    settings.plugins += (' -' + plugin.name);
+                    settings.fullscreen_settings.plugins += (' -' + plugin.name);
                 });
 
-                // Fires after an undo level has been added to the editor.
-                // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.AddUndo
-                ed.on('AddUndo', function(e) {
-                    if (false !== Con.Tiny.changingFullscreen) {
-                        return;
+                if ('undefined' === typeof(settings['file_browser_callback'])) {
+                	settings['file_browser_callback'] = 
+                        function(field_name, url, type, win) {
+                            Con.Tiny.customFileBrowserCallback(field_name, url, type, win);
                     }
-                    Con.Tiny.typingUndo[ed.id] = false;
-                    if ('undefined' === typeof(Con.Tiny.undoLvl[ed.id])) {
-                        Con.Tiny.undoLvl[ed.id] = ed.undoManager.data.length -1;
-                        return;
-                    }
-                    Con.Tiny.undoLvl[ed.id] += 1;
-                    ed.undoManager.data.push(e.level);
-                });
-                // Fires when content is changed in editor through typing but AddUndo has not been fired yet
-                ed.on('TypingUndo', function(e) {
-                    if (false !== Con.Tiny.changingFullscreen) {
-                        return;
-                    }
-                    // if we are not at latest undo level remove any further undo level later than at current position
+                }
 
-                    // build a new data array to avoid side effects
-                    var tmp = [];
-                    jQuery.each(ed.undoManager.data, function(idx, k) {
-                        if (idx < parseInt(Con.Tiny.undoLvl[ed.id]) + 1) {
-                            tmp.push(k);
+                // check which plugins should be loaded
+                if ('undefined' !== typeof(settings.externalplugins)) {
+                    // check if setting is an array
+                    // Array.isArray() can not be used because IE 8 does not implement it
+                    if ('[object Array]' === Object.prototype.toString.call(settings.externalplugins)) {
+                    	settings.externalplugins.forEach(function (plugin) {
+                            // load current add-on
+                            // http://www.tinymce.com/wiki.php/api4:method.tinymce.AddOnManager.load
+                            tinymce.PluginManager.load(plugin.name, plugin.url);
+                            // exclude plugin from later loading
+                            settings.plugins += (' -' + plugin.name);
+                            settings.fullscreen_settings.plugins += (' -' + plugin.name);
+                        });
+                    }
+                }
+
+
+                // inject setup into settings
+                settings.setup = function(ed) {
+                    ed.on('init', function() {
+                    	// init into manager
+                        ed.undoManager.data = [];
+                        ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
+                    });
+                    ed.on('undo', function(lvl) {
+                        // make sure not to change undo history while fullscreen switching is in progress
+                        if (false !== Con.Tiny.changingFullscreen) {
+                            return;
+                        }
+                        if ('undefined' === typeof(Con.Tiny.undoLvl[ed.id])) {
+                            Con.Tiny.undoLvl[ed.id] = ed.undoManager.data.length -2;
+                            return;
+                        }
+                        Con.Tiny.undoLvl[ed.id] -= 1;
+                    });
+                    ed.on('redo', function(e) {
+                        if ('undefined' === typeof(Con.Tiny.undoLvl[ed.id])) {
+                            Con.Tiny.undoLvl[ed.id] = 0;
+                            return;
+                        }
+                        Con.Tiny.undoLvl[ed.id] += 1;
+                    });
+
+                    // Fires after an undo level has been added to the editor.
+                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.AddUndo
+                    ed.on('AddUndo', function(e) {
+                        if (false !== Con.Tiny.changingFullscreen) {
+                            return;
+                        }
+                        Con.Tiny.typingUndo[ed.id] = false;
+                        if ('undefined' === typeof(Con.Tiny.undoLvl[ed.id])) {
+                            Con.Tiny.undoLvl[ed.id] = ed.undoManager.data.length -1;
+                            return;
+                        }
+                        Con.Tiny.undoLvl[ed.id] += 1;
+                        ed.undoManager.data.push(e.level);
+                    });
+                    // Fires when content is changed in editor through typing but AddUndo has not been fired yet
+                    ed.on('TypingUndo', function(e) {
+                        if (false !== Con.Tiny.changingFullscreen) {
+                            return;
+                        }
+                        // if we are not at latest undo level remove any further undo level later than at current position
+
+                        // build a new data array to avoid side effects
+                        var tmp = [];
+                        jQuery.each(ed.undoManager.data, function(idx, k) {
+                            if (idx < parseInt(Con.Tiny.undoLvl[ed.id]) + 1) {
+                                tmp.push(k);
+                            }
+                        });
+                        
+                        ed.undoManager.data = tmp;
+                        Con.Tiny.typingUndo[ed.id] = true;
+                    });
+                    // Fires before the contents is processed.
+                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PreProcess
+                    ed.on('PreProcess', function(ev) {
+                        // ignore dirty state fullscreen state
+                        if (false === Con.Tiny.changingFullscreen) {
+                            // pre-process content before it gets inserted into editor
+                        }
+                            ev.node.innerHTML = Con.Tiny.customCleanupCallback(ev.node.innerHTML);
+                    });
+                    // Fires after the contents has been processed.
+                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PostProcess
+                    ed.on('PostProcess', function(ev) {
+                        // ignore dirty state fullscreen state
+                        if (false === Con.Tiny.changingFullscreen) {
+                            // post-process content before it gets saved
+                            ev.content = Con.Tiny.customCleanupCallback(ev.content);
                         }
                     });
-                    
-                    ed.undoManager.data = tmp;
-                    Con.Tiny.typingUndo[ed.id] = true;
-                });
-                // Fires before the contents is processed.
-                // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PreProcess
-                ed.on('PreProcess', function(ev) {
-                    // ignore dirty state fullscreen state
-                    if (false === Con.Tiny.changingFullscreen) {
-                        // pre-process content before it gets inserted into editor
-                    }
-                        ev.node.innerHTML = Con.Tiny.customCleanupCallback(ev.node.innerHTML);
-                });
-                // Fires after the contents has been processed.
-                // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PostProcess
-                ed.on('PostProcess', function(ev) {
-                    // ignore dirty state fullscreen state
-                    if (false === Con.Tiny.changingFullscreen) {
-                        // post-process content before it gets saved
-                        ev.content = Con.Tiny.customCleanupCallback(ev.content);
-                    }
-                });
-                // Fires after contents has been loaded into the editor.
-                // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
-                ed.on('LoadContent', function(e) {
-                    // dirty state fullscreen state is over when content is loaded
-                    if (Con.Tiny.changingFullscreen) {
-                        //Con.Tiny.changingFullscreen = false;
-                        return;
-                    }
-                    Con.Tiny.customSetupContentCallback(ed.id);
-                    // set variable with original content of editor for later comparision
-                    // e.g. to check if content changed
-                    Con.Tiny.updateContent(ed.getContent(), ed.id);
-                });
-                // Fires after contents has been saved/extracted from the editor.
-                // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.SaveContent
-                ed.on('SaveContent', function (e) {
-                    // ignore dirty state fullscreen state
-                    if (false === Con.Tiny.changingFullscreen) {
-                        Con.Tiny.customSaveCallback(ed.getContent());
-                    }
-                });
-                ed.on('blur', function (e) {
-                    Con.Tiny.storeCurrentTinyContent();
-                });
-            }
-            if ('undefined' !== typeof(tinymce.settings.fullscreen_settings)) {
-                tinymce.settings.fullscreen_settings.setup = tinymce.settings.setup;
-                tinymce.settings.fullscreen_settings['file_browser_callback'] = tinymce.settings['file_browser_callback'];
-                tinymce.settings.fullscreen_settings['valid_elements'] = tinymce.settings['valid_elements'];
-            }
+                    // Fires after contents has been loaded into the editor.
+                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.LoadContent
+                    ed.on('LoadContent', function(e) {
+                        // dirty state fullscreen state is over when content is loaded
+                        if (Con.Tiny.changingFullscreen) {
+                            //Con.Tiny.changingFullscreen = false;
+                            return;
+                        }
+                        Con.Tiny.customSetupContentCallback(ed.id);
+                        // set variable with original content of editor for later comparision
+                        // e.g. to check if content changed
+                        Con.Tiny.updateContent(ed.getContent(), ed.id);
+                    });
+                    // Fires after contents has been saved/extracted from the editor.
+                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.SaveContent
+                    ed.on('SaveContent', function (e) {
+                        // ignore dirty state fullscreen state
+                        if (false === Con.Tiny.changingFullscreen) {
+                            Con.Tiny.customSaveCallback(ed.getContent());
+                        }
+                    });
+                    ed.on('blur', function (e) {
+                        Con.Tiny.storeCurrentTinyContent();
+                    });
+                }
+                if ('undefined' !== typeof(settings.fullscreen_settings)) {
+                	settings.fullscreen_settings.setup = settings.setup;
+                	settings.fullscreen_settings['file_browser_callback'] = settings['file_browser_callback'];
+                	settings.fullscreen_settings['valid_elements'] = settings['valid_elements'];
+                }
 
-            // register custom save command for save plugin
-            // check if used in non-fullscreen mode
-            if (tinymce.settings.plugins.split(" ").indexOf("save") > -1) {
-                // use callback documented in
-                // http://www.tinymce.com/wiki.php/Plugin:save
-                tinymce.settings.save_onsavecallback = function() {
-                    Con.Tiny.setContent(Con.Tiny.idartlang);
-                };
-            }
-            // check if used in fullscreen mode
-            if (tinymce.settings.fullscreen_settings.plugins.split(" ").indexOf("save") > -1) {
-                // use callback documented in
-                // http://www.tinymce.com/wiki.php/Plugin:save
-                tinymce.settings.fullscreen_settings.save_onsavecallback = function() {
-                    Con.Tiny.setContent(Con.Tiny.idartlang);
-                };
-            }
+                // register custom save command for save plugin
+                // check if used in non-fullscreen mode
+                if (settings.plugins.split(" ").indexOf("save") > -1) {
+                    // use callback documented in
+                    // http://www.tinymce.com/wiki.php/Plugin:save
+                	settings.save_onsavecallback = function() {
+                        Con.Tiny.setContent(Con.Tiny.idartlang);
+                    };
+                }
+                // check if used in fullscreen mode
+                if (settings.fullscreen_settings.plugins.split(" ").indexOf("save") > -1) {
+                    // use callback documented in
+                    // http://www.tinymce.com/wiki.php/Plugin:save
+                	settings.fullscreen_settings.save_onsavecallback = function() {
+                        Con.Tiny.setContent(Con.Tiny.idartlang);
+                    };
+                }
+                
+                jQuery(document).ready(function() {
+                tinymce.init(settings);
+                // copy settings into global variable for later access
+                Con.Tiny.tinySettings[jQuery(settings.selector).attr("id")] = settings;
+                });
+            });
+            
 
-            var tinyCmsHtmlHead = wysiwygSettings.slice(1, 2)[0];
-            tinyCmsHtmlHead.setup = tinymce.settings.setup;
-
-            // do not loose reference to tinymce settings
-            var set = tinymce.settings
-            tinymce.init(tinyCmsHtmlHead);
-            tinymce.settings = set;
-
-            tinymce.init(tinymce.settings);
+//            var tinyCmsHtmlHead = wysiwygSettings.slice(1, 2)[0];
+//            tinyCmsHtmlHead.setup = tinymce.settings.setup;
+//
+//            // do not loose reference to tinymce settings
+//            var set = tinymce.settings
+//            tinymce.init(tinyCmsHtmlHead);
+//            tinymce.settings = set;
+//
+//            tinymce.init(tinymce.settings);
         },
 
         handleFullscreen: function(ed) {
@@ -808,7 +827,7 @@
             var undoData = ed.undoManager.data;
 
             // build a new editor instance with fullscreen_settings
-            var set = tinymce.settings;
+            var set =  Con.Tiny.tinySettings[ed.id];
 
             ed = new tinymce.Editor(id, set.fullscreen_settings, tinymce.EditorManager);
             // fullscreen editor is removed when switching back to inline mode
@@ -880,7 +899,7 @@
                     ed.undoManager.data = [];
                     ed.undoManager.clear();
                     // replay undo history from old editor instance
-                    undoData.forEach( function (val, idx) {
+                    undoData.forEach(function(val, idx) {
                         // set the editor content to the content of editor during this undo history entry
                         ed.setContent(val.content);
                         // add the undo level to undo manager
