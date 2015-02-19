@@ -15,13 +15,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * This class sends update requests to a Solr core.
- * If the request failed an
- * exception is thrown. This class allows handling of more than one article at
- * once.
- *
- * <server>:8080/solr/admin/cores?action=STATUS
- * <server>:8080/solr/admin/cores?action=RENAME&core=collection1&other=contenido
- * <server>:8080/solr/admin/cores?action=RELOAD&core=contenido
+ * If the request failed an exception is thrown.
+ * This class allows handling of more than one article at once.
  *
  * @author marcus.gnass
  */

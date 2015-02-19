@@ -197,11 +197,6 @@ class SolrRightBottomPage extends cGuiPage {
     /**
      * Call the relaod action.
      *
-     * http://client-uat70.4fb.net:8080/solr/admin/cores?action=STATUS
-     * http://client-uat70.4fb.net:8080/solr/admin/cores?action=RENAME&core=collection1&other=contenido
-     * http://client-uat70.4fb.net:8080/solr/admin/cores?action=RELOAD&core=contenido
-     * Cannot be done with Solr extension (or can it?).
-     *
      * @return string
      */
     private function _reload() {
