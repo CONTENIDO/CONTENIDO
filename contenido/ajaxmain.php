@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the main AJAX file of the backend.
  *
@@ -12,6 +13,7 @@
  * @link             http://www.4fb.de
  * @link             http://www.contenido.org
  */
+
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
@@ -60,10 +62,10 @@ if (isset($changelang) && is_numeric($changelang)) {
     $lang = $changelang;
 }
 
-if (!is_numeric($client) ||
-    (!$perm->have_perm_client('client['.$client.']') &&
-    !$perm->have_perm_client('admin['.$client.']')))
-{
+if (!is_numeric($client)
+|| (!$perm->have_perm_client('client[' . $client . ']')
+&& !$perm->have_perm_client('admin[' . $client . ']'))) {
+
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
@@ -71,15 +73,28 @@ if (!is_numeric($client) ||
         unset($lang);
         $client = $oClient->get('idclient');
     }
+
 } else {
+
     $sess->register('client');
+
 }
 
 if (!is_numeric($lang) || $lang == '') {
     $sess->register('lang');
     // search for the first language of this client
-    $sql = "SELECT * FROM ".$cfg['tab']['lang']." AS A, ".$cfg['tab']['clients_lang']." AS B WHERE A.idlang=B.idlang AND idclient=".cSecurity::toInteger($client)." ORDER BY A.idlang ASC";
-    $db->query($sql);
+    $db->query("
+        SELECT
+            *
+        FROM
+            " . $cfg['tab']['lang'] . " AS A
+            , " . $cfg['tab']['clients_lang'] . " AS B
+        WHERE
+            A.idlang=B.idlang
+            AND idclient=" . cSecurity::toInteger($client) . "
+        ORDER BY
+            A.idlang ASC
+        ;");
     $db->nextRecord();
     $lang = $db->f('idlang');
 } else {
@@ -146,11 +161,13 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 $cfg['debug']['backend_exectime']['end'] = getmicrotime();
 
 $debugInfo = array(
-    'Building this page (excluding CONTENIDO includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']).' seconds',
-    'Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']).' seconds',
-    'Include memory usage: '.humanReadableSize(memory_get_usage()-$oldmemusage),
-    'Complete memory usage: '.humanReadableSize(memory_get_usage()),
-    "*****".$sFilename."*****"
+    'Building this page (excluding CONTENIDO includes) took: ' .
+    ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']).' seconds',
+    'Building the complete page took: ' .
+    ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']).' seconds',
+    'Include memory usage: ' . humanReadableSize(memory_get_usage()-$oldmemusage),
+    'Complete memory usage: ' . humanReadableSize(memory_get_usage()),
+    "*****" . $sFilename . "*****"
 );
 cDebug::out(implode("\n", $debugInfo));
 
