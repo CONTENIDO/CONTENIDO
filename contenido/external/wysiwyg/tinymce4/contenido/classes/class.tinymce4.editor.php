@@ -341,6 +341,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                     $defaultToolbar3 = cTinymce4Configuration::get('table | formatselect fontselect fontsizeselect', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar3');
                     $defaultPlugins = cTinymce4Configuration::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4', $cmsType, 'tinymce4_full', 'plugins');
                 }
+                $this->_setSetting($cmsType, 'inline', false, true);
                 $this->_setSetting($cmsType, 'toolbar1', $defaultToolbar1, true);
                 $this->_setSetting($cmsType, 'toolbar2', $defaultToolbar2, true);
                 $this->_setSetting($cmsType, 'toolbar3', $defaultToolbar3, true);
