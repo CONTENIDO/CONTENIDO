@@ -6,12 +6,16 @@
         <plugin_name>Solr Search</plugin_name>
         <plugin_foldername>search_solr</plugin_foldername>
         <uuid>3A6A020A-7357-C800-4C78-CF52C3C10F52</uuid>
-        <description>Provides Solr search capabilities.</description>
+        <description>Provides Solr search capabilities.
+        version 1.0.1
+        - added support for one core pre client
+        - added button to delete all articles of current client from core
+        </description>
         <author>Marcus Gnaß</author>
         <copyright>four for business AG</copyright>
         <mail>info@4fb.de</mail>
         <website>http://www.4fb.de</website>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </general>
 
     <requirements php="5.2.11">

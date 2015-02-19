@@ -30,15 +30,21 @@ class SolrSearcherSimple extends SolrSearcherAbstract {
      */
     public function getSearchResults() {
 
+        $searchTerm = $this->_searchTerm;
+        $searchTerm = trim($searchTerm);
+        $searchTerm = explode(' ', $searchTerm);
+        $searchTerm = array_map('trim', $searchTerm);
+        $searchTerm = array_filter($searchTerm);
+
         // there are no results if there is no search term
-        if (0 === strlen(trim($this->_searchTerm))) {
+        if (empty($searchTerm)) {
             throw new cException('search cannot be performed for empty search term');
         }
 
         /* SolrQuery */
         $query = new SolrQuery();
         // set the search query
-        $query->setQuery('content:' . $this->_searchTerm);
+        $query->setQuery('content:*' . implode('* *', $searchTerm) . '*');
         // specify the number of rows to skip
         $query->setStart(($this->_page - 1) * $this->_itemsPerPage);
         // specify the maximum number of rows to return in the result
@@ -48,7 +54,9 @@ class SolrSearcherSimple extends SolrSearcherAbstract {
         // $query->addField('id_art_lang');
 
         /* SolrClient */
-        $options = Solr::getClientOptions();
+        $idclient = cRegistry::getClientId();
+        $idlang = cRegistry::getLanguageId();
+        $options = Solr::getClientOptions($idclient, $idlang);
         Solr::log(print_r($options, true));
         $solrClient = new SolrClient($options);
         // $solrClient->setServlet(SolrClient::SEARCH_SERVLET_TYPE,
@@ -58,14 +66,14 @@ class SolrSearcherSimple extends SolrSearcherAbstract {
         try {
             $solrQueryResponse = @$solrClient->query($query);
             $response = $solrQueryResponse->getResponse();
-            $docs = $response->response->docs;
+            $response = $response->response;
         } catch (SolrClientException $e) {
             Solr::log($e, $e->getFile(), $e->getLine());
             Solr::log($solrClient->getDebug());
             Solr::log($query->toString());
         }
 
-        return $docs;
+        return $response;
     }
 
 }
