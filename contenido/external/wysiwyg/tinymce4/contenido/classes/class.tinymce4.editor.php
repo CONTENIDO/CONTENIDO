@@ -71,12 +71,12 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
         parent::__construct($sEditorName, $sEditorContent);
         $this->_setEditor("tinymce4");
+        $this->_aSettings = array();
 
         // Retrieve all settings for tinymce 4, depending on CMS types
         // define empty arrays for all CMS types that can be edited using a WYSIWYG editor
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
-        $allowedCmsTypes = array();
         while (false !== ($typeEntry = $oTypeColl->next())) {
             // specify a shortcut for type field
             $curType = $typeEntry->get('type');
@@ -89,9 +89,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             if (false === $cContentType->isWysiwygCompatible()) {
                 continue;
             }
-            $allowedCmsTypes[$curType] = array();
+            $this->_aSettings[$curType] = cTinymce4Configuration::get(array(), 'tinymce4');
         }
-        $this->_aSettings = cTinymce4Configuration::get($allowedCmsTypes, 'tinymce4');
 
         // CEC for template pre processing
         $this->_aSettings = cApiCecHook::executeAndReturn('Contenido.WYSIWYG.LoadConfiguration', $this->_aSettings, $this->_sEditor);

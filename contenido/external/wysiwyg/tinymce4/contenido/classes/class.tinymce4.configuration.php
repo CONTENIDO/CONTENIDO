@@ -311,6 +311,22 @@ class cTinymce4Configuration {
         unset($config['submit_y']);
 
 
+        // check if config should be deleted
+        if (isset($_POST['reset']) && 'reset' === $_POST['reset']) {
+            $noti = new cGuiNotification();
+
+            $configPath = cRegistry::getConfigValue('path', 'contenido_config');
+            $configPath .= 'config.wysiwyg_tinymce4.php';
+            if (cFileHandler::exists($configPath)
+            && cFileHandler::writeable($configPath)) {
+                cFileHandler::remove($configPath);
+                $noti->displayNotification(cGuiNotification::LEVEL_INFO, i18n('TinyMCE 4 configuration got reset back to default'));
+            } else {
+                $noti->displayNotification(cGuiNotification::LEVEL_ERROR, i18n('Can not delete config file'));
+            }
+            return false;
+        }
+
         // check if all array entries actually exist
         // abort if too many values are encountered
         $shouldArrayStructure =  array (
@@ -388,8 +404,8 @@ class cTinymce4Configuration {
         }
 
         // append new config to old config
-        $origConfig = static::get(array(), 'raw', 'cms_types');
-        $config['raw']['cms_types'] = array_merge($origConfig, $config);
+        $origConfig = static::get(array(), 'raw');
+        $config['raw'] = array_merge($origConfig, $config);
         //$config['raw'] = $config;
 
         // use custom parameters if they are correct JSON
@@ -561,9 +577,9 @@ class cTinymce4Configuration {
 
             // Add jump lists to tinymce's dialogs
             $containerDiv = new cHTMLDiv();
-            $checked = true === ('image' === static::get(false, 'raw','contenido_lists', 'image'));
+            $checked = true === ('image' === static::get(false, 'raw', $curType, 'contenido_lists', 'image'));
             $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in image insertion dialog'), $curType . '[contenido_lists][image]', 'image', $checked));
-            $checked = true === ('link' === static::get(false, 'raw','contenido_lists', 'link'));
+            $checked = true === ('link' === static::get(false, 'raw', $curType, 'contenido_lists', 'link'));
             $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('Provide jump lists in link insertion dialog'), $curType . '[contenido_lists][link]', 'link', $checked));
             $form->add(i18n('contenido_lists'), $containerDiv->render());
 
@@ -579,16 +595,25 @@ class cTinymce4Configuration {
             if ('CMS_HTMLHEAD' === $curType) {
                 $defaultParams = '{' . PHP_EOL . '"inline": true,' . PHP_EOL . '"menubar": false' . PHP_EOL . '}';
             }
-            $textarea->setValue(static::get($defaultParams, 'raw', 'custom'));
+            $textarea->setValue(static::get($defaultParams, 'raw', $curType, 'custom'));
             $form->add(i18n('Additional parameters (JSON passed to tinymce constructor)'), $textarea->render());
 
             // check permission to save system wysiwyg editor settings
             if (false === $this->_perm) {
                 $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n("You are not sysadmin. You can't change these settings."), 's');
             }
-            $result .= $form->render();
-            $result .= '<br />';
+            $result .= '<p>' . $form->render() . '</p>';
         }
+        
+        $resetForm = new cHTMLForm('system_wysiwyg_tinymce4_general_options', 'main.php', 'post');
+        $resetForm->setVar('area', $area);
+        $resetForm->setVar('frame', $frame);
+        $resetForm->setVar('action', 'edit_tinymce4');
+        $oResetButton = new cHTMLButton('reset', i18n('Reset configuration back to default'));
+        $oResetButton->setAttribute('value', 'reset');
+
+        $resetForm = $resetForm->appendContent($oResetButton);
+        $result .= $resetForm->render();
 
         $page->set('s', 'FORM', $result);
         $page->set('s', 'RELOAD_HEADER', (false) ? 'true' : 'false');
