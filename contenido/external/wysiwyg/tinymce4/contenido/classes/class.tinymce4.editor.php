@@ -419,7 +419,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             case "inline_edit":
                 if ('CMS_HTMLHEAD' === $cmsType) {
                     $defaultToolbar1 = cTinymce4Configuration::get('undo redo | consave conclose', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar1');
-                    var_dump($defaultToolbar1);
                     $defaultToolbar2 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar2');
                     $defaultToolbar3 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar3');
                     $defaultPlugins = cTinymce4Configuration::get('conclose', 'tinymce4', $cmsType, 'tinymce4_inline', 'plugins');

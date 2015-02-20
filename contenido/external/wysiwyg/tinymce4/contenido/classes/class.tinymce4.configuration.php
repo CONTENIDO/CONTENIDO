@@ -508,7 +508,7 @@ class cTinymce4Configuration {
             $form = new cGuiTableForm('system_wysiwyg_tinymce4_' . strtolower($curType));
             $form->setAcceptCharset('UTF-8');
 
-                $form->addHeader(i18n('TinyMCE 4 configuration for ') . $curType);
+            $form->addHeader(i18n('TinyMCE 4 configuration for ') . $curType);
 
             $form->setVar('area', $area);
             $form->setVar('frame', $frame);
@@ -535,15 +535,15 @@ class cTinymce4Configuration {
 
             $containerDiv = new cHTMLDiv();
             if ('CMS_HTMLHEAD' === $curType) {
-                $defaultToolbar1 = static::get('undo redo', 'raw','tinymce4_full', 'toolbar1');
-                $defaultToolbar2 = static::get('', 'raw','tinymce4_full', 'toolbar2');
-                $defaultToolbar3 = static::get('', 'raw','tinymce4_full', 'toolbar3');
-                $defaultPlugins = static::get('', 'raw','tinymce4_full', 'plugins');
+                $defaultToolbar1 = static::get('undo redo | consave conclose', 'raw','tinymce4_inline', 'toolbar1');
+                $defaultToolbar2 = static::get('', 'raw','tinymce4_inline', 'toolbar2');
+                $defaultToolbar3 = static::get('', 'raw','tinymce4_inline', 'toolbar3');
+                $defaultPlugins = static::get('conclose', 'raw','tinymce4_inline', 'plugins');
             } else {
-                $defaultToolbar1 = static::get('bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | fullscreen | save close', 'raw', 'tinymce4_inline', 'toolbar1');
+                $defaultToolbar1 = static::get('bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | confullscreen | consave conclose', 'raw', 'tinymce4_inline', 'toolbar1');
                 $defaultToolbar2 = static::get('', 'raw', 'tinymce4_inline', 'toolbar2');
                 $defaultToolbar3 = static::get('', 'raw', 'tinymce4_inline', 'toolbar3');
-                $defaultPlugins = static::get('table close confullscreen textcolor', 'raw', 'tinymce4_inline', 'plugins');
+                $defaultPlugins = static::get('table conclose confullscreen textcolor', 'raw', 'tinymce4_inline', 'plugins');
             }
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', $curType . '[tinymce4_inline][toolbar1]', $defaultToolbar1));
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', $curType . '[tinymce4_inline][toolbar2]', $defaultToolbar2));
@@ -553,10 +553,10 @@ class cTinymce4Configuration {
 
             $containerDiv = new cHTMLDiv();
             if ('CMS_HTMLHEAD' === $curType) {
-                $defaultToolbar1 = static::get('undo redo', 'raw','tinymce4_full', 'toolbar1');
-                $defaultToolbar2 = static::get('', 'raw','tinymce4_full', 'toolbar2');
-                $defaultToolbar3 = static::get('', 'raw','tinymce4_full', 'toolbar3');
-                $defaultPlugins = static::get('', 'raw','tinymce4_full', 'plugins');
+                $defaultToolbar1 = static::get('undo redo', 'raw','tinymce4_fullscreen', 'toolbar1');
+                $defaultToolbar2 = static::get('', 'raw','tinymce4_fullscreen', 'toolbar2');
+                $defaultToolbar3 = static::get('', 'raw','tinymce4_fullscreen', 'toolbar3');
+                $defaultPlugins = static::get('', 'raw','tinymce4_fullscreen', 'plugins');
             } else {
                 $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw', 'tinymce4_fullscreen', 'toolbar1');
                 $defaultToolbar2 = static::get('link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw', 'tinymce4_fullscreen', 'toolbar2');
