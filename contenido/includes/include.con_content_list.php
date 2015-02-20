@@ -47,6 +47,8 @@ $templateFile = cRegistry::getConfigValue('path', 'templates', '') . cRegistry::
 $page->setPageBase($templateFile);
 
 $jslibs = '';
+$aNotifications = array();
+
 // Include wysiwyg editor class
 $wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
 
@@ -121,7 +123,7 @@ if (($action == 'savecontype' || $action == 10)) {
             $data = $_REQUEST['data'];
             $value = $_REQUEST['value'];
 
-            $notification->displayNotification("info", i18n("Changes saved"));
+            $aNotifications[] = $notification->returnNotification("info", i18n("Changes saved"));
         }
 
         conGenerateCodeForArtInAllCategories($idart);
@@ -147,7 +149,7 @@ if (($action == 'savecontype' || $action == 10)) {
                 }
             }
             $oContentColl->delete((int) $_REQUEST['idcontent']);
-            $notification->displayNotification("info", i18n("Changes saved"));
+            $aNotifications[] = $notification->returnNotification("info", i18n("Changes saved"));
 
             conGenerateCodeForArtInAllCategories($idart);
         }
@@ -346,7 +348,15 @@ if (($action == 'savecontype' || $action == 10)) {
     } else {
         $page->displayWarning(i18n("Please choose a file"));
     }
-
+}
+if (count($aNotifications) > 0) {
+    $sNotifications = '';
+    foreach ($aNotifications as $curNotification) {
+        $sNotifications .= $curNotification . '<br />';
+    }
+    $page->set('s', 'NOTIFICATIONS', $sNotifications);
+} else {
+    $page->set('s', 'NOTIFICATIONS', '');
 }
 
 // get active value
@@ -564,6 +574,7 @@ function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode
     $client = $_REQUEST['client'];
     $idartlang = $_REQUEST['idartlang'];
     $contenido = $_REQUEST['contenido'];
+
 
     // Get locked status (article freeze)
     $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
