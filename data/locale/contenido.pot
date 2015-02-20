@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-20 10:32+0100\n"
+"POT-Creation-Date: 2015-02-20 11:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2354,8 +2354,12 @@ msgstr ""
 msgid "You are not sysadmin. You can't change these settings."
 msgstr ""
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:612
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:616
 msgid "Reset configuration back to default"
+msgstr ""
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:617
+msgid "Reset Configuration"
 msgstr ""
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:546

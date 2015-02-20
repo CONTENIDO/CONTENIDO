@@ -312,7 +312,7 @@ class cTinymce4Configuration {
 
 
         // check if config should be deleted
-        if (isset($_POST['reset']) && 'reset' === $_POST['reset']) {
+        if (isset($_POST['reset'])) {
             $noti = new cGuiNotification();
 
             $configPath = cRegistry::getConfigValue('path', 'contenido_config');
@@ -604,16 +604,22 @@ class cTinymce4Configuration {
             }
             $result .= '<p>' . $form->render() . '</p>';
         }
-        
-        $resetForm = new cHTMLForm('system_wysiwyg_tinymce4_general_options', 'main.php', 'post');
-        $resetForm->setVar('area', $area);
-        $resetForm->setVar('frame', $frame);
-        $resetForm->setVar('action', 'edit_tinymce4');
-        $oResetButton = new cHTMLButton('reset', i18n('Reset configuration back to default'));
-        $oResetButton->setAttribute('value', 'reset');
 
-        $resetForm = $resetForm->appendContent($oResetButton);
-        $result .= $resetForm->render();
+        $configPath = cRegistry::getConfigValue('path', 'contenido_config');
+        $configPath .= 'config.wysiwyg_tinymce4.php';
+        if (cFileHandler::exists($configPath)
+        && cFileHandler::writeable($configPath)) {
+            $resetForm = new cHTMLForm('system_wysiwyg_tinymce4_general_options', 'main.php', 'post');
+            $resetForm->setVar('area', $area);
+            $resetForm->setVar('frame', $frame);
+            $resetForm->setVar('action', 'edit_tinymce4');
+            $oResetButton = new cHTMLButton('reset', i18n('Reset configuration back to default'));
+            $oResetButton->setAttribute('value', i18n('Reset Configuration'));
+            
+            $resetForm = $resetForm->appendContent($oResetButton);
+            $result .= $resetForm->render();
+        }
+
 
         $page->set('s', 'FORM', $result);
         $page->set('s', 'RELOAD_HEADER', (false) ? 'true' : 'false');

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-20 10:32+0100\n"
-"PO-Revision-Date: 2015-02-20 10:34+0100\n"
+"POT-Creation-Date: 2015-02-20 11:34+0100\n"
+"PO-Revision-Date: 2015-02-20 11:34+0100\n"
 "Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -2559,9 +2559,13 @@ msgid "You are not sysadmin. You can't change these settings."
 msgstr ""
 "Sie sind nicht der SysAdmin. Sie können daher keine Einstellungen ändern."
 
-#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:612
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:616
 msgid "Reset configuration back to default"
 msgstr "Setze Einstellen auf Werkseinstellungen zurück"
+
+#: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php:617
+msgid "Reset Configuration"
+msgstr "Einstellungen zurücksetzen"
 
 #: external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php:546
 #: includes/include.con_content_list.php:456
