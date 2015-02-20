@@ -315,6 +315,7 @@ class cTinymce4Configuration {
         if (isset($_POST['reset'])) {
             $noti = new cGuiNotification();
 
+            // try to delete configuration
             $configPath = cRegistry::getConfigValue('path', 'contenido_config');
             $configPath .= 'config.wysiwyg_tinymce4.php';
             if (cFileHandler::exists($configPath)
@@ -322,8 +323,11 @@ class cTinymce4Configuration {
                 cFileHandler::remove($configPath);
                 $noti->displayNotification(cGuiNotification::LEVEL_INFO, i18n('TinyMCE 4 configuration got reset back to default'));
             } else {
+                // can not delete config, display message
                 $noti->displayNotification(cGuiNotification::LEVEL_ERROR, i18n('Can not delete config file'));
             }
+
+            // do not save config
             return false;
         }
 

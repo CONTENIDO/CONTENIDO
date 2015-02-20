@@ -399,7 +399,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 $this->_setSetting($cmsType, "toolbar3", "", true);
 
                 $this->_setSetting($cmsType, "plugins", "contextmenu", true);
-                
 
                 $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce4_mini');
                 foreach ($aCustSettings as $sKey => $sValue) {
