@@ -328,7 +328,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         switch ($sMode) {
             case "full": // Show all options
                 if ('CMS_HTMLHEAD' === $cmsType) {
-                    $defaultToolbar1 = cTinymce4Configuration::get('undo redo', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar1');
+                    $defaultToolbar1 = cTinymce4Configuration::get('undo redo | consave conclose', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar1');
                     $defaultToolbar2 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar2');
                     $defaultToolbar3 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar3');
                     $defaultPlugins = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_full', 'plugins');
@@ -418,15 +418,16 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
             case "inline_edit":
                 if ('CMS_HTMLHEAD' === $cmsType) {
-                    $defaultToolbar1 = cTinymce4Configuration::get('undo redo', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar1');
+                    $defaultToolbar1 = cTinymce4Configuration::get('undo redo | consave conclose', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar1');
+                    var_dump($defaultToolbar1);
                     $defaultToolbar2 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar2');
                     $defaultToolbar3 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar3');
-                    $defaultPlugins = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_inline', 'plugins');
+                    $defaultPlugins = cTinymce4Configuration::get('conclose', 'tinymce4', $cmsType, 'tinymce4_inline', 'plugins');
                 } else {
-                    $defaultToolbar1 = cTinymce4Configuration::get('bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | fullscreen | save close', 'tinymce4', $cmsType, 'tinymce4_inline', 'plugins');
+                    $defaultToolbar1 = cTinymce4Configuration::get('bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | confullscreen | consave conclose', 'tinymce4', $cmsType, 'tinymce4_inline', 'plugins');
                     $defaultToolbar2 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar2');
                     $defaultToolbar3 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar3');
-                    $defaultPlugins = cTinymce4Configuration::get('table close confullscreen textcolor', 'tinymce4', $cmsType, 'tinymce4_inline', 'plugins');
+                    $defaultPlugins = cTinymce4Configuration::get('table conclose confullscreen textcolor', 'tinymce4', $cmsType, 'tinymce4_inline', 'plugins');
                 }
                 $this->_setSetting($cmsType, 'inline', true, true);
                 $this->_setSetting($cmsType, 'menubar', false, true);

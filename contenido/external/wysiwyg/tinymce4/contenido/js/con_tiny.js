@@ -571,9 +571,9 @@
             // create plugins for tinymce first as they do not relate to wysiwygSettings
 
             // Create ClosePlugin
-            tinymce.create('tinymce.plugins.ClosePlugin', {
+            tinymce.create('tinymce.plugins.ConClosePlugin', {
                 init: function(ed, url) {
-                    ed.addButton('save', {
+                    ed.addButton('consave', {
                         title: options.saveTitle,
                         image: options.saveImage,
                         icons: false,
@@ -583,7 +583,7 @@
                         }
                     });
 
-                    ed.addButton('close', {
+                    ed.addButton('conclose', {
                         title: options.closeTitle,
                         image: options.closeImage,
                         icons: false,
@@ -595,11 +595,11 @@
             });
 
             // Register plugin with a short name
-            tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
+            tinymce.PluginManager.add('conclose', tinymce.plugins.ConClosePlugin);
 
             tinymce.create('tinymce.plugins.ConFullscreenPlugin', {
                 init: function(ed) {
-                    ed.addButton('fullscreen', {
+                    ed.addButton('confullscreen', {
                         tooltip: 'Fullscreen',
                         shortcut: 'Ctrl+Alt+F',
                         onclick: function() {
