@@ -383,9 +383,13 @@ class cSystemPurge {
                         break;
                     }
                 }
+                if (true === $bCanDelete
+                && in_array($dirName, $this->_dirsExcluded)) {
+                    $bCanDelete = false;
+                }
             }
             // reserved files or folders, do not delete
-            if (true === $bCanDelete) {
+            if (true === $bCanDelete) {var_dump($dirPath);
                 cDirHandler::remove($dirPath);
             }
 
