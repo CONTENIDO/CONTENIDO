@@ -94,6 +94,28 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
+     * Resets class variables back to default
+     * This is handy in case a new item is tried to be loaded into this class instance.
+     */
+    protected function _resetItem() {
+        parent::_resetItem();
+
+        $this->values = null;
+        $this->modifiedValues = null;
+        $this->_arrInFilters = array(
+            'htmlspecialchars',
+            'addslashes'
+        );
+        $this->_arrOutFilters = array(
+            'stripslashes',
+            'htmldecode'
+        );
+
+        $this->_metaObject = null;
+        $this->_lastSQL = null;
+    }
+
+    /**
      * Loads an item by colum/field from the database.
      *
      * @param string $sField Specifies the field
@@ -104,6 +126,9 @@ abstract class Item extends cItemBaseAbstract {
      * @return bool True if the load was successful
      */
     public function loadBy($sField, $mValue, $bSafe = true) {
+        // reset class variables back to default before loading
+        $this->_resetItem();
+
         if ($bSafe) {
             $mValue = $this->_inFilter($mValue);
         }
@@ -142,6 +167,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         $this->loadByRecordSet($this->db->toArray());
+        $this->virgin = false;
         return true;
     }
 
@@ -155,6 +181,9 @@ abstract class Item extends cItemBaseAbstract {
      * @return bool True if the load was successful
      */
     public function loadByMany(array $aAttributes, $bSafe = true) {
+        // reset class variables back to default before loading
+        $this->_resetItem();
+
         if ($bSafe) {
             $aAttributes = $this->_inFilter($aAttributes);
         }
@@ -205,6 +234,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         $this->loadByRecordSet($this->db->toArray());
+        $this->virgin = false;
         return true;
     }
 

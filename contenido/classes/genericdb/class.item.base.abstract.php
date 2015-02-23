@@ -96,7 +96,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * @todo remove access from public
      * @var bool
      */
-    public $virgin;
+    public $virgin = true;
 
     /**
      * Storage of the last occured error
@@ -141,8 +141,17 @@ abstract class cItemBaseAbstract extends cGenericDb {
 
         $this->table = $sTable;
         $this->primaryKey = $sPrimaryKey;
-        $this->virgin = true;
         $this->_className = $sClassName;
+    }
+
+    /**
+     * Resets class variables back to default
+     * This is handy in case a new item is tried to be loaded into this class instance.
+     */
+    protected function _resetItem() {
+        $this->virgin = true;
+        $this->properties = null;
+        $this->_lasterror = '';
     }
 
     /**
