@@ -100,17 +100,9 @@ abstract class Item extends cItemBaseAbstract {
     protected function _resetItem() {
         parent::_resetItem();
 
+        // make sure not to reset filters because then default filters would always be used for loading
         $this->values = null;
         $this->modifiedValues = null;
-        $this->_arrInFilters = array(
-            'htmlspecialchars',
-            'addslashes'
-        );
-        $this->_arrOutFilters = array(
-            'stripslashes',
-            'htmldecode'
-        );
-
         $this->_metaObject = null;
         $this->_lastSQL = null;
     }
