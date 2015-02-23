@@ -195,7 +195,6 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     public function generateViewCode() {
         $code = '";?><?php
                     $fileList = new cContentTypeFilelist(\'%s\', %s, %s);
-
                     echo $fileList->generateFileListCode();
                  ?><?php echo "';
         $code = sprintf($code, $this->_rawSettings, $this->_id, 'array()');
@@ -332,8 +331,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
         $template = new cTemplate();
         $fileList = array();
-
-        $template->set('s', 'TITLE', $this->_settings['filelist_title']);
+        $template->set('s', 'FILELIST_TITLE', $this->_settings['filelist_title']);
 
         $files = $this->getConfiguredFiles();
 
