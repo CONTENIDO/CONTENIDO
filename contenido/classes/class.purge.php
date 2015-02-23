@@ -371,7 +371,21 @@ class cSystemPurge {
             ), '', $dirPath) != str_replace(array(
                 '/',
                 '..'
-            ), '', $tmpDirPath) && $keep === false && !in_array($dirName, $this->_dirsExcludedWithFiles) && !in_array($dirName, $this->_dirsExcluded)) {
+            ), '', $tmpDirPath)
+            && $keep === false) {
+                // check if directoy contains reserved files folders
+                $bCanDelete = true;
+                $dirContent = cDirHandler::read($dirPath);
+                foreach ($dirContent as $sContent) {
+                    if (in_array($sContent, $this->_dirsExcludedWithFiles)
+                    || in_array($dirContent, $this->_dirsExcluded)) {
+                        $bCanDelete = false;
+                        break;
+                    }
+                }
+            }
+            // reserved files or folders, do not delete
+            if (true === $bCanDelete) {
                 cDirHandler::remove($dirPath);
             }
 
