@@ -389,7 +389,7 @@ class cSystemPurge {
                 }
             }
             // reserved files or folders, do not delete
-            if (true === $bCanDelete) {var_dump($dirPath);
+            if (true === $bCanDelete) {
                 cDirHandler::remove($dirPath);
             }
 
