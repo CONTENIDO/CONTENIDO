@@ -59,9 +59,11 @@ if ('tinymce3' === $wysiwygeditor) {
 }
 switch ($wysiwygeditor) {
     case 'tinymce4':
+        $page->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', $cfg['path']['all_wysiwyg_html'] . $wysiwygeditor . '/contenido/css/');
         $oEditor = new cTinyMCE4Editor('', '');
         break;
     default:
+        $page->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', $cfg['path']['contenido_fullhtml'] . 'styles/');
         $oEditor = new cTinyMCEEditor('', '');
         $oEditor->setToolbar('inline_edit');
 

@@ -71,6 +71,9 @@ if ($action == 10) {
 // Contenido --> Articles --> Editor)
 $markSubItem = markSubMenuItem(5, true);
 
+// Replace vars in Script
+$oScriptTpl = new cTemplate();
+
 // Include wysiwyg editor class
 $wysiwygeditor = cWYSIWYGEditor::getCurrentWysiwygEditorName();
 
@@ -80,9 +83,11 @@ if ('tinymce3' === $wysiwygeditor) {
 }
 switch ($wysiwygeditor) {
     case 'tinymce4':
+        $oScriptTpl->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', $cfg['path']['all_wysiwyg_html'] . $wysiwygeditor . '/contenido/css/');
         $oEditor = new cTinyMCE4Editor('', '');
         break;
     default:
+        $oScriptTpl->set('s', '_PATH_CONTENIDO_TINYMCE_CSS_', $cfg['path']['contenido_fullhtml'] . 'styles/');
         $oEditor = new cTinyMCEEditor('', '');
         $oEditor->setToolbar('inline_edit');
 
@@ -91,8 +96,6 @@ switch ($wysiwygeditor) {
         $sConfigFullscreen = $oEditor->getConfigFullscreen();
 }
 
-// Replace vars in Script
-$oScriptTpl = new cTemplate();
 
 $jslibs = '';
 // get scripts from editor class
