@@ -387,7 +387,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $wrapperContent = array();
 
         $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
-        $liRoot = new cHTMLListItem('root', 'last');
+        $liRoot = new cHTMLListItem('root', 'root');
         $aUpload = new cHTMLLink('#');
         $aUpload->setClass('on');
         $aUpload->setAttribute('title', 'upload');

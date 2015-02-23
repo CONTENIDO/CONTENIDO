@@ -336,7 +336,7 @@ abstract class cContentTypeAbstract {
             $divClass = ($this->_isActiveDirectory($dirData)) ? 'active' : '';
             $template->set('d', 'DIVCLASS', $divClass);
 
-            $template->set('d', 'TITLE', $dirData['path'] . $dirData['name']);
+            $template->set('d', 'DIRLISTITEM_TITLE', $dirData['path'] . $dirData['name']);
             $template->set('d', 'DIRNAME', $dirData['name']);
 
             $liClasses = array();

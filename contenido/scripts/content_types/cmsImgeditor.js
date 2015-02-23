@@ -140,8 +140,8 @@
             }
         });
 
-        $(self.frameId + ' .directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
-        $(self.frameId + ' .directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
+        $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').unbind('click');
+        $(self.frameId + ' #directoryList_' + self.id + ' a[class="on"]').parent('div').click(function() {
             // update the "active" class
             $.each($(self.frameId + ' div'), function() {
                 $(this).removeClass('active');
@@ -170,8 +170,9 @@
             return false;
         });
         // add possibility to expand and close directories
-        $(self.frameId + ' .directoryList_' + self.id + ' em a').unbind('click');
-        $(self.frameId + ' .directoryList_' + self.id + ' em a').click(function() {
+        $(self.frameId + ' #directoryList_' + self.id + ' em a').unbind('click');
+        $(self.frameId + ' #directoryList_' + self.id + ' em a').click(function(e) {
+        	e.preventDefault();
             var divContainer = $(this).parent().parent();
             var dirname = $(this).parent('em').parent().find('a[class="on"]').attr('title');
             if (divContainer.next('ul').length > 0) {
