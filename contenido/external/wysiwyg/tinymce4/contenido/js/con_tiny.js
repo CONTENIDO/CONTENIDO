@@ -442,8 +442,17 @@
                 var tmpId = Con.Tiny.activeId;
                 setTimeout(function() {
                     if (tmpId) {
-                        // use jQuery to deselect any element with the id (thus also deselecting the editor)
-                        jQuery('#' + tmpId).blur();
+                        // if editor is in fullscreen mode go back to non-fullscreen mode
+                        if ("undefined" !== typeof(tinymce.get(tmpId).plugins.fullscreen)
+                        && tinymce.get(tmpId).plugins.fullscreen.isFullscreen()) {
+                            tinymce.get(tmpId).execCommand("mceFullScreen");
+                            tinymce.get(tmpId).hide();
+                            tinymce.get(tmpId).show();
+                        }
+
+                        // fire blur event to set current editor to be not focussed
+                        
+                        jQuery("#" + tmpId).blur();
                     }
                 }, 0);
 
@@ -946,6 +955,7 @@
                     window.stoppedUnload = true;
                     return Con.Tiny.txtQuestion;
                 }
+                window.stoppedUnload = false;
             });
         }
     };

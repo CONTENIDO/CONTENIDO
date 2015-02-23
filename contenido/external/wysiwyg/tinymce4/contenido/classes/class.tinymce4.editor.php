@@ -361,7 +361,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                 } else {
                     $defaultToolbar1 = cTinymce4Configuration::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar1');
                     $defaultToolbar2 = cTinymce4Configuration::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar2');
-                    $defaultToolbar3 = cTinymce4Configuration::get('table | formatselect fontselect fontsizeselect | save', 'tinymce4','tinymce4_fullscreen', 'toolbar3');
+                    $defaultToolbar3 = cTinymce4Configuration::get('table | formatselect fontselect fontsizeselect | save', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar3');
                     $defaultPlugins = cTinymce4Configuration::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'plugins');
                 }
                 $this->_setSetting($cmsType, 'inline', false, true);
