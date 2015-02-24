@@ -151,7 +151,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
     protected function _resetItem() {
         $this->virgin = true;
         $this->properties = null;
-        $this->_lasterror = '';
+        $this->lasterror = '';
     }
 
     /**
