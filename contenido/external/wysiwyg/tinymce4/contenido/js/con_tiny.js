@@ -821,12 +821,13 @@
             if (true === Con.Tiny.typingUndo[ed.id]) {
                 Con.Tiny.typingUndo[ed.id] = false;
                 Con.Tiny.undoLvl[ed.id]++;
-                ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
+                ed.fire("BeforeExecCommand", {"command": "contenido_fake"});
+                ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1}), "bookmark": ed.selection.getBookmark(2, true)});
             }
 
             // save caret position
             var bookmarkBeforeChange = ed.selection.getBookmark(2, true);
-            
+
             ed.remove();
 
             var undoData = ed.undoManager.data;
@@ -898,7 +899,8 @@
                 if (true === Con.Tiny.typingUndo[ed.id]) {
                     Con.Tiny.typingUndo[ed.id] = false;
                     Con.Tiny.undoLvl[ed.id]++;
-                    ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
+                    ed.fire("BeforeExecCommand", {"command": "contenido_fake"});
+                    ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1}), "bookmark": ed.selection.getBookmark(2, true)});
                 }
 
                 // save caret position
