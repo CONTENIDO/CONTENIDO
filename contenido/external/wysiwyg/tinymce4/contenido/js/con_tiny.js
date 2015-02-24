@@ -820,6 +820,10 @@
                 Con.Tiny.undoLvl[ed.id]++;
                 ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
             }
+
+            // save caret position
+            var bookmarkBeforeChange = ed.selection.getBookmark(2, true);
+            
             ed.remove();
 
             var undoData = ed.undoManager.data;
@@ -835,7 +839,7 @@
             });
 
             // fullscreen editor initialised
-            ed.on('init', function () {
+            ed.on('init', function() {
                 // put new editor into focus
                 ed.fire('focus');
                 // set new editor to fullscreen mode
@@ -864,6 +868,10 @@
                 for (var i = 0; i < n; i++) {
                     ed.undoManager.undo();
                 }
+
+                // restore caret position
+                ed.selection.bookmarkManager.moveToBookmark(bookmarkBeforeChange);
+
                 // we are done changing fullscreen mode
                 Con.Tiny.changingFullscreen = false;
             });
@@ -883,6 +891,10 @@
                     Con.Tiny.undoLvl[ed.id]++;
                     ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
                 }
+
+                // save caret position
+                var bookmarkBeforeChange = ed.selection.getBookmark(2, true);
+
                 ed.remove();
 
                 var undoData = ed.undoManager.data;
@@ -892,6 +904,8 @@
                 ed.on('init', function () {
                     // put new editor into focus
                     ed.fire('focus');
+                    // if node is not focussed then caret is not shown
+                	jQuery("#" + ed.id).focus();
 
                     // clear undo history of current editor
                     ed.undoManager.data = [];
@@ -914,6 +928,9 @@
                     for (var i = 0; i < n; i++) {
                         ed.undoManager.undo();
                     }
+
+                    // restore caret position
+                    ed.selection.bookmarkManager.moveToBookmark(bookmarkBeforeChange);
 
                     // we are done changing fullscreen mode
                     Con.Tiny.changingFullscreen = false;
