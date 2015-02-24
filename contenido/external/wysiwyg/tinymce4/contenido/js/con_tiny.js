@@ -153,7 +153,7 @@
          */
         idartlang: 0,
         /**
-         * @property is editor currently changing fullscreen
+         * @property changingFullscreen is editor currently changing fullscreen
          * @type {Boolean}
          */
         changingFullscreen: false,
@@ -680,6 +680,7 @@
                         ed.undoManager.data = [];
                         ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
                     });
+
                     ed.on('undo', function(lvl) {
                         // make sure not to change undo history while fullscreen switching is in progress
                         if (false !== Con.Tiny.changingFullscreen) {
@@ -690,6 +691,7 @@
                             return;
                         }
                         Con.Tiny.undoLvl[ed.id] -= 1;
+                        ed.selection.bookmarkManager.moveToBookmark(ed.undoManager.data[Con.Tiny.undoLvl[ed.id]].beforeBookmark);
                     });
                     ed.on('redo', function(e) {
                         if ('undefined' === typeof(Con.Tiny.undoLvl[ed.id])) {
@@ -711,6 +713,7 @@
                             return;
                         }
                         Con.Tiny.undoLvl[ed.id] += 1;
+                        ed.undoManager.data[ed.undoManager.data.length - 1] = e.lastLevel;
                         ed.undoManager.data.push(e.level);
                     });
                     // Fires when content is changed in editor through typing but AddUndo has not been fired yet
@@ -854,6 +857,12 @@
                 undoData.forEach( function (val, idx) {
                     // set the editor content to the content of editor during this undo history entry
                     ed.setContent(val.content);
+
+                    // simulate a BeforeExecCommand event to force an internal computation of beforeBookmark
+                    // inside tinymce's undo manager
+                    ed.selection.bookmarkManager.moveToBookmark(val.bookmark);
+                    ed.fire("BeforeExecCommand", {"command": "contenido_fake"});
+
                     // add the undo level to undo manager
                     var lvl = ed.undoManager.add(val);
                     if (null !== lvl) {
@@ -905,7 +914,7 @@
                     // put new editor into focus
                     ed.fire('focus');
                     // if node is not focussed then caret is not shown
-                	jQuery("#" + ed.id).focus();
+                    jQuery("#" + ed.id).focus();
 
                     // clear undo history of current editor
                     ed.undoManager.data = [];
@@ -914,6 +923,12 @@
                     undoData.forEach(function(val, idx) {
                         // set the editor content to the content of editor during this undo history entry
                         ed.setContent(val.content);
+
+                        // simulate a BeforeExecCommand event to force an internal computation of beforeBookmark
+                        // inside tinymce's undo manager
+                        ed.selection.bookmarkManager.moveToBookmark(val.bookmark);
+                        ed.fire("BeforeExecCommand", {"command": "contenido_fake"});
+
                         // add the undo level to undo manager
                         var lvl = ed.undoManager.add(val);
                         if (null !== lvl) {
