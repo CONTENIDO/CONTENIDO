@@ -331,13 +331,13 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                     $defaultToolbar1 = cTinymce4Configuration::get('undo redo | consave conclose', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar1');
                     $defaultToolbar2 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar2');
                     $defaultToolbar3 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar3');
-                    $defaultPlugins = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_full', 'plugins');
+                    $defaultPlugins = cTinymce4Configuration::get('conclose', 'tinymce4', $cmsType, 'tinymce4_full', 'plugins');
                     $this->_setSetting($cmsType, 'menubar', false, true);
                 } else {
                     $defaultToolbar1 = cTinymce4Configuration::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar1');
                     $defaultToolbar2 = cTinymce4Configuration::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar2');
-                    $defaultToolbar3 = cTinymce4Configuration::get('table | formatselect fontselect fontsizeselect', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar3');
-                    $defaultPlugins = cTinymce4Configuration::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4', $cmsType, 'tinymce4_full', 'plugins');
+                    $defaultToolbar3 = cTinymce4Configuration::get('table | formatselect fontselect fontsizeselect | consave conclose', 'tinymce4', $cmsType, 'tinymce4_full', 'toolbar3');
+                    $defaultPlugins = cTinymce4Configuration::get('charmap code conclose table conclose hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4', $cmsType, 'tinymce4_full', 'plugins');
                 }
                 $this->_setSetting($cmsType, 'inline', false, true);
                 $this->_setSetting($cmsType, 'toolbar1', $defaultToolbar1, true);
@@ -354,15 +354,15 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             case "fullscreen": // Show all options
                 // fullscreen of inline-editor
                 if ('CMS_HTMLHEAD' === $cmsType) {
-                    $defaultToolbar1 = cTinymce4Configuration::get('undo redo', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar1');
+                    $defaultToolbar1 = cTinymce4Configuration::get('undo redo | consave conclose', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar1');
                     $defaultToolbar2 = cTinymce4Configuration::get('', 'tinymce4',$cmsType, 'tinymce4_fullscreen', 'toolbar2');
                     $defaultToolbar3 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar3');
-                    $defaultPlugins = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'plugins');
+                    $defaultPlugins = cTinymce4Configuration::get('conclose', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'plugins');
                 } else {
                     $defaultToolbar1 = cTinymce4Configuration::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar1');
                     $defaultToolbar2 = cTinymce4Configuration::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar2');
-                    $defaultToolbar3 = cTinymce4Configuration::get('table | formatselect fontselect fontsizeselect | save', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar3');
-                    $defaultPlugins = cTinymce4Configuration::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'plugins');
+                    $defaultToolbar3 = cTinymce4Configuration::get('table | formatselect fontselect fontsizeselect | consave conclose', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'toolbar3');
+                    $defaultPlugins = cTinymce4Configuration::get('charmap code table conclose hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'tinymce4', $cmsType, 'tinymce4_fullscreen', 'plugins');
                 }
                 $this->_setSetting($cmsType, 'inline', false, true);
                 $this->_setSetting($cmsType, 'menubar', true, true);
@@ -535,17 +535,21 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
         $browserparameters = array("restrict_imagebrowser" => array("jpg", "gif", "jpeg", "png"));
         $sess->register("browserparameters");
 
+
         // Set browser windows
         // Difference between file and image browser is with (file) or without categories/articles (image)
         $oTemplate = new cTemplate();
+
+        $oTemplate->set('s', 'CONFIG', json_encode($this->_aSettings));
+
+        $oTemplate->set('s', 'PATH_CONTENIDO_FULLHTML', cRegistry::getConfigValue('path', 'contenido_fullhtml'));
         $oTemplate->set('s', 'IMAGEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
         $oTemplate->set('s', 'FILEBROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=filebrowser');
         $oTemplate->set('s', 'MEDIABROWSER', $cfg["path"]["contenido_fullhtml"] . 'frameset.php?area=upl&contenido=' . $sess->id . '&appendparameters=imagebrowser');
         $oTemplate->set('s', 'FRONTEND_PATH', $cfgClient[$client]["path"]["htmlpath"]);
+        $oTemplate->set('s', 'CLOSE', html_entity_decode(i18n('Close editor'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
+        $oTemplate->set('s', 'SAVE', html_entity_decode(i18n('Close editor and save changes'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
         $oTemplate->set('s', 'QUESTION', html_entity_decode(i18n('You have unsaved changes.'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
-
-        $oTemplate->set('s', 'CONFIG', json_encode($this->_aSettings));
-
         $oTemplate->set('s', 'BACKEND_URL', cRegistry::getBackendUrl());
 
         $oTxtEditor = new cHTMLTextarea($this->_sEditorName, $this->_sEditorContent);

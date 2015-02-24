@@ -428,6 +428,15 @@
          * @static
          */
         closeTiny: function() {
+        	// check if tinymce is on separate editor page
+        	var cancelButton = jQuery("a[data-tiny-role='cancel'] img");
+        	if (null === Con.Tiny.activeId
+        	&& "undefined" !== typeof(cancelButton.get(0))) {
+                // editor on separate page, use cancel button
+            	cancelButton.click();
+        	}
+    		// no separate page, remove focus from editor
+
             //check if tiny is currently open
             if (Con.Tiny.activeId && tinymce.get(Con.Tiny.activeId)) {
                 //save current tiny content to js var
@@ -597,7 +606,7 @@
                         image: options.closeImage,
                         icons: false,
                         onclick: function(ed) {
-                            Con.Tiny.closeTiny();
+                    		Con.Tiny.closeTiny();
                         }
                     });
                 }

@@ -7,7 +7,14 @@
 var tinycss = jQuery("<link />", {"rel": "stylesheet", "type": "text/css", "href": "{_PATH_CONTENIDO_FULLHTML_}/external/wysiwyg/tinymce4/contenido/css/con_tiny.css"});
 document.getElementsByTagName("head")[0].appendChild(tinycss.get(0));
 
-Con.Tiny.tinymceInit(tinymce, {CONFIG}, {backendUrl: '{BACKEND_URL}'});
+Con.Tiny.tinymceInit(tinymce, {CONFIG}, {
+    saveTitle: '{SAVE}',
+    saveImage: '{PATH_CONTENIDO_FULLHTML}images/but_save_tiny.gif',
+    closeTitle: '{CLOSE}',
+    closeImage: '{PATH_CONTENIDO_FULLHTML}images/but_close_tiny.gif',
+    useTiny: '1',
+    backendUrl: '{PATH_CONTENIDO_FULLHTML}'
+});
 
 Con.Tiny.init({
     frontendPath: '{FRONTEND_PATH}',

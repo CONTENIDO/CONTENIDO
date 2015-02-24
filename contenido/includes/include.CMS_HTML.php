@@ -68,7 +68,7 @@ ob_start();
 
 <body class="cms_edit">
     <div class="cms_edit_wrap">
-        <form method="post" action="<?php echo $backendUrl . $cfg["path"]["includes"] ?>include.backendedit.php">
+        <form method="post" name="editcontent" action="<?php echo $backendUrl . $cfg["path"]["includes"] ?>include.backendedit.php">
             <input type="hidden" name="action" value="10">
             <input type="hidden" name="changeview" value="edit">
             <input type="hidden" name="doedit" value="1">
@@ -101,7 +101,7 @@ if (false === ($editor = getEffectiveSetting('wysiwyg', 'editor', false))) {
             </div>
 
             <div class="cms_edit_row">
-                <a href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" border="0" alt="<?php echo i18n("Cancel")?>" title="<?php echo i18n("Cancel") ?>"></a>
+                <a data-tiny-role="cancel" href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" border="0" alt="<?php echo i18n("Cancel")?>" title="<?php echo i18n("Cancel") ?>"></a>
                 <input type="image" name="save" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_refresh.gif" border="0" onclick="document.forms[0].doedit.value='2';document.forms[0].submit();" alt="<?php echo i18n("Save without leaving the editor") ?>" title="<?php echo i18n("Save without leaving the editor") ?>">
                 <input type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" border="0"  alt="<?php echo i18n("Save and close editor") ?>" title="<?php echo i18n("Save and close editor")?>">
             </div>

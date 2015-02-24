@@ -521,15 +521,15 @@ class cTinymce4Configuration {
 
             $containerDiv = new cHTMLDiv();
             if ('CMS_HTMLHEAD' === $curType) {
-                $defaultToolbar1 = static::get('undo redo', 'raw','tinymce4_full', 'toolbar1');
+                $defaultToolbar1 = static::get('undo redo | consave conclose', 'raw','tinymce4_full', 'toolbar1');
                 $defaultToolbar2 = static::get('', 'raw','tinymce4_full', 'toolbar2');
                 $defaultToolbar3 = static::get('', 'raw','tinymce4_full', 'toolbar3');
-                $defaultPlugins = static::get('', 'raw','tinymce4_full', 'plugins');
+                $defaultPlugins = static::get('conclose', 'raw','tinymce4_full', 'plugins');
             } else {
                 $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw','tinymce4_full', 'toolbar1');
                 $defaultToolbar2 = static::get('link unlink anchor image media hr | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw','tinymce4_full', 'toolbar2');
-                $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect', 'raw','tinymce4_full', 'toolbar3');
-                $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw','tinymce4_full', 'plugins');
+                $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect | consave conclose', 'raw','tinymce4_full', 'toolbar3');
+                $defaultPlugins = static::get('charmap code table conclose hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw','tinymce4_full', 'plugins');
             }
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', $curType . '[tinymce4_full][toolbar1]', $defaultToolbar1));
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', $curType . '[tinymce4_full][toolbar2]', $defaultToolbar2));
@@ -557,15 +557,15 @@ class cTinymce4Configuration {
 
             $containerDiv = new cHTMLDiv();
             if ('CMS_HTMLHEAD' === $curType) {
-                $defaultToolbar1 = static::get('undo redo', 'raw','tinymce4_fullscreen', 'toolbar1');
+                $defaultToolbar1 = static::get('undo redo | consave conclose', 'raw','tinymce4_fullscreen', 'toolbar1');
                 $defaultToolbar2 = static::get('', 'raw','tinymce4_fullscreen', 'toolbar2');
                 $defaultToolbar3 = static::get('', 'raw','tinymce4_fullscreen', 'toolbar3');
-                $defaultPlugins = static::get('', 'raw','tinymce4_fullscreen', 'plugins');
+                $defaultPlugins = static::get('conclose', 'raw','tinymce4_fullscreen', 'plugins');
             } else {
                 $defaultToolbar1 = static::get('cut copy paste pastetext | searchreplace | undo redo | bold italic underline strikethrough subscript superscript | insertdatetime preview | visualchars nonbreaking template pagebreak | help | fullscreen', 'raw', 'tinymce4_fullscreen', 'toolbar1');
                 $defaultToolbar2 = static::get('link unlink anchor image media | bullist numlist | outdent indent blockquote | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | ltr rtl | charmap | code', 'raw', 'tinymce4_fullscreen', 'toolbar2');
-                $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect | save', 'raw','tinymce4_fullscreen', 'toolbar3');
-                $defaultPlugins = static::get('charmap code table save hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw', 'tinymce4_fullscreen', 'plugins');
+                $defaultToolbar3 = static::get('table | formatselect fontselect fontsizeselect | consave conclose', 'raw','tinymce4_fullscreen', 'toolbar3');
+                $defaultPlugins = static::get('charmap code conclose table hr image link pagebreak layer insertdatetime preview anchor media searchreplace print contextmenu paste directionality fullscreen visualchars nonbreaking template textcolor', 'raw', 'tinymce4_fullscreen', 'plugins');
             }
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', $curType . '[tinymce4_fullscreen][toolbar1]', $defaultToolbar1));
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', $curType . '[tinymce4_fullscreen][toolbar2]', $defaultToolbar2));
@@ -575,7 +575,7 @@ class cTinymce4Configuration {
 
             // GZIP editor over HTTP using tinymce's library
             $containerDiv = new cHTMLDiv();
-            $checked = 'contenido_gzip' === static::get(false, 'raw','contenido_gzip');
+            $checked = 'contenido_gzip' === static::get(false, 'raw', $curType, 'contenido_gzip');
             $containerDiv->appendContent($this->_addLabelWithCheckbox(i18n('GZIP TinyMCE (only activate if server does not compress content already)'), $curType . '[contenido_gzip]', 'contenido_gzip', $checked));
             $form->add(i18n('contenido_gzip'), $containerDiv->render());
 
