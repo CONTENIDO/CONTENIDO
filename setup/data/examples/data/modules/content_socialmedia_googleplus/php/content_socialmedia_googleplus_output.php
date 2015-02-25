@@ -67,12 +67,12 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign("automaticURLLabel", $automaticURLLabel);
     $tpl->assign("currentArticleUrl", $currentArticleUrl);
 
-    $tpl->assign("urlHelp", new cGuiBackendHelpbox(mi18n("URL_HELP")));
-    $tpl->assign("normalHelp", new cGuiBackendHelpbox(mi18n("NORMAL_HELP")));
-    $tpl->assign("smallHelp", new cGuiBackendHelpbox(mi18n("SMALL_HELP")));
-    $tpl->assign("mediumHelp", new cGuiBackendHelpbox(mi18n("MEDIUM_HELP")));
-    $tpl->assign("tallHelp", new cGuiBackendHelpbox(mi18n("TALL_HELP")));
-	$tpl->assign("counterHelp", new cGuiBackendHelpbox(mi18n("COUNTER_HELP")));
+    $tpl->assign("urlHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("URL_HELP"))));
+    $tpl->assign("normalHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("NORMAL_HELP"))));
+    $tpl->assign("smallHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("SMALL_HELP"))));
+    $tpl->assign("mediumHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("MEDIUM_HELP"))));
+    $tpl->assign("tallHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("TALL_HELP"))));
+	$tpl->assign("counterHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("COUNTER_HELP"))));
     
     $tpl->display('google_plus_config_view.tpl');
 } else {
@@ -80,7 +80,7 @@ if (cRegistry::isBackendEditMode()) {
     if ($size == 'standard') {
         $tpl->assign('LAYOUT', '');
     } else {
-        $tpl->assign('LAYOUT', ' size="' . $size . '"');
+        $tpl->assign('LAYOUT', ' size="' . htmlspecialchars($size) . '"');
     }
 
     if ($counter) {

@@ -1,7 +1,7 @@
 {if true eq $isBackendEditMode}
 <!-- content_teaser_config -->
 
-    <label class="content_type_label">{$label}</label>
+    <label class="content_type_label">{$label|escape}</label>
 
     {$editor}
 

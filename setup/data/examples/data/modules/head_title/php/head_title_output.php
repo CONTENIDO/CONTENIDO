@@ -32,7 +32,7 @@ if ($headline != '') {
 }
 
 if ($headline === '') {
-    $breadcrumb[] = mi18n("STARTPAGE");
+    $breadcrumb[] = htmlspecialchars(mi18n("STARTPAGE"));
 }
 
 array_shift($breadcrumb);

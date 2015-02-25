@@ -81,13 +81,13 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign("automaticURLLabel", $automaticURLLabel);
     $tpl->assign("useAutomaticURL", $useAutomaticURL);
     
-    $tpl->assign("autoUrlHelp", new cGuiBackendHelpbox(mi18n("AUTO_URL_HELP")));
-    $tpl->assign("likeButtonHelp", new cGuiBackendHelpbox(mi18n("LIKE_BUTTON_HELP")));
-    $tpl->assign("likeBoxHelp", new cGuiBackendHelpbox(mi18n("LIKE_BOX_HELP")));
-    $tpl->assign("standardHelp", new cGuiBackendHelpbox(mi18n("STANDARD_HELP")));
-    $tpl->assign("buttonCountHelp", new cGuiBackendHelpbox(mi18n("BUTTON_COUNT_HELP")));
-    $tpl->assign("boxCountHelp", new cGuiBackendHelpbox(mi18n("BOX_COUNT_HELP")));
-    $tpl->assign("showFacesHelp", new cGuiBackendHelpbox(mi18n("SHOW_FACES_HELP")));
+    $tpl->assign("autoUrlHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("AUTO_URL_HELP"))));
+    $tpl->assign("likeButtonHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("LIKE_BUTTON_HELP"))));
+    $tpl->assign("likeBoxHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("LIKE_BOX_HELP"))));
+    $tpl->assign("standardHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("STANDARD_HELP"))));
+    $tpl->assign("buttonCountHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("BUTTON_COUNT_HELP"))));
+    $tpl->assign("boxCountHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("BOX_COUNT_HELP"))));
+    $tpl->assign("showFacesHelp", new cGuiBackendHelpbox(htmlspecialchars(mi18n("SHOW_FACES_HELP"))));
 
     $tpl->display('facebook_config_view.tpl');
 } else {

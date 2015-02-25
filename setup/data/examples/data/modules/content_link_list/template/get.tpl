@@ -1,10 +1,10 @@
 <!-- content_link_list -->
 {if 0 lt $label|strlen}
-    <label class="content_type_label">{$label}</label>
+    <label class="content_type_label">{$label|escape}</label>
 {/if}
 
 <div class="link_list">
-    <h2>{$usable_links}</h2>
+    <h2>{$usable_links|escape}</h2>
 
     <ul class="link_list">
         <!-- BEGIN:BLOCK -->
@@ -23,7 +23,7 @@
                 {/foreach}
             {/foreach}
         </li>
-        {$createLabel}<br />
+        {$createLabel|escape}<br />
         {$inputfield}
         {$button}
         <!-- END:BLOCK -->

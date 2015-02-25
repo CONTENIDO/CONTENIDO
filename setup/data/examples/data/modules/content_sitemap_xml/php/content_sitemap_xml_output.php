@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Generate a XML sitemap.
+ * Generate an XML sitemap.
  *
  * The module configuration allows for the selection of a category which is used
  * as root to determine articles that will be listed in the sitemap.
@@ -271,9 +271,9 @@ function saveSitemap(SimpleXMLElement $sitemap, $filename = '') {
         header('Content-type: text/xml');
         echo $sitemap->asXML();
     } else if ($sitemap->asXML($cfgClient[$client]['path']['frontend'] . $filename)) {
-        echo mi18n("XML sitemap successfully written to %s", $filename);
+        echo htmlspecialchars(mi18n("XML sitemap successfully written to %s", $filename));
     } else {
-        echo mi18n("XML sitemap could not be written to %s", $filename);
+        echo htmlspecialchars(mi18n("XML sitemap could not be written to %s", $filename));
     }
 }
 

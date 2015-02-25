@@ -14,5 +14,5 @@
     }
 {/literal}
 </script>
-<noscript><p><img src="{$url}piwik.php?idsite={$site}" style="border:0" alt="" /></p></noscript>
+<noscript><p><img src="{$url|escape}piwik.php?idsite={$site|escape}" style="border:0" alt="" /></p></noscript>
 <!-- End Piwik Tracking Code -->

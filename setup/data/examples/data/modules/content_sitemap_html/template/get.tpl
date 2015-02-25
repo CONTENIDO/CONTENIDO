@@ -3,21 +3,21 @@
 {if true eq $isBackendEditMode}
     <label class="content_type_label">{$trans.headline}</label>
     <div class="sitemapdiv">
-        <h2>{$trans.categoryLabel}</h2>
-        <label>{$trans.categoryHintLabel}</label>
+        <h2>{$trans.categoryLabel|escape}</h2>
+        <label>{$trans.categoryHintLabel|escape}</label>
         <div>{$category}</div>
     </div>
     <div class="sitemapdiv">
-        <h2>{$trans.levelLabel}</h2>
-        <label>{$trans.levelHintLabel}</label>
+        <h2>{$trans.levelLabel|escape}</h2>
+        <label>{$trans.levelHintLabel|escape}</label>
         <div>{$level}</div>
     </div>
     <div class="sitemapdiv">
-        <h2>{$trans.articleLabel}</h2>
-        <label>{$trans.articleHintLabel}</label>
+        <h2>{$trans.articleLabel|escape}</h2>
+        <label>{$trans.articleHintLabel|escape}</label>
         <div>{$article}</div>
     </div>
-    {if $error}<p class="error">{$error}</p>{/if}
+    {if $error}<p class="error">{$error|escape}</p>{/if}
 {else if $tree}
 <ul{if $first == false} class="sitemap"{/if}>
     {$first = true}
