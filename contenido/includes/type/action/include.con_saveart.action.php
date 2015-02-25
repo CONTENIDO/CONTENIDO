@@ -30,6 +30,11 @@ if (!isset($searchable)) {
     $searchable = false;
 }
 
+// if publishing date is not available use false as value
+if (false === isset($publishing_date)) {
+    $publishing_date = false;
+}
+
 $oldData = array();
 
 if (isset($title) && ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_action_item($area, "con_edit", $idcat))) {

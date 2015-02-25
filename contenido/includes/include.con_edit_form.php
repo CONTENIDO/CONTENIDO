@@ -513,9 +513,14 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // Publishing date
     $page->set('s', 'PUBLISHING_DATE_LABEL', i18n("Publishing date"));
     if ($tmp_online) {
-        $page->set('s', 'PUBLISHING_DATE', $tmp2_published);
+        $publishingDateTextbox = new cHTMLTextbox('publishing_date', $tmp2_published, 20, 40, 'publishing_date', false, null, '', 'text_medium');
+        $publishingDateTextbox->setStyle('width: 130px;');
+        $page->set('s', 'PUBLISHING_DATE', $publishingDateTextbox->render());
     } else {
-        $page->set('s', 'PUBLISHING_DATE', i18n("not yet published"));
+        $descriptionTextDiv = new cHTMLDiv(i18n("not yet published"));
+        // set overflow to auto so that user can scroll if translation is too long in current language
+        $descriptionTextDiv->setStyle('width: 150px; overflow: auto;');
+        $page->set('s', 'PUBLISHING_DATE', $descriptionTextDiv->render());
     }
 
     // Publisher

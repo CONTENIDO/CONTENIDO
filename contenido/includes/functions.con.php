@@ -304,7 +304,13 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     if ($changefreq != "nothing") {
         $oArtLang->set('changefreq', $changefreq);
     }
-    $oArtLang->set('published', date("Y-m-d H:i:s", strtotime($published)));
+
+    // do not set publishing date if value is false
+    // do not set publishing date if article is offline
+    if (false !== $published
+    && (int) $online === 1) {
+        $oArtLang->set('published', date("Y-m-d H:i:s", strtotime($published)));
+    }
 
     // If the user has right for makeonline, update some properties.
     if ($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) {
