@@ -593,7 +593,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             // Next iteration
             // Articles found
             $no_article = false;
+            $oArtLang = new cApiArticleLanguage();
             foreach ($listColumns as $listColumn => $ctitle) {
+                $oArtLang->loadBy($oArtLang->primaryKey, $idartlang);
+
                 switch ($listColumn) {
                     case "mark":
                         $value = '<input type="checkbox" name="mark" value="' . $idart . '" class="mark_articles">';
@@ -608,7 +611,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         $value = $modified;
                         break;
                     case "publisheddate":
-                        $value = $published;
+                        if ('1' === $oArtLang->get('online')) {
+                            $value = $published;
+                        } else {
+                            $value = i18n("not yet published");
+                        }
                         break;
                     case "sortorder":
                         $value = $sortkey;
@@ -685,6 +692,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $artlist[$tmp_rowid][$listColumn] = $value;
                 $artlist[$tmp_rowid]['templateDescription'] = $templateDescription;
             }
+            unset($oArtLang);
         }
 
         $headers = array();
