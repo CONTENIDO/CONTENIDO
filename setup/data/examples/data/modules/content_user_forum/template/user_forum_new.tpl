@@ -12,10 +12,10 @@
         <div style="padding-top:10px;">
             <div class="inputs">
                 <div class="email">
-                    <label for="email"><strong>{$EMAIL|escape} </strong></label>{$INPUT_EMAIL|escape}
+                    <label for="email"><strong>{$EMAIL|escape} </strong></label>{$INPUT_EMAIL}
                 </div>
                 <div class="name">
-                    <label for="realname"><strong>{$REALNAME|escape} </strong></label>{$INPUT_REALNAME|escape}
+                    <label for="realname"><strong>{$REALNAME|escape} </strong></label>{$INPUT_REALNAME}
                 </div>
             </div>
             <div style="padding-top:10px;"></div>
