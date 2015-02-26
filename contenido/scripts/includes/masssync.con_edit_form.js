@@ -1,5 +1,16 @@
 
 $(document).ready(function() {
+    // pressing enter will implicitly submit the form by using first submit button
+    // make sure we fire the article save button and not any of the sync buttons
+    jQuery("form[name='art_props'] input[type='text']").keypress(function(e) {
+        e.preventDefault();
+
+        if (13 === e.which || 10 === e.which) {
+            jQuery("#saveart").click();
+        }
+
+        return false;
+    });
 
     $(".massSyncCheckbox").click(function() {
         var $syncAll = $(".syncAllButton");
