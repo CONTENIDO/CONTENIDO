@@ -50,7 +50,7 @@
             var subnav = this;
             if ('undefined' !== typeof(window.parent)
             && 'undefined' !== typeof(window.parent.frames["right_bottom"])) {
-                window.parent.frames["right_bottom"].onunload = function() {
+                var tabHighlight = function() {
                     // change selected tab when new tab loads
                     var anchors = subnav._getAnchors(), i;
                     for (i = 0; i < anchors.length; i++) {
@@ -61,6 +61,18 @@
                         }
                     }
                 };
+
+                // frame has an error
+                window.parent.frames["right_bottom"].onerror = tabHighlight;
+
+                // frame changes
+                window.parent.frames["right_bottom"].onunload = function() {
+                    if ('undefined' === typeof(window.parent.frames["right_bottom"].stoppedUnload)
+                    || false === window.parent.frames["right_bottom"].stoppedUnload) {
+                        window.parent.frames["right_bottom"].stoppedUnload = false;
+                        tabHighlight();
+                    }
+                }
             } else {
                 // fallback if right bottom frame does not exist
                 var anchors = this._getAnchors(), i;

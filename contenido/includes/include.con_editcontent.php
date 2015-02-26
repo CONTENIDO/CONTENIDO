@@ -143,6 +143,9 @@ if ('tinymce4' === $wysiwygeditor) {
         $curType = $typeEntry->get('type');
 
         $contentTypeClassName = cTypeGenerator::getContentTypeClassName($curType);
+        if (false === class_exists($contentTypeClassName)) {
+            continue;
+        }
         $cContentType = new $contentTypeClassName(null, 0, array());
         if (false === $cContentType->isWysiwygCompatible()) {
             continue;
