@@ -566,12 +566,12 @@ class PifaField extends Item {
         // if no current value is given
         if (NULL === $value) {
             // the fields default value is used
-            $value = $this->get('default_value');
+            $value = conHtmlEntities($this->get('default_value');
             // which could be overwritten by a GET param
             if (array_key_exists($columnName, $_GET)) {
                 $value = $_GET[$columnName];
                 // try to prevent XSS ... the lazy way ...
-                $value = htmlentities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+                $value = conHtmlEntities($value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
             }
         }
 
