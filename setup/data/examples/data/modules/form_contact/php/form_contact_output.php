@@ -15,7 +15,7 @@
  */
 
 if (cRegistry::isBackendEditMode()) {
-    echo '<label class="content_type_label">' . htmlspecialchars(mi18n("LABEL_FORM_CONTACT")) . '</label>';
+    echo '<label class="content_type_label">' . conHtmlSpecialChars(mi18n("LABEL_FORM_CONTACT")) . '</label>';
 }
 
 echo "CMS_PIFAFORM[1]";
