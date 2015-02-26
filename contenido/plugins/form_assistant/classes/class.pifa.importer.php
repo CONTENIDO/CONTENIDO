@@ -113,8 +113,8 @@ class PifaImporter {
         foreach ($rowElems as $rowElem) {
             $rowPath = $rowElem->getNodePath();
             $fields = array();
-            if ('true' === $formElem->getAttribute('timestamp')) {
-                $fields['pifa_timestamp'] = $rowElem->nodeValue;
+            if ('true' == $formElem->getAttribute('timestamp')) {
+                $fields['pifa_timestamp'] = $rowElem->getAttribute('timestamp');
             }
             $colElems = $this->_reader->getXpathNodeList($rowPath . '/col');
             foreach ($colElems as $colElem) {
