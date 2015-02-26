@@ -1,10 +1,13 @@
 
 $(document).ready(function() {
+	// CON-2075
     // pressing enter will implicitly submit the form by using first submit button
     // make sure we fire the article save button and not any of the sync buttons
+	// https://html.spec.whatwg.org/multipage/forms.html#implicit-submission
     jQuery("form[name='art_props'] input[type='text']").keypress(function(e) {
         e.preventDefault();
 
+        // enter or return buttons can submit form
         if (13 === e.which || 10 === e.which) {
             jQuery("#saveart").click();
         }
