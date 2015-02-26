@@ -165,12 +165,6 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
             $sDirection = langGetTextDirection($lang);
             $this->_setSetting($cmsType, "directionality", $sDirection);
 
-            //         if ($sDirection == "rtl") {
-            //             $this->_setSetting("theme_advanced_toolbar_align", "right", true);
-            //         } else {
-            //             $this->_setSetting("theme_advanced_toolbar_align", "left", true);
-            //         }
-
             // Date and time formats
             $this->_setSetting($cmsType, "plugin_insertdate_dateFormat", $this->convertFormat(getEffectiveSetting("dateformat", "date", "Y-m-d")));
             $this->_setSetting($cmsType, "plugin_insertdate_timeFormat", $this->convertFormat(getEffectiveSetting("dateformat", "time", "H:i:s")));
@@ -425,7 +419,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
                     $defaultToolbar1 = cTinymce4Configuration::get('bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | confullscreen | consave conclose', 'tinymce4', $cmsType, 'tinymce4_inline', 'plugins');
                     $defaultToolbar2 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar2');
                     $defaultToolbar3 = cTinymce4Configuration::get('', 'tinymce4', $cmsType, 'tinymce4_inline', 'toolbar3');
-                    $defaultPlugins = cTinymce4Configuration::get('table conclose confullscreen textcolor', 'tinymce4', $cmsType, 'tinymce4_inline', 'plugins');
+                    $defaultPlugins = cTinymce4Configuration::get('conclose confullscreen media table textcolor', 'tinymce4', $cmsType, 'tinymce4_inline', 'plugins');
                 }
                 $this->_setSetting($cmsType, 'inline', true, true);
                 $this->_setSetting($cmsType, 'menubar', false, true);
@@ -457,9 +451,9 @@ class cTinyMCE4Editor extends cWYSIWYGEditor {
 
             default: // Default options
                 $this->_setSetting($cmsType, 'toolbar1', 'undo redo | bold italic underline strikethrough | link unlink anchor image | table', true);
-                $this->_setSetting($cmsType, 'toolbar2', 'styleselect,|,bullist,numlist,|,outdent,indent,|,alignleft,aligncenter,alignright,alignfull,removeformat,|,forecolor,backcolor,|,subscript,superscript,|,code', true);
+                $this->_setSetting($cmsType, 'toolbar2', 'styleselect | bullist numlist | outdent indent | alignleft aligncenter alignright alignfull removeformat | forecolor backcolor | subscript superscript | code', true);
                 $this->_setSetting($cmsType, 'toolbar3', "", true);
-                $this->_setSetting($cmsType, 'plugins', "anchor code table,searchreplace,contextmenu,paste textcolor", true);
+                $this->_setSetting($cmsType, 'plugins', "anchor code contextmenu media paste table searchreplace textcolor", true);
 
                 $aCustSettings = cTinymce4Configuration::get(array(), 'tinymce4', $cmsType, 'tinymce_default');
                 foreach ($aCustSettings as $sKey => $sValue) {

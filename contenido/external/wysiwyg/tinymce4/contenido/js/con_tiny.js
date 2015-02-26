@@ -428,14 +428,14 @@
          * @static
          */
         closeTiny: function() {
-        	// check if tinymce is on separate editor page
-        	var cancelButton = jQuery("a[data-tiny-role='cancel'] img");
-        	if (null === Con.Tiny.activeId
-        	&& "undefined" !== typeof(cancelButton.get(0))) {
+            // check if tinymce is on separate editor page
+            var cancelButton = jQuery("a[data-tiny-role='cancel'] img");
+            if (null === Con.Tiny.activeId
+            && "undefined" !== typeof(cancelButton.get(0))) {
                 // editor on separate page, use cancel button
-            	cancelButton.click();
-        	}
-    		// no separate page, remove focus from editor
+                cancelButton.click();
+            }
+            // no separate page, remove focus from editor
 
             //check if tiny is currently open
             if (Con.Tiny.activeId && tinymce.get(Con.Tiny.activeId)) {
@@ -606,7 +606,7 @@
                         image: options.closeImage,
                         icons: false,
                         onclick: function(ed) {
-                    		Con.Tiny.closeTiny();
+                            Con.Tiny.closeTiny();
                         }
                     });
                 }
@@ -809,11 +809,10 @@
                         Con.Tiny.setContent(Con.Tiny.idartlang);
                     };
                 }
-                
-                jQuery(document).ready(function() {
                 tinymce.init(settings);
-                // copy settings into global variable for later access
-                Con.Tiny.tinySettings[jQuery(settings.selector).attr("id")] = settings;
+                jQuery(document).ready(function() {
+                    // copy settings into global variable for later access
+                    Con.Tiny.tinySettings[jQuery(settings.selector).attr("id")] = settings;
                 });
             });
         },

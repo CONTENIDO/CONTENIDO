@@ -245,17 +245,21 @@ class cTinymce4Configuration {
      * @param string keys The keys to access values in configuration
      */
     public static function get($default) {
-        $configPath = cRegistry::getConfigValue('path', 'contenido_config') . 'config.wysiwyg_tinymce4.php';
-        // check if configuration file exists
-        if (true !== cFileHandler::exists($configPath)) {
-            return $default;
+        $cfg = cRegistry::getConfig();
+        if (false === isset($cfg['wysiwyg'])
+        || false === isset($cfg['wysiwyg']['tinymce4'])) {
+            $configPath = cRegistry::getConfigValue('path', 'contenido_config') . 'config.wysiwyg_tinymce4.php';
+            // check if configuration file exists
+            if (true !== cFileHandler::exists($configPath)) {
+                return $default;
+            }
+            // check if file is reable
+            if (true !== cFileHandler::readable($configPath)) {
+                return $default;
+            }
+            // Include configuration file
+            require_once($configPath);
         }
-        // check if file is reable
-        if (true !== cFileHandler::readable($configPath)) {
-            return $default;
-        }
-        // Include configuration file
-        require_once($configPath);
 
         // check number of keys passed to function
         $numargs = func_num_args();
@@ -470,6 +474,9 @@ class cTinymce4Configuration {
         cTinyMCE4Editor::safeConfig(array('tinymce4' => $settings));
     }
 
+    /**
+     * Generates an HTML form to configure tinymce 4
+     */
     public function showConfigurationForm() {
         $page = new cGuiPage('system_wysiwyg_tinymce4', '', '5');
         $auth = cRegistry::getAuth();
@@ -550,7 +557,7 @@ class cTinymce4Configuration {
                 $defaultToolbar1 = static::get('bold italic underline strikethrough | undo redo | bullist numlist separator forecolor backcolor | alignleft aligncenter alignright | confullscreen | consave conclose', 'raw', 'tinymce4_inline', 'toolbar1');
                 $defaultToolbar2 = static::get('', 'raw', 'tinymce4_inline', 'toolbar2');
                 $defaultToolbar3 = static::get('', 'raw', 'tinymce4_inline', 'toolbar3');
-                $defaultPlugins = static::get('table conclose confullscreen textcolor', 'raw', 'tinymce4_inline', 'plugins');
+                $defaultPlugins = static::get('conclose confullscreen media table textcolor', 'raw', 'tinymce4_inline', 'plugins');
             }
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 1:', $curType . '[tinymce4_inline][toolbar1]', $defaultToolbar1));
             $containerDiv->appendContent($this->_addLabelWithTextarea('Toolbar 2:', $curType . '[tinymce4_inline][toolbar2]', $defaultToolbar2));
