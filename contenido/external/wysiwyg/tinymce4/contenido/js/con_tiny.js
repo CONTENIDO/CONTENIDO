@@ -998,7 +998,6 @@
                     window.stoppedUnload = true;
                     return Con.Tiny.txtQuestion;
                 }
-//                window.stoppedUnload = false;
             });
         }
     };
