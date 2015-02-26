@@ -462,7 +462,7 @@ class PifaField extends Item {
         // get field data
         $idfield = cSecurity::toInteger($this->get('idfield'));
         $fieldType = cSecurity::toInteger($this->get('field_type'));
-        $label = $this->get('label');
+        $label = strip_tags($this->get('label'));
 
         if (NULL === $label) {
             return NULL;
@@ -522,7 +522,7 @@ class PifaField extends Item {
 
         $columnName = $this->get('column_name');
 
-        $label = $this->get('label');
+        $label = strip_tags($this->get('label'));
 
         $uri = $this->get('uri');
 

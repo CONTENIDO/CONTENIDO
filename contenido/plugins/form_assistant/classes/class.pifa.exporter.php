@@ -159,7 +159,7 @@ class PifaExporter {
     private function _addLabel(DOMElement $parent, PifaField $pifaField) {
 
         // get value
-        $value = $pifaField->get('label');
+        $value = strip_tags($pifaField->get('label'));
         if (0 === strlen(trim($value))) {
             return;
         }

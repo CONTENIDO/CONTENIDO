@@ -169,7 +169,7 @@ class PifaImporter {
 
 		// import label
 		$label = $this->_reader->getXpathValue($fieldPath . '/label');
-		$data['label'] = $label;
+		$data['label'] = strip_tags($label);
 		$labelElem = $this->_reader->getXpathNode($fieldPath . '/label');
 		if ($labelElem)
 		{ $display = (int) ('true' === $labelElem->getAttribute('display')); $data['display_label'] = $display; }
