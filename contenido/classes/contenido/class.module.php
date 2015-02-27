@@ -615,7 +615,7 @@ class cApiModule extends Item {
     }
 
     /**
-     * Imports the a module from a XML file, uses xmlparser and callbacks
+     * Imports the a module from a zip file, uses xmlparser and callbacks
      *
      * @param string $sFile Filename of data file (full path)
      * @param string $tempName of archive
@@ -635,10 +635,10 @@ class cApiModule extends Item {
         $sModulePath = $cfgClient[$client]['module']['path'] . $modulName;
         $sTempPath = $cfg['path']['contenido_temp'] . 'module_import_' . $modulName;
 
-        // exist the modul in directory
+        // does module already exist in directory
         if (is_dir($sModulePath)) {
             if ($show_notification == true) {
-                $notification->displayNotification('error', i18n('Module exist!'));
+                $notification->displayNotification('error', i18n('Module already exists!'));
             }
 
             return false;
@@ -731,7 +731,7 @@ class cApiModule extends Item {
                 $this->store();
                 $contenidoModuleHandler = new cModuleHandler($this->get('idmod'));
                 if (!$contenidoModuleHandler->createModule($inputOutput['input'], $inputOutput['output'])) {
-                    $notification->displayNotification('error', i18n('Could not make a module!'));
+                    $notification->displayNotification('error', i18n('Could not create a module!'));
                     return false;
                 } else {
                     // save the modul data to modul info file

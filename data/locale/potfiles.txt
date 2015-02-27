@@ -860,7 +860,6 @@
 ../data/config/production/config.chains.php
 ../data/config/production/config.clients.php
 ../data/config/production/config.http_check.php
-../data/config/production/config.local.php
 ../data/config/production/config.misc.php
 ../data/config/production/config.path.php
 ../data/config/production/config.php
