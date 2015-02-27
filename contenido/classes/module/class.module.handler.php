@@ -161,15 +161,15 @@ class cModuleHandler {
     protected static $_encodingStore = array();
 
     /**
-     * Construct for the class cModuleHandler.
+     * Constructor for the class cModuleHandler.
      * With this class you can
-     * make a new Modul, rename a Modul. You can save a Output from Modul and
+     * create a new module, rename a module. You can save a Output from modules and
      * Input in a
-     * file. The save rules are [Modulname] (is uneque) the files input and
+     * file. The save rules are [Modulname] (is unique) the files input and
      * output will be named
      * [Modulname]_input.php , [Modulname]_output.php
      *
-     * @param int $idmod the id of the modul
+     * @param int $idmod the id of the module
      * @throws cException if the module directory can not be created
      */
     public function __construct($idmod = NULL) {
@@ -671,8 +671,8 @@ class cModuleHandler {
      * Save a string into the file (_output.php).
      *
      * @param string
-     * @return bool if the action (save contents into the file _output.php is
-     *         success) return true else false
+     * @return bool if the action (save contents into the file _output.php) is
+     *         successful return true else false
      */
     public function saveOutput($output = NULL) {
         $fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php';
@@ -701,8 +701,8 @@ class cModuleHandler {
      * Save a string into the file (_input.php)
      *
      * @param string
-     * @return bool if the action (save contents into the file _input.php is
-     *         success) return true else false
+     * @return bool if the action (save contents into the file _input.php) is
+     *         successful return true else false
      */
     public function saveInput($input = NULL) {
         $fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php';
@@ -932,7 +932,10 @@ class cModuleHandler {
         }
         if ($toCheck !== $module->get("error")) {
             $module->set("error", $toCheck);
-            $module->store();
+
+            // do not rewrite cache on validation
+            // it is rewritten when saving module
+            $module->store(true);
         }
 
         //check code
@@ -976,7 +979,10 @@ class cModuleHandler {
         //overview/menu)
         if ($isError !== $module->get("error")) {
             $module->set("error", $isError);
-            $module->store();
+
+            // do not rewrite cache on validation
+            // it is rewritten when saving module
+            $module->store(true);
         }
 
         return $result;

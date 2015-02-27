@@ -1675,7 +1675,7 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
 
     $idcatart = $oCatArt->get('idcatart');
 
-    // Delete frome code cache and delete corresponding code
+    // Delete from code cache and delete corresponding code
     /**
      * @var $file SplFileInfo
      */

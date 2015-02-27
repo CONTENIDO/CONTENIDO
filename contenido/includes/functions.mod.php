@@ -18,7 +18,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 cInclude('includes', 'functions.tpl.php');
 cInclude('includes', 'functions.con.php');
 
-// @fixme: Document me!
+/**
+ * Saves changes of modules and regenerates code cache if required
+ * @param int $idmod module id
+ * @param string $name name of the module
+ * @param string $description module description text
+ * @param string $input module input content
+ * @param string $output module output content
+ * @param string $template template field in module's database entry (seems deprecated)
+ * @param string $type module type (common values are '', 'content', 'head', 'layout', 'navigation' and 'script')
+ * @return mixed idmod or nothing
+ */
 function modEditModule($idmod, $name, $description, $input, $output, $template, $type = '') {
     global $db, $client, $cfgClient, $auth, $cfg, $sess, $area, $area_tree, $perm, $frame;
     $description = stripslashes($description);
@@ -53,7 +63,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     $retInput = $contenidoModuleHandler->saveInput(stripslashes($input));
     $retOutput = $contenidoModuleHandler->saveOutput(stripslashes($output));
 
-    // clear the client cache if the module code has changed
+    // clear the client cache if the module code was written successfully
     if ($retInput || $retOutput) {
         $purge = new cSystemPurge();
         $purge->clearClientCache($client);
@@ -77,7 +87,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             }
         }
 
-        // Name of modul changed
+        // Name of module changed
         if ($change == true) {
             cRegistry::addInfoMessage(i18n('Renamed module successfully!'));
             $cApiModule->set('name', $name);
@@ -97,7 +107,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
             // Set the new module name
             $contenidoModuleHandler->changeModuleName($alias);
-            // Ssave input and output in file
+            // Save input and output in file
             if ($contenidoModuleHandler->saveInput(stripslashes($input)) == false) {
                 $messageIfError .= '<br>' . i18n("Can't save input !");
             }
@@ -111,9 +121,9 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             }
 
             // Display error
-            if ($messageIfError != '') {
+            if ($messageIfError !== '') {
                 cRegistry::addErrorMessage($messageIfError);
-                // Set the old name because module could not rename
+                // Set the old name because module could not be renamed
                 $cApiModule->set('name', $oldName);
                 $cApiModule->store();
             }
@@ -130,7 +140,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
                 cRegistry::addErrorMessage(i18n("Can't save xml module info file!"));
             }
 
-            if ($retInput == true && $retOutput == true) {
+            if ($retInput === true && $retOutput === true) {
                 cRegistry::addInfoMessage(i18n('Saved module successfully!'));
             } else {
                 $messageIfError = '<br>' . i18n("Can't save input !");
@@ -141,6 +151,8 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     } else {
         // No changes for save
         if ($retInput == true && $retOutput == true) {
+            // regenerate code cache because module input and output got saved 
+            $cApiModule->store();
             cRegistry::addInfoMessage(i18n('Saved module successfully!'));
         } else {
             $messageIfError = i18n("Can't save input !");
