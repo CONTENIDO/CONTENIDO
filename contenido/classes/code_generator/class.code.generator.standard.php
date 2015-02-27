@@ -302,18 +302,35 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_pageTitle = cApiCecHook::executeAndReturn('Contenido.Content.CreateTitletag');
         }
 
+        $headTag = array();
+        // find head tags in layout code (case insensitive, search across linebreaks)
+        if (false === preg_match_all('/<head>.*?<\/head>/is', $this->_layoutCode, $headTag)) {
+            // no head tag
+            return $this->_layoutCode;
+        }
+        if (0 === count($headTag)) {
+            // no head tag
+            return $this->_layoutCode;
+        }
+        // use first head tag found (by definition there must always be only 1 tag but user supplied markup might be incorrect)
+        $headTag = $headTag[0][0];
+
         // Add or replace title
         if ($this->_pageTitle != '') {
             $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
-            $this->_layoutCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $this->_layoutCode, 1);
-            if (strstr($this->_layoutCode, $replaceTag)) {
-                $this->_layoutCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $this->_layoutCode);
+            $headCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $headTag, 1);
+            
+            if (false !== strpos($this->_layoutCode, $replaceTag)) {echo "bkzb";
+                $headCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $headCode);
             } else {
-                $this->_layoutCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $this->_layoutCode);
+                $headCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $headCode);
             }
         } else {
-            $this->_layoutCode = str_replace('<title></title>', '', $this->_layoutCode);
+            // remove empty title tags from head tag
+            $headCode = str_replace('<title></title>', '', $headTag);
         }
+        // overwrite first head tag in original layout code
+        $this->_layoutCode = preg_replace('/<head>.*?<\/head>/is', $headCode, $this->_layoutCode, 1);
 
         return $this->_layoutCode;
     }
