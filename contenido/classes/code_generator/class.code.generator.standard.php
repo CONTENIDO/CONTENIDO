@@ -321,8 +321,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         if ($this->_pageTitle != '') {
             $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
             $headCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $headTag, 1);
-            
-            if (false !== strpos($this->_layoutCode, $replaceTag)) {echo "bkzb";
+
+            if (false !== strpos($this->_layoutCode, $replaceTag)) {
                 $headCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $headCode);
             } else {
                 $headCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $headCode);
