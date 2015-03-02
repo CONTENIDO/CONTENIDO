@@ -48,8 +48,7 @@
             }
 
             var subnav = this;
-            if ('undefined' !== typeof(window.parent)
-            && 'undefined' !== typeof(window.parent.frames["right_bottom"])) {
+            if ('undefined' !== typeof(Con.getFrame("right_bottom"))) {
                 var tabHighlight = function() {
                     // change selected tab when new tab loads
                     var anchors = subnav._getAnchors(), i;
@@ -63,13 +62,13 @@
                 };
 
                 // frame has an error
-                window.parent.frames["right_bottom"].onerror = tabHighlight;
+                Con.getFrame("right_bottom").onerror = tabHighlight;
 
                 // frame changes
-                window.parent.frames["right_bottom"].onunload = function() {
-                    if ('undefined' === typeof(window.parent.frames["right_bottom"].stoppedUnload)
-                    || false === window.parent.frames["right_bottom"].stoppedUnload) {
-                        window.parent.frames["right_bottom"].stoppedUnload = false;
+                Con.getFrame("right_bottom").onunload = function() {
+                    if ('undefined' === typeof(Con.getFrame("right_bottom").stoppedUnload)
+                    || false === Con.getFrame("right_bottom").stoppedUnload) {
+                        Con.getFrame("right_bottom").stoppedUnload = false;
                         tabHighlight();
                     }
                 }
