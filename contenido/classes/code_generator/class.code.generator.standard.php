@@ -308,7 +308,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             // no head tag
             return $this->_layoutCode;
         }
-        if (0 === count($headTag)) {
+        if (0 === count($headTag)
+        || false === isset($headTag[0])
+        || false === isset($headTag[0][0])) {
             // no head tag
             return $this->_layoutCode;
         }
