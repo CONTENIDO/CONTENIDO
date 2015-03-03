@@ -424,22 +424,28 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // Write code in the cache of the client. If the folder does not exist
         // create one.
-        if ($this->_layout == false && $this->_save == true) {
-            if (!is_dir($cfgClient[$this->_client]['code']['path'])) {
+
+        // CON-2113
+        // If .htaccess does not exist do not create the file because it will overwrite a client .htaccess
+        // with deny from all and therefore disable the whole frontend
+        // do not write a .htaccess file if there is already one
+        if ($this->_layout == false && $this->_save == true && isset($cfgClient[$this->_client]['code']['path'])) {
+            if (false === is_dir($cfgClient[$this->_client]['code']['path'])) {
                 mkdir($cfgClient[$this->_client]['code']['path']);
                 @chmod($cfgClient[$this->_client]['code']['path'], 0777);
-                cFileHandler::write($cfgClient[$this->_client]['code']['path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
 
-            $fileCode = ($code == '')? $this->_layoutCode : $code;
+            if (true === is_dir($cfgClient[$this->_client]['code']['path'])) {
+                $fileCode = ($code == '')? $this->_layoutCode : $code;
 
-            $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
-            cFileHandler::write($cfgClient[$this->_client]['code']['path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
+                $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
+                cFileHandler::write($cfgClient[$this->_client]['code']['path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
 
-            // Update create code flag
-            if ($flagCreateCode == true) {
-                $oCatArtColl = new cApiCategoryArticleCollection();
-                $oCatArtColl->setCreateCodeFlag($idcatart, 0);
+                // Update create code flag
+                if ($flagCreateCode == true) {
+                    $oCatArtColl = new cApiCategoryArticleCollection();
+                    $oCatArtColl->setCreateCodeFlag($idcatart, 0);
+                }
             }
         }
     }
