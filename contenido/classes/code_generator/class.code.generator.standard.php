@@ -448,7 +448,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                 @chmod($cfgClient[$this->_client]['code']['path'], 0777);
             }
 
-            if (true !== cFileHandler::exists($cfgClient[$this->_client]['code']['path'] . '.htaccess')) {echo "a";
+            if (true !== cFileHandler::exists($cfgClient[$this->_client]['code']['path'] . '.htaccess')) {
                 cFileHandler::write($cfgClient[$this->_client]['code']['path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
 
