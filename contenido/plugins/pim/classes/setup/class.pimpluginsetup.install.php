@@ -205,6 +205,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Dependencies checks
         $this->_installCheckDependencies();
 
+        // Set foldername of new plugin
+        $this->_setPluginFoldername(parent::$XmlGeneral->plugin_foldername);
+
         // Get all area names from database
         $this->_installFillAreas();
 
@@ -224,7 +227,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
         $this->_installAddNavSub();
 
         // Add specific sql queries, run only if we have no update sql file
-        if (PimPluginSetup::_getUpdateSqlFileExist() == false) {
+        if (PimPluginSetup::_getUpdateSqlFileExist() === false) {
             $this->_installAddSpecificSql();
         }
 
@@ -391,9 +394,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Set pluginId
         parent::setPluginId($pluginId);
-
-        // Set foldername of new plugin
-        $this->_setPluginFoldername(parent::$XmlGeneral->plugin_foldername);
     }
 
     /**
@@ -592,7 +592,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
     private function _installAddSpecificSql() {
         $cfg = cRegistry::getConfig();
         $db = cRegistry::getDb();
-
         if (parent::getMode() == 1) { // Plugin is already extracted
             $tempSqlFilename = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->_getPluginFoldername() . DIRECTORY_SEPARATOR . 'plugin_install.sql';
         } elseif (parent::getMode() == 2 || parent::getMode() == 4) { // Plugin
@@ -605,6 +604,7 @@ class PimPluginSetupInstall extends PimPluginSetup {
             $tempSqlFilename = parent::$_PimPluginArchiveExtractor->extractArchiveFileToVariable('plugin_install.sql', 0);
         }
 
+        // skip using plugin_install.sql if it does not exist
         if (!cFileHandler::exists($tempSqlFilename)) {
             return;
         }
