@@ -286,6 +286,7 @@ class cCategoryHelper {
         if ((int) $categoryId <= 0 || (int) $depth < 0) {
             return array();
         }
+        $depth = (int) $depth;
 
         $cfg = cRegistry::getConfig();
 
@@ -330,7 +331,7 @@ class cCategoryHelper {
             $catId = (int) $db->f('idcat');
             $catLevel = (int) $db->f('level');
 
-            if ($depth > 0 && ($depth < ($catLevel+1 - $depth))) {
+            if ($depth > 0 && ($depth > ($catLevel))) {
                 $subCategories = $this->getSubCategories($catId, $depth);
             } else {
                 $subCategories = array();
