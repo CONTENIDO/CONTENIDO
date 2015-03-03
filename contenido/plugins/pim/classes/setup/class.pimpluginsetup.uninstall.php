@@ -271,14 +271,14 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      */
     private function _uninstallCheckDependencies() {
 
-    	// Call checkDepenendencies function at PimPlugin class
-    	// Function returns true or false
-    	$result = $this->checkDependencies();
+        // Call checkDepenendencies function at PimPlugin class
+        // Function returns true or false
+        $result = $this->checkDependencies();
 
-    	// Show an error message when dependencies could be found
-    	if ($result === false) {
-    		parent::error(sprintf(i18n('This plugin are required by the plugin <strong>%s</strong>, so you can not remove it.', 'pim'), parent::_getPluginName()));
-    	}
+        // Show an error message when dependencies could be found
+        if ($result === false) {
+            parent::error(sprintf(i18n('This plugin is required by the plugin <strong>%s</strong>, so you can not remove it.', 'pim'), parent::_getPluginName()));
+        }
     }
 
     /**
@@ -340,20 +340,20 @@ class PimPluginSetupUninstall extends PimPluginSetup {
      */
     protected function _writeNewExecutionOrder() {
 
-    	// Lowest executionorder is one
-    	$i = 1;
+        // Lowest executionorder is one
+        $i = 1;
 
-    	$pimPluginColl = new PimPluginCollection();
-    	$pimPluginColl->setOrder('executionorder ASC');
-    	$pimPluginColl->query();
-    	while ($pimPluginSql = $pimPluginColl->next()) {
-			$pimPluginSql->set('executionorder', $i);
-			$pimPluginSql->store();
+        $pimPluginColl = new PimPluginCollection();
+        $pimPluginColl->setOrder('executionorder ASC');
+        $pimPluginColl->query();
+        while ($pimPluginSql = $pimPluginColl->next()) {
+            $pimPluginSql->set('executionorder', $i);
+            $pimPluginSql->store();
 
-			$i++;
-    	}
+            $i++;
+        }
 
-    	return true;
+        return true;
     }
 
 }

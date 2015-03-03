@@ -205,8 +205,8 @@ class PimPluginSetupInstall extends PimPluginSetup {
         // Dependencies checks
         $this->_installCheckDependencies();
 
-        // Set foldername of new plugin
-        $this->_setPluginFoldername(parent::$XmlGeneral->plugin_foldername);
+        // Add new plugin: *_plugins
+        $this->_installAddPlugin();
 
         // Get all area names from database
         $this->_installFillAreas();
@@ -241,9 +241,6 @@ class PimPluginSetupInstall extends PimPluginSetup {
         if (parent::getMode() == 2) {
             $this->_installAddDir();
         }
-
-        // Add new plugin: *_plugins
-        $this->_installAddPlugin();
 
         // Success message for new plugins
         // Get only for extracted (1) and installed mode (2)
@@ -328,57 +325,57 @@ class PimPluginSetupInstall extends PimPluginSetup {
      */
     private function _installCheckDependencies() {
 
-    	$dependenciesCount = count(parent::$XmlDependencies);
-    	for ($i = 0; $i < $dependenciesCount; $i++) {
+        $dependenciesCount = count(parent::$XmlDependencies);
+        for ($i = 0; $i < $dependenciesCount; $i++) {
 
-    		$attributes = array();
+            $attributes = array();
 
-    		// Build attributes
-    		foreach (parent::$XmlDependencies->depend[$i]->attributes() as $key => $value) {
-    			$attributes[$key] = $value;
-    		}
+            // Build attributes
+            foreach (parent::$XmlDependencies->depend[$i]->attributes() as $key => $value) {
+                $attributes[$key] = $value;
+            }
 
-    		// Security check
-    		$depend = cSecurity::escapeString(parent::$XmlDependencies->depend[$i]);
+            // Security check
+            $depend = cSecurity::escapeString(parent::$XmlDependencies->depend[$i]);
 
-    		if ($depend == "") {
-    			return true;
-    		}
+            if ($depend == "") {
+                return true;
+            }
 
-    		// Add attributes "min_version" and "max_version" to an array
-    		$attributes = array(
-    				'uuid' => cSecurity::escapeString($attributes['uuid']),
-    				'minversion' => cSecurity::escapeString($attributes['min_version']),
-    				'maxversion' => cSecurity::escapeSTring($attributes['max_version'])
-    		);
+            // Add attributes "min_version" and "max_version" to an array
+            $attributes = array(
+                    'uuid' => cSecurity::escapeString($attributes['uuid']),
+                    'minversion' => cSecurity::escapeString($attributes['min_version']),
+                    'maxversion' => cSecurity::escapeSTring($attributes['max_version'])
+            );
 
 
-    		$this->_PimPluginCollection->setWhere('uuid', $attributes['uuid']);
-    		$this->_PimPluginCollection->setWhere('active', '1');
-    		$this->_PimPluginCollection->query();
-    		if ($this->_PimPluginCollection->count() == 0) {
-    			parent::error(sprintf(i18n('This plugin required the plugin <strong>%s</strong>.', 'pim'), $depend));
-    		}
+            $this->_PimPluginCollection->setWhere('uuid', $attributes['uuid']);
+            $this->_PimPluginCollection->setWhere('active', '1');
+            $this->_PimPluginCollection->query();
+            if ($this->_PimPluginCollection->count() == 0) {
+                parent::error(sprintf(i18n('This plugin required the plugin <strong>%s</strong>.', 'pim'), $depend));
+            }
 
-    		$plugin = $this->_PimPluginCollection->next();
+            $plugin = $this->_PimPluginCollection->next();
 
-    		// Check min plugin version
-    		if (parent::$XmlDependencies->depend[$i]->attributes()->minversion) {
+            // Check min plugin version
+            if (parent::$XmlDependencies->depend[$i]->attributes()->minversion) {
 
-	    		if (version_compare($plugin->get("version"), parent::$XmlDependencies->depend[$i]->attributes()->minversion, '<')) {
-	    			parent::error(sprintf(i18n('You have to install<strong>%s %</strong> or higher to install this plugin!', 'pim'), $depend, parent::$XmlDependencies->depend[$i]->attributes()->minversion));
-	    		}
-    		}
+                if (version_compare($plugin->get("version"), parent::$XmlDependencies->depend[$i]->attributes()->minversion, '<')) {
+                    parent::error(sprintf(i18n('You have to install<strong>%s %</strong> or higher to install this plugin!', 'pim'), $depend, parent::$XmlDependencies->depend[$i]->attributes()->minversion));
+                }
+            }
 
-    		// Check max plugin version
-    		if (parent::$XmlDependencies->depend[$i]->attributes()->maxversion) {
+            // Check max plugin version
+            if (parent::$XmlDependencies->depend[$i]->attributes()->maxversion) {
 
-    			if (version_compare($plugin->get("version"),  parent::$XmlDependencies->depend[$i]->attributes()->maxversion, '>')) {
-	    			parent::error(sprintf(i18n('You have to install <strong>%s %s</strong> or lower to install this plugin!', 'pim'), $depend, parent::$XmlDependencies->depend[$i]->attributes()->maxversion));
-    			}
-    		}
+                if (version_compare($plugin->get("version"),  parent::$XmlDependencies->depend[$i]->attributes()->maxversion, '>')) {
+                    parent::error(sprintf(i18n('You have to install <strong>%s %s</strong> or lower to install this plugin!', 'pim'), $depend, parent::$XmlDependencies->depend[$i]->attributes()->maxversion));
+                }
+            }
 
-    	}
+        }
 
     }
 
@@ -394,6 +391,9 @@ class PimPluginSetupInstall extends PimPluginSetup {
 
         // Set pluginId
         parent::setPluginId($pluginId);
+        
+        // Set foldername of new plugin
+        $this->_setPluginFoldername(parent::$XmlGeneral->plugin_foldername);
     }
 
     /**
