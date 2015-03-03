@@ -27,14 +27,14 @@
         {assign var="url" value=$wrapper.item->getLink()}
         {assign var="name" value=$wrapper.item->get('name')}
         <li>
-            <a href="{$url}" title="{$name}">{$name}</a>
+            <a href="{$url|escape}" title="{$name|escape}">{$name|escape}</a>
             {include file="content_sitemap_html/template/get.tpl"
                 tree=$wrapper.subcats path=$path ulId=""}
         {* loop articles *}
         {if 0 lt $wrapper.articles|count}
             {foreach from=$wrapper.articles item=article}
             <li>
-                <a href="{$article->getLink()}" title="{$article->get('title')}">{$article->get('title')}</a>
+                <a href="{$article->getLink()|escape}" title="{$article->get('title')|escape}">{$article->get('title')|escape}</a>
             </li>
             {/foreach}
         {/if}
