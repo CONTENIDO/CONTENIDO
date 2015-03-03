@@ -425,14 +425,31 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         // Write code in the cache of the client. If the folder does not exist
         // create one.
 
+        // do not write code cache into root directory of client
+        if (cRegistry::getFrontendPath() === $cfgClient[$this->_client]['code']['path']) {
+            return;
+        }
+
+        // current directory must be named cache
+        $path = pathinfo($cfgClient[$this->_client]['code']['path']);
+        // convert backslashes to slashes
+        $path = str_replace('\\', '/', $path);
+        $directoryName = substr($path['dirname'], (int) strrpos($path['dirname'], '/') +1);
+        if ('cache' !== $directoryName) {
+            // directory name is not cache -> abort
+            return;
+        }
+
         // CON-2113
-        // If .htaccess does not exist do not create the file because it will overwrite a client .htaccess
-        // with deny from all and therefore disable the whole frontend
-        // do not write a .htaccess file if there is already one
+        // Do not overwrite an existing .htaccess file to prevent misconfiguring permissions
         if ($this->_layout == false && $this->_save == true && isset($cfgClient[$this->_client]['code']['path'])) {
             if (false === is_dir($cfgClient[$this->_client]['code']['path'])) {
                 mkdir($cfgClient[$this->_client]['code']['path']);
                 @chmod($cfgClient[$this->_client]['code']['path'], 0777);
+            }
+
+            if (true !== cFileHandler::exists($cfgClient[$this->_client]['code']['path'] . '.htaccess')) {echo "a";
+                cFileHandler::write($cfgClient[$this->_client]['code']['path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
 
             if (true === is_dir($cfgClient[$this->_client]['code']['path'])) {
