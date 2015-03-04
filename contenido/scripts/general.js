@@ -1230,7 +1230,7 @@
 
             menuItem = $(selector, frame.document)[0];
             if (menuItem) {
-                frame.Con.Subnav.clicked(menuItem);
+                frame.Con.Subnav.clicked(menuItem, true);
                 return true;
             }
         }
