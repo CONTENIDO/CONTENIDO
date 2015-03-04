@@ -684,8 +684,56 @@
 
                 // inject setup into settings
                 settings.setup = function(ed) {
+                    // register handlers before editor initialises
+                    // Fires before the editor has been initialized.
+                    // This is before any contents gets inserted into the editor but after we have selection and dom instances.
+                    // http://www.tinymce.com/wiki.php/api4:event.tinymce.Editor.PreInit
+                    ed.on("PreInit", function() {
+                        var resizeTiny = function() {
+                            if (true === options.dedicatedPage) {
+                                // get jQuery nodes for editor and buttons
+                                var edNode = jQuery(".cms_edit_row:eq(1)");
+                                var buttonNode = jQuery(".cms_edit_row:eq(2)");
+
+                                // compute allowed height for tinymce editor
+                                // subtract 20 pixels to leave some space to page bottom
+                                // window.innerHeight does not work in IE 8 -> use jQuery 
+                                var allowedHeight = jQuery(window).height() - edNode.offset().top - buttonNode.outerHeight() -20
+                                // substract editor node border, padding and margin
+                                allowedHeight -= edNode.innerHeight() - edNode.outerHeight()
+
+                                // get editor container without both menu and toolbar
+                                var tinyEdContainer = ed.getContentAreaContainer();
+
+                                // compute allowed height for content editing dom node
+                                var allowedEdContHeight = allowedHeight - (edNode.outerHeight() - jQuery(ed.getContentAreaContainer()).outerHeight());
+
+                                // resize content fiel of editor instance: keep old width and use newly computed height
+                                // do not try to resize to negative values (IE 8)
+                                if (allowedEdContHeight > 0) {
+                                    ed.theme.resizeTo(edNode.outerWidth(), allowedEdContHeight);
+                                }
+
+                                // only resize the editor once to avoid resizing after user set his prefered height in gui
+                                options.dedicatedPage = false;
+                            }
+                        };
+                        // wait until entire page is loaded before resizing tinymce editor
+                        // to avoid timing issues with IE 8 and Firefox that result on wrong height
+                        jQuery(window).one("load", function() {
+                            resizeTiny()
+                        }).each(function() {
+                            // fallback if window is loaded from cache (IE)
+                            console.log(document.readyState);
+                            if ("complete" === document.readyState) {
+                                resizeTiny();
+                                jQuery(window).load();
+                            }
+                        });
+                    });
+
                     ed.on('init', function() {
-                        // init into manager
+                        // init into undo manager
                         ed.undoManager.data = [];
                         ed.undoManager.data.push({"content": ed.getContent({format: 'raw', no_events: 1})});
                     });
