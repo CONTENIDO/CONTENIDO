@@ -364,7 +364,6 @@ class NewsletterJob extends Item {
 
                 // do not try to send a message to an invalid email address
                 if (false === isValidMail($sEMail)) {
-                    error_log($sEMail);
                     $oLog->set("status", "error (invalid email)");
                     $oLog->store();
                     continue;
