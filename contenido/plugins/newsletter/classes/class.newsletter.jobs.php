@@ -361,6 +361,15 @@ class NewsletterJob extends Item {
 
                 $sKey = $oLog->get("rcphash");
                 $sEMail = $oLog->get("rcpemail");
+
+                // do not try to send a message to an invalid email address
+                if (false === isValidMail($sEMail)) {
+                    error_log($sEMail);
+                    $oLog->set("status", "error (invalid email)");
+                    $oLog->store();
+                    continue;
+                }
+
                 $bSendHTML = false;
                 if ($oLog->get("rcpnewstype") == 1) {
                     $bSendHTML = true; // Recipient accepts html newsletter
@@ -413,10 +422,18 @@ class NewsletterJob extends Item {
                         $contentType = 'text/html';
                     }
 
-                    $message = Swift_Message::newInstance($sSubject, $body, $contentType, $sEncoding);
-                    $message->setFrom($sFrom, $sFromName);
-                    $message->setTo($to);
-                    $result = $mailer->send($message);
+                    
+                    try {
+                        // this code can throw exceptions like Swift_RfcComplianceException
+                        $message = Swift_Message::newInstance($sSubject, $body, $contentType, $sEncoding);
+                        $message->setFrom($sFrom, $sFromName);
+                        $message->setTo($to);
+                        
+                        // send the email
+                        $result = $mailer->send($message);
+                    } catch (Exception $e) {
+                        $result = false;
+                    }
 
                     if ($result) {
                         $oLog->set("status", "successful");
