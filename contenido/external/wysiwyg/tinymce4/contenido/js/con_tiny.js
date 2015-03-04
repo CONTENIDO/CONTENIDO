@@ -724,7 +724,6 @@
                             resizeTiny()
                         }).each(function() {
                             // fallback if window is loaded from cache (IE)
-                            console.log(document.readyState);
                             if ("complete" === document.readyState) {
                                 resizeTiny();
                                 jQuery(window).load();
