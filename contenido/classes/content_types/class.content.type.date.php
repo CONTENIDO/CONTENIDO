@@ -57,15 +57,21 @@ class cContentTypeDate extends cContentTypeAbstract {
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // set the locale
-        $belang = cRegistry::getBackendLanguage();
-        if (empty($belang)) {
-            $language = new cApiLanguage(cRegistry::getLanguageId());
-            $locale = $language->getProperty('dateformat', 'locale');
-            if (!empty($locale)) {
-                setlocale(LC_TIME, $locale);
+        $locale = cRegistry::getBackendLanguage();
+        if (empty($locale)) {
+            $oApiLang = new cApiLanguage(cRegistry::getLanguageId());
+            $locale = $oApiLang->getProperty('dateformat', 'locale');
+            if (empty($locale)) {
+                $language = $oApiLang->getProperty('language', 'code');
+                $country = $oApiLang->getProperty('language', 'code');
+
+                $locale = $language . '_' . strtoupper($country);
             }
-        } else {
-            setlocale(LC_TIME, $belang);
+
+        }
+
+        if (false === empty($locale)) {
+            setlocale(LC_TIME, $locale);
         }
 
         // initialise the date formats
