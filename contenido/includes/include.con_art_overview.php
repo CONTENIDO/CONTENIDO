@@ -568,7 +568,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             }
 
             // Delete button
-            if (($perm->have_perm_area_action('con', 'con_deleteart') || $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat)) && $inUse == false) {
+            if (($perm->have_perm_area_action('con', 'con_deleteart') || $perm->have_perm_area_action_item('con', 'con_deleteart', $idcat)) && $inUse == false && (int) $locked === 0 || $currentuser->get('username') === 'sysadmin') {
                 $tmp_title = $title;
                 if (strlen($tmp_title) > 30) {
                     $tmp_title = substr($tmp_title, 0, 27) . "...";
