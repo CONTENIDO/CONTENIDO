@@ -1065,6 +1065,7 @@ class PifaForm extends Item {
      */
     public function changeColumn($columnName, $dataType, $oldColumnName) {
         $tableName = $this->get('data_table');
+
         if ($oldColumnName === $columnName) {
             return;
         }
@@ -1076,6 +1077,8 @@ class PifaForm extends Item {
         if (NULL === $dataType) {
             return;
         }
+
+        $columnName = htmldecode($columnName);
 
         $sql = "-- PifaForm->changeColumn()
             ALTER TABLE

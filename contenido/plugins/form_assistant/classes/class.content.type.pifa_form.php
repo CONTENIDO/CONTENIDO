@@ -74,10 +74,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
             'pifaform_mail_system_subject'
         );
 
-        // encoding conversions to avoid problems with umlauts
-        $rawSettings = conHtmlEntityDecode($rawSettings);
-        $rawSettings = utf8_encode($rawSettings);
-
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // if form is submitted, store the current settings
