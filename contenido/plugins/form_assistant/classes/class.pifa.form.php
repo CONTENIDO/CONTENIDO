@@ -1078,8 +1078,6 @@ class PifaForm extends Item {
             return;
         }
 
-        $columnName = htmldecode($columnName);
-
         $sql = "-- PifaForm->changeColumn()
             ALTER TABLE
                 `$tableName`
