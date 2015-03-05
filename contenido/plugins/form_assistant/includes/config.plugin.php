@@ -181,7 +181,7 @@ class Pifa {
     public static function getExtensionClasses($parentClass) {
 
         // ignore if extensions folder is missing
-        if (false !== ($handle = cDirHandler::read(self::getPath() . 'extensions/'))) {
+        if (false === ($handle = cDirHandler::read(self::getPath() . 'extensions/'))) {
             return array();
         }
 
@@ -190,28 +190,28 @@ class Pifa {
             // skip files that don't match regex
             $matches = array();
             $matchCount = preg_match('/^class\.pifa\.([^\.]+)\.php$/', $file, $matches);
-            
+
             // REGEX failure ... just call Mr. T!
             if (false === $matchCount) {
                 $msg = self::i18n('EXTENSION_REGEX_ERROR');
                 throw new PifaException($msg);
             }
-            
+
             // some other file .. just skip it
             if (0 === $matchCount) {
                 continue;
             }
-            
+
             // this is a proper PHP class
             $optionClass = self::toCamelCase($matches[1], true);
-            
+
             include_once(self::getPath() . 'extensions/' . $file);
-            
+
             $reflection = new ReflectionClass($optionClass);
             if (false === $reflection->isSubclassOf($parentClass)) {
                 continue;
             }
-            
+
             $extensionClasses[] = array(
                     'value' => $optionClass,
                     'label' => $optionClass
@@ -233,7 +233,7 @@ class Pifa {
         $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
 
         // ignore if template folder is missing
-        if (false !== ($handle = cDirHandler::read($clientConfig['template']['path']))) {
+        if (false === ($handle = cDirHandler::read($clientConfig['template']['path']))) {
             return array();
         }
 
@@ -248,18 +248,18 @@ class Pifa {
             // skip files that don't match regex
             $matches = array();
             $matchCount = preg_match($re, $file, $matches);
-            
+
             // REGEX failure ... just call Mr. T!
             if (false === $matchCount) {
                 $msg = self::i18n('TEMPLATE_REGEX_ERROR');
                 throw new PifaException($msg);
             }
-            
+
             // some other file .. just skip it
             if (0 === $matchCount) {
                 continue;
             }
-            
+
             $templates[] = array(
                     'value' => $file,
                     'label' => $file
