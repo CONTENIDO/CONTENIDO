@@ -476,6 +476,7 @@ $page->set('s', 'IMPORT_RAWDATA', i18n("Import raw data"));
 $page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
 $page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
+
 //FFBCON-881 check if article is locked
 $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
 $locked = $cApiArticleLanguage->getField('locked');
@@ -493,7 +494,7 @@ $page->set('s', 'CATEGORY', $breadcrumb);
 
 if (count($result) <= 0) {
     $page->displayInfo(i18n("Article has no raw data"));
-    $page->abortRendering();
+//    $page->abortRendering();
     // $layoutcode .= '<div>--- ' . i18n("none") . ' ---</div>';
 } else {
     foreach ($aIdtype as $idtype) {
