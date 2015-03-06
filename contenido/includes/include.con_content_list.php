@@ -477,7 +477,7 @@ $page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
 $page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
 
-//FFBCON-881 check if article is locked
+//CON-2151 check if article is locked
 $aAuthPerms = explode(',', $auth->auth['perm']);
 
 $admin = false;
