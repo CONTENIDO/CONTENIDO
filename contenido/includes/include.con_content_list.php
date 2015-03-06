@@ -14,7 +14,6 @@
  */
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
-
 $backendPath = cRegistry::getBackendPath();
 $backendUrl = cRegistry::getBackendUrl();
 
@@ -477,7 +476,10 @@ $page->set('s', 'IMPORT_RAWDATA', i18n("Import raw data"));
 $page->set('s', 'EXPORT_LABEL', i18n("Raw data export"));
 $page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
-
+//FFBCON-881 check if article is locked
+$cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
+$locked = $cApiArticleLanguage->getField('locked');
+$page->set('s', 'HIDE', ((int)$locked === 1)? 'style="display:none;"' : '' );
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $page->set('s', 'USE_TINY', '');

@@ -102,8 +102,8 @@ document.getElementsByTagName('head')[0].appendChild(baseHref);
     <input type="submit" name="export" value="{EXPORT_RAWDATA}">
 </form>
 </div>
-<label class="rawdata">{IMPORT_LABEL}</label>
-<div class="contypeList">
+<label class="rawdata" {HIDE}>{IMPORT_LABEL}</label>
+<div class="contypeList" {HIDE}>
 <form name="importrawdata" id="importrawdata" method="post" enctype="multipart/form-data" action="{_PATH_CONTENIDO_FULLHTML_}main.php?area=con_content_list&action=importrawcontent&idart={IDART}&idcat={IDCAT}&lang={IDLANG}&idartlang={IDARTLANG}&frame=4&client={IDCLIENT}">
     <input type="file" name="rawfile" value="" size="40">
     <br />
