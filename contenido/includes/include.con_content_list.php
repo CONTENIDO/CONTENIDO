@@ -478,9 +478,16 @@ $page->set('s', 'IMPORT_LABEL', i18n("Raw data import"));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n("Overwrite data"));
 
 //FFBCON-881 check if article is locked
+$aAuthPerms = explode(',', $auth->auth['perm']);
+
+$admin = false;
+if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+    $admin = true;
+}
+
 $cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
 $locked = $cApiArticleLanguage->getField('locked');
-$page->set('s', 'HIDE', ((int)$locked === 1)? 'style="display:none;"' : '' );
+$page->set('s', 'HIDE', ($admin || (int)$locked === 0)? '' : 'style="display:none;"');
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $page->set('s', 'USE_TINY', '');
