@@ -529,7 +529,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $tmp_start = $tmp_link;
 
             // Make copy button
-            if (($perm->have_perm_area_action('con', 'con_duplicate') || $perm->have_perm_area_action_item('con', 'con_duplicate', $idcat)) && $idcat != 0 && ((int) $locked === 0 || $admin )) {echo "true";
+            if (($perm->have_perm_area_action('con', 'con_duplicate') || $perm->have_perm_area_action_item('con', 'con_duplicate', $idcat)) && $idcat != 0 && ((int) $locked === 0 || $admin )) {
                 $imgsrc = "but_copy.gif";
                 // add count_duplicate param to identify if the duplicate action
                 // is called from click or back button.
