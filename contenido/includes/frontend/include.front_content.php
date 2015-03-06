@@ -302,8 +302,19 @@ if (0 != $idart && 0 != $idcat) {
     }
 }
 
+// Check if category is public
+$oCatLang = new cApiCategoryLanguage();
+$oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
+$public = $oCatLang->get('public');
+
+// CON-2148
+// check if category is online, allow access if article is specified for loading
+$online = true;
+if (false === isset($_REQUEST['idart'])) {
+    $online = ('0' !== $oCatLang->get('visible'));
+}
 $idartlang = getArtLang($idart, $lang);
-if ($idartlang === false) {
+if ($idartlang === false || $online === false) {
     if ($_GET['display_errorpage']) {
         // show only if $idart > 0
         if ($idart > 0) {
@@ -604,8 +615,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Time management, redirect
     $oArtLang = new cApiArticleLanguage();
     $oArtLang->loadByArticleAndLanguageId($idart, $lang);
-
-    $online = $oArtLang->get('online');
+    $online = (int) $oArtLang->get('online');
     $redirect = $oArtLang->get('redirect');
     $redirect_url = $oArtLang->get('redirect_url');
 
