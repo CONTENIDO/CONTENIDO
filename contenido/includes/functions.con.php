@@ -227,7 +227,7 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     $locked = (int) $oArtLang->get('locked');
 
     // abort editing if article is locked and user user no admin
-    if (0 === $locked
+    if (1 === $locked
     && false === $admin) {
         return $idart;
     }
