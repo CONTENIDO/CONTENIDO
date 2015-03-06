@@ -571,7 +571,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $aAuthPerms = explode(',', $auth->auth['perm']);
 
             $admin = false;
-            if (count(preg_grep("/^admin.*/", $aAuthPerms)) > 0) {
+            if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
                 $admin = true;
             }
 
