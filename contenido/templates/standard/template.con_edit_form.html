@@ -278,7 +278,14 @@ function removeAssignments(idart, idcat) {
 }
 
 function disableFunctionsOnTimeControl() {
-    // Timecontrol enabled => disable Online and Startaticle
+    // CON-2134
+    // do not enable online and start article elements on frozen article
+    if (true === document.getElementById("timemgmt").disabled
+    && true === document.getElementById("online").disabled) {
+        return;
+    }
+
+    // Timecontrol enabled => disable Online and Startarticle
     if (document.getElementById("timemgmt").checked == true) {
         document.getElementById("is_start").checked = false;
         document.getElementById("is_start").disabled = true;
