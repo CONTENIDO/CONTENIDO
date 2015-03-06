@@ -130,6 +130,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         // notice: there is also a need, that filelist_id is the same (case:
         // more than one cms file list is used on the same page
         if (isset($_POST['filelist_action']) && $_POST['filelist_action'] === 'store' && isset($_POST['filelist_id']) && (int) $_POST['filelist_id'] == $this->_id) {
+            
             // convert the date form fields to timestamps
             foreach ($dateFormFields as $dateFormField) {
                 $value = $_POST[$dateFormField];
@@ -331,7 +332,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
         $template = new cTemplate();
         $fileList = array();
-        $template->set('s', 'TITLE', $this->_settings['filelist_title']);
+        $template->set('s', 'TITLE', conHtmlentities($this->_settings['filelist_title']));
 
         $files = $this->getConfiguredFiles();
 
@@ -638,7 +639,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLParagraph(i18n('General settings'), 'head_sub');
 
         $wrapperContent[] = new cHTMLLabel(i18n('File list title'), 'filelist_title_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('filelist_title_' . $this->_id, $this->_settings['filelist_title'], '', '', 'filelist_title_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_title_' . $this->_id, conHtmlSpecialChars($this->_settings['filelist_title']), '', '', 'filelist_title_' . $this->_id);
         $wrapperContent[] = new cHTMLLabel(i18n('File list style'), 'filelist_style_' . $this->_id);
         $wrapperContent[] = $this->_generateStyleSelect();
         $wrapperContent[] = new cHTMLLabel(i18n('File list sort'), 'filelist_sort_' . $this->_id);

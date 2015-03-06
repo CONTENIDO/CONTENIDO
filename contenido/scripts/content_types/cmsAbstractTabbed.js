@@ -165,12 +165,16 @@
      * @param {String} value The value of the form field which should be added.
      */
     cContentTypeAbstractTabbed.prototype.appendFormField = function(name, value) {
+    	// CON-2142
+        // jQuery transforms special strings like &auml; to ä during append
         // if a hidden input field with the given name already exists, just set the value
         if ($('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').length > 0) {
             $('form[name="editcontent"] input[type="hidden"][name="' + name + '"]').val(value);
         } else {
             // otherwise append a new field to the form
-            $('form[name="editcontent"]').append('<input type="hidden" value="' + value + '" name="' + name + '"/>');
+
+            $('form[name="editcontent"]').append('<input type="hidden" name="' + name + '"/>');
+            $('form[name="editcontent"] input:last-child').attr('value', value);
         }
     };
 
