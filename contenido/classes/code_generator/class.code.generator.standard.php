@@ -430,11 +430,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             return;
         }
 
-        // current directory must be named cache
-        $path = pathinfo($cfgClient[$this->_client]['code']['path']);
-        // convert backslashes to slashes
-        $path = str_replace('\\', '/', $path);
-        $directoryName = substr($path['dirname'], (int) strrpos($path['dirname'], '/') +1);
+        // parent directory must be named cache
+        $directoryName = basename(dirname($cfgClient[$this->_client]['code']['path']));
         if ('cache' !== $directoryName) {
             // directory name is not cache -> abort
             return;
