@@ -94,12 +94,7 @@ if ($action == "lang_newlanguage") {
             $invalidData = true;
             $page->displayError(i18n("Incorrect time format"));
         }
-        if (true === cString::validateDateFormat(stripslashes($datetimelocale))) {
-            $oLanguage->setProperty("dateformat", "locale", stripslashes($datetimelocale), $targetclient);
-        } else if (false === $invalidData) {
-            $invalidData = true;
-            $page->displayError(i18n("Incorrect date/time locale"));
-        }
+        $oLanguage->setProperty("dateformat", "locale", stripslashes($datetimelocale), $targetclient);
 
         $oLanguage->setProperty("language", "code", stripslashes($languagecode), $targetclient);
         $oLanguage->setProperty("country", "code", stripslashes($countrycode), $targetclient);
