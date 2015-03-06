@@ -332,7 +332,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
         $template = new cTemplate();
         $fileList = array();
-        $template->set('s', 'TITLE', conHtmlentities($this->_settings['filelist_title']));
+        $template->set('s', 'TITLE', conHtmlSpecialChars($this->_settings['filelist_title']));
 
         $files = $this->getConfiguredFiles();
 
