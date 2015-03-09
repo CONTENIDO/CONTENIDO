@@ -31,15 +31,15 @@
         holder.show();
     });
 
-    $('.content_article_include .content_article_include_close img#article_include_close_{$id|escape}').click(function() {
+    $(".content_article_include .content_article_include_close img#article_include_close_{$id|escape:'javascript'}").click(function() {
         $('#article_include_container_{$id|escape}').hide();
     });
 
-    $('.content_article_include .content_article_include_holder .toolbar img#article_include_cancel_{$id|escape}').click(function() {
-        $('#article_include_container_{$id|escape}').hide();
+    $(".content_article_include .content_article_include_holder .toolbar img#article_include_cancel_{$id|escape:'javascript'}").click(function() {
+        $("#article_include_container_{$id|escape:'javascript'}").hide();
     });
 
-    $('.content_article_include #categoryselect_{$id|escape}').on('change', function() {
+    $(".content_article_include #categoryselect_{$id|escape:'javascript'}").on('change', function() {
 
         var optionVal = $("option:selected", this).val();
         var ajaxUrl = $(this).find('input[name=ajaxUrl]').val();
@@ -47,19 +47,19 @@
         $.ajax({
             type: "POST",
             url: '{$ajaxUrl|escape}',
-            data: { idcat: optionVal, ajax: 'artsel', name: 'articleselect_ajax_{$id|escape}'},
+            data: { idcat: optionVal, ajax: 'artsel', name: "articleselect_ajax_{$id|escape:'javascript'}"},
             success: function(responsedata){
-                if($('.content_article_include #articleselect_{$id|escape}').length > 0) {
-                    $('.content_article_include #articleselect_{$id|escape}').replaceWith(responsedata);
+                if($(".content_article_include #articleselect_{$id|escape:'javascript'}").length > 0) {
+                    $(".content_article_include #articleselect_{$id|escape:'javascript'}").replaceWith(responsedata);
                 } else {
-                    $('.content_article_include #articleselect_ajax_{$id|escape}').replaceWith(responsedata);
+                    $(".content_article_include #articleselect_ajax_{$id|escape:'javascript'}").replaceWith(responsedata);
                 }
             }
         });
     });
 
-    $('.content_article_include .content_article_include_holder .toolbar #article_include_save_settings_{$id|escape}').click(function() {
-        $('.content_article_include_holder #content_article_include_form_{$id|escape}').submit();
+    $(".content_article_include .content_article_include_holder .toolbar #article_include_save_settings_{$id|escape:'javascript'}").click(function() {
+        $(".content_article_include_holder #content_article_include_form_{$id|escape:'javascript'}").submit();
     });
 
  })(jQuery);
