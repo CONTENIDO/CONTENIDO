@@ -105,7 +105,9 @@ function initData() {
 //Script updates sync Language and reloads left_bottom frame
 function updateCurLanguageSync() {
     curLanguageSync = document.syncfrom.syncoptions.value;
+    console.log($('.generic.generic_art_overwiew tr'));
     setTimeout(function(){ {UPDATE_SYNC_REFRESH_FRAMES} }, 10000);
+    console.log($('.generic.generic_art_overwiew tr'));
 }
 
 // need to insert function in Article Search link
