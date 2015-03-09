@@ -5,7 +5,7 @@
 
 <div>
     <label class="content_type_label">{$label_rss_source|escape}</label>
-    <div><a href="{$rss_source}" target="_blank">{$label_rss_source|label}</a></div>
+    <div><a href="{$rss_source}" target="_blank">{$label_rss_source|escape}</a></div>
 </div>
 
 <br/>
