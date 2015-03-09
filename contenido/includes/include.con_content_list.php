@@ -227,7 +227,7 @@ if (($action == 'savecontype' || $action == 10)) {
     }
     // output data as xml
     header('Content-Type: application/xml;');
-    header('Content-Disposition: attachment; filename='.$cApiArticleLanguage->get('title').';');
+    header('Content-Disposition: attachment; filename='.$cApiArticleLanguage->get('title').'.xml;');
     ob_clean();
     echo $articleElement->asXML();
     exit;
