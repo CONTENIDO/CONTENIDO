@@ -216,6 +216,22 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     global $time_online_move;
     global $timemgmt;
 
+    // CON-2134 check admin permission
+    $aAuthPerms = explode(',', $auth->auth['perm']);
+    
+    $admin = false;
+    if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+        $admin = true;
+    }
+    $oArtLang = new cApiArticleLanguage($idartlang);
+    $locked = (int) $oArtLang->get('locked');
+
+    // abort editing if article is locked and user user no admin
+    if (1 === $locked
+    && false === $admin) {
+        return $idart;
+    }
+    
     // Add slashes because single quotes will crash the db
     $page_title = addslashes($page_title);
     $title = stripslashes($title);
