@@ -251,7 +251,7 @@ if (($action == 'savecontype' || $action == 10)) {
             $xmlDocument = new SimpleXMLElement($rawData);
 
             foreach ($xmlDocument->children() as $articleNode) {
-                $articleId = $articleNode->attributes()->id;
+                $articleId = cRegistry::getArticleId();
 
                 // check article id exists in xml
                 if($articleId > 0) {
