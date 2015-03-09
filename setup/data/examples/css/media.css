@@ -156,7 +156,10 @@ body.no-media .hide_desktop {
 	.column_quarter .col {
 		width: auto;
 	}
-	.column_quarter.text.teaser {
+	/*.column_quarter.text.teaser {*/
+	/*width: auto;*/
+	/*}*/
+	.teaser-text .column_quarter.text .col {
 		width: auto;
 	}
 	.column_quarter .col,

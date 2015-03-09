@@ -434,6 +434,12 @@ p+.button.red {
     width: 700px;
 }
 
+.teaser-text .column_quarter.text {
+    width: 100%;
+}
+.teaser-text .column_quarter.text .col {
+    width: 200px;
+}
 .column_quarter {
     width: 920px;
     margin-top: 25px;
