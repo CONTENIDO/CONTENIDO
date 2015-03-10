@@ -204,8 +204,7 @@ abstract class cContentTypeAbstract {
             return;
         }
         if ($this->_settingsType === self::SETTINGS_TYPE_XML) {
-            // if the settings should be interpreted as XML, process them
-            // accordingly
+            // if the settings should be interpreted as XML, process them accordingly
             $this->_settings = cXmlBase::xmlStringToArray($this->_rawSettings);
             // add the prefix to the settings array keys
             foreach ($this->_settings as $key => $value) {
@@ -243,8 +242,7 @@ abstract class cContentTypeAbstract {
                 if (isset($_POST[$key])) {
                     $this->_settings[$key] = $_POST[$key];
                 } else if (isset($_POST[$this->_prefix . '_array_' . $keyWithoutPrefix])) {
-                    // key is of type prefix_array_field, so interpret value as
-                    // an array
+                    // key is of type prefix_array_field, so interpret value as an array
                     $this->_settings[$key] = explode(',', $_POST[$this->_prefix . '_array_' . $keyWithoutPrefix]);
                 }
                 $settings[$keyWithoutPrefix] = $this->_settings[$key];

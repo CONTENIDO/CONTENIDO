@@ -48,8 +48,12 @@ class cContentTypeText extends cContentTypeAbstract {
             $this->_settings = $_POST[$this->_prefix . '_text_' . $this->_id];
             $this->_rawSettings = $this->_settings;
             $this->_storeSettings();
+
+            // make sure to escape variables before any output on page
             $this->_settings = stripslashes($this->_settings);
+            $this->_settings = conHtmlSpecialChars($this->_settings);
             $this->_rawSettings = stripslashes($this->_rawSettings);
+            $this->_rawSettings = conHtmlSpecialChars($this->_rawSettings);
         }
     }
 
@@ -106,7 +110,7 @@ class cContentTypeText extends cContentTypeAbstract {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
+     * @return string escaped HTML code which should be shown if content type is
      *         shown in frontend
      */
     public function generateViewCode() {

@@ -41,6 +41,7 @@
             cContentType{PREFIX}AppendFormField{ID}('{PREFIX}_id', '{ID}');
             var text = $('#{PREFIX}_text_{ID}').val();
             cContentType{PREFIX}AppendFormField{ID}('{PREFIX}_text_{ID}', text);
+            // save changes done in tinymce
             Con.Tiny.setContent('{IDARTLANG}');
         }
     });
