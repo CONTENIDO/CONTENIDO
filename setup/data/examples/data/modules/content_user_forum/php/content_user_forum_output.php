@@ -297,15 +297,22 @@ class UserForumArticle {
                 $this->_messageText .= mi18n("yourArticleSaved");
             } else {
 
+
                 $this->_tpl->assign('MESSAGE', $this->_messageText);
 
                 if ($this->_userLoggedIn) {
-                    $this->_tpl->assign('INPUT_EMAIL', $this->_currentEmail . "<input type=\"hidden\" name=\"email\" value=\"conHtmlSpecialChars($this->_currentEmail)\" />");
-                    $this->_tpl->assign('INPUT_REALNAME', $this->_currentRealname . "<input type=\"hidden\" name=\"realname\" value=\"conHtmlSpecialChars($this->_currentRealname)\" />");
+                    // CON-2164 escape values
+                    $this->_currentEmail = conHtmlSpecialChars($this->_currentEmail);
+                    $this->_currentRealname = conHtmlSpecialChars($this->_currentRealname);
+                    $this->_tpl->assign('INPUT_EMAIL', $this->_currentEmail . "<input type=\"hidden\" name=\"email\" value=\"$this->_currentEmail\" />");
+                    $this->_tpl->assign('INPUT_REALNAME', $this->_currentRealname . "<input type=\"hidden\" name=\"realname\" value=\"$this->_currentRealname\" />");
                     $this->_tpl->assign('INPUT_FORUM', $forum);
                 } else {
-                    $this->_tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"conHtmlSpecialChars($email)\" />");
-                    $this->_tpl->assign('INPUT_REALNAME', "<input type=\"text\" name=\"realname\" value=\"conHtmlSpecialChars($realname)\" />");
+                    // CON-2164 escape values
+                    $email = conHtmlSpecialChars($email);
+                    $realname = conHtmlSpecialChars($realname);
+                    $this->_tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"$email\" />");
+                    $this->_tpl->assign('INPUT_REALNAME', "<input type=\"text\" name=\"realname\" value=\"$realname\" />");
                     $this->_tpl->assign('INPUT_FORUM', $forum);
                     $this->_tpl->assign('INPUT_FORUM_QUOTE', $forum_quote);
                 }
@@ -520,7 +527,7 @@ class UserForumArticle {
                 $empty = (count($content) > 0) ? false : true;
 
                 if (!$empty) {
-                    // Quote anser content
+                    // Quote answer content
                     $ar = $this->_collection->getCommentContent($replyId);
                     $transTemplate = mi18n("answerToQuote");
                     $transTemplateContent = $ar['content'];
