@@ -93,7 +93,7 @@ class cGuiScrollListAlltranslations extends cGuiScrollList {
         if ($field > 3) {
             $sortby = array();
             foreach ($this->data as $row => $cols) {
-                $sortby[$row] = trim(strtolower(strip_tags($cols[$field])));
+                $sortby[$row] = trim(strtolower(conHtmlentities($cols[$field])));
             }
             $this->data = cArray::csort($this->data, $sortby, $order);
         } else {
@@ -574,7 +574,7 @@ foreach ($allTranslations as $hash => $translationArray) {
         } else {
             $sLinkEdit = '';
         }
-        $sTranslationFirstLang = trim(strip_tags($translationArray['translations'][$lang])) . $sLinkEdit;
+        $sTranslationFirstLang = trim(conHtmlentities($translationArray['translations'][$lang])) . $sLinkEdit;
     }
     // building parameter array
     $countCurrentModuleInUse = count($modulesInUse[$translationArray['idmod']]);
@@ -629,7 +629,7 @@ foreach ($allTranslations as $hash => $translationArray) {
             } else {
                 $sLinkEdit = '';
             }
-            $fields[] = trim(strip_tags($translationArray['translations'][$idExtraLang])) . $sLinkEdit;
+            $fields[] = trim(conHtmlentities($translationArray['translations'][$idExtraLang])) . $sLinkEdit;
         }
     }
     if ($action == 'con_translate_edit' && $editstring == $hash && $editlang == 'all') {
