@@ -148,6 +148,10 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
     cFileHandler::write($path . $sFilename, $tempCode);
     $bEdit = cFileHandler::read($path . $sFilename);
 
+    // trigger a code cache rebuild
+    $oApiModule = new cApiModule($idmod);
+    $oApiModule->store();
+
     if ($sFilename != $sTempFilename && $bEdit) {
         $page->displayInfo(i18n('Renamed and saved changes successfully!'));
     } elseif (!$bEdit) {
