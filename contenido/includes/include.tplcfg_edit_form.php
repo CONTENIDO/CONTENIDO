@@ -263,7 +263,8 @@ $tpl2 = new cTemplate();
 $tpl2->set('s', 'NAME', 'idtpl');
 $tpl2->set('s', 'CLASS', 'text_medium');
 
-if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || (int) $artlang->get('locked') === 1 ) {
+// CON-2157 fix categorie page has no article
+if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || is_object($artlang) && $artlang->get('locked') === 1 ) {
     $disabled2 = ($admin)? '' : 'disabled="disabled"' ;
 }
 
