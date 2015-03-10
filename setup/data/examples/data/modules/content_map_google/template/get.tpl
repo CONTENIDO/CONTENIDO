@@ -31,7 +31,7 @@
     <label class="content_type_label">{$trans.markerTitle|escape}</label>
     <div>{$markerTitle}</div>
 
-    <label class="content_type_label">{$trans.way}</label>
+    <label class="content_type_label">{$trans.wayDescription|escape}</label>
     <div>{$way}</div>
 
 {else}
