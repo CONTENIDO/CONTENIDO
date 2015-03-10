@@ -59,7 +59,9 @@ class cI18n {
                 setlocale(LC_MESSAGES, $langCode);
             }
 
-            setlocale(LC_CTYPE, $langCode);
+            if (false === empty($langCode)) {
+                setlocale(LC_CTYPE, $langCode);
+            }
         }
 
         self::$_i18nData['domains'][$domain] = $localePath;
@@ -98,7 +100,22 @@ class cI18n {
                 $belang = false;
             }
 
-            self::init($cfg['path']['contenido_locale'], $belang, $domain);
+            // CON-2165
+            // initialise localisation of plugins correctly in frontend
+            if ($domain === 'contenido') {
+                self::init($cfg['path']['contenido_locale'], $belang, $domain);
+            } else {
+                if (empty($belang)) {
+                    $oApiLang = cRegistry::getLanguage();
+                    $language = $oApiLang->getProperty('language', 'code');
+                    $country = $oApiLang->getProperty('language', 'code');
+            
+                    $locale = $language . '_' . strtoupper($country);
+                    self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $locale, $domain);
+                } else {
+                    self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $belang, $domain);
+                }
+            }
         }
 
         // Is emulator to use?
@@ -110,7 +127,7 @@ class cI18n {
             $ret = htmlspecialchars_decode(utf8_decode(conHtmlentities($ret, ENT_COMPAT, 'utf-8', false)));
             return $ret;
         }
-
+        
         // Try to use native gettext implementation
         if (extension_loaded('gettext')) {
             if (function_exists('dgettext')) {
@@ -122,7 +139,7 @@ class cI18n {
                 }
             }
         }
-
+        
         // Emulator as fallback
         $ret = self::emulateGettext($string, $domain);
         if (isUtf8($ret)) {
@@ -197,11 +214,10 @@ class cI18n {
         }
 
         $translationFile = self::$_i18nData['domains'][$domain] . self::$_i18nData['language'] . '/LC_MESSAGES/' . $domain . '.po';
-
         if (!cFileHandler::exists($translationFile)) {
             return $string;
         }
-
+        
         if (!isset(self::$_i18nData['files'][$domain])) {
             self::$_i18nData['files'][$domain] = self::_loadTranslationFile($translationFile);
         }

@@ -557,43 +557,46 @@ class PifaForm extends Item {
 
         // cMailer
 
-        $mailer = new cMailer();
-        $message = Swift_Message::newInstance($opt['subject'], $opt['body'], 'text/plain', $opt['charSet']);
+        try {
+            $mailer = new cMailer();
+            $message = Swift_Message::newInstance($opt['subject'], $opt['body'], 'text/plain', $opt['charSet']);
 
-        // add attachments by names
-        if (array_key_exists('attachmentNames', $opt)) {
-            if (is_array($opt['attachmentNames'])) {
-                $values = $this->getValues();
-                foreach ($opt['attachmentNames'] as $column => $path) {
-                    if (!file_exists($path)) {
-                        continue;
+            // add attachments by names
+            if (array_key_exists('attachmentNames', $opt)) {
+                if (is_array($opt['attachmentNames'])) {
+                    $values = $this->getValues();
+                    foreach ($opt['attachmentNames'] as $column => $path) {
+                        if (!file_exists($path)) {
+                            continue;
+                        }
+                        $attachment = Swift_Attachment::fromPath($path);
+                        $filename = $values[$column];
+                        $attachment->setFilename($filename);
+                        $message->attach($attachment);
                     }
-                    $attachment = Swift_Attachment::fromPath($path);
-                    $filename = $values[$column];
-                    $attachment->setFilename($filename);
-                    $message->attach($attachment);
                 }
             }
-        }
-
-        // add attachments by string
-        if (array_key_exists('attachmentStrings', $opt)) {
-            if (is_array($opt['attachmentStrings'])) {
-                foreach ($opt['attachmentStrings'] as $filename => $string) {
-                    // TODO mime type should be configurale
-                    $attachment = Swift_Attachment::newInstance($string, $filename, 'text/csv');
-                    $message->attach($attachment);
+    
+            // add attachments by string
+            if (array_key_exists('attachmentStrings', $opt)) {
+                if (is_array($opt['attachmentStrings'])) {
+                    foreach ($opt['attachmentStrings'] as $filename => $string) {
+                        // TODO mime type should be configurale
+                        $attachment = Swift_Attachment::newInstance($string, $filename, 'text/csv');
+                        $message->attach($attachment);
+                    }
                 }
             }
+    
+            // add sender
+            $message->addFrom($opt['from'], $opt['fromName']);
+
+            // add recipient
+            $to = explode(',', $opt['to']);
+            $message->setTo(array_combine($to, $to));
+        } catch (Exception $e) {
+            throw new PifaException($e->getMessage());
         }
-
-        // add sender
-        $message->addFrom($opt['from'], $opt['fromName']);
-
-        // add recipient
-        $to = explode(',', $opt['to']);
-        $message->setTo(array_combine($to, $to));
-
         // send mail
         if (!$mailer->send($message)) {
 			$msg = mi18n("PIFA_MAIL_ERROR_SUFFIX");
