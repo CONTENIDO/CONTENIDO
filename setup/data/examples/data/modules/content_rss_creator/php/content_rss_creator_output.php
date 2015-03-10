@@ -1,7 +1,7 @@
 <?php
 
 /**
- * description: google map
+ * description: rss creator
  *
  * @package Module
  * @subpackage ContentRssCreator
@@ -95,6 +95,17 @@ foreach ($articles as $article) {
     $child->addChild('pubDate', date('D, d M Y H:i:s T', strtotime($article->getField('published'))));
 }
 
-$success = $rssFeed->asXML($filename);
+if (isset($cfgClient[$client]['xml']['frontendpath'])) {
+    if (false === cFileHandler::exists($cfgClient[$client]['xml']['frontendpath'])) {
+        cDirHandler::create($cfgClient[$client]['xml']['frontendpath'], true);
+    }
+    // try to write xml to disk
+    $success = $rssFeed->asXML($filename);
+    if (false !== $success) {
+        echo conHtmlentities(mi18n("LABEL_RSS_CREATED"));
+        return;
+    }
+}
+echo conHtmlentities(mi18n("LABEL_RSS_CREATION_FAILED"));
 
 ?>
