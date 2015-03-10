@@ -3,7 +3,7 @@
     $(function() {
         // replace the text div with an input field if the div or the edit button is clicked
         $('#{PREFIX}_editbutton_{ID}, #{PREFIX}_text_{ID}').click(function() {
-            var text = $('#{PREFIX}_text_{ID}').html();
+            var text = $('#{PREFIX}_text_{ID}').text();
             $('#{PREFIX}_text_{ID}').replaceWith('{TEXTBOX}');
             $('#{PREFIX}_text_{ID}').val(text);
             $('#{PREFIX}_text_{ID}').focus();
