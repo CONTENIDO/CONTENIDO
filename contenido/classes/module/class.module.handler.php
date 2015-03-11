@@ -416,6 +416,7 @@ class cModuleHandler {
      * @param string $type css | js | template directory of the file
      * @param string $fileName file name
      * @param string $content content of the file
+     * @return boolean true if file can be created, and false otherwise
      */
     public function createModuleFile($type, $fileName = NULL, $content = '') {
         // make directory if not exist

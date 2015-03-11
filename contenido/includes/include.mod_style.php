@@ -156,7 +156,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
 
     if ($sFilename != $sTempFilename && $bEdit) {
         $page->displayInfo(i18n('Renamed and saved changes successfully!'));
-    } elseif (!$bEdit) {
+    } elseif (false === $bEdit) {
         $page->displayError(i18n("Can't save file!"));
     } else {
         $page->displayInfo(i18n('Saved changes successfully!'));
