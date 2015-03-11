@@ -291,11 +291,13 @@ class cModuleTemplateHandler extends cModuleHandler {
      */
     private function _new() {
         $fileName = $this->_newFileName;
+        var_dump($this->_templateFileEnding);
         // if target filename already exists insert few random characters into target filename
         if ($this->existFile('template', $this->_newFileName . '.' . $this->_templateFileEnding)) {
             $fileName = $this->_newFileName . $this->getRandomCharacters(5);
         }
-        $this->createModuleFile('template', $fileName . '.' . $this->_templateFileEnding, '');
+        $fileName = $fileName . '.' . $this->_templateFileEnding;
+        $this->createModuleFile('template', $fileName, '');
         $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Created a new template file successfully!'));
 
         // trigger a smarty cache rebuild for new template file
