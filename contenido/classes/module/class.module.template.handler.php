@@ -249,6 +249,10 @@ class cModuleTemplateHandler extends cModuleHandler {
      * Save the code in the file
      */
     private function _save() {
+        // trigger a smarty cache rebuild for template if changes were saved
+        $tpl = cSmartyFrontend::getInstance();
+        $tpl->clearCache($this->getTemplatePath($this->_file));
+
         // save the contents of file
         $ret = $this->createModuleFile('template', $this->_file, $this->_code);
         // show message
@@ -268,6 +272,11 @@ class cModuleTemplateHandler extends cModuleHandler {
      * @throws cException if rename was not successfull
      */
     private function _rename() {
+        // trigger a smarty cache rebuild for old and new template file name
+        $tpl = cSmartyFrontend::getInstance();
+        $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
+        $tpl->clearCache($this->getTemplatePath($this->_file));
+
         if ($this->renameModuleFile('template', $this->_tmpFile, $this->_file) == false) {
             throw new cException(i18n('Rename of the file failed!'));
         } else {
@@ -281,16 +290,18 @@ class cModuleTemplateHandler extends cModuleHandler {
      * Make new file
      */
     private function _new() {
-        $fileName = '';
+        $fileName = $this->_newFileName;
+        // if target filename already exists insert few random characters into target filename
         if ($this->existFile('template', $this->_newFileName . '.' . $this->_templateFileEnding)) {
-            $fileName = $this->_newFileName . $this->getRandomCharacters(5) . '.' . $this->_templateFileEnding;
-            $this->createModuleFile('template', $fileName, '');
-            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Created a new template file successfully!'));
-        } else {
-            $this->createModuleFile('template', $this->_newFileName . '.' . $this->_templateFileEnding, '');
-            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Created a new template file successfully!'));
-            $fileName = $this->_newFileName . '.' . $this->_templateFileEnding;
+            $fileName = $this->_newFileName . $this->getRandomCharacters(5);
         }
+        $this->createModuleFile('template', $fileName . '.' . $this->_templateFileEnding, '');
+        $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Created a new template file successfully!'));
+
+        // trigger a smarty cache rebuild for new template file
+        $tpl = cSmartyFrontend::getInstance();
+        $tpl->clearCache($this->getTemplatePath($fileName));
+
         // set to new fileName
         $this->_file = $fileName;
         $this->_tmpFile = $fileName;
@@ -300,6 +311,10 @@ class cModuleTemplateHandler extends cModuleHandler {
      * Delete a file
      */
     private function _delete() {
+        // trigger a smarty cache rebuild for template that should be deleted
+        $tpl = cSmartyFrontend::getInstance();
+        $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
+
         $ret = $this->deleteFile('template', $this->_tmpFile);
         if ($ret == true) {
             $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Deleted the template file successfully!'));
@@ -537,7 +552,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     public function display($perm, $notification, $belang, $readOnly) {
         $myAction = $this->_getAction();
 
-        // if the user doesn't have premissions
+        // if the user doesn't have permissions
         if ($this->_havePremission($perm, $notification, $myAction) === -1) {
             return;
         }

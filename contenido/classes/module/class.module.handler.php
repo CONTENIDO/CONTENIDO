@@ -71,7 +71,7 @@ class cModuleHandler {
     protected $_type;
 
     /**
-     * The aliac name of the modul
+     * The alias name of the modul
      *
      * @var string
      */
@@ -328,7 +328,7 @@ class cModuleHandler {
     /**
      * Get the template path.
      * If file is set it will
-     * return the complete paht + file
+     * return the complete path + file
      *
      * @param string $file
      * @return string

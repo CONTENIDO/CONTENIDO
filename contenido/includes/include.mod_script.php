@@ -40,11 +40,10 @@ if (empty($action)) {
     $actionRequest = $action;
 }
 
-$premCreate = false;
-
+$permCreate = false;
 if (!$contenidoModulHandler->existFile('js', $contenidoModulHandler->getJsFileName())) {
     if (!$perm->have_perm_area_action('js', $sActionCreate)) {
-        $premCreate = true;
+        $permCreate = true;
     }
 }
 
@@ -52,7 +51,7 @@ $page = new cGuiPage("mod_script");
 
 $tpl->reset();
 
-if (!$perm->have_perm_area_action('js', $actionRequest) || $premCreate) {
+if (!$perm->have_perm_area_action('js', $actionRequest) || $permCreate) {
     $notification->displayNotification('error', i18n('Permission denied'));
     return;
 }
@@ -139,6 +138,12 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
     cFileHandler::validateFilename($sFilename);
     cFileHandler::write($path . $sFilename, $tempCode);
     $bEdit = cFileHandler::read($path . $sFilename);
+
+    if (false !== $bEdit) {
+        // trigger a code cache rebuild if changes were saved
+        $oApiModule = new cApiModule($idmod);
+        $oApiModule->store();
+    }
 
     // Show message for user
     if ($sFilename != $sTempFilename) {
