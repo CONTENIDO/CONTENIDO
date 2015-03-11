@@ -691,23 +691,22 @@ ul.link_list li {
     margin: 0 0 18px;
 }
 
-ul.link_list li a:first-child {
+ul.link_list li:hover a.link_list:first-child {
+	background
+}
+
+ul.link_list li a.link_list:first-child {
     background: url('../images/misc/sprite.png') no-repeat 0 -196px;
 }
 
-ul.link_list li:hover a:first-child {
+ul.link_list li:hover a.link_list:first-child {
     color: #0083cb;
     background: url('../images/misc/sprite.png') no-repeat 0 -231px;
 }
 
-ul.link_list li a:link,ul.link_list li a:active,ul.link_list li a:visited {
+ul.link_list li a.link_list:link,ul.link_list li a.link_list:active,ul.link_list li a.link_list:visited {
     color: #9ba21b;
     padding-left: 9px;
-}
-
-/*Todo fix without important*/
-ul.link_list .mceButton {
-    background: none !important;
 }
 
 ul.link_list li p {
