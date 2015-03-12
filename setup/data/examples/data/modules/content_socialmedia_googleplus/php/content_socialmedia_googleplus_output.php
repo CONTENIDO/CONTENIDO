@@ -13,7 +13,7 @@
  */
 
 $tpl = cSmartyFrontend::getInstance();
-
+const PROTOCOL = 'http://';
 $urlLabel = mi18n("URL");
 $automaticURLLabel = mi18n("AUTOMATIC_URL_LABEL");
 $lookLabel = mi18n("LOOK");
@@ -34,7 +34,14 @@ $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
 if (cRegistry::isBackendEditMode() && 'POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'gplus') {
-    conSaveContentEntry($idartlang, "CMS_HTML", 3000, $_POST['url']);
+
+    // CON-2174
+    $url = $_POST['url'];
+    if (strpos($url, PROTOCOL) !== 0) {
+        $url = PROTOCOL . $url;
+    }
+
+    conSaveContentEntry($idartlang, "CMS_HTML", 3000, $url);
     conSaveContentEntry($idartlang, "CMS_HTML", 3001, $_POST['size']);
     conSaveContentEntry($idartlang, "CMS_HTML", 3002, $_POST['counter']);
     conSaveContentEntry($idartlang, "CMS_HTML", 3003, $_POST['currentArticleUrl']);
@@ -72,8 +79,8 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign("smallHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SMALL_HELP"))));
     $tpl->assign("mediumHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("MEDIUM_HELP"))));
     $tpl->assign("tallHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("TALL_HELP"))));
-	$tpl->assign("counterHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("COUNTER_HELP"))));
-    
+    $tpl->assign("counterHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("COUNTER_HELP"))));
+
     $tpl->display('google_plus_config_view.tpl');
 } else {
 
