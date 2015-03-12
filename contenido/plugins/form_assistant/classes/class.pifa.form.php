@@ -759,7 +759,10 @@ class PifaForm extends Item {
             array_push($columns, 'pifa_timestamp');
         }
         foreach ($this->getFields() as $index => $pifaField) {
-            $columns[] = $pifaField->get('column_name');
+            // CON-2169 filter empty values
+            if (strlen(trim($pifaField->get('column_name'))) > 0) {
+                $columns[] = $pifaField->get('column_name');
+            }
         }
 
         $out = '';
