@@ -146,6 +146,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $target = ($this->_settings['linkeditor_newwindow'] === 'true') ? '_blank' : '';
 
         $link = new cHTMLLink($href);
+        $link->setClass('link_list');
         $link->setAlt($alt);
         $link->setTargetFrame($target);
         $link->setContent($linktext);
@@ -225,7 +226,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $templateTabs->next();
 
         // create code for basic settings "tab" - these settings are actually
-        // visible any tim
+        // visible any time
         $templateTabs->set('d', 'TAB_ID', 'basic-settings');
         $templateTabs->set('d', 'TAB_CLASS', 'basic-settings');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateBasicSettings());
