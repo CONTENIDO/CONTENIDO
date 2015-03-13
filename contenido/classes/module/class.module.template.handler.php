@@ -256,7 +256,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         // save the contents of file
         $ret = $this->createModuleFile('template', $this->_file, $this->_code);
         // show message
-        if ($ret) {
+        if (true === $ret) {
             $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Saved changes successfully!'));
         }
         // if user selected other file display it
