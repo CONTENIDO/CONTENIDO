@@ -291,7 +291,7 @@ class cModuleTemplateHandler extends cModuleHandler {
      */
     private function _new() {
         $fileName = $this->_newFileName;
-        var_dump($this->_templateFileEnding);
+
         // if target filename already exists insert few random characters into target filename
         if ($this->existFile('template', $this->_newFileName . '.' . $this->_templateFileEnding)) {
             $fileName = $this->_newFileName . $this->getRandomCharacters(5);
