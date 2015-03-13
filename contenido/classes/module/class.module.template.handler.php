@@ -427,7 +427,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     }
 
     private function _makeFormular($belang, $readOnly) {
-        $fileForm = new cGuiTableForm("file_editor");
+        $fileForm = new cGuiTableForm("file__chooser");
         $fileForm->addHeader(i18n('Choose file'));
         $fileForm->setTableid('choose_mod_template_file');
         $fileForm->setVar('area', $this->_area);
@@ -560,30 +560,34 @@ class cModuleTemplateHandler extends cModuleHandler {
         }
 
         try {
-            switch ($myAction) {
-                case 'save':
-                    if(!$readOnly) {
-                        $this->_save();
-                    }
-                    break;
-                case 'rename':
-                    if(!$readOnly) {
-                        $this->_rename();
-                    }
-                    break;
-                case 'new':
-                    if(!$readOnly) {
-                        $this->_new();
-                    }
-                    break;
-                case 'delete':
-                    if(!$readOnly) {
-                        $this->_delete();
-                    }
-                    break;
-                default:
-                    $this->_default();
-                    break;
+            if (isset($_POST['selectedFile'])) {
+                switch ($myAction) {
+                    case 'save':
+                        if(!$readOnly) {
+                            $this->_save();
+                        }
+                        break;
+                    case 'rename':
+                        if(!$readOnly) {
+                            $this->_rename();
+                        }
+                        break;
+                    case 'new':
+                        if(!$readOnly) {
+                            $this->_new();
+                        }
+                        break;
+                    case 'delete':
+                        if(!$readOnly) {
+                            $this->_delete();
+                        }
+                        break;
+                    default:
+                        $this->_default();
+                        break;
+                }
+            } else {
+                $this->_default();
             }
 
             $this->_code = $this->getFilesContent('template', '', $this->_file);
