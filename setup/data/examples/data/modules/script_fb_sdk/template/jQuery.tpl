@@ -21,25 +21,25 @@ $(document).ready(function() {
     $.ajaxSetup({
         cache: true
     });
-    $.getScript('//connect.facebook.net/{/literal}{$locale}{literal}/all.js', function() {
+    $.getScript('//connect.facebook.net/{/literal}{$locale|escape:'javascript'}{literal}/all.js', function() {
         FB.init({{/literal}
 {if 0 lt $channelUrl|trim|strlen}
-            channelUrl : '{$channelUrl}',
+            channelUrl : '{$channelUrl|escape:'javascript'}',
 {/if}
 {if 0 lt $cookie|trim|strlen}
-            cookie : {$cookie},
+            cookie : {$cookie|escape:'javascript'},
 {/if}
 {if 0 lt $kidDirectedSite|trim|strlen}
-            kidDirectedSite : {$kidDirectedSite},
+            kidDirectedSite : {$kidDirectedSite|escape:'javascript'},
 {/if}
 {if 0 lt $status|trim|strlen}
-            status : {$status},
+            status : {$status|escape:'javascript'},
 {/if}
 {if 0 lt $appId|trim|strlen}
-            appId : '{$appId}'
+            appId : '{$appId|escape:'javascript'}'
 {/if}
 {if 0 lt $xfbml|trim|strlen}
-            xfbml : {$xfbml}
+            xfbml : {$xfbml|escape:'javascript'}
 {else}
             xfbml : false
 {/if}{literal}

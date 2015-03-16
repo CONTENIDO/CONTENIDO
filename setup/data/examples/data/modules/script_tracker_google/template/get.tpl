@@ -1,6 +1,6 @@
 <script type="text/javascript">
  var _gaq = _gaq || [];
- _gaq.push(['_setAccount', '{$account}']);
+ _gaq.push(['_setAccount', '{$account|escape:'javascript'}']);
  _gaq.push(['_gat._anonymizeIp']);
  _gaq.push(['_trackPageview']);
 

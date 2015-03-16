@@ -108,7 +108,7 @@ class cI18n {
                 if (empty($belang)) {
                     $oApiLang = cRegistry::getLanguage();
                     $language = $oApiLang->getProperty('language', 'code');
-                    $country = $oApiLang->getProperty('language', 'code');
+                    $country = $oApiLang->getProperty('country', 'code');
             
                     $locale = $language . '_' . strtoupper($country);
                     self::init($cfg['path']['contenido'] . $cfg['path']['plugins'] . $domain . '/locale/', $locale, $domain);
