@@ -34,7 +34,7 @@
 <div>
     <label class="content_type_label">{$label_rss_logo|escape}</label>
     <div>{$rss_logo}</div>
-    <div><img src="{$rss_logo_display}" alt=""/></div>
+    <div><img src="{$rss_logo_display|escape}" alt=""/></div>
 </div>
 
 <br/>
