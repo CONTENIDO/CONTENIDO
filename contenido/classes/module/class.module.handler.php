@@ -661,8 +661,14 @@ class cModuleHandler {
      * @return boolean true or false
      */
     public function moduleWriteable($type) {
+        // check if type directory inside module folder exists and has write permissions
         if (true === cFileHandler::exists($this->_modulePath . $this->_directories[$type])) {
             return cFileHandler::writeable($this->_modulePath . $this->_directories[$type]);
+        }
+
+        // check if module folder exists and has write permissions
+        if (true === cFileHandler::exists($this->_modulePath)) {
+            return cFileHandler::writeable($this->_modulePath);
         }
 
         return false;
