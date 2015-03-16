@@ -411,7 +411,7 @@ class cModuleHandler {
     }
 
     /**
-     * Make and save new file
+     * Create and save new file
      *
      * @param string $type css | js | template directory of the file
      * @param string $fileName file name
@@ -448,9 +448,9 @@ class cModuleHandler {
                     $notification->displayNotification('error', i18n("Can't make file: ") . $fileName);
                     return false;
                 }
-            } elseif ($content != '') {
+            } else {
                 $content = iconv($this->_encoding, $this->_fileEncoding, $content);
-                if (!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName, $this->_modulePath . $this->_directories[$type])) {
+                if (!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName, $this->_modulePath . $this->_directories[$type])) {error_log("no write");
                     return false;
                 }
                 if (cFileHandler::write($this->_modulePath . $this->_directories[$type] . $fileName, $content) === false) {
@@ -661,11 +661,17 @@ class cModuleHandler {
      * @return boolean true or false
      */
     public function moduleWriteable($type) {
-        if (!cFileHandler::writeable($this->_modulePath . $this->_directories[$type])) {
-            return false;
-        } else {
-            return true;
+        // check if type directory inside module folder exists and has write permissions
+        if (true === cFileHandler::exists($this->_modulePath . $this->_directories[$type])) {
+            return cFileHandler::writeable($this->_modulePath . $this->_directories[$type]);
         }
+
+        // check if module folder exists and has write permissions
+        if (true === cFileHandler::exists($this->_modulePath)) {
+            return cFileHandler::writeable($this->_modulePath);
+        }
+
+        return false;
     }
 
     /**
@@ -1100,7 +1106,7 @@ class cModuleHandler {
      * @return $modulePath string
      */
     protected static function _getModulePath() {
-    	 return $this->_modulePath;
+         return $this->_modulePath;
     }
 
 }
