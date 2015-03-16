@@ -65,7 +65,7 @@ class cContentTypeDate extends cContentTypeAbstract {
             $locale = $oApiLang->getProperty('dateformat', 'locale');
             if (empty($locale)) {
                 $language = $oApiLang->getProperty('language', 'code');
-                $country = $oApiLang->getProperty('language', 'code');
+                $country = $oApiLang->getProperty('country', 'code');
 
                 $locale = $language . '_' . strtoupper($country);
             }

@@ -54,6 +54,6 @@ header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $cache_expire) . ' GMT');
 $settingType = 'fb-sdk';
 $locale = getEffectiveSetting($settingType, 'locale', 'en_US');
 
-echo '<script src="//connect.facebook.net/' . $locale . '/all.js"></script>';
+echo '<script src="//connect.facebook.net/' . conHtmlSpecialChars($locale) . '/all.js"></script>';
 
 ?>
