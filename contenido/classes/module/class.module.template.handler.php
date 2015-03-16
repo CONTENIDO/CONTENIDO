@@ -560,7 +560,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         }
 
         try {
-            if (isset($_POST['selectedFile'])) {
+            if (isset($_POST['code'])) {
                 switch ($myAction) {
                     case 'save':
                         if(!$readOnly) {
@@ -587,7 +587,13 @@ class cModuleTemplateHandler extends cModuleHandler {
                         break;
                 }
             } else {
-                $this->_default();
+                // if user selected other file display it
+                if ($this->_hasSelectedFileChanged()) {
+                    $this->_file = $this->_selectedFile;
+                    $this->_tmpFile = $this->_selectedFile;
+                } else {
+                    $this->_default();
+                }
             }
 
             $this->_code = $this->getFilesContent('template', '', $this->_file);
