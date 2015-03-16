@@ -150,8 +150,8 @@ class cModuleSearch extends cModuleHandler {
                             AND type RLIKE '%s'
                             OR description RLIKE '%s'
                             OR name RLIKE  '%s'" . $idFilter . ")
-                            ORDER BY %s %s", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
-        
+                            ORDER BY %s %s", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', $this->_filter, $this->_orderBy, $this->_sortOrder);
+
         $db = cRegistry::getDb();
         $db->query($sql);
         $result = array();
