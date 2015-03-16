@@ -2,3 +2,5 @@ LABEL_FORM_CONTACT=contact form
 PIFA_MAIL_ERROR_SUFFIX=Mail could not be sent
 PIFA_CLIENT_MAIL=Client mail error
 PIFA_SYSTEM_MAIL=System mail error
+REPLY_HEADLINE=Thank you for your contact request!
+REPLY_TEXT=We will get in touch with you soon.
