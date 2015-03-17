@@ -511,15 +511,30 @@ class cContentVersioning {
 	// Get the version number of the new Article Language Version that belongs to the Content
 	$parameters['version'] = $artLangVersion->getField('version');
         
-        // if there already is a content type like this in this version, make an update
+        $parametersToCheck = $parameters;
+        unset(
+                $parametersToCheck['lastmodified'],
+                $parameters2['author'],
+                $parameters2['value'],
+                $parameters2['created']
+        );
+        
+        // if there already is a content type like this in this version, 
+        // create a new article version, too (needed for storing a version after
+        // first change in simple-mode)
         $contentVersion = new cApiContentVersion();
-        $contentVersion->loadByMany($parameters);
-        if ($contentVersion->isLoaded()) {
-            foreach ($parameters AS $key => $value) {
-                $contentVersion->set($key, $value);
-            }
-            $contentVersion->store();     
-        } else {
+        //$contentVersion->loadByMany($parameters);
+        $contentVersion->loadByMany($parametersToCheck);
+        if ($contentVersion->isLoaded()) {echo "jetzt<hr>";
+            //foreach ($parameters AS $key => $value) {
+                //$contentVersion->set($key, $value);
+                $artLangVersion = $this->createArticleLanguageVersion($parametersArticleVersion);
+                $parameters['version'] = $artLangVersion->getField('version');
+                $contentVersionColl = new cApiContentVersionCollection();
+                $contentVersionColl->create($parameters);
+            //}
+            //$contentVersion->store();     
+        } else {echo "nicht<hr>";
             // if there is no content type like this in this version, create one
             $contentVersionColl = new cApiContentVersionCollection();
             $contentVersionColl->create($parameters);

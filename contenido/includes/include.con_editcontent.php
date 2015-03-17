@@ -136,6 +136,7 @@ $articleType = $versioning->getArticleType(
                 );
 $code = '';
 $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
+$versioningElement = '';
 
 switch ($versioningState) {
     case 'simple' :
@@ -181,7 +182,7 @@ switch ($versioningState) {
                 . 'Hier durchgeführte Aktionen beziehen sich nur auf Contents!');
         
         // add code
-        $code .=    $versioning->getVersionSelectionField(
+        $versioningElement .=    $versioning->getVersionSelectionField(
                         'editcontentList',
                         $selectElement->toHtml(),
                         $markAsCurrentButton,
@@ -273,7 +274,7 @@ switch ($versioningState) {
                 . 'Hier durchgeführte Aktionen beziehen sich nur auf Contents!');
         
         // add code
-        $code .=    $versioning->getVersionSelectionField(
+        $versioningElement .=    $versioning->getVersionSelectionField(
                         'editcontentList',
                         $selectElement->toHtml(),
                         $markAsCurrentButton,
@@ -296,7 +297,7 @@ switch ($versioningState) {
         $versioning_info_text = i18n('Aktiviere die Artikel-Versionierung in den Administration/System/System-Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen eines Artikels zurückgegriffen werden kann.');
  
         // add code
-        $code .=    $versioning->getVersionSelectionField(
+        $versioningElement .=    $versioning->getVersionSelectionField(
                         'editcontentList',
                         $selectElement->toHtml(),
                         $markAsCurrentButton,
@@ -350,6 +351,7 @@ if ($selectedArticle != NULL) {
         $edit = false;
     }
 
+        $code .= $versioningElement;
     $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, $editable, $version); 
 
 }
