@@ -154,7 +154,7 @@ switch ($versioningState) {
         $optionElementParameters = $versioning->getDataForSelectElement((int) $idartlang, 'content');
 
         // Create Current and Editable Content Option Element
-        $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
         if ($articleType == 'current') {
             $optionElement->setSelected(true);
         }
@@ -172,14 +172,14 @@ switch ($versioningState) {
         $selectElement->setEvent("onchange", "editcontent.idArtLangVersion.value=$('#selectVersionElement option:selected').val();editcontent.submit()");
         
         // Create markAsCurrent Button/Label
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Current Version'));
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'));
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
         
-        $versioning_info_text = i18n('<strong>Konfigurationsstufe \'simple\':</strong> Ältere Contentversionen lassen sich wiederherstellen (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
-                . 'Hier durchgeführte Aktionen beziehen sich nur auf Contents!');
+        $versioning_info_text = i18n("<strong>Mode 'simple':</strong> Older Article Versions can be restored and reviewed "
+                . "(Configurations under Administration/System configuration).<br/><br/>Accomplished actions only refer to contents itself!");
         
         // add code
         $versioningElement .=    $versioning->getVersionSelectionField(
@@ -227,7 +227,7 @@ switch ($versioningState) {
                 
         // set elements/buttons
         if (isset($versioning->editableArticleId)) {
-            $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId((int) $idartlang));
+            $optionElement = new cHTMLOptionElement(i18n('Draft'), $versioning->getEditableArticleId((int) $idartlang));
             if ($articleType == 'editable') {
                 $optionElement->setSelected(true);
             }
@@ -237,7 +237,7 @@ switch ($versioningState) {
             }
         }
         
-        $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
         if ($articleType == 'current') {
             $optionElement->setSelected(true);
         }
@@ -259,7 +259,7 @@ switch ($versioningState) {
         
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
-            $buttonTitle = i18n('Copy to Editable Version');
+            $buttonTitle = i18n('Copy to Draft');
         } else if ($articleType == 'editable') {
             $buttonTitle = i18n('Publish Draft');
         }
@@ -289,12 +289,12 @@ switch ($versioningState) {
         $selectElement->appendOptionElement($optionElement);
         $selectElement->setAttribute('disabled', 'disabled');
         
-        $buttonTitle = i18n('Copy to Current Version');
+        $buttonTitle = i18n('Copy to Published Version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
         
         // set info text
-        $versioning_info_text = i18n('Aktiviere die Artikel-Versionierung in den Administration/System/System-Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen eines Artikels zurückgegriffen werden kann.');
+        $versioning_info_text = i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.');
  
         // add code
         $versioningElement .=    $versioning->getVersionSelectionField(
@@ -351,7 +351,7 @@ if ($selectedArticle != NULL) {
         $edit = false;
     }
 
-        $code .= $versioningElement;
+    $code .= $versioningElement;
     $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, $editable, $version); 
 
 }

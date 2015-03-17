@@ -326,7 +326,7 @@ switch ($versioning->getState()) {
         // set editable element 
         $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
         if (isset($versioning->editableArticleId)) {
-            $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId($art->getField('idartlang'))); //key($optionElementParameters[max(array_keys($optionElementParameters))]));
+            $optionElement = new cHTMLOptionElement(i18n('Draft'), $versioning->getEditableArticleId($art->getField('idartlang'))); //key($optionElementParameters[max(array_keys($optionElementParameters))]));
             if ($articleType == 'editable') {
                 $optionElement->setSelected(true);
             }
@@ -338,7 +338,7 @@ switch ($versioning->getState()) {
         }
 
         // Create Metatag Version Option Elements
-        $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
         if ($articleType == 'current') {
             $optionElement->setSelected(true);
         }
@@ -362,7 +362,7 @@ switch ($versioning->getState()) {
 
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
-            $buttonTitle = i18n('Copy to Editable Version');
+            $buttonTitle = i18n('Copy to Draft');
         } else if ($articleType == 'editable') {
             $buttonTitle = i18n('Publish Draft');
         }
@@ -380,7 +380,7 @@ switch ($versioning->getState()) {
         
         // Create Metatag Version Option Elements
         $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
-        $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
         if ($articleType == 'current') {
             $optionElement->setSelected(true);
         }
@@ -404,7 +404,7 @@ switch ($versioning->getState()) {
 
 
         // Create markAsCurrent Button
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Current Version'), 'copytobutton');
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'), 'copytobutton');
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
@@ -424,12 +424,12 @@ switch ($versioning->getState()) {
         $selectElement->setAttribute('disabled', 'disabled');
         $tpl->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
 
-        $buttonTitle = i18n('Copy to Current Version');
+        $buttonTitle = i18n('Copy to Published Version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
         $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $infoButton = new cGuiBackendHelpbox(i18n('Aktiviere die Artikel-Versionierung in den Administration/System/System-Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen eines Artikels zurückgegriffen werden kann.'));
+        $infoButton = new cGuiBackendHelpbox(i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.'));
         $tpl->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());  
         
     default :
@@ -559,7 +559,13 @@ while ($db->nextRecord()) {
 $aUserPerm = explode(',', $auth->auth['perm']);
 
 if (in_array('sysadmin', $aUserPerm)) {
-    $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta">');
+    if ($versioning->getState() == 'simple' && $articleType != 'current'
+            || $versioning->getState() == 'advanced' && $articleType != 'editable') {
+        // TODO ausgegrauter button+"onclick" deaktivieren
+        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta">'); 
+    } else {
+        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta">');        
+    }
     $tpl->set('s', 'ADDNEWMETA', $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['con_meta_addnew'], true));
 } else {
     $tpl->set('s', 'ADDMETABTN', '&nbsp;');

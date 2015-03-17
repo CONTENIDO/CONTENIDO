@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-16 11:20+0100\n"
-"PO-Revision-Date: 2015-01-16 11:22+0100\n"
+"POT-Creation-Date: 2015-03-17 17:19+0100\n"
+"PO-Revision-Date: 2015-03-17 17:50+0100\n"
 "Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -25,7 +25,7 @@ msgstr "Vielen Dank für die Speicherung dieser Suche!"
 #: classes/content_types/class.content.type.linkeditor.php:306
 #: includes/include.con_art_overview.php:78
 #: includes/include.con_art_overview.php:701
-#: includes/include.con_edit_form.php:599
+#: includes/include.con_edit_form.php:606
 #: includes/include.stat_overview.php:87
 #: templates/standard/template.mycontenido_lastarticles.html:73
 #: templates/standard/template.mycontenido_lastarticles.html:113
@@ -198,7 +198,7 @@ msgstr "Keine Daten gefunden!"
 
 #: classes/class.ajax.php:140
 #: classes/content_types/class.content.type.teaser.php:812
-#: includes/include.con_edit_form.php:1058
+#: includes/include.con_edit_form.php:1065
 #: includes/include.grouprights_con.php:78
 #: includes/include.grouprights_str.php:79 includes/include.logs.php:267
 #: includes/include.note.popup.php:72 includes/include.rights_con.php:79
@@ -1931,7 +1931,7 @@ msgstr "Einige Plugin Menüs können nicht angezeigt werden."
 msgid "Client"
 msgstr "Mandant"
 
-#: classes/gui/class.navigation.php:343 includes/include.con_edit_form.php:283
+#: classes/gui/class.navigation.php:343 includes/include.con_edit_form.php:291
 #: includes/include.logs.php:265 includes/include.system_sysvalues.php:225
 #: templates/standard/template.log_main.html:30
 #: templates/standard/template.symbolhelp.html:610 xml/system.xml:20
@@ -2009,7 +2009,7 @@ msgstr "wurde nicht gefunden"
 #: includes/include.con_art_overview.php:968
 #: includes/include.con_content_list.php:85
 #: includes/include.con_content_list.php:160
-#: includes/include.con_edit_form.php:1282
+#: includes/include.con_edit_form.php:1289
 #: includes/include.con_meta_form.php:34
 #: includes/include.con_translate.php:138
 #: includes/include.grouprights_area.php:50
@@ -2047,7 +2047,7 @@ msgstr "wurde nicht gefunden"
 #: includes/type/action/include.con_makepublic.action.php:23
 #: includes/type/action/include.con_makestart.action.php:23
 #: includes/type/action/include.con_meta_deletetype.action.php:34
-#: includes/type/action/include.con_meta_saveart.action.php:110
+#: includes/type/action/include.con_meta_saveart.action.php:117
 #: includes/type/action/include.con_newart.action.php:44
 #: includes/type/action/include.lang_activatelanguage.action.php:22
 #: includes/type/action/include.lang_deactivatelanguage.action.php:22
@@ -2227,7 +2227,7 @@ msgstr "Neues HTML-Template"
 
 #: classes/module/class.module.template.handler.php:495
 #: classes/module/class.module.template.handler.php:498
-#: includes/include.con_edit_form.php:291 includes/include.logs.php:266
+#: includes/include.con_edit_form.php:299 includes/include.logs.php:266
 #: includes/include.mail_log.php:88 includes/include.mail_log.php:218
 #: includes/include.systemsettings.php:73
 #: templates/standard/template.log_main.html:34
@@ -2341,6 +2341,8 @@ msgstr "vor %d Minuten"
 
 #: classes/versioning/class.contentversioning.php:271
 #: templates/standard/template.con_content_list.html:58
+#: templates/standard/template.con_edit_form.html:110
+#: templates/standard/template.con_meta_edit_form.html:65
 msgid "Select Article Version"
 msgstr "Artikelversion auswählen"
 
@@ -2381,9 +2383,10 @@ msgid "Error article/category not found!"
 msgstr "Fehler: Artikel / Kategorie nicht gefunden!"
 
 #: includes/frontend/include.front_content.php:363
-#: includes/include.con_edit_form.php:525
-#: includes/include.con_edit_form.php:529
-#: includes/include.con_meta_form.php:82 includes/include.con_meta_form.php:84
+#: includes/include.con_edit_form.php:532
+#: includes/include.con_edit_form.php:536
+#: includes/include.con_meta_form.php:128
+#: includes/include.con_meta_form.php:130
 #: includes/include.tplcfg_edit_form.php:41
 #, php-format
 msgid "Article is in use by %s (%s)"
@@ -2399,16 +2402,16 @@ msgstr "Die Bearbeitung ist nicht möglich, weil der Kategorie keine Vorlage "
 msgid "FATAL ERROR"
 msgstr "SYSTEMFEHLER!"
 
-#: includes/functions.con.php:147 includes/functions.con.php:323
+#: includes/functions.con.php:150 includes/functions.con.php:329
 msgid "Default title"
 msgstr "Standardtitel"
 
-#: includes/functions.con.php:1043 includes/functions.pathresolver.php:251
+#: includes/functions.con.php:1056 includes/functions.pathresolver.php:251
 #: templates/standard/template.con_left_top_art_search.html:72
 msgid "Lost and found"
 msgstr "Lost and found"
 
-#: includes/functions.con.php:1558 includes/functions.str.php:1110
+#: includes/functions.con.php:1571 includes/functions.str.php:1110
 #: includes/functions.tpl.php:344
 #, php-format
 msgid "%s (Copy)"
@@ -2950,7 +2953,7 @@ msgid "Add new variable"
 msgstr "Neue Variable erstellen"
 
 #: includes/include.client_artspec.php:60
-#: includes/include.con_edit_form.php:631
+#: includes/include.con_edit_form.php:638
 msgid "Article specification"
 msgstr "Artikelspezifikation"
 
@@ -2974,7 +2977,7 @@ msgid "This is the default article specification"
 msgstr "Dies ist die standardmäßige Artikelspezifikation"
 
 #: includes/include.client_artspec.php:141
-#: includes/include.con_edit_form.php:625
+#: includes/include.con_edit_form.php:632
 msgid "No article specifications found!"
 msgstr "Keine Artikelspezifikation gefunden"
 
@@ -3036,7 +3039,7 @@ msgstr ""
 #: includes/include.rights_overview.php:164 includes/include.rights_str.php:38
 #: includes/include.rights_tpl.php:38
 #: includes/include.system_configuration.php:202
-#: includes/type/action/include.con_meta_saveart.action.php:108
+#: includes/type/action/include.con_meta_saveart.action.php:112
 #: includes/type/action/include.con_saveart.action.php:38
 #: includes/type/action/include.con_saveart.action.php:157
 msgid "Changes saved"
@@ -3147,7 +3150,7 @@ msgid "not modified yet"
 msgstr "noch nicht modifiziert"
 
 #: includes/include.con_art_overview.php:312
-#: includes/include.con_edit_form.php:706
+#: includes/include.con_edit_form.php:713
 msgid "not yet published"
 msgstr "noch nicht veröffentlicht"
 
@@ -3183,7 +3186,7 @@ msgid "Copy article to the current language"
 msgstr "Artikel in die aktuelle Sprache kopieren"
 
 #: includes/include.con_art_overview.php:511
-#: includes/include.con_edit_form.php:780
+#: includes/include.con_edit_form.php:787
 msgid "Start article"
 msgstr "Startartikel"
 
@@ -3308,64 +3311,67 @@ msgid "Please choose a file"
 msgstr "Bitte wählen Sie eine Datei"
 
 #: includes/include.con_content_list.php:425
-#: includes/include.con_content_list.php:520
-#: includes/include.con_editcontent.php:155
-#: includes/include.con_editcontent.php:236
-#: includes/include.con_edit_form.php:92
-#: includes/include.con_edit_form.php:143
-#: includes/include.con_meta_form.php:322
-#: includes/include.con_meta_form.php:371
-msgid "Current Version"
+#: includes/include.con_content_list.php:521
+#: includes/include.con_editcontent.php:157
+#: includes/include.con_editcontent.php:240
+#: includes/include.con_edit_form.php:96
+#: includes/include.con_edit_form.php:151
+#: includes/include.con_meta_form.php:341
+#: includes/include.con_meta_form.php:383
+msgid "Published Version"
 msgstr "Veröffentlichte Version"
 
 #: includes/include.con_content_list.php:453
-#: includes/include.con_content_list.php:543
+#: includes/include.con_content_list.php:544
 msgid "Copy Version"
 msgstr "Version kopieren"
 
 #: includes/include.con_content_list.php:454
-#: includes/include.con_content_list.php:577
-#: includes/include.con_editcontent.php:173
-#: includes/include.con_editcontent.php:288
-#: includes/include.con_edit_form.php:166
-#: includes/include.con_edit_form.php:184
-#: includes/include.con_meta_form.php:395
-#: includes/include.con_meta_form.php:415
-msgid "Copy to Current Version"
-msgstr "Version veröffentlichen"
+#: includes/include.con_content_list.php:578
+#: includes/include.con_editcontent.php:175
+#: includes/include.con_editcontent.php:292
+#: includes/include.con_edit_form.php:174
+#: includes/include.con_edit_form.php:192
+#: includes/include.con_meta_form.php:407
+#: includes/include.con_meta_form.php:427
+msgid "Copy to Published Version"
+msgstr "In veröffentlichte Version kopieren"
 
 #: includes/include.con_content_list.php:461
-#: includes/include.con_editcontent.php:179
+#: includes/include.con_editcontent.php:181
 msgid ""
+"<strong>Mode 'simple':</strong> Older Article Versions can be restored and "
+"reviewed (Configurations under Administration/System configuration).<br/><br/"
+">Accomplished actions only refer to contents itself!"
+msgstr ""
 "<strong>Konfigurationsstufe 'simple':</strong> Ältere Contentversionen "
 "lassen sich wiederherstellen (Einstellungen sind in Administration/System/"
 "System-Konfiguration möglich).<br/><br/>Hier durchgeführte Aktionen beziehen "
 "sich nur auf Contents!"
-msgstr ""
 
-#: includes/include.con_content_list.php:511
-#: includes/include.con_editcontent.php:228
+#: includes/include.con_content_list.php:512
+#: includes/include.con_editcontent.php:230
 #: includes/include.con_edit_form.php:83
-#: includes/include.con_meta_form.php:313
-msgid "Editable Version"
+#: includes/include.con_meta_form.php:329
+msgid "Draft"
 msgstr "Entwurf"
 
-#: includes/include.con_content_list.php:553
-#: includes/include.con_editcontent.php:258
-#: includes/include.con_edit_form.php:116
-#: includes/include.con_meta_form.php:346
-msgid "Copy to Editable Version"
-msgstr "Als Entwurf nutzen"
+#: includes/include.con_content_list.php:554
+#: includes/include.con_editcontent.php:262
+#: includes/include.con_edit_form.php:121
+#: includes/include.con_meta_form.php:365
+msgid "Copy to Draft"
+msgstr "In Entwurf kopieren"
 
-#: includes/include.con_content_list.php:555
-#: includes/include.con_editcontent.php:260
-#: includes/include.con_edit_form.php:118
-#: includes/include.con_meta_form.php:348
+#: includes/include.con_content_list.php:556
+#: includes/include.con_editcontent.php:264
+#: includes/include.con_edit_form.php:123
+#: includes/include.con_meta_form.php:367
 msgid "Publish Draft"
 msgstr "Entwurf veröffentlichen"
 
-#: includes/include.con_content_list.php:562
-#: includes/include.con_editcontent.php:267
+#: includes/include.con_content_list.php:563
+#: includes/include.con_editcontent.php:271
 msgid ""
 "<strong>Konfigurationsstufe 'advanced':</strong>  Es kann auf frühere "
 "Contentversionen zurückgegriffen werden. Es können äußerdem Entwürfe "
@@ -3374,75 +3380,78 @@ msgid ""
 "durchgeführte Aktionen beziehen sich nur auf Contents!"
 msgstr ""
 
-#: includes/include.con_content_list.php:582
-#: includes/include.con_editcontent.php:293
-#: includes/include.con_edit_form.php:189
-#: includes/include.con_meta_form.php:420
+#: includes/include.con_content_list.php:583
+#: includes/include.con_editcontent.php:297
+#: includes/include.con_edit_form.php:197
+#: includes/include.con_meta_form.php:432
 msgid ""
+"For reviewing and restoring older Article Versions activate the Article "
+"Versioning under Administration/System/System configuration."
+msgstr ""
 "Aktiviere die Artikel-Versionierung in den Administration/System/System-"
 "Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen "
 "eines Artikels zurückgegriffen werden kann."
-msgstr ""
-
-#: includes/include.con_content_list.php:631
-#: includes/include.con_editcontent.php:101
-msgid "Close editor"
-msgstr "Editor schließen"
 
 #: includes/include.con_content_list.php:632
 #: includes/include.con_editcontent.php:102
-msgid "Close editor and save changes"
-msgstr "Editor schließen und Änderungen speichern"
+msgid "Close editor"
+msgstr "Editor schließen"
 
 #: includes/include.con_content_list.php:633
 #: includes/include.con_editcontent.php:103
+msgid "Close editor and save changes"
+msgstr "Editor schließen und Änderungen speichern"
+
+#: includes/include.con_content_list.php:634
+#: includes/include.con_editcontent.php:104
 msgid "Do you want to save changes?"
 msgstr "Möchten Sie die Änderungen speichern?"
 
-#: includes/include.con_content_list.php:636
+#: includes/include.con_content_list.php:637
 msgid "Export raw data"
 msgstr "Rohdaten exportieren"
 
-#: includes/include.con_content_list.php:637
+#: includes/include.con_content_list.php:638
 msgid "Import raw data"
 msgstr "Rohdaten importieren"
 
-#: includes/include.con_content_list.php:638
+#: includes/include.con_content_list.php:639
 msgid "Raw data export"
 msgstr "Rohdaten-Export"
 
-#: includes/include.con_content_list.php:639
+#: includes/include.con_content_list.php:640
 msgid "Raw data import"
 msgstr "Rohdaten-Import"
 
-#: includes/include.con_content_list.php:640
+#: includes/include.con_content_list.php:641
 msgid "Overwrite data"
 msgstr "Inhalt überschreiben"
 
-#: includes/include.con_content_list.php:652
+#: includes/include.con_content_list.php:653
 msgid "Article has no raw data"
 msgstr "Artikel hat keine Rohdaten"
 
-#: includes/include.con_content_list.php:669
+#: includes/include.con_content_list.php:670
 msgid "Export"
 msgstr "Import / Export"
 
-#: includes/include.con_content_list.php:745
-#: includes/include.con_edit_form.php:518
-#: includes/include.con_edit_form.php:519
-#: includes/include.con_meta_form.php:90 includes/include.con_meta_form.php:91
+#: includes/include.con_content_list.php:746
+#: includes/include.con_edit_form.php:525
+#: includes/include.con_edit_form.php:526
+#: includes/include.con_meta_form.php:136
+#: includes/include.con_meta_form.php:137
 #: includes/include.tplcfg_edit_form.php:112
 msgid "This article is currently frozen and can not be edited!"
 msgstr "Dieser Artikel ist eingefroren und kann nicht editiert werden."
 
-#: includes/include.con_content_list.php:839
-#: includes/include.con_content_list.php:842
+#: includes/include.con_content_list.php:840
+#: includes/include.con_content_list.php:843
 msgid "Are you sure you want to delete this content type from this article?"
 msgstr ""
 "Sind Sie sich sicher, dass Sie den gewählten Content Typen wirklich löschen "
 "wollen?"
 
-#: includes/include.con_edit_form.php:124
+#: includes/include.con_edit_form.php:132
 msgid ""
 "<strong>Konfigurationsstufe 'advanced':</strong>  Es kann auf frühere "
 "Artikelversionen zurückgegriffen werden. Es können äußerdem Entwürfe "
@@ -3452,7 +3461,7 @@ msgid ""
 "sowie Contents!!"
 msgstr ""
 
-#: includes/include.con_edit_form.php:162
+#: includes/include.con_edit_form.php:170
 msgid ""
 "<strong>Konfigurationsstufe 'simple':</strong> Ältere Artikelversionen "
 "lassen sich wiederherstellen (Einstellungen sind in Administration/System/"
@@ -3460,7 +3469,7 @@ msgid ""
 "sich sowohl auf Artikeleigenschaften, SEO sowie Contents!"
 msgstr ""
 
-#: includes/include.con_edit_form.php:280
+#: includes/include.con_edit_form.php:288
 #: includes/include.con_translate.php:509 includes/include.lang_edit.php:186
 #: includes/include.lang_edit.php:190 includes/include.logs.php:263
 #: main.loginform.php:84 templates/standard/template.log_main.html:26
@@ -3468,19 +3477,19 @@ msgstr ""
 msgid "Language"
 msgstr "Sprache"
 
-#: includes/include.con_edit_form.php:287 includes/include.logs.php:264
+#: includes/include.con_edit_form.php:295 includes/include.logs.php:264
 #: includes/include.mail_log.php:86 includes/include.mail_log.php:181
 #: includes/include.stat_search_overview.php:35
 #: templates/standard/template.con_left_top_art_search.html:26
 msgid "Date"
 msgstr "Datum"
 
-#: includes/include.con_edit_form.php:513
+#: includes/include.con_edit_form.php:520
 #: ../data/config/production/cfg_actions.inc.php:37
 msgid "Save article"
 msgstr "Artikel speichern"
 
-#: includes/include.con_edit_form.php:602
+#: includes/include.con_edit_form.php:609
 #: includes/include.str_overview.php:495
 #: templates/standard/template.con_meta_edit_form.html:98
 #: templates/standard/template.str_overview.html:53
@@ -3489,39 +3498,39 @@ msgstr "Artikel speichern"
 msgid "Alias"
 msgstr "Alias"
 
-#: includes/include.con_edit_form.php:643
+#: includes/include.con_edit_form.php:650
 msgid "Article link"
 msgstr "Artikellink"
 
-#: includes/include.con_edit_form.php:653
+#: includes/include.con_edit_form.php:660
 msgid "Select an entry to display link"
 msgstr "Eintrag wählen, um einen Link anzuzeigen"
 
-#: includes/include.con_edit_form.php:654
+#: includes/include.con_edit_form.php:661
 msgid "Article only"
 msgstr "Nur Artikel"
 
-#: includes/include.con_edit_form.php:655
+#: includes/include.con_edit_form.php:662
 msgid "Article with category"
 msgstr "Artikel mit Kategorie"
 
-#: includes/include.con_edit_form.php:656
+#: includes/include.con_edit_form.php:663
 msgid "Article with category and language"
 msgstr "Artikel mit Kategorie und Sprache"
 
-#: includes/include.con_edit_form.php:657
+#: includes/include.con_edit_form.php:664
 msgid "Article with language"
 msgstr "Artikel mit Sprache"
 
-#: includes/include.con_edit_form.php:665
+#: includes/include.con_edit_form.php:672
 msgid "open"
 msgstr "Öffnen"
 
-#: includes/include.con_edit_form.php:671
+#: includes/include.con_edit_form.php:678
 msgid "Author (Creator)"
 msgstr "erstellt von"
 
-#: includes/include.con_edit_form.php:693
+#: includes/include.con_edit_form.php:700
 #: includes/include.frontend.left_top.php:43
 #: includes/include.frontend.user_menu.php:44
 #: includes/include.mycontenido.tasks.php:249
@@ -3532,55 +3541,55 @@ msgstr "erstellt von"
 msgid "Created"
 msgstr "Erstelldatum"
 
-#: includes/include.con_edit_form.php:697
+#: includes/include.con_edit_form.php:704
 msgid "Author (Modifier)"
 msgstr "verändert von"
 
-#: includes/include.con_edit_form.php:698
+#: includes/include.con_edit_form.php:705
 msgid "Last modified"
 msgstr "Änderungsdatum"
 
-#: includes/include.con_edit_form.php:702
+#: includes/include.con_edit_form.php:709
 msgid "Publishing date"
 msgstr "Veröffentlichungsdatum"
 
-#: includes/include.con_edit_form.php:710
+#: includes/include.con_edit_form.php:717
 msgid "Publisher"
 msgstr "veröffentlicht von"
 
-#: includes/include.con_edit_form.php:721
+#: includes/include.con_edit_form.php:728
 msgid "Redirect"
 msgstr "Weiterleitung"
 
-#: includes/include.con_edit_form.php:732
+#: includes/include.con_edit_form.php:739
 msgid "Status code"
 msgstr "Status code"
 
-#: includes/include.con_edit_form.php:735
+#: includes/include.con_edit_form.php:742
 msgid "Articlelog"
 msgstr "Artikellog"
 
-#: includes/include.con_edit_form.php:744
+#: includes/include.con_edit_form.php:751
 msgid "Temporary"
 msgstr "Temporär"
 
-#: includes/include.con_edit_form.php:745
+#: includes/include.con_edit_form.php:752
 msgid "Permanently"
 msgstr "Permanent"
 
-#: includes/include.con_edit_form.php:754
+#: includes/include.con_edit_form.php:761
 msgid "New window"
 msgstr "Neues Fenster"
 
-#: includes/include.con_edit_form.php:786
+#: includes/include.con_edit_form.php:793
 msgid "Searchable"
 msgstr "Suchbar"
 
-#: includes/include.con_edit_form.php:790
+#: includes/include.con_edit_form.php:797
 msgid "Sort key"
 msgstr "Sortierschlüssel"
 
-#: includes/include.con_edit_form.php:822
+#: includes/include.con_edit_form.php:829
 msgid ""
 "The called article is synchronized. If you want to move it please make sure "
 "that the target category of this article exist in all languages."
@@ -3589,16 +3598,16 @@ msgstr ""
 "möchten, stellen Sie bitte sicher, dass die Zielkategorie in allen "
 "verfügbaren Sprachen existiert."
 
-#: includes/include.con_edit_form.php:835
+#: includes/include.con_edit_form.php:842
 #: ../data/config/production/cfg_actions.inc.php:38
 msgid "Remove assignments"
 msgstr "Zuweisungen löschen"
 
-#: includes/include.con_edit_form.php:837
+#: includes/include.con_edit_form.php:844
 msgid "Remove multiple category assignments"
 msgstr "Mehrfachzuordnung löschen"
 
-#: includes/include.con_edit_form.php:838
+#: includes/include.con_edit_form.php:845
 msgid ""
 "Do you really want to remove the assignments to all categories except the "
 "current one?"
@@ -3606,15 +3615,15 @@ msgstr ""
 "Möchten Sie wirklich alle Zuweisungen zu allen Kategorien löschen - außer zu "
 "der aktuellen?"
 
-#: includes/include.con_edit_form.php:956
+#: includes/include.con_edit_form.php:963
 msgid "Take the article in this language offline"
 msgstr "Nimmt den Artikel in dieser Sprache offline."
 
-#: includes/include.con_edit_form.php:956
+#: includes/include.con_edit_form.php:963
 msgid "Make the article in this language online"
 msgstr "Bringt den Artikel in dieser Sprache online."
 
-#: includes/include.con_edit_form.php:961
+#: includes/include.con_edit_form.php:968
 #, php-format
 msgid ""
 "There is no synchronized article in the language '%s' to take offline/bring "
@@ -3623,17 +3632,17 @@ msgstr ""
 "Es gibt keinen synchronisierten Artikel in der Sprache '%s', den man "
 "bearbeiten könnte"
 
-#: includes/include.con_edit_form.php:967
+#: includes/include.con_edit_form.php:974
 #, php-format
 msgid "This article is synchronized to '%s'"
 msgstr "Dieser Artikel ist in die Sprache '%s' synchronisiert worden"
 
-#: includes/include.con_edit_form.php:967
+#: includes/include.con_edit_form.php:974
 #, php-format
 msgid "Synchronize this article to '%s'"
 msgstr "Synchronisiert den Artikel zur Sprache '%s'"
 
-#: includes/include.con_edit_form.php:972
+#: includes/include.con_edit_form.php:979
 #, php-format
 msgid ""
 "This article can't be synchronized to '%s' since the category '%s' does not "
@@ -3642,7 +3651,7 @@ msgstr ""
 "Dieser Artikel kann nicht in die Sprache '%s' kopiert werden, da die "
 "Kategorie '%s' nicht in dieser Sprache existiert."
 
-#: includes/include.con_edit_form.php:991
+#: includes/include.con_edit_form.php:998
 msgid ""
 "In this menu you can change the synchronization settings of this article. "
 "You will find a list of all available languages and can copy this article to "
@@ -3654,7 +3663,7 @@ msgstr ""
 "verfügbaren Sprachen werden angezeigt und der Artikel kann in jeder "
 "einzelnen Sprache online oder offline gestellt werden."
 
-#: includes/include.con_edit_form.php:1030
+#: includes/include.con_edit_form.php:1037
 msgid ""
 "You can not move an article into a category, which does not have an assigned "
 "template!"
@@ -3662,11 +3671,11 @@ msgstr ""
 "Sie können einen Artikel nicht in eine Kategorie verschieben, die keine "
 "zugewiesene Vorlage besitzt!"
 
-#: includes/include.con_edit_form.php:1156
+#: includes/include.con_edit_form.php:1163
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: includes/include.con_edit_form.php:1262
+#: includes/include.con_edit_form.php:1269
 msgid "Please fill in the start date and/or the end date!"
 msgstr "Bitte geben Sie Startzeitpunkt und / oder Endzeitpunkt ein!"
 
@@ -3719,16 +3728,16 @@ msgstr "Synchronisieren von"
 msgid "Legend"
 msgstr "Legende"
 
-#: includes/include.con_meta_form.php:141
+#: includes/include.con_meta_form.php:187
 msgid "SEO administration"
 msgstr "SEO-Administration"
 
-#: includes/include.con_meta_form.php:262
+#: includes/include.con_meta_form.php:303
 msgid "Are you sure to delete this Meta tag?"
 msgstr "Sind Sie sicher, dass dieser Meta Tag gelöscht werden soll?"
 
-#: includes/include.con_meta_form.php:353
-#: includes/include.con_meta_form.php:401
+#: includes/include.con_meta_form.php:372
+#: includes/include.con_meta_form.php:413
 msgid ""
 "<strong>Konfigurationsstufe 'simple':</strong> Ältere Metadatenversionen "
 "lassen sich wiederherstellen (Einstellungen sind in Administration/System/"
@@ -3736,7 +3745,7 @@ msgid ""
 "sich nur auf Metadaten!"
 msgstr ""
 
-#: includes/include.con_meta_form.php:428
+#: includes/include.con_meta_form.php:440
 msgid ""
 "The title-tag is one of the most important on-page factors for SEO and is "
 "not longer than 60 characters. It includes top keywords and the branding."
@@ -3745,7 +3754,7 @@ msgstr ""
 "optimierter Seitentitel beträgt nicht mehr als 60 Zeichen und beinhaltet "
 "neben den wichtigsten Keywords und auch das Branding."
 
-#: includes/include.con_meta_form.php:431
+#: includes/include.con_meta_form.php:443
 msgid ""
 "The description-tag describes the article in a short way (not more than 150 "
 "characters). The content should be related to the title-tag and the H1-tag."
@@ -3754,13 +3763,13 @@ msgstr ""
 "150 Zeichen werden die Top-Keywords erwähnt, die in Relation zum Title-Tag "
 "und H1-Tag stehen."
 
-#: includes/include.con_meta_form.php:434
+#: includes/include.con_meta_form.php:446
 msgid "No more than 6 Keywords should be used."
 msgstr ""
 "Mittels des Keyword-Tag wird der Artikel mit den wichtigsten Elementen "
 "beschrieben. Es sollten nicht mehr als 6-10 Keywords erwähnt werden."
 
-#: includes/include.con_meta_form.php:437
+#: includes/include.con_meta_form.php:449
 msgid ""
 "The frequency of the revisit after tag depends on new publications of the "
 "content. Nevertheless the robots decide on their own when to visit."
@@ -3769,7 +3778,7 @@ msgstr ""
 "Neuerscheinungen.  Jedoch haben die Robots der Suchmaschinen ihren eigenen "
 "Besuchsrhythmus."
 
-#: includes/include.con_meta_form.php:440
+#: includes/include.con_meta_form.php:452
 msgid ""
 "The robot-tag sets certain rules for search engines. You can tell it to not "
 "index certain articles or to keep pictures in this article out of its index. "
@@ -3781,7 +3790,7 @@ msgstr ""
 "Einfluss auf das Ranking, da nur relevante und besucherreiche Artikeln "
 "indiziert werden sollen."
 
-#: includes/include.con_meta_form.php:443
+#: includes/include.con_meta_form.php:455
 msgid ""
 "The avarage value for the sitemap priority is 0.5. Only important articels "
 "should have a value no more than 0.8."
@@ -3790,27 +3799,33 @@ msgstr ""
 "wichtige Artikel sollten einen Wert nicht über 0.8 erhalten. Ein unwichtiger "
 "Artikel sollten einen Wert nicht über 0.3 erhalten."
 
-#: includes/include.con_meta_form.php:446
+#: includes/include.con_meta_form.php:458
 msgid "The refresh rate is focused on the content."
 msgstr "Der Aktualisierung-Intervall richtet sich am Content."
 
-#: includes/include.con_meta_form.php:485
+#: includes/include.con_meta_form.php:497
+msgid ""
+"Der Attribut Inhalt muss mit einem Buchstaben beginnen. Folgen können "
+"Buchstaben, Ziffern und folgende Zeichen: . : _ - "
+msgstr ""
+
+#: includes/include.con_meta_form.php:498
 msgid "New meta tag"
 msgstr "Neuer Meta-Tag"
 
-#: includes/include.con_meta_form.php:499
+#: includes/include.con_meta_form.php:514
 msgid "Field Type"
 msgstr "Eingabetyp"
 
-#: includes/include.con_meta_form.php:503
+#: includes/include.con_meta_form.php:518
 msgid "Attribute content"
 msgstr "Attribut Inhalt"
 
-#: includes/include.con_meta_form.php:507
+#: includes/include.con_meta_form.php:522
 msgid "Max Length"
 msgstr "Maximale Länge"
 
-#: includes/include.con_meta_form.php:511
+#: includes/include.con_meta_form.php:526
 msgid "Meta Attribute"
 msgstr "Meta Attribut"
 
@@ -5589,6 +5604,44 @@ msgstr "Neues Element erfolgreich angelegt!"
 msgid "Please set this property in systemsettings directly"
 msgstr "Bitte setzen Sie diese Einstellung direkt in den Systemeinstellungen"
 
+#: includes/include.system_configuration.php:57
+msgid "Article Versioning"
+msgstr "Artikel Versionierung"
+
+#: includes/include.system_configuration.php:68
+msgid ""
+"<p><strong>Artikel-Versionierung:</strong></p>\r\n"
+"                    <ul style=\"list-style:none;\">\r\n"
+"                        <li>\r\n"
+"                            Es kann auf frühere \r\n"
+"                            Artikelversionen zurückgegriffen werden "
+"(simple). \r\n"
+"                            Es können äußerdem unveröffentlichte Entwürfe "
+"erstellt werden (advanced). \r\n"
+"                            Artikelversionen werden automatisch generiert, "
+"sobald der User \r\n"
+"                            eine Änderung im Editor speichert. \r\n"
+"                            Standardmäßig ist die Artikelversionierung "
+"deaktiviert.\r\n"
+"                        </li>\r\n"
+"                    </ul>\r\n"
+"                  <p><strong>Konfigurationsstufen:</strong></p>    \r\n"
+"                      <ul class=\"list\">\r\n"
+"                          <li class=\"first\"><strong>disabled: </strong> "
+"Auf frühere Artikelversionen kann nicht zugegriffen werden.</li>\r\n"
+"                          <li><strong>simple: </strong> Ältere "
+"Artikelversionen lassen sich wiederherstellen. Gehe im Artikel zum Reiter "
+"„Rohdaten“.</li>\r\n"
+"                          <li><strong>advanced: </strong> Ein Artikelentwurf "
+"kann erstellt werden. Und zeitunabhängig veröffentlicht werden. \r\n"
+"                                Vergangene Versionen lassen sich "
+"wiederherstellen bzw. nutzen.</li>\r\n"
+"                      </ul>\r\n"
+"                  <p><strong>Weitere Informationen</strong> sind in den "
+"entsprechenden Reitern zu finden.</p>                \r\n"
+"                  </div>"
+msgstr ""
+
 #: includes/include.system_configuration.php:184
 msgid "Update check period must be at least 60 minutes."
 msgstr "Die Aktualisierungsperiode muss mindestens 60 Minuten betragen."
@@ -6242,6 +6295,10 @@ msgstr "Suchbegriff:"
 msgid "Article deleted"
 msgstr "Artikel gelöscht"
 
+#: includes/type/action/include.con_meta_saveart.action.php:114
+msgid "Ungültiger Attribut Inhalt; Information beachten"
+msgstr ""
+
 #: includes/type/action/include.con_newart.action.php:40
 msgid "This category has no templates assigned."
 msgstr "Diese Kategorie hat keine Vorlagen."
@@ -6404,11 +6461,6 @@ msgstr "Anwenden für ausgewählte Artikel"
 #: templates/standard/template.con_content_list.html:159
 msgid "Content administration"
 msgstr "Content-Administration"
-
-#: templates/standard/template.con_edit_form.html:110
-#: templates/standard/template.con_meta_edit_form.html:65
-msgid "Version auswählen"
-msgstr ""
 
 #: templates/standard/template.con_edit_form.html:210
 #: templates/standard/template.con_edit_form.html:431
@@ -7939,6 +7991,39 @@ msgstr "Falsche Zugriffsrechte"
 #: ../data/config/production/cfg_actions.inc.php:216
 msgid "User login"
 msgstr "Benutzer login"
+
+#~ msgid ""
+#~ "Aktiviere die Artikel-Versionierung in den Administration/System/System-"
+#~ "Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen "
+#~ "eines Artikels zurückgegriffen werden kann."
+#~ msgstr ""
+#~ "For reviewing and restoring older Article Versions activate the Article "
+#~ "Versioning under Administration/System/System configuration. "
+
+#~ msgid ""
+#~ "<strong>Konfigurationsstufe 'simple':</strong> Ältere Contentversionen "
+#~ "lassen sich wiederherstellen (Einstellungen sind in Administration/System/"
+#~ "System-Konfiguration möglich).<br/><br/>Hier durchgeführte Aktionen "
+#~ "beziehen sich nur auf Contents!"
+#~ msgstr ""
+#~ "<strong>Mode 'simple':</strong> Older Article Versions can be restored "
+#~ "and reviewed (Configurations under Administration/System configuration)."
+#~ "<br/><br/>Accomplished actions only refer to contents itself!"
+
+#~ msgid "Current Version"
+#~ msgstr "Veröffentlichte Version"
+
+#~ msgid "Copy to Current Version"
+#~ msgstr "Version veröffentlichen"
+
+#~ msgid "Editable Version"
+#~ msgstr "Entwurf"
+
+#~ msgid "Copy to Editable Version"
+#~ msgstr "Als Entwurf nutzen"
+
+#~ msgid "Version auswählen"
+#~ msgstr "Version auswählen"
 
 #~ msgid "Content versioning (false/simple/advanced)"
 #~ msgstr "Content-Versionierung (false/simple/advanced)"

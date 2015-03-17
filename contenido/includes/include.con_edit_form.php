@@ -80,7 +80,7 @@ switch ($versioningState) {
         // set editable element 
         $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
         if (isset($versioning->editableArticleId) || $action == 'con_newart') {
-            $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId($idartlang));
+            $optionElement = new cHTMLOptionElement(i18n('Draft'), $versioning->getEditableArticleId($idartlang));
             if ($articleType == 'editable') {
                 $optionElement->setSelected(true);
             }
@@ -93,7 +93,7 @@ switch ($versioningState) {
 
         // Create Metatag Version Option Elements
         if ($action != 'con_newart') {
-            $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+            $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
             if ($articleType == 'current') {
                 $optionElement->setSelected(true);
             }
@@ -118,7 +118,7 @@ switch ($versioningState) {
 
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
-            $buttonTitle = i18n('Copy to Editable Version');
+            $buttonTitle = i18n('Copy to Draft');
         } else if ($articleType == 'editable') {
             $buttonTitle = i18n('Publish Draft');
         }
@@ -148,7 +148,7 @@ switch ($versioningState) {
         $optionElementParameters = $versioning->getDataForSelectElement($idartlang, 'config');
         // Create Article Version Option Elements
         $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
-        $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
         if ($articleType == 'current') {
             $optionElement->setSelected(true);
         }
@@ -171,7 +171,7 @@ switch ($versioningState) {
                 . 'Hier durchgeführte Aktionen beziehen sich sowohl auf Artikeleigenschaften, SEO sowie Contents!'));
         
         // Create markAsCurrent Button
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Current Version'), 'copytobutton');
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'), 'copytobutton');
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
@@ -189,12 +189,12 @@ switch ($versioningState) {
         $selectElement->setAttribute('disabled', 'disabled');
         $page->set('s', 'SELECT_ELEMENT', $selectElement->toHtml());
 
-        $buttonTitle = i18n('Copy to Current Version');
+        $buttonTitle = i18n('Copy to Published Version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $infoButton = new cGuiBackendHelpbox(i18n('Aktiviere die Artikel-Versionierung in den Administration/System/System-Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen eines Artikels zurückgegriffen werden kann.'));
+        $infoButton = new cGuiBackendHelpbox(i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.'));
         $page->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());  
         
     default:

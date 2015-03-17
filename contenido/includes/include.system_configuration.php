@@ -54,7 +54,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
             $return['label'] = 
                 ' <div>
                     <span style="width: 280px; display: inline-block; padding: 0px 0px 0px 2px;">
-                        <span style="margin: 0px 10px 0px 0px;">Artikel-Versionierung</span>
+                        <span style="margin: 0px 10px 0px 0px;">' . i18n("Article Versioning") . '</span>
                         <a 
                             href="#" 
                             id="pluginInfoDetails-link" 
@@ -64,9 +64,9 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
                     </span>
                     ' . $html->render() . '                    
                   </div>
-                  <div id="pluginInfoDetails" class="nodisplay">
-                  <p><strong>Artikel-Versionierung:</strong></p>
-                    <ul style="list-style:none;">
+                  <div id="pluginInfoDetails" class="nodisplay">'
+                  . i18n('<p><strong>Artikel-Versionierung:</strong></p>
+                      <ul style="list-style:none;">
                         <li>
                             Es kann auf frühere 
                             Artikelversionen zurückgegriffen werden (simple). 
@@ -84,7 +84,7 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
                                 Vergangene Versionen lassen sich wiederherstellen bzw. nutzen.</li>
                       </ul>
                   <p><strong>Weitere Informationen</strong> sind in den entsprechenden Reitern zu finden.</p>                
-                  </div>';
+                  </div>');
         } else {
             $html->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');   
             $return['label'] = renderLabel($label, $name);

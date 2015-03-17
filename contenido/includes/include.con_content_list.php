@@ -422,7 +422,7 @@ switch ($versioningState) {
                 
         // Create Current and Editable Content Option Element
         $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
-        $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
         if ($articleType == 'current') {
             $optionElement->setSelected(true);
         }
@@ -451,15 +451,16 @@ switch ($versioningState) {
         }
         // Create markAsCurrent Button/Label
         $page->set('s', 'COPY_LABEL', i18n('Copy Version'));
-        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Current Version'));
+        $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'));
         $markAsCurrentButton->setEvent('onclick', "copyto.idArtLangVersion.value=$('#selectVersionElement option:selected').val();copyto.submit()");
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $versioning_info_text = i18n('<strong>Konfigurationsstufe \'simple\':</strong> Ältere Contentversionen lassen sich wiederherstellen (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
-                . 'Hier durchgeführte Aktionen beziehen sich nur auf Contents!');
+        $versioning_info_text = i18n("<strong>Mode 'simple':</strong> Older Article Versions can be restored and reviewed "
+                . "(Configurations under Administration/System configuration).<br/><br/>Accomplished actions only refer to contents itself!");
+
         $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
 
         break;
@@ -508,7 +509,7 @@ switch ($versioningState) {
         $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
 
         if (isset($versioning->editableArticleId)) {
-            $optionElement = new cHTMLOptionElement(i18n('Editable Version'), $versioning->getEditableArticleId((int) $_REQUEST['idartlang']));
+            $optionElement = new cHTMLOptionElement(i18n('Draft'), $versioning->getEditableArticleId((int) $_REQUEST['idartlang']));
             if ($articleType == 'editable') {
                 $optionElement->setSelected(true);
             }
@@ -517,7 +518,7 @@ switch ($versioningState) {
         }
 
 
-        $optionElement = new cHTMLOptionElement(i18n('Current Version'), 'current');
+        $optionElement = new cHTMLOptionElement(i18n('Published Version'), 'current');
         if ($articleType == 'current') {
             $optionElement->setSelected(true);
         }
@@ -550,7 +551,7 @@ switch ($versioningState) {
 
         // Create markAsCurrent Button
         if ($articleType == 'current' || $articleType == 'version') {
-            $buttonTitle = i18n('Copy to Editable Version');
+            $buttonTitle = i18n('Copy to Draft');
         } else if ($articleType == 'editable') {
             $buttonTitle = i18n('Publish Draft');
         }
@@ -574,12 +575,12 @@ switch ($versioningState) {
         $selectElement->setAttribute('disabled', 'disabled');
         $page->set('s', 'ARTICLE_VERSION_SELECTION', $selectElement->toHtml());
         
-        $buttonTitle = i18n('Copy to Current Version');
+        $buttonTitle = i18n('Copy to Published Version');
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle);
         $markAsCurrentButton->setAttribute('disabled', 'disabled');
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
         
-        $versioning_info_text = i18n('Aktiviere die Artikel-Versionierung in den Administration/System/System-Konfiguration. Artikel-Versionierung bedeutet, dass auf frühere Versionen eines Artikels zurückgegriffen werden kann.');
+        $versioning_info_text = i18n('For reviewing and restoring older Article Versions activate the Article Versioning under Administration/System/System configuration.');
         $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);  
 
         // get selected article
