@@ -102,7 +102,13 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
     if (true === cFileHandler::validateFilename($sFilename)) {
         cFileHandler::create($path . $sFilename);
         $contenidoModulHandler->createModuleFile('js', $sFilename, $_REQUEST['code']);
-        $bEdit = (bool) cFileHandler::read($path . $sFilename);
+        $bEdit = cFileHandler::read($path . $sFilename);
+    }
+
+    if (false !== $bEdit) {
+        // trigger a code cache rebuild if changes were saved
+        $oApiModule = new cApiModule($idmod);
+        $oApiModule->store();
     }
 
     $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
@@ -144,7 +150,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
     $bEdit = false;
     if (true === cFileHandler::validateFilename($sFilename)) {
         $contenidoModulHandler->createModuleFile('js', $sFilename, $_REQUEST['code']);
-        $bEdit = (bool) cFileHandler::read($path . $sFilename);
+        $bEdit = cFileHandler::read($path . $sFilename);
     }
 
     if (false !== $bEdit) {

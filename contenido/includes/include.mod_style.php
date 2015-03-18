@@ -104,6 +104,12 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
     }
     $bEdit = cFileHandler::read($path . $sFilename);
 
+    if (false !== $bEdit) {
+        // trigger a code cache rebuild if changes were saved
+        $oApiModule = new cApiModule($idmod);
+        $oApiModule->store();
+    }
+
     $fileInfoCollection = new cApiFileInformationCollection();
     $fileInfoCollection->updateFile($sFilename, 'css', $_REQUEST['description'], $auth->auth['uid']);
 
