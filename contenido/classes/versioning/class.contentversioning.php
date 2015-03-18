@@ -514,9 +514,9 @@ class cContentVersioning {
         $parametersToCheck = $parameters;
         unset(
                 $parametersToCheck['lastmodified'],
-                $parameters2['author'],
-                $parameters2['value'],
-                $parameters2['created']
+                $parametersToCheck['author'],
+                $parametersToCheck['value'],
+                $parametersToCheck['created']
         );
         
         // if there already is a content type like this in this version, 
@@ -525,7 +525,7 @@ class cContentVersioning {
         $contentVersion = new cApiContentVersion();
         //$contentVersion->loadByMany($parameters);
         $contentVersion->loadByMany($parametersToCheck);
-        if ($contentVersion->isLoaded()) {echo "jetzt<hr>";
+        if ($contentVersion->isLoaded()) {
             //foreach ($parameters AS $key => $value) {
                 //$contentVersion->set($key, $value);
                 $artLangVersion = $this->createArticleLanguageVersion($parametersArticleVersion);
@@ -534,7 +534,7 @@ class cContentVersioning {
                 $contentVersionColl->create($parameters);
             //}
             //$contentVersion->store();     
-        } else {echo "nicht<hr>";
+        } else {
             // if there is no content type like this in this version, create one
             $contentVersionColl = new cApiContentVersionCollection();
             $contentVersionColl->create($parameters);
