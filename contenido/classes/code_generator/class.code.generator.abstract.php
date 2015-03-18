@@ -371,7 +371,6 @@ abstract class cCodeGeneratorAbstract {
                 $replacements[$val] = $tmp;
                 $keycode[$type][$val] = $tmp;
             }
-
             $this->_layoutCode = str_ireplace($search, $replacements, $this->_layoutCode);
         }
     }

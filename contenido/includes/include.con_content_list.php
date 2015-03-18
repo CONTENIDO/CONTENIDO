@@ -458,8 +458,8 @@ switch ($versioningState) {
         }
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
-        $versioning_info_text = i18n("<strong>Mode 'simple':</strong> Older Article Versions can be restored and reviewed "
-                . "(Configurations under Administration/System configuration).<br/><br/>Accomplished actions only refer to contents itself!");
+        $versioning_info_text = i18n("<strong>Mode simple:</strong> Older Content Versions can be restored and reviewed "
+                . "(Configurations under Administration/System configuration).<br/><br/>Changes only refer to contents itself!");
 
         $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
 
@@ -560,10 +560,10 @@ switch ($versioningState) {
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
 
         $versioning_info_text = i18n(
-                '<strong>Konfigurationsstufe \'advanced\':</strong>  '
-                . 'Es kann auf frühere Contentversionen zurückgegriffen werden. '
-                . 'Es können äußerdem Entwürfe erstellt und zeitunabhängig veröffentlicht werden (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
-                . 'Hier durchgeführte Aktionen beziehen sich nur auf Contents!');
+                '<strong>Mode advanced:</strong> '
+                . 'Older Content Versions can be reviewd and restored. Unpublished drafts'
+                . ' can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+                . 'Changes are only related to Contents!');
         $page->set('s', 'VERSIONING_INFO_TEXT', $versioning_info_text);
 
         break;

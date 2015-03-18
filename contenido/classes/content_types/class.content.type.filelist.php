@@ -932,7 +932,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
 
         // If we have wasted selected files, update settings
-        if (count($tempSelectedFiles) != count($selectedFiles)) {
+        //if (count($tempSelectedFiles) != count($selectedFiles) && $this->_settings['filelist_manual'] == true) {
+        if ($_REQUEST['action'] == 10 || $_REQUEST['action'] == 20) {
         	$this->_settings['filelist_manual_files'] = $selectedFiles;
         	$this->_storeSettings();
         }

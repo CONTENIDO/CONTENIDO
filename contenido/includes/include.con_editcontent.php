@@ -178,8 +178,8 @@ switch ($versioningState) {
             $markAsCurrentButton->setAttribute('DISABLED');
         }
         
-        $versioning_info_text = i18n("<strong>Mode 'simple':</strong> Older Article Versions can be restored and reviewed "
-                . "(Configurations under Administration/System configuration).<br/><br/>Accomplished actions only refer to contents itself!");
+        $versioning_info_text = i18n("<strong>Mode simple:</strong> Older Content Versions can be restored and reviewed "
+                . "(Configurations under Administration/System configuration).<br/><br/>Changes only refer to contents itself!");
         
         // add code
         $versioningElement .=    $versioning->getVersionSelectionField(
@@ -268,10 +268,10 @@ switch ($versioningState) {
 
         // set info text
         $versioning_info_text = i18n(
-                '<strong>Konfigurationsstufe \'advanced\':</strong>  '
-                . 'Es kann auf frühere Contentversionen zurückgegriffen werden. '
-                . 'Es können äußerdem Entwürfe erstellt und zeitunabhängig veröffentlicht werden (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
-                . 'Hier durchgeführte Aktionen beziehen sich nur auf Contents!');
+                '<strong>Mode advanced:</strong> '
+                . 'Older Content Versions can be reviewd and restored. Unpublished drafts'
+                . ' can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+                . 'Changes are only related to Contents!');
         
         // add code
         $versioningElement .=    $versioning->getVersionSelectionField(
@@ -351,7 +351,7 @@ if ($selectedArticle != NULL) {
         $edit = false;
     }
 
-    $code .= $versioningElement;
+    //$code .= $versioningElement;
     $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, $editable, $version); 
 
 }
@@ -366,6 +366,10 @@ if ($code == "0601") {
     $code = cString::iReplaceOnceReverse("</body>", "$contentform</body>", $code);
     $code = cString::iReplaceOnce("<head>", "<head>\n" . '<base href="' . cRegistry::getFrontendUrl() . '">', $code);
 }
+
+$bodyPosition = strpos($code, '<body>');
+
+$code = substr_replace($code, $versioningElement, $bodyPosition+6, 0);
 
 if ($cfg["debug"]["codeoutput"]) {
     cDebug::out(conHtmlSpecialChars($code));

@@ -129,10 +129,10 @@ switch ($versioningState) {
         $page->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
         
         $infoButton = new cGuiBackendHelpbox(i18n(
-                '<strong>Konfigurationsstufe \'advanced\':</strong>  '
-                . 'Es kann auf frühere Artikelversionen zurückgegriffen werden. '
-                . 'Es können äußerdem Entwürfe erstellt und zeitunabhängig veröffentlicht werden (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
-                . 'Hier durchgeführte Aktionen beziehen sich sowohl auf Artikeleigenschaften, SEO sowie Contents!!'));
+                '<strong>Advanced-Mode:</strong>  '
+                . 'Former Article Versions can be reviewed and restored. Unpublished drafts can be created.'
+                . ' (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+                . 'Changes are related to Article Properties, SEO\'s and Contents!'));
         $page->set('s', 'INFO_BUTTON_VERSION_SELECTION', $infoButton->render());
         
         break;
@@ -167,9 +167,10 @@ switch ($versioningState) {
 
         $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
 
-        $infoButton = new cGuiBackendHelpbox(i18n('<strong>Konfigurationsstufe \'simple\':</strong> Ältere Artikelversionen lassen sich wiederherstellen (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
-                . 'Hier durchgeführte Aktionen beziehen sich sowohl auf Artikeleigenschaften, SEO sowie Contents!'));
-        
+        $infoButton = new cGuiBackendHelpbox(i18n('<strong>Simple-Mode:</strong>' 
+            . ' Older Article Versions can be reviewed and restored (For further configurations please go to'
+            . ' Administration/System/System configuration).<br/><br/>'
+            . 'Changes are related to Article Properties, SEO\'s and Contents!'));
         // Create markAsCurrent Button
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', i18n('Copy to Published Version'), 'copytobutton');
         if ($articleType == 'current' || $articleType == 'editable' && $versioningState == 'simple') {
@@ -626,6 +627,11 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             $iAvariableSpec++;
         }
     }
+    // disable select element if a non-editable version is selected
+    if ($versioning->getState() == 'simple' && $articleType != 'current'
+        || $versioning->getState() == 'advanced' && $articleType != 'editable') {
+            $inputArtSortSelect->setDisabled('disabled');
+    }
     $tmp_inputArtSort .= $inputArtSortSelect->toHTML();
 
     if ($iAvariableSpec == 0) {
@@ -651,7 +657,8 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $select = new cHTMLSelectElement("directlink");
     $select->setEvent("change", "var sVal=this.form.directlink.options[this.form.directlink.options.selectedIndex].value; document.getElementById('linkhint').value = sVal; if(sVal)document.getElementById('linkhintA').style.display='inline-block'; else document.getElementById('linkhintA').style.display='none';");
-    if (cSecurity::toInteger($idart) == 0) {
+    if (cSecurity::toInteger($idart) == 0 || ($versioning->getState() == 'simple' && $articleType != 'current'
+            || $versioning->getState() == 'advanced' && $articleType != 'editable')) {
         $select->setEvent("disabled", "disabled");
     }
 
@@ -704,10 +711,11 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $page->set('s', 'AUTHOR_MODIFIER', i18n("Author (Modifier)"));
     $page->set('s', 'LETZTE-AENDERUNG', i18n("Last modified"));
     $page->set('s', 'AENDERUNGS-DATUM', $tmp2_lastmodified . '<input type="hidden" name="lastmodified" value="' . date("Y-m-d H:i:s") . '">');
-
+    
     // Publishing date
     $page->set('s', 'PUBLISHING_DATE_LABEL', i18n("Publishing date"));
     if ($tmp_online) {
+        $page->set('s', 'DISABLED', $disabled);
         $page->set('s', 'PUBLISHING_DATE', $tmp2_published);
     } else {
         $page->set('s', 'PUBLISHING_DATE', i18n("not yet published"));
@@ -1250,7 +1258,9 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $page->set('s', 'BUTTONDISABLE', $disabled);
 
-    if ($inUse == true) {
+    // disable/grey out button if article is in use or a non-editable version is selected
+    if ($inUse == true || ($versioning->getState() == 'simple' && $articleType != 'current'
+            || $versioning->getState() == 'advanced' && $articleType != 'editable')) {
         $page->set('s', 'BUTTONIMAGE', 'but_ok_off.gif');
     } else {
         $page->set('s', 'BUTTONIMAGE', 'but_ok.gif');

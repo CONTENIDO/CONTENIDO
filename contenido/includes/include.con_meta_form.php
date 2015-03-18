@@ -369,8 +369,9 @@ switch ($versioning->getState()) {
         $markAsCurrentButton = new cHTMLButton('markAsCurrentButton', $buttonTitle, 'copytobutton');
         $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
         
-        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Konfigurationsstufe \'simple\':</strong> Ältere Metadatenversionen lassen sich wiederherstellen (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
-                . 'Hier durchgeführte Aktionen beziehen sich nur auf Metadaten!'));
+        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Advanced-Mode:</strong> '
+                . 'Older SEO Versions can be reviewed and restored. Unpublished drafts can be created (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+                . 'Changes are only related to SEO!'));
         $tpl->set("s", "INFO_BUTTON_VERSION_SELECTION", $infoButton->render());
         
         break;
@@ -410,8 +411,9 @@ switch ($versioning->getState()) {
         }
         $tpl->set('s', 'SET_AS_CURRENT_VERSION', $markAsCurrentButton->toHtml());
         
-        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Konfigurationsstufe \'simple\':</strong> Ältere Metadatenversionen lassen sich wiederherstellen (Einstellungen sind in Administration/System/System-Konfiguration möglich).<br/><br/>'
-                . 'Hier durchgeführte Aktionen beziehen sich nur auf Metadaten!'));
+        $infoButton =  new cGuiBackendHelpbox(i18n('<strong>Simple-Mode:</strong> '
+                . 'Older SEO Versions can be reviewed and restored (For further configurations please go to Administration/System/System configuration).<br/><br/>'
+                . 'Changes are only related to SEO!'));
         $tpl->set("s", "INFO_BUTTON_VERSION_SELECTION", $infoButton->render());
     
         break;        
@@ -559,10 +561,10 @@ while ($db->nextRecord()) {
 $aUserPerm = explode(',', $auth->auth['perm']);
 
 if (in_array('sysadmin', $aUserPerm)) {
+    // disable/grey out button if a non-editable version is selected 
     if ($versioning->getState() == 'simple' && $articleType != 'current'
             || $versioning->getState() == 'advanced' && $articleType != 'editable') {
-        // TODO ausgegrauter button+"onclick" deaktivieren
-        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta">'); 
+        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new_off.png" id="addMetaDisabled">'); 
     } else {
         $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta">');        
     }

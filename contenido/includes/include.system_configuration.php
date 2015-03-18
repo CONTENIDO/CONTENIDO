@@ -65,26 +65,21 @@ function renderSelectProperty($name, $possibleValues, $value, $label, $width = 3
                     ' . $html->render() . '                    
                   </div>
                   <div id="pluginInfoDetails" class="nodisplay">'
-                  . i18n('<p><strong>Artikel-Versionierung:</strong></p>
-                      <ul style="list-style:none;">
-                        <li>
-                            Es kann auf frühere 
-                            Artikelversionen zurückgegriffen werden (simple). 
-                            Es können äußerdem unveröffentlichte Entwürfe erstellt werden (advanced). 
-                            Artikelversionen werden automatisch generiert, sobald der User 
-                            eine Änderung im Editor speichert. 
-                            Standardmäßig ist die Artikelversionierung deaktiviert.
-                        </li>
-                    </ul>
-                  <p><strong>Konfigurationsstufen:</strong></p>    
-                      <ul class="list">
-                          <li class="first"><strong>disabled: </strong> Auf frühere Artikelversionen kann nicht zugegriffen werden.</li>
-                          <li><strong>simple: </strong> Ältere Artikelversionen lassen sich wiederherstellen. Gehe im Artikel zum Reiter „Rohdaten“.</li>
-                          <li><strong>advanced: </strong> Ein Artikelentwurf kann erstellt werden. Und zeitunabhängig veröffentlicht werden. 
-                                Vergangene Versionen lassen sich wiederherstellen bzw. nutzen.</li>
-                      </ul>
-                  <p><strong>Weitere Informationen</strong> sind in den entsprechenden Reitern zu finden.</p>                
-                  </div>');
+                  . i18n('<p><strong>Article Versioning:</strong></p>'
+                      . '<ul style="list-style:none;">'
+                        . '<li>'
+                            . 'Review and restore older versions (simple) and create drafts (advanced).' 
+                            . ' Versions are generated automatically by changing an article.'
+                        . '</li>'
+                    . '</ul>'
+                  . '<p><strong>Modes:</strong></p>'    
+                      . '<ul class="list">'
+                          . '<li class="first"><strong>disabled: </strong> The Article Versioning is disabled.</li>'
+                          . '<li><strong>simple: </strong>Older Article Versions can be reviewed and restored.</li>'
+                          . '<li><strong>advanced: </strong>Additional to the Simple-Mode, unpublished drafts can be created.</li>'
+                      . '</ul>'
+                  . '<p><strong>Further informations</strong> can be found in related tabs (Content/Articles/Properties|SEO|Raw data|Editor).</p>'                
+                  . '</div>');
         } else {
             $html->setStyle('padding:3px;display:block;float:left;width:' . $width . 'px;');   
             $return['label'] = renderLabel($label, $name);

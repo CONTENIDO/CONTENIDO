@@ -528,7 +528,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
                 'created' => $date,
                 'lastmodified' => $date
             );
-
+            
             $versioning = new cContentVersioning();
             $versioning->createContentVersion($parameters);
         case 'disabled':
