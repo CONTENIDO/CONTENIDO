@@ -980,6 +980,12 @@ class PifaRightBottomFormExportPage extends cGuiPage {
         $this->addStyle('right_bottom.css');
         $this->addScript('form_assistant.js');
         $this->addScript('right_bottom.js');
+		
+		// add translations to template
+        $this->set('s', 'I18N', json_encode(array(
+            'cancel' => Pifa::i18n('CANCEL'),
+            'save' => Pifa::i18n('SAVE')
+        )));
 
         // create models
         $this->_pifaForm = new PifaForm();
@@ -1103,6 +1109,12 @@ class PifaRightBottomFormImportPage extends cGuiPage {
         $this->addStyle('right_bottom.css');
         $this->addScript('form_assistant.js');
         $this->addScript('right_bottom.js');
+		
+		// add translations to template
+        $this->set('s', 'I18N', json_encode(array(
+            'cancel' => Pifa::i18n('CANCEL'),
+            'save' => Pifa::i18n('SAVE')
+        )));
 
         // dispatch action
         try {
