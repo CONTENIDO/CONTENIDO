@@ -1291,7 +1291,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     $page->set('s', 'iIdtpl', $idtpl);
     $page->set('s', 'SYNCOPTIONS', -1);
     $page->set('s', 'DISPLAY_MENU', 1);
-
+    
     // Genereate the template
     $page->render();
 } else {

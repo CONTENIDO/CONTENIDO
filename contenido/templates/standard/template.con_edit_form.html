@@ -335,7 +335,8 @@ function disableFunctionsOnTimeControl() {
             buttonImage: '{PATH_TO_CALENDER_PIC}',
             buttonImageOnly: true,
             showOn: 'both',
-            dateFormat: 'yy-mm-dd'
+            dateFormat: 'yy-mm-dd',
+            disabled: {IS_DATETIMEPICKER_DISABLED}
         });
 
         $('#datestart').datetimepicker({
@@ -412,7 +413,7 @@ function disableFunctionsOnTimeControl() {
 
         // set initial status code switch state
         _onCheckForwardingClick();
-        
+
         disableFunctionsOnTimeControl();
     });
 })(Con, Con.$);

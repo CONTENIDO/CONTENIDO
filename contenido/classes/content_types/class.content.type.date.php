@@ -305,7 +305,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         $code .= $this->_generateFormatSelect();
         $code .= $this->_generateStoreButton();
         $code = new cHTMLDiv($code, 'cms_date', 'cms_' . $this->_prefix . '_' . $this->_id . '_settings');
-
+        
         return $this->_encodeForOutput($code);
     }
 
@@ -329,7 +329,7 @@ class cContentTypeDate extends cContentTypeAbstract {
         }
         $template->set('s', 'SETTINGS', json_encode($setting));
         $template->set('s', 'BELANG', cRegistry::getBackendLanguage());
-
+        
         return $template->generate($this->_cfg['path']['contenido'] . 'templates/standard/template.cms_date.html', true);
     }
 
@@ -340,7 +340,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      */
     private function _generateStoreButton() {
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif', 'save_settings');
-
+        
         return $saveButton->render();
     }
 
