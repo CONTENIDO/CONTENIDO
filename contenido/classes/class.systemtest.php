@@ -1009,7 +1009,7 @@ class cSystemtest {
             return $errorMessage;
         }
 
-        if ($handle->getLinkId()->errno == 1045) {
+        if (false === isset($handle) || $handle->getLinkId()->errno == 1045) {
             return self::CON_MYSQL_CANT_CONNECT;
         }
 
