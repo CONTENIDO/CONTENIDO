@@ -13,7 +13,7 @@
  */
 
 $tpl = cSmartyFrontend::getInstance();
-const PROTOCOL = 'http://';
+
 $urlLabel = mi18n("URL");
 $automaticURLLabel = mi18n("AUTOMATIC_URL_LABEL");
 $lookLabel = mi18n("LOOK");
@@ -37,8 +37,8 @@ if (cRegistry::isBackendEditMode() && 'POST' === strtoupper($_SERVER['REQUEST_ME
 
     // CON-2174
     $url = $_POST['url'];
-    if (strpos($url, PROTOCOL) !== 0) {
-        $url = PROTOCOL . $url;
+    if (null === parse_url($url, PHP_URL_SCHEME)) {
+    	$url = 'http://' . $url;
     }
 
     conSaveContentEntry($idartlang, "CMS_HTML", 3000, $url);
