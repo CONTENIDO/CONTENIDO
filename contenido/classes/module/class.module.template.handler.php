@@ -249,6 +249,13 @@ class cModuleTemplateHandler extends cModuleHandler {
      * Save the code in the file
      */
     private function _save() {
+        // if user selected other file display it
+        if ($this->_hasSelectedFileChanged()) {
+            $this->_file = $this->_selectedFile;
+            $this->_tmpFile = $this->_selectedFile;
+            return;
+        }
+
         // trigger a smarty cache rebuild for template if changes were saved
         $tpl = cSmartyFrontend::getInstance();
         $tpl->clearCache($this->getTemplatePath($this->_file));
@@ -258,11 +265,6 @@ class cModuleTemplateHandler extends cModuleHandler {
         // show message
         if (true === $ret) {
             $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Saved changes successfully!'));
-        }
-        // if user selected other file display it
-        if ($this->_hasSelectedFileChanged()) {
-            $this->_file = $this->_selectedFile;
-            $this->_tmpFile = $this->_selectedFile;
         }
     }
 
@@ -564,40 +566,30 @@ class cModuleTemplateHandler extends cModuleHandler {
         }
 
         try {
-            if (isset($_POST['code'])) {
-                switch ($myAction) {
-                    case 'save':
-                        if(!$readOnly) {
-                            $this->_save();
-                        }
-                        break;
-                    case 'rename':
-                        if(!$readOnly) {
-                            $this->_rename();
-                        }
-                        break;
-                    case 'new':
-                        if(!$readOnly) {
-                            $this->_new();
-                        }
-                        break;
-                    case 'delete':
-                        if(!$readOnly) {
-                            $this->_delete();
-                        }
-                        break;
-                    default:
-                        $this->_default();
-                        break;
-                }
-            } else {
-                // if user selected other file display it
-                if ($this->_hasSelectedFileChanged()) {
-                    $this->_file = $this->_selectedFile;
-                    $this->_tmpFile = $this->_selectedFile;
-                } else {
+            switch ($myAction) {
+                case 'save':
+                    if(!$readOnly) {
+                        $this->_save();
+                    }
+                    break;
+                case 'rename':
+                    if(!$readOnly) {
+                        $this->_rename();
+                    }
+                    break;
+                case 'new':
+                    if(!$readOnly) {
+                        $this->_new();
+                    }
+                    break;
+                case 'delete':
+                    if(!$readOnly) {
+                        $this->_delete();
+                    }
+                    break;
+                default:
                     $this->_default();
-                }
+                    break;
             }
 
             $this->_code = $this->getFilesContent('template', '', $this->_file);
