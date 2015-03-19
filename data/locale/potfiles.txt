@@ -464,7 +464,6 @@
 ./external/wysiwyg/tinymce4/contenido/templates/template.tinymce_tpl.html
 ./external/wysiwyg/tinymce4/tinymce/js/tinymce/plugins/example/dialog.html
 ./external/wysiwyg/tinymce4/tinymce/js/tinymce/tinymce.gzip.php
-./external/wysiwyg/tinymce4/tinymce_dev/js/tinymce/plugins/example/dialog.html
 ./frameset.php
 ./frameset_left.php
 ./frameset_right.php
