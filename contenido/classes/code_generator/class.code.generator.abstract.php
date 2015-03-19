@@ -295,7 +295,7 @@ abstract class cCodeGeneratorAbstract {
         // NOTE: Variables below are required in included/evaluated content type
         // codes!
         global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
-
+        
         // NOTE: Variables below are additionally required in included/evaluated
         // content type codes within backend edit mode!
         global $edit, $editLink, $belang;
@@ -329,7 +329,6 @@ abstract class cCodeGeneratorAbstract {
         // Replace all CMS_TAGS[]
         foreach ($_typeList as $_typeItem) {
             $key = strtolower($_typeItem->type);
-
             $type = $_typeItem->type;
             // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
             // $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i',

@@ -25,7 +25,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cContentTypeDate extends cContentTypeAbstract {
 
-    /**
+    /**   
      * The possible PHP date formats in which the selected date can be
      * displayed.
      *

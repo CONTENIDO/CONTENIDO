@@ -46,7 +46,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save 
 
     // execute CEC hook
     $code = cApiCecHook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
-
+    
     return $code;
 }
 

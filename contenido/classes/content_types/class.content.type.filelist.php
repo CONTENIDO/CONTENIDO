@@ -141,6 +141,13 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 }
                 $_POST[$dateFormField] = $timestamp;
             }
+            
+            try {
+                throw new Exception();
+            } catch (Exception $e) {
+                error_log($e->getTraceAsString());
+            }
+            
             $this->_storeSettings();
         }
     }

@@ -245,7 +245,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // Save the generated code
         $this->_saveGeneratedCode($idcatart);
-
+        
         return $this->_layoutCode;
     }
 

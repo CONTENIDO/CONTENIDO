@@ -255,7 +255,7 @@ abstract class cContentTypeAbstract {
         } else {
             $settingsToStore = $this->_settings;
         }
-        // store new settings in the database
+        // store new settings in the database        
         conSaveContentEntry($this->_idArtLang, $this->_type, $this->_id, $settingsToStore);
     }
 

@@ -34,7 +34,7 @@ $jsData = '';
 		
 $data = cSecurity::toString($_REQUEST['data']);
 
-if ($action == 20 || $action == 10) {
+if (($action == 20 || $action == 10) && $_REQUEST['filelist_action'] != 'store') {
     if ($data != '') {
         $data = explode('||', substr($data, 0, -2));		
         foreach ($data as $value) {
@@ -44,7 +44,6 @@ if ($action == 20 || $action == 10) {
             } else {
                 $value[3] = str_replace('%$%SEPERATOR%$%', '|', $value[3]);
             }
-            
             conSaveContentEntry($value[0], 'CMS_' . $value[1], $value[2], $value[3]);
         }
        
@@ -351,7 +350,6 @@ if ($selectedArticle != NULL) {
         $edit = false;
     }
 
-    //$code .= $versioningElement;
     $code .= conGenerateCode($idcat, $idart, $lang, $client, false, false, true, $editable, $version); 
 
 }

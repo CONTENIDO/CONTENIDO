@@ -450,6 +450,117 @@ class cContentVersioning {
     }
     
     /**
+     * Prepares content for saving (consider versioning-mode; prevents multiple storings for filelists e.g.)
+     *
+     * @param $idartlang the contents idartlang
+     * @param cApiContent $content the content to store
+     * @param $value the contents value to store
+     *
+     */
+    public function prepareContentForSaving($idartlang, cApiContent $content, $value) {
+        $versioningState = $this->getState();
+        $date = date('Y-m-d H:i:s');
+        $author = $auth->auth['uname'];
+        
+        // through a contenido bug filelists save each of their changes multiple times. 
+        // therefor its nececcary to check if the same change already has been saved and
+        // prevent multiple savings
+        static $savedTypes = array ();
+        $isAlreadySaved = false;
+        
+        if (!array_key_exists($content->get('idtype').$content->get('typeid'), $savedTypes)) {
+            $savedTypes[$content->get('idtype').$content->get('typeid')] = $value;
+        } else {
+            $isAlreadySaved = true;
+        }
+        
+       if ($isAlreadySaved == false) { 
+        switch ($versioningState) {
+            case 'simple':
+                // Create Content Version
+                $idContent = NULL;
+                if ($content->isLoaded()) {
+                    $idContent = $content->getField('idcontent');
+                }
+        
+                if ($idContent == NULL) {
+                    $idContent = $this->getMaxIdContent() + 1;
+                }
+        
+                $parameters = array(
+                    'idcontent' => $idContent,
+                    'idartlang' => $idartlang,
+                    'idtype' => $content->get('idtype'),
+                    'typeid' => $content->get('typeid'),
+                    'value' => $value,
+                    'author' => $author,
+                    'created' => $date,
+                    'lastmodified' => $date
+                );
+        
+                $this->createContentVersion($parameters);
+            case 'disabled':
+                if ($content->isLoaded()) {
+                    // Update existing entry
+                    $content->set('value', $value);
+                    $content->set('author', $author);
+                    $content->set('lastmodified', date('Y-m-d H:i:s'));
+                    $content->store();
+                } else {
+                    // Create new entry
+                    $contentColl = new cApiContentCollection();
+                    $content = $contentColl->create(
+                        $idartlang,
+                        $content->get('idtype'),
+                        $content->get('typeid'),
+                        $value,
+                        0,
+                        $author,
+                        $date,
+                        $date
+                    );
+                }
+        
+                // Touch the article to update last modified date
+                $lastmodified = date('Y-m-d H:i:s');
+                $artLang = new cApiArticleLanguage($idartlang);
+                $artLang->set('lastmodified', $lastmodified);
+                $artLang->set('modifiedby', $author);
+                $artLang->store();
+        
+                break;
+            case 'advanced':
+                // Create Content Version
+                $idContent = NULL;
+                if ($content->isLoaded()) {
+                    $idContent = $content->getField('idcontent');
+                }
+        
+                if ($idContent == NULL) {
+                    $idContent = $this->getMaxIdContent() + 1;
+                }
+        
+                $parameters = array(
+                    'idcontent' => $idContent,
+                    'idartlang' => $idartlang,
+                    'idtype' => $content->get('idtype'),
+                    'typeid' => $content->get('typeid'),
+                    'value' => $value,
+                    'author' => $author,
+                    'created' => $date,
+                    'lastmodified' => $date
+                );
+        
+                $this->createContentVersion($parameters);
+            default:
+                break;
+        }
+       }
+    }
+    
+    
+    
+    /**
      * Create new Content Version
      *
      * @param mixed[] $parameters {
@@ -464,12 +575,12 @@ class cContentVersioning {
      * }
     */
     public function createContentVersion(array $parameters) {
-	// Create new Article Language Version and get the version number
-		
-	// set parameters for Article Language Version
-	$currentArticle = cRegistry::getArticleLanguage();
-	
-	$parametersArticleVersion = array(
+    	// Create new Article Language Version and get the version number
+    		
+    	// set parameters for Article Language Version
+    	$currentArticle = cRegistry::getArticleLanguage();
+    	
+    	$parametersArticleVersion = array(
             'idartlang' => $currentArticle->getField('idartlang'),
             'idart' => $currentArticle->getField('idart'),
             'idlang' => $currentArticle->getField('idlang'),
@@ -504,13 +615,13 @@ class cContentVersioning {
             'searchable' => $currentArticle->getField('searchable'),
             'sitemapprio' => $currentArticle->getField('sitemapprio'),
             'changefreq' => $currentArticle->getField('changefreq')
-	);
-        
-	$artLangVersion = $this->createArticleLanguageVersion($parametersArticleVersion);
-	
-	// Get the version number of the new Article Language Version that belongs to the Content
-	$parameters['version'] = $artLangVersion->getField('version');
-        
+    	);
+    	
+    	$artLangVersion = $this->createArticleLanguageVersion($parametersArticleVersion);
+    	
+    	// Get the version number of the new Article Language Version that belongs to the Content
+    	$parameters['version'] = $artLangVersion->getField('version');
+            
         $parametersToCheck = $parameters;
         unset(
                 $parametersToCheck['lastmodified'],

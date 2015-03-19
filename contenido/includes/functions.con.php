@@ -487,8 +487,6 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
         return;
     }
     
-    $date = date('Y-m-d H:i:s');
-    $author = $auth->auth['uname'];
     $value = str_replace(cRegistry::getFrontendUrl(), '', $value);
     $value = stripslashes($value);
 
@@ -499,86 +497,12 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
 
     $idtype = $oType->get('idtype');
     
-    // Create new entry
+    // instantiate content
     $content = new cApiContent();
     $content->loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid);	
 	
     $versioning = new cContentVersioning();
-    $versioningState = $versioning->getState();
-
-    switch ($versioningState) {		
-        case 'simple':
-            // Create Content Version
-            $idContent = NULL;
-            if ($content->isLoaded()) {
-                $idContent = $content->getField('idcontent');
-            }
-            
-            if ($idContent == NULL) {
-                $idContent = $versioning->getMaxIdContent() + 1;
-            }
-
-            $parameters = array(
-                'idcontent' => $idContent,
-                'idartlang' => $idartlang,
-                'idtype' => $idtype,
-                'typeid' => $typeid,
-                'value' => $value,
-                'author' => $author,
-                'created' => $date,
-                'lastmodified' => $date
-            );
-            
-            $versioning = new cContentVersioning();
-            $versioning->createContentVersion($parameters);
-        case 'disabled':
-            if ($content->isLoaded()) {
-                // Update existing entry
-                $content->set('value', $value);
-                $content->set('author', $author);
-                $content->set('lastmodified', date('Y-m-d H:i:s'));
-                $content->store();
-            } else {
-                // Create new entry
-                $contentColl = new cApiContentCollection();
-                $content = $contentColl->create($idartlang, $idtype, $typeid, $value, 0, $author, $date, $date);
-            }    
-
-            // Touch the article to update last modified date
-            $lastmodified = date('Y-m-d H:i:s');
-            $artLang = new cApiArticleLanguage($idartlang);
-            $artLang->set('lastmodified', $lastmodified);
-            $artLang->set('modifiedby', $author);
-            $artLang->store();
-
-            break;
-        case 'advanced':
-            // Create Content Version	
-            $idContent = NULL;
-            if ($content->isLoaded()) {                
-                $idContent = $content->getField('idcontent');
-            }
-
-            if ($idContent == NULL) {
-                $idContent = $versioning->getMaxIdContent() + 1;
-            }
-            
-            $parameters = array(
-                'idcontent' => $idContent,
-                'idartlang' => $idartlang,
-                'idtype' => $idtype,
-                'typeid' => $typeid,
-                'value' => $value,
-                'author' => $author,
-                'created' => $date,
-                'lastmodified' => $date
-            );
-            
-            $versioning = new cContentVersioning();
-            $versioning->createContentVersion($parameters);
-        default:
-            break;
-    }
+    $versioning->prepareContentForSaving($idartlang, $content, $value);
 		
     // content entry has been saved, so clear the article cache
     $purge = new cSystemPurge();
