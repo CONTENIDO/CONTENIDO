@@ -111,13 +111,20 @@ class SearchResultModule {
 
         // perform first preparation of searchterm
         $searchTerm = $this->_searchTerm;
-        $searchTerm = stripslashes($searchTerm);
-        $searchTerm = strip_tags($searchTerm);
-        $searchTerm = conHtmlentities($searchTerm);
+        if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
+            $searchTerm = stripslashes($searchTerm);
+        }
 
+        // assume search term is always url encoded
+        // default enctype for a form is application/x-www-form-urlencoded
         $searchTerm = urldecode($searchTerm);
+
         $searchTerm = str_replace(' + ', ' AND ', $searchTerm);
         $searchTerm = str_replace(' - ', ' NOT ', $searchTerm);
+
+        // escape all entities for search because content types save its values
+        // using escaping of special chars
+        $searchTerm = conHtmlentities($searchTerm);
 
         // that's the search term suitable for display
         $this->_dispSearchTerm = $searchTerm;
@@ -131,7 +138,9 @@ class SearchResultModule {
                 $this->_combine = 'or';
             }
 
+            // force converting string to UTF-8
             $searchTerm = htmlentities($searchTerm, ENT_COMPAT, 'UTF-8');
+            // remove superfluous white space and convert search term to lowercase
             $searchTerm = (trim(strtolower($searchTerm)));
             $searchTerm = html_entity_decode($searchTerm, ENT_COMPAT, 'UTF-8');
 
