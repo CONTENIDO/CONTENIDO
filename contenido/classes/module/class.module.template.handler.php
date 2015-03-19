@@ -455,22 +455,26 @@ class cModuleTemplateHandler extends cModuleHandler {
         // array with all files in template directory
         $filesArray = $this->getAllFilesFromDirectory('template');
 
-        // make options fields
-        foreach ($filesArray as $key => $file) {
+        if (true === is_array($filesArray)) {
 
-            // ignore dirs
-            if (is_dir($file)) {
-                continue;
-            }
+	        // make options fields
+	        foreach ($filesArray as $key => $file) {
 
-            $optionField = new cHTMLOptionElement($file, $file);
+	            // ignore dirs
+	            if (is_dir($file)) {
+	                continue;
+	            }
 
-            // select the current file
-            if ($file == $this->_file) {
-                $optionField->setAttribute('selected', 'selected');
-            }
+	            $optionField = new cHTMLOptionElement($file, $file);
 
-            $selectFile->addOptionElement($key, $optionField);
+	            // select the current file
+	            if ($file == $this->_file) {
+	                $optionField->setAttribute('selected', 'selected');
+	            }
+
+	            $selectFile->addOptionElement($key, $optionField);
+	        }
+
         }
 
         $aDelete = new cHTMLLink('main.php');
@@ -479,7 +483,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aDelete->setClass('deletefunction');
         $aDelete->setCustom("deleteModTpl", "1");
         $aDelete->setCustom('area', $this->_area);
-        $aDelete->setCustom('action', $this->_action);
+        $aDelete->setCustom('action', $this->_actionDelete);
         $aDelete->setCustom('frame', $this->_frame);
         $aDelete->setCustom('status', 'send');
         $aDelete->setCustom('idmod', $this->_idmod);
@@ -491,7 +495,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aAdd->setClass('addfunction');
         $aAdd->setCustom("newModTpl", "1");
         $aAdd->setCustom('area', $this->_area);
-        $aAdd->setCustom('action', $this->_action);
+        $aAdd->setCustom('action', $this->_actionCreate);
         $aAdd->setCustom('frame', $this->_frame);
         $aAdd->setCustom('status', 'send');
         $aAdd->setCustom('tmp_file', $this->_tmpFile);

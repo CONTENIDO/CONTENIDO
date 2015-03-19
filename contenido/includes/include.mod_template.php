@@ -40,14 +40,14 @@ if (!is_object($notification)) {
 
 // $_REQUEST['action'] = $sActionEdit;
 
-if (!$perm->have_perm_area_action($area, $action)) {
+if (!$perm->have_perm_area_action($area, $sActionEdit)) {
     $page->displayCriticalError(i18n("Permission denied"));
 } else if (!(int) $client > 0) {
     // If there is no client selected, display empty page
 } else {
     $contenidoModulTemplateHandler = new cModuleTemplateHandler($idmod, $page);
     $contenidoModulTemplateHandler->checkWritePermissions();
-    $contenidoModulTemplateHandler->setAction($action);
+    $contenidoModulTemplateHandler->setAction($sActionEdit);
     $contenidoModulTemplateHandler->setCode($_REQUEST['code']);
     $contenidoModulTemplateHandler->setFiles($_REQUEST['file'], $_REQUEST['tmp_file']);
     $contenidoModulTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
