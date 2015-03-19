@@ -48,7 +48,9 @@ if (!$perm->have_perm_area_action($area, $sActionEdit)) {
     $contenidoModulTemplateHandler = new cModuleTemplateHandler($idmod, $page);
     $contenidoModulTemplateHandler->checkWritePermissions();
     $contenidoModulTemplateHandler->setAction($sActionEdit);
-    $contenidoModulTemplateHandler->setCode($_REQUEST['code']);
+    if (isset($_REQUEST['code'])) {
+        $contenidoModulTemplateHandler->setCode($_REQUEST['code']);
+    }
     $contenidoModulTemplateHandler->setFiles($_REQUEST['file'], $_REQUEST['tmp_file']);
     $contenidoModulTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
     $contenidoModulTemplateHandler->setNewDelete($_REQUEST['new'], $_REQUEST['delete']);

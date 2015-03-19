@@ -253,18 +253,19 @@ class cModuleTemplateHandler extends cModuleHandler {
         if ($this->_hasSelectedFileChanged()) {
             $this->_file = $this->_selectedFile;
             $this->_tmpFile = $this->_selectedFile;
-            return;
         }
 
-        // trigger a smarty cache rebuild for template if changes were saved
-        $tpl = cSmartyFrontend::getInstance();
-        $tpl->clearCache($this->getTemplatePath($this->_file));
+        if (isset($this->_code)) {
+            // trigger a smarty cache rebuild for template if changes were saved
+            $tpl = cSmartyFrontend::getInstance();
+            $tpl->clearCache($this->getTemplatePath($this->_file));
 
-        // save the contents of file
-        $ret = $this->createModuleFile('template', $this->_file, $this->_code);
-        // show message
-        if (true === $ret) {
-            $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Saved changes successfully!'));
+            // save the contents of file
+            $ret = $this->createModuleFile('template', $this->_file, $this->_code);
+            // show message
+            if (true === $ret) {
+                $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Saved changes successfully!'));
+            }
         }
     }
 
