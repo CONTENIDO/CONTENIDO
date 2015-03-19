@@ -58,13 +58,9 @@ if (empty($allLanguages)) {
     // set next language is exists
     foreach ($allLanguages as $langs) {
         if ($langs > $currentLanguage) {
-            // build new cApiLanguage instance instead of using cApiLanguageCollection->getLanguageName
-            // because the latter applies filters on the language name
-            $oApiLang = new cApiLanguage((int) $langs);
-            $oApiLang->setFilters();
-            $langName = $oApiLang->get('name');
-            $tpl->set('s', 'label', conHtmlSpecialChars($langName));
-            $tpl->set('s', 'title', conHtmlSpecialChars($langName));
+            $langName = conHtmlSpecialChars($languageCollectionInstance->getLanguageName((int) $langs));
+            $tpl->set('s', 'label', $langName);
+            $tpl->set('s', 'title', $langName);
 
             $selectedLang = $langs;
             $nextLang = true;
