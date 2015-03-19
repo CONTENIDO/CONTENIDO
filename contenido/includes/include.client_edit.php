@@ -49,12 +49,18 @@ $urlscheme = parse_url($htmlpath, PHP_URL_SCHEME);
 $valid = ($clientname != "" && $frontendpath != "" && ($urlscheme == 'http' || $urlscheme == 'https'));
 
 if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action)) && $valid) {
+    // Set $validPath = true if path could be created, else false
+    $validPath = false;
+    if (!is_dir($request['frontendpath'])) {
+        $validPath = mkdir($request['frontendpath'], 0777);
+    }
+    
     $sNewNotification = '';
     if ($active != '1') {
         $active = '0';
     }
 
-    if ($new == true) {
+    if (($new == true && $validPath == true) || ($new == true && cFileHandler::exists($request['frontendpath']))) {
         $sLangNotification = i18n('Notice: In order to use this client, you must create a new language for it.');
         $sTarget = $sess->url('frameset.php?area=lang');
         $sJsLink = "parent.parent.location.href='" . $sTarget . "';
@@ -87,7 +93,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         $dataPath = 'data/config/' . CON_ENVIRONMENT . '/';
 
         if ($copytemplate) {
-            if (!cFileHandler::exists($destPath)) {
+            if ($validPath) {
                 recursiveCopy($sourcePath, $destPath);
                 $buffer = cFileHandler::read($destPath . $dataPath . 'config.php');
                 $outbuf = str_replace('!CLIENT!', $idclient, $buffer);
@@ -108,12 +114,16 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         if (substr($frontendpath, strlen($frontendpath) - 1) != '/') {
             $frontendpath .= '/';
         }
-
+        
+        if (!$validPath) {
+            cRegistry::addWarningMessage(i18n("Path could not be created. Please ensure that there are only valid characters and no new nested folders."));
+        }
+        
         if (substr($htmlpath, strlen($htmlpath) - 1) != '/') {
             $htmlpath .= '/';
         }
 
-        if (($oldpath != $frontendpath) && ($oldpath != $pathwithoutslash)) {
+        if (($oldpath != $frontendpath) && ($oldpath != $pathwithoutslash) && ($validPath || cFileHandler::exists($destPath))) {
             cRegistry::addWarningMessage(i18n("You changed the client path. You might need to copy the frontend to the new location"));
         }
 
@@ -150,9 +160,11 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
             cFileHandler::remove($cfgClient[$idclient]['code']['path'] . '/' . $file->getFilename());
         }
     }
-
-    cRegistry::addInfoMessage(i18n("Changes saved") . $sNewNotification);
-
+    
+    if ($validPath || cFileHandler::exists($destPath)) {
+        cRegistry::addInfoMessage(i18n("Changes saved") . $sNewNotification);
+    }
+    
     $cApiClient->loadByPrimaryKey($idclient);
 
     if ($request['generate_xhtml'] == 'no') {
