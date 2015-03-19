@@ -249,6 +249,13 @@ class cModuleTemplateHandler extends cModuleHandler {
      * Save the code in the file
      */
     private function _save() {
+        // if user selected other file display it
+        if ($this->_hasSelectedFileChanged()) {
+            $this->_file = $this->_selectedFile;
+            $this->_tmpFile = $this->_selectedFile;
+            return;
+        }
+
         // trigger a smarty cache rebuild for template if changes were saved
         $tpl = cSmartyFrontend::getInstance();
         $tpl->clearCache($this->getTemplatePath($this->_file));
@@ -258,11 +265,6 @@ class cModuleTemplateHandler extends cModuleHandler {
         // show message
         if (true === $ret) {
             $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Saved changes successfully!'));
-        }
-        // if user selected other file display it
-        if ($this->_hasSelectedFileChanged()) {
-            $this->_file = $this->_selectedFile;
-            $this->_tmpFile = $this->_selectedFile;
         }
     }
 
@@ -455,22 +457,26 @@ class cModuleTemplateHandler extends cModuleHandler {
         // array with all files in template directory
         $filesArray = $this->getAllFilesFromDirectory('template');
 
-        // make options fields
-        foreach ($filesArray as $key => $file) {
+        if (true === is_array($filesArray)) {
 
-            // ignore dirs
-            if (is_dir($file)) {
-                continue;
-            }
+	        // make options fields
+	        foreach ($filesArray as $key => $file) {
 
-            $optionField = new cHTMLOptionElement($file, $file);
+	            // ignore dirs
+	            if (is_dir($file)) {
+	                continue;
+	            }
 
-            // select the current file
-            if ($file == $this->_file) {
-                $optionField->setAttribute('selected', 'selected');
-            }
+	            $optionField = new cHTMLOptionElement($file, $file);
 
-            $selectFile->addOptionElement($key, $optionField);
+	            // select the current file
+	            if ($file == $this->_file) {
+	                $optionField->setAttribute('selected', 'selected');
+	            }
+
+	            $selectFile->addOptionElement($key, $optionField);
+	        }
+
         }
 
         $aDelete = new cHTMLLink('main.php');
@@ -479,7 +485,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aDelete->setClass('deletefunction');
         $aDelete->setCustom("deleteModTpl", "1");
         $aDelete->setCustom('area', $this->_area);
-        $aDelete->setCustom('action', $this->_action);
+        $aDelete->setCustom('action', $this->_actionDelete);
         $aDelete->setCustom('frame', $this->_frame);
         $aDelete->setCustom('status', 'send');
         $aDelete->setCustom('idmod', $this->_idmod);
@@ -491,7 +497,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aAdd->setClass('addfunction');
         $aAdd->setCustom("newModTpl", "1");
         $aAdd->setCustom('area', $this->_area);
-        $aAdd->setCustom('action', $this->_action);
+        $aAdd->setCustom('action', $this->_actionCreate);
         $aAdd->setCustom('frame', $this->_frame);
         $aAdd->setCustom('status', 'send');
         $aAdd->setCustom('tmp_file', $this->_tmpFile);
@@ -560,40 +566,30 @@ class cModuleTemplateHandler extends cModuleHandler {
         }
 
         try {
-            if (isset($_POST['code'])) {
-                switch ($myAction) {
-                    case 'save':
-                        if(!$readOnly) {
-                            $this->_save();
-                        }
-                        break;
-                    case 'rename':
-                        if(!$readOnly) {
-                            $this->_rename();
-                        }
-                        break;
-                    case 'new':
-                        if(!$readOnly) {
-                            $this->_new();
-                        }
-                        break;
-                    case 'delete':
-                        if(!$readOnly) {
-                            $this->_delete();
-                        }
-                        break;
-                    default:
-                        $this->_default();
-                        break;
-                }
-            } else {
-                // if user selected other file display it
-                if ($this->_hasSelectedFileChanged()) {
-                    $this->_file = $this->_selectedFile;
-                    $this->_tmpFile = $this->_selectedFile;
-                } else {
+            switch ($myAction) {
+                case 'save':
+                    if(!$readOnly) {
+                        $this->_save();
+                    }
+                    break;
+                case 'rename':
+                    if(!$readOnly) {
+                        $this->_rename();
+                    }
+                    break;
+                case 'new':
+                    if(!$readOnly) {
+                        $this->_new();
+                    }
+                    break;
+                case 'delete':
+                    if(!$readOnly) {
+                        $this->_delete();
+                    }
+                    break;
+                default:
                     $this->_default();
-                }
+                    break;
             }
 
             $this->_code = $this->getFilesContent('template', '', $this->_file);

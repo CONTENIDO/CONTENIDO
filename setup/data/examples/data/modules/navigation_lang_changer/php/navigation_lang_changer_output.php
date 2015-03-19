@@ -58,8 +58,13 @@ if (empty($allLanguages)) {
     // set next language is exists
     foreach ($allLanguages as $langs) {
         if ($langs > $currentLanguage) {
-            $tpl->set('s', 'label', $languageCollectionInstance->getLanguageName($langs));
-            $tpl->set('s', 'title', $languageCollectionInstance->getLanguageName($langs));
+            // build new cApiLanguage instance instead of using cApiLanguageCollection->getLanguageName
+            // because the latter applies filters on the language name
+            $oApiLang = new cApiLanguage((int) $langs);
+            $oApiLang->setFilters();
+            $langName = $oApiLang->get('name');
+            $tpl->set('s', 'label', conHtmlSpecialChars($langName));
+            $tpl->set('s', 'title', conHtmlSpecialChars($langName));
 
             $selectedLang = $langs;
             $nextLang = true;
@@ -101,7 +106,7 @@ if (empty($allLanguages)) {
         $url = cRegistry::getFrontendUrl() . 'front_content.php?idart='.$idart.'&changelang=' . $selectedLang;
     }
 
-    $tpl->set('s', 'url', $url);
+    $tpl->set('s', 'url', conHtmlSpecialChars($url));
     $tpl->generate('get.html');
 
 }
