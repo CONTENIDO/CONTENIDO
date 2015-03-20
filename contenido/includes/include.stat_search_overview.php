@@ -26,15 +26,16 @@ if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
 
 // the collection we'll be showing
 $termCollection = new cApiSearchTrackingCollection();
+$term = conHtmlEntityDecode($_GET['term']);
 
 // switch between showing information about a single search term or all of them
 if ($action == "show_single_term") {
     // select all entries about one term
-    $termCollection->selectSearchTerm($term);
-    
+    $termCollection->selectSearchTerm(addslashes($term));
+
     $page->set("s", "ADDITIONAL_INFO", i18n('Date'));
     $page->set("s", "RESULTS_HEADER", i18n("Number of Results"));
-                                                                  
+
     // fill template
     $i = 0;
     while ($termItem = $termCollection->next()) {
