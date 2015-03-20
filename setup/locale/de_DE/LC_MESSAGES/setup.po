@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: CONTENIDO Setup\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-09 14:09+0100\n"
-"PO-Revision-Date: 2015-01-09 14:10+0100\n"
-"Last-Translator: Thomas Stauer <thomas.stauer@4fb.de>\n"
+"PO-Revision-Date: 2015-03-20 13:36+0100\n"
+"Last-Translator: Frederic Schneider <frederic.schneider@4fb.de>\n"
 "Language-Team: CONTENIDO Development\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: i18n\n"
 "X-Poedit-Keywords: i18n,trans\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.6.4\n"
 
 #: autoinstall.php:59
 msgid "Please enter the missing settings below:"
@@ -96,7 +96,7 @@ msgstr "Datenbankpasswort"
 
 #: lib/class.clisetup.php:208 steps/forms/setupsummary.php:47
 msgid "Database name"
-msgstr "Datenbank Name"
+msgstr "Datenbankname"
 
 #: lib/class.clisetup.php:213
 msgid "Charset"
@@ -654,7 +654,7 @@ msgstr "Tabellenprefix"
 
 #: steps/forms/setupsummary.php:50 steps/forms/systemdata.php:157
 msgid "Database character set"
-msgstr "Datenbank Zeichensatz"
+msgstr "Datenbank-Zeichensatz"
 
 #: steps/forms/setupsummary.php:56
 msgid "Client with example modules but without example content"
@@ -741,7 +741,7 @@ msgstr "Erweiterte Einstellungen"
 
 #: steps/forms/systemdata.php:158
 msgid "Database collation"
-msgstr "Datenbank Zeichenkodierung"
+msgstr "Datenbank-Kollation"
 
 #: steps/forms/systemdata.php:176
 msgid "You need to enter a database host."
