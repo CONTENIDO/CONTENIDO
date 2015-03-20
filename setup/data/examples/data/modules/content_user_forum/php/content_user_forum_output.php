@@ -439,8 +439,8 @@ class UserForumArticle {
                         $userColl = new cApiUserCollection();
                         $user = $userColl->loadItem($value['editedby'])->get('username');
 
-                        $edit_information = sprintf($tmp, $editdate, $edittime, $user);
-                        $record['EDIT_INFORMATION'] = "<br /><br /><em>conHtmlSpecialChars($edit_information)</em>";
+                        $edit_information = sprintf($tmp, $editdate, $edittime, conHtmlSpecialChars($user));
+                        $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
                     }
 
                     // ansers allowed or not.
