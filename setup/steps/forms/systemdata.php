@@ -121,7 +121,8 @@ class cSetupSystemData extends cSetupMask {
             }
             $dbcharsetTextbox = $dbcharset->render();
         } else {
-            $dbcharsetTextbox = 'utf-8';
+        	$hiddenFieldDbCharset = new cHTMLHiddenField('dbcharset', 'utf8');
+            $dbcharsetTextbox = $hiddenFieldDbCharset . 'utf8';
         }
 
         // Compose collation select box, only if CONUTF8 flag is not set
@@ -138,7 +139,8 @@ class cSetupSystemData extends cSetupMask {
             }
             $dbCollationTextbox = new cHTMLTextbox('dbcollation', $selectedCollation, '', '', 'collationText'). $dbcollation->render();
         } else {
-            $dbCollationTextbox = 'utf8_general_ci';
+        	$hiddenFieldDbCollation = new cHTMLHiddenField('dbcollation', 'utf8_general_ci');
+        	$dbCollationTextbox = $hiddenFieldDbCollation . 'utf8_general_ci';
         }
 
         $this->_oStepTemplate->set('s', 'LABEL_DBHOST', i18n("Database Server (IP or name)", "setup"));
