@@ -422,7 +422,7 @@
 ./cronjobs/advance_workflow.php
 ./cronjobs/index.php
 ./cronjobs/linkchecker.php
-./cronjobs/maintain_passwort_reset_requests.php
+./cronjobs/maintain_password_reset_requests.php
 ./cronjobs/move_articles.php
 ./cronjobs/move_old_stats.php
 ./cronjobs/optimize_database.php

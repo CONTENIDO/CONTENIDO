@@ -40,7 +40,7 @@ if ($action == "show_single_term") {
     while ($termItem = $termCollection->next()) {
         $i++;
         $page->set("d", "NUMBER", $i);
-        $page->set("d", "SEARCH_TERM", $term);
+        $page->set("d", "SEARCH_TERM", conHtmlSpecialChars($term));
         $page->set("d", "NUMBER_OF_RESULTS", $termItem->get("results"));
         $page->set("d", "ADDITIONAL_INFO", $termItem->get("datesearched"));
         $page->next();
@@ -73,7 +73,7 @@ if ($action == "show_single_term") {
     while ($termItem = $termCollection->next()) {
         $i++;
         $page->set("d", "NUMBER", $i);
-        $page->set("d", "SEARCH_TERM", $termItem->get('searchterm'));
+        $page->set("d", "SEARCH_TERM", conHtmlSpecialChars($termItem->get('searchterm')));
         $page->set("d", "NUMBER_OF_RESULTS", round($counts[$termItem->get('searchterm')]['avg'], 2));
         $page->set("d", "ADDITIONAL_INFO", $counts[$termItem->get('searchterm')]['count']);
         $page->next();
