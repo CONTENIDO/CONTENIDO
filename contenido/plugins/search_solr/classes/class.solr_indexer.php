@@ -28,17 +28,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class SolrIndexer {
 
     /**
-     * IDs of articles to be updated / added / deleted.
-     *
-     * @var array
+     * @var bool
      */
-    private $_articleIds = array();
+    const DBG = false;
+
+    /**
+     * Prefix to be used for Solr <uniqueKey> in order to distinguish docuemnts
+     * from different sources.
+     *
+     * @var string
+     */
+    const ID_PREFIX = 'contenido_article_';
 
     /**
      *
-     * @var SolrClient
+     * @var array of SolrClient
      */
-    private $_solrClient = NULL;
+    private $_solrClients = NULL;
+
+    /**
+     * IDs of articles to be updated / added / deleted.
+     *
+     * @var array     */
+    private $_articleIds = array();
 
     /**
      * CEC chain function for updating an article in the Solr core (index).
@@ -55,7 +67,7 @@ class SolrIndexer {
      */
     public static function handleStoringOfArticle(array $newData, array $oldData) {
 
-        // get IDs of given article langauge
+        // get IDs of given article language
         if (cRegistry::getArticleLanguageId() == $newData['idartlang']) {
             // quite easy if given article is current article
             $idclient = cRegistry::getClientId();
@@ -67,39 +79,34 @@ class SolrIndexer {
         } else {
             // == for other articles these infos have to be read from DB
             // get idclient by idart
-            $article = new cApiArticle($idart);
+            $article = new cApiArticle($newData['idart']);
             if ($article->isLoaded()) {
-            	$idart = $article->get('idart');
                 $idclient = $article->get('idclient');
             }
             // get idlang by idartlang
-            $articleLanguage = new cApiArticleLanguage($idartlang);
+            $articleLanguage = new cApiArticleLanguage($newData['idartlang']);
             if ($articleLanguage->isLoaded()) {
                 $idlang = $articleLanguage->get('idlang');
             }
             // get first idcat by idart
             $coll = new cApiCategoryArticleCollection();
-            $idcat = array_shift($coll->getCategoryIdsByArticleId($idart));
+            $idcat = array_shift($coll->getCategoryIdsByArticleId($newData['idart']));
             // get idcatlang by idcat & idlang
             $categoryLanguage = new cApiCategoryLanguage();
             $categoryLanguage->loadByCategoryIdAndLanguageId($idcat, $idlang);
             if ($categoryLanguage->isLoaded()) {
                 $idcatlang = $articleLanguage->get('idlang');
             }
-            // get idartlang
-            $idartlang = $newData['idartlang'];
         }
 
-        $articleIds = array(
+        self::handleStoringOfContentEntry(array(
             'idclient' => $idclient,
             'idlang' => $idlang,
             'idcat' => $idcat,
             'idcatlang' => $idcatlang,
             'idart' => $idart,
             'idartlang' => $idartlang
-        );
-
-        self::handleStoringOfContentEntry($articleIds);
+        ));
     }
 
     /**
@@ -140,20 +147,35 @@ class SolrIndexer {
      */
     public function __construct(array $articleIds) {
         $this->_articleIds = $articleIds;
-        $opt = Solr::getClientOptions();
-        Solr::validateClientOptions($opt);
-        $this->_solrClient = new SolrClient($opt);
     }
 
     /**
      * Destroy aggregated client instance.
+     *
+     * Destroys Solr client to free memory. Is this really neccessary?
+     * As SolClient has a method __destruct() this seems to be correct.
      */
     public function __destruct() {
+        foreach ($this->_solrClients as $key => $client) {
+            unset($this->_solrClients[$key]);
+        }
+    }
 
-        // destroy Solr client to free mem
-        // really neccessary?
-        // as SolClient has a method __destruct() this seems to be correct
-        unset($this->_solrClient);
+    /**
+     *
+     * @param int $idclient
+     * @param int $idlang
+     * @return SolrClient
+     */
+    private function _getSolrClient($idclient, $idlang) {
+
+        if (!isset($this->_solrClients[$idclient][$idlang])) {
+            $opt = Solr::getClientOptions($idclient, $idlang);
+            Solr::validateClientOptions($opt);
+            $this->_solrClients[$idclient][$idlang] = new SolrClient($opt);
+        }
+
+        return $this->_solrClients[$idclient][$idlang];
     }
 
     /**
@@ -164,7 +186,8 @@ class SolrIndexer {
      * @throws cException if Solr add request failed
      */
     public function addArticles() {
-        $documents = array();
+
+        $toAdd = array();
         foreach ($this->_articleIds as $articleIds) {
 
             // skip if article should not be indexed
@@ -172,11 +195,24 @@ class SolrIndexer {
                 continue;
             }
 
+            if (!isset($toAdd[$articleIds['idlang']])) {
+                $toAdd[$articleIds['idlang']] = array(
+                    'idclient' => $articleIds['idclient'],
+                    'documents' => array()
+                );
+            }
+
             // get article content to be indexed
             $articleContent = $this->_getContent($articleIds['idartlang']);
 
             // create input document
             $solrInputDocument = new SolrInputDocument();
+            $solrInputDocument->addField('source', 'contenido_article');
+            $solrInputDocument->addField('url', cUri::getInstance()->build(array(
+                'idart' => $articleIds['idart'],
+                'lang' => $articleIds['idlang']
+            )));
+            $solrInputDocument->addField('id', self::ID_PREFIX . $articleIds['idartlang']);
             // $solrInputDocument->addField('raise_exception', 'uncomment this
             // to raise an exception');
             // add IDs
@@ -208,42 +244,106 @@ class SolrIndexer {
                 }
             }
 
-            array_push($documents, $solrInputDocument);
+            if (isset($articleContent['CMS_IMGEDITOR'])) {
+                foreach ($articleContent['CMS_IMGEDITOR'] as $typeid => $idupl) {
+                    if (0 == strlen($idupl)) {
+                        continue;
+                    }
+                    $image = $this->_getImageUrlByIdupl($idupl);
+                    if (false === $image) {
+                        //Util::log("skipped \$idupl: $idupl");
+                        continue;
+                    }
+                    $solrInputDocument->addField('images', $image);
+                }
+            }
+
+            array_push($toAdd[$articleIds['idlang']]['documents'], $solrInputDocument);
+
         }
 
         // add and commit documents and then optimze index
-        try {
-            @$this->_solrClient->addDocuments($documents);
-            @$this->_solrClient->commit();
-            @$this->_solrClient->optimize();
-        } catch (Exception $e) {
-            // log exception
-            Solr::log($e);
-            // rethrow as cException
-            throw new cException('article could not be added to index', 0, $e);
+        foreach ($toAdd as $idlang => $data) {
+            try {
+                $solrClient = $this->_getSolrClient($data['idclient'], $idlang);
+                if (self::DBG) {
+                    error_log('# addArticles #');
+                    error_log('idclient: ' . $data['idclient']);
+                    error_log('idlang: ' . $idlang);
+                    error_log('config: ' . print_r($solrClient->getOptions(), 1));
+                    error_log('#documents: ' . count($data['documents']));
+                } else {
+                    @$solrClient->addDocuments($data['documents']);
+                    // @$solrClient->commit();
+                    // @$solrClient->optimize();
+                }
+            } catch (Exception $e) {
+                // log exception
+                Solr::log($e);
+                // rethrow as cException
+                throw new cException('article could not be deleted from index', 0, $e);
+            }
         }
+
     }
 
     /**
+     */
+    private function _getImageUrlByIdupl($idupl) {
+        $upload = new cApiUpload($idupl);
+
+        if (false === $upload->isLoaded()) {
+            return false;
+        }
+
+        $idclient = $upload->get('idclient');
+        $dirname = $upload->get('dirname');
+        $filename = $upload->get('filename');
+
+        $clientConfig = cRegistry::getClientConfig($idclient);
+        $image = $clientConfig['upl']['htmlpath'] . $dirname . $filename;
+
+        return $image;
+    }
+
+    /**
+     * Delete all CONTENIDO article documents that are aggregated as
+     * $this->_articleIds.
      *
      * @throws SolrClientException if Solr delete request failed
      */
     public function deleteArticles() {
-
-        function getIdartlang(array $array) {
-            return $array['idartlang'];
+        $toDelete = array();
+        foreach ($this->_articleIds as $articleIds) {
+            if (!isset($toDelete[$articleIds['idlang']])) {
+                $toDelete[$articleIds['idlang']] = array(
+                    'idclient' => $articleIds['idclient'],
+                    'idartlangs' => array()
+                );
+            }
+            $key = self::ID_PREFIX . strval($articleIds['idartlang']);
+            array_push($toDelete[$articleIds['idlang']]['idartlangs'], $key);
         }
-
-        $idartlangs = array_map('getIdartlang', $this->_articleIds);
-
-        // delete document
-        try {
-            @$this->_solrClient->deleteByIds($idartlangs);
-        } catch (Exception $e) {
-            // log exception
-            Solr::log($e);
-            // rethrow as cException
-            throw new cException('article could not be deleted from index', 0, $e);
+        foreach ($toDelete as $idlang => $data) {
+            try {
+                $solrClient = $this->_getSolrClient($data['idclient'], $idlang);
+                if (self::DBG) {
+                    error_log('# deleteArticles #');
+                    error_log('idclient: ' . $data['idclient']);
+                    error_log('idlang: ' . $idlang);
+                    error_log('config: ' . print_r($solrClient->getOptions(), 1));
+                    error_log('#idartlangs: ' . count($data['idartlangs']));
+                    error_log('idartlangs: ' . print_r($data['idartlangs'], 1));
+                } else {
+                    $solrClient->deleteByIds($data['idartlangs']);
+                    // @$solrClient->commit();
+                }
+            } catch (Exception $e) {
+                // log exception
+                Solr::log($e);
+                // rethrow as cException
+                throw new cException('article could not be deleted from index', 0, $e);
+            }
         }
     }
 
@@ -301,6 +401,13 @@ class SolrIndexer {
      */
     private function _getContent($idartlang) {
 
+        // 'CMS_IMG', 'CMS_LINK', 'CMS_LINKTARGET', 'CMS_SWF'
+        $cms = "'CMS_HTMLHEAD','CMS_HTML','CMS_TEXT','CMS_IMGDESCR',"
+            . "'CMS_LINKDESCR','CMS_HEAD','CMS_LINKTITLE','CMS_LINKEDIT',"
+            . "'CMS_RAWLINK','CMS_IMGEDIT','CMS_IMGTITLE','CMS_SIMPLELINKEDIT',"
+            . "'CMS_HTMLTEXT','CMS_EASYIMGEDIT','CMS_DATE','CMS_TEASER',"
+            . "'CMS_FILELIST','CMS_IMGEDITOR','CMS_LINKEDITOR','CMS_PIFAFORM'";
+
         // exclude certain content types from indexing
         // like in conMakeArticleIndex & conGenerateKeywords
         $db = cRegistry::getDb();
@@ -317,7 +424,7 @@ class SolrIndexer {
                 con_content.idtype = con_type.idtype
             WHERE
                 con_content.idartlang = $idartlang
-                AND con_type.type NOT IN ('CMS_IMG', 'CMS_LINK', 'CMS_LINKTARGET', 'CMS_SWF')
+                AND con_type.type IN ($cms)
             ORDER BY
                 con_content.idtype
                 , con_content.typeid
@@ -325,7 +432,14 @@ class SolrIndexer {
 
         $content = array();
         while (false !== $db->nextRecord()) {
-            $content[$db->f('type')][$db->f('typeid')] = $db->f('value');
+            $value = $db->f('value');
+            //$value = utf8_encode($value);
+            $value = strip_tags($value);
+            //$value = html_entity_decode($value);
+            $value = html_entity_decode($value, ENT_QUOTES, 'UTF-8');
+            $value = trim($value);
+
+            $content[$db->f('type')][$db->f('typeid')] = $value;
         }
 
         // TODO check first alternative:
