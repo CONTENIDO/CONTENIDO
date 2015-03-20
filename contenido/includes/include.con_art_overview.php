@@ -38,6 +38,10 @@ if (!isset($_SESSION['count_duplicate'])) {
     $_SESSION['count_duplicate'] = 0;
 }
 
+// New Article Selected: Unset Selected Article Id
+global $selectedArticleId;
+$selectedArticleId = NULL;
+
 if ($action == 'con_duplicate' && ($perm->have_perm_area_action("con", "con_duplicate") || $perm->have_perm_area_action_item("con", "con_duplicate", $idcat))) {
 
     $count = (int) $_SESSION['count_duplicate'];

@@ -31,7 +31,7 @@ $db2 = cRegistry::getDb();
 $scripts = '';
 $cssData = '';
 $jsData = '';
-		
+
 $data = cSecurity::toString($_REQUEST['data']);
 
 if (($action == 20 || $action == 10) && $_REQUEST['filelist_action'] != 'store') {
@@ -126,25 +126,32 @@ $contentform .= '
 </form>        
 ';
 
+global $selectedArticleId;
+if ($_REQUEST['idArtLangVersion'] != NULL) {
+    $selectedArticleId = $_REQUEST['idArtLangVersion'];
+}
 $versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
 $articleType = $versioning->getArticleType(
                     $_REQUEST['idArtLangVersion'], 
                     (int) $idartlang, 
-                    $action
+                    $action,
+                    $selectedArticleId
                 );
 $code = '';
 $selectElement = new cHTMLSelectElement('articleVersionSelect', '', 'selectVersionElement');
 $versioningElement = '';
 
+
 switch ($versioningState) {
-    case 'simple' :
-        
+    case 'simple' :        
         // Set as current
         if ($action == 'copyto') {
-            if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'current') {
+            if (is_numeric($_REQUEST['idArtLangVersion']) && $versioningState == 'simple' 
+                && ($articleType == 'current' || $articleType == 'editable')) {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsCurrent('content');
+                $selectedArticleId = 'current';
             }
         }
         $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], $idartlang, $articleType);
@@ -158,12 +165,33 @@ switch ($versioningState) {
             $optionElement->setSelected(true);
         }
         $selectElement->appendOptionElement($optionElement);
-
+        
+        // check if selected version is availible, else select the next lower version
+        $temp_id = $selectedArticleId;
+        $temp_ids = array ();
+        
+        foreach (array_values($optionElementParameters) AS $key => $value) {
+            $temp_ids[] = key($value);        
+        }
+        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
+            && $selectedArticleId != 'editable' && $articleType != 'current' && $articleType != 'editable') {
+            foreach ($temp_ids AS $key => $value) {
+                if ($value < $selectedArticleId) {
+                    $temp_id = $value;
+                    break;
+                }
+            }        
+        }
+        
         // Create Content Version Option Elements
         foreach ($optionElementParameters AS $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Version ' . $key . ': ' . $lastModified, key($value));
-            if ($_REQUEST['idArtLangVersion'] == key($value) && $articleType != 'current') { 
+            //if ($_REQUEST['idArtLangVersion'] == key($value) && $articleType != 'current') { 
+                //$optionElement->setSelected(true);
+            //}
+            //if (key($value) == $selectedArticleId) {
+            if (key($value) == $temp_id) {
                 $optionElement->setSelected(true);
             }
             $selectElement->appendOptionElement($optionElement);            
@@ -199,22 +227,27 @@ switch ($versioningState) {
                 if (isset($artLangVersion)) {
                     $artLangVersion->markAsCurrent('content');
                 }
+                $selectedArticleId = 'current';
             } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsEditable('content');
                 $articleType = $versioning->getArticleType(
                     $_REQUEST['idArtLangVersion'], 
                     (int) $idartlang, 
-                    $action
+                    $action,
+                    $selectedArticleId
                 );
+                $selectedArticleId = 'editable';
             } else if ($_REQUEST['idArtLangVersion'] == 'current') {
                 $artLang = new cApiArticleLanguage($idartlang);
                 $artLang->markAsEditable('content');
                 $articleType = $versioning->getArticleType(
                     $_REQUEST['idArtLangVersion'], 
                     (int) $idartlang, 
-                    $action
+                    $action,
+                    $selectedArticleId
                 );
+                $selectedArticleId = 'editable';
             }     
         }
         
@@ -242,15 +275,35 @@ switch ($versioningState) {
         }
         $selectElement->appendOptionElement($optionElement);
 
+        // check if selected version is availible, else select the next lower version
+        $temp_id = $selectedArticleId;
+        $temp_ids = array ();
+        
+        foreach (array_values($optionElementParameters) AS $key => $value) {
+            $temp_ids[] = key($value);
+        }
+        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
+            && $selectedArticleId != 'editable') {
+            foreach ($temp_ids AS $key => $value) {
+                if ($value < $selectedArticleId) {
+                    $temp_id = $value;
+                    break;
+                }
+            }
+        }
+            
         // Create Content Version Option Elements
         foreach ($optionElementParameters AS $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
-            if ($articleType == 'version') {
-                if ($_REQUEST['idArtLangVersion'] == key($value)) {
+            //if ($articleType == 'version') {
+                //if ($_REQUEST['idArtLangVersion'] == key($value)) {
+                    //$optionElement->setSelected(true);
+                //}                
+                if (key($value) == $temp_id) {
                     $optionElement->setSelected(true);
                 }
-            }
+            //}
             $selectElement->appendOptionElement($optionElement);
         }
         

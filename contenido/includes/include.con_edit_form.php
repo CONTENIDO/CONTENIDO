@@ -19,7 +19,7 @@ cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.pathresolver.php");
 
 // ugly globals that are used in this script
-global $tpl, $cfg, $db, $perm, $sess;
+global $tpl, $cfg, $db, $perm, $sess, $selectedArticleId;
 global $frame, $area, $action, $contenido, $notification;
 global $client, $lang, $belang;
 global $idcat, $idart, $idcatlang, $idartlang, $idcatart, $idtpl;
@@ -42,10 +42,20 @@ if (isset($idart)) {
         $idartlang = $db->f("idartlang");
     }
 }
+
     
+if ($_REQUEST['idArtLangVersion'] != NULL) {
+    $selectedArticleId = $_REQUEST['idArtLangVersion'];
+}
 $versioning = new cContentVersioning();
 $versioningState = $versioning->getState();
-$articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], $idartlang, $action);
+$articleType = $versioning->getArticleType(
+    $_REQUEST['idArtLangVersion'],
+    $idartlang,
+    $action,
+    $selectedArticleId
+);
+
 
 switch ($versioningState) {
     
@@ -58,20 +68,21 @@ switch ($versioningState) {
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 if (isset($artLangVersion)) {
                     $artLangVersion->markAsCurrent('complete');
+                    $selectedArticleId = 'current';
                 }
                 
             } else if (is_numeric($_REQUEST['idArtLangVersion']) && $articleType == 'editable') {
                 // version->editable
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
                 $artLangVersion->markAsEditable('complete');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
-
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $selectedArticleId = 'editable';
             } else if ($_REQUEST['idArtLangVersion'] == 'current') {
                 // current->editable
                 $artLang = new cApiArticleLanguage((int) $_REQUEST['idartlang']);
                 $artLang->markAsEditable('complete');
-                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action);
-
+                $articleType = $versioning->getArticleType($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $action, $selectedArticleId);
+                $selectedArticleId = 'editable';
             }
         }
         
@@ -90,6 +101,23 @@ switch ($versioningState) {
             }
             
         }
+        
+        // check if selected version is availible, else select the next lower version
+        $temp_id = $selectedArticleId;
+        $temp_ids = array ();
+        
+        foreach (array_values($optionElementParameters) AS $key => $value) {
+            $temp_ids[] = key($value);
+        }
+        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current'
+            && $selectedArticleId != 'editable' && $articleType != 'current' && $articleType != 'editable') {
+                foreach ($temp_ids AS $key => $value) {
+                    if ($value < $selectedArticleId) {
+                        $temp_id = $value;
+                        break;
+                    }
+                }
+            }
 
         // Create Metatag Version Option Elements
         if ($action != 'con_newart') {
@@ -103,11 +131,11 @@ switch ($versioningState) {
         foreach ($optionElementParameters AS $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
-            if ($articleType == 'version') {
-                if ($_REQUEST['idArtLangVersion'] == key($value)) {
+            //if ($articleType == 'version') {
+                if ($temp_id == key($value)) {
                     $optionElement->setSelected(true);
                 }
-            }
+            //}
             $selectElement->appendOptionElement($optionElement);
         }
         $selectElement->setEvent("onchange", "selectVersion.idArtLangVersion.value=$('#selectVersionElement option:selected').val();selectVersion.submit()");
@@ -141,7 +169,8 @@ switch ($versioningState) {
          if ($action == 'copyto') {            
             if (is_numeric($_REQUEST['idArtLangVersion'])) {                
                 $artLangVersion = new cApiArticleLanguageVersion((int) $_REQUEST['idArtLangVersion']);
-                $artLangVersion->markAsCurrent('complete');                
+                $artLangVersion->markAsCurrent('complete');      
+                $selectedArticleId = 'current';
             }            
         }
         
@@ -153,15 +182,37 @@ switch ($versioningState) {
             $optionElement->setSelected(true);
         }
         $selectElement->appendOptionElement($optionElement);
-
+        
+        // check if selected version is availible, else select the next lower version
+        $temp_id = $selectedArticleId;
+        $temp_ids = array ();
+        
+        foreach (array_values($optionElementParameters) AS $key => $value) {
+            $temp_ids[] = key($value);        
+        }
+        if (!in_array($selectedArticleId, $temp_ids) && $selectedArticleId != 'current' 
+            && $selectedArticleId != 'editable' && $articleType != 'current' && $articleType != 'editable') {
+            foreach ($temp_ids AS $key => $value) {
+                if ($selectedArticleId < $value) {
+                    $temp_id = $value;
+                    break;
+                }
+            }        
+        }
+        
         foreach ($optionElementParameters AS $key => $value) {
             $lastModified = $versioning->getTimeDiff($value[key($value)]);
             $optionElement = new cHTMLOptionElement('Revision ' . $key . ': ' . $lastModified, key($value));
-            if ($articleType == 'version') {
-                if ($_REQUEST['idArtLangVersion'] == key($value)) {
+            //if ($articleType == 'version') {
+                //if ($selectedArticleId == key($value)) {
+                    //$optionElement->setSelected(true);
+                //}   
+                             
+                //if ($selectedArticleId < key($value) || $selectedArticleId == key($value)) {
+                if ($temp_id == key($value)) {
                     $optionElement->setSelected(true);
-                }
-            }
+                }                
+            //}
             $selectElement->appendOptionElement($optionElement);
         }
 
@@ -359,7 +410,7 @@ if ($action == "con_newart" && $newart != true) {
     return;
 }
 
-if ($versioningState == 'simple' && $articleType != 'current'
+if ($versioningState == 'simple' && $articleType == 'version'
     || $versioningState == 'advanced' && $articleType != 'editable') {
     $disabled = 'disabled="disabled"';
 } else {
@@ -440,10 +491,11 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
                 AND idcat = " . cSecurity::toInteger($idcat);
     $db->query($sql);
     $db->nextRecord();
-
+    
     $tmp_cat_art = $db->f("idcatart");
     
-    if ($versioningState == 'disabled' || $articleType == 'current')  {
+    if ($versioningState == 'disabled' || $versioningState == 'simple' 
+        && ($articleType == 'current' || $articleType == 'editable'))  {
         $sql = "SELECT
                 *
             FROM
@@ -451,16 +503,17 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
             WHERE
                 idart = " . cSecurity::toInteger($idart) . "
                 AND idlang = " . cSecurity::toInteger($lang);
-    } else if ($action != 'con_newart' && ($_REQUEST['idArtLangVersion'] == NULL || $_REQUEST['idArtLangVersion'] == 'current')) {
+    } else if ($action != 'con_newart' && ($selectedArticleId == 'current' || $selectedArticleId == 'editable')
+        || $selectedArticleId == NULL) {
         $sql = "SELECT *
                 FROM " . $cfg["tab"]["art_lang_version"] . "
                 WHERE idartlangversion = " . $versioning->getEditableArticleId($idartlang);
     } else {
         $sql = "SELECT *
                 FROM " . $cfg["tab"]["art_lang_version"] . "
-                WHERE idartlangversion = " . cSecurity::toInteger($_REQUEST['idArtLangVersion']);        
+                WHERE idartlangversion = " . (int) $selectedArticleId;//cSecurity::toInteger($_REQUEST['idArtLangVersion']);     
     }
-    
+        
     $db->query($sql);
     $db->nextRecord();
 

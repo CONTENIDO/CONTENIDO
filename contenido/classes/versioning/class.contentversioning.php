@@ -226,30 +226,36 @@ class cContentVersioning {
      * @param int $idArtLangVersion
      * @param int $idArtLang
      * @param string $action
+     * @param mixed $selectedArticleId
      * @return string $this->articleType
+     * 
      */
-    public function getArticleType($idArtLangVersion, $idArtLang, $action) {
+    public function getArticleType($idArtLangVersion, $idArtLang, $action, $selectedArticleId) {
         
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
                 
         if ($this->getState() == 'disabled' // disabled               
-            || $this->getState() == 'simple' && (
-                    $action == 'con_meta_deletetype' || $action == 'copyto'
+            || ($this->getState() == 'simple' && ($selectedArticleId == 'current' 
+                || $selectedArticleId == NULL) 
+                && ($action == 'con_meta_deletetype' || $action == 'copyto'
                  || $action == 'con_content' || $idArtLangVersion == NULL
-                 || $action == 'con_saveart') 
+                 || $action == 'con_saveart' || $action == 'con_edit' || $action == 'con_meta_edit' || $action == 'con_editart')) 
             || $idArtLangVersion == 'current' && $action != 'copyto'
             || $action == 'copyto' && $idArtLangVersion == $this->editableArticleId
             || $action == 'con_meta_change_version' && $idArtLang == 'current'
+            || $selectedArticleId == 'current' && $action != 'copyto'
             || $this->editableArticleId == NULL
-            && $action != 'con_meta_saveart' && $action != 'con_newart' ) { // advanced
+            && $action != 'con_meta_saveart' && $action != 'con_newart') { // advanced
             $this->articleType = 'current';
-        } else if ($this->getState() == 'advanced' && 
-                ($action == 'con_content' || $action == 'con_meta_deletetype'
-                || $action == 'con_meta_edit' || $action == 'con_edit')
+        } else if ($this->getState() == 'advanced' && ($selectedArticleId == 'editable' 
+            || $selectedArticleId == NULL)
+            && ($action == 'con_content' || $action == 'con_meta_deletetype'
+                || $action == 'con_meta_edit' || $action == 'con_edit' || $action == 'con_editart')
             || $action == 'copyto' || $idArtLangVersion == 'current'
             || $idArtLangVersion == $this->editableArticleId
             || $action == 'importrawcontent' || $action == 'savecontype'
-            || $action == 'con_editart' && $this->getState() == 'advanced'
+            || $action == 'con_editart' && $this->getState() == 'advanced' && $selectedArticleId == 'editable'
+            || $action == 'con_edit' && $this->getState() == 'advanced' && $selectedArticleId == NULL
             || $action == '20' && $idArtLangVersion == NULL
             || $action == 'con_meta_saveart' || $action == 'con_saveart' 
             || $action == 'con_newart' || $action == 'con_meta_change_version' 
@@ -425,7 +431,7 @@ class cContentVersioning {
                 $artLangVersionColl->setWhere('version', $metaVersionMap, 'IN');
                 
             } else if ($selectElementType == 'config') {
-//                // select all versions
+                // select all versions
             }
         } catch (cException $e) {
             return $artLangVersionMap;
