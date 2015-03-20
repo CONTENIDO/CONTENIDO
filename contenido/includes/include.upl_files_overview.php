@@ -566,10 +566,15 @@ $rownum = 0;
 $properties = new cApiPropertyCollection();
 
 while ($item = $uploads->next()) {
-    $filename = $item->get('filename');
 
-    if (strpos($filename, ".") === 0) {
-        continue;
+	// Get name of directory, filename and size of file
+	$dirname = $item->get('dirname');
+    $filename = $item->get('filename');
+    $filesize = $item->get('size');
+
+    // Do not display directories and "filenames" begin with a dot
+    if (true === cDirHandler::exists($cfgClient[$client]['upl']['path'] . $dirname . $filename) || strpos($filename, ".") === 0) {
+    	continue;
     }
 
     $bAddFile = true;
@@ -586,9 +591,6 @@ while ($item = $uploads->next()) {
             }
         }
     }
-
-    $dirname = $item->get('dirname');
-    $filesize = $item->get('size');
 
     if ($filesize == 0) {
         if (cFileHandler::exists($cfgClient[$client]['upl']['path'] . $dirname . $filename)) {
@@ -628,7 +630,6 @@ while ($item = $uploads->next()) {
 }
 
 if ($rownum == 0) {
-
     header('Location: ' . cRegistry::getBackendUrl() . 'main.php?area=upl_upload&frame=4&path=' . $path . '&contenido=' . $contenido . '&appendparameters=' . $appendparameters);
 }
 
