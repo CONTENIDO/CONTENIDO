@@ -96,7 +96,7 @@ function getArticlesFromCategory($categoryId) {
     // needed fields: idart, lastmodified, sitemapprio, changefreq
     $sql = '-- getArticlesFromCategory()
         SELECT
-            al.idart
+            al.idartlang
             , UNIX_TIMESTAMP(al.lastmodified) AS lastmod
             , al.changefreq
             , al.sitemapprio
@@ -118,7 +118,7 @@ function getArticlesFromCategory($categoryId) {
     if (false !== $ret) {
         while ($db->next_record()) {
             $article = new cApiArticleLanguage();
-            $article->loadByPrimaryKey($db->f('idart'));
+            $article->loadByPrimaryKey($db->f('idartlang'));
             $array[] = $article;
         }
     }

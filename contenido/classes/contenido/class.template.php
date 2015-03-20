@@ -138,6 +138,37 @@ class cApiTemplate extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
+    
+    /**
+     * Load a template based on article, category, language and client id
+     * 
+     * @param int $idart article id
+     * @param int $idcat category id
+     * @param int $lang language id
+     * @param int $client client id
+     */
+    public function loadByArticleOrCategory($idart, $idcat, $lang, $client) {
+
+        // get ID of template configuration that is used for
+        // either the article language or the category language
+        $idtplcfg = conGetTemplateConfigurationIdForArticle($idart, $idcat, $lang, $client);
+        if (!is_numeric($idtplcfg) || $idtplcfg == 0) {
+            $idtplcfg = conGetTemplateConfigurationIdForCategory($idcat, $lang, $client);
+        }
+        if (is_null($idtplcfg)) {
+            return false;
+        }
+
+        // load template configuration to get its template ID
+        $templateConfiguration = new cApiTemplateConfiguration($idtplcfg);
+        if (!$templateConfiguration->isLoaded()) {
+            return;
+        }
+
+        // try to load template by determined ID
+        $idtpl = $templateConfiguration->get('idtpl');
+        $this->loadByPrimaryKey($idtpl);
+    }
 
     /**
      * Userdefined setter for template fields.

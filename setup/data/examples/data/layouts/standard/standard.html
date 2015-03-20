@@ -21,6 +21,7 @@
             <link type="text/css" rel="stylesheet" href="css/ie_8.css" media="all" />
         <![endif]-->
 
+        <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
     </head>
 
     <body>
@@ -55,7 +56,9 @@
                 <container id="110" name="content" types="content" mode="optional" default="content_header_first">first header</container>
                 <container id="120" name="content" types="content" mode="optional" default="content_header_second">second header</container>
                 <container id="130" name="content" types="content" mode="optional" default="content_image">image</container>
-                <container id="140" name="content" types="content" mode="optional" default="content_text">text</container>
+                <div class="teaser-text">
+                    <container id="140" name="content" types="content" mode="optional" default="content_text">text</container>
+                </div>
                 <container id="150" name="content" types="content" mode="optional" default="content_date">date</container>
 				<container id="160" name="content" types="content" mode="optional" default="">content</container>
                 <container id="170" name="content" types="content" mode="optional" default="">content</container>
@@ -81,7 +84,6 @@
         <container id="320" name="tracker script" types="script" mode="optional" default="script_tracker_piwik">tracker script</container>
         <container id="999" name="script_cookie_directive" types="script" mode="fixed" default="script_cookie_directive">script_cookie_directive</container>
 
-        <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="js/jquery-ui-1.9.1.custom.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="js/jquery.touchSwipe.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="js/main.js"></script>

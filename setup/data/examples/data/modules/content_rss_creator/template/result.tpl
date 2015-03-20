@@ -1,0 +1,1 @@
+<p>{$RESULT_MSG|escape}</p>

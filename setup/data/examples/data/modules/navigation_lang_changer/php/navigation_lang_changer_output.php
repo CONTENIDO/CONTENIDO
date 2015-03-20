@@ -58,8 +58,9 @@ if (empty($allLanguages)) {
     // set next language is exists
     foreach ($allLanguages as $langs) {
         if ($langs > $currentLanguage) {
-            $tpl->set('s', 'label', $languageCollectionInstance->getLanguageName($langs));
-            $tpl->set('s', 'title', $languageCollectionInstance->getLanguageName($langs));
+            $langName = conHtmlSpecialChars($languageCollectionInstance->getLanguageName((int) $langs));
+            $tpl->set('s', 'label', $langName);
+            $tpl->set('s', 'title', $langName);
 
             $selectedLang = $langs;
             $nextLang = true;
@@ -101,7 +102,7 @@ if (empty($allLanguages)) {
         $url = cRegistry::getFrontendUrl() . 'front_content.php?idart='.$idart.'&changelang=' . $selectedLang;
     }
 
-    $tpl->set('s', 'url', $url);
+    $tpl->set('s', 'url', conHtmlSpecialChars($url));
     $tpl->generate('get.html');
 
 }

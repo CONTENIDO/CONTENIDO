@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>script_cookie_directive</name><description/><type/><alias>script_cookie_directive</alias></module>
+<module><name>script_cookie_directive</name><description>Output of the cookie directive (cookie notification)</description><type/><alias>script_cookie_directive</alias></module>

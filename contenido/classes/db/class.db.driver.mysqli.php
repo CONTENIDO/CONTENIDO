@@ -119,6 +119,12 @@ class cDbDriverMysqli extends cDbDriverAbstract {
 
         $res = mysqli_real_connect($dbHandler, $connectConfig['host'], $connectConfig['user'], $connectConfig['password'], $connectConfig['database'], $connectConfig['port'], $connectConfig['socket'], $connectConfig['flags']);
 
+        // check if connection could be established
+        if (false === $res) {
+            $this->_handler->halt('MySQLi _connect() Error connecting to database ' . $connectConfig['database']);
+            return NULL;
+        }
+
         if ($res && $dbHandler && $connectConfig['database']) {
             if (!@mysqli_select_db($dbHandler, $connectConfig['database'])) {
                 $this->_handler->halt('MySQLi _connect() Cannot use database ' . $connectConfig['database']);

@@ -168,4 +168,15 @@ class cString {
             return strtok($haystack, $needle);
         }
     }
+
+    /**
+     * This function checks if a given format is accepted by php's date function
+     * @param string $format format according to date function specification
+     * @return bool true if format is correct, false otherwise
+     */
+    public static function validateDateFormat($format) {
+        // try to create a DateTime instance based on php's date function format specification
+        // return true if date is valid (no wrong format)
+        return false !== DateTime::createFromFormat($format, date($format, time()));
+    }
 }

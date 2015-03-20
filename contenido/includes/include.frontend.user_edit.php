@@ -43,6 +43,9 @@ while ($oFEGroup = $oFEGroupMemberCollection->next()) {
 if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "frontend_create")) {
     $feuser = $feusers->create(" ".i18n("-- new user --"));
     $idfrontenduser = $feuser->get("idfrontenduser");
+    // put idfrontenduser of newly created user into superglobals for plugins
+    $_GET['idfrontenduser'] = $idfrontenduser;
+    $_REQUEST['idfrontenduser'] = $_GET['idfrontenduser'];
     //show success message
     $page->displayInfo(i18n("Created new user successfully!"));
 }

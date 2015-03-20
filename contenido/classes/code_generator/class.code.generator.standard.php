@@ -92,11 +92,20 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
                 $moduleHandler = new cModuleHandler($containerModuleId);
                 $input = '';
+                $this->_moduleCode = '';
 
                 // Get the contents of input and output from files and not from
                 // db-table
                 if ($moduleHandler->modulePathExists() == true) {
-                    $this->_moduleCode = $moduleHandler->readOutput();
+                    // do not execute faulty modules
+                    // caution: if no module is bound to a container then idmod of $oModule is false
+                    // caution: and as result error field is also empty
+                    if ($oModule->get('error') === 'none' || $oModule->get('idmod') === false) {
+                        $this->_moduleCode = $moduleHandler->readOutput();
+                    } else {
+                        continue;
+                    }
+
                     // Load css and js content of the js/css files
                     if ($moduleHandler->getFilesContent('css', 'css') !== false) {
                         $this->_cssData .= $moduleHandler->getFilesContent('css', 'css');
@@ -109,7 +118,20 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
                     $input = $moduleHandler->readInput();
                 }
 
-                $this->_moduleCode = $this->_moduleCode . "\n";
+                // strip comments from module code, see CON-1536
+                // regex is not enough to correctly remove comments
+                // use php_strip_whitespace instead of writing own parser
+                // downside: php_strip_whitespace requires a file as parameter
+                $tmpFile = dirname(cRegistry::getBackendPath()) . '/' . $cfg['path']['temp'] . uniqid('code_gen_') . '.php';
+                if (cFileHandler::exists(dirname($tmpFile))
+                    && cFileHandler::readable(dirname($tmpFile))
+                    && cFileHandler::writeable(dirname($tmpFile))) {
+                    if (false !== cFileHandler::write($tmpFile, $this->_moduleCode)) {
+                        $this->_moduleCode = php_strip_whitespace($tmpFile);
+                    }
+                    // delete file
+                    cFileHandler::remove($tmpFile);
+                }
 
                 // Process CMS value tags
                 $containerCmsValues = $this->_processCmsValueTags($containerNr, $containerConfigurations[$containerNr]);
@@ -243,7 +265,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = $debugPrefix . $this->_layoutCode;
         }
 
-        // Save the generated code
+        // Save the generated code even if there are faulty modules
+        // if one does not do so a non existing cache file will be tried to be loaded in frontend
         $this->_saveGeneratedCode($idcatart);
 
         return $this->_layoutCode;
@@ -279,18 +302,37 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_pageTitle = cApiCecHook::executeAndReturn('Contenido.Content.CreateTitletag');
         }
 
+        $headTag = array();
+        // find head tags in layout code (case insensitive, search across linebreaks)
+        if (false === preg_match_all('/<head>.*?<\/head>/is', $this->_layoutCode, $headTag)) {
+            // no head tag
+            return $this->_layoutCode;
+        }
+        if (0 === count($headTag)
+        || false === isset($headTag[0])
+        || false === isset($headTag[0][0])) {
+            // no head tag
+            return $this->_layoutCode;
+        }
+        // use first head tag found (by definition there must always be only 1 tag but user supplied markup might be incorrect)
+        $headTag = $headTag[0][0];
+
         // Add or replace title
         if ($this->_pageTitle != '') {
             $replaceTag = '{__TITLE__' . md5(rand().time()) . '}';
-            $this->_layoutCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $this->_layoutCode, 1);
-            if (strstr($this->_layoutCode, $replaceTag)) {
-                $this->_layoutCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $this->_layoutCode);
+            $headCode = preg_replace('/<title>.*?<\/title>/is', $replaceTag, $headTag, 1);
+
+            if (false !== strpos($this->_layoutCode, $replaceTag)) {
+                $headCode = str_ireplace($replaceTag, '<title>' . $this->_pageTitle . '</title>', $headCode);
             } else {
-                $this->_layoutCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $this->_layoutCode);
+                $headCode = cString::iReplaceOnce('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $headCode);
             }
         } else {
-            $this->_layoutCode = str_replace('<title></title>', '', $this->_layoutCode);
+            // remove empty title tags from head tag
+            $headCode = str_replace('<title></title>', '', $headTag);
         }
+        // overwrite first head tag in original layout code
+        $this->_layoutCode = preg_replace('/<head>.*?<\/head>/is', $headCode, $this->_layoutCode, 1);
 
         return $this->_layoutCode;
     }
@@ -382,22 +424,42 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
         // Write code in the cache of the client. If the folder does not exist
         // create one.
-        if ($this->_layout == false && $this->_save == true) {
-            if (!is_dir($cfgClient[$this->_client]['code']['path'])) {
+
+        // do not write code cache into root directory of client
+        if (cRegistry::getFrontendPath() === $cfgClient[$this->_client]['code']['path']) {
+            return;
+        }
+
+        // parent directory must be named cache
+        $directoryName = basename(dirname($cfgClient[$this->_client]['code']['path']));
+        if ('cache' !== $directoryName) {
+            // directory name is not cache -> abort
+            return;
+        }
+
+        // CON-2113
+        // Do not overwrite an existing .htaccess file to prevent misconfiguring permissions
+        if ($this->_layout == false && $this->_save == true && isset($cfgClient[$this->_client]['code']['path'])) {
+            if (false === is_dir($cfgClient[$this->_client]['code']['path'])) {
                 mkdir($cfgClient[$this->_client]['code']['path']);
                 @chmod($cfgClient[$this->_client]['code']['path'], 0777);
+            }
+
+            if (true !== cFileHandler::exists($cfgClient[$this->_client]['code']['path'] . '.htaccess')) {
                 cFileHandler::write($cfgClient[$this->_client]['code']['path'] . '.htaccess', "Order Deny,Allow\nDeny from all\n");
             }
 
-            $fileCode = ($code == '')? $this->_layoutCode : $code;
+            if (true === is_dir($cfgClient[$this->_client]['code']['path'])) {
+                $fileCode = ($code == '')? $this->_layoutCode : $code;
 
-            $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
-            cFileHandler::write($cfgClient[$this->_client]['code']['path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
+                $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
+                cFileHandler::write($cfgClient[$this->_client]['code']['path'] . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
 
-            // Update create code flag
-            if ($flagCreateCode == true) {
-                $oCatArtColl = new cApiCategoryArticleCollection();
-                $oCatArtColl->setCreateCodeFlag($idcatart, 0);
+                // Update create code flag
+                if ($flagCreateCode == true) {
+                    $oCatArtColl = new cApiCategoryArticleCollection();
+                    $oCatArtColl->setCreateCodeFlag($idcatart, 0);
+                }
             }
         }
     }

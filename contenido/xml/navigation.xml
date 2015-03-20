@@ -94,6 +94,7 @@ i18n("Mailing")
 i18n("Info")
 i18n("Login")
 i18n("System integrity")
+i18n("WYSIWYG")
 i18n("Translations")
 i18n("HTML")
 i18n("Search Terms")
@@ -216,6 +217,7 @@ i18n("Search Terms")
                 <purge>Purge</purge>
                 <syserrorreport>Error report</syserrorreport>
                 <integrity>System integrity</integrity>
+                <wysiwyg>WYSIWYG</wysiwyg>
             </system>
             <frontend>
                 <main>Frontend</main>

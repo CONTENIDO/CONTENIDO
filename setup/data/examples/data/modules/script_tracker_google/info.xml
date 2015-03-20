@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>script_tracker_google</name><description></description><type>script</type><alias>script_tracker_google</alias></module>
+<module><name>script_tracker_google</name><description>Google Analytics</description><type>script</type><alias>script_tracker_google</alias></module>

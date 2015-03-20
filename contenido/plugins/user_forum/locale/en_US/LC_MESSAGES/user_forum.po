@@ -89,6 +89,9 @@ msgstr "parameter"
 msgid "CONTENT"
 msgstr "content"
 
+msgid "MODMODE"
+msgstr "With active moderator mode you can moderate the newest comments here"
+
 ; class.article_forum_left_bottom.php
 
 msgid "NOENTRY"

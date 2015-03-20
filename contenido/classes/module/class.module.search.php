@@ -90,6 +90,8 @@ class cModuleSearch extends cModuleHandler {
     }
 
     public function __construct($searchOptions) {
+        parent::__construct();
+        
         $this->_elementPerPage = $searchOptions['elementPerPage'];
         $this->_orderBy = $searchOptions['orderBy'];
         $this->_sortOrder = $searchOptions['sortOrder'];
@@ -116,16 +118,39 @@ class cModuleSearch extends cModuleHandler {
      */
     public function searchForAllModules() {
         global $cfg, $client;
-        $idClient = $client;
 
-        $sql = sprintf("SELECT *, (0) FROM %s WHERE idclient = %s AND (
-                            type LIKE '%s'
-                            AND type LIKE '%s'
-                            OR description LIKE '%s'
-                            OR name LIKE '%s'
-                            OR input LIKE '%s'
-                            OR output LIKE '%s')
-                            ORDER BY %s %s", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
+        $idClient = $client;
+        // first fetch all modules for client
+        // then apply _filter on input and output from files
+        // then use the whitelisted id's and search for additional filter matches on database
+        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s", $cfg['tab']['mod'], $idClient);
+        
+        
+        $db = cRegistry::getDb();
+        $db->query($sql);
+        $moduleIds = array();
+        
+        // filter modules based on input and output
+        while (($modul = $db->nextRecord()) !== false) {
+            $this->initWithDatabaseRow($db);
+            if (strlen(stripslashes($this->_filter)) === 0
+                    || strpos($this->readInput(), stripslashes($this->_filter)) !== false
+                    || strpos($this->readOutput(), stripslashes($this->_filter)) !== false) {
+                    $moduleIds[] = $db->f('idmod');
+            }
+        }
+        
+        // build query using whitelisted id's
+        $idFilter = "";
+        foreach ($moduleIds as $moduleId) {
+            $idFilter .= " OR idmod=" . (int) $moduleId;
+        }
+        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
+                            type RLIKE '%s'
+                            AND type RLIKE '%s'
+                            OR description RLIKE '%s'
+                            OR name LIKE  '%s'" . $idFilter . ")
+                            ORDER BY %s %s", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
 
         $db = cRegistry::getDb();
         $db->query($sql);
@@ -226,55 +251,62 @@ class cModuleSearch extends cModuleHandler {
      */
     public function findModulWithInput() {
         global $cfg, $client;
-        $idClient = $client;
 
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
-                            type LIKE '%s' AND input LIKE '%s')
-                            ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
+        $idClient = $client;
+        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND type LIKE '%s'
+                        ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, $this->_orderBy, $this->_sortOrder);
 
         $db = cRegistry::getDb();
         $db->query($sql);
         $result = array();
-
         while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
-            $result[$db->f('idmod')] = array(
-                    'name' => $db->f('name'),
-                    'description' => $db->f('description'),
-                    'error' => $db->f('error'),
-                    'input' => $this->readInput(),
-                    'output' => $this->readOutput()
-            );
+            if (strlen(stripslashes($this->_filter)) === 0
+                || strpos($this->readInput(), stripslashes($this->_filter)) !== false) {
+                $result[$db->f('idmod')] = array(
+                        'name' => $db->f('name'),
+                        'description' => $db->f('description'),
+                        'error' => $db->f('error'),
+                        'input' => $this->readInput(),
+                        'output' => $this->readOutput()
+                );
+            }
         }
+
         return $result;
     }
 
     /**
-     * Search for modules in output of the module
+     * Search for modules in output of modules of current client
      *
      * @return array result
      */
     public function findModulWithOutput() {
-        global $cfg, $client;
-        $idClient = $client;
+         global $cfg, $client;
+        
+        $result = array();
 
-        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (type LIKE '%s' AND output LIKE '%s' )
-                        ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
+        $idClient = $client;
+        $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND type LIKE '%s'
+                        ORDER BY %s %s ", $cfg['tab']['mod'], $idClient, $this->_moduleType, $this->_orderBy, $this->_sortOrder);
 
         $db = cRegistry::getDb();
         $db->query($sql);
         $result = array();
-
         while (($module = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
-            $result[$db->f('idmod')] = array(
-                    'name' => $db->f('name'),
-                    'description' => $db->f('description'),
-                    'error' => $db->f('error'),
-                    'input' => $this->readInput(),
-                    'output' => $this->readOutput()
-            );
+            if (strlen(stripslashes($this->_filter)) === 0
+                || strpos($this->readOutput(), stripslashes($this->_filter)) !== false) {
+                $result[$db->f('idmod')] = array(
+                        'name' => $db->f('name'),
+                        'description' => $db->f('description'),
+                        'error' => $db->f('error'),
+                        'input' => $this->readInput(),
+                        'output' => $this->readOutput()
+                );
+            }
         }
+
         return $result;
     }
 
@@ -306,7 +338,6 @@ class cModuleSearch extends cModuleHandler {
                     'output' => $this->readOutput()
             );
         }
-
         return $result;
     }
 
@@ -338,6 +369,7 @@ class cModuleSearch extends cModuleHandler {
                     'output' => $this->readOutput()
             );
         }
+
         return $result;
     }
 

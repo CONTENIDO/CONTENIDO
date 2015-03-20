@@ -1268,6 +1268,10 @@ if ( $.uiBackCompat !== false ) {
                 that._initProgressListener(o);
                 jqXHR = ($.ajax(o) || that._getXHRPromise(false, o.context))
                     .done(function (result, textStatus, jqXHR) {
+						if (Con.checkAjaxResponse(result) === false)  {
+							return false;
+						}
+
                         ub = that._getUploadedBytes(jqXHR) ||
                             (ub + o.chunkSize);
                         // Create a progress event if upload is done and
@@ -1386,6 +1390,10 @@ if ( $.uiBackCompat !== false ) {
                         that._getXHRPromise(false, options.context, aborted)) ||
                         that._chunkedUpload(options) || $.ajax(options)
                     ).done(function (result, textStatus, jqXHR) {
+						if (Con.checkAjaxResponse(result) === false)  {
+							return false;
+						}
+
                         that._onDone(result, textStatus, jqXHR, options);
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         that._onFail(jqXHR, textStatus, errorThrown, options);

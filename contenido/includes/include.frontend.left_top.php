@@ -92,7 +92,6 @@ if ($bUsePlugins == true) {
         }
     }
 }
-
 $aSortOrderOptions = array(
     "asc" => i18n("Ascending"),
     "desc" => i18n("Descending")
@@ -210,7 +209,6 @@ $oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
 $oSelectSearchIn = new cHTMLSelectElement("searchin");
 $oSelectSearchIn->autoFill($aFieldsToSearch);
 $oSelectSearchIn->setDefault($_REQUEST["searchin"]);
-
 $fegroups = new cApiFrontendGroupCollection();
 $fegroups->setWhere("idclient", $client);
 $fegroups->query();

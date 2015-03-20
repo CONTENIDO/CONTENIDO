@@ -34,7 +34,14 @@ $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
 if (cRegistry::isBackendEditMode() && 'POST' === strtoupper($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'gplus') {
-    conSaveContentEntry($idartlang, "CMS_HTML", 3000, $_POST['url']);
+
+    // CON-2174
+    $url = $_POST['url'];
+    if (null === parse_url($url, PHP_URL_SCHEME)) {
+    	$url = 'http://' . $url;
+    }
+
+    conSaveContentEntry($idartlang, "CMS_HTML", 3000, $url);
     conSaveContentEntry($idartlang, "CMS_HTML", 3001, $_POST['size']);
     conSaveContentEntry($idartlang, "CMS_HTML", 3002, $_POST['counter']);
     conSaveContentEntry($idartlang, "CMS_HTML", 3003, $_POST['currentArticleUrl']);
@@ -67,20 +74,20 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign("automaticURLLabel", $automaticURLLabel);
     $tpl->assign("currentArticleUrl", $currentArticleUrl);
 
-    $tpl->assign("urlHelp", new cGuiBackendHelpbox(mi18n("URL_HELP")));
-    $tpl->assign("normalHelp", new cGuiBackendHelpbox(mi18n("NORMAL_HELP")));
-    $tpl->assign("smallHelp", new cGuiBackendHelpbox(mi18n("SMALL_HELP")));
-    $tpl->assign("mediumHelp", new cGuiBackendHelpbox(mi18n("MEDIUM_HELP")));
-    $tpl->assign("tallHelp", new cGuiBackendHelpbox(mi18n("TALL_HELP")));
-	$tpl->assign("counterHelp", new cGuiBackendHelpbox(mi18n("COUNTER_HELP")));
-    
+    $tpl->assign("urlHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("URL_HELP"))));
+    $tpl->assign("normalHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("NORMAL_HELP"))));
+    $tpl->assign("smallHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SMALL_HELP"))));
+    $tpl->assign("mediumHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("MEDIUM_HELP"))));
+    $tpl->assign("tallHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("TALL_HELP"))));
+    $tpl->assign("counterHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("COUNTER_HELP"))));
+
     $tpl->display('google_plus_config_view.tpl');
 } else {
 
     if ($size == 'standard') {
         $tpl->assign('LAYOUT', '');
     } else {
-        $tpl->assign('LAYOUT', ' size="' . $size . '"');
+        $tpl->assign('LAYOUT', ' size="' . conHtmlSpecialChars($size) . '"');
     }
 
     if ($counter) {

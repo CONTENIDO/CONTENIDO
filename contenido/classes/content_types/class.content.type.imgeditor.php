@@ -387,7 +387,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $wrapperContent = array();
 
         $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
-        $liRoot = new cHTMLListItem('root', 'last');
+        $liRoot = new cHTMLListItem('root', 'root');
         $aUpload = new cHTMLLink('#');
         $aUpload->setClass('on');
         $aUpload->setAttribute('title', 'upload');
@@ -567,16 +567,15 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         $files = array();
         if (is_dir($this->_uploadPath . $directoryPath)) {
-            if ($handle = opendir($this->_uploadPath . $directoryPath)) {
-                while (($entry = readdir($handle)) != false) {
-                    if (is_file($this->_uploadPath . $directoryPath . $entry) && (! (strpos($entry, ".") === 0))) {
+            if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
+                foreach ($handle as $entry) {
+                    if (false === cFileHandler::fileNameBeginsWithDot($entry)) {
                         $file = array();
                         $file["name"] = $entry;
                         $file["path"] = $directoryPath . $entry;
                         $files[] = $file;
                     }
                 }
-                closedir($handle);
             }
         }
 

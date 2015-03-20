@@ -224,9 +224,9 @@ function scanDirectory($sDirectory, $bRecursive = false) {
     while (count(($openDirs)) >= 1) {
         $sDirectory = array_pop($openDirs);
         if (is_dir($sDirectory)) {
-            if (($hDirHandle = opendir($sDirectory)) !== false) {
-                while (($sFile = readdir($hDirHandle)) !== false) {
-                    if ($sFile != '.' && $sFile != '..') {
+            if (false !== $handle = cDirHandler::read($sDirectory)) {
+                foreach ($handle as $sFile) {
+                    if (cFileHandler::fileNameIsDot($sFile) === false) {
                         $sFullpathFile = $sDirectory . '/' . $sFile;
                         if (is_file($sFullpathFile) && cFileHandler::readable($sFullpathFile)) {
                             array_push($aFiles, $sFullpathFile);
@@ -237,7 +237,6 @@ function scanDirectory($sDirectory, $bRecursive = false) {
                         }
                     }
                 }
-                closedir($hDirHandle);
             }
         }
         array_push($closedDirs, $sDirectory);
@@ -268,11 +267,10 @@ function recursiveCopy($sourcePath, $destinationPath, $mode = 0777, array $optio
 
     if (is_dir($sourcePath)) {
         chdir($sourcePath);
-        $myhandle = opendir('.');
 
-        while (($file = readdir($myhandle)) !== false) {
-            if ($file != '.' && $file != '..') {
-                if (is_dir($file)) {
+        if (false !== ($handle = cDirHandler::read('.'))) {
+            foreach ($handle as $file) {
+                if (cFileHandler::fileNameIsDot($file) === false && is_dir($file)) {
                     // Copy directory
                     recursiveCopy($sourcePath . $file . '/', $destinationPath . $file . '/', $mode, $options);
                     chdir($sourcePath);
@@ -288,7 +286,6 @@ function recursiveCopy($sourcePath, $destinationPath, $mode = 0777, array $optio
                 }
             }
         }
-        closedir($myhandle);
     }
 
     chdir($oldPath);

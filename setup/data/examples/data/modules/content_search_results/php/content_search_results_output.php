@@ -2,7 +2,7 @@
 
 /**
  * Settings:
- * Which articles are searchable can be defined by a clinet setting
+ * Which articles are searchable can be defined by a client setting
  * searchable/idcats
  *
  * @package Module

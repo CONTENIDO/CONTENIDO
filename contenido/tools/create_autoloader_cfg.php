@@ -57,6 +57,7 @@ $context->destinationFile = $context->contenidoInstallPath . '/data/config/' . C
 // list of paths from where all class/interface names should be found
 $context->pathsToParse = array(
     $context->contenidoInstallPath . 'contenido/classes/',
+    $context->contenidoInstallPath . 'contenido/external/wysiwyg/tinymce4/contenido/classes/'
 );
 
 // class type finder options

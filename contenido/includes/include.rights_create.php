@@ -84,7 +84,7 @@ if ($action == 'user_createuser') {
 
     	}
 
-    	// If we have no errors, cpntinue to create a user
+    	// If we have no errors, continue to create a user
 		if ($bError == false) {
 	        $aPerms = buildUserOrGroupPermsFromRequest(true);
 

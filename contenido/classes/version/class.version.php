@@ -358,9 +358,9 @@ class cVersion {
         // Open this Filepath and read then the content.
         $sDir = $this->getFilePath();
         if (is_dir($sDir)) {
-            if (($dh = opendir($sDir)) !== false) {
-                while (($file = readdir($dh)) !== false) {
-                    if ($file != '.' && $file != '..') {
+            if (false !== ($handle = cDirHandler::read($sDir))) {
+                foreach ($handle as $file) {
+                    if (false === cFileHandler::fileNameIsDot($file)) {
                         $aData = explode('.', $file);
                         $aValues = explode('_', $aData[0]);
                         if ($aValues[0] > $this->iRevisionNumber) {
@@ -371,9 +371,9 @@ class cVersion {
                         $this->aRevisionFiles[$aValues[0]] = $file;
                     }
                 }
-                closedir($dh);
             }
         }
+
         return krsort($this->aRevisionFiles);
     }
 
@@ -386,20 +386,24 @@ class cVersion {
         // Open this Filepath and read then the content.
         $sDir = $this->getFilePath();
 
-        $bDelete = false;
+        $bDelete = true;
         if (is_dir($sDir) and $sFirstFile == '') {
-            if (($dh = opendir($sDir)) !== false) {
-                while (($sFile = readdir($dh)) !== false) {
-                    if ($sFile != '.' && $sFile != '..') {
+            if (false !== ($handle = cDirHandler::read($sDir))) {
+                foreach ($handle as $sFile) {
+                    if (false === cFileHandler::fileNameIsDot($sFile)) {
                         // Delete the files
-                        $bDelete = unlink($sDir . $sFile);
+                        if (false === cFileHandler::remove($sDir . $sFile)) {
+                            $bDelete = false;
+                        }
                     }
                 }
                 // if the files be cleared, the delete the folder
-                $bDelete = rmdir($sDir);
+                if (true === $bDelete) {
+                    $bDelete = cDirHandler::remove($sDir);
+                }
             }
         } else if ($sFirstFile != '') {
-            $bDelete = unlink($sDir . $sFirstFile);
+            $bDelete = cFileHandler::remove($sDir . $sFirstFile);
         }
         if ($bDelete) {
             return true;

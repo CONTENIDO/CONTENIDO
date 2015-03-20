@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $db;
 
 function frontendusers_groupselect_getTitle () {
-    return i18n("Gruppen bearbeiten", "frontendusers_groupselect");
+    return i18n("Groupname");
 }
 
 function frontendusers_groupselect_display () {
@@ -93,7 +93,8 @@ function frontendusers_groupselect_store ($variables) {
 }
 
 function frontendusers_groupselect_canonicalVariables () {
-    return array('groupselect' => 'Gruppen bearbeiten');
+    //FFBCON-812
+    return array();
 }
 
 function frontendusers_groupselect_getvalue ($key) {

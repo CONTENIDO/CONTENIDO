@@ -297,6 +297,15 @@ class cRegistry {
     }
 
     /**
+     * Returns the current frame id stored in the global variable "frame".
+     *
+     * @return string
+     */
+    public static function getFrame() {
+        return self::_fetchGlobalVariable('frame', '');
+    }
+
+    /**
      * Return the session object stored in the global variable "sess".
      *
      * @return cSession
@@ -312,6 +321,15 @@ class cRegistry {
      */
     public static function getAuth() {
         return self::_fetchGlobalVariable('auth');
+    }
+
+    /**
+     * Returns the area stored in the global variable "area".
+     *
+     * @return string
+     */
+    public static function getArea() {
+        return self::_fetchGlobalVariable('area');
     }
 
     /**

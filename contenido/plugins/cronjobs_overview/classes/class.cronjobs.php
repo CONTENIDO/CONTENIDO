@@ -212,11 +212,11 @@ class Cronjobs {
 
         $retArray = array();
         if (is_dir($this->_cronjobDirectory)) {
-            if ($dh = opendir($this->_cronjobDirectory)) {
-                while (($file = readdir($dh)) !== false) {
-                    #is file a dir or not
-                    if ($file != ".." && $file != "." && !is_dir($this->_cronjobDirectory . $file) && substr($file, -4) == '.php' && $file != 'index.php') {
-
+            // get only files
+            if (false !== ($handle = cDirHandler::read($this->_cronjobDirectory, false, false, true))) {
+                foreach ($handle as $file) {
+                    if (cFileHandler::fileNameIsDot($file) === false
+                        && substr($file, -4) == '.php' && $file != 'index.php') {
                         $retArray[] = $file;
                     }
                 }

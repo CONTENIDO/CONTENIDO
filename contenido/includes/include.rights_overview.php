@@ -202,7 +202,7 @@ $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'ROW_ID', "username");
 $tpl->set('d', 'CATNAME', i18n("Username"));
-$tpl->set('d', 'CATFIELD', $oUser->getField('username') . '<img align="top" src="images/spacer.gif" height="20">');
+$tpl->set('d', 'CATFIELD', $oUser->getField('username') . '<img align="top" alt="" src="images/spacer.gif" height="20">');
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "name");

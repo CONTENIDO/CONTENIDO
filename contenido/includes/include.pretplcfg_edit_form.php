@@ -91,8 +91,8 @@ $tpl->set('s', 'CATEGORY', '');
 $tpl->set('s', 'HEADER', i18n('Template preconfiguration'));
 $tpl->set('s', 'DISPLAY_HEADER', 'block');
 
-$buttons = '<a href="javascript:history.back()"><img src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="image" src="images/but_ok.gif">';
+$buttons = '<a href="javascript:history.back()"><img src="images/but_cancel.gif" alt="" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="image" alt="" src="images/but_ok.gif">';
 
 $tpl->set('s', 'BUTTONS', $buttons);
 

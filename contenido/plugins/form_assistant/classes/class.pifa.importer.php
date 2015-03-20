@@ -113,8 +113,8 @@ class PifaImporter {
         foreach ($rowElems as $rowElem) {
             $rowPath = $rowElem->getNodePath();
             $fields = array();
-            if ('true' === $formElem->getAttribute('timestamp')) {
-                $fields['pifa_timestamp'] = $rowElem->nodeValue;
+            if ('true' == $formElem->getAttribute('timestamp')) {
+                $fields['pifa_timestamp'] = $rowElem->getAttribute('timestamp');
             }
             $colElems = $this->_reader->getXpathNodeList($rowPath . '/col');
             foreach ($colElems as $colElem) {
@@ -167,12 +167,12 @@ class PifaImporter {
             $data['default_value'] = $fieldElem->getAttribute('default');
         }
 
-        // import label
-        $label = $this->_reader->getXpathValue($fieldPath . '/label');
-        $data['label'] = $label;
-        $labelElem = $this->_reader->getXpathNode($fieldPath . '/label');
-        $display = (int) ('true' === $labelElem->getAttribute('display'));
-        $data['display_label'] = $display;
+		// import label
+		$label = $this->_reader->getXpathValue($fieldPath . '/label');
+		$data['label'] = strip_tags($label);
+		$labelElem = $this->_reader->getXpathNode($fieldPath . '/label');
+		if ($labelElem)
+		{ $display = (int) ('true' === $labelElem->getAttribute('display')); $data['display_label'] = $display; }
 
         // import help (optional)
         if (0 < $this->_reader->countXpathNodes($fieldPath . '/help')) {

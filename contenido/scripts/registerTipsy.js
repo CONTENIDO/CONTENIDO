@@ -16,7 +16,7 @@
             html : true
         });
         $('.tooltip-north').tipsy({
-            gravity : 'n',
+            gravity : 'ns',
             html : true
         });
     });

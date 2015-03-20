@@ -57,7 +57,7 @@ if ($action == 'note_save_item') {
     $oNoteItem = new NoteItem();
 
     foreach ($notesData as $noteValue) {
-        $sValue = $oNoteItem->_outFilter($noteValue);
+        $sValue = $oNoteItem->outFilter($noteValue);
         $categories[$sValue] = $sValue;
     }
 

@@ -31,6 +31,9 @@ cInclude('includes', 'functions.str.php');
 function langEditLanguage($idlang, $langname, $encoding, $active, $direction = 'ltr') {
     $oLang = new cApiLanguage();
     if ($oLang->loadByPrimaryKey((int) $idlang)) {
+        if ('' === $langname) {
+            $langname = "-- ".i18n("New language")." --";
+        }
         $oLang->set('name', $langname, false);
         $oLang->set('encoding', $encoding, false);
         $oLang->set('active', $active, false);

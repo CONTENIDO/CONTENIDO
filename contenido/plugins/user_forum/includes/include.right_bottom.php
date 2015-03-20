@@ -15,10 +15,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+
 // generates obj that renders the content at the right side.
 if (!empty($_REQUEST['idart'])) {
 	$rightBottom = new ArticleForumRightBottom();
 	$rightBottom->receiveData($_GET, $_POST);
 	$rightBottom->render();
+} else {
+	$rightBottom = new ArticleForumRightBottom();
+	$rightBottom->getStartpage();
+	$rightBottom->render();
 }
+$tpl = new cTemplate();
+$tpl->generate('plugins/user_forum/templates/template.right_bottom.html');
+
 ?>

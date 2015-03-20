@@ -84,8 +84,8 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign('showCountLabel', $showCountLabel);
     $tpl->assign('save', $save);
 	
-	$tpl->assign("showRepliesHelp", new cGuiBackendHelpbox(mi18n("SHOWREPLIES_HELP")));
-	$tpl->assign("relatedExplanationHelp", new cGuiBackendHelpbox(mi18n("RELATEDEXPLANATION_HELP")));
+	$tpl->assign("showRepliesHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SHOWREPLIES_HELP"))));
+	$tpl->assign("relatedExplanationHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("RELATEDEXPLANATION_HELP"))));
 
     $tpl->display('twitter_config_view.tpl');
 } else {

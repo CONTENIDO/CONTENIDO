@@ -21,4 +21,20 @@
  */
 class cErrorException extends cException {
 
+    public function __construct($message, $code = 0, Exception $previous = NULL) {
+        $cfg = cRegistry::getConfig();
+
+        // determine if exception should be logged
+        if (false === isset($cfg['debug']['log_error_exceptions'])) {
+            $this->_log_exception = true;
+        }
+
+        if (false === $this->_log_exception) {
+            $this->_log_exception = $cfg['debug']['log_error_exceptions'];
+        }
+
+        parent::__construct($message, $code, $previous);
+
+    }
+
 }

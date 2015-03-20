@@ -163,7 +163,7 @@ $aMsg["SendTitle"] = i18n("Run job", 'newsletter');
 $aMsg["SendDescr"] = i18n("Do you really want to run the following job:<br>", 'newsletter');
 
 // Prepare "send link" template
-$sTplSend = '<a title="' . $aMsg["SendTitle"] . '" href="javascript://" onclick="showSendMsg(\'{ID}\',\'{NAME}\')"><img src="' . $cfg['path']['images'] . 'newsletter_16.gif" border="0" title="' . $aMsg["SendTitle"] . '" alt="' . $aMsg["SendTitle"] . '"></a>';
+$sTplSend = '<a title="' . $aMsg["SendTitle"] . '" href="javascript://" onclick="showSendMsg(\'{ID}\',\'{NAME}\')"><img alt="" src="' . $cfg['path']['images'] . 'newsletter_16.gif" border="0" title="' . $aMsg["SendTitle"] . '" alt="' . $aMsg["SendTitle"] . '"></a>';
 
 while ($oJob = $oJobs->next()) {
     $iMenu++;
@@ -199,7 +199,7 @@ while ($oJob = $oJobs->next()) {
 
             if ($perm->have_perm_area_action($area, "news_job_delete")) {
                 // Job may be deleted, if user has the right to do so
-                $oMenu->setActions($iMenu, 'delete', '<a title="' . $aMsg["DelTitle"] . '" href="javascript://" onclick="showDelMsg(' . $iID . ',\'' . addslashes($sName) . '\')"><img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '"></a>');
+                $oMenu->setActions($iMenu, 'delete', '<a title="' . $aMsg["DelTitle"] . '" href="javascript://" onclick="showDelMsg(' . $iID . ',\'' . addslashes($sName) . '\')"><img alt="" src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $aMsg["DelTitle"] . '" alt="' . $aMsg["DelTitle"] . '"></a>');
             }
             break;
         case 2:
@@ -217,7 +217,7 @@ while ($oJob = $oJobs->next()) {
                 "style" => "color:#da8a00"
             ));
 
-            $sDelete = '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n("Can't delete the job while it's running", "newsletter") . '" alt="' . i18n("Can't delete the job while it's running", "newsletter") . '">';
+            $sDelete = '< alt="" img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n("Can't delete the job while it's running", "newsletter") . '" alt="' . i18n("Can't delete the job while it's running", "newsletter") . '">';
             break;
         case 9:
             // Job finished, don't do anything
@@ -228,7 +228,7 @@ while ($oJob = $oJobs->next()) {
             if ($perm->have_perm_area_action($area, "news_job_delete")) {
                 // You have the right, but you can't delete the job after
                 // sending
-                $oMenu->setActions($iMenu, 'delete', '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n("Can't delete the job after it's been sent", "newsletter") . '" alt="' . i18n("Can't delete the job after it's been sent", "newsletter") . '">');
+                $oMenu->setActions($iMenu, 'delete', '<img alt="" src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . i18n("Can't delete the job after it's been sent", "newsletter") . '" alt="' . i18n("Can't delete the job after it's been sent", "newsletter") . '">');
             }
             break;
     }

@@ -204,8 +204,7 @@ abstract class cContentTypeAbstract {
             return;
         }
         if ($this->_settingsType === self::SETTINGS_TYPE_XML) {
-            // if the settings should be interpreted as XML, process them
-            // accordingly
+            // if the settings should be interpreted as XML, process them accordingly
             $this->_settings = cXmlBase::xmlStringToArray($this->_rawSettings);
             // add the prefix to the settings array keys
             foreach ($this->_settings as $key => $value) {
@@ -219,7 +218,7 @@ abstract class cContentTypeAbstract {
     }
 
     /**
-     * Function returns curren content type configuration as array
+     * Function returns current content type configuration as array
      *
      * @return array
      */
@@ -243,8 +242,7 @@ abstract class cContentTypeAbstract {
                 if (isset($_POST[$key])) {
                     $this->_settings[$key] = $_POST[$key];
                 } else if (isset($_POST[$this->_prefix . '_array_' . $keyWithoutPrefix])) {
-                    // key is of type prefix_array_field, so interpret value as
-                    // an array
+                    // key is of type prefix_array_field, so interpret value as an array
                     $this->_settings[$key] = explode(',', $_POST[$this->_prefix . '_array_' . $keyWithoutPrefix]);
                 }
                 $settings[$keyWithoutPrefix] = $this->_settings[$key];
@@ -292,10 +290,9 @@ abstract class cContentTypeAbstract {
         $directories = array();
 
         if (is_dir($uploadPath)) {
-            if ($handle = opendir($uploadPath)) {
-                while (($entry = readdir($handle)) !== false) {
-                    // ignore .svn directories as well as links to upper dirs
-                    if ((! (strpos($entry, ".") === 0)) && is_dir($uploadPath . $entry)) {
+            if (false !== ($handle = cDirHandler::read($uploadPath, false, true))) {
+                foreach ($handle as $entry) {
+                    if (cFileHandler::fileNameBeginsWithDot($entry) === false && is_dir($uploadPath . $entry)) {
                         $directory = array();
                         $directory['name'] = $entry;
                         $directory['path'] = str_replace($this->_uploadPath, '', $uploadPath);
@@ -304,7 +301,6 @@ abstract class cContentTypeAbstract {
                     }
                 }
             }
-            closedir($handle);
         }
 
         usort($directories, function($a, $b) {
@@ -428,4 +424,11 @@ abstract class cContentTypeAbstract {
      */
     public abstract function generateEditCode();
 
+    /**
+     * Checks if this content type can be edited by a WYSIWYG editor
+     * @return boolean
+     */
+    public function isWysiwygCompatible() {
+        return false;
+    }
 }

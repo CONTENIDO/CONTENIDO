@@ -63,7 +63,11 @@ function cInclude($sWhere, $sWhat, $bForce = false, $bReturnPath = false) {
             $sInclude = cRegistry::getFrontendPath() . $sWhat;
             break;
         case 'wysiwyg':
-            $sInclude = $cfg['path']['wysiwyg'] . $sWhat;
+            if (false === ($editor = getEffectiveSetting('wysiwyg', 'editor', false))) {
+                $sInclude = $cfg['path']['wysiwyg'] . $sWhat;
+            } else {
+                $sInclude = $cfg['path']['all_wysiwyg'] . $editor;
+            }
             break;
         case 'all_wysiwyg':
             $sInclude = $cfg['path']['all_wysiwyg'] . $sWhat;

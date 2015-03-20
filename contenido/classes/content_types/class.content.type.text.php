@@ -48,8 +48,12 @@ class cContentTypeText extends cContentTypeAbstract {
             $this->_settings = $_POST[$this->_prefix . '_text_' . $this->_id];
             $this->_rawSettings = $this->_settings;
             $this->_storeSettings();
+
+            // make sure to escape variables before any output on page
             $this->_settings = stripslashes($this->_settings);
+            $this->_settings = conHtmlSpecialChars($this->_settings);
             $this->_rawSettings = stripslashes($this->_rawSettings);
+            $this->_rawSettings = conHtmlSpecialChars($this->_rawSettings);
         }
     }
 
@@ -82,7 +86,8 @@ class cContentTypeText extends cContentTypeAbstract {
      * @return string the JS code for the content type
      */
     protected function _getEditJavaScript() {
-        $textbox = new cHTMLTextbox($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');
+        $textbox = new cHTMLTextarea($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');
+        $textbox->setClass("$this->_id");
 
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . 'images/but_ok.gif');
         $saveButton->setID($this->_prefix . '_savebutton_' . $this->_id);
@@ -105,7 +110,7 @@ class cContentTypeText extends cContentTypeAbstract {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
+     * @return string escaped HTML code which should be shown if content type is
      *         shown in frontend
      */
     public function generateViewCode() {

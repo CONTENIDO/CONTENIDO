@@ -102,6 +102,7 @@
 ./classes/contenido/class.type.php
 ./classes/contenido/class.upload.meta.php
 ./classes/contenido/class.upload.php
+./classes/contenido/class.user.passwordrequest.php
 ./classes/contenido/class.user.php
 ./classes/contenido/class.user.property.php
 ./classes/content_types/class.content.type.abstract.php
@@ -421,6 +422,7 @@
 ./cronjobs/advance_workflow.php
 ./cronjobs/index.php
 ./cronjobs/linkchecker.php
+./cronjobs/maintain_passwort_reset_requests.php
 ./cronjobs/move_articles.php
 ./cronjobs/move_old_stats.php
 ./cronjobs/optimize_database.php
@@ -451,9 +453,17 @@
 ./external/wysiwyg/tinymce3/editorclass.php
 ./external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/preview/example.html
 ./external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/preview/preview.html
+./external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce_gzip.php
 ./external/wysiwyg/tinymce3/list.php
 ./external/wysiwyg/tinymce3/tinymce.tpl.html
-./external/wysiwyg/tinymce3/tiny_mce_gzip.php
+./external/wysiwyg/tinymce4/contenido/ajax/class.tinymce_list.php
+./external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php
+./external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php
+./external/wysiwyg/tinymce4/contenido/config.php
+./external/wysiwyg/tinymce4/contenido/editor.php
+./external/wysiwyg/tinymce4/contenido/templates/template.tinymce_tpl.html
+./external/wysiwyg/tinymce4/tinymce/js/tinymce/plugins/example/dialog.html
+./external/wysiwyg/tinymce4/tinymce/js/tinymce/tinymce.gzip.php
 ./frameset.php
 ./frameset_left.php
 ./frameset_right.php
@@ -609,6 +619,7 @@
 ./includes/include.system_log_sysvalues.php
 ./includes/include.system_purge.php
 ./includes/include.system_sysvalues.php
+./includes/include.system_wysiwyg.php
 ./includes/include.todo.popup.php
 ./includes/include.tplcfg_edit.php
 ./includes/include.tplcfg_edit_form.php
@@ -749,6 +760,7 @@
 ./templates/standard/template.generic_list_row.html
 ./templates/standard/template.generic_menu.html
 ./templates/standard/template.generic_page.html
+./templates/standard/template.generic_page_html5.html
 ./templates/standard/template.generic_source_editor.html
 ./templates/standard/template.generic_table_form.html
 ./templates/standard/template.grouprights_create.html
@@ -817,6 +829,7 @@
 ./templates/standard/template.system_purge.html
 ./templates/standard/template.system_variables.html
 ./templates/standard/template.system_variables_block.html
+./templates/standard/template.system_wysiwyg_tinymce4.html
 ./templates/standard/template.tplcfg_edit_form.html
 ./templates/standard/template.tpl_edit_form.html
 ./templates/standard/template.tpl_overview.html

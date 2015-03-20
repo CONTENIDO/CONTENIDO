@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>content_fb_embeddedpost</name><description/><type>content</type><alias>content_fb_embeddedpost</alias></module>
+<module><name>content_fb_embeddedpost</name><description>Displays embedded Facebook post</description><type>content</type><alias>content_fb_embeddedpost</alias></module>

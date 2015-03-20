@@ -83,8 +83,8 @@ class PimPluginSetupStatus extends PimPluginSetup {
      */
     public function changeActiveStatus($pluginId) {
 
-    	// Set pluginId
-    	self::setPluginId($pluginId);
+        // Set pluginId
+        self::setPluginId($pluginId);
 
         // Build WHERE-Query for *_plugin table with $pluginId as parameter
         $this->_PimPluginCollection->setWhere('idplugin', cSecurity::toInteger($pluginId));
@@ -103,10 +103,10 @@ class PimPluginSetupStatus extends PimPluginSetup {
         if ($pluginActiveStatus == 1) { // Plugin is online and now we change
                                         // status to offline
 
-        	// Dependencies check
-        	$this->_updateCheckDependencies();
+            // Dependencies check
+            $this->_updateCheckDependencies();
 
-        	$plugin->set('active', 0);
+            $plugin->set('active', 0);
             $plugin->store();
 
             // If this plugin has some navSub entries, we must also change menu
@@ -116,7 +116,7 @@ class PimPluginSetupStatus extends PimPluginSetup {
                 $this->_changeNavSubStatus($idnavs, 0);
             }
 
-            parent::info(i18n('The plugin', 'pim') . ' <strong>' . $pluginName . '</strong> ' . i18n('has been sucessfully disabled. To apply the changes please login into backend again.', 'pim'));
+            parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been sucessfully disabled. To apply the changes please login into backend again.', 'pim'), $pluginName));
         } else { // Plugin is offline and now we change status to online
             $plugin->set('active', 1);
             $plugin->store();
@@ -128,7 +128,7 @@ class PimPluginSetupStatus extends PimPluginSetup {
                 $this->_changeNavSubStatus($idnavs, 1);
             }
 
-            parent::info(i18n('The plugin', 'pim') . ' <strong>' . $pluginName . '</strong> ' . i18n('has been sucessfully enabled. To apply the changes please login into backend again.', 'pim'));
+            parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been sucessfully enabled. To apply the changes please login into backend again.', 'pim'), $pluginName));
         }
     }
 
@@ -137,14 +137,14 @@ class PimPluginSetupStatus extends PimPluginSetup {
      */
     private function _updateCheckDependencies() {
 
-    	// Call checkDepenendencies function at PimPlugin class
-    	// Function returns true or false
-    	$result = $this->checkDependencies();
+        // Call checkDepenendencies function at PimPlugin class
+        // Function returns true or false
+        $result = $this->checkDependencies();
 
-    	// Show an error message when dependencies could be found
-    	if ($result === false) {
-    		parent::error(sprintf(i18n('This plugin are required by the plugin <strong>%s</strong>, so you can not deactivate it.', 'pim'), parent::_getPluginName()));
-    	}
+        // Show an error message when dependencies could be found
+        if ($result === false) {
+            parent::error(sprintf(i18n('This plugin is required by the plugin <strong>%s</strong>, so you can not deactivate it.', 'pim'), parent::_getPluginName()));
+        }
     }
 
     /**

@@ -71,6 +71,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
         $db->nextRecord();
         $id .= $db->f('idtype') . '_' . $this->_id;
         $wysiwygDiv->setId($id);
+        $wysiwygDiv->setClass(htmlentities($this->_type));
 
         $wysiwygDiv->setEvent('Focus', "this.style.border='1px solid #bb5577';");
         $wysiwygDiv->setEvent('Blur', "this.style.border='1px dashed #bfbfbf';");
@@ -97,11 +98,19 @@ class cContentTypeHtml extends cContentTypeAbstract {
 
         // construct save button
         $saveAnchor = new cHTMLLink();
-        $saveAnchor->setLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0')");
+        $saveAnchor->setLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "', '0');");
         $saveButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_ok.gif');
         $saveAnchor->setContent($saveButton);
 
         return $this->_encodeForOutput($wysiwygDiv->render() . $editAnchor->render() . $saveAnchor->render());
+    }
+
+    /**
+     * This content type and its derived types can be edited by a WYSIWYG editor
+     * @return boolean
+     */
+    public function isWysiwygCompatible() {
+        return true;
     }
 
 }

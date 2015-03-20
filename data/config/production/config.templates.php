@@ -38,6 +38,7 @@ $cfg['templates']['generic_menu']         = 'template.generic_menu.html';
 $cfg['templates']['generic_form']         = 'template.generic_form.html';
 $cfg['templates']['generic_table_form']   = 'template.generic_table_form.html';
 $cfg['templates']['generic_page']         = 'template.generic_page.html';
+$cfg['templates']['generic_page_html5']   = 'template.generic_page_html5.html';
 $cfg['templates']['generic_list_row']     = 'template.generic_list_row.html';
 $cfg['templates']['generic_list_head']    = 'template.generic_list_head.html';
 $cfg['templates']['generic_list']         = 'template.generic_list.html';

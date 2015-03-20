@@ -126,7 +126,7 @@ if (!empty($artspec)) {
             }
 
             if ($artspec[$id]['default'] == 0) {
-                $defLink->setContent('<img src="' . $backendUrl . $cfg['path']['images'] . 'artikel_spez_inakt.gif" title="' . i18n("Make this article specification default") . '">');
+                $defLink->setContent('<img alt="" src="' . $backendUrl . $cfg['path']['images'] . 'artikel_spez_inakt.gif" title="' . i18n("Make this article specification default") . '">');
                 $list->setCell($count, 2, $link->render() . $dlink->render() . $olink->render() . $defLink->render());
             } else {
                 $standardImage = new cHTMLImage($backendUrl . $cfg['path']['images'] . 'artikel_spez_akt.gif');

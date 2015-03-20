@@ -1,8 +1,8 @@
 <script type="text/javascript">
 (function(Con, $) {
     var frame = Con.getFrame('left_bottom');
-    if (frame && {RELOAD_LEFT_BOTTOM}) {
-        var href = Con.UtilUrl.replaceParams(frame.location.href, {idlang: {IDLANG}});
+    if ({RELOAD_LEFT_BOTTOM}) {
+		var href = 'main.php?area=lang&frame=2&contenido={CONTENIDO}';
         frame.location.href = href;
     }
 })(Con, Con.$);

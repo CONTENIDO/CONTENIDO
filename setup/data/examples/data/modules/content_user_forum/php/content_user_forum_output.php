@@ -89,7 +89,7 @@ class UserForumArticle {
      */
     protected $_currentRealname;
 
-    /**
+    /**e
      *
      * @access protected
      * @var bool counter
@@ -145,7 +145,7 @@ class UserForumArticle {
         $this->_idlang = cRegistry::getLanguageId();
         $this->_collection = new ArticleForumCollection();
         $this->_qoute = ($this->_collection->getQuoteState($this->_idart));
-        $this->_modMode = ($this->_collection->getModeModeActive($this->_idart));
+        $this->_modMode = ($this->_collection->getModModeActive($this->_idart));
     }
 
     /**
@@ -297,13 +297,20 @@ class UserForumArticle {
                 $this->_messageText .= mi18n("yourArticleSaved");
             } else {
 
+
                 $this->_tpl->assign('MESSAGE', $this->_messageText);
 
                 if ($this->_userLoggedIn) {
+                    // CON-2164 escape values
+                    $this->_currentEmail = conHtmlSpecialChars($this->_currentEmail);
+                    $this->_currentRealname = conHtmlSpecialChars($this->_currentRealname);
                     $this->_tpl->assign('INPUT_EMAIL', $this->_currentEmail . "<input type=\"hidden\" name=\"email\" value=\"$this->_currentEmail\" />");
                     $this->_tpl->assign('INPUT_REALNAME', $this->_currentRealname . "<input type=\"hidden\" name=\"realname\" value=\"$this->_currentRealname\" />");
                     $this->_tpl->assign('INPUT_FORUM', $forum);
                 } else {
+                    // CON-2164 escape values
+                    $email = conHtmlSpecialChars($email);
+                    $realname = conHtmlSpecialChars($realname);
                     $this->_tpl->assign('INPUT_EMAIL', "<input type=\"text\" name=\"email\" value=\"$email\" />");
                     $this->_tpl->assign('INPUT_REALNAME', "<input type=\"text\" name=\"realname\" value=\"$realname\" />");
                     $this->_tpl->assign('INPUT_FORUM', $forum);
@@ -343,7 +350,7 @@ class UserForumArticle {
                     if (!$empty) {
                         $transTemplate = mi18n("answerToQuote");
                         $transTemplateAfter = mi18n("from");
-                        $this->_tpl->assign('FORUM_REPLYMENT', $transTemplate . '<br/>' . $content['forum'] . "<br/><br/>" . $transTemplateAfter . ' ' . $content['realname']);
+                        $this->_tpl->assign('FORUM_REPLYMENT', conHtmlSpecialChars($transTemplate) . '<br/>' . conHtmlSpecialChars($content['forum']) . "<br/><br/>" . conHtmlSpecialChars($transTemplateAfter) . ' ' . conHtmlSpecialChars($content['realname']));
                     } else {
                         $this->_tpl->assign('FORUM_REPLYMENT', '');
                     }
@@ -372,7 +379,7 @@ class UserForumArticle {
             if (count($arrUserforum) == 0) {
                 $this->_tpl->assign('MESSAGE', mi18n("noCommentsYet"));
                 $this->_tpl->assign('FORUM_TEXT', mi18n("articles"));
-                $this->_tpl->assign(mi18n("writeNewEntry"));
+                $this->_tpl->assign(conHtmlSpecialChars(mi18n("writeNewEntry")));
                 if ($this->_allowedToEditForum) {
                     $link = $linkText;
                     $this->_tpl->assign('LINK_NEW_FORUM', $link);
@@ -433,7 +440,7 @@ class UserForumArticle {
                         $user = $userColl->loadItem($value['editedby'])->get('username');
 
                         $edit_information = sprintf($tmp, $editdate, $edittime, $user);
-                        $record['EDIT_INFORMATION'] = "<br /><br /><em>$edit_information</em>";
+                        $record['EDIT_INFORMATION'] = "<br /><br /><em>conHtmlSpecialChars($edit_information)</em>";
                     }
 
                     // ansers allowed or not.
@@ -520,13 +527,13 @@ class UserForumArticle {
                 $empty = (count($content) > 0) ? false : true;
 
                 if (!$empty) {
-                    // Quote anser content
+                    // Quote answer content
                     $ar = $this->_collection->getCommentContent($replyId);
                     $transTemplate = mi18n("answerToQuote");
                     $transTemplateContent = $ar['content'];
                     $transTemplateAfter = mi18n("from");
                     $transTemplateName = $ar['name'];
-                    $this->_tpl->assign('FORUM_REPLYMENT', $transTemplate . '<br/>' . $transTemplateContent . "<br/><br/>" . $transTemplateAfter . ' ' . $transTemplateName);
+                    $this->_tpl->assign('FORUM_REPLYMENT', conHtmlSpecialChars($transTemplate) . '<br/>' . $transTemplateContent . "<br/><br/>" . conHtmlSpecialChars($transTemplateAfter) . ' ' . conHtmlSpecialChars($transTemplateName));
                 } else {
                     $this->_tpl->assign('FORUM_REPLYMENT', '');
                 }

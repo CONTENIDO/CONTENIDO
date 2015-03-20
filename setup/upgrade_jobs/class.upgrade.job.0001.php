@@ -37,6 +37,9 @@ class cUpgradeJob_0001 extends cUpgradeJobAbstract {
                     break;
             }
         }
+        if (false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
+            updateClientPath($this->_oDb, $cfg['tab']['clients'], 0, self::$_rootPath . '/cms/', self::$_rootHttpPath . '/cms/');
+        }
     }
 
 }

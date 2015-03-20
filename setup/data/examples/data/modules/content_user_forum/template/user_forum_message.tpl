@@ -1,1 +1,1 @@
-<p>{$MESSAGE}</p>
+<p>{$MESSAGE|escape}</p>

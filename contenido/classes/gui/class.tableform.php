@@ -24,6 +24,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cGuiTableForm {
 
     /**
+     * accept charset of form tag
+     * @var string
+     */
+    private $_acceptCharset = '';
+
+    /**
      *
      * @var array
      */
@@ -223,6 +229,14 @@ class cGuiTableForm {
     }
 
     /**
+     * Sets the accept-charset attribute of form tag
+     * @param string $charset
+     */
+    public function setAcceptCharset($charset) {
+        $this->_acceptCharset = $charset;
+    }
+
+    /**
      *
      * @param unknown_type $id
      * @param unknown_type $event
@@ -288,9 +302,18 @@ class cGuiTableForm {
         $tpl = new cTemplate();
 
         if ($this->submitjs != "") {
-            $tpl->set("s", "JSEXTRA", 'onsubmit="' . $this->submitjs . '"');
+            if (strlen($this->_acceptCharset) > 0) {
+                $tpl->set("s", "JSEXTRA", 'onsubmit="' . $this->submitjs
+                        . '" accept-charset="' . $this->_acceptCharset . '"');
+            } else {
+                $tpl->set("s", "JSEXTRA", 'onsubmit="' . $this->submitjs . '"');
+            }
         } else {
-            $tpl->set("s", "JSEXTRA", '');
+            if (strlen($this->_acceptCharset) > 0) {
+                $tpl->set("s", "JSEXTRA", 'accept-charset="' . $this->_acceptCharset . '"');
+            } else {
+                $tpl->set("s", "JSEXTRA", '');
+            }
         }
 
         $tpl->set("s", "FORMNAME", $this->formname);

@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>content_rss_creator</name><description></description><type>content</type><alias>content_rss_creator</alias></module>
+<module><name>content_rss_creator</name><description>Representation of a configurable rss source</description><type>content</type><alias>content_rss_creator</alias></module>

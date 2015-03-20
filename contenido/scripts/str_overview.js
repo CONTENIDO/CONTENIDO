@@ -74,7 +74,7 @@ function handleInlineEdit(iCatId) {
             }
 
             if (document.renamecategory.idcat.value != iCatId || bResetted == false) {
-                //find previous tr element to use insertbefore function for edit layer
+                //find previous tr element to use insert before function for edit layer
                 while (row = row.nextSibling) {
                     if (row.nodeName == 'TR') {
                         break;
@@ -212,9 +212,12 @@ function changeVisible() {
  * function also sets status value in hidden input visible_input
  */
 function changePublic() {
-    var image = document.getElementById('public_image'),
-        label = document.getElementById('public_label'),
-        input = document.getElementById('public_input');
+    var image = document.getElementById('public_image');
+
+    var labels = document.getElementsByClassName('public_label');
+    var label = labels[0];
+
+    var input = document.getElementById('public_input');
 
     if (input.value == '1') {
         label.innerHTML = sUnprotectCategory;

@@ -228,14 +228,14 @@ initData();
         var left_bottom = Con.getFrame('left_bottom');
 
         $("a#expander").click(function() {
-            left_bottom.$("#con_str_tree #root ul li.collapsed").removeClass("collapsed");
+            left_bottom.$(".con_str_tree .root ul li.collapsed").removeClass("collapsed");
             var catlist = left_bottom.scatlist;
             $.post("{AJAXURL}", { area: "{AREA}", action: "expandall", wholelist: catlist, contenido: Con.sid });
             return false;
         });
 
         $("a#collapser").click(function() {
-            left_bottom.$("#con_str_tree li#root ul li ul").parent().addClass("collapsed");
+            left_bottom.$(".con_str_tree li.root ul li ul").parent().addClass("collapsed");
             var catlist = left_bottom.scatlist;
             $.post("{AJAXURL}", { area: "{AREA}", action: "collapseall", wholelist: catlist, contenido: Con.sid });
             return false;
@@ -250,8 +250,12 @@ initData();
                 var oldid = cfg.catId + '-' + cfg.tplId + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
                 var newid = cfg.catId + '-' + templateid + '-' + cfg.isOnline + '-' + cfg.isPublic + '-' + cfg.hasRight['template'] + '-' + cfg.hasRight['online'] + '-' + cfg.hasRight['public'] + '-' + cfg.hasRight['template_cfg']  + '-' + cfg.hasRight['syncable'];
                 cfg.tplId = templateid;
-                left_bottom.$("#con_str_tree li#root ul li#"+oldid).attr("id", newid);
+                left_bottom.$(".con_str_tree li.root ul li#"+oldid).attr("id", newid);
 
+                var frame = Con.getFrame('right_bottom');
+          		var href = 'main.php?area={AREA}&frame=4&idcat='+ cfg.catId + '&idtpl=' + templateid + '&contenido=n' + Con.sid + '';
+                frame.location.href = href;
+                
                 return false;
             }
         });
@@ -259,8 +263,8 @@ initData();
         $("div#oOnline_label a").click(function() {
             if (cfg.catId > 0 && cfg.hasRight['online'] == 1) {
                 var oldid = cfg.idString;
-                var oldobject = left_bottom.$("#con_str_tree li#root ul li#" + oldid);
-                var oldlink = left_bottom.$("#con_str_tree li#root ul li#" + oldid + " > div > a");
+                var oldobject = left_bottom.$(".con_str_tree li.root ul li#" + oldid);
+                var oldlink = left_bottom.$(".con_str_tree li.root ul li#" + oldid + " > div > a");
                 var oldclass = oldlink.attr("class");
                 if (cfg.isOnline == 0) {
                     var newonline = 1;
@@ -276,7 +280,7 @@ initData();
                 oldobject.attr("id", newid);
                 $.post("{AJAXURL}", { area: "{AREA}", action: "con_makecatonline", idcat: cfg.catId, online: newonline, contenido: Con.sid });
 
-                left_bottom.$("#con_str_tree li#root ul li#"+newid+" > div").click();
+                left_bottom.$(".con_str_tree li.root ul li#"+newid+" > div").click();
                 return false;
             }
         });
@@ -290,8 +294,8 @@ initData();
                     var newpublic = 0;
                 }
                 var oldid = cfg.idString;
-                var oldobject = left_bottom.$("#con_str_tree li#root ul li#"+oldid);
-                var oldlink = left_bottom.$("#con_str_tree li#root ul li#"+oldid+" div > a");
+                var oldobject = left_bottom.$(".con_str_tree li.root ul li#"+oldid);
+                var oldlink = left_bottom.$(".con_str_tree li.root ul li#"+oldid+" div > a");
                 oldlink.each(function(i) {
                     var oldlinkclass = $(this).attr("class");
                     var oldlinkid = $(this).parent().parent().attr("id");
@@ -309,7 +313,7 @@ initData();
                     $(this).removeClass(oldlinkclass);
                     $(this).addClass(newlinkclass);
                     var newlinkid = aOldlinkids[0] + '-' + aOldlinkids[1] + '-' + aOldlinkids[2] + '-' + newpublic + '-' + aOldlinkids[4] + '-' + aOldlinkids[5] + '-' + aOldlinkids[6] + '-' + aOldlinkids[7]  + '-' + aOldlinkids[8];
-                    $("#con_str_tree li#root ul li#"+oldlinkid).attr("id", newlinkid);
+                    $(".con_str_tree li.root ul li#"+oldlinkid).attr("id", newlinkid);
                     if (newid == false) {
                         newid = newlinkid;
                     }
@@ -319,7 +323,7 @@ initData();
 
                 cfg.isPublic = newpublic;
 
-                left_bottom.$("#con_str_tree li#root ul li#"+newid+" > div").click();
+                left_bottom.$(".con_str_tree li.root ul li#"+newid+" > div").click();
                 cfg.updateScreen();
                 return false;
             }
