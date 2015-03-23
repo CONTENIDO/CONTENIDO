@@ -70,7 +70,7 @@ if (empty($allLanguages)) {
 
     // otherwise set first language
     if ($nextLang === false) {
-        $languageName = $languageCollectionInstance->getLanguageName(reset($allLanguages));
+        $languageName = conHtmlSpecialChars($languageCollectionInstance->getLanguageName(reset($allLanguages)));
 
         $tpl->set('s', 'label', $languageName);
         $tpl->set('s', 'title', $languageName);
