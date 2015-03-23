@@ -56,7 +56,6 @@ $articleType = $versioning->getArticleType(
     $selectedArticleId
 );
 
-
 switch ($versioningState) {
     
     case 'advanced' :
@@ -567,7 +566,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
         if ((($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) && $tmp_locked != 1) {
             $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
             $inUse = false;
-            if ($versioningState == 'simple' && $articleType == 'current'
+            if ($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
             || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled') {
                 $disabled = '';
             }
@@ -710,7 +709,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $select = new cHTMLSelectElement("directlink");
     $select->setEvent("change", "var sVal=this.form.directlink.options[this.form.directlink.options.selectedIndex].value; document.getElementById('linkhint').value = sVal; if(sVal)document.getElementById('linkhintA').style.display='inline-block'; else document.getElementById('linkhintA').style.display='none';");
-    if (cSecurity::toInteger($idart) == 0 || ($versioning->getState() == 'simple' && $articleType != 'current'
+    if (cSecurity::toInteger($idart) == 0 || ($versioning->getState() == 'simple' && ($articleType != 'current' && $articleType != 'editable')
             || $versioning->getState() == 'advanced' && $articleType != 'editable')) {
         $select->setEvent("disabled", "disabled");
     }
@@ -827,7 +826,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // Online
     $tmp_ochecked = $tmp_online == 1? 'checked="checked"' : '';
     if (($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat))
-        && ($versioningState == 'simple' && $articleType == 'current'
+        && ($versioningState == 'simple' && $articleType == ($articleType == 'current' || $articleType == 'editable')
          || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled') ) {
         $tmp_ocheck = '<input type="checkbox" ' . $disabled . ' id="online" name="online" value="1" ' . $tmp_ochecked . '>';
     } else {
@@ -839,7 +838,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
     // Startarticle
     $tmp_start_checked = $tmp_is_start? 'checked="checked"' : '';
     if (($perm->have_perm_area_action("con", "con_makestart") || $perm->have_perm_area_action_item("con", "con_makestart", $idcat))
-        && ($versioningState == 'simple' && $articleType == 'current'
+        && ($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
         || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled')) {
         $tmp_start = '<input ' . $disabled . ' type="checkbox" name="is_start" id="is_start" value="1" ' . $tmp_start_checked . '>';
     } else {
@@ -1134,7 +1133,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     if ((($perm->have_perm_area_action("con", "con_makeonline") || 
         $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) && $inUse == false)
-        && ($versioningState == 'simple' && $articleType == 'current'
+        && ($versioningState == 'simple' && ($articleType == 'current' || $articleType == 'editable')
         || $versioningState == 'advanced' && $articleType == 'editable' || $versioningState == 'disabled')) {
         $allow_usetimemgmt = '';
         $page->set('s', 'IS_DATETIMEPICKER_DISABLED', 0);

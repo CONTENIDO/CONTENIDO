@@ -59,14 +59,26 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     $versioning = new cContentVersioning();  
     $version = NULL;
     if ($versioning->getState() != 'disabled') {
+        // safe original version
+        if ($versioning->getState() == 'simple') {
+            $where = 'idartlang = ' . $idartlang;
+            $metaTagVersionColl = new cApiMetaTagVersionCollection();
+            $metaTagVersionIds = $metaTagVersionColl->getIdsByWhereClause($where);
+            if (empty($metaTagVersionIds)) {
+                $artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
+                $artLangVersion->markAsCurrentVersion(1);
+                $version = $artLangVersion->get('version');
+            }
+        }        
         // create article version
         $artLangVersion = $versioning->createArticleLanguageVersion($artLang->toArray());
         $artLangVersion->markAsCurrentVersion(1);
         $version = $artLangVersion->get('version');
-    }                                                  
+    } 
+
     foreach ($availableTags as $key => $value) {
         if ($value['metatype'] == 'robots') {
-            conSetMetaValue($idartlang, $key, $robots, $version);
+            conSetMetaValue($idartlang, $key, $robots);//, $version);
             $newData[$value['metatype']] = $robots;
         } elseif ($value["metatype"] == "date" || $value["metatype"] == "expires") {
 

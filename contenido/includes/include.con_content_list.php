@@ -287,7 +287,8 @@ if (($action == 'savecontype' || $action == 10)) {
                         $artLangVersion = $versioning->createArticleLanguageVersion($articleLanguage->toArray());
                         $artLangVersion->markAsCurrentVersion(1);
                         $version = $artLangVersion->get('version');
-                    }
+                    }                    
+                    
                     
                     // check is article loaded
                     if ($articleLanguage->isLoaded()) {
@@ -402,9 +403,8 @@ $articleType = $versioning->getArticleType(
 
 switch ($versioningState) {
     case 'simple':
-
         // get selected article
-        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType);
+        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], (int) $_REQUEST['idartlang'], $articleType, $selectedArticleId);
 
         // Set as current/editable
         if ($action == 'copyto') {

@@ -149,17 +149,22 @@ class cContentVersioning {
 	
     /**
      * Returns selected article
+     * TODO $idArtlangVersion <-> $selectedArticleId
      *
      * @param int $idArtLangVersion
      * @param int $idArtLang
      * @param string $articleType
+     * @param int $selectedArticleId
      * @return cApiArticleLanguage/cApiArticleLanguageVersion $this->selectedArticle
      */	
-    public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType) {
+    public function getSelectedArticle($idArtLangVersion, $idArtLang, $articleType, $selectedArticleId) {
 
         $this->editableArticleId = $this->getEditableArticleId($idArtLang);
         $versioningState = $this->getState();
         $this->selectedArticle = NULL;
+        if (is_numeric($selectedArticleId)) {
+            $idArtLangVersion = $selectedArticleId;
+        }
         
         if (($articleType == 'version' || $articleType == 'editable')  && ($versioningState == 'advanced') 
             || ($articleType == 'version' && $versioningState == 'simple')) {

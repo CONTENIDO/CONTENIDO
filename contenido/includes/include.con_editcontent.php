@@ -154,7 +154,7 @@ switch ($versioningState) {
                 $selectedArticleId = 'current';
             }
         }
-        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], $idartlang, $articleType);
+        $selectedArticle = $versioning->getSelectedArticle($_REQUEST['idArtLangVersion'], $idartlang, $articleType, $selectedArticleId);
 
         // Get version numbers for Select Element
         $optionElementParameters = $versioning->getDataForSelectElement((int) $idartlang, 'content');
