@@ -481,14 +481,11 @@ function htmldecode($string) {
  * @param string $frontendpath path the to the frontend
  */
 function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
-    global $cfg, $cfgClient, $errsite_idcat, $errsite_idart, $db;
+    
+    global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
     if (!is_array($cfgClient)) {
         $cfgClient = array();
-    }
-
-    if (!is_object($db)) {
-        $db = cRegistry::getDb();
     }
 
     if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
@@ -496,9 +493,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$idclient]['path']['htmlpath'] = cSecurity::escapeString($htmlpath);
     }
 
-    $sql = 'SELECT idclient, name, errsite_cat, errsite_art FROM ' . $cfg['tab']['clients'];
-    $db->query($sql);
-
+    // remember paths as these will be lost otherwise
     $htmlpaths = array();
     $frontendpaths = array();
     foreach ($cfgClient as $id => $aclient) {
@@ -510,15 +505,34 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
     unset($cfgClient);
     $cfgClient = array();
 
-    foreach ($htmlpaths as $id => $path) {
-        $cfgClient[$id]["path"]["htmlpath"] = $htmlpaths[$id];
-        $cfgClient[$id]["path"]["frontend"] = $frontendpaths[$id];
-    }
+    // don't do that as the set of clients may have changed!
+    // paths will be set in subsequent foreach instead.
+    // foreach ($htmlpaths as $id => $path) {
+    //     $cfgClient[$id]["path"]["htmlpath"] = $htmlpaths[$id];
+    //     $cfgClient[$id]["path"]["frontend"] = $frontendpaths[$id];
+    // }
+
+    // get clients from database
+    $db = cRegistry::getDb();
+    $db->query('
+        SELECT idclient
+            , name
+            , errsite_cat
+            , errsite_art
+        FROM ' . $cfg['tab']['clients']);
 
     while ($db->nextRecord()) {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
 
+        // set original paths
+        if (isset($htmlpaths[$iClient])) {
+            $cfgClient[$iClient]["path"]["htmlpath"] = $htmlpaths[$iClient];
+        }
+        if (isset($frontendpaths[$iClient])) {
+            $cfgClient[$iClient]["path"]["frontend"] = $frontendpaths[$iClient];
+        }
+        
         $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace(array(
             '*/',
             '/*',
@@ -574,7 +588,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$iClient]['version']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/version/';
         $cfgClient[$iClient]['version']['frontendpath'] = 'data/version/';
     }
-
+    
     $aConfigFileContent = array();
     $aConfigFileContent[] = '<?php';
     $aConfigFileContent[] = 'global $cfgClient;';
