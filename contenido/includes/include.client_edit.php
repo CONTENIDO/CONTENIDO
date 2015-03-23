@@ -19,7 +19,6 @@ if (!$perm->have_perm_area_action($area)) {
     return;
 }
 
-
 $page = new cGuiPage('client_edit', '', '0');
 
 $cApiPropertyColl = new cApiPropertyCollection();
@@ -48,11 +47,16 @@ $clientlogo = $request['clientlogo'];
 $urlscheme = parse_url($htmlpath, PHP_URL_SCHEME);
 $valid = ($clientname != "" && $frontendpath != "" && ($urlscheme == 'http' || $urlscheme == 'https'));
 
-if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action)) && $valid) {
+if ($action == 'client_edit' && $perm->have_perm_area_action($area, $action) && $valid) {
     // Set $validPath = true if path could be created, else false
     $validPath = false;
-    if (!is_dir($request['frontendpath'])) {
+    $pathExisted = false;
+    
+    if (!cFileHandler::exists($request['frontendpath'])) {
         $validPath = mkdir($request['frontendpath'], 0777);
+    } else {
+        $pathExisted = true;
+        $validPath = true;
     }
     
     $sNewNotification = '';
@@ -60,7 +64,8 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         $active = '0';
     }
 
-    if (($new == true && $validPath == true) || ($new == true && cFileHandler::exists($request['frontendpath']))) {
+    if ($new == true && ($validPath == true || cFileHandler::exists($request['frontendpath']))) {
+        
         $sLangNotification = i18n('Notice: In order to use this client, you must create a new language for it.');
         $sTarget = $sess->url('frameset.php?area=lang');
         $sJsLink = "parent.parent.location.href='" . $sTarget . "';
@@ -93,7 +98,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
         $dataPath = 'data/config/' . CON_ENVIRONMENT . '/';
 
         if ($copytemplate) {
-            if ($validPath) {
+            if ($validPath && !$pathExisted) {
                 recursiveCopy($sourcePath, $destPath);
                 $buffer = cFileHandler::read($destPath . $dataPath . 'config.php');
                 $outbuf = str_replace('!CLIENT!', $idclient, $buffer);
@@ -101,7 +106,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
                 if (!cFileHandler::write($destPath . $dataPath . 'config.php.new', $outbuf)) {
                     cRegistry::addErrorMessage(i18n("Couldn't write the file config.php."));
                 }
-
+                
                 cFileHandler::remove($destPath . $dataPath . 'config.php');
                 cFileHandler::rename($destPath . $dataPath . 'config.php.new', 'config.php');
             } else {
@@ -123,7 +128,7 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
             $htmlpath .= '/';
         }
 
-        if (($oldpath != $frontendpath) && ($oldpath != $pathwithoutslash) && ($validPath || cFileHandler::exists($destPath))) {
+        if (($oldpath != $frontendpath) && ($oldpath != $pathwithoutslash) && ($validPath)) {
             cRegistry::addWarningMessage(i18n("You changed the client path. You might need to copy the frontend to the new location"));
         }
 
@@ -137,6 +142,8 @@ if (($action == 'client_edit') && ($perm->have_perm_area_action($area, $action))
 
     $new = false;
 
+    //error_log("updateClientCache($idclient, $htmlpath, $frontendpath)");
+    
     $cfgClient = updateClientCache($idclient, $htmlpath, $frontendpath);
 
     $cApiPropertyColl->setValue('idclient', $idclient, 'backend', 'clientimage', $clientlogo);
