@@ -69,7 +69,7 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
   Lizenz:      GNU General Public Licence (GPL)
   Information: http://www.bitfolge.de/?l=en&s=pseudocron
 
-- Smarty 3.1.14
+- Smarty 3.1.21
   Lizenz:      GNU Lesser General Public License 2.1 or later
   Information: http://www.smarty.net/
 
@@ -77,8 +77,12 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
   Lizenz:      GNU Lesser General Public License v3
   Information: http://swiftmailer.org/
 
-- TinyMCE 3.5.8
+- TinyMCE 3.5.10
   Lizenz:      GNU Lesser General Public License
+  Information: http://www.tinymce.com/
+  
+- TinyMCE 4.1.7
+  Lizenz:      GNU Lesser General Public License 2.1
   Information: http://www.tinymce.com/
 
 - tipsy, facebook style tooltips for jquery 1.0.0a
