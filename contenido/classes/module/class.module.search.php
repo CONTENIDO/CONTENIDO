@@ -146,9 +146,9 @@ class cModuleSearch extends cModuleHandler {
             $idFilter .= " OR idmod=" . (int) $moduleId;
         }
         $sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
-                            type RLIKE '%s'
-                            AND type RLIKE '%s'
-                            OR description RLIKE '%s'
+                            type LIKE '%s'
+                            AND type LIKE '%s'
+                            OR description LIKE '%s'
                             OR name LIKE  '%s'" . $idFilter . ")
                             ORDER BY %s %s", $cfg['tab']['mod'], $idClient, $this->_moduleType, '%' . $this->_filter . '%', '%' . $this->_filter . '%', '%' . $this->_filter . '%', $this->_orderBy, $this->_sortOrder);
 
