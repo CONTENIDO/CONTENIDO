@@ -220,7 +220,7 @@ abstract class cContentTypeAbstract {
     }
 
     /**
-     * Function returns curren content type configuration as array
+     * Function returns current content type configuration as array
      *
      * @return array
      */
