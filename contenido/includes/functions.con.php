@@ -714,6 +714,10 @@ function conDeleteart($idart) {
     // this will delete all keywords associated with the article
     $search = new cSearchIndex();
     $search->start($idart, array());
+    
+    // delete articles meta tags
+    $metaTagColl = new cApiMetaTagCollection();
+    $metaTagColl->deleteBy('idartlang', (int) $idartlang);
 
     // Contenido Extension Chain
     // @see docs/techref/plugins/Contenido Extension Chainer.pdf
