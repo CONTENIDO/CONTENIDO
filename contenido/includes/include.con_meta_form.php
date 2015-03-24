@@ -537,7 +537,7 @@ $result = array(
     'fieldname' => 'name'
 );
 $tpl2 = new cTemplate();
-$infoButton->setHelpText(i18n('Der Attribut Inhalt muss mit einem Buchstaben beginnen. Folgen können Buchstaben, Ziffern und folgende Zeichen: . : _ - '));
+$infoButton->setHelpText(i18n('Attribute content has to begin with a letter and can be followed by letters, digits or the following chars: . : _ - '));
 $tpl2->set('s', 'METATITLE', i18n('New meta tag') . ' ' . $infoButton->render());
 
 

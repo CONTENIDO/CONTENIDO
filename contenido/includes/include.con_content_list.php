@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file contains the backend page for displaying all content of an article.
  *
@@ -248,7 +247,7 @@ if (($action == 'savecontype' || $action == 10)) {
     
     // output data as xml
     header('Content-Type: application/xml;');
-    header('Content-Disposition: attachment; filename=' . $cApiArticleLanguage->get('title') . ';');
+    header('Content-Disposition: attachment; filename='.$cApiArticleLanguage->get('title').'.xml;');
     ob_clean();
     echo $articleElement->asXML();
     exit;
@@ -384,6 +383,16 @@ if (($action == 'savecontype' || $action == 10)) {
     } else {
         $page->displayWarning(i18n("Please choose a file"));
     }
+}
+
+if (count($aNotifications) > 0) {
+    $sNotifications = '';
+    foreach ($aNotifications as $curNotification) {
+        $sNotifications .= $curNotification . '<br />';
+    }
+    $page->set('s', 'NOTIFICATIONS', $sNotifications);
+} else {
+    $page->set('s', 'NOTIFICATIONS', '');
 }
 
 $selectedArticle = NULL;
@@ -690,6 +699,18 @@ $page->set('s', 'IMPORT_RAWDATA', i18n('Import raw data'));
 $page->set('s', 'EXPORT_LABEL', i18n('Raw data export'));
 $page->set('s', 'IMPORT_LABEL', i18n('Raw data import'));
 $page->set('s', 'OVERWRITE_DATA_LABEL', i18n('Overwrite data'));
+
+//CON-2151 check if article is locked
+$aAuthPerms = explode(',', $auth->auth['perm']);
+
+$admin = false;
+if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+    $admin = true;
+}
+
+$cApiArticleLanguage = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
+$locked = $cApiArticleLanguage->getField('locked');
+$page->set('s', 'HIDE', ($admin || (int)$locked === 0)? '' : 'style="display:none;"');
 
 if (getEffectiveSetting('system', 'insite_editing_activated', 'true') == 'false') {
     $page->set('s', 'USE_TINY', '');

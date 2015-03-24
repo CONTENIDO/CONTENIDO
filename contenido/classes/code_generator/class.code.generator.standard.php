@@ -333,7 +333,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
         // overwrite first head tag in original layout code
         $this->_layoutCode = preg_replace('/<head>.*?<\/head>/is', $headCode, $this->_layoutCode, 1);
-            
 
         return $this->_layoutCode;
     }

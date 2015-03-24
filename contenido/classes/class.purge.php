@@ -221,8 +221,8 @@ class cSystemPurge {
         }
     }
     
-        /**
-     * Clear the client content versioning
+    /**
+     * Clear the clients content versioning
      *
      * @param int $clientId
      * @param bool $keep
@@ -366,12 +366,12 @@ class cSystemPurge {
      * @return bool
      */
     public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = array()) {
-        if (is_dir($dirPath) && ($handle = opendir($dirPath))) {
+        if (is_dir($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
             $tmp = str_replace(array(
                 '/',
                 '..'
             ), '', $dirPath);
-            while (false !== ($file = readdir($handle))) {
+            foreach ($handle as $file) {
                 if (!in_array($file, $this->_dirsExcludedWithFiles)) {
                     $filePath = $dirPath . '/' . $file;
                     $filePath = str_replace('//', '/', $filePath);
@@ -379,7 +379,7 @@ class cSystemPurge {
                         $this->clearDir($filePath, $tmpDirPath, $keep, $tmpFileList);
                     } else {
                         if ($keep === false) {
-                            unlink($filePath);
+                            cFileHandler::remove($filePath);
                         } else {
                             $tmpFileList[$tmp][] = $filePath;
                         }
@@ -399,12 +399,28 @@ class cSystemPurge {
             ), '', $dirPath) != str_replace(array(
                 '/',
                 '..'
-            ), '', $tmpDirPath) && $keep === false && !in_array($dirName, $this->_dirsExcludedWithFiles) && !in_array($dirName, $this->_dirsExcluded)) {
-                rmdir($dirPath);
+            ), '', $tmpDirPath)
+            && $keep === false) {
+                // check if directoy contains reserved files folders
+                $bCanDelete = true;
+                $dirContent = cDirHandler::read($dirPath);
+                foreach ($dirContent as $sContent) {
+                    if (in_array($sContent, $this->_dirsExcludedWithFiles)
+                    || in_array($dirContent, $this->_dirsExcluded)) {
+                        $bCanDelete = false;
+                        break;
+                    }
+                }
+                if (true === $bCanDelete
+                && in_array($dirName, $this->_dirsExcluded)) {
+                    $bCanDelete = false;
+                }
             }
-
-            closedir($handle);
-
+            // reserved files or folders, do not delete
+            if (true === $bCanDelete) {
+                cDirHandler::remove($dirPath);
+            }
+            
             return true;
         } else {
             return false;
@@ -421,16 +437,17 @@ class cSystemPurge {
     public function emptyFile($dirPath, $types) {
         $count = 0;
         $countCleared = 0;
-        if (is_dir($dirPath) && ($handle = opendir($dirPath))) {
-            while (false !== ($file = readdir($handle))) {
+        
+        if (is_dir($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
+            foreach ($handle as $file) {
                 $fileExt = trim(end(explode('.', $file)));
-
+        
                 if ($file != '.' && $file != '..' && in_array($fileExt, $types)) {
                     $filePath = $dirPath . '/' . $file;
-
-                    if (cFileHandler::exists($filePath) && is_writable($filePath)) {
+        
+                    if (cFileHandler::exists($filePath) && cFileHandler::writeable($filePath)) {
                         $count++;
-
+        
                         if (cFileHandler::truncate($filePath)) {
                             $countCleared++;
                         }
