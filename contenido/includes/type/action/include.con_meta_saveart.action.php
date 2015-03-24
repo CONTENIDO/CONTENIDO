@@ -77,11 +77,10 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     } 
 
     foreach ($availableTags as $key => $value) {
-        if ($value['metatype'] == 'robots') {
+        if ($value['metatype'] == 'robots') {            
             conSetMetaValue($idartlang, $key, $robots);//, $version);
             $newData[$value['metatype']] = $robots;
         } elseif ($value["metatype"] == "date" || $value["metatype"] == "expires") {
-
             $atime = '';
             $dateValue = $_POST['META' . $value['metatype']];
             // fix store hours and minutes
@@ -91,7 +90,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
             $atime = $dateValue;
             conSetMetaValue($idartlang, $key, $atime, $version);
             $newData[$value['metatype']] = $atime;
-        } else {
+        } else {            
             conSetMetaValue($idartlang, $key, $_POST['META' . $value['metatype']], $version);
             $newData[$value['metatype']] = $_POST['META' . $value['metatype']];
         }
@@ -102,7 +101,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
     $purge->clearArticleCache($idartlang);
 
     // Add a new Meta Tag in DB
-    $correctMetaTagName = true;
+    $validMeta = true;
     if (!empty($METAmetatype) && preg_match('/^([a-zA-Z])([a-zA-Z0-9\.\:\-\_]*$)/', $METAmetatype)) {        
         $sql = "INSERT INTO `" . $cfg['tab']['meta_type'] . "` (
                     `metatype` ,
@@ -115,15 +114,15 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") || $perm->have_perm_are
                 );";
         $db->query($sql);
     } else if (!empty($METAmetatype)) {
-        $correctMetaTagName = false;
+        $validMeta = false;
     }
     
     cApiCecHook::execute('Contenido.Action.con_meta_saveart.AfterCall', $idart, $newData, $oldData);
     
-    if ($correctMetaTagName) {
+    if ($validMeta) {
         $notification->displayNotification('info', i18n('Changes saved'));
     } else {
-        $notification->displayNotification("error", i18n("Ungültiger Attribut Inhalt; Information beachten"));
+        $notification->displayNotification("error", i18n("Attribute content not valid; attend information button"));
     }
 } else {
     $notification->displayNotification("error", i18n("Permission denied"));
