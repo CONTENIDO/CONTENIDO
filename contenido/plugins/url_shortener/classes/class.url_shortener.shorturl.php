@@ -89,7 +89,7 @@ class cApiShortUrlCollection extends ItemCollection {
             $idclient = cRegistry::getClientId();
         }
 
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
         $item->set('shorturl', $shorturl);
         $item->set('idart', $idart);
         $item->set('idlang', $idlang);

@@ -22,7 +22,7 @@ $aManagedValues = array(
     'update_check_period', 'system_clickmenu', 'system_mail_host', 'system_mail_sender',
     'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
     'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml',
-    'system_insite_editing_activated', 'backend_backend_label'
+    'system_insite_editing_activated', 'backend_backend_label', 'backend_file_extensions', 'module_translation_message'
 );
 
 // @TODO Find a general solution for this!
@@ -163,7 +163,7 @@ $form->setVar("frame", $frame);
 $form->setVar("action", "systemsettings_save_item");
 $form->addHeader(i18n("Add new variable"));
 $inputbox = new cHTMLTextbox("systype");
-$inputbox->setWidth(10);
+$inputbox->setWidth(30);
 $form->add(i18n("Type"), $inputbox->render());
 
 $inputbox = new cHTMLTextbox("sysname");

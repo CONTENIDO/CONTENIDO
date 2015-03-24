@@ -61,7 +61,7 @@ class WorkflowActions extends ItemCollection {
     public function set($idworkflowitem, $action) {
         $this->select("idworkflowitem = " . (int) $idworkflowitem . " AND action = '" . $this->escape($action) . "'");
         if (!$this->next()) {
-            $newitem = parent::createNewItem();
+            $newitem = $this->createNewItem();
             $newitem->setField("idworkflowitem", $idworkflowitem);
             $newitem->setField("action", $action);
             $newitem->store();

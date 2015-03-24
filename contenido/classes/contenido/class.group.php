@@ -38,21 +38,21 @@ class cApiGroupCollection extends ItemCollection {
      * @param string $groupname
      * @param string $perms
      * @param string $description
-     * @return cApiGroup|NULL
+     * @return cApiGroup|false
      */
     public function create($groupname, $perms, $description) {
-        $primaryKeyValue = md5($groupname);
+        $primaryKeyValue = md5($groupname . time());
 
-        $item = parent::createNewItem($primaryKeyValue);
+        $item = $this->createNewItem($primaryKeyValue);
         if (!is_object($item)) {
-            return NULL;
+            return false;
         }
 
         $groupname = cApiGroup::prefixedGroupName($groupname);
 
-        $item->set('groupname', $this->escape($groupname));
-        $item->set('perms', $this->escape($perms));
-        $item->set('description', $this->escape($description));
+        $item->set('groupname', $groupname);
+        $item->set('perms', $perms);
+        $item->set('description', $description);
         $item->store();
 
         return $item;
@@ -242,6 +242,15 @@ class cApiGroup extends Item {
      */
     public function getPermsArray() {
         return explode(',', $this->get('perms'));
+    }
+
+	/**
+     * Returns group id, currently set.
+     *
+     * @return string
+     */
+    public function getGroupId() {
+        return $this->get('group_id');
     }
 
     /**

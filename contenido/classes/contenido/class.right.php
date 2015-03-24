@@ -53,15 +53,15 @@ class cApiRightCollection extends ItemCollection {
      * @return cApiRight
      */
     public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type) {
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
-        $oItem->set('user_id', $this->escape($userId));
-        $oItem->set('idarea', (int) $idarea);
-        $oItem->set('idaction', (int) $idaction);
-        $oItem->set('idcat', (int) $idcat);
-        $oItem->set('idclient', (int) $idclient);
-        $oItem->set('idlang', (int) $idlang);
-        $oItem->set('type', (int) $type);
+        $oItem->set('user_id', $userId);
+        $oItem->set('idarea', $idarea);
+        $oItem->set('idaction', $idaction);
+        $oItem->set('idcat', $idcat);
+        $oItem->set('idclient', $idclient);
+        $oItem->set('idlang', $idlang);
+        $oItem->set('type', $type);
 
         $oItem->store();
 
@@ -134,4 +134,36 @@ class cApiRight extends Item {
         }
     }
 
+	/**
+     * Userdefined setter for right fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idarea':
+                $value = (int) $value;
+                break;
+			case 'idaction':
+                $value = (int) $value;
+                break;
+			case 'idcat':
+                $value = (int) $value;
+                break;
+			case 'idclient':
+                $value = (int) $value;
+                break;
+			case 'idlang':
+                $value = (int) $value;
+                break;
+			case 'type':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+	
 }

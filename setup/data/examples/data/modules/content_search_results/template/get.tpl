@@ -1,14 +1,14 @@
 <!-- content_search_results/template/get.tpl -->
 
 {* headline *}
-<h1>{$label.headline}</h1>
+<h1>{$label.headline|escape}</h1>
 
 {* search form *}
 <form action="{$action}" method="{$method}" id="navigation_searchform_top">
     {if $idart}<input type="hidden" name="idart" value="{$idart}" />{/if}
     {if $idlang}<input type="hidden" name="idlang" value="{$idlang}" />{/if}
     <input type="text" id="search_term" name="search_term" class="full" title="Suche" />
-    <input type="submit" class="submit search" value="{$label.submit} &raquo;" />
+    <input type="submit" class="submit search" value="{$label.submit|escape} &raquo;" />
 </form>
 
 <h3>{$msgResult}</h3>
@@ -19,14 +19,14 @@
     <span>{$msgRange}</span>
     <ul>
     {if 0 < $prev|strlen}
-        <li><a href="{$prev}">{$label.previous}</a></li>
+        <li><a href="{$prev}">{$label.previous|escape}</a></li>
     {/if}
     {foreach item=page from=$pages|array_keys}
         {assign var="href" value=$pages.$page}
         <li><a href="{$href}"{if $currentPage eq $page}{/if}>{$page}</a></li>
     {/foreach}
     {if 0 < $next|strlen}
-        <li><a href="{$next}">{$label.next}</a></li>
+        <li><a href="{$next}">{$label.next|escape}</a></li>
     {/if}
     </ul>
 </div>
@@ -49,14 +49,14 @@
     <span>{$msgRange}</span>
     <ul>
     {if 0 < $prev|strlen}
-        <li><a href="{$prev}">{$label.previous}</a></li>
+        <li><a href="{$prev}">{$label.previous|escape}</a></li>
     {/if}
     {foreach item=page from=$pages|array_keys}
         {assign var="href" value=$pages.$page}
         <li><a href="{$href}"{if $currentPage eq $page}{/if}>{$page}</a></li>
     {/foreach}
     {if 0 < $next|strlen}
-        <li><a href="{$next}">{$label.next}</a></li>
+        <li><a href="{$next}">{$label.next|escape}</a></li>
     {/if}
     </ul>
 </div>

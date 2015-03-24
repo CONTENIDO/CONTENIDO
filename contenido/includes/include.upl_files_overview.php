@@ -333,9 +333,9 @@ class UploadList extends FrontendList {
                 // selecting link with tiny out of popup does not work with Con.getFrame in IE11
                 // reverting to the old call solves this problem
                 if (cApiDbfs::isDbfs($path . '/' . $data)) {
-                    $mstr = '<a href="javascript://" onclick="parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.close();"><img src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
+                    $mstr = '<a href="javascript://" onclick="parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . 'dbfs.php?file=' . $path . '/' . $data . '\'; window.close();"><img alt="" src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
                 } else {
-                    $mstr = '<a href="javascript://" onclick="parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . $path . $data . '\'; window.close();"><img src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
+                    $mstr = '<a href="javascript://" onclick="parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . $path . $data . '\'; window.returnValue=\'' . $cfgClient[$client]['htmlpath']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . $path . $data . '\'; window.close();"><img alt="" src="' . $backendUrl . $cfg['path']['images'] . 'but_ok.gif" title="' . i18n("Use file") . '">&nbsp;' . $data . '</a>';
                 }
             } else {
                 $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
@@ -381,14 +381,14 @@ class UploadList extends FrontendList {
                         $href = $frontendURL . $cfgClient[$client]['upload'] . $data;
                     }
                     $retValue = '<a class="jsZoom" href="' . $href . '">
-                           <img class="hover" name="smallImage" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
-                           <img class="preview" name="prevImage" src="' . $sCacheThumbnail . '">
+                           <img class="hover" name="smallImage" alt="" src="' . $sCacheThumbnail . '" data-width="' . $iWidth . '" data-height="' . $iHeight . '">
+                           <img class="preview" name="prevImage" alt="" src="' . $sCacheThumbnail . '">
                        </a>';
                     return $retValue;
                     break;
                 default:
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
-                    return '<img class="hover_none" name="smallImage" src="' . $sCacheThumbnail . '">';
+                    return '<img class="hover_none" name="smallImage" alt="" src="' . $sCacheThumbnail . '">';
             }
         }
 
@@ -412,30 +412,30 @@ $thisfile = $sess->url("main.php?idarea=$area&frame=$frame&path=$path&thumbnailm
 $scrollthisfile = $thisfile . "&sortmode=$sortmode&sortby=$sortby&appendparameters=$appendparameters";
 
 if ($sortby == 3 && $sortmode == 'DESC') {
-    $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_down.gif" border="0"></a>';
+    $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_down.gif" alt="" border="0"></a>';
 } else {
     if ($sortby == 3) {
-        $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_up.gif" border="0"></a>';
+        $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '<img src="images/sort_up.gif" alt="" border="0"></a>';
     } else {
         $fnsort = '<a class="gray" href="' . $thisfile . '&sortby=3&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Filename / Description") . '</a>';
     }
 }
 
 if ($sortby == 4 && $sortmode == 'DESC') {
-    $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_down.gif" border="0"></a>';
+    $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_down.gif" alt="" border="0"></a>';
 } else {
     if ($sortby == 4) {
-        $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_up.gif" border="0"></a>';
+        $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Size") . '<img src="images/sort_up.gif" alt="" border="0"></a>';
     } else {
         $sizesort = '<a class="gray" href="' . $thisfile . '&sortby=4&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Size") . "</a>";
     }
 }
 
 if ($sortby == 5 && $sortmode == 'DESC') {
-    $typesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_down.gif" border="0"></a>';
+    $typesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_down.gif" alt="" border="0"></a>';
 } else {
     if ($sortby == 5) {
-        $typesort = '<a class="gray" class="gray" href="' . $thisfile . '&sortby=5&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_up.gif" border="0"></a>';
+        $typesort = '<a class="gray" class="gray" href="' . $thisfile . '&sortby=5&sortmode=DESC&startpage=' . $startpage . '">' . i18n("Type") . '<img src="images/sort_up.gif" alt="" border="0"></a>';
     } else {
         $typesort = '<a class="gray" href="' . $thisfile . '&sortby=5&sortmode=ASC&startpage=' . $startpage . '">' . i18n("Type") . "</a>";
     }
@@ -566,10 +566,15 @@ $rownum = 0;
 $properties = new cApiPropertyCollection();
 
 while ($item = $uploads->next()) {
-    $filename = $item->get('filename');
 
-    if (strpos($filename, ".") === 0) {
-        continue;
+	// Get name of directory, filename and size of file
+	$dirname = $item->get('dirname');
+    $filename = $item->get('filename');
+    $filesize = $item->get('size');
+
+    // Do not display directories and "filenames" begin with a dot
+    if (true === cDirHandler::exists($cfgClient[$client]['upl']['path'] . $dirname . $filename) || strpos($filename, ".") === 0) {
+    	continue;
     }
 
     $bAddFile = true;
@@ -586,9 +591,6 @@ while ($item = $uploads->next()) {
             }
         }
     }
-
-    $dirname = $item->get('dirname');
-    $filesize = $item->get('size');
 
     if ($filesize == 0) {
         if (cFileHandler::exists($cfgClient[$client]['upl']['path'] . $dirname . $filename)) {
@@ -628,7 +630,6 @@ while ($item = $uploads->next()) {
 }
 
 if ($rownum == 0) {
-
     header('Location: ' . cRegistry::getBackendUrl() . 'main.php?area=upl_upload&frame=4&path=' . $path . '&contenido=' . $contenido . '&appendparameters=' . $appendparameters);
 }
 
@@ -732,34 +733,6 @@ $page->addScript($sess->url('iZoom.js.php'));
 if ($bDirectoryIsWritable == false) {
     $page->displayError(i18n("Directory not writable") . ' (' . $cfgClient[$client]['upl']['path'] . $path . ')');
 }
-
-$jsScript = new cHTMLScript();
-$jsScript->setAttribute('type', 'text/javascript');
-
-$jsCode = '
-(function(Con, $) {
-   $(function() {
-       var $body = $("body");
-
-       // Handler for clicked image anchors
-       $body.delegate("a.jsZoom", "click", function() {
-           iZoom($(this).attr("href"));
-           return false;
-       });
-
-       // Handler for mouseover/mouseout on images
-       $body.delegate("a.jsZoom img.hover", "mouseover", function() {
-           correctPosition(this, $(this).attr("data-width"), $(this).attr("data-height"));
-       });
-       $body.delegate("a.jsZoom img.hover", "mouseout", function() {
-           if (typeof(previewHideIe6) == "function") {
-               previewHideIe6(this);
-           };
-       });
-   });
-})(Con, Con.$);
-';
-$jsScript->setContent($jsCode);
 
 $page->setContent(array(
     $delform,

@@ -184,11 +184,15 @@ abstract class cDbDriverHandler {
 
         $this->loadDriver();
 
-        if ($this->connect() == NULL) {
-            $this->setErrorNumber(1);
-            $this->setErrorMessage("Could not connect to database");
-
-            throw new cDbException($this->getErrorMessage());
+        try {
+            if ($this->connect() == NULL) {
+                $this->setErrorNumber(1);
+                $this->setErrorMessage("Could not connect to database");
+            
+                throw new cDbException($this->getErrorMessage());
+            }
+        } catch (Exception $e) {
+            throw new cDbException($e->getMessage());
         }
     }
 
@@ -456,12 +460,15 @@ abstract class cDbDriverHandler {
     protected function _prepareStatementA($statement, array $arguments) {
         if (count($arguments) > 0) {
             foreach ($arguments as $key => $value) {
-                $param = ':' . $key;
-                if (is_int($value)) {
-                    $statement = str_replace($param, $value, $statement);
+				$param = ':' . $key;
+                if (cSecurity::isInteger($value)) {
+                	$statement = preg_replace('/' . $param . '/', cSecurity::toInteger($value), $statement);
+                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toInteger($value) . '\'', $statement);
                 } else {
-                    $param = (string)$param;
-                    $statement = str_replace($param, $this->escape($value), $statement);
+                    $param = cSecurity::toString($param);
+                    $statement = preg_replace('/' . $param . '/', cSecurity::escapeString($value), $statement);
+                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::escapeString($value) . '\'', $statement);
+                    $statement = preg_replace('/`' . $param . '`/', '`' . cSecurity::escapeString($value) . '`', $statement);
                 }
             }
         }
@@ -783,18 +790,12 @@ abstract class cDbDriverHandler {
     /**
      * Get last inserted id of given table name
      *
-     * @param string $tableName
-     *
      * @return int NULL id of table
      */
-    public function getLastInsertedId($tableName = '') {
+    public function getLastInsertedId() {
         $lastId = NULL;
 
-        if (strlen($tableName) == 0) {
-            return $lastId;
-        }
-
-        $this->query('SELECT LAST_INSERT_ID() as last_id FROM ' . $tableName);
+        $this->query('SELECT LAST_INSERT_ID() as last_id');
         if ($this->nextRecord()) {
             $lastId = $this->f('last_id');
         }

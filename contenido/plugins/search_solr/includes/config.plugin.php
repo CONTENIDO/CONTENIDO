@@ -105,72 +105,90 @@ class Solr {
     /**
      * Returns array of options used to create a SolClient object.
      *
-     * The option values are read from system or client settings. Required
-     * settings are solr/hostname, solr/port, solr/path, solr/login,
-     * solr/password.
+     * The option values are read from system or client settings.
+     * Required settings are solr/hostname, solr/port, solr/path.
      *
      * @return array
      */
-    public static function getClientOptions() {
+    public static function getClientOptions($idclient, $idlang) {
+
+        //$queryOption = 'getSystemProperty';
+        $queryOption = 'getEffectiveSetting';
+
         $options = array();
 
         // Boolean value indicating whether or not to connect in secure mode.
-        $options['secure'] = (bool) getSystemProperty('solr', 'secure');
+        $options['secure'] = (bool) $queryOption('solr', 'secure');
 
         // Required. The hostname for the Solr server.
-        $options['hostname'] = getSystemProperty('solr', 'hostname');
+        $options['hostname'] = $queryOption('solr', 'hostname');
 
         // Required. The port number.
-        $options['port'] = getSystemProperty('solr', 'port');
+        $options['port'] = $queryOption('solr', 'port');
 
         // Required. The path to solr.
-        $options['path'] = getSystemProperty('solr', 'path');
+        $options['path'] = $queryOption('solr', 'path');
+
+        // load path from clientLanguage, client or system
+        $clientLanguage = new cApiClientLanguage();
+        $clientLanguage->loadByMany(array(
+            'idclient' => $idclient,
+            'idlang' => $idlang
+        ));
+        $value = $clientLanguage->isLoaded() ? $clientLanguage->getProperty($type, $name) : false;
+        if (false === $value) {
+            $client = new cApiClient($idclient);
+            $value = $client->isLoaded() ? $client->getProperty($type, $name) : false;
+        }
+        if (false === $value) {
+            $value = getSystemProperty($type, $name);
+        }
 
         // The name of the response writer e.g. xml, phpnative.
-        $options['wt'] = getSystemProperty('solr', 'wt');
+        $options['wt'] = $queryOption('solr', 'wt');
 
         // Required. The username used for HTTP Authentication, if any.
-        $options['login'] = getSystemProperty('solr', 'login');
+        $options['login'] = $queryOption('solr', 'login');
 
         // Required. The HTTP Authentication password.
-        $options['password'] = getSystemProperty('solr', 'password');
+        $options['password'] = $queryOption('solr', 'password');
 
         // The hostname for the proxy server, if any.
-        $options['proxy_host'] = getSystemProperty('solr', 'proxy_host');
+        $options['proxy_host'] = $queryOption('solr', 'proxy_host');
 
         // The proxy port.
-        $options['proxy_port'] = getSystemProperty('solr', 'proxy_port');
+        $options['proxy_port'] = $queryOption('solr', 'proxy_port');
 
         // The proxy username.
-        $options['proxy_login'] = getSystemProperty('solr', 'proxy_login');
+        $options['proxy_login'] = $queryOption('solr', 'proxy_login');
 
         // The proxy password.
-        $options['proxy_password'] = getSystemProperty('solr', 'proxy_password');
+        $options['proxy_password'] = $queryOption('solr', 'proxy_password');
 
         // This is maximum time in seconds allowed for the http data transfer
         // operation. Default is 30 seconds.
-        $options['timeout'] = getSystemProperty('solr', 'timeout');
+        $options['timeout'] = $queryOption('solr', 'timeout');
 
         // File name to a PEM-formatted file containing the private key +
         // private certificate (concatenated in that order).
         // Please note the if the ssl_cert file only contains the private
         // certificate, you have to specify a separate ssl_key file.
-        $options['ssl_cert'] = getSystemProperty('solr', 'ssl_cert');
+        $options['ssl_cert'] = $queryOption('solr', 'ssl_cert');
 
         // File name to a PEM-formatted private key file only.
-        $options['ssl_key'] = getSystemProperty('solr', 'ssl_key');
+        $options['ssl_key'] = $queryOption('solr', 'ssl_key');
 
         // Password for private key.
         // The ssl_keypassword option is required if the ssl_cert or ssl_key
         // options are set.
-        $options['ssl_keypassword'] = getSystemProperty('solr', 'ssl_keypassword');
+        $options['ssl_keypassword'] = $queryOption('solr', 'ssl_keypassword');
 
         // Name of file holding one or more CA certificates to verify peer with.
-        $options['ssl_cainfo'] = getSystemProperty('solr', 'ssl_cainfo');
+        $options['ssl_cainfo'] = $queryOption('solr', 'ssl_cainfo');
 
         // Name of directory holding multiple CA certificates to verify peer
         // with.
-        $options['ssl_capath'] = getSystemProperty('solr', 'ssl_capath');
+        $options['ssl_capath'] = $queryOption('solr', 'ssl_capath');
 
         // remove unset options (TODO could be done via array_filter too)
         foreach ($options as $key => $value) {
@@ -184,6 +202,7 @@ class Solr {
 
     /**
      * Check if required options exist.
+     * Required settings are solr/hostname, solr/port, solr/path.
      *
      * @param array $options
      * @throws SolrWarning when required options don't exist
@@ -193,8 +212,10 @@ class Solr {
         $valid &= array_key_exists('hostname', $options);
         $valid &= array_key_exists('port', $options);
         $valid &= array_key_exists('path', $options);
-        $valid &= array_key_exists('login', $options);
-        $valid &= array_key_exists('password', $options);
+
+        // login & password are optional!
+        // $valid &= array_key_exists('login', $options);
+        // $valid &= array_key_exists('password', $options);
 
         if (!$valid) {
             throw new SolrWarning(Solr::i18n('WARNING_INVALID_CLIENT_OPTIONS'));

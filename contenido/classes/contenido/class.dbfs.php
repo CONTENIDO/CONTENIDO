@@ -265,13 +265,13 @@ class cApiDbfsCollection extends ItemCollection {
      * @param string $path
      * @param string $mimetype
      * @param string $content
-     * @return  cApiDbfs|null
+     * @return  cApiDbfs|false
      */
     public function create($path, $mimetype = '', $content = '') {
         global $client, $auth;
 
         $client = (int) $client;
-        $item = null;
+        $item = false;
 
         if (substr($path, 0, 1) == '/') {
             $path = substr($path, 1);
@@ -307,7 +307,7 @@ class cApiDbfsCollection extends ItemCollection {
         }
 
         if ($dir && !$this->dirExists($dir) || $file != '.') {
-            $item = parent::createNewItem();
+            $item = $this->createNewItem();
             $item->set('idclient', $client);
             $item->set('dirname', $dir);
             $item->set('filename', $file);

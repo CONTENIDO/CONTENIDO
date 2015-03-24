@@ -97,7 +97,7 @@ if ($action == 'user_edit') {
 				// Client has one or more assigned language(s)
 				foreach ($mlang as $selectedlanguage) {
 
-					if (!in_array($selectedlanguage, $availablelanguages)) {
+					if (!$clientLanguageCollection->hasLanguageInClients($selectedlanguage, $mclient)) {
 						// Selected language are not assigned to selected client
 						$sNotification = $notification->returnNotification("warning", i18n("You have to select a client with a language of that client."));
 						$bError = true;
@@ -202,7 +202,7 @@ $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'ROW_ID', "username");
 $tpl->set('d', 'CATNAME', i18n("Username"));
-$tpl->set('d', 'CATFIELD', $oUser->getField('username') . '<img align="top" src="images/spacer.gif" height="20">');
+$tpl->set('d', 'CATFIELD', $oUser->getField('username') . '<img align="top" alt="" src="images/spacer.gif" height="20">');
 $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "name");
@@ -411,14 +411,14 @@ $tpl->next();
 
 // account active or not
 if ($sCurrentValueFrom == '') {
-    $sCurrentValueFrom = '0000-00-00';
+    $sCurrentValueFrom = '0000-00-00 00:00:00';
 }
 
-if (($sCurrentValueTo == '') || ($sCurrentValueTo == '0000-00-00')) {
-    $sCurrentValueTo = '9999-99-99';
+if (($sCurrentValueTo == '') || ($sCurrentValueTo == '0000-00-00 00:00:00')) {
+    $sCurrentValueTo = '9999-99-99 99:99:99';
 }
 
-$sCurrentDate = date('Y-m-d');
+$sCurrentDate = date('Y-m-d H:i:s');
 
 if (($sCurrentValueFrom > $sCurrentDate) || ($sCurrentValueTo < $sCurrentDate)) {
     $sAccountState = i18n("This account is currently inactive.");

@@ -153,7 +153,7 @@ class WorkflowItems extends ItemCollection {
             $lastPos = $item->getField("position") + 1;
         }
 
-        $newItem = parent::createNewItem();
+        $newItem = $this->createNewItem();
         if ($newItem->init($idworkflow, $lastPos) === false) {
             $this->delete($newItem->getField("idworkflowitem"));
             $this->lasterror = $newItem->lasterror;
@@ -273,7 +273,7 @@ class WorkflowItem extends Item {
 
         parent::setField("idworkflow", $idworkflow);
         parent::setField("position", $idposition);
-        parent::store();
+        $this->store();
         return true;
     }
 
@@ -286,7 +286,7 @@ class WorkflowItem extends Item {
      */
     public function setPosition($idposition) {
         parent::setField("position", $idposition);
-        parent::store();
+        $this->store();
         return true;
     }
 

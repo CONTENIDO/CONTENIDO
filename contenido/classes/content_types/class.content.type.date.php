@@ -43,46 +43,53 @@ class cContentTypeDate extends cContentTypeAbstract {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
+
+
         // change attributes from the parent class and call the parent
         // constructor
         $this->_type = 'CMS_DATE';
         $this->_prefix = 'date';
-        $this->_settingsType = 'xml';
+        $this->_settingsType = self::SETTINGS_TYPE_XML;
         $this->_formFields = array(
             'date_timestamp',
             'date_format'
         );
         parent::__construct($rawSettings, $id, $contentTypes);
 
+
         // set the locale
-        $belang = cRegistry::getBackendLanguage();
-        if (empty($belang)) {
-            $language = new cApiLanguage(cRegistry::getLanguageId());
-            $locale = $language->getProperty('dateformat', 'locale');
-            if (!empty($locale)) {
+        $locale = cRegistry::getBackendLanguage();
+        if (empty($locale)
+        || false === setlocale(LC_TIME, $locale)) {
+            $oApiLang = new cApiLanguage(cRegistry::getLanguageId());
+            $locale = $oApiLang->getProperty('dateformat', 'locale');
+            if (empty($locale)) {
+                $language = $oApiLang->getProperty('language', 'code');
+                $country = $oApiLang->getProperty('country', 'code');
+
+                $locale = $language . '_' . strtoupper($country);
+            }
+            if (false === empty($locale)) {
                 setlocale(LC_TIME, $locale);
             }
-        } else {
-            setlocale(LC_TIME, $belang);
         }
-
         // initialise the date formats
         $this->_dateFormatsPhp = array(
-            conHtmlSpecialChars('{"dateFormat":"","timeFormat":""}') => '',
-            conHtmlSpecialChars('{"dateFormat":"d.m.Y","timeFormat":""}') => $this->_formatDate('d.m.Y'),
-            conHtmlSpecialChars('{"dateFormat":"D, d.m.Y","timeFormat":""}') => $this->_formatDate('D, d.m.Y'),
-            conHtmlSpecialChars('{"dateFormat":"d. F Y","timeFormat":""}') => $this->_formatDate('d. F Y'),
-            conHtmlSpecialChars('{"dateFormat":"Y-m-d","timeFormat":""}') => $this->_formatDate('Y-m-d'),
-            conHtmlSpecialChars('{"dateFormat":"d/F/Y","timeFormat":""}') => $this->_formatDate('d/F/Y'),
-            conHtmlSpecialChars('{"dateFormat":"d/m/y","timeFormat":""}') => $this->_formatDate('d/m/y'),
-            conHtmlSpecialChars('{"dateFormat":"F y","timeFormat":""}') => $this->_formatDate('F y'),
-            conHtmlSpecialChars('{"dateFormat":"F-y","timeFormat":""}') => $this->_formatDate('F-y'),
-            conHtmlSpecialChars('{"dateFormat":"d.m.Y","timeFormat":"H:i"}') => $this->_formatDate('d.m.Y H:i'),
-            conHtmlSpecialChars('{"dateFormat":"m.d.Y","timeFormat":"H:i:s"}') => $this->_formatDate('m.d.Y H:i:s'),
-            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"H:i"}') => $this->_formatDate('H:i'),
-            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"H:i:s"}') => $this->_formatDate('H:i:s'),
-            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"h:i A"}') => $this->_formatDate('h:i A'),
-            conHtmlSpecialChars('{"dateFormat":"","timeFormat":"h:i:s A"}') => $this->_formatDate('h:i:s A')
+            conHtmlentities('{"dateFormat":"","timeFormat":""}') => '',
+            conHtmlentities('{"dateFormat":"d.m.Y","timeFormat":""}') => $this->_formatDate('d.m.Y'),
+            conHtmlentities('{"dateFormat":"D, d.m.Y","timeFormat":""}') => $this->_formatDate('D, d.m.Y'),
+            conHtmlentities('{"dateFormat":"d. F Y","timeFormat":""}') => $this->_formatDate('d. F Y'),
+            conHtmlentities('{"dateFormat":"Y-m-d","timeFormat":""}') => $this->_formatDate('Y-m-d'),
+            conHtmlentities('{"dateFormat":"d/F/Y","timeFormat":""}') => $this->_formatDate('d/F/Y'),
+            conHtmlentities('{"dateFormat":"d/m/y","timeFormat":""}') => $this->_formatDate('d/m/y'),
+            conHtmlentities('{"dateFormat":"F y","timeFormat":""}') => $this->_formatDate('F y'),
+            conHtmlentities('{"dateFormat":"F-y","timeFormat":""}') => $this->_formatDate('F-y'),
+            conHtmlentities('{"dateFormat":"d.m.Y","timeFormat":"H:i"}') => $this->_formatDate('d.m.Y H:i'),
+            conHtmlentities('{"dateFormat":"m.d.Y","timeFormat":"H:i:s"}') => $this->_formatDate('m.d.Y H:i:s'),
+            conHtmlentities('{"dateFormat":"","timeFormat":"H:i"}') => $this->_formatDate('H:i'),
+            conHtmlentities('{"dateFormat":"","timeFormat":"H:i:s"}') => $this->_formatDate('H:i:s'),
+            conHtmlentities('{"dateFormat":"","timeFormat":"h:i A"}') => $this->_formatDate('h:i A'),
+            conHtmlentities('{"dateFormat":"","timeFormat":"h:i:s A"}') => $this->_formatDate('h:i:s A')
         );
 
         // add formats from client settings
@@ -105,12 +112,20 @@ class cContentTypeDate extends cContentTypeAbstract {
         if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
             // convert the given date string into a valid timestamp, so that a
             // timestamp is stored
-            $_POST['date_format'] = stripslashes(base64_decode($_POST['date_format']));
-            if (empty($_POST['date_format'])) {
+            //CON-2049 additional check for base64 strings
+            if (!empty($_POST['date_format']) && base64_encode(base64_decode($_POST['date_format'])) === $_POST['date_format']) {
+                $_POST['date_format'] = stripslashes(base64_decode($_POST['date_format']));
+            } else { // if no date_format is given, set standard value
                 $_POST['date_format'] = '{"dateFormat":"","timeFormat":""}';
             }
+
             $this->_storeSettings();
         }
+
+        // CON-2049
+        // reset specific date variable
+        // $_POST[$this->_prefix . '_action'] = '';
+        // $_POST['date_format'] = '';
     }
 
     /**
@@ -123,7 +138,7 @@ class cContentTypeDate extends cContentTypeAbstract {
     }
 
     /**
-     * Returns the PHP style format string
+     * Returns the full PHP style format string
      *
      * @return string
      */
@@ -138,6 +153,28 @@ class cContentTypeDate extends cContentTypeAbstract {
                 $format = implode(' ', $decoded_array);
             } else {
                 $format = '';
+            }
+        }
+
+        return $format;
+    }
+
+    /**
+     * Returns only the time portion of the PHP style format string
+     *
+     * @return string
+     */
+    public function getTimeFormat() {
+        $format = $this->_settings['date_format'];
+
+        if (empty($format)) {
+            $format = '';
+        } else {
+            $decoded_array = json_decode($format, true);
+            if (is_array($decoded_array)) {
+                return $decoded_array['timeFormat'];
+            } else {
+                return '';
             }
         }
 
@@ -225,6 +262,14 @@ class cContentTypeDate extends cContentTypeAbstract {
                 // string
                 $result .= $char;
             }
+        }
+
+        // strftime returns a string in an encoding that is specified by the locale
+        // use iconv extension to get the content encoding of string
+        // use mbstring extension to convert encoding to contenido's target encoding
+        if (extension_loaded('iconv') && extension_loaded('mbstring')) {
+            $result = mb_convert_encoding($result, cRegistry::getEncoding(), iconv_get_encoding('output_encoding'));
+            $result = conHtmlentities($result);
         }
 
         return $result;

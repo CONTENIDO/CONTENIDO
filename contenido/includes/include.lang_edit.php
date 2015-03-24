@@ -71,13 +71,29 @@ if ($action == "lang_newlanguage") {
     $page->set("s", "NEW_LANG_NAME", "");
     $page->render();
 } else {
-
+    // whether all data is ok
+    $invalidData = false;
     if ($action == "lang_edit") {
         callPluginStore('languages');
 
-        $oLanguage->setProperty("dateformat", "full", stripslashes($datetimeformat), $targetclient);
-        $oLanguage->setProperty("dateformat", "date", stripslashes($dateformat), $targetclient);
-        $oLanguage->setProperty("dateformat", "time", stripslashes($timeformat), $targetclient);
+        if (true === cString::validateDateFormat(stripslashes($datetimeformat))) {
+            $oLanguage->setProperty("dateformat", "full", stripslashes($datetimeformat), $targetclient);
+        } else {
+            $invalidData = true;
+            $page->displayError(i18n("Incorrect date/time format"));
+        }
+        if (true === cString::validateDateFormat(stripslashes($dateformat))) {
+            $oLanguage->setProperty("dateformat", "date", stripslashes($dateformat), $targetclient);
+        } else if (false === $invalidData) {
+            $invalidData = true;
+            $page->displayError(i18n("Incorrect date format"));
+        }
+        if (true === cString::validateDateFormat(stripslashes($timeformat))) {
+            $oLanguage->setProperty("dateformat", "time", stripslashes($timeformat), $targetclient);
+        } else if (false === $invalidData) {
+            $invalidData = true;
+            $page->displayError(i18n("Incorrect time format"));
+        }
         $oLanguage->setProperty("dateformat", "locale", stripslashes($datetimelocale), $targetclient);
 
         $oLanguage->setProperty("language", "code", stripslashes($languagecode), $targetclient);
@@ -91,8 +107,19 @@ if ($action == "lang_newlanguage") {
             $page->displayCriticalError("no language id given. Usually, this shouldn't happen, except if you played around with your system. if you didn't play around, please report a bug.");
         } else {
             if (($action == "lang_edit") && ($perm->have_perm_area_action($area, $action))) {
-                langEditLanguage($idlang, $langname, $sencoding, $active, $direction);
-                $page->displayInfo(i18n("Changes saved"));
+
+                // Set utf-8 as encoding if CON_UTF8 constant is defined
+                if (defined('CON_UTF8') && CON_UTF8 !== false) {
+                        $sencoding = 'utf-8';
+                }
+
+                if (false === $invalidData) {
+                    if (false === langEditLanguage($idlang, $langname, $sencoding, $active, $direction)) {
+                        $page->displayInfo(i18n("An error occurred during saving the changes"));
+                    } else {
+                        $page->displayInfo(i18n("Changes saved"));
+                    }
+                }
             }
 
             $tpl->reset();
@@ -135,10 +162,15 @@ if ($action == "lang_newlanguage") {
             $iso_3166_result = $iso3166Collection->fetchArray('iso', 'en');
             array_multisort($iso_3166_result);
 
-            $eselect = new cHTMLSelectElement("sencoding");
-            $eselect->setStyle('width:255px');
-            $eselect->autoFill($charsets);
-            $eselect->setDefault($db->f("encoding"));
+            // Display encoding options only if CON_UTF8 constant is not set
+            if (!defined('CON_UTF8') || (defined('CON_UTF8') && CON_UTF8 === false)) {
+                $eselect = new cHTMLSelectElement("sencoding");
+                $eselect->setStyle('width:255px');
+                $eselect->autoFill($charsets);
+                $eselect->setDefault((($db->f("encoding") != "") ? $db->f("encoding") : 'utf-8'));
+            } else {
+                $eselect = 'utf-8';
+            }
 
             $languagecode = new cHTMLSelectElement("languagecode");
             $languagecode->setStyle('width:255px');
@@ -173,7 +205,9 @@ if ($action == "lang_newlanguage") {
             $form->add(i18n("Active"), $oCheckbox->toHTML(false));
 
             $form->addSubHeader(i18n("Language"));
-            $form->add(i18n("Encoding"), $eselect);
+
+			$form->add(i18n("Encoding"), $eselect);
+
             $form->add(i18n("Language"), $languagecode->render());
             $form->add(i18n("Country"), $countrycode->render());
             $form->add(i18n("Text direction"), $directionSelect);
@@ -203,6 +237,7 @@ if ($action == "lang_newlanguage") {
             }
 
             if ($_REQUEST['action'] != '') {
+            	$page->set('s', 'CONTENIDO', $contenido);
                 $page->set("s", "RELOAD_LEFT_BOTTOM", "true");
             } else {
                 $page->set("s", "RELOAD_LEFT_BOTTOM", "false");

@@ -26,7 +26,7 @@ class LinkcheckerRepair {
     /**
      * Typical link misstakes
      *
-     * @var string
+     * @var array
      */
     private $errorTypes = array(
         'htp://',
@@ -42,7 +42,7 @@ class LinkcheckerRepair {
      * Fixed link misstakes
      * Keys are equivalent to $errorTypes
      *
-     * @var string
+     * @var array
      */
     private $correctTypes = array(
         'http://',

@@ -111,7 +111,7 @@ if (!$idlay) {
 }
 $form->addHeader(i18n("Edit template"));
 
-$name = new cHTMLTextbox("tplname", $tplname, 35);
+$name = new cHTMLTextbox("tplname", conHtmlSpecialChars(stripslashes($tplname)), 35);
 $form->add(i18n("Name"), $name->render());
 
 $descr = new cHTMLTextarea("description", $description);
@@ -149,16 +149,19 @@ if ($idlay) {
         if ($mode == 'fixed') {
             $default = tplGetContainerDefault($idlay, $containerNr);
 
+            $option = new cHTMLOptionElement('-- ' . i18n("none") . ' --', 0);
+            $modselect->addOptionElement(0, $option);
+
             foreach ($modules as $key => $val) {
                 if ($val['name'] == $default) {
                     $option = new cHTMLOptionElement($val['name'], $key);
                     if ($containerModules[$containerNr] == $key) {
                         $option->setSelected(true);
                     }
-
                     $modselect->addOptionElement($key, $option);
                 }
             }
+
         } else {
             $default = tplGetContainerDefault($idlay, $containerNr);
 

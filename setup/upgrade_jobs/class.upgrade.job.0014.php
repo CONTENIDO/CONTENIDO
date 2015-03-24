@@ -41,7 +41,7 @@ class cUpgradeJob_0014 extends cUpgradeJobAbstract {
             // Get informations for mod_rewrite/xml/;navigation/content/mod_rewrite/main
             $navsub->loadBy('location', 'mod_rewrite/xml/;navigation/content/mod_rewrite/main');
 
-            // If extry exist, change location to mod_rewrite/xml/;navigation/extra/mod_rewrite/main
+            // If entry exist, change location to mod_rewrite/xml/;navigation/extra/mod_rewrite/main
             if ($navsub !== null) {
             	$navsub->set('location', 'mod_rewrite/xml/;navigation/extra/mod_rewrite/main');
             	$navsub->store();

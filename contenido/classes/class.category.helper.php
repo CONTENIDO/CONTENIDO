@@ -286,6 +286,7 @@ class cCategoryHelper {
         if ((int) $categoryId <= 0 || (int) $depth < 0) {
             return array();
         }
+        $depth = (int) $depth;
 
         $cfg = cRegistry::getConfig();
 
@@ -326,17 +327,15 @@ class cCategoryHelper {
         $db = cRegistry::getDb();
         $db->query($sql);
 
-        $this->_subCategories = array();
-
         while ($db->nextRecord()) {
             $catId = (int) $db->f('idcat');
             $catLevel = (int) $db->f('level');
 
-            if ($depth > 0 && ($depth < ($catLevel - $depth))) {
-               break;
+            if ($depth > 0 && ($depth > ($catLevel))) {
+                $subCategories = $this->getSubCategories($catId, $depth);
+            } else {
+                $subCategories = array();
             }
-
-            $subCategories = $this->getSubCategories($catId, $depth);
             $categoryLanguage = new cApiCategoryLanguage();
             $categoryLanguage->loadByCategoryIdAndLanguageId($catId, $languageId);
 

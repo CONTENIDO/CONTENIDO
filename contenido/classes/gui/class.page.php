@@ -46,6 +46,11 @@ class cGuiPage {
     protected $_pageTemplate;
 
     /**
+     * The file used generate the page
+     * @var string
+     */
+    protected $_pageBase;
+    /**
      * The template for everything that is inside the body.
      * (Usually template.PAGENAME.html)
      *
@@ -147,6 +152,13 @@ class cGuiPage {
     protected $_filesDirectory;
 
     /**
+     * Whether the template exist check should be skipped or not.
+     *
+     * @var bool
+     */
+    protected $_skipTemplateCheck = false;
+
+    /**
      * The constructor initializes the class and tries to get the encoding from
      * the currently selected language.
      * It will also add every script in the form of /scripts/*.PAGENAME.js and
@@ -155,7 +167,7 @@ class cGuiPage {
      * /styles/PAGENAME.css.
      *
      * @param string $pageName The name of the page which will be used to load
-     *        corresponding stylehseets, templates and scripts.
+     *        corresponding stylesheets, templates and scripts.
      * @param string $pluginName The name of the plugin in which the site is run
      * @param string $subMenu The number of the submenu which should be
      *        highlighted when this page is shown.
@@ -185,6 +197,9 @@ class cGuiPage {
         if ($clang->isLoaded()) {
             $this->setEncoding($clang->get('encoding'));
         }
+        
+        // use default page base
+        $this->setPageBase();
 
         $this->_pageTemplate->set('s', 'SUBMENU', $subMenu);
         $this->_pageTemplate->set('s', 'PAGENAME', $pageName);
@@ -266,11 +281,10 @@ class cGuiPage {
         $backendUrl = cRegistry::getBackendUrl();
         $backendPath = cRegistry::getBackendPath();
         $filePathName = $this->_getRealFilePathName($script);
-        $fileName = basename($filePathName);
 
         // Warning message for not existing resources
         if($perm->isSysadmin($currentuser) && strpos(trim($script), '<script') === false &&
-           ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $fileName)) &&
+           ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['scripts'] . $script)) &&
            (!cFileHandler::exists($backendPath . $cfg['path']['scripts'] . $filePathName)))) {
 			$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
@@ -319,10 +333,9 @@ class cGuiPage {
         $backendUrl = cRegistry::getBackendUrl();
         $backendPath = cRegistry::getBackendPath();
         $filePathName = $this->_getRealFilePathName($stylesheet);
-        $fileName = basename($filePathName);
 
         // Warning message for not existing resources
-        if($perm->isSysadmin($currentuser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $fileName))) ||
+        if($perm->isSysadmin($currentuser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet))) ||
            (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName))) {
         	$this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
@@ -482,6 +495,19 @@ class cGuiPage {
     }
 
     /**
+     * Function to specify the file used to generate the page template
+     * @param string $filename the page base file
+     */
+    public function setPageBase($filename = '') {
+        if ('' === $filename) {
+            $cfg = cRegistry::getConfig();
+            $this->_pageBase = $cfg['path']['templates'] . $cfg['templates']['generic_page'];
+        } else {
+            $this->_pageBase = $filename;
+        }
+    }
+    
+    /**
      * Calls the next() method on the content template.
      *
      * @see cTemplate::next()
@@ -597,6 +623,9 @@ class cGuiPage {
 
         // Get all messages for the content
         $text = $this->_renderContentMessages();
+        if (strlen(trim($text)) > 0) {
+            $this->_skipTemplateCheck = true;
+        }
 
         if (!$this->_abort) {
             if (count($this->_objects) == 0) {
@@ -609,7 +638,7 @@ class cGuiPage {
             $this->_pageTemplate->set('s', 'CONTENT', $text);
         }
 
-        return $this->_pageTemplate->generate($cfg['path']['templates'] . $cfg['templates']['generic_page'], $return);
+        return $this->_pageTemplate->generate($this->_pageBase, $return);
     }
 
     /**
@@ -751,22 +780,21 @@ class cGuiPage {
      * @return string
      */
     protected function _renderTemplate($template) {
-    	global $perm, $currentuser;
+    	global $perm, $currentuser, $notification;
 
         $cfg = cRegistry::getConfig();
-
-        // Warning message for not existing resources
-        if($perm->isSysadmin($currentuser) && (($this->_pluginName == '' && !cFileHandler::exists($cfg['path']['templates'] . 'template.' . $this->_pageName . '.html')) ||
-           ($this->_pluginName != '' && !cFileHandler::exists($cfg['path']['plugins'] . $this->_pluginName . '/templates/template.' . $this->_pageName . '.html')))) {
-        	$this->displayWarning(i18n("The requested resource") . " <strong>" . $this->_pageName . "</strong> " . i18n("was not found"));
-        	$output .= $this->_renderContentMessages();
-        }
 
         $file = '';
         if ($this->_pluginName == '') {
             $file = $cfg['path']['templates'] . 'template.' . $this->_pageName . '.html';
         } else {
             $file = $cfg['path']['plugins'] . $this->_pluginName . '/templates/template.' . $this->_pageName . '.html';
+        }
+
+        $output = '';
+        // Warning message for not existing resources
+        if (!$this->_skipTemplateCheck && $perm->isSysadmin($currentuser) && !cFileHandler::exists($file)) {
+            $output .= $notification->returnNotification('warning', i18n("The requested resource") . " <strong>template." . $this->_pageName . ".html</strong> " . i18n("was not found")) . '<br>';
         }
 
         if (cFileHandler::exists($file)) {

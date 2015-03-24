@@ -93,7 +93,7 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * @return cApiPathresolveCache
      */
     public function create($path, $idcat, $idlang, $lastcached = '') {
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
         if (empty($lastcached)) {
             $lastcached = time();

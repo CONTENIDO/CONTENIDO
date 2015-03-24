@@ -43,7 +43,7 @@ $userselect = '<option value="%">' . i18n("All users") . '</option>';
 $actions = $actionColl->getAvailableActions();
 $actionselect = '<option value="%">' . i18n("All actions") . '</option>';
 $clientList = $clientColl->getAccessibleClients();
-$idqaction = "%";
+$idqaction = isset($idqaction) ? $idqaction : "%";
 
 //select current client per default
 if (!isset($idqclient)) {

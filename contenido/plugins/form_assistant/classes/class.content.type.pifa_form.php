@@ -74,10 +74,6 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
             'pifaform_mail_system_subject'
         );
 
-        // encoding conversions to avoid problems with umlauts
-        $rawSettings = conHtmlEntityDecode($rawSettings);
-        $rawSettings = utf8_encode($rawSettings);
-
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // if form is submitted, store the current settings
@@ -656,7 +652,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed {
     private function _getInputMailSystemRecipientEmail() {
 
         // attributes of form field elements
-        $label = Pifa::i18n('recipient email');
+        $label = Pifa::i18n('Recipient email');
         $id = 'pifaform_mail_system_recipient_email_' . $this->_id;
         $value = $this->_settings['pifaform_mail_system_recipient_email'];
 

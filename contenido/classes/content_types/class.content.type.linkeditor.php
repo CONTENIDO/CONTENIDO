@@ -146,6 +146,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $target = ($this->_settings['linkeditor_newwindow'] === 'true') ? '_blank' : '';
 
         $link = new cHTMLLink($href);
+        $link->setClass('link_list');
         $link->setAlt($alt);
         $link->setTargetFrame($target);
         $link->setContent($linktext);
@@ -225,7 +226,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $templateTabs->next();
 
         // create code for basic settings "tab" - these settings are actually
-        // visible any tim
+        // visible any time
         $templateTabs->set('d', 'TAB_ID', 'basic-settings');
         $templateTabs->set('d', 'TAB_CLASS', 'basic-settings');
         $templateTabs->set('d', 'TAB_CONTENT', $this->_generateBasicSettings());
@@ -679,28 +680,40 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         $htmlSelectOption = new cHTMLOptionElement('Kein', '', false);
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
-        $i = 1;
-
+        $files = array();
         if (is_dir($this->_uploadPath . $directoryPath)) {
-            if ($handle = opendir($this->_uploadPath . $directoryPath)) {
-                while (($entry = readdir($handle)) !== false) {
-                    if (is_file($this->_uploadPath . $directoryPath . $entry) && !(strpos($entry, ".") === 0)) {
-                        $htmlSelectOption = new cHTMLOptionElement($entry, $directoryPath . $entry);
-                        $htmlSelect->addOptionElement($i, $htmlSelectOption);
-                        $i++;
+            // get only files
+            if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
+                foreach ($handle as $entry) {
+                    if (cFileHandler::fileNameBeginsWithDot($entry) === false) {
+                        $file = array();
+                        $file["name"] = $entry;
+                        $file["path"] = $directoryPath . $entry;
+                        $files[] = $file;
                     }
                 }
-                closedir($handle);
             }
         }
 
-        if ($i === 0) {
-            $htmlSelectOption = new cHTMLOptionElement(i18n('No files found'), '', false);
-            $htmlSelectOption->setAlt(i18n('No files found'));
-            $htmlSelectOption->setDisabled(true);
+        usort($files, function($a, $b) {
+            $a = mb_strtolower($a["name"]);
+            $b = mb_strtolower($b["name"]);
+            if($a < $b) {
+                return -1;
+            } else if($a > $b) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        $i = 1;
+        foreach($files as $file) {
+            $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
             $htmlSelect->addOptionElement($i, $htmlSelectOption);
-            $htmlSelect->setDisabled(true);
+            $i++;
         }
+
 
         // set default value
         if ($this->_settings['linkeditor_type'] === 'file') {

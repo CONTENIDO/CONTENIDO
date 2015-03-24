@@ -1009,7 +1009,7 @@ class cSystemtest {
             return $errorMessage;
         }
 
-        if ($handle->getLinkId()->errno == 1045) {
+        if (false === isset($handle) || $handle->getLinkId()->errno == 1045) {
             return self::CON_MYSQL_CANT_CONNECT;
         }
 
@@ -1349,7 +1349,7 @@ class cSystemtest {
             return self::CON_IMAGERESIZE_GD;
         }
 
-        if(function_exists(checkAndInclude)) {
+        if(function_exists("checkAndInclude")) {
             checkAndInclude($this->_config['path']['contenido'] . 'includes/functions.api.images.php');
         } else {
             cInclude('includes', 'functions.api.images.php');

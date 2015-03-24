@@ -50,23 +50,27 @@ class cApiUploadCollection extends ItemCollection {
      */
     public function sync($sDirname, $sFilename, $client = 0) {
         $client = cSecurity::toInteger($client);
+
         if ($client <= 0) {
             global $client;
         }
 
-        $sDirname = $this->escape($sDirname);
-        $sFilename = $this->escape($sFilename);
-        if (strstr(strtolower($_ENV['OS']), 'windows') === false) {
-            // Unix style OS distinguish between lower and uppercase file names,
-            // i.e. test.gif is not the same as Test.gif
-            $this->select("dirname = BINARY '$sDirname' AND filename = BINARY '$sFilename' AND idclient = " . (int) $client);
-        } else {
-            // Windows OS doesn't distinguish between lower and uppercase file
-            // names, i.e. test.gif is the same as Test.gif in file system
-            $this->select("dirname = '$sDirname' AND filename = '$sFilename' AND idclient = " . (int) $client);
-        }
+        // build escaped vars for SQL 
+        $escClient = cSecurity::toInteger($client);
+        $escDirname = $this->escape($sDirname);
+        $escFilename = $this->escape($sFilename);
 
-        if (($oItem = $this->next()) !== false) {
+        // Unix style OS distinguish between lower and uppercase file names,
+        // i.e. test.gif is not the same as Test.gif
+        // Windows OS doesn't distinguish between lower and uppercase file
+        // names, i.e. test.gif is the same as Test.gif in file system
+        $os = strtolower(getenv('OS'));
+        $isWindows = (false !== strpos($os, 'windows'));
+        $binary = $isWindows ? '' : 'BINARY';
+
+        $this->select("idclient = $escClient AND dirname = $binary '$escDirname' AND filename = $binary '$escFilename'");
+
+        if (false !== $oItem = $this->next()) {
             $oItem->update();
         } else {
             $sFiletype = (string) uplGetFileExtension($sFilename);
@@ -94,7 +98,7 @@ class cApiUploadCollection extends ItemCollection {
     public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0, $sDescription = '', $iStatus = 0) {
         global $client, $cfg, $auth;
 
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
         $oItem->set('idclient', $client);
         $oItem->set('filename', $sFilename, false);

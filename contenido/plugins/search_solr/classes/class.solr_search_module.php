@@ -49,7 +49,7 @@ class SolrSearchModule {
      *
      * @var SolrObject
      */
-    private $_results = NULL;
+    private $_response = NULL;
 
     /**
      *
@@ -62,7 +62,7 @@ class SolrSearchModule {
                 $this->$name = $value;
             }
         }
-        $this->_results = $this->_getSearchResults();
+        $this->_response = $this->_getSearchResults();
     }
 
     /**
@@ -83,7 +83,28 @@ class SolrSearchModule {
     public function render() {
         $tpl = cSmartyFrontend::getInstance();
         $tpl->assign('label', $this->_label);
-        $tpl->assign('results', $this->_results);
+        $tpl->assign('href', cUri::getInstance()->build(array(
+            'idart' => cRegistry::getArticleId(),
+            'lang' => cRegistry::getLanguageId()
+        )));
+        $tpl->assign('searchTerm', $this->_searchTerm);
+        $tpl->assign('page', $this->_page);
+        $tpl->assign('itemsPerPage', $this->_itemsPerPage);
+
+        // calculate number of pages
+        $numPages = $this->_response->numFound / $this->_itemsPerPage;
+		if (is_float($numPages)) {
+			$numPages = ceil($numPages);
+		}
+
+        $tpl->assign('numPages', $numPages);
+        $tpl->assign('numFound', $this->_response->numFound);
+        $tpl->assign('start', $this->_response->start);
+        if (false === $this->_response->docs) {
+            $tpl->assign('results', array());
+        } else {
+            $tpl->assign('results', $this->_response->docs);
+        }
         $tpl->display($this->_templateName);
     }
 

@@ -38,6 +38,12 @@ $cfg['frontend']['timeout'] = 15;
 // (bool) Use Pseudo-Cron?
 $cfg['use_pseudocron'] = true;
 
+// (bool) Whether all cExceptions should be logged. If disabled most exceptions will not be logged.
+$cfg['debug']['log_exceptions'] = false;
+
+// (bool) Whether all cErrorExceptions should be logged. If disabled exceptions of type error will not be logged.
+$cfg['debug']['log_error_exceptions'] = true;
+
 // (bool) If you want to measure function timing set this to true
 $cfg['debug']['functiontiming'] = false;
 
@@ -410,3 +416,19 @@ $cfg['system_log']['number_of_lines'] = 100;
 
 // Searched file extensions
 $cfg['system_log']['file_extensions'] = array('txt', 'log');
+
+/* Search index settings
+ * -----------------------------------------------------------------------------
+ */
+
+// Excluded content types
+$cfg['search_index']['excluded_content_types'] = array(
+	'linktarget',
+	'link',
+	'img',
+	'date',
+	'teaser',
+	'filelist',
+	'imgeditor',
+	'linkeditor'
+);

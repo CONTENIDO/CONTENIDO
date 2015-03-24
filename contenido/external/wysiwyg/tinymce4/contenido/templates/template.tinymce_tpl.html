@@ -1,0 +1,29 @@
+<!-- contenido/external/wysiwyg/tinymce4/contenido/templates/template.tinymce_tpl.html -->
+<script src="{_PATH_CONTENIDO_FULLHTML_}/external/wysiwyg/tinymce4/contenido/js/con_tiny.js" type="text/javascript"></script>
+
+
+<script language="javascript" type="text/javascript">
+// head tag already written, use js to inject css into head
+var tinycss = jQuery("<link />", {"rel": "stylesheet", "type": "text/css", "href": "{_PATH_CONTENIDO_FULLHTML_}/external/wysiwyg/tinymce4/contenido/css/con_tiny.css"});
+document.getElementsByTagName("head")[0].appendChild(tinycss.get(0));
+
+Con.Tiny.tinymceInit(tinymce, {CONFIG}, {
+    saveTitle: '{SAVE}',
+    saveImage: '{PATH_CONTENIDO_FULLHTML}images/but_save_tiny.gif',
+    closeTitle: '{CLOSE}',
+    closeImage: '{PATH_CONTENIDO_FULLHTML}images/but_close_tiny.gif',
+    useTiny: '1',
+    backendUrl: '{PATH_CONTENIDO_FULLHTML}',
+    dedicatedPage: true
+});
+
+Con.Tiny.init({
+    frontendPath: '{FRONTEND_PATH}',
+    fileUrl: '{FILEBROWSER}',
+    imageUrl: '{IMAGEBROWSER}',
+    mediaUrl: '{MEDIABROWSER}',
+    txtQuestion: '{QUESTION}'
+});
+</script>
+
+<!-- /tinyMCE -->

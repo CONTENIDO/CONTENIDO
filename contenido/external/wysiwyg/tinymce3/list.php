@@ -150,27 +150,6 @@ switch ($_REQUEST['mode']) {
         $output .= "\n);";
         break;
 
-    case 'flash':
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('swf') ORDER BY dirname,filename ASC";
-        $db->query($sql);
-
-        $output .= "var tinyMCEFlashList = new Array(";
-
-        $loop = false;
-
-        while ($db->nextRecord()) {
-            if ($loop) {
-                $output .= ",";
-            } else {
-                $loop = true;
-            }
-
-            $output .= "\n\t".'["'.$db->f("dirname").$db->f("filename").'", "'.$cfgClient[$client]["upload"].$db->f("dirname").$db->f("filename").'"]';
-        }
-
-        $output .= "\n);";
-        break;
-
     case 'media':
         $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('swf','dcr','mov','qt','mpg','mpg3','mpg4','mpeg','avi','wmv','wm','asf','asx','wmx','wvx','rm','ra','ram') ORDER BY dirname, filename ASC";
         $db->query($sql);

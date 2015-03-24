@@ -107,6 +107,8 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
+		global $area;
+	
         // change attributes from the parent class and call the parent
         // constructor
         $this->_type = 'CMS_IMGEDITOR';
@@ -121,6 +123,13 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         );
         parent::__construct($rawSettings, $id, $contentTypes);
 
+		// if form is submitted, store the current teaser settings
+        // notice: also check the ID of the content type (there could be more
+        // than one content type of the same type on the same page!)
+        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
+            $this->_storeSettings();
+        }
+		
         // get image information from con_upl from the database
         $upload = new cApiUpload($this->_rawSettings);
         $this->_filename = $upload->get('filename');
@@ -141,14 +150,6 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $this->_internalNotice = ($uploadMeta->get('internal_notice') !== false) ? $uploadMeta->get('internal_notice') : '';
         $this->_copyright = ($uploadMeta->get('copyright') !== false) ? $uploadMeta->get('copyright') : '';
 
-        // if form is submitted, store the current teaser settings
-        // notice: also check the ID of the content type (there could be more
-        // than one content type of the same type on the same page!)
-        if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
-            $this->_storeSettings();
-            $path = $this->_cfg['path']['contenido_fullhtml'] . "external/backendedit/front_content.php?area=con_editcontent&idart=$this->_idArt&idcat=$this->_idCat&changeview=edit&client=$this->_client";
-            header('location:' . $this->_session->url($path));
-        }
     }
 
     /**
@@ -386,7 +387,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $wrapperContent = array();
 
         $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
-        $liRoot = new cHTMLListItem('root', 'last');
+        $liRoot = new cHTMLListItem('root', 'root');
         $aUpload = new cHTMLLink('#');
         $aUpload->setClass('on');
         $aUpload->setAttribute('title', 'upload');
@@ -564,25 +565,35 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
         $htmlSelectOption = new cHTMLOptionElement('Kein', '', false);
         $htmlSelect->addOptionElement(0, $htmlSelectOption);
 
-        $filenameEntries = array();
+        $files = array();
         if (is_dir($this->_uploadPath . $directoryPath)) {
-            if ($handle = opendir($this->_uploadPath . $directoryPath)) {
-                while (($entry = readdir($handle)) != false) {
-                    if (is_file($this->_uploadPath . $directoryPath . $entry) && (! (strpos($entry, ".") === 0))) {
-                        $htmlSelectOption = new cHTMLOptionElement($entry, $directoryPath . $entry);
-                        $htmlSelect->addOptionElement($i, $htmlSelectOption);
-                        $i++;
+            if (false !== ($handle = cDirHandler::read($this->_uploadPath . $directoryPath, false, false, true))) {
+                foreach ($handle as $entry) {
+                    if (false === cFileHandler::fileNameBeginsWithDot($entry)) {
+                        $file = array();
+                        $file["name"] = $entry;
+                        $file["path"] = $directoryPath . $entry;
+                        $files[] = $file;
                     }
                 }
-                closedir($handle);
             }
         }
 
-        sort($filenameEntries, SORT_STRING);
+        usort($files, function($a, $b) {
+            $a = mb_strtolower($a["name"]);
+            $b = mb_strtolower($b["name"]);
+            if($a < $b) {
+                return -1;
+            } else if($a > $b) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
 
         $i = 1;
-        foreach($filenameEntries as $filename) {
-        	$htmlSelectOption = new cHTMLOptionElement($filename, $directoryPath . $filename);
+        foreach($files as $file) {
+        	$htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
         	$htmlSelect->addOptionElement($i, $htmlSelectOption);
         	$i++;
         }

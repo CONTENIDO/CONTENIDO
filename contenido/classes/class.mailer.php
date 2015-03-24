@@ -355,7 +355,10 @@ class cMailer extends Swift_Mailer {
         $subject = $this->encodeField($message->getSubject(), $charset);
         $body = $this->encodeField($message->getBody(), $charset);
         $contentType = $message->getContentType();
-        $idmail = $mailLogCollection->create($from, $to, $replyTo, $cc, $bcc, $subject, $body, time(), $charset, $contentType);
+        $mailItem = $mailLogCollection->create($from, $to, $replyTo, $cc, $bcc, $subject, $body, time(), $charset, $contentType);
+
+        // get idmail variable
+        $idmail = $mailItem->get('idmail');
 
         // do not use array_merge here since the mail addresses are array keys
         // array_merge will make problems if one recipient is e.g. in cc and bcc

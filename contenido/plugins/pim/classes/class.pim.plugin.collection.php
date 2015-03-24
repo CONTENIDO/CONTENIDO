@@ -45,21 +45,8 @@ class PimPluginCollection extends ItemCollection {
 
         $nextId = $this->_getNextId();
 
-        // security checks
-        $client = cSecurity::toInteger($client);
-        $name = cSecurity::escapeString($name);
-        $description = cSecurity::escapeString($description);
-        $author = cSecurity::escapeString($author);
-        $copyright = cSecurity::escapeString($copyright);
-        $mail = cSecurity::escapeString($mail);
-        $website = cSecurity::escapeString($website);
-        $version = cSecurity::escapeString($version);
-        $foldername = cSecurity::escapeString($foldername);
-        $uuId = cSecurity::escapeString($uuId);
-        $active = cSecurity::toInteger($active);
-
         // create a new entry
-        $item = parent::createNewItem($nextId);
+        $item = $this->createNewItem($nextId);
         $item->set('idclient', $client);
         $item->set('name', $name);
         $item->set('description', $description);
@@ -134,7 +121,7 @@ class PimPlugin extends Item {
      * @param  mixed  $id  Specifies the id of item to load
      */
     public function __construct($id = false) {
-        global $cfg;
+        $cfg = cRegistry::getConfig();
         parent::__construct($cfg['tab']['plugins'], 'idplugin');
         $this->_error = '';
         if ($id !== false) {
@@ -142,13 +129,197 @@ class PimPlugin extends Item {
         }
     }
 
+	/**
+     * Userdefined setter for pim fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idclient':
+                $value = (int) $value;
+                break;
+			case 'active':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
+    }
+
+    /**
+     * Check dependencies
+     * Adapted from PimPLuginSetup class
+     *
+     * @param integer $newOrder New executionorder value
+     * @return boolean
+     */
+    public function checkDependedFromOtherPlugins($newOrder) {
+    	$cfg = cRegistry::getConfig();
+    	$pluginsDir = $cfg['path']['contenido'] . $cfg['path']['plugins'];
+
+    	// Get uuid from selected plugin
+    	$pimPluginColl = new PimPluginCollection();
+    	$pimPluginColl->setWhere('idplugin', $this->get("idplugin"));
+    	$pimPluginColl->query();
+    	$pimPluginSql = $pimPluginColl->next();
+    	$uuidBase = $pimPluginSql->get('uuid');
+
+    	// Reset query so we can use PimPluginCollection later again...
+    	$pimPluginColl->resetQuery();
+
+    	// Read all dirs
+    	$dirs = cDirHandler::read($pluginsDir);
+    	foreach ($dirs as $dirname) {
+
+    		// Skip plugin if it has no plugin.xml file
+    		if (!cFileHandler::exists($pluginsDir . $dirname . DIRECTORY_SEPARATOR . "plugin.xml")) {
+    			continue;
+    		}
+
+    		// Read plugin.xml files from existing plugins at contenido/plugins dir
+    		$tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . "plugin.xml");
+
+    		// Write plugin.xml content into temporary variable
+    		$tempXml = simplexml_load_string($tempXmlContent);
+
+    		$dependenciesCount = count($tempXml->dependencies);
+    		for ($i = 0; $i < $dependenciesCount; $i++) {
+
+    			// Security check
+    			$depend = cSecurity::escapeString($tempXml->dependencies->depend[$i]);
+
+    			// If is no dependencie name defined please go to next dependencie
+    			if ($depend == "") {
+    				continue;
+    			}
+
+    			// Build uuid variable from attributes
+    			foreach ($tempXml->dependencies->depend[$i]->attributes() as $key => $value) {
+
+    				// We use only uuid attribute and can ignore other attributes
+    				if ($key == "uuid") {
+
+    					$uuidTemp = cSecurity::escapeString($value);
+
+    					if ($uuidBase === $uuidTemp) {
+
+    						// Prüfe, ob das Kindplugin aktiv ist
+    						$pimPluginColl->setWhere('uuid', $tempXml->general->uuid);
+    						$pimPluginColl->setWhere('active', '1');
+    						$pimPluginColl->query();
+
+    						if ($pimPluginColl->count() == 0) {
+    							continue;
+    						}
+
+    						$result = $pimPluginColl->next();
+
+    						if ($newOrder == $result->get('executionorder')) {
+    							return false;
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+
+    	return true;
+    }
+
+    /**
+     * Check dependencies
+     * Adapted from PimPLuginSetup class
+     *
+     * @param integer $newOrder New executionorder value
+     * @return boolean
+     */
+    public function checkDependenciesToOtherPlugins($newOrder) {
+    	$cfg = cRegistry::getConfig();
+    	$pluginsDir = $cfg['path']['contenido'] . $cfg['path']['plugins'];
+
+    	// Get uuid from selected plugin
+    	$pimPluginColl = new PimPluginCollection();
+    	$pimPluginColl->setWhere('idplugin', $this->get("idplugin"));
+    	$pimPluginColl->query();
+    	$pimPluginSql = $pimPluginColl->next();
+    	$folderBase = $pimPluginSql->get('folder');
+    	$uuidBase = $pimPluginSql->get('uuid');
+
+    	// Reset query so we can use PimPluginCollection later again...
+    	$pimPluginColl->resetQuery();
+
+    	// Skip plugin if it has no plugin.xml file
+    	if (!cFileHandler::exists($pluginsDir . $folderBase . DIRECTORY_SEPARATOR . "plugin.xml")) {
+    		return true;
+    	}
+
+    	// Read plugin.xml files from existing plugins at contenido/plugins dir
+    	$tempXmlContent = cFileHandler::read($pluginsDir . $folderBase . DIRECTORY_SEPARATOR . "plugin.xml");
+
+    	// Write plugin.xml content into temporary variable
+    	$tempXml = simplexml_load_string($tempXmlContent);
+
+    	// Initializing dependencies array
+    	$dependenciesBase = array();
+
+    	$dependenciesCount = count($tempXml->dependencies);
+    	for ($i = 0; $i < $dependenciesCount; $i++) {
+
+    		foreach ($tempXml->dependencies->depend[$i]->attributes() as $key => $value) {
+    			$dependenciesBase[] = cSecurity::escapeString($value);
+    		}
+
+    	}
+
+    	// Read all dirs
+    	$dirs = cDirHandler::read($pluginsDir);
+    	foreach ($dirs as $dirname) {
+
+    		// Skip plugin if it has no plugin.xml file
+    		if (!cFileHandler::exists($pluginsDir . $dirname . DIRECTORY_SEPARATOR . "plugin.xml")) {
+    			continue;
+    		}
+
+    		// Read plugin.xml files from existing plugins at contenido/plugins dir
+    		$tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . "plugin.xml");
+
+    		// Write plugin.xml content into temporary variable
+    		$tempXml = simplexml_load_string($tempXmlContent);
+
+    		if (in_array($tempXml->general->uuid, $dependenciesBase) === true) {
+
+    			$pimPluginColl->setWhere('uuid', $tempXml->general->uuid);
+    			$pimPluginColl->query();
+    			$result = $pimPluginColl->next();
+
+    			if ($newOrder == $result->get('executionorder')) {
+    				return false;
+    			}
+    		}
+    	}
+
+    	return true;
+    }
+
     /**
      * Change the execution order of this plugin and update the order for every other plugin
      *
      * @param int $newOrder New execution order for this plugin
+     * @return boolean
      */
     public function updateExecOrder($newOrder) {
-        $oldOrder = $this->get('executionorder'); // get the old value
+
+    	$dependendFromOtherPlugins = $this->checkDependedFromOtherPlugins($newOrder);
+		$dependenciesToOtherPlugins = $this->checkDependenciesToOtherPlugins($newOrder);
+
+    	if ($dependendFromOtherPlugins === false || $dependenciesToOtherPlugins === false) {
+    		return false;
+    	}
+
+    	$oldOrder = $this->get('executionorder'); // get the old value
         $idplugin = $this->get("idplugin");
 
         $this->set('executionorder', $newOrder); // update this plugin to the new value
@@ -167,5 +338,7 @@ class PimPlugin extends Item {
                 $plugin->store();
             }
         }
+
+        return true;
     }
 }

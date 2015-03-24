@@ -50,7 +50,7 @@ class cApiContainerConfigurationCollection extends ItemCollection {
      * @return cApiContainerConfiguration
      */
     public function create($idtplcfg, $number, $container) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('idtplcfg', $idtplcfg);
         $item->set('number', $number);
@@ -113,7 +113,7 @@ class cApiContainerConfiguration extends Item {
         switch ($name) {
             case 'idtplcfg':
             case 'number':
-                $value = (int) $value;
+                $value = cSecurity::toInteger($value);
                 break;
         }
 

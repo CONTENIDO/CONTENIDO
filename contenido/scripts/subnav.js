@@ -38,21 +38,51 @@
          * Highlights the active tab.
          * @method clicked
          * @param {Object} cElm Clicked a-element, resp. the tab to highlight.
+         * @param {Boolean} Whether to change highlight now (default is false)
          * @todo Consider new name ("highlight"?) and rename remaining instances.
          */
-        clicked: function(cElm) {
+        clicked: function(cElm, changeNow) {
             var elem = ("string" === $.type(cElm)) ? $("#" + cElm + " a")[0] : cElm;
             if (!elem) {
                 Con.log("Couldn't get menu element for " + cElm, NAME, "warn");
                 return;
             }
 
-            var anchors = this._getAnchors(), i;
-            for (i = 0; i < anchors.length; i++) {
-                if (anchors[i] === elem) {
-                    anchors[i].className = 'current';
-                } else {
-                    anchors[i].className = '';
+            var subnav = this;
+            if (true !== changeNow
+            && 'undefined' !== typeof(Con.getFrame("right_bottom"))) {
+                var tabHighlight = function() {
+                    // change selected tab when new tab loads
+                    var anchors = subnav._getAnchors(), i;
+                    for (i = 0; i < anchors.length; i++) {
+                        if (anchors[i] === elem) {
+                            anchors[i].className = 'current';
+                        } else {
+                            anchors[i].className = '';
+                        }
+                    }
+                };
+
+                // frame has an error
+                Con.getFrame("right_bottom").onerror = tabHighlight;
+
+                // frame changes
+                Con.getFrame("right_bottom").onunload = function() {
+                    if ('undefined' === typeof(Con.getFrame("right_bottom").stoppedUnload)
+                    || false === Con.getFrame("right_bottom").stoppedUnload) {
+                        Con.getFrame("right_bottom").stoppedUnload = false;
+                        tabHighlight();
+                    }
+                }
+            } else {
+                // fallback if right bottom frame does not exist
+                var anchors = this._getAnchors(), i;
+                for (i = 0; i < anchors.length; i++) {
+                    if (anchors[i] === elem) {
+                        anchors[i].className = 'current';
+                    } else {
+                        anchors[i].className = '';
+                    }
                 }
             }
         },

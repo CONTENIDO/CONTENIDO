@@ -83,6 +83,9 @@ class PimPluginSetupStatus extends PimPluginSetup {
      */
     public function changeActiveStatus($pluginId) {
 
+        // Set pluginId
+        self::setPluginId($pluginId);
+
         // Build WHERE-Query for *_plugin table with $pluginId as parameter
         $this->_PimPluginCollection->setWhere('idplugin', cSecurity::toInteger($pluginId));
         $this->_PimPluginCollection->query();
@@ -92,13 +95,17 @@ class PimPluginSetupStatus extends PimPluginSetup {
         $pluginName = $plugin->get('name');
         $pluginActiveStatus = $plugin->get('active');
 
-        // get relations
+        // Get relations
         $this->_PimPluginRelationsCollection->setWhere('idplugin', cSecurity::toInteger($pluginId));
         $this->_PimPluginRelationsCollection->setWhere('type', 'navs');
         $this->_PimPluginRelationsCollection->query();
 
         if ($pluginActiveStatus == 1) { // Plugin is online and now we change
                                         // status to offline
+
+            // Dependencies check
+            $this->_updateCheckDependencies();
+
             $plugin->set('active', 0);
             $plugin->store();
 
@@ -106,10 +113,10 @@ class PimPluginSetupStatus extends PimPluginSetup {
             // status to offline
             while (($relation = $this->_PimPluginRelationsCollection->next()) !== false) {
                 $idnavs = $relation->get('iditem');
-                $this->changeNavSubStatus($idnavs, 0);
+                $this->_changeNavSubStatus($idnavs, 0);
             }
 
-            parent::info(i18n('The plugin', 'pim') . ' <strong>' . $pluginName . '</strong> ' . i18n('has been sucessfully disabled. To apply the changes please login into backend again.', 'pim'));
+            parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been sucessfully disabled. To apply the changes please login into backend again.', 'pim'), $pluginName));
         } else { // Plugin is offline and now we change status to online
             $plugin->set('active', 1);
             $plugin->store();
@@ -118,10 +125,25 @@ class PimPluginSetupStatus extends PimPluginSetup {
             // status to online
             while (($relation = $this->_PimPluginRelationsCollection->next()) !== false) {
                 $idnavs = $relation->get('iditem');
-                $this->changeNavSubStatus($idnavs, 1);
+                $this->_changeNavSubStatus($idnavs, 1);
             }
 
-            parent::info(i18n('The plugin', 'pim') . ' <strong>' . $pluginName . '</strong> ' . i18n('has been sucessfully enabled. To apply the changes please login into backend again.', 'pim'));
+            parent::info(sprintf(i18n('The plugin <strong>%s</strong> has been sucessfully enabled. To apply the changes please login into backend again.', 'pim'), $pluginName));
+        }
+    }
+
+    /**
+     * Check dependencies to other plugins (dependencies-Tag at plugin.xml)
+     */
+    private function _updateCheckDependencies() {
+
+        // Call checkDepenendencies function at PimPlugin class
+        // Function returns true or false
+        $result = $this->checkDependencies();
+
+        // Show an error message when dependencies could be found
+        if ($result === false) {
+            parent::error(sprintf(i18n('This plugin is required by the plugin <strong>%s</strong>, so you can not deactivate it.', 'pim'), parent::_getPluginName()));
         }
     }
 
@@ -132,7 +154,7 @@ class PimPluginSetupStatus extends PimPluginSetup {
      * @param bool $online (equivalent to column name)
      * @return  bool true
      */
-    private function changeNavSubStatus($idnavs, $online) {
+    private function _changeNavSubStatus($idnavs, $online) {
         $this->_ApiNavSubCollection->setWhere('idnavs', cSecurity::toInteger($idnavs));
         $this->_ApiNavSubCollection->query();
 

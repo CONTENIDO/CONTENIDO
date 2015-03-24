@@ -65,7 +65,7 @@ class cGuiSourceEditor extends cGuiPage {
      * @param string $filepath Path to the file. If ommited the class tries to determine the path from the type and the area
      */
     public function __construct($filename, $versioning = true, $filetype = '', $filepath = '') {
-        global $cfg, $cfgClient, $client, $perm, $area, $action;
+        global $cfg, $cfgClient, $client, $perm, $area, $action, $belang;
 
         // call parent constructor
         parent::__construct("generic_source_editor");
@@ -309,7 +309,7 @@ class cGuiSourceEditor extends cGuiPage {
         $this->set('s', 'ACTION', $action);
         $this->set('s', 'FILENAME', $this->filename);
         if(cFileHandler::readable($this->filepath) && $this->filename != '') {
-            $this->set('s', 'SOURCE', cFileHandler::read($this->filepath));
+            $this->set('s', 'SOURCE', conHtmlentities(cFileHandler::read($this->filepath)));
         } else {
             $this->set('s', 'SOURCE', '');
         }

@@ -82,6 +82,11 @@ class cTypeGenerator {
         return $typeClassName;
     }
 
+    public static function getContentTypeClassName($type)  {
+        $contentType = substr($type, 4);
+        return 'cContentType' . strtoupper($contentType[0]) . strtolower(substr($contentType, 1));
+    }
+
     /**
      * Returns the full path to the include file name of a content type.
      *

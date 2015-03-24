@@ -297,6 +297,15 @@ class cRegistry {
     }
 
     /**
+     * Returns the current frame id stored in the global variable "frame".
+     *
+     * @return string
+     */
+    public static function getFrame() {
+        return self::_fetchGlobalVariable('frame', '');
+    }
+
+    /**
      * Return the session object stored in the global variable "sess".
      *
      * @return cSession
@@ -312,6 +321,15 @@ class cRegistry {
      */
     public static function getAuth() {
         return self::_fetchGlobalVariable('auth');
+    }
+
+    /**
+     * Returns the area stored in the global variable "area".
+     *
+     * @return string
+     */
+    public static function getArea() {
+        return self::_fetchGlobalVariable('area');
     }
 
     /**
@@ -590,6 +608,54 @@ class cRegistry {
     }
 
     /**
+     * Appends the last info message that will be outputted
+     *
+     * @param string $message
+     */
+    public static function appendLastInfoMessage($message) {
+        if(count(self::$_infoMessages) == 0) {
+            self::$_infoMessages[] = $message;
+            return;
+        }
+        end(self::$_infoMessages);
+        $lastKey = key(self::$_infoMessages);
+        self::$_infoMessages[$lastKey] .= "<br>" . $message;
+        reset(self::$_infoMessages);
+    }
+
+    /**
+     * Appends the last error message that will be outputted
+     *
+     * @param string $message
+     */
+    public static function appendLastErrorMessage($message) {
+        if(count(self::$_errMessages) == 0) {
+            self::$_errMessages[] = $message;
+            return;
+        }
+        end(self::$_errMessages);
+        $lastKey = key(self::$_errMessages);
+        self::$_errMessages[$lastKey] .= "<br>" . $message;
+        reset(self::$_errMessages);
+    }
+
+    /**
+     * Appends the last warning that will be outputted
+     *
+     * @param string $message
+     */
+    public static function appendLastWarningMessage($message) {
+        if(count(self::$_warnMessages) == 0) {
+            self::$_warnMessages[] = $message;
+            return;
+        }
+        end(self::$_warnMessages);
+        $lastKey = key(self::$_warnMessages);
+        self::$_warnMessages[$lastKey] .= "<br>" . $message;
+        reset(self::$_warnMessages);
+    }
+
+    /**
      * Returns an array with information messages.
      *
      * @return array
@@ -625,4 +691,20 @@ class cRegistry {
     public static function isTrackingAllowed() {
         return (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] != 1) || !isset($_SERVER['HTTP_DNT']);
     }
+	
+	/**
+	* Returns the actual encoding (standard: utf-8)
+	*
+	* @return string name of encoding
+	* @return boolean false if no language founded
+	 */
+	public static function getEncoding() {
+	
+		$apiLanguage = new cApiLanguage(self::getLanguageId());
+		if ($apiLanguage->isLoaded()) {
+			return trim($apiLanguage->get('encoding'));
+		}
+
+		return false;
+	}
 }

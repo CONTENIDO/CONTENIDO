@@ -262,7 +262,7 @@ class cGuiNavigation {
         $link->setClass('main');
         $link->setTargetFrame('content');
         $link->setLink($sess->url('frameset.php?area=info&frame=4'));
-        $link->setContent('<img class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
+        $link->setContent('<img alt="" class="vAlignMiddle" src="' . $backendUrl . $cfg['path']['images'] . 'info.gif" border="0" alt="Info" title="Info" id="imgInfo">');
         $main->set('s', 'INFO', $link->render());
 
         $main->set('s', 'LOGOUT', $sess->url('logout.php'));
@@ -322,19 +322,21 @@ class cGuiNavigation {
         } else {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
 
-            $sClientName = '<span id="chosenclient">' . $clientCollection->getClientName($client) . ' (' . $client . ')</span>';
+            $sClientName = $clientCollection->getClientName($client) . ' (' . $client . ')';
+            $sClientNameWithHtml = '<span id="chosenclient">' .$sClientName . '</span>';
+
             $sClientUrl = cRegistry::getFrontendUrl();
             $frontendPath = cRegistry::getFrontendPath();
 
             if ($clientImage !== false && $clientImage != "" && cFileHandler::exists($frontendPath . $clientImage)) {
-                $sClientImageTemplate = '<img src="%s" alt="%s" title="%s">';
+                $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" style="height: 15px;">';
 
                 $sThumbnailPath = cApiImgScale($frontendPath . $clientImage, 80, 25, 0, 1);
                 $sClientImageTag = sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
 
                 $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientImageTag));
             } else {
-                $html = sprintf($sClientNameTemplate, $sClientUrl, $sClientName);
+                $html = sprintf($sClientNameTemplate, $sClientUrl, $sClientNameWithHtml);
                 $html .= $this->_renderClientSelect();
                 $main->set('s', 'CHOSENCLIENT', $html);
             }

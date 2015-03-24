@@ -21,8 +21,18 @@
 {_JS_HEAD_CONTENIDO_}
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
-    <script type="text/javascript">
-    Con.getFrame('left_bottom').location.reload();
+	<script type="text/javascript">
+    (function(Con, $) {
+        Con.getFrame('left_bottom').location.reload();
+        var createdGroupId = '{GROUPID}';
+
+        if (createdGroupId != '') {
+            Con.getFrame('right_top').location = 'main.php?area=groups&frame=3&action=groups_overview&groupid=' + createdGroupId + '&contenido=' + Con.sid;
+            Con.getFrame('right_bottom').location = 'main.php?area=groups_overview&frame=4&action=groups_overview&groupid=' + createdGroupId + '&created=1&contenido=' + Con.sid;
+        } else {
+            Con.getFrame('right_top').location = 'main.php?area=groups_create&frame=3&contenido=' + Con.sid;
+        }
+    })(Con, Con.$);
     </script>
 </head>
 <body style="margin:10px">

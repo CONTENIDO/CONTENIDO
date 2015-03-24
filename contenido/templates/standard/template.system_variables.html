@@ -31,19 +31,27 @@
 </table><br-->
 <table cellspacing="0" cellpadding="1" border="0" width="100%">
     <tr>
-        <td width="50%" valign="top">
-            {SERVER_CONFIGURATION}<br>
-            {SYSTEM_STATISTICS}
+        <td width="50%" valign="top">        	
+            {SERVER_CONFIGURATION}<br />
+			{DATABASE_CONFIGURATION}<br />
+            {SYSTEM_STATISTICS}            
         </td>
         <td width="1%"></td>
         <td width="49%" valign="top">
-            {INSTALLED_VERSIONS}<br>
-            {PHP_CONFIGURATION}
+			{INSTALLED_VERSIONS}<br />
+            {PHP_CONFIGURATION}   	
         </td>
     </tr>
+	<tr>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			{CLIENTS}
+		</td>
+	</tr>
 </table>
 <br>
-{CLIENTS}
 </body>
 </html>
 <!--

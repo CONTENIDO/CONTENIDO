@@ -167,7 +167,7 @@ class cApiCecHook {
      * Method to execute registered functions for CONTENIDO Extension Chainer
      * (CEC).
      * Gets the desired CEC iterator and executes each registered chain
-     * function. You can pass as much parameter as you want. NOTE: the first
+     * function. You can pass as much parameters as you want. NOTE: the first
      * param is interpeted as $chainName. NOTE: There is no restriction for
      * number of passed parameter. NOTE: If no chain function is registered,
      * $_defaultReturnValue will be returned.

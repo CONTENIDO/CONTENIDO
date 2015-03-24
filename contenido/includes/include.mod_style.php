@@ -57,7 +57,6 @@ if (!$perm->have_perm_area_action('style', $actionRequest) || $premCreate) {
 
 if (!(int) $client > 0) {
     // If there is no client selected, display empty page
-    $page->render();
     return;
 }
 
@@ -70,9 +69,6 @@ if (!$contenidoModulHandler->moduleWriteable('css')) {
     exit();
 }
 
-// Make automatic a new css file
-$contenidoModulHandler->createModuleFile('css');
-
 $sTempFilename = stripslashes($tmp_file);
 $sOrigFileName = $sTempFilename;
 
@@ -84,7 +80,7 @@ if (getFileType($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
 
 if (stripslashes($file)) {
     $page->reloadFrame('left_bottom', array(
-    	"file" => $sFilename
+        "file" => $sFilename
     ));
 }
 
@@ -93,21 +89,26 @@ $sTypeContent = 'css';
 $fileInfoCollection = new cApiFileInformationCollection();
 $aFileInfo = $fileInfoCollection->getFileInformation($sTempFilename, $sTypeContent);
 
-if (!cFileHandler::writeable($path . $sFilename)) {
+if (true === cFileHandler::exists($path . $sFilename)
+&& false === cFileHandler::writeable($path . $sFilename)) {
     $page->displayWarning(i18n("You have no write permissions for this file"));
 }
 
-// Create new file
+// Create new css file
 if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
     $sTempFilename = $sFilename;
     $ret = cFileHandler::create($path . $sFilename);
 
-    $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
-
-    $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
-    cFileHandler::validateFilename($sFilename);
-    cFileHandler::write($path . $sFilename, $tempCode);
+    if (true === cFileHandler::validateFilename($sFilename)) {
+        $contenidoModulHandler->createModuleFile('css', $sFilename, $_REQUEST['code']);
+    }
     $bEdit = cFileHandler::read($path . $sFilename);
+
+    if (false !== $bEdit) {
+        // trigger a code cache rebuild if changes were saved
+        $oApiModule = new cApiModule($idmod);
+        $oApiModule->store();
+    }
 
     $fileInfoCollection = new cApiFileInformationCollection();
     $fileInfoCollection->updateFile($sFilename, 'css', $_REQUEST['description'], $auth->auth['uid']);
@@ -142,15 +143,20 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
     $fileInfoCollection = new cApiFileInformationCollection();
     $fileInfoCollection->updateFile($sOrigFileName, 'css', $_REQUEST['description'], $sFilename, $auth->auth['uid']);
 
-    $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
-    $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
-    cFileHandler::validateFilename($sFilename);
-    cFileHandler::write($path . $sFilename, $tempCode);
+    if (true === cFileHandler::validateFilename($sFilename)) {
+        $contenidoModulHandler->createModuleFile('css', $sFilename, $_REQUEST['code']);
+    }
     $bEdit = cFileHandler::read($path . $sFilename);
+
+    if (false !== $bEdit) {
+        // trigger a code cache rebuild if changes were saved
+        $oApiModule = new cApiModule($idmod);
+        $oApiModule->store();
+    }
 
     if ($sFilename != $sTempFilename && $bEdit) {
         $page->displayInfo(i18n('Renamed and saved changes successfully!'));
-    } elseif (!$bEdit) {
+    } elseif (false === $bEdit) {
         $page->displayError(i18n("Can't save file!"));
     } else {
         $page->displayInfo(i18n('Saved changes successfully!'));
@@ -164,7 +170,8 @@ if (isset($actionRequest)) {
 
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 
-    if ($actionRequest == $sActionEdit) {
+    if ($actionRequest == $sActionEdit
+    && cFileHandler::exists($path . $sFilename)) {
         $sCode = cFileHandler::read($path . $sFilename);
         if ($sCode === false) {
             exit();

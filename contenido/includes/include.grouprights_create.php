@@ -27,6 +27,7 @@ if (!$perm->have_perm_area_action($area, $action)) {
 $bError        = false;
 $sNotification = '';
 $aPerms        = array();
+$groupId       = NULL;
 
 if ($action == 'group_create') {
     $aPerms = buildUserOrGroupPermsFromRequest();
@@ -34,25 +35,22 @@ if ($action == 'group_create') {
     if ($groupname == '') {
         $groupname = cApiGroup::PREFIX . i18n("New Group");
     }
+
     $groupname = stripcslashes(preg_replace("/\"/", "", ($groupname)));
+	$description = stripcslashes(preg_replace("/\"/", "", ($description)));
 
     $oGroup = new cApiGroup();
     $oGroup->loadGroupByGroupname($groupname);
     if ($oGroup->isLoaded()) {
-        $sNotification = $notification->returnNotification("info", i18n("Groupname already exists"));
+        $sNotification = $notification->returnNotification("warning", sprintf(i18n("Group name <strong>%s</strong> already exists"), $groupname));
         $bError = true;
     } else {
         $oGroupColl = new cApiGroupCollection();
-        //$description = stripcslashes(preg_replace("/\"/", "", ($description)));
         $oGroup = $oGroupColl->create($groupname, implode(',', $aPerms), $description);
         if (is_object($oGroup)) {
-            // clean "old" values...
-            $sNotification = $notification->returnNotification("info", i18n("group created"));
-            $groupname   = '';
-            $aPerms      = array();
-            $description = '';
+			$groupId = $oGroup->getGroupId();
         } else {
-            $sNotification = $notification->returnNotification("info", i18n("Group couldn't created"));
+            $sNotification = $notification->returnNotification("error", i18n("Group couldn't created"));
             $bError = true;
         }
     }
@@ -60,6 +58,7 @@ if ($action == 'group_create') {
 
 $tpl->reset();
 $tpl->set('s', 'NOTIFICATION', $sNotification);
+$tpl->set('s', 'GROUPID', $groupId);
 
 $form = '<form name="group_properties" method="post" action="'.$sess->url("main.php?").'">
              <input type="hidden" name="area" value="'.$area.'">
@@ -74,16 +73,13 @@ $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Group name"));
-if ($action == 'group_create' && !$bError) {
-    $tpl->set('d', 'CATFIELD', cApiGroup::getUnprefixedGroupName($groupname));
-} else {
-    $oTxtName = new cHTMLTextbox('groupname', stripcslashes(preg_replace("/\"/", "", (cApiGroup::getUnprefixedGroupName($groupname)))), 40, 32);
-    $tpl->set('d', 'CATFIELD', $oTxtName->render());
-}
+$oTxtName = new cHTMLTextbox('groupname', $groupname, 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtName->render());
+
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Description"));
-$oTxtDesc = new cHTMLTextbox('description', stripcslashes(preg_replace("/\"/", "", ($description))), 40, 255);
+$oTxtDesc = new cHTMLTextbox('description', $description, 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtDesc->render());
 $tpl->next();
 

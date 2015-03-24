@@ -31,6 +31,7 @@ while ($db->nextRecord()) {
             $perm->have_perm_area_action("tpl_visual", "tpl_visedit")
     ) {
         $name = (strlen(trim($db->f('name'))) > 0) ? $db->f('name') : i18n("-- New template --");
+        $name = conHtmlSpecialChars(stripslashes($name));
         $descr = $db->f('description');
         $idtpl = $db->f("idtpl");
 
@@ -77,13 +78,13 @@ while ($db->nextRecord()) {
                     <img src="' . $cfg['path']['images'] . 'delete.gif" border="0" title="' . $delTitle . '" alt="' . $delTitle . '">
                 </a>'
             );
-            $tpl->set('d', 'INUSE', '<img src="images/spacer.gif" width="16">');
+            $tpl->set('d', 'INUSE', '<img src="images/spacer.gif" alt="" width="16">');
         } else {
             $delDescription = i18n("Template in use, cannot delete");
             $tpl->set('d', 'DELETE', '<img src="' . $cfg['path']['images'] . 'delete_inact.gif" border="0" title="' . $delDescription . '" alt="' . $delDescription . '">');
             $tpl->set('d', 'INUSE', '
                 <a href="javascript:;" rel="' . (int) $db->f("idtpl") . '" class="in_used_tpl">
-                    <img src="' . $cfg['path']['images'] . 'exclamation.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '">
+                    <img alt="" src="' . $cfg['path']['images'] . 'exclamation.gif" border="0" title="' . $inUseString . '" alt="' . $inUseString . '">
                 </a>'
             );
         }
@@ -94,7 +95,7 @@ while ($db->nextRecord()) {
                     <img src="' . $cfg["path"]["images"] . 'but_copy.gif' . '" border="0" title="' . i18n("Duplicate template") . '" alt="' . i18n("Duplicate template") . '">
                 </a>';
         } else {
-            $copybutton = '<img src="images/spacer.gif" width="14" height="1">';
+            $copybutton = '<img src="images/spacer.gif" alt="" width="14" height="1">';
         }
 
         $tpl->set('d', 'COPY', $copybutton);

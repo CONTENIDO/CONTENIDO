@@ -52,7 +52,7 @@ class cApiFileInformationCollection extends ItemCollection {
             'filename' => $filename
         ));
         if (!$item->isLoaded()) {
-            $item = parent::createNewItem();
+            $item = $this->createNewItem();
 
             $item->set('idclient', $client);
             $item->set('type', $typeContent);

@@ -51,7 +51,7 @@ class cApiContainerCollection extends ItemCollection {
      * @return cApiContainer
      */
     public function create($idtpl, $number, $idmod) {
-        $item = parent::createNewItem();
+        $item = $this->createNewItem();
 
         $item->set('idtpl', $idtpl);
         $item->set('number', $number);

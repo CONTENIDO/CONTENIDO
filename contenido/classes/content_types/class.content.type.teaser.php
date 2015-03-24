@@ -351,6 +351,16 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
         $text = $this->_getArtContent($article, $this->_settings['teaser_source_text'], $this->_settings['teaser_source_text_count']);
         $imageId = $this->_getArtContent($article, $this->_settings['teaser_source_image'], $this->_settings['teaser_source_image_count']);
         $date = $this->_getArtContent($article, $this->_settings['teaser_source_date'], $this->_settings['teaser_source_date_count']);
+
+        // check if CMS type is date before trying to parse it as date
+        if ('CMS_DATE' === $this->_settings['teaser_source_date']) {
+            $date = trim($date);
+            $date = new cContentTypeDate($date, 1, array('CMS_DATE'));
+            $date = $date->generateViewCode();
+        } else {
+            $date = trim(strip_tags($date));
+        }
+
         $idArt = $article->getField('idart');
         $published = $article->getField('published');
         $online = $article->getField('online');
@@ -388,7 +398,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 $template->set('d', 'IMAGE_SRC', $image['src']);
             } else if (strip_tags($imageId) != $imageId && strlen($imageId) > 0) {
                 $image = $this->_extractImage($imageId);
-                if (strlen($image) > 0) {
+                if (strlen($image['src']) > 0) {
                     $template->set('d', 'IMAGE', $image['element']);
                     $template->set('d', 'IMAGE_SRC', $image['src']);
                 } else {

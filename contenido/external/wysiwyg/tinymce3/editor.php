@@ -22,10 +22,14 @@ cInclude('external', 'wysiwyg/tinymce3/editorclass.php');
 
 // name of textarea element
 if (isset($type)) {
-    $editor_name = 'CMS_HTML'; // this should be $type (might be a CONTENIDO bug)
+    $editor_name = $type;
 } else {
     $editor_name = 'content';
 }
+
+// we are in backendedit mode at this point, so set some variables to reflect that
+$edit = true;
+$contenido = 1;
 
 // if editor is called from any include.CMS_*.html file use available content from $a_content
 if ($a_content[$type][$typenr]) {
@@ -77,11 +81,10 @@ if ($currentuser->getField('wysi') == 1) {
     $oTextarea = new cHTMLTextarea($editor_name, $editor_content);
     $oTextarea->setId($editor_name);
 
-    $bgColor       = getEffectiveSetting('wysiwyg', 'tinymce-backgroundcolor', 'white');
     $editor_width  = getEffectiveSetting('wysiwyg', 'tinymce-width',  '600');
     $editor_height = getEffectiveSetting('wysiwyg', 'tinymce-height', '480');
 
-    $oTextarea->setStyle('width: '.$editor_width.'px; height: '.$editor_height.'px; background-color: '.$bgColor.';');
+    $oTextarea->setStyle('width: '.$editor_width.'px; height: '.$editor_height.'px;');
 
     echo $oTextarea->render();
 }

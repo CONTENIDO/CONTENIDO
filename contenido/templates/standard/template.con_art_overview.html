@@ -33,7 +33,7 @@
     <table width="100%" cellspacing="0" cellpadding="2" border="0">
         <tr>
             <td colspan="12">
-                <img src="images/spacer.gif" width="1" height="10">
+                <img src="images/spacer.gif" width="1" height="10" alt="">
             </td>
         </tr>
         <tr valign="middle">
@@ -58,7 +58,7 @@
         </tr>
         <tr>
             <td colspan="12">
-                <img src="images/spacer.gif" width="1" height="10">
+                <img src="images/spacer.gif" width="1" height="10" alt="">
             </td>
         </tr>{NOTIFICATION}
     </table>
@@ -122,7 +122,7 @@
     <table width="100%" cellspacing="0" cellpadding="2" border="0">
         <tr>
             <td>
-                <img src="images/spacer.gif" width="1" height="10">
+                <img src="images/spacer.gif" width="1" height="10" alt="">
             </td>
         </tr>
         <tr class="text_medium" style="background-color: #ffffff;">
@@ -315,6 +315,10 @@ function doAction(thisObject) {
 
         // On category path link click
         $("div#categorypath > a").click(function() {
+            if($(this).attr("disabled") !== undefined) {
+                return false;
+            }
+
             var url = $(this).attr('href'),
                 params = Con.UtilUrl.getParams(url);
             Con.multiLink(

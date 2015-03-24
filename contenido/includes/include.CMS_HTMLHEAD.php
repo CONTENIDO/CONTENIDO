@@ -34,13 +34,13 @@ if (isset($area) && $area == 'con_content_list') {
     $inputHTML = "";
 }
 
-if ($doedit == "1" || $doedit == "2") {
+if (isset($_POST['doedit']) && ($_POST['doedit'] == "1" || $_POST['doedit'] == "2")) {
     //1: save; 2: refresh;
-    conSaveContentEntry($idartlang, "CMS_HTMLHEAD", $typenr, $CMS_HTML);
+    conSaveContentEntry($idartlang, "CMS_HTMLHEAD", $typenr, $_POST['CMS_HTMLHEAD']);
     conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
 }
-if ($doedit == "1") {
+if (isset($_POST['doedit']) && $_POST['doedit'] == "1") {
     // redirect
     header("Location:" . $sess->url($path1));
 }
@@ -52,7 +52,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 ob_start();
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE html>
 <html>
 <head>
     <base href="<?php echo $frontendUrl; ?>">
@@ -68,7 +68,7 @@ ob_start();
 
 <body class="cms_edit">
     <div class="cms_edit_wrap">
-        <form method="post" action="<?php echo $backendUrl . $cfg["path"]["includes"] ?>include.backendedit.php">
+        <form method="post" name="editcontent" action="<?php echo $backendUrl . $cfg["path"]["includes"] ?>include.backendedit.php">
             <input type="hidden" name="action" value="10">
             <input type="hidden" name="changeview" value="edit">
             <input type="hidden" name="doedit" value="1">
@@ -89,12 +89,19 @@ ob_start();
 
             <div class="cms_edit_row">
 
-<?php include($cfg['path']['wysiwyg'] . 'editor.php'); ?>
+<?php
+// either load default editor or a user selected one
+if (false === ($editor = getEffectiveSetting('wysiwyg', 'editor', false))) {
+    include($cfg['path'][$cfg['wysiwyg']['editor'] . '_editor']);
+} else {
+    include($cfg['path'][$editor . '_editor']);
+}
+?>
 
             </div>
 
             <div class="cms_edit_row">
-                <a href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" border="0" alt="<?php echo i18n("Cancel")?>" title="<?php echo i18n("Cancel") ?>"></a>
+                <a data-tiny-role="cancel" href="<?php echo $sess->url($path2) ?>"><img src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_cancel.gif" border="0" alt="<?php echo i18n("Cancel")?>" title="<?php echo i18n("Cancel") ?>"></a>
                 <input type="image" name="save" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_refresh.gif" border="0" onclick="document.forms[0].doedit.value='2';document.forms[0].submit();" alt="<?php echo i18n("Save without leaving the editor") ?>" title="<?php echo i18n("Save without leaving the editor") ?>">
                 <input type="image" name="submit" value="editcontent" src="<?php echo $backendUrl . $cfg["path"]["images"] ?>but_ok.gif" border="0"  alt="<?php echo i18n("Save and close editor") ?>" title="<?php echo i18n("Save and close editor")?>">
             </div>

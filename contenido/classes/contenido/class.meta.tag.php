@@ -45,11 +45,11 @@ class cApiMetaTagCollection extends ItemCollection {
      * @return cApiMetaTag
      */
     public function create($iIdArtLang, $iIdMetaType, $sMetaValue) {
-        $oItem = parent::createNewItem();
+        $oItem = $this->createNewItem();
 
-        $oItem->set('idartlang', (int) $iIdArtLang, false);
-        $oItem->set('idmetatype', (int) $iIdMetaType, false);
-        $oItem->set('metavalue', $this->escape($sMetaValue), false);
+        $oItem->set('idartlang', $iIdArtLang, false);
+        $oItem->set('idmetatype', $iIdMetaType, false);
+        $oItem->set('metavalue', $sMetaValue, false);
         $oItem->store();
 
         return $oItem;
@@ -98,8 +98,28 @@ class cApiMetaTag extends Item {
      * @return bool
      */
     public function updateMetaValue($sMetaValue) {
-        $this->set('metavalue', $this->escape($sMetaValue), false);
+        $this->set('metavalue', $sMetaValue, false);
         return $this->store();
+    }
+
+	/**
+     * Userdefined setter for meta tag fields.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param bool $bSafe Flag to run defined inFilter on passed value
+     */
+    public function setField($name, $value, $bSafe = true) {
+        switch ($name) {
+            case 'idartlang':
+                $value = (int) $value;
+                break;
+			case 'idmetatype':
+                $value = (int) $value;
+                break;
+        }
+
+        return parent::setField($name, $value, $bSafe);
     }
 
 }

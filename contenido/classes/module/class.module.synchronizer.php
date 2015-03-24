@@ -50,8 +50,7 @@ class cModuleSynchronizer extends cModuleHandler {
         if ($this->_isExistInTable($oldModulName, $client) == false) {
             // add new Module in db-tablle
             $this->_addModul($newModulName, $client);
-            $notification = new cGuiNotification();
-            $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $newModulName));
+            cRegistry::appendLastInfoMessage(sprintf(i18n('Module %s successfully synchronized'), $newModulName));
         } else {
             // update the name of the module
             if ($oldModulName != $newModulName) {
@@ -122,6 +121,8 @@ class cModuleSynchronizer extends cModuleHandler {
         $retIdMod = 0;
 
         while ($db->nextRecord()) {
+            $showMessage = false;
+
             $modulePath = $cfgClient[$db->f('idclient')]['module']['path'] . $db->f('alias') . '/';
             $modulePHP = $modulePath . $this->_directories['php'] . $db->f('alias');
 
@@ -162,37 +163,30 @@ class cModuleSynchronizer extends cModuleHandler {
                     }
                     $mod->store();
                     $synchLock = 1;
-                    $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
+                    $showMessage = true;
                 }
             }
 
-            if ($lastmodInput < $lastmodOutput) {
-                // use output
-                if ($lastmodified < $lastmodOutput) {
-                    // update
-                    $synchLock = 1;
-                    $this->setLastModified($lastmodOutput, $db->f('idmod'));
-                    conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
-                    $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
-                }
-            } else {
-                // use input
-                if ($lastmodified < $lastmodInput) {
-                    // update
-                    $synchLock = 1;
-                    $this->setLastModified($lastmodInput, $db->f('idmod'));
-                    conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
-                    $notification->displayNotification('info', sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
-                }
+            $lastmodabsolute = max($lastmodInput, $lastmodOutput);
+            if ($lastmodified < $lastmodabsolute) {
+                // update
+                $synchLock = 1;
+                $this->setLastModified($lastmodabsolute, $db->f('idmod'));
+                conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
+                $showMessage = true;
             }
 
             if (($idmod = $this->_synchronizeFilesystemAndDb($db)) != 0) {
                 $retIdMod = $idmod;
             }
+
+            if ($showMessage) {
+                cRegistry::appendLastInfoMessage(sprintf(i18n('Module %s successfully synchronized'), $db->f('name')));
+            }
         }
 
         if ($synchLock == 0) {
-            $notification->displayNotification('info', i18n('All modules are already synchronized'));
+            cRegistry::addInfoMessage(i18n('All modules are already synchronized'));
         }
 
         // we need it for the update of moduls on the left site (module/backend)
@@ -206,6 +200,7 @@ class cModuleSynchronizer extends cModuleHandler {
      * fileystem but if not
      * clear it from filesystem.
      *
+     * @param $db
      * @return int id of last update module
      */
     private function _synchronizeFilesystemAndDb($db) {
@@ -232,20 +227,6 @@ class cModuleSynchronizer extends cModuleHandler {
     }
 
     /**
-     * If the first char a '.' return false else true
-     *
-     * @param string $file
-     * @return boolean true if the first char !='.' else false
-     */
-    private function _isValidFirstChar($file) {
-        if (substr($file, 0, 1) == '.') {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    /**
      * Depending on the client, this method
      * will check the modul dir of the client and if found
      * a Modul(Dir) that not exist in Db-table this method will
@@ -260,26 +241,25 @@ class cModuleSynchronizer extends cModuleHandler {
         $dir = $cfgClient[$this->_client]['module']['path'];
 
         if (is_dir($dir)) {
-            if ($dh = opendir($dir)) {
-                while (($file = readdir($dh)) !== false) {
-                    // is file a dir or not
-                    if ($this->_isValidFirstChar($file) && is_dir($dir . $file . '/')) {
+            if (false !== ($handle = cDirHandler::read($dir))) {
+                foreach ($handle as $file) {
+                    if (false === cFileHandler::fileNameBeginsWithDot($file) && is_dir($dir . $file . '/')) {
                         $newFile = cApiStrCleanURLCharacters($file);
                         // dir is ok
                         if ($newFile == $file) {
                             $this->_syncModule($dir, $file, $newFile);
                         } else { // dir not ok (with not allowed characters)
                             if (is_dir($dir . $newFile)) { // exist the new dir
-                                                           // name?
-                                                           // make new dirname
+                                // name?
+                                // make new dirname
                                 $newDirName = $newFile . substr(md5(time() . rand(0, time())), 0, 4);
-
+                        
                                 // rename
                                 if ($this->_renameFileAndDir($dir, $file, $newDirName, $this->_client) != false) {
                                     $this->_syncModule($dir, $file, $newDirName);
                                 }
                             } else { // $newFile (dir) not exist
-                                     // rename dir old
+                                // rename dir old
                                 if ($this->_renameFileAndDir($dir, $file, $newFile, $this->_client) != false) {
                                     $this->_syncModule($dir, $file, $newFile);
                                 }
@@ -288,9 +268,6 @@ class cModuleSynchronizer extends cModuleHandler {
                     }
                 }
             }
-
-            // close dir
-            closedir($dh);
         }
 
         // last Modul Id that will refresh the windows /modul overview
@@ -302,8 +279,9 @@ class cModuleSynchronizer extends cModuleHandler {
      * name.
      * If the modul name exist it will return true
      *
-     * @param string $name name ot the modul
+     * @param $alias
      * @param int $idclient idclient
+     * @internal param string $name name ot the modul
      * @return bool if a modul with the $name exist in the $cfg['tab']['mod'] table
      *         return true else false
      */
@@ -333,7 +311,7 @@ class cModuleSynchronizer extends cModuleHandler {
     private function _updateModulnameInDb($oldName, $newName, $idclient) {
         $db = cRegistry::getDb();
 
-        // Select depending from idclient all moduls wiht the name $name
+        // Select depending from idclient all modules wiht the name $name
         $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s", $this->_cfg['tab']['mod'], $oldName, $idclient);
 
         $db->query($sql);

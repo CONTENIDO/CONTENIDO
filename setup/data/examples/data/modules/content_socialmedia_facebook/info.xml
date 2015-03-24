@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>content_socialmedia_facebook</name><description/><type/><alias>content_socialmedia_facebook</alias></module>
+<module><name>content_socialmedia_facebook</name><description>Facebook integration with configurable layout</description><type>content</type><alias>content_socialmedia_facebook</alias></module>

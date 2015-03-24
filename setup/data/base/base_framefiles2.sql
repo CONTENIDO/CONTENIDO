@@ -22,3 +22,4 @@ INSERT INTO !PREFIX!_frame_files VALUES ('10000', '10000', '4', '10000');
 INSERT INTO !PREFIX!_frame_files VALUES ('1010', '951', '4', '955');
 INSERT INTO !PREFIX!_frame_files VALUES ('1011', '951', '4', '956');
 INSERT INTO !PREFIX!_frame_files VALUES ('1012', '953', '4', '957');
+INSERT INTO !PREFIX!_frame_files VALUES ('1013', '954', '4', '958');

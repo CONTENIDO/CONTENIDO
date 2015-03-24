@@ -1,6 +1,6 @@
 <!-- config_copyright_notice -->
 
-<label class="content_type_label">{$label}</label>
+<label class="content_type_label">{$label|escape}</label>
 
 {$text}
 

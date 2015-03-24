@@ -37,7 +37,7 @@ class WorkflowArtAllocations extends ItemCollection {
     public function create($idartlang) {
         global $cfg;
 
-        $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = " . (int) $idartlang;
+        $sql = "SELECT idartlang FROM " . $cfg["tab"]["art_lang"] . " WHERE idartlang = " . cSecurity::toInteger($idartlang);
 
         $this->db->query($sql);
         if (!$this->db->nextRecord()) {
@@ -52,7 +52,7 @@ class WorkflowArtAllocations extends ItemCollection {
             return false;
         }
 
-        $newitem = parent::createNewItem();
+        $newitem = $this->createNewItem();
         $newitem->setField("idartlang", $idartlang);
         $newitem->store();
 

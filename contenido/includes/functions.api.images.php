@@ -110,7 +110,7 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     }
 
     $frontendURL = cRegistry::getFrontendUrl();
-    $filetype = substr($filename, strlen($filename) - 4, 4);
+    $filetype = cFileHandler::getExtension($filename);
     $md5 = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
@@ -122,13 +122,13 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
 
     // Get out which file we have
     switch (strtolower($filetype)) {
-        case '.gif':
+        case 'gif':
             $function = 'imagecreatefromgif';
             break;
-        case '.png':
+        case 'png':
             $function = 'imagecreatefrompng';
             break;
-        case '.jpg':
+        case 'jpg':
             $function = 'imagecreatefromjpeg';
             break;
         case 'jpeg':
@@ -166,11 +166,11 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     // Output the file
     if ($keepType) {
         switch (strtolower($filetype)) {
-            case '.png':
+            case 'png':
                 imagepng($targetImage, $cacheFile); // no quality option
                                                     // available
                 break;
-            case '.gif':
+            case 'gif':
                 imagegif($targetImage, $cacheFile); // no quality option
                                                     // available
                 break;
@@ -293,7 +293,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
         $targetImage = imagecreatetruecolor($targetX, $targetY);
 
         // Preserve transparency
-        if (strtolower($filetype) == '.gif' or strtolower($filetype) == '.png') {
+        if (strtolower($filetype) == 'gif' or strtolower($filetype) == 'png') {
             imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
             imagealphablending($targetImage, false);
             imagesavealpha($targetImage, true);
@@ -305,11 +305,11 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false, $cac
     // Output the file
     if ($keepType) {
         switch (strtolower($filetype)) {
-            case '.png':
+            case 'png':
                 imagepng($targetImage, $cacheFile); // no quality option
                                                     // available
                 break;
-            case '.gif':
+            case 'gif':
                 imagegif($targetImage, $cacheFile);
                 break;
             default:
@@ -376,7 +376,7 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
     }
 
     $frontendURL = cRegistry::getFrontendUrl();
-    $filetype = substr($filename, strlen($filename) - 4, 4);
+    $filetype = cFileHandler::getExtension($filename);
     $md5 = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache']['path'] . $cfileName;
@@ -394,7 +394,7 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
     list($targetX, $targetY) = cApiImageGetTargetDimensions($x, $y, $maxX, $maxY, $expand);
 
     // If is animated gif resize first frame
-    if ($filetype == '.gif') {
+    if ($filetype == 'gif') {
         if (cApiImageIsAnimGif($filename)) {
             $filename .= '[0]';
         }
@@ -664,10 +664,10 @@ function cApiImageGetCacheFileName($md5, $filetype, $keepType) {
         // Should we keep the file type?
         // Just using switch if someone likes to add other types
         switch (strtolower($filetype)) {
-            case '.png':
+            case 'png':
                 $fileName = $md5 . '.png';
                 break;
-            case '.gif':
+            case 'gif':
                 $fileName = $md5 . '.gif';
                 break;
             default:

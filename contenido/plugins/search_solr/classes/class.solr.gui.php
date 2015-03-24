@@ -82,9 +82,12 @@ class SolrRightBottomPage extends cGuiPage {
         $this->set('s', 'I18N_DESCR_SSL_CAPATH', Solr::i18n('DESCR_SSL_CAPATH'));
         $this->set('s', 'I18N_DESCR_RELOAD', Solr::i18n('DESCR_RELOAD'));
         $this->set('s', 'I18N_DESCR_REINDEX', Solr::i18n('DESCR_REINDEX'));
+        $this->set('s', 'I18N_DESCR_DELETE', Solr::i18n('DESCR_DELETE'));
 
         // get client options
-        $this->_clientOptions = Solr::getClientOptions();
+        $idclient = cRegistry::getClientId();
+        $idlang = cRegistry::getLanguageId();
+        $this->_clientOptions = Solr::getClientOptions($idclient, $idlang);
         $this->set('s', 'HOSTNAME', $this->_clientOptions['hostname']);
         $this->set('s', 'PORT', $this->_clientOptions['port']);
         $this->set('s', 'PATH', $this->_clientOptions['path']);
@@ -103,19 +106,21 @@ class SolrRightBottomPage extends cGuiPage {
         $this->set('s', 'SSL_CAINFO', $this->_clientOptions['ssl_cainfo']);
         $this->set('s', 'SSL_CAPATH', $this->_clientOptions['ssl_capath']);
 
-        // actions will be disabled if any required client option is missing
-        $validClientOptions = true;
-        $validClientOptions &= array_key_exists('hostname', $this->_clientOptions);
-        $validClientOptions &= array_key_exists('port', $this->_clientOptions);
-        $validClientOptions &= array_key_exists('path', $this->_clientOptions);
-        $validClientOptions &= array_key_exists('login', $this->_clientOptions);
-        $validClientOptions &= array_key_exists('password', $this->_clientOptions);
-        $this->set('s', 'DISABLED_RELOAD', $validClientOptions ? '' : 'disabled="disabled"');
-        $this->set('s', 'DISABLED_REINDEX', $validClientOptions ? '' : 'disabled="disabled"');
-
         // dispatch action
         try {
             $this->_dispatch($action);
+
+            // actions will be disabled if any required client option is missing
+            try {
+                Solr::validateClientOptions($this->_clientOptions);
+                $validClientOptions = true;
+            } catch (SolrWarning $e) {
+                $validClientOptions = false;
+            }
+            $this->set('s', 'DISABLED_RELOAD', $validClientOptions ? '' : 'disabled="disabled"');
+            $this->set('s', 'DISABLED_REINDEX', $validClientOptions ? '' : 'disabled="disabled"');
+            $this->set('s', 'DISABLED_DELETE', $validClientOptions ? '' : 'disabled="disabled"');
+
         } catch (InvalidArgumentException $e) {
             $cGuiNotification = new cGuiNotification();
             $notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_ERROR, $e->getMessage());
@@ -155,6 +160,9 @@ class SolrRightBottomPage extends cGuiPage {
                     break;
                 case 'reindex':
                     $this->set('s', 'notification', $this->_reindex());
+                    break;
+                case 'delete':
+                    $this->set('s', 'notification', $this->_delete());
                     break;
                 default:
                     throw new InvalidArgumentException('unknown action ' . $action);
@@ -272,12 +280,76 @@ class SolrRightBottomPage extends cGuiPage {
      * @return string
      */
     private function _reindex() {
+        $cfg = cRegistry::getConfig();
+
+        $idclient = cRegistry::getClientId();
+        $idclient = cSecurity::toInteger($idclient);
+
+        $idlang = cRegistry::getLanguageId();
+        $idlang = cSecurity::toInteger($idlang);
+
+        // statement is not correct if articles are related to more than one category.
+        $db = cRegistry::getDb();
+        $db->query("-- SolrRightBottomPage->_reindex()
+            SELECT
+                art.idclient
+                , art_lang.idlang
+                , cat_art.idcat
+                , cat_lang.idcatlang
+                , art_lang.idart
+                , art_lang.idartlang
+            FROM
+                `{$cfg['tab']['art_lang']}` AS art_lang
+            INNER JOIN
+                `{$cfg['tab']['art']}` AS art
+            ON
+                art_lang.idart = art.idart
+            INNER JOIN
+                `{$cfg['tab']['cat_art']}` AS cat_art
+            ON
+                art_lang.idart = cat_art.idart
+            INNER JOIN
+                `{$cfg['tab']['cat_lang']}` AS cat_lang
+            ON
+                cat_art.idcat = cat_lang.idcat
+                AND art_lang.idlang = cat_lang.idlang
+            WHERE
+                art.idclient = $idclient
+                -- AND art_lang.idlang = $idlang
+            ORDER BY
+                art_lang.idartlang
+            ;");
+
+        $articleIds = array();
+        while ($db->nextRecord()) {
+            array_push($articleIds, array(
+                'idclient' => $db->f('idclient'),
+                'idlang' => $db->f('idlang'),
+                'idcat' => $db->f('idcat'),
+                'idcatlang' => $db->f('idcatlang'),
+                'idart' => $db->f('idart'),
+                'idartlang' => $db->f('idartlang')
+            ));
+        }
+
+        $indexer = new SolrIndexer($articleIds);
+        $indexer->updateArticles();
+
+        $cGuiNotification = new cGuiNotification();
+        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, 'core was reindexed');
+    }
+
+    /**
+     *
+     * @return string
+     */
+    private function _delete() {
 
         $cfg = cRegistry::getConfig();
 
         // statement is not correct if articles are related to more than one category.
         $db = cRegistry::getDb();
-        $db->query("-- SolrRightBottomPage->_reindex()
+        $db->query("-- SolrRightBottomPage->_delete()
             SELECT
                 art.idclient
                 , art_lang.idlang
@@ -317,10 +389,10 @@ class SolrRightBottomPage extends cGuiPage {
         }
 
         $indexer = new SolrIndexer($articleIds);
-        $indexer->updateArticles();
+        $indexer->deleteArticles();
 
         $cGuiNotification = new cGuiNotification();
-        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, 'core was reindexed');
+        return $cGuiNotification->returnNotification(cGuiNotification::LEVEL_INFO, 'core was deleted');
     }
 
 }

@@ -211,7 +211,10 @@ class cRequestValidator {
 
             if ($this->_mode == 'stop') {
                 ob_end_clean();
-                die('Parameter check failed! (' . $this->_failure . '=' . $_GET[$this->_failure] . $_POST[$this->_failure] . ')');
+                $msg = 'Parameter check failed! (%s = %s %s)';
+                // prevent XSS!
+                $msg = sprintf($msg, htmlentities($this->_failure), htmlentities($_GET[$this->_failure]), htmlentities($_POST[$this->_failure]));
+                die($msg);
             }
         }
 
@@ -266,7 +269,7 @@ class cRequestValidator {
                 // parameter is known, check it...
                 $result = preg_match($this->_check[$type][$key], $value);
             } else {
-                // unknown parameter. Will return tru
+                // unknown parameter. Will return true
                 $result = true;
             }
         }

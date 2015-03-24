@@ -92,7 +92,7 @@ class WorkflowUserSequences extends ItemCollection {
             $lastPos = $item->getField("position") + 1;
         }
 
-        $newitem = parent::createNewItem();
+        $newitem = $this->createNewItem();
         $newitem->setWorkflowItem($idworkflowitem);
         $newitem->setPosition($lastPos);
         $newitem->store();

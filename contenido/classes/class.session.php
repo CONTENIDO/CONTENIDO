@@ -67,7 +67,31 @@ class cSession {
         $this->name = 'contenido';
 
         if (!isset($_SESSION)) {
-            session_set_cookie_params(0, "/");
+            if ('backend' === $prefix) {
+                $url = cRegistry::getBackendUrl();
+            } else {
+                $url = cRegistry::getFrontendUrl();
+            }
+
+            // remove protocol from contenido URL
+            $start = strpos($url, '://');
+            if (false === $start) {
+                $url = 'http://' . $url;
+                $start = strpos($url, '://');
+            }
+
+            // url of contenido folder with hostname 
+            $path = substr($url, $start + 3);
+
+            $start = strpos($path, '/');
+            if (false !== $start) {
+                $path = substr($path, $start);
+                session_set_cookie_params(0, $path);
+            } else {
+                // fall back to entire domain if no path can be computed
+                session_set_cookie_params(0, '/');
+            }
+
             session_name($this->_prefix);
             session_start();
             $this->id = session_id();

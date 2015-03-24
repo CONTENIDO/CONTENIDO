@@ -84,13 +84,14 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
     if (chdir($sCurrentDir) == false) {
         return $aFiles;
     }
-    $hDir = opendir('.');
 
     // list the files in the dir
     $aCurrentFiles = array();
-    while (false !== ($file = readdir($hDir))) {
-        // foreach (cDirHandler::read('.',false,true) as $key => $file) {
-        if (is_dir($file) && !in_array(strtolower($file), $aDirsToExclude)) {
+    if (false === ($handle = cDirHandler::read('.', false, true))) {
+        return $aFiles;
+    }
+    foreach ($handle as $file) {
+        if (!in_array(strtolower($file), $aDirsToExclude)) {
             $aCurrentFiles[] = $file;
         }
     }
@@ -100,9 +101,9 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
         $sFilePathName = getcwd() . '/' . $file;
         if ((filetype($sFilePathName) == 'dir') && (opendir($sFilePathName) !== false)) {
             $_aFile = array(
-                'name' => $file,
-                'depth' => $iDepth,
-                'pathstring' => $sPathString . $file . '/'
+                    'name' => $file,
+                    'depth' => $iDepth,
+                    'pathstring' => $sPathString . $file . '/'
             );
 
             $aFiles[] = $_aFile;
@@ -111,7 +112,6 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
         }
     }
 
-    closedir($hDir);
     chdir($sStartDir);
     return $aFiles;
 }
@@ -126,19 +126,20 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
 function uplHasFiles($sDir) {
     global $client, $cfgClient;
 
-    if (!$hDir = @opendir($cfgClient[$client]['upl']['path'] . $sDir)) {
+    $handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir);
+    
+    if (!$handle) {
         return false;
     }
-
+    
     $bHasContent = false;
     if (is_dir($cfgClient[$client]['upl']['path'] . $sDir)) {
-        while (false !== ($sDirEntry = readdir($hDir))) {
-            if ($sDirEntry != '.' && $sDirEntry != '..') {
+        foreach ($handle as $sDirEntry) {
+            if (cFileHandler::fileNameIsDot($sDirEntry) === false) {
                 $bHasContent = true;
                 break;
             }
         }
-        closedir($hDir);
     }
     return $bHasContent;
 }
@@ -151,22 +152,20 @@ function uplHasFiles($sDir) {
  */
 function uplHasSubdirs($sDir) {
     global $client, $cfgClient;
-
-    if (!$hDir = @opendir($cfgClient[$client]['upl']['path'] . $sDir)) {
-        return true;
+    
+    $handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir); 
+    if (!$handle) {
+        return false;
     }
-
+    
     $bHasSubdir = false;
     if (is_dir($cfgClient[$client]['upl']['path'] . $sDir)) {
-        while (false !== ($sDirEntry = readdir($hDir))) {
-            if ($sDirEntry != '.' && $sDirEntry != '..') {
-                if (is_dir($cfgClient[$client]['upl']['path'] . $sDir . $sDirEntry)) {
-                    $bHasSubdir = true;
-                    break;
-                }
+        foreach ($handle as $sDirEntry) {
+            if (cFileHandler::fileNameIsDot($sDirEntry) === false) {
+                $bHasSubdir = true;
+                break;
             }
         }
-        closedir($hDir);
     }
 
     return $bHasSubdir;
@@ -218,18 +217,13 @@ function uplSyncDirectory($sPath) {
     $sFullPath = $cfgClient[$client]['upl']['path'] . $sPath;
     if (is_dir($sFullPath)) {
         $aDirsToExclude = uplGetDirectoriesToExclude();
-        if (($hDir = opendir($sFullPath)) !== false) {
-            while (false !== ($file = readdir($hDir))) {
-                // foreach (cDirHandler::read($sDirectory,false,true) as $key =>
-                // $file) {
+        if (false !== ($handle = cDirHandler::read($sFullPath))) {
+            foreach ($handle as $file) {
                 if (!in_array(strtolower($file), $aDirsToExclude)) {
-                    if (is_file($sFullPath . $file)) {
-                        cDebug::out($sPath . "::" . $file);
-                        $oUploadsColl->sync($sPath, $file);
-                    }
+                    cDebug::out($sPath . "::" . $file);
+                    $oUploadsColl->sync($sPath, $file);
                 }
             }
-            closedir($hDir);
         }
     }
 }
@@ -343,7 +337,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
         $sDirName = $oUpload->get('dirname');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
-        $oUpload->set('dirname', $oUpload->escape($sNewName2), false);
+        $oUpload->set('dirname', $sNewName2, false);
         $oUpload->store();
     }
 
@@ -355,7 +349,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
         $sDirName = $oProperty->get('itemid');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
-        $oProperty->set('itemid', $oProperty->escape($sNewName2), false);
+        $oProperty->set('itemid', $sNewName2, false);
         $oProperty->store();
     }
 }
@@ -373,16 +367,13 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent) {
 function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $sParent = '', $iRenameLevel = 0) {
     $aInvalidDirectories = array();
 
-    $hDir = @opendir($sDirectory);
-
-    if ($hDir) {
+    if (true === is_dir($sDirectory)) {
         $aDirsToExclude = uplGetDirectoriesToExclude();
 
         $aFiles = array();
 
         // list the files in the dir
         foreach (cDirHandler::read($sDirectory, false, true) as $key => $file) {
-            // while (false !== ($file = readdir($hDir))) {
             if (!in_array(strtolower($file), $aDirsToExclude)) {
                 if (strpos($file, ".") === 0) {
                     continue;
@@ -419,8 +410,6 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
             $aInvalidDirectories = array_merge($aInvalidDirectories, $aArrayTemp);
             unset($oItem);
         }
-
-        closedir($hDir);
     }
 
     return $aInvalidDirectories;

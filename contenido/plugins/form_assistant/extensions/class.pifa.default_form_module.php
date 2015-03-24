@@ -113,6 +113,11 @@ class DefaultFormModule extends PifaAbstractFormModule {
             // store validation state as (global) application so another module
             // can show a reply text but when validation is successfull
             cRegistry::setAppVar('pifaFormValidity', 'invalid');
+        } catch (PifaException $e) {
+            // display form with valid values again
+            $this->doGet($postProcessor->getForm()->getValues());
+
+            Pifa::displayException($e);
         } catch (Exception $e) {
 
             Pifa::logException($e);

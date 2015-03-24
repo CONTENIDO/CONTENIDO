@@ -38,15 +38,14 @@ class cZipArchive {
             return array();
         }
 
-        // try to open $dirPath
-        if (false === $handle = opendir($dirPath)) {
+        // try to read $dirPath
+        if (false === ($handle = cDirHandler::read($dirPath))) {
             return array();
         }
-
-        // gather all files in $dirPath that are "valid" filenames
+        
         $array = array();
-        while (false !== $file = readdir($handle)) {
-            if ('.' === $file[0]) {
+        foreach ($handle as $file) {
+            if (cFileHandler::fileNameBeginsWithDot($file)) {
                 // exclude file if name starts with a dot
                 // hotfix : fileHandler returns filename '.' als valid filename
                 continue;
@@ -58,9 +57,6 @@ class cZipArchive {
                 $array[] = $file;
             }
         }
-
-        // close dir handle
-        closedir($handle);
 
         // return array of files
         return $array;

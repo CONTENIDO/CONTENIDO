@@ -39,8 +39,8 @@ class cApiNavMainCollection extends ItemCollection {
      * @return cApiNavMain
      */
     public function create($location) {
-        $item = parent::createNewItem();
-        $item->set('location', cSecurity::escapeString($location));
+        $item = $this->createNewItem();
+        $item->set('location', $location);
         $item->store();
         return $item;
     }

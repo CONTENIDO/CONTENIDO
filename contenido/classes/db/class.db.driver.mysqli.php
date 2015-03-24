@@ -74,7 +74,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      */
     public function connect() {
         $dbHandler = @mysqli_init();
-        if (!$dbHandler) {
+        if (!$dbHandler || $dbHandler->connect_error != "" || $dbHandler->error != "") {
             $this->_handler->halt('Can not initialize database connection.');
             return NULL;
         }
@@ -118,6 +118,12 @@ class cDbDriverMysqli extends cDbDriverAbstract {
         }
 
         $res = mysqli_real_connect($dbHandler, $connectConfig['host'], $connectConfig['user'], $connectConfig['password'], $connectConfig['database'], $connectConfig['port'], $connectConfig['socket'], $connectConfig['flags']);
+
+        // check if connection could be established
+        if (false === $res) {
+            $this->_handler->halt('MySQLi _connect() Error connecting to database ' . $connectConfig['database']);
+            return NULL;
+        }
 
         if ($res && $dbHandler && $connectConfig['database']) {
             if (!@mysqli_select_db($dbHandler, $connectConfig['database'])) {

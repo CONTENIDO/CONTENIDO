@@ -481,14 +481,11 @@ function htmldecode($string) {
  * @param string $frontendpath path the to the frontend
  */
 function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
-    global $cfg, $cfgClient, $errsite_idcat, $errsite_idart, $db;
+    
+    global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
     if (!is_array($cfgClient)) {
         $cfgClient = array();
-    }
-
-    if (!is_object($db)) {
-        $db = cRegistry::getDb();
     }
 
     if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
@@ -496,9 +493,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$idclient]['path']['htmlpath'] = cSecurity::escapeString($htmlpath);
     }
 
-    $sql = 'SELECT idclient, name, errsite_cat, errsite_art FROM ' . $cfg['tab']['clients'];
-    $db->query($sql);
-
+    // remember paths as these will be lost otherwise
     $htmlpaths = array();
     $frontendpaths = array();
     foreach ($cfgClient as $id => $aclient) {
@@ -510,15 +505,34 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
     unset($cfgClient);
     $cfgClient = array();
 
-    foreach ($htmlpaths as $id => $path) {
-        $cfgClient[$id]["path"]["htmlpath"] = $htmlpaths[$id];
-        $cfgClient[$id]["path"]["frontend"] = $frontendpaths[$id];
-    }
+    // don't do that as the set of clients may have changed!
+    // paths will be set in subsequent foreach instead.
+    // foreach ($htmlpaths as $id => $path) {
+    //     $cfgClient[$id]["path"]["htmlpath"] = $htmlpaths[$id];
+    //     $cfgClient[$id]["path"]["frontend"] = $frontendpaths[$id];
+    // }
+
+    // get clients from database
+    $db = cRegistry::getDb();
+    $db->query('
+        SELECT idclient
+            , name
+            , errsite_cat
+            , errsite_art
+        FROM ' . $cfg['tab']['clients']);
 
     while ($db->nextRecord()) {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
 
+        // set original paths
+        if (isset($htmlpaths[$iClient])) {
+            $cfgClient[$iClient]["path"]["htmlpath"] = $htmlpaths[$iClient];
+        }
+        if (isset($frontendpaths[$iClient])) {
+            $cfgClient[$iClient]["path"]["frontend"] = $frontendpaths[$iClient];
+        }
+        
         $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace(array(
             '*/',
             '/*',
@@ -574,7 +588,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$iClient]['version']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/version/';
         $cfgClient[$iClient]['version']['frontendpath'] = 'data/version/';
     }
-
+    
     $aConfigFileContent = array();
     $aConfigFileContent[] = '<?php';
     $aConfigFileContent[] = 'global $cfgClient;';
@@ -1032,6 +1046,12 @@ function humanReadableSize($number) {
  * @return number
  */
 function machineReadableSize($sizeString) {
+
+	// If sizeString is a integer value (i. e. 64242880), return it
+	if (cSecurity::isInteger($sizeString)) {
+		return $sizeString;
+	}
+
     $val = trim($sizeString);
     $last = strtolower($val[strlen($val) - 1]);
     $val = (float) substr($val, 0, strlen($val) - 1);
@@ -1104,9 +1124,9 @@ function scanPlugins($entity) {
     if ($lastscantime + 300 < time()) {
         setSystemProperty('plugin', $entity . '-lastscantime', time());
         if (is_dir($basedir)) {
-            if (false !== $dh = opendir($basedir)) {
-                while (($file = readdir($dh)) !== false) {
-                    if (is_dir($basedir . $file) && $file != 'includes' && $file != '.' && $file != '..') {
+            if (false !== ($handle = cDirHandler::read($basedir))) {
+                foreach ($handle as $file) {
+                    if (is_dir($basedir . $file) && $file != 'includes' && cFileHandler::fileNameIsDot($file) === false) {
                         if (!in_array($file, $plugins)) {
                             if (cFileHandler::exists($basedir . $file . '/' . $file . '.php')) {
                                 $plugins[] = $file;
@@ -1114,7 +1134,6 @@ function scanPlugins($entity) {
                         }
                     }
                 }
-                closedir($dh);
             }
         }
 
@@ -1627,13 +1646,14 @@ function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = fa
 
     $helper = cCategoryHelper::getInstance();
     $categories = $helper->getCategoryPath(cRegistry::getCategoryId(), 1);
+    $catIds = array_reverse($helper->getParentCategoryIds(cRegistry::getCategoryId()));
+    $catIds[] = cRegistry::getCategoryId();
     $catCount = count($categories);
     $tplCfg = new cApiTemplateConfiguration();
     $sess = cRegistry::getSession();
     $cfg = cRegistry::getConfig();
     $lang = cRegistry::getLanguageId();
     $idart = cRegistry::getArticleId();
-
 
     for ($i = 0; $i < $catCount; $i++) {
         $idcat_tpl = 0;
@@ -1648,8 +1668,16 @@ function renderBackendBreadcrumb($syncoptions, $showArticle = true, $return = fa
         }
 
         $linkUrl = $sess->url(cRegistry::getBackendUrl() . "main.php?area=con&frame=4&idcat=$idcat_bread&idtpl=$idcat_tpl&syncoptions=$syncoptions&contenido=1");
+
+        $disabled = false;
+        if(!$categories[$i]->isLoaded() && $syncoptions > 0) {
+            $idcat_name = sprintf(i18n("Unsynchronized category (%s)"), $catIds[$i]);
+            $linkUrl = "#";
+            $disabled = true;
+        }
         $tplBread->set('d', 'LINK', $linkUrl);
         $tplBread->set('d', 'NAME', $idcat_name);
+        $tplBread->set('d', 'DISABLED', $disabled ? 'disabled' : '');
 
         $sepArrow = '';
         if ($i < $catCount - 1) {

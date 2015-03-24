@@ -117,6 +117,30 @@
      */
     Con.getFrame = function(name) {
         try {
+            // Contenido's file and image browser
+            if ("undefined" === typeof(scope.top.content)) {
+                switch (name) {
+                    case 'header':
+                        return scope.header;
+                    case 'content':
+                        return scope.contentFrame;
+                    case 'left':
+                        return scope.top.left;
+                    case 'left_deco':
+                        return scope.top.left.left_deco;
+                    case 'left_top':
+                        return scope.top.left.left_top;
+                    case 'left_bottom':
+                        return scope.top.left.left_bottom;
+                    case 'right':
+                        return scope.top.right;
+                    case 'right_top':
+                        return scope.top.right.right_top;
+                    case 'right_bottom':
+                        return scope.top.right.right_bottom;
+                }
+            }
+            // everywhere else
             switch (name) {
                 case 'header':
                     return scope.top.header;
@@ -139,7 +163,7 @@
                         return scope.top.content.right_top;
                     }
                 case 'right_bottom':
-                    if ('undefined' !== $.type(scope.top.content.right)) {
+                    if ('undefined' !== typeof(scope.top.content.right)) {
                         return scope.top.content.right.right_bottom;
                     } else {
                         return scope.top.content.right_bottom;

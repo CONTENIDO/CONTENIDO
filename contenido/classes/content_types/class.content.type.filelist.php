@@ -130,6 +130,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         // notice: there is also a need, that filelist_id is the same (case:
         // more than one cms file list is used on the same page
         if (isset($_POST['filelist_action']) && $_POST['filelist_action'] === 'store' && isset($_POST['filelist_id']) && (int) $_POST['filelist_id'] == $this->_id) {
+            
             // convert the date form fields to timestamps
             foreach ($dateFormFields as $dateFormField) {
                 $value = $_POST[$dateFormField];
@@ -141,6 +142,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 }
                 $_POST[$dateFormField] = $timestamp;
             }
+
+            $this->getConfiguredFiles();
             $this->_storeSettings();
         }
     }
@@ -193,7 +196,6 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     public function generateViewCode() {
         $code = '";?><?php
                     $fileList = new cContentTypeFilelist(\'%s\', %s, %s);
-
                     echo $fileList->generateFileListCode();
                  ?><?php echo "';
         $code = sprintf($code, $this->_rawSettings, $this->_id, 'array()');
@@ -210,7 +212,22 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $files = array();
 
         if ($this->_settings['filelist_manual'] === 'true' && count($this->_settings['filelist_manual_files']) > 0) {
-            $fileList = $this->_settings['filelist_manual_files'];
+            $tempFileList = $this->_settings['filelist_manual_files'];
+
+            // Check if manual selected file exists, otherwise ignore them
+            // Write only existing files into fileList array
+            if (is_array($tempFileList)) {
+                foreach ($tempFileList as $filename) {
+                    if (cFileHandler::exists($this->_uploadPath . $filename)) {
+                        $fileList[] = $filename;
+                    }
+                }
+            } else {
+                if (cFileHandler::exists($this->_uploadPath . $tempFileList)) {
+                    $fileList[] = $tempFileList;
+                }
+            }
+
         } else if (count($this->_settings['filelist_directories']) > 0) {
             $directories = $this->_settings['filelist_directories'];
 
@@ -229,15 +246,11 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
             foreach ($directories as $directoryName) {
                 if (is_dir($this->_uploadPath . $directoryName)) {
-                    if (false !== $handle = opendir($this->_uploadPath . $directoryName)) {
-                        while (($entry = readdir($handle)) !== false) {
-                            // checking if entry is file and is not a directory
-                            if (is_file($this->_uploadPath . $directoryName . '/' . $entry)) {
-                                $fileList[] = $directoryName . '/' . $entry;
-                            }
+                    if (false !== $handle = cDirHandler::read($this->_uploadPath . $directoryName . '/', false, false, true)) {
+                        foreach ($handle as $entry) {
+                            $fileList[] = $directoryName . '/' . $entry;
                         }
                     }
-                    closedir($handle);
                 }
             }
         } else {
@@ -319,8 +332,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
         $template = new cTemplate();
         $fileList = array();
-
-        $template->set('s', 'TITLE', $this->_settings['filelist_title']);
+        $template->set('s', 'TITLE', conHtmlSpecialChars($this->_settings['filelist_title']));
 
         $files = $this->getConfiguredFiles();
 
@@ -344,14 +356,16 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * @return array containing all subdirectories and the initial directories
      */
     private function _getAllSubdirectories($directoryPath, array $directories) {
-        $handle = opendir($this->_uploadPath . $directoryPath);
-        while (($entry = readdir($handle)) !== false) {
-            if ($entry !== '.svn' && $entry !== '.' && $entry !== '..' && is_dir($this->_uploadPath . $directoryPath . '/' . $entry)) {
-                $directories[] = $directoryPath . '/' . $entry;
-                $directories = $this->_getAllSubdirectories($directoryPath . '/' . $entry, $directories);
+        $handle = cDirHandler::read($this->_uploadPath . $directoryPath . '/', false, true);
+
+        if (false !== $handle) {
+            foreach ($handle as $entry) {
+                if (cFileHandler::fileNameBeginsWithDot($entry) === false) {
+                    $directories[] = $directoryPath . '/' . $entry;
+                    $directories = $this->_getAllSubdirectories($directoryPath . '/' . $entry, $directories);
+                }
             }
         }
-        closedir($handle);
 
         return $directories;
     }
@@ -403,7 +417,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                                 break;
                             case 'filename':
                             default:
-                                $indexName = strtolower($filename);
+                                $indexName = strtolower($directoryName . $filename);
                         }
 
                         $files[$indexName] = array();
@@ -455,8 +469,6 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         $fileLink = $this->_cfgClient[$this->_client]['upl']['htmlpath'] . $directoryName . '/' . $filename;
         $filePath = $this->_cfgClient[$this->_client]['upl']['path'] . $directoryName . '/' . $filename;
-
-        $info = exif_imagetype($filePath);
 
         // If file is an image (extensions gif, jpg, jpeg, png) scale it
         // otherwise use default png image
@@ -599,7 +611,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLParagraph(i18n('Source directory'), 'head_sub');
 
         $directoryList = new cHTMLDiv('', 'directoryList', 'directoryList' . '_' . $this->_id);
-        $liRoot = new cHTMLListItem('root', 'last');
+        $liRoot = new cHTMLListItem('root', 'root last');
         $directoryListCode = $this->generateDirectoryList($this->buildDirectoryList());
         $liRoot->setContent(array(
             '<em>Uploads</em>',
@@ -627,7 +639,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLParagraph(i18n('General settings'), 'head_sub');
 
         $wrapperContent[] = new cHTMLLabel(i18n('File list title'), 'filelist_title_' . $this->_id);
-        $wrapperContent[] = new cHTMLTextbox('filelist_title_' . $this->_id, $this->_settings['filelist_title'], '', '', 'filelist_title_' . $this->_id);
+        $wrapperContent[] = new cHTMLTextbox('filelist_title_' . $this->_id, conHtmlSpecialChars($this->_settings['filelist_title']), '', '', 'filelist_title_' . $this->_id);
         $wrapperContent[] = new cHTMLLabel(i18n('File list style'), 'filelist_style_' . $this->_id);
         $wrapperContent[] = $this->_generateStyleSelect();
         $wrapperContent[] = new cHTMLLabel(i18n('File list sort'), 'filelist_sort_' . $this->_id);
@@ -759,7 +771,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         $wrapperContent[] = new cHTMLLabel(i18n('Ignore selection (use all)'), 'filelist_ignore_extensions_' . $this->_id, 'filelist_ignore_extensions');
         $wrapperContent[] = new cHTMLCheckbox('filelist_ignore_extensions_' . $this->_id, '', 'filelist_ignore_extensions_' . $this->_id, ($this->_settings['filelist_ignore_extensions'] !== 'false'));
 
-        $wrapperContent[] = new cHTMLLabel(i18n('File size limit'), 'filelist_filesizefilter_from_' . $this->_id);
+        $wrapperContent[] = new cHTMLLabel(i18n('File size limit (in MiB)'), 'filelist_filesizefilter_from_' . $this->_id);
         $default = (!empty($this->_settings['filelist_filesizefilter_from'])) ? $this->_settings['filelist_filesizefilter_from'] : '0';
         $wrapperContent[] = new cHTMLTextbox('filelist_filesizefilter_from_' . $this->_id, $default, '', '', 'filelist_filesizefilter_from_' . $this->_id);
         $wrapperContent[] = new cHTMLSpan('&nbsp;-&nbsp;');
@@ -912,11 +924,30 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * @return string rendered cHTMLSelectElement
      */
     private function _generateExistingFileSelect() {
-        $selectedFiles = $this->_settings['filelist_manual_files'];
+        $tempSelectedFiles = $this->_settings['filelist_manual_files'];
+
+        // Check if manual selected file exists, otherwise ignore them
+        // Write only existing files into selectedFiles array
+//        if (is_array($tempSelectedFiles)) {
+//            foreach ($tempSelectedFiles as $filename) {
+//                if (cFileHandler::exists($this->_uploadPath . $filename)) {
+//                    $selectedFiles[] = $filename;
+//                }
+//            }
+//        }
+
+
+        // If we have wasted selected files, update settings
+//        if (count($tempSelectedFiles) != count($selectedFiles)) {
+//        	$this->_settings['filelist_manual_files'] = $selectedFiles;
+//
+//        	$this->_storeSettings();
+//        }
+
         $htmlSelect = new cHTMLSelectElement('filelist_manual_files_' . $this->_id, '', 'filelist_manual_files_' . $this->_id, false, '', '', 'manual');
 
-        if (is_array($selectedFiles)) { // More than one entry
-            foreach ($selectedFiles as $selectedFile) {
+        if (is_array($this->_settings['filelist_manual_files'])) { // More than one entry
+            foreach ($this->_settings['filelist_manual_files'] as $selectedFile) {
                 $splits = explode('/', $selectedFile);
                 $splitCount = count($splits);
                 $fileName = $splits[$splitCount - 1];
@@ -924,11 +955,11 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
                 $htmlSelectOption->setAlt($fileName);
                 $htmlSelect->appendOptionElement($htmlSelectOption);
             }
-        } elseif (!empty($selectedFiles)) { // Only one entry
-            $splits = explode('/', $selectedFiles);
+        } elseif (!empty($this->_settings['filelist_manual_files'])) { // Only one entry
+            $splits = explode('/', $this->_settings['filelist_manual_files']);
             $splitCount = count($splits);
             $fileName = $splits[$splitCount - 1];
-            $htmlSelectOption = new cHTMLOptionElement($fileName, $selectedFiles, true);
+            $htmlSelectOption = new cHTMLOptionElement($fileName, $this->_settings['filelist_manual_files'], true);
             $htmlSelectOption->setAlt($fileName);
             $htmlSelect->appendOptionElement($htmlSelectOption);
         }
@@ -949,17 +980,38 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     public function generateFileSelect($directoryPath = '') {
         $htmlSelect = new cHTMLSelectElement('filelist_filename_' . $this->_id, '', 'filelist_filename_' . $this->_id, false, '', '', 'filelist_filename');
 
-        $i = 0;
+        $files = array();
         if ($directoryPath != '') {
-            $handle = opendir($this->_uploadPath . $directoryPath);
-            while (($entry = readdir($handle)) !== false) {
-                if (is_file($this->_uploadPath . $directoryPath . '/' . $entry)) {
-                    $htmlSelectOption = new cHTMLOptionElement($entry, $directoryPath . '/' . $entry);
-                    $htmlSelect->addOptionElement($i, $htmlSelectOption);
-                    $i++;
+            $handle = cDirHandler::read($this->_uploadPath . $directoryPath);
+            if (false !== $handle) {
+                foreach ($handle as $entry) {
+                    if (is_file($this->_uploadPath . $directoryPath . '/' . $entry)) {
+                        $file = array();
+                        $file["name"] = $entry;
+                        $file["path"] = $directoryPath . "/" . $entry;
+                        $files[] = $file;
+                    }
                 }
             }
-            closedir($handle);
+        }
+
+        usort($files, function($a, $b) {
+            $a = mb_strtolower($a["name"]);
+            $b = mb_strtolower($b["name"]);
+            if($a < $b) {
+                return -1;
+            } else if($a > $b) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        $i = 0;
+        foreach($files as $file) {
+            $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
+            $htmlSelect->addOptionElement($i, $htmlSelectOption);
+            $i++;
         }
 
         if ($i === 0) {

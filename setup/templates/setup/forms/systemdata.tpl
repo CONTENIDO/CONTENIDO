@@ -30,8 +30,8 @@
                 </tr>
                 <tr>
                 	<td><a href="javascript://" onclick="toggleSettings()">
-                		<img class="advancedSettingsImage" style="margin-bottom: -.25em;" src="images/controls/arrow_closed.png">
-                		Advanced Settings
+                		<img class="advancedSettingsImage" alt="" style="margin-bottom: -.25em;" src="images/controls/arrow_closed.png">
+                		{LABEL_DBADVANCED}
                 	</td>
                 	<td>&nbsp;</td>
                 </tr>

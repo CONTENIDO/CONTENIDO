@@ -20,6 +20,7 @@ cInclude('includes', 'functions.pathresolver.php');
 
 $message = '';
 $description = '';
+$configLocked = false;
 
 if (isset($idart)) {
     if ($idart > 0) {
@@ -82,6 +83,25 @@ $tpl->reset();
 if ($idart) {
     if ($perm->have_perm_area_action('con', 'con_tplcfg_edit') || $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)) {
 
+        $artlang = new cApiArticleLanguage($idartlang);
+
+        // check admin rights
+        $aAuthPerms = explode(',', $auth->auth['perm']);
+
+        $admin = false;
+        if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+            $admin = true;
+        }
+
+        if ($artlang->isLoaded()) {
+            if(!$idtpl && $idcat && $idart && (int) $artlang->get('locked') === 1) {
+                $inUse    = true;
+                $disabled = ($admin === false)? 'disabled="disabled"' : '';
+                $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+                $configLocked = true;
+            }
+        }
+
         // Article is configured
         $sql = "SELECT
                     c.idtpl AS idtpl,
@@ -108,8 +128,10 @@ if ($idart) {
 
             if ($db->f('locked') == 1) {
                 $inUse = true;
-                $disabled = 'disabled="disabled"';
-                $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+                $disabled = ($admin)? '': 'disabled="disabled"';
+                if ($configLocked === false){
+                    $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+                }
             }
         } else {
             if ($idtpl) {
@@ -118,7 +140,7 @@ if ($idart) {
 
                 $sql = "INSERT INTO " . $cfg['tab']['tpl_conf'] . " (idtpl) VALUES (" . cSecurity::toInteger($idtpl) . ")";
                 $db->query($sql);
-                $idtplcfg = $db->getLastInsertedId($cfg['tab']['tpl_conf']);
+                $idtplcfg = $db->getLastInsertedId();
 
                 // update art_lang
                 $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET idtplcfg=" . cSecurity::toInteger($idtplcfg) . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
@@ -160,7 +182,7 @@ if ($idart) {
 
             $sql = "INSERT INTO " . $cfg['tab']['tpl_conf'] . " (idtpl) VALUES (" . cSecurity::toInteger($idtpl) . ")";
             $db->query($sql);
-            $idtplcfg = $db->getLastInsertedId($cfg['tab']['tpl_conf']);
+            $idtplcfg = $db->getLastInsertedId();
 
             // update cat_lang
             $sql = "UPDATE " . $cfg['tab']['cat_lang'] . " SET idtplcfg=" . cSecurity::toInteger($idtplcfg) . " WHERE idcat=" . cSecurity::toInteger($idcat) . " AND idlang=" . cSecurity::toInteger($lang);
@@ -241,8 +263,9 @@ $tpl2 = new cTemplate();
 $tpl2->set('s', 'NAME', 'idtpl');
 $tpl2->set('s', 'CLASS', 'text_medium');
 
-if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat)) {
-    $disabled2 = 'disabled="disabled"';
+// CON-2157 fix categorie page has no article
+if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || is_object($artlang) && $artlang->get('locked') === 1 ) {
+    $disabled2 = ($admin)? '' : 'disabled="disabled"' ;
 }
 
 $tpl2->set('s', 'OPTIONS', $disabled . ' ' . $disabled2 . ' onchange="tplcfgform.changetemplate.value=1;tplcfgform.send.value=0;tplcfgform.submit();"');
@@ -374,10 +397,10 @@ if ($idart) {
 $cancelbutton = '';
 $acceptbutton = '';
 if ($idart || $area == 'con_tplcfg') {
-    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=con&frame=4&idcat=$idcat") . '"><img src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
+    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=con&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
     $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
 } else {
-    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=str&frame=4&idcat=$idcat") . '"><img src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
+    $cancelbutton = '<a accesskey="c" href="' . $sess->url("main.php?area=str&frame=4&idcat=$idcat") . '"><img alt="" src="images/but_cancel.gif" border="0"></a>&nbsp;&nbsp;&nbsp;&nbsp;';
     $acceptbutton = '<input accesskey="s" type="image" src="images/but_ok.gif" onclick="document.getElementById(\'tpl_form\').action = document.getElementById(\'tpl_form\').action+\'&back=true\'">';
 }
 if ($idtpl != 0 && $inUse == false) {

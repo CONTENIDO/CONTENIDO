@@ -32,6 +32,11 @@ chdir($frontendPath);
 // Include the config file of the frontend to initialize client and language id
 include_once($cfgClient[$client]['config']['path'] . '/config.php');
 
+// Clients local configuration
+if (file_exists($cfgClient[$client]['config']['path'] . '/config.local.php')) {
+    @include($cfgClient[$client]['config']['path'] . '/config.local.php');
+}
+
 // Include article view handler
 include(cRegistry::getBackendPath() . $cfg['path']['includes'] . '/frontend/include.front_content.php');
 

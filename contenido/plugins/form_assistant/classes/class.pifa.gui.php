@@ -683,6 +683,18 @@ class PifaRightBottomFormFieldsPage extends cGuiPage {
         // get and fill template
         $tpl = cSmartyBackend::getInstance(true);
 
+        $columnNames = array();
+        foreach ($this->_pifaForm->getFields() as $field) {
+            $columnNames[] = $field->get('column_name');
+        }
+
+        // check for required email column at this form
+        if (!in_array('email', $columnNames)) {
+            $cGuiNotification = new cGuiNotification();
+            $email_notification = $cGuiNotification->returnNotification(cGuiNotification::LEVEL_WARNING, Pifa::i18n('Currently there is no field called "email" in this form. Sending mails - if configured - to the user which entered the form data may not work!'));
+            $tpl->assign('email_notification', $email_notification);
+        }
+
         // translations
         $tpl->assign('trans', array(
             'legend' => Pifa::i18n('fields'),
@@ -968,6 +980,12 @@ class PifaRightBottomFormExportPage extends cGuiPage {
         $this->addStyle('right_bottom.css');
         $this->addScript('form_assistant.js');
         $this->addScript('right_bottom.js');
+        
+        // add translations to template
+        $this->set('s', 'I18N', json_encode(array(
+            'cancel' => Pifa::i18n('CANCEL'),
+            'save' => Pifa::i18n('SAVE')
+        )));
 
         // create models
         $this->_pifaForm = new PifaForm();
@@ -1091,6 +1109,12 @@ class PifaRightBottomFormImportPage extends cGuiPage {
         $this->addStyle('right_bottom.css');
         $this->addScript('form_assistant.js');
         $this->addScript('right_bottom.js');
+
+        // add translations to template
+        $this->set('s', 'I18N', json_encode(array(
+            'cancel' => Pifa::i18n('CANCEL'),
+            'save' => Pifa::i18n('SAVE')
+        )));
 
         // dispatch action
         try {

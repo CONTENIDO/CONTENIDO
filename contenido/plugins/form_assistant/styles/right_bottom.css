@@ -181,6 +181,23 @@ legend {
     width: 75%;
 }
 
+#pifa-form-field-list a.ui-state-highlight {
+    height: 50px !important;
+    display: block;
+}
+
+#pifa-form-field-list a.ui-draggable {
+    background-color: #f1f1f1;
+    border: 1px solid grey;
+    clear: left;
+    height: 51px;
+    margin: 1px;
+    padding-top: 3px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: 5px 5px;
+}
+
 /******************************************************************************/
 /* FORM: fields buttons                                                       */
 /******************************************************************************/
@@ -412,8 +429,8 @@ input[type="image"],
 #field-buttons ul li a {
     background-repeat: no-repeat;
     display: block;
-    height: 46px;
-    width: 46px;
+    height: 46px !important;
+    width: 46px !important;
 }
 
 #field-buttons ul li a.img-draggable {
