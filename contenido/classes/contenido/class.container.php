@@ -100,14 +100,6 @@ class cApiContainerCollection extends ItemCollection {
             $this->create($idtpl, $number, $idmod);
         }
     }
-
-    /**
-     * @deprecated [2013-10-12] Use assignModule instead
-     */
-    public function assignModul($idtpl, $number, $idmod) {
-        cDeprecated("The method assignModul() is deprecated. Use assignModule() instead.");
-        $this->assignModule($idtpl, $number, $idmod);
-    }
 }
 
 /**

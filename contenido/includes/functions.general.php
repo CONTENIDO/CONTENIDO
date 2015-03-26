@@ -481,7 +481,7 @@ function htmldecode($string) {
  * @param string $frontendpath path the to the frontend
  */
 function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
-    
+
     global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 
     if (!is_array($cfgClient)) {
@@ -532,7 +532,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         if (isset($frontendpaths[$iClient])) {
             $cfgClient[$iClient]["path"]["frontend"] = $frontendpaths[$iClient];
         }
-        
+
         $cfgClient[$iClient]['name'] = conHtmlSpecialChars(str_replace(array(
             '*/',
             '/*',
@@ -588,7 +588,7 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
         $cfgClient[$iClient]['version']['path'] = $cfgClient[$iClient]['path']['frontend'] . 'data/version/';
         $cfgClient[$iClient]['version']['frontendpath'] = 'data/version/';
     }
-    
+
     $aConfigFileContent = array();
     $aConfigFileContent[] = '<?php';
     $aConfigFileContent[] = 'global $cfgClient;';
@@ -1226,14 +1226,6 @@ function createRandomName($nameLength) {
 }
 
 /**
- * @deprecated [2013-10-02]  Use getJsHelpContext() instead
- */
-function setHelpContext($area) {
-    cDeprecated("The function setHelpContext() is deprecated. Use getJsHelpContext() instead.");
-    return getJsHelpContext($area);
-}
-
-/**
  * Returns the JavaScript help context code, if help confuguration is enabled
  * @param string $area  The area name
  * @return The context context JS code
@@ -1603,14 +1595,6 @@ function ipMatch($network, $mask, $ip) {
         // fail - this IP is NOT within specified mask
         return false;
     }
-}
-
-/**
- * @deprecated [2013-08-14]  Use cString::endsWith() instead
- */
-function endsWith($haystack, $needle) {
-    cDeprecated("The function endsWith is deprecated. Use cString::endsWith() instead.");
-    return cString::endsWith($haystack, $needle);
 }
 
 /**

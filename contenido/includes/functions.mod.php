@@ -151,7 +151,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     } else {
         // No changes for save
         if ($retInput == true && $retOutput == true) {
-            // regenerate code cache because module input and output got saved 
+            // regenerate code cache because module input and output got saved
             $cApiModule->store();
             cRegistry::addInfoMessage(i18n('Saved module successfully!'));
         } else {
@@ -174,12 +174,4 @@ function modDeleteModule($idmod) {
     // Delete rights for element
     cInclude('includes', 'functions.rights.php');
     deleteRightsForElement('mod', $idmod);
-}
-
-/**
- * @deprecated [2013-10-02]  This function is not longer supported and will always return false.
- */
-function modTestModule($code, $id, $output = false) {
-    cDeprecated("This function is not longer supported and will always return false. Use cModuleHandler::testInput() and cModuleHandler::testOutput() instead.");
-    return false;
 }
