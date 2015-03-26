@@ -120,7 +120,7 @@ class PifaImporter {
             foreach ($colElems as $colElem) {
                 $fields[$colElem->getAttribute('name')] = $colElem->nodeValue;
             }
-            $sql = $db->buildInsert($formElem->getAttribute('table'), $fields);
+            $sql = $db->buildInsert($this->_tableName, $fields);
             $db->query($sql);
         }
     }
