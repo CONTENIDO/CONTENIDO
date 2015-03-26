@@ -391,46 +391,6 @@ class cFileHandler {
     }
 
     /**
-     *
-     * @see cDirHandler::recursiveRmdir()
-     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
-     */
-    public static function recursiveRmdir($dirname) {
-        cDeprecated("Use the class cDirHandler instead.");
-        return cDirHandler::recursiveRmdir($dirname);
-    }
-
-    /**
-     *
-     * @see cDirHandler::recursiveCopy()
-     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
-     */
-    public static function recursiveCopy($filename, $destination) {
-        cDeprecated("Use the class cDirHandler instead.");
-        return cDirHandler::recursiveCopy($filename, $destination);
-    }
-
-    /**
-     *
-     * @see cDirHandler::isDirectoryEmpty()
-     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
-     */
-    public static function isDirectoryEmpty($dir) {
-        cDeprecated("Use the class cDirHandler instead.");
-        return cDirHandler::isDirectoryEmpty($dir);
-    }
-
-    /**
-     *
-     * @see cDirHandler::setDefaultDirPerms()
-     * @deprecated 2013-11-11 - Use the class cDirHandler instead.
-     */
-    public static function setDefaultDirPerms($dirname) {
-        cDeprecated("Use the class cDirHandler instead.");
-        return cDirHandler::setDefaultDirPerms($dirname);
-    }
-
-    /**
      * Validates the given filename.
      *
      * @param string $filename the filename to validate

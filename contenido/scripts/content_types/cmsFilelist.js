@@ -332,7 +332,4 @@
 
     Con.cContentTypeFilelist = cContentTypeFilelist;
 
-    // @deprecated [2013-11-10] Assign to windows scope (downwards compatibility)
-    window.cContentTypeFilelist = cContentTypeFilelist;
-
 })(Con, Con.$);

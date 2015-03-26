@@ -37,19 +37,3 @@ class cSmartyBackend extends cSmartyFrontend {
     }
 
 }
-
-/**
- * Wrapper class for Integration of smarty.
- *
- * @deprecated 2013-11-12 - Use the class cSmartyBackend instead.
- * @package Plugin
- * @subpackage SmartyWrapper
- */
-class Contenido_Backend_SmartyWrapper extends cSmartyBackend {
-
-	public function __construct(&$aCfg, &$aClientCfg, $bSanityCheck = false) {
-		cDeprecated("Use the class cSmartyBackend instead.");
-		parent::__construct($aCfg, $aClientCfg, $bSanityCheck);
-	}
-
-}

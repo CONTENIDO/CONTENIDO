@@ -430,7 +430,4 @@
 
     Con.cContentTypeImgeditor = cContentTypeImgeditor;
 
-    // @deprecated [2013-11-10] Assign to windows scope (downwards compatibility)
-    window.cContentTypeImgeditor = cContentTypeImgeditor;
-
 })(Con, Con.$);

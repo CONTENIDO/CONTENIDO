@@ -149,13 +149,6 @@ class cApiActionCollection extends ItemCollection {
 class cApiAction extends Item {
 
     /**
-     *
-     * @var bool
-     * @deprecated is not used by any core class
-     */
-    protected $_objectInvalid = false;
-
-    /**
      * Constructor Function
      *
      * @param mixed $mId Specifies the ID of item to load

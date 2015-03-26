@@ -188,9 +188,6 @@
 
     Con.Subnav = Subnav;
 
-    // @deprecated [2013-11-13] Assign to windows scope (downwards compatibility)
-    window.sub = Subnav;
-
     // Bootstrap subnav module on document load
     $(function() {
         // Register click handler for all

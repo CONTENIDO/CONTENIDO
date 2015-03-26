@@ -553,22 +553,6 @@
 
     // ########################################################################
 
-    // @deprecated [2013-11-13] Assign to windows scope (downwards compatibility)
-    window.conMultiLink = Con.multiLink;
-    window.active_main = Con.Header._activeMain;
-    window.active_sub = Con.Header._activeSub;
-    window.active_link = Con.Header._activeLink;
-    window.active_sub_link = Con.Header._activeSubLink;
-    window.show = Con.Header.show;
-    window.hide = Con.Header.hide;
-    window.changeContenidoLanguage = Con.Header.changeContenidoLanguage;
-    window.changeContenidoClient = Con.Header.changeContenidoClient;
-    window.resetHeaderMenu = Con.Header.resetHeaderMenu;
-    window.HeaderTimer = Con.HeaderTimer;
-    window.HeaderMenu = Con.HeaderMenu;
-    window.HeaderClickMenu = Con.HeaderClickMenu;
-    window.HeaderDelayMenu = Con.HeaderDelayMenu;
-
 })(Con, Con.$);
 
 

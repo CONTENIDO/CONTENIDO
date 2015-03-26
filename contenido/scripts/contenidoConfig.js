@@ -299,7 +299,4 @@
 
     Con.Config = Config;
 
-    // @deprecated [2013-10-15] Downwards compatibility
-    window.contenidoConfig = Config;
-
 })(Con, Con.$);

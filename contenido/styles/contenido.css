@@ -829,13 +829,6 @@ input.textbox_readonly {
  * @section Foldingrow
  */
 
-/* @deprecated, not in use anymore */
-div.folding_content {
-    border-right: 1px solid #b3b3b3;
-    padding-left: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
 td.foldingrow {
     background-color: #e2e2e2;
     border-top: 1px solid #b3b3b3;

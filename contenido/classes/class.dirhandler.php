@@ -305,14 +305,4 @@ class cDirHandler {
     	return is_dir($dirname);
     }
 
-    /**
-     *
-     * @see cFileHandler::fileNameIsDot()
-     * @deprecated 2013-11-11 - Use the class cFileHandler instead.
-     */
-    public static function fileNameIsDot($fileName) {
-        cDeprecated("Use the class cFileHandler instead.");
-        return cFileHandler::fileNameIsDot($fileName);
-    }
-
 }

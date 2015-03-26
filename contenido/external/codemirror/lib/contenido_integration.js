@@ -110,9 +110,4 @@
         }
 
     };
-
-    // @deprecated [2013-10-22] Assign to windows scope (downwards compatibility)
-    window.initCodeMirror = Con.CodeMirrorHelper.init;
-    window.toggleCodeMirrorFullscreenEditor = Con.CodeMirrorHelper.toggleFullscreenEditor;
-
 })(Con, Con.$);

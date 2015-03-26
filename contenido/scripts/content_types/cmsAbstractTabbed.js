@@ -282,7 +282,4 @@
 
     Con.cContentTypeAbstractTabbed = cContentTypeAbstractTabbed;
 
-    // @deprecated [2013-11-10] Assign to windows scope (downwards compatibility)
-    window.cContentTypeAbstractTabbed = cContentTypeAbstractTabbed;
-
 })(Con, Con.$);

@@ -200,14 +200,6 @@ class cApiDbfsCollection extends ItemCollection {
     }
 
     /**
-     * @deprecated [20131106]  Use cApiDbfsCollection->fileExists() instead
-     */
-    public function file_exists($path) {
-        cDeprecated('The method file_exists() is deprecated. Use fileExists() instead.');
-        return $this->fileExists($path);
-    }
-
-    /**
      * Checks, if a dbfs directory exists.
      *
      * @global int $client
@@ -234,14 +226,6 @@ class cApiDbfsCollection extends ItemCollection {
     }
 
     /**
-     * @deprecated [20131106]  Use cApiDbfsCollection->dirExists() instead
-     */
-    public function dir_exists($path) {
-        cDeprecated('The method dir_exists() is deprecated. Use dirExists() instead.');
-        return $this->dirExists($path);
-    }
-
-    /**
      *
      * @param string $path
      * @return string
@@ -250,14 +234,6 @@ class cApiDbfsCollection extends ItemCollection {
         $path = dirname($path);
 
         return $path;
-    }
-
-    /**
-     * @deprecated [20131106]  Use cApiDbfsCollection->parentDir() instead
-     */
-    public function parent_dir($path) {
-        cDeprecated('The method parent_dir() is deprecated. Use parentDir() instead.');
-        return $this->parentDir($path);
     }
 
     /**

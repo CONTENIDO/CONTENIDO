@@ -268,10 +268,6 @@
         }
     };
 
-    // @deprecated [2013-10-15] Assign to windows scope (downwards
-    // compatibility)
-    window.ContenidoRegistry = Con.Registry;
-
 })(Con, Con.$);
 
 // ############################################################################
@@ -583,11 +579,6 @@
         }
     };
 
-    // @deprecated [2013-10-15] Assign to windows scope (downwards
-    // compatibility)
-    window.conEvaluateCallbacks = function() {
-        alert('Deprecated conEvaluateCallbacks');
-    };
     window.conLoadFile = Con.Loader.get;
 
 })(Con, Con.$);
@@ -871,11 +862,6 @@
 
         }
     };
-
-    // @deprecated [2013-10-15] Assign to windows scope (downwards
-    // compatibility)
-    window.getUrlParams = Con.UtilUrl.getParams;
-    window.validateURL = Con.UtilUrl.validate;
 
 })(Con, Con.$, window);
 
@@ -1237,15 +1223,5 @@
 
         return false;
     };
-
-    // @deprecated [2013-10-15] Assign to windows scope (downwards
-    // compatibility)
-    window.conMultiLink = Con.multiLink;
-    window.getRegistry = Con.getRegistry;
-    window.getContentWindow = Con.getContentWindow;
-    window.getTranslations = Con.getTranslations;
-    window.showConfirmation = Con.showConfirmation;
-    window.showNotification = Con.showNotification;
-    window.conMarkSubmenuItem = Con.markSubmenuItem;
 
 })(Con, Con.$);
