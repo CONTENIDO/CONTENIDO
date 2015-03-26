@@ -200,6 +200,7 @@ if (is_dir($cfg['path']['plugins'])) {
                 $pagePlugins->set('s', 'AUTHOR', $tempXml->general->author);
                 $pagePlugins->set('s', 'COPYRIGHT', $tempXml->general->copyright);
                 $pagePlugins->set('s', 'MAIL', $tempXml->general->mail);
+                $pagePlugins->set('s', 'WEBSITE', $tempXml->general->website);
                 $pagePlugins->set('s', 'DEPENDENCIES', $pluginDependenciesView->getPluginDependenciesExtracted($tempXml));
 
                 // uninstall link
