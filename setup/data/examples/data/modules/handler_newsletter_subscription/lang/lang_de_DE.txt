@@ -5,7 +5,9 @@ EMAIL_REGISTERED=Die angebene E-Mail-Adresse ist bereits für den Newsletter ang
 ACCEPT_POLICY=Bitte akzeptieren Sie Ihre Datenschutzerklärung!
 SELECT_ONE_GROUP=Bitte nur eine Gruppe auswählen.
 ERROR_REQUEST=Bei der Verarbeitung ist ein Fehler aufgetreten. Bitte wenden Sie sich an den Webseiten-Administrator.
-TXTMAILSUBSCRIBE=Sehr geehrter Interessent,<br><br>um Ihre Teilnahme am Newsletter zu bestätigen, klicken Sie bitte auf den unten stehenden Link:
+TXTMAILSUBSCRIBE=Sehr geehrter Interessent,
+
+um Ihre Teilnahme am Newsletter zu bestätigen, klicken Sie bitte auf den unten stehenden Link:
 NEWSLETTER_CONFIRMATION=Newsletter: Bestätigung
 SUBCRIBED=Sie haben sich für den Newsletter registriert
 TXT_AFTER_CONFIRMATION=<br><br>Nach der Best&auml;tigung erhalten Sie ausserdem ein Passwort, mit dem Sie sich unter Verwendung Ihrer E-Mail-Adresse auf unserer Webseite einloggen k&ouml;nnen.

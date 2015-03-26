@@ -23,7 +23,8 @@ PROBLEM_SENDING_CANCELATION_EMAIL=Sorry, there was a problem sending you the can
 EMAIL_NOT_FOUND=Sorry, the e-mail address was not found.
 CONFIRMED_SUBSCRIPTION_NEWSLETTER=Thank you! You have confirmed your subscription to our newsletter!
 WELCOME_NEWSLETTER=The welcome newsletter is already on the way to you!
-TXT_ACCOUNT_ACTIVATED=<br><br>Additionally, your website account has been activated. You can now use the following username and password to log in to access special areas on our website:<br>
+TXT_ACCOUNT_ACTIVATED=
+Additionally, your website account has been activated. You can now use the following username and password to log in to access special areas on our website:<br>
 TXTMAILPASSWORD=Dear subscriber,
 your website account has been activated.Please use following data to our website: =
 TXT_PROBLEM_ACCOUNTDETAILS=Sorry, there was a problem sending you the account details by mail. Please remember the given password.
