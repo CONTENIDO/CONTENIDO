@@ -346,7 +346,7 @@ class cMailer extends Swift_Mailer {
 
     	// Log only if mail_log is active otherwise return false
     	$mail_log = getSystemProperty('system', 'mail_log');
-    	if (true != $mail_log) {
+    	if (false === $mail_log) {
     		return false;
     	}
 
