@@ -241,10 +241,8 @@ class cMailer extends Swift_Mailer {
         }
         $result = parent::send($message, $failedRecipients);
 
-        $mail_log = getSystemProperty('system', 'mail_log');
-
-        // log the mail only if it is a new one and if mail_log system setting is active
-        if (!$resend && true === $mail_log) {
+        // log the mail only if it is a new one
+        if (!$resend) {
             $this->_logMail($message, $failedRecipients);
         }
 
@@ -342,9 +340,16 @@ class cMailer extends Swift_Mailer {
      * @param Swift_Message $message the message which has been send
      * @param array $failedRecipients [optional] the recipient addresses that
      *        did not get the mail
-     * @return string the idmail of the inserted table row in con_mail_log
+     * @return string the idmail of the inserted table row in con_mail_log|boolean false if mail_log option is inactive
      */
     private function _logMail(Swift_Mime_Message $message, array $failedRecipients = array()) {
+
+    	// Log only if mail_log is active otherwise return false
+    	$mail_log = getSystemProperty('system', 'mail_log');
+    	if (false === $mail_log) {
+    		return false;
+    	}
+
         $mailLogCollection = new cApiMailLogCollection();
 
         // encode all fields
