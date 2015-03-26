@@ -497,7 +497,6 @@ return array(
     'cVersionLayout' => 'contenido/classes/version/class.version.layout.php',
     'cVersionModule' => 'contenido/classes/version/class.version.module.php',
     'cVersion' => 'contenido/classes/version/class.version.php',
-    'cApiClickableQuestionAction' => 'contenido/classes/widgets/class.widgets.actionbutton.php',
     'cXmlBase' => 'contenido/classes/xml/class.xml.base.php',
     'cXmlReader' => 'contenido/classes/xml/class.xml.reader.php',
     'cXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
