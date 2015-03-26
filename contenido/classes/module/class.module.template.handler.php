@@ -257,8 +257,11 @@ class cModuleTemplateHandler extends cModuleHandler {
 
         if (isset($this->_code)) {
             // trigger a smarty cache rebuild for template if changes were saved
-            $tpl = cSmartyFrontend::getInstance();
-            $tpl->clearCache($this->getTemplatePath($this->_file));
+            // you need a installed and active smarty plugin (example client)
+            if (class_exists('cSmartyFrontend')) {
+        		$tpl = cSmartyFrontend::getInstance();
+            	$tpl->clearCache($this->getTemplatePath($this->_file));
+            }
 
             // save the contents of file
             $ret = $this->createModuleFile('template', $this->_file, $this->_code);
@@ -276,9 +279,12 @@ class cModuleTemplateHandler extends cModuleHandler {
      */
     private function _rename() {
         // trigger a smarty cache rebuild for old and new template file name
-        $tpl = cSmartyFrontend::getInstance();
-        $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
-        $tpl->clearCache($this->getTemplatePath($this->_file));
+    	// you need a installed and active smarty plugin (example client)
+    	if (class_exists('cSmartyFrontend')) {
+	        $tpl = cSmartyFrontend::getInstance();
+	        $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
+	        $tpl->clearCache($this->getTemplatePath($this->_file));
+    	}
 
         if ($this->renameModuleFile('template', $this->_tmpFile, $this->_file) == false) {
             throw new cException(i18n('Rename of the file failed!'));
@@ -304,8 +310,11 @@ class cModuleTemplateHandler extends cModuleHandler {
         $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Created a new template file successfully!'));
 
         // trigger a smarty cache rebuild for new template file
-        $tpl = cSmartyFrontend::getInstance();
-        $tpl->clearCache($this->getTemplatePath($fileName));
+        // you need a installed and active smarty plugin (example client)
+        if (class_exists('cSmartyFrontend')) {
+	        $tpl = cSmartyFrontend::getInstance();
+	        $tpl->clearCache($this->getTemplatePath($fileName));
+        }
 
         // set to new fileName
         $this->_file = $fileName;
@@ -317,8 +326,11 @@ class cModuleTemplateHandler extends cModuleHandler {
      */
     private function _delete() {
         // trigger a smarty cache rebuild for template that should be deleted
-        $tpl = cSmartyFrontend::getInstance();
-        $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
+    	// you need a installed and active smarty plugin (example client)
+    	if (class_exists('cSmartyFrontend')) {
+	    	$tpl = cSmartyFrontend::getInstance();
+	        $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
+    	}
 
         $ret = $this->deleteFile('template', $this->_tmpFile);
         if ($ret == true) {
