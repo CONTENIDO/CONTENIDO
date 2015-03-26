@@ -197,7 +197,7 @@ class cGuiPage {
         if ($clang->isLoaded()) {
             $this->setEncoding($clang->get('encoding'));
         }
-        
+
         // use default page base
         $this->setPageBase();
 
@@ -290,9 +290,6 @@ class cGuiPage {
         }
 
         if (strpos(trim($script), 'http') === 0 || strpos(trim($script), '<script') === 0 || strpos(trim($script), '//') === 0) {
-            // if (strpos(trim($script), '<script') === 0) {
-            //     cDeprecated("You shouldn't use inline JS for backend pages");
-            // }
             // the given script path is absolute
             if(!in_array($script, $this->_scripts)) {
                 $this->_scripts[] = $script;
@@ -506,7 +503,7 @@ class cGuiPage {
             $this->_pageBase = $filename;
         }
     }
-    
+
     /**
      * Calls the next() method on the content template.
      *
