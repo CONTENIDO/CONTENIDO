@@ -241,8 +241,10 @@ class cMailer extends Swift_Mailer {
         }
         $result = parent::send($message, $failedRecipients);
 
-        // log the mail only if it is a new one
-        if (!$resend) {
+        $mail_log = getSystemProperty('system', 'mail_log');
+
+        // log the mail only if it is a new one and if mail_log system setting is active
+        if (!$resend && true === $mail_log) {
             $this->_logMail($message, $failedRecipients);
         }
 
