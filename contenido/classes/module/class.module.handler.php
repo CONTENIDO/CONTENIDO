@@ -419,7 +419,7 @@ class cModuleHandler {
      * @return boolean true if file can be created, and false otherwise
      */
     public function createModuleFile($type, $fileName = NULL, $content = '') {
-        // make directory if not exist
+        // create directory if not exist
         if (!$this->createModuleDirectory($type)) {
             return false;
         }
@@ -435,7 +435,7 @@ class cModuleHandler {
             }
         }
 
-        // make and save file contents
+        // create and save file contents
         if ($type == 'css' || $type == 'js' || $type == 'template') {
             if (!$this->existFile($type, $fileName)) {
                 $content = iconv($this->_encoding, $this->_fileEncoding, $content);
