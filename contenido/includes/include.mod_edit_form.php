@@ -194,7 +194,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $name = new cHTMLTextbox("name", conHtmlSpecialChars(stripslashes($module->get("name"))), 60);
     $descr = new cHTMLTextarea("descr", str_replace(array(
         '\r\n'
-    ), "\r\n", conHtmlEntityDecode($module->get("description"))), 100, 5);
+    ), "\r\n", conHtmlentities($module->get("description"))), 100, 5);
 
     // Get input and output code; if specified, prepare row fields
     $sInputData = "";
