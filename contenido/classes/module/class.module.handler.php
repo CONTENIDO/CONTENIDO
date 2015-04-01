@@ -450,7 +450,7 @@ class cModuleHandler {
                 }
             } else {
                 $content = iconv($this->_encoding, $this->_fileEncoding, $content);
-                if (!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName, $this->_modulePath . $this->_directories[$type])) {error_log("no write");
+                if (!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName, $this->_modulePath . $this->_directories[$type])) {
                     return false;
                 }
                 if (cFileHandler::write($this->_modulePath . $this->_directories[$type] . $fileName, $content) === false) {

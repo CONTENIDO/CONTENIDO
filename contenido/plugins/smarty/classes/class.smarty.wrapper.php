@@ -80,7 +80,7 @@ class cSmartyWrapper extends Smarty {
     public function clearCache($template_name, $cache_id = null, $compile_id = null, $exp_time = null, $type = null) {
         if ($this->templateExists($template_name) === false) {
             $moduleId = (int) cRegistry::getCurrentModuleId();
-            if ($moduleId > 0) {error_log($moduleId);
+            if ($moduleId > 0) {
                 $module = new cModuleHandler($moduleId);
                 $template_name = $module->getTemplatePath($template_name);
             }
