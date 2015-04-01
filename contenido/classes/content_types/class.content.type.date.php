@@ -67,7 +67,7 @@ class cContentTypeDate extends cContentTypeAbstract {
                 $locale = $language . '_' . strtoupper($country);
             }
             if (false === empty($locale)) {
-                setlocale(LC_TIME, $belang);
+                setlocale(LC_TIME, $locale);
             }
         }
 

@@ -36,10 +36,11 @@ i18n("Visible debug")
 i18n("Allow all HTML tags and attributes in TinyMCE")
 i18n("Optional backend label")
 i18n("Show only CSS/JS/HTML files at areas CSS/JS/HTML")
+i18n("Show message for unknown module translations");
 i18n("Serverpath to style version files")
 i18n("Style versioning activated")
 i18n("Maximum number of stored style versions")
-i18n("Content versioning")
+i18n("Article Versioning")
 
 // old text
 i18n("Versioning activated")

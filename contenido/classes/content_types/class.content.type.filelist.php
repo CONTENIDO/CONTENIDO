@@ -216,11 +216,11 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             // Check if manual selected file exists, otherwise ignore them
             // Write only existing files into fileList array
             if (is_array($tempFileList)) {
-                    foreach ($tempFileList as $filename) {
-                        if (cFileHandler::exists($this->_uploadPath . $filename)) {
-                            $fileList[] = $filename;
-                        }
+                foreach ($tempFileList as $filename) {
+                    if (cFileHandler::exists($this->_uploadPath . $filename)) {
+                        $fileList[] = $filename;
                     }
+                }
             } else {
                 if (cFileHandler::exists($this->_uploadPath . $tempFileList)) {
                     $fileList[] = $tempFileList;
@@ -331,7 +331,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         }
         $template = new cTemplate();
         $fileList = array();
-        $template->set('s', 'TITLE', $this->_settings['filelist_title']);
+        $template->set('s', 'TITLE', conHtmlSpecialChars($this->_settings['filelist_title']));
 
         $files = $this->getConfiguredFiles();
 
@@ -641,6 +641,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
 
         $wrapperContent[] = new cHTMLLabel(i18n('File list title'), 'filelist_title_' . $this->_id);
         $wrapperContent[] = new cHTMLTextbox('filelist_title_' . $this->_id, conHtmlSpecialChars($this->_settings['filelist_title']), '', '', 'filelist_title_' . $this->_id);        $wrapperContent[] = new cHTMLLabel(i18n('File list style'), 'filelist_style_' . $this->_id);
+        $wrapperContent[] = new cHTMLLabel(i18n('File list style'), 'filelist_style_' . $this->_id);        
         $wrapperContent[] = $this->_generateStyleSelect();
         $wrapperContent[] = new cHTMLLabel(i18n('File list sort'), 'filelist_sort_' . $this->_id);
         $wrapperContent[] = $this->_generateSortSelect();
