@@ -325,8 +325,8 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
             $oPage->setReload();
         }
     } else {
-        //
-        $sMessage = $sMessage = $notification->returnNotification("error", implode("<br>", $aMessage)) . "<br>";
+        // error message
+        $oPage->displayError(implode("<br>", $aMessage));
     }
 }
 
@@ -355,7 +355,7 @@ $ofileUpload = new cHTMLUpload('receptionis_file');
 
 $oAreaData = new cHTMLTextarea("txtData", $_REQUEST["txtData"], 80, 20);
 
-$sInfo = '<a href="javascript:fncShowHide(\'idInfoText\');"><strong>' . i18n("Import information", 'newsletter') . '</strong></a>' . '<div id="idInfoText" style="display: none">' . '<br><br><strong>' . i18n("Specify file:", 'newsletter') . '</strong>' . '<br>' . i18n("The file is of type csv and is saved with UTF-8 encoding.") . '<br><br><strong>' . i18n("Specify colum types:", 'newsletter') . '</strong>' . i18n("<br>The first line must contain the column names; this specifies the column order.<br>&lt;column name&gt;[delimiter]&lt;column name&gt;...", 'newsletter') . '<br><br><strong>' . i18n("Data structure:", 'newsletter') . '</strong><br>' . i18n("The recipients have to be entered using the following format:<br>&lt;data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line.", 'newsletter') . '<br><br><strong>' . i18n("Example:", 'newsletter') . '</strong>' . i18n("<br>name;mail;confirmed<br>Smith;jon.smith@example.org;1", 'newsletter') . '<br><br><strong>' . i18n("The following column names will be recognized:", 'newsletter') . '</strong><br>' . implode("<br>\n", $aFields);
+$sInfo = '<a href="javascript:fncShowHide(\'idInfoText\');"><strong>' . i18n("Import information", 'newsletter') . '</strong></a>' . '<div id="idInfoText" style="display: none">' . '<br><br><strong>' . i18n("Specify file:", 'newsletter') . '</strong>' . '<br>' . i18n("The file is of type csv and is saved with UTF-8 encoding.", "newsletter") . '<br><br><strong>' . i18n("Specify colum types:", 'newsletter') . '</strong>' . i18n("<br>The first line must contain the column names; this specifies the column order.<br>&lt;column name&gt;[delimiter]&lt;column name&gt;...", 'newsletter') . '<br><br><strong>' . i18n("Data structure:", 'newsletter') . '</strong><br>' . i18n("The recipients have to be entered using the following format:<br>&lt;data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line.", 'newsletter') . '<br><br><strong>' . i18n("Example:", 'newsletter') . '</strong>' . i18n("<br>name;mail;confirmed<br>Smith;jon.smith@example.org;1", 'newsletter') . '<br><br><strong>' . i18n("The following column names will be recognized:", 'newsletter') . '</strong><br>' . implode("<br>\n", $aFields);
 
 $oForm->add(i18n("Recipients", 'newsletter'), $ofileUpload->render() . "<br>" . $sInfo);
 unset($sInfo);
