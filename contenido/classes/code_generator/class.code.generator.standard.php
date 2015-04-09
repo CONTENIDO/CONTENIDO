@@ -335,7 +335,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         $this->_layoutCode = preg_replace('/<head>.*?<\/head>/is', $headCode, $this->_layoutCode, 1);
 
         return $this->_layoutCode;
-
     }
 
     /**
