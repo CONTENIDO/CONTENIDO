@@ -73,7 +73,7 @@ class cApiUploadCollection extends ItemCollection {
         if (false !== $oItem = $this->next()) {
             $oItem->update();
         } else {
-            $sFiletype = (string) uplGetFileExtension($sFilename);
+            $sFiletype = (string) uplGetFileExtension($sFilename, $sDirname);
             $iFilesize = cApiUpload::getFileSize($sDirname, $sFilename);
             $oItem = $this->create($sDirname, $sFilename, $sFiletype, $iFilesize, '');
         }

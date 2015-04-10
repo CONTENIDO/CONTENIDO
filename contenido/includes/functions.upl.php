@@ -303,7 +303,7 @@ function uplmkdir($sPath, $sName) {
         // Create new dir
         return cDirHandler::create($dPath);
     } else {
-        // Directory already exist
+        // Directory already exists
         $action = 'upl_mkdir';
         return '0702';
     }
@@ -904,11 +904,21 @@ function uplSearch($searchfor) {
  * Returns file extension
  *
  * @param string $sFile
+ * @param string sDirname
  * @return string
  */
-function uplGetFileExtension($sFile) {
+function uplGetFileExtension($sFile, $sDirname = '') {
     // Fetch the dot position
     $iDotPosition = strrpos($sFile, '.');
+    if (false === $iDotPosition) {
+        // set file type to be empty in case of directory
+        // to avoid conflicts with files ending with directory for instance
+        $cfgClient = cRegistry::getClientConfig(cRegistry::getClientId());
+        if (cDirHandler::exists($cfgClient["upl"]["path"] . $sDirname . $sFile)) {
+            return '';
+        }
+        $iDotPosition = -1;
+    }
     $sExtension = substr($sFile, $iDotPosition + 1);
     if (strpos($sExtension, '/') !== false) {
         return false;
