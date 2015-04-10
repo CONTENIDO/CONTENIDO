@@ -16,7 +16,7 @@
     $(function() {
         $(".fileChooser").change(function() {
             var link = document.getElementById("deleteLink").href;
-            var newLink = link.substr(0, link.lastIndexOf("=") + 1) + $(".fileChooser option:selected").val();
+            var newLink = link.substr(0, link.lastIndexOf("=") + 1) + encodeURIComponent($(".fileChooser option:selected").val());
             document.getElementById("deleteLink").href = newLink;
         });
     });
