@@ -28,8 +28,13 @@ if($readOnly) {
 $sActionCreate = 'htmltpl_create';
 $sActionEdit = 'htmltpl_edit';
 
-$fileRequest = $_REQUEST['file'];
-$TmpFileRequest = $_REQUEST['tmp_file'];
+if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
+    $fileRequest = stripslashes($_REQUEST['file']);
+    $TmpFileRequest = stripslashes($_REQUEST['tmp_file']);
+} else {
+    $fileRequest = $_REQUEST['file'];
+    $TmpFileRequest = $_REQUEST['tmp_file'];
+}
 
 $page = new cGuiPage("mod_template");
 $tpl->reset();
@@ -39,7 +44,6 @@ if (!is_object($notification)) {
 }
 
 // $_REQUEST['action'] = $sActionEdit;
-
 if (!$perm->have_perm_area_action($area, $sActionEdit)) {
     $page->displayCriticalError(i18n("Permission denied"));
 } else if (!(int) $client > 0) {
@@ -49,13 +53,25 @@ if (!$perm->have_perm_area_action($area, $sActionEdit)) {
     $contenidoModulTemplateHandler->checkWritePermissions();
     $contenidoModulTemplateHandler->setAction($sActionEdit);
     if (isset($_REQUEST['code'])) {
-        $contenidoModulTemplateHandler->setCode($_REQUEST['code']);
+        if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
+            $contenidoModulTemplateHandler->setCode($_REQUEST['code']);
+        } else {
+            $contenidoModulTemplateHandler->setCode(stripslashes($_REQUEST['code']));
+        }
     }
-    $contenidoModulTemplateHandler->setFiles($_REQUEST['file'], $_REQUEST['tmp_file']);
-    $contenidoModulTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
-    $contenidoModulTemplateHandler->setNewDelete($_REQUEST['new'], $_REQUEST['delete']);
-    $contenidoModulTemplateHandler->setSelectedFile($_REQUEST['selectedFile']);
-    $contenidoModulTemplateHandler->setStatus($_REQUEST['status']);
+    if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
+        $contenidoModulTemplateHandler->setFiles($_REQUEST['file'], $_REQUEST['tmp_file']);
+        $contenidoModulTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
+        $contenidoModulTemplateHandler->setNewDelete($_REQUEST['new'], $_REQUEST['delete']);
+        $contenidoModulTemplateHandler->setSelectedFile($_REQUEST['selectedFile']);
+        $contenidoModulTemplateHandler->setStatus($_REQUEST['status']);
+    } else {
+        $contenidoModulTemplateHandler->setFiles(stripslashes($_REQUEST['file']), stripslashes($_REQUEST['tmp_file']));
+        $contenidoModulTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
+        $contenidoModulTemplateHandler->setNewDelete(stripslashes($_REQUEST['new']), stripslashes($_REQUEST['delete']));
+        $contenidoModulTemplateHandler->setSelectedFile(stripslashes($_REQUEST['selectedFile']));
+        $contenidoModulTemplateHandler->setStatus(stripslashes($_REQUEST['status']));
+    }
     $contenidoModulTemplateHandler->display($perm, $notification, $belang, $readOnly);
 }
 

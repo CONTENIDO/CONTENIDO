@@ -302,10 +302,10 @@ class cModuleTemplateHandler extends cModuleHandler {
         $fileName = $this->_newFileName;
 
         // if target filename already exists insert few random characters into target filename
-       while ($this->existFile('template', $this->_newFileName . '.' . $this->_templateFileEnding)) {
-            $fileName = $this->_newFileName . $this->getRandomCharacters(5);
+        $fileName = $this->_newFileName . '.' . $this->_templateFileEnding;
+        while ($this->existFile('template', $fileName)) {
+            $fileName = $this->_newFileName . $this->getRandomCharacters(5) . '.' . $this->_templateFileEnding;
         }
-        $fileName = $fileName . '.' . $this->_templateFileEnding;
         $this->createModuleFile('template', $fileName, '');
         $this->_notification->displayNotification(cGuiNotification::LEVEL_INFO, i18n('Created a new template file successfully!'));
 
@@ -449,9 +449,9 @@ class cModuleTemplateHandler extends cModuleHandler {
         $fileForm->setVar('action', $this->_action);
         $fileForm->setVar('frame', $this->_frame);
         $fileForm->setVar('status', 'send');
-        $fileForm->setVar('tmp_file', $this->_tmpFile);
+        $fileForm->setVar('tmp_file', conHtmlSpecialChars($this->_tmpFile));
         $fileForm->setVar('idmod', $this->_idmod);
-        $fileForm->setVar('file', $this->_file);
+        $fileForm->setVar('file', conHtmlSpecialChars($this->_file));
 
         $form = new cGuiTableForm('file_editor');
         $form->setTableid('mod_template');
@@ -460,10 +460,10 @@ class cModuleTemplateHandler extends cModuleHandler {
         $form->setVar('action', $this->_action);
         $form->setVar('frame', $this->_frame);
         $form->setVar('status', 'send');
-        $form->setVar('tmp_file', $this->_tmpFile);
+        $form->setVar('tmp_file', conHtmlSpecialChars($this->_tmpFile));
         $form->setVar('idmod', $this->_idmod);
-        $form->setVar('file', $this->_file);
-        $form->setVar('selectedFile', $this->_file);
+        $form->setVar('file', conHtmlSpecialChars($this->_file));
+        $form->setVar('selectedFile', conHtmlSpecialChars($this->_file));
 
         $selectFile = new cHTMLSelectElement('selectedFile');
         $selectFile->setClass("fileChooser");
@@ -480,7 +480,8 @@ class cModuleTemplateHandler extends cModuleHandler {
 	                continue;
 	            }
 
-	            $optionField = new cHTMLOptionElement($file, $file);
+	            // escape option elements to prevent JS injection into form
+	            $optionField = new cHTMLOptionElement(conHtmlSpecialChars($file), conHtmlSpecialChars($file));
 
 	            // select the current file
 	            if ($file == $this->_file) {
@@ -518,7 +519,7 @@ class cModuleTemplateHandler extends cModuleHandler {
         $aAdd->setCustom('file', $this->_file);
 
         // $oName = new cHTMLLabel($sFilename, '');
-        $oName = new cHTMLTextbox('file', $this->_file, 60);
+        $oName = new cHTMLTextbox('file', conHtmlSpecialChars($this->_file), 60);
 
         $oCode = new cHTMLTextarea('code', conHtmlSpecialChars($this->_code), 100, 35, 'code');
 

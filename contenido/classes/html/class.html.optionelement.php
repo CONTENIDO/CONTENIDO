@@ -45,7 +45,7 @@ class cHTMLOptionElement extends cHTMLFormElement {
         $this->_tag = 'option';
         $this->_title = $title;
 
-        $this->updateAttribute('value', conHtmlSpecialChars($value));
+        $this->updateAttribute('value', $value);
         $this->_contentlessTag = false;
 
         $this->setSelected($selected);
@@ -98,7 +98,7 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * @return string Rendered HTML
      */
     public function toHtml() {
-        $this->_setContent(conHtmlSpecialChars($this->_title));
+        $this->_setContent($this->_title);
 
         return parent::toHTML();
     }
