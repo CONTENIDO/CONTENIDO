@@ -51,18 +51,17 @@ if (!$contenido) {
             foreach($_GET as $getKey => $getValue) {
                 // do not add already added GET parameters to redirect url
                 if (strpos($uri, '?' . $getKey . '=') !== false
-                        || strpos($uri, '&' . $getKey . '=') !== false
-                        || strpos($uri, '&amp;' . $getKey . '=') !== false) {
+                        || strpos($uri, '&' . $getKey . '=') !== false) {
                             continue;
                         }
                         if (strpos($uri, '?') === false) {
                             $uri .= '?';
                         } else {
-                            $uri .= '&amp;';
+                            $uri .= '&';
                         }
                         $uri .= htmlentities($getKey) . '=' . htmlentities($getValue);
             }
-        
+
             return $uri;
         }
 
