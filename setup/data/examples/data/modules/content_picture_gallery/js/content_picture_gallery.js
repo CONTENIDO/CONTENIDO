@@ -10,7 +10,7 @@ function iniPagination() {
 	$(".gallery .source li").each(function() {
 		images++;
 	});
-	maxPage = Math.ceil(images / imgPerPage);debugger;
+	maxPage = Math.ceil(images / imgPerPage);
 	// take forward link, remove it from dom
 	var forwardNode = $(".gallery .pagination li a#forward").parent();
 	forwardNode.remove();
@@ -20,6 +20,11 @@ function iniPagination() {
 	}
 	// re-append forward link to the end of pagination elements
 	$(".gallery .pagination").append(forwardNode);
+
+	// remove back and forward buttons if no pages are on page at all
+	if (0 === maxPage) {
+		$(".gallery .pagination li").remove();
+	}
 }
 iniPagination();
 
