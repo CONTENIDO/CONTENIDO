@@ -41,6 +41,11 @@ if (count($files) > 0) {
 
 $tpl = cSmartyFrontend::getInstance();
 $tpl->assign('pictures', $pictures);
+
+// Translations
+$tpl->assign('back', mi18n("Back"));
+$tpl->assign('forward', mi18n("Forward"));
+
 $tpl->display('picture_gallery.tpl');
 
 if (cRegistry::isBackendEditMode()) {

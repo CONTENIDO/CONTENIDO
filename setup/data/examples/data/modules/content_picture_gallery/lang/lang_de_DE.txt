@@ -1,0 +1,2 @@
+Back=Zurück
+Forward=Weiter

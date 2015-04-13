@@ -377,14 +377,14 @@ body.no-media .hide_desktop {
 		line-height: 15px;
 	}
 
-	/* .galery */
-	.galery {
+	/* .gallery */
+	.gallery {
 		width: 100%;
 	}
-	#content .galery ul.slider {
+	#content .gallery ul.slider {
 		margin: 0;
 	}
-	.galery .slider li {
+	.gallery .slider li {
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
@@ -393,10 +393,10 @@ body.no-media .hide_desktop {
 		margin: 0 0 2% 0;
 		width: 49%;
 	}
-	.galery .slider li.odd {
+	.gallery .slider li.odd {
 		margin: 0 0 2% 2%;
 	}
-	.galery .slider li img {
+	.gallery .slider li img {
 		width: 100%;
 	}
 
