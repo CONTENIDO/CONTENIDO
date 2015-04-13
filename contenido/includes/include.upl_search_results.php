@@ -72,7 +72,11 @@ class UploadSearchResultList extends FrontendList {
                 $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
                 $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$file"), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"), $data);
             } else {
-                $mstr = $data;
+                $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
+
+                $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
+                // concatinate path with folder name (file) for path parameter to access folder
+                $mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=upl&frame=4&path=$path$file/&file="), 'right_top', $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"), $data);
             }
             return $mstr;
         }
@@ -123,7 +127,8 @@ class UploadSearchResultList extends FrontendList {
                     }
                     break;
                 case '':
-                    return '<img class="vAlignMiddle" src="images/grid_folder.gif" border="0" alt="folder icon">';
+                    // folder has empty filetype column value
+                    return '<img class="hover_none" name="smallImage" alt="" src="' . cRegistry::getBackendUrl() . 'images/grid_folder.gif' . '">';
                 default:
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
                     return '<img class="hover_none" name="smallImage" alt="" src="' . $sCacheThumbnail . '">';
