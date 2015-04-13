@@ -269,7 +269,18 @@ function markSubMenuItem($menuitem, $return = false) {
         // CONTENIDO backend but not in preview mode
         $str = <<<JS
 <script type="text/javascript">
-Con.markSubmenuItem('c_{$menuitem}');
+var id = 'c_{$menuitem}';
+if ('undefined' !== typeof(Con)) {
+    Con.markSubmenuItem(id);
+} else {
+    // Contenido backend but with frozen article
+    // Check if submenuItem is existing and mark it
+    if (parent.parent.frames.right.frames.right_top.document.getElementById(id)) {
+        menuItem = parent.parent.frames.right.frames.right_top.document.getElementById(id).getElementsByTagName('a')[0];
+        // load the new tab now
+        parent.parent.frames.right.frames.right_top.Con.Subnav.clicked(menuItem, true);
+    }
+}
 </script>
 JS;
     } else {
