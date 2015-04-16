@@ -10,7 +10,19 @@ function iniPagination() {
 	$(".gallery .source li").each(function() {
 		images++;
 	});
+
 	maxPage = Math.ceil(images / imgPerPage);
+	// no pagination necessary if only 1 page is shown
+	if (2 > maxPage) {
+		// take back link, remove it from dom
+		$(".gallery .pagination li a#back").parent().remove();
+
+		// take forward link, remove it from dom
+		$(".gallery .pagination li a#forward").parent().remove();
+
+		return;
+	}
+
 	// take forward link, remove it from dom
 	var forwardNode = $(".gallery .pagination li a#forward").parent();
 	forwardNode.remove();
