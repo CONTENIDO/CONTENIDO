@@ -462,7 +462,7 @@ if ($perm->have_perm_area_action($area, "con_edit") || $perm->have_perm_area_act
 
     $baselink = cRegistry::getFrontendUrl() . "front_content.php?idart=$idart";
 
-    $option[0] = new cHTMLOptionElement(i18n("Select an entry to display link"), '');
+    $option[0] = new cHTMLOptionElement(conHtmlEntityDecode(i18n("Select an entry to display link"), ''));
     $option[1] = new cHTMLOptionElement(i18n("Article only"), $baselink);
     $option[2] = new cHTMLOptionElement(i18n("Article with category"), $baselink . "&idcat=$idcat");
     $option[3] = new cHTMLOptionElement(i18n("Article with category and language"), $baselink . "&idcat=$idcat&lang=$lang");
