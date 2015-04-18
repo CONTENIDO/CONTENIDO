@@ -130,13 +130,13 @@ class cApiLanguage extends Item {
      *
      * @var array
      */
-	protected static $propertiesCache = array();
+	protected static $_propertiesCache = array();
 	
 	/**
      *
      * @var boolean
      */
-	protected static $propertiesCacheLoaded = false;
+	protected static $_propertiesCacheLoaded = false;
 	
     /**
      * Constructor Function
@@ -183,7 +183,7 @@ class cApiLanguage extends Item {
      *
      */
 	protected function loadProperties($iClient = 0) {
-		if (self::$propertiesCacheLoaded == false) {
+		if (self::$_propertiesCacheLoaded == false) {
 			$itemtype = $this->db->escape($this->primaryKey);
 			$itemid = $this->db->escape($this->get($this->primaryKey));
 			$oPropertyColl = $this->_getPropertiesCollectionInstance($iClient);
@@ -191,15 +191,15 @@ class cApiLanguage extends Item {
 
 			if ($oPropertyColl->count() > 0) {
 				while (($oItem = $oPropertyColl->next()) !== false) {
-					if (!isset(self::$propertiesCache[$oItem->get('type')])) {
-						self::$propertiesCache[$oItem->get('type')] = array();
+					if (!isset(self::$_propertiesCache[$oItem->get('type')])) {
+						self::$_propertiesCache[$oItem->get('type')] = array();
 					}
-					self::$propertiesCache[$oItem->get('type')][$oItem->get('name')] = $oItem->get('value');
+					self::$_propertiesCache[$oItem->get('type')][$oItem->get('name')] = $oItem->get('value');
 				}
 			}
 		}
 		
-		self::$propertiesCacheLoaded = true;
+		self::$_propertiesCacheLoaded = true;
 	}
 	
 	/**
@@ -219,8 +219,8 @@ class cApiLanguage extends Item {
 		
 		$this->loadProperties($iClient);
 		
-		if (isset(self::$propertiesCache[$sType]) && isset(self::$propertiesCache[$sName])) {
-			return self::$propertiesCache[$sType][$sName];
+		if (isset(self::$_propertiesCache[$sType]) && isset(self::$_propertiesCache[$sName])) {
+			return self::$_propertiesCache[$sType][$sName];
 		} else {
 			return false;
 		}

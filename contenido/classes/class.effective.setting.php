@@ -65,7 +65,7 @@ class cEffectiveSetting {
      *
      * @var boolean
      */
-    protected static $loaded = false;
+    protected static $_loaded = false;
 
     /**
      *
@@ -80,7 +80,7 @@ class cEffectiveSetting {
      *
      */
 	private static function loadSettings() {
-		if (self::$loaded == false) {
+		if (self::$_loaded == false) {
 			global $contenido;
 			
 			$typeGroup = array();
@@ -133,7 +133,7 @@ class cEffectiveSetting {
 			}
 		}
 		
-		self::$loaded = true;
+		self::$_loaded = true;
 	}
 
     /**
