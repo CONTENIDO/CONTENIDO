@@ -73,7 +73,8 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns all clients available in the system
      *
-     * @return array Array with id and name entries
+     * @return array
+     *         Array with id and name entries
      */
     public function getAvailableClients() {
         $clients = array();
@@ -92,7 +93,8 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns all clients available in the system
      *
-     * @return array Array with id and name entries
+     * @return array
+     *         Array with id and name entries
      */
     public function getAccessibleClients() {
         global $perm;
@@ -111,7 +113,7 @@ class cApiClientCollection extends ItemCollection {
     /**
      * Returns first client available in the system
      *
-     * @return cApiClient NULL
+     * @return cApiClient|NULL
      */
     public function getFirstAccessibleClient() {
         global $perm;
@@ -128,7 +130,8 @@ class cApiClientCollection extends ItemCollection {
      * Returns the clientname of the given clientid
      *
      * @param int $idClient
-     * @return string Clientname if found, or empty string if not.
+     * @return string
+     *         Clientname if found, or empty string if not.
      */
     public function getClientname($idClient) {
         $this->select("idclient='" . (int) $idClient . "'");
@@ -143,7 +146,8 @@ class cApiClientCollection extends ItemCollection {
      * Returns if the given client has a language
      *
      * @param int $idClient
-     * @return bool true if the client has a language
+     * @return bool
+     *         true if the client has a language
      */
     public function hasLanguageAssigned($idClient) {
         $client = new cApiClient($idClient);

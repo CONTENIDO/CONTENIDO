@@ -104,7 +104,8 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Returns all areas available in the system
      *
-     * @return array Array with id and name entries
+     * @return array
+     *         Array with id and name entries
      */
     public function getAvailableAreas() {
         $aClients = array();

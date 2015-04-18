@@ -478,7 +478,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * Collects and return basic meta tags/elements.
      *
      * @global array $encoding
-     * @return array List of assozative meta tag values
+     * @return array
+     *         List of assozative meta tag values
      */
     protected function _getBasicMetaTags() {
 

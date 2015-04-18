@@ -89,7 +89,7 @@ class cApiCategoryCollection extends ItemCollection {
      * Last entry has no parentid and no postid.
      *
      * @param int $idclient
-     * @return cApiCategory NULL
+     * @return cApiCategory|NULL
      */
     public function fetchLastCategoryTree($idclient) {
         $where = 'parentid=0 AND postid=0 AND idclient=' . (int) $idclient;
@@ -392,7 +392,8 @@ class cApiCategoryCollection extends ItemCollection {
      * @global array $cfg
      * @param int $idcat
      * @param int $client
-     * @return array Sorted by category id
+     * @return array
+     *         Sorted by category id
      */
     public function getAllCategoryIdsRecursive2($idcat, $idclient) {
         global $cfg;
@@ -488,7 +489,8 @@ class cApiCategory extends Item {
      *
      * @param int $changeLangId
      *         change language id for URL (optional)
-     * @return string link
+     * @return string
+     *         link
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {

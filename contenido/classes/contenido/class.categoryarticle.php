@@ -91,7 +91,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $client
      * @param int $lang
-     * @return cApiCategoryArticle NULL
+     * @return cApiCategoryArticle|NULL
      */
     public function fetchFirstFromTreeByClientIdAndLangId($client, $lang) {
         global $cfg;
@@ -123,7 +123,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
-     * @return cApiCategoryArticle NULL
+     * @return cApiCategoryArticle|NULL
      */
     public function fetchByCategoryIdAndArticleId($idcat, $idart) {
         $aProps = array(
@@ -147,7 +147,7 @@ class cApiCategoryArticleCollection extends ItemCollection {
      *
      * @param int $idcat
      * @param int $idart
-     * @return int NULL
+     * @return int|NULL
      */
     public function getIdByCategoryIdAndArticleId($idcat, $idart) {
         $where = "idcat = %d AND idart = %d";

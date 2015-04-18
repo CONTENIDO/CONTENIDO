@@ -104,7 +104,8 @@ class cApiArticle extends Item {
      *
      * @param int $changeLangId
      *         change language id for URL (optional)
-     * @return string link
+     * @return string
+     *         link
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {
