@@ -13,8 +13,26 @@
  * @link             http://www.contenido.org
  */
 
-require_once('bootstrap.php');
-TestSuiteHelper::loadFeSuite('Chains');
+require_once(dirname(dirname(__FILE__)) . '/bootstrap.php');
+require_once(dirname(__FILE__) . '/cApiCecRegistry.php');
+require_once(dirname(__FILE__) . '/ContenidoArticleConCopyArtLang_AfterInsert.php');
+require_once(dirname(__FILE__) . '/ContenidoArticleConMoveArticles_Loop.php');
+require_once(dirname(__FILE__) . '/ContenidoArticleConSyncArticle_AfterInsert.php');
+require_once(dirname(__FILE__) . '/ContenidoCategoryStrCopyCategory.php');
+require_once(dirname(__FILE__) . '/ContenidoCategoryStrSyncCategory_Loop.php');
+require_once(dirname(__FILE__) . '/ContenidoContentConGenerateCode.php');
+require_once(dirname(__FILE__) . '/ContenidoContentCopyArticle.php');
+require_once(dirname(__FILE__) . '/ContenidoContentCreateTitletag.php');
+require_once(dirname(__FILE__) . '/ContenidoContentDeleteArticle.php');
+require_once(dirname(__FILE__) . '/ContenidoContentSaveContentEntry.php');
+require_once(dirname(__FILE__) . '/ContenidoFrontendAllowEdit.php');
+require_once(dirname(__FILE__) . '/ContenidoFrontendBaseHrefGeneration.php');
+require_once(dirname(__FILE__) . '/ContenidoFrontendCategoryAccess.php');
+require_once(dirname(__FILE__) . '/ContenidoFrontendHTMLCodeOutput.php');
+require_once(dirname(__FILE__) . '/ContenidoFrontendPostprocessUrlBuilding.php');
+require_once(dirname(__FILE__) . '/ContenidoFrontendPreprocessUrlBuilding.php');
+require_once(dirname(__FILE__) . '/ExampleContenidoChainExecuteObject.php');
+require_once(dirname(__FILE__) . '/ExampleContenidoChainExecuteStaticMethod.php');
 
 /**
  * Testsuite for Contenido chains related tests.
