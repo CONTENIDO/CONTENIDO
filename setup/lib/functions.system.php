@@ -89,7 +89,8 @@ function updateSystemProperties($db, $table) {
         array('type' => 'system', 'name' => 'insite_editing_activated', 'value' => 'true'),
         array('type' => 'backend', 'name' => 'backend_label', 'value' => ''),
         array('type' => 'generator', 'name' => 'xhtml', 'value' => 'true'),
-        array('type' => 'generator', 'name' => 'basehref', 'value' => 'true')
+        array('type' => 'generator', 'name' => 'basehref', 'value' => 'true'),
+    	array('type' => 'debug', 'name' => 'module_translation_message', 'value' => 'true')
     );
 
     foreach ($aStandardvalues as $aData) {

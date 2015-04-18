@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>form_login</name><description/><type>content</type><alias>form_login</alias></module>
+<module><name>form_login</name><description>Output of the login/logout form</description><type>content</type><alias>form_login</alias></module>

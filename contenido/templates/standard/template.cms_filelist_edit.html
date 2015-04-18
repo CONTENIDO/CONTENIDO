@@ -1,7 +1,7 @@
-<img id="cms_filelist_{ID}" class="cms_filelist_img cms_filelist_{ID}_EDIT CMS_LINK_EDIT" src="{_PATH_CONTENIDO_FULLHTML_}images/but_downloadlist.gif">
+<img id="cms_filelist_{ID}" alt="" class="cms_filelist_img cms_filelist_{ID}_EDIT CMS_LINK_EDIT" src="{_PATH_CONTENIDO_FULLHTML_}images/but_downloadlist.gif">
 <div style="display:none" id="cms_filelist_{ID}_settings" class="cms_filelist">
     <div class="close" id="filelist_close">
-        <img src="{_PATH_CONTENIDO_FULLHTML_}images/but_cancel.gif">
+        <img src="{_PATH_CONTENIDO_FULLHTML_}images/but_cancel.gif" alt="">
     </div>
     <p class="head">{LABEL_FILELIST_SETTINGS}</p>
 
@@ -12,12 +12,12 @@
         <li class="manual">{MANUAL}</li>
     </ul>
     <div id="tabs">
-        <div id="directories">
+        <div class="directories">
             <p class="head_sub">{LABEL_SOURCE_DIRECTORY}</p>
 
-            <div id="directoryList">
-                <ul id="con_str_tree" dir="ltr">
-                    <li id="root" class="last">
+            <div class="directoryList">
+                <ul class="con_str_tree" dir="ltr">
+                    <li class="root last">
                         <em>Uploads</em>
                         {DIRECTORY_LIST}
                     </li>
@@ -92,9 +92,9 @@
 
                 <div class="head_sub head_sep">{LABEL_ADD_FILE}</div>
                 <label for="teaser_cat">{LABEL_DIRECTORY}:</label>
-                <div id="directoryList">
-                    <ul id="con_str_tree" dir="ltr">
-                        <li id="root" class="last">
+                <div class="directoryList">
+                    <ul class="con_str_tree" dir="ltr">
+                        <li class="root last">
                             <em>Uploads</em>
                             {DIRECTORY_LIST}
                         </li>
@@ -108,8 +108,8 @@
     </div>
 
     <div class="toolbar">
-        <img class="save_settings" src="{_PATH_CONTENIDO_FULLHTML_}images/but_ok.gif">
-        <img class="filelist_cancel" src="{_PATH_CONTENIDO_FULLHTML_}images/but_cancel.gif">
+        <img class="save_settings" src="{_PATH_CONTENIDO_FULLHTML_}images/but_ok.gif" alt="">
+        <img class="filelist_cancel" src="{_PATH_CONTENIDO_FULLHTML_}images/but_cancel.gif" alt="">
     </div>
 </div>
 

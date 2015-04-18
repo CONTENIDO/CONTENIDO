@@ -75,8 +75,7 @@ if(is_array($cfgClient)) {
 }
 $faultyFolders = array();
 foreach ($foldersToCheck as $folder) {
-    $handle = @opendir($folder);
-    if ($handle != false) {
+    if (true === @file_exists($folder)) {
         $faultyFolders[] = $folder;
     }
 }

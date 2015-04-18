@@ -16,7 +16,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Install class for new plugins, extends PimPluginSetup
+ * View navigation entries
  * TODO: Later implement into new PIM view design
  *
  * @package Plugin

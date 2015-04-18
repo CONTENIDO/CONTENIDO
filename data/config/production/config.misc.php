@@ -38,6 +38,12 @@ $cfg['frontend']['timeout'] = 15;
 // (bool) Use Pseudo-Cron?
 $cfg['use_pseudocron'] = true;
 
+// (bool) Whether all cExceptions should be logged. If disabled most exceptions will not be logged.
+$cfg['debug']['log_exceptions'] = false;
+
+// (bool) Whether all cErrorExceptions should be logged. If disabled exceptions of type error will not be logged.
+$cfg['debug']['log_error_exceptions'] = true;
+
 // (bool) If you want to measure function timing set this to true
 $cfg['debug']['functiontiming'] = false;
 

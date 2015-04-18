@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>content_copyright_notice</name><description></description><type>content</type><alias>content_copyright_notice</alias></module>
+<module><name>content_copyright_notice</name><description>Output of the copyright notice in the footer</description><type>content</type><alias>content_copyright_notice</alias></module>

@@ -37,7 +37,7 @@ class cArray {
      */
     public static function trim(array $arr, $charlist = NULL) {
         foreach ($arr as $key => $value) {
-            $arr[$key] = trim($value, $charlist);
+            $arr[$key] = isset($charlist) ? trim($value, $charlist) : trim($value);
         }
 
         return $arr;
@@ -56,7 +56,7 @@ class cArray {
      * Otherwise, if $strict equals true values are tested for identity with
      * $search. Otherwise (which is the default) values are tested for equality.
      *
-     * Be carefull when searching by equality in arrays containing values that
+     * Be careful when searching by equality in arrays containing values that
      * are no strings! The same is true for searching by equality for values
      * that are no strings. PHPs behaviour is quite weird concerning comparision
      * of different data types. E.g. '0' equals '0.0', 'foo' equals 0, 'foo'
@@ -77,15 +77,20 @@ class cArray {
     public static function searchRecursive(array $arr, $search, $partial = false, $strict = false) {
         foreach ($arr as $key => $value) {
             if (is_array($value)) {
-                $ret = self::searchRecursive($value, $search, $partial, $strict);
+                $ret = static::searchRecursive($value, $search, $partial, $strict);
                 if ($ret !== false) {
                     return $ret;
                 }
             } else {
                 if ($partial !== false) {
-                    // search partial
-                    $found = false !== strpos($value, $search);
-                } else if ($strict == true) {
+                    // BUGFIX empty search
+                    if (0 === strlen($search)) {
+                        return false;
+                    }
+                    // convert $search explicitly to string
+                    // we do not want to use the ordinal value of $search
+                    $found = false !== strpos($value, strval($search));
+               } else if ($strict == true) {
                     // search by identity
                     $found = $value === $search;
                 } else {

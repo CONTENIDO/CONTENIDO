@@ -40,11 +40,10 @@ if (empty($action)) {
     $actionRequest = $action;
 }
 
-$premCreate = false;
-
+$permCreate = false;
 if (!$contenidoModulHandler->existFile('js', $contenidoModulHandler->getJsFileName())) {
     if (!$perm->have_perm_area_action('js', $sActionCreate)) {
-        $premCreate = true;
+        $permCreate = true;
     }
 }
 
@@ -52,7 +51,7 @@ $page = new cGuiPage("mod_script");
 
 $tpl->reset();
 
-if (!$perm->have_perm_area_action('js', $actionRequest) || $premCreate) {
+if (!$perm->have_perm_area_action('js', $actionRequest) || $permCreate) {
     $notification->displayNotification('error', i18n('Permission denied'));
     return;
 }
@@ -65,14 +64,12 @@ if (!(int) $client > 0) {
 
 
 $path = $contenidoModulHandler->getJsPath(); // $cfgClient[$client]['js']['path'];
-// Make automatic a new js file
-$contenidoModulHandler->createModuleFile('js');
 
 // ERROR MESSAGE
 if (!$contenidoModulHandler->moduleWriteable('js')) {
-	$page->displayCriticalError(i18n('No write permissions in folder js for this module!'));
-	$page->render();
-	exit();
+    $page->displayCriticalError(i18n('No write permissions in folder js for this module!'));
+    $page->render();
+    exit();
 }
 
 $sTempFilename = stripslashes($tmpFile);
@@ -86,11 +83,12 @@ if (getFileType($file) != $sFileType && strlen(stripslashes(trim($file))) > 0) {
 
 if (stripslashes($file)) {
     $page->reloadFrame('left_bottom', array(
-    	"file" => $sFilename
+        "file" => $sFilename
     ));
 }
 
-if (!cFileHandler::writeable($path . $sFilename)) {
+if (true === cFileHandler::exists($path . $sFilename)
+&& false === cFileHandler::writeable($path . $sFilename)) {
     $page->displayWarning(i18n("You have no write permissions for this file"));
 }
 
@@ -99,17 +97,25 @@ $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 // Create new file
 if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == 'send') {
     $sTempFilename = $sFilename;
-    $ret = cFileHandler::create($path . $sFilename);
-    $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
-    cFileHandler::validateFilename($sFilename);
-    cFileHandler::write($path . $sFilename, $tempCode);
-    $bEdit = cFileHandler::read($path . $sFilename);
+
+    $bEdit = false;
+    if (true === cFileHandler::validateFilename($sFilename)) {
+        cFileHandler::create($path . $sFilename);
+        $contenidoModulHandler->createModuleFile('js', $sFilename, $_REQUEST['code']);
+        $bEdit = cFileHandler::read($path . $sFilename);
+    }
+
+    if (false !== $bEdit) {
+        // trigger a code cache rebuild if changes were saved
+        $oApiModule = new cApiModule($idmod);
+        $oApiModule->store();
+    }
 
     $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
     $page->reloadFrame('right_top', $urlReload);
 
     // Show message for user
-    if ($ret == true) {
+    if ($bEdit === true) {
         $page->displayInfo(i18n('Created new javascript file successfully'));
     } else {
         $page->displayError(i18n('Could not create a new javascript file!'));
@@ -120,12 +126,19 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
 if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
 
     if ($sFilename != $sTempFilename) {
-        cFileHandler::validateFilename($sFilename);
-        if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
-            $sTempFilename = $sFilename;
-        } else {
+        
+        try {
+            if (true !== cFileHandler::validateFilename($sFilename)) {
+                throw new cInvalidArgumentException('The file ' . $sFilename . ' could not be validated.');
+            }
+
+            if (cFileHandler::rename($path . $sTempFilename, $sFilename)) {
+                $sTempFilename = $sFilename;
+            } else {
+                throw new cInvalidArgumentException('The file ' . $sFilename . ' could not be renamed.');
+            }
+        } catch (Exception $e) {
             $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
-            exit;
         }
 
         $urlReload = $sess->url("main.php?area=$area&frame=3&file=$sTempFilename");
@@ -134,11 +147,17 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
         $sTempFilename = $sFilename;
     }
 
-    $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
-    $tempCode = iconv(cModuleHandler::getEncoding(), $fileEncoding, $_REQUEST['code']);
-    cFileHandler::validateFilename($sFilename);
-    cFileHandler::write($path . $sFilename, $tempCode);
-    $bEdit = cFileHandler::read($path . $sFilename);
+    $bEdit = false;
+    if (true === cFileHandler::validateFilename($sFilename)) {
+        $contenidoModulHandler->createModuleFile('js', $sFilename, $_REQUEST['code']);
+        $bEdit = cFileHandler::read($path . $sFilename);
+    }
+
+    if (false !== $bEdit) {
+        // trigger a code cache rebuild if changes were saved
+        $oApiModule = new cApiModule($idmod);
+        $oApiModule->store();
+    }
 
     // Show message for user
     if ($sFilename != $sTempFilename) {
@@ -153,7 +172,8 @@ if (isset($actionRequest)) {
     $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
     $sAction = ($bEdit) ? $sActionEdit : $actionRequest;
 
-    if ($actionRequest == $sActionEdit) {
+    if ($actionRequest == $sActionEdit
+    && cFileHandler::exists($path . $sFilename)) {
         $sCode = cFileHandler::read($path . $sFilename);
         if ($sCode === false) {
             exit;

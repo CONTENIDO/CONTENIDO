@@ -107,7 +107,8 @@ function hoverEffect(actButton, stat) {
     var i;
     for (i = 0; i < buttonArray.length; i++) {
         // highlight image on enter, gray image on mouse out
-        if (buttonArray[i].imgId == actButton && actButton != selectedButton) {
+//        if (buttonArray[i].imgId == actButton && actButton != selectedButton) {
+        if (buttonArray[i].imgId == actButton && (actButton != selectedButton || stat == 'in')){
             if (stat == 'in') {
                 document.getElementById(buttonArray[i].imgId).src = buttonArray[i].imgOn;
             } else {

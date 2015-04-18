@@ -48,7 +48,7 @@ while ($oClient = $clientColl->next()) {
             $tpl->set('d', 'DELETE', '&nbsp;');
         }
 
-        $tpl->set('d', 'ICON', '<img src="images/spacer.gif" width="12">');
+        $tpl->set('d', 'ICON', '<img src="images/spacer.gif" alt="" width="12">');
         $tpl->set('d', 'BGCOLOR', $bgColor);
         $tpl->set('d', 'TEXT', $mstr);
 

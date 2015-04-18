@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module><name>script_tracker_piwik</name><description></description><type>script</type><alias>script_tracker_piwik</alias></module>
+<module><name>script_tracker_piwik</name><description>Piwik Tracker</description><type>script</type><alias>script_tracker_piwik</alias></module>

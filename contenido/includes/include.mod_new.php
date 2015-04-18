@@ -60,11 +60,11 @@ if ((int) $client > 0) {
     $oSelectSearchIn = new cHTMLSelectElement("searchin");
 // CON-1910
     $oSelectSearchIn->autoFill(array('' => i18n("-- All --"),
-        'name' => i18n("Module name")/*,
+        'name' => i18n("Module name"),
         'description' => i18n("Description"),
         'type' => i18n("Type"),
         'input' => i18n("Input"),
-        'output' => i18n("Output")*/
+        'output' => i18n("Output")
     ));
 
     $oSelectSearchIn->setDefault($_REQUEST["searchin"]);

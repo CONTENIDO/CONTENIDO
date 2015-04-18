@@ -1,7 +1,7 @@
 <g:plusone{$LAYOUT}{$URL}{$SHOW_COUNT}></g:plusone>
 
 <script type="text/javascript">
-  window.___gcfg =  {literal} { {/literal}lang: '{$LOCALE}'{literal} } {/literal};
+  window.___gcfg =  {literal} { {/literal}lang: '{$LOCALE|escape}'{literal} } {/literal};
 
   (function() {
     var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;

@@ -3,7 +3,7 @@
     <ul class="source">
         {foreach from=$pictures item=picture}
             <li>
-                <a title="{$picture.description}" rel="{$picture.copyright}" href="{$picture.lightbox}" style="background: url({$picture.lightbox}) no-repeat -9999px -9999px;">
+                <a title="{$picture.description|escape}" rel="{$picture.copyright|escape}" href="{$picture.lightbox|escape}" style="background: url({$picture.lightbox|escape}) no-repeat -9999px -9999px;">
                     {$picture.thumb}
                 </a>
             </li>

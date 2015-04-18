@@ -3,56 +3,56 @@
  * @section Tree_Navigation
  */
 
-#con_str_tree {
+.con_str_tree {
     display: block;
     margin: 10px 0 0 0;
     padding: 0 2px;
     list-style: none;
 }
-#con_str_tree li {
+.con_str_tree li {
     display: block;
     list-style: none;
     margin: 0;
     padding: 0;
     width: 100%;
 }
-#con_str_tree li em {
+.con_str_tree li em {
     display: block;
 }
-#con_str_tree li ul {
+.con_str_tree li ul {
     display: block;
     margin: 0;
     padding: 0;
 }
-#con_str_tree li ul li {
+.con_str_tree li ul li {
     background: url('../images/tree/tree_i.gif') repeat-y scroll left top transparent;
     margin: 0 0 0 20px;
 }
-#con_str_tree > li > ul > li {
+.con_str_tree > li > ul > li {
     margin: 0;
 }
-#con_str_tree li ul li div {
+.con_str_tree li ul li div {
     height: 20px;
 }
-#con_str_tree li ul li div em {
+.con_str_tree li ul li div em {
     float: left;
     width: 20px;
 }
-#con_str_tree li ul li div em a {
+.con_str_tree li ul li div em a {
     background: url("../images/tree/but_minus.gif") no-repeat scroll left top #fff;
     display: block;
     height: 20px;
     font-style: normal;
     width: 20px;
 }
-#con_str_tree li ul li div em span {
+.con_str_tree li ul li div em span {
     background: url("../images/tree/but_minus.gif") no-repeat scroll left top #fff;
     display: block;
     height: 20px;
     font-style: normal;
     width: 20px;
 }
-#con_str_tree li ul li div > a {
+.con_str_tree li ul li div > a {
     background:  url("../images/folder_on.gif") no-repeat scroll left 2px transparent;
     display: block;
     font-size: 11px;
@@ -61,74 +61,74 @@
     padding: 0 0 0 20px;
     white-space: nowrap;
 }
-#con_str_tree li#root > em {
+.con_str_tree li.root > em {
     background:  url("../images/folder_on.gif") no-repeat scroll left top transparent;
     font-style: italic;
     height: 20px;
     padding: 0 0 0 20px;
 }
-#con_str_tree li ul li.last {
+.con_str_tree li ul li.last {
     background: none;
 }
-#con_str_tree li ul li.last >div > em > a,
-#con_str_tree li ul li.last >div > em > span {
+.con_str_tree li ul li.last >div > em > a,
+.con_str_tree li ul li.last >div > em > span {
     background: url('../images/tree/but_last.gif') no-repeat scroll 0 0 #fff;
 }
-#con_str_tree li ul li.collapsed div em a {
+.con_str_tree li ul li.collapsed div em a {
     background: url("../images/tree/but_plus.gif") no-repeat scroll left top #fff;
 }
-#con_str_tree li ul li.collapsed ul {
+.con_str_tree li ul li.collapsed ul {
     display: none;
 }
-#con_str_tree li ul li.last.collapsed div em a {
+.con_str_tree li ul li.last.collapsed div em a {
     background: url('../images/tree/but_last_plus.gif') no-repeat scroll 0 0 #fff;
 }
-#con_str_tree li ul li div.active,
-#con_str_tree li ul li div.active em a,
-#con_str_tree li ul li div.active em span {
+.con_str_tree li ul li div.active,
+.con_str_tree li ul li div.active em a,
+.con_str_tree li ul li div.active em span {
     background-color: #ecf1b2;
 }
-#con_str_tree li ul li div.hover,
-#con_str_tree li ul li div.hover em a,
-#con_str_tree li ul li div.hover em span {
+.con_str_tree li ul li div.hover,
+.con_str_tree li ul li div.hover em a,
+.con_str_tree li ul li div.hover em span {
     background-color: #f8fddc;
 }
-#con_str_tree li ul li div a.on {
+.con_str_tree li ul li div a.on {
     background-image: url("../images/folder_on.gif");
 }
-#con_str_tree li ul li div a.on_error {
+.con_str_tree li ul li div a.on_error {
     background-image: url('../images/folder_on_error.gif');
 }
-#con_str_tree li ul li div a.on_error_locked {
+.con_str_tree li ul li div a.on_error_locked {
     background-image: url("../images/folder_on_error_locked.gif");
 }
-#con_str_tree li ul li div a.on_locked {
+.con_str_tree li ul li div a.on_locked {
     background-image: url("../images/folder_on_locked.gif");;
 }
-#con_str_tree li ul li div a.off {
+.con_str_tree li ul li div a.off {
     background-image: url("../images/folder_off.gif");
 }
-#con_str_tree li ul li div a.off_error {
+.con_str_tree li ul li div a.off_error {
     background-image: url("../images/folder_off_error.gif");
 }
-#con_str_tree li ul li div a.off_error_locked {
+.con_str_tree li ul li div a.off_error_locked {
     background-image: url("../images/folder_off_error_locked.gif");
 }
-#con_str_tree li ul li div a.off_locked {
+.con_str_tree li ul li div a.off_locked {
     background-image: url("../images/folder_off_locked.gif");
 }
-#con_str_tree li ul li div a.off_disabled {
+.con_str_tree li ul li div a.off_disabled {
     color: #999;
     background-image: url("../images/folder_off.gif");
     font-style: italic;
 }
-#con_str_tree li ul li.con_sync div > a {
+.con_str_tree li ul li.con_sync div > a {
     background-image: url("../images/but_sync_cat.gif");
 }
-#con_str_tree li ul li.con_sync div > a.off,
-#con_str_tree li ul li.con_sync div > a.off_error,
-#con_str_tree li ul li.con_sync div > a.off_error_locked,
-#con_str_tree li ul li.con_sync div > a.off_locked,
-#con_str_tree li ul li.con_sync div > a.off_disabled {
+.con_str_tree li ul li.con_sync div > a.off,
+.con_str_tree li ul li.con_sync div > a.off_error,
+.con_str_tree li ul li.con_sync div > a.off_error_locked,
+.con_str_tree li ul li.con_sync div > a.off_locked,
+.con_str_tree li ul li.con_sync div > a.off_disabled {
     background-image: url("../images/but_sync_cat_off.gif");
 }

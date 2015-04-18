@@ -181,18 +181,12 @@ class Pifa {
     public static function getExtensionClasses($parentClass) {
 
         // ignore if extensions folder is missing
-        if (false === $dh = opendir(self::getPath() . 'extensions/')) {
+        if (false === ($handle = cDirHandler::read(self::getPath() . 'extensions/'))) {
             return array();
         }
 
         $extensionClasses = array();
-        while (false !== $file = readdir($dh)) {
-
-            // skip folders
-            if (true === is_dir($file)) {
-                continue;
-            }
-
+        foreach ($handle as $file) {
             // skip files that don't match regex
             $matches = array();
             $matchCount = preg_match('/^class\.pifa\.([^\.]+)\.php$/', $file, $matches);
@@ -219,8 +213,8 @@ class Pifa {
             }
 
             $extensionClasses[] = array(
-                'value' => $optionClass,
-                'label' => $optionClass
+                    'value' => $optionClass,
+                    'label' => $optionClass
             );
         }
 
@@ -239,12 +233,12 @@ class Pifa {
         $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
 
         // ignore if template folder is missing
-        if (false === $dh = opendir($clientConfig['template']['path'])) {
+        if (false === ($handle = cDirHandler::read($clientConfig['template']['path']))) {
             return array();
         }
 
         $templates = array();
-        while (false !== $file = readdir($dh)) {
+        foreach ($handle as $file) {
 
             // skip folders
             if (true === is_dir($file)) {
@@ -267,8 +261,8 @@ class Pifa {
             }
 
             $templates[] = array(
-                'value' => $file,
-                'label' => $file
+                    'value' => $file,
+                    'label' => $file
             );
         }
 

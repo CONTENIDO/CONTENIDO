@@ -115,6 +115,7 @@ $(function() {
 
     $(".galery .pagination li a").not(".disabled").click(function(e) {
         e.preventDefault();
+
         var page;
         if ($(this).parent().index() == 0) {
             page = activePage - 1;
@@ -129,14 +130,26 @@ $(function() {
     });
     /* ----- GALERY LIGHTBOX ----- */
     jQuery(window).load(function() {
-        $(".galery .slider, .galery .source").delegate("a", "click", function(e) {
+        var dialogPosition = {
+            my: "center",
+            at: "center",
+            of: window,
+            collision: "fit"
+        };
+
+        $(".galery .slider").delegate("a", "click", function(e) {
             e.preventDefault();
             var left = "", right = "";
-                count = $(this).parent().parent().find("li").length;
-
+            // number of pictures on all pages in total
+            var count = $(".galery .source li").length;
+            // currently shown page in gallery, first page is 1
+            var curPage = parseInt($(".pagination .active").text());
 
             if (count > 1) {
+                // index of picture, starts with 0
                 var index = $(this).parent().index();
+                // add current page offset to index
+                index += (curPage -1) * imgPerPage;
                 if (index > 0) {
                     left = '<a href="' + (index - 1) + '" class="prev_image">&laquo;</a>';
                 }
@@ -149,18 +162,15 @@ $(function() {
             if ($(this).attr("rel") != '' && $(this).attr("title") != '') {
                 colon = ':';
             }
-            $(".galery .lightbox").html(left + right + '<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + colon + $(this).attr("title") + '</p>').dialog({
+
+            var lb = $(".galery .lightbox").html(left + right + '<img src="' + $(this).attr("href") + '" alt="" /><p>' + $(this).attr("rel") + colon + $(this).attr("title") + '</p>').dialog({
                 modal: true,
                 width: "auto",
                 height: "auto",
                 closeText: "X",
-                dialogClass: 'dialog-gallery',
-                position: {
-                    my: "center",
-                    at: "center",
-                    of: window
-                },
-                open: function() {
+                dialogClass: 'dialog-gallery invisible',
+                position: dialogPosition,
+                open: function(event) {
                     $('.ui-widget-overlay').on('click', function() {
                         $(".ui-dialog-content").dialog("destroy");
                     });
@@ -179,24 +189,55 @@ $(function() {
                     });
                 },
                 close: function() {
+                    dialogPosition = {
+                        my: "center",
+                        at: "center",
+                        of: window
+                    };
                     $(this).dialog('destroy').remove()
                     $(".galery").prepend('<div class="lightbox"></div>');
                 }
             });
+
+            setTimeout(function() {
+                dialogPosition = lb.dialog( "option", "position" );
+                lb.dialog( "option", "position", dialogPosition);
+                $('.dialog-gallery.invisible').removeClass('invisible');
+            }, 0);
         });
 
         $("body").delegate(".lightbox a", "click", function(e) {
             e.preventDefault();
+
+            // get position
+            dialogPosition = $( ".lightbox" ).dialog( "option", "position" );
+
+            // get next image and close dialog
             var index = parseInt($(this).attr("href"));
             $(".lightbox").dialog("destroy");
-            $('.galery .source li:eq(' + index + ') a').click();
 
             // switch pages when image is on other page.
-            if (index % 6 == 0 && e.currentTarget.className == 'next_image') {
-                    $('#forward').click();
-            } else if (index % 6 == 5 && e.currentTarget.className == 'prev_image') {
+            if (index % imgPerPage == 0 && e.currentTarget.className == 'next_image') {
+                $('#forward').click();
+            } else if (index % imgPerPage == (imgPerPage -1) && e.currentTarget.className == 'prev_image') {
                 $('#back').click();
             }
+
+            // make sure all images are loaded before comming up with next dialog
+            // if we omit the check then the dialog will be misplaced after the images are loaded
+            var numImgOnPage = $(".galery .slider li").length;
+            var numLoadedImg = 0;
+            $(".galery .slider img").one("load", function() {
+                numLoadedImg++;
+                // are all images are loaded yet?
+                if (numLoadedImg >= numImgOnPage) {
+                    // click on link of displayed imagage at newly loaded page
+                    $('.galery .slider li:eq(' + index % imgPerPage + ') a').click();
+                }
+            }).each(function() {
+                // fallback if images are loaded from cache
+                if (this.complete) $(this).load();
+            });
 
         });
 

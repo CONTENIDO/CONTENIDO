@@ -71,7 +71,7 @@ class cModuleHandler {
     protected $_type;
 
     /**
-     * The aliac name of the modul
+     * The alias name of the modul
      *
      * @var string
      */
@@ -161,15 +161,15 @@ class cModuleHandler {
     protected static $_encodingStore = array();
 
     /**
-     * Construct for the class cModuleHandler.
+     * Constructor for the class cModuleHandler.
      * With this class you can
-     * make a new Modul, rename a Modul. You can save a Output from Modul and
+     * create a new module, rename a module. You can save a Output from modules and
      * Input in a
-     * file. The save rules are [Modulname] (is uneque) the files input and
+     * file. The save rules are [Modulname] (is unique) the files input and
      * output will be named
      * [Modulname]_input.php , [Modulname]_output.php
      *
-     * @param int $idmod the id of the modul
+     * @param int $idmod the id of the module
      * @throws cException if the module directory can not be created
      */
     public function __construct($idmod = NULL) {
@@ -328,7 +328,7 @@ class cModuleHandler {
     /**
      * Get the template path.
      * If file is set it will
-     * return the complete paht + file
+     * return the complete path + file
      *
      * @param string $file
      * @return string
@@ -411,11 +411,12 @@ class cModuleHandler {
     }
 
     /**
-     * Make and save new file
+     * Create and save new file
      *
      * @param string $type css | js | template directory of the file
      * @param string $fileName file name
      * @param string $content content of the file
+     * @return boolean true if file can be created, and false otherwise
      */
     public function createModuleFile($type, $fileName = NULL, $content = '') {
         // make directory if not exist
@@ -447,9 +448,9 @@ class cModuleHandler {
                     $notification->displayNotification('error', i18n("Can't make file: ") . $fileName);
                     return false;
                 }
-            } elseif ($content != '') {
+            } else {
                 $content = iconv($this->_encoding, $this->_fileEncoding, $content);
-                if (!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName, $this->_modulePath . $this->_directories[$type])) {
+                if (!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName, $this->_modulePath . $this->_directories[$type])) {error_log("no write");
                     return false;
                 }
                 if (cFileHandler::write($this->_modulePath . $this->_directories[$type] . $fileName, $content) === false) {
@@ -660,19 +661,25 @@ class cModuleHandler {
      * @return boolean true or false
      */
     public function moduleWriteable($type) {
-        if (!cFileHandler::writeable($this->_modulePath . $this->_directories[$type])) {
-            return false;
-        } else {
-            return true;
+        // check if type directory inside module folder exists and has write permissions
+        if (true === cFileHandler::exists($this->_modulePath . $this->_directories[$type])) {
+            return cFileHandler::writeable($this->_modulePath . $this->_directories[$type]);
         }
+
+        // check if module folder exists and has write permissions
+        if (true === cFileHandler::exists($this->_modulePath)) {
+            return cFileHandler::writeable($this->_modulePath);
+        }
+
+        return false;
     }
 
     /**
      * Save a string into the file (_output.php).
      *
      * @param string
-     * @return bool if the action (save contents into the file _output.php is
-     *         success) return true else false
+     * @return bool if the action (save contents into the file _output.php) is
+     *         successful return true else false
      */
     public function saveOutput($output = NULL) {
         $fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php';
@@ -701,8 +708,8 @@ class cModuleHandler {
      * Save a string into the file (_input.php)
      *
      * @param string
-     * @return bool if the action (save contents into the file _input.php is
-     *         success) return true else false
+     * @return bool if the action (save contents into the file _input.php) is
+     *         successful return true else false
      */
     public function saveInput($input = NULL) {
         $fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php';
@@ -932,7 +939,10 @@ class cModuleHandler {
         }
         if ($toCheck !== $module->get("error")) {
             $module->set("error", $toCheck);
-            $module->store();
+
+            // do not rewrite cache on validation
+            // it is rewritten when saving module
+            $module->store(true);
         }
 
         //check code
@@ -976,7 +986,10 @@ class cModuleHandler {
         //overview/menu)
         if ($isError !== $module->get("error")) {
             $module->set("error", $isError);
-            $module->store();
+
+            // do not rewrite cache on validation
+            // it is rewritten when saving module
+            $module->store(true);
         }
 
         return $result;
@@ -993,7 +1006,7 @@ class cModuleHandler {
      * @return array (bool state, string errorMessage)
      */
     protected function _verifyCode($code, $id, $output = false) {
-
+        $isError = false;
         $result = array(
             'state' => false,
             'errorMessage' => NULL
@@ -1050,17 +1063,20 @@ class cModuleHandler {
         @ini_set('error_append_string', $sEas); // Restoring settings (see above)
 
         // Strip out the error message
-        $isError = strpos($output, '<phperror>');
+        if ($isError === false) {
+            $isError = strpos($output, '<phperror>');
+        }
 
         // More stripping: Users shouldnt see where the file is located, but they
         // should see the error line
         if ($isError !== false) {
-
-            $pattern         = '/(<phperror>|<\/phperror>|<b>|<\/b>|<br>|<br \/>)/im';
-            $modErrorMessage = trim(preg_replace($pattern, '', $output));
-            $errorPart1      = substr($modErrorMessage, 0, strpos($modErrorMessage, ' in '));
-            $errorPart2      = substr($modErrorMessage, strpos($modErrorMessage, ' on line '));
-            $modErrorMessage = $errorPart1 . $errorPart2;
+            if (isset($modErrorMessage) === false) {
+                $pattern         = '/(<phperror>|<\/phperror>|<b>|<\/b>|<br>|<br \/>)/im';
+                $modErrorMessage = trim(preg_replace($pattern, '', $output));
+                $errorPart1      = substr($modErrorMessage, 0, strpos($modErrorMessage, ' in '));
+                $errorPart2      = substr($modErrorMessage, strpos($modErrorMessage, ' on line '));
+                $modErrorMessage = $errorPart1 . $errorPart2;
+            }
             $result['errorMessage'] = sprintf(i18n("Error in module. Error location: %s"), $modErrorMessage);
 
         }
@@ -1081,6 +1097,16 @@ class cModuleHandler {
 
         return $result;
 
+    }
+
+    /**
+     * Get method for module path value
+     * Path to a module dir
+     *
+     * @return $modulePath string
+     */
+    protected static function _getModulePath() {
+         return $this->_modulePath;
     }
 
 }

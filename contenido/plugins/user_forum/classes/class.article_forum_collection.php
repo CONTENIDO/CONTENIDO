@@ -2,15 +2,15 @@
 /**
  * This file contains the collection class for userforum plugin.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UserForum
- * @version SVN Revision $Rev:$
+ * @version    SVN Revision $Rev:$
  *
- * @author Claus Schunk
- * @copyright four for business AG <www.4fb.de>
- * @license http://www.contenido.org/license/LIZENZ.txt
- * @link http://www.4fb.de
- * @link http://www.contenido.org
+ * @author     Claus Schunk
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  */
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * between the frontend module
  * content_user_forum and the backend plugin.
  *
- * @package Plugin
+ * @package    Plugin
  * @subpackage UserForum
  */
 class ArticleForumCollection extends ItemCollection {
@@ -60,12 +60,12 @@ class ArticleForumCollection extends ItemCollection {
     public function __construct() {
         // sync time
         date_default_timezone_set('Europe/Berlin');
-        $this->db = cRegistry::getDb();
+        $this->db  = cRegistry::getDb();
         $this->cfg = cRegistry::getConfig();
 
         parent::__construct($this->cfg['tab']['user_forum'], 'id_user_forum');
         $this->_setItemClass('ArticleForum');
-        $this->item = new ArticleForumItem();
+        $this->item          = new ArticleForumItem();
         $this->idContentType = $this->getIdUserForumContenType();
     }
 
@@ -89,7 +89,7 @@ class ArticleForumCollection extends ItemCollection {
             WHERE
                 art_lang.idart = f.idart
                 AND art_lang.idlang = f.idlang
-                AND idclient = ".$idclient."
+                AND idclient = " . $idclient . "
             ORDER BY
                 id_user_forum ASC
             ;");
@@ -111,24 +111,24 @@ class ArticleForumCollection extends ItemCollection {
      * @param $idcat
      * @param $lang
      */
-    public function deleteHierarchie($keyPost, $level, $idart, $idcat, $lang) {
-        $comments = $this->_getCommentHierachrie($idcat, $idart, $lang);
+    public function deleteHierarchy($keyPost, $level, $idart, $idcat, $lang) {
+        $comments = $this->_getCommentHierarchy($idcat, $idart, $lang);
 
         $arri = array();
 
         foreach ($comments as $key => $com) {
             $com['key'] = $key;
-            $arri[] = $com;
+            $arri[]     = $com;
         }
-        $idEntry = 0;
+        $idEntry       = 0;
         $id_user_forum = array();
-        $lastLevel = 0;
+        $lastLevel     = 0;
         for ($i = 0; $i < count($arri); $i++) {
             // select Entry
             if ($arri[$i]['key'] == $keyPost) {
                 $idEntry = $arri[$i]['id_user_forum'];
                 if ($arri[$i]['level'] < $arri[$i + 1]['level']) {
-                    // check for more subcomments
+                    // check for more sub comments
                     for ($j = $i + 1; $j < $arri[$j]; $j++) {
                         if ($arri[$i]['level'] < $arri[$j]['level']) {
                             $id_user_forum[] = $arri[$j]['id_user_forum'];
@@ -153,12 +153,13 @@ class ArticleForumCollection extends ItemCollection {
      * @param int $id_cat
      * @param int $id_art
      * @param int $id_lang
+     *
      * @return array
      */
-    protected function _getCommentHierachrie($id_cat, $id_art, $id_lang) {
+    protected function _getCommentHierarchy($id_cat, $id_art, $id_lang) {
         $this->query();
         while (false != $field = $this->next()) {
-            $arrUsers[$field->get('userid')]['email'] = $field->get('email');
+            $arrUsers[$field->get('userid')]['email']    = $field->get('email');
             $arrUsers[$field->get('userid')]['realname'] = $field->get('realname');
         }
         $arrforum = array();
@@ -173,7 +174,7 @@ class ArticleForumCollection extends ItemCollection {
      *
      * @param array $arrforum
      * @param array $result
-     * @param int $level
+     * @param int   $level
      */
     public function normalizeArray($arrforum, &$result, $level = 0) {
         if (is_array($arrforum)) {
@@ -188,13 +189,13 @@ class ArticleForumCollection extends ItemCollection {
 
     /**
      *
-     * @param int $id_cat
-     * @param int $id_art
-     * @param int $id_lang
+     * @param int   $id_cat
+     * @param int   $id_art
+     * @param int   $id_lang
      * @param array $arrUsers
      * @param array $arrforum
-     * @param int $parent
-     * @param bool $frontend
+     * @param int   $parent
+     * @param bool  $frontend
      */
     public function getTreeLevel($id_cat, $id_art, $id_lang, &$arrUsers, &$arrforum, $parent = 0, $frontend = false) {
         $db = cRegistry::getDb();
@@ -235,28 +236,28 @@ class ArticleForumCollection extends ItemCollection {
             $arrforum[$db->f('id_user_forum')]['userid'] = $db->f('userid');
 
             if (array_key_exists($db->f('userid'), $arrUsers)) {
-                $arrforum[$db->f('id_user_forum')]['email'] = $arrUsers[$db->f('userid')]['email'];
+                $arrforum[$db->f('id_user_forum')]['email']    = $arrUsers[$db->f('userid')]['email'];
                 $arrforum[$db->f('id_user_forum')]['realname'] = $arrUsers[$db->f('userid')]['realname'];
             } else {
-                $arrforum[$db->f('id_user_forum')]['email'] = $db->f('email');
+                $arrforum[$db->f('id_user_forum')]['email']    = $db->f('email');
                 $arrforum[$db->f('id_user_forum')]['realname'] = $db->f('realname');
             }
-            $arrforum[$db->f('id_user_forum')]['forum'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum'));
+            $arrforum[$db->f('id_user_forum')]['forum']       = str_replace(chr(13) . chr(10), '<br />', $db->f('forum'));
             $arrforum[$db->f('id_user_forum')]['forum_quote'] = str_replace(chr(13) . chr(10), '<br />', $db->f('forum_quote'));
-            $arrforum[$db->f('id_user_forum')]['timestamp'] = $db->f('timestamp');
-            $arrforum[$db->f('id_user_forum')]['like'] = $db->f('like');
-            $arrforum[$db->f('id_user_forum')]['dislike'] = $db->f('dislike');
+            $arrforum[$db->f('id_user_forum')]['timestamp']   = $db->f('timestamp');
+            $arrforum[$db->f('id_user_forum')]['like']        = $db->f('like');
+            $arrforum[$db->f('id_user_forum')]['dislike']     = $db->f('dislike');
 
             $arrforum[$db->f('id_user_forum')]['editedat'] = $db->f('editedat');
             $arrforum[$db->f('id_user_forum')]['editedby'] = $db->f('editedby');
 
             // Added values to array for allocation
-            $arrforum[$db->f('id_user_forum')]['idcat'] = $db->f('idcat');
-            $arrforum[$db->f('id_user_forum')]['idart'] = $db->f('idart');
+            $arrforum[$db->f('id_user_forum')]['idcat']         = $db->f('idcat');
+            $arrforum[$db->f('id_user_forum')]['idart']         = $db->f('idart');
             $arrforum[$db->f('id_user_forum')]['id_user_forum'] = $db->f('id_user_forum');
-            $arrforum[$db->f('id_user_forum')]['online'] = $db->f('online');
-            $arrforum[$db->f('id_user_forum')]['editedat'] = $db->f('editedat');
-            $arrforum[$db->f('id_user_forum')]['editedby'] = $db->f('editedby');
+            $arrforum[$db->f('id_user_forum')]['online']        = $db->f('online');
+            $arrforum[$db->f('id_user_forum')]['editedat']      = $db->f('editedat');
+            $arrforum[$db->f('id_user_forum')]['editedby']      = $db->f('editedby');
 
             $this->getTreeLevel($id_cat, $id_art, $id_lang, $arrUsers, $arrforum[$db->f('id_user_forum')]['children'], $db->f('id_user_forum'), $frontend);
         }
@@ -270,10 +271,10 @@ class ArticleForumCollection extends ItemCollection {
      * @param unknown_type $like
      * @param unknown_type $dislike
      * @param unknown_type $forum
-     * @param unknown_type $online
-     * @param unknown_type $checked
+     * @param int $online
+     *
      */
-    public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online, $checked) {
+    public function updateValues($id_user_forum, $name, $email, $like, $dislike, $forum, $online) {
         $uuid = cRegistry::getAuth()->isAuthenticated();
 
         $this->item->loadByPrimaryKey($id_user_forum);
@@ -309,54 +310,66 @@ class ArticleForumCollection extends ItemCollection {
         // $this->item->getField('dislike');
 
         $fields = array(
-            'realname' => $name,
-            'editedby' => $uuid,
-            'email' => $email,
-            'forum' => $forum,
-            'editedat' => $timeStamp,
-            'like' => $like,
-            'dislike' => $dislike,
-            'online' => $online
+            'realname'  => $name,
+            'editedby'  => $uuid,
+            'email'     => $email,
+            'forum'     => $forum,
+            'editedat'  => $timeStamp,
+            'like'      => $like,
+            'dislike'   => $dislike,
+            'online'    => $online,
+            // update moderated flag with update => comment is moderated now.
+            'moderated' => 1
         );
 
         $whereClauses = array(
             'id_user_forum' => $id_user_forum
         );
-        $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
+        $statement    = $this->db->buildUpdate($this->table, $fields, $whereClauses);
         $this->db->query($statement);
     }
 
     /**
      * toggles the given input with update in db.
      *
-     * @param $onlineState
+     * @param     $onlineState
      * @param int $id_user_forum primary key
      */
-    public function toggleOnlineState($onlineState, $id_user_forum) {
+    public function toggleOnlineState($onlineState, $id_user_forum, $idart = NULL) {
+
         // toggle state
         $onlineState = ($onlineState == 0) ? 1 : 0;
 
-        $fields = array(
-            'online' => $onlineState
-        );
+        if (isset($idart)) {
+            $fields = array(
+                'online'    => $onlineState,
+                'moderated' => 1,
+            );
+        } else {
+            $fields = array(
+                'online' => $onlineState
+            );
+        }
+
         $whereClauses = array(
-            'id_user_forum' => (int) $id_user_forum
+            'id_user_forum' => (int)$id_user_forum
         );
-        $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
+        $statement    = $this->db->buildUpdate($this->table, $fields, $whereClauses);
         $this->db->query($statement);
     }
 
     /**
+     *
      * email notification for registred moderator.
      * before calling this function it is necessary to receive the converted
      * language string from frontend module.
      *
-     * @param unknown_type $realname
-     * @param unknown_type $email
-     * @param unknown_type $forum
-     * @param unknown_type $idart
-     * @param unknown_type $lang
-     * @param unknown_type $forum_quote
+     * @param     $realname
+     * @param     $email
+     * @param     $forum
+     * @param     $idart
+     * @param     $lang
+     * @param int $forum_quote
      */
     public function mailToModerator($realname, $email, $forum, $idart, $lang, $forum_quote = 0) {
 
@@ -385,6 +398,7 @@ class ArticleForumCollection extends ItemCollection {
      *
      * @param int $idart
      * @param int $idlang
+     *
      * @return array
      */
     public function getArticleTitle($idart, $idlang) {
@@ -407,38 +421,38 @@ class ArticleForumCollection extends ItemCollection {
     }
 
     /**
-     *
-     * @param $id_cat
-     * @param $id_art
-     * @param $id_lang
      * @return ArticleForumRightBottom
      */
-    public function getExistingforum($id_cat, $id_art, $id_lang) {
+    public function getExistingforum() {
         $userColl = new cApiUserCollection();
         $userColl->query();
 
         while (($field = $userColl->next()) != false) {
-            $arrUsers[$field->get('user_id')]['email'] = $field->get('email');
+            $arrUsers[$field->get('user_id')]['email']    = $field->get('email');
             $arrUsers[$field->get('user_id')]['realname'] = $field->get('realname');
         }
+
         return $arrUsers;
     }
 
     /**
      *
      * @param unknown_type $idquote
+     *
      * @return multitype:NULL
      */
     function selectNameAndNameByForumId($idquote) {
         $ar = array();
         $this->item->loadByPrimaryKey($this->db->escape($idquote));
         $ar[] = $this->item->get('realname');
+
         return $ar;
     }
 
     /**
+     * @param $userid
      *
-     * @param unknown_type $userid
+     * @return bool
      */
     public function selectUser($userid) {
         return $this->item->loadByPrimaryKey($this->db->escape($userid));
@@ -452,15 +466,14 @@ class ArticleForumCollection extends ItemCollection {
      */
     public function incrementLike($forum_user_id) {
         $db = cRegistry::getDb();
-        $ar = array();
         // load actual value
         $this->item->loadByPrimaryKey($db->escape($forum_user_id));
-        $ar = $this->item->toArray();
+        $ar      = $this->item->toArray();
         $current = $ar['like'];
         // increment value
         $current += 1;
 
-        $fields = array(
+        $fields       = array(
             'like' => $current
         );
         $whereClauses = array(
@@ -479,21 +492,20 @@ class ArticleForumCollection extends ItemCollection {
      */
     public function incrementDislike($forum_user_id) {
         $db = cRegistry::getDb();
-        $ar = array();
         // load actual value
         $this->item->loadByPrimaryKey($db->escape($forum_user_id));
-        $ar = $this->item->toArray();
+        $ar      = $this->item->toArray();
         $current = $ar['dislike'];
         // increment value
         $current += 1;
 
-        $fields = array(
+        $fields       = array(
             'dislike' => $current
         );
         $whereClauses = array(
             'id_user_forum' => $forum_user_id
         );
-        // persist inkremented value
+        // persist incremented value
         $statement = $this->db->buildUpdate($this->table, $fields, $whereClauses);
         $this->db->query($statement);
     }
@@ -515,28 +527,28 @@ class ArticleForumCollection extends ItemCollection {
         $db = cRegistry::getDb();
 
         // comments are marked as offline if the moderator mode is turned on.
-        $modCheck = $this->getModeModeActive($idart);
-        $online = $modCheck? 0 : 1;
+        $modCheck = $this->getModModeActive($idart);
+        $online   = $modCheck ? 0 : 1;
 
         // build array for sql statemant
         $fields = array(
-            'id_user_forum' => NULL,
+            'id_user_forum'        => NULL,
             'id_user_forum_parent' => $db->escape($parent),
-            'idart' => $db->escape($idart),
-            'idcat' => $db->escape($idcat),
-            'idlang' => $db->escape($lang),
-            'userid' => $db->escape($userid),
-            'email' => $db->escape($email),
-            'realname' => $db->escape($realname),
-            'forum' => ($forum),
-            'forum_quote' => ($forum_quote),
-            'idclient' => cRegistry::getClientId(),
-            'like' => 0,
-            'dislike' => 0,
-            'editedat' => NULL,
-            'editedby' => NULL,
-            'timestamp' => date('Y-m-d H:i:s'),
-            'online' => $online
+            'idart'                => $db->escape($idart),
+            'idcat'                => $db->escape($idcat),
+            'idlang'               => $db->escape($lang),
+            'userid'               => $db->escape($userid),
+            'email'                => $db->escape($email),
+            'realname'             => $db->escape($realname),
+            'forum'                => ($forum),
+            'forum_quote'          => ($forum_quote),
+            'idclient'             => cRegistry::getClientId(),
+            'like'                 => 0,
+            'dislike'              => 0,
+            'editedat'             => NULL,
+            'editedby'             => NULL,
+            'timestamp'            => date('Y-m-d H:i:s'),
+            'online'               => $online
         );
 
         $db->insert($this->table, $fields);
@@ -555,7 +567,7 @@ class ArticleForumCollection extends ItemCollection {
      * @param articleId $idart
      */
     public function deleteAllCommentsById($idart) {
-        $this->deleteBy('idart', (int) $idart);
+        $this->deleteBy('idart', (int)$idart);
     }
 
     /**
@@ -564,16 +576,15 @@ class ArticleForumCollection extends ItemCollection {
      * @param unknown_type $id_art
      * @param unknown_type $id_lang
      * @param unknown_type $frontend
+     *
      * @return multitype:
      */
     public function getExistingforumFrontend($id_cat, $id_art, $id_lang, $frontend) {
-        // $cfg = cRegistry::getConfig();
-        // $db = cRegistry::getDb();
         $userColl = new cApiUserCollection();
         $userColl->query();
 
         while (($field = $userColl->next()) != false) {
-            $arrUsers[$field->get('user_id')]['email'] = $field->get('email');
+            $arrUsers[$field->get('user_id')]['email']    = $field->get('email');
             $arrUsers[$field->get('user_id')]['realname'] = $field->get('realname');
         }
 
@@ -582,6 +593,7 @@ class ArticleForumCollection extends ItemCollection {
 
         $result = array();
         $this->normalizeArray($arrforum, $result);
+
         return $result;
     }
 
@@ -589,6 +601,7 @@ class ArticleForumCollection extends ItemCollection {
      * returns the emailadress from the moderator for this article
      *
      * @param articleid $idart
+     *
      * @return string
      */
     public function getModEmail($idart) {
@@ -598,16 +611,18 @@ class ArticleForumCollection extends ItemCollection {
                 return $data[$i]["email"];
             }
         }
+
         return NULL;
     }
 
     /**
-     * returns if moderator mode is actice for this article
+     * returns if moderator mode is active for this article
      *
      * @param articleid $idart
+     *
      * @return bool
      */
-    public function getModeModeActive($idart) {
+    public function getModModeActive($idart) {
         $data = $this->readXML();
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['idart'] == $idart) {
@@ -616,6 +631,7 @@ class ArticleForumCollection extends ItemCollection {
                 }
             }
         }
+
         return true;
     }
 
@@ -623,6 +639,7 @@ class ArticleForumCollection extends ItemCollection {
      * returns if quotes for comments are allowed in this article
      *
      * @param articleid $idart
+     *
      * @return bool
      */
     public function getQuoteState($idart) {
@@ -635,6 +652,7 @@ class ArticleForumCollection extends ItemCollection {
                 }
             }
         }
+
         return true;
     }
 
@@ -647,9 +665,6 @@ class ArticleForumCollection extends ItemCollection {
      */
     public function readXML() {
         // get variables from global context
-        $catId = cRegistry::getCategoryId();
-        $idclient = cRegistry::getClientId();
-        $cfgClient = cRegistry::getClientConfig();
         $idtype = $this->idContentType;
 
         try {
@@ -709,12 +724,14 @@ class ArticleForumCollection extends ItemCollection {
     /**
      *
      * @param unknown_type $id_user_forum
+     *
      * @return multitype:NULL Ambigous <mixed, boolean>
      */
     public function getCommentContent($id_user_forum) {
         $item = $this->loadItem($id_user_forum);
+
         return array(
-            'name' => $item->get("realname"),
+            'name'    => $item->get("realname"),
             'content' => $item->get("forum")
         );
     }
@@ -737,6 +754,40 @@ class ArticleForumCollection extends ItemCollection {
         } else {
             return false;
         }
+    }
+
+
+    public function getUnmoderatedComments() {
+
+        $comments =  array();
+
+        $idlang   = cRegistry::getLanguageId();
+        $idclient = cRegistry::getClientId();
+
+        $db = cRegistry::getDb();
+            $db->query("-- ArticleForumCollection->getUnmoderatedComments()
+                SELECT
+                    *
+                FROM
+                    `{$this->cfg['tab']['user_forum']}`
+                WHERE
+                    moderated = 0
+                    AND idclient = $idclient
+                    AND idlang = $idlang
+                    AND online = 0
+                ORDER BY
+                    timestamp DESC
+                ;");
+
+        while ($db->nextRecord()) {
+
+        // filter only mod mode active articles
+        $modCheck = $this->getModModeActive($db->f('idart'));
+           if(isset($modCheck)) {
+                $comments[] = $db->getRecord();
+            }
+        }
+        return $comments;
     }
 }
 

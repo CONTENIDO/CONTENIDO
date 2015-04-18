@@ -216,6 +216,22 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     global $time_online_move;
     global $timemgmt;
 
+    // CON-2134 check admin permission
+    $aAuthPerms = explode(',', $auth->auth['perm']);
+    
+    $admin = false;
+    if (count(preg_grep("/admin.*/", $aAuthPerms)) > 0) {
+        $admin = true;
+    }
+    $oArtLang = new cApiArticleLanguage($idartlang);
+    $locked = (int) $oArtLang->get('locked');
+
+    // abort editing if article is locked and user user no admin
+    if (1 === $locked
+    && false === $admin) {
+        return $idart;
+    }
+    
     // Add slashes because single quotes will crash the db
     $page_title = addslashes($page_title);
     $title = stripslashes($title);
@@ -304,7 +320,13 @@ function conEditArt($idcat, $idcatnew, $idart, $isstart, $idtpl, $idartlang, $id
     if ($changefreq != "nothing") {
         $oArtLang->set('changefreq', $changefreq);
     }
-    $oArtLang->set('published', date("Y-m-d H:i:s", strtotime($published)));
+
+    // do not set publishing date if value is false
+    // do not set publishing date if article is offline
+    if (false !== $published
+    && (int) $online === 1) {
+        $oArtLang->set('published', date("Y-m-d H:i:s", strtotime($published)));
+    }
 
     // If the user has right for makeonline, update some properties.
     if ($perm->have_perm_area_action('con', 'con_makeonline') || $perm->have_perm_area_action_item('con', 'con_makeonline', $idcat)) {
@@ -482,6 +504,13 @@ function conMakeOnline($idart, $lang, $online = -1) {
     }
 
     $artLang->store();
+
+    // Execute cec hook
+    cApiCecHook::execute('Contenido.Article.ConMakeOnline', array(
+    'idart' => $idart,
+    'idlang' => $lang,
+    'state' => $online
+    ));
 }
 
 /**
@@ -589,6 +618,12 @@ function conMakeCatOnline($idcat, $lang, $status) {
         $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
         $oPathresolveCacheColl->deleteByCategoryAndLanguage($idcat, $lang);
     }
+
+    // Execute cec hook
+    cApiCecHook::execute('Contenido.Article.ConMakeCatOnline', array(
+    'idcat' => $idcat,
+    'idlang' => $lang,
+    ));
 }
 
 /**
@@ -969,10 +1004,16 @@ function conMakeStart($idcatart, $isstart) {
         $oArtLang->set('timemgmt', 0);
         $oArtLang->store();
     }
+
+    // Execute cec hook
+    cApiCecHook::execute('Contenido.Article.ConMakeStart', array(
+    'idart' => $oCatArt->get("idart"),
+    'idlang' => $lang,
+    ));
 }
 
 /**
- * Create code for one article in all categorys
+ * Create code for one article in all categories
  *
  * @param int $idart Article ID
  */
@@ -1650,7 +1691,7 @@ function conRemoveOldCategoryArticle($idcat, $idart, $idartlang, $client, $lang)
 
     $idcatart = $oCatArt->get('idcatart');
 
-    // Delete frome code cache and delete corresponding code
+    // Delete from code cache and delete corresponding code
     /**
      * @var $file SplFileInfo
      */

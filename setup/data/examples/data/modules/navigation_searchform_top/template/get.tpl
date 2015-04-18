@@ -6,9 +6,9 @@
         you have to define a search result page.
     -->
 {else}
-    <form action="{$action}" method="{$method}" id="navigation_searchform_top">
-    {if $idart}<input type="hidden" name="idart" value="{$idart}" />{/if}
-    {if $idlang}<input type="hidden" name="idlang" value="{$idlang}" />{/if}
+    <form action="{$action|escape}" method="{$method|escape}" id="navigation_searchform_top">
+    {if $idart}<input type="hidden" name="idart" value="{$idart|escape}" />{/if}
+    {if $idlang}<input type="hidden" name="idlang" value="{$idlang|escape}" />{/if}
         <input type="text" id="search_term" name="search_term" />
     </form>
 {/if}

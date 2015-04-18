@@ -465,7 +465,7 @@ function workflowSelect($listid, $default, $idcat) {
     ));
     $workflowSelectBox->setDefault($default);
 
-    $sButton = '<a href="javascript:setWorkflow(' . $idcat . ', \'' . "wfselect" . $idcat . '\')"><img src="' . $cfg["path"]["images"] . 'submit.gif" class="spaced"></a>';
+    $sButton = '<a href="javascript:setWorkflow(' . $idcat . ', \'' . "wfselect" . $idcat . '\')"><img src="' . $cfg["path"]["images"] . 'submit.gif" alt="" class="spaced"></a>';
 
     return $workflowSelectBox->render() . $sButton;
 }

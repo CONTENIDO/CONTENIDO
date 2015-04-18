@@ -94,7 +94,7 @@ class cApiSearchTrackingCollection extends ItemCollection {
      * @return boolean
      */
     public function selectSearchTerm($term, $idclient = 0, $idlang = 0) {
-        return $this->select('searchterm=\'' . $term . '\' AND idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
+        return $this->select('searchterm=\'' . addslashes($term) . '\' AND idclient=' . (($idclient == 0) ? cRegistry::getClientId() : $idclient) . ' AND idlang=' . (($idlang == 0) ? cRegistry::getLanguageId() : $idlang), '', 'datesearched DESC');
     }
 
 }

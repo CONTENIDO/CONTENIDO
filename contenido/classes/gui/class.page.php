@@ -46,6 +46,11 @@ class cGuiPage {
     protected $_pageTemplate;
 
     /**
+     * The file used generate the page
+     * @var string
+     */
+    protected $_pageBase;
+    /**
      * The template for everything that is inside the body.
      * (Usually template.PAGENAME.html)
      *
@@ -162,7 +167,7 @@ class cGuiPage {
      * /styles/PAGENAME.css.
      *
      * @param string $pageName The name of the page which will be used to load
-     *        corresponding stylehseets, templates and scripts.
+     *        corresponding stylesheets, templates and scripts.
      * @param string $pluginName The name of the plugin in which the site is run
      * @param string $subMenu The number of the submenu which should be
      *        highlighted when this page is shown.
@@ -192,6 +197,9 @@ class cGuiPage {
         if ($clang->isLoaded()) {
             $this->setEncoding($clang->get('encoding'));
         }
+        
+        // use default page base
+        $this->setPageBase();
 
         $this->_pageTemplate->set('s', 'SUBMENU', $subMenu);
         $this->_pageTemplate->set('s', 'PAGENAME', $pageName);
@@ -487,6 +495,19 @@ class cGuiPage {
     }
 
     /**
+     * Function to specify the file used to generate the page template
+     * @param string $filename the page base file
+     */
+    public function setPageBase($filename = '') {
+        if ('' === $filename) {
+            $cfg = cRegistry::getConfig();
+            $this->_pageBase = $cfg['path']['templates'] . $cfg['templates']['generic_page'];
+        } else {
+            $this->_pageBase = $filename;
+        }
+    }
+    
+    /**
      * Calls the next() method on the content template.
      *
      * @see cTemplate::next()
@@ -617,7 +638,7 @@ class cGuiPage {
             $this->_pageTemplate->set('s', 'CONTENT', $text);
         }
 
-        return $this->_pageTemplate->generate($cfg['path']['templates'] . $cfg['templates']['generic_page'], $return);
+        return $this->_pageTemplate->generate($this->_pageBase, $return);
     }
 
     /**

@@ -13,8 +13,8 @@
 <body>
 
 <!--{SYNCRONIZATION}-->
-<ul id="con_str_tree" {DIRECTION}>
-  <li id="root"><em>Root</em>
+<ul class="con_str_tree" {DIRECTION}>
+  <li class="root"><em>Root</em>
     {CATS}
   </li>
 </ul>
@@ -84,18 +84,17 @@ var scatlist = catlist.join(',');
 
         try {
             var frameResize = Con.getFrame('content').frameResize;
-            var myTable = document.getElementById('con_str_tree');
+            var elems = document.getElementsByClassName('con_str_tree');
+            var myTable = elems[0];
+
             frameResize.optimalSize = myTable.offsetWidth;
         } catch (e) {
             Con.log(['frameResize update fail', e], 'template.con_str_overwiew.html', 'warn');
         }
 
-        var docwidth = document.body.scrollWidth + 100;
-        //$("#con_str_tree li").width(docwidth);
+        $(".con_str_tree li:last-child").addClass('last');
 
-        $("#con_str_tree li:last-child").addClass('last');
-
-        $("#con_str_tree #root li div em a").click(function() {
+        $(".con_str_tree .root li div em a").click(function() {
             $(this).parent().parent().parent().toggleClass("collapsed");
             var sRowid = $(this).parent().parents("li").attr('id');
             var aRowids = sRowid.split("-");
@@ -104,11 +103,11 @@ var scatlist = catlist.join(',');
             return false;
         });
 
-        $("#con_str_tree li div > a").click(function() {
+        $(".con_str_tree li div > a").click(function() {
             if ($(this).attr('class') != 'off_disabled') {
                 var collapsed = $(this).parent().parent("li").hasClass("collapsed");
                 $(this).parent().parent("li").removeClass("collapsed");
-                $("#con_str_tree li.active").removeClass('active');
+                $(".con_str_tree li.active").removeClass('active');
                 $(this).parent().parent("li").addClass("active");
                 var sRowid = $(this).parent().parent("li").attr('id');
                 var aRowids = sRowid.split("-");
@@ -126,20 +125,20 @@ var scatlist = catlist.join(',');
             return false;
         });
 
-        $("#con_str_tree li div > a.off_disabled").css('cursor', 'default');
+        $(".con_str_tree li div > a.off_disabled").css('cursor', 'default');
 
-        $("#con_str_tree #root li div").hover(function() {
+        $(".con_str_tree .root li div").hover(function() {
             $(this).addClass('hover');
         }, function() {
             $(this).removeClass('hover');
         });
 
-        $("#con_str_tree #root li div").mousedown(function() {
-            $("#con_str_tree #root li div.active").removeClass("active");
+        $(".con_str_tree .root li div").mousedown(function() {
+            $(".con_str_tree .root li div.active").removeClass("active");
             $(this).addClass("active");
         });
 
-        $("#con_str_tree #root li div").click(function() {
+        $(".con_str_tree .root li div").click(function() {
             rowMarkConClick(this.parentNode);
         });
     });

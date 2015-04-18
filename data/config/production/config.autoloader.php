@@ -195,6 +195,8 @@ return array(
     'cApiUploadMeta' => 'contenido/classes/contenido/class.upload.meta.php',
     'cApiUploadCollection' => 'contenido/classes/contenido/class.upload.php',
     'cApiUpload' => 'contenido/classes/contenido/class.upload.php',
+    'cApiUserPasswordRequestCollection' => 'contenido/classes/contenido/class.user.passwordrequest.php',
+    'cApiUserPasswordRequest' => 'contenido/classes/contenido/class.user.passwordrequest.php',
     'cApiUserCollection' => 'contenido/classes/contenido/class.user.php',
     'cApiUser' => 'contenido/classes/contenido/class.user.php',
     'cApiUserPropertyCollection' => 'contenido/classes/contenido/class.user.property.php',
@@ -213,7 +215,7 @@ return array(
     'cContentTypeLinkdescr' => 'contenido/classes/content_types/class.content.type.linkdescr.php',
     'cContentTypeLinkeditor' => 'contenido/classes/content_types/class.content.type.linkeditor.php',
     'cContentTypeLinktarget' => 'contenido/classes/content_types/class.content.type.linktarget.php',
-	'cContentTypeRaw' => 'contenido/classes/content_types/class.content.type.raw.php',
+    'cContentTypeRaw' => 'contenido/classes/content_types/class.content.type.raw.php',
     'cContentTypeTeaser' => 'contenido/classes/content_types/class.content.type.teaser.php',
     'cContentTypeText' => 'contenido/classes/content_types/class.content.type.text.php',
     'cDatatypeCurrency' => 'contenido/classes/datatypes/class.datatype.currency.php',
@@ -503,5 +505,7 @@ return array(
     'cApiClickableQuestionAction' => 'contenido/classes/widgets/class.widgets.actionbutton.php',
     'cXmlBase' => 'contenido/classes/xml/class.xml.base.php',
     'cXmlReader' => 'contenido/classes/xml/class.xml.reader.php',
-    'cXmlWriter' => 'contenido/classes/xml/class.xml.writer.php'
+    'cXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
+    'cTinymce4Configuration' => 'contenido/external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.configuration.php',
+    'cTinyMCE4Editor' => 'contenido/external/wysiwyg/tinymce4/contenido/classes/class.tinymce4.editor.php'
 );

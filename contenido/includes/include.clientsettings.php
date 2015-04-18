@@ -104,12 +104,13 @@ if ($aItems !== false) {
         $oLnkEdit->setCustom("idprop", $iKey);
 
         if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey)) {
-            $oInputboxValue = new cHTMLTextbox("csvalue", utf8_decode(conHtmlSpecialChars($aValue['value'])));
+
+        	$oInputboxType = new cHTMLTextbox("cstype", $aValue['type']);
+        	$oInputboxType->setWidth(15);
+        	$oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
+        	$oInputboxName->setWidth(15);
+        	$oInputboxValue = new cHTMLTextbox("csvalue", $aValue['value']);
             $oInputboxValue->setWidth(30);
-            $oInputboxName = new cHTMLTextbox("csname", conHtmlSpecialChars($aValue['name']));
-            $oInputboxName->setWidth(15);
-            $oInputboxType = new cHTMLTextbox("cstype", conHtmlSpecialChars($aValue['type']));
-            $oInputboxType->setWidth(15);
 
             $hidden = '<input type="hidden" name="csidproperty" value="' . $iKey . '">';
             $sSubmit = ' <input type="image" class="vAlignMiddle" value="submit" src="' . $backendUrl . $cfg['path']['images'] . 'submit.gif">';
@@ -118,22 +119,22 @@ if ($aItems !== false) {
         } else {
             $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
-            if (strlen($aValue['type']) > 35) {
-                $sShort = conHtmlSpecialChars(cApiStrTrimHard($aValue['type'], 35));
-                $aValue['type'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars($aValue['type'], ENT_QUOTES), $sShort);
-            }
-
-            if (strlen($aValue['value']) > 35) {
-                $sShort = conHtmlSpecialChars(cApiStrTrimHard($aValue['value'], 35));
-                $aValue['value'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars($aValue['value'], ENT_QUOTES), $sShort);
+           	if (strlen($aValue['type']) > 35) {
+                $sShort = cApiStrTrimHard($aValue['type'], 35);
+                $aValue['type'] = sprintf($sMouseoverTemplate, $aValue['type'], $sShort);
             }
 
             if (strlen($aValue['name']) > 35) {
-                $sShort = utf8_decode(conHtmlSpecialChars(cApiStrTrimHard($aValue['name'], 35)));
-                $aValue['name'] = sprintf($sMouseoverTemplate, conHtmlSpecialChars($aValue['name'], ENT_QUOTES), $sShort);
+            	$sShort = cApiStrTrimHard($aValue['name'], 35);
+            	$aValue['name'] = sprintf($sMouseoverTemplate, $aValue['name'], $sShort);
             }
 
-            $oList->setData($iCounter, $aValue['type'], $aValue['name'], utf8_decode($aValue['value']), $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
+            if (strlen($aValue['value']) > 35) {
+                $sShort = cApiStrTrimHard($aValue['value'], 35);
+                $aValue['value'] = sprintf($sMouseoverTemplate, $aValue['value'], $sShort);
+            }
+
+            $oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
         }
         $iCounter++;
     }

@@ -94,6 +94,20 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
+     * Resets class variables back to default
+     * This is handy in case a new item is tried to be loaded into this class instance.
+     */
+    protected function _resetItem() {
+        parent::_resetItem();
+
+        // make sure not to reset filters because then default filters would always be used for loading
+        $this->values = null;
+        $this->modifiedValues = null;
+        $this->_metaObject = null;
+        $this->_lastSQL = null;
+    }
+
+    /**
      * Loads an item by colum/field from the database.
      *
      * @param string $sField Specifies the field
@@ -104,6 +118,9 @@ abstract class Item extends cItemBaseAbstract {
      * @return bool True if the load was successful
      */
     public function loadBy($sField, $mValue, $bSafe = true) {
+        // reset class variables back to default before loading
+        $this->_resetItem();
+
         if ($bSafe) {
             $mValue = $this->_inFilter($mValue);
         }
@@ -142,6 +159,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         $this->loadByRecordSet($this->db->toArray());
+        $this->virgin = false;
         return true;
     }
 
@@ -155,6 +173,9 @@ abstract class Item extends cItemBaseAbstract {
      * @return bool True if the load was successful
      */
     public function loadByMany(array $aAttributes, $bSafe = true) {
+        // reset class variables back to default before loading
+        $this->_resetItem();
+
         if ($bSafe) {
             $aAttributes = $this->_inFilter($aAttributes);
         }
@@ -205,6 +226,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         $this->loadByRecordSet($this->db->toArray());
+        $this->virgin = false;
         return true;
     }
 
@@ -307,7 +329,7 @@ abstract class Item extends cItemBaseAbstract {
         }
 
         if (true == $bSafe) {
-            return $this->_outFilter($this->values[$sField]);
+            return $this->outFilter($this->values[$sField]);
         } else {
             return $this->values[$sField];
         }
@@ -595,7 +617,7 @@ abstract class Item extends cItemBaseAbstract {
      * @return mixed Filtered data
      * @see setFilters()
      */
-    protected function _outFilter($mData) {
+    public function outFilter($mData) {
         foreach ($this->_arrOutFilters as $_function) {
             if (function_exists($_function)) {
                 if (is_array($mData)) {

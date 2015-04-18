@@ -46,25 +46,25 @@ class MailedFormProcessor extends DefaultFormProcessor {
         // client mail
         try {
             $mailOptions = $this->_getMailOptions(self::MAIL_MODE_CLIENT);
-            
+
             // send mail
             if ($mailOptions !== false) {
             	$this->getForm()->toMailRecipient($mailOptions);
             }
         } catch (PifaMailException $e) {
             $errors[] = mi18n("PIFA_CLIENT_MAIL") . ": " . $e->getMessage();
-        }	
+        }
 
         // system mail
         try {
             $mailOptions = $this->_getMailOptions(self::MAIL_MODE_SYSTEM);
-            
+
             // send mail
             if ($mailOptions !== false) {
             	$this->getForm()->toMailRecipient($mailOptions);
             }
         } catch (PifaMailException $e) {
-            $errors[] = mi18n("PIFA_SYSTEM_MAIL") . ": " . $e->getMessage(); 
+            $errors[] = mi18n("PIFA_SYSTEM_MAIL") . ": " . $e->getMessage();
         }
 
         // throw errors
@@ -72,10 +72,10 @@ class MailedFormProcessor extends DefaultFormProcessor {
             throw new PifaMailException(implode('<br>', $errors));
         }
     }
-    
+
     /**
      * Sends a mail to the client or configured system address when mail template was selected.
-     * 
+     *
      * @param string $mode mail mode, must be "client" or "system"
      * @return boolean|array
      */
@@ -83,31 +83,31 @@ class MailedFormProcessor extends DefaultFormProcessor {
     	if ($mode != self::MAIL_MODE_CLIENT && $mode != self::MAIL_MODE_SYSTEM) {
     		return false;
     	}
-    	
+
     	$bodyTemplate = $this->getModule()->getSetting('pifaform_mail_' . $mode . '_template');
     	if ($bodyTemplate == '') {
     		return false;
     	}
-    	
+
     	// get values
     	$values = $this->getForm()->getValues();
-    	
+
     	// get subject from template
     	$tpl = cSmartyFrontend::getInstance(true);
     	$tpl->assign('values', $values);
     	$subject = $tpl->fetch('eval:' . $this->getModule()->getSetting('pifaform_mail_' . $mode . '_subject'));
-    	
+
     	// get body from template
     	$tpl = cSmartyFrontend::getInstance(true);
     	$tpl->assign('values', $values);
     	$body = $tpl->fetchGeneral($bodyTemplate);
-    	
+
     	if ($mode == self::MAIL_MODE_CLIENT) {
     		$mailTo = $values['email'];
     	} else {
     		$mailTo = $this->getModule()->getSetting('pifaform_mail_system_recipient_email');
     	}
-    	
+
     	if (cRegistry::getLanguageId() != 0) {
 	    	$language = cRegistry::getLanguage();
 	    	$encoding = $language->getField('encoding');
@@ -115,7 +115,7 @@ class MailedFormProcessor extends DefaultFormProcessor {
 	    		$encoding = 'UTF-8';
 	    	}
     	}
-    	
+
     	$mailOptions = array(
     		'from' => $this->getModule()->getSetting('pifaform_mail_' . $mode . '_from_email'),
     		'fromName' => $this->getModule()->getSetting('pifaform_mail_' . $mode . '_from_name'),
@@ -124,14 +124,14 @@ class MailedFormProcessor extends DefaultFormProcessor {
     		'body' => $body,
     		'charSet' => $encoding
     	);
-    	
+
     	// !!
-    	
+
     	if ($mode == self::MAIL_MODE_SYSTEM) {
     		$mailOptions['attachmentNames'] = $this->_getAttachmentNames();
     		$mailOptions['attachmentStrings'] = $this->_getAttachmentStrings();
     	}
-    	
+
     	return $mailOptions;
     }
 

@@ -54,7 +54,7 @@
                 <td>
                     <input class="textField" type="text" value="{LINK}" disabled size="24">&nbsp;
                     <a href="{FULL_LINK}" target="_blank">
-                        <img class="vAlignMiddle" src="images/submit.gif">
+                        <img class="vAlignMiddle" src="images/submit.gif" alt="">
                     </a>
                 </td>
             </tr>
@@ -177,7 +177,7 @@
                 <td class="text_medium">
                     {METAFIELDTYPE}
                     <a href="javascript://" onclick="Con.showConfirmation('{DELETE_META_CONFIRM}', function() { deleteMetaTag({IDMETATYPE}, {ARTICLE_ID}, {CAT_ID}, {ARTICLE_LANGUAGE_ID}); }); return false;" title="Delete Meta tag">
-                        <img class="vAlignMiddle" style="float: right" src="images/delete.gif">
+                        <img class="vAlignMiddle" style="float: right" src="images/delete.gif" alt="">
                     </a>
                 </td>
             </tr>
@@ -195,7 +195,7 @@
             <tr>
                 <td colspan="2">
                     <a href="javascript://" onclick="$('#metaPreview').toggle();">
-                        <img src="images/but_preview.gif" class="vAlignMiddle">&nbsp;i18n("HTML-View")
+                        <img src="images/but_preview.gif" alt="" class="vAlignMiddle">&nbsp;i18n("HTML-View")
                     </a>
                     <div style="display: none;" id="metaPreview">
                         {META_TAGS}
