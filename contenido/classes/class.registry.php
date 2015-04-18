@@ -331,7 +331,42 @@ class cRegistry {
     public static function getArea() {
         return self::_fetchGlobalVariable('area');
     }
-
+    
+   /**
+     * Returns the action stored in the global variable "action".
+     *
+     * @return string
+     */
+    public static function getAction() {
+        return self::_fetchGlobalVariable('action');
+    }
+    
+    /**
+     * Returns the language when switching languages. Must be set for URL-Build.
+     * Stored in the global variable "changelang".
+     *
+     * @return string
+     */
+    public static function getChangeLang() {
+        return self::_fetchGlobalVariable('changelang');
+    }
+    
+    /**
+     * Returns the global "idcat" and "idart" of the Error-Site stored in the
+     * Client Configurations
+     *
+     * @return array
+     */
+    public static function getErrSite() {
+         $idcat = self::_fetchGlobalVariable('errsite_idcat');
+         $idart = self::_fetchGlobalVariable('errsite_idart');
+         
+        return $errArtIds = array (
+            'idcat' => $idcat[1],
+            'idart' => $idart[1]
+        );
+    }
+    
     /**
      * Returns the permission object stored in the global variable "perm".
      *
