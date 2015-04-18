@@ -60,12 +60,81 @@ class cEffectiveSetting {
      * @var cApiClientLanguage
      */
     protected static $_clientLanguage;
+	
+	/**
+     *
+     * @var boolean
+     */
+    protected static $loaded = false;
 
     /**
      *
      * @var cApiLanguage
      */
     protected static $_language;
+	
+	/**
+     * Loads all client, clientlanguage an system properties into an static array.
+     *
+     * The order is: System => Client => Client (language)
+     *
+     */
+	private static function loadSettings() {
+		if (self::$loaded == false) {
+			global $contenido;
+			
+			$typeGroup = array();
+			
+			//get all client settings
+			$client = self::_getClientInstance();
+			$settings = $client->getProperties();
+			
+			foreach ($settings as $setting) {
+				$key = self::_makeKey($setting['type'], $setting['name']);
+				self::_set($key, $setting['value']);
+				if (!isset($typeGroup[$setting['type']])) {
+					$typeGroup[$setting['type']] = array();
+				}
+				$typeGroup[$setting['type']][$setting['name']] = $setting['value'];
+			}
+			
+			//get all clientlang setting
+			$clientlang = self::_getClientLanguageInstance();
+			$settings = $clientlang->getProperties();
+			
+			foreach ($settings as $setting) {
+				$key = self::_makeKey($setting['type'], $setting['name']);
+				self::_set($key, $setting['value']);
+				if (!isset($typeGroup[$setting['type']])) {
+					$typeGroup[$setting['type']] = array();
+				}
+				$typeGroup[$setting['type']][$setting['name']] = $setting['value'];
+			}
+			
+			//get user settings
+			if (self::_isAuthenticated() && isset($contenido)) {
+				$user = self::_getUserInstance();
+				$settings = $user->getUserProperties();
+				
+				foreach ($settings as $setting) {
+					$key = self::_makeKey($setting['type'], $setting['name']);
+					self::_set($key, $setting['value']);
+					if (!isset($typeGroup[$setting['type']])) {
+						$typeGroup[$setting['type']] = array();
+					}
+					$typeGroup[$setting['type']][$setting['name']] = $setting['value'];
+				}
+			}
+			
+			//write cache by type settings
+			foreach ($typeGroup as $key => $group) {
+				$key = self::_makeKey($key, ' ');
+				self::_set($key, $group);
+			}
+		}
+		
+		self::$loaded = true;
+	}
 
     /**
      * Returns effective setting for a property.
@@ -83,38 +152,14 @@ class cEffectiveSetting {
      * @param  string  $default  Optional default value
      * @return  bool|string  Setting value or false
      */
-    public static function get($type, $name, $default = '') {
-        global $contenido;
-
-        // If the DB object is not available, just return the default value in order
-        // to avoid PHP notices
-        try {
-            $db = new cDb();
-        } catch (cException $e) {
-            return $default;
-        }
+    public static function get($type, $name, $default = '') {		
+		self::loadSettings();
 
         $key = self::_makeKey($type, $name);
 
         $value = self::_get($key);
         if (false !== $value) {
             return $value;
-        }
-
-        if (self::_isAuthenticated() && isset($contenido)) {
-            $value = self::_getUserInstance()->getUserProperty($type, $name, true);
-        }
-
-        if (false === $value) {
-            $value = self::_getLanguageInstance()->getProperty($type, $name);
-        }
-
-        if (false === $value) {
-            $value = self::_getClientLanguageInstance()->getProperty($type, $name);
-        }
-
-        if (false === $value) {
-            $value = self::_getClientInstance()->getProperty($type, $name);
         }
 
         if (false === $value) {
@@ -127,8 +172,6 @@ class cEffectiveSetting {
             // NOTE: A non empty default value overrides an empty value
             $value = $default;
         }
-
-        self::_set($key, $value);
 
         return $value;
     }
@@ -148,23 +191,20 @@ class cEffectiveSetting {
      * @return array Assoziative array like $arr[name] = value
      */
     public static function getByType($type) {
-        global $contenido;
+		self::loadSettings();
+		
+        $settings = getSystemPropertiesByType($type);       
 
-        $settings = getSystemPropertiesByType($type);
-        $settings = array_merge($settings, self::_getClientInstance()->getPropertiesByType($type));
-        $settings = array_merge($settings, self::_getClientLanguageInstance()->getPropertiesByType($type));
-        if (self::_isAuthenticated() && cRegistry::isBackendEditMode()) {
-            $settings = array_merge($settings, self::_getUserInstance()->getUserPropertiesByType($type, true));
-        }
-
-        // cache all settings, to return them from cache in case of calling
-        // get()
-        foreach ($settings as $setting => $value) {
-            $key = self::_makeKey($type, $setting);
-            self::_set($key, $value);
-        }
-
-        return $settings;
+		$key = self::_makeKey($type, ' ');
+		if (is_array(self::_get($key))) {
+			$settings = array_merge($settings, self::_get($key));
+		}
+		
+        if (isset($settings) && is_array($settings)) {
+            return $settings;
+        } else {
+			return array();
+		}
     }
 
     /**

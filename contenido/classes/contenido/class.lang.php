@@ -126,7 +126,18 @@ class cApiLanguageCollection extends ItemCollection {
  * @subpackage GenericDB_Model
  */
 class cApiLanguage extends Item {
-
+	/**
+     *
+     * @var array
+     */
+	protected static $propertiesCache = array();
+	
+	/**
+     *
+     * @var boolean
+     */
+	protected static $propertiesCacheLoaded = false;
+	
     /**
      * Constructor Function
      *
@@ -165,6 +176,54 @@ class cApiLanguage extends Item {
         }
 
         return parent::setField($name, $value, $bSafe);
+    }
+	
+	/**
+     * Loads all languagesettings into an static array.
+     *
+     */
+	protected function loadProperties($iClient = 0) {
+		if (self::$propertiesCacheLoaded == false) {
+			$itemtype = $this->db->escape($this->primaryKey);
+			$itemid = $this->db->escape($this->get($this->primaryKey));
+			$oPropertyColl = $this->_getPropertiesCollectionInstance($iClient);
+			$oPropertyColl->select("itemtype='" . $itemtype . "' AND itemid='" . $itemid . "'", '', 'type, value ASC');
+
+			if ($oPropertyColl->count() > 0) {
+				while (($oItem = $oPropertyColl->next()) !== false) {
+					if (!isset(self::$propertiesCache[$oItem->get('type')])) {
+						self::$propertiesCache[$oItem->get('type')] = array();
+					}
+					self::$propertiesCache[$oItem->get('type')][$oItem->get('name')] = $oItem->get('value');
+				}
+			}
+		}
+		
+		self::$propertiesCacheLoaded = true;
+	}
+	
+	/**
+     * Returns a custom property.
+     *
+     * @param string $sType Specifies the type
+     * @param string $sName Specifies the name
+     * @param int $iClient Id of client to set property for
+     * @return mixed Value of the given property or false
+     */
+    public function getProperty($sType, $sName, $iClient = 0) {
+        // If this object wasn't loaded before, return false
+        if ($this->virgin == true) {
+            $this->lasterror = 'No item loaded';
+            return false;
+        }
+		
+		$this->loadProperties($iClient);
+		
+		if (isset(self::$propertiesCache[$sType]) && isset(self::$propertiesCache[$sName])) {
+			return self::$propertiesCache[$sType][$sName];
+		} else {
+			return false;
+		}
     }
 	
 }
