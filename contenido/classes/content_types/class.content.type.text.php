@@ -34,10 +34,13 @@ class cContentTypeText extends cContentTypeAbstract {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
+
         $rawSettings = conHtmlSpecialChars($rawSettings);
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
+
+        // set props
         $this->_type = 'CMS_TEXT';
         $this->_prefix = 'text';
 

@@ -26,8 +26,8 @@ class cApiCategoryArticleCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *            ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -202,8 +202,10 @@ class cApiCategoryArticleCollection extends ItemCollection {
     /**
      * Checks, if passed category contains any articles in specified language.
      *
-     * @param int $idcat Category id
-     * @param int $idlang Language id
+     * @param int $idcat
+     *         Category id
+     * @param int $idlang
+     *         Language id
      * @return bool
      */
     public function getHasArticles($idcat, $idlang) {
@@ -224,10 +226,12 @@ class cApiCategoryArticleCollection extends ItemCollection {
     /**
      * Sets 'createcode' flag for one or more category articles.
      *
-     * @param int|array $idcatart One category article id or list of category
-     *        article ids
-     * @param int $createcode Create code state, either 1 or 0.
-     * @return int Number of updated entries
+     * @param int|array $idcatart
+     *         One category article id or list of category article ids
+     * @param int $createcode
+     *         Create code state, either 1 or 0.
+     * @return int
+     *         Number of updated entries
      */
     public function setCreateCodeFlag($idcatart, $createcode = 1) {
         $createcode = ($createcode == 1) ? 1 : 0;
@@ -263,7 +267,8 @@ class cApiCategoryArticle extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -274,25 +279,27 @@ class cApiCategoryArticle extends Item {
         }
     }
 
-	/**
+    /**
      * Userdefined setter for category article fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'idcat':
                 $value = cSecurity::toInteger($value);
                 break;
-			case 'idart':
+            case 'idart':
                 $value = cSecurity::toInteger($value);
                 break;
-			case 'status':
+            case 'status':
                 $value = cSecurity::toInteger($value);
                 break;
-			case 'createcode':
+            case 'createcode':
                 $value = ($value == 1) ? 1 : 0;
                 break;
         }

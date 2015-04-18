@@ -102,19 +102,20 @@ class cApiMetaTag extends Item {
         return $this->store();
     }
 
-	/**
+    /**
      * Userdefined setter for meta tag fields.
      *
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'idartlang':
                 $value = (int) $value;
                 break;
-			case 'idmetatype':
+            case 'idmetatype':
                 $value = (int) $value;
                 break;
         }

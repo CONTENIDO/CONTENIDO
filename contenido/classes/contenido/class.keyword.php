@@ -83,16 +83,17 @@ class cApiKeyword extends Item {
         }
     }
 
-	/**
+    /**
      * Userdefined setter for keyword fields.
      *
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
-			case 'idlang':
+            case 'idlang':
                 $value = (int) $value;
                 break;
         }

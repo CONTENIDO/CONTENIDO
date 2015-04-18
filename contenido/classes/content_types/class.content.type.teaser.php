@@ -83,8 +83,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // set props
         $this->_type = 'CMS_TEASER';
         $this->_prefix = 'teaser';
         $this->_settingsType = self::SETTINGS_TYPE_XML;
@@ -113,6 +113,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
             'teaser_source_date_count'
         );
 
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // if form is submitted, store the current teaser settings
@@ -307,20 +308,20 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
 
             $artCollector = new cArticleCollector($options);
 
-			foreach ($artCollector as $article) {
+            foreach ($artCollector as $article) {
 
-				$title =  trim($this->_getArtContent($article, $this->_settings['teaser_source_head'], $this->_settings['teaser_source_head_count']));
-				$text =  trim($this->_getArtContent($article, $this->_settings['teaser_source_text'], $this->_settings['teaser_source_text_count']));
-				$imageId = trim($this->_getArtContent($article, $this->_settings['teaser_source_image'], $this->_settings['teaser_source_image_count']));
+                $title =  trim($this->_getArtContent($article, $this->_settings['teaser_source_head'], $this->_settings['teaser_source_head_count']));
+                $text =  trim($this->_getArtContent($article, $this->_settings['teaser_source_text'], $this->_settings['teaser_source_text_count']));
+                $imageId = trim($this->_getArtContent($article, $this->_settings['teaser_source_image'], $this->_settings['teaser_source_image_count']));
 
-    			if (!empty($title) || !empty($text) || !empty($imageId)) {
-  					if ($returnAsArray == true) {
-             			array_push($articles, $article);
-        			} else {
-             			$this->_fillTeaserTemplateEntry($article, $template);
-        			}
-   				}
-			}
+                if (!empty($title) || !empty($text) || !empty($imageId)) {
+                      if ($returnAsArray == true) {
+                         array_push($articles, $article);
+                    } else {
+                         $this->_fillTeaserTemplateEntry($article, $template);
+                    }
+                   }
+            }
         }
 
         $code = '';

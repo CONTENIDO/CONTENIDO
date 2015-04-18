@@ -23,18 +23,38 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cHTMLLink extends cHTMLContentElement {
 
-    /* Stores the link location */
+    /**
+     * Stores the link location
+     *
+     * @var unknown_type
+     */
     protected $_link;
 
-    /* Stores the content */
+    /**
+     * Stores the content
+     *
+     * @var unknown_type
+     */
     protected $_content;
 
-    /* Stores the anchor */
+    /**
+     * Stores the anchor
+     *
+     * @var unknown_type
+     */
     protected $_anchor;
 
-    /* Stores the custom entries */
+    /**
+     * Stores the custom entries
+     *
+     * @var unknown_type
+     */
     protected $_custom;
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_image;
 
     /**
@@ -59,10 +79,18 @@ class cHTMLLink extends cHTMLContentElement {
         }
     }
 
+    /**
+     *
+     * @return Ambigous <cHTML, cHTML>
+     */
     public function enableAutomaticParameterAppend() {
         return $this->setEvent('click', 'var doit = true; try { var i = get_registered_parameters() } catch (e) { doit = false; }; if (doit == true) { this.href += i; }');
     }
 
+    /**
+     *
+     * @return Ambigous <cHTML, cHTML>
+     */
     public function disableAutomaticParameterAppend() {
         return $this->unsetEvent('click');
     }
@@ -145,6 +173,11 @@ class cHTMLLink extends cHTMLContentElement {
         return $this;
     }
 
+    /**
+     *
+     * @param unknown_type $src
+     * @return cHTMLLink
+     */
     public function setImage($src) {
         $this->_image = $src;
 
@@ -165,6 +198,10 @@ class cHTMLLink extends cHTMLContentElement {
         return $this;
     }
 
+    /**
+     *
+     * @return string
+     */
     public function getHref() {
         global $sess;
 

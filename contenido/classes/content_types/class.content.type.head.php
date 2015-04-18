@@ -34,9 +34,11 @@ class cContentTypeHead extends cContentTypeText {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
+
+        // set props
         $this->_type = 'CMS_HEAD';
         $this->_prefix = 'head';
 
@@ -55,7 +57,7 @@ class cContentTypeHead extends cContentTypeText {
             $this->_rawSettings = conHtmlSpecialChars($this->_rawSettings);
         }
     }
-    
+
     /**
      * Generates the JS code for this content type.
      *

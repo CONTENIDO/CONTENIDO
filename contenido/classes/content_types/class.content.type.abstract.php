@@ -175,6 +175,8 @@ abstract class cContentTypeAbstract {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
+
+        // set props
         $this->_rawSettings = $rawSettings;
         $this->_id = $id;
         $this->_contentTypes = $contentTypes;

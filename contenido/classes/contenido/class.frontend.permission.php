@@ -48,10 +48,14 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Creates a new permission entry.
      *
-     * @param int $group Specifies the frontend group
-     * @param string $plugin Specifies the plugin
-     * @param string $action Specifies the action
-     * @param string $item Specifies the item
+     * @param int $group
+     *         Specifies the frontend group
+     * @param string $plugin
+     *         Specifies the plugin
+     * @param string $action
+     *         Specifies the action
+     * @param string $item
+     *         Specifies the item
      * @return cApiFrontendPermission|false
      */
     public function create($group, $plugin, $action, $item) {
@@ -68,7 +72,7 @@ class cApiFrontendPermissionCollection extends ItemCollection {
 
             $perm->store();
 
-			return $perm;
+            return $perm;
         }
 
     }
@@ -76,10 +80,14 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Sets a permission entry, is a wrapper for create() function
      *
-     * @param int $group Specifies the frontend group
-     * @param string $plugin Specifies the plugin
-     * @param string $action Specifies the action
-     * @param string $item Specifies the item
+     * @param int $group
+     *         Specifies the frontend group
+     * @param string $plugin
+     *         Specifies the plugin
+     * @param string $action
+     *         Specifies the action
+     * @param string $item
+     *         Specifies the item
      */
     public function setPerm($group, $plugin, $action, $item) {
         $this->create($group, $plugin, $action, $item);
@@ -91,11 +99,16 @@ class cApiFrontendPermissionCollection extends ItemCollection {
      * 1.) Checks for global permission
      * 2.) Checks for specific item permission
      *
-     * @param int $group Specifies the frontend group
-     * @param string $plugin Specifies the plugin
-     * @param string $action Specifies the action
-     * @param string $item Specifies the item
-     * @param bool $useLang Flag to use language (Not used!)
+     * @param int $group
+     *         Specifies the frontend group
+     * @param string $plugin
+     *         Specifies the plugin
+     * @param string $action
+     *         Specifies the action
+     * @param string $item
+     *         Specifies the item
+     * @param bool $useLang
+     *         Flag to use language (Not used!)
      * @return bool
      */
     public function checkPerm($group, $plugin, $action, $item, $useLang = false) {
@@ -122,11 +135,16 @@ class cApiFrontendPermissionCollection extends ItemCollection {
     /**
      * Removes the permission.
      *
-     * @param int $group Specifies the frontend group
-     * @param string $plugin Specifies the plugin
-     * @param string $action Specifies the action
-     * @param string $item Specifies the item
-     * @param bool $useLang Flag to use language (Not used!)
+     * @param int $group
+     *         Specifies the frontend group
+     * @param string $plugin
+     *         Specifies the plugin
+     * @param string $action
+     *         Specifies the action
+     * @param string $item
+     *         Specifies the item
+     * @param bool $useLang
+     *         Flag to use language (Not used!)
      * @return bool
      */
     public function removePerm($group, $plugin, $action, $item, $useLang = false) {
@@ -158,7 +176,8 @@ class cApiFrontendPermission extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

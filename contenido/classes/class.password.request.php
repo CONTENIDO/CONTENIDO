@@ -282,6 +282,8 @@ class cPasswordRequest {
 
     /**
      * Getter function to obtain an array of all current user password reset requests
+     *
+     * @return array
      */
     protected function _getCurrentRequests() {
         $oApiUserPasswordRequest = new cApiUserPasswordRequestCollection();
@@ -568,7 +570,7 @@ class cPasswordRequest {
      * @param string $token The token used to authorise password change
      */
     protected function _submitMail($token) {
-    	$cfg = cRegistry::getConfig();
+        $cfg = cRegistry::getConfig();
 
         $token = (string) $token;
 
@@ -586,11 +588,11 @@ class cPasswordRequest {
 
         // Decoding and encoding for charsets (without UTF-8)
         if ($cfg['php_settings']['default_charset'] != 'UTF-8') {
-	        $subject = utf8_encode(conHtmlEntityDecode(stripslashes(i18n('Your new password for CONTENIDO Backend')), '', $cfg['php_settings']['default_charset']));
-	        $body = utf8_encode(conHtmlEntityDecode($mailBody, '', $cfg['php_settings']['default_charset']));
+            $subject = utf8_encode(conHtmlEntityDecode(stripslashes(i18n('Your new password for CONTENIDO Backend')), '', $cfg['php_settings']['default_charset']));
+            $body = utf8_encode(conHtmlEntityDecode($mailBody, '', $cfg['php_settings']['default_charset']));
         } else {
-        	$subject = conHtmlEntityDecode(stripslashes(i18n('Your new password for CONTENIDO Backend')));
-        	$body = conHtmlEntityDecode($mailBody);
+            $subject = conHtmlEntityDecode(stripslashes(i18n('Your new password for CONTENIDO Backend')));
+            $body = conHtmlEntityDecode($mailBody);
         }
 
         $mailer->sendMail($from, $this->_email, $subject, $body);

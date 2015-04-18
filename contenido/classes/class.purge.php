@@ -98,7 +98,7 @@ class cSystemPurge {
             return false;
         }
 
-        /** @var $file SplFileInfo */
+        /* @var $file SplFileInfo */
         foreach (new DirectoryIterator($cfgClient[$clientId]['code']['path']) as $file) {
             if ($file->isFile() === false) {
                 continue;
@@ -409,17 +409,17 @@ class cSystemPurge {
     public function emptyFile($dirPath, $types) {
         $count = 0;
         $countCleared = 0;
-        
+
         if (is_dir($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
             foreach ($handle as $file) {
                 $fileExt = trim(end(explode('.', $file)));
-                
+
                 if ($file != '.' && $file != '..' && in_array($fileExt, $types)) {
                     $filePath = $dirPath . '/' . $file;
-                
+
                     if (cFileHandler::exists($filePath) && cFileHandler::writeable($filePath)) {
                         $count++;
-                
+
                         if (cFileHandler::truncate($filePath)) {
                             $countCleared++;
                         }

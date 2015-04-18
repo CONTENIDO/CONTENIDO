@@ -114,10 +114,12 @@ class cApiModuleCollection extends ItemCollection {
     }
 
     /**
-     * Returns list of all modules used by client id
+     * Returns a list of all modules used by the given client.
+     * By default the modules are ordered by name but can be ordered by any
+     * property.
      *
      * @param int $idclient
-     *
+     * @param string $oderBy
      * @return array
      */
     public function getAllByIdclient($idclient, $oderBy = 'name') {
@@ -525,8 +527,12 @@ class cApiModule extends Item {
     }
 
     /**
+     * Gets the value of a specific field.
      *
      * @see Item::getField()
+     * @param string $sField Specifies the field to retrieve
+     * @param bool $bSafe Flag to run defined outFilter on passed value
+     * @return mixed Value of the field
      */
     public function getField($field, $bSafe = true) {
         $value = parent::getField($field, $bSafe);
@@ -542,9 +548,14 @@ class cApiModule extends Item {
     }
 
     /**
+     * Stores the loaded and modified item to the database.
+     * Also generates the code for all articles using this module
+     * (if not suppressed by giving a true value for $bJustStore).
      *
-     * @param bool $bJustStore
      * @see Item::store()
+     * @param bool $bJustStore
+     *     don't generate code for all articles using this module (default false)
+     * @return bool
      */
     public function store($bJustStore = false) {
         if ($bJustStore) {
@@ -760,7 +771,7 @@ class cApiModule extends Item {
                 if (!empty($zipdir)) {
                     $zipArchive->addEmptyDir($zipdir);
                 }
-                
+
                 foreach ($handle as $file) {
                     // If it's a folder, run the function again!
                     if (!is_file($dir . $file)) {
@@ -872,8 +883,18 @@ class cApiModule extends Item {
         return $CiCMS_Values . "\n" . $moduleInputCode;
     }
 
+    /**
+     * Not yet implemented ... does nothing!
+     *
+     * @todo implement me
+     * @param unknown_type $containerNr
+     * @param string $containerCfg
+     * @param unknown_type $moduleInputCode
+     */
     public static function processContainerForOutput($containerNr, $containerCfg, $moduleInputCode) {
-return; // @TODO implement me
+
+        return; //
+
         $containerConfigurations = array();
         if (!empty($containerCfg)) {
             $containerConfigurations = cApiContainerConfiguration::parseContainerValue($containerCfg);

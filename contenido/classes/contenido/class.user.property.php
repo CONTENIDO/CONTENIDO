@@ -394,12 +394,13 @@ class cApiUserProperty extends Item {
         return $this->store();
     }
 
-	/**
+    /**
      * Userdefined setter for user property fields.
      *
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -410,5 +411,5 @@ class cApiUserProperty extends Item {
 
         return parent::setField($name, $value, $bSafe);
     }
-	
+
 }

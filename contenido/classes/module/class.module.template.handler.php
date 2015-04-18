@@ -27,31 +27,83 @@ cInclude('includes', 'functions.file.php');
  */
 class cModuleTemplateHandler extends cModuleHandler {
 
-    // Form fields
+    /**
+     * Form fields
+     *
+     * @var unknown_type
+     */
     private $_code;
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_file;
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_tmpFile;
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_area;
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_frame;
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_status;
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_action;
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_new;
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_delete;
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_selectedFile;
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_reloadScript;
 
+    /**
+     *
+     * @var cGuiPage
+     */
     private $_page = NULL;
 
+    /**
+     *
+     * @var unknown_type
+     */
     private $_notification = NULL;
 
     /**
@@ -96,6 +148,11 @@ class cModuleTemplateHandler extends cModuleHandler {
      */
     private $_testArea = 'htmltpl';
 
+    /**
+     *
+     * @param int $idmod
+     * @param cGuiPage $page
+     */
     public function __construct($idmod, $page) {
         parent::__construct($idmod);
         $this->_page = $page;
@@ -193,8 +250,8 @@ class cModuleTemplateHandler extends cModuleHandler {
      * The method decide what action is send from
      * user (form).
      *
-     * @throws cException if one of the filenames is not set
      * @return string [new, delete,empty,save,rename, default]
+     * @throws cException if one of the filenames is not set
      */
     private function _getAction() {
         global $newModTpl, $deleteModTpl;
@@ -372,7 +429,6 @@ class cModuleTemplateHandler extends cModuleHandler {
      * @param cPermission $perm
      * @param cGuiNotification $notification
      * @param string $action
-     *
      * @return int if user doesn't have permission return -1
      */
     private function _havePermission($perm, $notification, $action) {
@@ -405,6 +461,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * This method test the code if the client setting htmlvalidator
      * is not set to false.
+     *
      * @param {cGuiNotification} $notification
      */
     private function _validateHTML($notification) {
@@ -441,6 +498,11 @@ class cModuleTemplateHandler extends cModuleHandler {
         }
     }
 
+    /**
+     *
+     * @param unknown_type $belang
+     * @param unknown_type $readOnly
+     */
     private function _makeFormular($belang, $readOnly) {
         $fileForm = new cGuiTableForm("file__chooser");
         $fileForm->addHeader(i18n('Choose file'));

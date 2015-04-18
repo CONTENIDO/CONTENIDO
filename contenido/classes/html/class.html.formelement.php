@@ -28,21 +28,22 @@ class cHTMLFormElement extends cHTML {
      * This is a generic form element, where
      * specific elements should be inherited from this class.
      *
-     * @param string $name Name of the element
-     * @param string $id ID of the element
-     * @param string $disabled Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex Tab index for form elements
-     * @param string $accesskey Key to access the field
-     * @param string $class CSS class name to set
+     * @todo remove overfluous param class
+     * @param string $name
+     *         Name of the element
+     * @param string $id
+     *         ID of the element
+     * @param string $disabled
+     *         Item disabled flag (non-empty to set disabled)
+     * @param string $tabindex
+     *         Tab index for form elements
+     * @param string $accesskey
+     *         Key to access the field
+     * @param string $class
+     *         CSS class name to set
      */
-    public function __construct($name = '',
-                                $id = '',
-                                $disabled = '',
-                                $tabindex = '',
-                                $accesskey = '',
-                                $class = 'text_medium',
-                                $class = ''
-    ) {
+    public function __construct($name = '', $id = '', $disabled = '',
+            $tabindex = '', $accesskey = '', $class = 'text_medium', $class = '') {
 
         parent::__construct();
 

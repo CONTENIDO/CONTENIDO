@@ -30,6 +30,10 @@ class cGuiBackendHelpbox {
      */
     protected $helpText;
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $imageURL;
 
     /**

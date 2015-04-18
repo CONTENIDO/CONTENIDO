@@ -59,6 +59,13 @@ class cGuiFoldingRow extends cHTML {
      */
     protected $_contentData;
 
+    /**
+     *
+     * @param unknown_type $uuid
+     * @param unknown_type $caption
+     * @param unknown_type $linkId
+     * @param unknown_type $bExpanded
+     */
     public function __construct($uuid, $caption = "", $linkId = "", $bExpanded = NULL) {
         global $auth;
 
@@ -102,6 +109,10 @@ class cGuiFoldingRow extends cHTML {
         }
     }
 
+    /**
+     *
+     * @param unknown_type $expanded
+     */
     public function setExpanded($expanded = false) {
         if ($expanded == true) {
             $this->_foldingImage->setSrc("images/widgets/foldingrow/expanded.gif");
@@ -117,22 +128,43 @@ class cGuiFoldingRow extends cHTML {
         $this->_expanded = $expanded;
     }
 
+    /**
+     *
+     * @param unknown_type $caption
+     */
     public function setCaption($caption) {
         $this->_caption = $caption;
     }
 
+    /**
+     *
+     * @param unknown_type $context
+     */
     public function setHelpContext($context = false) {
         $this->_helpContext = $context;
     }
 
+    /**
+     *
+     * @param unknown_type $indent
+     */
     public function setIndent($indent = 0) {
         $this->_indent = $indent;
     }
 
+    /**
+     *
+     * @param unknown_type $content
+     */
     function setContentData($content) {
         $this->_contentData->setContent($content);
     }
 
+    /**
+     * @see cHTML::render()
+     * @return string
+     *         Generated markup
+     */
     public function render() {
         // Build the expand/collapse link
         $this->_link->setClass("foldingrow");

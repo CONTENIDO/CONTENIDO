@@ -23,11 +23,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cGuiObjectPager extends cGuiFoldingRow {
 
+    /**
+     *
+     * @var unknown_type
+     */
     public $_pagerLink;
+
+    /**
+     *
+     * @var unknown_type
+     */
     public $_parameterToAdd;
 
     /**
+     *
+     * @param unknown_type $uuid
+     * @param unknown_type $items
+     * @param unknown_type $itemsperpage
+     * @param unknown_type $currentpage
+     * @param unknown_type $link
+     * @param unknown_type $parameterToAdd
+     * @param unknown_type $id
      * @throws cException if the given link is not an object
+     * @return boolean
      */
     public function __construct($uuid, $items, $itemsperpage, $currentpage, $link, $parameterToAdd, $id = '') {
         if ((int) $currentpage == 0) {
@@ -49,6 +67,12 @@ class cGuiObjectPager extends cGuiFoldingRow {
         $this->_parameterToAdd = $parameterToAdd;
     }
 
+    /**
+     * @see cGuiFoldingRow::render()
+     * @param bool $bContentOnly
+     * @return string
+     *         Generated markup
+     */
     public function render($bContentOnly = false) {
         #Do not display Page navigation if there is only one Page and we are not in newsletter section
         if ($this->_cPager->getMaxPages() == 1) {

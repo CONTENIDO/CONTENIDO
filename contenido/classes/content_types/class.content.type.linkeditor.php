@@ -36,7 +36,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *        types
      */
     function __construct($rawSettings, $id, array $contentTypes) {
-        // set attributes of the parent class and call the parent constructor
+
+        // set props
         $this->_type = 'CMS_LINKEDITOR';
         $this->_prefix = 'linkeditor';
         $this->_settingsType = self::SETTINGS_TYPE_XML;
@@ -52,7 +53,10 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
         // encoding conversions to avoid problems with umlauts
         $rawSettings = conHtmlEntityDecode($rawSettings);
         $rawSettings = utf8_encode($rawSettings);
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
+
         $this->_settings['linkeditor_title'] = utf8_decode($this->_settings['linkeditor_title']);
         $this->_settings['linkeditor_title'] = conHtmlentities($this->_settings['linkeditor_title']);
 

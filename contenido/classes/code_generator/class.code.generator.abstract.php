@@ -178,13 +178,15 @@ abstract class cCodeGeneratorAbstract {
      * @param int $lang
      * @param int $client
      * @param bool $layout
-     * @param bool $save Flag to persist generated code
-     * @param bool $contype Flag to enable/disable replacement of CMS_TAGS[]
-     *
-     * @throws cInvalidArgumentException if an article with the given idart and
-     *         idlang can not be loaded
-     * @return string Generated code or error code '0601' if no template
-     *         configuration was found for category or article.
+     * @param bool $save
+     *         Flag to persist generated code
+     * @param bool $contype
+     *         Flag to enable/disable replacement of CMS_TAGS[]
+     * @throws cInvalidArgumentException
+     *         if an article with the given idart and idlang can not be loaded
+     * @return string
+     *         Generated code or error code '0601' if no template configuration
+     *         was found for category or article.
      */
     public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true) {
         $this->_idcat = (int) $idcat;
@@ -210,8 +212,10 @@ abstract class cCodeGeneratorAbstract {
      * Generates the code for a specific article (article for a client in a
      * language).
      *
-     * @param bool $contype Flag to enable/disable replacement of CMS_TAGS[]
-     * @return string The generated code
+     * @param bool $contype
+     *         Flag to enable/disable replacement of CMS_TAGS[]
+     * @return string
+     *         The generated code
      */
     abstract function _generate($contype = true);
 
@@ -249,8 +253,13 @@ abstract class cCodeGeneratorAbstract {
      * Returns array containing used layout, template and template name
      *
      * @global array $cfg
-     * @return array Asooziative array like array('idlay' => (int), 'idtpl' =>
-     *         (int), 'name' => (string))
+     * @return array
+     *         Asooziative array like
+     *         array(
+     *             'idlay' => (int),
+     *             'idtpl' => (int),
+     *             'name' => (string)
+     *         )
      */
     protected function _getTemplateData() {
         global $cfg;
@@ -286,9 +295,10 @@ abstract class cCodeGeneratorAbstract {
      * Processes replacements of all existing CMS_...
      * tags within passed code
      *
-     * @param array $contentList Assoziative list of CMS variables
-     * @param bool $saveKeywords Flag to save collected keywords during
-     *        replacement process.
+     * @param array $contentList
+     *         Assoziative list of CMS variables
+     * @param bool $saveKeywords
+     *         Flag to save collected keywords during replacement process.
      */
     protected function _processCmsTags($contentList, $saveKeywords = true) {
         // #####################################################################
@@ -385,13 +395,13 @@ abstract class cCodeGeneratorAbstract {
      * Replaces all container/module configuration tags (CMS_VALUE[n] values)
      * against their settings.
      *
-     * @param int $containerNumber Container number
-     * @param string $containerCfg A string being formatted like concatenated
-     *        query
-     *        parameter, e. g. param1=value1&param2=value2...
-     *
-     * @return string Concatenated PHP code containing CMS_VALUE variables and
-     *         their values
+     * @param int $containerNumber
+     *         Container number
+     * @param string $containerCfg
+     *         A string being formatted like concatenated query
+     *         parameter, e. g. param1=value1&param2=value2...
+     * @return string
+     *         Concatenated PHP code containing CMS_VALUE variables and their values
      */
     protected function _processCmsValueTags($containerNumber, $containerCfg) {
         $containerCfgList = array();
@@ -427,9 +437,10 @@ abstract class cCodeGeneratorAbstract {
      * Extends container code by adding several debug features, if enabled and
      * configured.
      *
-     * @param int $containerNumber Container number (The id attribute in container tag)
-     * @param array $module Recordset as assoziative array of related module
-     *        (container code)
+     * @param int $containerNumber
+     *         Container number (The id attribute in container tag)
+     * @param array $module
+     *         Recordset as assoziative array of related module (container code)
      */
     protected function _processFrontendDebug($containerNumber, array $module) {
         global $containerinf;
@@ -470,7 +481,8 @@ abstract class cCodeGeneratorAbstract {
      * Replaces container tag in layout against the parsed container code
      * (module code).
      *
-     * @param int $containerNumber Container number (The id attribute in container tag)
+     * @param int $containerNumber
+     *         Container number (The id attribute in container tag)
      */
     protected function _processCmsContainer($containerNumber) {
         $cmsContainer = "CMS_CONTAINER[$containerNumber]";
@@ -502,7 +514,8 @@ abstract class cCodeGeneratorAbstract {
      * Returns array of all CMS_...
      * vars being used by current article and language
      *
-     * @return array like $arr[type][typeid] = value;
+     * @return array
+     *         like $arr[type][typeid] = value;
      */
     protected function _getUsedCmsTypesData() {
         global $cfg;
@@ -533,10 +546,10 @@ abstract class cCodeGeneratorAbstract {
     /**
      * Returns the classname for a content type.
      *
-     * @param string $type Content type, e. g. CMS_HTMLHEAD
-     *
-     * @return string The classname e. g. cContentTypeHtmlhead for content type
-     *         CMS_HTMLHEAD
+     * @param string $type
+     *         Content type, e. g. CMS_HTMLHEAD
+     * @return string
+     *         The classname e. g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
      */
     protected function _getContentTypeClassName($type) {
         $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
@@ -547,9 +560,10 @@ abstract class cCodeGeneratorAbstract {
     /**
      * Returns the full path to the include file name of a content type.
      *
-     * @param string $type Content type, e. g. CMS_HTMLHEAD
-     *
-     * @return string The full path e. g.
+     * @param string $type
+     *         Content type, e. g. CMS_HTMLHEAD
+     * @return string
+     *         The full path e. g.
      *         {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
      *         for content type CMS_HTMLHEAD
      */

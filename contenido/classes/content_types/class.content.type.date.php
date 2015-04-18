@@ -44,9 +44,7 @@ class cContentTypeDate extends cContentTypeAbstract {
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
-
-        // change attributes from the parent class and call the parent
-        // constructor
+        // set props
         $this->_type = 'CMS_DATE';
         $this->_prefix = 'date';
         $this->_settingsType = self::SETTINGS_TYPE_XML;
@@ -54,8 +52,9 @@ class cContentTypeDate extends cContentTypeAbstract {
             'date_timestamp',
             'date_format'
         );
-        parent::__construct($rawSettings, $id, $contentTypes);
 
+        // call parent constructor
+        parent::__construct($rawSettings, $id, $contentTypes);
 
         // set the locale
         $locale = cRegistry::getBackendLanguage();
@@ -73,6 +72,7 @@ class cContentTypeDate extends cContentTypeAbstract {
                 setlocale(LC_TIME, $locale);
             }
         }
+
         // initialise the date formats
         $this->_dateFormatsPhp = array(
             conHtmlentities('{"dateFormat":"","timeFormat":""}') => '',

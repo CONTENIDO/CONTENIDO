@@ -124,6 +124,7 @@ class cHTMLSelectElement extends cHTMLFormElement {
     /**
      * Defines the size of this select element.
      *
+     * @param unknown_type $size
      * @return cHTMLSelectElement $this
      */
     public function setSize($size) {

@@ -16,6 +16,8 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (!class_exists('NotInitializedException')) {
+    /**
+     */
     class NotInitializedException extends Exception {
     }
 }

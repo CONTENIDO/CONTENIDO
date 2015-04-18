@@ -34,15 +34,15 @@ class cContentTypeLinkdescr extends cContentTypeLinkeditor {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // there are no raw settings here, because the image description is now
-        // saved in con_upl_meta
-        // so compute the appropriate raw settings and call the parent
-        // constructor with them
 
+        // There are no raw settings here, because CMS_LINKEDITOR is now
+        // saved in con_upl_meta. So compute the appropriate raw settings
+        // and call the parent constructor with them.
         if (!cXmlBase::isValidXML($rawSettings)) {
             $rawSettings = $this->_getRawSettings("CMS_LINKEDITOR", $id, $contentTypes);
         }
 
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
     }
 

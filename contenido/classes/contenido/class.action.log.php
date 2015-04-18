@@ -43,10 +43,10 @@ class cApiActionlogCollection extends ItemCollection {
      * Creates a actionlog item entry
      *
      * @param string $userId User id
-     * @param int    $idclient
-     * @param int    $idlang
-     * @param int    $idaction
-     * @param int    $idcatart
+     * @param int $idclient
+     * @param int $idlang
+     * @param int $idaction
+     * @param int $idcatart
      * @param string $logtimestamp
      *
      * @return cApiActionlog
@@ -83,7 +83,8 @@ class cApiActionlog extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -94,25 +95,27 @@ class cApiActionlog extends Item {
         }
     }
 
-	/**
+    /**
      * Userdefined setter for action log fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'idclient':
                 $value = (int) $value;
                 break;
-			case 'idlang':
+            case 'idlang':
                 $value = (int) $value;
                 break;
-			case 'idaction':
+            case 'idaction':
                 $value = (int) $value;
                 break;
-			case 'idcatart':
+            case 'idcatart':
                 $value = (int) $value;
                 break;
         }

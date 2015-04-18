@@ -107,10 +107,11 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-		global $area;
-	
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // TODO is this required?
+        global $area;
+
+        // set props
         $this->_type = 'CMS_IMGEDITOR';
         $this->_prefix = 'imgeditor';
         $this->_formFields = array(
@@ -121,15 +122,17 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
             'image_internal_notice',
             'image_copyright'
         );
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
-		// if form is submitted, store the current teaser settings
+        // if form is submitted, store the current teaser settings
         // notice: also check the ID of the content type (there could be more
         // than one content type of the same type on the same page!)
         if (isset($_POST[$this->_prefix . '_action']) && $_POST[$this->_prefix . '_action'] === 'store' && isset($_POST[$this->_prefix . '_id']) && (int) $_POST[$this->_prefix . '_id'] == $this->_id) {
             $this->_storeSettings();
         }
-		
+
         // get image information from con_upl from the database
         $upload = new cApiUpload($this->_rawSettings);
         $this->_filename = $upload->get('filename');
@@ -593,9 +596,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
 
         $i = 1;
         foreach($files as $file) {
-        	$htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
-        	$htmlSelect->addOptionElement($i, $htmlSelectOption);
-        	$i++;
+            $htmlSelectOption = new cHTMLOptionElement($file["name"], $file["path"]);
+            $htmlSelect->addOptionElement($i, $htmlSelectOption);
+            $i++;
         }
 
         if ($i === 0) {

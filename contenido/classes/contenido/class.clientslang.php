@@ -54,8 +54,10 @@ class cApiClientLanguageCollection extends ItemCollection {
     /**
      * Checks if a language is associated with a given list of clients.
      *
-     * @param int $iLang Language id which should be checked
-     * @param array $aClients List of clients to check
+     * @param int $iLang
+     *         Language id which should be checked
+     * @param array $aClients
+     *         List of clients to check
      * @return bool
      */
     public function hasLanguageInClients($iLang, array $aClientIds) {
@@ -172,11 +174,14 @@ class cApiClientLanguage extends Item {
     /**
      * Constructor
      *
-     * @param int $iIdClientsLang If specified, load item
-     * @param int $iIdClient If idclient and idlang specified, load item;
-     *        ignored, if idclientslang specified
-     * @param int $iIdLang If idclient and idlang specified, load item; ignored,
-     *        if idclientslang specified
+     * @param int $iIdClientsLang
+     *         If specified, load item
+     * @param int $iIdClient
+     *         If idclient and idlang specified, load item;
+     *         ignored, if idclientslang specified
+     * @param int $iIdLang
+     *         If idclient and idlang specified, load item;
+     *         ignored, if idclientslang specified
      */
     public function __construct($iIdClientsLang = false, $iIdClient = false, $iIdLang = false) {
         global $cfg;
@@ -219,13 +224,17 @@ class cApiClientLanguage extends Item {
     /**
      * Set client property
      *
-     * @param mixed $mType Type of the data to store (arbitary data)
-     * @param mixed $mName Entry name
-     * @param mixed $mValue Value
-     * @param int $client Client id
      * @todo Use parents method
-     * @see Item::setProperty()
      * @todo should return return value as overwritten method
+     * @see Item::setProperty()
+     * @param mixed $mType
+     *         Type of the data to store (arbitary data)
+     * @param mixed $mName
+     *         Entry name
+     * @param mixed $mValue
+     *         Value
+     * @param int $client
+     *         Client id
      */
     public function setProperty($mType, $mName, $mValue, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -237,11 +246,14 @@ class cApiClientLanguage extends Item {
      *
      * @todo Use parents method @see Item::getProperty()
      *
-     * @param mixed $mType Type of the data to get
-     * @param mixed $mName Entry name
-     * @param int $client Client id (not used, it's declared because of PHP
-     *        strict warnings)
-     * @return mixed Value
+     * @param mixed $mType
+     *         Type of the data to get
+     * @param mixed $mName
+     *         Entry name
+     * @param int $client
+     *         Client id (not used, it's declared because of PHP strict warnings)
+     * @return mixed
+     *         Value
      */
     public function getProperty($mType, $mName, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -254,10 +266,12 @@ class cApiClientLanguage extends Item {
      * @todo Use parents method @see Item::deleteProperty(), but be carefull,
      *       different parameter!
      *
-     * @param int $idprop Id of property
-     * @param int $p2 Not used, is here to prevent PHP Strict warnings
-     * @param int $client Client id (not used, it's declared because of PHP
-     *        strict warnings)
+     * @param int $idprop
+     *         Id of property
+     * @param int $p2
+     *         Not used, is here to prevent PHP Strict warnings
+     * @param int $client
+     *         Client id (not used, it's declared because of PHP strict warnings)
      */
     public function deleteProperty($idprop, $p2 = NULL, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -267,8 +281,10 @@ class cApiClientLanguage extends Item {
     /**
      * Get client properties by type
      *
-     * @param mixed $mType Type of the data to get
-     * @return array Assoziative array
+     * @param mixed $mType
+     *         Type of the data to get
+     * @return array
+     *         Assoziative array
      */
     public function getPropertiesByType($mType) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -278,9 +294,10 @@ class cApiClientLanguage extends Item {
     /**
      * Get all client properties
      *
-     * @return array false array
      * @todo return value should be the same as getPropertiesByType(), e.g. an
      *       empty array instead of false
+     * @return array|false
+     *         array
      */
     public function getProperties() {
         $itemtype = $this->db->escape($this->primaryKey);
@@ -306,8 +323,8 @@ class cApiClientLanguage extends Item {
     /**
      * Lazy instantiation and return of properties object
      *
-     * @param int $client Client id (not used, it's declared because of PHP
-     *        strict warnings)
+     * @param int $client
+     *         Client id (not used, it's declared because of PHP strict warnings)
      * @return cApiPropertyCollection
      */
     protected function _getPropertiesCollectionInstance($client = 0) {
@@ -319,19 +336,21 @@ class cApiClientLanguage extends Item {
         return $this->_oPropertyCollection;
     }
 
-	/**
+    /**
      * Userdefined setter for clients lang fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'idclient':
                 $value = (int) $value;
                 break;
-			case 'idlang':
+            case 'idlang':
                 $value = (int) $value;
                 break;
         }

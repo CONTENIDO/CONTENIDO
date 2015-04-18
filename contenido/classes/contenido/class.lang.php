@@ -150,12 +150,13 @@ class cApiLanguage extends Item {
         return parent::store();
     }
 
-	/**
+    /**
      * Userdefined setter for lang fields.
      *
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -166,5 +167,5 @@ class cApiLanguage extends Item {
 
         return parent::setField($name, $value, $bSafe);
     }
-	
+
 }

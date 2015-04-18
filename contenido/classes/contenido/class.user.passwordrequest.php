@@ -105,12 +105,14 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
 
     /**
      * Returns all non expired password requests
-     * @param string $userid search for a specific user id
-     * @return cApiUser[]
+     *
+     * @param string $userid
+     *         search for a specific user id
+     * @return array
      */
     public function fetchCurrentRequests($userid = false) {
         $requests = array();
-        
+
         $now = new DateTime('now', new DateTimeZone('UTC'));
         $this->select('expiration > \'' . $this->escape($now->format('Y-m-d H:i:s')) . '\'');
         while (($oItem = $this->next()) !== false) {
@@ -120,7 +122,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
                 $requests[] = clone $oItem;
             }
         }
-        
+
         return $requests;
     }
 }

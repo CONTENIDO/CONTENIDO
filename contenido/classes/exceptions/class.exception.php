@@ -27,12 +27,12 @@ class cException extends Exception {
     /**
      * Defines if an exception if this type should be logged.
      * May be defined by any exception individually.
-     * 
+     *
      * @see CON-1690
      * @var bool
      */
     protected $_log_exception = false;
-    
+
     /**
      * Saves an instance of the logger class for logging exceptions in the
      * corresponding log.
@@ -48,8 +48,6 @@ class cException extends Exception {
      * @param int $code The Exception code.
      * @param Exception $previous The previous exception used for the exception
      *            chaining.
-     * @param array $options exception logging options. By default cExceptions
-     *            are not logged but cErrorExceptions are
      */
     public function __construct($message, $code = 0, Exception $previous = NULL) {
         parent::__construct($message, $code, $previous);

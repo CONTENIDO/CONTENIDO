@@ -726,8 +726,9 @@ class cApiProperty extends Item {
      * @param string $field
      * @param string $value
      * @param bool $safe Flag to run filter on passed value
-     * @throws cInvalidArgumentException if the field is too small for the given
-     *         value
+     * @return bool
+     * @throws cInvalidArgumentException
+     *     if the field is too small for the given value
      */
     public function setField($field, $value, $safe = true) {
         if (array_key_exists($field, $this->maximumLength)) {

@@ -31,7 +31,6 @@ class cHTMLUpload extends cHTMLFormElement {
      * default width is 20 units.
      *
      * @param string $name Name of the element
-     * @param string $initvalue Initial value of the box
      * @param int $width width of the text box
      * @param int $maxlength maximum input length of the box
      * @param string $id ID of the element

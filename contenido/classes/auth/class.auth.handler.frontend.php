@@ -22,17 +22,34 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Authentication
  */
 class cAuthHandlerFrontend extends cAuthHandlerAbstract {
+
+    /**
+     *
+     * @var bool
+     */
     protected $_defaultNobody = true;
 
+    /**
+     * Constructor of the backend auth handler.
+     * Automatically sets the lifetime of the authentication to the configured
+     * value.
+     */
     public function __construct() {
-    	$cfg = cRegistry::getConfig();
-    	$this->_lifetime = (int)$cfg['frontend']['timeout'];
-
-    	if ($this->_lifetime == 0) {
-    		$this->_lifetime = 15;
-    	}
+        $cfg = cRegistry::getConfig();
+        $this->_lifetime = (int) $cfg['frontend']['timeout'];
+        if ($this->_lifetime == 0) {
+            $this->_lifetime = 15;
+        }
     }
 
+    /**
+     * Handle the pre authorization.
+     * Returns a valid user ID to be set before the login form is handled,
+     * otherwise false.
+     *
+     * @see cAuthHandlerAbstract::preAuthorize()
+     * @return string|false
+     */
     public function preAuthorize() {
         $password = $_POST['password'];
 
@@ -46,10 +63,23 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         return $this->validateCredentials();
     }
 
+    /**
+     * Display the login form.
+     * Includes a file which displays the login form.
+     *
+     * @see cAuthHandlerAbstract::displayLoginForm()
+     */
     public function displayLoginForm() {
         include(cRegistry::getFrontendPath() . 'front_crcloginform.inc.php');
     }
 
+    /**
+     * Validate the credentials.
+     * Validate the users input against source and return a valid user ID or false.
+     *
+     * @see cAuthHandlerAbstract::validateCredentials()
+     * @return string|false
+     */
     public function validateCredentials() {
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -130,11 +160,22 @@ class cAuthHandlerFrontend extends cAuthHandlerAbstract {
         return $uid;
     }
 
+    /**
+     * Log the successful authentication.
+     * Frontend logins won't be logged.
+     *
+     * @see cAuthHandlerAbstract::logSuccessfulAuth()
+     */
     public function logSuccessfulAuth() {
         return;
     }
 
-
+    /**
+     * Returns true if a user is logged in.
+     *
+     * @see cAuthHandlerAbstract::isLoggedIn()
+     * @return bool
+     */
     public function isLoggedIn() {
         $authInfo = $this->getAuthInfo();
 

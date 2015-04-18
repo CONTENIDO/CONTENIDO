@@ -72,7 +72,7 @@ class cGuiSourceEditor extends cGuiPage {
 
         // check permissions
         if (!$perm->have_perm_area_action($area, $action)) {
-        	$this->displayCriticalError(i18n('Permission denied'));
+            $this->displayCriticalError(i18n('Permission denied'));
         }
 
         // display empty page if no client is selected
@@ -83,18 +83,18 @@ class cGuiSourceEditor extends cGuiPage {
         // determine the filetype and path by using the area
         if($filetype == '') {
             switch($_REQUEST['area']) {
-            	case 'style':
-            	    $filepath = $cfgClient[$client]['css']['path'] . $filename;
-            	    $filetype = 'css';
-            	    break;
-            	case 'js':
-            	    $filepath = $cfgClient[$client]['js']['path'] . $filename;
-            	    $filetype = 'js';
-            	    break;
-            	case 'htmltpl':
-            	    $filepath = $cfgClient[$client]['tpl']['path'] . $filename;
-            	    $filetype = 'html';
-            	    break;
+                case 'style':
+                    $filepath = $cfgClient[$client]['css']['path'] . $filename;
+                    $filetype = 'css';
+                    break;
+                case 'js':
+                    $filepath = $cfgClient[$client]['js']['path'] . $filename;
+                    $filetype = 'js';
+                    break;
+                case 'htmltpl':
+                    $filepath = $cfgClient[$client]['tpl']['path'] . $filename;
+                    $filetype = 'html';
+                    break;
             }
         }
 
@@ -104,7 +104,7 @@ class cGuiSourceEditor extends cGuiPage {
 
         $this->readOnly = (getEffectiveSetting("client", "readonly", "false") == "true");
         if($this->readOnly) {
-        	cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
+            cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
         }
 
         $this->filename = $filename;
@@ -128,13 +128,13 @@ class cGuiSourceEditor extends cGuiPage {
 
         // check permissions
         if (!$perm->have_perm_area_action($area, $action)) {
-        	$this->displayCriticalError(i18n('Permission denied'));
+            $this->displayCriticalError(i18n('Permission denied'));
         }
 
         // if read only is activated or no data has been sent, skip the update step
         if( ($this->readOnly || ($req['status'] != 'send')) && $req['delfile'] == '') {
             if($req['action'] == '') {
-        	   $this->abortRendering();
+               $this->abortRendering();
             }
             return;
         }
@@ -149,15 +149,15 @@ class cGuiSourceEditor extends cGuiPage {
         // determine the file type for the file information table
         $dbFileType = '';
         switch($req['area']) {
-        	case 'style':
-        		$dbFileType = 'css';
-        		break;
-        	case 'js':
-        		$dbFileType = 'js';
-        		break;
-        	case 'htmltpl':
-        		$dbFileType = 'templates';
-        		break;
+            case 'style':
+                $dbFileType = 'css';
+                break;
+            case 'js':
+                $dbFileType = 'js';
+                break;
+            case 'htmltpl':
+                $dbFileType = 'templates';
+                break;
         }
 
         // delete the specified file
@@ -173,7 +173,7 @@ class cGuiSourceEditor extends cGuiPage {
                     $idsfi = $fileInfo->get('idsfi');
 
                     if (cSecurity::isInteger($idsfi) && is_dir($cfgClient[$client]['version']['path'] . "$dbFileType/$idsfi")) {
-                    	cDirHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "$dbFileType/$idsfi");
+                        cDirHandler::recursiveRmdir($cfgClient[$client]['version']['path'] . "$dbFileType/$idsfi");
                     }
                 }
 
@@ -182,7 +182,7 @@ class cGuiSourceEditor extends cGuiPage {
 
                 // remove the file information
                 $fileInfos->removeFileInformation(array(
-                		'filename' => $req['delfile']
+                        'filename' => $req['delfile']
                 ));
 
                 // display the information and reload the frame
@@ -208,15 +208,15 @@ class cGuiSourceEditor extends cGuiPage {
                 return;
             }
             // set the variables and create the file. Reload frames
-	        $this->filepath = $this->filepath . '/' . $req['file'];
-	        $this->filename = $req['file'];
+            $this->filepath = $this->filepath . '/' . $req['file'];
+            $this->filename = $req['file'];
 
-	        cFileHandler::write($this->filepath, '');
+            cFileHandler::write($this->filepath, '');
 
-	        $this->reloadFrame('left_bottom', array(
-	        		'file' => $req['file']
-	        ));
-	        $this->reloadFrame('right_top', "main.php?area=$area&frame=3&file={$req['file']}");
+            $this->reloadFrame('left_bottom', array(
+                    'file' => $req['file']
+            ));
+            $this->reloadFrame('right_top', "main.php?area=$area&frame=3&file={$req['file']}");
         }
 
         // save the old code and the old name
@@ -230,12 +230,12 @@ class cGuiSourceEditor extends cGuiPage {
         $oldDesc = '';
         if($fileInfo == null) {
             // file information does not exist yet. Create the row
-        	$fileInfo = $fileInfos->create($dbFileType, $this->filename, $req['description']);
+            $fileInfo = $fileInfos->create($dbFileType, $this->filename, $req['description']);
         } else {
-        	$oldDesc = $fileInfo->get('description');
-        	if($oldDesc != $req['description']) {
-        		$fileInfo->set('description', $req['description']);
-        	}
+            $oldDesc = $fileInfo->get('description');
+            if($oldDesc != $req['description']) {
+                $fileInfo->set('description', $req['description']);
+            }
         }
 
         // rename the file
@@ -248,17 +248,17 @@ class cGuiSourceEditor extends cGuiPage {
                 if(!cFileHandler::exists(dirname($this->filepath) . '/' . $req['file'])) {
                     // rename the file and set the variables accordingly
                     cFileHandler::rename($this->filepath, $req['file']);
-                	$this->filepath = dirname($this->filepath) . '/' . $req['file'];
-                	$this->filename = $req['file'];
+                    $this->filepath = dirname($this->filepath) . '/' . $req['file'];
+                    $this->filename = $req['file'];
 
-                	// update the file information
+                    // update the file information
                     $fileInfo->set('filename', $req['file']);
 
                     // reload frames
-                	$this->reloadFrame('left_bottom', array(
-                			'file' => $req['file']
-                	));
-                	$this->reloadFrame('right_top', "main.php?area=$area&frame=3&file={$req['file']}");
+                    $this->reloadFrame('left_bottom', array(
+                            'file' => $req['file']
+                    ));
+                    $this->reloadFrame('right_top', "main.php?area=$area&frame=3&file={$req['file']}");
                 } else {
                     $this->displayError(i18n('Couldn\'t rename file. Does it exist already?'));
                     return;

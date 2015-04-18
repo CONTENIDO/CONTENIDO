@@ -23,8 +23,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 abstract class cXmlBase {
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_dom = NULL;
 
+    /**
+     *
+     * @var unknown_type
+     */
     protected $_xpath = NULL;
 
     /**
@@ -253,8 +261,8 @@ abstract class cXmlBase {
      * );
      *
      * @param string $xmlString contains a valid XML structure
+     * @return array
      */
-
     public static function xmlStringToArray($xmlString) {
         return self::xmlToArray(new SimpleXMLElement($xmlString, LIBXML_NOCDATA));
     }
@@ -302,8 +310,8 @@ abstract class cXmlBase {
      * );
      *
      * @param SimpleXMLElement $xml
+     * @return array
      */
-
     public static function xmlToArray($xml) {
         $json = json_encode($xml);
         $array = json_decode($json, true);

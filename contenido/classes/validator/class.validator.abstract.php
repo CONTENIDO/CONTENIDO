@@ -25,18 +25,21 @@ abstract class cValidatorAbstract {
 
     /**
      * List of options, depends by used validator
+     *
      * @var array
      */
     protected $_options = array();
 
     /**
      * List of validations errors
+     *
      * @var array
      */
     protected $_errors = array();
 
     /**
      * Options setter, merges passed options with previous set options.
+     *
      * @param  array  $options
      */
     public function setOptions(array $options) {
@@ -45,6 +48,7 @@ abstract class cValidatorAbstract {
 
     /**
      * Single option setter.
+     *
      * @param  string  $name
      * @param  mixed   $value
      */
@@ -54,6 +58,7 @@ abstract class cValidatorAbstract {
 
     /**
      * Option getter.
+     *
      * @param   string  $name
      * @return  mixed|NULL
      */
@@ -63,6 +68,7 @@ abstract class cValidatorAbstract {
 
     /**
      * Returns list of validations errors
+     *
      * @return  array
      */
     public function getErrors() {
@@ -71,6 +77,7 @@ abstract class cValidatorAbstract {
 
     /**
      * Adds a error.
+     *
      * @param  string  $message
      * @param  mixed   $code
      */

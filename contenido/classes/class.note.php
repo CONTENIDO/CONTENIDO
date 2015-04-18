@@ -37,7 +37,12 @@ class NoteCollection extends cApiCommunicationCollection {
      * This function only extends the where statement. See the
      * original function for the parameters.
      *
-     * @see ItemCollection
+     * @see ItemCollection::select()
+     * @param string $sWhere Specifies the where clause.
+     * @param string $sGroupBy Specifies the group by clause.
+     * @param string $sOrderBy Specifies the order by clause.
+     * @param string $sLimit Specifies the limit by clause.
+     * @return bool True on success, otherwhise false
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
         if ($where == '') {
@@ -144,6 +149,8 @@ class NoteList extends cHTMLDiv {
      * (non-PHPdoc)
      *
      * @see cHTML::toHTML()
+     * @return string
+     *     generated markup
      */
     public function toHTML() {
         global $cfg, $lang;
@@ -199,6 +206,12 @@ class NoteList extends cHTMLDiv {
  */
 class NoteListItem extends cHTMLDiv {
 
+    /**
+     *
+     * @param string $sItemType
+     * @param string $sItemId
+     * @param int $iDeleteItem
+     */
     public function __construct($sItemType, $sItemId, $iDeleteItem) {
         parent::__construct();
         $this->appendStyleDefinition('padding', '2px');
@@ -263,9 +276,9 @@ class NoteListItem extends cHTMLDiv {
     }
 
     /**
-     * (non-PHPdoc)
      *
      * @see cHTML::render()
+     * @return string Generated markup
      */
     public function render() {
         global $sess;
@@ -390,6 +403,9 @@ class NoteLink extends cHTMLLink {
 
     /**
      * @see cHTML::render()
+     * @todo fix unused param $return
+     * @param bool $return this param is unused
+     * @return string Generated markup
      */
     public function render($return = false) {
         global $sess;

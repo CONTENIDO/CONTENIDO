@@ -138,14 +138,16 @@ class cApiTemplate extends Item {
             $this->loadByPrimaryKey($mId);
         }
     }
-    
+
     /**
      * Load a template based on article, category, language and client id
-     * 
+     *
+     * @todo avoid returning void
      * @param int $idart article id
      * @param int $idcat category id
      * @param int $lang language id
      * @param int $client client id
+     * @return void|boolean
      */
     public function loadByArticleOrCategory($idart, $idcat, $lang, $client) {
 

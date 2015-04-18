@@ -24,7 +24,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
-     * {@inheritdoc}
+     * Generates the code for a specific article (article for a client in a
+     * language).
+     *
+     * @see cCodeGeneratorAbstract::_generate()
+     * @param bool $contype
+     *         Flag to enable/disable replacement of CMS_TAGS[]
+     * @return string
+     *         The generated code
      */
     public function _generate($contype = true) {
         global $cfg, $code;
@@ -279,7 +286,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      *
      * Creates a error message and writes this into the code cache.
      *
-     * @param int $idcatart Category article id
+     * @param int $idcatart
+     *         Category article id
      */
     protected function _processNoConfigurationError($idcatart) {
         cDebug::out('Neither CAT or ART are configured!<br><br>');
@@ -344,6 +352,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * meta tags creation.
      *
      * @global array $encoding
+     * @return string
      */
     protected function _processCodeMetaTags() {
         global $encoding;
@@ -413,11 +422,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * Saves the generated code (if layout flag is false and save flag is true)
      *
      * @global array $cfgClient
-     * @param int $idcatart Category article id
-     * @param string $code parameter for setting code manually instead of using
-     *        the generated layout code
-     * @param bool $flagCreateCode whether the create code flag in cat_art
-     *        should be set or not (optional)
+     * @param int $idcatart
+     *         Category article id
+     * @param string $code
+     *         parameter for setting code manually instead of using the generated layout code
+     * @param bool $flagCreateCode
+     *         whether the create code flag in cat_art should be set or not (optional)
      */
     protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true) {
         global $cfgClient;
@@ -532,9 +542,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * overwritten. If article should be indexed and followed, 'all' will be
      * set.
      *
-     * @param array $metaTags array of meta elements to amend
-     * @param bool|NULL $index if article should be indexed
-     * @param bool|NULL $follow if links in article should be followed
+     * @param array $metaTags
+     *         array of meta elements to amend
+     * @param bool|NULL $index
+     *         if article should be indexed
+     * @param bool|NULL $follow
+     *         if links in article should be followed
      * @return array
      */
     protected function _updateMetaRobots(array $metaTags, $index, $follow) {
@@ -604,7 +617,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * could not be found, NULL will be returned in its place.
      *
      * @param array $metaTags
-     * @param string $type either 'name' or 'http-equiv'
+     * @param string $type
+     *         either 'name' or 'http-equiv'
      * @param string $nameOrEquiv
      * @return array
      */

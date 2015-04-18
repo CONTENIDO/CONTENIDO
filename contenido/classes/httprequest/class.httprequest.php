@@ -26,11 +26,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 abstract class cHttpRequest {
 
     /**
-     * Creates a new cHttpRequest object.
-     * The function determines the best extension to use and returns an object accordingly
+     * Creates a new cHttpRequest object. The function determines the best
+     * extension to use and returns an object accordingly
      *
-     * @param string $url URL of the HTTP request
-     * @return object extends cHttpRequest
+     * @param string $url
+     *         URL of the HTTP request
+     * @return cHttpRequest
      */
     public static function getHttpRequest($url = '') {
         $className = 'cHttpRequestCurl';
@@ -44,65 +45,80 @@ abstract class cHttpRequest {
     /**
      * Basic constructor
      *
-     * @param string $url URL of the HTTP request
+     * @param string $url
+     *         URL of the HTTP request
      */
     abstract public function __construct($url = '');
 
     /**
      * Peform the request using POST
      *
-     * @param bool $return If true, response of the server gets returned as string
-     * @param bool $returnHeaders If true, headers will be included in the response
-     *
-     * @return string|bool False on error, response otherwise
+     * @param bool $return
+     *         If true, response of the server gets returned as string
+     * @param bool $returnHeaders
+     *         If true, headers will be included in the response
+     * @return string|bool
+     *         False on error, response otherwise
      */
     abstract public function postRequest($return = true, $returnHeaders = false);
 
     /**
      * Peform the request using GET
      *
-     * @param bool $return If true, response of the server gets returned as string
-     * @param bool $returnHeaders If true, headers will be included in the response
-     *
-     * @return string|bool False on error, response otherwise
+     * @param bool $return
+     *         If true, response of the server gets returned as string
+     * @param bool $returnHeaders
+     *         If true, headers will be included in the response
+     * @return string|bool
+     *         False on error, response otherwise
      */
     abstract public function getRequest($return = true, $returnHeaders = false);
 
     /**
      * Peform the request using POST AND append all GET parameters
      *
-     * @param bool $return If true, response of the server gets returned as string
-     * @param bool $returnHeaders If true, headers will be included in the response
-     *
-     * @return string|bool False on error, response otherwise
+     * @param bool $return
+     *         If true, response of the server gets returned as string
+     * @param bool $returnHeaders
+     *         If true, headers will be included in the response
+     * @return string|bool
+     *         False on error, response otherwise
      */
     abstract public function request($return = true, $returnHeaders = false);
 
     /**
      * Set the GET parameters
      *
-     * @param array $array An associative array containing keys and values of the GET parameters
+     * @param array $array
+     *         associative array containing keys and values of the GET parameters
+     * @return cHttpRequest
      */
     abstract public function setGetParams($array);
 
     /**
      * Set the POST parameters
      *
-     * @param array $array An associative array containing keys and values of the POST parameters
+     * @param array $array
+     *         associative array containing keys and values of the POST parameters
+     * @return cHttpRequest
      */
     abstract public function setPostParams($array);
 
     /**
      * Set the HTTP headers
      *
-     * @param array $array An associative array containing the HTTP headers
+     * @param array $array
+     *         associative array containing the HTTP headers
+     * @return cHttpRequest
      */
     abstract public function setHeaders($array);
 
     /**
      * Set the request URL
      *
-     * @param string $url the URL
+     * @param string $url
+     *         the URL
+     * @return cHttpRequest
      */
     abstract public function setURL($url);
 }

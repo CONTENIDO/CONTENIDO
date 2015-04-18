@@ -34,15 +34,15 @@ class cContentTypeLink extends cContentTypeLinkeditor {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // there are no raw settings here, because CMS_LINK is not saved
-        // separately any more
-        // so compute the appropriate raw settings and call the parent
-        // constructor with them
 
+        // There are no raw settings here, because CMS_LINK is not saved
+        // separately any more. So compute the appropriate raw settings
+        // and call the parent constructor with them.
         if (!cXmlBase::isValidXML($rawSettings)) {
             $rawSettings = $this->_getRawSettings("CMS_LINKEDITOR", $id, $contentTypes);
         }
 
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
     }
 

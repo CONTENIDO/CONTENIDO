@@ -371,9 +371,11 @@ class cHTML {
     /**
      * Sets the content of the object
      *
-     * @param string|object|array $content String with the content or a cHTML
-     *        object to render or an array of strings / objects.
-     * @return cHTML $this
+     * @param string|object|array $content
+     *         String with the content or a cHTML object to render or an array
+     *         of strings / objects.
+     * @return cHTMLContentElement
+     *         $this for chaining
      */
     protected function _setContent($content) {
         $this->_contentlessTag = false;
@@ -616,9 +618,10 @@ class cHTML {
     }
 
     /**
-     * Generates the markup of the element
+     * Generates the markup of the element.
      *
-     * @return string Generated markup
+     * @return string
+     *         generated markup
      */
     public function toHTML() {
         // Fill style definition
@@ -661,7 +664,8 @@ class cHTML {
     /**
      * Alias for toHtml
      *
-     * @return string Generated markup
+     * @return string
+     *         generated markup
      */
     public function render() {
         return $this->toHtml();

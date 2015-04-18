@@ -129,31 +129,32 @@ class cApiStat extends Item {
         $this->set('visited', $this->get('visited') + 1);
         $this->store();
     }
-	
-	/**
+
+    /**
      * Userdefined setter for stat fields.
      *
      * @param string $name
      * @param mixed $value
      * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'visited':
                 $value = (int) $value;
                 break;
-			case 'idcatart':
+            case 'idcatart':
                 $value = (int) $value;
                 break;
-			case 'idlang':
+            case 'idlang':
                 $value = (int) $value;
                 break;
-			case 'idclient':
+            case 'idclient':
                 $value = (int) $value;
                 break;
         }
 
         return parent::setField($name, $value, $bSafe);
     }
-	
+
 }

@@ -112,8 +112,8 @@ class cApiActionCollection extends ItemCollection {
     /**
      * Return name of passed action.
      *
-     * @param int $action Id of action
-     *
+     * @param int $action
+     *         Id of action
      * @return string NULL
      */
     public function getActionName($action) {
@@ -125,8 +125,8 @@ class cApiActionCollection extends ItemCollection {
     /**
      * Returns the area for the given action.
      *
-     * @param string|int Name or id of action
-     *
+     * @param string|int
+     *         Name or id of action
      * @return int NULL with the area ID for the given action or NULL
      */
     function getAreaForAction($action) {
@@ -151,7 +151,8 @@ class cApiAction extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -171,12 +172,14 @@ class cApiAction extends Item {
         $this->_wantParameters = array();
     }
 
-	/**
+    /**
      * Userdefined setter for action fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

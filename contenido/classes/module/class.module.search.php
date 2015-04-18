@@ -89,9 +89,13 @@ class cModuleSearch extends cModuleHandler {
         echo '<pre>' . print_r($arg) . '</pre>';
     }
 
+    /**
+     *
+     * @param array $searchOptions
+     */
     public function __construct($searchOptions) {
         parent::__construct();
-        
+
         $this->_elementPerPage = $searchOptions['elementPerPage'];
         $this->_orderBy = $searchOptions['orderBy'];
         $this->_sortOrder = $searchOptions['sortOrder'];
@@ -124,12 +128,12 @@ class cModuleSearch extends cModuleHandler {
         // then apply _filter on input and output from files
         // then use the whitelisted id's and search for additional filter matches on database
         $sql = sprintf("SELECT * FROM %s WHERE idclient = %s", $cfg['tab']['mod'], $idClient);
-        
-        
+
+
         $db = cRegistry::getDb();
         $db->query($sql);
         $moduleIds = array();
-        
+
         // filter modules based on input and output
         while (($modul = $db->nextRecord()) !== false) {
             $this->initWithDatabaseRow($db);
@@ -139,7 +143,7 @@ class cModuleSearch extends cModuleHandler {
                     $moduleIds[] = $db->f('idmod');
             }
         }
-        
+
         // build query using whitelisted id's
         $idFilter = "";
         foreach ($moduleIds as $moduleId) {
@@ -283,7 +287,7 @@ class cModuleSearch extends cModuleHandler {
      */
     public function findModulWithOutput() {
          global $cfg, $client;
-        
+
         $result = array();
 
         $idClient = $client;

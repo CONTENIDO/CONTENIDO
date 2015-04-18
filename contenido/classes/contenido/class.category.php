@@ -26,8 +26,8 @@ class cApiCategoryCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *            ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -167,7 +167,8 @@ class cApiCategoryCollection extends ItemCollection {
      * (*) Returned category id
      * </pre>
      *
-     * @param int $idcat Category id
+     * @param int $idcat
+     *         Category id
      * @return int
      */
     public function getParentsNextPostCategoryId($idcat) {
@@ -221,8 +222,8 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @global array $cfg
      * @param int $idcat
-     * @param int|NULL $idlang If defined, it checks also if there is a next
-     *        deeper category in this language.
+     * @param int|NULL $idlang
+     *         If defined, it checks also if there is a next deeper category in this language.
      * @return int
      */
     public function getFirstChildCategoryId($idcat, $idlang = NULL) {
@@ -435,7 +436,8 @@ class cApiCategory extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -460,10 +462,11 @@ class cApiCategory extends Item {
     /**
      * Userdefined setter for category fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $safe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $safe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $safe = true) {
         switch ($name) {
@@ -483,7 +486,8 @@ class cApiCategory extends Item {
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId change language id for URL (optional)
+     * @param int $changeLangId
+     *         change language id for URL (optional)
      * @return string link
      */
     public function getLink($changeLangId = 0) {

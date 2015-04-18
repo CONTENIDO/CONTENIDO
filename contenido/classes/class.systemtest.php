@@ -1370,6 +1370,8 @@ class cSystemtest {
      * @param string $setupType
      * @param string $databaseName
      * @param string $databasePrefix
+     * @param string $charset
+     * @param string $collation
      */
     public function checkSetupMysql($setupType, $databaseName, $databasePrefix, $charset = '', $collation = '') {
         switch ($setupType) {

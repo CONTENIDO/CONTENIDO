@@ -192,6 +192,11 @@ class cModuleHandler {
         }
     }
 
+    /**
+     *
+     * @param int $overrideLanguageId
+     * @return mixed
+     */
     public static function getEncoding($overrideLanguageId = 0) {
         $lang = cRegistry::getLanguageId();
 
@@ -223,7 +228,7 @@ class cModuleHandler {
      * Exist the modulname in directory
      *
      * @param string $name
-     * @param array $cfgClient
+     * @return boolean
      */
     public function modulePathExistsInDirectory($name) {
         return is_dir($this->_cfgClient[$this->_client]['module']['path'] . $name . '/');
@@ -263,6 +268,7 @@ class cModuleHandler {
      *
      * @param string $name mod name
      * @param string $defaultChar default character
+     * @return string
      */
     public static function getCleanName($name, $defaultChar = '_') {
         // the first character of modul/Layut name should be [a-zA-Z0-9]|_|-
@@ -391,6 +397,7 @@ class cModuleHandler {
      *
      * @param string $type js | template | css the directory of the file
      * @param string $fileName file name
+     * @return boolean
      */
     public function existFile($type, $fileName) {
         return cFileHandler::exists($this->_modulePath . $this->_directories[$type] . $fileName);
@@ -401,6 +408,7 @@ class cModuleHandler {
      *
      * @param string $type js |template | css directory of the file
      * @param string $fileName file name
+     * @return boolean
      */
     public function deleteFile($type, $fileName) {
         if ($this->existFile($type, $fileName)) {
@@ -500,6 +508,8 @@ class cModuleHandler {
      *
      * @param string $directory where in module should we look
      * @param string $fileTyp css or js
+     * @param string $fileName
+     * @return string|bool
      */
     public function getFilesContent($directory, $fileTyp, $fileName = NULL) {
         if ($fileName == NULL) {
@@ -554,7 +564,7 @@ class cModuleHandler {
     /**
      * Set the new modul name.
      *
-     * @var $name string
+     * @param string $name
      */
     public function changeModuleName($name) {
         $this->_moduleAlias = $name;
@@ -579,7 +589,9 @@ class cModuleHandler {
     /**
      * Read the input of the file _input.php
      *
-     * @return string Contents of the Module file (_input.php)
+     * @param bool $issource
+     * @return boolean|string
+     *         Contents of the Module file (_input.php)
      */
     public function readInput($issource = false) {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_input.php') == false) {
@@ -598,7 +610,9 @@ class cModuleHandler {
     /**
      * Read the output of the file _output.php
      *
-     * @return string Contents of the Module file( _output.php)
+     * @param bool $issource
+     * @return boolean|string
+     *         Contents of the Module file( _output.php)
      */
     public function readOutput($issource = false) {
         if (cFileHandler::exists($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . '_output.php') == false) {
@@ -618,6 +632,7 @@ class cModuleHandler {
      * Make a directory template/css/image/js/php if not exist
      *
      * @param string $type
+     * @return boolean
      */
     protected function createModuleDirectory($type) {
         if (array_key_exists($type, $this->_directories)) {
@@ -741,6 +756,7 @@ class cModuleHandler {
      * @param string $moduleName name of the modul
      * @param string $description description of the modul
      * @param string $type type of the modul
+     * @param string $alias
      * @return true if success else false
      */
     public function saveInfoXML($moduleName = NULL, $description = NULL, $type = NULL, $alias = NULL) {
@@ -773,13 +789,14 @@ class cModuleHandler {
 
     /**
      * Make a new module into the modul dir.
-     * The modul name will be [ModulName] example
-     * Contact_Form or GoogleMaps2.
+     * The modul name will be [ModulName] example Contact_Form or GoogleMaps2.
      *
-     * @return bool if modul exist or mkdir and saveInput and saveOutput success
-     *         return true.
-     *         Else if the mkdir or saveInput or saveOutput not success return
-     *         false.
+     * @param string $input
+     * @param string $output
+     * @return bool
+     *         if modul exist or mkdir and saveInput and saveOutput success
+     *         return true. Else if the mkdir or saveInput or saveOutput not
+     *         success return false.
      */
     public function createModule($input = '', $output = '') {
         if ($input != '') {
@@ -875,13 +892,14 @@ class cModuleHandler {
     /**
      * Show if the Modul with the modul name exist in modul dir.
      *
-     * return bool if the modul exist return true, else false
+     * @return bool
+     *         if the modul exist return true, else false
      */
     public function modulePathExists() {
         return is_dir($this->_modulePath);
     }
 
-    /*
+    /**
      * Test input code
      *
      * @return array (bool state, string errorMessage)
@@ -892,7 +910,7 @@ class cModuleHandler {
 
     }
 
-    /*
+    /**
      * Test output code
      *
      * @return array (bool state, string errorMessage)
@@ -903,7 +921,7 @@ class cModuleHandler {
 
     }
 
-    /*
+    /**
      * Test module code
      *
      * @param $inputType string code field type

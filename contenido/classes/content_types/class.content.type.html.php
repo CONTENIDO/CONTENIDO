@@ -35,11 +35,14 @@ class cContentTypeHtml extends cContentTypeAbstract {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
+
+        // set props
         $this->_type = 'CMS_HTML';
         $this->_prefix = 'html';
+
     }
 
     /**
@@ -93,7 +96,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
         $editAnchor = new cHTMLLink("javascript:Con.Tiny.setContent('" . $this->_idArtLang . "','" . $editLink . "');");
         $editButton = new cHTMLImage($this->_cfg['path']['contenido_fullhtml'] . $this->_cfg['path']['images'] . 'but_edithtml.gif');
         $editButton->appendStyleDefinition('margin-right', '2px');
-		$editButton->setClass('content_type_zindex');
+        $editButton->setClass('content_type_zindex');
         $editAnchor->setContent($editButton);
 
         // construct save button

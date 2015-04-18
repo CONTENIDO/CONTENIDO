@@ -65,10 +65,12 @@ class cItemCache {
     /**
      * Contructor of cItemCache
      *
-     * @param string $sTable Table name
-     * @param array $aOptions Options array as follows:
-     *        - $aOptions['max_items_to_cache'] = (int) Number of items to cache
-     *        - $aOptions['enable'] = (bool) Flag to enable caching
+     * @param string $sTable
+     *         Table name
+     * @param array $aOptions
+     *         Options array as follows:
+     *         - $aOptions['max_items_to_cache'] = (int) Number of items to cache
+     *         - $aOptions['enable'] = (bool) Flag to enable caching
      */
     protected function __construct($sTable, array $aOptions = array()) {
         $this->_sTable = $sTable;
@@ -90,10 +92,13 @@ class cItemCache {
      * Returns item cache instance, creates it, if not done before.
      * Works as a singleton for one specific table.
      *
-     * @param string $sTable Table name
-     * @param array $aOptions Options array as follows:
-     *        - $aOptions['max_items_to_cache'] = (int) Number of items to cache
-     *        - $aOptions['enable'] = (bool) Flag to enable caching
+     * @param string $sTable
+     *         Table name
+     * @param array $aOptions
+     *         Options array as follows:
+     *         - $aOptions['max_items_to_cache'] = (int) Number of items to cache
+     *         - $aOptions['enable'] = (bool) Flag to enable caching
+     * @return cItemCache
      */
     public static function getInstance($sTable, array $aOptions = array()) {
         if (!isset(self::$_oInstances[$sTable])) {
@@ -154,7 +159,8 @@ class cItemCache {
      * Returns existing entry from cache by matching properties and their
      * values.
      *
-     * @param array $aProperties Assoziative key value pairs
+     * @param array $aProperties
+     *         Assoziative key value pairs
      * @return array NULL
      */
     public function getItemByProperties(array $aProperties) {
@@ -185,8 +191,11 @@ class cItemCache {
     /**
      * Adds passed item data to internal cache
      *
+     * @todo check if null should be returned
      * @param mixed $mId
-     * @param array $aData Usually the recordset
+     * @param array $aData
+     *         Usually the recordset
+     * @return void|null
      */
     public function addItem($mId, array $aData) {
         if (!$this->_bEnable) {
@@ -208,7 +217,9 @@ class cItemCache {
     /**
      * Removes existing cache entry by it's key
      *
+     * @todo check if null should be returned
      * @param mixed $mId
+     * @return void|null
      */
     public function removeItem($mId) {
         if (!$this->_bEnable) {
@@ -224,7 +235,9 @@ class cItemCache {
     /**
      * Removes multiple existing cache entries by their keys
      *
+     * @todo check if null should be returned
      * @param array $aIds
+     * @return void|null
      */
     public function removeItems(array $aIds) {
         if (!$this->_bEnable) {
@@ -238,6 +251,7 @@ class cItemCache {
             }
         }
     }
+
 }
 
 ?>

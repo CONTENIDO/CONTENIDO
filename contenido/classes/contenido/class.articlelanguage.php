@@ -26,8 +26,8 @@ class cApiArticleLanguageCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *        ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -257,8 +257,10 @@ class cApiArticleLanguage extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
-     * @param bool $fetchContent Flag to fetch content
+     * @param mixed $mId
+     *         Specifies the ID of item to load
+     * @param bool $fetchContent
+     *         Flag to fetch content
      */
     public function __construct($mId = false, $fetchContent = false) {
         global $cfg;
@@ -275,10 +277,14 @@ class cApiArticleLanguage extends Item {
     /**
      * Load data by article and language id
      *
-     * @param int $idart Article id
-     * @param int $idlang Language id
-     * @param bool $fetchContent Flag to fetch content
-     * @return bool true on success, otherwhise false
+     * @param int $idart
+     *         Article id
+     * @param int $idlang
+     *         Language id
+     * @param bool $fetchContent
+     *         Flag to fetch content
+     * @return bool
+     *         true on success, otherwhise false
      */
     public function loadByArticleAndLanguageId($idart, $idlang, $fetchContent = false) {
         $result = true;
@@ -307,9 +313,12 @@ class cApiArticleLanguage extends Item {
     /**
      * Extract 'idartlang' for a specified 'idart' and 'idlang'
      *
-     * @param int $idart Article id
-     * @param int $idlang Language id
-     * @return int Language dependant article id
+     * @param int $idart
+     *         Article id
+     * @param int $idlang
+     *         Language id
+     * @return int
+     *         Language dependant article id
      */
     protected function _getIdArtLang($idart, $idlang) {
         global $cfg;
@@ -389,9 +398,11 @@ class cApiArticleLanguage extends Item {
      * sitemapprio - The priority for the sitemap
      *
      * @param string $name
-     * @param bool $bSafe Flag to run defined outFilter on passed value
-     *        NOTE: It's not used ATM!
-     * @return string Value of property
+     * @param bool $bSafe
+     *         Flag to run defined outFilter on passed value
+     *         NOTE: It's not used ATM!
+     * @return string
+     *         Value of property
      */
     public function getField($name, $bSafe = true) {
         return $this->values[$name];
@@ -400,10 +411,11 @@ class cApiArticleLanguage extends Item {
     /**
      * Userdefined setter for article language fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -460,9 +472,12 @@ class cApiArticleLanguage extends Item {
      * linkdescr - Linkdescription
      * swf - Upload id of the element
      *
-     * @param string $type CMS_TYPE - Legal cms type string
-     * @param int|NULL $id Id of the content
-     * @return string array data
+     * @param string $type
+     *         CMS_TYPE - Legal cms type string
+     * @param int|NULL $id
+     *         Id of the content
+     * @return string|array
+     *         data
      */
     public function getContent($type, $id = NULL) {
         if (NULL === $this->content) {
@@ -495,9 +510,12 @@ class cApiArticleLanguage extends Item {
     /**
      * Similar to getContent this function returns the cContentType object
      *
-     * @param string $type Name of the content type
-     * @param int $id Id of the content type in this article
-     * @return boolean|cContenType Returns false if the name was invalid
+     * @param string $type
+     *         Name of the content type
+     * @param int $id
+     *         Id of the content type in this article
+     * @return boolean|cContenType
+     *         Returns false if the name was invalid
      */
     public function getContentObject($type, $id) {
         $typeClassName = 'cContentType' . ucfirst(strtolower(str_replace('CMS_', '', $type)));
@@ -511,8 +529,11 @@ class cApiArticleLanguage extends Item {
 
     /**
      * Similar to getContent this function returns the view voce of the cContentType object
-     * @param string $type Name of the content type
-     * @param int  $id Id of the content type in this article
+     *
+     * @param string $type
+     *         Name of the content type
+     * @param int  $id
+     *         Id of the content type in this article
      * @return string
      */
     public function getContentViewCode($type, $id) {
@@ -527,7 +548,8 @@ class cApiArticleLanguage extends Item {
     /**
      * Returns all available content types
      *
-     * @throws cException if no content has been loaded
+     * @throws cException
+     *         if no content has been loaded
      * @return array
      */
     public function getContentTypes() {
@@ -540,8 +562,10 @@ class cApiArticleLanguage extends Item {
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId change language id for URL (optional)
-     * @return string link
+     * @param int $changeLangId
+     *         change language id for URL (optional)
+     * @return string
+     *         link
      */
     public function getLink($changeLangId = 0) {
         if ($this->isLoaded() === false) {

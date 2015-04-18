@@ -34,17 +34,28 @@ class cContentTypeRaw extends cContentTypeAbstract {
      *        types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
-        // change attributes from the parent class and call the parent
-        // constructor
+
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
+
+        // set props
         $this->_type = 'CMS_RAW';
         $this->_prefix = 'raw';
+
     }
 
-	public function generateViewCode() {
-		return $this->_encodeForOutput($this->_rawSettings);
-	}
+    /**
+     * @see cContentTypeAbstract::generateViewCode()
+     * @return string encoded raw settings
+     */
+    public function generateViewCode() {
+        return $this->_encodeForOutput($this->_rawSettings);
+    }
 
+    /**
+     * @see cContentTypeAbstract::generateEditCode()
+     * @return string encoded raw settings
+     */
     public function generateEditCode() {
         return $this->_encodeForOutput($this->_rawSettings);
     }

@@ -26,8 +26,8 @@ class cApiCategoryTreeCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *        ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -46,9 +46,12 @@ class cApiCategoryTreeCollection extends ItemCollection {
      * Returns category tree structure by selecting the data from several tables
      * ().
      *
-     * @param int $client Client id
-     * @param int $lang Language id
-     * @return array Category tree structure as follows:
+     * @param int $client
+     *         Client id
+     * @param int $lang
+     *         Language id
+     * @return array
+     *         Category tree structure as follows:
      *         <pre>
      *         $arr[n] (int) idtree value
      *         $arr[n]['idcat'] (int)
@@ -105,7 +108,8 @@ class cApiCategoryTree extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

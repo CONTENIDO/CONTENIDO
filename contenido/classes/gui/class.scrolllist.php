@@ -25,62 +25,78 @@ class cGuiScrollList {
 
     /**
      * Data container
-     * @public array
+     *
+     * @var array
      */
     public $data = Array();
 
     /**
      * Header container
-     * @public array
+     *
+     * @var array
      */
     public $header = Array();
 
     /**
      * Number of records displayed per page
-     * @public string
+     *
+     * @var string
      */
     public $resultsPerPage;
 
     /**
      * Start page
-     * @public string
+     *
+     * @var string
      */
     public $listStart;
 
     /**
      * sortable flag
-     * @public string
+     *
+     * @var string
      */
     public $sortable;
 
     /**
      * sortlink
-     * @public string
+     *
+     * @var string
      */
     public $sortlink;
 
     /**
      * Table item
+     *
+     * @var unknown_type
      */
     public $objTable;
 
     /**
      * Header row
+     *
+     * @var unknown_type
      */
     public $objHeaderRow;
 
     /**
      * Header item
+     *
+     * @var unknown_type
      */
     public $objHeaderItem;
 
     /**
      * Header item
+     *
+     * @var unknown_type
      */
     public $objRow;
 
     /**
      * Header item
+     *
+     * @var unknown_type
      */
     public $objItem;
 
@@ -92,8 +108,9 @@ class cGuiScrollList {
     /**
      * Creates a new FrontendList object.
      *
-     * @param $defaultstyle boolean use the default style for object
-     *        initializing?
+     * @param boolean $defaultstyle
+     *         use the default style for object initializing?
+     * @param unknown_type $action
      */
     public function __construct($defaultstyle = true, $action = "") {
         global $cfg, $area, $frame;
@@ -128,7 +145,9 @@ class cGuiScrollList {
      *
      * $obj->setSortable(true);
      *
-     * @param $sortable boolean true or false
+     * @param unknown_type $key
+     * @param boolean $sortable
+     *         true or false
      */
     public function setSortable($key, $sortable) {
         $this->sortable[$key] = $sortable;
@@ -139,8 +158,10 @@ class cGuiScrollList {
      *
      * $obj->setCustom($key, $custom);
      *
-     * @param $key Custom entry key
-     * @param $custom Custom entry value
+     * @param $key
+     *         Custom entry key
+     * @param $custom
+     *         Custom entry value
      */
     public function setCustom($key, $custom) {
         $this->sortlink->setCustom($key, $custom);
@@ -149,7 +170,8 @@ class cGuiScrollList {
     /**
      * Is called when a new row is rendered
      *
-     * @param $row The current row which is being rendered
+     * @param $row
+     *         The current row which is being rendered
      */
     public function onRenderRow($row) {
         $this->objRow->setStyle("white-space:nowrap;");
@@ -158,7 +180,8 @@ class cGuiScrollList {
     /**
      * Is called when a new column is rendered
      *
-     * @param $row The current column which is being rendered
+     * @param $row
+     *         The current column which is being rendered
      */
     public function onRenderColumn($column) {
     }
@@ -174,8 +197,9 @@ class cGuiScrollList {
      * Make sure that the amount of parameters stays the same for all
      * setData calls in a single object.
      *
-     * @param $index Numeric index
-     * @param ... Additional parameters (data)
+     * @param int $index
+     *         Numeric index
+     * @param Additional parameters (data)
      */
     public function setHeader() {
         $numargs = func_num_args();
@@ -197,8 +221,9 @@ class cGuiScrollList {
      * setData calls in a single object. Also make sure that your index
      * starts from 0 and ends with the actual number - 1.
      *
-     * @param $index int Numeric index
-     * @param ... Additional parameters (data)
+     * @param int $index
+     *         Numeric index
+     * @param Additional parameters (data)
      */
     public function setData($index) {
         $numargs = func_num_args();
@@ -220,8 +245,9 @@ class cGuiScrollList {
      * setData calls in a single object. Also make sure that your index
      * starts from 0 and ends with the actual number - 1.
      *
-     * @param $index int Numeric index
-     * @param ... Additional parameters (data)
+     * @param int $index
+     *         Numeric index
+     * @param Additional parameters (data)
      */
     public function setHiddenData($index) {
         $numargs = func_num_args();
@@ -234,7 +260,8 @@ class cGuiScrollList {
     /**
      * Sets the number of records per page.
      *
-     * @param $numresults int Amount of records per page
+     * @param int $numresults
+     *         Amount of records per page
      */
     public function setResultsPerPage($numresults) {
         $this->resultsPerPage = $numresults;
@@ -243,7 +270,8 @@ class cGuiScrollList {
     /**
      * Sets the starting page number.
      *
-     * @param $startpage int Page number on which the list display starts
+     * @param int $startpage
+     *         Page number on which the list display starts
      */
     public function setListStart($startpage) {
         $this->listStart = $startpage;
@@ -252,8 +280,8 @@ class cGuiScrollList {
     /**
      * Returns the current page.
      *
-     * @param $none
-     * @return s Current page number
+     * @return int
+     *         Current page number
      */
     public function getCurrentPage() {
         if ($this->resultsPerPage == 0) {
@@ -266,8 +294,8 @@ class cGuiScrollList {
     /**
      * Returns the amount of pages.
      *
-     * @param $none
-     * @return s Amount of pages
+     * @return float
+     *         Amount of pages
      */
     public function getNumPages() {
         return (ceil(count($this->data) / $this->resultsPerPage));
@@ -276,8 +304,10 @@ class cGuiScrollList {
     /**
      * Sorts the list by a given field and a given order.
      *
-     * @param $field int Field index
-     * @param $order string|int Sort order (see php's sort documentation)
+     * @param int $field
+     *         Field index
+     * @param string|int $order
+     *         Sort order (see php's sort documentation)
      */
     public function sort($field, $order) {
         if ($order == "") {
@@ -303,8 +333,12 @@ class cGuiScrollList {
      * Field converting facility.
      * Needs to be overridden in the child class to work properbly.
      *
-     * @param $field Field index
-     * @param $value Field value
+     * @param unknown_type $field
+     *         Field index
+     * @param unknown_type $value
+     *         Field value
+     * @param unknown_type $hiddendata
+     * @return unknown
      */
     public function convert($field, $value, $hiddendata) {
         return $value;
@@ -313,7 +347,9 @@ class cGuiScrollList {
     /**
      * Outputs or optionally returns
      *
-     * @param $return If true, returns the list
+     * @param bool $return
+     *         If true, returns the list
+     * @return string|void
      */
     public function render($return = true) {
         global $cfg;

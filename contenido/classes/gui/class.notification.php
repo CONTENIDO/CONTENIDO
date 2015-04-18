@@ -37,6 +37,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage GUI
  */
 class cGuiNotification {
+
     /**
      * Error message level
      * @var string

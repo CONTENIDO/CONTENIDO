@@ -89,7 +89,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      *        types
      */
     function __construct($rawSettings, $id, array $contentTypes) {
-        // set attributes of the parent class and call the parent constructor
+
+        // set props
         $this->_type = 'CMS_FILELIST';
         $this->_prefix = 'filelist';
         $this->_settingsType = 'xml';
@@ -110,6 +111,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             'filelist_filecount'
         );
 
+        // call parent constructor
         parent::__construct($rawSettings, $id, $contentTypes);
 
         // dynamically add form fields based on the meta data identifiers
@@ -130,7 +132,7 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
         // notice: there is also a need, that filelist_id is the same (case:
         // more than one cms file list is used on the same page
         if (isset($_POST['filelist_action']) && $_POST['filelist_action'] === 'store' && isset($_POST['filelist_id']) && (int) $_POST['filelist_id'] == $this->_id) {
-            
+
             // convert the date form fields to timestamps
             foreach ($dateFormFields as $dateFormField) {
                 $value = $_POST[$dateFormField];
@@ -389,10 +391,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
             }
             if ($this->_settings['filelist_ignore_extensions'] === 'true' || count($extensions) == 0 || ($this->_settings['filelist_ignore_extensions'] === 'false' && in_array($extensionName, $extensions)) || ($this->_settings['filelist_ignore_extensions'] === 'false' && $extensionName == $extensions)) {
 
-            	// Prevent errors with not existing files
-            	if (!cFileHandler::exists($this->_uploadPath . $directoryName . '/' . $filename)) {
-            		return;
-            	}
+                // Prevent errors with not existing files
+                if (!cFileHandler::exists($this->_uploadPath . $directoryName . '/' . $filename)) {
+                    return;
+                }
 
                 // checking filesize filter
                 $fileStats = stat($this->_uploadPath . $directoryName . '/' . $filename);

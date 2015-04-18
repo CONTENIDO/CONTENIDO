@@ -52,6 +52,7 @@ interface cDebugInterface {
     public function showAll();
 
     /**
+     * Writes a line.
      *
      * @param string $sText
      */

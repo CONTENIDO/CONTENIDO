@@ -148,9 +148,12 @@ VALID UNTIL: %s
     /**
      * Constructor of cOutputCache
      *
-     * @param string $cachedir Directory 2 cache files
-     * @param string $cachegroup Subdirectory 2 cache files
-     * @param string $cacheprefix Prefixname 2 add 2 cached files
+     * @param string $cachedir
+     *         Directory 2 cache files
+     * @param string $cachegroup
+     *         Subdirectory 2 cache files
+     * @param string $cacheprefix
+     *         Prefixname 2 add 2 cached files
      */
     public function __construct($cachedir = NULL, $cachegroup = NULL, $cacheprefix = NULL) {
         // wherever you want the cache files
@@ -178,8 +181,8 @@ VALID UNTIL: %s
     /**
      * Set/Get the flag 2 enable caching.
      *
-     * @param bool $enable True 2 enable caching or false
-     *
+     * @param bool $enable
+     *         True 2 enable caching or false
      * @return mixed Enable flag or void
      */
     public function enable($enable = NULL) {
@@ -194,9 +197,10 @@ VALID UNTIL: %s
      * Set/Get the flag 2 debug cache object (prints out miss/hit state with
      * execution time).
      *
-     * @param bool $debug True 2 activate debugging or false.
-     *
-     * @return mixed Debug flag or void
+     * @param bool $debug
+     *         True 2 activate debugging or false.
+     * @return mixed
+     *         Debug flag or void
      */
     public function debug($debug) {
         if (!is_null($debug) && is_bool($debug)) {
@@ -209,9 +213,10 @@ VALID UNTIL: %s
     /**
      * Set/Get flag 2 print out cache info as html comment.
      *
-     * @param bool $htmlcomment True debugging or false.
-     *
-     * @return void|string Htmlcomment flag or void
+     * @param bool $htmlcomment
+     *         True debugging or false.
+     * @return void|string
+     *         Htmlcomment flag or void
      */
     public function htmlComment($htmlcomment) {
         if (!is_null($htmlcomment) && is_bool($htmlcomment)) {
@@ -224,9 +229,10 @@ VALID UNTIL: %s
     /**
      * Set/Get caching lifetime in seconds.
      *
-     * @param int $seconds New Lifetime in seconds
-     *
-     * @return mixed Actual lifetime or void
+     * @param int $seconds
+     *         New Lifetime in seconds
+     * @return mixed
+     *         Actual lifetime or void
      */
     public function lifetime($seconds = NULL) {
         if ($seconds != NULL && is_numeric($seconds) && $seconds > 0) {
@@ -239,8 +245,8 @@ VALID UNTIL: %s
     /**
      * Set/Get template to use on printing the chache info.
      *
-     * @param string $template Template string including the '%s' format
-     *            definition.
+     * @param string $template
+     *         Template string including the '%s' format definition.
      */
     public function infoTemplate($template) {
         $this->_sDebugTpl = $template;
@@ -250,8 +256,10 @@ VALID UNTIL: %s
      * Add option 4 caching (e.
      * g. $_GET,$_POST, $_COOKIE, ...). Used 2 generate the id for caching.
      *
-     * @param string $name Name of option
-     * @param string $option Value of option (any variable)
+     * @param string $name
+     *         Name of option
+     * @param string $option
+     *         Value of option (any variable)
      */
     public function addOption($name, $option) {
         $this->_aIDOptions[$name] = $option;
@@ -261,8 +269,8 @@ VALID UNTIL: %s
      * Returns information cache hit/miss and execution time if caching is
      * enabled.
      *
-     * @return string Information about cache if caching is enabled, otherwhise
-     *         nothing.
+     * @return string
+     *         Information about cache if caching is enabled, otherwhise nothing.
      */
     public function getInfo() {
         if (!$this->_bEnableCaching) {
@@ -275,7 +283,7 @@ VALID UNTIL: %s
     /**
      * Starts the cache process.
      *
-     * @return bool string
+     * @return bool|string
      */
     protected function _start() {
         $id = $this->_sID;
@@ -299,8 +307,8 @@ VALID UNTIL: %s
      * The script will be terminated by calling die(), if any cached
      * content is found.
      *
-     * @param int $iPageStartTime Optional start time, e. g. start time of main
-     *            script
+     * @param int $iPageStartTime
+     *         Optional start time, e. g. start time of main script
      */
     public function start($iPageStartTime = NULL) {
         if (!$this->_bEnableCaching) {
@@ -394,7 +402,8 @@ VALID UNTIL: %s
     /**
      * Raises any defined event code by using eval().
      *
-     * @param string $name Name of event 2 raise
+     * @param string $name
+     *         Name of event 2 raise
      */
     protected function _raiseEvent($name) {
         // check if event exists, get out if not
@@ -411,7 +420,8 @@ VALID UNTIL: %s
     /**
      * Returns microtime (Unix-Timestamp), used to calculate time of execution.
      *
-     * @return float Timestamp
+     * @return float
+     *         Timestamp
      */
     protected function _getMicroTime() {
         $mtime = explode(' ', microtime());
@@ -433,28 +443,30 @@ class cOutputCacheHandler extends cOutputCache {
      * Constructor of cOutputCacheHandler.
      * Does some checks and sets the configuration of cache object.
      *
-     * @param array $aConf Configuration of caching as follows:
-     *        - $a['excludecontenido'] bool. don't cache output, if we have a
+     * @param array $aConf
+     *         Configuration of caching as follows:
+     *         - $a['excludecontenido'] bool. don't cache output, if we have a
      *            CONTENIDO variable,
-     *        e. g. on calling frontend preview from backend
-     *        - $a['enable'] bool. activate caching of frontend output
-     *        - $a['debug'] bool. compose debuginfo (hit/miss and execution time
+     *         e. g. on calling frontend preview from backend
+     *         - $a['enable'] bool. activate caching of frontend output
+     *         - $a['debug'] bool. compose debuginfo (hit/miss and execution time
      *            of caching)
-     *        - $a['infotemplate'] string. debug information template
-     *        - $a['htmlcomment'] bool. add a html comment including several
+     *         - $a['infotemplate'] string. debug information template
+     *         - $a['htmlcomment'] bool. add a html comment including several
      *            debug messages to output
-     *        - $a['lifetime'] int. lifetime in seconds 2 cache output
-     *        - $a['cachedir'] string. directory where cached content is 2
+     *         - $a['lifetime'] int. lifetime in seconds 2 cache output
+     *         - $a['cachedir'] string. directory where cached content is 2
      *            store.
-     *        - $a['cachegroup'] string. cache group, will be a subdirectory
+     *         - $a['cachegroup'] string. cache group, will be a subdirectory
      *            inside cachedir
-     *        - $a['cacheprefix'] string. add prefix 2 stored filenames
-     *        - $a['idoptions'] array. several variables 2 create a unique id,
-     *            if the output depends
-     *        on them. e. g.
+     *         - $a['cacheprefix'] string. add prefix 2 stored filenames
+     *         - $a['idoptions'] array. several variables 2 create a unique id,
+     *            if the output depends on them. e. g.
      *            array('uri' => $_SERVER['REQUEST_URI'], 'post' => $_POST, 'get' => $_GET);
-     * @param cDb $db CONTENIDO database object
-     * @param int $iCreateCode Flag of createcode state from table con_cat_art
+     * @param cDb $db
+     *         CONTENIDO database object
+     * @param int $iCreateCode
+     *         Flag of createcode state from table con_cat_art
      */
     public function __construct($aConf, $db, $iCreateCode = NULL) {
         // check if caching is allowed on CONTENIDO variable
@@ -515,9 +527,11 @@ class cOutputCacheHandler extends cOutputCache {
      * Output will be loaded from cache, if no code is 2 create.
      * It also checks the state of global variable $force.
      *
-     * @param mixed $iCreateCode State of create code (0 or 1). The state will
-     *            be loaded from database if value is NULL
-     * @return bool True if code is to create, otherwhise false.
+     * @param mixed $iCreateCode
+     *         State of create code (0 or 1).
+     *         The state will be loaded from database if value is NULL
+     * @return bool
+     *         True if code is to create, otherwhise false.
      */
     protected function _isCode2Create($iCreateCode) {
         if ($this->_bEnableCaching == false) {

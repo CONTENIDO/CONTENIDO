@@ -49,9 +49,10 @@ class cDebugHidden implements cDebugInterface {
     }
 
     /**
-     * (non-PHPdoc)
+     * Writes a line.
      *
      * @see cDebugInterface::out()
+     * @param string $msg
      */
     public function out($msg) {
         echo ("\n <!-- dbg\n");

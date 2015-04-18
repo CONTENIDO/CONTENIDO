@@ -64,7 +64,8 @@ class cApiCommunication extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -76,6 +77,9 @@ class cApiCommunication extends Item {
 
     /**
      * Saves a communication item
+     *
+     * @see Item::store()
+     * @return bool
      */
     public function store() {
         global $auth;
@@ -85,12 +89,14 @@ class cApiCommunication extends Item {
         return parent::store();
     }
 
-	/**
+    /**
      * Userdefined setter for communcation fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

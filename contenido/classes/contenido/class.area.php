@@ -35,11 +35,16 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Creates a area item entry
      *
-     * @param string $name Name
-     * @param string|int $parentid Parent id as astring or number
-     * @param int $relevant 0 or 1
-     * @param int $online 0 or 1
-     * @param int $menuless 0 or 1
+     * @param string $name
+     *         Name
+     * @param string|int $parentid
+     *         Parent id as astring or number
+     * @param int $relevant
+     *         0 or 1
+     * @param int $online
+     *         0 or 1
+     * @param int $menuless
+     *         0 or 1
      * @return cApiArea
      */
     public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0) {
@@ -61,8 +66,10 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Returns the parent id of passed area
      *
-     * @param int|string $area Area id or name
-     * @return string int name of parent area or passed area
+     * @param int|string $area
+     *         Area id or name
+     * @return string|int
+     *         name of parent area or passed area
      */
     public function getParentAreaID($area) {
         if (is_numeric($area)) {
@@ -77,8 +84,10 @@ class cApiAreaCollection extends ItemCollection {
     /**
      * Returns all area ids having passed area as name or as parent id
      *
-     * @param int|string $nameOrId Area name or parent id
-     * @return array List of area ids
+     * @param int|string $nameOrId
+     *         Area name or parent id
+     * @return array
+     *         List of area ids
      */
     public function getIdareasByAreaNameOrParentId($nameOrId) {
         $sql = "SELECT idarea FROM `%s` AS a WHERE a.name = '%s' OR a.parent_id = '%s' ORDER BY idarea";
@@ -115,7 +124,8 @@ class cApiAreaCollection extends ItemCollection {
      * Returns the name for a given areaid
      *
      * @param string $area
-     * @return string String with the name for the area
+     * @return string
+     *         String with the name for the area
      */
     public function getAreaName($area) {
         $oItem = new cApiArea($area);
@@ -126,7 +136,8 @@ class cApiAreaCollection extends ItemCollection {
      * Returns the idarea for a given area name
      *
      * @param string $area
-     * @return int Integer with the ID for the area
+     * @return int
+     *         Integer with the ID for the area
      */
     public function getAreaID($area) {
         $oItem = new cApiArea();
@@ -147,7 +158,8 @@ class cApiArea extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -158,24 +170,26 @@ class cApiArea extends Item {
         }
     }
 
-	/**
+    /**
      * Userdefined setter for area fields.
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
+     * @return bool
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
             case 'relevant':
                 $value = ($value == 1) ? 1 : 0;
                 break;
-			case 'online':
+            case 'online':
                 $value = ($value == 1) ? 1 : 0;
                 break;
-			case 'menuless':
+            case 'menuless':
                 $value = ($value == 1) ? 1 : 0;
-                break;			
+                break;
         }
 
         return parent::setField($name, $value, $bSafe);

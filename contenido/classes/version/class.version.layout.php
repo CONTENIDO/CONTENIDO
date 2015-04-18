@@ -26,28 +26,37 @@ class cVersionLayout extends cVersion {
 
     /**
      * The name of Layout
+     *
+     * @var unknown_type
      */
     private $sName;
 
     /**
      * The code of Layout
+     *
+     * @var unknown_type
      */
     private $sCode;
 
     /**
      * The Description of Layout
+     *
+     * @var unknown_type
      */
     private $sDescripion;
 
     /**
      * The Metainformation about layout
+     *
+     * @var unknown_type
      */
     private $sDeletabel;
 
     /**
      * The class versionLayout object constructor, initializes class variables
      *
-     * @param string $iIdLayout The name of style file
+     * @param string $iIdLayout
+     *         The name of style file
      * @param array $aCfg
      * @param array $aCfgClient
      * @param cDB $oDB
@@ -79,8 +88,6 @@ class cVersionLayout extends cVersion {
     }
 
     /**
-     *
-     *
      * Set code to data ...
      *
      * @param string $code
@@ -119,9 +126,10 @@ class cVersionLayout extends cVersion {
     /**
      * This function read an xml file nodes
      *
-     * @param string $sPath Path to file
-     *
-     * @return array returns array width this three nodes
+     * @param string $sPath
+     *         Path to file
+     * @return array
+     *         returns array width this three nodes
      */
     public function initXmlReader($sPath) {
         $aResult = array();
@@ -147,13 +155,14 @@ class cVersionLayout extends cVersion {
      * This is neccessary, if filenames where changed, when a history entry is
      * restored
      *
-     * @param int $iIdClient - id of client which contains this file
-     * @param string $sArea - name of CONTENIDO area in which this procedure
-     *            should be done
-     * @param int $iIdLayout - Id of layout to highlight
-     * @param object $sess - CONTENIDO session object
-     *
-     * @return string - Javascript for refrehing frames
+     * @param string $sArea
+     *         name of CONTENIDO area in which this procedure should be done
+     * @param int $iIdLayout
+     *         Id of layout to highlight
+     * @param object $sess
+     *         CONTENIDO session object
+     * @return string
+     *         Javascript for refrehing frames
      */
     public function renderReloadScript($sArea, $iIdLayout, $sess) {
         $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idlay=$iIdLayout");

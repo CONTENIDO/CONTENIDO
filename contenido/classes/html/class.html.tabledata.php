@@ -24,7 +24,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cHTMLTableData extends cHTMLContentElement {
 
     /**
-     * Creates an HTML td element.
+     * Constructor.
+     *
+     * @param mixed $content
+     *         String or object with the contents
      */
     public function __construct($content = NULL) {
         parent::__construct($content);
