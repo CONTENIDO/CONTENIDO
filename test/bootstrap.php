@@ -25,9 +25,11 @@ define('CON_UNITTEST_LIB_DIR', '');
 // set dir to CONTENIDO test location
 define('CON_TEST_PATH', dirname(__FILE__));
 
-// UnitTest sources
-require_once(CON_UNITTEST_LIB_DIR . 'PHPUnit/Framework/TestCase.php');
-
+// if PHP unit class is not loaded manually load the testcase class
+if (false === class_exists('PHPUnit_Framework_TestCase')) {
+    // UnitTest sources
+    require_once(CON_UNITTEST_LIB_DIR . 'PHPUnit/Framework/TestCase.php');
+}
 // CONTENIDO test related classes
 require_once(CON_TEST_PATH . '/lib/class.testing.exception.php');
 require_once(CON_TEST_PATH . '/lib/class.testing.test.case.php');
