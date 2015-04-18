@@ -86,7 +86,8 @@ class cApiActionCollection extends ItemCollection {
     /**
      * Returns all actions available in the system
      *
-     * @return array Array with id and name entries
+     * @return array
+     *         Array with id and name entries
      */
     public function getAvailableActions() {
         global $cfg;
@@ -114,7 +115,7 @@ class cApiActionCollection extends ItemCollection {
      *
      * @param int $action
      *         Id of action
-     * @return string NULL
+     * @return string|NULL
      */
     public function getActionName($action) {
         $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
@@ -127,7 +128,8 @@ class cApiActionCollection extends ItemCollection {
      *
      * @param string|int
      *         Name or id of action
-     * @return int NULL with the area ID for the given action or NULL
+     * @return int|NULL
+     *         with the area ID for the given action or NULL
      */
     function getAreaForAction($action) {
         if (!is_numeric($action)) {

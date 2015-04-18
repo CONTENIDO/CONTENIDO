@@ -87,8 +87,9 @@ class cApiClientLanguageCollection extends ItemCollection {
      * Returns all languages (language ids and names) of an client
      *
      * @param int $client
-     * @return array List of languages where the key is the language id and
-     *         value the language name
+     * @return array
+     *         List of languages where the key is the language id and value the
+     *         language name
      */
     public function getLanguageNamesByClient($client) {
         global $cfg;
@@ -112,8 +113,10 @@ class cApiClientLanguageCollection extends ItemCollection {
      * table and returns them back.
      *
      * @param int $client
-     * @return array List of languages where the key is the language id and
-     *         value an assoziative array merged by fields from language and client language table
+     * @return array
+     *         List of languages where the key is the language id and value an
+     *         assoziative array merged by fields from language and client
+     *         language table
      */
     public function getAllLanguagesByClient($client) {
         global $cfg;

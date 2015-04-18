@@ -183,7 +183,8 @@ VALID UNTIL: %s
      *
      * @param bool $enable
      *         True 2 enable caching or false
-     * @return mixed Enable flag or void
+     * @return mixed
+     *         Enable flag or void
      */
     public function enable($enable = NULL) {
         if (!is_null($enable) && is_bool($enable)) {

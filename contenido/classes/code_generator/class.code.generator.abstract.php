@@ -576,7 +576,8 @@ abstract class cCodeGeneratorAbstract {
 
     /**
      *
-     * @return cApiArticleLanguage the artlang object
+     * @return cApiArticleLanguage
+     *         the artlang object
      */
     protected function getArtLangObject() {
         return $this->_oArtLang;

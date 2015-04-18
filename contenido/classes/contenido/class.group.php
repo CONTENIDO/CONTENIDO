@@ -62,7 +62,8 @@ class cApiGroupCollection extends ItemCollection {
      * Returns the groups a user is in
      *
      * @param string $userid
-     * @return cApiGroup[] List of groups
+     * @return array
+     *         List of groups
      */
     public function fetchByUserID($userid) {
         global $cfg;
