@@ -14,7 +14,7 @@
  */
 
 require_once(dirname(dirname(__FILE__)) . '/bootstrap.php');
-TestSuiteHelper::loadFeSuite('Url');
+require_once(dirname(__FILE__) . '/Url/Contenido_Url.php');
 
 /**
  * Testsuite for Contenido_Url related tests.
