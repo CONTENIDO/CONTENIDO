@@ -34,7 +34,7 @@ Run UnitTests:
       $ phpunit ChainsTestSuite
 
 
-Write tests for new features and, if possible, for allready existing features.
+Write tests for new features and, if possible, for already existing features.
 
 
 Todo
