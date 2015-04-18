@@ -14,7 +14,7 @@
  */
 
 require_once(dirname(dirname(__FILE__)) . '/bootstrap.php');
-TestSuiteHelper::loadFeSuite('Validator');
+require_once(dirname(__FILE__) . '/Validator/cValidatorEmail.php');
 
 /**
  * Testsuite for validator related tests.

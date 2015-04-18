@@ -15,7 +15,7 @@
  */
 require_once(dirname(dirname(__FILE__)) . '/bootstrap.php');
 // foldername of the test
-TestSuiteHelper::loadFeSuite('Template');
+require_once(dirname(__FILE__) . '/Template/template.php');
 
 /**
  * Template Testsuite.

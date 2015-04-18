@@ -37,6 +37,11 @@ abstract class cTestingTestCase extends PHPUnit_Framework_TestCase {
      */
     protected static $_originalSqlPrefix;
 
+    public function __construct() {
+        error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
+        ini_set('display_errors', true);
+    }
+
     /**
      * Sets the original database prefix
      * @param $sqlPrefix
