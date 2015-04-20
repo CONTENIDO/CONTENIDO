@@ -79,7 +79,7 @@ class cEffectiveSetting {
      * The order is: System => Client => Client (language)
      *
      */
-	private static function loadSettings() {
+	private static function _loadSettings() {
 		if (self::$_loaded == false) {
 			global $contenido;
 			
@@ -153,7 +153,7 @@ class cEffectiveSetting {
      * @return  bool|string  Setting value or false
      */
     public static function get($type, $name, $default = '') {		
-		self::loadSettings();
+		self::_loadSettings();
 
         $key = self::_makeKey($type, $name);
 
@@ -191,7 +191,7 @@ class cEffectiveSetting {
      * @return array Assoziative array like $arr[name] = value
      */
     public static function getByType($type) {
-		self::loadSettings();
+		self::_loadSettings();
 		
         $settings = getSystemPropertiesByType($type);       
 

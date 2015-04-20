@@ -134,9 +134,9 @@ class cApiLanguage extends Item {
 	
 	/**
      *
-     * @var boolean
+     * @var array
      */
-	protected static $_propertiesCacheLoaded = false;
+	protected static $_propertiesCacheLoaded = array();
 	
     /**
      * Constructor Function
@@ -182,8 +182,9 @@ class cApiLanguage extends Item {
      * Loads all languagesettings into an static array.
      *
      */
-	protected function loadProperties($iClient = 0) {
-		if (self::$_propertiesCacheLoaded == false) {
+	protected function _loadProperties($iClient = 0) {
+		if (!isset(self::$_propertiesCacheLoaded[$iClient])) {
+			self::$_propertiesCacheLoaded[$iClient] = array();
 			$itemtype = $this->db->escape($this->primaryKey);
 			$itemid = $this->db->escape($this->get($this->primaryKey));
 			$oPropertyColl = $this->_getPropertiesCollectionInstance($iClient);
@@ -191,15 +192,15 @@ class cApiLanguage extends Item {
 
 			if ($oPropertyColl->count() > 0) {
 				while (($oItem = $oPropertyColl->next()) !== false) {
-					if (!isset(self::$_propertiesCache[$oItem->get('type')])) {
-						self::$_propertiesCache[$oItem->get('type')] = array();
+					if (!isset(self::$_propertiesCacheLoaded[$iClient][$oItem->get('type')])) {
+						self::$_propertiesCacheLoaded[$iClient][$oItem->get('type')] = array();
 					}
-					self::$_propertiesCache[$oItem->get('type')][$oItem->get('name')] = $oItem->get('value');
+					self::$_propertiesCacheLoaded[$iClient][$oItem->get('type')][$oItem->get('name')] = $oItem->get('value');
 				}
 			}
 		}
 		
-		self::$_propertiesCacheLoaded = true;
+		self::$_propertiesCacheLoaded[$iClient] = true;
 	}
 	
 	/**
@@ -217,10 +218,10 @@ class cApiLanguage extends Item {
             return false;
         }
 		
-		$this->loadProperties($iClient);
+		$this->_loadProperties($iClient);
 		
-		if (isset(self::$_propertiesCache[$sType]) && isset(self::$_propertiesCache[$sName])) {
-			return self::$_propertiesCache[$sType][$sName];
+		if (isset(self::$_propertiesCacheLoaded[$iClient][$sType]) && isset(self::$_propertiesCacheLoaded[$iClient][$sName])) {
+			return self::$_propertiesCacheLoaded[$iClient][$sType][$sName];
 		} else {
 			return false;
 		}
