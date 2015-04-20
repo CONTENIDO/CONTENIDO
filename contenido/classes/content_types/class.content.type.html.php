@@ -49,8 +49,8 @@ class cContentTypeHtml extends cContentTypeAbstract {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         return $this->_encodeForOutput($this->_rawSettings);
@@ -59,8 +59,8 @@ class cContentTypeHtml extends cContentTypeAbstract {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         $wysiwygDiv = new cHTMLDiv();
@@ -110,6 +110,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
 
     /**
      * This content type and its derived types can be edited by a WYSIWYG editor
+     *
      * @return boolean
      */
     public function isWysiwygCompatible() {

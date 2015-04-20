@@ -75,8 +75,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * Connects to the database.
      *
      * @see cDbDriverAbstract::connect()
-     * @return object resource int NULL value depends on
-     *         used driver and is NULL in case of an error.
+     * @return object|resource|int|NULL
+     *         value depends on used driver and is NULL in case of an error.
      */
     public function connect() {
         $dbHandler = @mysqli_init();
@@ -156,7 +156,8 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * @see cDbDriverAbstract::buildInsert()
      * @param string $tableName The table name
      * @param array $fields Associative array of fields to insert
-     * @return string The INSERT SQL query
+     * @return string
+     *         The INSERT SQL query
      */
     public function buildInsert($tableName, array $fields) {
         $fieldList = '';

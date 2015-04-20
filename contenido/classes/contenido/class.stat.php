@@ -80,7 +80,7 @@ class cApiStatCollection extends ItemCollection {
      *
      * @param int $iIdCatArt
      * @param int $iIdLang
-     * @return cApiStat NULL
+     * @return cApiStat|NULL
      */
     public function fetchByCatArtAndLang($iIdCatArt, $iIdLang) {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
@@ -92,7 +92,8 @@ class cApiStatCollection extends ItemCollection {
      *
      * @param int $idcatart
      * @param int $idlang
-     * @return int Number of deleted items
+     * @return int
+     *         Number of deleted items
      */
     public function deleteByCategoryArticleAndLanguage($idcatart, $idlang) {
         $where = 'idcatart = ' . (int) $idcatart . ' AND idlang = ' . (int) $idlang;

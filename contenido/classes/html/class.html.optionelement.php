@@ -57,7 +57,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * Sets the selected flag
      *
      * @param bool $selected If true, adds the "selected" attribute
-     * @return cHTMLOptionElement $this
+     * @return cHTMLOptionElement
+     *         $this for chaining
      */
     public function setSelected($selected) {
         if ($selected == true) {
@@ -70,7 +71,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
     /**
      * Checks whether this option element is selected.
      *
-     * @return bool whether this option element is selected
+     * @return bool
+     *         whether this option element is selected
      */
     public function isSelected() {
         return $this->getAttribute('selected') === 'selected';
@@ -80,7 +82,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * Sets the disabled flag
      *
      * @param bool $disabled If true, adds the "disabled" attribute
-     * @return cHTMLOptionElement $this
+     * @return cHTMLOptionElement
+     *         $this for chaining
      */
     public function setDisabled($disabled) {
         if ($disabled == true) {
@@ -95,7 +98,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * Note:
      * the cHTMLSelectElement renders the options by itself.
      *
-     * @return string Rendered HTML
+     * @return string
+     *         Rendered HTML
      */
     public function toHtml() {
         $this->_setContent($this->_title);

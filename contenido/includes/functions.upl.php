@@ -127,11 +127,11 @@ function uplHasFiles($sDir) {
     global $client, $cfgClient;
 
     $handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir);
-    
+
     if (!$handle) {
         return false;
     }
-    
+
     $bHasContent = false;
     if (is_dir($cfgClient[$client]['upl']['path'] . $sDir)) {
         foreach ($handle as $sDirEntry) {
@@ -152,12 +152,12 @@ function uplHasFiles($sDir) {
  */
 function uplHasSubdirs($sDir) {
     global $client, $cfgClient;
-    
-    $handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir); 
+
+    $handle = cDirHandler::read($cfgClient[$client]['upl']['path'] . $sDir);
     if (!$handle) {
         return false;
     }
-    
+
     $bHasSubdir = false;
     if (is_dir($cfgClient[$client]['upl']['path'] . $sDir)) {
         foreach ($handle as $sDirEntry) {
@@ -274,7 +274,8 @@ function uplSyncDirectoryDBFS($sPath) {
  *        upload
  *        directory or a dbfs path
  * @param string $sName Name of directory to create
- * @return string void value of filemode as string ('0702') or nothing
+ * @return string|void
+ *         value of filemode as string ('0702') or nothing
  */
 function uplmkdir($sPath, $sName) {
     global $cfgClient, $client, $action;

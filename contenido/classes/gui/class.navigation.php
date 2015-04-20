@@ -64,7 +64,8 @@ class cGuiNavigation {
      *                                                       to extract caption from a plugin XML file.
      *                            - "{XPath}": XPath value to extract caption from CONTENIDO XML file
      * @throws cException if XML language files could not be loaded
-     * @return  string  The found caption
+     * @return string
+     *         The found caption
      */
     public function getName($location) {
         global $cfg, $belang;
@@ -415,7 +416,8 @@ class cGuiNavigation {
     /**
      * Renders a select box where the client can be selected as well as an edit button.
      *
-     * @return string rendered HTML
+     * @return string
+     *         rendered HTML
      */
     protected function _renderClientSelect() {
         $cfg = cRegistry::getConfig();

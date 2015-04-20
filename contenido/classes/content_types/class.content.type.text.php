@@ -63,8 +63,8 @@ class cContentTypeText extends cContentTypeAbstract {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         $script = $this->_getEditJavaScript();
@@ -86,7 +86,8 @@ class cContentTypeText extends cContentTypeAbstract {
     /**
      * Generates the JS code for this content type.
      *
-     * @return string the JS code for the content type
+     * @return string
+     *         the JS code for the content type
      */
     protected function _getEditJavaScript() {
         $textbox = new cHTMLTextarea($this->_prefix . '_text_' . $this->_id, '', '', '', $this->_prefix . '_text_' . $this->_id, false, NULL, '', 'edit-textfield edit-' . $this->_prefix . '-textfield');
@@ -113,8 +114,8 @@ class cContentTypeText extends cContentTypeAbstract {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which should be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         return $this->_encodeForOutput($this->_rawSettings);

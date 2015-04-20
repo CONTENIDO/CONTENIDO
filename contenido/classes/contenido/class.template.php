@@ -94,7 +94,7 @@ class cApiTemplateCollection extends ItemCollection {
      * Returns the default template configuration item
      *
      * @param int $idclient
-     * @return cApiTemplateConfiguration NULL
+     * @return cApiTemplateConfiguration|NULL
      */
     public function selectDefaultTemplate($idclient) {
         $this->select('defaulttemplate = 1 AND idclient = ' . (int) $idclient);
@@ -105,7 +105,7 @@ class cApiTemplateCollection extends ItemCollection {
      * Returns all templates having passed layout id.
      *
      * @param int $idlay
-     * @return cApiTemplate[]
+     * @return array
      */
     public function fetchByIdLay($idlay) {
         $this->select('idlay = ' . (int) $idlay);

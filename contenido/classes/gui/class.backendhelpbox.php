@@ -73,7 +73,8 @@ class cGuiBackendHelpbox {
      *
      * @param string $returnAsString if true the rendered button will be
      *        returned. Otherwise it will be echoed
-     * @return string|NULL rendered button or nothing if it's been printed
+     * @return string|NULL
+     *         rendered button or nothing if it's been printed
      */
     public function render($returnAsString = true) {
         $id = md5(rand()) . "-Info";

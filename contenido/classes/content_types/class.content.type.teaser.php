@@ -130,7 +130,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Returns all translation strings for mi18n.
      *
      * @param array $translationStrings translation strings
-     * @return array updated translation string
+     * @return array
+     *         updated translation string
      */
     public static function addModuleTranslations(array $translationStrings) {
         foreach (self::$_translations as $value) {
@@ -210,8 +211,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         $code = '";?><?php
@@ -242,7 +243,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param bool $returnAsArray modeswitch betwwen template generation and
      *        and returning result as array
-     * @return mixed string of select box or array of articles
+     * @return mixed
+     *         string of select box or array of articles
      */
     public function generateTeaserCode($returnAsArray = false) {
         global $contenido;
@@ -341,7 +343,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param cApiArticleLanguage $article - CONTENIDO Article object
      * @param cTemplate $template - CONTENIDO Template object (as reference)
-     * @return boolean - success state of this operation
+     * @return boolean
+     *         success state of this operation
      */
     private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate &$template) {
         global $contenido;
@@ -455,7 +458,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @param string $contentTypeName - Name of Content type to extract
      *        informations from
      * @param string $ids - list of ids to search in
-     * @return string - largest result of content
+     * @return string
+     *         largest result of content
      */
     private function _getArtContent(cApiArticleLanguage &$article, $contentTypeName, $ids) {
         $this->_initCmsTypes();
@@ -479,7 +483,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Teaser image on that basis
      *
      * @param string $content - HTML string to search image in
-     * @return string img tag containing scaled image
+     * @return string
+     *         img tag containing scaled image
      */
     private function _extractImage($content) {
         $image = array();
@@ -519,7 +524,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @param int $maxY - maximum image height
      * @param bool $isFile - in case of a direct file path retrival from
      *        database is not needed
-     * @return string - <img> tag contains scaled image
+     * @return string
+     *         <img> tag contains scaled image
      */
     private function _getImage($image, $maxX, $maxY, $cropped, $isFile = false) {
         $content = '';
@@ -567,8 +573,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         $this->_initCmsTypes();
@@ -668,7 +674,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     /**
      * Generates code for the general tab in which various settings can be made.
      *
-     * @return string - the code for the general tab
+     * @return string
+     *         the code for the general tab
      */
     private function _generateTabGeneral() {
         // define a wrapper which contains the whole content of the general tab
@@ -701,7 +708,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * displayed in teaser as a maximum.
      * Only important in editmode.
      *
-     * @return string html string of select box
+     * @return string
+     *         html string of select box
      */
     private function _generateCountSelect() {
         $htmlSelect = new cHTMLSelectElement('teaser_count_' . $this->_id, '', 'teaser_count_' . $this->_id);
@@ -727,7 +735,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Generats a select box for setting teaser style
      * currently two seperate teaser templates were supported
      *
-     * @return html string of select box
+     * @return string
+     *         html string of select box
      */
     private function _generateStyleSelect() {
         $htmlSelect = new cHTMLSelectElement('teaser_style_' . $this->_id, '', 'teaser_style_' . $this->_id);
@@ -774,7 +783,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * @param string $selectName - name of input elements
      * @param string $selected - value of select box which is selected
      * @param string $value - current value of text box
-     * @return string html string of select box
+     * @return string
+     *         html string of select box
      */
     private function _generateTypeSelect($selectName, $selected, $value) {
         // make sure that the ID is at the end of the form field name
@@ -806,7 +816,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Generates code for the advanced tab in which various advanced settings
      * can be made.
      *
-     * @return string - the code for the advanced tab
+     * @return string
+     *         the code for the advanced tab
      */
     private function _generateTabAdvanced() {
         // define a wrapper which contains the whole content of the advanced tab
@@ -865,7 +876,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Function which generated a select box for setting teaser
      * sort argument
      *
-     * @return string html string of select box
+     * @return string
+     *         html string of select box
      */
     private function _generateSortSelect() {
         $htmlSelect = new cHTMLSelectElement('teaser_sort_' . $this->_id, '', 'teaser_sort_' . $this->_id);
@@ -897,7 +909,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Function which generated a select box for setting teaser
      * sort order argument
      *
-     * @return string html string of select box
+     * @return string
+     *         html string of select box
      */
     private function _generateSortOrderSelect() {
         $htmlSelect = new cHTMLSelectElement('teaser_sort_order_' . $this->_id, '', 'teaser_sort_order_' . $this->_id);
@@ -922,7 +935,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
     /**
      * Function which provides select option for cropping teaser images
      *
-     * @return string html string of select box
+     * @return string
+     *         html string of select box
      */
     private function _generateCropSelect() {
         $htmlSelect = new cHTMLSelectElement('teaser_image_crop_' . $this->_id, '', 'teaser_image_crop_' . $this->_id);
@@ -948,7 +962,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Generates code for the manual tab in which various settings for the
      * manual teaser can be made.
      *
-     * @return string - the code for the manual tab
+     * @return string
+     *         the code for the manual tab
      */
     private function _generateTabManual() {
         // define a wrapper which contains the whole content of the manual tab
@@ -989,7 +1004,8 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      * Function retrives name of an article by its id from database
      *
      * @param int $idArt - CONTENIDO article id
-     * @return string - name of article
+     * @return string
+     *         name of article
      */
     private function _getArtName($idArt) {
         $article = new cApiArticleLanguage();

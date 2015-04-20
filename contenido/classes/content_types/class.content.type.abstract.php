@@ -262,7 +262,8 @@ abstract class cContentTypeAbstract {
      * Since the content type code is evaled by php, the code has to be encoded.
      *
      * @param string $code code to encode
-     * @return string encoded code
+     * @return string
+     *         encoded code
      */
     protected function _encodeForOutput($code) {
         $code = addslashes($code);
@@ -278,7 +279,8 @@ abstract class cContentTypeAbstract {
      * @param string $uploadPath path to upload directory (optional, default:
      *        root upload path
      *        of client)
-     * @return array with directory information (keys: name, path, sub)
+     * @return array
+     *         with directory information (keys: name, path, sub)
      */
     public function buildDirectoryList($uploadPath = '') {
         // make sure the upload path is set and ends with a slash
@@ -325,7 +327,8 @@ abstract class cContentTypeAbstract {
      * typically built by {@link cContentTypeAbstract::buildDirectoryList}).
      *
      * @param array $dirs directory information
-     * @return string HTML code showing a directory list
+     * @return string
+     *         HTML code showing a directory list
      */
     public function generateDirectoryList(array $dirs) {
         $template = new cTemplate();
@@ -367,7 +370,8 @@ abstract class cContentTypeAbstract {
      * Overwrite in subclasses if you use generateDirectoryList!
      *
      * @param array $dirData directory information
-     * @return boolean whether the directory is the currently active directory
+     * @return boolean
+     *         whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData) {
         return false;
@@ -379,7 +383,8 @@ abstract class cContentTypeAbstract {
      * Overwrite in subclasses if you use getDirectoryList!
      *
      * @param array $dirData directory information
-     * @return boolean whether the directory should be shown expanded
+     * @return boolean
+     *         whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData) {
         return false;
@@ -390,7 +395,8 @@ abstract class cContentTypeAbstract {
      *
      * @param string $subDir the potential subdirectory
      * @param string $dir the parent directory
-     * @return boolean whether the given $subDir is a subdirectory of $dir
+     * @return boolean
+     *         whether the given $subDir is a subdirectory of $dir
      */
     protected function _isSubdirectory($subDir, $dir) {
         $dirArray = explode('/', $dir);
@@ -413,21 +419,22 @@ abstract class cContentTypeAbstract {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public abstract function generateViewCode();
 
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public abstract function generateEditCode();
 
     /**
      * Checks if this content type can be edited by a WYSIWYG editor
+     *
      * @return boolean
      */
     public function isWysiwygCompatible() {

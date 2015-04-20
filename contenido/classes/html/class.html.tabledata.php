@@ -39,6 +39,7 @@ class cHTMLTableData extends cHTMLContentElement {
      *
      * @param string $width Width
      * @return cHTMLTableData $this
+     *         $this for chaining
      */
     public function setWidth($width) {
         return $this->updateAttribute('width', $width);
@@ -49,6 +50,7 @@ class cHTMLTableData extends cHTMLContentElement {
      *
      * @param string $height Height
      * @return cHTMLTableData $this
+     *         $this for chaining
      */
     public function setHeight($height) {
         return $this->updateAttribute('height', $height);
@@ -59,6 +61,7 @@ class cHTMLTableData extends cHTMLContentElement {
      *
      * @param string $alignment Alignment
      * @return cHTMLTableData $this
+     *         $this for chaining
      */
     public function setAlignment($alignment) {
         return $this->updateAttribute('align', $alignment);
@@ -69,6 +72,7 @@ class cHTMLTableData extends cHTMLContentElement {
      *
      * @param string $alignment Vertical Alignment
      * @return cHTMLTableData $this
+     *         $this for chaining
      */
     public function setVerticalAlignment($alignment) {
         return $this->updateAttribute('valign', $alignment);
@@ -79,6 +83,7 @@ class cHTMLTableData extends cHTMLContentElement {
      *
      * @param string $color background color
      * @return cHTMLTableData $this
+     *         $this for chaining
      */
     public function setBackgroundColor($color) {
         return $this->updateAttribute('bgcolor', $color);
@@ -89,6 +94,7 @@ class cHTMLTableData extends cHTMLContentElement {
      *
      * @param string $colspan Colspan
      * @return cHTMLTableData $this
+     *         $this for chaining
      */
     public function setColspan($colspan) {
         return $this->updateAttribute('colspan', $colspan);

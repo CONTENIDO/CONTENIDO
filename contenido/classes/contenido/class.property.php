@@ -370,7 +370,8 @@ class cApiPropertyCollection extends ItemCollection {
      *
      * @param mixed $itemtype Type of the item (example: idcat)
      * @param mixed $itemid ID of the item (example: 31)
-     * @return array For each given item
+     * @return array
+     *         For each given item
      */
     public function getProperties($itemtype, $itemid) {
         if ($this->_useCache($itemtype, $itemid)) {
@@ -407,7 +408,8 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $field Field to search in
      * @param mixed $fieldValue Value to search for
      * @param cAuth $auth Narrow result down to user in auth objext
-     * @return array For each given item
+     * @return array
+     *         For each given item
      */
     public function getAllValues($field, $fieldValue, $auth = NULL) {
         $authString = '';
@@ -606,7 +608,8 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $type Type of the data to store (arbitary data)
      * @param mixed $name Entry name
      * @param mixed $default to be returned if no item was found
-     * @return mixed Value
+     * @return mixed
+     *         Value
      */
     protected function _getValueFromCache($itemtype, $itemid, $type, $name, $default = false) {
         foreach (self::$_entries as $id => $entry) {
@@ -624,7 +627,8 @@ class cApiPropertyCollection extends ItemCollection {
      * @param mixed $itemtype Type of the item (example: idcat)
      * @param mixed $itemid ID of the item (example: 31)
      * @param mixed $type Type of the data to store (arbitary data)
-     * @return array Value
+     * @return array
+     *         Value
      *
      */
     protected function _getValuesByTypeFromCache($itemtype, $itemid, $type) {
@@ -644,7 +648,8 @@ class cApiPropertyCollection extends ItemCollection {
      *
      * @param mixed $itemtype Type of the item (example: idcat)
      * @param mixed $itemid ID of the item (example: 31)
-     * @return array For each given item
+     * @return array
+     *         For each given item
      */
     public function _getPropertiesFromCache($itemtype, $itemid) {
         $result = array();

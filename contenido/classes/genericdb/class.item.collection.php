@@ -960,7 +960,8 @@ abstract class ItemCollection extends cItemBaseAbstract {
      *
      * @param array $aObjects
      *         With the correct order of the objects
-     * @return array Result
+     * @return array
+     *         Result
      */
     public function queryAndFetchStructured(array $aObjects) {
         $aOrder = array();

@@ -52,7 +52,8 @@ class cHTMLButton extends cHTMLFormElement {
      * Sets the title (caption) for the button
      *
      * @param string $title The title to set
-     * @return cHTMLButton $this
+     * @return cHTMLButton
+     *         $this for chaining
      */
     public function setTitle($title) {
         $this->updateAttribute('value', $title);
@@ -64,7 +65,8 @@ class cHTMLButton extends cHTMLFormElement {
      * Sets the mode (submit or reset) for the button
      *
      * @param string $mode Either 'submit', 'reset' or 'image'.
-     * @return cHTMLButton $this
+     * @return cHTMLButton
+     *         $this for chaining
      */
     public function setMode($mode) {
         $modes = array(
@@ -84,7 +86,8 @@ class cHTMLButton extends cHTMLFormElement {
      * Set the image src if mode type is "image"
      *
      * @param string $mode Image path.
-     * @return cHTMLButton $this
+     * @return cHTMLButton
+     *         $this for chaining
      */
     public function setImageSource($src) {
         $this->setMode('image');

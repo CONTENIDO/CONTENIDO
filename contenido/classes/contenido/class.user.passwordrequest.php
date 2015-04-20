@@ -42,7 +42,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      * Create a user password request by user id.
      *
      * @param int $userid
-     * @return cApiUserPasswordRequest false
+     * @return cApiUserPasswordRequest
      */
     public function createNewItem($data = NULL) {
         $item = parent::createNewItem($data);
@@ -63,7 +63,8 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      * Removes the specified entries from the database by user's id.
      *
      * @param int $userid Specifies the user id
-     * @return bool True if the delete was successful
+     * @return bool
+     *         True if the delete was successful
      */
     public function deleteByUserId($userid) {
         $result = $this->deleteBy('user_id', $userid);
@@ -74,7 +75,8 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      * Removes the specified entries from the database by token.
      *
      * @param int $userid Specifies the user id
-     * @return bool True if the delete was successful
+     * @return bool
+     *         True if the delete was successful
      */
     public function deleteByToken($token) {
         $result = $this->deleteBy('validation_token', $token);
@@ -86,7 +88,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      *
      * @param string $userid search for a specific user id
      * @param string $orderBy SQL order by part
-     * @return cApiUser[]
+     * @return array
      */
     public function fetchAvailableRequests($userid = false, $orderBy = 'id_pwreq ASC') {
         $requests = array();
@@ -134,6 +136,7 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
  * @subpackage GenericDB_Model
  */
 class cApiUserPasswordRequest extends Item {
+
     /**
      * Constructor function
      *

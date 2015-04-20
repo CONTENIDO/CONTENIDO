@@ -145,7 +145,7 @@ class cApiUserPropertyCollection extends ItemCollection {
     /**
      * Returns all user properties by userid.
      *
-     * @return cApiUserProperty[]
+     * @return array
      */
     public function fetchByUserId() {
         if (self::$_enableCache) {
@@ -168,7 +168,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
-     * @return cApiUserProperty[]
+     * @return array
      */
     public function fetchByTypeName($type, $name) {
         $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
@@ -204,7 +204,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Returns all user properties by userid and type.
      *
      * @param string $type
-     * @return cApiUserProperty[]
+     * @return array
      */
     public function fetchByUserIdType($type) {
         if (self::$_enableCache) {
@@ -299,7 +299,7 @@ class cApiUserPropertyCollection extends ItemCollection {
     /**
      * Fetches all user properties by userid from cache.
      *
-     * @return cApiUserProperty[]
+     * @return array
      */
     protected function _fetchByUserIdFromCache() {
         $props = array();
@@ -334,7 +334,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * Fetches user properties by userid and type from cache.
      *
      * @param string $type
-     * @return cApiUserProperty[]
+     * @return array
      */
     public function _fetchByUserIdTypeFromCache($type) {
         $props = array();

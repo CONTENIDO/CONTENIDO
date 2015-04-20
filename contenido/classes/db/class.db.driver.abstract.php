@@ -62,7 +62,7 @@ abstract class cDbDriverAbstract {
     /**
      * Returns the database driver handler instance.
      *
-     * @return cDbDriverHandler NULL
+     * @return cDbDriverHandler|NULL
      */
     public function getHandler() {
         return $this->_handler;

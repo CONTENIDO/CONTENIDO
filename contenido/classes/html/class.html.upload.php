@@ -55,7 +55,8 @@ class cHTMLUpload extends cHTMLFormElement {
      * Sets the width of the text box.
      *
      * @param int $width width of the text box
-     * @return cHTMLUpload $this
+     * @return cHTMLUpload
+     *         $this for chaining
      */
     public function setWidth($width) {
         $width = intval($width);
@@ -71,7 +72,8 @@ class cHTMLUpload extends cHTMLFormElement {
      * Sets the maximum input length of the text box.
      *
      * @param int $maxlen maximum input length
-     * @return cHTMLUpload $this
+     * @return cHTMLUpload
+     *         $this for chaining
      */
     public function setMaxLength($maxlen) {
         $maxlen = intval($maxlen);

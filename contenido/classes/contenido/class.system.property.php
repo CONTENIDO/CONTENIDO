@@ -148,7 +148,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * Returns all system properties.
      *
      * @param string $orderBy Order by clause like "value ASC"
-     * @return cApiSystemProperty[]
+     * @return array
      */
     public function fetchAll($orderBy = '') {
         if (self::$_enableCache) {
@@ -203,7 +203,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * Returns all system properties by type.
      *
      * @param string $type
-     * @return cApiSystemProperty[]
+     * @return array
      */
     public function fetchByType($type) {
         if (self::$_enableCache) {
@@ -286,7 +286,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
     /**
      * Fetches all entries from cache.
      *
-     * @return cApiSystemProperty[]
+     * @return array
      */
     protected function _fetchAllFromCache() {
         $props = array();
@@ -337,7 +337,7 @@ class cApiSystemPropertyCollection extends ItemCollection {
      * Fetches entries by type from cache.
      *
      * @param string $type
-     * @return cApiSystemProperty[]
+     * @return array
      */
     protected function _fetchByTypeFromCache($type) {
         $props = array();

@@ -75,7 +75,8 @@ class cHTMLFormElement extends cHTML {
      * removes the disabled flag.
      *
      * @param string $disabled Sets the disabled-flag if non-empty
-     * @return cHTMLFormElement $this
+     * @return cHTMLFormElement
+     *         $this for chaining
      */
     public function setDisabled($disabled) {
         if (empty($disabled)) {
@@ -93,7 +94,8 @@ class cHTMLFormElement extends cHTML {
      * index needs to be numeric, bigger than 0 and smaller than 32767.
      *
      * @param int $tabindex Desired tab index
-     * @return cHTMLFormElement $this
+     * @return cHTMLFormElement
+     *         $this for chaining
      */
     public function setTabindex($tabindex) {
         if (is_numeric($tabindex) && $tabindex >= 0 && $tabindex <= 32767) {
@@ -108,7 +110,8 @@ class cHTMLFormElement extends cHTML {
      *
      * @param string $accesskey The length of the access key. May be A-Z and
      *        0-9.
-     * @return cHTMLFormElement $this
+     * @return cHTMLFormElement
+     *         $this for chaining
      */
     public function setAccessKey($accesskey) {
         if ((strlen($accesskey) == 1) && isAlphanumeric($accesskey)) {

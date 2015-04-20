@@ -50,8 +50,8 @@ class cContentTypeLinkdescr extends cContentTypeLinkeditor {
      * Generates the code which should be shown if this content type is shown in
      * the frontend.
      *
-     * @return string escaped HTML code which sould be shown if content type is
-     *         shown in frontend
+     * @return string
+     *         escaped HTML code which sould be shown if content type is shown in frontend
      */
     public function generateViewCode() {
         return $this->_encodeForOutput($this->_settings['linkeditor_title']);
@@ -60,8 +60,8 @@ class cContentTypeLinkdescr extends cContentTypeLinkeditor {
     /**
      * Generates the code which should be shown if this content type is edited.
      *
-     * @return string escaped HTML code which should be shown if content type is
-     *         edited
+     * @return string
+     *         escaped HTML code which should be shown if content type is edited
      */
     public function generateEditCode() {
         return $this->generateViewCode();

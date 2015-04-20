@@ -27,7 +27,8 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
      * Generates the encoded code for the tab menu.
      *
      * @param array $tabs associative array mapping the tab IDs to the tab names
-     * @return string - the encoded code for the tab menu
+     * @return string
+     *         the encoded code for the tab menu
      */
     protected function _generateTabMenuCode(array $tabs) {
         $template = new cTemplate();
@@ -75,7 +76,8 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
     /**
      * Generates the code for the action buttons (save and cancel).
      *
-     * @return string - the encoded code for the action buttons
+     * @return string
+     *         the encoded code for the action buttons
      */
     protected function _generateActionCode() {
         $template = new cTemplate();

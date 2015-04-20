@@ -84,7 +84,8 @@ class cFileCache {
      *         cache ID
      * @param string $group
      *         cache group
-     * @return string filename
+     * @return string
+     *         filename
      */
     public function generateFileName($id, $group = '') {
         $id = ($this->_options['fileNameProtection'] === true) ? md5($id) : $id;

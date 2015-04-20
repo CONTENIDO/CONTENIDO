@@ -141,7 +141,8 @@ class cApiModuleCollection extends ItemCollection {
     /**
      * Checks if any modules are in use and returns the data
      *
-     * @return array Returns all templates for all modules
+     * @return array
+     *         Returns all templates for all modules
      */
     public function getModulesInUse() {
         global $cfg;
@@ -250,7 +251,8 @@ class cApiModule extends Item {
     /**
      * Returns the translated name of the module if a translation exists.
      *
-     * @return string Translated module name or original
+     * @return string
+     *         Translated module name or original
      */
     public function getTranslatedName() {
         global $lang;
@@ -286,7 +288,7 @@ class cApiModule extends Item {
      * @param array $cfg
      * @param int $client
      * @param int $lang
-     * @return bool multitype:
+     * @return bool|array
      */
     function parseModuleForStringsLoadFromFile($cfg, $client, $lang) {
         global $client;
@@ -369,7 +371,8 @@ class cApiModule extends Item {
     /**
      * Parses the module for mi18n strings and returns them in an array
      *
-     * @return array Found strings for this module
+     * @return array
+     *         Found strings for this module
      */
     public function parseModuleForStrings() {
         if (!$this->isLoaded()) {
@@ -455,7 +458,8 @@ class cApiModule extends Item {
      *
      * @param int $module
      * @param bool $bSetData
-     * @return bool true if the module is in use
+     * @return bool
+     *         true if the module is in use
      */
     public function moduleInUse($module, $bSetData = false) {
         global $cfg;
@@ -494,7 +498,8 @@ class cApiModule extends Item {
     /**
      * Get the informations of used templates
      *
-     * @return array template data
+     * @return array
+     *         template data
      */
     public function getUsedTemplates() {
         return $this->aUsedTemplates;
@@ -503,7 +508,8 @@ class cApiModule extends Item {
     /**
      * Checks if the module is a pre-4.3 module
      *
-     * @return bool true if this module is an old one
+     * @return bool
+     *         true if this module is an old one
      */
     public function isOldModule() {
         // Keywords to scan
@@ -532,7 +538,8 @@ class cApiModule extends Item {
      * @see Item::getField()
      * @param string $sField Specifies the field to retrieve
      * @param bool $bSafe Flag to run defined outFilter on passed value
-     * @return mixed Value of the field
+     * @return mixed
+     *         Value of the field
      */
     public function getField($field, $bSafe = true) {
         $value = parent::getField($field, $bSafe);
@@ -577,7 +584,8 @@ class cApiModule extends Item {
      *
      * @param string $sFile Filename including path of import xml file
      *
-     * @return array Array with module data from XML file
+     * @return array
+     *         Array with module data from XML file
      */
     private function _parseImportFile($sFile) {
         $oXmlReader = new cXmlReader();

@@ -53,7 +53,8 @@ class cHTMLLabel extends cHTMLContentElement {
     /**
      * Renders the label
      *
-     * @return string Rendered HTML
+     * @return string
+     *         Rendered HTML
      */
     public function toHtml() {
         $this->_setContent($this->text);

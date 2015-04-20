@@ -148,7 +148,8 @@ class cApiLayout extends Item {
     /**
      * Get the informations of used templates
      *
-     * @return array template data
+     * @return array
+     *         template data
      */
     public function getUsedTemplates() {
         return $this->_aUsedTemplates;

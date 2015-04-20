@@ -77,15 +77,16 @@ class cApiNavSubCollection extends ItemCollection {
      * @param  string  $area
      * @param  int  $level
      * @param  int  $online
-     * @return  array  List of assiziative arrays like
-     * <pre>
-     *  $arr[] = array(
-     *      'location' => location xml path
-     *      'caption' => The tanslation of location from XML file
-     *      'name' => area name for sub navigation item
-     *      'menulesss' => Menuless state
-     *  );
-     * </pre>
+     * @return  array
+     *         List of assiziative arrays like
+     *         <pre>
+     *         $arr[] = array(
+     *             'location' => location xml path
+     *             'caption' => The tanslation of location from XML file
+     *             'name' => area name for sub navigation item
+     *             'menulesss' => Menuless state
+     *         );
+     *         </pre>
      */
     public function getSubnavigationsByAreaName($area, $level = 1, $online = 1) {
         global $cfg;

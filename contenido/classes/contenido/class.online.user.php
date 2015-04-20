@@ -71,7 +71,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * Insert this user in online_user table
      *
      * @param string $userId Id of user
-     * @return bool Returns true if successful else false
+     * @return bool
+     *         Returns true if successful else false
      */
     public function insertOnlineUser($userId) {
         $oItem = $this->createNewItem((string) $userId);
@@ -87,7 +88,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * Find the this user if exists in the table 'online_user'
      *
      * @param string $userId Is the User-Id (get from auth object)
-     * @return bool Returns true if this User is found, else false
+     * @return bool
+     *         Returns true if this User is found, else false
      */
     public function findUser($userId) {
         $oUser = new cApiOnlineUser((string) $userId);
@@ -96,10 +98,10 @@ class cApiOnlineUserCollection extends ItemCollection {
 
     /**
      * Find all user_ids in the table 'online_user' for get rest information
-     * from
-     * table 'con_user'
+     * from table 'con_user'
      *
-     * @return array Returns array of user-information
+     * @return array
+     *         Returns array of user-information
      */
     public function findAllUser() {
         // todo use $perm
@@ -168,7 +170,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * This function do an update of current timestamp in 'online_user'
      *
      * @param string $userId Is the User-Id (get from auth object)
-     * @return bool Returns true if successful, else false
+     * @return bool
+     *         Returns true if successful, else false
      */
     public function updateUser($userId) {
         $oUser = new cApiOnlineUser((string) $userId);
@@ -184,7 +187,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * Delete all Contains in the table 'online_user' that is older as
      * Backend timeout(currently is $cfg['backend']['timeout'] = 60)
      *
-     * @return bool Returns true if successful else false
+     * @return bool
+     *         Returns true if successful else false
      */
     public function deleteInactiveUser() {
         global $cfg;
@@ -205,7 +209,8 @@ class cApiOnlineUserCollection extends ItemCollection {
     /**
      * Get the number of users from the table 'online_user'
      *
-     * @return int Returns if exists a number of users
+     * @return int
+     *         Returns if exists a number of users
      */
     public function getNumberOfUsers() {
         $sql = 'SELECT COUNT(*) AS cnt FROM `%s`';
@@ -222,7 +227,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * Delete this user from 'online user' table
      *
      * @param string $userId Is the User-Id (get from auth object)
-     * @return bool Returns true if successful, else false
+     * @return bool
+     *         Returns true if successful, else false
      */
     public function deleteUser($userId) {
         return $this->delete((string) $userId);

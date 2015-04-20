@@ -55,7 +55,7 @@ class cApiUploadCollection extends ItemCollection {
             global $client;
         }
 
-        // build escaped vars for SQL 
+        // build escaped vars for SQL
         $escClient = cSecurity::toInteger($client);
         $escDirname = $this->escape($sDirname);
         $escFilename = $this->escape($sFilename);
@@ -117,12 +117,12 @@ class cApiUploadCollection extends ItemCollection {
     /**
      * Deletes upload file and it's properties
      *
+     * @todo Code is similar/redundant to include.upl_files_overview.php 216-230
      * @global cApiCecRegistry $_cecRegistry
      * @global array $cfgClient
      * @global int $client
      * @param int $id
-     * @return bool @fixme Code is similar/redundant to
-     *         include.upl_files_overview.php 216-230
+     * @return bool
      */
     public function delete($id) {
         global $cfgClient, $client;

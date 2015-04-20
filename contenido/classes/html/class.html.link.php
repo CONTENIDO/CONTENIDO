@@ -99,7 +99,8 @@ class cHTMLLink extends cHTMLContentElement {
      * Sets the link to a specific location
      *
      * @param string $href String with the location to link to
-     * @return cHTMLLink $this
+     * @return cHTMLLink
+     *         $this for chaining
      */
     public function setLink($href) {
         $this->_link = $href;
@@ -116,7 +117,8 @@ class cHTMLLink extends cHTMLContentElement {
      * Sets the target frame
      *
      * @param string $target Target frame identifier
-     * @return cHTMLLink $this
+     * @return cHTMLLink
+     *         $this for chaining
      */
     public function setTargetFrame($target) {
         return $this->updateAttribute('target', $target);
@@ -128,7 +130,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @param string $targetarea Target backend area
      * @param string $targetframe Target frame (1-4)
      * @param string $targetaction Target action
-     * @return cHTMLLink $this
+     * @return cHTMLLink
+     *         $this for chaining
      */
     public function setCLink($targetarea, $targetframe, $targetaction = '') {
         $this->_targetarea = $targetarea;
@@ -146,7 +149,8 @@ class cHTMLLink extends cHTMLContentElement {
      * @param string $righttopaction Action (right top)
      * @param string $rightbottomarea Area (right bottom)
      * @param string $rightbottomaction Action (right bottom)
-     * @return cHTMLLink $this
+     * @return cHTMLLink
+     *         $this for chaining
      */
     public function setMultiLink($righttoparea, $righttopaction, $rightbottomarea, $rightbottomaction) {
         $this->_targetarea = $righttoparea;
@@ -165,7 +169,8 @@ class cHTMLLink extends cHTMLContentElement {
      *
      * @param string $key Parameter name
      * @param string $value Parameter value
-     * @return cHTMLLink $this
+     * @return cHTMLLink
+     *         $this for chaining
      */
     public function setCustom($key, $value) {
         $this->_custom[$key] = $value;
@@ -177,6 +182,7 @@ class cHTMLLink extends cHTMLContentElement {
      *
      * @param unknown_type $src
      * @return cHTMLLink
+     *         $this for chaining
      */
     public function setImage($src) {
         $this->_image = $src;
@@ -188,7 +194,8 @@ class cHTMLLink extends cHTMLContentElement {
      * Unsets a previous set custom attribute
      *
      * @param string $key Parameter name
-     * @return cHTMLLink $this
+     * @return cHTMLLink
+     *         $this for chaining
      */
     public function unsetCustom($key) {
         if (isset($this->_custom[$key])) {
@@ -252,7 +259,8 @@ class cHTMLLink extends cHTMLContentElement {
      * Only works for the link types Link and cLink.
      *
      * @param string $content Anchor name
-     * @return cHTMLLink $this
+     * @return cHTMLLink
+     *         $this for chaining
      */
     public function setAnchor($anchor) {
         $this->_anchor = $anchor;
@@ -263,7 +271,8 @@ class cHTMLLink extends cHTMLContentElement {
     /**
      * Renders the link
      *
-     * @return string Rendered HTML
+     * @return string
+     *         Rendered HTML
      */
     public function toHTML() {
         $this->updateAttribute('href', $this->getHref());

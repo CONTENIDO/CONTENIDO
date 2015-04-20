@@ -167,7 +167,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      *
      * @param string $type
      * @param string $name
-     * @return cApiGroupProperty NULL
+     * @return cApiGroupProperty|NULL
      */
     public function fetchByGroupIdTypeName($type, $name) {
         if (self::$_enableCache) {
@@ -186,7 +186,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * Returns all group properties by groupid and type.
      *
      * @param string $type
-     * @return cApiGroupProperty[]
+     * @return array
      */
     public function fetchByGroupIdType($type) {
         if (self::$_enableCache) {
@@ -205,7 +205,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
     /**
      * Returns all group properties by groupid.
      *
-     * @return cApiGroupProperty[]
+     * @return array
      */
     public function fetchByGroupId() {
         if (self::$_enableCache) {
@@ -335,7 +335,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
      * Fetches all group properties by groupid and type from cache.
      *
      * @param string $type
-     * @return cApiGroupProperty[]
+     * @return array
      */
     protected function _fetchByGroupIdTypeFromCache($type) {
         $props = array();
@@ -352,7 +352,7 @@ class cApiGroupPropertyCollection extends ItemCollection {
     /**
      * Fetches all group properties by groupid from cache.
      *
-     * @return cApiGroupProperty[]
+     * @return array
      */
     protected function _fetchByGroupIdFromCache() {
         $props = array();

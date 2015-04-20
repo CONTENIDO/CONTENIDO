@@ -158,7 +158,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * Escape string for using in SQL-Statement.
      *
      * @param string $sString The string to escape
-     * @return string Escaped string
+     * @return string
+     *         Escaped string
      */
     public function escape($sString) {
         return $this->db->escape($sString);

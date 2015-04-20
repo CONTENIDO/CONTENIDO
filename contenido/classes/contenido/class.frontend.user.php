@@ -209,7 +209,8 @@ class cApiFrontendUser extends Item {
     /**
      * Returns list of all groups belonging to current user
      *
-     * @return array List of frontend group ids
+     * @return array
+     *         List of frontend group ids
      */
     public function getGroupsForUser() {
         $feGroupMembers = new cApiFrontendGroupMemberCollection();

@@ -120,7 +120,7 @@ class cItemCache {
      * Returns existing entry from cache by it's id.
      *
      * @param mixed $mId
-     * @return array NULL
+     * @return array|NULL
      */
     public function getItem($mId) {
         if (!$this->_bEnable) {
@@ -139,7 +139,7 @@ class cItemCache {
      *
      * @param mixed $mProperty
      * @param mixed $mValue
-     * @return array NULL
+     * @return array|NULL
      */
     public function getItemByProperty($mProperty, $mValue) {
         if (!$this->_bEnable) {
@@ -161,7 +161,7 @@ class cItemCache {
      *
      * @param array $aProperties
      *         Assoziative key value pairs
-     * @return array NULL
+     * @return array|NULL
      */
     public function getItemByProperties(array $aProperties) {
         if (!$this->_bEnable) {

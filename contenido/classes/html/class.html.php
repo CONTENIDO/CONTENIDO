@@ -158,7 +158,8 @@ class cHTML {
      * This function is useful if you need to use HTML elements
      * in a loop, but don't want to re-create new objects each time.
      *
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function advanceID() {
         self::$_idCounter++;
@@ -168,7 +169,8 @@ class cHTML {
     /**
      * Returns the current ID
      *
-     * @return string current ID
+     * @return string
+     *         current ID
      */
     public function getID() {
         return $this->getAttribute('id');
@@ -178,7 +180,8 @@ class cHTML {
      * Sets the HTML tag to $tag
      *
      * @param string $tag The new tag
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function setTag($tag) {
         $this->_tag = $tag;
@@ -200,7 +203,8 @@ class cHTML {
      *
      * @param string $alt Text to set as the "alt" and "title" attribute
      * @param bool $setTitle Whether title attribute should be set, too (optional, default: true)
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function setAlt($alt, $setTitle = true) {
         $attributes = array('alt' => $alt, 'title' => $alt);
@@ -216,7 +220,8 @@ class cHTML {
      * Sets the ID class
      *
      * @param string $id Text to set as the "id"
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function setID($id) {
         if ($id != "") {
@@ -231,7 +236,8 @@ class cHTML {
      * Sets the CSS class
      *
      * @param string $class Text to set as the "class" attribute
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function setClass($class) {
         if ($class != "") {
@@ -245,7 +251,8 @@ class cHTML {
      * Sets the CSS style
      *
      * @param string $style Text to set as the "style" attribute
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function setStyle($style) {
         return $this->updateAttribute('style', $style);
@@ -259,7 +266,8 @@ class cHTML {
      *
      * @param string $event Type of the event, e. g. "change" for "onchange"
      * @param string $action Function or action to call (JavaScript Code)
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function setEvent($event, $action) {
         if (substr($event, 0, 2) !== 'on' && $event != 'disabled') {
@@ -276,7 +284,8 @@ class cHTML {
      * $item->unsetEvent('change');
      *
      * @param string $event Type of the event
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function unsetEvent($event) {
         if (substr($event, 0, 2) !== 'on') {
@@ -294,7 +303,8 @@ class cHTML {
      * in the stringyfied variant.
      *
      * @param string $attributes Attributes to set
-     * @return string filled SGML opener skeleton
+     * @return string
+     *         filled SGML opener skeleton
      */
     public function fillSkeleton($attributes) {
         if ($this->_contentlessTag == true) {
@@ -307,7 +317,8 @@ class cHTML {
     /**
      * Fills the close skeleton
      *
-     * @return string filled SGML closer skeleton
+     * @return string
+     *         filled SGML closer skeleton
      */
     public function fillCloseSkeleton() {
         return sprintf($this->_skeletonClose, $this->_tag);
@@ -320,7 +331,8 @@ class cHTML {
      *
      * @param string $property the property name, e.g. 'margin'
      * @param string $value the value of the property, e.g. '5px'
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function appendStyleDefinition($property, $value) {
         if (substr($value, -1) === ';') {
@@ -340,7 +352,8 @@ class cHTML {
      * ));
      *
      * @param string $styles the styles to append
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function appendStyleDefinitions(array $styles) {
         foreach ($styles as $property => $value) {
@@ -355,7 +368,8 @@ class cHTML {
      * Anyway, scripts are not included twice.
      *
      * @param string $script the script to include
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function addRequiredScript($script) {
         if (!is_array($this->_requiredScripts)) {
@@ -419,7 +433,8 @@ class cHTML {
      * @param string|object|array $content String with the content or an object
      *        to
      *        render or an array of strings/objects.
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     protected function _appendContent($content) {
         if (!is_string($this->_content)) {
@@ -461,7 +476,8 @@ class cHTML {
      * @param string $name Defines the name of the event
      * @param string $event Defines the event (e.g. onClick)
      * @param string $code Defines the code
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function attachEventDefinition($name, $event, $code) {
         $this->_eventDefinitions[strtolower($event)][$name] = $code;
@@ -474,7 +490,8 @@ class cHTML {
      *
      * @param string $attributeName Name of the attribute
      * @param string $value Value of the attribute
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function setAttribute($attributeName, $value = NULL) {
         $attributeName = strtolower($attributeName);
@@ -490,7 +507,8 @@ class cHTML {
      * Sets the HTML attributes
      *
      * @param array $attributes Associative array with attributes
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function setAttributes(array $attributes) {
         $this->_attributes = $this->_parseAttributes($attributes);
@@ -502,7 +520,8 @@ class cHTML {
      * Returns a valid atrributes array.
      *
      * @param array $attributes Associative array with attributes
-     * @return array the parsed attributes
+     * @return array
+     *         the parsed attributes
      */
     protected function _parseAttributes(array $attributes) {
         $return = array();
@@ -523,7 +542,8 @@ class cHTML {
      * Removes an attribute
      *
      * @param string $attributeName Attribute name
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function removeAttribute($attributeName) {
         if (isset($this->_attributes[$attributeName])) {
@@ -537,8 +557,8 @@ class cHTML {
      * Returns the value of the given attribute.
      *
      * @param string $attributeName Attribute name
-     * @return string NULL value or NULL if the attribute does not
-     *         exist
+     * @return string
+     *         NULL value or NULL if the attribute does not exist
      */
     public function getAttribute($attributeName) {
         $attributeName = strtolower($attributeName);
@@ -556,7 +576,8 @@ class cHTML {
      *
      * @param string $name the name of the attribute
      * @param string $value the value of the attribute with the given name
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function updateAttribute($name, $value) {
         return $this->updateAttributes(array(
@@ -569,7 +590,8 @@ class cHTML {
      * attributes
      *
      * @param array $attributes Associative array with attributes
-     * @return cHTML $this
+     * @return cHTML
+     *         $this for chaining
      */
     public function updateAttributes(array $attributes) {
         $attributes = $this->_parseAttributes($attributes);
@@ -587,7 +609,8 @@ class cHTML {
      * Returns an HTML formatted attribute string
      *
      * @param array $attributes Associative array with attributes
-     * @return string Attribute string in HTML format
+     * @return string
+     *         Attribute string in HTML format
      */
     protected function _getAttrString(array $attributes) {
         $attrString = '';
@@ -607,7 +630,7 @@ class cHTML {
      * Returns the assoc array(default) or string of attributes
      *
      * @param bool $returnAsString Whether to return the attributes as string
-     * @return array string
+     * @return array|string
      */
     public function getAttributes($returnAsString = false) {
         if ($returnAsString) {
@@ -674,7 +697,8 @@ class cHTML {
     /**
      * Direct call of object as string will return it's generated markup.
      *
-     * @return string Generated markup
+     * @return string
+     *         Generated markup
      */
     public function __toString() {
         return $this->render();

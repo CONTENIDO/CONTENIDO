@@ -181,8 +181,8 @@ class cApiInUseCollection extends ItemCollection {
      *
      * @param string $type Specifies the type to de-mark.
      * @param mixed $objectid Specifies the object ID
-     * @return cApiInUse bool false if it's not in use or returns the object if
-     *         it is.
+     * @return cApiInUse bool
+     *         false if it's not in use or returns the object if it is.
      */
     public function checkMark($type, $objectid) {
         $type = $this->escape($type);
@@ -213,9 +213,10 @@ class cApiInUseCollection extends ItemCollection {
      *            name)
      * @param bool $allowOverride True if the user can override the lock
      * @param string $location Value to append to the override lock button
-     * @return bool array returnWarning is false, returns a bool value wether
-     *         the object is locked. If returnWarning is true, returns a 2 item
-     *         array (bool inUse, string errormessage).
+     * @return bool array
+     *         returnWarning is false, returns a bool value wether the object
+     *         is locked. If returnWarning is true, returns a 2 item array
+     *         (bool inUse, string errormessage).
      */
     public function checkAndMark($type, $objectid, $returnWarning = false, $warningTemplate = '', $allowOverride = false, $location = '') {
         global $sess, $auth, $notification, $area, $frame, $perm;

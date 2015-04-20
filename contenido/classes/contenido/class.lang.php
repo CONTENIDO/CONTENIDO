@@ -106,7 +106,8 @@ class cApiLanguageCollection extends ItemCollection {
      * Returns the language name of the language with the given ID.
      *
      * @param int $idlang the ID of the language
-     * @return string the name of the language
+     * @return string
+     *         the name of the language
      */
     public function getLanguageName($idlang) {
         $item = new cApiLanguage($idlang);
