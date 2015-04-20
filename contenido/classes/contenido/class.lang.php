@@ -187,19 +187,29 @@ class cApiLanguage extends Item {
      *         Id of client to load properties from
      */
     protected function _loadProperties($idclient = 0) {
+
         if (!isset(self::$_propertiesCacheLoaded[$idclient])) {
+
             self::$_propertiesCacheLoaded[$idclient] = array();
+
             $itemtype = $this->db->escape($this->primaryKey);
             $itemid = $this->db->escape($this->get($this->primaryKey));
-            $oPropertyColl = $this->_getPropertiesCollectionInstance($idclient);
-            $oPropertyColl->select("itemtype='" . $itemtype . "' AND itemid='" . $itemid . "'", '', 'type, value ASC');
 
-            if ($oPropertyColl->count() > 0) {
-                while (($oItem = $oPropertyColl->next()) !== false) {
-                    if (!isset(self::$_propertiesCacheLoaded[$idclient][$oItem->get('type')])) {
-                        self::$_propertiesCacheLoaded[$idclient][$oItem->get('type')] = array();
+            $propColl = $this->_getPropertiesCollectionInstance($idclient);
+            $propColl->select("itemtype='$itemtype' AND itemid='$itemid'", '', 'type, value ASC');
+
+            if (0 < $propColl->count()) {
+
+                while (false !== $item = $propColl->next()) {
+
+                    $type = $item->get('type');
+                    if (!isset(self::$_propertiesCacheLoaded[$idclient][$type])) {
+                        self::$_propertiesCacheLoaded[$idclient][$type] = array();
                     }
-                    self::$_propertiesCacheLoaded[$idclient][$oItem->get('type')][$oItem->get('name')] = $oItem->get('value');
+
+                    $name = $item->get('name');
+                    $value = $item->get('value');
+                    self::$_propertiesCacheLoaded[$idclient][$type][$name] = $value;
                 }
             }
         }
@@ -229,7 +239,11 @@ class cApiLanguage extends Item {
 
         $this->_loadProperties($idclient);
 
-        if (isset(self::$_propertiesCacheLoaded[$idclient][$type]) && isset(self::$_propertiesCacheLoaded[$idclient][$name])) {
+        if (isset(
+            self::$_propertiesCacheLoaded[$idclient],
+            self::$_propertiesCacheLoaded[$idclient][$type],
+            self::$_propertiesCacheLoaded[$idclient][$type][$name]
+        )) {
             return self::$_propertiesCacheLoaded[$idclient][$type][$name];
         } else {
             return false;
