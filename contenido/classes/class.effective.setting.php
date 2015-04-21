@@ -89,33 +89,7 @@ class cEffectiveSetting {
 			$client = self::_getClientInstance();
 			$settings = $client->getProperties();
 			
-			foreach ($settings as $setting) {
-				$key = self::_makeKey($setting['type'], $setting['name']);
-				self::_set($key, $setting['value']);
-				if (!isset($typeGroup[$setting['type']])) {
-					$typeGroup[$setting['type']] = array();
-				}
-				$typeGroup[$setting['type']][$setting['name']] = $setting['value'];
-			}
-			
-			//get all clientlang setting
-			$clientlang = self::_getClientLanguageInstance();
-			$settings = $clientlang->getProperties();
-			
-			foreach ($settings as $setting) {
-				$key = self::_makeKey($setting['type'], $setting['name']);
-				self::_set($key, $setting['value']);
-				if (!isset($typeGroup[$setting['type']])) {
-					$typeGroup[$setting['type']] = array();
-				}
-				$typeGroup[$setting['type']][$setting['name']] = $setting['value'];
-			}
-			
-			//get user settings
-			if (self::_isAuthenticated() && isset($contenido)) {
-				$user = self::_getUserInstance();
-				$settings = $user->getUserProperties();
-				
+			if (is_array($settings)) {
 				foreach ($settings as $setting) {
 					$key = self::_makeKey($setting['type'], $setting['name']);
 					self::_set($key, $setting['value']);
@@ -123,6 +97,38 @@ class cEffectiveSetting {
 						$typeGroup[$setting['type']] = array();
 					}
 					$typeGroup[$setting['type']][$setting['name']] = $setting['value'];
+				}
+			}
+			
+			//get all clientlang setting
+			$clientlang = self::_getClientLanguageInstance();
+			$settings = $clientlang->getProperties();
+			
+			if (is_array($settings)) {
+				foreach ($settings as $setting) {
+					$key = self::_makeKey($setting['type'], $setting['name']);
+					self::_set($key, $setting['value']);
+					if (!isset($typeGroup[$setting['type']])) {
+						$typeGroup[$setting['type']] = array();
+					}
+					$typeGroup[$setting['type']][$setting['name']] = $setting['value'];
+				}
+			}
+			
+			//get user settings
+			if (self::_isAuthenticated() && isset($contenido)) {
+				$user = self::_getUserInstance();
+				$settings = $user->getUserProperties();
+				
+				if (is_array($settings)) {
+					foreach ($settings as $setting) {
+						$key = self::_makeKey($setting['type'], $setting['name']);
+						self::_set($key, $setting['value']);
+						if (!isset($typeGroup[$setting['type']])) {
+							$typeGroup[$setting['type']] = array();
+						}
+						$typeGroup[$setting['type']][$setting['name']] = $setting['value'];
+					}
 				}
 			}
 			
