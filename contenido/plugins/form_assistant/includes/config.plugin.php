@@ -113,7 +113,7 @@ class Pifa {
      */
     public static function logException(Exception $e) {
 
-    	if (getSystemProperty('debug', 'debug_for_plguins') == 'true') {
+    	if (getSystemProperty('debug', 'debug_for_plugins') == 'true') {
 	        $cfg = cRegistry::getConfig();
 
 	        $log = new cLog(cLogWriter::factory('file', array(
