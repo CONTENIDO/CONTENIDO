@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CONTENIDO code generator factory
  *
@@ -25,11 +26,11 @@ class cCodeGeneratorFactory {
     /**
      * Returns code generator instance by it's name.
      *
-     * @param  string $name
+     * @param  string $name [optional]
      *         The generator name, e. g. 'Standard' to retrieve instance
-     *         of cCodeGeneratorStandard
+     *         of cCodeGeneratorStandard.
      * @throws cInvalidArgumentException
-     *         If name is invalid, class file is missing or class isn't available
+     *         If name is invalid, class file is missing or class isn't available.
      * @return cCodeGeneratorAbstract
      */
     public static function getInstance($name = '') {

@@ -13,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -28,7 +29,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * language).
      *
      * @see cCodeGeneratorAbstract::_generate()
-     * @param bool $contype
+     * @param bool $contype [optional]
      *         Flag to enable/disable replacement of CMS_TAGS[]
      * @return string
      *         The generated code
@@ -192,20 +193,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             }
         }
 
-        // // show toolbar with revisions of article This toolbar is only shown
-        // in
-        // // backend in edit mode if revision control is enabled
-        // $revionsToolBar = $this->_revisionControl->getToolbar();
-        // if (NULL !== $revionsToolBar) {
-        // if (false !== strpos($this->_layoutCode, '<body>')) {
-        // $this->_layoutCode = str_ireplace_once('<body>', '<body>' .
-        // $revionsToolBar, $this->_layoutCode);
-        // } else {
-        // // TODO wo füg ich die dann ein?
-        // // $this->_layoutCode .= $revionsToolBar;
-        // }
-        // }
-
         // add module CSS at {CSS} position, after title or after opening head
         // tag
         if (strpos($this->_layoutCode, '{CSS}') !== false) {
@@ -272,7 +259,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             $this->_layoutCode = $debugPrefix . $this->_layoutCode;
         }
 
-        // Save the generated code even if there are faulty modules
+        // Save the generated code even if there are faulty modules.
         // if one does not do so a non existing cache file will be tried to be loaded in frontend
         $this->_saveGeneratedCode($idcatart);
 
@@ -281,13 +268,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * Will be invoked, if code generation wasn't able to find a configured
-     * article
-     * or category.
+     * article or category.
      *
      * Creates a error message and writes this into the code cache.
      *
      * @param int $idcatart
-     *         Category article id
+     *         category article id
      */
     protected function _processNoConfigurationError($idcatart) {
         cDebug::out('Neither CAT or ART are configured!<br><br>');
@@ -298,8 +284,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
 
     /**
      * Processes and adds or replaces title tag for an article.
-     * Calls also the CEC 'Contenido.Content.CreateTitletag' for user defined
-     * title creation.
+     *
+     * Also calls the CEC 'Contenido.Content.CreateTitletag'
+     * for user defined title creation.
      *
      * @see cCodeGeneratorAbstract::_processCodeTitleTag()
      * @return string
@@ -322,7 +309,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
             // no head tag
             return $this->_layoutCode;
         }
-        // use first head tag found (by definition there must always be only 1 tag but user supplied markup might be incorrect)
+        // use first head tag found (by definition there must always be only 1 tag
+        // but user supplied markup might be incorrect)
         $headTag = $headTag[0][0];
 
         // Add or replace title
@@ -348,8 +336,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
     /**
      * Processes and adds or replaces all meta tags for an article.
      *
-     * Calls also the CEC 'Contenido.Content.CreateMetatags' for user defined
-     * meta tags creation.
+     * Also calls the CEC 'Contenido.Content.CreateMetatags'
+     * for user defined meta tags creation.
      *
      * @global array $encoding
      * @return string
@@ -424,9 +412,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
      * @global array $cfgClient
      * @param int $idcatart
      *         Category article id
-     * @param string $code
+     * @param string $code [optional]
      *         parameter for setting code manually instead of using the generated layout code
-     * @param bool $flagCreateCode
+     * @param bool $flagCreateCode [optional]
      *         whether the create code flag in cat_art should be set or not (optional)
      */
     protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true) {
@@ -496,8 +484,8 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         // add generator meta tag
-        // if the version is appended should be configurable due to security
-        // reasons
+        // if the version is appended should be configurable
+        // due to security reasons
         $generator = 'CMS CONTENIDO';
         $addVersion = true;
         if ($addVersion) {
@@ -529,7 +517,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract {
         }
 
         // update (!) index setting of robots meta tag
-        // the follow value will not be changed
+        // the following value will not be changed
         // $index = (bool) $this->getArtLangObject()->get('searchable');
         // $metaTags = $this->_updateMetaRobots($metaTags, $index, NULL);
 

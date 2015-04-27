@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the global authentication class.
  *
@@ -48,7 +49,7 @@ class cAuth {
      * Lifetime for authenticated users in minutes.
      * After that time the authentication expires.
      *
-     * @var integer
+     * @var int
      */
     protected $_lifetime = 15;
 
@@ -144,7 +145,7 @@ class cAuth {
     /**
      * Resets the global authentication information.
      *
-     * @param bool $nobody
+     * @param bool $nobody [optional]
      *         If flag set to true, the default authentication is switched to
      *         nobody. (optional, default: false)
      */
@@ -159,7 +160,7 @@ class cAuth {
      * Logs out the current user, resets the auth information and freezes the
      * session.
      *
-     * @param bool $nobody
+     * @param bool $nobody [optional]
      *         If flag set to true, nobody is recreated as user.
      * @return bool true
      */
@@ -246,7 +247,7 @@ class cAuth {
     /**
      * Sets or refreshs the expiration of the authentication.
      *
-     * @param int $expiration
+     * @param int $expiration [optional]
      *         new expiration (optional, default: NULL = current time plus lifetime minutes)
      */
     protected function _setExpiration($expiration = NULL) {
@@ -279,7 +280,7 @@ class cAuth {
      *
      * @param string $userId
      *         user ID to set
-     * @param int $expiration
+     * @param int $expiration [optional]
      *         expiration (optional, default: NULL)
      */
     protected function _setAuthInfo($userId, $expiration = NULL) {

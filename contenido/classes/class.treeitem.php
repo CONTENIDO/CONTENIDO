@@ -99,7 +99,7 @@ class TreeItem {
     /**
      * Contains the level of this item
      *
-     * @var integer
+     * @var int
      */
     var $level;
 

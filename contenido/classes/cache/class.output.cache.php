@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the output cache classes.
  *
@@ -26,35 +27,35 @@ class cOutputCache {
     /**
      * File Cache Object
      *
-     * @var cFileCache $_fileCache
+     * @var cFileCache
      */
     protected $_fileCache;
 
     /**
      * Flag 2 activate caching.
      *
-     * @var bool $_bEnableCaching
+     * @var bool
      */
     protected $_bEnableCaching = false;
 
     /**
      * Flag for output of debug informations.
      *
-     * @var bool $_bDebug
+     * @var bool
      */
     protected $_bDebug = false;
 
     /**
      * Flag 2 print html comment including some debug informations.
      *
-     * @var bool $_bHtmlComment
+     * @var bool
      */
     protected $_bHtmlComment = false;
 
     /**
      * Start time of caching.
      *
-     * @var int $_iStartTime
+     * @var int
      */
     protected $_iStartTime;
 
@@ -62,14 +63,14 @@ class cOutputCache {
      * Option array 4 generating cache identifier (e.
      * g. $_GET,$_POST, $_COOKIE, ...).
      *
-     * @var array _aIDOptions
+     * @var array
      */
     protected $_aIDOptions;
 
     /**
      * Option array 4 pear caching.
      *
-     * @var array $_aIDOptions
+     * @var array
      */
     protected $_aCacheOptions;
 
@@ -79,63 +80,63 @@ class cOutputCache {
      * - 'beforeoutput': code to execute before doing the output
      * - 'afteroutput' code to execute after output
      *
-     * @var array $_aEventCode
+     * @var array
      */
     protected $_aEventCode;
 
     /**
      * Unique identifier for caching.
      *
-     * @var string $_sID
+     * @var string
      */
     protected $_sID;
 
     /**
      * Directory 2 store cached output.
      *
-     * @var string $_sDir
+     * @var string
      */
     protected $_sDir = 'cache/';
 
     /**
      * Subdirectory 2 store cached output.
      *
-     * @var string $_sGroup
+     * @var string
      */
     protected $_sGroup = 'default';
 
     /**
      * Substring 2 add as prefix to cache-filename.
      *
-     * @var string $_sPrefix
+     * @var string
      */
     protected $_sPrefix = 'cache_output_';
 
     /**
      * Default lifetime of cached files.
      *
-     * @var int $_iLifetime
+     * @var int
      */
     protected $_iLifetime = 3600;
 
     /**
      * Used 2 store debug message.
      *
-     * @var string $_sDebugMsg
+     * @var string
      */
     protected $_sDebugMsg = '';
 
     /**
      * HTML code template used for debug message.
      *
-     * @var string $_sDebugTpl
+     * @var string
      */
     protected $_sDebugTpl = '<div>%s</div>';
 
     /**
      * HTML comment template used for generating some debug infos.
      *
-     * @var string $_sDebugTpl
+     * @var string
      */
     protected $_sHtmlCommentTpl = '
 <!--
@@ -148,11 +149,11 @@ VALID UNTIL: %s
     /**
      * Constructor of cOutputCache
      *
-     * @param string $cachedir
+     * @param string $cachedir [optional]
      *         Directory 2 cache files
-     * @param string $cachegroup
+     * @param string $cachegroup [optional]
      *         Subdirectory 2 cache files
-     * @param string $cacheprefix
+     * @param string $cacheprefix [optional]
      *         Prefixname 2 add 2 cached files
      */
     public function __construct($cachedir = NULL, $cachegroup = NULL, $cacheprefix = NULL) {
@@ -181,7 +182,7 @@ VALID UNTIL: %s
     /**
      * Set/Get the flag 2 enable caching.
      *
-     * @param bool $enable
+     * @param bool $enable [optional]
      *         True 2 enable caching or false
      * @return mixed
      *         Enable flag or void
@@ -230,7 +231,7 @@ VALID UNTIL: %s
     /**
      * Set/Get caching lifetime in seconds.
      *
-     * @param int $seconds
+     * @param int $seconds [optional]
      *         New Lifetime in seconds
      * @return mixed
      *         Actual lifetime or void
@@ -308,7 +309,7 @@ VALID UNTIL: %s
      * The script will be terminated by calling die(), if any cached
      * content is found.
      *
-     * @param int $iPageStartTime
+     * @param int $iPageStartTime [optional]
      *         Optional start time, e. g. start time of main script
      */
     public function start($iPageStartTime = NULL) {
@@ -446,27 +447,35 @@ class cOutputCacheHandler extends cOutputCache {
      *
      * @param array $aConf
      *         Configuration of caching as follows:
-     *         - $a['excludecontenido'] bool. don't cache output, if we have a
-     *            CONTENIDO variable,
-     *         e. g. on calling frontend preview from backend
-     *         - $a['enable'] bool. activate caching of frontend output
-     *         - $a['debug'] bool. compose debuginfo (hit/miss and execution time
-     *            of caching)
-     *         - $a['infotemplate'] string. debug information template
-     *         - $a['htmlcomment'] bool. add a html comment including several
-     *            debug messages to output
-     *         - $a['lifetime'] int. lifetime in seconds 2 cache output
-     *         - $a['cachedir'] string. directory where cached content is 2
-     *            store.
-     *         - $a['cachegroup'] string. cache group, will be a subdirectory
-     *            inside cachedir
-     *         - $a['cacheprefix'] string. add prefix 2 stored filenames
-     *         - $a['idoptions'] array. several variables 2 create a unique id,
-     *            if the output depends on them. e. g.
-     *            array('uri' => $_SERVER['REQUEST_URI'], 'post' => $_POST, 'get' => $_GET);
+     *         - $a['excludecontenido'] bool
+     *             don't cache output, if we have a CONTENIDO variable,
+     *             e. g. on calling frontend preview from backend
+     *         - $a['enable'] bool
+     *             activate caching of frontend output
+     *         - $a['debug'] bool
+     *             compose debuginfo (hit/miss and execution time of caching)
+     *         - $a['infotemplate'] string
+     *             debug information template
+     *         - $a['htmlcomment'] bool
+     *             add a html comment including several debug messages to output
+     *         - $a['lifetime'] int
+     *             lifetime in seconds to cache output
+     *         - $a['cachedir'] string
+     *             directory where cached content is to store.
+     *         - $a['cachegroup'] string
+     *             cache group, will be a subdirectory inside cachedir
+     *         - $a['cacheprefix'] string
+     *             add prefix to stored filenames
+     *         - $a['idoptions'] array
+     *             several variables to create a unique id,
+     *             if the output depends on them. e. g.
+     *             array(
+     *                 'uri' => $_SERVER['REQUEST_URI'],
+     *                 'post' => $_POST, 'get' => $_GET
+     *             )
      * @param cDb $db
      *         CONTENIDO database object
-     * @param int $iCreateCode
+     * @param int $iCreateCode [optional]
      *         Flag of createcode state from table con_cat_art
      */
     public function __construct($aConf, $db, $iCreateCode = NULL) {
@@ -557,6 +566,5 @@ class cOutputCacheHandler extends cOutputCache {
 
         return ($iCreateCode == 1) ? true : false;
     }
-}
 
-?>
+}
