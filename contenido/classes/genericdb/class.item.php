@@ -34,7 +34,7 @@ abstract class Item extends cItemBaseAbstract {
 
     /**
      * Storage of the fields which were modified, where the keys are the
-     * fieldnames and the values just simple booleans.
+     * fieldnames and the values just simple bools.
      *
      * @var array
      */

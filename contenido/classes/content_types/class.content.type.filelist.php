@@ -81,12 +81,12 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     /**
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_TEASER[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_TEASER[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -153,7 +153,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     /**
      * Returns all translation strings for mi18n.
      *
-     * @param array $translationStrings translation strings
+     * @param array $translationStrings
+     *         translation strings
      * @return array
      *         updated translation string
      */
@@ -355,8 +356,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     /**
      * Gets all subdirectories recursively.
      *
-     * @param string $directoryPath path to directory
-     * @param array $directories already found directories
+     * @param string $directoryPath
+     *         path to directory
+     * @param array $directories
+     *         already found directories
      * @return array
      *         containing all subdirectories and the initial directories
      */
@@ -378,7 +381,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     /**
      * Removes all files not matching the filter criterias.
      *
-     * @param array $fileList files which should be filtered
+     * @param array $fileList
+     *         files which should be filtered
      * @return array
      *         with filtered files
      */
@@ -444,8 +448,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     /**
      * Checks whether the file passes the date filters.
      *
-     * @param array $fileStats file information
-     * @return boolean
+     * @param array $fileStats
+     *         file information
+     * @return bool
      *         whether the file passes the date filters
      */
     private function _applyDateFilters(array $fileStats) {
@@ -462,8 +467,10 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     /**
      * Method to fill single entry (file) of the file list.
      *
-     * @param array $fileData information about the file
-     * @param cTemplate $template reference to the used template object
+     * @param array $fileData
+     *         information about the file
+     * @param cTemplate $template
+     *         reference to the used template object
      */
     private function _fillFileListTemplateEntry(array $fileData, cTemplate &$template) {
         $filename = $fileData['filename'];
@@ -853,8 +860,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * Checks whether the directory defined by the given directory
      * information is the currently active directory.
      *
-     * @param array $dirData directory information
-     * @return boolean
+     * @param array $dirData
+     *         directory information
+     * @return bool
      *         whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData) {
@@ -865,8 +873,9 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
      * Checks whether the directory defined by the given directory information
      * should be shown expanded.
      *
-     * @param array $dirData directory information
-     * @return boolean
+     * @param array $dirData
+     *         directory information
+     * @return bool
      *         whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData) {
@@ -993,7 +1002,8 @@ class cContentTypeFilelist extends cContentTypeAbstractTabbed {
     /**
      * Generate a select box containing all files for the manual tab.
      *
-     * @param string $directoryPath Path to directory of the files
+     * @param string $directoryPath
+     *         Path to directory of the files
      * @return string
      *         rendered cHTMLSelectElement
      */

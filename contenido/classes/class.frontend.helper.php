@@ -57,7 +57,8 @@ class cFrontendHelper {
      * @param int $currentCategoryId the current category ID
      * @throws cUnexpectedValueException if given category ID is not greater
      *         than 0
-     * @return array category tree
+     * @return array
+     *         category tree
      */
     protected function _fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId) {
         if ((int) $baseCategoryId == 0) {
@@ -105,7 +106,8 @@ class cFrontendHelper {
      * @param int $baseCategoryId root category ID
      * @param int $depth maximum depth
      * @param int $currentCategoryId the current category ID
-     * @return array category tree
+     * @return array
+     *         category tree
      */
     public function renderNavigation($baseCategoryId, $depth, $currentCategoryId) {
         $tree = $this->_fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId);

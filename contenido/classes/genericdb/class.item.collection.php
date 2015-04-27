@@ -259,7 +259,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     /**
      * Initializes the driver to use with GenericDB.
      *
-     * @param boolean $bForceInit
+     * @param bool $bForceInit
      *         If true, forces the driver to initialize, even if it already exists.
      */
     protected function _initializeDriver($bForceInit = false) {

@@ -26,7 +26,8 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
     /**
      * Generates the encoded code for the tab menu.
      *
-     * @param array $tabs associative array mapping the tab IDs to the tab names
+     * @param array $tabs
+     *         associative array mapping the tab IDs to the tab names
      * @return string
      *         the encoded code for the tab menu
      */
@@ -47,9 +48,12 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract {
     /**
      * Return the raw settings of a content type
      *
-     * @param string $contentTypeName Content type name
-     * @param int $id ID of the content type
-     * @param array $contentTypes Content type array
+     * @param string $contentTypeName
+     *         Content type name
+     * @param int $id
+     *         ID of the content type
+     * @param array $contentTypes
+     *         Content type array
      * @return mixed
      */
     protected function _getRawSettings($contentTypeName, $id, array $contentTypes) {

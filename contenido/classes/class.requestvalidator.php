@@ -40,7 +40,7 @@ class cRequestValidator {
     /**
      * Flag whether to write log or not.
      *
-     * @var boolean
+     * @var bool
      */
     protected $_log = true;
 
@@ -203,7 +203,8 @@ class cRequestValidator {
      * Parameters which aren't defined in config.http_check.php are considered
      * to be fine
      *
-     * @return bool True if every parameter is fine
+     * @return bool
+     *         True if every parameter is fine
      */
     public function checkParams() {
         if ((!$this->checkGetParams()) || (!$this->checkPostParams())) {
@@ -225,7 +226,8 @@ class cRequestValidator {
      * Checks GET parameters only.
      *
      * @see cRequestValidator::checkParams()
-     * @return bool True if every parameter is fine
+     * @return bool
+     *         True if every parameter is fine
      */
     public function checkGetParams() {
         return $this->checkArray($_GET, 'GET');
@@ -235,7 +237,8 @@ class cRequestValidator {
      * Checks POST parameters only.
      *
      * @see cRequestValidator::checkParams()
-     * @return bool True if every parameter is fine
+     * @return bool
+     *         True if every parameter is fine
      */
     public function checkPostParams() {
         return $this->checkArray($_POST, 'POST');
@@ -249,7 +252,8 @@ class cRequestValidator {
      * @param string $type GET or POST
      * @param string $key the key of the parameter
      * @param mixed $value the value of the parameter
-     * @return bool True if the parameter is fine
+     * @return bool
+     *         True if the parameter is fine
      */
     public function checkParameter($type, $key, $value) {
         $result = false;
@@ -280,7 +284,8 @@ class cRequestValidator {
     /**
      * Returns the first bad parameter
      *
-     * @return string the key of the bad parameter
+     * @return string
+     *         the key of the bad parameter
      */
     public function getBadParameter() {
         return $this->_failure;
@@ -309,7 +314,8 @@ class cRequestValidator {
      * @param array the array which has to be checked
      * @param string GET or POST
      *
-     * @return bool true if everything is fine.
+     * @return bool
+     *         true if everything is fine.
      */
     protected function checkArray($arr, $type) {
         $result = true;

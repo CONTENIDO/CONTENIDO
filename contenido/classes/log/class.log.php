@@ -239,7 +239,7 @@ class cLog {
      *         Name of the shortcut
      * @throws cInvalidArgumentException
      *         if the given shortcut handler does not exist
-     * @return boolean
+     * @return bool
      */
     public function unsetShortcutHandler($shortcut) {
         if (!in_array($shortcut, $this->_shortcutHandlers)) {
@@ -265,9 +265,9 @@ class cLog {
     /**
      * Commits all buffered messages and empties the message buffer if parameter is not false.
      *
-     * @param boolean $revoke
+     * @param bool $revoke
      *         Flag, whether the buffer is cleared or not (optional, default: true)
-     * @return boolean|void
+     * @return bool|void
      */
     public function commit($revoke = true) {
         if (count($this->_buffer) == 0) {

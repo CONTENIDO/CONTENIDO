@@ -105,7 +105,8 @@ class cApiLanguageCollection extends ItemCollection {
     /**
      * Returns the language name of the language with the given ID.
      *
-     * @param int $idlang the ID of the language
+     * @param int $idlang
+     *         the ID of the language
      * @return string
      *         the name of the language
      */
@@ -142,7 +143,8 @@ class cApiLanguage extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -167,7 +169,8 @@ class cApiLanguage extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      * @return bool
      */
     public function setField($name, $value, $bSafe = true) {

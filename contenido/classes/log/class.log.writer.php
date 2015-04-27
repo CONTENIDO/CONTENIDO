@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the abstract log writer class.
  *
@@ -22,14 +23,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @subpackage Log
  */
 abstract class cLogWriter {
+
     /**
-     * @var array Contains all options of the current writer instance.
+     * @var array
+     *         Contains all options of the current writer instance.
      */
     protected $_options = array();
 
     /**
      * Constructor of the writer instance.
-     * @param    array    $options    Array with options for the writer instance (optional)
+     * @param array $options
+     *         Array with options for the writer instance (optional)
      */
     public function __construct($options = array()) {
         $this->setOptions($options);
@@ -42,11 +46,15 @@ abstract class cLogWriter {
     /**
      * Factory method for a new writer instance.
      *
-     * @param string $writerName Name of the writer
-     * @param array $writerOptions Options array for the writer instance
-     * @throws cInvalidArgumentException if the writer class with the given name
-     *         does not exist or is not an instance of clogWriter
-     * @return cLogWriter Log writer instance
+     * @param string $writerName
+     *         Name of the writer
+     * @param array $writerOptions
+     *         Options array for the writer instance
+     * @throws cInvalidArgumentException
+     *         if the writer class with the given name does not exist
+     *         or is not an instance of clogWriter
+     * @return cLogWriter
+     *         Log writer instance
      */
     public static function factory($writerName, array $writerOptions) {
         $logWriterClassName = 'cLogWriter' . ucfirst($writerName);
@@ -65,7 +73,8 @@ abstract class cLogWriter {
     /**
      * Sets the whole options array.
      *
-     * @param    array    $options    Array with options
+     * @param array $options
+     *         Array with options
      */
     public function setOptions(array $options) {
         $this->_options = $options;
@@ -73,18 +82,24 @@ abstract class cLogWriter {
 
     /**
      * Returns an array with all options.
-     * @return    array    Array with all options
+     *
+     * @return array
+     *         Array with all options
      */
     public function getOptions() {
         return $this->_options;
     }
 
     /**
-     * Sets a option. If option was set previously, it must be forced to overwrite the value.
+     * Sets a option.
+     * If option was set previously, it must be forced to overwrite the value.
      *
-     * @param    string    $option    Name of the option
-     * @param    mixed    $value    Value of the option
-     * @param    boolean    $force    Flag to force setting the option value (optional, default: false)
+     * @param string $option
+     *         Name of the option
+     * @param mixed $value
+     *         Value of the option
+     * @param bool $force
+     *         Flag to force setting the option value (optional, default: false)
      */
     public function setOption($option, $value, $force = false) {
         if ($force == false && isset($this->_options[$option]) == true) {
@@ -97,9 +112,10 @@ abstract class cLogWriter {
     /**
      * Returns the value of an option entry.
      *
-     * @param    string    $option    Name of the option
-     *
-     * @return    mixed    Value of the option entry
+     * @param string $option
+     *         Name of the option
+     * @return mixed
+     *         Value of the option entry
      */
     public function getOption($option) {
         return $this->_options[$option];
@@ -108,7 +124,8 @@ abstract class cLogWriter {
     /**
      * Removes an option entry.
      *
-     * @param    string    $option    Name of the option
+     * @param string $option
+     *         Name of the option
      */
     public function removeOption($option) {
         unset($this->_options[$option]);
@@ -118,10 +135,12 @@ abstract class cLogWriter {
      * Abstract function for the write process.
      * This method must be implemented in the specific writer.
      *
-     * @param    string    $message    Message to write
-     * @param    int        $priority    Priority of the log entry
-     *
-     * @return    boolean    State of the write process
+     * @param string $message
+     *         Message to write
+     * @param int $priority
+     *         Priority of the log entry
+     * @return bool
+     *         State of the write process
      */
     abstract function write($message, $priority);
 }

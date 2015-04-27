@@ -343,7 +343,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      *
      * @param cApiArticleLanguage $article - CONTENIDO Article object
      * @param cTemplate $template - CONTENIDO Template object (as reference)
-     * @return boolean
+     * @return bool
      *         success state of this operation
      */
     private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate &$template) {

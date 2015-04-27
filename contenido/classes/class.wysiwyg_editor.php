@@ -153,7 +153,8 @@ abstract class cWYSIWYGEditor {
 
     /**
      * Find out which WYSIWYG editor is currently chosen
-     * @return string The name of current WYSIWYG editor
+     * @return string
+     *         The name of current WYSIWYG editor
      */
     public static function getCurrentWysiwygEditorName() {
         // define fallback WYSIWYG editor
@@ -179,7 +180,8 @@ abstract class cWYSIWYGEditor {
      * This function does not validate input! This has to be done by classes that extend cWYSIWYGEditor
      * because this class does not know what each WYSIWYG editor expects.
      * @param array Array with configuration values for the current WYSIWYG editor to save
-     * @return array Array with values that were not accepted
+     * @return array
+     *         Array with values that were not accepted
      */
     public static function safeConfig($config) {
         $erroneousSettings = array();

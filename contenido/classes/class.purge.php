@@ -438,7 +438,7 @@ class cSystemPurge {
      * Get frontend directory name for a client
      *
      * @param int $clientId
-     * @return string $sClientDir
+     * @return string
      */
     public function getClientDir($clientId) {
         $cfgClient = cRegistry::getClientConfig();

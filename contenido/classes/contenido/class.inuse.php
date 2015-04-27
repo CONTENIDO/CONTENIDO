@@ -38,11 +38,14 @@ class cApiInUseCollection extends ItemCollection {
      * approved as internal CONTENIDO standard: - article - module - layout -
      * template
      *
-     * @param string $type Specifies the type to mark.
-     * @param mixed $objectid Specifies the object ID
-     * @param string $session Specifies the session for which the "in use" mark
-     *            is valid
-     * @param string $user Specifies the user which requested the in-use flag
+     * @param string $type
+     *         Specifies the type to mark.
+     * @param mixed $objectid
+     *         Specifies the object ID
+     * @param string $session
+     *         Specifies the session for which the "in use" mark is valid
+     * @param string $user
+     *         Specifies the user which requested the in-use flag
      * @return cApiInUse|NULL
      */
     public function markInUse($type, $objectid, $session, $user) {
@@ -69,10 +72,12 @@ class cApiInUseCollection extends ItemCollection {
     /**
      * Removes the "in use" mark from a specific object.
      *
-     * @param string $type Specifies the type to de-mark.
-     * @param mixed $objectid Specifies the object ID
-     * @param string $session Specifies the session for which the "in use" mark
-     *            is valid
+     * @param string $type
+     *         Specifies the type to de-mark.
+     * @param mixed $objectid
+     *         Specifies the object ID
+     * @param string $session
+     *         Specifies the session for which the "in use" mark is valid
      */
     public function removeMark($type, $objectid, $session) {
         $type = $this->escape($type);
@@ -91,9 +96,10 @@ class cApiInUseCollection extends ItemCollection {
     /**
      * Removes all marks for a specific type and session
      *
-     * @param string $type Specifies the type to de-mark.
-     * @param string $session Specifies the session for which the "in use" mark
-     *            is valid
+     * @param string $type
+     *         Specifies the type to de-mark.
+     * @param string $session
+     *         Specifies the session for which the "in use" mark is valid
      */
     public function removeTypeMarks($type, $session) {
         $type = $this->escape($type);
@@ -111,8 +117,10 @@ class cApiInUseCollection extends ItemCollection {
     /**
      * Removes the mark for a specific item
      *
-     * @param string $type Specifies the type to de-mark.
-     * @param string $itemid Specifies the item
+     * @param string $type
+     *         Specifies the type to de-mark.
+     * @param string $itemid
+     *         Specifies the item
      */
     public function removeItemMarks($type, $itemid) {
         $type = $this->escape($type);
@@ -130,7 +138,8 @@ class cApiInUseCollection extends ItemCollection {
     /**
      * Removes all in-use marks for a specific userId
      *
-     * @param string $userId Specifies the user
+     * @param string $userId
+     *         Specifies the user
      */
     public function removeUserMarks($userId) {
         $userId = $this->escape($userId);
@@ -162,8 +171,8 @@ class cApiInUseCollection extends ItemCollection {
     /**
      * Removes all in-use marks for a specific session.
      *
-     * @param string $session Specifies the session for which the "in use" marks
-     *            should be removed
+     * @param string $session
+     *         Specifies the session for which the "in use" marks should be removed
      */
     public function removeSessionMarks($session) {
         $session = $this->escape($session);
@@ -179,8 +188,10 @@ class cApiInUseCollection extends ItemCollection {
     /**
      * Checks if a specific item is marked
      *
-     * @param string $type Specifies the type to de-mark.
-     * @param mixed $objectid Specifies the object ID
+     * @param string $type
+     *         Specifies the type to de-mark.
+     * @param mixed $objectid
+     *         Specifies the object ID
      * @return cApiInUse bool
      *         false if it's not in use or returns the object if it is.
      */
@@ -204,15 +215,19 @@ class cApiInUseCollection extends ItemCollection {
      * "idmod", don't return a lock message $inUse = $col->checkAndMark("idmod",
      * $idmod);
      *
-     * @param string $type Specifies the type to de-mark.
-     * @param mixed $objectid Specifies the object ID
-     * @param bool $returnWarning If true, also returns an error message if in
-     *            use
-     * @param string $warningTemplate String to fill with the template (%s as
-     *            placeholder, first %s is the username, second is the real
-     *            name)
-     * @param bool $allowOverride True if the user can override the lock
-     * @param string $location Value to append to the override lock button
+     * @param string $type
+     *         Specifies the type to de-mark.
+     * @param mixed $objectid
+     *         Specifies the object ID
+     * @param bool $returnWarning
+     *         If true, also returns an error message if in use
+     * @param string $warningTemplate
+     *         String to fill with the template (%s as placeholder, first %s is
+     *         the username, second is the real name)
+     * @param bool $allowOverride
+     *         True if the user can override the lock
+     * @param string $location
+     *         Value to append to the override lock button
      * @return bool array
      *         returnWarning is false, returns a bool value wether the object
      *         is locked. If returnWarning is true, returns a 2 item array
@@ -278,7 +293,8 @@ class cApiInUse extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

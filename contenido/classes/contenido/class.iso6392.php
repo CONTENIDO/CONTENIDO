@@ -26,8 +26,8 @@ class cApiIso6392Collection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *            ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         parent::__construct(cRegistry::getDbTableName('iso_639_2'), 'iso');
@@ -50,7 +50,8 @@ class cApiIso6392 extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         parent::__construct(cRegistry::getDbTableName('iso_639_2'), 'iso');

@@ -57,7 +57,7 @@ class TreeItem {
     /**
      * Determinates if this tree item is collapsed
      *
-     * @var boolean
+     * @var bool
      */
     var $collapsed;
 
@@ -170,7 +170,8 @@ class TreeItem {
      * function traverses all subitems to find the correct item.
      *
      * @param string $id the ID to find
-     * @return object The item, or false if nothing was found
+     * @return object
+     *         The item, or false if nothing was found
      */
     function &getItemByID($id) {
         if ($this->id == $id) {
@@ -204,7 +205,7 @@ class TreeItem {
      * Checks if a specific custom attribute is set
      *
      * @param string $item the attribute name to find
-     * @return boolean
+     * @return bool
      */
     function isCustomAttributeSet($item) {
         if (array_key_exists($item, $this->custom)) {
@@ -226,7 +227,7 @@ class TreeItem {
      * is expanded, but not its childs.
      *
      * @param string $id the ID to expand, or an array with all id's
-     * @return boolean
+     * @return bool
      */
     function markExpanded($id) {
         if (is_array($id)) {
@@ -332,7 +333,7 @@ class TreeItem {
     /**
      *
      * @param unknown_type $item_id
-     * @return boolean
+     * @return bool
      */
     function hasCollapsedNode($item_id) {
         $parentNodeList = array();

@@ -26,8 +26,8 @@ class cApiOnlineUserCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *        ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -44,7 +44,8 @@ class cApiOnlineUserCollection extends ItemCollection {
      * 2) If find user in the table, do update
      * 3) Else there is no current user do insert new user
      *
-     * @param string $userId Id of user
+     * @param string $userId
+     *         Id of user
      */
     public function startUsersTracking($userId = NULL) {
         global $auth;
@@ -70,7 +71,8 @@ class cApiOnlineUserCollection extends ItemCollection {
     /**
      * Insert this user in online_user table
      *
-     * @param string $userId Id of user
+     * @param string $userId
+     *         Id of user
      * @return bool
      *         Returns true if successful else false
      */
@@ -87,7 +89,8 @@ class cApiOnlineUserCollection extends ItemCollection {
     /**
      * Find the this user if exists in the table 'online_user'
      *
-     * @param string $userId Is the User-Id (get from auth object)
+     * @param string $userId
+     *         Is the User-Id (get from auth object)
      * @return bool
      *         Returns true if this User is found, else false
      */
@@ -169,7 +172,8 @@ class cApiOnlineUserCollection extends ItemCollection {
     /**
      * This function do an update of current timestamp in 'online_user'
      *
-     * @param string $userId Is the User-Id (get from auth object)
+     * @param string $userId
+     *         Is the User-Id (get from auth object)
      * @return bool
      *         Returns true if successful, else false
      */
@@ -226,7 +230,8 @@ class cApiOnlineUserCollection extends ItemCollection {
     /**
      * Delete this user from 'online user' table
      *
-     * @param string $userId Is the User-Id (get from auth object)
+     * @param string $userId
+     *         Is the User-Id (get from auth object)
      * @return bool
      *         Returns true if successful, else false
      */
@@ -246,7 +251,8 @@ class cApiOnlineUser extends Item {
     /**
      * Constructor function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

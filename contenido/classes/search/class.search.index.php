@@ -525,22 +525,23 @@ class cSearchIndex extends cSearchBaseAbstract {
      * Check if the requested content type should be indexed (false) or not (true)
      *
      * @param string $idtype
-     * @return boolean
+     * @return bool
      */
     public function checkCmsType($idtype) {
         $idtype = strtoupper($idtype);
-		
-		// Do not index CMS_RAW
-		if ($idtype == "CMS_RAW") {
-			return true;
-		}
+
+        // Do not index CMS_RAW
+        if ($idtype == "CMS_RAW") {
+            return true;
+        }
 
         return (count($this->_cmsOptions) === 0 || in_array($idtype, $this->_cmsOptions)) ? false : true;
     }
 
     /**
      *
-     * @return array the _cmsType property
+     * @return array
+     *         the _cmsType property
      */
     public function getCmsType() {
         return $this->_cmsType;
@@ -548,7 +549,8 @@ class cSearchIndex extends cSearchBaseAbstract {
 
     /**
      *
-     * @return array the _cmsTypeSuffix property
+     * @return array
+     *         the _cmsTypeSuffix property
      */
     public function getCmsTypeSuffix() {
         return $this->_cmsTypeSuffix;

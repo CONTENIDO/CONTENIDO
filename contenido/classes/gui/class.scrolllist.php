@@ -108,7 +108,7 @@ class cGuiScrollList {
     /**
      * Creates a new FrontendList object.
      *
-     * @param boolean $defaultstyle
+     * @param bool $defaultstyle
      *         use the default style for object initializing?
      * @param unknown_type $action
      */
@@ -146,7 +146,7 @@ class cGuiScrollList {
      * $obj->setSortable(true);
      *
      * @param unknown_type $key
-     * @param boolean $sortable
+     * @param bool $sortable
      *         true or false
      */
     public function setSortable($key, $sortable) {

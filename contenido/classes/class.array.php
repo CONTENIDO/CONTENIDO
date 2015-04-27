@@ -33,7 +33,8 @@ class cArray {
      *        specified using the charlist parameter. Simply list all characters
      *        that you want to be stripped. With .. you can specify a range of
      *        characters.
-     * @return array Array of trimmed strings.
+     * @return array
+     *         Array of trimmed strings.
      */
     public static function trim(array $arr, $charlist = NULL) {
         foreach ($arr as $key => $value) {
@@ -66,13 +67,14 @@ class cArray {
      * Another caveat is when searching for an empty string when using the
      * partial mode. This would lead to an error and is considered a bug!
      *
+     * @todo There should be only one flag for $partial and $strict in order to
+     *       avoid ambiguities (imagine $partial=true & $strict=true).
      * @param array $arr array to search
      * @param mixed $search value to search for
      * @param bool $partial if values are tested to contain $search
      * @param bool $strict if values are tested for identity
-     * @return mixed key of the array containing the searched value or false
-     * @todo There should be only one flag for $partial and $strict in order to
-     *       avoid ambiguities (imagine $partial=true & $strict=true).
+     * @return mixed
+     *         key of the array containing the searched value or false
      */
     public static function searchRecursive(array $arr, $search, $partial = false, $strict = false) {
         foreach ($arr as $key => $value) {
@@ -111,7 +113,8 @@ class cArray {
      *
      * @param array $arr The array to sort
      * @param string $locale The locale to change before sorting
-     * @return array Sorted array
+     * @return array
+     *         Sorted array
      */
     public static function sortWithLocale(array $arr, $locale) {
         $oldlocale = setlocale(LC_COLLATE, 0);
@@ -180,7 +183,7 @@ class cArray {
      * @param array $aArray
      * @param string $sKey
      * @param mixed $mDefault
-     * @return boolean
+     * @return bool
      */
     public static function initializeKey(&$aArray, $sKey, $mDefault = '') {
         if (!is_array($aArray)) {

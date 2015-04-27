@@ -162,7 +162,7 @@ class cHTMLValidator {
     /**
      *
      * @param string $tag
-     * @return boolean
+     * @return bool
      */
     public function tagExists($tag) {
         if (in_array($tag, $this->_existingTags)) {

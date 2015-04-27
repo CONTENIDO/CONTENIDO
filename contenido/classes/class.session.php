@@ -80,7 +80,7 @@ class cSession {
                 $start = strpos($url, '://');
             }
 
-            // url of contenido folder with hostname 
+            // url of contenido folder with hostname
             $path = substr($url, $start + 3);
 
             $start = strpos($path, '/');
@@ -127,7 +127,7 @@ class cSession {
      * Checks if a variable is registered
      *
      * @param string $name The name of the variable (e.g. "idclient")
-     * @return boolean
+     * @return bool
      */
     public function isRegistered($name) {
         if (isset($this->_pt[$name]) && $this->_pt[$name] == true) {
@@ -190,7 +190,8 @@ class cSession {
      * This will work recursevly on arrays
      *
      * @param mixed $var A variable which should get serialized.
-     * @return string the PHP code which can be evaluated.
+     * @return string
+     *         the PHP code which can be evaluated.
      */
     public function serialize($var) {
         $str = "";

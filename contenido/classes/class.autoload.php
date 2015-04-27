@@ -264,7 +264,8 @@ class cAutoload {
      * classname
      *
      * @param string $className
-     * @return Ambigous <(string, NULL), NULL, string> Path and filename or NULL
+     * @return string|null
+     *         string if validation was successfull, otherwise NULL
      */
     private static function _getContenidoClassFile($className) {
         $classNameLower = strtolower($className);
@@ -277,7 +278,8 @@ class cAutoload {
      *
      * @param string $className
      * @param string $filePathName
-     * @return NULL unknown if validation was successfull, otherwise NULL
+     * @return string|null
+     *         string if validation was successfull, otherwise NULL
      */
     private static function _validateClassAndFile($className, $filePathName) {
         if (class_exists($className)) {

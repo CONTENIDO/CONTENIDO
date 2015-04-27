@@ -33,7 +33,7 @@ class cTreeItem {
     /**
      * Determinates if this tree item is collapsed
      *
-     * @var boolean
+     * @var bool
      */
     var $_collapsed;
 
@@ -142,7 +142,7 @@ class cTreeItem {
      *                 )
      *             )
      *         )
-     * @return boolean
+     * @return bool
      */
     public function importTable($flat_array) {
         $lastobj[0] = $this->_id;
@@ -207,7 +207,7 @@ class cTreeItem {
      * @param unknown_type $destarray
      * @param unknown_type $lastid
      * @param unknown_type $level
-     * @return boolean
+     * @return bool
      */
     protected function _flattenArray($sourcearray, &$destarray, &$lastid, &$level) {
         if ($lastid == false) {
@@ -266,7 +266,7 @@ class cTreeItem {
      *
      * @param string $id ID to add the item to
      * @param cTreeItem $item Item to add
-     * @return boolean
+     * @return bool
      */
     public function addItemToID($id, &$item) {
         if ($this->_id == $id) {
@@ -305,7 +305,8 @@ class cTreeItem {
      *
      * @param mixed $id
      *         item object or ID to delete
-     * @return deleted object
+     * @return object
+     *         deleted object
      */
     public function deleteItem($id) {
         foreach (array_keys($this->_subitems) as $key) {
@@ -401,7 +402,7 @@ class cTreeItem {
      * deletes an attribute
      *
      * @param string attributeName
-     * @return boolean
+     * @return bool
      */
     public function deleteAttribute($attributeName) {
         if (array_key_exists($attributeName, $this->_attributes)) {
@@ -416,7 +417,7 @@ class cTreeItem {
      *
      * @param unknown_type $attributeName
      * @param unknown_type $bRecursive
-     * @return boolean
+     * @return bool
      */
     public function hasAttribute($attributeName, $bRecursive = false) {
         if (array_key_exists($attributeName, $this->_attributes)) {
@@ -442,7 +443,7 @@ class cTreeItem {
     /**
      * @param mixed $id
      *         expand ID of item to expand or array of item ID's to expand
-     * @return boolean
+     * @return bool
      */
     public function setExpanded($id) {
         if (is_array($id)) {
@@ -468,7 +469,7 @@ class cTreeItem {
     /**
      * @param mixed $id
      *         collapse ID to collapse or an array with items to collapse
-     * @return void|boolean
+     * @return void|bool
      */
     public function setCollapsed($id) {
         if (is_array($id)) {

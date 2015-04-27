@@ -42,7 +42,8 @@ class NoteCollection extends cApiCommunicationCollection {
      * @param string $sGroupBy Specifies the group by clause.
      * @param string $sOrderBy Specifies the order by clause.
      * @param string $sLimit Specifies the limit by clause.
-     * @return bool True on success, otherwhise false
+     * @return bool
+     *         True on success, otherwhise false
      */
     public function select($where = '', $group_by = '', $order_by = '', $limit = '') {
         if ($where == '') {
@@ -62,7 +63,8 @@ class NoteCollection extends cApiCommunicationCollection {
      * @param int $idlang Language-ID
      * @param string $message Message to store
      * @param string $category
-     * @return object The new item
+     * @return object
+     *         The new item
      */
     public function createItem($itemtype, $itemid, $idlang, $message, $category = '') {
         $item = parent::create();
@@ -278,7 +280,8 @@ class NoteListItem extends cHTMLDiv {
     /**
      *
      * @see cHTML::render()
-     * @return string Generated markup
+     * @return string
+     *         Generated markup
      */
     public function render() {
         global $sess;
@@ -337,13 +340,13 @@ class NoteLink extends cHTMLLink {
 
     /**
      *
-     * @var boolean If true, shows the note history
+     * @var bool If true, shows the note history
      */
     private $_bShowHistory;
 
     /**
      *
-     * @var boolean If true, history items can be deleted
+     * @var bool If true, history items can be deleted
      */
     private $_bDeleteHistoryItems;
 
@@ -405,7 +408,8 @@ class NoteLink extends cHTMLLink {
      * @see cHTML::render()
      * @todo fix unused param $return
      * @param bool $return this param is unused
-     * @return string Generated markup
+     * @return string
+     *         Generated markup
      */
     public function render($return = false) {
         global $sess;

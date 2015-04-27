@@ -34,7 +34,8 @@ class cApiPathresolveCacheHelper {
      * Checks configuration of heap table creation, it's existance and creates
      * it if needed.
      *
-     * @param array $cfg Global CONTENIDO config array
+     * @param array $cfg
+     *         Global CONTENIDO config array
      */
     public static function setup($cfg) {
         if (true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
@@ -146,7 +147,8 @@ class cApiPathresolveCache extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -176,10 +178,11 @@ class cApiPathresolveCache extends Item {
     /**
      * Userdefined setter for pathresolve cache fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

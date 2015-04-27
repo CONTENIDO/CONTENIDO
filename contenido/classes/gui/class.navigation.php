@@ -465,7 +465,7 @@ class cGuiNavigation {
     /**
      * Returns true if the class encountered errors while building the navigation
      *
-     * @return boolean
+     * @return bool
      */
     public function hasErrors() {
         return count($this->errors) > 0;

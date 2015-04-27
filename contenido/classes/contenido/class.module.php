@@ -223,7 +223,8 @@ class cApiModule extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg, $cfgClient, $client;
@@ -274,7 +275,8 @@ class cApiModule extends Item {
     /**
      * Sets the translated name of the module
      *
-     * @param string $name Translated name of the module
+     * @param string $name
+     *         Translated name of the module
      */
     public function setTranslatedName($name) {
         global $lang;
@@ -536,8 +538,10 @@ class cApiModule extends Item {
      * Gets the value of a specific field.
      *
      * @see Item::getField()
-     * @param string $sField Specifies the field to retrieve
-     * @param bool $bSafe Flag to run defined outFilter on passed value
+     * @param string $sField
+     *         Specifies the field to retrieve
+     * @param bool $bSafe
+     *         Flag to run defined outFilter on passed value
      * @return mixed
      *         Value of the field
      */
@@ -582,8 +586,8 @@ class cApiModule extends Item {
     /**
      * Parse import xml file and returns its values.
      *
-     * @param string $sFile Filename including path of import xml file
-     *
+     * @param string $sFile
+     *         Filename including path of import xml file
      * @return array
      *         Array with module data from XML file
      */
@@ -614,7 +618,8 @@ class cApiModule extends Item {
     /**
      * Save the modul properties (description,type...)
      *
-     * @param string $sFile Where is the modul info.xml file
+     * @param string $sFile
+     *         Where is the modul info.xml file
      * @return array
      */
     private function _getModuleProperties($sFile) {
@@ -636,10 +641,12 @@ class cApiModule extends Item {
     /**
      * Imports the a module from a zip file, uses xmlparser and callbacks
      *
-     * @param string $sFile Filename of data file (full path)
-     * @param string $tempName of archive
-     * @param bool $show_notification standard: true, mode to turn
-     *        notifications off
+     * @param string $sFile
+     *         Filename of data file (full path)
+     * @param string $tempName
+     *         of archive
+     * @param bool $show_notification
+     *         standard: true, mode to turn notifications off
      * @return bool
      */
     function import($sFile, $tempName, $show_notification = true) {
@@ -712,7 +719,8 @@ class cApiModule extends Item {
     /**
      * Imports the a module from a XML file, uses xmlparser and callbacks
      *
-     * @param string $sFile Filename of data file (full path)
+     * @param string $sFile
+     *         Filename of data file (full path)
      * @return bool
      */
     function importModuleFromXML($sFile) {
@@ -769,8 +777,10 @@ class cApiModule extends Item {
     /**
      * Add recursive folder to zip archive
      *
-     * @param string $dir directory name
-     * @param string $zipArchive name of the archive
+     * @param string $dir
+     *         directory name
+     * @param string $zipArchive
+     *         name of the archive
      * @param string $zipdir
      */
     private function _addFolderToZip($dir, $zipArchive, $zipdir = '') {
@@ -835,10 +845,11 @@ class cApiModule extends Item {
     /**
      * Userdefined setter for module fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {
@@ -858,10 +869,12 @@ class cApiModule extends Item {
      * Processes container placeholder (e. g. CMS_VAR[123], CMS_VALUE[123]) in given module input code.
      * Tries to find the proper container tag and replaces its value against
      * container configuration.
-     * @param  int  $containerNr  The container number to process
-     * @param  string  $containerCfg  Container configuration string containing key/values pairs for all containers
-     * @param  string  $moduleInputCode
-     * @return  string
+     * @param int $containerNr
+     *         The container number to process
+     * @param string $containerCfg
+     *         Container configuration string containing key/values pairs for all containers
+     * @param string $moduleInputCode
+     * @return string
      */
     public static function processContainerInputCode($containerNr, $containerCfg, $moduleInputCode) {
         $containerConfigurations = array();

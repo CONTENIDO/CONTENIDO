@@ -193,7 +193,7 @@ class cSearch extends cSearchBaseAbstract {
      * If $protected = true => do not search articles which are offline or
      * articles in catgeories which are offline (protected) unless the user has access to them
      *
-     * @var boolean
+     * @var bool
      */
     protected $_protected;
 
@@ -201,7 +201,7 @@ class cSearch extends cSearchBaseAbstract {
      * If $dontshowofflinearticles = false => search offline articles or
      * articles in categories which are offline
      *
-     * @var boolean
+     * @var bool
      */
     protected $_dontshowofflinearticles;
 
@@ -209,7 +209,7 @@ class cSearch extends cSearchBaseAbstract {
      * If $exclude = true => the specified search range is excluded from search,
      * otherwise included
      *
-     * @var boolean
+     * @var bool
      */
     protected $_exclude;
 
@@ -278,7 +278,7 @@ class cSearch extends cSearchBaseAbstract {
      * @param string $searchwords The search words
      * @param string $searchwords_exclude The words, which should be excluded
      *        from search
-     * @return boolean multitype:
+     * @return bool|array
      */
     public function searchIndex($searchwords, $searchwords_exclude = '') {
         if (strlen(trim($searchwords)) > 0) {
@@ -440,7 +440,8 @@ class cSearch extends cSearchBaseAbstract {
     /**
      *
      * @param string $searchwords The search-words
-     * @return array of stripped search-words
+     * @return array
+     *         of stripped search-words
      */
     public function stripWords($searchwords) {
         // remove backslash and html tags
@@ -469,9 +470,10 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * Returns the category tree array.
      *
-     * @param int $cat_start Root of a category tree
-     * @return array Category Tree
      * @todo This is not the job for search, should be outsourced ...
+     * @param int $cat_start Root of a category tree
+     * @return array
+     *         Category Tree
      */
     public function getSubTree($cat_start) {
         $sql = "SELECT
@@ -529,10 +531,11 @@ class cSearch extends cSearchBaseAbstract {
      * Returns list of searchable article ids.
      *
      * @param array $search_range
-     * @return array Articles in specified search range
+     * @return array
+     *         Articles in specified search range
      */
     public function getSearchableArticles($search_range) {
-	    global $auth;
+        global $auth;
 
         $aCatRange = array();
         if (array_key_exists('cat_tree', $search_range) && is_array($search_range['cat_tree'])) {
@@ -631,7 +634,8 @@ class cSearch extends cSearchBaseAbstract {
     /**
      * Fetch all article specifications which are online,
      *
-     * @return array Array of article specification Ids
+     * @return array
+     *         Array of article specification Ids
      */
     public function getArticleSpecifications() {
         $sql = "SELECT
@@ -665,7 +669,7 @@ class cSearch extends cSearchBaseAbstract {
      * (client dependent but language independent)
      *
      * @param string $sArtSpecName
-     * @return boolean
+     * @return bool
      */
     public function addArticleSpecificationsByName($sArtSpecName) {
         if (!isset($sArtSpecName) || strlen($sArtSpecName) == 0) {

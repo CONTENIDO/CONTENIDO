@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the abstract authentication handler class.
  *
@@ -49,8 +50,7 @@ abstract class cAuthHandlerAbstract extends cAuth {
 
     /**
      * Log the successful authentication.
-     * If wished, this method can be executed for logging an successful
-     * authentication.
+     * If wished, this method can be executed to log a successful login.
      */
     abstract public function logSuccessfulAuth();
 

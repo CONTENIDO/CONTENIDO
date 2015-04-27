@@ -91,7 +91,8 @@ class cModuleSynchronizer extends cModuleHandler {
      * @param string $dirNameOld old dir name
      * @param string $dirNameNew new dir name
      * @param int $client idclient
-     * @return boolean true if succes (rename file and directories)
+     * @return bool
+     *         true if succes (rename file and directories)
      */
     private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client) {
         if (rename($dir . $dirNameOld, $dir . $dirNameNew) == FALSE) {
@@ -106,7 +107,8 @@ class cModuleSynchronizer extends cModuleHandler {
      * Compare file change timestemp and the timestemp in ['tab']['mod'].
      * If file had changed make new code :conGenerateCodeForAllArtsUsingMod
      *
-     * @return int id of last update module
+     * @return int
+     *         id of last update module
      */
     public function compareFileAndModuleTimestamp() {
         global $cfg, $cfgClient;
@@ -201,7 +203,8 @@ class cModuleSynchronizer extends cModuleHandler {
      * clear it from filesystem.
      *
      * @param $db
-     * @return int id of last update module
+     * @return int
+     *         id of last update module
      */
     private function _synchronizeFilesystemAndDb($db) {
         $returnIdMod = 0;
@@ -232,7 +235,8 @@ class cModuleSynchronizer extends cModuleHandler {
      * a Modul(Dir) that not exist in Db-table this method will
      * insert the Modul in Db-table ([tab][mod]).
      *
-     * @return int last id of synchronized module
+     * @return int
+     *         last id of synchronized module
      */
     public function synchronize() {
         global $cfg, $cfgClient;
@@ -253,7 +257,7 @@ class cModuleSynchronizer extends cModuleHandler {
                                 // name?
                                 // make new dirname
                                 $newDirName = $newFile . substr(md5(time() . rand(0, time())), 0, 4);
-                        
+
                                 // rename
                                 if ($this->_renameFileAndDir($dir, $file, $newDirName, $this->_client) != false) {
                                     $this->_syncModule($dir, $file, $newDirName);
@@ -282,7 +286,8 @@ class cModuleSynchronizer extends cModuleHandler {
      * @param $alias
      * @param int $idclient idclient
      * @internal param string $name name ot the modul
-     * @return bool if a modul with the $name exist in the $cfg['tab']['mod'] table
+     * @return bool
+     *         if a modul with the $name exist in the $cfg['tab']['mod'] table
      *         return true else false
      */
     private function _isExistInTable($alias, $idclient) {
