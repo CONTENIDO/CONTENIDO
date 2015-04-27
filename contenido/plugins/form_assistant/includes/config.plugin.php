@@ -112,14 +112,17 @@ class Pifa {
      * @param Exception $e
      */
     public static function logException(Exception $e) {
-        $cfg = cRegistry::getConfig();
 
-        $log = new cLog(cLogWriter::factory('file', array(
-            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
-        )), cLog::ERR);
+    	if (getSystemProperty('debug', 'debug_for_plugins') == 'true') {
+	        $cfg = cRegistry::getConfig();
 
-        $log->err($e->getMessage());
-        $log->err($e->getTraceAsString());
+	        $log = new cLog(cLogWriter::factory('file', array(
+	            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
+	        )), cLog::ERR);
+
+	        $log->err($e->getMessage());
+	        $log->err($e->getTraceAsString());
+    	}
     }
 
     /**

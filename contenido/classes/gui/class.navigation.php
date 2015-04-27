@@ -433,7 +433,7 @@ class cGuiNavigation {
         $tpl->set('s', 'NAME', 'changeclient');
         $tpl->set('s', 'CLASS', 'vAlignMiddle text_medium nodisplay');
         $tpl->set('s', 'ID', 'cClientSelect');
-        $tpl->set('s', 'OPTIONS', 'onchange="changeContenidoClient(this.value)"');
+        $tpl->set('s', 'OPTIONS', 'onchange="Con.Header.changeContenidoClient(this.value)"');
 
         // add all accessible clients to the select
         foreach ($clients as $idclient => $clientInfo) {

@@ -122,10 +122,6 @@
 ./classes/content_types/class.content.type.raw.php
 ./classes/content_types/class.content.type.teaser.php
 ./classes/content_types/class.content.type.text.php
-./classes/datatypes/class.datatype.currency.php
-./classes/datatypes/class.datatype.datetime.php
-./classes/datatypes/class.datatype.number.php
-./classes/datatypes/class.datatype.php
 ./classes/db/class.db.driver.abstract.php
 ./classes/db/class.db.driver.handler.php
 ./classes/db/class.db.driver.mysql.php
@@ -684,7 +680,6 @@
 ./main.loginform.php
 ./main.php
 ./scripts/articleObject.js.php
-./scripts/help.js.php
 ./scripts/index.php
 ./scripts/iZoom.js.php
 ./scripts/langref.php
@@ -703,7 +698,6 @@
 ./templates/standard/index.php
 ./templates/standard/main.loginform.html
 ./templates/standard/submenu.html
-./templates/standard/template.admin_frontend.html
 ./templates/standard/template.backend_search_results.html
 ./templates/standard/template.blank.html
 ./templates/standard/template.breadcrumb.html
@@ -742,7 +736,6 @@
 ./templates/standard/template.debug.visible.html
 ./templates/standard/template.debug.visibleadv.html
 ./templates/standard/template.deco.html
-./templates/standard/template.default_subnav.html
 ./templates/standard/template.error_page.html
 ./templates/standard/template.files_overview.html
 ./templates/standard/template.file_subnav.html
@@ -822,7 +815,6 @@
 ./templates/standard/template.style_left_top.html
 ./templates/standard/template.subnav.html
 ./templates/standard/template.subnav_blank.html
-./templates/standard/template.subnav_noleft.html
 ./templates/standard/template.symbolhelp.html
 ./templates/standard/template.system_configuration.html
 ./templates/standard/template.system_integrity.html

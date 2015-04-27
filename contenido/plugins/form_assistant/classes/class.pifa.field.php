@@ -812,10 +812,12 @@ class PifaField extends Item {
                 $sel = '#pifa-field-elm-' . $idfield;
                 // dateFormat: 'yy-mm-dd', // could be different
                 // altFormat as ISO_8601
-                $script = "jQuery(function(){ jQuery('$sel').datepicker({
-                    altFormat: 'yy-mm-dd',
-                    altField: '$sel-hidden'
-                });});";
+                $script = "if (typeof jQuery == \"function\") {
+                	jQuery(function(){ jQuery('$sel').datepicker({
+                    	altFormat: 'yy-mm-dd',
+                    	altField: '$sel-hidden'
+                	});});
+                }";
                 break;
             // case self::CAPTCHA:
             // $sel = '#pifa-field-' . $idfield . ' label';
