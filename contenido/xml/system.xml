@@ -42,6 +42,7 @@ i18n("Allow all HTML tags and attributes in TinyMCE")
 i18n("Optional backend label")
 i18n("Show only CSS/JS/HTML files at areas CSS/JS/HTML")
 i18n("Show message for unknown module translations");
+i18n("Debug function for plugins");
 
 -->
 
@@ -261,6 +262,14 @@ i18n("Show message for unknown module translations");
                 <label>Visible debug</label>
                 <group>Development</group>
             </debug_to_screen>
+            <debug_for_plugins>
+            	<values>
+            		<array_value>true</array_value>
+            		<array_value>false</array_value>
+            	</values>
+            	<label>Debug function for plugins</label>
+            	<group>Development</group>
+            </debug_for_plugins> 
             <module_translation_message>
             	<values>
                     <array_value>true</array_value>

@@ -98,7 +98,8 @@ class cApiPropertyCollection extends ItemCollection {
 
     /**
      * Constructor function
-     * @param int $idclient  Client id
+     * @param int $idclient
+     *         Client id
      */
     public function __construct($idclient = 0) {
         global $cfg, $client, $lang;
@@ -160,14 +161,19 @@ class cApiPropertyCollection extends ItemCollection {
      * $property = $properties->create('idcat', 27, 'visual', 'image', 'images/tool.gif');
      * </pre>
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
-     * @param mixed $type Type of the data to store (arbitary data)
-     * @param mixed $name Entry name
-     * @param mixed $value Value
-     * @param bool $bDontEscape Optionally default false (on internal call do
-     *        not escape parameters again
-     *        NOTE: This parameter is deprecated since 2013-11-26
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param mixed $itemid
+     *         ID of the item (example: 31)
+     * @param mixed $type
+     *         Type of the data to store (arbitary data)
+     * @param mixed $name
+     *         Entry name
+     * @param mixed $value
+     *         Value
+     * @param bool $bDontEscape
+     *         Optionally default false (on internal call do not escape parameters again
+     *         NOTE: This parameter is deprecated since 2013-11-26
      * @return cApiProperty
      */
     public function create($itemtype, $itemid, $type, $name, $value, $bDontEscape = false) {
@@ -202,11 +208,16 @@ class cApiPropertyCollection extends ItemCollection {
      * $value = $properties->getValue('idcat', 27, 'visual', 'image');
      * </pre>
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
-     * @param mixed $type Type of the data to store (arbitary data)
-     * @param mixed $name Entry name
-     * @param mixed $default to be returned if no item was found
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param mixed $itemid
+     *         ID of the item (example: 31)
+     * @param mixed $type
+     *         Type of the data to store (arbitary data)
+     * @param mixed $name
+     *         Entry name
+     * @param mixed $default
+     *         to be returned if no item was found
      * @return mixed Value
      */
     public function getValue($itemtype, $itemid, $type, $name, $default = false) {
@@ -238,10 +249,14 @@ class cApiPropertyCollection extends ItemCollection {
      * $values = $properties->getValuesByType('idcat', 27, 'visual');
      * </pre>
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
-     * @param mixed $type Type of the data to store (arbitary data)
-     * @return array Value
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param mixed $itemid
+     *         ID of the item (example: 31)
+     * @param mixed $type
+     *         Type of the data to store (arbitary data)
+     * @return array
+     *         Value
      *
      */
     public function getValuesByType($itemtype, $itemid, $type) {
@@ -275,9 +290,12 @@ class cApiPropertyCollection extends ItemCollection {
      * $values = $properties->getValuesOnlyByTypeName('note', 'category');
      * </pre>
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $name Type of the data to store (arbitary data)
-     * @return array Value
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param mixed $name
+     *         Type of the data to store (arbitary data)
+     * @return array
+     *         Value
      *
      */
     public function getValuesOnlyByTypeName($type, $name) {
@@ -303,13 +321,19 @@ class cApiPropertyCollection extends ItemCollection {
      * $properties->setValue('idcat', 27, 'visual', 'image', 'images/tool.gif');
      * </pre>
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
-     * @param mixed $type Type of the data to store (arbitary data)
-     * @param mixed $name Entry name
-     * @param mixed $value Value
-     * @param int $idProp Id of database record (if set, update on this basis
-     *        (possiblity to update name value and type))
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param mixed $itemid
+     *         ID of the item (example: 31)
+     * @param mixed $type
+     *         Type of the data to store (arbitary data)
+     * @param mixed $name
+     *         Entry name
+     * @param mixed $value
+     *         Value
+     * @param int $idProp
+     *         Id of database record (if set, update on this basis
+     *         (possiblity to update name value and type))
      */
     public function setValue($itemtype, $itemid, $type, $name, $value, $idProp = 0) {
         $idProp = (int) $idProp;
@@ -344,10 +368,14 @@ class cApiPropertyCollection extends ItemCollection {
      * $properties->deleteValue('idcat', 27, 'visual', 'image');
      * </pre>
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
-     * @param mixed $type Type of the data to store (arbitary data)
-     * @param mixed $name Entry name
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param mixed $itemid
+     *         ID of the item (example: 31)
+     * @param mixed $type
+     *         Type of the data to store (arbitary data)
+     * @param mixed $name
+     *         Entry name
      */
     public function deleteValue($itemtype, $itemid, $type, $name) {
         if (isset($this->client)) {
@@ -368,8 +396,10 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Checks if values for a given item are available.
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param mixed $itemid
+     *         ID of the item (example: 31)
      * @return array
      *         For each given item
      */
@@ -405,9 +435,12 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Returns all datasets selected by given field and value combination
      *
-     * @param mixed $field Field to search in
-     * @param mixed $fieldValue Value to search for
-     * @param cAuth $auth Narrow result down to user in auth objext
+     * @param mixed $field
+     *         Field to search in
+     * @param mixed $fieldValue
+     *         Value to search for
+     * @param cAuth $auth
+     *         Narrow result down to user in auth objext
      * @return array
      *         For each given item
      */
@@ -450,8 +483,10 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Delete all properties which match itemtype and itemid
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param mixed $itemid
+     *         ID of the item (example: 31)
      */
     public function deleteProperties($itemtype, $itemid) {
         if (isset($this->client)) {
@@ -469,8 +504,10 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Delete all properties which match itemtype and multiple itemids.
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param array $itemids Ids of multiple items (example: array(31,12,22))
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param array $itemids
+     *         Ids of multiple items (example: array(31,12,22))
      */
     public function deletePropertiesMultiple($itemtype, array $itemids) {
         $itemtype = $this->db->escape($itemtype);
@@ -603,11 +640,16 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Returns the value for a given item from cache.
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
-     * @param mixed $type Type of the data to store (arbitary data)
-     * @param mixed $name Entry name
-     * @param mixed $default to be returned if no item was found
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param mixed $itemid
+     *         ID of the item (example: 31)
+     * @param mixed $type
+     *         Type of the data to store (arbitary data)
+     * @param mixed $name
+     *         Entry name
+     * @param mixed $default
+     *         to be returned if no item was found
      * @return mixed
      *         Value
      */
@@ -624,9 +666,12 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Returns the values for a given item by its type from cache.
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
-     * @param mixed $type Type of the data to store (arbitary data)
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param mixed $itemid
+     *         ID of the item (example: 31)
+     * @param mixed $type
+     *         Type of the data to store (arbitary data)
      * @return array
      *         Value
      *
@@ -646,8 +691,10 @@ class cApiPropertyCollection extends ItemCollection {
     /**
      * Returns poperties for given item are available.
      *
-     * @param mixed $itemtype Type of the item (example: idcat)
-     * @param mixed $itemid ID of the item (example: 31)
+     * @param mixed $itemtype
+     *         Type of the item (example: idcat)
+     * @param mixed $itemid
+     *         ID of the item (example: 31)
      * @return array
      *         For each given item
      */
@@ -692,7 +739,8 @@ class cApiProperty extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -730,7 +778,8 @@ class cApiProperty extends Item {
      *
      * @param string $field
      * @param string $value
-     * @param bool $safe Flag to run filter on passed value
+     * @param bool $safe
+     *         Flag to run filter on passed value
      * @return bool
      * @throws cInvalidArgumentException
      *     if the field is too small for the given value

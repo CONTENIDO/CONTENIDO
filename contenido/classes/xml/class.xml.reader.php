@@ -29,8 +29,8 @@ class cXmlReader extends cXmlBase {
      *
      * @param string $filename path to the XML document
      * @throws cException if file could not be loaded
-     * @return boolean load state (true = successfully loaded, false = not found
-     *         or loaded)
+     * @return bool
+     *         load state (true = successfully loaded, false = not found or loaded)
      */
     public function load($filename) {
 
@@ -56,8 +56,8 @@ class cXmlReader extends cXmlBase {
      *
      * @param string $sFilename path to the XML document
      * @throws cException if XML could not be loaded
-     * @return boolean load state (true = successfully loaded, false = not found
-     *         or loaded)
+     * @return bool
+     *         load state (true = successfully loaded, false = not found or loaded)
      */
     public function loadXML($sXml) {
         // Load document via object method to avoid warning in PHP strict mode.
@@ -106,7 +106,8 @@ class cXmlReader extends cXmlBase {
      *
      * @param string $path xpath string
      * @param int $nodeKey node key (optional, default: 0)
-     * @return string value of DOMNode
+     * @return string
+     *         value of DOMNode
      */
     public function getXpathValue($path, $nodeKey = 0) {
 
@@ -118,7 +119,8 @@ class cXmlReader extends cXmlBase {
      * Returns the amount of nodes in a given XPath string.
      *
      * @param string $path XPath string
-     * @return int amount of nodes in node list
+     * @return int
+     *         amount of nodes in node list
      */
     public function countXpathNodes($path) {
         $domNodeList = $this->getXpathNodeList($path);
@@ -136,7 +138,8 @@ class cXmlReader extends cXmlBase {
      * Decodes the value if XML document has not UTF-8 encoding.
      *
      * @param string $value value to decode
-     * @return string decoded value
+     * @return string
+     *         decoded value
      */
     protected function _decode($value) {
 

@@ -326,7 +326,7 @@ class cVersion {
      *
      * @throws cException
      *         if new version could not be created
-     * @return boolean
+     * @return bool
      */
     public function createNewVersion() {
         if ($this->bVersioningActive == false) {

@@ -212,7 +212,8 @@ class cApiClient extends Item {
      *
      * @param string $name
      *         only works for "idclient"
-     * @param mixed $value Value to set
+     * @param mixed $value
+     *         Value to set
      */
     public function __set($name, $value) {
         if ($name === 'idclient') {

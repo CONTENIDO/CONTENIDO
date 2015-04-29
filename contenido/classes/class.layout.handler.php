@@ -130,7 +130,8 @@ class cLayoutHandler {
      * @param string $layoutAlias
      * @param array $cfgClient
      * @param int $client
-     * @return bool true if file exist
+     * @return bool
+     *         true if file exist
      */
     static function existLayout($layoutAlias, $cfgClient, $client) {
         $file = $cfgClient[$client]['layout']['path'] . $layoutAlias . '/';
@@ -174,7 +175,8 @@ class cLayoutHandler {
     /**
      * Get the layout name
      *
-     * @return string layoutname
+     * @return string
+     *         layoutname
      */
     public function getLayoutName() {
         return $this->_layoutName;
@@ -202,7 +204,8 @@ class cLayoutHandler {
      * Make all directories for layout.
      * Main directory and Layout directory
      *
-     * @return boolean true if successfully
+     * @return bool
+     *         true if successfully
      */
     private function _makeDirectories() {
         if ($this->_makeDirectory($this->_layoutMainPath)) {
@@ -218,7 +221,8 @@ class cLayoutHandler {
      * Make directory
      *
      * @param string $directory
-     * @return boolean true if succssesfully
+     * @return bool
+     *         true if succssesfully
      */
     private function _makeDirectory($directory) {
         if (is_dir($directory)) {
@@ -264,7 +268,8 @@ class cLayoutHandler {
      *
      * @param string $fileName file name
      * @param string $directory directory where is the file
-     * @return bool true on success else false
+     * @return bool
+     *         true on success else false
      */
     public function isWritable($fileName, $directory) {
         if (cFileHandler::exists($fileName)) {
@@ -285,7 +290,7 @@ class cLayoutHandler {
      *
      * @param string $layoutCode
      *
-     * @return boolean true
+     * @return bool
      */
     public function saveLayout($layoutCode = '') {
         $fileName = $this->_layoutPath . $this->_fileName;
@@ -302,7 +307,7 @@ class cLayoutHandler {
      * Use it for upgrade!
      *
      * @param string $layoutCode
-     * @return boolean
+     * @return bool
      */
     public function saveLayoutByUpgrade($layoutCode = '') {
         // if file exist dont overwirte it
@@ -316,7 +321,7 @@ class cLayoutHandler {
     /**
      *
      * @param string $layoutCode
-     * @return boolean
+     * @return bool
      */
     private function _save($layoutCode = '') {
         if ($layoutCode == '') {
@@ -341,7 +346,8 @@ class cLayoutHandler {
      * Removes this layout from the filesystem.
      * Also deletes the version files.
      *
-     * @return boolean true on success or false on failure
+     * @return bool
+     *         true on success or false on failure
      */
     public function eraseLayout() {
         global $area, $frame;
@@ -364,7 +370,7 @@ class cLayoutHandler {
      *
      * @param string $old
      * @param string $new
-     * @return boolean
+     * @return bool
      */
     public function rename($old, $new) {
         // try to rename the dir
@@ -395,7 +401,8 @@ class cLayoutHandler {
     /**
      * Get the contents of the file
      *
-     * @return string|bool content or false
+     * @return string|bool
+     *         content or false
      */
     public function getLayoutCode() {
         // cant read it dont exist file
@@ -417,10 +424,10 @@ class cLayoutHandler {
      * Save all layout in file system.
      * Use it for upgrade.
      *
+     * @throws cException if the layout could not be saved
      * @param cDb $adb database object
      * @param array $cfg CONTENIDO config array
      * @param int $clientId
-     * @throws cException if the layout could not be saved
      */
     public static function upgrade($adb, $cfg, $clientId) {
         // get name of layout and frontendpath

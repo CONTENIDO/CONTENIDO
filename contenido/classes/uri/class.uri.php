@@ -70,10 +70,11 @@ class cUri {
      *                            - url: front_content.php?idcat=12&lang=1
      *                            - params: array('idcat' => 12, 'lang' => 1)
      *                            Required values depend on used UriBuilder, but a must have is 'lang'.
-     * @param   boolean  $bUseAbsolutePath  Flag to create absolute Urls
+     * @param   bool  $bUseAbsolutePath  Flag to create absolute Urls
      * @param   array    $aConfig  If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
      * @throws cInvalidArgumentException if the given params do not contain the lang
-     * @return  string   The Url build by cUriBuilder
+     * @return string
+     *         The Url build by cUriBuilder
      */
     public function build($param, $bUseAbsolutePath = false, array $aConfig = array()) {
         if (!is_array($param)) {
@@ -136,7 +137,8 @@ class cUri {
      *                            - params: array('idcat' => 12, 'lang' => 1)
      *                            Required values depend on used UriBuilder, but a must have is 'lang'.
      * @param   array    $aConfig  If not set, cUriBuilderConfig::getConfig() will be used by the UriBuilder
-     * @return  string   The redirect Url build by cUriBuilder
+     * @return string
+     *         The redirect Url build by cUriBuilder
      */
     public function buildRedirect($param, array $aConfig = array()) {
         $url = $this->build($param, true, $aConfig);
@@ -147,8 +149,9 @@ class cUri {
      * Splits passed url into its components
      *
      * @param   string  $sUrl  The Url to strip down
-     * @return  array   Assoziative array created by using parse_url() having the key 'params' which
-     *                  includes the parameter value pairs.
+     * @return array
+     *         Assoziative array created by using parse_url()
+     *         having the key 'params' which includes the parameter value pairs.
      */
     public function parse($sUrl) {
         $aUrl = @parse_url($sUrl);
@@ -166,7 +169,8 @@ class cUri {
      * Composes a url using passed components array
      *
      * @param   array   %aComponents Assoziative array created by parse_url()
-     * @return  string  $sUrl  The composed Url
+     * @return string
+     *         The composed Url
      */
     public function composeByComponents(array $aComponents) {
         $sUrl = (isset($aComponents['scheme']) ? $aComponents['scheme'] . '://' : '') .
@@ -184,7 +188,8 @@ class cUri {
      * Checks, if passed url is an external url while performing hostname check
      *
      * @param   string  $sUrl  Url to check
-     * @return  bool  True if url is a external url, otherwhise false
+     * @return bool
+     *         True if url is a external url, otherwhise false
      */
     public function isExternalUrl($sUrl) {
         $aComponents = $this->parse($sUrl);
@@ -219,7 +224,8 @@ class cUri {
      * internal url event if they are real working clean URLs.
      *
      * @param   string  $sUrl  Url to check
-     * @return  bool  True if url is identifiable internal url, otherwhise false
+     * @return bool
+     *         True if url is identifiable internal url, otherwhise false
      */
     public function isIdentifiableFrontContentUrl($sUrl) {
         if ($this->isExternalUrl($sUrl)) {
@@ -268,7 +274,7 @@ class cUri {
     /**
      * Returns UriBuilder instance.
      *
-     * @return  cUriBuilder
+     * @return cUriBuilder
      */
     public function getUriBuilder() {
         return $this->_oUriBuilder;

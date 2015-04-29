@@ -135,11 +135,11 @@ class cApiCecRegistry {
      *         Chain name
      * @param array $aParameters
      *         Chain parameter
-     * @return null
+     * @return NULL
      */
     protected function _addChain($sChainName, array $aParameters = array()) {
         cDeprecated('This method is deprecated and is not needed any longer');
-        return null;
+        return NULL;
     }
 
     /**
@@ -158,7 +158,8 @@ class cApiCecRegistry {
      *
      * @throws cInvalidArgumentException if the given chain is not registered or
      *         the given callback is not callable
-     * @return bool True on success, otherwhise false
+     * @return bool
+     *         True on success, otherwhise false
      */
     public function addChainFunction($sChainName, $sFunctionName) {
         $cfg = cRegistry::getConfig();
@@ -427,7 +428,7 @@ class cApiCecChainItem {
     /**
      * Returns the callback
      *
-     * @return string array
+     * @return string|array
      */
     public function getCallback() {
         return $this->_mCallback;
@@ -459,7 +460,8 @@ class cApiCecChainItem {
     /**
      * Invokes the CEC function/callback.
      *
-     * @return mixed If available, the result of the CEC function/callback
+     * @return mixed
+     *         If available, the result of the CEC function/callback
      */
     public function execute() {
         // get temporary arguments, if the where set before

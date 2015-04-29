@@ -26,7 +26,8 @@ class cSecurity {
     /**
      * Checks some CONTENIDO core related request parameters against XSS
      *
-     * @return  bool  True on success otherwhise nothing.
+     * @return bool
+     *         True on success otherwhise nothing.
      */
     public static function checkRequests() {
         $requestValidator = cRequestValidator::getInstance();
@@ -39,7 +40,8 @@ class cSecurity {
      *
      * @param   string        $sString  Input string
      * @param   cDb  $oDb      CONTENIDO database object
-     * @return  string   Filtered string
+     * @return string
+     *         Filtered string
      */
     public static function filter($sString, $oDb) {
         $sString = self::toString($sString);
@@ -53,7 +55,8 @@ class cSecurity {
      * Reverts effect of method filter()
      *
      * @param   string  $sString  Input string
-     * @return  string  Unfiltered string
+     * @return string
+     *         Unfiltered string
      */
     public static function unFilter($sString) {
         $sString = self::toString($sString);
@@ -61,10 +64,11 @@ class cSecurity {
     }
 
     /**
-     * Check: Has the variable an boolean value?
+     * Check: Has the variable an bool value?
      *
      * @param   string   $sVar  Input string
-     * @return  bool  Check state
+     * @return  bool
+     *         Check state
      */
     public static function isBoolean($sVar) {
         $sTempVar = $sVar;
@@ -76,7 +80,8 @@ class cSecurity {
      * Check: Is the variable an integer?
      *
      * @param   string   $sVar  Input string
-     * @return  bool  Check state
+     * @return  bool
+     *         Check state
      */
     public static function isInteger($sVar) {
         return (preg_match('/^[0-9]+$/', $sVar));
@@ -86,17 +91,19 @@ class cSecurity {
      * Check: Is the variable an string?
      *
      * @param   string   $sVar  Input string
-     * @return  bool  Check state
+     * @return  bool
+     *         Check state
      */
     public static function isString($sVar) {
         return (is_string($sVar));
     }
 
     /**
-     * Convert an string to an boolean
+     * Convert an string to an bool
      *
      * @param   string   $sString   Input string
-     * @return  bool  Type casted input string
+     * @return  bool
+     *         Type casted input string
      */
     public static function toBoolean($sString) {
         return (bool) $sString;
@@ -106,7 +113,8 @@ class cSecurity {
      * Convert an string to an integer
      *
      * @param   string   $sString   Input string
-     * @return  int  Type casted input string
+     * @return  int
+     *         Type casted input string
      */
     public static function toInteger($sString) {
         return (int) $sString;
@@ -118,7 +126,8 @@ class cSecurity {
      * @param   string   $sString         Input string
      * @param   bool  $bHTML           If true check with strip_tags and stripslashes
      * @param   string   $sAllowableTags  Allowable tags if $bHTML is true
-     * @return  string  Converted string
+     * @return  string
+     *         Converted string
      */
     public static function toString($sString, $bHTML = false, $sAllowableTags = '') {
         $sString = (string) $sString;
@@ -134,7 +143,8 @@ class cSecurity {
      * @param   string        $sString          Input string
      * @param   cDb  $oDB              CONTENIDO database object
      * @param   bool       $bUndoAddSlashes  Flag for undo addslashes (optional, default: true)
-     * @return  string  Converted string
+     * @return  string
+     *         Converted string
      */
     public static function escapeDB($sString, $oDB, $bUndoAddSlashes = true) {
         if (!is_object($oDB)) {
@@ -151,7 +161,8 @@ class cSecurity {
      * Escaped an query-string with addslashes
      *
      * @param   string  $sString  Input string
-     * @return  string  Converted string
+     * @return  string
+     *         Converted string
      */
     public static function escapeString($sString) {
         $sString = (string) $sString;
@@ -165,7 +176,8 @@ class cSecurity {
      * Un-quote string quoted with escapeDB()
      *
      * @param   string  $sString  Input string
-     * @return  string  Converted string
+     * @return  string
+     *         Converted string
      */
     public static function unescapeDB($sString) {
         return stripslashes($sString);

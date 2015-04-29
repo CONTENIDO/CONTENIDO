@@ -35,15 +35,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cModuleLog extends cLog {
 
     /**
-     * @var cApiModule instance of module model
+     * @var cApiModule
+     *         instance of module model
      */
     private $_module;
 
     /**
      * Constructor of the module log.
      *
-     * @param mixed $writer Writer object (any subclass of cLogWriter), or false
-     *        if cLog should handle the writer creation
+     * @param mixed $writer
+     *         Writer object (any subclass of cLogWriter),
+     *         or false if cLog should handle the writer creation
      *
      */
     public function __construct($writer = false) {
@@ -62,8 +64,10 @@ class cModuleLog extends cLog {
      * setModule automatically buffers basic module information to the log to
      * assist the developer in debugging his modules.
      *
-     * @param int $idmod The module ID to use
-     * @throws cException if the module with the given idmod could not be loaded
+     * @param int $idmod
+     *         The module ID to use
+     * @throws cException
+     *         if the module with the given idmod could not be loaded
      */
     public function setModule($idmod) {
         $this->_module = new cApiModule($idmod);
@@ -76,7 +80,8 @@ class cModuleLog extends cLog {
      * Shortcut Handler Module.
      * Returns the ID and the name of the module.
      *
-     * @return string ID and name of the module
+     * @return string
+     *         ID and name of the module
      */
     public function shModule() {
         if ($this->_module->isLoaded() == false) {
@@ -85,6 +90,7 @@ class cModuleLog extends cLog {
 
         return $this->_module->get("idmod") . ": " . $this->_module->get("name");
     }
+
 }
 
 ?>

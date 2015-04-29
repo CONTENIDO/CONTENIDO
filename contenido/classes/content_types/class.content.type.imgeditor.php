@@ -629,7 +629,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Overwrite in subclasses if you use getDirectoryList!
      *
      * @param array $dirData directory information
-     * @return boolean
+     * @return bool
      *         whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData) {
@@ -642,7 +642,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed {
      * Overwrite in subclasses if you use getDirectoryList!
      *
      * @param array $dirData directory information
-     * @return boolean
+     * @return bool
      *         whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData) {

@@ -147,7 +147,8 @@ class cApiSystemPropertyCollection extends ItemCollection {
     /**
      * Returns all system properties.
      *
-     * @param string $orderBy Order by clause like "value ASC"
+     * @param string $orderBy
+     *         Order by clause like "value ASC"
      * @return array
      */
     public function fetchAll($orderBy = '') {
@@ -387,7 +388,8 @@ class cApiSystemProperty extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

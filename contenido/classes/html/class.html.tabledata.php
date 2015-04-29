@@ -38,7 +38,7 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table width
      *
      * @param string $width Width
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
      *         $this for chaining
      */
     public function setWidth($width) {
@@ -49,7 +49,7 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table height
      *
      * @param string $height Height
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
      *         $this for chaining
      */
     public function setHeight($height) {
@@ -60,7 +60,7 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table alignment
      *
      * @param string $alignment Alignment
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
      *         $this for chaining
      */
     public function setAlignment($alignment) {
@@ -71,7 +71,7 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table vertical alignment
      *
      * @param string $alignment Vertical Alignment
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
      *         $this for chaining
      */
     public function setVerticalAlignment($alignment) {
@@ -82,7 +82,7 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table background color
      *
      * @param string $color background color
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
      *         $this for chaining
      */
     public function setBackgroundColor($color) {
@@ -93,7 +93,7 @@ class cHTMLTableData extends cHTMLContentElement {
      * Sets the table colspan
      *
      * @param string $colspan Colspan
-     * @return cHTMLTableData $this
+     * @return cHTMLTableData
      *         $this for chaining
      */
     public function setColspan($colspan) {

@@ -172,7 +172,8 @@ class cApiCecHook {
      * number of passed parameter. NOTE: If no chain function is registered,
      * $_defaultReturnValue will be returned.
      *
-     * @return mixed Parameter changed/processed by chain functions.
+     * @return mixed
+     *         Parameter changed/processed by chain functions.
      */
     public static function executeAndReturn() {
         // get arguments
@@ -221,7 +222,8 @@ class cApiCecHook {
      * number of passed parameter. NOTE: If no chain function is registered,
      * $_defaultReturnValue will be returned.
      *
-     * @return mixed The break condition or it's default value
+     * @return mixed
+     *         The break condition or it's default value
      */
     public static function executeWhileBreakCondition() {
         // get arguments

@@ -26,8 +26,9 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
      * Constructor function.
      *
      * @global array $cfg
-     * @param string|bool $where The where clause in the select, usable to run
-     *        select by creating the instance
+     * @param string|bool $where
+     *         The where clause in the select, usable to run select by creating
+     *         the instance.
      */
     public function __construct($where = false) {
         global $cfg;
@@ -62,7 +63,8 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Removes the specified entries from the database by user's id.
      *
-     * @param int $userid Specifies the user id
+     * @param int $userid
+     *         Specifies the user id
      * @return bool
      *         True if the delete was successful
      */
@@ -74,7 +76,8 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Removes the specified entries from the database by token.
      *
-     * @param int $userid Specifies the user id
+     * @param int $userid
+     *         Specifies the user id
      * @return bool
      *         True if the delete was successful
      */
@@ -86,8 +89,10 @@ class cApiUserPasswordRequestCollection extends ItemCollection {
     /**
      * Returns all password requests available in the system
      *
-     * @param string $userid search for a specific user id
-     * @param string $orderBy SQL order by part
+     * @param string $userid
+     *         search for a specific user id
+     * @param string $orderBy
+     *         SQL order by part
      * @return array
      */
     public function fetchAvailableRequests($userid = false, $orderBy = 'id_pwreq ASC') {
@@ -140,7 +145,8 @@ class cApiUserPasswordRequest extends Item {
     /**
      * Constructor function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;

@@ -102,7 +102,8 @@ class cModuleFileTranslation extends cModuleHandler {
      *
      * @param string $type
      * @param string $name
-     * @return string value
+     * @return string
+     *         value
      */
     private function _getValueFromProperties($type, $name) {
         cApiPropertyCollection::reset();
@@ -222,7 +223,8 @@ class cModuleFileTranslation extends cModuleHandler {
      * Save the contents of the wordListArray in file.
      *
      * @param array $wordListArray
-     * @return boolean true if success else false
+     * @return bool
+     *         true if success else false
      */
     public function saveTranslationArray($wordListArray) {
         $fileName = $this->_modulePath . $this->_directories['lang'] . self::$fileName;

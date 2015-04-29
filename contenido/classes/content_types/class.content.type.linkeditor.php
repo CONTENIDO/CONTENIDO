@@ -28,12 +28,12 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
     /**
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -404,7 +404,8 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      * Generates a category list from the given category information (which is
      * typically built by {@link cContentTypeLinkeditor::buildCategoryArray}).
      *
-     * @param array $dirs directory information
+     * @param array $dirs
+     *         directory information
      * @return string
      *         HTML code showing a directory list
      */
@@ -745,7 +746,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @param array $dirData
      *         directory information
-     * @return boolean
+     * @return bool
      *         whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData) {
@@ -759,7 +760,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed {
      *
      * @param array $dirData
      *         directory information
-     * @return boolean
+     * @return bool
      *         whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData) {
