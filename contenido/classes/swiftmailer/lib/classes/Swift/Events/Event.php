@@ -11,27 +11,28 @@
 /**
  * The minimum interface for an Event.
  *
- * @package Swift
- * @subpackage Events
- * @author Chris Corbyn
+ * @author     Chris Corbyn
  */
 interface Swift_Events_Event
 {
     /**
      * Get the source object of this event.
+     *
      * @return object
      */
     public function getSource();
 
     /**
      * Prevent this Event from bubbling any further up the stack.
-     * @param boolean $cancel, optional
+     *
+     * @param bool    $cancel, optional
      */
     public function cancelBubble($cancel = true);
 
     /**
      * Returns true if this Event will not bubble any further up the stack.
-     * @return boolean
+     *
+     * @return bool
      */
     public function bubbleCancelled();
 }

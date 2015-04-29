@@ -10,13 +10,14 @@
 
 /**
  * Allows StreamFilters to operate on a stream.
- * @package Swift
- * @author Chris Corbyn
+ *
+ * @author  Chris Corbyn
  */
 interface Swift_Filterable
 {
     /**
      * Add a new StreamFilter, referenced by $key.
+     *
      * @param Swift_StreamFilter $filter
      * @param string             $key
      */
@@ -24,6 +25,7 @@ interface Swift_Filterable
 
     /**
      * Remove an existing filter using $key.
+     *
      * @param string $key
      */
     public function removeFilter($key);

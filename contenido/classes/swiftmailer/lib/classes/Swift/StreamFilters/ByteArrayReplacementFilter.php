@@ -10,9 +10,10 @@
 
 /**
  * Processes bytes as they pass through a buffer and replaces sequences in it.
+ *
  * This stream filter deals with Byte arrays rather than simple strings.
- * @package Swift
- * @author Chris Corbyn
+ *
+ * @author  Chris Corbyn
  */
 class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilter
 {
@@ -35,6 +36,7 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
 
     /**
      * Create a new ByteArrayReplacementFilter with $search and $replace.
+     *
      * @param array $search
      * @param array $replace
      */
@@ -94,8 +96,10 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
 
     /**
      * Returns true if based on the buffer passed more bytes should be buffered.
-     * @param  array   $buffer
-     * @return boolean
+     *
+     * @param array $buffer
+     *
+     * @return bool
      */
     public function shouldBuffer($buffer)
     {
@@ -106,7 +110,10 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
 
     /**
      * Perform the actual replacements on $buffer and return the result.
-     * @param  array $buffer
+     *
+     * @param array   $buffer
+     * @param int     $_minReplaces
+     *
      * @return array
      */
     public function filter($buffer, $_minReplaces = -1)
@@ -127,8 +134,7 @@ class Swift_StreamFilters_ByteArrayReplacementFilter implements Swift_StreamFilt
                     $search_pos = $search_pos[$buffer[$p]];
                     // We have a complete pattern, save, in case we don't find a better match later
                     if (isset($search_pos[- 1]) && $search_pos[-1] < $last_found
-                        && $search_pos[-1] > $_minReplaces)
-                    {
+                        && $search_pos[-1] > $_minReplaces) {
                         $last_found = $search_pos[-1];
                         $last_size = $search_pos[-2];
                     }
