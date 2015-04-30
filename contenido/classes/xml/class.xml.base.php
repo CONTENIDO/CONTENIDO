@@ -74,7 +74,8 @@ abstract class cXmlBase {
      * Returns the encoding of the XML document.
      *
      * @throws cException if there is no DOM document
-     * @return string encoding
+     * @return string
+     *     encoding
      */
     public function getEncoding() {
         if ($this->_dom === NULL) {
@@ -111,7 +112,8 @@ abstract class cXmlBase {
      * level in path.
      * @param string $path path to resolve
      *
-     * @return string resolved path
+     * @return string
+     *         resolved path
      */
     public static function resolvePath($path) {
         if (substr($path, 0, 1) != '/') {
@@ -142,7 +144,8 @@ abstract class cXmlBase {
      * @param string $path XPath to extend
      * @param int $level level
      *
-     * @return string extended XPath
+     * @return string
+     *         extended XPath
      */
     public static function getLevelXpath($path, $level) {
         $splits = explode('/', $path);
@@ -200,7 +203,8 @@ abstract class cXmlBase {
      *            should be added
      * @param string $rootTagName [optional] the root tag name which should be
      *            used - is only used when $xml is NULL!
-     * @return SimpleXMLElement the array as a SimpleXMLElement
+     * @return SimpleXMLElement
+     *         the array as a SimpleXMLElement
      */
 
     public static function arrayToXml($array, $xml = NULL, $rootTagName = 'root') {
@@ -271,7 +275,8 @@ abstract class cXmlBase {
      * Checks if a string is valid XML
      *
      * @param string $xmlString
-     * @return boolean True if the XML is valid
+     * @return bool
+     *         True if the XML is valid
      */
     public static function isValidXML($xmlString) {
         $testArray = null;
@@ -326,7 +331,8 @@ abstract class cXmlBase {
      * only empty values with the array keys of the array.
      *
      * @param array $array the array to clean
-     * @return array the cleaned array
+     * @return array
+     *         the cleaned array
      */
     private static function _cleanArray($array) {
         // replace empty arrays with empty strings recursively

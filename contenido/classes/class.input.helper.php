@@ -53,8 +53,8 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @param string $sSpaces Just some '&nbsp;' to show data hierarchically
      *        (used in conjunction with addCategories)
      *
-     * @return int Number of items added
-     *
+     * @return int
+     *         Number of items added
      */
     public function addArticles($iIDCat, $bColored = false, $bArtOnline = true, $sSpaces = '') {
         global $cfg, $lang;
@@ -130,8 +130,8 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @param bool $bWithArt Add also articles per category
      * @param bool $bArtOnline If true, show only online articles
      *
-     * @return int Number of items added
-     *
+     * @return int
+     *         Number of items added
      */
     public function addCategories($iMaxLevel = 0, $bColored = false, $bCatVisible = true, $bCatPublic = true, $bWithArt = false, $bArtOnline = true) {
         global $cfg, $client, $lang;
@@ -203,8 +203,8 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * @param string $sTypeRange Komma separated list of CONTENIDO type ids
      *        which may be in the resulting list (e.g. '1', '17', '28')
      *
-     * @return int Number of items added
-     *
+     * @return int
+     *         Number of items added
      */
     public function addTypesFromArt($iIDCatArt, $sTypeRange = '') {
         global $cfg, $lang;
@@ -251,7 +251,8 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      *
      * @param array $aElements Array with "values" of the cHTMLOptionElement to
      *        set
-     * @return cHTMLSelectElement $this for chaining
+     * @return cHTMLSelectElement
+     *         $this for chaining
      */
     public function setSelected($aElements) {
         if (is_array($this->_options) && is_array($aElements)) {
@@ -491,7 +492,8 @@ try {
     /**
      *
      * @param unknown_type $bPrint
-     * @return Ambigous <string, mixed>
+     * @return string|void
+     *         Complete template string or nothing
      */
     function render($bPrint = false) {
         $oTable = new cTemplate();

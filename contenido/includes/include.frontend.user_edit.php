@@ -47,7 +47,7 @@ if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "fr
     $_GET['idfrontenduser'] = $idfrontenduser;
     $_REQUEST['idfrontenduser'] = $_GET['idfrontenduser'];
     //show success message
-    $page->displayInfo(i18n("Created new user successfully!"));
+    $page->displayOk(i18n("Created new user successfully!"));
 }
 
 if ($idfrontenduser && $action != '') {
@@ -84,7 +84,7 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
     if (!empty($sReloadScript)) {
         $page->addScript($sReloadScript);
     }
-    $page->displayInfo(i18n("Delteted user successfully!"));
+    $page->displayOk(i18n("Delteted user successfully!"));
 }
 
 if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
@@ -154,7 +154,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
         }
 
         $feuser->store();
-        $page->displayInfo(i18n("Saved changes successfully!"));
+        $page->displayOk(i18n("Saved changes successfully!"));
     }
 
     if (count($messages) > 0) {

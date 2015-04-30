@@ -81,7 +81,8 @@ class cHTMLLink extends cHTMLContentElement {
 
     /**
      *
-     * @return Ambigous <cHTML, cHTML>
+     * @return cHTML
+     *         $this for chaining
      */
     public function enableAutomaticParameterAppend() {
         return $this->setEvent('click', 'var doit = true; try { var i = get_registered_parameters() } catch (e) { doit = false; }; if (doit == true) { this.href += i; }');
@@ -89,7 +90,8 @@ class cHTMLLink extends cHTMLContentElement {
 
     /**
      *
-     * @return Ambigous <cHTML, cHTML>
+     * @return cHTML
+     *         $this for chaining
      */
     public function disableAutomaticParameterAppend() {
         return $this->unsetEvent('click');

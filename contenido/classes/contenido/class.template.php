@@ -26,8 +26,8 @@ class cApiTemplateCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select where clause to use for selection (see
-     *        ItemCollection::select())
+     * @param string $select
+     *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
         global $cfg;
@@ -49,7 +49,8 @@ class cApiTemplateCollection extends ItemCollection {
      *
      * @param int $idclient
      * @param int $idlay
-     * @param int $idtplcfg  Either a valid template configuration id or an empty string
+     * @param int $idtplcfg
+     *         Either a valid template configuration id or an empty string
      * @param string $name
      * @param string $description
      * @param int $deletable
@@ -128,7 +129,8 @@ class cApiTemplate extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
+     * @param mixed $mId
+     *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
         global $cfg;
@@ -143,11 +145,15 @@ class cApiTemplate extends Item {
      * Load a template based on article, category, language and client id
      *
      * @todo avoid returning void
-     * @param int $idart article id
-     * @param int $idcat category id
-     * @param int $lang language id
-     * @param int $client client id
-     * @return void|boolean
+     * @param int $idart
+     *         article id
+     * @param int $idcat
+     *         category id
+     * @param int $lang
+     *         language id
+     * @param int $client
+     *         client id
+     * @return void|bool
      */
     public function loadByArticleOrCategory($idart, $idcat, $lang, $client) {
 
@@ -175,10 +181,11 @@ class cApiTemplate extends Item {
     /**
      * Userdefined setter for template fields.
      *
+     * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     * @todo should return return value of overloaded method
+     * @param bool $bSafe
+     *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
         switch ($name) {

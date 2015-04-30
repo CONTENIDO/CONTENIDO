@@ -33,6 +33,13 @@ class cRegistry {
     protected static $_appVars = array();
 
     /**
+     * Container for ok messages.
+     *
+     * @var array
+     */
+    protected static $_okMessages = array();
+
+    /**
      * Container for information messages.
      *
      * @var array
@@ -57,7 +64,8 @@ class cRegistry {
      * Function wich returns path after the last possible place changing via
      * configuration file.
      *
-     * @return string path
+     * @return string
+     *         path
      */
     public static function getBackendPath() {
         $cfg = self::getConfig();
@@ -68,7 +76,8 @@ class cRegistry {
      * Function wich returns the backend URL after the last possible place
      * changing via configuration file.
      *
-     * @return string URL
+     * @return string
+     *         URL
      */
     public static function getBackendUrl() {
         $cfg = self::getConfig();
@@ -80,7 +89,8 @@ class cRegistry {
      * configuration file.
      * The path point to the current client
      *
-     * @return string path
+     * @return string
+     *         path
      */
     public static function getFrontendPath() {
         $cfgClient = self::getClientConfig();
@@ -93,7 +103,8 @@ class cRegistry {
      * configuration file.
      * The path point to the current client
      *
-     * @return string URL
+     * @return string
+     *         URL
      */
     public static function getFrontendUrl() {
         $cfgClient = self::getClientConfig();
@@ -125,7 +136,7 @@ class cRegistry {
      * Checks if the edit mode in backend is active or not stored in the global
      * variable "edit"
      *
-     * @return boolean
+     * @return bool
      */
     public static function isBackendEditMode() {
         return self::_fetchGlobalVariable('edit', false);
@@ -331,7 +342,7 @@ class cRegistry {
     public static function getArea() {
         return self::_fetchGlobalVariable('area');
     }
-    
+
    /**
      * Returns the action stored in the global variable "action".
      *
@@ -340,7 +351,7 @@ class cRegistry {
     public static function getAction() {
         return self::_fetchGlobalVariable('action');
     }
-    
+
     /**
      * Returns the language when switching languages. Must be set for URL-Build.
      * Stored in the global variable "changelang".
@@ -350,7 +361,7 @@ class cRegistry {
     public static function getChangeLang() {
         return self::_fetchGlobalVariable('changelang');
     }
-    
+
     /**
      * Returns the global "idcat" and "idart" of the Error-Site stored in the
      * Client Configurations
@@ -360,13 +371,13 @@ class cRegistry {
     public static function getErrSite() {
          $idcat = self::_fetchGlobalVariable('errsite_idcat');
          $idart = self::_fetchGlobalVariable('errsite_idart');
-         
+
         return $errArtIds = array (
             'idcat' => $idcat[1],
             'idart' => $idart[1]
         );
     }
-    
+
     /**
      * Returns the permission object stored in the global variable "perm".
      *
@@ -616,6 +627,16 @@ class cRegistry {
     }
 
     /**
+     * Stores an ok massage in the cRegistry.
+     *
+     * @param string $message
+     */
+    public static function addOkMessage($message) {
+    	array_push(self::$_okMessages, $message);
+    }
+
+
+    /**
      * Stores an information massage in the cRegistry.
      *
      * @param string $message
@@ -640,6 +661,22 @@ class cRegistry {
      */
     public static function addWarningMessage($message) {
         array_push(self::$_warnMessages, $message);
+    }
+
+    /**
+     * Appends the last ok message that will be outputted
+     *
+     * @param string $message
+     */
+    public static function appendLastOkMessage($message) {
+    	if(count(self::$_okMessages) == 0) {
+    		self::$_okMessages[] = $message;
+    		return;
+    	}
+    	end(self::$_okMessages);
+    	$lastKey = key(self::$_okMessages);
+    	self::$_okMessages[$lastKey] .= "<br>" . $message;
+    	reset(self::$_okMessages);
     }
 
     /**
@@ -691,6 +728,15 @@ class cRegistry {
     }
 
     /**
+     * Return an array with ok message
+     *
+     * @return array
+     */
+    public static function getOkMessages() {
+    	return self::$_okMessages;
+    }
+
+    /**
      * Returns an array with information messages.
      *
      * @return array
@@ -721,7 +767,8 @@ class cRegistry {
      * Returns true if the DNT header is set and equal to 1.
      * Returns false if the DNT header is unset or not equal to 1.
      *
-     * @return boolean whether tracking is allowed by the DNT header
+     * @return bool
+     *         whether tracking is allowed by the DNT header
      */
     public static function isTrackingAllowed() {
         return (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] != 1) || !isset($_SERVER['HTTP_DNT']);
@@ -730,11 +777,11 @@ class cRegistry {
     /**
     * Returns the actual encoding (standard: utf-8)
     *
-    * @return string name of encoding
-    * @return boolean false if no language found
+    * @return string|bool
+    *         name of encoding or false if no language found
      */
     public static function getEncoding() {
-    
+
         $apiLanguage = new cApiLanguage(self::getLanguageId());
         if ($apiLanguage->isLoaded()) {
             return trim($apiLanguage->get('encoding'));

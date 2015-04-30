@@ -102,7 +102,7 @@ class cModuleTemplateHandler extends cModuleHandler {
 
     /**
      *
-     * @var unknown_type
+     * @var cGuiNotification
      */
     private $_notification = NULL;
 
@@ -235,8 +235,7 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * Checks write permissions for module template
      *
-     * @return $this warning notification
-     * @return boolean true
+     * @return void|bool
      */
     public function checkWritePermissions() {
         if ($this->moduleWriteable('template') == false && cFileHandler::exists(parent::getModulePath() . $this->_directories['template'])) {
@@ -250,8 +249,10 @@ class cModuleTemplateHandler extends cModuleHandler {
      * The method decide what action is send from
      * user (form).
      *
-     * @return string [new, delete,empty,save,rename, default]
-     * @throws cException if one of the filenames is not set
+     * @throws cException
+     *         if one of the filenames is not set
+     * @return string
+     *         [new, delete,empty,save,rename, default]
      */
     private function _getAction() {
         global $newModTpl, $deleteModTpl;
@@ -292,7 +293,8 @@ class cModuleTemplateHandler extends cModuleHandler {
     /**
      * Has the selected file changed.
      *
-     * @return boolean is the filename changed
+     * @return bool
+     *         is the filename changed
      */
     private function _hasSelectedFileChanged() {
         if ($this->_file != $this->_selectedFile) {
@@ -429,7 +431,8 @@ class cModuleTemplateHandler extends cModuleHandler {
      * @param cPermission $perm
      * @param cGuiNotification $notification
      * @param string $action
-     * @return int if user doesn't have permission return -1
+     * @return int
+     *         if user doesn't have permission return -1
      */
     private function _havePermission($perm, $notification, $action) {
         switch ($action) {

@@ -31,7 +31,8 @@ class cString {
      * @param  string  $find  String to find
      * @param  string  $replace  String to replace
      * @param  string  $subject String to process
-     * @return string Processed string
+     * @return string
+     *         Processed string
      */
     public static function iReplaceOnce($find, $replace, $subject) {
         $start = strpos(strtolower($subject), strtolower($find));
@@ -57,7 +58,8 @@ class cString {
      * @param  string  $find  String to find
      * @param  string  $replace  String to replace
      * @param  string  $subject  String to process
-     * @return string Processed string
+     * @return string
+     *         Processed string
      */
     public static function iReplaceOnceReverse($find, $replace, $subject) {
         $start = self::posReverse(strtolower($subject), strtolower($find));
@@ -84,7 +86,8 @@ class cString {
      * @param  string  $haystack   String to search in
      * @param  string  $needle     String to search for
      * @param  int     $start     Offset
-     * @return string Processed string
+     * @return string
+     *         Processed string
      */
     public static function posReverse($haystack, $needle, $start = 0) {
         $tempPos = strpos($haystack, $needle, $start);
@@ -146,7 +149,7 @@ class cString {
      *
      * @param string $haystack String to be searched
      * @param string $needle String to search for
-     * @return boolean
+     * @return bool
      */
     public static function contains($haystack, $needle) {
         return !(strpos($haystack, $needle) === false);
@@ -172,7 +175,8 @@ class cString {
     /**
      * This function checks if a given format is accepted by php's date function
      * @param string $format format according to date function specification
-     * @return bool true if format is correct, false otherwise
+     * @return bool
+     *         true if format is correct, false otherwise
      */
     public static function validateDateFormat($format) {
         // try to create a DateTime instance based on php's date function format specification

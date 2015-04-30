@@ -132,7 +132,7 @@ abstract class cContentTypeAbstract {
     /**
      * Whether to generate XHTML
      *
-     * @var boolean
+     * @var bool
      */
     protected $_useXHTML;
 
@@ -167,12 +167,12 @@ abstract class cContentTypeAbstract {
     /**
      * Initialises class attributes with values from cRegistry.
      *
-     * @param string $rawSettings the raw settings in an XML structure or as
-     *        plaintext
-     * @param int $id ID of the content type, e.g. 3 if CMS_TEASER[3] is
-     *        used
-     * @param array $contentTypes array containing the values of all content
-     *        types
+     * @param string $rawSettings
+     *         the raw settings in an XML structure or as plaintext
+     * @param int $id
+     *         ID of the content type, e.g. 3 if CMS_TEASER[3] is used
+     * @param array $contentTypes
+     *         array containing the values of all content types
      */
     public function __construct($rawSettings, $id, array $contentTypes) {
 
@@ -261,7 +261,8 @@ abstract class cContentTypeAbstract {
     /**
      * Since the content type code is evaled by php, the code has to be encoded.
      *
-     * @param string $code code to encode
+     * @param string $code
+     *         code to encode
      * @return string
      *         encoded code
      */
@@ -276,9 +277,9 @@ abstract class cContentTypeAbstract {
     /**
      * Builds an array with directory information from the given upload path.
      *
-     * @param string $uploadPath path to upload directory (optional, default:
-     *        root upload path
-     *        of client)
+     * @param string $uploadPath [optional]
+     *         path to upload directory
+     *         (default: root upload path of client)
      * @return array
      *         with directory information (keys: name, path, sub)
      */
@@ -326,7 +327,8 @@ abstract class cContentTypeAbstract {
      * Generates a directory list from the given directory information (which is
      * typically built by {@link cContentTypeAbstract::buildDirectoryList}).
      *
-     * @param array $dirs directory information
+     * @param array $dirs
+     *         directory information
      * @return string
      *         HTML code showing a directory list
      */
@@ -369,8 +371,9 @@ abstract class cContentTypeAbstract {
      * information is the currently active directory.
      * Overwrite in subclasses if you use generateDirectoryList!
      *
-     * @param array $dirData directory information
-     * @return boolean
+     * @param array $dirData
+     *         directory information
+     * @return bool
      *         whether the directory is the currently active directory
      */
     protected function _isActiveDirectory(array $dirData) {
@@ -382,8 +385,9 @@ abstract class cContentTypeAbstract {
      * should be shown expanded.
      * Overwrite in subclasses if you use getDirectoryList!
      *
-     * @param array $dirData directory information
-     * @return boolean
+     * @param array $dirData
+     *         directory information
+     * @return bool
      *         whether the directory should be shown expanded
      */
     protected function _shouldDirectoryBeExpanded(array $dirData) {
@@ -393,9 +397,11 @@ abstract class cContentTypeAbstract {
     /**
      * Checks whether the given $subDir is a subdirectory of the given $dir.
      *
-     * @param string $subDir the potential subdirectory
-     * @param string $dir the parent directory
-     * @return boolean
+     * @param string $subDir
+     *         the potential subdirectory
+     * @param string $dir
+     *         the parent directory
+     * @return bool
      *         whether the given $subDir is a subdirectory of $dir
      */
     protected function _isSubdirectory($subDir, $dir) {
@@ -435,7 +441,7 @@ abstract class cContentTypeAbstract {
     /**
      * Checks if this content type can be edited by a WYSIWYG editor
      *
-     * @return boolean
+     * @return bool
      */
     public function isWysiwygCompatible() {
         return false;

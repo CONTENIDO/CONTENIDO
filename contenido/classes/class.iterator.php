@@ -77,7 +77,8 @@ class cIterator {
      * This function returns the item, or false if no
      * items are left.
      *
-     * @return mixed item or false if nothing was found
+     * @return mixed
+     *         item or false if nothing was found
      */
     public function next() {
         $item = each($this->_aIteratorItems);
@@ -92,7 +93,8 @@ class cIterator {
     /**
      * count: Returns the number of items in the iterator
      *
-     * @return int Number of items
+     * @return int
+     *         Number of items
      */
     public function count() {
         return count($this->_aIteratorItems);

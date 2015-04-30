@@ -47,6 +47,16 @@
 .alertbox_info {
     background: #fff url(../images/info.gif) no-repeat 10px 7px;
 }
+
+.alertbox_ok_color {
+    border-color: #bfcf00;
+    color: #bfcf00;
+}
+
+.alertbox_ok {
+    background: #fff url(../images/but_ok.gif) no-repeat 10px 7px;
+}
+
 .alertbox_message {
     padding: 5px 20px 10px 10px;
     line-height: 1.9em;
@@ -64,10 +74,17 @@
     color: #435d06;
 }
 
-.notify_info {
-    border-color: #bfcf00;
+.notify_ok {
+	border-color: #bfcf00;
     background-image: url(../images/but_ok.gif);
     color: #435d06;
+    display: inline-block;
+}
+
+.notify_info {
+    border-color: #0060b1;
+    background-image: url(../images/info.gif);
+    color: #445d05;
     display: inline-block;
 }
 

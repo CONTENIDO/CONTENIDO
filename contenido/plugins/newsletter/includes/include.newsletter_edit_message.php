@@ -88,7 +88,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         }
 
         $oNewsletter->store();
-        $oPage->displayInfo(i18n("Saved changes successfully!", 'newsletter'));
+        $oPage->displayOk(i18n("Saved changes successfully!", 'newsletter'));
     } elseif ($oNewsletter->get("idart") > 0) {
         // Check, if html message article and template article are still
         // available

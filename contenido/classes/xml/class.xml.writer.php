@@ -47,7 +47,8 @@ class cXmlWriter extends cXmlBase {
      *        (optional)
      * @param bool $cdata whether the value is surround by CDATA blocks (optional)
      *
-     * @return DOMElement created DOM element
+     * @return DOMElement
+     *         created DOM element
      */
     public function addElement($name, $value = '', $rootElement = NULL, $attributes = array(), $cdata = false) {
         if ($value == '' || ($value != '' && $cdata == true)) {
@@ -75,7 +76,8 @@ class cXmlWriter extends cXmlBase {
      *
      * @param DOMElement $element DOM element to add attributes
      * @param array $attributes array of attributes
-     * @return DOMElement DOM element with assigned attributes
+     * @return DOMElement
+     *         DOM element with assigned attributes
      */
     protected function _addElementAttributes(DOMElement $element, array $attributes = array()) {
         if (count($attributes) == 0) {
@@ -92,7 +94,8 @@ class cXmlWriter extends cXmlBase {
     /**
      * Returns the complete XML tree as string.
      *
-     * @return string XML tree
+     * @return string
+     *         XML tree
      */
     public function saveToString() {
         return $this->_dom->saveXML();
@@ -104,8 +107,8 @@ class cXmlWriter extends cXmlBase {
      * @param string $directory path to destination directory
      * @param string $fileName name of the written file
      * @throws cException if the directory is not writable
-     * @return boolean state of saving process (true if file was created, false
-     *         otherwise)
+     * @return bool
+     *         state of saving process (true if file was created, false otherwise)
      */
     public function saveToFile($directory, $fileName) {
         if (is_writable($directory) === false) {

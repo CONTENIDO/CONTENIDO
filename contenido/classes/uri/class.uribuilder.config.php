@@ -92,7 +92,8 @@ class cUriBuilderConfig {
      *
      * @throws cException If cUriBuilder configuration wasn't
      *         initialized before
-     * @return string cUriBuilder name
+     * @return string
+     *         cUriBuilder name
      */
     public static function getUriBuilderName() {
         if (!is_array(self::$_aUriBuilderCfg) || !isset(self::$_aUriBuilderCfg['name'])) {
@@ -107,7 +108,8 @@ class cUriBuilderConfig {
      *
      * @throws cException If cUriBuilder configuration wasn't
      *         initialized before
-     * @return array cUriBuilder configuration
+     * @return array
+     *         cUriBuilder configuration
      */
     public static function getConfig() {
         if (!is_array(self::$_aUriBuilderCfg)) {

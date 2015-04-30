@@ -47,20 +47,20 @@ class cGuiSourceEditor extends cGuiPage {
 
     /**
      * Read-only mode or not
-     * @var boolean
+     * @var bool
      */
     protected $readOnly;
 
     /**
      * Versioning or not
-     * @var boolean
+     * @var bool
      */
     protected $versioning;
 
     /**
      * The default constructor. Initializes the class and its parent
      * @param string $filename Name of the edited file
-     * @param boolean $versioning Is versioning activated or not. Defaults to true
+     * @param bool $versioning Is versioning activated or not. Defaults to true
      * @param string $filetype The type of the file. If ommited the class tries to determine the type from the area
      * @param string $filepath Path to the file. If ommited the class tries to determine the path from the type and the area
      */
@@ -186,7 +186,7 @@ class cGuiSourceEditor extends cGuiPage {
                 ));
 
                 // display the information and reload the frame
-                $this->displayInfo(i18n('File deleted successfully!'));
+                $this->displayOk(i18n('File deleted successfully!'));
                 $this->abortRendering();
 
                 $this->reloadFrame('left_bottom', array());
@@ -278,7 +278,7 @@ class cGuiSourceEditor extends cGuiPage {
         if(cFileHandler::write($this->filepath, $req['code'])) {
             // store the file information
             $fileInfo->store();
-            $this->displayInfo(i18n('Changes saved successfully!'));
+            $this->displayOk(i18n('Changes saved successfully!'));
         } else {
             $this->displayError(i18n('Couldn\'t save the changes! Check the file system permissions.'));
         }

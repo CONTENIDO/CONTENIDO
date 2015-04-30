@@ -108,7 +108,8 @@ class cModuleSearch extends cModuleHandler {
     /**
      * Count result
      *
-     * @return int count in result
+     * @return int
+     *         count in result
      */
     public function getModulCount() {
         return count($this->_result);
@@ -118,7 +119,8 @@ class cModuleSearch extends cModuleHandler {
      * Search for modules in db columns and in filesystem (input and output
      * files)
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function searchForAllModules() {
         global $cfg, $client;
@@ -178,7 +180,8 @@ class cModuleSearch extends cModuleHandler {
      * Main method for the class. Search for modules in db and in input and
      * outputs files.
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function getModules() {
         $modules = array();
@@ -222,7 +225,8 @@ class cModuleSearch extends cModuleHandler {
     /**
      * Search for modules in "name" column of modul
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function findeModulWithName() {
         global $cfg, $client;
@@ -251,7 +255,8 @@ class cModuleSearch extends cModuleHandler {
     /**
      * Search for modules in input file of the module
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function findModulWithInput() {
         global $cfg, $client;
@@ -283,7 +288,8 @@ class cModuleSearch extends cModuleHandler {
     /**
      * Search for modules in output of modules of current client
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function findModulWithOutput() {
          global $cfg, $client;
@@ -317,7 +323,8 @@ class cModuleSearch extends cModuleHandler {
     /**
      * Search for modules in type column
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function findModuleWithType() {
         global $cfg, $client;
@@ -348,7 +355,8 @@ class cModuleSearch extends cModuleHandler {
     /**
      * Search for modules in description column of modules
      *
-     * @return array result
+     * @return array
+     *         result
      */
     public function findModuleWithDescription() {
         global $cfg, $client;

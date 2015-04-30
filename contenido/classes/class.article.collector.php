@@ -199,13 +199,13 @@ class cArticleCollector implements SeekableIterator, Countable {
         if (count($this->_startArticles) > 0) {
             if ($this->_options['start'] == false) {
                 $sqlStartArticles = "a.idartlang NOT IN ('" . implode("','", $this->_startArticles) . "') AND ";
-            } 
-            
+            }
+
             if ($this->_options['startonly'] == true) {
                 $sqlStartArticles = "a.idartlang IN ('" . implode("','", $this->_startArticles) . "') AND ";
             }
         }
-        
+
         if ($this->_options['startonly'] == true && count($this->_startArticles) == 0) {
             return;
         }
@@ -260,7 +260,7 @@ class cArticleCollector implements SeekableIterator, Countable {
      * Compatibility method for old ArticleCollection class. Returns the next
      * article.
      *
-     * @return bool cApiArticleLanguage
+     * @return bool|cApiArticleLanguage
      */
     public function nextArticle() {
         $next = $this->current();
@@ -344,7 +344,7 @@ class cArticleCollector implements SeekableIterator, Countable {
     /**
      * Method "key" of the implemented iterator.
      *
-     * @return int mixed
+     * @return int
      */
     public function key() {
         return $this->_currentPosition;

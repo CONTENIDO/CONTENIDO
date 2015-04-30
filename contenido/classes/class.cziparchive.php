@@ -27,9 +27,10 @@ class cZipArchive {
      * dot or are not valid according to CONTENIDO standards
      * (validateFilename()).
      *
-     * @param string $dirPath
-     * @return array of files
      * @see cFileHandler::validateFilename()
+     * @param string $dirPath
+     * @return array
+     *         of files
      */
     public static function readExistingFiles($dirPath) {
 
@@ -42,7 +43,7 @@ class cZipArchive {
         if (false === ($handle = cDirHandler::read($dirPath))) {
             return array();
         }
-        
+
         $array = array();
         foreach ($handle as $file) {
             if (cFileHandler::fileNameBeginsWithDot($file)) {
@@ -66,7 +67,7 @@ class cZipArchive {
      * This function checks if the given path already exists.
      *
      * @param string $dirPath
-     * @return boolean
+     * @return bool
      */
     public static function isExtracted($dirPath) {
         if (!file_exists($dirPath)) {

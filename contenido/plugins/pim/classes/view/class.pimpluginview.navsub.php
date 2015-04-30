@@ -43,6 +43,12 @@ class PimPluginViewNavSub {
     // Varianle for counted nav entries
     protected $_NavCount = 0;
 
+    // Variable for filepath to CONTENIDO base navigation.xml
+    protected $_contenidoLanguageFileLang;
+
+    // Variable for subnavigation name
+    protected $_SubNav;
+
     // Class variable for DOMDocument
     protected $_DOMDocument;
 
@@ -80,6 +86,29 @@ class PimPluginViewNavSub {
     }
 
     /**
+     * Set contenidoLanguageFileLang variable
+     * (Filepath to CONTENIDO base navigation.xml)
+     *
+     * @param string $path
+     * @return boolean
+     */
+    private function _setNavigationXmlPath($path) {
+    	$this->_contenidoLanguageFileLang = $path;
+    	return true;
+    }
+
+    /**
+     * Get contenidoLanguageFileLang variable
+     * (Filepath to CONTENIDO base navigation.xml)
+     *
+     * @return string contenigoLanguageFileLang
+     */
+    private function _getNavigationXmlPath() {
+    	return $this->_contenidoLanguageFileLang;
+	}
+
+
+    /**
      * Construct function
      */
     public function __construct() {
@@ -114,24 +143,24 @@ class PimPluginViewNavSub {
 
         $cfg = cRegistry::getConfig();
 
-        // get contents of plugin.xml file
+        // Get contents of plugin.xml file
         $dataPluginXml = file_get_contents($cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->PluginFoldername . DIRECTORY_SEPARATOR . self::PLUGIN_CONFIG_FILENAME);
 
-        // load xml strings
+        // Load xml strings
         $xmlPluginXml = simplexml_load_string($dataPluginXml);
 
-        // count nav_sub entries for this plugin
+        // Count nav_sub entries for this plugin
         $this->_NavCount = count($xmlPluginXml->contenido->nav_sub->nav);
 
-        // no navigation configured, so we can stop this process
+        // No navigation configured, so we can stop this process
         if ($this->_NavCount == 0) {
             return i18n('No navigation configuration founded', 'pim');
         }
 
-        // added nav_sub entries to variable XmlNavSub
+        // Added nav_sub entries to variable XmlNavSub
         self::$XmlNavSub = $xmlPluginXml->contenido->nav_sub;
 
-        // check for CONTENIDO navigation entries
+        // Check for CONTENIDO navigation entries
         $contenidoNav = $this->_getCONTENIDONavigation();
 
         if ($contenidoNav != "") { // CONTENIDO navigation entry founded
@@ -157,42 +186,60 @@ class PimPluginViewNavSub {
     private function _getCONTENIDONavigation() {
         $cfg = cRegistry::getConfig();
 
-        // path to CONTENIDO navigation xml file
-        $contenidoLanguageFileLang = $cfg['path']['contenido'] . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME;
+        // Path to CONTENIDO navigation xml file
+        $this->_setNavigationXmlPath($cfg['path']['contenido'] . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME);
 
-        if (cFileHandler::exists($contenidoLanguageFileLang)) {
+        if (cFileHandler::exists($this->_getNavigationXmlPath())) {
 
             for ($i = 0; $i < $this->_NavCount; $i++) {
 
-                // get only navigation value (pattern)
+                // Get only navigation value (pattern)
                 preg_match(self::PATTERN, self::$XmlNavSub->nav[$i], $matches);
 
-                // get single navigation values
+                // Get single navigation values
                 $navSubEntries = explode("/", $matches[1]);
 
                 if ($navSubEntries[0] == "navigation") { // CONTENIDO navigation
                                                          // case
-                    $query = '//language/navigation/' . $navSubEntries[1] . '/main';
+
+                	// Define subnavigation name (example: navigation/content/linkchecker)
+                    $this->_SubNav = $this->_getTranslatedNavigationName('//language/navigation/' . $navSubEntries[1] . '/' . $navSubEntries[2] . '/main');
+
+                    // Define navigation name (example: navigation/content)
+                    return $this->_getTranslatedNavigationName('//language/navigation/' . $navSubEntries[1] . '/main');
                 } else { // No CONTENIDO navigation case
                     return false;
-                }
-
-                // load CONTENIDO navigation xml file
-                $this->_DOMDocument->load($contenidoLanguageFileLang);
-
-                // create new DOMXPath
-                $xpath = new DOMXPath($this->_DOMDocument);
-
-                // run defined query
-                $entriesLang = $xpath->query($query);
-
-                foreach ($entriesLang as $entry) {
-                    return $entry->firstChild->nodeValue;
                 }
             }
         } else {
             return false;
         }
+    }
+
+    /**
+     * Get translated navigation name
+     *
+     * @param string $query
+     * @return xml String of translated navigation nane
+     */
+    private function _getTranslatedNavigationName($query = '') {
+
+    	if ($query == '') {
+    		return false;
+    	}
+
+    	// Load CONTENIDO navigation xml file
+    	$this->_DOMDocument->load($this->_getNavigationXmlPath());
+
+    	// Create new DOMXPath
+    	$xpath = new DOMXPath($this->_DOMDocument);
+
+    	// Run defined query
+    	$entriesLang = $xpath->query($query);
+
+    	foreach ($entriesLang as $entry) {
+    		return $entry->firstChild->nodeValue;
+    	}
     }
 
     /**
@@ -204,7 +251,7 @@ class PimPluginViewNavSub {
     private function _checkAndGetPluginNavigation() {
         $cfg = cRegistry::getConfig();
 
-        // path to CONTENIDO navigation xml file
+        // Path to CONTENIDO navigation xml file
         $contenidoLanguageFileLang = $cfg['path']['contenido'] . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME;
 
         if (cFileHandler::exists($contenidoLanguageFileLang)) {
@@ -214,7 +261,7 @@ class PimPluginViewNavSub {
                 $this->_ApiNavMainCollection->setWhere('idnavm', cSecurity::toInteger(self::$XmlNavSub->nav[$i]->attributes()->navm));
                 $this->_ApiNavMainCollection->query();
 
-                // if no entry at nav_sub database table founded,
+                // If no entry at nav_sub database table founded,
                 // return false
                 if ($this->_ApiNavMainCollection->count() == 0) {
                     return false;
@@ -222,16 +269,16 @@ class PimPluginViewNavSub {
 
                 $row = $this->_ApiNavMainCollection->next();
 
-                // define query
+                // Define query
                 $query = '//' . $row->get('location');
 
-                // load plugin navigation xml file
+                // Load plugin navigation xml file
                 $this->_DOMDocument->load($contenidoLanguageFileLang);
 
-                // create new DOMXPath
+                // Create new DOMXPath
                 $xpath = new DOMXPath($this->_DOMDocument);
 
-                // run defined query
+                // Run defined query
                 $entriesLang = $xpath->query($query);
 
                 foreach ($entriesLang as $entry) {
@@ -253,57 +300,61 @@ class PimPluginViewNavSub {
         global $belang;
         $cfg = cRegistry::getConfig();
 
-        // path to plugin specific navigation xml file with selected backend
+        // Path to plugin specific navigation xml file with selected backend
         // language
         $pluginLanguageFileLang = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $this->PluginFoldername . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . $cfg['lang'][$belang];
 
         if (cFileHandler::exists($pluginLanguageFileLang) && $contenidoNav != "") {
 
-            // initializing founded variable
+            // Initializing founded variable
             $founded = "";
 
             for ($i = 0; $i < $this->_NavCount; $i++) {
 
-                // get only navigation value (pattern)
+                // Get only navigation value (pattern)
                 preg_match(self::PATTERN, self::$XmlNavSub->nav[$i], $matches);
 
-                // define query
+                // Define query
                 $query = '//' . $matches[1];
 
-                // load plugin navigation xml file
+                // Load plugin navigation xml file
                 $this->_DOMDocument->load($pluginLanguageFileLang);
 
-                // create new DOMXPath
+                // Create new DOMXPath
                 $xpath = new DOMXPath($this->_DOMDocument);
 
-                // run defined query
+                // Run defined query
                 $entriesLang = $xpath->query($query);
 
-                // prevent misarrangement
+                // Prevent misarrangement
                 if ($entriesLang->length == 0) {
                     return false;
                 }
 
                 foreach ($entriesLang as $entry) {
 
-                    // if we have more then one navigation entry, define
+                    // If we have more then one navigation entry, define
                     // menuname for other entries
                     if (self::$XmlNavSub->nav[$i]->attributes()->level == 0 && $this->_NavCount > 1) {
                         $menuName = $entry->nodeValue;
                         continue;
+                    } elseif (self::$XmlNavSub->nav[$i]->attributes()->level == 1 && $menuName == '') {
+                    	// If we have an plugin with level one and no defined menuName, use subnavigation name
+                    	// as menuName
+						$menuName = $this->_SubNav;
                     }
 
                     $founded[] = i18n('You find this plugin at navigation section', 'pim') . " &quot;{$contenidoNav}&quot; " . i18n('as', 'pim') . (($menuName != "") ? ' &quot;' . $menuName . '&quot; ->' : '') . " &quot;{$entry->nodeValue}&quot;<br />";
                 }
             }
 
-            // prevent double entries
+            // Prevent double entries
             $founded = array_unique($founded);
 
-            // initializing output variable
+            // Initializing output variable
             $output = "";
 
-            // convert founded array to an string
+            // Convert founded array to an string
             foreach ($founded as $entry) {
                 $output .= $entry;
             }

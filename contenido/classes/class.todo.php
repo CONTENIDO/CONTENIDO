@@ -67,7 +67,7 @@ class TODOCollection extends cApiCommunicationCollection {
      * @param unknown_type $notimail
      * @param unknown_type $notibackend
      * @param string $recipient
-     * @return Ambigous <cApiCommunication, Item, object>
+     * @return cApiCommunication
      */
     public function createItem($itemtype, $itemid, $reminderdate, $subject, $content, $notimail, $notibackend, $recipient) {
         $item = parent::create();

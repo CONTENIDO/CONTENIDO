@@ -122,10 +122,6 @@
 ./classes/content_types/class.content.type.raw.php
 ./classes/content_types/class.content.type.teaser.php
 ./classes/content_types/class.content.type.text.php
-./classes/datatypes/class.datatype.currency.php
-./classes/datatypes/class.datatype.datetime.php
-./classes/datatypes/class.datatype.number.php
-./classes/datatypes/class.datatype.php
 ./classes/db/class.db.driver.abstract.php
 ./classes/db/class.db.driver.handler.php
 ./classes/db/class.db.driver.mysql.php
@@ -243,6 +239,7 @@
 ./classes/swiftmailer/lib/classes/Swift/ByteStream/AbstractFilterableInputStream.php
 ./classes/swiftmailer/lib/classes/Swift/ByteStream/ArrayByteStream.php
 ./classes/swiftmailer/lib/classes/Swift/ByteStream/FileByteStream.php
+./classes/swiftmailer/lib/classes/Swift/ByteStream/TemporaryFileByteStream.php
 ./classes/swiftmailer/lib/classes/Swift/CharacterReader/GenericFixedWidthReader.php
 ./classes/swiftmailer/lib/classes/Swift/CharacterReader/UsAsciiReader.php
 ./classes/swiftmailer/lib/classes/Swift/CharacterReader/Utf8Reader.php
@@ -285,7 +282,6 @@
 ./classes/swiftmailer/lib/classes/Swift/IoException.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/ArrayKeyCache.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/DiskKeyCache.php
-./classes/swiftmailer/lib/classes/Swift/KeyCache/DummyKeyCache.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/KeyCacheInputStream.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/NullKeyCache.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/SimpleKeyCacheInputStream.php
@@ -303,6 +299,8 @@
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/NativeQpContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/PlainContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/QpContentEncoder.php
+./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/QpContentEncoderProxy.php
+./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/RawContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/EmbeddedFile.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/EncodingObserver.php
@@ -316,6 +314,7 @@
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/DateHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/IdentificationHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/MailboxHeader.php
+./classes/swiftmailer/lib/classes/Swift/Mime/Headers/OpenDKIMHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/ParameterizedHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/PathHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/UnstructuredHeader.php
@@ -356,6 +355,14 @@
 ./classes/swiftmailer/lib/classes/Swift/ReplacementFilterFactory.php
 ./classes/swiftmailer/lib/classes/Swift/RfcComplianceException.php
 ./classes/swiftmailer/lib/classes/Swift/SendmailTransport.php
+./classes/swiftmailer/lib/classes/Swift/SignedMessage.php
+./classes/swiftmailer/lib/classes/Swift/Signer.php
+./classes/swiftmailer/lib/classes/Swift/Signers/BodySigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/DKIMSigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/DomainKeySigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/HeaderSigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/OpenDKIMSigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/SMimeSigner.php
 ./classes/swiftmailer/lib/classes/Swift/SmtpTransport.php
 ./classes/swiftmailer/lib/classes/Swift/Spool.php
 ./classes/swiftmailer/lib/classes/Swift/SpoolTransport.php
@@ -367,7 +374,9 @@
 ./classes/swiftmailer/lib/classes/Swift/Transport/AbstractSmtpTransport.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/CramMd5Authenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/LoginAuthenticator.php
+./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/NTLMAuthenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/PlainAuthenticator.php
+./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/XOAuth2Authenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Authenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/AuthHandler.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/EsmtpHandler.php
@@ -393,6 +402,7 @@
 ./classes/swiftmailer/lib/dependency_maps/transport_deps.php
 ./classes/swiftmailer/lib/mime_types.php
 ./classes/swiftmailer/lib/preferences.php
+./classes/swiftmailer/lib/swiftmailer_generate_mimes_config.php
 ./classes/swiftmailer/lib/swift_init.php
 ./classes/swiftmailer/lib/swift_required.php
 ./classes/swiftmailer/lib/swift_required_pear.php
@@ -415,7 +425,6 @@
 ./classes/version/class.version.layout.php
 ./classes/version/class.version.module.php
 ./classes/version/class.version.php
-./classes/widgets/class.widgets.actionbutton.php
 ./classes/xml/class.xml.base.php
 ./classes/xml/class.xml.reader.php
 ./classes/xml/class.xml.writer.php
@@ -684,7 +693,6 @@
 ./main.loginform.php
 ./main.php
 ./scripts/articleObject.js.php
-./scripts/help.js.php
 ./scripts/index.php
 ./scripts/iZoom.js.php
 ./scripts/langref.php
@@ -703,7 +711,6 @@
 ./templates/standard/index.php
 ./templates/standard/main.loginform.html
 ./templates/standard/submenu.html
-./templates/standard/template.admin_frontend.html
 ./templates/standard/template.backend_search_results.html
 ./templates/standard/template.blank.html
 ./templates/standard/template.breadcrumb.html
@@ -742,7 +749,6 @@
 ./templates/standard/template.debug.visible.html
 ./templates/standard/template.debug.visibleadv.html
 ./templates/standard/template.deco.html
-./templates/standard/template.default_subnav.html
 ./templates/standard/template.error_page.html
 ./templates/standard/template.files_overview.html
 ./templates/standard/template.file_subnav.html
@@ -822,7 +828,6 @@
 ./templates/standard/template.style_left_top.html
 ./templates/standard/template.subnav.html
 ./templates/standard/template.subnav_blank.html
-./templates/standard/template.subnav_noleft.html
 ./templates/standard/template.symbolhelp.html
 ./templates/standard/template.system_configuration.html
 ./templates/standard/template.system_integrity.html

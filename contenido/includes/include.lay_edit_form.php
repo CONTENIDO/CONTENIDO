@@ -58,7 +58,7 @@ if ((!$readOnly) && $action == "lay_new") {
             if ($layoutInFile->saveLayout('') == false) {
                 $page->displayError(i18n("Cant save layout in filesystem!"));
             } else {
-                $page->displayInfo(i18n("Created layout succsessfully!"));
+                $page->displayOk(i18n("Created layout succsessfully!"));
             }
         }
     }
@@ -68,7 +68,7 @@ if ((!$readOnly) && $action == "lay_new") {
         $page->displayError(i18n("Permission denied"));
     } else {
         $layout->virgin = true;
-        $page->displayInfo(i18n("Layout deleted"));
+        $page->displayOk(i18n("Layout deleted"));
     }
 } elseif ($action == "lay_sync") {
     // Synchronize layout from db and filesystem
@@ -227,7 +227,7 @@ if (!$layout->virgin) {
     // disable codemirror editing if readonly is on
     if($readOnly) {
         $oCodeMirror->setProperty("readOnly", "true");
-        
+
         $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
     }
     $page->addScript($oCodeMirror->renderScript());

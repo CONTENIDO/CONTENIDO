@@ -31,7 +31,7 @@ if (!$perm->have_perm_area_action('url_shortener')) {
 if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm->have_perm_area_action('url_shortener', 'url_shortener_delete')) {
     $shortUrlColl = new cApiShortUrlCollection();
     if ($shortUrlColl->delete($_POST['idshorturl'])) {
-        $page->displayInfo(i18n('The short URL has successfully been deleted!', 'url_shortener'));
+        $page->displayOk(i18n('The short URL has successfully been deleted!', 'url_shortener'));
     }
 } else if ($action === 'url_shortener_edit' && !empty($_POST['idshorturl']) && $perm->have_perm_area_action('url_shortener', 'url_shortener_edit')) {
     // only do something if shorturl has been changed

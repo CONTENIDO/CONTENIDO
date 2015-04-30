@@ -198,7 +198,7 @@ class cHttpRequestSocket extends cHttpRequest {
      * @param bool $return Wether the function should return the servers response
      * @param string $method GET or PUT
      * @param bool $returnHeaders Wether the headers should be included in the response
-     * @return string|boolean
+     * @return string|bool
      */
     protected function sendRequest($return, $method, $returnHeaders = false) {
         if (!(strpos($this->url, 'http') === 0)) {

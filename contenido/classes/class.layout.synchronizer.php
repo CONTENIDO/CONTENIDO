@@ -119,7 +119,7 @@ class cLayoutSynchronizer {
      * @param string $dirNameOld
      * @param string $dirNameNew
      * @param int $client
-     * @return boolean
+     * @return bool
      */
     private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client) {
         if (rename($dir . $dirNameOld, $dir . $dirNameNew) == false) {
@@ -136,7 +136,7 @@ class cLayoutSynchronizer {
      *
      * @param string $alias layout name
      * @param int $idclient client id
-     * @return boolean
+     * @return bool
      */
     private function _isExistInTable($alias, $idclient) {
         // Select depending from idclient all moduls wiht the name $name
@@ -246,7 +246,7 @@ class cLayoutSynchronizer {
      * Synchronize the Layout directory with the lay-table und the lay-table
      * with directory.
      *
-     * @return boolean
+     * @return bool
      */
     public function synchronize() {
         // update file and layout

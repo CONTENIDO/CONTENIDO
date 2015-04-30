@@ -41,7 +41,8 @@ class cApiMailLogCollection extends ItemCollection {
      * @param string|array $bcc
      * @param string $subject
      * @param string $body
-     * @param string $created timestamp!
+     * @param string $created
+     *         timestamp!
      * @param string $charset
      * @param string $contentType
      * @return cApiMailLog

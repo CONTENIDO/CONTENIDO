@@ -421,7 +421,8 @@ class cSystemtest {
      * )
      *
      * @param string $sFilename The path to the file
-     * @return boolean array if the file can't be accessed
+     * @return bool|array
+     *         if the file can't be accessed
      */
     protected function getFileInfo($sFilename) {
         if (!cFileHandler::exists($sFilename)) {
@@ -486,7 +487,7 @@ class cSystemtest {
      * Returns true if the file is writeable
      *
      * @param string $filename The path to the file
-     * @return boolean
+     * @return bool
      */
     protected function canWriteFile($filename) {
         clearstatcache();
@@ -501,7 +502,7 @@ class cSystemtest {
      * Returns true if the given file is a directory and if it is writeable
      *
      * @param string $dirname The path to the directory
-     * @return boolean
+     * @return bool
      */
     protected function canWriteDir($dirname) {
         clearstatcache();
@@ -511,7 +512,8 @@ class cSystemtest {
     /**
      * Returns the current user which runs the PHP interpreter
      *
-     * @return number boolean ID or false if unable to determine the user
+     * @return number|bool
+     *         ID or false if unable to determine the user
      */
     protected function getServerUID() {
         if (function_exists("posix_getuid")) {
@@ -541,7 +543,8 @@ class cSystemtest {
     /**
      * Returns the current group which runs the PHP interpreter
      *
-     * @return number boolean ID or false if unable to determine the group
+     * @return number|bool
+     *         ID or false if unable to determine the group
      */
     protected function getServerGID() {
         if (function_exists("posix_getgid")) {
@@ -566,7 +569,8 @@ class cSystemtest {
      * of the given file
      *
      * @param string $file The path to the file
-     * @return int CON_PREDICT_*
+     * @return int
+     *         CON_PREDICT_*
      */
     protected function predictCorrectFilepermissions($file) {
         // Check if the system is a windows system. If yes, we can't predict
@@ -632,7 +636,8 @@ class cSystemtest {
      * Gets a PHP setting with ini_get
      *
      * @param string $setting A PHP setting
-     * @return mixed The value of the PHP setting or NULL if ini_get is disabled
+     * @return mixed
+     *         The value of the PHP setting or NULL if ini_get is disabled
      */
     protected function getPHPIniSetting($setting) {
         // Avoid errors if ini_get is in the disable_functions directive
@@ -677,8 +682,8 @@ class cSystemtest {
      * @param string $host The database host
      * @param string $username The database user
      * @param string $password The database user password
-     * @return boolean cDb an array with the cDB object on the first place and a
-     *         boolean on the second
+     * @return array
+     *         with the cDB object on the first place and a bool on the second
      */
     protected function doMySQLConnect($host, $username, $password) {
         $aOptions = array(
@@ -714,7 +719,8 @@ class cSystemtest {
      * Checks if a given extension is loaded.
      *
      * @param string $extension A PHP extension
-     * @return int Returns one of the CON_EXTENSION constants
+     * @return int
+     *         Returns one of the CON_EXTENSION constants
      */
     public function isPHPExtensionLoaded($extension) {
         $value = extension_loaded($extension);
@@ -735,7 +741,7 @@ class cSystemtest {
     /**
      * Returns true if the interpreter is run on Windows
      *
-     * @return boolean
+     * @return bool
      */
     public function isWindows() {
         if (strtolower(substr(PHP_OS, 0, 3)) == "win") {
@@ -748,7 +754,8 @@ class cSystemtest {
     /**
      * Test PHP function
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testPHPVersion() {
         if (version_compare(phpversion(), CON_SETUP_MIN_PHP_VERSION, '>=') == true) {
@@ -760,7 +767,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function getSafeModeStatus() {
         if ($this->getPHPIniSetting("safe_mode") == "1") {
@@ -772,7 +780,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function getSafeModeGidStatus() {
         if ($this->getPHPIniSetting("safe_mode_gid") == "1") {
@@ -784,7 +793,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testXMLParserCreate() {
         return function_exists("xml_parser_create");
@@ -792,7 +802,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testFileUploadSetting() {
         return $this->getPHPIniSetting('file_uploads');
@@ -800,7 +811,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testMagicQuotesRuntimeSetting() {
         return !$this->getPHPIniSetting('magic_quotes_runtime');
@@ -808,7 +820,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testMagicQuotesSybaseSetting() {
         return !$this->getPHPIniSetting('magic_quotes_sybase');
@@ -816,7 +829,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testMaxExecutionTime() {
         return intval($this->getPHPIniSetting('max_execution_time')) >= 30;
@@ -824,7 +838,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testZIPArchive() {
         return class_exists("ZipArchive");
@@ -832,7 +847,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testMemoryLimit() {
         $memoryLimit = $this->getAsBytes($this->getPHPIniSetting("memory_limit"));
@@ -841,7 +857,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testPHPSQLSafeMode() {
         return !$this->getPHPIniSetting('sql.safe_mode');
@@ -849,7 +866,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testDOMDocument() {
         return class_exists("DOMDocument");
@@ -858,7 +876,8 @@ class cSystemtest {
     /**
      *
      * @param string $ext
-     * @return bool true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testPHPExtension($ext) {
         return $this->isPHPExtensionLoaded($ext) == CON_EXTENSION_AVAILABLE;
@@ -866,7 +885,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testIconv() {
         return function_exists("iconv");
@@ -874,7 +894,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testGDGIFRead() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
@@ -885,7 +906,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testGDGIFWrite() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
@@ -896,7 +918,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testGDJPEGRead() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
@@ -907,7 +930,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testGDJPEGWrite() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
@@ -918,7 +942,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testGDPNGRead() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
@@ -929,7 +954,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testGDPNGWrite() {
         if (($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_AVAILABLE) && ($this->isPHPExtensionLoaded('gd') != self::CON_EXTENSION_CANTCHECK)) {
@@ -940,7 +966,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testMySQLExtension() {
         if ($this->isPHPExtensionLoaded("mysql") == self::CON_EXTENSION_AVAILABLE) {
@@ -952,7 +979,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testMySQLiExtension() {
         if ($this->isPHPExtensionLoaded("mysqli") == self::CON_EXTENSION_AVAILABLE) {
@@ -967,7 +995,8 @@ class cSystemtest {
      * @param string $host
      * @param string $username
      * @param string $password
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testMySQLModeStrict($host, $username, $password) {
         // host, user and password
@@ -994,7 +1023,8 @@ class cSystemtest {
      * @param string $host
      * @param string $username
      * @param string $password
-     * @return int 1 if the test passed and > 1 if not
+     * @return int
+     *         1 if the test passed and > 1 if not
      */
     public function testMySQL($host, $username, $password) {
         list($handle, $status) = $this->doMySQLConnect($host, $username, $password);
@@ -1024,7 +1054,8 @@ class cSystemtest {
      *
      * @param bool $testConfig
      * @param bool $testFrontend
-     * @return bool true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testFilesystem($testConfig = true, $testFrontend = true) {
         global $cfgClient;
@@ -1172,7 +1203,8 @@ class cSystemtest {
      * @param bool $dir True if the $filename is a directory
      * @throws Exception Throws a generic Exception in the event that the
      *         permissions are wrong
-     * @return boolean Returns true if everything is fine
+     * @return bool
+     *         Returns true if everything is fine
      */
     protected function testSingleFile($filename, $severity, $dir = false) {
         if (strpos($filename, $this->_config["path"]["frontend"]) === 0) {
@@ -1259,7 +1291,8 @@ class cSystemtest {
 
     /**
      *
-     * @return boolean true if the test passed and false if not
+     * @return bool
+     *         true if the test passed and false if not
      */
     public function testFrontendFolderCreation() {
         $directories = array(
@@ -1336,7 +1369,8 @@ class cSystemtest {
     /**
      * Checks the available image resizer classes and functions
      *
-     * @return int Returns one of the CON_IMAGERESIZE constants
+     * @return int
+     *         Returns one of the CON_IMAGERESIZE constants
      */
     public function checkImageResizer() {
         $iGDStatus = $this->isPHPExtensionLoaded('gd');

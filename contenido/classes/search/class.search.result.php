@@ -180,7 +180,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * @param int $art_id Id of an article
      * @param string $cms_type
      * @param int $id
-     * @return string Content of an article, specified by it's content type
+     * @return string
+     *         Content of an article, specified by it's content type
      */
     public function getContent($art_id, $cms_type, $id = 0) {
         $article = new cApiArticleLanguage();
@@ -193,8 +194,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * @param int $art_id Id of an article
      * @param string $cms_type Content type
      * @param int $cms_nr
-     * @return string Content of an article in search result, specified by its
-     *         type
+     * @return string
+     *         Content of an article in search result, specified by its type
      */
     public function getSearchContent($art_id, $cms_type, $cms_nr = NULL) {
         $cms_type = strtoupper($cms_type);
@@ -284,7 +285,8 @@ class cSearchResult extends cSearchBaseAbstract {
      * Returns articles in page.
      *
      * @param int $page_id
-     * @return array Articles in page $page_id
+     * @return array
+     *         Articles in page $page_id
      */
     public function getSearchResultPage($page_id) {
         $this->_resultPage = $page_id;
@@ -313,7 +315,8 @@ class cSearchResult extends cSearchBaseAbstract {
     /**
      *
      * @param int $art_id Id of an article
-     * @return int Similarity between searchword and matching word in article
+     * @return int
+     *         Similarity between searchword and matching word in article
      */
     public function getSimilarity($art_id) {
         return $this->_searchResult[$art_id]['similarity'];
@@ -322,7 +325,8 @@ class cSearchResult extends cSearchBaseAbstract {
     /**
      *
      * @param int $art_id Id of an article
-     * @return number of matching searchwords found in article
+     * @return int
+     *         number of matching searchwords found in article
      */
     public function getOccurrence($art_id) {
         $aOccurence = $this->_searchResult[$art_id]['occurence'];
@@ -349,9 +353,10 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $artid
-     * @return int Category Id
      * @todo Is not job of search, should be outsourced!
+     * @param int $artid
+     * @return int
+     *         Category Id
      */
     public function getArtCat($artid) {
         $sql = "SELECT idcat FROM " . $this->cfg['tab']['cat_art'] . "

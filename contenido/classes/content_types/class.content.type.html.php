@@ -111,7 +111,7 @@ class cContentTypeHtml extends cContentTypeAbstract {
     /**
      * This content type and its derived types can be edited by a WYSIWYG editor
      *
-     * @return boolean
+     * @return bool
      */
     public function isWysiwygCompatible() {
         return true;

@@ -182,7 +182,8 @@ class cPasswordRequest {
      * passwort reset request and sending process
      *
      * @param bool $return Return or print template
-     * @return string rendered HTML code
+     * @return string
+     *         rendered HTML code
      */
     public function renderForm($return = false) {
         // if feature is not enabled, do nothing
@@ -544,7 +545,8 @@ class cPasswordRequest {
      * Save request into db for future validity check
      * @param string $token Token used to check for validity at user confirmation part
      * @param DateTime Expiration time of reset request validity
-     * @return bool whether password request could be safed successfully
+     * @return bool
+     *         whether password request could be safed successfully
      */
     protected function _safePwResetRequest($token, DateTime $expiration) {
         $oUserPwRequestCol = new cApiUserPasswordRequestCollection();
@@ -601,7 +603,8 @@ class cPasswordRequest {
     /**
      * Function generates new token
      *
-     * @return string The new token
+     * @return string
+     *         The new token
      */
     protected function _generateToken() {
         // possible chars which were used in password

@@ -320,7 +320,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
         if (count($aMessage) > 0) {
             $oPage->displayWarning(implode("<br>", $aMessage)) . "<br>";
         }
-        $oPage->displayInfo(sprintf(i18n("%d recipients added, %d recipients skipped (e-mail already exists) and %d invalid recipients/e-mail addresses ignored. Invalid recipients are shown (if any).", 'newsletter'), $iAdded, $iDublettes, $iInvalid));
+        $oPage->displayOk(sprintf(i18n("%d recipients added, %d recipients skipped (e-mail already exists) and %d invalid recipients/e-mail addresses ignored. Invalid recipients are shown (if any).", 'newsletter'), $iAdded, $iDublettes, $iInvalid));
         if ($iAdded > 0) {
             $oPage->setReload();
         }
