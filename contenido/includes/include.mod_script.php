@@ -116,7 +116,7 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
 
     // Show message for user
     if ($bEdit === true) {
-        $page->displayInfo(i18n('Created new javascript file successfully'));
+        $page->displayOk(i18n('Created new javascript file successfully'));
     } else {
         $page->displayError(i18n('Could not create a new javascript file!'));
     }
@@ -126,7 +126,7 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
 if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'send') {
 
     if ($sFilename != $sTempFilename) {
-        
+
         try {
             if (true !== cFileHandler::validateFilename($sFilename)) {
                 throw new cInvalidArgumentException('The file ' . $sFilename . ' could not be validated.');
@@ -161,9 +161,9 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
 
     // Show message for user
     if ($sFilename != $sTempFilename) {
-        $page->displayInfo(i18n('Renamed and saved changes successfully!'));
+        $page->displayOk(i18n('Renamed and saved changes successfully!'));
     } else {
-        $page->displayInfo(i18n('Saved changes successfully!'));
+        $page->displayOk(i18n('Saved changes successfully!'));
     }
 }
 

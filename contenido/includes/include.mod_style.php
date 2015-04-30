@@ -117,9 +117,9 @@ if ((!$readOnly) && $actionRequest == $sActionCreate && $_REQUEST['status'] == '
     $page->reloadFrame('right_top', $urlReload);
 
     if ($ret && $bEdit) {
-        $page->displayInfo(i18n('Created new css file successfully'));
+        $page->displayOk(i18n('Created new css file successfully'));
     } else {
-        $page->displayInfo(i18n('Could not create a new css file!'));
+        $page->displayError(i18n('Could not create a new css file!'));
     }
 }
 
@@ -155,11 +155,11 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $_REQUEST['status'] == 'se
     }
 
     if ($sFilename != $sTempFilename && $bEdit) {
-        $page->displayInfo(i18n('Renamed and saved changes successfully!'));
+        $page->displayOk(i18n('Renamed and saved changes successfully!'));
     } elseif (false === $bEdit) {
         $page->displayError(i18n("Can't save file!"));
     } else {
-        $page->displayInfo(i18n('Saved changes successfully!'));
+        $page->displayOk(i18n('Saved changes successfully!'));
     }
 }
 

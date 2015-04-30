@@ -67,12 +67,12 @@ if (!is_numeric($request["idclientslang"]) || $request["idclientslang"] == 0) {
 
 if ($_POST['action'] == 'clientsettings_save_item') {
     $oClient->setProperty($request['cstype'], $request['csname'], $request['csvalue'], $request['csidproperty']);
-    $oPage->displayInfo(i18n("Save changes successfully!"));
+    $oPage->displayOk(i18n("Save changes successfully!"));
 }
 
 if ($_GET['action'] == 'clientsettings_delete_item') {
     $oClient->deleteProperty($_GET['idprop']);
-    $oPage->displayInfo(i18n("Deleted item successfully!"));
+    $oPage->displayOk(i18n("Deleted item successfully!"));
 }
 
 $oList->setHeader(i18n('Type'), i18n('Name'), i18n('Value'), '&nbsp;');
