@@ -73,8 +73,8 @@ Lizenzen von verwendeten Produkten / Licenses of used third party products:
   Lizenz:      GNU Lesser General Public License 2.1 or later
   Information: http://www.smarty.net/
 
-- SwiftMailer 4.2.1
-  Lizenz:      GNU Lesser General Public License v3
+- SwiftMailer 5.4.0
+  Lizenz:      MIT License
   Information: http://swiftmailer.org/
 
 - TinyMCE 3.5.10
