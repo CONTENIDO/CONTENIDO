@@ -410,11 +410,11 @@ class PimPluginSetup {
     }
 
     /**
-     * Info function
+     * Info function, used displayOk CONTENIDO method
      * @param string $message
      */
     protected static function info($message = '') {
-        return self::$_GuiPage->displayInfo($message);
+        return self::$_GuiPage->displayOk($message);
     }
 
 }
