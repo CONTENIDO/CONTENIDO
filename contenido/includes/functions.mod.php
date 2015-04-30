@@ -89,7 +89,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 
         // Name of module changed
         if ($change == true) {
-            cRegistry::addInfoMessage(i18n('Renamed module successfully!'));
+            cRegistry::addOkMessage(i18n('Renamed module successfully!'));
             $cApiModule->set('name', $name);
             $cApiModule->set('template', $template);
             $cApiModule->set('description', $description);
@@ -141,7 +141,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             }
 
             if ($retInput === true && $retOutput === true) {
-                cRegistry::addInfoMessage(i18n('Saved module successfully!'));
+                cRegistry::addOkMessage(i18n('Saved module successfully!'));
             } else {
                 $messageIfError = '<br>' . i18n("Can't save input !");
                 $messageIfError .= '<br>' . i18n("Can't save output !");
@@ -153,7 +153,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
         if ($retInput == true && $retOutput == true) {
             // regenerate code cache because module input and output got saved
             $cApiModule->store();
-            cRegistry::addInfoMessage(i18n('Saved module successfully!'));
+            cRegistry::addOkMessage(i18n('Saved module successfully!'));
         } else {
             $messageIfError = i18n("Can't save input !");
             $messageIfError .= ' ' . i18n("Can't save output !");

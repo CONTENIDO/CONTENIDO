@@ -39,7 +39,7 @@ while ($db->nextRecord()) { // set a new rights list for this user
 
 if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == "group_edit")) {
     if (saveGroupRights() === true) {
-        cRegistry::addInfoMessage(i18n('Changes saved'));
+        cRegistry::addOkMessage(i18n('Changes saved'));
     } else {
         // no error handling implemented yet.
     }
