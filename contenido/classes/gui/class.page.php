@@ -746,6 +746,9 @@ class cGuiPage {
         $output = '';
 
         foreach ($this->_objects as $obj) {
+            if (is_string($obj)) {
+                $output .= $obj;
+            }
             if (!method_exists($obj, 'render')) {
                 continue;
             }
