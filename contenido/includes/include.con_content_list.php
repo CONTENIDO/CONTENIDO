@@ -340,7 +340,7 @@ if (($action == 'savecontype' || $action == 10)) {
                 }
             }
             if($error === false) {
-                $page->displayInfo(i18n("Raw data was imported successfully"));
+                $page->displayOk(i18n("Raw data was imported successfully"));
             }
 
         } catch (Exception $e) {

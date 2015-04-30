@@ -42,9 +42,9 @@ if ($action == "systemsettings_save_item") {
         if (!in_array($request['systype'] . '_' . $request['sysname'], $aManagedValues)) {
             setSystemProperty($request['systype'], $request['sysname'], $request['sysvalue'], (int) $request['csidsystemprop']);
             if (isset($x)) {
-                $page->displayInfo(i18n('Saved changes successfully!'), 1);
+                $page->displayOk(i18n('Saved changes successfully!'), 1);
             } else {
-                $page->displayInfo(i18n('Created new item successfully!'), 1);
+                $page->displayOk(i18n('Created new item successfully!'), 1);
             }
         } else {
             $page->displayWarning(i18n('Please set this property in systemsettings directly'), 1);
@@ -57,7 +57,7 @@ if ($action == "systemsettings_delete_item") {
         $page->displayError(i18n("You don't have the permission to make changes here."), 1);
     } else {
         deleteSystemProperty($request['systype'], $request['sysname']);
-        $page->displayInfo(i18n('Deleted item successfully!'), 1);
+        $page->displayOk(i18n('Deleted item successfully!'), 1);
     }
 }
 

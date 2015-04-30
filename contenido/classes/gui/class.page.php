@@ -116,6 +116,14 @@ class cGuiPage {
     protected $_info;
 
     /**
+     * A ok which will be used to display an error with the help of
+     * cGuiNotification
+     *
+     * @var string
+     */
+    protected $_ok;
+
+    /**
      * If true, just display the message and don't render the template
      *
      * @var bool
@@ -560,6 +568,15 @@ class cGuiPage {
     }
 
     /**
+     * Display a ok
+     *
+     * @param string $msg The ok message
+     */
+    public function displayOk($msg) {
+    	$this->_ok .= $msg . '<br>';
+    }
+
+    /**
      * Sets an array (or a single object) of cHTML objects which build up the
      * site instead of a content template.
      * NOTE: All these objects must have a render() method or else they won't be
@@ -707,6 +724,11 @@ class cGuiPage {
         global $notification;
 
         // Get messages from cRegistry
+        $okMessages = cRegistry::getOkMessages();
+        foreach ($okMessages as $message) {
+        	$this->displayOk($message);
+        }
+
         $infoMessages = cRegistry::getInfoMessages();
         foreach ($infoMessages as $message) {
             $this->displayInfo($message);
@@ -723,6 +745,9 @@ class cGuiPage {
         }
 
         $text = '';
+        if ($this->_ok != '') {
+        	$text .= $notification->returnNotification('ok', $this->_ok) . '<br>';
+        }
         if ($this->_info != '') {
             $text .= $notification->returnNotification('info', $this->_info) . '<br>';
         }

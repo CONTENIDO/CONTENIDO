@@ -252,7 +252,7 @@ if ($action == 'con_translate_edit') {
     }
 
     if (!$error) {
-        $page->displayInfo(i18n('Saved translation successfully!'));
+        $page->displayOk(i18n('Saved translation successfully!'));
     } else {
         $page->displayError(i18n("Can't save translation!"));
     }

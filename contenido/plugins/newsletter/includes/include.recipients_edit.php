@@ -42,7 +42,7 @@ if ($action == "recipients_create" && $perm->have_perm_area_action($area, $actio
     $purgedrecipients = $oRecipients->purge($timeframe);
     /* backslashdollar: There is a problem translating \$ - it is either not recognized or translated correctly (using poEdit) */
     if ($purgedrecipients > 0) {
-        $oPage->displayInfo(sprintf(str_replace("backslashdollar", "\$", i18n("%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')),$purgedrecipients,$timeframe),0);
+        $oPage->displayOk(sprintf(str_replace("backslashdollar", "\$", i18n("%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')),$purgedrecipients,$timeframe),0);
     } else {
         $oPage->displayInfo(sprintf(str_replace("backslashdollar", "\$", i18n("There are no recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')), 0, $timeframe),0);
     }

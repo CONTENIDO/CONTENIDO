@@ -33,6 +33,13 @@ class cRegistry {
     protected static $_appVars = array();
 
     /**
+     * Container for ok messages.
+     *
+     * @var array
+     */
+    protected static $_okMessages = array();
+
+    /**
      * Container for information messages.
      *
      * @var array
@@ -620,6 +627,16 @@ class cRegistry {
     }
 
     /**
+     * Stores an ok massage in the cRegistry.
+     *
+     * @param string $message
+     */
+    public static function addOkMessage($message) {
+    	array_push(self::$_okMessages, $message);
+    }
+
+
+    /**
      * Stores an information massage in the cRegistry.
      *
      * @param string $message
@@ -644,6 +661,22 @@ class cRegistry {
      */
     public static function addWarningMessage($message) {
         array_push(self::$_warnMessages, $message);
+    }
+
+    /**
+     * Appends the last ok message that will be outputted
+     *
+     * @param string $message
+     */
+    public static function appendLastOkMessage($message) {
+    	if(count(self::$_okMessages) == 0) {
+    		self::$_okMessages[] = $message;
+    		return;
+    	}
+    	end(self::$_okMessages);
+    	$lastKey = key(self::$_okMessages);
+    	self::$_okMessages[$lastKey] .= "<br>" . $message;
+    	reset(self::$_okMessages);
     }
 
     /**
@@ -692,6 +725,15 @@ class cRegistry {
         $lastKey = key(self::$_warnMessages);
         self::$_warnMessages[$lastKey] .= "<br>" . $message;
         reset(self::$_warnMessages);
+    }
+
+    /**
+     * Return an array with ok message
+     *
+     * @return array
+     */
+    public static function getOkMessages() {
+    	return self::$_okMessages;
     }
 
     /**

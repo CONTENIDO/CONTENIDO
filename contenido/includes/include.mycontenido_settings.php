@@ -48,7 +48,7 @@ if ($action == "mycontenido_editself") {
 
             if ($iResult == cApiUser::PASS_OK) {
                 $notidisplayed = true;
-                $cpage->displayInfo(i18n("Changes saved"));
+                $cpage->displayOk(i18n("Changes saved"));
             } else {
                 $notidisplayed = true;
                 $cpage->displayError(cApiUser::getErrorString($iResult));
@@ -101,7 +101,7 @@ if ($action == "mycontenido_editself") {
     }
 
     if ($user->store() && !$notidisplayed) {
-        $cpage->displayInfo(i18n("Changes saved"));
+        $cpage->displayOk(i18n("Changes saved"));
     } else if (!$notidisplayed) {
         $cpage->displayError(i18n("An error occured while saving user info."));
     }
