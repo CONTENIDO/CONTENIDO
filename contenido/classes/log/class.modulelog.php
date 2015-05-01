@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the module log class.
  *
@@ -92,5 +93,3 @@ class cModuleLog extends cLog {
     }
 
 }
-
-?>

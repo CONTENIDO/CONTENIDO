@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the module handler class.
  * TODO: Rework comments of this class.
@@ -169,7 +170,8 @@ class cModuleHandler {
      * output will be named
      * [Modulname]_input.php , [Modulname]_output.php
      *
-     * @param int $idmod the id of the module
+     * @param int $idmod
+     *         the id of the module
      * @throws cException if the module directory can not be created
      */
     public function __construct($idmod = NULL) {
@@ -266,8 +268,10 @@ class cModuleHandler {
     /**
      * Get the cleaned name
      *
-     * @param string $name mod name
-     * @param string $defaultChar default character
+     * @param string $name
+     *         mod name
+     * @param string $defaultChar
+     *         default character
      * @return string
      */
     public static function getCleanName($name, $defaultChar = '_') {
@@ -286,8 +290,7 @@ class cModuleHandler {
     /**
      * Init the vars of the class.
      *
-     * @param array $modulData
-     *            [idmod],[name],[input],[output],[forntedpath],[client]
+     * @param mixed $db
      */
     public function initWithDatabaseRow($db) {
         if (is_object($db)) {
@@ -298,7 +301,8 @@ class cModuleHandler {
     /**
      * Init the vars of the class, make a query to the Db
      *
-     * @param int $idmod the id of the modul
+     * @param int $idmod
+     *         the id of the modul
      */
     protected function _initByModule($idmod = NULL) {
         if ((int) $idmod == 0) {
@@ -382,7 +386,8 @@ class cModuleHandler {
     /**
      * Returns random characters
      *
-     * @param int $count amount of characters
+     * @param int $count
+     *         amount of characters
      * @return string
      */
     protected function getRandomCharacters($count) {
@@ -395,8 +400,10 @@ class cModuleHandler {
     /**
      * Check if exist a file
      *
-     * @param string $type js | template | css the directory of the file
-     * @param string $fileName file name
+     * @param string $type
+     *         js | template | css the directory of the file
+     * @param string $fileName
+     *         file name
      * @return bool
      */
     public function existFile($type, $fileName) {
@@ -406,8 +413,10 @@ class cModuleHandler {
     /**
      * Delete file
      *
-     * @param string $type js |template | css directory of the file
-     * @param string $fileName file name
+     * @param string $type
+     *         js |template | css directory of the file
+     * @param string $fileName
+     *         file name
      * @return bool
      */
     public function deleteFile($type, $fileName) {
@@ -421,9 +430,12 @@ class cModuleHandler {
     /**
      * Create and save new file
      *
-     * @param string $type css | js | template directory of the file
-     * @param string $fileName file name
-     * @param string $content content of the file
+     * @param string $type
+     *         css | js | template directory of the file
+     * @param string $fileName
+     *         file name
+     * @param string $content
+     *         content of the file
      * @return bool
      *         true if file can be created, and false otherwise
      */
@@ -478,9 +490,12 @@ class cModuleHandler {
     /**
      * Rename a file
      *
-     * @param string $type css | js | template directory of the file
-     * @param string $oldFileName old name of the file
-     * @param string $newFileName the new name of the file
+     * @param string $type
+     *         css | js | template directory of the file
+     * @param string $oldFileName
+     *         old name of the file
+     * @param string $newFileName
+     *         the new name of the file
      * @return bool
      *         by success return true
      */
@@ -509,8 +524,10 @@ class cModuleHandler {
     /**
      * Get the content of file, modul js or css or template or php
      *
-     * @param string $directory where in module should we look
-     * @param string $fileTyp css or js
+     * @param string $directory
+     *         where in module should we look
+     * @param string $fileTyp
+     *         css or js
      * @param string $fileName
      * @return string|bool
      */
@@ -556,7 +573,8 @@ class cModuleHandler {
     /**
      * Get all files from a module directory
      *
-     * @param string $moduleDirectory template css or js...
+     * @param string $moduleDirectory
+     *         template css or js...
      * @return array
      */
     public function getAllFilesFromDirectory($moduleDirectory) {
@@ -656,8 +674,10 @@ class cModuleHandler {
     /**
      * Can write/create a file
      *
-     * @param string $fileName file name
-     * @param string $directory directory where is the file
+     * @param string $fileName
+     *         file name
+     * @param string $directory
+     *         directory where is the file
      * @return bool
      *         success true else false
      */
@@ -677,7 +697,8 @@ class cModuleHandler {
     /**
      * Check write permissions for this module
      *
-     * @param string $type php oder template
+     * @param string $type
+     *         php oder template
      * @return bool
      *         true or false
      */
@@ -698,7 +719,7 @@ class cModuleHandler {
     /**
      * Save a string into the file (_output.php).
      *
-     * @param string
+     * @param string $output
      * @return bool
      *         if the action (save contents into the file _output.php) is
      *         successful return true else false
@@ -729,7 +750,7 @@ class cModuleHandler {
     /**
      * Save a string into the file (_input.php)
      *
-     * @param string
+     * @param string $input
      * @return bool
      *         if the action (save contents into the file _input.php) is
      *         successful return true else false
@@ -761,9 +782,12 @@ class cModuleHandler {
      * This method save a xml file with modul information.
      * If the params not set, get the value from this
      *
-     * @param string $moduleName name of the modul
-     * @param string $description description of the modul
-     * @param string $type type of the modul
+     * @param string $moduleName
+     *         name of the modul
+     * @param string $description
+     *         description of the modul
+     * @param string $type
+     *         type of the modul
      * @param string $alias
      * @return true
      *         if success else false
@@ -857,8 +881,10 @@ class cModuleHandler {
     /**
      * Rename a modul and the input and output files.
      *
-     * @param string $old old name of the modul
-     * @param string $new new name of the modul
+     * @param string $old
+     *         old name of the modul
+     * @param string $new
+     *         new name of the modul
      *
      * @return bool
      *         true if success
@@ -936,8 +962,8 @@ class cModuleHandler {
     /**
      * Test module code
      *
-     * @param $inputType string code field type
-     *
+     * @param $inputType
+     *         string code field type
      * @return array
      *         bool state, string errorMessage
      */
@@ -1030,9 +1056,12 @@ class cModuleHandler {
     /**
      * Check module php code
      *
-     * @param string $code Code to evaluate
-     * @param string $id Unique ID for the test function
-     * @param string $mode true if start in php mode, otherwise false
+     * @param string $code
+     *         Code to evaluate
+     * @param string $id
+     *         Unique ID for the test function
+     * @param string $mode
+     *         true if start in php mode, otherwise false
      *
      * @return array
      *         bool state, string errorMessage

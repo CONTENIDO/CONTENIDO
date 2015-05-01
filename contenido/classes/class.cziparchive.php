@@ -84,8 +84,10 @@ class cZipArchive {
      * existing files.
      *
      * @param string $file zip file
-     * @param string $extractPath extraction path
-     * @param string $extractPathUserInput user specified extraction path
+     * @param string $extractPath
+     *         extraction path
+     * @param string $extractPathUserInput
+     *         user specified extraction path
      */
     public static function extractOverRide($file, $extractPath, $extractPathUserInput = NULL) {
 
@@ -118,9 +120,12 @@ class cZipArchive {
     /**
      * This function contains the functionality to extract archive.
      *
-     * @param string $file zip file
-     * @param string $extractPath extraction path
-     * @param string $extractPathUserInput user specified extraction path
+     * @param string $file
+     *         zip file
+     * @param string $extractPath
+     *         extraction path
+     * @param string $extractPathUserInput
+     *         user specified extraction path
      */
     public static function extract($file, $extractPath, $extractPathUserInput = NULL) {
         if (isset($extractPathUserInput)) {
@@ -167,9 +172,12 @@ class cZipArchive {
     /**
      * This function contains the functionality to create archives.
      *
-     * @param string $zipFilePath file path
-     * @param string $dirPath directory path
-     * @param array $filePathes files to store in archive
+     * @param string $zipFilePath
+     *         file path
+     * @param string $dirPath
+     *         directory path
+     * @param array $filePathes
+     *         files to store in archive
      */
     public static function createZip($zipFilePath, $dirPath, array $filePathes) {
         $zip = new ZipArchive();

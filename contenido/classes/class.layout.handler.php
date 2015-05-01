@@ -266,8 +266,10 @@ class cLayoutHandler {
     /**
      * Can write/create a file
      *
-     * @param string $fileName file name
-     * @param string $directory directory where is the file
+     * @param string $fileName
+     *         file name
+     * @param string $directory
+     *         directory where is the file
      * @return bool
      *         true on success else false
      */
@@ -425,8 +427,10 @@ class cLayoutHandler {
      * Use it for upgrade.
      *
      * @throws cException if the layout could not be saved
-     * @param cDb $adb database object
-     * @param array $cfg CONTENIDO config array
+     * @param cDb $adb
+     *         database object
+     * @param array $cfg
+     *         CONTENIDO config array
      * @param int $clientId
      */
     public static function upgrade($adb, $cfg, $clientId) {

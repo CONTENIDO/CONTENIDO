@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the navigation GUI class.
  *
@@ -58,12 +59,14 @@ class cGuiNavigation {
     /**
      * Extracts caption from the XML language file including plugins extended multilang version.
      *
-     * @param  string  $location  The location of navigation item caption. Feasible values are
-     *                            - "{xmlFilePath};{XPath}": Path to XML File and the XPath value
-     *                                                       separated by semicolon. This type is used
-     *                                                       to extract caption from a plugin XML file.
-     *                            - "{XPath}": XPath value to extract caption from CONTENIDO XML file
-     * @throws cException if XML language files could not be loaded
+     * @param  string  $location
+     *         The location of navigation item caption. Feasible values are
+     *         - "{xmlFilePath};{XPath}": Path to XML File and the XPath value
+     *         separated by semicolon. This type is used
+     *         to extract caption from a plugin XML file.
+     *         - "{XPath}": XPath value to extract caption from CONTENIDO XML file
+     * @throws cException
+     *         if XML language files could not be loaded
      * @return string
      *         The found caption
      */
@@ -175,7 +178,8 @@ class cGuiNavigation {
     /**
      * Function to build the CONTENIDO header document for backend
      *
-     * @param  int  $lang  The language to use for header doc creation
+     * @param  int  $lang
+     *         The language to use for header doc creation
      */
     public function buildHeader($lang) {
         global $cfg, $sess, $client, $auth, $cfgClient;

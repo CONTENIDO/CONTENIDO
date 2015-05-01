@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLFormElement class.
  *
@@ -74,7 +75,8 @@ class cHTMLFormElement extends cHTML {
      * The first example sets the disabled flag, the second one
      * removes the disabled flag.
      *
-     * @param string $disabled Sets the disabled-flag if non-empty
+     * @param string $disabled
+     *         Sets the disabled-flag if non-empty
      * @return cHTMLFormElement
      *         $this for chaining
      */
@@ -93,7 +95,8 @@ class cHTMLFormElement extends cHTML {
      * The tab
      * index needs to be numeric, bigger than 0 and smaller than 32767.
      *
-     * @param int $tabindex Desired tab index
+     * @param int $tabindex
+     *         Desired tab index
      * @return cHTMLFormElement
      *         $this for chaining
      */
@@ -108,8 +111,8 @@ class cHTMLFormElement extends cHTML {
     /**
      * Sets the access key for this element.
      *
-     * @param string $accesskey The length of the access key. May be A-Z and
-     *        0-9.
+     * @param string $accesskey
+     *         The length of the access key. May be A-Z and 0-9.
      * @return cHTMLFormElement
      *         $this for chaining
      */

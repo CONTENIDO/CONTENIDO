@@ -80,7 +80,8 @@ class cMailer extends Swift_Mailer {
     /**
      * Constructor
      *
-     * @param Swift_Transport $transport [optional] the transport type
+     * @param Swift_Transport $transport [optional]
+     *         the transport type
      */
     public function __construct($transport = NULL) {
         // get sender mail from system properties
@@ -142,11 +143,16 @@ class cMailer extends Swift_Mailer {
      * If this is possible, a Swift_SmtpTransport object is returned. Otherwise
      * a simple Swift_MailTransport object is returned.
      *
-     * @param string $mailHost the mail host
-     * @param string $mailPort the mail port
-     * @param string $mailEncryption [optional] the mail encryption
-     * @param string $mailUser [optional] the mail user
-     * @param string $mailPass [optional] the mail password
+     * @param string $mailHost
+     *         the mail host
+     * @param string $mailPort
+     *         the mail port
+     * @param string $mailEncryption [optional]
+     *         the mail encryption
+     * @param string $mailUser [optional]
+     *         the mail user
+     * @param string $mailPass [optional]
+     *         the mail password
      * @return Swift_SmtpTransport|Swift_MailTransport
      *         the transport object
      */
@@ -183,7 +189,8 @@ class cMailer extends Swift_Mailer {
      * Sets the charset of the messages which are sent with this mailer object.
      * If you want to use UTF-8, you do not need to call this method.
      *
-     * @param string $charset the character encoding
+     * @param string $charset
+     *         the character encoding
      */
     public function setCharset($charset) {
         Swift_Preferences::getInstance()->setCharset($charset);
@@ -194,18 +201,23 @@ class cMailer extends Swift_Mailer {
      * All parameters which accept mail addresses also accept an array where
      * the key is the email address and the value is the name.
      *
-     * @param string|array $from the sender of the mail, if something "empty" is
-     *        given, default address from CONTENIDO system settings is used
-     * @param string|array $to one or more recipient addresses
-     * @param string $subject the subject of the mail
-     * @param string $body [optional] the body of the mail
-     * @param string|array $cc [optional] one or more recipient addresses which
-     *        should get a normal copy
-     * @param string|array $bcc [optional] one or more recipient addresses which
-     *        should get a blind copy
-     * @param string|array $replyTo [optional] address to which replies should
-     *        be sent
-     * @param bool $resend [optional] whether the mail is resent
+     * @param string|array $from
+     *         the sender of the mail, if something "empty" is given,
+     *         default address from CONTENIDO system settings is used
+     * @param string|array $to
+     *         one or more recipient addresses
+     * @param string $subject
+     *         the subject of the mail
+     * @param string $body [optional]
+     *         the body of the mail
+     * @param string|array $cc [optional]
+     *         one or more recipient addresses which should get a normal copy
+     * @param string|array $bcc [optional]
+     *         one or more recipient addresses which should get a blind copy
+     * @param string|array $replyTo [optional]
+     *         address to which replies should be sent
+     * @param bool $resend [optional]
+     *         whether the mail is resent
      * @param string $contentType
      * @return int
      *         number of recipients to which the mail has been sent
@@ -233,8 +245,8 @@ class cMailer extends Swift_Mailer {
      *
      * @see Swift_Mailer::send()
      * @param Swift_Mime_Message $message
-     * @param array &$failedRecipients, optional
-     * @param bool $resend, optional
+     * @param array &$failedRecipients [optional]
+     * @param bool $resend [optional]
      * @return int
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = NULL, $resend = false) {
@@ -254,9 +266,10 @@ class cMailer extends Swift_Mailer {
     /**
      * Resends the mail with the given idmailsuccess.
      *
-     * @param int $idmailsuccess the ID of the mail which should be resend
-     * @throws cInvalidArgumentException if the mail has already been sent
-     *         successfully or does not exist
+     * @param int $idmailsuccess
+     *         the ID of the mail which should be resend
+     * @throws cInvalidArgumentException
+     *         if the mail has already been sent successfully or does not exist
      */
     public function resendMail($idmailsuccess) {
         $mailLogSuccess = new cApiMailLogSuccess($idmailsuccess);
@@ -298,8 +311,10 @@ class cMailer extends Swift_Mailer {
     /**
      * Encodes the given value / the given array values with htmlentities.
      *
-     * @param string|array $value the value to encode
-     * @param string $charset the charset to use in htmlentities
+     * @param string|array $value
+     *         the value to encode
+     * @param string $charset
+     *         the charset to use in htmlentities
      * @return string|array
      *         encoded value
      */
@@ -320,8 +335,10 @@ class cMailer extends Swift_Mailer {
     /**
      * Decodes the given value / the given array values with html_entity_decode.
      *
-     * @param string|array $value the value to decode
-     * @param string $charset the charset to use in htmlentities
+     * @param string|array $value
+     *         the value to decode
+     * @param string $charset
+     *         the charset to use in htmlentities
      * @return string|array
      *         decoded value
      */
@@ -341,9 +358,10 @@ class cMailer extends Swift_Mailer {
     /**
      * Log the information about sending the email.
      *
-     * @param Swift_Message $message the message which has been send
-     * @param array $failedRecipients [optional] the recipient addresses that
-     *        did not get the mail
+     * @param Swift_Message $message
+     *         the message which has been send
+     * @param array $failedRecipients [optional]
+     *         the recipient addresses that did not get the mail
      * @return string|bool
      *         the idmail of the inserted table row in con_mail_log|bool
      *         false if mail_log option is inactive

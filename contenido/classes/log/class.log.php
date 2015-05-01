@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the log class.
  *
@@ -442,5 +443,3 @@ class cLog {
         return $info['message'];
     }
 }
-
-?>

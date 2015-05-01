@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the menu GUI class.
  *
@@ -249,5 +250,3 @@ class cGuiMenu {
     }
 
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the base class for building search indices
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.encoding.php');
@@ -151,7 +153,8 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * Constructor, set object properties
      *
-     * @param cDb $db CONTENIDO Database object
+     * @param cDb $db
+     *         CONTENIDO database object
      */
     public function __construct($db = NULL) {
         parent::__construct($db);
@@ -162,23 +165,26 @@ class cSearchIndex extends cSearchBaseAbstract {
     /**
      * Start indexing the article.
      *
-     * @param int $idart Article Id
-     * @param array $aContent The complete content of an article specified by
-     *        its content types.
-     *        It looks like
-     *        Array (
-     *        [CMS_HTMLHEAD] => Array (
-     *        [1] => Herzlich Willkommen...
-     *        [2] => ...auf Ihrer Website!
-     *        )
-     *        [CMS_HTML] => Array (
-     *        [1] => Die Inhalte auf dieser Website ...
-     *
-     * @param string $place The field where to store the index information in
-     *        db.
-     * @param array $cms_options One can specify explicitly cms types which
-     *        should not be indexed.
-     * @param array $aStopwords Array with words which should not be indexed.
+     * @param int $idart
+     *         Article Id
+     * @param array $aContent
+     *         The complete content of an article specified by its content types.
+     *         It looks like:
+     *         Array (
+     *             [CMS_HTMLHEAD] => Array (
+     *                 [1] => Herzlich Willkommen...
+     *                 [2] => ...auf Ihrer Website!
+     *             )
+     *             [CMS_HTML] => Array (
+     *                 [1] => Die Inhalte auf dieser Website ...
+     *             )
+     *         )
+     * @param string $place
+     *         The field where to store the index information in db.
+     * @param array $cms_options
+     *         One can specify explicitly cms types which should not be indexed.
+     * @param array $aStopwords
+     *         Array with words which should not be indexed.
      */
     public function start($idart, $aContent, $place = 'auto', $cms_options = array(), $aStopwords = array()) {
         if (!is_int((int) $idart) || $idart < 0) {
@@ -209,14 +215,14 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * for each cms-type create index structure.
-     * it looks like
+     * For each cms-type create index structure.
+     * It looks like:
      * Array (
-     * [die] => CMS_HTML-1
-     * [inhalte] => CMS_HTML-1
-     * [auf] => CMS_HTML-1 CMS_HTMLHEAD-2
-     * [dieser] => CMS_HTML-1
-     * [website] => CMS_HTML-1 CMS_HTML-1 CMS_HTMLHEAD-2
+     *     [die] => CMS_HTML-1
+     *     [inhalte] => CMS_HTML-1
+     *     [auf] => CMS_HTML-1 CMS_HTMLHEAD-2
+     *     [dieser] => CMS_HTML-1
+     *     [website] => CMS_HTML-1 CMS_HTML-1 CMS_HTMLHEAD-2
      * )
      */
     public function createKeywords() {
@@ -277,8 +283,8 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * generate index_string from index structure and save keywords
-     * The index_string looks like "&12=2(CMS_HTMLHEAD-1,CMS_HTML-1)"
+     * Generate index_string from index structure and save keywords.
+     * The index_string looks like "&12=2(CMS_HTMLHEAD-1,CMS_HTML-1)".
      */
     public function saveKeywords() {
         $tmp_count = array();
@@ -317,8 +323,8 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * if keywords don't occur in the article anymore, update index_string and
-     * delete keyword if necessary
+     * If keywords don't occur in the article anymore, update index_string and
+     * delete keyword if necessary.
      */
     public function deleteKeywords() {
         foreach ($this->_keywordsDel as $key_del) {
@@ -339,7 +345,7 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * get the keywords of an article
+     * Get the keywords of an article.
      */
     public function getKeywords() {
         $keys = implode("','", array_keys($this->_keywords));
@@ -364,9 +370,10 @@ class cSearchIndex extends cSearchBaseAbstract {
     }
 
     /**
-     * remove special characters from index term
+     * Remove special characters from index term.
      *
-     * @param string $key Keyword
+     * @param string $key
+     *         Keyword
      * @return mixed
      */
     public function removeSpecialChars($key) {

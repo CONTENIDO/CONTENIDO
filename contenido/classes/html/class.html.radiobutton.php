@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLRadiobutton class.
  *
@@ -41,14 +42,22 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * Constructor.
      * Creates an HTML radio button element.
      *
-     * @param string $name Name of the element
-     * @param string $value Value of the radio button
-     * @param string $id ID of the element
-     * @param bool $checked Is element checked?
-     * @param string $disabled Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex Tab index for form elements
-     * @param string $accesskey Key to access the field
-     * @param string $class the class of this element
+     * @param string $name
+     *         Name of the element
+     * @param string $value
+     *         Value of the radio button
+     * @param string $id
+     *         ID of the element
+     * @param bool $checked
+     *         Is element checked?
+     * @param string $disabled
+     *         Item disabled flag (non-empty to set disabled)
+     * @param string $tabindex
+     *         Tab index for form elements
+     * @param string $accesskey
+     *         Key to access the field
+     * @param string $class
+     *         the class of this element
      */
     public function __construct($name, $value, $id = '', $checked = false, $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
@@ -65,7 +74,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
     /**
      * Sets the checked flag.
      *
-     * @param bool $checked If true, the "checked" attribute will be assigned.
+     * @param bool $checked
+     *         If true, the "checked" attribute will be assigned.
      * @return cHTMLRadiobutton
      *         $this for chaining
      */
@@ -80,7 +90,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
     /**
      * Sets a custom label text
      *
-     * @param string $text Text to display
+     * @param string $text
+     *         Text to display
      * @return cHTMLRadiobutton
      *         $this for chaining
      */
@@ -99,7 +110,8 @@ class cHTMLRadiobutton extends cHTMLFormElement {
      * as regular text. Displaying the value can be turned off via the
      * parameter.
      *
-     * @param bool $renderlabel If true, renders a label
+     * @param bool $renderlabel
+     *         If true, renders a label
      * @return string
      *         Rendered HTML
      */

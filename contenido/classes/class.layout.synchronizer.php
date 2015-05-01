@@ -99,9 +99,12 @@ class cLayoutSynchronizer {
     /**
      * Update the name of layout (if the name not allowes)
      *
-     * @param string $oldName old name
-     * @param string $newName new module name
-     * @param int $idclient id of client
+     * @param string $oldName
+     *         old name
+     * @param string $newName
+     *         new module name
+     * @param int $idclient
+     *         id of client
      */
     private function _updateModulnameInDb($oldName, $newName, $idclient) {
         $oLayColl = new cApiLayoutCollection();
@@ -134,8 +137,10 @@ class cLayoutSynchronizer {
     /**
      * Exist the layout in db-table
      *
-     * @param string $alias layout name
-     * @param int $idclient client id
+     * @param string $alias
+     *         layout name
+     * @param int $idclient
+     *         client id
      * @return bool
      */
     private function _isExistInTable($alias, $idclient) {
@@ -148,9 +153,12 @@ class cLayoutSynchronizer {
     /**
      * Rename the Layout
      *
-     * @param string path to client layout-direcotry $dir
-     * @param string $oldLayoutName layout name in file directory
-     * @param string $newLayoutName clear layout name
+     * @param string $dir
+     *         path to client layout-direcotry $dir
+     * @param string $oldLayoutName
+     *         layout name in file directory
+     * @param string $newLayoutName
+     *         clear layout name
      */
     private function _renameFiles($dir, $oldLayoutName, $newLayoutName) {
         if (cFileHandler::exists($dir . $newLayoutName . '/' . $oldLayoutName . '.html') == true) {
@@ -161,8 +169,10 @@ class cLayoutSynchronizer {
     /**
      * Update the con_mod, the field lastmodified
      *
-     * @param int $timestamp timestamp of last modification
-     * @param int $idlay Id of layout
+     * @param int $timestamp
+     *         timestamp of last modification
+     * @param int $idlay
+     *         Id of layout
      */
     public function setLastModified($timestamp, $idlay) {
         $oLay = new cApiLayout((int) $idlay);

@@ -94,7 +94,8 @@ class cCategoryHelper {
     /**
      * Sets an auth object to use on category access check.
      *
-     * @param cAuth $auth auth object
+     * @param cAuth $auth
+     *         auth object
      */
     public function setAuth($auth) {
         $this->_auth = $auth;
@@ -131,7 +132,8 @@ class cCategoryHelper {
     /**
      * Sets the client ID to store it locally in the class.
      *
-     * @param int $clientId client ID
+     * @param int $clientId
+     *         client ID
      */
     public function setClientId($clientId = 0) {
         $this->_clientId = (int) $clientId;
@@ -140,8 +142,8 @@ class cCategoryHelper {
     /**
      * Returns the local stored language ID
      *
-     * @throws cInvalidArgumentException if no active language ID specified or
-     *         found
+     * @throws cInvalidArgumentException
+     *         if no active language ID specified or found
      * @return int
      *         language ID
      */
@@ -161,7 +163,8 @@ class cCategoryHelper {
     /**
      * Sets the language ID to store it locally in the class.
      *
-     * @param int $languageId language ID
+     * @param int $languageId
+     *         language ID
      */
     public function setLanguageId($languageId = 0) {
         $this->_languageId = (int) $languageId;
@@ -170,7 +173,8 @@ class cCategoryHelper {
     /**
      * Return the ID of the top most category based on a given category ID.
      *
-     * @param int $categoryId Base category ID to search on
+     * @param int $categoryId
+     *         Base category ID to search on
      * @return int
      *         Top most category ID
      */
@@ -190,11 +194,12 @@ class cCategoryHelper {
      * Returns an array with ordered cApiCategoryLanguage objects e.g.
      * for a breadcrumb.
      *
-     * @param int $categoryId Last category ID in list.
-     * @param int $startingLevel Define here, at which level the list should
-     *        start. (optional, default: 1)
-     * @param int $maxDepth Amount of the max depth of categories. (optional,
-     *        default: 20)
+     * @param int $categoryId
+     *         Last category ID in list.
+     * @param int $startingLevel (optional, default: 1)
+     *         Define here, at which level the list should start.
+     * @param int $maxDepth (optional, default: 20)
+     *         Amount of the max depth of categories.
      * @return array
      *         Array with cApiCategoryLanguage objects
      */
@@ -231,9 +236,10 @@ class cCategoryHelper {
     /**
      * Fetch all parent category IDs of a given category.
      *
-     * @param int $categoryId Base category to search on.
-     * @param int $maxDepth Amount of the max depth of categories. (optional,
-     *        default: 20)
+     * @param int $categoryId
+     *         Base category to search on.
+     * @param int $maxDepth (optional, default: 20)
+     *         Amount of the max depth of categories.
      * @return array
      *         Array with parent category IDs.
      */
@@ -259,7 +265,8 @@ class cCategoryHelper {
     /**
      * Fetchs the level of a category by a given category ID.
      *
-     * @param int $categoryId Category ID to fetch the level of.
+     * @param int $categoryId
+     *         Category ID to fetch the level of.
      * @return int
      *         category level
      */
@@ -284,8 +291,10 @@ class cCategoryHelper {
      * Return the subcategories of the given category ID.
      * TODO: Use Generic DB instead of SQL queries
      *
-     * @param int $categoryId ID of the category to load
-     * @param int $depth the maximum depth
+     * @param int $categoryId
+     *         ID of the category to load
+     * @param int $depth
+     *         the maximum depth
      * @return array
      *         array with subcategories
      */
@@ -365,7 +374,8 @@ class cCategoryHelper {
     /**
      * Checks if set auth object has access to the specific category.
      *
-     * @param cApiCategoryLanguage $categoryLanguage category language object
+     * @param cApiCategoryLanguage $categoryLanguage
+     *         category language object
      * @return bool
      *         result of access check
      */

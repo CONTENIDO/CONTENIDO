@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cInvalidArgumentException class.
  *
@@ -20,5 +21,4 @@
  * This exception type is logged to data/logs/exception.txt.
  */
 class cInvalidArgumentException extends cLogicException {
-
 }

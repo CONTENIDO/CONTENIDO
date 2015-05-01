@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLContentElement class.
  *
@@ -57,8 +58,9 @@ class cHTMLContentElement extends cHTML {
     /**
      * Appends code / objects to the content.
      *
-     * @param string|object|array $content String with the content or a cHTML
-     *        object to render or an array of strings / objects.
+     * @param string|object|array $content
+     *         String with the content or a cHTML object to render
+     *         or an array of strings / objects.
      * @return cHTMLContentElement
      *         $this for chaining
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the MySQL database driver class.
  *
@@ -94,8 +95,10 @@ class cDbDriverMysql extends cDbDriverAbstract {
      * String values in passed fields parameter will be escaped automatically.
      *
      * @see cDbDriverAbstract::buildInsert()
-     * @param string $tableName The table name
-     * @param array $fields Associative array of fields to insert
+     * @param string $tableName
+     *         The table name
+     * @param array $fields
+     *         Associative array of fields to insert
      * @return string
      *         The INSERT SQL query
      */

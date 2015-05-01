@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLList class.
  *
@@ -26,10 +27,14 @@ class cHTMLList extends cHTMLContentElement {
     /**
      * Creates an HTML list element.
      *
-     * @param string $type type of the list - ul or ol
-     * @param string $id the ID of the list element
-     * @param string $class the class of the list element
-     * @param array|string|object $elements the elements of this list
+     * @param string $type
+     *         type of the list - ul or ol
+     * @param string $id
+     *         the ID of the list element
+     * @param string $class
+     *         the class of the list element
+     * @param array|string|object $elements
+     *         the elements of this list
      */
     public function __construct($type = 'ul', $id = '', $class = '', $elements = array()) {
         parent::__construct($elements, $class, $id);

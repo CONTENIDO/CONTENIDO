@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the tree GUI class.
  *
@@ -160,11 +161,12 @@ class cGuiTree extends cTree {
     }
 
     /**
-     * @param int $mode Sets the gridline mode to one of the following values:
-     * cGuiTree::TREEVIEW_GRIDLINE_SOLID
-     * cGuiTree::TREEVIEW_GRIDLINE_DASHED
-     * cGuiTree::TREEVIEW_GRIDLINE_DOTTED
-     * cGuiTree::TREEVIEW_GRIDLINE_NONE
+     * @param int $mode
+     *         Sets the gridline mode to one of the following values:
+     *         - cGuiTree::TREEVIEW_GRIDLINE_SOLID
+     *         - cGuiTree::TREEVIEW_GRIDLINE_DASHED
+     *         - cGuiTree::TREEVIEW_GRIDLINE_DOTTED
+     *         - cGuiTree::TREEVIEW_GRIDLINE_NONE
      */
     public function setGridlineMode($mode) {
         $this->_gridlineMode = $mode;
@@ -388,9 +390,9 @@ class cGuiTree extends cTree {
 
     /**
      * Sets collapsed state
-     * @param   cHTMLLink  $link
-     * @param   cTreeItem  $object
-     * @return  cHTMLLink
+     * @param cHTMLLink  $link
+     * @param cTreeItem  $object
+     * @return cHTMLLink
      */
     public function _setExpandCollapseLink($link, $object) {
         if (!empty($this->_name)) {

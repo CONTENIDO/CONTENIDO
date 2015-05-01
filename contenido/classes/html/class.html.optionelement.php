@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLOptionElement class.
  *
@@ -34,11 +35,16 @@ class cHTMLOptionElement extends cHTMLFormElement {
      * Constructor.
      * Creates an HTML option element.
      *
-     * @param string $title Displayed title of the element
-     * @param string $value Value of the option
-     * @param bool $selected If true, element is selected
-     * @param bool $disabled If true, element is disabled
-     * @param string $class the class of this element
+     * @param string $title
+     *         Displayed title of the element
+     * @param string $value
+     *         Value of the option
+     * @param bool $selected
+     *         If true, element is selected
+     * @param bool $disabled
+     *         If true, element is disabled
+     * @param string $class
+     *         the class of this element
      */
     public function __construct($title, $value, $selected = false, $disabled = false, $class = '') {
         cHTML::__construct();
@@ -56,7 +62,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
     /**
      * Sets the selected flag
      *
-     * @param bool $selected If true, adds the "selected" attribute
+     * @param bool $selected
+     *         If true, adds the "selected" attribute
      * @return cHTMLOptionElement
      *         $this for chaining
      */
@@ -81,7 +88,8 @@ class cHTMLOptionElement extends cHTMLFormElement {
     /**
      * Sets the disabled flag
      *
-     * @param bool $disabled If true, adds the "disabled" attribute
+     * @param bool $disabled
+     *         If true, adds the "disabled" attribute
      * @return cHTMLOptionElement
      *         $this for chaining
      */

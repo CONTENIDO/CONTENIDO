@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLTextbox class.
  *
@@ -30,15 +31,24 @@ class cHTMLTextbox extends cHTMLFormElement {
      * If no additional parameters are specified, the
      * default width is 20 units.
      *
-     * @param string $name Name of the element
-     * @param string $initvalue Initial value of the box
-     * @param int $width width of the text box
-     * @param int $maxlength maximum input length of the box
-     * @param string $id ID of the element
-     * @param string $disabled Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex Tab index for form elements
-     * @param string $accesskey Key to access the field
-     * @param string $class the class of this element
+     * @param string $name
+     *         Name of the element
+     * @param string $initvalue
+     *         Initial value of the box
+     * @param int $width
+     *         width of the text box
+     * @param int $maxlength
+     *         maximum input length of the box
+     * @param string $id
+     *         ID of the element
+     * @param string $disabled
+     *         Item disabled flag (non-empty to set disabled)
+     * @param string $tabindex
+     *         Tab index for form elements
+     * @param string $accesskey
+     *         Key to access the field
+     * @param string $class
+     *         the class of this element
      */
     public function __construct($name,
                                 $initvalue = '',
@@ -67,7 +77,8 @@ class cHTMLTextbox extends cHTMLFormElement {
     /**
      * Sets the width of the text box.
      *
-     * @param int $width width of the text box
+     * @param int $width
+     *         width of the text box
      * @return cHTMLTextbox
      *         $this for chaining
      */
@@ -84,7 +95,8 @@ class cHTMLTextbox extends cHTMLFormElement {
     /**
      * Sets the maximum input length of the text box.
      *
-     * @param int $maxlen maximum input length
+     * @param int $maxlen
+     *         maximum input length
      * @return cHTMLTextbox
      *         $this for chaining
      */
@@ -101,7 +113,8 @@ class cHTMLTextbox extends cHTMLFormElement {
     /**
      * Sets the initial value of the text box.
      *
-     * @param string $value Initial value
+     * @param string $value
+     *         Initial value
      * @return cHTMLTextbox
      *         $this for chaining
      */

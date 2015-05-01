@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the foldable pager for menus GUI class.
  *

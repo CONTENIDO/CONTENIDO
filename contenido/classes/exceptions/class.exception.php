@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cException class.
  *
@@ -44,10 +45,12 @@ class cException extends Exception {
     /**
      * Constructs the Exception.
      *
-     * @param string $message The Exception message to throw.
-     * @param int $code The Exception code.
-     * @param Exception $previous The previous exception used for the exception
-     *            chaining.
+     * @param string $message
+     *         The Exception message to throw.
+     * @param int $code
+     *         The Exception code.
+     * @param Exception $previous
+     *         The previous exception used for the exception chaining.
      */
     public function __construct($message, $code = 0, Exception $previous = NULL) {
         parent::__construct($message, $code, $previous);

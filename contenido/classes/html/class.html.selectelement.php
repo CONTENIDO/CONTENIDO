@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLSelectElement class.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -33,13 +35,20 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * Constructor.
      * Creates an HTML select field (aka "DropDown").
      *
-     * @param string $name Name of the element
-     * @param int $width Width of the select element
-     * @param string $id ID of the element
-     * @param bool $disabled Item disabled flag (non-empty to set disabled)
-     * @param string $tabindex Tab index for form elements
-     * @param string $accesskey Key to access the field
-     * @param string $class the class of this element
+     * @param string $name
+     *         Name of the element
+     * @param int $width
+     *         Width of the select element
+     * @param string $id
+     *         ID of the element
+     * @param bool $disabled
+     *         Item disabled flag (non-empty to set disabled)
+     * @param string $tabindex
+     *         Tab index for form elements
+     * @param string $accesskey
+     *         Key to access the field
+     * @param string $class
+     *         the class of this element
      */
     public function __construct($name, $width = '', $id = '', $disabled = false, $tabindex = NULL, $accesskey = '', $class = '') {
         parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
@@ -67,7 +76,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * 'value' => 'title'
      * );
      *
-     * @param array $stuff Array with all items
+     * @param array $stuff
+     *         Array with all items
      * @return cHTMLSelectElement
      *         $this for chaining
      */
@@ -88,8 +98,10 @@ class cHTMLSelectElement extends cHTMLFormElement {
      * Adds an cHTMLOptionElement to the number of choices at the specified
      * position.
      *
-     * @param string $index Index of the element
-     * @param cHTMLOptionElement $element Filled cHTMLOptionElement to add
+     * @param string $index
+     *         Index of the element
+     * @param cHTMLOptionElement $element
+     *         Filled cHTMLOptionElement to add
      * @return cHTMLSelectElement
      *         $this for chaining
      */
@@ -101,7 +113,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
     /**
      * Appends a cHTMLOptionElement to the number of choices.
      *
-     * @param cHTMLOptionElement $element Filled cHTMLOptionElement to add
+     * @param cHTMLOptionElement $element
+     *         Filled cHTMLOptionElement to add
      * @return cHTMLSelectElement
      *         $this for chaining
      */
@@ -139,7 +152,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
     /**
      * Sets a specific cHTMLOptionElement to the selected state.
      *
-     * @param string $lvalue Specifies the "value" of the cHTMLOptionElement to
+     * @param string $lvalue
+     *         Specifies the "value" of the cHTMLOptionElement to
      *        set
      * @return cHTMLSelectElement
      *         $this for chaining
@@ -187,8 +201,8 @@ class cHTMLSelectElement extends cHTMLFormElement {
     /**
      * Sets specified elements as selected (and all others as unselected)
      *
-     * @param array $elements Array with "values" of the cHTMLOptionElement to
-     *        set
+     * @param array $elements
+     *         Array with "values" of the cHTMLOptionElement to set
      * @return cHTMLSelectElement
      *         $this for chaining
      */

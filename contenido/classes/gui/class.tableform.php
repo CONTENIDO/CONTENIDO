@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the table form GUI class.
  *
@@ -116,9 +117,12 @@ class cGuiTableForm {
     /**
      * Creates a new cGuiTableForm with given name, action & method of form.
      *
-     * @param string $name of form
-     * @param string $action of form defaults to 'main.php'
-     * @param string $method of form defaults to 'post'
+     * @param string $name
+     *         of form
+     * @param string $action
+     *         of form defaults to 'main.php'
+     * @param string $method
+     *         of form defaults to 'post'
      */
     public function __construct($name, $action = 'main.php', $method = 'post') {
 
@@ -293,7 +297,8 @@ class cGuiTableForm {
      * Renders this cGuiTableForm and either returs ist markup or echoes it
      * immediately.
      *
-     * @param bool $return if true then return markup, else echo immediately
+     * @param bool $return
+     *         if true then return markup, else echo immediately
      * @return Ambigous <string, mixed>
      */
     public function render($return = true) {

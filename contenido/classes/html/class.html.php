@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the base class cHTML for all HTML classes.
  *
@@ -117,7 +118,8 @@ class cHTML {
     /**
      * Constructor Function.
      *
-     * @param array $attributes Associative array of table tag attributes
+     * @param array $attributes
+     *         Associative array of table tag attributes
      */
     public function __construct(array $attributes = NULL) {
         if (!is_null($attributes)) {
@@ -179,7 +181,8 @@ class cHTML {
     /**
      * Sets the HTML tag to $tag
      *
-     * @param string $tag The new tag
+     * @param string $tag
+     *         The new tag
      * @return cHTML
      *         $this for chaining
      */
@@ -201,8 +204,10 @@ class cHTML {
      * and "title". IE behaves incorrectly and shows "alt" on
      * mouse over. Mozilla browsers only show "title" as mouse over.
      *
-     * @param string $alt Text to set as the "alt" and "title" attribute
-     * @param bool $setTitle Whether title attribute should be set, too (optional, default: true)
+     * @param string $alt
+     *         Text to set as the "alt" and "title" attribute
+     * @param bool $setTitle
+     *         Whether title attribute should be set, too (optional, default: true)
      * @return cHTML
      *         $this for chaining
      */
@@ -219,7 +224,8 @@ class cHTML {
     /**
      * Sets the ID class
      *
-     * @param string $id Text to set as the "id"
+     * @param string $id
+     *         Text to set as the "id"
      * @return cHTML
      *         $this for chaining
      */
@@ -235,7 +241,8 @@ class cHTML {
     /**
      * Sets the CSS class
      *
-     * @param string $class Text to set as the "class" attribute
+     * @param string $class
+     *         Text to set as the "class" attribute
      * @return cHTML
      *         $this for chaining
      */
@@ -250,7 +257,8 @@ class cHTML {
     /**
      * Sets the CSS style
      *
-     * @param string $style Text to set as the "style" attribute
+     * @param string $style
+     *         Text to set as the "style" attribute
      * @return cHTML
      *         $this for chaining
      */
@@ -264,8 +272,10 @@ class cHTML {
      * example:
      * $item->setEvent('change', 'document.forms[0].submit');
      *
-     * @param string $event Type of the event, e. g. "change" for "onchange"
-     * @param string $action Function or action to call (JavaScript Code)
+     * @param string $event
+     *         Type of the event, e. g. "change" for "onchange"
+     * @param string $action
+     *         Function or action to call (JavaScript Code)
      * @return cHTML
      *         $this for chaining
      */
@@ -283,7 +293,8 @@ class cHTML {
      * example:
      * $item->unsetEvent('change');
      *
-     * @param string $event Type of the event
+     * @param string $event
+     *         Type of the event
      * @return cHTML
      *         $this for chaining
      */
@@ -302,7 +313,8 @@ class cHTML {
      * specified attributes. Attributes need to be passed
      * in the stringyfied variant.
      *
-     * @param string $attributes Attributes to set
+     * @param string $attributes
+     *         Attributes to set
      * @return string
      *         filled SGML opener skeleton
      */
@@ -329,8 +341,10 @@ class cHTML {
      * Example usage:
      * $element->appendStyleDefinition('margin', '5px');
      *
-     * @param string $property the property name, e.g. 'margin'
-     * @param string $value the value of the property, e.g. '5px'
+     * @param string $property
+     *         the property name, e.g. 'margin'
+     * @param string $value
+     *         the value of the property, e.g. '5px'
      * @return cHTML
      *         $this for chaining
      */
@@ -351,7 +365,8 @@ class cHTML {
      * 'padding' => '0'
      * ));
      *
-     * @param string $styles the styles to append
+     * @param string $styles
+     *         the styles to append
      * @return cHTML
      *         $this for chaining
      */
@@ -367,7 +382,8 @@ class cHTML {
      * Adds a required script to the current element.
      * Anyway, scripts are not included twice.
      *
-     * @param string $script the script to include
+     * @param string $script
+     *         the script to include
      * @return cHTML
      *         $this for chaining
      */
@@ -430,9 +446,9 @@ class cHTML {
     /**
      * Adds the given content to the already existing content of this object.
      *
-     * @param string|object|array $content String with the content or an object
-     *        to
-     *        render or an array of strings/objects.
+     * @param string|object|array $content
+     *         String with the content or an object to render
+     *         or an array of strings/objects.
      * @return cHTML
      *         $this for chaining
      */
@@ -473,9 +489,12 @@ class cHTML {
      * Example to attach an onClick handler:
      * attachEventDefinition('foo', 'onClick', 'alert("foo");');
      *
-     * @param string $name Defines the name of the event
-     * @param string $event Defines the event (e.g. onClick)
-     * @param string $code Defines the code
+     * @param string $name
+     *         Defines the name of the event
+     * @param string $event
+     *         Defines the event (e.g. onClick)
+     * @param string $code
+     *         Defines the code
      * @return cHTML
      *         $this for chaining
      */
@@ -488,8 +507,10 @@ class cHTML {
     /**
      * Sets a specific attribute
      *
-     * @param string $attributeName Name of the attribute
-     * @param string $value Value of the attribute
+     * @param string $attributeName
+     *         Name of the attribute
+     * @param string $value
+     *         Value of the attribute
      * @return cHTML
      *         $this for chaining
      */
@@ -506,7 +527,8 @@ class cHTML {
     /**
      * Sets the HTML attributes
      *
-     * @param array $attributes Associative array with attributes
+     * @param array $attributes
+     *         Associative array with attributes
      * @return cHTML
      *         $this for chaining
      */
@@ -519,7 +541,8 @@ class cHTML {
     /**
      * Returns a valid atrributes array.
      *
-     * @param array $attributes Associative array with attributes
+     * @param array $attributes
+     *         Associative array with attributes
      * @return array
      *         the parsed attributes
      */
@@ -541,7 +564,8 @@ class cHTML {
     /**
      * Removes an attribute
      *
-     * @param string $attributeName Attribute name
+     * @param string $attributeName
+     *         Attribute name
      * @return cHTML
      *         $this for chaining
      */
@@ -556,7 +580,8 @@ class cHTML {
     /**
      * Returns the value of the given attribute.
      *
-     * @param string $attributeName Attribute name
+     * @param string $attributeName
+     *         Attribute name
      * @return string
      *         NULL value or NULL if the attribute does not exist
      */
@@ -574,8 +599,10 @@ class cHTML {
      * Updates the passed attribute without changing the other existing
      * attributes
      *
-     * @param string $name the name of the attribute
-     * @param string $value the value of the attribute with the given name
+     * @param string $name
+     *         the name of the attribute
+     * @param string $value
+     *         the value of the attribute with the given name
      * @return cHTML
      *         $this for chaining
      */
@@ -589,7 +616,8 @@ class cHTML {
      * Updates the passed attributes without changing the other existing
      * attributes
      *
-     * @param array $attributes Associative array with attributes
+     * @param array $attributes
+     *         Associative array with attributes
      * @return cHTML
      *         $this for chaining
      */
@@ -608,7 +636,8 @@ class cHTML {
     /**
      * Returns an HTML formatted attribute string
      *
-     * @param array $attributes Associative array with attributes
+     * @param array $attributes
+     *         Associative array with attributes
      * @return string
      *         Attribute string in HTML format
      */
@@ -629,7 +658,8 @@ class cHTML {
     /**
      * Returns the assoc array(default) or string of attributes
      *
-     * @param bool $returnAsString Whether to return the attributes as string
+     * @param bool $returnAsString
+     *         Whether to return the attributes as string
      * @return array|string
      */
     public function getAttributes($returnAsString = false) {

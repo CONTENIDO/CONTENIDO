@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the MySQLi database driver class.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -154,8 +156,10 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * String values in passed fields parameter will be escaped automatically.
      *
      * @see cDbDriverAbstract::buildInsert()
-     * @param string $tableName The table name
-     * @param array $fields Associative array of fields to insert
+     * @param string $tableName
+     *         The table name
+     * @param array $fields
+     *         Associative array of fields to insert
      * @return string
      *         The INSERT SQL query
      */

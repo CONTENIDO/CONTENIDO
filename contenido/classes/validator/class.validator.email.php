@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the mail validator class.
  *
@@ -161,8 +162,8 @@ class cValidatorEmail extends cValidatorAbstract {
     /**
      * Check DNS Records for MX type.
      *
-     * @param string $host Host name
-     *
+     * @param string $host
+     *         Host name
      * @return bool
      */
     private function _checkMx($host) {

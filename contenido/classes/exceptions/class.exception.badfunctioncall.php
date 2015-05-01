@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cBadFunctionCallException class.
  *
@@ -21,5 +22,4 @@
  * This exception type is logged to data/logs/exception.txt.
  */
 class cBadFunctionCallException extends cLogicException {
-
 }

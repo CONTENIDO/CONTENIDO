@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLLink class.
  *
@@ -61,7 +62,8 @@ class cHTMLLink extends cHTMLContentElement {
      * Constructor.
      * Creates an HTML link.
      *
-     * @param string $href String with the location to link to
+     * @param string $href
+     *         String with the location to link to
      */
     public function __construct($href = '') {
         global $sess;
@@ -100,7 +102,8 @@ class cHTMLLink extends cHTMLContentElement {
     /**
      * Sets the link to a specific location
      *
-     * @param string $href String with the location to link to
+     * @param string $href
+     *         String with the location to link to
      * @return cHTMLLink
      *         $this for chaining
      */
@@ -118,7 +121,8 @@ class cHTMLLink extends cHTMLContentElement {
     /**
      * Sets the target frame
      *
-     * @param string $target Target frame identifier
+     * @param string $target
+     *         Target frame identifier
      * @return cHTMLLink
      *         $this for chaining
      */
@@ -129,9 +133,12 @@ class cHTMLLink extends cHTMLContentElement {
     /**
      * Sets a CONTENIDO link (area, frame, action)
      *
-     * @param string $targetarea Target backend area
-     * @param string $targetframe Target frame (1-4)
-     * @param string $targetaction Target action
+     * @param string $targetarea
+     *         Target backend area
+     * @param string $targetframe
+     *         Target frame (1-4)
+     * @param string $targetaction
+     *         Target action
      * @return cHTMLLink
      *         $this for chaining
      */
@@ -147,10 +154,14 @@ class cHTMLLink extends cHTMLContentElement {
     /**
      * Sets a multilink
      *
-     * @param string $righttoparea Area (right top)
-     * @param string $righttopaction Action (right top)
-     * @param string $rightbottomarea Area (right bottom)
-     * @param string $rightbottomaction Action (right bottom)
+     * @param string $righttoparea
+     *         Area (right top)
+     * @param string $righttopaction
+     *         Action (right top)
+     * @param string $rightbottomarea
+     *         Area (right bottom)
+     * @param string $rightbottomaction
+     *         Action (right bottom)
      * @return cHTMLLink
      *         $this for chaining
      */
@@ -169,8 +180,10 @@ class cHTMLLink extends cHTMLContentElement {
     /**
      * Sets a custom attribute to be appended to the link
      *
-     * @param string $key Parameter name
-     * @param string $value Parameter value
+     * @param string $key
+     *         Parameter name
+     * @param string $value
+     *         Parameter value
      * @return cHTMLLink
      *         $this for chaining
      */
@@ -195,7 +208,8 @@ class cHTMLLink extends cHTMLContentElement {
     /**
      * Unsets a previous set custom attribute
      *
-     * @param string $key Parameter name
+     * @param string $key
+     *         Parameter name
      * @return cHTMLLink
      *         $this for chaining
      */
@@ -260,7 +274,8 @@ class cHTMLLink extends cHTMLContentElement {
      * Sets an anchor
      * Only works for the link types Link and cLink.
      *
-     * @param string $content Anchor name
+     * @param string $content
+     *         Anchor name
      * @return cHTMLLink
      *         $this for chaining
      */

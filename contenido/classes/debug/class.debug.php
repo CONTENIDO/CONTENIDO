@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the static debugger class.
  *
@@ -71,10 +72,10 @@ class cDebug {
      * Returns instance of debugger.
      * If not defined, it returns the debugger from the current system settings.
      *
-     * @param string $sType The debugger to get, empty string to get debugger
-     *            defined in system settings
-     *
-     * @throws cInvalidArgumentException If type of debugger is unknown
+     * @param string $sType
+     *         The debugger to get, empty string to get debugger defined in system settings
+     * @throws cInvalidArgumentException
+     *         If type of debugger is unknown
      * @return cDebugInterface
      */
     public static function getDebugger($sType = '') {
@@ -118,8 +119,9 @@ class cDebug {
      * written to the filesystem but they will only show up when
      * cDebug::showAll() is called.
      *
-     * @param string $message Message to display. NOTE: You can use
-     *            buildStackString to show stacktraces
+     * @param string $message
+     *         Message to display.
+     *         NOTE: You can use buildStackString to show stacktraces
      */
     public static function out($message) {
         self::getDebugger()->out($message);
@@ -129,8 +131,10 @@ class cDebug {
      * Adds a variable to the debugger.
      * This variable will be watched.
      *
-     * @param mixed $var A variable or an object
-     * @param string $label An optional description for the variable
+     * @param mixed $var
+     *         A variable or an object
+     * @param string $label
+     *         An optional description for the variable
      */
     public static function add($var, $label = '') {
         self::getDebugger()->add($var, $label);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the foldable table row GUI class.
  *
@@ -207,5 +208,3 @@ HTML;
     }
 
 }
-
-?>

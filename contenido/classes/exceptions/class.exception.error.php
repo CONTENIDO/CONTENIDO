@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cErrorException class.
  *
@@ -24,10 +25,12 @@ class cErrorException extends cException {
     /**
      * Constructs the Exception.
      *
-     * @param string $message The Exception message to throw.
-     * @param int $code The Exception code.
-     * @param Exception $previous The previous exception used for the exception
-     *            chaining.
+     * @param string $message
+     *         The Exception message to throw.
+     * @param int $code
+     *         The Exception code.
+     * @param Exception $previous
+     *         The previous exception used for the exception chaining.
      */
     public function __construct($message, $code = 0, Exception $previous = NULL) {
         $cfg = cRegistry::getConfig();

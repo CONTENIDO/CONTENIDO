@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the abstract base item class of the generic db.
  *
@@ -115,10 +116,14 @@ abstract class cItemBaseAbstract extends cGenericDb {
     /**
      * Sets some common properties
      *
-     * @param string $sTable Name of table
-     * @param string $sPrimaryKey Primary key of table
-     * @param string $sClassName Name of parent class
-     * @throws cInvalidArgumentException If table name or primary key is not set
+     * @param string $sTable
+     *         Name of table
+     * @param string $sPrimaryKey
+     *         Primary key of table
+     * @param string $sClassName
+     *         Name of parent class
+     * @throws cInvalidArgumentException
+     *         If table name or primary key is not set
      */
     protected function __construct($sTable, $sPrimaryKey, $sClassName) {
         global $cfg;
@@ -157,7 +162,8 @@ abstract class cItemBaseAbstract extends cGenericDb {
     /**
      * Escape string for using in SQL-Statement.
      *
-     * @param string $sString The string to escape
+     * @param string $sString
+     *         The string to escape
      * @return string
      *         Escaped string
      */
@@ -183,9 +189,9 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * NOTE: This funtion changes always the client variable of property
      * collection instance.
      *
-     * @param int $idclient Id of client to use in property collection. If not
-     *        passed
-     *        it uses global variable
+     * @param int $idclient
+     *         Id of client to use in property collection.
+     *         If not passed it uses global variable
      * @return cApiPropertyCollection
      */
     protected function _getPropertiesCollectionInstance($idclient = 0) {
@@ -207,5 +213,3 @@ abstract class cItemBaseAbstract extends cGenericDb {
         return $this->properties;
     }
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains an implementation of HttpRequest using fsockopen
  *
@@ -195,9 +196,11 @@ class cHttpRequestSocket extends cHttpRequest {
     /**
      * Send the request to the server
      *
-     * @param bool $return Wether the function should return the servers response
+     * @param bool $return
+     *         Wether the function should return the servers response
      * @param string $method GET or PUT
-     * @param bool $returnHeaders Wether the headers should be included in the response
+     * @param bool $returnHeaders
+     *         Wether the headers should be included in the response
      * @return string|bool
      */
     protected function sendRequest($return, $method, $returnHeaders = false) {
@@ -303,5 +306,3 @@ class cHttpRequestSocket extends cHttpRequest {
         return $this->sendRequest($return, 'POST', $returnHeaders);
     }
 }
-
-?>

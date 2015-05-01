@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the base class for content search.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.encoding.php');
@@ -59,8 +61,10 @@ abstract class cSearchBaseAbstract {
     /**
      * Initialises some properties
      *
-     * @param cDb $oDB Optional database instance
-     * @param bool $bDebug Optional, flag to enable debugging (no longer needed)
+     * @param cDb $oDB
+     *         Optional database instance
+     * @param bool $bDebug
+     *         Optional, flag to enable debugging (no longer needed)
      */
     protected function __construct($oDB = NULL, $bDebug = false) {
         global $cfg, $lang, $client;
@@ -81,8 +85,10 @@ abstract class cSearchBaseAbstract {
     /**
      * Main debug function, prints dumps parameter if debugging is enabled
      *
-     * @param string $msg Some text
-     * @param mixed $var The variable to dump
+     * @param string $msg
+     *         Some text
+     * @param mixed $var
+     *         The variable to dump
      */
     protected function _debug($msg, $var) {
         $dump = $msg . ': ';

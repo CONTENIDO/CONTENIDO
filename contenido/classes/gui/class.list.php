@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the list GUI class.
  *
@@ -98,5 +99,3 @@ class cGuiList {
     }
 
 }
-
-?>

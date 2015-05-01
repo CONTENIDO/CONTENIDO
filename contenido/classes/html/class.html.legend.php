@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLLegend class.
  *
@@ -27,9 +28,12 @@ class cHTMLLegend extends cHTMLContentElement {
      * Constructor.
      * Creates an HTML legend element.
      *
-     * @param mixed $content String or object with the contents
-     * @param string $class the class of this element
-     * @param string $id the ID of this element
+     * @param mixed $content
+     *         String or object with the contents
+     * @param string $class
+     *         the class of this element
+     * @param string $id
+     *         the ID of this element
      */
     public function __construct($content = '', $class = '', $id = '') {
         parent::__construct($content, $class, $id);

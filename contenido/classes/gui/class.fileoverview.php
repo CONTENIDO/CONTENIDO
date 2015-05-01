@@ -1,17 +1,19 @@
 <?php
+
 /**
-* This file contains the generic file overviewer class.
-*
-* @package Core
-* @subpackage GUI
-* @version SVN Revision $Rev:$
-*
-* @author Mischa Holz
-* @copyright four for business AG <www.4fb.de>
-* @license http://www.contenido.org/license/LIZENZ.txt
-* @link http://www.4fb.de
-* @link http://www.contenido.org
-*/
+ * This file contains the generic file overviewer class.
+ *
+ * @package Core
+ * @subpackage GUI
+ * @version SVN Revision $Rev:$
+ *
+ * @author Mischa Holz
+ * @copyright four for business AG <www.4fb.de>
+ * @license http://www.contenido.org/license/LIZENZ.txt
+ * @link http://www.4fb.de
+ * @link http://www.contenido.org
+ */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -63,13 +65,14 @@ class cGuiFileOverview extends cGuiPage {
     /**
      * Display only special file extensions
      *
-     * @param array | string $extension Name of extensions
+     * @param array|string $extension
+     *         Name of extensions
      */
     public function setFileExtension($extension) {
-    	if (cSecurity::isString($extension)) {
-    		$extension = array($extension);
-    	}
-    	$this->fileExtension = $extension;
+        if (cSecurity::isString($extension)) {
+            $extension = array($extension);
+        }
+        $this->fileExtension = $extension;
     }
 
     /**
@@ -86,7 +89,7 @@ class cGuiFileOverview extends cGuiPage {
                 continue;
             }
             if (!empty($this->fileExtension) && !in_array($file->getExtension(), $this->fileExtension)) {
-            	continue;
+                continue;
             }
             $files[] = $file->getBasename();
         }

@@ -32,12 +32,18 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * Constructor.
      * Creates an HTML select field (aka 'DropDown').
      *
-     * @param string $sName Name of the element
-     * @param int $iWidth Width of the select element
-     * @param string $sID ID of the element
-     * @param string $bDisabled Item disabled flag (non-empty to set disabled)
-     * @param int $iTabIndex Tab index for form elements
-     * @param string $sAccessKey Key to access the field
+     * @param string $sName
+     *         Name of the element
+     * @param int $iWidth
+     *         Width of the select element
+     * @param string $sID
+     *         ID of the element
+     * @param string $bDisabled
+     *         Item disabled flag (non-empty to set disabled)
+     * @param int $iTabIndex
+     *         Tab index for form elements
+     * @param string $sAccessKey
+     *         Key to access the field
      */
     public function __construct($sName, $iWidth = '', $sID = '', $bDisabled = false, $iTabIndex = NULL, $sAccessKey = '') {
         parent::__construct($sName, $iWidth, $sID, $bDisabled, $iTabIndex, $sAccessKey);
@@ -47,12 +53,15 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * Function addArticles.
      * Adds articles to select box values.
      *
-     * @param int $iIDCat idcat of the category to be listed
-     * @param bool $bColored Add color information to option elements
-     * @param bool $bArtOnline If true, only online articles will be added
-     * @param string $sSpaces Just some '&nbsp;' to show data hierarchically
-     *        (used in conjunction with addCategories)
-     *
+     * @param int $iIDCat
+     *         idcat of the category to be listed
+     * @param bool $bColored
+     *         Add color information to option elements
+     * @param bool $bArtOnline
+     *         If true, only online articles will be added
+     * @param string $sSpaces
+     *         Just some '&nbsp;' to show data hierarchically
+     *         (used in conjunction with addCategories)
      * @return int
      *         Number of items added
      */
@@ -121,15 +130,18 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * will get a negative value!
      * There is no way to distinguish between a category id and an article id...
      *
-     * @param int $iMaxLevel Max. level shown (to be exact: except this level)
-     * @param bool $bColored Add color information to option elements
-     * @param bool $bCatVisible If true, only add idcat as value, if cat is
-     *        visible
-     * @param bool $bCatPublic If true, only add idcat as value, if cat is
-     *        public
-     * @param bool $bWithArt Add also articles per category
-     * @param bool $bArtOnline If true, show only online articles
-     *
+     * @param int $iMaxLevel
+     *         Max. level shown (to be exact: except this level)
+     * @param bool $bColored
+     *         Add color information to option elements
+     * @param bool $bCatVisible
+     *         If true, only add idcat as value, if cat is visible
+     * @param bool $bCatPublic
+     *         If true, only add idcat as value, if cat is public
+     * @param bool $bWithArt
+     *         Add also articles per category
+     * @param bool $bArtOnline
+     *         If true, show only online articles
      * @return int
      *         Number of items added
      */
@@ -199,10 +211,11 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
      * Function addTypesFromArt.
      * Adds types and type ids which are available for the specified article
      *
-     * @param int $iIDCatArt Article id
-     * @param string $sTypeRange Komma separated list of CONTENIDO type ids
-     *        which may be in the resulting list (e.g. '1', '17', '28')
-     *
+     * @param int $iIDCatArt
+     *         Article id
+     * @param string $sTypeRange
+     *         Comma separated list of CONTENIDO type ids
+     *         which may be in the resulting list (e.g. '1', '17', '28')
      * @return int
      *         Number of items added
      */
@@ -249,8 +262,8 @@ class cHTMLInputSelectElement extends cHTMLSelectElement {
     /**
      * Selects specified elements as selected
      *
-     * @param array $aElements Array with "values" of the cHTMLOptionElement to
-     *        set
+     * @param array $aElements
+     *         Array with "values" of the cHTMLOptionElement to set
      * @return cHTMLSelectElement
      *         $this for chaining
      */

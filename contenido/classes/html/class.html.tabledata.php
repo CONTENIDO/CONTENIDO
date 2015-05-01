@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the cHTMLTableData class.
  *
@@ -37,7 +38,8 @@ class cHTMLTableData extends cHTMLContentElement {
     /**
      * Sets the table width
      *
-     * @param string $width Width
+     * @param string $width
+     *         Width
      * @return cHTMLTableData
      *         $this for chaining
      */
@@ -48,7 +50,8 @@ class cHTMLTableData extends cHTMLContentElement {
     /**
      * Sets the table height
      *
-     * @param string $height Height
+     * @param string $height
+     *         Height
      * @return cHTMLTableData
      *         $this for chaining
      */
@@ -59,7 +62,8 @@ class cHTMLTableData extends cHTMLContentElement {
     /**
      * Sets the table alignment
      *
-     * @param string $alignment Alignment
+     * @param string $alignment
+     *         Alignment
      * @return cHTMLTableData
      *         $this for chaining
      */
@@ -70,7 +74,8 @@ class cHTMLTableData extends cHTMLContentElement {
     /**
      * Sets the table vertical alignment
      *
-     * @param string $alignment Vertical Alignment
+     * @param string $alignment
+     *         Vertical Alignment
      * @return cHTMLTableData
      *         $this for chaining
      */
@@ -81,7 +86,8 @@ class cHTMLTableData extends cHTMLContentElement {
     /**
      * Sets the table background color
      *
-     * @param string $color background color
+     * @param string $color
+     *         background color
      * @return cHTMLTableData
      *         $this for chaining
      */
@@ -92,7 +98,8 @@ class cHTMLTableData extends cHTMLContentElement {
     /**
      * Sets the table colspan
      *
-     * @param string $colspan Colspan
+     * @param string $colspan
+     *         Colspan
      * @return cHTMLTableData
      *         $this for chaining
      */

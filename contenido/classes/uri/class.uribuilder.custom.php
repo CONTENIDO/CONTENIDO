@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the uri builder custom class.
  *
@@ -63,7 +64,8 @@ class cUriBuilderCustom extends cUriBuilder {
      *
      * @param array $aParams
      * @param bool $bUseAbsolutePath
-     * @param array $aConfig If not set, will use cUriBuilderConfig::getConfig()
+     * @param array $aConfig
+     *         If not set, will use cUriBuilderConfig::getConfig()
      * @throws cInvalidArgumentException
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {

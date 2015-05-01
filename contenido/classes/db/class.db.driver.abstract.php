@@ -136,7 +136,7 @@ abstract class cDbDriverAbstract {
      * set is left. If optional param $className is set, the result object is an
      * instance of class $className.
      *
-     * @param string $className
+     * @param string $className [optional]
      * @return object
      */
     abstract public function getResultObject($className = NULL);
@@ -183,7 +183,7 @@ abstract class cDbDriverAbstract {
     /**
      * Moves the cursor (position inside current result sets).
      *
-     * @param int $iPos
+     * @param int $iPos [optional]
      *         The positon to move to inside the current result set
      * @return int
      */
@@ -218,7 +218,7 @@ abstract class cDbDriverAbstract {
      * @param string $tableName
      *         The table to get metadata or empty string to retrieve metadata
      *         of all tables.
-     * @param bool $full
+     * @param bool $full [optional]
      *         Flag to load full metadata.
      * @return array
      *         Depends on used database and on parameter $full

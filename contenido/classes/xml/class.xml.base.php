@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the base XML class.
  *
@@ -38,8 +39,10 @@ abstract class cXmlBase {
     /**
      * Creates a new XML document using DOMDocument.
      *
-     * @param string $version version of DOMDocument (optional, default: 1.0)
-     * @param string $encoding encoding of DOMDocumen (optional, default: UTF-8)
+     * @param string $version
+     *         version of DOMDocument (optional, default: 1.0)
+     * @param string $encoding
+     *         encoding of DOMDocumen (optional, default: UTF-8)
      */
     protected function _createDocument($version = '', $encoding = '') {
         if ($version == '') {
@@ -63,7 +66,9 @@ abstract class cXmlBase {
 
     /**
      * Sets a current DOMDocument object to class.
-     * @param    DOMDocument    $domDocument DOMDocument object
+     *
+     * @param    DOMDocument    $domDocument
+     *         DOMDocument object
      */
     public function setDomDocument(DOMDocument $domDocument) {
         $this->_dom = $domDocument;
@@ -110,8 +115,9 @@ abstract class cXmlBase {
     /**
      * Resolves a given path which contains ".." statement for moving up one
      * level in path.
-     * @param string $path path to resolve
      *
+     * @param string $path
+     *         path to resolve
      * @return string
      *         resolved path
      */
@@ -141,9 +147,10 @@ abstract class cXmlBase {
     /**
      * Returns given XPath with integrad level definition.
      *
-     * @param string $path XPath to extend
-     * @param int $level level
-     *
+     * @param string $path
+     *         XPath to extend
+     * @param int $level
+     *         level
      * @return string
      *         extended XPath
      */
@@ -178,31 +185,32 @@ abstract class cXmlBase {
      * Converts an array to a SimpleXMLElement.
      * Example:
      * array(
-     * 'key1' => 'value1',
-     * 'key2' => array('value21', 'value22'),
-     * 'key3' => array('key31' => 'value31', 'key32' => 'value32')
+     *     'key1' => 'value1',
+     *     'key2' => array('value21', 'value22'),
+     *     'key3' => array('key31' => 'value31', 'key32' => 'value32')
      * );
      *
      * becomes
      *
      * <?xml version="1.0" encoding="utf-8"?>
      * <root>
-     * <key1>value1</key1>
-     * <key2>
-     * <array_value>value21</array_value>
-     * <array_value>value22</array_value>
-     * </key2>
-     * <key3>
-     * <key31>value31</key31>
-     * <key32>value32</key32>
-     * </key3>
+     *     <key1>value1</key1>
+     *     <key2>
+     *         <array_value>value21</array_value>
+     *         <array_value>value22</array_value>
+     *     </key2>
+     *     <key3>
+     *         <key31>value31</key31>
+     *         <key32>value32</key32>
+     *     </key3>
      * </root>
      *
-     * @param array $array the array which should be converted to XML
-     * @param SimpleXMLElement $xml [optional] the element to which the array
-     *            should be added
-     * @param string $rootTagName [optional] the root tag name which should be
-     *            used - is only used when $xml is NULL!
+     * @param array $array
+     *         the array which should be converted to XML
+     * @param SimpleXMLElement $xml [optional]
+     *         the element to which the array should be added
+     * @param string $rootTagName [optional]
+     *         the root tag name which should be used - is only used when $xml is NULL!
      * @return SimpleXMLElement
      *         the array as a SimpleXMLElement
      */
@@ -264,7 +272,8 @@ abstract class cXmlBase {
      * 'key3' => array('key31' => 'value31', 'key32' => 'value32')
      * );
      *
-     * @param string $xmlString contains a valid XML structure
+     * @param string $xmlString
+     *         contains a valid XML structure
      * @return array
      */
     public static function xmlStringToArray($xmlString) {
@@ -330,7 +339,8 @@ abstract class cXmlBase {
      * Additionally, the function replaces all associative arrays which have
      * only empty values with the array keys of the array.
      *
-     * @param array $array the array to clean
+     * @param array $array
+     *         the array to clean
      * @return array
      *         the cleaned array
      */

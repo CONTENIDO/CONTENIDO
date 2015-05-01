@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the class for content search results.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 cInclude('includes', 'functions.encoding.php');
@@ -130,10 +132,14 @@ class cSearchResult extends cSearchBaseAbstract {
      * because a matching word in the headline (CMS_HEADLINE[1]) could be
      * weighted more than a matching word in the text (CMS_HTML[1]).
      *
-     * @param array $search_result List of article ids
-     * @param int $result_per_page Number of items per page
-     * @param cDb $oDB Optional db instance
-     * @param bool $bDebug Optional flag to enable debugging
+     * @param array $search_result
+     *         List of article ids
+     * @param int $result_per_page
+     *         Number of items per page
+     * @param cDb $oDB [optional]
+     *         db instance
+     * @param bool $bDebug
+     *         Optional flag to enable debugging
      */
     public function __construct($search_result, $result_per_page, $oDB = NULL, $bDebug = false) {
         parent::__construct($oDB, $bDebug);
@@ -177,7 +183,8 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id Id of an article
+     * @param int $art_id
+     *         Id of an article
      * @param string $cms_type
      * @param int $id
      * @return string
@@ -191,8 +198,10 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id Id of an article
-     * @param string $cms_type Content type
+     * @param int $art_id
+     *         Id of an article
+     * @param string $cms_type
+     *         Content type
      * @param int $cms_nr
      * @return string
      *         Content of an article in search result, specified by its type
@@ -314,7 +323,8 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id Id of an article
+     * @param int $art_id
+     *         Id of an article
      * @return int
      *         Similarity between searchword and matching word in article
      */
@@ -324,7 +334,8 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param int $art_id Id of an article
+     * @param int $art_id
+     *         Id of an article
      * @return int
      *         number of matching searchwords found in article
      */
@@ -340,9 +351,10 @@ class cSearchResult extends cSearchBaseAbstract {
 
     /**
      *
-     * @param string $rep1 The opening html-tag to emphasize the searchword e.g.
-     *        '<b>'
-     * @param string $rep2 The closing html-tag e.g. '</b>'
+     * @param string $rep1
+     *         The opening html-tag to emphasize the searchword e.g. '<b>'
+     * @param string $rep2
+     *         The closing html-tag e.g. '</b>'
      */
     public function setReplacement($rep1, $rep2) {
         if (strlen(trim($rep1)) > 0 && strlen(trim($rep2)) > 0) {
@@ -367,4 +379,3 @@ class cSearchResult extends cSearchBaseAbstract {
         }
     }
 }
-

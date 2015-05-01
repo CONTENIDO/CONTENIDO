@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the generic db class.
  *
@@ -114,13 +115,15 @@ class cGenericDb {
      * cGenericDb::register(cGenericDb::CREATE_SUCCESS,
      * array('cCallbackHandler', 'executeCreateHandle'), 'cApiArticle');
      *
-     * @param string $event Callback event, must be a valid value of a
-     *        cGenericDb event constant
-     * @param mixed $callback Callback to register
-     * @param mixed $class Class name for registering callback (can be string of
-     *        array with names of the concrete Item classes)
-     * @throws cInvalidArgumentException if event or class are not set or the
-     *         callback is not callable
+     * @param string $event
+     *         Callback event, must be a valid value of a cGenericDb event constant
+     * @param mixed $callback
+     *         Callback to register
+     * @param mixed $class
+     *         Class name for registering callback (can be string of array with
+     *         names of the concrete Item classes)
+     * @throws cInvalidArgumentException
+     *         if event or class are not set or the callback is not callable
      */
     public static function register($event, $callback, $class) {
         if (isset($event) === false) {
@@ -150,11 +153,13 @@ class cGenericDb {
      * Example:
      * cGenericDb::unregister(cGenericDb::CREATE_SUCCESS, 'cApiArticle');
      *
-     * @param string $event Callback event, must be a valid value of a
-     *        cGenericDb event constant
-     * @param mixed $class Class name for unregistering callback (can be string
-     *        of array with names of the concrete Item classes)
-     * @throws cInvalidArgumentException if the event or the class are not set
+     * @param string $event
+     *         Callback event, must be a valid value of a cGenericDb event constant
+     * @param mixed $class
+     *         Class name for unregistering callback (can be string of array
+     *         with names of the concrete Item classes)
+     * @throws cInvalidArgumentException
+     *         if the event or the class are not set
      */
     public static function unregister($event, $class) {
         if (isset($event) === false) {
@@ -177,11 +182,14 @@ class cGenericDb {
     /**
      * Executes all callbacks for a specific event in a class.
      *
-     * @param string $event Callback event, must be a valid value of a
-     *        cGenericDb event constant
-     * @param string $class Class name for executing callback
-     * @param array $arguments Arguments to pass to the callback function
-     * @throws cInvalidArgumentException if the event or class is not set
+     * @param string $event
+     *         Callback event, must be a valid value of a cGenericDb event constant
+     * @param string $class
+     *         Class name for executing callback
+     * @param array $arguments
+     *         Arguments to pass to the callback function
+     * @throws cInvalidArgumentException
+     *         if the event or class is not set
      */
     protected final function _executeCallbacks($event, $class, $arguments = array()) {
         if (isset($event) === false) {
@@ -205,5 +213,3 @@ class cGenericDb {
         }
     }
 }
-
-?>

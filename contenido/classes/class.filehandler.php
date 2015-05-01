@@ -26,8 +26,10 @@ class cFileHandler {
     /**
      * Creates a new file
      *
-     * @param string $filename the name and path of the new file
-     * @param string $content optional content of the new file. Optional.
+     * @param string $filename
+     *         the name and path of the new file
+     * @param string $content optional
+     *         content of the new file. Optional.
      * @return bool
      *         true on success. Otherwise false.
      */
@@ -43,13 +45,16 @@ class cFileHandler {
     /**
      * Reads bytes from a file
      *
-     * @param string $filename the name and path of the file
-     * @param int $length the number of bytes to read. Optional.
-     * @param int $offset this will be the first byte which is read. Optional.
-     * @param bool $reverse if true, the function will start from the back of
-     *        the file. Optional.
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
+     * @param string $filename
+     *         the name and path of the file
+     * @param int $length
+     *         the number of bytes to read. Optional.
+     * @param int $offset
+     *         this will be the first byte which is read. Optional.
+     * @param bool $reverse Optional
+     *         if true, the function will start from the back of the file.
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      * @return string|bool
      *         On success it returns the bytes which have been read.
      *         Otherwise false.
@@ -75,12 +80,14 @@ class cFileHandler {
     /**
      * Reads a file line by line
      *
-     * @param string $filename the name and path of the file
-     * @param int $lines the number of lines to be read. Optional.
-     * @param int $lineoffset this will be the first line which is read.
-     *        Optional.
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
+     * @param string $filename
+     *         the name and path of the file
+     * @param int $lines [optional]
+     *         the number of lines to be read.
+     * @param int $lineoffset [optional]
+     *         this will be the first line which is read.
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      * @return string|array|bool
      *         If one line was read the function will return it.
      *         If more than one line was read the function will return an array
@@ -128,10 +135,12 @@ class cFileHandler {
     /**
      * Writes data to a file
      *
-     * @param string $filename the name and path of the file
-     * @param string $content the data which should be written
-     * @param bool $append if true the data will be appended to the file.
-     *        Optional.
+     * @param string $filename
+     *         the name and path of the file
+     * @param string $content
+     *         the data which should be written
+     * @param bool $append  [optional]
+     *         if true the data will be appended to the file.
      * @return bool
      *         true on success, false otherwise
      */
@@ -154,9 +163,12 @@ class cFileHandler {
      * cFileHandler::write($filename, $data."\n", $apppend)
      *
      * @see cFileHandler::write($filename, $content, $append)
-     * @param string $filename the name and path to the file
-     * @param string $content the data of the line
-     * @param bool $append if true the data will be appended to file. Optional.
+     * @param string $filename
+     *         the name and path to the file
+     * @param string $content
+     *         the data of the line
+     * @param bool $append [optional]
+     *         if true the data will be appended to file.
      * @return bool
      *         true on success, false otherwise
      */
@@ -167,7 +179,8 @@ class cFileHandler {
     /**
      * Checks if a file exists
      *
-     * @param string $filename the name and path of the file
+     * @param string $filename
+     *         the name and path of the file
      * @return bool
      *         true if the file exists
      */
@@ -178,7 +191,8 @@ class cFileHandler {
     /**
      * Checks if the file is writable for the PHP user
      *
-     * @param string $filename the name and path of the file
+     * @param string $filename
+     *         the name and path of the file
      * @return bool
      *         true if the file can be written
      */
@@ -189,9 +203,10 @@ class cFileHandler {
     /**
      * Checks if a file is readable for the PHP user
      *
-     * @param string $filename the name and path of the file
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
+     * @param string $filename
+     *         the name and path of the file
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      * @return bool
      *         true if the file is readable
      */
@@ -206,9 +221,10 @@ class cFileHandler {
     /**
      * Removes a file from the filesystem
      *
-     * @param string $filename the name and path of the file
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
+     * @param string $filename
+     *         the name and path of the file
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      * @return bool
      *         true on success
      */
@@ -223,9 +239,10 @@ class cFileHandler {
     /**
      * Truncates a file so that it is empty
      *
-     * @param string $filename the name and path of the file
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
+     * @param string $filename
+     *         the name and path of the file
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      * @return bool
      *         true on success
      */
@@ -244,11 +261,13 @@ class cFileHandler {
     /**
      * Moves a file
      *
-     * @param string $filename the name of the source file
-     * @param string $destination the destination. Note that the file can also
-     *        be renamed in the process of moving it
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
+     * @param string $filename
+     *         the name of the source file
+     * @param string $destination
+     *         the destination. Note that the file can also be renamed in the
+     *         process of moving it
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      * @return bool
      *         true on success
      */
@@ -267,10 +286,12 @@ class cFileHandler {
     /**
      * Renames a file
      *
-     * @param string $filename the name and path of the file
-     * @param string $new_filename the new name of the file
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
+     * @param string $filename
+     *         the name and path of the file
+     * @param string $new_filename
+     *         the new name of the file
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      * @return bool
      *         true on success
      */
@@ -289,11 +310,12 @@ class cFileHandler {
     /**
      * Copies a file
      *
-     * @param string $filename the name and path of the file
-     * @param string $destination the destination. Note that existing files get
-     *        overwritten
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
+     * @param string $filename
+     *         the name and path of the file
+     * @param string $destination
+     *         the destination. Note that existing files get overwritten
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      * @return bool
      *         true on success
      */
@@ -312,10 +334,12 @@ class cFileHandler {
     /**
      * Changes the file permissions
      *
-     * @param string $filename the name and path of the file
-     * @param int $mode the new access mode : php chmod needs octal value
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
+     * @param string $filename
+     *         the name and path of the file
+     * @param int $mode
+     *         the new access mode : php chmod needs octal value
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      * @return bool
      *         true on success
      */
@@ -338,9 +362,10 @@ class cFileHandler {
      * in 4 octal digits 'extension' - the file extension or '' if there's no
      * extension 'mime' - the mime type of the file
      *
-     * @param string $filename the name and path to the file
-     * @throws cInvalidArgumentException if the file with the given filename
-     *         does not exist
+     * @param string $filename
+     *         the name and path to the file
+     * @throws cInvalidArgumentException
+     *         if the file with the given filename does not exist
      * @return array
      *         Returns an array containing information about the file
      */
@@ -391,7 +416,8 @@ class cFileHandler {
     /**
      * Sets the default file permissions on the given file.
      *
-     * @param string $filename the name of the file
+     * @param string $filename
+     *         the name of the file
      * @return bool
      *         true on success or false on failure
      */
@@ -409,9 +435,10 @@ class cFileHandler {
     /**
      * Validates the given filename.
      *
-     * @param string $filename the filename to validate
-     * @param bool $notifyAndExitOnFailure if set, function will show a
-     *        notification and will exit the script
+     * @param string $filename
+     *         the filename to validate
+     * @param bool $notifyAndExitOnFailure
+     *         if set, function will show a notification and will exit the script
      * @return bool
      *         true if the given filename is valid, false otherwise
      */
@@ -464,9 +491,10 @@ class cFileHandler {
     }
 
     /**
-     * Check if file name begins with a period
-     *  @param string $fileName
-     *  @return bool
+     * Check if file name begins with a period.
+     *
+     * @param string $fileName
+     * @return bool
      */
     public static function fileNameBeginsWithDot($fileName) {
         return (strpos(end(explode('/', $fileName)), ".") === 0);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the visible debug class.
  *
@@ -64,10 +65,12 @@ class cDebugVisible implements cDebugInterface {
     /**
      * Outputs contents of passed variable in a preformatted, readable way
      *
-     * @param mixed $mVariable The variable to be displayed
-     * @param string $sVariableDescription The variable's name or description
-     * @param bool $bExit If set to true, your app will die() after output of
-     *        current var
+     * @param mixed $mVariable
+     *         The variable to be displayed
+     * @param string $sVariableDescription
+     *         The variable's name or description
+     * @param bool $bExit
+     *         If set to true, your app will die() after output of current var
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
         $bTextarea = false;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the generic page GUI class.
  *
@@ -12,6 +13,7 @@
  * @link http://www.4fb.de
  * @link http://www.contenido.org
  */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -272,8 +274,9 @@ class cGuiPage {
      * plugins/PLUGINNAME/scripts/
      * too.
      *
-     * @param string $script The filename of the script. It has to reside in
-     *        /scripts/ in order to be found.
+     * @param string $script
+     *         The filename of the script. It has to reside in /scripts/
+     *         in order to be found.
      */
     public function addScript($script) {
         global $perm, $currentuser;
@@ -321,8 +324,9 @@ class cGuiPage {
      * plugin stylesheets folder and relative to the CONTENIDO stylesheets
      * folder.
      *
-     * @param string $stylesheet The filename of the stylesheet. It has to
-     *        reside in /styles/ in order to be found.
+     * @param string $stylesheet
+     *         The filename of the stylesheet. It has to reside in /styles/
+     *         in order to be found.
      */
     public function addStyle($stylesheet) {
         global $perm, $currentuser;
@@ -368,9 +372,10 @@ class cGuiPage {
     /**
      * Adds a meta tag to the website.
      *
-     * @param array $meta Associative array with the meta tag attributes
-     * @throws cInvalidArgumentException if an invalid attribute for the meta
-     *         tag has been given
+     * @param array $meta
+     *         Associative array with the meta tag attributes
+     * @throws cInvalidArgumentException
+     *         if an invalid attribute for the meta tag has been given
      */
     public function addMeta(array $meta) {
         $allowedAttributes = array(
@@ -402,10 +407,12 @@ class cGuiPage {
     /**
      * Loads the subnavigation of the current area upon rendering.
      *
-     * @param string $additional Additional parameters the subnavigation might
-     *        need. These have to look like "key=value&key2=value2..."
-     * @param string $aarea The area of the subnavigation. If none is given the
-     *        current area will be loaded
+     * @param string $additional
+     *         Additional parameters the subnavigation might need.
+     *         These have to look like "key=value&key2=value2..."
+     * @param string $aarea
+     *         The area of the subnavigation.
+     *         If none is given the current area will be loaded.
      */
     public function setSubnav($additional = '', $aarea = '') {
         global $area, $sess;
@@ -431,8 +438,12 @@ class cGuiPage {
     /**
      * Adds JavaScript to the page to reload a certain frame.
      *
-     * @param string $frameName Name of the frame
-     * @param string|array $updatedParameters Either an array with keys that will be passed to Con.UtilUrl.replaceParams OR a string containing the new href of the frame
+     * @param string $frameName
+     *         Name of the frame
+     * @param string|array $updatedParameters
+     *         Either an array with keys that will be passed to
+     *         Con.UtilUrl.replaceParams OR a string containing
+     *         the new href of the frame.
      */
     public function reloadFrame($frameName, $updatedParameters = null) {
         if(is_array($updatedParameters)) {
@@ -463,7 +474,8 @@ class cGuiPage {
     /**
      * Sets the markscript
      *
-     * @param string $item The number of the submenu which should be marked.
+     * @param string $item
+     *         The number of the submenu which should be marked.
      */
     public function setMarkScript($item) {
         $this->_markScript = markSubMenuItem($item, true);
@@ -472,8 +484,8 @@ class cGuiPage {
     /**
      * Sets the encoding of the website
      *
-     * @param string $encoding An encoding which should be valid to use in the
-     *        meta tag
+     * @param string $encoding
+     *         An encoding which should be valid to use in the meta tag
      */
     public function setEncoding($encoding) {
         if (empty($encoding)) {
@@ -488,10 +500,13 @@ class cGuiPage {
     /**
      * Applies a value to a key in the content template.
      *
-     * @param string $type Either "s" or "d" for "static" or "dynamic" values
-     * @param string $key The key which should be replaced
-     * @param string $value The value which should replace the key
      * @see cTemplate::set()
+     * @param string $type
+     *         Either "s" or "d" for "static" or "dynamic" values
+     * @param string $key
+     *         The key which should be replaced
+     * @param string $value
+     *         The value which should replace the key
      */
     public function set($type, $key, $value) {
         $this->_contentTemplate->set($type, $key, $value);
@@ -499,7 +514,9 @@ class cGuiPage {
 
     /**
      * Function to specify the file used to generate the page template
-     * @param string $filename the page base file
+     *
+     * @param string $filename
+     *         the page base file
      */
     public function setPageBase($filename = '') {
         if ('' === $filename) {
@@ -532,7 +549,8 @@ class cGuiPage {
      * Displays an error message and aborts rendering after that
      * NOTE: You still have to call render() to actually show any messages
      *
-     * @param string $msg A message
+     * @param string $msg
+     *         A message
      */
     public function displayCriticalError($msg) {
         $this->_error = $msg;
@@ -543,7 +561,8 @@ class cGuiPage {
      * Displays an error but the rendering of the content template will
      * continue.
      *
-     * @param string $msg A message
+     * @param string $msg
+     *         A message
      */
     public function displayError($msg) {
         $this->_error .= $msg . '<br>';
@@ -552,7 +571,8 @@ class cGuiPage {
     /**
      * Displays a warning
      *
-     * @param string $msg The warning
+     * @param string $msg
+     *         The warning
      */
     public function displayWarning($msg) {
         $this->_warning .= $msg . '<br>';
@@ -561,7 +581,8 @@ class cGuiPage {
     /**
      * Displays an info
      *
-     * @param string $msg The info message
+     * @param string $msg
+     *         The info message
      */
     public function displayInfo($msg) {
         $this->_info .= $msg . '<br>';
@@ -570,10 +591,11 @@ class cGuiPage {
     /**
      * Display a ok
      *
-     * @param string $msg The ok message
+     * @param string $msg
+     *         The ok message
      */
     public function displayOk($msg) {
-    	$this->_ok .= $msg . '<br>';
+        $this->_ok .= $msg . '<br>';
     }
 
     /**
@@ -582,7 +604,8 @@ class cGuiPage {
      * NOTE: All these objects must have a render() method or else they won't be
      * shown
      *
-     * @param array|object $objects An array of objects
+     * @param array|object $objects
+     *         An array of objects
      */
     public function setContent($objects) {
         if (!is_array($objects)) {
@@ -595,12 +618,12 @@ class cGuiPage {
 
     /**
      * Appends all cHTML objects in an array (or a single object) which build up
-     * the
-     * site instead of a content template.
+     * the site instead of a content template.
      * NOTE: All these objects must have a render() method or else they won't be
      * shown
      *
-     * @param array|object $objects An array of objects or a single object
+     * @param array|object $objects
+     *         An array of objects or a single object
      */
     public function appendContent($objects) {
         if (!is_array($objects)) {
@@ -613,9 +636,10 @@ class cGuiPage {
     /**
      * Renders the page and either prints it or returns it
      *
-     * @param cTemplate|NULL $template If set, use this content template instead
-     *        of the default one
-     * @param bool $return If true, the page will be returned instead of echoed
+     * @param cTemplate|NULL $template
+     *         If set, use this content template instead of the default one
+     * @param bool $return
+     *         If true, the page will be returned instead of echoed
      * @return string|void
      *         either the webpage or nothing
      */
@@ -726,7 +750,7 @@ class cGuiPage {
         // Get messages from cRegistry
         $okMessages = cRegistry::getOkMessages();
         foreach ($okMessages as $message) {
-        	$this->displayOk($message);
+            $this->displayOk($message);
         }
 
         $infoMessages = cRegistry::getInfoMessages();
@@ -746,7 +770,7 @@ class cGuiPage {
 
         $text = '';
         if ($this->_ok != '') {
-        	$text .= $notification->returnNotification('ok', $this->_ok) . '<br>';
+            $text .= $notification->returnNotification('ok', $this->_ok) . '<br>';
         }
         if ($this->_info != '') {
             $text .= $notification->returnNotification('info', $this->_info) . '<br>';

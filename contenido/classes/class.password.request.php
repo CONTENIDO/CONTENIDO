@@ -103,8 +103,10 @@ class cPasswordRequest {
     /**
      * Constructor of RequestPassword initializes class variables
      *
-     * @param cDb $db The CONTENIDO database object
-     * @param array $cfg The CONTENIDO configuration array
+     * @param cDb $db
+     *         The CONTENIDO database object
+     * @param array $cfg
+     *         The CONTENIDO configuration array
      */
     public function __construct($db, $cfg) {
         // generate new dbobject, if it does not exist
@@ -181,7 +183,8 @@ class cPasswordRequest {
      * password is submitted this function also starts the
      * passwort reset request and sending process
      *
-     * @param bool $return Return or print template
+     * @param bool $return
+     *         Return or print template
      * @return string
      *         rendered HTML code
      */
@@ -543,8 +546,10 @@ class cPasswordRequest {
 
     /**
      * Save request into db for future validity check
-     * @param string $token Token used to check for validity at user confirmation part
-     * @param DateTime Expiration time of reset request validity
+     * @param string $token
+     *         Token used to check for validity at user confirmation part
+     * @param DateTime
+     *         Expiration time of reset request validity
      * @return bool
      *         whether password request could be safed successfully
      */
@@ -569,7 +574,8 @@ class cPasswordRequest {
     /**
      * Function submits new password to users mail address
      *
-     * @param string $token The token used to authorise password change
+     * @param string $token
+     *         The token used to authorise password change
      */
     protected function _submitMail($token) {
         $cfg = cRegistry::getConfig();

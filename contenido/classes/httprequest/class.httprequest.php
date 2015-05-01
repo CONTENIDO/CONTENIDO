@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the the general HttpRequest class
  * Extends this class and implement the functions to use
@@ -122,5 +123,3 @@ abstract class cHttpRequest {
      */
     abstract public function setURL($url);
 }
-
-?>

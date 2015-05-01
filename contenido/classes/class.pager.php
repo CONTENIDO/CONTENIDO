@@ -70,9 +70,12 @@ class cPager {
      * Constructor Function
      * Initializes the pager
      *
-     * @param int $items Amount of items
-     * @param int $itemsPerPage Items displayed per page
-     * @param int $currentPage Defines the current page
+     * @param int $items
+     *         Amount of items
+     * @param int $itemsPerPage
+     *         Items displayed per page
+     * @param int $currentPage
+     *         Defines the current page
      */
     public function __construct($items, $itemsPerPage, $currentPage) {
         $this->_items = $items;

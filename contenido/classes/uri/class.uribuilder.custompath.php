@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the uri builder custom path class.
  *
@@ -65,9 +66,11 @@ class cUriBuilderCustomPath extends cUriBuilder {
      *
      * @todo Somehow get around using prCreateURLNameLocationString()
      * @throws cInvalidArgumentException
-     * @param  array  $aParams  Required keys are: idcat, level, lang and at least one custom key.
+     * @param  array  $aParams
+     *         Required keys are: idcat, level, lang and at least one custom key.
      * @param  bool  $bUseAbsolutePath
-     * @param  array  $aConfig  If not set, will use UriBuilderConfig::getConfig()
+     * @param  array  $aConfig
+     *         If not set, will use UriBuilderConfig::getConfig()
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
         if (!isset($aParams['idcat'])) {

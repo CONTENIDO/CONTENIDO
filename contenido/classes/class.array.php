@@ -28,11 +28,12 @@ class cArray {
      * each item in array.
      * Similar to trim() function.
      *
-     * @param array $arr Array of strings that will be trimmed.
-     * @param string $charlist Optionally, the stripped characters can also be
-     *        specified using the charlist parameter. Simply list all characters
-     *        that you want to be stripped. With .. you can specify a range of
-     *        characters.
+     * @param array $arr
+     *         Array of strings that will be trimmed.
+     * @param string $charlist Optionally
+     *         Optionally the stripped characters can also be specified using
+     *         the charlist parameter. Simply list all characters that you want
+     *         to be stripped. With .. you can specify a range of characters.
      * @return array
      *         Array of trimmed strings.
      */
@@ -69,10 +70,14 @@ class cArray {
      *
      * @todo There should be only one flag for $partial and $strict in order to
      *       avoid ambiguities (imagine $partial=true & $strict=true).
-     * @param array $arr array to search
-     * @param mixed $search value to search for
-     * @param bool $partial if values are tested to contain $search
-     * @param bool $strict if values are tested for identity
+     * @param array $arr
+     *         array to search
+     * @param mixed $search
+     *         value to search for
+     * @param bool $partial
+     *         if values are tested to contain $search
+     * @param bool $strict
+     *         if values are tested for identity
      * @return mixed
      *         key of the array containing the searched value or false
      */
@@ -111,8 +116,10 @@ class cArray {
     /**
      * Sorts an array by changing the locale temporary to passed value.
      *
-     * @param array $arr The array to sort
-     * @param string $locale The locale to change before sorting
+     * @param array $arr
+     *         The array to sort
+     * @param string $locale
+     *         The locale to change before sorting
      * @return array
      *         Sorted array
      */

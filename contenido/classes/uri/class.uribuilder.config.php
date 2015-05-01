@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains the uri builder configuration class.
  *
@@ -68,12 +69,13 @@ class cUriBuilderConfig {
     /**
      * Set cUriBuilder configuration
      *
-     * @param array $cfg Assoziative configuration array as follows:
-     *        - $cfg['name'] = Name of UriBuilder class to use
-     *        - $cfg['config'] = UriBuilder configuration
-     * @throws cInvalidArgumentException If $cfg ist empty, $cfg['name'] is
-     *         missing or $cfg['config']
-     *         exists but is not a array
+     * @param array $cfg
+     *         Assoziative configuration array as follows:
+     *         - $cfg['name'] = Name of UriBuilder class to use
+     *         - $cfg['config'] = UriBuilder configuration
+     * @throws cInvalidArgumentException
+     *         If $cfg ist empty, $cfg['name'] is missing
+     *         or $cfg['config'] exists but is not a array
      */
     public static function setConfig(array $cfg) {
         if (count($cfg) == 0) {
@@ -90,8 +92,8 @@ class cUriBuilderConfig {
     /**
      * Returns cUriBuilder name
      *
-     * @throws cException If cUriBuilder configuration wasn't
-     *         initialized before
+     * @throws cException
+     *         If cUriBuilder configuration wasn't initialized before
      * @return string
      *         cUriBuilder name
      */
@@ -106,8 +108,8 @@ class cUriBuilderConfig {
     /**
      * Returns cUriBuilder configuration
      *
-     * @throws cException If cUriBuilder configuration wasn't
-     *         initialized before
+     * @throws cException
+     *         If cUriBuilder configuration wasn't initialized before
      * @return array
      *         cUriBuilder configuration
      */

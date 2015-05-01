@@ -122,8 +122,8 @@ class cPermission {
      * Loads all permissions of groups where current logged in user is a member
      * and saves them in session.
      *
-     * @param bool $force Flag to force loading, event if they were ccached
-     *        before
+     * @param bool $force
+     *         Flag to force loading, event if they were cached before
      * @return string
      *         Returns diffrent values, depending on state:
      *         '1' (string) if permissions couldn't loaded
@@ -164,7 +164,8 @@ class cPermission {
      * Stores area rights in global variable $area_rights.
      * Stores item rights in global variable $item_rights.
      *
-     * @param string $user User Id hash
+     * @param string $user
+     *         User Id hash
      */
     public function load_permissions_for_user($user) {
         global $client, $lang;
@@ -376,9 +377,10 @@ class cPermission {
     /**
      * Checks if a user has access rights for a specific client.
      *
-     * @param int $iClient idclient to check, or false for the current client
-     * @param object $oUser User object to check against, or false for the
-     *        current user
+     * @param int $iClient
+     *         idclient to check, or false for the current client
+     * @param object $oUser
+     *         User object to check against, or false for the current user
      * @return bool
      */
     public function hasClientPermission($iClient = false, $oUser = false) {
@@ -410,8 +412,10 @@ class cPermission {
     /**
      * Checks if the given user has access permission for a client
      *
-     * @param int $iClient idclient to check
-     * @param object $oUser User object to check against
+     * @param int $iClient
+     *         idclient to check
+     * @param object $oUser
+     *         User object to check against
      * @return bool
      */
     public function isClientUser($iClient, $oUser) {
@@ -429,8 +433,10 @@ class cPermission {
     /**
      * Checks if the given group has access permission for a client
      *
-     * @param int $iClient idclient to check
-     * @param object $oGroup Group object to check against
+     * @param int $iClient
+     *         idclient to check
+     * @param object $oGroup
+     *         Group object to check against
      * @return bool
      */
     public function isClientGroup($iClient, $oGroup) {
@@ -446,8 +452,10 @@ class cPermission {
     /**
      * Checks if the given user has an admin permission
      *
-     * @param int $iClient idclient to check
-     * @param object $oUser User object to check against
+     * @param int $iClient
+     *         idclient to check
+     * @param object $oUser
+     *         User object to check against
      * @return bool
      */
     public function isClientAdmin($iClient, $oUser) {
@@ -465,7 +473,8 @@ class cPermission {
     /**
      * Checks if the given user has sysadmin permission
      *
-     * @param object $oUser User object to check against
+     * @param object $oUser
+     *         User object to check against
      * @return bool
      */
     public function isSysadmin($oUser) {
@@ -487,9 +496,10 @@ class cPermission {
      * user. If oUser is not an object of the class cApiUser, throw an
      * exception.
      *
-     * @param object $oUser User object
-     * @throws cInvalidArgumentException if the given or constructed user is not
-     *         a cApiUser object
+     * @param object $oUser
+     *         User object
+     * @throws cInvalidArgumentException
+     *         if the given or constructed user is not a cApiUser object
      * @return object
      */
     private function _checkUserObject($oUser) {
@@ -545,7 +555,8 @@ class cPermission {
      * - Sysadmin has allways permission
      * - Client admin has allways permission
      *
-     * @param string $p Permissions (comma separated list of perms) to check
+     * @param string $perm
+     *         Permissions (comma separated list of perms) to check
      * @return bool
      */
     public function have_perm($perm = 'x') {

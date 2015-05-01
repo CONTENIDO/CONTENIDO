@@ -1,4 +1,5 @@
 <?php
+
 /**
 * This file contains the generic source editor class. It is used for editing HTML templates, JS files and CSS files
 *
@@ -12,6 +13,7 @@
 * @link http://www.4fb.de
 * @link http://www.contenido.org
 */
+
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
@@ -59,10 +61,16 @@ class cGuiSourceEditor extends cGuiPage {
 
     /**
      * The default constructor. Initializes the class and its parent
-     * @param string $filename Name of the edited file
-     * @param bool $versioning Is versioning activated or not. Defaults to true
-     * @param string $filetype The type of the file. If ommited the class tries to determine the type from the area
-     * @param string $filepath Path to the file. If ommited the class tries to determine the path from the type and the area
+     * @param string $filename
+     *         Name of the edited file
+     * @param bool $versioning
+     *         Is versioning activated or not. Defaults to true
+     * @param string $filetype
+     *         The type of the file. If ommited the class tries to determine
+     *         the type from the area
+     * @param string $filepath
+     *         Path to the file. If ommited the class tries to determine the
+     *         path from the type and the area
      */
     public function __construct($filename, $versioning = true, $filetype = '', $filepath = '') {
         global $cfg, $cfgClient, $client, $perm, $area, $action, $belang;
@@ -121,7 +129,9 @@ class cGuiSourceEditor extends cGuiPage {
 
     /**
      * Updates the file according to the options in the array
-     * @param array $req Request array. Usually _REQUEST
+     *
+     * @param array $req
+     *         Request array. Usually _REQUEST
      */
     protected function update($req) {
         global $cfg, $cfgClient, $db, $client, $area, $frame, $perm, $action;

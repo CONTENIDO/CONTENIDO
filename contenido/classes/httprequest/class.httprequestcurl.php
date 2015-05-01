@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file contains an implementation of HttpRequest using curl
  *
@@ -178,9 +179,12 @@ class cHttpRequestCurl extends cHttpRequest {
     /**
      * Send the request to the server
      *
-     * @param bool $return Wether the function should return the servers response
-     * @param string $method GET or POST
-     * @param bool $returnHeaders Wether the headers should be included in the response
+     * @param bool $return
+     *         Wether the function should return the servers response
+     * @param string $method
+     *         GET or POST
+     * @param bool $returnHeaders
+     *         Wether the headers should be included in the response
      * @return string|bool
      */
     protected function sendRequest($return, $method, $returnHeaders) {
@@ -255,8 +259,10 @@ class cHttpRequestCurl extends cHttpRequest {
      * Sets CURL options
      *
      * @see curl_setopt()
-     * @param int $curlOpt One of the CURLOPT constants
-     * @param mixed $value Value for the option
+     * @param int $curlOpt
+     *         One of the CURLOPT constants
+     * @param mixed $value
+     *         Value for the option
      * @return cHttpRequest
      */
     public function setOpt($curlOpt, $value) {
@@ -274,5 +280,3 @@ class cHttpRequestCurl extends cHttpRequest {
         return $this->curl;
     }
 }
-
-?>
