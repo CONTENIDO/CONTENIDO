@@ -27,7 +27,7 @@ $logfile = basename($_REQUEST['logfile']);
 // process the actions delete / clear log
 if ($action == 'deletelog' && !empty($logfile)) {
     if (cFileHandler::remove($path . cSecurity::escapeString($logfile))) {
-        $page->displayInfo(sprintf(i18n('Logfile "%s" deleted successfully'), $logfile));
+        $page->displayOk(sprintf(i18n('Logfile "%s" deleted successfully'), $logfile));
     }
     $logfile = "";
 } else if ($action == 'clearlog' && !empty($logfile)) {

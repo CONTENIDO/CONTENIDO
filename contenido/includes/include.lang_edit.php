@@ -31,7 +31,7 @@ $db2 = cRegistry::getDb();
 
 if ($action == "lang_newlanguage") {
 
-    $page->displayInfo(i18n("Created new language successfully!"));
+    $page->displayOk(i18n("Created new language successfully!"));
 
     // update language dropdown in header, but only for current client
     if ($targetclient == $client) {
@@ -53,7 +53,7 @@ if ($action == "lang_newlanguage") {
     $page->render();
 } elseif ($action == "lang_deletelanguage") {
 
-    $page->displayInfo(i18n("Deleted language successfully!"));
+    $page->displayOk(i18n("Deleted language successfully!"));
 
     // finally delete from dropdown in header, but only for current client
     if ($targetclient == $client) {
@@ -115,9 +115,9 @@ if ($action == "lang_newlanguage") {
 
                 if (false === $invalidData) {
                     if (false === langEditLanguage($idlang, $langname, $sencoding, $active, $direction)) {
-                        $page->displayInfo(i18n("An error occurred during saving the changes"));
+                        $page->displayError(i18n("An error occurred during saving the changes"));
                     } else {
-                        $page->displayInfo(i18n("Changes saved"));
+                        $page->displayOk(i18n("Changes saved"));
                     }
                 }
             }

@@ -97,7 +97,10 @@ if ($idart) {
             if(!$idtpl && $idcat && $idart && (int) $artlang->get('locked') === 1) {
                 $inUse    = true;
                 $disabled = ($admin === false)? 'disabled="disabled"' : '';
-                $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+                // display notification if article configuration can not be edited
+                if (false === $admin) {
+                    $notification->displayNotification('warning', i18n('This article is currently frozen and can not be edited!'));
+                }
                 $configLocked = true;
             }
         }

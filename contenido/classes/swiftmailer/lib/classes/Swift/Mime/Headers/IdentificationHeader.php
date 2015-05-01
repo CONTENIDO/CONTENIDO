@@ -10,22 +10,23 @@
 
 /**
  * An ID MIME Header for something like Message-ID or Content-ID.
- * @package Swift
- * @subpackage Mime
- * @author Chris Corbyn
+ *
+ * @author     Chris Corbyn
  */
 class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_AbstractHeader
 {
     /**
      * The IDs used in the value of this Header.
+     *
      * This may hold multiple IDs or just a single ID.
+     *
      * @var string[]
-     * @access private
      */
     private $_ids = array();
 
     /**
      * Creates a new IdentificationHeader with the given $name and $id.
+     *
      * @param string             $name
      * @param Swift_Mime_Grammar $grammar
      */
@@ -37,9 +38,11 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
 
     /**
      * Get the type of Header that this instance represents.
-     * @return int
+     *
      * @see TYPE_TEXT, TYPE_PARAMETERIZED, TYPE_MAILBOX
      * @see TYPE_DATE, TYPE_ID, TYPE_PATH
+     *
+     * @return int
      */
     public function getFieldType()
     {
@@ -48,8 +51,11 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
 
     /**
      * Set the model for the field body.
-     * This method takes a string ID, or an array of IDs
-     * @param  mixed                        $model
+     *
+     * This method takes a string ID, or an array of IDs.
+     *
+     * @param mixed $model
+     *
      * @throws Swift_RfcComplianceException
      */
     public function setFieldBodyModel($model)
@@ -59,7 +65,9 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
 
     /**
      * Get the model for the field body.
+     *
      * This method returns an array of IDs
+     *
      * @return array
      */
     public function getFieldBodyModel()
@@ -69,7 +77,9 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
 
     /**
      * Set the ID used in the value of this header.
-     * @param  string|array                 $id
+     *
+     * @param string|array $id
+     *
      * @throws Swift_RfcComplianceException
      */
     public function setId($id)
@@ -79,7 +89,9 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
 
     /**
      * Get the ID used in the value of this Header.
+     *
      * If multiple IDs are set only the first is returned.
+     *
      * @return string
      */
     public function getId()
@@ -91,7 +103,9 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
 
     /**
      * Set a collection of IDs to use in the value of this Header.
-     * @param  string[]                     $ids
+     *
+     * @param string[] $ids
+     *
      * @throws Swift_RfcComplianceException
      */
     public function setIds(array $ids)
@@ -109,6 +123,7 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
 
     /**
      * Get the list of IDs used in this Header.
+     *
      * @return string[]
      */
     public function getIds()
@@ -118,10 +133,14 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
 
     /**
      * Get the string value of the body in this Header.
+     *
      * This is not necessarily RFC 2822 compliant since folding white space will
-     * not be added at this stage (see {@link toString()} for that).
-     * @return string
+     * not be added at this stage (see {@see toString()} for that).
+     *
      * @see toString()
+     *
+     * @return string
+     *
      * @throws Swift_RfcComplianceException
      */
     public function getFieldBody()
@@ -130,7 +149,7 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
             $angleAddrs = array();
 
             foreach ($this->_ids as $id) {
-                $angleAddrs[] = '<' . $id . '>';
+                $angleAddrs[] = '<'.$id.'>';
             }
 
             $this->setCachedValue(implode(' ', $angleAddrs));
@@ -141,19 +160,20 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
 
     /**
      * Throws an Exception if the id passed does not comply with RFC 2822.
-     * @param  string                       $id
+     *
+     * @param string $id
+     *
      * @throws Swift_RfcComplianceException
      */
     private function _assertValidId($id)
     {
         if (!preg_match(
-            '/^' . $this->getGrammar()->getDefinition('id-left') . '@' .
-            $this->getGrammar()->getDefinition('id-right') . '$/D',
+            '/^'.$this->getGrammar()->getDefinition('id-left').'@'.
+            $this->getGrammar()->getDefinition('id-right').'$/D',
             $id
-            ))
-        {
+            )) {
             throw new Swift_RfcComplianceException(
-                'Invalid ID given <' . $id . '>'
+                'Invalid ID given <'.$id.'>'
                 );
         }
     }

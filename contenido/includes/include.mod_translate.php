@@ -42,7 +42,7 @@ if ((!$readOnly) && $action == 'mod_translation_save') {
     $translationArray[stripslashes($t_orig)] = stripslashes($t_trans);
 
     if ($moduleTranslation->saveTranslationArray($translationArray)) {
-        $page->displayInfo(i18n('Saved translation successfully!'));
+        $page->displayOk(i18n('Saved translation successfully!'));
     } else {
         $page->displayError(i18n("Can't save translation!"));
     }

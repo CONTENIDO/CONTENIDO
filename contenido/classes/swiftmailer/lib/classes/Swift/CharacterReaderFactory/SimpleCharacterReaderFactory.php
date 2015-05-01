@@ -10,23 +10,22 @@
 
 /**
  * Standard factory for creating CharacterReaders.
- * @package Swift
- * @subpackage Encoder
- * @author Chris Corbyn
+ *
+ * @author     Chris Corbyn
  */
 class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory implements Swift_CharacterReaderFactory
 {
     /**
      * A map of charset patterns to their implementation classes.
+     *
      * @var array
-     * @access private
      */
     private static $_map = array();
 
     /**
      * Factories which have already been loaded.
+     *
      * @var Swift_CharacterReaderFactory[]
-     * @access private
      */
     private static $_loaded = array();
 
@@ -52,24 +51,24 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory implements Swift
         $prefix = 'Swift_CharacterReader_';
 
         $singleByte = array(
-            'class' => $prefix . 'GenericFixedWidthReader',
-            'constructor' => array(1)
+            'class' => $prefix.'GenericFixedWidthReader',
+            'constructor' => array(1),
             );
 
         $doubleByte = array(
-            'class' => $prefix . 'GenericFixedWidthReader',
-            'constructor' => array(2)
+            'class' => $prefix.'GenericFixedWidthReader',
+            'constructor' => array(2),
             );
 
         $fourBytes = array(
-            'class' => $prefix . 'GenericFixedWidthReader',
-            'constructor' => array(4)
+            'class' => $prefix.'GenericFixedWidthReader',
+            'constructor' => array(4),
             );
 
-        //Utf-8
+        // Utf-8
         self::$_map['utf-?8'] = array(
-            'class' => $prefix . 'Utf8Reader',
-            'constructor' => array()
+            'class' => $prefix.'Utf8Reader',
+            'constructor' => array(),
             );
 
         //7-8 bit charsets
@@ -91,20 +90,22 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory implements Swift
         //32 bits
         self::$_map['(ucs-?4|utf-?32)'] = $fourBytes;
 
-        //Fallback
+        // Fallback
         self::$_map['.*'] = $singleByte;
     }
 
     /**
      * Returns a CharacterReader suitable for the charset applied.
-     * @param  string                $charset
+     *
+     * @param string $charset
+     *
      * @return Swift_CharacterReader
      */
     public function getReaderFor($charset)
     {
         $charset = trim(strtolower($charset));
         foreach (self::$_map as $pattern => $spec) {
-            $re = '/^' . $pattern . '$/D';
+            $re = '/^'.$pattern.'$/D';
             if (preg_match($re, $charset)) {
                 if (!array_key_exists($pattern, self::$_loaded)) {
                     $reflector = new ReflectionClass($spec['class']);

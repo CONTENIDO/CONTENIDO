@@ -186,7 +186,7 @@ class cGuiSourceEditor extends cGuiPage {
                 ));
 
                 // display the information and reload the frame
-                $this->displayInfo(i18n('File deleted successfully!'));
+                $this->displayOk(i18n('File deleted successfully!'));
                 $this->abortRendering();
 
                 $this->reloadFrame('left_bottom', array());
@@ -278,7 +278,7 @@ class cGuiSourceEditor extends cGuiPage {
         if(cFileHandler::write($this->filepath, $req['code'])) {
             // store the file information
             $fileInfo->store();
-            $this->displayInfo(i18n('Changes saved successfully!'));
+            $this->displayOk(i18n('Changes saved successfully!'));
         } else {
             $this->displayError(i18n('Couldn\'t save the changes! Check the file system permissions.'));
         }

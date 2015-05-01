@@ -51,7 +51,7 @@ if ((!$readOnly) && $action == "mod_delete") {
     }
 
     // show success message
-    cRegistry::addInfoMessage(i18n("Module was successfully deleted!"));
+    cRegistry::addOkMessage(i18n("Module was successfully deleted!"));
     $page = new cGuiPage('generic_page');
 
     $contenidoModuleHandler->eraseModule();
@@ -128,7 +128,7 @@ if ((!$readOnly) && $action == "mod_new") {
         $page->render();
         die();
     } else {
-        cRegistry::addInfoMessage(i18n("New module created successfuly!"));
+        cRegistry::addOkMessage(i18n("New module created successfuly!"));
     }
 } else {
     $module = new cApiModule($idmod);

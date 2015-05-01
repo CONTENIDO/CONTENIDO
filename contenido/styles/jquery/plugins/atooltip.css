@@ -31,7 +31,7 @@ a.aToolTipCloseBtn {
     display:block;
     height:16px;
     width:16px;
-    background:url(../images/infoBtn.gif) no-repeat;
+    background:url(../../../images/but_cancel.gif) no-repeat;
     text-indent:-9999px;
     outline:none;
     position:absolute;

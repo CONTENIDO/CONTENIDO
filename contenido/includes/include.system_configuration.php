@@ -159,7 +159,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
             }
         }
         if ($stored) {
-            $page->displayInfo(i18n('Changes saved'));
+            $page->displayOk(i18n('Changes saved'));
         }
     }
 }

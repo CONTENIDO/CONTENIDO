@@ -255,7 +255,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      */
     public function generateTeaserCode($returnAsArray = false) {
         global $contenido;
-
+        
         $articles = array();
 
         $template = new cTemplate();
@@ -308,7 +308,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
                 'direction' => $this->_settings['teaser_sort_order'],
                 'limit' => $this->_settings['teaser_count'],
                 'start' => false,
-                'offline' => $contenido != ""
+                'offline' => false
             );
 
             if ($this->_settings['teaser_start'] == 'true') {
@@ -357,7 +357,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      */
     private function _fillTeaserTemplateEntry(cApiArticleLanguage $article, cTemplate &$template) {
         global $contenido;
-
+        
         // get necessary informations for teaser from articles use properties in
         // a Settings for retrieval
         $title = $this->_getArtContent($article, $this->_settings['teaser_source_head'], $this->_settings['teaser_source_head_count']);
@@ -593,7 +593,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed {
      */
     public function generateEditCode() {
         $this->_initCmsTypes();
-
+        
         $template = new cTemplate();
         // Set some values into javascript for a better handling
         $template->set('s', 'ID', $this->_id);

@@ -65,7 +65,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
    $idfrontendgroup= 0;
    $fegroup = new cApiFrontendGroup();
 
-  cRegistry::addInfoMessage(i18n("Deleted group successfully!"));
+  cRegistry::addOkMessage(i18n("Deleted group successfully!"));
 }
 
 if ($action != '') {
@@ -139,9 +139,9 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
         $notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
     } else {
         if (strlen($successMessage) > 0) {
-            cRegistry::addInfoMessage($successMessage);
+            cRegistry::addOkMessage($successMessage);
         } elseif (strlen($action) > 0) {
-            cRegistry::addInfoMessage(i18n("Saved changes successfully!"));
+            cRegistry::addOkMessage(i18n("Saved changes successfully!"));
         }
     }
 

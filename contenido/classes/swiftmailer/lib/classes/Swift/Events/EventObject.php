@@ -11,9 +11,7 @@
 /**
  * A base Event which all Event classes inherit from.
  *
- * @package Swift
- * @subpackage Events
- * @author Chris Corbyn
+ * @author     Chris Corbyn
  */
 class Swift_Events_EventObject implements Swift_Events_Event
 {
@@ -25,6 +23,7 @@ class Swift_Events_EventObject implements Swift_Events_Event
 
     /**
      * Create a new EventObject originating at $source.
+     *
      * @param object $source
      */
     public function __construct($source)
@@ -34,6 +33,7 @@ class Swift_Events_EventObject implements Swift_Events_Event
 
     /**
      * Get the source object of this event.
+     *
      * @return object
      */
     public function getSource()
@@ -43,7 +43,8 @@ class Swift_Events_EventObject implements Swift_Events_Event
 
     /**
      * Prevent this Event from bubbling any further up the stack.
-     * @param boolean $cancel, optional
+     *
+     * @param bool    $cancel, optional
      */
     public function cancelBubble($cancel = true)
     {
@@ -52,7 +53,8 @@ class Swift_Events_EventObject implements Swift_Events_Event
 
     /**
      * Returns true if this Event will not bubble any further up the stack.
-     * @return boolean
+     *
+     * @return bool
      */
     public function bubbleCancelled()
     {

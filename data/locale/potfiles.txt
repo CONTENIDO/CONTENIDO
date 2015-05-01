@@ -239,6 +239,7 @@
 ./classes/swiftmailer/lib/classes/Swift/ByteStream/AbstractFilterableInputStream.php
 ./classes/swiftmailer/lib/classes/Swift/ByteStream/ArrayByteStream.php
 ./classes/swiftmailer/lib/classes/Swift/ByteStream/FileByteStream.php
+./classes/swiftmailer/lib/classes/Swift/ByteStream/TemporaryFileByteStream.php
 ./classes/swiftmailer/lib/classes/Swift/CharacterReader/GenericFixedWidthReader.php
 ./classes/swiftmailer/lib/classes/Swift/CharacterReader/UsAsciiReader.php
 ./classes/swiftmailer/lib/classes/Swift/CharacterReader/Utf8Reader.php
@@ -281,7 +282,6 @@
 ./classes/swiftmailer/lib/classes/Swift/IoException.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/ArrayKeyCache.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/DiskKeyCache.php
-./classes/swiftmailer/lib/classes/Swift/KeyCache/DummyKeyCache.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/KeyCacheInputStream.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/NullKeyCache.php
 ./classes/swiftmailer/lib/classes/Swift/KeyCache/SimpleKeyCacheInputStream.php
@@ -299,6 +299,8 @@
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/NativeQpContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/PlainContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/QpContentEncoder.php
+./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/QpContentEncoderProxy.php
+./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder/RawContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/ContentEncoder.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/EmbeddedFile.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/EncodingObserver.php
@@ -312,6 +314,7 @@
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/DateHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/IdentificationHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/MailboxHeader.php
+./classes/swiftmailer/lib/classes/Swift/Mime/Headers/OpenDKIMHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/ParameterizedHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/PathHeader.php
 ./classes/swiftmailer/lib/classes/Swift/Mime/Headers/UnstructuredHeader.php
@@ -352,6 +355,14 @@
 ./classes/swiftmailer/lib/classes/Swift/ReplacementFilterFactory.php
 ./classes/swiftmailer/lib/classes/Swift/RfcComplianceException.php
 ./classes/swiftmailer/lib/classes/Swift/SendmailTransport.php
+./classes/swiftmailer/lib/classes/Swift/SignedMessage.php
+./classes/swiftmailer/lib/classes/Swift/Signer.php
+./classes/swiftmailer/lib/classes/Swift/Signers/BodySigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/DKIMSigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/DomainKeySigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/HeaderSigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/OpenDKIMSigner.php
+./classes/swiftmailer/lib/classes/Swift/Signers/SMimeSigner.php
 ./classes/swiftmailer/lib/classes/Swift/SmtpTransport.php
 ./classes/swiftmailer/lib/classes/Swift/Spool.php
 ./classes/swiftmailer/lib/classes/Swift/SpoolTransport.php
@@ -363,7 +374,9 @@
 ./classes/swiftmailer/lib/classes/Swift/Transport/AbstractSmtpTransport.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/CramMd5Authenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/LoginAuthenticator.php
+./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/NTLMAuthenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/PlainAuthenticator.php
+./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Auth/XOAuth2Authenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/Authenticator.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/Esmtp/AuthHandler.php
 ./classes/swiftmailer/lib/classes/Swift/Transport/EsmtpHandler.php
@@ -389,6 +402,7 @@
 ./classes/swiftmailer/lib/dependency_maps/transport_deps.php
 ./classes/swiftmailer/lib/mime_types.php
 ./classes/swiftmailer/lib/preferences.php
+./classes/swiftmailer/lib/swiftmailer_generate_mimes_config.php
 ./classes/swiftmailer/lib/swift_init.php
 ./classes/swiftmailer/lib/swift_required.php
 ./classes/swiftmailer/lib/swift_required_pear.php
@@ -411,7 +425,6 @@
 ./classes/version/class.version.layout.php
 ./classes/version/class.version.module.php
 ./classes/version/class.version.php
-./classes/widgets/class.widgets.actionbutton.php
 ./classes/xml/class.xml.base.php
 ./classes/xml/class.xml.reader.php
 ./classes/xml/class.xml.writer.php

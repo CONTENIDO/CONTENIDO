@@ -6,7 +6,7 @@
  *
  * Usage:
  * ------
- * 1. Modifiy settings to youre requriements
+ * 1. Modifiy settings to your requirements
  * 2. Call this script from command line as follows:
  *     $ php create_autoloader_cfg.php
  * 3. Check created class map file
