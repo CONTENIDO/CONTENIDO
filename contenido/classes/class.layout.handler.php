@@ -335,7 +335,7 @@ class cLayoutHandler {
 
         // convert
         $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
-        $layoutCode = iconv($this->_encoding, $fileEncoding, $layoutCode);
+        $layoutCode = cApiStrRecodeString($layoutCode, $this->_encoding, $fileEncoding);
 
         $save = cFileHandler::write($this->_layoutPath . $this->_fileName, $layoutCode);
 
