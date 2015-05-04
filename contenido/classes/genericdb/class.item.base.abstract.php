@@ -189,7 +189,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
      * NOTE: This funtion changes always the client variable of property
      * collection instance.
      *
-     * @param int $idclient
+     * @param int $idclient [optional]
      *         Id of client to use in property collection.
      *         If not passed it uses global variable
      * @return cApiPropertyCollection

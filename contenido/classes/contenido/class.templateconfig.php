@@ -26,7 +26,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select
+     * @param string $select [optional]
      *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
@@ -63,10 +63,10 @@ class cApiTemplateConfigurationCollection extends ItemCollection {
      * Creates a template config item entry
      *
      * @param int $idtpl
-     * @param int $status
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
+     * @param int $status [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiTemplateConfiguration
      */
     public function create($idtpl, $status = 0, $author = '', $created = '', $lastmodified = '') {
@@ -130,7 +130,7 @@ class cApiTemplateConfiguration extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -148,7 +148,7 @@ class cApiTemplateConfiguration extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {

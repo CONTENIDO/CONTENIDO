@@ -276,8 +276,8 @@ class cRegistry {
      * Returns the category/article relation id stored in the global variable
      * "idcatart".
      *
-     * @param bool $autoDetect If true, the value is tried to detected
-     *        automatically. (default: false)
+     * @param bool $autoDetect [optional; default: false]
+     *         If true, the value is tried to detected automatically.
      * @return int
      */
     public static function getCategoryArticleId($autoDetect = false) {

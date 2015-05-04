@@ -27,9 +27,9 @@ class cErrorException extends cException {
      *
      * @param string $message
      *         The Exception message to throw.
-     * @param int $code
+     * @param int $code [optional]
      *         The Exception code.
-     * @param Exception $previous
+     * @param Exception $previous [optional]
      *         The previous exception used for the exception chaining.
      */
     public function __construct($message, $code = 0, Exception $previous = NULL) {

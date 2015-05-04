@@ -99,9 +99,12 @@ abstract class cWYSIWYGEditor {
      * Sets given setting if setting was not yet defined.
      * Overwriting defined setting can be achieved with $bForceSetting = true.
      *
-     * @param string $sKey of setting to set
-     * @param string $sValue of setting to set
-     * @param bool $bForceSetting to overwrite defined setting
+     * @param string $sKey
+     *         of setting to set
+     * @param string $sValue
+     *         of setting to set
+     * @param bool $bForceSetting
+     *         to overwrite defined setting
      */
     protected function _setSetting($sKey, $sValue, $bForceSetting = false) {
         if ($bForceSetting || !array_key_exists($sKey, $this->_aSettings)) {
@@ -179,7 +182,8 @@ abstract class cWYSIWYGEditor {
      * Saves configuration of WYSIWYG editor into a file
      * This function does not validate input! This has to be done by classes that extend cWYSIWYGEditor
      * because this class does not know what each WYSIWYG editor expects.
-     * @param array Array with configuration values for the current WYSIWYG editor to save
+     * @param array $config
+     *         Array with configuration values for the current WYSIWYG editor to save
      * @return array
      *         Array with values that were not accepted
      */

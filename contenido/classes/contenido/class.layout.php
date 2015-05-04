@@ -39,14 +39,14 @@ class cApiLayoutCollection extends ItemCollection {
      * Creates a layout entry.
      *
      * @param string $name
-     * @param int $idclient
-     * @param string $alias
-     * @param string $description
-     * @param int $deletable
+     * @param int $idclient [optional]
+     * @param string $alias [optional]
+     * @param string $description [optional]
+     * @param int $deletable [optional]
      *         Either 1 or 0
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiLayout
      */
     public function create($name, $idclient = NULL, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '') {
@@ -104,7 +104,7 @@ class cApiLayout extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -121,7 +121,7 @@ class cApiLayout extends Item {
      *
      * @throws cException
      *         If layout item has not been loaded before
-     * @param bool $setData
+     * @param bool $setData [optional]
      *         Flag to set used templates data structure
      * @return bool
      */
@@ -164,7 +164,7 @@ class cApiLayout extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */

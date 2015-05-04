@@ -75,7 +75,7 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      * Add a Debug item to internal collection.
      *
      * @param mixed $mVariable
-     * @param string $sVariableDescription
+     * @param string $sVariableDescription [optional]
      */
     public function add($mVariable, $sVariableDescription = '') {
         $oItem = new cDebugVisibleAdvItem();
@@ -222,9 +222,9 @@ class cDebugVisibleAdv implements cDebugInterface, Countable {
      *
      * @param mixed $mVariable
      *         The variable to be displayed.
-     * @param string $sVariableDescription
+     * @param string $sVariableDescription [optional]
      *         The variable's name or description.
-     * @param bool $bExit
+     * @param bool $bExit [optional]
      *         If set to true, your app will die() after output of current var.
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {

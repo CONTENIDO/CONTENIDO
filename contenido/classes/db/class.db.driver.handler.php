@@ -132,7 +132,7 @@ abstract class cDbDriverHandler {
      * Uses default connection settings, passed $options['connection'] settings
      * will overwrite connection settings for current instance.
      *
-     * @param array $options
+     * @param array $options [optional]
      *         Assoziative options as follows:
      *         - $options['haltBehavior'] (string) Optional, halt behavior on
      *             occured errors
@@ -731,7 +731,7 @@ abstract class cDbDriverHandler {
      * If optional param $className is set, the result object is an instance of
      * class $className.
      *
-     * @param string $className
+     * @param string $className [optional]
      * @return object
      */
     public function getResultObject($className = NULL) {
@@ -829,10 +829,10 @@ abstract class cDbDriverHandler {
     /**
      * Parses te table structure and generates a metadata from it.
      *
-     * @param string $tableName
+     * @param string $tableName [optional]
      *         The table to get metadata or empty string to retrieve metadata
      *         of all tables
-     * @param bool   $full
+     * @param bool $full [optional]
      *         Flag to load full metadata
      * @return array
      *         Depends on used database and on parameter $full
@@ -904,7 +904,7 @@ abstract class cDbDriverHandler {
      *
      * @param mixed $name
      *         The field name or index position
-     * @param mixed $default
+     * @param mixed $default [optional]
      *         The default value to return
      * @return mixed
      *         The value of field
@@ -918,7 +918,7 @@ abstract class cDbDriverHandler {
     /**
      * Returns current record set as a associative and/or indexed array.
      *
-     * @param string $fetchMode
+     * @param string $fetchMode [optional]
      *         One of cDbDriverHandler::FETCH_* constants
      * @return array
      */

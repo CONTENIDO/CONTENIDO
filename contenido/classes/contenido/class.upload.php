@@ -45,8 +45,8 @@ class cApiUploadCollection extends ItemCollection {
      * @global int $client
      * @param string $sDirname
      * @param string $sFilename
+     * @param int $clientid [optional]
      * @return cApiUpload
-     * @param int $clientid
      */
     public function sync($sDirname, $sFilename, $client = 0) {
         $client = cSecurity::toInteger($client);
@@ -89,13 +89,14 @@ class cApiUploadCollection extends ItemCollection {
      * @global object $auth
      * @param string $sDirname
      * @param string $sFilename
-     * @param string $sFiletype
-     * @param int $iFileSize
-     * @param string $sDescription
-     * @param int $iStatus
+     * @param string $sFiletype [optional]
+     * @param int $iFileSize [optional]
+     * @param string $sDescription [optional]
+     * @param int $iStatus [optional]
      * @return cApiUpload
      */
-    public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0, $sDescription = '', $iStatus = 0) {
+    public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0,
+            $sDescription = '', $iStatus = 0) {
         global $client, $cfg, $auth;
 
         $oItem = $this->createNewItem();
@@ -205,7 +206,7 @@ class cApiUpload extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {

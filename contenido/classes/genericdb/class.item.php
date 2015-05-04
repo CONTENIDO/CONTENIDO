@@ -116,7 +116,7 @@ abstract class Item extends cItemBaseAbstract {
      *         Specifies the field
      * @param mixed $mValue
      *         Specifies the value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Use inFilter or not
      * @throws cException
      *         if more than one item has been found matching the given arguments
@@ -174,7 +174,7 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @param array $aAttributes
      *         associative array with field / value pairs
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Use inFilter or not
      * @throws cException
      *         if more than one item could be found matching the given arguments
@@ -334,7 +334,7 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @param string $sField
      *         Specifies the field to retrieve
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined outFilter on passed value
      * @return mixed
      *         Value of the field
@@ -357,7 +357,7 @@ abstract class Item extends cItemBaseAbstract {
      *
      * @param string $sField
      *         Specifies the field to retrieve
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined outFilter on passed value
      * @return mixed
      *         Value of the field
@@ -373,7 +373,7 @@ abstract class Item extends cItemBaseAbstract {
      *         Field name
      * @param string $mValue
      *         Value to set
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
@@ -410,7 +410,7 @@ abstract class Item extends cItemBaseAbstract {
      *         Field name
      * @param mixed $mValue
      *         Value to set
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
@@ -517,7 +517,7 @@ abstract class Item extends cItemBaseAbstract {
      *         Specifies the name
      * @param mixed $mValue
      *         Specifies the value
-     * @param int $iClient
+     * @param int $iClient [optional]
      *         Id of client to set property for
      * @return bool
      */
@@ -541,7 +541,7 @@ abstract class Item extends cItemBaseAbstract {
      *         Specifies the type
      * @param string $sName
      *         Specifies the name
-     * @param int $iClient
+     * @param int $iClient [optional]
      *         Id of client to set property for
      * @return mixed
      *         Value of the given property or false
@@ -566,7 +566,7 @@ abstract class Item extends cItemBaseAbstract {
      *         Specifies the type
      * @param string $sName
      *         Specifies the name
-     * @param int $iClient
+     * @param int $iClient [optional]
      *         Id of client to delete properties
      * @return bool
      */
@@ -614,9 +614,9 @@ abstract class Item extends cItemBaseAbstract {
      * 'htmlencode'));
      * </pre>
      *
-     * @param array $aInFilters
+     * @param array $aInFilters [optional]
      *         Array with function names
-     * @param array $aOutFilters
+     * @param array $aOutFilters [optional]
      *         Array with function names
      */
     public function setFilters($aInFilters = array(), $aOutFilters = array()) {

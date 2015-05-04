@@ -59,7 +59,7 @@ class cGuiNavigation {
     /**
      * Extracts caption from the XML language file including plugins extended multilang version.
      *
-     * @param  string  $location
+     * @param string $location
      *         The location of navigation item caption. Feasible values are
      *         - "{xmlFilePath};{XPath}": Path to XML File and the XPath value
      *         separated by semicolon. This type is used
@@ -178,7 +178,7 @@ class cGuiNavigation {
     /**
      * Function to build the CONTENIDO header document for backend
      *
-     * @param  int  $lang
+     * @param int $lang
      *         The language to use for header doc creation
      */
     public function buildHeader($lang) {
@@ -363,7 +363,7 @@ class cGuiNavigation {
     /**
      * Renders the language select box
      *
-     * @return  string
+     * @return string
      */
     public function _renderLanguageSelect() {
         global $cfg, $client, $lang;

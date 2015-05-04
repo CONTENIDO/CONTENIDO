@@ -68,7 +68,7 @@ class cItemCache {
      *
      * @param string $sTable
      *         Table name
-     * @param array $aOptions
+     * @param array $aOptions [optional]
      *         Options array as follows:
      *         - $aOptions['max_items_to_cache'] = (int) Number of items to cache
      *         - $aOptions['enable'] = (bool) Flag to enable caching
@@ -95,7 +95,7 @@ class cItemCache {
      *
      * @param string $sTable
      *         Table name
-     * @param array $aOptions
+     * @param array $aOptions [optional]
      *         Options array as follows:
      *         - $aOptions['max_items_to_cache'] = (int) Number of items to cache
      *         - $aOptions['enable'] = (bool) Flag to enable caching

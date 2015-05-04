@@ -267,7 +267,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * instance of class $className.
      *
      * @see cDbDriverAbstract::getResultObject()
-     * @param string $className
+     * @param string $className [optional]
      * @return Ambigous <NULL, object, false>
      */
     public function getResultObject($className = NULL) {
@@ -357,7 +357,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * Moves the cursor (position inside current result sets).
      *
      * @see cDbDriverAbstract::seek()
-     * @param int $iPos
+     * @param int $pos [optional]
      *         The positon to move to inside the current result set
      * @return int
      */
@@ -404,7 +404,7 @@ class cDbDriverMysqli extends cDbDriverAbstract {
      * @param string $tableName
      *         The table to get metadata or empty string to retrieve metadata
      *         of all tables.
-     * @param bool $full
+     * @param bool $full [optional]
      *         Flag to load full metadata.
      * @return array
      *         Depends on used database and on parameter $full

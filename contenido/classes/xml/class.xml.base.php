@@ -67,7 +67,7 @@ abstract class cXmlBase {
     /**
      * Sets a current DOMDocument object to class.
      *
-     * @param    DOMDocument    $domDocument
+     * @param DOMDocument $domDocument
      *         DOMDocument object
      */
     public function setDomDocument(DOMDocument $domDocument) {

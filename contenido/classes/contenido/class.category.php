@@ -26,7 +26,7 @@ class cApiCategoryCollection extends ItemCollection {
     /**
      * Create a new collection of items.
      *
-     * @param string $select
+     * @param string $select [optional]
      *         where clause to use for selection (see ItemCollection::select())
      */
     public function __construct($select = false) {
@@ -46,13 +46,13 @@ class cApiCategoryCollection extends ItemCollection {
      * Creates a category entry.
      *
      * @param int $idclient
-     * @param int $parentid
-     * @param int $preid
-     * @param int $postid
-     * @param int $status
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
+     * @param int $parentid [optional]
+     * @param int $preid [optional]
+     * @param int $postid [optional]
+     * @param int $status [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiCategory
      */
     public function create($idclient, $parentid = 0, $preid = 0, $postid = 0, $status = 0, $author = '', $created = '', $lastmodified = '') {
@@ -222,7 +222,7 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @global array $cfg
      * @param int $idcat
-     * @param int|NULL $idlang
+     * @param int|NULL $idlang [optional]
      *         If defined, it checks also if there is a next deeper category in this language.
      * @return int
      */
@@ -267,7 +267,7 @@ class cApiCategoryCollection extends ItemCollection {
      *
      * @global array $cfg
      * @param int $idcat
-     * @param int|NULL $idlang
+     * @param int|NULL $idlang [optional]
      * @return array
      */
     public function getAllChildCategoryIds($idcat, $idlang = NULL) {
@@ -437,7 +437,7 @@ class cApiCategory extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -466,7 +466,7 @@ class cApiCategory extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $safe
+     * @param bool $safe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $safe = true) {
@@ -487,7 +487,7 @@ class cApiCategory extends Item {
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId
+     * @param int $changeLangId [optional]
      *         change language id for URL (optional)
      * @return string
      *         link

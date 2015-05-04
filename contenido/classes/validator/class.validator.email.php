@@ -62,7 +62,7 @@ class cValidatorEmail extends cValidatorAbstract {
 
     /**
      * Filter variable function exists setter
-     * @param  bool  $exists
+     * @param bool $exists
      */
     public static function setFilterVarExists($exists) {
         self::$_filterVarExists = (bool) $exists;
@@ -78,8 +78,8 @@ class cValidatorEmail extends cValidatorAbstract {
     /**
      *
      * @see cValidatorAbstract::_isValid()
-     * @param   mixed  $value
-     * @return  bool
+     * @param mixed $value
+     * @return bool
      */
     protected function _isValid($value) {
         if (!is_string($value) || empty($value)) {

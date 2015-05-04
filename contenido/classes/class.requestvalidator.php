@@ -249,9 +249,12 @@ class cRequestValidator {
      *
      * @see cRequestValidator::checkParams()
      *
-     * @param string $type GET or POST
-     * @param string $key the key of the parameter
-     * @param mixed $value the value of the parameter
+     * @param string $type
+     *         GET or POST
+     * @param string $key
+     *         the key of the parameter
+     * @param mixed $value
+     *         the value of the parameter
      * @return bool
      *         True if the parameter is fine
      */
@@ -311,9 +314,10 @@ class cRequestValidator {
     /**
      * Checks an array for validity.
      *
-     * @param array the array which has to be checked
-     * @param string GET or POST
-     *
+     * @param array $arr
+     *         the array which has to be checked
+     * @param string $type
+     *         GET or POST
      * @return bool
      *         true if everything is fine.
      */

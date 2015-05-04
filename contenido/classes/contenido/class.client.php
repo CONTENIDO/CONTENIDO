@@ -38,11 +38,11 @@ class cApiClientCollection extends ItemCollection {
      *
      * @global object $auth
      * @param string $name
-     * @param int $errsite_cat
-     * @param int $errsite_art
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
+     * @param int $errsite_cat [optional]
+     * @param int $errsite_art [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiClient
      */
     public function create($name, $errsite_cat = 0, $errsite_art = 0, $author = '', $created = '', $lastmodified = '') {
@@ -183,7 +183,7 @@ class cApiClient extends Item {
     /**
      * Constructor function.
      *
-     * @param mixed $id
+     * @param mixed $id [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($id = false) {
@@ -225,7 +225,7 @@ class cApiClient extends Item {
      * Static accessor to the singleton instance.
      *
      * @todo There is no need since caching is available at GenericDB level
-     * @param int $client
+     * @param int $client [optional]
      * @return cApiClient
      *         Reference to the singleton instance.
      */
@@ -268,7 +268,7 @@ class cApiClient extends Item {
      *         Entry name
      * @param mixed $value
      *         Value
-     * @param mixed $idproperty
+     * @param mixed $idproperty [optional]
      */
     public function setProperty($type, $name, $value, $idproperty = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
@@ -282,7 +282,7 @@ class cApiClient extends Item {
      *         Type of the data to get
      * @param mixed $name
      *         Entry name
-     * @param int $client
+     * @param int $client [optional]
      *         Client id (not used, it's declared because of PHP strict warnings)
      * @return mixed
      *         Value
@@ -297,9 +297,9 @@ class cApiClient extends Item {
      *
      * @param int $idProp
      *         Id of property
-     * @param string $p2
+     * @param string $p2 [optional]
      *         Not used, is here to prevent PHP Strict warnings
-     * @param int $client
+     * @param int $client [optional]
      *         Client id (not used, it's declared because of PHP strict warnings)
      */
     public function deleteProperty($idProp, $p2 = "", $client = 0) {
@@ -371,7 +371,7 @@ class cApiClient extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {
@@ -388,7 +388,7 @@ class cApiClient extends Item {
     /**
      * Lazy instantiation and return of properties object
      *
-     * @param int $client
+     * @param int $client [optional]
      *         Client id (not used, it's declared because of PHP strict warnings)
      * @return cApiPropertyCollection
      */

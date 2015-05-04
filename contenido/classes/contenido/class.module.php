@@ -39,23 +39,25 @@ class cApiModuleCollection extends ItemCollection {
      * @global object $auth
      *
      * @param string $name
-     * @param int $idclient
-     * @param string $alias
-     * @param string $type
-     * @param string $error
-     * @param string $description
-     * @param int $deletable
-     * @param string $template
-     * @param int $static
-     * @param string $package_guid
-     * @param string $package_data
-     * @param string $author
-     * @param string $created
-     * @param string $lastmodified
-     *
+     * @param int $idclient [optional]
+     * @param string $alias [optional]
+     * @param string $type [optional]
+     * @param string $error [optional]
+     * @param string $description [optional]
+     * @param int $deletable [optional]
+     * @param string $template [optional]
+     * @param int $static [optional]
+     * @param string $package_guid [optional]
+     * @param string $package_data [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $lastmodified [optional]
      * @return cApiModule
      */
-    public function create($name, $idclient = NULL, $alias = '', $type = '', $error = 'none', $description = '', $deletable = 0, $template = '', $static = 0, $package_guid = '', $package_data = '', $author = '', $created = '', $lastmodified = '') {
+    public function create($name, $idclient = NULL, $alias = '', $type = '',
+            $error = 'none', $description = '', $deletable = 0, $template = '',
+            $static = 0, $package_guid = '', $package_data = '', $author = '',
+            $created = '', $lastmodified = '') {
         global $client, $auth;
 
         if (NULL === $idclient) {
@@ -119,7 +121,7 @@ class cApiModuleCollection extends ItemCollection {
      * property.
      *
      * @param int $idclient
-     * @param string $oderBy
+     * @param string $oderBy [optional]
      * @return array
      */
     public function getAllByIdclient($idclient, $oderBy = 'name') {
@@ -223,7 +225,7 @@ class cApiModule extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -459,7 +461,7 @@ class cApiModule extends Item {
      * Checks if the module is in use
      *
      * @param int $module
-     * @param bool $bSetData
+     * @param bool $bSetData [optional]
      * @return bool
      *         true if the module is in use
      */
@@ -540,7 +542,7 @@ class cApiModule extends Item {
      * @see Item::getField()
      * @param string $sField
      *         Specifies the field to retrieve
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined outFilter on passed value
      * @return mixed
      *         Value of the field
@@ -564,7 +566,7 @@ class cApiModule extends Item {
      * (if not suppressed by giving a true value for $bJustStore).
      *
      * @see Item::store()
-     * @param bool $bJustStore
+     * @param bool $bJustStore [optional]
      *     don't generate code for all articles using this module (default false)
      * @return bool
      */
@@ -645,7 +647,7 @@ class cApiModule extends Item {
      *         Filename of data file (full path)
      * @param string $tempName
      *         of archive
-     * @param bool $show_notification
+     * @param bool $show_notification [optional]
      *         standard: true, mode to turn notifications off
      * @return bool
      */
@@ -781,7 +783,7 @@ class cApiModule extends Item {
      *         directory name
      * @param string $zipArchive
      *         name of the archive
-     * @param string $zipdir
+     * @param string $zipdir [optional]
      */
     private function _addFolderToZip($dir, $zipArchive, $zipdir = '') {
         if (is_dir($dir)) {
@@ -848,7 +850,7 @@ class cApiModule extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {

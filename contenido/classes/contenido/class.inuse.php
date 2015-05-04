@@ -219,14 +219,14 @@ class cApiInUseCollection extends ItemCollection {
      *         Specifies the type to de-mark.
      * @param mixed $objectid
      *         Specifies the object ID
-     * @param bool $returnWarning
+     * @param bool $returnWarning [optional]
      *         If true, also returns an error message if in use
-     * @param string $warningTemplate
+     * @param string $warningTemplate [optional]
      *         String to fill with the template (%s as placeholder, first %s is
      *         the username, second is the real name)
-     * @param bool $allowOverride
+     * @param bool $allowOverride [optional]
      *         True if the user can override the lock
-     * @param string $location
+     * @param string $location [optional]
      *         Value to append to the override lock button
      * @return bool array
      *         returnWarning is false, returns a bool value wether the object
@@ -293,7 +293,7 @@ class cApiInUse extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {

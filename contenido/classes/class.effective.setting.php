@@ -153,13 +153,13 @@ class cEffectiveSetting {
      * NOTE: If you provide a default value (other than empty string), then it will be returned back
      *       in case of not existing or empty setting.
      *
-     * @param  string  $type
+     * @param string $type
      *         The type of the item
-     * @param  string  $name
+     * @param string $name
      *         The name of the item
-     * @param  string  $default  Optional
+     * @param string $default [optional]
      *         default value
-     * @return  bool|string
+     * @return bool|string
      *         Setting value or false
      */
     public static function get($type, $name, $default = '') {

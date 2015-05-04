@@ -37,13 +37,13 @@ class cApiAreaCollection extends ItemCollection {
      *
      * @param string $name
      *         Name
-     * @param string|int $parentid
+     * @param string|int $parentid [optional]
      *         Parent id as astring or number
-     * @param int $relevant
+     * @param int $relevant [optional]
      *         0 or 1
-     * @param int $online
+     * @param int $online [optional]
      *         0 or 1
-     * @param int $menuless
+     * @param int $menuless [optional]
      *         0 or 1
      * @return cApiArea
      */
@@ -159,7 +159,7 @@ class cApiArea extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -176,7 +176,7 @@ class cApiArea extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */

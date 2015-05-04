@@ -190,7 +190,7 @@ class cApiGroup extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -235,7 +235,7 @@ class cApiGroup extends Item {
      *         Field name
      * @param string $mValue
      *         Value to set
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */
@@ -270,7 +270,7 @@ class cApiGroup extends Item {
     /**
      * Returns name of group.
      *
-     * @param bool $removePrefix
+     * @param bool $removePrefix [optional]
      *         Flag to remove "grp_" prefix from group name
      * @return Ambigous <string, mixed, bool>
      */

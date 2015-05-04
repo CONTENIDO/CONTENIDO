@@ -262,8 +262,8 @@ class cSystemtest {
     /**
      * Caches the given config array for later use.
      *
-     * @param array $config A config array which should be similar to
-     *        CONTENIDO's $cfg
+     * @param array $config
+     *         A config array which should be similar to CONTENIDO's $cfg
      */
     public function __construct($config) {
         $this->_config = $config;
@@ -272,8 +272,9 @@ class cSystemtest {
     /**
      * Runs all available tests and stores the resuls in the messages array
      *
-     * @param bool $testFileSystem If this is true the file system checks will
-     *        be performed too with standard settings.
+     * @param bool $testFileSystem
+     *         If this is true the file system checks will be performed too
+     *         with standard settings.
      */
     public function runTests($testFileSystem = true) {
         $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), self::CON_SETUP_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), self::CON_SETUP_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . self::CON_SETUP_MIN_PHP_VERSION);
@@ -355,16 +356,18 @@ class cSystemtest {
     /**
      * Stores a result in the messages array for later display
      *
-     * @param bool $result true for success, false otherwise
-     * @param int $severity One one of the C_SEVERITY constants
-     * @param string $errorHeadline The headline which will be stored in the
-     *        case that $result is false
-     * @param string $errorMessage The message which will be stored in the case
-     *        that $result is false
-     * @param string $successHeadline The headline which will be stored in the
-     *        case that $result is true
-     * @param string $successMessage The message which will be stored in the
-     *        case that $result is true
+     * @param bool $result
+     *         true for success, false otherwise
+     * @param int $severity
+     *         One one of the C_SEVERITY constants
+     * @param string $errorHeadline
+     *         The headline which will be stored in the case that $result is false
+     * @param string $errorMessage
+     *         The message which will be stored in the case that $result is false
+     * @param string $successHeadline
+     *         The headline which will be stored in the case that $result is true
+     * @param string $successMessage
+     *         The message which will be stored in the case that $result is true
      */
     public function storeResult($result, $severity, $errorHeadline = "", $errorMessage = "", $successHeadline = "", $successMessage = "") {
         if ($result) {
@@ -420,7 +423,8 @@ class cSystemtest {
      * )
      * )
      *
-     * @param string $sFilename The path to the file
+     * @param string $sFilename
+     *         The path to the file
      * @return bool|array
      *         if the file can't be accessed
      */
@@ -486,7 +490,8 @@ class cSystemtest {
     /**
      * Returns true if the file is writeable
      *
-     * @param string $filename The path to the file
+     * @param string $filename
+     *         The path to the file
      * @return bool
      */
     protected function canWriteFile($filename) {
@@ -501,7 +506,8 @@ class cSystemtest {
     /**
      * Returns true if the given file is a directory and if it is writeable
      *
-     * @param string $dirname The path to the directory
+     * @param string $dirname
+     *         The path to the directory
      * @return bool
      */
     protected function canWriteDir($dirname) {
@@ -568,7 +574,8 @@ class cSystemtest {
      * Returns one of the CON_PREDICT suggestions depending on the permissions
      * of the given file
      *
-     * @param string $file The path to the file
+     * @param string $file
+     *         The path to the file
      * @return int
      *         CON_PREDICT_*
      */
@@ -635,7 +642,8 @@ class cSystemtest {
     /**
      * Gets a PHP setting with ini_get
      *
-     * @param string $setting A PHP setting
+     * @param string $setting
+     *         A PHP setting
      * @return mixed
      *         The value of the PHP setting or NULL if ini_get is disabled
      */
@@ -649,7 +657,8 @@ class cSystemtest {
     /**
      * Converts a string like "12M" to the correct number of bytes
      *
-     * @param string $val A string in the form of "12K", "12M" or "12G"
+     * @param string $val
+     *         A string in the form of "12K", "12M" or "12G"
      * @return number
      */
     protected function getAsBytes($val) {
@@ -679,9 +688,12 @@ class cSystemtest {
     /**
      * Connects to the database with the given settings
      *
-     * @param string $host The database host
-     * @param string $username The database user
-     * @param string $password The database user password
+     * @param string $host
+     *         The database host
+     * @param string $username
+     *         The database user
+     * @param string $password
+     *         The database user password
      * @return array
      *         with the cDB object on the first place and a bool on the second
      */
@@ -718,7 +730,8 @@ class cSystemtest {
     /**
      * Checks if a given extension is loaded.
      *
-     * @param string $extension A PHP extension
+     * @param string $extension
+     *         A PHP extension
      * @return int
      *         Returns one of the CON_EXTENSION constants
      */
@@ -1197,12 +1210,14 @@ class cSystemtest {
     /**
      * Checks a single file or directory wether it is writeable or not
      *
-     * @param string $filename The file
-     * @param int $severity The resulting C_SEVERITY constant should the test
-     *        fail
-     * @param bool $dir True if the $filename is a directory
-     * @throws Exception Throws a generic Exception in the event that the
-     *         permissions are wrong
+     * @param string $filename
+     *         The file
+     * @param int $severity
+     *         The resulting C_SEVERITY constant should the test fail
+     * @param bool $dir
+     *         True if the $filename is a directory
+     * @throws Exception
+     *         Throws a generic Exception in the event that the permissions are wrong
      * @return bool
      *         Returns true if everything is fine
      */

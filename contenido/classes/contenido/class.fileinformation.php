@@ -42,7 +42,7 @@ class cApiFileInformationCollection extends ItemCollection {
      *         type of the entry
      * @param string $filename
      *         name of the file
-     * @param string $description
+     * @param string $description [optional]
      *         an optional description
      * @return cApiFileInformation
      *         the new item
@@ -83,11 +83,11 @@ class cApiFileInformationCollection extends ItemCollection {
      *         name of the file
      * @param string $typeContent
      *         type of the entry
-     * @param string $description
+     * @param string $description [optional]
      *         an optional description
-     * @param string $newFilename
+     * @param string $newFilename [optional]
      *         an optional new filename
-     * @param string $author
+     * @param string $author [optional]
      *         an optional author
      * @return cApiFileInformation
      *         the updated item
@@ -175,7 +175,7 @@ class cApiFileInformation extends Item {
 
     /**
      *
-     * @param string $id
+     * @param string $id [optional]
      */
     public function __construct($id = false) {
         global $cfg;

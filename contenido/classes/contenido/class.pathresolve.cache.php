@@ -90,7 +90,7 @@ class cApiPathresolveCacheCollection extends ItemCollection {
      * @param string $path
      * @param int $idcat
      * @param int $idlang
-     * @param string $lastcached
+     * @param string $lastcached [optional]
      * @return cApiPathresolveCache
      */
     public function create($path, $idcat, $idlang, $lastcached = '') {
@@ -147,7 +147,7 @@ class cApiPathresolveCache extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -181,7 +181,7 @@ class cApiPathresolveCache extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {

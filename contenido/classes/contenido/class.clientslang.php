@@ -177,12 +177,12 @@ class cApiClientLanguage extends Item {
     /**
      * Constructor
      *
-     * @param int $iIdClientsLang
+     * @param int $iIdClientsLang [optional]
      *         If specified, load item
-     * @param int $iIdClient
+     * @param int $iIdClient [optional]
      *         If idclient and idlang specified, load item;
      *         ignored, if idclientslang specified
-     * @param int $iIdLang
+     * @param int $iIdLang [optional]
      *         If idclient and idlang specified, load item;
      *         ignored, if idclientslang specified
      */
@@ -236,7 +236,7 @@ class cApiClientLanguage extends Item {
      *         Entry name
      * @param mixed $mValue
      *         Value
-     * @param int $client
+     * @param int $client [optional]
      *         Client id
      */
     public function setProperty($mType, $mName, $mValue, $client = 0) {
@@ -253,7 +253,7 @@ class cApiClientLanguage extends Item {
      *         Type of the data to get
      * @param mixed $mName
      *         Entry name
-     * @param int $client
+     * @param int $client [optional]
      *         Client id (not used, it's declared because of PHP strict warnings)
      * @return mixed
      *         Value
@@ -273,7 +273,7 @@ class cApiClientLanguage extends Item {
      *         Id of property
      * @param int $p2
      *         Not used, is here to prevent PHP Strict warnings
-     * @param int $client
+     * @param int $client [optional]
      *         Client id (not used, it's declared because of PHP strict warnings)
      */
     public function deleteProperty($idprop, $p2 = NULL, $client = 0) {
@@ -326,7 +326,7 @@ class cApiClientLanguage extends Item {
     /**
      * Lazy instantiation and return of properties object
      *
-     * @param int $client
+     * @param int $client [optional]
      *         Client id (not used, it's declared because of PHP strict warnings)
      * @return cApiPropertyCollection
      */
@@ -344,7 +344,7 @@ class cApiClientLanguage extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */

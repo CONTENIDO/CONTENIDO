@@ -41,18 +41,20 @@ class cApiUploadMetaCollection extends ItemCollection {
      * @global object $auth
      * @param int $idupl
      * @param int $idlang
-     * @param string $medianame
-     * @param string $description
-     * @param string $keywords
-     * @param string $internal_notice
-     * @param string $copyright
-     * @param string $author
-     * @param string $created
-     * @param string $modified
-     * @param string $modifiedby
+     * @param string $medianame [optional]
+     * @param string $description [optional]
+     * @param string $keywords [optional]
+     * @param string $internal_notice [optional]
+     * @param string $copyright [optional]
+     * @param string $author [optional]
+     * @param string $created [optional]
+     * @param string $modified [optional]
+     * @param string $modifiedby [optional]
      * @return cApiUploadMeta
      */
-    public function create($idupl, $idlang, $medianame = '', $description = '', $keywords = '', $internal_notice = '', $copyright = '', $author = '', $created = '', $modified = '', $modifiedby = '') {
+    public function create($idupl, $idlang, $medianame = '', $description = '',
+            $keywords = '', $internal_notice = '', $copyright = '', $author = '',
+            $created = '', $modified = '', $modifiedby = '') {
         global $auth;
 
         if (empty($author)) {
@@ -95,7 +97,7 @@ class cApiUploadMeta extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -136,7 +138,7 @@ class cApiUploadMeta extends Item {
      * @todo should return return value of overloaded method
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      */
     public function setField($name, $value, $bSafe = true) {

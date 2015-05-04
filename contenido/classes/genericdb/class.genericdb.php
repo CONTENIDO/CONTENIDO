@@ -186,7 +186,7 @@ class cGenericDb {
      *         Callback event, must be a valid value of a cGenericDb event constant
      * @param string $class
      *         Class name for executing callback
-     * @param array $arguments
+     * @param array $arguments [optional]
      *         Arguments to pass to the callback function
      * @throws cInvalidArgumentException
      *         if the event or class is not set

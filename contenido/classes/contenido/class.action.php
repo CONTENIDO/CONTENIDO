@@ -40,10 +40,10 @@ class cApiActionCollection extends ItemCollection {
      *
      * @param string|int $area
      * @param string|int $name
-     * @param string|int $alt_name
-     * @param string $code
-     * @param string $location
-     * @param int $relevant
+     * @param string|int $alt_name [optional]
+     * @param string $code [optional]
+     * @param string $location [optional]
+     * @param int $relevant [optional]
      *
      * @return cApiAction
      */
@@ -153,7 +153,7 @@ class cApiAction extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -179,7 +179,7 @@ class cApiAction extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */

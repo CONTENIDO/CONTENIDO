@@ -66,9 +66,9 @@ class cDebugDevNull implements cDebugInterface {
      *
      * @param mixed $mVariable
      *         The variable to be displayed
-     * @param string $sVariableDescription
+     * @param string $sVariableDescription [optional]
      *         The variable's name or description
-     * @param bool $bExit
+     * @param bool $bExit [optional]
      *         If set to true, your app will NOT die() after output of current var
      */
     public function show($mVariable, $sVariableDescription = '', $bExit = false) {
@@ -78,7 +78,7 @@ class cDebugDevNull implements cDebugInterface {
      * Interface implementation
      *
      * @param mixed $mVariable
-     * @param string $sVariableDescription
+     * @param string $sVariableDescription [optional]
      */
     public function add($mVariable, $sVariableDescription = '') {
     }

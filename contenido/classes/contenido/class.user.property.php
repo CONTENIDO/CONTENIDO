@@ -97,7 +97,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param string $type
      * @param string $name
      * @param string $value
-     * @param int $idcatlang
+     * @param int $idcatlang [optional]
      * @return cApiUserProperty
      */
     public function setValueByTypeName($type, $name, $value, $idcatlang = 0) {
@@ -122,7 +122,7 @@ class cApiUserPropertyCollection extends ItemCollection {
      * @param string $type
      * @param string $name
      * @param string $value
-     * @param int $idcatlang
+     * @param int $idcatlang [optional]
      * @return cApiUserProperty
      */
     public function create($type, $name, $value, $idcatlang = 0) {
@@ -372,7 +372,7 @@ class cApiUserProperty extends Item {
     /**
      * Constructor Function
      *
-     * @param mixed $mId
+     * @param mixed $mId [optional]
      *         Specifies the ID of item to load
      */
     public function __construct($mId = false) {
@@ -400,7 +400,7 @@ class cApiUserProperty extends Item {
      *
      * @param string $name
      * @param mixed $value
-     * @param bool $bSafe
+     * @param bool $bSafe [optional]
      *         Flag to run defined inFilter on passed value
      * @return bool
      */

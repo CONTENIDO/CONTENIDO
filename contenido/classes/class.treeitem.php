@@ -121,9 +121,12 @@ class TreeItem {
      * Constructor Function
      * Creates a new, independant tree item.
      *
-     * @param string $name The name of that item
-     * @param string $id The unique ID of that item
-     * @param bool $collapsed Is this item collapsed by default
+     * @param string $name
+     *         The name of that item
+     * @param string $id
+     *         The unique ID of that item
+     * @param bool $collapsed
+     *         Is this item collapsed by default
      */
     public function __construct($name = "", $id = "", $collapsed = false) {
         $this->name = $name;
@@ -139,7 +142,8 @@ class TreeItem {
     /**
      * Adds a new subitem to this item.
      *
-     * @param object $item the item to add
+     * @param object $item
+     *         the item to add
      */
     function addItem(&$item) {
         $this->subitems[count($this->subitems)] = &$item;
@@ -150,8 +154,10 @@ class TreeItem {
      * Adds a new subitem to a specific item with an ID.
      * Traverses all subitems to find the correct item.
      *
-     * @param object $item the item to add
-     * @param string $id the ID to add the item to
+     * @param object $item
+     *         the item to add
+     * @param string $id
+     *         the ID to add the item to
      */
     function addItemToID($item, $id) {
         if ($this->id == $id) {
@@ -169,7 +175,8 @@ class TreeItem {
      * Note that this
      * function traverses all subitems to find the correct item.
      *
-     * @param string $id the ID to find
+     * @param string $id
+     *         the ID to find
      * @return object
      *         The item, or false if nothing was found
      */
@@ -191,7 +198,8 @@ class TreeItem {
     /**
      * Removes an item with a specific ID.
      *
-     * @param string $id the ID to find
+     * @param string $id
+     *         the ID to find
      */
     function removeItem($id) {
         foreach (array_keys($this->subitems) as $key) {
@@ -204,7 +212,8 @@ class TreeItem {
     /**
      * Checks if a specific custom attribute is set
      *
-     * @param string $item the attribute name to find
+     * @param string $item
+     *         the attribute name to find
      * @return bool
      */
     function isCustomAttributeSet($item) {
@@ -226,7 +235,8 @@ class TreeItem {
      * Traverses all subitems to find the ID. Note that only the item with $id
      * is expanded, but not its childs.
      *
-     * @param string $id the ID to expand, or an array with all id's
+     * @param string $id
+     *         the ID to expand, or an array with all id's
      * @return bool
      */
     function markExpanded($id) {
@@ -253,7 +263,8 @@ class TreeItem {
     /**
      * Expands all items, starting from the $start item.
      *
-     * @param string $start the ID to start expanding from
+     * @param string $start
+     *         the ID to start expanding from
      */
     function expandAll($start = -2) {
         if ($start != $this->id) {
@@ -268,7 +279,8 @@ class TreeItem {
     /**
      * Collapses all items, starting from the $start item.
      *
-     * @param string $start the ID to start collapsing from
+     * @param string $start
+     *         the ID to start collapsing from
      */
     function collapseAll($start = -2) {
         if ($start != $this->id) {
@@ -286,7 +298,8 @@ class TreeItem {
      * to find the ID. Note that only the item with $id is
      * collapsed, but not its childs.
      *
-     * @param string $id the ID to collapse
+     * @param string $id
+     *         the ID to collapse
      */
     function markCollapsed($id) {
         if ($this->id == $id) {
@@ -302,8 +315,10 @@ class TreeItem {
      * Traverses the tree starting from this item, and returning
      * all objects as $objects.
      *
-     * @param object $objects all found objects
-     * @param int $level Level to start on
+     * @param object $objects
+     *         all found objects
+     * @param int $level
+     *         Level to start on
      */
     function traverse(&$objects, $level = 0) {
         $objects[count($objects)] = &$this;
@@ -406,7 +421,8 @@ class TreeItem {
     /**
      * Returns all items (as ID array) which are collapsed.
      *
-     * @param array $list Contains the list with all collapsed items
+     * @param array $list
+     *         Contains the list with all collapsed items
      */
     function getCollapsedList(&$list) {
         if ($this->collapsed == true) {
@@ -421,7 +437,8 @@ class TreeItem {
     /**
      * Returns all items (as ID array) which are expanded.
      *
-     * @param array $list Contains the list with all expanded items
+     * @param array $list
+     *         Contains the list with all expanded items
      */
     function getExpandedList(&$list) {
         if ($this->collapsed == false && !in_array($this->id, $list)) {
