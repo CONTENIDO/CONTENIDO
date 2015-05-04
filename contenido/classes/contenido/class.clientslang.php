@@ -198,14 +198,14 @@ class cApiClientLanguage extends Item {
              * cApiClientLanguageCollection; $oCollection->setWhere('idclient',
              * $iIdClient); $oCollection->setWhere('idlang', $iIdLang);
              * $oCollection->query(); if ($oItem = $oCollection->next()) {
-             * $this->loadByPrimaryKey($oItem->get($oItem->primaryKey)); }
+             * $this->loadByPrimaryKey($oItem->get($oItem->getPrimaryKeyName())); }
              */
 
             // Query the database
             $sSQL = "SELECT %s FROM %s WHERE idclient = '%d' AND idlang = '%d'";
-            $this->db->query($sSQL, $this->primaryKey, $this->table, $iIdClient, $iIdLang);
+            $this->db->query($sSQL, $this->getPrimaryKeyName(), $this->table, $iIdClient, $iIdLang);
             if ($this->db->nextRecord()) {
-                $this->loadByPrimaryKey($this->db->f($this->primaryKey));
+                $this->loadByPrimaryKey($this->db->f($this->getPrimaryKeyName()));
             }
         }
     }
@@ -241,7 +241,7 @@ class cApiClientLanguage extends Item {
      */
     public function setProperty($mType, $mName, $mValue, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
-        $oPropertyColl->setValue($this->primaryKey, $this->get($this->primaryKey), $mType, $mName, $mValue, $client);
+        $oPropertyColl->setValue($this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $mType, $mName, $mValue, $client);
     }
 
     /**
@@ -260,7 +260,7 @@ class cApiClientLanguage extends Item {
      */
     public function getProperty($mType, $mName, $client = 0) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
-        return $oPropertyColl->getValue($this->primaryKey, $this->get($this->primaryKey), $mType, $mName);
+        return $oPropertyColl->getValue($this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $mType, $mName);
     }
 
     /**
@@ -291,7 +291,7 @@ class cApiClientLanguage extends Item {
      */
     public function getPropertiesByType($mType) {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
-        return $oPropertyColl->getValuesByType($this->primaryKey, $this->idclient, $mType);
+        return $oPropertyColl->getValuesByType($this->getPrimaryKeyName(), $this->idclient, $mType);
     }
 
     /**
@@ -303,8 +303,8 @@ class cApiClientLanguage extends Item {
      *         array
      */
     public function getProperties() {
-        $itemtype = $this->db->escape($this->primaryKey);
-        $itemid = $this->db->escape($this->get($this->primaryKey));
+        $itemtype = $this->db->escape($this->getPrimaryKeyName());
+        $itemid = $this->db->escape($this->get($this->getPrimaryKeyName()));
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->select("itemtype='" . $itemtype . "' AND itemid='" . $itemid . "'", '', 'type, value ASC');
 

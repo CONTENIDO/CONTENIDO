@@ -75,7 +75,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
                 $oRecipients->setWhere("email", $email);
                 $oRecipients->setWhere("idclient", $client);
                 $oRecipients->setWhere("idlang", $lang);
-                $oRecipients->setWhere($recipient->primaryKey, $recipient->get($recipient->primaryKey), "!=");
+                $oRecipients->setWhere($recipient->getPrimaryKeyName(), $recipient->get($recipient->getPrimaryKeyName()), "!=");
                 $oRecipients->query();
 
                 if ($oRecipients->next()) {

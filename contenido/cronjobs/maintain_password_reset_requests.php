@@ -48,9 +48,9 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
         $expiration = new DateTime($oApiUserPasswordRequest->get('expiration'), new DateTimeZone('UTC'));
         if (false === $oApiUserPasswordRequest->get('expiration')
         || '' === $oApiUserPasswordRequest->get('expiration')
-        || $expiration < $outdated) {echo $oApiUserPasswordRequest->get($oApiUserPasswordRequest->primaryKey);
+        || $expiration < $outdated) {echo $oApiUserPasswordRequest->get($oApiUserPasswordRequest->getPrimaryKeyName());
             // delete password request as it is considered outdated
-            $oApiPasswordRequestCol->delete($oApiUserPasswordRequest->get($oApiUserPasswordRequest->primaryKey));
+            $oApiPasswordRequestCol->delete($oApiUserPasswordRequest->get($oApiUserPasswordRequest->getPrimaryKeyName()));
         }
     }
 }

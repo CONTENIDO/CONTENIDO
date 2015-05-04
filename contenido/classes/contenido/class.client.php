@@ -204,6 +204,8 @@ class cApiClient extends Item {
     public function __get($name) {
         if ($name === 'idclient') {
             return $this->get('idclient');
+        } else {
+            return parent::__get($name);
         }
     }
 
@@ -218,6 +220,8 @@ class cApiClient extends Item {
     public function __set($name, $value) {
         if ($name === 'idclient') {
             $this->set('idclient', cSecurity::toInteger($value));
+        } else {
+            parent::__set($name, $value);
         }
     }
 

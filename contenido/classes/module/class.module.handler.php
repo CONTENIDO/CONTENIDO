@@ -459,7 +459,7 @@ class cModuleHandler {
         // create and save file contents
         if ($type == 'css' || $type == 'js' || $type == 'template') {
             if (!$this->existFile($type, $fileName)) {
-                $content = iconv($this->_encoding, $this->_fileEncoding, $content);
+                $content = cApiStrRecodeString($content, $this->_encoding, $this->_fileEncoding);
                 if (!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName, $this->_modulePath . $this->_directories[$type])) {
                     return false;
                 }
@@ -470,7 +470,7 @@ class cModuleHandler {
                     return false;
                 }
             } else {
-                $content = iconv($this->_encoding, $this->_fileEncoding, $content);
+                $content = cApiStrRecodeString($content, $this->_encoding, $this->_fileEncoding);
                 if (!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName, $this->_modulePath . $this->_directories[$type])) {
                     return false;
                 }
@@ -735,7 +735,7 @@ class cModuleHandler {
             $output = $this->_output;
         }
 
-        $output = iconv($this->_encoding, $this->_fileEncoding, $output);
+        $output = cApiStrRecodeString($output, $this->_encoding, $this->_fileEncoding);
 
         $fileOperation = cFileHandler::write($fileName, $output);
 
@@ -766,7 +766,7 @@ class cModuleHandler {
             $input = $this->_input;
         }
 
-        $input = iconv($this->_encoding, $this->_fileEncoding, $input);
+        $input = cApiStrRecodeString($input, $this->_encoding, $this->_fileEncoding);
 
         $fileOperation = cFileHandler::write($fileName, $input);
 

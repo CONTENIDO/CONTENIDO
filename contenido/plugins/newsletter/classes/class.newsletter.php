@@ -122,7 +122,7 @@ class NewsletterCollection extends ItemCollection
             $this->properties = new cApiPropertyCollection();
         }
         $this->properties->setWhere("idclient", $client);
-        $this->properties->setWhere("itemtype", $this->primaryKey);
+        $this->properties->setWhere("itemtype", $this->getPrimaryKeyName());
         $this->properties->setWhere("itemid", $iItemID);
         $this->properties->query();
 

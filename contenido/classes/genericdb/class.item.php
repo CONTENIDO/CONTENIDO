@@ -133,7 +133,7 @@ abstract class Item extends cItemBaseAbstract {
 
         // check, if cache contains a matching entry
         $aRecordSet = NULL;
-        if ($sField === $this->primaryKey) {
+        if ($sField === $this->_primaryKeyName) {
             $aRecordSet = $this->_oCache->getItem($mValue);
         } else {
             $aRecordSet = $this->_oCache->getItemByProperty($sField, $mValue);
@@ -191,8 +191,8 @@ abstract class Item extends cItemBaseAbstract {
 
         // check, if cache contains a matching entry
         $aRecordSet = NULL;
-        if (count($aAttributes) == 1 && isset($aAttributes[$this->primaryKey])) {
-            $aRecordSet = $this->_oCache->getItem($aAttributes[$this->primaryKey]);
+        if (count($aAttributes) == 1 && isset($aAttributes[$this->getPrimaryKeyName()])) {
+            $aRecordSet = $this->_oCache->getItem($aAttributes[$this->getPrimaryKeyName()]);
         } else {
             $aRecordSet = $this->_oCache->getItemByProperties($aAttributes);
         }
@@ -257,7 +257,7 @@ abstract class Item extends cItemBaseAbstract {
     protected function _loadByWhereClause($sWhere) {
         // SQL-Statement to select by whee clause
         $sql = "SELECT %s AS pk FROM `%s` WHERE " . (string) $sWhere;
-        $sql = $this->db->prepare($sql, $this->primaryKey, $this->table);
+        $sql = $this->db->prepare($sql, $this->getPrimaryKeyName(), $this->table);
 
         // Query the database
         $this->db->query($sql);
@@ -287,7 +287,7 @@ abstract class Item extends cItemBaseAbstract {
      *         True if the load was successful
      */
     public function loadByPrimaryKey($mValue) {
-        $bSuccess = $this->loadBy($this->primaryKey, $mValue);
+        $bSuccess = $this->loadBy($this->_primaryKeyName, $mValue);
 
         if ($bSuccess == true && method_exists($this, '_onLoad')) {
             $this->_onLoad();
@@ -304,7 +304,7 @@ abstract class Item extends cItemBaseAbstract {
      */
     public function loadByRecordSet(array $aRecordSet) {
         $this->values = $aRecordSet;
-        $this->oldPrimaryKey = $this->values[$this->primaryKey];
+        $this->oldPrimaryKey = $this->values[$this->getPrimaryKeyName()];
         $this->virgin = false;
         $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
 
@@ -314,7 +314,7 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
-     * Checks if a the item is already loaded.
+     * Checks if the item is already loaded.
      *
      * @return bool
      */
@@ -383,7 +383,7 @@ abstract class Item extends cItemBaseAbstract {
             return false;
         }
 
-        if ($sField == $this->primaryKey) {
+        if ($sField == $this->getPrimaryKeyName()) {
             $this->oldPrimaryKey = $this->values[$sField];
         }
 
@@ -460,7 +460,7 @@ abstract class Item extends cItemBaseAbstract {
             }
         }
 
-        $sql .= " WHERE " . $this->primaryKey . " = '" . $this->oldPrimaryKey . "'";
+        $sql .= " WHERE " . $this->getPrimaryKeyName() . " = '" . $this->oldPrimaryKey . "'";
 
         $this->db->query($sql);
 
@@ -530,7 +530,7 @@ abstract class Item extends cItemBaseAbstract {
 
         // Set the value
         $oProperties = $this->_getPropertiesCollectionInstance($iClient);
-        $bResult = $oProperties->setValue($this->primaryKey, $this->get($this->primaryKey), $sType, $sName, $mValue);
+        $bResult = $oProperties->setValue($this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName, $mValue);
         return $bResult;
     }
 
@@ -555,7 +555,7 @@ abstract class Item extends cItemBaseAbstract {
 
         // Return the value
         $oProperties = $this->_getPropertiesCollectionInstance($iClient);
-        $mValue = $oProperties->getValue($this->primaryKey, $this->get($this->primaryKey), $sType, $sName);
+        $mValue = $oProperties->getValue($this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName);
         return $mValue;
     }
 
@@ -579,7 +579,7 @@ abstract class Item extends cItemBaseAbstract {
 
         // Delete the value
         $oProperties = $this->_getPropertiesCollectionInstance($iClient);
-        $bResult = $oProperties->deleteValue($this->primaryKey, $this->get($this->primaryKey), $sType, $sName);
+        $bResult = $oProperties->deleteValue($this->getPrimaryKeyName(), $this->get($this->getPrimaryKeyName()), $sType, $sName);
         return $bResult;
     }
 
@@ -600,7 +600,7 @@ abstract class Item extends cItemBaseAbstract {
     // * Method doesn't work, remove in future versions.
     // */
     // function delete() {
-    // $this->_collectionInstance->delete($item->get($this->primaryKey));
+    // $this->_collectionInstance->delete($item->get($this->getPrimaryKeyName()));
     // }
 
     /**

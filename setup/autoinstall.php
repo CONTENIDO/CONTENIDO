@@ -14,7 +14,7 @@
  */
 
 // first, check if the file is being called by the CLI
-if (PHP_SAPI != 'cli') {
+if ('cli' !== PHP_SAPI) {
     die('This program is suppsoed to be run from the command line.');
 }
 

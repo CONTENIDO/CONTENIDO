@@ -178,7 +178,7 @@ if (isset($actionRequest)) {
         if ($sCode === false) {
             exit;
         }
-        $sCode = iconv($fileEncoding, cModuleHandler::getEncoding(), $sCode);
+        $sCode = cApiStrRecodeString($sCode, $fileEncoding, cModuleHandler::getEncoding());
     } else {
         $sCode = stripslashes($_REQUEST['code']); # stripslashes is required here in case of creating a new file
     }

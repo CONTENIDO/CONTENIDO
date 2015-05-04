@@ -865,7 +865,7 @@ class cSystemtest {
      */
     public function testMemoryLimit() {
         $memoryLimit = $this->getAsBytes($this->getPHPIniSetting("memory_limit"));
-        return ($memoryLimit > 1024 * 1024 * 32) || ($memoryLimit == 0);
+        return ($memoryLimit > 1024 * 1024 * 32) || ($memoryLimit == 0) || ('-1' === $memoryLimit);
     }
 
     /**

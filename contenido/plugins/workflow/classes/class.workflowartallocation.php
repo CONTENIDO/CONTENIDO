@@ -247,7 +247,7 @@ class WorkflowArtAllocation extends Item {
         }
 
         if (parent::store()) {
-            $this->db->query("UPDATE " . $this->table . " SET `starttime`=NOW() WHERE `" . $this->primaryKey . "`='" . $this->get($this->primaryKey) . "'");
+            $this->db->query("UPDATE " . $this->table . " SET `starttime`=NOW() WHERE `" . $this->getPrimaryKeyName() . "`='" . $this->get($this->getPrimaryKeyName()) . "'");
             return true;
         } else {
             return false;

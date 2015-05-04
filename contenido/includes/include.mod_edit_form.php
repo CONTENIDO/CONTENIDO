@@ -144,7 +144,7 @@ if ((!$readOnly) && $action == "mod_importexport_module") {
                 cRegistry::addErrorMessage(i18n("Could not import module!"));
             } else {
                 // Load the item again (clearing slashes from import)
-                $module->loadByPrimaryKey($module->get($module->primaryKey));
+                $module->loadByPrimaryKey($module->get($module->getPrimaryKeyName()));
                 $contenidoModuleHandler = new cModuleHandler($module->get('idmod'));
             }
         }

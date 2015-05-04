@@ -152,7 +152,7 @@ class NewsletterLogCollection extends ItemCollection {
                 $iRecipients = $oRecipients->count();
 
                 while ($oRecipient = $oRecipients->next()) {
-                    $this->create($idnewsjob, $oRecipient->get($oRecipient->primaryKey));
+                    $this->create($idnewsjob, $oRecipient->get($oRecipient->getPrimaryKeyName()));
                 }
 
                 return $iRecipients;
@@ -189,7 +189,7 @@ class NewsletterLogCollection extends ItemCollection {
         $this->query();
 
         while ($oItem = $this->next()) {
-            $this->delete($oItem->get($oItem->primaryKey));
+            $this->delete($oItem->get($oItem->getPrimaryKeyName()));
         }
 
         return true;
