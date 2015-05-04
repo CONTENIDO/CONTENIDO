@@ -101,7 +101,7 @@ $oRcpGroups->setOrder("groupname");
 $oRcpGroups->query();
 
 while ($oRcpGroup = $oRcpGroups->next()) {
-    $sField = "g" . $oRcpGroup->get($oRcpGroup->primaryKey);
+    $sField = "g" . $oRcpGroup->get($oRcpGroup->getPrimaryKeyName());
 
     $sGroupName = $oRcpGroup->get("groupname");
     $sGroupName = str_replace(" ", "", $sGroupName);
@@ -119,7 +119,7 @@ while ($oRcpGroup = $oRcpGroups->next()) {
     $aFieldDetails[$sField]["fieldtype"] = "group";
     $aFieldDetails[$sField]["mandatory"] = false;
     $aFieldDetails[$sField]["type"] = "string";
-    $aFieldDetails[$sField]["link"] = $oRcpGroup->get($oRcpGroup->primaryKey);
+    $aFieldDetails[$sField]["link"] = $oRcpGroup->get($oRcpGroup->getPrimaryKeyName());
     $aFieldDetails[$sField]["col"] = -1;
 }
 
@@ -215,7 +215,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 
                     // Must be $recipient for plugins
                     if ($recipient = $oRecipients->create($sEMail, $sName)) {
-                        $iID = $recipient->get($recipient->primaryKey);
+                        $iID = $recipient->get($recipient->getPrimaryKeyName());
                         $iAdded++;
 
                         unset($aPluginValue);

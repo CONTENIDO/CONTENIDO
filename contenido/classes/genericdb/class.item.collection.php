@@ -519,7 +519,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         }
 
         // Add this class
-        $aFields[] = strtolower(strtolower(get_class($this))) . '.' . $this->primaryKey;
+        $aFields[] = strtolower(strtolower(get_class($this))) . '.' . $this->getPrimaryKeyName();
 
         // Make the parameters unique
         foreach ($aParameters as $parameter) {
@@ -696,7 +696,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
                 'desttable' => $obj->table,
                 'destclass' => $sClassName,
                 'sourceclass' => $sParentClass,
-                'key' => $obj->primaryKey
+                'key' => $obj->getPrimaryKeyName()
             );
         } else {
             // Recurse all items
@@ -719,7 +719,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
                         'desttable' => $obj->table,
                         'destclass' => $tmpClassname,
                         'sourceclass' => $sParentClass,
-                        'key' => $obj->primaryKey
+                        'key' => $obj->getPrimaryKeyName()
                     );
                     return ($returns);
                 }
@@ -764,7 +764,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             $sLimit = ' LIMIT ' . $sLimit;
         }
 
-        $sFields = ($this->_settings['select_all_mode']) ? '*' : $this->primaryKey;
+        $sFields = ($this->_settings['select_all_mode']) ? '*' : $this->getPrimaryKeyName();
         $sql = 'SELECT ' . $sFields . ' FROM `' . $this->table . '`' . $sWhere . $sGroupBy . $sOrderBy . $sLimit;
         $this->db->query($sql);
         $this->_lastSQL = $sql;
@@ -825,7 +825,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             $sLimit = ' LIMIT ' . $sLimit;
         }
 
-        $sql = 'SELECT ' . $sDistinct . strtolower(get_class($this)) . '.' . $this->primaryKey . ' AS ' . $this->primaryKey . ' FROM `' . $this->table . '` AS ' . strtolower(get_class($this)) . $sFrom . $sWhere . $sGroupBy . $sOrderBy . $sLimit;
+        $sql = 'SELECT ' . $sDistinct . strtolower(get_class($this)) . '.' . $this->getPrimaryKeyName() . ' AS ' . $this->getPrimaryKeyName() . ' FROM `' . $this->table . '` AS ' . strtolower(get_class($this)) . $sFrom . $sWhere . $sGroupBy . $sOrderBy . $sLimit;
 
         $this->db->query($sql);
         $this->_lastSQL = $sql;
@@ -850,7 +850,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     public function exists($mId) {
         $oDb = $this->_getSecondDBInstance();
         $sql = "SELECT `%s` FROM %s WHERE %s='%s'";
-        $oDb->query($sql, $this->primaryKey, $this->table, $this->primaryKey, $mId);
+        $oDb->query($sql, $this->getPrimaryKeyName(), $this->table, $this->getPrimaryKeyName(), $mId);
         return ($oDb->nextRecord()) ? true : false;
     }
 
@@ -867,10 +867,10 @@ abstract class ItemCollection extends cItemBaseAbstract {
                 $aRs = $this->db->toArray(cDb::FETCH_BOTH);
                 $ret = $this->loadItem($aRs);
             } else {
-                $ret = $this->loadItem($this->db->f($this->primaryKey));
+                $ret = $this->loadItem($this->db->f($this->getPrimaryKeyName()));
             }
 
-            if ($ret->get($this->primaryKey) == "") {
+            if ($ret->get($this->getPrimaryKeyName()) == "") {
                 continue;
             } else {
                 break;
@@ -893,7 +893,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         }
         /* @var $obj ItemCollection */
         $obj = $this->_collectionCache[$sKey];
-        return $obj->loadItem($this->db->f($obj->primaryKey));
+        return $obj->loadItem($this->db->f($obj->getPrimaryKeyName()));
     }
 
     /**
@@ -971,7 +971,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         foreach ($aObjects as $object) {
             $x = new $object();
             $object = strtolower($object);
-            $aOrder[] = $object . '.' . $x->primaryKey . ' ASC';
+            $aOrder[] = $object . '.' . $x->getPrimaryKeyName() . ' ASC';
             $aFetchObjects[] = $x;
         }
 
@@ -996,7 +996,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
     protected function _recursiveStructuredFetch(array $aObjects, array $aResult) {
         $i = array_shift($aObjects);
 
-        $value = $this->db->f($i->primaryKey);
+        $value = $this->db->f($i->getPrimaryKeyName());
 
         if (!is_null($value)) {
             $aResult[$value]['class'] = strtolower(get_class($i));
@@ -1086,14 +1086,14 @@ abstract class ItemCollection extends cItemBaseAbstract {
         // prepare the primary key value and the data depending on the type of
         // $data
         if (is_array($data)) {
-            if (array_key_exists($this->primaryKey, $data)) {
-                $primaryKeyValue = $data[$this->primaryKey];
+            if (array_key_exists($this->getPrimaryKeyName(), $data)) {
+                $primaryKeyValue = $data[$this->getPrimaryKeyName()];
             }
         } else {
             // data is the primary key
             $primaryKeyValue = $data;
             $data = array(
-                $this->primaryKey => $data
+                $this->getPrimaryKeyName() => $data
             );
         }
 
@@ -1146,7 +1146,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
             if (is_numeric($field)) {
                 // Skip index based field
                 continue;
-            } elseif ($field == $this->primaryKey) {
+            } elseif ($field == $this->getPrimaryKeyName()) {
                 // Skip primary key
                 continue;
             }
@@ -1177,7 +1177,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $aIds = array();
 
         // Get all ids
-        $sql = 'SELECT ' . $this->primaryKey . ' AS pk FROM `' . $this->table . '` WHERE ' . $sWhere;
+        $sql = 'SELECT ' . $this->getPrimaryKeyName() . ' AS pk FROM `' . $this->table . '` WHERE ' . $sWhere;
         $oDb->query($sql);
         while ($oDb->nextRecord()) {
             $aIds[] = $oDb->f('pk');
@@ -1240,7 +1240,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         $aIds = array();
 
         // Get all ids
-        $sql = 'SELECT ' . $this->primaryKey . ' AS pk FROM `' . $this->table . '`';
+        $sql = 'SELECT ' . $this->getPrimaryKeyName() . ' AS pk FROM `' . $this->table . '`';
         $oDb->query($sql);
         while ($oDb->nextRecord()) {
             $aIds[] = $oDb->f('pk');
@@ -1332,7 +1332,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         // delete db entry
         $sql = "DELETE FROM `%s` WHERE %s = '%s'";
-        $oDb->query($sql, $this->table, $this->primaryKey, $mId);
+        $oDb->query($sql, $this->table, $this->getPrimaryKeyName(), $mId);
         $success = $oDb->affectedRows();
 
         // delete cache entry
@@ -1340,7 +1340,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         // delete the property values
         $oProperties = $this->_getPropertiesCollectionInstance();
-        $oProperties->deleteProperties($this->primaryKey, $mId);
+        $oProperties->deleteProperties($this->getPrimaryKeyName(), $mId);
 
         if ($success == 0) {
             $this->_executeCallbacks(self::DELETE_FAILURE, $this->_itemClass, array(
@@ -1380,7 +1380,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
         ), $aIds);
         $in = "'" . implode("', '", $aEscapedIds) . "'";
         $sql = "DELETE FROM `%s` WHERE %s IN (" . $in . ")";
-        $oDb->query($sql, $this->table, $this->primaryKey);
+        $oDb->query($sql, $this->table, $this->getPrimaryKeyName());
         $numAffected = $oDb->affectedRows();
 
         // Delete cache entries
@@ -1388,7 +1388,7 @@ abstract class ItemCollection extends cItemBaseAbstract {
 
         // Delete the property values
         $oProperties = $this->_getPropertiesCollectionInstance();
-        $oProperties->deletePropertiesMultiple($this->primaryKey, $aIds);
+        $oProperties->deletePropertiesMultiple($this->getPrimaryKeyName(), $aIds);
 
         // NOTE: Deleteing multiple entries at once has a drawback. There is no
         // way to detect faulty ids, if one or more entries couldn't deleted.

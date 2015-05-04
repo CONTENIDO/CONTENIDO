@@ -81,6 +81,14 @@ abstract class cItemBaseAbstract extends cGenericDb {
     protected $table;
 
     /**
+     * Setting of client ID (deprecated)
+     *
+     * @deprecated [2015-05-04] Class variable primaryKey is deprecated, use getPrimaryKeyName() instead
+     * @var int
+     */
+    private $primaryKey;
+
+    /**
      * Storage of the primary key name
      *
      * @var string

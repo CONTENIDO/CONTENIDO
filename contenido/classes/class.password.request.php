@@ -336,7 +336,7 @@ class cPasswordRequest {
 
                     // if $reqTime is newer than $lastPwRequest then use this as new last password request time
                     if (strtotime($lastPwRequest) < strtotime($reqTime)
-                    && $this->_db->f($oApiUser->primaryKey) === $oApiUser->get($oApiUser->primaryKey)) {
+                    && $this->_db->f($oApiUser->getPrimaryKeyName()) === $oApiUser->get($oApiUser->getPrimaryKeyName())) {
                         $lastPwRequest = $reqTime;
                     }
 
@@ -355,12 +355,12 @@ class cPasswordRequest {
                     || '' === $oApiUserPasswordRequest->get('expiration')
                     || $expiration < $outdated) {
                         // delete password request as it is considered outdated
-                        $oApiPasswordRequestCol->delete($oApiUserPasswordRequest->get($oApiUserPasswordRequest->primaryKey));
+                        $oApiPasswordRequestCol->delete($oApiUserPasswordRequest->get($oApiUserPasswordRequest->getPrimaryKeyName()));
                     }
                 }
 
                 // get all password reset requests related to entered username in form
-                $uid = $oApiUser->get($oApiUser->primaryKey);
+                $uid = $oApiUser->get($oApiUser->getPrimaryKeyName());
                 $requests = $oApiPasswordRequestCol->fetchAvailableRequests($uid);
 
                 // get amount of max password reset requests
@@ -497,7 +497,7 @@ class cPasswordRequest {
             if ($request->get('validation_token') === $_GET['pw_reset'])
             {
                 // we found the used token
-                if ($oApiUser->get($oApiUser->primaryKey) === $request->get($oApiUser->primaryKey)) {
+                if ($oApiUser->get($oApiUser->getPrimaryKeyName()) === $request->get($oApiUser->getPrimaryKeyName())) {
                     // user entered in form matches user related to validation token
                     $validUser = true;
                 }
@@ -530,7 +530,7 @@ class cPasswordRequest {
             $this->_tpl->set('s', 'RESET_LABEL', '');
             $this->_tpl->set('s', 'RESET_FORM', '');
             // remove all password requests for this user from database
-            $oPasswordRequest->deleteByUserId($oApiUser->get($oApiUser->primaryKey));
+            $oPasswordRequest->deleteByUserId($oApiUser->get($oApiUser->getPrimaryKeyName()));
             $msg = i18n('New password has been set.');
         } else {
             // password could not be saved
@@ -557,7 +557,7 @@ class cPasswordRequest {
         $oApiUser = new cApiUser();
         $oApiUser->loadBy('username', $this->_username);
 
-        $oUserPwRequest->set($oApiUser->primaryKey, $oApiUser->get($oApiUser->primaryKey));
+        $oUserPwRequest->set($oApiUser->getPrimaryKeyName(), $oApiUser->get($oApiUser->getPrimaryKeyName()));
         $oUserPwRequest->set('request', $requestTime->format('Y-m-d H:i:s'));
         $oUserPwRequest->set('expiration', $expiration->format('Y-m-d H:i:s'));
         $oUserPwRequest->set('validation_token', $token);

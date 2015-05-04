@@ -195,8 +195,8 @@ class cApiLanguage extends Item {
 
             self::$_propertiesCache[$idclient] = array();
 
-            $itemtype = $this->db->escape($this->primaryKey);
-            $itemid = $this->db->escape($this->get($this->primaryKey));
+            $itemtype = $this->db->escape($this->getPrimaryKeyName());
+            $itemid = $this->db->escape($this->get($this->getPrimaryKeyName()));
 
             $propColl = $this->_getPropertiesCollectionInstance($idclient);
             $propColl->select("itemtype='$itemtype' AND itemid='$itemid'", '', 'type, value ASC');

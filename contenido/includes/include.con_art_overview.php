@@ -603,7 +603,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $no_article = false;
             $oArtLang = new cApiArticleLanguage();
             foreach ($listColumns as $listColumn => $ctitle) {
-                $oArtLang->loadBy($oArtLang->primaryKey, $idartlang);
+                $oArtLang->loadBy($oArtLang->getPrimaryKeyName(), $idartlang);
 
                 switch ($listColumn) {
                     case "mark":

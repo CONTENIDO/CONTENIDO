@@ -192,7 +192,7 @@ class NewsletterJobCollection extends ItemCollection {
 
             // Adds log items for all recipients and returns recipient count
             $oLogs = new NewsletterLogCollection();
-            $iRecipientCount = $oLogs->initializeJob($oItem->get($oItem->primaryKey), $iIDNews);
+            $iRecipientCount = $oLogs->initializeJob($oItem->get($oItem->getPrimaryKeyName()), $iIDNews);
             unset($oLogs);
 
             $oItem->set("rcpcount", $iRecipientCount);
@@ -258,7 +258,7 @@ class NewsletterJob extends Item {
                 $this->set("started", "0000-00-00 00:00:00", false);
 
                 $oLogs = new NewsletterLogCollection();
-                $oLogs->setWhere("idnewsjob", $this->get($this->primaryKey));
+                $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
                 $oLogs->setWhere("status", "sending");
                 $oLogs->query();
 
@@ -343,7 +343,7 @@ class NewsletterJob extends Item {
             } else {
                 $oLogs->resetQuery();
             }
-            $oLogs->setWhere("idnewsjob", $this->get($this->primaryKey));
+            $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
             $oLogs->setWhere("status", "pending");
 
             if ($bDispatch) {
@@ -455,7 +455,7 @@ class NewsletterJob extends Item {
             } else if ($bDispatch) {
                 // Check, if there are recipients remaining - stops job faster
                 $oLogs->resetQuery();
-                $oLogs->setWhere("idnewsjob", $this->get($this->primaryKey));
+                $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
                 $oLogs->setWhere("status", "pending");
                 $oLogs->setLimit(0, $this->get("dispatch_count"));
                 $oLogs->query();

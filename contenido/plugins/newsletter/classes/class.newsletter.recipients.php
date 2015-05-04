@@ -245,7 +245,7 @@ class NewsletterRecipient extends Item {
         $iNewsType = $this->get("news_type");
 
         $oLogs = new NewsletterLogCollection();
-        $oLogs->setWhere("idnewsrcp", $this->get($this->primaryKey));
+        $oLogs->setWhere("idnewsrcp", $this->get($this->getPrimaryKeyName()));
         $oLogs->setWhere("status", "pending");
         $oLogs->query();
 

@@ -84,7 +84,7 @@ class cApiRightCollection extends ItemCollection {
                 LIMIT 1";
 
         $params = array(
-            'pk' => $this->primaryKey,
+            'pk' => $this->getPrimaryKeyName(),
             'rights' => $this->table,
             'actions' => $cfg['tab']['actions'],
             'area' => $cfg['tab']['area'],

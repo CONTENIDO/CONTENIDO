@@ -96,7 +96,7 @@ class cTinyMCE4List {
         // $oApiUploadCol->setWhere('filetype', array('gif', 'jpg', 'jpeg', 'png'), 'IN');
         // $oApiUploadCol->setOrder('dirname, filename ASC');
         // $oApiUploadCol->query();
-        $aUplList = $oApiUploadCol->fetchArray($oApiUploadCol->primaryKey, array('idclient', 'dirname', 'filetype', 'filename'));
+        $aUplList = $oApiUploadCol->fetchArray($oApiUploadCol->getPrimaryKeyName(), array('idclient', 'dirname', 'filetype', 'filename'));
 
         $imageList = array();
         foreach ($aUplList as $uplItem) {

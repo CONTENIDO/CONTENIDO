@@ -222,7 +222,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             $oNewsletters->setWhere("name", $sName);
             $oNewsletters->setWhere("idclient", $client);
             $oNewsletters->setWhere("idlang", $lang);
-            $oNewsletters->setWhere($oNewsletter->primaryKey, $oNewsletter->get($oNewsletter->primaryKey), "!=");
+            $oNewsletters->setWhere($oNewsletter->getPrimaryKeyName(), $oNewsletter->get($oNewsletter->getPrimaryKeyName()), "!=");
             $oNewsletters->query();
 
             if ($oNewsletters->next()) {

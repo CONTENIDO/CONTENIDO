@@ -244,7 +244,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
             $oLnkRemove = new cHTMLLink();
             $oLnkRemove->setCLink("news_jobs", 4, "news_job_detail_delete");
             $oLnkRemove->setCustom("idnewsjob", $_REQUEST["idnewsjob"]);
-            $oLnkRemove->setCustom("idnewslog", $oLog->get($oLog->primaryKey));
+            $oLnkRemove->setCustom("idnewslog", $oLog->get($oLog->getPrimaryKeyName()));
             $oLnkRemove->setCustom("sortby", $_REQUEST["sortby"]);
             $oLnkRemove->setCustom("sortmode", $_REQUEST["sortmode"]);
             $oLnkRemove->setContent($sImgDelete);
