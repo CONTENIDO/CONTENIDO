@@ -449,7 +449,7 @@ class cCLISetup {
         $_SESSION['dbcollation'] = $this->settings['db']['collation'];
         $_SESSION['dbcharset'] = $this->settings['db']['charset'];
         $cfg['sql']['sqlprefix'] = $this->settings['db']['prefix'];
-        // reload cfg_sql.inc.php based on new sql prefix
-        checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
+        // reload cfg_sql.inc.php because new sql prefix will change resulting array data
+        include($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
     }
 }
