@@ -81,12 +81,11 @@ abstract class cItemBaseAbstract extends cGenericDb {
     protected $table;
 
     /**
-     * Storage of the primary key
+     * Storage of the primary key name
      *
      * @var string
-     * @todo remove access from public
      */
-    public $primaryKey;
+    protected $_primaryKeyName;
 
     /**
      * Checks for the virginity of created objects.
@@ -140,7 +139,7 @@ abstract class cItemBaseAbstract extends cGenericDb {
         $this->_oCache = cItemCache::getInstance($sTable, $aCacheOpt);
 
         $this->table = $sTable;
-        $this->primaryKey = $sPrimaryKey;
+        static::_setPrimaryKeyName($sPrimaryKey);
         $this->_className = $sClassName;
     }
 
@@ -163,6 +162,34 @@ abstract class cItemBaseAbstract extends cGenericDb {
      */
     public function escape($sString) {
         return $this->db->escape($sString);
+    }
+
+    public function __get($name) {
+        if ('primaryKey' === $name) {
+            return static::getPrimaryKeyName();
+        }
+    }
+    public function __set($name, $value) {
+        if ('primaryKey' === $name) {
+            static::_setPrimaryKeyName($value);
+        }
+    }
+
+    /**
+     * Get the primary key name in database
+     * @return string
+     *         Name of primary key
+     */
+    public function getPrimaryKeyName() {
+        return $this->_primaryKeyName;
+    }
+
+    /**
+     * Set the primary key name for class
+     * The name must always match the primary key name in database
+     */
+    protected function _setPrimaryKeyName($keyName) {
+        $this->_primaryKeyName = $keyName;
     }
 
     /**

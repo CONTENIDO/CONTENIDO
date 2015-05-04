@@ -132,7 +132,7 @@ abstract class Item extends cItemBaseAbstract {
 
         // check, if cache contains a matching entry
         $aRecordSet = NULL;
-        if ($sField === $this->primaryKey) {
+        if ($sField === $this->_primaryKeyName) {
             $aRecordSet = $this->_oCache->getItem($mValue);
         } else {
             $aRecordSet = $this->_oCache->getItemByProperty($sField, $mValue);
@@ -286,7 +286,7 @@ abstract class Item extends cItemBaseAbstract {
      *         True if the load was successful
      */
     public function loadByPrimaryKey($mValue) {
-        $bSuccess = $this->loadBy($this->primaryKey, $mValue);
+        $bSuccess = $this->loadBy($this->_primaryKeyName, $mValue);
 
         if ($bSuccess == true && method_exists($this, '_onLoad')) {
             $this->_onLoad();
@@ -313,7 +313,7 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
-     * Checks if a the item is already loaded.
+     * Checks if the item is already loaded.
      *
      * @return bool
      */
