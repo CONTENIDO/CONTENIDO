@@ -313,15 +313,6 @@ abstract class Item extends cItemBaseAbstract {
     }
 
     /**
-     * Checks if the item is already loaded.
-     *
-     * @return bool
-     */
-    public function isLoaded() {
-        return $this->isLoaded();
-    }
-
-    /**
      * Function which is called whenever an item is loaded.
      * Inherited classes should override this function if desired.
      */
